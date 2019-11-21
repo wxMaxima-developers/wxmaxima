@@ -1037,8 +1037,6 @@ void GroupCell::Draw(wxPoint point)
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        in = point;
-        
         configuration->Outdated(false);
 
         EditorCell *input = GetInput();
@@ -1091,10 +1089,7 @@ int GroupCell::GetLineIndent(Cell *cell)
 
 void GroupCell::CellUnderPointer(GroupCell *cell)
 {
-  if (m_cellPointers->m_groupCellUnderPointer != cell)
-  {
-    m_cellPointers->m_groupCellUnderPointer = cell;
-  }
+  m_cellPointers->m_groupCellUnderPointer = cell;
 }
 
 void GroupCell::DrawBracket()
@@ -1188,12 +1183,11 @@ void GroupCell::DrawBracket()
                                                 configuration->GetDefaultLineWidth(),
                                                 wxPENSTYLE_SOLID)));
 
-    wxRect rect = GetRect();
-    rect = wxRect(
-            configuration->GetIndent() - configuration->GetCellBracketWidth(),
-            rect.GetTop() - 2,
-            configuration->GetCellBracketWidth(),
-            rect.GetHeight() + 5);
+    wxRect rect = wxRect(
+      configuration->GetIndent() - configuration->GetCellBracketWidth(),
+      rect.GetTop() - 2,
+      configuration->GetCellBracketWidth(),
+      rect.GetHeight() + 5);
     if (Cell::InUpdateRegion(rect))
       dc->DrawRectangle(rect);
   }
@@ -1364,14 +1358,7 @@ wxString GroupCell::ToString()
     while (tmp != NULL)
     {
       if (firstCell || (tmp->HardLineBreak() && str.Length() > 0))
-      {
-        if (firstCell)
           str += wxT("\n");
-        else
-        {
-          str += wxT("\n");
-        }
-      }
       str += tmp->ToString();
       firstCell = false;
       tmp = tmp->m_nextToDraw;
@@ -1538,8 +1525,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 
       wxString input = m_inputLabel->m_next->ToTeX();
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
-             input +
-             wxT("\n\\end{minipage}");
+             input + "\n\\end{minipage}";
     }
   }
 
@@ -1855,7 +1841,7 @@ void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
     m_inputLabel->SelectInner(rect, first, last);
 }
 
-void GroupCell::SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two,
+void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two,
                                    Cell **first, Cell **last)
 {
   if (m_isHidden)

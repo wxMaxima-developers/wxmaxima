@@ -68,7 +68,7 @@ public:
     }
 
   std::list<Cell *> GetInnerCells() override;
-  void MarkAsDeleted();
+  void MarkAsDeleted() override;
 
   void LoadImage(wxString image, bool remove = true);
 
@@ -91,10 +91,10 @@ public:
     The scaled version of the image will be recreated automatically once it is 
     needed.
    */
-  virtual void ClearCache()
+  virtual void ClearCache() override
   { if (m_image)m_image->ClearCache(); }
 
-  virtual wxString GetToolTip(const wxPoint &point);
+  virtual wxString GetToolTip(const wxPoint &point) override;
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);
@@ -140,7 +140,7 @@ protected:
   static int s_counter;
   bool m_drawRectangle;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
   {
     m_drawBoundingBox = true;
   }

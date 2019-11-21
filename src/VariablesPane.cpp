@@ -83,10 +83,10 @@ void Variablespane::OnKey(wxKeyEvent &event)
       BeginBatch();
       wxArrayInt selectedRows = GetSelectedRows();
       selectedRows.Sort(CompareInt);
-      int offset = 0;
       
       if(!selectedRows.IsEmpty())
       {
+        int offset = 0;
         for (wxArrayInt::iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
         {
           DeleteRows(*it-offset);
@@ -336,7 +336,7 @@ void Variablespane::AddWatchCode(wxString code)
       unescapedCode+=*it;
     else
     {
-      it++;
+      ++it;
       if(it != code.end())
         unescapedCode += *it;
     }

@@ -155,7 +155,7 @@ public:
 
   void SelectOutput(Cell **start, Cell **end);
 
-  void SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
+  void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
   void SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
 

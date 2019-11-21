@@ -80,10 +80,10 @@ public:
 
   bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  virtual wxString GetToolTip(const wxPoint &point);
+  virtual wxString GetToolTip(const wxPoint &point) override;
 
   std::list<Cell *> GetInnerCells() override;
-  void MarkAsDeleted();
+  void MarkAsDeleted()  override;
 
   /*! Remove all cached scaled images from memory
 
@@ -123,7 +123,7 @@ public:
     Returns either the frame rate set for this slide show cell individually or 
     the default frame rate chosen in the config.
    */
-  int GetFrameRate();
+  int GetFrameRate() const;
 
   /*! Reload the animation timer starting and instantiating and registering it if necessary.
 
@@ -176,7 +176,7 @@ protected:
 
   wxString ToXML() override;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   {
     m_drawBoundingBox = true;
   }

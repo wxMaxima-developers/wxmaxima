@@ -1239,7 +1239,7 @@ wxString TextCell::ToTeX()
     }
   }
 
-  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_LABEL))
+  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
     text = text + wxT(" ");
 
   return text;
@@ -1377,7 +1377,7 @@ wxString TextCell::ToOMML()
           text = wxT("\x03C0");
       }
     }
-    /* FALLTHRU */
+    break;
   case TS_FUNCTION:
       text = GetGreekStringUnicode();
       if (text == wxT("inf"))

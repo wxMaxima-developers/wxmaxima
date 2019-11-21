@@ -37,6 +37,7 @@
 
 Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
+  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"),
   m_documentclass("article"),
   m_documentclassOptions("fleqn")
 {
@@ -51,7 +52,6 @@ Configuration::Configuration(wxDC *dc) :
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
-  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_changeAsterisk = true;
   m_workSheet = NULL;
@@ -62,7 +62,6 @@ Configuration::Configuration(wxDC *dc) :
   m_outdated = false;
   m_printing = false;
   m_TeXFonts = false;
-  m_printing = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
@@ -86,7 +85,6 @@ Configuration::Configuration(wxDC *dc) :
   m_antiAliasLines = true;
   ReadConfig();
   m_showCodeCells = true;
-  m_defaultToolTip = wxEmptyString;
   m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
   // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
   // for maxima-discuss.

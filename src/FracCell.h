@@ -42,7 +42,7 @@
 class FracCell : public Cell
 {
 public:
-  FracCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
+  FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~FracCell();
   
@@ -94,7 +94,7 @@ public:
   wxString ToXML() override;
 
   //! Fractions in exponents are shown in their linear form.
-  void SetExponentFlag();
+  void SetExponentFlag() override;
 
   bool BreakUp() override;
 

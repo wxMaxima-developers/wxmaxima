@@ -1359,7 +1359,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
       if (!separatorAdded)
         m_recentDocumentsMenu->Append(menu_recent_document_separator,
                                       wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
-
+      separatorAdded = true;
       m_recentDocumentsMenu->Append(i, label);
       unsavedDocuments.pop_front();
     }

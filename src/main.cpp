@@ -219,8 +219,6 @@ bool MyApp::OnInit()
   if (cmdLineParser.Found(wxT("pipe")))
     wxMaxima::PipeToStdout();
 
-  config = wxConfig::Get();
-
   wxString extraMaximaArgs;
   wxString arg;
   if (cmdLineParser.Found(wxT("l"), &arg))
@@ -250,9 +248,9 @@ bool MyApp::OnInit()
     if(dir != wxEmptyString)
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-  wxString fontPrefix = m_dirstruct->FontDir() + wxT("/");  
   /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
+  wxString fontPrefix = m_dirstruct->FontDir() + wxT("/");  
   if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  wxFont::AddPrivateFont(fontPrefix + wxT(CMR10) + wxT(".ttf"));

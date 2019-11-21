@@ -107,10 +107,7 @@ void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 {
   wxArrayString::iterator it;
   for (it = wordlist.begin(); it != wordlist.end(); ++it)
-  {
-    if (m_worksheetWords[*it] != 1)
-      m_worksheetWords[*it] = 1;
-  }
+    m_worksheetWords[*it] = 1;
 }
 
 bool AutoComplete::LoadSymbols()

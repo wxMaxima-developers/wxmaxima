@@ -88,6 +88,7 @@ Cell::Cell(Cell *group, Configuration **config)
   SetCurrentPoint(wxPoint(-1, -1));
   m_toolTip = (*m_configuration)->GetDefaultCellToolTip();
   m_fontSize = (*m_configuration)->GetMathFontSize();
+  
 }
 
 Cell::~Cell()
@@ -189,12 +190,12 @@ void Cell::ClearCacheList()
   }
 }
 
-void Cell::SetGroupList(Cell *parent)
+void Cell::SetGroupList(Cell *group)
 {
   Cell *tmp = this;
   while (tmp != NULL)
   {
-    tmp->SetGroup(parent);
+    tmp->SetGroup(group);
     tmp->SetParent(this);
     tmp = tmp->m_next;
   }

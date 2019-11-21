@@ -90,7 +90,6 @@ protected:
    /*! How to create a big parenthesis sign?
    */
   Configuration::drawMode m_bigParenType;
-  int m_fontSize;
   void SetFont(int fontsize);
   Cell *m_innerCell, *m_open, *m_close;
   Cell *m_last1;

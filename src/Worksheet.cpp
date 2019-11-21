@@ -8725,9 +8725,10 @@ Worksheet::MathMLDataObject::MathMLDataObject() : wxCustomDataObject(m_mathmlFor
 {
 }
 
-Worksheet::MathMLDataObject::MathMLDataObject(wxString data) : wxCustomDataObject(m_mathmlFormat)
+Worksheet::MathMLDataObject::MathMLDataObject(wxString data) : wxCustomDataObject(m_mathmlFormat),
+                                                               m_databuf(data.utf8_str())
+
 {
-  m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 

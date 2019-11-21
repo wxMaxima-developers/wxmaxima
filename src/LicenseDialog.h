@@ -40,7 +40,7 @@
 class LicenseDialog : public wxDialog
 {
 public:
-  LicenseDialog(wxWindow *parent);
+  explicit LicenseDialog(wxWindow *parent);
 };
 
 #endif // LICENSEDIALOG_H

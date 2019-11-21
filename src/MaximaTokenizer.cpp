@@ -98,12 +98,12 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           continue;
         }
         
-        wxString::const_iterator it2(it);
-        if(it2 < commands.end())
-          ++it2;
+        wxString::const_iterator it3(it);
+        if(it3 < commands.end())
+          ++it3;
         wxChar nextCh = ' ';
-        if(it2 < commands.end())
-          nextCh = *it2;
+        if(it3 < commands.end())
+          nextCh = *it3;
 
         // handle comment begins within comments.
         if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\xB7'))))
@@ -148,13 +148,13 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       if(Ch == ':')
       {
         wxString breakCommand;
-        wxString::const_iterator it2(it);
+        wxString::const_iterator it3(it);
         int len = 14;
-        while((len>0) && (it2 < commands.end()))
+        while((len>0) && (it3 < commands.end()))
         {
           len--;
-          breakCommand += wxString(*it2);
-          it2++;
+          breakCommand += wxString(*it3);
+          it3++;
         }
         if(
           breakCommand.StartsWith(":lisp ") ||
@@ -345,15 +345,15 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         else
         {
           // Let's look what the next char looks like
-          wxString::const_iterator it2(it);
-          while ((it2 < commands.end()) &&
-                 ((*it2 == ' ') || (*it2 == '\t') || (*it2 == '\n') || (*it2 == '\r')))
-            ++it2;
-          if(it2 >= commands.end())
+          wxString::const_iterator it3(it);
+          while ((it3 < commands.end()) &&
+                 ((*it3 == ' ') || (*it3 == '\t') || (*it3 == '\n') || (*it3 == '\r')))
+            ++it3;
+          if(it3 >= commands.end())
             m_tokens.push_back(new Token(token, TS_CODE_VARIABLE));
           else
           {
-            if(*it2 == '(')
+            if(*it3 == '(')
               m_tokens.push_back(new Token(token, TS_CODE_FUNCTION));
             else
               m_tokens.push_back(new Token(token, TS_CODE_VARIABLE));

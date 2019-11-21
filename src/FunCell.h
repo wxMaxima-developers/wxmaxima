@@ -60,9 +60,9 @@ public:
 
   Cell *Copy() override;
 
-  void SetName(Cell *base);
+  void SetName(Cell *name);
 
-  void SetArg(Cell *index);
+  void SetArg(Cell *arg);
 
   void RecalculateHeight(int fontsize) override;
 

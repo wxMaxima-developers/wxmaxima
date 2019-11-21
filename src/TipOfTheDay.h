@@ -52,7 +52,7 @@ extern const char * invalidImage_xpm[];
 class TipOfTheDay : public wxDialog
 {
 public:
-  TipOfTheDay(wxWindow *parent);
+  explicit TipOfTheDay(wxWindow *parent);
   ~TipOfTheDay();
 protected:
   void OnNextButton(wxCommandEvent &dummy);

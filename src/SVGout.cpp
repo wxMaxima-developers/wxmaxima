@@ -35,9 +35,9 @@
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
-Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
+Svgout::Svgout(Configuration **configuration, wxString filename, double scale) :
+  m_CWD(wxGetCwd())
 {
-  m_CWD = wxGetCwd();
   m_width = m_height = -1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
@@ -156,12 +156,12 @@ bool Svgout::Layout()
   return true;
 }
 
-double Svgout::GetRealWidth()
+double Svgout::GetRealWidth() const
 {
   return m_width / m_scale;
 }
 
-double Svgout::GetRealHeight()
+double Svgout::GetRealHeight() const
 {
   return m_height / m_scale;
 }

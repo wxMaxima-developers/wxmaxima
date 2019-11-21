@@ -67,9 +67,9 @@ wxString MarkDownParser::MarkDown(wxString str)
     wxString lineTrimmed = line;
     lineTrimmed.Trim(false);
 
-    wxString str = line;
-    str = str.Trim(false);
-    size_t index = line.Length() - str.Length();
+    wxString st = line;
+    st = st.Trim(false);
+    size_t index = line.Length() - st.Length();
 
     // Determine the amount of indentation and the contents of the rest
     // of the line.
@@ -78,18 +78,18 @@ wxString MarkDownParser::MarkDown(wxString str)
     line = line.Trim();
 
     // Does the line contain anything other than spaces?
-    if (str != wxEmptyString)
+    if (st != wxEmptyString)
     {
       // The line contains actual text..
 
       // Let's see if the line is the start of a bullet list item
-      if ((str.StartsWith("* ")) &&
+      if ((st.StartsWith("* ")) &&
           ((indentationTypes.empty())||(indentationTypes.back() == wxT('*'))))
       {
 
         // Remove the bullet list start marker from our string.
-        str = str.Right(str.Length() - 2);
-        str = str.Trim(false);
+        st = st.Right(st.Length() - 2);
+        st = st.Trim(false);
 
         // Let's see if this is the first item in the list
         if (indentationLevels.empty())
@@ -132,18 +132,18 @@ wxString MarkDownParser::MarkDown(wxString str)
         result += itemizeItem();
 
         // Add the item itself
-        str.Trim();
-        if(str.EndsWith(NewLine()))
-          str = str.Left(str.Length() - NewLine().Length());
-        result += str += wxT(" ");
+        st.Trim();
+        if(st.EndsWith(NewLine()))
+          st = st.Left(st.Length() - NewLine().Length());
+        result += st += wxT(" ");
       }
-      else if (str.StartsWith(quoteChar() + wxT(" ")))
+      else if (st.StartsWith(quoteChar() + wxT(" ")))
       {
         // We are part of a quotation.
         //
         // Remove the bullet list start marker from our string.
-        str = str.Right(str.Length() - quoteChar().Length() - 1);
-        str = str.Trim(false);
+        st = st.Right(st.Length() - quoteChar().Length() - 1);
+        st = st.Trim(false);
 
         // Let's see if this is the first item in the list
         if (indentationLevels.empty())
@@ -180,7 +180,7 @@ wxString MarkDownParser::MarkDown(wxString str)
             indentationTypes.pop_back();
           }
         }
-        result += str += wxT(" ");
+        result += st += wxT(" ");
       }
       else
       {

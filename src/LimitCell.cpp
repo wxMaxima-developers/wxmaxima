@@ -36,6 +36,9 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_base = NULL;
   m_under = NULL;
   m_name = NULL;
+  m_base_last = NULL;
+  m_under_last = NULL;
+  m_name_last = NULL;
   m_open = new TextCell(parent, config, cellPointers, "(");
   m_comma = new TextCell(parent, config, cellPointers, ",");
   m_close = new TextCell(parent, config, cellPointers, ")");

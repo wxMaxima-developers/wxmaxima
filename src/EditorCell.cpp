@@ -1065,12 +1065,11 @@ wxString EditorCell::GetCurrentCommand()
     {
       if(*it == '\\')
       {
-        *it;++it;
+        possibleCommand += *it;++it;
       }
       if(it != lineTillCursor.end())
       {
-        possibleCommand += *it;
-        ++it;
+        possibleCommand += *it;++it;
       }
       while((it != lineTillCursor.end()) && ((wxIsalnum(*it) ||
                                               (*it == wxT('_')) ||
@@ -1078,7 +1077,7 @@ wxString EditorCell::GetCurrentCommand()
       {
         if(*it == '\\')
         {
-          *it;++it;
+          possibleCommand += *it;++it;
         }
         if(it != lineTillCursor.end())
         {
@@ -1496,10 +1495,11 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
         if (autoIndent)
         {
           int i = BeginningOfLine(m_positionOfCaret);
-          while ((m_text[i] == wxT(' ')) && (i < m_positionOfCaret))
+          while ((i < m_positionOfCaret) && (m_text[i] == wxT(' ')))
             ++i;
           if (i == m_positionOfCaret)
-            while ((m_text[m_positionOfCaret] == wxT(' ')) && (m_positionOfCaret < (long) m_text.Length() - 1))
+            while ((m_positionOfCaret < (long) m_text.Length() - 1) &&
+                   (m_text[m_positionOfCaret] == wxT(' ')))
               ++m_positionOfCaret;
         }
 
@@ -3393,7 +3393,7 @@ void EditorCell::ClearUndo()
 }
 
 void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token,
-                                           unsigned int charInCell, wxString &text, size_t &lastSpacePos,
+                                           unsigned int charInCell, wxString &text, size_t const &lastSpacePos,
                                            int &indentationPixels)
 {
   // If we don't want to autowrap code we don't do nothing here.

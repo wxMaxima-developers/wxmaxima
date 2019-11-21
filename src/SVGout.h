@@ -36,7 +36,7 @@ class Svgout
 public:
   /*! The constructor.
   */
-  Svgout(Configuration **configuration, wxString filename = wxEmptyString, double scale = 1.0);
+  explicit Svgout(Configuration **configuration, wxString filename = wxEmptyString, double scale = 1.0);
 
   ~Svgout();
   
@@ -69,9 +69,9 @@ protected:
 
   Cell *m_tree;
 
-  double GetRealHeight();
+  double GetRealHeight() const;
 
-  double GetRealWidth();
+  double GetRealWidth() const;
 
   
   /*! An object that can be filled with SVG data for the clipboard
@@ -79,7 +79,7 @@ protected:
   class SVGDataObject : public wxCustomDataObject
   {
   public:
-    SVGDataObject(wxMemoryBuffer data);
+    explicit SVGDataObject(wxMemoryBuffer data);
 
     SVGDataObject();
 

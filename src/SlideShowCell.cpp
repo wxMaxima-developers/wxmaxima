@@ -61,7 +61,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   if(m_animationRunning)
     ReloadTimer();
 }
-int SlideShow::GetFrameRate()
+int SlideShow::GetFrameRate() const
 {
   int framerate = 2;
 

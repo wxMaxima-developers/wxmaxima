@@ -44,7 +44,7 @@ wxString wxMathML::GetCmd()
     {
       // Remove formatting spaces
       if(((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
-	  ch++;
+	  ++ch;
       else
 	{
 	  // Handle backslashes that might escape double quotes
@@ -52,7 +52,7 @@ wxString wxMathML::GetCmd()
 	    {
 	      lineWithoutComments += *ch;
 	      lastChar = *ch;
-	      ch++;
+	      ++ch;
 	    }
 	  else
 	    {
@@ -66,7 +66,7 @@ wxString wxMathML::GetCmd()
 	    }
 	  lineWithoutComments += *ch;
 	  lastChar = *ch;
-	  ch++;
+	  ++ch;
 	}
     }
     cmd += lineWithoutComments + " ";

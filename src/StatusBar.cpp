@@ -32,9 +32,9 @@
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 
-StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
+StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
+                                                 m_ppi(wxSize(-1,-1))
 {
-  m_ppi = wxSize(-1,-1);
   int widths[] = {-1, 300, GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;
