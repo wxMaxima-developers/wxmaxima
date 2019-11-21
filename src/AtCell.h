@@ -28,7 +28,7 @@
 class AtCell : public Cell
 {
 public:
-  AtCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
+  AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~AtCell();
 

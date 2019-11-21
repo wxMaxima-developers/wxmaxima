@@ -36,15 +36,15 @@ public:
 
   ~MatrCell();
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
 
-  Cell *Copy();
+  Cell *Copy() override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void AddNewCell(Cell *cell)
   {
@@ -63,17 +63,17 @@ public:
 
   void SetDimension();
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
   void SetSpecialFlag(bool special)
   { m_specialMatrix = special; }

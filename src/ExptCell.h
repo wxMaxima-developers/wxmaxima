@@ -52,9 +52,9 @@ public:
 
   ~ExptCell();
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
 
-  Cell *Copy();
+  Cell *Copy() override;
 
   //! Set the mantissa
   void SetBase(Cell *base);
@@ -65,23 +65,23 @@ public:
   //! By how much do we want to rise the power?
   double PowRise() const {return Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);}
   
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
   wxString GetDiffPart();
 
@@ -90,9 +90,9 @@ public:
     m_isMatrix = isMatrix;
   }
 
-  bool BreakUp();
+  bool BreakUp() override;
 
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
   Cell *m_baseCell, *m_exptCell;

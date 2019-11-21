@@ -26,7 +26,7 @@ void RecentDocuments::Load()
   Save();
 }
 
-wxString RecentDocuments::Get(int num)
+wxString RecentDocuments::Get(int num) const
 {
   std::list<wxString> listOfFiles = m_listOfFiles;
   for(int i = 0; i<num; i++)

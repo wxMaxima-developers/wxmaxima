@@ -70,7 +70,7 @@ public:
   class GifDataObject : public wxCustomDataObject
   {
   public:
-    GifDataObject(const wxMemoryOutputStream &str);
+    explicit GifDataObject(const wxMemoryOutputStream &str);
 
     GifDataObject();
 
@@ -82,7 +82,7 @@ public:
   
   virtual wxString GetToolTip(const wxPoint &point);
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
   void MarkAsDeleted();
 
   /*! Remove all cached scaled images from memory
@@ -90,11 +90,11 @@ public:
     To be called when the slideshow is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
    */
-  virtual void ClearCache();
+  virtual void ClearCache() override;
 
   void LoadImages(wxArrayString images, bool deleteRead);
 
-  Cell *Copy();
+  Cell *Copy() override;
 
   int GetDisplayedIndex() const
   { return m_displayed; }
@@ -113,7 +113,7 @@ public:
   //! Exports the whole animation as animated gif
   wxSize ToGif(wxString filename);
 
-  bool CopyToClipboard();
+  bool CopyToClipboard()  override;
   
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();
@@ -160,21 +160,21 @@ protected:
   wxFileSystem *m_fileSystem;
   vector<Image *> m_images;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToRTF();
+  wxString ToRTF() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
   virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)
   {

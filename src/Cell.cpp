@@ -51,17 +51,18 @@ wxString Cell::GetToolTip(const wxPoint &point)
 Cell::Cell(Cell *group, Configuration **config)
 #if wxUSE_ACCESSIBILITY
   :wxAccessible()
+#else
+   :
 #endif
+   m_currentPoint_Last(wxPoint(-1,-1)),
+   m_group(group),
+   m_parent(group),
+   m_configuration(config)
 {
   m_lastZoomFactor = -1;
-  m_currentPoint_Last = wxPoint(-1,-1);
   m_clientWidth_old = -1;
-  m_group = group;
   m_textStyle = TS_DEFAULT;
   m_cellPointers = NULL;
-  m_group = group;
-  m_parent = group;
-  m_configuration = config;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
@@ -1464,7 +1465,6 @@ Cell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_groupCellUnderPointer = NULL;
   m_lastWorkingGroup = NULL;
   m_workingGroup = NULL;
-  m_selectionString = wxEmptyString;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
   m_currentTextCell = NULL;

@@ -80,7 +80,7 @@ public:
 
   wxString ToXML() override;
 
-  wxString GetDiffPart();
+  wxString GetDiffPart() override;
 
   bool IsOperator() const override;
 
@@ -95,7 +95,7 @@ public:
 
   wxString GetSymbolUnicode(bool keepPercent) const;
 
-  bool IsShortNum();
+  bool IsShortNum() override;
 
   virtual void SetType(CellType type) override;
 

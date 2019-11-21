@@ -32,9 +32,9 @@ public:
 
   ~SubSupCell();
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
 
-  Cell *Copy();
+  Cell *Copy() override;
 
   void SetBase(Cell *base);
 
@@ -50,23 +50,23 @@ public:
 
   void SetPostSup(Cell *expt){SetExponent(expt);}
   
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
 protected:
   Cell *m_baseCell;

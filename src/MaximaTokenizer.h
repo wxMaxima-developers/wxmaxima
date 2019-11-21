@@ -55,7 +55,7 @@ public:
       {
       }
     Token& operator=(const Token& t){m_text = t.m_text;m_style = t.m_style; return *this;}
-    Token(wxString text){m_text = text; m_style = TS_DEFAULT;}
+    explicit Token(wxString text) : m_text(text){m_style = TS_DEFAULT;}
     TextStyle GetStyle() const {return m_style;}
     wxString GetText() const {return m_text;}
     operator wxString() const {return GetText();}

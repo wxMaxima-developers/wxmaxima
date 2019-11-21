@@ -65,7 +65,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_forceBreakLine = true;
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
-  m_hide = false;
+  m_isHidden = false;
   m_groupType = groupType;
   m_lastInOutput = NULL;
   m_appendedCells = NULL;
@@ -293,7 +293,7 @@ void GroupCell::ResetInputLabelList()
 Cell *GroupCell::Copy()
 {
   GroupCell *tmp = new GroupCell(m_configuration, m_groupType, m_cellPointers);
-  tmp->Hide(m_hide);
+  tmp->Hide(m_isHidden);
   CopyData(this, tmp);
   tmp->AutoAnswer(m_autoAnswer);
   if (m_inputLabel)
@@ -500,7 +500,7 @@ void GroupCell::AppendInput(Cell *cell)
     else
     {
       AppendOutput(cell);
-      m_hide = false;
+      m_isHidden = false;
     }
   }
 }
@@ -551,7 +551,7 @@ void GroupCell::RemoveOutput()
   ResetSize();
   RecalculateHeight((*m_configuration)->GetDefaultFontSize());
   (*m_configuration)->AdjustWorksheetSize(true);
-  m_hide = false;
+  m_isHidden = false;
 
   // Move all cells that follow the current one up by the amount this cell has shrinked.
   GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
@@ -633,7 +633,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       m_inputLabel->SetCurrentPoint(m_currentPoint);
     }
 
-    if (m_output == NULL || m_hide)
+    if (m_output == NULL || m_isHidden)
     {
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
@@ -741,7 +741,7 @@ void GroupCell::RecalculateHeightInput()
     m_height = 0;
   }
   
-  if (!m_hide)
+  if (!m_isHidden)
   {
     Cell *tmp = m_output;
     while (tmp != NULL)
@@ -790,7 +790,7 @@ void GroupCell::RecalculateHeightInput()
 
 void GroupCell::RecalculateHeightOutput()
 {
-  if(!m_hide)
+  if(!m_isHidden)
   {
     m_appendedCells = m_output;
     if(m_output != NULL)
@@ -830,7 +830,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 // We assume that appended cells will be in a new line!
 void GroupCell::RecalculateAppended()
 {  
-  if(m_hide)
+  if(m_isHidden)
     return;
   if(NeedsRecalculation())
     m_appendedCells = m_output;
@@ -1002,7 +1002,7 @@ void GroupCell::Draw(wxPoint point)
       SetPen();
       wxPoint in(point);
 
-      if ((m_output != NULL) && !m_hide)
+      if ((m_output != NULL) && !m_isHidden)
       {
         Cell *tmp = m_output;
         int drop = tmp->GetMaxDrop();
@@ -1215,7 +1215,7 @@ void GroupCell::DrawBracket()
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
   }
 
-  if ((!m_hide) && (!m_hiddenTree))
+  if ((!m_isHidden) && (!m_hiddenTree))
   {
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
   }
@@ -1279,7 +1279,7 @@ void GroupCell::DrawBracket()
         );
 
       // The rest of the bracket
-      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
+      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_isHidden)
       {
         points.Append(
           new wxPoint(
@@ -1357,7 +1357,7 @@ wxString GroupCell::ToString()
     }
   }
 
-  if (m_output != NULL && !m_hide)
+  if (m_output != NULL && !m_isHidden)
   {
     Cell *tmp = m_output;
     bool firstCell = true;
@@ -1472,7 +1472,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
       break;
 
     default:
-      if (GetEditable() != NULL && !m_hide)
+      if (GetEditable() != NULL && !m_isHidden)
       {
         str = GetEditable()->ListToTeX();
         switch (GetEditable()->GetStyle())
@@ -1735,7 +1735,7 @@ wxString GroupCell::ToXML()
   }
 
   // write hidden status
-  if (m_hide)
+  if (m_isHidden)
     str += wxT(" hide=\"true\"");
   str += wxT(">\n");
 
@@ -1817,7 +1817,7 @@ void GroupCell::SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two,
       (m_inputLabel->ContainsRect(rect))
           )
     m_inputLabel->SelectRect(rect, first, last);
-  else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
+  else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);
 
   if (*first == NULL || *last == NULL)
@@ -1834,7 +1834,7 @@ void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 
   if (m_inputLabel->ContainsRect(rect))
     m_inputLabel->SelectRect(rect, first, last);
-  else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
+  else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
     m_output->SelectRect(rect, first, last);
 
   if (*first == NULL || *last == NULL)
@@ -1858,7 +1858,7 @@ void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
 void GroupCell::SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two,
                                    Cell **first, Cell **last)
 {
-  if (m_hide)
+  if (m_isHidden)
     return;
 
   Cell *tmp;
@@ -1936,7 +1936,7 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
   
   wxString retval;
 
-  if (m_hide)
+  if (m_isHidden)
     return retval;
   
   Cell *tmp = m_output;
@@ -2015,7 +2015,7 @@ void GroupCell::BreakLines(Cell *cell)
   // Don't let the layout degenerate for small window widths
   if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
   
-  while (cell != NULL && !m_hide)
+  while (cell != NULL && !m_isHidden)
   {
     cell->ResetData();
     cell->SoftLineBreak(false);
@@ -2038,7 +2038,7 @@ void GroupCell::BreakLines(Cell *cell)
 
 void GroupCell::SelectOutput(Cell **start, Cell **end)
 {
-  if (m_hide)
+  if (m_isHidden)
     return;
 
   *start = m_output;
@@ -2090,7 +2090,7 @@ bool GroupCell::BreakUpCells(Cell *cell)
   if(m_cellsInGroup > showLength)
   {
     wxLogMessage(_("Resolving to 1D layout for one cell in order to save time"));
-    while (cell != NULL && !m_hide)
+    while (cell != NULL && !m_isHidden)
     {
       if (cell->BreakUp())
         lineHeightsChanged = true;
@@ -2102,7 +2102,7 @@ bool GroupCell::BreakUpCells(Cell *cell)
   {
     int clientWidth = (*m_configuration)->GetClientWidth();
     
-    while (cell != NULL && !m_hide)
+    while (cell != NULL && !m_isHidden)
     {
       if ((!cell->m_isBrokenIntoLines) &&
           ((cell->GetWidth() +
@@ -2162,12 +2162,12 @@ void GroupCell::Hide(bool hide)
   if (IsFoldable())
     return;
 
-  if (m_hide == hide)
+  if (m_isHidden == hide)
     return;
 
-  m_hide = hide;
+  m_isHidden = hide;
   if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-    GetEditable()->SetFirstLineOnly(m_hide);
+    GetEditable()->SetFirstLineOnly(m_isHidden);
 
   // Don't keep cached versions of scaled images around if they aren't visible at all.
   if (GetLabel())
@@ -2179,7 +2179,7 @@ void GroupCell::Hide(bool hide)
 
 void GroupCell::SwitchHide()
 {
-  Hide(!m_hide);
+  Hide(!m_isHidden);
 }
 
 //
@@ -2356,7 +2356,7 @@ GroupCell *GroupCell::UnfoldAll()
   return result;
 }
 
-bool GroupCell::IsLesserGCType(int comparedTo)
+bool GroupCell::IsLesserGCType(int comparedTo) const
 {
   switch (m_groupType)
   {
@@ -2468,7 +2468,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
   }
 }
 
-bool GroupCell::IsMainInput(Cell *active)
+bool GroupCell::IsMainInput(Cell *active) const
 {
   return m_inputLabel->m_next != NULL && active == m_inputLabel->m_next;
 }

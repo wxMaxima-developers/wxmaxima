@@ -35,10 +35,11 @@
 #include <wx/fileconf.h>
 #include "Cell.h"
 
-Configuration::Configuration(wxDC *dc) : m_dc(dc) 
+Configuration::Configuration(wxDC *dc) :
+  m_dc(dc),
+  m_documentclass("article"),
+  m_documentclassOptions("fleqn")
 {
-  m_documentclass = wxT("article");
-  m_documentclassOptions = wxT("fleqn");
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
@@ -451,7 +452,7 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
-wxFont Configuration::GetFont(TextStyle textStyle, int fontSize)
+wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
 {
   wxString fontName;
   wxFontStyle fontStyle;
@@ -868,8 +869,9 @@ wxString Configuration::GetSymbolFontName() const
 {
 #if defined __WXMSW__
   return wxT("Symbol");
-#endif
+#else
   return m_fontName;
+#endif
 }
 
 wxColour Configuration::GetColor(int st) const

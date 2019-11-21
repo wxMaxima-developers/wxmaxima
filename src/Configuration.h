@@ -278,7 +278,7 @@ public:
   wxSize GetPPI(wxWindow *win) const;
   
   //! How much vertical space is to be left between two group cells?
-  int GetCursorWidth()
+  int GetCursorWidth() const
   {
     int ppi;
 
@@ -294,7 +294,7 @@ public:
   }
   
   //! The y position the worksheet starts at
-  int GetBaseIndent()
+  int GetBaseIndent() const
   {
     if (GetCursorWidth() < 12)
       return 12;
@@ -303,7 +303,7 @@ public:
   }
 
   //! The vertical space between GroupCells
-  int GetGroupSkip()
+  int GetGroupSkip() const
   {
     if (GetCursorWidth() < 10)
       return 20;
@@ -743,7 +743,7 @@ public:
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
    */
-  wxFont GetFont(TextStyle textStyle, int fontSize);
+  wxFont GetFont(TextStyle textStyle, int fontSize) const;
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -922,7 +922,7 @@ private:
 class Printing
 {
 public:
-  Printing(Configuration *configuration)
+  explicit Printing(Configuration *configuration)
     {
       m_configuration = configuration;
       m_configuration->SetPrinting(true);
@@ -941,7 +941,7 @@ private:
 class NoClipToDrawRegion
 {
 public:
-  NoClipToDrawRegion(Configuration *configuration)
+  explicit NoClipToDrawRegion(Configuration *configuration)
     {
       m_configuration = configuration;
       m_configuration->ClipToDrawRegion(false);

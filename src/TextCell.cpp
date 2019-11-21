@@ -1649,7 +1649,7 @@ wxString TextCell::GetGreekStringUnicode() const
   return m_text;
 }
 
-wxString TextCell::GetSymbolUnicode(bool keepPercent) cost
+wxString TextCell::GetSymbolUnicode(bool keepPercent) const
 {
   if (m_text == wxT("+"))
     return wxT("+");

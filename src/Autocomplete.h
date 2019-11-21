@@ -63,7 +63,7 @@ public:
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
-  AutoComplete(Configuration *configuration);
+  explicit AutoComplete(Configuration *configuration);
 
   Configuration *m_configuration;
   
@@ -103,7 +103,7 @@ private:
   class GetGeneralFiles : public wxDirTraverser
   {
   public:
-    GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
@@ -132,7 +132,7 @@ private:
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix)  { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
@@ -171,9 +171,9 @@ private:
   class GetMacFiles : public GetMacFiles_includingSubdirs
   {
   public:
-    GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetMacFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
@@ -187,7 +187,7 @@ private:
   class GetDemoFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
@@ -222,7 +222,7 @@ private:
   class GetDemoFiles : public GetDemoFiles_includingSubdirs
   {
   public:
-    GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {

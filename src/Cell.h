@@ -654,6 +654,7 @@ class Cell
      - parenthesis around fractions or similar things that clearly can be recognized as atoms
      - plus signs within numbers
      - most multiplication dots.
+     - The output in folded GroupCells
    */
   bool m_isHidden;
 
@@ -668,6 +669,10 @@ class Cell
            m_type == MC_TYPE_HEADING5 || m_type == MC_TYPE_HEADING6 || m_type == MC_TYPE_TITLE;
   }
 
+  //! Return the hide status
+  bool IsHidden() const
+    { return m_isHidden; }
+
   bool IsEditable(bool input = false) const
   {
     return (m_type == MC_TYPE_INPUT &&
@@ -680,7 +685,7 @@ class Cell
   {}
 
   //! Add a semicolon to a cell, of needed.
-  virtual bool AddEnding()
+  virtual bool AddEnding() const
   { return false; }
 
   virtual void SelectPointText(const wxPoint &point);
@@ -738,10 +743,10 @@ class Cell
 
     Also automatically sets this cell as the "parent" of all cells of the list.
    */
-  void SetGroupList(Cell *parent);
+  void SetGroupList(Cell *group);
 
   //! Define which Sell is the GroupCell this list of cells belongs to
-  virtual void SetGroup(Cell *parent);
+  virtual void SetGroup(Cell *group);
   
   virtual void SetStyle(TextStyle style)
   {
@@ -873,7 +878,7 @@ public:
   public:
     void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
     Cell *CellToScrollTo(){return m_cellToScrollTo;}
-    CellPointers(wxScrolledCanvas *mathCtrl);
+    explicit CellPointers(wxScrolledCanvas *mathCtrl);
     /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
       
       \param resortToLast true = if we already have set the cell maxima works on to NULL

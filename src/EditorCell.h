@@ -60,11 +60,11 @@ class EditorCell : public Cell
 private:
 
   #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description);
-  wxAccStatus GetFocus (int *childId, EditorCell **child);
-  wxAccStatus GetDefaultAction(int childId, wxString *actionName);
-  wxAccStatus GetValue (int childId, wxString *strValue);
-  wxAccStatus GetRole (int childId, wxAccRole *role);
+  wxAccStatus GetDescription(int childId, wxString *description) override;
+  wxAccStatus GetFocus (int *childId, EditorCell **child) override;
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
+  wxAccStatus GetValue (int childId, wxString *strValue) override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) override;
   #endif
   
   int m_errorIndex;
@@ -197,8 +197,8 @@ public:
     Running this command tells the cell to remove these pointers as the cell is 
     no more displayed currently.
    */
-  void MarkAsDeleted();
-  std::list<Cell *> GetInnerCells();
+  void MarkAsDeleted() override;
+  std::list<Cell *> GetInnerCells() override;
 
   /*! Expand all tabulators.
 
@@ -214,16 +214,16 @@ public:
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
 
-  Cell *Copy();
+  Cell *Copy() override;
 
   //! Recalculate the widths of the current cell.
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
   /*! Convert the current cell to a string
   
@@ -237,16 +237,16 @@ public:
   wxString ToMatlab(bool dontLimitToSelection);
 
   //! Convert the current cell to LaTeX code
-  wxString ToTeX();
+  wxString ToTeX() override;
 
   //! Convert the current cell to XML code for inclusion in a .wxmx file.
-  wxString ToXML();
+  wxString ToXML() override;
 
   //! Convert the current cell to HTML code.
   wxString ToHTML();
 
   //! Convert the current cell to RTF code
-  wxString ToRTF();
+  wxString ToRTF() override;
 
   //! Set the currently used font to the one that matches this cell's formatting
   void SetFont();
@@ -264,7 +264,7 @@ public:
 
     Naturally all soft line breaks are converted back to spaces beforehand.
    */
-  wxString GetValue() const
+  wxString GetValue() const override
   {
     return m_text;
   }
@@ -316,10 +316,10 @@ public:
   wxPoint PositionToPoint(int fontsize, int pos = -1);
 
   //! Sets the cursor to the screen coordinate point
-  void SelectPointText(const wxPoint &point);
+  void SelectPointText(const wxPoint &point) override;
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(const wxPoint &one, const wxPoint &two);
+  void SelectRectText(const wxPoint &one, const wxPoint &two) override;
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,
@@ -328,11 +328,11 @@ public:
   //! Is the point point inside the currently selected text?
   bool IsPointInSelection(wxPoint point);
 
-  bool CopyToClipboard();
+  bool CopyToClipboard() override;
 
-  bool CutToClipboard();
+  bool CutToClipboard() override;
 
-  void PasteFromClipboard(const bool &primary = false);
+  void PasteFromClipboard(const bool &primary = false) override;
 
   //! Get the character position the selection has been started with
   int GetSelectionStart() const
@@ -343,7 +343,7 @@ public:
   { return m_selectionEnd; }
 
   //! Select the whole text contained in this Cell
-  void SelectAll()
+  void SelectAll() override
   {
     m_selectionStart = 0;
     m_selectionEnd = m_positionOfCaret = m_text.Length();
@@ -385,7 +385,7 @@ public:
   }
 
   //! Toggles the visibility of the cursor which is used to make it blink.
-  void SwitchCaretDisplay()
+  void SwitchCaretDisplay() override
   {
     m_displayCaret = !m_displayCaret;
   }
@@ -481,7 +481,7 @@ public:
 
   void SetSelection(int start, int end);
 
-  void GetSelection(int *start, int *end)
+  void GetSelection(int *start, int *end) const
   {
     *start = m_selectionStart;
     *end = m_selectionEnd;
@@ -600,25 +600,24 @@ private:
     int m_width;
   public:
     //! Defines a piece of styled text
-    StyledText(TextStyle style, wxString text)
+    StyledText(TextStyle style, wxString text) :
+      m_style(style),
+      m_text(text)
     {
-      m_text = text;
-      m_style = style;
       m_styleThisText = true;
       m_indentPixels = 0;
-      m_indentChar = wxEmptyString;
       m_width = -1;
     }
 
     /*! Defines a piece of text with the default style that possibly is indented
      */
-    StyledText(wxString text, int indentPixels = 0, wxString indentChar = wxEmptyString)
+    explicit StyledText(wxString text, int indentPixels = 0, wxString indentChar = wxEmptyString):
+      m_text(text),
+      m_indentPixels(indentPixels),
+      m_indentChar(indentChar)
     {
-      m_text = text;
       m_style = TS_DEFAULT;
       m_styleThisText = false;
-      m_indentPixels = indentPixels;
-      m_indentChar = indentChar;
       m_width = -1;
     }
 

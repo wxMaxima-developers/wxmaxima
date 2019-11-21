@@ -44,7 +44,7 @@ public:
      Sets the specified @c logger (which may be NULL) as the default log
      target but the log messages are also passed to the previous log target if any.
   */
-  ErrorRedirector(wxLog* logger);
+  explicit ErrorRedirector(wxLog* logger);
 
   /**
      Destroys the previous log target.

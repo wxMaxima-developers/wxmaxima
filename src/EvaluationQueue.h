@@ -43,10 +43,10 @@ private:
 
   class command{
   public:
-    command(wxString string, int index){m_command = string; m_indexStart = index;}
-    wxString GetString(){return m_command;}
+    command(wxString string, int index): m_indexStart(index), m_command(string){}
+    wxString GetString() const {return m_command;}
     void AddEnding(){m_command += ";";}
-    int GetIndex(){return m_indexStart;}
+    int GetIndex() const {return m_indexStart;}
   private:
     int m_indexStart;
     wxString m_command;
@@ -80,10 +80,10 @@ public:
     (in which case we assume the user wanted to hide it and for example didn't use
     it as a label at all) we return wxEmptyString.
   */
-  wxString GetUserLabel()
+  wxString GetUserLabel() const
   { return m_userLabel; }
 
-  int GetIndex()
+  int GetIndex() const
     {
       if (!m_commands.empty())
         return  m_commands.front().GetIndex();
@@ -113,7 +113,7 @@ public:
   }
 
   //! Is GroupCell gr part of the evaluation queue?
-  bool IsInQueue(GroupCell *gr);
+  bool IsInQueue(GroupCell *gr) const;
 
   //! Adds a GroupCell to the evaluation queue.
   void AddToQueue(GroupCell *gr);
@@ -134,7 +134,7 @@ public:
   GroupCell *GetCell();
 
   //! Is the queue empty?
-  bool Empty();
+  bool Empty() const;
 
   //! Clear the queue
   void Clear();
@@ -143,13 +143,13 @@ public:
   wxString GetCommand();  
 
   //! Get the size of the queue [in cells]
-  int Size()
+  int Size() const
   {
     return m_size;
   }
 
   //! Get the size of the queue
-  int CommandsLeftInCell()
+  int CommandsLeftInCell() const
   {
     return m_commands.size();
   }

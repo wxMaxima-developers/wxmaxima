@@ -109,8 +109,8 @@ public:
     Running this command tells the cell to remove these pointers as the cell is
     no more displayed currently.
    */
-  void MarkAsDeleted();
-  std::list<Cell *> GetInnerCells();
+  void MarkAsDeleted() override;
+  std::list<Cell *> GetInnerCells() override;
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -133,9 +133,9 @@ public:
 
     wxEmptyString means: No toolTip.
    */
-  wxString GetToolTip(const wxPoint &point);
+  wxString GetToolTip(const wxPoint &point)  override;
 
-  Cell *Copy();
+  Cell *Copy() override;
 
   // general methods
   GroupType GetGroupType() const
@@ -146,10 +146,10 @@ public:
 
   void SetCellStyle(int style);
 
-  void SetGroup(Cell *parent); // setting parent for all mathcells in GC
+  void SetGroup(Cell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
-  void SelectInner(const wxRect &rect, Cell **first, Cell **last);
+  void SelectInner(const wxRect &rect, Cell **first, Cell **last) override;
 
   void SelectPoint(const wxPoint &rect, Cell **first, Cell **last);
 
@@ -183,22 +183,18 @@ public:
    */
   wxString ToWXM(bool wxm = true);
 
-  wxString ToRTF();
+  wxString ToRTF() override;
 
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
 
   wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
 
-  wxString ToXML();
-
-  //! Return the hide status
-  bool IsHidden()
-  { return m_hide; }
+  wxString ToXML() override;
 
   void Hide(bool hide);
 
@@ -237,11 +233,11 @@ public:
 
     See also GetLabel()
   */
-  Cell *GetOutput()
+  Cell *GetOutput() const
   { if (m_output == NULL) return NULL; else return m_output->m_next; }
 
   //! Determine which rectangle is occupied by this GroupCell
-  wxRect GetOutputRect()
+  wxRect GetOutputRect() const
   { return m_outputRect; }
 
   /*! Recalculates the height of this GroupCell and all cells inside it if needed.
@@ -250,10 +246,10 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
-  virtual wxRect GetRect(bool all = false);
+  virtual wxRect GetRect(bool all = false) override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
@@ -263,7 +259,7 @@ public:
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
    */
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
   /*! Recalculate the size of this GroupCell.
 
@@ -298,7 +294,7 @@ public:
   //! @{ folding and unfolding
 
   //! Is this cell foldable?
-  bool IsFoldable()
+  bool IsFoldable() const
   {
     return ((m_groupType == GC_TYPE_SECTION) ||
             (m_groupType == GC_TYPE_TITLE) ||
@@ -362,10 +358,10 @@ public:
     For example ordinary text cells can be part of a chapter and sections can be
     part of a chapter, too.
    */
-  bool IsLesserGCType(int comparedTo);
+  bool IsLesserGCType(int comparedTo) const;
 
   //! @}
-  bool IsMainInput(Cell *active);
+  bool IsMainInput(Cell *active) const;
 
   //!  Return this cell's section- or image number.
   void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
@@ -389,9 +385,9 @@ public:
     by RecalculateHeightOutput().
 
    */
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  virtual bool AddEnding()
+  virtual bool AddEnding() const override
     {
       if(GetEditable() != NULL)
         return GetEditable()->AddEnding();
@@ -409,7 +405,7 @@ public:
   bool Contains(GroupCell *cell);
 
   //! A textual representation of this cell
-  wxString ToString();
+  wxString ToString() override;
 
   //! Is this cell part of the evaluation Queue?
   void InEvaluationQueue(bool inQueue)
@@ -430,13 +426,13 @@ public:
   StringHash m_knownAnswers;
   
 #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description);
-  wxAccStatus GetLocation (wxRect &rect, int elementId);
+  wxAccStatus GetDescription(int childId, wxString *description) override;
+  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
 
   class HCaretCell: public wxAccessible
   {
   public:
-    HCaretCell(GroupCell* group) : wxAccessible()
+    explicit HCaretCell(GroupCell* group) : wxAccessible()
       {
         m_group = group;
       }
@@ -507,7 +503,7 @@ public:
   
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation();
+  bool NeedsRecalculation() override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
@@ -519,8 +515,6 @@ protected:
   //! The maxima output this cell contains
   Cell *m_output;
   //! Is this cell folded (which hides its contents)?
-  bool m_hide;
-  int m_fontSize;
   int m_mathFontSize;
   Cell *m_lastInOutput;
   Cell *m_appendedCells;

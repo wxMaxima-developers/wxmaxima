@@ -46,7 +46,7 @@ public:
 
   ~FracCell();
   
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
 
   //! All types of fractions we supportx
   enum FracType
@@ -56,13 +56,13 @@ public:
     FC_DIFF
   };
 
-  Cell *Copy();
+  Cell *Copy() override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetFracStyle(int style)
   {
@@ -76,31 +76,31 @@ public:
   void SetDenom(Cell *denom);
 
   //! Answers the question if this is an operator by returning "true".
-  bool IsOperator() const
+  bool IsOperator() const override
   {
     return true;
   }
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
   //! Fractions in exponents are shown in their linear form.
   void SetExponentFlag();
 
-  bool BreakUp();
+  bool BreakUp() override;
 
   void SetupBreakUps();
 
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
   //! The numerator

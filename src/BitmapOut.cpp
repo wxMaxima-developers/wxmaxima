@@ -143,12 +143,12 @@ bool BitmapOut::Layout(long int maxSize)
   }
 }
 
-double BitmapOut::GetRealWidth()
+double BitmapOut::GetRealWidth() const
 {
   return m_width * m_scale;
 }
 
-double BitmapOut::GetRealHeight()
+double BitmapOut::GetRealHeight() const
 {
   return m_height * m_scale;
 }
@@ -210,7 +210,7 @@ void BitmapOut::BreakLines()
   }
 }
 
-void BitmapOut::GetMaxPoint(int *width, int *height)
+void BitmapOut::GetMaxPoint(int *width, int *height) const
 {
   Cell *tmp = m_tree;
   int currentHeight = 0;

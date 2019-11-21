@@ -67,12 +67,12 @@ public:
         return m_image->GnuplotData();
     }
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
   void MarkAsDeleted();
 
   void LoadImage(wxString image, bool remove = true);
 
-  Cell *Copy();
+  Cell *Copy() override;
 
   friend class SlideShow;
 
@@ -100,7 +100,7 @@ public:
   void SetBitmap(const wxBitmap &bitmap);
 
   //! Copies the cell to the system's clipboard
-  bool CopyToClipboard();
+  bool CopyToClipboard() override;
 
   void DrawRectangle(bool draw)
   { m_drawRectangle = draw; }
@@ -118,24 +118,24 @@ public:
   void SetMaxWidth(double width) const {if(m_image != NULL) return m_image->SetMaxWidth(width);}
   void SetMaxHeight(double height) const {if(m_image != NULL) return m_image->SetMaxHeight(height);}
 
+  void RecalculateHeight(int fontsize) override;
+
+  void RecalculateWidths(int fontsize) override;
+
+  virtual void Draw(wxPoint point) override;
+
+  wxString ToString() override;
+
+  wxString ToMatlab() override;
+
+  wxString ToRTF() override;
+
+  wxString ToTeX() override;
+
+  wxString ToXML() override;
+
 protected:
   Image *m_image;
-
-  void RecalculateHeight(int fontsize);
-
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
-
-  wxString ToString();
-
-  wxString ToMatlab();
-
-  wxString ToRTF();
-
-  wxString ToTeX();
-
-  wxString ToXML();
   
   static int s_counter;
   bool m_drawRectangle;

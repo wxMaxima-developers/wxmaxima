@@ -126,7 +126,7 @@ private:
   class MathMLDataObject : public wxCustomDataObject
   {
   public:
-    MathMLDataObject(wxString data);
+    explicit MathMLDataObject(wxString data);
 
     MathMLDataObject();
 
@@ -138,7 +138,7 @@ private:
   class wxmDataObject : public wxCustomDataObject
   {
   public:
-    wxmDataObject(wxString data);
+    explicit wxmDataObject(wxString data);
 
     wxmDataObject();
 
@@ -149,7 +149,7 @@ private:
   class MathMLDataObject2 : public wxCustomDataObject
   {
   public:
-    MathMLDataObject2(wxString data);
+    explicit MathMLDataObject2(wxString data);
 
     MathMLDataObject2();
 
@@ -164,7 +164,7 @@ private:
   class RtfDataObject : public wxCustomDataObject
   {
   public:
-    RtfDataObject(wxString data);
+    explicit RtfDataObject(wxString data);
 
     RtfDataObject();
 
@@ -175,7 +175,7 @@ private:
   class RtfDataObject2 : public wxCustomDataObject
   {
   public:
-    RtfDataObject2(wxString data);
+    explicit RtfDataObject2(wxString data);
 
     RtfDataObject2();
 
@@ -227,7 +227,6 @@ private:
     TreeUndoAction()
     {
       m_start = NULL;
-      m_oldText = wxEmptyString;
       m_newCellsEnd = NULL;
       m_oldCells = NULL;
       m_partOfAtomicAction = false;

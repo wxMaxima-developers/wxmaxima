@@ -38,7 +38,7 @@
 class ToolBar : public wxAuiToolBar
 {
 public:
-  ToolBar(wxWindow *parent);
+  explicit ToolBar(wxWindow *parent);
   /*! All states the "start/stop animation" toolbar button can be in
    */
   enum AnimationStartStopState

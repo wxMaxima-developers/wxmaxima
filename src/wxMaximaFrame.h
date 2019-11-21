@@ -651,7 +651,7 @@ private:
   class DrawPane: public wxPanel
     {
     public:
-      DrawPane(wxWindow *parent, int ID = wxID_ANY);
+      explicit DrawPane(wxWindow *parent, int ID = wxID_ANY);
       /*! Tell the sidebar if we currently are inside a 2D or a 3D plot command
         
         \param dimensions

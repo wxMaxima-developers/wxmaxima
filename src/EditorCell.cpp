@@ -41,8 +41,7 @@
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
   Cell(parent, config),
-  m_text(text),
-  m_indentChar(wxEmptyString)
+  m_text(text)
 {
   m_errorIndex = -1;
   m_autoAnswer = false;

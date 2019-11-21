@@ -30,7 +30,7 @@
 #include "EvaluationQueue.h"
 #include "MaximaTokenizer.h"
 
-bool EvaluationQueue::Empty()
+bool EvaluationQueue::Empty() const
 {
   return (m_queue.size() <= 1) && (m_commands.empty());
 }
@@ -49,9 +49,9 @@ void EvaluationQueue::Clear()
   m_workingGroupChanged = false;
 }
 
-bool EvaluationQueue::IsInQueue(GroupCell *gr)
+bool EvaluationQueue::IsInQueue(GroupCell *gr) const
 {
-  for(std::list<GroupCell *>::iterator it=m_queue.begin(); it != m_queue.end(); ++it)
+  for(std::list<GroupCell *>::const_iterator it = m_queue.begin(); it != m_queue.end(); ++it)
     if (*it == gr)
       return true;
   

@@ -40,7 +40,7 @@ public:
     \param configuration A pointer to the pointer to this worksheet's configuration
            storage
   */
-  BitmapOut(Configuration **configuration, int scale = 1);
+  explicit BitmapOut(Configuration **configuration, int scale = 1);
 
   ~BitmapOut();
 
@@ -61,7 +61,7 @@ public:
   wxSize ToFile(wxString file);
 
   //! Returns the bitmap representation of the list of cells that was passed to SetData()
-  wxBitmap GetBitmap()
+  wxBitmap GetBitmap() const
   { return m_bmp; }
 
   //! Copies the bitmap representation of the list of cells that was passed to SetData()
@@ -76,7 +76,7 @@ protected:
 
   void RecalculateHeight();
 
-  void GetMaxPoint(int *width, int *height);
+  void GetMaxPoint(int *width, int *height) const;
 
   void BreakUpCells();
 
@@ -86,9 +86,9 @@ protected:
 
   Cell *m_tree;
 
-  double GetRealHeight();
+  double GetRealHeight() const;
 
-  double GetRealWidth();
+  double GetRealWidth() const;
 
 private:
   wxMemoryDC *m_dc;

@@ -49,7 +49,7 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
   return retval;
 }
 
-wxBitmap Image::GetUnscaledBitmap()
+wxBitmap Image::GetUnscaledBitmap() const
 {
   wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
   wxImage img(istream, wxBITMAP_TYPE_ANY);
@@ -481,7 +481,7 @@ wxSize Image::ToImageFile(wxString filename)
   }
 }
 
-wxBitmap Image::GetBitmap(double scale)
+wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
 

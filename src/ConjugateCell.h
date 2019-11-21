@@ -52,38 +52,38 @@ public:
 
   ~ConjugateCell();
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);
 
-  Cell *Copy();
+  Cell *Copy() override;
 
-  bool BreakUp();
+  bool BreakUp() override;
 
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
   Cell *m_innerCell;
   TextCell *m_open, *m_close;
   Cell *m_last;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 };
 
 #endif // CONJUGATECELL_H
