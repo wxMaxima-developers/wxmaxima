@@ -93,17 +93,11 @@ wxString Dirstructure::ResourcesDir() const
   // If the binary is in the wxMaxima folder the resources dir is two levels above as we
   // are in MacOS/wxmaxima
   if((dirs.Last().Upper() == wxT("MACOS")))
-  {
     exe.RemoveLastDir();
-    dirs = exe.GetDirs();
-  }
   
   // If there is a Resources folder the ressources are there
   if(wxDirExists(exe.GetPath() + wxT("/Resources")))
-  {
     exe.AppendDir("Resources");
-    dirs = exe.GetDirs();
-  }
   
   // If there is a share folder the ressources are there
   if(wxDirExists(exe.GetPath() + wxT("/share")))

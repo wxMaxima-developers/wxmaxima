@@ -171,10 +171,10 @@ void wxMaxima::ConfigChanged()
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
-                MyApp::m_topLevelWindows.empty())
+                MyApp::m_topLevelWindows.empty()),
+  m_gnuplotcommand("gnuplot");
 {
   // Will be corrected by ConfigChanged()
-  m_gnuplotcommand = "gnuplot";
   m_maxOutputCellsPerCommand = -1;
   m_locale = locale;
   m_isLogTarget = MyApp::m_topLevelWindows.empty();
@@ -4793,12 +4793,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   case wxID_PREFERENCES:
   case ToolBar::tb_pref:
   {
-    wxConfigBase *config = wxConfig::Get();
     // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
     // on inintialisation => Let's reload the config file before entering the
     // config dialogue.
     ReReadConfig();
-    config = wxConfig::Get();
+    wxConfigBase *config = wxConfig::Get();
 
     ConfigDialogue *configW = new ConfigDialogue(this, m_worksheet->m_configuration);
     configW->Centre(wxBOTH);

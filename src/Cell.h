@@ -379,12 +379,12 @@ class Cell
 
   /*! Is a part of this cell inside a certain rectangle?
 
-    \param big The rectangle to test for collision with this cell
+    \param sm The rectangle to test for collision with this cell
     \param all
      - true means test this cell and the ones that are following it in the list
      - false means test this cell only.
    */
-  bool ContainsRect(const wxRect &big, bool all = true);
+  bool ContainsRect(const wxRect &sm, bool all = true);
 
   /*! Is a given point inside this cell?
 
@@ -714,7 +714,7 @@ class Cell
   wxString OMML2RTF(wxXmlNode *node);
 
   //! Converts OMML math to RTF math
-  wxString OMML2RTF(wxString data);
+  wxString OMML2RTF(wxString ommltext);
 
   /*! Returns the cell's representation as OMML
 

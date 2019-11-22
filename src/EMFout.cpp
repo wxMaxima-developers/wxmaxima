@@ -40,6 +40,7 @@
 Emfout::Emfout(Configuration **configuration, wxString filename)
 {
   m_width = m_height = -1;
+  m_scale = 1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_tree = NULL;

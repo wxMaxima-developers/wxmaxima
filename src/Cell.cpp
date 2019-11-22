@@ -88,7 +88,6 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
   SetCurrentPoint(wxPoint(-1, -1));
   m_toolTip = (*m_configuration)->GetDefaultCellToolTip();
   m_fontSize = (*m_configuration)->GetMathFontSize();
-  
 }
 
 Cell::~Cell()

@@ -74,7 +74,7 @@ class ConfigDialogue : public wxPropertySheetDialog
 {
 public:
   //! The constructor
-  ConfigDialogue(wxWindow *parent, Configuration *config);
+  ConfigDialogue(wxWindow *parent, Configuration *cfg);
 
   //! The destructor
   ~ConfigDialogue();

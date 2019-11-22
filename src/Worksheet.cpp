@@ -2510,10 +2510,6 @@ bool Worksheet::CopyTeX()
     inMath = true;
     if (wrapLatexMath)
       s = wxT("\\[");
-  }
-
-  if (tmp->GetType() != MC_TYPE_GROUP)
-  {
     while (tmp != NULL)
     {
       s += tmp->ToTeX();

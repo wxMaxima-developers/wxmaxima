@@ -1782,7 +1782,7 @@ wxString GroupCell::ToXML()
   return str;
 }
 
-void GroupCell::SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two,
+void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two,
                                 Cell **first, Cell **last)
 {
   Configuration *configuration = (*m_configuration);

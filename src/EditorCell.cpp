@@ -751,9 +751,9 @@ The order this cell is drawn is:
  StyleText() converts m_text into. This way the decisions needed for styling
  text are cached for later use.
 */
-void EditorCell::Draw(wxPoint point1)
+void EditorCell::Draw(wxPoint point)
 {
-  Cell::Draw(point1);
+  Cell::Draw(point);
   
   if ((!m_isHidden) && (DrawThisCell()))
   {
@@ -796,7 +796,7 @@ void EditorCell::Draw(wxPoint point1)
     SetFont();
 
     m_selectionChanged = false;
-    wxPoint point(point1);
+    wxPoint point(point);
 
     //
     // Mark text that coincides with the selection
@@ -1345,7 +1345,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       // of indentChars.
       if (!indentChars.empty())
       {
-        int lst = indentChars.back();
+        int lst;
         indentChars.pop_back();
         if (!indentChars.empty())
           lst = indentChars.back() + 4;
@@ -2876,7 +2876,6 @@ void EditorCell::SelectPointText(const wxPoint &point)
     while (m_positionOfCaret < (signed) text.Length() && text.GetChar(m_positionOfCaret) != '\n' &&
            text.GetChar(m_positionOfCaret) != '\r')
     {
-      s = text.SubString(lineStart, m_positionOfCaret);
       (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
                                                  &width, &height);
       if (width > posInCell.x)
@@ -2952,7 +2951,6 @@ bool EditorCell::IsPointInSelection(wxPoint point)
   while (positionOfCaret < (signed) text.Length() && text.GetChar(positionOfCaret) != '\n' &&
          text.GetChar(positionOfCaret) != '\r')
   {
-    s = text.SubString(lineStart, positionOfCaret);
     (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, positionOfCaret),
                                                &width, &height);
     if (width > posInCell.x)
@@ -3061,7 +3059,7 @@ wxString EditorCell::GetWordUnderCaret()
   {
     if(*it == '\\')
     {
-      *it++;
+      it++;
       if(it != m_text.end())
       {
         retval += *it;
@@ -3106,7 +3104,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
       pos++;
       if(it != m_text.end())
       {
-        *it++;
+        it++;
         pos++;
       }
       continue;
@@ -4269,7 +4267,7 @@ wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue)
   return wxACC_OK;
 }
 
-wxAccStatus EditorCell::GetFocus (int *childId, wxAccessibile **child)
+wxAccStatus EditorCell::GetFocus (int *childId, wxAccessible **child)
 {
   if(IsActive())
   {

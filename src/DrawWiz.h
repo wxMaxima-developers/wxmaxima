@@ -61,7 +61,7 @@ public:
 class ExplicitWiz : public wxDialog
 {
 public:
-  ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int Dimensions = 2);
+  ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -79,7 +79,7 @@ private:
 class ParametricWiz : public wxDialog
 {
 public:
-  ParametricWiz(wxWindow *parent, Configuration *config, int Dimensions = 2);
+  ParametricWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -95,7 +95,7 @@ private:
 class ImplicitWiz : public wxDialog
 {
 public:
-  ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int Dimensions = 2);
+  ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -115,7 +115,7 @@ private:
 class AxisWiz : public wxDialog
 {
 public:
-  AxisWiz(wxWindow *parent, Configuration *config, int Dimensions = 2);
+  AxisWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;

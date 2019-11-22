@@ -131,11 +131,9 @@ void LimitCell::RecalculateWidths(int fontsize)
       m_comma->RecalculateWidthsList(fontsize);
     if(m_close)
       m_close->RecalculateWidthsList(fontsize);
-  }
-  
-  if (!m_isBrokenIntoLines)
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
       + m_base->GetFullWidth();
+  }
   else
     m_width = 0;
   

@@ -156,7 +156,7 @@ public:
 
   void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
-  void SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
+  void SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
   // methods for manipulating GroupCell
   bool SetEditableContent(wxString text);

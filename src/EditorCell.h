@@ -306,7 +306,7 @@ public:
   bool AddEnding();
 
   //! Determines which line and column the pos'th char is at.
-  void PositionToXY(int pos, unsigned int *line, unsigned int *col);
+  void PositionToXY(int position, unsigned int *x, unsigned int *y);
 
   //! Determines which index the char at the position "x chars left, y chars down" is at.
   int XYToPosition(int x, int y);
@@ -568,9 +568,9 @@ private:
 
 #endif
 
-  bool HandleSpecialKey(wxKeyEvent &ev);
+  bool HandleSpecialKey(wxKeyEvent &event);
 
-  bool HandleOrdinaryKey(wxKeyEvent &ev);
+  bool HandleOrdinaryKey(wxKeyEvent &event);
 
   /*! A piece of styled text for syntax highlighting
 

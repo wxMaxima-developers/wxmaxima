@@ -1169,7 +1169,6 @@ void ConfigDialogue::OnClose(wxCloseEvent&  WXUNUSED(event))
 
 void ConfigDialogue::WriteSettings()
 {
-  wxString search = wxT("maxima-htmldir");
   wxArrayString out;
   wxConfigBase *config = wxConfig::Get();
   Configuration *configuration = m_configuration;
@@ -1350,9 +1349,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(wxT("Linux Libertine O"));
   font.SetStyle(wxFONTSTYLE_NORMAL );
-  if(font.IsOk())
-    fontName = wxT("Linux Libertine O");
-  if(!font.IsOk())
 #endif
     font = *wxNORMAL_FONT;
 
@@ -1376,6 +1372,17 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
                 wxFONTWEIGHT_NORMAL,
                 false, fontName,
                 m_fontEncoding);
+
+  if(font.IsOk())
+  {
+    fontName = wxT("Linux Libertine O");
+    font = wxFont(fontsize,
+                  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                  wxFONTWEIGHT_NORMAL,
+                  false, fontName,
+                  m_fontEncoding);
+  }
+  
   if(!font.IsOk())
     font = *wxNORMAL_FONT;
   
@@ -1481,7 +1488,6 @@ void ConfigDialogue::UpdateExample()
 
   m_styleColor->SetColor(m_configuration->m_styles[st].Color());
   
-  wxString example = _("Example text");
   wxColour color(m_configuration->m_styles[st].Color());
   wxString font(m_configuration->m_styles[TS_DEFAULT].FontName());
 
@@ -1502,7 +1508,6 @@ void ConfigDialogue::UpdateExample()
            st == TS_SPECIAL_CONSTANT)
   {
     fontsize = m_configuration->GetMathFontSize();
-    font = m_mathFontName;
   }
 
   if (st == TS_TEXT_BACKGROUND)

@@ -89,11 +89,11 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         if(*it == '\\')
         {
           token += *it;
-          it++;
+          ++it;
           if(it < commands.end())
           {
             token += *it;
-            it++;
+            ++it;
           }
           continue;
         }
@@ -110,11 +110,11 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         {
           commentDepth++;
           token += *it;
-          it++;
+          ++it;
           if(it < commands.end())
           {
             token += *it;
-            it++;
+            ++it;
           }
           continue;
         }
@@ -123,11 +123,11 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         {
           commentDepth--;
           token += *it;
-          it++;
+          ++it;
           if(it < commands.end())
           {
             token += *it;
-            it++;
+            ++it;
           }
           if(commentDepth < 0)
             break;
@@ -284,7 +284,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       if(Ch == '?')
       {
         token += Ch;
-        it++;
+        ++it;
         Ch = *it;
       }
 

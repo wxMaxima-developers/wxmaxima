@@ -35,7 +35,7 @@ class Emfout
 public:
   /*! The constructor.
   */
-  Emfout(Configuration **configuration, wxString filename = wxEmptyString);
+  explicit Emfout(Configuration **configuration, wxString filename = wxEmptyString);
 
   ~Emfout();
 
@@ -80,7 +80,7 @@ protected:
   class EMFDataObject : public wxCustomDataObject
   {
   public:
-    EMFDataObject(wxMemoryBuffer data);
+    explicit EMFDataObject(wxMemoryBuffer data);
 
     EMFDataObject();
 

@@ -1283,6 +1283,8 @@ wxString TextCell::ToMathML()
     /* FALLTHRU */
   case TS_VARIABLE:
     {
+      text = GetGreekStringUnicode();
+
       bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
       if (!keepPercent)
@@ -1291,7 +1293,7 @@ wxString TextCell::ToMathML()
           text = wxT("\x03C0");
       }
     }
-    /* FALLTHRU */
+    break;
   case TS_FUNCTION:
       text = GetGreekStringUnicode();
       if (text == wxT("inf"))
