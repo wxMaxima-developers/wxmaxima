@@ -172,7 +172,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty()),
-  m_gnuplotcommand("gnuplot");
+  m_gnuplotcommand("gnuplot")
 {
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
