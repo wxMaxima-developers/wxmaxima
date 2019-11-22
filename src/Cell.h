@@ -122,7 +122,7 @@ class Cell
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
   virtual wxAccStatus GetChild (int childId, Cell **child);
   //! Accessibility: Does this or a child cell currently own the focus?
-  virtual wxAccStatus GetFocus (int *childId, Cell  **child);
+  virtual wxAccStatus GetFocus (int *childId, wxAccessible **child);
   //! Accessibility: Where is this cell to be found?
   virtual wxAccStatus GetLocation (wxRect &rect, int elementId);
   //! Is pt inside this cell or a child cell?

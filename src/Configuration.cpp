@@ -39,13 +39,14 @@ Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
   m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"),
   m_documentclass("article"),
-  m_documentclassOptions("fleqn")
+  m_documentclassOptions("fleqn"),
+  m_BackgroundBrush(*wxWHITE_BRUSH)
+
 {
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
-  m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
   m_fontChanged = true;
   m_mathJaxURL_UseUser = false;

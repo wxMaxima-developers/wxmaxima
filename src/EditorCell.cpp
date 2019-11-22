@@ -4278,7 +4278,7 @@ wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue)
   return wxACC_OK;
 }
 
-wxAccStatus EditorCell::GetFocus (int *childId, EditorCell **child)
+wxAccStatus EditorCell::GetFocus (int *childId, wxAccessibile **child)
 {
   if(IsActive())
   {

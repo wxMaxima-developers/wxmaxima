@@ -61,7 +61,7 @@ private:
 
   #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) override;
-  wxAccStatus GetFocus (int *childId, EditorCell **child) override;
+  wxAccStatus GetFocus (int *childId, wxAccessibile **child) override;
   wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
   wxAccStatus GetValue (int childId, wxString *strValue) override;
   wxAccStatus GetRole (int childId, wxAccRole *role) override;

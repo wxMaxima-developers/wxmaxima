@@ -107,10 +107,7 @@ wxString Dirstructure::ResourcesDir() const
   
   // If there is a share folder the ressources are there
   if(wxDirExists(exe.GetPath() + wxT("/share")))
-  {
     exe.AppendDir("share");
-    dirs = exe.GetDirs();
-  }
   
   return exe.GetPath();
 }
@@ -144,9 +141,9 @@ wxString Dirstructure::MaximaDefaultLocation()
   wxString maximaLocation;
   wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
   exe.MakeAbsolute();
-  wxString exeDir = exe.GetPathWithSep();
   wxFileName maxima;  
 #if defined __WXMSW__
+  wxString exeDir = exe.GetPathWithSep();
   maxima = exeDir + "../bin/maxima.bat";
   maxima.MakeAbsolute();
   if(wxFileExists(maximaLocation = maxima.GetFullPath()))

@@ -1384,7 +1384,7 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
   }
 }
 
-wxAccStatus Cell::GetFocus (int *childId, Cell  **child)
+wxAccStatus Cell::GetFocus (int *childId, wxAccessible **child)
 {
   int childCount;
   GetChildCount(&childCount);
