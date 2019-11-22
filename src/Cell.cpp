@@ -50,7 +50,7 @@ wxString Cell::GetToolTip(const wxPoint &point)
 
 Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 #if wxUSE_ACCESSIBILITY
-  :wxAccessible()
+  :wxAccessible(),
 #else
    :
 #endif
