@@ -1496,7 +1496,7 @@ public:
     wxAccStatus GetChild (int childId, wxAccessible **child);
     wxAccStatus GetDefaultAction(int childId, wxString *actionName);
     wxAccStatus GetParent (wxAccessible ** parent);
-    wxAccStatus GetFocus (int *childId, wxAccessible **child);
+//    wxAccStatus GetFocus (int *childId, wxAccessible **child);
     wxAccStatus GetLocation (wxRect &rect, int elementId);
     wxAccStatus HitTest 	(const wxPoint &pt,
 	                         int *childId, wxAccessible **childObject);

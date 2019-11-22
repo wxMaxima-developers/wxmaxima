@@ -8923,42 +8923,42 @@ wxAccStatus Worksheet::AccessibilityInfo::GetParent (wxAccessible ** parent)
 }
 
 
-wxAccStatus Worksheet::AccessibilityInfo::GetFocus (int *childId, wxAccessible **child)
-{
-  if(!m_worksheet->HasFocus())
-  {
-    if(childId != NULL)
-      *childId = 0;
-    if(child != NULL)
-      *child = NULL;
-    return wxACC_FALSE;
-  }
-  else
-  {
-    int id = 0;
-    Cell *cell = m_worksheet->m_tree;
-    while(cell != NULL)
-    {
-      id++;
-      if(cell->GetFocus(&id, &cell) == wxACC_OK)
-         {
-           if(childId != NULL)
-             *childId = id;
-           if(child != NULL)
-             *child = cell;
-           return wxACC_OK;
-         }
-      cell = dynamic_cast<GroupCell *>(cell->m_next);
-    }
+// wxAccStatus Worksheet::AccessibilityInfo::GetFocus (int *childId, wxAccessible **child)
+// {
+//   if(!m_worksheet->HasFocus())
+//   {
+//     if(childId != NULL)
+//       *childId = 0;
+//     if(child != NULL)
+//       *child = NULL;
+//     return wxACC_FALSE;
+//   }
+//   else
+//   {
+//     int id = 0;
+//     Cell *cell = m_worksheet->m_tree;
+//     while(cell != NULL)
+//     {
+//       id++;
+//       if(cell->GetFocus(&id, &cell) == wxACC_OK)
+//          {
+//            if(childId != NULL)
+//              *childId = id;
+//            if(child != NULL)
+//              *child = cell;
+//            return wxACC_OK;
+//          }
+//       cell = dynamic_cast<GroupCell *>(cell->m_next);
+//     }
 
-    if(childId != NULL)
-      *childId = 0;
-    if(child != NULL)
-      *child = this;
+//     if(childId != NULL)
+//       *childId = 0;
+//     if(child != NULL)
+//       *child = this;
 
-    return wxACC_OK;
-  }
-}
+//     return wxACC_OK;
+//   }
+// }
 
 wxAccStatus Worksheet::AccessibilityInfo::GetLocation(wxRect &rect, int elementId)
 {
