@@ -35,9 +35,8 @@
 #define PROD_SIGN "\x59"
 #define SUM_DEC 2
 
-SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_base = new TextCell(parent, config, cellPointers);
   m_under = new TextCell(parent, config, cellPointers);
   m_over = new TextCell(parent, config, cellPointers);
@@ -48,16 +47,16 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_sumStyle = SM_SUM;
 }
 
-Cell *SumCell::Copy()
+SumCell::SumCell(const SumCell &cell):
+  SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SumCell *tmp = new SumCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_base->CopyList());
-  tmp->SetUnder(m_under->CopyList());
-  tmp->SetOver(m_over->CopyList());
-  tmp->m_sumStyle = m_sumStyle;
-
-  return tmp;
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+  SetUnder(cell.m_under->CopyList());
+  if(cell.m_over)
+    SetOver(cell.m_over->CopyList());
+  m_sumStyle = cell.m_sumStyle;
 }
 
 SumCell::~SumCell()

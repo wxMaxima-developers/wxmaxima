@@ -29,12 +29,11 @@ class DiffCell : public Cell
 {
 public:
   DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  DiffCell(const DiffCell &cell);
+  Cell *Copy() override {return new DiffCell(*this);}
   ~DiffCell();
   
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   void SetBase(Cell *base);
 

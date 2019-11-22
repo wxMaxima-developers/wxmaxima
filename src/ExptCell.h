@@ -49,12 +49,11 @@ class ExptCell : public Cell
 {
 public:
   ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
-
+  ExptCell(const ExptCell &cell);
+  Cell *Copy() override {return new ExptCell(*this);}
   ~ExptCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   //! Set the mantissa
   void SetBase(Cell *base);

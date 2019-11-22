@@ -33,9 +33,8 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) : Cell(parent, config)
+SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_postSubCell = NULL;
   m_postSupCell = NULL;
@@ -43,17 +42,19 @@ SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPo
   m_preSupCell = NULL;
 }
 
-Cell *SubSupCell::Copy()
+SubSupCell::SubSupCell(const SubSupCell &cell):
+ SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SubSupCell *tmp = new SubSupCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetIndex(m_postSubCell->CopyList());
-  tmp->SetExponent(m_postSupCell->CopyList());
-  tmp->SetPreSub(m_preSubCell->CopyList());
-  tmp->SetPreSup(m_preSupCell->CopyList());
-
-  return tmp;
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_postSubCell)
+    SetIndex(cell.m_postSubCell->CopyList());
+  if(cell.m_postSupCell)
+    SetExponent(cell.m_postSupCell->CopyList());
+  if(cell.m_preSubCell)
+    SetPreSub(cell.m_preSubCell->CopyList());
+  if(cell.m_preSupCell)
+    SetPreSup(cell.m_preSupCell->CopyList());
 }
 
 SubSupCell::~SubSupCell()

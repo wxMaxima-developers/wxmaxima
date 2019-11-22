@@ -31,7 +31,7 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
   m_base = NULL;
   m_under = NULL;
@@ -42,19 +42,17 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_open = new TextCell(parent, config, cellPointers, "(");
   m_comma = new TextCell(parent, config, cellPointers, ",");
   m_close = new TextCell(parent, config, cellPointers, ")");
-
-  m_cellPointers = cellPointers;
 }
 
-Cell *LimitCell::Copy()
+LimitCell::LimitCell(const LimitCell &cell):
+ LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  LimitCell *tmp = new LimitCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_base->CopyList());
-  tmp->SetUnder(m_under->CopyList());
-  tmp->SetName(m_name->CopyList());
-
-  return tmp;
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+    SetUnder(cell.m_under->CopyList());
+  if(cell.m_name)
+    SetName(cell.m_name->CopyList());
 }
 
 LimitCell::~LimitCell()

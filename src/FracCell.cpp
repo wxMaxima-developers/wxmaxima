@@ -31,9 +31,8 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_num = new TextCell(parent, config, cellPointers);
   m_denom = new TextCell(parent, config, cellPointers);
   m_last1 = NULL;
@@ -52,18 +51,16 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_divide = NULL;
 }
 
-Cell *FracCell::Copy()
+FracCell::FracCell(const FracCell &cell):
+ FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  FracCell *tmp = new FracCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetNum(m_num->CopyList());
-  tmp->SetDenom(m_denom->CopyList());
-  tmp->m_fracStyle = m_fracStyle;
-  tmp->m_exponent = m_exponent;
-  tmp->SetupBreakUps();
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  if(cell.m_num)
+    SetNum(cell.m_num->CopyList());
+  if(cell.m_denom)
+    SetDenom(cell.m_denom->CopyList());
+  m_fracStyle = cell.m_fracStyle;
+  m_exponent = cell.m_exponent;
+  SetupBreakUps();
 }
 
 FracCell::~FracCell()

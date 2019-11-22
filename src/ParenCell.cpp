@@ -30,9 +30,8 @@
 #include "ParenCell.h"
 #include "TextCell.h"
 
-ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_numberOfExtensions = 0;
   m_extendHeight = 12;
   m_charWidth = 12;
@@ -52,14 +51,12 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-Cell *ParenCell::Copy()
+ParenCell::ParenCell(const ParenCell &cell):
+ ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->CopyList(), m_type);
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList(), cell.m_type);
+  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 ParenCell::~ParenCell()

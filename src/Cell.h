@@ -105,8 +105,175 @@ class Cell
 #endif
 {
   public:
-  Cell(Cell *group, Configuration **config);
 
+    /*! The storage for pointers to cells.
+    
+    If a cell is deleted it is necessary to remove all pointers that might
+    allow to access the now-defunct cell. These pointers are kept in this 
+    per-worksheet structure.
+  */
+  class CellPointers
+  {
+  public:
+    void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
+    Cell *CellToScrollTo(){return m_cellToScrollTo;}
+    explicit CellPointers(wxScrolledCanvas *mathCtrl);
+    /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+      
+      \param resortToLast true = if we already have set the cell maxima works on to NULL
+      use the last cell maxima was known to work on.
+    */
+    Cell *GetWorkingGroup(bool resortToLast = false)
+      {
+        if ((m_workingGroup != NULL) || (!resortToLast))
+          return m_workingGroup;
+        else
+          return m_lastWorkingGroup;
+      }
+
+    //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+    void SetWorkingGroup(Cell *group)
+      {
+        if(group != NULL)
+          m_lastWorkingGroup = group;
+        m_workingGroup = group;
+      }
+    
+    void WXMXResetCounter()
+      { m_wxmxImgCounter = 0; }
+    
+    wxString WXMXGetNewFileName();
+    
+    int WXMXImageCount() const
+      { return m_wxmxImgCounter; }
+
+    //! A list of editor cells containing error messages.
+    class ErrorList
+    {
+    public:
+      ErrorList(){};
+      //! Is the list of errors empty?
+      bool Empty() const {return m_errorList.empty();}
+      //! Remove one specific GroupCell from the list of errors
+      void Remove(Cell * cell){m_errorList.remove(cell);}
+      //! Does the list of GroupCell with errors contain cell?
+      bool Contains(Cell * cell);
+      //! Mark this GroupCell as containing errors
+      void Add(Cell * cell){m_errorList.push_back(cell);}
+      //! The first GroupCell with error that is still in the list
+      Cell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+      //! The last GroupCell with errors in the list
+      Cell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+      //! Empty the list of GroupCells with errors
+      void Clear(){m_errorList.clear();}
+    private:
+      //! A list of GroupCells that contain errors
+      std::list<Cell *> m_errorList;
+    };
+
+    //! The list of cells maxima has complained about errors in
+    ErrorList m_errorList;
+    //! The EditorCell the mouse selection has started in
+    Cell *m_cellMouseSelectionStartedIn;
+    //! The EditorCell the keyboard selection has started in
+    Cell *m_cellKeyboardSelectionStartedIn;
+    //! The EditorCell the search was started in
+    Cell *m_cellSearchStartedIn;
+    //! Which cursor position incremental search has started at?
+    int m_indexSearchStartedAt;
+    //! Which cell the blinking cursor is in?
+    Cell *m_activeCell;
+    //! The GroupCell that is under the mouse pointer 
+    Cell *m_groupCellUnderPointer;
+    //! The EditorCell that contains the currently active question from maxima 
+    Cell *m_answerCell;
+    //! The last group cell maxima was working on.
+    Cell *m_lastWorkingGroup;
+    //! The textcell the text maxima is sending us was ending in.
+    Cell *m_currentTextCell;
+    /*! The group cell maxima is currently working on.
+
+      NULL means that maxima isn't currently evaluating a cell.
+    */
+    Cell *m_workingGroup;
+    /*! The currently selected string. 
+
+      Since this string is defined here it is available in every editor cell
+      for highlighting other instances of the selected string.
+    */
+    wxString m_selectionString;
+
+    //! Forget where the search was started
+    void ResetSearchStart()
+      {
+        m_cellSearchStartedIn = NULL;
+        m_indexSearchStartedAt = -1;
+      }
+
+    //! Forget where the mouse selection was started
+    void ResetMouseSelectionStart()
+      { m_cellMouseSelectionStartedIn = NULL; }
+
+    //! Forget where the keyboard selection was started
+    void ResetKeyboardSelectionStart()
+      { m_cellKeyboardSelectionStartedIn = NULL; }
+  
+    /*! The first cell of the currently selected range of Cells.
+    
+      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+      is selected and therefore the selection is handled by EditorCell; This cell is 
+      always above m_selectionEnd.
+    
+      See also m_hCaretPositionStart and m_selectionEnd
+    */
+    Cell *m_selectionStart;
+    /*! The last cell of the currently selected range of groupCells.
+    
+      NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+      is selected and therefore the selection is handled by EditorCell; This cell is 
+      always below m_selectionStart.
+    
+      See also m_hCaretPositionEnd
+    */
+
+    //! The cell currently under the mouse pointer
+    Cell *m_cellUnderPointer;
+  
+    /*! The last cell of the currently selected range of Cells.
+    
+      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+      is selected and therefore the selection is handled by EditorCell; This cell is 
+      always above m_selectionEnd.
+    
+      See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
+    */
+    Cell *m_selectionEnd;
+    WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
+    SlideShowTimersList m_slideShowTimers;
+
+    wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
+
+    //! Is scrolling to a cell scheduled?
+    bool m_scrollToCell;
+  private:
+    //! If m_scrollToCell = true: Which cell do we need to scroll to?
+    Cell *m_cellToScrollTo;
+    //! The function to call if an animation has to be stepped.
+    wxScrolledCanvas *m_mathCtrl;
+    //! The image counter for saving .wxmx files
+    int m_wxmxImgCounter;
+  };
+
+
+  Cell(Cell *group, Configuration **config, CellPointers *cellPointers);
+
+  /*! Create a copy of this cell
+
+    This method is purely virtual, which means every child class has to define
+    its own Copy() method.
+   */
+  virtual Cell *Copy() = 0;
+  
   /*! Scale font sizes and line widths according to the zoom factor.
 
     Is used for displaying/printing/exporting of text/maths
@@ -765,15 +932,6 @@ class Cell
   */
   Cell *CopyList();
 
-  /*! Copy this cell
-    
-    This method is used by CopyList() which creates a copy of a cell tree. 
-    
-    \return A copy of this cell without the rest of the list this cell is part 
-    from.
-  */
-  virtual Cell *Copy() = 0;
-
   /*! Do we want to begin this cell with a center dot if it is part of a product?
 
     Maxima will represent a product like (a*b*c) by a list like the following:
@@ -865,165 +1023,6 @@ protected:
   TextStyle m_textStyle;
   //! The font size is smaller in super- and subscripts.
   double m_fontSize;
-
-public:
-  /*! The storage for pointers to cells.
-    
-    If a cell is deleted it is necessary to remove all pointers that might
-    allow to access the now-defunct cell. These pointers are kept in this 
-    per-worksheet structure.
-  */
-  class CellPointers
-  {
-  public:
-    void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
-    Cell *CellToScrollTo(){return m_cellToScrollTo;}
-    explicit CellPointers(wxScrolledCanvas *mathCtrl);
-    /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
-      
-      \param resortToLast true = if we already have set the cell maxima works on to NULL
-      use the last cell maxima was known to work on.
-    */
-    Cell *GetWorkingGroup(bool resortToLast = false)
-      {
-        if ((m_workingGroup != NULL) || (!resortToLast))
-          return m_workingGroup;
-        else
-          return m_lastWorkingGroup;
-      }
-
-    //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-    void SetWorkingGroup(Cell *group)
-      {
-        if(group != NULL)
-          m_lastWorkingGroup = group;
-        m_workingGroup = group;
-      }
-    
-    void WXMXResetCounter()
-      { m_wxmxImgCounter = 0; }
-    
-    wxString WXMXGetNewFileName();
-    
-    int WXMXImageCount() const
-      { return m_wxmxImgCounter; }
-
-    //! A list of editor cells containing error messages.
-    class ErrorList
-    {
-    public:
-      ErrorList(){};
-      //! Is the list of errors empty?
-      bool Empty() const {return m_errorList.empty();}
-      //! Remove one specific GroupCell from the list of errors
-      void Remove(Cell * cell){m_errorList.remove(cell);}
-      //! Does the list of GroupCell with errors contain cell?
-      bool Contains(Cell * cell);
-      //! Mark this GroupCell as containing errors
-      void Add(Cell * cell){m_errorList.push_back(cell);}
-      //! The first GroupCell with error that is still in the list
-      Cell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
-      //! The last GroupCell with errors in the list
-      Cell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
-      //! Empty the list of GroupCells with errors
-      void Clear(){m_errorList.clear();}
-    private:
-      //! A list of GroupCells that contain errors
-      std::list<Cell *> m_errorList;
-    };
-
-    //! The list of cells maxima has complained about errors in
-    ErrorList m_errorList;
-    //! The EditorCell the mouse selection has started in
-    Cell *m_cellMouseSelectionStartedIn;
-    //! The EditorCell the keyboard selection has started in
-    Cell *m_cellKeyboardSelectionStartedIn;
-    //! The EditorCell the search was started in
-    Cell *m_cellSearchStartedIn;
-    //! Which cursor position incremental search has started at?
-    int m_indexSearchStartedAt;
-    //! Which cell the blinking cursor is in?
-    Cell *m_activeCell;
-    //! The GroupCell that is under the mouse pointer 
-    Cell *m_groupCellUnderPointer;
-    //! The EditorCell that contains the currently active question from maxima 
-    Cell *m_answerCell;
-    //! The last group cell maxima was working on.
-    Cell *m_lastWorkingGroup;
-    //! The textcell the text maxima is sending us was ending in.
-    Cell *m_currentTextCell;
-    /*! The group cell maxima is currently working on.
-
-      NULL means that maxima isn't currently evaluating a cell.
-    */
-    Cell *m_workingGroup;
-    /*! The currently selected string. 
-
-      Since this string is defined here it is available in every editor cell
-      for highlighting other instances of the selected string.
-    */
-    wxString m_selectionString;
-
-    //! Forget where the search was started
-    void ResetSearchStart()
-      {
-        m_cellSearchStartedIn = NULL;
-        m_indexSearchStartedAt = -1;
-      }
-
-    //! Forget where the mouse selection was started
-    void ResetMouseSelectionStart()
-      { m_cellMouseSelectionStartedIn = NULL; }
-
-    //! Forget where the keyboard selection was started
-    void ResetKeyboardSelectionStart()
-      { m_cellKeyboardSelectionStartedIn = NULL; }
-  
-    /*! The first cell of the currently selected range of Cells.
-    
-      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-      is selected and therefore the selection is handled by EditorCell; This cell is 
-      always above m_selectionEnd.
-    
-      See also m_hCaretPositionStart and m_selectionEnd
-    */
-    Cell *m_selectionStart;
-    /*! The last cell of the currently selected range of groupCells.
-    
-      NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
-      is selected and therefore the selection is handled by EditorCell; This cell is 
-      always below m_selectionStart.
-    
-      See also m_hCaretPositionEnd
-    */
-
-    //! The cell currently under the mouse pointer
-    Cell *m_cellUnderPointer;
-  
-    /*! The last cell of the currently selected range of Cells.
-    
-      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-      is selected and therefore the selection is handled by EditorCell; This cell is 
-      always above m_selectionEnd.
-    
-      See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
-    */
-    Cell *m_selectionEnd;
-    WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
-    SlideShowTimersList m_slideShowTimers;
-
-    wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
-
-    //! Is scrolling to a cell scheduled?
-    bool m_scrollToCell;
-  private:
-    //! If m_scrollToCell = true: Which cell do we need to scroll to?
-    Cell *m_cellToScrollTo;
-    //! The function to call if an animation has to be stepped.
-    wxScrolledCanvas *m_mathCtrl;
-    //! The image counter for saving .wxmx files
-    int m_wxmxImgCounter;
-  };
 
 protected:
   CellPointers *m_cellPointers;

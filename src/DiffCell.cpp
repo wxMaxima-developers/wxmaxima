@@ -29,22 +29,19 @@
 #include "DiffCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
   m_baseCell = NULL;
   m_diffCell = NULL;
-  m_cellPointers = cellPointers;
 }
 
-Cell *DiffCell::Copy()
+DiffCell::DiffCell(const DiffCell &cell):
+ DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  DiffCell *tmp = new DiffCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetDiff(m_diffCell->CopyList());
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  if(cell.m_diffCell)
+    SetDiff(cell.m_diffCell->CopyList());
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
 }
 
 DiffCell::~DiffCell()

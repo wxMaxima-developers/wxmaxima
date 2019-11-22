@@ -47,9 +47,8 @@
 #include <wx/anidecod.h>
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : Cell(
-        parent, config)
+  parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_timer = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
@@ -146,21 +145,15 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   m_displayed = 0;
 }
 
-Cell *SlideShow::Copy()
+SlideShow::SlideShow(const SlideShow &cell):
+ SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SlideShow *tmp = new SlideShow(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->AnimationRunning(false);
+  AnimationRunning(false);
 
-  for (size_t i = 0; i < m_images.size(); i++)
-  {
-    Image *image = new Image(*m_images[i]);
-    tmp->m_images.push_back(image);
-  }
+  for (size_t i = 0; i < cell.m_images.size(); i++)
+    m_images.push_back(new Image(*cell.m_images[i]));
 
-  tmp->m_size = m_size;
-
-  return tmp;
+  m_size = cell.m_size;
 }
 
 SlideShow::~SlideShow()

@@ -32,7 +32,7 @@
 /*! FunCell represents a maxiam function no special visual representation exists for 
 
   Examples of functions with special visual representation would be:
-   - SqurtCell
+   - SqrtCell
    - ExptCell
    - AbsCell
    - ConjugateCell
@@ -53,12 +53,11 @@ class FunCell : public Cell
 {
 public:
   FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  FunCell(const FunCell &cell);
+  Cell *Copy() override {return new FunCell(*this);}
   ~FunCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   void SetName(Cell *name);
 

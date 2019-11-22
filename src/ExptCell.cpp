@@ -31,9 +31,8 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_last1 = NULL;
   m_last2 = NULL;
   m_baseCell = NULL;
@@ -43,6 +42,26 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_open = new TextCell(parent, config, cellPointers, wxT("("));
   m_open->DontEscapeOpeningParenthesis();
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
+}
+
+ExptCell::ExptCell(const ExptCell &cell):
+  ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+{
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_exptCell)
+    SetPower(cell.m_exptCell->CopyList());
+}
+
+ExptCell::~ExptCell()
+{
+  wxDELETE(m_baseCell);
+  wxDELETE(m_exptCell);
+  wxDELETE(m_exp);
+  wxDELETE(m_open);
+  wxDELETE(m_close);
+  m_baseCell = m_exptCell = m_exp = m_open = m_close = NULL;
+  MarkAsDeleted();
 }
 
 void ExptCell::Draw(wxPoint point)
@@ -63,30 +82,6 @@ void ExptCell::Draw(wxPoint point)
     point.y -= PowRise();
     m_exptCell->DrawList(point);
   }
-}
-
-
-Cell *ExptCell::Copy()
-{
-  ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetPower(m_exptCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-  tmp->m_open->DontEscapeOpeningParenthesis();
-
-  return tmp;
-}
-
-ExptCell::~ExptCell()
-{
-  wxDELETE(m_baseCell);
-  wxDELETE(m_exptCell);
-  wxDELETE(m_exp);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_baseCell = m_exptCell = m_exp = m_open = m_close = NULL;
-  MarkAsDeleted();
 }
 
 std::list<Cell *> ExptCell::GetInnerCells()

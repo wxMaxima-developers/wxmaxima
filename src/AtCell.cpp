@@ -28,21 +28,19 @@
 
 #include "AtCell.h"
 
-AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
 
-Cell *AtCell::Copy()
+AtCell::AtCell(const AtCell &cell):
+ AtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  AtCell *tmp = new AtCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetIndex(m_indexCell->CopyList());
-
-  return tmp;
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_indexCell)
+    SetIndex(cell.m_indexCell->CopyList());
 }
 
 AtCell::~AtCell()

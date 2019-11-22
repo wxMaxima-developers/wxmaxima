@@ -33,12 +33,12 @@ class MatrCell : public Cell
 {
 public:
   MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  MatrCell(const MatrCell &cell);
+  Cell *Copy() override {return new MatrCell(*this);}
 
   ~MatrCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   void RecalculateHeight(int fontsize) override;
 

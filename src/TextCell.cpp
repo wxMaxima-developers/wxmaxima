@@ -31,7 +31,7 @@
 #include "wx/config.h"
 
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
-                   wxString text, TextStyle style) : Cell(parent, config)
+                   wxString text, TextStyle style) : Cell(parent, config, cellPointers)
 {
   switch(m_textStyle = style)
   {
@@ -61,7 +61,6 @@ TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPoint
     wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"),style));
     m_type = MC_TYPE_DEFAULT;
   }
-  m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;
   m_realCenter = m_center = -1;
@@ -330,21 +329,18 @@ void TextCell::SetValue(const wxString &text)
   ResetSize();
 }
 
-Cell *TextCell::Copy()
+TextCell::TextCell(const TextCell &cell):
+  Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  TextCell *retval = new TextCell(m_group, m_configuration, m_cellPointers, wxEmptyString);
-  CopyData(this, retval);
-  retval->m_text = wxString(m_text);
-  retval->m_displayedText = wxString(m_displayedText);
-  retval->m_forceBreakLine = m_forceBreakLine;
-  retval->m_bigSkip = m_bigSkip;
-  retval->m_isHidden = m_isHidden;
-  retval->m_textStyle = m_textStyle;
-  retval->m_highlight = m_highlight;
-  retval->m_userDefinedLabel = m_userDefinedLabel;
-  retval->m_dontEscapeOpeningParenthesis = m_dontEscapeOpeningParenthesis;
-
-  return retval;
+  m_text = wxString(cell.m_text);
+  m_displayedText = wxString(cell.m_displayedText);
+  m_forceBreakLine = cell.m_forceBreakLine;
+  m_bigSkip = cell.m_bigSkip;
+  m_isHidden = cell.m_isHidden;
+  m_textStyle = cell.m_textStyle;
+  m_highlight = cell.m_highlight;
+  m_userDefinedLabel = cell.m_userDefinedLabel;
+  m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
 bool TextCell::NeedsRecalculation()

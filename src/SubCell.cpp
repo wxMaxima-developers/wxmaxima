@@ -30,21 +30,19 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
 
-Cell *SubCell::Copy()
+SubCell::SubCell(const SubCell &cell):
+ SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SubCell *tmp = new SubCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetIndex(m_indexCell->CopyList());
-
-  return tmp;
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_indexCell)
+    SetIndex(cell.m_indexCell->CopyList());
 }
 
 SubCell::~SubCell()

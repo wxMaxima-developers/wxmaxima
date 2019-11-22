@@ -43,7 +43,8 @@ class FracCell : public Cell
 {
 public:
   FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  FracCell(const FracCell &cell);
+  Cell *Copy() override {return new FracCell(*this);}
   ~FracCell();
   
   std::list<Cell *> GetInnerCells() override;
@@ -55,8 +56,6 @@ public:
     FC_CHOOSE,
     FC_DIFF
   };
-
-  Cell *Copy() override;
 
   void RecalculateHeight(int fontsize) override;
 

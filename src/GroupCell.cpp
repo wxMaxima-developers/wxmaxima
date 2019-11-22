@@ -41,13 +41,12 @@
 #include "list"
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
-        this, config)
+  this, config, cellPointers)
 {
   m_numberedAnswersCount = 0;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
-  m_cellPointers = cellPointers;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
   m_inputLabel = NULL;
@@ -156,6 +155,18 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 
   // The GroupCell this cell belongs to is this GroupCell.
   SetGroup(this);
+}
+
+GroupCell::GroupCell(const GroupCell &cell):
+  GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers, wxEmptyString)
+{
+  m_inputLabel = m_output = NULL;
+  if (cell.m_inputLabel)
+    SetInput(cell.m_inputLabel->CopyList());
+  if (cell.m_output)
+    SetOutput(cell.m_output->CopyList());
+  Hide(cell.m_isHidden);
+  AutoAnswer(cell.m_autoAnswer);
 }
 
 void GroupCell::SetCellStyle(int style)
@@ -287,21 +298,6 @@ void GroupCell::ResetInputLabelList()
 
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
-
-}
-
-Cell *GroupCell::Copy()
-{
-  GroupCell *tmp = new GroupCell(m_configuration, m_groupType, m_cellPointers);
-  tmp->Hide(m_isHidden);
-  CopyData(this, tmp);
-  tmp->AutoAnswer(m_autoAnswer);
-  if (m_inputLabel)
-    tmp->SetInput(m_inputLabel->CopyList());
-  if (m_output != NULL)
-    tmp->SetOutput(m_output->CopyList());
-
-  return tmp;
 }
 
 wxString GroupCell::ToWXM(bool wxm)

@@ -28,22 +28,19 @@
 
 #include "FunCell.h"
 
-FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_nameCell = NULL;
   m_argCell = NULL;
 }
 
-Cell *FunCell::Copy()
+FunCell::FunCell(const FunCell &cell):
+ FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  FunCell *tmp = new FunCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetName(m_nameCell->CopyList());
-  tmp->SetArg(m_argCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  if(cell.m_nameCell)
+    SetName(cell.m_nameCell->CopyList());
+  if(cell.m_argCell)
+    SetArg(cell.m_argCell->CopyList());
 }
 
 FunCell::~FunCell()

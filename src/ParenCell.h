@@ -50,12 +50,12 @@ class ParenCell : public Cell
 {
 public:
   ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  ParenCell(const ParenCell &cell);
+  Cell *Copy() override {return new ParenCell(*this);}
 
   ~ParenCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  virtual Cell *Copy() override;
 
   void SetInner(Cell *inner, CellType  style);
 

@@ -49,12 +49,12 @@ class SqrtCell : public Cell
 {
 public:
   SqrtCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
+  SqrtCell(const SqrtCell &cell);
+  Cell *Copy() override {return new SqrtCell(*this);}
 
   ~SqrtCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   void SetInner(Cell *inner);
 

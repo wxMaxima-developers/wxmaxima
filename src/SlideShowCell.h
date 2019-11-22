@@ -60,7 +60,8 @@ public:
                         be set to NULL if this cell is deleted.
    */
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
-
+  SlideShow(const SlideShow &cell);
+  Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();
 
   //! A class that publishes wxm data to the clipboard
@@ -93,8 +94,6 @@ public:
   virtual void ClearCache() override;
 
   void LoadImages(wxArrayString images, bool deleteRead);
-
-  Cell *Copy() override;
 
   int GetDisplayedIndex() const
   { return m_displayed; }

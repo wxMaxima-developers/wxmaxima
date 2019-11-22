@@ -38,12 +38,12 @@ private:
   bool m_dontEscapeOpeningParenthesis;
 public:
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_DEFAULT);
-
+  TextCell(const TextCell &cell);
+  Cell *Copy() override {return new TextCell(*this);}
+  
   std::list<Cell *> GetInnerCells() override;
   
-  ~TextCell();
-  
-  Cell *Copy() override;
+  ~TextCell();  
 
   virtual void SetStyle(TextStyle style) override;
   

@@ -36,7 +36,7 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
   m_base = NULL;
   m_under = NULL;
@@ -48,20 +48,20 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_intStyle = INT_IDEF;
   m_charWidth = 12;
   m_charHeight = 12;
-  m_cellPointers = cellPointers;
 }
 
-Cell *IntCell::Copy()
+IntCell::IntCell(const IntCell &cell):
+ IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  IntCell *tmp = new IntCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_base->CopyList());
-  tmp->SetUnder(m_under->CopyList());
-  tmp->SetOver(m_over->CopyList());
-  tmp->SetVar(m_var->CopyList());
-  tmp->m_intStyle = m_intStyle;
-
-  return tmp;
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+    SetUnder(cell.m_under->CopyList());
+  if(cell.m_over)
+    SetOver(cell.m_over->CopyList());
+  if(cell.m_var)
+    SetVar(cell.m_var->CopyList());
+  m_intStyle = cell.m_intStyle;
 }
 
 IntCell::~IntCell()

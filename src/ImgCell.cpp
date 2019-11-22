@@ -40,7 +40,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
   m_cellPointers = cellPointers;
   m_image = NULL;
@@ -51,7 +51,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 }
 
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : Cell(parent,
-                                                                                                           config)
+                                                                                                                               config, cellpointers)
 {
   m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, image, type);
@@ -61,7 +61,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointer
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : Cell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : Cell(parent, config, cellpointers)
 {
   m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, bitmap);
@@ -75,9 +75,8 @@ int ImgCell::s_counter = 0;
 
 // constructor which load image
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
-        : Cell(parent, config)
+  : Cell(parent, config, cellpointers)
 {
-  m_cellPointers = cellpointers;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
@@ -101,17 +100,11 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
   m_image = new Image(m_configuration, bitmap);
 }
 
-Cell *ImgCell::Copy()
+ImgCell::ImgCell(const ImgCell &cell):
+ ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  ImgCell *tmp = new ImgCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->m_drawRectangle = m_drawRectangle;
-
-  Image *img = new Image(m_configuration);
-  *img = *m_image;
-  tmp->m_image = img;
-
-  return tmp;
+  m_drawRectangle = cell.m_drawRectangle;
+  m_image = new Image(*cell.m_image);
 }
 
 ImgCell::~ImgCell()

@@ -31,9 +31,8 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_signSize = 50;
   m_signWidth = 18;
   m_signTop = m_signSize / 2;
@@ -47,15 +46,12 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 }
 
 
-Cell *SqrtCell::Copy()
+SqrtCell::SqrtCell(const SqrtCell &cell):
+ SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SqrtCell *tmp = new SqrtCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-  tmp->m_open->DontEscapeOpeningParenthesis();
-
-  return tmp;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList());
+  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 SqrtCell::~SqrtCell()

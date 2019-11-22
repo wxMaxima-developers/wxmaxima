@@ -67,7 +67,8 @@ class GroupCell : public Cell
 {
 public:
   GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
-
+  GroupCell(const GroupCell &cell);
+  Cell *Copy() override {return new GroupCell(*this);}
   ~GroupCell();
 
   wxString GetAnswer(int answer)
@@ -134,8 +135,6 @@ public:
     wxEmptyString means: No toolTip.
    */
   wxString GetToolTip(const wxPoint &point)  override;
-
-  Cell *Copy() override;
 
   // general methods
   GroupType GetGroupType() const

@@ -56,14 +56,13 @@ class AbsCell : public Cell
 {
 public:
   AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  AbsCell(const AbsCell &cell);
+  Cell *Copy() override {return new AbsCell(*this);}
   ~AbsCell();
   
   std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);
-
-  Cell *Copy() override;
 
   bool BreakUp() override;
 

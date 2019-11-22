@@ -29,12 +29,12 @@ class SubCell : public Cell
 {
 public:
   SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SubCell(const SubCell &cell);
+  Cell *Copy() override {return new SubCell(*this);}
 
   ~SubCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   void SetBase(Cell *base);
 

@@ -34,14 +34,13 @@ class ImgCell : public Cell
 {
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
-
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
           wxFileSystem *filesystem = NULL);
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
-
+  ImgCell(const ImgCell &cell);
+  Cell *Copy() override {return new ImgCell(*this);}
   ~ImgCell();
 
   //! Tell the image which gnuplot files it was made from
@@ -71,8 +70,6 @@ public:
   void MarkAsDeleted() override;
 
   void LoadImage(wxString image, bool remove = true);
-
-  Cell *Copy() override;
 
   friend class SlideShow;
 

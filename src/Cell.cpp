@@ -48,7 +48,7 @@ wxString Cell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-Cell::Cell(Cell *group, Configuration **config)
+Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 #if wxUSE_ACCESSIBILITY
   :wxAccessible()
 #else
@@ -57,12 +57,12 @@ Cell::Cell(Cell *group, Configuration **config)
    m_currentPoint_Last(wxPoint(-1,-1)),
    m_group(group),
    m_parent(group),
-   m_configuration(config)
+   m_configuration(config),
+   m_cellPointers(cellPointers)
 {
   m_lastZoomFactor = -1;
   m_clientWidth_old = -1;
   m_textStyle = TS_DEFAULT;
-  m_cellPointers = NULL;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
@@ -175,7 +175,6 @@ Cell *Cell::CopyList()
     src = src->m_next;
     dest = dest->m_next;
   }
-
   return ret;
 }
 

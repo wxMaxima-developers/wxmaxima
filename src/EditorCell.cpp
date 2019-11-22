@@ -40,12 +40,11 @@
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
-  Cell(parent, config),
+  Cell(parent, config, cellPointers),
   m_text(text)
 {
   m_errorIndex = -1;
   m_autoAnswer = false;
-  m_cellPointers = cellPointers;
   m_numberOfLines = 1;
   m_charHeight = 12;
   m_selectionChanged = false;
@@ -263,17 +262,9 @@ wxString EditorCell::PrependNBSP(wxString input)
   return retval;
 }
 
-Cell *EditorCell::Copy()
+EditorCell::EditorCell(const EditorCell &cell):
+  EditorCell(cell.m_group, cell.m_configuration, cell.m_cellPointers, cell.m_text)
 {
-  EditorCell *tmp = new EditorCell(m_group, m_configuration, m_cellPointers);
-  // We cannot use SetValue() here, since SetValue() sometimes has the task to change
-  //  the cell's contents
-  tmp->m_text = m_text;
-  tmp->m_containsChanges = m_containsChanges;
-  CopyData(this, tmp);
-  tmp->m_styledText = m_styledText;
-
-  return tmp;
 }
 
 wxString EditorCell::ToString()
@@ -391,7 +382,7 @@ EditorCell::~EditorCell()
   MarkAsDeleted();
 }
 
-void EditorCell::MarkAsDeleted()
+void EditorCell::MarkAsDeleted()  
 {
   if (m_cellPointers->m_cellMouseSelectionStartedIn == this)
     m_cellPointers->m_cellMouseSelectionStartedIn = NULL;

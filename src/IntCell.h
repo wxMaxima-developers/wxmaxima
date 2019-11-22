@@ -40,12 +40,12 @@ class IntCell : public Cell
 {
 public:
   IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  IntCell(const IntCell &cell);
+  Cell *Copy() override {return new IntCell(*this);}
 
   ~IntCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
 
   void RecalculateHeight(int fontsize) override;
 

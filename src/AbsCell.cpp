@@ -31,9 +31,9 @@
 #include "AbsCell.h"
 #include "TextCell.h"
 
-AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_innerCell = NULL;
   m_open = new TextCell(parent, config, cellPointers, wxT("abs("));
   m_open->DontEscapeOpeningParenthesis();
@@ -41,15 +41,12 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_last = NULL;
 }
 
-Cell *AbsCell::Copy()
-{
-  AbsCell *tmp = new AbsCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-  tmp->m_open->DontEscapeOpeningParenthesis();
 
-  return tmp;
+AbsCell::AbsCell(const AbsCell &cell):
+  AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+{
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList());
 }
 
 AbsCell::~AbsCell()

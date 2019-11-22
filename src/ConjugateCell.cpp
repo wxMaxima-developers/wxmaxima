@@ -29,25 +29,20 @@
 #include "ConjugateCell.h"
 #include "TextCell.h"
 
-ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
-  m_innerCell = NULL;
   m_last = NULL;
+  m_innerCell = NULL;
   m_open = new TextCell(parent, config, cellPointers, wxT("conjugate("));
   m_open->DontEscapeOpeningParenthesis();
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-Cell *ConjugateCell::Copy()
+ConjugateCell::ConjugateCell(const ConjugateCell &cell):
+ ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-  tmp->m_open->DontEscapeOpeningParenthesis();
-
-  return tmp;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList());
 }
 
 ConjugateCell::~ConjugateCell()

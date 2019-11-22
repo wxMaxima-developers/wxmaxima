@@ -29,11 +29,11 @@ class AtCell : public Cell
 {
 public:
   AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  AtCell(const AtCell &cell);
+  Cell *Copy() override {return new AtCell(*this);}
   ~AtCell();
 
   std::list<Cell *> GetInnerCells() override;
-  Cell *Copy() override;
   
   void SetBase(Cell *base);
   void SetIndex(Cell *index);

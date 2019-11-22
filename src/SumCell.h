@@ -43,15 +43,14 @@ class SumCell : public Cell
 {
 public:
   SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SumCell(const SumCell &cell);
+  Cell *Copy() override {return new SumCell(*this);}
 
   ~SumCell();
   
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
   
   void RecalculateHeight(int fontsize) override;
-
   void RecalculateWidths(int fontsize) override;
 
   virtual void Draw(wxPoint point) override;

@@ -49,14 +49,13 @@ class ConjugateCell : public Cell
 {
 public:
   ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  ConjugateCell(const ConjugateCell &cell);
+  Cell *Copy() override {return new ConjugateCell(*this);}
   ~ConjugateCell();
 
   std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);
-
-  Cell *Copy() override;
 
   bool BreakUp() override;
 

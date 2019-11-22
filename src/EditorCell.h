@@ -97,7 +97,8 @@ public:
   //! The constructor
   EditorCell(Cell *parent, Configuration **config,
              CellPointers *cellPointers, wxString text = wxEmptyString);
-
+  EditorCell(const EditorCell &cell);
+  Cell *Copy() override {return new EditorCell(*this);}
   ~EditorCell();
 
   //! Insert the symbol that corresponds to the ESC command txt
@@ -213,8 +214,6 @@ public:
 
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
-
-  Cell *Copy() override;
 
   //! Recalculate the widths of the current cell.
   void RecalculateWidths(int fontsize) override;

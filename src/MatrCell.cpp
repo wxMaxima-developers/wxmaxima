@@ -29,9 +29,8 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_matWidth = 0;
   m_matHeight = 0;
   m_specialMatrix = false;
@@ -40,22 +39,19 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_rowNames = m_colNames = false;
 }
 
-Cell *MatrCell::Copy()
+MatrCell::MatrCell(const MatrCell &cell):
+ MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  MatrCell *tmp = new MatrCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->m_specialMatrix = m_specialMatrix;
-  tmp->m_inferenceMatrix = m_inferenceMatrix;
-  tmp->m_roundedParens = m_roundedParens;
-  tmp->m_rowNames = m_rowNames;
-  tmp->m_colNames = m_colNames;
-  tmp->m_matWidth = m_matWidth;
-  tmp->m_matHeight = m_matHeight;
-  for (unsigned int i = 0; i < m_matWidth * m_matHeight; i++)
-    if(i < m_cells.size())
-      (tmp->m_cells).push_back(m_cells[i]->CopyList());
-  
-  return tmp;
+  m_specialMatrix = cell.m_specialMatrix;
+  m_inferenceMatrix = cell.m_inferenceMatrix;
+  m_roundedParens = cell.m_roundedParens;
+  m_rowNames = cell.m_rowNames;
+  m_colNames = cell.m_colNames;
+  m_matWidth = cell.m_matWidth;
+  m_matHeight = cell.m_matHeight;
+  for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
+    if(i < cell.m_cells.size())
+      (m_cells).push_back(cell.m_cells[i]->CopyList());
 }
 
 MatrCell::~MatrCell()

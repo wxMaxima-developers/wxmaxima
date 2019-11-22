@@ -29,13 +29,13 @@ class SubSupCell : public Cell
 {
 public:
   SubSupCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SubSupCell(const SubSupCell &cell);
+  Cell *Copy() override {return new SubSupCell(*this);}
 
   ~SubSupCell();
 
   std::list<Cell *> GetInnerCells() override;
-
-  Cell *Copy() override;
-
+  
   void SetBase(Cell *base);
 
   void SetIndex(Cell *index);
