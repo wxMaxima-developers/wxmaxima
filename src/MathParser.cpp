@@ -530,7 +530,7 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
   return retval;
 }
 
-static void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
+void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
 {
   if(cell == NULL)
     return;

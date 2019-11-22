@@ -54,7 +54,7 @@ public:
   Cell *ParseTag(wxXmlNode *node, bool all = true);
 
 private:
-  static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
+  void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
 
   Cell *HandleNullPointer(Cell *cell);
 
