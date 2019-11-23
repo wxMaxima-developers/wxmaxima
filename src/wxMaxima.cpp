@@ -1106,7 +1106,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE sharedMemoryHandle = 0;
     LPVOID sharedMemoryAddress = 0;
-    wchar_t sharedMemoryName[51];
+    volatile wchar_t sharedMemoryName[51];
     sharedMemoryName[50] = 0;
 
     // wxMaxima doesn't want to get interrupt signals.
@@ -2977,10 +2977,9 @@ wxString wxMaxima::GetHelpFile2()
   if (headerFile.Length() && wxFileExists(headerFile))
     return headerFile;
   else
-    headerFile = wxEmptyString;
-
+    headerFile = m_maximaDocDir + wxT("/maxima.hhp");
+  
   wxString searchText = _("Searching for maxima help file %s");
-  headerFile = m_maximaDocDir + wxT("/maxima.hhp");
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
@@ -3565,7 +3564,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
       if (m_printData)
         printDialogData.SetPrintData(*m_printData);
       wxPrinter printer(&printDialogData);
-      wxString title(_("wxMaxima document")), suffix;
+      wxString title(_("wxMaxima document"));
 
       if (m_worksheet->m_currentFile.Length())
       {
@@ -3825,7 +3824,7 @@ wxString wxMaxima::GetDefaultEntry()
   return wxT("%");
 }
 
-bool wxMaxima::OpenFile(wxString file, wxString cmd)
+bool wxMaxima::OpenFile(wxString file, wxString command)
 {
   wxBusyCursor crs;
   bool retval = true;
@@ -3848,10 +3847,10 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
 
   wxWindowUpdateLocker dontUpdateTheWorksheet (m_worksheet);
   
-  if (cmd.Length() > 0)
+  if (command.Length() > 0)
   {
-    MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
-    if(cmd == wxT("load"))
+    MenuCommand(command + wxT("(\"") + unixFilename + wxT("\")$"));
+    if(command == wxT("load"))
     {
       ReReadConfig();
       m_recentPackages.AddDocument(unixFilename);
@@ -7070,14 +7069,14 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
   }
 }
 
-void wxMaxima::StatsMenu(wxCommandEvent &ev)
+void wxMaxima::StatsMenu(wxCommandEvent &event)
 {
   if(m_worksheet != NULL)
     m_worksheet->CloseAutoCompletePopup();
 
   wxString expr = GetDefaultEntry();
 
-  switch (ev.GetId())
+  switch (event.GetId())
   {
     case menu_stats_histogram:
     {
@@ -7811,9 +7810,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
                                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
-        Cell *selection = m_worksheet->GetSelectionStart();
-        if (selection != NULL && selection->GetType() == MC_TYPE_SLIDE)
-          dynamic_cast<SlideShow *>(selection)->ToGif(file);
+        Cell *selectedCell = m_worksheet->GetSelectionStart();
+        if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
+          dynamic_cast<SlideShow *>(selectedCell)->ToGif(file);
       }
     }
       break;
@@ -8000,8 +7999,6 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
       (group->GetEditable()->GetType() == MC_TYPE_INPUT))
     editor = group->GetEditable();
   }
-  if (m_worksheet->QuestionPending())
-    evaluating = true;
 
   if (editor != NULL) // we have an active cell
   {
@@ -8627,14 +8624,14 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &WXUNUSED(ev))
   }
 }
 
-void wxMaxima::SliderEvent(wxScrollEvent &ev)
+void wxMaxima::SliderEvent(wxScrollEvent &event)
 {
   SlideShow *slideShow = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
 
   if (slideShow != NULL)
   {
     slideShow->AnimationRunning(false);
-    slideShow->SetDisplayedIndex(ev.GetPosition());
+    slideShow->SetDisplayedIndex(event.GetPosition());
 
     wxRect rect = slideShow->GetRect();
     m_worksheet->RequestRedraw(rect);
@@ -8643,12 +8640,12 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
   }
 }
 
-void wxMaxima::ShowPane(wxCommandEvent &ev)
+void wxMaxima::ShowPane(wxCommandEvent &event)
 {
   if(m_worksheet != NULL)
     m_worksheet->CloseAutoCompletePopup();
 
-  int id = ev.GetId();
+  int id = event.GetId();
 
   if (id == menu_pane_hideall)
     wxMaximaFrame::ShowPane(static_cast<Event>(id), true);
@@ -8674,7 +8671,7 @@ void wxMaxima::OnKeyDown(wxKeyEvent &event)
   event.Skip();
 }
 
-void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(ev))
+void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event))
 {
   m_manager.GetPane(wxT("XmlInspector")).Show(
           !m_manager.GetPane(wxT("XmlInspector")).IsShown()
@@ -8682,18 +8679,18 @@ void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(ev))
   m_manager.Update();
 }
 
-void wxMaxima::HistoryDClick(wxCommandEvent &ev)
+void wxMaxima::HistoryDClick(wxCommandEvent &event)
 {
   if(m_worksheet != NULL)
     m_worksheet->CloseAutoCompletePopup();
 
-  m_worksheet->OpenHCaret(ev.GetString(), GC_TYPE_CODE);
+  m_worksheet->OpenHCaret(event.GetString(), GC_TYPE_CODE);
   m_worksheet->SetFocus();
 }
 
-void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
+void wxMaxima::TableOfContentsSelection(wxListEvent &event)
 {
-  GroupCell *selection = dynamic_cast<GroupCell *>(m_worksheet->m_tableOfContents->GetCell(ev.GetIndex())->GetGroup());
+  GroupCell *selection = dynamic_cast<GroupCell *>(m_worksheet->m_tableOfContents->GetCell(event.GetIndex())->GetGroup());
 
   // We only update the table of contents when there is time => no guarantee that the
   // cell that was clicked at actually still is part of the tree.
@@ -8826,7 +8823,6 @@ int wxMaxima::SaveDocumentP()
         return wxID_NO;
     }
 
-    wxString ext;
     wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &file, &ext);
     file += wxT(".") + ext;
   }

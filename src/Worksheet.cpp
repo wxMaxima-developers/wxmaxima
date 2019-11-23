@@ -68,9 +68,9 @@
 #include <stdlib.h>
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
-Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
+Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   wxScrolled<wxWindow>(
-    parent, id, position, size,
+    parent, id, pos, size,
     wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
     | wxSUNKEN_BORDER
@@ -2351,8 +2351,8 @@ bool Worksheet::Copy(bool astext)
           int bitmapScale = 3;
           wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
           BitmapOut bmp_scaled(&m_configuration, bitmapScale);
-          Cell *tmp = CopySelection();
-          if (bmp_scaled.SetData(tmp, 4000000))
+          Cell *tmp2 = CopySelection();
+          if (bmp_scaled.SetData(tmp2, 4000000))
           {
             bmp = bmp_scaled.GetBitmap();
             data->Add(new wxBitmapDataObject(bmp));
@@ -2627,30 +2627,30 @@ bool Worksheet::CopyCells()
 
     if(m_configuration->CopyBitmap())
     {
-      Cell *tmp = CopySelection();
+      Cell *tmp2 = CopySelection();
       int bitmapScale = 3;
       wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
       BitmapOut bmp(&m_configuration, bitmapScale);
-      if (bmp.SetData(tmp, 4000000))
+      if (bmp.SetData(tmp2, 4000000))
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
 
 #if wxUSE_ENH_METAFILE
     if(m_configuration->CopyEMF())
     {
-      Cell *tmp = CopySelection();
+      Cell *tmp2 = CopySelection();
 
       Emfout emf(&m_configuration);
-      emf.SetData(tmp);
+      emf.SetData(tmp2);
       data->Add(emf.GetDataObject());
     }
 #endif
     if(m_configuration->CopySVG())
     {
-      Cell *tmp = CopySelection();
+      Cell *tmp2 = CopySelection();
 
       Svgout svg(&m_configuration);
-      svg.SetData(tmp);
+      svg.SetData(tmp2);
       data->Add(svg.GetDataObject());
     }
 
@@ -2720,15 +2720,15 @@ bool Worksheet::CanDeleteRegion(GroupCell *start, GroupCell *end)
   return true;
 }
 
-void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end)
+void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end)
 {
-  TreeUndo_MarkCellsAsAdded(start, end, &treeUndoActions);
+  TreeUndo_MarkCellsAsAdded(parentOfStart, end, &treeUndoActions);
 }
 
-void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
+void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
 {
   TreeUndoAction *undoAction = new TreeUndoAction;
-  undoAction->m_start = start;
+  undoAction->m_start = parentOfStart;
   undoAction->m_newCellsEnd = end;
   undoBuffer->push_front(undoAction);
   TreeUndo_LimitUndoBuffer();
@@ -2781,27 +2781,30 @@ void Worksheet::TreeUndo_CellLeft()
   {
     return;
   }
-
-  GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
-
-  if (TreeUndo_ActiveCell != NULL)
-    wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
-
-  // We only can undo a text change if the text has actually changed.
-  if (
-    (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
-    (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
-    (m_treeUndo_ActiveCellOldText.Length() > 1)
-    )
+  else
   {
-    TreeUndoAction *undoAction = new TreeUndoAction;
-    wxASSERT_MSG(activeCell != NULL, _("Bug: Text changed, but no active cell."));
-    undoAction->m_start = activeCell;
-    wxASSERT_MSG(undoAction->m_start != NULL, _("Bug: Trying to record a cell contents change for undo without a cell."));
-    undoAction->m_oldText = m_treeUndo_ActiveCellOldText;
-    treeUndoActions.push_front(undoAction);
-    TreeUndo_LimitUndoBuffer();
-    TreeUndo_ClearRedoActionList();
+    GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    
+    if (TreeUndo_ActiveCell != NULL)
+      wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
+    
+    // We only can undo a text change if the text has actually changed.
+    if (
+      (activeCell->GetEditable()) &&
+      (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
+      (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
+      (m_treeUndo_ActiveCellOldText.Length() > 1)
+      )
+    {
+      TreeUndoAction *undoAction = new TreeUndoAction;
+      wxASSERT_MSG(activeCell != NULL, _("Bug: Text changed, but no active cell."));
+      undoAction->m_start = activeCell;
+      wxASSERT_MSG(undoAction->m_start != NULL, _("Bug: Trying to record a cell contents change for undo without a cell."));
+      undoAction->m_oldText = m_treeUndo_ActiveCellOldText;
+      treeUndoActions.push_front(undoAction);
+      TreeUndo_LimitUndoBuffer();
+      TreeUndo_ClearRedoActionList();
+    }
   }
 }
 
@@ -3633,7 +3636,7 @@ void Worksheet::SelectWithChar(int ccode)
   RequestRedraw();
 }
 
-void Worksheet::SelectEditable(EditorCell *editor, bool top)
+void Worksheet::SelectEditable(EditorCell *editor, bool up)
 {
   if ((editor != NULL) &&
       (
@@ -3645,7 +3648,7 @@ void Worksheet::SelectEditable(EditorCell *editor, bool top)
     SetActiveCell(editor, false);
     m_hCaretActive = false;
 
-    if (top)
+    if (up)
       editor->CaretToStart();
     else
       editor->CaretToEnd();
@@ -3657,7 +3660,7 @@ void Worksheet::SelectEditable(EditorCell *editor, bool top)
   }
   else
   { // can't get editor... jump over to the next cell..
-    if (top)
+    if (up)
     {
       if (m_hCaretPosition == NULL)
         SetHCaret(m_tree);
@@ -4188,14 +4191,13 @@ void Worksheet::GetMaxPoint(int *width, int *height)
 {
   Cell *tmp = m_tree;
   int currentHeight = m_configuration->GetIndent();
-  int currentWidth = m_configuration->GetBaseIndent();
   *width = m_configuration->GetBaseIndent();
 
   while (tmp != NULL)
   {
     currentHeight += tmp->GetMaxHeight();
     currentHeight += m_configuration->GetGroupSkip();
-    currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth() + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize());
+    int currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth() + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize());
     *width = wxMax(currentWidth, *width);
     tmp = tmp->m_next;
   }
@@ -4613,7 +4615,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData)
   return out;
 }
 
-void Worksheet::AddLineToFile(wxTextFile &output, wxString s, bool unicode)
+void Worksheet::AddLineToFile(wxTextFile &output, wxString s)
 {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
@@ -4625,17 +4627,7 @@ void Worksheet::AddLineToFile(wxTextFile &output, wxString s, bool unicode)
     while (lines.HasMoreTokens())
     {
       line = lines.GetNextToken();
-      if (unicode)
-      {
-#if wxUNICODE
-        output.AddLine(line);
-#else
-        wxString t(line.wc_str(wxConvLocal), wxConvUTF8);
-        output.AddLine(t);
-#endif
-      }
-      else
-        output.AddLine(line);
+      output.AddLine(line);
     }
   }
 }
@@ -5420,9 +5412,8 @@ bool Worksheet::ExportToHTML(wxString file)
 
             case Configuration::svg:
             {
-              wxString alttext = _("Result");
-              alttext = chunk->ListToString();
-              alttext = EditorCell::EscapeHTMLChars(alttext);
+              wxString alttext;
+              alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
               wxSize size = svgout.SetData(chunk);
               wxString line = wxT("  <img src=\"") +
@@ -5438,7 +5429,6 @@ bool Worksheet::ExportToHTML(wxString file)
 
             case Configuration::bitmap:
             {
-              wxString ext;
               wxSize size;
               int bitmapScale = 3;
               ext = wxT(".png");
@@ -5448,8 +5438,7 @@ bool Worksheet::ExportToHTML(wxString file)
                                 NULL, true, bitmapScale);
               int borderwidth = 0;
               wxString alttext = _("Result");
-              alttext = chunk->ListToString();
-              alttext = EditorCell::EscapeHTMLChars(alttext);
+              alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               borderwidth = chunk->m_imageBorderWidth;
 
               wxString line = wxT("  <img src=\"") +
@@ -5475,15 +5464,13 @@ bool Worksheet::ExportToHTML(wxString file)
           }
           else
           {
-            wxString ext;
             wxSize size;
             ext = wxT(".") + dynamic_cast<ImgCell *>(chunk)->GetExtension();
             size = dynamic_cast<ImgCell *>(chunk)->ToImageFile(
               imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
             wxString alttext = _("Image");
-            alttext = chunk->ListToString();
-            alttext = EditorCell::EscapeHTMLChars(alttext);
+            alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
             borderwidth = chunk->m_imageBorderWidth;
 
             wxString line = wxT("  <img src=\"") +
@@ -5920,18 +5907,18 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
         wxString imgtype = wxmLines->Item(0);
         wxmLines->RemoveAt(0);
 
-        wxString line;
+        wxString ln;
         while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: image   end   ] */")))
         {
-          if (line.Length() == 0)
-            line += wxmLines->Item(0);
+          if (ln.Length() == 0)
+            ln += wxmLines->Item(0);
           else
-            line += wxT("\n") + wxmLines->Item(0);
+            ln += wxT("\n") + wxmLines->Item(0);
 
           wxmLines->RemoveAt(0);
         }
 
-        cell->SetOutput(new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(line), imgtype));
+        cell->SetOutput(new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(ln), imgtype));
       }
     }
       // Print input
@@ -6343,9 +6330,9 @@ bool Worksheet::ExportToMAC(wxString file)
 
   if (wxm)
   {
-    AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
+    AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"));
     wxString version(wxT(GITVERSION));
-    AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
+    AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"));
   }
 
   bool fixReorderedIndices = m_configuration->FixReorderedIndices();
@@ -6357,11 +6344,11 @@ bool Worksheet::ExportToMAC(wxString file)
   }
   ExportToMAC(backupfile, m_tree, wxm, cellMap, fixReorderedIndices);
 
-  AddLineToFile(backupfile, wxEmptyString, false);
+  AddLineToFile(backupfile, wxEmptyString);
   if (wxm)
   {
-    AddLineToFile(backupfile, wxT("/* Old versions of Maxima abort on loading files that end in a comment. */"), false);
-    AddLineToFile(backupfile, wxT("\"Created with wxMaxima " GITVERSION "\"$"), false);
+    AddLineToFile(backupfile, wxT("/* Old versions of Maxima abort on loading files that end in a comment. */"));
+    AddLineToFile(backupfile, wxT("\"Created with wxMaxima " GITVERSION "\"$"));
   }
 
   // Try to save the file.
@@ -8006,23 +7993,23 @@ void Worksheet::RemoveAllOutput()
   RequestRedraw();
 }
 
-void Worksheet::RemoveAllOutput(GroupCell *tree)
+void Worksheet::RemoveAllOutput(GroupCell *cell)
 {
-  if (tree == NULL)
-    tree = m_tree;
+  if (cell == NULL)
+    cell = m_tree;
 
-  while (tree != NULL)
+  while (cell != NULL)
   {
     // If this function actually does do something we
     // should enable the "save" button.
     OutputChanged();
 
-    tree->RemoveOutput();
+    cell->RemoveOutput();
 
-    GroupCell *sub = tree->GetHiddenTree();
+    GroupCell *sub = cell->GetHiddenTree();
     if (sub != NULL)
       RemoveAllOutput(sub);
-    tree = dynamic_cast<GroupCell *>(tree->m_next);
+    cell = dynamic_cast<GroupCell *>(cell->m_next);
   }
   m_configuration->AdjustWorksheetSize(true);
 }
@@ -8190,10 +8177,10 @@ bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
 
       if (found)
       {
-        int start, end;
-        editor->GetSelection(&start, &end);
+        int strt, end;
+        editor->GetSelection(&strt, &end);
         SetActiveCell(editor);
-        editor->SetSelection(start, end);
+        editor->SetSelection(strt, end);
         ScrollToCaret();
         UpdateTableOfContents();
         RequestRedraw();
@@ -8973,10 +8960,8 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest (const wxPoint &pt,
   GetLocation(currentRect, 0);
   if(!currentRect.Contains(pt))
   {
-    if(childId != NULL)
-      *childId = 0;
-    if(childObject != NULL)
-      childObject = NULL;
+    *childId = NULL;
+    *childObject = NULL;
     return wxACC_FALSE;
   }
   else

@@ -181,7 +181,7 @@ public:
   
   void StripLispComments(wxString &s);
 
-  void SendMaxima(wxString s, bool history = false);
+  void SendMaxima(wxString s, bool addToHistory = false);
 
   //! Open a file
   bool OpenFile(wxString file,

@@ -305,23 +305,23 @@ private:
 
   /*! Undo an item from a list of undo actions.
 
-    \param actionlist The list to take the undo information from
+    \param sourcelist The list to take the undo information from
     \param undoForThisOperation The list to write the information to how on to undo this undo op
   */
-  bool TreeUndo(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
 
   /*! Undo a text change
 
     Called from TreeUndo().*/
-  bool TreeUndoTextChange(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
   /*! Undo a call deletion
 
     Called from TreeUndo().*/
-  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
   /*! Undo adding cells
 
     Called from TreeUndo().*/
-  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
 
   //! Undo a tree operation.
   bool TreeUndo()
@@ -395,7 +395,7 @@ private:
   };
 
   //! Add a line to a file.
-  void AddLineToFile(wxTextFile &output, wxString s, bool unicode = true);
+  void AddLineToFile(wxTextFile &output, wxString s);
 
   //! Copy the currently selected cells
   Cell *CopySelection(bool asData = false);
@@ -455,7 +455,7 @@ private:
 
   void OnMouseLeftDown(wxMouseEvent &event);
 
-  void OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGC);
+  void OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGc);
 
   void OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC);
 
@@ -919,7 +919,7 @@ public:
     If maxima isn't currently evaluating and therefore there is no working group
     the line is appended to m_last, instead.
   */
-  void InsertLine(Cell *newLine, bool forceNewLine = false);
+  void InsertLine(Cell *newCell, bool forceNewLine = false);
 
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
