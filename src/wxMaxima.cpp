@@ -1106,7 +1106,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE sharedMemoryHandle = 0;
     LPVOID sharedMemoryAddress = 0;
-    volatile wchar_t sharedMemoryName[51];
+    wchar_t sharedMemoryName[51];
     sharedMemoryName[50] = 0;
 
     // wxMaxima doesn't want to get interrupt signals.
