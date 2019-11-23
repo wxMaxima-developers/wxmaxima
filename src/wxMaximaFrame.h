@@ -513,7 +513,7 @@ public:
      - true: show the sidebar
      - false: hide it
    */
-  void ShowPane(Event id, bool hide);
+  void ShowPane(Event id, bool show);
 
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(wxString cmd)
@@ -651,7 +651,7 @@ private:
   class DrawPane: public wxPanel
     {
     public:
-      explicit DrawPane(wxWindow *parent, int ID = wxID_ANY);
+      explicit DrawPane(wxWindow *parent, int id = wxID_ANY);
       /*! Tell the sidebar if we currently are inside a 2D or a 3D plot command
         
         \param dimensions

@@ -1289,7 +1289,7 @@ public:
     it is) can be archieved by FollowEvaluation(true) or
     FollowEvaluation(false).
    */
-  void FollowEvaluation(bool FollowEvaluation);
+  void FollowEvaluation(bool followEvaluation);
 
   //! Query if we want to automatically scroll to the cell that is currently evaluated
   bool FollowEvaluation()

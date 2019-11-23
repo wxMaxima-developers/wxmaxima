@@ -44,7 +44,8 @@ XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id
   m_state = clear;
   m_indentLevel = 0;
   BeginSuppressUndo();
-  Clear();
+  XmlInspector::Clear();
+  wxRichTextCtrl::Clear();
 }
 
 XmlInspector::~XmlInspector()

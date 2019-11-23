@@ -1105,7 +1105,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     // interfaces/xmaxima/win32/win_signals.lisp
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE sharedMemoryHandle = 0;
-    LPVOID sharedMemoryAddress = 0;
+    volatile LPVOID sharedMemoryAddress = 0;
     wchar_t sharedMemoryName[51];
     sharedMemoryName[50] = 0;
 

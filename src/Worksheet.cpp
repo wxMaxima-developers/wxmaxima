@@ -1802,7 +1802,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
   }
 }
 
-void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
+void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGC)
 {
   // The click has changed the cell which means the user works here and
   // doesn't want the evaluation mechanism to automatically follow the
@@ -1810,9 +1810,9 @@ void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
   ScrolledAwayFromEvaluation(true);
 
   if (m_down.x <= m_configuration->GetIndent())
-    OnMouseLeftInGcLeft(event, clickedInGc);
+    OnMouseLeftInGcLeft(event, clickedInGC);
   else
-    OnMouseLeftInGcCell(event, clickedInGc);
+    OnMouseLeftInGcCell(event, clickedInGC);
 }
 
 /***
@@ -2725,10 +2725,10 @@ void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *e
   TreeUndo_MarkCellsAsAdded(parentOfStart, end, &treeUndoActions);
 }
 
-void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
+void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
 {
   TreeUndoAction *undoAction = new TreeUndoAction;
-  undoAction->m_start = parentOfStart;
+  undoAction->m_start = start;
   undoAction->m_newCellsEnd = end;
   undoBuffer->push_front(undoAction);
   TreeUndo_LimitUndoBuffer();
@@ -2776,14 +2776,14 @@ void Worksheet::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
 
 void Worksheet::TreeUndo_CellLeft()
 {
+  GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
   // If no cell is active we didn't leave a cell and return from this function.
-  if (GetActiveCell() == NULL)
+  if (activeCell == NULL)
   {
     return;
   }
   else
   {
-    GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
     
     if (TreeUndo_ActiveCell != NULL)
       wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
@@ -4037,14 +4037,14 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
 
       // keycodes which open hCaret with initial content
     default:
-      wxChar txt(event.GetUnicodeKey());
-      if (txt == WXK_NONE)
+      wxChar tx(event.GetUnicodeKey());
+      if (tx == WXK_NONE)
       {
         event.Skip();
         return;
       }
       else
-        OpenHCaret(txt);
+        OpenHCaret(tx);
   }
 
   RequestRedraw();
@@ -4388,7 +4388,7 @@ void Worksheet::OnTimer(wxTimerEvent &event)
       {
         if(it->second == event.GetId())
         {
-          slideshow = dynamic_cast<SlideShow *>((Cell *) it->first);
+          slideshow = dynamic_cast<SlideShow *>(static_cast<Cell *>(it->first));
           break;
         }
       }
@@ -5437,8 +5437,7 @@ bool Worksheet::ExportToHTML(wxString file)
                                 chunk,
                                 NULL, true, bitmapScale);
               int borderwidth = 0;
-              wxString alttext = _("Result");
-              alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
+              wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               borderwidth = chunk->m_imageBorderWidth;
 
               wxString line = wxT("  <img src=\"") +
@@ -5469,8 +5468,7 @@ bool Worksheet::ExportToHTML(wxString file)
             size = dynamic_cast<ImgCell *>(chunk)->ToImageFile(
               imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
-            wxString alttext = _("Image");
-            alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
+            wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
             borderwidth = chunk->m_imageBorderWidth;
 
             wxString line = wxT("  <img src=\"") +
