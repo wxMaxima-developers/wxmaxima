@@ -7,7 +7,9 @@ hard-to-detect bugs, some features that might make the code easier to read...
 ...and I am afraid that plain old c++ might look antiquated one day.
 
 Additionally it will contain many bug fixes hoping that I won't fix bugs that
-in retrospect didn't exist...
+in retrospect didn't exist... ...on the plus side the program should again 
+have gotten faster by giving the compiler additional hints for optimization
+and the transition has shrunk wxMaxima by about 100 lines.
 
 # wxMaxima 19.11.1 - Stable
   * Improved italian translation by Marco Ciampa
