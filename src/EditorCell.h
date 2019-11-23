@@ -257,7 +257,7 @@ public:
     
     Automatically calls StyleText().
    */
-  void SetValue(const wxString &text);
+  void SetValue(const wxString &text) override;
 
   /*! Returns the text contained in this cell
 
@@ -284,7 +284,7 @@ public:
   void Reset();
 
   //! Decide what to do if the user pressed a key when this cell was selected
-  void ProcessEvent(wxKeyEvent &event);
+  void ProcessEvent(wxKeyEvent &event) override;
 
   /*! Activate the blinking cursor in this cell
     
@@ -303,7 +303,7 @@ public:
   size_t EndOfLine(long pos);
 
   //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;
-  bool AddEnding();
+  bool AddEnding() override;
 
   //! Determines which line and column the pos'th char is at.
   void PositionToXY(int position, unsigned int *x, unsigned int *y);
@@ -312,7 +312,7 @@ public:
   int XYToPosition(int x, int y);
 
   //! The screen coordinates of the cursor
-  wxPoint PositionToPoint(int fontsize, int pos = -1);
+  wxPoint PositionToPoint(int fontsize, int pos = -1) override;
 
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(const wxPoint &point) override;
@@ -366,7 +366,7 @@ public:
     return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
   }
 
-  bool CanCopy() const
+  bool CanCopy() const override
   {
     return m_selectionStart != -1;
   }
@@ -378,7 +378,7 @@ public:
   int GetLineWidth(unsigned int line, int end);
 
   //! true, if this cell's width has to be recalculated.
-  bool IsDirty() const
+  bool IsDirty() const override
   {
     return m_isDirty;
   }
@@ -389,7 +389,7 @@ public:
     m_displayCaret = !m_displayCaret;
   }
 
-  void SetFocus(bool focus)
+  void SetFocus(bool focus) override
   {
     m_hasFocus = focus;
   }
@@ -405,7 +405,7 @@ public:
     StyleText();
   }
 
-  bool IsActive() const
+  bool IsActive() const override
   { return this == m_cellPointers->m_activeCell; }
 
   //! Is the cursor at the start of this cell?
@@ -426,7 +426,7 @@ public:
   void CaretToPosition(int pos);
 
   //! True, if there is undo information for this cell
-  bool CanUndo();
+  bool CanUndo(); 
 
   //! Issue an undo command
   void Undo();

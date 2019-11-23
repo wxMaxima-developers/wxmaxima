@@ -105,7 +105,7 @@ private:
   public:
     explicit GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename)
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
       {
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
@@ -134,7 +134,7 @@ private:
   public:
     explicit GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix)  { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename)
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(
           (filename.EndsWith(".mac"))||
@@ -189,7 +189,7 @@ private:
   public:
     explicit GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename)
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(filename.EndsWith(".dem"))
         {

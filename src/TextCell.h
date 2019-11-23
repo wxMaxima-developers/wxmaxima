@@ -48,7 +48,7 @@ public:
   virtual void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
-  void SetValue(const wxString &text);
+  void SetValue(const wxString &text) override;
 
   //! Set the automatic label maxima has assigned the current equation
   void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}

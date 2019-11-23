@@ -187,6 +187,7 @@ wxString Dirstructure::MaximaDefaultLocation()
 
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
 #elif defined __WXOSX__
+  wxString exeDir = exe.GetPathWithSep();
   maximaLocation =  "/Applications/Maxima.app";
   if (wxFileExists(maximaLocation))
     return maximaLocation;

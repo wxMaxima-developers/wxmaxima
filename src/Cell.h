@@ -879,7 +879,7 @@ class Cell
   virtual wxPoint PositionToPoint(int WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
   { return wxPoint(-1, -1); }
 
-  virtual bool IsDirty()
+  virtual bool IsDirty() const
   { return false; }
 
   virtual void SwitchCaretDisplay()
@@ -890,7 +890,7 @@ class Cell
 
   void SetForeground();
 
-  virtual bool IsActive()
+  virtual bool IsActive() const
   { return false; }
 
   /*! Define which GroupCell is the parent of this cell.
