@@ -68,7 +68,7 @@ TableOfContents::~TableOfContents()
   wxDELETE(m_displayedItems);
 }
 
-void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPosition)
+void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
 {
   long selection = m_lastSelection;
   if (IsShown())
@@ -91,7 +91,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
         m_structure.push_back(cell);
 
       // Select the cell with the cursor
-      if (cell == cursorPosition)
+      if (cell == pos)
       {
         if (!m_structure.empty())
           selection = m_structure.size() - 1;

@@ -1102,6 +1102,7 @@ public:
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
 
+    \todo Slow: Iterates through a string using [] instead of using an iterator.
    */
   void
   ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);
@@ -1487,6 +1488,33 @@ public:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane;
 
+  //! Returns the index in (%i...) or (%o...)
+  int GetCellIndex(Cell *cell) const;
+
+  //Simple iterator over a Maxima input string, skipping comments and strings
+  class SimpleMathConfigurationIterator
+  {
+  public:
+    explicit SimpleMathConfigurationIterator(const wxString &ainput);
+    
+    void operator++();
+
+    bool isValid() const
+      { return pos < input.length(); }
+    
+    
+    inline wxChar operator*() const
+      { return input[pos]; }
+
+    unsigned int pos;
+
+    /*! reference to input string (must be a reference, so it can be modified)
+
+      \todo: It is const, so it cannot be modified!?!
+     */
+    const wxString &input;
+  };
+    
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible
   {

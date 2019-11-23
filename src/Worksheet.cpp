@@ -871,11 +871,11 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
   // Determine if we have a sane thing we can scroll to.
   Cell *cellToScrollTo = NULL;
   if (CaretVisibleIs())
-  {
     cellToScrollTo = GetHCaret();
+  if (!cellToScrollTo)
     cellToScrollTo = GetActiveCell();
-  }
-  if (!cellToScrollTo) cellToScrollTo = GetWorkingGroup(true);
+  if (!cellToScrollTo)
+    cellToScrollTo = GetWorkingGroup(true);
   if (!cellToScrollTo)
   {
     wxPoint topleft;
@@ -981,11 +981,10 @@ void Worksheet::Recalculate(Cell *start, bool force)
         return;
 
       tmp = dynamic_cast<GroupCell *>(tmp -> m_next);
+      // If the cells to recalculate neither contain the start nor the tree we should
+      // better recalculate all.
+      m_recalculateStart = m_tree;
     }
-
-  // If the cells to recalculate neither contain the start nor the tree we should
-  // better recalculate all.
-  m_recalculateStart = m_tree;
 }
 
 /***
@@ -4387,7 +4386,7 @@ void Worksheet::OnTimer(wxTimerEvent &event)
       {
         if(it->second == event.GetId())
         {
-          slideshow = (SlideShow *) it->first;
+          slideshow = dynamic_cast<SlideShow *>((Cell *) it->first);
           break;
         }
       }
@@ -4641,65 +4640,48 @@ void Worksheet::AddLineToFile(wxTextFile &output, wxString s, bool unicode)
   }
 }
 
-//Simple iterator over a Maxima input string, skipping comments and strings
-struct SimpleMathConfigurationIterator
-{
-  const wxString &input; //reference to input string (must be a reference, so it can be modified)
-  unsigned int pos;
-
-  SimpleMathConfigurationIterator(const wxString &ainput) : input(ainput), pos(0)
-  {
-    if (isValid() && (input[0] == '"' || (input[0] == '/' && input.length() > 1 && input[1] == '*')))
-    {
-      //skip strings or comments at string start
-      pos--;
-      ++(*this);
-    }
-  }
-
-  bool isValid()
-  {
-    return pos < input.length();
-  }
-
-  void operator++()
-  {
-    unsigned int oldpos = pos;
-    pos++;
-    while (pos < input.length() && oldpos != pos)
-    {
-      oldpos = pos;
-      if (input[pos] == '"')
-      { //skip strings
-        pos++; //skip leading "
-        while (pos < input.length() && input[pos] != '"')
-          pos++;
-        pos++;//skip trailing "
-      }
-      if (pos + 1 < input.length() && input[pos] == '/' && input[pos + 1] == '*')
-      { //skip comments
-        pos += 2; //skip /*
-        while (pos < input.length() && (input[pos] != '*' || input[pos + 1] != '/'))
-          pos++;
-        pos += 2; //skip */
-      }
-    }
-  }
-
-  inline wxChar operator*()
-  {
-    return input[pos];
-  }
-};
-
 //returns the index in (%i...) or (%o...)
-int getCellIndex(Cell *cell)
+int Worksheet::GetCellIndex(Cell *cell) const
 {
   if (!cell) return -1;
   wxString strindex = cell->ToString().Trim(); //(%i...)
   long temp;
   if (!strindex.Mid(3, strindex.Len() - 4).ToLong(&temp)) return -1;
   return temp;
+}
+
+Worksheet::SimpleMathConfigurationIterator::SimpleMathConfigurationIterator(const wxString &ainput) : pos(0), input(ainput)
+{
+  if (isValid() && (input[0] == '"' || (input[0] == '/' && input.length() > 1 && input[1] == '*')))
+  {
+    //skip strings or comments at string start
+    pos--;
+    ++(*this);
+  }
+}
+
+void Worksheet::SimpleMathConfigurationIterator::operator++()
+{
+  unsigned int oldpos = pos;
+  pos++;
+  while (pos < input.length() && oldpos != pos)
+  {
+    oldpos = pos;
+    if (input[pos] == '"')
+    { //skip strings
+      pos++; //skip leading "
+      while (pos < input.length() && input[pos] != '"')
+        pos++;
+      pos++;//skip trailing "
+    }
+    if (pos + 1 < input.length() && input[pos] == '/' && input[pos + 1] == '*')
+    { //skip comments
+      pos += 2; //skip /*
+      while (pos < input.length() && (input[pos] != '*' || input[pos + 1] != '/'))
+        pos++;
+      pos += 2; //skip */
+    }
+  }
 }
 
 void Worksheet::CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::vector<int> &cellMap)
@@ -4709,15 +4691,19 @@ void Worksheet::CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::v
   {
     if (!tmp->IsHidden() && tmp->GetGroupType() == GC_TYPE_CODE)
     {
+      wxString input;
       Cell *prompt = tmp->GetPrompt();
       Cell *cell = tmp->GetEditable();
-
-      wxString input = cell->ToString();
+      
+      if(cell != NULL)
+         input = cell->ToString();
+      
       if (prompt && cell && input.Len() > 0)
       {
         int outputExpressions = 0;
         int initialHiddenExpressions = 0;
-        for (SimpleMathConfigurationIterator it = input; it.isValid(); ++it)
+        SimpleMathConfigurationIterator it(input);
+        for (; it.isValid(); ++it)
         {
           switch (*it)
           {
@@ -4728,8 +4714,8 @@ void Worksheet::CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::v
           }
         }
 
-        long promptIndex = getCellIndex(prompt);
-        long outputIndex = getCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
+        long promptIndex = GetCellIndex(prompt);
+        long outputIndex = GetCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
         long index = promptIndex;
         if (promptIndex < 0) index = outputIndex; //no input index => use output index
         else
@@ -6305,7 +6291,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
         wxString input = txt->ToString(true);
 
         if (fixReorderedIndices)
-          for (SimpleMathConfigurationIterator it = input; it.pos + 1 < it.input.length(); ++it)
+          for (SimpleMathConfigurationIterator it = SimpleMathConfigurationIterator(input); it.pos + 1 < it.input.length(); ++it)
             if (*it == '%' &&
                 (input[it.pos + 1] == 'i' || input[it.pos + 1] == 'o') &&
                 (it.pos == 0 || input[it.pos - 1] != '%'))
