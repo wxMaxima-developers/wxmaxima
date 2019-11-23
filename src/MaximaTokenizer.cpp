@@ -154,7 +154,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         {
           len--;
           breakCommand += wxString(*it3);
-          it3++;
+          ++it3;
         }
         if(
           breakCommand.StartsWith(":lisp ") ||

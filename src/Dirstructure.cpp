@@ -131,11 +131,13 @@ wxString Dirstructure::ArtDir() const
 
 wxString Dirstructure::MaximaDefaultLocation()
 {
-  wxString notFound = _("Maxima not found as %s");
   wxString maximaLocation;
   wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
   exe.MakeAbsolute();
   wxFileName maxima;  
+#if defined __WXMSW__ || defined __WXOSX__
+  wxString notFound = _("Maxima not found as %s");
+#endif
 #if defined __WXMSW__
   wxString exeDir = exe.GetPathWithSep();
   maxima = exeDir + "../bin/maxima.bat";

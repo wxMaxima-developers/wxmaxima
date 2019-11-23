@@ -1195,18 +1195,6 @@ void Cell::UnsetPen()
                                               1, wxPENSTYLE_SOLID)));
 }
 
-/***
- * Copy all important data from s to t
- */
-void Cell::CopyData(Cell *s, Cell *t)
-{
-  t->m_altCopyText = s->m_altCopyText;
-  t->m_toolTip = s->m_toolTip;
-  t->m_forceBreakLine = s->m_forceBreakLine;
-  t->m_type = s->m_type;
-  t->m_textStyle = s->m_textStyle;
-}
-
 void Cell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);

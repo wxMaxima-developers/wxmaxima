@@ -59,23 +59,23 @@ void RecentDocuments::Save()
     }
 }
 
-void RecentDocuments::AddDocument(wxString filename)
+void RecentDocuments::AddDocument(wxString name)
 {
-  wxFileName fle(filename);
+  wxFileName fle(name);
   fle.MakeAbsolute();
   if((fle.GetFullPath() != wxEmptyString) && wxFileExists(fle.GetFullPath()))
-    filename = fle.GetFullPath();
+    name = fle.GetFullPath();
 
   std::list<wxString>::iterator it = m_listOfFiles.begin();
   while(it != m_listOfFiles.end())
     {
-      if (*it == filename)
+      if (*it == name)
 	it = m_listOfFiles.erase(it);
       else
 	++it;
     }
   
-  m_listOfFiles.push_front(filename);
+  m_listOfFiles.push_front(name);
   m_listOfFiles.unique();
   long recentItems;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);

@@ -395,8 +395,6 @@ class Cell
     return GetRect().Contains(point);
   }
 
-  void CopyData(Cell *s, Cell *t);
-
   /*! Clears memory from cached items automatically regenerated when the cell is drawn
     
     The scaled version of the image will be recreated automatically once it is 
@@ -851,8 +849,11 @@ class Cell
   virtual void ProcessEvent(wxKeyEvent &WXUNUSED(event))
   {}
 
-  //! Add a semicolon to a cell, of needed.
-  virtual bool AddEnding() const
+  /*! Add a semicolon to a code cell, if needed.
+
+    Defined in GroupCell and EditorCell
+  */
+  virtual bool AddEnding()
   { return false; }
 
   virtual void SelectPointText(const wxPoint &point);
@@ -870,7 +871,7 @@ class Cell
   virtual void SelectAll()
   {}
 
-  virtual bool CanCopy()
+  virtual bool CanCopy() const
   { return false; }
 
   virtual void SetMatchParens(bool WXUNUSED(match))

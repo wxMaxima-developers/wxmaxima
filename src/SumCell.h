@@ -59,7 +59,7 @@ public:
 
   void SetUnder(Cell *under);
 
-  void SetOver(Cell *name);
+  void SetOver(Cell *over);
 
   void SetSumStyle(int style)
   {

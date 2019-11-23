@@ -404,7 +404,7 @@ void ToolBar::AddTools()
   wxDELETE(m_plotSlider);
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
                               wxDefaultPosition, wxSize(sliderWidth, -1),
-                              wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
+                              wxSL_HORIZONTAL);
   m_plotSlider->SetToolTip(
     _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);

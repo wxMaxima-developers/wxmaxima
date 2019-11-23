@@ -42,11 +42,11 @@ public:
 
   void SetExponent(Cell *expt);
 
-  void SetPreSub(Cell *expt);
+  void SetPreSub(Cell *index);
 
-  void SetPreSup(Cell *expt);
+  void SetPreSup(Cell *index);
 
-  void SetPostSub(Cell *expt){SetIndex(expt);}
+  void SetPostSub(Cell *index){SetIndex(index);}
 
   void SetPostSup(Cell *expt){SetExponent(expt);}
   

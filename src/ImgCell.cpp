@@ -40,9 +40,8 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers) : Cell(parent, config, cellpointers)
 {
-  m_cellPointers = cellPointers;
   m_image = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -53,7 +52,6 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : Cell(parent,
                                                                                                                                config, cellpointers)
 {
-  m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, image, type);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -63,7 +61,6 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointer
 
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : Cell(parent, config, cellpointers)
 {
-  m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, bitmap);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -110,7 +107,7 @@ ImgCell::ImgCell(const ImgCell &cell):
 ImgCell::~ImgCell()
 {
   wxDELETE(m_image);
-  MarkAsDeleted();
+  ImgCell::MarkAsDeleted();
 }
 
 void ImgCell::MarkAsDeleted()
@@ -240,9 +237,9 @@ wxString ImgCell::ToTeX()
   return _(" (Graphics) ");
 }
 
-wxSize ImgCell::ToImageFile(wxString file)
+wxSize ImgCell::ToImageFile(wxString filename)
 {
-  return m_image->ToImageFile(file);
+  return m_image->ToImageFile(filename);
 }
 
 wxString ImgCell::ToRTF()

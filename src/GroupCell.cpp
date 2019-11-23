@@ -422,7 +422,7 @@ wxString GroupCell::ToWXM(bool wxm)
 
 GroupCell::~GroupCell()
 {
-  MarkAsDeleted();
+  GroupCell::MarkAsDeleted();
   wxDELETE(m_inputLabel);
   wxDELETE(m_output);
   wxDELETE(m_hiddenTree);
@@ -522,7 +522,7 @@ void GroupCell::SetOutput(Cell *output)
     m_output->ResetSizeList();
   }
   UpdateCellsInGroup();
-  Recalculate();
+//  Recalculate();
 }
 
 void GroupCell::RemoveOutput()
@@ -1179,13 +1179,13 @@ void GroupCell::DrawBracket()
                                                 configuration->GetDefaultLineWidth(),
                                                 wxPENSTYLE_SOLID)));
 
-    wxRect rect = wxRect(
+    wxRect bracketRect = wxRect(
       configuration->GetIndent() - configuration->GetCellBracketWidth(),
-      rect.GetTop() - 2,
+      bracketRect.GetTop() - 2,
       configuration->GetCellBracketWidth(),
-      rect.GetHeight() + 5);
-    if (Cell::InUpdateRegion(rect))
-      dc->DrawRectangle(rect);
+      bracketRect.GetHeight() + 5);
+    if (Cell::InUpdateRegion(bracketRect))
+      dc->DrawRectangle(bracketRect);
   }
 
   Cell *editable = GetEditable();
@@ -1508,14 +1508,11 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   // Input cells
   if (configuration->ShowCodeCells())
   {
-    str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
-      wxT("%%% INPUT:\n") +
-      wxString::Format(
-        wxT("\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n"),
-        configuration->GetLabelWidth()/14
-        ) +
-      m_inputLabel->ToTeX() +
-      wxT("\n\\end{minipage}");
+    wxString::Format(
+      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n",
+      configuration->GetLabelWidth()/14
+      ) + m_inputLabel->ToTeX() +
+      "\n\\end{minipage}";
     if (m_inputLabel->m_next != NULL)
     {
 

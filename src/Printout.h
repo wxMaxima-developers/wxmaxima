@@ -62,7 +62,7 @@ public:
 
   bool HasPage(int num);
 
-  void GetPageInfo(int *minPage, int *maxPage, int *pageFrom, int *pageTo);
+  void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage);
 
   bool OnBeginDocument(int startPage, int endPage);
 

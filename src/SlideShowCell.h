@@ -107,10 +107,10 @@ public:
   { return m_size; }
 
   //! Exports the image the slideshow currently displays
-  wxSize ToImageFile(wxString filename);
+  wxSize ToImageFile(wxString file);
 
   //! Exports the whole animation as animated gif
-  wxSize ToGif(wxString filename);
+  wxSize ToGif(wxString file);
 
   bool CopyToClipboard()  override;
   

@@ -150,7 +150,7 @@ public:
   // selection methods
   void SelectInner(const wxRect &rect, Cell **first, Cell **last) override;
 
-  void SelectPoint(const wxPoint &rect, Cell **first, Cell **last);
+  void SelectPoint(const wxPoint &point, Cell **first, Cell **last);
 
   void SelectOutput(Cell **start, Cell **end);
 
@@ -386,7 +386,7 @@ public:
    */
   virtual void Draw(wxPoint point) override;
 
-  virtual bool AddEnding() const override
+  virtual bool AddEnding() override
     {
       if(GetEditable() != NULL)
         return GetEditable()->AddEnding();

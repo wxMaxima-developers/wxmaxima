@@ -68,7 +68,7 @@ TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_fontSize = -1;
   m_fontSizeLabel = -1;
   m_lastZoomFactor = -1;
-  SetValue(text);
+  TextCell::SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
   m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
@@ -330,9 +330,9 @@ void TextCell::SetValue(const wxString &text)
 }
 
 TextCell::TextCell(const TextCell &cell):
-  Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+  Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
+  m_text(cell.m_text)
 {
-  m_text = wxString(cell.m_text);
   m_displayedText = wxString(cell.m_displayedText);
   m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
@@ -1267,6 +1267,7 @@ wxString TextCell::ToMathML()
       break;
     case TS_SPECIAL_CONSTANT:
     {
+      text = GetGreekStringUnicode();
       // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
       // support this currently => Commenting it out.
       // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
@@ -1280,7 +1281,7 @@ wxString TextCell::ToMathML()
           text = wxT("i");
       }
     }
-    /* FALLTHRU */
+    break;
   case TS_VARIABLE:
     {
       text = GetGreekStringUnicode();

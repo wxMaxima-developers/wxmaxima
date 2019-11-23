@@ -88,12 +88,12 @@ std::list<Cell *> IntCell::GetInnerCells()
   return innerCells;
 }
 
-void IntCell::SetOver(Cell *over)
+void IntCell::SetOver(Cell *name)
 {
-  if (over == NULL)
+  if (name == NULL)
     return;
   wxDELETE(m_over);
-  m_over = over;
+  m_over = name;
 }
 
 void IntCell::SetBase(Cell *base)

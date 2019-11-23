@@ -57,7 +57,7 @@ public:
 
   std::list<Cell *> GetInnerCells() override;
 
-  void SetInner(Cell *inner, CellType  style);
+  void SetInner(Cell *inner, CellType  type);
 
   void SetPrint(bool print)
   {

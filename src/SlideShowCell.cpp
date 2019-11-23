@@ -164,7 +164,7 @@ SlideShow::~SlideShow()
       wxDELETE(m_images[i]);
       m_images[i] = NULL;
     }
-  MarkAsDeleted();
+  SlideShow::MarkAsDeleted();
 }
 
 void SlideShow::MarkAsDeleted()

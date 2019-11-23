@@ -51,7 +51,6 @@ wxString wxMathML::GetCmd()
 	  if (*ch == wxT('\\'))
 	    {
 	      lineWithoutComments += *ch;
-	      lastChar = *ch;
 	      ++ch;
 	    }
 	  else

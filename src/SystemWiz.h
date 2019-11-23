@@ -37,8 +37,8 @@ public:
   SysWiz(wxWindow *parent, int id,
          Configuration *cfg,
          const wxString &title,
-         int eqn, const wxPoint &pos = wxDefaultPosition,
-         const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+         int numEq, const wxPoint &pos = wxDefaultPosition,
+         const wxSize &sz = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
   wxString GetValue();
 

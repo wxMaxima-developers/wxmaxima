@@ -31,17 +31,17 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers) : Cell(parent, config, cellpointers)
 {
   m_last1 = NULL;
   m_last2 = NULL;
   m_baseCell = NULL;
   m_exptCell = NULL;
   m_isMatrix = false;
-  m_exp = new TextCell(parent, config, cellPointers, wxT("^"));
-  m_open = new TextCell(parent, config, cellPointers, wxT("("));
+  m_exp = new TextCell(parent, config, cellpointers, wxT("^"));
+  m_open = new TextCell(parent, config, cellpointers, wxT("("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
+  m_close = new TextCell(parent, config, cellpointers, wxT(")"));
 }
 
 ExptCell::ExptCell(const ExptCell &cell):

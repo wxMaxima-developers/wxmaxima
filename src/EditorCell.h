@@ -375,7 +375,7 @@ public:
 
   void FindMatchingParens();
 
-  int GetLineWidth(unsigned int line, int end);
+  int GetLineWidth(unsigned int line, int pos);
 
   //! true, if this cell's width has to be recalculated.
   bool IsDirty() const override
@@ -464,7 +464,7 @@ public:
 
   /*! Replaces all occurrences of a given string
    */
-  int ReplaceAll(wxString oldString, wxString newString, bool IgnoreCase);
+  int ReplaceAll(wxString oldString, wxString newString, bool ignoreCase);
 
   /*! Finds the next occurrences of a string
 
@@ -698,9 +698,11 @@ private:
   std::vector<int> m_positionHistory;
   std::vector<int> m_startHistory;
   std::vector<int> m_endHistory;
+  //! Where in the undo history are we?
   ptrdiff_t m_historyPosition;
   //! Where inside this cell is the cursor?
   int m_positionOfCaret;
+  //! Which column the cursor would be if the current line were long enough?
   int m_caretColumn;
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
