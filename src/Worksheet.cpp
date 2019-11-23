@@ -2776,35 +2776,30 @@ void Worksheet::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
 
 void Worksheet::TreeUndo_CellLeft()
 {
-  GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
   // If no cell is active we didn't leave a cell and return from this function.
-  if (activeCell == NULL)
-  {
+  if (GetActiveCell() == NULL)
     return;
-  }
-  else
+    
+  GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+  if (TreeUndo_ActiveCell != NULL)
+    wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
+    
+  // We only can undo a text change if the text has actually changed.
+  if (
+    (activeCell->GetEditable()) &&
+    (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
+    (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
+    (m_treeUndo_ActiveCellOldText.Length() > 1)
+    )
   {
-    
-    if (TreeUndo_ActiveCell != NULL)
-      wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
-    
-    // We only can undo a text change if the text has actually changed.
-    if (
-      (activeCell->GetEditable()) &&
-      (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
-      (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
-      (m_treeUndo_ActiveCellOldText.Length() > 1)
-      )
-    {
-      TreeUndoAction *undoAction = new TreeUndoAction;
-      wxASSERT_MSG(activeCell != NULL, _("Bug: Text changed, but no active cell."));
-      undoAction->m_start = activeCell;
-      wxASSERT_MSG(undoAction->m_start != NULL, _("Bug: Trying to record a cell contents change for undo without a cell."));
-      undoAction->m_oldText = m_treeUndo_ActiveCellOldText;
-      treeUndoActions.push_front(undoAction);
-      TreeUndo_LimitUndoBuffer();
-      TreeUndo_ClearRedoActionList();
-    }
+    TreeUndoAction *undoAction = new TreeUndoAction;
+    wxASSERT_MSG(activeCell != NULL, _("Bug: Text changed, but no active cell."));
+    undoAction->m_start = activeCell;
+    wxASSERT_MSG(undoAction->m_start != NULL, _("Bug: Trying to record a cell contents change for undo without a cell."));
+    undoAction->m_oldText = m_treeUndo_ActiveCellOldText;
+    treeUndoActions.push_front(undoAction);
+    TreeUndo_LimitUndoBuffer();
+    TreeUndo_ClearRedoActionList();
   }
 }
 
