@@ -502,6 +502,7 @@ void ConfigDialogue::SetProperties()
   m_incrementalSearch->SetValue(incrementalSearch);
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_fixedFontInTC->SetValue(fixedFontTC);
+  m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_abortOnError->SetValue(configuration->GetAbortOnError());
