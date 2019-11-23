@@ -1,3 +1,14 @@
+# Transition to C++11
+
+The next wxMaxima release will make use of C++11 features: I *hope* that C++
+has been out long enough in 2019 that every relevant compiler supports it.
+C++11 brings in features that allow to make compilation fail on otherwise 
+hard-to-detect bugs, some features that might make the code easier to read...
+...and I am afraid that plain old c++ might look antiquated one day.
+
+Additionally it will contain many bug fixes hoping that I won't fix bugs that
+in retrospect didn't exist...
+
 # wxMaxima 19.11.1 - Stable
   * Improved italian translation by Marco Ciampa
   * Autocompletion no more causes asserts
