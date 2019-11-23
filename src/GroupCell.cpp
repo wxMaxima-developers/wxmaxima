@@ -1181,9 +1181,9 @@ void GroupCell::DrawBracket()
 
     wxRect bracketRect = wxRect(
       configuration->GetIndent() - configuration->GetCellBracketWidth(),
-      bracketRect.GetTop() - 2,
+      rect.GetTop() - 2,
       configuration->GetCellBracketWidth(),
-      bracketRect.GetHeight() + 5);
+      rect.GetHeight() + 5);
     if (Cell::InUpdateRegion(bracketRect))
       dc->DrawRectangle(bracketRect);
   }
