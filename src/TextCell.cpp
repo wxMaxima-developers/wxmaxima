@@ -331,12 +331,18 @@ void TextCell::SetValue(const wxString &text)
 
 TextCell::TextCell(const TextCell &cell):
   Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
-  m_text(cell.m_text)
+  m_text(cell.m_text),
+  m_displayedText(cell.m_displayedText)
 {
-  m_displayedText = wxString(cell.m_displayedText);
   m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
   m_isHidden = cell.m_isHidden;
+  m_lastZoomFactor = -1;
+  m_fontSizeLabel = -1;
+  m_displayedDigits_old = -1;
+  m_lastCalculationFontSize = -1;
+  m_realCenter = -1;
+  m_fontsize_old = -1;
   m_textStyle = cell.m_textStyle;
   m_highlight = cell.m_highlight;
   m_userDefinedLabel = cell.m_userDefinedLabel;
