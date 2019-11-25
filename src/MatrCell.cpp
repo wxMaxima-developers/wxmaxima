@@ -29,7 +29,11 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_widths(vector<int>()),
+  m_drops(vector<int>()),
+  m_centers(vector<int>())
 {
   m_matWidth = 0;
   m_matHeight = 0;

@@ -1256,13 +1256,14 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
+#ifndef __WXOSX__
+  bool done;
+#else
   bool done = false;
-
-#if defined __WXOSX__
   done = HandleCtrlCommand(event);
+  if(!done)
 #endif
 
-  if(!done)
     done = HandleSpecialKey(event);
 
   if (!done)
@@ -3542,7 +3543,6 @@ void EditorCell::StyleTextTexts()
     wxString line;
     int lastSpacePos = -1;
     wxString::const_iterator lastSpaceIt;
-    int indent = 0;
     int lastLineStart = 0;
     int width, height;
 
@@ -3553,6 +3553,7 @@ void EditorCell::StyleTextTexts()
     wxString indentChar;
 
     unsigned int i = 0;
+    signed int indent;
     wxString::const_iterator it = m_text.begin();
     while (it < m_text.end())
     {
@@ -3755,7 +3756,6 @@ void EditorCell::StyleTextTexts()
       if (prefixes.empty())
         indentChar = wxEmptyString;
 
-      int indent;
       if ((!indentPixels.empty()) && (!newLine))
         indent = indentPixels.back();
       else

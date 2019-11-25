@@ -670,7 +670,7 @@ public:
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {wxConfig::Get()->Write(wxT("enterEvaluates"),
                                                                 m_enterEvaluates = enterEvaluates);}
-  wxString MathJaXURL_Auto() const { return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");}
+  static wxString MathJaXURL_Auto() { return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
   bool AntiAliasLines() const {return m_antiAliasLines;}

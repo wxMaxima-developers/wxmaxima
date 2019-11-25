@@ -49,8 +49,8 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointer
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : Cell(parent,
-                                                                                                                               config, cellpointers)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type) : Cell(parent,
+                                                                                                                               config, cellPointers)
 {
   m_image = new Image(m_configuration, image, type);
   m_type = MC_TYPE_IMAGE;
@@ -59,7 +59,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointer
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : Cell(parent, config, cellpointers)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap) : Cell(parent, config, cellPointers)
 {
   m_image = new Image(m_configuration, bitmap);
   m_type = MC_TYPE_IMAGE;
@@ -71,8 +71,8 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointer
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
-  : Cell(parent, config, cellpointers)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove, wxFileSystem *filesystem)
+  : Cell(parent, config, cellPointers)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;

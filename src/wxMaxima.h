@@ -733,7 +733,7 @@ protected:
 class MyDropTarget : public wxFileDropTarget
 {
 public:
-  MyDropTarget(wxMaxima *wxmax)
+  explicit MyDropTarget(wxMaxima *wxmax)
   { m_wxmax = wxmax; }
 
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);

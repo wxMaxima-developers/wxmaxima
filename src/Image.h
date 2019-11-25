@@ -127,7 +127,7 @@ public:
   { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
 
   //! Reads the compressed image into a memory buffer
-  wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
+  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
 
   //! Returns the file name extension of the current image
   wxString GetExtension() const

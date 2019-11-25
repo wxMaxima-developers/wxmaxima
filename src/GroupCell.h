@@ -186,7 +186,7 @@ public:
 
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter) const;
 
   wxString ToTeX() override;
 
@@ -208,7 +208,7 @@ public:
 
   void AppendInput(Cell *cell);
 
-  wxString TexEscapeOutputCell(wxString Input);
+  static wxString TexEscapeOutputCell(wxString Input);
 
   Cell *GetPrompt()
   { return m_inputLabel; }

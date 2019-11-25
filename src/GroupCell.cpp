@@ -1594,7 +1594,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   return str;
 }
 
-wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter)
+wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter) const
 {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
   if (imgCounter == NULL) return wxEmptyString;

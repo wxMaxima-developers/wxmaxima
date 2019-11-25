@@ -2783,17 +2783,18 @@ void Worksheet::TreeUndo_CellLeft()
   GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
   if (TreeUndo_ActiveCell != NULL)
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
-    
+
+  if(activeCell->GetEditable() == NULL)
+    return;
+  
   // We only can undo a text change if the text has actually changed.
   if (
-    (activeCell->GetEditable()) &&
+    (m_treeUndo_ActiveCellOldText.Length() > 1) &&
     (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
-    (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
-    (m_treeUndo_ActiveCellOldText.Length() > 1)
+    (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue())
     )
   {
     TreeUndoAction *undoAction = new TreeUndoAction;
-    wxASSERT_MSG(activeCell != NULL, _("Bug: Text changed, but no active cell."));
     undoAction->m_start = activeCell;
     wxASSERT_MSG(undoAction->m_start != NULL, _("Bug: Trying to record a cell contents change for undo without a cell."));
     undoAction->m_oldText = m_treeUndo_ActiveCellOldText;
@@ -6960,11 +6961,13 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
 void Worksheet::AddDocumentTillHereToEvaluationQueue()
 {
   FollowEvaluation(true);
-  GroupCell *stop;
+  GroupCell *stop = NULL;
   if (m_hCaretActive)
     stop = m_hCaretPosition;
   else
   {
+    if(GetActiveCell() == NULL)
+      return;
     stop = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
     if (stop->m_previous != NULL)
       stop = dynamic_cast<GroupCell *>(stop->m_previous);
