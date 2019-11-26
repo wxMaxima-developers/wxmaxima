@@ -89,6 +89,11 @@ protected:
   };
 
 private:
+  //! This class doesn't have a copy constructor
+  Svgout(const Svgout&) = delete;
+  //! This class doesn't have a = operator
+  Svgout& operator=(const Svgout&) = delete;
+
   int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
   //! The name of a temp file we create while calculating the svg size.
   wxString m_tempFileName;

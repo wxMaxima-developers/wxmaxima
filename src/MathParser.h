@@ -45,7 +45,10 @@ class MathParser
 {
 public:
   MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
-
+  //! This class doesn't have a copy constructor
+  MathParser(const MathParser&) = delete;
+  //! This class doesn't have a = operator
+  MathParser& operator=(const MathParser&) = delete;
   ~MathParser();
 
   void SetUserLabel(wxString label){ m_userDefinedLabel = label; }

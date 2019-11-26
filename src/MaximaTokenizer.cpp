@@ -288,8 +288,9 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         Ch = *it;
       }
 
-      while ((it < commands.end()) && (IsAlphaNum(Ch = *it) || (Ch == '\\') || (Ch == wxT('µ'))))
+      while ((it < commands.end()) && (IsAlphaNum(*it) || (*it == '\\') || (*it == wxT('µ'))))
       {
+        Ch = *it;
         token += Ch;
         if (Ch == wxT('\\'))
         {

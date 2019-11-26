@@ -281,13 +281,10 @@ wxBitmap StatusBar::GetImage(wxString name,
     sizeB >>= 1;
   }
 
-  if(ABS(targetWidth - sizeA) < ABS(targetWidth - sizeB)) {
-    targetWidth = sizeA;
+  if(ABS(targetWidth - sizeA) < ABS(targetWidth - sizeB))
     prescale = 128;
-  } else {
-    targetWidth = sizeB;
+  else
     prescale = 192;
-  }
 
   if(!img.IsOk()) {
     void *data;

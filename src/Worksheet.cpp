@@ -6973,16 +6973,16 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue()
       stop = dynamic_cast<GroupCell *>(stop->m_previous);
   }
 
-  if (stop != NULL)
+  if (stop == NULL)
+    return;
+
+  GroupCell *tmp = m_tree;
+  while (tmp != NULL)
   {
-    GroupCell *tmp = m_tree;
-    while (tmp != NULL)
-    {
-      AddToEvaluationQueue(tmp);
-      if (tmp == stop)
-        break;
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
-    }
+    AddToEvaluationQueue(tmp);
+    if (tmp == stop)
+      break;
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
 }
 

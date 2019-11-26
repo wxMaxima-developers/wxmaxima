@@ -36,7 +36,10 @@ public:
   /*! The constructor.
   */
   explicit Emfout(Configuration **configuration, wxString filename = wxEmptyString);
-
+  //! This class doesn't have a copy constructor
+  Emfout(const Emfout&) = delete;
+  //! This class doesn't have a = operator
+  Emfout& operator=(const Emfout&) = delete;
   ~Emfout();
 
   int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}

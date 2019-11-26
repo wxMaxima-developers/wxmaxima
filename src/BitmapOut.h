@@ -42,6 +42,10 @@ public:
   */
   explicit BitmapOut(Configuration **configuration, int scale = 1);
 
+  //! This class doesn't have a copy constructor
+  BitmapOut(const BitmapOut&) = delete;
+  //! This class doesn't have a = operator
+  BitmapOut& operator=(const BitmapOut&) = delete;
   ~BitmapOut();
 
   /*! Renders tree as bitmap
