@@ -69,6 +69,7 @@ public:
   GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
   GroupCell(const GroupCell &cell);
   Cell *Copy() override {return new GroupCell(*this);}
+  GroupCell& operator=(const GroupCell &other);
   ~GroupCell();
 
   wxString GetAnswer(int answer)

@@ -160,13 +160,22 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 GroupCell::GroupCell(const GroupCell &cell):
   GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers, wxEmptyString)
 {
+  *this = cell;
+}
+
+GroupCell& GroupCell::operator=(const GroupCell &other)
+{
+  if(&other == this)
+    return *this;
+  Cell::operator=(other);
   m_inputLabel = m_output = NULL;
-  if (cell.m_inputLabel)
-    SetInput(cell.m_inputLabel->CopyList());
-  if (cell.m_output)
-    SetOutput(cell.m_output->CopyList());
-  Hide(cell.m_isHidden);
-  AutoAnswer(cell.m_autoAnswer);
+  if (other.m_inputLabel)
+    SetInput(other.m_inputLabel->CopyList());
+  if (other.m_output)
+    SetOutput(other.m_output->CopyList());
+  Hide(other.m_isHidden);
+  AutoAnswer(other.m_autoAnswer);
+  return *this;
 }
 
 void GroupCell::SetCellStyle(int style)
