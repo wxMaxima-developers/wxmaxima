@@ -45,6 +45,7 @@ public:
   FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   FracCell(const FracCell &cell);
   Cell *Copy() override {return new FracCell(*this);}
+  FracCell& operator=(const FracCell &other);
   ~FracCell();
   
   std::list<Cell *> GetInnerCells() override;
