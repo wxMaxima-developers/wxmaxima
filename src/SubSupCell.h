@@ -30,6 +30,7 @@ class SubSupCell : public Cell
 public:
   SubSupCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SubSupCell(const SubSupCell &cell);
+  SubSupCell& operator=(const SubSupCell &other);
   Cell *Copy() override {return new SubSupCell(*this);}
 
   ~SubSupCell();

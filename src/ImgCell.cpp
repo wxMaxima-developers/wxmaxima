@@ -97,11 +97,20 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
   m_image = new Image(m_configuration, bitmap);
 }
 
+ImgCell& ImgCell::operator=(const ImgCell &other)
+{
+  if(&other == this)
+    return *this;
+  Cell::operator=(other);
+  m_drawRectangle = other.m_drawRectangle;
+  m_image = new Image(*other.m_image);
+  return *this;
+}
+
 ImgCell::ImgCell(const ImgCell &cell):
  ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_drawRectangle = cell.m_drawRectangle;
-  m_image = new Image(*cell.m_image);
+  *this = cell;
 }
 
 ImgCell::~ImgCell()

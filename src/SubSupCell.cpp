@@ -42,19 +42,28 @@ SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPo
   m_preSupCell = NULL;
 }
 
+SubSupCell& SubSupCell::operator=(const SubSupCell &other)
+{
+  if(&other == this)
+    return *this;
+  Cell::operator=(other);
+  if(other.m_baseCell)
+    SetBase(other.m_baseCell->CopyList());
+  if(other.m_postSubCell)
+    SetIndex(other.m_postSubCell->CopyList());
+  if(other.m_postSupCell)
+    SetExponent(other.m_postSupCell->CopyList());
+  if(other.m_preSubCell)
+    SetPreSub(other.m_preSubCell->CopyList());
+  if(other.m_preSupCell)
+    SetPreSup(other.m_preSupCell->CopyList());
+  return *this;
+}
+
 SubSupCell::SubSupCell(const SubSupCell &cell):
  SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  if(cell.m_baseCell)
-    SetBase(cell.m_baseCell->CopyList());
-  if(cell.m_postSubCell)
-    SetIndex(cell.m_postSubCell->CopyList());
-  if(cell.m_postSupCell)
-    SetExponent(cell.m_postSupCell->CopyList());
-  if(cell.m_preSubCell)
-    SetPreSub(cell.m_preSubCell->CopyList());
-  if(cell.m_preSupCell)
-    SetPreSup(cell.m_preSupCell->CopyList());
+  *this = cell;
 }
 
 SubSupCell::~SubSupCell()
@@ -124,12 +133,12 @@ void SubSupCell::SetBase(Cell *base)
   m_innerCellList.push_back(base);
 }
 
-void SubSupCell::SetExponent(Cell *exp)
+void SubSupCell::SetExponent(Cell *expt)
 {
-  if (exp == NULL)
+  if (expt == NULL)
     return;
   wxDELETE(m_postSupCell);
-  m_postSupCell = exp;
+  m_postSupCell = expt;
 }
 
 void SubSupCell::RecalculateWidths(int fontsize)

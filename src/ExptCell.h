@@ -51,6 +51,7 @@ public:
   ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
   ExptCell(const ExptCell &cell);
   Cell *Copy() override {return new ExptCell(*this);}
+  ExptCell& operator=(const ExptCell &other);
   ~ExptCell();
 
   std::list<Cell *> GetInnerCells() override;
