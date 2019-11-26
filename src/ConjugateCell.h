@@ -51,7 +51,6 @@ public:
   ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ConjugateCell(const ConjugateCell &cell);
   Cell *Copy() override {return new ConjugateCell(*this);}
-  ConjugateCell& operator=(const ConjugateCell &other);
   ~ConjugateCell();
 
   std::list<Cell *> GetInnerCells() override;

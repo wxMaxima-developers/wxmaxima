@@ -41,20 +41,12 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_last = NULL;
 }
 
-AbsCell& AbsCell::operator=(const AbsCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_innerCell)
-    SetInner(other.m_innerCell->CopyList());
-  return *this;
-}
 
 AbsCell::AbsCell(const AbsCell &cell):
   AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList());
 }
 
 AbsCell::~AbsCell()

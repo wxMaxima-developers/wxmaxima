@@ -54,18 +54,9 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 ParenCell::ParenCell(const ParenCell &cell):
  ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
-}
-
-ParenCell& ParenCell::operator=(const ParenCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_innerCell)
-    SetInner(other.m_innerCell->CopyList(), other.m_type);
-  m_isBrokenIntoLines = other.m_isBrokenIntoLines;
-  return *this;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList(), cell.m_type);
+  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 ParenCell::~ParenCell()

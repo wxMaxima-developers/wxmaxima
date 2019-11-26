@@ -58,7 +58,6 @@ public:
   AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   AbsCell(const AbsCell &cell);
   Cell *Copy() override {return new AbsCell(*this);}
-  AbsCell& operator=(const AbsCell &other);
   ~AbsCell();
   
   std::list<Cell *> GetInnerCells() override;

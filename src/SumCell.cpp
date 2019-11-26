@@ -47,25 +47,16 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_sumStyle = SM_SUM;
 }
 
-SumCell& SumCell::operator=(const SumCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_base)
-    SetBase(other.m_base->CopyList());
-  if(other.m_under)
-  SetUnder(other.m_under->CopyList());
-  if(other.m_over)
-    SetOver(other.m_over->CopyList());
-  return *this;
-}
-
 SumCell::SumCell(const SumCell &cell):
   SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+  SetUnder(cell.m_under->CopyList());
+  if(cell.m_over)
+    SetOver(cell.m_over->CopyList());
   m_sumStyle = cell.m_sumStyle;
-  *this = cell;
 }
 
 SumCell::~SumCell()

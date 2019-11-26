@@ -37,7 +37,6 @@ class LimitCell : public Cell
 public:
   LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   LimitCell(const LimitCell &cell);
-  LimitCell& operator=(const LimitCell &other);
   Cell *Copy() override {return new LimitCell(*this);}
 
   ~LimitCell();

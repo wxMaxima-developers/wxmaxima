@@ -51,7 +51,6 @@ class ParenCell : public Cell
 public:
   ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ParenCell(const ParenCell &cell);
-  ParenCell& operator=(const ParenCell &other);
   Cell *Copy() override {return new ParenCell(*this);}
 
   ~ParenCell();

@@ -44,22 +44,13 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellpoint
   m_close = new TextCell(parent, config, cellpointers, wxT(")"));
 }
 
-ExptCell& ExptCell::operator=(const ExptCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_baseCell)
-    SetBase(other.m_baseCell->CopyList());
-  if(other.m_exptCell)
-    SetPower(other.m_exptCell->CopyList());
-  return *this;
-}
-
 ExptCell::ExptCell(const ExptCell &cell):
   ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_exptCell)
+    SetPower(cell.m_exptCell->CopyList());
 }
 
 ExptCell::~ExptCell()

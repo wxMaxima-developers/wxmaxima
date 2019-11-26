@@ -46,21 +46,12 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 }
 
 
-SqrtCell& SqrtCell::operator=(const SqrtCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_innerCell)
-    SetInner(other.m_innerCell->CopyList());
-  m_isBrokenIntoLines = other.m_isBrokenIntoLines;
-  return *this;
-}
-
 SqrtCell::SqrtCell(const SqrtCell &cell):
  SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList());
+  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 SqrtCell::~SqrtCell()

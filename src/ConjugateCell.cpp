@@ -38,20 +38,11 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-ConjugateCell& ConjugateCell::operator=(const ConjugateCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_innerCell)
-    SetInner(other.m_innerCell->CopyList());
-  return *this;
-}
-
 ConjugateCell::ConjugateCell(const ConjugateCell &cell):
  ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList());
 }
 
 ConjugateCell::~ConjugateCell()

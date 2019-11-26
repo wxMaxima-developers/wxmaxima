@@ -41,7 +41,6 @@ public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
   Cell *Copy() override {return new ImgCell(*this);}
-  ImgCell& operator=(const ImgCell &other);
   ~ImgCell();
 
   //! Tell the image which gnuplot files it was made from

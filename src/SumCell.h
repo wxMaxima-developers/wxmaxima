@@ -45,7 +45,6 @@ public:
   SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SumCell(const SumCell &cell);
   Cell *Copy() override {return new SumCell(*this);}
-  SumCell& operator=(const SumCell &other);
 
   ~SumCell();
   

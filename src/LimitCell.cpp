@@ -44,24 +44,15 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_close = new TextCell(parent, config, cellPointers, ")");
 }
 
-LimitCell& LimitCell::operator=(const LimitCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_base)
-    SetBase(other.m_base->CopyList());
-  if(other.m_under)
-    SetUnder(other.m_under->CopyList());
-  if(other.m_name)
-    SetName(other.m_name->CopyList());
-  return *this;
-}
-
 LimitCell::LimitCell(const LimitCell &cell):
  LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+    SetUnder(cell.m_under->CopyList());
+  if(cell.m_name)
+    SetName(cell.m_name->CopyList());
 }
 
 LimitCell::~LimitCell()

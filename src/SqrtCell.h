@@ -51,7 +51,7 @@ public:
   SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SqrtCell(const SqrtCell &cell);
   Cell *Copy() override {return new SqrtCell(*this);}
-  SqrtCell& operator=(const SqrtCell &other);
+
   ~SqrtCell();
 
   std::list<Cell *> GetInnerCells() override;
