@@ -150,7 +150,7 @@ private:
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if((dirname.EndsWith(".git")) ||
            (dirname.EndsWith("/share/share")) ||
