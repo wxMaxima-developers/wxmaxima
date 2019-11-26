@@ -51,25 +51,16 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_divide = NULL;
 }
 
-FracCell& FracCell::operator=(const FracCell &other)
-{
-  if(&other == this)
-    return *this;
-  Cell::operator=(other);
-  if(other.m_num)
-    SetNum(other.m_num->CopyList());
-  if(other.m_denom)
-    SetDenom(other.m_denom->CopyList());
-  m_fracStyle = other.m_fracStyle;
-  m_exponent = other.m_exponent;
-  SetupBreakUps();
-  return *this;
-}
-
 FracCell::FracCell(const FracCell &cell):
  FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  *this = cell;
+  if(cell.m_num)
+    SetNum(cell.m_num->CopyList());
+  if(cell.m_denom)
+    SetDenom(cell.m_denom->CopyList());
+  m_fracStyle = cell.m_fracStyle;
+  m_exponent = cell.m_exponent;
+  SetupBreakUps();
 }
 
 FracCell::~FracCell()
