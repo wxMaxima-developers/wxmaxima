@@ -1265,9 +1265,9 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
 #ifndef __WXOSX__
-  bool done;
-#else
   bool done = false;
+#else
+  bool done;
   done = HandleCtrlCommand(event);
   if(!done)
 #endif

@@ -41,6 +41,8 @@ public:
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_DEFAULT);
   TextCell(const TextCell &cell);
   Cell *Copy() override {return new TextCell(*this);}
+  //! This class can be derived from wxAccessible which has no copy constructor
+  TextCell &operator=(const TextCell&) = delete;
   
   std::list<Cell *> GetInnerCells() override;
   

@@ -56,6 +56,7 @@ public:
   FunCell(const FunCell &cell);
   Cell *Copy() override {return new FunCell(*this);}
   ~FunCell();
+  FunCell &operator=(const FunCell&) = delete;
 
   std::list<Cell *> GetInnerCells() override;
 

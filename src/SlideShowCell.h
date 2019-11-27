@@ -63,6 +63,7 @@ public:
   SlideShow(const SlideShow &cell);
   Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();
+  SlideShow &operator=(const SlideShow&) = delete;
 
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;

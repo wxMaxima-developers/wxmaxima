@@ -101,6 +101,7 @@ ImgCell::ImgCell(const ImgCell &cell):
  ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_drawRectangle = cell.m_drawRectangle;
+  m_drawBoundingBox = false;
   m_image = new Image(*cell.m_image);
 }
 

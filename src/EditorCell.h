@@ -66,7 +66,9 @@ private:
   wxAccStatus GetValue (int childId, wxString *strValue) override;
   wxAccStatus GetRole (int childId, wxAccRole *role) override;
   #endif
-  
+
+  EditorCell &operator=(const EditorCell&) = delete;
+
   int m_errorIndex;
 
   //! A list of all potential autoComplete targets within this cell
