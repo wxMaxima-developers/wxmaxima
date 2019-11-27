@@ -16,6 +16,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
             "--inconclusive"
             "--inline-suppr"
             "--language=c++"
+	    "--template=gcc"
             "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
 	    )
     else()
