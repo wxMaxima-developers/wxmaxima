@@ -130,3 +130,21 @@ include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
 
 install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0") 
+    find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
+    if (CMAKE_CXX_CPPCHECK)
+	list(
+            APPEND CMAKE_CXX_CPPCHECK 
+            "--enable=warning"
+            "--force" 
+            "--inline-suppr"
+            "--language=c++"
+            "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
+	    )
+    else()
+	message(STATUS "cppcheck not found.")
+    endif()
+else()
+    message(STATUS "Cmake too old to support cppcheck.")
+endif()

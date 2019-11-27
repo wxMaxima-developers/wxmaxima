@@ -24,7 +24,7 @@
 MatWiz::MatWiz(wxWindow *parent, int id,
                Configuration *cfg,
                const wxString &title,
-               int type, int w, int h,
+               int type, int h, int w,
                const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, style)
 {
