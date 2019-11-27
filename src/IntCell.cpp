@@ -50,6 +50,12 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_charHeight = 12;
 }
 
+// Old cppcheck bugs:
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signHeight
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signTop
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
 IntCell::IntCell(const IntCell &cell):
  IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {

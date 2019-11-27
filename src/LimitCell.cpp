@@ -44,6 +44,9 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_close = new TextCell(parent, config, cellPointers, ")");
 }
 
+// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
+// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
+// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
 LimitCell::LimitCell(const LimitCell &cell):
  LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {

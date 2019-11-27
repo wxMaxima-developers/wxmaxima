@@ -38,6 +38,9 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
+// Old cppcheck bugs:
+// cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
+// cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
 ConjugateCell::ConjugateCell(const ConjugateCell &cell):
  ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {

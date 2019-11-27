@@ -45,7 +45,13 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_comma
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signSize
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signTop
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
+// cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(const SqrtCell &cell):
  SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {

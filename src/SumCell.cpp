@@ -47,6 +47,9 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_sumStyle = SM_SUM;
 }
 
+// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signSize
+// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWCenter
 SumCell::SumCell(const SumCell &cell):
   SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {

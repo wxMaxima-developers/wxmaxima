@@ -41,7 +41,9 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_last = NULL;
 }
 
-
+// Old cppcheck bugs:
+// cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
+// cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
 AbsCell::AbsCell(const AbsCell &cell):
   AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
