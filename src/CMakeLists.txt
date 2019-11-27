@@ -9,7 +9,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
     if (CMAKE_CXX_CPPCHECK)
 	list(
             APPEND CMAKE_CXX_CPPCHECK 
-            "--enable=warning,style,performance,portability,information"
+            "--enable=warning,style,performance,portability"
             "--quiet"
 	    "--std=c++11"
             "--force" 

@@ -33,6 +33,9 @@ public:
   Cell *Copy() override {return new AtCell(*this);}
   ~AtCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  AtCell &operator=(const AtCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
   
   void SetBase(Cell *base);

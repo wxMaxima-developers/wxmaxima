@@ -123,7 +123,7 @@ public:
     
     \param dc The drawing context that is to be used for drawing objects
    */
-  Configuration(wxDC *dc = NULL);
+  explicit Configuration(wxDC *dc = NULL);
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)
@@ -409,6 +409,7 @@ public:
   bool GetAutoWrap() const
   { return m_autoWrap > 0; }
 
+  // cppcheck-suppress performance
   //! Do we want to have automatic line breaks for code cells?
   bool GetAutoWrapCode() const
   { return false; }
