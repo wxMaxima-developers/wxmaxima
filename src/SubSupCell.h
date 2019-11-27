@@ -34,6 +34,9 @@ public:
 
   ~SubSupCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  SubSupCell operator=(const SubSupCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
   
   void SetBase(Cell *base);

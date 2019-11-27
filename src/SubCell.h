@@ -34,6 +34,8 @@ public:
 
   ~SubCell();
 
+  SubCell operator=(const SubCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   void SetBase(Cell *base);

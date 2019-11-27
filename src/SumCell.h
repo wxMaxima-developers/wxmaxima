@@ -47,7 +47,10 @@ public:
   Cell *Copy() override {return new SumCell(*this);}
 
   ~SumCell();
-  
+
+    //! This class can be derived from wxAccessible which has no copy constructor
+  SumCell operator=(const SumCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
   
   void RecalculateHeight(int fontsize) override;

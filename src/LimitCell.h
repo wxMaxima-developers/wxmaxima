@@ -41,6 +41,9 @@ public:
 
   ~LimitCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  LimitCell &operator=(const LimitCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   void RecalculateHeight(int fontsize) override;

@@ -53,6 +53,9 @@ public:
   Cell *Copy() override {return new ConjugateCell(*this);}
   ~ConjugateCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ConjugateCell &operator=(const ConjugateCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);

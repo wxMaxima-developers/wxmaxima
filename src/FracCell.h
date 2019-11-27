@@ -46,6 +46,10 @@ public:
   FracCell(const FracCell &cell);
   Cell *Copy() override {return new FracCell(*this);}
   ~FracCell();
+
+  //! This class can be derived from wxAccessible which has no copy constructor
+  FracCell &operator=(const FracCell&) = delete;
+
   
   std::list<Cell *> GetInnerCells() override;
 

@@ -54,6 +54,9 @@ public:
 
   ~SqrtCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  SqrtCell &operator=(const SqrtCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);

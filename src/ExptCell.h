@@ -53,6 +53,9 @@ public:
   Cell *Copy() override {return new ExptCell(*this);}
   ~ExptCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ExptCell &operator=(const ExptCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   //! Set the mantissa

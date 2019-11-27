@@ -124,12 +124,12 @@ void SubSupCell::SetBase(Cell *base)
   m_innerCellList.push_back(base);
 }
 
-void SubSupCell::SetExponent(Cell *exp)
+void SubSupCell::SetExponent(Cell *expt)
 {
-  if (exp == NULL)
+  if (expt == NULL)
     return;
   wxDELETE(m_postSupCell);
-  m_postSupCell = exp;
+  m_postSupCell = expt;
 }
 
 void SubSupCell::RecalculateWidths(int fontsize)

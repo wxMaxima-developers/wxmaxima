@@ -55,6 +55,9 @@ public:
 
   ~ParenCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ParenCell &operator=(const ParenCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner, CellType  type);

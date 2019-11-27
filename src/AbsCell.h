@@ -59,7 +59,10 @@ public:
   AbsCell(const AbsCell &cell);
   Cell *Copy() override {return new AbsCell(*this);}
   ~AbsCell();
-  
+
+  //! This class can be derived from wxAccessible which has no copy constructor
+  AbsCell &operator=(const AbsCell&) = delete;
+
   std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);

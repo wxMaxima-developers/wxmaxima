@@ -1512,7 +1512,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
       "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n",
       configuration->GetLabelWidth()/14
       ) + m_inputLabel->ToTeX() +
-      "\n\\end{minipage}";
+      wxString("\n\\end{minipage}");
     if (m_inputLabel->m_next != NULL)
     {
 

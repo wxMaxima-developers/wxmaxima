@@ -43,6 +43,9 @@ public:
   Cell *Copy() override {return new ImgCell(*this);}
   ~ImgCell();
 
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ImgCell &operator=(const ImgCell&) = delete;
+
   //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, wxFileSystem *filesystem = NULL)
     {
