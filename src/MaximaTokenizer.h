@@ -58,7 +58,7 @@ public:
     TextStyle GetStyle() const {return m_style;}
     wxString GetText() const {return m_text;}
     operator wxString() const {return GetText();}
-    MaximaTokenizer::MaximaTokenizer(const MaximaTokenizer &tokenizer)
+    MaximaTokenizer(const MaximaTokenizer &tokenizer)
       {
         *this = tokenizer;
       }
