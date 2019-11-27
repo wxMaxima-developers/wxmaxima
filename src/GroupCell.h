@@ -155,13 +155,16 @@ public:
 
   void SelectPoint(const wxPoint &point, Cell **first, Cell **last);
 
+  // cppcheck-suppress functionConst
   void SelectOutput(Cell **start, Cell **end);
 
+  // cppcheck-suppress functionConst
   void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
   void SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
   // methods for manipulating GroupCell
+  // cppcheck-suppress functionConst
   bool SetEditableContent(wxString text);
 
   EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
@@ -189,7 +192,7 @@ public:
 
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter) const;
+  static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
   wxString ToTeX() override;
 

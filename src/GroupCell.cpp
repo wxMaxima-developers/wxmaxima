@@ -1508,7 +1508,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   // Input cells
   if (configuration->ShowCodeCells())
   {
-    wxString::Format(
+    str += wxString::Format(
       "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n",
       configuration->GetLabelWidth()/14
       ) + m_inputLabel->ToTeX() +
@@ -1594,7 +1594,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   return str;
 }
 
-wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter) const
+wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter)
 {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
   if (imgCounter == NULL) return wxEmptyString;
@@ -1933,6 +1933,7 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
   return retval;
 }
 
+// cppcheck-suppress functionConst
 bool GroupCell::SetEditableContent(wxString text)
 {
   if (GetEditable())

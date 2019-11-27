@@ -607,6 +607,8 @@ class Cell
   TextStyle GetStyle() const
   { return m_textStyle; }
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void SetPen(double lineWidth = 1.0);
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
@@ -744,6 +746,8 @@ class Cell
   //! Escape a string for XML
   static wxString XMLescape(wxString);
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void UnsetPen();
 
   /*! Undo breaking this cell into multiple lines

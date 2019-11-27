@@ -261,6 +261,14 @@ wxString EditorCell::PrependNBSP(wxString input)
   return retval;
 }
 
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_wordList
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_styledText
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_textHistory
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_positionHistory
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_startHistory
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_endHistory
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_fontName
+// cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_tokens
 EditorCell::EditorCell(const EditorCell &cell):
   EditorCell(cell.m_group, cell.m_configuration, cell.m_cellPointers, cell.m_text)
 {

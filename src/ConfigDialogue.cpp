@@ -1346,13 +1346,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
 
-#ifdef __WXMSW__
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetStyle(wxFONTSTYLE_NORMAL );
-#endif
-    font = *wxNORMAL_FONT;
-
   if (
     (st == TS_TEXT)          ||
     (st == TS_TITLE)         ||
@@ -1368,13 +1361,14 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   }
   else
     fontName = m_configuration->m_styles[TS_DEFAULT].FontName();
+  
   font = wxFont(fontsize,
                 wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                 wxFONTWEIGHT_NORMAL,
                 false, fontName,
                 m_fontEncoding);
 
-  if(font.IsOk())
+  if(!font.IsOk())
   {
     fontName = wxT("Linux Libertine O");
     font = wxFont(fontsize,
@@ -1501,7 +1495,7 @@ void ConfigDialogue::UpdateExample()
       st == TS_SECTION || st == TS_TITLE)
   {
     fontsize = m_configuration->m_styles[st].FontSize();
-    font = m_configuration->m_styles[st].FontName();
+    m_configuration->m_styles[st].FontName();
     if (fontsize <= 0)
       fontsize = m_configuration->GetDefaultFontSize();
   }

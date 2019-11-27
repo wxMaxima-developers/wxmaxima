@@ -1155,9 +1155,9 @@ void Cell::UnbreakList()
   }
 }
 
-/*!
-  Set the pen in device context according to the style of the cell.
-*/
+// cppcheck-suppress functionStatic
+// cppcheck-suppress functionConst
+// Set the pen in device context according to the style of the cell.
 void Cell::SetPen(double lineWidth)
 {
   Configuration *configuration = (*m_configuration);

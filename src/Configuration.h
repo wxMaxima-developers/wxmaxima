@@ -228,6 +228,8 @@ public:
   
   wxString GetFontName(int type = TS_DEFAULT) const;
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   wxString GetSymbolFontName() const;
 
   wxColour GetColor(int st) const;
@@ -274,6 +276,9 @@ public:
 
   //! Get the resolution of the display showing the worksheet
   wxSize GetPPI() const {return GetPPI(GetWorkSheet());}
+
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   //! Get the resolution of an arbitrary display
   wxSize GetPPI(wxWindow *win) const;
   
@@ -409,7 +414,7 @@ public:
   bool GetAutoWrap() const
   { return m_autoWrap > 0; }
 
-  // cppcheck-suppress performance
+  // cppcheck-suppress functionStatic
   //! Do we want to have automatic line breaks for code cells?
   bool GetAutoWrapCode() const
   { return false; }
@@ -630,7 +635,7 @@ public:
   }
 
   //! The auto-detected maxima location
-  wxString MaximaDefaultLocation() const;
+  static wxString MaximaDefaultLocation();
 
   //! Returns the location of the maxima binary.
   wxString MaximaLocation() const;
@@ -650,7 +655,7 @@ public:
     If location == wxEmptyString the default location from the configuration 
     is taken.
    */
-  bool MaximaFound(wxString location = wxEmptyString);
+  static bool MaximaFound(wxString location = wxEmptyString);
 
   //! Renumber out-of-order cell labels on saving.
   bool FixReorderedIndices() const
@@ -810,7 +815,7 @@ private:
   //! The worksheet this configuration storage is valid for
   wxWindow *m_workSheet;
   //! A replacement for the non-existing "==" operator for wxBitmaps.
-  bool IsEqual(wxBitmap bitmap1, wxBitmap bitmap2);
+  static bool IsEqual(wxBitmap bitmap1, wxBitmap bitmap2);
   /*! Do these chars exist in the given font?
 
     wxWidgets currently doesn't define such a function. But we can do the following:

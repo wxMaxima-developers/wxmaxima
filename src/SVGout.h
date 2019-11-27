@@ -53,14 +53,18 @@ public:
 protected:
   void DestroyTree();
 
+  // cppcheck-suppress functionConst
   void RecalculateWidths();
 
+  // cppcheck-suppress functionConst
   void BreakLines();
 
+  // cppcheck-suppress functionConst
   void RecalculateHeight();
 
   void GetMaxPoint(int *width, int *height);
 
+  // cppcheck-suppress functionConst
   void BreakUpCells();
 
   bool Layout();

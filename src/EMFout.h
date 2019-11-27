@@ -57,14 +57,22 @@ public:
 protected:
   void DestroyTree();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void RecalculateWidths();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void BreakLines();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void RecalculateHeight();
 
   void GetMaxPoint(int *width, int *height);
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void BreakUpCells();
 
   bool Layout();
@@ -73,8 +81,12 @@ protected:
 
   Cell *m_tree;
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   double GetRealHeight();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   double GetRealWidth();
 
 

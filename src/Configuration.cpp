@@ -706,7 +706,7 @@ wxString Configuration::MaximaLocation() const
     return m_maximaUserLocation;
 }
 
-wxString Configuration::MaximaDefaultLocation() const
+wxString Configuration::MaximaDefaultLocation()
 { 
   return Dirstructure::Get()->MaximaDefaultLocation();
 }

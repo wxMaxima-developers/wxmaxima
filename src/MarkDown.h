@@ -67,7 +67,7 @@ protected:
   typedef std::list<RegexReplacer *> replaceList;
   replaceList regexReplaceList;
 public:
-  MarkDownParser(Configuration *cfg);
+  explicit MarkDownParser(Configuration *cfg);
 
   virtual ~MarkDownParser();
 

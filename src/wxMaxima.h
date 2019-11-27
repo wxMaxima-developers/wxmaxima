@@ -745,6 +745,7 @@ private:
 #endif
 
 
+// cppcheck-suppress noConstructor
 class MyApp : public wxApp
 {
 public:

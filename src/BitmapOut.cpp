@@ -168,6 +168,8 @@ void BitmapOut::RecalculateHeight()
   }
 }
 
+// cppcheck-suppress functionStatic
+// cppcheck-suppress functionConst
 void BitmapOut::RecalculateWidths()
 {
   int fontsize = 12;

@@ -37,6 +37,7 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
+  //! \todo: m_alt+m_altJs+m_altText+m_altJsText are all needed?
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_DEFAULT);
   TextCell(const TextCell &cell);
   Cell *Copy() override {return new TextCell(*this);}
