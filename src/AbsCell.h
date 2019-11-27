@@ -56,6 +56,8 @@ class AbsCell : public Cell
 {
 public:
   AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
+  // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
   AbsCell(const AbsCell &cell);
   Cell *Copy() override {return new AbsCell(*this);}
   ~AbsCell();
