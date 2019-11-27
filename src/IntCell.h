@@ -42,7 +42,8 @@ public:
   IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   IntCell(const IntCell &cell);
   Cell *Copy() override {return new IntCell(*this);}
-
+  //! This class can be derived from wxAccessible which has no copy constructor
+  IntCell &operator=(const IntCell&) = delete;
   ~IntCell();
 
   std::list<Cell *> GetInnerCells() override;

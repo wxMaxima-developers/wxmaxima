@@ -1264,14 +1264,11 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
-#ifndef __WXOSX__
-  bool done = false;
-#else
   bool done;
+#ifdef __WXOSX__
   done = HandleCtrlCommand(event);
   if(!done)
 #endif
-
     done = HandleSpecialKey(event);
 
   if (!done)

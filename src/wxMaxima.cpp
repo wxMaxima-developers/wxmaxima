@@ -4107,12 +4107,8 @@ void wxMaxima::ReadStdErr()
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
     wxString o;
     wxChar ch;
-    int len = 0;
     while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStdout->CanRead()))
-    {
       o += ch;
-      len++;
-    }
 
     wxString o_trimmed = o;
     o_trimmed.Trim();
@@ -4132,12 +4128,8 @@ void wxMaxima::ReadStdErr()
     wxTextInputStream istrm(*m_maximaStderr, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
     wxString o;
     wxChar ch;
-    int len = 0;
     while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStderr->CanRead()))
-    {
       o += ch;
-      len++;
-    }
 
     wxString o_trimmed = o;
     o_trimmed.Trim();

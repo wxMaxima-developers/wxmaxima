@@ -99,8 +99,7 @@ bool MyApp::OnInit()
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   wxConfigBase *config = wxConfig::Get();
-  int lang = wxLANGUAGE_UNKNOWN;
-  lang = wxLocale::GetSystemLanguage();
+  int lang = wxLocale::GetSystemLanguage();
   if(lang == wxLANGUAGE_UNKNOWN)
     lang = wxLANGUAGE_DEFAULT;
   if(config->Read(wxT("language"), &lang))

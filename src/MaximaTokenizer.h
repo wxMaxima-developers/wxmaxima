@@ -53,12 +53,15 @@ public:
     Token(wxString text, TextStyle style) :
       m_text(text),
       m_style(style)
-      {
-      }
+      {}
     Token& operator=(const Token& t){m_text = t.m_text;m_style = t.m_style; return *this;}
     TextStyle GetStyle() const {return m_style;}
     wxString GetText() const {return m_text;}
     operator wxString() const {return GetText();}
+    MaximaTokenizer::MaximaTokenizer(const MaximaTokenizer &tokenizer)
+      {
+        *this = tokenizer;
+      }
   private:
     wxString m_text;
     TextStyle m_style;
