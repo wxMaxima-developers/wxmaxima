@@ -1,6 +1,30 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
+# The result of the following command is only re-generated on
+# CMakeLists.txt changes
 file(GLOB SOURCE_FILES *.cpp *.h)
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0") 
+    find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
+    if (CMAKE_CXX_CPPCHECK)
+	list(
+            APPEND CMAKE_CXX_CPPCHECK 
+            "--enable=all"
+            "--verbose"
+            "--quiet"
+	    "--std=c++11"
+            "--force" 
+            "--inconclusive"
+            "--inline-suppr"
+            "--language=c++"
+            "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
+	    )
+    else()
+	message(STATUS "cppcheck not found.")
+    endif()
+else()
+    message(STATUS "Cmake too old to support cppcheck.")
+endif()
 
 # We provide our own manifest. MSVC seems not to autodetect that.
 if(MSVC)
@@ -130,21 +154,3 @@ include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
 
 install(TARGETS wxmaxima RUNTIME DESTINATION bin)
-
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0") 
-    find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
-    if (CMAKE_CXX_CPPCHECK)
-	list(
-            APPEND CMAKE_CXX_CPPCHECK 
-            "--enable=warning"
-            "--force" 
-            "--inline-suppr"
-            "--language=c++"
-            "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
-	    )
-    else()
-	message(STATUS "cppcheck not found.")
-    endif()
-else()
-    message(STATUS "Cmake too old to support cppcheck.")
-endif()
