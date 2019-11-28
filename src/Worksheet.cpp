@@ -8956,7 +8956,7 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest (const wxPoint &pt,
   GetLocation(currentRect, 0);
   if(!currentRect.Contains(pt))
   {
-    *childId = NULL;
+    *childId = 0;
     *childObject = NULL;
     return wxACC_FALSE;
   }
