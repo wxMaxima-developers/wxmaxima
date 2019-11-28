@@ -62,6 +62,9 @@ public:
   //! The directory general data is stored in
   wxString DataDir() const;
 
+    //! The directory our private fonts are stored in
+  wxString FontDir() const {return DataDir()+wxT("/../fonts");}
+
   //! The directory the help file is stored in
   wxString HelpDir() const {return m_helpDir;}
   //! Set the directory the help file is stored in
@@ -83,6 +86,9 @@ public:
   //! The path to wxMaxima's own AutoComplete file
   wxString AutocompleteFile() const
   { return DataDir() + wxT("/autocomplete.txt"); }
+
+  //! The directory art is stored relative to
+  wxString ArtDir() const;
 
   /*! The directory the locale data is to be found in
 
