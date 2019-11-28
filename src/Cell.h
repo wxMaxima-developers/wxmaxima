@@ -144,9 +144,6 @@ class Cell
     
     wxString WXMXGetNewFileName();
     
-    int WXMXImageCount() const
-      { return m_wxmxImgCounter; }
-
     //! A list of editor cells containing error messages.
     class ErrorList
     {

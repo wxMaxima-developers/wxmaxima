@@ -747,10 +747,6 @@ public:
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
 
-  //! Re-read the configuration
-  void UpdateConfig()
-  { m_configuration->ReadConfig(); }
-
   //! The name of the currently-opened file
   wxString m_currentFile;
 
@@ -1260,9 +1256,6 @@ public:
 
   //! Place the cursor into a new cell where the horizontal cursor is
   void OpenHCaret(wxString txt, GroupType type);
-
-  //! Activates the horizontal cursor
-  void ShowHCaret();
 
   /*! Is it possible to issue an undo in the currently selected cell?
 
