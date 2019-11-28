@@ -4,7 +4,7 @@
 # CMakeLists.txt changes
 file(GLOB SOURCE_FILES *.cpp *.h)
 
-if(CMAKE_MAJOR_VERSION GREATER 3 OR CMAKE_MINOR_VERSION GREATER 9)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
     find_program(CPPCHECK cppcheck)
     if(CPPCHECK)
 	find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
