@@ -509,7 +509,7 @@ public:
   /*! Show or hide a sidebar
     
     \param id The type of the sidebar to show/hide
-    \param hide 
+    \param show 
      - true: show the sidebar
      - false: hide it
    */

@@ -9,7 +9,9 @@ hard-to-detect bugs, some features that might make the code easier to read...
 Additionally it will contain many bug fixes hoping that I won't fix bugs that
 in retrospect didn't exist... ...on the plus side the program should again 
 have gotten faster by giving the compiler additional hints for optimization
-and the transition has shrunk wxMaxima by about 100 lines.
+and the transition has shrunk wxMaxima by about 100 lines. Much help with
+finding bugs came from the cppcheck utility which caused changes in over 
+1700 lines of code, mainly in order to prevent possible future bugs.
 
 # wxMaxima 19.11.1 - Stable
   * Improved italian translation by Marco Ciampa
