@@ -5,25 +5,23 @@
 file(GLOB SOURCE_FILES *.cpp *.h)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
-    find_program(CPPCHECK cppcheck)
-    if(CPPCHECK)
-	find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
-	if (CMAKE_CXX_CPPCHECK)
-	    list(
-		APPEND CMAKE_CXX_CPPCHECK 
-		"--enable=warning,style,performance,portability"
-		"--quiet"
-		"--std=c++11"
-		"--force" 
-		#		"--inconclusive"
-		"--inline-suppr"
-		"--language=c++"
-		"--template=gcc"
-		"--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
-		)
-	endif()
+    find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
+    if(CMAKE_CXX_CPPCHECK)
+        message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
+	list(APPEND CMAKE_CXX_CPPCHECK
+	    "--enable=warning,style,performance,portability"
+	    "--quiet"
+	    "--std=c++11"
+	    "--force"
+	    #"--inconclusive"
+	    "--inline-suppr"
+	    "--language=c++"
+	    "--template=gcc"
+	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
+	)
     else()
 	message(STATUS "cppcheck not found.")
+        set(CMAKE_CXX_CPPCHECK "")
     endif()
 else()
     message(STATUS "Cmake too old to support cppcheck.")
