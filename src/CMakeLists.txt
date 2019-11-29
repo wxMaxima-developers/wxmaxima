@@ -4,7 +4,11 @@
 # CMakeLists.txt changes
 file(GLOB SOURCE_FILES *.cpp *.h)
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
+# VERSION_GREATER_EQUAL would normally be the way to go here.
+# But in Nov 2012 some Ubuntu versions still use a cmake that
+# doesn't support it.
+# if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
+if(CMAKE_MAJOR_VERSION GREATER 3 OR CMAKE_MINOR_VERSION GREATER 9)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
         message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
