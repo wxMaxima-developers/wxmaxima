@@ -1486,6 +1486,9 @@ wxString TextCell::ToXML()
   if(m_userDefinedLabel != wxEmptyString)
     flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
+  if(m_altCopyText != wxEmptyString)
+    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
+
   if(m_toolTip != wxEmptyString)
     flags += wxT(" tooltip=\"") + XMLescape(m_toolTip) + wxT("\"");
 
