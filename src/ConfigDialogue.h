@@ -319,7 +319,6 @@ protected:
   wxBookCtrlBase *m_notebook;
   wxStaticText *m_mathFont;
   wxButton *m_getMathFont;
-  wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;

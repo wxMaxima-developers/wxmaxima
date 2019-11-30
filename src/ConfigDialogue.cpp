@@ -1081,8 +1081,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
-  if (m_mathFontName.Length() > 0)
-    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
+  if (!m_configuration->MathFontName().IsEmpty())
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
 
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   wxArrayString m_styleFor_choices;
@@ -1319,7 +1319,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 #endif
     font = wxFont(m_configuration->GetMathFontSize(), wxFONTFAMILY_DEFAULT,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
-                  false, m_mathFontName);
+                  false, m_configuration->MathFontName());
 
   if(!font.IsOk())
     font = *wxNORMAL_FONT;
@@ -1329,10 +1329,10 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 
   if (math.Ok())
   {
-    m_mathFontName = math.GetFaceName();
+    m_configuration->MathFontName(math.GetFaceName());
     m_configuration->SetMathFontSize(math.GetPointSize());
     math.SetPointSize(m_configuration->GetMathFontSize());
-    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
   }
 
   UpdateExample();
