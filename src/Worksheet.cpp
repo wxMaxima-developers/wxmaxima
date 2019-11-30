@@ -1497,6 +1497,17 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_add_watch_label, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
         }
 
+        if (
+          (GetSelectionStart() != NULL) &&
+          (GetSelectionStart() == GetSelectionEnd()) &&
+          (GetSelectionStart()->GetStyle() == TS_VARIABLE)
+          )
+        {
+          if(popupMenu->GetMenuItemCount()>0)
+            popupMenu->AppendSeparator();
+          popupMenu->Append(popid_add_watch, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
+        }
+        
         if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL))
         {
           popupMenu->AppendSeparator();

@@ -8333,16 +8333,25 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       return;
       break;
     case Worksheet::popid_add_watch:
+    {
+      wxString selectionString;
       if(m_worksheet->GetActiveCell())
       {
-        wxString selectionString = m_worksheet->GetActiveCell()->GetSelectionString();
+        selectionString = m_worksheet->GetActiveCell()->GetSelectionString();
         if(selectionString.IsEmpty())
           selectionString = m_worksheet->GetActiveCell()->GetWordUnderCaret();
         m_worksheet->m_variablesPane->AddWatchCode(selectionString);
         wxMaximaFrame::ShowPane(menu_pane_variables,true);
       }
+      if(selectionString.IsEmpty() && (m_worksheet->GetSelectionStart() != NULL))
+        selectionString = m_worksheet->GetSelectionStart()->ToString();
+      if(!selectionString.IsEmpty())
+      {
+        m_worksheet->m_variablesPane->AddWatchCode(selectionString);
+        wxMaximaFrame::ShowPane(menu_pane_variables,true);
+      }
       return;
-      break;
+    }
     case Worksheet::popid_add_watch_label:
       if(m_worksheet->IsSelected(MC_TYPE_LABEL))
       {
