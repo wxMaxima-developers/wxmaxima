@@ -66,8 +66,17 @@ public:
   explicit AutoComplete(Configuration *configuration);
 
   Configuration *m_configuration;
-  
+
+  //! Load all autocomplete symbols wxMaxima knows about by itself
   bool LoadSymbols();
+
+  /*! Makes wxMaxima know all its builtin symbols.
+
+    This function might cause a compiler warning because it is 
+    suspiciously long. 
+    For the same reason it has been split into a separate file.
+  */
+  bool LoadBuiltinSymbols();
 
   //! Manually add a autocompletable symbol to our symbols lists
   void AddSymbol(wxString fun, autoCompletionType type = command);

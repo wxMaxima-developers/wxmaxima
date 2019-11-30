@@ -9,7 +9,7 @@ file(GLOB SOURCE_FILES *.cpp *.h)
 # doesn't support it.
 # if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
 # As the top-level cmakelists.txt refuses to configure on cmake <3.0.0
-# The version test can be simple.
+# The version test can be simple. 
 if(CMAKE_MAJOR_VERSION GREATER 3 OR CMAKE_MINOR_VERSION GREATER 9)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
