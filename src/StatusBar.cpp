@@ -54,6 +54,8 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
   m_networkState = offline;
   // Mark the network state as "to be changed"
   m_oldNetworkState = receive;
+  Connect(wxEVT_SIZE, wxSizeEventHandler(StatusBar::OnSize));
+  Connect(wxEVT_TIMER, wxTimerEventHandler(StatusBar::OnTimerEvent));
 }
 
 void StatusBar::UpdateBitmaps()
@@ -317,9 +319,3 @@ wxBitmap StatusBar::GetImage(wxString name,
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
 #endif
 }
-
-
-wxBEGIN_EVENT_TABLE(StatusBar, wxStatusBar)
-                EVT_SIZE(StatusBar::OnSize)
-                EVT_TIMER(wxID_ANY, StatusBar::OnTimerEvent)
-wxEND_EVENT_TABLE()

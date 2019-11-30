@@ -123,7 +123,6 @@ private:
   wxTimer SendTimer;
   //! The timer that prolongs the showing of the "receiving" bitmap a bit.
   wxTimer ReceiveTimer;
-wxDECLARE_EVENT_TABLE();
 };
 
 #endif

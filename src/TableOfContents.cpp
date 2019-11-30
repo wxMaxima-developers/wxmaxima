@@ -54,6 +54,9 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
+  Connect(structure_regex_id, wxEVT_TEXT, wxCommandEventHandler(TableOfContents::OnRegExEvent));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));
+  Connect(wxEVT_LIST_ITEM_RIGHT_CLICK, wxListEventHandler(TableOfContents::OnMouseRightDown));
 }
 
 void TableOfContents::OnSize(wxSizeEvent &event)
@@ -310,9 +313,3 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
     PopupMenu(popupMenu);
   wxDELETE(popupMenu);
 }
-
-BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
-                EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
-                EVT_SIZE(TableOfContents::OnSize)
-                EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY, TableOfContents::OnMouseRightDown)
-END_EVENT_TABLE()

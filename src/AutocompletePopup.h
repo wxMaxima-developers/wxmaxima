@@ -112,8 +112,6 @@ public:
   void UpdateResults();
 
   void OnClick(wxMouseEvent &event);
-
-  DECLARE_EVENT_TABLE()
 };
 
 #endif // AUTOCOMPLETEPOPUP_H

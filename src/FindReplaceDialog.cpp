@@ -42,6 +42,9 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, 
     SetPosition(m_windowPos);
   if (m_windowSize.x > 0)
     SetSize(wxSize(m_windowSize.x, GetSize().y));
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplaceDialog::OnActivate),NULL, this);
+  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),NULL, this);
+  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(FindReplaceDialog::OnClose),NULL, this);
 }
 
 void FindReplaceDialog::OnKeyDown(wxKeyEvent &event)
@@ -71,10 +74,3 @@ void FindReplaceDialog::OnActivate(wxActivateEvent &event)
 
 wxSize  FindReplaceDialog::m_windowSize = wxSize(-1, -1);
 wxPoint FindReplaceDialog::m_windowPos = wxPoint(-1, -1);
-
-BEGIN_EVENT_TABLE(FindReplaceDialog, wxDialog)
-                EVT_ACTIVATE(FindReplaceDialog::OnActivate)
-                EVT_CHAR_HOOK(FindReplaceDialog::OnKeyDown)
-                EVT_CLOSE(FindReplaceDialog::OnClose)
-
-END_EVENT_TABLE()

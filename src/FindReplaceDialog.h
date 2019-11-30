@@ -70,7 +70,6 @@ protected:
     once dockable dialogues aren't this ugly any more.
    */
   FindReplacePane *m_contents;
-DECLARE_EVENT_TABLE()
 
 private:
   /*! Allows to remember how wide the window was the last time it was used.

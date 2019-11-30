@@ -124,6 +124,8 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data) :
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
   this->SetSizerAndFit(grid_sizer);
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),NULL, this);
+  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown),NULL, this);
 }
 
 void FindReplacePane::SetFindString(wxString string)
@@ -217,8 +219,3 @@ void FindReplacePane::OnKeyDown(wxKeyEvent &event)
   else
     event.Skip();
 }
-
-BEGIN_EVENT_TABLE(FindReplacePane, wxPanel)
-                EVT_CHAR_HOOK(FindReplacePane::OnKeyDown)
-                EVT_ACTIVATE(FindReplacePane::OnActivate)
-END_EVENT_TABLE()
