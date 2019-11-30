@@ -84,7 +84,6 @@ Configuration::Configuration(wxDC *dc) :
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
-  ReadConfig();
   m_showCodeCells = true;
   m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
   // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
@@ -270,6 +269,7 @@ Configuration::Configuration(wxDC *dc) :
   m_styles[TS_SELECTION].Set(_("Selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
   m_styles[TS_EQUALSSELECTION].Set(_("Text equal to selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
   m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
+  ReadConfig();
 }
 
 wxSize Configuration::GetPPI(wxWindow *win) const
