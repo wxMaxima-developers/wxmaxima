@@ -896,6 +896,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     break;
   }
 }
+
 /*!
  * ServerEvent is triggered when maxima connects to the socket server.
  */

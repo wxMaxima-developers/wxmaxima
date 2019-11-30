@@ -3061,16 +3061,6 @@ wxString EditorCell::GetWordUnderCaret()
   unsigned long pos = 0;
   for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
-    if(*it == '\\')
-    {
-      ++it;
-      if(it != m_text.end())
-      {
-        retval += *it;
-        pos++;   
-      }
-    }        
-
     if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&'))
     {
       if(pos >= start)
@@ -3082,6 +3072,16 @@ wxString EditorCell::GetWordUnderCaret()
       retval += *it;
 
     pos++;   
+    
+    if(*it == '\\')
+    {
+      ++it;
+      if(it != m_text.end())
+      {
+        retval += *it;
+        pos++;   
+      }
+    }
   }
   return retval;
 }
