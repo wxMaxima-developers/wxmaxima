@@ -37,6 +37,7 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 FunCell::FunCell(const FunCell &cell):
  FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_nameCell)
     SetName(cell.m_nameCell->CopyList());
   if(cell.m_argCell)

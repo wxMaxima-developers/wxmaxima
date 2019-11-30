@@ -54,6 +54,7 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 ParenCell::ParenCell(const ParenCell &cell):
  ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList(), cell.m_type);
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;

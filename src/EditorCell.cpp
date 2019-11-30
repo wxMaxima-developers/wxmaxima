@@ -272,6 +272,7 @@ wxString EditorCell::PrependNBSP(wxString input)
 EditorCell::EditorCell(const EditorCell &cell):
   EditorCell(cell.m_group, cell.m_configuration, cell.m_cellPointers, cell.m_text)
 {
+  CopyCommonData(cell);
 }
 
 wxString EditorCell::ToString()

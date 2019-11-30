@@ -45,6 +45,7 @@ SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPo
 SubSupCell::SubSupCell(const SubSupCell &cell):
  SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
   if(cell.m_postSubCell)
@@ -253,6 +254,9 @@ void SubSupCell::Draw(wxPoint point)
 
 wxString SubSupCell::ToString()
 {
+  if (m_altCopyText != wxEmptyString)
+    return m_altCopyText;
+
   wxString s;
   if (m_baseCell->IsCompound())
     s += wxT("(") + m_baseCell->ListToString() + wxT(")");
@@ -331,6 +335,9 @@ wxString SubSupCell::ToXML()
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
 
+  if (m_altCopyText != wxEmptyString)
+    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
+  
   return _T("<ie") + flags +wxT("><r>") + m_baseCell->ListToXML()
          + _T("</r><r>") + m_postSubCell->ListToXML()
          + _T("</r><r>") + m_postSupCell->ListToXML()

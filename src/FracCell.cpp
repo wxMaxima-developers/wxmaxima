@@ -54,6 +54,7 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 FracCell::FracCell(const FracCell &cell):
  FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_num)
     SetNum(cell.m_num->CopyList());
   if(cell.m_denom)

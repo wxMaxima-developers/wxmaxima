@@ -44,6 +44,7 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
 ConjugateCell::ConjugateCell(const ConjugateCell &cell):
  ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
 }

@@ -37,6 +37,7 @@ AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers)
 AtCell::AtCell(const AtCell &cell):
  AtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
   if(cell.m_indexCell)

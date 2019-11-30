@@ -539,10 +539,13 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
 
   if(node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
     cell->ForceBreakLine(true);
+
+  wxString val;
   
-  wxString toolTip = node->GetAttribute(wxT("tooltip"), wxEmptyString);
-  if(toolTip != wxEmptyString)
-    cell->SetToolTip(toolTip);
+  if(node->GetAttribute(wxT("tooltip"), &val))
+    cell->SetToolTip(val);
+  if(node->GetAttribute(wxT("altCopy"), &val))
+    cell->SetAltCopyText(val);
 }
 
 Cell *MathParser::ParseCharCode(wxXmlNode *node, TextStyle style)
@@ -994,10 +997,6 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       {
         tmp = ParseTag(node->GetChildren());
       }
-
-      // The new cell may needing being equipped with a "altCopy" tag.
-      if ((tmp != NULL) && (node->GetAttribute(wxT("altCopy"), &altCopy)))
-        tmp->SetAltCopyText(altCopy);
 
       // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
       if (tmp != NULL)

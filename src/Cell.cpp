@@ -162,6 +162,15 @@ void Cell::SetType(CellType type)
     GetGroup()->ResetSize();
 }
 
+void Cell::CopyCommonData(const Cell & cell)
+{
+  m_altCopyText = cell.m_altCopyText;
+  m_toolTip = cell.m_toolTip;
+  m_forceBreakLine = cell.m_forceBreakLine;
+  m_type = cell.m_type;
+  m_textStyle = cell.m_textStyle;
+}
+
 Cell *Cell::CopyList()
 {
   Cell *dest = Copy();

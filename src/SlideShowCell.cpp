@@ -148,6 +148,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 SlideShow::SlideShow(const SlideShow &cell):
  SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   AnimationRunning(false);
 
   for (size_t i = 0; i < cell.m_images.size(); i++)

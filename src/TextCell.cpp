@@ -342,6 +342,7 @@ TextCell::TextCell(const TextCell &cell):
   m_userDefinedLabel(cell.m_userDefinedLabel),
   m_displayedText(cell.m_displayedText)
 {
+  CopyCommonData(cell);
   m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
   m_isHidden = cell.m_isHidden;

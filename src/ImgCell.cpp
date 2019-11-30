@@ -100,6 +100,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 ImgCell::ImgCell(const ImgCell &cell):
  ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;
   m_image = new Image(*cell.m_image);

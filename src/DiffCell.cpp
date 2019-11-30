@@ -38,6 +38,7 @@ DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 DiffCell::DiffCell(const DiffCell &cell):
  DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_diffCell)
     SetDiff(cell.m_diffCell->CopyList());
   if(cell.m_baseCell)

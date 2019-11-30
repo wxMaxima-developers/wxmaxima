@@ -160,6 +160,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 GroupCell::GroupCell(const GroupCell &cell):
   GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers, wxEmptyString)
 {
+  CopyCommonData(cell);
   m_inputLabel = m_output = NULL;
   if (cell.m_inputLabel)
     SetInput(cell.m_inputLabel->CopyList());

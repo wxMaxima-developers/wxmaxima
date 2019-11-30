@@ -37,8 +37,9 @@ SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 }
 
 SubCell::SubCell(const SubCell &cell):
- SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+  SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
   if(cell.m_indexCell)
@@ -122,9 +123,7 @@ void SubCell::Draw(wxPoint point)
 wxString SubCell::ToString()
 {
   if (m_altCopyText != wxEmptyString)
-  {
     return m_altCopyText;
-  }
 
   wxString s;
   if (m_baseCell->IsCompound())

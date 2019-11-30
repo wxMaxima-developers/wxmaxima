@@ -55,6 +55,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 SqrtCell::SqrtCell(const SqrtCell &cell):
  SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;

@@ -928,6 +928,9 @@ class Cell
 
   bool IsMath() const;
 
+  //! Copy common data (used when copying a cell)
+  void CopyCommonData(const Cell & cell);
+  
   void SetAltCopyText(wxString text)
   { m_altCopyText = text; }
 

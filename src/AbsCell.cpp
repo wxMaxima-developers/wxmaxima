@@ -47,6 +47,7 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 AbsCell::AbsCell(const AbsCell &cell):
   AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
 }

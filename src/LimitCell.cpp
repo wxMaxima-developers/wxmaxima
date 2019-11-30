@@ -50,6 +50,7 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 LimitCell::LimitCell(const LimitCell &cell):
  LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_base)
     SetBase(cell.m_base->CopyList());
   if(cell.m_under)

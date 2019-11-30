@@ -46,6 +46,7 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 MatrCell::MatrCell(const MatrCell &cell):
  MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
   m_roundedParens = cell.m_roundedParens;

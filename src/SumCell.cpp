@@ -53,6 +53,7 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 SumCell::SumCell(const SumCell &cell):
   SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  CopyCommonData(cell);
   if(cell.m_base)
     SetBase(cell.m_base->CopyList());
   if(cell.m_under)
@@ -287,6 +288,9 @@ void SumCell::Draw(wxPoint point)
 
 wxString SumCell::ToString()
 {
+  if (m_altCopyText != wxEmptyString)
+    return m_altCopyText;
+
   wxString s;
   if (m_sumStyle == SM_SUM)
     s = wxT("sum(");
