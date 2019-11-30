@@ -801,58 +801,61 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 }
 
+
+void wxMaxima::TryToReadDataFromMaxima()
+{
+  // Read out stderr: We will do that in the background on a regular basis, anyway.
+  // But if we do it manually now, too, the probability that things are presented
+  // to the user in chronological order increases a bit.
+  ReadStdErr();
+
+  // It is theoretically possible that the client has exited after sending us
+  // data and before we had been able to process it.
+  if (m_client == NULL)
+    return;
+
+  if(!m_client->IsData())
+    return;
+
+  m_statusBar->NetworkStatus(StatusBar::receive);
+
+  // Read all new lines of text we received.
+  wxChar chr;
+
+  while((m_client->IsData()) && (!m_clientStream->Eof()))
+  {
+    chr = m_clientTextStream->GetChar();
+    if(chr == wxEOT)
+      break;
+    if(chr != '\0')
+      m_newCharsFromMaxima += chr;
+  }
+
+  if(m_pipeToStdout)
+    std::cout << m_newCharsFromMaxima;
+  m_bytesFromMaxima += m_newCharsFromMaxima.Length();
+
+  if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix) || (m_first))
+  {
+    m_waitForStringEndTimer.Stop();
+    InterpretDataFromMaxima();
+  }
+  else
+    m_waitForStringEndTimer.StartOnce(5000);
+}
+
+
 ///--------------------------------------------------------------------------------
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
-
 void wxMaxima::ClientEvent(wxSocketEvent &event)
 {
   switch (event.GetSocketEvent())
   {
 
   case wxSOCKET_INPUT:
-  {
-    // Read out stderr: We will do that in the background on a regular basis, anyway.
-    // But if we do it manually now, too, the probability that things are presented
-    // to the user in chronological order increases a bit.
-    ReadStdErr();
-
-    // It is theoretically possible that the client has exited after sending us
-    // data and before we had been able to process it.
-    if (m_client == NULL)
-      return;
-
-    if(!m_client->IsData())
-      return;
-
-    m_statusBar->NetworkStatus(StatusBar::receive);
-
-    // Read all new lines of text we received.
-    wxChar chr;
-
-    while((m_client->IsData()) && (!m_clientStream->Eof()))
-      {
-        chr = m_clientTextStream->GetChar();
-        if(chr == wxEOT)
-          break;
-        if(chr != '\0')
-          m_newCharsFromMaxima += chr;
-      }
-
-    if(m_pipeToStdout)
-      std::cout << m_newCharsFromMaxima;
-    m_bytesFromMaxima += m_newCharsFromMaxima.Length();
-
-    if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix) || (m_first))
-    {
-      m_waitForStringEndTimer.Stop();
-      InterpretDataFromMaxima();
-    }
-    else
-      m_waitForStringEndTimer.StartOnce(5000);
-
+    TryToReadDataFromMaxima();
     break;
-    }
   case wxSOCKET_OUTPUT:
   {
     if(!m_client)
@@ -884,7 +887,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   }
   case wxSOCKET_LOST:
   {
-
+    
 //    wxLogMessage(_("Connection to Maxima lost."));
     //  KillMaxima();
     break;
@@ -893,7 +896,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     break;
   }
 }
-
 /*!
  * ServerEvent is triggered when maxima connects to the socket server.
  */
@@ -3496,8 +3498,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // Let's trigger interpretation of new input if we don't have anything
   // else to do just to make sure that wxMaxima will eventually restart
   // receiving data.
-  wxSocketEvent dummy(wxSOCKET_INPUT);
-  ClientEvent(dummy);
+  TryToReadDataFromMaxima();
 
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();

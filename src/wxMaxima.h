@@ -374,6 +374,15 @@ protected:
     m_currentOutput until we got a full line we can display.
    */
   void ClientEvent(wxSocketEvent &event);
+
+  /* Tries to read the new data from maxima
+
+     Is called by ClientEvent() if wxWidgets reckons there is data. But as this sometimes
+     doesn't happen even if there is data (only on MSW) it is called from the idle loop,
+     as well.
+  */
+  void TryToReadDataFromMaxima();
+    
   //! Triggered when we get new chars from maxima.
   void OnNewChars();
 
