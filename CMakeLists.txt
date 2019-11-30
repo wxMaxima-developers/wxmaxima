@@ -56,6 +56,11 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     set(CMAKE_INSTALL_CONFIG_NAME "${CMAKE_BUILD_TYPE}")
 endif()
 
+
+if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+    message(INFO "Cmake discourages in-source builds making them the less tested option. It is therefore advisable to do an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
+endif()
+
 # should the PDF doku be build from the texinfo source? (requires a TeX installation)
 option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
 
