@@ -1419,9 +1419,7 @@ void ConfigDialogue::OnChangeColor()
 void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-
   m_styleColor->SetColor(m_configuration->m_styles[st].Color());
-
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
   if (st >= TS_TEXT&& st <= TS_TITLE)
@@ -1482,7 +1480,7 @@ void ConfigDialogue::UpdateExample()
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
 
   m_styleColor->SetColor(m_configuration->m_styles[st].Color());
-  
+
   wxColour color(m_configuration->m_styles[st].Color());
   wxString font(m_configuration->m_styles[TS_DEFAULT].FontName());
 
@@ -1597,6 +1595,7 @@ wxPanel(parent, id,
   m_color = wxColour(0, 0, 0);
   m_configDialogue = conf;
   SetBackgroundColour(m_color);
+  SetBackgroundStyle(wxBG_STYLE_PAINT);
 }
 
 void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
@@ -1606,7 +1605,7 @@ void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
 
 void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
-  wxBufferedPaintDC dc(this);
+  wxAutoBufferedPaintDC dc(this);
   if(!m_color.IsOk())
     m_color = *wxWHITE;
   
