@@ -118,7 +118,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
-
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
@@ -151,12 +150,10 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   SetSaved(false);
   AdjustSize();
   m_autocompleteTemplates = false;
-
   int blinktime = wxCaret::GetBlinkTime();
   if (blinktime < 200)
     blinktime = 200;
   m_caretTimer.Start(blinktime);
-
   DisableKeyboardScrolling();
 
   // hack to workaround problems in RtL locales, https://bugzilla.redhat.com/show_bug.cgi?id=455863
@@ -170,13 +167,11 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = new AccessibilityInfo(GetTargetWindow(),this);
   #endif
-
   #if wxCHECK_VERSION(3,1,1)
   Connect(wxEVT_GESTURE_ZOOM,
           wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
-
   Connect(
     popid_complete_00, popid_complete_00 + AC_MENU_LENGTH,
     wxEVT_MENU, wxCommandEventHandler(Worksheet::OnComplete));
