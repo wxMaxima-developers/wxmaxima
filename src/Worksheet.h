@@ -1553,7 +1553,6 @@ protected:
   int m_pointer_y;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // WORKSHEET_H

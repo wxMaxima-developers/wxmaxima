@@ -176,6 +176,29 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
           wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
+
+  Connect(
+    popid_complete_00, popid_complete_00 + AC_MENU_LENGTH,
+    wxEVT_MENU, wxCommandEventHandler(Worksheet::OnComplete));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(Worksheet::OnSize));
+  Connect(wxEVT_PAINT, wxPaintEventHandler(Worksheet::OnPaint));
+  Connect(wxEVT_MOUSE_CAPTURE_LOST, wxMouseCaptureLostEventHandler(Worksheet::OnMouseCaptureLost));
+  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(Worksheet::OnMouseLeftUp));
+  Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(Worksheet::OnMouseLeftDown));
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(Worksheet::OnMouseRightDown));
+  Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(Worksheet::OnDoubleClick));
+  Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(Worksheet::OnMouseMiddleUp));
+  Connect(wxEVT_MOTION, wxMouseEventHandler(Worksheet::OnMouseMotion));
+  Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(Worksheet::OnMouseEnter));
+  Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(Worksheet::OnMouseExit));
+  Connect(wxEVT_MOUSEWHEEL, wxMouseEventHandler(Worksheet::OnMouseWheel));
+  Connect(wxEVT_TIMER, wxTimerEventHandler(Worksheet::OnTimer));
+  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(Worksheet::OnKeyDown));
+  Connect(wxEVT_CHAR, wxKeyEventHandler(Worksheet::OnChar));
+  Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(Worksheet::OnEraseBackground));
+  Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(Worksheet::OnKillFocus));
+  Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
+  Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(Worksheet::OnScrollChanged));
 }
 
 wxSize Worksheet::DoGetBestClientSize() const
@@ -9021,30 +9044,6 @@ wxAccStatus Worksheet::AccessibilityInfo::GetDescription(int childId, wxString *
 }
 
 #endif
-
-
-BEGIN_EVENT_TABLE(Worksheet, wxScrolledCanvas)
-                EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, Worksheet::OnComplete)
-                EVT_SIZE(Worksheet::OnSize)
-                EVT_PAINT(Worksheet::OnPaint)
-                EVT_MOUSE_CAPTURE_LOST(Worksheet::OnMouseCaptureLost)
-                EVT_LEFT_UP(Worksheet::OnMouseLeftUp)
-                EVT_LEFT_DOWN(Worksheet::OnMouseLeftDown)
-                EVT_RIGHT_DOWN(Worksheet::OnMouseRightDown)
-                EVT_LEFT_DCLICK(Worksheet::OnDoubleClick)
-                EVT_MOTION(Worksheet::OnMouseMotion)
-                EVT_ENTER_WINDOW(Worksheet::OnMouseEnter)
-                EVT_LEAVE_WINDOW(Worksheet::OnMouseExit)
-                EVT_TIMER(wxID_ANY, Worksheet::OnTimer)
-                EVT_KEY_DOWN(Worksheet::OnKeyDown)
-                EVT_CHAR(Worksheet::OnChar)
-                EVT_ERASE_BACKGROUND(Worksheet::OnEraseBackground)
-                EVT_KILL_FOCUS(Worksheet::OnKillFocus)
-                EVT_SET_FOCUS(Worksheet::OnSetFocus)
-                EVT_MIDDLE_UP(Worksheet::OnMouseMiddleUp)
-                EVT_SCROLL_CHANGED(Worksheet::OnScrollChanged)
-                EVT_MOUSEWHEEL(Worksheet::OnMouseWheel)
-END_EVENT_TABLE()
 
 // Define the static variable that contains the format info for placing MathMl
 // on the clip board
