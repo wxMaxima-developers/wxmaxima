@@ -62,7 +62,6 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 {
   m_lastZoomFactor = -1;
   m_clientWidth_old = -1;
-  m_textStyle = TS_DEFAULT;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
@@ -82,7 +81,7 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
   m_isBrokenIntoLines = false;
   m_highlight = false;
   m_type = MC_TYPE_DEFAULT;
-  m_textStyle = TS_VARIABLE;
+  m_textStyle = TS_DEFAULT;
   m_SuppressMultiplicationDot = false;
   m_imageBorderWidth = 0;
   SetCurrentPoint(wxPoint(-1, -1));
