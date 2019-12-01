@@ -511,19 +511,29 @@ public:
     redrawn.
   */
   bool GetPrinting() const
-  { return m_printing; }
-
+    { return m_printing; }
+  
   bool GetMatchParens() const
-  { return m_matchParens; }
+    { return m_matchParens; }
 
   bool GetChangeAsterisk() const
-  { return m_changeAsterisk; }
-
+    { return m_changeAsterisk; }
+  
   void SetChangeAsterisk(bool changeAsterisk)
-  {
-    wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
-  }
+    {
+      wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
+    }
+  
+  bool HidemultiplicationSign() const
+    {
+      return m_hidemultiplicationsign;
+    }
 
+  void HidemultiplicationSign(bool show)
+    {
+      wxConfig::Get()->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign = show);
+    }
+  
   bool Latin2Greek() const
     {return m_latin2greek;}
 
@@ -910,6 +920,7 @@ private:
   bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
+  bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
   int m_defaultPort;
   wxString m_documentclass;

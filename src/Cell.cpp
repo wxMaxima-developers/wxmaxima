@@ -60,6 +60,7 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
+  m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
   m_clientWidth_old = -1;
   m_next = NULL;
@@ -168,6 +169,8 @@ void Cell::CopyCommonData(const Cell & cell)
   m_forceBreakLine = cell.m_forceBreakLine;
   m_type = cell.m_type;
   m_textStyle = cell.m_textStyle;
+  m_isHidden = cell.m_isHidden;
+  m_isHidableMultSign = cell.m_isHidableMultSign;
 }
 
 Cell *Cell::CopyList()

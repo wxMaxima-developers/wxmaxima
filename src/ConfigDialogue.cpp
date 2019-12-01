@@ -374,6 +374,7 @@ void ConfigDialogue::SetProperties()
   m_getFont->SetToolTip(_("Font used for display in document."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
   m_changeAsterisk->SetToolTip(_("Use centered dot and Minus, not Star and Hyphen"));
+  m_hidemultiplicationSign->SetToolTip(_("Hide all multiplication signs that aren't really necessary for understanding the equation"));
   m_latin2Greek->SetToolTip(_("Change the text \"alpha\" and \"beta\" to the corresponding greek letter?"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
   m_undoLimit->SetToolTip(
@@ -480,6 +481,7 @@ void ConfigDialogue::SetProperties()
   m_showLength->SetSelection(configuration->ShowLength());
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
+  m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
   m_latin2Greek->SetValue(configuration->Latin2Greek());
   m_enterEvaluates->SetValue(configuration->EnterEvaluates());
   m_saveUntitled->SetValue(saveUntitled);
@@ -531,7 +533,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(31, 1, 5, 5);
+  wxFlexGridSizer *vsizer = new wxFlexGridSizer(32, 1, 5, 5);
 
   wxStaticText *pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox = new wxBoxSizer(wxHORIZONTAL);
@@ -617,6 +619,9 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
   vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
+
+  m_hidemultiplicationSign = new wxCheckBox(panel, -1, _("Hide multiplication signs, if possible"));
+  vsizer->Add(m_hidemultiplicationSign, 0, wxALL, 5);
 
   m_latin2Greek = new wxCheckBox(panel, -1, _("Change names of greek letters to greek letters"));
   vsizer->Add(m_latin2Greek, 0, wxALL, 5);
@@ -1186,6 +1191,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
+  configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
   configuration->EnterEvaluates(m_enterEvaluates->GetValue());
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());

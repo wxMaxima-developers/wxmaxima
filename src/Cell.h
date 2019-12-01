@@ -822,10 +822,12 @@ class Cell
     Currently the following items fall into this category:
      - parenthesis around fractions or similar things that clearly can be recognized as atoms
      - plus signs within numbers
-     - most multiplication dots.
      - The output in folded GroupCells
    */
   bool m_isHidden;
+
+  //! True means: This is a hidable multiplication sign
+  bool m_isHidableMultSign;
 
   /*! Determine if this cell contains text that isn't code
 

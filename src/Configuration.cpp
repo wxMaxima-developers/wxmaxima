@@ -43,6 +43,7 @@ Configuration::Configuration(wxDC *dc) :
   m_BackgroundBrush(*wxWHITE_BRUSH)
 
 {
+  m_hidemultiplicationsign = true;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
@@ -360,6 +361,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);
   config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
+  config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
 
   {
     int tmp;

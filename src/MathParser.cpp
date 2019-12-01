@@ -771,7 +771,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       else if (tagName == wxT("h"))
       {          // Hidden cells (*)
         tmp = ParseText(node->GetChildren());
-        tmp->m_isHidden = true;
+        tmp->m_isHidableMultSign = true;
       }
       else if (tagName == wxT("p"))
       {          // Parenthesis

@@ -1,4 +1,4 @@
-Current:
+19.12.0:
   * wxMaxima now uses C++11 that makes the code more readable and helps
 	finding bugs
   * If found wxMaxima now asks cppcheck to find bugs
@@ -7,6 +7,7 @@ Current:
   * For Cmake>=3.10.0 the build system now asks cppcheck to find bugs.
   * Changing the worksheet style was partially broken.
   * A big number of additional bug fixes in various places
+  * A config option that forces displaying all multiplication signs.
 
 19.11.1:
   * Improved italian translation by Marco Ciampa
