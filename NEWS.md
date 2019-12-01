@@ -1,3 +1,19 @@
+# wxMaxima 19.12.0 - Stable:
+
+This release provides many under-the-hood changes partially caused by 
+switching to C++11 and partially by cppcheck finding bugs and constructs
+that can cause bugs later. 
+
+  * wxMaxima now uses C++11 that makes the code more readable and helps
+	finding bugs
+  * If found wxMaxima now asks cppcheck to find bugs
+  * Increased the speed of the program again
+  * Opening the config dialogue since 19.11.0 unchecked "offer known answers"
+  * For Cmake>=3.10.0 the build system now asks cppcheck to find bugs.
+  * Changing the worksheet style was partially broken.
+  * A big number of additional bug fixes in various places
+  * A config option that forces displaying all multiplication signs.
+
 # Transition to C++11
 
 The next wxMaxima release will make use of C++11 features: I *hope* that C++
