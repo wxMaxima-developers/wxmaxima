@@ -524,6 +524,12 @@ private:
   //! Is called if a action from the autocomplete menu is selected
   void OnComplete(wxCommandEvent &event);
 
+  /*! Is called if wxWidgets wants to erase the worksheet's background
+
+    We don't want to erase the worksheet's background.
+   */
+  void EraseBackground(wxEraseEvent &event);
+
   //! The position the left mouse key was pressed at.
   wxPoint m_leftDownPosition;
   wxPoint m_down;

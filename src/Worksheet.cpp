@@ -88,6 +88,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   SetMinClientSize(wxSize(100,100));
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
+  GetTargetWindow()->SetBackgroundStyle(wxBG_STYLE_PAINT);  
   SetBackgroundColour(*wxWHITE);
   m_virtualWidth_Last = -1;
   m_virtualHeight_Last = -1;
@@ -172,6 +173,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
           wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
+  Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(Worksheet::EraseBackground));
   Connect(
     popid_complete_00, popid_complete_00 + AC_MENU_LENGTH,
     wxEVT_MENU, wxCommandEventHandler(Worksheet::OnComplete));
@@ -195,6 +197,8 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(Worksheet::OnScrollChanged));
 }
+
+void Worksheet::EraseBackground(wxEraseEvent &WXUNUSED(event)){}
 
 wxSize Worksheet::DoGetBestClientSize() const
 {

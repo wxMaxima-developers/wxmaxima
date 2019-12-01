@@ -3607,6 +3607,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   m_MenuBar->Enable(menu_copy_from_worksheet, m_worksheet->CanCopy(true));
   m_MenuBar->Enable(menu_cut, m_worksheet->CanCut());
   m_MenuBar->Enable(menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_matlab_from_worksheet, m_worksheet->CanCopy());
   m_MenuBar->Enable(Worksheet::popid_copy_mathml, m_worksheet->CanCopy());
   m_MenuBar->Enable(menu_copy_as_bitmap, m_worksheet->CanCopy());
   m_MenuBar->Enable(menu_copy_as_svg, m_worksheet->CanCopy());
