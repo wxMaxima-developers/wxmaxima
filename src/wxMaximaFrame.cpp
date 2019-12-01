@@ -31,6 +31,7 @@
  */
 #include "wxMaximaFrame.h"
 #include "LogPane.h"
+#include "Dirstructure.h"
 
 #include <wx/artprov.h>
 #include <wx/config.h>
@@ -113,6 +114,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxLogMessage(_("wxWidgets is using GTK 2"));
   #endif
 #endif
+
+  wxLogMessage(
+    wxString::Format(_("Translations are read from %s."), Dirstructure::Get()->LocaleDir())
+      );
 
   if(Configuration::m_configfileLocation_override != wxEmptyString)
     wxLogMessage(wxString::Format(_("Reading the config from %s."),
