@@ -6,6 +6,7 @@ wxmaxima (19.11.1-1) unstable; urgency=medium
     debian-file-utils and appstream-util
   * Added a simple packaging test
   * Made the build tests optional which resolved a lintian informational waring
+  * ibus-gtk3 is now a hard requirement: With xim on GTK3 wxWidgets flickers.
 
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 10 Nov 2019 21:54:36 +0100
 
