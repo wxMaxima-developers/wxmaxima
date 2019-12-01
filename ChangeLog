@@ -1,11 +1,12 @@
 Current:
-  * wxMaxima now uses C++11 that makes the code more readable and helps with
+  * wxMaxima now uses C++11 that makes the code more readable and helps
 	finding bugs
-  * Many small bug fixes in various places
+  * If found wxMaxima now asks cppcheck to find bugs
   * Increased the speed of the program again
   * Opening the config dialogue since 19.11.0 unchecked "offer known answers"
-  * For Cmake>=3.10.0 the build system now supports cppcheck.
+  * For Cmake>=3.10.0 the build system now asks cppcheck to find bugs.
   * Changing the worksheet style was partially broken.
+  * A big number of additional bug fixes in various places
 
 19.11.1:
   * Improved italian translation by Marco Ciampa
