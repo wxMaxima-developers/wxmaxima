@@ -1839,7 +1839,7 @@ void wxMaxima::ReadVariables(wxString &data)
     }
 
     if(num>1)
-      wxLogMessage(_("Maxima sends a new set of auto-completible symbols."));
+      wxLogMessage(_("Maxima sends a new set of auto-completable symbols."));
     else
       wxLogMessage(_("Maxima has sent a new variable value."));
 
