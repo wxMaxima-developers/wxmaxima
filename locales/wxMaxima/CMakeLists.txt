@@ -23,7 +23,7 @@ if(GETTEXT_FOUND)
 	COMMAND ${XGETTEXT} -C -k_ -s -o "wxMaxima.pot" ${POT_SOURCE_FILES}
 	COMMAND ${CMAKE_COMMAND} -E copy "wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
 	COMMENT "Updating the POT-file from the current sourcecode")
-    
+
     foreach(POFILE ${TRANSLATION_FILES})
 	string(REGEX REPLACE ".*locales/wxMaxima/(.*).po$" "\\1" LANG ${POFILE})
 
@@ -36,7 +36,10 @@ if(GETTEXT_FOUND)
 	# 'install' message files in the directory "${CMAKE_BINARY_DIR}/locale/..."
 	# too (at build time, not at install time), so that running ./wxmaxima-local
 	# (without installing it) can find the message files and i18n works.
-	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}")
+	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES")
+	add_custom_target(wxmaxima-local-${LANG} ALL
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo"
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo")
 
 	add_custom_target(
 	    ${LANG}_po
