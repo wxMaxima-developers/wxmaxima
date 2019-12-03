@@ -1677,6 +1677,7 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
   wxChar ch = event.GetId();
   wxString ch_string(ch);
   m_worksheet->InsertText(ch_string);
+  m_worksheet->SetFocus();
 }
 
 wxPanel *wxMaximaFrame::CharButton(wxPanel *parent, wxChar ch, wxString description, bool WXUNUSED(matchesMaximaCommand))
