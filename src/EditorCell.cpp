@@ -797,7 +797,7 @@ void EditorCell::Draw(wxPoint point)
       dc->SetBrush(*br);
       dc->SetPen(*pen);
       rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
-      if (InUpdateRegion(rect))
+      if (InUpdateRegion(rect) && (br->GetColour() != configuration->DefaultBackgroundColor()))
         dc->DrawRectangle(CropToUpdateRegion(rect));
     }
     dc->SetPen(*wxBLACK_PEN);

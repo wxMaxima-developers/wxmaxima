@@ -473,6 +473,8 @@ Cell *MathParser::ParseFunTag(wxXmlNode *node)
   fun->SetStyle(TS_FUNCTION);
   fun->SetArg(HandleNullPointer(ParseTag(child, false)));
   ParseCommonAttrs(node, fun);
+  if((fun != NULL) && (fun->ToString().Contains(")(")))
+    fun->SetToolTip(_("Missing multiplication sign (*) between closing and opening parenthesis?."));
   return fun;
 }
 

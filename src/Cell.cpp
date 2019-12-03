@@ -402,14 +402,35 @@ void Cell::Draw(wxPoint point)
   if((m_height > 0) && (point.y > 0))
     SetCurrentPoint(point);
 
+  // Mark all cells that contain tooltips
+  if(!m_toolTip.IsEmpty())
+  {
+    wxRect rect = Cell::CropToUpdateRegion(GetRect());
+    if (Cell::InUpdateRegion(rect))
+    {    Configuration *configuration = (*m_configuration);
+      if((rect.GetWidth() > 0) && rect.GetHeight() > 0)
+      {
+        wxDC *dc = configuration->GetDC();
+        dc->SetPen(*wxTRANSPARENT_PEN);
+        dc->SetBrush((*m_configuration)->GetTooltipBrush());
+        dc->DrawRectangle(rect);
+      }
+    }
+  }
+  
   // Tell the screen reader that this cell's contents might have changed.
-
 #if wxUSE_ACCESSIBILITY
   if((*m_configuration)->GetWorkSheet() != NULL)
     NotifyEvent(0, (*m_configuration)->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
 }
 
+void Cell::AddToolTip(const wxString &tip)
+{
+  if((!m_toolTip.IsEmpty()) && (!m_toolTip.EndsWith("\n")))
+    m_toolTip += "\n";
+  m_toolTip += tip;
+}
 void Cell::DrawList(wxPoint point)
 {
   Cell *tmp = this;

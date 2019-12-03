@@ -318,6 +318,22 @@ void Configuration::ShowCodeCells(bool show)
   m_showCodeCells = show;
 }
 
+void Configuration::SetBackgroundBrush(wxBrush brush)
+{
+  m_BackgroundBrush = brush;
+  int red = brush.GetColour().Red();
+  int green = brush.GetColour().Green();
+  int blue = brush.GetColour().Blue();
+  if(red < 128)
+    red += 32;
+  if(green < 128)
+    green += 32;
+  if(blue > 128)
+    blue -= 32;
+  m_tooltipBrush = brush;
+  m_tooltipBrush.SetColour(wxColour(red, green, blue));
+}
+
 bool Configuration::MaximaFound(wxString location)
 {
   if(location == wxEmptyString)

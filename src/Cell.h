@@ -952,8 +952,12 @@ class Cell
    */
   bool m_SuppressMultiplicationDot;
 
+  //! Remove this cell's tooltip
+  void ClearToolTip(){m_toolTip = wxEmptyString;}
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
+  //! Add another tooltip to this cell
+  void AddToolTip(const wxString &tip);
   void SetCurrentPoint(wxPoint point){m_currentPoint = point;
     if((m_currentPoint.x >=0) &&
        (m_currentPoint.y >=0))

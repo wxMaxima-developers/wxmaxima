@@ -178,6 +178,9 @@ public:
   */
   void RemoveOutput();
 
+  //! GroupCells warn if they contain both greek and latin lookalike chars.
+  void UpdateConfusableCharWarnings();
+  
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
 
   /*! Convert the current cell to its wxm representation.
@@ -505,7 +508,7 @@ public:
     \return The next GroupCell or NULL if there isn't any.
   */
   GroupCell *UpdateYPosition();
-  
+
 protected:
   int m_labelWidth_cached;
   bool NeedsRecalculation() override;

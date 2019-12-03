@@ -132,8 +132,9 @@ public:
     m_antialiassingDC = NULL;
   }
 
-  void SetBackgroundBrush(wxBrush brush){m_BackgroundBrush = brush;}
+  void SetBackgroundBrush(wxBrush brush);
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
+  wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
     {m_antialiassingDC = &antialiassingDC;}
 
@@ -935,6 +936,7 @@ private:
   wxColour m_defaultBackgroundColor;
   //! The brush the normal cell background is painted with
   wxBrush m_BackgroundBrush;
+  wxBrush m_tooltipBrush;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
