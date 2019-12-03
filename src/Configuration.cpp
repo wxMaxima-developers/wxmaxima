@@ -39,9 +39,9 @@ Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
   m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"),
   m_documentclass("article"),
-  m_documentclassOptions("fleqn"),
-  SetBackgroundBrush(*wxWHITE_BRUSH);
+  m_documentclassOptions("fleqn")
 {
+  SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
