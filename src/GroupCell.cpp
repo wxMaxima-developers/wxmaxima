@@ -726,7 +726,7 @@ void GroupCell::UpdateConfusableCharWarnings()
 //    AddToolTip(_(wxT("Lookalike chars: Contains both a latin x and a greek \x03c7")));
   if(string.Contains (wxT("ü")) && string.Contains(wxT("\x03cb")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a umlaut ü and a greek \x03cb")));
-  if(string.Contains (wxT("\x0461")) && string.Contains(wxT("\x03c9")))
+  if(string.Contains (wxT("\x0460")) && string.Contains(wxT("\x03c9")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a unit \x0461 and a greek \x03c9")));
   if(string.Contains (wxT("\x0472")) && string.Contains(wxT("\x0398")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a unit \x0472 and a greek \x0398")));
