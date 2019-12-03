@@ -403,7 +403,7 @@ void Cell::Draw(wxPoint point)
     SetCurrentPoint(point);
 
   // Mark all cells that contain tooltips
-  if(!m_toolTip.IsEmpty())
+  if(!m_toolTip.IsEmpty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (Cell::InUpdateRegion(rect))
