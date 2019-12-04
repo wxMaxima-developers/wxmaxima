@@ -266,6 +266,12 @@ add_test(
 set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME comment_begin
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_commentBegin.wxm)
+set_tests_properties(unicode PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME autosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND ../../wxmaxima-local --logtostdout --pipe -f autosave.cfg --batch testbench_automatic_unicode.wxm)

@@ -173,6 +173,8 @@ bool MyApp::OnInit()
                    "Log all \"debug messages\" sidebar messages to stderr, too.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "pipe",
                    "Pipe messages from Maxima to stdout.",  wxCMD_LINE_VAL_NONE, 0},
+                  {wxCMD_LINE_SWITCH, "", "exit-on-error",
+                   "Close the program on any maxima error.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_OPTION, "u", "use-version",
                    "Use maxima version <str>.",  wxCMD_LINE_VAL_STRING, 0},
@@ -217,6 +219,9 @@ bool MyApp::OnInit()
 
   if (cmdLineParser.Found(wxT("pipe")))
     wxMaxima::PipeToStdout();
+
+  if (cmdLineParser.Found(wxT("exit-on-error")))
+    wxMaxima::ExitOnError();
 
   wxString extraMaximaArgs;
   wxString arg;

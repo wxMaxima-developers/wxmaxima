@@ -9295,6 +9295,7 @@ END_EVENT_TABLE()
 
 
 bool wxMaxima::m_pipeToStdout = false;
+bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 
 /* Local Variables:       */
