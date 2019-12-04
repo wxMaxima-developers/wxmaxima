@@ -6257,7 +6257,12 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
     case wxT('\x2260'): retval += wxT(" # ");break;
     case wxT('\x2264'): retval += wxT(" <= ");break;
     case wxT('\x2265'): retval += wxT(" >= ");break;
-    case wxT('\x2212'): retval += wxT("-");break; // An unicode minus sinbreak;
+    case wxT('\x2212'): retval += wxT("-");break; // An unicode minus sign
+    case wxT('\x2052'): retval += "-";break; // commercial minus sign
+    case wxT('\xFE63'): retval += "-";break; // unicode small minus sign
+    case wxT('\xFF0D'): retval += "-";break; // unicode big minus sign
+    case wxT('\xFF0B'): retval += "+";break; // unicode big plus
+    case wxT('\xFB29'): retval += "+";break; // hebrew alternate plus
     case wxT('\x00B7'): retval += wxT("*");break; // An unicode multiplication sinbreak;
     case wxT('\xDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
     case wxT('\r'): retval += wxT(" ");break; // A soft linebreak

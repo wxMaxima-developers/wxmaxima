@@ -424,6 +424,11 @@ wxString EditorCell::ToTeX()
     text.Replace(wxT("^"), wxT("\\^{}"));
     text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+    text.Replace(wxT("\x2052"), wxT("-")); // commercial minus sign
+    text.Replace(wxT("\xFE63"), wxT("-")); // unicode small minus sign
+    text.Replace(wxT("\xFF0D"), wxT("-")); // unicode big minus sign
+    text.Replace(wxT("\xFF0B"), wxT("+")); // unicode big plus
+    text.Replace(wxT("\xFB29"), wxT("+")); // hebrew alternate plus
     text.Replace(wxT("\x03B1"), wxT("\\ensuremath{\\alpha}"));
     text.Replace(wxT("\x00B1"), wxT("\\ensuremath{\\pm}"));
     text.Replace(wxT("\x00B2"), wxT("\\ensuremath{^2}"));
