@@ -324,13 +324,13 @@ void Configuration::SetBackgroundBrush(wxBrush brush)
   int green = brush.GetColour().Green();
   int blue = brush.GetColour().Blue();
   if(red < 128)
-    red += 32;
+    red += 64;
   if(green < 128)
-    green += 32;
+    green += 64;
   if(blue > 128)
-    blue -= 32;
+    blue -= 64;
   m_tooltipBrush = brush;
-  m_tooltipBrush.SetColour(wxColour(red, green, blue));
+  m_tooltipBrush.SetColour(wxColour(red, green, blue,128));
 }
 
 bool Configuration::MaximaFound(wxString location)
