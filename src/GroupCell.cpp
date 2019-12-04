@@ -694,8 +694,10 @@ void GroupCell::UpdateConfusableCharWarnings()
     AddToolTip(_(wxT("Lookalike chars: Contains both a latin Y and a greek \x03A5")));
   if(string.Contains (wxT("\x212a")) && string.Contains(wxT("\x039A")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a unit \x212a and a greek \x039A")));
-  if(string.Contains ("l") && string.Contains("I"))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a I and a l")));
+  // These characters often look identical. But they are even more often used together so
+  // the following warning fires constantly.
+  //  if(string.Contains ("l") && string.Contains("I"))
+  //    AddToolTip(_(wxT("Lookalike chars: Contains both a I and a l")));
   if(string.Contains ("B") && string.Contains(wxT("\x0392")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a latin B and a greek \x0392")));
   if(string.Contains ("S") && string.Contains(wxT("\x0405")))

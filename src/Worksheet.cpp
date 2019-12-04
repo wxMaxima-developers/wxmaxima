@@ -860,7 +860,8 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
 
     UpdateConfigurationClientSize();
 
-    tmp->RecalculateAppended();
+    tmp->ResetSize();
+    Recalculate(tmp);
 
     if (FollowEvaluation())
     {
