@@ -636,12 +636,12 @@ void GroupCell::UpdateConfusableCharWarnings()
     AddToolTip(_(wxT("Lookalike chars: Contains both a latin H and a cyrillic \x041d")));
   if(string.Contains(wxT("\x0397")) && string.Contains(wxT("\x041D")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x0397 and a cyrillic \x041d")));
-  if(string.Contains ("I") && string.Contains(wxT("\x0399")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin I and a greek \x0399")));
-  if(string.Contains(wxT("I")) && string.Contains(wxT("\x0406")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin I and a cyrillic \x0406")));
-  if(string.Contains(wxT("l")) && string.Contains(wxT("\x0406")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin l and a cyrillic \x0406")));
+//  if(string.Contains ("I") && string.Contains(wxT("\x0399")))
+//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin I and a greek \x0399")));
+//  if(string.Contains(wxT("I")) && string.Contains(wxT("\x0406")))
+//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin I and a cyrillic \x0406")));
+//  if(string.Contains(wxT("l")) && string.Contains(wxT("\x0406")))
+//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin l and a cyrillic \x0406")));
   if(string.Contains ("K") && string.Contains(wxT("\x039A")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a latin K and a greek \x039A")));
   if(string.Contains ("K") && string.Contains(wxT("\x041A")))
