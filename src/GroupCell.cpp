@@ -602,7 +602,23 @@ void GroupCell::AppendOutput(Cell *cell)
 
 void GroupCell::UpdateConfusableCharWarnings()
 {
-  wxString string = GroupCell::ToString();
+    // Split the line into commands, numbers etc.
+  m_tokens = MaximaTokenizer(GroupCell::ToString(), *m_configuration).GetTokens();
+  wxString lastTokenWithText;
+  int pos = 0;
+  int lineWidth = 0;
+  m_cmdsAndVariables.Clear();
+  MaximaTokenizer::Token token;
+  for(MaximaTokenizer::TokenList::iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
+  {
+    TextStyle style = token.GetStyle();
+    if(
+      (style == TS_VARIABLE) ||
+      (style == TS_FUNCTION)
+      )
+      m_cmdsAndVariables[token.GetText()] = 1;
+  }
+    
   ClearToolTip();
   if(string.Contains ("µ") && string.Contains(wxT("\x03bc")))
     AddToolTip(_(wxT("Lookalike chars: Contains both a metric µ and a greek \x03bc")));
