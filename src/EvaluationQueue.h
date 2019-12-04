@@ -97,7 +97,8 @@ public:
 
   void AddEnding()
     {
-      m_commands.back().AddEnding();
+      if (!m_commands.empty())
+        m_commands.back().AddEnding();
     }
   
   ~EvaluationQueue()
