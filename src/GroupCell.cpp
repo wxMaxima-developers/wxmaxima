@@ -41,13 +41,15 @@
 #include "list"
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
-  this, config, cellPointers),
-                                                                                                                       m_lookalikeChars(wxT(
-    "µ"		"\x03bc"
-    "\x2126"	"\x03a9"
-    "C"		"\x03F2"
-    "C"		"\x0421"
-    "\x03F2"	"\x0421"
+  this, config, cellPointers)
+{
+  m_lookalikeChars =
+    wxT(
+      "µ"		"\x03bc"
+      "\x2126"	"\x03a9"
+      "C"		"\x03F2"
+      "C"		"\x0421"
+      "\x03F2"	"\x0421"
     "A"		"\x0391"
     "A"		"\x0410"
     "\x391"	"\x0410"
@@ -106,8 +108,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
     "ü"		"\x03cb"
     "\x0460"	"\x03c9"
     "\x0472"	"\x0398"
-                     ))
-{
+      );
   m_numberedAnswersCount = 0;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
@@ -700,9 +701,10 @@ void GroupCell::UpdateConfusableCharWarnings()
           if(cmp->first == word_subst)
           {
             std::cerr<<word;
-            AddToolTip(wxString::Format(_("Warning: Lookalike chars used in %s."),
-                                        cmp->first.utf8_str()
-                         ));
+            AddToolTip(_("Warning: Lookalike chars used: ") +
+                       cmp->first.utf8_str() + wxT("\x2260") +
+                       word.utf8_str()
+              );
           }
         }
         word_subst = word;
@@ -711,8 +713,9 @@ void GroupCell::UpdateConfusableCharWarnings()
           if(cmp->first == word_subst)
           {
             std::cerr<<word;
-            AddToolTip(wxString::Format(_("Warning: Lookalike chars used in %s."),
-                                        cmp->first.utf8_str()
+            AddToolTip(wxString::Format(_("Warning: Lookalike chars used in %s and %s."),
+                                        cmp->first.utf8_str(),
+                                        word.utf8_str()
                          ));
           }
         }
