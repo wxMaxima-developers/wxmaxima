@@ -429,9 +429,7 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
-  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
-  CmdsAndVariables m_cmdsAndVariables;
-  
+  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);  
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
@@ -539,6 +537,7 @@ private:
   //! The number of cells the current group contains (-1, if no GroupCell)
   int m_cellsInGroup;
   int m_numberedAnswersCount;
+  wxString m_lookalikeChars;
   void UpdateCellsInGroup(){
     if(m_output != NULL)
       m_cellsInGroup = 2 + m_output->CellsInListRecursive();

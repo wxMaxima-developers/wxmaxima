@@ -41,7 +41,72 @@
 #include "list"
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
-  this, config, cellPointers)
+  this, config, cellPointers),
+                                                                                                                       m_lookalikeChars(wxT(
+    "µ"		"\x03bc"
+    "\x2126"	"\x03a9"
+    "C"		"\x03F2"
+    "C"		"\x0421"
+    "\x03F2"	"\x0421"
+    "A"		"\x0391"
+    "A"		"\x0410"
+    "\x391"	"\x0410"
+    "M"		"\x0392"
+    "E"		"\x0395"
+    "E"		"\x0415"
+    "\x0415"	"\x0395"
+    "Z"		"\x0396"
+    "H"		"\x0397"
+    "H"		"\x041D"
+    "\x0397"	"\x041D"
+    "I"		"\x0399"
+    "I"		"\x0406"
+    "l"		"\x0406"
+    "K"		"\x039A"
+    "K"		"\x041A"
+    "\x039A"	"\x041A"
+    "\x212a"	"\x041A"
+    "K"		"\x212A"
+    "M"		"\x41c"
+    "\x39C"	"\x41c"
+    "M"		"\x039C"
+    "N"		"\x039D"
+    "O"		"\x039F"
+    "O"		"\x41E"
+    "\x039F"	"\x41E"
+    "\x039F"	"\x41E"
+    "P"		"\x03A1"
+    "X"		"\x0425"
+    "e"		"\x0435"
+    "p"		"\x0440"
+    "x"		"\x0445"
+    "y"		"\x0443"
+    "P"		"\x0420"
+    "\x03A1"	"\x0420"
+    "T"		"\x03A4"
+    "T"		"\x0422"
+    "\x03A4"	"\x0422"
+    "Y"		"\x03A5"
+    "\x212a"	"\x039A"
+    "l"		"I"
+    "B"		"\x0392"
+    "S"		"\x0405"
+    "\x0392"	"\x0412"
+    "B"		"\x0412"
+    "J"		"\x0408"
+    "a"		"\x0430"
+    "o"		"\x03bf"
+    "o"		"\x043e"
+    "\x03bf"	"\x043e"
+    "c"		"\x0441"
+    "s"		"\x0455"
+    "t"		"\x03c4"
+    "u"		"\x03c5"
+    "x"		"\x03c7"
+    "ü"		"\x03cb"
+    "\x0460"	"\x03c9"
+    "\x0472"	"\x0398"
+                     ))
 {
   m_numberedAnswersCount = 0;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
@@ -602,152 +667,60 @@ void GroupCell::AppendOutput(Cell *cell)
 
 void GroupCell::UpdateConfusableCharWarnings()
 {
-    // Split the line into commands, numbers etc.
-  m_tokens = MaximaTokenizer(GroupCell::ToString(), *m_configuration).GetTokens();
-  wxString lastTokenWithText;
-  int pos = 0;
-  int lineWidth = 0;
-  m_cmdsAndVariables.Clear();
-  MaximaTokenizer::Token token;
-  for(MaximaTokenizer::TokenList::iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
-  {
-    TextStyle style = token.GetStyle();
-    if(
-      (style == TS_VARIABLE) ||
-      (style == TS_FUNCTION)
-      )
-      m_cmdsAndVariables[token.GetText()] = 1;
-  }
-    
   ClearToolTip();
-  if(string.Contains ("µ") && string.Contains(wxT("\x03bc")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a metric µ and a greek \x03bc")));
-  if(string.Contains (wxT("\x2126")) && string.Contains(wxT("\x03a9")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a metric unit \x2126 and a greek \x03a9")));
-  if(string.Contains ("C") && string.Contains(wxT("\x03F2")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin C and the greek \x03F2")));
-  if(string.Contains ("C") && string.Contains(wxT("\x0421")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin C and the cyrillic \x0421")));
-  if(string.Contains (wxT("\x03F2")) && string.Contains(wxT("\x0421")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \03F2 and the cyrillic \x0421")));
-  if(string.Contains ("A") && string.Contains(wxT("\x0391")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin A and a greek \x0391")));
-  if(string.Contains ("A") && string.Contains(wxT("\x0410")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin A and a cyrillic \x0410")));
-  if(string.Contains (wxT("\x391")) && string.Contains(wxT("\x0410")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x391 and a cyrillic\x0410")));
-  if(string.Contains ("M") && string.Contains(wxT("\x0392")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin B and a greek \x0392")));
-  if(string.Contains ("E") && string.Contains(wxT("\x0395")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin E and a greek \x0395")));
-  if(string.Contains ("E") && string.Contains(wxT("\x0415")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin E and a cyrillic \x0415")));
-  if(string.Contains(wxT("\x0415")) && string.Contains(wxT("\x0395")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \0395 and a cyrillic \x0415")));
-  if(string.Contains ("Z") && string.Contains(wxT("\x0396")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin Z and a greek \x0396")));
-  if(string.Contains ("H") && string.Contains(wxT("\x0397")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin H and a greek \x0397")));
-  if(string.Contains ("H") && string.Contains(wxT("\x041D")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin H and a cyrillic \x041d")));
-  if(string.Contains(wxT("\x0397")) && string.Contains(wxT("\x041D")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x0397 and a cyrillic \x041d")));
-//  if(string.Contains ("I") && string.Contains(wxT("\x0399")))
-//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin I and a greek \x0399")));
-//  if(string.Contains(wxT("I")) && string.Contains(wxT("\x0406")))
-//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin I and a cyrillic \x0406")));
-//  if(string.Contains(wxT("l")) && string.Contains(wxT("\x0406")))
-//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin l and a cyrillic \x0406")));
-  if(string.Contains ("K") && string.Contains(wxT("\x039A")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin K and a greek \x039A")));
-  if(string.Contains ("K") && string.Contains(wxT("\x041A")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin K and the cyrillic \x041a")));
-  if(string.Contains(wxT("\x039A")) && string.Contains(wxT("\x041A")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x039A and the cyrillic \x041a")));
-  if(string.Contains(wxT("\x212a")) && string.Contains(wxT("\x041A")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both the unit \x212a and the cyrillic \x041a")));
-  if(string.Contains ("K") && string.Contains(wxT("\x212A")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin K and the unit \x212a")));
-  if(string.Contains ("M") && string.Contains(wxT("\x41c")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin M and a cyrillic \x041c")));
-  if(string.Contains (wxT("\x39C")) && string.Contains(wxT("\x41c")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x39C and a cyrillic \x041c")));
-  if(string.Contains ("M") && string.Contains(wxT("\x039C")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin M and a greek \x039C")));
-  if(string.Contains ("N") && string.Contains(wxT("\x039D")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin N and a greek \x039D")));
-  if(string.Contains ("O") && string.Contains(wxT("\x039F")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin O and a greek \x039F")));
-  if(string.Contains ("O") && string.Contains(wxT("\x41E")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin O and a cyrillic \x041E")));
-  if(string.Contains (wxT("\x039F")) && string.Contains(wxT("\x41E")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin \x039F and a cyrillic \x041E")));
-  if(string.Contains (wxT("\x039F")) && string.Contains(wxT("\x41E")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin \x039F and a cyrillic \x041E")));
-  if(string.Contains ("P") && string.Contains(wxT("\x03A1")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin P and a greek \x03A1")));
-  if(string.Contains ("X") && string.Contains(wxT("\x0425")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin X and a cyrillic \x0425")));
-  if(string.Contains ("e") && string.Contains(wxT("\x0435")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin e and a cyrillic \x0435")));
-  if(string.Contains ("p") && string.Contains(wxT("\x0440")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin p and a cyrillic \x0440")));
-  if(string.Contains ("x") && string.Contains(wxT("\x0445")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin x and a cyrillic \x0445")));
-  if(string.Contains ("y") && string.Contains(wxT("\x0443")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin y and a cyrillic \x0443")));
-  if(string.Contains ("P") && string.Contains(wxT("\x0420")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin P and a cyrillic \x0420")));
-  if(string.Contains (wxT("\x03A1")) && string.Contains(wxT("\x0420")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x03A1 and a cyrillic \x0420")));
-  if(string.Contains ("T") && string.Contains(wxT("\x03A4")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin T and a greek \x03A4")));
-  if(string.Contains ("T") && string.Contains(wxT("\x0422")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin T and a greek \x0422")));
-  if(string.Contains (wxT("\x03A4")) && string.Contains(wxT("\x0422")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x03A4 and a greek \x0422")));
-  if(string.Contains ("Y") && string.Contains(wxT("\x03A5")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin Y and a greek \x03A5")));
-  if(string.Contains (wxT("\x212a")) && string.Contains(wxT("\x039A")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a unit \x212a and a greek \x039A")));
-  // These characters often look identical. But they are even more often used together so
-  // the following warning fires constantly.
-  //  if(string.Contains ("l") && string.Contains("I"))
-  //    AddToolTip(_(wxT("Lookalike chars: Contains both a I and a l")));
-  if(string.Contains ("B") && string.Contains(wxT("\x0392")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin B and a greek \x0392")));
-  if(string.Contains ("S") && string.Contains(wxT("\x0405")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin S and a cyrillic \x0405")));
-  if(string.Contains (wxT("\x0392")) && string.Contains(wxT("\x0412")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a greek \x0392 and a cyrillic \x0412")));
-  if(string.Contains ("B") && string.Contains(wxT("\x0412")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin B and a cyrillic \x0412")));
-  if(string.Contains ("J") && string.Contains(wxT("\x0408")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin J and a cyrillic \x0408")));
-  if(string.Contains ("a") && string.Contains(wxT("\x0430")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin a and a cyrillic \x0430")));
-  if(string.Contains ("o") && string.Contains(wxT("\x03bf")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin o and a greek \x03bf")));
-  if(string.Contains ("o") && string.Contains(wxT("\x043e")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin o and a cyrillic \x043e")));
-  if(string.Contains (wxT("\x03bf")) && string.Contains(wxT("\x043e")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin \x03bf and a cyrillic \x043e")));
-  if(string.Contains ("c") && string.Contains(wxT("\x0441")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin c and a cyrillic \x0441")));
-  if(string.Contains ("s") && string.Contains(wxT("\x0455")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a latin s and a cyrillic \x0455")));
-//  if(string.Contains ("t") && string.Contains(wxT("\x03c4")))
-//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin t and a greek \x03c4")));
-//  if(string.Contains ("u") && string.Contains(wxT("\x03c5")))
-//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin u and a greek \x03c5")));
-//  if(string.Contains ("x") && string.Contains(wxT("\x03c7")))
-//    AddToolTip(_(wxT("Lookalike chars: Contains both a latin x and a greek \x03c7")));
-  if(string.Contains (wxT("ü")) && string.Contains(wxT("\x03cb")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a umlaut ü and a greek \x03cb")));
-  if(string.Contains (wxT("\x0460")) && string.Contains(wxT("\x03c9")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a unit \x0461 and a greek \x03c9")));
-  if(string.Contains (wxT("\x0472")) && string.Contains(wxT("\x0398")))
-    AddToolTip(_(wxT("Lookalike chars: Contains both a unit \x0472 and a greek \x0398")));
+
+  // Extract all variable and command names from the cell including input and output
+  CmdsAndVariables cmdsAndVariables;
+  MaximaTokenizer::TokenList
+    m_tokens = MaximaTokenizer(GroupCell::ToString(), *m_configuration).GetTokens();
+  for(MaximaTokenizer::TokenList::iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
+    cmdsAndVariables[(*it)->GetText()] = 1;
+ 
+  // Now we step through all the words we found
+  while(!cmdsAndVariables.empty())
+  {
+    CmdsAndVariables::const_iterator cmp = cmdsAndVariables.begin();
+    wxString word;
+    word = cmp->first;
+    cmdsAndVariables.erase(cmp);
+    // Now iterate through all remaining words
+    cmp = cmdsAndVariables.begin();
+    while(cmp != cmdsAndVariables.end())
+    {
+      // iterate through all lookalike chars
+      for (wxString::iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
+      {
+        wxChar ch1 = *it;
+        ++it;
+        wxASSERT(it < m_lookalikeChars.end());
+        wxChar ch2 = *it;
+        wxString word_subst = word;
+        if(word_subst.Replace(ch1,ch2))
+        {
+          if(cmp->first == word_subst)
+          {
+            std::cerr<<word;
+            AddToolTip(wxString::Format(_("Warning: Lookalike chars used in %s."),
+                                        cmp->first.utf8_str()
+                         ));
+          }
+        }
+        word_subst = word;
+        if(word_subst.Replace(ch2,ch1))
+        {
+          if(cmp->first == word_subst)
+          {
+            std::cerr<<word;
+            AddToolTip(wxString::Format(_("Warning: Lookalike chars used in %s."),
+                                        cmp->first.utf8_str()
+                         ));
+          }
+        }
+          
+      }
+      ++cmp;
+    }
+  }
 }
 
 void GroupCell::Recalculate()
@@ -2701,3 +2674,4 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
 }
 
 #endif
+
