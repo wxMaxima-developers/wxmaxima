@@ -44,71 +44,69 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   this, config, cellPointers)
 {
   m_lookalikeChars =
-    wxT(
-      "µ"		"\x03bc"
-      "\x2126"	"\x03a9"
-      "C"		"\x03F2"
-      "C"		"\x0421"
-      "\x03F2"	"\x0421"
-    "A"		"\x0391"
-    "A"		"\x0410"
-    "\x391"	"\x0410"
-    "M"		"\x0392"
-    "E"		"\x0395"
-    "E"		"\x0415"
-    "\x0415"	"\x0395"
-    "Z"		"\x0396"
-    "H"		"\x0397"
-    "H"		"\x041D"
-    "\x0397"	"\x041D"
-    "I"		"\x0399"
-    "I"		"\x0406"
-    "l"		"\x0406"
-    "K"		"\x039A"
-    "K"		"\x041A"
-    "\x039A"	"\x041A"
-    "\x212a"	"\x041A"
-    "K"		"\x212A"
-    "M"		"\x41c"
-    "\x39C"	"\x41c"
-    "M"		"\x039C"
-    "N"		"\x039D"
-    "O"		"\x039F"
-    "O"		"\x41E"
-    "\x039F"	"\x41E"
-    "\x039F"	"\x41E"
-    "P"		"\x03A1"
-    "X"		"\x0425"
-    "e"		"\x0435"
-    "p"		"\x0440"
-    "x"		"\x0445"
-    "y"		"\x0443"
-    "P"		"\x0420"
-    "\x03A1"	"\x0420"
-    "T"		"\x03A4"
-    "T"		"\x0422"
-    "\x03A4"	"\x0422"
-    "Y"		"\x03A5"
-    "\x212a"	"\x039A"
-    "l"		"I"
-    "B"		"\x0392"
-    "S"		"\x0405"
-    "\x0392"	"\x0412"
-    "B"		"\x0412"
-    "J"		"\x0408"
-    "a"		"\x0430"
-    "o"		"\x03bf"
-    "o"		"\x043e"
-    "\x03bf"	"\x043e"
-    "c"		"\x0441"
-    "s"		"\x0455"
-    "t"		"\x03c4"
-    "u"		"\x03c5"
-    "x"		"\x03c7"
-    "ü"		"\x03cb"
-    "\x0460"	"\x03c9"
-    "\x0472"	"\x0398"
-      );
+    wxT("µ")		wxT("\x03bc")
+    wxT("\x2126")	wxT("\x03a9")
+    wxT("C")		wxT("\x03F2")
+    wxT("C")		wxT("\x0421")
+    wxT("\x03F2")	wxT("\x0421")
+    wxT("A")		wxT("\x0391")
+    wxT("A")		wxT("\x0410")
+    wxT("\x391")	wxT("\x0410")
+    wxT("M")		wxT("\x0392")
+    wxT("E")		wxT("\x0395")
+    wxT("E")		wxT("\x0415")
+    wxT("\x0415")	wxT("\x0395")
+    wxT("Z")		wxT("\x0396")
+    wxT("H")		wxT("\x0397")
+    wxT("H")		wxT("\x041D")
+    wxT("\x0397")	wxT("\x041D")
+    wxT("I")		wxT("\x0399")
+    wxT("I")		wxT("\x0406")
+    wxT("l")		wxT("\x0406")
+    wxT("K")		wxT("\x039A")
+    wxT("K")		wxT("\x041A")
+    wxT("\x039A")	wxT("\x041A")
+    wxT("\x212a")	wxT("\x041A")
+    wxT("K")		wxT("\x212A")
+    wxT("M")		wxT("\x41c")
+    wxT("\x39C")	wxT("\x41c")
+    wxT("M")		wxT("\x039C")
+    wxT("N")		wxT("\x039D")
+    wxT("O")		wxT("\x039F")
+    wxT("O")		wxT("\x41E")
+    wxT("\x039F")	wxT("\x41E")
+    wxT("\x039F")	wxT("\x41E")
+    wxT("P")		wxT("\x03A1")
+    wxT("X")		wxT("\x0425")
+    wxT("e")		wxT("\x0435")
+    wxT("p")		wxT("\x0440")
+    wxT("x")		wxT("\x0445")
+    wxT("y")		wxT("\x0443")
+    wxT("P")		wxT("\x0420")
+    wxT("\x03A1")	wxT("\x0420")
+    wxT("T")		wxT("\x03A4")
+    wxT("T")		wxT("\x0422")
+    wxT("\x03A4")	wxT("\x0422")
+    wxT("Y")		wxT("\x03A5")
+    wxT("\x212a")	wxT("\x039A")
+    wxT("l")		wxT("I")
+    wxT("B")		wxT("\x0392")
+    wxT("S")		wxT("\x0405")
+    wxT("\x0392")	wxT("\x0412")
+    wxT("B")		wxT("\x0412")
+    wxT("J")		wxT("\x0408")
+    wxT("a")		wxT("\x0430")
+    wxT("o")		wxT("\x03bf")
+    wxT("o")		wxT("\x043e")
+    wxT("\x03bf")	wxT("\x043e")
+    wxT("c")		wxT("\x0441")
+    wxT("s")		wxT("\x0455")
+    wxT("t")		wxT("\x03c4")
+    wxT("u")		wxT("\x03c5")
+    wxT("x")		wxT("\x03c7")
+    wxT("ü")		wxT("\x03cb")
+    wxT("\x0460")	wxT("\x03c9")
+    wxT("\x0472")	wxT("\x0398");
   m_numberedAnswersCount = 0;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
@@ -680,7 +678,7 @@ void GroupCell::UpdateConfusableCharWarnings()
   // Now we step through all the words we found
   while(!cmdsAndVariables.empty())
   {
-    CmdsAndVariables::const_iterator cmp = cmdsAndVariables.begin();
+    CmdsAndVariables::iterator cmp = cmdsAndVariables.begin();
     wxString word;
     word = cmp->first;
     cmdsAndVariables.erase(cmp);
