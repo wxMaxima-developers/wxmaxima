@@ -527,6 +527,7 @@ protected:
   int m_mathFontSize;
   Cell *m_lastInOutput;
   Cell *m_appendedCells;
+  static wxString m_lookalikeChars;
 private:
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;
@@ -537,7 +538,6 @@ private:
   //! The number of cells the current group contains (-1, if no GroupCell)
   int m_cellsInGroup;
   int m_numberedAnswersCount;
-  wxString m_lookalikeChars;
   void UpdateCellsInGroup(){
     if(m_output != NULL)
       m_cellsInGroup = 2 + m_output->CellsInListRecursive();
