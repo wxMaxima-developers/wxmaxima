@@ -9,6 +9,7 @@ for a new release:
  * If lookalike chars are used in a way that can cause hard-to-find errors now a
    warning tooltip is generated
  * A few additional bug fixes that (besides others) resolve a potential crash
+ * An option to turn all multiplication dots on
 
 # wxMaxima 19.12.0 - Stable:
 

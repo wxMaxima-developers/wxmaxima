@@ -194,7 +194,7 @@ bool MyApp::OnInit()
   {
     std::cout << "A feature-rich graphical user interface for the computer algebra system maxima\n";
     std::cout << cmdLineParser.GetUsageString();
-    exit(0);
+    exit(wxMaxima::m_exitCode);
   }
 
   if(cmdLineError != 0)

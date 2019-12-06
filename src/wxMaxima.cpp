@@ -4173,6 +4173,11 @@ bool wxMaxima::AbortOnError()
   }
 
   m_exitAfterEval = false;
+  if(m_exitOnError)
+  {
+    wxMaxima::m_exitCode = -1;
+    wxExit();
+  }
   if (m_worksheet->m_configuration->GetAbortOnError())
   {
     m_worksheet->m_evaluationQueue.Clear();
@@ -8169,6 +8174,7 @@ void wxMaxima::TriggerEvaluation()
     if(m_configCommands != wxEmptyString)
       SendMaxima(m_configCommands);
     m_configCommands = wxEmptyString;
+    m_exitOnError = false;
     return; //empty queue
   }
 
@@ -9297,6 +9303,7 @@ END_EVENT_TABLE()
 bool wxMaxima::m_pipeToStdout = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
+int wxMaxima::m_exitCode = 0;
 
 /* Local Variables:       */
 /* mode: text             */

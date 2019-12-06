@@ -714,6 +714,7 @@ protected:
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;
+  static int m_exitCode;
   //! Maxima's idea about gnuplot's location
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
