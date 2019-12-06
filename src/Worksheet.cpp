@@ -3221,7 +3221,13 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
     case WXK_RETURN:
       // If Ctrl+Shift are pressed at the same time this is an evaluate event.
       if (event.ControlDown() && event.ShiftDown())
-        Evaluate();
+      {
+        // Queue an evaluate event for the window containing this worksheet.
+        wxCommandEvent *evaluateEvent = new wxCommandEvent;
+        evaluateEvent->SetEventType(wxEVT_MENU);
+        evaluateEvent->SetId(popid_evaluate_section);
+        GetParent()->GetEventHandler()->QueueEvent(evaluateEvent);
+      }
       else
       {
         bool enterEvaluates = false;
