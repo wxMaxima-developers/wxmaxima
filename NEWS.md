@@ -1,3 +1,15 @@
+# wxMaxima 19.12.1 - Stable:
+
+If the maxima-discuss list asks for an additional feature that is the Right Time
+for a new release:
+
+ * Made the tooltips more visible
+ * Added a warning tooltip about missing multiplication signs
+ * Sped up drawing of new cells correcting the size calculations
+ * If lookalike chars are used in a way that can cause hard-to-find errors now a
+   warning tooltip is generated
+ * A few additional bug fixes that (besides others) resolve a potential crash
+
 # wxMaxima 19.12.0 - Stable:
 
 This release provides many under-the-hood changes partially caused by 

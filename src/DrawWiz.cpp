@@ -996,6 +996,12 @@ wxString WizDrawAccuracy::GetValue()
         retval += ",\n";
       retval += "ip_grid=[" + m_ip_grid_x->GetValue() + "," + m_ip_grid_y->GetValue()+"]";
     }
+    if((!m_ip_grid_in_x->GetValue().IsEmpty()) && (!m_ip_grid_in_y->GetValue().IsEmpty()))
+    {
+      if(!retval.IsEmpty())
+        retval += ",\n";
+      retval += "ip_grid_in=[" + m_ip_grid_in_x->GetValue() + "," + m_ip_grid_in_y->GetValue()+"]";
+    }
   }
   else
   {
