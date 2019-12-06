@@ -50,6 +50,22 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.12.1" date="2019-12-06">
+      <description>
+	<p>
+	  A new release bringing in a feature requested by the maxima-
+	  discuss mailing list.
+	</p>
+        <ul>
+	  <li>Made the tooltips more visible</li>
+	  <li>Added a warning tooltip about missing multiplication signs</li>
+	  <li>Sped up drawing of new cells correcting the size calculations</li>
+	  <li>If lookalike chars are used in a way that can cause hard-to-find errors now a
+   warning tooltip is generated</li>
+	  <li>A few additional bug fixes that (besides others) resolve a potential crash</li>
+        </ul>
+    </description>
+    </release>
     <release version="19.12.0" date="2019-12-01">
       <description>
 	<p>
@@ -68,13 +84,6 @@
         </ul>
     </description>
     </release>
-  * 
-  * Many small bug fixes in various places
-  * Increased the speed of the program again
-  * Opening the config dialogue since 19.11.0 unchecked "offer known answers"
-  * For Cmake>=3.10.0 the build system now supports cppcheck.
-  * Changing the worksheet style was partially broken.
-
     
     <release version="19.11.1" date="2019-11-17">
       <description>
