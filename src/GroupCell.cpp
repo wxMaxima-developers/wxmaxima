@@ -633,26 +633,20 @@ void GroupCell::UpdateConfusableCharWarnings()
         if(word_subst.Replace(ch1,ch2))
         {
           if(cmp->first == word_subst)
-          {
-            std::cerr<<word;
             AddToolTip(_("Warning: Lookalike chars: ") +
                        cmp->first.utf8_str() + wxT("\x2260") +
                        word.utf8_str()
               );
-          }
         }
         word_subst = word;
         if(word_subst.Replace(ch2,ch1))
         {
           if(cmp->first == word_subst)
-          {
-            std::cerr<<word;
             AddToolTip(_("Warning: Lookalike chars: ") +
                        cmp->first +
                        wxT(" \x2260 ") +
                        word
               );
-          }
         }
           
       }
