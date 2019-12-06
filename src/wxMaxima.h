@@ -108,6 +108,7 @@ public:
   static void PipeToStdout(){m_pipeToStdout = true;}
   static void ExitOnError(){m_exitOnError = true;}
   static void ExtraMaximaArgs(wxString args){m_extraMaximaArgs = args;}
+  static int m_exitCode;
 
   //! Clean up on exit
   void CleanUp();                                  //!< shuts down server and client on exit
@@ -714,7 +715,6 @@ protected:
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;
-  static int m_exitCode;
   //! Maxima's idea about gnuplot's location
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
