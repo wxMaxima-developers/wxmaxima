@@ -4177,10 +4177,7 @@ bool wxMaxima::AbortOnError()
   if(m_exitOnError)
   {
     wxMaxima::m_exitCode = -1;
-    wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
-    event->SetCanVeto(true);
-    event->SetLoggingOff(false);
-    GetEventHandler()->QueueEvent(event);
+    wxExit();
   }
   if (m_worksheet->m_configuration->GetAbortOnError())
   {
