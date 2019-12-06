@@ -635,7 +635,7 @@ void GroupCell::UpdateConfusableCharWarnings()
           if(cmp->first == word_subst)
           {
             std::cerr<<word;
-            AddToolTip(_("Warning: Lookalike chars used: ") +
+            AddToolTip(_("Warning: Lookalike chars: ") +
                        cmp->first.utf8_str() + wxT("\x2260") +
                        word.utf8_str()
               );
@@ -647,10 +647,11 @@ void GroupCell::UpdateConfusableCharWarnings()
           if(cmp->first == word_subst)
           {
             std::cerr<<word;
-            AddToolTip(wxString::Format(_("Warning: Lookalike chars used in %s and %s."),
-                                        cmp->first.utf8_str(),
-                                        word.utf8_str()
-                         ));
+            AddToolTip(_("Warning: Lookalike chars: ") +
+                       cmp->first +
+                       wxT(" \x2260 ") +
+                       word
+              );
           }
         }
           
