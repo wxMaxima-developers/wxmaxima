@@ -389,6 +389,9 @@ void ParenCell::Draw(wxPoint point)
 wxString ParenCell::ToString()
 {
   wxString s;
+  if(!m_innerCell)
+    return "()";
+  
   if (!m_isBrokenIntoLines)
   {
     if (m_print)
