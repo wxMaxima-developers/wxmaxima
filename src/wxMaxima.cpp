@@ -1979,6 +1979,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_outputCellsFromCurrentCommand = 0;
     if (m_worksheet->m_evaluationQueue.Empty())
     { // queue empty.
+      m_exitOnError = false;
       StatusMaximaBusy(waiting);
       // If we have selected a cell in order to show we are evaluating it
       // we should now remove this marker.
@@ -8174,7 +8175,6 @@ void wxMaxima::TriggerEvaluation()
     if(m_configCommands != wxEmptyString)
       SendMaxima(m_configCommands);
     m_configCommands = wxEmptyString;
-    m_exitOnError = false;
     return; //empty queue
   }
 
