@@ -162,7 +162,7 @@ void IntCell::RecalculateWidths(int fontsize)
 #endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
-    dc->GetTextExtent(wxT("\u5A"), &m_signWidth, &m_signHeight);
+    dc->GetTextExtent(wxT("\u005A"), &m_signWidth, &m_signHeight);
 
 #if defined __WXMSW__
     m_signWidth = m_signWidth / 2;
@@ -266,7 +266,7 @@ void IntCell::Draw(wxPoint point)
       font.SetPointSize(fontsize1);
 #endif
       dc->SetFont(font);
-      dc->DrawText(wxT("\u5A"),
+      dc->DrawText(wxT("\u005A"),
                   sign.x,
                   sign.y - m_signTop);
     }
