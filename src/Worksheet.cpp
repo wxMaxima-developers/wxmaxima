@@ -6271,8 +6271,9 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
     case wxT('\uFF0B'): retval += "+";break; // unicode big plus
     case wxT('\uFB29'): retval += "+";break; // hebrew alternate plus
     case wxT('\u00B7'): retval += wxT("*");break; // An unicode multiplication sinbreak;
-    case wxT('\uDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
+    case wxT('\u00A0'): retval += wxT(" ");break; // A non-breakable spaebreak;
     case wxT('\r'): retval += wxT(" ");break; // A soft linebreak
+    case wxT('\xDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
     // Convert \u03C0 to %pi if it isn't part of a symbol name
     case wxT('\u03C0'):
     {
