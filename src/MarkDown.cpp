@@ -261,8 +261,6 @@ MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
           new RegexReplacer(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}")));
   regexReplaceList.push_back(
           new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}")));
-  regexReplaceList.push_back(
-          new RegexReplacer(wxT("\uDCB6"), wxT("~")));
 }
 
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
@@ -284,5 +282,5 @@ MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
   regexReplaceList.push_back(
           new RegexReplacer(wxT("\\+/-"), wxT("\uB1")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\uDCB6"), wxT("\uA0")));
+    new RegexReplacer(wxT("\u00A0"), wxT("\uA0")));
 }
