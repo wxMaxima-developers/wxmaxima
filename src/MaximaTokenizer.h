@@ -70,11 +70,11 @@ public:
   static const wxString UnicodeNumbers()
     {
       return wxString(
-        wxT("\x00BD\x00B2\x00B3\x221E")
+        wxT("\u00BD\u00B2\u00B3\u221E")
         );
     }
   static const wxString Operators(){return wxString(
-      wxT("\x221A\x22C0\x22C1\x22BB\x22BC\x22BD\x00AC\x222b\x2264\x2265\x2211\x2260+-*/^:=#'!()[]{}"
+      wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"
         )
       );}
 

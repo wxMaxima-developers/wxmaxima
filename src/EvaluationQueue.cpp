@@ -139,7 +139,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
   for (it = tokens.begin(); it != tokens.end(); ++it)
   {
     wxString itemText = (*it)->GetText();
-    itemText.Replace(wxT("\xa0"), " ");
+    itemText.Replace(wxT("\ua0"), " ");
     TextStyle itemStyle = (*it)->GetStyle();
     index += itemText.Length();
     if(itemStyle != TS_CODE_COMMENT)

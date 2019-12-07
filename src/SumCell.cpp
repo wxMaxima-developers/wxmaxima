@@ -31,8 +31,8 @@
 #include "SumCell.h"
 #include "TextCell.h"
 
-#define SUM_SIGN "\x58"
-#define PROD_SIGN "\x59"
+#define SUM_SIGN "\u58"
+#define PROD_SIGN "\u59"
 #define SUM_DEC 2
 
 SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
@@ -380,9 +380,9 @@ wxString SumCell::ToOMML()
 
   retval = wxT("<m:nary><m:naryPr><m:chr>");
   if (m_sumStyle == SM_SUM)
-    retval += wxT("\x2211");
+    retval += wxT("\u2211");
   else
-    retval += wxT("\x220F");
+    retval += wxT("\u220F");
 
   retval += wxT("</m:chr></m:naryPr>");
   if (from != wxEmptyString)

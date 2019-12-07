@@ -6243,38 +6243,38 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
       else
         return retval;
       break;
-    case wxT('\x00B2'): retval += wxT("^2");break;
-    case wxT('\x00B3'): retval += wxT("^3");break;
-    case wxT('\x00BD'): retval += wxT("(1/2)");break;
-    case wxT('\x221A'): retval += wxT("sqrt");break;
-    case wxT('\x222B'): retval += wxT("integrate");break;
-    case wxT('\x2211'): retval += wxT("sum");break;
-    case wxT('\x2205'): retval += wxT("[]");break;
-    case wxT('\x2148'): retval += wxT("%i");break;
-    case wxT('\x2147'): retval += wxT("%e");break;
-    case wxT('\x221E'): retval += wxT("inf");break;
-    case wxT('\x22C0'): retval += wxT(" and ");break;
-    case wxT('\x22C1'): retval += wxT(" or ");break;
-    case wxT('\x22BB'): retval += wxT(" xor ");break;
-    case wxT('\x22BC'): retval += wxT(" nand ");break;
-    case wxT('\x22BD'): retval += wxT(" nor ");break;
-    case wxT('\x21D2'): retval += wxT(" implies ");break;
-    case wxT('\x21D4'): retval += wxT(" equiv ");break;
-    case wxT('\x00AC'): retval += wxT(" not ");break;
-    case wxT('\x2260'): retval += wxT(" # ");break;
-    case wxT('\x2264'): retval += wxT(" <= ");break;
-    case wxT('\x2265'): retval += wxT(" >= ");break;
-    case wxT('\x2212'): retval += wxT("-");break; // An unicode minus sign
-    case wxT('\x2052'): retval += "-";break; // commercial minus sign
-    case wxT('\xFE63'): retval += "-";break; // unicode small minus sign
-    case wxT('\xFF0D'): retval += "-";break; // unicode big minus sign
-    case wxT('\xFF0B'): retval += "+";break; // unicode big plus
-    case wxT('\xFB29'): retval += "+";break; // hebrew alternate plus
-    case wxT('\x00B7'): retval += wxT("*");break; // An unicode multiplication sinbreak;
-    case wxT('\xDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
+    case wxT('\u00B2'): retval += wxT("^2");break;
+    case wxT('\u00B3'): retval += wxT("^3");break;
+    case wxT('\u00BD'): retval += wxT("(1/2)");break;
+    case wxT('\u221A'): retval += wxT("sqrt");break;
+    case wxT('\u222B'): retval += wxT("integrate");break;
+    case wxT('\u2211'): retval += wxT("sum");break;
+    case wxT('\u2205'): retval += wxT("[]");break;
+    case wxT('\u2148'): retval += wxT("%i");break;
+    case wxT('\u2147'): retval += wxT("%e");break;
+    case wxT('\u221E'): retval += wxT("inf");break;
+    case wxT('\u22C0'): retval += wxT(" and ");break;
+    case wxT('\u22C1'): retval += wxT(" or ");break;
+    case wxT('\u22BB'): retval += wxT(" xor ");break;
+    case wxT('\u22BC'): retval += wxT(" nand ");break;
+    case wxT('\u22BD'): retval += wxT(" nor ");break;
+    case wxT('\u21D2'): retval += wxT(" implies ");break;
+    case wxT('\u21D4'): retval += wxT(" equiv ");break;
+    case wxT('\u00AC'): retval += wxT(" not ");break;
+    case wxT('\u2260'): retval += wxT(" # ");break;
+    case wxT('\u2264'): retval += wxT(" <= ");break;
+    case wxT('\u2265'): retval += wxT(" >= ");break;
+    case wxT('\u2212'): retval += wxT("-");break; // An unicode minus sign
+    case wxT('\u2052'): retval += "-";break; // commercial minus sign
+    case wxT('\uFE63'): retval += "-";break; // unicode small minus sign
+    case wxT('\uFF0D'): retval += "-";break; // unicode big minus sign
+    case wxT('\uFF0B'): retval += "+";break; // unicode big plus
+    case wxT('\uFB29'): retval += "+";break; // hebrew alternate plus
+    case wxT('\u00B7'): retval += wxT("*");break; // An unicode multiplication sinbreak;
+    case wxT('\uDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
     case wxT('\r'): retval += wxT(" ");break; // A soft linebreak
-    // Convert \x03C0 to %pi if it isn't part of a symbol name
-    case wxT('\x03C0'):
+    // Convert \u03C0 to %pi if it isn't part of a symbol name
+    case wxT('\u03C0'):
     {
       wxString::iterator it2 = it;
       ++it2;

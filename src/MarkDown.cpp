@@ -262,27 +262,27 @@ MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
   regexReplaceList.push_back(
           new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\xDCB6"), wxT("~")));
+          new RegexReplacer(wxT("\uDCB6"), wxT("~")));
 }
 
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
 {
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;=\\&gt;"), wxT("\x21d4")));
+          new RegexReplacer(wxT("\\&lt;=\\&gt;"), wxT("\u21d4")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("=\\&gt;"), wxT("\x21d2")));
+          new RegexReplacer(wxT("=\\&gt;"), wxT("\u21d2")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("&lt;-\\&gt;"), wxT("\x2194")));
+          new RegexReplacer(wxT("&lt;-\\&gt;"), wxT("\u2194")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("-\\&gt;"), wxT("\x2192")));
+          new RegexReplacer(wxT("-\\&gt;"), wxT("\u2192")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;-"), wxT("\x2190")));
+          new RegexReplacer(wxT("\\&lt;-"), wxT("\u2190")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;="), wxT("\x2264")));
+          new RegexReplacer(wxT("\\&lt;="), wxT("\u2264")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&gt;="), wxT("\x2265")));
+          new RegexReplacer(wxT("\\&gt;="), wxT("\u2265")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\+/-"), wxT("\xB1")));
+          new RegexReplacer(wxT("\\+/-"), wxT("\uB1")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\xDCB6"), wxT("\xA0")));
+    new RegexReplacer(wxT("\uDCB6"), wxT("\uA0")));
 }

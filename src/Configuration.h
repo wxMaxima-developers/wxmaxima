@@ -32,12 +32,12 @@
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
 
-#define PAREN_OPEN_TOP_UNICODE     "\x239b"
-#define PAREN_OPEN_EXTEND_UNICODE  "\x239c"
-#define PAREN_OPEN_BOTTOM_UNICODE  "\x239d"
-#define PAREN_CLOSE_TOP_UNICODE    "\x239e"
-#define PAREN_CLOSE_EXTEND_UNICODE "\x239f"
-#define PAREN_CLOSE_BOTTOM_UNICODE "\x23a0"
+#define PAREN_OPEN_TOP_UNICODE     "\u239b"
+#define PAREN_OPEN_EXTEND_UNICODE  "\u239c"
+#define PAREN_OPEN_BOTTOM_UNICODE  "\u239d"
+#define PAREN_CLOSE_TOP_UNICODE    "\u239e"
+#define PAREN_CLOSE_EXTEND_UNICODE "\u239f"
+#define PAREN_CLOSE_BOTTOM_UNICODE "\u23a0"
 
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25

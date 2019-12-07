@@ -44,7 +44,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     while(
       (it < commands.end()) &&
       ((!token.EndsWith("(to-maxima)"))) &&
-      ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima)"))))
+      ((!token.EndsWith(wxString("(to")+wxT("\u2212")+"maxima)"))))
     {
       token +=*it;
       ++it;
@@ -75,7 +75,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       continue;
     }
     // Check for comments
-    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7'))))
+    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\uB7'))))
     {
       wxString token;
       // Add the comment start
@@ -106,7 +106,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           nextCh = *it3;
 
         // handle comment begins within comments.
-        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\xB7'))))
+        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\uB7'))))
         {
           commentDepth++;
           token += *it;
@@ -119,7 +119,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           continue;
         }
         // handle comment endings
-        if(((*it == '*') || (*it == wxT('\xB7'))) && (nextCh == '/'))
+        if(((*it == '*') || (*it == wxT('\uB7'))) && (nextCh == '/'))
         {
           commentDepth--;
           token += *it;
@@ -181,8 +181,8 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         wxString token = wxString(Ch);
         if (configuration->GetChangeAsterisk())
         {
-          token.Replace(wxT("*"), wxT("\xB7"));
-          token.Replace(wxT("-"), wxT("\x2212"));
+          token.Replace(wxT("*"), wxT("\uB7"));
+          token.Replace(wxT("-"), wxT("\u2212"));
         }
         
         m_tokens.push_back(new Token(token, TS_CODE_OPERATOR));
@@ -248,7 +248,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
                    ) && (
                      (*it == '+') ||
                      (*it == '-') ||
-                     (*it == wxT('\x2212'))
+                     (*it == wxT('\u2212'))
                      )
                  )))
       {
@@ -314,7 +314,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
       if(token == ("to_lisp"))
       {
-        while((it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) && ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima)"))))
+        while((it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) && ((!token.EndsWith(wxString("(to")+wxT("\u2212")+"maxima)"))))
         {
           token += wxString(*it);
           ++it;

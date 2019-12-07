@@ -484,7 +484,7 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
   TextCell *retval = NULL;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString))
   {
-    str.Replace(wxT("-"), wxT("\x2212")); // unicode minus sign
+    str.Replace(wxT("-"), wxT("\u2212")); // unicode minus sign
 
     wxStringTokenizer lines(str, wxT('\n'));
     while (lines.HasMoreTokens())
@@ -1083,7 +1083,7 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
       showLength = 50000;    
   }
 
-  m_graphRegex.Replace(&s, wxT("\xFFFD"));
+  m_graphRegex.Replace(&s, wxT("\uFFFD"));
 
   if (((long) s.Length() < showLength) || (showLength == 0))
   {

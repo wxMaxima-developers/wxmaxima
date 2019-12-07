@@ -36,7 +36,7 @@
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
-#define ESC_CHAR wxT('\xA6')
+#define ESC_CHAR wxT('\uA6')
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
@@ -250,7 +250,7 @@ wxString EditorCell::PrependNBSP(wxString input)
         retval += ch;
       }
       else
-        retval += wxT("\xA0");
+        retval += wxT("\uA0");
     }
     else
     {
@@ -286,7 +286,7 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   // Remove all soft line breaks
   text.Replace(wxT('\r'), wxT(' '));
   // Convert non-breakable spaces to breakable ones
-  text.Replace(wxT("\xa0"), wxT(" "));
+  text.Replace(wxT("\ua0"), wxT(" "));
 
   if (SelectionActive() && (!dontLimitToSelection))
   {
@@ -310,7 +310,7 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection)
   // Remove all soft line breaks
   text.Replace(wxT('\r'), wxT(' '));
   // Convert non-breakable spaces to breakable ones
-  text.Replace(wxT("\xa0"), wxT(" "));
+  text.Replace(wxT("\ua0"), wxT(" "));
 
   if (SelectionActive() && (!dontLimitToSelection))
   {
@@ -418,107 +418,107 @@ wxString EditorCell::ToTeX()
   wxString text = m_text;
   if (!text.StartsWith(wxT("TeX:")))
   {
-    text.Replace(wxT("\xa0"), wxT("~"));
+    text.Replace(wxT("\ua0"), wxT("~"));
     text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
     text.Replace(wxT("\r"), wxEmptyString);
     text.Replace(wxT("^"), wxT("\\^{}"));
     text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
-    text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-    text.Replace(wxT("\x2052"), wxT("-")); // commercial minus sign
-    text.Replace(wxT("\xFE63"), wxT("-")); // unicode small minus sign
-    text.Replace(wxT("\xFF0D"), wxT("-")); // unicode big minus sign
-    text.Replace(wxT("\xFF0B"), wxT("+")); // unicode big plus
-    text.Replace(wxT("\xFB29"), wxT("+")); // hebrew alternate plus
-    text.Replace(wxT("\x03B1"), wxT("\\ensuremath{\\alpha}"));
-    text.Replace(wxT("\x00B1"), wxT("\\ensuremath{\\pm}"));
-    text.Replace(wxT("\x00B2"), wxT("\\ensuremath{^2}"));
-    text.Replace(wxT("\x00B3"), wxT("\\ensuremath{^3}"));
-    text.Replace(wxT("\x221A"), wxT("\\ensuremath{\\sqrt{}}"));
-    text.Replace(wxT("\x2148"), wxT("\\ensuremath{\\mathbbm{i}}"));
-    text.Replace(wxT("\x2147"), wxT("\\ensuremath{\\mathbbm{e}}"));
-    text.Replace(wxT("\x210f"), wxT("\\ensuremath{\\hbar}"));
-    text.Replace(wxT("\x2203"), wxT("\\ensuremath{\\exists}"));
-    text.Replace(wxT("\x2204"), wxT("\\ensuremath{\\nexists}"));
-    text.Replace(wxT("\x2208"), wxT("\\ensuremath{\\in}"));
-    text.Replace(wxT("\x21D2"), wxT("\\ensuremath{\\Longrightarrow}"));
-    text.Replace(wxT("\x221e"), wxT("\\ensuremath{\\infty}"));
-    text.Replace(wxT("\x22C0"), wxT("\\ensuremath{\\wedge}"));
-    text.Replace(wxT("\x22C1"), wxT("\\ensuremath{\\vee}"));
-    text.Replace(wxT("\x22bb"), wxT("\\ensuremath{\\oplus}"));
-    text.Replace(wxT("\x22BC"), wxT("\\ensuremath{\\overline{\\wedge}}"));
-    text.Replace(wxT("\x22BB"), wxT("\\ensuremath{\\overline{\\vee}}"));
-    text.Replace(wxT("\x00AC"), wxT("\\ensuremath{\\setminus}"));
-    text.Replace(wxT("\x22C3"), wxT("\\ensuremath{\\cup}"));
-    text.Replace(wxT("\x22C2"), wxT("\\ensuremath{\\cap}"));
-    text.Replace(wxT("\x2286"), wxT("\\ensuremath{\\subseteq}"));
-    text.Replace(wxT("\x2282"), wxT("\\ensuremath{\\subset}"));
-    text.Replace(wxT("\x2288"), wxT("\\ensuremath{\\not\\subseteq}"));
-    text.Replace(wxT("\x0127"), wxT("\\ensuremath{\\hbar}"));
-    text.Replace(wxT("\x0126"), wxT("\\ensuremath{\\Hbar}"));
-    text.Replace(wxT("\x2205"), wxT("\\ensuremath{\\emptyset}"));
-    text.Replace(wxT("\x00BD"), wxT("\\ensuremath{\\frac{1}{2}}"));
-    text.Replace(wxT("\x03B2"), wxT("\\ensuremath{\\beta}"));
-    text.Replace(wxT("\x03B3"), wxT("\\ensuremath{\\gamma}"));
-    text.Replace(wxT("\x03B4"), wxT("\\ensuremath{\\delta}"));
-    text.Replace(wxT("\x03B5"), wxT("\\ensuremath{\\epsilon}"));
-    text.Replace(wxT("\x03B6"), wxT("\\ensuremath{\\zeta}"));
-    text.Replace(wxT("\x03B7"), wxT("\\ensuremath{\\eta}"));
-    text.Replace(wxT("\x03B8"), wxT("\\ensuremath{\\theta}"));
-    text.Replace(wxT("\x03B9"), wxT("\\ensuremath{\\iota}"));
-    text.Replace(wxT("\x03BA"), wxT("\\ensuremath{\\kappa}"));
-    text.Replace(wxT("\x03BB"), wxT("\\ensuremath{\\lambda}"));
-    text.Replace(wxT("\x03BC"), wxT("\\ensuremath{\\mu}"));
-    text.Replace(wxT("\x03BD"), wxT("\\ensuremath{\\nu}"));
-    text.Replace(wxT("\x03BE"), wxT("x"));
-    text.Replace(wxT("\x03BF"), wxT("o"));
-    text.Replace(wxT("\x03C0"), wxT("\\ensuremath{\\pi}"));
-    text.Replace(wxT("\x03C1"), wxT("\\ensuremath{\\rho}"));
-    text.Replace(wxT("\x03C3"), wxT("\\ensuremath{\\sigma}"));
-    text.Replace(wxT("\x03C4"), wxT("\\ensuremath{\\tau}"));
-    text.Replace(wxT("\x03C5"), wxT("\\ensuremath{\\upsilon}"));
-    text.Replace(wxT("\x03C6"), wxT("\\ensuremath{\\phi}"));
-    text.Replace(wxT("\x03C7"), wxT("\\ensuremath{\\chi}"));
-    text.Replace(wxT("\x03C8"), wxT("\\ensuremath{\\psi}"));
-    text.Replace(wxT("\x03C9"), wxT("\\ensuremath{\\omega}"));
-    text.Replace(wxT("\x0391"), wxT("A"));
-    text.Replace(wxT("\x0392"), wxT("B"));
-    text.Replace(wxT("\x0393"), wxT("\\ensuremath{\\Gamma}"));
-    text.Replace(wxT("\x0394"), wxT("\\ensuremath{\\Delta}"));
-    text.Replace(wxT("\x0395"), wxT("E"));
-    text.Replace(wxT("\x0396"), wxT("Z"));
-    text.Replace(wxT("\x0397"), wxT("H"));
-    text.Replace(wxT("\x0398"), wxT("\\ensuremath{\\Theta}"));
-    text.Replace(wxT("\x0399"), wxT("I"));
-    text.Replace(wxT("\x039A"), wxT("K"));
-    text.Replace(wxT("\x039B"), wxT("\\ensuremath{\\Lambda}"));
-    text.Replace(wxT("\x039C"), wxT("M"));
-    text.Replace(wxT("\x039D"), wxT("N"));
-    text.Replace(wxT("\x039E"), wxT("\\ensuremath{\\Xi}"));
-    text.Replace(wxT("\x039F"), wxT("O"));
-    text.Replace(wxT("\x03A0"), wxT("\\ensuremath{\\Pi}"));
-    text.Replace(wxT("\x03A1"), wxT("P"));
-    text.Replace(wxT("\x03A3"), wxT("\\ensuremath{\\Sigma}"));
-    text.Replace(wxT("\x03A4"), wxT("T"));
-    text.Replace(wxT("\x03A5"), wxT("\\ensuremath{\\Upsilon}"));
-    text.Replace(wxT("\x03A6"), wxT("\\ensuremath{\\Phi}"));
-    text.Replace(wxT("\x03A7"), wxT("X"));
-    text.Replace(wxT("\x03A8"), wxT("\\ensuremath{\\Psi}"));
-    text.Replace(wxT("\x03A9"), wxT("\\ensuremath{\\Omega}"));
-    text.Replace(wxT("\x2202"), wxT("\\ensuremath{\\partial}"));
-    text.Replace(wxT("\x222b"), wxT("\\ensuremath{\\int}"));
-    text.Replace(wxT("\x2245"), wxT("\\ensuremath{\\approx}"));
-    text.Replace(wxT("\x221d"), wxT("\\ensuremath{\\propto}"));
-    text.Replace(wxT("\x2260"), wxT("\\ensuremath{\\neq}"));
-    text.Replace(wxT("\x2264"), wxT("\\ensuremath{\\leq}"));
-    text.Replace(wxT("\x2265"), wxT("\\ensuremath{\\geq}"));
-    text.Replace(wxT("\x226A"), wxT("\\ensuremath{\\ll}"));
-    text.Replace(wxT("\x226B"), wxT("\\ensuremath{\\gg}"));
-    text.Replace(wxT("\x220e"), wxT("\\ensuremath{\\blacksquare}"));
-    text.Replace(wxT("\x2263"), wxT("\\ensuremath{\\equiv}"));
-    text.Replace(wxT("\x2211"), wxT("\\ensuremath{\\sum}"));
-    text.Replace(wxT("\x220F"), wxT("\\ensuremath{\\prod}"));
-    text.Replace(wxT("\x2225"), wxT("\\ensuremath{\\parallel}"));
-    text.Replace(wxT("\x27C2"), wxT("\\ensuremath{\\bot}"));
+    text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
+    text.Replace(wxT("\u2052"), wxT("-")); // commercial minus sign
+    text.Replace(wxT("\uFE63"), wxT("-")); // unicode small minus sign
+    text.Replace(wxT("\uFF0D"), wxT("-")); // unicode big minus sign
+    text.Replace(wxT("\uFF0B"), wxT("+")); // unicode big plus
+    text.Replace(wxT("\uFB29"), wxT("+")); // hebrew alternate plus
+    text.Replace(wxT("\u03B1"), wxT("\\ensuremath{\\alpha}"));
+    text.Replace(wxT("\u00B1"), wxT("\\ensuremath{\\pm}"));
+    text.Replace(wxT("\u00B2"), wxT("\\ensuremath{^2}"));
+    text.Replace(wxT("\u00B3"), wxT("\\ensuremath{^3}"));
+    text.Replace(wxT("\u221A"), wxT("\\ensuremath{\\sqrt{}}"));
+    text.Replace(wxT("\u2148"), wxT("\\ensuremath{\\mathbbm{i}}"));
+    text.Replace(wxT("\u2147"), wxT("\\ensuremath{\\mathbbm{e}}"));
+    text.Replace(wxT("\u210f"), wxT("\\ensuremath{\\hbar}"));
+    text.Replace(wxT("\u2203"), wxT("\\ensuremath{\\exists}"));
+    text.Replace(wxT("\u2204"), wxT("\\ensuremath{\\nexists}"));
+    text.Replace(wxT("\u2208"), wxT("\\ensuremath{\\in}"));
+    text.Replace(wxT("\u21D2"), wxT("\\ensuremath{\\Longrightarrow}"));
+    text.Replace(wxT("\u221e"), wxT("\\ensuremath{\\infty}"));
+    text.Replace(wxT("\u22C0"), wxT("\\ensuremath{\\wedge}"));
+    text.Replace(wxT("\u22C1"), wxT("\\ensuremath{\\vee}"));
+    text.Replace(wxT("\u22bb"), wxT("\\ensuremath{\\oplus}"));
+    text.Replace(wxT("\u22BC"), wxT("\\ensuremath{\\overline{\\wedge}}"));
+    text.Replace(wxT("\u22BB"), wxT("\\ensuremath{\\overline{\\vee}}"));
+    text.Replace(wxT("\u00AC"), wxT("\\ensuremath{\\setminus}"));
+    text.Replace(wxT("\u22C3"), wxT("\\ensuremath{\\cup}"));
+    text.Replace(wxT("\u22C2"), wxT("\\ensuremath{\\cap}"));
+    text.Replace(wxT("\u2286"), wxT("\\ensuremath{\\subseteq}"));
+    text.Replace(wxT("\u2282"), wxT("\\ensuremath{\\subset}"));
+    text.Replace(wxT("\u2288"), wxT("\\ensuremath{\\not\\subseteq}"));
+    text.Replace(wxT("\u0127"), wxT("\\ensuremath{\\hbar}"));
+    text.Replace(wxT("\u0126"), wxT("\\ensuremath{\\Hbar}"));
+    text.Replace(wxT("\u2205"), wxT("\\ensuremath{\\emptyset}"));
+    text.Replace(wxT("\u00BD"), wxT("\\ensuremath{\\frac{1}{2}}"));
+    text.Replace(wxT("\u03B2"), wxT("\\ensuremath{\\beta}"));
+    text.Replace(wxT("\u03B3"), wxT("\\ensuremath{\\gamma}"));
+    text.Replace(wxT("\u03B4"), wxT("\\ensuremath{\\delta}"));
+    text.Replace(wxT("\u03B5"), wxT("\\ensuremath{\\epsilon}"));
+    text.Replace(wxT("\u03B6"), wxT("\\ensuremath{\\zeta}"));
+    text.Replace(wxT("\u03B7"), wxT("\\ensuremath{\\eta}"));
+    text.Replace(wxT("\u03B8"), wxT("\\ensuremath{\\theta}"));
+    text.Replace(wxT("\u03B9"), wxT("\\ensuremath{\\iota}"));
+    text.Replace(wxT("\u03BA"), wxT("\\ensuremath{\\kappa}"));
+    text.Replace(wxT("\u03BB"), wxT("\\ensuremath{\\lambda}"));
+    text.Replace(wxT("\u03BC"), wxT("\\ensuremath{\\mu}"));
+    text.Replace(wxT("\u03BD"), wxT("\\ensuremath{\\nu}"));
+    text.Replace(wxT("\u03BE"), wxT("x"));
+    text.Replace(wxT("\u03BF"), wxT("o"));
+    text.Replace(wxT("\u03C0"), wxT("\\ensuremath{\\pi}"));
+    text.Replace(wxT("\u03C1"), wxT("\\ensuremath{\\rho}"));
+    text.Replace(wxT("\u03C3"), wxT("\\ensuremath{\\sigma}"));
+    text.Replace(wxT("\u03C4"), wxT("\\ensuremath{\\tau}"));
+    text.Replace(wxT("\u03C5"), wxT("\\ensuremath{\\upsilon}"));
+    text.Replace(wxT("\u03C6"), wxT("\\ensuremath{\\phi}"));
+    text.Replace(wxT("\u03C7"), wxT("\\ensuremath{\\chi}"));
+    text.Replace(wxT("\u03C8"), wxT("\\ensuremath{\\psi}"));
+    text.Replace(wxT("\u03C9"), wxT("\\ensuremath{\\omega}"));
+    text.Replace(wxT("\u0391"), wxT("A"));
+    text.Replace(wxT("\u0392"), wxT("B"));
+    text.Replace(wxT("\u0393"), wxT("\\ensuremath{\\Gamma}"));
+    text.Replace(wxT("\u0394"), wxT("\\ensuremath{\\Delta}"));
+    text.Replace(wxT("\u0395"), wxT("E"));
+    text.Replace(wxT("\u0396"), wxT("Z"));
+    text.Replace(wxT("\u0397"), wxT("H"));
+    text.Replace(wxT("\u0398"), wxT("\\ensuremath{\\Theta}"));
+    text.Replace(wxT("\u0399"), wxT("I"));
+    text.Replace(wxT("\u039A"), wxT("K"));
+    text.Replace(wxT("\u039B"), wxT("\\ensuremath{\\Lambda}"));
+    text.Replace(wxT("\u039C"), wxT("M"));
+    text.Replace(wxT("\u039D"), wxT("N"));
+    text.Replace(wxT("\u039E"), wxT("\\ensuremath{\\ui}"));
+    text.Replace(wxT("\u039F"), wxT("O"));
+    text.Replace(wxT("\u03A0"), wxT("\\ensuremath{\\Pi}"));
+    text.Replace(wxT("\u03A1"), wxT("P"));
+    text.Replace(wxT("\u03A3"), wxT("\\ensuremath{\\Sigma}"));
+    text.Replace(wxT("\u03A4"), wxT("T"));
+    text.Replace(wxT("\u03A5"), wxT("\\ensuremath{\\Upsilon}"));
+    text.Replace(wxT("\u03A6"), wxT("\\ensuremath{\\Phi}"));
+    text.Replace(wxT("\u03A7"), wxT("X"));
+    text.Replace(wxT("\u03A8"), wxT("\\ensuremath{\\Psi}"));
+    text.Replace(wxT("\u03A9"), wxT("\\ensuremath{\\Omega}"));
+    text.Replace(wxT("\u2202"), wxT("\\ensuremath{\\partial}"));
+    text.Replace(wxT("\u222b"), wxT("\\ensuremath{\\int}"));
+    text.Replace(wxT("\u2245"), wxT("\\ensuremath{\\approx}"));
+    text.Replace(wxT("\u221d"), wxT("\\ensuremath{\\propto}"));
+    text.Replace(wxT("\u2260"), wxT("\\ensuremath{\\neq}"));
+    text.Replace(wxT("\u2264"), wxT("\\ensuremath{\\leq}"));
+    text.Replace(wxT("\u2265"), wxT("\\ensuremath{\\geq}"));
+    text.Replace(wxT("\u226A"), wxT("\\ensuremath{\\ll}"));
+    text.Replace(wxT("\u226B"), wxT("\\ensuremath{\\gg}"));
+    text.Replace(wxT("\u220e"), wxT("\\ensuremath{\\blacksquare}"));
+    text.Replace(wxT("\u2263"), wxT("\\ensuremath{\\equiv}"));
+    text.Replace(wxT("\u2211"), wxT("\\ensuremath{\\sum}"));
+    text.Replace(wxT("\u220F"), wxT("\\ensuremath{\\prod}"));
+    text.Replace(wxT("\u2225"), wxT("\\ensuremath{\\parallel}"));
+    text.Replace(wxT("\u27C2"), wxT("\\ensuremath{\\bot}"));
     text.Replace(wxT("~"), wxT("\\ensuremath{\\sim }"));
     text.Replace(wxT("_"), wxT("\\_"));
     text.Replace(wxT("$"), wxT("\\$"));
@@ -526,12 +526,12 @@ wxString EditorCell::ToTeX()
     text.Replace(wxT("&"), wxT("\\&"));
     text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
     text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
-    text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
+    text.Replace(wxT("\uDCB6"), wxT("~")); // A non-breakable space
     text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
     text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
-    text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
-    text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
-    text.Replace(wxT("\x27F6"), wxT("\\ensuremath{\\longrightarrow}"));
+    text.Replace(wxT("\u219D"), wxT("\\ensuremath{\\leadsto}"));
+    text.Replace(wxT("\u2192"), wxT("\\ensuremath{\\rightarrow}"));
+    text.Replace(wxT("\u27F6"), wxT("\\ensuremath{\\longrightarrow}"));
     // Now we might want to introduce some markdown:
     MarkDownTeX MarkDown(*m_configuration);
     text = MarkDown.MarkDown(text);
@@ -2150,7 +2150,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 /*
   case WXK_SPACE:
     if (event.ShiftDown())
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\x00B7")
+      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\u00B7")
                m_text.SubString(m_positionOfCaret, m_text.Length());
     else
       m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
@@ -2329,7 +2329,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
     chr = event.GetUnicodeKey();
 
     if (event.ShiftDown())
-      chr.Replace(wxT(" "), wxT("\xa0"));
+      chr.Replace(wxT(" "), wxT("\ua0"));
 
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
              chr +
@@ -3544,7 +3544,7 @@ void EditorCell::StyleTextTexts()
 
   // Remove all bullets of item lists as we will introduce them again in the next
   // step, as well.
-  m_text.Replace(wxT("\x2022"), wxT("*"));
+  m_text.Replace(wxT("\u2022"), wxT("*"));
 
   // Insert new soft line breaks where we hit the right border of the worksheet, if
   // this has been requested in the config dialogue
@@ -3715,8 +3715,8 @@ void EditorCell::StyleTextTexts()
         line_trimmed.Trim(false);
         if (
             (line_trimmed.StartsWith(wxT("* "))) ||
-            (line_trimmed.StartsWith(wxT("\x2022 "))) ||
-            (line_trimmed.StartsWith(wxT("\xB7 "))) ||
+            (line_trimmed.StartsWith(wxT("\u2022 "))) ||
+            (line_trimmed.StartsWith(wxT("\uB7 "))) ||
             (line_trimmed.StartsWith(wxT("> ")))
             )
         {
@@ -3737,9 +3737,9 @@ void EditorCell::StyleTextTexts()
 
           // Equip bullet lists with real bullets
           if (line_trimmed.StartsWith(wxT("* ")))
-            line[line.find("*")] = wxT('\x2022');
-          if (line_trimmed.StartsWith(wxT("\xB7 ")))
-            line[line.find("\xB7")] = wxT('\x2022');
+            line[line.find("*")] = wxT('\u2022');
+          if (line_trimmed.StartsWith(wxT("\uB7 ")))
+            line[line.find("\uB7")] = wxT('\u2022');
 
           // Remember what a continuation for this indenting object would begin with
           prefixes.push_back(wxT("  ") + line.Left(line.Length() - line_trimmed.Length()));

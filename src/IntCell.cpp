@@ -30,9 +30,9 @@
 #include "TextCell.h"
 
 #if defined __WXMSW__
-#define INTEGRAL_TOP "\xF3"
-#define INTEGRAL_BOTTOM "\xF5"
-#define INTEGRAL_EXTEND "\xF4"
+#define INTEGRAL_TOP "\uF3"
+#define INTEGRAL_BOTTOM "\uF5"
+#define INTEGRAL_EXTEND "\uF4"
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
@@ -162,7 +162,7 @@ void IntCell::RecalculateWidths(int fontsize)
 #endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
-    dc->GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signHeight);
+    dc->GetTextExtent(wxT("\u5A"), &m_signWidth, &m_signHeight);
 
 #if defined __WXMSW__
     m_signWidth = m_signWidth / 2;
@@ -266,7 +266,7 @@ void IntCell::Draw(wxPoint point)
       font.SetPointSize(fontsize1);
 #endif
       dc->SetFont(font);
-      dc->DrawText(wxT("\x5A"),
+      dc->DrawText(wxT("\u5A"),
                   sign.x,
                   sign.y - m_signTop);
     }
@@ -512,7 +512,7 @@ wxString IntCell::ToOMML()
 
   wxString retval;
 
-  retval = wxT("<m:nary><m:naryPr><m:chr>\x222b</m:chr></m:naryPr>");
+  retval = wxT("<m:nary><m:naryPr><m:chr>\u222b</m:chr></m:naryPr>");
   if (from != wxEmptyString)
     retval += wxT("<m:sub>") + from + wxT("</m:sub>");
   if (to != wxEmptyString)

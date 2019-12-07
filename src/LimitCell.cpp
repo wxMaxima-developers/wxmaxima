@@ -287,7 +287,7 @@ wxString LimitCell::ToXML()
 wxString LimitCell::ToOMML()
 {
   wxString under = m_under->ListToOMML();
-  under.Replace(wxT("->"), wxT("\x2192"));
+  under.Replace(wxT("->"), wxT("\u2192"));
 
   return _T("<m:func><m:fName><m:limLow><m:e><m:r>lim</m:r></m:e><m:lim>") +
          under + _T("</m:lim></m:limLow></m:fName><m:e>") +

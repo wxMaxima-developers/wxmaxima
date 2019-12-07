@@ -1421,7 +1421,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   m_closing = false; // when restarting maxima this is temporarily true
 
   wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
-  prompt_compact.Replace(wxT("\n"),wxT("\x21b2"));
+  prompt_compact.Replace(wxT("\n"),wxT("\u21b2"));
 
 
   wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
@@ -2583,7 +2583,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
           s += istream1.ReadLine() + wxT("\n");
 
         // Remove the illegal character
-        s.Replace(wxT('\x1b'), wxT("|"));
+        s.Replace(wxT('\u1b'), wxT("|"));
 
         {
           // Write the string into a memory buffer
