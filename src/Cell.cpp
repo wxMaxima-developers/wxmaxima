@@ -37,7 +37,7 @@ wxString Cell::GetToolTip(const wxPoint &point)
 
   wxString toolTip;
   std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  for(std::list<Cell *>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     if(*it != NULL)
     {
@@ -222,7 +222,7 @@ int Cell::CellsInListRecursive()
   {
     cells ++;
     std::list<Cell*> cellList = tmp->GetInnerCells();
-    for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+    for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
       if(*it != NULL)
         cells += (*it)->CellsInListRecursive();
@@ -241,7 +241,7 @@ void Cell::SetGroup(Cell *group)
   }
   
   std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+  for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
   {
     if(*it != NULL)
       (*it)->SetGroupList(group);
@@ -1093,7 +1093,7 @@ void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   *last = NULL;
 
   std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+  for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     if(*it != NULL)
     {
       if ((*it)->ContainsRect(rect))
@@ -1138,7 +1138,7 @@ void Cell::ResetData()
   m_maxCenter = -1;
   m_maxDrop   = -1;
   std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+  for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     if(*it != NULL)
       (*it)->ResetData();
 }
@@ -1173,7 +1173,7 @@ void Cell::Unbreak()
 
   // Unbreak the inner cells, too
   std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  for(std::list<Cell *>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
     if(*it != NULL)
       (*it)->Unbreak();
 }
@@ -1392,7 +1392,7 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
     {
       std::list<Cell*> cellList = m_parent->GetInnerCells();
       int cnt = 1;
-      for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+      for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
         if (cnt++ == childId)
         {
           *child = *it;
@@ -1499,7 +1499,7 @@ wxString Cell::CellPointers::WXMXGetNewFileName()
 
 bool Cell::CellPointers::ErrorList::Contains(Cell *cell)
 {
-  for(std::list<Cell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
+  for(std::list<Cell *>::const_iterator it = m_errorList.begin(); it != m_errorList.end();++it)
   {
     if((*it)==cell)
       return true;
@@ -1530,7 +1530,7 @@ void Cell::MarkAsDeleted()
 
   // Delete all pointers to the cells this cell contains
   std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  for(std::list<Cell *>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     if(*it != NULL)
       (*it)->MarkAsDeleted();

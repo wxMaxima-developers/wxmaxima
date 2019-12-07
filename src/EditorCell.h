@@ -46,7 +46,7 @@
   use <code>\\r</code> as a marker that this line has to be broken here if we
   don't want it to extend beyond the right margin of the screen.
 
-  In a few places we use wxString::iterator instead of accessing individual 
+  In a few places we use wxString::const_iterator instead of accessing individual 
   letters within the string using the [] operator. This might look overly
   complicated. But in UTF-8 all non-standard-ASCII-characters use more than one
   byte making iterating over every single char of the string the only way of

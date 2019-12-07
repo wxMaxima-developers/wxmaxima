@@ -177,7 +177,7 @@ void TextCell::SetValue(const wxString &text)
 
       bool isrnum = (number != wxEmptyString);
      
-      for (wxString::iterator it = number.begin(); it != number.end(); ++it)
+      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
         if(!wxIsdigit(*it))
         {
           isrnum = false;
@@ -198,7 +198,7 @@ void TextCell::SetValue(const wxString &text)
 
       bool isinum = (number != wxEmptyString);
      
-      for (wxString::iterator it = number.begin(); it != number.end(); ++it)
+      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
         if(!wxIsdigit(*it))
         {
           isinum = false;

@@ -46,7 +46,7 @@ void RecentDocuments::Save()
 {
   wxConfigBase *config = wxConfig::Get();
   int i = 0;
-  for(std::list<wxString>::iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
+  for(std::list<wxString>::const_iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
     {
       wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       i++;
@@ -66,7 +66,7 @@ void RecentDocuments::AddDocument(wxString name)
   if((fle.GetFullPath() != wxEmptyString) && wxFileExists(fle.GetFullPath()))
     name = fle.GetFullPath();
 
-  std::list<wxString>::iterator it = m_listOfFiles.begin();
+  std::list<wxString>::const_iterator it = m_listOfFiles.begin();
   while(it != m_listOfFiles.end())
     {
       if (*it == name)

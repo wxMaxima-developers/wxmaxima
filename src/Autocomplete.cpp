@@ -105,7 +105,7 @@ void AutoComplete::AddSymbols(wxString xml)
 }
 void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 {
-  wxArrayString::iterator it;
+  wxArrayString::const_iterator it;
   for (it = wordlist.begin(); it != wordlist.end(); ++it)
     m_worksheetWords[*it] = 1;
 }
@@ -120,7 +120,7 @@ bool AutoComplete::LoadSymbols()
 
   LoadBuiltinSymbols();
   
-  for(Configuration::StringHash::iterator it = m_configuration->m_escCodes.begin();
+  for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
       it != m_configuration->m_escCodes.end();
       ++it)
     m_wordList[esccommand].Add(it->first);
@@ -358,7 +358,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   // defined as maxima commands or functions.
   if (type == command)
   {
-    WorksheetWords::iterator it;
+    WorksheetWords::const_iterator it;
     for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it)
     {
       if (it->first.StartsWith(partial))

@@ -600,7 +600,7 @@ Configuration::~Configuration()
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
 {
   wxString name = char1 + char2 + char3;
-  CharsInFontMap::iterator it = m_charsInFontMap.find(name);
+  CharsInFontMap::const_iterator it = m_charsInFontMap.find(name);
   if(it != m_charsInFontMap.end())
     return it->second;
 

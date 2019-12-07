@@ -125,7 +125,7 @@ void XmlInspector::Update()
     // Indent the XML
     wxString textWithIndention;
     long length = 0;
-    for ( wxString::iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
+    for (wxString::const_iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
     {
       length++;
       // Assume that all tags add indentation

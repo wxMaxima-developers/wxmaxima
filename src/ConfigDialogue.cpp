@@ -851,7 +851,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
 
   wxArrayString languages;
-  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
   
   m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), languages);
@@ -862,7 +862,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   int lang = wxLANGUAGE_DEFAULT;
   config->Read(wxT("language"), &lang);
   unsigned int i = 0;
-  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == wxLANGUAGE_DEFAULT)
     {
@@ -872,7 +872,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
     ++i;
   }
   i = 0;
-  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == lang)
     {
@@ -1237,7 +1237,7 @@ void ConfigDialogue::WriteSettings()
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
   long i = 0;
   config->Write(wxT("language"), (int) wxLANGUAGE_DEFAULT);
-  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(i++ == m_language->GetSelection())
       config->Write(wxT("language"), it->second);

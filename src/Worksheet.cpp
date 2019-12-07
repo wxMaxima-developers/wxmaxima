@@ -4425,7 +4425,7 @@ void Worksheet::OnTimer(wxTimerEvent &event)
       SlideShow *slideshow = NULL;
 
       // Determine if the timer that has expired belongs to a slide show cell.
-      for(Cell::CellPointers::SlideShowTimersList::iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
+      for(Cell::CellPointers::SlideShowTimersList::const_iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
       {
         if(it->second == event.GetId())
         {
@@ -6199,7 +6199,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
 
   wxChar ch;
   wxChar ch_Last = '\0';
-  for (wxString::iterator it = s.begin(); it < s.end(); ++it)
+  for (wxString::const_iterator it = s.begin(); it < s.end(); ++it)
   {
     ch = *it;
     switch (ch)
@@ -6277,7 +6277,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
     // Convert \u03C0 to %pi if it isn't part of a symbol name
     case wxT('\u03C0'):
     {
-      wxString::iterator it2 = it;
+      wxString::const_iterator it2 = it;
       ++it2;
       if (
         (!wxIsalnum(ch_Last)) &&
@@ -6594,7 +6594,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // Delete all but one control character from the string: there should be
   // no way for them to enter this string, anyway. But sometimes they still
   // do...
-  for (wxString::iterator it = xmlText.begin(); it != xmlText.end(); ++it)
+  for (wxString::const_iterator it = xmlText.begin(); it != xmlText.end(); ++it)
   {
     wxChar c = *it;
     if ((c < wxT('\t')) ||

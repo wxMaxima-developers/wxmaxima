@@ -322,7 +322,7 @@ wxString GroupCell::ToWXM(bool wxm)
       // Export the list of known answers
       if(wxm)
       {
-        for(StringHash::iterator it = m_knownAnswers.begin();
+        for(StringHash::const_iterator it = m_knownAnswers.begin();
             it != m_knownAnswers.end();
             ++it)
         {
@@ -608,13 +608,13 @@ void GroupCell::UpdateConfusableCharWarnings()
   CmdsAndVariables cmdsAndVariables;
   MaximaTokenizer::TokenList
     m_tokens = MaximaTokenizer(GroupCell::ToString(), *m_configuration).GetTokens();
-  for(MaximaTokenizer::TokenList::iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
+  for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
     cmdsAndVariables[(*it)->GetText()] = 1;
  
   // Now we step through all the words we found
   while(!cmdsAndVariables.empty())
   {
-    CmdsAndVariables::iterator cmp = cmdsAndVariables.begin();
+    CmdsAndVariables::const_iterator cmp = cmdsAndVariables.begin();
     wxString word;
     word = cmp->first;
     cmdsAndVariables.erase(cmp);
@@ -623,7 +623,7 @@ void GroupCell::UpdateConfusableCharWarnings()
     while(cmp != cmdsAndVariables.end())
     {
       // iterate through all lookalike chars
-      for (wxString::iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
+      for (wxString::const_iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
       {
         wxChar ch1 = *it;
         ++it;
@@ -1714,7 +1714,7 @@ wxString GroupCell::ToXML()
     {
       str += wxT(" type=\"code\"");
       int i = 0;
-      for(StringHash::iterator it = m_knownAnswers.begin();
+      for(StringHash::const_iterator it = m_knownAnswers.begin();
           it != m_knownAnswers.end();
           ++it)
       {

@@ -417,7 +417,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       break;
     case wxID_EXIT:
     {
-      std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
+      std::list<wxMaxima *>::const_iterator it=m_topLevelWindows.begin();
       while(it != m_topLevelWindows.end())
       {
         if (*it != NULL)

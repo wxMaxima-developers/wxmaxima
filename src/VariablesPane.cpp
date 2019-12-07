@@ -87,7 +87,7 @@ void Variablespane::OnKey(wxKeyEvent &event)
       if(!selectedRows.IsEmpty())
       {
         int offset = 0;
-        for (wxArrayInt::iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
+        for (wxArrayInt::const_iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
         {
           DeleteRows(*it-offset);
           offset++;
@@ -311,7 +311,7 @@ wxArrayString Variablespane::GetVarnames()
 wxString Variablespane::InvertCase(wxString var)
 {
   wxString retval;
-  for (wxString::iterator it = var.begin(); it != var.end(); ++it)
+  for (wxString::const_iterator it = var.begin(); it != var.end(); ++it)
   {
     if(wxIsupper(*it))
       retval += wxString(*it).Lower();
@@ -330,7 +330,7 @@ wxString Variablespane::InvertCase(wxString var)
 void Variablespane::AddWatchCode(wxString code)
 {
   wxString unescapedCode;
-  for (wxString::iterator it = code.begin(); it != code.end(); ++it)
+  for (wxString::const_iterator it = code.begin(); it != code.end(); ++it)
   {
     if(*it != '\\')
       unescapedCode+=*it;
@@ -400,7 +400,7 @@ wxString Variablespane::EscapeVarname(wxString var)
 
 bool Variablespane::IsValidVariable(wxString var)
 {
-  for (wxString::iterator it = var.begin(); it != var.end(); ++it)
+  for (wxString::const_iterator it = var.begin(); it != var.end(); ++it)
   {
     if(!wxIsprint(*it))
       return false;

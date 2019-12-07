@@ -45,7 +45,7 @@ wxString MarkDownParser::MarkDown(wxString str)
 {
   // Replace all markdown equivalents of arrows and similar symbols by the
   // according symbols
-  for (replaceList::iterator it = regexReplaceList.begin();
+  for (replaceList::const_iterator it = regexReplaceList.begin();
        it != regexReplaceList.end();
        ++it)
     (*it)->DoReplace(&str);

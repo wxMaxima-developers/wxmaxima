@@ -39,7 +39,7 @@ wxString wxMathML::GetCmd()
 
     bool stringIs = false;
     wxChar lastChar = wxT('\n');
-    wxString::iterator ch = line.begin();
+    wxString::const_iterator ch = line.begin();
     while (ch < line.end())
     {
       // Remove formatting spaces

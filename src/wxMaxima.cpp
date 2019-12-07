@@ -1537,7 +1537,7 @@ void wxMaxima::ReadMiscText(wxString &data)
   // characters are merged.
   wxString mergedWhitespace = wxT("\n");
   bool whitespace = true;
-  for ( wxString::iterator it = miscText.begin(); it!=miscText.end(); ++it)
+  for ( wxString::const_iterator it = miscText.begin(); it!=miscText.end(); ++it)
   {
     if((*it == wxT(' ')) || (*it == wxT('\t')))
     {
@@ -2190,7 +2190,7 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
   GroupCell *last = NULL;
   wxString line = wxEmptyString;
   wxChar lastChar = wxT(' ');
-  wxString::iterator ch = macContents.begin();
+  wxString::const_iterator ch = macContents.begin();
   while (ch != macContents.end())
   {
 
@@ -8050,7 +8050,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   bool endingNeeded = true;
   wxChar lastnonWhitespace;
   wxChar lastnonWhitespace_Next = wxT(' ');
-  MaximaTokenizer::TokenList::iterator it;
+  MaximaTokenizer::TokenList::const_iterator it;
   std::list<wxChar> delimiters;
   for (it = tokens.begin(); it != tokens.end(); ++it)
   {

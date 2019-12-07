@@ -100,7 +100,7 @@ void EditorCell::AddDrawParameter(wxString param)
   int pos = 1;
 
   // Insert a comma in front of the parameter, if necessary
-  wxString::iterator ch = m_text.begin();
+  wxString::const_iterator ch = m_text.begin();
   bool commaNeededBefore = false;
   bool commaNeededAfter = false;
   while (ch < m_text.end())
@@ -199,7 +199,7 @@ wxString EditorCell::GetFullCommandUnderCursor()
   wxString result;
   int pos = 1;
 
-  wxString::iterator ch = m_text.begin();
+  wxString::const_iterator ch = m_text.begin();
   while (ch < m_text.end())
   {
     result += *ch;
@@ -352,7 +352,7 @@ wxString EditorCell::ToRTF()
     case MC_TYPE_INPUT:
     {
       retval += wxT(" ");
-      for (std::vector<StyledText>::iterator textSnippet = m_styledText.begin();
+      for (std::vector<StyledText>::const_iterator textSnippet = m_styledText.begin();
            textSnippet != m_styledText.end(); ++textSnippet)
       {
 
@@ -613,7 +613,7 @@ void EditorCell::RecalculateWidths(int fontsize)
 
     m_numberOfLines = 1;
 
-    std::vector<StyledText>::iterator textSnippet;
+    std::vector<StyledText>::const_iterator textSnippet;
 
     for (
             textSnippet = m_styledText.begin();
@@ -661,7 +661,7 @@ wxString EditorCell::ToHTML()
 
   while (tmp != NULL)
   {
-    for (std::vector<StyledText>::iterator textSnippet = m_styledText.begin();
+    for (std::vector<StyledText>::const_iterator textSnippet = m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet)
     {
       wxString text = PrependNBSP(EscapeHTMLChars(textSnippet->GetText()));
@@ -1058,7 +1058,7 @@ wxString EditorCell::GetCurrentCommand()
 
   wxString command;
   wxString possibleCommand;
-  wxString::iterator it = lineTillCursor.begin();
+  wxString::const_iterator it = lineTillCursor.begin();
   while(it != lineTillCursor.end())
   {
     if(wxIsalpha(*it) || (*it == wxT('_')) || (*it == wxT('\\')))
@@ -1133,7 +1133,7 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
   // Convert the text to our line endings.
   input.Replace(wxT("\r\n"), wxT("\n"));
 
-  wxString::iterator ch = input.begin();
+  wxString::const_iterator ch = input.begin();
   while (ch < input.end())
   {
     if ((*ch == wxT('\n')))
@@ -2750,7 +2750,7 @@ void EditorCell::SelectPointText(const wxPoint &point)
   // Find the text snippet the line we search for begins with
   int currentLine = 1;
   int indentPixels = 0;
-  std::vector<StyledText>::iterator textSnippet;
+  std::vector<StyledText>::const_iterator textSnippet;
   for (textSnippet = m_styledText.begin();
        ((textSnippet != m_styledText.end()) && (currentLine <= lin)); ++textSnippet)
   {
@@ -2889,7 +2889,7 @@ bool EditorCell::IsPointInSelection(wxPoint point)
   // the indentation needed.
   unsigned int currentLine = 1;
   int indentPixels = 0;
-  std::vector<StyledText>::iterator textSnippet;
+  std::vector<StyledText>::const_iterator textSnippet;
   for (textSnippet = m_styledText.begin();
        ((textSnippet < m_styledText.end()) && (currentLine < lin)); ++textSnippet)
   {
@@ -3011,7 +3011,7 @@ wxString EditorCell::GetWordUnderCaret()
 
   wxString retval;
   unsigned long pos = 0;
-  for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
+  for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
     if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&'))
     {
@@ -3053,7 +3053,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
   
   long start = 0;
   long pos = 0;
-  for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
+  for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
     if(*it == '\\')
     {
@@ -3185,7 +3185,7 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
   // the indentation needed.
   unsigned int currentLine = 1;
   int indentPixels = 0;
-  std::vector<StyledText>::iterator textSnippet;
+  std::vector<StyledText>::const_iterator textSnippet;
   for (textSnippet = m_styledText.begin();
        ((textSnippet < m_styledText.end()) && (currentLine <= line)); ++textSnippet)
   {
@@ -3417,7 +3417,7 @@ void EditorCell::StyleTextCode()
   int lineWidth = 0;
   MaximaTokenizer::Token token;
 
-  for(MaximaTokenizer::TokenList::iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
+  for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
   {
     pos += token.GetText().Length();
     token = *(*it);
@@ -3454,7 +3454,7 @@ void EditorCell::StyleTextCode()
     // Most of the other item types can contain Newlines - that we want as separate tokens
     wxString txt = tokenString;
     wxString line;      
-    for (wxString::iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
+    for (wxString::const_iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
     {
       if(*it2 != '\n')
         line +=wxString(*it2);
