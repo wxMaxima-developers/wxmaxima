@@ -30,9 +30,9 @@
 #include "TextCell.h"
 
 #if defined __WXMSW__
-#define INTEGRAL_TOP "\uF3"
-#define INTEGRAL_BOTTOM "\uF5"
-#define INTEGRAL_EXTEND "\uF4"
+#define INTEGRAL_TOP "\xF3"
+#define INTEGRAL_BOTTOM "\xF5"
+#define INTEGRAL_EXTEND "\xF4"
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
