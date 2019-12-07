@@ -31,8 +31,8 @@
 #include "SumCell.h"
 #include "TextCell.h"
 
-#define SUM_SIGN "0058"
-#define PROD_SIGN "\u0u00"
+#define SUM_SIGN "\u2211"
+#define PROD_SIGN "\u220F"
 #define SUM_DEC 2
 
 SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
