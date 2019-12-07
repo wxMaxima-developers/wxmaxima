@@ -36,8 +36,6 @@
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
-#define ESC_CHAR wxT('\x238B')
-
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
   Cell(parent, config, cellPointers),
@@ -286,7 +284,7 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   // Remove all soft line breaks
   text.Replace(wxT('\r'), wxT(' '));
   // Convert non-breakable spaces to breakable ones
-  text.Replace(wxT("\ua0"), wxT(" "));
+  text.Replace(wxT("\u00a0"), wxT(" "));
 
   if (SelectionActive() && (!dontLimitToSelection))
   {
@@ -310,7 +308,7 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection)
   // Remove all soft line breaks
   text.Replace(wxT('\r'), wxT(' '));
   // Convert non-breakable spaces to breakable ones
-  text.Replace(wxT("\ua0"), wxT(" "));
+  text.Replace(wxT("\u00a0"), wxT(" "));
 
   if (SelectionActive() && (!dontLimitToSelection))
   {
@@ -418,7 +416,7 @@ wxString EditorCell::ToTeX()
   wxString text = m_text;
   if (!text.StartsWith(wxT("TeX:")))
   {
-    text.Replace(wxT("\ua0"), wxT("~"));
+    text.Replace(wxT("\u00a0"), wxT("~"));
     text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
     text.Replace(wxT("\r"), wxEmptyString);
     text.Replace(wxT("^"), wxT("\\^{}"));
@@ -526,7 +524,7 @@ wxString EditorCell::ToTeX()
     text.Replace(wxT("&"), wxT("\\&"));
     text.Replace(wxT("@"), wxT("\\ensuremath{@}"));
     text.Replace(wxT("#"), wxT("\\ensuremath{\\neq}"));
-    text.Replace(wxT("\uA0"), wxT("~")); // A non-breakable space
+    text.Replace(wxT("\u00A0"), wxT("~")); // A non-breakable space
     text.Replace(wxT("<"), wxT("\\ensuremath{<}"));
     text.Replace(wxT(">"), wxT("\\ensuremath{>}"));
     text.Replace(wxT("\u219D"), wxT("\\ensuremath{\\leadsto}"));
@@ -2147,57 +2145,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
       }
       StyleText();
       break;
-/*
-  case WXK_SPACE:
-    if (event.ShiftDown())
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT("*") + // wxT("\u00B7")
-               m_text.SubString(m_positionOfCaret, m_text.Length());
-    else
-      m_text = m_text.SubString(0, m_positionOfCaret - 1) + wxT(" ") +
-               m_text.SubString(m_positionOfCaret, m_text.Length());
-    m_isDirty = true;
-    m_containsChanges = true;
-    m_positionOfCaret++;
-    break;
-*/
-    case WXK_ESCAPE:
-      if (m_selectionStart != -1)
-      {
-        m_positionOfCaret = m_selectionEnd;
-        ClearSelection();
-      }
-      else
-      {
-        bool insertescchar = false;
-        int esccharpos = m_text.Left(m_positionOfCaret).Find(ESC_CHAR, true);
-        if (esccharpos > -1)
-        { // we have a match, check for insertion
-          wxString greek = InterpretEscapeString(m_text.SubString(esccharpos + 1, m_positionOfCaret - 1));
-          if (greek.Length() > 0)
-          {
-            m_text = m_text.SubString(0, esccharpos - 1) + greek +
-                     m_text.SubString(m_positionOfCaret, m_text.Length());
-            m_positionOfCaret = esccharpos + greek.Length();
-            m_isDirty = true;
-            m_containsChanges = true;
-          }
-          else
-            insertescchar = true;
-        }
-        else
-          insertescchar = true;
-
-        if (insertescchar)
-        {
-          m_text = m_text.SubString(0, m_positionOfCaret - 1) + ESC_CHAR +
-                   m_text.SubString(m_positionOfCaret, m_text.Length());
-          m_isDirty = true;
-          m_containsChanges = true;
-          m_positionOfCaret++;
-        }
-      }
-      StyleText();
-      break;
 
       /* Ignored keys */
     case WXK_WINDOWS_LEFT:
@@ -2329,7 +2276,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
     chr = event.GetUnicodeKey();
 
     if (event.ShiftDown())
-      chr.Replace(wxT(" "), wxT("\ua0"));
+      chr.Replace(wxT(" "), wxT("\u00a0"));
 
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
              chr +
@@ -3716,7 +3663,7 @@ void EditorCell::StyleTextTexts()
         if (
             (line_trimmed.StartsWith(wxT("* "))) ||
             (line_trimmed.StartsWith(wxT("\u2022 "))) ||
-            (line_trimmed.StartsWith(wxT("\uB7 "))) ||
+            (line_trimmed.StartsWith(wxT("\u00B7 "))) ||
             (line_trimmed.StartsWith(wxT("> ")))
             )
         {
@@ -3738,8 +3685,8 @@ void EditorCell::StyleTextTexts()
           // Equip bullet lists with real bullets
           if (line_trimmed.StartsWith(wxT("* ")))
             line[line.find("*")] = wxT('\u2022');
-          if (line_trimmed.StartsWith(wxT("\uB7 ")))
-            line[line.find("\uB7")] = wxT('\u2022');
+          if (line_trimmed.StartsWith(wxT("\u00B7 ")))
+            line[line.find("\u00B7")] = wxT('\u2022');
 
           // Remember what a continuation for this indenting object would begin with
           prefixes.push_back(wxT("  ") + line.Left(line.Length() - line_trimmed.Length()));
