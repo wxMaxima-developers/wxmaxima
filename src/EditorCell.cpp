@@ -36,7 +36,7 @@
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
-#define ESC_CHAR wxT('\uA6')
+#define ESC_CHAR wxT('\x238B')
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
