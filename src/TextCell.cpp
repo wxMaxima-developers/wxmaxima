@@ -111,6 +111,7 @@ void TextCell::SetValue(const wxString &text)
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
   ResetSize();
+  m_text.Replace(wxT("\xDCB6"), wxT("\u00A0")); // A non-breakable space
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_text.Replace(wxT("-->"), wxT("\u2794"));
   m_text.Replace(wxT(" -->"), wxT("\u2794"));
@@ -553,7 +554,7 @@ void TextCell::Draw(wxPoint point)
 
         /// Change asterisk
       else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
-        dc->DrawText(wxT("\uB7"),
+        dc->DrawText(wxT("\u00B7"),
                     point.x + MC_TEXT_PADDING,
                     point.y - m_realCenter + MC_TEXT_PADDING);
 
@@ -1009,7 +1010,7 @@ wxString TextCell::ToTeX()
     // is chosen to show that this is a multiplication.
     // But any use of \mathit{} will change to ordinary text spacing which means we need
     // to add a \, to show that we want to multiply the two long variable names.
-    if ((text == wxT("*")) || (text == wxT("\uB7")))
+    if ((text == wxT("*")) || (text == wxT("\u00B7")))
     {
       // We have a hidden multiplication sign
       if (
@@ -1043,7 +1044,7 @@ wxString TextCell::ToTeX()
     if (m_SuppressMultiplicationDot)
     {
       text.Replace(wxT("*"), wxT("\\, "));
-      text.Replace(wxT("\uB7"), wxT("\\, "));
+      text.Replace(wxT("\u00B7"), wxT("\\, "));
     }
     else
     {
@@ -1054,12 +1055,12 @@ wxString TextCell::ToTeX()
         if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX() == wxT("d"))
         {
           text.Replace(wxT("*"), wxT("\\, "));
-          text.Replace(wxT("\uB7"), wxT("\\, "));
+          text.Replace(wxT("\u00B7"), wxT("\\, "));
         }
         else
         {
           text.Replace(wxT("*"), wxT("\\cdot "));
-          text.Replace(wxT("\uB7"), wxT("\\cdot "));
+          text.Replace(wxT("\u00B7"), wxT("\\cdot "));
         }
       }
     }
@@ -1265,11 +1266,11 @@ wxString TextCell::ToMathML()
   if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
   {
     text.Replace(wxT("*"), wxT("&#8290;"));
-    text.Replace(wxT("\uB7"), wxT("&#8290;"));
+    text.Replace(wxT("\u00B7"), wxT("&#8290;"));
     if (text != wxT ("&#8290;"))
       text = wxEmptyString;
   }
-  text.Replace(wxT("*"), wxT("\uB7"));
+  text.Replace(wxT("*"), wxT("\u00B7"));
 
   switch (GetStyle())
   {
@@ -1354,11 +1355,11 @@ wxString TextCell::ToOMML()
   if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
   {
     text.Replace(wxT("*"), wxT("&#8290;"));
-    text.Replace(wxT("\uB7"), wxT("&#8290;"));
+    text.Replace(wxT("\u00B7"), wxT("&#8290;"));
     if (text != wxT ("&#8290;"))
       text = wxEmptyString;
   }
-  text.Replace(wxT("*"), wxT("\uB7"));
+  text.Replace(wxT("*"), wxT("\u00B7"));
 
   switch (GetStyle())
   {
@@ -1725,72 +1726,72 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const
 wxString TextCell::GetGreekStringTeX() const
 {
   if (m_text == wxT("gamma"))
-    return wxT("\uC0");
+    return wxT("\u00C0");
   else if (m_text == wxT("zeta"))
-    return wxT("\uB0");
+    return wxT("\u00B0");
   else if (m_text == wxT("psi"))
-    return wxT("\uC9");
+    return wxT("\u00C9");
 
   wxString txt(m_text);
   if (txt[0] != '%')
     txt = wxT("%") + txt;
 
   if (txt == wxT("%alpha"))
-    return wxT("\uCB");
+    return wxT("\u00CB");
   else if (txt == wxT("%beta"))
-    return wxT("\uCC");
+    return wxT("\u00CC");
   else if (txt == wxT("%gamma"))
-    return wxT("\uCD");
+    return wxT("\u00CD");
   else if (txt == wxT("%delta"))
-    return wxT("\uCE");
+    return wxT("\u00CE");
   else if (txt == wxT("%epsilon"))
-    return wxT("\uCF");
+    return wxT("\u00CF");
   else if (txt == wxT("%zeta"))
-    return wxT("\uB0");
+    return wxT("\u00B0");
   else if (txt == wxT("%eta"))
-    return wxT("\uD1");
+    return wxT("\u00D1");
   else if (txt == wxT("%theta"))
-    return wxT("\uD2");
+    return wxT("\u00D2");
   else if (txt == wxT("%iota"))
-    return wxT("\uD3");
+    return wxT("\u00D3");
   else if (txt == wxT("%kappa"))
-    return wxT("\uD4");
+    return wxT("\u00D4");
   else if (txt == wxT("%lambda"))
-    return wxT("\uD5");
+    return wxT("\u00D5");
   else if (txt == wxT("%mu"))
-    return wxT("\uD6");
+    return wxT("\u00D6");
   else if (txt == wxT("%nu"))
-    return wxT("\uB7");
+    return wxT("\u00B7");
   else if (txt == wxT("%xi"))
-    return wxT("\uD8");
+    return wxT("\u00D8");
   else if (txt == wxT("%omicron"))
     return wxT("o");
   else if (txt == wxT("%pi"))
-    return wxT("\uD9");
+    return wxT("\u00D9");
   else if (txt == wxT("%rho"))
-    return wxT("\uDA");
+    return wxT("\u00DA");
   else if (txt == wxT("%sigma"))
-    return wxT("\uDB");
+    return wxT("\u00DB");
   else if (txt == wxT("%tau"))
-    return wxT("\uDC");
+    return wxT("\u00DC");
   else if (txt == wxT("%upsilon"))
-    return wxT("\uB5");
+    return wxT("\u00B5");
   else if (txt == wxT("%chi"))
-    return wxT("\uDF");
+    return wxT("\u00DF");
   else if (txt == wxT("%psi"))
-    return wxT("\uEF");
+    return wxT("\u00EF");
   else if (txt == wxT("%phi"))
-    return wxT("\u27");
+    return wxT("\u0027");
   else if (txt == wxT("%omega"))
-    return wxT("\u21");
+    return wxT("\u0021");
   else if (txt == wxT("%Alpha"))
     return wxT("A");
   else if (txt == wxT("%Beta"))
     return wxT("B");
   else if (txt == wxT("%Gamma"))
-    return wxT("\uC0");
+    return wxT("\u00C0");
   else if (txt == wxT("%Delta"))
-    return wxT("\uC1");
+    return wxT("\u00C1");
   else if (txt == wxT("%Epsilon"))
     return wxT("E");
   else if (txt == wxT("%Zeta"))
@@ -1798,39 +1799,39 @@ wxString TextCell::GetGreekStringTeX() const
   else if (txt == wxT("%Eta"))
     return wxT("H");
   else if (txt == wxT("%Theta"))
-    return wxT("\uC2");
+    return wxT("\u00C2");
   else if (txt == wxT("%Iota"))
     return wxT("I");
   else if (txt == wxT("%Kappa"))
     return wxT("K");
   else if (txt == wxT("%Lambda"))
-    return wxT("\uC3");
+    return wxT("\u00C3");
   else if (txt == wxT("%Mu"))
     return wxT("M");
   else if (txt == wxT("%Nu"))
     return wxT("N");
   else if (txt == wxT("%Xi"))
-    return wxT("\uC4");
+    return wxT("\u00C4");
   else if (txt == wxT("%Omicron"))
     return wxT("O");
   else if (txt == wxT("%Pi"))
-    return wxT("\uC5");
+    return wxT("\u00C5");
   else if (txt == wxT("%Rho"))
     return wxT("P");
   else if (txt == wxT("%Sigma"))
-    return wxT("\uC6");
+    return wxT("\u00C6");
   else if (txt == wxT("%Tau"))
     return wxT("T");
   else if (txt == wxT("%Upsilon"))
     return wxT("Y");
   else if (txt == wxT("%Phi"))
-    return wxT("\uC8");
+    return wxT("\u00C8");
   else if (txt == wxT("%Chi"))
     return wxT("X");
   else if (txt == wxT("%Psi"))
-    return wxT("\uC9");
+    return wxT("\u00C9");
   else if (txt == wxT("%Omega"))
-    return wxT("\uCA");
+    return wxT("\u00CA");
 
   return wxEmptyString;
 }
@@ -1838,36 +1839,36 @@ wxString TextCell::GetGreekStringTeX() const
 wxString TextCell::GetSymbolTeX() const
 {
   if (m_text == wxT("inf"))
-    return wxT("\u31");
+    return wxT("\u0031");
   else if (m_text == wxT("+"))
     return wxT("+");
   else if (m_text == wxT("%pi"))
-    return wxT("\uD9");
+    return wxT("\u00D9");
   else if (m_text == wxT("="))
     return wxT("=");
   else if (m_text == wxT("->"))
-    return wxT("\u21");
+    return wxT("\u0021");
   else if (m_text == wxT(">="))
-    return wxT("\uD5");
+    return wxT("\u00D5");
   else if (m_text == wxT("<="))
-    return wxT("\uD4");
+    return wxT("\u00D4");
 /*
   else if (m_text == wxT(" and "))
-    return wxT(" \u5E ");
+    return wxT(" \u005E ");
   else if (m_text == wxT(" or "))
-    return wxT(" \u5F ");
+    return wxT(" \u005F ");
   else if (m_text == wxT(" nand "))
-    return wxT(" \u22 ");
+    return wxT(" \u0022 ");
   else if (m_text == wxT(" nor "))
-    return wxT(" \u23 ");
+    return wxT(" \u0023 ");
   else if (m_text == wxT(" eq "))
-    return wxT(" \u2C ");
+    return wxT(" \u002C ");
   else if (m_text == wxT(" implies "))
-    return wxT(" \u29 ");
+    return wxT(" \u0029 ");
   else if (m_text == wxT("not"))
-    return wxT("\u3A");
+    return wxT("\u003A");
   else if (m_text == wxT(" xor "))
-    return wxT("\uC8");
+    return wxT("\u00C8");
 */
 
   return wxEmptyString;
