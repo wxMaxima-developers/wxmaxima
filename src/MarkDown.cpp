@@ -280,7 +280,7 @@ MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
   regexReplaceList.push_back(
           new RegexReplacer(wxT("\\&gt;="), wxT("\u2265")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\+/-"), wxT("\uB1")));
+          new RegexReplacer(wxT("\\+/-"), wxT("\u00B1")));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\u00A0"), wxT("\uA0")));
+    new RegexReplacer(wxT("\u00A0"), wxT("\u00A0")));
 }
