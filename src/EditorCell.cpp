@@ -250,7 +250,7 @@ wxString EditorCell::PrependNBSP(wxString input)
         retval += ch;
       }
       else
-        retval += wxT("\uA0");
+        retval += wxT("\u00A0");
     }
     else
     {
