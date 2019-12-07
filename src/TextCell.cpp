@@ -995,7 +995,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("&"), wxT("\\& "));
   text.Replace(wxT("@"), mathModeStart + wxT("@") + mathModeEnd);
   text.Replace(wxT("#"), mathModeStart + wxT("\\neq") + mathModeEnd);
-  text.Replace(wxT("\uDCB6"), wxT("~")); // A non-breakable space
+  text.Replace(wxT("\u00A0"), wxT("~")); // A non-breakable space
   text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
   text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
   text.Replace(wxT("\u219D"), mathModeStart + wxT("\\leadsto") + mathModeEnd);
