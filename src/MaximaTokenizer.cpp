@@ -75,7 +75,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       continue;
     }
     // Check for comments
-    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\uB7'))))
+    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\u00B7'))))
     {
       wxString token;
       // Add the comment start
@@ -106,7 +106,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           nextCh = *it3;
 
         // handle comment begins within comments.
-        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\uB7'))))
+        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\u00B7'))))
         {
           commentDepth++;
           token += *it;
@@ -119,7 +119,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           continue;
         }
         // handle comment endings
-        if(((*it == '*') || (*it == wxT('\uB7'))) && (nextCh == '/'))
+        if(((*it == '*') || (*it == wxT('\u00B7'))) && (nextCh == '/'))
         {
           commentDepth--;
           token += *it;
@@ -181,7 +181,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         wxString token = wxString(Ch);
         if (configuration->GetChangeAsterisk())
         {
-          token.Replace(wxT("*"), wxT("\uB7"));
+          token.Replace(wxT("*"), wxT("\u00B7"));
           token.Replace(wxT("-"), wxT("\u2212"));
         }
         
