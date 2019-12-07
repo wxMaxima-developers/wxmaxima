@@ -2583,7 +2583,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
           s += istream1.ReadLine() + wxT("\n");
 
         // Remove the illegal character
-        s.Replace(wxT('\u001b'), wxT("|"));
+        s.Replace(wxT('\u001b'), wxT("\u238B"));
 
         {
           // Write the string into a memory buffer
