@@ -526,7 +526,6 @@ protected:
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
   Cell *m_lastInOutput;
-  Cell *m_appendedCells;
   static wxString m_lookalikeChars;
 private:
   //! Does this GroupCell automatically fill in the answer to questions?
