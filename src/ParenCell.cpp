@@ -277,7 +277,7 @@ void ParenCell::RecalculateHeight(int fontsize)
           wxPoint(m_currentPoint.x + m_signWidth,
                   m_currentPoint.y));
       
-      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(5);      
+      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(4);
       m_center = m_height / 2;   
     }
   }
@@ -347,15 +347,15 @@ void ParenCell::Draw(wxPoint point)
       wxPoint pointList[5];
       // Left bracket
       pointList[0] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center);
+                             point.y - m_center + Scale_Px(4));
       pointList[1] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                             point.y - m_center + signWidth / 2);
+                             point.y - m_center + signWidth / 2 + Scale_Px(4));
       pointList[2] = wxPoint(point.x + Scale_Px(1),
                              point.y);
       pointList[3] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                             point.y + m_center - signWidth / 2);
+                             point.y + m_center - signWidth / 2 - Scale_Px(4));
       pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y + m_center);
+                             point.y + m_center - Scale_Px(4));
       configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
       pointList[2] = wxPoint(point.x + Scale_Px(1.5),
                              point.y);
@@ -363,15 +363,15 @@ void ParenCell::Draw(wxPoint point)
       
       // Right bracket
       pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                             point.y - m_center);
+                             point.y - m_center + Scale_Px(4));
       pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                             point.y - m_center + signWidth / 2);
+                             point.y - m_center + signWidth / 2 + Scale_Px(4));
       pointList[2] = wxPoint(point.x + m_width - Scale_Px(1.5),
                              point.y);
       pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                             point.y + m_center - signWidth / 2);
+                             point.y + m_center - signWidth / 2 - Scale_Px(4));
       pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                             point.y + m_center);
+                             point.y + m_center - Scale_Px(4));
       configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
       pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
                              point.y);
