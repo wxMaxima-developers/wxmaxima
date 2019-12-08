@@ -2946,7 +2946,7 @@ void wxMaxima::ShowTip(bool force)
   {
     wxConfigBase *config = wxConfig::Get();
     config->Read(wxT("ShowTips"), &ShowTips);
-    if (!ShowTips && !force)
+    if ((!ShowTips && !force) || m_evalOnStartup )
       return;
   }
 
