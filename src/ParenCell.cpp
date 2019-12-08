@@ -277,7 +277,7 @@ void ParenCell::RecalculateHeight(int fontsize)
           wxPoint(m_currentPoint.x + m_signWidth,
                   m_currentPoint.y));
       
-      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);      
+      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(5);      
       m_center = m_height / 2;   
     }
   }
