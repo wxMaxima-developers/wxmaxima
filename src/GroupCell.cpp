@@ -614,7 +614,7 @@ void GroupCell::UpdateConfusableCharWarnings()
   // Now we step through all the words we found
   while(!cmdsAndVariables.empty())
   {
-    CmdsAndVariables::const_iterator cmp = cmdsAndVariables.begin();
+    CmdsAndVariables::iterator cmp = cmdsAndVariables.begin();
     wxString word;
     word = cmp->first;
     cmdsAndVariables.erase(cmp);
