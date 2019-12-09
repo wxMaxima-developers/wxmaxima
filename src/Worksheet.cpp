@@ -5957,7 +5957,8 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
           wxmLines->RemoveAt(0);
         }
 
-        cell->SetOutput(new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(ln), imgtype));
+        cell->SetOutput(
+          new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(ln), imgtype));
       }
     }
       // Print input
