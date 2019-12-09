@@ -8269,20 +8269,14 @@ void wxMaxima::TriggerEvaluation()
       tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
-      TextCell *cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
+      TextCell *cell = new TextCell(tmp, &(m_worksheet->m_configuration),
                                     &m_worksheet->m_cellPointers,
                                     _("Refusing to send cell to maxima: ") +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
-      cell->SetGroup(tmp);
-      tmp->InEvaluationQueue(false);
-      tmp->LastInEvaluationQueue(false);
       tmp->SetOutput(cell);
-      tmp->ResetSize();
-      tmp->Recalculate();
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
-      m_worksheet->Recalculate(cell->GetGroup());
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
 

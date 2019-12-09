@@ -523,7 +523,8 @@ void GroupCell::SetOutput(Cell *output)
   }
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
-//  Recalculate();
+//  ResetSize();
+  GroupCell::Recalculate();
 }
 
 void GroupCell::RemoveOutput()
@@ -658,8 +659,8 @@ void GroupCell::Recalculate()
   m_fontSize = fontsize;
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
 
-  RecalculateWidths(fontsize);
-  RecalculateHeight(fontsize);
+  GroupCell::RecalculateWidths(fontsize);
+  GroupCell::RecalculateHeight(fontsize);
 }
 
 void GroupCell::RecalculateWidths(int fontsize)
