@@ -67,7 +67,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_isHidden = false;
   m_groupType = groupType;
   m_lastInOutput = NULL;
-  m_appendedCells = NULL;
 
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK)
@@ -593,9 +592,6 @@ void GroupCell::AppendOutput(Cell *cell)
         m_lastInOutput = m_lastInOutput->m_next;
   }
 
-  if (m_appendedCells == NULL)
-    m_appendedCells = cell;
-
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
 }
@@ -862,17 +858,10 @@ void GroupCell::RecalculateHeightOutput()
     
     RecalculateWidths(fontsize);
     RecalculateHeightInput();
-    m_appendedCells = m_output;
   }
-  if (m_appendedCells == NULL)
-    m_appendedCells = m_inputLabel;
-  if (m_appendedCells == NULL)
-    m_appendedCells = GetOutput();
-  if (m_appendedCells == NULL)
-    return;
-  m_appendedCells->HardLineBreak();
+  m_output->HardLineBreak();
 
-  Cell *tmp = m_appendedCells;
+  Cell *tmp = m_output;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
   m_mathFontSize = configuration->GetMathFontSize();
 
@@ -884,10 +873,10 @@ void GroupCell::RecalculateHeightOutput()
   }
 
   // Breakup cells and break lines
-  BreakLines(m_appendedCells);
+  BreakLines(m_output);
 
   // Recalculate size of cells
-  tmp = m_appendedCells;
+  tmp = m_output;
   while (tmp != NULL)
   {
     tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
@@ -896,7 +885,7 @@ void GroupCell::RecalculateHeightOutput()
   }
 
   // Update heights
-  tmp = m_appendedCells;
+  tmp = m_output;
   tmp->ForceBreakLine(true);
   while (tmp != NULL)
   {
@@ -923,7 +912,6 @@ void GroupCell::RecalculateHeightOutput()
     }
     tmp = tmp->m_nextToDraw;
   }
-  m_appendedCells = NULL;
 
   ResetData();
   
@@ -958,9 +946,6 @@ void GroupCell::RecalculateHeight(int fontsize)
 //    m_height = configuration->GetCellBracketWidth();
   
   UpdateYPosition();
-  // If code is hidden and there is no output a cell can have the height
-  // 0. If it is higher than that we make our cell high enough to fit the 
-  // bracket in.  m_appendedCells = NULL;
 }
 
 GroupCell *GroupCell::UpdateYPosition()
