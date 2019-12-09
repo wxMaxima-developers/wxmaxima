@@ -374,14 +374,6 @@ public:
   //!  Return this cell's section- or image number.
   void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
 
-  /*! Recalculate the cell dimensions after appending new lines.
-
-    Won't work if text has been added to the end of the line instead.
-    \attention Needs to be in sync with the height calculation done during Draw() and
-    during RecalculateHeightOutput
-   */
-  void RecalculateAppended();
-
   /* Draw this GroupCell
 
      Also assigns all output cells contained in this GroupCell an y coordinate.

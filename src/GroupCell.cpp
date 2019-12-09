@@ -849,7 +849,93 @@ void GroupCell::RecalculateHeightOutput()
   {
     m_appendedCells = m_output;
     if(m_output != NULL)
-      RecalculateAppended();
+    {
+      if(m_isHidden)
+        return;
+      if(NeedsRecalculation())
+        m_appendedCells = m_output;
+      Configuration *configuration = (*m_configuration);
+    
+      if(m_height < 0)
+      {
+        int fontsize = configuration->GetDefaultFontSize();
+      
+        m_fontSize = fontsize;
+        m_mathFontSize = (*m_configuration)->GetMathFontSize();
+    
+        RecalculateWidths(fontsize);
+        RecalculateHeightInput();
+        m_appendedCells = m_output;
+      }
+      if (m_appendedCells == NULL)
+        m_appendedCells = m_inputLabel;
+      if (m_appendedCells == NULL)
+        m_appendedCells = GetOutput();
+      if (m_appendedCells == NULL)
+        return;
+      m_appendedCells->HardLineBreak();
+
+      Cell *tmp = m_appendedCells;
+      m_fontSize = configuration->GetFontSize(TS_TEXT);
+      m_mathFontSize = configuration->GetMathFontSize();
+
+      // Recalculate widths of cells
+      while (tmp != NULL)
+      {
+        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp = tmp->m_next;
+      }
+
+      // Breakup cells and break lines
+      BreakLines(m_appendedCells);
+
+      // Recalculate size of cells
+      tmp = m_appendedCells;
+      while (tmp != NULL)
+      {
+        tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->ResetData();
+        tmp = tmp->m_next;
+      }
+
+      // Update heights
+      tmp = m_appendedCells;
+      tmp->ForceBreakLine(true);
+      while (tmp != NULL)
+      {
+        if (tmp->BreakLineHere())
+        {
+          int height_Delta = tmp->GetMaxHeight();
+          m_width = wxMax(m_width, tmp->GetLineWidth());
+          m_height            += height_Delta;
+          m_outputRect.width = m_width;
+          m_outputRect.height += height_Delta;
+      
+          if (tmp->m_previousToDraw != NULL &&
+              ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
+          {
+            m_height            += configuration->GetInterEquationSkip();
+            m_outputRect.height += configuration->GetInterEquationSkip();
+          }
+
+          if (tmp->m_bigSkip)
+          {
+            m_height            += MC_LINE_SKIP;
+            m_outputRect.height += MC_LINE_SKIP;
+          }
+        }
+        tmp = tmp->m_nextToDraw;
+      }
+      m_appendedCells = NULL;
+
+      ResetData();
+  
+      // Move all cells that follow the current one down by the amount this cell has grown.
+      GroupCell *cell = this;
+      while(cell != NULL)
+        cell = cell->UpdateYPosition();
+      (*m_configuration)->AdjustWorksheetSize(true);
+    }
   }
 }
 
@@ -880,96 +966,6 @@ void GroupCell::RecalculateHeight(int fontsize)
   // If code is hidden and there is no output a cell can have the height
   // 0. If it is higher than that we make our cell high enough to fit the 
   // bracket in.  m_appendedCells = NULL;
-}
-
-// We assume that appended cells will be in a new line!
-void GroupCell::RecalculateAppended()
-{  
-  if(m_isHidden)
-    return;
-  if(NeedsRecalculation())
-    m_appendedCells = m_output;
-  Configuration *configuration = (*m_configuration);
-    
-  if(m_height < 0)
-  {
-    int fontsize = configuration->GetDefaultFontSize();
-      
-    m_fontSize = fontsize;
-    m_mathFontSize = (*m_configuration)->GetMathFontSize();
-    
-    RecalculateWidths(fontsize);
-    RecalculateHeightInput();
-    m_appendedCells = m_output;
-  }
-  if (m_appendedCells == NULL)
-    m_appendedCells = m_inputLabel;
-  if (m_appendedCells == NULL)
-    m_appendedCells = GetOutput();
-  if (m_appendedCells == NULL)
-    return;
-  m_appendedCells->HardLineBreak();
-
-  Cell *tmp = m_appendedCells;
-  m_fontSize = configuration->GetFontSize(TS_TEXT);
-  m_mathFontSize = configuration->GetMathFontSize();
-
-  // Recalculate widths of cells
-  while (tmp != NULL)
-  {
-    tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-    tmp = tmp->m_next;
-  }
-
-  // Breakup cells and break lines
-  BreakLines(m_appendedCells);
-
-  // Recalculate size of cells
-  tmp = m_appendedCells;
-  while (tmp != NULL)
-  {
-    tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-    tmp->ResetData();
-    tmp = tmp->m_next;
-  }
-
-  // Update heights
-  tmp = m_appendedCells;
-  tmp->ForceBreakLine(true);
-  while (tmp != NULL)
-  {
-    if (tmp->BreakLineHere())
-    {
-      int height_Delta = tmp->GetMaxHeight();
-      m_width = wxMax(m_width, tmp->GetLineWidth());
-      m_height            += height_Delta;
-      m_outputRect.width = m_width;
-      m_outputRect.height += height_Delta;
-      
-      if (tmp->m_previousToDraw != NULL &&
-          ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
-      {
-        m_height            += configuration->GetInterEquationSkip();
-        m_outputRect.height += configuration->GetInterEquationSkip();
-      }
-
-      if (tmp->m_bigSkip)
-      {
-        m_height            += MC_LINE_SKIP;
-        m_outputRect.height += MC_LINE_SKIP;
-      }
-    }
-    tmp = tmp->m_nextToDraw;
-  }
-  m_appendedCells = NULL;
-
-  ResetData();
-  
-  // Move all cells that follow the current one down by the amount this cell has grown.
-  GroupCell *cell = this;
-  while(cell != NULL)
-    cell = cell->UpdateYPosition();
-  (*m_configuration)->AdjustWorksheetSize(true);
 }
 
 GroupCell *GroupCell::UpdateYPosition()
