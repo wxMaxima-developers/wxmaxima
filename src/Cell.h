@@ -557,7 +557,7 @@ class Cell
     This cell therefore needs to know which font size it has to be drawn at.
   */
   virtual void RecalculateHeight(int fontsize)
-    {m_fontSize = fontsize; m_recalculateForce = false;}
+    {m_fontSize = fontsize;}
 
   /*! Recalculate the height of this list of cells
 
@@ -1011,8 +1011,6 @@ protected:
 virtual std::list<Cell *> GetInnerCells() = 0;
 
 protected:
-  //! true = The cell contents was changed causing the need for a recalculation.
-  bool m_recalculateForce;
   //! The height of this cell.
   int m_height;
   /*! The width of this cell.
