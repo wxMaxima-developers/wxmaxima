@@ -279,6 +279,7 @@ bool GroupCell::Empty()
 
 void GroupCell::ResetInputLabel()
 {
+  m_recalculateForce = true;
   if (m_groupType == GC_TYPE_CODE)
   {
     if (m_inputLabel)
@@ -288,6 +289,7 @@ void GroupCell::ResetInputLabel()
 
 void GroupCell::ResetInputLabelList()
 {
+  m_recalculateForce = true;
   GroupCell *tmp = this;
   while (tmp)
   {
@@ -470,6 +472,7 @@ wxString GroupCell::TexEscapeOutputCell(wxString Input)
 
 void GroupCell::SetInput(Cell *input)
 {
+  m_recalculateForce = true;
   if (input == NULL)
     return;
   wxDELETE(m_inputLabel);
@@ -524,11 +527,13 @@ void GroupCell::SetOutput(Cell *output)
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
 //  ResetSize();
-  GroupCell::Recalculate();
+  m_recalculateForce = true;
+//  GroupCell::Recalculate();
 }
 
 void GroupCell::RemoveOutput()
 {
+  m_recalculateForce = true;
   m_numberedAnswersCount = 0;
   // If there is nothing to do we can skip the rest of this action.
   if (m_output == NULL)
@@ -561,6 +566,7 @@ void GroupCell::RemoveOutput()
 
 void GroupCell::AppendOutput(Cell *cell)
 {
+  m_recalculateForce = true;
   wxASSERT_MSG(cell != NULL, _("Bug: Trying to append NULL to a group cell."));
   if (cell == NULL) return;
   cell->SetGroupList(this);
@@ -654,6 +660,9 @@ void GroupCell::UpdateConfusableCharWarnings()
 
 void GroupCell::Recalculate()
 {
+  if(!GroupCell::NeedsRecalculation())
+    return;
+  
   int fontsize = (*m_configuration)->GetDefaultFontSize();
 
   m_fontSize = fontsize;

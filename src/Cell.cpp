@@ -60,6 +60,7 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
+  m_recalculateForce = true;
   m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
   m_clientWidth_old = -1;
@@ -307,7 +308,7 @@ int Cell::GetMaxCenter()
 
 bool Cell::NeedsRecalculation()
 {
-  return (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+  return (m_width < 0) || (m_height < 0) || (m_center < 0) || m_recalculateForce ||
     (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
@@ -1133,6 +1134,7 @@ bool Cell::ContainsRect(const wxRect &sm, bool all)
  */
 void Cell::ResetData()
 {
+  m_recalculateForce = true;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
