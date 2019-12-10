@@ -6644,7 +6644,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
         wxDataObjectComposite *data = new wxDataObjectComposite;
         data->Add(new wxTextDataObject(xmlText));
         wxTheClipboard->SetData(data);
-        wxLogMessage(_("Save failed. The erroneous XML data has been put on the clipboard in order to allow to debug it."));
+        wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
       }
 
       // Remove all files from our internal filesystem
@@ -6729,20 +6729,26 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // The URI of the wxm code contained within the .wxmx file
   wxString filename = wxmxURI + wxT("#zip:content.xml");
 
-  // Open the file
-  wxFileSystem fs;
-  wxFSFile *fsfile = fs.OpenFile(filename);
-  if (!fsfile)
+  // Open the file we have saved yet just in order to see if we
+  // actually managed to save it correctly.
   {
-    filename = wxmxURI + wxT("#zip:/content.xml");
-    fsfile = fs.OpenFile(filename);
+    wxFileSystem fs;
+    wxFSFile *fsfile = fs.OpenFile(filename);
+    if (!fsfile)
+    {
+      filename = wxmxURI + wxT("#zip:/content.xml");
+      fsfile = fs.OpenFile(filename);
+    }
+    
+    // Did we succeed in opening the file?
+    if (!fsfile)
+    {
+      wxLogMessage(_("Saving succeeded, but the file could not be read again \u21D2 Not replacing the old saved file."));
+      return false;
+    }
+    
+    delete fsfile;
   }
-
-  // Did we succeed in opening the file?
-  if (!fsfile)
-    return false;
-
-  delete fsfile;
   
   {
     SuppressErrorDialogs suppressor;
