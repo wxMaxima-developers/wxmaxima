@@ -154,7 +154,10 @@ SlideShow::SlideShow(const SlideShow &cell):
   for (size_t i = 0; i < cell.m_images.size(); i++)
     m_images.push_back(new Image(*cell.m_images[i]));
 
+  m_framerate = cell.m_framerate;
+  m_displayed = true;
   m_size = cell.m_size;
+  m_fileSystem = NULL;
 }
 
 SlideShow::~SlideShow()

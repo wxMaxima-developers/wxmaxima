@@ -33,6 +33,8 @@
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
                    wxString text, TextStyle style) : Cell(parent, config, cellPointers)
 {
+  m_alt = false;
+  m_altJs = false;
   switch(m_textStyle = style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;

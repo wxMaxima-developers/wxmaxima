@@ -318,7 +318,7 @@ void Printout::Recalculate()
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
+//  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
 
   while (tmp != NULL)
   {

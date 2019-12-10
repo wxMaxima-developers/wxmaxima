@@ -1049,10 +1049,10 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   RecalculateForce();
 
   GroupCell *tmp = m_tree;
-  GroupCell *prev = NULL;
   UpdateConfigurationClientSize();
   if (tmp != NULL)
   {
+    GroupCell *prev = NULL;
     SetSelection(NULL);
     while (tmp != NULL)
     {
@@ -8285,9 +8285,7 @@ bool Worksheet::CaretVisibleIs()
     GetViewStart(&view_x, &view_y);
     GetSize(&width, &height);
 
-    view_x *= m_scrollUnit;
     view_y *= m_scrollUnit;
-
     return ((y >= view_y) && (y <= view_y + height));
   }
   else

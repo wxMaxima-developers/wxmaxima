@@ -4561,10 +4561,9 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
   if(!canEvaluateNext)
   {
 
-    GroupCell *group = NULL;
     if(m_worksheet->HCaretActive())
     {
-      group = m_worksheet->GetHCaret();
+      GroupCell *group = m_worksheet->GetHCaret();
       if(group == NULL)
         group = m_worksheet->GetTree();
       else
