@@ -56,7 +56,6 @@ private:
   void OnChar(wxKeyEvent &event);
 
   Configuration *m_config;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // BTEXTCTRL_H

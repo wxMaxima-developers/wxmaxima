@@ -64,7 +64,6 @@ private:
   wxArrayString commands;
   //! The currently selected item. -1=none.
   long m_current;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // HISTORY_H

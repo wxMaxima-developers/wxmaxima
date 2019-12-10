@@ -47,6 +47,7 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   box->Fit(this);
   box->SetSizeHints(this);
   m_current = 0;
+  Connect(history_regex_id, wxEVT_TEXT, wxCommandEventHandler(History::OnRegExEvent), NULL, this);
 }
 
 History::~History()
@@ -126,7 +127,3 @@ wxString History::GetCommand(bool next)
     return commands[m_current];
   }
 }
-
-BEGIN_EVENT_TABLE(History, wxPanel)
-                EVT_TEXT(history_regex_id, History::OnRegExEvent)
-END_EVENT_TABLE()
