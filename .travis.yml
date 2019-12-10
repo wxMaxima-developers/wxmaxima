@@ -2,11 +2,14 @@ language: cpp
 os:
 - linux
 - osx
+#dist:
+#- eoan
 branches:
   except:
   - gh_pages
   - DebianPackaging
   - DebianPackaging_NightlyBuild
+dist: bionic
 env:
   - LANG=en_US.UTF-8
 cache:
