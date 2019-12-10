@@ -57,6 +57,9 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
+  Connect(wxMaximaFrame::menu_new_id, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(ToolBar::tb_new, wxEVT_TOOL, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+    
   #if wxUSE_ON_FATAL_EXCEPTION
   wxHandleFatalExceptions(true);
   #endif
@@ -445,8 +448,3 @@ void MyApp::MacOpenFile(const wxString &file)
 {
   NewWindow(file);
 }
-
-BEGIN_EVENT_TABLE(MyApp, wxApp)
-  EVT_MENU(wxMaximaFrame::menu_new_id, MyApp::OnFileMenu)
-  EVT_TOOL(ToolBar::tb_new, MyApp::OnFileMenu)
-END_EVENT_TABLE()

@@ -87,7 +87,6 @@ public:
 
   void OnLinkClicked(wxHtmlLinkEvent &event);
 
-DECLARE_EVENT_TABLE()
 };
 
 #endif
@@ -737,7 +736,6 @@ protected:
   friend class MyDropTarget;
 
 #endif
-  DECLARE_EVENT_TABLE()
 };
 
 #if wxUSE_DRAG_AND_DROP
@@ -792,7 +790,6 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure *m_dirstruct;
-  DECLARE_EVENT_TABLE()
 };
 
 DECLARE_APP(MyApp)
