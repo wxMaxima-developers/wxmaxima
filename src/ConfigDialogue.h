@@ -116,6 +116,7 @@ private:
         m_italic = false;
         m_bold = false;
         m_underlined = false;
+        Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint));
       };
 
     //! Sets all user-changable elements of style of the example at once.
@@ -151,7 +152,6 @@ private:
     wxString m_font;
     //! The size of the characters of the currently selected item type
     int m_size;
-    DECLARE_EVENT_TABLE()
   };
 
   /*! A rectangle showing the color of an item
@@ -176,7 +176,6 @@ private:
   private:
     ConfigDialogue *m_configDialogue;
     wxColor m_color;
-    DECLARE_EVENT_TABLE()
   };
 
 
@@ -367,7 +366,6 @@ protected:
 
   //! A list containing the pictograms for the tabs.
   wxImageList *m_imageList;
-DECLARE_EVENT_TABLE()
 };
 
 #ifndef __WXMSW__

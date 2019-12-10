@@ -268,6 +268,19 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   LayoutDialog();
 
   SetProperties();
+
+  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),NULL, this);
+  Connect(wxID_OPEN, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMpBrowse), NULL, this);
+  Connect(button_mathFont, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMathBrowse), NULL, this);
+  Connect(font_family, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnChangeFontFamily), NULL, this);
+  Connect(listbox_styleFor, wxEVT_LISTBOX, wxCommandEventHandler(ConfigDialogue::OnChangeStyle), NULL, this);
+  Connect(language_id, wxEVT_COMBOBOX, wxCommandEventHandler(ConfigDialogue::OnChangeWarning), NULL, this);
+  Connect(checkbox_bold, wxEVT_CHECKBOX, wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
+  Connect(checkbox_italic, wxEVT_CHECKBOX, wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
+  Connect(checkbox_underlined, wxEVT_CHECKBOX, wxCommandEventHandler(ConfigDialogue::OnCheckbox), NULL, this);
+  Connect(save_id, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::LoadSave), NULL, this);
+  Connect(load_id, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::LoadSave), NULL, this);
+  Connect(style_font_family, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnChangeFontFamily), NULL, this);
 }
 
 ConfigDialogue::~ConfigDialogue()
@@ -1162,7 +1175,7 @@ void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event)
   OnChangeStyle(event);
 }
 
-void ConfigDialogue::OnClose(wxCloseEvent&  WXUNUSED(event))
+void ConfigDialogue::OnClose(wxCloseEvent &event)
 {
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
@@ -1171,6 +1184,7 @@ void ConfigDialogue::OnClose(wxCloseEvent&  WXUNUSED(event))
 #else
   EndModal(wxID_CANCEL);
 #endif
+  event.Skip();
 }
 
 void ConfigDialogue::WriteSettings()
@@ -1577,31 +1591,18 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
   }
 }
 
-BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
-                EVT_BUTTON(wxID_OPEN, ConfigDialogue::OnMpBrowse)
-                EVT_BUTTON(button_mathFont, ConfigDialogue::OnMathBrowse)
-                EVT_BUTTON(font_family, ConfigDialogue::OnChangeFontFamily)
-                EVT_LISTBOX(listbox_styleFor, ConfigDialogue::OnChangeStyle)
-                EVT_COMBOBOX(language_id, ConfigDialogue::OnChangeWarning)
-                EVT_CHECKBOX(checkbox_bold, ConfigDialogue::OnCheckbox)
-                EVT_CHECKBOX(checkbox_italic, ConfigDialogue::OnCheckbox)
-                EVT_CHECKBOX(checkbox_underlined, ConfigDialogue::OnCheckbox)
-                EVT_BUTTON(save_id, ConfigDialogue::LoadSave)
-                EVT_BUTTON(load_id, ConfigDialogue::LoadSave)
-                EVT_BUTTON(style_font_family, ConfigDialogue::OnChangeFontFamily)
-                EVT_CLOSE(ConfigDialogue::OnClose)
-END_EVENT_TABLE()
-
 ConfigDialogue::ColorPanel::ColorPanel(ConfigDialogue *conf, wxWindow *parent,
                                        int id, wxPoint pos, wxSize size, long style) :
-wxPanel(parent, id,
-        pos, size,
-        style)
+  wxPanel(parent, id,
+          pos, size,
+          style),
+  m_color(0, 0, 0)
 {
-  m_color = wxColour(0, 0, 0);
   m_configDialogue = conf;
   SetBackgroundColour(m_color);
   SetBackgroundStyle(wxBG_STYLE_PAINT);
+  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(ConfigDialogue::ColorPanel::OnClick), NULL, this);
+  Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ColorPanel::OnPaint), NULL, this);
 }
 
 void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
@@ -1687,12 +1688,3 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
   dc.DrawText(example, (panel_width - text_width) / 2,
               (panel_height - text_height) / 2);
 }
-
-BEGIN_EVENT_TABLE(ConfigDialogue::ExamplePanel, wxPanel)
-                EVT_PAINT(ConfigDialogue::ExamplePanel::OnPaint)
-END_EVENT_TABLE()
-
-BEGIN_EVENT_TABLE(ConfigDialogue::ColorPanel, wxPanel)
-EVT_LEFT_UP(ConfigDialogue::ColorPanel::OnClick)
-EVT_PAINT(ConfigDialogue::ColorPanel::OnPaint)
-END_EVENT_TABLE()
