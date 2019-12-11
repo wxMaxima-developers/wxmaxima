@@ -2826,9 +2826,10 @@ void wxMaxima::ReadPrompt(wxString &data)
        m_worksheet->SetNotification(_("Maxima asks a question!"), wxICON_INFORMATION);
     if (!o.IsEmpty())
     {
-      m_worksheet->m_configuration->SetDefaultCellToolTip(
-        _("Most questions can be avoided using the assume() "
-          "and the declare() command. If that isn't possible the \"Automatically answer questions\" button makes wxMaxima automatically fill in all answers it still remembers from a previous run."));
+      if((!m_worksheet->GetWorkingGroup()) || (!m_worksheet->GetWorkingGroup()->AutoAnswer()))
+        m_worksheet->m_configuration->SetDefaultCellToolTip(
+          _("Most questions can be avoided using the assume() "
+            "and the declare() command. If that isn't possible the \"Automatically answer questions\" button makes wxMaxima automatically fill in all answers it still remembers from a previous run."));
       if (o.Find(wxT("<mth>")) > -1)
         DoConsoleAppend(o, MC_TYPE_PROMPT);
       else
