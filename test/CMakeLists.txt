@@ -27,74 +27,74 @@ set_tests_properties(runMaxima-over-network PROPERTIES TIMEOUT 60)
 add_test(
     NAME wxmaxima_batch_emptyFile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_empty_file.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_empty_file.wxm)
 set_tests_properties(wxmaxima_batch_emptyFile PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME wxmaxima_batch_textcell
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch textcells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch textcells.wxm)
 set_tests_properties(wxmaxima_batch_textcell PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch foreign-characters.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch foreign-characters.wxm)
 set_tests_properties(wxmaxima_batch_foreign_characters PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME wxmaxima_version_string
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --version)
+    COMMAND wxmaxima --logtostdout --pipe --version)
 set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
 set_tests_properties(wxmaxima_version_string PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME wxmaxima_version_returncode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --version)
+    COMMAND wxmaxima --logtostdout --pipe --version)
 set_tests_properties(wxmaxima_version_returncode PROPERTIES TIMEOUT 60)
 
 #add_test(
 #    NAME maxima_lisp_switch
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND ../../wxmaxima-local --logtostdout --pipe -l undefined_lisp)
+#    COMMAND wxmaxima --logtostdout --pipe -l undefined_lisp)
 #set_tests_properties(maxima_lisp_switch PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
 #add_test(
 #    NAME maxima_version_switch
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND ../../wxmaxima-local --logtostdout --pipe -u undefined_version)
+#    COMMAND wxmaxima --logtostdout --pipe -u undefined_version)
 #set_tests_properties(maxima_version_switch PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
 #add_test(
 #    NAME maxima_args_switch
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND ../../wxmaxima-local --logtostdout --pipe -X gibberish)
+#    COMMAND wxmaxima --logtostdout --pipe -X gibberish)
 #set_tests_properties(maxima_args_switch PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
 add_test(
     NAME wxmaxima_help
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --help)
+    COMMAND wxmaxima --logtostdout --pipe --help)
 set_tests_properties(wxmaxima_version_returncode PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME all_celltypes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_all_celltypes.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_all_celltypes.wxm)
 set_tests_properties(all_celltypes PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME simpleInput
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_simpleInput.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_simpleInput.wxm)
 set_tests_properties(simpleInput PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME rememberingAnswers
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_rememberingAnswers.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_rememberingAnswers.wxm)
 set_tests_properties(rememberingAnswers PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -106,7 +106,7 @@ set_tests_properties(absCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME absCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_absCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_absCells.wxm)
 set_tests_properties(absCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -118,7 +118,7 @@ set_tests_properties(diffCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME diffCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_diffCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_diffCells.wxm)
 set_tests_properties(diffCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -130,7 +130,7 @@ set_tests_properties(atCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME atCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_atCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_atCells.wxm)
 set_tests_properties(atCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -142,7 +142,7 @@ set_tests_properties(conjugateCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME conjugateCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_conjugateCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_conjugateCells.wxm)
 set_tests_properties(conjugateCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -154,7 +154,7 @@ set_tests_properties(exptCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME exptCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_exptCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_exptCells.wxm)
 set_tests_properties(exptCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -166,7 +166,7 @@ set_tests_properties(fracCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME fracCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_fracCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_fracCells.wxm)
 set_tests_properties(fracCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -178,7 +178,7 @@ set_tests_properties(intCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME intCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_intCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_intCells.wxm)
 set_tests_properties(intCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -190,19 +190,19 @@ set_tests_properties(functionCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME functionCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_functionCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_functionCells.wxm)
 set_tests_properties(functionCells PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME slideshowCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_slideshowCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_slideshowCells.wxm)
 set_tests_properties(slideshowCells PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_imageCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_imageCells.wxm)
 set_tests_properties(imageCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -214,7 +214,7 @@ set_tests_properties(limitCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME limitCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_limitCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_limitCells.wxm)
 set_tests_properties(limitCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -226,7 +226,7 @@ set_tests_properties(matrixCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME matrixCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_matrixCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_matrixCells.wxm)
 set_tests_properties(matrixCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -238,7 +238,7 @@ set_tests_properties(parenthesisCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME parenthesisCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_parenthesisCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_parenthesisCells.wxm)
 set_tests_properties(parenthesisCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -250,7 +250,7 @@ set_tests_properties(sqrtCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME sqrtCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_sqrtCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_sqrtCells.wxm)
 set_tests_properties(sqrtCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -262,7 +262,7 @@ set_tests_properties(subCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME subCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_subCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_subCells.wxm)
 set_tests_properties(subCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -274,7 +274,7 @@ set_tests_properties(subsupCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME subsupCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_subsupCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_subsupCells.wxm)
 set_tests_properties(subsupCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -286,7 +286,7 @@ set_tests_properties(sumCells_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME sumCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_sumCells.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_sumCells.wxm)
 set_tests_properties(sumCells PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -298,7 +298,7 @@ set_tests_properties(printf_simple_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME printf_simple
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_printf_simple.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_printf_simple.wxm)
 set_tests_properties(printf_simple PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -310,7 +310,7 @@ set_tests_properties(printf_equations_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME printf_equations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_printf_equations.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_printf_equations.wxm)
 set_tests_properties(printf_equations PROPERTIES TIMEOUT 60)
 
 add_test(
@@ -322,85 +322,85 @@ set_tests_properties(printf_continuationLines_cmdline PROPERTIES TIMEOUT 60)
 add_test(
     NAME printf_continuationLines
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_printf_continuationLines.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_printf_continuationLines.wxm)
 set_tests_properties(printf_continuationLines PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME weirdLabels
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_weirdLabels.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_weirdLabels.wxm)
 set_tests_properties(weirdLabels PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME xmlQuote
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_xmlQuote.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_xmlQuote.wxm)
 set_tests_properties(xmlQuote PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME formerCrashes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_formerCrashes.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_formerCrashes.wxm)
 set_tests_properties(formerCrashes PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME multiplication
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_multiplication.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_multiplication.wxm)
 set_tests_properties(multiplication PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME nonsenseConstructs
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_nonsenseConstructs.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_nonsenseConstructs.wxm)
 set_tests_properties(nonsenseConstructs PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME lisp
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_lisp.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_lisp.wxm)
 set_tests_properties(lisp PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME boxes
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_boxes.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_boxes.wxm)
 set_tests_properties(boxes PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME unicode
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_unicode.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_unicode.wxm)
 set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME comment_begin
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_commentBegin.wxm)
+    COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_commentBegin.wxm)
 set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME autosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe -f autosave.cfg --batch testbench_automatic_unicode.wxm)
+    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch testbench_automatic_unicode.wxm)
 set_tests_properties(autosave PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME noautosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe -f noautosave.cfg --batch testbench_automatic_unicode.wxm)
+    COMMAND wxmaxima --logtostdout --pipe -f noautosave.cfg --batch testbench_automatic_unicode.wxm)
 set_tests_properties(noautosave PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME config_from_19.11
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --logtostdout --pipe -f config_from_19.11.cfg --batch testbench_automatic_unicode.wxm)
+    COMMAND wxmaxima --logtostdout --pipe -f config_from_19.11.cfg --batch testbench_automatic_unicode.wxm)
 set_tests_properties(config_from_19.11 PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME invalid_commandline_arg
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND ../../wxmaxima-local --gibberish --batch testbench_automatic_unicode.wxm)
+    COMMAND wxmaxima --gibberish --batch testbench_automatic_unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
 find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
