@@ -606,8 +606,9 @@ void GroupCell::UpdateConfusableCharWarnings()
   MaximaTokenizer::TokenList
     m_tokens = MaximaTokenizer(GroupCell::ToString(), *m_configuration).GetTokens();
   for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
-    cmdsAndVariables[(*it)->GetText()] = 1;
- 
+    if(((*it)->GetStyle() == TS_CODE_VARIABLE) || ((*it)->GetStyle() == TS_CODE_FUNCTION))
+      cmdsAndVariables[(*it)->GetText()] = 1;
+  
   // Now we step through all the words we found
   while(!cmdsAndVariables.empty())
   {
