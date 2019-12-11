@@ -43,6 +43,12 @@ add_test(
 set_tests_properties(wxmaxima_batch_foreign_characters_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME wxmaxima_batch_foreign_characters_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch foreign-characters.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(wxmaxima_batch_foreign_characters_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch foreign-characters.wxm)
@@ -134,6 +140,12 @@ add_test(
 set_tests_properties(atCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME atCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_atCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(atCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME atCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_atCells.wxm)
@@ -144,6 +156,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_conjugateCells.wxm)
 set_tests_properties(conjugateCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME conjugateCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_conjugateCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(conjugateCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME conjugateCells
@@ -158,6 +176,12 @@ add_test(
 set_tests_properties(exptCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME exptCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_exptCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(exptCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME exptCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_exptCells.wxm)
@@ -168,6 +192,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_fracCells.wxm)
 set_tests_properties(fracCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME fracCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_fracCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(fracCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME fracCells
@@ -182,6 +212,12 @@ add_test(
 set_tests_properties(intCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME intCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_intCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(intCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME intCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_intCells.wxm)
@@ -192,6 +228,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_functionCells.wxm)
 set_tests_properties(functionCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME functionCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_functionCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(functionCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME functionCells
@@ -218,6 +260,12 @@ add_test(
 set_tests_properties(limitCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME limitCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_limitCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(limitCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME limitCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_limitCells.wxm)
@@ -228,6 +276,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_matrixCells.wxm)
 set_tests_properties(matrixCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME matrixCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_matrixCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(matrixCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME matrixCells
@@ -242,6 +296,12 @@ add_test(
 set_tests_properties(parenthesisCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME parenthesisCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_parenthesisCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(parenthesisCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME parenthesisCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_parenthesisCells.wxm)
@@ -252,6 +312,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_sqrtCells.wxm)
 set_tests_properties(sqrtCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME sqrtCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_sqrtCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(sqrtCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME sqrtCells
@@ -266,6 +332,12 @@ add_test(
 set_tests_properties(subCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME subCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --pipe --batch testbench_automatic_subCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(subCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME subCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_subCells.wxm)
@@ -276,6 +348,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_subsupCells.wxm)
 set_tests_properties(subsupCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME subsupCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_subsupCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(subsupCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME subsupCells
@@ -290,6 +368,12 @@ add_test(
 set_tests_properties(sumCells_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME sumCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_sumCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(sumCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME sumCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_sumCells.wxm)
@@ -300,6 +384,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_printf_simple.wxm)
 set_tests_properties(printf_simple_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME printf_simple_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch testbench_automatic_printf_simple.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(printf_simple_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME printf_simple
@@ -314,6 +404,12 @@ add_test(
 set_tests_properties(printf_equations_cmdline PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME printf_equations_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --pipe --batch testbench_automatic_printf_equations.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(printf_equations_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME printf_equations
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch testbench_automatic_printf_equations.wxm)
@@ -324,6 +420,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --pipe --batch testbench_automatic_printf_continuationLines.wxm)
 set_tests_properties(printf_continuationLines_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME printf_continuationLines_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --pipe --batch testbench_automatic_printf_continuationLines.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(printf_continuationLines_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME printf_continuationLines
