@@ -2828,7 +2828,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     {
       m_worksheet->m_configuration->SetDefaultCellToolTip(
         _("Most questions can be avoided using the assume() "
-          "and the declare() command"));
+          "and the declare() command. If that isn't possible the \"Automatically answer questions\" button makes wxMaxima automatically fill in all answers it still remembers from a previous run."));
       if (o.Find(wxT("<mth>")) > -1)
         DoConsoleAppend(o, MC_TYPE_PROMPT);
       else
@@ -2846,7 +2846,6 @@ void wxMaxima::ReadPrompt(wxString &data)
     }
     StatusMaximaBusy(userinput);
   }
-
   o.Trim(false);
   if (o.StartsWith(wxT("MAXIMA>")))
   {
