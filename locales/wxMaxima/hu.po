@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Blahota István <blahota@fsf.hu>, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
+# Blahota István <blahota@fsf.hu>, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-06 08:57+0100\n"
-"PO-Revision-Date: 2019-11-11 09:47+0100\n"
+"PO-Revision-Date: 2019-12-11 13:07+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
@@ -3053,6 +3053,9 @@ msgid ""
 "GTK_IM_MODULE is set to \"xim\" and GTK3 is in use. Expect the program to "
 "hideously flicker, see https://trac.wxwidgets.org/ticket/18462."
 msgstr ""
+"A GTK_IM_MODULE \"xim\" értékre van állítva, és a GTK3 használatban van. Ha "
+"a program rettenetesen villog, nézze meg ezt: https://trac.wxwidgets.org/"
+"ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:182
 msgid "Galician"
@@ -3264,6 +3267,8 @@ msgid ""
 "Hide all multiplication signs that aren't really necessary for understanding "
 "the equation"
 msgstr ""
+"Rejtsen el minden szorzásjelet, amely nem igazán szükséges az egyenlet "
+"értelmezéséhez"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:725
 msgid "Hide all panes"
@@ -3275,7 +3280,7 @@ msgstr "Tartalmak elrejtése"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:623
 msgid "Hide multiplication signs, if possible"
-msgstr ""
+msgstr "Ha lehetséges, rejtse el a szorzásjeleket"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:524
 msgid "Hide objects behind the surface"
@@ -3414,6 +3419,8 @@ msgid ""
 "If this isn't a function returning a lambda() expression a multiplication "
 "sign (*) between closing and opening parenthesis is missing here."
 msgstr ""
+"Ha ez nem egy lambda() kifejezést visszaadó függvény, akkor itt hiányzik a "
+"záró és nyitó zárójel közötti szorzásjel (*)."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
 msgid ""
@@ -5852,7 +5859,7 @@ msgstr "&Minden kiválasztása\tCtrl+A"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:734
 msgid "Select All button"
-msgstr ""
+msgstr "Minden kiválasztása"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1296
 msgid "Select Maxima program"
@@ -6169,7 +6176,7 @@ msgstr "Mutassa a Keresés gombot?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:735
 msgid "Show the \"select all\" button?"
-msgstr ""
+msgstr "Mutassa a \"Minden kiválasztása\" gombot?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:729
 msgid "Show the Copy, Cut and the Paste button?"
@@ -7163,7 +7170,7 @@ msgstr "Kódcellák láthatóságának állítása"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:119
 #, c-format
 msgid "Translations are read from %s."
-msgstr ""
+msgstr "A fordításokat a(z) %s helyről olvassa be."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:967
 msgid "Transpose a matrix"
@@ -7536,7 +7543,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:638
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:650
 msgid "Warning: Lookalike chars: "
-msgstr ""
+msgstr "Figyelmeztetés: Hasonmás karakterek:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3344
 msgid "Welcome to wxMaxima"
@@ -8284,6 +8291,9 @@ msgid ""
 "contribute. Join the wxMaxima development at: https://github.com/wxMaxima-"
 "developers/wxmaxima"
 msgstr ""
+"A wxMaxima-nak további fejlesztőkre van szüksége. Ez egy nyílt forráskódú "
+"projekt, melyhez Ön is hozzájárulhat. Csatlakozzon a wxMaxima "
+"fejlesztéséhez: https://github.com/wxMaxima-developers/wxmaxima"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:172
 msgid ""
@@ -8291,6 +8301,10 @@ msgid ""
 "translate wxMaxima and the manual to your language. Join the wxMaxima "
 "development at: https://github.com/wxMaxima-developers/wxmaxima"
 msgstr ""
+"A wxMaxima-nak további fordítókra van szüksége. Nem beszélünk minden "
+"nyelven. Segítsen nekünk a wxMaximának és a kézikönyvnek az Ön nyelvére való "
+"lefordításában . Csatlakozzon a wxMaxima fejlesztéséhez: https://github.com/"
+"wxMaxima-developers/wxmaxima"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:136
 msgid ""
@@ -8400,58 +8414,3 @@ msgstr "z tartomány (automatikus, ha nem teljes)"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1715
 msgid "zeta"
 msgstr "dzéta"
-
-#~ msgid ""
-#~ "The maximum number of displayed digits can be changed in the "
-#~ "configuration dialogue"
-#~ msgstr ""
-#~ "A megjelenített számjegyek maximális száma a konfigurációs "
-#~ "párbeszédablakban módosítható"
-
-#~ msgid "Bug: Text changed, but no active cell."
-#~ msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
-
-#~ msgid "Result"
-#~ msgstr "Eredmény"
-
-#~ msgid "Don't save the worksheet automatically"
-#~ msgstr "Ne mentse a munkalapot automatikusan"
-
-#~ msgid ""
-#~ "If this checkbox is checked wxMaxima does automatically save the file "
-#~ "every few minutes in a temp file instead of keeping the currently-open "
-#~ "file up-to-date all the time."
-#~ msgstr ""
-#~ "Ha ezt a jelölőnégyzetet bejelöli, a wxMaxima néhány percenként "
-#~ "automatikusan elmenti az adatokat egy ideiglenes fájlba, ahelyett, hogy a "
-#~ "jelenleg nyitott fájlt folyamatosan frissítené."
-
-#~ msgid "Save wxMaxima window size/position"
-#~ msgstr "Ablak méret/pozíció mentése"
-
-#~ msgid "Save wxMaxima window size/position between sessions."
-#~ msgstr "A wxMaxima ablak méret/pozíció mentése."
-
-#~ msgid "Autosave on close and every n minutes (0 means: off):"
-#~ msgstr ""
-#~ "Automatikus mentés bezáráskor és minden n-edik percben (0 azt jelenti: "
-#~ "ki):"
-
-#~ msgid ""
-#~ "If this number of minutes has elapsed after the last save of the file, "
-#~ "the file has been given a name (by opening or saving it) and the keyboard "
-#~ "has been inactive for > 10 seconds the file is saved. If this number is "
-#~ "zero the file isn't saved automatically at all."
-#~ msgstr ""
-#~ "Ha ennyi perc telt el a fájl utolsó mentése óta, a fájl kap egy nevet "
-#~ "(megnyitva vagy mentve) és 10 másodpercnyi billentyűzet-inaktivitás után "
-#~ "mentésre kerül."
-
-#~ msgid "Recalculating all cell sizes"
-#~ msgstr "Az összes cellaméret újraszámítása"
-
-#~ msgid "Recalculating all cell sizes inclusive text dimensions"
-#~ msgstr "Az összes cellaméret újraszámítása, beleértve a szövegméreteket"
-
-#~ msgid "Recalculating changed cell sizes"
-#~ msgstr "Az összes cellaméret újraszámítása"
