@@ -49,6 +49,12 @@ add_test(
 set_tests_properties(wxmaxima_batch_foreign_characters_cmdline_wxmathml PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME wxmaxima_batch_foreign_characters_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch foreign-characters.wxm)
+set_tests_properties(wxmaxima_batch_foreign_characters_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch foreign-characters.wxm)
@@ -198,6 +204,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch testbench_automatic_fracCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
 set_tests_properties(fracCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME fracCells_cmdline_wxmathml_over_network
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND echo 'load(testbench_automatic_fracCells.wxm); quit();' | nc -l 40000 & sleep 10 ; maxima -s 40000)
+set_tests_properties(fracCells_cmdline_wxmathml_over_network PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME fracCells
