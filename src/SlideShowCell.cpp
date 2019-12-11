@@ -158,6 +158,7 @@ SlideShow::SlideShow(const SlideShow &cell):
   m_displayed = true;
   m_size = cell.m_size;
   m_fileSystem = NULL;
+  m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 
 SlideShow::~SlideShow()

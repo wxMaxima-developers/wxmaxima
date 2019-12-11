@@ -6743,7 +6743,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     // Did we succeed in opening the file?
     if (!fsfile)
     {
-      wxLogMessage(_("Saving succeeded, but the file could not be read again \u21D2 Not replacing the old saved file."));
+      wxLogMessage(_(wxT("Saving succeeded, but the file could not be read again \u21D2 Not replacing the old saved file.")));
       return false;
     }
     
