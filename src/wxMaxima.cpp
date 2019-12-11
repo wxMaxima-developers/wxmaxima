@@ -2139,16 +2139,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     
     // Let's see if maxima has told us why this did happen.
     ReadStdErr();
-
-    // if m_closing==true we might already have a new process
-    // and therefore the following lines would probably mark
-    // the wrong process as "deleted".
-    m_process = NULL;
-    m_maximaStdout = NULL;
-    m_maximaStderr = NULL;
-    m_maximaVersion = wxEmptyString;
-    m_lispVersion = wxEmptyString;
-
     ConsoleAppend(wxT("\nMaxima exited...\n"),
                   MC_TYPE_ERROR);
 
