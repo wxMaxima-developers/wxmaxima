@@ -1678,8 +1678,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   }
   case wxSOCKET_LOST:
   {
-    
-//    wxLogMessage(_("Connection to Maxima lost."));
+    wxLogMessage(_("Connection to Maxima lost."));
     //  KillMaxima();
     break;
   }
