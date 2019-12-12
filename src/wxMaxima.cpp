@@ -246,26 +246,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   wxConfig::Get()->Read(wxT("findFlags"), &findFlags);
   m_findData.SetFlags(findFlags);
   m_worksheet->SetFocus();
-  m_worksheet->m_keyboardInactiveTimer.SetOwner(this);
-  m_worksheet->m_keyboardInactiveTimer.Connect(
+  m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
+  m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
+  m_waitForStringEndTimer.SetOwner(this, WAITFORSTRING_ID);
+  m_maximaConnectTimeout.SetOwner(this, WAITFORCONNECTION_ID);
+  m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
+  Connect(
     wxEVT_TIMER,
-    wxTimerEventHandler(wxMaxima::OnAutosaveTimer), NULL, this);
-  m_maximaStdoutPollTimer.SetOwner(this);
-  m_maximaStdoutPollTimer.Connect(
-    wxEVT_TIMER,
-    wxTimerEventHandler(wxMaxima::OnPollStdOutTimer), NULL, this);
-  m_waitForStringEndTimer.SetOwner(this);
-  m_waitForStringEndTimer.Connect(
-    wxEVT_TIMER,
-    wxTimerEventHandler(wxMaxima::OnWaitForStringEndTimer), NULL, this);
-  m_autoSaveTimer.SetOwner(this);
-  m_autoSaveTimer.Connect(
-    wxEVT_TIMER,
-    wxTimerEventHandler(wxMaxima::OnAutosaveTimer), NULL, this);
-  m_maximaConnectionTimeout.SetOwner(this);
-  m_maximaConnectionTimeout.Connect(
-    wxEVT_TIMER,
-    wxTimerEventHandler(wxMaxima::OnMaximaConnectionTimeout), NULL, this);
+    wxTimerEventHandler(wxMaxima::OnTimerEvent), NULL, this);
 
 #if wxUSE_DRAG_AND_DROP
   m_worksheet->SetDropTarget(new MyDropTarget(this));
@@ -1701,7 +1689,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   {
     case wxSOCKET_CONNECTION :
     {
-      m_maximaConnectionTimeout.Stop();
+      m_maximaConnectTimeout.Stop();
       if (m_client.IsConnected())
       {
         wxSocketBase *tmp = m_server->Accept(false);
@@ -1871,7 +1859,7 @@ bool wxMaxima::StartMaxima(bool force)
                      wxOK | wxICON_ERROR);
         return false;
       }
-      m_maximaConnectionTimeout.StartOnce(8000);
+      m_maximaConnectTimeout.StartOnce(8000);
       m_maximaStdout = m_process->GetInputStream();
       m_maximaStderr = m_process->GetErrorStream();
       m_lastPrompt = wxT("(%i1) ");
@@ -5106,54 +5094,53 @@ double wxMaxima::GetMaximaCPUPercentage()
   return retval;
 }
 
-void wxMaxima::OnWaitForStringEndTimer(wxTimerEvent &WXUNUSED(event))
+void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 {
-  if(InterpretDataFromMaxima())
-    wxLogMessage(_("String from maxima apparently didn't end in a newline"));
-}
-
-void wxMaxima::OnMaximaConnectionTimeout(wxTimerEvent &WXUNUSED(event))
-{
-  wxLogMessage(_("Maxima didn't connect within the timeout"));
-  if(m_unsuccessfulConnectionAttempts < 12)
+  switch (event.GetId())
   {
-    wxLogMessage(_("Trying to restart Maxima"));
-    StartMaxima();
-  }
-}
+  case WAITFORCONNECTION_ID:
+    wxLogMessage(_("Maxima didn't connect within the timeout"));
+    if(m_unsuccessfulConnectionAttempts < 12)
+    {
+      wxLogMessage(_("Trying to restart Maxima"));
+      StartMaxima();
+    }
+    break;
+    case WAITFORSTRING_ID:
+      if(InterpretDataFromMaxima())
+        wxLogMessage(_("String from maxima apparently didn't end in a newline"));
+      break;
+    case MAXIMA_STDOUT_POLL_ID:
+      ReadStdErr();
 
-void wxMaxima::OnPollStdOutTimer(wxTimerEvent &WXUNUSED(event))
-{
-  ReadStdErr();
-  
-  if (m_process == NULL)
-    return;
+      if (m_process != NULL)
+      {
+        // The atexit() of maxima informs us if the process dies. But it sometimes doesn't do
+        // so if it dies due to an out of memory => Periodically check if it really lives.
+        if (!wxProcess::Exists(m_process->GetPid()))
+        {
+          wxProcessEvent *processEvent;
+          processEvent = new wxProcessEvent();
+          GetEventHandler()->QueueEvent(processEvent);
+        }
 
-  // The atexit() of maxima informs us if the process dies. But if that happens due
-  // to an out-of-memory sometimes that doesn't happen.
-  // => Manually heck if maxima is still around.
-  if (!wxProcess::Exists(m_process->GetPid()))
-  {
-    wxProcessEvent *processEvent;
-    processEvent = new wxProcessEvent();
-    GetEventHandler()->QueueEvent(processEvent);
-  }
+        double cpuPercentage = GetMaximaCPUPercentage();
+        m_statusBar->SetMaximaCPUPercentage(cpuPercentage);
 
-  // Update the CPU percentage display
-  double cpuPercentage = GetMaximaCPUPercentage();
-  m_statusBar->SetMaximaCPUPercentage(cpuPercentage);
-  
-  if((m_process != NULL) && (m_pid > 0) &&
-     ((cpuPercentage > 0) || (m_maximaBusy)))
-    m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
-} 
+        if((m_process != NULL) && (m_pid > 0) &&
+           ((cpuPercentage > 0) || (m_maximaBusy)))
+          m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
+      }
 
-void wxMaxima::OnAutosaveTimer(wxTimerEvent &WXUNUSED(event))
-{
-  if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
-  {
-    AutoSave();
-    m_autoSaveTimer.StartOnce(180000);
+      break;
+    case KEYBOARD_INACTIVITY_TIMER_ID:
+    case AUTO_SAVE_TIMER_ID:
+      if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
+      {
+        AutoSave();
+        m_autoSaveTimer.StartOnce(180000);
+      }
+      break;
   }
 }
 
