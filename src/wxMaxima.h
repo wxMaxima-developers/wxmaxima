@@ -389,14 +389,8 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
-  //!< server event: maxima connection
+  //! server event: Maxima sends or receives data, connects or disconnects
   void ServerEvent(wxSocketEvent &event);
-  /*! Is triggered on Input or disconnect from maxima
-
-    The data we get from maxima is typically split into small packets we append to 
-    m_currentOutput until we got a full line we can display.
-   */
-  void ClientEvent(wxSocketEvent &event);
 
   /* Tries to read the new data from maxima
 

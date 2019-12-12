@@ -738,10 +738,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(ToolBar::tb_follow, wxEVT_TOOL,
           wxCommandEventHandler(wxMaxima::OnFollow), NULL, this);
-  Connect(socket_server_id, wxEVT_SOCKET,
+  Connect(wxEVT_SOCKET,
           wxSocketEventHandler(wxMaxima::ServerEvent), NULL, this);
-  Connect(socket_client_id, wxEVT_SOCKET,
-          wxSocketEventHandler(wxMaxima::ClientEvent), NULL, this);
   Connect(wxEVT_CLOSE_WINDOW,
           wxCloseEventHandler(wxMaxima::OnClose), NULL, this);
   Connect(wxEVT_QUERY_END_SESSION,
@@ -1632,11 +1630,14 @@ void wxMaxima::TryToReadDataFromMaxima()
 ///--------------------------------------------------------------------------------
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
-void wxMaxima::ClientEvent(wxSocketEvent &event)
+
+/*!
+ * ServerEvent is triggered when maxima connects to the socket server.
+ */
+void wxMaxima::ServerEvent(wxSocketEvent &event)
 {
   switch (event.GetSocketEvent())
   {
-
   case wxSOCKET_INPUT:
     TryToReadDataFromMaxima();
     break;
@@ -1675,74 +1676,62 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     //  KillMaxima();
     break;
   }
-  default:
-    break;
-  }
-}
-
-/*!
- * ServerEvent is triggered when maxima connects to the socket server.
- */
-void wxMaxima::ServerEvent(wxSocketEvent &event)
-{
-  switch (event.GetSocketEvent())
+  case wxSOCKET_CONNECTION :
   {
-    case wxSOCKET_CONNECTION :
+    m_maximaConnectTimeout.Stop();
+    if (m_client.IsConnected())
     {
-      m_maximaConnectTimeout.Stop();
-      if (m_client.IsConnected())
+      wxSocketBase *tmp = m_server->Accept(false);
+      tmp->Close();
+      wxLogMessage(_("New connection attempt when already connected."));
+      return;
+    }
+    if(m_process == NULL)
+    {
+      wxLogMessage(_("New connection attempt, but no currently running maxima process."));
+      return;
+    }
+    
+    wxLogMessage(_("Connected."));
+    m_rawDataToSend.Clear();
+    m_rawBytesSent = 0;
+    
+    m_statusBar->NetworkStatus(StatusBar::idle);
+    m_worksheet->QuestionAnswered();
+    m_currentOutput = wxEmptyString;
+    if(!m_server->AcceptWith(m_client, false))
+    {
+      wxLogMessage(_("Connection attempt, but connection failed."));
+      m_unsuccessfulConnectionAttempts++;
+      if(m_unsuccessfulConnectionAttempts < 12)
       {
-        wxSocketBase *tmp = m_server->Accept(false);
-        tmp->Close();
-        wxLogMessage(_("New connection attempt when already connected."));
-        return;
-      }
-      if(m_process == NULL)
-      {
-        wxLogMessage(_("New connection attempt, but no currently running maxima process."));
-        return;
-      }
-      
-      wxLogMessage(_("Connected."));
-      m_rawDataToSend.Clear();
-      m_rawBytesSent = 0;
-
-      m_statusBar->NetworkStatus(StatusBar::idle);
-      m_worksheet->QuestionAnswered();
-      m_currentOutput = wxEmptyString;
-      if(!m_server->AcceptWith(m_client, false))
-      {
-        wxLogMessage(_("Connection attempt, but connection failed."));
-        m_unsuccessfulConnectionAttempts++;
-        if(m_unsuccessfulConnectionAttempts < 12)
-        {
-          wxLogMessage(_("Trying to restart maxima."));          
-          StartMaxima(true);
-        }
-      }
-      else
-      {
-        m_clientStream = new wxSocketInputStream(m_client);
-        m_clientTextStream = std::unique_ptr<wxTextInputStream>(
-          new wxTextInputStream(*m_clientStream, wxT('\t'),
-                                wxConvUTF8));
-        m_client.SetEventHandler(*this, socket_client_id);
-        m_client.SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
-        m_client.Notify(true);
-        m_client.SetFlags(wxSOCKET_NOWAIT);
-        m_client.SetTimeout(15);
-        SetupVariables();
-        Refresh();
-        // wxUpdateUIEvent dummy;
-        //UpdateToolBar(dummy);
-        //UpdateMenus(dummy);
+        wxLogMessage(_("Trying to restart maxima."));          
+        StartMaxima(true);
       }
     }
-    break;
-
+    else
+    {
+      m_clientStream = new wxSocketInputStream(m_client);
+      m_clientTextStream = std::unique_ptr<wxTextInputStream>(
+        new wxTextInputStream(*m_clientStream, wxT('\t'),
+                              wxConvUTF8));
+      m_client.SetEventHandler(*GetEventHandler());
+      m_client.SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
+      m_client.Notify(true);
+      m_client.SetFlags(wxSOCKET_NOWAIT);
+      m_client.SetTimeout(15);
+      SetupVariables();
+      Refresh();
+      // wxUpdateUIEvent dummy;
+      //UpdateToolBar(dummy);
+      //UpdateMenus(dummy);
+    }
+  }
+  break;
+  
   default:
-    wxLogMessage(_("Encountered a socket event that isn't an connection request."));
-      break;
+    wxLogMessage(_("Encountered an unknown socket event."));
+    break;
   }
 }
 
@@ -1770,9 +1759,11 @@ bool wxMaxima::StartServer()
     return false;
   }
   RightStatusText(_("Server started"));
-  m_server->SetEventHandler(*this, socket_server_id);
+  m_server->SetEventHandler(*GetEventHandler());
   m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->Notify(true);
+  m_server->SetFlags(wxSOCKET_NOWAIT);
+  m_server->SetTimeout(30);
 
   return true;
 }
