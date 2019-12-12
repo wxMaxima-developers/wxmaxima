@@ -172,7 +172,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty()),
-  m_gnuplotcommand("gnuplot")
+  m_gnuplotcommand("gnuplot"),
+  m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
@@ -229,7 +230,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_closing = false;
   m_openFile = wxEmptyString;
   m_fileSaved = true;
-  m_printData = NULL;
 
   m_chmhelpFile = wxEmptyString;
 
@@ -285,8 +285,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
                                                   NULL, this);
   m_clientStream = NULL;
   m_clientTextStream = NULL;
-  m_parser = new MathParser (&m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
-
   Connect(wxEVT_SCROLL_CHANGED,
           wxScrollEventHandler(wxMaxima::SliderEvent), NULL, this);
   Connect(mac_closeId, wxEVT_MENU,
@@ -1080,9 +1078,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 wxMaxima::~wxMaxima()
 {
   KillMaxima(false);
-  wxDELETE(m_printData);m_printData = NULL;
-  delete(m_parser);
-  m_parser = NULL;
   MyApp::m_topLevelWindows.remove(this);
   if(MyApp::m_topLevelWindows.empty())
     wxExit();
@@ -1334,8 +1329,8 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
 
   s.Replace(wxT("\n"), wxT(" "), true);
 
-  m_parser->SetUserLabel(userLabel);
-  cell = m_parser->ParseLine(s, type);
+  m_parser.SetUserLabel(userLabel);
+  cell = m_parser.ParseLine(s, type);
 
   wxASSERT_MSG(cell != NULL, _("There was an error in generated XML!\n\n"
                                        "Please report this as a bug."));
@@ -1739,8 +1734,9 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       else
       {
         m_clientStream = new wxSocketInputStream(m_client);
-        m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\t'),
-                                                   wxConvUTF8);
+        m_clientTextStream = std::unique_ptr<wxTextInputStream>(
+          new wxTextInputStream(*m_clientStream, wxT('\t'),
+                                wxConvUTF8));
         m_client.SetEventHandler(*this, socket_client_id);
         m_client.SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
         m_client.Notify(true);
@@ -2077,7 +2073,7 @@ void wxMaxima::KillMaxima(bool logMessage)
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
+  m_clientTextStream = NULL;
   m_clientStream = NULL;
 
   if(m_client.IsConnected())
@@ -3098,7 +3094,7 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
           // Interpret this array of lines as wxm code.
           GroupCell *cell;
           document->InsertGroupCells(
-            cell = m_worksheet->CreateTreeFromWXMCode(&commentLines),
+            cell = m_worksheet->CreateTreeFromWXMCode(commentLines),
             last);
           last = cell;
 
@@ -3227,7 +3223,7 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
 
   // open wxm file
   wxTextFile inputFile(file);
-  wxArrayString *wxmLines = NULL;
+  wxArrayString wxmLines;
 
   if (!inputFile.Open())
   {
@@ -3244,21 +3240,18 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
     LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
-  wxmLines = new wxArrayString();
   wxString line;
   for (line = inputFile.GetFirstLine();
        !inputFile.Eof();
        line = inputFile.GetNextLine())
   {
-    wxmLines->Add(line);
+    wxmLines.Add(line);
   }
-  wxmLines->Add(line);
+  wxmLines.Add(line);
 
   inputFile.Close();
 
   GroupCell *tree = m_worksheet->CreateTreeFromWXMCode(wxmLines);
-
-  wxDELETE(wxmLines);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
@@ -3351,11 +3344,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   wxString filename = wxmxURI + wxT("#zip:content.xml");
 
   // Open the file
-  wxFSFile *fsfile = fs.OpenFile(filename);
+  std::unique_ptr<wxFSFile> fsfile(std::unique_ptr<wxFSFile>(fs.OpenFile(filename)));
   if (!fsfile)
   {
     filename = wxmxURI + wxT("#zip:/content.xml");
-    fsfile = fs.OpenFile(filename);
+    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
   }
 
   // Did we succeed in opening the file?
@@ -3368,8 +3361,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
       // a letter of ascii code 27 in content.xml. Let's filter this char out.
 
       // Re-open the file.
-      wxDELETE(fsfile);
-      fsfile = fs.OpenFile(filename);
+      fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
       if (fsfile)
       {
         // Read the file into a string
@@ -3408,8 +3400,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
     RightStatusText(_("File could not be opened"));
     return false;
   }
-
-  wxDELETE(fsfile);
 
   if (!xmldoc.IsOk())
   {
@@ -4383,8 +4373,8 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         wxBusyCursor crs;
         if (printer.Print(this, &printout, true))
         {
-          wxDELETE(m_printData);
-          m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
+          m_printData = std::unique_ptr<wxPrintData>(
+            new wxPrintData(printer.GetPrintDialogData().GetPrintData()));
         }
       }
       m_worksheet->RecalculateForce();
@@ -9518,16 +9508,49 @@ void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event))
   m_worksheet->OnFollow();
 }
 
-long *VersionToInt(wxString version)
+wxMaxima::VersionNumber::VersionNumber(wxString version) :
+  m_major(0),
+  m_minor(0),
+  m_patchlevel(0)
 {
-  long *intV = new long[3];
+  wxStringTokenizer tokens(version, wxT("._-~$"));
 
-  wxStringTokenizer tokens(version, wxT("."));
+  if(tokens.HasMoreTokens())
+    tokens.GetNextToken().ToLong(&m_major);
+  if(tokens.HasMoreTokens())
+    tokens.GetNextToken().ToLong(&m_minor);
+  if(tokens.HasMoreTokens())
+    tokens.GetNextToken().ToLong(&m_patchlevel);
+}
 
-  for (int i = 0; i < 3 && tokens.HasMoreTokens(); i++)
-    tokens.GetNextToken().ToLong(&intV[i]);
+bool operator<(const wxMaxima::VersionNumber& v1, const wxMaxima::VersionNumber& v2)
+{
+  if(v1.Major() < v2.Major())
+    return true;
+  if(v1.Major() > v2.Major())
+    return false;
+  if(v1.Minor() < v2.Minor())
+    return true;
+  if(v1.Minor() > v2.Minor())
+    return false;
+  if(v1.Patchlevel() < v2.Patchlevel())
+    return true;
+  return false;
+}
 
-  return intV;
+bool operator>(const wxMaxima::VersionNumber& v1, const wxMaxima::VersionNumber& v2)
+{
+  if(v1.Major() > v2.Major())
+    return true;
+  if(v1.Major() < v2.Major())
+    return false;
+  if(v1.Minor() > v2.Minor())
+    return true;
+  if(v1.Minor() < v2.Minor())
+    return false;
+  if(v1.Patchlevel() > v2.Patchlevel())
+    return true;
+  return false;
 }
 
 /***
@@ -9547,7 +9570,8 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
     return;
   }
 
-  wxInputStream *inputStream = connection.GetInputStream(_T("/wxmaxima/version.txt"));
+  std::unique_ptr<wxInputStream> inputStream =
+    std::unique_ptr<wxInputStream>(connection.GetInputStream(_T("/wxmaxima/version.txt")));
 
   if (connection.GetError() == wxPROTO_NOERR)
   {
@@ -9558,16 +9582,10 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
     if (version.StartsWith(wxT("wxmaxima = ")))
     {
       version = version.Mid(11, version.Length()).Trim();
-      long *myVersion = VersionToInt(wxT(GITVERSION));
-      long *currVersion = VersionToInt(version);
+      VersionNumber myVersion(wxT(GITVERSION));
+      VersionNumber currVersion(version);
 
-      bool upgrade = myVersion[0] < currVersion[0] ||
-                     (myVersion[0] == currVersion[0] && myVersion[1] < currVersion[1]) ||
-                     (myVersion[0] == currVersion[0] &&
-                      myVersion[1] == currVersion[1] &&
-                      myVersion[2] < currVersion[2]);
-
-      if (upgrade)
+      if (myVersion < currVersion)
       {
         bool visit = LoggingMessageBox(wxString::Format(
                                           _("You have version %s. Current version is %s.\n\n"
@@ -9582,9 +9600,6 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
       else if (reportUpToDate)
         LoggingMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
                      wxOK | wxICON_INFORMATION);
-
-      delete[] myVersion;
-      delete[] currVersion;
     }
     else
     {
@@ -9600,9 +9615,6 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
     LoggingMessageBox(_("Can not download version info."), _("Error"),
                  wxOK | wxICON_ERROR);
   }
-
-  wxDELETE(inputStream);
-  inputStream = NULL;
   connection.Close();
 }
 

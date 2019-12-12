@@ -97,8 +97,8 @@ bool MyApp::OnInit()
 
   wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
 
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir()+wxT("/wxwin"));
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir()+wxT("/wxwin"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   wxConfigBase *config = wxConfig::Get();
@@ -245,8 +245,6 @@ bool MyApp::OnInit()
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
-  m_dirstruct =  new Dirstructure;
-
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
@@ -257,7 +255,7 @@ bool MyApp::OnInit()
   }
   /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
-  wxString fontPrefix = m_dirstruct->FontDir() + wxT("/");  
+  wxString fontPrefix = dirstruct.FontDir() + wxT("/");  
   if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  wxFont::AddPrivateFont(fontPrefix + wxT(CMR10) + wxT(".ttf"));
@@ -346,8 +344,6 @@ bool MyApp::OnInit()
 
 int MyApp::OnExit()
 {
-  wxDELETE(m_dirstruct);
-  m_dirstruct = NULL;
   return 0;
 }
 
