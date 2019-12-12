@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-11 18:58+0100\n"
-"PO-Revision-Date: 2019-12-11 16:23+0100\n"
+"PO-Revision-Date: 2019-12-12 05:40+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1592,7 +1592,7 @@ msgstr "Verbunden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1681
 msgid "Connection to Maxima lost."
-msgstr ""
+msgstr "Verbindung mit Maxima verloren."
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:215
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:234
@@ -2265,7 +2265,7 @@ msgstr "Aktiviert:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1738
 msgid "Encountered a socket event that isn't an connection request."
-msgstr ""
+msgstr "Sockel meldet Ereignis, das keine Verbindungsanfrage ist."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1842
 msgid "End of proof"
@@ -3184,7 +3184,7 @@ msgstr "Name der Datendatei für Gnuplot:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2590
 #, c-format
 msgid "Gnuplot can be found at %s"
-msgstr ""
+msgstr "Gnuplot kann unter %s gefunden werden"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2120
 msgid "Gnuplot has closed."
@@ -4060,7 +4060,7 @@ msgstr "Lisp-Modus."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2607
 #, c-format
 msgid "Lisp version: %s"
-msgstr ""
+msgstr "Lisp-Version: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6856
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6880
@@ -4306,7 +4306,7 @@ msgstr "Maxima"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2580
 #, c-format
 msgid "Maxima architecture: %s"
-msgstr ""
+msgstr "Architektur von Maxima: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:483
 msgid "Maxima asks a question"
@@ -4470,7 +4470,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2559
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
-msgstr ""
+msgstr "Die Konfigurationsdateien von Maxima liegen unter %s"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:49
 msgid ""
@@ -4484,12 +4484,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2564
 #, c-format
 msgid "Maxima uses temp directory %s"
-msgstr ""
+msgstr "Temporäre Dateien von Maxima liegen im Verzeichnis %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2575
 #, c-format
 msgid "Maxima version: %s"
-msgstr ""
+msgstr "Maxima-Version: %s"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:250
 msgid "Maxima warnings"
@@ -4498,7 +4498,7 @@ msgstr "Warnungen von Maxima"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2602
 #, c-format
 msgid "Maxima was compiled using %s"
-msgstr ""
+msgstr "Maxima wurde von %s compiliert"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:154
 msgid ""
@@ -4528,7 +4528,7 @@ msgstr "Die Prozess-ID von Maxima ist %li"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2585
 #, c-format
 msgid "Maxima's manual lies in directory %s"
-msgstr ""
+msgstr "Maxima's Handbuch liegt im Ordner %s"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:33
 msgid "Maxima's power lies in symbolic operations."
@@ -4537,7 +4537,7 @@ msgstr "Die stärke von Maxima liegt im symbolischen Rechnen."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2595
 #, c-format
 msgid "Maxima's share files lie in directory %s"
-msgstr ""
+msgstr "Die Zusatzdateien für Maxima liegen unter %s"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:148
 msgid ""
@@ -4785,7 +4785,7 @@ msgstr "Neuer Verbindungsversuch, während Maxima bereits verbunden ist ?!?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1709
 msgid "New connection attempt, but no currently running maxima process."
-msgstr ""
+msgstr "Neuer Verbindungsversuch, aber kein Maxima-Prozess"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
 msgid "New document"
