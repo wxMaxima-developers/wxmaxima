@@ -43,14 +43,17 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
   m_scale = 1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
+  m_tree = NULL;
   m_emfFormat = wxDataFormat(wxT("image/x-emf"));
 
   m_filename = filename;
   if (m_filename == wxEmptyString)
     m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
 
+  m_dc = NULL;
+
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
-  m_recalculationDc = std::unique_ptr<wxEnhMetaFileDC>(new wxEnhMetaFileDC(m_tempFileName,3000,50000));
+  m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,3000,50000);
   *m_configuration = new Configuration(m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(3000);
@@ -66,7 +69,12 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
 
 Emfout::~Emfout()
 {
+  wxDELETE(m_tree);
+  m_tree = NULL;
   wxDELETE(*m_configuration);
+  wxDELETE(m_dc);
+  m_dc = NULL;
+  wxDELETE(m_recalculationDc);
   m_recalculationDc = NULL;
   if(wxFileExists(m_tempFileName))
   {
@@ -133,9 +141,10 @@ bool Emfout::Layout()
   if(m_dc != NULL)
   {
     m_dc->Close();
+    wxDELETE(m_dc);
   }
   // Let's switch to a DC of the right size for our object.
-  m_dc = std::unique_ptr<wxEnhMetaFileDC>(new wxEnhMetaFileDC(m_filename, m_width, m_height));
+  m_dc = new wxEnhMetaFileDC(m_filename, m_width, m_height);
   if(m_dc != NULL)
   {
     (*m_configuration)->SetContext(*m_dc);
@@ -143,6 +152,8 @@ bool Emfout::Layout()
     Draw();
     // Closing the DC seems to trigger the actual output of the file.
     m_dc->Close();
+    wxDELETE(m_dc);
+    m_dc = NULL;
   }
   return true;
 }
