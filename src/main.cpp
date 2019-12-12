@@ -245,6 +245,8 @@ bool MyApp::OnInit()
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
+  m_dirstruct =  new Dirstructure;
+
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
