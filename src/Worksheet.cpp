@@ -1303,7 +1303,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   ClearNotification();
   m_cellPointers.ResetSearchStart();
 
-  wxMenu *popupMenu = new wxMenu();
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
 
   int downx, downy;
 
@@ -1750,8 +1750,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   }
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
-    PopupMenu( popupMenu);
-  wxDELETE(popupMenu);
+    PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
 }
 
 
@@ -2358,12 +2357,12 @@ bool Worksheet::Copy(bool astext)
         }
       }
 
+      std::unique_ptr<Cell> tmp(CopySelection());
       if(m_configuration->CopyRTF())
       {
         // Add a RTF representation of the currently selected text
         // to the clipboard: For some reason libreoffice likes RTF more than
         // it likes the MathML - which is standartized.
-        Cell *tmp = CopySelection();
         if (tmp != NULL)
         {
           wxString rtf;
@@ -2371,14 +2370,12 @@ bool Worksheet::Copy(bool astext)
           data->Add(new RtfDataObject(rtf));
           data->Add(new RtfDataObject2(rtf), true);
         }
-        wxDELETE(tmp);
       }
 
       // Add a string representation of the selected output to the clipboard
-      Cell *tmp = CopySelection();
+      tmp = std::unique_ptr<Cell>(CopySelection());
       s = tmp->ListToString();
       data->Add(new wxTextDataObject(s));
-      wxDELETE(tmp);
 
       if(m_configuration->CopyBitmap())
       {
@@ -2417,16 +2414,17 @@ wxString Worksheet::ConvertSelectionToMathML()
     return wxEmptyString;
 
   wxString s;
-  Cell *tmp = CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, true);
+   std::unique_ptr<Cell> tmp(
+     CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, true));
 
-  s = wxString(wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
-      wxT("<semantics>") +
-      tmp->ListToMathML(true) +
-      wxT("<annotation encoding=\"application/x-maxima\">") +
-      Cell::XMLescape(tmp->ListToString()) +
-      wxT("</annotation>") +
-      wxT("</semantics>") +
-      wxT("</math>");
+   s = wxString(wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
+     wxT("<semantics>") +
+     tmp->ListToMathML(true) +
+     wxT("<annotation encoding=\"application/x-maxima\">") +
+     Cell::XMLescape(tmp->ListToString()) +
+     wxT("</annotation>") +
+     wxT("</semantics>") +
+     wxT("</math>");
 
   // We might add indentation as additional eye candy to all but extremely long
   // xml data chunks.
@@ -5412,13 +5410,13 @@ bool Worksheet::ExportToHTML(wxString file)
             }
 
           // Create a list containing only our chunk.
-          Cell *chunk = CopySelection(chunkStart, chunkEnd);
+          std::unique_ptr<Cell> chunk(CopySelection(chunkStart, chunkEnd));
 
           // Export the chunk.
 
           if (chunk->GetType() == MC_TYPE_SLIDE)
           {
-            dynamic_cast<SlideShow *>(chunk)->ToGif(
+            dynamic_cast<SlideShow *>(&(*chunk))->ToGif(
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
@@ -5447,7 +5445,6 @@ bool Worksheet::ExportToHTML(wxString file)
               line.Replace(wxT("\\tag{\\% "), wxT("\\tag{%"));
 
               output << wxT("<p>\n\\[") << line << wxT("\\]\n</p>\n");
-              wxDELETE(chunk);
               break;
             }
 
@@ -5456,7 +5453,7 @@ bool Worksheet::ExportToHTML(wxString file)
               wxString alttext;
               alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
-              wxSize size = svgout.SetData(chunk);
+              wxSize size = svgout.SetData(&(*chunk));
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\"" ),
@@ -5475,7 +5472,7 @@ bool Worksheet::ExportToHTML(wxString file)
               ext = wxT(".png");
               wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
               size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
-                                chunk,
+                                &(*chunk),
                                 NULL, true, bitmapScale);
               int borderwidth = 0;
               wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
@@ -5489,7 +5486,6 @@ bool Worksheet::ExportToHTML(wxString file)
                 wxT("\" /><br/>\n");
 
               output << line + "\n";
-              wxDELETE(chunk);
               break;
             }
 
@@ -5498,15 +5494,14 @@ bool Worksheet::ExportToHTML(wxString file)
               wxString line = chunk->ListToMathML();
               output << wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">") << line
                      << wxT("</math>\n");
-              wxDELETE(chunk);
             }
             }
           }
           else
           {
             wxSize size;
-            ext = wxT(".") + dynamic_cast<ImgCell *>(chunk)->GetExtension();
-            size = dynamic_cast<ImgCell *>(chunk)->ToImageFile(
+            ext = wxT(".") + dynamic_cast<ImgCell *>(&(*chunk))->GetExtension();
+            size = dynamic_cast<ImgCell *>(&(*chunk))->ToImageFile(
               imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
             wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
@@ -5520,8 +5515,6 @@ bool Worksheet::ExportToHTML(wxString file)
               wxT("\" /><br/>\n");
 
             output << line + "\n";
-            wxDELETE(chunk);
-
           }
           count++;
 
@@ -5723,7 +5716,7 @@ void Worksheet::CodeCellVisibilityChanged()
   ScrollToCaret();
 }
 
-GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
+GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
 {
   bool hide = false;
   GroupCell *tree = NULL;
@@ -5732,27 +5725,27 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
 
   wxString question;
   
-  while (!wxmLines->IsEmpty())
+  while (!wxmLines.IsEmpty())
   {
     cell = NULL;
 
-    if (wxmLines->Item(0) == wxT("/* [wxMaxima: hide output   ] */"))
+    if (wxmLines.Item(0) == wxT("/* [wxMaxima: hide output   ] */"))
       hide = true;
 
       // Print title
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: title   start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: title   start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: title   end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: title   end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_TITLE, &m_cellPointers, line);
@@ -5764,19 +5757,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
       // Print section
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: section start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: section start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: section end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: section end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_SECTION, &m_cellPointers, line);
@@ -5788,19 +5781,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
       // Print subsection
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsect start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: subsect start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: subsect end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: subsect end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_SUBSECTION, &m_cellPointers, line);
@@ -5812,19 +5805,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
     // print subsubsection
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsubsect start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: subsubsect start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: subsubsect end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: subsubsect end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_SUBSUBSECTION, &m_cellPointers, line);
@@ -5836,19 +5829,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
     // print heading5
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: heading5 start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: heading5 start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: heading5 end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: heading5 end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_HEADING5, &m_cellPointers, line);
@@ -5860,19 +5853,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
     // print heading6
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: heading6 start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: heading6 start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: heading6 end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: heading6 end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_HEADING6, &m_cellPointers, line);
@@ -5884,19 +5877,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
       // Print comment
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: comment start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: comment start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: comment end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: comment end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_TEXT, &m_cellPointers, line);
@@ -5908,20 +5901,20 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     }
 
       // Print an image
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: caption start ]"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: caption start ]"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
 
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: caption end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: caption end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_IMAGE, &m_cellPointers);
@@ -5934,27 +5927,27 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       }
 
       // Gracefully handle captions without images
-      if(wxmLines->IsEmpty())
+      if(wxmLines.IsEmpty())
         break;
 
-      wxmLines->RemoveAt(0);
-      if (wxmLines->Item(0) == wxT("/* [wxMaxima: image   start ]"))
+      wxmLines.RemoveAt(0);
+      if (wxmLines.Item(0) == wxT("/* [wxMaxima: image   start ]"))
       {
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
 
         // Read the image type
-        wxString imgtype = wxmLines->Item(0);
-        wxmLines->RemoveAt(0);
+        wxString imgtype = wxmLines.Item(0);
+        wxmLines.RemoveAt(0);
 
         wxString ln;
-        while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: image   end   ] */")))
+        while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: image   end   ] */")))
         {
           if (ln.Length() == 0)
-            ln += wxmLines->Item(0);
+            ln += wxmLines.Item(0);
           else
-            ln += wxT("\n") + wxmLines->Item(0);
+            ln += wxT("\n") + wxmLines.Item(0);
 
-          wxmLines->RemoveAt(0);
+          wxmLines.RemoveAt(0);
         }
 
         cell->SetOutput(
@@ -5962,19 +5955,19 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       }
     }
       // Print input
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: input   start ] */"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: input   start ] */"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: input   end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: input   end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_CODE, &m_cellPointers, line);
@@ -5984,62 +5977,62 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
         hide = false;
       }
     }
-    if (wxmLines->Item(0) == wxT("/* [wxMaxima: answer  start ] */"))
+    if (wxmLines.Item(0) == wxT("/* [wxMaxima: answer  start ] */"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: answer  end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: answer  end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
       if((last != NULL) && (!question.IsEmpty()))
         last->SetAnswer(question, line);
     }
-    if (wxmLines->Item(0) == wxT("/* [wxMaxima: question  start ] */"))
+    if (wxmLines.Item(0) == wxT("/* [wxMaxima: question  start ] */"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxString line;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: question  end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: question  end   ] */")))
       {
         if (line.Length() == 0)
-          line += wxmLines->Item(0);
+          line += wxmLines.Item(0);
         else
-          line += wxT("\n") + wxmLines->Item(0);
+          line += wxT("\n") + wxmLines.Item(0);
 
-        wxmLines->RemoveAt(0);
+        wxmLines.RemoveAt(0);
       }
       question = line;
     }
-    if (wxmLines->Item(0) == wxT("/* [wxMaxima: autoanswer    ] */"))
+    if (wxmLines.Item(0) == wxT("/* [wxMaxima: autoanswer    ] */"))
     {
       if(last != NULL)
         last->AutoAnswer(true);
     }
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: page break    ] */"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: page break    ] */"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       cell = new GroupCell(&m_configuration, GC_TYPE_PAGEBREAK, &m_cellPointers);
     }
 
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    start ] */"))
+    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: fold    start ] */"))
     {
-      wxmLines->RemoveAt(0);
+      wxmLines.RemoveAt(0);
 
       wxArrayString hiddenTree;
-      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: fold    end   ] */")))
+      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: fold    end   ] */")))
       {
-        hiddenTree.Add(wxmLines->Item(0));
-        wxmLines->RemoveAt(0);
+        hiddenTree.Add(wxmLines.Item(0));
+        wxmLines.RemoveAt(0);
       }
-      last->HideTree(CreateTreeFromWXMCode(&hiddenTree));
+      last->HideTree(CreateTreeFromWXMCode(hiddenTree));
     }
 
     if (cell)
@@ -6056,8 +6049,8 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       cell = NULL;
     }
 
-    if (!wxmLines->IsEmpty())
-      wxmLines->RemoveAt(0);
+    if (!wxmLines.IsEmpty())
+      wxmLines.RemoveAt(0);
   }
 
   return tree;
@@ -6610,7 +6603,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   xmlText +=  wxT("\n</wxMaximaDocument>");
 
   // Prepare reading the files we have stored in memory
-  wxFileSystem *fsystem = new wxFileSystem();
+  std::unique_ptr<wxFileSystem> fsystem(new wxFileSystem);
   fsystem->AddHandler(new wxMemoryFSHandler);
   fsystem->ChangePathTo(wxT("memory:"), true);
 
@@ -6655,7 +6648,6 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
         wxMemoryFSHandler::RemoveFile(name);
         memFsName = fsystem->FindNext();
       }
-      wxDELETE(fsystem);
       return false;
     }
   }
@@ -6673,7 +6665,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     {
       zip.CloseEntry();
 
-      wxFSFile *fsfile = fsystem->OpenFile(memFsName);
+      std::unique_ptr<wxFSFile> fsfile(fsystem->OpenFile(memFsName));
 
       if (fsfile)
       {
@@ -6685,19 +6677,15 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
           zip.SetLevel(0);
 
         zip.PutNextEntry(name);
-        wxInputStream *imagefile = fsfile->GetStream();
+        std::unique_ptr<wxInputStream> imagefile(fsfile->GetStream());
 
         while (!(imagefile->Eof()))
           imagefile->Read(zip);
-
-        wxDELETE(imagefile);
       }
     }
     wxMemoryFSHandler::RemoveFile(name);
     memFsName = fsystem->FindNext();
   }
-
-  wxDELETE(fsystem);
 
   if (!zip.Close())
     return false;
@@ -6733,21 +6721,14 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // actually managed to save it correctly.
   {
     wxFileSystem fs;
-    wxFSFile *fsfile = fs.OpenFile(filename);
-    if (!fsfile)
-    {
-      filename = wxmxURI + wxT("#zip:/content.xml");
-      fsfile = fs.OpenFile(filename);
-    }
+    std::unique_ptr<wxFSFile> fsfile(fs.OpenFile(filename));
     
     // Did we succeed in opening the file?
     if (!fsfile)
     {
       wxLogMessage(_(wxT("Saving succeeded, but the file could not be read again \u21D2 Not replacing the old saved file.")));
       return false;
-    }
-    
-    delete fsfile;
+    }    
   }
   
   {
@@ -7632,7 +7613,7 @@ void Worksheet::PasteFromClipboard()
         lines_array.Add(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
-      GroupCell *contents = CreateTreeFromWXMCode(&lines_array);
+      GroupCell *contents = CreateTreeFromWXMCode(lines_array);
 
       // Add the result of the last operation to the worksheet.
       if (contents)

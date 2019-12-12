@@ -53,6 +53,7 @@
 #endif
 
 #include <wx/html/helpctrl.h>
+#include <memory>
 
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
@@ -199,7 +200,23 @@ public:
   //! Query the value of a new maxima variable
   bool QueryVariableValue();
 
-private:
+  //! A version number that can be compared with "<" and ">"
+  class VersionNumber
+  {
+  public:
+    explicit VersionNumber(wxString version);
+    int Major() const {return m_major;}
+    int Minor() const {return m_minor;}
+    int Patchlevel() const {return m_patchlevel;}
+    friend bool operator<(const VersionNumber& v1, const VersionNumber& v2);
+    friend bool operator>(const VersionNumber& v1, const VersionNumber& v2);
+  private:
+    long m_major;
+    long m_minor;
+    long m_patchlevel;
+  };
+
+private:  
   static bool m_pipeToStdout;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
@@ -648,7 +665,7 @@ protected:
 
   wxSocketBase m_client;
   wxSocketInputStream *m_clientStream;
-  wxTextInputStream *m_clientTextStream;
+  std::unique_ptr<wxTextInputStream> m_clientTextStream;
   wxSocketServer *m_server;
   wxProcess *m_process;
   //! The stdout of the maxima process
@@ -693,7 +710,7 @@ protected:
   bool m_dispReadOut;               //!< what is displayed in statusbar
   wxString m_lastPrompt;
   wxString m_lastPath;
-  wxPrintData *m_printData;
+  std::unique_ptr<wxPrintData> m_printData;
   /*! Did we tell maxima to close?
 
     If we didn't we respan an unexpectedly-closing maxima.
@@ -724,7 +741,7 @@ protected:
   wxRegEx m_varRegEx;
   wxRegEx m_blankStatementRegEx;
   wxRegEx m_sbclCompilationRegEx;
-  MathParser *m_parser;
+  MathParser m_parser;
   bool m_maximaBusy;
   wxMemoryBuffer m_rawDataToSend;
   unsigned long int m_rawBytesSent;
@@ -786,7 +803,7 @@ public:
 private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
-  Dirstructure *m_dirstruct;
+  Dirstructure m_dirstruct;
 };
 
 DECLARE_APP(MyApp)
