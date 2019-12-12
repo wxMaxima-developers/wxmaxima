@@ -5725,10 +5725,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       MenuCommand(wxT("wxsubscripts: false$"));
       break;
     case menu_defaultAutosubscript:
-      MenuCommand(wxT("wxsubscripts: true"));
+      MenuCommand(wxT("wxsubscripts: true$"));
       break;
     case menu_alwaysAutosubscript:
-      MenuCommand(wxT("wxsubscripts: 'always$"));
+      MenuCommand(wxT("wxsubscripts: 'all$"));
       break;
     case menu_roundedMatrixParensYes:
       MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
