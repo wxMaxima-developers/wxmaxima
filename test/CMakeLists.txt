@@ -39,15 +39,13 @@ set_tests_properties(wxmaxima_batch_textcell PROPERTIES TIMEOUT 60)
 add_test(
     NAME wxmaxima_batch_foreign_characters
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch foreign-characters.wxm
-    VERBATIM)
+    COMMAND wxmaxima --logtostdout --pipe --batch foreign-characters.wxm)
 set_tests_properties(wxmaxima_batch_foreign_characters PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME wxmaxima_version_string
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --version
-    VERBATIM)
+    COMMAND wxmaxima --logtostdout --pipe --version)
 set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*" TIMEOUT 60)
 
 add_test(
