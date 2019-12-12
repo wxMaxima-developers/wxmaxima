@@ -1848,14 +1848,14 @@ bool wxMaxima::StartMaxima(bool force)
 
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
 
+// TODO: Is this still necessary?
 #if defined __WXOSX__
       wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
 
-#if defined __WXMSW__
       // Tell maxima we want to be able to kill it on Ctrl+G by sending it a signal
+      // Strictly necessary only on MS Windows where we don'r have a kill() command.
       wxSetEnv(wxT("MAXIMA_SIGNALS_THREAD"), wxT("1"));
-#endif
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
 //      m_process->SetPriority(wxPRIORITY_MAX);
