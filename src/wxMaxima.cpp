@@ -1164,7 +1164,7 @@ void wxMaxima::InitSession()
   else if (!StartMaxima())
     LeftStatusText(_("Starting Maxima process failed"));
 
-  Refresh();
+//  Refresh();
   m_worksheet->SetFocus();
   m_autoSaveTimer.StartOnce(180000);
 }
@@ -1718,19 +1718,32 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_worksheet->QuestionAnswered();
       m_currentOutput = wxEmptyString;
       m_isConnected = true;
-      m_client = m_server->Accept(false);
-      m_clientStream = new wxSocketInputStream(*m_client);
-      m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\t'),
-                                                 wxConvUTF8);
-      m_client->SetEventHandler(*this, socket_client_id);
-      m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
-      m_client->Notify(true);
-      m_client->SetFlags(wxSOCKET_NOWAIT);
-      m_client->SetTimeout(15);
-      SetupVariables();
-      wxUpdateUIEvent dummy;
-      UpdateToolBar(dummy);
-      UpdateMenus(dummy);
+      if(!m_server->AcceptWith(m_client, false))
+      {
+        wxLogMessage(_("Connection attempt, but connection failed."));
+        m_unsuccessfulConnectionAttempts++;
+        if(m_unsuccessfulConnectionAttempts < 12)
+        {
+          wxLogMessage(_("Trying to restart maxima."));          
+          StartMaxima(true);
+        }
+      }
+      else
+      {
+        m_clientStream = new wxSocketInputStream(*m_client);
+        m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\t'),
+                                                   wxConvUTF8);
+        m_client->SetEventHandler(*this, socket_client_id);
+        m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
+        m_client->Notify(true);
+        m_client->SetFlags(wxSOCKET_NOWAIT);
+        m_client->SetTimeout(15);
+        SetupVariables();
+        Refresh();
+        // wxUpdateUIEvent dummy;
+        //UpdateToolBar(dummy);
+        //UpdateMenus(dummy);
+      }
     }
     break;
 
