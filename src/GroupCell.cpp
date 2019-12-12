@@ -40,8 +40,8 @@
 #include "BitmapOut.h"
 #include "list"
 
-GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
-  this, config, cellPointers)
+GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) :
+  Cell(this, config, cellPointers)
 {
   m_numberedAnswersCount = 0;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
@@ -49,10 +49,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_cellsInGroup = 1;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
-  m_inputLabel = NULL;
   m_labelWidth_cached = 0;
-  m_output = NULL;
-  m_hiddenTree = NULL;
   m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
@@ -72,9 +69,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL);
+      m_inputLabel = std::unique_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
     else
-      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, wxT(""));
+      m_inputLabel = std::unique_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -160,7 +157,6 @@ GroupCell::GroupCell(const GroupCell &cell):
   GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers, wxEmptyString)
 {
   CopyCommonData(cell);
-  m_inputLabel = m_output = NULL;
   if (cell.m_inputLabel)
     SetInput(cell.m_inputLabel->CopyList());
   if (cell.m_output)
@@ -262,7 +258,7 @@ void GroupCell::SetGroup(Cell *parent)
   if (m_inputLabel != NULL)
     m_inputLabel->SetGroupList(parent);
 
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   if(m_output != NULL)
     tmp->SetGroupList(parent);
 }
@@ -423,10 +419,6 @@ wxString GroupCell::ToWXM(bool wxm)
 GroupCell::~GroupCell()
 {
   GroupCell::MarkAsDeleted();
-  wxDELETE(m_inputLabel);
-  wxDELETE(m_output);
-  wxDELETE(m_hiddenTree);
-  m_inputLabel = m_output = m_hiddenTree = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
@@ -472,8 +464,7 @@ void GroupCell::SetInput(Cell *input)
 {
   if (input == NULL)
     return;
-  wxDELETE(m_inputLabel);
-  m_inputLabel = input;
+  m_inputLabel = std::unique_ptr<Cell>(input);
   m_inputLabel->SetGroup(this);
 }
 
@@ -481,7 +472,7 @@ void GroupCell::AppendInput(Cell *cell)
 {
   if (m_inputLabel == NULL)
   {
-    m_inputLabel = cell;
+    m_inputLabel = std::unique_ptr<Cell>(cell);
   }
   else
   {
@@ -507,12 +498,9 @@ void GroupCell::SetOutput(Cell *output)
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   
-  wxDELETE(m_output);
+  m_output = std::unique_ptr<Cell>(output);
 
-  m_output = output;
-
-
-  m_lastInOutput = m_output;
+  m_lastInOutput = m_output.get();
 
   if(m_output != NULL)
   {
@@ -539,7 +527,6 @@ void GroupCell::RemoveOutput()
 
   if (!(GetGroupType() == GC_TYPE_IMAGE))
   {
-    wxDELETE(m_output);
     m_output = NULL;
   }
 
@@ -566,12 +553,12 @@ void GroupCell::AppendOutput(Cell *cell)
   cell->SetGroupList(this);
   if (m_output == NULL)
   {
-    m_output = cell;
+    m_output = std::unique_ptr<Cell>(cell);
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
 
-    m_lastInOutput = m_output;
+    m_lastInOutput = m_output.get();
 
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
@@ -581,7 +568,7 @@ void GroupCell::AppendOutput(Cell *cell)
   {
     Cell *tmp = m_lastInOutput;
     if (tmp == NULL)
-      tmp = m_output;
+      tmp = m_output.get();
 
     while (tmp->m_next != NULL)
       tmp = tmp->m_next;
@@ -742,7 +729,7 @@ void GroupCell::InputHeightChanged()
 void GroupCell::OnSize()
 {
   // Unbreakup cells
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   while (tmp != NULL)
   {
     tmp->Unbreak();
@@ -796,7 +783,7 @@ void GroupCell::RecalculateHeightInput()
   
   if (!m_isHidden)
   {
-    Cell *tmp = m_output;
+    Cell *tmp = m_output.get();
     while (tmp != NULL)
     {
       tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
@@ -863,7 +850,7 @@ void GroupCell::RecalculateHeightOutput()
   }
   m_output->HardLineBreak();
 
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   m_fontSize = configuration->GetFontSize(TS_TEXT);
   m_mathFontSize = configuration->GetMathFontSize();
 
@@ -875,10 +862,10 @@ void GroupCell::RecalculateHeightOutput()
   }
 
   // Breakup cells and break lines
-  BreakLines(m_output);
+  BreakLines(m_output.get());
 
   // Recalculate size of cells
-  tmp = m_output;
+  tmp = m_output.get();
   while (tmp != NULL)
   {
     tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
@@ -887,7 +874,7 @@ void GroupCell::RecalculateHeightOutput()
   }
 
   // Update heights
-  tmp = m_output;
+  tmp = m_output.get();
   tmp->ForceBreakLine(true);
   while (tmp != NULL)
   {
@@ -1037,7 +1024,7 @@ void GroupCell::Draw(wxPoint point)
 
       if ((m_output != NULL) && !m_isHidden)
       {
-        Cell *tmp = m_output;
+        Cell *tmp = m_output.get();
         int drop = tmp->GetMaxDrop();
         if ((configuration->ShowCodeCells()) ||
             (m_groupType != GC_TYPE_CODE))
@@ -1386,7 +1373,7 @@ wxString GroupCell::ToString()
 
   if (m_output != NULL && !m_isHidden)
   {
-    Cell *tmp = m_output;
+    Cell *tmp = m_output.get();
     bool firstCell = true;
     while (tmp != NULL)
     {
@@ -1566,7 +1553,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     if (imgCounter == NULL)
       str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
-    Cell *tmp = m_output;
+    Cell *tmp = m_output.get();
 
     bool mathMode = false;
 
@@ -1892,7 +1879,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
   }
 
   // Lets select a rectangle
-  tmp = m_output;
+  tmp = m_output.get();
   *first = *last = NULL;
 
   while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
@@ -1955,7 +1942,7 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
   if (m_isHidden)
     return retval;
   
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   while (tmp != NULL)
   {
 
@@ -2004,7 +1991,7 @@ EditorCell *GroupCell::GetEditable() const
 
 void GroupCell::BreakLines()
 {
-  BreakLines(m_output);
+  BreakLines(m_output.get());
 }
 
 void GroupCell::BreakLines(Cell *cell)
@@ -2058,7 +2045,7 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
   if (m_isHidden)
     return;
 
-  *start = m_output;
+  *start = m_output.get();
 
   while (*start != NULL && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
     *start = (*start)->m_nextToDraw;
@@ -2206,11 +2193,11 @@ bool GroupCell::HideTree(GroupCell *tree)
 {
   if (m_hiddenTree)
     return false;
-  m_hiddenTree = tree;
+  m_hiddenTree = std::unique_ptr<GroupCell>(tree);
   m_hiddenTree->SetHiddenTreeParent(this);
 
   // Clear cached images from cells that are hidden
-  GroupCell *tmp = m_hiddenTree;
+  GroupCell *tmp = m_hiddenTree.get();
   while (tmp)
   {
     if (tmp->GetLabel())
@@ -2223,7 +2210,7 @@ bool GroupCell::HideTree(GroupCell *tree)
 
 GroupCell *GroupCell::UnhideTree()
 {
-  GroupCell *tree = m_hiddenTree;
+  GroupCell *tree = m_hiddenTree.get();
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
   return tree;
@@ -2300,7 +2287,7 @@ GroupCell *GroupCell::Fold()
   }
   
   start->m_previous = start->m_previousToDraw = NULL;
-  m_hiddenTree = start; // save the torn out tree into m_hiddenTree
+  m_hiddenTree = std::unique_ptr<GroupCell>(start); // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
 }
@@ -2315,10 +2302,10 @@ GroupCell *GroupCell::Unfold()
   Cell *next = m_next;
 
   // sew together this cell with m_hiddenTree
-  m_next = m_nextToDraw = m_hiddenTree;
+  m_next = m_nextToDraw = m_hiddenTree.get();
   m_hiddenTree->m_previous = m_hiddenTree->m_previousToDraw = this;
 
-  Cell *tmp = m_hiddenTree;
+  Cell *tmp = m_hiddenTree.get();
   while (tmp->m_next)
     tmp = tmp->m_next;
   // tmp holds the last element of m_hiddenTree

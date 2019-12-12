@@ -220,22 +220,22 @@ public:
   static wxString TexEscapeOutputCell(wxString Input);
 
   Cell *GetPrompt()
-  { return m_inputLabel; }
+    { return m_inputLabel.get(); }
 
   EditorCell *GetInput() const
-  {
-    if (m_inputLabel != NULL)
-      return dynamic_cast<EditorCell *>(m_inputLabel->m_next);
-    else
-      return NULL;
-  }
+    {
+      if (m_inputLabel != NULL)
+        return dynamic_cast<EditorCell *>(m_inputLabel.get()->m_next);
+      else
+        return NULL;
+    }
 
   /*! Returns the list of cells the output consists of, starting with the label.
 
     See also GetOutput();
   */
   Cell *GetLabel()
-  { return m_output; }
+    { return m_output.get(); }
 
   /*! Returns the list of cells the output consists of, starting after the label.
 
@@ -315,7 +315,7 @@ public:
 
   //! Get the tree of cells that got hidden by folding this cell
   GroupCell *GetHiddenTree()
-  { return m_hiddenTree; }
+    { return m_hiddenTree.get(); }
 
   /*! Fold the current cell
 
@@ -507,14 +507,14 @@ protected:
   bool NeedsRecalculation() override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
-  GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
+  std::unique_ptr<GroupCell> m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
   GroupType m_groupType;
   //! The input label of this cell. Is followed by the input of the cell.
-  Cell *m_inputLabel;
+  std::unique_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
-  Cell *m_output;
+  std::unique_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
   Cell *m_lastInOutput;
