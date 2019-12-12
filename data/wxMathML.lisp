@@ -24,9 +24,9 @@
 
 ;(format t "<wxxml-start/>")
 
-;; This is necessary to make file and directory names that contain special characters
-;; work under windows.
 (progn
+  ;; This is necessary to make file and directory names that contain special characters
+  ;; work under windows.
   #+sbcl (setf sb-impl::*default-external-format* :UTF-8)
 
   (in-package :maxima)
