@@ -126,6 +126,12 @@ public:
   //! A timer that tells us to wait until maxima ends its data.
   wxTimer m_waitForStringEndTimer;
 
+  //! A timer that tells us how long to wait for maxima to connect.
+  wxTimer m_maximaConnectionTimeout;
+
+  //! Is eventually triggered when a line from maxima doesn't end in a newline
+  void OnMaximaConnectionTimeout(wxTimerEvent &event);
+
   //! Is eventually triggered when a line from maxima doesn't end in a newline
   void OnWaitForStringEndTimer(wxTimerEvent &event);
   /*! wxWidgets doesn't send a signal if data arrives at maxima's stdout
@@ -640,7 +646,7 @@ protected:
     return m_CWD;
   }
 
-  wxSocketBase *m_client;
+  wxSocketBase m_client;
   wxSocketInputStream *m_clientStream;
   wxTextInputStream *m_clientTextStream;
   wxSocketServer *m_server;
