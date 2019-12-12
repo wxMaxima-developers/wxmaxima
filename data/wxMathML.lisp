@@ -218,7 +218,8 @@
 		    (or (get sub-var-symb 'wxxmlword)
 			(format nil "<v>~a</v>" sub-var))
 		    (if sub-int
-			(format nil "<n>~a</n>" sub-int)
+			;; sub-symb discarded leading zeros from subscripts
+			(format nil "<n>~a</n>" sub) 
                       (format nil "<v>~a</v>" sub))))))))
 
   (defun wxxmlnumformat (atom)
