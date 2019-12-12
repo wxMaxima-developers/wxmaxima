@@ -135,12 +135,11 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     {
       if (children->GetName() == wxT("input"))
       {
-        std::unique_ptr<Cell> editor(ParseEditorTag(children->GetChildren()));
+        Cell *editor = ParseTag(children->GetChildren());
         if (editor == NULL)
-          editor = std::unique_ptr<EditorCell>(
-            new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
-        if(editor)
-          group->SetEditableContent(editor->GetValue());
+          editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
+        group->SetEditableContent(editor->GetValue());
+        wxDELETE(editor);
       }
       if (children->GetName() == wxT("output"))
       {
@@ -158,9 +157,9 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     {
       if (children->GetName() == wxT("editor"))
       {
-        std::unique_ptr<Cell> ed(ParseEditorTag(children));
-        if(ed)
-          group->SetEditableContent(ed->GetValue());
+        Cell *ed = ParseEditorTag(children);
+        group->SetEditableContent(ed->GetValue());
+        wxDELETE(ed);
       }
       else
         group->AppendOutput(ParseTag(children));
@@ -174,12 +173,11 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
   else if (type == wxT("text"))
   {
     group = new GroupCell(m_configuration, GC_TYPE_TEXT, m_cellPointers);
-    std::unique_ptr<Cell> editor(ParseTag(node->GetChildren()));
+    Cell *editor = ParseTag(node->GetChildren());
     if (editor == NULL)
-      editor = std::unique_ptr<Cell>(
-        new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
-    if(editor)
-       group->SetEditableContent(editor->GetValue());
+      editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
+    group->SetEditableContent(editor->GetValue());
+    wxDELETE(editor);
   }
   else
   {
@@ -226,9 +224,9 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     {
       if (children->GetName() == wxT("editor"))
       {
-        std::unique_ptr<Cell> ed(ParseEditorTag(children));
-        if(ed)
-          group->SetEditableContent(ed->GetValue());
+        Cell *ed = ParseEditorTag(children);
+        group->SetEditableContent(ed->GetValue());
+        wxDELETE(ed);
       }
       else if (children->GetName() == wxT("fold"))
       { // we have folded groupcells
