@@ -36,8 +36,8 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_num(new TextCell(parent, config, cellPointers)),
   m_denom(new TextCell(parent, config, cellPointers)),
   m_open1(new TextCell(m_group, m_configuration, m_cellPointers, wxT("("))),
-  m_close1(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
   m_open2(new TextCell(m_group, m_configuration, m_cellPointers, wxT("("))),
+  m_close1(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
   m_close2(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
   m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
