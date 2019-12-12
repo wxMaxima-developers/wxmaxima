@@ -1742,7 +1742,7 @@ bool wxMaxima::StartServer()
 
   wxIPV4address addr;
 
-  addr.LocalHost();
+  addr.AnyAddress();
   addr.Service(m_port);
 
   m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
