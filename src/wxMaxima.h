@@ -44,6 +44,7 @@
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
+#include <memory>
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
@@ -53,7 +54,6 @@
 #endif
 
 #include <wx/html/helpctrl.h>
-#include <memory>
 
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
@@ -200,7 +200,7 @@ public:
   //! Query the value of a new maxima variable
   bool QueryVariableValue();
 
-  //! A version number that can be compared with "<" and ">"
+  //! A version number that can be compared using "<" and ">"
   class VersionNumber
   {
   public:

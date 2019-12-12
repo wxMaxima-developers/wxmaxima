@@ -98,6 +98,7 @@
 #include <wx/url.h>
 #include <wx/sstream.h>
 #include <list>
+#include <memory>
 
 #if defined __WXOSX__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
@@ -171,7 +172,7 @@ void wxMaxima::ConfigChanged()
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
-                MyApp::m_topLevelWindows.empty()),
+                MyApp::m_topLevelWindows.empty()), 
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {

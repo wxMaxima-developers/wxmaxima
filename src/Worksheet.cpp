@@ -59,13 +59,13 @@
 #include <wx/dcgraph.h>
 #include <wx/fileconf.h>
 #include <wx/uri.h>
-
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 #include <stdlib.h>
+#include "memory"
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
 Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
