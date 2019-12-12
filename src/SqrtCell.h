@@ -84,8 +84,9 @@ public:
   wxString ToXML() override;
 
 protected:
-  Cell *m_innerCell;
-  TextCell *m_open, *m_close;
+  std::unique_ptr<Cell> m_innerCell;
+  std::unique_ptr<TextCell> m_open;
+  std::unique_ptr<TextCell> m_close;
   Cell *m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;

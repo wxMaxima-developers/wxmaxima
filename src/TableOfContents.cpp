@@ -67,8 +67,6 @@ void TableOfContents::OnSize(wxSizeEvent &event)
 
 TableOfContents::~TableOfContents()
 {
-  wxDELETE(m_regex);
-  wxDELETE(m_displayedItems);
 }
 
 void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
@@ -285,8 +283,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
 {
   if (event.GetIndex() < 0)
     return;
-  wxMenu *popupMenu = new wxMenu();
-
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   m_cellRightClickedOn = m_structure[event.GetIndex()];
 
   if (m_cellRightClickedOn != NULL)
@@ -310,6 +307,5 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
 
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
-    PopupMenu(popupMenu);
-  wxDELETE(popupMenu);
+    PopupMenu(popupMenu.get());
 }

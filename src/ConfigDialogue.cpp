@@ -206,7 +206,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   SetSheetOuterBorder(3);
 
   int imgSize = GetImageSize();
-  m_imageList = new wxImageList(imgSize, imgSize);
+  m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize));
   m_imageList->Add(GetImage(wxT("editing"),
                             editing_128_png,editing_128_png_len,
                             editing_192_png,editing_192_png_len
@@ -241,7 +241,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   m_notebook = GetBookCtrl();
 
-  m_notebook->SetImageList(m_imageList);
+  m_notebook->SetImageList(m_imageList.get());
 
   m_notebook->AddPage(CreateWorksheetPanel(), _("Worksheet"), true, 0);
   m_notebook->AddPage(CreateMaximaPanel(), _("Maxima"), false, 1);
@@ -285,8 +285,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
 ConfigDialogue::~ConfigDialogue()
 {
-  wxDELETE(m_imageList);
-  m_imageList = NULL;
 }
 
 

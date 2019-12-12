@@ -35,7 +35,7 @@
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {
   wxMemoryBuffer retval;
-
+  
   char *buf = new char[8192];
 
   while (data->CanRead())
@@ -229,45 +229,44 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
       wxFSFile *fsfile = filesystem->OpenFile(m_gnuplotSource);
       if (fsfile)
       { // open successful
-        wxInputStream *input = fsfile->GetStream();
-          if(input->IsOk())
+        std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+        if(input->IsOk())
+        {
+          wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+          
+          wxMemoryOutputStream mstream;
+          int zlib_flags;
+          if(wxZlibOutputStream::CanHandleGZip())
+            zlib_flags = wxZLIB_GZIP;
+          else
+            zlib_flags = wxZLIB_ZLIB;
+          wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
+          wxTextOutputStream textOut(zstream);
+          wxString line;
+          
+          // A RegEx that matches the name of the data file (needed if we ever want to
+          // move a data file into the temp directory of a new computer that locates its
+          // temp data somewhere strange).
+          wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9*]\\.data'");
+          while(!input->Eof())
           {
-            wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-
-            wxMemoryOutputStream mstream;
-            int zlib_flags;
-            if(wxZlibOutputStream::CanHandleGZip())
-              zlib_flags = wxZLIB_GZIP;
-            else
-              zlib_flags = wxZLIB_ZLIB;
-            wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
-            wxTextOutputStream textOut(zstream);
-            wxString line;
-            
-            // A RegEx that matches the name of the data file (needed if we ever want to
-            // move a data file into the temp directory of a new computer that locates its
-            // temp data somewhere strange).
-            wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9*]\\.data'");
-            while(!input->Eof())
+            line = textIn.ReadLine();
+            if(replaceDataFileName.Matches(line))
             {
-              line = textIn.ReadLine();
-              if(replaceDataFileName.Matches(line))
-              {
-                wxString dataFileName;
-                dataFileName = replaceDataFileName.GetMatch(line);
-                if(dataFileName != wxEmptyString)
-                  wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
-                replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
-              }
-              textOut << line + wxT("\n");
+              wxString dataFileName;
+              dataFileName = replaceDataFileName.GetMatch(line);
+              if(dataFileName != wxEmptyString)
+                wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
+              replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
             }
-            textOut.Flush();
-            zstream.Close();
-            m_gnuplotSource_Compressed.Clear();
-            m_gnuplotSource_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
-                                                  mstream.GetOutputStreamBuffer()->GetBufferSize());
-            wxDELETE(input);
+            textOut << line + wxT("\n");
           }
+          textOut.Flush();
+          zstream.Close();
+          m_gnuplotSource_Compressed.Clear();
+          m_gnuplotSource_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                                mstream.GetOutputStreamBuffer()->GetBufferSize());
+        }
       }
     }
     {
@@ -569,7 +568,7 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 
   if (filesystem)
   {
-    wxFSFile *fsfile = filesystem->OpenFile(image);
+    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(image));
     if (fsfile)
     { // open successful
 
@@ -581,7 +580,6 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     // Closing and deleting fsfile is important: If this line is missing
     // opening .wxmx files containing hundreds of images might lead to a
     // "too many open files" error.
-    wxDELETE(fsfile);
   }
   else
   {

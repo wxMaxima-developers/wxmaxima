@@ -32,7 +32,7 @@ dialog. The preferences themself will be read directly using
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/hashmap.h>
-
+#include "memory"
 #include <wx/propdlg.h>
 #include <wx/generic/propdlg.h>
 #include <wx/spinctrl.h>
@@ -365,7 +365,7 @@ protected:
   int m_mathFontSize;
 
   //! A list containing the pictograms for the tabs.
-  wxImageList *m_imageList;
+  std::unique_ptr<wxImageList> m_imageList;
 };
 
 #ifndef __WXMSW__

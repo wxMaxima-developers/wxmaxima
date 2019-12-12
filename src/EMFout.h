@@ -79,7 +79,7 @@ protected:
 
   void Draw();
 
-  Cell *m_tree;
+  std::unique_ptr<Cell> m_tree;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
@@ -108,9 +108,9 @@ private:
   //! The name of a temp file we create while calculating the emf size.
   wxString m_tempFileName;
   //! The draw context we draw to during recalculation.
-  wxEnhMetaFileDC *m_recalculationDc;
+  std::unique_ptr<wxEnhMetaFileDC> m_recalculationDc;
   //! The draw context we draw to.
-  wxEnhMetaFileDC *m_dc;
+  std::unique_ptr<wxEnhMetaFileDC> m_dc;
   static wxDataFormat m_emfFormat;
   wxString m_filename;
   Configuration **m_configuration, *m_oldconfig;

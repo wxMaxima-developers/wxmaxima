@@ -31,6 +31,7 @@
 #define PARENCELL_H
 
 #include "Cell.h"
+#include "TextCell.h"
 
 /*! The class that represents parenthesis that are wrapped around text
 
@@ -94,7 +95,9 @@ protected:
    */
   Configuration::drawMode m_bigParenType;
   void SetFont(int fontsize);
-  Cell *m_innerCell, *m_open, *m_close;
+  std::unique_ptr<Cell> m_innerCell;
+  std::unique_ptr<TextCell> m_open;
+  std::unique_ptr<TextCell> m_close;
   Cell *m_last1;
   bool m_print;
   int m_numberOfExtensions;

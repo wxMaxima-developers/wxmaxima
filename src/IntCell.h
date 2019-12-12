@@ -91,13 +91,13 @@ public:
 
 protected:
   //! The part of the formula that is to be integrated.
-  Cell *m_base;
+  std::unique_ptr<Cell> m_base;
   //! The lower limit of the integral
-  Cell *m_under;
+  std::unique_ptr<Cell> m_under;
   //! The upper limit of the integral
-  Cell *m_over;
+  std::unique_ptr<Cell> m_over;
   //! The integration variable
-  Cell *m_var;
+  std::unique_ptr<Cell> m_var;
   //! The height of the integral sign
   int m_signHeight;
   //! The width of the integral sign

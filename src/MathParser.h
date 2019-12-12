@@ -35,6 +35,8 @@ The header file for the xml cell parser
 
 #include "Cell.h"
 #include "TextCell.h"
+#include "EditorCell.h"
+#include "FracCell.h"
 
 /*! This class handles parsing the xml representation of a cell tree.
 
@@ -138,7 +140,7 @@ private:
   Cell::CellPointers *m_cellPointers;
   Configuration **m_configuration;
   bool m_highlight;
-  wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>
+  std::unique_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
 };
 
 #endif // MATHPARSER_H

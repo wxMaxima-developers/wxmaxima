@@ -36,12 +36,13 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_base(new TextCell(parent, config, cellPointers)),
+  m_under(new TextCell(parent, config, cellPointers)),
+  m_over(new TextCell(parent, config, cellPointers)),
+  m_var(new TextCell(parent, config, cellPointers))
 {
-  m_base = NULL;
-  m_under = NULL;
-  m_over = NULL;
-  m_var = NULL;
   m_signHeight = 35;
   m_signWidth = 18;
   m_signTop = m_signHeight / 2;
@@ -73,11 +74,6 @@ IntCell::IntCell(const IntCell &cell):
 
 IntCell::~IntCell()
 {
-  wxDELETE(m_base);
-  wxDELETE(m_under);
-  wxDELETE(m_over);
-  wxDELETE(m_var);
-  m_base = m_under = m_over = m_var = NULL;
   MarkAsDeleted();
 }
 
@@ -85,13 +81,13 @@ std::list<Cell *> IntCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_base)
-    innerCells.push_back(m_base);
+    innerCells.push_back(m_base.get());
   if(m_under)
-    innerCells.push_back(m_under);
+    innerCells.push_back(m_under.get());
   if(m_over)
-    innerCells.push_back(m_over);
+    innerCells.push_back(m_over.get());
   if(m_var)
-    innerCells.push_back(m_var);
+    innerCells.push_back(m_var.get());
   return innerCells;
 }
 
@@ -99,32 +95,28 @@ void IntCell::SetOver(Cell *name)
 {
   if (name == NULL)
     return;
-  wxDELETE(m_over);
-  m_over = name;
+  m_over = std::unique_ptr<Cell>(name);
 }
 
 void IntCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_base);
-  m_base = base;
+  m_base = std::unique_ptr<Cell>(base);
 }
 
 void IntCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  wxDELETE(m_under);
-  m_under = under;
+  m_under = std::unique_ptr<Cell>(under);
 }
 
 void IntCell::SetVar(Cell *var)
 {
   if (var == NULL)
     return;
-  wxDELETE(m_var);
-  m_var = var;
+  m_var = std::unique_ptr<Cell>(var);
 }
 
 void IntCell::RecalculateWidths(int fontsize)
@@ -139,11 +131,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
   m_base->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
-  if (m_under == NULL)
-    m_under = new TextCell(m_group, m_configuration, m_cellPointers);
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  if (m_over == NULL)
-    m_over = new TextCell(m_group, m_configuration, m_cellPointers);
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
 
   if (configuration->CheckTeXFonts())
@@ -405,7 +393,7 @@ wxString IntCell::ToString()
 
   s += m_base->ListToString();
 
-  Cell *tmp = m_var;
+  Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)
@@ -430,7 +418,7 @@ wxString IntCell::ToMatlab()
 
   s += m_base->ListToMatlab();
 
-  Cell *tmp = m_var;
+  Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)

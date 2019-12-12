@@ -61,8 +61,8 @@ public:
   wxString ToXML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_indexCell;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_indexCell;
 };
 
 #endif // SUBCELL_H

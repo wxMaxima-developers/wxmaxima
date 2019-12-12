@@ -72,11 +72,11 @@ public:
   wxString ToMathML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_postSupCell;
-  Cell *m_postSubCell;
-  Cell *m_preSupCell;
-  Cell *m_preSubCell;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_postSupCell;
+  std::unique_ptr<Cell> m_postSubCell;
+  std::unique_ptr<Cell> m_preSupCell;
+  std::unique_ptr<Cell> m_preSubCell;
   std::list<Cell *> m_innerCellList;
 };
 

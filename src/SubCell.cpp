@@ -30,10 +30,9 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers)
 {
-  m_baseCell = NULL;
-  m_indexCell = NULL;
 }
 
 SubCell::SubCell(const SubCell &cell):
@@ -48,10 +47,6 @@ SubCell::SubCell(const SubCell &cell):
 
 SubCell::~SubCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_indexCell);
-  m_baseCell = NULL;
-  m_indexCell = NULL;
   MarkAsDeleted();
 }
 
@@ -59,9 +54,9 @@ std::list<Cell *> SubCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell);
+    innerCells.push_back(m_baseCell.get());
   if(m_indexCell)
-    innerCells.push_back(m_indexCell);
+    innerCells.push_back(m_indexCell.get());
   return innerCells;
 }
 
@@ -70,16 +65,14 @@ void SubCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_indexCell);
-  m_indexCell = index;
+  m_indexCell = std::unique_ptr<Cell>(index);
 }
 
 void SubCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::unique_ptr<Cell>(base);
 }
 
 void SubCell::RecalculateWidths(int fontsize)

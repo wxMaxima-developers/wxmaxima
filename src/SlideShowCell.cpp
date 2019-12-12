@@ -138,8 +138,8 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 
   for (int i = 0; i < m_size; i++)
   {
-    Image *image = new Image(m_configuration, images[i], deleteRead, m_fileSystem);
-    m_images.push_back(image);
+    m_images.push_back(std::unique_ptr<Image>(
+      new Image(m_configuration, images[i], deleteRead, m_fileSystem)));
   }
   m_fileSystem = NULL;
   m_displayed = 0;
@@ -152,7 +152,7 @@ SlideShow::SlideShow(const SlideShow &cell):
   AnimationRunning(false);
 
   for (size_t i = 0; i < cell.m_images.size(); i++)
-    m_images.push_back(new Image(*cell.m_images[i]));
+    m_images.push_back(std::unique_ptr<Image>(new Image(*cell.m_images[i])));
 
   m_framerate = cell.m_framerate;
   m_displayed = true;
@@ -163,12 +163,6 @@ SlideShow::SlideShow(const SlideShow &cell):
 
 SlideShow::~SlideShow()
 {
-  for (int i = 0; i < m_size; i++)
-    if (m_images[i] != NULL)
-    {
-      wxDELETE(m_images[i]);
-      m_images[i] = NULL;
-    }
   SlideShow::MarkAsDeleted();
 }
 

@@ -30,7 +30,11 @@
 #include "ParenCell.h"
 #include "TextCell.h"
 
-ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_innerCell(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, wxT("("))),
+  m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
   m_numberOfExtensions = 0;
   m_extendHeight = 12;
@@ -45,10 +49,7 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_signBotHeight = 12;
   m_signWidth = 12;
   m_bigParenType = Configuration::ascii;
-  m_innerCell = NULL;
   m_print = true;
-  m_open = new TextCell(parent, config, cellPointers, wxT("("));
-  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
 ParenCell::ParenCell(const ParenCell &cell):
@@ -62,10 +63,6 @@ ParenCell::ParenCell(const ParenCell &cell):
 
 ParenCell::~ParenCell()
 {
-  wxDELETE(m_innerCell);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_innerCell = m_open = m_close = NULL;
   MarkAsDeleted();
 }
 
@@ -73,11 +70,11 @@ std::list<Cell *> ParenCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_innerCell)
-    innerCells.push_back(m_innerCell);
+    innerCells.push_back(m_innerCell.get());
   if(m_open)
-    innerCells.push_back(m_open);
+    innerCells.push_back(m_open.get());
   if(m_close)
-    innerCells.push_back(m_close);
+    innerCells.push_back(m_close.get());
   return innerCells;
 }
 
@@ -85,10 +82,9 @@ void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner == NULL)
     return;
-  wxDELETE(m_innerCell);
-  m_innerCell = inner;
-  m_type = type;
+  m_innerCell = std::unique_ptr<Cell>(inner);
 
+  m_type = type;
   // Tell the first of our inter cell not to begin with a multiplication dot.
   m_innerCell->m_SuppressMultiplicationDot = true;
 
@@ -158,10 +154,6 @@ void ParenCell::SetFont(int fontsize)
 void ParenCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-
-  // Add a dummy contents to empty parenthesis
-  if (m_innerCell == NULL)
-    m_innerCell = new TextCell(m_group, m_configuration, m_cellPointers);
   
   if(!m_isBrokenIntoLines)
   {
@@ -481,18 +473,18 @@ bool ParenCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell;
-    m_innerCell->m_previousToDraw = m_open;
+    m_open->m_nextToDraw = m_innerCell.get();
+    m_innerCell->m_previousToDraw = m_open.get();
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
     if (m_last1 != NULL)
     {
-      m_last1->m_nextToDraw = m_close;
+      m_last1->m_nextToDraw = m_close.get();
       m_close->m_previousToDraw = m_last1;
     }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_open;
+      m_nextToDraw->m_previousToDraw = m_close.get();
+    m_nextToDraw = m_open.get();
 
     ResetData();
     m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());

@@ -31,17 +31,18 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_name(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, "(")),
+  m_base(new TextCell(parent, config, cellPointers)),
+  m_comma(new TextCell(parent, config, cellPointers, ",")),
+  m_under(new TextCell(parent, config, cellPointers)),
+  m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_base = NULL;
-  m_under = NULL;
-  m_name = NULL;
-  m_base_last = NULL;
-  m_under_last = NULL;
-  m_name_last = NULL;
-  m_open = new TextCell(parent, config, cellPointers, "(");
-  m_comma = new TextCell(parent, config, cellPointers, ",");
-  m_close = new TextCell(parent, config, cellPointers, ")");
+  m_base_last = m_base.get();
+  m_under_last = m_under.get();
+  m_name_last = m_name.get();
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
@@ -61,31 +62,24 @@ LimitCell::LimitCell(const LimitCell &cell):
 
 LimitCell::~LimitCell()
 {
-  wxDELETE(m_base);
-  wxDELETE(m_under);
-  wxDELETE(m_name);
-  wxDELETE(m_open);
-  wxDELETE(m_comma);
-  wxDELETE(m_close);
   MarkAsDeleted();
-  m_base = m_under = m_name = m_open = m_comma = m_close = NULL;
 }
 
 std::list<Cell *> LimitCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_base)
-    innerCells.push_back(m_base);
+    innerCells.push_back(m_base.get());
   if(m_under)
-    innerCells.push_back(m_under);
+    innerCells.push_back(m_under.get());
   if(m_name)
-    innerCells.push_back(m_name);
+    innerCells.push_back(m_name.get());
   if(m_open)
-    innerCells.push_back(m_open);
+    innerCells.push_back(m_open.get());
   if(m_comma)
-    innerCells.push_back(m_comma);
+    innerCells.push_back(m_comma.get());
   if(m_close)
-    innerCells.push_back(m_close);
+    innerCells.push_back(m_close.get());
   return innerCells;
 }
 
@@ -93,8 +87,8 @@ void LimitCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
-  wxDELETE(m_name);
-  m_name_last = m_name = name;
+  m_name = std::unique_ptr<Cell>(name);
+  m_name_last = name;
   while(m_name_last->m_next != NULL)
     m_name_last = m_name_last->m_next;
 }
@@ -103,8 +97,8 @@ void LimitCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_base);
-  m_base_last = m_base = base;
+  m_base = std::unique_ptr<Cell>(base);
+  m_base_last = base;
   while(m_base_last->m_next != NULL)
     m_base_last = m_base_last->m_next;
 }
@@ -113,8 +107,8 @@ void LimitCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  wxDELETE(m_under);
-  m_under_last = m_under = under;
+  m_under = std::unique_ptr<Cell>(under);
+  m_under_last = under;
   while(m_under_last->m_next != NULL)
     m_under_last = m_under_last->m_next;
 }
@@ -300,20 +294,20 @@ bool LimitCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_name_last->m_nextToDraw = m_open;
-    m_open->m_nextToDraw = m_base;
-    m_base_last->m_nextToDraw = m_comma;
-    m_comma->m_nextToDraw = m_under;
-    m_under_last->m_nextToDraw = m_close;
+    m_name_last->m_nextToDraw = m_open.get();
+    m_open->m_nextToDraw = m_base.get();
+    m_base_last->m_nextToDraw = m_comma.get();
+    m_comma->m_nextToDraw = m_under.get();
+    m_under_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
     if(m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_name;
+      m_nextToDraw->m_previousToDraw = m_close.get();
+    m_nextToDraw = m_name.get();
     m_name->m_previousToDraw = this;
     m_open->m_previousToDraw = m_name_last;
-    m_base->m_previousToDraw = m_open;
+    m_base->m_previousToDraw = m_open.get();
     m_comma->m_previousToDraw = m_base_last;
-    m_under->m_previousToDraw = m_comma;
+    m_under->m_previousToDraw = m_comma.get();
     m_close->m_previousToDraw = m_under_last;
     ResetData();    
     return true;

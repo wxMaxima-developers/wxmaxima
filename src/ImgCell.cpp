@@ -42,26 +42,27 @@
 
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers) : Cell(parent, config, cellpointers)
 {
-  m_image = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type) : Cell(parent,
-                                                                                                                               config, cellPointers)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type) :
+  Cell(parent, config, cellPointers),
+  m_image(new Image(m_configuration, image, type))
 {
-  m_image = new Image(m_configuration, image, type);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap) : Cell(parent, config, cellPointers)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap) :
+  Cell(parent, config, cellPointers),
+  m_image(new Image(m_configuration, bitmap))
+
 {
-  m_image = new Image(m_configuration, bitmap);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
@@ -77,24 +78,21 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
-    m_image = new Image(m_configuration, image, remove, filesystem);
+    m_image = std::unique_ptr<Image>(new Image(m_configuration, image, remove, filesystem));
   else
-    m_image = new Image(m_configuration);
+    m_image = std::unique_ptr<Image>(new Image(m_configuration));
   m_drawBoundingBox = false;
 }
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
-  wxDELETE(m_image);
-  m_image = new Image(m_configuration, image, remove);
+  m_image = std::unique_ptr<Image>(new Image(m_configuration, image, remove));
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap)
 {
-  wxDELETE(m_image);
-
   m_width = m_height = -1;
-  m_image = new Image(m_configuration, bitmap);
+  m_image = std::unique_ptr<Image>(new Image(m_configuration, bitmap));
 }
 
 ImgCell::ImgCell(const ImgCell &cell):
@@ -103,12 +101,11 @@ ImgCell::ImgCell(const ImgCell &cell):
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;
-  m_image = new Image(*cell.m_image);
+  m_image = std::unique_ptr<Image>(new Image(*cell.m_image));
 }
 
 ImgCell::~ImgCell()
 {
-  wxDELETE(m_image);
   ImgCell::MarkAsDeleted();
 }
 

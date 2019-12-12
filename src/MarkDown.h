@@ -34,6 +34,7 @@
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 #include <list>
+#include <memory>
 #include "Configuration.h"
 
 /*! A generic markdown Parser.
@@ -64,7 +65,7 @@ protected:
     wxString replaceBy; //!< The thing we replace it with
   };
 
-  typedef std::list<RegexReplacer *> replaceList;
+  typedef std::list<std::shared_ptr<RegexReplacer>> replaceList;
   replaceList regexReplaceList;
 public:
   explicit MarkDownParser(Configuration *cfg);
@@ -74,8 +75,8 @@ public:
   wxString MarkDown(wxString str);
 
   //! A list of things we want to replace.
-  std::list<RegexReplacer *> RegexReplaceList()
-  { return regexReplaceList; }
+  replaceList RegexReplaceList() const
+    { return regexReplaceList; }
 
 private:
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list

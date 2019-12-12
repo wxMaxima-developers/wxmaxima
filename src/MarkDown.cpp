@@ -29,11 +29,6 @@
 
 MarkDownParser::~MarkDownParser()
 {
-  while (!regexReplaceList.empty())
-  {
-    wxDELETE(regexReplaceList.front());
-    regexReplaceList.pop_front();
-  }
 }
 
 MarkDownParser::MarkDownParser(Configuration *cfg)
@@ -240,47 +235,67 @@ wxString MarkDownParser::MarkDown(wxString str)
 MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
 {
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("#"), wxT("\\\\#")));
+    std::shared_ptr<RegexReplacer>(
+      new RegexReplacer(wxT("#"), wxT("\\\\#"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longleftrightarrow}")));
+    std::shared_ptr<RegexReplacer>(
+      new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longleftrightarrow}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longrightarrow}")));
+    std::shared_ptr<RegexReplacer>(
+    new RegexReplacer(wxT("=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longrightarrow}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longleftrightarrow}")));
+    std::shared_ptr<RegexReplacer>(
+        new RegexReplacer(wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longleftrightarrow}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longrightarrow}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longrightarrow}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|-"), wxT("\\\\ensuremath{\\\\longleftarrow}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\\\verb\\|<\\|-"), wxT("\\\\ensuremath{\\\\longleftarrow}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|="), wxT("\\\\ensuremath{\\\\leq}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\\\verb\\|<\\|="), wxT("\\\\ensuremath{\\\\leq}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|>\\|="), wxT("\\\\ensuremath{\\\\geq}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\\\verb\\|>\\|="), wxT("\\\\ensuremath{\\\\geq}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}"))));
 }
 
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
 {
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;=\\&gt;"), wxT("\u21d4")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\&lt);=\\&gt;"), wxT("\u21d4"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("=\\&gt;"), wxT("\u21d2")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("=\\&gt);"), wxT("\u21d2"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("&lt;-\\&gt;"), wxT("\u2194")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("&lt);-\\&gt;"), wxT("\u2194"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("-\\&gt;"), wxT("\u2192")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("-\\&gt);"), wxT("\u2192"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;-"), wxT("\u2190")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\&lt);-"), wxT("\u2190"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;="), wxT("\u2264")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\&lt);="), wxT("\u2264"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&gt;="), wxT("\u2265")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\&gt);="), wxT("\u2265"))));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\+/-"), wxT("\u00B1")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\\+/-"), wxT("\u00B1"))));
   regexReplaceList.push_back(
-    new RegexReplacer(wxT("\u00A0"), wxT("\u00A0")));
+        std::shared_ptr<RegexReplacer>(
+          new RegexReplacer(wxT("\u00A0"), wxT("\u00A0"))));
 }

@@ -564,7 +564,7 @@ private:
   bool m_mouseDrag;
   bool m_mouseOutside;
   //! The list of tree that contains the document itself
-  GroupCell *m_tree;
+  std::unique_ptr<GroupCell> m_tree;
   GroupCell *m_last;
   int m_clickType;
   GroupCell *m_clickInGC;
@@ -934,7 +934,7 @@ public:
   void Recalculate(Cell *start, bool force = false);
 
   void Recalculate(bool force = false)
-  { Recalculate(m_tree, force); }
+    { Recalculate(GetTree(), force); }
 
   //! Schedule a full recalculation of the worksheet
   void RecalculateForce()
@@ -1139,8 +1139,8 @@ public:
    */
   wxString GetString(bool lb = false);
 
-  GroupCell *GetTree()
-  { return m_tree; }
+  GroupCell *GetTree() const
+    { return m_tree.get(); }
 
   /*! Return the first of the currently selected cells.
 

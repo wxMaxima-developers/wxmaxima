@@ -35,11 +35,6 @@
 
 SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
-  m_baseCell = NULL;
-  m_postSubCell = NULL;
-  m_postSupCell = NULL;
-  m_preSubCell = NULL;
-  m_preSupCell = NULL;
 }
 
 SubSupCell::SubSupCell(const SubSupCell &cell):
@@ -60,16 +55,6 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
 
 SubSupCell::~SubSupCell()
 {
-  wxDELETE(m_preSubCell);
-  m_preSubCell = NULL;
-  wxDELETE(m_preSupCell);
-  m_preSupCell = NULL;
-  wxDELETE(m_baseCell);
-  m_baseCell = NULL;
-  wxDELETE(m_postSubCell);
-  m_postSubCell = NULL;
-  wxDELETE(m_postSupCell);
-  m_postSupCell = NULL;
   MarkAsDeleted();
 }
 
@@ -77,15 +62,15 @@ std::list<Cell *> SubSupCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell);
+    innerCells.push_back(m_baseCell.get());
   if(m_postSubCell)
-    innerCells.push_back(m_postSubCell);
+    innerCells.push_back(m_postSubCell.get());
   if(m_postSupCell)
-    innerCells.push_back(m_postSupCell);
+    innerCells.push_back(m_postSupCell.get());
   if(m_preSubCell)
-    innerCells.push_back(m_preSubCell);
+    innerCells.push_back(m_preSubCell.get());
   if(m_preSupCell)
-    innerCells.push_back(m_preSupCell);
+    innerCells.push_back(m_preSupCell.get());
   return innerCells;
 }
 
@@ -93,8 +78,7 @@ void SubSupCell::SetPreSup(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_preSupCell);
-  m_preSupCell = index;
+  m_preSupCell = std::unique_ptr<Cell>(index);
   m_innerCellList.push_back(index);
 }
 
@@ -102,8 +86,7 @@ void SubSupCell::SetPreSub(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_preSubCell);
-  m_preSubCell = index;
+  m_preSubCell = std::unique_ptr<Cell>(index);
   m_innerCellList.push_back(index);
 }
 
@@ -111,8 +94,7 @@ void SubSupCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_postSubCell);
-  m_postSubCell = index;
+  m_postSubCell = std::unique_ptr<Cell>(index);
   m_innerCellList.push_back(index);
 }
 
@@ -120,8 +102,7 @@ void SubSupCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::unique_ptr<Cell>(base);
   m_innerCellList.push_back(base);
 }
 
@@ -129,8 +110,7 @@ void SubSupCell::SetExponent(Cell *expt)
 {
   if (expt == NULL)
     return;
-  wxDELETE(m_postSupCell);
-  m_postSupCell = expt;
+  m_postSupCell = std::unique_ptr<Cell>(expt);
 }
 
 void SubSupCell::RecalculateWidths(int fontsize)

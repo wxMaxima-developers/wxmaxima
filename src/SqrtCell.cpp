@@ -31,7 +31,11 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_innerCell(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
+  m_close(new TextCell(parent, config, cellPointers, ")"))
 {
   m_signSize = 50;
   m_signWidth = 18;
@@ -39,10 +43,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_last = NULL;
   m_signType = 0;
   m_signFontScale = 0;
-  m_innerCell = NULL;
-  m_open = new TextCell(parent, config, cellPointers, wxT("sqrt("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
@@ -63,10 +64,6 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
 
 SqrtCell::~SqrtCell()
 {
-  wxDELETE(m_innerCell);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_innerCell = m_open = m_close = NULL;
   MarkAsDeleted();
 }
 
@@ -74,11 +71,11 @@ std::list<Cell *> SqrtCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_innerCell)
-    innerCells.push_back(m_innerCell);
+    innerCells.push_back(m_innerCell.get());
   if(m_open)
-    innerCells.push_back(m_open);
+    innerCells.push_back(m_open.get());
   if(m_close)
-    innerCells.push_back(m_close);
+    innerCells.push_back(m_close.get());
   return innerCells;
 }
 
@@ -86,8 +83,7 @@ void SqrtCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
-  wxDELETE(m_innerCell);
-  m_innerCell = inner;
+  m_innerCell = std::unique_ptr<Cell>(inner);
 
   m_last = inner;
   if (m_last != NULL)
@@ -359,18 +355,18 @@ bool SqrtCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell;
-    m_innerCell->m_previousToDraw = m_open;
+    m_open->m_nextToDraw = m_innerCell.get();
+    m_innerCell->m_previousToDraw = m_open.get();
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell inside a square root!"));
     if (m_last != NULL)
     {
-      m_last->m_nextToDraw = m_close;
+      m_last->m_nextToDraw = m_close.get();
       m_close->m_previousToDraw = m_last;
     }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_open;
+      m_nextToDraw->m_previousToDraw = m_close.get();
+    m_nextToDraw = m_open.get();
 
     ResetData();
     m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());

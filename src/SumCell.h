@@ -82,9 +82,9 @@ public:
   wxString ToOMML() override;
 
 protected:
-  Cell *m_base;
-  Cell *m_under;
-  Cell *m_over;
+  std::unique_ptr<Cell> m_base;
+  std::unique_ptr<Cell> m_under;
+  std::unique_ptr<Cell> m_over;
   int m_signSize;
   int m_signWidth;
   int m_sumStyle;

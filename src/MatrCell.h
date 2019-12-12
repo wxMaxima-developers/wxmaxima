@@ -49,7 +49,7 @@ public:
 
   void AddNewCell(Cell *cell)
   {
-    m_cells.push_back(cell);
+    m_cells.push_back(std::unique_ptr<Cell>(cell));
   }
 
   void NewRow()
@@ -95,7 +95,7 @@ protected:
   bool m_roundedParens;
   unsigned int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
-  vector<Cell *> m_cells;
+  vector<std::unique_ptr<Cell>> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;

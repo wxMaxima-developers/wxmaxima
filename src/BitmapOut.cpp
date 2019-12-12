@@ -33,21 +33,19 @@
 
 #define BM_FULL_WIDTH 1000
 
-BitmapOut::BitmapOut(Configuration **configuration, int scale)
+BitmapOut::BitmapOut(Configuration **configuration, int scale):
+  m_dc(new wxMemoryDC())
 {
   m_scale = scale;
 
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
-  m_tree = NULL;
-
-  m_dc = new wxMemoryDC();
   m_bmp.CreateScaled(m_width = 10, m_height= 10, 24, scale);
   m_dc->SelectObject(m_bmp);
   m_dc->SetUserScale(m_scale, m_scale);
   m_dc->SetPen(wxNullPen);
   
-  *m_configuration = new Configuration(m_dc);
+  *m_configuration = new Configuration(m_dc.get());
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetZoomFactor_temporarily(1.0);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
@@ -57,8 +55,6 @@ BitmapOut::BitmapOut(Configuration **configuration, int scale)
 
 BitmapOut::~BitmapOut()
 {
-  wxDELETE(m_tree);
-  wxDELETE(m_dc);
   wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
@@ -67,8 +63,7 @@ BitmapOut::~BitmapOut()
 
 bool BitmapOut::SetData(Cell *tree, long int maxSize)
 {
-  wxDELETE(m_tree);
-  m_tree = tree;
+  m_tree = std::unique_ptr<Cell>(tree);
   m_tree->ResetSize();
   return Layout(maxSize);
 }
@@ -87,7 +82,7 @@ bool BitmapOut::Layout(long int maxSize)
   }
   else
   {
-    GroupCell *tmp = dynamic_cast<GroupCell *>(m_tree);
+    GroupCell *tmp = dynamic_cast<GroupCell *>(m_tree.get());
     while (tmp != NULL)
     {
       tmp->Recalculate();
@@ -110,7 +105,6 @@ bool BitmapOut::Layout(long int maxSize)
     // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
     // windows applications will interpret as rgba if they appear on
     // the clipboards and therefore render them all-transparent.
-    wxDELETE(m_dc);
     m_bmp.CreateScaled(m_width, m_height, 24, m_scale);
     if(!m_bmp.IsOk())
     {
@@ -119,7 +113,7 @@ bool BitmapOut::Layout(long int maxSize)
     }
     else
     {
-      m_dc = new wxMemoryDC();
+      m_dc = std::unique_ptr<wxMemoryDC>(new wxMemoryDC());
       m_dc->SelectObject(m_bmp);
       if(m_dc->IsOk())
       {
@@ -159,7 +153,7 @@ void BitmapOut::RecalculateHeight()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  Cell *tmp = m_tree;
+  Cell *tmp = m_tree.get();
 
   while (tmp != NULL)
   {
@@ -177,7 +171,7 @@ void BitmapOut::RecalculateWidths()
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
-  Cell *tmp = m_tree;
+  Cell *tmp = m_tree.get();
 
   while (tmp != NULL)
   {
@@ -191,7 +185,7 @@ void BitmapOut::BreakLines()
   int fullWidth = BM_FULL_WIDTH * m_scale;
   int currentWidth = 0;
 
-  Cell *tmp = m_tree;
+  Cell *tmp = m_tree.get();
 
   while (tmp != NULL)
   {
@@ -214,7 +208,7 @@ void BitmapOut::BreakLines()
 
 void BitmapOut::GetMaxPoint(int *width, int *height) const
 {
-  Cell *tmp = m_tree;
+  Cell *tmp = m_tree.get();
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -245,7 +239,7 @@ void BitmapOut::GetMaxPoint(int *width, int *height) const
 void BitmapOut::Draw()
 {
   (*m_configuration)->ClipToDrawRegion(false);
-  Cell *tmp = m_tree;
+  Cell *tmp = m_tree.get();
 
   wxString bgColStr = wxT("white");
   wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
@@ -348,7 +342,7 @@ bool BitmapOut::ToClipboard()
 
 void BitmapOut::BreakUpCells()
 {
-  Cell *tmp = m_tree;
+  Cell *tmp = m_tree.get();
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;

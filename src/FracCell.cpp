@@ -31,24 +31,24 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_num(new TextCell(parent, config, cellPointers)),
+  m_denom(new TextCell(parent, config, cellPointers)),
+  m_open1(new TextCell(m_group, m_configuration, m_cellPointers, wxT("("))),
+  m_close1(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
+  m_open2(new TextCell(m_group, m_configuration, m_cellPointers, wxT("("))),
+  m_close2(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
+  m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
-  m_num = new TextCell(parent, config, cellPointers);
-  m_denom = new TextCell(parent, config, cellPointers);
-  m_last1 = NULL;
-  m_last2 = NULL;
+  m_num_Last = NULL;
+  m_denom_Last = NULL;
   m_expDivideWidth = 12;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
   m_horizontalGapLeft = 0;
   m_horizontalGapRight = 0;
   m_protrusion = 0;
-  
-  m_open1 = NULL;
-  m_close1 = NULL;
-  m_open2 = NULL;
-  m_close2 = NULL;
-  m_divide = NULL;
 }
 
 FracCell::FracCell(const FracCell &cell):
@@ -66,14 +66,6 @@ FracCell::FracCell(const FracCell &cell):
 
 FracCell::~FracCell()
 {
-  wxDELETE(m_open1);
-  wxDELETE(m_open2);
-  wxDELETE(m_close1);
-  wxDELETE(m_close2);
-  wxDELETE(m_num);
-  wxDELETE(m_denom);
-  wxDELETE(m_divide);
-  m_open1 = m_open2 = m_close1 = m_close2 = m_num = m_denom = m_divide = NULL;
   MarkAsDeleted();
 }
 
@@ -81,19 +73,19 @@ std::list<Cell *> FracCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_divide)
-    innerCells.push_back(m_divide);
+    innerCells.push_back(m_divide.get());
   if(m_denom)
-    innerCells.push_back(m_denom);
+    innerCells.push_back(m_denom.get());
   if(m_num)
-    innerCells.push_back(m_num);
+    innerCells.push_back(m_num.get());
   if(m_open1)
-    innerCells.push_back(m_open1);
+    innerCells.push_back(m_open1.get());
   if(m_close1)
-    innerCells.push_back(m_close1);
+    innerCells.push_back(m_close1.get());
   if(m_open2)
-    innerCells.push_back(m_open2);
+    innerCells.push_back(m_open2.get());
   if(m_close2)
-    innerCells.push_back(m_close2);
+    innerCells.push_back(m_close2.get());
   return innerCells;
 }
 
@@ -101,16 +93,26 @@ void FracCell::SetNum(Cell *num)
 {
   if (num == NULL)
     return;
-  wxDELETE(m_num);
-  m_num = num;
+  m_num = std::unique_ptr<Cell>(num);
+  m_num_Last = num;
+  if (m_num_Last != NULL)
+  {
+    while (m_num_Last->m_next != NULL)
+      m_num_Last = m_num_Last->m_next;
+  }
 }
 
 void FracCell::SetDenom(Cell *denom)
 {
   if (denom == NULL)
     return;
-  wxDELETE(m_denom);
-  m_denom = denom;
+  m_denom = std::unique_ptr<Cell>(denom);
+  m_denom_Last = denom;
+  if (m_denom_Last != NULL)
+  {
+    while (m_denom_Last->m_next != NULL)
+      m_denom_Last = m_denom_Last->m_next;
+  }
 }
 
 void FracCell::RecalculateWidths(int fontsize)
@@ -286,7 +288,7 @@ wxString FracCell::ToString()
     }
     else
     {
-      Cell *tmp = m_denom;
+      Cell *tmp = m_denom.get();
       while (tmp != NULL)
       {
         tmp = tmp->m_next;   // Skip the d
@@ -329,7 +331,7 @@ wxString FracCell::ToMatlab()
 	}
 	else
 	{
-	  Cell *tmp = m_denom;
+	  Cell *tmp = m_denom.get();
 	  while (tmp != NULL)
 	  {
 		tmp = tmp->m_next;   // Skip the d
@@ -408,10 +410,6 @@ void FracCell::SetupBreakUps()
 {
   if (m_fracStyle == FC_NORMAL)
   {
-    m_open1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("("));
-    m_close1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"));
-    m_open2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("("));
-    m_close2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"));
     if (m_num)
     {
       if (!m_num->IsCompound())
@@ -428,31 +426,11 @@ void FracCell::SetupBreakUps()
         m_close2->m_isHidden = true;
       }
     }
-    m_divide = new TextCell(m_group, m_configuration, m_cellPointers, wxT("/"));
   }
   else
   {
-    m_open1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("binomial("));
-    m_close1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("x"));
-    m_open2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("x"));
-    m_close2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"));
-    m_divide = new TextCell(m_group, m_configuration, m_cellPointers, wxT(","));
     m_close1->m_isHidden = true;
     m_open2->m_isHidden = true;
-  }
-
-  m_last1 = m_num;
-  if (m_last1 != NULL)
-  {
-    while (m_last1->m_next != NULL)
-      m_last1 = m_last1->m_next;
-  }
-
-  m_last2 = m_denom;
-  if (m_last2 != NULL)
-  {
-    while (m_last2->m_next != NULL)
-      m_last2 = m_last2->m_next;
   }
 }
 
@@ -465,30 +443,30 @@ bool FracCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open1->m_previousToDraw = this;
-    m_open1->m_nextToDraw = m_num;
-    m_num->m_previousToDraw = m_open1;
-    wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in an numerator!"));
-    if (m_last1 != NULL)
+    m_open1->m_nextToDraw = m_num.get();
+    m_num->m_previousToDraw = m_open1.get();
+    wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in an numerator!"));
+    if (m_num_Last != NULL)
     {
-      m_last1->m_nextToDraw = m_close1;
-      m_close1->m_previousToDraw = m_last1;
+      m_num_Last->m_nextToDraw = m_close1.get();
+      m_close1->m_previousToDraw = m_num_Last;
     }
-    m_close1->m_nextToDraw = m_divide;
-    m_divide->m_previousToDraw = m_close1;
-    m_divide->m_nextToDraw = m_open2;
-    m_open2->m_previousToDraw = m_divide;
-    m_open2->m_nextToDraw = m_denom;
-    m_denom->m_previousToDraw = m_open2;
-    wxASSERT_MSG(m_last2 != NULL, _("Bug: No last cell in an denominator!"));
-    if (m_last2 != NULL)
+    m_close1->m_nextToDraw = m_divide.get();
+    m_divide->m_previousToDraw = m_close1.get();
+    m_divide->m_nextToDraw = m_open2.get();
+    m_open2->m_previousToDraw = m_divide.get();
+    m_open2->m_nextToDraw = m_denom.get();
+    m_denom->m_previousToDraw = m_open2.get();
+    wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
+    if (m_denom_Last != NULL)
     {
-      m_last2->m_nextToDraw = m_close2;
-      m_close2->m_previousToDraw = m_last2;
+      m_denom_Last->m_nextToDraw = m_close2.get();
+      m_close2->m_previousToDraw = m_denom_Last;
     }
     m_close2->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close2;
-    m_nextToDraw = m_open1;
+      m_nextToDraw->m_previousToDraw = m_close2.get();
+    m_nextToDraw = m_open1.get();
     ResetData();    
     return true;
   }

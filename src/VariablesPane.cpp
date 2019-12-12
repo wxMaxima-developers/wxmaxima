@@ -20,6 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "VariablesPane.h"
+#include "memory"
 
 Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, id)
 {
@@ -152,7 +153,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   for(int i = 0; i < GetNumberRows(); i++)
     m_vars[GetCellValue(i,0)] = 1;
   
-  wxMenu *popupMenu = new wxMenu();
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu);
   if(m_vars["values"] != 1)
     popupMenu->Append(varID_values,
                       _("List of user variables"), wxEmptyString, wxITEM_NORMAL);
@@ -199,10 +200,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
                     _("Add all"), wxEmptyString, wxITEM_NORMAL);
 
   if (popupMenu->GetMenuItemCount() > 0)
-    PopupMenu( popupMenu);
-  
-  wxDELETE(popupMenu);
-  
+    PopupMenu(popupMenu.get());  
 }
 
 void Variablespane::OnTextChanging(wxGridEvent &event)

@@ -135,7 +135,7 @@ public:
   wxString ToXML() override;
 
 protected:
-  Image *m_image;
+  std::unique_ptr<Image> m_image;
   
   static int s_counter;
   bool m_drawRectangle;

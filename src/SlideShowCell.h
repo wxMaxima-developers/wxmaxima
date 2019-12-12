@@ -158,7 +158,7 @@ protected:
   int m_size;
   int m_displayed;
   wxFileSystem *m_fileSystem;
-  vector<Image *> m_images;
+  vector<std::unique_ptr<Image>> m_images;
 
   void RecalculateHeight(int fontsize) override;
 

@@ -35,11 +35,12 @@
 #define PROD_SIGN "\u220F"
 #define SUM_DEC 2
 
-SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_base(new TextCell(parent, config, cellPointers)),
+  m_under(new TextCell(parent, config, cellPointers)),
+  m_over(new TextCell(parent, config, cellPointers))
 {
-  m_base = new TextCell(parent, config, cellPointers);
-  m_under = new TextCell(parent, config, cellPointers);
-  m_over = new TextCell(parent, config, cellPointers);
   m_signSize = 50;
   m_signTop = (2 * m_signSize) / 5;
   m_signWidth = 30;
@@ -65,12 +66,6 @@ SumCell::SumCell(const SumCell &cell):
 
 SumCell::~SumCell()
 {
-  wxDELETE(m_base);
-  wxDELETE(m_under);
-  wxDELETE(m_over);
-  m_base = NULL;
-  m_under = NULL;
-  m_over = NULL;
   MarkAsDeleted();
 }
 
@@ -78,11 +73,11 @@ std::list<Cell *> SumCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_base)
-    innerCells.push_back(m_base);
+    innerCells.push_back(m_base.get());
   if(m_under)
-    innerCells.push_back(m_under);
+    innerCells.push_back(m_under.get());
   if(m_over)
-    innerCells.push_back(m_over);
+    innerCells.push_back(m_over.get());
   return innerCells;
 }
 
@@ -90,24 +85,21 @@ void SumCell::SetOver(Cell *over)
 {
   if (over == NULL)
     return;
-  wxDELETE(m_over);
-  m_over = over;
+  m_over = std::unique_ptr<Cell>(over);
 }
 
 void SumCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_base);
-  m_base = base;
+  m_base = std::unique_ptr<Cell>(base);
 }
 
 void SumCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  wxDELETE(m_under);
-  m_under = under;
+  m_under = std::unique_ptr<Cell>(under);
 }
 
 void SumCell::RecalculateWidths(int fontsize)
@@ -121,7 +113,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = new TextCell(m_group, m_configuration, m_cellPointers);
+    m_over = std::unique_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (configuration->CheckTeXFonts())
@@ -298,7 +290,7 @@ wxString SumCell::ToString()
     s = wxT("product(");
   s += m_base->ListToString();
 
-  Cell *tmp = m_under;
+  Cell *tmp = m_under.get();
   wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->m_next;
@@ -326,7 +318,7 @@ wxString SumCell::ToMatlab()
 	s = wxT("product(");
   s += m_base->ListToMatlab();
 
-  Cell *tmp = m_under;
+  Cell *tmp = m_under.get();
   wxString var = tmp->ToMatlab();
   wxString from;
   tmp = tmp->m_next;

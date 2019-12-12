@@ -79,7 +79,7 @@ private:
   int m_numberOfPages;
   bool m_printConfigCreated;
   wxString m_title;
-  GroupCell *m_tree;
+  std::unique_ptr<GroupCell> m_tree;
   vector<GroupCell *> m_pages;
   double m_scaleFactor;
 };

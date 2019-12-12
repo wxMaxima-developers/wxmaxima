@@ -24,7 +24,6 @@
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {
   m_isLogTarget = false;
-  m_errorRedirector = NULL;
   m_logPanelTarget = NULL;
   wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
 
@@ -49,10 +48,10 @@ void LogPane::DropLogTarget()
   // m_logPanelTarget is automatically destroyed in this step.
   if(m_isLogTarget)
   {
-    wxDELETE(m_errorRedirector);
+    m_errorRedirector = NULL;
     wxLog::SetActiveTarget(NULL);
   }
-  m_logPanelTarget = m_errorRedirector = NULL;
+  m_logPanelTarget = NULL;
   m_isLogTarget = false;
 }
 
@@ -60,7 +59,7 @@ void LogPane::BecomeLogTarget()
 {
   m_isLogTarget = true;
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));  
-  m_errorRedirector = new ErrorRedirector(new wxLogGui());
+  m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
 }
 
 LogPane::~LogPane()

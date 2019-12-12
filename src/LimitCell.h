@@ -74,12 +74,12 @@ public:
   bool BreakUp() override;
 
 protected:
-  Cell *m_name;
-  TextCell *m_open;
-  Cell *m_base;
-  TextCell *m_comma;
-  Cell *m_under;
-  TextCell *m_close;
+  std::unique_ptr<Cell> m_name;
+  std::unique_ptr<TextCell> m_open;
+  std::unique_ptr<Cell> m_base;
+  std::unique_ptr<TextCell> m_comma;
+  std::unique_ptr<Cell> m_under;
+  std::unique_ptr<TextCell> m_close;
   Cell *m_name_last;
   Cell *m_base_last;
   Cell *m_under_last;

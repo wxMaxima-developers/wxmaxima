@@ -87,17 +87,13 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
   m_highlight = false;
   if (zipfile.Length() > 0)
   {
-    m_fileSystem = new wxFileSystem();
+    m_fileSystem = std::unique_ptr<wxFileSystem>(new wxFileSystem());
     m_fileSystem->ChangePathTo(zipfile + wxT("#zip:/"), true);
   }
-  else
-    m_fileSystem = NULL;
 }
 
 MathParser::~MathParser()
 {
-  if (m_fileSystem)
-    wxDELETE(m_fileSystem);
 }
 
 // ParseCellTag
@@ -139,11 +135,12 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     {
       if (children->GetName() == wxT("input"))
       {
-        Cell *editor = ParseTag(children->GetChildren());
+        std::unique_ptr<Cell> editor(ParseEditorTag(children->GetChildren()));
         if (editor == NULL)
-          editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
-        group->SetEditableContent(editor->GetValue());
-        wxDELETE(editor);
+          editor = std::unique_ptr<EditorCell>(
+            new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
+        if(editor)
+          group->SetEditableContent(editor->GetValue());
       }
       if (children->GetName() == wxT("output"))
       {
@@ -161,9 +158,9 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     {
       if (children->GetName() == wxT("editor"))
       {
-        Cell *ed = ParseEditorTag(children);
-        group->SetEditableContent(ed->GetValue());
-        wxDELETE(ed);
+        std::unique_ptr<Cell> ed(ParseEditorTag(children));
+        if(ed)
+          group->SetEditableContent(ed->GetValue());
       }
       else
         group->AppendOutput(ParseTag(children));
@@ -177,11 +174,12 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
   else if (type == wxT("text"))
   {
     group = new GroupCell(m_configuration, GC_TYPE_TEXT, m_cellPointers);
-    Cell *editor = ParseTag(node->GetChildren());
+    std::unique_ptr<Cell> editor(ParseTag(node->GetChildren()));
     if (editor == NULL)
-      editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
-    group->SetEditableContent(editor->GetValue());
-    wxDELETE(editor);
+      editor = std::unique_ptr<Cell>(
+        new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
+    if(editor)
+       group->SetEditableContent(editor->GetValue());
   }
   else
   {
@@ -228,9 +226,9 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     {
       if (children->GetName() == wxT("editor"))
       {
-        Cell *ed = ParseEditorTag(children);
-        group->SetEditableContent(ed->GetValue());
-        wxDELETE(ed);
+        std::unique_ptr<Cell> ed(ParseEditorTag(children));
+        if(ed)
+          group->SetEditableContent(ed->GetValue());
       }
       else if (children->GetName() == wxT("fold"))
       { // we have folded groupcells
@@ -906,7 +904,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString filename(node->GetChildren()->GetContent());
 
         if (m_fileSystem) // loading from zip
-          imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, m_fileSystem);
+          imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, m_fileSystem.get());
         else
         {
           if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
@@ -928,7 +926,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
         wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
         if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
-          imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+          imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem.get());
 
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           imageCell->DrawRectangle(false);
@@ -952,7 +950,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       else if (tagName == wxT("slide"))
       {
         bool del = node->GetAttribute(wxT("del"), wxT("false")) == wxT("true");
-        SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem);
+        SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem.get());
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
         wxString framerate;

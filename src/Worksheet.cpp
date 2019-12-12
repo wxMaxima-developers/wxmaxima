@@ -139,7 +139,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   m_questionPrompt = false;
   m_scheduleUpdateToc = false;
   m_scrolledAwayFromEvaluation = false;
-  m_tree = NULL;
   m_mainToolBar = NULL;
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
@@ -230,7 +229,7 @@ bool Worksheet::RedrawIfRequested()
       GroupCell *oldGroupCellUnderPointer = dynamic_cast<GroupCell *>(m_cellPointers.m_groupCellUnderPointer);
 
       // find out which group cell lies under the pointer
-      GroupCell *tmp = m_tree;
+      GroupCell *tmp = GetTree();
       wxRect rect;
 
       while (tmp != NULL)
@@ -240,8 +239,8 @@ bool Worksheet::RedrawIfRequested()
           break;
         tmp = dynamic_cast<GroupCell *>(tmp->m_next);
       }
-      if (m_tree)
-        m_tree->CellUnderPointer(tmp);
+      if (GetTree())
+        GetTree()->CellUnderPointer(tmp);
 
       if ((m_configuration->HideBrackets()) && (oldGroupCellUnderPointer != m_cellPointers.m_groupCellUnderPointer))
       {
@@ -336,7 +335,7 @@ void Worksheet::RequestRedraw(GroupCell *start)
   m_redrawRequested = true;
 
   if (start == 0)
-    m_redrawStart = m_tree;
+    m_redrawStart = GetTree();
   else
   {
     if (m_redrawStart != NULL)
@@ -345,7 +344,7 @@ void Worksheet::RequestRedraw(GroupCell *start)
       // know our cell's position.
       if ((start->GetCurrentPoint().y < 0) || (m_redrawStart->GetCurrentPoint().y < 0))
       {
-        m_redrawStart = m_tree;
+        m_redrawStart = GetTree();
       }
       else if (start->GetCurrentPoint().y < m_redrawStart->GetCurrentPoint().y)
         m_redrawStart = start;
@@ -563,7 +562,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     m_configuration->GetDC()->DrawRectangle(cursor);
   }
   
-  if (m_tree == NULL)
+  if (GetTree() == NULL)
   {
     m_configuration->SetContext(*m_dc);
     return;
@@ -598,9 +597,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   //
   wxPoint point;
   point.x = m_configuration->GetIndent();
-  point.y = m_configuration->GetBaseIndent() + m_tree->GetMaxCenter();
+  point.y = m_configuration->GetBaseIndent() + GetTree()->GetMaxCenter();
   // Draw tree
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   
   m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
   m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
@@ -710,15 +709,15 @@ GroupCell *Worksheet::InsertGroupCells(
       renumbersections = true;
   }
 
-  if (m_tree == NULL)
+  if (GetTree() == NULL)
     where = NULL;
 
   if (where)
     next = dynamic_cast<GroupCell *>(where->m_next);
   else
   {
-    next = m_tree; // where == NULL
-    m_tree = cells;
+    next = GetTree(); // where == NULL
+    m_tree = std::unique_ptr<GroupCell>(cells);
   }
   prev = where;
 
@@ -746,17 +745,17 @@ GroupCell *Worksheet::InsertGroupCells(
   return lastOfCellsToInsert;
 }
 
-// this goes through m_tree with m_next, to set the correct m_last
+// this goes through GetTree() with m_next, to set the correct m_last
 // you can call this after folding, unfolding cells to make sure
 // m_last is correct
 GroupCell *Worksheet::UpdateMLast()
 {
-  if (!m_tree)
+  if (!GetTree())
     m_last = NULL;
   else
   {
 
-    m_last = m_tree;
+    m_last = GetTree();
     while (m_last->m_next)
       m_last = dynamic_cast<GroupCell *>(m_last->m_next);
   }
@@ -851,7 +850,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   if (tmp == NULL)
     return;
 
-  if (m_tree->Contains(tmp))
+  if (GetTree()->Contains(tmp))
   {
     newCell->ForceBreakLine(forceNewLine);
     newCell->SetGroupList(tmp);
@@ -875,7 +874,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   }
   else
   {
-    wxASSERT_MSG(m_tree->Contains(tmp), _("Bug: Trying to append maxima's output to a cell outside the worksheet."));
+    wxASSERT_MSG(GetTree()->Contains(tmp), _("Bug: Trying to append maxima's output to a cell outside the worksheet."));
   }
 }
 
@@ -929,7 +928,7 @@ bool Worksheet::RecalculateIfNeeded()
 {
   bool recalculate = true;
 
-  if((m_recalculateStart == NULL) || (m_tree == NULL))
+  if((m_recalculateStart == NULL) || (GetTree() == NULL))
     recalculate = false;
 
   if(m_dc == NULL)
@@ -943,14 +942,14 @@ bool Worksheet::RecalculateIfNeeded()
   }
   m_configuration->AdjustWorksheetSize(false);
 
-  if(!m_tree->Contains(m_recalculateStart))
-    m_recalculateStart = m_tree;
+  if(!GetTree()->Contains(m_recalculateStart))
+    m_recalculateStart = GetTree();
 
   GroupCell *tmp;
   m_configuration->SetCanvasSize(GetClientSize());
 
   if (m_recalculateStart == NULL)
-    tmp = m_tree;
+    tmp = GetTree();
   else
     tmp = m_recalculateStart;
 
@@ -985,14 +984,14 @@ bool Worksheet::RecalculateIfNeeded()
 
 void Worksheet::Recalculate(Cell *start, bool force)
 {
-  GroupCell *group = m_tree;
+  GroupCell *group = GetTree();
   if(start != NULL)
     group = dynamic_cast<GroupCell *>(start->GetGroup());
 
   if(force)
     m_configuration->RecalculationForce(force);
 
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   if(m_recalculateStart == NULL)
     m_recalculateStart = group;
   else
@@ -1011,7 +1010,7 @@ void Worksheet::Recalculate(Cell *start, bool force)
       tmp = dynamic_cast<GroupCell *>(tmp -> m_next);
       // If the cells to recalculate neither contain the start nor the tree we should
       // better recalculate all.
-      m_recalculateStart = m_tree;
+      m_recalculateStart = GetTree();
     }
 }
 
@@ -1036,7 +1035,7 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   {
     wxPoint topleft;
     CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
-    CellToScrollTo = m_tree;
+    CellToScrollTo = GetTree();
     while (CellToScrollTo != NULL)
     {
       wxRect rect = CellToScrollTo->GetRect();
@@ -1048,7 +1047,7 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
 
   RecalculateForce();
 
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   UpdateConfigurationClientSize();
   if (tmp != NULL)
   {
@@ -1115,8 +1114,8 @@ void Worksheet::ClearDocument()
  */
 void Worksheet::ResetInputPrompts()
 {
-  if (m_tree)
-    m_tree->ResetInputLabelList(); // recursivly reset prompts
+  if (GetTree())
+    GetTree()->ResetInputLabelList(); // recursivly reset prompts
 }
 
 //
@@ -1126,8 +1125,8 @@ void Worksheet::NumberSections()
 {
   int s, sub, subsub, h5, h6, i;
   s = sub = subsub = i = h5 = h6 = 0;
-  if (m_tree)
-    m_tree->Number(s, sub, subsub, h5, h6, i);
+  if (GetTree())
+    GetTree()->Number(s, sub, subsub, h5, h6, i);
 }
 
 bool Worksheet::IsLesserGCType(int type, int comparedTo)
@@ -1252,9 +1251,9 @@ GroupCell *Worksheet::ToggleFoldAll(GroupCell *which)
  */
 void Worksheet::FoldAll()
 {
-  if (m_tree)
+  if (GetTree())
   {
-    m_tree->FoldAll();
+    GetTree()->FoldAll();
     FoldOccurred();
   }
 }
@@ -1264,15 +1263,15 @@ void Worksheet::FoldAll()
  */
 void Worksheet::UnfoldAll()
 {
-  if (m_tree)
+  if (GetTree())
   {
-    m_tree->UnfoldAll();
+    GetTree()->UnfoldAll();
     FoldOccurred();
   }
 }
 
 // Returns the tree from start to end and connets the pointers the right way
-// so that m_tree stays 'correct' - also works in hidden trees
+// so that GetTree() stays 'correct' - also works in hidden trees
 GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
 {
   if ((!start) || (!end))
@@ -1884,7 +1883,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
-  if (m_tree == NULL)
+  if (GetTree() == NULL)
     return;
 
   // Handle a shift-click when GroupCells were selected.
@@ -1943,7 +1942,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
   m_hCaretActive = false;
   SetActiveCell(NULL, false);
 
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   wxRect rect;
   GroupCell *clickedBeforeGC = NULL;
   GroupCell *clickedInGC = NULL;
@@ -1998,7 +1997,7 @@ GroupCell *Worksheet::FirstVisibleGC()
   wxPoint point;
   CalcUnscrolledPosition(0, 0, &point.x, &point.y);
   wxRect rect;
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
 
   while (tmp != NULL)
   { // go through all groupcells
@@ -2105,7 +2104,7 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event)
     CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x, &m_pointer_y);
     m_mouseMotionWas = true;
 
-    if (m_tree == NULL || !m_leftDown)
+    if (GetTree() == NULL || !m_leftDown)
       return;
     m_mouseDrag = true;
     m_up.x = m_pointer_x;
@@ -2128,7 +2127,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
   wxRect rect;
 
   // find out the group cell the selection begins in
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   while (tmp != NULL)
   {
     rect = tmp->GetRect();
@@ -2141,7 +2140,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
   }
 
   // find out the group cell the selection ends in
-  tmp = m_tree;
+  tmp = GetTree();
   while (tmp != NULL)
   {
     rect = tmp->GetRect();
@@ -2931,7 +2930,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
 
   // Unlink the to-be-deleted cells from the worksheet.
   if(start->m_previous == NULL)
-    m_tree = dynamic_cast<GroupCell *>(end->m_next);
+    m_tree = std::unique_ptr<GroupCell>(dynamic_cast<GroupCell *>(end->m_next));
   else
     start->m_previous->m_next = start->m_previous->m_nextToDraw = end->m_next;
 
@@ -3585,7 +3584,7 @@ void Worksheet::SelectWithChar(int ccode)
     if (m_hCaretPosition != NULL)
       m_hCaretPositionStart = m_hCaretPositionEnd = m_hCaretPosition;
     else
-      m_hCaretPositionStart = m_hCaretPositionEnd = m_tree;
+      m_hCaretPositionStart = m_hCaretPositionEnd = GetTree();
 
     if (m_hCaretPositionStart == NULL)
       return;
@@ -3703,7 +3702,7 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up)
     if (up)
     {
       if (m_hCaretPosition == NULL)
-        SetHCaret(m_tree);
+        SetHCaret(GetTree());
       else
       {
         if (m_hCaretPosition->m_next != NULL)
@@ -3793,7 +3792,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       int width;
       int height;
       CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
-      GroupCell *CellToScrollTo = m_tree;
+      GroupCell *CellToScrollTo = GetTree();
       GetClientSize(&width, &height);
 
       // Make sure we scroll at least one cell
@@ -3833,13 +3832,13 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       {
         GroupCell *oldCell = GetHCaret();
         SetHCaret(NULL);
-        if (m_tree != NULL)
-          ScheduleScrollToCell(m_tree, true);
+        if (GetTree() != NULL)
+          ScheduleScrollToCell(GetTree(), true);
         if (event.ShiftDown())
         {
-          SetSelection(m_tree, oldCell);
+          SetSelection(GetTree(), oldCell);
           m_hCaretPositionStart = oldCell;
-          m_hCaretPositionEnd = m_tree;
+          m_hCaretPositionEnd = GetTree();
         }
         ScrolledAwayFromEvaluation();
       }
@@ -3881,9 +3880,9 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
     case WXK_NUMPAD_DELETE:
       if (m_hCaretPosition == NULL)
       {
-        if (m_tree != NULL)
+        if (GetTree() != NULL)
         {
-          SetSelection(m_tree);
+          SetSelection(GetTree());
           m_hCaretActive = false;
           return;
         }
@@ -4048,9 +4047,9 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
           else
             SelectEditable(dynamic_cast<GroupCell *>(m_hCaretPosition->m_next)->GetEditable(), true);
         }
-        else if (m_tree != NULL && m_hCaretPosition == NULL)
+        else if (GetTree() != NULL && m_hCaretPosition == NULL)
         {
-          SelectEditable(dynamic_cast<GroupCell *>(m_tree)->GetEditable(), true);
+          SelectEditable(dynamic_cast<GroupCell *>(GetTree())->GetEditable(), true);
         }
 
       }
@@ -4229,7 +4228,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
  */
 void Worksheet::GetMaxPoint(int *width, int *height)
 {
-  Cell *tmp = m_tree;
+  Cell *tmp = GetTree();
   int currentHeight = m_configuration->GetIndent();
   *width = m_configuration->GetBaseIndent();
 
@@ -4253,7 +4252,7 @@ void Worksheet::AdjustSize()
   int virtualHeight = 40;
   int clientWidth, clientHeight;
   GetClientSize(&clientWidth, &clientHeight);
-  if (m_tree != NULL)
+  if (GetTree() != NULL)
   {
     width = m_configuration->GetBaseIndent();
     height = width;
@@ -4301,8 +4300,8 @@ void Worksheet::OnMouseExit(wxMouseEvent &event)
   // If this isn't the case I'm not against the following block being deleted.
   if(m_configuration->HideBrackets())
   {
-    if (m_tree)
-      m_tree->CellUnderPointer(NULL);
+    if (GetTree())
+      GetTree()->CellUnderPointer(NULL);
     RequestRedraw();
   }
 }
@@ -4477,8 +4476,8 @@ void Worksheet::DestroyTree()
   SetHCaret(NULL);
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
-  wxDELETE(m_tree);
-  m_tree = m_last = NULL;
+  m_tree = NULL;
+  m_last = NULL;
 }
 
 /***
@@ -4486,10 +4485,10 @@ void Worksheet::DestroyTree()
  */
 GroupCell *Worksheet::CopyTree()
 {
-  if (m_tree == NULL)
+  if (GetTree() == NULL)
     return (GroupCell *) NULL;
 
-  return dynamic_cast<GroupCell *>(m_tree->CopyList());
+  return dynamic_cast<GroupCell *>(GetTree()->CopyList());
 }
 
 /***
@@ -4794,7 +4793,7 @@ bool Worksheet::ExportToHTML(wxString file)
   wxConfigBase *config = wxConfig::Get();
 
   int count = 0;
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   MarkDownHTML MarkDown(m_configuration);
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
@@ -6069,7 +6068,7 @@ bool Worksheet::ExportToTeX(wxString file)
 
   wxString imgDir;
   wxString path, filename, ext;
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
 
   wxFileName::SplitPath(file, &path, &filename, &ext);
   imgDir = path + wxT("/") + filename + wxT("_img");
@@ -6380,9 +6379,9 @@ bool Worksheet::ExportToMAC(wxString file)
   if (fixReorderedIndices)
   {
     int cellIndex = 1;
-    CalculateReorderedCellIndices(m_tree, cellIndex, cellMap);
+    CalculateReorderedCellIndices(GetTree(), cellIndex, cellMap);
   }
-  ExportToMAC(backupfile, m_tree, wxm, cellMap, fixReorderedIndices);
+  ExportToMAC(backupfile, GetTree(), wxm, cellMap, fixReorderedIndices);
 
   AddLineToFile(backupfile, wxEmptyString);
   if (wxm)
@@ -6507,7 +6506,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     );
   zip.CloseEntry();
 
-  // next zip entry is "content.xml", xml of m_tree
+  // next zip entry is "content.xml", xml of GetTree()
 
   zip.PutNextEntry(wxT("content.xml"));
   wxString xmlText;
@@ -6583,8 +6582,8 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // Reset image counter
   m_cellPointers.WXMXResetCounter();
 
-  if (m_tree)
-    xmlText += m_tree->ListToXML();
+  if (GetTree())
+    xmlText += GetTree()->ListToXML();
 
   // Delete all but one control character from the string: there should be
   // no way for them to enter this string, anyway. But sometimes they still
@@ -6655,7 +6654,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 
   // wxWidgets could pretty-print the XML document now. But as no-one will
   // look at it, anyway, there might be no good reason to do so.
-  if (m_tree != NULL)output << xmlText;
+  if (GetTree() != NULL)output << xmlText;
 
   // Move all files we have stored in memory during saving to zip file
   wxString memFsName = fsystem->FindFirst("*", wxFILE);
@@ -6900,7 +6899,7 @@ bool Worksheet::ActivateNextInput(bool input)
 void Worksheet::AddDocumentToEvaluationQueue()
 {
   FollowEvaluation(true);
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   while (tmp != NULL)
   {
     {
@@ -6931,7 +6930,7 @@ void Worksheet::AddToEvaluationQueue(GroupCell *cell)
 void Worksheet::AddEntireDocumentToEvaluationQueue()
 {
   FollowEvaluation(true);
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   while (tmp != NULL)
   {
     AddToEvaluationQueue(tmp);
@@ -7016,7 +7015,7 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue()
   if (stop == NULL)
     return;
 
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
   while (tmp != NULL)
   {
     AddToEvaluationQueue(tmp);
@@ -7286,9 +7285,9 @@ bool Worksheet::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std:
                _("Bug: Got a request to change the contents of the cell above the beginning of the worksheet."));
 
 
-  if (!m_tree->Contains(action->m_start))
+  if (!GetTree()->Contains(action->m_start))
   {
-    wxASSERT_MSG(m_tree->Contains(action->m_start), _("Bug: Undo request for cell outside worksheet."));
+    wxASSERT_MSG(GetTree()->Contains(action->m_start), _("Bug: Undo request for cell outside worksheet."));
     return false;
   }
 
@@ -7628,10 +7627,10 @@ void Worksheet::PasteFromClipboard()
           end = dynamic_cast<GroupCell *>(end->m_next);
 
         // Now paste the cells
-        if (m_tree == NULL)
+        if (GetTree() == NULL)
         {
           // Empty work sheet => We paste cells as the new cells
-          m_tree = contents;
+          m_tree = std::unique_ptr<GroupCell>(contents);
           m_last = end;
         }
         else
@@ -7708,9 +7707,9 @@ void Worksheet::PasteFromClipboard()
 
 void Worksheet::SelectAll()
 {
-  if (GetActiveCell() == NULL && m_tree != NULL)
+  if (GetActiveCell() == NULL && GetTree() != NULL)
   {
-    SetSelection(m_tree, m_last);
+    SetSelection(GetTree(), m_last);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     m_hCaretActive = false;
   }
@@ -7721,7 +7720,7 @@ void Worksheet::SelectAll()
     else
     {
       SetActiveCell(NULL);
-      SetSelection(m_tree, m_last);
+      SetSelection(GetTree(), m_last);
       m_clickType = CLICK_TYPE_GROUP_SELECTION;
       m_hCaretActive = false;
     }
@@ -8023,7 +8022,7 @@ void Worksheet::RemoveAllOutput()
 
   SetActiveCell(NULL);
 
-  RemoveAllOutput(m_tree);
+  RemoveAllOutput(GetTree());
 
   Recalculate();
   RequestRedraw();
@@ -8032,7 +8031,7 @@ void Worksheet::RemoveAllOutput()
 void Worksheet::RemoveAllOutput(GroupCell *cell)
 {
   if (cell == NULL)
-    cell = m_tree;
+    cell = GetTree();
 
   while (cell != NULL)
   {
@@ -8137,7 +8136,7 @@ bool Worksheet::FindIncremental(wxString str, bool down, bool ignoreCase)
 
 bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
 {
-  if (m_tree == NULL)
+  if (GetTree() == NULL)
     return false;
 
   GroupCell *pos;
@@ -8153,7 +8152,7 @@ bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
   // Default the start of the search at the top or the bottom of the screen
   wxPoint topleft;
   CalcUnscrolledPosition(0, starty, &topleft.x, &topleft.y);
-  pos = m_tree;
+  pos = GetTree();
   while (pos != NULL)
   {
     wxRect rect = pos->GetRect();
@@ -8165,7 +8164,7 @@ bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
   if (pos == NULL)
   {
     if (down)
-      pos = m_tree;
+      pos = GetTree();
     else
       pos = m_last;
   }
@@ -8237,7 +8236,7 @@ bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
       if (pos == NULL)
       {
         wrappedSearch = true;
-        pos = m_tree;
+        pos = GetTree();
       }
     }
     else
@@ -8338,12 +8337,12 @@ int Worksheet::ReplaceAll(wxString oldString, wxString newString, bool ignoreCas
 {
   m_cellPointers.ResetSearchStart();
 
-  if (m_tree == NULL)
+  if (GetTree() == NULL)
     return 0;
 
   int count = 0;
 
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = GetTree();
 
   while (tmp != NULL)
   {
@@ -8485,7 +8484,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     // Update the list of words that might not be defined as maxima function or variable
     // but that still appear on the workSheet.
     m_autocomplete->ClearWorksheetWords();
-    GroupCell *tmp = m_tree;
+    GroupCell *tmp = GetTree();
     while (tmp != NULL)
     {
       // Don't collect the current word as possible autocompletion.
@@ -8851,7 +8850,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChildCount (int *childCount)
   if(childCount == NULL)
     return wxACC_FAIL;
 
-  GroupCell *cell = m_worksheet->m_tree;
+  GroupCell *cell = m_worksheet->GetTree();
   *childCount = 0;
   while(cell != NULL)
   {
@@ -8866,7 +8865,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild (int childId, wxAccessible **
   if(child == NULL)
     return wxACC_FAIL;
 
-  GroupCell *cell = m_worksheet->m_tree;
+  GroupCell *cell = m_worksheet->GetTree();
 
   *child = NULL;
   if(childId == 0)
@@ -8943,7 +8942,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetParent (wxAccessible ** parent)
 //   else
 //   {
 //     int id = 0;
-//     Cell *cell = m_worksheet->m_tree;
+//     Cell *cell = m_worksheet->GetTree();
 //     while(cell != NULL)
 //     {
 //       id++;
@@ -9001,7 +9000,7 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest (const wxPoint &pt,
   else
   {
 	int id = 0;
-    GroupCell *cell = m_worksheet->m_tree;
+    GroupCell *cell = m_worksheet->GetTree();
 
     while(cell != NULL)
     {

@@ -24,6 +24,7 @@
 #define BITMAP_H
 
 #include "Cell.h"
+#include "GroupCell.h"
 
 /*! Renders portions of the work sheet (including 2D maths) as bitmap.
 
@@ -96,14 +97,14 @@ protected:
 
   void Draw();
 
-  Cell *m_tree;
+  std::unique_ptr<Cell> m_tree;
 
   double GetRealHeight() const;
 
   double GetRealWidth() const;
 
 private:
-  wxMemoryDC *m_dc;
+  std::unique_ptr<wxMemoryDC> m_dc;
   Configuration **m_configuration, *m_oldconfig;
   //! How many times the natural resolution do we want this bitmap to be?
   int m_scale;
