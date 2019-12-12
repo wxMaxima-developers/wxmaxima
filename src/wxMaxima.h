@@ -389,6 +389,9 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
+  //! Is called if maxima connects to wxMaxima.
+  void OnMaximaConnect();
+  
   //! server event: Maxima sends or receives data, connects or disconnects
   void ServerEvent(wxSocketEvent &event);
 

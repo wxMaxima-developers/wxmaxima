@@ -1677,61 +1677,62 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     break;
   }
   case wxSOCKET_CONNECTION :
-  {
-    m_maximaConnectTimeout.Stop();
-    if (m_client.IsConnected())
-    {
-      wxSocketBase *tmp = m_server->Accept(false);
-      tmp->Close();
-      wxLogMessage(_("New connection attempt when already connected."));
-      return;
-    }
-    if(m_process == NULL)
-    {
-      wxLogMessage(_("New connection attempt, but no currently running maxima process."));
-      return;
-    }
-    
-    wxLogMessage(_("Connected."));
-    m_rawDataToSend.Clear();
-    m_rawBytesSent = 0;
-    
-    m_statusBar->NetworkStatus(StatusBar::idle);
-    m_worksheet->QuestionAnswered();
-    m_currentOutput = wxEmptyString;
-    if(!m_server->AcceptWith(m_client, false))
-    {
-      wxLogMessage(_("Connection attempt, but connection failed."));
-      m_unsuccessfulConnectionAttempts++;
-      if(m_unsuccessfulConnectionAttempts < 12)
-      {
-        wxLogMessage(_("Trying to restart maxima."));          
-        StartMaxima(true);
-      }
-    }
-    else
-    {
-      m_clientStream = new wxSocketInputStream(m_client);
-      m_clientTextStream = std::unique_ptr<wxTextInputStream>(
-        new wxTextInputStream(*m_clientStream, wxT('\t'),
-                              wxConvUTF8));
-      m_client.SetEventHandler(*GetEventHandler());
-      m_client.SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
-      m_client.Notify(true);
-      m_client.SetFlags(wxSOCKET_NOWAIT);
-      m_client.SetTimeout(15);
-      SetupVariables();
-      Refresh();
-      // wxUpdateUIEvent dummy;
-      //UpdateToolBar(dummy);
-      //UpdateMenus(dummy);
-    }
-  }
+    OnMaximaConnect();
   break;
   
   default:
     wxLogMessage(_("Encountered an unknown socket event."));
     break;
+  }
+}
+
+void wxMaxima::OnMaximaConnect()
+{
+  m_maximaConnectTimeout.Stop();
+  if (m_client.IsConnected())
+  {
+    wxLogMessage(_("New connection attempt whilst already connected."));
+    return;
+  }
+  if(m_process == NULL)
+  {
+    wxLogMessage(_("New connection attempt, but no currently running maxima process."));
+    return;
+  }
+    
+  wxLogMessage(_("Connected."));
+  m_rawDataToSend.Clear();
+  m_rawBytesSent = 0;
+    
+  m_statusBar->NetworkStatus(StatusBar::idle);
+  m_worksheet->QuestionAnswered();
+  m_currentOutput = wxEmptyString;
+  if(!m_server->AcceptWith(m_client, false))
+  {
+    wxLogMessage(_("Connection attempt, but connection failed."));
+    m_unsuccessfulConnectionAttempts++;
+    if(m_unsuccessfulConnectionAttempts < 12)
+    {
+      wxLogMessage(_("Trying to restart maxima."));          
+      StartMaxima(true);
+    }
+  }
+  else
+  {
+    m_clientStream = new wxSocketInputStream(m_client);
+    m_clientTextStream = std::unique_ptr<wxTextInputStream>(
+      new wxTextInputStream(*m_clientStream, wxT('\t'),
+                            wxConvUTF8));
+    m_client.SetEventHandler(*GetEventHandler());
+    m_client.SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
+    m_client.Notify(true);
+    m_client.SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
+    m_client.SetTimeout(15);
+    SetupVariables();
+    Refresh();
+    // wxUpdateUIEvent dummy;
+    //UpdateToolBar(dummy);
+    //UpdateMenus(dummy);
   }
 }
 
@@ -1741,15 +1742,10 @@ bool wxMaxima::StartServer()
 
   wxIPV4address addr;
 
-#ifndef __WXOSX__
   addr.LocalHost();
-#else
-  addr.AnyAddress();
-#endif
-
   addr.Service(m_port);
 
-  m_server = new wxSocketServer(addr);
+  m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
   if (!m_server->Ok())
   {
     m_server->Destroy();
@@ -1758,13 +1754,15 @@ bool wxMaxima::StartServer()
     m_statusBar->NetworkStatus(StatusBar::error);
     return false;
   }
-  RightStatusText(_("Server started"));
   m_server->SetEventHandler(*GetEventHandler());
   m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->Notify(true);
-  m_server->SetFlags(wxSOCKET_NOWAIT);
   m_server->SetTimeout(30);
+  RightStatusText(_("Server started"));
 
+  if(m_server->IsConnected())
+    OnMaximaConnect();
+  
   return true;
 }
 
