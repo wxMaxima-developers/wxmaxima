@@ -208,7 +208,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_maximaStderr = NULL;
   m_ready = false;
   m_first = true;
-  m_isRunning = false;
   m_dispReadOut = false;
   m_promptPrefix = wxT("<PROMPT-P/>");
   m_promptSuffix = wxT("<PROMPT-S/>");
@@ -233,9 +232,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_printData = NULL;
 
   m_chmhelpFile = wxEmptyString;
-
-  m_isConnected = false;
-  m_isRunning = false;
 
   wxFileSystem::AddHandler(new wxMemoryFSHandler); // for saving wxmx
 
@@ -1710,7 +1706,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     case wxSOCKET_CONNECTION :
     {
       m_maximaConnectionTimeout.Stop();
-      if (m_isConnected)
+      if (m_client.IsConnected())
       {
         wxSocketBase *tmp = m_server->Accept(false);
         tmp->Close();
@@ -1730,7 +1726,6 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_statusBar->NetworkStatus(StatusBar::idle);
       m_worksheet->QuestionAnswered();
       m_currentOutput = wxEmptyString;
-      m_isConnected = true;
       if(!m_server->AcceptWith(m_client, false))
       {
         wxLogMessage(_("Connection attempt, but connection failed."));
@@ -1785,8 +1780,6 @@ bool wxMaxima::StartServer()
   {
     m_server->Destroy();
     m_server = NULL;
-    m_isRunning = false;
-    m_isConnected = false;
     RightStatusText(_("Starting server failed"));
     m_statusBar->NetworkStatus(StatusBar::error);
     return false;
@@ -1796,9 +1789,7 @@ bool wxMaxima::StartServer()
   m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->Notify(true);
 
-  m_isConnected = false;
-  m_isRunning = true;
-  return m_isRunning;
+  return true;
 }
 
 ///--------------------------------------------------------------------------------
@@ -2063,8 +2054,6 @@ void wxMaxima::KillMaxima(bool logMessage)
   if(m_pid < 0)
     return;
 
-  m_isRunning = false;
-
   if(logMessage)
     wxLogMessage(_("Killing Maxima."));
   m_configCommands = wxEmptyString;
@@ -2112,7 +2101,6 @@ void wxMaxima::KillMaxima(bool logMessage)
     SuppressErrorDialogs logNull;
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
   }
-  m_isConnected = false;
   m_worksheet->m_configuration->InLispMode(false);
 
   // As we might have killed maxima before it was able to clean up its
@@ -2166,7 +2154,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     ConsoleAppend(wxT("\nMaxima exited...\n"),
                   MC_TYPE_ERROR);
 
-    m_isConnected = false;
     if (m_unsuccessfulConnectionAttempts > 10)
       ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                     MC_TYPE_ERROR);
@@ -2190,7 +2177,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 
 void wxMaxima::CleanUp()
 {
-  if (m_isConnected)
+  if (m_client.IsConnected())
     KillMaxima();
 }
 
@@ -8969,7 +8956,7 @@ void wxMaxima::TriggerEvaluation()
 
   // If we aren't connected yet this function will be triggered as soon as maxima
   // connects to wxMaxima
-  if (!m_isConnected)
+  if (!m_client.IsConnected())
     return;
 
   // Maxima is connected. Let's test if the evaluation queue is empty.

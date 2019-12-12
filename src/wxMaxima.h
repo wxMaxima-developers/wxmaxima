@@ -650,10 +650,6 @@ protected:
   wxSocketInputStream *m_clientStream;
   wxTextInputStream *m_clientTextStream;
   wxSocketServer *m_server;
-  //! Is the network connection to maxima working?
-  bool m_isConnected;
-  //! Is maxima running?
-  bool m_isRunning;
   wxProcess *m_process;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
