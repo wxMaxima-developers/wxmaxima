@@ -110,18 +110,6 @@ public:
 
   //! Clean up on exit
   void CleanUp();                                  //!< shuts down server and client on exit
-  //! An enum of individual IDs for all timers this class handles
-  enum TimerIDs
-  {
-    //! The keyboard was inactive long enough that we can attempt an auto-save.
-            KEYBOARD_INACTIVITY_TIMER_ID,
-    //! The time between two auto-saves has elapsed.
-            AUTO_SAVE_TIMER_ID,
-    //! We look if we got new data from maxima's stdout.
-            MAXIMA_STDOUT_POLL_ID,
-            //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID
-  };
 
   /*! A timer that determines when to do the next autosave;
 
@@ -138,9 +126,16 @@ public:
   //! A timer that tells us to wait until maxima ends its data.
   wxTimer m_waitForStringEndTimer;
 
-  //! Is triggered when a timer this class is responsible for requires
-  void OnTimerEvent(wxTimerEvent &event);
+  //! Is eventually triggered when a line from maxima doesn't end in a newline
+  void OnWaitForStringEndTimer(wxTimerEvent &event);
+  /*! wxWidgets doesn't send a signal if data arrives at maxima's stdout
 
+    We therefore need a timer that tells us when to poll for data.
+   */
+  void OnPollStdOutTimer(wxTimerEvent &event);
+  //! Is triggered when the keyboard is inactive or the worksheet hasn't been saved lately
+  void OnAutosaveTimer(wxTimerEvent &event);
+  
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
 
