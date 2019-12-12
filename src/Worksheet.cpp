@@ -6416,6 +6416,8 @@ bool Worksheet::ExportToMAC(wxString file)
   }
 
   if (wxm)
+    SetSaved(true);
+  else
     SetSaved(wasSaved);
   return true;
 }
