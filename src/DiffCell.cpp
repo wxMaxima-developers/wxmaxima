@@ -27,12 +27,14 @@
  */
 
 #include "DiffCell.h"
+#include "TextCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_baseCell(new TextCell(parent, config, cellPointers)),
+  m_diffCell(new TextCell(parent, config, cellPointers))
 {
-  m_baseCell = NULL;
-  m_diffCell = NULL;
 }
 
 DiffCell::DiffCell(const DiffCell &cell):
@@ -47,9 +49,6 @@ DiffCell::DiffCell(const DiffCell &cell):
 
 DiffCell::~DiffCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_diffCell);
-  m_baseCell = m_diffCell = NULL;
   MarkAsDeleted();
 }
 
@@ -57,9 +56,9 @@ std::list<Cell *> DiffCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell);
+    innerCells.push_back(m_baseCell.get());
   if(m_diffCell)
-    innerCells.push_back(m_diffCell);
+    innerCells.push_back(m_diffCell.get());
   return innerCells;
 }
 
@@ -68,8 +67,7 @@ void DiffCell::SetDiff(Cell *diff)
 {
   if (diff == NULL)
     return;
-  wxDELETE(m_diffCell);
-  m_diffCell = diff;
+  m_diffCell = std::unique_ptr<Cell>(diff);
 
   m_diffCell->m_SuppressMultiplicationDot = true;
 }
@@ -78,8 +76,7 @@ void DiffCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::unique_ptr<Cell>(base);
 }
 
 void DiffCell::RecalculateWidths(int fontsize)

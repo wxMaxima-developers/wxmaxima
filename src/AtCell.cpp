@@ -27,11 +27,13 @@
 */
 
 #include "AtCell.h"
+#include "TextCell.h"
 
-AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_baseCell (new TextCell(parent, config, cellPointers)),
+  m_indexCell(new TextCell(parent, config, cellPointers))
 {
-  m_baseCell = NULL;
-  m_indexCell = NULL;
 }
 
 AtCell::AtCell(const AtCell &cell):
@@ -46,9 +48,6 @@ AtCell::AtCell(const AtCell &cell):
 
 AtCell::~AtCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_indexCell);
-  m_baseCell = m_indexCell = NULL;
   MarkAsDeleted();
 }
 
@@ -56,9 +55,9 @@ std::list<Cell *> AtCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell);
+    innerCells.push_back(m_baseCell.get());
   if(m_indexCell)
-    innerCells.push_back(m_indexCell);
+    innerCells.push_back(m_indexCell.get());
   return innerCells;
 }
 
@@ -66,16 +65,14 @@ void AtCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_indexCell);
-  m_indexCell = index;
+  m_indexCell = std::unique_ptr<Cell>(index);
 }
 
 void AtCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::unique_ptr<Cell>(base);
 }
 
 void AtCell::RecalculateWidths(int fontsize)

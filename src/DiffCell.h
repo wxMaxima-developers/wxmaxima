@@ -60,8 +60,8 @@ public:
   wxString ToXML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_diffCell;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_diffCell;
 };
 
 #endif // DIFFCELL_H

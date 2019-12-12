@@ -87,8 +87,8 @@ public:
   void Unbreak() override;
 
 protected:
-  Cell *m_nameCell;
-  Cell *m_argCell;
+  std::unique_ptr<Cell> m_nameCell;
+  std::unique_ptr<Cell> m_argCell;
 };
 
 

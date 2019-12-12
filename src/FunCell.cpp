@@ -27,11 +27,13 @@
  */
 
 #include "FunCell.h"
+#include "TextCell.h"
 
-FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_nameCell(new TextCell(parent, config, cellPointers)),
+  m_argCell(new TextCell(parent, config, cellPointers))
 {
-  m_nameCell = NULL;
-  m_argCell = NULL;
 }
 
 FunCell::FunCell(const FunCell &cell):
@@ -46,9 +48,6 @@ FunCell::FunCell(const FunCell &cell):
 
 FunCell::~FunCell()
 {
-  wxDELETE(m_nameCell);
-  wxDELETE(m_argCell);
-  m_nameCell = m_argCell = NULL;
   MarkAsDeleted();
 }
 
@@ -56,9 +55,9 @@ std::list<Cell *> FunCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_nameCell)
-    innerCells.push_back(m_nameCell);
+    innerCells.push_back(m_nameCell.get());
   if(m_argCell)
-    innerCells.push_back(m_argCell);
+    innerCells.push_back(m_argCell.get());
   return innerCells;
 }
 
@@ -66,8 +65,7 @@ void FunCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
-  wxDELETE(m_nameCell);
-  m_nameCell = name;
+  m_nameCell = std::unique_ptr<Cell>(name);
   name->SetStyle(TS_FUNCTION);
 }
 
@@ -75,8 +73,7 @@ void FunCell::SetArg(Cell *arg)
 {
   if (arg == NULL)
     return;
-  wxDELETE(m_argCell);
-  m_argCell = arg;
+  m_argCell = std::unique_ptr<Cell>(arg);
 }
 
 void FunCell::RecalculateWidths(int fontsize)
@@ -197,12 +194,12 @@ bool FunCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_nameCell->m_previousToDraw = this;
-    m_nameCell->m_nextToDraw = m_argCell;
-    m_argCell->m_previousToDraw = m_nameCell;
+    m_nameCell->m_nextToDraw = m_argCell.get();
+    m_argCell->m_previousToDraw = m_nameCell.get();
     m_argCell->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_argCell;
-    m_nextToDraw = m_nameCell;
+      m_nextToDraw->m_previousToDraw = m_argCell.get();
+    m_nextToDraw = m_nameCell.get();
     m_width = 0;
     ResetData();    
     return true;

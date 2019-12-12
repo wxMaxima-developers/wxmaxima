@@ -60,8 +60,8 @@ public:
   wxString ToMathML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_indexCell;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_indexCell;
 };
 
 #endif // ATCELL_H

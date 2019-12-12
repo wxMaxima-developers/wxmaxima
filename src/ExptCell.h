@@ -48,7 +48,7 @@
 class ExptCell : public Cell
 {
 public:
-  ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
+  ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ExptCell(const ExptCell &cell);
   Cell *Copy() override {return new ExptCell(*this);}
   ~ExptCell();
@@ -97,10 +97,13 @@ public:
   void Unbreak() override;
 
 protected:
-  Cell *m_baseCell, *m_exptCell;
-  TextCell *m_open, *m_close;
-  Cell *m_last2;
-  Cell *m_exp, *m_last1;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_exptCell;
+  std::unique_ptr<TextCell> m_open;
+  std::unique_ptr<TextCell> m_close;
+  std::unique_ptr<TextCell> m_exp;
+  Cell *m_expt_last;
+  Cell *m_base_last;
   bool m_isMatrix;
 };
 

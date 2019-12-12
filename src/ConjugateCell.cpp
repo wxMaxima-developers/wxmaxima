@@ -29,13 +29,14 @@
 #include "ConjugateCell.h"
 #include "TextCell.h"
 
-ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_innerCell(new TextCell(parent, config, cellPointers, "")),
+  m_open(new TextCell(parent, config, cellPointers, "conjugate(")),
+  m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_last = NULL;
-  m_innerCell = NULL;
-  m_open = new TextCell(parent, config, cellPointers, wxT("conjugate("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
+  m_last = NULL;
 }
 
 // Old cppcheck bugs:
@@ -55,10 +56,6 @@ ConjugateCell::~ConjugateCell()
     m_cellPointers->m_selectionStart = NULL;
   if(this == m_cellPointers->m_selectionEnd)
     m_cellPointers->m_selectionEnd = NULL;
-  wxDELETE(m_innerCell);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_innerCell = m_open = m_close = NULL;
   MarkAsDeleted();
 }
 
@@ -66,11 +63,11 @@ std::list<Cell *> ConjugateCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_innerCell)
-    innerCells.push_back(m_innerCell);
+    innerCells.push_back(m_innerCell.get());
   if(m_open)
-    innerCells.push_back(m_open);
+    innerCells.push_back(m_open.get());
   if(m_close)
-    innerCells.push_back(m_close);
+    innerCells.push_back(m_close.get());
   return innerCells;
 }
 
@@ -78,10 +75,9 @@ void ConjugateCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
-  wxDELETE(m_innerCell);
-  m_innerCell = inner;
+  m_innerCell = std::unique_ptr<Cell>(inner);
 
-  m_last = m_innerCell;
+  m_last = m_innerCell.get();
   if (m_last != NULL)
     while (m_last->m_next != NULL)
       m_last = m_last->m_next;
@@ -194,18 +190,18 @@ bool ConjugateCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell;
-    m_innerCell->m_previousToDraw = m_open;
+    m_open->m_nextToDraw = m_innerCell.get();
+    m_innerCell->m_previousToDraw = m_open.get();
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an conjugateCell!"));
     if (m_last != NULL)
     {
-      m_last->m_nextToDraw = m_close;
+      m_last->m_nextToDraw = m_close.get();
       m_close->m_previousToDraw = m_last;
     }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_open;
+      m_nextToDraw->m_previousToDraw = m_close.get();
+    m_nextToDraw = m_open.get();
     ResetData();        
     m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());

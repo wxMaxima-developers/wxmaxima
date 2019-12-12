@@ -2805,6 +2805,7 @@ void Worksheet::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
     {
       TreeUndoAction *Action = actionList->back();
       wxDELETE(Action);
+      Action = NULL;
       actionList->pop_back();
     }
     while(!actionList->empty() && (actionList->back()->m_partOfAtomicAction));

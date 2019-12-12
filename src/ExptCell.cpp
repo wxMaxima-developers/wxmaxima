@@ -31,17 +31,18 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers) : Cell(parent, config, cellpointers)
+ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_baseCell(new TextCell(parent, config, cellPointers)),
+  m_exptCell(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, "(")),
+  m_close(new TextCell(parent, config, cellPointers, ")")),
+  m_exp(new TextCell(parent, config, cellPointers, "^"))
 {
-  m_last1 = NULL;
-  m_last2 = NULL;
-  m_baseCell = NULL;
-  m_exptCell = NULL;
+  m_base_last = m_baseCell.get();
+  m_expt_last = m_exptCell.get();
   m_isMatrix = false;
-  m_exp = new TextCell(parent, config, cellpointers, wxT("^"));
-  m_open = new TextCell(parent, config, cellpointers, wxT("("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, cellpointers, wxT(")"));
 }
 
 ExptCell::ExptCell(const ExptCell &cell):
@@ -56,12 +57,6 @@ ExptCell::ExptCell(const ExptCell &cell):
 
 ExptCell::~ExptCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_exptCell);
-  wxDELETE(m_exp);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_baseCell = m_exptCell = m_exp = m_open = m_close = NULL;
   MarkAsDeleted();
 }
 
@@ -89,15 +84,15 @@ std::list<Cell *> ExptCell::GetInnerCells()
 {
   std::list<Cell *> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell);
+    innerCells.push_back(m_baseCell.get());
   if(m_exptCell)
-    innerCells.push_back(m_exptCell);
+    innerCells.push_back(m_exptCell.get());
   if(m_exp)
-    innerCells.push_back(m_exp);
+    innerCells.push_back(m_exp.get());
   if(m_open)
-    innerCells.push_back(m_open);
+    innerCells.push_back(m_open.get());
   if(m_close)
-    innerCells.push_back(m_close );
+    innerCells.push_back(m_close.get());
   return innerCells;
 }
 
@@ -106,8 +101,7 @@ void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)
     return;
-  wxDELETE(m_exptCell);
-  m_exptCell = power;
+  m_exptCell = std::unique_ptr<Cell>(power);
 
   if (!m_exptCell->IsCompound())
   {
@@ -115,23 +109,22 @@ void ExptCell::SetPower(Cell *power)
     m_close->m_isHidden = true;
   }
 
-  m_last2 = power;
-  if (m_last2 != NULL)
-    while (m_last2->m_next != NULL)
-      m_last2 = m_last2->m_next;
+  m_expt_last = power;
+  if (m_expt_last != NULL)
+    while (m_expt_last->m_next != NULL)
+      m_expt_last = m_expt_last->m_next;
 }
 
 void ExptCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::unique_ptr<Cell>(base);
 
-  m_last1 = base;
-  if (m_last1 != NULL)
-    while (m_last1->m_next != NULL)
-      m_last1 = m_last1->m_next;
+  m_base_last = base;
+  if (m_base_last != NULL)
+    while (m_base_last->m_next != NULL)
+      m_base_last = m_base_last->m_next;
 }
 
 void ExptCell::RecalculateWidths(int fontsize)
@@ -274,26 +267,26 @@ bool ExptCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_baseCell->m_previousToDraw = this;
-    wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in the base of an exptCell!"));
-    if (m_last1 != NULL)
+    wxASSERT_MSG(m_base_last != NULL, _("Bug: No last cell in the base of an exptCell!"));
+    if (m_base_last != NULL)
     {
-      m_last1->m_nextToDraw = m_exp;
-      m_exp->m_previousToDraw = m_last1;
+      m_base_last->m_nextToDraw = m_exp.get();
+      m_exp->m_previousToDraw = m_base_last;
     }
-    m_exp->m_nextToDraw = m_open;
-    m_open->m_previousToDraw = m_exp;
-    m_open->m_nextToDraw = m_exptCell;
-    m_exptCell->m_previousToDraw = m_open;
-    wxASSERT_MSG(m_last2 != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
-    if (m_last2 != NULL)
+    m_exp->m_nextToDraw = m_open.get();
+    m_open->m_previousToDraw = m_exp.get();
+    m_open->m_nextToDraw = m_exptCell.get();
+    m_exptCell->m_previousToDraw = m_open.get();
+    wxASSERT_MSG(m_expt_last != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
+    if (m_expt_last != NULL)
     {
-      m_last2->m_nextToDraw = m_close;
-      m_close->m_previousToDraw = m_last2;
+      m_expt_last->m_nextToDraw = m_close.get();
+      m_close->m_previousToDraw = m_expt_last;
     }
     m_close->m_nextToDraw = m_nextToDraw;
     if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_baseCell;
+      m_nextToDraw->m_previousToDraw = m_close.get();
+    m_nextToDraw = m_baseCell.get();
     ResetData();    
     m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());

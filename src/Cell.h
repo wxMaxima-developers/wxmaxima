@@ -38,6 +38,7 @@
 #endif // wxUSE_ACCESSIBILITY
 #include "Configuration.h"
 #include "TextStyle.h"
+#include <memory>
 
 /*! The supported types of math cells
  */

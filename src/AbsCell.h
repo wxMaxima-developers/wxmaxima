@@ -91,11 +91,11 @@ public:
 
 protected:
   //! The contents of the abs() comand
-  Cell *m_innerCell;
+  std::unique_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
-  TextCell *m_open;
+  std::unique_ptr<TextCell> m_open;
   //! The cell containing the closing parenthesis
-  TextCell *m_close;
+  std::unique_ptr<TextCell> m_close;
   //! The last element of m_innerCell
   Cell *m_last;
 };
