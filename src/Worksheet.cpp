@@ -6665,7 +6665,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     {
       zip.CloseEntry();
 
-      std::unique_ptr<wxFSFile> fsfile(fsystem->OpenFile(memFsName));
+      wxFSFile *fsfile = fsystem->OpenFile(memFsName);
 
       if (fsfile)
       {
