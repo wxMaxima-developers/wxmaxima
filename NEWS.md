@@ -1,3 +1,17 @@
+# Transition to C++11 - Part II
+
+Many annoying bugs have to do with memory management. Typical examples are:
+ * Out-of-bonds reads and writes: n+1 bytes of an n-bytes-long string are
+   read or written. 
+ * Use of uninitialized memory: Memory is first read and then set to the 
+   value that one would have wanted to read from it.
+ * Use-after-free: Memory was first marked as "free" and then used again.
+ * Memory Leaks: Memory isn't marked as "free" even if it is no more used.
+Against the last two of these bugs C++11 offers automatic pointers that 
+stay allocated while they are in used and then are automatically marked 
+as free. In the next wxMaxima release about 2500 lines will be changed 
+in order to make use of that functionality.
+
 # wxMaxima 19.12.1 - Stable:
 
 If the maxima-discuss list asks for an additional feature that is the Right Time
