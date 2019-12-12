@@ -138,7 +138,8 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
         Cell *editor = ParseTag(children->GetChildren());
         if (editor == NULL)
           editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
-        group->SetEditableContent(editor->GetValue());
+        if(editor)
+          group->SetEditableContent(editor->GetValue());
         wxDELETE(editor);
       }
       if (children->GetName() == wxT("output"))
@@ -158,7 +159,8 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
       if (children->GetName() == wxT("editor"))
       {
         Cell *ed = ParseEditorTag(children);
-        group->SetEditableContent(ed->GetValue());
+        if(ed)
+          group->SetEditableContent(ed->GetValue());
         wxDELETE(ed);
       }
       else
@@ -176,7 +178,8 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     Cell *editor = ParseTag(node->GetChildren());
     if (editor == NULL)
       editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
-    group->SetEditableContent(editor->GetValue());
+    if(editor)
+      group->SetEditableContent(editor->GetValue());
     wxDELETE(editor);
   }
   else
@@ -225,7 +228,8 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
       if (children->GetName() == wxT("editor"))
       {
         Cell *ed = ParseEditorTag(children);
-        group->SetEditableContent(ed->GetValue());
+        if(ed)
+          group->SetEditableContent(ed->GetValue());
         wxDELETE(ed);
       }
       else if (children->GetName() == wxT("fold"))
