@@ -250,6 +250,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
   m_waitForStringEndTimer.SetOwner(this, WAITFORSTRING_ID);
   m_maximaConnectTimeout.SetOwner(this, WAITFORCONNECTION_ID);
+  m_pollForConnectionTimer.SetOwner(this, POLLFORCONNECTION_ID);
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
   Connect(
     wxEVT_TIMER,
@@ -1677,6 +1678,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     break;
   }
   case wxSOCKET_CONNECTION :
+    m_pollForConnectionTimer.Stop();
     OnMaximaConnect();
   break;
   
@@ -1686,21 +1688,22 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   }
 }
 
-void wxMaxima::OnMaximaConnect()
+void wxMaxima::OnMaximaConnect(bool receivedSignal)
 {
   m_maximaConnectTimeout.Stop();
   if (m_client.IsConnected())
   {
-    wxLogMessage(_("New connection attempt whilst already connected."));
+    if(receivedSignal)
+      wxLogMessage(_("New connection attempt whilst already connected."));
     return;
   }
   if(m_process == NULL)
   {
-    wxLogMessage(_("New connection attempt, but no currently running maxima process."));
+    if(receivedSignal)
+      wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
     
-  wxLogMessage(_("Connected."));
   m_rawDataToSend.Clear();
   m_rawBytesSent = 0;
     
@@ -1709,16 +1712,20 @@ void wxMaxima::OnMaximaConnect()
   m_currentOutput = wxEmptyString;
   if(!m_server->AcceptWith(m_client, false))
   {
-    wxLogMessage(_("Connection attempt, but connection failed."));
-    m_unsuccessfulConnectionAttempts++;
-    if(m_unsuccessfulConnectionAttempts < 12)
+    if(receivedSignal)
     {
-      wxLogMessage(_("Trying to restart maxima."));          
-      StartMaxima(true);
+      wxLogMessage(_("Connection attempt, but connection failed."));
+      m_unsuccessfulConnectionAttempts++;
+      if(m_unsuccessfulConnectionAttempts < 12)
+      {
+        wxLogMessage(_("Trying to restart maxima."));          
+        StartMaxima(true);
+      }
     }
   }
   else
   {
+    wxLogMessage(_("Connected."));
     m_clientStream = new wxSocketInputStream(m_client);
     m_clientTextStream = std::unique_ptr<wxTextInputStream>(
       new wxTextInputStream(*m_clientStream, wxT('\t'),
@@ -1848,6 +1855,7 @@ bool wxMaxima::StartMaxima(bool force)
                      wxOK | wxICON_ERROR);
         return false;
       }
+      m_pollForConnectionTimer.Start(300);
       m_maximaConnectTimeout.StartOnce(8000);
       m_maximaStdout = m_process->GetInputStream();
       m_maximaStderr = m_process->GetErrorStream();
@@ -5134,6 +5142,8 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         m_autoSaveTimer.StartOnce(180000);
       }
       break;
+  case POLLFORCONNECTION_ID:
+    OnMaximaConnect(false);
   }
 }
 

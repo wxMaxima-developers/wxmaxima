@@ -123,7 +123,9 @@ public:
             //! We have finished waiting if the current string ends in a newline
             WAITFORSTRING_ID,
             //! Wait for the connection of Maxima
-            WAITFORCONNECTION_ID
+            WAITFORCONNECTION_ID,
+            //! Poll for connection if the OS doesn't inform us that we can connect
+            POLLFORCONNECTION_ID
   };
 
   /*! A timer that determines when to do the next autosave;
@@ -140,6 +142,13 @@ public:
 
   //! A timer that tells us to wait until maxima ends its data.
   wxTimer m_waitForStringEndTimer;
+
+  /*! A timer that allows us to poll regularly for maxima connectionss
+
+    We actually get a signal if maxima connects. But it seems like that 
+    isn't working on every combination of wxWidgets and MacOs.
+   */
+  wxTimer m_pollForConnectionTimer;
 
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
@@ -390,7 +399,7 @@ protected:
   void OnReplaceAll(wxFindDialogEvent &event);
 
   //! Is called if maxima connects to wxMaxima.
-  void OnMaximaConnect();
+  void OnMaximaConnect(bool receivedSignal = true);
   
   //! server event: Maxima sends or receives data, connects or disconnects
   void ServerEvent(wxSocketEvent &event);
