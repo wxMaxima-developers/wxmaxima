@@ -3566,6 +3566,10 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
 
 GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename)
 {
+  // Show a busy cursor as long as we export a .gif file (which might be a lengthy
+  // action).
+  wxBusyCursor crs;
+
   MathParser mp(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers, wxmxfilename);
   GroupCell *tree = NULL;
   GroupCell *last = NULL;

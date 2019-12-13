@@ -5718,6 +5718,9 @@ void Worksheet::CodeCellVisibilityChanged()
 
 GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
 {
+  // Show a busy cursor as long as we export a .gif file (which might be a lengthy
+  // action).
+  wxBusyCursor crs;
   bool hide = false;
   GroupCell *tree = NULL;
   GroupCell *last = NULL;
