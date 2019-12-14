@@ -50,6 +50,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
   m_labelWidth_cached = 0;
+  m_hiddenTree = NULL;
   m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
@@ -419,6 +420,8 @@ wxString GroupCell::ToWXM(bool wxm)
 GroupCell::~GroupCell()
 {
   GroupCell::MarkAsDeleted();
+  wxDELETE(m_hiddenTree);
+  m_hiddenTree = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
@@ -2193,11 +2196,11 @@ bool GroupCell::HideTree(GroupCell *tree)
 {
   if (m_hiddenTree)
     return false;
-  m_hiddenTree = std::unique_ptr<GroupCell>(tree);
+  m_hiddenTree = tree;
   m_hiddenTree->SetHiddenTreeParent(this);
 
   // Clear cached images from cells that are hidden
-  GroupCell *tmp = m_hiddenTree.get();
+  GroupCell *tmp = m_hiddenTree;
   while (tmp)
   {
     if (tmp->GetLabel())
@@ -2210,7 +2213,7 @@ bool GroupCell::HideTree(GroupCell *tree)
 
 GroupCell *GroupCell::UnhideTree()
 {
-  GroupCell *tree = m_hiddenTree.get();
+  GroupCell *tree = m_hiddenTree;
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
   return tree;
@@ -2287,7 +2290,7 @@ GroupCell *GroupCell::Fold()
   }
   
   start->m_previous = start->m_previousToDraw = NULL;
-  m_hiddenTree = std::unique_ptr<GroupCell>(start); // save the torn out tree into m_hiddenTree
+  m_hiddenTree = start; // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
 }
@@ -2302,10 +2305,10 @@ GroupCell *GroupCell::Unfold()
   Cell *next = m_next;
 
   // sew together this cell with m_hiddenTree
-  m_next = m_nextToDraw = m_hiddenTree.get();
+  m_next = m_nextToDraw = m_hiddenTree;
   m_hiddenTree->m_previous = m_hiddenTree->m_previousToDraw = this;
 
-  Cell *tmp = m_hiddenTree.get();
+  Cell *tmp = m_hiddenTree;
   while (tmp->m_next)
     tmp = tmp->m_next;
   // tmp holds the last element of m_hiddenTree

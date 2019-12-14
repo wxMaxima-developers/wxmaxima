@@ -315,7 +315,7 @@ public:
 
   //! Get the tree of cells that got hidden by folding this cell
   GroupCell *GetHiddenTree()
-    { return m_hiddenTree.get(); }
+  { return m_hiddenTree; }
 
   /*! Fold the current cell
 
@@ -507,7 +507,7 @@ protected:
   bool NeedsRecalculation() override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
-  std::unique_ptr<GroupCell> m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
+  GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
   GroupType m_groupType;
