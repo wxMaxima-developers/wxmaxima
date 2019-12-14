@@ -108,8 +108,8 @@ if(PANDOC AND PO4A_TRANSLATE)
 	    if(NOT BASENAME STREQUAL "wxmaxima")
 		add_custom_command(
 		    OUTPUT ${BASENAME}.md
-		    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-		    COMMAND ${PO4A_TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
+		    DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+		    COMMAND ${PO4A_TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
 	    endif()
 	endif()
 	add_custom_command(
