@@ -267,7 +267,7 @@ The material that is developed in a _wxMaxima_ session can be stored for later u
 
 ### .mac
 
-.mac files are ordinary text files that contain _Maxima_ commands. They can be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File menu entry. 
+.mac files are ordinary text files that contain _Maxima_ commands. They can be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File menu entry.
 
 One Example:
 
@@ -328,7 +328,7 @@ This option enables two things:
 
 If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
 
-If this option isn't set wxMaxima behaves more like a modern cellphone app: 
+If this option isn't set wxMaxima behaves more like a modern cellphone app:
 
 *   Files are saved automatically on exit
 *   And the file will automatically be saved every 3 minutes.
@@ -802,120 +802,120 @@ Annotated Index
 ===============
 
 **A**
-[Animations](#Embedding-animations-into-the-spreadsheet): commands to embed animations into a _wxMaxima_ workbook
+[Animations](#embedding-animations-into-the-spreadsheet): commands to embed animations into a _wxMaxima_ workbook
 
 [Animations, failure](#Outputting-animations-doesn_0027t-work): why creation and execution of some animations might not work
 
-[Autocompletion](#Command-autocompletion): using _wxMaxima_ a command
+[Autocompletion](#command-autocompletion): using _wxMaxima_ a command
 
-[Aspect ratio](#Can-I-set-the-aspect-ratio-of-a-plot_003f): set the aspect ratio for a plot
+[Aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect ratio for a plot
 
 [Autosave](#Autosave-interval): set interval for saving a _wxMaxima_ session file (workbook)
 
 **C**
-[Cells](#Cells): the nature and use of cells in a _wxMaxima_ workbook
+[Cells](#cells): the nature and use of cells in a _wxMaxima_ workbook
 
 [Cells, Input/Output](#Input%20Output%20Cell): Cells that contain one or more commands and the results of executing the command(s)
 
-[Command autocompletion](#Command-autocompletion): using _wxMaxima_ a command
+[Command autocompletion](#command-autocompletion): using _wxMaxima_ a command
 
-[Configure wxMaxima](#Configuration-options): how to configure a _wxMaxima_ workbook
+[Configure wxMaxima](#configuration-options): how to configure a _wxMaxima_ workbook
 
-[Cursors, vertical and horizontal](#Drag%20and%20drop): entering text or selecting entered material
+[Cursors, vertical and horizontal](#horizontal-and-vertical-cursors): entering text or selecting entered material
 
 **D**
 [Drag and drop](#Drag%20and%20drop): Copying and pasting material in one or more cells or executing a sequence of cells
 
 **F**
-[File Info](#wxfilename%20command): command to print name and location of currently-open wxMaxima workbook
+[File Info](#special-variables-wx...): command to print name and location of currently-open wxMaxima workbook
 
-[File Formats](#File-Formats): types of files that _wxMaxima_ can create and open
+[File Formats](#file-formats): types of files that _wxMaxima_ can create and open
 
 **G**
-[Greek characters](#Greek-characters): Ways to enter Greek letters into a _wxMaxima_ workbook (see Side Panels below)
+[Greek characters](#greek-characters): Ways to enter Greek letters into a _wxMaxima_ workbook (see Side Panels below)
 
 **H**
-[HTML](#Markdown-support): export material as html
+[HTML](#markdown-support): export material as html
 
-[Hotkeys](#Hotkeys): shortcut key combinations, alternatives to menu options
+[Hotkeys](#hotkeys): shortcut key combinations, alternatives to menu options
 
 **I**
 [Input/Output Cells](#Input%20Output%20Cell): Cells that contain one or more commands and the results of executing the command(s)
 
 **J**
-[jsMath](#Use-jsMath-fonts): useful fonts set for mathematical expressions
+[jsMath](#use-jsmath-font): useful fonts set for mathematical expressions
 
 **L**
-[LaTeX](#Markdown-support): export material as LaTeX
+[LaTeX](#markdown-support): export material as LaTeX
 
-[Lost content](#I-lost-a-cell-contents-and-undo-doesn_0027t-remember): ways to recover lost cell contents
+[Lost content](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to recover lost cell contents
 
 **M**
-[Macro files](#g_t_002emac): .mac files, batch files that can be entered into _wxMaxima_ workbooks
+[Macro files](#mac): .mac files, batch files that can be entered into _wxMaxima_ workbooks
 
-[MathML](#MathML-output): export mathematical expressions with MathML markup
+[MathML](#mathml-output): export mathematical expressions with MathML markup
 
 [Matrix](#Matrix): Create a matrix and convert the matrix to a table
 
-[Maxima and wxMaxima](#Maxima-and-wxMaxima "Maxima and wxMaxima"): the relationship between the Maxima CAS and the _wxMaxima_ front-end
+[Maxima and wxMaxima](#maxima-and-wxmaxima): the relationship between the Maxima CAS and the _wxMaxima_ front-end
 
-[Maxima-wxMaxima connection](#Cannot-connect-to-Maxima): possible reasons from failure of _wxMaxima_ to communicate with _Maxima_
+[Maxima-wxMaxima connection](#cannot-connect-to-maxima): possible reasons from failure of _wxMaxima_ to communicate with _Maxima_
 
 **N**
-[Name of file](#wxfilename%20command): command to print name and location of currently-open _wxMaxima_ workbook
+[Name of file](#special-variables-wx...): command to print name and location of currently-open _wxMaxima_ workbook
 
 **P**
-[Plot, aspect ratio](#Can-I-set-the-aspect-ratio-of-a-plot_003f): set the aspect ratio for a plot
+[Plot, aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect ratio for a plot
 
-[Plot, embedding](#Embedding-a-plot-into-the-work-sheet): embed a _Maxima_\-generated plot in a _wxMaxima_ workbook
+[Plot, embedding](#embedding-a-plot-into-the-work-sheet): embed a _Maxima_\-generated plot in a _wxMaxima_ workbook
 
-[Plot, failure](#Plotting-only-shows-an-closed-empty-envelope-with-an-error-message): some reasons that attempts to plot might fail
+[Plot, failure](#plotting-only-shows-an-closed-empty-envelope-with-an-error-message): some reasons that attempts to plot might fail
 
-[Plot file, embedding](#Embedding-graphics): embed a plot file in a _wxMaxima_ workbook
+[Plot file, embedding](#embedding-graphics): embed a plot file in a _wxMaxima_ workbook
 
-[Plot size](#Making-embedded-plots-bigger-or-smaller): control the size of embedded plots
+[Plot size](#making-embedded-plots-bigger-or-smaller): control the size of embedded plots
 
-[Plots, better quality](#Better-quality-plots): notes related to the quality of gnuplot plots
+[Plots, better quality](#better-quality-plots): notes related to the quality of gnuplot plots
 
-[Plots, multiple](#Opening-multiple-plots-in-contemporaneous-windows): open multiple plots in contemporaneous windows
+[Plots, multiple](#opening-multiple-plots-in-contemporaneous-windows): open multiple plots in contemporaneous windows
 
 [Progress indicators](#statusbar): Giving user feedback in the status bar
 
 **R**
-[Recover lost content](#I-lost-a-cell-contents-and-undo-doesn_0027t-remember)
+[Recover lost content](#i-lost-a-cell-contents-and-undo-doesnt-remember)
 
 **S**
-[Side Panes](#Side-Panes): collections of buttons that open dialog boxes, enter commands, and enter special characters
+[Side Panes](#side-panes): collections of buttons that open dialog boxes, enter commands, and enter special characters
 
-[Startup file location](#index-Startup-File): location of an initialization file that is passed to _wxMaxima_ when it opens
+[Startup file location](#startup-files): location of an initialization file that is passed to _wxMaxima_ when it opens
 
 [Status bar](#statusbar): Giving user feedback in the status bar
 
-[Subscripted variables](#Subscripted-variables): using the command `wxsubscripts` to display subscripted variables
+[Subscripted variables](#subscripted-variables): using the command `wxsubscripts` to display subscripted variables
 
 **T**
-[Table](#Pretty_002dprinting-2D-output): show lists of text and values as a table
+[Table](#pretty-printing-2d-output): show lists of text and values as a table
 
-[TeX markup](#Raw-TeX-in-the-TeX-export): allows TeX markup to be entered into a text file
+[TeX markup](#raw-tex-in-the-tex-export): allows TeX markup to be entered into a text file
 
 **U**
-[undo](#I-lost-a-cell-contents-and-undo-doesn_0027t-remember): ways to recover lost cell contents
+[undo](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to recover lost cell contents
 
 **W**
-[with\_slider\_draw](#Embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw`
+[with\_slider\_draw](#embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw`
 
-[with\_slider\_draw3d](#Embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw3d`
+[with\_slider\_draw3d](#embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw3d`
 
-[wxanimate\_draw](#Embedding-animations-into-the-spreadsheet): command to embed animations
+[wxanimate\_draw](#embedding-animations-into-the-spreadsheet): command to embed animations
 
-[wxanimate\_draw3d](#Embedding-animations-into-the-spreadsheet): command to embed animations
+[wxanimate\_draw3d](#embedding-animations-into-the-spreadsheet): command to embed animations
 
-[wxMaxima and Maxima](#Maxima-and-wxMaxima "wxMaxima and Maxima"): the relationship between the _Maxima_ CAS and the _wxMaxima_ front-end
+[wxMaxima and Maxima](#maxima-and-wxmaxima): the relationship between the _Maxima_ CAS and the _wxMaxima_ front-end
 
 [wxMaxima documentation](#wxMaxima)
 
-[wxMaxima workbook structure](#The-worksheet-approach): central features of a _wxMaxima_ workbook
+[wxMaxima workbook structure](#the-workbook-approach): central features of a _wxMaxima_ workbook
 
-[wxm and wxmx files](#g_t_002ewxm): formats for _wxMaxima_ workbooks
+[wxm and wxmx files](#file-formats): formats for _wxMaxima_ workbooks
 
-[wxmx data](#Broken%20wxmx): retrieve data from a broken wxmx file
+[wxmx data](#how-to-save-data-from-a-broken-.wxmx-file): retrieve data from a broken wxmx file
