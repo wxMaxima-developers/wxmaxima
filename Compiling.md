@@ -85,7 +85,7 @@ https://www.peterpall.de/wxMaxima/html/index.xhtml
 A local version of the documentation of wxMaxima's source can be
 generated using doxygen and the
 
-    make html
+    make doxygen
 
 target.
 
