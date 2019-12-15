@@ -18,6 +18,7 @@ function(generate_wxmaxima_documentation FORMAT PANDOC_TEXSELECT_OPTION)
         COMMENT "Generating ${BASENAME}.${FORMAT}")
     add_custom_target(${BASENAME}.${FORMAT}.stamp DEPENDS ${BASENAME}.${FORMAT})
     add_dependencies(${FORMAT} ${BASENAME}.${FORMAT}.stamp)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.${FORMAT} DESTINATION share/doc/wxmaxima OPTIONAL)
 endfunction()
 
 
@@ -48,7 +49,7 @@ if (NOT PO4A_TRANSLATE)
     message(STATUS "No po4a-translate binary")
     if(NOT PO4A_TRANSLATE)
         find_package(Perl)
-	if(PERL_FOUND)
+	 if(PERL_FOUND)
 	    message(STATUS "Found perl")
 	    find_file(PO4A_TRANSLATE po4a-translate)
 	    if(PO4A_TRANSLATE)
@@ -110,7 +111,6 @@ if(PANDOC AND PO4A_TRANSLATE)
     endif()
 
 
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
     endforeach()
@@ -118,11 +118,11 @@ else()
     foreach(BASENAME ${BASENAMES})
 	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima OPTIONAL)
     endforeach()
 endif()
 
-file(GLOB WXMAXIMA_ADDITIONAL_HELP_FILES *.jpg *.png *.pdf)
+file(GLOB WXMAXIMA_ADDITIONAL_HELP_FILES *.jpg *.png)
 install(FILES ${WXMAXIMA_ADDITIONAL_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
 
