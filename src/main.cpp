@@ -125,7 +125,7 @@ bool MyApp::OnInit()
         if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
           localeName+=wxT(".UTF-32");
         
-        wxLogDebug(wxString::Format(_("Setting maxima's locale to %s."),localeName.utf8_str()));
+        wxLogDebug(wxString::Format(_("Setting Maxima's locale to %s."),localeName.utf8_str()));
         wxSetEnv(wxT("LANG"), localeName);
       }
       else
@@ -166,7 +166,7 @@ bool MyApp::OnInit()
                   /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
                    * using a own window and we want the message on the command line. If a user enters a command
                    * line option, he expects probably a answer just on the command line... */
-                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
+                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_SWITCH, "e", "eval",
                    "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
@@ -177,15 +177,15 @@ bool MyApp::OnInit()
                   {wxCMD_LINE_SWITCH, "", "pipe",
                    "Pipe messages from Maxima to stdout.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "exit-on-error",
-                   "Close the program on any maxima error.",  wxCMD_LINE_VAL_NONE, 0},
+                   "Close the program on any Maxima error.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_OPTION, "u", "use-version",
-                   "Use maxima version <str>.",  wxCMD_LINE_VAL_STRING, 0},
+                   "Use Maxima version <str>.",  wxCMD_LINE_VAL_STRING, 0},
                   {wxCMD_LINE_OPTION, "l", "lisp",
-                   "Use a maxima compiled with lisp compiler <str>.",  wxCMD_LINE_VAL_STRING, 0},
+                   "Use a Maxima compiled with lisp compiler <str>.",  wxCMD_LINE_VAL_STRING, 0},
                   {wxCMD_LINE_OPTION, "X", "extra-args",
-                   "Allows to specify extra maxima arguments",  wxCMD_LINE_VAL_STRING, 0},
-                  { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the maxima binary", wxCMD_LINE_VAL_STRING , 0},
+                   "Allows to specify extra Maxima arguments",  wxCMD_LINE_VAL_STRING, 0},
+                  { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the Maxima binary", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
             {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
@@ -195,7 +195,7 @@ bool MyApp::OnInit()
 
   if (cmdLineParser.Found(wxT("h")))
   {
-    std::cout << "A feature-rich graphical user interface for the computer algebra system maxima\n";
+    std::cout << "A feature-rich graphical user interface for the computer algebra system Maxima\n";
     std::cout << cmdLineParser.GetUsageString();
     exit(0);
   }
