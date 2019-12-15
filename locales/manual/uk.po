@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-14 19:49+0100\n"
+"POT-Creation-Date: 2019-12-15 22:27+0100\n"
 "PO-Revision-Date: 2019-02-17 16:54+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -113,7 +113,7 @@ msgstr ""
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:628
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:768
 #: /home/dauti/Software/wxmaxima/info/wxmaxima.md:780
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:800
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:806
 msgid "* *"
 msgstr ""
 
@@ -2246,61 +2246,51 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:800
 msgid "`-v` or `--version`: Output the version information"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:800
 msgid "`-h` or `--help`: Output a short help text"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:800
 msgid ""
-"`-o` or `--open`: Open the filename given as argument to this command-line "
-"switch"
+"`-o` or `--open=<str>`: Open the filename given as argument to this command-"
+"line switch"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:800
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr ""
 
-#. type: Bullet: '*   '
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
-msgid ""
-"`-b` or `--batch`: If the command-line opens a file all cells in this file "
-"are evaluated and the file is saved afterwards. This is for example useful "
-"if the session described in the file makes _Maxima_ generate output files. "
-"Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has "
-"output an error and will pause if _Maxima_ has a question: Mathematics is "
-"somewhat interactive by nature so a completely interaction-free batch "
-"processing cannot always be guaranteed."
-msgstr ""
-
-#. type: Bullet: '*   '
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
-msgid ""
-"`-f` or `--ini`: Use the init file that was given as argument to this "
-"command-line switch"
-msgstr ""
-
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:794
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:800
 #, no-wrap
-msgid "*   `-m` or `--maxima`    allows to specify the location of the _maxima_ binary\n"
+msgid ""
+"*   `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.\n"
+"*  `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
+"*  `--pipe`:                        Pipe messages from Maxima to stdout.\n"
+"*  `--exit-on-error`:               Close the program on any maxima error.\n"
+"*   `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch\n"
+"* `-u`, `--use-version=<str>`:     Use maxima version <str>.\n"
+"*  `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler <str>.\n"
+"*  `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments\n"
+"*   `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:796
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:802
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:802
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:808
 #, no-wrap
 msgid ""
 "Annotated Index\n"
@@ -2308,7 +2298,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:806
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:812
 #, no-wrap
 msgid ""
 "**A**\n"
@@ -2316,33 +2306,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:808
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:814
 msgid ""
 "[Animations, failure](#Outputting-animations-doesn_0027t-work): why creation "
 "and execution of some animations might not work"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:810
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:816
 msgid "[Autocompletion](#command-autocompletion): using _wxMaxima_ a command"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:812
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:818
 msgid ""
 "[Aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect ratio "
 "for a plot"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:814
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:820
 msgid ""
 "[Autosave](#Autosave-interval): set interval for saving a _wxMaxima_ session "
 "file (workbook)"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:817
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:823
 #, no-wrap
 msgid ""
 "**C**\n"
@@ -2350,34 +2340,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:819
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:825
 msgid ""
 "[Cells, Input/Output](#Input%20Output%20Cell): Cells that contain one or "
 "more commands and the results of executing the command(s)"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:821
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:827
 msgid ""
 "[Command autocompletion](#command-autocompletion): using _wxMaxima_ a command"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:823
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:829
 msgid ""
 "[Configure wxMaxima](#configuration-options): how to configure a _wxMaxima_ "
 "workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:825
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:831
 msgid ""
 "[Cursors, vertical and horizontal](#horizontal-and-vertical-cursors): "
 "entering text or selecting entered material"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:828
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:834
 #, no-wrap
 msgid ""
 "**D**\n"
@@ -2385,7 +2375,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:831
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:837
 #, no-wrap
 msgid ""
 "**F**\n"
@@ -2393,14 +2383,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:833
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:839
 msgid ""
 "[File Formats](#file-formats): types of files that _wxMaxima_ can create and "
 "open"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:836
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:842
 #, no-wrap
 msgid ""
 "**G**\n"
@@ -2408,7 +2398,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:839
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:845
 #, no-wrap
 msgid ""
 "**H**\n"
@@ -2416,13 +2406,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:841
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:847
 msgid ""
 "[Hotkeys](#hotkeys): shortcut key combinations, alternatives to menu options"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:844
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:850
 #, no-wrap
 msgid ""
 "**I**\n"
@@ -2430,7 +2420,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:847
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:853
 #, no-wrap
 msgid ""
 "**J**\n"
@@ -2438,7 +2428,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:850
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:856
 #, no-wrap
 msgid ""
 "**L**\n"
@@ -2446,14 +2436,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:852
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:858
 msgid ""
 "[Lost content](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to "
 "recover lost cell contents"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:855
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:861
 #, no-wrap
 msgid ""
 "**M**\n"
@@ -2461,32 +2451,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:857
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:863
 msgid ""
 "[MathML](#mathml-output): export mathematical expressions with MathML markup"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:859
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:865
 msgid "[Matrix](#Matrix): Create a matrix and convert the matrix to a table"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:861
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:867
 msgid ""
 "[Maxima and wxMaxima](#maxima-and-wxmaxima): the relationship between the "
 "Maxima CAS and the _wxMaxima_ front-end"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:863
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:869
 msgid ""
 "[Maxima-wxMaxima connection](#cannot-connect-to-maxima): possible reasons "
 "from failure of _wxMaxima_ to communicate with _Maxima_"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:866
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:872
 #, no-wrap
 msgid ""
 "**N**\n"
@@ -2494,7 +2484,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:869
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:875
 #, no-wrap
 msgid ""
 "**P**\n"
@@ -2502,55 +2492,55 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:871
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:877
 msgid ""
 "[Plot, embedding](#embedding-a-plot-into-the-work-sheet): embed a _Maxima_\\-"
 "generated plot in a _wxMaxima_ workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:873
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:879
 msgid ""
 "[Plot, failure](#plotting-only-shows-an-closed-empty-envelope-with-an-error-"
 "message): some reasons that attempts to plot might fail"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:875
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:881
 msgid ""
 "[Plot file, embedding](#embedding-graphics): embed a plot file in a "
 "_wxMaxima_ workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:877
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:883
 msgid ""
 "[Plot size](#making-embedded-plots-bigger-or-smaller): control the size of "
 "embedded plots"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:879
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:885
 msgid ""
 "[Plots, better quality](#better-quality-plots): notes related to the quality "
 "of gnuplot plots"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:881
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:887
 msgid ""
 "[Plots, multiple](#opening-multiple-plots-in-contemporaneous-windows): open "
 "multiple plots in contemporaneous windows"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:883
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:889
 msgid ""
 "[Progress indicators](#statusbar): Giving user feedback in the status bar"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:886
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:892
 #, no-wrap
 msgid ""
 "**R**\n"
@@ -2558,7 +2548,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:889
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:895
 #, no-wrap
 msgid ""
 "**S**\n"
@@ -2566,26 +2556,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:891
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:897
 msgid ""
 "[Startup file location](#startup-files): location of an initialization file "
 "that is passed to _wxMaxima_ when it opens"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:893
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:899
 msgid "[Status bar](#statusbar): Giving user feedback in the status bar"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:895
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:901
 msgid ""
 "[Subscripted variables](#subscripted-variables): using the command "
 "`wxsubscripts` to display subscripted variables"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:898
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:904
 #, no-wrap
 msgid ""
 "**T**\n"
@@ -2593,14 +2583,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:900
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:906
 msgid ""
 "[TeX markup](#raw-tex-in-the-tex-export): allows TeX markup to be entered "
 "into a text file"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:903
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:909
 #, no-wrap
 msgid ""
 "**U**\n"
@@ -2608,7 +2598,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:906
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:912
 #, no-wrap
 msgid ""
 "**W**\n"
@@ -2616,52 +2606,52 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:908
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:914
 msgid ""
 "[with\\_slider\\_draw3d](#embedding-animations-into-the-spreadsheet): "
 "command to embed animations -- alternative: `wxanimate_draw3d`"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:910
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:916
 msgid ""
 "[wxanimate\\_draw](#embedding-animations-into-the-spreadsheet): command to "
 "embed animations"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:912
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:918
 msgid ""
 "[wxanimate\\_draw3d](#embedding-animations-into-the-spreadsheet): command to "
 "embed animations"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:914
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:920
 msgid ""
 "[wxMaxima and Maxima](#maxima-and-wxmaxima): the relationship between the "
 "_Maxima_ CAS and the _wxMaxima_ front-end"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:916
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:922
 msgid "[wxMaxima documentation](#wxMaxima)"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:918
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:924
 msgid ""
 "[wxMaxima workbook structure](#the-workbook-approach): central features of a "
 "_wxMaxima_ workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:920
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:926
 msgid "[wxm and wxmx files](#file-formats): formats for _wxMaxima_ workbooks"
 msgstr ""
 
 #. type: Plain text
-#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:921
+#: /home/dauti/Software/wxmaxima/info/wxmaxima.md:927
 msgid ""
 "[wxmx data](#how-to-save-data-from-a-broken-.wxmx-file): retrieve data from "
 "a broken wxmx file"
