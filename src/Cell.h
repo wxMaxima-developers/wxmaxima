@@ -775,6 +775,17 @@ class Cell
     and m_previousToDraw
    */
   Cell *m_next;
+
+  //! Get the next cell in the list.
+  virtual Cell *GetNext() const {return m_next;}
+  /*! Get the next cell that needs to be drawn
+
+    In case of potential 2d objects like fractions either the fraction needs to be
+    drawn as a single 2D object or the nominator, the cell containing the "/" and 
+    the denominator are pointed to by GetNextToDraw() as single separate objects.
+   */
+  virtual Cell *GetNextToDraw() const {return m_nextToDraw;}
+  
   /*! The previous cell in the list of cells
     
     Reads NULL, if this is the first cell of the list. See also m_previousToDraw, 

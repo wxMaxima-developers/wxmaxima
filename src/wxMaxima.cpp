@@ -3478,7 +3478,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
 
     for (long i = 1; i < ActiveCellNumber; i++)
       if (pos)
-        pos = dynamic_cast<GroupCell *>(pos->m_next);
+        pos = pos->GetNext();
 
     if (pos)
       m_worksheet->SetHCaret(pos);
@@ -3607,7 +3607,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
           last->m_next = last->m_nextToDraw = cell;
           last->m_next->m_previous = last->m_next->m_previousToDraw = last;
 
-          last = dynamic_cast<GroupCell *>(last->m_next);
+          last = last->GetNext();
         }
       }
       else if (warning)
@@ -4552,14 +4552,14 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       if(group == NULL)
         group = m_worksheet->GetTree();
       else
-        group = dynamic_cast<GroupCell *>(group->m_next);
+        group = group->GetNext();
       while(
         (group != NULL) &&
         (!((group->GetEditable() != NULL) &&
            (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
          (!m_worksheet->m_evaluationQueue.IsLastInQueue(group))
           ))
-        group = dynamic_cast<GroupCell *>(group->m_next);
+        group = group->GetNext();
 
       if(group != NULL)
         canEvaluateNext = true;
@@ -8300,9 +8300,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
             GroupCell *SelectionEnd = SelectionStart;
             while (
               (SelectionEnd->m_next != NULL)
-              && (dynamic_cast<GroupCell *>(SelectionEnd->m_next)->IsLesserGCType(SelectionStart->GetGroupType()))
+              && (SelectionEnd->GetNext()->IsLesserGCType(SelectionStart->GetGroupType()))
               )
-              SelectionEnd = dynamic_cast<GroupCell *>(SelectionEnd->m_next);
+              SelectionEnd = SelectionEnd->GetNext();
             m_worksheet->SetActiveCell(NULL);
             m_worksheet->SetHCaret(SelectionEnd);
             m_worksheet->SetSelection(SelectionStart, SelectionEnd);
@@ -8770,14 +8770,14 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
       if(group == NULL)
         group = m_worksheet->GetTree();
       else
-        group = dynamic_cast<GroupCell *>(group->m_next);
+        group = group->GetNext();
       while(
         (group != NULL) &&
         (!((group->GetEditable() != NULL) &&
            (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
          (!m_worksheet->m_evaluationQueue.IsLastInQueue(group))
           ))
-        group = dynamic_cast<GroupCell *>(group->m_next);
+        group = group->GetNext();
     }
     if(
       (group != NULL) &&
@@ -9111,7 +9111,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
 
           if(gc == m_worksheet->GetSelectionEnd())
             break;
-          gc = dynamic_cast<GroupCell *>(gc->m_next);
+          gc = gc->GetNext();
         }
       }
       m_fileSaved = false;

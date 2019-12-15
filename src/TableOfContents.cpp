@@ -98,7 +98,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
           selection = m_structure.size() - 1;
       }
 
-      cell = dynamic_cast<GroupCell *>(cell->m_next);
+      cell = cell->GetNext();
     }
 
     long item = m_displayedItems->GetNextItem(-1,

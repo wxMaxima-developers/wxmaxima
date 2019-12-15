@@ -131,7 +131,7 @@ bool Svgout::Layout()
     while (tmp != NULL)
     {
       tmp->Recalculate();
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      tmp = tmp->GetNext();
     }
   }
 
