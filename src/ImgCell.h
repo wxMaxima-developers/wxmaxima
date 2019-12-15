@@ -69,7 +69,7 @@ public:
         return m_image->GnuplotData();
     }
 
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   void MarkAsDeleted() override;
 
   void LoadImage(wxString image, bool remove = true);
@@ -135,7 +135,7 @@ public:
   wxString ToXML() override;
 
 protected:
-  std::unique_ptr<Image> m_image;
+  std::shared_ptr<Image> m_image;
   
   static int s_counter;
   bool m_drawRectangle;

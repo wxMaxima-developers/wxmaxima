@@ -201,7 +201,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted() override;
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   /*! Expand all tabulators.
 

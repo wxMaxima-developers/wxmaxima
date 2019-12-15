@@ -58,19 +58,19 @@ SubSupCell::~SubSupCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> SubSupCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> SubSupCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell.get());
+    innerCells.push_back(m_baseCell);
   if(m_postSubCell)
-    innerCells.push_back(m_postSubCell.get());
+    innerCells.push_back(m_postSubCell);
   if(m_postSupCell)
-    innerCells.push_back(m_postSupCell.get());
+    innerCells.push_back(m_postSupCell);
   if(m_preSubCell)
-    innerCells.push_back(m_preSubCell.get());
+    innerCells.push_back(m_preSubCell);
   if(m_preSupCell)
-    innerCells.push_back(m_preSupCell.get());
+    innerCells.push_back(m_preSupCell);
   return innerCells;
 }
 
@@ -78,7 +78,7 @@ void SubSupCell::SetPreSup(Cell *index)
 {
   if (index == NULL)
     return;
-  m_preSupCell = std::unique_ptr<Cell>(index);
+  m_preSupCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(index);
 }
 
@@ -86,7 +86,7 @@ void SubSupCell::SetPreSub(Cell *index)
 {
   if (index == NULL)
     return;
-  m_preSubCell = std::unique_ptr<Cell>(index);
+  m_preSubCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(index);
 }
 
@@ -94,7 +94,7 @@ void SubSupCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  m_postSubCell = std::unique_ptr<Cell>(index);
+  m_postSubCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(index);
 }
 
@@ -102,7 +102,7 @@ void SubSupCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_baseCell = std::unique_ptr<Cell>(base);
+  m_baseCell = std::shared_ptr<Cell>(base);
   m_innerCellList.push_back(base);
 }
 
@@ -110,7 +110,7 @@ void SubSupCell::SetExponent(Cell *expt)
 {
   if (expt == NULL)
     return;
-  m_postSupCell = std::unique_ptr<Cell>(expt);
+  m_postSupCell = std::shared_ptr<Cell>(expt);
 }
 
 void SubSupCell::RecalculateWidths(int fontsize)

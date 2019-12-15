@@ -65,21 +65,21 @@ LimitCell::~LimitCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> LimitCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> LimitCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_base)
-    innerCells.push_back(m_base.get());
+    innerCells.push_back(m_base);
   if(m_under)
-    innerCells.push_back(m_under.get());
+    innerCells.push_back(m_under);
   if(m_name)
-    innerCells.push_back(m_name.get());
+    innerCells.push_back(m_name);
   if(m_open)
-    innerCells.push_back(m_open.get());
+    innerCells.push_back(m_open);
   if(m_comma)
-    innerCells.push_back(m_comma.get());
+    innerCells.push_back(m_comma);
   if(m_close)
-    innerCells.push_back(m_close.get());
+    innerCells.push_back(m_close);
   return innerCells;
 }
 
@@ -87,7 +87,7 @@ void LimitCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
-  m_name = std::unique_ptr<Cell>(name);
+  m_name = std::shared_ptr<Cell>(name);
   m_name_last = name;
   while(m_name_last->m_next != NULL)
     m_name_last = m_name_last->m_next;
@@ -97,7 +97,7 @@ void LimitCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_base = std::unique_ptr<Cell>(base);
+  m_base = std::shared_ptr<Cell>(base);
   m_base_last = base;
   while(m_base_last->m_next != NULL)
     m_base_last = m_base_last->m_next;
@@ -107,7 +107,7 @@ void LimitCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  m_under = std::unique_ptr<Cell>(under);
+  m_under = std::shared_ptr<Cell>(under);
   m_under_last = under;
   while(m_under_last->m_next != NULL)
     m_under_last = m_under_last->m_next;

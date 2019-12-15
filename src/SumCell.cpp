@@ -69,15 +69,15 @@ SumCell::~SumCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> SumCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> SumCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_base)
-    innerCells.push_back(m_base.get());
+    innerCells.push_back(m_base);
   if(m_under)
-    innerCells.push_back(m_under.get());
+    innerCells.push_back(m_under);
   if(m_over)
-    innerCells.push_back(m_over.get());
+    innerCells.push_back(m_over);
   return innerCells;
 }
 
@@ -85,21 +85,21 @@ void SumCell::SetOver(Cell *over)
 {
   if (over == NULL)
     return;
-  m_over = std::unique_ptr<Cell>(over);
+  m_over = std::shared_ptr<Cell>(over);
 }
 
 void SumCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_base = std::unique_ptr<Cell>(base);
+  m_base = std::shared_ptr<Cell>(base);
 }
 
 void SumCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  m_under = std::unique_ptr<Cell>(under);
+  m_under = std::shared_ptr<Cell>(under);
 }
 
 void SumCell::RecalculateWidths(int fontsize)
@@ -113,7 +113,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = std::unique_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));
+    m_over = std::shared_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (configuration->CheckTeXFonts())

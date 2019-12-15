@@ -69,23 +69,23 @@ FracCell::~FracCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> FracCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> FracCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_divide)
-    innerCells.push_back(m_divide.get());
+    innerCells.push_back(m_divide);
   if(m_denom)
-    innerCells.push_back(m_denom.get());
+    innerCells.push_back(m_denom);
   if(m_num)
-    innerCells.push_back(m_num.get());
+    innerCells.push_back(m_num);
   if(m_open1)
-    innerCells.push_back(m_open1.get());
+    innerCells.push_back(m_open1);
   if(m_close1)
-    innerCells.push_back(m_close1.get());
+    innerCells.push_back(m_close1);
   if(m_open2)
-    innerCells.push_back(m_open2.get());
+    innerCells.push_back(m_open2);
   if(m_close2)
-    innerCells.push_back(m_close2.get());
+    innerCells.push_back(m_close2);
   return innerCells;
 }
 
@@ -93,7 +93,7 @@ void FracCell::SetNum(Cell *num)
 {
   if (num == NULL)
     return;
-  m_num = std::unique_ptr<Cell>(num);
+  m_num = std::shared_ptr<Cell>(num);
   m_num_Last = num;
   if (m_num_Last != NULL)
   {
@@ -106,7 +106,7 @@ void FracCell::SetDenom(Cell *denom)
 {
   if (denom == NULL)
     return;
-  m_denom = std::unique_ptr<Cell>(denom);
+  m_denom = std::shared_ptr<Cell>(denom);
   m_denom_Last = denom;
   if (m_denom_Last != NULL)
   {

@@ -80,19 +80,19 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-std::list<Cell *> ExptCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> ExptCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell.get());
+    innerCells.push_back(m_baseCell);
   if(m_exptCell)
-    innerCells.push_back(m_exptCell.get());
+    innerCells.push_back(m_exptCell);
   if(m_exp)
-    innerCells.push_back(m_exp.get());
+    innerCells.push_back(m_exp);
   if(m_open)
-    innerCells.push_back(m_open.get());
+    innerCells.push_back(m_open);
   if(m_close)
-    innerCells.push_back(m_close.get());
+    innerCells.push_back(m_close);
   return innerCells;
 }
 
@@ -101,7 +101,7 @@ void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)
     return;
-  m_exptCell = std::unique_ptr<Cell>(power);
+  m_exptCell = std::shared_ptr<Cell>(power);
 
   if (!m_exptCell->IsCompound())
   {
@@ -119,7 +119,7 @@ void ExptCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_baseCell = std::unique_ptr<Cell>(base);
+  m_baseCell = std::shared_ptr<Cell>(base);
 
   m_base_last = base;
   if (m_base_last != NULL)

@@ -56,7 +56,7 @@ MatrCell::MatrCell(const MatrCell &cell):
   m_matHeight = cell.m_matHeight;
   for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if(i < cell.m_cells.size())
-      (m_cells).push_back(std::unique_ptr<Cell>(cell.m_cells[i]->CopyList()));
+      (m_cells).push_back(std::shared_ptr<Cell>(cell.m_cells[i]->CopyList()));
 }
 
 MatrCell::~MatrCell()
@@ -64,12 +64,12 @@ MatrCell::~MatrCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> MatrCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> MatrCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   for (unsigned int i = 0; i < m_cells.size(); i++)
     if(m_cells[i])
-      innerCells.push_back(m_cells[i].get());
+      innerCells.push_back(m_cells[i]);
   return innerCells;
 }
 

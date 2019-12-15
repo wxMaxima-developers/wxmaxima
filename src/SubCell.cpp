@@ -50,13 +50,13 @@ SubCell::~SubCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> SubCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> SubCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell.get());
+    innerCells.push_back(m_baseCell);
   if(m_indexCell)
-    innerCells.push_back(m_indexCell.get());
+    innerCells.push_back(m_indexCell);
   return innerCells;
 }
 
@@ -65,14 +65,14 @@ void SubCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  m_indexCell = std::unique_ptr<Cell>(index);
+  m_indexCell = std::shared_ptr<Cell>(index);
 }
 
 void SubCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_baseCell = std::unique_ptr<Cell>(base);
+  m_baseCell = std::shared_ptr<Cell>(base);
 }
 
 void SubCell::RecalculateWidths(int fontsize)

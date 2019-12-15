@@ -84,7 +84,7 @@ public:
   
   virtual wxString GetToolTip(const wxPoint &point) override;
 
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   void MarkAsDeleted()  override;
 
   /*! Remove all cached scaled images from memory
@@ -158,7 +158,7 @@ protected:
   int m_size;
   int m_displayed;
   wxFileSystem *m_fileSystem;
-  vector<std::unique_ptr<Image>> m_images;
+  vector<std::shared_ptr<Image>> m_images;
 
   void RecalculateHeight(int fontsize) override;
 

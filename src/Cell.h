@@ -1009,7 +1009,7 @@ protected:
   wxString m_altCopyText;
   Configuration **m_configuration;
 
-virtual std::list<Cell *> GetInnerCells() = 0;
+  virtual std::list<std::shared_ptr<Cell>> GetInnerCells() = 0;
 
 protected:
   //! The height of this cell.

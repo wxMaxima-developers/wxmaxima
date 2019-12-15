@@ -46,7 +46,7 @@ public:
   IntCell &operator=(const IntCell&) = delete;
   ~IntCell();
 
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void RecalculateHeight(int fontsize) override;
 
@@ -91,13 +91,13 @@ public:
 
 protected:
   //! The part of the formula that is to be integrated.
-  std::unique_ptr<Cell> m_base;
+  std::shared_ptr<Cell> m_base;
   //! The lower limit of the integral
-  std::unique_ptr<Cell> m_under;
+  std::shared_ptr<Cell> m_under;
   //! The upper limit of the integral
-  std::unique_ptr<Cell> m_over;
+  std::shared_ptr<Cell> m_over;
   //! The integration variable
-  std::unique_ptr<Cell> m_var;
+  std::shared_ptr<Cell> m_var;
   //! The height of the integral sign
   int m_signHeight;
   //! The width of the integral sign

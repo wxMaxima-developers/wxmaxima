@@ -35,7 +35,7 @@ public:
   DiffCell &operator=(const DiffCell&) = delete;
   ~DiffCell();
   
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetBase(Cell *base);
 
@@ -60,8 +60,8 @@ public:
   wxString ToXML() override;
 
 protected:
-  std::unique_ptr<Cell> m_baseCell;
-  std::unique_ptr<Cell> m_diffCell;
+  std::shared_ptr<Cell> m_baseCell;
+  std::shared_ptr<Cell> m_diffCell;
 };
 
 #endif // DIFFCELL_H

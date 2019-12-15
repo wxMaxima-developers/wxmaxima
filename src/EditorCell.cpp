@@ -405,9 +405,9 @@ void EditorCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<Cell *> EditorCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> EditorCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   return innerCells;
 }
 

@@ -70,9 +70,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = std::unique_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
+      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
     else
-      m_inputLabel = std::unique_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
+      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -443,15 +443,15 @@ void GroupCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<Cell *> GroupCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> GroupCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if (m_groupType != GC_TYPE_PAGEBREAK)
   {
     if(GetInput())
-      innerCells.push_back(GetInput());
+      innerCells.push_back(m_inputLabel);
     if(GetOutput())
-      innerCells.push_back(GetOutput());
+      innerCells.push_back(m_output);
   }
   return innerCells;
 }
@@ -467,7 +467,7 @@ void GroupCell::SetInput(Cell *input)
 {
   if (input == NULL)
     return;
-  m_inputLabel = std::unique_ptr<Cell>(input);
+  m_inputLabel = std::shared_ptr<Cell>(input);
   m_inputLabel->SetGroup(this);
 }
 
@@ -475,7 +475,7 @@ void GroupCell::AppendInput(Cell *cell)
 {
   if (m_inputLabel == NULL)
   {
-    m_inputLabel = std::unique_ptr<Cell>(cell);
+    m_inputLabel = std::shared_ptr<Cell>(cell);
   }
   else
   {
@@ -501,7 +501,7 @@ void GroupCell::SetOutput(Cell *output)
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   
-  m_output = std::unique_ptr<Cell>(output);
+  m_output = std::shared_ptr<Cell>(output);
 
   m_lastInOutput = m_output.get();
 
@@ -556,7 +556,7 @@ void GroupCell::AppendOutput(Cell *cell)
   cell->SetGroupList(this);
   if (m_output == NULL)
   {
-    m_output = std::unique_ptr<Cell>(cell);
+    m_output = std::shared_ptr<Cell>(cell);
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);

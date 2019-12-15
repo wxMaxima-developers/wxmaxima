@@ -44,7 +44,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   TextCell &operator=(const TextCell&) = delete;
   
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   
   ~TextCell();  
 

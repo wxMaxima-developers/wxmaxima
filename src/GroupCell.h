@@ -114,7 +114,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted() override;
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -512,9 +512,9 @@ protected:
   //! Which type this cell is of?
   GroupType m_groupType;
   //! The input label of this cell. Is followed by the input of the cell.
-  std::unique_ptr<Cell> m_inputLabel;
+  std::shared_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
-  std::unique_ptr<Cell> m_output;
+  std::shared_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
   Cell *m_lastInOutput;

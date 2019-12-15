@@ -66,15 +66,15 @@ ParenCell::~ParenCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> ParenCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> ParenCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_innerCell)
-    innerCells.push_back(m_innerCell.get());
+    innerCells.push_back(m_innerCell);
   if(m_open)
-    innerCells.push_back(m_open.get());
+    innerCells.push_back(m_open);
   if(m_close)
-    innerCells.push_back(m_close.get());
+    innerCells.push_back(m_close);
   return innerCells;
 }
 
@@ -82,7 +82,7 @@ void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner == NULL)
     return;
-  m_innerCell = std::unique_ptr<Cell>(inner);
+  m_innerCell = std::shared_ptr<Cell>(inner);
 
   m_type = type;
   // Tell the first of our inter cell not to begin with a multiplication dot.

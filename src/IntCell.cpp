@@ -77,17 +77,17 @@ IntCell::~IntCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> IntCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> IntCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_base)
-    innerCells.push_back(m_base.get());
+    innerCells.push_back(m_base);
   if(m_under)
-    innerCells.push_back(m_under.get());
+    innerCells.push_back(m_under);
   if(m_over)
-    innerCells.push_back(m_over.get());
+    innerCells.push_back(m_over);
   if(m_var)
-    innerCells.push_back(m_var.get());
+    innerCells.push_back(m_var);
   return innerCells;
 }
 
@@ -95,28 +95,28 @@ void IntCell::SetOver(Cell *name)
 {
   if (name == NULL)
     return;
-  m_over = std::unique_ptr<Cell>(name);
+  m_over = std::shared_ptr<Cell>(name);
 }
 
 void IntCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_base = std::unique_ptr<Cell>(base);
+  m_base = std::shared_ptr<Cell>(base);
 }
 
 void IntCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  m_under = std::unique_ptr<Cell>(under);
+  m_under = std::shared_ptr<Cell>(under);
 }
 
 void IntCell::SetVar(Cell *var)
 {
   if (var == NULL)
     return;
-  m_var = std::unique_ptr<Cell>(var);
+  m_var = std::shared_ptr<Cell>(var);
 }
 
 void IntCell::RecalculateWidths(int fontsize)

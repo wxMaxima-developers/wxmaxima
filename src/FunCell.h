@@ -58,7 +58,7 @@ public:
   ~FunCell();
   FunCell &operator=(const FunCell&) = delete;
 
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetName(Cell *name);
 
@@ -87,8 +87,8 @@ public:
   void Unbreak() override;
 
 protected:
-  std::unique_ptr<Cell> m_nameCell;
-  std::unique_ptr<Cell> m_argCell;
+  std::shared_ptr<Cell> m_nameCell;
+  std::shared_ptr<Cell> m_argCell;
 };
 
 

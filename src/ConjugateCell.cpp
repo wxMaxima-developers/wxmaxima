@@ -59,15 +59,15 @@ ConjugateCell::~ConjugateCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> ConjugateCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> ConjugateCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_innerCell)
-    innerCells.push_back(m_innerCell.get());
+    innerCells.push_back(m_innerCell);
   if(m_open)
-    innerCells.push_back(m_open.get());
+    innerCells.push_back(m_open);
   if(m_close)
-    innerCells.push_back(m_close.get());
+    innerCells.push_back(m_close);
   return innerCells;
 }
 
@@ -75,7 +75,7 @@ void ConjugateCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
-  m_innerCell = std::unique_ptr<Cell>(inner);
+  m_innerCell = std::shared_ptr<Cell>(inner);
 
   m_last = m_innerCell.get();
   if (m_last != NULL)

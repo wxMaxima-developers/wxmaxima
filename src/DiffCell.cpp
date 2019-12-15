@@ -52,13 +52,13 @@ DiffCell::~DiffCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> DiffCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> DiffCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
-    innerCells.push_back(m_baseCell.get());
+    innerCells.push_back(m_baseCell);
   if(m_diffCell)
-    innerCells.push_back(m_diffCell.get());
+    innerCells.push_back(m_diffCell);
   return innerCells;
 }
 
@@ -67,7 +67,7 @@ void DiffCell::SetDiff(Cell *diff)
 {
   if (diff == NULL)
     return;
-  m_diffCell = std::unique_ptr<Cell>(diff);
+  m_diffCell = std::shared_ptr<Cell>(diff);
 
   m_diffCell->m_SuppressMultiplicationDot = true;
 }
@@ -76,7 +76,7 @@ void DiffCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  m_baseCell = std::unique_ptr<Cell>(base);
+  m_baseCell = std::shared_ptr<Cell>(base);
 }
 
 void DiffCell::RecalculateWidths(int fontsize)

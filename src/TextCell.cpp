@@ -82,9 +82,9 @@ TextCell::~TextCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> TextCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> TextCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   return innerCells;
 }
 

@@ -51,7 +51,7 @@ public:
   FracCell &operator=(const FracCell&) = delete;
 
   
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   //! All types of fractions we supportx
   enum FracType
@@ -107,10 +107,10 @@ public:
 
 protected:
   //! The numerator
-  std::unique_ptr<Cell> m_num;
+  std::shared_ptr<Cell> m_num;
   //! The denominator
-  std::unique_ptr<Cell> m_denom;
-  std::unique_ptr<TextCell> m_open1, m_open2, m_close1, m_close2, m_divide;
+  std::shared_ptr<Cell> m_denom;
+  std::shared_ptr<TextCell> m_open1, m_open2, m_close1, m_close2, m_divide;
   Cell *m_num_Last, *m_denom_Last;
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;

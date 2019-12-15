@@ -39,7 +39,7 @@ public:
   MatrCell &operator=(const MatrCell&) = delete;
   ~MatrCell();
 
-  std::list<Cell *> GetInnerCells() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void RecalculateHeight(int fontsize) override;
 
@@ -49,7 +49,7 @@ public:
 
   void AddNewCell(Cell *cell)
   {
-    m_cells.push_back(std::unique_ptr<Cell>(cell));
+    m_cells.push_back(std::shared_ptr<Cell>(cell));
   }
 
   void NewRow()
@@ -95,7 +95,7 @@ protected:
   bool m_roundedParens;
   unsigned int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
-  vector<std::unique_ptr<Cell>> m_cells;
+  vector<std::shared_ptr<Cell>> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;

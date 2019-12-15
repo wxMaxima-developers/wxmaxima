@@ -36,8 +36,8 @@ wxString Cell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 
   wxString toolTip;
-  std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     if(*it != NULL)
     {
@@ -221,8 +221,8 @@ int Cell::CellsInListRecursive()
   while(tmp != NULL)
   {
     cells ++;
-    std::list<Cell*> cellList = tmp->GetInnerCells();
-    for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
+    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
       if(*it != NULL)
         cells += (*it)->CellsInListRecursive();
@@ -240,8 +240,8 @@ void Cell::SetGroup(Cell *group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
   }
   
-  std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
   {
     if(*it != NULL)
       (*it)->SetGroupList(group);
@@ -1092,8 +1092,8 @@ void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   *first = NULL;
   *last = NULL;
 
-  std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     if(*it != NULL)
     {
       if ((*it)->ContainsRect(rect))
@@ -1137,8 +1137,8 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
-  std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     if(*it != NULL)
       (*it)->ResetData();
 }
@@ -1172,8 +1172,8 @@ void Cell::Unbreak()
     m_nextToDraw->m_previousToDraw = this;
 
   // Unbreak the inner cells, too
-  std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
     if(*it != NULL)
       (*it)->Unbreak();
 }
@@ -1390,9 +1390,9 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
   {
     if (childId > 0)
     {
-      std::list<Cell*> cellList = m_parent->GetInnerCells();
+      std::list<std::shared_ptr<Cell>> cellList = m_parent->GetInnerCells();
       int cnt = 1;
-      for (std::list<Cell *>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+      for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
         if (cnt++ == childId)
         {
           *child = *it;
@@ -1529,8 +1529,8 @@ void Cell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 
   // Delete all pointers to the cells this cell contains
-  std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     if(*it != NULL)
       (*it)->MarkAsDeleted();

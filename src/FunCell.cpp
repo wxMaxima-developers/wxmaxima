@@ -51,13 +51,13 @@ FunCell::~FunCell()
   MarkAsDeleted();
 }
 
-std::list<Cell *> FunCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> FunCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_nameCell)
-    innerCells.push_back(m_nameCell.get());
+    innerCells.push_back(m_nameCell);
   if(m_argCell)
-    innerCells.push_back(m_argCell.get());
+    innerCells.push_back(m_argCell);
   return innerCells;
 }
 
@@ -65,7 +65,7 @@ void FunCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
-  m_nameCell = std::unique_ptr<Cell>(name);
+  m_nameCell = std::shared_ptr<Cell>(name);
   name->SetStyle(TS_FUNCTION);
 }
 
@@ -73,7 +73,7 @@ void FunCell::SetArg(Cell *arg)
 {
   if (arg == NULL)
     return;
-  m_argCell = std::unique_ptr<Cell>(arg);
+  m_argCell = std::shared_ptr<Cell>(arg);
 }
 
 void FunCell::RecalculateWidths(int fontsize)
