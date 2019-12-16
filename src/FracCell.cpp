@@ -442,30 +442,17 @@ bool FracCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num.get();
-    m_num->m_previousToDraw = m_open1.get();
     wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in an numerator!"));
     if (m_num_Last != NULL)
-    {
       m_num_Last->m_nextToDraw = m_close1.get();
-      m_close1->m_previousToDraw = m_num_Last;
-    }
     m_close1->m_nextToDraw = m_divide.get();
-    m_divide->m_previousToDraw = m_close1.get();
     m_divide->m_nextToDraw = m_open2.get();
-    m_open2->m_previousToDraw = m_divide.get();
     m_open2->m_nextToDraw = m_denom.get();
-    m_denom->m_previousToDraw = m_open2.get();
     wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
     if (m_denom_Last != NULL)
-    {
       m_denom_Last->m_nextToDraw = m_close2.get();
-      m_close2->m_previousToDraw = m_denom_Last;
-    }
     m_close2->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close2.get();
     m_nextToDraw = m_open1.get();
     ResetData();    
     return true;

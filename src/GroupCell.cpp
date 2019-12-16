@@ -44,7 +44,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   Cell(this, config, cellPointers)
 {
   m_numberedAnswersCount = 0;
-  m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
+  m_next = m_previous = m_nextToDraw = NULL;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
   m_inEvaluationQueue = false;
@@ -889,7 +889,7 @@ void GroupCell::RecalculateHeightOutput()
       m_outputRect.width = m_width;
       m_outputRect.height += height_Delta;
       
-      if (tmp->m_previousToDraw != NULL &&
+      if (tmp->m_previous != NULL &&
           ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
       {
         m_height            += configuration->GetInterEquationSkip();
@@ -2282,14 +2282,14 @@ GroupCell *GroupCell::Fold()
     if(end->m_next != NULL)
     {
       m_next = m_nextToDraw = end->m_next;
-      end->m_next->m_previous = end->m_next->m_previousToDraw = this;
+      end->m_next->m_previous = this;
     }
     else
       m_next = m_nextToDraw = NULL;
     end->m_next = end->m_nextToDraw = NULL;
   }
   
-  start->m_previous = start->m_previousToDraw = NULL;
+  start->m_previous = NULL;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
@@ -2306,7 +2306,7 @@ GroupCell *GroupCell::Unfold()
 
   // sew together this cell with m_hiddenTree
   m_next = m_nextToDraw = m_hiddenTree;
-  m_hiddenTree->m_previous = m_hiddenTree->m_previousToDraw = this;
+  m_hiddenTree->m_previous = this;
 
   Cell *tmp = m_hiddenTree;
   while (tmp->m_next)
@@ -2314,7 +2314,7 @@ GroupCell *GroupCell::Unfold()
   // tmp holds the last element of m_hiddenTree
   tmp->m_next = tmp->m_nextToDraw = next;
   if (next)
-    next->m_previous = next->m_previousToDraw = tmp;
+    next->m_previous = tmp;
 
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;

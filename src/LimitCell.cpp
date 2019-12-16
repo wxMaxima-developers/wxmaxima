@@ -300,15 +300,7 @@ bool LimitCell::BreakUp()
     m_comma->m_nextToDraw = m_under.get();
     m_under_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
-    if(m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close.get();
     m_nextToDraw = m_name.get();
-    m_name->m_previousToDraw = this;
-    m_open->m_previousToDraw = m_name_last;
-    m_base->m_previousToDraw = m_open.get();
-    m_comma->m_previousToDraw = m_base_last;
-    m_under->m_previousToDraw = m_comma.get();
-    m_close->m_previousToDraw = m_under_last;
     ResetData();    
     return true;
   }

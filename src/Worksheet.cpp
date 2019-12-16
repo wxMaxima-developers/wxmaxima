@@ -721,13 +721,13 @@ GroupCell *Worksheet::InsertGroupCells(
   }
   prev = where;
 
-  cells->m_previous = cells->m_previousToDraw = where;
+  cells->m_previous = where;
   lastOfCellsToInsert->m_next = lastOfCellsToInsert->m_nextToDraw = next;
 
   if (prev)
     prev->m_next = prev->m_nextToDraw = cells;
   if (next)
-    next->m_previous = next->m_previousToDraw = lastOfCellsToInsert;
+    next->m_previous = lastOfCellsToInsert;
   // make sure m_last still points to the last cell of the worksheet!!
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
@@ -1280,12 +1280,12 @@ GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
   Cell *next = end->m_next;
 
   end->m_next = end->m_nextToDraw = NULL;
-  start->m_previous = start->m_previousToDraw = NULL;
+  start->m_previous = NULL;
 
   if (prev)
     prev->m_next = prev->m_nextToDraw = next;
   if (next)
-    next->m_previous = next->m_previousToDraw = prev;
+    next->m_previous = prev;
   // fix m_last if we tore it
   if (end == m_last)
     m_last = dynamic_cast<GroupCell *>(prev);
@@ -2935,7 +2935,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
     start->m_previous->m_next = start->m_previous->m_nextToDraw = end->m_next;
 
   if (end->m_next != NULL)
-    end->m_next->m_previous = end->m_next->m_previousToDraw = start->m_previous;
+    end->m_next->m_previous = start->m_previous;
   else
   {
     if(start->m_previous != NULL)
@@ -2944,7 +2944,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
 
   // Add an "end of tree" marker to both ends of the list of deleted cells
   end->m_next = end->m_nextToDraw = NULL;
-  start->m_previous = start->m_previousToDraw = NULL;
+  start->m_previous = NULL;
 
   // Do we have an undo buffer for this action?
   if (undoBuffer != NULL)
@@ -6045,7 +6045,7 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
       else
       {
         last->m_next = last->m_nextToDraw = cell;
-        last->m_next->m_previous = last->m_next->m_previousToDraw = last;
+        last->m_next->m_previous = last;
 
         last = dynamic_cast<GroupCell *>(last->m_next);
       }

@@ -266,26 +266,15 @@ bool ExptCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_baseCell->m_previousToDraw = this;
     wxASSERT_MSG(m_base_last != NULL, _("Bug: No last cell in the base of an exptCell!"));
     if (m_base_last != NULL)
-    {
       m_base_last->m_nextToDraw = m_exp.get();
-      m_exp->m_previousToDraw = m_base_last;
-    }
     m_exp->m_nextToDraw = m_open.get();
-    m_open->m_previousToDraw = m_exp.get();
     m_open->m_nextToDraw = m_exptCell.get();
-    m_exptCell->m_previousToDraw = m_open.get();
     wxASSERT_MSG(m_expt_last != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
     if (m_expt_last != NULL)
-    {
       m_expt_last->m_nextToDraw = m_close.get();
-      m_close->m_previousToDraw = m_expt_last;
-    }
     m_close->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close.get();
     m_nextToDraw = m_baseCell.get();
     ResetData();    
     m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());

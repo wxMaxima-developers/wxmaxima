@@ -406,13 +406,13 @@ private:
     \param end   The cell the copy has to end with
     \param asData
       - true:  The cells are copied in the order they are stored. m_next and m_previous
-               therefore point to the right places. But m_nextToDraw and m_previousToDraw
+               therefore point to the right places. But m_nextToDraw 
                will be treated as aliasses of m_next and m_previous.
       - false: If a cell is broken into individual lines m_nextToDraw won't point to the
                next cell that is to be displayed. It will point to the cell containing the
                function name instead that is followed by the cell containing its contents.
                This is accurately copied if asdata=false. But m_next and m_previous are
-               treated as mere aliasses of m_nextToDraw and m_previousToDraw in this case.
+               treated as mere aliasses of m_nextToDraw in this case.
   */
   Cell *CopySelection(Cell *start, Cell *end, bool asData = false);
 

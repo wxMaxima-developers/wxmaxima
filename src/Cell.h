@@ -70,7 +70,7 @@ enum CellType
    - A Cell does have a member m_previous that points to the previous item
      (or contains a NULL for the head node of the list) and a member named m_next 
      that points to the next cell (or contains a NULL if this is the end node of a list).
-   - And there is m_previousToDraw and m_nextToDraw that contain fractions and similar 
+   - And there is m_nextToDraw that contain fractions and similar 
      items as one element if they are drawn as a single 2D object that isn't divided by
      a line break, but will contain every single element of a fraction as a separate 
      object if the fraction is broken into several lines and therefore displayed in its
@@ -771,13 +771,13 @@ class Cell
 
   /*! The next cell in the list of cells
 
-    Reads NULL, if this is the last cell of the list. See also m_nextToDraw, m_previous
-    and m_previousToDraw
+    Reads NULL, if this is the last cell of the list. See also m_nextToDraw and 
+    m_previous.
    */
   Cell *m_next;
   /*! The previous cell in the list of cells
     
-    Reads NULL, if this is the first cell of the list. See also m_previousToDraw, 
+    Reads NULL, if this is the first cell of the list. See also 
     m_nextToDraw and m_next
    */
   Cell *m_previous;
@@ -792,24 +792,16 @@ class Cell
 
     In the example of a SqrtCell if the SqrtCell isn't broken into lines
     m_nextToDraw will point to the cell following the SqrtCell. If the
-    SqrtCell is broken into lines the list made up by m_nextToDraw and
-    m_previousToDraw will point to the sqrtCell, then to a cell
-    containing the word "sqrt", then one that represents the opening
-    and closing parenthesis (that will again be followed by a list 
-    containing the "(", the contents and the ")" of the parenthesis
-    as individdual elements) and then the cell that follows the SqrtCell. 
+    SqrtCell is broken into lines the list made up by m_nextToDraw 
+    will point to the sqrtCell, then to a cell containing the word "sqrt", 
+    then one that represents the opening and closing parenthesis 
+    (that will again be followed by a list containing the "(", the 
+    contents and the ")" of the parenthesis as individdual elements) 
+    and then the cell that follows the SqrtCell. 
 
-    See also m_previousToDraw and m_next.
+    See also m_next.
    */
   Cell *m_nextToDraw;
-  /*! The previous cell to draw
-    
-    Normally cells are drawn one by one. But if a function is broken into several lines 
-    the list made up by m_nextToDraw and m_previousToDraw will contain the function itself,
-    the function name and its arguments as individual list elements so they can be drawn
-    separately (and on separate lines).
-   */
-  Cell *m_previousToDraw;
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     

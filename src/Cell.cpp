@@ -66,7 +66,6 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
-  m_previousToDraw = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
@@ -275,7 +274,6 @@ void Cell::AppendCell(Cell *p_next)
 
   // Append p_next to this list.
   LastToDraw->m_nextToDraw = p_next;
-  p_next->m_previousToDraw = LastToDraw;
 }
 
 Cell *Cell::GetGroup()
@@ -1168,8 +1166,6 @@ void Cell::Unbreak()
 
   m_isBrokenIntoLines = false;
   m_nextToDraw = m_next;
-  if (m_nextToDraw != NULL)
-    m_nextToDraw->m_previousToDraw = this;
 
   // Unbreak the inner cells, too
   std::list<Cell *> innerCells = GetInnerCells();
