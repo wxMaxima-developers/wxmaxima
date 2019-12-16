@@ -356,16 +356,10 @@ bool SqrtCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell.get();
-    m_innerCell->m_previousToDraw = m_open.get();
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell inside a square root!"));
     if (m_last != NULL)
-    {
       m_last->m_nextToDraw = m_close.get();
-      m_close->m_previousToDraw = m_last;
-    }
     m_close->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close.get();
     m_nextToDraw = m_open.get();
 
     ResetData();
