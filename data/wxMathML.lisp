@@ -53,6 +53,7 @@
   (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
   (defvar $wxsubscripts t
     "Recognize TeX-style subscripts")
+  (defvar $wxplot_usesvg nil "Create scalable plots?")
   (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
   (defmvar $wxplot_old_gnuplot nil)
 
@@ -1381,7 +1382,9 @@
   (defun wxplot-filename (&optional (suff t))
     (incf *image-counter*)
     (plot-temp-file (if suff
-			(format nil "maxout_~d_~d.png" (getpid) *image-counter*)
+			(format nil (if
+					$wxplot_usesvg "maxout_~d_~d.svg" "maxout_~d_~d.png")
+				(getpid) *image-counter*)
 		      (format nil "maxout_~d_~d" (getpid) *image-counter*))))
 
   ;; The "solid" has to be changed to "dashed" as soon as plot() starts
@@ -1390,8 +1393,9 @@
     (let ((frmt
 	   (cond
 	    ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
-	    ($wxplot_pngcairo "set terminal pngcairo solid background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
-	    (t "set terminal png size ~d,~d; set zeroaxis;"))))
+	    ((and (not $wxplot_usesvg) $wxplot_pngcairo) "set terminal pngcairo solid background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
+	    ((and (not $wxplot_usesvg) (not $wxplot_pngcairo)) "set terminal png size ~d,~d; set zeroaxis;")
+	    (t "set terminal svg size ~d,~d; set zeroaxis;"))))
       (format nil frmt
 	      ($first $wxplot_size)
 	      ($second $wxplot_size))))
@@ -1454,7 +1458,9 @@
 				       preamble (meval (maxima-substitute aval a (caddr arg)))))))
 	  (apply #'$plot2d `(,(meval expr) ,@(mapcar #'meval args)
 			     ((mlist simp) $plot_format $gnuplot)
-			     ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			     ((mlist simp) $gnuplot_term ,(if
+							      $wxplot_usesvg '$svg
+							    (if $wxplot_pngcairo '$pngcairo '$png)))
 			     ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_out_file ,filename)))
 	  (setq images (cons filename images))))
@@ -1525,11 +1531,15 @@
 					(args (cons scene-head
 						    (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
 							    args))))
-				   (setq images (cons (format nil "~a.png" filename) images))
+				   (setq images (cons (format nil
+							      (if $wxplot_usesvg "~a.svg" "~a.png")
+							      filename)
+						      images))
 				   ($apply '$draw
 					   (append
 					    `((mlist simp)
-					      ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
+					      ((mequal simp) $terminal ,(if $wxplot_usesvg '$svg
+									  (if $wxplot_pngcairo '$pngcairo '$png)))
 					      ((mequal simp) $file_name ,filename))
 					    (get-pic-size-opt)
 					    (list args)))))
@@ -1564,7 +1574,8 @@
 	    (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
       (apply #'$plot2d `(,@args
 			 ((mlist simp) $plot_format $gnuplot)
-			 ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							(if $wxplot_pngcairo '$pngcairo '$png)))
 			 ((mlist simp) $gnuplot_preamble ,preamble)
 			 ((mlist simp) $gnuplot_out_file ,filename)))
       ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -1583,7 +1594,8 @@
 				   preamble (caddr arg)))))
       (apply #'$plot3d `(,@args
 			 ((mlist simp) $plot_format $gnuplot)
-			 ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							(if $wxplot_pngcairo '$pngcairo '$png)))
 			 ((mlist simp) $gnuplot_preamble ,preamble)
 			 ((mlist simp) $gnuplot_out_file ,filename)))
       ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -1620,7 +1632,8 @@
 			(append
 			 '((mlist simp))
 			 args
-			 `(((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 `(((mequal simp) $terminal ,(if $wxplot_usesvg '$svg
+							(if $wxplot_pngcairo '$pngcairo '$png)))
 			   ((mequal simp) $gnuplot_file_name ,gnuplotfilename)
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
@@ -1632,14 +1645,18 @@
 			   `(((mequal simp) $dimensions ,$wxplot_size)))))))
       (if $display_graphics
 	  (progn
-	    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil "~a.png" filename)) "img"
+	    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil
+								 (if $wxplot_usesvg "~a.svg" "~a.png")
+								 filename)) "img"
 		      ,(if file_name_spec
 			   (format nil "del=\"no\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 			 )
 		      ))
 	    (setq res ""))
-	(setf res `((wxxmltag simp) ,(wxxml-fix-string (format nil "~a.png" filename)) "img")))
+	(setf res `((wxxmltag simp) ,(wxxml-fix-string (format nil
+							       (if $wxplot_usesvg "svg" "png")
+							       filename)) "img")))
       res))
 
   (defmspec $wxdraw_list (args)
@@ -1661,7 +1678,8 @@
 				   preamble (caddr arg)))))
       ($apply '$implicit_plot `((mlist simp) ,@args
 				((mlist simp) $plot_format $gnuplot)
-				((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+				((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							       (if $wxplot_pngcairo '$pngcairo '$png)))
 				((mlist simp) $gnuplot_preamble ,preamble)
 				((mlist simp) $gnuplot_out_file ,filename)))
       ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -1680,7 +1698,8 @@
 	(if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	    (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
       (apply #'$contour_plot `(,@args
-			       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			       ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							       (if $wxplot_pngcairo '$pngcairo '$png)))
 			       ((mlist simp) $plot_format $gnuplot)
 			       ((mlist simp) $gnuplot_preamble ,preamble)
 			       ((mlist simp) $gnuplot_out_file ,filename)))

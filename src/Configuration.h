@@ -727,6 +727,11 @@ public:
     {
       wxConfig::Get()->Write(wxT("copyEMF"), m_copyEMF = copyEMF );
     }
+  bool UseSVG(){return m_useSVG;}
+  void UseSVG(bool useSVG)
+    {
+      wxConfig::Get()->Write(wxT("useSVG"), m_useSVG = useSVG );
+    }
   void ShowLength(int length)
     {
       wxConfig::Get()->Write(wxT("showLength"), m_showLength = length);
@@ -914,6 +919,7 @@ private:
   //!< don't add ; in lisp mode
   bool m_inLispMode;
   bool m_enterEvaluates;
+  bool m_useSVG;
   bool m_copyRTF;
   bool m_copySVG;
   bool m_copyEMF;

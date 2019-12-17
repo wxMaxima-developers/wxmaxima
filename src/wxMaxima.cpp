@@ -131,6 +131,11 @@ void wxMaxima::ConfigChanged()
   m_worksheet->RecalculateForce();
   m_worksheet->RequestRedraw();
 
+  wxLogMessage(_("Sending configuration data to maxima."));
+  if(m_worksheet->m_configuration->UseSVG())
+    m_configCommands += wxT(":lisp-quiet (setq $wxplot_usesvg t)\n");
+  else
+    m_configCommands += wxT(":lisp-quiet (setq $wxplot_usesvg nil)\n");
 #if defined (__WXOSX__)
   bool usepngCairo = false;
 #else

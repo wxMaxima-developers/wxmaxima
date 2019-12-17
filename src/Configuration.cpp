@@ -54,6 +54,7 @@ Configuration::Configuration(wxDC *dc) :
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_zoomFactor = 1.0; // affects returned fontsizes
+  m_useSVG = false;
   m_changeAsterisk = true;
   m_workSheet = NULL;
   m_latin2greek = false;
@@ -390,6 +391,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
 
+  config->Read(wxT("useSVG"), &m_useSVG);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);

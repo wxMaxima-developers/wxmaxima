@@ -79,6 +79,15 @@ public:
   //! The destructor
   ~ConfigDialogue();
 
+  //! The export formats we support for HTML equations
+  enum htmlExportFormats
+  {
+    mathJaX_TeX = 0,
+    bitmap = 1,
+    mathML_mathJaX = 2,
+    svg = 3
+  };
+
   /*! Called if the color of an item has been changed
 
     called from class ColorPanel
@@ -262,7 +271,7 @@ protected:
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
   wxCheckBox *m_savePanes;
-  wxCheckBox *m_usepngCairo;
+  wxCheckBox *m_usesvg;
   wxCheckBox *m_antialiasLines;
   wxSpinCtrl *m_defaultFramerate;
   wxSpinCtrl *m_defaultPlotWidth;
@@ -328,7 +337,7 @@ protected:
   void MaximaLocationChanged(wxCommandEvent &unused);
 
   //! Is called when the path to the maxima binary was changed.
-  void UsepngcairoChanged(wxCommandEvent &event);
+  void UsesvgChanged(wxCommandEvent &event);
 
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent &event);
