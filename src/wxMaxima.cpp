@@ -7711,7 +7711,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       wxAboutDialogInfo info;
       wxString description;
 
-      description = _("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets.");
+      description = _("wxMaxima is a cross-platform graphical user interface for the computer algebra system Maxima based on wxWidgets. For rendering svg graphics it uses nanosvg (https://github.com/memononen/nanosvg).");
 
 #if defined(WXMAXIMA_GIT_VERSION)
       description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
