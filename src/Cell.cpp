@@ -1391,7 +1391,7 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
       for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
         if (cnt++ == childId)
         {
-          *child = it->get();
+          *child = *it->get();
           return wxACC_OK;
         }
     }
