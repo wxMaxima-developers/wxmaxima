@@ -25,6 +25,10 @@
 */
 
 #include "Image.h"
+#define NANOSVG_ALL_COLOR_KEYWORDS
+#define NANOSVG_IMPLEMENTATION
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
@@ -70,6 +74,7 @@ Image::Image(Configuration **config)
   m_isOk = false;
   m_maxWidth = -1;
   m_maxHeight = -1;
+  m_svgImage = NULL;
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -82,7 +87,8 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   m_height = 1;
   m_originalWidth = 640;
   m_originalHeight = 480;
-
+  m_svgImage = NULL;
+  
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
@@ -98,6 +104,7 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
+  m_svgImage = NULL;
   m_configuration = config;
   m_width = 1;
   m_height = 1;
@@ -109,6 +116,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 // constructor which loads an image
 Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *filesystem)
 {
+  m_svgImage = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_width = 1;
@@ -608,8 +616,15 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
-    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-    Image.LoadFile(istream);
+    if(image.Lower().EndsWith(".svg") ||
+       image.Lower().EndsWith(".svgz"))
+    {
+    }
+    else
+    {   
+      wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+      Image.LoadFile(istream);
+    }
   }
 
   m_extension = wxFileName(image).GetExt();

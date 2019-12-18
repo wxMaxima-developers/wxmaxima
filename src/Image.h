@@ -35,6 +35,8 @@
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
 
 /*! Manages an auto-scaling image
 
@@ -210,6 +212,8 @@ private:
   double m_maxHeight;
   //! The name of the image, if known.
   wxString m_imageName;
+
+  NSVGimage* m_svgImage;
 };
 
 #endif // IMAGE_H
