@@ -630,7 +630,7 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 
       // Parse the svg file's contents
       if(svgContents)
-        m_svgImage = nsvgParse(svgContents, "px",  96);
+        m_svgImage = nsvgParse(svgContents, "px", (*m_configuration)->GetDC()->GetPPI().x);
       delete(svgContents);
     }
     else
