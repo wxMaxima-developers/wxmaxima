@@ -138,9 +138,9 @@ Image::~Image()
 
     wxString popoutname = m_gnuplotSource + wxT(".popout");
     if(wxFileExists(popoutname))
-      wxRemoveFile(popoutname);
-    
+      wxRemoveFile(popoutname);    
   }
+  wxDELETE(m_svgImage);
 }
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem)
@@ -619,6 +619,19 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     if(image.Lower().EndsWith(".svg") ||
        image.Lower().EndsWith(".svgz"))
     {
+      // Convert the data we have read to a char * containing the svg file's contents.
+      char *svgContents;
+      {
+        wxString svgContents_string = wxString::FromUTF8(
+          (char *)m_compressedImage.GetData(),
+          m_compressedImage.GetDataLen());
+        svgContents = (char *)strdup(svgContents_string.utf8_str());
+      }
+
+      // Parse the svg file's contents
+      if(svgContents)
+        m_svgImage = nsvgParse(svgContents, "px",  96);
+      delete(svgContents);
     }
     else
     {   
