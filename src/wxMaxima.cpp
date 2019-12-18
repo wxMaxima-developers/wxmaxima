@@ -1122,7 +1122,8 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
 
   if (files[0].EndsWith(wxT(".png")) ||
       files[0].EndsWith(wxT(".jpeg")) ||
-      files[0].EndsWith(wxT(".jpg")))
+      files[0].EndsWith(wxT(".jpg")) ||
+      files[0].EndsWith(wxT(".svg")))
   {
     m_wxmax->LoadImage(files[0]);
     return true;

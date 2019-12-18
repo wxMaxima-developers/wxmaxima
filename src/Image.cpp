@@ -660,8 +660,14 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
       }
 
       // Parse the svg file's contents
+      int ppi;
+      if((*m_configuration)->GetDC()->GetPPI().x > 50)
+        ppi = (*m_configuration)->GetDC()->GetPPI().x;
+      else
+        ppi = 96;
+      
       if(svgContents)
-        m_svgImage = nsvgParse(svgContents, "px", (*m_configuration)->GetDC()->GetPPI().x);
+        m_svgImage = nsvgParse(svgContents, "px", ppi);
       delete(svgContents);
 
       if(m_svgImage)
@@ -671,6 +677,7 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
           m_isOk = true;
         m_originalWidth = m_svgImage->width;
         m_originalHeight = m_svgImage->height;
+        std::cerr<<m_svgImage->width<<"x"<<m_svgImage->height<<"@"<<ppi<<"dpi\n";
       }
     }
     else
