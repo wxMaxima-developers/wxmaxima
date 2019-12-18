@@ -58,7 +58,6 @@ wxBitmap Image::GetUnscaledBitmap() const
 {
   if (m_svgRast)
   {
-    std::cerr<<m_originalWidth<<"x"<<m_originalHeight<<"\n";
     unsigned char* imgdata = (unsigned char *)malloc(m_originalWidth*m_originalHeight*4);
     if(imgdata)
       nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_originalWidth, m_originalHeight, m_originalWidth*4);
@@ -509,6 +508,8 @@ wxSize Image::ToImageFile(wxString filename)
 wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
+
+  std::cerr<<m_originalWidth<<"x"<<m_originalHeight<<"->"<<m_width<<"x"<<m_height<<"\n";
 
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
