@@ -36,6 +36,7 @@
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
 #include <wx/stdpaths.h>
+#include <wx/rawbmp.h>
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {
@@ -62,8 +63,8 @@ wxBitmap Image::GetUnscaledBitmap() const
     if(imgdata)
       nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_originalWidth, m_originalHeight, m_originalWidth*4);
     // Automatically deletes the raw image data once the wxImage has been created
-    wxImage img(m_originalWidth, m_originalHeight, imgdata , true);
-    return wxBitmap(img, 24);
+    wxImage img(m_originalWidth, m_originalHeight, imgdata , false);
+    return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
   }
   else
   {
@@ -518,12 +519,34 @@ wxBitmap Image::GetBitmap(double scale)
   // Seems like we need to create a new scaled bitmap.
   if (m_svgRast)
   {
+    // First create rgba data
     unsigned char* imgdata = (unsigned char *)malloc(m_width*m_height*4);
     if(imgdata)
       nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_width, m_height, m_width*4);
-    // Automatically deletes the raw image data once the wxImage has been created
-    wxImage img(m_width, m_height, imgdata , true);
-    m_scaledBitmap = wxBitmap(img, 24);
+    
+    // Then convert the rgba data to a wxBitmap
+    m_scaledBitmap = wxBitmap(m_width, m_height, 32);
+    unsigned char* rgba = imgdata;
+    if(m_scaledBitmap.Ok())
+    {
+      wxAlphaPixelData bmpdata(m_scaledBitmap);
+      wxAlphaPixelData::Iterator dst(bmpdata);
+      for( int y = 0; y < m_height; y++)
+      {
+        dst.MoveTo(bmpdata, 0, y);
+        for(int x = 0; x < m_width; x++)
+        {
+          unsigned char a = rgba[3];
+          dst.Red() = rgba[0] * a / 255;
+          dst.Green() = rgba[1] * a / 255;
+          dst.Blue() = rgba[2] * a / 255;
+          dst.Alpha() = a;
+          dst++;
+          rgba += 4;
+        }
+      }
+      free(imgdata);
+    }
     return m_scaledBitmap;
   }
   else
