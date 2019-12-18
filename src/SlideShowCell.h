@@ -68,6 +68,9 @@ public:
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;
 
+  //! Can the current image be exported in SVG format?
+  bool CanExportSVG() const {return (m_images[m_displayed] != NULL) && m_images[m_displayed]->CanExportSVG();}
+
   //! A Gif object for the clipboard
   class GifDataObject : public wxCustomDataObject
   {

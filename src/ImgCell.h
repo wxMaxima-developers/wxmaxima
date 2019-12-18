@@ -74,6 +74,9 @@ public:
 
   void LoadImage(wxString image, bool remove = true);
 
+  //! Can this image be exported in SVG format?
+  bool CanExportSVG() const {return (m_image != NULL) && m_image->CanExportSVG();}
+
   friend class SlideShow;
 
   /*! Writes the image to a file

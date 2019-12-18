@@ -185,6 +185,8 @@ public:
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
 
+  //! Can this image be exported in SVG format?
+  bool CanExportSVG() const {return m_svgRast != NULL;}
 protected:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
