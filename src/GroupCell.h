@@ -218,8 +218,8 @@ public:
   void AppendInput(Cell *cell);
 
   // Get the next cell in the list.
-  virtual GroupCell *GetNext() const override {return dynamic_cast<GroupCell *>(m_next);}
-  virtual GroupCell *GetNextToDraw() const override {return dynamic_cast<GroupCell *>(m_nextToDraw);}
+  virtual GroupCell *GetNext() const override {if(m_next) return dynamic_cast<GroupCell *>(m_next); else return NULL;}
+  virtual GroupCell *GetNextToDraw() const override {if(m_nextToDraw) return dynamic_cast<GroupCell *>(m_nextToDraw); else return NULL;}
 
   static wxString TexEscapeOutputCell(wxString Input);
 
