@@ -27,6 +27,7 @@
 #include "Image.h"
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #define NANOSVG_IMPLEMENTATION
+#define NANOSVGRAST_IMPLEMENTATION
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 #include <wx/mstream.h>
@@ -55,12 +56,24 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 
 wxBitmap Image::GetUnscaledBitmap() const
 {
-  wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-  wxImage img(istream, wxBITMAP_TYPE_ANY);
-  wxBitmap bmp;
-  if (img.Ok())
-    bmp = wxBitmap(img);
-  return bmp;
+  if (m_svgRast)
+  {
+    unsigned char* imgdata = (unsigned char *)malloc(m_originalWidth*m_originalHeight*4);
+    if(imgdata)
+      nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_originalWidth, m_originalHeight, m_originalWidth*4);
+    // Automatically deletes the raw image data once the wxImage has been created
+    wxImage img(m_originalWidth, m_originalHeight, imgdata , true);
+    return wxBitmap(img, 24);
+  }
+  else
+  {
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    wxImage img(istream, wxBITMAP_TYPE_ANY);
+    wxBitmap bmp;
+    if (img.Ok())
+      bmp = wxBitmap(img);
+    return bmp;
+  }
 }
 
 Image::Image(Configuration **config)
@@ -500,9 +513,18 @@ wxBitmap Image::GetBitmap(double scale)
   if (m_scaledBitmap.GetWidth() == m_width)
     return m_scaledBitmap;
 
-
   // Seems like we need to create a new scaled bitmap.
-  if (m_scaledBitmap.GetWidth() != m_width)
+  if (m_svgRast)
+  {
+    unsigned char* imgdata = (unsigned char *)malloc(m_width*m_height*4);
+    if(imgdata)
+      nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_width, m_height, m_width*4);
+    // Automatically deletes the raw image data once the wxImage has been created
+    wxImage img(m_width, m_height, imgdata , true);
+    m_scaledBitmap = wxBitmap(img, 24);
+    return m_scaledBitmap;
+  }
+  else
   {
     wxImage img;
     if (m_compressedImage.GetDataLen() > 0)
