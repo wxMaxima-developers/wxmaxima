@@ -212,8 +212,9 @@ private:
   double m_maxHeight;
   //! The name of the image, if known.
   wxString m_imageName;
-
+  
   NSVGimage* m_svgImage;
+  struct NSVGrasterizer* m_svgRast;
 };
 
 #endif // IMAGE_H

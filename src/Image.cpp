@@ -75,6 +75,7 @@ Image::Image(Configuration **config)
   m_maxWidth = -1;
   m_maxHeight = -1;
   m_svgImage = NULL;
+  m_svgRast = NULL;
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -88,6 +89,7 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   m_originalWidth = 640;
   m_originalHeight = 480;
   m_svgImage = NULL;
+  m_svgRast = NULL;
   
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
@@ -105,6 +107,7 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
   m_svgImage = NULL;
+  m_svgRast = NULL;
   m_configuration = config;
   m_width = 1;
   m_height = 1;
@@ -117,6 +120,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *filesystem)
 {
   m_svgImage = NULL;
+  m_svgRast = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_width = 1;
@@ -632,6 +636,13 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
       if(svgContents)
         m_svgImage = nsvgParse(svgContents, "px", (*m_configuration)->GetDC()->GetPPI().x);
       delete(svgContents);
+
+      if(m_svgImage)
+      {
+	m_svgRast = nsvgCreateRasterizer();
+        m_originalWidth = m_svgImage->width;
+        m_originalHeight = m_svgImage->height;
+      }
     }
     else
     {   
