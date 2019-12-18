@@ -114,7 +114,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxLogMessage(_("wxWidgets is using GTK 2"));
   #endif
 #endif
-
+  
   wxLogMessage(
     wxString::Format(_("Translations are read from %s."), Dirstructure::Get()->LocaleDir())
       );
