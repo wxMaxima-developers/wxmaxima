@@ -915,6 +915,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_usesvg->Connect(wxEVT_CHECKBOX,
                          wxCommandEventHandler(ConfigDialogue::UsesvgChanged),
                          NULL, this);
+  m_usesvg->Show(false);
 
   vsizer->Add(m_usesvg, 0, wxALL, 5);
 

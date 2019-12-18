@@ -510,8 +510,6 @@ wxBitmap Image::GetBitmap(double scale)
 {
   Recalculate(scale);
 
-  std::cerr<<m_originalWidth<<"x"<<m_originalHeight<<"->"<<m_width<<"x"<<m_height<<"\n";
-
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
     return m_scaledBitmap;
@@ -522,7 +520,9 @@ wxBitmap Image::GetBitmap(double scale)
     // First create rgba data
     unsigned char* imgdata = (unsigned char *)malloc(m_width*m_height*4);
     if(imgdata)
-      nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_width, m_height, m_width*4);
+      nsvgRasterize(m_svgRast, m_svgImage, 0,0,
+                    ((double)m_width)/((double)m_originalWidth),
+                    imgdata, m_width, m_height, m_width*4);
     
     // Then convert the rgba data to a wxBitmap
     m_scaledBitmap = wxBitmap(m_width, m_height, 32);
@@ -702,7 +702,6 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
           m_isOk = true;
         m_originalWidth = m_svgImage->width;
         m_originalHeight = m_svgImage->height;
-        std::cerr<<m_svgImage->width<<"x"<<m_svgImage->height<<"@"<<ppi<<"dpi\n";
       }
     }
     else

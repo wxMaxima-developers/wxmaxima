@@ -9291,7 +9291,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     {
       wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"),
+                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.svg)|*.png;*.jpg;*.bmp;*.xpm;*.svg"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
       {
