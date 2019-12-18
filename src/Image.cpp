@@ -58,6 +58,7 @@ wxBitmap Image::GetUnscaledBitmap() const
 {
   if (m_svgRast)
   {
+    std::cerr<<m_originalWidth<<"x"<<m_originalHeight<<"\n";
     unsigned char* imgdata = (unsigned char *)malloc(m_originalWidth*m_originalHeight*4);
     if(imgdata)
       nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_originalWidth, m_originalHeight, m_originalWidth*4);
@@ -638,13 +639,16 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   }
 
   m_isOk = false;
-  
+
+  m_extension = wxFileName(image).GetExt();
+  m_extension = m_extension.Lower();
+
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
-    if(image.Lower().EndsWith(".svg") ||
-       image.Lower().EndsWith(".svgz"))
+    if(m_extension == "svg")
     {
+      m_isOk = false;
       // Convert the data we have read to a char * containing the svg file's contents.
       char *svgContents;
       {
@@ -662,6 +666,8 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
       if(m_svgImage)
       {
 	m_svgRast = nsvgCreateRasterizer();
+        if(m_svgRast)
+          m_isOk = true;
         m_originalWidth = m_svgImage->width;
         m_originalHeight = m_svgImage->height;
       }
@@ -670,25 +676,20 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     {   
       wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
       Image.LoadFile(istream);
+      m_originalWidth = 700;
+      m_originalHeight = 300;
+      
+      if (Image.Ok())
+      {
+        m_originalWidth = Image.GetWidth();
+        m_originalHeight = Image.GetHeight();
+        m_isOk = true;
+      }
+      else
+        m_isOk = false;
     }
+    Recalculate();
   }
-
-  m_extension = wxFileName(image).GetExt();
-
-  m_originalWidth = 700;
-  m_originalHeight = 300;
-
-  if (Image.Ok())
-  {
-    m_originalWidth = Image.GetWidth();
-    m_originalHeight = Image.GetHeight();
-    m_isOk = true;
-  }
-  else
-    m_isOk = false;
-
-  Recalculate();
-
 }
 
 void Image::Recalculate(double scale)
