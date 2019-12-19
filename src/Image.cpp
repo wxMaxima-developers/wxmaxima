@@ -506,6 +506,32 @@ wxSize Image::ToImageFile(wxString filename)
   }
 }
 
+wxBitmap Image::RGBA2wxBitmap(const unsigned char imgdata[], const int &width, const int &height)
+{
+  wxBitmap retval = wxBitmap(width, height, 32);
+  const unsigned char* rgba = imgdata;
+  if(!retval.Ok())
+    return retval;
+  
+  wxAlphaPixelData bmpdata(retval);
+  wxAlphaPixelData::Iterator dst(bmpdata);
+  for( int y = 0; y < height; y++)
+  {
+    dst.MoveTo(bmpdata, 0, y);
+    for(int x = 0; x < width; x++)
+    {
+      unsigned char a = rgba[3];
+      dst.Red() = rgba[0] * a / 255;
+      dst.Green() = rgba[1] * a / 255;
+      dst.Blue() = rgba[2] * a / 255;
+      dst.Alpha() = a;
+      dst++;
+          rgba += 4;
+    }
+  }
+  return retval;
+}
+
 wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
@@ -518,36 +544,14 @@ wxBitmap Image::GetBitmap(double scale)
   if (m_svgRast)
   {
     // First create rgba data
-    unsigned char* imgdata = (unsigned char *)malloc(m_width*m_height*4);
-    if(imgdata)
-      nsvgRasterize(m_svgRast, m_svgImage, 0,0,
-                    ((double)m_width)/((double)m_originalWidth),
-                    imgdata, m_width, m_height, m_width*4);
-    
-    // Then convert the rgba data to a wxBitmap
-    m_scaledBitmap = wxBitmap(m_width, m_height, 32);
-    unsigned char* rgba = imgdata;
-    if(m_scaledBitmap.Ok())
-    {
-      wxAlphaPixelData bmpdata(m_scaledBitmap);
-      wxAlphaPixelData::Iterator dst(bmpdata);
-      for( int y = 0; y < m_height; y++)
-      {
-        dst.MoveTo(bmpdata, 0, y);
-        for(int x = 0; x < m_width; x++)
-        {
-          unsigned char a = rgba[3];
-          dst.Red() = rgba[0] * a / 255;
-          dst.Green() = rgba[1] * a / 255;
-          dst.Blue() = rgba[2] * a / 255;
-          dst.Alpha() = a;
-          dst++;
-          rgba += 4;
-        }
-      }
-      free(imgdata);
-    }
-    return m_scaledBitmap;
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_width*m_height*4]);
+    if(!imgdata)
+      return wxBitmap();
+
+    nsvgRasterize(m_svgRast, m_svgImage, 0,0,
+                  ((double)m_width)/((double)m_originalWidth),
+                  imgdata.get(), m_width, m_height, m_width*4);
+    return RGBA2wxBitmap(imgdata.get(), m_width, m_height);
   }
   else
   {

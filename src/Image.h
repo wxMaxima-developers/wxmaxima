@@ -126,11 +126,14 @@ public:
     Will recreate the scaled image as soon as needed.
    */
   void ClearCache()
-  { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
-
+    { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
+  
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
 
+  //! Convert rgba data to a wxBitmap
+  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
+  
   //! Returns the file name extension of the current image
   wxString GetExtension() const
   { return m_extension; };
