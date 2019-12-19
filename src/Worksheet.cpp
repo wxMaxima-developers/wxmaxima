@@ -376,6 +376,8 @@ Worksheet::~Worksheet()
 
   m_configuration = NULL;
   m_dc = NULL;
+  wxDELETE(m_tree);
+  m_tree =NULL;
 }
 
 #if wxCHECK_VERSION(3, 1, 2)
@@ -717,7 +719,7 @@ GroupCell *Worksheet::InsertGroupCells(
   else
   {
     next = GetTree(); // where == NULL
-    m_tree = std::unique_ptr<GroupCell>(cells);
+    m_tree = cells;
   }
   prev = where;
 
@@ -2930,7 +2932,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
 
   // Unlink the to-be-deleted cells from the worksheet.
   if(start->m_previous == NULL)
-    m_tree = std::unique_ptr<GroupCell>(end->GetNext());
+    m_tree = end->GetNext();
   else
     start->m_previous->m_next = start->m_previous->m_nextToDraw = end->m_next;
 
@@ -7635,7 +7637,7 @@ void Worksheet::PasteFromClipboard()
         if (GetTree() == NULL)
         {
           // Empty work sheet => We paste cells as the new cells
-          m_tree = std::unique_ptr<GroupCell>(contents);
+          m_tree = contents;
           m_last = end;
         }
         else
