@@ -59,12 +59,13 @@ wxBitmap Image::GetUnscaledBitmap() const
 {
   if (m_svgRast)
   {
-    unsigned char* imgdata = (unsigned char *)malloc(m_originalWidth*m_originalHeight*4);
-    if(imgdata)
-      nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata, m_originalWidth, m_originalHeight, m_originalWidth*4);
-    // Automatically deletes the raw image data once the wxImage has been created
-    wxImage img(m_originalWidth, m_originalHeight, imgdata , false);
-    return wxBitmap(img, wxBITMAP_SCREEN_DEPTH);
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
+    if(!imgdata)
+      return wxBitmap();
+        
+    nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata.get(),
+                  m_originalWidth, m_originalHeight, m_originalWidth*4);
+    return RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
   }
   else
   {
