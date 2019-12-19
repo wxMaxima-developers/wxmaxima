@@ -8578,15 +8578,43 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       break;
     case Worksheet::popid_image:
     {
+      if(m_worksheet->GetSelectionStart() != m_worksheet->GetSelectionEnd())
+        break;
+
+      bool canExportSVG = false;
+      
+      if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE)
+        if(dynamic_cast<ImgCell *>(m_worksheet->GetSelectionStart())->CanExportSVG())
+          canExportSVG = true;
+
+      if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
+        if(dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart())->CanExportSVG())
+          canExportSVG = true;
+
+      wxString selectorString;
+
+      if(canExportSVG)
+        selectorString = _(
+          "Scalabe Vector image (*.svg)|*.svg|"
+          "PNG image (*.png)|*.png|"
+          "JPEG image (*.jpg)|*.jpg|"
+          "Windows bitmap (*.bmp)|*.bmp|"
+          "Portable anymap (*.pnm)|*.pnm|"
+          "Tagged image file format (*.tif)|*.tif|"
+          "X pixmap (*.xpm)|*.xpm"
+          );
+      else
+        selectorString = _("PNG image (*.png)|*.png|"
+                           "JPEG image (*.jpg)|*.jpg|"
+                           "Windows bitmap (*.bmp)|*.bmp|"
+                           "Portable anymap (*.pnm)|*.pnm|"
+                           "Tagged image file format (*.tif)|*.tif|"
+                           "X pixmap (*.xpm)|*.xpm"
+            );
+      
       wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
                                      wxT("image.png"), wxT("png"),
-                                     _("PNG image (*.png)|*.png|"
-                                               "JPEG image (*.jpg)|*.jpg|"
-                                               "Windows bitmap (*.bmp)|*.bmp|"
-                                               "Portable animap (*.pnm)|*.pnm|"
-                                               "Tagged image file format (*.tif)|*.tif|"
-                                               "X pixmap (*.xpm)|*.xpm"
-                                     ),
+                                     selectorString,
                                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
