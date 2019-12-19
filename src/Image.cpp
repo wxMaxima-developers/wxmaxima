@@ -707,9 +707,23 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
       // Read the svg file's data into the system's memory
       if(m_extension == "svg")
       {
+        // We can read the file from memory without much ado...
         svgContents_string = wxString::FromUTF8(
           (char *)m_compressedImage.GetData(),
           m_compressedImage.GetDataLen());
+        
+        // ...but we want to compress the in-memory image for saving memory
+        wxMemoryOutputStream mstream;
+        wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,wxZLIB_GZIP);
+        wxTextOutputStream textOut(zstream);
+        textOut << svgContents_string;
+        textOut.Flush();
+        zstream.Close();
+        m_compressedImage.Clear();
+        m_compressedImage.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                     mstream.GetOutputStreamBuffer()->GetBufferSize());
+        m_extension += "z";
+        m_imageName += "z";
       }
       else
       {
