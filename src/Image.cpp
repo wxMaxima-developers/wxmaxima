@@ -477,6 +477,31 @@ wxSize Image::ToImageFile(wxString filename)
     else
       return wxSize(-1, -1);
   }
+
+  if((filename.Lower().EndsWith(".svg")) && (m_extension == "svgz"))
+  {
+    // Unzip the .svgz image
+    wxString svgContents_string;
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    wxZlibInputStream zstream(istream);
+    wxTextInputStream textIn(zstream);
+    wxString line;
+    while(!istream.Eof())
+    {
+      line = textIn.ReadLine();
+      svgContents_string += line + wxT("\n");
+    }
+    wxFile file(filename, wxFile::write);
+    if (!file.IsOpened())
+      return wxSize(-1, -1);
+    wxFileOutputStream output(file);
+    wxTextOutputStream text(output);
+    text << svgContents_string;
+    if (file.Close())
+      return wxSize(m_originalWidth, m_originalHeight);
+    else
+      return wxSize(-1, -1);    
+  }
   else
   {
     wxBitmap bitmap = GetUnscaledBitmap();
