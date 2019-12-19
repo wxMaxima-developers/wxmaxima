@@ -576,7 +576,7 @@ wxBitmap Image::GetBitmap(double scale)
     nsvgRasterize(m_svgRast, m_svgImage, 0,0,
                   ((double)m_width)/((double)m_originalWidth),
                   imgdata.get(), m_width, m_height, m_width*4);
-    return RGBA2wxBitmap(imgdata.get(), m_width, m_height);
+    return m_scaledBitmap = RGBA2wxBitmap(imgdata.get(), m_width, m_height);
   }
   else
   {
