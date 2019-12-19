@@ -548,7 +548,6 @@ wxBitmap Image::GetBitmap(double scale)
     std::unique_ptr<unsigned char> imgdata(new unsigned char[m_width*m_height*4]);
     if(!imgdata)
       return wxBitmap();
-
     nsvgRasterize(m_svgRast, m_svgImage, 0,0,
                   ((double)m_width)/((double)m_originalWidth),
                   imgdata.get(), m_width, m_height, m_width*4);
@@ -675,17 +674,34 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
-    if(m_extension == "svg")
+    if((m_extension == "svg") || (m_extension == "svgz"))
     {
       m_isOk = false;
-      // Convert the data we have read to a char * containing the svg file's contents.
-      char *svgContents;
+      wxString svgContents_string;
+
+      // Read the svg file's data into the system's memory
+      if(m_extension == "svg")
       {
-        wxString svgContents_string = wxString::FromUTF8(
+        svgContents_string = wxString::FromUTF8(
           (char *)m_compressedImage.GetData(),
           m_compressedImage.GetDataLen());
-        svgContents = (char *)strdup(svgContents_string.utf8_str());
       }
+      else
+      {
+        // Unzip the .svgz image
+        wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+        wxZlibInputStream zstream(istream);
+        wxTextInputStream textIn(zstream);
+        wxString line;
+        while(!istream.Eof())
+        {
+          line = textIn.ReadLine();
+          svgContents_string += line + wxT("\n");
+        }
+      }
+      // Convert the data we have read to a modifyable char * containing the svg file's contents.
+      char *svgContents;
+      svgContents = (char *)strdup(svgContents_string.utf8_str());
 
       // Parse the svg file's contents
       int ppi;
