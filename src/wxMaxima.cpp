@@ -1124,7 +1124,9 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
   if (files[0].EndsWith(wxT(".png")) ||
       files[0].EndsWith(wxT(".jpeg")) ||
       files[0].EndsWith(wxT(".jpg")) ||
-      files[0].EndsWith(wxT(".svg")))
+      files[0].EndsWith(wxT(".svg")) ||
+      files[0].EndsWith(wxT(".svgz"))
+    )
   {
     m_wxmax->LoadImage(files[0]);
     return true;
@@ -8595,7 +8597,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
 
       if(canExportSVG)
         selectorString = _(
-          "Scalabe Vector image (*.svg)|*.svg|"
+          "Scalable Vector image (*.svg)|*.svg|"
+          "Compressed Scalable Vector Image (*.svgz)|*.svgz|"
           "PNG image (*.png)|*.png|"
           "JPEG image (*.jpg)|*.jpg|"
           "Windows bitmap (*.bmp)|*.bmp|"
@@ -9320,7 +9323,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     {
       wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.svg)|*.png;*.jpg;*.bmp;*.xpm;*.svg"),
+                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.svg;*.svgz"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
       {
