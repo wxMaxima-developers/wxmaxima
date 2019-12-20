@@ -76,7 +76,7 @@ void Gen1Wiz::set_properties()
 
 void Gen1Wiz::do_layout()
 {
-  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
