@@ -489,7 +489,8 @@ public:
     socket_client_id,
     socket_server_id,
     maxima_process_id,
-    gnuplot_process_id
+    gnuplot_process_id,
+    menu_additionalSymbols
   };
 
   /*! Update the recent documents list
@@ -713,6 +714,7 @@ private:
   wxPanel *CreateSymbolsPane();
 
 protected:
+  void MouseRightDownInSymbols(wxMouseEvent &WXUNUSED(event));
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
   //! Update the "user symbols" portion of the symbols pane.

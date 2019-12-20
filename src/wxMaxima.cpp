@@ -172,6 +172,7 @@ void wxMaxima::ConfigChanged()
 
     SetCWD(filename);
   }
+  UpdateUserSymbols();
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
@@ -1051,6 +1052,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCharEventHandler(wxMaxima::OnKeyDown), NULL, this);
   Connect(ToolBar::tb_changeStyle, wxEVT_CHOICE,
           wxCommandEventHandler(wxMaxima::ChangeCellStyle), NULL, this);
+  Connect(menu_additionalSymbols, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_edit_find, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(wxEVT_FIND,
@@ -5452,6 +5455,25 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
+  case menu_additionalSymbols:
+  {
+    wxString symbolPaneAdditionalChars = wxT("Øü§");
+    wxConfig::Get()->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1,
+                               m_worksheet->m_configuration,                               
+                               _("Non-builtin symbols"),
+                               _("Unicode symbols:"),
+                                 symbolPaneAdditionalChars,
+                               _("Allows to specify which not-builtin unicode symbols should be displayed in the symbols sidebar along with the built-in symbols.")
+        );
+      //wiz->Centre(wxBOTH);
+      wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
+      if (wiz->ShowModal() == wxID_OK)
+        wxConfig::Get()->Write(wxT("symbolPaneAdditionalChars"), wiz->GetValue());
+      wiz->Destroy();
+      UpdateUserSymbols();
+    break;
+  }
   case Worksheet::popid_digits_20:
   {
     m_worksheet->m_configuration->SetDisplayedDigits(20);

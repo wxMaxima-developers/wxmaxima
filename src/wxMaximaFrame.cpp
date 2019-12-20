@@ -1850,7 +1850,16 @@ wxPanel *wxMaximaFrame::CreateSymbolsPane()
   vbox->Add(m_userSymbols, 0, style, border);
   panel->SetSizerAndFit(vbox);
   vbox->SetSizeHints(panel);
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::MouseRightDownInSymbols));
+
   return panel;
+}
+
+void wxMaximaFrame::MouseRightDownInSymbols(wxMouseEvent &WXUNUSED(event))
+{
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  popupMenu->Append(menu_additionalSymbols, _("Add more symbols"), wxEmptyString, wxITEM_NORMAL);
+  PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
 }
 
 void wxMaximaFrame::UpdateUserSymbols()
