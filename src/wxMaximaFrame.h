@@ -709,6 +709,9 @@ private:
    */
   wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
 
+  //! A CharButton that provides a "add new symbols" right-click menu
+  wxPanel *SymbolButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
+
   wxPanel *CreateGreekPane();
 
   wxPanel *CreateSymbolsPane();
@@ -747,6 +750,7 @@ protected:
   RecentDocuments m_unsavedDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
+  wxPanel *m_symbolsPane;
   wxMenu *m_recentPackagesMenu;
 };
 
