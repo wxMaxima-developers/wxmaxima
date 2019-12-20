@@ -115,6 +115,7 @@ Configuration::Configuration(wxDC *dc) :
   m_escCodes["xi"] = wxT("\u03BE");
   m_escCodes["om"] = wxT("\u03BF");
   m_escCodes["omicron"] = wxT("\u03BF");
+  m_escCodes["nabla"] = wxT("\u2207");
   m_escCodes["pi"] = wxT("\u03C0");
   m_escCodes["rho"] = wxT("\u03C1");
   m_escCodes["sigma"] = wxT("\u03C3");

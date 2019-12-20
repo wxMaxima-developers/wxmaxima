@@ -189,6 +189,7 @@ or #          not equal to
 >> or gg      much greater than
 equiv         equivalent to
 qed           end of proof
+nabla         a nabla operator
 sum           sum sign
 prod          product sign
 exists        "there exists" sign
