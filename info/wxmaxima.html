@@ -235,6 +235,7 @@ or #          not equal to
 &gt;&gt; or gg      much greater than
 equiv         equivalent to
 qed           end of proof
+nabla         a nabla operator
 sum           sum sign
 prod          product sign
 exists        &quot;there exists&quot; sign
@@ -639,65 +640,71 @@ pngdraw2d(&quot;Test&quot;,
 <ul>
 <li><code>-v</code> or <code>--version</code>: Output the version information</li>
 <li><code>-h</code> or <code>--help</code>: Output a short help text</li>
-<li><code>-o</code> or <code>--open</code>: Open the filename given as argument to this command-line switch</li>
+<li><code>-o</code> or <code>--open=&lt;str&gt;</code>: Open the filename given as argument to this command-line switch</li>
 <li><code>-e</code> or <code>--eval</code>: Evaluate the file after opening it.</li>
 <li><code>-b</code> or <code>--batch</code>: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes <em>Maxima</em> generate output files. Batch-processing will be stopped if <em>wxMaxima</em> detects that <em>Maxima</em> has output an error and will pause if <em>Maxima</em> has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.</li>
-<li><code>-f</code> or <code>--ini</code>: Use the init file that was given as argument to this command-line switch</li>
-<li><code>-m</code> or <code>--maxima</code> allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--logtostdout</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <str>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a maxima compiled with lisp compiler <str>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
 </ul>
 <p>Instead of a minus some operating systems might use a dash in front of the command-line switches.</p>
 <hr />
 <h1 id="annotated-index"><span class="header-section-number">6</span> Annotated Index</h1>
-<p><strong>A</strong> <a href="#Embedding-animations-into-the-spreadsheet">Animations</a>: commands to embed animations into a <em>wxMaxima</em> workbook</p>
+<p><strong>A</strong> <a href="#embedding-animations-into-the-spreadsheet">Animations</a>: commands to embed animations into a <em>wxMaxima</em> workbook</p>
 <p><a href="#Outputting-animations-doesn_0027t-work">Animations, failure</a>: why creation and execution of some animations might not work</p>
-<p><a href="#Command-autocompletion">Autocompletion</a>: using <em>wxMaxima</em> a command</p>
-<p><a href="#Can-I-set-the-aspect-ratio-of-a-plot_003f">Aspect ratio</a>: set the aspect ratio for a plot</p>
+<p><a href="#command-autocompletion">Autocompletion</a>: using <em>wxMaxima</em> a command</p>
+<p><a href="#can-i-set-the-aspect-ratio-of-a-plot">Aspect ratio</a>: set the aspect ratio for a plot</p>
 <p><a href="#Autosave-interval">Autosave</a>: set interval for saving a <em>wxMaxima</em> session file (workbook)</p>
-<p><strong>C</strong> <a href="#Cells">Cells</a>: the nature and use of cells in a <em>wxMaxima</em> workbook</p>
+<p><strong>C</strong> <a href="#cells">Cells</a>: the nature and use of cells in a <em>wxMaxima</em> workbook</p>
 <p><a href="#Input%20Output%20Cell">Cells, Input/Output</a>: Cells that contain one or more commands and the results of executing the command(s)</p>
-<p><a href="#Command-autocompletion">Command autocompletion</a>: using <em>wxMaxima</em> a command</p>
-<p><a href="#Configuration-options">Configure wxMaxima</a>: how to configure a <em>wxMaxima</em> workbook</p>
-<p><a href="#Drag%20and%20drop">Cursors, vertical and horizontal</a>: entering text or selecting entered material</p>
+<p><a href="#command-autocompletion">Command autocompletion</a>: using <em>wxMaxima</em> a command</p>
+<p><a href="#configuration-options">Configure wxMaxima</a>: how to configure a <em>wxMaxima</em> workbook</p>
+<p><a href="#horizontal-and-vertical-cursors">Cursors, vertical and horizontal</a>: entering text or selecting entered material</p>
 <p><strong>D</strong> <a href="#Drag%20and%20drop">Drag and drop</a>: Copying and pasting material in one or more cells or executing a sequence of cells</p>
-<p><strong>F</strong> <a href="#wxfilename%20command">File Info</a>: command to print name and location of currently-open wxMaxima workbook</p>
-<p><a href="#File-Formats">File Formats</a>: types of files that <em>wxMaxima</em> can create and open</p>
-<p><strong>G</strong> <a href="#Greek-characters">Greek characters</a>: Ways to enter Greek letters into a <em>wxMaxima</em> workbook (see Side Panels below)</p>
-<p><strong>H</strong> <a href="#Markdown-support">HTML</a>: export material as html</p>
-<p><a href="#Hotkeys">Hotkeys</a>: shortcut key combinations, alternatives to menu options</p>
+<p><strong>F</strong> <a href="#special-variables-wx...">File Info</a>: command to print name and location of currently-open wxMaxima workbook</p>
+<p><a href="#file-formats">File Formats</a>: types of files that <em>wxMaxima</em> can create and open</p>
+<p><strong>G</strong> <a href="#greek-characters">Greek characters</a>: Ways to enter Greek letters into a <em>wxMaxima</em> workbook (see Side Panels below)</p>
+<p><strong>H</strong> <a href="#markdown-support">HTML</a>: export material as html</p>
+<p><a href="#hotkeys">Hotkeys</a>: shortcut key combinations, alternatives to menu options</p>
 <p><strong>I</strong> <a href="#Input%20Output%20Cell">Input/Output Cells</a>: Cells that contain one or more commands and the results of executing the command(s)</p>
-<p><strong>J</strong> <a href="#Use-jsMath-fonts">jsMath</a>: useful fonts set for mathematical expressions</p>
-<p><strong>L</strong> <a href="#Markdown-support">LaTeX</a>: export material as LaTeX</p>
-<p><a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember">Lost content</a>: ways to recover lost cell contents</p>
-<p><strong>M</strong> <a href="#g_t_002emac">Macro files</a>: .mac files, batch files that can be entered into <em>wxMaxima</em> workbooks</p>
-<p><a href="#MathML-output">MathML</a>: export mathematical expressions with MathML markup</p>
+<p><strong>J</strong> <a href="#use-jsmath-font">jsMath</a>: useful fonts set for mathematical expressions</p>
+<p><strong>L</strong> <a href="#markdown-support">LaTeX</a>: export material as LaTeX</p>
+<p><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember">Lost content</a>: ways to recover lost cell contents</p>
+<p><strong>M</strong> <a href="#mac">Macro files</a>: .mac files, batch files that can be entered into <em>wxMaxima</em> workbooks</p>
+<p><a href="#mathml-output">MathML</a>: export mathematical expressions with MathML markup</p>
 <p><a href="#Matrix">Matrix</a>: Create a matrix and convert the matrix to a table</p>
-<p><a href="#Maxima-and-wxMaxima" title="Maxima and wxMaxima">Maxima and wxMaxima</a>: the relationship between the Maxima CAS and the <em>wxMaxima</em> front-end</p>
-<p><a href="#Cannot-connect-to-Maxima">Maxima-wxMaxima connection</a>: possible reasons from failure of <em>wxMaxima</em> to communicate with <em>Maxima</em></p>
-<p><strong>N</strong> <a href="#wxfilename%20command">Name of file</a>: command to print name and location of currently-open <em>wxMaxima</em> workbook</p>
-<p><strong>P</strong> <a href="#Can-I-set-the-aspect-ratio-of-a-plot_003f">Plot, aspect ratio</a>: set the aspect ratio for a plot</p>
-<p><a href="#Embedding-a-plot-into-the-work-sheet">Plot, embedding</a>: embed a <em>Maxima</em>-generated plot in a <em>wxMaxima</em> workbook</p>
-<p><a href="#Plotting-only-shows-an-closed-empty-envelope-with-an-error-message">Plot, failure</a>: some reasons that attempts to plot might fail</p>
-<p><a href="#Embedding-graphics">Plot file, embedding</a>: embed a plot file in a <em>wxMaxima</em> workbook</p>
-<p><a href="#Making-embedded-plots-bigger-or-smaller">Plot size</a>: control the size of embedded plots</p>
-<p><a href="#Better-quality-plots">Plots, better quality</a>: notes related to the quality of gnuplot plots</p>
-<p><a href="#Opening-multiple-plots-in-contemporaneous-windows">Plots, multiple</a>: open multiple plots in contemporaneous windows</p>
+<p><a href="#maxima-and-wxmaxima">Maxima and wxMaxima</a>: the relationship between the Maxima CAS and the <em>wxMaxima</em> front-end</p>
+<p><a href="#cannot-connect-to-maxima">Maxima-wxMaxima connection</a>: possible reasons from failure of <em>wxMaxima</em> to communicate with <em>Maxima</em></p>
+<p><strong>N</strong> <a href="#special-variables-wx...">Name of file</a>: command to print name and location of currently-open <em>wxMaxima</em> workbook</p>
+<p><strong>P</strong> <a href="#can-i-set-the-aspect-ratio-of-a-plot">Plot, aspect ratio</a>: set the aspect ratio for a plot</p>
+<p><a href="#embedding-a-plot-into-the-work-sheet">Plot, embedding</a>: embed a <em>Maxima</em>-generated plot in a <em>wxMaxima</em> workbook</p>
+<p><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message">Plot, failure</a>: some reasons that attempts to plot might fail</p>
+<p><a href="#embedding-graphics">Plot file, embedding</a>: embed a plot file in a <em>wxMaxima</em> workbook</p>
+<p><a href="#making-embedded-plots-bigger-or-smaller">Plot size</a>: control the size of embedded plots</p>
+<p><a href="#better-quality-plots">Plots, better quality</a>: notes related to the quality of gnuplot plots</p>
+<p><a href="#opening-multiple-plots-in-contemporaneous-windows">Plots, multiple</a>: open multiple plots in contemporaneous windows</p>
 <p><a href="#statusbar">Progress indicators</a>: Giving user feedback in the status bar</p>
-<p><strong>R</strong> <a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember">Recover lost content</a></p>
-<p><strong>S</strong> <a href="#Side-Panes">Side Panes</a>: collections of buttons that open dialog boxes, enter commands, and enter special characters</p>
-<p><a href="#index-Startup-File">Startup file location</a>: location of an initialization file that is passed to <em>wxMaxima</em> when it opens</p>
+<p><strong>R</strong> <a href="#i-lost-a-cell-contents-and-undo-doesnt-remember">Recover lost content</a></p>
+<p><strong>S</strong> <a href="#side-panes">Side Panes</a>: collections of buttons that open dialog boxes, enter commands, and enter special characters</p>
+<p><a href="#startup-files">Startup file location</a>: location of an initialization file that is passed to <em>wxMaxima</em> when it opens</p>
 <p><a href="#statusbar">Status bar</a>: Giving user feedback in the status bar</p>
-<p><a href="#Subscripted-variables">Subscripted variables</a>: using the command <code>wxsubscripts</code> to display subscripted variables</p>
-<p><strong>T</strong> <a href="#Pretty_002dprinting-2D-output">Table</a>: show lists of text and values as a table</p>
-<p><a href="#Raw-TeX-in-the-TeX-export">TeX markup</a>: allows TeX markup to be entered into a text file</p>
-<p><strong>U</strong> <a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember">undo</a>: ways to recover lost cell contents</p>
-<p><strong>W</strong> <a href="#Embedding-animations-into-the-spreadsheet">with_slider_draw</a>: command to embed animations – alternative: <code>wxanimate_draw</code></p>
-<p><a href="#Embedding-animations-into-the-spreadsheet">with_slider_draw3d</a>: command to embed animations – alternative: <code>wxanimate_draw3d</code></p>
-<p><a href="#Embedding-animations-into-the-spreadsheet">wxanimate_draw</a>: command to embed animations</p>
-<p><a href="#Embedding-animations-into-the-spreadsheet">wxanimate_draw3d</a>: command to embed animations</p>
-<p><a href="#Maxima-and-wxMaxima" title="wxMaxima and Maxima">wxMaxima and Maxima</a>: the relationship between the <em>Maxima</em> CAS and the <em>wxMaxima</em> front-end</p>
+<p><a href="#subscripted-variables">Subscripted variables</a>: using the command <code>wxsubscripts</code> to display subscripted variables</p>
+<p><strong>T</strong> <a href="#pretty-printing-2d-output">Table</a>: show lists of text and values as a table</p>
+<p><a href="#raw-tex-in-the-tex-export">TeX markup</a>: allows TeX markup to be entered into a text file</p>
+<p><strong>U</strong> <a href="#i-lost-a-cell-contents-and-undo-doesnt-remember">undo</a>: ways to recover lost cell contents</p>
+<p><strong>W</strong> <a href="#embedding-animations-into-the-spreadsheet">with_slider_draw</a>: command to embed animations – alternative: <code>wxanimate_draw</code></p>
+<p><a href="#embedding-animations-into-the-spreadsheet">with_slider_draw3d</a>: command to embed animations – alternative: <code>wxanimate_draw3d</code></p>
+<p><a href="#embedding-animations-into-the-spreadsheet">wxanimate_draw</a>: command to embed animations</p>
+<p><a href="#embedding-animations-into-the-spreadsheet">wxanimate_draw3d</a>: command to embed animations</p>
+<p><a href="#maxima-and-wxmaxima">wxMaxima and Maxima</a>: the relationship between the <em>Maxima</em> CAS and the <em>wxMaxima</em> front-end</p>
 <p><a href="#wxMaxima">wxMaxima documentation</a></p>
-<p><a href="#The-worksheet-approach">wxMaxima workbook structure</a>: central features of a <em>wxMaxima</em> workbook</p>
-<p><a href="#g_t_002ewxm">wxm and wxmx files</a>: formats for <em>wxMaxima</em> workbooks</p>
-<p><a href="#Broken%20wxmx">wxmx data</a>: retrieve data from a broken wxmx file</p>
+<p><a href="#the-workbook-approach">wxMaxima workbook structure</a>: central features of a <em>wxMaxima</em> workbook</p>
+<p><a href="#file-formats">wxm and wxmx files</a>: formats for <em>wxMaxima</em> workbooks</p>
+<p><a href="#how-to-save-data-from-a-broken-.wxmx-file">wxmx data</a>: retrieve data from a broken wxmx file</p>
 </body>
 </html>
