@@ -1850,8 +1850,7 @@ wxPanel *wxMaximaFrame::CreateSymbolsPane()
   vbox->Add(m_userSymbols, 0, style, border);
   panel->SetSizerAndFit(vbox);
   vbox->SetSizeHints(panel);
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::MouseRightDownInSymbols));
-
+  panel->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::MouseRightDownInSymbols));
   return panel;
 }
 
@@ -1864,7 +1863,6 @@ void wxMaximaFrame::MouseRightDownInSymbols(wxMouseEvent &WXUNUSED(event))
 
 void wxMaximaFrame::UpdateUserSymbols()
 {
-
   while (!m_userSymbolButtons.empty())
   {
     m_userSymbolButtons.front()->Destroy();
