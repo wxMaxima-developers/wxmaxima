@@ -627,11 +627,6 @@ private:
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;
   wxTimer m_bytesReadDisplayTimer; 
-  //! A panel that shows all user-defined symbols on the symbols pane.
-  wxPanel *m_userSymbols;
-  //! A button per user defined symbol
-  std::list<wxPanel *> m_userSymbolButtons;
-  wxGridSizer *m_userSymbolsSizer;
   //! True=We are currently saving.
   bool m_StatusSaving;
 
@@ -715,16 +710,33 @@ protected:
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
-  wxPanel *CreateGreekPane();
+  class GreekPane : public wxPanel
+  {
+  public:
+    GreekPane(wxWindow *parent, int ID = wxID_ANY);
+  };
+
+  class SymbolsPane : public wxPanel
+  {
+  public:
+    SymbolsPane(wxWindow *parent, int ID = wxID_ANY);
+    //! Update the "user symbols" portion of the symbols pane.
+    void UpdateUserSymbols();
+  private:
+    //! A panel that shows all user-defined symbols on the symbols pane.
+    wxPanel *m_userSymbols;
+    //! A button per user defined symbol
+    std::list<wxPanel *> m_userSymbolButtons;
+    wxGridSizer *m_userSymbolsSizer;
+  };
 
   wxPanel *CreateSymbolsPane();
 
 protected:
+  SymbolsPane *m_symbolsPane;
   void MouseRightDownInSymbols(wxMouseEvent &WXUNUSED(event));
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
-  //! Update the "user symbols" portion of the symbols pane.
-  void UpdateUserSymbols();
   //! Do we need to update the display showing the evaluation queue length?
   bool m_updateEvaluationQueueLengthDisplay;
   //! The number of commands left in the current of the evaluation queue item
@@ -753,7 +765,6 @@ protected:
   RecentDocuments m_unsavedDocuments;
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
-  wxPanel *m_symbolsPane;
   wxMenu *m_recentPackagesMenu;
 };
 

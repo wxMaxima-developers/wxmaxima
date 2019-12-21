@@ -172,7 +172,7 @@ void wxMaxima::ConfigChanged()
 
     SetCWD(filename);
   }
-  UpdateUserSymbols();
+  m_symbolsPane->UpdateUserSymbols();
 }
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
@@ -5471,7 +5471,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if (wiz->ShowModal() == wxID_OK)
         wxConfig::Get()->Write(wxT("symbolPaneAdditionalChars"), wiz->GetValue());
       wiz->Destroy();
-      UpdateUserSymbols();
+      m_symbolsPane->UpdateUserSymbols();
     break;
   }
   case Worksheet::popid_digits_20:
