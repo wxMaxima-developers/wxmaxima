@@ -648,6 +648,23 @@ private:
 
   wxPanel *CreateFormatPane();
 
+  class CharButton: public wxPanel
+  {
+  public:
+    /*! A flat, compact button for the greek and the symbols pane
+      
+      \param parent The parent panel/window
+      \param ch The unicode symbol
+      \param description The help text for the symbol
+      \param matchesMaximaCommand true means that this symbol is automatically
+      translated into a maxima command/operator
+      
+    */
+    CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
+  protected:
+      void ForwardToParent(wxMouseEvent &event);
+  };
+  
   //! The class for the sidebar with the draw commands
   class DrawPane: public wxPanel
     {
@@ -698,20 +715,6 @@ protected:
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
-  /*! A flat, compact button for the greek and the symbols pane
-    
-    \param parent The parent panel/window
-    \param ch The unicode symbol
-    \param description The help text for the symbol
-    \param matchesMaximaCommand true means that this symbol is automatically
-                                translated into a maxima command/operator
-
-   */
-  wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
-
-  //! A CharButton that provides a "add new symbols" right-click menu
-  wxPanel *SymbolButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
-
   wxPanel *CreateGreekPane();
 
   wxPanel *CreateSymbolsPane();

@@ -78,6 +78,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
     ),m_cellPointers(this)
 {
   m_tree = NULL;
+  m_autocompletePopup = NULL;
   #ifdef __WXGTK__
   wxString gtk_input_method;
   if(wxGetEnv(wxT("GTK_IM_MODULE"),&gtk_input_method))
