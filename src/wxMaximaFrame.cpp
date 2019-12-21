@@ -1694,8 +1694,11 @@ wxMaximaFrame::CharButton::CharButton (wxPanel *parent, wxChar ch, wxString desc
 
   if (description.Length() > 0)
     text->SetToolTip(description);
-  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed), NULL, GetParent()->GetParent()->GetParent());
-  text->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed), NULL, GetParent()->GetParent()->GetParent());
+  wxWindow *worksheet = GetParent();
+  while(worksheet->GetParent())
+    worksheet = worksheet->GetParent();
+  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed), NULL, worksheet);
+  text->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(wxMaximaFrame::CharacterButtonPressed), NULL, worksheet);
   text->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::CharButton::ForwardToParent), NULL, this);
   SetSizerAndFit(vbox);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::CharButton::ForwardToParent), NULL, this);
