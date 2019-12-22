@@ -1833,7 +1833,7 @@ void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->AppendCheckItem(menu_showLatinGreekLookalikes,_(wxT("Show greek \u21D4 latin lookalikes")));
   popupMenu->Check(menu_showLatinGreekLookalikes, m_configuration->GreekSidebar_ShowLatinLookalikes());
-  popupMenu->AppendCheckItem(menu_showGreekMu, _(wxT("Show greek µ")));
+  popupMenu->AppendCheckItem(menu_showGreekMu, _(wxT("Show lookalike for unit prefix µ")));
   popupMenu->Check(menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
   PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
 }

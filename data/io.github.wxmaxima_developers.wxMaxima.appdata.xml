@@ -50,6 +50,22 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.12.1" date="2019-12-22">
+      <description>
+	<p>
+	  A new release that improves usability.
+	</p>
+        <ul>
+	  <li>An hungarian translation update by István Blahota</li>
+	  <li>Drastically sped up the lookalike char detection</li>
+	  <li>Fixes for many small bugs</li>
+	  <li>Many changes that prevent typical programming errors</li>
+	  <li>Saving to .wxm sets the worksheet to "saved" again</li>
+	  <li>More cases of modern wxWidgets signal handling</li>
+	  <li>svg support that unfortunately lacks a font renderer</li>
+	  <li>Right-click menus for the symbols sidebars</li>
+        </ul>
+    </description>
     <release version="19.12.1" date="2019-12-06">
       <description>
 	<p>
