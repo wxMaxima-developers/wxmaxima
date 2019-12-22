@@ -421,8 +421,6 @@ void ConfigDialogue::SetProperties()
   bool incrementalSearch = true;
   int defaultFramerate = 2;
   wxString texPreamble = wxEmptyString;
-  wxString symbolPaneAdditionalChars = wxT("üØ");
-  m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 
   int panelSize = 1;
   config->Read(wxT("maxima"), &mp);
@@ -452,7 +450,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
-  config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
   
   m_documentclass->SetValue(configuration->Documentclass());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
@@ -514,7 +511,7 @@ void ConfigDialogue::SetProperties()
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
-  m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
+  m_symbolPaneAdditionalChars->SetValue(configuration->SymbolPaneAdditionalChars());
   if (m_styleFor->GetSelection() >= 14 && m_styleFor->GetSelection() <= 18)
     m_getStyleFont->Enable(true);
   else
@@ -1245,7 +1242,7 @@ void ConfigDialogue::WriteSettings()
     if(i++ == m_language->GetSelection())
       config->Write(wxT("language"), it->second);
   }
-  config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars->GetValue());
+  configuration->SymbolPaneAdditionalChars(m_symbolPaneAdditionalChars->GetValue());
 
   configuration->CopyBitmap(m_copyBitmap->GetValue());
   configuration->CopyMathML(m_copyMathML->GetValue());

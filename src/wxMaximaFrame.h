@@ -713,28 +713,32 @@ private:
   class GreekPane : public wxPanel
   {
   public:
-    GreekPane(wxWindow *parent, int ID = wxID_ANY);
+    GreekPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
+  private:
+    Configuration *m_configuration;
   };
 
   class SymbolsPane : public wxPanel
   {
   public:
-    SymbolsPane(wxWindow *parent, int ID = wxID_ANY);
+    SymbolsPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
     //! Update the "user symbols" portion of the symbols pane.
     void UpdateUserSymbols();
+  protected:
+    void OnMouseRightDown(wxMouseEvent &event);
   private:
     //! A panel that shows all user-defined symbols on the symbols pane.
     wxPanel *m_userSymbols;
     //! A button per user defined symbol
     std::list<wxPanel *> m_userSymbolButtons;
     wxGridSizer *m_userSymbolsSizer;
+    Configuration *m_configuration;
   };
 
   wxPanel *CreateSymbolsPane();
 
 protected:
   SymbolsPane *m_symbolsPane;
-  void MouseRightDownInSymbols(wxMouseEvent &WXUNUSED(event));
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
   //! Do we need to update the display showing the evaluation queue length?

@@ -39,7 +39,8 @@ Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
   m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"),
   m_documentclass("article"),
-  m_documentclassOptions("fleqn")
+  m_documentclassOptions("fleqn"),
+  m_symbolPaneAdditionalChars("Øü§")
 {
   SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
@@ -86,6 +87,8 @@ Configuration::Configuration(wxDC *dc) :
   m_autoSubscript = 1;
   m_antiAliasLines = true;
   m_showCodeCells = true;
+  m_greekSidebar_ShowLatinLookalikes = false;
+  m_greekSidebar_Show_mu = false;
   m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
   // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
   // for maxima-discuss.
@@ -370,7 +373,10 @@ void Configuration::ReadConfig()
   config->Read(wxT("latin2greek"), &m_latin2greek);
   config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
   config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
-
+  config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
+  config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
+  config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
+  m_symbolPaneAdditionalChars = wxT("Øü§");
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);

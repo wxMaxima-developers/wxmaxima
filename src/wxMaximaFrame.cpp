@@ -243,7 +243,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             PaneBorder(true).
                             Left());
 
-  wxPanel *greekPane = new GreekPane(this);
+  wxPanel *greekPane = new GreekPane(this, m_worksheet->m_configuration);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                             Show(false).CloseButton(true).PinButton().
@@ -293,7 +293,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             FloatingSize(m_logPane->GetEffectiveMinSize()).
                             Bottom());
 
-  m_symbolsPane = new SymbolsPane(this);
+  m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
                             Show(false).
@@ -1704,8 +1704,9 @@ wxMaximaFrame::CharButton::CharButton (wxPanel *parent, wxChar ch, wxString desc
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::CharButton::ForwardToParent), NULL, this);
 }
 
-wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, int ID) :
-  wxPanel(parent, ID)
+wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configuration, int ID) :
+  wxPanel(parent, ID),
+  m_configuration(configuration)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -1730,7 +1731,9 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, int ID) :
   lowercase->Add(new CharButton(this, wxT('\u03BC'), _("mu")), 0, wxALL | wxEXPAND, 2);
   lowercase->Add(new CharButton(this, wxT('\u03BD'), _("nu")), 0, wxALL | wxEXPAND, 2);
   lowercase->Add(new CharButton(this, wxT('\u03BE'), _("xi")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
+  wxPanel *omicron;
+  lowercase->Add(omicron = new CharButton(this, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
+  omicron->Show(false);
   lowercase->Add(new CharButton(this, wxT('\u03C0'), _("pi")), 0, wxALL | wxEXPAND, 2);
   lowercase->Add(new CharButton(this, wxT('\u03C1'), _("rho")), 0, wxALL | wxEXPAND, 2);
   lowercase->Add(new CharButton(this, wxT('\u03C3'), _("sigma")), 0, wxALL | wxEXPAND, 2);
@@ -1777,8 +1780,9 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, int ID) :
   vbox->SetSizeHints(this);
 }
 
-wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, int ID) :
-  wxPanel(parent, ID)
+wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configuration, int ID) :
+  wxPanel(parent, ID),
+  m_configuration(configuration)
 {
   m_userSymbols = NULL;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -1857,12 +1861,12 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, int ID) :
   vbox->Add(m_userSymbols, 0, style, border);
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);
-  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::MouseRightDownInSymbols));
-  builtInSymbols->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::MouseRightDownInSymbols));
-  m_userSymbols->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::MouseRightDownInSymbols));
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
+  builtInSymbols->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
+  m_userSymbols->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
 }
 
-void wxMaximaFrame::MouseRightDownInSymbols(wxMouseEvent &WXUNUSED(event))
+void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->Append(menu_additionalSymbols, _("Add more symbols"), wxEmptyString, wxITEM_NORMAL);
@@ -1883,12 +1887,11 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
   m_userSymbols->DestroyChildren();
 
   // Populate the pane with a button per user symbol
-  wxString symbolPaneAdditionalChars = wxT("Øü§");
-  wxConfig::Get()->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
-  for (size_t i = 0; i < symbolPaneAdditionalChars.Length(); i++)
+  wxString userChars = m_configuration->SymbolPaneAdditionalChars();
+  for (wxString::const_iterator it = userChars.begin(); it < userChars.end(); ++it)
   {
-    wxPanel *button = new CharButton(m_userSymbols, symbolPaneAdditionalChars[i],
-                                 _("A symbol from the configuration dialogue"));
+    wxPanel *button = new CharButton(m_userSymbols, *it,
+                                     _("A symbol from the configuration dialogue"));
     m_userSymbolButtons.push_back(button);
     m_userSymbolsSizer->Add(button, 0, wxALL | wxEXPAND, 2);
   }

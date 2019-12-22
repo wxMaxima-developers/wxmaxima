@@ -542,6 +542,25 @@ public:
     {
       wxConfig::Get()->Write(wxT("latin2greek"), m_latin2greek = latin2greek);
     }
+
+  bool GreekSidebar_ShowLatinLookalikes() const
+    {return m_greekSidebar_ShowLatinLookalikes;}
+  void GreekSidebar_ShowLatinLookalikes(bool show)
+    {wxConfig::Get()->Write(wxT("greekSidebar_ShowLatinLookalikes"),
+                            m_greekSidebar_ShowLatinLookalikes = show);}
+
+  bool GreekSidebar_Show_mu() const
+    {return m_greekSidebar_ShowLatinLookalikes;}
+  void GreekSidebar_Show_mu(bool show)
+    {wxConfig::Get()->Write(wxT("greekSidebar_Show_mu"),
+                            m_greekSidebar_Show_mu = show);}
+
+  wxString SymbolPaneAdditionalChars() const
+    {return m_symbolPaneAdditionalChars;}
+  void SymbolPaneAdditionalChars(wxString symbols)
+    {wxConfig::Get()->Write(wxT("symbolPaneAdditionalChars"),
+                            m_symbolPaneAdditionalChars = symbols);}
+
   
   //! Notify the user if maxima is idle?
   bool NotifyIfIdle() const
@@ -943,6 +962,9 @@ private:
   //! The brush the normal cell background is painted with
   wxBrush m_BackgroundBrush;
   wxBrush m_tooltipBrush;
+  bool m_greekSidebar_ShowLatinLookalikes;
+  bool m_greekSidebar_Show_mu;
+  wxString m_symbolPaneAdditionalChars;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
