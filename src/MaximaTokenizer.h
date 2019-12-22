@@ -74,7 +74,7 @@ public:
         );
     }
   static const wxString Operators(){return wxString(
-      wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2207\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"
+      wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"
         )
       );}
 

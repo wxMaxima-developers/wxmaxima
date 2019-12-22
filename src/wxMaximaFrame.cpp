@@ -1891,7 +1891,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u0127')), 0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u0126')), 0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u2202'), _("partial sign")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u2207'), _("nabla sign (del)")), 0, wxALL | wxEXPAND, 2);
+  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u2207'), _("nabla sign")), 0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u222b'), _("Integral sign")), 0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u2245')), 0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, wxT('\u221d'), _("proportional to")), 0, wxALL | wxEXPAND, 2);
