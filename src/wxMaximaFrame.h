@@ -714,6 +714,9 @@ private:
   {
   public:
     GreekPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
+  protected:
+    void UpdateSymbols();
+    void OnMouseRightDown(wxMouseEvent &event);
   private:
     Configuration *m_configuration;
     wxFlexGridSizer *m_lowercaseSizer;

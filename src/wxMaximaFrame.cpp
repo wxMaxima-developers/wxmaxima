@@ -1709,7 +1709,6 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
   m_configuration(configuration),
   m_lowercaseSizer(new wxFlexGridSizer(8)),
   m_uppercaseSizer(new wxFlexGridSizer(8))
-
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -1717,8 +1716,25 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
   int border = 0;
 
   m_lowercaseSizer->SetFlexibleDirection(wxBOTH);
+  m_uppercaseSizer->SetFlexibleDirection(wxBOTH);
+
   for (int i = 0; i < 8; i++)
     m_lowercaseSizer->AddGrowableCol(i, 1);
+  for (int i = 0; i < 8; i++)
+    m_uppercaseSizer->AddGrowableCol(i, 1);
+
+  UpdateSymbols();
+  
+  vbox->Add(m_lowercaseSizer, 0, style, border);
+  vbox->Add(m_uppercaseSizer, 0, style, border);
+
+  SetSizerAndFit(vbox);
+  vbox->SetSizeHints(this);
+}
+
+void wxMaximaFrame::GreekPane::UpdateSymbols()
+{
+  m_lowercaseSizer->Clear(true);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B1'), _("alpha")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B2'), _("beta")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B3'), _("gamma")), 0, wxALL | wxEXPAND, 2);
@@ -1743,12 +1759,7 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C7'), _("chi")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C8'), _("psi")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C9'), _("omega")), 0, wxALL | wxEXPAND, 2);
-  vbox->Add(m_lowercaseSizer, 0, style, border);
-
-  m_uppercaseSizer->SetFlexibleDirection(wxBOTH);
-  for (int i = 0; i < 8; i++)
-    m_uppercaseSizer->AddGrowableCol(i, 1);
-
+  m_uppercaseSizer->Clear(true);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u0391'), _("Alpha")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u0392'), _("Beta")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u0393'), _("Gamma")), 0, wxALL | wxEXPAND, 2);
@@ -1773,12 +1784,8 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A7'), _("Chi")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A8'), _("Psi")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A9'), _("Omega")), 0, wxALL | wxEXPAND, 2);
-  vbox->Add(m_uppercaseSizer, 0, style, border);
 
-  SetSizerAndFit(vbox);
-  vbox->SetSizeHints(this);
 }
-
 wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configuration, int ID) :
   wxPanel(parent, ID),
   m_configuration(configuration)
