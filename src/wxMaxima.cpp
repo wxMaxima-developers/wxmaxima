@@ -6348,8 +6348,8 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
           cmd = wiz->GetValue0() + wxT(": ");
         long w, h;
         int type = wiz->GetMatrixType();
-        if (!(wiz->GetValue2()).ToLong(&w) ||
-            !(wiz->GetValue1()).ToLong(&h) ||
+        if (!(wiz->GetValue2()).ToLong(&h) ||
+            !(wiz->GetValue1()).ToLong(&w) ||
             w <= 0 || h <= 0)
         {
           LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
