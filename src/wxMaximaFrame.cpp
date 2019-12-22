@@ -43,6 +43,7 @@
 #include <wx/display.h>
 #include <wx/wupdlock.h>
 #include "wxMaximaIcon.h"
+#include "Gen1Wiz.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxPoint &pos, const wxSize &size,
@@ -1732,7 +1733,7 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
           wxCommandEventHandler(wxMaximaFrame::GreekPane::OnMenu), NULL, this);
   Connect(menu_showGreekMu, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::GreekPane::OnMenu), NULL, this);
-   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::GreekPane::OnMouseRightDown));
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::GreekPane::OnMouseRightDown));
 
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);
@@ -1919,9 +1920,33 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   vbox->Add(m_userSymbols, 0, style, border);
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);
+  Connect(menu_additionalSymbols, wxEVT_MENU,
+          wxCommandEventHandler(wxMaximaFrame::SymbolsPane::OnMenu), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
   builtInSymbols->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
   m_userSymbols->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
+}
+
+void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event)
+{
+  switch (event.GetId())
+  {
+  case menu_additionalSymbols:
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1,
+                               m_configuration,                               
+                               _("Non-builtin symbols"),
+                               _("Unicode symbols:"),
+                               m_configuration->SymbolPaneAdditionalChars(),
+                               _("Allows to specify which not-builtin unicode symbols should be displayed in the symbols sidebar along with the built-in symbols.")
+      );
+    //wiz->Centre(wxBOTH);
+    wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
+    if (wiz->ShowModal() == wxID_OK)
+      m_configuration->SymbolPaneAdditionalChars(wiz->GetValue());
+    wiz->Destroy();
+    UpdateUserSymbols();
+    break;
+  }
 }
 
 void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))

@@ -734,6 +734,7 @@ private:
     void UpdateUserSymbols();
   protected:
     void OnMouseRightDown(wxMouseEvent &event);
+    void OnMenu(wxCommandEvent &event);
   private:
     //! A panel that shows all user-defined symbols on the symbols pane.
     wxPanel *m_userSymbols;
