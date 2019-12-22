@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-22 09:32+0100\n"
-"PO-Revision-Date: 2019-12-13 10:14+0100\n"
+"PO-Revision-Date: 2019-12-22 09:39+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -629,7 +629,7 @@ msgstr "Gebe Vereinfacher für rationale Ausdrücke eine Gleichung"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1956
 msgid "Add more symbols"
-msgstr ""
+msgstr "Mehr Symbole"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:831
 msgid "Add the .wxmx file to the HTML export"
@@ -720,7 +720,7 @@ msgstr "Erlaubt es, getrennte Ausdrücke anzugeben, um"
 msgid ""
 "Allows to specify which not-builtin unicode symbols should be displayed in "
 "the symbols sidebar along with the built-in symbols."
-msgstr ""
+msgstr "Erlaubt, nicht eingebaute Unicode-Symbole in die Seitenleiste einzufügen."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1302
 msgid "All|*"
@@ -1895,7 +1895,7 @@ msgstr "Erzeuge eine Liste aus komma-getrennten Elementen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:911
 msgid "Create scalable plots."
-msgstr ""
+msgstr "Erzeuge skalierbare Diagramme."
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:273
 msgid "Cursor"
@@ -2203,7 +2203,7 @@ msgstr "Nach unten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1944
 msgid "Drag-and-drop unicode symbols here"
-msgstr ""
+msgstr "Hierher können Unicode-Symbole kopiert werden"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:133
 msgid "Draw all points where an equation is true."
@@ -3524,6 +3524,8 @@ msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*."
 "xpm;*.svg;*.svgz"
 msgstr ""
+"Bilddateien (*.png, *.jpg, *.bmp, *.xpm, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*.\"\n"
+"\"xpm;*.svg;*.svgz"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2090
 msgid "Implicit Plot"
@@ -4878,7 +4880,7 @@ msgstr "Speichern beim Schließen fehlgeschlagen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1938
 msgid "Non-builtin symbols"
-msgstr ""
+msgstr "Nicht-eingebaute Symbole"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1634
 msgid "Normality Test..."
@@ -5182,12 +5184,12 @@ msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
-msgstr ""
+msgstr "PNG image (*.png)|*.png|JPEG-Bild (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:370
 msgid ""
 "PNG images can be read by old wxMaxima versions - but aren't really scalable."
-msgstr ""
+msgstr "PNG-Bilder können auch von alten wxMaxima-Versionen gelesen werden, sind aber nur begrenzt skalierbar."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7298
 msgid "Pade approximation"
@@ -5942,7 +5944,7 @@ msgid ""
 "svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap "
 "(*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|"
 "*.tif|X pixmap (*.xpm)|*.xpm"
-msgstr ""
+msgstr "Skalierbare Vektorgraphik image (*.svg)|*.svg|Komprimiertes SVG (*.svgz)|*.svgz|PNG image (*.png)|*.png|JPEG-Bild (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7898
 msgid "Scatterplot"
@@ -6042,7 +6044,7 @@ msgstr "Algorithmus zum Anzeigen von Formeln auswählen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:188
 msgid "Selected language: "
-msgstr ""
+msgstr "Gewählte Sprache: "
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:85
 msgid ""
@@ -6180,7 +6182,7 @@ msgstr "Setze Vergrößerung auf 80 %"
 #: /home/gunter/src/wxmaxima/src/main.cpp:128
 #, c-format
 msgid "Setting Maxima's locale to %s."
-msgstr ""
+msgstr "Setze Maxima's Sprache auf %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3644
 msgid "Setting a few prerequisites for wxMaxima"
@@ -7467,7 +7469,7 @@ msgstr "Zeige den Inhalt"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1939
 msgid "Unicode symbols:"
-msgstr ""
+msgstr "Unicode-Symbole:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8891
 msgid "Unterminated comment."
@@ -8114,7 +8116,7 @@ msgstr "n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1894
 msgid "nabla sign"
-msgstr ""
+msgstr "Nabla-Zeichen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1880
 msgid "nand"
@@ -8441,7 +8443,7 @@ msgid ""
 "wxMaxima is a cross-platform graphical user interface for the computer "
 "algebra system Maxima based on wxWidgets. For rendering svg graphics it uses "
 "nanosvg (https://github.com/memononen/nanosvg)."
-msgstr ""
+msgstr "wxMaxima it eine graphische Benutzeroberfläche, für Maxima, das Computer-Algebra-System, die auf wxWidgets basiert. SVG-Bilder werden mittels nanosvg (https://github.com/memononen/nanosvg) dargestellt."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:175
 msgid ""
