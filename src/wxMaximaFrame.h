@@ -716,6 +716,8 @@ private:
     GreekPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
   private:
     Configuration *m_configuration;
+    wxFlexGridSizer *m_lowercaseSizer;
+    wxFlexGridSizer *m_uppercaseSizer;
   };
 
   class SymbolsPane : public wxPanel

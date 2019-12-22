@@ -1706,75 +1706,74 @@ wxMaximaFrame::CharButton::CharButton (wxPanel *parent, wxChar ch, wxString desc
 
 wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configuration, int ID) :
   wxPanel(parent, ID),
-  m_configuration(configuration)
+  m_configuration(configuration),
+  m_lowercaseSizer(new wxFlexGridSizer(8)),
+  m_uppercaseSizer(new wxFlexGridSizer(8))
+
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   int style = wxALL | wxEXPAND;
   int border = 0;
 
-  wxFlexGridSizer *lowercase = new wxFlexGridSizer(8);
-  lowercase->SetFlexibleDirection(wxBOTH);
+  m_lowercaseSizer->SetFlexibleDirection(wxBOTH);
   for (int i = 0; i < 8; i++)
-    lowercase->AddGrowableCol(i, 1);
-  lowercase->Add(new CharButton(this, wxT('\u03B1'), _("alpha")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B2'), _("beta")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B3'), _("gamma")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B4'), _("delta")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B5'), _("epsilon")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B6'), _("zeta")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B7'), _("eta")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B8'), _("theta")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03B9'), _("iota")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03BA'), _("kappa")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03BB'), _("lambda")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03BC'), _("mu")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03BD'), _("nu")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03BE'), _("xi")), 0, wxALL | wxEXPAND, 2);
-  wxPanel *omicron;
-  lowercase->Add(omicron = new CharButton(this, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
-  omicron->Show(false);
-  lowercase->Add(new CharButton(this, wxT('\u03C0'), _("pi")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C1'), _("rho")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C3'), _("sigma")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C4'), _("tau")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C5'), _("upsilon")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C6'), _("phi")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C7'), _("chi")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C8'), _("psi")), 0, wxALL | wxEXPAND, 2);
-  lowercase->Add(new CharButton(this, wxT('\u03C9'), _("omega")), 0, wxALL | wxEXPAND, 2);
-  vbox->Add(lowercase, 0, style, border);
+    m_lowercaseSizer->AddGrowableCol(i, 1);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B1'), _("alpha")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B2'), _("beta")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B3'), _("gamma")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B4'), _("delta")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B5'), _("epsilon")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B6'), _("zeta")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B7'), _("eta")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B8'), _("theta")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B9'), _("iota")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BA'), _("kappa")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BB'), _("lambda")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BC'), _("mu")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BD'), _("nu")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BE'), _("xi")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C0'), _("pi")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C1'), _("rho")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C3'), _("sigma")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C4'), _("tau")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C5'), _("upsilon")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C6'), _("phi")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C7'), _("chi")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C8'), _("psi")), 0, wxALL | wxEXPAND, 2);
+  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C9'), _("omega")), 0, wxALL | wxEXPAND, 2);
+  vbox->Add(m_lowercaseSizer, 0, style, border);
 
-  wxFlexGridSizer *uppercase = new wxFlexGridSizer(8);
-  uppercase->SetFlexibleDirection(wxBOTH);
+  m_uppercaseSizer->SetFlexibleDirection(wxBOTH);
   for (int i = 0; i < 8; i++)
-    uppercase->AddGrowableCol(i, 1);
+    m_uppercaseSizer->AddGrowableCol(i, 1);
 
-  uppercase->Add(new CharButton(this, wxT('\u0391'), _("Alpha")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0392'), _("Beta")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0393'), _("Gamma")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0394'), _("Delta")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0395'), _("Epsilon")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0396'), _("Zeta")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0397'), _("Eta")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0398'), _("Theta")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u0399'), _("Iota")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u039A'), _("Kappa")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u039B'), _("Lambda")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u039C'), _("Mu")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u039D'), _("Nu")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u039E'), _("Xi")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u039F'), _("Omicron")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A0'), _("Pi")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A1'), _("Rho")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A3'), _("Sigma")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A4'), _("Tau")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A5'), _("Upsilon")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A6'), _("Phi")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A7'), _("Chi")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A8'), _("Psi")), 0, wxALL | wxEXPAND, 2);
-  uppercase->Add(new CharButton(this, wxT('\u03A9'), _("Omega")), 0, wxALL | wxEXPAND, 2);
-  vbox->Add(uppercase, 0, style, border);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0391'), _("Alpha")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0392'), _("Beta")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0393'), _("Gamma")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0394'), _("Delta")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0395'), _("Epsilon")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0396'), _("Zeta")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0397'), _("Eta")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0398'), _("Theta")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0399'), _("Iota")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039A'), _("Kappa")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039B'), _("Lambda")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039C'), _("Mu")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039D'), _("Nu")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039E'), _("Xi")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039F'), _("Omicron")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A0'), _("Pi")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A1'), _("Rho")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A3'), _("Sigma")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A4'), _("Tau")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A5'), _("Upsilon")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A6'), _("Phi")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A7'), _("Chi")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A8'), _("Psi")), 0, wxALL | wxEXPAND, 2);
+  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A9'), _("Omega")), 0, wxALL | wxEXPAND, 2);
+  vbox->Add(m_uppercaseSizer, 0, style, border);
 
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);
