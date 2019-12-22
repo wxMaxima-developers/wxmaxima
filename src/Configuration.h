@@ -550,7 +550,7 @@ public:
                             m_greekSidebar_ShowLatinLookalikes = show);}
 
   bool GreekSidebar_Show_mu() const
-    {return m_greekSidebar_ShowLatinLookalikes;}
+    {return m_greekSidebar_Show_mu;}
   void GreekSidebar_Show_mu(bool show)
     {wxConfig::Get()->Write(wxT("greekSidebar_Show_mu"),
                             m_greekSidebar_Show_mu = show);}

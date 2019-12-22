@@ -490,7 +490,9 @@ public:
     socket_server_id,
     maxima_process_id,
     gnuplot_process_id,
-    menu_additionalSymbols
+    menu_additionalSymbols,
+    menu_showLatinGreekLookalikes,
+    menu_showGreekMu
   };
 
   /*! Update the recent documents list
@@ -717,6 +719,7 @@ private:
   protected:
     void UpdateSymbols();
     void OnMouseRightDown(wxMouseEvent &event);
+    void OnMenu(wxCommandEvent &event);
   private:
     Configuration *m_configuration;
     wxFlexGridSizer *m_lowercaseSizer;

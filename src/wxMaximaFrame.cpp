@@ -1728,8 +1728,33 @@ wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configurati
   vbox->Add(m_lowercaseSizer, 0, style, border);
   vbox->Add(m_uppercaseSizer, 0, style, border);
 
+  Connect(menu_showLatinGreekLookalikes, wxEVT_MENU,
+          wxCommandEventHandler(wxMaximaFrame::GreekPane::OnMenu), NULL, this);
+  Connect(menu_showGreekMu, wxEVT_MENU,
+          wxCommandEventHandler(wxMaximaFrame::GreekPane::OnMenu), NULL, this);
+   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::GreekPane::OnMouseRightDown));
+
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);
+}
+
+void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event)
+{
+  switch (event.GetId())
+  {
+  case menu_showLatinGreekLookalikes:
+    m_configuration->GreekSidebar_ShowLatinLookalikes(
+      !m_configuration->GreekSidebar_ShowLatinLookalikes());
+    UpdateSymbols();
+    Layout();
+    break;
+  case menu_showGreekMu:
+    m_configuration->GreekSidebar_Show_mu(
+      !m_configuration->GreekSidebar_Show_mu());
+    UpdateSymbols();
+    Layout();
+    break;
+  }
 }
 
 void wxMaximaFrame::GreekPane::UpdateSymbols()
@@ -1746,10 +1771,12 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03B9'), _("iota")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BA'), _("kappa")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BB'), _("lambda")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BC'), _("mu")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_Show_mu())
+    m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BC'), _("mu")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BD'), _("nu")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BE'), _("xi")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_lowercaseSizer->Add(new CharButton(this, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C0'), _("pi")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C1'), _("rho")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C3'), _("sigma")), 0, wxALL | wxEXPAND, 2);
@@ -1760,32 +1787,57 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C8'), _("psi")), 0, wxALL | wxEXPAND, 2);
   m_lowercaseSizer->Add(new CharButton(this, wxT('\u03C9'), _("omega")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Clear(true);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0391'), _("Alpha")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0392'), _("Beta")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u0391'), _("Alpha")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u0392'), _("Beta")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u0393'), _("Gamma")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u0394'), _("Delta")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0395'), _("Epsilon")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0396'), _("Zeta")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0397'), _("Eta")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u0395'), _("Epsilon")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u0396'), _("Zeta")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u0397'), _("Eta")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u0398'), _("Theta")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u0399'), _("Iota")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039A'), _("Kappa")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u0399'), _("Iota")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u039A'), _("Kappa")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u039B'), _("Lambda")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039C'), _("Mu")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039D'), _("Nu")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u039C'), _("Mu")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u039D'), _("Nu")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u039E'), _("Xi")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u039F'), _("Omicron")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u039F'), _("Omicron")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A0'), _("Pi")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A1'), _("Rho")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A1'), _("Rho")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A3'), _("Sigma")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A4'), _("Tau")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A5'), _("Upsilon")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A4'), _("Tau")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A5'), _("Upsilon")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A6'), _("Phi")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A7'), _("Chi")), 0, wxALL | wxEXPAND, 2);
+  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
+    m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A7'), _("Chi")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A8'), _("Psi")), 0, wxALL | wxEXPAND, 2);
   m_uppercaseSizer->Add(new CharButton(this, wxT('\u03A9'), _("Omega")), 0, wxALL | wxEXPAND, 2);
-
 }
+
+void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
+{
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  popupMenu->AppendCheckItem(menu_showLatinGreekLookalikes,_(wxT("Show greek \u21D4 latin lookalikes")));
+  popupMenu->Check(menu_showLatinGreekLookalikes, m_configuration->GreekSidebar_ShowLatinLookalikes());
+  popupMenu->AppendCheckItem(menu_showGreekMu, _(wxT("Show greek µ")));
+  popupMenu->Check(menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
+  PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
+}
+
+
 wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configuration, int ID) :
   wxPanel(parent, ID),
   m_configuration(configuration)
