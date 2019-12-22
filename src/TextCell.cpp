@@ -93,6 +93,8 @@ void TextCell::SetStyle(TextStyle style)
   Cell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\u0393");
+  if ((m_text == wxT("del")) && (m_textStyle == TS_FUNCTION))
+    m_displayedText = wxT("\u2207");
   if ((m_text == wxT("psi")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\u03A8");
   if((style == TS_LABEL) || (style == TS_USERLABEL)||
@@ -939,6 +941,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\u03B9"), mathModeStart + wxT("\\iota") + mathModeEnd);
   text.Replace(wxT("\u03BA"), mathModeStart + wxT("\\kappa") + mathModeEnd);
   text.Replace(wxT("\u03BB"), mathModeStart + wxT("\\lambda") + mathModeEnd);
+  text.Replace(wxT("\u2207"), mathModeStart + wxT("\\nabla") + mathModeEnd);
   text.Replace(wxT("\u03BC"), mathModeStart + wxT("\\mu") + mathModeEnd);
   text.Replace(wxT("\u03BD"), mathModeStart + wxT("\\nu") + mathModeEnd);
   text.Replace(wxT("\u03BE"), mathModeStart + wxT("\\ui") + mathModeEnd);
