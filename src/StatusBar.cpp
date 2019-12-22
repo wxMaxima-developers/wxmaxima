@@ -29,12 +29,18 @@
 #include <wx/display.h>
 #include "invalidImage.h"
 #include "../art/statusbar/images.h"
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include "Image.h"
 
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
                                                  m_ppi(wxSize(-1,-1))
 {
+  m_svgRast = nsvgCreateRasterizer();
   int widths[] = {-1, 300, GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;
@@ -83,29 +89,23 @@ void StatusBar::UpdateBitmaps()
   {
     m_ppi = ppi;
     m_network_error = GetImage("network-error",
-                               network_error_128_png,network_error_128_png_len,
-                               network_error_192_png,network_error_192_png_len
+                               network_error_svg_gz,network_error_svg_gz_len
       );
     m_network_offline = GetImage("network-offline",
-                                 network_offline_128_png,network_offline_128_png_len,
-                                 network_offline_192_png,network_offline_192_png_len
+                                 network_offline_svg_gz,network_offline_svg_gz_len
       );
     m_network_transmit = GetImage("network-transmit",
-                                  network_transmit_128_png,network_transmit_128_png_len,
-                                  network_transmit_192_png,network_transmit_192_png_len
+                                  network_transmit_svg_gz,network_transmit_svg_gz_len
       );
     m_network_idle = GetImage("network-idle",
-                              network_idle_128_png,network_idle_128_png_len,
-                              network_idle_192_png,network_idle_192_png_len
+                              network_idle_svg_gz,network_idle_svg_gz_len
       );
     m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
     m_network_receive = GetImage("network-receive",
-                                 network_receive_128_png,network_receive_128_png_len,
-                                 network_receive_192_png,network_receive_192_png_len
+                                 network_receive_svg_gz,network_receive_svg_gz_len
       );
     m_network_transmit_receive = GetImage("network-transmit-receive",
-                                          network_transmit_receive_128_png,network_transmit_receive_128_png_len,
-                                          network_transmit_receive_192_png,network_transmit_receive_192_png_len
+                                          network_transmit_receive_svg_gz,network_transmit_receive_svg_gz_len
       );
   }
 }
@@ -236,8 +236,7 @@ void StatusBar::OnSize(wxSizeEvent &event)
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
 
 wxBitmap StatusBar::GetImage(wxString name,
-                          unsigned char *data_128, size_t len_128,
-                          unsigned char *data_192, size_t len_192)
+                          unsigned char *data, size_t len)
 {
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -256,8 +255,8 @@ wxBitmap StatusBar::GetImage(wxString name,
   if (ppi.y < 72)
     ppi.y = 72;
 #endif
-  double targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
-  double targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
+  int targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
+  int targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
 
   if(targetWidth < 16)
     targetWidth = 16;
@@ -271,8 +270,6 @@ wxBitmap StatusBar::GetImage(wxString name,
     img = bmp.ConvertToImage();
   }
 
-    int prescale;
-
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetWidth && sizeA >= 32) {
     sizeA >>= 1;
@@ -283,26 +280,32 @@ wxBitmap StatusBar::GetImage(wxString name,
     sizeB >>= 1;
   }
 
-  if(ABS(targetWidth - sizeA) < ABS(targetWidth - sizeB))
-    prescale = 128;
-  else
-    prescale = 192;
-
   if(!img.IsOk()) {
-    void *data;
-    size_t len;
-    if(prescale == 128)
+    // Unzip the .svgz image
+    wxMemoryInputStream istream(data, len);
+    wxZlibInputStream zstream(istream);
+    wxTextInputStream textIn(zstream);
+    wxString svgContents_string;
+    wxString line;
+    while(!istream.Eof())
     {
-      data = (void *)data_128;
-      len  = len_128;
+      line = textIn.ReadLine();
+      svgContents_string += line + wxT("\n");
     }
-    else
-    {
-      data = (void *)data_192;
-      len  = len_192;
-    }
-    wxMemoryInputStream istream(data,len);
-    img.LoadFile(istream);
+
+    // Render the .svgz image
+    char *svgContents;
+    svgContents = (char *)strdup(svgContents_string.utf8_str());
+    NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
+    delete(svgContents);
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[targetWidth*targetWidth*4]);        
+    nsvgRasterize(m_svgRast, svgImage, 0,0,
+                  wxMin((double)targetWidth/(double)svgImage->width,
+                        (double)targetWidth/(double)svgImage->height),
+                  imgdata.get(),
+                  targetWidth, targetWidth, targetWidth*4);
+    wxDELETE(svgImage);
+    return Image::RGBA2wxBitmap(imgdata.get(), targetWidth, targetWidth);    
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);

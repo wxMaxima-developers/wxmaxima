@@ -27,11 +27,16 @@
 
 #include "TipOfTheDay.h"
 #include <wx/config.h>
-#include <wx/mstream.h>
 #include <wx/display.h>
-#include <wx/wfstream.h>
 #include <wx/persist.h>
 #include <wx/persist/toplevel.h>
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include "Image.h"
 
 #define ICON_SCALE (0.35)
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
@@ -190,8 +195,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxButton *backButton = new wxButton(this,-1);
   backButton->SetBitmap(
     GetImage(
-      media_playback_start_reverse_128_png,media_playback_start_reverse_128_png_len,
-      media_playback_start_reverse_192_png,media_playback_start_reverse_192_png_len
+      media_playback_start_svg_gz,media_playback_start_reverse_svg_gz_len
       )
     );
   backButton->Connect(
@@ -207,8 +211,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxButton *forwardButton = new wxButton(this,-1);
   forwardButton->SetBitmap(
     GetImage(
-      media_playback_start_128_png,media_playback_start_128_png_len,
-      media_playback_start_192_png,media_playback_start_192_png_len
+      media_playback_start_svg_gz,media_playback_start_svg_gz_len
       )
     );
   forwardButton->Connect(
@@ -258,8 +261,7 @@ TipOfTheDay::~TipOfTheDay()
 }
 
 
-wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
-                              unsigned char *data_192, size_t len_192)
+wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
 {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -278,8 +280,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
   if(ppi <= 10)
     ppi = 72;
   
-  double targetSize = wxMax(ppi,75) * ICON_SCALE;
-  int prescale;
+  int targetSize = wxMax(ppi,75) * ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -293,29 +294,36 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
 
   if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
     targetSize = sizeA;
-    prescale = 128;
   } else {
     targetSize = sizeB;
-    prescale = 192;
+  }
+  
+  // Unzip the .svgz image
+  wxMemoryInputStream istream(data, len);
+  wxZlibInputStream zstream(istream);
+  wxTextInputStream textIn(zstream);
+  wxString svgContents_string;
+  wxString line;
+  while(!istream.Eof())
+  {
+    line = textIn.ReadLine();
+    svgContents_string += line + wxT("\n");
   }
 
-  wxBitmap bmp;
-  wxImage img;
+  // Render the .svgz image
+  char *svgContents;
+  svgContents = (char *)strdup(svgContents_string.utf8_str());
+  NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
+  delete(svgContents);
+  std::unique_ptr<unsigned char> imgdata(new unsigned char[targetSize*targetSize*4]);        
+  nsvgRasterize(m_svgRast, svgImage, 0,0,
+                wxMin((double)targetSize/(double)svgImage->width,
+                      (double)targetSize/(double)svgImage->height),
+                imgdata.get(),
+                targetSize, targetSize, targetSize*4);
+  wxDELETE(svgImage);
+  wxImage img = Image::RGBA2wxBitmap(imgdata.get(), targetSize, targetSize).ConvertToImage();
 
-  void *data;
-  size_t len;
-  if(prescale == 128)
-  {
-    data = (void *)data_128;
-    len  = len_128;
-  }
-  else
-  {
-    data = (void *)data_192;
-    len  = len_192;
-  }
-  wxMemoryInputStream istream(data,len);
-  img.LoadFile(istream);
   
 #if defined __WXMSW__
 #if wxCHECK_VERSION(3, 1, 1)

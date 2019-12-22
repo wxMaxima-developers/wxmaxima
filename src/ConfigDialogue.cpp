@@ -39,7 +39,6 @@
 #include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/font.h>
-#include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/fontdlg.h>
 #include <wx/sstream.h>
@@ -47,10 +46,15 @@
 #include <wx/settings.h>
 #include <wx/filename.h>
 #include "../art/config/images.h"
-#include <wx/mstream.h>
-#include <wx/wfstream.h>
 #include <wx/config.h>
 #include <wx/dcbuffer.h>
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include "Image.h"
 
 #define CONFIG_ICON_SCALE (1.0)
 
@@ -95,8 +99,7 @@ int ConfigDialogue::GetImageSize()
 }
 
 wxBitmap ConfigDialogue::GetImage(wxString name,
-                          unsigned char *data_128, size_t len_128,
-                          unsigned char *data_192, size_t len_192)
+                          unsigned char *data, size_t len)
 {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -115,8 +118,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   if(ppi <= 10)
     ppi = 72;
   
-  double targetSize = wxMax(ppi,75) * CONFIG_ICON_SCALE;
-  int prescale;
+  int targetSize = wxMax(ppi,75) * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -130,10 +132,8 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 
   if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
     targetSize = sizeA;
-    prescale = 128;
   } else {
     targetSize = sizeB;
-    prescale = 192;
   }
 
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_MENU, wxSize(targetSize, targetSize));
@@ -143,20 +143,31 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
     img = bmp.ConvertToImage();
   }
   if(!img.IsOk()) {
-    void *data;
-    size_t len;
-    if(prescale == 128)
+    // Unzip the .svgz image
+    wxMemoryInputStream istream(data, len);
+    wxZlibInputStream zstream(istream);
+    wxTextInputStream textIn(zstream);
+    wxString svgContents_string;
+    wxString line;
+    while(!istream.Eof())
     {
-      data = (void *)data_128;
-      len  = len_128;
+      line = textIn.ReadLine();
+      svgContents_string += line + wxT("\n");
     }
-    else
-    {
-      data = (void *)data_192;
-      len  = len_192;
-    }
-    wxMemoryInputStream istream(data,len);
-    img.LoadFile(istream);
+
+    // Render the .svgz image
+    char *svgContents;
+    svgContents = (char *)strdup(svgContents_string.utf8_str());
+    NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
+    delete(svgContents);
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[targetSize*targetSize*4]);        
+    nsvgRasterize(m_svgRast, svgImage, 0,0,
+                  wxMin((double)targetSize/(double)svgImage->width,
+                        (double)targetSize/(double)svgImage->height),
+                  imgdata.get(),
+                  targetSize, targetSize, targetSize*4);
+    wxDELETE(svgImage);
+    return Image::RGBA2wxBitmap(imgdata.get(), targetSize, targetSize);
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
@@ -170,6 +181,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
+  m_svgRast = nsvgCreateRasterizer();
   m_languages[_("(Use default language)")]=wxLANGUAGE_DEFAULT;
   m_languages[_("Catalan")]=wxLANGUAGE_CATALAN;
   m_languages[_("Chinese (Simplified)")]=wxLANGUAGE_CHINESE_SIMPLIFIED;
@@ -208,32 +220,25 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   int imgSize = GetImageSize();
   m_imageList = std::unique_ptr<wxImageList>(new wxImageList(imgSize, imgSize));
   m_imageList->Add(GetImage(wxT("editing"),
-                            editing_128_png,editing_128_png_len,
-                            editing_192_png,editing_192_png_len
+                            editing_svg_gz,editing_svg_gz_len
                      ));
   m_imageList->Add(GetImage(wxT("maxima"),
-                            maxima_128_png,maxima_128_png_len,
-                            maxima_192_png,maxima_192_png_len
+                            maxima_svg_gz,maxima_svg_gz_len
                      ));
   m_imageList->Add(GetImage(wxT("styles"),
-                            styles_128_png,styles_128_png_len,
-                            styles_192_png,styles_192_png_len
+                            styles_svg_gz,styles_svg_gz_len
                      ));
   m_imageList->Add(GetImage(wxT("document-export"),
-                            document_export_128_png,document_export_128_png_len,
-                            document_export_192_png,document_export_192_png_len
+                            document_export_svg_gz,document_export_svg_gz_len
                      ));
   m_imageList->Add(GetImage(wxT("options"),
-                            options_128_png,options_128_png_len,
-                            options_192_png,options_192_png_len
+                            options_svg_gz,options_svg_gz_len
                      ));
   m_imageList->Add(GetImage(wxT("edit-copy"),
-                            edit_copy_confdialogue_128_png,edit_copy_confdialogue_128_png_len,
-                            edit_copy_confdialogue_192_png,edit_copy_confdialogue_192_png_len
+                            edit_copy_confdialogue_svg_gz,edit_copy_confdialogue_svg_gz_len
                      ));
   m_imageList->Add(GetImage(wxT("media-playback-start"),
-                            media_playback_start_confdialogue_128_png,media_playback_start_confdialogue_128_png_len,
-                            media_playback_start_confdialogue_192_png,media_playback_start_confdialogue_192_png_len
+                            media_playback_start_confdialogue_svg_gz,media_playback_start_confdialogue_svg_gz_len
                      ));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),

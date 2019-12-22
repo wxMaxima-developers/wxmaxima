@@ -61,8 +61,7 @@ public:
   };
 
   wxBitmap GetImage(wxString name,
-                    unsigned char *data_128, size_t len_128,
-                    unsigned char *data_192, size_t len_192);
+                    unsigned char *data, size_t len);
 
   virtual ~ToolBar();
 
@@ -269,6 +268,7 @@ private:
   bool m_canPrint_old;
   bool m_canEvalTillHere_old;
   bool m_canEvalThisCell_old;
+  struct NSVGrasterizer* m_svgRast;
   bool m_worksheetEmpty_old;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.

@@ -102,6 +102,7 @@ public:
   void WriteSettings();
 
 private:
+  struct NSVGrasterizer* m_svgRast;
   //! The configuration storage
   Configuration *m_configuration;
   
@@ -199,8 +200,7 @@ private:
 
   //! Loads the image for a configuration tab
   wxBitmap GetImage(wxString name,
-                   unsigned char *data_128, size_t len_128,
-                   unsigned char *data_192, size_t len_192);
+                   unsigned char *data, size_t len);
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();
