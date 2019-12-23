@@ -1,7 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2015-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,15 +28,13 @@
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
 #include <wx/stdpaths.h>
-#include <wx/rawbmp.h>
+#include "SvgBitmap.h"
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {
@@ -65,7 +63,7 @@ wxBitmap Image::GetUnscaledBitmap() const
         
     nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata.get(),
                   m_originalWidth, m_originalHeight, m_originalWidth*4);
-    return RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
+    return SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
   }
   else
   {
@@ -532,32 +530,6 @@ wxSize Image::ToImageFile(wxString filename)
   }
 }
 
-wxBitmap Image::RGBA2wxBitmap(const unsigned char imgdata[], const int &width, const int &height)
-{
-  wxBitmap retval = wxBitmap(width, height, 32);
-  const unsigned char* rgba = imgdata;
-  if(!retval.Ok())
-    return retval;
-  
-  wxAlphaPixelData bmpdata(retval);
-  wxAlphaPixelData::Iterator dst(bmpdata);
-  for( int y = 0; y < height; y++)
-  {
-    dst.MoveTo(bmpdata, 0, y);
-    for(int x = 0; x < width; x++)
-    {
-      unsigned char a = rgba[3];
-      dst.Red() = rgba[0] * a / 255;
-      dst.Green() = rgba[1] * a / 255;
-      dst.Blue() = rgba[2] * a / 255;
-      dst.Alpha() = a;
-      dst++;
-          rgba += 4;
-    }
-  }
-  return retval;
-}
-
 wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
@@ -576,7 +548,7 @@ wxBitmap Image::GetBitmap(double scale)
     nsvgRasterize(m_svgRast, m_svgImage, 0,0,
                   ((double)m_width)/((double)m_originalWidth),
                   imgdata.get(), m_width, m_height, m_width*4);
-    return m_scaledBitmap = RGBA2wxBitmap(imgdata.get(), m_width, m_height);
+    return m_scaledBitmap = SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_width, m_height);
   }
   else
   {

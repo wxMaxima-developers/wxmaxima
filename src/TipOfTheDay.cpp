@@ -30,8 +30,7 @@
 #include <wx/display.h>
 #include <wx/persist.h>
 #include <wx/persist/toplevel.h>
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
@@ -298,32 +297,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
     targetSize = sizeB;
   }
   
-  // Unzip the .svgz image
-  wxMemoryInputStream istream(data, len);
-  wxZlibInputStream zstream(istream);
-  wxTextInputStream textIn(zstream);
-  wxString svgContents_string;
-  wxString line;
-  while(!istream.Eof())
-  {
-    line = textIn.ReadLine();
-    svgContents_string += line + wxT("\n");
-  }
-
-  // Render the .svgz image
-  char *svgContents;
-  svgContents = (char *)strdup(svgContents_string.utf8_str());
-  NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
-  delete(svgContents);
-  std::unique_ptr<unsigned char> imgdata(new unsigned char[targetSize*targetSize*4]);        
-  nsvgRasterize(m_svgRast, svgImage, 0,0,
-                wxMin((double)targetSize/(double)svgImage->width,
-                      (double)targetSize/(double)svgImage->height),
-                imgdata.get(),
-                targetSize, targetSize, targetSize*4);
-  wxDELETE(svgImage);
-  wxImage img = Image::RGBA2wxBitmap(imgdata.get(), targetSize, targetSize).ConvertToImage();
-
+  wxImage img = SvgBitmap(data, len, targetSize, targetSize).ConvertToImage();
   
 #if defined __WXMSW__
 #if wxCHECK_VERSION(3, 1, 1)

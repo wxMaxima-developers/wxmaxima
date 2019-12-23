@@ -1,7 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@
 #include <wx/display.h>
 #include "invalidImage.h"
 #include "../art/statusbar/images.h"
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
@@ -280,36 +279,8 @@ wxBitmap StatusBar::GetImage(wxString name,
     sizeB >>= 1;
   }
 
-  if(!img.IsOk()) {
-    // Unzip the .svgz image
-    wxMemoryInputStream istream(data, len);
-    wxZlibInputStream zstream(istream);
-    wxTextInputStream textIn(zstream);
-    wxString svgContents_string;
-    wxString line;
-    while(!istream.Eof())
-    {
-      line = textIn.ReadLine();
-      svgContents_string += line + wxT("\n");
-    }
-
-    // Render the .svgz image
-    char *svgContents;
-    svgContents = (char *)strdup(svgContents_string.utf8_str());
-    NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
-    delete(svgContents);
-    std::unique_ptr<unsigned char> imgdata(new unsigned char[targetWidth*targetWidth*4]);        
-    nsvgRasterize(m_svgRast, svgImage, 0,0,
-                  wxMin((double)targetWidth/(double)svgImage->width,
-                        (double)targetWidth/(double)svgImage->height),
-                  imgdata.get(),
-                  targetWidth, targetWidth, targetWidth*4);
-    wxDELETE(svgImage);
-    return Image::RGBA2wxBitmap(imgdata.get(), targetWidth, targetWidth);    
-  }
-  if(!img.IsOk()) {
-    img = wxImage(invalidImage_xpm);
-  }
+  if(!img.IsOk())
+    return SvgBitmap(data, len, targetWidth, targetWidth);
 
   targetWidth = static_cast<double>(GetSize().GetHeight());
   targetHeight = static_cast<double>(GetSize().GetHeight());

@@ -3,7 +3,7 @@
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2015-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,8 +35,7 @@
 #include <wx/artprov.h>
 #include <wx/filename.h>
 #include "invalidImage.h"
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
@@ -96,36 +95,7 @@ wxBitmap ToolBar::GetImage(wxString name,
     img = bmp.ConvertToImage();
   }
   if(!img.IsOk())
-  {
-    // Unzip the .svgz image
-    wxMemoryInputStream istream(data, len);
-    wxZlibInputStream zstream(istream);
-    wxTextInputStream textIn(zstream);
-    wxString svgContents_string;
-    wxString line;
-    while(!istream.Eof())
-    {
-      line = textIn.ReadLine();
-      svgContents_string += line + wxT("\n");
-    }
-
-    // Render the .svgz image
-    char *svgContents;
-    svgContents = (char *)strdup(svgContents_string.utf8_str());
-    NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
-    delete(svgContents);
-    std::unique_ptr<unsigned char> imgdata(new unsigned char[targetSize*targetSize*4]);        
-    nsvgRasterize(m_svgRast, svgImage, 0,0,
-                  wxMin((double)targetSize/(double)svgImage->width,
-                        (double)targetSize/(double)svgImage->height),
-                  imgdata.get(),
-                  targetSize, targetSize, targetSize*4);
-    wxDELETE(svgImage);
-    return Image::RGBA2wxBitmap(imgdata.get(), targetSize, targetSize);
-  }
-  if(!img.IsOk()) {
-    img = wxImage(invalidImage_xpm);
-  }
+    return SvgBitmap(data, len, targetSize, targetSize);
 
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 #if defined __WXOSX__

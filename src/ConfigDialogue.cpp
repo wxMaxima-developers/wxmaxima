@@ -34,7 +34,6 @@
 #include "Cell.h"
 #include "Configuration.h"
 #include "Dirstructure.h"
-#include "invalidImage.h"
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/fileconf.h>
@@ -48,12 +47,9 @@
 #include "../art/config/images.h"
 #include <wx/config.h>
 #include <wx/dcbuffer.h>
-#include "nanoSVG/nanosvg.h"
-#include "nanoSVG/nanosvgrast.h"
+#include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include <wx/zstream.h>
-#include <wx/txtstrm.h>
 #include "Image.h"
 
 #define CONFIG_ICON_SCALE (1.0)
@@ -142,40 +138,13 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   if(bmp.IsOk()) {
     img = bmp.ConvertToImage();
   }
-  if(!img.IsOk()) {
-    // Unzip the .svgz image
-    wxMemoryInputStream istream(data, len);
-    wxZlibInputStream zstream(istream);
-    wxTextInputStream textIn(zstream);
-    wxString svgContents_string;
-    wxString line;
-    while(!istream.Eof())
-    {
-      line = textIn.ReadLine();
-      svgContents_string += line + wxT("\n");
-    }
-
-    // Render the .svgz image
-    char *svgContents;
-    svgContents = (char *)strdup(svgContents_string.utf8_str());
-    NSVGimage *svgImage = nsvgParse(svgContents, "px", 96);
-    delete(svgContents);
-    std::unique_ptr<unsigned char> imgdata(new unsigned char[targetSize*targetSize*4]);        
-    nsvgRasterize(m_svgRast, svgImage, 0,0,
-                  wxMin((double)targetSize/(double)svgImage->width,
-                        (double)targetSize/(double)svgImage->height),
-                  imgdata.get(),
-                  targetSize, targetSize, targetSize*4);
-    wxDELETE(svgImage);
-    return Image::RGBA2wxBitmap(imgdata.get(), targetSize, targetSize);
+  if(!img.IsOk())
+    return SvgBitmap(data, len, targetSize, targetSize);
+  else
+  {
+    img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH); 
+    return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
   }
-  if(!img.IsOk()) {
-    img = wxImage(invalidImage_xpm);
-  }
-
-  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-
-  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
 }
 
 

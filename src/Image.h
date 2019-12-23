@@ -130,9 +130,6 @@ public:
   
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
-
-  //! Convert rgba data to a wxBitmap
-  static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
   
   //! Returns the file name extension of the current image
   wxString GetExtension() const
