@@ -311,8 +311,6 @@ void ToolBar::AddTools()
   m_textStyle->SetSelection(textStyleSelection);
   AddControl(m_textStyle);
   
-  // Seems like on MSW changing the image of this button has strange side-effects
-  // so we combine both images into one for this OS.
   m_PlayButton = GetImage(wxT("media-playback-start"),
                           media_playback_start_svg_gz,media_playback_start_svg_gz_len);
   m_StopButton = GetImage(wxT("media-playback-stop"),
