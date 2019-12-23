@@ -39,12 +39,14 @@
 class SvgBitmap: public wxBitmap
 {
 public:
+//! A constructor that loads the data into a wxBitmap
   SvgBitmap(unsigned char *data, size_t len, int width, int height);
   
-  //! Convert rgba data to a wxBitmap
+  //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
   
-private:  
+private:
+  //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;
 };
 
