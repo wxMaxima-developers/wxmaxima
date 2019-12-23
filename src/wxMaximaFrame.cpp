@@ -49,6 +49,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxPoint &pos, const wxSize &size,
                              long style, bool becomeLogTarget) :
   wxFrame(parent, id, title, pos, size, style),
+  m_manager(this, wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE | wxAUI_MGR_TRANSPARENT_HINT | wxAUI_MGR_HINT_FADE),
   m_recentDocuments(wxT("document")),
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
@@ -147,7 +148,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_EvaluationQueueLength = 0;
   m_commandsLeftInCurrentCell = 0;
   m_forceStatusbarUpdate = false;
-  m_manager.SetManagedWindow(this);
 
   // Better support for low-resolution netbook screens.
   wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
