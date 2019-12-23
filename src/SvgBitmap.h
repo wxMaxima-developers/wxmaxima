@@ -45,7 +45,7 @@ public:
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
   
 private:  
-  struct NSVGrasterizer* m_svgRast;
+  static struct NSVGrasterizer* m_svgRast;
 };
 
 #endif // SVGBITMAP_H

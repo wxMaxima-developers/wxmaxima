@@ -51,7 +51,8 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   }
   
   // Render the .svgz image
-  m_svgRast = nsvgCreateRasterizer();
+  if(m_svgRast == NULL)
+    m_svgRast = nsvgCreateRasterizer();
   std::unique_ptr<char> svgContents((char *)strdup(svgContents_string.utf8_str()));
   std::unique_ptr<NSVGimage> svgImage(nsvgParse(svgContents.get(), "px", 96));
   std::unique_ptr<unsigned char> imgdata(new unsigned char[width*height*4]);        
@@ -107,3 +108,5 @@ wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
   }
   return retval;
 }
+
+struct NSVGrasterizer* SvgBitmap::m_svgRast = NULL;
