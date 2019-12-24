@@ -7,12 +7,13 @@
 # Copyright (c) Olesya Gerasimenko <gammaray@basealt.ru>, 2019.
 #
 # This file is distributed under the same license as the wxMaxima package.
+# Olesya Gerasimenko <gammaray@basealt.ru>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-23 10:28+0100\n"
-"PO-Revision-Date: 2019-07-24 18:07MSK\n"
+"PO-Revision-Date: 2019-12-24 11:25MSK\n"
 "Last-Translator: Olesya Gerasimenko <gammaray@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -153,7 +154,7 @@ msgstr "&Граничная задача..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1272
 msgid "&Bug Report"
-msgstr ""
+msgstr "&Сообщение об ошибке"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1029
 msgid "&Calculus"
@@ -277,7 +278,7 @@ msgstr "&Обратить матрицу"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1274
 msgid "&License"
-msgstr ""
+msgstr "&Лицензия"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1201
 msgid "&List"
@@ -402,7 +403,7 @@ msgstr "&pm3d"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1103
 msgid "(Expression longer than allowed by the configuration setting)"
-msgstr ""
+msgstr "(Длина выражения превышает разрешённую параметром конфигурации)"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:233
 msgid "(Not a valid variable name)"
@@ -632,7 +633,7 @@ msgstr "Добавить равенство в упроститель рацио
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1959
 msgid "Add more symbols"
-msgstr ""
+msgstr "Добавить больше символов"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:805
 msgid "Add the .wxmx file to the HTML export"
@@ -723,6 +724,8 @@ msgid ""
 "Allows to specify which not-builtin unicode symbols should be displayed in "
 "the symbols sidebar along with the built-in symbols."
 msgstr ""
+"Позволяет указать, какие невстроенные символы Юникода следует показывать в "
+"боковой панели символов вместе со встроенными символами."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1276
 msgid "All|*"
@@ -743,7 +746,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1571
 msgid "Always show all digits"
-msgstr ""
+msgstr "Всегда показывать все цифры"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:446
 msgid "An animation with multiple frames"
@@ -859,7 +862,7 @@ msgstr "Автоматически"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1580
 msgid "Automatic labels"
-msgstr ""
+msgstr "Автоматические метки"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:566
 #, c-format
@@ -870,7 +873,7 @@ msgstr "Автоматические метки (%i1, %o1,...)"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1684
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:831
 msgid "Automatically answer questions"
-msgstr ""
+msgstr "Автоматически отвечать на вопросы"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1480
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1685
@@ -890,11 +893,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5177
 msgid "Autosaving as temp file"
-msgstr ""
+msgstr "Автосохранение во временный файл"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5195
 msgid "Autosaving the .wxmx file"
-msgstr ""
+msgstr "Автосохранение файла .wxmx"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:740
 msgid "Autosubscript"
@@ -979,7 +982,7 @@ msgstr "Жирный"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4392
 msgid "Both horizontal and vertical cursor active at the same time"
-msgstr ""
+msgstr "Одновременно активны и горизонтальный, и вертикальный курсоры"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1651
 msgid "Boxplot..."
@@ -1238,6 +1241,9 @@ msgid ""
 "(it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's "
 "config dialogue the setting for maxima's location is wrong."
 msgstr ""
+"Не удалось запустить Maxima. Наиболее вероятная причина: программа Maxima не "
+"установлена (её можно загрузить с веб-сайта http://maxima.sourceforge.net) "
+"или в диалоге настройки указано неверное расположение её исполняемого файла."
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:56
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:58
@@ -1346,7 +1352,7 @@ msgstr "Изменить способ отображения"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:598
 msgid "Change names of greek letters to greek letters"
-msgstr ""
+msgstr "Заменить названия греческих букв на греческие буквы"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:873
 msgid "Change the 2d display algorithm used to display math output"
@@ -1356,6 +1362,7 @@ msgstr "Изменить способ, применяемый для отобр�
 msgid ""
 "Change the text \"alpha\" and \"beta\" to the corresponding greek letter?"
 msgstr ""
+"Заменить текстовые «альфа» и «бета» на соответствующие греческие буквы?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7280
 msgid "Change variable"
@@ -1383,7 +1390,7 @@ msgstr "Χ"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:156
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "Китайский (упрощённый)"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:157
 msgid "Chinese (traditional)"
@@ -1430,7 +1437,7 @@ msgstr "Выделение кода: функции"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:246
 msgid "Code highlighting: Lisp"
-msgstr ""
+msgstr "Выделение кода: Lisp"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:243
 msgid "Code highlighting: Numbers"
@@ -1486,7 +1493,7 @@ msgstr "Уравнения, разделённые запятыми"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8471
 msgid "Comma-separated variables"
-msgstr ""
+msgstr "Переменные, разделённые запятыми"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:722
 msgid "Commands that are executed at every start of maxima."
@@ -1574,7 +1581,7 @@ msgstr "Файл конфигурации (*.ini)|*.ini"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1453
 msgid "Configuration warning"
-msgstr ""
+msgstr "Предупреждение настройки"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:198
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:701
@@ -1592,11 +1599,11 @@ msgstr "Соединение установлено."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1727
 msgid "Connection attempt, but connection failed."
-msgstr ""
+msgstr "Сбой попытки соединения."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1686
 msgid "Connection to Maxima lost."
-msgstr ""
+msgstr "Соединение с Maxima потеряно."
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:215
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:234
@@ -1612,7 +1619,7 @@ msgstr "Содержимое"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1667
 msgid "Continuing sending data to maxima."
-msgstr ""
+msgstr "Продолжение отправки данных в Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2112
 msgid "Contour"
@@ -1832,7 +1839,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:632
 msgid "Copy, Cut and Paste button"
-msgstr ""
+msgstr "Кнопки «Копировать», «Вырезать» и «Вставить»"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1993
 msgid ""
@@ -1889,7 +1896,7 @@ msgstr "Создать список на основе элементов, раз
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:885
 msgid "Create scalable plots."
-msgstr ""
+msgstr "Создать масштабируемые графики."
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:273
 msgid "Cursor"
@@ -1962,7 +1969,7 @@ msgstr "По умолчанию"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:872
 msgid "Default animation framerate:"
-msgstr ""
+msgstr "Частота кадров анимации по умолчанию:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1054
 msgid "Default font:"
@@ -1970,7 +1977,7 @@ msgstr "Шрифт по умолчанию:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:510
 msgid "Default plot size for new maxima sessions:"
-msgstr ""
+msgstr "Размер графика по умолчанию для новых сеансов Maxima:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:948
 msgid "Default port for communication with wxMaxima:"
@@ -2175,7 +2182,7 @@ msgstr "Класс документа для экспорта в TeX:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:742
 msgid "Documentclass options:"
-msgstr ""
+msgstr "Параметры класса документа:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:737
 msgid "Don't autosubscript after an underscore"
@@ -2187,7 +2194,7 @@ msgstr "Не сохранять"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1582
 msgid "Don't show labels"
-msgstr ""
+msgstr "Не показывать метки"
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:86
 msgid "Down"
@@ -2195,7 +2202,7 @@ msgstr "Вниз"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1947
 msgid "Drag-and-drop unicode symbols here"
-msgstr ""
+msgstr "Перетащите сюда символы Юникода"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:133
 msgid "Draw all points where an equation is true."
@@ -2283,7 +2290,7 @@ msgstr "Включить:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1696
 msgid "Encountered an unknown socket event."
-msgstr ""
+msgstr "Неизвестное событие сокета."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1916
 msgid "End of proof"
@@ -2449,7 +2456,7 @@ msgstr "Ошибка"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1577
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1672
 msgid "Error writing to Maxima"
-msgstr ""
+msgstr "Ошибка записи в Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5345
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5361
@@ -2548,7 +2555,7 @@ msgstr "Вычислить выделенные поля"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:262
 msgid "Evaluate all"
-msgstr ""
+msgstr "Вычислить все"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:777
 msgid "Evaluate all cells in the document"
@@ -2564,7 +2571,7 @@ msgstr "Вычислить все видимые поля в документе"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:257
 msgid "Evaluate current cell"
-msgstr ""
+msgstr "Вычислить текущее поле"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:270
 msgid "Evaluate the file from its beginning to the cell above the cursor"
@@ -2592,7 +2599,7 @@ msgstr "Текст примера"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:958
 msgid "Examples:"
-msgstr ""
+msgstr "Примеры:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1157
 msgid "Execute a command for each element of the list"
@@ -2600,7 +2607,7 @@ msgstr "Выполнить команду для каждого элемента
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:639
 msgid "Exit wxMaxima"
-msgstr ""
+msgstr "Выйти из wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1567
 msgid "Expand"
@@ -3103,6 +3110,8 @@ msgid ""
 "GTK_IM_MODULE is set to \"xim\" and GTK3 is in use. Expect the program to "
 "hideously flicker, see https://trac.wxwidgets.org/ticket/18462."
 msgstr ""
+"Для GTK_IM_MODULE установлено значение «xim», и используется GTK3. Окно "
+"программы будет сильно мерцать, см. https://trac.wxwidgets.org/ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:163
 msgid "Galician"
@@ -3196,7 +3205,7 @@ msgstr "Имя файла данных Gnuplot: "
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2594
 #, c-format
 msgid "Gnuplot can be found at %s"
-msgstr ""
+msgstr "Gnuplot находится по адресу %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2125
 msgid "Gnuplot has closed."
@@ -3270,7 +3279,7 @@ msgstr "Справка"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:644
 msgid "Help button"
-msgstr ""
+msgstr "Кнопка «Справка»"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:296
 msgid "Hide"
@@ -3317,6 +3326,8 @@ msgid ""
 "Hide all multiplication signs that aren't really necessary for understanding "
 "the equation"
 msgstr ""
+"Скрывать все знаки умножения, которые не являются необходимыми для понимания "
+"уравнения"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:725
 msgid "Hide all panes"
@@ -3329,7 +3340,7 @@ msgstr "Скрыть содержимое"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:595
 msgid "Hide multiplication signs, if possible"
-msgstr ""
+msgstr "Скрывать знаки умножения, если возможно"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:524
 msgid "Hide objects behind the surface"
@@ -3451,6 +3462,11 @@ msgid ""
 "file is virtually always saved. If this checkbox is unchecked from time to "
 "time a backup is made in the temp folder instead."
 msgstr ""
+"Если этот флажок установлен, wxMaxima выполняет автоматическое сохранение "
+"файла каждые несколько минут и при закрытии. Это придаёт работе программы "
+"сходство с мобильными приложениями — файл практически всегда сохранён. Если "
+"этот флажок снят, вместо этого программа будет периодически сохранять "
+"резервную копию во временной папке."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:305
 msgid ""
@@ -3458,12 +3474,17 @@ msgid ""
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
 msgstr ""
+"Если этот флажок установлен, новое поле кода будет открыто сразу после "
+"запроса данных Maxima. Если этот флажок снят, новое поле кода в таком случае "
+"будет открыто сразу после начала ввода кода пользователем."
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:475
 msgid ""
 "If this isn't a function returning a lambda() expression a multiplication "
 "sign (*) between closing and opening parenthesis is missing here."
 msgstr ""
+"Если это не функция, возвращающая лямбда-выражение, здесь не хватает знака "
+"умножения (*) между закрывающей и открывающей скобками."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:337
 msgid ""
@@ -3501,6 +3522,8 @@ msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*."
 "xpm;*.svg;*.svgz"
 msgstr ""
+"Файлы изображений (*.png, *.jpg, *.bmp, *.xpm, *.svg, *.svgz)|*.png;*.jpg;*."
+"bmp;*.xpm;*.svg;*.svgz"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2093
 msgid "Implicit Plot"
@@ -3753,12 +3776,12 @@ msgstr "Вставить поле &Заголовок6\tCtrl+7"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:814
 msgid "Insert image"
-msgstr ""
+msgstr "Вставить изображение"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:553
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:738
 msgid "Integers and single letters"
-msgstr ""
+msgstr "Целые числа и отдельные буквы"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1898
 msgid "Integral sign"
@@ -3872,6 +3895,8 @@ msgid ""
 "It is possible to add custom symbols to the \"symbols\" sidebar by copying "
 "them into the respective field in the configuration dialogue."
 msgstr ""
+"Можно добавить пользовательские символы в боковую панель символов, "
+"скопировав их в соответствующее поле диалога настройки."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:126
 msgid ""
@@ -4031,7 +4056,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/LicenseDialog.cpp:36
 msgid "License"
-msgstr ""
+msgstr "Лицензия"
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:69
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7487
@@ -4057,7 +4082,7 @@ msgstr "Режим Lisp."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2611
 #, c-format
 msgid "Lisp version: %s"
-msgstr ""
+msgstr "Версия Lisp:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6868
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6892
@@ -4218,7 +4243,7 @@ msgstr "Учитывать регистр"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:589
 msgid "Match parenthesis in text controls"
-msgstr ""
+msgstr "Проверять расстановку скобок в текстовом вводе"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1060
 msgid "Math font:"
@@ -4226,7 +4251,7 @@ msgstr "Математический шрифт:"
 
 #: /home/gunter/src/wxmaxima/src/Cell.cpp:1279
 msgid "Math output"
-msgstr ""
+msgstr "Вывод формул"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:341
 msgid ""
@@ -4301,12 +4326,12 @@ msgstr "Матрица:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:221
 msgid "Maxima"
-msgstr ""
+msgstr "Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2584
 #, c-format
 msgid "Maxima architecture: %s"
-msgstr ""
+msgstr "Архитектура Maxima: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:483
 msgid "Maxima asks a question"
@@ -4355,7 +4380,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5113
 msgid "Maxima didn't connect within the timeout"
-msgstr ""
+msgstr "Не удалось установить соединение с Maxima в течение периода ожидания"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:256
 msgid "Maxima errors"
@@ -4372,7 +4397,7 @@ msgstr "Программой Maxima обнаружена ошибка!"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2616
 #, c-format
 msgid "Maxima has loaded the file %s."
-msgstr ""
+msgstr "Maxima загрузила файл %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2632
 msgid "Maxima has sent a new variable value."
@@ -4443,7 +4468,7 @@ msgstr "Maxima отправляет новый набор переменных �
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:532
 msgid "Maxima started. Waiting for connection..."
-msgstr "Maxima запущена. Установка связи ..."
+msgstr "Maxima запущена. Установка связи..."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:720
 msgid "Maxima startup file location: "
@@ -4472,7 +4497,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2563
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
-msgstr ""
+msgstr "Пользовательская конфигурация Maxima находится в каталоге %s"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:54
 msgid ""
@@ -4485,12 +4510,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2568
 #, c-format
 msgid "Maxima uses temp directory %s"
-msgstr ""
+msgstr "Maxima использует временный каталог %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2579
 #, c-format
 msgid "Maxima version: %s"
-msgstr ""
+msgstr "Версия Maxima: %s"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:255
 msgid "Maxima warnings"
@@ -4499,7 +4524,7 @@ msgstr "Предупреждения Maxima"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2606
 #, c-format
 msgid "Maxima was compiled using %s"
-msgstr ""
+msgstr "Сборка Maxima была выполнена с помощью %s"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:159
 msgid ""
@@ -4529,7 +4554,7 @@ msgstr "PID Maxima: %li"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2589
 #, c-format
 msgid "Maxima's manual lies in directory %s"
-msgstr ""
+msgstr "Руководство пользователя Maxima находится в каталоге %s"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:33
 msgid "Maxima's power lies in symbolic operations."
@@ -4538,7 +4563,7 @@ msgstr "Maxima позволяет выполнять символьные выч
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2599
 #, c-format
 msgid "Maxima's share files lie in directory %s"
-msgstr ""
+msgstr "Общие файлы Maxima находятся в каталоге %s"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:153
 msgid ""
@@ -4737,6 +4762,10 @@ msgid ""
 "wxMaxima automatically fill in all answers it still remembers from a "
 "previous run."
 msgstr ""
+"Большинства вопросов можно избежать, используя команды assume() и declare(). "
+"Если это невозможно, воспользуйтесь кнопкой «Автоматически отвечать на "
+"вопросы» — при её нажатии wxMaxima автоматически вставляет ответы, которые "
+"известны с момента прошлого выполнения."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1813
 msgid "Mu"
@@ -4773,15 +4802,15 @@ msgstr "Создать\tCtrl+N"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:623
 msgid "New button"
-msgstr ""
+msgstr "Кнопка «Создать»"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1707
 msgid "New connection attempt whilst already connected."
-msgstr ""
+msgstr "Новая попытка соединения при уже установленном соединении."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1713
 msgid "New connection attempt, but no currently running maxima process."
-msgstr ""
+msgstr "Новая попытка соединения при отсутствии работающего процесса Maxima."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:171
 msgid "New document"
@@ -4825,7 +4854,7 @@ msgstr "Без знака доллара ($) или точки с запятой
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3901
 #, c-format
 msgid "No helpfile found at %s."
-msgstr ""
+msgstr "Файл справки не найден по адресу %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5814
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5837
@@ -4842,11 +4871,11 @@ msgstr "Без точек"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8119
 msgid "No saving on close necessary."
-msgstr ""
+msgstr "Сохранение при закрытии не требуется."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1941
 msgid "Non-builtin symbols"
-msgstr ""
+msgstr "Невстроенные символы"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1634
 msgid "Normality Test..."
@@ -4913,7 +4942,7 @@ msgstr "Неверное число уравнений!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:527
 msgid "Not connected to maxima"
-msgstr ""
+msgstr "Нет соединения с Maxima"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:143
 #, c-format
@@ -5000,7 +5029,7 @@ msgstr "OK"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:616
 msgid "Offer known answers"
-msgstr ""
+msgstr "Предлагать известные ответы"
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:34
 msgid "Old value:"
@@ -5058,7 +5087,7 @@ msgstr "Открыть новое окно"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:626
 msgid "Open and save button"
-msgstr ""
+msgstr "Кнопки «Открыть» и «Сохранить»"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:177
 msgid "Open document"
@@ -5153,11 +5182,15 @@ msgid ""
 "bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
+"PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|Windows Bitmap (*.bmp)|*.bmp|Portable "
+"anymap (*.pnm)|*.pnm|TIFF (*.tif)|*.tif|X PixMap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:344
 msgid ""
 "PNG images can be read by old wxMaxima versions - but aren't really scalable."
 msgstr ""
+"Изображения PNG могут быть прочитаны предыдущими версиями wxMaxima, но они "
+"не подходят для масштабирования."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7298
 msgid "Pade approximation"
@@ -5389,11 +5422,11 @@ msgstr "Точность"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1579
 msgid "Prefer user labels"
-msgstr ""
+msgstr "Предпочитать пользовательские метки"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:635
 msgid "Preferences button"
-msgstr ""
+msgstr "Кнопка «Параметры»"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:700
 msgid "Preferences...\tCtrl+,"
@@ -5421,7 +5454,7 @@ msgstr "Печать"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:629
 msgid "Print button"
-msgstr ""
+msgstr "Кнопка «Печать»"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:192
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:635
@@ -5446,6 +5479,8 @@ msgid ""
 "Produced invalid XML. The erroneous XML data has therefore not been saved "
 "but has been put on the clipboard in order to allow to debug it."
 msgstr ""
+"Создан недопустимый код XML. Поэтому неверные данные XML не были сохранены, "
+"но были помещены в буфер обмена для обеспечения возможности отладки."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7539
 msgid "Product"
@@ -5478,11 +5513,11 @@ msgstr "Отслеживание необработанных XML-данных"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1416
 #, c-format
 msgid "Re-Reading the config from %s."
-msgstr ""
+msgstr "Повторное чтение конфигурации по адресу %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1411
 msgid "Re-Reading the config from the default location."
-msgstr ""
+msgstr "Повторное чтение конфигурации по адресу, заданному по умолчанию."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:779
 msgid "Re-evaluate all cells above the one the cursor is in"
@@ -5512,11 +5547,11 @@ msgstr "Чтение вывода Maxima: %li байт"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:124
 #, c-format
 msgid "Reading the config from %s."
-msgstr ""
+msgstr "Чтение конфигурации по адресу %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:127
 msgid "Reading the config from the default location."
-msgstr ""
+msgstr "Чтение конфигурации по адресу, заданному по умолчанию."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:500
 msgid "Ready for user input"
@@ -5889,7 +5924,7 @@ msgstr "Сохранить стиль в файл"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:882
 msgid "Save the worksheet automatically"
-msgstr ""
+msgstr "Сохранять лист автоматически"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:578
 msgid "Saving failed."
@@ -5914,6 +5949,9 @@ msgid ""
 "(*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|"
 "*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
+"SVG (*.svg)|*.svg|SVGZ (*.svgz)|*.svgz|PNG(*.png)|*.png|JPEG (*.jpg)|*.jpg|"
+"Windows Bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|TIFF (*.tif)|*."
+"tif|X PixMap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7898
 msgid "Scatterplot"
@@ -5925,7 +5963,7 @@ msgstr "График рассеяния..."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:641
 msgid "Search button"
-msgstr ""
+msgstr "Кнопка «Найти»"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3772
 #, c-format
@@ -5983,7 +6021,7 @@ msgstr "Выделить все\tCtrl+A"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:638
 msgid "Select All button"
-msgstr ""
+msgstr "Кнопка «Выделить все»"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1270
 msgid "Select Maxima program"
@@ -6012,7 +6050,7 @@ msgstr "Выбрать способ отображения"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:188
 msgid "Selected language: "
-msgstr ""
+msgstr "Выбранный язык:"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:90
 msgid ""
@@ -6028,11 +6066,11 @@ msgstr "Выделение"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:265
 msgid "Send all cells to maxima"
-msgstr ""
+msgstr "Отправить все поля в Maxima"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:260
 msgid "Send the current cell to maxima"
-msgstr ""
+msgstr "Отправить текущее поле в Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2030
 msgid "Sending Maxima a SIGINT signal."
@@ -6150,7 +6188,7 @@ msgstr "Установить увеличение в 80%"
 #: /home/gunter/src/wxmaxima/src/main.cpp:128
 #, c-format
 msgid "Setting Maxima's locale to %s."
-msgstr ""
+msgstr "Установка локали Maxima в значение %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3644
 msgid "Setting a few prerequisites for wxMaxima"
@@ -6276,15 +6314,15 @@ msgstr "Показывать длинные выражения:"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1570
 msgid "Show max. 100 digits"
-msgstr ""
+msgstr "Показывать не более 100 цифр"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1568
 msgid "Show max. 20 digits"
-msgstr ""
+msgstr "Показывать не более 20 цифр"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1569
 msgid "Show max. 50 digits"
-msgstr ""
+msgstr "Показывать не более 50 цифр"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:304
 msgid "Show section numbers"
@@ -6292,23 +6330,23 @@ msgstr "Показывать номера разделов"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:624
 msgid "Show the \"New\" button?"
-msgstr ""
+msgstr "Показывать кнопку «Создать»?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:645
 msgid "Show the \"help\" button?"
-msgstr ""
+msgstr "Показывать кнопку «Справка»?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:642
 msgid "Show the \"search\" button?"
-msgstr ""
+msgstr "Показывать кнопку «Найти»?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:639
 msgid "Show the \"select all\" button?"
-msgstr ""
+msgstr "Показывать кнопку «Выделить все»?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:633
 msgid "Show the Copy, Cut and the Paste button?"
-msgstr ""
+msgstr "Показывать кнопки «Копировать», «Вырезать» и «Вставить»?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5919
 msgid "Show the definition of function:"
@@ -6316,15 +6354,15 @@ msgstr "Показать определение функции:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:627
 msgid "Show the open and the save button?"
-msgstr ""
+msgstr "Показывать кнопки «Открыть» и «Сохранить»?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:636
 msgid "Show the preferences button?"
-msgstr ""
+msgstr "Показывать кнопку «Параметры»?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:630
 msgid "Show the print button?"
-msgstr ""
+msgstr "Показывать кнопку «Печать»?"
 
 # tips
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:233
@@ -6685,7 +6723,7 @@ msgstr "Знак суммы"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:434
 msgid "Suppressing a redraw during printing/export"
-msgstr ""
+msgstr "Подавление обновление изображения на экране при печати/экспорте"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2851
 msgid "Switched to lisp mode after receiving a lisp prompt!"
@@ -6912,7 +6950,7 @@ msgstr "Обратное преобразование Лапласа."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:174
 msgid "The key combination Shift+Space results in a non-breakable space."
-msgstr ""
+msgstr "Комбинация клавиш Shift+Пробел позволяет создать неразрывный пробел."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6981
 msgid ""
@@ -6941,6 +6979,8 @@ msgid ""
 "The maximum size of the expressions wxMaxima is allowed to display can be "
 "changed in the configuration dialogue."
 msgstr ""
+"Максимальный размер выражений для отображения в wxMaxima можно изменить в "
+"диалоге настройки"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2118
 msgid "The next plot's title"
@@ -6967,6 +7007,8 @@ msgid ""
 "The options the document class LaTeX is instructed to use for our documents "
 "gets."
 msgstr ""
+"Параметры класса документа, который LaTeX должен использовать для "
+"создаваемых документов."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:644
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:689
@@ -7288,7 +7330,7 @@ msgstr "Переключить состояние видимости полей 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:120
 #, c-format
 msgid "Translations are read from %s."
-msgstr ""
+msgstr "Переводы читаются по адресу %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:967
 msgid "Transpose a matrix"
@@ -7313,15 +7355,15 @@ msgstr "Попытка открыть несуществующий файл %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5185
 msgid "Trying to remove the old temp file"
-msgstr ""
+msgstr "Попытка удалить старый временный файл"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5116
 msgid "Trying to restart Maxima"
-msgstr ""
+msgstr "Попытка перезапустить Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1731
 msgid "Trying to restart maxima."
-msgstr ""
+msgstr "Попытка перезапустить Maxima."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:177
 msgid "Turkish"
@@ -7399,7 +7441,7 @@ msgstr "Ограничение отмены («0» означает отсутс
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:63
 #, c-format
 msgid "Unexpected text style %i for TextCell"
-msgstr ""
+msgstr "Непредвиденный стиль текста для текстового поля: %i"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:818
 msgid "Unfold All\tCtrl+Alt+]"
@@ -7444,7 +7486,7 @@ msgstr "Показать содержимое"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1942
 msgid "Unicode symbols:"
-msgstr ""
+msgstr "Символы Юникода:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8891
 msgid "Unterminated comment."
@@ -7506,7 +7548,7 @@ msgstr "Использовать точку как символ умножени
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1065
 msgid "Use jsMath fonts"
-msgstr ""
+msgstr "Использовать шрифты jsMath"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1160
 msgid "Use list"
@@ -7549,7 +7591,7 @@ msgstr "Использовать математические символы Ю�
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1581
 msgid "User labels only"
-msgstr ""
+msgstr "Только пользовательские метки"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:773
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:934
@@ -7664,11 +7706,13 @@ msgid ""
 "Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys and "
 "non-ASCII characters might not work."
 msgstr ""
+"Предупреждение: для GTK_IM_MODULE установлено значение «xim»; возможно, "
+"некоторые комбинации клавиш и символы не из набора ASCII не будут работать."
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:624
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:633
 msgid "Warning: Lookalike chars: "
-msgstr ""
+msgstr "Предупреждение: похожие символы:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4131
 msgid "Welcome to wxMaxima"
@@ -7863,6 +7907,7 @@ msgid ""
 "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
 "\" />\n"
 msgstr ""
+"_%d.gif\"  alt=\"Анимация\" loading=\"lazy\" style=\"max-width:90%%;\" />\n"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5610
 #, c-format
@@ -7870,6 +7915,7 @@ msgid ""
 "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy"
 "\" />"
 msgstr ""
+"_%d.gif\" alt=\"Анимация\" style=\"max-width:90%%;\" loading=\"lazy\" />"
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:46
 msgid "a>b"
@@ -8081,7 +8127,7 @@ msgstr "n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1897
 msgid "nabla sign"
-msgstr ""
+msgstr "знак набла"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1883
 msgid "nand"
@@ -8241,6 +8287,12 @@ msgid ""
 "therefore in most cases don't work as an array index thatneeds to be an "
 "exact integer number."
 msgstr ""
+"оператором [] выполнена попытка извлечения элемента списка, матрицы, "
+"уравнения или массива. Но вместо целого числа использовалось что-то с "
+"неизвестным или отличным от целого числовым значением.\n"
+"Числа с плавающей точкой всегда содержат небольшие ошибки округления; "
+"следовательно, они обычно не подходят для использования в качестве индекса "
+"массива (он должен быть точным целым числом)."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:721
 msgid "the x and the y coordinate."
@@ -8295,7 +8347,7 @@ msgstr "использовать сохранённые фактические �
 #: /home/gunter/src/wxmaxima/src/main.cpp:360
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7744
 msgid "wxMaxima"
-msgstr ""
+msgstr "wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:365
 #, c-format
@@ -8399,6 +8451,9 @@ msgid ""
 "algebra system Maxima based on wxWidgets. For rendering svg graphics it uses "
 "nanosvg (https://github.com/memononen/nanosvg)."
 msgstr ""
+"wxMaxima — кроссплатформенный графический интерфейс для системы "
+"аналитических вычислений Maxima, основанный на wxWidgets. Для обработки svg-"
+"графики используется nanosvg (https://github.com/memononen/nanosvg)."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:180
 msgid ""
@@ -8406,6 +8461,9 @@ msgid ""
 "contribute. Join the wxMaxima development at: https://github.com/wxMaxima-"
 "developers/wxmaxima"
 msgstr ""
+"Проекту wxMaxima требуется участие разработчиков. Исходный код программы "
+"открыт, вы можете внести свой вклад в его разработку. Присоединяйтесь к "
+"разработке wxMaxima: https://githubcom/wxMaxima-developers/wxmaxima"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:177
 msgid ""
@@ -8413,6 +8471,9 @@ msgid ""
 "translate wxMaxima and the manual to your language. Join the wxMaxima "
 "development at: https://github.com/wxMaxima-developers/wxmaxima"
 msgstr ""
+"Проекту wxMaxima требуется участие переводчиков — помогите нам перевести "
+"программу и руководство пользователя на ваш язык. Присоединяйтесь к "
+"разработке wxMaxima: https://github.com/wxMaxima-developers/wxmaxima"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:141
 msgid ""
@@ -8432,6 +8493,9 @@ msgid ""
 "set it automatically offers to enter the last answer to this question the "
 "user has input."
 msgstr ""
+"wxMaxima запоминает ответы на вопросы Maxima. Если этот флажок установлен, "
+"программа автоматически предложит последний введённый пользователем ответ на "
+"вопрос."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:675
 msgid "wxMaxima startup file location: "
@@ -8444,7 +8508,7 @@ msgstr "wxMaxima версии %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1275
 msgid "wxMaxima's license"
-msgstr ""
+msgstr "Лицензия wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:117
 #, c-format
@@ -8604,3 +8668,1082 @@ msgstr "ζ"
 
 #~ msgid "Recalculating changed cell sizes"
 #~ msgstr "Повторное вычисление размеров изменённых полей"
+
+#~ msgid "<br>Lisp: "
+#~ msgstr "<br>Lisp: "
+
+#~ msgid "Artwork by"
+#~ msgstr "Дизайн"
+
+#~ msgid "Not connected."
+#~ msgstr "Нет соединения."
+
+#~ msgid "System info"
+#~ msgstr "Системная информация"
+
+#~ msgid "Toolbar icons"
+#~ msgstr "Значки панели инструментов"
+
+#~ msgid "Translated by"
+#~ msgstr "Переводчик"
+
+#~ msgid "Unicode Support"
+#~ msgstr "Поддержка Юникода"
+
+#~ msgid "Written by"
+#~ msgstr "Разработал"
+
+#~ msgid ""
+#~ "wxMaxima could not find Maxima!\n"
+#~ "\n"
+#~ "Please configure wxMaxima with 'Edit->Configure'.\n"
+#~ "Then start Maxima with 'Maxima->Restart Maxima'."
+#~ msgstr ""
+#~ "wxMaxima не может найти программу Maxima!\n"
+#~ "\n"
+#~ "Настройте wxMaxima в меню «Правка->Настройка» и запустите Maxima снова\n"
+#~ " («Maxima->Перезапустить»)."
+
+#~ msgid ""
+#~ "wxMaxima is a graphical user interface for the computer algebra system "
+#~ "MAXIMA based on wxWidgets."
+#~ msgstr ""
+#~ "wxMaxima — графический интерфейс для системы аналитических вычислений "
+#~ "Maxima, основанный на wxWidgets."
+
+#~ msgid "Ending lisp mode!"
+#~ msgstr "Завершение режима Lisp!"
+
+#~ msgid "Switching to lisp mode for one line!"
+#~ msgstr "Переключение в режим Lisp для одной строки!"
+
+#~ msgid "Switching to lisp mode until a (to-maxima) is encountered!"
+#~ msgstr "Переключение в режим Lisp до получения запроса (to-maxima)!"
+
+#~ msgid "Chinese traditional"
+#~ msgstr "Китайский традиционный"
+
+#, fuzzy
+#~ msgid "untitled %d"
+#~ msgstr "без названия"
+
+#, fuzzy
+#~ msgid "XML Inspector"
+#~ msgstr "Вставить"
+
+#~ msgid "no"
+#~ msgstr "нет"
+
+#, fuzzy
+#~ msgid "Restict Maximum size"
+#~ msgstr "Перезапустить Maxima"
+
+#~ msgid ""
+#~ "\n"
+#~ "Not connected to Maxima!\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Нет соединения с Maxima!\n"
+
+#, fuzzy
+#~ msgid "Maxima has a question"
+#~ msgstr "Вопросы Maxima"
+
+#~ msgid ""
+#~ "wxMaxima could not find tip files.\n"
+#~ "\n"
+#~ "Please check your installation."
+#~ msgstr ""
+#~ "wxMaxima не может найти файлы подсказки.\n"
+#~ "\n"
+#~ "Проверьте правильность установки программы."
+
+#~ msgid "Tips not available, sorry!"
+#~ msgstr "Подсказки недоступны."
+
+#, fuzzy
+#~ msgid "Manually Trigger Evaluation"
+#~ msgstr "Отображать время выполнения команд"
+
+#, fuzzy
+#~ msgid "Maxima Error"
+#~ msgstr "Программа Maxima:"
+
+#, fuzzy
+#~ msgid "Maxima Question"
+#~ msgstr "Вопросы Maxima"
+
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr " << Слишком длинное выражение! >>"
+
+#~ msgid " << Unfold >>"
+#~ msgstr "<< Развернуть >>"
+
+#~ msgid "&Copy"
+#~ msgstr "Копировать"
+
+#, fuzzy
+#~ msgid "&Describe\tCtrl+H"
+#~ msgstr "Описать (describe)\tCtrl-H"
+
+#, fuzzy
+#~ msgid "&Edit input\tCtrl+E"
+#~ msgstr "Редактировать ввод\tCtrl-E"
+
+#~ msgid "&Input\tF7"
+#~ msgstr "Ввод\tF7"
+
+#~ msgid "&Monitor file"
+#~ msgstr "Следить за файлом"
+
+#~ msgid "&New\tCtrl-N"
+#~ msgstr "Новый\tCtrl-N "
+
+#, fuzzy
+#~ msgid "&New Window\tCtrl+N"
+#~ msgstr "Новое окно\tCtrl-N "
+
+#, fuzzy
+#~ msgid "&Re-evaluate input\tCtrl+R"
+#~ msgstr "Пересчитать ввод\tCtrl-R"
+
+#, fuzzy
+#~ msgid "&Read file"
+#~ msgstr "Прочитать файл"
+
+#~ msgid "&Text\tF6"
+#~ msgstr "Текст\tF6"
+
+#, fuzzy
+#~ msgid "<< Nothing to display >>"
+#~ msgstr " << Слишком длинное выражение! >>"
+
+#~ msgid "Adjustment for the size of greek font."
+#~ msgstr "Корректировка размера греческого шрифта."
+
+#~ msgid "Adjustment:"
+#~ msgstr "Корректировка:"
+
+#~ msgid ""
+#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
+#~ "lisp)|*.lisp"
+#~ msgstr ""
+#~ "Все|*|Пакеты Maxima (*.mac)|*.mac|Демо-файлы (*.dem)|*.dem|Lisp-файлы (*."
+#~ "lisp)|*.lisp"
+
+#~ msgid "Animation"
+#~ msgstr "Анимация"
+
+#~ msgid "Apply function:"
+#~ msgstr "Применить функцию:"
+
+#~ msgid "Autoload a file when it is updated"
+#~ msgstr "Загружать файл при его изменении"
+
+#~ msgid "Background"
+#~ msgstr "Фон"
+
+#~ msgid "Basic"
+#~ msgstr "Обычная"
+
+#~ msgid "Button panel:"
+#~ msgstr "Панель:"
+
+#~ msgid "C&lear screen"
+#~ msgstr "Очистить экран"
+
+#~ msgid "Char poly of:"
+#~ msgstr "Характеристический полином:"
+
+#~ msgid "Close document?"
+#~ msgstr "Закрыть документ?"
+
+#~ msgid "Comment out"
+#~ msgstr "Закомментировать"
+
+#~ msgid "Copy &text"
+#~ msgstr "Копировать текст"
+
+#~ msgid "Copy As Image"
+#~ msgstr "Копировать как изображение"
+
+#~ msgid "Copy LaTeX"
+#~ msgstr "Копировать LaTeX"
+
+#~ msgid "Copy cells"
+#~ msgstr "Копировать поля"
+
+#, fuzzy
+#~ msgid "Copy input"
+#~ msgstr "Копировать текст"
+
+#, fuzzy
+#~ msgid "Copy input from console"
+#~ msgstr "Копировать выделение из консоли"
+
+#, fuzzy
+#~ msgid "Copy selected cell(s)"
+#~ msgstr "Копировать выделенные поля"
+
+#~ msgid "Copy selection from console (including linebreaks)"
+#~ msgstr "Копировать выделение из консоли (включая переводы строки)"
+
+#~ msgid "Copy selection from console to input line"
+#~ msgstr "Копировать выделение из консоли в командную строку"
+
+#, fuzzy
+#~ msgid "Copy selection to clipboard when selection is made in document."
+#~ msgstr ""
+#~ "Копировать выделение в буфер обмена при выполнении выделения в консоли."
+
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Копировать в буфер при выделении"
+
+#, fuzzy
+#~ msgid "Copy to input"
+#~ msgstr "Перейти к вводу\tF4"
+
+#, fuzzy
+#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
+#~ msgstr "Пересчитать все поля\tCtrl-Shift-R"
+
+#~ msgid "Cut selection from document"
+#~ msgstr "Вырезать выделение из документа"
+
+#~ msgid "Decrease fontsize in document"
+#~ msgstr "Уменьшить шрифт в документе"
+
+#~ msgid "Default port:"
+#~ msgstr "Порт по умолчанию:"
+
+#, fuzzy
+#~ msgid "Delete selected cell(s)"
+#~ msgstr "Удалить выделенные поля"
+
+#~ msgid "Delete selected input/output group"
+#~ msgstr "Удалить выделенную группу ввода/вывода"
+
+#~ msgid "Delete selection"
+#~ msgstr "Удалить выделение"
+
+#~ msgid "Delete the contents of console."
+#~ msgstr "Удалить содержимое консоли."
+
+#~ msgid "Describe"
+#~ msgstr "Описать"
+
+#~ msgid "Document "
+#~ msgstr "Документ"
+
+#~ msgid ""
+#~ "Document not saved!\n"
+#~ "\n"
+#~ "Close current document and lose all changes?"
+#~ msgstr ""
+#~ "Документ не сохранен!\n"
+#~ "\n"
+#~ "Закрыть текущий документ с потерей всех изменений?"
+
+#~ msgid ""
+#~ "Document not saved!\n"
+#~ "\n"
+#~ "Quit wxMaxima and lose all changes?"
+#~ msgstr ""
+#~ "Документ не сохранен!\n"
+#~ "\n"
+#~ "Выйти из wxMaxima с потерей всех изменений?"
+
+#~ msgid "Edit input"
+#~ msgstr "Редактировать ввод"
+
+#~ msgid "Edit selected input"
+#~ msgstr "Редактировать выделенный ввод"
+
+#~ msgid "Edit text"
+#~ msgstr "Редактировать текст"
+
+#~ msgid "Error %d"
+#~ msgstr "Ошибка %d"
+
+#~ msgid "Export to HTML file"
+#~ msgstr "Экспортировать в HTML-файл"
+
+#~ msgid "Find..."
+#~ msgstr "Найти..."
+
+#~ msgid "Font family:"
+#~ msgstr "Семейство шрифтов:"
+
+#~ msgid "Font size in console window."
+#~ msgstr "Размер шрифта в консоли."
+
+#~ msgid "Font size:"
+#~ msgstr "Размер шрифта:"
+
+#, fuzzy
+#~ msgid "Font used for displaying unicode glyphs in document."
+#~ msgstr "Шрифт для изображения символов юникода в консоли."
+
+#~ msgid "From array:"
+#~ msgstr "Из массива:"
+
+#~ msgid "From equations:"
+#~ msgstr "Из уравнений:"
+
+#~ msgid "Full"
+#~ msgstr "Полная"
+
+#, fuzzy
+#~ msgid "Functions and macros"
+#~ msgstr "Имена функций"
+
+#, fuzzy
+#~ msgid "Go to input\tCtrl+Shift+D"
+#~ msgstr "Заголовок\tCtrl-Shift-F6"
+
+#~ msgid "Go to input\tF4"
+#~ msgstr "Перейти к вводу\tF4"
+
+#~ msgid "Go to output window\tF3"
+#~ msgstr "Перейти к окну вывода\tF3"
+
+#~ msgid "Height:"
+#~ msgstr "Высота:"
+
+#~ msgid "Hidden groups"
+#~ msgstr "Скрытые группы"
+
+#~ msgid "I&nsert"
+#~ msgstr "Вставить"
+
+#~ msgid "INPUT:"
+#~ msgstr "ВВОД:"
+
+#~ msgid ""
+#~ "If you want to input more than one line at a time, use the 'Multiline "
+#~ "input' button at the right of the input line."
+#~ msgstr ""
+#~ "Если требуется ввести более одной строки, используйте кнопку "
+#~ "'Многострочный ввод' справа от командной строки"
+
+#~ msgid "Increase fontsize in document"
+#~ msgstr "Увеличить размер шрифта в документе"
+
+#~ msgid "Input"
+#~ msgstr "Ввод"
+
+#, fuzzy
+#~ msgid "Insert input cell"
+#~ msgstr "Вставить новое поле ввода"
+
+#~ msgid "Insert input group"
+#~ msgstr "Вставить группу"
+
+#~ msgid "Insert new input before selected input"
+#~ msgstr "Вставить новый ввод до выделенного ввода"
+
+#~ msgid "Insert section before selected input"
+#~ msgstr "Вставить фрагмент до выделенного ввода"
+
+#~ msgid "Insert text"
+#~ msgstr "Вставить текст"
+
+#~ msgid "Insert text before selected input"
+#~ msgstr "Вставить текст до выделенного ввода"
+
+#~ msgid "Insert title before selected input"
+#~ msgstr "Вставить заголовок до выделенного ввода"
+
+#~ msgid ""
+#~ "Instead of typing a long pathname of a file to input line, you can select "
+#~ "that file using 'File->Select file'."
+#~ msgstr ""
+#~ "Вместо того, чтобы печатать длинный путь к файлу в командной строке, "
+#~ "можно использовать 'Файл->Выбрать файл'."
+
+#~ msgid "Integrate ..."
+#~ msgstr "Интегрировать ..."
+
+#~ msgid "Integrate:"
+#~ msgstr "Интегрировать:"
+
+#~ msgid "Labels"
+#~ msgstr "Метки"
+
+#~ msgid "Limit of:"
+#~ msgstr "Предел выражения:"
+
+#~ msgid "Main prompts"
+#~ msgstr "Основное приглашение"
+
+#~ msgid "Map function:"
+#~ msgstr "Применить функцию:"
+
+#~ msgid "Maxima session (*.wxm)|*.wxm"
+#~ msgstr "Сессия Maxima (*.wxm)|*.wxm"
+
+#~ msgid "Multiline input"
+#~ msgstr "Многострочный ввод"
+
+#, fuzzy
+#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
+#~ msgstr "Новый &заголовок\tCtrl-Shift-F6"
+
+#~ msgid "Off"
+#~ msgstr "Выключить"
+
+#~ msgid "Open multiline input dialog"
+#~ msgstr "Открыть диалог многострочного ввода"
+
+#~ msgid "Open session from a file"
+#~ msgstr "Открыть сессию из файла"
+
+#~ msgid "Other prompts"
+#~ msgstr "Другие приглашения"
+
+#~ msgid "Panes"
+#~ msgstr "Панели"
+
+#~ msgid "Parametric"
+#~ msgstr "Параметрический"
+
+#, fuzzy
+#~ msgid "Paste cell(s) to document"
+#~ msgstr "Вставить поля"
+
+#, fuzzy
+#~ msgid "Paste input"
+#~ msgstr "Вставить ввод"
+
+#, fuzzy
+#~ msgid "Paste input to console"
+#~ msgstr "Выделить последний ввод в консоли!"
+
+#~ msgid "Product..."
+#~ msgstr "Произведение ..."
+
+#~ msgid "Product:"
+#~ msgstr "Произведение:"
+
+#~ msgid "Quit?"
+#~ msgstr "Выйти?"
+
+#, fuzzy
+#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
+#~ msgstr "Пересчитать ввод\tCtrl-R"
+
+#, fuzzy
+#~ msgid "Re-evaluate all input"
+#~ msgstr "Пересчитать ввод"
+
+#~ msgid "Re-evaluate input"
+#~ msgstr "Пересчитать ввод"
+
+#, fuzzy
+#~ msgid "Read file from command line"
+#~ msgstr "Прочитать сессию из файла"
+
+#, fuzzy
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Отмена\tCtrl+Z"
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Сохранить изменения перед закрытием?"
+
+#, fuzzy
+#~ msgid "Save changes?"
+#~ msgstr "Сохранить изображение..."
+
+#~ msgid "Save session"
+#~ msgstr "Сохранить сессию"
+
+#~ msgid "Save session to a file"
+#~ msgstr "Сохранить сессию в файл"
+
+#~ msgid "Save to file"
+#~ msgstr "Сохранить в файл"
+
+#~ msgid "Select &file"
+#~ msgstr "Выбрать файл"
+
+#~ msgid "Select a file"
+#~ msgstr "Выбрать файл"
+
+#~ msgid "Select a file (copy filename to input line)"
+#~ msgstr "Выбрать файл (копировать имя файла в командную строку)"
+
+#~ msgid "Select file to open"
+#~ msgstr "Выбрать файл для ввода"
+
+#, fuzzy
+#~ msgid "Select last input\tCtrl+D"
+#~ msgstr "Выделить последний ввод\tF2"
+
+#~ msgid "Select last input\tF2"
+#~ msgstr "Выделить последний ввод\tF2"
+
+#, fuzzy
+#~ msgid "Select last input in the colsole!"
+#~ msgstr "Выделить последний ввод в консоли!"
+
+#~ msgid "Select last input in the console!"
+#~ msgstr "Выделить последний ввод в консоли!"
+
+#~ msgid "Select package to load"
+#~ msgstr "Выбрать пакет для загрузки"
+
+#, fuzzy
+#~ msgid "Selection to input\tCtrl+Shift+E"
+#~ msgstr "Выделение во ввод\tF5"
+
+#~ msgid "Selection to input\tF5"
+#~ msgstr "Выделение во ввод\tF5"
+
+#~ msgid "Send ranges to &gnuplot"
+#~ msgstr "Передать пределы в gnuplot"
+
+#~ msgid "Set focus to the input line"
+#~ msgstr "Установить фокус на командную строку"
+
+#~ msgid "Set focus to the output window"
+#~ msgstr "Установить фокус на окно вывода"
+
+#~ msgid "Show Maxima header"
+#~ msgstr "Показывать заголовок Maxima"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr "Показывать начальный заголовок с информацией о Maxima."
+
+#~ msgid "Show the description of a command"
+#~ msgstr "Показать описание команды"
+
+#~ msgid "Show the description of command/variable:"
+#~ msgstr "Показать описание команды или переменной:"
+
+#~ msgid "Solve &numerically ..."
+#~ msgstr "Решить численно ..."
+
+#~ msgid "Solve equation(s):"
+#~ msgstr "Решить уравнение(ния):"
+
+#~ msgid "Solve equation:"
+#~ msgstr "Решить уравнение:"
+
+#~ msgid "Solve numerically"
+#~ msgstr "Решить численно"
+
+#~ msgid "Solve numerically ..."
+#~ msgstr "Решить численно ..."
+
+#~ msgid "Start animation"
+#~ msgstr "Запустить анимацию"
+
+#~ msgid "Substitute ..."
+#~ msgstr "Подставить ..."
+
+#~ msgid "Substitute:"
+#~ msgstr "Подставить:"
+
+#~ msgid "Substitution"
+#~ msgstr "Подстановка"
+
+#~ msgid "Sum of:"
+#~ msgstr "Сумма:"
+
+#~ msgid "Sum..."
+#~ msgstr "Суммировать..."
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "Текстовое поле"
+
+#, fuzzy
+#~ msgid "To &Float\tCtrl+F"
+#~ msgstr "В число с плавающей точкой\tCtrl-F"
+
+#~ msgid ""
+#~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
+#~ "matrix' from menus."
+#~ msgstr ""
+#~ "Для того, чтобы задать матрицу, введите 'A:' в командной строке и "
+#~ "выберите 'Алгебра->Ввести матрицу' в меню."
+
+#~ msgid ""
+#~ "To put parenthesis around an expression you previously typed into the "
+#~ "input line, select the expression with mouse and then type '('."
+#~ msgstr ""
+#~ "Чтобы поставить скобки вокруг ранее введенного выражения, достаточно "
+#~ "выделить это выражение с помощью мыши и нажать '('."
+
+#~ msgid ""
+#~ "To repeat a long command you previously entered in the input line, type "
+#~ "in the first few letters to the input line and then pres tab key."
+#~ msgstr ""
+#~ "Чтобы повторить ранее введенную длинную команду, достаточно напечатать "
+#~ "несколько первых букв в командной строке и нажать клавишу табуляции."
+
+#~ msgid "Unfold"
+#~ msgstr "Развернуть"
+
+#~ msgid "Use &Taylor series"
+#~ msgstr "Использовать ряд Тейлора"
+
+#~ msgid "Use greek font to display greek characters."
+#~ msgstr "Использовать греческий шрифт для отображения греческих букв"
+
+#~ msgid "Use greek font:"
+#~ msgstr "Использовать греческий шрифт:"
+
+#~ msgid "Width:"
+#~ msgstr "Ширина:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Писать соответствующие скобки в текстовых элементах управления."
+
+#~ msgid ""
+#~ "You can delete output/input group if you select the input label and "
+#~ "choose 'Edit->Delete selection' from menus."
+#~ msgstr ""
+#~ "Для удаления группы ввода/вывода необходимо выделить метку ввода и "
+#~ "использовать пункт 'Правка->Удалить выделение' в меню."
+
+#~ msgid ""
+#~ "You can hide the output by clicking on the output label. Clicking on the "
+#~ "input label hides input and output. Clicking on the label again, shows "
+#~ "hidden expressions."
+#~ msgstr ""
+#~ "Результат вычисления можно скрыть при щелчке на метке результата "
+#~ "вычисления. При щелчке на метке ввода скрывается как ввод, так и вывод. "
+#~ "Повторный щелчок на метке снова отображает скрытые выражения."
+
+#~ msgid ""
+#~ "You can load a file into maxima by dragging it from a file browser to the "
+#~ "console window."
+#~ msgstr ""
+#~ "Можно загрузить файл в Maxima просто перетаскивая его из браузера файлов "
+#~ "в окно консоли."
+
+#~ msgid ""
+#~ "You can load files into maxima if you drop them on the console window. "
+#~ "You can select a custom function for loading your file. If your custom "
+#~ "function is 'A:read_matrix(%file%, csv)', then %file% will be replaced "
+#~ "with the filename of your file."
+#~ msgstr ""
+#~ "Файл можно загрузить в Maxima, просто перетаскивая его в окно консоли. "
+#~ "Можно определить свою собственную функцию для загрузки файлов. Если, "
+#~ "например, эта функция определена как 'A:read_matrix(%file%, csv)', то "
+#~ "%file% заменяется на имя загружаемого файла."
+
+#~ msgid ""
+#~ "You can select the output of maxima in wxMaxima console with mouse and "
+#~ "copy it to the clipboard with 'Edit->copy'."
+#~ msgstr ""
+#~ "Вывод Maxima можно выделить в консоли wxMaxima мыштю и копировать в буфер "
+#~ "обмена при помощи 'Правка->Копировать'."
+
+#~ msgid ""
+#~ "You can use the maxima tex command to print the expression in TeX form. "
+#~ "Then you can copy it to text editor to include it in you paper."
+#~ msgstr ""
+#~ "Для вывода выражений в формате TeX можно использовать функцию tex. "
+#~ "Результат затем можно скопировать в любой текстовый редактор и включить в "
+#~ "Вашу статью."
+
+#, fuzzy
+#~ msgid "Ypsilon"
+#~ msgstr "Эпсилон:"
+
+#~ msgid "Zoom set to "
+#~ msgstr "Установить увеличение в "
+
+#~ msgid "aquamarine"
+#~ msgstr "аквамарин"
+
+#~ msgid "around:"
+#~ msgstr "в окрестности:"
+
+#~ msgid "black"
+#~ msgstr "черный"
+
+#~ msgid "blue"
+#~ msgstr "синий"
+
+#~ msgid "blue violet"
+#~ msgstr "сине-фиолетовый"
+
+#~ msgid "brown"
+#~ msgstr "коричневый"
+
+#~ msgid "by variable:"
+#~ msgstr "по переменной:"
+
+#~ msgid "cadet blue"
+#~ msgstr "кадетский синий"
+
+#~ msgid "change var:"
+#~ msgstr "замена переменной:"
+
+#~ msgid "coral"
+#~ msgstr "коралловый"
+
+#~ msgid "cornflower blue"
+#~ msgstr "васильковый"
+
+#~ msgid "cyan"
+#~ msgstr "голубой"
+
+#~ msgid "dark green"
+#~ msgstr "темно-зеленый"
+
+#~ msgid "dark grey"
+#~ msgstr "темно-серый"
+
+#~ msgid "dark olive green"
+#~ msgstr "темно-оливковый"
+
+#~ msgid "dark orchid"
+#~ msgstr "темная орхидея"
+
+#~ msgid "dark slate blue"
+#~ msgstr "темный серовато-синий"
+
+#~ msgid "dark slate grey"
+#~ msgstr "темный сероватый"
+
+#~ msgid "dark turquoise"
+#~ msgstr "темно-бирюзовый"
+
+#~ msgid "dim grey"
+#~ msgstr "тускло-серый"
+
+#~ msgid "eliminate variables:"
+#~ msgstr "исключить переменные:"
+
+#~ msgid "equation:"
+#~ msgstr "уравнение:"
+
+#~ msgid "firebrick"
+#~ msgstr "кирпичный"
+
+#~ msgid "for function(s):"
+#~ msgstr "для функции(ций)"
+
+#~ msgid "for variable(s):"
+#~ msgstr "для переменной(ных):"
+
+#~ msgid "forest green"
+#~ msgstr "лесной зеленый"
+
+#~ msgid "from expression:"
+#~ msgstr "из выражения:"
+
+#~ msgid "function:"
+#~ msgstr "функция:"
+
+#~ msgid "gold"
+#~ msgstr "золотой"
+
+#~ msgid "goldenrod"
+#~ msgstr "золотистый"
+
+#~ msgid "green"
+#~ msgstr "зеленый"
+
+#~ msgid "green yellow"
+#~ msgstr "зелено-желтый"
+
+#~ msgid "grey"
+#~ msgstr "серый"
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "Упростить"
+
+#~ msgid "khaki"
+#~ msgstr "хаки"
+
+#~ msgid "light blue"
+#~ msgstr "светло-синий"
+
+#~ msgid "light grey"
+#~ msgstr "светло-серый"
+
+#~ msgid "light steel blue"
+#~ msgstr "светло-стальной"
+
+#~ msgid "lime green"
+#~ msgstr "зеленый лайм"
+
+#~ msgid "lines hidden"
+#~ msgstr "строк скрыто"
+
+#~ msgid "maroon"
+#~ msgstr "каштановый"
+
+#~ msgid "medium aquamarine"
+#~ msgstr "средний аквамарин"
+
+#~ msgid "medium blue"
+#~ msgstr "средний синий"
+
+#~ msgid "medium forrest green"
+#~ msgstr "средний лесной зеленый"
+
+#~ msgid "medium goldenrod"
+#~ msgstr "средний золотистый"
+
+#~ msgid "medium orchid"
+#~ msgstr "средняя орхидея"
+
+#~ msgid "medium sea green"
+#~ msgstr "средняя морская зелень"
+
+#~ msgid "medium slate blue"
+#~ msgstr "средний серовато-синий"
+
+#~ msgid "medium spring green"
+#~ msgstr "средняя весенняя зелень"
+
+#~ msgid "medium turquoise"
+#~ msgstr "средний бирюзовый"
+
+#~ msgid "medium violet red"
+#~ msgstr "средний фиолетово-красный"
+
+#~ msgid "midnight blue"
+#~ msgstr "полночный синий"
+
+#, fuzzy
+#~ msgid "ny"
+#~ msgstr "морской"
+
+#~ msgid "orange"
+#~ msgstr "оранжевый"
+
+#~ msgid "orange red"
+#~ msgstr "оранжево-красный"
+
+#~ msgid "pale green"
+#~ msgstr "бледно-зеленый"
+
+#~ msgid "plum"
+#~ msgstr "сливовый"
+
+#~ msgid "purple"
+#~ msgstr "пурпурный"
+
+#~ msgid "red"
+#~ msgstr "красный"
+
+#~ msgid "salmon"
+#~ msgstr "семга"
+
+#~ msgid "sea green"
+#~ msgstr "морской зеленый"
+
+#~ msgid "sienna"
+#~ msgstr "сиена"
+
+#~ msgid "sky blue"
+#~ msgstr "небесно-голубой"
+
+#~ msgid "spring green"
+#~ msgstr "весенний зеленый"
+
+#~ msgid "steel blue"
+#~ msgstr "стальной"
+
+#~ msgid "thistle"
+#~ msgstr "чертополох"
+
+#~ msgid "turquoise"
+#~ msgstr "бирюзовый"
+
+#~ msgid "untitled.wxm"
+#~ msgstr "untitled.wxm"
+
+#~ msgid "variable"
+#~ msgstr "переменная"
+
+#~ msgid "variable:"
+#~ msgstr "переменная:"
+
+#~ msgid "violet"
+#~ msgstr "фиолетовый"
+
+#~ msgid "wheat"
+#~ msgstr "пшеничный"
+
+#~ msgid "when variable:"
+#~ msgstr "когда переменная:"
+
+#~ msgid "white"
+#~ msgstr "белый"
+
+#~ msgid "with:"
+#~ msgstr "на:"
+
+#~ msgid ""
+#~ "wxMaxima has nice plot dialogs. If you want to modify previous plot "
+#~ "commands, access them using command history and then push the plot button."
+#~ msgstr ""
+#~ "wxMaxima имеет удобные диалоги для рисования графиков.  Если требуется "
+#~ "модифицировать предыдущий график, соответствующую команду можно "
+#~ "исправить, используя историю команд, и нажав кнопку 'График'."
+
+#~ msgid ""
+#~ "wxMaxima is a graphical user interface for the\n"
+#~ "computer algebra system Maxima based on wxWidgets."
+#~ msgstr ""
+#~ "wxMaxima - графический интерфейс для\n"
+#~ "системы аналитических вычислений Maxima, основаный на wxWidgets."
+
+#~ msgid ""
+#~ "wxMaxima is a wxWidgets interface for the\n"
+#~ "computer algebra system MAXIMA.\n"
+#~ "\n"
+#~ "Version: %s.\n"
+#~ "License: GPL.\n"
+#~ "\n"
+#~ "%s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "wxMaxima - графический интерфейс для системы аналитических вычислений "
+#~ "Maxima, основаный на wxWidgets.\n"
+#~ "\n"
+#~ "Версия: %s.\n"
+#~ "Лицензия: GPL.\n"
+#~ "\n"
+#~ "%s\n"
+#~ "%s"
+
+#~ msgid "wxMaxima options"
+#~ msgstr "Опции wxMaxima"
+
+#~ msgid "wxMaxima session"
+#~ msgstr "Сессия wxMaxima"
+
+#~ msgid "wxMaxima session (*.wxm)|*.wxm"
+#~ msgstr "Сессия wxMaxima (*.wxm)|*.wxm"
+
+#, fuzzy
+#~ msgid "wxMaxima session (*.wxm)|*.wxm|Maxima batch file (*mac)|*.mac|All|*"
+#~ msgstr "Сессия wxMaxima (*.wxm)|*.wxm"
+
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "Документ wxMaxima (*.wxm)|*.wxm|XML-документ wxMaxima (*.wxmx)|*.wxmx| "
+#~ "Пакетный файл  Maxima (*.mac)|*.mac*"
+
+#~ msgid ""
+#~ "wxMaxima's input line has command history available using up and down "
+#~ "keys and command completion based on previous input available using the "
+#~ "tab key."
+#~ msgstr ""
+#~ "Командная строка wxMaxima хранит историю команд, доступную при помощи "
+#~ "клавиш стрелка вверх/вниз, и выполняет автодополнение команд, основанное "
+#~ "на истории, по клавише табуляции."
+
+#~ msgid "yellow green"
+#~ msgstr "желто-зеленый"
+
+#, fuzzy
+#~ msgid "ypsilon"
+#~ msgstr "Эпсилон:"
+
+#~ msgid "Got notified about data from maxima, but there was no data."
+#~ msgstr ""
+#~ "Получено уведомление о поступлении данных от Maxima, но данные не "
+#~ "получены."
+
+#~ msgid "&Cell"
+#~ msgstr "Поле"
+
+#~ msgid "Mean"
+#~ msgstr "Среднее"
+
+#~ msgid ""
+#~ "There was and error during GIF export!\n"
+#~ "\n"
+#~ "Make sure ImageMagick is installed and wxMaxima can find the convert "
+#~ "program."
+#~ msgstr ""
+#~ "Не удалось произвести экспорт в GIF!\n"
+#~ "\n"
+#~ "Убедитесь, что программа ImageMagick установлена и wxMaxima может ее "
+#~ "запускать."
+
+#~ msgid "Search for:"
+#~ msgstr "Найти:"
+
+#~ msgid "Whole word"
+#~ msgstr "Целые слова"
+
+#~ msgid "&Replace"
+#~ msgstr "З&аменить"
+
+#~ msgid "Search"
+#~ msgstr "Поиск"
+
+#~ msgid "(bookmarks)"
+#~ msgstr "(закладки)"
+
+#~ msgid "Normal font:"
+#~ msgstr "Обычный шрифт:"
+
+#~ msgid "Fixed font:"
+#~ msgstr "Моноширинный шрифт:"
+
+#~ msgid "Preview:"
+#~ msgstr "Предпросмотр:"
+
+#~ msgid " of "
+#~ msgstr " из "
+
+#~ msgid "Help Browser Options"
+#~ msgstr "Настройки"
+
+#~ msgid "Add current page to bookmarks"
+#~ msgstr "Добавить текущую страницу в закладки"
+
+#~ msgid "Remove current page from bookmarks"
+#~ msgstr "Удалить текущую страницу из закладок"
+
+#~ msgid "Case sensitive"
+#~ msgstr "С учетом регистра"
+
+#~ msgid "Whole words only"
+#~ msgstr "Только целые слова"
+
+#~ msgid "Search in all books"
+#~ msgstr "Во всех книгах"
+
+#~ msgid "Maxima manual"
+#~ msgstr "Руководство Maxima"
+
+#~ msgid "Go back"
+#~ msgstr "Назад"
+
+#~ msgid "Go forward"
+#~ msgstr "Вперед"
+
+#~ msgid "Go one level up in document hierarchy"
+#~ msgstr "На уровень вверх"
+
+#~ msgid "Previous page"
+#~ msgstr "Предыдущая страница"
+
+#~ msgid "Next page"
+#~ msgstr "Следующая страница"
+
+#~ msgid "Show/hide navigation panel"
+#~ msgstr "Показать/скрыть панель навигации"
+
+#~ msgid "&Next Tip"
+#~ msgstr "&Следущий совет"
+
+#~ msgid "Map..."
+#~ msgstr "Применить к элементам..."
