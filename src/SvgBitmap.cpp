@@ -135,4 +135,4 @@ wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
 
 // 
 struct NSVGrasterizer* SvgBitmap::m_svgRast = NULL;
-wxBitmap SvgBitmap::m_invalidBitmap_unscaled = wxBitmap(wxImage(invalidImage_xpm));
+wxBitmap SvgBitmap::m_invalidBitmap_unscaled = wxBitmap(wxImage(invalidImage_xpm), 24);
