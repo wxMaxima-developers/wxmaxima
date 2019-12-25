@@ -751,9 +751,13 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       wxString tagName(node->GetName());
 
       Cell *tmp = NULL;
-      if (tagName == wxT("v"))
+      if ((tagName == "v") || (tagName == "mi"))
       {               // Variables (atoms)
         tmp = ParseText(node->GetChildren(), TS_VARIABLE);
+      }
+      else if (tagName == wxT("mo"))
+      {          // operator
+        tmp = ParseText(node->GetChildren(), TS_FUNCTION);
       }
       else if (tagName == wxT("t"))
       {          // Other text
@@ -764,7 +768,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
           style = TS_WARNING;
         tmp = ParseText(node->GetChildren(), style);
       }
-      else if (tagName == wxT("n"))
+      else if ((tagName == "n") || (tagName == "mn"))
       {          // Numbers
         tmp = ParseText(node->GetChildren(), TS_NUMBER);
       }
@@ -845,7 +849,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       { // A limit tag
         tmp = ParseLimitTag(node);
       }
-      else if ((tagName == wxT("r")) || (tagName == wxT("mrow")))
+      else if ((tagName == "r") || (tagName == "mrow"))
       { // A group of tags
         tmp = ParseTag(node->GetChildren());
       }
