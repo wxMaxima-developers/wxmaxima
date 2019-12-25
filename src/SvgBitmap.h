@@ -45,17 +45,18 @@ public:
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
 
+  /*! An "invalid bitmap" sign
+    
+    We should make the image static and generate it on start-up 
+    so whenever we need it it already would be available as a 
+    refcounted object and therefore be likely to 
+    be available even if the problem was a failing malloc(). 
+    But with wx3.0 gtk crashes in this case.
+   */
   static wxBitmap GetInvalidBitmap(int targetSize);
 private:
   //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;
-  /*! An "invalid bitmap" sign
-  
-    We generate this image on start-up so whenever we need it it already
-    is available as a refcounted object and therefore is likely to
-    be available even if the problem was a failing malloc()
-   */
-  static wxBitmap m_invalidBitmap_unscaled;
 };
 
 #endif // SVGBITMAP_H

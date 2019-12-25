@@ -53,17 +53,17 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   // Render the .svgz image
   if(m_svgRast == NULL)
     m_svgRast = nsvgCreateRasterizer();
-//  if(m_svgRast == NULL)
-//    wxBitmap::operator=(GetInvalidBitmap(width));
+  if(m_svgRast == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<char> svgContents((char *)strdup(svgContents_string.utf8_str()));
-//  if(svgContents == NULL)
-//    wxBitmap::operator=(GetInvalidBitmap(width));
+  if(svgContents == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<NSVGimage> svgImage(nsvgParse(svgContents.get(), "px", 96));
-//  if(svgImage == NULL)
-//    wxBitmap::operator=(GetInvalidBitmap(width));
+  if(svgImage == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<unsigned char> imgdata(new unsigned char[width*height*4]);        
-//  if(imgdata == NULL)
-//    wxBitmap::operator=(GetInvalidBitmap(width));
+  if(imgdata == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   nsvgRasterize(m_svgRast, svgImage.get(), 0,0,
                 wxMin((double)width/(double)svgImage->width,
                       (double)height/(double)svgImage->height),
@@ -92,18 +92,11 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
 
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
 {
-  wxImage img = m_invalidBitmap_unscaled.ConvertToImage();
-  if(!img.IsOk())
-    return m_invalidBitmap_unscaled;
+  wxImage img = wxImage(invalidImage_xpm);
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-  if(!img.IsOk())
-    return m_invalidBitmap_unscaled;
   wxBitmap retval;
   retval = wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
-  if(retval.IsOk())
-    return retval;
-  else
-    return m_invalidBitmap_unscaled;
+  return retval;
 }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
@@ -133,6 +126,4 @@ wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
   return retval;
 }
 
-// 
 struct NSVGrasterizer* SvgBitmap::m_svgRast = NULL;
-wxBitmap SvgBitmap::m_invalidBitmap_unscaled; // = wxBitmap(wxImage(invalidImage_xpm), 24);
