@@ -845,7 +845,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       { // A limit tag
         tmp = ParseLimitTag(node);
       }
-      else if (tagName == wxT("r"))
+      else if ((tagName == wxT("r")) || (tagName == wxT("mrow")))
       { // A group of tags
         tmp = ParseTag(node->GetChildren());
       }

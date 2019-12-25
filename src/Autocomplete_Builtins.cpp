@@ -1052,6 +1052,12 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("random_negative_binomial"); // FUNCTION
   m_wordList[tmplte ].Add("random_negative_binomial(<n>,<p>)"); // OPTION
   m_wordList[tmplte ].Add("random_negative_binomial(<n>,<p>,<m>)"); // OPTION
+  m_wordList[command].Add("declare_index_properties"); // FUNCTION
+  m_wordList[tmplte ].Add("declare_index_properties(<var>, <prop1>, <...>])"); // OPTION
+  m_wordList[command].Add("presuperscript"); // OPTION
+  m_wordList[command].Add("postsuperscript"); // OPTION
+  m_wordList[command].Add("presubscript"); // OPTION
+  m_wordList[command].Add("postsubscript"); // OPTION
   m_wordList[command].Add("draw"); // FUNCTION
   m_wordList[tmplte ].Add("draw(<gr2d>, ..., <gr3d>, ..., <options>, ...)"); // OPTION
   m_wordList[command].Add("draw2d"); // FUNCTION
