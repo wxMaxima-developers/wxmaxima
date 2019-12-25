@@ -99,11 +99,7 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
   if(!img.IsOk())
     return m_invalidBitmap_unscaled;
   wxBitmap retval;
-#if defined __WXOSX__
-  retval =  wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
-#else
   retval = wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
-#endif
   if(retval.IsOk())
     return retval;
   else
