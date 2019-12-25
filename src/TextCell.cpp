@@ -464,16 +464,24 @@ void TextCell::RecalculateWidths(int fontsize)
       wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       font = dc->GetFont();
-      do
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
+#else
+      font.SetPointSize(Scale_Px(m_fontSizeLabel));
+#endif
+      labelSize = GetTextSize(text);
+      while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
       {
 #if wxCHECK_VERSION(3, 1, 2)
-        font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel = m_fontSizeLabel - .3));
+        m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+        font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
 #else
-        font.SetPointSize(Scale_Px(--m_fontSizeLabel));
+        m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+        font.SetPointSize(Scale_Px(m_fontSizeLabel));
 #endif
         dc->SetFont(font);
         labelSize = GetTextSize(text);
-      } while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2));
+      } 
       m_width = labelSize.GetWidth();
       m_height = labelSize.GetHeight();
       m_center = m_height / 2;
