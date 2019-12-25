@@ -34,7 +34,6 @@
 #include <wx/display.h>
 #include <wx/artprov.h>
 #include <wx/filename.h>
-#include "invalidImage.h"
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>

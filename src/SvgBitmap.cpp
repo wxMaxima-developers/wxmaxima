@@ -53,9 +53,17 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   // Render the .svgz image
   if(m_svgRast == NULL)
     m_svgRast = nsvgCreateRasterizer();
+  if(m_svgRast == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<char> svgContents((char *)strdup(svgContents_string.utf8_str()));
+  if(svgContents == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<NSVGimage> svgImage(nsvgParse(svgContents.get(), "px", 96));
+  if(svgImage == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<unsigned char> imgdata(new unsigned char[width*height*4]);        
+  if(imgdata == NULL)
+    wxBitmap::operator=(GetInvalidBitmap(width));
   nsvgRasterize(m_svgRast, svgImage.get(), 0,0,
                 wxMin((double)width/(double)svgImage->width,
                       (double)height/(double)svgImage->height),
@@ -80,6 +88,17 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
       rgba += 4;
     }
   }
+}
+
+wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
+{
+  wxImage img(invalidImage_xpm);
+  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+#if defined __WXOSX__
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
+#else
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+#endif
 }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],

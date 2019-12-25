@@ -44,7 +44,8 @@ public:
   
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
-  
+
+  static wxBitmap GetInvalidBitmap(int targetSize);
 private:
   //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;

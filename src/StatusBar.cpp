@@ -27,7 +27,6 @@
 #include "StatusBar.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
-#include "invalidImage.h"
 #include "../art/statusbar/images.h"
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
