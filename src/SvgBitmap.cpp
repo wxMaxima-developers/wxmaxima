@@ -53,17 +53,17 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   // Render the .svgz image
   if(m_svgRast == NULL)
     m_svgRast = nsvgCreateRasterizer();
-  if(m_svgRast == NULL)
-    wxBitmap::operator=(GetInvalidBitmap(width));
+//  if(m_svgRast == NULL)
+//    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<char> svgContents((char *)strdup(svgContents_string.utf8_str()));
-  if(svgContents == NULL)
-    wxBitmap::operator=(GetInvalidBitmap(width));
+//  if(svgContents == NULL)
+//    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<NSVGimage> svgImage(nsvgParse(svgContents.get(), "px", 96));
-  if(svgImage == NULL)
-    wxBitmap::operator=(GetInvalidBitmap(width));
+//  if(svgImage == NULL)
+//    wxBitmap::operator=(GetInvalidBitmap(width));
   std::unique_ptr<unsigned char> imgdata(new unsigned char[width*height*4]);        
-  if(imgdata == NULL)
-    wxBitmap::operator=(GetInvalidBitmap(width));
+//  if(imgdata == NULL)
+//    wxBitmap::operator=(GetInvalidBitmap(width));
   nsvgRasterize(m_svgRast, svgImage.get(), 0,0,
                 wxMin((double)width/(double)svgImage->width,
                       (double)height/(double)svgImage->height),
