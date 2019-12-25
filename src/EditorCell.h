@@ -561,7 +561,16 @@ public:
   //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
   MaximaTokenizer::TokenList GetTokens() const {return m_tokens;}
 
+protected:
+  void FontsChanged() override
+    {
+      ResetSize();
+      ResetData();
+      m_widths.clear();
+    }
 private:
+  //! Determines the size of a text snippet
+  wxSize GetTextSize(wxString const &text);
   //! Mark this cell as "Automatically answer questions".
   bool m_autoAnswer;
 #if defined __WXOSX__
@@ -714,6 +723,9 @@ private:
     We need to know this in order to be able to detect we need a full recalculation.
    */
   double m_fontSize_Last;
+  WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
+  //! Cached widths of text snippets, one width per style
+  StringHash m_widths;
   int m_charHeight;
   int m_paren1, m_paren2;
   //! Does this cell's size have to be recalculated?

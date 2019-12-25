@@ -1044,6 +1044,21 @@ void EditorCell::SetFont()
   dc->SetFont(font);
 }
 
+wxSize EditorCell::GetTextSize(wxString const &text)
+{
+  wxDC *dc = (*m_configuration)->GetDC();
+  StringHash::const_iterator it = m_widths.find(text);
+
+  // If we already know this text piece's size we return the cached value
+  if(it != m_widths.end())
+    return it->second;
+
+  // Ask wxWidgets to return this text piece's size (slow!)
+  wxSize sz = dc->GetTextExtent(text);
+  m_widths[text] = sz;
+  return sz;
+}
+
 void EditorCell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);
@@ -2189,6 +2204,11 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
     return false;
   }
 
+  // It may be not too intelligent to cache all pieces of a word we arrived at
+  // during typing
+  if(keyCode == ' ')
+    m_widths.clear();
+
   if (m_historyPosition != -1)
   {
     int len = m_textHistory.GetCount() - m_historyPosition;
@@ -2744,7 +2764,6 @@ void EditorCell::SelectPointText(const wxPoint &point)
   int lin = posInCell.y / m_charHeight + 1;
   if (posInCell.y < 0)
     lin = 0;
-  int width, height;
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
   // Find the text snippet the line we search for begins with
@@ -2771,13 +2790,12 @@ void EditorCell::SelectPointText(const wxPoint &point)
     {
       wxString txt = textSnippet->GetText();
       int firstCharWidth;
-      (*m_configuration)->GetDC()->GetTextExtent(txt.Left(1), &firstCharWidth, &height);
+      firstCharWidth = GetTextSize(txt.Left(1)).GetWidth();
 
        if((txt == wxT("\n")) || (txt == wxT("\r")))
          break;
 
-       wxCoord w = 0, h = 0;
-       (*m_configuration)->GetDC()->GetTextExtent(txt, &w, &h);
+       wxCoord w = GetTextSize(txt).GetWidth();
        if(xpos + w + firstCharWidth / 2 < posInCell.x)
        {
          xpos += w;
@@ -2794,7 +2812,7 @@ void EditorCell::SelectPointText(const wxPoint &point)
     if(textSnippet != m_styledText.end())
       snippet = textSnippet->GetText();
 
-    (*m_configuration)->GetDC()->GetTextExtent(snippet.Left(1), &lastwidth, &height);
+    lastwidth = GetTextSize(snippet.Left(1)).GetWidth();
     lastwidth = -lastwidth;
 
     // Now determine which char inside this text snippet the cursor is at
@@ -2804,7 +2822,7 @@ void EditorCell::SelectPointText(const wxPoint &point)
     {
       for (unsigned int i = 0; i < snippet.Length(); i++)
       {
-        (*m_configuration)->GetDC()->GetTextExtent(snippet.Left(i), &width, &height);
+        int width = GetTextSize(snippet.Left(i)).GetWidth();
         if(xpos + width
            + (width - lastwidth)/2
            < posInCell.x)
@@ -2832,8 +2850,8 @@ void EditorCell::SelectPointText(const wxPoint &point)
     while (m_positionOfCaret < (signed) text.Length() && text.GetChar(m_positionOfCaret) != '\n' &&
            text.GetChar(m_positionOfCaret) != '\r')
     {
-      (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
-                                                 &width, &height);
+      int width;
+      width = GetTextSize(text.SubString(lineStart, m_positionOfCaret)).GetWidth();
       if (width > posInCell.x)
         break;
 
@@ -2881,7 +2899,6 @@ bool EditorCell::IsPointInSelection(wxPoint point)
   posInCell.x -= m_currentPoint.x - 2;
   posInCell.y -= m_currentPoint.y - 2 - m_center;
   unsigned int lin = posInCell.y / m_charHeight;
-  int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
 
@@ -2907,8 +2924,8 @@ bool EditorCell::IsPointInSelection(wxPoint point)
   while (positionOfCaret < (signed) text.Length() && text.GetChar(positionOfCaret) != '\n' &&
          text.GetChar(positionOfCaret) != '\r')
   {
-    (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, positionOfCaret),
-                                               &width, &height);
+    int width;
+    width = GetTextSize(text.SubString(lineStart, m_positionOfCaret)).GetWidth();
     if (width > posInCell.x)
       break;
     positionOfCaret++;
@@ -3216,12 +3233,12 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
   SetFont();
   int width = 0;
   wxString text;
-  int textWidth = 0, textHeight = 0;
+  int textWidth = 0;
   pos--;
   for (; (textSnippet < m_styledText.end()) && (pos >= 0); ++textSnippet)
   {
     text = textSnippet->GetText();
-    (*m_configuration)->GetDC()->GetTextExtent(text, &textWidth, &textHeight);
+    textWidth = GetTextSize(text).GetWidth();
     width += textWidth;
     pos -= text.Length();
   }
@@ -3229,7 +3246,7 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
   if (pos < 0)
   {
     width -= textWidth;
-    (*m_configuration)->GetDC()->GetTextExtent(text.SubString(0, text.Length() + pos), &textWidth, &textHeight);
+    textWidth = GetTextSize(text.SubString(0, text.Length() + pos)).GetWidth();
     width += textWidth;
   }
 
@@ -3352,11 +3369,11 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
 
   SetFont();
 
-  int width, height;
+  int width;
   //  Does the line extend too much to the right to fit on the screen /
   //   // to be easy to read?
   Configuration *configuration = (*m_configuration);
-  configuration->GetDC()->GetTextExtent(token, &width, &height);
+  width = GetTextSize(token).GetWidth();
   lineWidth += width;
 
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
@@ -3369,7 +3386,7 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
           (lastSpace != NULL) && (lastSpace->GetText() != "\r"))
   {
     int charWidth;
-    configuration->GetDC()->GetTextExtent(wxT(" "), &charWidth, &height);
+    charWidth = GetTextSize(" ").GetWidth();
     indentationPixels = charWidth * GetIndentDepth(m_text, lastSpacePos);
     lineWidth = width + indentationPixels;
     lastSpace->SetText("\r");
@@ -3502,7 +3519,7 @@ void EditorCell::StyleTextTexts()
     int lastSpacePos = -1;
     wxString::const_iterator lastSpaceIt;
     int lastLineStart = 0;
-    int width, height;
+    int width;
 
     // Is this a new line - or the remainder of the line after a soft break?
     bool newLine = true;
@@ -3534,9 +3551,7 @@ void EditorCell::StyleTextTexts()
               indent = 0;
 
             // How long is the current line already?
-            configuration->GetDC()->GetTextExtent(
-                                                 m_text.SubString(lastLineStart, i),
-                                                 &width, &height);
+            width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
             // Do we need to introduce a soft line break?
             if (width + xmargin + indent >= configuration->GetLineWidth())
             {
@@ -3578,7 +3593,7 @@ void EditorCell::StyleTextTexts()
           {
             
             // Determine the current line's length
-            configuration->GetDC()->GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
+            width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
             // Determine the current indentation
             if ((!indentPixels.empty()) && (!newLine))
               indent = indentPixels.back();
@@ -3671,12 +3686,12 @@ void EditorCell::StyleTextTexts()
 
           // Remember what a line that is part of this indentation level has to
           // begin with
-          int w, h;
+          int w;
 
           indentChar = line.Left(line.Length() - line_trimmed.Length() + 2);
 
           // Remember how far to indent subsequent lines
-          (*m_configuration)->GetDC()->GetTextExtent(indentChar, &w, &h);
+          w = GetTextSize(indentChar).GetWidth();
 
           // Every line of a Quote begins with a ">":
           if (!line_trimmed.StartsWith(wxT("> ")))
