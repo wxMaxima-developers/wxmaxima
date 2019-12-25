@@ -589,6 +589,9 @@ class Cell
    */
   void RecalculateList(int fontsize);
 
+  //! Tell a whole list of cells that their fonts have changed
+  void FontsChangedList();
+
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
@@ -971,6 +974,12 @@ class Cell
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   
 protected:
+  //! To be called if the font has changed.
+  virtual void FontsChanged()
+    {
+      ResetSize();
+      ResetData();
+    }
   /*! The point in the work sheet at which this cell begins.
 
     The begin of a cell is defined as 

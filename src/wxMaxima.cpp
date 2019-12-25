@@ -108,6 +108,9 @@ wxDECLARE_APP (MyApp);
 
 void wxMaxima::ConfigChanged()
 {
+  if(m_worksheet->GetTree())
+    m_worksheet->GetTree()->FontsChangedList();
+  
   wxConfigBase *config = wxConfig::Get();
   int showLength = 0;
 

@@ -90,6 +90,7 @@ std::list<std::shared_ptr<Cell>> TextCell::GetInnerCells()
 
 void TextCell::SetStyle(TextStyle style)
 {
+  m_widths.clear();
   Cell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\u0393");
@@ -103,12 +104,14 @@ void TextCell::SetStyle(TextStyle style)
 
 void TextCell::SetType(CellType type)
 {
+  m_widths.clear();
   Cell::SetType(type);
   SetFont((*m_configuration)->GetDefaultFontSize());
 }
 
 void TextCell::SetValue(const wxString &text)
 {
+  m_widths.clear();
   SetToolTip(m_initialToolTip);
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
@@ -358,6 +361,23 @@ TextCell::TextCell(const TextCell &cell):
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
+wxSize TextCell::GetTextSize(wxString const &text)
+{
+  wxDC *dc = (*m_configuration)->GetDC();
+  double fontSize = dc->GetFont().GetPointSize();
+
+  SizeHash::const_iterator it = m_widths.find(fontSize);
+
+  // If we already know this text piece's size we return the cached value
+  if(it != m_widths.end())
+    return it->second;
+
+  // Ask wxWidgets to return this text piece's size (slow!)
+  wxSize sz = dc->GetTextExtent(text);
+  m_widths[fontSize] = sz;
+  return sz;
+}
+
 bool TextCell::NeedsRecalculation()
 {
   return Cell::NeedsRecalculation() ||
@@ -440,9 +460,8 @@ void TextCell::RecalculateWidths(int fontsize)
       m_width = Scale_Px(configuration->GetLabelWidth());
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize + 1;
-      int labelWidth,labelHeight;
-      dc->GetTextExtent(text, &labelWidth, &labelHeight);
-      wxASSERT_MSG((labelWidth > 0) || (m_displayedText == wxEmptyString),
+      wxSize labelSize = GetTextSize(text);
+      wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       font = dc->GetFont();
       do
@@ -453,16 +472,18 @@ void TextCell::RecalculateWidths(int fontsize)
         font.SetPointSize(Scale_Px(--m_fontSizeLabel));
 #endif
         dc->SetFont(font);
-        dc->GetTextExtent(text, &labelWidth, &labelHeight);
-      } while ((labelWidth >= m_width) && (m_fontSizeLabel > 2));
-      m_height = labelHeight;
+        labelSize = GetTextSize(text);
+      } while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2));
+      m_width = labelSize.GetWidth();
+      m_height = labelSize.GetHeight();
       m_center = m_height / 2;
     }
     // Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())
-    {
-      dc->GetTextExtent(m_altJsText, &m_width, &m_height);
-
+    {      
+      wxSize sz = GetTextSize(m_altJsText);
+      m_width = sz.GetWidth();
+      m_height = sz.GetHeight();
       if (m_texFontname == wxT("jsMath-cmsy10"))
         m_height = m_height / 2;
     }
@@ -470,20 +491,24 @@ void TextCell::RecalculateWidths(int fontsize)
       /// We are using a special symbol
     else if (m_alt)
     {
-      dc->GetTextExtent(m_altText, &m_width, &m_height);
+      wxSize sz = GetTextSize(m_altText);
+      m_width = sz.GetWidth();
+      m_height = sz.GetHeight();
     }
-
-      /// Empty string has height of X
-    else if (m_displayedText == wxEmptyString)
+    else if (m_displayedText.IsEmpty())
     {
-      dc->GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
+      m_height = m_fontSize;
       m_width = 0;
     }
 
       /// This is the default.
     else
-      dc->GetTextExtent(m_displayedText, &m_width, &m_height);
-
+    {
+      wxSize sz = GetTextSize(m_displayedText);
+      m_width = sz.GetWidth();
+      m_height = sz.GetHeight();
+    }
+    
     m_width = m_width + 2 * MC_TEXT_PADDING;
     m_height = m_height + 2 * MC_TEXT_PADDING;
 

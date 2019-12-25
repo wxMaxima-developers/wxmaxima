@@ -247,6 +247,23 @@ void Cell::SetGroup(Cell *group)
   }
 }
 
+void Cell::FontsChangedList()
+{
+  Cell *tmp = this;
+  
+  while(tmp != NULL)
+  {
+    tmp->FontsChanged();
+    std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
+    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    {
+      if(*it != NULL)
+        (*it)->FontsChangedList();
+    }
+    tmp = tmp->m_next;
+  }
+}
+
 
 /***
  * Append new cell to the end of this list.

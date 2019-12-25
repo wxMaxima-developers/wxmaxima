@@ -103,8 +103,16 @@ public:
   virtual void SetType(CellType type) override;
 
 protected:
+  wxSize GetTextSize(wxString const &text);
   void SetAltText();
-  
+
+  void FontsChanged() override
+    {
+      ResetSize();
+      ResetData();
+      m_widths.clear();
+    }
+
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
@@ -137,6 +145,32 @@ protected:
   double m_fontSizeLabel;
   double m_lastZoomFactor;
 private:
+  class SizeHash_internals
+  {
+  public:
+    SizeHash_internals() { }
+    unsigned long operator()( const double& k ) const
+      {
+        return k * 1000000;
+      }
+    SizeHash_internals& operator=(const SizeHash_internals&) { return *this; }
+  };
+  // comparison operator
+  class DoubleEqual
+  {
+  public:
+    DoubleEqual() { }
+    bool operator()( const double& a, const double& b ) const
+      {
+        return fabs(a-b) < .001;
+      }
+    DoubleEqual& operator=(const DoubleEqual&) { return *this; }
+  };
+  WX_DECLARE_HASH_MAP(
+    double, wxSize, SizeHash_internals, DoubleEqual, SizeHash);
+  //! Remembers all widths we already have configured
+  SizeHash m_widths;
+
   //! Produces a text sample that determines the label width
   wxString m_initialToolTip;
   //! The number of digits we did display the last time we displayed a number.
