@@ -109,7 +109,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   #ifdef __WXOSX__
   wxLogMessage(_("Running on Mac OS"));
   #endif
-  wxLogMessage(_("wxWidgets version: ") + wxVERSION_STRING);
+  wxLogMessage(wxVERSION_STRING);
     
   #ifdef __WXGTK__
   #ifdef __WXGTK3__
