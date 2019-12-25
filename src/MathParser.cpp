@@ -785,11 +785,11 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       {               // Fractions
         tmp = ParseFracTag(node);
       }
-      else if (tagName == wxT("e"))
+      else if (tagName == "e" || (tagName == "msup"))
       {          // Exponentials
         tmp = ParseSupTag(node);
       }
-      else if (tagName == wxT("i"))
+      else if ((tagName == "i") || (tagName == "munder"))
       {          // Subscripts
         tmp = ParseSubTag(node);
       }
