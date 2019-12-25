@@ -49,6 +49,13 @@ public:
 private:
   //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;
+  /*! An "invalid bitmap" sign
+  
+    We generate this image on start-up so whenever we need it it already
+    is available as a refcounted object and therefore is likely to
+    be available even if the problem was a failing malloc()
+   */
+  static wxBitmap m_invalidBitmap_unscaled;
 };
 
 #endif // SVGBITMAP_H

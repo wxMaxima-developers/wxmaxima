@@ -92,13 +92,22 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
 
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
 {
-  wxImage img(invalidImage_xpm);
+  wxImage img = m_invalidBitmap_unscaled.ConvertToImage();
+  if(!img.IsOk())
+    return m_invalidBitmap_unscaled;
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+  if(!img.IsOk())
+    return m_invalidBitmap_unscaled;
+  wxBitmap retval;
 #if defined __WXOSX__
-  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
+  retval =  wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
 #else
-  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+  retval = wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
 #endif
+  if(retval.IsOk())
+    return retval;
+  else
+    return m_invalidBitmap_unscaled;
 }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
@@ -128,4 +137,6 @@ wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
   return retval;
 }
 
+// 
 struct NSVGrasterizer* SvgBitmap::m_svgRast = NULL;
+wxBitmap SvgBitmap::m_invalidBitmap_unscaled = wxBitmap(wxImage(invalidImage_xpm));
