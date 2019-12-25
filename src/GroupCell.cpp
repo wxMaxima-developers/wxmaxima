@@ -318,8 +318,8 @@ wxString GroupCell::ToWXM(bool wxm)
       // Export the list of known answers
       if(wxm)
       {
-        for(StringHash::const_iterator it = m_knownAnswers.begin();
-            it != m_knownAnswers.end();
+        for(StringHash::const_iterator it = m_knownAnswers.rbegin();
+            it != m_knownAnswers.rend();
             ++it)
         {
           {
@@ -1682,8 +1682,8 @@ wxString GroupCell::ToXML()
     {
       str += wxT(" type=\"code\"");
       int i = 0;
-      for(StringHash::const_iterator it = m_knownAnswers.begin();
-          it != m_knownAnswers.end();
+      for(StringHash::const_iterator it = m_knownAnswers.rbegin();
+          it != m_knownAnswers.rend();
           ++it)
       {
         i++;
