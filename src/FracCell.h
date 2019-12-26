@@ -117,7 +117,6 @@ protected:
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?
   int m_protrusion;
-  int m_expDivideWidth;
   /*! The horizontal gap between this frac and any minus before it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 

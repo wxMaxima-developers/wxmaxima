@@ -405,6 +405,9 @@ void TextCell::RecalculateWidths(int fontsize)
   
   if(NeedsRecalculation())
   {
+    wxDC *dc = configuration->GetDC();
+    SetFont(fontsize);
+
     // If the setting has changed and we want to show a user-defined label
     // instead of an automatic one or vice versa we decide that here.
     if(
@@ -430,8 +433,6 @@ void TextCell::RecalculateWidths(int fontsize)
       SetValue(m_text);
     
     m_lastCalculationFontSize = fontsize;
-    wxDC *dc = configuration->GetDC();
-    SetFont(fontsize);
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in

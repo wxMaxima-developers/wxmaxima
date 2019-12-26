@@ -41,9 +41,9 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close2(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
   m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
+  m_divide->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;
   m_denom_Last = NULL;
-  m_expDivideWidth = 12;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
   m_horizontalGapLeft = 0;
@@ -117,8 +117,13 @@ void FracCell::SetDenom(Cell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  if((!m_isBrokenIntoLines) || m_exponent)
-  {    
+  if(m_exponent || m_isBrokenIntoLines)
+  {
+    m_num->RecalculateWidthsList(fontsize);
+    m_denom->RecalculateWidthsList(fontsize);
+  }
+  else
+  {
     m_num->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
@@ -128,61 +133,60 @@ void FracCell::RecalculateWidths(int fontsize)
   m_close2->RecalculateWidths(fontsize);
   m_divide->RecalculateWidths(fontsize);
   
-  wxASSERT(fontsize >= 1);
-  Configuration *configuration = (*m_configuration);
   if (m_exponent)
   {
-    m_num->RecalculateWidthsList(fontsize);
-    m_denom->RecalculateWidthsList(fontsize);
-  }
-  wxDC *dc = configuration->GetDC();
-  dc->SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
-  if (m_exponent && !m_isBrokenIntoLines)
-  {
-    m_protrusion = 0;
-    m_width = m_num->GetFullWidth() + m_denom->GetFullWidth() + m_divide->GetFullWidth();
+    m_divide->RecalculateWidths(fontsize);
+    m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
+    m_width = m_num->GetWidth() + m_denom->GetWidth() + m_divide->GetWidth();
+    std::cerr<<"num1="<<m_num->GetWidth()<<"\n";
   }
   else
   {
-    int dummy;
-
-    dc->GetTextExtent(wxT("X"), &m_protrusion, &dummy);
-    m_protrusion /= 3;
-    
-    // We want half a space's widh of blank space to separate us from the
-    // next minus.
-
-    if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
-      m_horizontalGapLeft = m_protrusion;
+    if(m_isBrokenIntoLines)
+      m_width = 0;
     else
-      m_horizontalGapLeft = 0;
-
-    if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
-      m_horizontalGapRight = m_protrusion;
-    else
-      m_horizontalGapRight = 0;
-    
-    m_width = wxMax(m_num->GetFullWidth(), m_denom->GetFullWidth()) +
-              2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
+    {
+      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 3);
+      
+      // We want half a space's widh of blank space to separate us from the
+      // next minus.
+      
+      if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
+        m_horizontalGapLeft = m_protrusion;
+      else
+        m_horizontalGapLeft = 0;
+      
+      if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
+        m_horizontalGapRight = m_protrusion;
+      else
+        m_horizontalGapRight = 0;
+      
+      m_width = wxMax(m_num->GetFullWidth(), m_denom->GetFullWidth()) +
+        2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
+    }
   }
-  if(m_isBrokenIntoLines)
-    m_width = 0;
   Cell::RecalculateWidths(fontsize);
 }
 
 void FracCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  if(!m_isBrokenIntoLines)
+  if(m_exponent || m_isBrokenIntoLines)
   {
-    m_open1->RecalculateHeight(fontsize);
-    m_close1->RecalculateHeight(fontsize);
-    m_open2->RecalculateHeight(fontsize);
-    m_close2->RecalculateHeight(fontsize);
-    m_divide->RecalculateHeight(fontsize);
+    m_num->RecalculateHeightList(fontsize);
+    m_denom->RecalculateHeightList(fontsize);
+  }
+  else
+  {
     m_num->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
+  m_open1->RecalculateHeight(fontsize);
+  m_close1->RecalculateHeight(fontsize);
+  m_open2->RecalculateHeight(fontsize);
+  m_close2->RecalculateHeight(fontsize);
+  m_divide->RecalculateHeight(fontsize);
+
   if (m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
@@ -203,8 +207,8 @@ void FracCell::RecalculateHeight(int fontsize)
     }
     else
     {
-      m_height = m_num->GetMaxHeight();
-      m_center = m_height / 2;
+      m_height = wxMax(m_num->GetHeight(), m_denom->GetHeight());
+      m_center = wxMax(m_num->GetCenter(), m_denom->GetCenter());
     }
   }
 }
@@ -221,22 +225,17 @@ void FracCell::Draw(wxPoint point)
 
     if (m_exponent)
     {
-      num.x = point.x;
-      num.y = point.y;
-      denom.x = point.x + m_num->GetFullWidth() + m_expDivideWidth;
-      denom.y = num.y;
-
+      std::cerr<<"tet\n";
+      num = point;
+      wxPoint divide(point);
+      divide.x += m_num->GetWidth();
+      denom = divide;
+      denom.x += m_divide->GetWidth();
+      
+      std::cerr<<"num2="<<m_num->GetWidth()<<"\n";
       m_num->DrawList(num);
+      m_divide->Draw(divide);
       m_denom->DrawList(denom);
-
-      int fontsize1 = Scale_Px(m_fontSize);
-      wxASSERT(fontsize1 > 0);
-      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                        configuration->GetFontName(TS_VARIABLE)));
-      dc->DrawText(wxT("/"),
-                  point.x + m_num->GetFullWidth(),
-                  point.y - m_num->GetMaxCenter() + MC_TEXT_PADDING);
     }
     else
     {
