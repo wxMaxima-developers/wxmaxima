@@ -39,6 +39,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close(new TextCell(parent, config, cellPointers, ")")),
   m_exp(new TextCell(parent, config, cellPointers, "^"))
 {
+  m_expt_yoffset = 0;
   m_base_last = m_baseCell.get();
   m_expt_last = m_exptCell.get();
   m_isMatrix = false;
@@ -71,11 +72,7 @@ void ExptCell::Draw(wxPoint point)
     m_baseCell->DrawList(bs);
 
     point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
-    // Raise the exponent to share the upper border with the base cell
-    if(m_exptCell->GetMaxHeight() < m_baseCell->GetMaxHeight())
-      point.y -= m_baseCell->GetMaxHeight() - m_exptCell->GetMaxHeight();
-    // Raise the exponent a little bit more so it looks like an exponent
-    point.y -= PowRise();
+    point.y -= m_expt_yoffset;
     m_exptCell->DrawList(point);
   }
 }
@@ -164,22 +161,23 @@ void ExptCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    int expt_yoffset = 0;
+    m_exptCell->RecalculateHeightList(fontsize);
+    m_baseCell->RecalculateHeightList(fontsize);
 
-    if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
-      expt_yoffset += m_baseCell->GetMaxHeight() - m_exptCell->GetMaxHeight();
-    // Raise the exponent a little bit more so it looks like an exponent
-    expt_yoffset += PowRise();
+    m_expt_yoffset = m_exptCell->GetDrop() + PowRise();
 
-    m_height = m_baseCell->GetMaxHeight();
-    m_center = m_baseCell->GetMaxCenter();
+    m_height = m_baseCell->GetHeight();
+    m_center = m_baseCell->GetCenter();
 
-    if(expt_yoffset + m_exptCell->GetMaxCenter() - m_baseCell->GetMaxCenter() > 0)
-    m_height += expt_yoffset + m_exptCell->GetMaxCenter() - m_baseCell->GetMaxCenter();
-    m_center += expt_yoffset + m_exptCell->GetMaxCenter() - m_baseCell->GetMaxCenter();
+    int baseHeight = m_baseCell->GetHeight() - m_baseCell->GetDrop();
+    int exptHeight = m_exptCell->GetHeight() - m_exptCell->GetDrop() + m_expt_yoffset;
+    
+    if(baseHeight < exptHeight)
+    {
+      m_height += exptHeight - baseHeight;
+      m_center += exptHeight - baseHeight;
+    }
   }
-  
-  
 }
 
 wxString ExptCell::ToString()

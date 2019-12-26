@@ -65,7 +65,7 @@ public:
   void SetPower(Cell *power);
 
   //! By how much do we want to rise the power?
-  double PowRise() const {return Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);}
+  double PowRise() const {return Scale_Px(.3 * m_fontSize);}
   
   void RecalculateHeight(int fontsize) override;
 
@@ -105,6 +105,7 @@ protected:
   Cell *m_expt_last;
   Cell *m_base_last;
   bool m_isMatrix;
+  int m_expt_yoffset;
 };
 
 

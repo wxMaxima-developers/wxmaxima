@@ -117,17 +117,16 @@ void FracCell::SetDenom(Cell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  if(!m_isBrokenIntoLines)
-  {
-    
-    m_open1->RecalculateWidths(fontsize);
-    m_close1->RecalculateWidths(fontsize);
-    m_open2->RecalculateWidths(fontsize);
-    m_close2->RecalculateWidths(fontsize);
-    m_divide->RecalculateWidths(fontsize);
+  if((!m_isBrokenIntoLines) || m_exponent)
+  {    
     m_num->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
+  m_open1->RecalculateWidths(fontsize);
+  m_close1->RecalculateWidths(fontsize);
+  m_open2->RecalculateWidths(fontsize);
+  m_close2->RecalculateWidths(fontsize);
+  m_divide->RecalculateWidths(fontsize);
   
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
@@ -141,9 +140,7 @@ void FracCell::RecalculateWidths(int fontsize)
   if (m_exponent && !m_isBrokenIntoLines)
   {
     m_protrusion = 0;
-    int height;
-    dc->GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
-    m_width = m_num->GetFullWidth() + m_denom->GetFullWidth() + m_expDivideWidth;
+    m_width = m_num->GetFullWidth() + m_denom->GetFullWidth() + m_divide->GetFullWidth();
   }
   else
   {
