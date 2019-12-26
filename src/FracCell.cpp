@@ -135,10 +135,8 @@ void FracCell::RecalculateWidths(int fontsize)
   
   if (m_exponent)
   {
-    m_divide->RecalculateWidths(fontsize);
     m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
     m_width = m_num->GetWidth() + m_denom->GetWidth() + m_divide->GetWidth();
-    std::cerr<<"num1="<<m_num->GetWidth()<<"\n";
   }
   else
   {
@@ -187,11 +185,6 @@ void FracCell::RecalculateHeight(int fontsize)
   m_close2->RecalculateHeight(fontsize);
   m_divide->RecalculateHeight(fontsize);
 
-  if (m_exponent)
-  {
-    m_num->RecalculateHeightList(fontsize);
-    m_denom->RecalculateHeightList(fontsize);
-  }
   if(m_isBrokenIntoLines)
   {
     m_height = m_num->GetMaxHeight();
@@ -225,14 +218,12 @@ void FracCell::Draw(wxPoint point)
 
     if (m_exponent)
     {
-      std::cerr<<"tet\n";
       num = point;
       wxPoint divide(point);
       divide.x += m_num->GetWidth();
       denom = divide;
       denom.x += m_divide->GetWidth();
       
-      std::cerr<<"num2="<<m_num->GetWidth()<<"\n";
       m_num->DrawList(num);
       m_divide->Draw(divide);
       m_denom->DrawList(denom);

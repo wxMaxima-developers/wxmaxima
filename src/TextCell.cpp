@@ -105,8 +105,9 @@ void TextCell::SetStyle(TextStyle style)
 void TextCell::SetType(CellType type)
 {
   m_widths.clear();
+  ResetSize();
+  ResetData();
   Cell::SetType(type);
-  SetFont((*m_configuration)->GetDefaultFontSize());
 }
 
 void TextCell::SetValue(const wxString &text)
@@ -518,8 +519,8 @@ void TextCell::RecalculateWidths(int fontsize)
       m_height = sz.GetHeight();
     }
     
-    m_width = m_width + 2 * MC_TEXT_PADDING;
-    m_height = m_height + 2 * MC_TEXT_PADDING;
+    m_width += 2 * MC_TEXT_PADDING;
+    m_height += 2 * MC_TEXT_PADDING;
 
     /// Hidden cells (multiplication * is not displayed)
     if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
@@ -637,7 +638,7 @@ void TextCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-  m_fontSize = configuration->GetDefaultFontSize();
+  m_fontSize = fontsize;
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
