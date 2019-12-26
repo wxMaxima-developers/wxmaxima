@@ -36,6 +36,8 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_open(new TextCell(parent, config, cellPointers, wxT("("))),
   m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
+  m_open->SetStyle(TS_VARIABLE);
+  m_close->SetStyle(TS_VARIABLE);
   m_numberOfExtensions = 0;
   m_extendHeight = 12;
   m_charWidth = 12;
