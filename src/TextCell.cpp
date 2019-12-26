@@ -401,11 +401,12 @@ void TextCell::RecalculateWidths(int fontsize)
 {
   if(fontsize != m_fontsize_old)
     ResetSize();
-  m_fontsize_old = fontsize;
   Configuration *configuration = (*m_configuration);
   
   if(NeedsRecalculation())
   {
+    m_fontsize_old = fontsize;
+    m_fontSize = fontsize;
     wxDC *dc = configuration->GetDC();
     SetFont(fontsize);
 
