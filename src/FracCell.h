@@ -31,6 +31,7 @@
 
 #include "Cell.h"
 #include "TextCell.h"
+#include "ParenCell.h"
 
 /* This class represents fractions.
 
@@ -110,10 +111,23 @@ protected:
   std::shared_ptr<Cell> m_num;
   //! The denominator
   std::shared_ptr<Cell> m_denom;
-  std::shared_ptr<TextCell> m_open1, m_open2, m_close1, m_close2, m_divide;
-  Cell *m_num_Last, *m_denom_Last;
+  //! A parenthesis around the numerator
+  std::shared_ptr<ParenCell> m_numParenthesis;
+  //! A parenthesis around the denominator
+  std::shared_ptr<ParenCell> m_denomParenthesis;
+  //! The "/" sign
+  std::shared_ptr<TextCell> m_divide;
+  //! The last element of the numerator
+  Cell *m_num_Last;
+  //! The last element of the denominator
+  Cell *m_denom_Last;
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
+  //! The displayed version of the numerator, if needed with parenthesis
+  Cell *m_displayedNum;
+  //! The displayed version of the denominator, if needed with parenthesis
+  Cell *m_displayedDenom;
+  //! The way the fraction should be displayed
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?
   int m_protrusion;

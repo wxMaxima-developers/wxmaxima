@@ -70,12 +70,11 @@ SumCell::~SumCell()
 std::list<std::shared_ptr<Cell>> SumCell::GetInnerCells()
 {
   std::list<std::shared_ptr<Cell>> innerCells;
-  if(m_base)
-    innerCells.push_back(m_base);
   if(m_under)
     innerCells.push_back(m_under);
   if(m_over)
     innerCells.push_back(m_over);
+  // Contains m_base
   if(m_paren)
     innerCells.push_back(m_paren);
   return innerCells;

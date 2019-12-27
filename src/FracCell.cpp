@@ -35,17 +35,13 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   Cell(parent, config, cellPointers),
   m_num(new TextCell(parent, config, cellPointers)),
   m_denom(new TextCell(parent, config, cellPointers)),
-  m_open1(new TextCell(m_group, m_configuration, m_cellPointers, wxT("("))),
-  m_open2(new TextCell(m_group, m_configuration, m_cellPointers, wxT("("))),
-  m_close1(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
-  m_close2(new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"))),
+  m_numParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
+  m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
   m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
+  m_displayedNum = NULL;
+  m_displayedDenom = NULL;
   m_divide->SetStyle(TS_VARIABLE);
-  m_open1->SetStyle(TS_VARIABLE);
-  m_open2->SetStyle(TS_VARIABLE);
-  m_close1->SetStyle(TS_VARIABLE);
-  m_close2->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;
   m_denom_Last = NULL;
   m_fracStyle = FC_NORMAL;
@@ -78,18 +74,12 @@ std::list<std::shared_ptr<Cell>> FracCell::GetInnerCells()
   std::list<std::shared_ptr<Cell>> innerCells;
   if(m_divide)
     innerCells.push_back(m_divide);
-  if(m_denom)
-    innerCells.push_back(m_denom);
-  if(m_num)
-    innerCells.push_back(m_num);
-  if(m_open1)
-    innerCells.push_back(m_open1);
-  if(m_close1)
-    innerCells.push_back(m_close1);
-  if(m_open2)
-    innerCells.push_back(m_open2);
-  if(m_close2)
-    innerCells.push_back(m_close2);
+  // Contains m_num
+  if(m_numParenthesis)
+    innerCells.push_back(m_numParenthesis);
+  // Contains m_denom
+  if(m_denomParenthesis)
+    innerCells.push_back(m_denomParenthesis);
   return innerCells;
 }
 
@@ -98,12 +88,9 @@ void FracCell::SetNum(Cell *num)
   if (num == NULL)
     return;
   m_num = std::shared_ptr<Cell>(num);
+  m_numParenthesis->SetInner(m_num);
   m_num_Last = num;
-  if (m_num_Last != NULL)
-  {
-    while (m_num_Last->m_next != NULL)
-      m_num_Last = m_num_Last->m_next;
-  }
+  SetupBreakUps();
 }
 
 void FracCell::SetDenom(Cell *denom)
@@ -111,30 +98,22 @@ void FracCell::SetDenom(Cell *denom)
   if (denom == NULL)
     return;
   m_denom = std::shared_ptr<Cell>(denom);
-  m_denom_Last = denom;
-  if (m_denom_Last != NULL)
-  {
-    while (m_denom_Last->m_next != NULL)
-      m_denom_Last = m_denom_Last->m_next;
-  }
+  m_denomParenthesis->SetInner(m_denom);
+  SetupBreakUps();
 }
 
 void FracCell::RecalculateWidths(int fontsize)
 {
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_num->RecalculateWidthsList(fontsize);
-    m_denom->RecalculateWidthsList(fontsize);
+    m_numParenthesis->RecalculateWidthsList(fontsize);
+    m_denomParenthesis->RecalculateWidthsList(fontsize);
   }
   else
   {
-    m_num->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_denom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_numParenthesis->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_denomParenthesis->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  m_open1->RecalculateWidths(fontsize);
-  m_close1->RecalculateWidths(fontsize);
-  m_open2->RecalculateWidths(fontsize);
-  m_close2->RecalculateWidths(fontsize);
   m_divide->RecalculateWidths(fontsize);
   
   if (m_exponent)
@@ -175,18 +154,14 @@ void FracCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_num->RecalculateHeightList(fontsize);
-    m_denom->RecalculateHeightList(fontsize);
+    m_numParenthesis->RecalculateHeightList(fontsize);
+    m_denomParenthesis->RecalculateHeightList(fontsize);
   }
   else
   {
-    m_num->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_denom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_numParenthesis->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_denomParenthesis->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  m_open1->RecalculateHeight(fontsize);
-  m_close1->RecalculateHeight(fontsize);
-  m_open2->RecalculateHeight(fontsize);
-  m_close2->RecalculateHeight(fontsize);
   m_divide->RecalculateHeight(fontsize);
 
   if(m_isBrokenIntoLines)
@@ -399,29 +374,33 @@ void FracCell::SetExponentFlag()
 
 void FracCell::SetupBreakUps()
 {
+  m_displayedNum = m_numParenthesis.get();
+  m_displayedDenom = m_denomParenthesis.get();
   if (m_fracStyle == FC_NORMAL)
   {
-    if (m_num)
+    if (m_num && (!m_num->IsCompound()))
+      m_displayedNum = m_num.get();
+    if (m_denom && (!m_denom->IsCompound()))
     {
-      if (!m_num->IsCompound())
-      {
-        m_open1->m_isHidden = true;
-        m_close1->m_isHidden = true;
-      }
-    }
-    if (m_denom)
-    {
-      if (!m_denom->IsCompound())
-      {
-        m_open2->m_isHidden = true;
-        m_close2->m_isHidden = true;
-      }
+      m_displayedDenom = m_denom.get();
     }
   }
   else
   {
-    m_close1->m_isHidden = true;
-    m_open2->m_isHidden = true;
+    m_displayedNum = m_num.get();
+    m_displayedDenom = m_denom.get();
+  }
+  m_num_Last = m_displayedNum;
+  if (m_num_Last != NULL)
+  {
+    while (m_num_Last->m_next != NULL)
+      m_num_Last = m_num_Last->m_next;
+  }
+  m_denom_Last = m_displayedDenom;
+  if (m_denom_Last != NULL)
+  {
+    while (m_denom_Last->m_next != NULL)
+      m_denom_Last = m_denom_Last->m_next;
   }
 }
 
@@ -433,18 +412,12 @@ bool FracCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open1->m_nextToDraw = m_num.get();
     wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in an numerator!"));
     if (m_num_Last != NULL)
-      m_num_Last->m_nextToDraw = m_close1.get();
-    m_close1->m_nextToDraw = m_divide.get();
-    m_divide->m_nextToDraw = m_open2.get();
-    m_open2->m_nextToDraw = m_denom.get();
+      m_num_Last->m_nextToDraw = m_divide.get();
+    m_divide->m_nextToDraw = m_displayedDenom;
     wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
-    if (m_denom_Last != NULL)
-      m_denom_Last->m_nextToDraw = m_close2.get();
-    m_close2->m_nextToDraw = m_nextToDraw;
-    m_nextToDraw = m_open1.get();
+    m_nextToDraw = m_displayedNum;
     ResetData();    
     return true;
   }
