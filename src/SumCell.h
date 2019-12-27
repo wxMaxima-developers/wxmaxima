@@ -32,6 +32,7 @@
 #define SUMCELL_H
 
 #include "Cell.h"
+#include "ParenCell.h"
 
 enum
 {
@@ -85,6 +86,8 @@ protected:
   std::shared_ptr<Cell> m_base;
   std::shared_ptr<Cell> m_under;
   std::shared_ptr<Cell> m_over;
+  std::shared_ptr<ParenCell> m_paren;
+  Cell *m_displayedBase;
   int m_signHeight;
   int m_signWidth;
   int m_sumStyle;

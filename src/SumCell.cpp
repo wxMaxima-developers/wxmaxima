@@ -35,8 +35,10 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   Cell(parent, config, cellPointers),
   m_base(new TextCell(parent, config, cellPointers)),
   m_under(new TextCell(parent, config, cellPointers)),
-  m_over(new TextCell(parent, config, cellPointers))
+  m_over(new TextCell(parent, config, cellPointers)),
+  m_paren(new ParenCell(parent, config, cellPointers))
 {
+  m_displayedBase = NULL;
   m_signHeight = 50;
   m_signTop = (2 * m_signHeight) / 5;
   m_signWidth = 30;
@@ -74,6 +76,8 @@ std::list<std::shared_ptr<Cell>> SumCell::GetInnerCells()
     innerCells.push_back(m_under);
   if(m_over)
     innerCells.push_back(m_over);
+  if(m_paren)
+    innerCells.push_back(m_paren);
   return innerCells;
 }
 
@@ -89,6 +93,8 @@ void SumCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_base = std::shared_ptr<Cell>(base);
+  m_paren->SetInner(m_base);
+  m_displayedBase = m_paren.get();
 }
 
 void SumCell::SetUnder(Cell *under)
@@ -100,8 +106,8 @@ void SumCell::SetUnder(Cell *under)
 
 void SumCell::RecalculateWidths(int fontsize)
 {
-  m_base->RecalculateWidthsList(fontsize);
-  m_signHeight = m_base->GetMaxHeight();
+  m_displayedBase->RecalculateWidthsList(fontsize);
+  m_signHeight = m_displayedBase->GetMaxHeight();
   m_signWidth = 3 * m_signHeight / 5;
   m_signWCenter = m_signWidth / 2;
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
@@ -132,7 +138,7 @@ void SumCell::RecalculateWidths(int fontsize)
 //   }
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
   m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
-  m_width = 2 * m_signWCenter + m_base->GetFullWidth() + Scale_Px(4);
+  m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
 
   ResetData();
   Cell::RecalculateWidths(fontsize);
@@ -143,13 +149,13 @@ void SumCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_base->RecalculateHeightList(fontsize);
+  m_displayedBase->RecalculateHeightList(fontsize);
 
   m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2,
-                 m_base->GetMaxCenter());
+                 m_displayedBase->GetMaxCenter());
   m_height = m_center +
              wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2,
-                 m_base->GetMaxDrop());
+                 m_displayedBase->GetMaxDrop());
 }
 
 void SumCell::Draw(wxPoint point)
@@ -256,7 +262,7 @@ void SumCell::Draw(wxPoint point)
       UnsetPen();
     }
     base.x += (2 * m_signWCenter + Scale_Px(4));
-    m_base->DrawList(base);
+    m_displayedBase->DrawList(base);
   }
 }
 

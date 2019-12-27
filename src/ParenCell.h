@@ -61,7 +61,8 @@ public:
 
   std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  void SetInner(Cell *inner, CellType  type);
+  void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
+  void SetInner(std::shared_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
   void SetPrint(bool print)
   {

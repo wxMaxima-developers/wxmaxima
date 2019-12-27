@@ -36,8 +36,8 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_open(new TextCell(parent, config, cellPointers, wxT("("))),
   m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
-  m_open->SetStyle(TS_VARIABLE);
-  m_close->SetStyle(TS_VARIABLE);
+  m_open->SetStyle(TS_FUNCTION);
+  m_close->SetStyle(TS_FUNCTION);
   m_numberOfExtensions = 0;
   m_extendHeight = 12;
   m_charWidth = 12;
@@ -94,6 +94,23 @@ void ParenCell::SetInner(Cell *inner, CellType type)
   while (inner->m_next != NULL)
     inner = inner->m_next;
   m_last1 = inner;
+  ResetSize();
+}
+
+void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
+{
+  if (inner == NULL)
+    return;
+  m_innerCell = inner;
+
+  m_type = type;
+  // Tell the first of our inter cell not to begin with a multiplication dot.
+  m_innerCell->m_SuppressMultiplicationDot = true;
+
+  m_last1 = inner.get();
+  // Search for the last of the inner cells
+  while (m_last1->m_next != NULL)
+    m_last1 = m_last1->m_next;
   ResetSize();
 }
 
@@ -176,7 +193,7 @@ void ParenCell::RecalculateWidths(int fontsize)
     if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
     m_signHeight = m_open->GetMaxHeight();
-    m_signWidth  = m_signHeight /4;
+    m_signWidth  = m_open->GetWidth();
   }
   else
   {
@@ -293,7 +310,7 @@ void ParenCell::Draw(wxPoint point)
     case Configuration::ascii:
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point);
-      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(),point.y));
+      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),point.y));
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
