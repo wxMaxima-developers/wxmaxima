@@ -180,6 +180,8 @@ void ExptCell::RecalculateHeight(int fontsize)
       m_height += exptHeight - baseHeight;
       m_center += exptHeight - baseHeight;
     }
+    else
+      m_expt_yoffset += baseHeight - exptHeight;
   }
 }
 
