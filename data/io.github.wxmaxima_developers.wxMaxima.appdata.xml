@@ -51,6 +51,24 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.12.3" date="2019-12-27">
+      <description>
+	<p>
+	  Big improvements for the graphical output.
+	</p>
+        <ul>
+	  <li>A Russian traslation update by OlesyaGerasimenko</li>
+	  <li>The manual is now found on Gentoo, too</li>
+	  <li>Big improvements to the maths output</li>
+	  <li>A major speedUp by caching already-determined text snippet sizes</li>
+	  <li>All icons that aren't provided by the operating system now are
+	  rendered from SVG</li>
+	  <li>Internal communication with maxima is now more MathML-like in
+	  many places</li>
+	  <li>Many additional small bug fixes</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.12.2" date="2019-12-22">
       <description>
 	<p>
