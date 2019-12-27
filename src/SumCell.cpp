@@ -235,29 +235,16 @@ void SumCell::Draw(wxPoint point)
         dc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                     point.y + m_signHeight / 2,
                     point.x + m_signWCenter + m_signWidth / 6,
-                    point.y - m_signHeight / 2 + Scale_Px(4));
+                    point.y - m_signHeight / 2);
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
                     point.y + m_signHeight / 2,
                     point.x + m_signWCenter - m_signWidth / 6,
-                    point.y - m_signHeight / 2 + Scale_Px(4));
-        // Horizonral line (double)
+                    point.y - m_signHeight / 2);
+        // Horizontal line
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signHeight / 2,
                     point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signHeight / 2);
-        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signHeight / 2 + 1,
-                    point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signHeight / 2 + 1);
-        // Ticks on horizontal line
-        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signHeight / 2,
-                    point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signHeight / 2 + Scale_Px(5));
-        dc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signHeight / 2,
-                    point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signHeight / 2 + Scale_Px(5));
       }
       UnsetPen();
     }
