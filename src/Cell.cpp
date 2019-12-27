@@ -1148,17 +1148,14 @@ bool Cell::ContainsRect(const wxRect &sm, bool all)
  */
 void Cell::ResetData()
 {
-  if(m_fullWidth >= 0)
-  {
-    std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
-    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
-      if(*it != NULL)
-        (*it)->ResetData();
-    m_fullWidth = -1;
-    m_lineWidth = -1;
-    m_maxCenter = -1;
-    m_maxDrop   = -1;
-  }
+  m_fullWidth = -1;
+  m_lineWidth = -1;
+  m_maxCenter = -1;
+  m_maxDrop   = -1;
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    if(*it != NULL)
+      (*it)->ResetData();
 }
 
 Cell *Cell::first()
