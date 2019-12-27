@@ -37,6 +37,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
   m_close(new TextCell(parent, config, cellPointers, ")"))
 {
+  m_open->SetStyle(TS_FUNCTION);
   m_signSize = 50;
   m_signWidth = 18;
   m_signTop = m_signSize / 2;

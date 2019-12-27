@@ -38,6 +38,7 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_last(NULL)
 {
   m_open->DontEscapeOpeningParenthesis();
+  m_open->SetStyle(TS_FUNCTION);
 }
 
 // Old cppcheck bugs:
