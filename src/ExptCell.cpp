@@ -39,9 +39,9 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close(new TextCell(parent, config, cellPointers, ")")),
   m_exp(new TextCell(parent, config, cellPointers, "^"))
 {
-  m_open->SetStyle(TS_VARIABLE);
-  m_close->SetStyle(TS_VARIABLE);
-  m_exp->SetStyle(TS_VARIABLE);
+  m_open->SetStyle(TS_FUNCTION);
+  m_close->SetStyle(TS_FUNCTION);
+  m_exp->SetStyle(TS_FUNCTION);
   m_expt_yoffset = 0;
   m_base_last = m_baseCell.get();
   m_expt_last = m_exptCell.get();
