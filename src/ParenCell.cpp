@@ -354,39 +354,57 @@ void ParenCell::Draw(wxPoint point)
       SetPen(1.0);
 
       int signWidth = m_signWidth - Scale_Px(2);
-      
-      wxPoint pointList[5];
+
+      wxPointList points;
       // Left bracket
-      pointList[0] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center + Scale_Px(4));
-      pointList[1] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                             point.y - m_center + signWidth / 2 + Scale_Px(4));
-      pointList[2] = wxPoint(point.x + Scale_Px(1),
-                             point.y);
-      pointList[3] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                             point.y + m_center - signWidth / 2 - Scale_Px(4));
-      pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y + m_center - Scale_Px(4));
-      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
-      pointList[2] = wxPoint(point.x + Scale_Px(1.5),
-                             point.y);
-      adc->DrawSpline(5,pointList);
-      
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                             point.y - m_center + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1),
+                                point.y));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      // Appending the last point twice should allow for an abrupt 180° turn
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
+      // The middle point of the 2nd run of the parenthesis is at a different place
+      // making the parenthesis wider here
+      points.Append(new wxPoint(point.x + Scale_Px(2),
+                                point.y));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                             point.y - m_center + Scale_Px(4)));
+      adc->DrawSpline(&points);
+
+      points.Clear();
       // Right bracket
-      pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                             point.y - m_center + Scale_Px(4));
-      pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                             point.y - m_center + signWidth / 2 + Scale_Px(4));
-      pointList[2] = wxPoint(point.x + m_width - Scale_Px(1.5),
-                             point.y);
-      pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                             point.y + m_center - signWidth / 2 - Scale_Px(4));
-      pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                             point.y + m_center - Scale_Px(4));
-      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
-      pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
-                             point.y);
-      adc->DrawSpline(5,pointList);      
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y - m_center + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1.5),
+                                point.y));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(2),
+                                point.y));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y - m_center + Scale_Px(4)));
+      adc->DrawSpline(&points);
     }
       break;
     }

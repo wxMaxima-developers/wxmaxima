@@ -1240,6 +1240,7 @@ void GroupCell::DrawBracket()
   if (drawBracket)
   {
     adc->SetBrush(dc->GetBrush());
+    SetPen(1.5);
     int bracketWidth = configuration->GetCellBracketWidth() - configuration->GetDefaultLineWidth();
     if (IsFoldable())
     { // draw the square that allows hiding and unhiding the cell
