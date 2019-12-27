@@ -200,8 +200,8 @@ void FracCell::RecalculateHeight(int fontsize)
     }
     else
     {
-      m_height = wxMax(m_num->GetHeight(), m_denom->GetHeight());
-      m_center = wxMax(m_num->GetCenter(), m_denom->GetCenter());
+      m_height = wxMax(m_num->GetMaxHeight(), m_denom->GetMaxHeight());
+      m_center = wxMax(m_num->GetMaxCenter(), m_denom->GetMaxCenter());
     }
   }
 }
@@ -220,9 +220,9 @@ void FracCell::Draw(wxPoint point)
     {
       num = point;
       wxPoint divide(point);
-      divide.x += m_num->GetWidth();
+      divide.x += m_num->GetFullWidth();
       denom = divide;
-      denom.x += m_divide->GetWidth();
+      denom.x += m_divide->GetFullWidth();
       
       m_num->DrawList(num);
       m_divide->Draw(divide);

@@ -85,7 +85,7 @@ protected:
   std::shared_ptr<Cell> m_base;
   std::shared_ptr<Cell> m_under;
   std::shared_ptr<Cell> m_over;
-  int m_signSize;
+  int m_signHeight;
   int m_signWidth;
   int m_sumStyle;
   int m_signWCenter;

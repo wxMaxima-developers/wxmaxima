@@ -246,7 +246,7 @@ void IntCell::Draw(wxPoint point)
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
-        font = *wxNORMAL_FONT;
+        configuration->CheckTeXFonts(false);
       wxASSERT(fontsize1 > 0);
 #if wxCHECK_VERSION(3, 1, 2)
       font.SetFractionalPointSize(fontsize1);

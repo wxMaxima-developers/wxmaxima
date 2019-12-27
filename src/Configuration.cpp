@@ -394,10 +394,8 @@ void Configuration::ReadConfig()
   config->Read(wxT("abortOnError"),&m_abortOnError);
   config->Read("defaultPort",&m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
-  
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
-
   config->Read(wxT("useSVG"), &m_useSVG);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
@@ -405,9 +403,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("copyRTF"), &m_copyRTF);
   config->Read(wxT("copySVG"), &m_copySVG );
   config->Read(wxT("copyEMF"), &m_copyEMF );
-
   config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
-
   config->Read(wxT("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaUserLocation.IsSameAs(wxT("1")))
@@ -442,8 +438,7 @@ void Configuration::ReadConfig()
 
   m_openHCaret = false;
   config->Read(wxT("openHCaret"), &m_openHCaret);
-
-
+  
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
@@ -533,7 +528,7 @@ wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
   return font;
 }
 
-Configuration::drawMode Configuration::GetGrouphesisDrawMode()
+Configuration::drawMode Configuration::GetParenthesisDrawMode()
 {
   if(m_parenthesisDrawMode == unknown)
   {
@@ -905,7 +900,5 @@ int Configuration::Scale_Px(double px) const
   return retval;
 }
 
-
 wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;
-

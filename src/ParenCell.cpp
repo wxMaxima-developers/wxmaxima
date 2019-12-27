@@ -173,14 +173,14 @@ void ParenCell::RecalculateWidths(int fontsize)
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
   {
-    if(configuration->GetGrouphesisDrawMode() != Configuration::handdrawn)
+    if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
-    m_signWidth = m_open->GetWidth();
-    m_signHeight= m_open->GetHeight();
+    m_signHeight = m_open->GetMaxHeight();
+    m_signWidth  = m_signHeight /4;
   }
   else
   {
-    m_bigParenType = configuration->GetGrouphesisDrawMode();
+    m_bigParenType = configuration->GetParenthesisDrawMode();
     if(m_bigParenType != Configuration::handdrawn)
     {
       SetFont(fontsize);

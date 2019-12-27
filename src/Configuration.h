@@ -38,6 +38,9 @@
 #define PAREN_CLOSE_TOP_UNICODE    "\u239e"
 #define PAREN_CLOSE_EXTEND_UNICODE "\u239f"
 #define PAREN_CLOSE_BOTTOM_UNICODE "\u23a0"
+#define SUM_SIGN "\u2211"
+#define PROD_SIGN "\u220F"
+#define SUM_DEC 2
 
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25
@@ -469,6 +472,9 @@ public:
   bool CheckTeXFonts() const
   { return m_TeXFonts; }
 
+  void CheckTeXFonts(bool check)
+  { m_TeXFonts = check; }
+
   bool CheckKeepPercent() const
   { return m_keepPercent; }
 
@@ -777,7 +783,7 @@ public:
     }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
-  drawMode GetGrouphesisDrawMode();
+  drawMode GetParenthesisDrawMode();
   /*! Get the font for a given text style
 
     \param textStyle The text style to get the font for
@@ -866,7 +872,7 @@ private:
       of this function.
    */
   bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3);
-  //! Caches the information on how to draw big parenthesis for GetGrouphesisDrawMode().
+  //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
 
