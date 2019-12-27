@@ -42,6 +42,10 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
   m_divide->SetStyle(TS_VARIABLE);
+  m_open1->SetStyle(TS_VARIABLE);
+  m_open2->SetStyle(TS_VARIABLE);
+  m_close1->SetStyle(TS_VARIABLE);
+  m_close2->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;
   m_denom_Last = NULL;
   m_fracStyle = FC_NORMAL;

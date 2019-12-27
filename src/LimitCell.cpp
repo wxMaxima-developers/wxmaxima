@@ -40,6 +40,8 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_under(new TextCell(parent, config, cellPointers)),
   m_close(new TextCell(parent, config, cellPointers, ")"))
 {
+  m_open->SetStyle(TS_VARIABLE);
+  m_close->SetStyle(TS_VARIABLE);
   m_base_last = m_base.get();
   m_under_last = m_under.get();
   m_name_last = m_name.get();
