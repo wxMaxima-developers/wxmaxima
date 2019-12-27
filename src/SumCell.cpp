@@ -108,8 +108,11 @@ void SumCell::RecalculateWidths(int fontsize)
 {
   m_displayedBase->RecalculateWidthsList(fontsize);
   m_signHeight = m_displayedBase->GetMaxHeight();
-  m_signWidth = 3 * m_signHeight / 5;
-  m_signWCenter = m_signWidth / 2;
+  if (m_sumStyle == SM_SUM)
+    m_signWidth = 3.0 * m_signHeight / 5.0;
+  else
+    m_signWidth = 4.0 * m_signHeight / 5.0;
+  m_signWCenter = m_signWidth / 2.0;
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
     m_over = std::shared_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));

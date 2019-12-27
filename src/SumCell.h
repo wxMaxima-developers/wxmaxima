@@ -89,7 +89,7 @@ protected:
   std::shared_ptr<ParenCell> m_paren;
   Cell *m_displayedBase;
   int m_signHeight;
-  int m_signWidth;
+  double m_signWidth;
   int m_sumStyle;
   int m_signWCenter;
   int m_signTop;
