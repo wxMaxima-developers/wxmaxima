@@ -6196,56 +6196,105 @@ bool Worksheet::ExportToTeX(wxString file)
 
 wxString Worksheet::UnicodeToMaxima(wxString s)
 {
-  s.Replace(wxT("\u2052"), "-"); // commercial minus sign
-  s.Replace(wxT("\uFE63"), "-"); // unicode small minus sign
-  s.Replace(wxT("\uFF0D"), "-"); // unicode big minus sign
-  s.Replace(wxT("\uFF0B"), "+"); // unicode big plus
-  s.Replace(wxT("\uFB29"), "+"); // hebrew alternate plus
-
-  MaximaTokenizer::TokenList tokens = MaximaTokenizer(s, m_configuration).GetTokens();
   wxString retval;
-  
-  for(MaximaTokenizer::TokenList::const_iterator it = tokens.begin(); it != tokens.end(); ++it)
+
+  wxChar ch;
+  wxChar ch_Last = '\0';
+  for (wxString::const_iterator it = s.begin(); it < s.end(); ++it)
   {
-    wxString tokenString = (*it)->GetText();
-    switch((*it)->GetStyle())
+    ch = *it;
+    switch (ch)
     {
-    case TS_DEFAULT:
-    case TS_CODE_OPERATOR:
-    case TS_CODE_VARIABLE:
-    case TS_CODE_FUNCTION:
-      if(tokenString == wxT("\u00B2")) {retval += wxT("^2");continue;}
-      if(tokenString == wxT("\u00B3")) {retval += wxT("^3");continue;}
-      if(tokenString == wxT("\u00BD")) {retval += wxT("(1/2)");continue;}
-      if(tokenString == wxT("\u221A")) {retval += wxT(" sqrt ");continue;}
-      if(tokenString == wxT("\u222B")) {retval += wxT(" integrate ");continue;}
-      if(tokenString == wxT("\u2211")) {retval += wxT(" sum ");continue;}
-      if(tokenString == wxT("\u220F")) {retval += wxT(" product ");continue;}
-      if(tokenString == wxT("\u2205")) {retval += wxT("[]");continue;}
-      if(tokenString == wxT("\u2148")) {retval += wxT(" %i ");continue;}
-      if(tokenString == wxT("\u2147")) {retval += wxT(" %e ");continue;}
-      if(tokenString == wxT("\u221E")) {retval += wxT(" inf ");continue;}
-      if(tokenString == wxT("\u22C0")) {retval += wxT(" and ");continue;}
-      if(tokenString == wxT("\u22C1")) {retval += wxT(" or ");continue;}
-      if(tokenString == wxT("\u22BB")) {retval += wxT(" xor ");continue;}
-      if(tokenString == wxT("\u22BC")) {retval += wxT(" nand ");continue;}
-      if(tokenString == wxT("\u22BD")) {retval += wxT(" nor ");continue;}
-      if(tokenString == wxT("\u21D2")) {retval += wxT(" implies ");continue;}
-      if(tokenString == wxT("\u21D4")) {retval += wxT(" equiv ");continue;}
-      if(tokenString == wxT("\u00AC")) {retval += wxT(" not ");continue;}
-      if(tokenString == wxT("\u2260")) {retval += wxT(" # ");continue;}
-      if(tokenString == wxT("\u2264")) {retval += wxT(" <= ");continue;}
-      if(tokenString == wxT("\u2265")) {retval += wxT(" >= ");continue;}
-      if(tokenString == wxT("\u2212")) {retval += wxT("-");continue;} // An unicode minus sign
-      if(tokenString == wxT("\u03C0")) {retval += wxT(" %pi ");continue;}
-      // Only executed if none of the conditions that can be found above fires
-      retval += tokenString;
+    // Strings aren't converted
+    case '\"':
+      retval += ch;
+      ++it;
+      while(it < s.end())
+      {
+        retval += *it;
+        if(*it == '\\')
+        {
+          ++it;
+          if(it != s.end())
+            retval += *it;
+          else
+            return retval;
+          ++it;
+        }
+        else
+        {
+          if(*it == '\"')
+          {
+            if (it < s.end())
+              break;
+            else
+              return retval;
+           }
+          else
+            ++it;
+        }
+      }
       break;
-    default:
-      retval += tokenString;
+    // Backslashed items aren't converted.
+    case '\\':
+      retval += ch;
+      ++it;
+      if(it != s.end())
+        retval += *it;
+      else
+        return retval;
+      break;
+    case wxT('\u00B2'): retval += wxT("^2");break;
+    case wxT('\u00B3'): retval += wxT("^3");break;
+    case wxT('\u00BD'): retval += wxT("(1/2)");break;
+    case wxT('\u221A'): retval += wxT(" sqrt ");break;
+    case wxT('\u222B'): retval += wxT(" integrate ");break;
+    case wxT('\u2211'): retval += wxT(" sum ");break;
+    case wxT('\u220F'): retval += wxT(" product ");break;
+    case wxT('\u2205'): retval += wxT("[]");break;
+    case wxT('\u2148'): retval += wxT(" %i ");break;
+    case wxT('\u2147'): retval += wxT(" %e ");break;
+    case wxT('\u221E'): retval += wxT(" inf ");break;
+    case wxT('\u22C0'): retval += wxT(" and ");break;
+    case wxT('\u22C1'): retval += wxT(" or ");break;
+    case wxT('\u22BB'): retval += wxT(" xor ");break;
+    case wxT('\u22BC'): retval += wxT(" nand ");break;
+    case wxT('\u22BD'): retval += wxT(" nor ");break;
+    case wxT('\u21D2'): retval += wxT(" implies ");break;
+    case wxT('\u21D4'): retval += wxT(" equiv ");break;
+    case wxT('\u00AC'): retval += wxT(" not ");break;
+    case wxT('\u2260'): retval += wxT(" # ");break;
+    case wxT('\u2264'): retval += wxT(" <= ");break;
+    case wxT('\u2265'): retval += wxT(" >= ");break;
+    case wxT('\u2212'): retval += wxT("-");break; // An unicode minus sign
+    case wxT('\u2052'): retval += "-";break; // commercial minus sign
+    case wxT('\uFE63'): retval += "-";break; // unicode small minus sign
+    case wxT('\uFF0D'): retval += "-";break; // unicode big minus sign
+    case wxT('\uFF0B'): retval += "+";break; // unicode big plus
+    case wxT('\uFB29'): retval += "+";break; // hebrew alternate plus
+    case wxT('\u00B7'): retval += wxT("*");break; // An unicode multiplication sinbreak;
+    case wxT('\u00A0'): retval += wxT(" ");break; // A non-breakable spaebreak;
+    case wxT('\r'): retval += wxT(" ");break; // A soft linebreak
+    case wxT('\xDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
+    // Convert \u03C0 to %pi if it isn't part of a symbol name
+    case wxT('\u03C0'):
+    {
+      wxString::const_iterator it2 = it;
+      ++it2;
+      if (
+        (!wxIsalnum(ch_Last)) &&
+        ((it2 == s.end()) || (!wxIsalnum(*it2)))
+        )
+        retval += wxT("%pi");
+      else
+        retval += *it;
     }
+    break;
+    default:
+      retval += *it;
+    }
+    ch_Last = ch;
   }
-  retval.Replace(wxT("\u00B7"), "*"); // An unicode multiplication sign
   return retval;
 }
 
