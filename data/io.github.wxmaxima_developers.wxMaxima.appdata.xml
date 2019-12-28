@@ -51,6 +51,16 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.12.4" date="2019-12-28">
+      <description>
+	<p>
+	  Resolved a crash.
+	</p>
+        <ul>
+	  <li>Unpacking the svg icons no more can lead to an infinite size file</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.12.3" date="2019-12-27">
       <description>
 	<p>
