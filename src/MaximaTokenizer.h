@@ -84,6 +84,9 @@ public:
   
 protected:
   TokenList m_tokens;
+  static const wxString m_additional_alphas;
+  static const wxString m_not_alphas;
+  static const wxString m_spaces;
 };
 
 #endif // MAXIMATOKENIZER_H

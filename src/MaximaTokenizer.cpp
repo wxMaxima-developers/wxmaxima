@@ -264,14 +264,14 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     if (IsSpace(Ch))
     {
       wxString token;
-      while ((it < commands.end()) &&
-             (IsSpace(Ch))
-               )
+      while ((it < commands.end()) && IsSpace(Ch))
       {
-        token += " ";
-        if (++it < commands.end()) {
+	if(Ch == '\t')
+          token += "\t";
+        else
+          token += " ";
+        if (++it < commands.end())
           Ch = *it;
-        }
       }
       m_tokens.push_back(new Token(token));
       continue;
@@ -380,13 +380,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
 
 bool MaximaTokenizer::IsAlpha(wxChar ch)
 {
-  static const wxString additional_alphas = wxT("\\_%µ");
-  static const wxString not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212");
-
   if (wxIsalpha(ch))
     return true;
 
-  if(not_alphas.Find(ch) != wxNOT_FOUND)
+  if(m_not_alphas.Find(ch) != wxNOT_FOUND)
     return false;
   
   if(IsSpace(ch))
@@ -397,27 +394,12 @@ bool MaximaTokenizer::IsAlpha(wxChar ch)
   if(ch > 127)
     return true;
   
-  return (additional_alphas.Find(ch) >= 0);
+  return (m_additional_alphas.Find(ch) != wxNOT_FOUND);
 }
 
 bool MaximaTokenizer::IsSpace(wxChar ch)
 {
-  static const wxString spaces = wxT(" \t")
-    wxT("\u00A0") // A non-breakable space
-    wxT("\xDCB6") // A non-breakable space (alternate version)
-    wxT("\u1680") // Ogham space mark
-    wxT("\u2000") // en quad
-    wxT("\u2001") // em quad
-    wxT("\u2002") // en space
-    wxT("\u2003") // em space
-    wxT("\u2004") // 1/3 em space
-    wxT("\u2005") // 1/4 em space
-    wxT("\u2006") // 1/6 em space
-    wxT("\u2007") // figure space
-    wxT("\u2008") // punctuation space
-    wxT("\r"); // A soft linebreak
-
-  return spaces.Find(ch) != wxNOT_FOUND;
+  return m_spaces.Find(ch) != wxNOT_FOUND;
 }
 
 bool MaximaTokenizer::IsNum(wxChar ch)
@@ -430,3 +412,19 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch)
   return IsAlpha(ch) || IsNum(ch);
 }
 
+const wxString MaximaTokenizer::m_additional_alphas = wxT("\\_%µ");
+const wxString MaximaTokenizer::m_not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212");
+const wxString MaximaTokenizer::m_spaces = wxT(" \t")
+  wxT("\u00A0") // A non-breakable space
+  wxT("\xDCB6") // A non-breakable space (alternate version)
+  wxT("\u1680") // Ogham space mark
+  wxT("\u2000") // en quad
+  wxT("\u2001") // em quad
+  wxT("\u2002") // en space
+  wxT("\u2003") // em space
+  wxT("\u2004") // 1/3 em space
+  wxT("\u2005") // 1/4 em space
+  wxT("\u2006") // 1/6 em space
+  wxT("\u2007") // figure space
+  wxT("\u2008") // punctuation space
+  wxT("\r"); // A soft linebreak

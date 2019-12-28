@@ -2630,7 +2630,7 @@ wxString GroupCell:: m_lookalikeChars(
     wxT("J")		wxT("\u0408")
     wxT("a")		wxT("\u0430")
     wxT("o")		wxT("\u03bf")
-    wxT("\u03a3")      	wxT("\u2211")
+    wxT("\u03a3")      wxT("\u2211")
     wxT("o")		wxT("\u043e")
     wxT("\u03bf")	wxT("\u043e")
     wxT("c")		wxT("\u0441")

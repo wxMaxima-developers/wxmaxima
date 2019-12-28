@@ -6201,7 +6201,6 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\uFF0D"), "-"); // unicode big minus sign
   s.Replace(wxT("\uFF0B"), "+"); // unicode big plus
   s.Replace(wxT("\uFB29"), "+"); // hebrew alternate plus
-  s.Replace(wxT("\u00B7"), "*"); // An unicode multiplication sign
 
   MaximaTokenizer::TokenList tokens = MaximaTokenizer(s, m_configuration).GetTokens();
   wxString retval;
