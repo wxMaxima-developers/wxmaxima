@@ -6214,16 +6214,12 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
     case TS_CODE_OPERATOR:
     case TS_CODE_VARIABLE:
     case TS_CODE_FUNCTION:
-      if(tokenString == wxT("\u00B2")) {retval += wxT("^2");continue;}
-      if(tokenString == wxT("\u00B3")) {retval += wxT("^3");continue;}
-      if(tokenString == wxT("\u00BD")) {retval += wxT("(1/2)");continue;}
       if(tokenString == wxT("\u221A")) {retval += wxT(" sqrt ");continue;}
       if(tokenString == wxT("\u222B")) {retval += wxT(" integrate ");continue;}
       if(tokenString == wxT("\u2211")) {retval += wxT(" sum ");continue;}
       if(tokenString == wxT("\u220F")) {retval += wxT(" product ");continue;}
       if(tokenString == wxT("\u2148")) {retval += wxT(" %i ");continue;}
       if(tokenString == wxT("\u2147")) {retval += wxT(" %e ");continue;}
-      if(tokenString == wxT("\u221E")) {retval += wxT(" inf ");continue;}
       if(tokenString == wxT("\u22C0")) {retval += wxT(" and ");continue;}
       if(tokenString == wxT("\u22C1")) {retval += wxT(" or ");continue;}
       if(tokenString == wxT("\u22BB")) {retval += wxT(" xor ");continue;}
@@ -6237,14 +6233,18 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
       retval += tokenString;
       break;
     default:
+      if(tokenString == wxT("\u221E")) tokenString = " inf ";
       retval += tokenString;
     }
   }
+  retval.Replace(wxT("\u00B2"), "^2");
+  retval.Replace(wxT("\u00B3"), "^3");
+  retval.Replace(wxT("\u00BD"), "(1/2)");
   retval.Replace(wxT("\u2205"), "[]"); // An empty list
-  retval.Replace(wxT("\u2212"), "-");  // The "not equal" sign
+  retval.Replace(wxT("\u2212"), "-");
   retval.Replace(wxT("\u2260"), "#");  // The "not equal" sign
-  retval.Replace(wxT("\u2264"), "<="); // The "not equal" sign
-  retval.Replace(wxT("\u2265"), "=>"); // The "not equal" sign
+  retval.Replace(wxT("\u2264"), "<=");
+  retval.Replace(wxT("\u2265"), ">=");
   retval.Replace(wxT("\u00B7"), "*");  // An unicode multiplication sign
   retval.Replace(wxT("\u2052"), "-");  // commercial minus sign
   retval.Replace(wxT("\uFE63"), "-");  // unicode small minus sign
