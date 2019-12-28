@@ -195,7 +195,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxButton *backButton = new wxButton(this,-1);
   backButton->SetBitmap(
     GetImage(
-      media_playback_start_svg_gz,media_playback_start_reverse_svg_gz_len
+      media_playback_start_reverse_svg_gz,media_playback_start_reverse_svg_gz_len
       )
     );
   backButton->Connect(
