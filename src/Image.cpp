@@ -346,7 +346,7 @@ wxMemoryBuffer Image::GetGnuplotSource()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     textOut << line + wxT("\n");
@@ -375,7 +375,7 @@ wxMemoryBuffer Image::GetGnuplotData()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     textOut << line + wxT("\n");
@@ -411,7 +411,7 @@ wxString Image::GnuplotData()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     textOut << line + wxT("\n");
@@ -445,7 +445,7 @@ wxString Image::GnuplotSource()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
@@ -483,7 +483,7 @@ wxSize Image::ToImageFile(wxString filename)
     wxZlibInputStream zstream(istream);
     wxTextInputStream textIn(zstream);
     wxString line;
-    while(!istream.Eof())
+    while(!zstream.Eof())
     {
       line = textIn.ReadLine();
       svgContents_string += line + wxT("\n");
@@ -703,7 +703,7 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
         wxZlibInputStream zstream(istream);
         wxTextInputStream textIn(zstream);
         wxString line;
-        while(!istream.Eof())
+        while(!zstream.Eof())
         {
           line = textIn.ReadLine();
           svgContents_string += line + wxT("\n");

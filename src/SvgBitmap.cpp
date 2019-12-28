@@ -44,7 +44,7 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   wxTextInputStream textIn(zstream);
   wxString svgContents_string;
   wxString line;
-  while(!istream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     svgContents_string += line + wxT("\n");
