@@ -6246,6 +6246,7 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
       retval += tokenString;
     }
   }
+  retval.Replace(wxT("\u00B7"), "*"); // An unicode multiplication sign
   return retval;
 }
 
