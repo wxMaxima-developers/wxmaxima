@@ -381,7 +381,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
 bool MaximaTokenizer::IsAlpha(wxChar ch)
 {
   static const wxString additional_alphas = wxT("\\_%µ");
-  static const wxString not_alphas = wxT("\u00B7\u2212");
+  static const wxString not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212");
 
   if (wxIsalpha(ch))
     return true;
