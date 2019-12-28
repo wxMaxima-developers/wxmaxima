@@ -1,10 +1,10 @@
 # wxMaxima 19.12.4 - Stable:
 
 Since 19.12.3 depending on the system allocated immense amounts of 
-RAM and crashed a 18.12.4 had to be released. Together they port
+RAM and crashed a 19.12.4 had to be released. Together they port
 many big improvements to the display code.
 
- * A Russian traslation update by OlesyaGerasimenko
+ * A Russian translation update by OlesyaGerasimenko
  * The manual is now found on Gentoo, too
  * Big improvements to the maths output
  * A major speedUp by caching already-determined text snippet sizes
