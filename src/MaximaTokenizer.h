@@ -67,6 +67,7 @@ public:
   static bool IsAlpha(wxChar ch);
   static bool IsNum(wxChar ch);
   static bool IsAlphaNum(wxChar ch);
+  static bool IsSpace(wxChar ch);
   static const wxString UnicodeNumbers()
     {
       return wxString(

@@ -261,24 +261,23 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       continue;
     }
     // Merge consecutive spaces into one single token
-    if ((Ch == wxT(' ')) || (Ch == wxT('\t')))
+    if (IsSpace(Ch))
     {
       wxString token;
       while ((it < commands.end()) &&
-             ((Ch == wxT(' ') || (Ch == wxT('\t')))
-               ))
+             (IsSpace(Ch))
+               )
       {
-        token += wxString(Ch);
+        token += " ";
         if (++it < commands.end()) {
           Ch = *it;
         }
       }
-
       m_tokens.push_back(new Token(token));
       continue;
     }
     // Handle keywords
-    if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?') || (Ch == wxT('µ')))
+    if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?'))
     {
       wxString token;
       if(Ch == '?')
@@ -288,7 +287,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         Ch = *it;
       }
 
-      while ((it < commands.end()) && (IsAlphaNum(*it) || (*it == '\\') || (*it == wxT('µ'))))
+      while ((it < commands.end()) && (IsAlphaNum(*it) || (*it == '\\')))
       {
         Ch = *it;
         token += Ch;
@@ -381,12 +380,44 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
 
 bool MaximaTokenizer::IsAlpha(wxChar ch)
 {
-  static const wxString additional_alphas = wxT("\\_%");
+  static const wxString additional_alphas = wxT("\\_%µ");
+  static const wxString not_alphas = wxT("\u00B7\u2212");
 
   if (wxIsalpha(ch))
     return true;
 
-  return (additional_alphas.Find(ch) != wxNOT_FOUND);
+  if(not_alphas.Find(ch) != wxNOT_FOUND)
+    return false;
+  
+  if(IsSpace(ch))
+    return false;
+
+  // If it cannot be converted to asciiand we didn't detect it as a char we know how to deal with
+  // it (in maxima's view) is an ordinary letter.
+  if(ch > 127)
+    return true;
+  
+  return (additional_alphas.Find(ch) >= 0);
+}
+
+bool MaximaTokenizer::IsSpace(wxChar ch)
+{
+  static const wxString spaces = wxT(" \t")
+    wxT("\u00A0") // A non-breakable space
+    wxT("\xDCB6") // A non-breakable space (alternate version)
+    wxT("\u1680") // Ogham space mark
+    wxT("\u2000") // en quad
+    wxT("\u2001") // em quad
+    wxT("\u2002") // en space
+    wxT("\u2003") // em space
+    wxT("\u2004") // 1/3 em space
+    wxT("\u2005") // 1/4 em space
+    wxT("\u2006") // 1/6 em space
+    wxT("\u2007") // figure space
+    wxT("\u2008") // punctuation space
+    wxT("\r"); // A soft linebreak
+
+  return spaces.Find(ch) != wxNOT_FOUND;
 }
 
 bool MaximaTokenizer::IsNum(wxChar ch)
