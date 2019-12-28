@@ -83,9 +83,13 @@ public:
 
   
 protected:
+  //! The tokens the string is divided into
   TokenList m_tokens;
+  //! ASCII symbols that wxIsalnum() doesn't see as chars, but maxima does.
   static const wxString m_additional_alphas;
+  //! Unicode Operators and other special non-ascii characters
   static const wxString m_not_alphas;
+  //! Space characters
   static const wxString m_spaces;
 };
 
