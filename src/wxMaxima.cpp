@@ -9639,7 +9639,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
     else
     {
       LoggingMessageBox(
-              _("Unable to interpret the version info I got from http://wxMaxima-developers.github.io//wxmaxima/version.txt: ") +
+              _("Unable to interpret the version info I got from http://wxMaxima-developers.github.io/wxmaxima/version.txt: ") +
               version, _("Upgrade"),
               wxOK | wxICON_INFORMATION);
 
