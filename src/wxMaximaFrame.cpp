@@ -760,9 +760,13 @@ void wxMaximaFrame::SetupMenu()
   m_Edit_Zoom_Sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
 
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
-  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt+Enter"),
-                             _("Toggle full screen editing"),
-                             wxITEM_NORMAL);
+#ifdef __UNIX__
+  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tF11"),
+                             _("Toggle full screen editing"), wxITEM_NORMAL);
+#else
+  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+                             _("Toggle full screen editing"), wxITEM_NORMAL);
+#endif
 
   m_MenuBar->Append(m_Maxima_Panes_Sub, _("View"));
 
