@@ -260,44 +260,36 @@ void SqrtCell::Draw(wxPoint point)
       wxDC *adc = configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
       SetPen(1.2);
-      adc->DrawLine(point.x,
-                  point.y,
-                  point.x + Scale_Px(3),
-                  point.y - Scale_Px(1));
+      wxPointList points;
+      // The "serif" at the start of the sign
+      points.Append(new wxPoint(point));
+      points.Append(new wxPoint(point.x + Scale_Px(3),
+                                point.y - Scale_Px(1)));
       //  A wider line
-      adc->DrawLine(point.x + Scale_Px(3),
-                  point.y - Scale_Px(1),
-                  point.x + Scale_Px(7),
-                  point.y + m_height - m_center - Scale_Px(4));
-      adc->DrawLine(point.x + Scale_Px(3+1),
-                  point.y - Scale_Px(1),
-                  point.x + Scale_Px(7+1),
-                  point.y + m_height - m_center - Scale_Px(4));
-      adc->DrawLine(point.x + Scale_Px(3+.5),
-                  point.y - Scale_Px(1),
-                  point.x + Scale_Px(7+.5),
-                  point.y + m_height - m_center - Scale_Px(4));
-      adc->DrawLine(point.x + Scale_Px(3),
-                  point.y - Scale_Px(1),
-                  point.x + Scale_Px(3+1),
-                  point.y - Scale_Px(1));
-      adc->DrawLine(point.x + Scale_Px(7),
-                    point.y + m_height - m_center - Scale_Px(4),
-                    point.x + Scale_Px(7+1),
-                    point.y + m_height - m_center - Scale_Px(4));
-
-      adc->DrawLine(point.x + Scale_Px(7+1),
-                  point.y + m_height - m_center - Scale_Px(4),
-                  point.x + Scale_Px(10),
-                  point.y - m_center + Scale_Px(2));
-      adc->DrawLine(point.x + Scale_Px(10),
-                  point.y - m_center + Scale_Px(2),
-                  point.x + m_width - Scale_Px(1),
-                  point.y - m_center + Scale_Px(2));
-      adc->DrawLine(point.x + m_width - Scale_Px(1),
-                  point.y - m_center + Scale_Px(2),
-                  point.x + m_width - Scale_Px(1),
-                  point.y - m_center + Scale_Px(6));
+      points.Append(new wxPoint(point.x + Scale_Px(3),
+                                point.y - Scale_Px(1)));
+      points.Append(new wxPoint(point.x + Scale_Px(7),
+                                point.y + m_height - m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(7.5),
+                                point.y + m_height - m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(3.5),
+                                point.y - Scale_Px(1)));
+      points.Append(new wxPoint(point.x + Scale_Px(3.5),
+                                point.y - Scale_Px(1)));
+      points.Append(new wxPoint(point.x + Scale_Px(3),
+                                point.y - Scale_Px(1)));
+      points.Append(new wxPoint(point.x + Scale_Px(8),
+                                point.y + m_height - m_center - Scale_Px(4)));
+      // The upwards line
+      points.Append(new wxPoint(point.x + Scale_Px(10),
+                                point.y - m_center + Scale_Px(2)));
+      // The horizontal line
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
+                                point.y - m_center + Scale_Px(2)));
+      // The serif at the end of the root
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
+                                point.y - m_center + Scale_Px(6)));
+      adc->DrawLines(&points);
       UnsetPen();
     }
 
