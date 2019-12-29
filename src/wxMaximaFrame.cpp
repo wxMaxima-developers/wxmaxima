@@ -608,19 +608,19 @@ void wxMaximaFrame::SetupMenu()
   m_FileMenu->Append(mac_newId, _("New\tCtrl+N"),
                      _("Open a new window"));
 #else
-  APPEND_MENU_ITEM(m_FileMenu, menu_new_id, _("New\tCtrl+N"),
+  APPEND_MENU_ITEM(m_FileMenu, wxID_NEW, _("New\tCtrl+N"),
        _("Open a new window"), wxT("gtk-new"));
 #endif
-  APPEND_MENU_ITEM(m_FileMenu, menu_open_id, _("&Open...\tCtrl+O"),
+  APPEND_MENU_ITEM(m_FileMenu, wxID_OPEN, _("&Open...\tCtrl+O"),
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
   m_FileMenu->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
   m_FileMenu->AppendSeparator();
   m_FileMenu->Append(wxID_CLOSE, _("Close\tCtrl+W"),
                      _("Close window"), wxITEM_NORMAL);
-  APPEND_MENU_ITEM(m_FileMenu, menu_save_id, _("&Save\tCtrl+S"),
+  APPEND_MENU_ITEM(m_FileMenu, wxID_SAVE, _("&Save\tCtrl+S"),
                    _("Save document"), wxT("gtk-save"));
-  APPEND_MENU_ITEM(m_FileMenu, menu_save_as_id, _("Save As...\tShift+Ctrl+S"),
+  APPEND_MENU_ITEM(m_FileMenu, wxID_SAVEAS, _("Save As...\tShift+Ctrl+S"),
                    _("Save document as"), wxT("gtk-save"));
   m_FileMenu->Append(menu_load_id, _("&Load Package...\tCtrl+L"),
                      _("Load a Maxima package file"), wxITEM_NORMAL);
@@ -640,10 +640,10 @@ void wxMaximaFrame::SetupMenu()
   m_MenuBar->Append(m_FileMenu, _("&File"));
 
   m_EditMenu = new wxMenu;
-  m_EditMenu->Append(menu_undo, _("Undo\tCtrl+Z"),
+  m_EditMenu->Append(wxID_UNDO, _("Undo\tCtrl+Z"),
                      _("Undo last change"),
                      wxITEM_NORMAL);
-  m_EditMenu->Append(menu_redo, _("Redo\tCtrl+Y"),
+  m_EditMenu->Append(wxID_REDO, _("Redo\tCtrl+Y"),
                      _("Redo last change"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();

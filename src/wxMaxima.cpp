@@ -407,9 +407,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_license, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(menu_save_id, wxEVT_MENU,
+  Connect(wxID_SAVE, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
-  Connect(menu_save_as_id, wxEVT_MENU,
+  Connect(wxID_SAVEAS, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(menu_load_id, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
@@ -433,7 +433,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_interrupt_id, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::Interrupt), NULL, this);
-  Connect(menu_open_id, wxEVT_MENU,
+  Connect(wxID_OPEN, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(menu_batch_id, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
@@ -641,9 +641,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_copy_mathml, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_undo, wxEVT_MENU,
+  Connect(wxID_UNDO, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_redo, wxEVT_MENU,
+  Connect(wxID_REDO, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_texform, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
@@ -4408,8 +4408,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   m_MenuBar->Enable(menu_copy_to_file, m_worksheet->CanCopy());
   m_MenuBar->Enable(menu_copy_text_from_worksheet, m_worksheet->CanCopy(true));
   m_MenuBar->Enable(menu_select_all, m_worksheet->GetTree() != NULL);
-  m_MenuBar->Enable(menu_undo, m_worksheet->CanUndo());
-  m_MenuBar->Enable(menu_redo, m_worksheet->CanRedo());
+  m_MenuBar->Enable(wxID_UNDO, m_worksheet->CanUndo());
+  m_MenuBar->Enable(wxID_REDO, m_worksheet->CanRedo());
   m_MenuBar->Enable(menu_interrupt_id, m_pid > 0);
   m_MenuBar->Enable(Worksheet::popid_comment_selection,
                   (m_worksheet->GetActiveCell() != NULL) && (m_worksheet->GetActiveCell()->SelectionActive()));
@@ -4427,7 +4427,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   );
 
   m_MenuBar->Enable(menu_jumptoerror, !m_worksheet->m_cellPointers.m_errorList.Empty());
-  m_MenuBar->Enable(menu_save_id, (!m_fileSaved));
+  m_MenuBar->Enable(wxID_SAVE, (!m_fileSaved));
 
   for (int id = menu_pane_math; id <= menu_pane_stats; id++)
     m_MenuBar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
@@ -5223,7 +5223,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     break;
 
     case ToolBar::tb_open:
-    case menu_open_id:
+    case wxID_OPEN:
     {
       if (SaveNecessary())
       {
@@ -5264,7 +5264,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     }
       break;
 
-    case menu_save_as_id:
+    case wxID_SAVEAS:
       forceSave = true;
       m_fileSaved = false;
       SaveFile(forceSave);
@@ -5273,7 +5273,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       ResetTitle(m_worksheet->IsSaved(), true);
       break;
     case ToolBar::tb_save:
-    case menu_save_id:
+    case wxID_SAVE:
       SaveFile(forceSave);
       // Seems like resetting the title on "file/save as" is a little bit
       // sluggish, otherwise.
@@ -5638,11 +5638,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     if (m_worksheet->CanPaste())
       m_worksheet->PasteFromClipboard();
     break;
-  case menu_undo:
+  case wxID_UNDO:
     if (m_worksheet->CanUndo())
       m_worksheet->Undo();
     break;
-  case menu_redo:
+  case wxID_REDO:
     if (m_worksheet->CanRedo())
       m_worksheet->Redo();
     break;
