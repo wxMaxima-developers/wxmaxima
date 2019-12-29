@@ -287,7 +287,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_clientTextStream = NULL;
   Connect(wxEVT_SCROLL_CHANGED,
           wxScrollEventHandler(wxMaxima::SliderEvent), NULL, this);
-  Connect(mac_closeId, wxEVT_MENU,
+  Connect(wxID_CLOSE, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(menu_check_updates, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
@@ -5218,7 +5218,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-  case mac_closeId:
+  case wxID_CLOSE:
     Close();
     break;
 

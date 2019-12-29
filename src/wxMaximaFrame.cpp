@@ -615,11 +615,9 @@ void wxMaximaFrame::SetupMenu()
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
   m_FileMenu->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
-#if defined __WXOSX__
   m_FileMenu->AppendSeparator();
-  m_FileMenu->Append(mac_closeId, _("Close\tCtrl+W"),
+  m_FileMenu->Append(wxID_CLOSE, _("Close\tCtrl+W"),
                      _("Close window"), wxITEM_NORMAL);
-#endif
   APPEND_MENU_ITEM(m_FileMenu, menu_save_id, _("&Save\tCtrl+S"),
                    _("Save document"), wxT("gtk-save"));
   APPEND_MENU_ITEM(m_FileMenu, menu_save_as_id, _("Save As...\tShift+Ctrl+S"),

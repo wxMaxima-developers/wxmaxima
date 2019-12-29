@@ -330,7 +330,6 @@ public:
     menu_remove_output,
     mac_newId,
     mac_openId,
-    mac_closeId,
     menu_list_create_from_elements,
     menu_list_create_from_rule,
     menu_list_create_from_list,
