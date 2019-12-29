@@ -388,7 +388,7 @@ void ParenCell::Draw(wxPoint point)
                                 point.y - m_center + Scale_Px(4)));
       points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
                                 point.y - m_center + signWidth / 2 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1.5),
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
                                 point.y));
       points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
                                 point.y + m_center - signWidth / 2 - Scale_Px(4)));
