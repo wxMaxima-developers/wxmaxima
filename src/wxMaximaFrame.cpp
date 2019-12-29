@@ -61,7 +61,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxWindowUpdateLocker noUpdates(this);
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[23];
+  wxAcceleratorEntry entries[24];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
@@ -87,7 +87,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[20].Set(wxACCEL_CTRL, wxT('5'), menu_add_subsubsection);
   entries[21].Set(wxACCEL_CTRL, wxT('6'), menu_add_heading5);
   entries[22].Set(wxACCEL_CTRL, wxT('7'), menu_add_heading6);
-  wxAcceleratorTable accel(23, entries);
+  entries[23].Set(wxACCEL_CTRL, wxT('.'), menu_interrupt_id); // Standard on the Mac
+  wxAcceleratorTable accel(24, entries);
   SetAcceleratorTable(accel);
     
   // Redirect all debug messages to a dockable panel and output some info
@@ -840,15 +841,9 @@ void wxMaximaFrame::SetupMenu()
   // Maxima menu
   m_MaximaMenu = new wxMenu;
 
-#if defined (__WXOSX__)
-  APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
-                   _("&Interrupt\tCtrl+."), // command-. interrupts (mac standard)
-                   _("Interrupt current computation"), wxT("gtk-stop"));
-#else
   APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
                    _("&Interrupt\tCtrl+G"),
                    _("Interrupt current computation"), wxT("gtk-stop"));
-#endif
   APPEND_MENU_ITEM(m_MaximaMenu, ToolBar::menu_restart_id,
                    _("&Restart Maxima"), _("Restart Maxima"), wxT("gtk-refresh"));
   m_MaximaMenu->Append(menu_soft_restart, _("&Clear Memory"),
