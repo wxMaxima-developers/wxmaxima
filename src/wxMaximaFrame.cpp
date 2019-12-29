@@ -647,10 +647,10 @@ void wxMaximaFrame::SetupMenu()
                      _("Redo last change"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-  m_EditMenu->Append(menu_cut, _("Cut\tCtrl+X"),
+  m_EditMenu->Append(wxID_CUT, _("Cut\tCtrl+X"),
                      _("Cut selection"),
                      wxITEM_NORMAL);
-  APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_worksheet, _("&Copy\tCtrl+C"),
+  APPEND_MENU_ITEM(m_EditMenu, wxID_COPY, _("&Copy\tCtrl+C"),
                    _("Copy selection"), wxT("gtk-copy"));
   m_EditMenu->Append(menu_copy_text_from_worksheet, _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"),
@@ -678,14 +678,14 @@ void wxMaximaFrame::SetupMenu()
                      _("Copy selection from document as an Enhanced Metafile"),
                      wxITEM_NORMAL);
 #endif
-  m_EditMenu->Append(menu_paste, _("Paste\tCtrl+V"),
+  m_EditMenu->Append(wxID_PASTE, _("Paste\tCtrl+V"),
                      _("Paste text from clipboard"),
                      wxITEM_NORMAL);
 
   m_EditMenu->AppendSeparator();
-  m_EditMenu->Append(menu_edit_find, _("Find\tCtrl+F"), _("Find and replace"), wxITEM_NORMAL);
+  m_EditMenu->Append(wxID_FIND, _("Find\tCtrl+F"), _("Find and replace"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-  m_EditMenu->Append(menu_select_all, _("Select All\tCtrl+A"),
+  m_EditMenu->Append(wxID_SELECTALL, _("Select All\tCtrl+A"),
                      _("Select all"),
                      wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_to_file, _("Save Selection to Image..."),

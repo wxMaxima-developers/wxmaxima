@@ -631,7 +631,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_add_path, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
-  Connect(menu_copy_from_worksheet, wxEVT_MENU,
+  Connect(wxID_COPY, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_copy_text_from_worksheet, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -717,7 +717,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_copy_to_file, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_select_all, wxEVT_MENU,
+  Connect(wxID_SELECTALL, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_subst, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
@@ -811,9 +811,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_history_next, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_cut, wxEVT_MENU,
+  Connect(wxID_CUT, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_paste, wxEVT_MENU,
+  Connect(wxID_PASTE, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_paste_input, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -1055,7 +1055,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCharEventHandler(wxMaxima::OnKeyDown), NULL, this);
   Connect(ToolBar::tb_changeStyle, wxEVT_CHOICE,
           wxCommandEventHandler(wxMaxima::ChangeCellStyle), NULL, this);
-  Connect(menu_edit_find, wxEVT_MENU,
+  Connect(wxID_FIND, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(wxEVT_FIND,
           wxFindDialogEventHandler(wxMaxima::OnFind), NULL, this);
@@ -4394,8 +4394,8 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   wxASSERT_MSG((!m_worksheet->HCaretActive()) || (m_worksheet->GetActiveCell() == NULL),
                _("Both horizontal and vertical cursor active at the same time"));
 
-  m_MenuBar->Enable(menu_copy_from_worksheet, m_worksheet->CanCopy(true));
-  m_MenuBar->Enable(menu_cut, m_worksheet->CanCut());
+  m_MenuBar->Enable(wxID_COPY, m_worksheet->CanCopy(true));
+  m_MenuBar->Enable(wxID_CUT, m_worksheet->CanCut());
   m_MenuBar->Enable(menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
   m_MenuBar->Enable(menu_copy_matlab_from_worksheet, m_worksheet->CanCopy());
   m_MenuBar->Enable(Worksheet::popid_copy_mathml, m_worksheet->CanCopy());
@@ -4407,7 +4407,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   m_MenuBar->Enable(menu_copy_as_rtf, m_worksheet->CanCopy());
   m_MenuBar->Enable(menu_copy_to_file, m_worksheet->CanCopy());
   m_MenuBar->Enable(menu_copy_text_from_worksheet, m_worksheet->CanCopy(true));
-  m_MenuBar->Enable(menu_select_all, m_worksheet->GetTree() != NULL);
+  m_MenuBar->Enable(wxID_SELECTALL, m_worksheet->GetTree() != NULL);
   m_MenuBar->Enable(wxID_UNDO, m_worksheet->CanUndo());
   m_MenuBar->Enable(wxID_REDO, m_worksheet->CanRedo());
   m_MenuBar->Enable(menu_interrupt_id, m_pid > 0);
@@ -5616,7 +5616,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     break;
   }
   case ToolBar::tb_copy:
-  case menu_copy_from_worksheet:
+  case wxID_COPY:
     if (m_worksheet->CanCopy(true))
       m_worksheet->Copy();
     break;
@@ -5625,16 +5625,16 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       m_worksheet->Copy(true);
     break;
   case ToolBar::tb_cut:
-  case menu_cut:
+  case wxID_CUT:
     if (m_worksheet->CanCut())
       m_worksheet->CutToClipboard();
     break;
-  case menu_select_all:
+  case wxID_SELECTALL:
   case ToolBar::tb_select_all:
     m_worksheet->SelectAll();
     break;
   case ToolBar::tb_paste:
-  case menu_paste:
+  case wxID_PASTE:
     if (m_worksheet->CanPaste())
       m_worksheet->PasteFromClipboard();
     break;
@@ -5765,7 +5765,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_show_toolbar:
       ShowToolBar(!ToolbarIsShown());
       break;
-    case menu_edit_find:
+    case wxID_FIND:
     case ToolBar::tb_find:
       if (m_worksheet->m_findDialog == NULL)
         m_worksheet->m_findDialog = new FindReplaceDialog(
