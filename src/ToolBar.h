@@ -215,22 +215,22 @@ public:
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
-  static wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetSaveBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetPrintBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetPreferencesBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetCutBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetCopyBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetPasteBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetSelectAllBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetFindBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetRestartBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetInterruptBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetEvalTillHereBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetHelpBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
-  static wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetSaveBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPrintBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPreferencesBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetCutBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetCopyBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPasteBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetSelectAllBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetFindBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetRestartBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetInterruptBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetEvalTillHereBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetHelpBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
 
   bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
     return show;}
