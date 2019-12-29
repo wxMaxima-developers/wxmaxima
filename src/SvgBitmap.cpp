@@ -90,6 +90,10 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   }
 }
 
+SvgBitmap::SvgBitmap(unsigned char *data, size_t len, wxSize siz):
+  SvgBitmap(data, len, siz.x, siz.y)
+{}
+
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
 {
   wxImage img = wxImage(invalidImage_xpm);

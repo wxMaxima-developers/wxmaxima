@@ -41,7 +41,8 @@ class SvgBitmap: public wxBitmap
 public:
 //! A constructor that loads the data into a wxBitmap
   SvgBitmap(unsigned char *data, size_t len, int width, int height);
-  
+  SvgBitmap(unsigned char *data, size_t len, wxSize siz);
+
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
 

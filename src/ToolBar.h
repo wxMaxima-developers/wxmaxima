@@ -60,8 +60,8 @@ public:
     selectAll
   };
 
-  wxBitmap GetImage(wxString name,
-                    unsigned char *data, size_t len);
+  wxBitmap GetBitmap(wxString name,
+                     unsigned char *data, size_t len, wxSize siz = wxSize(-1,-1));
 
   virtual ~ToolBar();
 
@@ -214,6 +214,10 @@ public:
   void SetDefaultCellStyle();
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
+
+  wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetSaveBitmap(wxSize siz = wxSize(-1, -1));
 
   bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
     return show;}
