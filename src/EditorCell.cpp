@@ -467,7 +467,7 @@ wxString EditorCell::ToTeX()
     text.Replace(wxT("\u03BB"), wxT("\\ensuremath{\\lambda}"));
     text.Replace(wxT("\u03BC"), wxT("\\ensuremath{\\mu}"));
     text.Replace(wxT("\u03BD"), wxT("\\ensuremath{\\nu}"));
-    text.Replace(wxT("\u03BE"), wxT("x"));
+    text.Replace(wxT("\u03BE"), wxT("\\ensuremath{\\xi}"));
     text.Replace(wxT("\u03BF"), wxT("o"));
     text.Replace(wxT("\u03C0"), wxT("\\ensuremath{\\pi}"));
     text.Replace(wxT("\u03C1"), wxT("\\ensuremath{\\rho}"));
@@ -491,7 +491,7 @@ wxString EditorCell::ToTeX()
     text.Replace(wxT("\u039B"), wxT("\\ensuremath{\\Lambda}"));
     text.Replace(wxT("\u039C"), wxT("M"));
     text.Replace(wxT("\u039D"), wxT("N"));
-    text.Replace(wxT("\u039E"), wxT("\\ensuremath{\\ui}"));
+    text.Replace(wxT("\u039E"), wxT("\\ensuremath{\\Xi}"));
     text.Replace(wxT("\u039F"), wxT("O"));
     text.Replace(wxT("\u03A0"), wxT("\\ensuremath{\\Pi}"));
     text.Replace(wxT("\u03A1"), wxT("P"));

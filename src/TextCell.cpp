@@ -977,7 +977,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\u03BB"), mathModeStart + wxT("\\lambda") + mathModeEnd);
   text.Replace(wxT("\u03BC"), mathModeStart + wxT("\\mu") + mathModeEnd);
   text.Replace(wxT("\u03BD"), mathModeStart + wxT("\\nu") + mathModeEnd);
-  text.Replace(wxT("\u03BE"), mathModeStart + wxT("\\ui") + mathModeEnd);
+  text.Replace(wxT("\u03BE"), mathModeStart + wxT("\\xi") + mathModeEnd);
   text.Replace(wxT("\u03BF"), wxT("o"));
   text.Replace(wxT("\u03C0"), mathModeStart + wxT("\\pi") + mathModeEnd);
   text.Replace(wxT("\u03C1"), mathModeStart + wxT("\\rho") + mathModeEnd);
@@ -1001,7 +1001,7 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\u039B"), mathModeStart + wxT("\\Lambda") + mathModeEnd);
   text.Replace(wxT("\u039C"), wxT("M"));
   text.Replace(wxT("\u039D"), wxT("N"));
-  text.Replace(wxT("\u039E"), mathModeStart + wxT("\\ui") + mathModeEnd);
+  text.Replace(wxT("\u039E"), mathModeStart + wxT("\\Xi") + mathModeEnd);
   text.Replace(wxT("\u039F"), wxT("O"));
   text.Replace(wxT("\u03A0"), mathModeStart + wxT("\\Pi") + mathModeEnd);
   text.Replace(wxT("\u03A1"), wxT("P"));
