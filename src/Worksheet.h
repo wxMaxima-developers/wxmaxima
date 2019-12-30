@@ -818,8 +818,7 @@ public:
       This item is the first of the enum and is assigned a high enough number
       that it won't collide with the numbers to be found in wxFrame::Event
      */
-            popid_copy = wxID_HIGHEST + 500,
-    popid_cut,
+    popid_copy = wxID_HIGHEST + 500,
     popid_paste,
     popid_select_all,
     popid_comment_selection,

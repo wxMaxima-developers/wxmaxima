@@ -1612,7 +1612,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     // popup menu in active cell
   else
   {
-    popupMenu->Append(popid_cut, _("Cut"), wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(wxID_CUT, _("Cut"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
@@ -3177,7 +3177,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
     case WXK_NUMPAD_DELETE:
       if (event.ShiftDown())
       {
-        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_cut);
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, wxID_CUT);
         GetParent()->ProcessWindowEvent(ev);
       }
       else if (CanDeleteSelection())

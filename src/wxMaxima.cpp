@@ -817,7 +817,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_paste_input, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(Worksheet::popid_cut, wxEVT_MENU,
+  Connect(wxID_CUT, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_paste, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -8408,9 +8408,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_worksheet->CanCopy(true))
         m_worksheet->CopyText();
       break;
-    case Worksheet::popid_cut:
-      if (m_worksheet->CanCopy(true))
-        m_worksheet->CutToClipboard();
+    case wxID_CUT:
+      if (m_worksheet->CanCut())
+        m_worksheet->CutToClipboard(); // FIXME: Selection is not deleted. It works, when one uses cut from the menu.
       break;
     case Worksheet::popid_paste:
       m_worksheet->PasteFromClipboard();
