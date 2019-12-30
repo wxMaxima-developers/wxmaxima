@@ -784,11 +784,18 @@ void wxMaximaFrame::SetupMenu()
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
                      _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl+Shift+P"),
-                     _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
-  m_CellMenu->Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
-                     _("Re-evaluate all cells below the one the cursor is in"), wxITEM_NORMAL);
-
+  {
+    wxMenuItem *it = new wxMenuItem(m_CellMenu, ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl+Shift+P"),
+                                    _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
+    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalTillHereBitmap(wxRendererNative::Get().GetCheckBoxSize(this)));
+    m_CellMenu->Append(it);
+  }
+  {
+    wxMenuItem *it = new wxMenuItem(m_CellMenu, ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
+                                    _("Re-evaluate all cells below the one the cursor is in"), wxITEM_NORMAL);
+    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalRestBitmap(wxRendererNative::Get().GetCheckBoxSize(this)));
+    m_CellMenu->Append(it);
+  }
   m_CellMenu->Append(menu_remove_output, _("Remove All Output"),
                      _("Remove output from input cells"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
