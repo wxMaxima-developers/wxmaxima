@@ -218,8 +218,7 @@ void ToolBar::AddTools()
 #endif
 
   AddTool(tb_eval, _("Evaluate current cell"),
-          GetBitmap(wxT("go-next"),
-                   go_next_svg_gz,go_next_svg_gz_len),
+          GetEvalBitmap(),
           _("Send the current cell to maxima"));
 
   AddTool(tb_eval_all, _("Evaluate all"),
@@ -356,6 +355,7 @@ void ToolBar::UpdateBitmaps()
 
   m_ppi = ppi;
   
+  SetToolBitmap(tb_eval,GetEvalBitmap());
   SetToolBitmap(tb_new,GetNewBitmap());
   SetToolBitmap(tb_open,GetOpenBitmap());
   SetToolBitmap(tb_save,GetSaveBitmap());
@@ -386,6 +386,10 @@ void ToolBar::UpdateBitmaps()
   Realize();
 }
 
+wxBitmap ToolBar::GetEvalBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("go-next"), go_next_svg_gz, go_next_svg_gz_len, siz);
+}
 wxBitmap ToolBar::GetNewBitmap(wxSize siz)  
 {
   return GetBitmap(wxT("gtk-new"),gtk_new_svg_gz,gtk_new_svg_gz_len, siz);

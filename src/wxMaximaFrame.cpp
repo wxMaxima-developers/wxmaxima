@@ -774,8 +774,12 @@ void wxMaximaFrame::SetupMenu()
 
   // Cell menu
   m_CellMenu = new wxMenu;
-  m_CellMenu->Append(menu_evaluate, _("Evaluate Cell(s)"),
-                     _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
+  {
+    wxMenuItem *it = new wxMenuItem(m_CellMenu, menu_evaluate, _("Evaluate Cell(s)"),
+                                    _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
+    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalBitmap(wxRendererNative::Get().GetCheckBoxSize(this)));
+    m_CellMenu->Append(it);
+  }
   m_CellMenu->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl+R"),
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),

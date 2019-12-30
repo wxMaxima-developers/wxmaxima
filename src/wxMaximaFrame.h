@@ -749,7 +749,6 @@ protected:
   void CharacterButtonPressed(wxMouseEvent &event);
 
   bool ToolbarIsShown();
-
   //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor

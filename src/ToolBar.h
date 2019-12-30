@@ -206,15 +206,13 @@ public:
   //! Called if there is no cell to show the style for
   void UnsetCellStyle(){SetCellStyle(-1);}
   //! Set the default cell style for new cells
-  void SetDefaultCellStyle(int style)
-    {
-      m_defaultCellStyle = style;
-    }
+  void SetDefaultCellStyle(int style) { m_defaultCellStyle = style; }
   //! The current style is the new style for new cells
   void SetDefaultCellStyle();
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
+  wxBitmap GetEvalBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetSaveBitmap(wxSize siz = wxSize(-1, -1));
