@@ -167,8 +167,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
 
   m_xmlInspector = new XmlInspector(this, -1);
-  SetupMenu();
-
   m_statusBar = new StatusBar(this, -1);
   SetStatusBar(m_statusBar);
   m_StatusSaving = false;
@@ -441,7 +439,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton(true).PinButton().Resizable();
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
     .CloseButton(true).PinButton().Resizable();
-
+  SetupMenu();
   m_manager.Update();
 }
 
