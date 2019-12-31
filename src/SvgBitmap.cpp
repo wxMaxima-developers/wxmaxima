@@ -36,7 +36,6 @@
 #include "invalidImage.h"
 
 SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
-  : wxBitmap(width, height, 32)
 {
   // Unzip the .svgz image
   wxMemoryInputStream istream(data, len);
@@ -58,19 +57,34 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   std::unique_ptr<char> svgContents((char *)strdup(svgContents_string.utf8_str()));
   if(svgContents == NULL)
     wxBitmap::operator=(GetInvalidBitmap(width));
-  std::unique_ptr<NSVGimage> svgImage(nsvgParse(svgContents.get(), "px", 96));
-  if(svgImage == NULL)
+  m_svgImage = std::unique_ptr<NSVGimage>(nsvgParse(svgContents.get(), "px", 96));
+  SetSize(width, height);
+}
+
+const SvgBitmap &SvgBitmap::SetSize(int width, int height)
+{
+  // Set the bitmap to the new size
+  wxBitmap::operator=(wxBitmap(width, height, 32));
+
+  if(m_svgImage == NULL)
+  {
     wxBitmap::operator=(GetInvalidBitmap(width));
+    return *this;
+  }
   std::unique_ptr<unsigned char> imgdata(new unsigned char[width*height*4]);        
   if(imgdata == NULL)
+  {
     wxBitmap::operator=(GetInvalidBitmap(width));
-  nsvgRasterize(m_svgRast, svgImage.get(), 0,0,
-                wxMin((double)width/(double)svgImage->width,
-                      (double)height/(double)svgImage->height),
+    return *this;
+  }
+  // Actually render the bitmap
+  nsvgRasterize(m_svgRast, m_svgImage.get(), 0,0,
+                wxMin((double)width/(double)m_svgImage->width,
+                      (double)height/(double)m_svgImage->height),
                 imgdata.get(),
                 width, height, width*4);
 
-  
+  // Copy the bitmap to this object's bitmap storage
   wxAlphaPixelData bmpdata(*this);
   wxAlphaPixelData::Iterator dst(bmpdata);
   const unsigned char* rgba = imgdata.get();
@@ -88,8 +102,8 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
       rgba += 4;
     }
   }
+  return *this;
 }
-
 SvgBitmap::SvgBitmap(unsigned char *data, size_t len, wxSize siz):
   SvgBitmap(data, len, siz.x, siz.y)
 {}

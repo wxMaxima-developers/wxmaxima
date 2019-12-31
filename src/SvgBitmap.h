@@ -45,7 +45,15 @@ public:
 
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
-
+  //! Sets the bitmap to a new size and renders the svg image at this size.
+  const SvgBitmap& SetSize(int width, int height);
+  //! Sets the bitmap to a new size and renders the svg image at this size.
+  const SvgBitmap& SetSize(wxSize siz){return SetSize(siz.x, siz.y);}
+  //! Gets the original size of the svg image
+  wxSize GetOriginalSize(){if(m_svgImage)
+      return wxSize(m_svgImage->width, m_svgImage->height);
+    else
+      return wxSize(-1, -1);}
   /*! An "invalid bitmap" sign
     
     We should make the image static and generate it on start-up 
@@ -58,6 +66,8 @@ public:
 private:
   //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;
+  //! The renderable svg image after we have read it in
+  std::unique_ptr<NSVGimage> m_svgImage;
 };
 
 #endif // SVGBITMAP_H
