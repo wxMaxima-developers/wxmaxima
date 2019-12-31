@@ -1,5 +1,5 @@
-/* Automatically generated file using generate_pngs.sh                                  */
-/* SVG images are converted to PNG (using inkscape) and then converted to C using xxd   */
+/* Automatically generated file using pack_svg_files.sh                                 */
+/* SVG images are compressed using gzupand converted to C using xxd                     */
 /* This file is part of wxMaxima.                                                       */
 
 /* Copyright (C) 2018 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)               */

@@ -36,7 +36,7 @@
 
 #include "BTextCtrl.h"
 #include "Configuration.h"
-#include "wxImagePanel.h"
+#include "SvgPanel.h"
 
 //! A wizard for explicit plots using draw
 class ExplicitWiz : public wxDialog
@@ -157,7 +157,7 @@ public:
 protected:
   void OnRadioButton(wxCommandEvent &dummy);
 private:
-  wxImagePanel *m_image;
+  SvgPanel *m_image;
   wxRadioButton *m_contourNone; 
   wxRadioButton *m_contourSurface; 
   wxRadioButton *m_contourBase;
