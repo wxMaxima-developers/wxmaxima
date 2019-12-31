@@ -84,7 +84,7 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     new SvgPanel(
       this,
       Draw_Explicit_svg_gz,Draw_Explicit_svg_gz_len),
-    wxSizerFlags().Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -187,7 +187,7 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     new SvgPanel(
       this,
       Draw_Implicit_svg_gz,Draw_Implicit_svg_gz_len),
-    wxSizerFlags().Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -651,7 +651,7 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
     m_image = new SvgPanel(
       this,
       Draw_ContourBoth_svg_gz,Draw_ContourBoth_svg_gz_len),
-    wxSizerFlags().Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
@@ -751,7 +751,7 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
     new SvgPanel(
       this,
       Draw_Parametric_svg_gz,Draw_Parametric_svg_gz_len),
-    wxSizerFlags().Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
