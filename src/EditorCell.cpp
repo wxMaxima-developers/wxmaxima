@@ -3711,15 +3711,12 @@ void EditorCell::StyleTextTexts()
         {
           // No "begin indenting" marker => Let's see if this is a continuation
           // of a indentation
-          if (!prefixes.empty())
+          while (!prefixes.empty())
           {
-            while (!prefixes.empty())
-            {
-              if (line.StartsWith(prefixes.back()))
-                break;
-              prefixes.pop_back();
-              indentPixels.pop_back();
-            }
+            if (line.StartsWith(prefixes.back()))
+              break;
+            prefixes.pop_back();
+            indentPixels.pop_back();
           }
           // We don't need indentation as this line was indented
           // by spaces already.
