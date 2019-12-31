@@ -509,7 +509,7 @@ void Plot2DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event))
     text_ctrl_9->SetValue(file);
 }
 
-// cppcheck-suppress unknownMacro symbolName=BEGIN_EVENT_TABLE
+// cppcheck-suppress unknownMacro
 BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
                 EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
                 EVT_BUTTON(special, Plot2DWiz::OnButton)

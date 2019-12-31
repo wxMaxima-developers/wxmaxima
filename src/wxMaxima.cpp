@@ -2001,12 +2001,9 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       // Set the bit for the SIGINT handler
       int value = (1 << (wxSIGINT));
       int *sharedMemoryContents = (int *)(sharedMemoryAddress);
-      if (sharedMemoryAddress)
-      {
-        *sharedMemoryContents = *sharedMemoryContents | value;
-        wxLogMessage(_("Sending an interrupt signal to Maxima."));
-        UnmapViewOfFile(sharedMemoryAddress);
-      }
+      *sharedMemoryContents = *sharedMemoryContents | value;
+      wxLogMessage(_("Sending an interrupt signal to Maxima."));
+      UnmapViewOfFile(sharedMemoryAddress);
       if (sharedMemoryHandle)
         CloseHandle(sharedMemoryHandle);
       sharedMemoryAddress = NULL;

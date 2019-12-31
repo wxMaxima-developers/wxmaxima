@@ -816,6 +816,7 @@ private:
   Dirstructure m_dirstruct;
 };
 
+// cppcheck-suppress unknownMacro
 DECLARE_APP(MyApp)
 
 #endif // WXMAXIMA_H

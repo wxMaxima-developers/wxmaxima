@@ -162,6 +162,7 @@ wxString MarkDownParser::MarkDown(wxString str)
           }
 
           // End lists if we are at a old indentation level.
+          // cppcheck-suppress knownConditionTrueFalse
           while (!indentationLevels.empty() && (indentationLevels.back() > index))
           {
             if (indentationTypes.back() == wxT('*'))
