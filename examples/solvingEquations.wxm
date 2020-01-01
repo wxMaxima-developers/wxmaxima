@@ -26,7 +26,7 @@ For many problems Maxima's solve() program instantly finds a list of solutions:
 
 
 /* [wxMaxima: input   start ] */
-pyth:a^2+b^2=c^2;
+pyth:c^2=a^2+b^2;
 /* [wxMaxima: input   end   ] */
 
 
@@ -46,25 +46,8 @@ sol2:sol1[2];
 
 
 /* [wxMaxima: comment start ]
-By having given this equation a name ("sol2") we gained a way to re-use this equation later:
+By having given this equation a name ("sol2") we gained a way to re-use this equation later.
    [wxMaxima: comment end   ] */
-
-
-/* [wxMaxima: input   start ] */
-solve(sol2,b);
-/* [wxMaxima: input   end   ] */
-/* [wxMaxima: question  start ] */
-Question #1
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-
-/* [wxMaxima: answer  end   ] */
-/* [wxMaxima: question  start ] */
-<mth><st>Is </st><mi>a</mi><st> positive, negative or zero?</st></mth>
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-p;
-/* [wxMaxima: answer  end   ] */
 
 
 /* [wxMaxima: comment start ]
@@ -91,6 +74,136 @@ solve(
     [pyth,eq2],
     [a,b]
 );
+rootscontract(%);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Re-using equations
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+As seen above the last equation displayed by maxima can be referenced by using the placeholder "%":
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+%;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Until now we additionally have given nearly all equations names which means we can use them again whenever we want them. For example we can print them out again:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sol2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+We can use them as input to solve:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve(sol2,b);
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+<mth><st>Is </st><mi>a</mi><st> positive, negative or zero?</st></mth>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+p;
+/* [wxMaxima: answer  end   ] */
+
+
+/* [wxMaxima: comment start ]
+We can introduce ("substitute") them into other equations:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+E=m*c^2;
+subst(pyth,%);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Additionally the left hand side and the right hand side can be extracted using the command lhs() and rhs() which allows to use the part left or right to to the "=" in a new equation:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lhs(pyth);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+rhs(pyth);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq10:sin(δ)=rhs(pyth);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Boiling it down to numbers
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+If in mathematics two things cancel each other out they do so exactly. The same isn't true with IEEE floating-point numbers like the ones the computer uses:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+.1;
+%-.01;
+%-.1;
+%+.01;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Many computer programs are configured to show small numbers as "0" or only to show the first few digits after the decimal dot hoping that the rest is a rounding error that doesn't add up (see wilkinson's polynomial for an example where this happens quickly). Maxima's solve instead tries to replace floating-point numbers by the exact fraction it most likely means and warns about doing so:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve(x+.1=2,x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Since it often is the general case that allows to learn about the fundamental mechanisms often a good approach is to solve everything numerically and to keep the actual numerical input values in a separate list like the following one:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+vals:[
+    a=sqrt(1/2),
+    b=sqrt(1/2),
+    δ=π/2
+];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Whenever a numerical value is needed this list can be introduced into any equation:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+subst(vals,pyth);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+subst(vals,eq10);
 /* [wxMaxima: input   end   ] */
 
 
