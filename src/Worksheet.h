@@ -819,7 +819,6 @@ public:
       that it won't collide with the numbers to be found in wxFrame::Event
      */
     popid_copy = wxID_HIGHEST + 500,
-    popid_select_all,
     popid_comment_selection,
     popid_divide_cell,
     popid_copy_image,

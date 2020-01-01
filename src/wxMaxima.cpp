@@ -821,7 +821,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(wxID_PASTE, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(Worksheet::popid_select_all, wxEVT_MENU,
+  Connect(wxID_SELECTALL, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_comment_selection, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -8412,7 +8412,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     case wxID_PASTE:
       m_worksheet->PasteFromClipboard();
       break;
-    case Worksheet::popid_select_all:
+    case wxID_SELECTALL:
     case ToolBar::tb_select_all:
       m_worksheet->SelectAll();
       break;
