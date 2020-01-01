@@ -7795,7 +7795,7 @@ void Worksheet::CheckUnixCopy()
       if (wxTheClipboard->Open())
       {
         wxDataObjectComposite *data = new wxDataObjectComposite;
-        // The \0 seems to prevent data corruption on seleting strings while evaluating.
+        // The \0 seems to prevent data corruption on selecting strings while evaluating.
         // The wxTextDataObject is a speculative go at the same bug.
         data->Add(new wxTextDataObject(GetString() + wxT('\0')));
         wxTheClipboard->SetData(data);
