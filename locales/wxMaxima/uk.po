@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-01 15:40+0100\n"
+"POT-Creation-Date: 2020-01-01 16:18+0100\n"
 "PO-Revision-Date: 2019-02-17 16:54+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -967,6 +967,12 @@ msgstr "Жирний"
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:63
+msgid ""
+"Both solutions solve() offers are valied. We can pick any of them manually, "
+"for example:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1659
 msgid "Boxplot..."
 msgstr "Скринькова діаграма…"
@@ -1163,6 +1169,12 @@ msgstr ""
 "поведінку програми можна змінити за допомогою діалогового вікна «Зміни → "
 "Налаштувати»: позначте пункт «Enter для обчислення у комірках». За допомогою "
 "цього пункту ви зможете поміняти місцями призначення клавіатурних скорочень."
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:73
+msgid ""
+"By having given this equation a name (\"sol2\") we gained a way to re-use "
+"this equation later:\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:994
 msgid "C&hange Variable..."
@@ -2988,6 +3000,12 @@ msgstr ""
 "   Ctrl+6: Комірка heading5\n"
 "   Ctrl+7: Комірка heading6\n"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:48
+msgid ""
+"For many problems Maxima's solve() program instantly finds a list of "
+"solutions:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:62
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:61
 msgid "Format:"
@@ -3457,6 +3475,13 @@ msgid ""
 msgstr ""
 "Якщо позначено цей пункт, код .wxmx поточного файла буде скопійовано до "
 "місця, на яке вказуватиме посилання у експортованому результаті."
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:38
+msgid ""
+"If you are studying mathematics the good news is that solving equations is "
+"an art a computer can help with in many special cases but that often relies "
+"on human creativity for finding algorithms and ways.\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:63
 msgid ""
@@ -4251,6 +4276,14 @@ msgstr "Опис MathML"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:417
 msgid "Mathematical Symbols"
 msgstr "Математичні символи"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:33
+msgid ""
+"Mathematics can be seen as a language consisting only of a rather small set "
+"of words and only a handful of grammatical rules. Both sets are carefully "
+"chosen, though, that by simply reformulating the question in many cases the "
+"answer can be found.\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:244
 msgid "Maths"
@@ -6332,6 +6365,10 @@ msgstr "Показує, скільки цифр буде показано у ч�
 msgid "Sigma"
 msgstr "Σ"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:43
+msgid "Simple equations\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1569
 msgid "Simplify"
 msgstr "Спростити"
@@ -6435,6 +6472,16 @@ msgstr "Розв’язати систему алгебраїчних рівня
 msgid "Solve algebraic system of equations"
 msgstr "Розв’язати систему алгебраїчних рівнянь"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:106
+msgid ""
+"Solve also accepts lists as its arguments. In this case it will only find "
+"solutions if the following conditions are all met:\n"
+" * The number of linearly independent equations matches the number of "
+"variables to solve to\n"
+" * The solution doesn't completely change its form depending on the range "
+"one variable is in.\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:930
 msgid "Solve boundary value problem for second degree ODE"
 msgstr "Розв’язати крайову задачу для ЗДР другого порядку"
@@ -6477,6 +6524,10 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1589
 msgid "Solve..."
 msgstr "Розв’язати…"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:28
+msgid "Solving equations\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:325
 msgid ""
@@ -7122,6 +7173,13 @@ msgstr ""
 "вказувати на те, що виконується спроба апроксимації даних рівнянням, яке "
 "найкраще відповідає даним, якщо один з його параметрів є плюс або мінус "
 "нескінченністю."
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:95
+msgid ""
+"This time the type of solutions we can get depends on the value of a which "
+"is why maxima asked about it. One can avoid asking questions by telling the "
+"answers to maxima's assume database:\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:436
 #, c-format

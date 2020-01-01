@@ -53,7 +53,10 @@ for i in *.wxm; do
     gzip -k "$i"
     xxd -i "$i.gz" >> examples.h
     rm $i.gz
-    cat "$i" | sed -e "s/^\\(.*\\)/wxT(\"\\1\\\\n\") /g" |\
+    cat "$i" |\
+	sed -e "s/\\\\/\\\\\\\\/g" |\
+	sed -e "s/\\\"/\\\\\"/g" |\
+	sed -e "s/^\\(.*\\)/L\"\\1\\\\n\" /g" |\
 	sed -e "s#^\\(.*wxMaxima: title.*start.*$\\)#\\1 + _(#g" |\
 	sed -e "s#^\\(.*wxMaxima: title.*end.*$\\)#) + \\1 #g" |\
 	sed -e "s#^\\(.*wxMaxima: comment.*start.*$\\)#\\1 + _(#g" |\
