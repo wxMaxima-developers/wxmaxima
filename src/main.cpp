@@ -375,7 +375,7 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, uns
     // Unzip the .wxm file
     wxMemoryInputStream istream(wxmData, wxmLen);
     wxZlibInputStream zstream(istream);
-    wxTextInputStream textIn(zstream);
+    wxTextInputStream textIn(zstream, "\t", wxConvAuto(wxFONTENCODING_UTF8));
     wxString initialContents;
     wxString line;
     wxString block;
