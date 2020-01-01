@@ -1370,7 +1370,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   {
     if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE))
     {
-      popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_image, _("Save Image..."), wxEmptyString, wxITEM_NORMAL);
       if (IsSelected(MC_TYPE_SLIDE))
       {
@@ -1403,7 +1403,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 
         if (CanCopy())
         {
-          popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
 		  popupMenu->Append(popid_copy_matlab, _("Copy for Octave/Matlab"), wxEmptyString, wxITEM_NORMAL);
 		  popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
@@ -1497,7 +1497,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       {
         if (CanCopy(true))
         {
-          popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
 		  popupMenu->Append(popid_copy_matlab, _("Copy for Octave/Matlab"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
@@ -1613,7 +1613,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   else
   {
     popupMenu->Append(wxID_CUT, _("Cut"), wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(wxID_COPY, _("Copy"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
     popupMenu->Append(wxID_SELECTALL, _("Select All"), wxEmptyString, wxITEM_NORMAL);
@@ -3192,7 +3192,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
     case WXK_INSERT:
       if (event.ControlDown())
       {
-        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_copy);
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, wxID_COPY);
         GetParent()->ProcessWindowEvent(ev);
       }
       else if (event.ShiftDown())

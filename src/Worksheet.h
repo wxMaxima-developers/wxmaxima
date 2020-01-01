@@ -813,13 +813,11 @@ public:
   */
   enum PopIds
   {
-    /*! The "copy" popup menu item was clicked
-
-      This item is the first of the enum and is assigned a high enough number
+    /*!
+      This first item of the enum and is assigned a high enough number
       that it won't collide with the numbers to be found in wxFrame::Event
      */
-    popid_copy = wxID_HIGHEST + 500,
-    popid_comment_selection,
+    popid_comment_selection = wxID_HIGHEST + 500,
     popid_divide_cell,
     popid_copy_image,
     popid_copy_animation,

@@ -291,7 +291,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(menu_check_updates, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(Worksheet::popid_copy, wxEVT_MENU,
+  Connect(wxID_COPY, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_copy_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
@@ -8389,7 +8389,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
       TriggerEvaluation();
       break;
-    case Worksheet::popid_copy:
+    case wxID_COPY:
       if (m_worksheet->CanCopy(true))
         m_worksheet->Copy();
       break;
