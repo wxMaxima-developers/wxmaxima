@@ -752,7 +752,7 @@ void wxMaximaFrame::SetupMenu()
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;
   m_Edit_Zoom_Sub->Append(menu_zoom_80, wxT("80%"), _("Set zoom to 80%"), wxITEM_NORMAL);
-  m_Edit_Zoom_Sub->Append(menu_zoom_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
+  m_Edit_Zoom_Sub->Append(wxID_ZOOM_100, wxT("100%"), _("Set zoom to 100%"), wxITEM_NORMAL);
   m_Edit_Zoom_Sub->Append(menu_zoom_120, wxT("120%"), _("Set zoom to 120%"), wxITEM_NORMAL);
   m_Edit_Zoom_Sub->Append(menu_zoom_150, wxT("150%"), _("Set zoom to 150%"), wxITEM_NORMAL);
   m_Edit_Zoom_Sub->Append(menu_zoom_200, wxT("200%"), _("Set zoom to 200%"), wxITEM_NORMAL);

@@ -276,7 +276,7 @@ public:
     menu_texform,
     button_enter,
     menu_zoom_80,
-    menu_zoom_100,
+    /* Instead of menu_zoom_100 we use the standard wxID_ZOOM_100, which displays an icon in the menu (currently Unix only) */
     menu_zoom_120,
     menu_zoom_150,
     menu_zoom_200,

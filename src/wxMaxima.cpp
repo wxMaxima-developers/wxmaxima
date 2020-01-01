@@ -661,7 +661,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_zoom_80, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_zoom_100, wxEVT_MENU,
+  Connect(wxID_ZOOM_100, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_zoom_120, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -5710,7 +5710,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_zoom_80:
       m_worksheet->SetZoomFactor(0.8);
       break;
-    case menu_zoom_100:
+    case wxID_ZOOM_100:
       m_worksheet->SetZoomFactor(1.0);
       break;
     case menu_zoom_120:
