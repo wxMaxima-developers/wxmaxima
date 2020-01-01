@@ -60,6 +60,7 @@ bool MyApp::OnInit()
 {
   Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(wxMaximaFrame::menu_help_solving, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_tolerances, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(ToolBar::tb_new, wxEVT_TOOL, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
     
   #if wxUSE_ON_FATAL_EXCEPTION
@@ -409,9 +410,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
   switch (ev.GetId())
   {
   case wxMaxima::menu_help_solving:
-      NewWindow(wxEmptyString, false, false,
-                solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
-      break;
+    NewWindow(wxEmptyString, false, false,
+              solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
+    break;
+  case wxMaxima::menu_help_tolerances:
+    NewWindow(wxEmptyString, false, false,
+              toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);
+    break;
     case wxID_NEW:
     case ToolBar::tb_new:
   case wxMaxima::mac_newId:

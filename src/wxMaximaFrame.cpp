@@ -1273,7 +1273,9 @@ m_listMenu->AppendSeparator();
                    _("Show a tip"), wxART_TIP);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_help_solving, _("Solving equations with maxima"),
-                     _(""), wxITEM_NORMAL);
+                     "", wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_help_tolerances, _("Tolerance calculations with maxima"),
+                     "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_tutorials, _("Tutorials on the web"),
                      _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();
