@@ -79,7 +79,7 @@ rootscontract(%);
 
 
 /* [wxMaxima: section start ]
-Re-using equations
+Re-using the solutions
    [wxMaxima: section end   ] */
 
 
@@ -94,7 +94,7 @@ As seen above the last equation displayed by maxima can be referenced by using t
 
 
 /* [wxMaxima: comment start ]
-Until now we additionally have given nearly all equations names which means we can use them again whenever we want them. For example we can print them out again:
+Additionally have given nearly all equations names that allow to reference the whenever we need them. For example we can print them out again:
    [wxMaxima: comment end   ] */
 
 
@@ -104,7 +104,7 @@ sol2;
 
 
 /* [wxMaxima: comment start ]
-We can use them as input to solve:
+We can use them as an input to solve:
    [wxMaxima: comment end   ] */
 
 
@@ -204,6 +204,82 @@ subst(vals,pyth);
 
 /* [wxMaxima: input   start ] */
 subst(vals,eq10);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+What if there exists no symbolical solution?
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Some solutions have never been assigned a name in mathematics. One popular example would be:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq2:cos(x)=x;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+solve() which tries to find an symbolical solution is bound to fail here and tells us how far it got:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve(eq2,x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+In this case maxima offers several options to at least find the numerical values, two examples are given below:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    explicit(
+        rhs(eq2)-lhs(eq2),
+        x,-1,1
+    ),
+    grid=true
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+mnewton
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+mnewton uses a modified version of newton's method for finding a solution of a nonlinear, but differentiable, stetical and monotonic function near to a point (in this example 0.1)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("mnewton")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+mnewton(eq2,x,.1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+find_root
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+find_root even works if the equation isn't differentiable and searches for a solution in between two points.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+find_root(eq2,x,-.001,1);
 /* [wxMaxima: input   end   ] */
 
 
