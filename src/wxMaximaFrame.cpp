@@ -66,8 +66,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE, menu_autocomplete_templates);
-  entries[4].Set(wxACCEL_ALT, wxT('I'), Worksheet::menu_zoom_in);
-  entries[5].Set(wxACCEL_ALT, wxT('O'), Worksheet::menu_zoom_out);
+  entries[4].Set(wxACCEL_ALT, wxT('I'), wxID_ZOOM_IN);
+  entries[5].Set(wxACCEL_ALT, wxT('O'), wxID_ZOOM_OUT);
   entries[6].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE, menu_convert_to_code);
   entries[7].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'), menu_convert_to_comment);
   entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'), menu_convert_to_title);
@@ -77,8 +77,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
   // wxWidgets can read the hotkeys that now follow from the menus. But it doesn't
   // do so on debian if the input method is xim.
-  entries[13].Set(wxACCEL_CTRL, wxT('+'), Worksheet::menu_zoom_in);
-  entries[14].Set(wxACCEL_CTRL, wxT('-'), Worksheet::menu_zoom_out);
+  entries[13].Set(wxACCEL_CTRL, wxT('+'), wxID_ZOOM_IN);
+  entries[14].Set(wxACCEL_CTRL, wxT('-'), wxID_ZOOM_OUT);
   entries[15].Set(wxACCEL_CTRL, wxT('0'), menu_insert_input);
   entries[16].Set(wxACCEL_CTRL, wxT('1'), menu_add_comment);
   entries[17].Set(wxACCEL_CTRL, wxT('2'), menu_add_title);
@@ -745,9 +745,9 @@ void wxMaximaFrame::SetupMenu()
 
 
   m_Maxima_Panes_Sub->AppendSeparator();
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, Worksheet::menu_zoom_in, _("Zoom &In\tCtrl++"),
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, Worksheet::menu_zoom_out, _("Zoom Ou&t\tCtrl+-"),
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, wxID_ZOOM_OUT, _("Zoom Ou&t\tCtrl+-"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;

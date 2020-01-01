@@ -2048,12 +2048,12 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event)
     zoomEvent->SetEventType(wxEVT_MENU);
     if (event.GetWheelRotation() > 0)
     {
-      zoomEvent->SetId(menu_zoom_in);
+      zoomEvent->SetId(wxID_ZOOM_IN);
       GetParent()->GetEventHandler()->QueueEvent(zoomEvent);
     }
     else
     {
-      zoomEvent->SetId(menu_zoom_out);
+      zoomEvent->SetId(wxID_ZOOM_OUT);
       GetParent()->GetEventHandler()->QueueEvent(zoomEvent);
     }
   }

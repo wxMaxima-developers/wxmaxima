@@ -655,9 +655,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PrintMenu), NULL, this);
   Connect(ToolBar::tb_print, wxEVT_TOOL,
           wxCommandEventHandler(wxMaxima::PrintMenu), NULL, this);
-  Connect(Worksheet::menu_zoom_in, wxEVT_MENU,
+  Connect(wxID_ZOOM_IN, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(Worksheet::menu_zoom_out, wxEVT_MENU,
+  Connect(wxID_ZOOM_OUT, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_zoom_80, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -4447,13 +4447,13 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   }
   double zf = m_worksheet->m_configuration->GetZoomFactor();
   if (zf < Configuration::GetMaxZoomFactor())
-    m_MenuBar->Enable(Worksheet::menu_zoom_in, true);
+    m_MenuBar->Enable(wxID_ZOOM_IN, true);
   else
-    m_MenuBar->Enable(Worksheet::menu_zoom_in, false);
+    m_MenuBar->Enable(wxID_ZOOM_IN, false);
   if (zf > Configuration::GetMinZoomFactor())
-    m_MenuBar->Enable(Worksheet::menu_zoom_out, true);
+    m_MenuBar->Enable(wxID_ZOOM_OUT, true);
   else
-    m_MenuBar->Enable(Worksheet::menu_zoom_out, false);
+    m_MenuBar->Enable(wxID_ZOOM_OUT, false);
 
 }
 
@@ -5701,10 +5701,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         return;
       }
       break;
-    case Worksheet::menu_zoom_in:
+    case wxID_ZOOM_IN:
       m_worksheet->SetZoomFactor(m_worksheet->m_configuration->GetZoomFactor() + 0.1);
       break;
-    case Worksheet::menu_zoom_out:
+    case wxID_ZOOM_OUT:
       m_worksheet->SetZoomFactor(m_worksheet->m_configuration->GetZoomFactor() - 0.1);
       break;
     case menu_zoom_80:

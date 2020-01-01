@@ -870,8 +870,6 @@ public:
     popid_insert_heading6,
     popid_auto_answer,
     popid_popup_gnuplot,
-    menu_zoom_in,
-    menu_zoom_out,
     popid_fold,
     popid_unfold,
     popid_maxsizechooser
