@@ -1,0 +1,99 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 19.12.4-DevelopmentSnapshot ] */
+/* [wxMaxima: title   start ]
+Solving equations
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Mathematics can be seen as a language consisting only of a rather small set of words and only a handful of grammatical rules. Both sets are carefully chosen, though, that by simply reformulating the question in many cases the answer can be found.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+If you are studying mathematics the good news is that solving equations is an art a computer can help with in many special cases but that often relies on human creativity for finding algorithms and ways.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+Simple equations
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+For many problems Maxima's solve() program instantly finds a list of solutions:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+pyth:a^2+b^2=c^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sol1:solve(pyth,a);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Both solutions solve() offers are valied. We can pick any of them manually, for example:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sol2:sol1[2];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+By having given this equation a name ("sol2") we gained a way to re-use this equation later:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve(sol2,b);
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+Question #1
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: question  start ] */
+<mth><st>Is </st><mi>a</mi><st> positive, negative or zero?</st></mth>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+p;
+/* [wxMaxima: answer  end   ] */
+
+
+/* [wxMaxima: comment start ]
+This time the type of solutions we can get depends on the value of a which is why maxima asked about it. One can avoid asking questions by telling the answers to maxima's assume database:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+assume(a>0, b>0, c>0);
+solve(sol2,b);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Solve also accepts lists as its arguments. In this case it will only find solutions if the following conditions are all met:
+ * The number of linearly independent equations matches the number of variables to solve to
+ * The solution doesn't completely change its form depending on the range one variable is in.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq2:a+2*b=10;
+solve(
+    [pyth,eq2],
+    [a,b]
+);
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 19.12.4-DevelopmentSnapshot"$

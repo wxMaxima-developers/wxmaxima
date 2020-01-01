@@ -291,6 +291,8 @@ void TextCell::SetValue(const wxString &text)
                     "by setting ratprint to false."));
     if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
       SetToolTip( _("Division by 0."));
+    if(text.StartsWith(wxT("incorrect syntax: parser: incomplete number; missing exponent?")))
+      SetToolTip( _("Might also indicate a missing multiplication sign (\"*\")."));
     if(text.Contains(wxT("arithmetic error DIVISION-BY-ZERO signalled")))
       SetToolTip( _("Besides a division by 0 the reason for this error message can be a "
                     "calculation that returns +/-infinity."));
@@ -485,7 +487,7 @@ void TextCell::RecalculateWidths(int fontsize)
         dc->SetFont(font);
         labelSize = GetTextSize(text);
       } 
-      m_width = labelSize.GetWidth();
+      m_width = Scale_Px(configuration->GetLabelWidth());
       m_height = labelSize.GetHeight();
       m_center = m_height / 2;
     }
