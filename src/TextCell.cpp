@@ -487,7 +487,7 @@ void TextCell::RecalculateWidths(int fontsize)
         dc->SetFont(font);
         labelSize = GetTextSize(text);
       } 
-      m_width = Scale_Px(configuration->GetLabelWidth());
+      m_width = Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
       m_height = labelSize.GetHeight();
       m_center = m_height / 2;
     }
