@@ -25,6 +25,7 @@
 
 #include "wxImagePanel.h"
 #include <wx/mstream.h>
+#include <wx/display.h>
 
 wxImagePanel::wxImagePanel(wxWindow* parent, unsigned char *data, size_t len) :
 wxPanel(parent)
