@@ -3,13 +3,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
 # Innocent De Marchi <tangram.peces@gmail.com>, 2010-2016.
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1276
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1278
 msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-02 00:28+0100\n"
+"POT-Creation-Date: 2020-01-02 00:38+0100\n"
 "PO-Revision-Date: 2016-11-10 19:22+0100\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
@@ -510,6 +508,10 @@ msgid ""
 "\". \"draw\" can be replaced by \"wxdraw\", plot by \"wxplot\" etc."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:577
+msgid "A ridicously advanced example\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:335
 msgid ""
 "A scale factor for the printout. Helpful for printing big equations on small "
@@ -791,6 +793,10 @@ msgstr "Obre un document"
 msgid "Append an element to an existing list"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:510
+msgid "Appending lists of tolerances\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6484
 msgid "Apply"
 msgstr "Aplicar"
@@ -827,6 +833,10 @@ msgstr ""
 msgid ""
 "As seen above the last equation displayed by maxima can be referenced by "
 "using the placeholder \"%\":\n"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:480
+msgid "As we have guessed the 2nd voltage divider was the better one.\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:896
@@ -1176,6 +1186,14 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1282
 msgid "Build &Info"
 msgstr "&Informació de compilació"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:542
+msgid ""
+"By default the wrstcse package tests all combinations of 3 values per "
+"tol[n]: The minimum, the maximum and the typical value. If we only want to "
+"test 2 values (the minimum and the maximum) that might speed up lengthy "
+"calculations with many values that contain tolerances:\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:51
 msgid ""
@@ -2064,6 +2082,10 @@ msgstr "Fondària:"
 msgid "Derivative:"
 msgstr "Derivada:"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:582
+msgid "Description of the problem\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1637
 msgid "Deviation..."
 msgstr "Desviació..."
@@ -2933,6 +2955,10 @@ msgstr "Finlandès"
 msgid "First"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:366
+msgid "First we load the tolerance calculation package:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:899
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
@@ -3175,6 +3201,10 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1140
 msgid "Generate list elements using a rule"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:624
+msgid "Generating a list of 100 sets of possible values of \"coords\"\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:164
@@ -3441,6 +3471,13 @@ msgid ""
 "uses:\n"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:515
+msgid ""
+"If it is necessary to append two lists of values with tolerances to each "
+"other without risking a collision of tol[n] that happen to have the same n "
+"in the two lists the following function can be used:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:304
 msgid ""
 "If multiple cells are evaluated in one go: Abort evaluation if wxMaxima "
@@ -3495,6 +3532,12 @@ msgid ""
 "The last two of these methods are described here.\n"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:567
+msgid ""
+"If this calculation is repeated it will naturally result in a different set "
+"of numers:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:316
 msgid ""
 "If this checkbox is checked wxMaxima automatically saves the file closing "
@@ -3524,6 +3567,10 @@ msgstr ""
 "Si aquesta opció està seleccionada, la font .wxmx de l'arxiu actual serà "
 "copiat en un lloc al qual s'agregarà un enllaç cap el resultat de una "
 "exportació."
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:424
+msgid "If we just want to know the typical value we can do the following:\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:38
 msgid ""
@@ -3980,6 +4027,13 @@ msgstr ""
 msgid "Jump to the first cell maxima has reported an error in."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:414
+msgid ""
+"Just substituting the values into the equations provides us with the "
+"equation containing the real values and the tolerances in wrstcse's "
+"notation:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:170
 msgid "Kabyle"
 msgstr "Kabyle"
@@ -4069,11 +4123,11 @@ msgstr ""
 msgid "Length"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:371
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:381
 #, c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
-"with 1% tolerance. \n"
+"with 1% tolerance instead:\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:132
@@ -4721,6 +4775,10 @@ msgstr "No coincideixen els parèntisi"
 msgid "Modulus"
 msgstr "Mòdul"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:552
+msgid "Monte carlo analysis\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:264
 msgid ""
 "Most probable cause: A dot instead a comma between two list items containing "
@@ -4926,6 +4984,13 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/main.cpp:146
 #, c-format
 msgid "Not setting language %i"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:490
+msgid ""
+"Now we want to tell maxima that the voltage source provides a voltage "
+"between 4V and 6V, typically 4.5V. For doing this a specialized function "
+"exists:\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1826
@@ -5330,6 +5395,10 @@ msgstr "Gràfic a l'arxiu:"
 msgid "Plot using Draw"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:634
+msgid "Plotting these lists\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:822
 #, fuzzy
 msgid "Point type:"
@@ -5431,6 +5500,10 @@ msgstr "Imprimir document"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1247
 msgid "Print floating-point numbers with exponents dividable by 2"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:409
+msgid "Print out the results\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:784
@@ -5723,6 +5796,10 @@ msgstr "Arrels d'un &polinomi"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:902
 msgid "Roots of Polynomial (bfloat)"
 msgstr "Arrels reals &grans d'un polinomi"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:592
+msgid "Round holes can be described as follows:\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:742
 msgid "Rounded"
@@ -6540,6 +6617,13 @@ msgid ""
 "example would be:\n"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:587
+msgid ""
+"Someone constructs a magic drill that is guaranteed to generate holes that "
+"exactly meet 3 points. But that points unfortunately all have tolerances. We "
+"now are asked to produce images of the possible outcome.\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6746
 msgid "Something like f(x_1,x_2)"
 msgstr ""
@@ -6576,6 +6660,10 @@ msgstr "Especial"
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:261
 msgid "Special constants"
 msgstr "Constants especials"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:485
+msgid "Specifying complex tolerances\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:909
 msgid "Speed versus accuracy"
@@ -6856,6 +6944,10 @@ msgstr ""
 msgid "The color of the next line to draw"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:610
+msgid "The coordinates of the points the wholes go through\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:321
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
@@ -7035,8 +7127,13 @@ msgstr ""
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:366
-msgid "The tolerance calculation package lets tol[n] tolerate \n"
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:376
+msgid ""
+"The tolerance calculation package lets tol[n] tolerate between -1 and 1. "
+"tol[n] with the same n are coupled tolerances that share the same value. In "
+"theory the \"n\" doesn't need to be a number. But if it is a symbolic name "
+"one has to make sure this name is never assigned a value else tol[name] will "
+"be replaced by tol[<value of the variable \"name\">]\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:276
@@ -7060,6 +7157,12 @@ msgid ""
 "The xml data from maxima or from the .wxmx file was missing data here.\n"
 "If you find a way how to reproduce this problem please file a bug report "
 "against wxMaxima."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:450
+msgid ""
+"Then we ask wrstcse to print out the tolerances of the right hand side of "
+"our equation \"uout\":\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:78
@@ -7121,11 +7224,25 @@ msgid ""
 "infinity."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:460
+msgid ""
+"This result is still - well, hard to interpret, because Maxima didn't know "
+"the value of U_In which is necessary to decide which of all the terms is the "
+"minimum and which is the maximum. But we can inform maxima about the "
+"necessary facts:\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:78
 msgid ""
 "This time the type of solutions we can get depends on the value of a which "
 "is why maxima asked about it. One can avoid asking questions by telling the "
 "answers to maxima's assume database:\n"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:557
+msgid ""
+"This time we want the tolerance package to use 1000 random sets of values "
+"and to find the best and worst case that can be reached using these values:\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:436
@@ -7560,6 +7677,10 @@ msgstr "Etiquetes definides per l'usuari"
 msgid "User-defined labels if available"
 msgstr "Etiquetes definides per l'usuari"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:537
+msgid "Using a bigger or lower number of samples\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:42
 #, fuzzy
 msgid "Value"
@@ -7672,8 +7793,24 @@ msgstr ""
 msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:395
+#, c-format
+msgid ""
+"We can propose another set of values: Two resistors that are only 10% ones, "
+"but are guaranteed to always deviate into the same direction by the same "
+"percentage.\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:131
 msgid "We can use them as an input to solve:\n"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:439
+msgid ""
+"We now want to test all combinations of minimum, typical or maximum value, "
+"instead.\n"
+"First we tell maxima not to print a warning if a float is replaced by a "
+"fraction of the same value:\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4144
@@ -8334,6 +8471,11 @@ msgstr "Noms de funcions"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1158
 msgid "use the actual values stored"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:532
+msgid ""
+"wc_tolappend() appends values with tolerances and renumbers the tol[n]\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:363
