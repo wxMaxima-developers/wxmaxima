@@ -1593,7 +1593,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 
     else if (m_hCaretActive == true)
     {
-      popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->AppendSeparator();
       popupMenu->Append(popid_insert_text, _("Insert Text Cell"), wxEmptyString, wxITEM_NORMAL);
@@ -1614,7 +1614,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   {
     popupMenu->Append(wxID_CUT, _("Cut"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-    popupMenu->Append(popid_paste, _("Paste"), wxEmptyString, wxITEM_NORMAL);
+    popupMenu->Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu->AppendSeparator();
     popupMenu->Append(popid_select_all, _("Select All"), wxEmptyString, wxITEM_NORMAL);
     if ((clickInSelection) &&
@@ -3197,7 +3197,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
       }
       else if (event.ShiftDown())
       {
-        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, popid_paste);
+        wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, wxID_PASTE);
         GetParent()->ProcessWindowEvent(ev);
       }
       else
