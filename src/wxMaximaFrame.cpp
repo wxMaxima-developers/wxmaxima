@@ -1272,7 +1272,9 @@ m_listMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_HelpMenu, menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
   m_HelpMenu->AppendSeparator();
-  m_HelpMenu->Append(menu_help_tutorials, _("Tutorials"),
+  m_HelpMenu->Append(menu_help_solving, _("Solving equations with maxima"),
+                     _(""), wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_help_tutorials, _("Tutorials on the web"),
                      _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_build_info, _("Build &Info"),

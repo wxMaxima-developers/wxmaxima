@@ -470,6 +470,7 @@ public:
     menu_format_image,
     menu_format_pagebreak,
     menu_help_tutorials,
+    menu_help_solving,
     menu_show_toolbar,
     menu_history_previous,
     menu_history_next,

@@ -41,6 +41,8 @@
 #include <wx/regex.h>
 #include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
@@ -177,7 +179,8 @@ public:
   {
     m_openFile = file;
   }
-  
+
+  void SetWXMdata(wxString data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on statup?
   void EvalOnStartup(bool eval)
     {
@@ -230,6 +233,8 @@ public:
   };
 
 private:  
+  //! wxm data the worksheet is populated from 
+  wxString m_initialWorkSheetContents;
   static bool m_pipeToStdout;
   static bool m_exitOnError;
   static wxString m_extraMaximaArgs;
@@ -799,8 +804,10 @@ public:
     \param evalOnStartup Do we want to execute the file automatically, but halt on error?
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
-  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
-  
+  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, int wxmLen = 0);
+
+  void NewTutorialWindow(wxString contents);
+
   static std::list<wxMaxima *> m_topLevelWindows;
 
   void OnFileMenu(wxCommandEvent &ev);

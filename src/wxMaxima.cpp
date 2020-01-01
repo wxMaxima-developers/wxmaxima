@@ -239,7 +239,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_lastPrompt = wxEmptyString;
 
   m_closing = false;
-  m_openFile = wxEmptyString;
   m_fileSaved = true;
 
   m_chmhelpFile = wxEmptyString;
@@ -4094,20 +4093,34 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // The draw context is created on displaying the worksheet for the 1st time
   // and after drawing the worksheet onIdle is called => we won't miss this
   // event when we wait for it here.
-  if ((m_worksheet != NULL) && (m_worksheet->m_configuration->GetDC() != NULL) &&
-      (m_openFile != wxEmptyString))
+  if ((m_worksheet != NULL) && (m_worksheet->m_configuration->GetDC() != NULL))
   {
-    wxString file = m_openFile;
-    m_openFile = wxEmptyString;
+    if(m_openFile != wxEmptyString)
+    {
+      wxString file = m_openFile;
+      m_openFile = wxEmptyString;
       m_openInitialFileError = !OpenFile(file);
-
-    // After doing such big a thing we should end our idle event and request
-    // a new one to be issued once the computer has time for doing real
-    // background stuff.
-    event.RequestMore();
-    return;
+      
+      // After doing such big a thing we should end our idle event and request
+      // a new one to be issued once the computer has time for doing real
+      // background stuff.
+      event.RequestMore();
+      return;
+    }
+    //! wxm data the worksheet is populated from 
+    if(!m_initialWorkSheetContents.IsEmpty())
+    {
+      //  Convert the comment block to an array of lines
+      wxStringTokenizer tokenizer(m_initialWorkSheetContents, "\n");
+      wxArrayString lines;
+      while ( tokenizer.HasMoreTokens() )
+        lines.Add(tokenizer.GetNextToken());
+      m_worksheet->InsertGroupCells(
+        m_worksheet->CreateTreeFromWXMCode(lines));
+      m_worksheet->SetSaved(true);
+      m_initialWorkSheetContents = wxEmptyString;
+    }
   }
-
   // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
 

@@ -37,6 +37,7 @@
 #include "Dirstructure.h"
 #include <iostream>
 
+#include "../examples/examples.h"
 #include "wxMaxima.h"
 #include "Version.h"
 
@@ -58,6 +59,7 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 bool MyApp::OnInit()
 {
   Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_solving, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(ToolBar::tb_new, wxEVT_TOOL, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
     
   #if wxUSE_ON_FATAL_EXCEPTION
@@ -353,7 +355,7 @@ int MyApp::OnRun()
   return 0;
 }
 
-void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
+void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
 {
   int numberOfWindows = m_topLevelWindows.size();
 
@@ -365,8 +367,32 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
   wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title);
-  if (file.Length() > 0)
+  if (!file.IsEmpty() )
     frame->SetOpenFile(file);
+  if (wxmData)
+  {
+    // Unzip the .wxm file
+    wxMemoryInputStream istream(wxmData, wxmLen);
+    wxZlibInputStream zstream(istream);
+    wxTextInputStream textIn(zstream);
+    wxString initialContents;
+    wxString line;
+    wxString block;
+    while(!zstream.Eof())
+    {
+      line = textIn.ReadLine();
+      if((line.StartsWith("/*")) || (line.EndsWith("*/")))
+      {
+        initialContents += _(block);
+        initialContents += line + "\n";
+        block = wxEmptyString;
+      }
+      else
+        block += line + "\n";
+    }
+    initialContents += _(block);
+    frame->SetWXMdata(initialContents);
+  }
   
   frame->ExitAfterEval(exitAfterEval);
   frame->EvalOnStartup(evalOnStartup);
@@ -382,6 +408,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch (ev.GetId())
   {
+  case wxMaxima::menu_help_solving:
+      NewWindow(wxEmptyString, false, false,
+                solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
+      break;
     case wxID_NEW:
     case ToolBar::tb_new:
   case wxMaxima::mac_newId:
