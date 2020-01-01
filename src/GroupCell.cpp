@@ -537,6 +537,7 @@ void GroupCell::RemoveOutput()
   // Calculate the new cell height.
 
   ResetSize();
+  ResetData();
   RecalculateHeight((*m_configuration)->GetDefaultFontSize());
   (*m_configuration)->AdjustWorksheetSize(true);
   m_isHidden = false;
