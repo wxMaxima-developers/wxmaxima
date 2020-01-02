@@ -59,7 +59,7 @@ Extensive documentation for _Maxima_ is  [available in the internet](http://maxi
 
 ### wxMaxima
 
-wxMaxima is a graphical user interface that provides the full functionality and flexibility of _Maxima_. wxMaxima offers users a graphical display and many features that make working with _Maxima_ easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for wx_Maxima_, including workbooks to illustrate aspects of its use, is online at the wxMaxima [help site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help menu.
+wxMaxima is a graphical user interface that provides the full functionality and flexibility of _Maxima_. wxMaxima offers users a graphical display and many features that make working with _Maxima_ easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for _wxMaxima_, including workbooks to illustrate aspects of its use, is online at the wxMaxima [help site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help menu.
 
 ![wxMaxima window](./wxMaximaWindow.png)
 
@@ -219,7 +219,7 @@ Several word processors and similar programs either recognize MathML input and a
 
 ### Markdown support
 
-_wxMaxima_offers a set of standard markdown conventions that don't collide with mathematical notation. One of this elements is bullet lists.
+_wxMaxima_ offers a set of standard markdown conventions that don't collide with mathematical notation. One of this elements is bullet lists.
 
 ~~~~
 Ordinary text
@@ -282,7 +282,7 @@ You can be use `.mac` files for writing own library of macros. But since they do
 
 ### .wxm
 
-.wxm files contains the worksheet except _maxima_'s output. On maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
+.wxm files contains the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
 
 ### .wxmx
 
