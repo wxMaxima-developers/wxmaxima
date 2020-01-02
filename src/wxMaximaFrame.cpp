@@ -1276,6 +1276,8 @@ m_listMenu->AppendSeparator();
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_tolerances, _("Tolerance calculations with maxima"),
                      "", wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_help_3d, _("Displaying 3d curves"),
+                     "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_tutorials, _("Tutorials on the web"),
                      _("Online tutorials"), wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();

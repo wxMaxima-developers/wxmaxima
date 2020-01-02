@@ -409,6 +409,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch (ev.GetId())
   {
+  case wxMaxima::menu_help_3d:
+    NewWindow(wxEmptyString, false, false,
+              displaying3DCurves_wxm_gz, displaying3DCurves_wxm_gz_len);
+    break;
   case wxMaxima::menu_help_solving:
     NewWindow(wxEmptyString, false, false,
               solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
