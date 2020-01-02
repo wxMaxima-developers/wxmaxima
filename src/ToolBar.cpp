@@ -397,63 +397,63 @@ wxBitmap ToolBar::GetNewBitmap(wxSize siz)
 
 wxBitmap ToolBar::GetPrintBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-print"),gtk_print_svg_gz,gtk_print_svg_gz_len);
+  return GetBitmap(wxT("gtk-print"),gtk_print_svg_gz,gtk_print_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetOpenBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-open"),gtk_open_svg_gz,gtk_open_svg_gz_len);
+  return GetBitmap(wxT("gtk-open"),gtk_open_svg_gz,gtk_open_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetSaveBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-save"),gtk_save_svg_gz,gtk_save_svg_gz_len);
+  return GetBitmap(wxT("gtk-save"),gtk_save_svg_gz,gtk_save_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-preferences"), gtk_preferences_svg_gz, gtk_preferences_svg_gz_len);
+  return GetBitmap(wxT("gtk-preferences"), gtk_preferences_svg_gz, gtk_preferences_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetCutBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-cut"), gtk_cut_svg_gz, gtk_cut_svg_gz_len);
+  return GetBitmap(wxT("gtk-cut"), gtk_cut_svg_gz, gtk_cut_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetCopyBitmap(wxSize siz)
 {
- return GetBitmap(wxT("gtk-copy"), gtk_copy_svg_gz, gtk_copy_svg_gz_len);
+ return GetBitmap(wxT("gtk-copy"), gtk_copy_svg_gz, gtk_copy_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetPasteBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-paste"), gtk_paste_svg_gz, gtk_paste_svg_gz_len);
+  return GetBitmap(wxT("gtk-paste"), gtk_paste_svg_gz, gtk_paste_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetSelectAllBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-select-all"), gtk_select_all_svg_gz,gtk_select_all_svg_gz_len);
+  return GetBitmap(wxT("gtk-select-all"), gtk_select_all_svg_gz,gtk_select_all_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetFindBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-find"), gtk_find_svg_gz, gtk_find_svg_gz_len);
+  return GetBitmap(wxT("gtk-find"), gtk_find_svg_gz, gtk_find_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetRestartBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("view-refresh"), view_refresh_svg_gz,view_refresh_svg_gz_len);
+  return GetBitmap(wxT("view-refresh"), view_refresh_svg_gz,view_refresh_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetInterruptBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-stop"), gtk_stop_svg_gz, gtk_stop_svg_gz_len);
+  return GetBitmap(wxT("gtk-stop"), gtk_stop_svg_gz, gtk_stop_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("go-bottom"), go_bottom_svg_gz, go_bottom_svg_gz_len);
+  return GetBitmap(wxT("go-bottom"), go_bottom_svg_gz, go_bottom_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetHelpBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("gtk-help"), gtk_help_svg_gz,gtk_help_svg_gz_len);
+  return GetBitmap(wxT("gtk-help"), gtk_help_svg_gz,gtk_help_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("go-last"), go_last_svg_gz,go_last_svg_gz_len);
+  return GetBitmap(wxT("go-last"), go_last_svg_gz,go_last_svg_gz_len, siz);
 }
 wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz)
 {
-  return GetBitmap(wxT("weather-few-clouds"), weather_few_clouds_svg_gz,weather_few_clouds_svg_gz_len);
+  return GetBitmap(wxT("weather-few-clouds"), weather_few_clouds_svg_gz,weather_few_clouds_svg_gz_len, siz);
 }
 
 void ToolBar::SetDefaultCellStyle()
