@@ -473,6 +473,7 @@ public:
     menu_help_solving,
     menu_help_tolerances,
     menu_help_3d,
+    menu_show_toolbar,
     menu_history_previous,
     menu_history_next,
     menu_check_updates,
