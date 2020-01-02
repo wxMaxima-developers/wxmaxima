@@ -128,7 +128,7 @@
 </figure>
 <p>Extensive documentation for <em>Maxima</em> is <a href="http://maxima.sourceforge.net/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems that would be the F1 key) causes wxMaxima’s context-sensitive help feature will automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
-<p>wxMaxima is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for wx_Maxima_, including workbooks to illustrate aspects of its use, is online at the wxMaxima <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
+<p>wxMaxima is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the wxMaxima <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
 <img src="./wxMaximaWindow.png" alt="wxMaxima window" /><figcaption>wxMaxima window</figcaption>
 </figure>
@@ -161,22 +161,22 @@
 <p>If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise <em>wxMaxima</em> if more than one cell is selected will extend the selection to whole cells.</p>
 <p>What isn’t standard is that <em>wxMaxima</em> provides drag-and-drop flexibility by defining two types of cursors. <em>wxMaxima</em> will switch between them automatically when needed:</p>
 <ul>
-<li>A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use ctrl+enter or shift+enter to execute the highlighted cells.</li>
+<li>A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.</li>
 <li>A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.</li>
 </ul>
 <h3 id="command-autocompletion"><span class="header-section-number">1.2.4</span> Command autocompletion</h3>
-<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <Ctrl>+<Space>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.</p>
+<p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
-<p>Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <Shift>+<Ctrl>+<Space> or select the respective menu item (Cell/Show Template).</p>
+<p>Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).</p>
 <h4 id="greek-characters"><span class="header-section-number">1.2.4.1</span> Greek characters</h4>
 <p>Computers traditionally store characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
 <p>For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.</p>
 <p><em>Maxima</em> allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn’t care about the font encoding. As at least one of this is likely to be true <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
 <ul>
-<li>A greek letter can be entered by pressing the <ESC> key and then starting to type the greek character’s name.</li>
-<li>Alternatively it can be entered by pressing <ESC>, one letter and <ESC> again. In this case the following letters are supported:</li>
+<li>A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character’s name.</li>
+<li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
 </ul>
 <pre><code>a alpha    i iota      r rho
 b beta     k kappa     s sigma
@@ -245,7 +245,7 @@ perp          a &quot;perpendicular&quot; sign
 leadsto       a &quot;leads to&quot; sign
 -&gt;            a right arrow
 --&gt;           a long right arrow</code></pre>
-<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <code>&lt;ESC&gt;number of the character&lt;ESC&gt;</code>. <code>&lt;ESC&gt;61&lt;ESC&gt;</code> therefore results in an <code>a</code>.</p>
+<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <code>&lt;kbd&gt;ESC&lt;/kbd&gt;number of the character&lt;kbd&gt;ESC&lt;/kbd&gt;</code>. <code>&lt;kbd&gt;ESC&lt;/kbd&gt;61&lt;kbd&gt;ESC&lt;/kbd&gt;</code> therefore results in an <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
 <h3 id="side-panes"><span class="header-section-number">1.2.5</span> Side Panes</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
@@ -255,7 +255,7 @@ leadsto       a &quot;leads to&quot; sign
 <h3 id="mathml-output"><span class="header-section-number">1.2.6</span> MathML output</h3>
 <p>Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. <em>wxMaxima</em> therefore offers several entries in the right-click menu.</p>
 <h3 id="markdown-support"><span class="header-section-number">1.2.7</span> Markdown support</h3>
-<p>_wxMaxima_offers a set of standard markdown conventions that don’t collide with mathematical notation. One of this elements is bullet lists.</p>
+<p><em>wxMaxima</em> offers a set of standard markdown conventions that don’t collide with mathematical notation. One of this elements is bullet lists.</p>
 <pre><code>Ordinary text
  * One item, indentation level 1
  * Another item at indentation level 1
@@ -271,9 +271,9 @@ Ordinary text</code></pre>
 <h3 id="hotkeys"><span class="header-section-number">1.2.8</span> Hotkeys</h3>
 <p>Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of <em>wxMaxima</em> to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:</p>
 <ul>
-<li><code>Ctrl+Shift+Delete</code> deletes a complete cell.</li>
-<li><code>Ctrl+Tab</code> or <code>Ctrl+Shift+Tab</code> triggers the auto-completion mechanism.</li>
-<li><code>Shift+Space</code> inserts a non-breaking space.</li>
+<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell.</li>
+<li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.</li>
+<li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
 </ul>
 <h3 id="raw-tex-in-the-tex-export"><span class="header-section-number">1.2.9</span> Raw TeX in the TeX export</h3>
 <p>If a text cell begins with <code>TeX:</code> the TeX export contains the literal text that follows the <code>TeX:</code> marker. Using this feature allows the entry of TeX markup within the <em>wxMaxima</em> workbook.</p>
@@ -289,7 +289,7 @@ Ordinary text</code></pre>
 <pre><code>%i1 read(&quot;test.mac&quot;);</code></pre>
 <p>You can be use <code>.mac</code> files for writing own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em>wxMaxima</em> session.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
-<p>.wxm files contains the worksheet except <em>maxima</em>’s output. On maxima versions &gt;5.38 they can be read using <em>Maxima</em>’s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
+<p>.wxm files contains the worksheet except <em>Maxima</em>’s output. On Maxima versions &gt;5.38 they can be read using <em>Maxima</em>’s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
 <p>This xml-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.</p>
 <h2 id="configuration-options"><span class="header-section-number">1.4</span> Configuration options</h2>
@@ -632,7 +632,7 @@ pngdraw2d(&quot;Test&quot;,
 <h1 id="faq"><span class="header-section-number">4</span> FAQ</h1>
 <h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
 <p>There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”):</p>
-<pre><code>\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
+<pre><code>\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
 <hr />
 <h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>
@@ -646,8 +646,8 @@ pngdraw2d(&quot;Test&quot;,
 <li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
 <li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
 <li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
-<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <str>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a maxima compiled with lisp compiler <str>.</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a maxima compiled with lisp compiler <code>&lt;str&gt;</code>.</li>
 <li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra maxima arguments</li>
 <li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
 </ul>
