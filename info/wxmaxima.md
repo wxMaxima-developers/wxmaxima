@@ -105,16 +105,16 @@ If the user tries to select a complete sentence a word processor will try to ext
 
 What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
-*   A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use ctrl+enter or shift+enter to execute the highlighted cells.
+*   A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.
 *   A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
 
 ### Command autocompletion
 
-_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <Ctrl>+<Space>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.
+_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.
 
 ![ezUnits](./ezUnits.png)
 
-Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <Shift>+<Ctrl>+<Space> or select the respective menu item (Cell/Show Template).
+Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).
 
 #### Greek characters
 
@@ -124,8 +124,8 @@ For most countries the codepage of 256 characters that has been chosen does not 
 
 _Maxima_ allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
-*   A greek letter can be entered by pressing the <ESC> key and then starting to type the greek character's name.
-*   Alternatively it can be entered by pressing <ESC>, one letter and <ESC> again. In this case the following letters are supported:
+*   A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
+*   Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:
 
 ~~~~
 a alpha    i iota      r rho
@@ -201,7 +201,7 @@ leadsto       a "leads to" sign
 -->           a long right arrow
 ~~~~
 
-If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing `<ESC>number of the character<ESC>`. `<ESC>61<ESC>` therefore results in an `a`.
+If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing `<kbd>ESC</kbd>number of the character<kbd>ESC</kbd>`. `<kbd>ESC</kbd>61<kbd>ESC</kbd>` therefore results in an `a`.
 
 Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
@@ -253,9 +253,9 @@ Other symbols the html and TeX export will recognize are `<=` and `>=` for compa
 
 Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of _wxMaxima_ to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:
 
-*   `Ctrl+Shift+Delete` deletes a complete cell.
-*   `Ctrl+Tab` or `Ctrl+Shift+Tab` triggers the auto-completion mechanism.
-*   `Shift+Space` inserts a non-breaking space.
+*   <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell.
+*   <kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.
+*   <kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.
 
 ### Raw TeX in the TeX export
 
@@ -795,8 +795,8 @@ Most operating systems provide less complicated ways of starting programs than t
 *  `--pipe`:                        Pipe messages from Maxima to stdout.
 *  `--exit-on-error`:               Close the program on any maxima error.
 *   `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch
-* `-u`, `--use-version=<str>`:     Use maxima version <str>.
-*  `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler <str>.
+* `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
+*  `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler `<str>`.
 *  `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments
 *   `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
 
