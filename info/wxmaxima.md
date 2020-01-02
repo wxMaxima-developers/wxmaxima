@@ -776,7 +776,7 @@ FAQ
 
 There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"):
 
-    \usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+    \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
 
 * * *
 
