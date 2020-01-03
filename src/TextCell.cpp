@@ -218,18 +218,23 @@ void TextCell::SetValue(const wxString &text)
   
   if (m_textStyle == TS_NUMBER)
   {
+    m_numStart = wxEmptyString;
+    m_numEnd = wxEmptyString;
+    m_ellipsis = wxEmptyString;
     unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();
     if (m_displayedText.Length() > displayedDigits)
     {
       int left = displayedDigits / 3;
-      if (left > 30) left = 30;
-
-      m_displayedText = m_displayedText.Left(left) +
-                        wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) +
-                        m_displayedText.Right(left);
+      if (left > 30) left = 30;      
+      m_numStart = m_displayedText.Left(left);
+      m_ellipsis = wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left);
+      m_numEnd = m_displayedText.Right(left);
     }
     else
     {
+      m_numStart = wxEmptyString;
+      m_numEnd = wxEmptyString;
+      m_ellipsis = wxEmptyString;
       if(
         (m_roundingErrorRegEx1.Matches(m_displayedText)) ||
         (m_roundingErrorRegEx2.Matches(m_displayedText)) ||
@@ -406,7 +411,7 @@ void TextCell::RecalculateWidths(int fontsize)
   Configuration *configuration = (*m_configuration);
   
   if(NeedsRecalculation())
-  {
+  {      
     m_fontsize_old = fontsize;
     m_fontSize = fontsize;
     wxDC *dc = configuration->GetDC();
@@ -433,103 +438,154 @@ void TextCell::RecalculateWidths(int fontsize)
     if (
       (m_textStyle == TS_NUMBER) &&
       (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-      )
+        )
+    {
       SetValue(m_text);
+      m_numstartWidths.clear();
+      m_ellipsisWidths.clear();
+      m_numEndWidths.clear();
+    }
     
     m_lastCalculationFontSize = fontsize;
 
-    // Labels and prompts are fixed width - adjust font size so that
-    // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-    {
-      wxString text = m_text;
 
-      if(m_textStyle == TS_USERLABEL)
+    if(m_numStart != wxEmptyString)
+    {      
+      double fontSize = dc->GetFont().GetPointSize();
       {
-        text = wxT("(") + m_userDefinedLabel + wxT(")");
-        m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+        SizeHash::const_iterator it = m_numstartWidths.find(fontSize);    
+        if(it != m_numstartWidths.end())
+          m_numStartWidth = it->second;
+        else
+        {
+          wxSize sz = dc->GetTextExtent(m_numStart);
+          m_numstartWidths[fontSize] = sz;
+          m_numStartWidth = sz;
+        }
       }
-
-      wxFont font = dc->GetFont();
-      double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
-      if(fontsize1 < 4)
-        fontsize1 = 4;
-#if wxCHECK_VERSION(3, 1, 2)
-      font.SetFractionalPointSize(fontsize1);
-#else
-      font.SetPointSize(fontsize1);
-#endif
-      dc->SetFont(font);
-
-      
-      m_width = Scale_Px(configuration->GetLabelWidth());
-      // We will decrease it before use
-      m_fontSizeLabel = m_fontSize + 1;
-      wxSize labelSize = GetTextSize(text);
-      wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
-                   _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      font = dc->GetFont();
-#if wxCHECK_VERSION(3, 1, 2)
-      font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
-#else
-      font.SetPointSize(Scale_Px(m_fontSizeLabel));
-#endif
-      labelSize = GetTextSize(text);
-      while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
       {
+        SizeHash::const_iterator it = m_numEndWidths.find(fontSize);    
+        if(it != m_numEndWidths.end())
+          m_numEndWidth = it->second;
+        else
+        {
+          wxSize sz = dc->GetTextExtent(m_numEnd);
+          m_numEndWidths[fontSize] = sz;
+          m_numEndWidth = sz;
+        }
+      }
+      {
+        SizeHash::const_iterator it = m_ellipsisWidths.find(fontSize);    
+        if(it != m_ellipsisWidths.end())
+          m_ellipsisWidth = it->second;
+        else
+        {
+          wxSize sz = dc->GetTextExtent(m_ellipsis);
+          m_ellipsisWidths[fontSize] = sz;
+          m_ellipsisWidth = sz;
+        }
+      }
+      m_width = m_numStartWidth.GetWidth() + m_numEndWidth.GetWidth() +
+        m_ellipsisWidth.GetWidth();
+      m_height = wxMax(
+        wxMax(m_numStartWidth.GetHeight(), m_numEndWidth.GetHeight()),
+        m_ellipsisWidth.GetHeight());
+    }
+    else
+    {    
+      // Labels and prompts are fixed width - adjust font size so that
+      // they fit in
+      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+      {
+        wxString text = m_text;
+
+        if(m_textStyle == TS_USERLABEL)
+        {
+          text = wxT("(") + m_userDefinedLabel + wxT(")");
+          m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+        }
+
+        wxFont font = dc->GetFont();
+        double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
+        if(fontsize1 < 4)
+          fontsize1 = 4;
 #if wxCHECK_VERSION(3, 1, 2)
-        m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-        font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
+        font.SetFractionalPointSize(fontsize1);
 #else
-        m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-        font.SetPointSize(Scale_Px(m_fontSizeLabel));
+        font.SetPointSize(fontsize1);
 #endif
         dc->SetFont(font);
+
+      
+        m_width = Scale_Px(configuration->GetLabelWidth());
+        // We will decrease it before use
+        m_fontSizeLabel = m_fontSize + 1;
+        wxSize labelSize = GetTextSize(text);
+        wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
+                     _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+        font = dc->GetFont();
+#if wxCHECK_VERSION(3, 1, 2)
+        font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
+#else
+        font.SetPointSize(Scale_Px(m_fontSizeLabel));
+#endif
         labelSize = GetTextSize(text);
-      } 
-      m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
-      m_height = labelSize.GetHeight();
-      m_center = m_height / 2;
-    }
-    // Check if we are using jsMath and have jsMath character
-    else if (m_altJs && configuration->CheckTeXFonts())
-    {      
-      wxSize sz = GetTextSize(m_altJsText);
-      m_width = sz.GetWidth();
-      m_height = sz.GetHeight();
-      if (m_texFontname == wxT("jsMath-cmsy10"))
-        m_height = m_height / 2;
-    }
+        while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
+        {
+#if wxCHECK_VERSION(3, 1, 2)
+          m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+          font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
+#else
+          m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+          font.SetPointSize(Scale_Px(m_fontSizeLabel));
+#endif
+          dc->SetFont(font);
+          labelSize = GetTextSize(text);
+        } 
+        m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
+        m_height = labelSize.GetHeight();
+        m_center = m_height / 2;
+      }
+      // Check if we are using jsMath and have jsMath character
+      else if (m_altJs && configuration->CheckTeXFonts())
+      {      
+        wxSize sz = GetTextSize(m_altJsText);
+        m_width = sz.GetWidth();
+        m_height = sz.GetHeight();
+        if (m_texFontname == wxT("jsMath-cmsy10"))
+          m_height = m_height / 2;
+      }
 
       /// We are using a special symbol
-    else if (m_alt)
-    {
-      wxSize sz = GetTextSize(m_altText);
-      m_width = sz.GetWidth();
-      m_height = sz.GetHeight();
-    }
-    else if (m_displayedText.IsEmpty())
-    {
-      m_height = m_fontSize;
-      m_width = 0;
-    }
+      else if (m_alt)
+      {
+        wxSize sz = GetTextSize(m_altText);
+        m_width = sz.GetWidth();
+        m_height = sz.GetHeight();
+      }
+      else if (m_displayedText.IsEmpty())
+      {
+        m_height = m_fontSize;
+        m_width = 0;
+      }
 
       /// This is the default.
-    else
-    {
-      wxSize sz = GetTextSize(m_displayedText);
-      m_width = sz.GetWidth();
-      m_height = sz.GetHeight();
-    }
+      else
+      {
+        wxSize sz = GetTextSize(m_displayedText);
+        m_width = sz.GetWidth();
+        m_height = sz.GetHeight();
+      }
     
-    m_width += 2 * MC_TEXT_PADDING;
-    m_height += 2 * MC_TEXT_PADDING;
+      m_width += 2 * MC_TEXT_PADDING;
+      m_height += 2 * MC_TEXT_PADDING;
 
-    /// Hidden cells (multiplication * is not displayed)
-    if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
-    {
-      m_height = 0;
-      m_width = m_width / 4;
+      /// Hidden cells (multiplication * is not displayed)
+      if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
+      {
+        m_height = 0;
+        m_width = m_width / 4;
+      }
     }
   }
   if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
@@ -579,7 +635,28 @@ void TextCell::Draw(wxPoint point)
           }
         }
       }
-
+      else if (!m_numStart.IsEmpty())
+      {
+        dc->DrawText(m_numStart,
+                     point.x + MC_TEXT_PADDING,
+                     point.y - m_realCenter + MC_TEXT_PADDING);
+        dc->DrawText(m_numEnd,
+                     point.x + MC_TEXT_PADDING + m_numStartWidth.GetWidth() +
+                     m_ellipsisWidth.GetWidth(),
+                     point.y - m_realCenter + MC_TEXT_PADDING);
+        wxColor textColor = dc->GetTextForeground();
+        wxColor backgroundColor = dc->GetTextBackground();
+        dc->SetTextForeground(
+          wxColor(
+            (textColor.Red() + backgroundColor.Red()) / 2,
+            (textColor.Green() + backgroundColor.Green()) / 2,
+            (textColor.Blue() + backgroundColor.Blue()) / 2
+            )
+          );
+        dc->DrawText(m_ellipsis,
+                     point.x + MC_TEXT_PADDING + m_numStartWidth.GetWidth(),
+                     point.y - m_realCenter + MC_TEXT_PADDING);
+      }
         /// Check if we are using jsMath and have jsMath character
       else if (m_altJs && configuration->CheckTeXFonts())
         dc->DrawText(m_altJsText,

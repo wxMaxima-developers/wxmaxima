@@ -168,8 +168,20 @@ private:
   };
   WX_DECLARE_HASH_MAP(
     double, wxSize, SizeHash_internals, DoubleEqual, SizeHash);
-  //! Remembers all widths we already have configured
+  //! Remembers all widths of the full text we already have configured
   SizeHash m_widths;
+  //! The size of the first few digits
+  SizeHash m_numstartWidths;
+  wxSize m_numStartWidth;
+  wxString m_numStart;
+  //! The size of the "not all digits displayed" message.
+  SizeHash m_ellipsisWidths;
+  wxString m_ellipsis;
+  wxSize m_ellipsisWidth;
+  //! The size of the last few digits
+  SizeHash m_numEndWidths;
+  wxString m_numEnd;
+  wxSize m_numEndWidth;
 
   //! Produces a text sample that determines the label width
   wxString m_initialToolTip;
