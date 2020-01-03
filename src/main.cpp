@@ -62,6 +62,7 @@ bool MyApp::OnInit()
   Connect(wxMaximaFrame::menu_help_solving, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(wxMaximaFrame::menu_help_tolerances, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(wxMaximaFrame::menu_help_3d, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_numberformats, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(ToolBar::tb_new, wxEVT_TOOL, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
     
   #if wxUSE_ON_FATAL_EXCEPTION
@@ -410,6 +411,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch (ev.GetId())
   {
+  case wxMaxima::menu_help_numberformats:
+    NewWindow(wxEmptyString, false, false,
+              numberFormats_wxm_gz, numberFormats_wxm_gz_len);
+    break;
   case wxMaxima::menu_help_3d:
     NewWindow(wxEmptyString, false, false,
               displaying3DCurves_wxm_gz, displaying3DCurves_wxm_gz_len);

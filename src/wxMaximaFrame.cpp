@@ -1274,6 +1274,8 @@ m_listMenu->AppendSeparator();
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_help_solving, _("Solving equations with maxima"),
                      "", wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_help_numberformats, _("Number types"),
+                     "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_tolerances, _("Tolerance calculations with maxima"),
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_3d, _("Displaying 3d curves"),
