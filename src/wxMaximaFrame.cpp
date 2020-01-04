@@ -821,7 +821,7 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_add_heading5, _("Insert heading5 Cell\tCtrl+6"),
                      _("Insert a new heading5 cell"));
   m_CellMenu->Append(menu_add_heading6, _("Insert heading6 Cell\tCtrl+7"),
-                     _("Insert a new heading7 cell"));
+                     _("Insert a new heading6 cell"));
   m_CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
                      _("Insert a page break"));
   m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
