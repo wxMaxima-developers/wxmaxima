@@ -1106,7 +1106,6 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
  */
 void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
-  std::cerr<<"SelectInner\n";
   *first = NULL;
   *last = NULL;
 
@@ -1114,13 +1113,10 @@ void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
       Cell *tmp = it->get();
-      std::cerr<<"NewInner:"<<tmp->ListToString()<<"\n";
       while(tmp != NULL)
       {
-        std::cerr<<"NewInner:"<<tmp->ToString()<<"\n";
         if (tmp->ContainsRect(rect))
           tmp->SelectRect(rect, first, last);
-        std::cerr<<"next="<<tmp->m_next;
         tmp = tmp->m_next;
       }
     }
