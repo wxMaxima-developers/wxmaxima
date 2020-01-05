@@ -39,10 +39,12 @@ wxString Cell::GetToolTip(const wxPoint &point)
   std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
   for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
-    if(*it != NULL)
+    Cell *tmp = it->get();
+    while(tmp != NULL)
     {
-      if((toolTip = (*it)->GetToolTip(point)) != wxEmptyString)
+      if((toolTip = tmp->GetToolTip(point)) != wxEmptyString)
         return toolTip;
+      tmp = tmp -> m_next;
     }
   }
   return m_toolTip;
@@ -1100,19 +1102,27 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
 }
 
 /***
- * Select rectangle in deeper cell - derived classes should override this
+ * Select rectangle in deeper cell
  */
 void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
+  std::cerr<<"SelectInner\n";
   *first = NULL;
   *last = NULL;
 
   std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
   for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
-    if(*it != NULL)
     {
-      if ((*it)->ContainsRect(rect))
-        (*it)->SelectRect(rect, first, last);
+      Cell *tmp = it->get();
+      std::cerr<<"NewInner:"<<tmp->ListToString()<<"\n";
+      while(tmp != NULL)
+      {
+        std::cerr<<"NewInner:"<<tmp->ToString()<<"\n";
+        if (tmp->ContainsRect(rect))
+          tmp->SelectRect(rect, first, last);
+        std::cerr<<"next="<<tmp->m_next;
+        tmp = tmp->m_next;
+      }
     }
 
   if (*first == NULL || *last == NULL)
@@ -1154,8 +1164,14 @@ void Cell::ResetData()
   m_maxDrop   = -1;
   std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
   for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
-    if(*it != NULL)
-      (*it)->ResetData();
+    {
+      Cell *tmp = it->get();
+      while(tmp != NULL)
+      {
+        tmp->ResetData();
+        tmp = tmp -> m_next;
+      }
+    }
 }
 
 Cell *Cell::first()
@@ -1187,8 +1203,14 @@ void Cell::Unbreak()
   // Unbreak the inner cells, too
   std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
   for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
-    if(*it != NULL)
-      (*it)->Unbreak();
+  {
+    Cell *tmp = it->get();
+    while(tmp != NULL)
+    {
+      tmp->Unbreak();
+      tmp = tmp -> m_next;
+    }
+  }
 }
 
 void Cell::UnbreakList()
@@ -1545,7 +1567,11 @@ void Cell::MarkAsDeleted()
   std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
   for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
-    if(*it != NULL)
-      (*it)->MarkAsDeleted();
+    Cell *tmp = it->get();
+    while(tmp != NULL)
+    {
+      tmp->MarkAsDeleted();
+      tmp = tmp -> m_next;
+    }
   }
 }

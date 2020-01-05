@@ -173,7 +173,7 @@ void FracCell::RecalculateHeight(int fontsize)
     {
       m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
         Scale_Px(4);
-      m_center = m_denom->GetMaxHeight() + Scale_Px(2);
+      m_center = m_num->GetMaxHeight() + Scale_Px(2);
     }
     else
     {
@@ -200,26 +200,26 @@ void FracCell::Draw(wxPoint point)
     {
       num = point;
       wxPoint divide(point);
-      divide.x += m_num->GetFullWidth();
+      divide.x += m_displayedNum->GetFullWidth();
       denom = divide;
       denom.x += m_divide->GetFullWidth();
       
-      m_num->DrawList(num);
+      m_displayedNum->DrawList(num);
       m_divide->Draw(divide);
-      m_denom->DrawList(denom);
+      m_displayedDenom->DrawList(denom);
     }
     else
     {
       num.x = point.x + m_horizontalGapLeft +
-              (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_num->GetFullWidth()) / 2;
-      num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
+              (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedNum->GetFullWidth()) / 2;
+      num.y = point.y - m_displayedNum->GetMaxHeight() + m_displayedNum->GetMaxCenter() -
               Scale_Px(2);
-      m_num->DrawList(num);
+      m_displayedNum->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
-                (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth()) / 2;
-      denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2);
-      m_denom->DrawList(denom);
+                (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedDenom->GetFullWidth()) / 2;
+      denom.y = point.y + m_displayedDenom->GetMaxCenter() + Scale_Px(2);
+      m_displayedDenom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
@@ -377,7 +377,7 @@ void FracCell::SetupBreakUps()
 {
   m_displayedNum = m_numParenthesis;
   m_displayedDenom = m_denomParenthesis;
-  if (m_fracStyle == FC_NORMAL)
+  if (m_fracStyle == FC_CHOOSE)
   {
     if (m_num && (!m_num->IsCompound()))
       m_displayedNum = m_num;
