@@ -294,6 +294,8 @@ void TextCell::SetValue(const wxString &text)
                     "are used.\n"
                     "The info that numbers have automatically been converted can be suppressed "
                     "by setting ratprint to false."));
+    if(text.StartsWith("desolve: can't handle this case."))
+      SetToolTip( _("The list of time-dependent variables to solve to doesn't match the time-dependent variables the list of dgls contains."));      
     if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
       SetToolTip( _("Division by 0."));
     if(text.StartsWith(wxT("incorrect syntax: parser: incomplete number; missing exponent?")))
