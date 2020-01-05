@@ -92,15 +92,6 @@ public:
   enum Event
   {
     plot_slider_id = 5500,
-    tb_new,
-    tb_open,
-    tb_save,
-    tb_copy,
-    tb_paste,
-    tb_cut,
-    tb_select_all,
-    tb_print,
-    tb_pref,
     tb_interrupt,
     tb_follow,
     tb_eval,
@@ -111,7 +102,6 @@ public:
     tb_animation_startStop,
     tb_animation_start,
     tb_animation_stop,
-    tb_find,
     tb_hideCode,
     tb_changeStyle,
     menu_restart_id
@@ -129,7 +119,7 @@ public:
   {
     if (value != m_canCopy_old)
     {
-      EnableTool(tb_copy, value);
+      EnableTool(wxID_COPY, value);
       m_canCopy_old = value;
     }
   }
@@ -138,7 +128,7 @@ public:
   {
     if (value != m_canCut_old)
     {
-      EnableTool(tb_cut, value);
+      EnableTool(wxID_CUT, value);
       m_canCut_old = value;
     }
   }
@@ -147,7 +137,7 @@ public:
   {
     if (value != m_canSave_old)
     {
-      EnableTool(tb_save, value);
+      EnableTool(wxID_SAVE, value);
       m_canSave_old = value;
     }
   }
@@ -156,7 +146,7 @@ public:
   {
     if (value != m_canPrint_old)
     {
-      EnableTool(tb_print, value);
+      EnableTool(wxID_PRINT, value);
       m_canPrint_old = value;
     }
   }

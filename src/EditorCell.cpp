@@ -3106,28 +3106,23 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
 
 bool EditorCell::CopyToClipboard()
 {
-  if (m_selectionStart == -1)
+  if ((m_selectionStart < 0) && (m_selectionEnd < 0))
     return false;
-  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(), _("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-    long start = wxMin(m_selectionStart, m_selectionEnd);
+    long start = wxMin(wxMin(m_selectionStart, m_selectionEnd), 0);
     long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
     wxString s = m_text.SubString(start, end);
-
-    // For some reason wxMaxima sometimes hangs when putting string on the
-    // clipboard. Also Valgrind tells me that if I don't add a null byte to my string
-    // one byte too much is accessed.
-    //
-    // Another hope is that using a wxDataObjectComposite uses a different code path:
-    // Valgrind tells me that the clipboard uses an uninitialized 64 bit value
-    // in this case when using a 64 bit linux box instead.
     wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(s + wxT('\0')));
+    data->Add(new wxTextDataObject(s.utf8_str()));
     wxTheClipboard->SetData(data);
+    wxTheClipboard->Flush();
     wxTheClipboard->Close();
+    return true;
   }
-  return true;
+  else
+    return false;
 }
 
 bool EditorCell::CutToClipboard()
@@ -3182,8 +3177,7 @@ void EditorCell::InsertText(wxString text)
 
 void EditorCell::PasteFromClipboard(const bool &primary)
 {
-  if (primary)
-    wxTheClipboard->UsePrimarySelection(true);
+    wxTheClipboard->UsePrimarySelection(primary);
   wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));
   if (wxTheClipboard->IsSupported(wxDF_TEXT))
   {

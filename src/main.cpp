@@ -63,7 +63,6 @@ bool MyApp::OnInit()
   Connect(wxMaximaFrame::menu_help_tolerances, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(wxMaximaFrame::menu_help_3d, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
   Connect(wxMaximaFrame::menu_help_numberformats, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(ToolBar::tb_new, wxEVT_TOOL, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
     
   #if wxUSE_ON_FATAL_EXCEPTION
   wxHandleFatalExceptions(true);
@@ -291,13 +290,10 @@ bool MyApp::OnInit()
   wxApp::SetExitOnFrameDelete(false);
   wxMenuBar *menuBar = new wxMenuBar;
   wxMenu *fileMenu = new wxMenu;
-  fileMenu->Append(wxMaxima::mac_newId, _("&New\tCtrl+N"));
-  fileMenu->Append(wxMaxima::mac_openId, _("&Open\tCtrl+O"));
+  fileMenu->Append(wxID_NEW, _("&New\tCtrl+N"));
+  fileMenu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
   menuBar->Append(fileMenu, _("File"));
   wxMenuBar::MacSetCommonMenuBar(menuBar);
-
-  Connect(wxMaxima::mac_newId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
-  Connect(wxMaxima::mac_openId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
@@ -432,8 +428,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
               toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);
     break;
     case wxID_NEW:
-    case ToolBar::tb_new:
-  case wxMaxima::mac_newId:
     {
       // Mac computers insist that all instances of a new application need to share
       // the same process. On all other OSes we create a separate process for each
@@ -453,16 +447,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 #endif
       break;
     }
-    case wxMaxima::mac_openId:
-    {
-      wxString file = wxFileSelector(_("Open"), wxEmptyString,
-                                     wxEmptyString, wxEmptyString,
-                                     _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
-                                     wxFD_OPEN);
-      if (file.Length() > 0)
-        NewWindow(file);
-    }
-      break;
     case wxID_EXIT:
     {
       std::list<wxMaxima *>::const_iterator it=m_topLevelWindows.begin();

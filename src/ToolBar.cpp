@@ -162,11 +162,11 @@ void ToolBar::AddTools()
   Clear();
   m_ppi = wxSize(-1,-1);  
   if(ShowNew())
-    AddTool(tb_new, _("New"),GetNewBitmap(),_("New document"));
+    AddTool(wxID_NEW, _("New"),GetNewBitmap(),_("New document"));
   if(ShowOpenSave())
   {
-    AddTool(tb_open, _("Open"),GetOpenBitmap(),_("Open document"));
-    AddTool(tb_save, _("Save"),GetSaveBitmap(),_("Save document"));
+    AddTool(wxID_OPEN, _("Open"),GetOpenBitmap(),_("Open document"));
+    AddTool(wxID_SAVE, _("Save"),GetSaveBitmap(),_("Save document"));
   }
   if(ShowPrint())
   {
@@ -174,28 +174,28 @@ void ToolBar::AddTools()
     if(ShowOpenSave() || ShowNew())
       AddSeparator();
 #endif
-    AddTool(tb_print, _("Print"), GetPrintBitmap(), _("Print document"));
+    AddTool(wxID_PRINT, _("Print"), GetPrintBitmap(), _("Print document"));
   }
   if(ShowOptions())
-    AddTool(tb_pref, _("Options"), GetPreferencesBitmap(), _("Configure wxMaxima"));
+    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(), _("Configure wxMaxima"));
   if(ShowCopyPaste())
   {
 #ifndef __WXOSX__
     AddSeparator();
 #endif
-    AddTool(tb_cut, _("Cut"), GetCutBitmap(), _("Cut selection"));
-    AddTool(tb_copy, _("Copy"), GetCopyBitmap(), _("Copy selection"));
-    AddTool(tb_paste, _("Paste"), GetPasteBitmap(), _("Paste from clipboard"));
+    AddTool(wxID_CUT, _("Cut"), GetCutBitmap(), _("Cut selection"));
+    AddTool(wxID_COPY, _("Copy"), GetCopyBitmap(), _("Copy selection"));
+    AddTool(wxID_PASTE, _("Paste"), GetPasteBitmap(), _("Paste from clipboard"));
   }
   if(ShowSelectAll())
-    AddTool(tb_select_all, _("Select all"), GetSelectAllBitmap(), _("Select all"));
+    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(), _("Select all"));
   if(ShowSearch())
   {
 #ifndef __WXOSX__
     if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint())
       AddSeparator();
 #endif
-    AddTool(tb_find, _("Find"), GetFindBitmap(), _("Find and replace"));
+    AddTool(wxID_FIND, _("Find"), GetFindBitmap(), _("Find and replace"));
   }
 #ifndef __WXOSX__
   if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions())
@@ -356,16 +356,16 @@ void ToolBar::UpdateBitmaps()
   m_ppi = ppi;
   
   SetToolBitmap(tb_eval,GetEvalBitmap());
-  SetToolBitmap(tb_new,GetNewBitmap());
-  SetToolBitmap(tb_open,GetOpenBitmap());
-  SetToolBitmap(tb_save,GetSaveBitmap());
-  SetToolBitmap(tb_print,GetPrintBitmap());
-  SetToolBitmap(tb_pref,GetPreferencesBitmap());
-  SetToolBitmap(tb_cut,GetCutBitmap());
-  SetToolBitmap(tb_copy,GetCopyBitmap());
-  SetToolBitmap(tb_paste,GetPasteBitmap());
-  SetToolBitmap(tb_select_all,GetSelectAllBitmap());
-  SetToolBitmap(tb_find,GetFindBitmap());
+  SetToolBitmap(wxID_NEW,GetNewBitmap());
+  SetToolBitmap(wxID_OPEN,GetOpenBitmap());
+  SetToolBitmap(wxID_SAVE,GetSaveBitmap());
+  SetToolBitmap(wxID_PRINT,GetPrintBitmap());
+  SetToolBitmap(wxID_PREFERENCES,GetPreferencesBitmap());
+  SetToolBitmap(wxID_CUT,GetCutBitmap());
+  SetToolBitmap(wxID_COPY,GetCopyBitmap());
+  SetToolBitmap(wxID_PASTE,GetPasteBitmap());
+  SetToolBitmap(wxID_SELECTALL,GetSelectAllBitmap());
+  SetToolBitmap(wxID_FIND,GetFindBitmap());
   SetToolBitmap(menu_restart_id,GetRestartBitmap());
   SetToolBitmap(tb_interrupt,GetInterruptBitmap());
   m_followIcon = GetBitmap(wxT("weather-clear"),

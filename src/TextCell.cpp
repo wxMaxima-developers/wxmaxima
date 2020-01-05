@@ -67,8 +67,8 @@ TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_height = -1;
   m_realCenter = m_center = -1;
   m_lastCalculationFontSize = -1;
-  m_fontSize = -1;
-  m_fontSizeLabel = -1;
+  m_fontSize = 10;
+  m_fontSizeLabel = 10;
   m_lastZoomFactor = -1;
   TextCell::SetValue(text);
   m_highlight = false;
@@ -408,14 +408,15 @@ bool TextCell::NeedsRecalculation()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
+  if(fontsize < 1)
+    fontsize = m_fontSize;
   if(fontsize != m_fontsize_old)
     ResetSize();
   Configuration *configuration = (*m_configuration);
   
   if(NeedsRecalculation())
   {      
-    m_fontsize_old = fontsize;
-    m_fontSize = fontsize;
+    m_fontSize = m_fontsize_old = fontsize;
     wxDC *dc = configuration->GetDC();
     SetFont(fontsize);
 
@@ -604,7 +605,7 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (m_width == -1 || m_height == -1 || m_fontSize != m_lastCalculationFontSize)
+    if (NeedsRecalculation())
       RecalculateWidths(m_fontSize);
     
     if (InUpdateRegion())
@@ -720,7 +721,6 @@ void TextCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-  m_fontSize = fontsize;
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||

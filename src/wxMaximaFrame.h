@@ -318,8 +318,6 @@ public:
     menu_paste_input,
     menu_fullscreen,
     menu_remove_output,
-    mac_newId,
-    mac_openId,
     menu_list_create_from_elements,
     menu_list_create_from_rule,
     menu_list_create_from_list,

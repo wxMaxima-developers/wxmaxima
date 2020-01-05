@@ -607,7 +607,7 @@ void wxMaximaFrame::SetupMenu()
   // File menu
   m_FileMenu = new wxMenu;
 #if defined __WXOSX__
-  m_FileMenu->Append(mac_newId, _("New\tCtrl+N"),
+  m_FileMenu->Append(wxID_NEW, _("New\tCtrl+N"),
                      _("Open a new window"));
 #else
   APPEND_MENU_ITEM(m_FileMenu, wxID_NEW, _("New\tCtrl+N"),

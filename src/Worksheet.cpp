@@ -854,32 +854,25 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   if (tmp == NULL)
     return;
 
-  if (GetTree()->Contains(tmp))
+  newCell->ForceBreakLine(forceNewLine);
+  newCell->SetGroupList(tmp);
+  
+  tmp->AppendOutput(newCell);
+  
+  UpdateConfigurationClientSize();
+  
+  tmp->ResetSize();
+  Recalculate(tmp);
+  
+  if (FollowEvaluation())
   {
-    newCell->ForceBreakLine(forceNewLine);
-    newCell->SetGroupList(tmp);
-
-    tmp->AppendOutput(newCell);
-
-    UpdateConfigurationClientSize();
-
-    tmp->ResetSize();
-    Recalculate(tmp);
-
-    if (FollowEvaluation())
-    {
-      SetSelection(NULL);
-      if (GCContainsCurrentQuestion(tmp))
-        OpenQuestionCaret();
-      else
-        ScrollToCaret();
-    }
-    RequestRedraw(tmp);
+    SetSelection(NULL);
+    if (GCContainsCurrentQuestion(tmp))
+      OpenQuestionCaret();
+    else
+      ScrollToCaret();
   }
-  else
-  {
-    wxASSERT_MSG(GetTree()->Contains(tmp), _("Bug: Trying to append maxima's output to a cell outside the worksheet."));
-  }
+  RequestRedraw(tmp);
 }
 
 void Worksheet::SetZoomFactor(double newzoom, bool recalc)
@@ -2303,9 +2296,7 @@ wxString Worksheet::GetString(bool lb)
 bool Worksheet::Copy(bool astext)
 {
   if (GetActiveCell() != NULL)
-  {
     return GetActiveCell()->CopyToClipboard();
-  }
 
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
@@ -2378,7 +2369,7 @@ bool Worksheet::Copy(bool astext)
       // Add a string representation of the selected output to the clipboard
       tmp = std::unique_ptr<Cell>(CopySelection());
       s = tmp->ListToString();
-      data->Add(new wxTextDataObject(s));
+      data->Add(new wxTextDataObject(s.utf8_str()));
 
       if(m_configuration->CopyBitmap())
       {
@@ -2475,7 +2466,7 @@ bool Worksheet::CopyMathML()
     data->Add(new MathMLDataObject(s), true);
     data->Add(new MathMLDataObject2(s), true);
     // A fallback for communicating with non-mathML-aware programs
-    data->Add(new wxTextDataObject(s));
+    data->Add(new wxTextDataObject(s.utf8_str()));
     // wxMathML is a HTML5 flavour, as well.
     // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
     //
@@ -2517,7 +2508,7 @@ bool Worksheet::CopyMatlab()
   if (wxTheClipboard->Open())
   {
 	wxDataObjectComposite *data = new wxDataObjectComposite;
-	data->Add(new wxTextDataObject(result));
+	data->Add(new wxTextDataObject(result.utf8_str()));
 	wxTheClipboard->SetData(data);
 	wxTheClipboard->Close();
 	return true;
@@ -2577,7 +2568,7 @@ bool Worksheet::CopyTeX()
   if (wxTheClipboard->Open())
   {
     wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(s));
+    data->Add(new wxTextDataObject(s.utf8_str()));
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
@@ -2613,7 +2604,7 @@ bool Worksheet::CopyText()
   if (wxTheClipboard->Open())
   {
     wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(result));
+    data->Add(new wxTextDataObject(result.utf8_str()));
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
@@ -2662,7 +2653,7 @@ bool Worksheet::CopyCells()
       data->Add(new RtfDataObject(rtf), true);
       data->Add(new RtfDataObject2(rtf));
     }
-    data->Add(new wxTextDataObject(str));
+    data->Add(new wxTextDataObject(str.utf8_str()));
     data->Add(new wxmDataObject(wxm));
 
     if(m_configuration->CopyBitmap())
@@ -6602,7 +6593,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
       if (wxTheClipboard->Open())
       {
         wxDataObjectComposite *data = new wxDataObjectComposite;
-        data->Add(new wxTextDataObject(xmlText));
+        data->Add(new wxTextDataObject(xmlText.utf8_str()));
         wxTheClipboard->SetData(data);
         wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
       }
@@ -7800,9 +7791,7 @@ void Worksheet::CheckUnixCopy()
       if (wxTheClipboard->Open())
       {
         wxDataObjectComposite *data = new wxDataObjectComposite;
-        // The \0 seems to prevent data corruption on selecting strings while evaluating.
-        // The wxTextDataObject is a speculative go at the same bug.
-        data->Add(new wxTextDataObject(GetString() + wxT('\0')));
+        data->Add(new wxTextDataObject(GetString().utf8_str()));
         wxTheClipboard->SetData(data);
         wxTheClipboard->Close();
       }
