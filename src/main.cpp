@@ -423,6 +423,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     NewWindow(wxEmptyString, false, false,
               solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
     break;
+  case wxMaxima::menu_help_diffequations:
+    NewWindow(wxEmptyString, false, false,
+              diffEquations_wxm_gz, diffEquations_wxm_gz_len);
+    break;
   case wxMaxima::menu_help_tolerances:
     NewWindow(wxEmptyString, false, false,
               toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);

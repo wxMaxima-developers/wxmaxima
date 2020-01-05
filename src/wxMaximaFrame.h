@@ -471,6 +471,7 @@ public:
     menu_format_pagebreak,
     menu_help_tutorials,
     menu_help_solving,
+    menu_help_diffequations,
     menu_help_numberformats,
     menu_help_tolerances,
     menu_help_3d,
