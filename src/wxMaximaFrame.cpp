@@ -61,7 +61,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxWindowUpdateLocker noUpdates(this);
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[24];
+  wxAcceleratorEntry entries[27];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
@@ -88,7 +88,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[21].Set(wxACCEL_CTRL, wxT('6'), menu_add_heading5);
   entries[22].Set(wxACCEL_CTRL, wxT('7'), menu_add_heading6);
   entries[23].Set(wxACCEL_CTRL, wxT('.'), menu_interrupt_id); // Standard on the Mac
-  wxAcceleratorTable accel(24, entries);
+  entries[24].Set(wxACCEL_CTRL, wxT('c'), wxID_COPY);
+  entries[25].Set(wxACCEL_CTRL, wxT('x'), wxID_CUT);
+  entries[26].Set(wxACCEL_CTRL, wxT('v'), wxID_PASTE);
+  wxAcceleratorTable accel(27, entries);
   SetAcceleratorTable(accel);
     
   // Redirect all debug messages to a dockable panel and output some info
