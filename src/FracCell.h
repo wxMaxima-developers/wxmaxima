@@ -54,7 +54,7 @@ public:
   
   std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  //! All types of fractions we supportx
+  //! All types of fractions we support
   enum FracType
   {
     FC_NORMAL,

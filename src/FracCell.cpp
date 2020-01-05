@@ -195,6 +195,9 @@ void FracCell::Draw(wxPoint point)
     wxDC *dc = configuration->GetDC();
     wxPoint num, denom;
 
+    if(m_isBrokenIntoLines)
+      return;
+    
     if (m_exponent)
     {
       num = point;
