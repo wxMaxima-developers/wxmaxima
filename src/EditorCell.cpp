@@ -3138,7 +3138,8 @@ bool EditorCell::CutToClipboard()
   SaveValue();
   m_saveValue = true;
   m_containsChanges = true;
-  CopyToClipboard();
+  if(!CopyToClipboard())
+    return false;
 
   long start = wxMin(m_selectionStart, m_selectionEnd);
   long end = wxMax(m_selectionStart, m_selectionEnd);

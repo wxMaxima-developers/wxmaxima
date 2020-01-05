@@ -2723,6 +2723,7 @@ void Worksheet::DeleteSelection()
   TreeUndo_ClearRedoActionList();
   m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = NULL;
   UpdateTableOfContents();
+  RequestRedraw();
 }
 
 void Worksheet::DeleteCurrentCell()
@@ -7530,10 +7531,13 @@ bool Worksheet::CutToClipboard()
   }
   else if (m_cellPointers.m_selectionStart != NULL && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP)
   {
-    CopyCells();
-    DeleteSelection();
-    Refresh();
-    return true;
+    if(CopyCells())
+    {
+      DeleteSelection();
+      return true;
+    }
+    else
+      return false;
   }
   return false;
 }
