@@ -8420,7 +8420,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       break;
     case wxID_CUT:
       if (m_worksheet->CanCut())
-        m_worksheet->CutToClipboard(); // FIXME: Selection is not deleted. It works, when one uses cut from the menu.
+        m_worksheet->CutToClipboard();
       break;
     case wxID_PASTE:
       m_worksheet->PasteFromClipboard();

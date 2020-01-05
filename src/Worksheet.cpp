@@ -7532,6 +7532,7 @@ bool Worksheet::CutToClipboard()
   {
     CopyCells();
     DeleteSelection();
+    Refresh();
     return true;
   }
   return false;
