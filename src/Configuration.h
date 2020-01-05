@@ -46,8 +46,8 @@
 #define MC_HCARET_WIDTH 25
 
 #define MC_EXP_INDENT 2
-#define MC_MIN_SIZE 8
-#define MC_MAX_SIZE 36
+#define MC_MIN_SIZE 6
+#define MC_MAX_SIZE 48
 
 #define CMEX10 "jsMath-cmex10"
 #define CMSY10 "jsMath-cmsy10"
