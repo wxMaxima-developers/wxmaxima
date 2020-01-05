@@ -416,6 +416,7 @@ bool FracCell::BreakUp()
     if (m_num_Last != NULL)
       m_num_Last->m_nextToDraw = m_divide.get();
     m_divide->m_nextToDraw = m_displayedDenom;
+    m_displayedDenom->m_nextToDraw = m_nextToDraw;
     wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
     m_nextToDraw = m_displayedNum;
     ResetData();    
