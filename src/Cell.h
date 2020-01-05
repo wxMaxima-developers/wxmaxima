@@ -685,6 +685,12 @@ class Cell
   //! Returns the list's representation as a string.
   virtual wxString ListToString();
 
+  /*! Returns all variable and function names used inside this list of cells.
+  
+    Used for detecting lookalike chars in function and variable names.
+   */
+  virtual wxString VariablesAndFunctionsList();
+
   //! Convert this list to its LaTeX representation
   virtual wxString ListToMatlab();
 

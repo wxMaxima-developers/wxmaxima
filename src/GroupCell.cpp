@@ -592,10 +592,15 @@ void GroupCell::UpdateConfusableCharWarnings()
 {
   ClearToolTip();
 
+  wxString code;
+  if(GetInput())
+    code += GetInput()->ListToString() + " ";
+  if(GetOutput())
+    code += GetOutput()->VariablesAndFunctionsList();
   // Extract all variable and command names from the cell including input and output
   CmdsAndVariables cmdsAndVariables;
   MaximaTokenizer::TokenList
-    m_tokens = MaximaTokenizer(GroupCell::ToString(), *m_configuration).GetTokens();
+    m_tokens = MaximaTokenizer(code, *m_configuration).GetTokens();
   for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
     if(((*it)->GetStyle() == TS_CODE_VARIABLE) || ((*it)->GetStyle() == TS_CODE_FUNCTION))
       cmdsAndVariables[(*it)->GetText()] = 1;

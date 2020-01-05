@@ -629,6 +629,24 @@ wxString Cell::ToString()
   return wxEmptyString;
 }
 
+wxString Cell::VariablesAndFunctionsList()
+{
+  wxString retval;
+  Cell *tmp = this;
+  while (tmp != NULL)
+  {
+    if(
+      (tmp->GetStyle() == TS_LABEL) ||
+      (tmp->GetStyle() == TS_USERLABEL) ||
+      (tmp->GetStyle() == TS_MAIN_PROMPT) ||
+      (tmp->GetStyle() == TS_VARIABLE) ||
+      (tmp->GetStyle() == TS_FUNCTION))
+      retval += tmp->ToString() + " ";      
+    tmp = tmp->m_nextToDraw;
+  }
+  return retval;
+}
+
 wxString Cell::ListToString()
 {
   wxString retval;
@@ -661,7 +679,6 @@ wxString Cell::ListToString()
     firstline = false;
     tmp = tmp->m_nextToDraw;
   }
-
   return retval;
 }
 
