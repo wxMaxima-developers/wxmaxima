@@ -39,8 +39,6 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
   m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
-  m_displayedNum = NULL;
-  m_displayedDenom = NULL;
   m_divide->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;
   m_denom_Last = NULL;
@@ -75,11 +73,11 @@ std::list<std::shared_ptr<Cell>> FracCell::GetInnerCells()
   if(m_divide)
     innerCells.push_back(m_divide);
   // Contains m_num
-  if(m_numParenthesis)
-    innerCells.push_back(m_numParenthesis);
+  if(m_displayedNum)
+    innerCells.push_back(m_displayedNum);
   // Contains m_denom
-  if(m_denomParenthesis)
-    innerCells.push_back(m_denomParenthesis);
+  if(m_displayedDenom)
+    innerCells.push_back(m_displayedDenom);
   return innerCells;
 }
 
@@ -106,13 +104,13 @@ void FracCell::RecalculateWidths(int fontsize)
 {
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_numParenthesis->RecalculateWidthsList(fontsize);
-    m_denomParenthesis->RecalculateWidthsList(fontsize);
+    m_displayedNum->RecalculateWidthsList(fontsize);
+    m_displayedDenom->RecalculateWidthsList(fontsize);
   }
   else
   {
-    m_numParenthesis->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_denomParenthesis->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedDenom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
   m_divide->RecalculateWidths(fontsize);
   
@@ -154,13 +152,13 @@ void FracCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_numParenthesis->RecalculateHeightList(fontsize);
-    m_denomParenthesis->RecalculateHeightList(fontsize);
+    m_displayedNum->RecalculateHeightList(fontsize);
+    m_displayedDenom->RecalculateHeightList(fontsize);
   }
   else
   {
-    m_numParenthesis->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_denomParenthesis->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedDenom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
   m_divide->RecalculateHeight(fontsize);
 
@@ -175,7 +173,7 @@ void FracCell::RecalculateHeight(int fontsize)
     {
       m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
         Scale_Px(4);
-      m_center = m_num->GetMaxHeight() + Scale_Px(2);
+      m_center = m_denom->GetMaxHeight() + Scale_Px(2);
     }
     else
     {
@@ -377,29 +375,29 @@ void FracCell::SetExponentFlag()
 
 void FracCell::SetupBreakUps()
 {
-  m_displayedNum = m_numParenthesis.get();
-  m_displayedDenom = m_denomParenthesis.get();
+  m_displayedNum = m_numParenthesis;
+  m_displayedDenom = m_denomParenthesis;
   if (m_fracStyle == FC_NORMAL)
   {
     if (m_num && (!m_num->IsCompound()))
-      m_displayedNum = m_num.get();
+      m_displayedNum = m_num;
     if (m_denom && (!m_denom->IsCompound()))
     {
-      m_displayedDenom = m_denom.get();
+      m_displayedDenom = m_denom;
     }
   }
   else
   {
-    m_displayedNum = m_num.get();
-    m_displayedDenom = m_denom.get();
+    m_displayedNum = m_num;
+    m_displayedDenom = m_denom;
   }
-  m_num_Last = m_displayedNum;
+  m_num_Last = m_displayedNum.get();
   if (m_num_Last != NULL)
   {
     while (m_num_Last->m_next != NULL)
       m_num_Last = m_num_Last->m_next;
   }
-  m_denom_Last = m_displayedDenom;
+  m_denom_Last = m_displayedDenom.get();
   if (m_denom_Last != NULL)
   {
     while (m_denom_Last->m_next != NULL)
@@ -418,10 +416,10 @@ bool FracCell::BreakUp()
     wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in an numerator!"));
     if (m_num_Last != NULL)
       m_num_Last->m_nextToDraw = m_divide.get();
-    m_divide->m_nextToDraw = m_displayedDenom;
+    m_divide->m_nextToDraw = m_displayedDenom.get();
     m_displayedDenom->m_nextToDraw = m_nextToDraw;
     wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
-    m_nextToDraw = m_displayedNum;
+    m_nextToDraw = m_displayedNum.get();
     ResetData();    
     return true;
   }

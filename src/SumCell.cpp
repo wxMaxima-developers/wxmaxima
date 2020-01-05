@@ -38,7 +38,6 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_over(new TextCell(parent, config, cellPointers)),
   m_paren(new ParenCell(parent, config, cellPointers))
 {
-  m_displayedBase = NULL;
   m_signHeight = 50;
   m_signTop = (2 * m_signHeight) / 5;
   m_signWidth = 30;
@@ -93,7 +92,7 @@ void SumCell::SetBase(Cell *base)
     return;
   m_base = std::shared_ptr<Cell>(base);
   m_paren->SetInner(m_base);
-  m_displayedBase = m_paren.get();
+  m_displayedBase = m_paren;
 }
 
 void SumCell::SetUnder(Cell *under)

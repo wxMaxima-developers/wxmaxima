@@ -124,9 +124,9 @@ protected:
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
   //! The displayed version of the numerator, if needed with parenthesis
-  Cell *m_displayedNum;
+  std::shared_ptr<Cell> m_displayedNum;
   //! The displayed version of the denominator, if needed with parenthesis
-  Cell *m_displayedDenom;
+  std::shared_ptr<Cell> m_displayedDenom;
   //! The way the fraction should be displayed
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?
