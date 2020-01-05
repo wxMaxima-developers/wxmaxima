@@ -601,7 +601,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   //
   wxPoint point;
   point.x = m_configuration->GetIndent();
-  point.y = m_configuration->GetBaseIndent() + GetTree()->GetMaxCenter();
+  point.y = m_configuration->GetBaseIndent() + GetTree()->GetCenterList();
   // Draw tree
   GroupCell *tmp = GetTree();
   
@@ -1057,12 +1057,12 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
       if (prev == NULL)
       {
         tmp->SetCurrentPoint(m_configuration->GetIndent(),
-                             m_configuration->GetBaseIndent() + tmp->GetMaxCenter());
+                             m_configuration->GetBaseIndent() + tmp->GetCenterList());
       }
       else
       {
         tmp->SetCurrentPoint(m_configuration->GetIndent(),
-                             prev->GetCurrentPoint().y + prev->GetMaxDrop() + tmp->GetMaxCenter() +
+                             prev->GetCurrentPoint().y + prev->GetMaxDrop() + tmp->GetCenterList() +
                              m_configuration->GetGroupSkip());
       }
 
@@ -4230,7 +4230,7 @@ void Worksheet::GetMaxPoint(int *width, int *height)
 
   while (tmp != NULL)
   {
-    currentHeight += tmp->GetMaxHeight();
+    currentHeight += tmp->GetHeightList();
     currentHeight += m_configuration->GetGroupSkip();
     int currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth() + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize());
     *width = wxMax(currentWidth, *width);

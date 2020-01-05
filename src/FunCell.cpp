@@ -97,7 +97,7 @@ void FunCell::RecalculateHeight(int fontsize)
   {
     m_nameCell->RecalculateHeightList(fontsize);
     m_argCell->RecalculateHeightList(fontsize);
-    m_center = wxMax(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
+    m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
   else

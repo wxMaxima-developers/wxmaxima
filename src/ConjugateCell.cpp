@@ -105,13 +105,13 @@ void ConjugateCell::RecalculateHeight(int fontsize)
     m_innerCell->RecalculateHeightList(fontsize);
     m_open->RecalculateHeightList(fontsize);
     m_close->RecalculateHeightList(fontsize);
-    m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
-    m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
+    m_height = m_innerCell->GetHeightList() + Scale_Px(4);
+    m_center = m_innerCell->GetCenterList() + Scale_Px(2);
   }
   else
   {
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
 }
 
@@ -197,8 +197,8 @@ bool ConjugateCell::BreakUp()
     m_close->m_nextToDraw = m_nextToDraw;
     m_nextToDraw = m_open.get();
     ResetData();        
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;

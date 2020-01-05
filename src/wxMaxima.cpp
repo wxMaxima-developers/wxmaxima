@@ -8221,18 +8221,18 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
 
         MaxSizeChooser *chooser = new MaxSizeChooser(this, -1,
                                                      dynamic_cast<ImgCell *>(output)->GetMaxWidth(),
-                                                     dynamic_cast<ImgCell *>(output)->GetMaxHeight()
+                                                     dynamic_cast<ImgCell *>(output)->GetHeightList()
         );
         chooser->Centre(wxBOTH);
         if (chooser->ShowModal() == wxID_OK)
         {
           if(dynamic_cast<ImgCell *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
             m_fileSaved = false;
-          if(dynamic_cast<ImgCell *>(output)->GetMaxHeight() != chooser->GetMaxHeight())
+          if(dynamic_cast<ImgCell *>(output)->GetHeightList() != chooser->GetHeightList())
             m_fileSaved = false;
 
           dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
-          dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetMaxHeight());
+          dynamic_cast<ImgCell *>(output)->SetListHeight(chooser->GetHeightList());
         }
       }
       m_worksheet->RecalculateForce();

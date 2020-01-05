@@ -117,9 +117,9 @@ public:
   { return m_image->m_compressedImage; }
 
   double GetMaxWidth() const {if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
-  double GetMaxHeight() const {if(m_image != NULL) return m_image->GetMaxHeight();else return -1;}
+  double GetHeightList() const {if(m_image != NULL) return m_image->GetHeightList();else return -1;}
   void SetMaxWidth(double width) const {if(m_image != NULL) return m_image->SetMaxWidth(width);}
-  void SetMaxHeight(double height) const {if(m_image != NULL) return m_image->SetMaxHeight(height);}
+  void SetListHeight(double height) const {if(m_image != NULL) return m_image->SetListHeight(height);}
 
   void RecalculateHeight(int fontsize) override;
 

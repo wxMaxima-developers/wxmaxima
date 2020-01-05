@@ -101,7 +101,7 @@ bool Printout::OnPrintPage(int num)
 
     wxPoint point;
     point.x = marginX;
-    point.y = marginY + tmp->GetMaxCenter() + GetHeaderHeight();
+    point.y = marginY + tmp->GetCenterList() + GetHeaderHeight();
     wxConfigBase *config = wxConfig::Get();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
@@ -120,7 +120,7 @@ bool Printout::OnPrintPage(int num)
       if (tmp->m_next != NULL)
       {
         point.x = marginX;
-        point.y += drop + tmp->m_next->GetMaxCenter();
+        point.y += drop + tmp->m_next->GetCenterList();
         point.y += (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip());
         drop = tmp->m_next->GetMaxDrop();
       }
@@ -164,11 +164,11 @@ void Printout::BreakPages()
   {
     tmp->BreakPage(false);
 
-    if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY ||
+    if (currentHeight + tmp->GetHeightList() + skip >= pageHeight - marginY ||
         tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
     {
       if (tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
-        currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+        currentHeight = marginY + tmp->GetHeightList() + headerHeight;
       else
         currentHeight = marginY;
       tmp->BreakPage(true);
@@ -176,7 +176,7 @@ void Printout::BreakPages()
       m_numberOfPages++;
     }
     else
-      currentHeight += tmp->GetMaxHeight() + skip;
+      currentHeight += tmp->GetHeightList() + skip;
 
     tmp = tmp->GetNext();
   }

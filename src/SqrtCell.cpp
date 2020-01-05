@@ -122,7 +122,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
     
-    int size = m_innerCell->GetMaxHeight();
+    int size = m_innerCell->GetHeightList();
 
     if (size <= (m_signSize) / 5)
     {
@@ -176,12 +176,12 @@ void SqrtCell::RecalculateHeight(int fontsize)
   if(!m_isBrokenIntoLines)
   {
     m_innerCell->RecalculateHeightList(fontsize);
-    m_height = m_innerCell->GetMaxHeight() + Scale_Px(3);
-    m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);
+    m_height = m_innerCell->GetHeightList() + Scale_Px(3);
+    m_center = m_innerCell->GetCenterList() + Scale_Px(3);
     m_open->RecalculateHeightList(fontsize);
     m_close->RecalculateHeightList(fontsize);
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
 }
 
@@ -220,12 +220,12 @@ void SqrtCell::Draw(wxPoint point)
                 m_signType == 2 ? wxT("q") :
                 m_signType == 3 ? wxT("r") : wxT("s"),
                 point.x,
-                point.y - m_innerCell->GetMaxCenter() - m_signTop);
+                point.y - m_innerCell->GetCenterList() - m_signTop);
       }
       else
       {
         int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2 * m_signTop;
-        int yTop = point.y - m_innerCell->GetMaxCenter() - m_signTop;
+        int yTop = point.y - m_innerCell->GetCenterList() - m_signTop;
         int dy = m_signSize / 10;
         wxASSERT_MSG((yTop != 0) || (yBottom != 0), _("Font issue? The contents of a sqrt() has the size 0."));
         wxASSERT_MSG(dy > 0,
@@ -249,9 +249,9 @@ void SqrtCell::Draw(wxPoint point)
 
       wxDC *adc = configuration->GetAntialiassingDC();
       adc->DrawLine(point.x + m_signWidth,
-                  point.y - m_innerCell->GetMaxCenter(),
+                  point.y - m_innerCell->GetCenterList(),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(),
-                  point.y - m_innerCell->GetMaxCenter());
+                  point.y - m_innerCell->GetCenterList());
 
       UnsetPen();
     }
@@ -356,8 +356,8 @@ bool SqrtCell::BreakUp()
     m_nextToDraw = m_open.get();
 
     ResetData();
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;

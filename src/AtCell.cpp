@@ -89,7 +89,7 @@ void AtCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 3));
-  m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
+  m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(7);
   m_center = m_baseCell->GetCenter();
 }
@@ -110,11 +110,11 @@ void AtCell::Draw(wxPoint point)
 
     in.x = point.x + m_baseCell->GetFullWidth() + Scale_Px(4);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-           +m_indexCell->GetMaxCenter() - Scale_Px(7);
+           +m_indexCell->GetCenterList() - Scale_Px(7);
     m_indexCell->DrawList(in);
     SetPen();
     dc->DrawLine(in.x - Scale_Px(2),
-                bs.y - m_baseCell->GetMaxCenter(),
+                bs.y - m_baseCell->GetCenterList(),
                 in.x - Scale_Px(2),
                 in.y);
     UnsetPen();

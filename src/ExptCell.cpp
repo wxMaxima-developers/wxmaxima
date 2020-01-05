@@ -159,8 +159,8 @@ void ExptCell::RecalculateHeight(int fontsize)
   
   if (m_isBrokenIntoLines)
   {
-    m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
   }
   else
   {
@@ -280,8 +280,8 @@ bool ExptCell::BreakUp()
     m_close->m_nextToDraw = m_nextToDraw;
     m_nextToDraw = m_baseCell.get();
     ResetData();    
-    m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;

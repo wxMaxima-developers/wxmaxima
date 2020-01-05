@@ -98,7 +98,7 @@ void DiffCell::RecalculateHeight(int fontsize)
   {
     m_baseCell->RecalculateHeightList(fontsize);
     m_diffCell->RecalculateHeightList(fontsize);
-    m_center = wxMax(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
+    m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
 }

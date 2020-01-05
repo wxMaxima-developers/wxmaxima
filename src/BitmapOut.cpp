@@ -221,7 +221,7 @@ void BitmapOut::GetMaxPoint(int *width, int *height) const
       if (tmp->BreakLineHere() || firstCell)
       {
         firstCell = false;
-        currentHeight += tmp->GetMaxHeight();
+        currentHeight += tmp->GetHeightList();
         *height = currentHeight;
         currentWidth = tmp->GetWidth();
         *width = wxMax(currentWidth, *width);
@@ -250,7 +250,7 @@ void BitmapOut::Draw()
   {
     wxPoint point;
     point.x = 0;
-    point.y = tmp->GetMaxCenter();
+    point.y = tmp->GetCenterList();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
 
@@ -266,7 +266,7 @@ void BitmapOut::Draw()
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
-          point.y += drop + tmp->m_next->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetCenterList();
           drop = tmp->m_next->GetMaxDrop();
         }
         else
@@ -277,7 +277,7 @@ void BitmapOut::Draw()
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
-          point.y += drop + tmp->m_next->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetCenterList();
           drop = tmp->m_next->GetMaxDrop();
         }
       }

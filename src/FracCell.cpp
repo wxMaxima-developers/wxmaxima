@@ -164,21 +164,21 @@ void FracCell::RecalculateHeight(int fontsize)
 
   if(m_isBrokenIntoLines)
   {
-    m_height = m_num->GetMaxHeight();
-    m_center = m_num->GetMaxCenter();
+    m_height = m_num->GetHeightList();
+    m_center = m_num->GetCenterList();
   }
   else
   {
     if (!m_exponent)
     {
-      m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
+      m_height = m_num->GetHeightList() + m_denom->GetHeightList() +
         Scale_Px(4);
-      m_center = m_num->GetMaxHeight() + Scale_Px(2);
+      m_center = m_num->GetHeightList() + Scale_Px(2);
     }
     else
     {
-      m_height = wxMax(m_num->GetMaxHeight(), m_denom->GetMaxHeight());
-      m_center = wxMax(m_num->GetMaxCenter(), m_denom->GetMaxCenter());
+      m_height = wxMax(m_num->GetHeightList(), m_denom->GetHeightList());
+      m_center = wxMax(m_num->GetCenterList(), m_denom->GetCenterList());
     }
   }
 }
@@ -212,13 +212,13 @@ void FracCell::Draw(wxPoint point)
     {
       num.x = point.x + m_horizontalGapLeft +
               (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedNum->GetFullWidth()) / 2;
-      num.y = point.y - m_displayedNum->GetMaxHeight() + m_displayedNum->GetMaxCenter() -
+      num.y = point.y - m_displayedNum->GetHeightList() + m_displayedNum->GetCenterList() -
               Scale_Px(2);
       m_displayedNum->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedDenom->GetFullWidth()) / 2;
-      denom.y = point.y + m_displayedDenom->GetMaxCenter() + Scale_Px(2);
+      denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(2);
       m_displayedDenom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)

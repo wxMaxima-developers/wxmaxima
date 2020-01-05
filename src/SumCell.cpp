@@ -105,7 +105,7 @@ void SumCell::SetUnder(Cell *under)
 void SumCell::RecalculateWidths(int fontsize)
 {
   m_displayedBase->RecalculateWidthsList(fontsize);
-  m_signHeight = m_displayedBase->GetMaxHeight();
+  m_signHeight = m_displayedBase->GetHeightList();
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
   else
@@ -152,10 +152,10 @@ void SumCell::RecalculateHeight(int fontsize)
   m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_displayedBase->RecalculateHeightList(fontsize);
 
-  m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2,
-                 m_displayedBase->GetMaxCenter());
+  m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
+                 m_displayedBase->GetCenterList());
   m_height = m_center +
-             wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2,
+             wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
                  m_displayedBase->GetMaxDrop());
 }
 
@@ -171,7 +171,7 @@ void SumCell::Draw(wxPoint point)
     wxPoint base(point), under(point), over(point), sign(point);
 
     under.x += m_signWCenter - m_under->GetFullWidth() / 2;
-    under.y = point.y + m_signHeight / 2 + m_under->GetMaxCenter() + Scale_Px(2);
+    under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
     m_under->DrawList(under);
 
     over.x += m_signWCenter - m_over->GetFullWidth() / 2;

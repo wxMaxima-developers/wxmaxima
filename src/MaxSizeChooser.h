@@ -41,7 +41,7 @@ public:
     return m_width->GetValue();
   }
 
-  double GetMaxHeight()
+  double GetHeightList()
   {
     return m_height->GetValue();
   }

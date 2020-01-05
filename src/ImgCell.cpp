@@ -310,8 +310,8 @@ wxString ImgCell::ToXML()
   if(m_image->GetMaxWidth() > 0)
     flags += wxString::Format(wxT(" maxWidth=\"%f\""), m_image->GetMaxWidth());
 
-  if(m_image->GetMaxHeight() > 0)
-    flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetMaxHeight());
+  if(m_image->GetHeightList() > 0)
+    flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetHeightList());
 
   if (m_image)
   {

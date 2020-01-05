@@ -304,7 +304,7 @@ Cell *Cell::GetGroup()
 /***
  * Get the maximum drop of the center.
  */
-int Cell::GetMaxCenter()
+int Cell::GetCenterList()
 {
   if ((m_maxCenter < 0) || ((*m_configuration)->RecalculationForce()))
   {
@@ -354,9 +354,9 @@ int Cell::GetMaxDrop()
 }
 
 //!  Get the maximum hight of cells in line.
-int Cell::GetMaxHeight()
+int Cell::GetHeightList()
 {
-  return GetMaxCenter() + GetMaxDrop();
+  return GetCenterList() + GetMaxDrop();
 }
 
 /*! Get full width of this group.
@@ -550,11 +550,11 @@ bool Cell::DrawThisCell(wxPoint point)
    - true  return the rectangle around the whole line.
    - false return the rectangle around this cell.
  */
-wxRect Cell::GetRect(bool all)
+wxRect Cell::GetRect(bool wholeList)
 {
-  if (all)
-    return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
-                  GetLineWidth(), GetMaxHeight());
+  if (wholeList)
+    return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenterList(),
+                  GetLineWidth(), GetHeightList());
   else
     return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
                   m_width, m_height);

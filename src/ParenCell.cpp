@@ -183,7 +183,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   }
   
   wxDC *dc = configuration->GetDC();
-  int size = m_innerCell->GetMaxHeight();
+  int size = m_innerCell->GetHeightList();
   if (fontsize < 4) fontsize = 4;
   int fontsize1 = Scale_Px(fontsize);
   // If our font provides all the unicode chars we need we don't need
@@ -192,7 +192,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   {
     if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
-    m_signHeight = m_open->GetMaxHeight();
+    m_signHeight = m_open->GetHeightList();
     m_signWidth  = m_open->GetWidth();
   }
   else
@@ -240,7 +240,7 @@ void ParenCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
-  m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
+  m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
 
   SetFont(fontsize);
@@ -254,8 +254,8 @@ void ParenCell::RecalculateHeight(int fontsize)
 
   if (m_isBrokenIntoLines)
   {
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
   else
   {
@@ -282,13 +282,13 @@ void ParenCell::RecalculateHeight(int fontsize)
       if(m_bigParenType != Configuration::ascii)
         m_innerCell->SetCurrentPoint(
           wxPoint(m_currentPoint.x + m_signWidth,
-                  m_currentPoint.y + (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2)));
+                  m_currentPoint.y + (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2)));
       else
         m_innerCell->SetCurrentPoint(
           wxPoint(m_currentPoint.x + m_signWidth,
                   m_currentPoint.y));
       
-      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(4);
+      m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;   
     }
   }
@@ -318,7 +318,7 @@ void ParenCell::Draw(wxPoint point)
     {
       innerCellPos.x += m_signWidth;
       // Center the contents of the parenthesis vertically.
-      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+      innerCellPos.y += (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2);
 
       int top = point.y - m_center + Scale_Px (1);
       int bottom = top + m_signHeight - m_signBotHeight - Scale_Px (2);
@@ -350,7 +350,7 @@ void ParenCell::Draw(wxPoint point)
     {
       wxDC *adc = configuration->GetAntialiassingDC();
       innerCellPos.x = point.x + Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
-      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+      innerCellPos.y += (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2);
       SetPen(1.0);
 
       int signWidth = m_signWidth - Scale_Px(2);
@@ -518,8 +518,8 @@ bool ParenCell::BreakUp()
     m_nextToDraw = m_open.get();
 
     ResetData();
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;

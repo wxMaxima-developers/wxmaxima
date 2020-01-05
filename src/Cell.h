@@ -505,13 +505,13 @@ class Cell
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
   */
-  int GetMaxCenter();
+  int GetCenterList();
 
   /*! Returns the total height of this line
 
-    Returns GetMaxCenter()+GetMaxDrop()
+    Returns GetCenterList()+GetMaxDrop()
    */
-  int GetMaxHeight();
+  int GetHeightList();
 
   //! How many pixels is this list of cells wide?
   int GetFullWidth();
@@ -543,7 +543,7 @@ class Cell
       - true: Get the rectangle for this cell and the ones that follow it in the list of cells
       - false: Get the rectangle for this cell only.
    */
-  virtual wxRect GetRect(bool all = false);
+  virtual wxRect GetRect(bool wholeList = false);
 
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation();

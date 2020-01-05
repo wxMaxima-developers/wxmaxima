@@ -213,15 +213,15 @@ void IntCell::RecalculateHeight(int fontsize)
 
   if (m_intStyle == INT_DEF)
   {
-    m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
-                   m_base->GetMaxCenter());
+    m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+                   m_base->GetCenterList());
     m_height = m_center +
-      wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+      wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
           m_base->GetMaxDrop());
   }
   else
   {
-    m_center = wxMax(m_signHeight / 2, m_base->GetMaxCenter());
+    m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
     m_height = m_center +
                wxMax(m_signHeight / 2, m_base->GetMaxDrop());
   }
@@ -352,7 +352,7 @@ void IntCell::Draw(wxPoint point)
     if (m_intStyle == INT_DEF)
     {
       under.x += m_signWidth;
-      under.y = point.y + m_signHeight / 2 + m_under->GetMaxCenter() + Scale_Px(2) -
+      under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2) -
                 m_signHeight / 3;
       m_under->DrawList(under);
 

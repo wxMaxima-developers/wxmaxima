@@ -141,11 +141,11 @@ public:
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {return m_maxWidth;}
   //! The maximum height this image shall be displayed with
-  double GetMaxHeight() const {return m_maxHeight;}
+  double GetHeightList() const {return m_maxHeight;}
   //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){m_maxWidth = width;}
   //! Set the maximum height this image shall be displayed with
-  void   SetMaxHeight(double height){m_maxHeight = height;}
+  void   SetListHeight(double height){m_maxHeight = height;}
   
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);

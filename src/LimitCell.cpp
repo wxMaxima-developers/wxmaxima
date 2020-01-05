@@ -158,14 +158,14 @@ void LimitCell::RecalculateHeight(int fontsize)
       m_comma->RecalculateHeightList(fontsize);
     if(m_close)
       m_close->RecalculateHeightList(fontsize);
-    m_center = wxMax(m_base->GetMaxCenter(), m_name->GetMaxCenter());
-    m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
+    m_center = wxMax(m_base->GetCenterList(), m_name->GetCenterList());
+    m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetHeightList(),
                                 m_base->GetMaxDrop());
   }
   else
   {
-    m_height = m_name->GetMaxHeight();
-    m_center = m_name->GetMaxCenter();
+    m_height = m_name->GetHeightList();
+    m_center = m_name->GetCenterList();
   }
 }
 
@@ -184,7 +184,7 @@ void LimitCell::Draw(wxPoint point)
     under.x = point.x + wxMax(m_name->GetFullWidth(),
                             m_under->GetFullWidth()) / 2 -
               m_under->GetFullWidth() / 2;
-    under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
+    under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
     m_under->DrawList(under);
 
     base.x += wxMax(m_name->GetFullWidth(),

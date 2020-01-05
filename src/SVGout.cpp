@@ -239,7 +239,7 @@ void Svgout::GetMaxPoint(int *width, int *height)
       if (tmp->BreakLineHere() || firstCell)
       {
         firstCell = false;
-        currentHeight += tmp->GetMaxHeight();
+        currentHeight += tmp->GetHeightList();
         if (bigSkip)
           currentHeight += MC_LINE_SKIP;
         *height = currentHeight;
@@ -265,7 +265,7 @@ void Svgout::Draw()
   {
     wxPoint point;
     point.x = 0;
-    point.y = tmp->GetMaxCenter();
+    point.y = tmp->GetCenterList();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
 
@@ -281,7 +281,7 @@ void Svgout::Draw()
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
-          point.y += drop + tmp->m_next->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetCenterList();
           if (tmp->m_bigSkip)
             point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();
@@ -294,7 +294,7 @@ void Svgout::Draw()
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
-          point.y += drop + tmp->m_next->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetCenterList();
           if (tmp->m_bigSkip)
             point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();

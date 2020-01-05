@@ -117,7 +117,7 @@ void MatrCell::RecalculateHeight(int fontsize)
     for (unsigned int j = 0; j < m_matWidth; j++)
       if(m_matWidth * i + j < m_cells.size())
       {
-        m_centers[i] = wxMax(m_centers[i], m_cells[m_matWidth * i + j]->GetMaxCenter());
+        m_centers[i] = wxMax(m_centers[i], m_cells[m_matWidth * i + j]->GetCenterList());
         m_drops[i] = wxMax(m_drops[i], m_cells[m_matWidth * i + j]->GetMaxDrop());
       }
   }

@@ -772,8 +772,8 @@ void GroupCell::RecalculateHeightInput()
     if(m_inputLabel)
     {
       m_inputLabel->RecalculateHeightList((*m_configuration)->GetDefaultFontSize());
-      m_center = m_inputLabel->GetMaxCenter();
-      m_height = m_inputLabel->GetMaxHeight();
+      m_center = m_inputLabel->GetCenterList();
+      m_height = m_inputLabel->GetHeightList();
     }
   }
   else
@@ -797,19 +797,19 @@ void GroupCell::RecalculateHeightInput()
   m_currentPoint.x = configuration->GetIndent();
   if (m_previous == NULL)
   {
-    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
+    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetCenterList();
   }
   else
   {
     if(dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y > 0)
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
         (*m_configuration)->GetGroupSkip();
   }
   
   m_outputRect.x = m_currentPoint.x;
   m_outputRect.y = m_currentPoint.y + m_center;
-  if (m_output) m_outputRect.y -= m_output->GetMaxCenter();
+  if (m_output) m_outputRect.y -= m_output->GetCenterList();
   else
   {
     m_outputRect.width = 0;
@@ -818,7 +818,7 @@ void GroupCell::RecalculateHeightInput()
   if ((configuration->ShowCodeCells()) ||
       (m_groupType != GC_TYPE_CODE))
   {
-    m_height = m_inputLabel->GetMaxHeight();
+    m_height = m_inputLabel->GetHeightList();
     m_width = m_inputLabel->GetFullWidth();
   }
   else
@@ -884,7 +884,7 @@ void GroupCell::RecalculateHeightOutput()
   {
     if (tmp->BreakLineHere())
     {
-      int height_Delta = tmp->GetMaxHeight();
+      int height_Delta = tmp->GetHeightList();
       m_width = wxMax(m_width, tmp->GetLineWidth());
       m_height            += height_Delta;
       m_outputRect.width = m_width;
@@ -948,14 +948,14 @@ GroupCell *GroupCell::UpdateYPosition()
   if (m_previous == NULL)
   {
     m_currentPoint.x = configuration->GetIndent();
-    m_currentPoint.y = configuration->GetBaseIndent() + GetMaxCenter();
+    m_currentPoint.y = configuration->GetBaseIndent() + GetCenterList();
   }
   else
   {
     m_currentPoint.x = configuration->GetIndent();
     if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
         configuration->GetGroupSkip();
     else
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y;
@@ -1034,8 +1034,8 @@ void GroupCell::Draw(wxPoint point)
             (m_groupType != GC_TYPE_CODE))
           in.y += m_inputLabel->GetMaxDrop();
 
-        in.y += m_output->GetMaxCenter();
-        m_outputRect.y = in.y - m_output->GetMaxCenter();
+        in.y += m_output->GetCenterList();
+        m_outputRect.y = in.y - m_output->GetCenterList();
         m_outputRect.x = in.x;
 
         in.x += GetLineIndent(tmp);
@@ -1049,7 +1049,7 @@ void GroupCell::Draw(wxPoint point)
  
               in.x = point.x + GetLineIndent(tmp->m_nextToDraw);              
 
-              in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+              in.y += drop + tmp->m_nextToDraw->GetCenterList();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
           else
@@ -1303,19 +1303,19 @@ void GroupCell::DrawBracket()
         points.Append(
           new wxPoint(
             m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            m_currentPoint.y - m_center + m_inputLabel->GetHeightList()
             )
           );
         points.Append(
           new wxPoint(
             m_currentPoint.x - bracketWidth / 2 + configuration->GetDefaultLineWidth() / 2,
-            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            m_currentPoint.y - m_center + m_inputLabel->GetHeightList()
             )
           );
         points.Append(
           new wxPoint(
             m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            m_currentPoint.y - m_center + m_inputLabel->GetHeightList()
             )
           );
       }
@@ -1921,7 +1921,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
         if (curr == NULL)
           break;
         if (curr->GetCurrentX() <= end.x &&
-            curr->GetCurrentY() - curr->GetMaxCenter() <= end.y)
+            curr->GetCurrentY() - curr->GetCenterList() <= end.y)
           *last = curr;
         if (curr == tmp)
           break;
