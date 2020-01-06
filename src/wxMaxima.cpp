@@ -8196,434 +8196,433 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   wxString selection = m_worksheet->GetString();
   switch (event.GetId())
   {
-    case Worksheet::popid_fold:
+  case Worksheet::popid_fold:
+  {
+    if (m_worksheet->GetActiveCell())
     {
-      if (m_worksheet->GetActiveCell())
-      {
-        // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
-        if (group->IsFoldable())
-          group->Fold();
-        else
-          group->Hide(true);
-        m_worksheet->UpdateTableOfContents();
-      }
-      break;
-    }
-    case Worksheet::popid_maxsizechooser:
-      if(m_worksheet->m_cellPointers.m_selectionStart != NULL)
-      {
-        Cell *output = dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
-        if (output == NULL)
-          return;
-        if(output->GetType() != MC_TYPE_IMAGE)
-          return;
-
-        MaxSizeChooser *chooser = new MaxSizeChooser(this, -1,
-                                                     dynamic_cast<ImgCell *>(output)->GetMaxWidth(),
-                                                     dynamic_cast<ImgCell *>(output)->GetHeightList()
-        );
-        chooser->Centre(wxBOTH);
-        if (chooser->ShowModal() == wxID_OK)
-        {
-          if(dynamic_cast<ImgCell *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
-            m_fileSaved = false;
-          if(dynamic_cast<ImgCell *>(output)->GetHeightList() != chooser->GetHeightList())
-            m_fileSaved = false;
-
-          dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
-          dynamic_cast<ImgCell *>(output)->SetListHeight(chooser->GetHeightList());
-        }
-      }
-      m_worksheet->RecalculateForce();
-      m_worksheet->RequestRedraw();
-      break;
-    case Worksheet::popid_unfold:
-    {
+      // This "if" is pure paranoia. But - since the costs of an "if" are low...
       GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
       if (group->IsFoldable())
-        group->Unfold();
+        group->Fold();
       else
-        group->Hide(false);
+        group->Hide(true);
       m_worksheet->UpdateTableOfContents();
-      break;
     }
-    case TableOfContents::popid_Fold:
-      if (m_worksheet->m_tableOfContents != NULL)
-      {
-        // We only update the table of contents when there is time => no guarantee that the
-        // cell that was clicked at actually still is part of the tree.
-        if ((m_worksheet->GetTree()) &&
-            (m_worksheet->GetTree()->Contains(m_worksheet->m_tableOfContents->RightClickedOn())))
-        {
-          m_worksheet->m_tableOfContents->RightClickedOn()->Fold();
-          m_worksheet->Recalculate();
-          m_worksheet->RequestRedraw();
-          m_worksheet->UpdateTableOfContents();
-        }
-      }
-      break;
-    case TableOfContents::popid_Unfold:
-      if (m_worksheet->m_tableOfContents != NULL)
-      {
-        // We only update the table of contents when there is time => no guarantee that the
-        // cell that was clicked at actually still is part of the tree.
-        if ((m_worksheet->GetTree()) &&
-            (m_worksheet->GetTree()->Contains(m_worksheet->m_tableOfContents->RightClickedOn())))
-        {
-          m_worksheet->m_tableOfContents->RightClickedOn()->Unfold();
-          m_worksheet->Recalculate();
-          m_worksheet->RequestRedraw();
-          m_worksheet->UpdateTableOfContents();
-        }
-      }
-      break;
-    case TableOfContents::popid_SelectTocChapter:
-      if (m_worksheet->m_tableOfContents != NULL)
-      {
-        if (m_worksheet->m_tableOfContents->RightClickedOn())
-        {
-          GroupCell *SelectionStart = m_worksheet->m_tableOfContents->RightClickedOn();
-          // We only update the table of contents when there is time => no guarantee that the
-          // cell that was clicked at actually still is part of the tree.
-          if((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
-          {
-            GroupCell *SelectionEnd = SelectionStart;
-            while (
-              (SelectionEnd->m_next != NULL)
-              && (SelectionEnd->GetNext()->IsLesserGCType(SelectionStart->GetGroupType()))
-              )
-              SelectionEnd = SelectionEnd->GetNext();
-            m_worksheet->SetActiveCell(NULL);
-            m_worksheet->SetHCaret(SelectionEnd);
-            m_worksheet->SetSelection(SelectionStart, SelectionEnd);
-            m_worksheet->RequestRedraw();
-          }
-        }
-      }
-      break;
-    case TableOfContents::popid_EvalTocChapter:
+    break;
+  }
+  case Worksheet::popid_maxsizechooser:
+    if(m_worksheet->m_cellPointers.m_selectionStart != NULL)
     {
-      GroupCell *SelectionStart = m_worksheet->m_tableOfContents->RightClickedOn();
+      Cell *output = dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
+      if (output == NULL)
+        return;
+      if(output->GetType() != MC_TYPE_IMAGE)
+        return;
+
+      MaxSizeChooser *chooser = new MaxSizeChooser(this, -1,
+                                                   dynamic_cast<ImgCell *>(output)->GetMaxWidth(),
+                                                   dynamic_cast<ImgCell *>(output)->GetHeightList()
+        );
+      chooser->Centre(wxBOTH);
+      if (chooser->ShowModal() == wxID_OK)
+      {
+        if(dynamic_cast<ImgCell *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
+          m_fileSaved = false;
+        if(dynamic_cast<ImgCell *>(output)->GetHeightList() != chooser->GetHeightList())
+          m_fileSaved = false;
+
+        dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
+        dynamic_cast<ImgCell *>(output)->SetListHeight(chooser->GetHeightList());
+      }
+    }
+    m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
+    break;
+  case Worksheet::popid_unfold:
+  {
+    GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+    if (group->IsFoldable())
+      group->Unfold();
+    else
+      group->Hide(false);
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case TableOfContents::popid_Fold:
+    if (m_worksheet->m_tableOfContents != NULL)
+    {
       // We only update the table of contents when there is time => no guarantee that the
       // cell that was clicked at actually still is part of the tree.
-      if ((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
+      if ((m_worksheet->GetTree()) &&
+          (m_worksheet->GetTree()->Contains(m_worksheet->m_tableOfContents->RightClickedOn())))
       {
-        m_worksheet->AddSectionToEvaluationQueue(m_worksheet->m_tableOfContents->RightClickedOn());
-        TriggerEvaluation();
+        m_worksheet->m_tableOfContents->RightClickedOn()->Fold();
+        m_worksheet->Recalculate();
+        m_worksheet->RequestRedraw();
+        m_worksheet->UpdateTableOfContents();
       }
-      break;
     }
-    case TableOfContents::popid_ToggleTOCshowsSectionNumbers:
+    break;
+  case TableOfContents::popid_Unfold:
+    if (m_worksheet->m_tableOfContents != NULL)
     {
-      m_worksheet->m_configuration->TocShowsSectionNumbers(event.IsChecked());
-      m_worksheet->UpdateTableOfContents();
-      break;
-    }
-    case Worksheet::popid_evaluate_section:
-    {
-      GroupCell *group = NULL;
-      if (m_worksheet->GetActiveCell())
+      // We only update the table of contents when there is time => no guarantee that the
+      // cell that was clicked at actually still is part of the tree.
+      if ((m_worksheet->GetTree()) &&
+          (m_worksheet->GetTree()->Contains(m_worksheet->m_tableOfContents->RightClickedOn())))
       {
-        // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        if (m_worksheet->GetActiveCell()->GetGroup())
-          group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+        m_worksheet->m_tableOfContents->RightClickedOn()->Unfold();
+        m_worksheet->Recalculate();
+        m_worksheet->RequestRedraw();
+        m_worksheet->UpdateTableOfContents();
       }
-      else if (m_worksheet->HCaretActive())
+    }
+    break;
+  case TableOfContents::popid_SelectTocChapter:
+    if (m_worksheet->m_tableOfContents != NULL)
+    {
+      if (m_worksheet->m_tableOfContents->RightClickedOn())
       {
-        if (m_worksheet->GetHCaret())
+        GroupCell *SelectionStart = m_worksheet->m_tableOfContents->RightClickedOn();
+        // We only update the table of contents when there is time => no guarantee that the
+        // cell that was clicked at actually still is part of the tree.
+        if((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
         {
-          group = m_worksheet->GetHCaret();
+          GroupCell *SelectionEnd = SelectionStart;
+          while (
+            (SelectionEnd->m_next != NULL)
+            && (SelectionEnd->GetNext()->IsLesserGCType(SelectionStart->GetGroupType()))
+            )
+            SelectionEnd = SelectionEnd->GetNext();
+          m_worksheet->SetActiveCell(NULL);
+          m_worksheet->SetHCaret(SelectionEnd);
+          m_worksheet->SetSelection(SelectionStart, SelectionEnd);
+          m_worksheet->RequestRedraw();
+        }
+      }
+    }
+    break;
+  case TableOfContents::popid_EvalTocChapter:
+  {
+    GroupCell *SelectionStart = m_worksheet->m_tableOfContents->RightClickedOn();
+    // We only update the table of contents when there is time => no guarantee that the
+    // cell that was clicked at actually still is part of the tree.
+    if ((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
+    {
+      m_worksheet->AddSectionToEvaluationQueue(m_worksheet->m_tableOfContents->RightClickedOn());
+      TriggerEvaluation();
+    }
+    break;
+  }
+  case TableOfContents::popid_ToggleTOCshowsSectionNumbers:
+  {
+    m_worksheet->m_configuration->TocShowsSectionNumbers(event.IsChecked());
+    m_worksheet->UpdateTableOfContents();
+    break;
+  }
+  case Worksheet::popid_evaluate_section:
+  {
+    GroupCell *group = NULL;
+    if (m_worksheet->GetActiveCell())
+    {
+      // This "if" is pure paranoia. But - since the costs of an "if" are low...
+      if (m_worksheet->GetActiveCell()->GetGroup())
+        group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+    }
+    else if (m_worksheet->HCaretActive())
+    {
+      if (m_worksheet->GetHCaret())
+      {
+        group = m_worksheet->GetHCaret();
 /*        if(group->m_next)
           group = dynamic_cast<GroupCell*>(group->m_next);*/
-        }
-        else
-          group = m_worksheet->GetTree();
       }
-      if (group)
-      {
-        m_worksheet->AddSectionToEvaluationQueue(group);
-        TriggerEvaluation();
-      }
-    }
-      break;
-    case Worksheet::popid_evaluate:
-    case ToolBar::tb_eval:
-      {
-        wxCommandEvent *dummy = new wxCommandEvent;
-        EvaluateEvent(*dummy);
-      }
-      break;
-    case ToolBar::tb_evaluate_rest:
-      m_worksheet->AddRestToEvaluationQueue();
-      EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TriggerEvaluation();
-      break;
-    case ToolBar::tb_evaltillhere:
-      m_worksheet->m_evaluationQueue.Clear();
-      m_worksheet->ResetInputPrompts();
-      EvaluationQueueLength(0);
-      if (m_worksheet->m_configuration->RestartOnReEvaluation())
-        StartMaxima();
-      m_worksheet->AddDocumentTillHereToEvaluationQueue();
-      // Inform the user about the length of the evaluation queue.
-      EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TriggerEvaluation();
-      break;
-    case wxID_COPY:
-      if (m_worksheet->CanCopy(true))
-        m_worksheet->Copy();
-      break;
-	case Worksheet::popid_copy_matlab:
-		if (m_worksheet->CanCopy(true))
-		  m_worksheet->CopyMatlab();
-	break;
-    case Worksheet::popid_copy_tex:
-      if (m_worksheet->CanCopy(true))
-        m_worksheet->CopyTeX();
-      break;
-    case Worksheet::popid_copy_text:
-      if (m_worksheet->CanCopy(true))
-        m_worksheet->CopyText();
-      break;
-    case wxID_CUT:
-      if (m_worksheet->CanCut())
-        m_worksheet->CutToClipboard();
-      break;
-    case wxID_PASTE:
-      m_worksheet->PasteFromClipboard();
-      break;
-    case wxID_SELECTALL:
-      m_worksheet->SelectAll();
-      break;
-    case Worksheet::popid_comment_selection:
-      m_worksheet->CommentSelection();
-      break;
-    case Worksheet::popid_divide_cell:
-      m_worksheet->DivideCell();
-      break;
-    case Worksheet::popid_copy_image:
-      if (m_worksheet->CanCopy())
-        m_worksheet->CopyBitmap();
-      break;
-    case Worksheet::popid_copy_animation:
-      if (m_worksheet->CanCopy())
-        m_worksheet->CopyAnimation();
-      break;
-    case Worksheet::popid_copy_svg:
-      if (m_worksheet->CanCopy())
-        m_worksheet->CopySVG();
-      break;
-#if wxUSE_ENH_METAFILE
-    case Worksheet::popid_copy_emf:
-      if (m_worksheet->CanCopy())
-        m_worksheet->CopyEMF();
-      break;
-#endif
-    case Worksheet::popid_copy_rtf:
-      if (m_worksheet->CanCopy(true))
-        m_worksheet->CopyRTF();
-      break;
-    case Worksheet::popid_simplify:
-      MenuCommand(wxT("ratsimp(") + selection + wxT(");"));
-      break;
-    case Worksheet::popid_expand:
-      MenuCommand(wxT("expand(") + selection + wxT(");"));
-      break;
-    case Worksheet::popid_factor:
-      MenuCommand(wxT("factor(") + selection + wxT(");"));
-      break;
-    case Worksheet::popid_solve:
-    {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                                 selection, wxT("x"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Solve"), true,
-                                 _("solve() will solve a list of equations only if for n "
-                                   "independent equations there are n variables to solve to.\n"
-                                   "If only one result variable is of interest the other result "
-                                   "variables solve needs to do its work can be used to tell "
-                                   "solve() which variables to eliminate in the solution "
-                                   "for the interesting variable.")
-        );
-      //wiz->Centre(wxBOTH);
-      wiz->SetLabel1ToolTip(_("Comma-separated equations"));
-      wiz->SetLabel2ToolTip(_("Comma-separated variables"));
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
-                       wiz->GetValue2() + wxT("]);");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_solve_num:
-    {
-      Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
-                                 _("Lower bound:"), _("Upper bound:"),
-                                 selection, wxT("x"), wxT("-1"), wxT("1"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Find root"), true);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
-                       wiz->GetValue2() + wxT(", ") +
-                       wiz->GetValue3() + wxT(", ") +
-                       wiz->GetValue4() + wxT(");");
-        MenuCommand(cmd);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_integrate:
-    {
-      IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_worksheet->m_configuration, _("Integrate"));
-      wiz->SetValue(selection);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_diff:
-    {
-      Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
-                                 _("Times:"), selection, wxT("x"), wxT("1"),
-                                 m_worksheet->m_configuration,
-                                 this, -1, _("Differentiate"));
-      wiz->SetValue(selection);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
-        wxStringTokenizer times(wiz->GetValue3(), wxT(","));
-
-        wxString val = wxT("diff(") + wiz->GetValue1();
-
-        while (vars.HasMoreTokens() && times.HasMoreTokens())
-        {
-          val += wxT(",") + vars.GetNextToken();
-          val += wxT(",") + times.GetNextToken();
-        }
-
-        val += wxT(");");
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_subst:
-    {
-      SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_worksheet->m_configuration, _("Substitute"));
-      wiz->SetValue(selection);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_plot2d:
-    {
-      Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_worksheet->m_configuration, _("Plot 2D"));
-      wiz->SetValue(selection);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_plot3d:
-    {
-      Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_worksheet->m_configuration, _("Plot 3D"));
-      wiz->SetValue(selection);
-      //wiz->Centre(wxBOTH);
-      if (wiz->ShowModal() == wxID_OK)
-      {
-        wxString val = wiz->GetValue();
-        MenuCommand(val);
-      }
-      wiz->Destroy();
-    }
-      break;
-    case Worksheet::popid_float:
-      MenuCommand(wxT("float(") + selection + wxT("), numer;"));
-      break;
-    case Worksheet::popid_image:
-    {
-      if(m_worksheet->GetSelectionStart() != m_worksheet->GetSelectionEnd())
-        break;
-
-      bool canExportSVG = false;
-      
-      if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE)
-        if(dynamic_cast<ImgCell *>(m_worksheet->GetSelectionStart())->CanExportSVG())
-          canExportSVG = true;
-
-      if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
-        if(dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart())->CanExportSVG())
-          canExportSVG = true;
-
-      wxString selectorString;
-
-      if(canExportSVG)
-        selectorString = _(
-          "Scalable Vector image (*.svg)|*.svg|"
-          "Compressed Scalable Vector Image (*.svgz)|*.svgz|"
-          "PNG image (*.png)|*.png|"
-          "JPEG image (*.jpg)|*.jpg|"
-          "Windows bitmap (*.bmp)|*.bmp|"
-          "Portable anymap (*.pnm)|*.pnm|"
-          "Tagged image file format (*.tif)|*.tif|"
-          "X pixmap (*.xpm)|*.xpm"
-          );
       else
-        selectorString = _("PNG image (*.png)|*.png|"
-                           "JPEG image (*.jpg)|*.jpg|"
-                           "Windows bitmap (*.bmp)|*.bmp|"
-                           "Portable anymap (*.pnm)|*.pnm|"
-                           "Tagged image file format (*.tif)|*.tif|"
-                           "X pixmap (*.xpm)|*.xpm"
-            );
-      
-      wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
-                                     wxT("image.png"), wxT("png"),
-                                     selectorString,
-                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-      if (file.Length())
-      {
-        m_worksheet->CopyToFile(file);
-        m_lastPath = wxPathOnly(file);
-      }
+        group = m_worksheet->GetTree();
     }
-      break;
-    case Worksheet::popid_animation_save:
+    if (group)
     {
-      wxString file = wxFileSelector(_("Save animation to file"), m_lastPath,
-                                     wxT("animation.gif"), wxT("gif"),
-                                     _("GIF image (*.gif)|*.gif"),
-                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-      if (file.Length())
-      {
-        Cell *selectedCell = m_worksheet->GetSelectionStart();
-        if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
-          dynamic_cast<SlideShow *>(selectedCell)->ToGif(file);
-      }
+      m_worksheet->AddSectionToEvaluationQueue(group);
+      TriggerEvaluation();
     }
+  }
+  break;
+  case Worksheet::popid_evaluate:
+  case ToolBar::tb_eval:
+  {
+    wxCommandEvent *dummy = new wxCommandEvent;
+    EvaluateEvent(*dummy);
+  }
+  break;
+  case ToolBar::tb_evaluate_rest:
+    m_worksheet->AddRestToEvaluationQueue();
+    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    TriggerEvaluation();
+    break;
+  case ToolBar::tb_evaltillhere:
+    m_worksheet->m_evaluationQueue.Clear();
+    m_worksheet->ResetInputPrompts();
+    EvaluationQueueLength(0);
+    if (m_worksheet->m_configuration->RestartOnReEvaluation())
+      StartMaxima();
+    m_worksheet->AddDocumentTillHereToEvaluationQueue();
+    // Inform the user about the length of the evaluation queue.
+    EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+    TriggerEvaluation();
+    break;
+  case wxID_COPY:
+    m_worksheet->Copy();
+    break;
+  case Worksheet::popid_copy_matlab:
+    if (m_worksheet->CanCopy(true))
+      m_worksheet->CopyMatlab();
+    break;
+  case Worksheet::popid_copy_tex:
+    if (m_worksheet->CanCopy(true))
+      m_worksheet->CopyTeX();
+    break;
+  case Worksheet::popid_copy_text:
+    if (m_worksheet->CanCopy(true))
+      m_worksheet->CopyText();
+    break;
+  case wxID_CUT:
+    if (m_worksheet->CanCut())
+      m_worksheet->CutToClipboard();
+    break;
+  case wxID_PASTE:
+    m_worksheet->PasteFromClipboard();
+    break;
+  case wxID_SELECTALL:
+    m_worksheet->SelectAll();
+    break;
+  case Worksheet::popid_comment_selection:
+    m_worksheet->CommentSelection();
+    break;
+  case Worksheet::popid_divide_cell:
+    m_worksheet->DivideCell();
+    break;
+  case Worksheet::popid_copy_image:
+    if (m_worksheet->CanCopy())
+      m_worksheet->CopyBitmap();
+    break;
+  case Worksheet::popid_copy_animation:
+    if (m_worksheet->CanCopy())
+      m_worksheet->CopyAnimation();
+    break;
+  case Worksheet::popid_copy_svg:
+    if (m_worksheet->CanCopy())
+      m_worksheet->CopySVG();
+    break;
+#if wxUSE_ENH_METAFILE
+  case Worksheet::popid_copy_emf:
+    if (m_worksheet->CanCopy())
+      m_worksheet->CopyEMF();
+    break;
+#endif
+  case Worksheet::popid_copy_rtf:
+    if (m_worksheet->CanCopy(true))
+      m_worksheet->CopyRTF();
+    break;
+  case Worksheet::popid_simplify:
+    MenuCommand(wxT("ratsimp(") + selection + wxT(");"));
+    break;
+  case Worksheet::popid_expand:
+    MenuCommand(wxT("expand(") + selection + wxT(");"));
+    break;
+  case Worksheet::popid_factor:
+    MenuCommand(wxT("factor(") + selection + wxT(");"));
+    break;
+  case Worksheet::popid_solve:
+  {
+    Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
+                               selection, wxT("x"),
+                               m_worksheet->m_configuration,
+                               this, -1, _("Solve"), true,
+                               _("solve() will solve a list of equations only if for n "
+                                 "independent equations there are n variables to solve to.\n"
+                                 "If only one result variable is of interest the other result "
+                                 "variables solve needs to do its work can be used to tell "
+                                 "solve() which variables to eliminate in the solution "
+                                 "for the interesting variable.")
+      );
+    //wiz->Centre(wxBOTH);
+    wiz->SetLabel1ToolTip(_("Comma-separated equations"));
+    wiz->SetLabel2ToolTip(_("Comma-separated variables"));
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
+        wiz->GetValue2() + wxT("]);");
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_solve_num:
+  {
+    Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
+                               _("Lower bound:"), _("Upper bound:"),
+                               selection, wxT("x"), wxT("-1"), wxT("1"),
+                               m_worksheet->m_configuration,
+                               this, -1, _("Find root"), true);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
+        wiz->GetValue2() + wxT(", ") +
+        wiz->GetValue3() + wxT(", ") +
+        wiz->GetValue4() + wxT(");");
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_integrate:
+  {
+    IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_worksheet->m_configuration, _("Integrate"));
+    wiz->SetValue(selection);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wiz->GetValue();
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_diff:
+  {
+    Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
+                               _("Times:"), selection, wxT("x"), wxT("1"),
+                               m_worksheet->m_configuration,
+                               this, -1, _("Differentiate"));
+    wiz->SetValue(selection);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
+      wxStringTokenizer times(wiz->GetValue3(), wxT(","));
+
+      wxString val = wxT("diff(") + wiz->GetValue1();
+
+      while (vars.HasMoreTokens() && times.HasMoreTokens())
+      {
+        val += wxT(",") + vars.GetNextToken();
+        val += wxT(",") + times.GetNextToken();
+      }
+
+      val += wxT(");");
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_subst:
+  {
+    SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_worksheet->m_configuration, _("Substitute"));
+    wiz->SetValue(selection);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wiz->GetValue();
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_plot2d:
+  {
+    Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_worksheet->m_configuration, _("Plot 2D"));
+    wiz->SetValue(selection);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wiz->GetValue();
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_plot3d:
+  {
+    Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_worksheet->m_configuration, _("Plot 3D"));
+    wiz->SetValue(selection);
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wiz->GetValue();
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case Worksheet::popid_float:
+    MenuCommand(wxT("float(") + selection + wxT("), numer;"));
+    break;
+  case Worksheet::popid_image:
+  {
+    if(m_worksheet->GetSelectionStart() != m_worksheet->GetSelectionEnd())
       break;
-    case Worksheet::popid_merge_cells:
-      m_worksheet->MergeCells();
-      break;
+
+    bool canExportSVG = false;
+      
+    if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_IMAGE)
+      if(dynamic_cast<ImgCell *>(m_worksheet->GetSelectionStart())->CanExportSVG())
+        canExportSVG = true;
+
+    if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
+      if(dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart())->CanExportSVG())
+        canExportSVG = true;
+
+    wxString selectorString;
+
+    if(canExportSVG)
+      selectorString = _(
+        "Scalable Vector image (*.svg)|*.svg|"
+        "Compressed Scalable Vector Image (*.svgz)|*.svgz|"
+        "PNG image (*.png)|*.png|"
+        "JPEG image (*.jpg)|*.jpg|"
+        "Windows bitmap (*.bmp)|*.bmp|"
+        "Portable anymap (*.pnm)|*.pnm|"
+        "Tagged image file format (*.tif)|*.tif|"
+        "X pixmap (*.xpm)|*.xpm"
+        );
+    else
+      selectorString = _("PNG image (*.png)|*.png|"
+                         "JPEG image (*.jpg)|*.jpg|"
+                         "Windows bitmap (*.bmp)|*.bmp|"
+                         "Portable anymap (*.pnm)|*.pnm|"
+                         "Tagged image file format (*.tif)|*.tif|"
+                         "X pixmap (*.xpm)|*.xpm"
+        );
+      
+    wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
+                                   wxT("image.png"), wxT("png"),
+                                   selectorString,
+                                   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if (file.Length())
+    {
+      m_worksheet->CopyToFile(file);
+      m_lastPath = wxPathOnly(file);
+    }
+  }
+  break;
+  case Worksheet::popid_animation_save:
+  {
+    wxString file = wxFileSelector(_("Save animation to file"), m_lastPath,
+                                   wxT("animation.gif"), wxT("gif"),
+                                   _("GIF image (*.gif)|*.gif"),
+                                   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if (file.Length())
+    {
+      Cell *selectedCell = m_worksheet->GetSelectionStart();
+      if (selectedCell != NULL && selectedCell->GetType() == MC_TYPE_SLIDE)
+        dynamic_cast<SlideShow *>(selectedCell)->ToGif(file);
+    }
+  }
+  break;
+  case Worksheet::popid_merge_cells:
+    m_worksheet->MergeCells();
+    break;
   }
 }
 

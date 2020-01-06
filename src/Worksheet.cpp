@@ -2297,7 +2297,7 @@ bool Worksheet::Copy(bool astext)
 {
   if (GetActiveCell() != NULL)
     return GetActiveCell()->CopyToClipboard();
-
+  
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
 
@@ -2369,7 +2369,7 @@ bool Worksheet::Copy(bool astext)
       // Add a string representation of the selected output to the clipboard
       tmp = std::unique_ptr<Cell>(CopySelection());
       s = tmp->ListToString();
-      data->Add(new wxTextDataObject(s.utf8_str()));
+      data->Add(new wxTextDataObject(s));
 
       if(m_configuration->CopyBitmap())
       {
@@ -2466,7 +2466,7 @@ bool Worksheet::CopyMathML()
     data->Add(new MathMLDataObject(s), true);
     data->Add(new MathMLDataObject2(s), true);
     // A fallback for communicating with non-mathML-aware programs
-    data->Add(new wxTextDataObject(s.utf8_str()));
+    data->Add(new wxTextDataObject(s));
     // wxMathML is a HTML5 flavour, as well.
     // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
     //
@@ -2507,13 +2507,10 @@ bool Worksheet::CopyMatlab()
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-	wxDataObjectComposite *data = new wxDataObjectComposite;
-	data->Add(new wxTextDataObject(result.utf8_str()));
-	wxTheClipboard->SetData(data);
-	wxTheClipboard->Close();
-	return true;
+    wxTheClipboard->SetData(new wxTextDataObject(result));
+    wxTheClipboard->Close();
+    return true;
   }
-
   return false;
 }
 
@@ -2567,9 +2564,7 @@ bool Worksheet::CopyTeX()
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-    wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(s.utf8_str()));
-    wxTheClipboard->SetData(data);
+    wxTheClipboard->SetData(new wxTextDataObject(s));
     wxTheClipboard->Close();
     return true;
   }
@@ -2603,9 +2598,7 @@ bool Worksheet::CopyText()
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-    wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(result.utf8_str()));
-    wxTheClipboard->SetData(data);
+    wxTheClipboard->SetData(new wxTextDataObject(result));
     wxTheClipboard->Close();
     return true;
   }
@@ -2653,7 +2646,7 @@ bool Worksheet::CopyCells()
       data->Add(new RtfDataObject(rtf), true);
       data->Add(new RtfDataObject2(rtf));
     }
-    data->Add(new wxTextDataObject(str.utf8_str()));
+    data->Add(new wxTextDataObject(str));
     data->Add(new wxmDataObject(wxm));
 
     if(m_configuration->CopyBitmap())
@@ -6593,7 +6586,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
       if (wxTheClipboard->Open())
       {
         wxDataObjectComposite *data = new wxDataObjectComposite;
-        data->Add(new wxTextDataObject(xmlText.utf8_str()));
+        data->Add(new wxTextDataObject(xmlText));
         wxTheClipboard->SetData(data);
         wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
       }
@@ -7790,9 +7783,7 @@ void Worksheet::CheckUnixCopy()
       wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
       if (wxTheClipboard->Open())
       {
-        wxDataObjectComposite *data = new wxDataObjectComposite;
-        data->Add(new wxTextDataObject(GetString().utf8_str()));
-        wxTheClipboard->SetData(data);
+        wxTheClipboard->SetData(new wxTextDataObject(GetString()));
         wxTheClipboard->Close();
       }
     }

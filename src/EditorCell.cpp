@@ -3109,15 +3109,26 @@ bool EditorCell::CopyToClipboard()
   if ((m_selectionStart < 0) && (m_selectionEnd < 0))
     return false;
   wxASSERT_MSG(!wxTheClipboard->IsOpened(), _("Bug: The clipboard is already opened"));
-  if (wxTheClipboard->Open())
+  long start = wxMin(wxMin(m_selectionStart, m_selectionEnd), 0);
+  long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
+  wxString s = m_text.SubString(start, end);
+  if (!s.IsEmpty() && (wxTheClipboard->Open()))
   {
-    long start = wxMin(wxMin(m_selectionStart, m_selectionEnd), 0);
-    long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
-    wxString s = m_text.SubString(start, end);
-    wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(s.utf8_str()));
-    wxTheClipboard->SetData(data);
-    wxTheClipboard->Flush();
+    if(wxTheClipboard->SetData(new wxTextDataObject(s)))
+    {
+      wxLogMessage(_("Copied text from EditorCell: ") + s);
+      wxTheClipboard->Flush();
+    }
+    else
+    {
+      if(wxTheClipboard->SetData(new wxTextDataObject(s)))
+      {
+        wxLogMessage(_("Copied text from EditorCell: ") + s);
+        wxTheClipboard->Flush();
+      }
+      else
+        wxLogMessage(_("Cannot put the copied text on the clipboard"));
+    }
     wxTheClipboard->Close();
     return true;
   }
