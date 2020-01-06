@@ -290,8 +290,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(menu_check_updates, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
-  Connect(wxID_COPY, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_copy_image, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_copy_animation, wxEVT_MENU,
@@ -714,8 +712,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_copy_to_file, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(wxID_SELECTALL, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_subst, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(ToolBar::tb_interrupt, wxEVT_TOOL,
@@ -797,11 +793,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_paste_input, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(wxID_CUT, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
-  Connect(wxID_PASTE, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(wxID_SELECTALL, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_comment_selection, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_divide_cell, wxEVT_MENU,
@@ -8370,9 +8364,6 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
     TriggerEvaluation();
     break;
-  case wxID_COPY:
-    m_worksheet->Copy();
-    break;
   case Worksheet::popid_copy_matlab:
     if (m_worksheet->CanCopy(true))
       m_worksheet->CopyMatlab();
@@ -8384,16 +8375,6 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   case Worksheet::popid_copy_text:
     if (m_worksheet->CanCopy(true))
       m_worksheet->CopyText();
-    break;
-  case wxID_CUT:
-    if (m_worksheet->CanCut())
-      m_worksheet->CutToClipboard();
-    break;
-  case wxID_PASTE:
-    m_worksheet->PasteFromClipboard();
-    break;
-  case wxID_SELECTALL:
-    m_worksheet->SelectAll();
     break;
   case Worksheet::popid_comment_selection:
     m_worksheet->CommentSelection();
