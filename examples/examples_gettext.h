@@ -2,7 +2,7 @@
 /* This file is part of wxMaxima, but read only by gettext allowing to translate the    */
 /* example files.                                                                       */
 
-/* Copyright (C) 2019 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2020 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -535,7 +535,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"Many hard-to-find errors can be avoided by using exact numbers. It is therefore wise to use exact numbers whereever possible and only to convert the results to floats using float() or bfloat():\n" 
+L"Many hard-to-find errors can be avoided by using exact numbers. It is therefore wise to use exact numbers wherever possible and only to convert the results to floats using float() or bfloat():\n"
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
