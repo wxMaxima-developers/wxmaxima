@@ -1219,10 +1219,12 @@
   (defun wxxml-amatrix (x l r)
     (let* ((nr ($@-function x '$nr))
 	   (nc ($@-function x '$nc))
-	   (M (simplifya ($genmatrix
+	   (M (if (or (= nr 0) (= nc 0))
+		'(($matrix))
+		(simplifya ($genmatrix
 			  `((lambda) ((mlist) i j) (mfuncall '$get_element ,x i j))
 			  nr nc)
-			 t)))
+			 t))))
       (wxxml-matrix M l r)))
 
   (defprop $amatrix wxxml-amatrix wxxml)
