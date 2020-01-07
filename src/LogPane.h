@@ -26,6 +26,7 @@
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include "ErrorRedirector.h"
+#include "memory"
 
 /*! A "debug messages" sidepane
 
@@ -33,7 +34,7 @@
 class LogPane : public wxPanel
 {
 public:
-  LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
+  explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
   void BecomeLogTarget();
   void SetBatchMode(){m_errorRedirector->SetBatchMode();}
   void DropLogTarget();
@@ -43,7 +44,7 @@ private:
   //! The textctrl all log messages appear on
   wxTextCtrl *m_textCtrl;
   //! Redirects all error messages to gui dialogues
-  ErrorRedirector *m_errorRedirector;
+  std::unique_ptr<ErrorRedirector> m_errorRedirector;
   wxLog *m_logPanelTarget;
   bool m_isLogTarget;
 };

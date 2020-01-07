@@ -28,37 +28,40 @@
 class AtCell : public Cell
 {
 public:
-  AtCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
-
+  AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  AtCell(const AtCell &cell);
+  Cell *Copy() override {return new AtCell(*this);}
   ~AtCell();
 
-  std::list<Cell *> GetInnerCells();
-  Cell *Copy();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  AtCell &operator=(const AtCell&) = delete;
+
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   
   void SetBase(Cell *base);
   void SetIndex(Cell *index);
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_indexCell;
+  std::shared_ptr<Cell> m_baseCell;
+  std::shared_ptr<Cell> m_indexCell;
 };
 
 #endif // ATCELL_H

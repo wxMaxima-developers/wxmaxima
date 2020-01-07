@@ -1,25 +1,121 @@
-Current:
+20.01.2:
+ * Corrected html export of the lowest sectioning unit
+ * Sometimes text after fractions wasn't displayed
+ * Copy-and-paste should now work in more cases
+ * Selecting text within fractions should now work again
+ * Corrected a few display glitches of the worksheet
+ * wxMaxima now comes with five example files
+ * More and better-working mouse-over tooltips
+
+20.01.1:
+ * Nice menu icons for the operating systems that support this
+ * Started to bundle small tutorials with wxMaxima
+ * Many small additional bug fixes
+
+19.12.4:
+ * Resolved a crash whilst unpacking the svg icons.
+
+19.12.3:
+ * A Russian traslation update by OlesyaGerasimenko
+ * The manual is now found on Gentoo, too
+ * Big improvements to the maths output
+ * A major speedUp by caching already-determined text snippet sizes
+ * All icons that aren't provided by the operating system now are
+   rendered from SVG
+ * Internal communication with maxima is now more MathML-like in
+   many places
+ * Many additional small bug fixes.
+
+19.12.2:
+ * An hungarian translation update by István Blahota
+ * Drastically sped up the lookalike char detection
+ * Fixes for many small bugs
+ * Many changes that prevent typical programming errors
+ * Saving to .wxm sets the worksheet to "saved" again
+ * More cases of modern wxWidgets signal handling
+ * svg support that unfortunately lacks a font renderer
+ * Right-click menus for the symbols sidebars
+ * (Mostly) fixed the index in the manual
+ * Allow building and installing the manual in other formats (epub, pdf, ...)
+
+19.12.1:
+ * Made the tooltips more visible
+ * Added a warning tooltip about missing multiplication signs
+ * Sped up drawing of new cells correcting the size calculations
+ * If lookalike chars are used in a way that can cause hard-to-find errors now a
+   warning tooltip is generated
+ * A few additional bug fixes that (besides others) resolve a potential crash
+ * An option to turn all multiplication dots on
+
+19.12.0:
+  * wxMaxima now uses C++11 that makes the code more readable and helps
+	finding bugs
+  * If found wxMaxima now asks cppcheck to find bugs
+  * Increased the speed of the program again
+  * Opening the config dialogue since 19.11.0 unchecked "offer known answers"
+  * For Cmake>=3.10.0 the build system now asks cppcheck to find bugs.
+  * Changing the worksheet style was partially broken.
+  * A big number of additional bug fixes in various places
+  * A config option that forces displaying all multiplication signs.
+
+19.11.1:
+  * Improved italian translation by Marco Ciampa
+  * Autocompletion no more causes asserts
+  * A better logic that decides which cell to send to maxima
+  * wxMaxima now supports "-l", "-u" and "-X" command-line args like maxima
+  * The help files now are installed in the Right Place
+  * Many additional small bug fixes
+
+19.11.0:
+  * Chinese translation updates from liulitchi
+  * Turkish translation updates from TufanSirin
+  * Hungarian translation updates from Blahota István
+  * German translation updates from Wolfgang Dautermann and Gunter Königsmann
+  * Better detection of the Gnuplot location
+  * Better detection of the right place to open autocomplete popups in
+  * Better formatting of special unicode operators
+  * If autosave on closing fails: Allow the user to ask to exit anyway
+  * Enable Autosave even if the option to keep the file saved is disabled
+  * A context menu with the "display labels" choices
+  * A context menu with "max number of digits" choices
+  * A speedup by preventing recursive calls to resize functions
+  * Corrected parametric plots in the plot wizard
+  * A command-line switch that copies all log messages to stderr.
+  * Batch mode no more adds documents to "recent documents".
+  * For purists: A "don't offer known answers" config option.
+  * Now some toolbar items can be disabled.
+  * Added more toolbar buttons that evaluate cells.
+  * Many additional bug fixes
+
+19.10.0:
+  * Corrected a Regression: The better display of exponents failed for exp(x^2).
+  * Seems like some Windows computers only have a numpad enter key.
+  * Chinese translation updates from liulitchi.
+  * Russian translation updates from OlesyaGerasimenko.
+
+19.09.1:
   * The names of greek letters are no more converted to greek letters in variable
     names by default.
   * Smarter Formatting of asterisk and hyphen.
-  * An automatic per-commit Windows Build for Appveyor.
+  * An automatic per-commit Windows build for Appveyor.
   * Always recalculate the worksheet size when needed.
   * Better vertical alignment of exponents.
   * The layout is now more consistent between platforms.
   * Chinese translation updates from liulitchi.
   * wxMaxima now remembers the question for each answer, not only its number.
   * Now the manual can be localized, too.
-  * Many bug fixes.
+  * Non-breaking spaces are now replaced by ordinary spaces before being sent to Maxima.
+  * Many other bug fixes.
 
 19.09.0:
   * Handle timeouts when writing to maxima and partial writes.
   * Worksheet text disappeared on scrolling on some platforms.
-  * Sped up sending code to maxima.
+  * Sped up sending code to Maxima.
   * Removed quoting of Unicode characters within strings sent to maxima.
 
 19.08.1:
   * Bugfixes for nearly every instance something was drawn on the screen.
-  * Better handling of multi-cell lisp code
+  * Better handling of multi-cell Lisp code
 
 19.08.0:
   * Updated the russian translation
@@ -87,7 +183,7 @@ Current:
  * Many code optimizations.
 
 19.04.3:
- * wxMaxima now informs maxima which front-end is in use.
+ * wxMaxima now informs Maxima which front-end is in use.
 
 19.04.2:
  * Corrected the size of error messages
@@ -107,13 +203,13 @@ Current:
  * Autocompletion sometimes cleared the result after inputting it
  * Added more commands to autocompletion
  * Spanish and italian translation updates
- * We no more need to re-implement maxima's load() routine.
+ * We no more need to re-implement Maxima's load() routine.
    Instead we call the original one now.
  * Animations now on load remember which slide they stopped at.
  * A more error-proof language selection.
  * If the system looks like it uses UTF8 by default the locale name
-   that is passed to maxima now ends in ".UTF8" which should resolve
-   the "setting locale failed" errors from maxima.
+   that is passed to Maxima now ends in ".UTF8" which should resolve
+   the "setting locale failed" errors from Maxima.
  * Corrected the initial size of error messages.
  * Many additional bug fixes
  * Code cleanups
@@ -145,7 +241,7 @@ Current:
  * Shipped around a wxWidgets <3.1 bug for embedding bitmaps in svg
  * Many Links were updated to https
  * A better help file detection that still works if there is no .hhp file.
- * A command-line option that allows to specify the location of maxima.
+ * A command-line option that allows to specify the location of Maxima.
 
 18.12.0:
   * Use C++'s strong typing for more enums.
@@ -155,8 +251,8 @@ Current:
   * Tried to simplify the display code
   * Source file and function names that more closely their current meaning.
   * Many bug fixes.
-  * Now we pass the canonical locale name to maxima, not the short one.
-  * We no more try to set maxima's locale if it doesn't differ from the system's
+  * Now we pass the canonical locale name to Maxima, not the short one.
+  * We no more try to set Maxima's locale if it doesn't differ from the system's
     default one.
 
 18.11.2:
@@ -180,7 +276,7 @@ Current:
   * A menu item that sets the autosubscript feature for the current worksheet.
   * A menu allowing to switch floats to engineering format.
   * Maxima can now pass the values of variables to wxMaxima.
-  * Autocompletion for functions from lisp-only packages and for all of maxima's.
+  * Autocompletion for functions from lisp-only packages and for all of Maxima's.
     built in functions.
   * A context-sensitive "draw" sidepane.
   * We now allow a packet from Maxima to end in the middle of an unicode codepoint.
@@ -381,7 +477,7 @@ Current:
 
 15.08:
   * Compatibility with Maxima 5.37.0
-  * MathJAX now provides scaleable equations and extended drag-and-drop for the html export.
+  * MathJAX now provides scalable equations and extended drag-and-drop for the html export.
   * The table-of-contents-sidebar now shows the current cursor position
   * Fixed a few instances of cursors jumping out of the screen
   * Fixed a few instances of cursors jumping to the beginning or end of the worksheet

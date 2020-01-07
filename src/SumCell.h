@@ -32,6 +32,7 @@
 #define SUMCELL_H
 
 #include "Cell.h"
+#include "ParenCell.h"
 
 enum
 {
@@ -43,48 +44,52 @@ class SumCell : public Cell
 {
 public:
   SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SumCell(const SumCell &cell);
+  Cell *Copy() override {return new SumCell(*this);}
 
   ~SumCell();
+
+    //! This class can be derived from wxAccessible which has no copy constructor
+  SumCell operator=(const SumCell&) = delete;
+
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   
-  std::list<Cell *> GetInnerCells();
+  void RecalculateHeight(int fontsize) override;
+  void RecalculateWidths(int fontsize) override;
 
-  Cell *Copy();
-  
-  void RecalculateHeight(int fontsize);
-
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
   void SetUnder(Cell *under);
 
-  void SetOver(Cell *name);
+  void SetOver(Cell *over);
 
   void SetSumStyle(int style)
   {
     m_sumStyle = style;
   }
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
 protected:
-  Cell *m_base;
-  Cell *m_under;
-  Cell *m_over;
-  int m_signSize;
-  int m_signWidth;
+  std::shared_ptr<Cell> m_base;
+  std::shared_ptr<Cell> m_under;
+  std::shared_ptr<Cell> m_over;
+  std::shared_ptr<ParenCell> m_paren;
+  std::shared_ptr<Cell> m_displayedBase;
+  int m_signHeight;
+  double m_signWidth;
   int m_sumStyle;
   int m_signWCenter;
   int m_signTop;

@@ -29,6 +29,7 @@
 
 #include "ErrorRedirector.h"
 #include <iostream>
+#include <wx/datetime.h>
 
 ErrorRedirector::ErrorRedirector(wxLog *logger) : wxLog()
 {
@@ -86,6 +87,15 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       else
         wxLog::DoLogRecord(level, msg, info);
     }
+    
+    if(m_logToStdErr)
+    {
+      wxDateTime now;
+      now.SetToCurrent();
+
+      wxString record = now.FormatTime() + ": " + msg;
+      std::cerr << record.utf8_str() << "\n";
+    }
 }
 
 void ErrorRedirector::Flush()
@@ -99,3 +109,5 @@ void ErrorRedirector::Flush()
 }
 
 int ErrorRedirector::m_messages_logPaneOnly = 0;
+
+bool ErrorRedirector::m_logToStdErr = false;

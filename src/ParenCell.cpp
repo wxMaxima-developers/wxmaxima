@@ -30,9 +30,14 @@
 #include "ParenCell.h"
 #include "TextCell.h"
 
-ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_innerCell(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, wxT("("))),
+  m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
-  m_cellPointers = cellPointers;
+  m_open->SetStyle(TS_FUNCTION);
+  m_close->SetStyle(TS_FUNCTION);
   m_numberOfExtensions = 0;
   m_extendHeight = 12;
   m_charWidth = 12;
@@ -46,34 +51,26 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_signBotHeight = 12;
   m_signWidth = 12;
   m_bigParenType = Configuration::ascii;
-  m_innerCell = NULL;
   m_print = true;
-  m_open = new TextCell(parent, config, cellPointers, wxT("("));
-  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-Cell *ParenCell::Copy()
+ParenCell::ParenCell(const ParenCell &cell):
+ ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetInner(m_innerCell->CopyList(), m_type);
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_innerCell)
+    SetInner(cell.m_innerCell->CopyList(), cell.m_type);
+  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 ParenCell::~ParenCell()
 {
-  wxDELETE(m_innerCell);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_innerCell = m_open = m_close = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> ParenCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> ParenCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)
@@ -87,10 +84,9 @@ void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner == NULL)
     return;
-  wxDELETE(m_innerCell);
-  m_innerCell = inner;
-  m_type = type;
+  m_innerCell = std::shared_ptr<Cell>(inner);
 
+  m_type = type;
   // Tell the first of our inter cell not to begin with a multiplication dot.
   m_innerCell->m_SuppressMultiplicationDot = true;
 
@@ -98,6 +94,23 @@ void ParenCell::SetInner(Cell *inner, CellType type)
   while (inner->m_next != NULL)
     inner = inner->m_next;
   m_last1 = inner;
+  ResetSize();
+}
+
+void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
+{
+  if (inner == NULL)
+    return;
+  m_innerCell = inner;
+
+  m_type = type;
+  // Tell the first of our inter cell not to begin with a multiplication dot.
+  m_innerCell->m_SuppressMultiplicationDot = true;
+
+  m_last1 = inner.get();
+  // Search for the last of the inner cells
+  while (m_last1->m_next != NULL)
+    m_last1 = m_last1->m_next;
   ResetSize();
 }
 
@@ -160,32 +173,31 @@ void ParenCell::SetFont(int fontsize)
 void ParenCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-
-  // Add a dummy contents to empty parenthesis
-  if (m_innerCell == NULL)
-    m_innerCell = new TextCell(m_group, m_configuration, m_cellPointers);
   
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
+  if(!m_isBrokenIntoLines)
+  {
+    m_innerCell->RecalculateWidthsList(fontsize);
+    m_innerCell->RecalculateHeightList(fontsize);
+    m_open->RecalculateWidthsList(fontsize);
+    m_close->RecalculateWidthsList(fontsize);
+  }
   
   wxDC *dc = configuration->GetDC();
-  int size = m_innerCell->GetMaxHeight();
+  int size = m_innerCell->GetHeightList();
   if (fontsize < 4) fontsize = 4;
   int fontsize1 = Scale_Px(fontsize);
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
   {
-    if(configuration->GetGrouphesisDrawMode() != Configuration::handdrawn)
+    if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
-    m_open->RecalculateWidthsList(fontsize);
-    m_close->RecalculateWidthsList(fontsize);
-    m_signWidth = m_open->GetWidth();
-    m_signHeight= m_open->GetHeight();
+    m_signHeight = m_open->GetHeightList();
+    m_signWidth  = m_open->GetWidth();
   }
   else
   {
-    m_bigParenType = configuration->GetGrouphesisDrawMode();
+    m_bigParenType = configuration->GetParenthesisDrawMode();
     if(m_bigParenType != Configuration::handdrawn)
     {
       SetFont(fontsize);
@@ -228,7 +240,7 @@ void ParenCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
-  m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
+  m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
 
   SetFont(fontsize);
@@ -242,8 +254,8 @@ void ParenCell::RecalculateHeight(int fontsize)
 
   if (m_isBrokenIntoLines)
   {
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
   else
   {
@@ -270,13 +282,13 @@ void ParenCell::RecalculateHeight(int fontsize)
       if(m_bigParenType != Configuration::ascii)
         m_innerCell->SetCurrentPoint(
           wxPoint(m_currentPoint.x + m_signWidth,
-                  m_currentPoint.y + (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2)));
+                  m_currentPoint.y + (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2)));
       else
         m_innerCell->SetCurrentPoint(
           wxPoint(m_currentPoint.x + m_signWidth,
                   m_currentPoint.y));
       
-      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);      
+      m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(4);
       m_center = m_height / 2;   
     }
   }
@@ -298,7 +310,7 @@ void ParenCell::Draw(wxPoint point)
     case Configuration::ascii:
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point);
-      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(),point.y));
+      m_close->DrawList(wxPoint(point.x + m_open->GetWidth() + m_innerCell->GetFullWidth(),point.y));
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
@@ -306,7 +318,7 @@ void ParenCell::Draw(wxPoint point)
     {
       innerCellPos.x += m_signWidth;
       // Center the contents of the parenthesis vertically.
-      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+      innerCellPos.y += (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2);
 
       int top = point.y - m_center + Scale_Px (1);
       int bottom = top + m_signHeight - m_signBotHeight - Scale_Px (2);
@@ -338,43 +350,61 @@ void ParenCell::Draw(wxPoint point)
     {
       wxDC *adc = configuration->GetAntialiassingDC();
       innerCellPos.x = point.x + Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
-      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+      innerCellPos.y += (m_innerCell->GetCenterList() - m_innerCell->GetHeightList() /2);
       SetPen(1.0);
 
       int signWidth = m_signWidth - Scale_Px(2);
-      
-      wxPoint pointList[5];
+
+      wxPointList points;
       // Left bracket
-      pointList[0] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center);
-      pointList[1] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                             point.y - m_center + signWidth / 2);
-      pointList[2] = wxPoint(point.x + Scale_Px(1),
-                             point.y);
-      pointList[3] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                             point.y + m_center - signWidth / 2);
-      pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y + m_center);
-      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
-      pointList[2] = wxPoint(point.x + Scale_Px(1.5),
-                             point.y);
-      adc->DrawSpline(5,pointList);
-      
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                             point.y - m_center + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
+                                point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1),
+                                point.y));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
+                                point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      // Appending the last point twice should allow for an abrupt 180° turn
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
+                                point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)));
+      // The middle point of the 2nd run of the parenthesis is at a different place
+      // making the parenthesis wider here
+      points.Append(new wxPoint(point.x + Scale_Px(2),
+                                point.y));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
+                                point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
+                             point.y - m_center + Scale_Px(4)));
+      adc->DrawSpline(&points);
+
+      points.Clear();
       // Right bracket
-      pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                             point.y - m_center);
-      pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                             point.y - m_center + signWidth / 2);
-      pointList[2] = wxPoint(point.x + m_width - Scale_Px(1.5),
-                             point.y);
-      pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                             point.y + m_center - signWidth / 2);
-      pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                             point.y + m_center);
-      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
-      pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
-                             point.y);
-      adc->DrawSpline(5,pointList);      
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y - m_center + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
+                                point.y));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y + m_center - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(2),
+                                point.y));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
+      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                                point.y - m_center + Scale_Px(4)));
+      adc->DrawSpline(&points);
     }
       break;
     }
@@ -388,6 +418,9 @@ void ParenCell::Draw(wxPoint point)
 wxString ParenCell::ToString()
 {
   wxString s;
+  if(!m_innerCell)
+    return "()";
+  
   if (!m_isBrokenIntoLines)
   {
     if (m_print)
@@ -477,22 +510,16 @@ bool ParenCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell;
-    m_innerCell->m_previousToDraw = m_open;
+    m_open->m_nextToDraw = m_innerCell.get();
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
     if (m_last1 != NULL)
-    {
-      m_last1->m_nextToDraw = m_close;
-      m_close->m_previousToDraw = m_last1;
-    }
+      m_last1->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_open;
+    m_nextToDraw = m_open.get();
 
     ResetData();
-    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;

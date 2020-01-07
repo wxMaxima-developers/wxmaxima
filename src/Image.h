@@ -35,6 +35,8 @@
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
 
 /*! Manages an auto-scaling image
 
@@ -63,7 +65,7 @@ class Image
 {
 public:
   //! A constructor that generates an empty image. See LoadImage()
-  Image(Configuration **config);
+  explicit Image(Configuration **config);
 
   //! A constructor that loads the compressed file from a wxMemoryBuffer
   Image(Configuration **config, wxMemoryBuffer image, wxString type);
@@ -124,26 +126,26 @@ public:
     Will recreate the scaled image as soon as needed.
    */
   void ClearCache()
-  { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
-
+    { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
+  
   //! Reads the compressed image into a memory buffer
-  wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
-
+  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
+  
   //! Returns the file name extension of the current image
-  wxString GetExtension()
+  wxString GetExtension() const
   { return m_extension; };
 
   //! Loads an image from a file
   void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
   //! The maximum width this image shall be displayed with
-  double GetMaxWidth(){return m_maxWidth;}
+  double GetMaxWidth() const {return m_maxWidth;}
   //! The maximum height this image shall be displayed with
-  double GetMaxHeight(){return m_maxHeight;}
+  double GetHeightList() const {return m_maxHeight;}
   //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){m_maxWidth = width;}
   //! Set the maximum height this image shall be displayed with
-  void   SetMaxHeight(double height){m_maxHeight = height;}
+  void   SetListHeight(double height){m_maxHeight = height;}
   
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
@@ -155,10 +157,10 @@ public:
   wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk() {return m_isOk;}
+  bool IsOk() const {return m_isOk;}
   
   //! Returns the image in its unscaled form
-  wxBitmap GetUnscaledBitmap();
+  wxBitmap GetUnscaledBitmap() const;
 
   //! Can be called to specify a specific scale
   void Recalculate(double scale = 1.0);
@@ -169,20 +171,22 @@ public:
   long m_height;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage()
+  wxMemoryBuffer GetCompressedImage() const
   { return m_compressedImage; }
 
   //! Returns the original width
-  size_t GetOriginalWidth()
+  size_t GetOriginalWidth() const
   { return m_originalWidth; }
 
   //! Returns the original height
-  size_t GetOriginalHeight()
+  size_t GetOriginalHeight() const
   { return m_originalHeight; }
 
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
 
+  //! Can this image be exported in SVG format?
+  bool CanExportSVG() const {return m_svgRast != NULL;}
 protected:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
@@ -210,6 +214,9 @@ private:
   double m_maxHeight;
   //! The name of the image, if known.
   wxString m_imageName;
+  
+  NSVGimage* m_svgImage;
+  struct NSVGrasterizer* m_svgRast;
 };
 
 #endif // IMAGE_H

@@ -27,35 +27,33 @@
 */
 
 #include "AtCell.h"
+#include "TextCell.h"
 
-AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_baseCell (new TextCell(parent, config, cellPointers)),
+  m_indexCell(new TextCell(parent, config, cellPointers))
 {
-  m_cellPointers = cellPointers;
-  m_baseCell = NULL;
-  m_indexCell = NULL;
 }
 
-Cell *AtCell::Copy()
+AtCell::AtCell(const AtCell &cell):
+ AtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  AtCell *tmp = new AtCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetIndex(m_indexCell->CopyList());
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_indexCell)
+    SetIndex(cell.m_indexCell->CopyList());
 }
 
 AtCell::~AtCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_indexCell);
-  m_baseCell = m_indexCell = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> AtCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> AtCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)
@@ -67,16 +65,14 @@ void AtCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_indexCell);
-  m_indexCell = index;
+  m_indexCell = std::shared_ptr<Cell>(index);
 }
 
 void AtCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::shared_ptr<Cell>(base);
 }
 
 void AtCell::RecalculateWidths(int fontsize)
@@ -93,7 +89,7 @@ void AtCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 3));
-  m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
+  m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(7);
   m_center = m_baseCell->GetCenter();
 }
@@ -114,11 +110,11 @@ void AtCell::Draw(wxPoint point)
 
     in.x = point.x + m_baseCell->GetFullWidth() + Scale_Px(4);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-           +m_indexCell->GetMaxCenter() - Scale_Px(7);
+           +m_indexCell->GetCenterList() - Scale_Px(7);
     m_indexCell->DrawList(in);
     SetPen();
     dc->DrawLine(in.x - Scale_Px(2),
-                bs.y - m_baseCell->GetMaxCenter(),
+                bs.y - m_baseCell->GetCenterList(),
                 in.x - Scale_Px(2),
                 in.y);
     UnsetPen();

@@ -49,15 +49,16 @@ public:
   {
   public:
     Token(){m_style = TS_DEFAULT;}
-    Token(wxString text, TextStyle style)
-      {
-        m_text = text; m_style = style;
-      }
+    explicit Token(wxString text) : m_text(text){m_style = TS_DEFAULT;}
+    Token(wxString text, TextStyle style) :
+      m_text(text),
+      m_style(style)
+      {}
     Token& operator=(const Token& t){m_text = t.m_text;m_style = t.m_style; return *this;}
-    Token(wxString text){m_text = text; m_style = TS_DEFAULT;}
-    TextStyle GetStyle(){return m_style;}
-    wxString GetText() {return m_text;}
-    operator wxString(){return GetText();}
+    Token(const Token &token){*this = token;}
+    TextStyle GetStyle() const {return m_style;}
+    wxString GetText() const {return m_text;}
+    operator wxString() const {return GetText();}
   private:
     wxString m_text;
     TextStyle m_style;
@@ -66,13 +67,30 @@ public:
   static bool IsAlpha(wxChar ch);
   static bool IsNum(wxChar ch);
   static bool IsAlphaNum(wxChar ch);
-  static const wxString Operators(){return wxString("+-*/^:=#'!()[]{}");}
+  static bool IsSpace(wxChar ch);
+  static const wxString UnicodeNumbers()
+    {
+      return wxString(
+        wxT("\u00BD\u00B2\u00B3\u221E")
+        );
+    }
+  static const wxString Operators(){return wxString(
+      wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"
+        )
+      );}
 
   TokenList GetTokens(){return m_tokens;}
 
   
 protected:
+  //! The tokens the string is divided into
   TokenList m_tokens;
+  //! ASCII symbols that wxIsalnum() doesn't see as chars, but maxima does.
+  static const wxString m_additional_alphas;
+  //! Unicode Operators and other special non-ascii characters
+  static const wxString m_not_alphas;
+  //! Space characters
+  static const wxString m_spaces;
 };
 
 #endif // MAXIMATOKENIZER_H

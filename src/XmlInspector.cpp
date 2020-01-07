@@ -44,7 +44,8 @@ XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id
   m_state = clear;
   m_indentLevel = 0;
   BeginSuppressUndo();
-  Clear();
+  XmlInspector::Clear();
+  wxRichTextCtrl::Clear();
 }
 
 XmlInspector::~XmlInspector()
@@ -124,7 +125,7 @@ void XmlInspector::Update()
     // Indent the XML
     wxString textWithIndention;
     long length = 0;
-    for ( wxString::iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
+    for (wxString::const_iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
     {
       length++;
       // Assume that all tags add indentation
@@ -171,9 +172,9 @@ void XmlInspector::Add_ToMaxima(wxString text)
 {
   if(m_toMaxima != wxEmptyString)
   {
-    m_toMaxima += wxT("\n\x2015\n");
+    m_toMaxima += wxT("\n\u2015\n");
     if(m_fromMaxima != wxEmptyString)
-      m_fromMaxima += wxT("\n\x2015\n");
+      m_fromMaxima += wxT("\n\u2015\n");
   }
   m_toMaxima += text;
   m_updateNeeded = true;

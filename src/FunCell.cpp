@@ -27,36 +27,33 @@
  */
 
 #include "FunCell.h"
+#include "TextCell.h"
 
-FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_nameCell(new TextCell(parent, config, cellPointers)),
+  m_argCell(new TextCell(parent, config, cellPointers))
 {
-  m_cellPointers = cellPointers;
-  m_nameCell = NULL;
-  m_argCell = NULL;
 }
 
-Cell *FunCell::Copy()
+FunCell::FunCell(const FunCell &cell):
+ FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  FunCell *tmp = new FunCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetName(m_nameCell->CopyList());
-  tmp->SetArg(m_argCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_nameCell)
+    SetName(cell.m_nameCell->CopyList());
+  if(cell.m_argCell)
+    SetArg(cell.m_argCell->CopyList());
 }
 
 FunCell::~FunCell()
 {
-  wxDELETE(m_nameCell);
-  wxDELETE(m_argCell);
-  m_nameCell = m_argCell = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> FunCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> FunCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_nameCell)
     innerCells.push_back(m_nameCell);
   if(m_argCell)
@@ -68,8 +65,7 @@ void FunCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
-  wxDELETE(m_nameCell);
-  m_nameCell = name;
+  m_nameCell = std::shared_ptr<Cell>(name);
   name->SetStyle(TS_FUNCTION);
 }
 
@@ -77,17 +73,18 @@ void FunCell::SetArg(Cell *arg)
 {
   if (arg == NULL)
     return;
-  wxDELETE(m_argCell);
-  m_argCell = arg;
+  m_argCell = std::shared_ptr<Cell>(arg);
 }
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  m_argCell->RecalculateWidthsList(fontsize);
-  m_nameCell->RecalculateWidthsList(fontsize);
   if(!m_isBrokenIntoLines)
+  {
+    m_argCell->RecalculateWidthsList(fontsize);
+    m_nameCell->RecalculateWidthsList(fontsize);
     m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -
       Scale_Px(1);
+  }
   else
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
@@ -96,11 +93,13 @@ void FunCell::RecalculateWidths(int fontsize)
 void FunCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_nameCell->RecalculateHeightList(fontsize);
-  m_argCell->RecalculateHeightList(fontsize);
-  m_center = wxMax(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   if(!m_isBrokenIntoLines)
+  {
+    m_nameCell->RecalculateHeightList(fontsize);
+    m_argCell->RecalculateHeightList(fontsize);
+    m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
+  }
   else
     m_height = 0;
 }
@@ -194,13 +193,9 @@ bool FunCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_nameCell->m_previousToDraw = this;
-    m_nameCell->m_nextToDraw = m_argCell;
-    m_argCell->m_previousToDraw = m_nameCell;
+    m_nameCell->m_nextToDraw = m_argCell.get();
     m_argCell->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_argCell;
-    m_nextToDraw = m_nameCell;
+    m_nextToDraw = m_nameCell.get();
     m_width = 0;
     ResetData();    
     return true;

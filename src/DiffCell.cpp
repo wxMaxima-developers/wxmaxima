@@ -27,37 +27,34 @@
  */
 
 #include "DiffCell.h"
+#include "TextCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_baseCell(new TextCell(parent, config, cellPointers)),
+  m_diffCell(new TextCell(parent, config, cellPointers))
 {
-  m_baseCell = NULL;
-  m_diffCell = NULL;
-  m_cellPointers = cellPointers;
 }
 
-Cell *DiffCell::Copy()
+DiffCell::DiffCell(const DiffCell &cell):
+ DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  DiffCell *tmp = new DiffCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetDiff(m_diffCell->CopyList());
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_diffCell)
+    SetDiff(cell.m_diffCell->CopyList());
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
 }
 
 DiffCell::~DiffCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_diffCell);
-  m_baseCell = m_diffCell = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> DiffCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> DiffCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_diffCell)
@@ -70,8 +67,7 @@ void DiffCell::SetDiff(Cell *diff)
 {
   if (diff == NULL)
     return;
-  wxDELETE(m_diffCell);
-  m_diffCell = diff;
+  m_diffCell = std::shared_ptr<Cell>(diff);
 
   m_diffCell->m_SuppressMultiplicationDot = true;
 }
@@ -80,26 +76,31 @@ void DiffCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::shared_ptr<Cell>(base);
 }
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
   Cell::RecalculateWidths(fontsize);
-  m_baseCell->RecalculateWidthsList(fontsize);
-  m_diffCell->RecalculateWidthsList(fontsize);
-  m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+  if(!m_isBrokenIntoLines)
+  {
+    m_baseCell->RecalculateWidthsList(fontsize);
+    m_diffCell->RecalculateWidthsList(fontsize);
+    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+  }
   Cell::RecalculateWidths(fontsize);
 }
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_diffCell->RecalculateHeightList(fontsize);
-  m_center = wxMax(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
-  m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+  if(!m_isBrokenIntoLines)
+  {
+    m_baseCell->RecalculateHeightList(fontsize);
+    m_diffCell->RecalculateHeightList(fontsize);
+    m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
+    m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+  }
 }
 
 void DiffCell::Draw(wxPoint point)

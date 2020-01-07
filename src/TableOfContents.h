@@ -104,7 +104,6 @@ private:
   Configuration **m_configuration;
 
   std::vector<GroupCell *> m_structure;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // TABLEOFCONTENTS_H

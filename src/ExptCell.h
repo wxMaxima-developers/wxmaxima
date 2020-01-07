@@ -48,13 +48,15 @@
 class ExptCell : public Cell
 {
 public:
-  ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
-
+  ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  ExptCell(const ExptCell &cell);
+  Cell *Copy() override {return new ExptCell(*this);}
   ~ExptCell();
 
-  std::list<Cell *> GetInnerCells();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ExptCell &operator=(const ExptCell&) = delete;
 
-  Cell *Copy();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   //! Set the mantissa
   void SetBase(Cell *base);
@@ -63,43 +65,47 @@ public:
   void SetPower(Cell *power);
 
   //! By how much do we want to rise the power?
-  double PowRise(){return Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);}
+  double PowRise() const {return Scale_Px(.3 * m_fontSize);}
   
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString GetDiffPart();
+  wxString GetDiffPart() override;
 
   void IsMatrix(bool isMatrix)
   {
     m_isMatrix = isMatrix;
   }
 
-  bool BreakUp();
+  bool BreakUp() override;
 
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
-  Cell *m_baseCell, *m_exptCell;
-  TextCell *m_open, *m_close;
-  Cell *m_last2;
-  Cell *m_exp, *m_last1;
+  std::shared_ptr<Cell> m_baseCell;
+  std::shared_ptr<Cell> m_exptCell;
+  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<TextCell> m_close;
+  std::shared_ptr<TextCell> m_exp;
+  Cell *m_expt_last;
+  Cell *m_base_last;
   bool m_isMatrix;
+  int m_expt_yoffset;
 };
 
 

@@ -85,8 +85,6 @@ protected:
 
   void OnKeyDown(wxKeyEvent &event);
 
-DECLARE_EVENT_TABLE()
-
 };
 
 #endif // FINDREPLACEPANE_H

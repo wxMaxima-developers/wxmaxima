@@ -34,15 +34,17 @@ class ImgCell : public Cell
 {
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
-
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
           wxFileSystem *filesystem = NULL);
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
-
+  ImgCell(const ImgCell &cell);
+  Cell *Copy() override {return new ImgCell(*this);}
   ~ImgCell();
+
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ImgCell &operator=(const ImgCell&) = delete;
 
   //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, wxFileSystem *filesystem = NULL)
@@ -51,26 +53,29 @@ public:
         m_image->GnuplotSource(sourcefile,datafile, filesystem);
     }
   //! The name of the file with gnuplot commands that created this file
-  wxString GnuplotSource(){
-    if(m_image == NULL)
-      return wxEmptyString;
-    else
-      return m_image->GnuplotSource();
-  }
+  wxString GnuplotSource() const
+    {
+      if(m_image == NULL)
+        return wxEmptyString;
+      else
+        return m_image->GnuplotSource();
+    }
   //! The name of the file with gnuplot data needed for creating this file
-  wxString GnuplotData(){
-    if(m_image == NULL)
-      return wxEmptyString;
-    else
-      return m_image->GnuplotData();
-  }
+  wxString GnuplotData() const
+    {
+      if(m_image == NULL)
+        return wxEmptyString;
+      else
+        return m_image->GnuplotData();
+    }
 
-  std::list<Cell *> GetInnerCells();
-  void MarkAsDeleted();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  void MarkAsDeleted() override;
 
   void LoadImage(wxString image, bool remove = true);
 
-  Cell *Copy();
+  //! Can this image be exported in SVG format?
+  bool CanExportSVG() const {return (m_image != NULL) && m_image->CanExportSVG();}
 
   friend class SlideShow;
 
@@ -89,56 +94,56 @@ public:
     The scaled version of the image will be recreated automatically once it is 
     needed.
    */
-  virtual void ClearCache()
+  virtual void ClearCache() override
   { if (m_image)m_image->ClearCache(); }
 
-  virtual wxString GetToolTip(const wxPoint &point);
+  virtual wxString GetToolTip(const wxPoint &point) override;
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);
 
   //! Copies the cell to the system's clipboard
-  bool CopyToClipboard();
+  bool CopyToClipboard() override;
 
   void DrawRectangle(bool draw)
   { m_drawRectangle = draw; }
 
   //! Returns the file name extension that matches the image type
-  wxString GetExtension()
+  wxString GetExtension() const
   { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
 
-  //! Returnes the original compressed version of the image
-  wxMemoryBuffer GetCompressedImage()
+  //! Returns the original compressed version of the image
+  wxMemoryBuffer GetCompressedImage() const
   { return m_image->m_compressedImage; }
 
-  double GetMaxWidth(){if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
-  double GetMaxHeight(){if(m_image != NULL) return m_image->GetMaxHeight();else return -1;}
-  void SetMaxWidth(double width){if(m_image != NULL) return m_image->SetMaxWidth(width);}
-  void SetMaxHeight(double height){if(m_image != NULL) return m_image->SetMaxHeight(height);}
+  double GetMaxWidth() const {if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
+  double GetHeightList() const {if(m_image != NULL) return m_image->GetHeightList();else return -1;}
+  void SetMaxWidth(double width) const {if(m_image != NULL) return m_image->SetMaxWidth(width);}
+  void SetListHeight(double height) const {if(m_image != NULL) return m_image->SetListHeight(height);}
+
+  void RecalculateHeight(int fontsize) override;
+
+  void RecalculateWidths(int fontsize) override;
+
+  virtual void Draw(wxPoint point) override;
+
+  wxString ToString() override;
+
+  wxString ToMatlab() override;
+
+  wxString ToRTF() override;
+
+  wxString ToTeX() override;
+
+  wxString ToXML() override;
 
 protected:
-  Image *m_image;
-
-  void RecalculateHeight(int fontsize);
-
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
-
-  wxString ToString();
-
-  wxString ToMatlab();
-
-  wxString ToRTF();
-
-  wxString ToTeX();
-
-  wxString ToXML();
+  std::shared_ptr<Image> m_image;
   
   static int s_counter;
   bool m_drawRectangle;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
   {
     m_drawBoundingBox = true;
   }

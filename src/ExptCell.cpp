@@ -31,18 +31,37 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_baseCell(new TextCell(parent, config, cellPointers)),
+  m_exptCell(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, "(")),
+  m_close(new TextCell(parent, config, cellPointers, ")")),
+  m_exp(new TextCell(parent, config, cellPointers, "^"))
 {
-  m_cellPointers = cellPointers;
-  m_last1 = NULL;
-  m_last2 = NULL;
-  m_baseCell = NULL;
-  m_exptCell = NULL;
+  m_open->SetStyle(TS_FUNCTION);
+  m_close->SetStyle(TS_FUNCTION);
+  m_exp->SetStyle(TS_FUNCTION);
+  m_expt_yoffset = 0;
+  m_base_last = m_baseCell.get();
+  m_expt_last = m_exptCell.get();
   m_isMatrix = false;
-  m_exp = new TextCell(parent, config, cellPointers, wxT("^"));
-  m_open = new TextCell(parent, config, cellPointers, wxT("("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
+}
+
+ExptCell::ExptCell(const ExptCell &cell):
+  ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+{
+  CopyCommonData(cell);
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_exptCell)
+    SetPower(cell.m_exptCell->CopyList());
+}
+
+ExptCell::~ExptCell()
+{
+  MarkAsDeleted();
 }
 
 void ExptCell::Draw(wxPoint point)
@@ -56,42 +75,14 @@ void ExptCell::Draw(wxPoint point)
     m_baseCell->DrawList(bs);
 
     point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
-    // Raise the exponent to share the upper border with the base cell
-    if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
-      point.y -= m_baseCell->GetMaxCenter() - m_exptCell->GetMaxCenter();
-    // Raise the exponent a little bit more so it looks like an exponent
-    point.y -= PowRise();
+    point.y -= m_expt_yoffset;
     m_exptCell->DrawList(point);
   }
 }
 
-
-Cell *ExptCell::Copy()
+std::list<std::shared_ptr<Cell>> ExptCell::GetInnerCells()
 {
-  ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetPower(m_exptCell->CopyList());
-  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
-  tmp->m_open->DontEscapeOpeningParenthesis();
-
-  return tmp;
-}
-
-ExptCell::~ExptCell()
-{
-  wxDELETE(m_baseCell);
-  wxDELETE(m_exptCell);
-  wxDELETE(m_exp);
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-  m_baseCell = m_exptCell = m_exp = m_open = m_close = NULL;
-  MarkAsDeleted();
-}
-
-std::list<Cell *> ExptCell::GetInnerCells()
-{
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_exptCell)
@@ -101,7 +92,7 @@ std::list<Cell *> ExptCell::GetInnerCells()
   if(m_open)
     innerCells.push_back(m_open);
   if(m_close)
-    innerCells.push_back(m_close );
+    innerCells.push_back(m_close);
   return innerCells;
 }
 
@@ -110,8 +101,7 @@ void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)
     return;
-  wxDELETE(m_exptCell);
-  m_exptCell = power;
+  m_exptCell = std::shared_ptr<Cell>(power);
 
   if (!m_exptCell->IsCompound())
   {
@@ -119,23 +109,22 @@ void ExptCell::SetPower(Cell *power)
     m_close->m_isHidden = true;
   }
 
-  m_last2 = power;
-  if (m_last2 != NULL)
-    while (m_last2->m_next != NULL)
-      m_last2 = m_last2->m_next;
+  m_expt_last = power;
+  if (m_expt_last != NULL)
+    while (m_expt_last->m_next != NULL)
+      m_expt_last = m_expt_last->m_next;
 }
 
 void ExptCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::shared_ptr<Cell>(base);
 
-  m_last1 = base;
-  if (m_last1 != NULL)
-    while (m_last1->m_next != NULL)
-      m_last1 = m_last1->m_next;
+  m_base_last = base;
+  if (m_base_last != NULL)
+    while (m_base_last->m_next != NULL)
+      m_base_last = m_base_last->m_next;
 }
 
 void ExptCell::RecalculateWidths(int fontsize)
@@ -170,28 +159,30 @@ void ExptCell::RecalculateHeight(int fontsize)
   
   if (m_isBrokenIntoLines)
   {
-    m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
   }
   else
   {
-    int expt_yoffset = 0;
+    m_exptCell->RecalculateHeightList(fontsize);
+    m_baseCell->RecalculateHeightList(fontsize);
+
+    m_expt_yoffset = m_exptCell->GetDrop() + PowRise();
+
+    m_height = m_baseCell->GetHeight();
+    m_center = m_baseCell->GetCenter();
+
+    int baseHeight = m_baseCell->GetHeight() - m_baseCell->GetDrop();
+    int exptHeight = m_exptCell->GetHeight() - m_exptCell->GetDrop() + m_expt_yoffset;
     
-    if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
-      expt_yoffset = m_baseCell->GetMaxCenter() - m_exptCell->GetMaxCenter();
-    // Raise the exponent a little bit more so it looks like an exponent
-    expt_yoffset = PowRise();
-    m_height = m_baseCell->GetMaxHeight();
-    m_center = m_baseCell->GetMaxCenter();
-    
-    if(expt_yoffset > 0)
+    if(baseHeight < exptHeight)
     {
-      m_height += expt_yoffset;
-      m_center += expt_yoffset;
+      m_height += exptHeight - baseHeight;
+      m_center += exptHeight - baseHeight;
     }
+    else
+      m_expt_yoffset += baseHeight - exptHeight;
   }
-  
-  
 }
 
 wxString ExptCell::ToString()
@@ -278,30 +269,19 @@ bool ExptCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_baseCell->m_previousToDraw = this;
-    wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in the base of an exptCell!"));
-    if (m_last1 != NULL)
-    {
-      m_last1->m_nextToDraw = m_exp;
-      m_exp->m_previousToDraw = m_last1;
-    }
-    m_exp->m_nextToDraw = m_open;
-    m_open->m_previousToDraw = m_exp;
-    m_open->m_nextToDraw = m_exptCell;
-    m_exptCell->m_previousToDraw = m_open;
-    wxASSERT_MSG(m_last2 != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
-    if (m_last2 != NULL)
-    {
-      m_last2->m_nextToDraw = m_close;
-      m_close->m_previousToDraw = m_last2;
-    }
+    wxASSERT_MSG(m_base_last != NULL, _("Bug: No last cell in the base of an exptCell!"));
+    if (m_base_last != NULL)
+      m_base_last->m_nextToDraw = m_exp.get();
+    m_exp->m_nextToDraw = m_open.get();
+    m_open->m_nextToDraw = m_exptCell.get();
+    wxASSERT_MSG(m_expt_last != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
+    if (m_expt_last != NULL)
+      m_expt_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
-    if (m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_baseCell;
+    m_nextToDraw = m_baseCell.get();
     ResetData();    
-    m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
+    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;

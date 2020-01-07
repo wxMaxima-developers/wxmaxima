@@ -60,17 +60,22 @@ public:
                         be set to NULL if this cell is deleted.
    */
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
-
+  SlideShow(const SlideShow &cell);
+  Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();
+  SlideShow &operator=(const SlideShow&) = delete;
 
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;
+
+  //! Can the current image be exported in SVG format?
+  bool CanExportSVG() const {return (m_images[m_displayed] != NULL) && m_images[m_displayed]->CanExportSVG();}
 
   //! A Gif object for the clipboard
   class GifDataObject : public wxCustomDataObject
   {
   public:
-    GifDataObject(const wxMemoryOutputStream &str);
+    explicit GifDataObject(const wxMemoryOutputStream &str);
 
     GifDataObject();
 
@@ -78,42 +83,40 @@ public:
     wxCharBuffer m_databuf;
   };
 
-  bool IsOk(){return (m_size>0) && (m_images[m_displayed]->IsOk());}
+  bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  virtual wxString GetToolTip(const wxPoint &point);
+  virtual wxString GetToolTip(const wxPoint &point) override;
 
-  std::list<Cell *> GetInnerCells();
-  void MarkAsDeleted();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  void MarkAsDeleted()  override;
 
   /*! Remove all cached scaled images from memory
 
     To be called when the slideshow is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
    */
-  virtual void ClearCache();
+  virtual void ClearCache() override;
 
   void LoadImages(wxArrayString images, bool deleteRead);
 
-  Cell *Copy();
-
-  int GetDisplayedIndex()
+  int GetDisplayedIndex() const
   { return m_displayed; }
 
-  wxImage GetBitmap(int n)
+  wxImage GetBitmap(int n) const
   { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
 
-  int Length()
+  int Length() const
   { return m_size; }
 
   //! Exports the image the slideshow currently displays
-  wxSize ToImageFile(wxString filename);
+  wxSize ToImageFile(wxString file);
 
   //! Exports the whole animation as animated gif
-  wxSize ToGif(wxString filename);
+  wxSize ToGif(wxString file);
 
-  bool CopyToClipboard();
+  bool CopyToClipboard()  override;
   
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();
@@ -123,7 +126,7 @@ public:
     Returns either the frame rate set for this slide show cell individually or 
     the default frame rate chosen in the config.
    */
-  int GetFrameRate();
+  int GetFrameRate() const;
 
   /*! Reload the animation timer starting and instantiating and registering it if necessary.
 
@@ -144,7 +147,7 @@ public:
    */
   int SetFrameRate(int Freq);
 
-  bool AnimationRunning() {return m_animationRunning;}
+  bool AnimationRunning() const {return m_animationRunning;}
   void AnimationRunning(bool run);
 protected:
   wxTimer *m_timer;
@@ -158,25 +161,25 @@ protected:
   int m_size;
   int m_displayed;
   wxFileSystem *m_fileSystem;
-  vector<Image *> m_images;
+  vector<std::shared_ptr<Image>> m_images;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToRTF();
+  wxString ToRTF() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   {
     m_drawBoundingBox = true;
   }

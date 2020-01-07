@@ -31,6 +31,7 @@
 
 #include "Cell.h"
 #include "TextCell.h"
+#include "ParenCell.h"
 
 /* This class represents fractions.
 
@@ -42,13 +43,18 @@
 class FracCell : public Cell
 {
 public:
-  FracCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
-
+  FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  FracCell(const FracCell &cell);
+  Cell *Copy() override {return new FracCell(*this);}
   ~FracCell();
-  
-  std::list<Cell *> GetInnerCells();
 
-  //! All types of fractions we supportx
+  //! This class can be derived from wxAccessible which has no copy constructor
+  FracCell &operator=(const FracCell&) = delete;
+
+  
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+
+  //! All types of fractions we support
   enum FracType
   {
     FC_NORMAL,
@@ -56,13 +62,11 @@ public:
     FC_DIFF
   };
 
-  Cell *Copy();
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetFracStyle(int style)
   {
@@ -76,45 +80,57 @@ public:
   void SetDenom(Cell *denom);
 
   //! Answers the question if this is an operator by returning "true".
-  bool IsOperator()
+  bool IsOperator() const override
   {
     return true;
   }
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
   //! Fractions in exponents are shown in their linear form.
-  void SetExponentFlag();
+  void SetExponentFlag() override;
 
-  bool BreakUp();
+  bool BreakUp() override;
 
   void SetupBreakUps();
 
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
   //! The numerator
-  Cell *m_num;
+  std::shared_ptr<Cell> m_num;
   //! The denominator
-  Cell *m_denom;
-  Cell *m_open1, *m_open2, *m_close1, *m_close2, *m_divide;
-  Cell *m_last1, *m_last2;
+  std::shared_ptr<Cell> m_denom;
+  //! A parenthesis around the numerator
+  std::shared_ptr<ParenCell> m_numParenthesis;
+  //! A parenthesis around the denominator
+  std::shared_ptr<ParenCell> m_denomParenthesis;
+  //! The "/" sign
+  std::shared_ptr<TextCell> m_divide;
+  //! The last element of the numerator
+  Cell *m_num_Last;
+  //! The last element of the denominator
+  Cell *m_denom_Last;
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
+  //! The displayed version of the numerator, if needed with parenthesis
+  std::shared_ptr<Cell> m_displayedNum;
+  //! The displayed version of the denominator, if needed with parenthesis
+  std::shared_ptr<Cell> m_displayedDenom;
+  //! The way the fraction should be displayed
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?
   int m_protrusion;
-  int m_expDivideWidth;
   /*! The horizontal gap between this frac and any minus before it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 

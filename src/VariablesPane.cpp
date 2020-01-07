@@ -20,6 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "VariablesPane.h"
+#include "memory"
 
 Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, id)
 {
@@ -83,11 +84,11 @@ void Variablespane::OnKey(wxKeyEvent &event)
       BeginBatch();
       wxArrayInt selectedRows = GetSelectedRows();
       selectedRows.Sort(CompareInt);
-      int offset = 0;
       
       if(!selectedRows.IsEmpty())
       {
-        for (wxArrayInt::iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
+        int offset = 0;
+        for (wxArrayInt::const_iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
         {
           DeleteRows(*it-offset);
           offset++;
@@ -152,7 +153,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   for(int i = 0; i < GetNumberRows(); i++)
     m_vars[GetCellValue(i,0)] = 1;
   
-  wxMenu *popupMenu = new wxMenu();
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu);
   if(m_vars["values"] != 1)
     popupMenu->Append(varID_values,
                       _("List of user variables"), wxEmptyString, wxITEM_NORMAL);
@@ -199,10 +200,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
                     _("Add all"), wxEmptyString, wxITEM_NORMAL);
 
   if (popupMenu->GetMenuItemCount() > 0)
-    PopupMenu( popupMenu);
-  
-  wxDELETE(popupMenu);
-  
+    PopupMenu(popupMenu.get());  
 }
 
 void Variablespane::OnTextChanging(wxGridEvent &event)
@@ -311,7 +309,7 @@ wxArrayString Variablespane::GetVarnames()
 wxString Variablespane::InvertCase(wxString var)
 {
   wxString retval;
-  for (wxString::iterator it = var.begin(); it != var.end(); ++it)
+  for (wxString::const_iterator it = var.begin(); it != var.end(); ++it)
   {
     if(wxIsupper(*it))
       retval += wxString(*it).Lower();
@@ -330,13 +328,13 @@ wxString Variablespane::InvertCase(wxString var)
 void Variablespane::AddWatchCode(wxString code)
 {
   wxString unescapedCode;
-  for (wxString::iterator it = code.begin(); it != code.end(); ++it)
+  for (wxString::const_iterator it = code.begin(); it != code.end(); ++it)
   {
     if(*it != '\\')
       unescapedCode+=*it;
     else
     {
-      it++;
+      ++it;
       if(it != code.end())
         unescapedCode += *it;
     }
@@ -400,7 +398,7 @@ wxString Variablespane::EscapeVarname(wxString var)
 
 bool Variablespane::IsValidVariable(wxString var)
 {
-  for (wxString::iterator it = var.begin(); it != var.end(); ++it)
+  for (wxString::const_iterator it = var.begin(); it != var.end(); ++it)
   {
     if(!wxIsprint(*it))
       return false;

@@ -54,6 +54,11 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
     if(font.IsOk())
       SetFont(font);
   }
+#if defined __WXGTK__
+  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+#else
+  Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+#endif
 }
 
 
@@ -152,11 +157,3 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
       SetInsertionPoint(to + 1);
   }
 }
-
-BEGIN_EVENT_TABLE(BTextCtrl, wxTextCtrl)
-#if defined __WXGTK__
-                EVT_KEY_DOWN(BTextCtrl::OnChar)
-#else
-                EVT_CHAR(BTextCtrl::OnChar)
-#endif
-END_EVENT_TABLE()

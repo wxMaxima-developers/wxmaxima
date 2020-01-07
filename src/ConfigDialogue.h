@@ -32,7 +32,7 @@ dialog. The preferences themself will be read directly using
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/hashmap.h>
-
+#include "memory"
 #include <wx/propdlg.h>
 #include <wx/generic/propdlg.h>
 #include <wx/spinctrl.h>
@@ -74,10 +74,19 @@ class ConfigDialogue : public wxPropertySheetDialog
 {
 public:
   //! The constructor
-  ConfigDialogue(wxWindow *parent, Configuration *config);
+  ConfigDialogue(wxWindow *parent, Configuration *cfg);
 
   //! The destructor
   ~ConfigDialogue();
+
+  //! The export formats we support for HTML equations
+  enum htmlExportFormats
+  {
+    mathJaX_TeX = 0,
+    bitmap = 1,
+    mathML_mathJaX = 2,
+    svg = 3
+  };
 
   /*! Called if the color of an item has been changed
 
@@ -93,6 +102,7 @@ public:
   void WriteSettings();
 
 private:
+  struct NSVGrasterizer* m_svgRast;
   //! The configuration storage
   Configuration *m_configuration;
   
@@ -116,6 +126,7 @@ private:
         m_italic = false;
         m_bold = false;
         m_underlined = false;
+        Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint));
       };
 
     //! Sets all user-changable elements of style of the example at once.
@@ -151,7 +162,6 @@ private:
     wxString m_font;
     //! The size of the characters of the currently selected item type
     int m_size;
-    DECLARE_EVENT_TABLE()
   };
 
   /*! A rectangle showing the color of an item
@@ -176,7 +186,6 @@ private:
   private:
     ConfigDialogue *m_configDialogue;
     wxColor m_color;
-    DECLARE_EVENT_TABLE()
   };
 
 
@@ -191,8 +200,7 @@ private:
 
   //! Loads the image for a configuration tab
   wxBitmap GetImage(wxString name,
-                   unsigned char *data_128, size_t len_128,
-                   unsigned char *data_192, size_t len_192);
+                   unsigned char *data, size_t len);
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();
@@ -252,18 +260,18 @@ protected:
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_documentclassOptions;
   wxTextCtrl *m_texPreamble;
-  wxSpinCtrl *m_autoSaveInterval;
+  wxCheckBox *m_autoSave;
   wxButton *m_mpBrowse;
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
-  wxCheckBox *m_saveSize;
   wxCheckBox *m_abortOnError;
+  wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
   wxCheckBox *m_savePanes;
-  wxCheckBox *m_usepngCairo;
+  wxCheckBox *m_usesvg;
   wxCheckBox *m_antialiasLines;
   wxSpinCtrl *m_defaultFramerate;
   wxSpinCtrl *m_defaultPlotWidth;
@@ -312,6 +320,7 @@ protected:
   wxCheckBox *m_fixedFontInTC;
   wxCheckBox *m_unixCopy;
   wxCheckBox *m_changeAsterisk;
+  wxCheckBox *m_hidemultiplicationSign;
   wxCheckBox *m_latin2Greek;
   wxCheckBox *m_useJSMath;
   wxCheckBox *m_useUnicodeMaths;
@@ -319,7 +328,6 @@ protected:
   wxBookCtrlBase *m_notebook;
   wxStaticText *m_mathFont;
   wxButton *m_getMathFont;
-  wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
@@ -329,7 +337,7 @@ protected:
   void MaximaLocationChanged(wxCommandEvent &unused);
 
   //! Is called when the path to the maxima binary was changed.
-  void UsepngcairoChanged(wxCommandEvent &event);
+  void UsesvgChanged(wxCommandEvent &event);
 
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent &event);
@@ -366,8 +374,7 @@ protected:
   int m_mathFontSize;
 
   //! A list containing the pictograms for the tabs.
-  wxImageList *m_imageList;
-DECLARE_EVENT_TABLE()
+  std::unique_ptr<wxImageList> m_imageList;
 };
 
 #ifndef __WXMSW__

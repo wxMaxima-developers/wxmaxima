@@ -44,7 +44,6 @@ Printout::Printout(wxString title, Configuration **configuration, double scaleFa
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_numberOfPages = 0;
-  m_tree = NULL;
   m_printConfigCreated = false;
 }
 
@@ -60,7 +59,7 @@ Printout::~Printout()
 
 void Printout::SetData(GroupCell *tree)
 {
-  m_tree = tree;
+  m_tree = std::unique_ptr<GroupCell>(tree);
   if (m_tree != NULL)
     m_tree->BreakPage(true);
 }
@@ -96,13 +95,13 @@ bool Printout::OnPrintPage(int num)
   if (tmp != NULL)
   {
     if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      tmp = tmp->GetNext();
     if (tmp == NULL)
       return true;
 
     wxPoint point;
     point.x = marginX;
-    point.y = marginY + tmp->GetMaxCenter() + GetHeaderHeight();
+    point.y = marginY + tmp->GetCenterList() + GetHeaderHeight();
     wxConfigBase *config = wxConfig::Get();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
@@ -121,12 +120,12 @@ bool Printout::OnPrintPage(int num)
       if (tmp->m_next != NULL)
       {
         point.x = marginX;
-        point.y += drop + tmp->m_next->GetMaxCenter();
+        point.y += drop + tmp->m_next->GetCenterList();
         point.y += (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip());
         drop = tmp->m_next->GetMaxDrop();
       }
 
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      tmp = tmp->GetNext();
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
@@ -157,7 +156,7 @@ void Printout::BreakPages()
   int currentHeight = marginY;
   int skip = (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip());;
 
-  GroupCell *tmp = dynamic_cast<GroupCell *>(m_tree);
+  GroupCell *tmp = m_tree.get();
   m_pages.push_back(tmp);
 
   m_numberOfPages = 1;
@@ -165,11 +164,11 @@ void Printout::BreakPages()
   {
     tmp->BreakPage(false);
 
-    if (currentHeight + tmp->GetMaxHeight() + skip >= pageHeight - marginY ||
+    if (currentHeight + tmp->GetHeightList() + skip >= pageHeight - marginY ||
         tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
     {
       if (tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
-        currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+        currentHeight = marginY + tmp->GetHeightList() + headerHeight;
       else
         currentHeight = marginY;
       tmp->BreakPage(true);
@@ -177,9 +176,9 @@ void Printout::BreakPages()
       m_numberOfPages++;
     }
     else
-      currentHeight += tmp->GetMaxHeight() + skip;
+      currentHeight += tmp->GetHeightList() + skip;
 
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
 }
 
@@ -311,25 +310,24 @@ void Printout::PrintHeader(int pageNum, wxDC *dc)
 
 void Printout::Recalculate()
 {
-  GroupCell *tmp = m_tree;
+  GroupCell *tmp = m_tree.get();
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
+//  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
 
   while (tmp != NULL)
   {
     tmp->ResetSize();
     tmp->Recalculate();
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
 }
 
 void Printout::DestroyTree()
 {
-  wxDELETE(m_tree);
   m_tree = NULL;
 }

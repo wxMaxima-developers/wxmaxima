@@ -46,7 +46,7 @@
   use <code>\\r</code> as a marker that this line has to be broken here if we
   don't want it to extend beyond the right margin of the screen.
 
-  In a few places we use wxString::iterator instead of accessing individual 
+  In a few places we use wxString::const_iterator instead of accessing individual 
   letters within the string using the [] operator. This might look overly
   complicated. But in UTF-8 all non-standard-ASCII-characters use more than one
   byte making iterating over every single char of the string the only way of
@@ -60,13 +60,15 @@ class EditorCell : public Cell
 private:
 
   #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description);
-  wxAccStatus GetFocus (int *childId, EditorCell **child);
-  wxAccStatus GetDefaultAction(int childId, wxString *actionName);
-  wxAccStatus GetValue (int childId, wxString *strValue);
-  wxAccStatus GetRole (int childId, wxAccRole *role);
+  wxAccStatus GetDescription(int childId, wxString *description) override;
+  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
+  wxAccStatus GetValue (int childId, wxString *strValue) override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) override;
   #endif
-  
+
+  EditorCell &operator=(const EditorCell&) = delete;
+
   int m_errorIndex;
 
   //! A list of all potential autoComplete targets within this cell
@@ -97,7 +99,8 @@ public:
   //! The constructor
   EditorCell(Cell *parent, Configuration **config,
              CellPointers *cellPointers, wxString text = wxEmptyString);
-
+  EditorCell(const EditorCell &cell);
+  Cell *Copy() override {return new EditorCell(*this);}
   ~EditorCell();
 
   //! Insert the symbol that corresponds to the ESC command txt
@@ -113,7 +116,7 @@ public:
   void AutoAnswer(bool autoAnswer){m_autoAnswer = autoAnswer;}
 
   //! Which cell the blinking cursor is in?
-  EditorCell *GetActiveCell()
+  EditorCell *GetActiveCell() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell); }
 
   /*! Tells where the mouse selection has started.
@@ -121,7 +124,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  EditorCell *MouseSelectionStart()
+  EditorCell *MouseSelectionStart() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn); }
 
   /*! Tells where the keyboard selection has started.
@@ -129,7 +132,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  EditorCell *KeyboardSelectionStart()
+  EditorCell *KeyboardSelectionStart() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn); }
 
   /*! Tells where the search has started.
@@ -137,7 +140,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  EditorCell *SearchStart()
+  EditorCell *SearchStart() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn); }
 
   /*! At which character inside its cell has the search started?
@@ -145,7 +148,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  int IndexSearchStartedAt()
+  int IndexSearchStartedAt() const
   { return m_cellPointers->m_indexSearchStartedAt; }
 
   /*! Remember that this is the cell the search was started in.
@@ -182,7 +185,7 @@ public:
   { m_cellPointers->m_selectionString = string; }
 
   //! A list of words that might be applicable to the autocomplete function.
-  wxArrayString GetWordList()
+  wxArrayString GetWordList() const
   { return m_wordList; }
 
   //! Has the selection changed since the last draw event?
@@ -197,8 +200,8 @@ public:
     Running this command tells the cell to remove these pointers as the cell is 
     no more displayed currently.
    */
-  void MarkAsDeleted();
-  std::list<Cell *> GetInnerCells();
+  void MarkAsDeleted() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   /*! Expand all tabulators.
 
@@ -206,7 +209,7 @@ public:
     \param posInLine The number of characters that come before the input in the same line
     \todo Implement the actual TAB expansion
   */
-  wxString TabExpand(wxString input, long posInLine);
+  static wxString TabExpand(wxString input, long posInLine);
 
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
@@ -214,16 +217,14 @@ public:
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
 
-  Cell *Copy();
-
   //! Recalculate the widths of the current cell.
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
   /*! Convert the current cell to a string
   
@@ -237,16 +238,16 @@ public:
   wxString ToMatlab(bool dontLimitToSelection);
 
   //! Convert the current cell to LaTeX code
-  wxString ToTeX();
+  wxString ToTeX() override;
 
   //! Convert the current cell to XML code for inclusion in a .wxmx file.
-  wxString ToXML();
+  wxString ToXML() override;
 
   //! Convert the current cell to HTML code.
   wxString ToHTML();
 
   //! Convert the current cell to RTF code
-  wxString ToRTF();
+  wxString ToRTF() override;
 
   //! Set the currently used font to the one that matches this cell's formatting
   void SetFont();
@@ -258,13 +259,13 @@ public:
     
     Automatically calls StyleText().
    */
-  void SetValue(const wxString &text);
+  void SetValue(const wxString &text) override;
 
   /*! Returns the text contained in this cell
 
     Naturally all soft line breaks are converted back to spaces beforehand.
    */
-  wxString GetValue()
+  wxString GetValue() const override
   {
     return m_text;
   }
@@ -285,7 +286,7 @@ public:
   void Reset();
 
   //! Decide what to do if the user pressed a key when this cell was selected
-  void ProcessEvent(wxKeyEvent &event);
+  void ProcessEvent(wxKeyEvent &event) override;
 
   /*! Activate the blinking cursor in this cell
     
@@ -298,28 +299,28 @@ public:
   void DeactivateCursor();
 
   //! Return the index of the 1st char of the line containing the letter pos.
-  size_t BeginningOfLine(long pos);
+  size_t BeginningOfLine(long pos) const;
 
   //! Return the index of the last char of the line containing the letter \#pos,
   size_t EndOfLine(long pos);
 
   //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;
-  bool AddEnding();
+  bool AddEnding() override;
 
   //! Determines which line and column the pos'th char is at.
-  void PositionToXY(int pos, unsigned int *line, unsigned int *col);
+  void PositionToXY(int position, unsigned int *x, unsigned int *y);
 
   //! Determines which index the char at the position "x chars left, y chars down" is at.
   int XYToPosition(int x, int y);
 
   //! The screen coordinates of the cursor
-  wxPoint PositionToPoint(int fontsize, int pos = -1);
+  wxPoint PositionToPoint(int fontsize, int pos = -1) override;
 
   //! Sets the cursor to the screen coordinate point
-  void SelectPointText(const wxPoint &point);
+  void SelectPointText(const wxPoint &point) override;
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(const wxPoint &one, const wxPoint &two);
+  void SelectRectText(const wxPoint &one, const wxPoint &two) override;
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,
@@ -328,29 +329,29 @@ public:
   //! Is the point point inside the currently selected text?
   bool IsPointInSelection(wxPoint point);
 
-  bool CopyToClipboard();
+  bool CopyToClipboard() override;
 
-  bool CutToClipboard();
+  bool CutToClipboard() override;
 
-  void PasteFromClipboard(const bool &primary = false);
+  void PasteFromClipboard(const bool &primary = false) override;
 
   //! Get the character position the selection has been started with
-  int GetSelectionStart()
+  int GetSelectionStart() const
   { return m_selectionStart; }
 
   //! Get the character position the selection has been ended with
-  int GetSelectionEnd()
+  int GetSelectionEnd() const
   { return m_selectionEnd; }
 
   //! Select the whole text contained in this Cell
-  void SelectAll()
+  void SelectAll() override
   {
     m_selectionStart = 0;
     m_selectionEnd = m_positionOfCaret = m_text.Length();
   }
 
   //! Does the selection currently span the whole cell?
-  bool AllSelected()
+  bool AllSelected() const
   {
     return (m_selectionStart == 0) && (m_selectionEnd == (long) m_text.Length());
   }
@@ -362,12 +363,12 @@ public:
   }
 
   //! Is there any text selected right now?
-  bool SelectionActive()
+  bool SelectionActive() const
   {
     return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
   }
 
-  bool CanCopy()
+  bool CanCopy() const override
   {
     return m_selectionStart != -1;
   }
@@ -376,21 +377,21 @@ public:
 
   void FindMatchingParens();
 
-  int GetLineWidth(unsigned int line, int end);
+  int GetLineWidth(unsigned int line, int pos);
 
   //! true, if this cell's width has to be recalculated.
-  bool IsDirty()
+  bool IsDirty() const override
   {
     return m_isDirty;
   }
 
   //! Toggles the visibility of the cursor which is used to make it blink.
-  void SwitchCaretDisplay()
+  void SwitchCaretDisplay() override
   {
     m_displayCaret = !m_displayCaret;
   }
 
-  void SetFocus(bool focus)
+  void SetFocus(bool focus) override
   {
     m_hasFocus = focus;
   }
@@ -406,18 +407,18 @@ public:
     StyleText();
   }
 
-  bool IsActive()
+  bool IsActive() const override
   { return this == m_cellPointers->m_activeCell; }
 
   //! Is the cursor at the start of this cell?
-  bool CaretAtStart()
+  bool CaretAtStart() const
   { return m_positionOfCaret == 0; }
 
   //! Move the cursor to the start of this cell
   void CaretToStart();
 
   //! Is the cursor at the end of this cell?
-  bool CaretAtEnd()
+  bool CaretAtEnd() const
   { return m_positionOfCaret == (long) m_text.Length(); }
 
   //! Move the cursor to the end of this cell
@@ -427,7 +428,7 @@ public:
   void CaretToPosition(int pos);
 
   //! True, if there is undo information for this cell
-  bool CanUndo();
+  bool CanUndo(); 
 
   //! Issue an undo command
   void Undo();
@@ -454,7 +455,7 @@ public:
   void ClearUndo();
 
   //! Query if this cell needs to be re-evaluated by maxima
-  bool ContainsChanges()
+  bool ContainsChanges() const
   { return m_containsChanges; }
 
   //! Set the information if this cell needs to be re-evaluated by maxima
@@ -465,7 +466,7 @@ public:
 
   /*! Replaces all occurrences of a given string
    */
-  int ReplaceAll(wxString oldString, wxString newString, bool IgnoreCase);
+  int ReplaceAll(wxString oldString, wxString newString, bool ignoreCase);
 
   /*! Finds the next occurrences of a string
 
@@ -481,7 +482,7 @@ public:
 
   void SetSelection(int start, int end);
 
-  void GetSelection(int *start, int *end)
+  void GetSelection(int *start, int *end) const
   {
     *start = m_selectionStart;
     *end = m_selectionEnd;
@@ -502,7 +503,7 @@ public:
   bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
 
   //! Convert the current selection to a string
-  wxString GetSelectionString();
+  wxString GetSelectionString() const;
 
   //! The word the cursor currently is at
   wxString GetWordUnderCaret();
@@ -516,7 +517,7 @@ public:
   //! Sets the index the error is at
   void SetErrorIndex(int index){m_errorIndex = index;}
 
-  bool ErrorIndexSet(){return m_errorIndex >= 0;}
+  bool ErrorIndexSet() const {return m_errorIndex >= 0;}
 
   void GotoError(){SetCaretPosition(m_errorIndex);ActivateCursor();}
 
@@ -524,7 +525,7 @@ public:
   void ProcessNewline(bool keepCursorAtStartOfLine = true);
 
   //! Get the cursor's current position inside the cell.
-  int GetCaretPosition()
+  int GetCaretPosition() const
   { return m_positionOfCaret; }
 
   //! Set the cursor's current position inside the cell.
@@ -540,7 +541,7 @@ public:
 
   void InsertText(wxString text);
 
-  wxString TextInFrontOfSelection()
+  wxString TextInFrontOfSelection() const
   {
     return GetValue().Mid(1, m_selectionStart);
   }
@@ -558,9 +559,18 @@ public:
   }
 
   //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
-  MaximaTokenizer::TokenList GetTokens(){return m_tokens;}
+  MaximaTokenizer::TokenList GetTokens() const {return m_tokens;}
 
+protected:
+  void FontsChanged() override
+    {
+      ResetSize();
+      ResetData();
+      m_widths.clear();
+    }
 private:
+  //! Determines the size of a text snippet
+  wxSize GetTextSize(wxString const &text);
   //! Mark this cell as "Automatically answer questions".
   bool m_autoAnswer;
 #if defined __WXOSX__
@@ -569,9 +579,9 @@ private:
 
 #endif
 
-  bool HandleSpecialKey(wxKeyEvent &ev);
+  bool HandleSpecialKey(wxKeyEvent &event);
 
-  bool HandleOrdinaryKey(wxKeyEvent &ev);
+  bool HandleOrdinaryKey(wxKeyEvent &event);
 
   /*! A piece of styled text for syntax highlighting
 
@@ -600,34 +610,33 @@ private:
     int m_width;
   public:
     //! Defines a piece of styled text
-    StyledText(TextStyle style, wxString text)
+    StyledText(TextStyle style, wxString text) :
+      m_style(style),
+      m_text(text)
     {
-      m_text = text;
-      m_style = style;
       m_styleThisText = true;
       m_indentPixels = 0;
-      m_indentChar = wxEmptyString;
       m_width = -1;
     }
 
     /*! Defines a piece of text with the default style that possibly is indented
      */
-    StyledText(wxString text, int indentPixels = 0, wxString indentChar = wxEmptyString)
+    explicit StyledText(wxString text, int indentPixels = 0, wxString indentChar = wxEmptyString):
+      m_text(text),
+      m_indentPixels(indentPixels),
+      m_indentChar(indentChar)
     {
-      m_text = text;
       m_style = TS_DEFAULT;
       m_styleThisText = false;
-      m_indentPixels = indentPixels;
-      m_indentChar = indentChar;
       m_width = -1;
     }
 
     void SetWidth(int width){m_width = width;}
     void ResetSize(){SetWidth(-1);}
-    int GetWidth(){return m_width;}
-    bool SizeKnown(){return GetWidth() >= 0;}
+    int GetWidth() const {return m_width;}
+    bool SizeKnown() const {return GetWidth() >= 0;}
     //! Returns the piece of text
-    wxString GetText()
+    wxString GetText() const
     {
       return m_text;
     }
@@ -646,24 +655,24 @@ private:
     }
 
     //! By how many pixels do we need to indent this line due to a bullet list or similar?
-    int GetIndentPixels()
+    int GetIndentPixels() const
     {
       return m_indentPixels;
     }
 
-    wxString GetIndentChar()
+    wxString GetIndentChar() const
     {
       return m_indentChar;
     }
 
 //! If StyleSet() is true this function returns the color of this text portion
-    TextStyle GetStyle()
+    TextStyle GetStyle() const
     {
       return m_style;
     }
 
     // Has a individual text style been set for this text portion?
-    bool StyleSet()
+    bool StyleSet() const
     {
       return m_styleThisText;
     }
@@ -678,7 +687,7 @@ private:
     the indentation algorithm scans the text again) which is unfortunate.
    */
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token, unsigned int charInCell,
-                                 wxString &text, size_t &lastSpacePos, int &indentationPixels);
+                                 wxString &text, const size_t &lastSpacePos, int &indentationPixels);
 
   /*! How many chars do we need to indent text at the position the caret is currently at?
 
@@ -693,26 +702,30 @@ private:
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */
-  wxString InterpretEscapeString(wxString txt);
+  wxString InterpretEscapeString(wxString txt) const;
 
   wxString m_text;
   wxArrayString m_textHistory;
   std::vector<int> m_positionHistory;
   std::vector<int> m_startHistory;
   std::vector<int> m_endHistory;
+  //! Where in the undo history are we?
   ptrdiff_t m_historyPosition;
   //! Where inside this cell is the cursor?
   int m_positionOfCaret;
+  //! Which column the cursor would be if the current line were long enough?
   int m_caretColumn;
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
   unsigned int m_numberOfLines;
-  double m_fontSize;
   /*! The font size we were called with  the last time
 
     We need to know this in order to be able to detect we need a full recalculation.
    */
   double m_fontSize_Last;
+  WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
+  //! Cached widths of text snippets, one width per style
+  StringHash m_widths;
   int m_charHeight;
   int m_paren1, m_paren2;
   //! Does this cell's size have to be recalculated?

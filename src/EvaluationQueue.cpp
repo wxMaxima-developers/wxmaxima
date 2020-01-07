@@ -30,7 +30,7 @@
 #include "EvaluationQueue.h"
 #include "MaximaTokenizer.h"
 
-bool EvaluationQueue::Empty()
+bool EvaluationQueue::Empty() const
 {
   return (m_queue.size() <= 1) && (m_commands.empty());
 }
@@ -49,9 +49,9 @@ void EvaluationQueue::Clear()
   m_workingGroupChanged = false;
 }
 
-bool EvaluationQueue::IsInQueue(GroupCell *gr)
+bool EvaluationQueue::IsInQueue(GroupCell *gr) const
 {
-  for(std::list<GroupCell *>::iterator it=m_queue.begin(); it != m_queue.end(); ++it)
+  for(std::list<GroupCell *>::const_iterator it = m_queue.begin(); it != m_queue.end(); ++it)
     if (*it == gr)
       return true;
   
@@ -102,7 +102,7 @@ void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
   {
     AddToQueue(dynamic_cast<GroupCell *>(cell));
     AddHiddenTreeToQueue(cell);
-    cell = dynamic_cast<GroupCell *>(cell->m_next);
+    cell = cell->GetNext();
   }
 }
 
@@ -133,12 +133,13 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
   if(cell == NULL)
     return;
   MaximaTokenizer::TokenList tokens = cell->GetEditable()->GetTokens();
-  MaximaTokenizer::TokenList::iterator it;
+  MaximaTokenizer::TokenList::const_iterator it;
   wxString token;
   int index = 0;
   for (it = tokens.begin(); it != tokens.end(); ++it)
   {
     wxString itemText = (*it)->GetText();
+    itemText.Replace(wxT("\u00a0"), " ");
     TextStyle itemStyle = (*it)->GetStyle();
     index += itemText.Length();
     if(itemStyle != TS_CODE_COMMENT)

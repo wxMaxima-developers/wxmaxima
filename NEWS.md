@@ -1,3 +1,128 @@
+# wxMaxima 19.12.4 - Stable:
+
+Since 19.12.3 depending on the system allocated immense amounts of 
+RAM and crashed a 19.12.4 had to be released. Together they port
+many big improvements to the display code.
+
+ * A Russian translation update by OlesyaGerasimenko
+ * The manual is now found on Gentoo, too
+ * Big improvements to the maths output
+ * A major speedUp by caching already-determined text snippet sizes
+ * All icons that aren't provided by the operating system now are
+   rendered from SVG
+ * Internal communication with maxima is now more MathML-like in
+   many places
+ * Many additional small bug fixes.
+
+
+# Transition to C++11 - Part II
+
+Many annoying bugs have to do with memory management. Typical examples are:
+ * Out-of-bonds reads and writes: n+1 bytes of an n-bytes-long string are
+   read or written. 
+ * Use of uninitialized memory: Memory is first read and then set to the 
+   value that one would have wanted to read from it.
+ * Use-after-free: Memory was first marked as "free" and then used again.
+ * Memory Leaks: Memory isn't marked as "free" even if it is no more used.
+Against the last two of these bugs C++11 offers automatic pointers that 
+stay allocated while they are in used and then are automatically marked 
+as free. In the next wxMaxima release about 2500 lines will be changed 
+in order to make use of that functionality.
+
+# wxMaxima 19.12.1 - Stable:
+
+If the maxima-discuss list asks for an additional feature that is the Right Time
+for a new release:
+
+ * Made the tooltips more visible
+ * Added a warning tooltip about missing multiplication signs
+ * Sped up drawing of new cells correcting the size calculations
+ * If lookalike chars are used in a way that can cause hard-to-find errors now a
+   warning tooltip is generated
+ * A few additional bug fixes that (besides others) resolve a potential crash
+ * An option to turn all multiplication dots on
+
+# wxMaxima 19.12.0 - Stable:
+
+This release provides many under-the-hood changes partially caused by 
+switching to C++11 and partially by cppcheck finding bugs and constructs
+that can cause bugs later. 
+
+  * wxMaxima now uses C++11 that makes the code more readable and helps
+	finding bugs
+  * If found wxMaxima now asks cppcheck to find bugs
+  * Increased the speed of the program again
+  * Opening the config dialogue since 19.11.0 unchecked "offer known answers"
+  * For Cmake>=3.10.0 the build system now asks cppcheck to find bugs.
+  * Changing the worksheet style was partially broken.
+  * A big number of additional bug fixes in various places
+  * A config option that forces displaying all multiplication signs.
+
+# Transition to C++11
+
+The next wxMaxima release will make use of C++11 features: I *hope* that C++
+has been out long enough in 2019 that every relevant compiler supports it.
+C++11 brings in features that allow to make compilation fail on otherwise 
+hard-to-detect bugs, some features that might make the code easier to read...
+...and I am afraid that plain old c++ might look antiquated one day.
+
+Additionally it will contain many bug fixes hoping that I won't fix bugs that
+in retrospect didn't exist... ...on the plus side the program should again 
+have gotten faster by giving the compiler additional hints for optimization
+and the transition has shrunk wxMaxima by about 100 lines. Much help with
+finding bugs came from the cppcheck utility which caused changes in over 
+1700 lines of code, mainly in order to prevent possible future bugs.
+
+# wxMaxima 19.11.1 - Stable
+  * Improved italian translation by Marco Ciampa
+  * Autocompletion no more causes asserts
+  * A better logic that decides which cell to send to maxima
+  * wxMaxima now supports "-l", "-u" and "-X" command-line args like maxima
+  * The help files now are installed in the Right Place
+  * Many additional small bug fixes
+
+# wxMaxima 19.11.0 - Stable
+  * Chinese translation updates from liulitchi
+  * Turkish translation updates from TufanSirin
+  * Hungarian translation updates from Blahota István
+  * German translation updates from Wolfgang Dautermann and Gunter Königsmann
+  * Better detection of the Gnuplot location
+  * Better detection of the right place to open autocomplete popups in
+  * Better formatting of special unicode operators
+  * If autosave on closing fails: Allow the user to ask to exit anyway
+  * Enable Autosave even if the option to keep the file saved is disabled
+  * A context menu with the "display labels" choices
+  * A context menu with "max number of digits" choices
+  * A speedup by preventing recursive calls to resize functions
+  * Corrected parametric plots in the plot wizard
+  * A command-line switch that copies all log messages to stderr.
+  * Batch mode no more adds documents to "recent documents"
+  * For purists: A "don't offer known answers" config option
+  * Now some toolbar items can be disabled
+  * Added more toolbar buttons that evaluate cells
+  * Many bug fixes
+
+# wxMaxima 19.10.0 - Stable
+  * Corrected a Regression: The better display of exponents failed for exp(x^2).
+  * Seems like some Windows computers only have a numpad enter key.
+  * Chinese translation updates from liulitchi.
+  * Russian translation updates from OlesyaGerasimenko.
+
+# wxMaxima 19.09.1 - Stable
+  * The names of greek letters are no more converted to greek letters in variable
+	names by default
+  * Smarter Formatting of asterisk and hyphen
+  * An automatic per-commit Windows Build for Appveyor
+  * Always recalculate the worksheet size when needed
+  * Better vertical alignment of exponents
+  * The layout is now more consigstent between platforms
+  * Chinese translation updates from liulitchi
+  * wxMaxima now remembers the question for each answer, not only its number
+  * Now the manual can be localized, too
+  * Non-breaking spaces are now replaced by ordinary spaces
+    before being sent to maxima
+  * As always: Many additional bug fixes
+
 # wxMaxima 19.09.0 - Stable
   * Handle timeouts when writing to maxima and partial writes.
   * Worksheet text disappeared on scrolling on some platforms.

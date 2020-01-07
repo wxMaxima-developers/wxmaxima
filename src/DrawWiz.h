@@ -36,32 +36,13 @@
 
 #include "BTextCtrl.h"
 #include "Configuration.h"
-
-
-/*! A panel that shows an example image
-
-  From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
- */
-class wxImagePanel : public wxPanel
-{
-    wxImage m_image;
-    wxBitmap m_resized;
-    int m_w, m_h;
- 
-public:
-    wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
-    void Load(unsigned char *data, size_t len);
- 
-    void paintEvent(wxPaintEvent & evt);
-    void paintNow();
-    void OnSize(wxSizeEvent& event); 
-};
+#include "SvgPanel.h"
 
 //! A wizard for explicit plots using draw
 class ExplicitWiz : public wxDialog
 {
 public:
-  ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int Dimensions = 2);
+  ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -79,7 +60,7 @@ private:
 class ParametricWiz : public wxDialog
 {
 public:
-  ParametricWiz(wxWindow *parent, Configuration *config, int Dimensions = 2);
+  ParametricWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -95,7 +76,7 @@ private:
 class ImplicitWiz : public wxDialog
 {
 public:
-  ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int Dimensions = 2);
+  ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -115,7 +96,7 @@ private:
 class AxisWiz : public wxDialog
 {
 public:
-  AxisWiz(wxWindow *parent, Configuration *config, int Dimensions = 2);
+  AxisWiz(wxWindow *parent, Configuration *config, int dimensions = 2);
   wxString GetValue();
 private:
   int m_dimensions;
@@ -176,7 +157,7 @@ public:
 protected:
   void OnRadioButton(wxCommandEvent &dummy);
 private:
-  wxImagePanel *m_image;
+  SvgPanel *m_image;
   wxRadioButton *m_contourNone; 
   wxRadioButton *m_contourSurface; 
   wxRadioButton *m_contourBase;

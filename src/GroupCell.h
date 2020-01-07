@@ -67,22 +67,32 @@ class GroupCell : public Cell
 {
 public:
   GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
-
+  GroupCell(const GroupCell &cell);
+  Cell *Copy() override {return new GroupCell(*this);}
   ~GroupCell();
+
+  //! This class can be derived from wxAccessible which has no copy constructor
+  GroupCell &operator=(const GroupCell&) = delete;
 
   wxString GetAnswer(int answer)
     {
+      if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
+        return wxEmptyString;
+      
       return m_knownAnswers[wxString::Format(wxT("Question #%i"),answer)];
     }
   wxString GetAnswer(wxString question)
     {
+      if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
+        return wxEmptyString;
+      
       wxString answer = m_knownAnswers[question];
       if(answer.IsEmpty())
         answer = GetAnswer(++m_numberedAnswersCount);
       return answer;
     }
   //! Does this GroupCell save the answer to a question?
-  bool AutoAnswer(){return m_autoAnswer;}
+  bool AutoAnswer() const {return m_autoAnswer;}
   //! Does this GroupCell save the answer to a question?
   void AutoAnswer(bool autoAnswer){
     m_autoAnswer = autoAnswer;
@@ -103,15 +113,15 @@ public:
     Running this command tells the cell to remove these pointers as the cell is
     no more displayed currently.
    */
-  void MarkAsDeleted();
-  std::list<Cell *> GetInnerCells();
+  void MarkAsDeleted() override;
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   /*! Which GroupCell was the last maxima was working on?
 
     Must be kept in GroupCell as on deletion a GroupCell will unlink itself from
     this pointer.
    */
-  GroupCell *GetLastWorkingGroup()
+  GroupCell *GetLastWorkingGroup() const
   {
     return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup);
   }
@@ -127,12 +137,10 @@ public:
 
     wxEmptyString means: No toolTip.
    */
-  wxString GetToolTip(const wxPoint &point);
-
-  Cell *Copy();
+  wxString GetToolTip(const wxPoint &point)  override;
 
   // general methods
-  GroupType GetGroupType()
+  GroupType GetGroupType() const
   { return m_groupType; }
 
   void SetGroupType(GroupType type)
@@ -140,23 +148,26 @@ public:
 
   void SetCellStyle(int style);
 
-  void SetGroup(Cell *parent); // setting parent for all mathcells in GC
+  void SetGroup(Cell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
-  void SelectInner(const wxRect &rect, Cell **first, Cell **last);
+  void SelectInner(const wxRect &rect, Cell **first, Cell **last) override;
 
-  void SelectPoint(const wxPoint &rect, Cell **first, Cell **last);
+  void SelectPoint(const wxPoint &point, Cell **first, Cell **last);
 
+  // cppcheck-suppress functionConst
   void SelectOutput(Cell **start, Cell **end);
 
-  void SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
+  // cppcheck-suppress functionConst
+  void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
-  void SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
+  void SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
 
   // methods for manipulating GroupCell
+  // cppcheck-suppress functionConst
   bool SetEditableContent(wxString text);
 
-  EditorCell *GetEditable(); // returns pointer to editor (if there is one)
+  EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
   void AppendOutput(Cell *cell);
 
   /*! Remove all output cells attached to this one
@@ -167,6 +178,9 @@ public:
   */
   void RemoveOutput();
 
+  //! GroupCells warn if they contain both greek and latin lookalike chars.
+  void UpdateConfusableCharWarnings();
+  
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
 
   /*! Convert the current cell to its wxm representation.
@@ -177,22 +191,18 @@ public:
    */
   wxString ToWXM(bool wxm = true);
 
-  wxString ToRTF();
+  wxString ToRTF() override;
 
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
+  static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
 
-  wxString ToXML();
-
-  //! Return the hide status
-  bool IsHidden()
-  { return m_hide; }
+  wxString ToXML() override;
 
   void Hide(bool hide);
 
@@ -207,35 +217,39 @@ public:
 
   void AppendInput(Cell *cell);
 
-  wxString TexEscapeOutputCell(wxString Input);
+  // Get the next cell in the list.
+  virtual GroupCell *GetNext() const override {if (m_next != NULL) return dynamic_cast<GroupCell *>(m_next); else return NULL;}
+  virtual GroupCell *GetNextToDraw() const override {if (m_nextToDraw != NULL) return dynamic_cast<GroupCell *>(m_nextToDraw); else return NULL;}
+
+  static wxString TexEscapeOutputCell(wxString Input);
 
   Cell *GetPrompt()
-  { return m_inputLabel; }
+    { return m_inputLabel.get(); }
 
-  EditorCell *GetInput()
-  {
-    if (m_inputLabel != NULL)
-      return dynamic_cast<EditorCell *>(m_inputLabel->m_next);
-    else
-      return NULL;
-  }
+  EditorCell *GetInput() const
+    {
+      if (m_inputLabel != NULL)
+        return dynamic_cast<EditorCell *>(m_inputLabel.get()->m_next);
+      else
+        return NULL;
+    }
 
   /*! Returns the list of cells the output consists of, starting with the label.
 
     See also GetOutput();
   */
   Cell *GetLabel()
-  { return m_output; }
+    { return m_output.get(); }
 
   /*! Returns the list of cells the output consists of, starting after the label.
 
     See also GetLabel()
   */
-  Cell *GetOutput()
+  Cell *GetOutput() const
   { if (m_output == NULL) return NULL; else return m_output->m_next; }
 
   //! Determine which rectangle is occupied by this GroupCell
-  wxRect GetOutputRect()
+  wxRect GetOutputRect() const
   { return m_outputRect; }
 
   /*! Recalculates the height of this GroupCell and all cells inside it if needed.
@@ -244,10 +258,10 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
-  virtual wxRect GetRect(bool all = false);
+  virtual wxRect GetRect(bool all = false) override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
@@ -257,7 +271,7 @@ public:
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
    */
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
   /*! Recalculate the size of this GroupCell.
 
@@ -292,7 +306,7 @@ public:
   //! @{ folding and unfolding
 
   //! Is this cell foldable?
-  bool IsFoldable()
+  bool IsFoldable() const
   {
     return ((m_groupType == GC_TYPE_SECTION) ||
             (m_groupType == GC_TYPE_TITLE) ||
@@ -356,21 +370,13 @@ public:
     For example ordinary text cells can be part of a chapter and sections can be
     part of a chapter, too.
    */
-  bool IsLesserGCType(int comparedTo);
+  bool IsLesserGCType(int comparedTo) const;
 
   //! @}
-  bool IsMainInput(Cell *active);
+  bool IsMainInput(Cell *active) const;
 
   //!  Return this cell's section- or image number.
   void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
-
-  /*! Recalculate the cell dimensions after appending new lines.
-
-    Won't work if text has been added to the end of the line instead.
-    \attention Needs to be in sync with the height calculation done during Draw() and
-    during RecalculateHeightOutput
-   */
-  void RecalculateAppended();
 
   /* Draw this GroupCell
 
@@ -383,9 +389,9 @@ public:
     by RecalculateHeightOutput().
 
    */
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  virtual bool AddEnding()
+  virtual bool AddEnding() override
     {
       if(GetEditable() != NULL)
         return GetEditable()->AddEnding();
@@ -403,7 +409,7 @@ public:
   bool Contains(GroupCell *cell);
 
   //! A textual representation of this cell
-  wxString ToString();
+  wxString ToString() override;
 
   //! Is this cell part of the evaluation Queue?
   void InEvaluationQueue(bool inQueue)
@@ -419,18 +425,19 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
+  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);  
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
   
 #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description);
-  wxAccStatus GetLocation (wxRect &rect, int elementId);
+  wxAccStatus GetDescription(int childId, wxString *description) override;
+  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
 
   class HCaretCell: public wxAccessible
   {
   public:
-    HCaretCell(GroupCell* group) : wxAccessible()
+    explicit HCaretCell(GroupCell* group) : wxAccessible()
       {
         m_group = group;
       }
@@ -498,10 +505,10 @@ public:
     \return The next GroupCell or NULL if there isn't any.
   */
   GroupCell *UpdateYPosition();
-  
+
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation();
+  bool NeedsRecalculation() override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
@@ -509,15 +516,13 @@ protected:
   //! Which type this cell is of?
   GroupType m_groupType;
   //! The input label of this cell. Is followed by the input of the cell.
-  Cell *m_inputLabel;
+  std::shared_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
-  Cell *m_output;
+  std::shared_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
-  bool m_hide;
-  int m_fontSize;
   int m_mathFontSize;
   Cell *m_lastInOutput;
-  Cell *m_appendedCells;
+  static wxString m_lookalikeChars;
 private:
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;

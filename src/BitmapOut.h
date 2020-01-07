@@ -24,6 +24,7 @@
 #define BITMAP_H
 
 #include "Cell.h"
+#include "GroupCell.h"
 
 /*! Renders portions of the work sheet (including 2D maths) as bitmap.
 
@@ -40,8 +41,12 @@ public:
     \param configuration A pointer to the pointer to this worksheet's configuration
            storage
   */
-  BitmapOut(Configuration **configuration, int scale = 1);
+  explicit BitmapOut(Configuration **configuration, int scale = 1);
 
+  //! This class doesn't have a copy constructor
+  BitmapOut(const BitmapOut&) = delete;
+  //! This class doesn't have a = operator
+  BitmapOut& operator=(const BitmapOut&) = delete;
   ~BitmapOut();
 
   /*! Renders tree as bitmap
@@ -61,7 +66,7 @@ public:
   wxSize ToFile(wxString file);
 
   //! Returns the bitmap representation of the list of cells that was passed to SetData()
-  wxBitmap GetBitmap()
+  wxBitmap GetBitmap() const
   { return m_bmp; }
 
   //! Copies the bitmap representation of the list of cells that was passed to SetData()
@@ -70,28 +75,36 @@ public:
 protected:
   void DestroyTree();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void RecalculateWidths();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void BreakLines();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void RecalculateHeight();
 
-  void GetMaxPoint(int *width, int *height);
+  void GetMaxPoint(int *width, int *height) const;
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void BreakUpCells();
 
   bool Layout(long int maxSize = -1);
 
   void Draw();
 
-  Cell *m_tree;
+  std::unique_ptr<Cell> m_tree;
 
-  double GetRealHeight();
+  double GetRealHeight() const;
 
-  double GetRealWidth();
+  double GetRealWidth() const;
 
 private:
-  wxMemoryDC *m_dc;
+  std::unique_ptr<wxMemoryDC> m_dc;
   Configuration **m_configuration, *m_oldconfig;
   //! How many times the natural resolution do we want this bitmap to be?
   int m_scale;

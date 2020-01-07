@@ -51,22 +51,22 @@ public:
   
 private:
   //! The directory all data is stored relative to.
-  wxString ResourcesDir();
+  wxString ResourcesDir() const;
 
 public:
   //! The directory the user stores its data in.
-  wxString UserConfDir(){return m_userConfDir;}
+  wxString UserConfDir() const {return m_userConfDir;}
   //! Set the directory the user stores its data in.
-  void UserConfDir(wxString userConfDir){m_userConfDir = userConfDir + wxT("/");}
+  void UserConfDir(wxString userConfDir) {m_userConfDir = userConfDir + wxT("/");}
 
   //! The directory general data is stored in
-  wxString DataDir();
+  wxString DataDir() const;
 
     //! The directory our private fonts are stored in
-  wxString FontDir(){return DataDir()+wxT("/../fonts");}
+  wxString FontDir() const {return DataDir()+wxT("/../fonts");}
 
   //! The directory the help file is stored in
-  wxString HelpDir(){return m_helpDir;}
+  wxString HelpDir() const {return m_helpDir;}
   //! Set the directory the help file is stored in
   void HelpDir(wxString helpDir){m_helpDir = helpDir;}
 
@@ -75,37 +75,30 @@ public:
     \todo Document this file in the texinfo manual
    */
 #if defined __WXMSW__
-  wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
+  wxString UserAutocompleteFile() const {return UserConfDir()+wxT("wxmax.ac");}
 #else
 
-  wxString UserAutocompleteFile()
+  wxString UserAutocompleteFile() const
   { return UserConfDir() + wxT(".wxmaxima.ac"); }
 
 #endif
 
   //! The path to wxMaxima's own AutoComplete file
-  wxString AutocompleteFile()
+  wxString AutocompleteFile() const
   { return DataDir() + wxT("/autocomplete.txt"); }
 
   //! The directory art is stored relative to
-  wxString ArtDir();
+  wxString ArtDir() const;
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
    */
-  wxString LocaleDir()
+  wxString LocaleDir() const
   { return ResourcesDir() + wxT("/locale"); }
 
   //! The path we pass to the operating system if we want it to locate maxima instead
   static wxString MaximaDefaultLocation();
-
-  /*! The contents of the PREFIX macro as a wxString
-
-    wxWidgets 3.0.2 refuses to directly concatenate two wxT-generated strings.
-    To avoid triggering this bug we store the prefix here.
-  */
-  wxString Prefix();
 
   static Dirstructure *Get()
     {

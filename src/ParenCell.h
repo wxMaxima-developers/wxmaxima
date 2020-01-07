@@ -31,6 +31,7 @@
 #define PARENCELL_H
 
 #include "Cell.h"
+#include "TextCell.h"
 
 /*! The class that represents parenthesis that are wrapped around text
 
@@ -50,49 +51,54 @@ class ParenCell : public Cell
 {
 public:
   ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  ParenCell(const ParenCell &cell);
+  Cell *Copy() override {return new ParenCell(*this);}
 
   ~ParenCell();
 
-  std::list<Cell *> GetInnerCells();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ParenCell &operator=(const ParenCell&) = delete;
 
-  virtual Cell *Copy();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  void SetInner(Cell *inner, CellType  style);
+  void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
+  void SetInner(std::shared_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
   void SetPrint(bool print)
   {
     m_print = print;
   }
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  bool BreakUp();
+  bool BreakUp() override;
 
-  void Unbreak();
+  void Unbreak() override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
 protected:
    /*! How to create a big parenthesis sign?
    */
   Configuration::drawMode m_bigParenType;
-  int m_fontSize;
   void SetFont(int fontsize);
-  Cell *m_innerCell, *m_open, *m_close;
+  std::shared_ptr<Cell> m_innerCell;
+  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<TextCell> m_close;
   Cell *m_last1;
   bool m_print;
   int m_numberOfExtensions;

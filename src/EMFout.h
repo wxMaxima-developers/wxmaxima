@@ -35,8 +35,11 @@ class Emfout
 public:
   /*! The constructor.
   */
-  Emfout(Configuration **configuration, wxString filename = wxEmptyString);
-
+  explicit Emfout(Configuration **configuration, wxString filename = wxEmptyString);
+  //! This class doesn't have a copy constructor
+  Emfout(const Emfout&) = delete;
+  //! This class doesn't have a = operator
+  Emfout& operator=(const Emfout&) = delete;
   ~Emfout();
 
   int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
@@ -54,14 +57,22 @@ public:
 protected:
   void DestroyTree();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void RecalculateWidths();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void BreakLines();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void RecalculateHeight();
 
   void GetMaxPoint(int *width, int *height);
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   void BreakUpCells();
 
   bool Layout();
@@ -70,8 +81,12 @@ protected:
 
   Cell *m_tree;
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   double GetRealHeight();
 
+  // cppcheck-suppress functionStatic
+  // cppcheck-suppress functionConst
   double GetRealWidth();
 
 
@@ -80,7 +95,7 @@ protected:
   class EMFDataObject : public wxCustomDataObject
   {
   public:
-    EMFDataObject(wxMemoryBuffer data);
+    explicit EMFDataObject(wxMemoryBuffer data);
 
     EMFDataObject();
 

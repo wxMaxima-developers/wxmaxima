@@ -52,7 +52,7 @@ public:
      * temporary save files for unsaved files and 
      * maxima packages
    */
-  RecentDocuments(wxString documentType);
+  explicit RecentDocuments(wxString documentType);
   //! Add a new recent document.
   void AddDocument(wxString name);
   //! Load the recent documents list.
@@ -60,13 +60,13 @@ public:
   //! Save the recent documents list.
   void Save();
   //! Get the list of recent documents
-  std::list<wxString> Get(){return m_listOfFiles;}
+  std::list<wxString> Get() const {return m_listOfFiles;}
   /*! Get the nth item of the list of recent documents
 
     \note This function traverses the list of recent documents. Therefore it is
     slower than an iterator if one needs to access each element in turn.
    */
-  wxString Get(int num);
+  wxString Get(int num) const;
   //! Make sure that we save the list of recent documents on closing the program
   ~RecentDocuments(){Save();}
  private:

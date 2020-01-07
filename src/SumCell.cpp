@@ -31,55 +31,51 @@
 #include "SumCell.h"
 #include "TextCell.h"
 
-#define SUM_SIGN "\x58"
-#define PROD_SIGN "\x59"
-#define SUM_DEC 2
-
-SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_base(new TextCell(parent, config, cellPointers)),
+  m_under(new TextCell(parent, config, cellPointers)),
+  m_over(new TextCell(parent, config, cellPointers)),
+  m_paren(new ParenCell(parent, config, cellPointers))
 {
-  m_cellPointers = cellPointers;
-  m_base = new TextCell(parent, config, cellPointers);
-  m_under = new TextCell(parent, config, cellPointers);
-  m_over = new TextCell(parent, config, cellPointers);
-  m_signSize = 50;
-  m_signTop = (2 * m_signSize) / 5;
+  m_signHeight = 50;
+  m_signTop = (2 * m_signHeight) / 5;
   m_signWidth = 30;
   m_signWCenter = 15;
   m_sumStyle = SM_SUM;
 }
 
-Cell *SumCell::Copy()
+// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signHeight
+// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWCenter
+SumCell::SumCell(const SumCell &cell):
+  SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SumCell *tmp = new SumCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_base->CopyList());
-  tmp->SetUnder(m_under->CopyList());
-  tmp->SetOver(m_over->CopyList());
-  tmp->m_sumStyle = m_sumStyle;
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+  SetUnder(cell.m_under->CopyList());
+  if(cell.m_over)
+    SetOver(cell.m_over->CopyList());
+  m_sumStyle = cell.m_sumStyle;
 }
 
 SumCell::~SumCell()
 {
-  wxDELETE(m_base);
-  wxDELETE(m_under);
-  wxDELETE(m_over);
-  m_base = NULL;
-  m_under = NULL;
-  m_over = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> SumCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> SumCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
-  if(m_base)
-    innerCells.push_back(m_base);
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_under)
     innerCells.push_back(m_under);
   if(m_over)
     innerCells.push_back(m_over);
+  // Contains m_base
+  if(m_paren)
+    innerCells.push_back(m_paren);
   return innerCells;
 }
 
@@ -87,64 +83,63 @@ void SumCell::SetOver(Cell *over)
 {
   if (over == NULL)
     return;
-  wxDELETE(m_over);
-  m_over = over;
+  m_over = std::shared_ptr<Cell>(over);
 }
 
 void SumCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_base);
-  m_base = base;
+  m_base = std::shared_ptr<Cell>(base);
+  m_paren->SetInner(m_base);
+  m_displayedBase = m_paren;
 }
 
 void SumCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  wxDELETE(m_under);
-  m_under = under;
+  m_under = std::shared_ptr<Cell>(under);
 }
 
 void SumCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-
-  m_signSize = Scale_Px(50) * configuration->GetZoomFactor();
-  m_signWidth = Scale_Px(30) * configuration->GetZoomFactor();
-  m_signWCenter = Scale_Px(15) * configuration->GetZoomFactor();
-
-  m_base->RecalculateWidthsList(fontsize);
+  m_displayedBase->RecalculateWidthsList(fontsize);
+  m_signHeight = m_displayedBase->GetHeightList();
+  if (m_sumStyle == SM_SUM)
+    m_signWidth = 3.0 * m_signHeight / 5.0;
+  else
+    m_signWidth = 4.0 * m_signHeight / 5.0;
+  m_signWCenter = m_signWidth / 2.0;
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = new TextCell(m_group, m_configuration, m_cellPointers);
+    m_over = std::shared_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
-  if (configuration->CheckTeXFonts())
-  {
-    wxDC *dc = configuration->GetDC();
-    double fontsize1 = Scale_Px(configuration->GetMathFontSize());
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-                wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                configuration->GetTeXCMEX());
-    if (!font.IsOk())
-      font = *wxNORMAL_FONT;
-    wxASSERT(fontsize1 > 0);
-#if wxCHECK_VERSION(3, 1, 2)
-    font.SetFractionalPointSize(fontsize1);
-#else
-    font.SetPointSize(fontsize1);
-#endif
-    dc->SetFont(font);
-    dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
-    m_signWCenter = m_signWidth / 2;
-    m_signTop = (2 * m_signSize) / 5;
-    m_signSize = (2 * m_signSize) / 5;
-  }
+//   if (configuration->CheckTeXFonts())
+//   {
+//     wxDC *dc = configuration->GetDC();
+//     double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+//     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+//                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+//                 configuration->GetTeXCMEX());
+//     if (!font.IsOk())
+//       configuration->CheckTeXFonts(false);
+  
+// #if wxCHECK_VERSION(3, 1, 2)
+//     font.SetFractionalPointSize(fontsize1);
+// #else
+//     font.SetPointSize(fontsize1);
+// #endif
+//     dc->SetFont(font);
+//     dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signHeight);
+//     m_signWCenter = m_signWidth / 2;
+//     m_signTop = (2 * m_signHeight) / 5;
+//     m_signHeight = (2 * m_signHeight) / 5;
+//   }
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
   m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
-  m_width = 2 * m_signWCenter + m_base->GetFullWidth() + Scale_Px(4);
+  m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
 
   ResetData();
   Cell::RecalculateWidths(fontsize);
@@ -155,13 +150,13 @@ void SumCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_base->RecalculateHeightList(fontsize);
+  m_displayedBase->RecalculateHeightList(fontsize);
 
-  m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
-                 m_base->GetMaxCenter());
+  m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
+                 m_displayedBase->GetCenterList());
   m_height = m_center +
-             wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
-                 m_base->GetMaxDrop());
+             wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
+                 m_displayedBase->GetMaxDrop());
 }
 
 void SumCell::Draw(wxPoint point)
@@ -176,34 +171,34 @@ void SumCell::Draw(wxPoint point)
     wxPoint base(point), under(point), over(point), sign(point);
 
     under.x += m_signWCenter - m_under->GetFullWidth() / 2;
-    under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + Scale_Px(2);
+    under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
     m_under->DrawList(under);
 
     over.x += m_signWCenter - m_over->GetFullWidth() / 2;
-    over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - Scale_Px(2);
+    over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2);
     m_over->DrawList(over);
 
-    if (configuration->CheckTeXFonts())
-    {
-      SetForeground();
-      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
-      wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-                  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                  configuration->GetTeXCMEX());
-      if (!font.IsOk())
-        font = *wxNORMAL_FONT;
-      wxASSERT(fontsize1 > 0);
-#if wxCHECK_VERSION(3, 1, 2)
-      font.SetFractionalPointSize(fontsize1);
-#else
-      font.SetPointSize(fontsize1);
-#endif
-      dc->SetFont(font);
-      dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
-                  sign.x + m_signWCenter - m_signWidth / 2,
-                  sign.y - m_signTop);
-    }
-    else
+// //     if (configuration->CheckTeXFonts())
+// //     {
+// //       SetForeground();
+// //       double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+// //       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+// //                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+// //                   configuration->GetTeXCMEX());
+// //       if (!font.IsOk())
+// //         font = *wxNORMAL_FONT;
+// //       wxASSERT(fontsize1 > 0);
+// // #if wxCHECK_VERSION(3, 1, 2)
+// //       font.SetFractionalPointSize(fontsize1);
+// // #else
+// //       font.SetPointSize(fontsize1);
+// // #endif
+// //       dc->SetFont(font);
+// //       dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
+// //                   sign.x + m_signWCenter - m_signWidth / 2,
+// //                   sign.y - m_signTop);
+// //     }
+// //     else
     {
       SetPen(1.5);
       if (m_sumStyle == SM_SUM)
@@ -211,80 +206,59 @@ void SumCell::Draw(wxPoint point)
         wxDC *adc = configuration->GetAntialiassingDC();
         //DRAW SUM SIGN
         // Upper part
-        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
-                     point.y,
-                     point.x + m_signWCenter - m_signWidth / 2,
-                     point.y - m_signSize / 2 + 1);
-        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                     point.y - m_signSize / 2,
-                     point.x + m_signWCenter + m_signWidth / 2,
-                     point.y - m_signSize / 2);
-        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                     point.y - m_signSize / 2 + 1,
-                     point.x + m_signWCenter + m_signWidth / 2,
-                     point.y - m_signSize / 2 + 1);
-        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
-                     point.y - m_signSize / 2,
-                     point.x + m_signWCenter + m_signWidth / 2,
-                     point.y - m_signSize / 2 + Scale_Px(5));
-        // Lower part
-        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
-                     point.y,
-                     point.x + m_signWCenter - m_signWidth / 2,
-                     point.y + m_signSize / 2 - 1);
-        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                     point.y + m_signSize / 2,
-                     point.x + m_signWCenter + m_signWidth / 2,
-                     point.y + m_signSize / 2);
-        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                     point.y + m_signSize / 2 - 1,
-                     point.x + m_signWCenter + m_signWidth / 2,
-                     point.y + m_signSize / 2 - 1);
-        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
-                     point.y + m_signSize / 2,
-                     point.x + m_signWCenter + m_signWidth / 2,
-                     point.y + m_signSize / 2 - Scale_Px(5));
+        wxPointList points;
+        points.Append(new wxPoint(
+                        point.x + m_signWCenter + m_signWidth / 2,
+                        point.y - (m_signHeight / 2)
+                        ));
+        points.Append(new wxPoint(
+                        point.x + m_signWCenter - m_signWidth / 2,
+                        point.y - (m_signHeight / 2)
+                        ));
+        points.Append(new wxPoint(
+                        point.x + m_signWCenter + m_signWidth / 5,
+                        point.y
+                        ));
+        points.Append(new wxPoint(
+                        point.x + m_signWCenter - m_signWidth / 2,
+                        point.y + (m_signHeight / 2)
+                        ));
+        points.Append(new wxPoint(
+                        point.x + m_signWCenter + m_signWidth / 2,
+                        point.y + (m_signHeight / 2)
+                        ));
+        adc->DrawLines(&points);
       }
       else
       {
         // DRAW PRODUCT SIGN
         // Vertical lines
         dc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
-                    point.y + m_signSize / 2,
+                    point.y + m_signHeight / 2,
                     point.x + m_signWCenter + m_signWidth / 6,
-                    point.y - m_signSize / 2 + Scale_Px(4));
+                    point.y - m_signHeight / 2);
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
-                    point.y + m_signSize / 2,
+                    point.y + m_signHeight / 2,
                     point.x + m_signWCenter - m_signWidth / 6,
-                    point.y - m_signSize / 2 + Scale_Px(4));
-        // Horizonral line (double)
+                    point.y - m_signHeight / 2);
+        // Horizontal line
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signSize / 2,
+                    point.y - m_signHeight / 2,
                     point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signSize / 2);
-        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signSize / 2 + 1,
-                    point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signSize / 2 + 1);
-        // Ticks on horizontal line
-        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signSize / 2,
-                    point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signSize / 2 + Scale_Px(5));
-        dc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signSize / 2,
-                    point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signSize / 2 + Scale_Px(5));
+                    point.y - m_signHeight / 2);
       }
       UnsetPen();
     }
     base.x += (2 * m_signWCenter + Scale_Px(4));
-    m_base->DrawList(base);
+    m_displayedBase->DrawList(base);
   }
 }
 
 wxString SumCell::ToString()
 {
+  if (m_altCopyText != wxEmptyString)
+    return m_altCopyText;
+
   wxString s;
   if (m_sumStyle == SM_SUM)
     s = wxT("sum(");
@@ -292,7 +266,7 @@ wxString SumCell::ToString()
     s = wxT("product(");
   s += m_base->ListToString();
 
-  Cell *tmp = m_under;
+  Cell *tmp = m_under.get();
   wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->m_next;
@@ -320,7 +294,7 @@ wxString SumCell::ToMatlab()
 	s = wxT("product(");
   s += m_base->ListToMatlab();
 
-  Cell *tmp = m_under;
+  Cell *tmp = m_under.get();
   wxString var = tmp->ToMatlab();
   wxString from;
   tmp = tmp->m_next;
@@ -374,9 +348,9 @@ wxString SumCell::ToOMML()
 
   retval = wxT("<m:nary><m:naryPr><m:chr>");
   if (m_sumStyle == SM_SUM)
-    retval += wxT("\x2211");
+    retval += wxT("\u2211");
   else
-    retval += wxT("\x220F");
+    retval += wxT("\u220F");
 
   retval += wxT("</m:chr></m:naryPr>");
   if (from != wxEmptyString)

@@ -41,9 +41,12 @@
 #include <wx/regex.h>
 #include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
+#include <memory>
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
@@ -87,7 +90,6 @@ public:
 
   void OnLinkClicked(wxHtmlLinkEvent &event);
 
-DECLARE_EVENT_TABLE()
 };
 
 #endif
@@ -104,6 +106,12 @@ public:
   
   ~wxMaxima();
 
+  //! Pipe maxima's output to stdout
+  static void PipeToStdout(){m_pipeToStdout = true;}
+  static void ExitOnError(){m_exitOnError = true;}
+  static void ExtraMaximaArgs(wxString args){m_extraMaximaArgs = args;}
+
+  //! Clean up on exit
   void CleanUp();                                  //!< shuts down server and client on exit
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
@@ -115,7 +123,11 @@ public:
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID,
             //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID
+            WAITFORSTRING_ID,
+            //! Wait for the connection of Maxima
+            WAITFORCONNECTION_ID,
+            //! Poll for connection if the OS doesn't inform us that we can connect
+            POLLFORCONNECTION_ID
   };
 
   /*! A timer that determines when to do the next autosave;
@@ -133,11 +145,21 @@ public:
   //! A timer that tells us to wait until maxima ends its data.
   wxTimer m_waitForStringEndTimer;
 
+  /*! A timer that allows us to poll regularly for maxima connectionss
+
+    We actually get a signal if maxima connects. But it seems like that 
+    isn't working on every combination of wxWidgets and MacOs.
+   */
+  wxTimer m_pollForConnectionTimer;
+
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
 
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
+
+  //! A timer that polls for output from the maxima process.
+  wxTimer m_maximaConnectTimeout;
 
   void ShowTip(bool force);
 
@@ -157,7 +179,8 @@ public:
   {
     m_openFile = file;
   }
-  
+
+  void SetWXMdata(wxString data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on statup?
   void EvalOnStartup(bool eval)
     {
@@ -176,7 +199,7 @@ public:
   
   void StripLispComments(wxString &s);
 
-  void SendMaxima(wxString s, bool history = false);
+  void SendMaxima(wxString s, bool addToHistory = false);
 
   //! Open a file
   bool OpenFile(wxString file,
@@ -193,7 +216,28 @@ public:
   //! Query the value of a new maxima variable
   bool QueryVariableValue();
 
-private:
+  //! A version number that can be compared using "<" and ">"
+  class VersionNumber
+  {
+  public:
+    explicit VersionNumber(wxString version);
+    int Major() const {return m_major;}
+    int Minor() const {return m_minor;}
+    int Patchlevel() const {return m_patchlevel;}
+    friend bool operator<(const VersionNumber& v1, const VersionNumber& v2);
+    friend bool operator>(const VersionNumber& v1, const VersionNumber& v2);
+  private:
+    long m_major;
+    long m_minor;
+    long m_patchlevel;
+  };
+
+private:  
+  //! wxm data the worksheet is populated from 
+  wxString m_initialWorkSheetContents;
+  static bool m_pipeToStdout;
+  static bool m_exitOnError;
+  static wxString m_extraMaximaArgs;
   //! Search for the wxMaxima help file
   wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
@@ -359,14 +403,20 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
-  //!< server event: maxima connection
+  //! Is called if maxima connects to wxMaxima.
+  void OnMaximaConnect(bool receivedSignal = true);
+  
+  //! server event: Maxima sends or receives data, connects or disconnects
   void ServerEvent(wxSocketEvent &event);
-  /*! Is triggered on Input or disconnect from maxima
 
-    The data we get from maxima is typically split into small packets we append to 
-    m_currentOutput until we got a full line we can display.
-   */
-  void ClientEvent(wxSocketEvent &event);
+  /* Tries to read the new data from maxima
+
+     Is called by ClientEvent() if wxWidgets reckons there is data. But as this sometimes
+     doesn't happen even if there is data (only on MSW) it is called from the idle loop,
+     as well.
+  */
+  void TryToReadDataFromMaxima();
+    
   //! Triggered when we get new chars from maxima.
   void OnNewChars();
 
@@ -609,6 +659,14 @@ protected:
    */
   bool SaveFile(bool forceSave = false);
 
+  //! Try to save the file before closing it - or return false 
+  bool SaveOnClose();
+  /*! Save the project in a temp file.
+
+    Returns false if a save was necessary, but not possible.
+   */
+  bool AutoSave();
+  
   int SaveDocumentP();
 
   //! Set the current working directory file I/O from maxima is relative to.
@@ -620,14 +678,10 @@ protected:
     return m_CWD;
   }
 
-  wxSocketBase *m_client;
+  wxSocketBase m_client;
   wxSocketInputStream *m_clientStream;
-  wxTextInputStream *m_clientTextStream;
+  std::unique_ptr<wxTextInputStream> m_clientTextStream;
   wxSocketServer *m_server;
-  //! Is the network connection to maxima working?
-  bool m_isConnected;
-  //! Is maxima running?
-  bool m_isRunning;
   wxProcess *m_process;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
@@ -671,7 +725,7 @@ protected:
   bool m_dispReadOut;               //!< what is displayed in statusbar
   wxString m_lastPrompt;
   wxString m_lastPath;
-  wxPrintData *m_printData;
+  std::unique_ptr<wxPrintData> m_printData;
   /*! Did we tell maxima to close?
 
     If we didn't we respan an unexpectedly-closing maxima.
@@ -688,6 +742,9 @@ protected:
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;
+  static int m_exitCode;
+  //! Maxima's idea about gnuplot's location
+  wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
   int m_commandIndex;
 #if defined (__WXMSW__)
@@ -699,7 +756,7 @@ protected:
   wxRegEx m_varRegEx;
   wxRegEx m_blankStatementRegEx;
   wxRegEx m_sbclCompilationRegEx;
-  MathParser *m_parser;
+  MathParser m_parser;
   bool m_maximaBusy;
   wxMemoryBuffer m_rawDataToSend;
   unsigned long int m_rawBytesSent;
@@ -708,7 +765,6 @@ protected:
   friend class MyDropTarget;
 
 #endif
-  DECLARE_EVENT_TABLE()
 };
 
 #if wxUSE_DRAG_AND_DROP
@@ -716,7 +772,7 @@ protected:
 class MyDropTarget : public wxFileDropTarget
 {
 public:
-  MyDropTarget(wxMaxima *wxmax)
+  explicit MyDropTarget(wxMaxima *wxmax)
   { m_wxmax = wxmax; }
 
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);
@@ -728,6 +784,7 @@ private:
 #endif
 
 
+// cppcheck-suppress noConstructor
 class MyApp : public wxApp
 {
 public:
@@ -747,8 +804,10 @@ public:
     \param evalOnStartup Do we want to execute the file automatically, but halt on error?
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
-  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
-  
+  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, int wxmLen = 0);
+
+  void NewTutorialWindow(wxString contents);
+
   static std::list<wxMaxima *> m_topLevelWindows;
 
   void OnFileMenu(wxCommandEvent &ev);
@@ -757,13 +816,14 @@ public:
   void BecomeLogTarget();
 
   virtual void MacOpenFile(const wxString &file);
+
 private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
-  Dirstructure *m_dirstruct;
-  DECLARE_EVENT_TABLE()
+  Dirstructure m_dirstruct;
 };
 
+// cppcheck-suppress unknownMacro
 DECLARE_APP(MyApp)
 
 #endif // WXMAXIMA_H

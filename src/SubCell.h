@@ -29,38 +29,40 @@ class SubCell : public Cell
 {
 public:
   SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SubCell(const SubCell &cell);
+  Cell *Copy() override {return new SubCell(*this);}
 
   ~SubCell();
 
-  std::list<Cell *> GetInnerCells();
+  SubCell operator=(const SubCell&) = delete;
 
-  Cell *Copy();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetBase(Cell *base);
 
   void SetIndex(Cell *index);
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_indexCell;
+  std::shared_ptr<Cell> m_baseCell;
+  std::shared_ptr<Cell> m_indexCell;
 };
 
 #endif // SUBCELL_H

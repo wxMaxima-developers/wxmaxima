@@ -1,6 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C) 2015-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,11 +28,15 @@
 
 #include "TipOfTheDay.h"
 #include <wx/config.h>
-#include <wx/mstream.h>
 #include <wx/display.h>
-#include <wx/wfstream.h>
 #include <wx/persist.h>
 #include <wx/persist/toplevel.h>
+#include "SvgBitmap.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include "Image.h"
 
 #define ICON_SCALE (0.35)
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
@@ -168,6 +173,12 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   m_tips.Add(
     _("The key combination Shift+Space results in a non-breakable space.")
     );
+  m_tips.Add(
+    _("wxMaxima needs more translators. We do not speak every language. Help us to translate wxMaxima and the manual to your language. Join the wxMaxima development at: https://github.com/wxMaxima-developers/wxmaxima")
+    );
+  m_tips.Add(
+    _("wxMaxima needs more developers. It is an open source project where you can contribute. Join the wxMaxima development at: https://github.com/wxMaxima-developers/wxmaxima")
+    );
 
   m_num = 0;
   wxConfigBase *config = wxConfig::Get();
@@ -184,8 +195,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxButton *backButton = new wxButton(this,-1);
   backButton->SetBitmap(
     GetImage(
-      media_playback_start_reverse_128_png,media_playback_start_reverse_128_png_len,
-      media_playback_start_reverse_192_png,media_playback_start_reverse_192_png_len
+      media_playback_start_reverse_svg_gz,media_playback_start_reverse_svg_gz_len
       )
     );
   backButton->Connect(
@@ -201,8 +211,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   wxButton *forwardButton = new wxButton(this,-1);
   forwardButton->SetBitmap(
     GetImage(
-      media_playback_start_128_png,media_playback_start_128_png_len,
-      media_playback_start_192_png,media_playback_start_192_png_len
+      media_playback_start_svg_gz,media_playback_start_svg_gz_len
       )
     );
   forwardButton->Connect(
@@ -252,8 +261,7 @@ TipOfTheDay::~TipOfTheDay()
 }
 
 
-wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
-                              unsigned char *data_192, size_t len_192)
+wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
 {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -272,8 +280,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
   if(ppi <= 10)
     ppi = 72;
   
-  double targetSize = wxMax(ppi,75) * ICON_SCALE;
-  int prescale;
+  int targetSize = wxMax(ppi,75) * ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -287,29 +294,11 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
 
   if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
     targetSize = sizeA;
-    prescale = 128;
   } else {
     targetSize = sizeB;
-    prescale = 192;
   }
-
-  wxBitmap bmp;
-  wxImage img;
-
-  void *data;
-  size_t len;
-  if(prescale == 128)
-  {
-    data = (void *)data_128;
-    len  = len_128;
-  }
-  else
-  {
-    data = (void *)data_192;
-    len  = len_192;
-  }
-  wxMemoryInputStream istream(data,len);
-  img.LoadFile(istream);
+  
+  wxImage img = SvgBitmap(data, len, targetSize, targetSize).ConvertToImage();
   
 #if defined __WXMSW__
 #if wxCHECK_VERSION(3, 1, 1)

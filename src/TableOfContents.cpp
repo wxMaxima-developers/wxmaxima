@@ -54,6 +54,9 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
+  Connect(structure_regex_id, wxEVT_TEXT, wxCommandEventHandler(TableOfContents::OnRegExEvent));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));
+  Connect(wxEVT_LIST_ITEM_RIGHT_CLICK, wxListEventHandler(TableOfContents::OnMouseRightDown));
 }
 
 void TableOfContents::OnSize(wxSizeEvent &event)
@@ -64,11 +67,9 @@ void TableOfContents::OnSize(wxSizeEvent &event)
 
 TableOfContents::~TableOfContents()
 {
-  wxDELETE(m_regex);
-  wxDELETE(m_displayedItems);
 }
 
-void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPosition)
+void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
 {
   long selection = m_lastSelection;
   if (IsShown())
@@ -91,13 +92,13 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
         m_structure.push_back(cell);
 
       // Select the cell with the cursor
-      if (cell == cursorPosition)
+      if (cell == pos)
       {
         if (!m_structure.empty())
           selection = m_structure.size() - 1;
       }
 
-      cell = dynamic_cast<GroupCell *>(cell->m_next);
+      cell = cell->GetNext();
     }
 
     long item = m_displayedItems->GetNextItem(-1,
@@ -282,8 +283,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
 {
   if (event.GetIndex() < 0)
     return;
-  wxMenu *popupMenu = new wxMenu();
-
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   m_cellRightClickedOn = m_structure[event.GetIndex()];
 
   if (m_cellRightClickedOn != NULL)
@@ -307,12 +307,5 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
 
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
-    PopupMenu(popupMenu);
-  wxDELETE(popupMenu);
+    PopupMenu(popupMenu.get());
 }
-
-BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
-                EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
-                EVT_SIZE(TableOfContents::OnSize)
-                EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY, TableOfContents::OnMouseRightDown)
-END_EVENT_TABLE()

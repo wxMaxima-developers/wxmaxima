@@ -75,6 +75,7 @@ protected:
   void HandleTimerEvent();
 
 private:
+  struct NSVGrasterizer* m_svgRast;
   //! The display resolution
   wxSize m_ppi;
   /*! How many percents of the available CPU power does maxima use?
@@ -98,9 +99,8 @@ private:
   //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit;
 
-  wxBitmap GetImage(wxString img,
-                    unsigned char *data_128, size_t len_128,
-                    unsigned char *data_192, size_t len_192
+  wxBitmap GetImage(wxString name,
+                    unsigned char *data_128, size_t len_128
     );
   
   //! The currently shown network status bitmap
@@ -123,7 +123,6 @@ private:
   wxTimer SendTimer;
   //! The timer that prolongs the showing of the "receiving" bitmap a bit.
   wxTimer ReceiveTimer;
-wxDECLARE_EVENT_TABLE();
 };
 
 #endif

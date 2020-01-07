@@ -29,38 +29,39 @@ class DiffCell : public Cell
 {
 public:
   DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  DiffCell(const DiffCell &cell);
+  Cell *Copy() override {return new DiffCell(*this);}
+  //! This class can be derived from wxAccessible which has no copy constructor
+  DiffCell &operator=(const DiffCell&) = delete;
   ~DiffCell();
   
-  std::list<Cell *> GetInnerCells();
-
-  Cell *Copy();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetBase(Cell *base);
 
   void SetDiff(Cell *diff);
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_diffCell;
+  std::shared_ptr<Cell> m_baseCell;
+  std::shared_ptr<Cell> m_diffCell;
 };
 
 #endif // DIFFCELL_H

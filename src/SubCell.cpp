@@ -30,35 +30,29 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
-  m_baseCell = NULL;
-  m_indexCell = NULL;
 }
 
-Cell *SubCell::Copy()
+SubCell::SubCell(const SubCell &cell):
+  SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SubCell *tmp = new SubCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetIndex(m_indexCell->CopyList());
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_baseCell)
+    SetBase(cell.m_baseCell->CopyList());
+  if(cell.m_indexCell)
+    SetIndex(cell.m_indexCell->CopyList());
 }
 
 SubCell::~SubCell()
 {
-  wxDELETE(m_baseCell);
-  wxDELETE(m_indexCell);
-  m_baseCell = NULL;
-  m_indexCell = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> SubCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> SubCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)
@@ -71,16 +65,14 @@ void SubCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  wxDELETE(m_indexCell);
-  m_indexCell = index;
+  m_indexCell = std::shared_ptr<Cell>(index);
 }
 
 void SubCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_baseCell);
-  m_baseCell = base;
+  m_baseCell = std::shared_ptr<Cell>(base);
 }
 
 void SubCell::RecalculateWidths(int fontsize)
@@ -97,7 +89,7 @@ void SubCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
-  m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
+  m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
 }
@@ -115,7 +107,7 @@ void SubCell::Draw(wxPoint point)
 
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-           m_indexCell->GetMaxCenter() -
+           m_indexCell->GetCenterList() -
            Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
     m_indexCell->DrawList(in);
   }
@@ -124,9 +116,7 @@ void SubCell::Draw(wxPoint point)
 wxString SubCell::ToString()
 {
   if (m_altCopyText != wxEmptyString)
-  {
     return m_altCopyText;
-  }
 
   wxString s;
   if (m_baseCell->IsCompound())

@@ -29,41 +29,55 @@ class SubSupCell : public Cell
 {
 public:
   SubSupCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SubSupCell(const SubSupCell &cell);
+  Cell *Copy() override {return new SubSupCell(*this);}
 
   ~SubSupCell();
 
-  std::list<Cell *> GetInnerCells();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  SubSupCell operator=(const SubSupCell&) = delete;
 
-  Cell *Copy();
-
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  
   void SetBase(Cell *base);
 
   void SetIndex(Cell *index);
 
   void SetExponent(Cell *expt);
 
-  void RecalculateHeight(int fontsize);
+  void SetPreSub(Cell *index);
 
-  void RecalculateWidths(int fontsize);
+  void SetPreSup(Cell *index);
 
-  virtual void Draw(wxPoint point);
+  void SetPostSub(Cell *index){SetIndex(index);}
 
-  wxString ToString();
+  void SetPostSup(Cell *expt){SetExponent(expt);}
+  
+  void RecalculateHeight(int fontsize) override;
 
-  wxString ToMatlab();
+  void RecalculateWidths(int fontsize) override;
 
-  wxString ToTeX();
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToXML();
+  wxString ToString() override;
 
-  wxString ToOMML();
+  wxString ToMatlab() override;
 
-  wxString ToMathML();
+  wxString ToTeX() override;
+
+  wxString ToXML() override;
+
+  wxString ToOMML() override;
+
+  wxString ToMathML() override;
 
 protected:
-  Cell *m_baseCell;
-  Cell *m_exptCell;
-  Cell *m_indexCell;
+  std::shared_ptr<Cell> m_baseCell;
+  std::shared_ptr<Cell> m_postSupCell;
+  std::shared_ptr<Cell> m_postSubCell;
+  std::shared_ptr<Cell> m_preSupCell;
+  std::shared_ptr<Cell> m_preSubCell;
+  std::list<Cell *> m_innerCellList;
 };
 
 #endif // SUBSUPCELL_H

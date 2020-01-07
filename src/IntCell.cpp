@@ -36,47 +36,50 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_base(new TextCell(parent, config, cellPointers)),
+  m_under(new TextCell(parent, config, cellPointers)),
+  m_over(new TextCell(parent, config, cellPointers)),
+  m_var(new TextCell(parent, config, cellPointers))
 {
-  m_base = NULL;
-  m_under = NULL;
-  m_over = NULL;
-  m_var = NULL;
   m_signHeight = 35;
   m_signWidth = 18;
   m_signTop = m_signHeight / 2;
   m_intStyle = INT_IDEF;
   m_charWidth = 12;
   m_charHeight = 12;
-  m_cellPointers = cellPointers;
 }
 
-Cell *IntCell::Copy()
+// Old cppcheck bugs:
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signHeight
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signTop
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
+// cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
+IntCell::IntCell(const IntCell &cell):
+ IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  IntCell *tmp = new IntCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_base->CopyList());
-  tmp->SetUnder(m_under->CopyList());
-  tmp->SetOver(m_over->CopyList());
-  tmp->SetVar(m_var->CopyList());
-  tmp->m_intStyle = m_intStyle;
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+    SetUnder(cell.m_under->CopyList());
+  if(cell.m_over)
+    SetOver(cell.m_over->CopyList());
+  if(cell.m_var)
+    SetVar(cell.m_var->CopyList());
+  m_intStyle = cell.m_intStyle;
 }
 
 IntCell::~IntCell()
 {
-  wxDELETE(m_base);
-  wxDELETE(m_under);
-  wxDELETE(m_over);
-  wxDELETE(m_var);
-  m_base = m_under = m_over = m_var = NULL;
   MarkAsDeleted();
 }
 
-std::list<Cell *> IntCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> IntCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)
@@ -88,36 +91,32 @@ std::list<Cell *> IntCell::GetInnerCells()
   return innerCells;
 }
 
-void IntCell::SetOver(Cell *over)
+void IntCell::SetOver(Cell *name)
 {
-  if (over == NULL)
+  if (name == NULL)
     return;
-  wxDELETE(m_over);
-  m_over = over;
+  m_over = std::shared_ptr<Cell>(name);
 }
 
 void IntCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_base);
-  m_base = base;
+  m_base = std::shared_ptr<Cell>(base);
 }
 
 void IntCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  wxDELETE(m_under);
-  m_under = under;
+  m_under = std::shared_ptr<Cell>(under);
 }
 
 void IntCell::SetVar(Cell *var)
 {
   if (var == NULL)
     return;
-  wxDELETE(m_var);
-  m_var = var;
+  m_var = std::shared_ptr<Cell>(var);
 }
 
 void IntCell::RecalculateWidths(int fontsize)
@@ -132,11 +131,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
   m_base->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
-  if (m_under == NULL)
-    m_under = new TextCell(m_group, m_configuration, m_cellPointers);
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  if (m_over == NULL)
-    m_over = new TextCell(m_group, m_configuration, m_cellPointers);
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
 
   if (configuration->CheckTeXFonts())
@@ -155,7 +150,7 @@ void IntCell::RecalculateWidths(int fontsize)
 #endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
-    dc->GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signHeight);
+    dc->GetTextExtent(wxT("\u005A"), &m_signWidth, &m_signHeight);
 
 #if defined __WXMSW__
     m_signWidth = m_signWidth / 2;
@@ -218,15 +213,15 @@ void IntCell::RecalculateHeight(int fontsize)
 
   if (m_intStyle == INT_DEF)
   {
-    m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
-                   m_base->GetMaxCenter());
+    m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+                   m_base->GetCenterList());
     m_height = m_center +
-      wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+      wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
           m_base->GetMaxDrop());
   }
   else
   {
-    m_center = wxMax(m_signHeight / 2, m_base->GetMaxCenter());
+    m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
     m_height = m_center +
                wxMax(m_signHeight / 2, m_base->GetMaxDrop());
   }
@@ -251,7 +246,7 @@ void IntCell::Draw(wxPoint point)
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
-        font = *wxNORMAL_FONT;
+        configuration->CheckTeXFonts(false);
       wxASSERT(fontsize1 > 0);
 #if wxCHECK_VERSION(3, 1, 2)
       font.SetFractionalPointSize(fontsize1);
@@ -259,7 +254,7 @@ void IntCell::Draw(wxPoint point)
       font.SetPointSize(fontsize1);
 #endif
       dc->SetFont(font);
-      dc->DrawText(wxT("\x5A"),
+      dc->DrawText(wxT("\u005A"),
                   sign.x,
                   sign.y - m_signTop);
     }
@@ -357,7 +352,7 @@ void IntCell::Draw(wxPoint point)
     if (m_intStyle == INT_DEF)
     {
       under.x += m_signWidth;
-      under.y = point.y + m_signHeight / 2 + m_under->GetMaxCenter() + Scale_Px(2) -
+      under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2) -
                 m_signHeight / 3;
       m_under->DrawList(under);
 
@@ -398,7 +393,7 @@ wxString IntCell::ToString()
 
   s += m_base->ListToString();
 
-  Cell *tmp = m_var;
+  Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)
@@ -423,7 +418,7 @@ wxString IntCell::ToMatlab()
 
   s += m_base->ListToMatlab();
 
-  Cell *tmp = m_var;
+  Cell *tmp = m_var.get();
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)
@@ -505,7 +500,7 @@ wxString IntCell::ToOMML()
 
   wxString retval;
 
-  retval = wxT("<m:nary><m:naryPr><m:chr>\x222b</m:chr></m:naryPr>");
+  retval = wxT("<m:nary><m:naryPr><m:chr>\u222b</m:chr></m:naryPr>");
   if (from != wxEmptyString)
     retval += wxT("<m:sub>") + from + wxT("</m:sub>");
   if (to != wxEmptyString)

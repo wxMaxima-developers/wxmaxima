@@ -37,6 +37,7 @@
 #include "Dirstructure.h"
 #include <iostream>
 
+#include "../examples/examples.h"
 #include "wxMaxima.h"
 #include "Version.h"
 
@@ -57,6 +58,13 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
+  Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_solving, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_diffequations, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_tolerances, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_3d, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_numberformats, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+    
   #if wxUSE_ON_FATAL_EXCEPTION
   wxHandleFatalExceptions(true);
   #endif
@@ -94,13 +102,12 @@ bool MyApp::OnInit()
 
   wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
 
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir()+wxT("/wxwin"));
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir()+wxT("/wxwin"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   wxConfigBase *config = wxConfig::Get();
-  int lang = wxLANGUAGE_UNKNOWN;
-  lang = wxLocale::GetSystemLanguage();
+  int lang = wxLocale::GetSystemLanguage();
   if(lang == wxLANGUAGE_UNKNOWN)
     lang = wxLANGUAGE_DEFAULT;
   if(config->Read(wxT("language"), &lang))
@@ -112,7 +119,7 @@ bool MyApp::OnInit()
       {
         m_locale.Init(lang);
         wxString localeName = m_locale.GetCanonicalName();
-        wxLogDebug(wxString::Format(_("wxMaxima's locale is set to to %s"),localeName));
+        wxLogDebug(wxString::Format(_("wxMaxima's locale is set to to %s"),localeName.utf8_str()));
         if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
            (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
            (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
@@ -123,7 +130,7 @@ bool MyApp::OnInit()
         if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
           localeName+=wxT(".UTF-32");
         
-        wxLogDebug(wxString::Format(_("Setting maxima's locale to %s."),localeName));
+        wxLogDebug(wxString::Format(_("Setting Maxima's locale to %s."),localeName.utf8_str()));
         wxSetEnv(wxT("LANG"), localeName);
       }
       else
@@ -134,7 +141,7 @@ bool MyApp::OnInit()
           wxString localeName = m_locale.GetCanonicalName();
           wxLogDebug(
             wxString::Format(_("Setting wxMaxima's language to the system language %s"),
-                             localeName)
+                             localeName.utf8_str())
             );
         }
         else
@@ -164,46 +171,84 @@ bool MyApp::OnInit()
                   /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
                    * using a own window and we want the message on the command line. If a user enters a command
                    * line option, he expects probably a answer just on the command line... */
-                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
+                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_SWITCH, "e", "eval",
                    "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
                   {wxCMD_LINE_SWITCH, "b", "batch",
                    "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
-                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
-                  { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the maxima binary", wxCMD_LINE_VAL_STRING , 0},
+                  {wxCMD_LINE_SWITCH, "", "logtostdout",
+                   "Log all \"debug messages\" sidebar messages to stderr, too.",  wxCMD_LINE_VAL_NONE, 0},
+                  {wxCMD_LINE_SWITCH, "", "pipe",
+                   "Pipe messages from Maxima to stdout.",  wxCMD_LINE_VAL_NONE, 0},
+                  {wxCMD_LINE_SWITCH, "", "exit-on-error",
+                   "Close the program on any Maxima error.",  wxCMD_LINE_VAL_NONE, 0},
+                  {wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
+                  {wxCMD_LINE_OPTION, "u", "use-version",
+                   "Use Maxima version <str>.",  wxCMD_LINE_VAL_STRING, 0},
+                  {wxCMD_LINE_OPTION, "l", "lisp",
+                   "Use a Maxima compiled with lisp compiler <str>.",  wxCMD_LINE_VAL_STRING, 0},
+                  {wxCMD_LINE_OPTION, "X", "extra-args",
+                   "Allows to specify extra Maxima arguments",  wxCMD_LINE_VAL_STRING, 0},
+                  { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the Maxima binary", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
             {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
-
+       
   cmdLineParser.SetDesc(cmdLineDesc);
-  cmdLineParser.Parse();
+  int cmdLineError = cmdLineParser.Parse();
+
+  if (cmdLineParser.Found(wxT("h")))
+  {
+    std::cout << "A feature-rich graphical user interface for the computer algebra system Maxima\n";
+    std::cout << cmdLineParser.GetUsageString();
+    exit(0);
+  }
+
+  if(cmdLineError != 0)
+    exit(-1);
+  
   wxString ini, file;
   // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
   {
-    Configuration::m_configfileLocation_override = ini;
+    wxFileName configFile(ini);
+    configFile.MakeAbsolute();
+    Configuration::m_configfileLocation_override = configFile.GetFullPath();
     wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
                                    wxEmptyString,
                                    Configuration::m_configfileLocation_override));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+  
+  if (cmdLineParser.Found(wxT("logtostdout")))
+    ErrorRedirector::LogToStdErr();
 
-  config = wxConfig::Get();
+  if (cmdLineParser.Found(wxT("pipe")))
+    wxMaxima::PipeToStdout();
 
-  if (cmdLineParser.Found(wxT("m"),&ini))
-  {
-    Configuration::m_maximaLocation_override = ini;
-  }
+  if (cmdLineParser.Found(wxT("exit-on-error")))
+    wxMaxima::ExitOnError();
 
+  wxString extraMaximaArgs;
+  wxString arg;
+  if (cmdLineParser.Found(wxT("l"), &arg))
+    extraMaximaArgs += " -l " +  arg;
+  
+  if (cmdLineParser.Found(wxT("X"), &arg))
+    extraMaximaArgs += " -X " +  arg;
+
+  if (cmdLineParser.Found(wxT("u"), &arg))
+    extraMaximaArgs += " -u " +  arg;
+
+  wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
+  
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
-
-  m_dirstruct =  new Dirstructure;
 
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
@@ -213,9 +258,9 @@ bool MyApp::OnInit()
     if(dir != wxEmptyString)
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-  wxString fontPrefix = m_dirstruct->FontDir() + wxT("/");  
   /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
+  wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");  
   if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  wxFont::AddPrivateFont(fontPrefix + wxT(CMR10) + wxT(".ttf"));
@@ -246,13 +291,10 @@ bool MyApp::OnInit()
   wxApp::SetExitOnFrameDelete(false);
   wxMenuBar *menuBar = new wxMenuBar;
   wxMenu *fileMenu = new wxMenu;
-  fileMenu->Append(wxMaxima::mac_newId, _("&New\tCtrl+N"));
-  fileMenu->Append(wxMaxima::mac_openId, _("&Open\tCtrl+O"));
+  fileMenu->Append(wxID_NEW, _("&New\tCtrl+N"));
+  fileMenu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
   menuBar->Append(fileMenu, _("File"));
   wxMenuBar::MacSetCommonMenuBar(menuBar);
-
-  Connect(wxMaxima::mac_newId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
-  Connect(wxMaxima::mac_openId, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
@@ -264,12 +306,6 @@ bool MyApp::OnInit()
     std::cout << " (Git version: " << WXMAXIMA_GIT_VERSION << ")";
 #endif
     std::cout << "\n";
-    exit(0);
-  }
-  if (cmdLineParser.Found(wxT("h")))
-  {
-    std::cout << "A feature-rich graphical user interface for the computer algebra system maxima\n";
-    std::cout << cmdLineParser.GetUsageString();
     exit(0);
   }
 
@@ -310,8 +346,6 @@ bool MyApp::OnInit()
 
 int MyApp::OnExit()
 {
-  wxDELETE(m_dirstruct);
-  m_dirstruct = NULL;
   return 0;
 }
 
@@ -321,7 +355,7 @@ int MyApp::OnRun()
   return 0;
 }
 
-void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
+void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
 {
   int numberOfWindows = m_topLevelWindows.size();
 
@@ -333,8 +367,32 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
   wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title);
-  if (file.Length() > 0)
+  if (!file.IsEmpty() )
     frame->SetOpenFile(file);
+  if (wxmData)
+  {
+    // Unzip the .wxm file
+    wxMemoryInputStream istream(wxmData, wxmLen);
+    wxZlibInputStream zstream(istream);
+    wxTextInputStream textIn(zstream, "\t", wxConvAuto(wxFONTENCODING_UTF8));
+    wxString initialContents;
+    wxString line;
+    wxString block;
+    while(!zstream.Eof())
+    {
+      line = textIn.ReadLine();
+      if((line.StartsWith("/*")) || (line.EndsWith("*/")))
+      {
+        initialContents += _(block);
+        initialContents += line + "\n";
+        block = wxEmptyString;
+      }
+      else
+        block += line + "\n";
+    }
+    initialContents += _(block);
+    frame->SetWXMdata(initialContents);
+  }
   
   frame->ExitAfterEval(exitAfterEval);
   frame->EvalOnStartup(evalOnStartup);
@@ -350,9 +408,27 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch (ev.GetId())
   {
-    case wxMaximaFrame::menu_new_id:
-    case ToolBar::tb_new:
-  case wxMaxima::mac_newId:
+  case wxMaxima::menu_help_numberformats:
+    NewWindow(wxEmptyString, false, false,
+              numberFormats_wxm_gz, numberFormats_wxm_gz_len);
+    break;
+  case wxMaxima::menu_help_3d:
+    NewWindow(wxEmptyString, false, false,
+              displaying3DCurves_wxm_gz, displaying3DCurves_wxm_gz_len);
+    break;
+  case wxMaxima::menu_help_solving:
+    NewWindow(wxEmptyString, false, false,
+              solvingEquations_wxm_gz, solvingEquations_wxm_gz_len);
+    break;
+  case wxMaxima::menu_help_diffequations:
+    NewWindow(wxEmptyString, false, false,
+              diffEquations_wxm_gz, diffEquations_wxm_gz_len);
+    break;
+  case wxMaxima::menu_help_tolerances:
+    NewWindow(wxEmptyString, false, false,
+              toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);
+    break;
+    case wxID_NEW:
     {
       // Mac computers insist that all instances of a new application need to share
       // the same process. On all other OSes we create a separate process for each
@@ -372,19 +448,9 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 #endif
       break;
     }
-    case wxMaxima::mac_openId:
-    {
-      wxString file = wxFileSelector(_("Open"), wxEmptyString,
-                                     wxEmptyString, wxEmptyString,
-                                     _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
-                                     wxFD_OPEN);
-      if (file.Length() > 0)
-        NewWindow(file);
-    }
-      break;
     case wxID_EXIT:
     {
-      std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
+      std::list<wxMaxima *>::const_iterator it=m_topLevelWindows.begin();
       while(it != m_topLevelWindows.end())
       {
         if (*it != NULL)
@@ -412,8 +478,3 @@ void MyApp::MacOpenFile(const wxString &file)
 {
   NewWindow(file);
 }
-
-BEGIN_EVENT_TABLE(MyApp, wxApp)
-  EVT_MENU(wxMaximaFrame::menu_new_id, MyApp::OnFileMenu)
-  EVT_TOOL(ToolBar::tb_new, MyApp::OnFileMenu)
-END_EVENT_TABLE()

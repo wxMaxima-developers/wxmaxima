@@ -57,7 +57,7 @@ private:
 
   void OnPopupMenu(wxCommandEvent &event);
 
-  void Parse(wxString in);
+  void Parse(wxString s);
 
   enum
   {

@@ -37,14 +37,13 @@ class Style
 {
 public:
   //! The constructor
-  Style()
-  {
-    m_bold = false;
-    m_italic = false;
-    m_underlined = false;
-    m_fontSize = 10;
-    m_color = *wxBLACK;
-  };
+  Style():m_color(*wxBLACK),
+          m_bold(false),
+          m_italic(false),
+          m_underlined(false)
+    {
+      m_fontSize = 10;
+    };
   //! Read thisstyle from a config source
   void Read(wxConfigBase *config, wxString where);
   //! Write this style to a config source
@@ -63,35 +62,35 @@ public:
       m_fontSize = fontSize;
     }
   //! Is this style italic?
-  bool Italic(){return m_italic;}
+  bool Italic() const{return m_italic;}
   //! Make this style italic
   void Italic(bool italic){m_italic = italic;}
   //! Is this style bold?
-  bool Bold(){return m_bold;}
+  bool Bold() const{return m_bold;}
   //! Make this style bold
   void Bold(bool bold){m_bold = bold;}
   //! Is this style underlined?
-  bool Underlined(){return m_underlined;}
+  bool Underlined() const{return m_underlined;}
   //! Make this style underlined
   void Underlined(bool underlined){m_underlined = underlined;}
   //! The font size of this style
-  int FontSize(){return m_fontSize;}
+  int FontSize() const{return m_fontSize;}
   //! Set the font size of this style
   void FontSize(int size){m_fontSize = size;}
   //! The font name of this style
-  wxString FontName(){return m_fontName;}
+  wxString FontName() const{return m_fontName;}
   //! Set the font name of this style
   void FontName(wxString name){m_fontName = name;}
   //! Get the color of this style
-  wxColor GetColor(){return m_color;}
+  wxColor GetColor() const{return m_color;}
   //! Set the color of this style
-  wxString Name(){return m_name;}
+  wxString Name() const{return m_name;}
   //! Set the color of this style
   void Color(wxColor color){m_color = color;}
   //! Set the color of this style
   void Color(int r, int g, int b){m_color = wxColor(r,g,b);}
   //! Get the color of this style
-  wxColor Color(){return m_color;}
+  wxColor Color() const{return m_color;}
 private:
   wxColor m_color;
   wxString m_fontName;

@@ -33,22 +33,23 @@ class MatrCell : public Cell
 {
 public:
   MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  MatrCell(const MatrCell &cell);
+  Cell *Copy() override {return new MatrCell(*this);}
+  //! This class can be derived from wxAccessible which has no copy constructor
+  MatrCell &operator=(const MatrCell&) = delete;
   ~MatrCell();
 
-  std::list<Cell *> GetInnerCells();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  Cell *Copy();
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void AddNewCell(Cell *cell)
   {
-    m_cells.push_back(cell);
+    m_cells.push_back(std::shared_ptr<Cell>(cell));
   }
 
   void NewRow()
@@ -63,17 +64,17 @@ public:
 
   void SetDimension();
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
   void SetSpecialFlag(bool special)
   { m_specialMatrix = special; }
@@ -94,7 +95,7 @@ protected:
   bool m_roundedParens;
   unsigned int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
-  vector<Cell *> m_cells;
+  vector<std::shared_ptr<Cell>> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;

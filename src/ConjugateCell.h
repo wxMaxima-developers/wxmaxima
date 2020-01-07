@@ -49,41 +49,44 @@ class ConjugateCell : public Cell
 {
 public:
   ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  ConjugateCell(const ConjugateCell &cell);
+  Cell *Copy() override {return new ConjugateCell(*this);}
   ~ConjugateCell();
 
-  std::list<Cell *> GetInnerCells();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  ConjugateCell &operator=(const ConjugateCell&) = delete;
+
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetInner(Cell *inner);
 
-  Cell *Copy();
+  bool BreakUp() override;
 
-  bool BreakUp();
-
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
-  Cell *m_innerCell;
-  TextCell *m_open, *m_close;
+  std::shared_ptr<Cell> m_innerCell;
+  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<TextCell> m_close;
   Cell *m_last;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 };
 
 #endif // CONJUGATECELL_H

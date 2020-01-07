@@ -37,25 +37,28 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_DEFAULT);
-
-  std::list<Cell *> GetInnerCells();
+  //! \todo: m_alt+m_altJs+m_altText+m_altJsText are all needed?
+  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
+  TextCell(const TextCell &cell);
+  Cell *Copy() override {return new TextCell(*this);}
+  //! This class can be derived from wxAccessible which has no copy constructor
+  TextCell &operator=(const TextCell&) = delete;
   
-  ~TextCell();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   
-  Cell *Copy();
+  ~TextCell();  
 
-  virtual void SetStyle(TextStyle style);
+  virtual void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
-  void SetValue(const wxString &text);
+  void SetValue(const wxString &text) override;
 
   //! Set the automatic label maxima has assigned the current equation
   void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetFont(int fontsize);
 
@@ -66,46 +69,54 @@ public:
   void DontEscapeOpeningParenthesis()
   { m_dontEscapeOpeningParenthesis = true; }
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToRTF();
+  wxString ToRTF() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString GetDiffPart();
+  wxString GetDiffPart() override;
 
-  bool IsOperator();
+  bool IsOperator() const override;
 
-  wxString GetValue()
+  wxString GetValue() const override
   { return m_text; }
 
-  wxString GetGreekStringTeX();
+  wxString GetGreekStringTeX() const;
 
-  wxString GetSymbolTeX();
+  wxString GetSymbolTeX() const;
 
-  wxString GetGreekStringUnicode();
+  wxString GetGreekStringUnicode() const;
 
-  wxString GetSymbolUnicode(bool keepPercent);
+  wxString GetSymbolUnicode(bool keepPercent) const;
 
-  bool IsShortNum();
+  bool IsShortNum() override;
 
-  virtual void SetType(CellType type);
+  virtual void SetType(CellType type) override;
 
 protected:
+  wxSize GetTextSize(wxString const &text);
   void SetAltText();
-  
+
+  void FontsChanged() override
+    {
+      ResetSize();
+      ResetData();
+      m_widths.clear();
+    }
+
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
-  bool NeedsRecalculation();
+  bool NeedsRecalculation() override;
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
@@ -118,7 +129,6 @@ protected:
   wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
-  //! How many maximum digits did we display the last time this cell was recalculated?
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 
@@ -131,12 +141,48 @@ protected:
     size has changed and we need to re-calculate the text width.
    */
   double m_lastCalculationFontSize;
-  //! The line height
-  double m_fontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
   double m_lastZoomFactor;
 private:
+  class SizeHash_internals
+  {
+  public:
+    SizeHash_internals() { }
+    unsigned long operator()( const double& k ) const
+      {
+        return k * 1000000;
+      }
+    SizeHash_internals& operator=(const SizeHash_internals&) { return *this; }
+  };
+  // comparison operator
+  class DoubleEqual
+  {
+  public:
+    DoubleEqual() { }
+    bool operator()( const double& a, const double& b ) const
+      {
+        return fabs(a-b) < .001;
+      }
+    DoubleEqual& operator=(const DoubleEqual&) { return *this; }
+  };
+  WX_DECLARE_HASH_MAP(
+    double, wxSize, SizeHash_internals, DoubleEqual, SizeHash);
+  //! Remembers all widths of the full text we already have configured
+  SizeHash m_widths;
+  //! The size of the first few digits
+  SizeHash m_numstartWidths;
+  wxSize m_numStartWidth;
+  wxString m_numStart;
+  //! The size of the "not all digits displayed" message.
+  SizeHash m_ellipsisWidths;
+  wxString m_ellipsis;
+  wxSize m_ellipsisWidth;
+  //! The size of the last few digits
+  SizeHash m_numEndWidths;
+  wxString m_numEnd;
+  wxSize m_numEndWidth;
+
   //! Produces a text sample that determines the label width
   wxString m_initialToolTip;
   //! The number of digits we did display the last time we displayed a number.

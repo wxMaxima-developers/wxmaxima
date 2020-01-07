@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 set(RESSOURCES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest)
 
 # need only be installed on Windows.

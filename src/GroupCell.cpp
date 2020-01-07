@@ -40,19 +40,16 @@
 #include "BitmapOut.h"
 #include "list"
 
-GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
-        this, config)
+GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) :
+  Cell(this, config, cellPointers)
 {
   m_numberedAnswersCount = 0;
-  m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
+  m_next = m_previous = m_nextToDraw = NULL;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
-  m_cellPointers = cellPointers;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
-  m_inputLabel = NULL;
   m_labelWidth_cached = 0;
-  m_output = NULL;
   m_hiddenTree = NULL;
   m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
@@ -60,23 +57,22 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_outputRect.width = 0;
   m_outputRect.height = 0;
   m_group = this;
-  m_fontSize = 10;
-  m_mathFontSize = 10;
+  m_fontSize = (*m_configuration)->GetDefaultFontSize();
+  m_mathFontSize = (*m_configuration)->GetMathFontSize();
   m_forceBreakLine = true;
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
-  m_hide = false;
+  m_isHidden = false;
   m_groupType = groupType;
   m_lastInOutput = NULL;
-  m_appendedCells = NULL;
 
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL);
+      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
     else
-      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, wxT(""));
+      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -151,11 +147,23 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
     ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, false);
-    AppendOutput(ic);
+    GroupCell::AppendOutput(ic);
   }
 
   // The GroupCell this cell belongs to is this GroupCell.
   SetGroup(this);
+}
+
+GroupCell::GroupCell(const GroupCell &cell):
+  GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers, wxEmptyString)
+{
+  CopyCommonData(cell);
+  if (cell.m_inputLabel)
+    SetInput(cell.m_inputLabel->CopyList());
+  if (cell.m_output)
+    SetOutput(cell.m_output->CopyList());
+  Hide(cell.m_isHidden);
+  AutoAnswer(cell.m_autoAnswer);
 }
 
 void GroupCell::SetCellStyle(int style)
@@ -251,7 +259,7 @@ void GroupCell::SetGroup(Cell *parent)
   if (m_inputLabel != NULL)
     m_inputLabel->SetGroupList(parent);
 
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   if(m_output != NULL)
     tmp->SetGroupList(parent);
 }
@@ -285,23 +293,8 @@ void GroupCell::ResetInputLabelList()
     if (tmp->IsFoldable() && (tmp->m_hiddenTree))
       tmp->m_hiddenTree->ResetInputLabelList();
 
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
-
-}
-
-Cell *GroupCell::Copy()
-{
-  GroupCell *tmp = new GroupCell(m_configuration, m_groupType, m_cellPointers);
-  tmp->Hide(m_hide);
-  CopyData(this, tmp);
-  tmp->AutoAnswer(m_autoAnswer);
-  if (m_inputLabel)
-    tmp->SetInput(m_inputLabel->CopyList());
-  if (m_output != NULL)
-    tmp->SetOutput(m_output->CopyList());
-
-  return tmp;
 }
 
 wxString GroupCell::ToWXM(bool wxm)
@@ -325,7 +318,7 @@ wxString GroupCell::ToWXM(bool wxm)
       // Export the list of known answers
       if(wxm)
       {
-        for(StringHash::iterator it = m_knownAnswers.begin();
+        for(StringHash::const_iterator it = m_knownAnswers.begin();
             it != m_knownAnswers.end();
             ++it)
         {
@@ -412,7 +405,7 @@ wxString GroupCell::ToWXM(bool wxm)
     while (tmp != NULL)
     {
       retval += tmp->ToWXM(wxm);
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      tmp = tmp->GetNext();
     }
     if(wxm)
       retval += wxT("\n/* [wxMaxima: fold    end   ] */\n");
@@ -426,11 +419,9 @@ wxString GroupCell::ToWXM(bool wxm)
 
 GroupCell::~GroupCell()
 {
-  MarkAsDeleted();
-  wxDELETE(m_inputLabel);
-  wxDELETE(m_output);
+  GroupCell::MarkAsDeleted();
   wxDELETE(m_hiddenTree);
-  m_inputLabel = m_output = m_hiddenTree = NULL;
+  m_hiddenTree = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
@@ -452,15 +443,15 @@ void GroupCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<Cell *> GroupCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> GroupCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if (m_groupType != GC_TYPE_PAGEBREAK)
   {
     if(GetInput())
-      innerCells.push_back(GetInput());
+      innerCells.push_back(m_inputLabel);
     if(GetOutput())
-      innerCells.push_back(GetOutput());
+      innerCells.push_back(m_output);
   }
   return innerCells;
 }
@@ -476,8 +467,7 @@ void GroupCell::SetInput(Cell *input)
 {
   if (input == NULL)
     return;
-  wxDELETE(m_inputLabel);
-  m_inputLabel = input;
+  m_inputLabel = std::shared_ptr<Cell>(input);
   m_inputLabel->SetGroup(this);
 }
 
@@ -485,7 +475,7 @@ void GroupCell::AppendInput(Cell *cell)
 {
   if (m_inputLabel == NULL)
   {
-    m_inputLabel = cell;
+    m_inputLabel = std::shared_ptr<Cell>(cell);
   }
   else
   {
@@ -500,7 +490,7 @@ void GroupCell::AppendInput(Cell *cell)
     else
     {
       AppendOutput(cell);
-      m_hide = false;
+      m_isHidden = false;
     }
   }
 }
@@ -511,12 +501,9 @@ void GroupCell::SetOutput(Cell *output)
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   
-  wxDELETE(m_output);
+  m_output = std::shared_ptr<Cell>(output);
 
-  m_output = output;
-
-
-  m_lastInOutput = m_output;
+  m_lastInOutput = m_output.get();
 
   if(m_output != NULL)
   {
@@ -526,7 +513,9 @@ void GroupCell::SetOutput(Cell *output)
     m_output->ResetSizeList();
   }
   UpdateCellsInGroup();
-  Recalculate();
+  UpdateConfusableCharWarnings();
+//  ResetSize();
+  GroupCell::Recalculate();
 }
 
 void GroupCell::RemoveOutput()
@@ -541,7 +530,6 @@ void GroupCell::RemoveOutput()
 
   if (!(GetGroupType() == GC_TYPE_IMAGE))
   {
-    wxDELETE(m_output);
     m_output = NULL;
   }
 
@@ -549,15 +537,17 @@ void GroupCell::RemoveOutput()
   // Calculate the new cell height.
 
   ResetSize();
+  ResetData();
   RecalculateHeight((*m_configuration)->GetDefaultFontSize());
   (*m_configuration)->AdjustWorksheetSize(true);
-  m_hide = false;
+  m_isHidden = false;
 
   // Move all cells that follow the current one up by the amount this cell has shrinked.
   GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
   while(cell != NULL)
     cell = cell->UpdateYPosition();
   UpdateCellsInGroup();
+  UpdateConfusableCharWarnings();
 }
 
 void GroupCell::AppendOutput(Cell *cell)
@@ -567,12 +557,12 @@ void GroupCell::AppendOutput(Cell *cell)
   cell->SetGroupList(this);
   if (m_output == NULL)
   {
-    m_output = cell;
+    m_output = std::shared_ptr<Cell>(cell);
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
 
-    m_lastInOutput = m_output;
+    m_lastInOutput = m_output.get();
 
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
@@ -582,7 +572,7 @@ void GroupCell::AppendOutput(Cell *cell)
   {
     Cell *tmp = m_lastInOutput;
     if (tmp == NULL)
-      tmp = m_output;
+      tmp = m_output.get();
 
     while (tmp->m_next != NULL)
       tmp = tmp->m_next;
@@ -593,27 +583,82 @@ void GroupCell::AppendOutput(Cell *cell)
       while (m_lastInOutput->m_next != NULL)
         m_lastInOutput = m_lastInOutput->m_next;
   }
-
-  if (m_appendedCells == NULL)
-    m_appendedCells = cell;
-
+//  Recalculate();
   UpdateCellsInGroup();
+  UpdateConfusableCharWarnings();
+}
+
+void GroupCell::UpdateConfusableCharWarnings()
+{
+  ClearToolTip();
+
+  wxString code;
+  if(GetInput())
+    code += GetInput()->ListToString() + " ";
+  if(GetOutput())
+    code += GetOutput()->VariablesAndFunctionsList();
+  // Extract all variable and command names from the cell including input and output
+  CmdsAndVariables cmdsAndVariables;
+  MaximaTokenizer::TokenList
+    m_tokens = MaximaTokenizer(code, *m_configuration).GetTokens();
+  for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
+    if(((*it)->GetStyle() == TS_CODE_VARIABLE) || ((*it)->GetStyle() == TS_CODE_FUNCTION))
+      cmdsAndVariables[(*it)->GetText()] = 1;
+  
+  // Now we step through all the words we found
+  while(!cmdsAndVariables.empty())
+  {
+    CmdsAndVariables::iterator cmp = cmdsAndVariables.begin();
+    wxString word;
+    word = cmp->first;
+    cmdsAndVariables.erase(cmp);
+    // Now iterate through all remaining words
+    cmp = cmdsAndVariables.begin();
+    while(cmp != cmdsAndVariables.end())
+    {
+      // iterate through all lookalike chars
+      for (wxString::const_iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
+      {
+        wxChar ch1 = *it;
+        ++it;
+        wxASSERT(it < m_lookalikeChars.end());
+        wxChar ch2 = *it;
+        wxString word_subst = word;
+        if(word_subst.Replace(ch1,ch2))
+        {
+          if(cmp->first == word_subst)
+            AddToolTip(_("Warning: Lookalike chars: ") +
+                       cmp->first.utf8_str() + wxT("\u2260") +
+                       word.utf8_str()
+              );
+        }
+        word_subst = word;
+        if(word_subst.Replace(ch2,ch1))
+        {
+          if(cmp->first == word_subst)
+            AddToolTip(_("Warning: Lookalike chars: ") +
+                       cmp->first +
+                       wxT(" \u2260 ") +
+                       word
+              );
+        }
+          
+      }
+      ++cmp;
+    }
+  }
 }
 
 void GroupCell::Recalculate()
 {
-  int fontsize = (*m_configuration)->GetDefaultFontSize();
-
-  m_fontSize = fontsize;
+  m_fontSize = (*m_configuration)->GetDefaultFontSize();
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
-
-  RecalculateWidths(fontsize);
-  RecalculateHeight(fontsize);
+  GroupCell::RecalculateWidths((*m_configuration)->GetDefaultFontSize());
+  GroupCell::RecalculateHeight((*m_configuration)->GetDefaultFontSize());
 }
 
 void GroupCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   
   if (NeedsRecalculation())
@@ -633,7 +678,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       m_inputLabel->SetCurrentPoint(m_currentPoint);
     }
 
-    if (m_output == NULL || m_hide)
+    if (m_output == NULL || m_isHidden)
     {
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
@@ -660,6 +705,7 @@ void GroupCell::RecalculateWidths(int fontsize)
     BreakLines();
   }
   ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void GroupCell::InputHeightChanged()
@@ -669,7 +715,7 @@ void GroupCell::InputHeightChanged()
   EditorCell *editorCell = GetEditable();
   if (editorCell != NULL) {
     editorCell->ResetSize();
-    editorCell->RecalculateWidths(m_fontSize);
+    editorCell->RecalculateWidths((*m_configuration)->GetDefaultFontSize());
   }
   if (m_inputLabel != NULL) {
     m_inputLabel->ResetData();
@@ -689,7 +735,7 @@ void GroupCell::InputHeightChanged()
 void GroupCell::OnSize()
 {
   // Unbreakup cells
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   while (tmp != NULL)
   {
     tmp->Unbreak();
@@ -721,7 +767,7 @@ void GroupCell::RecalculateHeightInput()
     m_width = configuration->GetCellBracketWidth();
     m_height = 2;
     m_center = 0;
-    Cell::RecalculateWidthsList(m_fontSize);
+    Cell::RecalculateWidthsList((*m_configuration)->GetDefaultFontSize());
     return;
   }
   
@@ -730,9 +776,9 @@ void GroupCell::RecalculateHeightInput()
   {
     if(m_inputLabel)
     {
-      m_inputLabel->RecalculateHeightList(m_fontSize);
-      m_center = m_inputLabel->GetMaxCenter();
-      m_height = m_inputLabel->GetMaxHeight();
+      m_inputLabel->RecalculateHeightList((*m_configuration)->GetDefaultFontSize());
+      m_center = m_inputLabel->GetCenterList();
+      m_height = m_inputLabel->GetHeightList();
     }
   }
   else
@@ -741,12 +787,14 @@ void GroupCell::RecalculateHeightInput()
     m_height = 0;
   }
   
-  if (!m_hide)
+  if (!m_isHidden)
   {
-    Cell *tmp = m_output;
+    Cell *tmp = m_output.get();
     while (tmp != NULL)
     {
-      tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+      tmp->RecalculateHeight(tmp->IsMath() ?
+                             (*m_configuration)->GetMathFontSize() :
+                             (*m_configuration)->GetDefaultFontSize());
       tmp = tmp->m_next;
     }
   }
@@ -754,19 +802,19 @@ void GroupCell::RecalculateHeightInput()
   m_currentPoint.x = configuration->GetIndent();
   if (m_previous == NULL)
   {
-    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
+    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetCenterList();
   }
   else
   {
     if(dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y > 0)
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
         (*m_configuration)->GetGroupSkip();
   }
   
   m_outputRect.x = m_currentPoint.x;
   m_outputRect.y = m_currentPoint.y + m_center;
-  if (m_output) m_outputRect.y -= m_output->GetMaxCenter();
+  if (m_output) m_outputRect.y -= m_output->GetCenterList();
   else
   {
     m_outputRect.width = 0;
@@ -775,7 +823,7 @@ void GroupCell::RecalculateHeightInput()
   if ((configuration->ShowCodeCells()) ||
       (m_groupType != GC_TYPE_CODE))
   {
-    m_height = m_inputLabel->GetMaxHeight();
+    m_height = m_inputLabel->GetHeightList();
     m_width = m_inputLabel->GetFullWidth();
   }
   else
@@ -790,12 +838,86 @@ void GroupCell::RecalculateHeightInput()
 
 void GroupCell::RecalculateHeightOutput()
 {
-  if(!m_hide)
+  if(m_isHidden)
+    return;
+
+  if(m_output == NULL)
+    return;
+  
+  Configuration *configuration = (*m_configuration);
+    
+  if(m_height < 0)
   {
-    m_appendedCells = m_output;
-    if(m_output != NULL)
-      RecalculateAppended();
+    m_fontSize = configuration->GetDefaultFontSize();
+    m_mathFontSize = (*m_configuration)->GetMathFontSize();
+    
+    RecalculateWidths(configuration->GetDefaultFontSize());
+    RecalculateHeightInput();
   }
+  m_output->HardLineBreak();
+
+  Cell *tmp = m_output.get();
+  m_mathFontSize = configuration->GetMathFontSize();
+
+  // Recalculate widths of cells
+  while (tmp != NULL)
+  {
+    tmp->RecalculateWidths(tmp->IsMath() ?
+                           (*m_configuration)->GetMathFontSize() :
+                           (*m_configuration)->GetDefaultFontSize());
+    tmp = tmp->m_next;
+  }
+
+  // Breakup cells and break lines
+  BreakLines(m_output.get());
+
+  // Recalculate size of cells
+  tmp = m_output.get();
+  while (tmp != NULL)
+  {
+    tmp->RecalculateHeight(tmp->IsMath() ?
+                           (*m_configuration)->GetMathFontSize() :
+                           (*m_configuration)->GetDefaultFontSize());
+    tmp->ResetData();
+    tmp = tmp->m_next;
+  }
+
+  // Update heights
+  tmp = m_output.get();
+  tmp->ForceBreakLine(true);
+  while (tmp != NULL)
+  {
+    if (tmp->BreakLineHere())
+    {
+      int height_Delta = tmp->GetHeightList();
+      m_width = wxMax(m_width, tmp->GetLineWidth());
+      m_height            += height_Delta;
+      m_outputRect.width = m_width;
+      m_outputRect.height += height_Delta;
+      
+      if (tmp->m_previous != NULL &&
+          ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
+      {
+        m_height            += configuration->GetInterEquationSkip();
+        m_outputRect.height += configuration->GetInterEquationSkip();
+      }
+
+      if (tmp->m_bigSkip)
+      {
+        m_height            += MC_LINE_SKIP;
+        m_outputRect.height += MC_LINE_SKIP;
+      }
+    }
+    tmp = tmp->m_nextToDraw;
+  }
+
+  ResetData();
+  
+  // Move all cells that follow the current one down by the amount this cell has grown.
+  GroupCell *cell = this;
+  while(cell != NULL)
+    cell = cell->UpdateYPosition();
+  (*m_configuration)->AdjustWorksheetSize(true);
 }
 
 bool GroupCell::NeedsRecalculation()
@@ -822,99 +944,6 @@ void GroupCell::RecalculateHeight(int fontsize)
 //    m_height = configuration->GetCellBracketWidth();
   
   UpdateYPosition();
-  // If code is hidden and there is no output a cell can have the height
-  // 0. If it is higher than that we make our cell high enough to fit the 
-  // bracket in.  m_appendedCells = NULL;
-}
-
-// We assume that appended cells will be in a new line!
-void GroupCell::RecalculateAppended()
-{  
-  if(m_hide)
-    return;
-  if(NeedsRecalculation())
-    m_appendedCells = m_output;
-  Configuration *configuration = (*m_configuration);
-    
-  if(m_height < 0)
-  {
-    int fontsize = configuration->GetDefaultFontSize();
-      
-    m_fontSize = fontsize;
-    m_mathFontSize = (*m_configuration)->GetMathFontSize();
-    
-    RecalculateWidths(fontsize);
-    RecalculateHeightInput();
-    m_appendedCells = m_output;
-  }
-  if (m_appendedCells == NULL)
-    m_appendedCells = m_inputLabel;
-  if (m_appendedCells == NULL)
-    m_appendedCells = GetOutput();
-  if (m_appendedCells == NULL)
-    return;
-  m_appendedCells->HardLineBreak();
-
-  Cell *tmp = m_appendedCells;
-  m_fontSize = configuration->GetFontSize(TS_TEXT);
-  m_mathFontSize = configuration->GetMathFontSize();
-
-  // Recalculate widths of cells
-  while (tmp != NULL)
-  {
-    tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-    tmp = tmp->m_next;
-  }
-
-  // Breakup cells and break lines
-  BreakLines(m_appendedCells);
-
-  // Recalculate size of cells
-  tmp = m_appendedCells;
-  while (tmp != NULL)
-  {
-    tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-    tmp->ResetData();
-    tmp = tmp->m_next;
-  }
-
-  // Update heights
-  tmp = m_appendedCells;
-  tmp->ForceBreakLine(true);
-  while (tmp != NULL)
-  {
-    if (tmp->BreakLineHere())
-    {
-      int height_Delta = tmp->GetMaxHeight();
-      m_width = wxMax(m_width, tmp->GetLineWidth());
-      m_height            += height_Delta;
-      m_outputRect.width = m_width;
-      m_outputRect.height += height_Delta;
-      
-      if (tmp->m_previousToDraw != NULL &&
-          ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
-      {
-        m_height            += configuration->GetInterEquationSkip();
-        m_outputRect.height += configuration->GetInterEquationSkip();
-      }
-
-      if (tmp->m_bigSkip)
-      {
-        m_height            += MC_LINE_SKIP;
-        m_outputRect.height += MC_LINE_SKIP;
-      }
-    }
-    tmp = tmp->m_nextToDraw;
-  }
-  m_appendedCells = NULL;
-
-  ResetData();
-  
-  // Move all cells that follow the current one down by the amount this cell has grown.
-  GroupCell *cell = this;
-  while(cell != NULL)
-    cell = cell->UpdateYPosition();
-  (*m_configuration)->AdjustWorksheetSize(true);
 }
 
 GroupCell *GroupCell::UpdateYPosition()
@@ -924,19 +953,19 @@ GroupCell *GroupCell::UpdateYPosition()
   if (m_previous == NULL)
   {
     m_currentPoint.x = configuration->GetIndent();
-    m_currentPoint.y = configuration->GetBaseIndent() + GetMaxCenter();
+    m_currentPoint.y = configuration->GetBaseIndent() + GetCenterList();
   }
   else
   {
     m_currentPoint.x = configuration->GetIndent();
     if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
         configuration->GetGroupSkip();
     else
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y;
   }
-  return dynamic_cast<GroupCell *>(m_next);
+  return GetNext();
 }
 
 int GroupCell::GetInputIndent()
@@ -1002,16 +1031,16 @@ void GroupCell::Draw(wxPoint point)
       SetPen();
       wxPoint in(point);
 
-      if ((m_output != NULL) && !m_hide)
+      if ((m_output != NULL) && !m_isHidden)
       {
-        Cell *tmp = m_output;
+        Cell *tmp = m_output.get();
         int drop = tmp->GetMaxDrop();
         if ((configuration->ShowCodeCells()) ||
             (m_groupType != GC_TYPE_CODE))
           in.y += m_inputLabel->GetMaxDrop();
 
-        in.y += m_output->GetMaxCenter();
-        m_outputRect.y = in.y - m_output->GetMaxCenter();
+        in.y += m_output->GetCenterList();
+        m_outputRect.y = in.y - m_output->GetCenterList();
         m_outputRect.x = in.x;
 
         in.x += GetLineIndent(tmp);
@@ -1025,7 +1054,7 @@ void GroupCell::Draw(wxPoint point)
  
               in.x = point.x + GetLineIndent(tmp->m_nextToDraw);              
 
-              in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+              in.y += drop + tmp->m_nextToDraw->GetCenterList();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
           else
@@ -1037,8 +1066,6 @@ void GroupCell::Draw(wxPoint point)
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        in = point;
-        
         configuration->Outdated(false);
 
         EditorCell *input = GetInput();
@@ -1091,10 +1118,7 @@ int GroupCell::GetLineIndent(Cell *cell)
 
 void GroupCell::CellUnderPointer(GroupCell *cell)
 {
-  if (m_cellPointers->m_groupCellUnderPointer != cell)
-  {
-    m_cellPointers->m_groupCellUnderPointer = cell;
-  }
+  m_cellPointers->m_groupCellUnderPointer = cell;
 }
 
 void GroupCell::DrawBracket()
@@ -1188,14 +1212,13 @@ void GroupCell::DrawBracket()
                                                 configuration->GetDefaultLineWidth(),
                                                 wxPENSTYLE_SOLID)));
 
-    wxRect rect = GetRect();
-    rect = wxRect(
-            configuration->GetIndent() - configuration->GetCellBracketWidth(),
-            rect.GetTop() - 2,
-            configuration->GetCellBracketWidth(),
-            rect.GetHeight() + 5);
-    if (Cell::InUpdateRegion(rect))
-      dc->DrawRectangle(rect);
+    wxRect bracketRect = wxRect(
+      configuration->GetIndent() - configuration->GetCellBracketWidth(),
+      rect.GetTop() - 2,
+      configuration->GetCellBracketWidth(),
+      rect.GetHeight() + 5);
+    if (Cell::InUpdateRegion(bracketRect))
+      dc->DrawRectangle(bracketRect);
   }
 
   Cell *editable = GetEditable();
@@ -1215,7 +1238,7 @@ void GroupCell::DrawBracket()
     dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
   }
 
-  if ((!m_hide) && (!m_hiddenTree))
+  if ((!m_isHidden) && (!m_hiddenTree))
   {
     dc->SetBrush(*wxTRANSPARENT_BRUSH);
   }
@@ -1223,6 +1246,7 @@ void GroupCell::DrawBracket()
   if (drawBracket)
   {
     adc->SetBrush(dc->GetBrush());
+    SetPen(1.5);
     int bracketWidth = configuration->GetCellBracketWidth() - configuration->GetDefaultLineWidth();
     if (IsFoldable())
     { // draw the square that allows hiding and unhiding the cell
@@ -1279,24 +1303,24 @@ void GroupCell::DrawBracket()
         );
 
       // The rest of the bracket
-      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
+      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_isHidden)
       {
         points.Append(
           new wxPoint(
             m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            m_currentPoint.y - m_center + m_inputLabel->GetHeightList()
             )
           );
         points.Append(
           new wxPoint(
             m_currentPoint.x - bracketWidth / 2 + configuration->GetDefaultLineWidth() / 2,
-            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            m_currentPoint.y - m_center + m_inputLabel->GetHeightList()
             )
           );
         points.Append(
           new wxPoint(
             m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            m_currentPoint.y - m_center + m_inputLabel->GetHeightList()
             )
           );
       }
@@ -1357,21 +1381,14 @@ wxString GroupCell::ToString()
     }
   }
 
-  if (m_output != NULL && !m_hide)
+  if (m_output != NULL && !m_isHidden)
   {
-    Cell *tmp = m_output;
+    Cell *tmp = m_output.get();
     bool firstCell = true;
     while (tmp != NULL)
     {
       if (firstCell || (tmp->HardLineBreak() && str.Length() > 0))
-      {
-        if (firstCell)
           str += wxT("\n");
-        else
-        {
-          str += wxT("\n");
-        }
-      }
       str += tmp->ToString();
       firstCell = false;
       tmp = tmp->m_nextToDraw;
@@ -1432,7 +1449,7 @@ wxString GroupCell::ToRTF()
 
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
-  wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
+  wxASSERT_MSG((imgCounter != NULL), _(wxT("Bug: No image counter to write to!")));
   if (imgCounter == NULL) return wxEmptyString;
   wxString str;
   switch (m_groupType)
@@ -1472,7 +1489,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
       break;
 
     default:
-      if (GetEditable() != NULL && !m_hide)
+      if (GetEditable() != NULL && !m_isHidden)
       {
         str = GetEditable()->ListToTeX();
         switch (GetEditable()->GetStyle())
@@ -1525,21 +1542,17 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   // Input cells
   if (configuration->ShowCodeCells())
   {
-    str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
-      wxT("%%% INPUT:\n") +
-      wxString::Format(
-        wxT("\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n"),
-        configuration->GetLabelWidth()/14
-        ) +
-      m_inputLabel->ToTeX() +
-      wxT("\n\\end{minipage}");
+    str += wxString::Format(
+      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n",
+      configuration->GetLabelWidth()/14
+      ) + m_inputLabel->ToTeX() +
+      wxString("\n\\end{minipage}");
     if (m_inputLabel->m_next != NULL)
     {
 
       wxString input = m_inputLabel->m_next->ToTeX();
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
-             input +
-             wxT("\n\\end{minipage}");
+             input + "\n\\end{minipage}";
     }
   }
 
@@ -1550,7 +1563,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     if (imgCounter == NULL)
       str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
-    Cell *tmp = m_output;
+    Cell *tmp = m_output.get();
 
     bool mathMode = false;
 
@@ -1676,7 +1689,7 @@ wxString GroupCell::ToXML()
     {
       str += wxT(" type=\"code\"");
       int i = 0;
-      for(StringHash::iterator it = m_knownAnswers.begin();
+      for(StringHash::const_iterator it = m_knownAnswers.begin();
           it != m_knownAnswers.end();
           ++it)
       {
@@ -1735,7 +1748,7 @@ wxString GroupCell::ToXML()
   }
 
   // write hidden status
-  if (m_hide)
+  if (m_isHidden)
     str += wxT(" hide=\"true\"");
   str += wxT(">\n");
 
@@ -1800,7 +1813,7 @@ wxString GroupCell::ToXML()
   return str;
 }
 
-void GroupCell::SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two,
+void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two,
                                 Cell **first, Cell **last)
 {
   Configuration *configuration = (*m_configuration);
@@ -1817,7 +1830,7 @@ void GroupCell::SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two,
       (m_inputLabel->ContainsRect(rect))
           )
     m_inputLabel->SelectRect(rect, first, last);
-  else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
+  else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);
 
   if (*first == NULL || *last == NULL)
@@ -1834,7 +1847,7 @@ void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 
   if (m_inputLabel->ContainsRect(rect))
     m_inputLabel->SelectRect(rect, first, last);
-  else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
+  else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
     m_output->SelectRect(rect, first, last);
 
   if (*first == NULL || *last == NULL)
@@ -1855,10 +1868,10 @@ void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
     m_inputLabel->SelectInner(rect, first, last);
 }
 
-void GroupCell::SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two,
+void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two,
                                    Cell **first, Cell **last)
 {
-  if (m_hide)
+  if (m_isHidden)
     return;
 
   Cell *tmp;
@@ -1876,7 +1889,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &tw
   }
 
   // Lets select a rectangle
-  tmp = m_output;
+  tmp = m_output.get();
   *first = *last = NULL;
 
   while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
@@ -1913,7 +1926,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &tw
         if (curr == NULL)
           break;
         if (curr->GetCurrentX() <= end.x &&
-            curr->GetCurrentY() - curr->GetMaxCenter() <= end.y)
+            curr->GetCurrentY() - curr->GetCenterList() <= end.y)
           *last = curr;
         if (curr == tmp)
           break;
@@ -1934,12 +1947,12 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
     m_cellPointers->m_cellUnderPointer = this;
   }
   
-  wxString retval;
+  wxString retval = m_toolTip;
 
-  if (m_hide)
+  if (m_isHidden)
     return retval;
   
-  Cell *tmp = m_output;
+  Cell *tmp = m_output.get();
   while (tmp != NULL)
   {
 
@@ -1954,6 +1967,7 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
   return retval;
 }
 
+// cppcheck-suppress functionConst
 bool GroupCell::SetEditableContent(wxString text)
 {
   if (GetEditable())
@@ -1965,7 +1979,7 @@ bool GroupCell::SetEditableContent(wxString text)
     return false;
 }
 
-EditorCell *GroupCell::GetEditable()
+EditorCell *GroupCell::GetEditable() const
 {
   switch (m_groupType)
   {
@@ -1987,7 +2001,7 @@ EditorCell *GroupCell::GetEditable()
 
 void GroupCell::BreakLines()
 {
-  BreakLines(m_output);
+  BreakLines(m_output.get());
 }
 
 void GroupCell::BreakLines(Cell *cell)
@@ -2001,7 +2015,7 @@ void GroupCell::BreakLines(Cell *cell)
     if(m_output != NULL)
     {
       m_output->ResetSizeList();
-      m_output->RecalculateList(m_mathFontSize);
+      m_output->RecalculateList((*m_configuration)->GetMathFontSize());
     }
     ResetData();
   }
@@ -2015,7 +2029,7 @@ void GroupCell::BreakLines(Cell *cell)
   // Don't let the layout degenerate for small window widths
   if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
   
-  while (cell != NULL && !m_hide)
+  while (cell != NULL && !m_isHidden)
   {
     cell->ResetData();
     cell->SoftLineBreak(false);
@@ -2038,10 +2052,10 @@ void GroupCell::BreakLines(Cell *cell)
 
 void GroupCell::SelectOutput(Cell **start, Cell **end)
 {
-  if (m_hide)
+  if (m_isHidden)
     return;
 
-  *start = m_output;
+  *start = m_output.get();
 
   while (*start != NULL && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
     *start = (*start)->m_nextToDraw;
@@ -2090,7 +2104,7 @@ bool GroupCell::BreakUpCells(Cell *cell)
   if(m_cellsInGroup > showLength)
   {
     wxLogMessage(_("Resolving to 1D layout for one cell in order to save time"));
-    while (cell != NULL && !m_hide)
+    while (cell != NULL && !m_isHidden)
     {
       if (cell->BreakUp())
         lineHeightsChanged = true;
@@ -2102,7 +2116,7 @@ bool GroupCell::BreakUpCells(Cell *cell)
   {
     int clientWidth = (*m_configuration)->GetClientWidth();
     
-    while (cell != NULL && !m_hide)
+    while (cell != NULL && !m_isHidden)
     {
       if ((!cell->m_isBrokenIntoLines) &&
           ((cell->GetWidth() +
@@ -2162,12 +2176,12 @@ void GroupCell::Hide(bool hide)
   if (IsFoldable())
     return;
 
-  if (m_hide == hide)
+  if (m_isHidden == hide)
     return;
 
-  m_hide = hide;
+  m_isHidden = hide;
   if ((m_groupType == GC_TYPE_TEXT) || (m_groupType == GC_TYPE_CODE))
-    GetEditable()->SetFirstLineOnly(m_hide);
+    GetEditable()->SetFirstLineOnly(m_isHidden);
 
   // Don't keep cached versions of scaled images around if they aren't visible at all.
   if (GetLabel())
@@ -2179,7 +2193,7 @@ void GroupCell::Hide(bool hide)
 
 void GroupCell::SwitchHide()
 {
-  Hide(!m_hide);
+  Hide(!m_isHidden);
 }
 
 //
@@ -2198,7 +2212,7 @@ bool GroupCell::HideTree(GroupCell *tree)
   {
     if (tmp->GetLabel())
       tmp->GetLabel()->ClearCacheList();
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
 
   return true;
@@ -2237,7 +2251,7 @@ void GroupCell::SetHiddenTreeParent(GroupCell *parent)
   while (cell)
   {
     cell->m_hiddenTreeParent = parent;
-    cell = dynamic_cast<GroupCell *>(cell->m_next);
+    cell = cell->GetNext();
   }
 }
 
@@ -2260,7 +2274,7 @@ GroupCell *GroupCell::Fold()
     if (end->GetLabel())
       end->GetLabel()->ClearCacheList();
 
-    GroupCell *tmp = dynamic_cast<GroupCell *>(end->m_next);
+    GroupCell *tmp = end->GetNext();
     if (tmp == NULL)
       break;
     if ((m_groupType == tmp->GetGroupType()) || IsLesserGCType(tmp->GetGroupType()))
@@ -2275,14 +2289,14 @@ GroupCell *GroupCell::Fold()
     if(end->m_next != NULL)
     {
       m_next = m_nextToDraw = end->m_next;
-      end->m_next->m_previous = end->m_next->m_previousToDraw = this;
+      end->m_next->m_previous = this;
     }
     else
       m_next = m_nextToDraw = NULL;
     end->m_next = end->m_nextToDraw = NULL;
   }
   
-  start->m_previous = start->m_previousToDraw = NULL;
+  start->m_previous = NULL;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
@@ -2299,7 +2313,7 @@ GroupCell *GroupCell::Unfold()
 
   // sew together this cell with m_hiddenTree
   m_next = m_nextToDraw = m_hiddenTree;
-  m_hiddenTree->m_previous = m_hiddenTree->m_previousToDraw = this;
+  m_hiddenTree->m_previous = this;
 
   Cell *tmp = m_hiddenTree;
   while (tmp->m_next)
@@ -2307,7 +2321,7 @@ GroupCell *GroupCell::Unfold()
   // tmp holds the last element of m_hiddenTree
   tmp->m_next = tmp->m_nextToDraw = next;
   if (next)
-    next->m_previous = next->m_previousToDraw = tmp;
+    next->m_previous = tmp;
 
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
@@ -2329,7 +2343,7 @@ GroupCell *GroupCell::FoldAll()
     }
     if (tmp->m_hiddenTree != NULL)
       tmp->m_hiddenTree->FoldAll();
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
   return result;
 }
@@ -2351,12 +2365,12 @@ GroupCell *GroupCell::UnfoldAll()
     }
     if (tmp->m_hiddenTree != NULL)
       m_hiddenTree->UnfoldAll();
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
   return result;
 }
 
-bool GroupCell::IsLesserGCType(int comparedTo)
+bool GroupCell::IsLesserGCType(int comparedTo) const
 {
   switch (m_groupType)
   {
@@ -2464,11 +2478,11 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
     if (IsFoldable() && tmp->m_hiddenTree)
       tmp->m_hiddenTree->Number(section, subsection, subsubsection, heading5, heading6, image);
 
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
 }
 
-bool GroupCell::IsMainInput(Cell *active)
+bool GroupCell::IsMainInput(Cell *active) const
 {
   return m_inputLabel->m_next != NULL && active == m_inputLabel->m_next;
 }
@@ -2492,7 +2506,7 @@ bool GroupCell::Contains(GroupCell *cell)
     }
 
     // Step to the next cell.
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = tmp->GetNext();
   }
 
   return false;
@@ -2567,3 +2581,69 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
 }
 
 #endif
+
+wxString GroupCell:: m_lookalikeChars(
+    wxT("µ")		wxT("\u03bc")
+    wxT("\u2126")	wxT("\u03a9")
+    wxT("C")		wxT("\u03F2")
+    wxT("C")		wxT("\u0421")
+    wxT("\u03F2")	wxT("\u0421")
+    wxT("A")		wxT("\u0391")
+    wxT("A")		wxT("\u0410")
+    wxT("\u0391")	wxT("\u0410")
+    wxT("M")		wxT("\u0392")
+    wxT("E")		wxT("\u0395")
+    wxT("E")		wxT("\u0415")
+    wxT("\u0415")	wxT("\u0395")
+    wxT("Z")		wxT("\u0396")
+    wxT("H")		wxT("\u0397")
+    wxT("H")		wxT("\u041D")
+    wxT("\u0397")	wxT("\u041D")
+    wxT("I")		wxT("\u0399")
+    wxT("I")		wxT("\u0406")
+    wxT("l")		wxT("\u0406")
+    wxT("K")		wxT("\u039A")
+    wxT("K")		wxT("\u041A")
+    wxT("\u039A")	wxT("\u041A")
+    wxT("\u212a")	wxT("\u041A")
+    wxT("K")		wxT("\u212A")
+    wxT("M")		wxT("\u041c")
+    wxT("\u039C")	wxT("\u041c")
+    wxT("M")		wxT("\u039C")
+    wxT("N")		wxT("\u039D")
+    wxT("O")		wxT("\u039F")
+    wxT("O")		wxT("\u041E")
+    wxT("\u039F")	wxT("\u041E")
+    wxT("\u039F")	wxT("\u041E")
+    wxT("P")		wxT("\u03A1")
+    wxT("X")		wxT("\u0425")
+    wxT("e")		wxT("\u0435")
+    wxT("p")		wxT("\u0440")
+    wxT("x")		wxT("\u0445")
+    wxT("y")		wxT("\u0443")
+    wxT("P")		wxT("\u0420")
+    wxT("\u03A1")	wxT("\u0420")
+    wxT("T")		wxT("\u03A4")
+    wxT("T")		wxT("\u0422")
+    wxT("\u03A4")	wxT("\u0422")
+    wxT("Y")		wxT("\u03A5")
+    wxT("\u212a")	wxT("\u039A")
+    wxT("l")		wxT("I")
+    wxT("B")		wxT("\u0392")
+    wxT("S")		wxT("\u0405")
+    wxT("\u0392")	wxT("\u0412")
+    wxT("B")		wxT("\u0412")
+    wxT("J")		wxT("\u0408")
+    wxT("a")		wxT("\u0430")
+    wxT("o")		wxT("\u03bf")
+    wxT("\u03a3")      wxT("\u2211")
+    wxT("o")		wxT("\u043e")
+    wxT("\u03bf")	wxT("\u043e")
+    wxT("c")		wxT("\u0441")
+    wxT("s")		wxT("\u0455")
+    wxT("t")		wxT("\u03c4")
+    wxT("u")		wxT("\u03c5")
+    wxT("x")		wxT("\u03c7")
+    wxT("ü")		wxT("\u03cb")
+    wxT("\u0460")	wxT("\u03c9")
+    wxT("\u0472")	wxT("\u0398"));

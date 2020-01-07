@@ -47,9 +47,8 @@
 #include <wx/anidecod.h>
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : Cell(
-        parent, config)
+  parent, config, cellPointers)
 {
-  m_cellPointers = cellPointers;
   m_timer = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
@@ -61,7 +60,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   if(m_animationRunning)
     ReloadTimer();
 }
-int SlideShow::GetFrameRate()
+int SlideShow::GetFrameRate() const
 {
   int framerate = 2;
 
@@ -139,39 +138,32 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 
   for (int i = 0; i < m_size; i++)
   {
-    Image *image = new Image(m_configuration, images[i], deleteRead, m_fileSystem);
-    m_images.push_back(image);
+    m_images.push_back(std::shared_ptr<Image>(
+      new Image(m_configuration, images[i], deleteRead, m_fileSystem)));
   }
   m_fileSystem = NULL;
   m_displayed = 0;
 }
 
-Cell *SlideShow::Copy()
+SlideShow::SlideShow(const SlideShow &cell):
+ SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  SlideShow *tmp = new SlideShow(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->AnimationRunning(false);
+  CopyCommonData(cell);
+  AnimationRunning(false);
 
-  for (size_t i = 0; i < m_images.size(); i++)
-  {
-    Image *image = new Image(*m_images[i]);
-    tmp->m_images.push_back(image);
-  }
+  for (size_t i = 0; i < cell.m_images.size(); i++)
+    m_images.push_back(std::shared_ptr<Image>(new Image(*cell.m_images[i])));
 
-  tmp->m_size = m_size;
-
-  return tmp;
+  m_framerate = cell.m_framerate;
+  m_displayed = true;
+  m_size = cell.m_size;
+  m_fileSystem = NULL;
+  m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 
 SlideShow::~SlideShow()
 {
-  for (int i = 0; i < m_size; i++)
-    if (m_images[i] != NULL)
-    {
-      wxDELETE(m_images[i]);
-      m_images[i] = NULL;
-    }
-  MarkAsDeleted();
+  SlideShow::MarkAsDeleted();
 }
 
 void SlideShow::MarkAsDeleted()
@@ -182,9 +174,9 @@ void SlideShow::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<Cell *> SlideShow::GetInnerCells()
+std::list<std::shared_ptr<Cell>> SlideShow::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   return innerCells;
 }
 

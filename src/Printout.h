@@ -62,7 +62,7 @@ public:
 
   bool HasPage(int num);
 
-  void GetPageInfo(int *minPage, int *maxPage, int *pageFrom, int *pageTo);
+  void GetPageInfo(int *minPage, int *maxPage, int *fromPage, int *toPage);
 
   bool OnBeginDocument(int startPage, int endPage);
 
@@ -79,7 +79,7 @@ private:
   int m_numberOfPages;
   bool m_printConfigCreated;
   wxString m_title;
-  GroupCell *m_tree;
+  std::unique_ptr<GroupCell> m_tree;
   vector<GroupCell *> m_pages;
   double m_scaleFactor;
 };

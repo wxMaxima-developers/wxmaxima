@@ -35,32 +35,36 @@
 #include <wx/fileconf.h>
 #include "Cell.h"
 
-Configuration::Configuration(wxDC *dc) : m_dc(dc) 
+Configuration::Configuration(wxDC *dc) :
+  m_dc(dc),
+  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML"),
+  m_documentclass("article"),
+  m_documentclassOptions("fleqn"),
+  m_symbolPaneAdditionalChars("Øü§")
 {
-  m_documentclass = wxT("article");
-  m_documentclassOptions = wxT("fleqn");
-  
+  SetBackgroundBrush(*wxWHITE_BRUSH);
+  m_hidemultiplicationsign = true;
+  m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
-  m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
   m_fontChanged = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
-  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");
   m_zoomFactor = 1.0; // affects returned fontsizes
+  m_useSVG = false;
   m_changeAsterisk = true;
   m_workSheet = NULL;
   m_latin2greek = false;
+  m_enterEvaluates = false;
   m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
   m_printing = false;
   m_TeXFonts = false;
-  m_printing = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
@@ -68,9 +72,8 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_hideBrackets = true;
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
-  m_showLabelChoice = 1;
+  m_showLabelChoice = labels_prefer_user;
   m_abortOnError = true;
-  m_autoSaveMinutes = 3;
   m_clientWidth = 1024;
   m_defaultPort = 40100;
 
@@ -83,9 +86,9 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
-  ReadConfig();
   m_showCodeCells = true;
-  m_defaultToolTip = wxEmptyString;
+  m_greekSidebar_ShowLatinLookalikes = false;
+  m_greekSidebar_Show_mu = false;
   m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
   // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
   // for maxima-discuss.
@@ -96,122 +99,124 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_copyEMF = false;
   m_showLength = 2;
   m_useUnicodeMaths = true;
-  m_escCodes["pm"]    = wxT("\x00B1");
-  m_escCodes["+/-"]   = wxT("\x00B1");
-  m_escCodes["alpha"] = wxT("\x03B1");
-  m_escCodes["beta"]  = wxT("\x03B2");
-  m_escCodes["gamma"] = wxT("\x03B3");
-  m_escCodes["delta"] = wxT("\x03B4");
-  m_escCodes["epsilon"] = wxT("\x03B5");
-  m_escCodes["zeta"] = wxT("\x03B6");
-  m_escCodes["eta"] = wxT("\x03B7");
-  m_escCodes["theta"] = wxT("\x03B8");
-  m_escCodes["iota"] = wxT("\x03B9");
-  m_escCodes["kappa"] = wxT("\x03BA");
-  m_escCodes["lambda"] = wxT("\x03BB");
-  m_escCodes["mu"] = wxT("\x03BC");
-  m_escCodes["nu"] = wxT("\x03BD");
-  m_escCodes["xi"] = wxT("\x03BE");
-  m_escCodes["om"] = wxT("\x03BF");
-  m_escCodes["omicron"] = wxT("\x03BF");
-  m_escCodes["pi"] = wxT("\x03C0");
-  m_escCodes["rho"] = wxT("\x03C1");
-  m_escCodes["sigma"] = wxT("\x03C3");
-  m_escCodes["tau"] = wxT("\x03C4");
-  m_escCodes["upsilon"] = wxT("\x03C5");
-  m_escCodes["phi"] = wxT("\x03C6");
-  m_escCodes["chi"] = wxT("\x03C7");
-  m_escCodes["psi"] = wxT("\x03C8");
-  m_escCodes["omega"] = wxT("\x03C9");
-  m_escCodes["Alpha"] = wxT("\x0391");
-  m_escCodes["Beta"] = wxT("\x0392");
-  m_escCodes["Gamma"] = wxT("\x0393");
-  m_escCodes["Delta"] = wxT("\x0394");
-  m_escCodes["Epsilon"] = wxT("\x0395");
-  m_escCodes["Zeta"] = wxT("\x0396");
-  m_escCodes["Eta"] = wxT("\x0397");
-  m_escCodes["Theta"] = wxT("\x0398");
-  m_escCodes["Iota"] = wxT("\x0399");
-  m_escCodes["Kappa"] = wxT("\x039A");
-  m_escCodes["Lambda"] = wxT("\x039B");
-  m_escCodes["Mu"] = wxT("\x039C");
-  m_escCodes["Nu"] = wxT("\x039D");
-  m_escCodes["Xi"] = wxT("\x039E");
-  m_escCodes["Omicron"] = wxT("\x039F");
-  m_escCodes["Pi"] = wxT("\x03A0");
-  m_escCodes["Rho"] = wxT("\x03A1");
-  m_escCodes["Sigma"] = wxT("\x03A3");
-  m_escCodes["Tau"] = wxT("\x03A4");
-  m_escCodes["Upsilon"] = wxT("\x03A5");
-  m_escCodes["Phi"] = wxT("\x03A6");
-  m_escCodes["Chi"] = wxT("\x03A7");
-  m_escCodes["Psi"] = wxT("\x03A8");
-  m_escCodes["Omega"] = wxT("\x03A9");
-  m_escCodes["Ohm"] = wxT("\x03A9");
+  m_offerKnownAnswers = true;
+  m_escCodes["pm"]    = wxT("\u00B1");
+  m_escCodes["+/-"]   = wxT("\u00B1");
+  m_escCodes["alpha"] = wxT("\u03B1");
+  m_escCodes["beta"]  = wxT("\u03B2");
+  m_escCodes["gamma"] = wxT("\u03B3");
+  m_escCodes["delta"] = wxT("\u03B4");
+  m_escCodes["epsilon"] = wxT("\u03B5");
+  m_escCodes["zeta"] = wxT("\u03B6");
+  m_escCodes["eta"] = wxT("\u03B7");
+  m_escCodes["theta"] = wxT("\u03B8");
+  m_escCodes["iota"] = wxT("\u03B9");
+  m_escCodes["kappa"] = wxT("\u03BA");
+  m_escCodes["lambda"] = wxT("\u03BB");
+  m_escCodes["mu"] = wxT("\u03BC");
+  m_escCodes["nu"] = wxT("\u03BD");
+  m_escCodes["xi"] = wxT("\u03BE");
+  m_escCodes["om"] = wxT("\u03BF");
+  m_escCodes["omicron"] = wxT("\u03BF");
+  m_escCodes["nabla"] = wxT("\u2207");
+  m_escCodes["pi"] = wxT("\u03C0");
+  m_escCodes["rho"] = wxT("\u03C1");
+  m_escCodes["sigma"] = wxT("\u03C3");
+  m_escCodes["tau"] = wxT("\u03C4");
+  m_escCodes["upsilon"] = wxT("\u03C5");
+  m_escCodes["phi"] = wxT("\u03C6");
+  m_escCodes["chi"] = wxT("\u03C7");
+  m_escCodes["psi"] = wxT("\u03C8");
+  m_escCodes["omega"] = wxT("\u03C9");
+  m_escCodes["Alpha"] = wxT("\u0391");
+  m_escCodes["Beta"] = wxT("\u0392");
+  m_escCodes["Gamma"] = wxT("\u0393");
+  m_escCodes["Delta"] = wxT("\u0394");
+  m_escCodes["Epsilon"] = wxT("\u0395");
+  m_escCodes["Zeta"] = wxT("\u0396");
+  m_escCodes["Eta"] = wxT("\u0397");
+  m_escCodes["Theta"] = wxT("\u0398");
+  m_escCodes["Iota"] = wxT("\u0399");
+  m_escCodes["Kappa"] = wxT("\u039A");
+  m_escCodes["Lambda"] = wxT("\u039B");
+  m_escCodes["Mu"] = wxT("\u039C");
+  m_escCodes["Nu"] = wxT("\u039D");
+  m_escCodes["Xi"] = wxT("\u039E");
+  m_escCodes["Omicron"] = wxT("\u039F");
+  m_escCodes["Pi"] = wxT("\u03A0");
+  m_escCodes["Rho"] = wxT("\u03A1");
+  m_escCodes["Sigma"] = wxT("\u03A3");
+  m_escCodes["Tau"] = wxT("\u03A4");
+  m_escCodes["Upsilon"] = wxT("\u03A5");
+  m_escCodes["Phi"] = wxT("\u03A6");
+  m_escCodes["Chi"] = wxT("\u03A7");
+  m_escCodes["Psi"] = wxT("\u03A8");
+  m_escCodes["Omega"] = wxT("\u03A9");
+  m_escCodes["Ohm"] = wxT("\u03A9");
   //////////////////////////
-  m_escCodes["^2"] = wxT("\x00B2");
-  m_escCodes["^3"] = wxT("\x00B3");
-  m_escCodes["/2"] = wxT("\x00BD");
-  m_escCodes["sq"] = wxT("\x221A");
-  m_escCodes["ii"] = wxT("\x2148");
-  m_escCodes["ee"] = wxT("\x2147");
-  m_escCodes["hb"] = wxT("\x210F");
-  m_escCodes["in"] = wxT("\x2208");
-  m_escCodes["impl"] = wxT("\x21D2");
-  m_escCodes["inf"] = wxT("\x221e");
-  m_escCodes["empty"] = wxT("\x2205");
-  m_escCodes["TB"] = wxT("\x25b6");
-  m_escCodes["tb"] = wxT("\x25b8");
-  m_escCodes["and"] = wxT("\x22C0");
-  m_escCodes["or"] = wxT("\x22C1");
-  m_escCodes["xor"] = wxT("\x22BB");
-  m_escCodes["nand"] = wxT("\x22BC");
-  m_escCodes["nor"] = wxT("\x22BD");
-  m_escCodes["implies"] = wxT("\x21D2");
-  m_escCodes["=>"] = wxT("\x21D2");
-  m_escCodes["equiv"] = wxT("\x21D4");
-  m_escCodes["<=>"] = wxT("\x21D4");
-  m_escCodes["not"] = wxT("\x00AC");
-  m_escCodes["union"] = wxT("\x22C3");
-  m_escCodes["inter"] = wxT("\x22C2");
-  m_escCodes["subseteq"] = wxT("\x2286");
-  m_escCodes["subset"] = wxT("\x2282");
-  m_escCodes["notsubseteq"] = wxT("\x2288");
-  m_escCodes["notsubset"] = wxT("\x2284");
-  m_escCodes["hbar"] = wxT("\x0127");
-  m_escCodes["Hbar"] = wxT("\x0126");
-  m_escCodes["partial"] = wxT("\x2202");
-  m_escCodes["integral"] = wxT("\x222b");
-  m_escCodes["approx"] = wxT("\x2245");
-  m_escCodes["prop"] = wxT("\x221d");
-  m_escCodes["propto"] = wxT("\x221d");
-  m_escCodes["neq"] = wxT("\x2260");
-  m_escCodes["!="] = wxT("\x2260");
-  m_escCodes["/="] = wxT("\x2260");
-  m_escCodes["#"] = wxT("\x2260");
-  m_escCodes["<="] = wxT("\x2264");
-  m_escCodes["leq"] = wxT("\x2264");
-  m_escCodes[">="] = wxT("\x2265");
-  m_escCodes["geq"] = wxT("\x2265");
-  m_escCodes["ll"] = wxT("\x226A");
-  m_escCodes["<<"] = wxT("\x226A");
-  m_escCodes["gg"] = wxT("\x226B");
-  m_escCodes[">>"] = wxT("\x226B");
-  m_escCodes["qed"] = wxT("\x220E");
-  m_escCodes["equiv"] = wxT("\x2263");
-  m_escCodes["sum"] = wxT("\x2211");
-  m_escCodes["prod"] = wxT("\x220F");
-  m_escCodes["product"] = wxT("\x220F");
-  m_escCodes["exists"] = wxT("\x2203");
-  m_escCodes["nexists"] = wxT("\x2204");
-  m_escCodes["parallel"] = wxT("\x2225");
-  m_escCodes["perp"] = wxT("\x27C2");
-  m_escCodes["perpendicular"] = wxT("\x27C2");
-  m_escCodes["bot"] = wxT("\x27C2");
-  m_escCodes["leadsto"] = wxT("\x219D");
-  m_escCodes["->"] = wxT("\x2192");
-  m_escCodes["-->"] = wxT("\x27F6");
-  m_escCodes[" --> "] = wxT("\x27F6");
+  m_escCodes["^2"] = wxT("\u00B2");
+  m_escCodes["^3"] = wxT("\u00B3");
+  m_escCodes["/2"] = wxT("\u00BD");
+  m_escCodes["sq"] = wxT("\u221A");
+  m_escCodes["ii"] = wxT("\u2148");
+  m_escCodes["ee"] = wxT("\u2147");
+  m_escCodes["hb"] = wxT("\u210F");
+  m_escCodes["in"] = wxT("\u2208");
+  m_escCodes["impl"] = wxT("\u21D2");
+  m_escCodes["inf"] = wxT("\u221e");
+  m_escCodes["empty"] = wxT("\u2205");
+  m_escCodes["TB"] = wxT("\u25b6");
+  m_escCodes["tb"] = wxT("\u25b8");
+  m_escCodes["and"] = wxT("\u22C0");
+  m_escCodes["or"] = wxT("\u22C1");
+  m_escCodes["xor"] = wxT("\u22BB");
+  m_escCodes["nand"] = wxT("\u22BC");
+  m_escCodes["nor"] = wxT("\u22BD");
+  m_escCodes["implies"] = wxT("\u21D2");
+  m_escCodes["=>"] = wxT("\u21D2");
+  m_escCodes["equiv"] = wxT("\u21D4");
+  m_escCodes["<=>"] = wxT("\u21D4");
+  m_escCodes["not"] = wxT("\u00AC");
+  m_escCodes["union"] = wxT("\u22C3");
+  m_escCodes["inter"] = wxT("\u22C2");
+  m_escCodes["subseteq"] = wxT("\u2286");
+  m_escCodes["subset"] = wxT("\u2282");
+  m_escCodes["notsubseteq"] = wxT("\u2288");
+  m_escCodes["notsubset"] = wxT("\u2284");
+  m_escCodes["hbar"] = wxT("\u0127");
+  m_escCodes["Hbar"] = wxT("\u0126");
+  m_escCodes["partial"] = wxT("\u2202");
+  m_escCodes["integral"] = wxT("\u222b");
+  m_escCodes["approx"] = wxT("\u2245");
+  m_escCodes["prop"] = wxT("\u221d");
+  m_escCodes["propto"] = wxT("\u221d");
+  m_escCodes["neq"] = wxT("\u2260");
+  m_escCodes["!="] = wxT("\u2260");
+  m_escCodes["/="] = wxT("\u2260");
+  m_escCodes["#"] = wxT("\u2260");
+  m_escCodes["<="] = wxT("\u2264");
+  m_escCodes["leq"] = wxT("\u2264");
+  m_escCodes[">="] = wxT("\u2265");
+  m_escCodes["geq"] = wxT("\u2265");
+  m_escCodes["ll"] = wxT("\u226A");
+  m_escCodes["<<"] = wxT("\u226A");
+  m_escCodes["gg"] = wxT("\u226B");
+  m_escCodes[">>"] = wxT("\u226B");
+  m_escCodes["qed"] = wxT("\u220E");
+  m_escCodes["equiv"] = wxT("\u2263");
+  m_escCodes["sum"] = wxT("\u2211");
+  m_escCodes["prod"] = wxT("\u220F");
+  m_escCodes["product"] = wxT("\u220F");
+  m_escCodes["exists"] = wxT("\u2203");
+  m_escCodes["nexists"] = wxT("\u2204");
+  m_escCodes["parallel"] = wxT("\u2225");
+  m_escCodes["perp"] = wxT("\u27C2");
+  m_escCodes["perpendicular"] = wxT("\u27C2");
+  m_escCodes["bot"] = wxT("\u27C2");
+  m_escCodes["leadsto"] = wxT("\u219D");
+  m_escCodes["->"] = wxT("\u2192");
+  m_escCodes["-->"] = wxT("\u27F6");
+  m_escCodes[" --> "] = wxT("\u27F6");
 
   m_parenthesisDrawMode = unknown;
 
@@ -269,9 +274,10 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_styles[TS_SELECTION].Set(_("Selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
   m_styles[TS_EQUALSSELECTION].Set(_("Text equal to selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
   m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
+  ReadConfig();
 }
 
-wxSize Configuration::GetPPI(wxWindow *win)
+wxSize Configuration::GetPPI(wxWindow *win) const
 {
   if(win == NULL)
     return wxSize(96,96);
@@ -295,7 +301,8 @@ wxSize Configuration::GetPPI(wxWindow *win)
   return ppi;
 }
 
-wxString Configuration::GetAutosubscript_string(){
+wxString Configuration::GetAutosubscript_string() const
+{
   switch (m_autoSubscript)
   {
   case 0:
@@ -313,6 +320,13 @@ wxString Configuration::GetAutosubscript_string(){
 void Configuration::ShowCodeCells(bool show)
 {
   m_showCodeCells = show;
+}
+
+void Configuration::SetBackgroundBrush(wxBrush brush)
+{
+  m_BackgroundBrush = brush;
+  m_tooltipBrush = brush;
+  m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
 bool Configuration::MaximaFound(wxString location)
@@ -347,14 +361,22 @@ void Configuration::ReadConfig()
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
-  config->Read(wxT("autoSaveMinutes"),&m_autoSaveMinutes);
-  if(m_autoSaveMinutes < 0)
-    m_autoSaveMinutes = 0;
-
+  if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
+  {
+    long autoSaveMinutes = 0;
+    config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
+    m_autoSaveAsTempFile = (autoSaveMinutes == 0);
+  }
+  config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);
-
+  config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
+  config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
+  config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
+  config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
+  config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
+  m_symbolPaneAdditionalChars = wxT("Øü§");
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);
@@ -372,19 +394,16 @@ void Configuration::ReadConfig()
   config->Read(wxT("abortOnError"),&m_abortOnError);
   config->Read("defaultPort",&m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
-  
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
-
+  config->Read(wxT("useSVG"), &m_useSVG);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
   config->Read(wxT("copyRTF"), &m_copyRTF);
   config->Read(wxT("copySVG"), &m_copySVG );
   config->Read(wxT("copyEMF"), &m_copyEMF );
-
   config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
-
   config->Read(wxT("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaUserLocation.IsSameAs(wxT("1")))
@@ -393,7 +412,9 @@ void Configuration::ReadConfig()
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
-  config->Read(wxT("showLabelChoice"), &m_showLabelChoice);
+  int showLabelChoice;
+  config->Read(wxT("showLabelChoice"), &showLabelChoice);
+  m_showLabelChoice = (showLabels) showLabelChoice; 
 
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
@@ -417,8 +438,7 @@ void Configuration::ReadConfig()
 
   m_openHCaret = false;
   config->Read(wxT("openHCaret"), &m_openHCaret);
-
-
+  
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
@@ -443,7 +463,7 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
-wxFont Configuration::GetFont(TextStyle textStyle, int fontSize)
+wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
 {
   wxString fontName;
   wxFontStyle fontStyle;
@@ -508,7 +528,7 @@ wxFont Configuration::GetFont(TextStyle textStyle, int fontSize)
   return font;
 }
 
-Configuration::drawMode Configuration::GetGrouphesisDrawMode()
+Configuration::drawMode Configuration::GetParenthesisDrawMode()
 {
   if(m_parenthesisDrawMode == unknown)
   {
@@ -584,7 +604,7 @@ Configuration::~Configuration()
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
 {
   wxString name = char1 + char2 + char3;
-  CharsInFontMap::iterator it = m_charsInFontMap.find(name);
+  CharsInFontMap::const_iterator it = m_charsInFontMap.find(name);
   if(it != m_charsInFontMap.end())
     return it->second;
 
@@ -675,7 +695,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   }
 }
 
-wxString Configuration::GetFontName(int type)
+wxString Configuration::GetFontName(int type) const
 {
   wxString retval = m_fontName;
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
@@ -690,7 +710,7 @@ wxString Configuration::GetFontName(int type)
   return retval;
 }
 
-wxString Configuration::MaximaLocation()
+wxString Configuration::MaximaLocation() const
 {
   if(m_autodetectMaxima)
     return MaximaDefaultLocation();
@@ -842,41 +862,37 @@ void Configuration::WriteStyles(wxString file)
   }
 }
 
-wxFontWeight Configuration::IsBold(int st)
+wxFontWeight Configuration::IsBold(int st) const
 {
   if (m_styles[st].Bold())
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
-wxFontStyle Configuration::IsItalic(int st)
+wxFontStyle Configuration::IsItalic(int st) const
 {
   if (m_styles[st].Italic())
     return wxFONTSTYLE_SLANT;
   return wxFONTSTYLE_NORMAL;
 }
 
-bool Configuration::IsUnderlined(int st)
-{
-  return m_styles[st].Underlined();
-}
-
-wxString Configuration::GetSymbolFontName()
+wxString Configuration::GetSymbolFontName() const
 {
 #if defined __WXMSW__
   return wxT("Symbol");
-#endif
+#else
   return m_fontName;
+#endif
 }
 
-wxColour Configuration::GetColor(int st)
+wxColour Configuration::GetColor(int st) const
 {
   if (m_outdated)
     return m_styles[TS_OUTDATED].Color();
   return m_styles[st].Color();
 }
 
-int Configuration::Scale_Px(double px)
+int Configuration::Scale_Px(double px) const
 {
   int retval = round(px * GetZoomFactor());
   if (retval < 1)
@@ -884,7 +900,5 @@ int Configuration::Scale_Px(double px)
   return retval;
 }
 
-
 wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;
-

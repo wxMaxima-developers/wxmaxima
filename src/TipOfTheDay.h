@@ -30,15 +30,10 @@
 #include <wx/checkbox.h>
 #include <wx/stattext.h>
 
-extern unsigned char media_playback_start_128_png[];
-extern unsigned int  media_playback_start_128_png_len;
-extern unsigned char media_playback_start_192_png[];
-extern unsigned int  media_playback_start_192_png_len;
-extern unsigned char media_playback_start_reverse_128_png[];
-extern unsigned int  media_playback_start_reverse_128_png_len;
-extern unsigned char media_playback_start_reverse_192_png[];
-extern unsigned int  media_playback_start_reverse_192_png_len;
-extern const char * invalidImage_xpm[];
+extern unsigned char media_playback_start_svg_gz[];
+extern unsigned int  media_playback_start_svg_gz_len;
+extern unsigned char media_playback_start_reverse_svg_gz[];
+extern unsigned int  media_playback_start_reverse_svg_gz_len;
 
 /*! A minimalistic Tip of the day dialogue
 
@@ -52,7 +47,7 @@ extern const char * invalidImage_xpm[];
 class TipOfTheDay : public wxDialog
 {
 public:
-  TipOfTheDay(wxWindow *parent);
+  explicit TipOfTheDay(wxWindow *parent);
   ~TipOfTheDay();
 protected:
   void OnNextButton(wxCommandEvent &dummy);
@@ -62,11 +57,11 @@ protected:
 private:
   wxString GetTip(unsigned int n);
   int m_num;
+  struct NSVGrasterizer* m_svgRast;
   wxTextCtrl *m_tip;
   wxString GetTip();
   wxCheckBox *m_showAtStartup;
-  wxImage GetImage(unsigned char *data_128, size_t len_128,
-                   unsigned char *data_192, size_t len_192);
+  wxImage GetImage(unsigned char *data, size_t len);
   wxArrayString m_tips;
 };
 

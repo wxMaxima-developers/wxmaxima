@@ -36,35 +36,38 @@ wxString Cell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 
   wxString toolTip;
-  std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
-    if(*it != NULL)
+    Cell *tmp = it->get();
+    while(tmp != NULL)
     {
-      if((toolTip = (*it)->GetToolTip(point)) != wxEmptyString)
+      if((toolTip = tmp->GetToolTip(point)) != wxEmptyString)
         return toolTip;
+      tmp = tmp -> m_next;
     }
   }
   return m_toolTip;
 }
 
-Cell::Cell(Cell *group, Configuration **config)
+Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 #if wxUSE_ACCESSIBILITY
-  :wxAccessible()
+  :wxAccessible(),
+#else
+   :
 #endif
+   m_currentPoint_Last(wxPoint(-1,-1)),
+   m_group(group),
+   m_parent(group),
+   m_configuration(config),
+   m_cellPointers(cellPointers)
 {
+  m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
   m_clientWidth_old = -1;
-  m_group = group;
-  m_textStyle = TS_DEFAULT;
-  m_cellPointers = NULL;
-  m_group = group;
-  m_parent = group;
-  m_configuration = config;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
-  m_previousToDraw = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
@@ -80,7 +83,7 @@ Cell::Cell(Cell *group, Configuration **config)
   m_isBrokenIntoLines = false;
   m_highlight = false;
   m_type = MC_TYPE_DEFAULT;
-  m_textStyle = TS_VARIABLE;
+  m_textStyle = TS_DEFAULT;
   m_SuppressMultiplicationDot = false;
   m_imageBorderWidth = 0;
   SetCurrentPoint(wxPoint(-1, -1));
@@ -160,6 +163,17 @@ void Cell::SetType(CellType type)
     GetGroup()->ResetSize();
 }
 
+void Cell::CopyCommonData(const Cell & cell)
+{
+  m_altCopyText = cell.m_altCopyText;
+  m_toolTip = cell.m_toolTip;
+  m_forceBreakLine = cell.m_forceBreakLine;
+  m_type = cell.m_type;
+  m_textStyle = cell.m_textStyle;
+  m_isHidden = cell.m_isHidden;
+  m_isHidableMultSign = cell.m_isHidableMultSign;
+}
+
 Cell *Cell::CopyList()
 {
   Cell *dest = Copy();
@@ -172,7 +186,6 @@ Cell *Cell::CopyList()
     src = src->m_next;
     dest = dest->m_next;
   }
-
   return ret;
 }
 
@@ -187,12 +200,12 @@ void Cell::ClearCacheList()
   }
 }
 
-void Cell::SetGroupList(Cell *parent)
+void Cell::SetGroupList(Cell *group)
 {
   Cell *tmp = this;
   while (tmp != NULL)
   {
-    tmp->SetGroup(parent);
+    tmp->SetGroup(group);
     tmp->SetParent(this);
     tmp = tmp->m_next;
   }
@@ -209,8 +222,8 @@ int Cell::CellsInListRecursive()
   while(tmp != NULL)
   {
     cells ++;
-    std::list<Cell*> cellList = tmp->GetInnerCells();
-    for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+    std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
+    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
       if(*it != NULL)
         cells += (*it)->CellsInListRecursive();
@@ -228,11 +241,28 @@ void Cell::SetGroup(Cell *group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
   }
   
-  std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
   {
     if(*it != NULL)
       (*it)->SetGroupList(group);
+  }
+}
+
+void Cell::FontsChangedList()
+{
+  Cell *tmp = this;
+  
+  while(tmp != NULL)
+  {
+    tmp->FontsChanged();
+    std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
+    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    {
+      if(*it != NULL)
+        (*it)->FontsChangedList();
+    }
+    tmp = tmp->m_next;
   }
 }
 
@@ -263,7 +293,6 @@ void Cell::AppendCell(Cell *p_next)
 
   // Append p_next to this list.
   LastToDraw->m_nextToDraw = p_next;
-  p_next->m_previousToDraw = LastToDraw;
 }
 
 Cell *Cell::GetGroup()
@@ -275,7 +304,7 @@ Cell *Cell::GetGroup()
 /***
  * Get the maximum drop of the center.
  */
-int Cell::GetMaxCenter()
+int Cell::GetCenterList()
 {
   if ((m_maxCenter < 0) || ((*m_configuration)->RecalculationForce()))
   {
@@ -325,9 +354,9 @@ int Cell::GetMaxDrop()
 }
 
 //!  Get the maximum hight of cells in line.
-int Cell::GetMaxHeight()
+int Cell::GetHeightList()
 {
-  return GetMaxCenter() + GetMaxDrop();
+  return GetCenterList() + GetMaxDrop();
 }
 
 /*! Get full width of this group.
@@ -390,14 +419,36 @@ void Cell::Draw(wxPoint point)
   if((m_height > 0) && (point.y > 0))
     SetCurrentPoint(point);
 
+  // Mark all cells that contain tooltips
+  if(!m_toolTip.IsEmpty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
+     (*m_configuration)->ClipToDrawRegion() && !(*m_configuration)->GetPrinting())
+  {
+    wxRect rect = Cell::CropToUpdateRegion(GetRect());
+    if (Cell::InUpdateRegion(rect))
+    {    Configuration *configuration = (*m_configuration);
+      if((rect.GetWidth() > 0) && rect.GetHeight() > 0)
+      {
+        wxDC *dc = configuration->GetDC();
+        dc->SetPen(*wxTRANSPARENT_PEN);
+        dc->SetBrush((*m_configuration)->GetTooltipBrush());
+        dc->DrawRectangle(rect);
+      }
+    }
+  }
+  
   // Tell the screen reader that this cell's contents might have changed.
-
 #if wxUSE_ACCESSIBILITY
   if((*m_configuration)->GetWorkSheet() != NULL)
     NotifyEvent(0, (*m_configuration)->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
 }
 
+void Cell::AddToolTip(const wxString &tip)
+{
+  if((!m_toolTip.IsEmpty()) && (!m_toolTip.EndsWith("\n")))
+    m_toolTip += "\n";
+  m_toolTip += tip;
+}
 void Cell::DrawList(wxPoint point)
 {
   Cell *tmp = this;
@@ -499,11 +550,11 @@ bool Cell::DrawThisCell(wxPoint point)
    - true  return the rectangle around the whole line.
    - false return the rectangle around this cell.
  */
-wxRect Cell::GetRect(bool all)
+wxRect Cell::GetRect(bool wholeList)
 {
-  if (all)
-    return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
-                  GetLineWidth(), GetMaxHeight());
+  if (wholeList)
+    return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenterList(),
+                  GetLineWidth(), GetHeightList());
   else
     return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
                   m_width, m_height);
@@ -565,7 +616,7 @@ bool Cell::IsCompound()
 /***
  * Is operator - draw () in frac...
  */
-bool Cell::IsOperator()
+bool Cell::IsOperator() const
 {
   return false;
 }
@@ -576,6 +627,24 @@ bool Cell::IsOperator()
 wxString Cell::ToString()
 {
   return wxEmptyString;
+}
+
+wxString Cell::VariablesAndFunctionsList()
+{
+  wxString retval;
+  Cell *tmp = this;
+  while (tmp != NULL)
+  {
+    if(
+      (tmp->GetStyle() == TS_LABEL) ||
+      (tmp->GetStyle() == TS_USERLABEL) ||
+      (tmp->GetStyle() == TS_MAIN_PROMPT) ||
+      (tmp->GetStyle() == TS_VARIABLE) ||
+      (tmp->GetStyle() == TS_FUNCTION))
+      retval += tmp->ToString() + " ";      
+    tmp = tmp->m_nextToDraw;
+  }
+  return retval;
 }
 
 wxString Cell::ListToString()
@@ -610,7 +679,6 @@ wxString Cell::ListToString()
     firstline = false;
     tmp = tmp->m_nextToDraw;
   }
-
   return retval;
 }
 
@@ -1051,19 +1119,23 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
 }
 
 /***
- * Select rectangle in deeper cell - derived classes should override this
+ * Select rectangle in deeper cell
  */
 void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
   *first = NULL;
   *last = NULL;
 
-  std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
-    if(*it != NULL)
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
-      if ((*it)->ContainsRect(rect))
-        (*it)->SelectRect(rect, first, last);
+      Cell *tmp = it->get();
+      while(tmp != NULL)
+      {
+        if (tmp->ContainsRect(rect))
+          tmp->SelectRect(rect, first, last);
+        tmp = tmp->m_next;
+      }
     }
 
   if (*first == NULL || *last == NULL)
@@ -1073,7 +1145,7 @@ void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   }
 }
 
-bool Cell::BreakLineHere()
+bool Cell::BreakLineHere() const
 {
   return (((!m_isBrokenIntoLines) && m_breakLine) || m_forceBreakLine);
 }
@@ -1103,10 +1175,16 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
-  std::list<Cell*> cellList = GetInnerCells();
-  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
-    if(*it != NULL)
-      (*it)->ResetData();
+  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    {
+      Cell *tmp = it->get();
+      while(tmp != NULL)
+      {
+        tmp->ResetData();
+        tmp = tmp -> m_next;
+      }
+    }
 }
 
 Cell *Cell::first()
@@ -1134,14 +1212,18 @@ void Cell::Unbreak()
 
   m_isBrokenIntoLines = false;
   m_nextToDraw = m_next;
-  if (m_nextToDraw != NULL)
-    m_nextToDraw->m_previousToDraw = this;
 
   // Unbreak the inner cells, too
-  std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
-    if(*it != NULL)
-      (*it)->Unbreak();
+  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  {
+    Cell *tmp = it->get();
+    while(tmp != NULL)
+    {
+      tmp->Unbreak();
+      tmp = tmp -> m_next;
+    }
+  }
 }
 
 void Cell::UnbreakList()
@@ -1154,9 +1236,9 @@ void Cell::UnbreakList()
   }
 }
 
-/*!
-  Set the pen in device context according to the style of the cell.
-*/
+// cppcheck-suppress functionStatic
+// cppcheck-suppress functionConst
+// Set the pen in device context according to the style of the cell.
 void Cell::SetPen(double lineWidth)
 {
   Configuration *configuration = (*m_configuration);
@@ -1192,18 +1274,6 @@ void Cell::UnsetPen()
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
     dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
                                               1, wxPENSTYLE_SOLID)));
-}
-
-/***
- * Copy all important data from s to t
- */
-void Cell::CopyData(Cell *s, Cell *t)
-{
-  t->m_altCopyText = s->m_altCopyText;
-  t->m_toolTip = s->m_toolTip;
-  t->m_forceBreakLine = s->m_forceBreakLine;
-  t->m_type = s->m_type;
-  t->m_textStyle = s->m_textStyle;
 }
 
 void Cell::SetForeground()
@@ -1243,7 +1313,7 @@ void Cell::SetForeground()
   dc->SetTextForeground(color);
 }
 
-bool Cell::IsMath()
+bool Cell::IsMath() const
 {
   return !(m_textStyle == TS_LABEL ||
            m_textStyle == TS_USERLABEL ||
@@ -1368,12 +1438,12 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
   {
     if (childId > 0)
     {
-      std::list<Cell*> cellList = m_parent->GetInnerCells();
+      std::list<std::shared_ptr<Cell>> cellList = m_parent->GetInnerCells();
       int cnt = 1;
-      for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+      for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
         if (cnt++ == childId)
         {
-          *child = *it;
+          *child = &(*it->get());
           return wxACC_OK;
         }
     }
@@ -1381,7 +1451,7 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
   }
 }
 
-wxAccStatus Cell::GetFocus (int *childId, Cell  **child)
+wxAccStatus Cell::GetFocus (int *childId, wxAccessible **child)
 {
   int childCount;
   GetChildCount(&childCount);
@@ -1463,7 +1533,6 @@ Cell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_groupCellUnderPointer = NULL;
   m_lastWorkingGroup = NULL;
   m_workingGroup = NULL;
-  m_selectionString = wxEmptyString;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
   m_currentTextCell = NULL;
@@ -1478,7 +1547,7 @@ wxString Cell::CellPointers::WXMXGetNewFileName()
 
 bool Cell::CellPointers::ErrorList::Contains(Cell *cell)
 {
-  for(std::list<Cell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
+  for(std::list<Cell *>::const_iterator it = m_errorList.begin(); it != m_errorList.end();++it)
   {
     if((*it)==cell)
       return true;
@@ -1508,10 +1577,14 @@ void Cell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 
   // Delete all pointers to the cells this cell contains
-  std::list<Cell *> innerCells = GetInnerCells();
-  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
-    if(*it != NULL)
-      (*it)->MarkAsDeleted();
+    Cell *tmp = it->get();
+    while(tmp != NULL)
+    {
+      tmp->MarkAsDeleted();
+      tmp = tmp -> m_next;
+    }
   }
 }

@@ -48,41 +48,45 @@
 class SqrtCell : public Cell
 {
 public:
-  SqrtCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
+  SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SqrtCell(const SqrtCell &cell);
+  Cell *Copy() override {return new SqrtCell(*this);}
 
   ~SqrtCell();
 
-  std::list<Cell *> GetInnerCells();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  SqrtCell &operator=(const SqrtCell&) = delete;
 
-  Cell *Copy();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetInner(Cell *inner);
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  bool BreakUp();
+  bool BreakUp() override;
 
-  void Unbreak();
+  void Unbreak() override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
 protected:
-  Cell *m_innerCell;
-  TextCell *m_open, *m_close;
+  std::shared_ptr<Cell> m_innerCell;
+  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<TextCell> m_close;
   Cell *m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;

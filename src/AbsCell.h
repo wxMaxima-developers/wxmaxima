@@ -55,47 +55,49 @@
 class AbsCell : public Cell
 {
 public:
-  AbsCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
-
+  AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  AbsCell(const AbsCell &cell);
+  Cell *Copy() override {return new AbsCell(*this);}
   ~AbsCell();
-  
-  std::list<Cell *> GetInnerCells();
+
+  //! This class can be derived from wxAccessible which has no copy constructor
+  AbsCell &operator=(const AbsCell&) = delete;
+
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
   void SetInner(Cell *inner);
 
-  Cell *Copy();
+  bool BreakUp() override;
 
-  bool BreakUp();
+  void Unbreak() override;
 
-  void Unbreak();
+  void RecalculateHeight(int fontsize) override;
+  
+  void RecalculateWidths(int fontsize) override;
+
+  virtual void Draw(wxPoint point) override;
+
+  wxString ToString() override;
+
+  wxString ToMatlab() override;
+
+  wxString ToTeX() override;
+
+  wxString ToMathML() override;
+
+  wxString ToXML() override;
+
+  wxString ToOMML() override;
 
 protected:
   //! The contents of the abs() comand
-  Cell *m_innerCell;
+  std::shared_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
-  TextCell *m_open;
+  std::shared_ptr<TextCell> m_open;
   //! The cell containing the closing parenthesis
-  TextCell *m_close;
+  std::shared_ptr<TextCell> m_close;
   //! The last element of m_innerCell
   Cell *m_last;
-
-  void RecalculateHeight(int fontsize);
-
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
-
-  wxString ToString();
-
-  wxString ToMatlab();
-
-  wxString ToTeX();
-
-  wxString ToMathML();
-
-  wxString ToXML();
-
-  wxString ToOMML();
 };
 
 #endif // ABSCELL_H

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 wxMaxima Team -->
 <component type="desktop">
   <id>io.github.wxmaxima_developers.wxMaxima</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
   <name>wxMaxima</name>
-  ​<update_contact>wxMaxima@physikbuch.de</update_contact>
+  <update_contact>wxMaxima@physikbuch.de</update_contact>
   <summary>A graphical user interface for Maxima, a powerful computer algebra system</summary>
   <description>
     <p>
@@ -50,17 +51,192 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
-    <release version="19.09.1" date="2019-09-19">
+    <release version="20.01.2" date="2020-01-06">
       <description>
 	<p>
-	  Bugfix release.
+	  Several important bugfixes.
 	</p>
         <ul>
+	  <li>Corrected html export of the lowest sectioning unit</li>
+	  <li>Sometimes text after fractions wasn't displayed</li>
+	  <li>Copy-and-paste should now work in more cases</li>
+	  <li>Selecting text within fractions should now work again</li>
+	  <li>Corrected a few display glitches of the worksheet</li>
+	  <li>wxMaxima now comes with five example files</li>
+	  <li>More and better-working mouse-over tooltips</li>
+        </ul>
+      </description>
+    </release>
+    <release version="20.01.1" date="2020-01-01">
+      <description>
+	<p>
+	  Small improvements prior to the maxima release.
+	</p>
+        <ul>
+	  <li>Resolved a crash whilst unpacking the svg icons</li>
+	  <li>Nice menu icons for the operating systems that support this</li>
+	  <li>Started to bundle small tutorials with wxMaxima</li>
+	  <li>Many small additional bug fixes</li>
+        </ul>
+      </description>
+    </release>
+    <release version="19.12.4" date="2019-12-28">
+      <description>
+	<p>
+	  Resolved a crash.
+	</p>
+        <ul>
+	  <li>Unpacking the svg icons no more can lead to an infinite size file</li>
+        </ul>
+      </description>
+    </release>
+    <release version="19.12.3" date="2019-12-27">
+      <description>
+	<p>
+	  Big improvements for the graphical output.
+	</p>
+        <ul>
+	  <li>A Russian traslation update by OlesyaGerasimenko</li>
+	  <li>The manual is now found on Gentoo, too</li>
+	  <li>Big improvements to the maths output</li>
+	  <li>A major speedUp by caching already-determined text snippet sizes</li>
+	  <li>All icons that aren't provided by the operating system now are
+	  rendered from SVG</li>
+	  <li>Internal communication with maxima is now more MathML-like in
+	  many places</li>
+	  <li>Many additional small bug fixes</li>
+        </ul>
+      </description>
+    </release>
+    <release version="19.12.2" date="2019-12-22">
+      <description>
+	<p>
+	  A new release that improves usability.
+	</p>
+        <ul>
+	  <li>An hungarian translation update by István Blahota</li>
+	  <li>Drastically sped up the lookalike char detection</li>
+	  <li>Fixes for many small bugs</li>
+	  <li>Many changes that prevent typical programming errors</li>
+	  <li>Saving to .wxm sets the worksheet to "saved" again</li>
+	  <li>More cases of modern wxWidgets signal handling</li>
+	  <li>SVG support that unfortunately lacks a font renderer</li>
+	  <li>Right-click menus for the symbols sidebars</li>
+	  <li>(Mostly) fixed the index in the manual</li>
+	  <li>Allow building and installing the manual in other formats (epub, pdf, ...)</li>
+        </ul>
+      </description>
+    </release>
+    <release version="19.12.1" date="2019-12-06">
+      <description>
+	<p>
+	  A new release bringing in a feature requested by the maxima-
+	  discuss mailing list.
+	</p>
+        <ul>
+	  <li>Made the tooltips more visible</li>
+	  <li>Added a warning tooltip about missing multiplication signs</li>
+	  <li>Sped up drawing of new cells correcting the size calculations</li>
+	  <li>Warn if lookalike chars are used</li>
+	  <li>An option to turn all multiplication dots on</li>
+	  <li>A few additional bug fixes that (besides others) resolve a potential crash</li>
+        </ul>
+    </description>
+    </release>
+    <release version="19.12.0" date="2019-12-01">
+      <description>
+	<p>
+	  This release contains many non-user visible changes and tons of bug
+	  fixes.
+	</p>
+        <ul>
+	  <li>wxMaxima now uses C++11 that makes the code more readable and helps
+	  finding bugs</li>
+	  <li>If found wxMaxima now asks cppcheck to find bugs</li>
+	  <li>Increased the speed of the program again</li>
+	  <li>Opening the config dialogue since 19.11.0 unchecked "offer known answers"</li>
+	  <li>Changing the worksheet style was partially broken</li>
+	  <li>A big number of additional small bug fixes in various places</li>
+	  <li>A config option that forces displaying all multiplication signs</li>
+        </ul>
+    </description>
+    </release>
+    
+    <release version="19.11.1" date="2019-11-17">
+      <description>
+	<p>
+	  A bugfix release.
+	</p>
+        <ul>
+	  <li>Improved italian translation by Marco Ciampa</li>
+	  <li>Autocompletion no more causes asserts</li>
+	  <li>A better logic that decides which cell to send to maxima</li>
+	  <li>wxMaxima now supports "-l", "-u" and "-X" command-line args like maxima</li>
+	  <li>The help files now are all installed in the Right Place</li>
+	  <li>Many additional small bug fixes</li>
+        </ul>
+    </description>
+    </release>
+    <release version="19.11.0" date="2019-11-11">
+      <description>
+	<p>
+	  A release that contains usability improvements and bug fixes.
+	</p>
+        <ul>
+	  <li>Chinese translation updates from liulitchi</li>
+	  <li>Turkish translation updates from TufanSirin</li>
+	  <li>Hungarian translation updates from Blahota István</li>
+	  <li>German translation updates from Wolfgang Dautermann and Gunter Königsmann</li>
+	  <li>Better detection of the Gnuplot location</li>
+	  <li>Better detection of the right place to open autocomplete popups in</li>
+	  <li>Better formatting of special unicode operators</li>
+	  <li>If autosave on closing fails: Allow the user to ask to exit anyway</li>
+	  <li>Enable Autosave even if the option to keep the file saved is disabled</li>
+	  <li>A context menu with the "display labels" choices</li>
+	  <li>A context menu with "max number of digits" choices</li>
+	  <li>A speedup by preventing recursive calls to resize functions</li>
+	  <li>Corrected parametric plots in the plot wizard</li>
+	  <li>A command-line switch that copies all log messages to stderr</li>
+	  <li>Batch mode no more adds documents to "recent documents"</li>
+	  <li>For purists: A "don't offer known answers" config option</li>
+	  <li>Now some toolbar items can be disabled</li>
+	  <li>Added more toolbar buttons that evaluate cells</li>
+	  <li>Many additional bug fixes</li>
+        </ul>
+    </description>
+    </release>
+    <release version="19.10.0" date="2019-10-04">
+      <description>
+	<p>
+	  Resolved an Regression.
+	</p>
+        <ul>
+	  <li>Corrected a Regression: The better display of exponents failed for exp(x^2)</li>
+          <li>Seems like some Windows computers only have a numpad enter key</li>
+          <li>Chinese translation updates from liulitchi</li>
+          <li>Russian translation updates from OlesyaGerasimenko</li>
+        </ul>
+      </description>
+    </release>
+    <release version="19.09.1" date="2019-09-30">
+      <description>
+	<p>
+	  Many small improvements, thanks to all the testers!
+	</p>
+        <ul>
+	  <li>The names of greek letters are no more converted to greek letters in variable
+	  names by default</li>
           <li>Smarter Formatting of asterisk and hyphen</li>
           <li>An automatic per-commit Windows Build for Appveyor</li>
           <li>Always recalculate the worksheet size when needed</li>
           <li>Better vertical alignment of exponents</li>
           <li>The layout is now more consistent between platforms</li>
+	  <li> Chinese translation updates from liulitchi</li>
+	  <li>wxMaxima now remembers the question for each answer, not only its number</li>
+	  <li>Now the manual can be localized, too</li>
+	  <li>Non-breaking spaces are now replaced by ordinary spaces
+	  before being sent to maxima</li>
+	  <li>As always: Many additional bug fixes</li>
         </ul>
       </description>
     </release>

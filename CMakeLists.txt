@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 cmake_minimum_required(VERSION 3.4)
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
@@ -12,11 +14,13 @@ else()
 endif()
 
 project(wxmaxima LANGUAGES CXX)
-set(VERSION 19.09.0-DevelopmentSnapshot)
+set(VERSION 20.01.2-DevelopmentSnapshot)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 set(APP_NAME wxMaxima)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
@@ -54,11 +58,8 @@ endif()
 
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-    message(WARNING "Cmake strongly discourages in-source builds. It is therefore advisable to make an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
+    message(STATUS "Cmake discourages in-source builds making them the less tested option. It is therefore advisable to do an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
 endif()
-
-# should the PDF doku be build from the texinfo source? (requires a TeX installation)
-option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
 
 # MacOSX version-min compiler settings
 if(MACOSX_VERSION_MIN)
@@ -102,15 +103,11 @@ if(WIN32 AND APPVEYOR_BUILD)
 endif()
 
 # Make the bundle portable to other macs.
-#
-# Doesn't currently work, unfortunately, see
-# https://gitlab.kitware.com/cmake/cmake/issues/19663
-#
-# set(BU_CHMOD_BUNDLE_ITEM)
-# if(APPLE)
-# install(CODE "include(BundleUtilities)
-#     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
-# endif()
+if(APPLE)
+    install(CODE "include(BundleUtilities)
+    set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
+endif()
 
 # Build Packages
 if(WIN32)

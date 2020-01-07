@@ -44,7 +44,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     while(
       (it < commands.end()) &&
       ((!token.EndsWith("(to-maxima)"))) &&
-      ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima)"))))
+      ((!token.EndsWith(wxString("(to")+wxT("\u2212")+"maxima)"))))
     {
       token +=*it;
       ++it;
@@ -72,9 +72,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     {
       m_tokens.push_back(new Token(wxChar(Ch)));
       ++it;
+      continue;
     }
     // Check for comments
-    else if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7'))))
+    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\u00B7'))))
     {
       wxString token;
       // Add the comment start
@@ -88,45 +89,45 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         if(*it == '\\')
         {
           token += *it;
-          it++;
+          ++it;
           if(it < commands.end())
           {
             token += *it;
-            it++;
+            ++it;
           }
           continue;
         }
         
-        wxString::const_iterator it2(it);
-        if(it2 < commands.end())
-          ++it2;
+        wxString::const_iterator it3(it);
+        if(it3 < commands.end())
+          ++it3;
         wxChar nextCh = ' ';
-        if(it2 < commands.end())
-          nextCh = *it2;
+        if(it3 < commands.end())
+          nextCh = *it3;
 
         // handle comment begins within comments.
-        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\xB7'))))
+        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\u00B7'))))
         {
           commentDepth++;
           token += *it;
-          it++;
+          ++it;
           if(it < commands.end())
           {
             token += *it;
-            it++;
+            ++it;
           }
           continue;
         }
         // handle comment endings
-        if(((*it == '*') || (*it == wxT('\xB7'))) && (nextCh == '/'))
+        if(((*it == '*') || (*it == wxT('\u00B7'))) && (nextCh == '/'))
         {
           commentDepth--;
           token += *it;
-          it++;
+          ++it;
           if(it < commands.end())
           {
             token += *it;
-            it++;
+            ++it;
           }
           if(commentDepth < 0)
             break;
@@ -139,20 +140,21 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         }
       }
       m_tokens.push_back(new Token(token, TS_CODE_COMMENT));
+      continue;
     }
     // Handle operators and :lisp commands
-    else if (Operators().Find(Ch) != wxNOT_FOUND)
+    if (Operators().Find(Ch) != wxNOT_FOUND)
     {
       if(Ch == ':')
       {
         wxString breakCommand;
-        wxString::const_iterator it2(it);
+        wxString::const_iterator it3(it);
         int len = 14;
-        while((len>0) && (it2 < commands.end()))
+        while((len>0) && (it3 < commands.end()))
         {
           len--;
-          breakCommand += wxString(*it2);
-          it2++;
+          breakCommand += wxString(*it3);
+          ++it3;
         }
         if(
           breakCommand.StartsWith(":lisp ") ||
@@ -179,16 +181,17 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         wxString token = wxString(Ch);
         if (configuration->GetChangeAsterisk())
         {
-          token.Replace(wxT("*"), wxT("\xB7"));
-          token.Replace(wxT("-"), wxT("\x2212"));
+          token.Replace(wxT("*"), wxT("\u00B7"));
+          token.Replace(wxT("-"), wxT("\u2212"));
         }
         
         m_tokens.push_back(new Token(token, TS_CODE_OPERATOR));
         ++it;
       }
+      continue;
     }
     // Handle strings
-    else if (Ch == wxT('\"'))
+    if (Ch == wxT('\"'))
     {
       wxString token;
       // Add the opening quote
@@ -213,11 +216,19 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           break;
       }
       m_tokens.push_back(new Token(token, TS_CODE_STRING));
-      token = wxEmptyString;
+      continue;
     }
+    // Handle number-like symbols
+    if(UnicodeNumbers().Find(Ch) != wxNOT_FOUND)
+    {
+       wxString token = Ch;
+       ++it;
+       m_tokens.push_back(new Token(token, TS_CODE_NUMBER));
+       continue;
+    } 
     // Handle numbers. Numbers begin with a digit, but can continue with letters and can
     // contain a + or - that follows an e, f, g, h or l.
-    else if (IsNum(Ch))
+    if (IsNum(Ch))
     {
       wxString token;
       wxChar lastChar = *it;
@@ -237,7 +248,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
                    ) && (
                      (*it == '+') ||
                      (*it == '-') ||
-                     (*it == wxT('\x2212'))
+                     (*it == wxT('\u2212'))
                      )
                  )))
       {
@@ -247,38 +258,38 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
       
       m_tokens.push_back(new Token(token, TS_CODE_NUMBER));
-      token = wxEmptyString;
+      continue;
     }
     // Merge consecutive spaces into one single token
-    else if ((Ch == wxT(' ')) || (Ch == wxT('\t')))
+    if (IsSpace(Ch))
     {
       wxString token;
-      while ((it < commands.end()) &&
-             ((Ch == wxT(' ') || (Ch == wxT('\t')))
-               ))
+      while ((it < commands.end()) && IsSpace(Ch))
       {
-        token += wxString(Ch);
-        if (++it < commands.end()) {
+	if(Ch == '\t')
+          token += "\t";
+        else
+          token += " ";
+        if (++it < commands.end())
           Ch = *it;
-        }
       }
-
       m_tokens.push_back(new Token(token));
-      token = wxEmptyString;
+      continue;
     }
     // Handle keywords
-    else if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?'))
+    if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?'))
     {
       wxString token;
       if(Ch == '?')
       {
         token += Ch;
-        it++;
+        ++it;
         Ch = *it;
       }
 
-      while ((it < commands.end()) && (IsAlphaNum(Ch = *it)))
+      while ((it < commands.end()) && (IsAlphaNum(*it) || (*it == '\\')))
       {
+        Ch = *it;
         token += Ch;
         if (Ch == wxT('\\'))
         {
@@ -302,7 +313,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
       if(token == ("to_lisp"))
       {
-        while((it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) && ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima)"))))
+        while((it < commands.end()) && ((!token.EndsWith("(to-maxima)"))) && ((!token.EndsWith(wxString("(to")+wxT("\u2212")+"maxima)"))))
         {
           token += wxString(*it);
           ++it;
@@ -334,44 +345,61 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         else
         {
           // Let's look what the next char looks like
-          wxString::const_iterator it2(it);
-          while ((it2 < commands.end()) &&
-                 ((*it2 == ' ') || (*it2 == '\t') || (*it2 == '\n') || (*it2 == '\r')))
-            ++it2;
-          if(it2 >= commands.end())
+          wxString::const_iterator it3(it);
+          while ((it3 < commands.end()) &&
+                 ((*it3 == ' ') || (*it3 == '\t') || (*it3 == '\n') || (*it3 == '\r')))
+            ++it3;
+          if(it3 >= commands.end())
             m_tokens.push_back(new Token(token, TS_CODE_VARIABLE));
           else
           {
-            if(*it2 == '(')
+            if(*it3 == '(')
               m_tokens.push_back(new Token(token, TS_CODE_FUNCTION));
             else
               m_tokens.push_back(new Token(token, TS_CODE_VARIABLE));
           }
         }
       }
-      token = wxEmptyString;
+      continue;
     }   
-    else if((Ch == '$') || (Ch == ';'))
+    if((Ch == '$') || (Ch == ';'))
     {
       m_tokens.push_back(new Token(wxString(Ch), TS_CODE_ENDOFLINE));
       ++it;
+      continue;
     }
-    else
+
     {
+      // Everything that hasn't been handled until now.
       m_tokens.push_back(new Token(wxString(Ch)));
       ++it;
+      continue;
     }
   }
 }
 
 bool MaximaTokenizer::IsAlpha(wxChar ch)
 {
-  static const wxString additional_alphas = wxT("\\_%");
-
   if (wxIsalpha(ch))
     return true;
 
-  return (additional_alphas.Find(ch) != wxNOT_FOUND);
+  if(m_not_alphas.Find(ch) != wxNOT_FOUND)
+    return false;
+  
+  if(IsSpace(ch))
+    return false;
+
+  // If it cannot be converted to asciiand we didn't detect it as a char we know how to deal with
+  // it (in maxima's view) is an ordinary letter.
+  if(ch > 127)
+    return true;
+  
+  return (m_additional_alphas.Find(ch) != wxNOT_FOUND);
+}
+
+bool MaximaTokenizer::IsSpace(wxChar ch)
+{
+  return m_spaces.Find(ch) != wxNOT_FOUND;
 }
 
 bool MaximaTokenizer::IsNum(wxChar ch)
@@ -383,3 +411,20 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch)
 {
   return IsAlpha(ch) || IsNum(ch);
 }
+
+const wxString MaximaTokenizer::m_additional_alphas = wxT("\\_%µ");
+const wxString MaximaTokenizer::m_not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212");
+const wxString MaximaTokenizer::m_spaces = wxT(" \t")
+  wxT("\u00A0") // A non-breakable space
+  wxT("\xDCB6") // A non-breakable space (alternate version)
+  wxT("\u1680") // Ogham space mark
+  wxT("\u2000") // en quad
+  wxT("\u2001") // em quad
+  wxT("\u2002") // en space
+  wxT("\u2003") // em space
+  wxT("\u2004") // 1/3 em space
+  wxT("\u2005") // 1/4 em space
+  wxT("\u2006") // 1/6 em space
+  wxT("\u2007") // figure space
+  wxT("\u2008") // punctuation space
+  wxT("\r"); // A soft linebreak

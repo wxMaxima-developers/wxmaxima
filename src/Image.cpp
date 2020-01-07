@@ -1,8 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
-//
+//            (C) 2015-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -25,17 +24,21 @@
 */
 
 #include "Image.h"
+#define NANOSVG_ALL_COLOR_KEYWORDS
+#define NANOSVG_IMPLEMENTATION
+#define NANOSVGRAST_IMPLEMENTATION
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
 #include <wx/stdpaths.h>
+#include "SvgBitmap.h"
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {
   wxMemoryBuffer retval;
-
+  
   char *buf = new char[8192];
 
   while (data->CanRead())
@@ -49,14 +52,27 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
   return retval;
 }
 
-wxBitmap Image::GetUnscaledBitmap()
+wxBitmap Image::GetUnscaledBitmap() const
 {
-  wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-  wxImage img(istream, wxBITMAP_TYPE_ANY);
-  wxBitmap bmp;
-  if (img.Ok())
-    bmp = wxBitmap(img);
-  return bmp;
+  if (m_svgRast)
+  {
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
+    if(!imgdata)
+      return wxBitmap();
+        
+    nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata.get(),
+                  m_originalWidth, m_originalHeight, m_originalWidth*4);
+    return SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
+  }
+  else
+  {
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    wxImage img(istream, wxBITMAP_TYPE_ANY);
+    wxBitmap bmp;
+    if (img.Ok())
+      bmp = wxBitmap(img);
+    return bmp;
+  }
 }
 
 Image::Image(Configuration **config)
@@ -70,6 +86,8 @@ Image::Image(Configuration **config)
   m_isOk = false;
   m_maxWidth = -1;
   m_maxHeight = -1;
+  m_svgImage = NULL;
+  m_svgRast = NULL;
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -82,7 +100,9 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   m_height = 1;
   m_originalWidth = 640;
   m_originalHeight = 480;
-
+  m_svgImage = NULL;
+  m_svgRast = NULL;
+  
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
@@ -98,6 +118,8 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
+  m_svgImage = NULL;
+  m_svgRast = NULL;
   m_configuration = config;
   m_width = 1;
   m_height = 1;
@@ -109,6 +131,8 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 // constructor which loads an image
 Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *filesystem)
 {
+  m_svgImage = NULL;
+  m_svgRast = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_width = 1;
@@ -130,9 +154,9 @@ Image::~Image()
 
     wxString popoutname = m_gnuplotSource + wxT(".popout");
     if(wxFileExists(popoutname))
-      wxRemoveFile(popoutname);
-    
+      wxRemoveFile(popoutname);    
   }
+  wxDELETE(m_svgImage);
 }
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem)
@@ -229,45 +253,44 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
       wxFSFile *fsfile = filesystem->OpenFile(m_gnuplotSource);
       if (fsfile)
       { // open successful
-        wxInputStream *input = fsfile->GetStream();
-          if(input->IsOk())
+        std::unique_ptr<wxInputStream> input(fsfile->GetStream());
+        if(input->IsOk())
+        {
+          wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+          
+          wxMemoryOutputStream mstream;
+          int zlib_flags;
+          if(wxZlibOutputStream::CanHandleGZip())
+            zlib_flags = wxZLIB_GZIP;
+          else
+            zlib_flags = wxZLIB_ZLIB;
+          wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
+          wxTextOutputStream textOut(zstream);
+          wxString line;
+          
+          // A RegEx that matches the name of the data file (needed if we ever want to
+          // move a data file into the temp directory of a new computer that locates its
+          // temp data somewhere strange).
+          wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9*]\\.data'");
+          while(!input->Eof())
           {
-            wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-
-            wxMemoryOutputStream mstream;
-            int zlib_flags;
-            if(wxZlibOutputStream::CanHandleGZip())
-              zlib_flags = wxZLIB_GZIP;
-            else
-              zlib_flags = wxZLIB_ZLIB;
-            wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
-            wxTextOutputStream textOut(zstream);
-            wxString line;
-            
-            // A RegEx that matches the name of the data file (needed if we ever want to
-            // move a data file into the temp directory of a new computer that locates its
-            // temp data somewhere strange).
-            wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9*]\\.data'");
-            while(!input->Eof())
+            line = textIn.ReadLine();
+            if(replaceDataFileName.Matches(line))
             {
-              line = textIn.ReadLine();
-              if(replaceDataFileName.Matches(line))
-              {
-                wxString dataFileName;
-                dataFileName = replaceDataFileName.GetMatch(line);
-                if(dataFileName != wxEmptyString)
-                  wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
-                replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
-              }
-              textOut << line + wxT("\n");
+              wxString dataFileName;
+              dataFileName = replaceDataFileName.GetMatch(line);
+              if(dataFileName != wxEmptyString)
+                wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
+              replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
             }
-            textOut.Flush();
-            zstream.Close();
-            m_gnuplotSource_Compressed.Clear();
-            m_gnuplotSource_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
-                                                  mstream.GetOutputStreamBuffer()->GetBufferSize());
-            wxDELETE(input);
+            textOut << line + wxT("\n");
           }
+          textOut.Flush();
+          zstream.Close();
+          m_gnuplotSource_Compressed.Clear();
+          m_gnuplotSource_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                                mstream.GetOutputStreamBuffer()->GetBufferSize());
+        }
       }
     }
     {
@@ -323,7 +346,7 @@ wxMemoryBuffer Image::GetGnuplotSource()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     textOut << line + wxT("\n");
@@ -352,7 +375,7 @@ wxMemoryBuffer Image::GetGnuplotData()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     textOut << line + wxT("\n");
@@ -388,7 +411,7 @@ wxString Image::GnuplotData()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     textOut << line + wxT("\n");
@@ -422,7 +445,7 @@ wxString Image::GnuplotSource()
   wxTextInputStream textIn(zstream);
   wxString line;
   
-  while(!mstream.Eof())
+  while(!zstream.Eof())
   {
     line = textIn.ReadLine();
     line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
@@ -450,6 +473,31 @@ wxSize Image::ToImageFile(wxString filename)
       return wxSize(m_originalWidth, m_originalHeight);
     else
       return wxSize(-1, -1);
+  }
+
+  if((filename.Lower().EndsWith(".svg")) && (m_extension == "svgz"))
+  {
+    // Unzip the .svgz image
+    wxString svgContents_string;
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    wxZlibInputStream zstream(istream);
+    wxTextInputStream textIn(zstream);
+    wxString line;
+    while(!zstream.Eof())
+    {
+      line = textIn.ReadLine();
+      svgContents_string += line + wxT("\n");
+    }
+    wxFile file(filename, wxFile::write);
+    if (!file.IsOpened())
+      return wxSize(-1, -1);
+    wxFileOutputStream output(file);
+    wxTextOutputStream text(output);
+    text << svgContents_string;
+    if (file.Close())
+      return wxSize(m_originalWidth, m_originalHeight);
+    else
+      return wxSize(-1, -1);    
   }
   else
   {
@@ -481,7 +529,7 @@ wxSize Image::ToImageFile(wxString filename)
   }
 }
 
-wxBitmap Image::GetBitmap(double scale)
+wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
 
@@ -489,9 +537,19 @@ wxBitmap Image::GetBitmap(double scale)
   if (m_scaledBitmap.GetWidth() == m_width)
     return m_scaledBitmap;
 
-
   // Seems like we need to create a new scaled bitmap.
-  if (m_scaledBitmap.GetWidth() != m_width)
+  if (m_svgRast)
+  {
+    // First create rgba data
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_width*m_height*4]);
+    if(!imgdata)
+      return wxBitmap();
+    nsvgRasterize(m_svgRast, m_svgImage, 0,0,
+                  ((double)m_width)/((double)m_originalWidth),
+                  imgdata.get(), m_width, m_height, m_width*4);
+    return m_scaledBitmap = SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_width, m_height);
+  }
+  else
   {
     wxImage img;
     if (m_compressedImage.GetDataLen() > 0)
@@ -512,7 +570,7 @@ wxBitmap Image::GetBitmap(double scale)
 
       wxString error;
       if(m_imageName != wxEmptyString)
-        error = wxString::Format(_("Error: Cannot render %s."), m_imageName);
+        error = wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
       else
         error = wxString::Format(_("Error: Cannot render the image."));
 
@@ -569,7 +627,7 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 
   if (filesystem)
   {
-    wxFSFile *fsfile = filesystem->OpenFile(image);
+    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(image));
     if (fsfile)
     { // open successful
 
@@ -581,7 +639,6 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     // Closing and deleting fsfile is important: If this line is missing
     // opening .wxmx files containing hundreds of images might lead to a
     // "too many open files" error.
-    wxDELETE(fsfile);
   }
   else
   {
@@ -606,30 +663,96 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   }
 
   m_isOk = false;
-  
+
+  m_extension = wxFileName(image).GetExt();
+  m_extension = m_extension.Lower();
+
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
-    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-    Image.LoadFile(istream);
+    if((m_extension == "svg") || (m_extension == "svgz"))
+    {
+      m_isOk = false;
+      wxString svgContents_string;
+
+      // Read the svg file's data into the system's memory
+      if(m_extension == "svg")
+      {
+        // We can read the file from memory without much ado...
+        svgContents_string = wxString::FromUTF8(
+          (char *)m_compressedImage.GetData(),
+          m_compressedImage.GetDataLen());
+        
+        // ...but we want to compress the in-memory image for saving memory
+        wxMemoryOutputStream mstream;
+        wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,wxZLIB_GZIP);
+        wxTextOutputStream textOut(zstream);
+        textOut << svgContents_string;
+        textOut.Flush();
+        zstream.Close();
+        m_compressedImage.Clear();
+        m_compressedImage.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                     mstream.GetOutputStreamBuffer()->GetBufferSize());
+        m_extension += "z";
+        m_imageName += "z";
+      }
+      else
+      {
+        // Unzip the .svgz image
+        wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+        wxZlibInputStream zstream(istream);
+        wxTextInputStream textIn(zstream);
+        wxString line;
+        while(!zstream.Eof())
+        {
+          line = textIn.ReadLine();
+          svgContents_string += line + wxT("\n");
+        }
+      }
+      // Convert the data we have read to a modifyable char * containing the svg file's contents.
+      char *svgContents;
+      svgContents = (char *)strdup(svgContents_string.utf8_str());
+
+      // Parse the svg file's contents
+      int ppi;
+      if((*m_configuration)->GetDC()->GetPPI().x > 50)
+        ppi = (*m_configuration)->GetDC()->GetPPI().x;
+      else
+        ppi = 96;
+      
+      if(svgContents)
+      {
+        m_svgImage = nsvgParse(svgContents, "px", ppi);
+        delete(svgContents);
+      }
+
+      if(m_svgImage)
+      {
+	m_svgRast = nsvgCreateRasterizer();
+        if(m_svgRast)
+          m_isOk = true;
+        m_originalWidth = m_svgImage->width;
+        m_originalHeight = m_svgImage->height;
+      }
+    }
+    else
+    {   
+      wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+      Image.LoadFile(istream);
+      m_originalWidth = 700;
+      m_originalHeight = 300;
+      
+      if (Image.Ok())
+      {
+        m_originalWidth = Image.GetWidth();
+        m_originalHeight = Image.GetHeight();
+        m_isOk = true;
+      }
+      else
+        m_isOk = false;
+    }
+    Recalculate();
   }
-
-  m_extension = wxFileName(image).GetExt();
-
-  m_originalWidth = 700;
-  m_originalHeight = 300;
-
-  if (Image.Ok())
-  {
-    m_originalWidth = Image.GetWidth();
-    m_originalHeight = Image.GetHeight();
-    m_isOk = true;
-  }
-  else
-    m_isOk = false;
-
-  Recalculate();
-
 }
 
 void Image::Recalculate(double scale)

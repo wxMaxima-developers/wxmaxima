@@ -31,44 +31,46 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
+LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+  Cell(parent, config, cellPointers),
+  m_name(new TextCell(parent, config, cellPointers)),
+  m_open(new TextCell(parent, config, cellPointers, "(")),
+  m_base(new TextCell(parent, config, cellPointers)),
+  m_comma(new TextCell(parent, config, cellPointers, ",")),
+  m_under(new TextCell(parent, config, cellPointers)),
+  m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_base = NULL;
-  m_under = NULL;
-  m_name = NULL;
-  m_open = new TextCell(parent, config, cellPointers, "(");
-  m_comma = new TextCell(parent, config, cellPointers, ",");
-  m_close = new TextCell(parent, config, cellPointers, ")");
-
-  m_cellPointers = cellPointers;
+  m_open->SetStyle(TS_FUNCTION);
+  m_close->SetStyle(TS_FUNCTION);
+  m_comma->SetStyle(TS_FUNCTION);
+  m_base_last = m_base.get();
+  m_under_last = m_under.get();
+  m_name_last = m_name.get();
 }
 
-Cell *LimitCell::Copy()
+// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
+// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
+// cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
+LimitCell::LimitCell(const LimitCell &cell):
+ LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  LimitCell *tmp = new LimitCell(m_group, m_configuration, m_cellPointers);
-  CopyData(this, tmp);
-  tmp->SetBase(m_base->CopyList());
-  tmp->SetUnder(m_under->CopyList());
-  tmp->SetName(m_name->CopyList());
-
-  return tmp;
+  CopyCommonData(cell);
+  if(cell.m_base)
+    SetBase(cell.m_base->CopyList());
+  if(cell.m_under)
+    SetUnder(cell.m_under->CopyList());
+  if(cell.m_name)
+    SetName(cell.m_name->CopyList());
 }
 
 LimitCell::~LimitCell()
 {
-  wxDELETE(m_base);
-  wxDELETE(m_under);
-  wxDELETE(m_name);
-  wxDELETE(m_open);
-  wxDELETE(m_comma);
-  wxDELETE(m_close);
   MarkAsDeleted();
-  m_base = m_under = m_name = m_open = m_comma = m_close = NULL;
 }
 
-std::list<Cell *> LimitCell::GetInnerCells()
+std::list<std::shared_ptr<Cell>> LimitCell::GetInnerCells()
 {
-  std::list<Cell *> innerCells;
+  std::list<std::shared_ptr<Cell>> innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)
@@ -88,8 +90,8 @@ void LimitCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
-  wxDELETE(m_name);
-  m_name_last = m_name = name;
+  m_name = std::shared_ptr<Cell>(name);
+  m_name_last = name;
   while(m_name_last->m_next != NULL)
     m_name_last = m_name_last->m_next;
 }
@@ -98,8 +100,8 @@ void LimitCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
-  wxDELETE(m_base);
-  m_base_last = m_base = base;
+  m_base = std::shared_ptr<Cell>(base);
+  m_base_last = base;
   while(m_base_last->m_next != NULL)
     m_base_last = m_base_last->m_next;
 }
@@ -108,30 +110,31 @@ void LimitCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
-  wxDELETE(m_under);
-  m_under_last = m_under = under;
+  m_under = std::shared_ptr<Cell>(under);
+  m_under_last = under;
   while(m_under_last->m_next != NULL)
     m_under_last = m_under_last->m_next;
 }
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  if(m_base)
-    m_base->RecalculateWidthsList(fontsize);
-  if(m_under)
-    m_under->RecalculateWidthsList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  if(m_name)
-    m_name->RecalculateWidthsList(fontsize);
-  if(m_open)
-    m_open->RecalculateWidthsList(fontsize);
-  if(m_comma)
-    m_comma->RecalculateWidthsList(fontsize);
-  if(m_close)
-    m_close->RecalculateWidthsList(fontsize);
-
-  if (!m_isBrokenIntoLines)
+  if(!m_isBrokenIntoLines)
+  {
+    if(m_base)
+      m_base->RecalculateWidthsList(fontsize);
+    if(m_under)
+      m_under->RecalculateWidthsList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    if(m_name)
+      m_name->RecalculateWidthsList(fontsize);
+    if(m_open)
+      m_open->RecalculateWidthsList(fontsize);
+    if(m_comma)
+      m_comma->RecalculateWidthsList(fontsize);
+    if(m_close)
+      m_close->RecalculateWidthsList(fontsize);
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
       + m_base->GetFullWidth();
+  }
   else
     m_width = 0;
   
@@ -141,29 +144,28 @@ void LimitCell::RecalculateWidths(int fontsize)
 void LimitCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  if(m_under)
-    m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  if(m_name)
-    m_name->RecalculateHeightList(fontsize);
-  if(m_base)
-    m_base->RecalculateHeightList(fontsize);
-  if(m_open)
-    m_open->RecalculateHeightList(fontsize);
-  if(m_comma)
-    m_comma->RecalculateHeightList(fontsize);
-  if(m_close)
-    m_close->RecalculateHeightList(fontsize);
-
-  if (!m_isBrokenIntoLines)
+  if(!m_isBrokenIntoLines)
   {
-    m_center = wxMax(m_base->GetMaxCenter(), m_name->GetMaxCenter());
-    m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
-                              m_base->GetMaxDrop());
+    if(m_under)
+      m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    if(m_name)
+      m_name->RecalculateHeightList(fontsize);
+    if(m_base)
+      m_base->RecalculateHeightList(fontsize);
+    if(m_open)
+      m_open->RecalculateHeightList(fontsize);
+    if(m_comma)
+      m_comma->RecalculateHeightList(fontsize);
+    if(m_close)
+      m_close->RecalculateHeightList(fontsize);
+    m_center = wxMax(m_base->GetCenterList(), m_name->GetCenterList());
+    m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetHeightList(),
+                                m_base->GetMaxDrop());
   }
   else
   {
-    m_height = m_name->GetMaxHeight();
-    m_center = m_name->GetMaxCenter();
+    m_height = m_name->GetHeightList();
+    m_center = m_name->GetCenterList();
   }
 }
 
@@ -182,7 +184,7 @@ void LimitCell::Draw(wxPoint point)
     under.x = point.x + wxMax(m_name->GetFullWidth(),
                             m_under->GetFullWidth()) / 2 -
               m_under->GetFullWidth() / 2;
-    under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
+    under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
     m_under->DrawList(under);
 
     base.x += wxMax(m_name->GetFullWidth(),
@@ -282,7 +284,7 @@ wxString LimitCell::ToXML()
 wxString LimitCell::ToOMML()
 {
   wxString under = m_under->ListToOMML();
-  under.Replace(wxT("->"), wxT("\x2192"));
+  under.Replace(wxT("->"), wxT("\u2192"));
 
   return _T("<m:func><m:fName><m:limLow><m:e><m:r>lim</m:r></m:e><m:lim>") +
          under + _T("</m:lim></m:limLow></m:fName><m:e>") +
@@ -295,21 +297,13 @@ bool LimitCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_name_last->m_nextToDraw = m_open;
-    m_open->m_nextToDraw = m_base;
-    m_base_last->m_nextToDraw = m_comma;
-    m_comma->m_nextToDraw = m_under;
-    m_under_last->m_nextToDraw = m_close;
+    m_name_last->m_nextToDraw = m_open.get();
+    m_open->m_nextToDraw = m_base.get();
+    m_base_last->m_nextToDraw = m_comma.get();
+    m_comma->m_nextToDraw = m_under.get();
+    m_under_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
-    if(m_nextToDraw != NULL)
-      m_nextToDraw->m_previousToDraw = m_close;
-    m_nextToDraw = m_name;
-    m_name->m_previousToDraw = this;
-    m_open->m_previousToDraw = m_name_last;
-    m_base->m_previousToDraw = m_open;
-    m_comma->m_previousToDraw = m_base_last;
-    m_under->m_previousToDraw = m_comma;
-    m_close->m_previousToDraw = m_under_last;
+    m_nextToDraw = m_name.get();
     ResetData();    
     return true;
   }

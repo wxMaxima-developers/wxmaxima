@@ -40,6 +40,7 @@
 Emfout::Emfout(Configuration **configuration, wxString filename)
 {
   m_width = m_height = -1;
+  m_scale = 1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_tree = NULL;
@@ -82,7 +83,7 @@ Emfout::~Emfout()
     SuppressErrorDialogs messageBlocker;
     
     if(!wxRemoveFile(m_tempFileName))
-      wxLogMessage(_("Cannot remove the file %s"),m_tempFileName);
+      wxLogMessage(_("Cannot remove the file %s"),m_tempFileName.utf8_str());
   }
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
@@ -127,7 +128,7 @@ bool Emfout::Layout()
     while (tmp != NULL)
     {
       tmp->Recalculate();
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      tmp = tmp->GetNext();
     }
   }
 
@@ -239,7 +240,7 @@ void Emfout::GetMaxPoint(int *width, int *height)
       if (tmp->BreakLineHere() || firstCell)
       {
         firstCell = false;
-        currentHeight += tmp->GetMaxHeight();
+        currentHeight += tmp->GetHeightList();
         if (bigSkip)
           currentHeight += MC_LINE_SKIP;
         *height = currentHeight;
@@ -265,7 +266,7 @@ void Emfout::Draw()
   {
     wxPoint point;
     point.x = 0;
-    point.y = tmp->GetMaxCenter();
+    point.y = tmp->GetCenterList();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
 
@@ -281,7 +282,7 @@ void Emfout::Draw()
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
-          point.y += drop + tmp->m_next->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetCenterList();
           if (tmp->m_bigSkip)
             point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();
@@ -294,7 +295,7 @@ void Emfout::Draw()
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
-          point.y += drop + tmp->m_next->GetMaxCenter();
+          point.y += drop + tmp->m_next->GetCenterList();
           if (tmp->m_bigSkip)
             point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();

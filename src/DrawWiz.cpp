@@ -81,10 +81,10 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
   }
 
   vbox->Add(
-    new wxImagePanel(
+    new SvgPanel(
       this,
-      Draw_Explicit_png,Draw_Explicit_png_len),
-    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+      Draw_Explicit_svg_gz,Draw_Explicit_svg_gz_len),
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -184,10 +184,10 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     SetName("DrawImplicitWiz2D");
 
   vbox->Add(
-    new wxImagePanel(
+    new SvgPanel(
       this,
-      Draw_Implicit_png,Draw_Implicit_png_len),
-    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+      Draw_Implicit_svg_gz,Draw_Implicit_svg_gz_len),
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -583,23 +583,23 @@ void WizContour::OnRadioButton(wxCommandEvent& WXUNUSED(dummy))
 {
   if(m_contourNone->GetValue())
   {
-    m_image->Load(Draw_ContourNone_png, Draw_ContourNone_png_len);
+    m_image->Load(Draw_ContourNone_svg_gz, Draw_ContourNone_svg_gz_len);
   }
   if(m_contourBase->GetValue())
   {
-    m_image->Load(Draw_ContourBase_png, Draw_ContourBase_png_len);
+    m_image->Load(Draw_ContourBase_svg_gz, Draw_ContourBase_svg_gz_len);
   }
   if(m_contourBoth->GetValue())
   {
-    m_image->Load(Draw_ContourBoth_png, Draw_ContourBoth_png_len);
+    m_image->Load(Draw_ContourBoth_svg_gz, Draw_ContourBoth_svg_gz_len);
   }
   if(m_contourSurface->GetValue())
   {
-    m_image->Load(Draw_ContourSurface_png, Draw_ContourSurface_png_len);
+    m_image->Load(Draw_ContourSurface_svg_gz, Draw_ContourSurface_svg_gz_len);
   }
   if(m_contourOnly->GetValue())
   {
-    m_image->Load(Draw_ContourMap_png, Draw_ContourMap_png_len);
+    m_image->Load(Draw_ContourMap_svg_gz, Draw_ContourMap_svg_gz_len);
   }
 }
 
@@ -648,10 +648,10 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   m_contourBoth->SetValue(true);
   
   vbox->Add(
-    m_image = new wxImagePanel(
+    m_image = new SvgPanel(
       this,
-      Draw_ContourBoth_png,Draw_ContourBoth_png_len),
-    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+      Draw_ContourBoth_svg_gz,Draw_ContourBoth_svg_gz_len),
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
@@ -748,10 +748,10 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
   vbox->Add(m_parameterEnd = new BTextCtrl(this,-1, config, "2"), wxSizerFlags().Expand());
 
   vbox->Add(
-    new wxImagePanel(
+    new SvgPanel(
       this,
-      Draw_Parametric_png,Draw_Parametric_png_len),
-    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+      Draw_Parametric_svg_gz,Draw_Parametric_svg_gz_len),
+    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
     );
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -996,6 +996,12 @@ wxString WizDrawAccuracy::GetValue()
         retval += ",\n";
       retval += "ip_grid=[" + m_ip_grid_x->GetValue() + "," + m_ip_grid_y->GetValue()+"]";
     }
+    if((!m_ip_grid_in_x->GetValue().IsEmpty()) && (!m_ip_grid_in_y->GetValue().IsEmpty()))
+    {
+      if(!retval.IsEmpty())
+        retval += ",\n";
+      retval += "ip_grid_in=[" + m_ip_grid_in_x->GetValue() + "," + m_ip_grid_in_y->GetValue()+"]";
+    }
   }
   else
   {
@@ -1034,70 +1040,3 @@ wxString WizDrawAccuracy::GetValue()
   return retval;
 }
  
-wxImagePanel::wxImagePanel(wxWindow* parent, unsigned char *data, size_t len) :
-wxPanel(parent)
-{  
-  Load(data,len);
-  int ppi;
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-  
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    ppi = 72;
-  else
-    ppi = wxDisplay(display_idx).GetPPI().x;
-#else
-  ppi = wxGetDisplayPPI().x;
-#endif
-  ppi = wxMax(ppi,75);
-
-  SetMinSize(wxSize(ppi*4,m_image.GetHeight()*ppi*4/m_image.GetWidth()));
-
-  Connect(wxEVT_PAINT,
-          wxPaintEventHandler(wxImagePanel::paintEvent),
-          NULL, this);
-  Connect(wxEVT_SIZE,
-          wxSizeEventHandler(wxImagePanel::OnSize),
-          NULL, this);
-}
-
-void wxImagePanel::Load(unsigned char *data, size_t len)
-{
-  wxMemoryInputStream istream(data,len);
-  m_image.LoadFile(istream);
-  m_w = m_h = -1;
-  Refresh(true);
-}
-
-/*
- * Called by the system of by wxWidgets when the panel needs
- * to be redrawn. You can also trigger this call by
- * calling Refresh()/Update().
- */
- 
-void wxImagePanel::paintEvent(wxPaintEvent& WXUNUSED(evt))
-{
-  // depending on your system you may need to look at double-buffered dcs
-  wxMemoryDC dcm;
-  wxPaintDC dc(this);
-  int neww, newh;
-  dc.GetSize( &neww, &newh );
-  
-  if( neww != m_w || newh != m_h )
-  {
-    m_resized = wxBitmap( m_image.Scale( neww, newh, wxIMAGE_QUALITY_HIGH) );
-    m_w = neww;
-    m_h = newh;
-  }
-  dc.DrawBitmap( m_resized, 0, 0, false );
-}
- 
-/*
- * Here we call refresh to tell the panel to draw itself again.
- * So when the user resizes the image panel the image should be resized too.
- */
-void wxImagePanel::OnSize(wxSizeEvent& event){
-    Refresh();
-    event.Skip();
-}

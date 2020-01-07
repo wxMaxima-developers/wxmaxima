@@ -39,20 +39,19 @@ wxString wxMathML::GetCmd()
 
     bool stringIs = false;
     wxChar lastChar = wxT('\n');
-    wxString::iterator ch = line.begin();
+    wxString::const_iterator ch = line.begin();
     while (ch < line.end())
     {
       // Remove formatting spaces
       if(((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
-	  ch++;
+	  ++ch;
       else
 	{
 	  // Handle backslashes that might escape double quotes
 	  if (*ch == wxT('\\'))
 	    {
 	      lineWithoutComments += *ch;
-	      lastChar = *ch;
-	      ch++;
+	      ++ch;
 	    }
 	  else
 	    {
@@ -66,7 +65,7 @@ wxString wxMathML::GetCmd()
 	    }
 	  lineWithoutComments += *ch;
 	  lastChar = *ch;
-	  ch++;
+	  ++ch;
 	}
     }
     cmd += lineWithoutComments + " ";

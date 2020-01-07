@@ -30,7 +30,7 @@ create them with:
 On Ubuntu or Debian the build prerequisites can be installed by doing
 a
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
@@ -53,8 +53,14 @@ the newer version of CMake in the commands above).
 
 On Mac OS X you should install XCode. To build wxMaxima open the
 Terminal application and follow the instructions for building with cmake.
-It is recommended that you compile your own version of
-wxMac. See the section about compiling wxWidgets.
+wxMac can be installed using homebrew, fink or macports. Alternatively 
+see the section about compiling wxWidgets.
+In order to work on the translations of the manual addintionally po4a 
+(a perl program) and pandoc are necessary. An app bundle in the .dmg
+format should be assembled if after compiling wxMaxima the following 
+command is executed:
+
+    cmake --build . -- package
 
 
 ### Compiling on Windows
@@ -62,8 +68,9 @@ wxMac. See the section about compiling wxWidgets.
 On Windows install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
-of the installer.  Then run the MinGW Shell and follow the
-instructions for compiling wxWidgets and wxMaxima with cmake.
+of the installer. Also select po4a and install pandoc.
+Then run the MinGW Shell and follow the instructions for compiling
+wxWidgets and wxMaxima with cmake.
 
 
 Additional information about installing and configuring wxMaxima
@@ -78,7 +85,7 @@ https://www.peterpall.de/wxMaxima/html/index.xhtml
 A local version of the documentation of wxMaxima's source can be
 generated using doxygen and the
 
-    make html
+    make doxygen
 
 target.
 

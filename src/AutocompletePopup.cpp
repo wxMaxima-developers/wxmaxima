@@ -349,12 +349,10 @@ AutocompletePopup::AutocompletePopup(
   if(m_type != AutoComplete::esccommand)
     m_partial = m_editor->GetSelectionString();
       
-  Connect(wxEVT_CHAR,
-          wxKeyEventHandler(AutocompletePopup::OnChar),
-          NULL, this);
-  Connect(wxEVT_KEY_DOWN,
-          wxKeyEventHandler(AutocompletePopup::OnKeyDown),
-          NULL, this);
+  Connect(wxEVT_CHAR, wxKeyEventHandler(AutocompletePopup::OnChar), NULL, this);
+  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(AutocompletePopup::OnKeyDown), NULL, this);
+  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(AutocompletePopup::OnClick), NULL, this);
+  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(AutocompletePopup::OnClose), NULL, this);
 }
 
 void AutocompletePopup::OnChar(wxKeyEvent &event)
@@ -412,10 +410,4 @@ void AutocompletePopup::OnChar(wxKeyEvent &event)
     return;
   }
 }
-
-wxBEGIN_EVENT_TABLE(AutocompletePopup, wxListView)
-EVT_LEFT_UP(AutocompletePopup::OnClick)
-EVT_CLOSE(AutocompletePopup::OnClose)
-wxEND_EVENT_TABLE()
-
 

@@ -40,18 +40,19 @@ class IntCell : public Cell
 {
 public:
   IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  IntCell(const IntCell &cell);
+  Cell *Copy() override {return new IntCell(*this);}
+  //! This class can be derived from wxAccessible which has no copy constructor
+  IntCell &operator=(const IntCell&) = delete;
   ~IntCell();
 
-  std::list<Cell *> GetInnerCells();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  Cell *Copy();
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
@@ -76,27 +77,27 @@ public:
     m_intStyle = style;
   }
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
 protected:
   //! The part of the formula that is to be integrated.
-  Cell *m_base;
+  std::shared_ptr<Cell> m_base;
   //! The lower limit of the integral
-  Cell *m_under;
+  std::shared_ptr<Cell> m_under;
   //! The upper limit of the integral
-  Cell *m_over;
+  std::shared_ptr<Cell> m_over;
   //! The integration variable
-  Cell *m_var;
+  std::shared_ptr<Cell> m_var;
   //! The height of the integral sign
   int m_signHeight;
   //! The width of the integral sign

@@ -63,11 +63,20 @@ public:
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
-  AutoComplete(Configuration *configuration);
+  explicit AutoComplete(Configuration *configuration);
 
   Configuration *m_configuration;
-  
+
+  //! Load all autocomplete symbols wxMaxima knows about by itself
   bool LoadSymbols();
+
+  /*! Makes wxMaxima know all its builtin symbols.
+
+    This function might cause a compiler warning because it is 
+    suspiciously long. 
+    For the same reason it has been split into a separate file.
+  */
+  bool LoadBuiltinSymbols();
 
   //! Manually add a autocompletable symbol to our symbols lists
   void AddSymbol(wxString fun, autoCompletionType type = command);
@@ -103,9 +112,9 @@ private:
   class GetGeneralFiles : public wxDirTraverser
   {
   public:
-    GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
-      m_files(files) { m_prefix = prefix; }
-    virtual wxDirTraverseResult OnFile(const wxString& filename)
+    explicit GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
       {
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
@@ -114,7 +123,7 @@ private:
           m_files.Add(newItem);
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
@@ -132,9 +141,9 @@ private:
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
-      m_files(files) { m_prefix = prefix; }
-    virtual wxDirTraverseResult OnFile(const wxString& filename)
+    explicit GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix)  { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(
           (filename.EndsWith(".mac"))||
@@ -150,9 +159,17 @@ private:
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        return wxDIR_CONTINUE;
+        if((dirname.EndsWith(".git")) ||
+           (dirname.EndsWith("/share/share")) ||
+           (dirname.EndsWith("/src/src")) ||
+           (dirname.EndsWith("/doc/doc")) ||
+           (dirname.EndsWith("/interfaces/interfaces"))
+          )
+          return wxDIR_STOP;
+        else
+          return wxDIR_CONTINUE;
       }
     wxArrayString& GetResult(){return m_files;}
   protected: 
@@ -163,9 +180,9 @@ private:
   class GetMacFiles : public GetMacFiles_includingSubdirs
   {
   public:
-    GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetMacFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
@@ -179,9 +196,9 @@ private:
   class GetDemoFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
-      m_files(files) { m_prefix = prefix; }
-    virtual wxDirTraverseResult OnFile(const wxString& filename)
+    explicit GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
       {
         if(filename.EndsWith(".dem"))
         {
@@ -193,9 +210,17 @@ private:
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
-        return wxDIR_CONTINUE;
+        if((dirname.EndsWith(".git")) ||
+           (dirname.EndsWith("/share/share")) ||
+           (dirname.EndsWith("/src/src")) ||
+           (dirname.EndsWith("/doc/doc")) ||
+           (dirname.EndsWith("/interfaces/interfaces"))
+          )
+          return wxDIR_STOP;
+        else
+          return wxDIR_CONTINUE;
       }
     wxArrayString& GetResult(){return m_files;}
   protected: 
@@ -206,9 +231,9 @@ private:
   class GetDemoFiles : public GetDemoFiles_includingSubdirs
   {
   public:
-    GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+    explicit GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";

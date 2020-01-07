@@ -47,10 +47,10 @@ public:
   //! A constructor that doesn't take any arguments
   Notification();
   //! A constructor that completely prepares the notification, but doesn't call Show() yet.
-  Notification(const wxString &title,
-               const wxString &message=wxEmptyString,
-               wxWindow *parent=NULL,
-               int flags=wxICON_INFORMATION);
+  explicit Notification(const wxString &title,
+                        const wxString &message=wxEmptyString,
+                        wxWindow *parent=NULL,
+                        int flags=wxICON_INFORMATION);
   //! Makes the notification appear.
   virtual bool Show(int duration = Timeout_Auto);
   //! Informs the notification which the main window is it notified for.

@@ -35,6 +35,8 @@ The header file for the xml cell parser
 
 #include "Cell.h"
 #include "TextCell.h"
+#include "EditorCell.h"
+#include "FracCell.h"
 
 /*! This class handles parsing the xml representation of a cell tree.
 
@@ -45,7 +47,10 @@ class MathParser
 {
 public:
   MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
-
+  //! This class doesn't have a copy constructor
+  MathParser(const MathParser&) = delete;
+  //! This class doesn't have a = operator
+  MathParser& operator=(const MathParser&) = delete;
   ~MathParser();
 
   void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
@@ -54,7 +59,7 @@ public:
   Cell *ParseTag(wxXmlNode *node, bool all = true);
 
 private:
-  void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
+  static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
 
   Cell *HandleNullPointer(Cell *cell);
 
@@ -135,7 +140,7 @@ private:
   Cell::CellPointers *m_cellPointers;
   Configuration **m_configuration;
   bool m_highlight;
-  wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>
+  std::unique_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
 };
 
 #endif // MATHPARSER_H

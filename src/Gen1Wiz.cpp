@@ -24,18 +24,18 @@
 #include <wx/persist/toplevel.h>
 
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
-                 const wxString &label1,
-                 const wxString &val1,
+                 const wxString &label,
+                 const wxString &val,
                  const wxString &warning,
                  const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, style)
 {
   SetName(title);
-  label_2 = new wxStaticText(this, -1, label1);
+  label_2 = new wxStaticText(this, -1, label);
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
-  text_ctrl_1 -> SetValue(val1);
+  text_ctrl_1 -> SetValue(val);
   static_line_1 = new wxStaticLine(this, -1);
 
 #if defined __WXMSW__
@@ -76,7 +76,7 @@ void Gen1Wiz::set_properties()
 
 void Gen1Wiz::do_layout()
 {
-  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(5, 1, 0, 0);
   wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);

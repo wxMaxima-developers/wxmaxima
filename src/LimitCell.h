@@ -36,18 +36,21 @@ class LimitCell : public Cell
 {
 public:
   LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  LimitCell(const LimitCell &cell);
+  Cell *Copy() override {return new LimitCell(*this);}
 
   ~LimitCell();
 
-  std::list<Cell *> GetInnerCells();
+  //! This class can be derived from wxAccessible which has no copy constructor
+  LimitCell &operator=(const LimitCell&) = delete;
 
-  Cell *Copy();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
@@ -55,28 +58,28 @@ public:
 
   void SetName(Cell *name);
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  void Unbreak();
-  bool BreakUp();
+  void Unbreak() override;
+  bool BreakUp() override;
 
 protected:
-  Cell *m_name;
-  TextCell *m_open;
-  Cell *m_base;
-  TextCell *m_comma;
-  Cell *m_under;
-  TextCell *m_close;
+  std::shared_ptr<Cell> m_name;
+  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<Cell> m_base;
+  std::shared_ptr<TextCell> m_comma;
+  std::shared_ptr<Cell> m_under;
+  std::shared_ptr<TextCell> m_close;
   Cell *m_name_last;
   Cell *m_base_last;
   Cell *m_under_last;

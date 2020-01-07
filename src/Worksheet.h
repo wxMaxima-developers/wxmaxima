@@ -126,7 +126,7 @@ private:
   class MathMLDataObject : public wxCustomDataObject
   {
   public:
-    MathMLDataObject(wxString data);
+    explicit MathMLDataObject(wxString data);
 
     MathMLDataObject();
 
@@ -138,7 +138,7 @@ private:
   class wxmDataObject : public wxCustomDataObject
   {
   public:
-    wxmDataObject(wxString data);
+    explicit wxmDataObject(wxString data);
 
     wxmDataObject();
 
@@ -149,7 +149,7 @@ private:
   class MathMLDataObject2 : public wxCustomDataObject
   {
   public:
-    MathMLDataObject2(wxString data);
+    explicit MathMLDataObject2(wxString data);
 
     MathMLDataObject2();
 
@@ -164,7 +164,7 @@ private:
   class RtfDataObject : public wxCustomDataObject
   {
   public:
-    RtfDataObject(wxString data);
+    explicit RtfDataObject(wxString data);
 
     RtfDataObject();
 
@@ -175,7 +175,7 @@ private:
   class RtfDataObject2 : public wxCustomDataObject
   {
   public:
-    RtfDataObject2(wxString data);
+    explicit RtfDataObject2(wxString data);
 
     RtfDataObject2();
 
@@ -227,7 +227,6 @@ private:
     TreeUndoAction()
     {
       m_start = NULL;
-      m_oldText = wxEmptyString;
       m_newCellsEnd = NULL;
       m_oldCells = NULL;
       m_partOfAtomicAction = false;
@@ -306,23 +305,23 @@ private:
 
   /*! Undo an item from a list of undo actions.
 
-    \param actionlist The list to take the undo information from
+    \param sourcelist The list to take the undo information from
     \param undoForThisOperation The list to write the information to how on to undo this undo op
   */
-  bool TreeUndo(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
 
   /*! Undo a text change
 
     Called from TreeUndo().*/
-  bool TreeUndoTextChange(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
   /*! Undo a call deletion
 
     Called from TreeUndo().*/
-  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
   /*! Undo adding cells
 
     Called from TreeUndo().*/
-  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
 
   //! Undo a tree operation.
   bool TreeUndo()
@@ -396,7 +395,7 @@ private:
   };
 
   //! Add a line to a file.
-  void AddLineToFile(wxTextFile &output, wxString s, bool unicode = true);
+  void AddLineToFile(wxTextFile &output, wxString s);
 
   //! Copy the currently selected cells
   Cell *CopySelection(bool asData = false);
@@ -407,13 +406,13 @@ private:
     \param end   The cell the copy has to end with
     \param asData
       - true:  The cells are copied in the order they are stored. m_next and m_previous
-               therefore point to the right places. But m_nextToDraw and m_previousToDraw
+               therefore point to the right places. But m_nextToDraw 
                will be treated as aliasses of m_next and m_previous.
       - false: If a cell is broken into individual lines m_nextToDraw won't point to the
                next cell that is to be displayed. It will point to the cell containing the
                function name instead that is followed by the cell containing its contents.
                This is accurately copied if asdata=false. But m_next and m_previous are
-               treated as mere aliasses of m_nextToDraw and m_previousToDraw in this case.
+               treated as mere aliasses of m_nextToDraw in this case.
   */
   Cell *CopySelection(Cell *start, Cell *end, bool asData = false);
 
@@ -456,7 +455,7 @@ private:
 
   void OnMouseLeftDown(wxMouseEvent &event);
 
-  void OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGC);
+  void OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGc);
 
   void OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC);
 
@@ -524,6 +523,12 @@ private:
 
   //! Is called if a action from the autocomplete menu is selected
   void OnComplete(wxCommandEvent &event);
+
+  /*! Is called if wxWidgets wants to erase the worksheet's background
+
+    We don't want to erase the worksheet's background.
+   */
+  void EraseBackground(wxEraseEvent &event);
 
   //! The position the left mouse key was pressed at.
   wxPoint m_leftDownPosition;
@@ -808,16 +813,11 @@ public:
   */
   enum PopIds
   {
-    /*! The "copy" popup menu item was clicked
-
-      This item is the first of the enum and is assigned a high enough number
+    /*!
+      This first item of the enum and is assigned a high enough number
       that it won't collide with the numbers to be found in wxFrame::Event
      */
-            popid_copy = wxID_HIGHEST + 500,
-    popid_cut,
-    popid_paste,
-    popid_select_all,
-    popid_comment_selection,
+    popid_comment_selection = wxID_HIGHEST + 500,
     popid_divide_cell,
     popid_copy_image,
     popid_copy_animation,
@@ -841,10 +841,18 @@ public:
     popid_edit,
     popid_add_comment,
     popid_insert_input,
-	popid_copy_matlab,
+    popid_copy_matlab,
     popid_copy_tex,
     popid_copy_text,
     popid_copy_mathml,
+    popid_labels_disable,
+    popid_labels_user,
+    popid_labels_useronly,
+    popid_labels_autogenerated,
+    popid_digits_20,
+    popid_digits_50,
+    popid_digits_100,
+    popid_digits_all,
     popid_image,
     popid_svg,
     popid_emf,
@@ -862,8 +870,6 @@ public:
     popid_insert_heading6,
     popid_auto_answer,
     popid_popup_gnuplot,
-    menu_zoom_in,
-    menu_zoom_out,
     popid_fold,
     popid_unfold,
     popid_maxsizechooser
@@ -912,7 +918,7 @@ public:
     If maxima isn't currently evaluating and therefore there is no working group
     the line is appended to m_last, instead.
   */
-  void InsertLine(Cell *newLine, bool forceNewLine = false);
+  void InsertLine(Cell *newCell, bool forceNewLine = false);
 
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
@@ -921,7 +927,7 @@ public:
   void Recalculate(Cell *start, bool force = false);
 
   void Recalculate(bool force = false)
-  { Recalculate(m_tree, force); }
+    { Recalculate(GetTree(), force); }
 
   //! Schedule a full recalculation of the worksheet
   void RecalculateForce()
@@ -1095,6 +1101,7 @@ public:
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
 
+    \todo Slow: Iterates through a string using [] instead of using an iterator.
    */
   void
   ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);
@@ -1125,8 +1132,8 @@ public:
    */
   wxString GetString(bool lb = false);
 
-  GroupCell *GetTree()
-  { return m_tree; }
+  GroupCell *GetTree() const
+    { return m_tree; }
 
   /*! Return the first of the currently selected cells.
 
@@ -1281,7 +1288,7 @@ public:
     it is) can be archieved by FollowEvaluation(true) or
     FollowEvaluation(false).
    */
-  void FollowEvaluation(bool FollowEvaluation);
+  void FollowEvaluation(bool followEvaluation);
 
   //! Query if we want to automatically scroll to the cell that is currently evaluated
   bool FollowEvaluation()
@@ -1304,6 +1311,12 @@ public:
 
   void SetSaved(bool saved)
   { m_saved = saved; }
+
+  void OutputChanged()
+    {
+      if(m_currentFile.EndsWith(".wxmx"))
+        m_saved = false;
+    }
 
   void RemoveAllOutput();
 
@@ -1449,7 +1462,7 @@ public:
   { return m_questionPrompt; }
   //!@}
   //! Converts a wxm description into individual cells
-  GroupCell *CreateTreeFromWXMCode(wxArrayString *wxmLines);
+  GroupCell *CreateTreeFromWXMCode(wxArrayString wxmLines);
 
   /*! Does maxima wait for the answer of a question?
 
@@ -1474,6 +1487,33 @@ public:
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane;
 
+  //! Returns the index in (%i...) or (%o...)
+  int GetCellIndex(Cell *cell) const;
+
+  //Simple iterator over a Maxima input string, skipping comments and strings
+  class SimpleMathConfigurationIterator
+  {
+  public:
+    explicit SimpleMathConfigurationIterator(const wxString &ainput);
+    
+    void operator++();
+
+    bool isValid() const
+      { return pos < input.length(); }
+    
+    
+    inline wxChar operator*() const
+      { return input[pos]; }
+
+    unsigned int pos;
+
+    /*! reference to input string (must be a reference, so it can be modified)
+
+      \todo: It is const, so it cannot be modified!?!
+     */
+    const wxString &input;
+  };
+    
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible
   {
@@ -1483,7 +1523,7 @@ public:
     wxAccStatus GetChild (int childId, wxAccessible **child);
     wxAccStatus GetDefaultAction(int childId, wxString *actionName);
     wxAccStatus GetParent (wxAccessible ** parent);
-    wxAccStatus GetFocus (int *childId, wxAccessible **child);
+//    wxAccStatus GetFocus (int *childId, wxAccessible **child);
     wxAccStatus GetLocation (wxRect &rect, int elementId);
     wxAccStatus HitTest 	(const wxPoint &pt,
 	                         int *childId, wxAccessible **childObject);
@@ -1512,7 +1552,6 @@ protected:
   int m_pointer_y;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // WORKSHEET_H

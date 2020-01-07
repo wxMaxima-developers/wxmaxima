@@ -36,7 +36,7 @@ class Svgout
 public:
   /*! The constructor.
   */
-  Svgout(Configuration **configuration, wxString filename = wxEmptyString, double scale = 1.0);
+  explicit Svgout(Configuration **configuration, wxString filename = wxEmptyString, double scale = 1.0);
 
   ~Svgout();
   
@@ -53,14 +53,18 @@ public:
 protected:
   void DestroyTree();
 
+  // cppcheck-suppress functionConst
   void RecalculateWidths();
 
+  // cppcheck-suppress functionConst
   void BreakLines();
 
+  // cppcheck-suppress functionConst
   void RecalculateHeight();
 
   void GetMaxPoint(int *width, int *height);
 
+  // cppcheck-suppress functionConst
   void BreakUpCells();
 
   bool Layout();
@@ -69,9 +73,9 @@ protected:
 
   Cell *m_tree;
 
-  double GetRealHeight();
+  double GetRealHeight() const;
 
-  double GetRealWidth();
+  double GetRealWidth() const;
 
   
   /*! An object that can be filled with SVG data for the clipboard
@@ -79,7 +83,7 @@ protected:
   class SVGDataObject : public wxCustomDataObject
   {
   public:
-    SVGDataObject(wxMemoryBuffer data);
+    explicit SVGDataObject(wxMemoryBuffer data);
 
     SVGDataObject();
 
@@ -89,6 +93,11 @@ protected:
   };
 
 private:
+  //! This class doesn't have a copy constructor
+  Svgout(const Svgout&) = delete;
+  //! This class doesn't have a = operator
+  Svgout& operator=(const Svgout&) = delete;
+
   int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
   //! The name of a temp file we create while calculating the svg size.
   wxString m_tempFileName;

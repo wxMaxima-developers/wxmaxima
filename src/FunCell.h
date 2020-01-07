@@ -32,7 +32,7 @@
 /*! FunCell represents a maxiam function no special visual representation exists for 
 
   Examples of functions with special visual representation would be:
-   - SqurtCell
+   - SqrtCell
    - ExptCell
    - AbsCell
    - ConjugateCell
@@ -53,42 +53,42 @@ class FunCell : public Cell
 {
 public:
   FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
-
+  FunCell(const FunCell &cell);
+  Cell *Copy() override {return new FunCell(*this);}
   ~FunCell();
+  FunCell &operator=(const FunCell&) = delete;
 
-  std::list<Cell *> GetInnerCells();
+  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
 
-  Cell *Copy();
+  void SetName(Cell *name);
 
-  void SetName(Cell *base);
+  void SetArg(Cell *arg);
 
-  void SetArg(Cell *index);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  virtual void Draw(wxPoint point) override;
 
-  virtual void Draw(wxPoint point);
+  wxString ToString() override;
 
-  wxString ToString();
+  wxString ToMatlab() override;
 
-  wxString ToMatlab();
+  wxString ToTeX() override;
 
-  wxString ToTeX();
+  wxString ToMathML() override;
 
-  wxString ToMathML();
+  wxString ToXML() override;
 
-  wxString ToXML();
+  wxString ToOMML() override;
 
-  wxString ToOMML();
+  bool BreakUp() override;
 
-  bool BreakUp();
-
-  void Unbreak();
+  void Unbreak() override;
 
 protected:
-  Cell *m_nameCell;
-  Cell *m_argCell;
+  std::shared_ptr<Cell> m_nameCell;
+  std::shared_ptr<Cell> m_argCell;
 };
 
 
