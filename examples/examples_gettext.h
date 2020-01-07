@@ -2,7 +2,7 @@
 /* This file is part of wxMaxima, but read only by gettext allowing to translate the    */
 /* example files.                                                                       */
 
-/* Copyright (C) 2020 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
+/* Copyright (C) 2019 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -191,7 +191,7 @@ L"\n"
 L"/* Old versions of Maxima abort on loading files that end in a comment. */\n" 
 L"\"Created with wxMaxima 20.01.1-DevelopmentSnapshot\"$\n" 
 L"/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n" 
-L"/* [ Created with wxMaxima version 19.12.4-DevelopmentSnapshot ] */\n" 
+L"/* [ Created with wxMaxima version 20.01.2 ] */\n" 
 L"/* [wxMaxima: title   start ]\n"  + _(
 L"Visualizing 3D curves\n" 
 ) + L"   [wxMaxima: title   end   ] */\n"  
@@ -313,7 +313,7 @@ L"In order to make the 3d shape easier to grasp\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"As can easily be seen of one pops out the above images interactively and moves them the human brain is quite efficient in grasping the complete shape of a moving picture. wxMaxima allows to embed such a thing into the worksheet:\n" 
+L"As can easily be seen if one pops out the above images interactively and moves them the human brain is quite efficient in grasping the complete shape of a moving picture. wxMaxima allows to embed such a thing into the worksheet:\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
@@ -370,7 +370,7 @@ L"\n"
 L"\n" 
 L"\n" 
 L"/* Old versions of Maxima abort on loading files that end in a comment. */\n" 
-L"\"Created with wxMaxima 19.12.4-DevelopmentSnapshot\"$\n" 
+L"\"Created with wxMaxima 20.01.2\"$\n" 
 L"/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n" 
 L"/* [ Created with wxMaxima version 20.01.1 ] */\n" 
 L"/* [wxMaxima: title   start ]\n"  + _(
@@ -429,7 +429,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"Another drawback is that mathematics is based on tha fact that two things that cancel each other out actually do so:\n" 
+L"Another drawback is that mathematics is based on the fact that two things that cancel each other out actually do so:\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
@@ -535,7 +535,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"Many hard-to-find errors can be avoided by using exact numbers. It is therefore wise to use exact numbers wherever possible and only to convert the results to floats using float() or bfloat():\n"
+L"Many hard-to-find errors can be avoided by using exact numbers. It is therefore wise to use exact numbers wherever possible and only to convert the results to floats using float() or bfloat():\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 

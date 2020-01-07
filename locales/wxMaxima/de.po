@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-06 11:46+0100\n"
-"PO-Revision-Date: 2019-12-22 09:39+0100\n"
+"POT-Creation-Date: 2020-01-07 08:25+0100\n"
+"PO-Revision-Date: 2020-01-07 21:28+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -430,6 +430,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:155
 msgid "...and let's plot the result for different L_Cable:\n"
 msgstr ""
+"...lasst uns also das Resultat für unterschiedliche Induktivitäten des "
+"Kabels aufzeichnen:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1881
 msgid "1/2"
@@ -478,7 +480,7 @@ msgid ""
 "resistive load R_Load and is connected to a power supply U_Supply via a "
 "cable of the inductivity L_Cable. In this moment the circuit is destroyed by "
 "an overvoltage. Let's see if we can calculate how high this voltage was.\n"
-msgstr ""
+msgstr "Eine Schaltung besitzt eine Eingangskapazität von C_In=100nF, verhält sich ansonsten wie eine Last des Widerstands R_Load und kann über ein Kabel der Induktivität L_Cable mit einer Spannungsquelle der Spannung U_Supply verbunden werden. Genau in dem Augenblick, in dem das geschieht, geht sie aber kaputt. Es ist daher auszurechnen, was da genau geschehen ist.\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:266
 msgid ""
@@ -526,7 +528,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1108
 msgid "A ridicously advanced example\n"
-msgstr ""
+msgstr "Ein lächerlich fortgeschrittenes Beispiel\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:335
 msgid ""
@@ -545,6 +547,8 @@ msgid ""
 "A simple voltage divider of R_1 and R_2 is powered by a voltage source U_In. "
 "In which range can U_Out lie?\n"
 msgstr ""
+"ein einfacher Spannungsteiler aus R_1 und R_2 wird von der Spannung U_In "
+"versorgt. In welchem Bereich kann seine Ausgangsspannung U_Out liegen?\n"
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.h:449
 msgid "A space between GroupCells"
@@ -700,6 +704,9 @@ msgid ""
 "Additionally have given nearly all equations names that allow to reference "
 "the whenever we need them. For example we can print them out again:\n"
 msgstr ""
+"Zusätzlich haben wir nahezu allen Gleichungen Namen gegeben, über die sie "
+"später wieder angesprochen werden können. Beispielsweise können wir sie "
+"erneut ausgeben lassen:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:689
 msgid ""
@@ -707,11 +714,16 @@ msgid ""
 "using the command lhs() and rhs() which allows to use the part left or right "
 "to to the \"=\" in a new equation:\n"
 msgstr ""
+"Weiterhin kann die Seite linker Hand oder rechter Hand des "
+"Gleichheitszeichens mittels der Kommandos lhs() und rhs() extrahiert "
+"werden:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:120
 msgid ""
 "Additionally we are interested only in the first item in the result list:\n"
 msgstr ""
+"Zudem interessieren wir uns nur für den ersten Eintrag in der Liste der "
+"Resultate:\n"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:307
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:601
@@ -769,7 +781,7 @@ msgstr "Alpha"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:245
 msgid "Alternatively the curve can be made more colorful:\n"
-msgstr ""
+msgstr "Alternativ kann die Kurve bunter gemacht werden:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:741
 msgid "Always"
@@ -789,7 +801,7 @@ msgstr "Eine Animation mit mehreren Einzelbildern"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:43
 msgid "An example\n"
-msgstr ""
+msgstr "Ein Beispiel\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:215
 msgid "An integration constant."
@@ -801,9 +813,9 @@ msgstr "Bildwiederholrate für Animationen:"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:432
 msgid ""
-"Another drawback is that mathematics is based on tha fact that two things "
+"Another drawback is that mathematics is based on the fact that two things "
 "that cancel each other out actually do so:\n"
-msgstr ""
+msgstr "Ein anderer Nachteil ist, dass die Mathematik darauf vertraut, dass zwei Dinge, die einander aufheben, einander exakt aufheben:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:893
 msgid "Antialias lines."
@@ -813,7 +825,7 @@ msgstr "Kantenglättung für Linien."
 msgid ""
 "Any other number can be converted to a floating-point one using the float() "
 "keyword:\n"
-msgstr ""
+msgstr "Jede Zahl kann durch den Befehl float() zu einer Fließkommazahl umgewandelt werden.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1197
 msgid "Append"
@@ -841,7 +853,7 @@ msgstr "Füge ein Element zu einer Liste hinzu"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1041
 msgid "Appending lists of tolerances\n"
-msgstr ""
+msgstr "Aneinanderhängen von Listen mit toleranzbehafteten Bauteilwerten\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6446
 msgid "Apply"
@@ -883,21 +895,21 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:316
 msgid ""
-"As can easily be seen of one pops out the above images interactively and "
+"As can easily be seen if one pops out the above images interactively and "
 "moves them the human brain is quite efficient in grasping the complete shape "
 "of a moving picture. wxMaxima allows to embed such a thing into the "
 "worksheet:\n"
-msgstr ""
+msgstr "Wie einfach zu sehen ist, wenn jemand die obigen Bilder in einem interaktiven Fenster öffnet und bewegt, ist das menschliche Gehirn ziemlich gut darin, sich bewegende Bilder räumlich zu erfassen. wxMaxima erlaubt, solch ein Ding in das Arbeitsplatz einzubetten:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:642
 msgid ""
 "As seen above the last equation displayed by maxima can be referenced by "
 "using the placeholder \"%\":\n"
-msgstr ""
+msgstr "Wie oben gesehen werden kann, kann die letzte von Maxima ausgegebene Gleichung über den Platzhalter \"%\" referenziert werden:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1011
 msgid "As we have guessed the 2nd voltage divider was the better one.\n"
-msgstr ""
+msgstr "Wie zu erwarten war, ist der zweite Spannungsteiler deutlich besser als der Erste.\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:896
 msgid "Ask to save untitled documents"
@@ -1038,7 +1050,7 @@ msgstr "Beta"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:476
 msgid "Bigfloats\n"
-msgstr ""
+msgstr "Bigfloats\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1006
 msgid "Bitmap"
@@ -1054,7 +1066,7 @@ msgstr "Bild"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:709
 msgid "Boiling it down to numbers\n"
-msgstr ""
+msgstr "Errechnen konkreter Zahlen\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1078
 msgid "Bold"
@@ -1068,7 +1080,7 @@ msgstr "Vertikaler und horizontaler Cursor sind gleichzeitig aktiv"
 msgid ""
 "Both solutions solve() offers are valied. We can pick any of them manually, "
 "for example:\n"
-msgstr ""
+msgstr "Beide Antworten, die solve() vorschlägt, sind korrekt. Wir können jede von ihnen auswählen, zum Beispiel:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1672
 msgid "Boxplot..."
@@ -1262,7 +1274,7 @@ msgid ""
 "By choosing [a,b] as the list of solution variables maxima is automatically "
 "told to eliminate these two variables on the right side of the equations, if "
 "possible.\n"
-msgstr ""
+msgstr "Da [a,b] als Variablen, nach denen die Gleichungen aufzulösen sind, angegeben wurden, versucht Maximaxima, diese beiden Variablen, wenn möglich, aus der rechten Seite der Gleichungen zu eliminieren.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1073
 msgid ""
@@ -1270,7 +1282,7 @@ msgid ""
 "tol[n]: The minimum, the maximum and the typical value. If we only want to "
 "test 2 values (the minimum and the maximum) that might speed up lengthy "
 "calculations with many values that contain tolerances:\n"
-msgstr ""
+msgstr "Standardmäßig testet wrstcse alle Kombinationen dreier Werte pro tol[n]: Das Minimum, das Maximum und den typische Wert, Wenn wir, um die Sache zu beschleunigen, nur auf 2 Werte (das Minimum und das Maximum) Wert legen, signalisieren wir das Folgendermaßen:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:51
 msgid ""
@@ -1289,7 +1301,7 @@ msgstr ""
 msgid ""
 "By having given this equation a name (\"sol2\") we gained a way to re-use "
 "this equation later.\n"
-msgstr ""
+msgstr "Da wir dieser Gleichung einen Namen (\"sol2\") gegeben haben, können wir sie später wiederverwenden.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:997
 msgid "C&hange Variable..."
@@ -1416,7 +1428,7 @@ msgstr "Kann maxima nicht dort finden, wo im Konfigurationsdialog angegeben."
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3130
 msgid "Cannot put the copied text on the clipboard"
-msgstr ""
+msgstr "Kann den kopierten Text nicht in der Zwischenablage platzieren"
 
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:86
 #, c-format
@@ -1741,7 +1753,7 @@ msgstr "Höhenlinien"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:262
 msgid "Contour lines\n"
-msgstr ""
+msgstr "Höhenlinien\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2152
 msgid "Contour lines for 3d plots"
@@ -1834,7 +1846,7 @@ msgstr "Konvertiert verschachtelte Listen wie [[1,2],[3,4]] zu einer Matrix"
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3119
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3126
 msgid "Copied text from EditorCell: "
-msgstr ""
+msgstr "Kopierter Text von der Editor-Zelle: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:225
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
@@ -2174,7 +2186,7 @@ msgstr "Ableitung:"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1113
 msgid "Description of the problem\n"
-msgstr ""
+msgstr "Beschreibung des Problems\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1646
 msgid "Deviation..."
@@ -2250,7 +2262,7 @@ msgstr "Zahl angezeigter Stellen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1284
 msgid "Displaying 3d curves"
-msgstr ""
+msgstr "Anzeige dreidimensionaler Kurven"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7325
 msgid "Divide"
@@ -2717,7 +2729,7 @@ msgstr "&Zellen bis hier evaluieren"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:503
 msgid "Exact numbers\n"
-msgstr ""
+msgstr "Exakte Zahlen\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7792
 msgid "Example"
@@ -3049,11 +3061,11 @@ msgstr "Erstes"
 msgid ""
 "First we describe the energy-storing circuit elements. The voltage over the "
 "inductivity of the cable is calculated as follows:\n"
-msgstr ""
+msgstr "Zuerst beschreiben wir die Energiespeicher. Die Spannung über der Induktivität des Kabels kann folgendermaßen beschrieben werden:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:897
 msgid "First we load the tolerance calculation package:\n"
-msgstr ""
+msgstr "Zuerst laden wir das Toleranzberechnungs-Paket:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:899
 #, c-format
@@ -3067,7 +3079,7 @@ msgstr "Schriftart mit fester Breite in Texteingabefeldern"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:382
 msgid "Floating-point numbers\n"
-msgstr ""
+msgstr "Fließkommazahlen\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:833
 msgid "Fold All\tCtrl+Alt+["
@@ -3166,7 +3178,7 @@ msgstr ""
 msgid ""
 "For many problems Maxima's solve() program instantly finds a list of "
 "solutions:\n"
-msgstr ""
+msgstr "Für viele Probleme findet Maxima's solve()-Befehl sofort eine Lösung:\n"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:62
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:61
@@ -3212,11 +3224,11 @@ msgstr "von:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:769
 msgid "Full Screen\tAlt-Enter"
-msgstr ""
+msgstr "Vollbild        Alt-Enter"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:766
 msgid "Full Screen\tF11"
-msgstr ""
+msgstr "Vollbild\tF11"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5895
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6936
@@ -3322,7 +3334,7 @@ msgstr "Erzeuge Listenelemente anhand einer Regel"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1155
 msgid "Generating a list of 100 sets of possible values of \"coords\"\n"
-msgstr ""
+msgstr "Erzeugung einer Liste von 100 Sätzen möglicher werte für \"coords\"\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:164
 msgid "German"
@@ -3579,14 +3591,14 @@ msgid ""
 "If in mathematics two things cancel each other out they do so exactly. The "
 "same isn't true with IEEE floating-point numbers like the ones the computer "
 "uses:\n"
-msgstr ""
+msgstr "Wenn in der Mathematik zwei Sachen einander ausgleichen, dann tun sie das genau. Mit IEEE-Fließkommazahlen, wie sie der Computer intern verwendet, ist dies nicht der Fall:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1046
 msgid ""
 "If it is necessary to append two lists of values with tolerances to each "
 "other without risking a collision of tol[n] that happen to have the same n "
 "in the two lists the following function can be used:\n"
-msgstr ""
+msgstr "Wenn es notwendig ist, zwei Listen toleranzbehafteter Werte aneinanderzuhängen, ohne zu riskieren, dass die tol[n] in beiden, da sie das gleiche n besitzen, miteinander kollidieren, kann die folgende Funktion verwendet werden:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:304
 msgid ""
@@ -3604,7 +3616,7 @@ msgstr "Wenn sie nicht extrem lang sind"
 msgid ""
 "If not the shape, but the absolute heights are important maxima offers "
 "contour lines.\n"
-msgstr ""
+msgstr "Wenn nicht die Form, sondern der Absolutbetrag der Höhe wichtig ist, bietet Maxima Höhenlinien an.\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:534
 msgid "If not very long"
@@ -4538,7 +4550,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:538
 msgid ""
 "Many hard-to-find errors can be avoided by using exact numbers. It is "
-"therefore wise to use exact numbers whereever possible and only to convert "
+"therefore wise to use exact numbers wherever possible and only to convert "
 "the results to floats using float() or bfloat():\n"
 msgstr ""
 
