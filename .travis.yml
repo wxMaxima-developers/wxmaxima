@@ -68,6 +68,8 @@ script:
 - ccache -s
 deploy:
   provider: releases
+  draft: false
+  prerelease: false
   api_key:
     secure: Zoo6p3CTOMf7mUcUuTrTz03U8xSIvhRCGRQlLGzcU3eF7/bNyo7MyXlePSC3bPsi+Fs7BX41eakQV2E2ycBnwRxMapOAxMv9yhk+nnlGSrS5tagNP1ljcqT30JJrEyDGBVP3S1FqiqMyzESiZLvaYmMzbFyisaiF4Cn6O+XxyU2xRz3EEX6sdhnkd9txU0rwjw/TUksG2xrtJdiOaCKXjjTVbJx1R4pAu2BWIfnFVrliwNNIDVby2riBeqO0QSt5NxU5OuWFXYX9Q6RlxlRmAr6njCVi7GA4uG/c5x7WNKjPiOXFpy2LyvRMlTY2hEL0KVeCqYUArvMkLM3ELyoniQvv+QJk+MnAcvdF+04ioIO9/rhYTtU5bjmZI1uAnzPsXGZJXgIRdxmDcGnFZJbmwlolp/kZtBKR9pwqPOYT2Xymg7QkJwy9R4MaCv2/6EZ/zHxi3qRxiKH+zhT8Ymdsn0UUe96pGw6oiOOdQPvxcOPCVmmJyxjVr9OkvBYjd5yRGZHdfXAs5ZfJGdotVq6OWq906ISQkOdAB2CDSklmGjXEf3d1RSxiueSC2rQa0h+/6kDzyRyHKFX+dtdLlHqKdvjRWXVmDMXrZ+qj6oZTykfa5s8BzcykmsLnVS1txw8at4P3/BsFshUAuMPmBg3cs7dLpwezEN+Yu+4dxkImYX4=
   file: build/*.dmg
