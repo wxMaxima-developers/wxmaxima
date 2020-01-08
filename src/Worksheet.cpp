@@ -8262,7 +8262,8 @@ void Worksheet::ScrollToCaret()
         point.y = GetActiveCell()->GetGroup()->GetCurrentY();
       }
       else
-        ShowPoint(point);
+        if(point.y > 0)
+          ShowPoint(point);
     }
   }
 }

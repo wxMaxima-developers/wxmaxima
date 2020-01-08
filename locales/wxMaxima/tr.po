@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-07 08:25+0100\n"
+"POT-Creation-Date: 2020-01-08 08:24+0100\n"
 "PO-Revision-Date: 2019-07-04 14:57+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -523,7 +523,7 @@ msgstr ""
 "olarakistiyorsanız, draw yada plot komutlarının önüne \"wx\" koyarak; "
 "\"wxdraw\", \"wxplot\" şeklinde yazmalısınız."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1108
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1109
 msgid "A ridicously advanced example\n"
 msgstr ""
 
@@ -539,7 +539,7 @@ msgstr ""
 msgid "A section heading"
 msgstr "Bir Kısım başlığı"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:866
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:867
 msgid ""
 "A simple voltage divider of R_1 and R_2 is powered by a voltage source U_In. "
 "In which range can U_Out lie?\n"
@@ -831,7 +831,7 @@ msgstr "Bir öge ekle"
 msgid "Append an element to an existing list"
 msgstr "Var olan bir lsiteye bir öge ekle"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1041
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1042
 msgid "Appending lists of tolerances\n"
 msgstr ""
 
@@ -887,7 +887,7 @@ msgid ""
 "using the placeholder \"%\":\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1011
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1012
 msgid "As we have guessed the 2nd voltage divider was the better one.\n"
 msgstr ""
 
@@ -1240,7 +1240,7 @@ msgid ""
 "possible.\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1073
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1074
 msgid ""
 "By default the wrstcse package tests all combinations of 3 values per "
 "tol[n]: The minimum, the maximum and the typical value. If we only want to "
@@ -2138,7 +2138,7 @@ msgstr "Derinlik:"
 msgid "Derivative:"
 msgstr "Türev:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1113
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1114
 msgid "Description of the problem\n"
 msgstr ""
 
@@ -3014,7 +3014,7 @@ msgid ""
 "inductivity of the cable is calculated as follows:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:897
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:898
 msgid "First we load the tolerance calculation package:\n"
 msgstr ""
 
@@ -3277,7 +3277,7 @@ msgstr ""
 msgid "Generate list elements using a rule"
 msgstr "Bir kural kullanarak liste öğeleri üret"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1155
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1156
 msgid "Generating a list of 100 sets of possible values of \"coords\"\n"
 msgstr ""
 
@@ -3534,7 +3534,7 @@ msgid ""
 "uses:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1046
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1047
 msgid ""
 "If it is necessary to append two lists of values with tolerances to each "
 "other without risking a collision of tol[n] that happen to have the same n "
@@ -3606,18 +3606,21 @@ msgid ""
 "determines the range of the output depending on the ranges of the input "
 "parameters. Unfortunately doing so is so complex that any interval "
 "arithmetics is bound to work only in more or less trivial cases.\n"
+" * Calculating the derivation of the result over the tolerance of each "
+"parameter hoping these derivations point to a global maximum, not only to a "
+"local one.\n"
 " * A montecarlo analysis: All parameters are filled with random values out "
 "of their tolerance range. Then the calculation is repeated until the spread "
 "of the outcome can be seen.\n"
-" * And systematically trying out all combinations at the edges of the "
-"tolerance space. \n"
+" * Or systematically trying out all combinations at the edges of the n-"
+"dimensional tolerance space. \n"
 "The last two of these methods are described here.\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1098
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1099
 msgid ""
-"If this calculation is repeated it will naturally result in a different set "
-"of numers:\n"
+"If this calculation is repeated it will naturally result in slightly "
+"different numeric values:\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:316
@@ -3662,7 +3665,7 @@ msgid ""
 "defines the general shape of all possible loading curves:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:955
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:956
 msgid "If we just want to know the typical value we can do the following:\n"
 msgstr ""
 
@@ -3867,7 +3870,7 @@ msgstr "Başlangıç Değer Problemi (&2)"
 msgid "Input labels"
 msgstr "Girdi Etiketleri"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:892
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:893
 msgid "Input values that include a tolerance\n"
 msgstr ""
 
@@ -4165,7 +4168,7 @@ msgstr "İlk hataya git"
 msgid "Jump to the first cell maxima has reported an error in."
 msgstr "Maxima'nın hata bildirdiği ilk satıra git."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:945
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:946
 msgid ""
 "Just substituting the values into the equations provides us with the "
 "equation containing the real values and the tolerances in wrstcse's "
@@ -4258,7 +4261,7 @@ msgstr "Sol taraf \"=\""
 msgid "Length"
 msgstr "Uzunluk"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:912
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:913
 #, c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
@@ -4537,7 +4540,7 @@ msgstr "MathML tanımı"
 msgid "Mathematical Symbols"
 msgstr "Matematik Sembolleri"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:871
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:872
 msgid "Mathematical description\n"
 msgstr ""
 
@@ -4989,7 +4992,7 @@ msgstr "Eşleşmeyen parantezler"
 msgid "Modulus"
 msgstr "Modül"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1083
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1084
 msgid "Monte carlo analysis\n"
 msgstr ""
 
@@ -5237,7 +5240,7 @@ msgstr "% i dilini ayarlamıyor"
 msgid "Now we have enough information to calculate the input voltage itself:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1021
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1022
 msgid ""
 "Now we want to tell maxima that the voltage source provides a voltage "
 "between 4V and 6V, typically 4.5V. For doing this a specialized function "
@@ -5672,7 +5675,7 @@ msgstr "Grafiği Bir Dosyaya çiz:"
 msgid "Plot using Draw"
 msgstr "Draw  kullanarak grafik çiz"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1165
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1166
 msgid "Plotting these lists\n"
 msgstr ""
 
@@ -5777,7 +5780,7 @@ msgstr "Belgeyi Yazdır"
 msgid "Print floating-point numbers with exponents dividable by 2"
 msgstr "Üstler 2 ile bölünebilir şekilde kayan nokta sayıları yazdır"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:940
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:941
 msgid "Print out the results\n"
 msgstr ""
 
@@ -6072,7 +6075,7 @@ msgstr "&Polinomun Kökleri"
 msgid "Roots of Polynomial (bfloat)"
 msgstr "Polinomun Kökleri (büyKaySayı)"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1123
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1124
 msgid "Round holes can be described as follows:\n"
 msgstr ""
 
@@ -6750,8 +6753,8 @@ msgstr "Trigonometrik İfadeyi Sadeleştir"
 msgid ""
 "Since it often is the general case that allows to learn about the "
 "fundamental mechanisms often a good approach is to solve everything "
-"numerically and to keep the actual numerical input values in a separate list "
-"like the following one:\n"
+"symbolically and to keep the actual numerical input values in a separate "
+"list like the following one:\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:117
@@ -6768,7 +6771,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:228
 msgid ""
-"Slower, but easier to understand the curve is if the surfacte isn't "
+"Slower to draw, but easier to understand the curve is if the surface isn't "
 "transparent:\n"
 msgstr ""
 
@@ -6906,7 +6909,7 @@ msgid ""
 "example would be:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1118
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1119
 msgid ""
 "Someone constructs a magic drill that is guaranteed to generate holes that "
 "exactly meet 3 points. But that points unfortunately all have tolerances. We "
@@ -6955,7 +6958,7 @@ msgstr "Özel"
 msgid "Special constants"
 msgstr "Özel Sabitler"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1016
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1017
 msgid "Specifying complex tolerances\n"
 msgstr ""
 
@@ -7251,7 +7254,7 @@ msgstr ""
 msgid "The color of the next line to draw"
 msgstr "Çizilecek bir sonraki çizginin rengi"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1141
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1142
 msgid "The coordinates of the points the wholes go through\n"
 msgstr ""
 
@@ -7424,7 +7427,7 @@ msgstr ""
 "tarafından sıkıştırılabilir. Her zaman olduğu gibi, maxima komutlarının \";"
 "\" veya bir \"$\" ile bitmesi gerekir."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:861
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:862
 msgid "The problem\n"
 msgstr ""
 
@@ -7485,7 +7488,7 @@ msgstr ""
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr "Standart çizim komutu: Bir denklemi eğri olarak çizme"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:907
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:908
 msgid ""
 "The tolerance calculation package lets tol[n] tolerate between -1 and 1. "
 "tol[n] with the same n are coupled tolerances that share the same value. In "
@@ -7516,7 +7519,7 @@ msgstr ""
 msgid "The variable the value of the current source item is stored in."
 msgstr "Geçerli kaynak öğesinin değeri değişkeninde saklanır."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8984
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8986
 msgid "The worksheet containing maxima's input and output"
 msgstr "Maxima'nın giriş ve çıkışını içeren çalışma sayfası"
 
@@ -7530,7 +7533,7 @@ msgstr ""
 "Bu sorunu nasıl üreteceğinizin bir yolunu bulursanız lütfen wxMaxima'ya "
 "karşı bir hata raporu hazırlayın."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:981
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:982
 msgid ""
 "Then we ask wrstcse to print out the tolerances of the right hand side of "
 "our equation \"uout\":\n"
@@ -7556,7 +7559,7 @@ msgstr ""
 "\n"
 "Lütfen bunu hata olarak bildirin."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:882
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:883
 msgid ""
 "These equations are simple enough that there is no need to use solve() to "
 "introduce them into each other:\n"
@@ -7614,7 +7617,7 @@ msgstr ""
 "ayarlanmışsa, verilere gerçekten en uygun olan bir denkleme veri sığdırma "
 "girişiminde bulunduğunu gösterebilir."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:991
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:992
 msgid ""
 "This result is still - well, hard to interpret, because Maxima didn't know "
 "the value of U_In which is necessary to decide which of all the terms is the "
@@ -7629,7 +7632,7 @@ msgid ""
 "answers to maxima's assume database:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1088
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1089
 msgid ""
 "This time we want the tolerance package to use 1000 random sets of values "
 "and to find the best and worst case that can be reached using these values:\n"
@@ -7836,7 +7839,7 @@ msgstr ""
 msgid "Two sample t-test"
 msgstr "İki Örnek t-testi"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8856
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8858
 msgid "Type"
 msgstr "Tip"
 
@@ -8061,7 +8064,7 @@ msgstr "Kullanıcı tanımlı etiketler"
 msgid "User-defined labels if available"
 msgstr "Eğer mümkünse kullanıcı tanımlı etiketler"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1068
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1069
 msgid "Using a bigger or lower number of samples\n"
 msgstr ""
 
@@ -8179,7 +8182,7 @@ msgstr ""
 msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:926
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:927
 #, c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
@@ -8191,7 +8194,7 @@ msgstr ""
 msgid "We can use them as an input to solve:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:970
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:971
 msgid ""
 "We now want to test all combinations of minimum, typical or maximum value, "
 "instead.\n"
@@ -8870,7 +8873,7 @@ msgstr "fonksiyon argümanları olarak kullan"
 msgid "use the actual values stored"
 msgstr "depolanan gerçek değerleri kullanın"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1063
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1064
 msgid ""
 "wc_tolappend() appends values with tolerances and renumbers the tol[n]\n"
 msgstr ""

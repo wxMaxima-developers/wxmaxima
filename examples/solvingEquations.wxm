@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.01.1 ] */
+/* [ Created with wxMaxima version 20.01.2-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Solving equations
    [wxMaxima: title   end   ] */
@@ -184,7 +184,7 @@ solve(x+.1=2,x);
 
 
 /* [wxMaxima: comment start ]
-Since it often is the general case that allows to learn about the fundamental mechanisms often a good approach is to solve everything numerically and to keep the actual numerical input values in a separate list like the following one:
+Since it often is the general case that allows to learn about the fundamental mechanisms often a good approach is to solve everything symbolically and to keep the actual numerical input values in a separate list like the following one:
    [wxMaxima: comment end   ] */
 
 
@@ -290,4 +290,4 @@ find_root(eq2,x,-.001,1);
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.01.1"$
+"Created with wxMaxima 20.01.2-DevelopmentSnapshot"$
