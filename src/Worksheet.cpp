@@ -8250,9 +8250,10 @@ void Worksheet::ScrollToCaret()
     if (GetActiveCell())
     {
       wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
-      if (point.y == -1)
+      if ((point.x < 0) || (point.y < 0))
       {
         RecalculateForce();
+        RecalculateIfNeeded();
         point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       }
       if (QuestionPending())
