@@ -59,11 +59,8 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 bool MyApp::OnInit()
 {
   Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxMaximaFrame::menu_help_solving, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxMaximaFrame::menu_help_diffequations, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxMaximaFrame::menu_help_tolerances, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxMaximaFrame::menu_help_3d, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxMaximaFrame::menu_help_numberformats, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  Connect(wxMaximaFrame::menu_help_tutorials_start, wxMaximaFrame::menu_help_tutorials_end,
+          wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
     
   #if wxUSE_ON_FATAL_EXCEPTION
   wxHandleFatalExceptions(true);

@@ -468,11 +468,13 @@ public:
     menu_format_image,
     menu_format_pagebreak,
     menu_help_tutorials,
+    menu_help_tutorials_start, //! Start of bundled tutorials
     menu_help_solving,
     menu_help_diffequations,
     menu_help_numberformats,
     menu_help_tolerances,
     menu_help_3d,
+    menu_help_tutorials_end, //! End of bundled tutorials
     menu_show_toolbar,
     menu_history_previous,
     menu_history_next,
