@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-08 08:24+0100\n"
-"PO-Revision-Date: 2020-01-08 22:39+0100\n"
+"PO-Revision-Date: 2020-01-09 06:42+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -8469,6 +8469,8 @@ msgid ""
 "First we tell maxima not to print a warning if a float is replaced by a "
 "fraction of the same value:\n"
 msgstr ""
+"Nun wollen wir Maxima stattdessen alle Kombinationen von minimalen, typischen und maximalen Werten durchtesten lassen.\n"
+"Zuerst schalten wir die Warnung aus, die ausgegeben wird, wenn eine Fließkommazahl durch eine exakte Zahl ersetzt wird.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4118
 msgid "Welcome to wxMaxima"
@@ -8476,7 +8478,7 @@ msgstr "Willkommen bei wxMaxima"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:766
 msgid "What if there exists no symbolical solution?\n"
-msgstr ""
+msgstr "Was, wenn es keine symbolische Lösung gibt?\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7007
 msgid "What to do:"
@@ -8497,7 +8499,7 @@ msgstr ""
 msgid ""
 "Whenever a numerical value is needed this list can be introduced into any "
 "equation:\n"
-msgstr ""
+msgstr "Wann immer ein numerischer Wert benötigt wird, kann dieser in beliebige Gleichungen eingesetzt werden:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4775
 msgid ""
@@ -8798,13 +8800,13 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:827
 msgid "find_root\n"
-msgstr ""
+msgstr "find_root\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:832
 msgid ""
 "find_root even works if the equation isn't differentiable and searches for a "
 "solution in between two points.\n"
-msgstr ""
+msgstr "find_root funktioniert auch dann, wenn die Gleichung nicht differenzierbar ist und sucht eine Lösung zwischen zwei Punkten.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1145
 msgid "from a list"
@@ -8892,14 +8894,14 @@ msgstr "Matrix"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:807
 msgid "mnewton\n"
-msgstr ""
+msgstr "mnewton\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:812
 msgid ""
 "mnewton uses a modified version of newton's method for finding a solution of "
 "a nonlinear, but differentiable, stetical and monotonic function near to a "
 "point (in this example 0.1)\n"
-msgstr ""
+msgstr "mnewton verwendet eine modifizierte Variante von newton's Methode, die in nichtlinearen, differenzierbaren, monotonen und stetigen Funktionen eine Lösung nahe eines angegebenen Punktes sucht (in diesem Falle nahe der 0.1)\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1797
 msgid "mu"
@@ -9035,7 +9037,7 @@ msgstr "sigma"
 msgid ""
 "solve() which tries to find an symbolical solution is bound to fail here and "
 "tells us how far it got:\n"
-msgstr ""
+msgstr "solve(), das eine Gleichung sucht, die das Problem exakt löst, ist hier zum Scheitern verurteilt und kann uns nur noch sagen, wie weit es mit seiner Aufgabe kam:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6026
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8422
@@ -9147,7 +9149,7 @@ msgstr "verwende die konkreten in der Liste gespeicherten Variablenwerte"
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1064
 msgid ""
 "wc_tolappend() appends values with tolerances and renumbers the tol[n]\n"
-msgstr ""
+msgstr "wc_tolappend() hängt Listen von Variablenwerten mit Toleranzen aneinander und nummeriert die tol[n] neu\n"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:362
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7719
