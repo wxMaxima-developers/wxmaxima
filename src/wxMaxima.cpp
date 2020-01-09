@@ -7781,6 +7781,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Yinhe Zhang"));
       info.AddDeveloper(wxT("Yuri Chornoivan"));
       info.AddDeveloper(wxT("zufus <zufus@users.sourceforge.net>"));      
+      info.AddDeveloper(wxT("The team behind nanoSVG"));
       info.AddTranslator(wxT("Innocent De Marchi (ca)"));
       info.AddTranslator(wxT("Josef Barak (cs)"));
       info.AddTranslator(wxT("Robert Marik (cs)"));
@@ -7808,8 +7809,8 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
 
       info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
-      info.AddArtist(wxT("Toolbar and config icons: The TANGO Project"));
-      info.AddArtist(wxT("svg version of the icon: Gunter Königsmann"));
+      info.AddArtist(wxT("SVG version of the icon: Gunter Königsmann"));
+      info.AddArtist(wxT("Other icons: The TANGO Project"));
 
       wxAboutBox(info);
     }
