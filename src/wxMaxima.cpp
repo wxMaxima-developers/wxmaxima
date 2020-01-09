@@ -7789,6 +7789,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddTranslator(wxT("Harald Geyer (de)"));
       info.AddTranslator(wxT("Dieter Kaiser (de)"));
       info.AddTranslator(wxT("Gunter Königsmann (de)"));
+      info.AddTranslator(wxT("Wolfgang Dautermann (de)"));
       info.AddTranslator(wxT("Alkis Akritas (el)"));
       info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (el)"));
       info.AddTranslator(wxT("Kostantinos Derekas (el)"));
