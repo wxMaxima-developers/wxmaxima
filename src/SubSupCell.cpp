@@ -273,7 +273,7 @@ wxString SubSupCell::ToString()
   else
   {
     std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
-    while(!innerCells .empty())
+    while(!innerCells.empty())
     {
       s += "[" + innerCells.front()->ListToString() + "]";
       innerCells.pop_front();
@@ -289,13 +289,33 @@ wxString SubSupCell::ToMatlab()
 	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
   else
 	s += m_baseCell->ListToMatlab();
-  s += wxT("[") + m_postSubCell->ListToMatlab() + wxT("]");
-  s += wxT("^");
-  if (m_postSupCell->IsCompound())
-	s += wxT("(");
-  s += m_postSupCell->ListToMatlab();
-  if (m_postSupCell->IsCompound())
-	s += wxT(")");
+  if(m_innerCellList.empty())
+  {
+    s += wxT("[") + m_postSubCell->ListToMatlab() + wxT("]");
+    s += wxT("^");
+    if (m_postSupCell->IsCompound())
+      s += wxT("(");
+    s += m_postSupCell->ListToMatlab();
+    if (m_postSupCell->IsCompound())
+      s += wxT(")");
+  }
+  else
+  {
+    std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
+
+    s += "[";
+    bool first = false;
+    
+    while(!innerCells.empty())
+    {
+      if(!first)
+        s += ";";
+      first = true;
+      s += innerCells.front()->ListToMatlab();
+      innerCells.pop_front();
+    }
+    s += "]";
+  }
   return s;
 }
 
@@ -333,19 +353,19 @@ wxString SubSupCell::ToTeX()
   }
   else
   {
-    if(m_presupcell || m_presubcell)
+    if(m_preSupCell || m_preSubCell)
     {
       s = "{}";
-      if(m_presupcell)
-        s += "^{" + m_presupcell->ListToTeX() + "}";
-      if(m_presubcell)
-        s += "^{" + m_presubcell->ListToTeX() + "}";
+      if(m_preSupCell)
+        s += "^{" + m_preSupCell->ListToTeX() + "}";
+      if(m_preSubCell)
+        s += "^{" + m_preSubCell->ListToTeX() + "}";
     }
-    s = wxT("{") + m_baseCell->ListToTeX() + "}";
-    if(m_postsupcell)
-      s += "^{" + m_postsupcell->ListToTeX() + "}";
-    if(m_postsubcell)
-      s += "^{" + m_postsubcell->ListToTeX() + "}";
+    s += wxT("{") + m_baseCell->ListToTeX() + "}";
+    if(m_postSupCell)
+      s += "^{" + m_postSupCell->ListToTeX() + "}";
+    if(m_postSubCell)
+      s += "^{" + m_postSubCell->ListToTeX() + "}";
   }
   return s;
 }
