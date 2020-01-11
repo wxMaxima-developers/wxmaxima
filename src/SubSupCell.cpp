@@ -199,7 +199,6 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSubCell)
     {
       wxPoint presub = point;
-      presub.x -= m_preSubCell->GetFullWidth();
       presub.y += m_baseCell->GetMaxDrop() +
         m_preSubCell->GetCenterList() -
         Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
@@ -209,13 +208,13 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSupCell)
     {
       wxPoint presup = point;
-      presup.x -= m_preSupCell->GetFullWidth();
       presup.y -= m_baseCell->GetCenterList() - m_preSupCell->GetHeightList()
         + m_preSupCell->GetCenterList() +
         Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);;
       m_preSupCell->DrawList(presup);
     }
-    
+
+    point.x += preWidth;
     m_baseCell->DrawList(point);
 
     if(m_postSubCell)
