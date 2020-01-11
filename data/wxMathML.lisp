@@ -770,9 +770,9 @@
 
   (defun wxxml-mquotient (x l r)
     (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
-    (setq l (wxxml (cadr x) (append l '("<f><mrow>")) nil 'mparen 'mparen)
+    (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
 	  r (wxxml (caddr x) (list "</mrow><mrow>")
-		   (append '("</mrow></f>")r) 'mparen 'mparen))
+		   (append '("</mrow></mfrac>")r) 'mparen 'mparen))
     (append l r))
 
   (defprop $matrix wxxml-matrix-test wxxml)
@@ -914,11 +914,11 @@
 
   (defun wxxml-choose (x l r)
     `(,@l
-      "<p print=\"no\"><f line=\"no\"><mrow>"
+      "<p print=\"no\"><mfrac line=\"no\"><mrow>"
       ,@(wxxml (cadr x) nil nil 'mparen 'mparen)
       "</mrow><mrow>"
       ,@(wxxml (caddr x) nil nil 'mparen 'mparen)
-      "</mrow></f></p>"
+      "</mrow></mfrac></p>"
       ,@r))
 
 
@@ -1212,7 +1212,7 @@
     (let ((*print-circle* nil)
 	  (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
       (mapc #'princ
-	    (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen)))
+	    (wxxml x '("<math>") '("</math>") 'mparen 'mparen)))
     #+clisp (finish-output)
     )
 
@@ -2080,7 +2080,7 @@
       (declare (special $x))
       (progn
 	#+clisp (finish-output)
-	(simplify (mfunction-call $printf t '"<mth><slide"))
+	(simplify (mfunction-call $printf t '"<math><slide"))
 	(cond
 	 ((is-boole-check (trd-msymeval $wxanimate_autoplay '$wxanimate_autoplay))
 	  (simplify (mfunction-call $printf t '" running=\"false\""))))
@@ -2101,7 +2101,7 @@
 	    (declare (special $i))
 	    (setq $i (car mdo))
 	    (simplify (mfunction-call $printf t '"~a;" $i)))
-	(simplify (mfunction-call $printf t '"</slide></mth>"))
+	(simplify (mfunction-call $printf t '"</slide></math>"))
 	#+clisp (finish-output)
 	)
       ))
