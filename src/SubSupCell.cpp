@@ -212,6 +212,7 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSubCell)
     {
       wxPoint presub = point;
+      presub.x += preWidth - m_preSubCell->GetFullWidth();
       presub.y += m_baseCell->GetMaxDrop() +
         m_preSubCell->GetCenterList() -
         Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
@@ -221,6 +222,7 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSupCell)
     {
       wxPoint presup = point;
+      presup.x += preWidth - m_preSupCell->GetFullWidth();
       presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList()
         - m_preSupCell->GetCenterList() -
         Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
@@ -368,13 +370,29 @@ wxString SubSupCell::ToXML()
     flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
 
   wxString retval;
-  retval = _T("<ie") + flags +wxT("><r>") + m_baseCell->ListToXML()
-    + _T("</r><r>");
-  if(m_postSubCell)
-    retval += m_postSubCell->ListToXML();
-  retval += _T("</r><r>");
-  if(m_postSupCell)
-    retval += m_postSupCell->ListToXML();
-  retval += _T("</r></ie>");
+  if(m_innerCellList.empty())
+  {
+    retval = "<ie" + flags + "><r>" + m_baseCell->ListToXML()
+      + "</r><r>";
+    if(m_postSubCell)
+      retval += m_postSubCell->ListToXML();
+    retval += "</r><r>";
+    if(m_postSupCell)
+      retval += m_postSupCell->ListToXML();
+    retval += "</r></ie>";
+  }
+  else
+  {
+    retval = "<ie" + flags + ">";
+    if(m_preSupCell)
+      retval += "<r pos=\"presup\">" + m_preSupCell->ListToXML() + "</r>";
+    if(m_preSubCell)
+      retval += "<r pos=\"presub\">" + m_preSubCell->ListToXML() + "</r>";
+    if(m_postSupCell)
+      retval += "<r pos=\"postsup\">" + m_postSupCell->ListToXML() + "</r>";
+    if(m_postSubCell)
+      retval += "<r pos=\"postsub\">" + m_postSubCell->ListToXML() + "</r>";
+    retval += "</ie>";
+  }
   return retval;
 }
