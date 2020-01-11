@@ -23,6 +23,7 @@
 #ifndef SUBSUPCELL_H
 #define SUBSUPCELL_H
 
+#include <memory>
 #include "Cell.h"
 
 class SubSupCell : public Cell
@@ -49,9 +50,9 @@ public:
 
   void SetPreSup(Cell *index);
 
-  void SetPostSub(Cell *index){SetIndex(index);}
+  void SetPostSub(Cell *index);
 
-  void SetPostSup(Cell *expt){SetExponent(expt);}
+  void SetPostSup(Cell *index);
   
   void RecalculateHeight(int fontsize) override;
 
@@ -77,7 +78,7 @@ protected:
   std::shared_ptr<Cell> m_postSubCell;
   std::shared_ptr<Cell> m_preSupCell;
   std::shared_ptr<Cell> m_preSubCell;
-  std::list<Cell *> m_innerCellList;
+  std::list<std::shared_ptr<Cell>> m_innerCellList;
 };
 
 #endif // SUBSUPCELL_H

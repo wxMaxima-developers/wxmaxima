@@ -29,7 +29,6 @@
 
 #include "SubSupCell.h"
 #include <wx/config.h>
-#include "wx/config.h"
 
 #define SUBSUP_DEC 3
 
@@ -79,7 +78,7 @@ void SubSupCell::SetPreSup(Cell *index)
   if (index == NULL)
     return;
   m_preSupCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
+  m_innerCellList.push_back(m_preSupCell);
 }
 
 void SubSupCell::SetPreSub(Cell *index)
@@ -87,7 +86,23 @@ void SubSupCell::SetPreSub(Cell *index)
   if (index == NULL)
     return;
   m_preSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
+  m_innerCellList.push_back(m_preSubCell);
+}
+
+void SubSupCell::SetPostSup(Cell *index)
+{
+  if (index == NULL)
+    return;
+  m_postSupCell = std::shared_ptr<Cell>(index);
+  m_innerCellList.push_back(m_postSupCell);
+}
+
+void SubSupCell::SetPostSub(Cell *index)
+{
+  if (index == NULL)
+    return;
+  m_postSubCell = std::shared_ptr<Cell>(index);
+  m_innerCellList.push_back(m_postSubCell);
 }
 
 void SubSupCell::SetIndex(Cell *index)
@@ -206,9 +221,9 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSupCell)
     {
       wxPoint presup = point;
-      presup.y -= m_baseCell->GetCenterList() - m_preSupCell->GetHeightList()
-        + m_preSupCell->GetCenterList() +
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);;
+      presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList()
+        - m_preSupCell->GetCenterList() -
+        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
       m_preSupCell->DrawList(presup);
     }
 
@@ -255,7 +270,7 @@ wxString SubSupCell::ToString()
   }
   else
   {
-    std::list<Cell *> innerCells = m_innerCellList;
+    std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
     while(!innerCells .empty())
     {
       s += "[" + innerCells.front()->ListToString() + "]";

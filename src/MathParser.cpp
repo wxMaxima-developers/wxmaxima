@@ -439,8 +439,7 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
   child = GetNextTag(child);
   while(child != NULL)
   {
-    std::cerr<<"Child="<<child<<"\n";
-    if(child->GetName() == "mmultiscripts")
+    if(child->GetName() == "mprescripts")
     {
       pre = true;
       subscript = true;
@@ -456,13 +455,14 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
     }
     
     if(pre && subscript)
-      subsup->SetPreSub(HandleNullPointer(ParseTag(child)));
+      subsup->SetPreSub(ParseTag(child));
     if(pre && (!subscript))
-      subsup->SetPreSup(HandleNullPointer(ParseTag(child)));
+      subsup->SetPreSup(ParseTag(child));
     if((!pre) && subscript)
-      subsup->SetPostSup(HandleNullPointer(ParseTag(child)));
+      subsup->SetPostSub(ParseTag(child));
     if((!pre) && (!subscript))
-      subsup->SetPostSub(HandleNullPointer(ParseTag(child)));
+      subsup->SetPostSup(ParseTag(child));
+    subscript = !subscript;
     child = GetNextTag(child);
   }
   return subsup;
