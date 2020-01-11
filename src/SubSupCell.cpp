@@ -147,27 +147,31 @@ void SubSupCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
-  if(m_postSubCell)
-    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_postSupCell)
-    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSubCell)
-    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSupCell)
-    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int subHeight = 0;
   if(m_preSubCell)
+  {
+    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     subHeight = m_preSubCell->GetHeightList();
+  }
   if(m_postSubCell)
+  {
+    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     subHeight = wxMax(subHeight, m_postSubCell->GetHeightList());
-
+  }
+  
   int supHeight = 0;
   if(m_preSupCell)
+  {
+    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     supHeight = m_preSupCell->GetHeightList();
+  }
   if(m_postSupCell)
+  {
+    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     supHeight = wxMax(supHeight, m_postSupCell->GetHeightList());
-
+  }
+  
   m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
              2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
 
