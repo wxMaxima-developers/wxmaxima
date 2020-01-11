@@ -309,24 +309,43 @@ wxString SubSupCell::ToTeX()
 
   wxString s;
 
-  if (TeXExponentsAfterSubscript)
+  if(m_innerCellList.empty())
   {
-    s = wxT("{{{") + m_baseCell->ListToTeX() + "}";
-    if(m_postSubCell)
-      s += "_{" + m_postSubCell->ListToTeX() + "}";
-    s += "}";
-    if(m_postSupCell)
-      s += "^{" + m_postSupCell->ListToTeX() + "}";
-    s += "}";
+    if (TeXExponentsAfterSubscript)
+    {
+      s = wxT("{{{") + m_baseCell->ListToTeX() + "}";
+      if(m_postSubCell)
+        s += "_{" + m_postSubCell->ListToTeX() + "}";
+      s += "}";
+      if(m_postSupCell)
+        s += "^{" + m_postSupCell->ListToTeX() + "}";
+      s += "}";
+    }
+    else
+    {
+      s = wxT("{{") + m_baseCell->ListToTeX() + "}";
+      if(m_postSubCell)
+        s +="_{" + m_postSubCell->ListToTeX() + "}";
+      if(m_postSupCell)
+        s += "^{" + m_postSupCell->ListToTeX() + "}";
+      s += "}";
+    }
   }
   else
   {
-    s = wxT("{{") + m_baseCell->ListToTeX() + "}";
-    if(m_postSubCell)
-      s +="_{" + m_postSubCell->ListToTeX() + "}";
-    if(m_postSupCell)
-      s += "^{" + m_postSupCell->ListToTeX() + "}";
-    s += "}";
+    if(m_presupcell || m_presubcell)
+    {
+      s = "{}";
+      if(m_presupcell)
+        s += "^{" + m_presupcell->ListToTeX() + "}";
+      if(m_presubcell)
+        s += "^{" + m_presubcell->ListToTeX() + "}";
+    }
+    s = wxT("{") + m_baseCell->ListToTeX() + "}";
+    if(m_postsupcell)
+      s += "^{" + m_postsupcell->ListToTeX() + "}";
+    if(m_postsubcell)
+      s += "^{" + m_postsubcell->ListToTeX() + "}";
   }
   return s;
 }
