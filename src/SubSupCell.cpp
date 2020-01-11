@@ -95,7 +95,6 @@ void SubSupCell::SetIndex(Cell *index)
   if (index == NULL)
     return;
   m_postSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
 }
 
 void SubSupCell::SetBase(Cell *base)
@@ -103,7 +102,6 @@ void SubSupCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
-  m_innerCellList.push_back(base);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
@@ -242,13 +240,25 @@ wxString SubSupCell::ToString()
     s += wxT("(") + m_baseCell->ListToString() + wxT(")");
   else
     s += m_baseCell->ListToString();
-  s += wxT("[") + m_postSubCell->ListToString() + wxT("]");
-  s += wxT("^");
-  if (m_postSupCell->IsCompound())
-    s += wxT("(");
-  s += m_postSupCell->ListToString();
-  if (m_postSupCell->IsCompound())
-    s += wxT(")");
+  if(m_innerCellList.empty())
+  {
+    s += wxT("[") + m_postSubCell->ListToString() + wxT("]");
+    s += wxT("^");
+    if (m_postSupCell->IsCompound())
+      s += wxT("(");
+    s += m_postSupCell->ListToString();
+    if (m_postSupCell->IsCompound())
+      s += wxT(")");
+  }
+  else
+  {
+    std::list<Cell *> innerCells = m_innerCellList;
+    while(!innerCells .empty())
+    {
+      s += "[" + innerCells.front()->ListToString() + "]";
+      innerCells.pop_front();
+    }
+  }
   return s;
 }
 
