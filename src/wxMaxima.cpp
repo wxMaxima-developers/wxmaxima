@@ -1212,7 +1212,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
 
     while (s.Length() > 0)
     {
-      int start = s.Find(wxT("<mth"));
+      int start = wxMax(s.Find(wxT("<mth")), s.Find(wxT("<math")));
 
       if (start == wxNOT_FOUND)
       {
@@ -1237,11 +1237,19 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
           DoRawConsoleAppend(pre, MC_TYPE_DEFAULT);
 
         // If the math tag ends inside this string we add the whole tag.
-        int end = s.Find(wxT("</mth>"));
+        int mthTagLen;
+        int end = FindTagEnd(s,"</mth>");
+        if(end >= 0)
+          mthTagLen = 5;
+        else
+        {
+          end = FindTagEnd(s,"</math>");
+          mthTagLen = 6;
+        }
         if (end == wxNOT_FOUND)
           end = s.Length();
         else
-          end += 5;
+          end += mthTagLen;
         wxString rest = s.SubString(start, end);
 
         DoConsoleAppend(wxT("<span>") + rest +
@@ -2220,7 +2228,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 int wxMaxima::GetMiscTextEnd(const wxString &data)
 {
   // These tests are redundant with later tests. But they are faster.
-  if(data.StartsWith("<mth>"))
+  if(data.StartsWith("<mth>") || (data.StartsWith("<math>")))
     return 0;
   if(data.StartsWith("<lbl>"))
     return 0;
@@ -2237,7 +2245,7 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   if(data.StartsWith(m_suppressOutputPrefix))
     return 0;
 
-  int mthpos = data.Find("<mth>");
+  int mthpos = wxMax(data.Find("<mth>"), data.Find("<math>"));
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
   int prmptpos = data.Find(m_promptPrefix);
@@ -2422,23 +2430,28 @@ void wxMaxima::ReadStatusBar(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-  wxString mthstart = wxT("<mth>");
-  if (!data.StartsWith(mthstart))
+  if ((!data.StartsWith("<mth>")) && (!data.StartsWith("<math>")))
     return;
 
   m_worksheet->m_cellPointers.m_currentTextCell = NULL;
 
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
-  wxString mthend = wxT("</mth>");
-  int end;
-  if ((end = FindTagEnd(data,mthend)) != wxNOT_FOUND)
+  int mthTagLen;
+  int end = FindTagEnd(data,"</mth>");
+  if(end >= 0)
+    mthTagLen = 6;
+  else
   {
-    wxString o = data.Left(end + mthend.Length());
-    data = data.Right(data.Length()-end-mthend.Length());
+    end = FindTagEnd(data,"</math>");
+    mthTagLen = 7;
+  }
+  if(end >= 0)
+  {
+    wxString o = data.Left(end + mthTagLen);
+    data = data.Right(data.Length() - end - mthTagLen);
     o.Trim(true);
     o.Trim(false);
-
     if (o.Length() > 0)
     {
       if (m_worksheet->m_configuration->UseUserLabels())
@@ -2800,7 +2813,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_worksheet->m_configuration->SetDefaultCellToolTip(
           _("Most questions can be avoided using the assume() "
             "and the declare() command. If that isn't possible the \"Automatically answer questions\" button makes wxMaxima automatically fill in all answers it still remembers from a previous run."));
-      if (o.Find(wxT("<mth>")) > -1)
+      if (wxMax(o.Find(wxT("<mth>")), o.Find(wxT("<math>"))) >= 0)
         DoConsoleAppend(o, MC_TYPE_PROMPT);
       else
         DoRawConsoleAppend(o, MC_TYPE_PROMPT);

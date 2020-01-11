@@ -781,7 +781,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       {          // Parenthesis
         tmp = ParseParenTag(node);
       }
-      else if (tagName == wxT("f"))
+      else if ((tagName == wxT("f")) || (tagName == wxT("mfrac")))
       {               // Fractions
         tmp = ParseFracTag(node);
       }
