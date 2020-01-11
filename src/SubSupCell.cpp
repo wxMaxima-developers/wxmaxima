@@ -114,27 +114,30 @@ void SubSupCell::SetExponent(Cell *expt)
 void SubSupCell::RecalculateWidths(int fontsize)
 {
   m_baseCell->RecalculateWidthsList(fontsize);
-  if(m_postSubCell)    
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_postSupCell)    
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSubCell)    
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSupCell)    
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int preWidth = 0;
   int postWidth = 0;
 
   if(m_postSubCell)
+  {
     postWidth = m_postSubCell->GetFullWidth();
+    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  }
   if(m_postSupCell)
+  {
+    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     postWidth = wxMax(postWidth, m_postSupCell->GetFullWidth());
-
+  }
   if(m_preSubCell)
+  {
+    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     preWidth = m_preSubCell->GetFullWidth();
+  }
   if(m_preSupCell)
+  {
+    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
+  }
 
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
   Cell::RecalculateWidths(fontsize);
