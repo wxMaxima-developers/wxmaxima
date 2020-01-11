@@ -383,7 +383,7 @@ wxString SubSupCell::ToXML()
   }
   else
   {
-    retval = "<ie" + flags + ">";
+    retval = "<ie" + flags + "><r>" + m_baseCell->ListToXML() + "</r>";
     if(m_preSupCell)
       retval += "<r pos=\"presup\">" + m_preSupCell->ListToXML() + "</r>";
     if(m_preSubCell)

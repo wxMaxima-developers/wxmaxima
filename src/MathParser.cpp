@@ -399,16 +399,16 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
     while(child != NULL)
     {
       Cell *cell = HandleNullPointer(ParseTag(child, false));
-      child->GetAttribute("pos", wxEmptyString);
+      pos = child->GetAttribute("pos", wxEmptyString);
       if(pos == "presub")
         subsup->SetPreSub(cell);
-      else if(pos == "presup")
+      if(pos == "presup")
         subsup->SetPreSup(cell);
-      else if(pos == "postsup")
+      if(pos == "postsup")
         subsup->SetPostSup(cell);
-      else if(pos == "postsub")
+      if(pos == "postsub")
         subsup->SetPostSub(cell);
-
+      child = SkipWhitespaceNode(child);
       child = GetNextTag(child);
     }
   }
@@ -463,6 +463,7 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
     if((!pre) && (!subscript))
       subsup->SetPostSup(ParseTag(child, false));
     subscript = !subscript;
+    child = SkipWhitespaceNode(child);
     child = GetNextTag(child);
   }
   return subsup;
