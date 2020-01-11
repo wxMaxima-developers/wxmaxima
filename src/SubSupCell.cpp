@@ -372,20 +372,50 @@ wxString SubSupCell::ToTeX()
 
 wxString SubSupCell::ToMathML()
 {
-  wxString retval = wxT("<msubsup>") +
-    m_baseCell->ListToMathML();
-  if(m_postSubCell)
-    retval += m_postSubCell->ListToMathML();
+  wxString retval;
+  if(m_innerCellList.empty())
+  {
+    retval = wxT("<msubsup>") +
+      m_baseCell->ListToMathML();
+    if(m_postSubCell)
+      retval += m_postSubCell->ListToMathML();
+    else
+      retval += "<mrow/>";
+    if(m_postSupCell)
+      m_postSupCell->ListToMathML();
+    else
+      retval += "<mrow/>";
+    retval += wxT("</msubsup>\n");
+  }
   else
-    retval += "<mrow/>";
-  if(m_postSupCell)
-    m_postSupCell->ListToMathML();
-  else
-    retval += "<mrow/>";
-  retval += wxT("</msubsup>\n");
+  {
+    retval = "<mmultiscripts>" + m_baseCell->ListToMathML();
+    if(m_postSupCell || m_postSubCell)
+    {
+      if(m_postSubCell)
+        retval += "<mrow>" + m_postSubCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+      if(m_postSupCell)
+        retval += "<mrow>" + m_postSupCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+    }
+    if(m_preSupCell || m_preSubCell)
+    {
+      retval += "<mprescripts/>";
+      if(m_preSubCell)
+        retval += "<mrow>" + m_preSubCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+      if(m_preSupCell)
+        retval += "<mrow>" + m_preSupCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+    }
+  }
   return retval;
 }
-
 wxString SubSupCell::ToOMML()
 {
   wxString retval = wxT("<m:sSubSup><m:e>") +
