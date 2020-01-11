@@ -427,6 +427,47 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
   }
   return subsup;
 }
+
+Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
+{
+  bool pre = false;
+  bool subscript = true;
+  SubSupCell *subsup = new SubSupCell(NULL, m_configuration, m_cellPointers);
+  wxXmlNode *child = node->GetChildren();
+  child = SkipWhitespaceNode(child);
+  subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  while(child != NULL)
+  {
+    std::cerr<<"Child="<<child<<"\n";
+    if(child->GetName() == "mmultiscripts")
+    {
+      pre = true;
+      subscript = true;
+      child = GetNextTag(child);
+      continue;
+    }
+    
+    if(child->GetName() == "none")
+    {
+      pre = !pre;
+      child = GetNextTag(child);
+      continue;
+    }
+    
+    if(pre && subscript)
+      subsup->SetPreSub(HandleNullPointer(ParseTag(child)));
+    if(pre && (!subscript))
+      subsup->SetPreSup(HandleNullPointer(ParseTag(child)));
+    if((!pre) && subscript)
+      subsup->SetPostSup(HandleNullPointer(ParseTag(child)));
+    if((!pre) && (!subscript))
+      subsup->SetPostSub(HandleNullPointer(ParseTag(child)));
+    child = GetNextTag(child);
+  }
+  return subsup;
+}
+
 Cell *MathParser::ParseSubTag(wxXmlNode *node)
 {
   SubCell *sub = new SubCell(NULL, m_configuration, m_cellPointers);
@@ -844,6 +885,10 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       else if (tagName == wxT("ie"))
       {
         tmp = ParseSubSupTag(node);
+      }
+      else if (tagName == wxT("mmultiscripts"))
+      {
+        tmp = ParseMmultiscriptsTag(node);
       }
       else if (tagName == wxT("lm"))
       { // A limit tag
