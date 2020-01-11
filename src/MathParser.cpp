@@ -455,13 +455,13 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
     }
     
     if(pre && subscript)
-      subsup->SetPreSub(ParseTag(child));
+      subsup->SetPreSub(ParseTag(child, false));
     if(pre && (!subscript))
-      subsup->SetPreSup(ParseTag(child));
+      subsup->SetPreSup(ParseTag(child, false));
     if((!pre) && subscript)
-      subsup->SetPostSub(ParseTag(child));
+      subsup->SetPostSub(ParseTag(child, false));
     if((!pre) && (!subscript))
-      subsup->SetPostSup(ParseTag(child));
+      subsup->SetPostSup(ParseTag(child, false));
     subscript = !subscript;
     child = GetNextTag(child);
   }
