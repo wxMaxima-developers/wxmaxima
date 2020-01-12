@@ -399,16 +399,16 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
     while(child != NULL)
     {
       Cell *cell = HandleNullPointer(ParseTag(child, false));
-      child->GetAttribute("pos", wxEmptyString);
+      pos = child->GetAttribute("pos", wxEmptyString);
       if(pos == "presub")
         subsup->SetPreSub(cell);
-      else if(pos == "presup")
+      if(pos == "presup")
         subsup->SetPreSup(cell);
-      else if(pos == "postsup")
+      if(pos == "postsup")
         subsup->SetPostSup(cell);
-      else if(pos == "postsub")
+      if(pos == "postsub")
         subsup->SetPostSub(cell);
-
+      child = SkipWhitespaceNode(child);
       child = GetNextTag(child);
     }
   }
@@ -427,6 +427,48 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
   }
   return subsup;
 }
+
+Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
+{
+  bool pre = false;
+  bool subscript = true;
+  SubSupCell *subsup = new SubSupCell(NULL, m_configuration, m_cellPointers);
+  wxXmlNode *child = node->GetChildren();
+  child = SkipWhitespaceNode(child);
+  subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  while(child != NULL)
+  {
+    if(child->GetName() == "mprescripts")
+    {
+      pre = true;
+      subscript = true;
+      child = GetNextTag(child);
+      continue;
+    }
+    
+    if(child->GetName() == "none")
+    {
+      pre = !pre;
+      child = GetNextTag(child);
+      continue;
+    }
+    
+    if(pre && subscript)
+      subsup->SetPreSub(ParseTag(child, false));
+    if(pre && (!subscript))
+      subsup->SetPreSup(ParseTag(child, false));
+    if((!pre) && subscript)
+      subsup->SetPostSub(ParseTag(child, false));
+    if((!pre) && (!subscript))
+      subsup->SetPostSup(ParseTag(child, false));
+    subscript = !subscript;
+    child = SkipWhitespaceNode(child);
+    child = GetNextTag(child);
+  }
+  return subsup;
+}
+
 Cell *MathParser::ParseSubTag(wxXmlNode *node)
 {
   SubCell *sub = new SubCell(NULL, m_configuration, m_cellPointers);
@@ -781,7 +823,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       {          // Parenthesis
         tmp = ParseParenTag(node);
       }
-      else if (tagName == wxT("f"))
+      else if ((tagName == wxT("f")) || (tagName == wxT("mfrac")))
       {               // Fractions
         tmp = ParseFracTag(node);
       }
@@ -844,6 +886,10 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       else if (tagName == wxT("ie"))
       {
         tmp = ParseSubSupTag(node);
+      }
+      else if (tagName == wxT("mmultiscripts"))
+      {
+        tmp = ParseMmultiscriptsTag(node);
       }
       else if (tagName == wxT("lm"))
       { // A limit tag

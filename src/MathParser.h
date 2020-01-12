@@ -132,6 +132,8 @@ private:
 
   Cell *ParseSubSupTag(wxXmlNode *node);
 
+  Cell *ParseMmultiscriptsTag(wxXmlNode *node);
+  
   wxString m_userDefinedLabel;
   wxRegEx m_graphRegex;
 

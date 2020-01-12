@@ -29,7 +29,6 @@
 
 #include "SubSupCell.h"
 #include <wx/config.h>
-#include "wx/config.h"
 
 #define SUBSUP_DEC 3
 
@@ -79,7 +78,7 @@ void SubSupCell::SetPreSup(Cell *index)
   if (index == NULL)
     return;
   m_preSupCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
+  m_innerCellList.push_back(m_preSupCell);
 }
 
 void SubSupCell::SetPreSub(Cell *index)
@@ -87,7 +86,23 @@ void SubSupCell::SetPreSub(Cell *index)
   if (index == NULL)
     return;
   m_preSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
+  m_innerCellList.push_back(m_preSubCell);
+}
+
+void SubSupCell::SetPostSup(Cell *index)
+{
+  if (index == NULL)
+    return;
+  m_postSupCell = std::shared_ptr<Cell>(index);
+  m_innerCellList.push_back(m_postSupCell);
+}
+
+void SubSupCell::SetPostSub(Cell *index)
+{
+  if (index == NULL)
+    return;
+  m_postSubCell = std::shared_ptr<Cell>(index);
+  m_innerCellList.push_back(m_postSubCell);
 }
 
 void SubSupCell::SetIndex(Cell *index)
@@ -95,7 +110,6 @@ void SubSupCell::SetIndex(Cell *index)
   if (index == NULL)
     return;
   m_postSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
 }
 
 void SubSupCell::SetBase(Cell *base)
@@ -103,7 +117,6 @@ void SubSupCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
-  m_innerCellList.push_back(base);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
@@ -116,27 +129,30 @@ void SubSupCell::SetExponent(Cell *expt)
 void SubSupCell::RecalculateWidths(int fontsize)
 {
   m_baseCell->RecalculateWidthsList(fontsize);
-  if(m_postSubCell)    
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_postSupCell)    
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSubCell)    
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSupCell)    
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int preWidth = 0;
   int postWidth = 0;
 
   if(m_postSubCell)
+  {
     postWidth = m_postSubCell->GetFullWidth();
+    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  }
   if(m_postSupCell)
+  {
+    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     postWidth = wxMax(postWidth, m_postSupCell->GetFullWidth());
-
+  }
   if(m_preSubCell)
+  {
+    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     preWidth = m_preSubCell->GetFullWidth();
+  }
   if(m_preSupCell)
+  {
+    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
+  }
 
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
   Cell::RecalculateWidths(fontsize);
@@ -146,27 +162,31 @@ void SubSupCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
-  if(m_postSubCell)
-    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_postSupCell)
-    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSubCell)
-    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSupCell)
-    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int subHeight = 0;
   if(m_preSubCell)
+  {
+    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     subHeight = m_preSubCell->GetHeightList();
+  }
   if(m_postSubCell)
+  {
+    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     subHeight = wxMax(subHeight, m_postSubCell->GetHeightList());
-
+  }
+  
   int supHeight = 0;
   if(m_preSupCell)
+  {
+    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     supHeight = m_preSupCell->GetHeightList();
+  }
   if(m_postSupCell)
+  {
+    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     supHeight = wxMax(supHeight, m_postSupCell->GetHeightList());
-
+  }
+  
   m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
              2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
 
@@ -189,12 +209,10 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSupCell)
       preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
 
-    point.x += preWidth;
-
     if(m_preSubCell)
     {
       wxPoint presub = point;
-      presub.x -= m_preSubCell->GetFullWidth();
+      presub.x += preWidth - m_preSubCell->GetFullWidth();
       presub.y += m_baseCell->GetMaxDrop() +
         m_preSubCell->GetCenterList() -
         Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
@@ -204,24 +222,24 @@ void SubSupCell::Draw(wxPoint point)
     if(m_preSupCell)
     {
       wxPoint presup = point;
-      presup.x -= m_preSupCell->GetFullWidth();
-      presup.y -= m_baseCell->GetCenterList() - m_preSupCell->GetHeightList()
-        + m_preSupCell->GetCenterList() +
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);;
+      presup.x += preWidth - m_preSupCell->GetFullWidth();
+      presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList()
+        - m_preSupCell->GetCenterList() -
+        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
       m_preSupCell->DrawList(presup);
     }
-    
+
+    point.x += preWidth;
     m_baseCell->DrawList(point);
 
+    in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     if(m_postSubCell)
     {
-      in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
       in.y = point.y + m_baseCell->GetMaxDrop() +
         m_postSubCell->GetCenterList() -
         Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
       m_postSubCell->DrawList(in);
     }
-    
     if(m_postSupCell)
     {
       in.y = point.y - m_baseCell->GetCenterList() - m_postSupCell->GetHeightList()
@@ -242,13 +260,25 @@ wxString SubSupCell::ToString()
     s += wxT("(") + m_baseCell->ListToString() + wxT(")");
   else
     s += m_baseCell->ListToString();
-  s += wxT("[") + m_postSubCell->ListToString() + wxT("]");
-  s += wxT("^");
-  if (m_postSupCell->IsCompound())
-    s += wxT("(");
-  s += m_postSupCell->ListToString();
-  if (m_postSupCell->IsCompound())
-    s += wxT(")");
+  if(m_innerCellList.empty())
+  {
+    s += wxT("[") + m_postSubCell->ListToString() + wxT("]");
+    s += wxT("^");
+    if (m_postSupCell->IsCompound())
+      s += wxT("(");
+    s += m_postSupCell->ListToString();
+    if (m_postSupCell->IsCompound())
+      s += wxT(")");
+  }
+  else
+  {
+    std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
+    while(!innerCells.empty())
+    {
+      s += "[" + innerCells.front()->ListToString() + "]";
+      innerCells.pop_front();
+    }
+  }
   return s;
 }
 
@@ -259,13 +289,33 @@ wxString SubSupCell::ToMatlab()
 	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
   else
 	s += m_baseCell->ListToMatlab();
-  s += wxT("[") + m_postSubCell->ListToMatlab() + wxT("]");
-  s += wxT("^");
-  if (m_postSupCell->IsCompound())
-	s += wxT("(");
-  s += m_postSupCell->ListToMatlab();
-  if (m_postSupCell->IsCompound())
-	s += wxT(")");
+  if(m_innerCellList.empty())
+  {
+    s += wxT("[") + m_postSubCell->ListToMatlab() + wxT("]");
+    s += wxT("^");
+    if (m_postSupCell->IsCompound())
+      s += wxT("(");
+    s += m_postSupCell->ListToMatlab();
+    if (m_postSupCell->IsCompound())
+      s += wxT(")");
+  }
+  else
+  {
+    std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
+
+    s += "[";
+    bool first = false;
+    
+    while(!innerCells.empty())
+    {
+      if(!first)
+        s += ";";
+      first = true;
+      s += innerCells.front()->ListToMatlab();
+      innerCells.pop_front();
+    }
+    s += "]";
+  }
   return s;
 }
 
@@ -279,34 +329,104 @@ wxString SubSupCell::ToTeX()
 
   wxString s;
 
-  if (TeXExponentsAfterSubscript)
-    s = wxT("{{{") + m_baseCell->ListToTeX() + wxT("}_{") +
-        m_postSubCell->ListToTeX() + wxT("}}^{") +
-        m_postSupCell->ListToTeX() + wxT("}}");
+  if(m_innerCellList.empty())
+  {
+    if (TeXExponentsAfterSubscript)
+    {
+      s = wxT("{{{") + m_baseCell->ListToTeX() + "}";
+      if(m_postSubCell)
+        s += "_{" + m_postSubCell->ListToTeX() + "}";
+      s += "}";
+      if(m_postSupCell)
+        s += "^{" + m_postSupCell->ListToTeX() + "}";
+      s += "}";
+    }
+    else
+    {
+      s = wxT("{{") + m_baseCell->ListToTeX() + "}";
+      if(m_postSubCell)
+        s +="_{" + m_postSubCell->ListToTeX() + "}";
+      if(m_postSupCell)
+        s += "^{" + m_postSupCell->ListToTeX() + "}";
+      s += "}";
+    }
+  }
   else
-    s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}_{") +
-        m_postSubCell->ListToTeX() + wxT("}^{") +
-        m_postSupCell->ListToTeX() + wxT("}}");
-
+  {
+    if(m_preSupCell || m_preSubCell)
+    {
+      s = "{}";
+      if(m_preSupCell)
+        s += "^{" + m_preSupCell->ListToTeX() + "}";
+      if(m_preSubCell)
+        s += "^{" + m_preSubCell->ListToTeX() + "}";
+    }
+    s += wxT("{") + m_baseCell->ListToTeX() + "}";
+    if(m_postSupCell)
+      s += "^{" + m_postSupCell->ListToTeX() + "}";
+    if(m_postSubCell)
+      s += "^{" + m_postSubCell->ListToTeX() + "}";
+  }
   return s;
 }
 
 wxString SubSupCell::ToMathML()
 {
-  return wxT("<msubsup>") +
-         m_baseCell->ListToMathML() +
-         m_postSubCell->ListToMathML() +
-         m_postSupCell->ListToMathML() +
-         wxT("</msubsup>\n");
+  wxString retval;
+  if(m_innerCellList.empty())
+  {
+    retval = wxT("<msubsup>") +
+      m_baseCell->ListToMathML();
+    if(m_postSubCell)
+      retval += m_postSubCell->ListToMathML();
+    else
+      retval += "<mrow/>";
+    if(m_postSupCell)
+      m_postSupCell->ListToMathML();
+    else
+      retval += "<mrow/>";
+    retval += wxT("</msubsup>\n");
+  }
+  else
+  {
+    retval = "<mmultiscripts>" + m_baseCell->ListToMathML();
+    if(m_postSupCell || m_postSubCell)
+    {
+      if(m_postSubCell)
+        retval += "<mrow>" + m_postSubCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+      if(m_postSupCell)
+        retval += "<mrow>" + m_postSupCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+    }
+    if(m_preSupCell || m_preSubCell)
+    {
+      retval += "<mprescripts/>";
+      if(m_preSubCell)
+        retval += "<mrow>" + m_preSubCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+      if(m_preSupCell)
+        retval += "<mrow>" + m_preSupCell->ListToMathML() + "</mrow>";
+      else
+        retval += "<none/>";
+    }
+  }
+  return retval;
 }
-
 wxString SubSupCell::ToOMML()
 {
-  return wxT("<m:sSubSup><m:e>") +
-         m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
-         m_postSubCell->ListToOMML() + wxT("</m:sup><m:sub>") +
-         m_postSupCell->ListToOMML() +
-         wxT("</m:sub></m:sSubSup>\n");
+  wxString retval = wxT("<m:sSubSup><m:e>") +
+    m_baseCell->ListToOMML() + wxT("</m:e><m:sup>");
+  if(m_postSubCell)
+    retval += m_postSubCell->ListToOMML();
+  retval += wxT("</m:sup><m:sub>");
+  if(m_postSupCell)
+    retval += m_postSupCell->ListToOMML();
+  retval += wxT("</m:sub></m:sSubSup>\n");
+  return retval;
 }
 
 wxString SubSupCell::ToXML()
@@ -317,9 +437,31 @@ wxString SubSupCell::ToXML()
 
   if (m_altCopyText != wxEmptyString)
     flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
-  
-  return _T("<ie") + flags +wxT("><r>") + m_baseCell->ListToXML()
-         + _T("</r><r>") + m_postSubCell->ListToXML()
-         + _T("</r><r>") + m_postSupCell->ListToXML()
-         + _T("</r></ie>");
+
+  wxString retval;
+  if(m_innerCellList.empty())
+  {
+    retval = "<ie" + flags + "><r>" + m_baseCell->ListToXML()
+      + "</r><r>";
+    if(m_postSubCell)
+      retval += m_postSubCell->ListToXML();
+    retval += "</r><r>";
+    if(m_postSupCell)
+      retval += m_postSupCell->ListToXML();
+    retval += "</r></ie>";
+  }
+  else
+  {
+    retval = "<ie" + flags + "><r>" + m_baseCell->ListToXML() + "</r>";
+    if(m_preSupCell)
+      retval += "<r pos=\"presup\">" + m_preSupCell->ListToXML() + "</r>";
+    if(m_preSubCell)
+      retval += "<r pos=\"presub\">" + m_preSubCell->ListToXML() + "</r>";
+    if(m_postSupCell)
+      retval += "<r pos=\"postsup\">" + m_postSupCell->ListToXML() + "</r>";
+    if(m_postSubCell)
+      retval += "<r pos=\"postsub\">" + m_postSubCell->ListToXML() + "</r>";
+    retval += "</ie>";
+  }
+  return retval;
 }
