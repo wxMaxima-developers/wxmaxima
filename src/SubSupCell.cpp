@@ -443,6 +443,7 @@ wxString SubSupCell::ToMathML()
         retval += "<none/>";
     }
   }
+  retval += wxT("</mmultiscripts>\n");
   return retval;
 }
 wxString SubSupCell::ToOMML()
