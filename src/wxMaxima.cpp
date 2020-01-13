@@ -1637,7 +1637,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     break;
   case wxSOCKET_OUTPUT:
   {
-    if(!m_client->IsConnected())
+    if((!m_client) || (!m_client->IsConnected()))
     {
       m_rawBytesSent = 0;
       m_rawDataToSend.Clear();
