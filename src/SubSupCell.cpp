@@ -134,6 +134,8 @@ void SubSupCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
+  if(m_postSubCell)
+    SetPostSub(index);
   m_postSubCell = std::shared_ptr<Cell>(index);
 }
 
@@ -148,6 +150,8 @@ void SubSupCell::SetExponent(Cell *expt)
 {
   if (expt == NULL)
     return;
+  if(m_postSupCell)
+    SetPostSup(expt);
   m_postSupCell = std::shared_ptr<Cell>(expt);
 }
 
