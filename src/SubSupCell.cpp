@@ -28,6 +28,7 @@
  */
 
 #include "SubSupCell.h"
+#include "TextCell.h"
 #include <wx/config.h>
 
 #define SUBSUP_DEC 3
@@ -77,7 +78,13 @@ void SubSupCell::SetPreSup(Cell *index)
 {
   if (index == NULL)
     return;
-  m_preSupCell = std::shared_ptr<Cell>(index);
+  if(m_preSupCell)
+  {
+    m_preSupCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
+    m_preSupCell->AppendCell(index);
+  }
+  else
+    m_preSupCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_preSupCell);
 }
 
@@ -85,7 +92,13 @@ void SubSupCell::SetPreSub(Cell *index)
 {
   if (index == NULL)
     return;
-  m_preSubCell = std::shared_ptr<Cell>(index);
+  if(m_preSubCell)
+  {
+    m_preSubCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
+    m_preSubCell->AppendCell(index);
+  }
+  else
+    m_preSubCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_preSubCell);
 }
 
@@ -93,7 +106,13 @@ void SubSupCell::SetPostSup(Cell *index)
 {
   if (index == NULL)
     return;
-  m_postSupCell = std::shared_ptr<Cell>(index);
+  if(m_postSupCell)
+  {
+    m_postSupCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
+    m_postSupCell->AppendCell(index);
+  }
+  else
+    m_postSupCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_postSupCell);
 }
 
@@ -101,7 +120,13 @@ void SubSupCell::SetPostSub(Cell *index)
 {
   if (index == NULL)
     return;
-  m_postSubCell = std::shared_ptr<Cell>(index);
+  if(m_postSubCell)
+  {
+    m_postSubCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
+    m_postSubCell->AppendCell(index);
+  }
+  else
+    m_postSubCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_postSubCell);
 }
 
