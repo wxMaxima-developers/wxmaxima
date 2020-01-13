@@ -1767,6 +1767,7 @@ bool wxMaxima::StartMaxima(bool force)
 {
   if(!m_server)
     StartServer();
+  // cppcheck-suppress duplicateCondition
   if(!m_server)
     return false;
   
@@ -2076,7 +2077,7 @@ void wxMaxima::KillMaxima(bool logMessage)
   {
     // wxProcess::kill will fail on MSW. Something with a console.
     SuppressErrorDialogs logNull;
-    if(!wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN))
+    if(wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK)
       wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
   }
   m_worksheet->m_configuration->InLispMode(false);
