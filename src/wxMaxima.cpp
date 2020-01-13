@@ -1765,6 +1765,11 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
+  if(!m_server)
+    StartServer();
+  if(!m_server)
+    return false;
+  
   wxString dirname;
   {
     wxString filename = m_worksheet->m_currentFile;
