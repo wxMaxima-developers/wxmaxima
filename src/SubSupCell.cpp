@@ -451,20 +451,28 @@ wxString SubSupCell::ToOMML()
   wxString retval;
   if(m_preSupCell || m_preSubCell)
   {
-    retval += "<m:sSubSup><m:e></m:e><m:sub>";
+    retval += "<m:sSubSup><m:e><m:r></m:r></m:e><m:sub>";
     if(m_preSubCell)
       retval += m_preSubCell->ListToOMML();
+    else
+      retval += "<m:r></m:r>";
     retval += "</m:sub><m:sup>";
     if(m_preSupCell)
       retval += m_preSupCell->ListToOMML();
+    else
+      retval += "<m:r></m:r>";
     retval += "</m:sup></m:sSubSup>\n";
   }
   retval += wxT("<m:sSubSup><m:e>") + m_baseCell->ListToOMML() + "</m:e><m:sub>";
   if(m_postSubCell)
     retval += m_postSubCell->ListToOMML();
-    retval += "</m:sub><m:sup>";
+  else
+    retval += "<m:r></m:r>";
+  retval += "</m:sub><m:sup>";
   if(m_postSupCell)
     retval += m_postSupCell->ListToOMML();
+  else
+    retval += "<m:r></m:r>";
   retval += "</m:sup></m:sSubSup>\n";
   return retval;
 }
