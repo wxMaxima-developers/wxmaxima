@@ -7737,7 +7737,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("cucharro <cucharro@users.sourceforge.net>"));
       info.AddDeveloper(wxT("cw.ahbong <cw.ahbong@gmail.com>"));
       info.AddDeveloper(wxT("Dave <dave@dave-VirtualBox.(none)>"));
-      info.AddDeveloper(wxT("Doug Ilijev"));
       info.AddDeveloper(wxT("Drew <5396418+djh101@users.noreply.github.com>"));
       info.AddDeveloper(wxT("Eduardo M. Kalinowski"));
       info.AddDeveloper(wxT("endolith <endolith@gmail.com>"));
