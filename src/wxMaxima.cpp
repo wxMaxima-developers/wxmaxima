@@ -258,8 +258,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
   m_waitForStringEndTimer.SetOwner(this, WAITFORSTRING_ID);
-  m_maximaConnectTimeout.SetOwner(this, WAITFORCONNECTION_ID);
-  m_pollForConnectionTimer.SetOwner(this, POLLFORCONNECTION_ID);
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
   Connect(
     wxEVT_TIMER,
@@ -283,6 +281,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
   m_clientStream = NULL;
+  m_client = NULL;
   m_clientTextStream = NULL;
   Connect(wxEVT_SCROLL_CHANGED,
           wxScrollEventHandler(wxMaxima::SliderEvent), NULL, this);
@@ -1520,7 +1519,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       }
     }
 
-    if ((m_client.IsConnected()) && (s.Length() >= 1))
+    if ((m_client) && (m_client->IsConnected()) && (s.Length() >= 1))
     {
       // If there is no working group and we still are trying to send something
       // we are trying to change maxima's settings from the background and might never
@@ -1534,7 +1533,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       #ifdef __WXMSW__
       // On MS Windows we don't get a signal that tells us if a write has
       // finishes. But it seems a write always succeeds
-      m_client.Write(data_raw.data(), data_raw.length());
+      if(m_client) m_client->Write(data_raw.data(), data_raw.length());
       #else
       // On Linux (and most probably all other non MS-Windows systems) we get a
       // signal that tells us a write command has finished - and tells us how many
@@ -1554,10 +1553,10 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         // Now we have done this we attempt to send the data. If our try falls
         // short we'll find that out in the client event of the type wxSOCKET_OUTPUT
         // that will follow the write.
-        m_client.Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
+        if(m_client) m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
       #endif
-      if (m_client.Error()) {
+      if ((!m_client) || m_client->Error()) {
         wxLogMessage(_("Error writing to Maxima"));
         return;
       }
@@ -1587,10 +1586,10 @@ void wxMaxima::TryToReadDataFromMaxima()
 
   // It is theoretically possible that the client has exited after sending us
   // data and before we had been able to process it.
-  if (!m_client.IsConnected())
+  if (!m_client || (!m_client->IsConnected()))
     return;
 
-  if(!m_client.IsData())
+  if(!m_client->IsData())
     return;
 
   m_statusBar->NetworkStatus(StatusBar::receive);
@@ -1598,7 +1597,7 @@ void wxMaxima::TryToReadDataFromMaxima()
   // Read all new lines of text we received.
   wxChar chr;
 
-  while((m_client.IsConnected()) && (m_client.IsData()) && (m_clientStream != NULL) &&
+  while((m_client->IsConnected()) && (m_client->IsData()) && (m_clientStream != NULL) &&
         (!m_clientStream->Eof()))
   {
     chr = m_clientTextStream->GetChar();
@@ -1638,21 +1637,21 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     break;
   case wxSOCKET_OUTPUT:
   {
-    if(!m_client.IsConnected())
+    if(!m_client->IsConnected())
     {
       m_rawBytesSent = 0;
       m_rawDataToSend.Clear();
       return;
     }
-    long int bytesWritten = m_client.LastWriteCount();
+    long int bytesWritten = m_client->LastWriteCount();
     m_rawBytesSent  += bytesWritten;
     if(m_rawDataToSend.GetDataLen() > m_rawBytesSent)
     {
       wxLogMessage(_("Continuing sending data to maxima."));
-      m_client.Write(
+      m_client->Write(
         (void *)((char *)m_rawDataToSend.GetData() + m_rawBytesSent),
         m_rawDataToSend.GetDataLen() - m_rawBytesSent);
-      if (m_client.Error()) {
+      if (m_client->Error()) {
         DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
         return;
       }
@@ -1672,7 +1671,6 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     break;
   }
   case wxSOCKET_CONNECTION :
-    m_pollForConnectionTimer.Stop();
     OnMaximaConnect();
   break;
   
@@ -1682,19 +1680,16 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   }
 }
 
-void wxMaxima::OnMaximaConnect(bool receivedSignal)
+void wxMaxima::OnMaximaConnect()
 {
-  m_maximaConnectTimeout.Stop();
-  if (m_client.IsConnected())
+  if (m_client && (m_client->IsConnected()))
   {
-    if(receivedSignal)
-      wxLogMessage(_("New connection attempt whilst already connected."));
+    wxLogMessage(_("New connection attempt whilst already connected."));
     return;
   }
   if(m_process == NULL)
   {
-    if(receivedSignal)
-      wxLogMessage(_("New connection attempt, but no currently running maxima process."));
+    wxLogMessage(_("New connection attempt, but no currently running maxima process."));
     return;
   }
     
@@ -1704,36 +1699,33 @@ void wxMaxima::OnMaximaConnect(bool receivedSignal)
   m_statusBar->NetworkStatus(StatusBar::idle);
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
-  if(!m_server->AcceptWith(m_client, false))
+    
+  m_client = m_server->Accept(false);
+  if(!m_client)
   {
-    if(receivedSignal)
+    wxLogMessage(_("Connection attempt, but connection failed."));
+    m_unsuccessfulConnectionAttempts++;
+    if(m_unsuccessfulConnectionAttempts < 12)
     {
-      wxLogMessage(_("Connection attempt, but connection failed."));
-      m_unsuccessfulConnectionAttempts++;
-      if(m_unsuccessfulConnectionAttempts < 12)
-      {
-        wxLogMessage(_("Trying to restart maxima."));          
-        StartMaxima(true);
-      }
+      wxLogMessage(_("Trying to restart maxima."));          
+      StartMaxima(true);
+      return;
     }
   }
   else
   {
     wxLogMessage(_("Connected."));
-    m_clientStream = new wxSocketInputStream(m_client);
+    m_clientStream = new wxSocketInputStream(*m_client);
     m_clientTextStream = std::unique_ptr<wxTextInputStream>(
       new wxTextInputStream(*m_clientStream, wxT('\t'),
                             wxConvUTF8));
-    m_client.SetEventHandler(*GetEventHandler());
-    m_client.SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
-    m_client.Notify(true);
-    m_client.SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
-    m_client.SetTimeout(15);
+    m_client->SetEventHandler(*GetEventHandler());
+    m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
+    m_client->Notify(true);
+    m_client->SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
+    m_client->SetTimeout(30);
     SetupVariables();
     Refresh();
-    // wxUpdateUIEvent dummy;
-    //UpdateToolBar(dummy);
-    //UpdateMenus(dummy);
   }
 }
 
@@ -1849,8 +1841,6 @@ bool wxMaxima::StartMaxima(bool force)
                      wxOK | wxICON_ERROR);
         return false;
       }
-      m_pollForConnectionTimer.Start(300);
-      m_maximaConnectTimeout.StartOnce(8000);
       m_maximaStdout = m_process->GetInputStream();
       m_maximaStderr = m_process->GetErrorStream();
       m_lastPrompt = wxT("(%i1) ");
@@ -1864,7 +1854,7 @@ bool wxMaxima::StartMaxima(bool force)
     }
   }
   m_worksheet->m_cellPointers.m_errorList.Clear();
-
+  
   // Initialize the performance counter.
   GetMaximaCPUPercentage();
   return true;
@@ -2007,10 +1997,9 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         wxLogMessage(_("Sending an interactive Interrupt signal (Ctrl+C) to Maxima."));
     }
   }
-#else
+  #endif
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_pid, wxSIGINT);
-#endif
 }
 
 void wxMaxima::BecomeLogTarget()
@@ -2053,10 +2042,10 @@ void wxMaxima::KillMaxima(bool logMessage)
   m_clientTextStream = NULL;
   m_clientStream = NULL;
 
-  if(m_client.IsConnected())
+  if(m_client && (m_client->IsConnected()))
   {
     // Make wxWidgets close the connection only after we have sent the close command.
-    m_client.SetFlags(wxSOCKET_WAITALL);
+    m_client->SetFlags(wxSOCKET_WAITALL);
     // Try to gracefully close maxima.
     if (m_worksheet->m_configuration->InLispMode())
       SendMaxima(wxT("($quit)"));
@@ -2064,7 +2053,8 @@ void wxMaxima::KillMaxima(bool logMessage)
       SendMaxima(wxT("quit();"));
 
     // The following command should close maxima, as well.
-    m_client.Close();
+    m_client->Close();
+    m_client = NULL;
   }
 
   // Just to be absolutely sure: Additionally try to kill maxima
@@ -2150,7 +2140,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 
 void wxMaxima::CleanUp()
 {
-  if (m_client.IsConnected())
+  if (m_client && (m_client->IsConnected()))
     KillMaxima();
 }
 
@@ -2848,7 +2838,7 @@ void wxMaxima::ReadPrompt(wxString &data)
 void wxMaxima::SetCWD(wxString file)
 {
   // If maxima isn't connected we cannot do anything
-  if (!m_client.IsConnected())
+  if (!m_client || (!m_client->IsConnected()))
     return;
 
   // Tell the math parser where to search for local files.
@@ -4469,8 +4459,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
           (m_worksheet->GetTree() != NULL) &&
           (m_worksheet->CanPaste()) &&
           (m_worksheet->GetHCaret() != NULL) &&
-          (m_client.IsConnected())
-  );
+          ((m_client && m_client->IsConnected())));
 
   // On MSW it seems we cannot change an icon without side-effects that somehow
   // stop the animation => on this OS we have separate icons for the
@@ -5108,14 +5097,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 {
   switch (event.GetId())
   {
-  case WAITFORCONNECTION_ID:
-    wxLogMessage(_("Maxima didn't connect within the timeout"));
-    if(m_unsuccessfulConnectionAttempts < 12)
-    {
-      wxLogMessage(_("Trying to restart Maxima"));
-      StartMaxima();
-    }
-    break;
     case WAITFORSTRING_ID:
       if(InterpretDataFromMaxima())
         wxLogMessage(_("String from maxima apparently didn't end in a newline"));
@@ -5151,8 +5132,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         m_autoSaveTimer.StartOnce(180000);
       }
       break;
-  case POLLFORCONNECTION_ID:
-    OnMaximaConnect(false);
   }
 }
 
@@ -9002,7 +8981,7 @@ void wxMaxima::TriggerEvaluation()
 
   // If we aren't connected yet this function will be triggered as soon as maxima
   // connects to wxMaxima
-  if (!m_client.IsConnected())
+  if (!m_client || (!m_client->IsConnected()))
     return;
 
   // Maxima is connected. Let's test if the evaluation queue is empty.

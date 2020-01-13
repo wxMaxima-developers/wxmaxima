@@ -123,11 +123,7 @@ public:
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID,
             //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID,
-            //! Wait for the connection of Maxima
-            WAITFORCONNECTION_ID,
-            //! Poll for connection if the OS doesn't inform us that we can connect
-            POLLFORCONNECTION_ID
+            WAITFORSTRING_ID
   };
 
   /*! A timer that determines when to do the next autosave;
@@ -144,22 +140,12 @@ public:
 
   //! A timer that tells us to wait until maxima ends its data.
   wxTimer m_waitForStringEndTimer;
-
-  /*! A timer that allows us to poll regularly for maxima connectionss
-
-    We actually get a signal if maxima connects. But it seems like that 
-    isn't working on every combination of wxWidgets and MacOs.
-   */
-  wxTimer m_pollForConnectionTimer;
-
+  
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
 
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
-
-  //! A timer that polls for output from the maxima process.
-  wxTimer m_maximaConnectTimeout;
 
   void ShowTip(bool force);
 
@@ -404,7 +390,7 @@ protected:
   void OnReplaceAll(wxFindDialogEvent &event);
 
   //! Is called if maxima connects to wxMaxima.
-  void OnMaximaConnect(bool receivedSignal = true);
+  void OnMaximaConnect();
   
   //! server event: Maxima sends or receives data, connects or disconnects
   void ServerEvent(wxSocketEvent &event);
@@ -678,7 +664,7 @@ protected:
     return m_CWD;
   }
 
-  wxSocketBase m_client;
+  wxSocketBase *m_client;
   wxSocketInputStream *m_clientStream;
   std::unique_ptr<wxTextInputStream> m_clientTextStream;
   wxSocketServer *m_server;
