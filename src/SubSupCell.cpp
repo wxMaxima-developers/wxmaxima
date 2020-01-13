@@ -388,13 +388,13 @@ wxString SubSupCell::ToTeX()
       if(m_preSupCell)
         s += "^{" + m_preSupCell->ListToTeX() + "}";
       if(m_preSubCell)
-        s += "^{" + m_preSubCell->ListToTeX() + "}";
+        s += "_{" + m_preSubCell->ListToTeX() + "}";
     }
     s += wxT("{") + m_baseCell->ListToTeX() + "}";
     if(m_postSupCell)
       s += "^{" + m_postSupCell->ListToTeX() + "}";
     if(m_postSubCell)
-      s += "^{" + m_postSubCell->ListToTeX() + "}";
+      s += "_{" + m_postSubCell->ListToTeX() + "}";
   }
   return s;
 }
