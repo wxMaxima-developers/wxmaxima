@@ -1843,7 +1843,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
-    if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) <= 0 )
+    if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
     {
       StatusMaximaBusy(process_wont_start);
       RightStatusText(_("Cannot start the maxima binary"));
