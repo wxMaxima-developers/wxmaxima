@@ -23,6 +23,26 @@
 
 wxString examples = 
 L"/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n" 
+L"/* [ Created with wxMaxima version 20.01.2-DevelopmentSnapshot ] */\n" 
+L"/* [wxMaxima: title   start ]\n"  + _(
+L"Cool things to know\n" 
+) + L"   [wxMaxima: title   end   ] */\n"  
+L"\n" 
+L"\n" 
+L"/* [wxMaxima: section start ]\n"  + _(
+L"Subscripts\n" 
+) + L"   [wxMaxima: section end   ] */\n"  
+L"\n" 
+L"\n" 
+L"/* [wxMaxima: comment start ]\n"  + _(
+L"Maxima\n" 
+) + L"   [wxMaxima: comment end   ] */\n"  
+L"\n" 
+L"\n" 
+L"\n" 
+L"/* Old versions of Maxima abort on loading files that end in a comment. */\n" 
+L"\"Created with wxMaxima 20.01.2-DevelopmentSnapshot\"$\n" 
+L"/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/\n" 
 L"/* [ Created with wxMaxima version 20.01.1-DevelopmentSnapshot ] */\n" 
 L"/* [wxMaxima: title   start ]\n"  + _(
 L"Solving differential equations\n" 
@@ -455,7 +475,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"In this example the \"initial=\" wasn't really necessary. But sometimes using the wrong starting point means that lsquares by \n" 
+L"In this example the \"initial=\" wasn't really necessary. But sometimes using the wrong starting point means that lsquares heads for the wrong local optimum of the problem.\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
