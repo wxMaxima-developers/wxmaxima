@@ -1765,42 +1765,51 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
-  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-    m_xmlInspector->Clear();
-
-  // Maxima isn't in lisp mode
-  m_worksheet->m_configuration->InLispMode(false);
-  
-  // Maxima isn't asking questions
-  m_worksheet->QuestionAnswered();
-
-  // If we have an open file tell maxima to start in the directory the file is in
-  wxUnsetEnv(wxT("MAXIMA_INITIAL_FOLDER"));
-  wxString filename = m_worksheet->m_currentFile;
-  if(filename == wxEmptyString)
-    filename = m_openFile;
-  if(filename != wxEmptyString)
+  wxString dirname;
   {
-    wxFileName dir(filename);
-    dir.MakeAbsolute();
-    wxString dirname = dir.GetPath();
-    if(wxDirExists(dirname))
+    wxString filename = m_worksheet->m_currentFile;
+    if(filename.IsEmpty())
+      filename = m_openFile;
+    
+    if(!filename.IsEmpty())
     {
-      // Tell maxima to start in the directory the file is in
-      wxSetEnv(wxT("MAXIMA_INITIAL_FOLDER"),dirname);
+      wxFileName dir(filename);
+      dir.MakeAbsolute();
+      dirname = dir.GetPath();
     }
-    else
-      wxLogWarning(wxString::Format(
-                     wxT("Directory %s doesn't exist. Maxima might complain about that."),
-                     dirname.utf8_str())
-        );
   }
-
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
   // order.
-  if ((m_process == NULL) || (m_hasEvaluatedCells) || force)
+  wxString dirname_Old;
+  wxGetEnv("MAXIMA_INITIAL_FOLDER", &dirname_Old);
+  
+  if ((m_process == NULL) || (m_hasEvaluatedCells) || force ||
+      (dirname != dirname_Old))
   {
+    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+      m_xmlInspector->Clear();
+    
+    // Maxima isn't in lisp mode
+    m_worksheet->m_configuration->InLispMode(false);
+    
+    // Maxima isn't asking questions
+    m_worksheet->QuestionAnswered();
+    
+    // If we have an open file tell maxima to start in the directory the file is in
+    wxUnsetEnv("MAXIMA_INITIAL_FOLDER");
+    if(!dirname.IsEmpty())
+      if(wxDirExists(dirname))
+      {
+        // Tell maxima to start in the directory the file is in
+        wxSetEnv(wxT("MAXIMA_INITIAL_FOLDER"),dirname);
+      }
+      else
+        wxLogWarning(wxString::Format(
+                       wxT("Directory %s doesn't exist. Maxima might complain about that."),
+                       dirname.utf8_str())
+          );
+    
     if(m_process != NULL)
     {
       m_closing = true;
@@ -1810,9 +1819,8 @@ bool wxMaxima::StartMaxima(bool force)
 
     wxString command = GetCommand();
 
-    if (command.Length() > 0)
+    if(!command.IsEmpty())
     {
-
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
 
 // TODO: Is this still necessary?
@@ -1829,22 +1837,22 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
-      if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
-      {
-        StatusMaximaBusy(process_wont_start);
-        RightStatusText(_("Cannot start the maxima binary"));
-        m_process = NULL;
-        m_maximaStdout = NULL;
-        m_maximaStderr = NULL;
-        m_statusBar->NetworkStatus(StatusBar::offline);
-        LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
-                     wxOK | wxICON_ERROR);
-        return false;
-      }
-      m_maximaStdout = m_process->GetInputStream();
-      m_maximaStderr = m_process->GetErrorStream();
-      m_lastPrompt = wxT("(%i1) ");
-      StatusMaximaBusy(wait_for_start);
+    if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
+    {
+      StatusMaximaBusy(process_wont_start);
+      RightStatusText(_("Cannot start the maxima binary"));
+      m_process = NULL;
+      m_maximaStdout = NULL;
+      m_maximaStderr = NULL;
+      m_statusBar->NetworkStatus(StatusBar::offline);
+      LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
+                        wxOK | wxICON_ERROR);
+      return false;
+    }
+    m_maximaStdout = m_process->GetInputStream();
+    m_maximaStderr = m_process->GetErrorStream();
+    m_lastPrompt = wxT("(%i1) ");
+    StatusMaximaBusy(wait_for_start);
     }
     else
     {
@@ -1852,11 +1860,11 @@ bool wxMaxima::StartMaxima(bool force)
       wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the config dialogue."));
       return false;
     }
+    m_worksheet->m_cellPointers.m_errorList.Clear();
+    
+// Initialize the performance counter.
+    GetMaximaCPUPercentage();
   }
-  m_worksheet->m_cellPointers.m_errorList.Clear();
-  
-  // Initialize the performance counter.
-  GetMaximaCPUPercentage();
   return true;
 }
 
