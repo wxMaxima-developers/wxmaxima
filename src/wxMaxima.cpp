@@ -1837,7 +1837,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
-    if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
+    if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) <= 0 )
     {
       StatusMaximaBusy(process_wont_start);
       RightStatusText(_("Cannot start the maxima binary"));
@@ -2005,9 +2005,10 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         wxLogMessage(_("Sending an interactive Interrupt signal (Ctrl+C) to Maxima."));
     }
   }
-  #endif
+  #else
   wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_pid, wxSIGINT);
+  #endif
 }
 
 void wxMaxima::BecomeLogTarget()
@@ -2070,7 +2071,8 @@ void wxMaxima::KillMaxima(bool logMessage)
   {
     // wxProcess::kill will fail on MSW. Something with a console.
     SuppressErrorDialogs logNull;
-    wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
+    if(!wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN))
+      wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
   }
   m_worksheet->m_configuration->InLispMode(false);
 
