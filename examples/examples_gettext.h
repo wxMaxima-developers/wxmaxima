@@ -919,7 +919,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"Both solutions solve() offers are valied. We can pick any of them manually, for example:\n" 
+L"Both solutions solve() offers are valid. We can pick any of them manually, for example:\n"
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 

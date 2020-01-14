@@ -1015,7 +1015,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5196
 msgid "Autosaving as temp file"
-msgstr "Automatisches Speichern als Temporäre Datei"
+msgstr "Automatisches Speichern als temporäre Datei"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5214
 msgid "Autosaving the .wxmx file"
@@ -1131,7 +1131,7 @@ msgstr "Vertikaler und horizontaler Cursor sind gleichzeitig aktiv"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:922
 msgid ""
-"Both solutions solve() offers are valied. We can pick any of them manually, "
+"Both solutions solve() offers are valid. We can pick any of them manually, "
 "for example:\n"
 msgstr ""
 "Beide Antworten, die solve() vorschlägt, sind korrekt. Wir können jede von "
@@ -1488,7 +1488,7 @@ msgstr "Abbrechen"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1864
 msgid ""
 "Cannot find a maxima binary and no binary chosen in the config dialogue."
-msgstr "Kann maxima nicht dort finden, wo im Konfigurationsdialog angegeben."
+msgstr "Kann Maxima nicht dort finden, wo im Konfigurationsdialog angegeben."
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3130
 msgid "Cannot put the copied text on the clipboard"
@@ -1599,7 +1599,7 @@ msgstr "Neues Plot-Format eingeben:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:747
 msgid "Choose the parenthesis type for Matrices"
-msgstr "Darstellung der Klammern von Matritzen"
+msgstr "Darstellung der Klammern von Matrizen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7939
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7955
@@ -8447,9 +8447,9 @@ msgid ""
 "leads to numbers that exceed the floating-point range (or exact numbers "
 "longer than the computer's memory).\n"
 msgstr ""
-"Unglücklicherweise ist es in diesem Fall schwer, experimentelle Daten auf eine e-Funktion zu fitten::\n"
-" * Ein Teil der Kurve besteht aus niedrigen Werten. Da dieser Bereich aus einer nichtlinearen Funkton besteht, wird jegliches Rauschen hier nicht herausgemittelt, sondern die Werte verfälschen.\n"
-" * Ein weiterer Teil der Kurve besteht aus hohen Werten und wird von kleinen Änderungen der Eingangswerte stark beeinflusst. Um den Durchschnittlichen Fehler gering zu halten, wird der Fitter diesen Bereich überproportional berücksichtigen.\n"
+"Unglücklicherweise ist es in diesem Fall schwer, experimentelle Daten auf eine e-Funktion zu fitten:\n"
+" * Ein Teil der Kurve besteht aus niedrigen Werten. Da dieser Bereich aus einer nichtlinearen Funktion besteht, wird jegliches Rauschen hier nicht herausgemittelt, sondern die Werte verfälschen.\n"
+" * Ein weiterer Teil der Kurve besteht aus hohen Werten und wird von kleinen Änderungen der Eingangswerte stark beeinflusst. Um den durchschnittlichen Fehler gering zu halten, wird der Fitter diesen Bereich überproportional berücksichtigen.\n"
 " * Wenn die Suche nach Parametern am falschen Ort begonnen wird, ist es leicht, an einem Punkt zu enden, der besser als alle Punkte in seiner Nähe ist, aber nicht die gesuchte Lösung.\n"
 " * lsquares_estimates, das die exakte Lösung sucht, wird hingegen oft an Orten ankommen, die außerhalb des Bereichs der Fließkommazahlen liegen oder längerere Zahlen erfordern, als in das RAM des Rechners passen.\n"
 
