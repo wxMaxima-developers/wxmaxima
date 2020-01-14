@@ -1735,10 +1735,12 @@ bool wxMaxima::StartServer()
 
   wxIPV4address addr;
 
-  addr.AnyAddress();
+  addr.LocalHost();
   addr.Service(m_port);
 
   m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
+  if(!m_server)
+    return false;
   if (!m_server->Ok())
   {
     m_server->Destroy();
@@ -1748,14 +1750,10 @@ bool wxMaxima::StartServer()
     return false;
   }
   m_server->SetEventHandler(*GetEventHandler());
-  m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->Notify(true);
+  m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->SetTimeout(30);
   RightStatusText(_("Server started"));
-
-  if(m_server->IsConnected())
-    OnMaximaConnect();
-  
   return true;
 }
 
@@ -2077,7 +2075,7 @@ void wxMaxima::KillMaxima(bool logMessage)
   {
     // wxProcess::kill will fail on MSW. Something with a console.
     SuppressErrorDialogs logNull;
-    if(wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN) != wxKILL_OK)
+    if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
       wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
   }
   m_worksheet->m_configuration->InLispMode(false);
@@ -2112,15 +2110,42 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
   wxLogMessage(_("Gnuplot has closed."));
 }
 
-void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
+void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
-  wxLogMessage(_("Maxima has terminated."));
+  wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i."),
+               event.GetPid(), event.GetExitCode());
+  if(m_maximaStdout)
+  {
+    wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+    wxString o;
+    wxChar ch;
+    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStdout->CanRead()))
+      o += ch;
+    
+    wxString o_trimmed = o;
+    o_trimmed.Trim();
+    if(!o.IsEmpty())
+      wxLogMessage(_("Last message from maxima's stdout: %s"), o.utf8_str());
+  }
+  if(m_maximaStderr)
+  {
+    wxTextInputStream istrm(*m_maximaStderr, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+    wxString o;
+    wxChar ch;
+    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStderr->CanRead()))
+      o += ch;
+    
+    wxString o_trimmed = o;
+    o_trimmed.Trim();
+    if(!o.IsEmpty())
+      wxLogMessage(_("Last message from maxima's stderr: %s"), o.utf8_str());
+  }
   m_rawDataToSend.Clear();
   m_rawBytesSent = 0;
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
-    RightStatusText(_("Maxima process terminated."));
+    RightStatusText(_("Maxima process terminated unexpectedly."));
 
     if(m_first)
     {
