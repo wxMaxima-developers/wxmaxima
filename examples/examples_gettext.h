@@ -684,7 +684,7 @@ L"This approach is much more good-natured for finding the parameters (that can t
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"The problem with noise causing finding erroneous parameters is still valid, though, in this case.  It can be partially eliminated by introducing a c_noise.\n" 
+L"The problem with noise causing finding erroneous parameters is still valid, though, in this case.  It can be partially eliminated by introducing a c_noise, as proposed by Guo.\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
