@@ -185,6 +185,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
+  wxSocketBase::Initialize();
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
   m_locale = locale;
@@ -1059,6 +1060,7 @@ wxMaxima::~wxMaxima()
       MyApp::m_topLevelWindows.back()->BecomeLogTarget();
     }
   }
+  wxSocketBase::Shutdown();
 }
 
 #if wxUSE_DRAG_AND_DROP
