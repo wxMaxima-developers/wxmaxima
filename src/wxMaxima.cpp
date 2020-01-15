@@ -1822,7 +1822,7 @@ bool wxMaxima::StartMaxima(bool force)
                        dirname.utf8_str())
           );
     
-    if(m_process != NULL)
+    if((m_process != NULL) || (m_pid >= 0))
     {
       m_closing = true;
       KillMaxima();
@@ -2034,9 +2034,6 @@ void wxMaxima::KillMaxima(bool logMessage)
   m_closing = true;
   m_worksheet->m_variablesPane->ResetValues();
   m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
-  if(m_pid < 0)
-    return;
-
   if(logMessage)
     wxLogMessage(_("Killing Maxima."));
   m_configCommands = wxEmptyString;
