@@ -125,7 +125,7 @@ void FracCell::RecalculateWidths(int fontsize)
       m_width = 0;
     else
     {
-      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 3);
+      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 2);
       
       // We want half a space's widh of blank space to separate us from the
       // next minus.
