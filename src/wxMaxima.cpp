@@ -1749,7 +1749,7 @@ bool wxMaxima::StartServer()
   m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT);
   if(!m_server)
     return false;
-  if (!m_server->Ok())
+  if (!m_server->IsOk())
   {
     m_server->Destroy();
     m_server = NULL;
