@@ -2081,7 +2081,7 @@ void wxMaxima::KillMaxima(bool logMessage)
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0)
   {
-    // wxProcess::kill will fail on MSW. Something with a console.
+ // wxProcess::kill will fail on MSW. Something with a console.
     SuppressErrorDialogs logNull;
     if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
       wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
@@ -2107,9 +2107,7 @@ void wxMaxima::KillMaxima(bool logMessage)
       wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
-  wxUpdateUIEvent dummy;
-  UpdateToolBar(dummy);
-  UpdateMenus(dummy);
+  Refresh();
 }
 
 void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
