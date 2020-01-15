@@ -593,7 +593,6 @@ wxString EditorCell::ToXML()
 void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-
   m_isDirty = false;
   if (NeedsRecalculation())
   {

@@ -1746,7 +1746,7 @@ bool wxMaxima::StartServer()
   addr.LocalHost();
   addr.Service(m_port);
 
-  m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
+  m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT);
   if(!m_server)
     return false;
   if (!m_server->Ok())
