@@ -542,8 +542,12 @@ void GroupCell::RemoveOutput()
   (*m_configuration)->AdjustWorksheetSize(true);
   m_isHidden = false;
 
+  ResetSize();
+  Recalculate();
   // Move all cells that follow the current one up by the amount this cell has shrinked.
-  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
+  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_previous);
+  if(cell == NULL)
+    cell = this;
   while(cell != NULL)
     cell = cell->UpdateYPosition();
   UpdateCellsInGroup();
@@ -583,7 +587,9 @@ void GroupCell::AppendOutput(Cell *cell)
       while (m_lastInOutput->m_next != NULL)
         m_lastInOutput = m_lastInOutput->m_next;
   }
-//  Recalculate();
+  ResetSize();
+  ResetData();
+  m_output->ResetSize();
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
 }
@@ -953,7 +959,9 @@ GroupCell *GroupCell::UpdateYPosition()
   if (m_previous == NULL)
   {
     m_currentPoint.x = configuration->GetIndent();
-    m_currentPoint.y = configuration->GetBaseIndent() + GetCenterList();
+    if(m_center < 0)
+      Recalculate();
+    m_currentPoint.y = configuration->GetBaseIndent() + GetCenter();
   }
   else
   {

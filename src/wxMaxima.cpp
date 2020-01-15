@@ -1737,7 +1737,6 @@ bool wxMaxima::StartServer()
   {
     m_server->Destroy();
     m_server = NULL;
-    return;
   }
   
   RightStatusText(wxString::Format(_("Starting server on port %d"), m_port));

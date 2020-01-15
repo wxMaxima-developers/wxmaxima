@@ -860,8 +860,6 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   tmp->AppendOutput(newCell);
   
   UpdateConfigurationClientSize();
-  
-  tmp->ResetSize();
   Recalculate(tmp);
   
   if (FollowEvaluation())
@@ -924,7 +922,7 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 bool Worksheet::RecalculateIfNeeded()
 {
   bool recalculate = true;
-
+  UpdateConfigurationClientSize();
   if((m_recalculateStart == NULL) || (GetTree() == NULL))
     recalculate = false;
 
