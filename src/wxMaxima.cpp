@@ -1822,7 +1822,7 @@ bool wxMaxima::StartMaxima(bool force)
                        dirname.utf8_str())
           );
     
-    if((m_process != NULL) || (m_pid >= 0))
+    if((m_process != NULL) || (m_pid >= 0) || (m_client))
     {
       m_closing = true;
       KillMaxima();
@@ -2180,12 +2180,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
   wxUpdateUIEvent dummy;
   UpdateToolBar(dummy);
   UpdateMenus(dummy);
-}
-
-void wxMaxima::CleanUp()
-{
-  if (m_client && (m_client->IsConnected()))
-    KillMaxima();
 }
 
 ///--------------------------------------------------------------------------------
@@ -8266,7 +8260,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   }
   event.Skip();
 
-  CleanUp();
+  KillMaxima();
   MyApp::m_topLevelWindows.remove(this);
 }
 

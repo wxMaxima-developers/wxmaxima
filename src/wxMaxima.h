@@ -111,8 +111,6 @@ public:
   static void ExitOnError(){m_exitOnError = true;}
   static void ExtraMaximaArgs(wxString args){m_extraMaximaArgs = args;}
 
-  //! Clean up on exit
-  void CleanUp();                                  //!< shuts down server and client on exit
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
   {
