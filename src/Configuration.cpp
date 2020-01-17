@@ -528,6 +528,20 @@ wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
   return font;
 }
 
+int Configuration::GetLineWidth() const
+{
+  // The default line width is the width of the viewport minus the indentation minus
+  // roughly one char
+  int lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
+                                           GetCellBracketWidth() + m_defaultFontSize);
+
+  // If that was suspiciously wide we reduce the default line width again.
+  if((lineWidth >= Scale_Px(double(m_defaultFontSize)) * LineWidth_em()) &&
+     (!m_printing))
+    lineWidth = Scale_Px(double(m_defaultFontSize)) * LineWidth_em();
+  return lineWidth;
+}
+
 Configuration::drawMode Configuration::GetParenthesisDrawMode()
 {
   if(m_parenthesisDrawMode == unknown)

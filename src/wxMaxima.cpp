@@ -1823,14 +1823,11 @@ bool wxMaxima::StartMaxima(bool force)
           );
     
     if((m_process != NULL) || (m_pid >= 0) || (m_client))
-    {
-      m_closing = true;
       KillMaxima();
-    }
+
     m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
     wxString command = GetCommand();
-
     if(!command.IsEmpty())
     {
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
@@ -1849,7 +1846,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
-    if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
+    if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) <= 0 )
     {
       StatusMaximaBusy(process_wont_start);
       RightStatusText(_("Cannot start the maxima binary"));
@@ -2080,8 +2077,13 @@ void wxMaxima::KillMaxima(bool logMessage)
   {
  // wxProcess::kill will fail on MSW. Something with a console.
     SuppressErrorDialogs logNull;
-    if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
-      wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
+    if(wxProcess::Kill(m_pid, wxSIGKILL,  wxKILL_CHILDREN) != wxKILL_OK)
+    {
+      if(wxProcess::Kill(m_pid, wxSIGKILL) != wxKILL_OK)
+        wxLogMessage(_("Sending a wxSIGKILL to maxima has failed"));
+      else
+        wxLogMessage(_("Sent wxSIGKILL to maxima, but not to its child processes"));
+    }
   }
   m_worksheet->m_configuration->InLispMode(false);
 

@@ -440,9 +440,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
 
-  // Inform all cells how wide our display is
-  m_configuration->SetCanvasSize(GetClientSize());
-
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
   wxSize sz = GetSize();
@@ -736,7 +733,6 @@ GroupCell *Worksheet::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
 
-  m_configuration->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate(where, false);
@@ -941,14 +937,11 @@ bool Worksheet::RecalculateIfNeeded()
     m_recalculateStart = GetTree();
 
   GroupCell *tmp;
-  m_configuration->SetCanvasSize(GetClientSize());
 
   if (m_recalculateStart == NULL)
     tmp = GetTree();
   else
     tmp = m_recalculateStart;
-
-  m_configuration->SetCanvasSize(GetClientSize());
 
   UpdateConfigurationClientSize();
 

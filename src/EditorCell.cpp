@@ -69,7 +69,7 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_firstLineOnly = false;
   m_historyPosition = -1;
   SetValue(TabExpand(text, 0));
-//  ResetSize();  
+  ResetSize();  
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input)
@@ -594,7 +594,7 @@ void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   m_isDirty = false;
-  if (NeedsRecalculation())
+//  if (NeedsRecalculation())
   {
     StyleText();
     m_fontSize_Last = Scale_Px(fontsize);
@@ -3393,13 +3393,8 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
   width = GetTextSize(token).GetWidth();
   lineWidth += width;
 
-  // Normally the cell begins at the x position m_currentPoint.x - but sometimes
-  // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin = Scale_Px(configuration->GetLabelWidth() +
-                         configuration->GetCellBracketWidth());
-
   if (
-          (lineWidth + xmargin + indentationPixels >= configuration->GetLineWidth()) &&
+          (lineWidth + indentationPixels >= configuration->GetLineWidth()) &&
           (lastSpace != NULL) && (lastSpace->GetText() != "\r"))
   {
     int charWidth;
@@ -3487,7 +3482,7 @@ void EditorCell::StyleTextCode()
     
     // Most of the other item types can contain Newlines - that we want as separate tokens
     wxString txt = tokenString;
-    wxString line;      
+    wxString line;
     for (wxString::const_iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
     {
       if(*it2 != '\n')
@@ -3516,12 +3511,6 @@ void EditorCell::StyleTextCode()
 void EditorCell::StyleTextTexts()
 {
   Configuration *configuration = (*m_configuration);
-
-  // Normally the cell begins at the x position m_currentPoint.x - but sometimes
-  // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin =
-  Scale_Px(configuration->GetLabelWidth()) +
-  configuration->GetCellBracketWidth();
 
   // Remove all bullets of item lists as we will introduce them again in the next
   // step, as well.
@@ -3570,7 +3559,7 @@ void EditorCell::StyleTextTexts()
             // How long is the current line already?
             width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
             // Do we need to introduce a soft line break?
-            if (width + xmargin + indent >= configuration->GetLineWidth())
+            if (width + indent >= configuration->GetLineWidth())
             {
               // We need a line break in front of the last space
               m_text[lastSpacePos] = wxT('\r');
@@ -3619,7 +3608,7 @@ void EditorCell::StyleTextTexts()
 
             // Does the line extend too much to the right to fit on the screen /
             // to be easy to read?
-            if (width + m_currentPoint.x + indent >= configuration->GetLineWidth())
+            if (width + indent >= configuration->GetLineWidth())
             {
               // We need a line break. Does the current line contain a space we can
               // break the line at?
