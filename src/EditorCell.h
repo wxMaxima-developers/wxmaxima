@@ -552,6 +552,8 @@ public:
     SetSelection(m_lastSelectionStart, 0);
   }
 
+  void SetType(CellType type) override;
+
   //! Return to the selection after the cell has been left downwards
   void ReturnToSelectionFromBot()
   {
@@ -641,12 +643,14 @@ private:
       return m_text;
     }
 
+
+  
     //! Changes the piece of text kept in this token
     void SetText(wxString text)
     {
       m_text = text;
     }
-
+    
     //! Changes the indentation level of this token
     void SetIndentation(int indentPixels, wxString indentString = wxEmptyString)
     {
