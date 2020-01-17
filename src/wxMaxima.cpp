@@ -8261,7 +8261,8 @@ void wxMaxima::OnClose(wxCloseEvent &event)
     wxTheClipboard->Close();
   }
   event.Skip();
-
+  if(m_fileSaved)
+    RemoveTempAutosavefile();
   KillMaxima();
   MyApp::m_topLevelWindows.remove(this);
 }
