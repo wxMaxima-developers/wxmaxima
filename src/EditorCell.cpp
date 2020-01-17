@@ -982,11 +982,16 @@ void EditorCell::Draw(wxPoint point)
   }
 }
 
-//! Sets the text style according to the type
 void EditorCell::SetType(CellType type)
 {
   m_widths.clear();
   Cell::SetType(type);
+}
+
+void EditorCell::SetStyle(TextStyle style)
+{
+  m_widths.clear();
+  Cell::SetStyle(style);
 }
 
 void EditorCell::SetFont()

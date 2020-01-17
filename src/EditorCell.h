@@ -553,6 +553,7 @@ public:
   }
 
   void SetType(CellType type) override;
+  void SetStyle(TextStyle style) override;
 
   //! Return to the selection after the cell has been left downwards
   void ReturnToSelectionFromBot()
