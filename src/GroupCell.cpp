@@ -937,8 +937,6 @@ bool GroupCell::NeedsRecalculation()
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
-
   if(NeedsRecalculation())
   {
     m_outputRect.SetHeight(0);
@@ -949,6 +947,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 //  if (((m_height <= 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
 //    m_height = configuration->GetCellBracketWidth();
   
+  Cell::RecalculateHeight(fontsize);
   UpdateYPosition();
 }
 

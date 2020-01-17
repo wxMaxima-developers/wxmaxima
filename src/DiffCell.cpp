@@ -93,7 +93,6 @@ void DiffCell::RecalculateWidths(int fontsize)
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_baseCell->RecalculateHeightList(fontsize);
@@ -101,6 +100,7 @@ void DiffCell::RecalculateHeight(int fontsize)
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void DiffCell::Draw(wxPoint point)

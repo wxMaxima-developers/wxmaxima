@@ -146,7 +146,6 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateHeightList(fontsize);
@@ -183,6 +182,7 @@ void ExptCell::RecalculateHeight(int fontsize)
     else
       m_expt_yoffset += baseHeight - exptHeight;
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 wxString ExptCell::ToString()

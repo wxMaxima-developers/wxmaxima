@@ -238,7 +238,6 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
@@ -292,6 +291,7 @@ void ParenCell::RecalculateHeight(int fontsize)
       m_center = m_height / 2;   
     }
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point)

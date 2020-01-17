@@ -143,7 +143,6 @@ void LimitCell::RecalculateWidths(int fontsize)
 
 void LimitCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   if(!m_isBrokenIntoLines)
   {
     if(m_under)
@@ -167,6 +166,7 @@ void LimitCell::RecalculateHeight(int fontsize)
     m_height = m_name->GetHeightList();
     m_center = m_name->GetCenterList();
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void LimitCell::Draw(wxPoint point)

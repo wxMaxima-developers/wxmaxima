@@ -99,7 +99,6 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_innerCell->RecalculateHeightList(fontsize);
@@ -113,6 +112,7 @@ void ConjugateCell::RecalculateHeight(int fontsize)
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point)

@@ -516,6 +516,10 @@ void Cell::RecalculateWidthsList(const int &fontsize)
 
 void Cell::RecalculateWidths(int fontsize)
 {
+}
+
+void Cell::RecalculateHeight(int fontsize)
+{
   ResetData();
   m_fontSize = fontsize;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();

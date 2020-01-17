@@ -149,7 +149,6 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   if(m_exponent || m_isBrokenIntoLines)
   {
     m_displayedNum->RecalculateHeightList(fontsize);
@@ -181,6 +180,7 @@ void FracCell::RecalculateHeight(int fontsize)
       m_center = wxMax(m_num->GetCenterList(), m_denom->GetCenterList());
     }
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void FracCell::Draw(wxPoint point)

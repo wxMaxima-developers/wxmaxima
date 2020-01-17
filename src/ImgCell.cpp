@@ -159,7 +159,6 @@ void ImgCell::RecalculateWidths(int fontsize)
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
   if (m_image)
   {
@@ -170,6 +169,7 @@ void ImgCell::RecalculateHeight(int fontsize)
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point)

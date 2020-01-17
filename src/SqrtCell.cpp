@@ -183,6 +183,7 @@ void SqrtCell::RecalculateHeight(int fontsize)
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point)

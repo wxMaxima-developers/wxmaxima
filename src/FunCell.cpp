@@ -92,7 +92,6 @@ void FunCell::RecalculateWidths(int fontsize)
 
 void FunCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_nameCell->RecalculateHeightList(fontsize);
@@ -102,6 +101,7 @@ void FunCell::RecalculateHeight(int fontsize)
   }
   else
     m_height = 0;
+  Cell::RecalculateHeight(fontsize);
 }
 
 void FunCell::Draw(wxPoint point)

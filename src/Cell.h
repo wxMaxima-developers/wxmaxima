@@ -557,8 +557,7 @@ class Cell
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize)
-    {m_fontSize = fontsize;}
+  virtual void RecalculateHeight(int fontsize);
 
   /*! Recalculate the height of this list of cells
 

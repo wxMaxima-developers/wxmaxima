@@ -103,7 +103,6 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 2));
@@ -129,6 +128,7 @@ void MatrCell::RecalculateHeight(int fontsize)
   if (m_height == 0)
     m_height = fontsize + Scale_Px(10);
   m_center = m_height / 2;
+  Cell::RecalculateHeight(fontsize);
 }
 
 void MatrCell::Draw(wxPoint point)

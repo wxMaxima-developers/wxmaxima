@@ -147,7 +147,6 @@ void SumCell::RecalculateWidths(int fontsize)
 
 void SumCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_displayedBase->RecalculateHeightList(fontsize);
@@ -157,6 +156,7 @@ void SumCell::RecalculateHeight(int fontsize)
   m_height = m_center +
              wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
                  m_displayedBase->GetMaxDrop());
+  Cell::RecalculateHeight(fontsize);
 }
 
 void SumCell::Draw(wxPoint point)

@@ -160,7 +160,6 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
 
   int subHeight = 0;
@@ -193,6 +192,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
   m_center = supHeight +
     m_baseCell->GetCenterList() -
     Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+  Cell::RecalculateHeight(fontsize);
 }
 
 void SubSupCell::Draw(wxPoint point)

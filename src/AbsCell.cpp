@@ -103,7 +103,6 @@ void AbsCell::RecalculateWidths(int fontsize)
 
 void AbsCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   if (!m_isBrokenIntoLines)
   {
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
@@ -114,6 +113,7 @@ void AbsCell::RecalculateHeight(int fontsize)
     m_open->RecalculateHeightList(fontsize);
     m_close->RecalculateHeightList(fontsize);
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void AbsCell::Draw(wxPoint point)
