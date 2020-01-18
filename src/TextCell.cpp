@@ -797,9 +797,7 @@ void TextCell::SetFont(int fontsize)
 
 bool TextCell::IsOperator() const
 {
-  if (wxString(wxT("+*/-")).Find(m_text) >= 0)
-    return true;
-  if (m_text == wxT("\u2212"))
+  if (wxString(wxT("+*/-\u2212\u00B7")).Find(m_text) >= 0)
     return true;
   return false;
 }

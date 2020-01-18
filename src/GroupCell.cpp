@@ -521,33 +521,29 @@ void GroupCell::SetOutput(Cell *output)
 void GroupCell::RemoveOutput()
 {
   m_numberedAnswersCount = 0;
-  // If there is nothing to do we can skip the rest of this action.
   if (m_output == NULL)
     return;
+  // If there is nothing to do we can skip the rest of this action.
 
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
 
-  if (!(GetGroupType() == GC_TYPE_IMAGE))
-  {
+  if (GetGroupType() != GC_TYPE_IMAGE)
     m_output = NULL;
-  }
 
   m_cellPointers->m_errorList.Remove(this);
   // Calculate the new cell height.
 
-  ResetSize();
-  ResetData();
-  RecalculateHeight((*m_configuration)->GetDefaultFontSize());
-  (*m_configuration)->AdjustWorksheetSize(true);
   m_isHidden = false;
 
-  ResetSize();
+  // ResetSize();
+  // ResetData();
+
   Recalculate();
+  (*m_configuration)->AdjustWorksheetSize(true);
+  
   // Move all cells that follow the current one up by the amount this cell has shrinked.
-  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_previous);
-  if(cell == NULL)
-    cell = this;
+  GroupCell *cell = this;
   while(cell != NULL)
     cell = cell->UpdateYPosition();
   UpdateCellsInGroup();

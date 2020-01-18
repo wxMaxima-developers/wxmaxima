@@ -1420,6 +1420,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
     m_worksheet->Recalculate(cell->GetGroup());
     if (scrollToCaret)
       m_worksheet->ScrollToCaret();
+    Refresh();
   }
   return cell;
 }
