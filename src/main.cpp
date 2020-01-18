@@ -97,7 +97,7 @@ bool MyApp::OnInit()
   #endif
   #endif
 
-  wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
+  wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
 
   m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
   m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));
@@ -212,9 +212,8 @@ bool MyApp::OnInit()
     wxFileName configFile(ini);
     configFile.MakeAbsolute();
     Configuration::m_configfileLocation_override = configFile.GetFullPath();
-    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
-                                   wxEmptyString,
-                                   Configuration::m_configfileLocation_override));
+    wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString,
+                               Configuration::m_configfileLocation_override));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
