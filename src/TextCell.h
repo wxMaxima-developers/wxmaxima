@@ -128,7 +128,10 @@ protected:
   wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
+  wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
+
+  bool m_alt, m_altJs;
   int m_realCenter;
   /*! The font size we had the last time we were recalculating this cell
 
