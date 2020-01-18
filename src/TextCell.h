@@ -37,7 +37,6 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  //! \todo: m_alt+m_altJs+m_altText+m_altJsText are all needed?
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
   Cell *Copy() override {return new TextCell(*this);}
@@ -129,10 +128,7 @@ protected:
   wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
-  wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
-
-  bool m_alt, m_altJs;
   int m_realCenter;
   /*! The font size we had the last time we were recalculating this cell
 

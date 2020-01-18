@@ -383,6 +383,7 @@ wxSize TextCell::GetTextSize(wxString const &text)
     return it->second;
 
   // Ask wxWidgets to return this text piece's size (slow!)
+  SetFont();
   wxSize sz = dc->GetTextExtent(text);
   m_widths[fontSize] = sz;
   return sz;
@@ -797,7 +798,9 @@ void TextCell::SetFont(int fontsize)
 
 bool TextCell::IsOperator() const
 {
-  if (wxString(wxT("+*/-\u2212\u00B7")).Find(m_text) >= 0)
+  if (wxString(wxT("+*/-")).Find(m_text) >= 0)
+    return true;
+  if (m_text == wxT("\u2212"))
     return true;
   return false;
 }
