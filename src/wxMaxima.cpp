@@ -118,18 +118,18 @@ void wxMaxima::ConfigChanged()
 
   switch (showLength)
   {
-    case 0:
-      m_maxOutputCellsPerCommand = 600;
-      break;
-    case 1:
-      m_maxOutputCellsPerCommand = 1200;
-      break;
-    case 2:
-      m_maxOutputCellsPerCommand = 5000;
-      break;
-    case 3:
-      m_maxOutputCellsPerCommand = -1;
-      break;
+  case 0:
+    m_maxOutputCellsPerCommand = 600;
+    break;
+  case 1:
+    m_maxOutputCellsPerCommand = 1200;
+    break;
+  case 2:
+    m_maxOutputCellsPerCommand = 5000;
+    break;
+  case 3:
+    m_maxOutputCellsPerCommand = -1;
+    break;
   }
   m_worksheet->RecalculateForce();
   m_worksheet->RequestRedraw();
@@ -152,22 +152,22 @@ void wxMaxima::ConfigChanged()
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
 
   m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
-             m_worksheet->m_configuration->GetAutosubscript_string() +
-             wxT(")\n");
+    m_worksheet->m_configuration->GetAutosubscript_string() +
+    wxT(")\n");
 
   // A few variables for additional debug info in wxbuild_info();
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->UserConfDir()).utf8_str());
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
-                              EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
+                                       EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                              defaultPlotWidth,
-                              defaultPlotHeight);
+                                       defaultPlotWidth,
+                                       defaultPlotHeight);
 
   if (m_worksheet->m_currentFile != wxEmptyString)
   {
@@ -1191,8 +1191,8 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
     if (m_outputCellsFromCurrentCommand++ >= m_maxOutputCellsPerCommand)
     {
       DoRawConsoleAppend(
-              _("... [suppressed additional lines since the output is longer than allowed in the configuration] "),
-              MC_TYPE_ERROR);
+        _("... [suppressed additional lines since the output is longer than allowed in the configuration] "),
+        MC_TYPE_ERROR);
       return NULL;
     };
 
@@ -1282,8 +1282,8 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
 
     if (tmp == NULL)
     {
-    if (m_worksheet->GetActiveCell())
-      tmp = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+      if (m_worksheet->GetActiveCell())
+        tmp = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
     }
 
     if(tmp != NULL)
@@ -1316,7 +1316,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
   cell = m_parser.ParseLine(s, type);
 
   wxASSERT_MSG(cell != NULL, _("There was an error in generated XML!\n\n"
-                                       "Please report this as a bug."));
+                               "Please report this as a bug."));
   if (cell == NULL)
   {
     return;
@@ -1333,7 +1333,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-            new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers, wxEmptyString));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers, wxEmptyString));
 
   if (s.IsEmpty())
     return NULL;
@@ -1533,11 +1533,11 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         StatusMaximaBusy(waiting);
 
       wxScopedCharBuffer const data_raw = s.utf8_str();
-      #ifdef __WXMSW__
+#ifdef __WXMSW__
       // On MS Windows we don't get a signal that tells us if a write has
       // finishes. But it seems a write always succeeds
       if(m_client) m_client->Write(data_raw.data(), data_raw.length());
-      #else
+#else
       // On Linux (and most probably all other non MS-Windows systems) we get a
       // signal that tells us a write command has finished - and tells us how many
       // bytes were sent. Which (at least on BSD) might be lower than we wanted.
@@ -1558,7 +1558,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         // that will follow the write.
         if(m_client) m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
-      #endif
+#endif
       if ((!m_client) || m_client->Error()) {
         wxLogMessage(_("Error writing to Maxima"));
         return;
@@ -1575,7 +1575,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
     m_worksheet->m_evaluationQueue.Clear();
   }
   if(!m_maximaStdoutPollTimer.IsRunning())
-      m_statusBar->SetMaximaCPUPercentage(-1);
+    m_statusBar->SetMaximaCPUPercentage(-1);
   m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 }
 
@@ -1675,7 +1675,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   }
   case wxSOCKET_CONNECTION :
     OnMaximaConnect();
-  break;
+    break;
   
   default:
     wxLogMessage(_("Encountered an unknown socket event."));
@@ -1812,6 +1812,7 @@ bool wxMaxima::StartMaxima(bool force)
     // If we have an open file tell maxima to start in the directory the file is in
     wxUnsetEnv("MAXIMA_INITIAL_FOLDER");
     if(!dirname.IsEmpty())
+    {
       if(wxDirExists(dirname))
       {
         // Tell maxima to start in the directory the file is in
@@ -1824,6 +1825,7 @@ bool wxMaxima::StartMaxima(bool force)
                        dirname.utf8_str())
           );
       }
+    }
     if((m_process != NULL) || (m_pid >= 0) || (m_client))
       KillMaxima();
 
