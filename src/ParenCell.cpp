@@ -54,6 +54,20 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_print = true;
 }
 
+// These false-positive warnings only appear in old versions of cppcheck
+// that don't fully understand constructor delegation, still.
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_last1
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_print
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_numberOfExtensions
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth1
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight1
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signTopHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
 ParenCell::ParenCell(const ParenCell &cell):
  ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {

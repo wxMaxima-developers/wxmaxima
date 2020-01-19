@@ -514,7 +514,7 @@ void Cell::RecalculateWidthsList(const int &fontsize)
   }
 }
 
-void Cell::RecalculateWidths(int fontsize)
+void Cell::RecalculateWidths(int WXUNUSED(fontsize))
 {
 }
 
