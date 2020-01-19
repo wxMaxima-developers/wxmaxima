@@ -133,8 +133,6 @@ elseif(APPLE)
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}	
 	)
     set_target_properties(wxmaxima PROPERTIES
-              RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-              RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
               RESOURCE "${ALLRERESOURCES}"
               )
     # make wxmathml.lisp ship with the Mac App
