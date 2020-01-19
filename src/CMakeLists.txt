@@ -122,30 +122,32 @@ if(APPLE)
 endif()
 
 
-SET(MACOSX_BUNDLE_BUNDLE_NAME wxmaxima)
+SET(MACOSX_BUNDLE_BUNDLE_NAME wxMaxima)
+
 add_executable(wxmaxima ${SOURCE_FILES})
-install(
-    TARGETS wxmaxima
-    BUNDLE  DESTINATION ${CMAKE_INSTALL_PREFIX}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
 if(WIN32)
     set_target_properties(wxmaxima WIN32 TRUE)
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
   set_target_properties(wxmaxima PROPERTIES
       RESOURCE "${ALLRERESOURCES}"
       MACOSX_BUNDLE TRUE
       MACOSX_FRAMEWORK_IDENTIFIER com.github.wxMaxima-developers.wxmaxima
       )
-  install(
-      CODE "include(BundleUtilities)
-  set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-    message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
-    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")"
-      )
-  # make wxmathml.lisp ship with the Mac App
-  add_dependencies(wxmaxima wxmaxima.app)
+    install(
+	TARGETS wxmaxima
+	BUNDLE  DESTINATION ${CMAKE_INSTALL_PREFIX}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#CODE "include(BundleUtilities)
+ # set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+  #  message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
+   # fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")"
+	)
+    # make wxmathml.lisp ship with the Mac App
+    add_dependencies(wxmaxima wxmaxima.app)
+else()
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
 
 get_target_property(EXEPATH wxmaxima BINARY_DIR)
