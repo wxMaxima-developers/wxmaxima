@@ -124,10 +124,11 @@ endif()
 
 SET(MACOSX_BUNDLE_BUNDLE_NAME wxMaxima)
 
-add_executable(wxmaxima ${SOURCE_FILES})
 if(WIN32)
+    add_executable(wxmaxima WIN32 ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
+  add_executable(wxmaxima MACOSX_BUNDLE ${SOURCE_FILES})
   set_target_properties(wxmaxima PROPERTIES
       RESOURCE "${ALLRERESOURCES}"
       MACOSX_BUNDLE TRUE
@@ -146,6 +147,7 @@ elseif(APPLE)
     # make wxmathml.lisp ship with the Mac App
     add_dependencies(wxmaxima wxmaxima.app)
 else()
+    add_executable(wxmaxima ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
 
