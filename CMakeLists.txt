@@ -17,8 +17,8 @@ project(wxmaxima LANGUAGES CXX)
 set(VERSION 20.01.2-DevelopmentSnapshot)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
-set(PACKAGE wxMaxima)
-set(APP_NAME wxMaxima)
+set(PACKAGE wxmaxima)
+set(APP_NAME wxmaxima)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -90,7 +90,7 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(src)
 
-install(FILES COPYING README README.md DESTINATION share/wxMaxima)
+install(FILES COPYING README README.md DESTINATION share/wxmaxima)
 
 install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
   DESTINATION programs
@@ -106,7 +106,7 @@ endif()
 if(APPLE)
     install(CODE "include(BundleUtilities)
     set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
+    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
 endif()
 
 # Build Packages
