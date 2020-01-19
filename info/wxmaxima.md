@@ -334,6 +334,13 @@ If this option isn't set wxMaxima behaves more like a modern cellphone app:
 *   Files are saved automatically on exit
 *   And the file will automatically be saved every 3 minutes.
 
+### Where is the configuration saved?
+
+If you are using Unix/Linux, a file `.wxMaxima` in your homedirectory is used for saving wxMaxima's configuration. (Since the filename starts with a dot, it will be a hidden file).
+
+If you are using Windows, the configuration will be stored in the registry. You will find the entries for wxMaxima at the following position in the registry: `HKEY_CURRENT_USER\Software\wxMaxima`
+
+
 * * *
 
 
