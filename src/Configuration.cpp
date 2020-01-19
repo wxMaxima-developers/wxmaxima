@@ -745,7 +745,7 @@ void Configuration::ReadStyles(wxString file)
   else
   {
     wxFileInputStream str(file);
-    config = new wxConfig(str);
+    config = new wxFileConfig(str);
   }
   
   // Font
@@ -821,7 +821,7 @@ void Configuration::WriteStyles(wxString file)
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-    config = new wxConfig(wxT("wxMaxima"), wxEmptyString, file);
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
   config->Write(wxT("Style/fontname"), m_fontName);
