@@ -382,8 +382,8 @@ wxSize TextCell::GetTextSize(wxString const &text)
   if(it != m_widths.end())
     return it->second;
 
-  // Ask wxWidgets to return this text piece's size (slow!)
-  SetFont();
+  // Ask wxWidgets to return this text piece's size (slow, but the only way if
+  // there is no cached size).
   wxSize sz = dc->GetTextExtent(text);
   m_widths[fontSize] = sz;
   return sz;
