@@ -72,7 +72,6 @@ if(APPLE)
     ${CMAKE_SOURCE_DIR}/info/*.png
     ${CMAKE_SOURCE_DIR}/info/*.hhp)
   file(GLOB CONTENT_FILES
-    ${CMAKE_BINARY_DIR}/data/Info.plist
     ${CMAKE_SOURCE_DIR}/data/PkgInfo)
   file(GLOB FONT_FILES
     ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
@@ -134,7 +133,6 @@ elseif(APPLE)
     set_target_properties(wxmaxima PROPERTIES
               RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
               RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-              MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
               RESOURCE "${ALLRERESOURCES}"
               )
     # make wxmathml.lisp ship with the Mac App
@@ -146,7 +144,6 @@ endif()
 get_target_property(EXEPATH wxmaxima BINARY_DIR)
 get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY)
 get_target_property(OUTPUTNAME wxmaxima OUTPUT_NAME)
-get_target_property(MACOSX_BUNDLE_INFO_PLIST wxmaxima ${CMAKE_SOURCE_DIR}/data/info.plist)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
