@@ -125,7 +125,7 @@ endif()
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
 elseif(APPLE)
-  add_executable(wxmaxima ${SOURCE_FILES})
+  add_executable(wxmaxima MACOSX_BUNDLE ${SOURCE_FILES})
   
     install(TARGETS wxmaxima
       BUNDLE DESTINATION . COMPONENT Runtime
