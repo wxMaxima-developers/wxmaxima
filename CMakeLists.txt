@@ -106,6 +106,7 @@ endif()
 if(APPLE)
     install(CODE "include(BundleUtilities)
     set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+    message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
 endif()
 
