@@ -102,14 +102,6 @@ if(WIN32 AND APPVEYOR_BUILD)
     install(FILES ${wxwidgets_dlls} DESTINATION bin/)
 endif()
 
-# Make the bundle portable to other macs.
-if(APPLE)
-    install(CODE "include(BundleUtilities)
-    set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-    message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
-    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
-endif()
-
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
