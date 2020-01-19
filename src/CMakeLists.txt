@@ -123,12 +123,14 @@ endif()
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
   add_executable(wxmaxima MACOSX_BUNDLE ${SOURCE_FILES})
   
     install(TARGETS wxmaxima
-	BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-	RUNTIME DESTINATION bin COMPONENT Runtime
+	BUNDLE  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}	
 	)
     set_target_properties(wxmaxima PROPERTIES
               RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
@@ -139,8 +141,10 @@ elseif(APPLE)
     add_dependencies(wxmaxima wxMaxima.app)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
- 
+
+
 get_target_property(EXEPATH wxmaxima BINARY_DIR)
 get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY)
 get_target_property(OUTPUTNAME wxmaxima OUTPUT_NAME)
@@ -156,5 +160,3 @@ target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
-
-install(TARGETS wxmaxima RUNTIME DESTINATION bin)

@@ -199,6 +199,7 @@ add_custom_target(checksums
 
 include(InstallRequiredSystemLibraries)
 include(CPack)
+include(GNUInstallDirs)
 
 enable_testing()
 add_subdirectory(test)
