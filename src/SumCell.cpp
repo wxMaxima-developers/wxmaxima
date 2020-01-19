@@ -168,7 +168,7 @@ void SumCell::Draw(wxPoint point)
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
 
-    wxPoint base(point), under(point), over(point), sign(point);
+    wxPoint base(point), under(point), over(point);
 
     under.x += m_signWCenter - m_under->GetFullWidth() / 2;
     under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);

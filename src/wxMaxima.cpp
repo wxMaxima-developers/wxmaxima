@@ -1818,11 +1818,12 @@ bool wxMaxima::StartMaxima(bool force)
         wxSetEnv(wxT("MAXIMA_INITIAL_FOLDER"),dirname);
       }
       else
+      {
         wxLogWarning(wxString::Format(
                        wxT("Directory %s doesn't exist. Maxima might complain about that."),
                        dirname.utf8_str())
           );
-    
+      }
     if((m_process != NULL) || (m_pid >= 0) || (m_client))
       KillMaxima();
 
