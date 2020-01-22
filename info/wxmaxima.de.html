@@ -323,7 +323,7 @@ Normaler Text</code></pre>
 <li>Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt.</li>
 </ul>
 <h3 id="arbeitsblatt-nicht-automatisch-speichern"><span class="header-section-number">1.3.9</span> Arbeitsblatt nicht automatisch speichern</h3>
-<p>Wenn diese Option gewählt ist, wird das Arbeitsblatt nur überschrieben, wenn der Benutzer es speichert. Ein aktuelles Backup wird in diesem Fall im temp-Verzeichnis abgelegt.</p>
+<p>If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
 <p>Ist diese Option nicht angewählt, arbeitet <em>wxMaxima</em> wie eine moderne Handy-Applikation:</p>
 <ul>
 <li>Dateien werden beim Schließen automatisch gespeichert</li>
@@ -390,7 +390,7 @@ Normaler Text</code></pre>
 <h3 id="die-größe-eingebetteter-diagramme-1"><span class="header-section-number">2.3.4</span> Die Größe eingebetteter Diagramme</h3>
 <p>Wenn ein Diagramm mittels einem <code>wxdraw</code>-ähnlichen Befehl erstellt wurde (<code>wxplot</code> wird hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang ist, bietet <em>wxMaxima</em> einen Rechts-Klick-Menüpunkt an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet.</p>
 <h3 id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
-<p>Wenn unter Windows die Variable <code>gnuplot_command</code> auf “wgnuplot” geändert wird, erlaubt gnuplot, eine Kommandokonsole zu öffnen, stielt aber jedes Mal, wenn ein Diagramm gezeichnet wird, die Zeichen, die währenddessen in die Tastatur eingegeben werden.</p>
+<p>On MS Windows, if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot”, gnuplot offers the possibility to open a console window, where gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
 <h3 id="einbetten-von-animationen-in-das-arbeitsblatt"><span class="header-section-number">2.3.6</span> Einbetten von Animationen in das Arbeitsblatt</h3>
 <p>3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. <em>wxMaxima</em> allows to export this animation as an animated gif.</p>
 <p>Die ersten beiden Argumente von <code>with_slider_draw</code> sind der Name der Variable des zu variierenden Parameters und die Liste der Werte, die dieser annehmen soll. Darauf folgen die ganz normalen Argumente, die <code>wxdraw2d</code> akzeptiert:</p>
@@ -448,7 +448,7 @@ with_slider_draw(
     grid=true,
     explicit(f,x,0,10)
 )$</code></pre>
-<p>Wenn <em>Maxima</em> explizit gebeten wird, den Wert einzusetzen, funktioniert der Befehl stattdessen:</p>
+<p>If <em>Maxima</em> is explicitly asked to substitute the slider’s value plotting works fine instead:</p>
 <pre><code>f:sin(a*x);
 with_slider_draw(
     b,makelist(i/2,i,1,10),
@@ -474,10 +474,10 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>Die “Plotte mittels Draw”-Seitenleiste</p>
 <p>Die “Plotte mittels Draw”-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des <em>draw</em>-Pakets von <em>Maxima</em> zu nutzen.</p>
 <h4 id="d"><span class="header-section-number">2.3.7.1</span> 2D</h4>
-<p>Generiert einen <code>draw()</code>-Befehl, der mittels der anderen Knöpfe der Seitenleiste mit einer 2D-Szene gefüllt werden kann.</p>
+<p>Generates the skeleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
 <p>Dieser Knopf ist hauptsächlich dann praktisch, wenn eine Animation erstellt werden soll: Ein sich bewegendes flaches Diagramm ist einfacher abzulesen, als ein räumliches Solches.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.7.2</span> 3D</h4>
-<p>Wie “2D”, aber für dreidimensionale Diagramme.</p>
+<p>Generates the skeleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
 <h4 id="ausdruck"><span class="header-section-number">2.3.7.3</span> Ausdruck</h4>
 <p>Fügt den aktuellen <code>draw()</code>-Befehl den Plot einer Kurve wie <code>sin(x)</code> oder <code>x^2+2*x-4</code> hinzu. Besteht noch kein <code>draw()</code>-Befehl, wird automatisch eine 2D-Szene erzeugt.</p>
 <h4 id="implizit"><span class="header-section-number">2.3.7.4</span> Implizit</h4>

@@ -325,7 +325,7 @@ Ordinary text</code></pre>
 <li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
 </ul>
 <h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.5</span> Don’t save the worksheet automatically</h3>
-<p>If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
+<p>If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
 <p>If this option isn’t set wxMaxima behaves more like a modern cellphone app:</p>
 <ul>
 <li>Files are saved automatically on exit</li>
@@ -391,7 +391,7 @@ Ordinary text</code></pre>
 <h3 id="opening-embedded-plots-in-interactive-gnuplot-windows"><span class="header-section-number">2.3.4</span> Opening embedded plots in interactive gnuplot windows</h3>
 <p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot</code> isn’t supported by this feature) and the file size of the underlying gnuplot project isn’t way too high <em>wxMaxima</em> offers a right-click menu that allows to open the plot in an interactive gnuplot window.</p>
 <h3 id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
-<p>On MS Windows if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot” gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
+<p>On MS Windows, if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot”, gnuplot offers the possibility to open a console window, where gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
 <h3 id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.6</span> Embedding animations into the spreadsheet</h3>
 <p>3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. <em>wxMaxima</em> allows to export this animation as an animated gif.</p>
 <p>The first two arguments for <code>with_slider_draw</code> are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for <code>wxdraw2d</code>:</p>
@@ -449,7 +449,7 @@ with_slider_draw(
     grid=true,
     explicit(f,x,0,10)
 )$</code></pre>
-<p>If <em>Maxima</em> is explicitely asked to substitute the slider’s value plotting works fine instead:</p>
+<p>If <em>Maxima</em> is explicitly asked to substitute the slider’s value plotting works fine instead:</p>
 <pre><code>f:sin(a*x);
 with_slider_draw(
     b,makelist(i/2,i,1,10),
@@ -475,10 +475,10 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h3 id="the-plot-using-draw-sidepane"><span class="header-section-number">2.3.8</span> The “Plot using draw” sidepane</h3>
 <p>The “Plot using draw” sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
-<p>Generates the sceleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
+<p>Generates the skeleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
 <p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em> has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
-<p>Generates the sceleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
+<p>Generates the skeleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
 <h4 id="expression"><span class="header-section-number">2.3.8.3</span> Expression</h4>
 <p>Appends a standard plot of an expression like <code>sin(x)</code>, <code>x*sin(x)</code> or <code>x^2+2*x-4</code> to the <code>draw()</code> command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.</p>
 <h4 id="implicit-plot"><span class="header-section-number">2.3.8.4</span> Implicit plot</h4>
