@@ -138,10 +138,10 @@ elseif(APPLE)
 	TARGETS wxmaxima
 	BUNDLE  DESTINATION .
 	RUNTIME DESTINATION bin
-#CODE "include(BundleUtilities)
- # set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-  #  message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
-   # fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")"
+	CODE "include(BundleUtilities)
+ set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+    message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
+    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")"
 	)
     # make wxmathml.lisp ship with the Mac App
     add_dependencies(wxmaxima wxmaxima.app)
