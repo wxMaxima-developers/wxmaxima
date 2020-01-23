@@ -201,7 +201,9 @@ leadsto       a "leads to" sign
 -->           a long right arrow
 ~~~~
 
-If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing `<kbd>ESC</kbd>number of the character<kbd>ESC</kbd>`. `<kbd>ESC</kbd>61<kbd>ESC</kbd>` therefore results in an `a`.
+If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.
+
+<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.
 
 Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
