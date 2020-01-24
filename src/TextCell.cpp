@@ -1637,9 +1637,7 @@ void TextCell::SetAltText()
     if((*m_configuration)->Latin2Greek())
     {
       m_altJsText = GetGreekStringTeX();
-      m_texFontname = CMMI10;
-      
-      m_alt = true;
+      m_texFontname = CMMI10;      
       m_altText = GetGreekStringUnicode();
     }
   }
