@@ -338,6 +338,7 @@ void TextCell::SetValue(const wxString &text)
                       "an equation was expected but was lacking an \"=\"."));
     }
   }
+  SetAltText();
   ResetSize();
 }
 
@@ -431,9 +432,7 @@ void TextCell::RecalculateWidths(int fontsize)
       (m_userDefinedLabel != wxEmptyString)
       )
       m_textStyle = TS_USERLABEL;
-    
-    SetAltText();
-    
+        
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
     if (
@@ -448,7 +447,6 @@ void TextCell::RecalculateWidths(int fontsize)
     }
     
     m_lastCalculationFontSize = fontsize;
-
 
     if(m_numStart != wxEmptyString)
     {      
@@ -499,6 +497,8 @@ void TextCell::RecalculateWidths(int fontsize)
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
         wxString text = m_text;
+        if(!m_altText.IsEmpty())
+          text = m_altText;
 
         if(m_textStyle == TS_USERLABEL)
         {
@@ -564,12 +564,6 @@ void TextCell::RecalculateWidths(int fontsize)
         m_width = sz.GetWidth();
         m_height = sz.GetHeight();
       }
-      else if (m_displayedText.IsEmpty())
-      {
-        m_height = m_fontSize;
-        m_width = 0;
-      }
-
       /// This is the default.
       else
       {
