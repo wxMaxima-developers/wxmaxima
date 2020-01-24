@@ -33,8 +33,6 @@
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
                    wxString text, TextStyle style) : Cell(parent, config, cellPointers)
 {
-  m_alt = false;
-  m_altJs = false;
   switch(m_textStyle = style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
@@ -340,7 +338,6 @@ void TextCell::SetValue(const wxString &text)
                       "an equation was expected but was lacking an \"=\"."));
     }
   }
-  m_alt = m_altJs = false;
   ResetSize();
 }
 
@@ -551,7 +548,7 @@ void TextCell::RecalculateWidths(int fontsize)
         m_center = m_height / 2;
       }
       // Check if we are using jsMath and have jsMath character
-      else if (m_altJs && configuration->CheckTeXFonts())
+      else if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
       {      
         wxSize sz = GetTextSize(m_altJsText);
         m_width = sz.GetWidth();
@@ -561,7 +558,7 @@ void TextCell::RecalculateWidths(int fontsize)
       }
 
       /// We are using a special symbol
-      else if (m_alt)
+      else if (!m_altText.IsEmpty())
       {
         wxSize sz = GetTextSize(m_altText);
         m_width = sz.GetWidth();
@@ -662,13 +659,13 @@ void TextCell::Draw(wxPoint point)
                      point.y - m_realCenter + MC_TEXT_PADDING);
       }
         /// Check if we are using jsMath and have jsMath character
-      else if (m_altJs && configuration->CheckTeXFonts())
+      else if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
         dc->DrawText(m_altJsText,
                     point.x + MC_TEXT_PADDING,
                     point.y - m_realCenter + MC_TEXT_PADDING);
 
         /// We are using a special symbol
-      else if (m_alt)
+      else if (!m_altText.IsEmpty())
         dc->DrawText(m_altText,
                     point.x + MC_TEXT_PADDING,
                     point.y - m_realCenter + MC_TEXT_PADDING);
@@ -749,7 +746,7 @@ void TextCell::SetFont(int fontsize)
   wxFont font = configuration->GetFont(m_textStyle,fontsize);
 
   // Use jsMath
-  if (m_altJs && configuration->CheckTeXFonts())
+  if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
     font.SetFaceName(m_texFontname);
   
   if (!font.IsOk())
@@ -1631,7 +1628,6 @@ bool TextCell::IsShortNum()
 
 void TextCell::SetAltText()
 {
-  m_altJs = m_alt = false;
   if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
     return;
 
@@ -1640,7 +1636,6 @@ void TextCell::SetAltText()
   {
     if((*m_configuration)->Latin2Greek())
     {
-      m_altJs = true;
       m_altJsText = GetGreekStringTeX();
       m_texFontname = CMMI10;
       
@@ -1661,11 +1656,8 @@ void TextCell::SetAltText()
         m_texFontname = CMMI10;
       else
         m_texFontname = CMSY10;
-      m_altJs = true;
     }
     m_altText = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
-    if (m_altText != wxEmptyString)
-      m_alt = true;
 // #if defined __WXMSW__
 //     m_altText = GetSymbolSymbol(configuration->CheckKeepPercent());
 //     if (m_altText != wxEmptyString)

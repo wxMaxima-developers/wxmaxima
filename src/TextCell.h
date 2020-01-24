@@ -131,7 +131,6 @@ protected:
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 
-  bool m_alt, m_altJs;
   int m_realCenter;
   /*! The font size we had the last time we were recalculating this cell
 
