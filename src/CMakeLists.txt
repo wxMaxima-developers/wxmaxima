@@ -9,7 +9,7 @@ file(GLOB SOURCE_FILES *.cpp *.h nanoSVG/*.h)
 # doesn't support it.
 # if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
 # As the top-level cmakelists.txt refuses to configure on cmake <3.0.0
-# The version test can be simple. 
+# The version test can be simple.
 if(CMAKE_MAJOR_VERSION GREATER 3 OR CMAKE_MINOR_VERSION GREATER 9)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
@@ -136,13 +136,14 @@ elseif(APPLE)
       )
     install(
 	TARGETS wxmaxima
-	BUNDLE  DESTINATION .
-	RUNTIME DESTINATION bin
-	CODE "include(BundleUtilities)
- set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-    message(STATUS \"Bundle main executable:\" GET_BUNDLE_MAIN_EXECUTABLE(\"${PROJECT_BINARY_DIR}/wxmaxima.app\"))
-    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxmaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")"
+	BUNDLE  DESTINATION . COMPONENT Runtime
+	RUNTIME DESTINATION bin COMPONENT Runtime
 	)
+  set(APPS "\${CMAKE_INSTALL_PREFIX}/wxmaxima.app")
+  install(CODE "
+   include(BundleUtilities)
+   fixup_bundle(\"${APPS}\"   \"\"   \"${wxWidgets_LIB_DIR}\")
+   " COMPONENT Runtime)
     # make wxmathml.lisp ship with the Mac App
     add_dependencies(wxmaxima wxmaxima.app)
 else()
