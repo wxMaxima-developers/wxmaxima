@@ -142,7 +142,7 @@ elseif(APPLE)
   set(APPS "\${CMAKE_INSTALL_PREFIX}/wxmaxima.app")
   install(CODE "
    include(BundleUtilities)
-   fixup_bundle(\"${APPS}\"   \"\"   \"${wxWidgets_LIB_DIR}\")
+   fixup_bundle(\"${APPS}\"   \"\"   \"\")
    " COMPONENT Runtime)
     # make wxmathml.lisp ship with the Mac App
     add_dependencies(wxmaxima wxmaxima.app)
