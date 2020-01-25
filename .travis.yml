@@ -56,7 +56,7 @@ script:
 #- cp .travis/CTestCustom.cmake build
 - cd build && cmake .. && cmake --build .
 - find *
-- cmake --build . -- install DESTDIR=$(pwd)/installtest
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; cmake --build . -- install DESTDIR=$(pwd)/installtest; fi
 - cmake --build . -- package
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=`ldconfig -p|grep "libSegFault.so "|head -1|sed -e "s/^.* //g"` xvfb-run -a make test; fi
 - cd ..
