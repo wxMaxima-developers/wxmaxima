@@ -396,7 +396,6 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, uns
 
   SetTopWindow(frame);
   frame->Show(true);
-  frame->InitSession();
   frame->ShowTip(false);
 }
 

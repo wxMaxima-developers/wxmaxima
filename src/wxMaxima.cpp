@@ -284,6 +284,28 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_clientStream = NULL;
   m_client = NULL;
   m_clientTextStream = NULL;
+
+  bool server = false;
+  m_port = m_worksheet->m_configuration->DefaultPort();
+  while (!(server = StartServer()))
+  {
+    m_port++;
+    if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535))
+    {
+      LoggingMessageBox(_("wxMaxima could not start the server.\n\n"
+                          "Please check you have network support\n"
+                          "enabled and try again!"),
+                        _("Fatal error"),
+                        wxOK | wxICON_ERROR);
+      break;
+    }
+  }
+
+  if (!server)
+    LeftStatusText(_("Starting server failed"));
+  else if (!StartMaxima())
+    LeftStatusText(_("Starting Maxima process failed"));
+
   Connect(wxEVT_SCROLL_CHANGED,
           wxScrollEventHandler(wxMaxima::SliderEvent), NULL, this);
   Connect(wxID_CLOSE, wxEVT_MENU,
@@ -1044,6 +1066,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxActivateEventHandler(wxMaxima::OnActivate), NULL, this);
   Connect(wxEVT_ICONIZE,
           wxIconizeEventHandler(wxMaxima::OnMinimize), NULL, this);
+  m_worksheet->SetFocus();
+  m_autoSaveTimer.StartOnce(180000);
 }
 
 wxMaxima::~wxMaxima()
@@ -1115,37 +1139,6 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
 }
 
 #endif
-
-//!--------------------------------------------------------------------------------
-//  Startup
-//--------------------------------------------------------------------------------
-void wxMaxima::InitSession()
-{
-  bool server = false;
-  m_port = m_worksheet->m_configuration->DefaultPort();
-  while (!(server = StartServer()))
-  {
-    m_port++;
-    if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535))
-    {
-      LoggingMessageBox(_("wxMaxima could not start the server.\n\n"
-                          "Please check you have network support\n"
-                          "enabled and try again!"),
-                        _("Fatal error"),
-                        wxOK | wxICON_ERROR);
-      break;
-    }
-  }
-
-  if (!server)
-    LeftStatusText(_("Starting server failed"));
-  else if (!StartMaxima())
-    LeftStatusText(_("Starting Maxima process failed"));
-
-//  Refresh();
-  m_worksheet->SetFocus();
-  m_autoSaveTimer.StartOnce(180000);
-}
 
 void wxMaxima::FirstOutput()
 {

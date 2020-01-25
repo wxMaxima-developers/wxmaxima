@@ -157,8 +157,6 @@ public:
 
   void ShowWxMaximaHelp();
 
-  void InitSession();
-
   void SetOpenFile(wxString file)
   {
     m_openFile = file;
