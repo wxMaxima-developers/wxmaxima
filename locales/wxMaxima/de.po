@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-25 09:06+0100\n"
-"PO-Revision-Date: 2020-01-25 09:21+0100\n"
+"PO-Revision-Date: 2020-01-25 09:27+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -94,10 +94,9 @@ msgid ""
 " * The \"symbols\" sidebar now should allow for easy access to these "
 "characters.\n"
 msgstr ""
-" * Öffnen der Seitenleiste mit den \"Mathematischen Symbolen\" (falls diese nicht bereits angezeigt wird)\n"
-" * Rechtsklicken darauf und kopieren der betreffenden Symbole in den \"Zusätzliche Symbole\"-Dialog.\n"
-" * Nun sollte es einfach sein, auf die betreffenden Symbole zuzugreifen.\n"
-" "
+" * Öffnen der Seitenleiste für mathematische Symbole (falls diese nicht ohnehin bereits sichtbar ist)\n"
+" * Rechtsklick und Kopieren der gewünschten Symbole in den \"Zusätzliche Symbole\"-Dialog\n"
+" * Nun sollte die \"Symbole\"-Seitenleiste einen halbwegs einfachen Zugriff auf die betreffenden Symbole bieten.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
 msgid ""
@@ -433,7 +432,7 @@ msgid ""
 msgstr ""
 "* Eingabe des Zeichens, das mit Akzenten oder ähnlichem versehen werden soll\n"
 "* Hinzufügen eines Backslash (\"\\\"), der Maxima sagt, dass dieses als normales Zeichen zu interpretieren ist\n"
-"* Hinzufügen des gewünschten Akzents:"
+"* Hinzufügen des gewünschten Akzents:\n"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:244
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:256
@@ -785,7 +784,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1290
 msgid "Advanced variable names"
-msgstr "Variablennamen für Fortgeschrittene\n"
+msgstr "Variablennamen für Fortgeschrittene"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1536
 msgid "Advanced variable names\n"
@@ -1412,7 +1411,9 @@ msgstr ""
 msgid ""
 "By escaping it with an backslash nearly every symbol can be made to be "
 "interpreted as an ordinary character:\n"
-msgstr "Ein Backslash erlaubt es, Maxima für fast beliebige Symbole anzuweisen, dass diese als ganz normales Zeichen zu interpretieren sind:\n"
+msgstr ""
+"Ein Backslash erlaubt es, Maxima für fast beliebige Symbole anzuweisen, dass "
+"diese als ganz normales Zeichen zu interpretieren sind:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:912
 msgid ""
@@ -3921,7 +3922,9 @@ msgstr ""
 msgid ""
 "If this feature is over-eager (or not eagerly enough) wxMaxima offers "
 "additional control:\n"
-msgstr "Wenn dieses Feature an den Falschen stellen anspricht, erlaubt wxMaxima einige Feineinstellungen:\n"
+msgstr ""
+"Wenn dieses Feature an den Falschen stellen anspricht, erlaubt wxMaxima "
+"einige Feineinstellungen:\n"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:517
 msgid ""
@@ -6881,7 +6884,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2089
 msgid "Sent wxSIGKILL to maxima, but not to its child processes"
-msgstr "Konnte Maxima beenden, aber nicht es anweisen, eventuelle Subprozesse zu beenden.\n"
+msgstr "Konnte Maxima beenden, aber es nicht bitten, eventuelle Subprozesse zu beenden."
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7484
@@ -8565,7 +8568,10 @@ msgid ""
 "parts these characters are combined to are meant to be interpreted as "
 "ordinary letters, though, so assembling weird characters is a multi-step "
 "process:\n"
-msgstr "Unicode bietet \"kombinierende Symbole\" an, aus denen komplexe Zeichen zusammengesetzt werden können. Maxima beizubringen, diese Anzuzeigen, ist oft ein aus mehreren Schritten zusammengesetzter Prozess:\n"
+msgstr ""
+"Unicode bietet \"kombinierende Symbole\" an, aus denen komplexe Zeichen "
+"zusammengesetzt werden können. Maxima beizubringen, diese Anzuzeigen, ist "
+"oft ein aus mehreren Schritten zusammengesetzter Prozess:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1967
 msgid "Unicode symbols:"
@@ -9562,7 +9568,9 @@ msgstr "&Hilfe zu wxMaxima \tF1"
 msgid ""
 "wxMaxima allows to use engineer-style subscripts in variable or function "
 "names:\n"
-msgstr "wxMaxima erzeut automatisch Indices aus Symbolnamen, wie sie bei Ingenieuren geläufig sind:\n"
+msgstr ""
+"wxMaxima erzeut automatisch Indices aus Symbolnamen, wie sie bei Ingenieuren "
+"geläufig sind:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:129
 msgid ""
@@ -9780,6 +9788,21 @@ msgstr "zeta"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1292
 msgid "↗Tutorials on the web"
 msgstr "↗Weitere Beispiele im Netz"
+
+#~ msgid ""
+#~ " * Open the \"mathematical symbols\" sidebar (if it isn't already "
+#~ "displayed) and right-click on it\n"
+#~ " * Drag-and-drop a combining diacritic to the \"add new symbols\" "
+#~ "dialogue.\n"
+#~ " * The \"symbols\" sidebar now should allow for easy access to these "
+#~ "characters.\n"
+#~ msgstr ""
+#~ " * Öffnen der Seitenleiste mit den \"Mathematischen Symbolen\" (falls "
+#~ "diese nicht bereits angezeigt wird)\n"
+#~ " * Rechtsklicken darauf und kopieren der betreffenden Symbole in den "
+#~ "\"Zusätzliche Symbole\"-Dialog.\n"
+#~ " * Nun sollte es einfach sein, auf die betreffenden Symbole zuzugreifen.\n"
+#~ " "
 
 #~ msgid "Cool things to know\n"
 #~ msgstr "Interessante Dinge\n"
