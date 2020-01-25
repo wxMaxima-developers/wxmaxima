@@ -53,73 +53,20 @@ endif()
 # We put Version.h into binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-# OSX binary folders
-if(APPLE)
-  # DEFINE FILES
-  file(GLOB RESOURCES_FILES
-    ${CMAKE_BINARY_DIR}/data/wxmathml.lisp
-    ${CMAKE_SOURCE_DIR}/test/testbench_simple.wxmx
+file(GLOB RESOURCE_FILES
     ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png
-    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg)
-  file(GLOB RESOURCES_FILES_OSX
+    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg
     ${CMAKE_SOURCE_DIR}/art/wxmac.icns
     ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
     ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns)
-  file(GLOB HELP_FILES
+    ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
     ${CMAKE_SOURCE_DIR}/info/*.html
     ${CMAKE_SOURCE_DIR}/info/*.jpg
     ${CMAKE_SOURCE_DIR}/info/*.png
-    ${CMAKE_SOURCE_DIR}/info/*.hhp)
-  file(GLOB CONTENT_FILES
-    ${CMAKE_SOURCE_DIR}/data/PkgInfo)
-  file(GLOB FONT_FILES
-    ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
-  file(GLOB WXSTD_LOCALE_FILES
+    ${CMAKE_SOURCE_DIR}/info/*.hhp
+    ${CMAKE_SOURCE_DIR}/data/PkgInfo
+    ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
     ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
-    # DEFINE DIRECTORIES
-    set(APP_DIR ${CMAKE_BINARY_DIR}/wxmaxima.app/Contents)
-    set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
-    set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
-    set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
-    set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)
-    set(APP_LOCALE_DIR ${APP_RESOURCES_DIR}/locale)
-    # CUSTOM TARGET
-    add_custom_target(wxmaxima.appdata)
-    add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_MACOSX_DIR})
-    add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
-    add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_FONTS_DIR})
-    foreach(f ${CONTENT_FILES})
-      add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
-    endforeach()
-    foreach(f ${RESOURCES_FILES})
-      add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
-    endforeach()
-    foreach(f ${RESOURCES_FILES_OSX})
-      add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
-    endforeach()
-    foreach(f ${HELP_FILES})
-      add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
-    endforeach()
-    foreach(f ${FONT_FILES})
-      add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
-    endforeach()
-    add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/locale ${APP_LOCALE_DIR})
-    foreach(f ${WXSTD_LOCALE_FILES})
-      string(REGEX REPLACE ".*locales/wxwin/(.*).mo$" "\\1" LANG ${f})
-      add_custom_command(TARGET wxmaxima.appdata POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_LOCALE_DIR}/${LANG}/LC_MESSAGES/wxMaxima-wxstd.mo)
-    endforeach()
-endif()
 
 
 SET(MACOSX_BUNDLE_BUNDLE_NAME wxMaxima)
@@ -128,9 +75,10 @@ if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
+  list(APPEND SOURCE_FILES ${GLOB MACOS_RESOURCES_FILES})
   add_executable(wxmaxima MACOSX_BUNDLE ${SOURCE_FILES})
   set_target_properties(wxmaxima PROPERTIES
-      RESOURCE "${ALLRERESOURCES}"
+      RESOURCE "${RESOURCE_FILES}"
       MACOSX_BUNDLE TRUE
       MACOSX_FRAMEWORK_IDENTIFIER com.github.wxMaxima-developers.wxmaxima
       )
