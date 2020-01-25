@@ -92,8 +92,6 @@ elseif(APPLE)
    include(BundleUtilities)
    fixup_bundle(\"${APPS}\"   \"\"   \"\")
    " COMPONENT Runtime)
-    # make wxmathml.lisp ship with the Mac App
-    add_dependencies(wxmaxima wxmaxima.appdata)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
