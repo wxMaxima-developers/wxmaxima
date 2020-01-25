@@ -115,6 +115,7 @@ endif()
 
 if(APPLE)
     set(MACOSX_BUNDLE)
+    list(APPEND CPACK_GENERATOR "Bundle") # Build app bundle on MacOS
     list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
 
