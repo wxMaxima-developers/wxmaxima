@@ -87,7 +87,7 @@ elseif(APPLE)
 	BUNDLE  DESTINATION . COMPONENT Runtime
 	RUNTIME DESTINATION bin COMPONENT Runtime
 	)
-  set(APPS "\${CMAKE_INSTALL_PREFIX}/wxmaxima.app")
+  set(APPS "\${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.app")
   install(CODE "
    include(BundleUtilities)
    fixup_bundle(\"${APPS}\"   \"\"   \"\")
