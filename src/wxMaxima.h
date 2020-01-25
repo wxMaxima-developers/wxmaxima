@@ -102,6 +102,7 @@ class wxMaxima : public wxMaximaFrame
 public:
 
   wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
+           const wxString &filename = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
   ~wxMaxima();
@@ -156,11 +157,6 @@ public:
   void ShowMaximaHelp(wxString keyword = wxEmptyString);
 
   void ShowWxMaximaHelp();
-
-  void SetOpenFile(wxString file)
-  {
-    m_openFile = file;
-  }
 
   void SetWXMdata(wxString data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on statup?

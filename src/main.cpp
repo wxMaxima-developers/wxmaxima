@@ -362,9 +362,7 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, uns
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
-  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title);
-  if (!file.IsEmpty() )
-    frame->SetOpenFile(file);
+  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title, file);
   if (wxmData)
   {
     // Unzip the .wxm file
