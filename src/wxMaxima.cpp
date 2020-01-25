@@ -306,7 +306,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     LeftStatusText(_("Starting server failed"));
   else
   {
-    if(!m_openFile.IsEmpty())
+    if(m_openFile.IsEmpty())
     {
       if (!StartMaxima())
         LeftStatusText(_("Starting Maxima process failed"));
