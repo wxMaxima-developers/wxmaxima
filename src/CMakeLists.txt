@@ -78,16 +78,17 @@ elseif(APPLE)
   list(APPEND SOURCE_FILES ${MACOS_RESOURCES_FILES})
   add_executable(wxmaxima MACOSX_BUNDLE ${SOURCE_FILES})
   set_target_properties(wxmaxima PROPERTIES
-      RESOURCE "${RESOURCE_FILES}"
       MACOSX_BUNDLE TRUE
       MACOSX_FRAMEWORK_IDENTIFIER com.github.wxMaxima-developers.wxmaxima
+      RESOURCE "${RESOURCE_FILES}"
       )
     install(
 	TARGETS wxmaxima
-	BUNDLE  DESTINATION . COMPONENT Runtime
-	RUNTIME DESTINATION bin COMPONENT Runtime
+	BUNDLE  DESTINATION .
+	RUNTIME DESTINATION . COMPONENT Runtime
+	RESOURCE DESTINATION . 
 	)
-  set(APPS "\${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.app")
+  set(APPS "\${CMAKE_BINARY_DIR}/wxmaxima.app")
   install(CODE "
    include(BundleUtilities)
    fixup_bundle(\"${APPS}\"   \"\"   \"\")
