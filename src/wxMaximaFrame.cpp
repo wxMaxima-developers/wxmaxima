@@ -1283,6 +1283,8 @@ m_listMenu->AppendSeparator();
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_3d, _("Displaying 3d curves"),
                      "", wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_help_varnames, _("Advanced variable names"),
+                     "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_diffequations, _("Solving differential equations"),
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_fittingData, _("Fitting curves to measurement data"),

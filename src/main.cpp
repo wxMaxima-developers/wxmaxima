@@ -412,6 +412,12 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     NewWindow(wxEmptyString, false, false,
               displaying3DCurves_wxm_gz, displaying3DCurves_wxm_gz_len);
     break;
+
+  case wxMaxima::menu_help_varnames:
+    NewWindow(wxEmptyString, false, false,
+              variableNames_wxm_gz, variableNames_wxm_gz_len);
+    break;
+    
   case wxMaxima::menu_help_fittingData:
     NewWindow(wxEmptyString, false, false,
               fittingEquations_wxm_gz, fittingEquations_wxm_gz_len);

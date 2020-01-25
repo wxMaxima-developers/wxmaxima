@@ -474,6 +474,7 @@ public:
     menu_help_numberformats,
     menu_help_tolerances,
     menu_help_3d,
+    menu_help_varnames,
     menu_help_fittingData,
     menu_help_tutorials_end, //! End of bundled tutorials
     menu_show_toolbar,
