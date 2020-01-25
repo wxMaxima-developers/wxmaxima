@@ -85,38 +85,38 @@ if(APPLE)
     set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)
     set(APP_LOCALE_DIR ${APP_RESOURCES_DIR}/locale)
     # CUSTOM TARGET
-    add_custom_target(wxmaxima.app)
-    add_custom_command(TARGET wxmaxima.app PRE_BUILD
+    add_custom_target(wxmaxima.appdata)
+    add_custom_command(TARGET wxmaxima.appdata PRE_BUILD
       COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_MACOSX_DIR})
-    add_custom_command(TARGET wxmaxima.app PRE_BUILD
+    add_custom_command(TARGET wxmaxima.appdata PRE_BUILD
       COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
-    add_custom_command(TARGET wxmaxima.app
+    add_custom_command(TARGET wxmaxima.appdata
       COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_FONTS_DIR})
     foreach(f ${CONTENT_FILES})
-      add_custom_command(TARGET wxmaxima.app
+      add_custom_command(TARGET wxmaxima.appdata
         COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
     endforeach()
     foreach(f ${RESOURCES_FILES})
-      add_custom_command(TARGET wxmaxima.app
+      add_custom_command(TARGET wxmaxima.appdata
         COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
     endforeach()
     foreach(f ${RESOURCES_FILES_OSX})
-      add_custom_command(TARGET wxmaxima.app
+      add_custom_command(TARGET wxmaxima.appdata
         COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
     endforeach()
     foreach(f ${HELP_FILES})
-      add_custom_command(TARGET wxmaxima.app
+      add_custom_command(TARGET wxmaxima.appdata
         COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
     endforeach()
     foreach(f ${FONT_FILES})
-      add_custom_command(TARGET wxmaxima.app
+      add_custom_command(TARGET wxmaxima.appdata
         COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
     endforeach()
-    add_custom_command(TARGET wxmaxima.app
+    add_custom_command(TARGET wxmaxima.appdata
       COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/locale ${APP_LOCALE_DIR})
     foreach(f ${WXSTD_LOCALE_FILES})
       string(REGEX REPLACE ".*locales/wxwin/(.*).mo$" "\\1" LANG ${f})
-      add_custom_command(TARGET wxmaxima.app
+      add_custom_command(TARGET wxmaxima.appdata
         COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_LOCALE_DIR}/${LANG}/LC_MESSAGES/wxMaxima-wxstd.mo)
     endforeach()
 endif()
@@ -145,7 +145,7 @@ elseif(APPLE)
    fixup_bundle(\"${APPS}\"   \"\"   \"\")
    " COMPONENT Runtime)
     # make wxmathml.lisp ship with the Mac App
-    add_dependencies(wxmaxima wxmaxima.app)
+    add_dependencies(wxmaxima wxmaxima.appdata)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
