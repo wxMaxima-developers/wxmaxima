@@ -69,7 +69,7 @@ file(GLOB RESOURCE_FILES
     ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
 
 
-SET(MACOSX_BUNDLE_BUNDLE_NAME wxMaxima)
+SET(MACOSX_BUNDLE_BUNDLE_NAME wxmaxima)
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
