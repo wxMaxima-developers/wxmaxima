@@ -127,7 +127,7 @@ endif()
 if(APPLE)
     list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
-
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
 set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
