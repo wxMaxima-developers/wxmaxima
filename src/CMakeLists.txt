@@ -112,3 +112,76 @@ target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+
+# Build Packages
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+else()
+    set(CPACK_GENERATOR "TGZ;TBZ2")
+endif()
+
+if(UNIX AND NOT APPLE)
+    list(APPEND CPACK_GENERATOR "DEB") # Don't build DEB packages on MacOS
+endif()
+
+if(APPLE)
+    list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
+endif()
+
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
+set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
+set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
+set(CPACK_PACKAGE_SECTION "science")
+if(WIN32)
+#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data\\\\io.github.wxmaxima_developers.wxMaxima.png")
+else()
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
+endif()
+set(CPACK_PACKAGE_VERSION "${VERSION}")
+
+
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc")
+set(CPACK_DEBIAN_PACKAGE_SUGGESTS "jsmath-fonts")
+
+set(CPACK_RPM_PACKAGE_SUGGESTS "jsmath-fonts")
+
+# Build a tarball
+set(CPACK_SOURCE_IGNORE_FILES
+  "build/"
+  ".git/"
+  ".gitignore"
+  ".gitattributes"
+  "Doxygen/html/"
+  "\\\\.gmo$"
+  "\\\\.mo$"
+  "~$"
+  "CPackConfig.cmake"
+  "CPackSourceConfig.cmake"
+  "CMakeCache.txt"
+  "CMakeFiles"
+  "_CPack_Packages"
+  "wxmaxima-.*\\\\.tgz$"
+  "wxmaxima-.*\\\\.deb$"
+  "wxmaxima-.*\\\\.rpm$"
+  "wxmaxima-.*\\\\.bz2$"
+  "wxmaxima-.*\\\\.xz$"
+  "wxmaxima-.*\\\\.Z$"
+  "wxmaxima-.*\\\\.gz$"
+  "${CPACK_SOURCE_IGNORE_FILES}")
+
+# Debian wants to be able to download a signature of the source package from the
+# project's download directory. If it cannot find it it will still work, but will
+# issue a warning. For details see
+# https://lintian.debian.org/tags/debian-watch-may-check-gpg-signature.html
+find_program(gpg NAMES gpg pgp)
+add_custom_target(gpg DEPENDS dist
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
+
+include(CPack)
