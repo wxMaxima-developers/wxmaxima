@@ -15,7 +15,6 @@ endif()
 
 project(wxmaxima LANGUAGES CXX)
 set(VERSION 20.01.3-DevelopmentSnapshot)
-set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxmaxima)
 set(APP_NAME wxmaxima)
