@@ -22,6 +22,8 @@ set(APP_NAME wxmaxima)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(GNUInstallDirs)
+
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
 
@@ -192,7 +194,6 @@ add_custom_target(checksums
 
 include(InstallRequiredSystemLibraries)
 include(CPack)
-include(GNUInstallDirs)
 
 enable_testing()
 add_subdirectory(test)
