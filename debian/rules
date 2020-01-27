@@ -18,8 +18,4 @@ ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	xvfb-run make test
 endif
 
-override_dh_auto_install:
-	dh_auto_install
-	rm debian/wxmaxima/usr/share/wxMaxima/COPYING
-
 .PHONY: get-orig-source
