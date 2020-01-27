@@ -26,12 +26,7 @@ include(GNUInstallDirs)
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
 
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-
-# Avoid a warning by deciding which version of this policy we use in case we can
-# decide this.
+# Avoid a warning by deciding which version of this policy we prefer.
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
 endif()
@@ -93,18 +88,17 @@ add_subdirectory(src)
 
 install(FILES COPYING README README.md DESTINATION share/wxmaxima)
 
-install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
-  DESTINATION programs
-  COMPONENT applications)
-
 # include wxWidgets DLLs on Windows on appveyor
 if(WIN32 AND APPVEYOR_BUILD)
     file(GLOB wxwidgets_dlls "${wxWidgets_LIB_DIR}/*.dll")
     install(FILES ${wxwidgets_dlls} DESTINATION bin/)
+    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+	DESTINATION programs
+	COMPONENT applications)
 endif()
 
-if(APPLE)
-    set(MACOSX_BUNDLE)
+if(WIN32)
+    include(InstallRequiredSystemLibraries)
 endif()
 
 # build RPMs only if rpmbuild is installed
@@ -120,8 +114,6 @@ add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 add_custom_target(checksums
     ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
-
-include(InstallRequiredSystemLibraries)
 
 enable_testing()
 add_subdirectory(test)

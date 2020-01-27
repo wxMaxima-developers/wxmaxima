@@ -68,38 +68,34 @@ file(GLOB RESOURCE_FILES
     ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
     ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
 
-
 SET(MACOSX_BUNDLE_BUNDLE_NAME wxmaxima)
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
-  list(APPEND SOURCE_FILES ${MACOS_RESOURCES_FILES})
-  add_executable(wxmaxima MACOSX_BUNDLE ${SOURCE_FILES})
-  set_target_properties(wxmaxima PROPERTIES
-      MACOSX_BUNDLE TRUE
-      RESOURCE "${RESOURCE_FILES}"
-      )
+    set(MACOSX_BUNDLE)
+    list(APPEND SOURCE_FILES ${MACOS_RESOURCES_FILES})
+    add_executable(wxmaxima ${SOURCE_FILES})
+    set_target_properties(wxmaxima PROPERTIES
+	MACOSX_BUNDLE TRUE
+	RESOURCE "${RESOURCE_FILES}"
+	)
     install(
 	TARGETS wxmaxima
 	BUNDLE  DESTINATION .
-	RUNTIME DESTINATION . COMPONENT Runtime
-	RESOURCE DESTINATION . 
+	RUNTIME DESTINATION bin
+	COMPONENT Runtime
+	RESOURCE DESTINATION .
 	)
-  set(APPS "\${CMAKE_BINARY_DIR}/src/wxmaxima.app")
   install(CODE "
    include(BundleUtilities)
-   fixup_bundle(\"${APPS}\"   \"\"   \"\")
+   fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")
    " COMPONENT Runtime)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
-
-get_target_property(EXEPATH wxmaxima BINARY_DIR)
-get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY)
-get_target_property(OUTPUTNAME wxmaxima OUTPUT_NAME)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
@@ -107,27 +103,25 @@ if(WIN32)
     configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" ../wxmaxima-local.bat)
 endif()
 
-
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
 
 # Build Packages
+include(CPack)
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
-else()
-    set(CPACK_GENERATOR "TGZ;TBZ2")
 endif()
 
 if(UNIX AND NOT APPLE)
-    list(APPEND CPACK_GENERATOR "DEB") # Don't build DEB packages on MacOS
+    set(CPACK_GENERATOR "DEB;TGZ;TBZ2")
 endif()
 
 if(APPLE)
-    list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
+    set(CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
 set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
@@ -183,5 +177,3 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
-
-include(CPack)
