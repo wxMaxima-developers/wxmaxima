@@ -74,7 +74,7 @@ if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
-    set(MACOSX_BUNDLE)
+    set(MACOSX_BUNDLE TRUE)
     list(APPEND SOURCE_FILES ${MACOS_RESOURCES_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
