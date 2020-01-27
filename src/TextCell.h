@@ -141,7 +141,6 @@ protected:
   double m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
-  double m_lastZoomFactor;
 private:
   class SizeHash_internals
   {
