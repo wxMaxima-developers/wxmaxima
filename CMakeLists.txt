@@ -101,15 +101,6 @@ if(WIN32)
     include(InstallRequiredSystemLibraries)
 endif()
 
-# build RPMs only if rpmbuild is installed
-find_program(RPMBUILD_EXECUTABLE rpmbuild)
-if(NOT RPMBUILD_EXECUTABLE)
-    message(STATUS "rpmbuild not found - no RPM package will be build with make package.")
-else()
-    message(STATUS "rpmbuild found - RPM package can be build with make package.")
-    list(APPEND  CPACK_GENERATOR "RPM")
-endif()
-
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 add_custom_target(checksums
