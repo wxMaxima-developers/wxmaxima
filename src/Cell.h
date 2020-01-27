@@ -1058,12 +1058,12 @@ protected:
 
 protected:
   CellPointers *m_cellPointers;
+  //! The zoom factor at the time of the last recalculation.
+  double m_lastZoomFactor;
 
 private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old;
-  //! The zoom factor at the time of the last recalculation.
-  double m_lastZoomFactor;
 };
 
 #endif // MATHCELL_H

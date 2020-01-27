@@ -593,8 +593,11 @@ wxString EditorCell::ToXML()
 void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
+  if (configuration->GetZoomFactor() != m_lastZoomFactor)
+    m_widths.clear();
+
   m_isDirty = false;
-//  if (NeedsRecalculation())
+  if (NeedsRecalculation())
   {
     StyleText();
     m_fontSize_Last = Scale_Px(fontsize);
