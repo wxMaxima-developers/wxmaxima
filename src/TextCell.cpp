@@ -507,7 +507,7 @@ void TextCell::RecalculateWidths(int fontsize)
         }
 
         wxFont font = dc->GetFont();
-        double fontsize1 = Scale_Px(configuration->GetDefaultFontSize();)
+        double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
         if(fontsize1 < 4)
           fontsize1 = 4;
 #if wxCHECK_VERSION(3, 1, 2)
