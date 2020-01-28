@@ -376,7 +376,6 @@ void Configuration::ReadConfig()
   config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
-  m_symbolPaneAdditionalChars = wxT("Øü§");
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);
