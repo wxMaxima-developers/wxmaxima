@@ -82,24 +82,26 @@ void DiffCell::SetBase(Cell *base)
 void DiffCell::RecalculateWidths(int fontsize)
 {
   Cell::RecalculateWidths(fontsize);
-  if(!m_isBrokenIntoLines)
-  {
     m_baseCell->RecalculateWidthsList(fontsize);
     m_diffCell->RecalculateWidthsList(fontsize);
+  if(!m_isBrokenIntoLines)
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-  }
+  else
+    m_width = 0;
   Cell::RecalculateWidths(fontsize);
 }
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
+  m_baseCell->RecalculateHeightList(fontsize);
+  m_diffCell->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
-    m_baseCell->RecalculateHeightList(fontsize);
-    m_diffCell->RecalculateHeightList(fontsize);
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
+  else
+    m_center = m_height = 0;
   Cell::RecalculateHeight(fontsize);
 }
 

@@ -78,24 +78,21 @@ void FunCell::SetArg(Cell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  if(!m_isBrokenIntoLines)
-  {
     m_argCell->RecalculateWidthsList(fontsize);
     m_nameCell->RecalculateWidthsList(fontsize);
-    m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -
-      Scale_Px(1);
-  }
-  else
+    m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
+
+  if(m_isBrokenIntoLines)
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
 }
 
 void FunCell::RecalculateHeight(int fontsize)
 {
+  m_nameCell->RecalculateHeightList(fontsize);
+  m_argCell->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
-    m_nameCell->RecalculateHeightList(fontsize);
-    m_argCell->RecalculateHeightList(fontsize);
     m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
@@ -146,20 +143,20 @@ wxString FunCell::ToTeX()
   wxString s;
 
   if (
-          (m_nameCell->ToString() == wxT("sin")) ||
-          (m_nameCell->ToString() == wxT("cos")) ||
-          (m_nameCell->ToString() == wxT("cosh")) ||
-          (m_nameCell->ToString() == wxT("cos")) ||
-          (m_nameCell->ToString() == wxT("log")) ||
-          (m_nameCell->ToString() == wxT("cot")) ||
-          (m_nameCell->ToString() == wxT("sec")) ||
-          (m_nameCell->ToString() == wxT("csc")) ||
-          (m_nameCell->ToString() == wxT("tan"))
-          )
+    (m_nameCell->ToString() == wxT("sin")) ||
+    (m_nameCell->ToString() == wxT("cos")) ||
+    (m_nameCell->ToString() == wxT("cosh")) ||
+    (m_nameCell->ToString() == wxT("cos")) ||
+    (m_nameCell->ToString() == wxT("log")) ||
+    (m_nameCell->ToString() == wxT("cot")) ||
+    (m_nameCell->ToString() == wxT("sec")) ||
+    (m_nameCell->ToString() == wxT("csc")) ||
+    (m_nameCell->ToString() == wxT("tan"))
+    )
     s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() + wxT("}");
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
-
+  
   return s;
 }
 

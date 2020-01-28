@@ -188,13 +188,10 @@ void ParenCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   
-  if(!m_isBrokenIntoLines)
-  {
-    m_innerCell->RecalculateWidthsList(fontsize);
-    m_innerCell->RecalculateHeightList(fontsize);
-    m_open->RecalculateWidthsList(fontsize);
-    m_close->RecalculateWidthsList(fontsize);
-  }
+  m_innerCell->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateHeightList(fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_close->RecalculateWidthsList(fontsize);
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetHeightList();
