@@ -108,25 +108,3 @@ add_custom_target(checksums
 
 enable_testing()
 add_subdirectory(test)
-
-# Build Packages
-if(WIN32)
-    set(CPACK_GENERATOR "ZIP;NSIS")
-endif()
-
-if(UNIX AND NOT APPLE)
-    set(CPACK_GENERATOR "DEB;TGZ;TBZ2")
-    # build RPMs only if rpmbuild is installed
-    find_program(RPMBUILD_EXECUTABLE rpmbuild)
-    if(NOT RPMBUILD_EXECUTABLE)
-	message(STATUS "rpmbuild not found - no RPM package will be build with make package.")
-    else()
-	message(STATUS "rpmbuild found - RPM package can be build with make package.")
-	list(APPEND  CPACK_GENERATOR "RPM")
-    endif()
-endif()
-
-if(APPLE)
-    set(CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
-endif()
-
