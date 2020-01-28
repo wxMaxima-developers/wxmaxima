@@ -590,6 +590,35 @@ wxString EditorCell::ToXML()
   return head + xmlstring + wxT("</editor>\n");
 }
 
+void EditorCell::ConvertNumToUNicodeChar()
+{
+  if(m_positionOfCaret <= 0 )
+    return;
+  int numLen = 0;
+  while((m_positionOfCaret > 0) &&
+        (m_text [m_positionOfCaret - 1] >= '0') &&
+        (m_text [m_positionOfCaret - 1] <= '9')
+    )
+  {
+    numLen++;
+    m_positionOfCaret--;
+  }
+  long number;
+  std::cerr<<"numString="<<m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1)<<"\n";
+  if(!m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1).ToLong(&number))
+    return;
+
+  wxString newChar;
+  {
+    wxLogNull suppressConversationErrors;
+    newChar = wxChar(number);
+  }
+  m_text = m_text.Left(m_positionOfCaret) +
+    newChar +
+    m_text.Right(m_text.Length() - m_positionOfCaret - numLen);
+  m_positionOfCaret+= newChar.Length();
+}
+
 void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
@@ -1561,6 +1590,12 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 {
   bool done = true;
 
+  if(((event.GetKeyCode() == 'x') || (event.GetKeyCode() == 'u')) && (event.AltDown()))
+  {
+    ConvertNumToUNicodeChar();
+    return true;
+  }
+  
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&

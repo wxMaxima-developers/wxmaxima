@@ -528,6 +528,9 @@ public:
   int GetCaretPosition() const
   { return m_positionOfCaret; }
 
+  //! Convert a number to unicode chars.
+  void ConvertNumToUNicodeChar();
+
   //! Set the cursor's current position inside the cell.
   void SetCaretPosition(int pos)
     { m_positionOfCaret = pos;
