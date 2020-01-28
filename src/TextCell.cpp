@@ -579,7 +579,7 @@ void TextCell::RecalculateWidths(int fontsize)
       if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
       {
         m_height = 0;
-        m_width = m_width / 4;
+        m_width = Scale_Px(fontsize) / 4;
       }
     }
   }

@@ -115,6 +115,7 @@ endif()
 
 if(APPLE)
     set(CPACK_GENERATOR "DragNDrop;TGZ;TBZ2") # Build DMG packages on MacOS
+    set(CPACK_BINARY_DragNDrop "ON")
 else()
     set(CPACK_GENERATOR "DEB;TGZ;TBZ2")
     # build RPMs only if rpmbuild is installed
