@@ -65,7 +65,7 @@ script:
 - eval `ssh-agent -s`
 - ssh-add id_rsa
 - cat .travis/known_hosts >>~/.ssh/known_hosts
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/src/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi
 - ccache -s
 deploy:
   provider: releases
