@@ -409,8 +409,6 @@ void TextCell::RecalculateWidths(int fontsize)
 {
   if(fontsize < 1)
     fontsize = m_fontSize;
-  if(fontsize != m_fontsize_old)
-    ResetSize();
   Configuration *configuration = (*m_configuration);
   
   if(NeedsRecalculation())

@@ -1060,6 +1060,7 @@ protected:
   CellPointers *m_cellPointers;
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor;
+  int m_fontsize_old;
 
 private:
   //! The client width at the time of the last recalculation.

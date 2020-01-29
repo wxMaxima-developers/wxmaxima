@@ -596,16 +596,21 @@ void EditorCell::ConvertNumToUNicodeChar()
     return;
   int numLen = 0;
   while((m_positionOfCaret > 0) &&
-        (m_text [m_positionOfCaret - 1] >= '0') &&
-        (m_text [m_positionOfCaret - 1] <= '9')
+        (((m_text [m_positionOfCaret - 1] >= '0') &&
+          (m_text [m_positionOfCaret - 1] <= '9')) ||
+         ((m_text [m_positionOfCaret - 1] >= 'a') &&
+          (m_text [m_positionOfCaret - 1] <= 'f')) ||
+         ((m_text [m_positionOfCaret - 1] >= 'A') &&
+          (m_text [m_positionOfCaret - 1] <= 'F')))
     )
   {
     numLen++;
     m_positionOfCaret--;
   }
+
+  wxString numString = "0x" + m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1);
   long number;
-  std::cerr<<"numString="<<m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1)<<"\n";
-  if(!m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1).ToLong(&number))
+  if(!numString.ToLong(&number))
     return;
 
   wxString newChar;
