@@ -86,7 +86,7 @@ elseif(APPLE)
 	BUNDLE  DESTINATION .
 	RUNTIME DESTINATION bin
 	COMPONENT Runtime
-#	RESOURCE DESTINATION ${CMAKE_BINARY_DIR}/src/wxmaxima.app/Resources
+	RESOURCE DESTINATION ${CMAKE_BINARY_DIR}/src/wxmaxima.app/Resources
 	)
   install(CODE "
    include(BundleUtilities)
