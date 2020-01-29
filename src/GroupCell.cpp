@@ -539,6 +539,7 @@ void GroupCell::RemoveOutput()
   // ResetSize();
   // ResetData();
 
+  m_outputHeight = 0;
   Recalculate();
   (*m_configuration)->AdjustWorksheetSize(true);
   
@@ -663,7 +664,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   
-  if (NeedsRecalculation())
+  if (NeedsRecalculation(fontsize))
   {
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -922,9 +923,9 @@ void GroupCell::RecalculateHeightOutput()
   (*m_configuration)->AdjustWorksheetSize(true);
 }
 
-bool GroupCell::NeedsRecalculation()
+bool GroupCell::NeedsRecalculation(int fontSize)
 {
-  return Cell::NeedsRecalculation() ||
+  return Cell::NeedsRecalculation(fontSize) ||
     ((GetInput() != NULL) &&
      ((GetInput()->GetWidth() <= 0) || (GetInput()->GetHeight() <= 0) ||
       (GetInput()->GetCurrentPoint().x <= 0) || (GetInput()->GetCurrentPoint().y <= 0)
@@ -933,7 +934,7 @@ bool GroupCell::NeedsRecalculation()
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
-  if(NeedsRecalculation())
+  if(NeedsRecalculation(fontsize))
   {
     m_outputRect.SetHeight(0);
     RecalculateHeightInput();   

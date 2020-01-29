@@ -322,10 +322,10 @@ int Cell::GetCenterList()
   return m_maxCenter;
 }
 
-bool Cell::NeedsRecalculation()
+bool Cell::NeedsRecalculation(int fontSize)
 {
   return (m_width < 0) || (m_height < 0) || (m_center < 0) ||
-    (m_fontSize != m_fontsize_old) ||
+    (fontSize != m_fontsize_old) ||
     (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||

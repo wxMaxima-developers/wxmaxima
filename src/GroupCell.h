@@ -508,7 +508,7 @@ public:
 
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation() override;
+  bool NeedsRecalculation(int fontSize) override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored

@@ -631,7 +631,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     m_widths.clear();
 
   m_isDirty = false;
-  if (NeedsRecalculation())
+  if (NeedsRecalculation(fontsize))
   {
     StyleText();
     m_fontSize_Last = Scale_Px(fontsize);

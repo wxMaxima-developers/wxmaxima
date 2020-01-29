@@ -387,9 +387,9 @@ wxSize TextCell::GetTextSize(wxString const &text)
   return sz;
 }
 
-bool TextCell::NeedsRecalculation()
+bool TextCell::NeedsRecalculation(int fontSize)
 {
-  return Cell::NeedsRecalculation() ||
+  return Cell::NeedsRecalculation(fontSize) ||
     (
       (m_textStyle == TS_USERLABEL) &&
       (!(*m_configuration)->UseUserLabels())
@@ -411,7 +411,7 @@ void TextCell::RecalculateWidths(int fontsize)
     fontsize = m_fontSize;
   Configuration *configuration = (*m_configuration);
   
-  if(NeedsRecalculation())
+  if(NeedsRecalculation(fontsize))
   {      
     m_fontSize = m_fontsize_old = fontsize;
     wxDC *dc = configuration->GetDC();
@@ -595,7 +595,7 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (NeedsRecalculation())
+    if (NeedsRecalculation(m_fontsize_old))
       RecalculateWidths(m_fontSize);
     
     if (InUpdateRegion())

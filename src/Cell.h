@@ -546,7 +546,7 @@ class Cell
   virtual wxRect GetRect(bool wholeList = false);
 
   //! True, if something that affects the cell size has changed.
-  virtual bool NeedsRecalculation();
+  virtual bool NeedsRecalculation(int fontSize);
   
   virtual wxString GetDiffPart();
 
