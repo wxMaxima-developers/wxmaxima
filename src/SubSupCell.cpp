@@ -198,7 +198,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
 void SubSupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     wxPoint in;
 

@@ -116,7 +116,7 @@ void ConjugateCell::RecalculateHeight(int fontsize)
 void ConjugateCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     

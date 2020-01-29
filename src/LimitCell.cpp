@@ -173,7 +173,7 @@ void LimitCell::RecalculateHeight(int fontsize)
 void LimitCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {   
     wxPoint base(point), under(point), name(point);
 

@@ -134,7 +134,7 @@ void MatrCell::RecalculateHeight(int fontsize)
 void MatrCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();

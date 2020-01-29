@@ -186,7 +186,7 @@ void SqrtCell::RecalculateHeight(int fontsize)
 void SqrtCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();

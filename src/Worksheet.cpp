@@ -638,7 +638,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       // Only actually clear the image cache if there is a screen's height between
       // us and the image's position: Else the chance is too high that we will
       // very soon have to generated a scaled image again.
-      if ((cellRect.GetBottom() <= m_lastBottom - height) || (cellRect.GetTop() >= m_lastTop + height))
+      if ((cellRect.GetBottom() <= m_lastBottom - 2 * height) || (cellRect.GetTop() >= m_lastTop + 2 * height))
       {
         if (tmp->GetOutput())
           tmp->GetOutput()->ClearCacheList();

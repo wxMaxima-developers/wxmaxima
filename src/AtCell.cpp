@@ -97,7 +97,7 @@ void AtCell::RecalculateHeight(int fontsize)
 void AtCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     
     Configuration *configuration = (*m_configuration);

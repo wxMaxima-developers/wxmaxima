@@ -104,7 +104,7 @@ void FunCell::RecalculateHeight(int fontsize)
 void FunCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
 
     wxPoint name(point), arg(point);
