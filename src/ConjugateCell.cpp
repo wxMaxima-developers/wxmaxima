@@ -85,6 +85,9 @@ void ConjugateCell::SetInner(Cell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_innerCell->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -97,6 +100,9 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_innerCell->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);

@@ -129,6 +129,9 @@ void ExptCell::SetBase(Cell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateWidthsList(fontsize);
@@ -146,6 +149,9 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateHeightList(fontsize);
@@ -163,9 +169,6 @@ void ExptCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    m_exptCell->RecalculateHeightList(fontsize);
-    m_baseCell->RecalculateHeightList(fontsize);
-
     m_expt_yoffset = m_exptCell->GetDrop() + PowRise();
 
     m_height = m_baseCell->GetHeight();

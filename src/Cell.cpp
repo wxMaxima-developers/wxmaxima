@@ -62,6 +62,7 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
+  m_isBrokenIntoLines_old = false;
   m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
   m_fontsize_old = m_clientWidth_old = -1;
@@ -324,13 +325,15 @@ int Cell::GetCenterList()
 
 bool Cell::NeedsRecalculation(int fontSize)
 {
-  return (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+  bool result = (m_width < 0) || (m_height < 0) || (m_center < 0) ||
     (fontSize != m_fontsize_old) ||
+    (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
     ((*m_configuration)->RecalculationForce()) ||
     (*m_configuration)->FontChanged();
+  return result;
 }
 
 /***
@@ -524,6 +527,7 @@ void Cell::RecalculateHeight(int fontsize)
   ResetData();
   m_fontSize = fontsize;
   m_fontsize_old = fontsize;
+  m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
 }

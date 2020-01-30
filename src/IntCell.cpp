@@ -121,6 +121,9 @@ void IntCell::SetVar(Cell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
@@ -204,6 +207,10 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
+
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Cell::RecalculateHeight(fontsize);
 
   m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));

@@ -86,6 +86,9 @@ void AbsCell::SetInner(Cell *inner)
 
 void AbsCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_innerCell->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -103,6 +106,9 @@ void AbsCell::RecalculateWidths(int fontsize)
 
 void AbsCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_innerCell->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);

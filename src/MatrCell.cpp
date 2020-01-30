@@ -77,6 +77,9 @@ std::list<std::shared_ptr<Cell>> MatrCell::GetInnerCells()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 2));
@@ -103,6 +106,9 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 2));

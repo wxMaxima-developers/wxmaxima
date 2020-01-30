@@ -128,6 +128,9 @@ void SubSupCell::SetExponent(Cell *expt)
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateWidthsList(fontsize);
 
   int preWidth = 0;
@@ -160,6 +163,9 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateHeightList(fontsize);
 
   int subHeight = 0;

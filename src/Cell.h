@@ -1061,7 +1061,7 @@ protected:
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor;
   int m_fontsize_old;
-
+  bool m_isBrokenIntoLines_old;
 private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old;

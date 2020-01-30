@@ -118,6 +118,9 @@ void LimitCell::SetUnder(Cell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   if(m_base)
     m_base->RecalculateWidthsList(fontsize);
   if(m_under)
@@ -143,6 +146,9 @@ void LimitCell::RecalculateWidths(int fontsize)
 
 void LimitCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   if(m_under)
     m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   if(m_name)
