@@ -540,7 +540,11 @@ void GroupCell::RemoveOutput()
   // ResetData();
 
   m_outputHeight = 0;
-  Recalculate();
+  m_height = m_inputHeight;
+  if(m_inputLabel)
+    m_width = m_inputLabel->GetFullWidth();
+  else
+    m_width = 50;
   (*m_configuration)->AdjustWorksheetSize(true);
   
   // Move all cells that follow the current one up by the amount this cell has shrinked.
