@@ -487,6 +487,7 @@ public:
     maxima_process_id,
     gnuplot_process_id,
     menu_additionalSymbols,
+    enable_unicodePane,
     menu_showLatinGreekLookalikes,
     menu_showGreekMu
   };
@@ -512,7 +513,7 @@ public:
      - true: show the sidebar
      - false: hide it
    */
-  void ShowPane(Event id, bool show);
+  void ShowPane(Event id, bool show = true);
 
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(wxString cmd)

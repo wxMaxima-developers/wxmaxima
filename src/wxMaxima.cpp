@@ -356,6 +356,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_solve_num, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(enable_unicodePane, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_subst, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_plot2d, wxEVT_MENU,
@@ -1072,6 +1074,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxActivateEventHandler(wxMaxima::OnActivate), NULL, this);
   Connect(wxEVT_ICONIZE,
           wxIconizeEventHandler(wxMaxima::OnMinimize), NULL, this);
+  Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL, this);
   m_worksheet->SetFocus();
   m_autoSaveTimer.StartOnce(180000);
 }
@@ -5865,6 +5868,14 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event)
     m_worksheet->UpdateTableOfContents();
 }
 
+void wxMaxima::OnSymbolAdd(wxCommandEvent &event)
+{
+  m_worksheet->m_configuration->SymbolPaneAdditionalChars(
+    m_worksheet->m_configuration->SymbolPaneAdditionalChars() +
+    wxString(wxChar(event.GetId())));
+  m_symbolsPane->UpdateUserSymbols();
+}
+
 void wxMaxima::MaximaMenu(wxCommandEvent &event)
 {
   if(m_worksheet != NULL)
@@ -7734,7 +7745,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       wxAboutDialogInfo info;
       wxString description;
 
-      description = _("wxMaxima is a cross-platform graphical user interface for the computer algebra system Maxima based on wxWidgets. For rendering svg graphics it uses nanosvg (https://github.com/memononen/nanosvg).");
+      description = _("wxMaxima is a cross-platform graphical user interface for the computer algebra system Maxima based on wxWidgets.\nFor rendering svg graphics it uses nanosvg (https://github.com/memononen/nanosvg).\nThe unicode character list has been compiled by the Unicode Consortium.");
 
 #if defined(WXMAXIMA_GIT_VERSION)
       description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
@@ -8281,6 +8292,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   wxString selection = m_worksheet->GetString();
   switch (event.GetId())
   {
+  case enable_unicodePane:
+    wxMaximaFrame::ShowPane(wxMaximaFrame::menu_pane_unicode, true);
+  break;
   case Worksheet::popid_fold:
   {
     if (m_worksheet->GetActiveCell())

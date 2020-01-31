@@ -2015,6 +2015,7 @@ void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->Append(menu_additionalSymbols, _("Add more symbols"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(enable_unicodePane, _("Show all unicode symbols"), wxEmptyString, wxITEM_NORMAL);
   PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
 }
 

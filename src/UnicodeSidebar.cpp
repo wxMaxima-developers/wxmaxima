@@ -23,7 +23,8 @@
 /*! \file
   This file defines the class UnicodeSidebar
 
-  UnicodeSidebar is a side bar that shows all recently issued maxima commands.
+  This file contains the definition of the class Unicodesidebar that allows to 
+  select arbitrary unicode symbols.
  */
 
 
@@ -37,10 +38,12 @@
 #include <wx/regex.h>
 #include <wx/wupdlock.h>
 #include "../data/UnicodeData.h"
+#include <memory>
 
 #include "ErrorRedirector.h"
 #include "UnicodeSidebar.h"
 wxDEFINE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);
+wxDEFINE_EVENT(SYMBOLADDEVENT, SymboladdEvent);
 
 UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   wxPanel(parent),
@@ -59,6 +62,7 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   Connect(wxEVT_PAINT, wxPaintEventHandler(UnicodeSidebar::OnPaint), NULL, this);
   Connect(wxEVT_SIZE, wxSizeEventHandler(UnicodeSidebar::OnSize), NULL, this);
   m_grid->Connect(wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler(UnicodeSidebar::OnDClick), NULL, this);
+  m_grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(UnicodeSidebar::OnRightClick), NULL, this);
   m_grid->Connect(wxEVT_GRID_CELL_CHANGING, wxGridEventHandler(UnicodeSidebar::OnChangeAttempt), NULL, this);
   SetSizerAndFit(box);
 //  box->SetSizeHints(this);
@@ -79,6 +83,35 @@ void UnicodeSidebar::OnDClick(wxGridEvent &event)
     m_worksheet->GetEventHandler()->QueueEvent(ev);
   }
   m_worksheet->SetFocus();
+}
+
+void UnicodeSidebar::OnRightClick(wxGridEvent &event)
+{
+  wxString number;
+  number = m_grid->GetCellValue(event.GetRow() ,0);
+  if(number.ToLong(&m_charRightClickedOn, 16))
+  {
+    std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+    popupMenu->Append(popid_addToSymbols, _("Add to symbols Sidebar"));
+    PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
+    Connect(popid_addToSymbols, wxEVT_MENU,
+            wxCommandEventHandler(UnicodeSidebar::OnMenu), NULL, this);
+  }
+}
+
+void UnicodeSidebar::OnMenu(wxCommandEvent &event)
+{
+  switch (event.GetId())
+  {
+  case popid_addToSymbols:
+    wxWindow *toplevel = this;
+    while(toplevel->GetParent() != NULL)
+      toplevel = toplevel->GetParent();
+    wxCommandEvent *ev = new wxCommandEvent(SYMBOLADDEVENT, m_charRightClickedOn);
+    toplevel->GetEventHandler()->QueueEvent(ev);
+
+    break;
+  }
 }
 
 void UnicodeSidebar::OnChangeAttempt(wxGridEvent &event)

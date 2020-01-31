@@ -287,7 +287,8 @@ protected:
   void ConfigChanged();
   //! Called when the "Scroll to last error" button is pressed.
   void OnJumpToError(wxCommandEvent &event);
-
+  //! Sends a new char to the symbols sidebar
+  void OnSymbolAdd(wxCommandEvent &event);
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent &event);
 

@@ -22,8 +22,8 @@
 
 /*! \file
 
-  This file contains the definition of the class Unicodesidebar that handles the recently 
-  issued commands for the unicodesidebar pane.
+  This file contains the definition of the class Unicodesidebar that allows to 
+  select arbitrary unicode symbols.
  */
 #include <wx/wx.h>
 #include <wx/grid.h>
@@ -44,18 +44,28 @@ public:
    */
   ~UnicodeSidebar();
 
-  void OnRegExEvent(wxCommandEvent &ev);
+  //! The popup menu IDs this sidebar uses
+  enum PopIds
+  {
+    popid_addToSymbols = wxID_HIGHEST + 3500,
+  };
 
+  //! Is called if the RegEx changes
+  void OnRegExEvent(wxCommandEvent &ev);
+  //! Update the display after the regex has changed
   void UpdateDisplay();
 
 protected:
+  void OnMenu(wxCommandEvent &event);
   void OnPaint(wxPaintEvent &event);
   void OnSize(wxSizeEvent &event);
   void OnDClick(wxGridEvent &event);
+  void OnRightClick(wxGridEvent &event);
   void OnChangeAttempt(wxGridEvent &event);
-
-  private:
+  
+private:
   bool m_initialized;
+  long m_charRightClickedOn;
   wxWindow *m_worksheet;
   wxGrid *m_grid;
   wxTextCtrl *m_regex;
@@ -71,6 +81,17 @@ public:
           :  wxCommandEvent(event) {}
 };
 
+class SymboladdEvent: public wxCommandEvent
+{
+public:
+	SymboladdEvent(int id = 0)
+        		:  wxCommandEvent(id) { }
+ 
+	SymboladdEvent(const SymboladdEvent& event)
+          :  wxCommandEvent(event) {}
+};
+
 wxDECLARE_EVENT(SIDEBARKEYEVENT, SidebarKeyEvent);
+wxDECLARE_EVENT(SYMBOLADDEVENT, SymboladdEvent);
 
 #endif // UNICODESIDEBAR_H
