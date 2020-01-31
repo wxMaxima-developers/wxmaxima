@@ -505,6 +505,7 @@ void GroupCell::SetOutput(Cell *output)
 
   m_lastInOutput = m_output.get();
 
+  m_outputHeight = -1;
   if(m_output != NULL)
   {
     m_output->SetGroup(this);
@@ -514,7 +515,8 @@ void GroupCell::SetOutput(Cell *output)
   }
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
-//  ResetSize();
+  ResetSize();
+  ResetData();
   GroupCell::Recalculate();
 }
 
@@ -589,8 +591,11 @@ void GroupCell::AppendOutput(Cell *cell)
         m_lastInOutput = m_lastInOutput->m_next;
   }
   m_output->ResetSize();
+  m_output->ResetSize();
+  m_outputHeight = -1;
   ResetSize();
   ResetData();
+  GroupCell::Recalculate();
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
 }

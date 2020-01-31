@@ -4639,9 +4639,12 @@ wxString wxMaxima::GetDefaultEntry()
 {
   if (m_worksheet->CanCopy(true))
     return (m_worksheet->GetString()).Trim().Trim(false);
+  wxString retval;
   if (m_worksheet->GetActiveCell() != NULL)
-    return ExtractFirstExpression(m_worksheet->GetActiveCell()->ToString());
-  return wxT("%");
+    return retval = m_worksheet->GetActiveCell()->GetWordUnderCaret();
+  if (retval.IsEmpty())
+    retval = "%";
+  return retval;
 }
 
 bool wxMaxima::OpenFile(wxString file, wxString command)
