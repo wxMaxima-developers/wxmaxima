@@ -179,6 +179,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
           wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
+  Connect(SIDEBARKEYEVENT,
+          wxCommandEventHandler(Worksheet::OnSidebarKey),
+          NULL, this);
   Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(Worksheet::EraseBackground));
   Connect(
     popid_complete_00, popid_complete_00 + AC_MENU_LENGTH,
@@ -202,6 +205,14 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(Worksheet::OnKillFocus));
   Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(Worksheet::OnScrollChanged));
+}
+
+void Worksheet::OnSidebarKey(wxCommandEvent &event)
+{
+  if(GetActiveCell())
+    GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
+  else
+    OpenHCaret(wxString(wxChar(event.GetId())));
 }
 
 void Worksheet::EraseBackground(wxEraseEvent &WXUNUSED(event)){}

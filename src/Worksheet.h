@@ -47,6 +47,7 @@
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
 #include "TableOfContents.h"
+#include "UnicodeSidebar.h"
 #include "ToolBar.h"
 
 /*! The canvas that contains the spreadsheet the whole program is about.
@@ -448,6 +449,8 @@ private:
 
   void OnMouseRightDown(wxMouseEvent &event);
 
+  void OnSidebarKey(wxCommandEvent &event);
+  
   void OnMouseLeftUp(wxMouseEvent &event);
 
   //! Is called if we loose the mouse connection whilst selecting text/cells

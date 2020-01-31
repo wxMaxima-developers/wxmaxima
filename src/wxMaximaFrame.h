@@ -103,6 +103,7 @@ public:
     menu_pane_xmlInspector, //!< Both the "toggle the xml monitor" command and the monitor pane
     menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
     menu_pane_greek,     //!< Both the "toggle the greek pane" command and the "greek" pane
+    menu_pane_unicode,   //!< Both the "toggle the unicode pane" command and the "unicode" pane
     menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
     menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
     menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane

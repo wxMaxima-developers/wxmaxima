@@ -44,6 +44,7 @@
 #include <wx/wupdlock.h>
 #include "wxMaximaIcon.h"
 #include "Gen1Wiz.h"
+#include "UnicodeSidebar.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxPoint &pos, const wxSize &size,
@@ -265,6 +266,23 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
+  wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet);
+  m_manager.AddPane(unicodePane,
+                    wxAuiPaneInfo().Name(wxT("unicode")).
+                            Show(false).CloseButton(true).PinButton().
+                            DockFixed(false).
+                            Gripper(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            MinSize(greekPane->GetEffectiveMinSize()).
+                            BestSize(greekPane->GetEffectiveMinSize()).
+                            MaxSize(greekPane->GetEffectiveMinSize()).
+                            FloatingSize(greekPane->GetEffectiveMinSize()).
+                            Left());
+
   m_manager.AddPane(m_logPane,
                     wxAuiPaneInfo().Name(wxT("log")).
                             Show(false).CloseButton(true).PinButton().
@@ -364,6 +382,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
     Show(false).Gripper(false).CloseButton(true).PinButton();
 
+  m_manager.GetPane(wxT("unicode")) = m_manager.GetPane(wxT("unicode")).
+    Show(false).Gripper(false).CloseButton(true).PinButton();
+
   m_manager.GetPane(wxT("variables")) = m_manager.GetPane(wxT("variables")).
     Gripper(false).CloseButton(true).PinButton();
 
@@ -437,6 +458,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // The XML inspector scares many users and displaying long XML responses there slows
   // down wxMaxima => disable the XML inspector on startup.
   m_manager.GetPane(wxT("XmlInspector")).Show(false);
+  m_manager.GetPane(wxT("unicode")).Show(false);
 
   m_manager.GetPane(wxT("structure")) =
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton(true).PinButton().Resizable();
@@ -718,6 +740,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt+Shift+S"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek Letters\tAlt+Shift+G"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt+Shift+Y"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_unicode, _("Unicode chars\tAlt+Shift+U"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt+Shift+I"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure, _("Table of Contents\tAlt+Shift+T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
@@ -1496,6 +1519,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_greek:
       displayed = m_manager.GetPane(wxT("greek")).IsShown();
       break;
+    case menu_pane_unicode:
+      displayed = m_manager.GetPane(wxT("unicode")).IsShown();
+      break;
     case menu_pane_log:
       displayed = m_manager.GetPane(wxT("log")).IsShown();
       break;
@@ -1542,6 +1568,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_greek:
       m_manager.GetPane(wxT("greek")).Show(show);
       break;
+    case menu_pane_unicode:
+      m_manager.GetPane(wxT("unicode")).Show(show);
+      break;
     case menu_pane_log:
       m_manager.GetPane(wxT("log")).Show(show);
       break;
@@ -1565,6 +1594,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("stats")).Show(false);
       m_manager.GetPane(wxT("greek")).Show(false);
       m_manager.GetPane(wxT("log")).Show(false);
+      m_manager.GetPane(wxT("unicode")).Show(false);
       m_manager.GetPane(wxT("variables")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);

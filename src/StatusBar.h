@@ -69,7 +69,6 @@ public:
     }
 protected:
   void OnSize(wxSizeEvent &event);
-
   void OnTimerEvent(wxTimerEvent &event);
 
   void HandleTimerEvent();

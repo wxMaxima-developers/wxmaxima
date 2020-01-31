@@ -608,9 +608,9 @@ void EditorCell::ConvertNumToUNicodeChar()
     m_positionOfCaret--;
   }
 
-  wxString numString = "0x" + m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1);
+  wxString numString = m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1);
   long number;
-  if(!numString.ToLong(&number))
+  if(!numString.ToLong(&number, 16))
     return;
 
   wxString newChar;
