@@ -50,7 +50,7 @@ if(WIN32)
   set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
 endif()
 
-# We put Version.h into binary dir
+# Version.h is generated in the binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 file(GLOB RESOURCE_FILES
@@ -68,14 +68,13 @@ file(GLOB RESOURCE_FILES
     ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
     ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
 
-SET(MACOSX_BUNDLE_BUNDLE_NAME wxmaxima)
-
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
     set(MACOSX_BUNDLE TRUE)
-    list(APPEND SOURCE_FILES ${MACOS_RESOURCES_FILES})
+    SET(MACOSX_BUNDLE_NAME wxmaxima)
+    list(APPEND SOURCE_FILES ${RESOURCE_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
 	MACOSX_BUNDLE TRUE
@@ -86,7 +85,7 @@ elseif(APPLE)
 	BUNDLE  DESTINATION .
 	RUNTIME DESTINATION bin
 	COMPONENT Runtime
-	RESOURCE DESTINATION ${CMAKE_BINARY_DIR}/src/wxmaxima.app/Resources
+#	RESOURCE DESTINATION .
 	)
   install(CODE "
    include(BundleUtilities)
@@ -143,8 +142,6 @@ else()
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
 endif()
 set(CPACK_PACKAGE_VERSION "${VERSION}")
-
-
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc")
 set(CPACK_DEBIAN_PACKAGE_SUGGESTS "jsmath-fonts")
@@ -184,6 +181,8 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
-  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
+  COMMAND ${gpg} k
+  --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
 include(CPack)
+include(InstallRequiredSystemLibraries)

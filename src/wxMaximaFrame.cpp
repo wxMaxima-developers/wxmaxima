@@ -599,6 +599,9 @@ wxMaximaFrame::~wxMaximaFrame()
 
 void wxMaximaFrame::SetupMenu()
 {
+  // Silence a few warnings about non-existing icons.
+  SuppressErrorDialogs iconWarningBlocker;
+  
   m_MenuBar = new MainMenuBar();
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \

@@ -97,10 +97,6 @@ if(WIN32 AND APPVEYOR_BUILD)
 	COMPONENT applications)
 endif()
 
-if(WIN32)
-    include(InstallRequiredSystemLibraries)
-endif()
-
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 add_custom_target(checksums
