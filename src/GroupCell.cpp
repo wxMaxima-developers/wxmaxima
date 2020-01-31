@@ -588,9 +588,9 @@ void GroupCell::AppendOutput(Cell *cell)
       while (m_lastInOutput->m_next != NULL)
         m_lastInOutput = m_lastInOutput->m_next;
   }
+  m_output->ResetSize();
   ResetSize();
   ResetData();
-  m_output->ResetSize();
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
 }
