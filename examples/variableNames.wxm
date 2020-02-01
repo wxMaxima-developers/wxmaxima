@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.01.2-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 20.01.3-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Advanced variable names
    [wxMaxima: title   end   ] */
@@ -58,7 +58,7 @@ ew_qwqw;
 
 
 /* [wxMaxima: section start ]
-Variable names containing "+", "-" or the like
+Variable and equation names containing "'", "+", "-" or the like
    [wxMaxima: section end   ] */
 
 
@@ -68,8 +68,13 @@ By escaping it with an backslash nearly every symbol can be made to be interpret
 
 
 /* [wxMaxima: input   start ] */
-φ_\-=10;
-φ_\+=φ_\-;
+eq1\':φ_\-=10;
+eq1\'\':φ_\+=φ_\-;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1:subst(eq1\',eq1\'\');
 /* [wxMaxima: input   end   ] */
 
 
@@ -90,7 +95,7 @@ Easy access to combining diacritics
 
 /* [wxMaxima: comment start ]
  * Open the "mathematical symbols" sidebar (if it isn't already displayed) and right-click on it
- * Drag-and-drop a combining diacritic to the "add new symbols" dialogue.
+ * Drag-and-drop a combining diacritic to the "add new symbols" dialogue, for example one of the following.
  * The "symbols" sidebar now should allow for easy access to these characters.
    [wxMaxima: comment end   ] */
 
@@ -103,6 +108,7 @@ A few combining diacritics are:
 /* [wxMaxima: comment start ]
  * ̂
  * ̃
+ * ̅
    [wxMaxima: comment end   ] */
 
 
@@ -128,6 +134,28 @@ T\̂/U_Test;
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: section start ]
+A weird example, just for showing off
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's hope the font that is used to display this includes cherries, pear and banana symbols.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1:🍐+🍌=🍒;
+eq2:🍐+🍐=🍌;
+eq3:🍌=10;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve([eq1,eq2,eq3],[🍐,🍌,🍒]);
+/* [wxMaxima: input   end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.01.2-DevelopmentSnapshot"$
+"Created with wxMaxima 20.01.3-DevelopmentSnapshot"$
