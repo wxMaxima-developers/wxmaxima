@@ -202,7 +202,12 @@ wxString Dirstructure::MaximaDefaultLocation()
   maximaLocation = "/usr/local/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
-  
+
+  wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
+  maximaLocation = "/opt/local/bin/maxima";
+  if (wxFileExists(maximaLocation))
+    return maximaLocation;
+
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = "/usr/bin/maxima";
   if (wxFileExists(maximaLocation))
