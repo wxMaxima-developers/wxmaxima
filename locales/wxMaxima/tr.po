@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 22:50+0100\n"
+"POT-Creation-Date: 2020-02-01 08:06+0100\n"
 "PO-Revision-Date: 2019-07-04 14:57+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -86,7 +86,7 @@ msgstr "-u<sayı>"
 msgid " (Graphics) "
 msgstr " (Grafikler) "
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1624
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1629
 msgid ""
 " * Open the \"mathematical symbols\" sidebar (if it isn't already displayed) "
 "and right-click on it\n"
@@ -96,10 +96,11 @@ msgid ""
 "characters.\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1641
 msgid ""
 " * ̂\n"
 " * ̃\n"
+" * ̅\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3476
@@ -418,7 +419,7 @@ msgstr "Geçerli bir değişken adı değil"
 msgid "(Use default language)"
 msgstr "(Varsayılan dili kullan)"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1647
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1653
 msgid ""
 "* First enter the character you want to equip with new accents or the like.\n"
 "* Then add a Backslash (\"\\\") in order to tell maxima that the symbol that "
@@ -518,7 +519,7 @@ msgstr ""
 "Bir komut veya numara dan önce gelmeyen bir \":\", bir \"$\", bir \";\" veya "
 "bir \",\".Olası en büyük neden: İki liste öğesi arasında eksik virgül."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1631
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
 msgid "A few combining diacritics are:\n"
 msgstr ""
 
@@ -615,6 +616,10 @@ msgstr ""
 " e atanabilecek bir değişkenSonsuz sayıda sonuç varsa, genellikle solve() ve "
 "algsys()komutlarıyla kullanılır."
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1670
+msgid "A weird example, just for showing off\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:965
 msgid "A&t Value..."
 msgstr "&Başlangıç Şartı..."
@@ -641,7 +646,7 @@ msgstr "Doğruluk"
 msgid "Active cell bracket"
 msgstr "Aktif hücre ayıracı"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1642
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1648
 msgid "Actually using combining diacritics\n"
 msgstr ""
 
@@ -2400,7 +2405,7 @@ msgstr "&Denklemler"
 msgid "E&xit\tCtrl+Q"
 msgstr "&Çık\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1619
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1624
 msgid "Easy access to combining diacritics\n"
 msgstr ""
 
@@ -2619,7 +2624,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "Denklemler:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1609
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1614
 msgid "Equipping any character with accents\n"
 msgstr ""
 
@@ -4425,6 +4430,12 @@ msgstr ""
 msgid ""
 "Let's assume we have guessed that the curve might be something parabola-"
 "like:\n"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1675
+msgid ""
+"Let's hope the font that is used to display this includes cherries, pear and "
+"banana symbols.\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:136
@@ -8198,7 +8209,7 @@ msgstr "İçeriği gizleme"
 msgid "Unicode chars\tAlt+Shift+U"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1614
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1619
 msgid ""
 "Unicode supports so-called \"combining diacritics\" that allow to assemble a "
 "character from several elements. Maxima might not know that the individual "
@@ -8348,6 +8359,11 @@ msgstr "Değer:"
 msgid "Variable"
 msgstr "Değişken"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1593
+msgid ""
+"Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:48
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:144
 msgid "Variable for the x value"
@@ -8366,10 +8382,6 @@ msgstr "z değeri için değişken"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7019
 msgid "Variable name"
 msgstr "Değişken adı"
-
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1593
-msgid "Variable names containing \"+\", \"-\" or the like\n"
-msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6071
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6096

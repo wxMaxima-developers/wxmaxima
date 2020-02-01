@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 22:50+0100\n"
+"POT-Creation-Date: 2020-02-01 08:06+0100\n"
 "PO-Revision-Date: 2013-11-04 00:21+0100\n"
 "Last-Translator: Bernard Alfonsi <bernard.alfonsi@free.fr>\n"
 "Language-Team: francais <fr@li.org>\n"
@@ -83,7 +83,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1624
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1629
 msgid ""
 " * Open the \"mathematical symbols\" sidebar (if it isn't already displayed) "
 "and right-click on it\n"
@@ -93,10 +93,11 @@ msgid ""
 "characters.\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1641
 msgid ""
 " * ̂\n"
 " * ̃\n"
+" * ̅\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3476
@@ -422,7 +423,7 @@ msgstr ""
 msgid "(Use default language)"
 msgstr "(Utiliser la langue par défaut)"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1647
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1653
 msgid ""
 "* First enter the character you want to equip with new accents or the like.\n"
 "* Then add a Backslash (\"\\\") in order to tell maxima that the symbol that "
@@ -517,7 +518,7 @@ msgid ""
 "Most probable cause: A missing comma between two list items."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1631
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
 msgid "A few combining diacritics are:\n"
 msgstr ""
 
@@ -611,6 +612,10 @@ msgid ""
 "results."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1670
+msgid "A weird example, just for showing off\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:965
 msgid "A&t Value..."
 msgstr "À la valeur…"
@@ -637,7 +642,7 @@ msgstr ""
 msgid "Active cell bracket"
 msgstr "Crochet de la cellule active"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1642
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1648
 msgid "Actually using combining diacritics\n"
 msgstr ""
 
@@ -2393,7 +2398,7 @@ msgstr "É&quations"
 msgid "E&xit\tCtrl+Q"
 msgstr "&Quitter\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1619
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1624
 msgid "Easy access to combining diacritics\n"
 msgstr ""
 
@@ -2604,7 +2609,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "Équation(s) :"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1609
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1614
 msgid "Equipping any character with accents\n"
 msgstr ""
 
@@ -4406,6 +4411,12 @@ msgstr ""
 msgid ""
 "Let's assume we have guessed that the curve might be something parabola-"
 "like:\n"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1675
+msgid ""
+"Let's hope the font that is used to display this includes cherries, pear and "
+"banana symbols.\n"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:136
@@ -8033,7 +8044,7 @@ msgstr "Constantes grecques"
 msgid "Unicode chars\tAlt+Shift+U"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1614
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1619
 msgid ""
 "Unicode supports so-called \"combining diacritics\" that allow to assemble a "
 "character from several elements. Maxima might not know that the individual "
@@ -8181,6 +8192,11 @@ msgstr "Valeur :"
 msgid "Variable"
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1593
+msgid ""
+"Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:48
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:144
 msgid "Variable for the x value"
@@ -8200,10 +8216,6 @@ msgstr ""
 #, fuzzy
 msgid "Variable name"
 msgstr "Ancienne variable :"
-
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1593
-msgid "Variable names containing \"+\", \"-\" or the like\n"
-msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6071
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6096

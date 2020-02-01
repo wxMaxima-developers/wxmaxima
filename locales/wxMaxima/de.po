@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 22:50+0100\n"
-"PO-Revision-Date: 2020-01-25 09:27+0100\n"
+"POT-Creation-Date: 2020-02-01 08:06+0100\n"
+"PO-Revision-Date: 2020-02-01 08:11+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -85,7 +85,7 @@ msgstr "      -u <nummer>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1624
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1629
 msgid ""
 " * Open the \"mathematical symbols\" sidebar (if it isn't already displayed) "
 "and right-click on it\n"
@@ -101,13 +101,15 @@ msgstr ""
 " * Nun sollte die \"Symbole\"-Seitenleiste einen halbwegs einfachen Zugriff "
 "auf die betreffenden Symbole bieten.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1641
 msgid ""
 " * ̂\n"
 " * ̃\n"
+" * ̅\n"
 msgstr ""
 " * ̂\n"
 " * ̃\n"
+" * ̅\n"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3476
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3711
@@ -426,7 +428,7 @@ msgstr "(Kein gültiger Variablenname)"
 msgid "(Use default language)"
 msgstr "(Standardsprache verwenden)"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1647
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1653
 msgid ""
 "* First enter the character you want to equip with new accents or the like.\n"
 "* Then add a Backslash (\"\\\") in order to tell maxima that the symbol that "
@@ -539,7 +541,7 @@ msgstr ""
 "Wahrscheinlichste Fehlerursache: Ein fehlendes Komma zwichen zwei "
 "Listenelementen."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1631
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1636
 msgid "A few combining diacritics are:\n"
 msgstr "Ein paar geeignete Symbole sind:\n"
 
@@ -638,6 +640,10 @@ msgstr ""
 "Wird von solve() und algsys() verwendet, falls es unendlich viele Resultate "
 "gibt."
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1670
+msgid "A weird example, just for showing off\n"
+msgstr "Ein wildes Beispiel, um anzugeben\n"
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:965
 msgid "A&t Value..."
 msgstr "Rand&bedingung setzen ..."
@@ -664,7 +670,7 @@ msgstr "Genauigkeit"
 msgid "Active cell bracket"
 msgstr "Klammern aktive Zelle"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1642
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1648
 msgid "Actually using combining diacritics\n"
 msgstr "Verwendung der kombinierenden Symbole\n"
 
@@ -717,7 +723,7 @@ msgstr "Zum &Pfad hinzufügen ..."
 
 #: /home/gunter/src/wxmaxima/src/UnicodeSidebar.cpp:95
 msgid "Add to symbols Sidebar"
-msgstr ""
+msgstr "In die \"Symbole\"-Seitenleiste"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1523
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1534
@@ -2499,7 +2505,7 @@ msgstr "&Gleichungen"
 msgid "E&xit\tCtrl+Q"
 msgstr "B&eenden\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1619
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1624
 msgid "Easy access to combining diacritics\n"
 msgstr "Einfacher Zugriff auf kombinierende Symbole\n"
 
@@ -2717,7 +2723,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1609
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1614
 msgid "Equipping any character with accents\n"
 msgstr "Versehen eines beliebigen Zeichens mit Akzenten\n"
 
@@ -4637,6 +4643,12 @@ msgid ""
 "like:\n"
 msgstr "Wie haben nun erraten, dass die Kurve eine Parabel sein kann:\n"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1675
+msgid ""
+"Let's hope the font that is used to display this includes cherries, pear and "
+"banana symbols.\n"
+msgstr "Hoffen wir, dass der verwende Zeichensatz Kirschen, Birnen und Bananen enthält.\n"
+
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:136
 msgid "Let's specify the circuit values we might know about...\n"
 msgstr ""
@@ -6044,7 +6056,7 @@ msgstr "Bitte konfigurieren Sie wxMaxima mit 'Bearbeiten->Einstellungen'."
 #: /home/gunter/src/wxmaxima/src/UnicodeSidebar.cpp:55
 msgid ""
 "Please enter a regex here that searches for the required unicode character"
-msgstr ""
+msgstr "Hier bitte eine regexp eingeben, die nach dem gewünschten Symbol sucht"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1452
 msgid "Please restart wxMaxima for changes to take effect!"
@@ -7073,7 +7085,7 @@ msgstr "Zeige alle Befehle, die ähnlich sind zu:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2018
 msgid "Show all unicode symbols"
-msgstr ""
+msgstr "Alle Unicode-Symbole anzeigen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7893
 msgid "Show an example for the command:"
@@ -8583,9 +8595,9 @@ msgstr "Zeige den Inhalt"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:743
 msgid "Unicode chars\tAlt+Shift+U"
-msgstr ""
+msgstr "Unicode-Zeichen\\tAlt+Shift+U"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1614
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1619
 msgid ""
 "Unicode supports so-called \"combining diacritics\" that allow to assemble a "
 "character from several elements. Maxima might not know that the individual "
@@ -8739,6 +8751,11 @@ msgstr "Wert:"
 msgid "Variable"
 msgstr "Variable"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1593
+msgid ""
+"Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
+msgstr "Variablen- and Gleichungsnamen mit \"'\", \"+\" oder \"-\"\n"
+
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:48
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:144
 msgid "Variable for the x value"
@@ -8757,10 +8774,6 @@ msgstr "Variable für den z-Wert"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7019
 msgid "Variable name"
 msgstr "Variablenname"
-
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1593
-msgid "Variable names containing \"+\", \"-\" or the like\n"
-msgstr "Variablennamen mit einem \"+\", \"-\" oder Ähnlichen darin\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6071
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6096
@@ -9677,6 +9690,9 @@ msgid ""
 "nanosvg).\n"
 "The unicode character list has been compiled by the Unicode Consortium."
 msgstr ""
+"wxMaxima ist eine graphische Benutzeroberfläche für das Computer-Algebra-System Maxima.\n"
+"SVG zeigt sie mittels nanosvg an (https://github.com/memononen/nanosvg).\n"
+"Die Liste der Unicode-Zeichen stammt hingegen vom Unicode-Consortium."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:180
 msgid ""
@@ -9807,6 +9823,16 @@ msgstr "Der Bereich für die z-Achse (automatisch, wenn leer)"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1827
 msgid "zeta"
 msgstr "zeta"
+
+#~ msgid ""
+#~ " * ̂\n"
+#~ " * ̃\n"
+#~ msgstr ""
+#~ " * ̂\n"
+#~ " * ̃\n"
+
+#~ msgid "Variable names containing \"+\", \"-\" or the like\n"
+#~ msgstr "Variablennamen mit einem \"+\", \"-\" oder Ähnlichen darin\n"
 
 #~ msgid ""
 #~ "wxMaxima is a cross-platform graphical user interface for the computer "
