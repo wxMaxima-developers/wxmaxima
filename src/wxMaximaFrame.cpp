@@ -809,8 +809,12 @@ void wxMaximaFrame::SetupMenu()
   }
   m_CellMenu->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl+R"),
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
-                     _("Evaluate all cells in the document"), wxITEM_NORMAL);
+  {
+    wxMenuItem *it = new wxMenuItem(m_CellMenu, menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
+                                    _("Evaluate all cells in the document"), wxITEM_NORMAL);
+    it->SetBitmap(m_worksheet->m_mainToolBar->GetEvalAllBitmap(wxRendererNative::Get().GetCheckBoxSize(this)));
+    m_CellMenu->Append(it);
+  }
   {
     wxMenuItem *it = new wxMenuItem(m_CellMenu, ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl+Shift+P"),
                                     _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
@@ -879,11 +883,19 @@ void wxMaximaFrame::SetupMenu()
   // Maxima menu
   m_MaximaMenu = new wxMenu;
 
-  APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
-                   _("&Interrupt\tCtrl+G"),
-                   _("Interrupt current computation"), wxT("gtk-stop"));
-  APPEND_MENU_ITEM(m_MaximaMenu, ToolBar::menu_restart_id,
-                   _("&Restart Maxima"), _("Restart Maxima"), wxT("gtk-refresh"));
+  {
+    wxMenuItem *it = new wxMenuItem(m_MaximaMenu, menu_interrupt_id, _("&Interrupt\tCtrl+G"),
+                   _("Interrupt current computation"), wxITEM_NORMAL);
+    it->SetBitmap(m_worksheet->m_mainToolBar->GetInterruptBitmap(wxRendererNative::Get().GetCheckBoxSize(this)));
+    m_MaximaMenu->Append(it);
+  }
+
+  {
+    wxMenuItem *it = new wxMenuItem(m_MaximaMenu, ToolBar::menu_restart_id, _("&Restart Maxima"),
+                                    _("Restart Maxima"), wxITEM_NORMAL);
+    it->SetBitmap(m_worksheet->m_mainToolBar->GetRestartBitmap(wxRendererNative::Get().GetCheckBoxSize(this)));
+    m_MaximaMenu->Append(it);
+  }
   m_MaximaMenu->Append(menu_soft_restart, _("&Clear Memory"),
                        _("Delete all values from memory"), wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_MaximaMenu, menu_add_path, _("Add to &Path..."),
