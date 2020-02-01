@@ -209,6 +209,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event)
 {
+  SetFocus();
   if(GetActiveCell())
     GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
   else

@@ -641,23 +641,6 @@ private:
   wxPanel *CreateMathPane();
 
   wxPanel *CreateFormatPane();
-
-  class CharButton: public wxPanel
-  {
-  public:
-    /*! A flat, compact button for the greek and the symbols pane
-      
-      \param parent The parent panel/window
-      \param ch The unicode symbol
-      \param description The help text for the symbol
-      \param matchesMaximaCommand true means that this symbol is automatically
-      translated into a maxima command/operator
-      
-    */
-    CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
-  protected:
-      void ForwardToParent(wxMouseEvent &event);
-  };
   
   //! The class for the sidebar with the draw commands
   class DrawPane: public wxPanel
@@ -712,7 +695,7 @@ private:
   class GreekPane : public wxPanel
   {
   public:
-    GreekPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
+    GreekPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
   protected:
     void UpdateSymbols();
     void OnMouseRightDown(wxMouseEvent &event);
@@ -721,12 +704,13 @@ private:
     Configuration *m_configuration;
     wxFlexGridSizer *m_lowercaseSizer;
     wxFlexGridSizer *m_uppercaseSizer;
+    Worksheet *m_worksheet;
   };
 
   class SymbolsPane : public wxPanel
   {
   public:
-    SymbolsPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
+    SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
     //! Update the "user symbols" portion of the symbols pane.
     void UpdateUserSymbols();
   protected:
@@ -739,6 +723,7 @@ private:
     std::list<wxPanel *> m_userSymbolButtons;
     wxGridSizer *m_userSymbolsSizer;
     Configuration *m_configuration;
+    Worksheet *m_worksheet;
   };
 
   wxPanel *CreateSymbolsPane();
@@ -754,8 +739,6 @@ protected:
 
   //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
-
-  void CharacterButtonPressed(wxMouseEvent &event);
 
   bool ToolbarIsShown();
   //! The manager for dynamic screen layouts
