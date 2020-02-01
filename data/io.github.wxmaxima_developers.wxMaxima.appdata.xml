@@ -51,6 +51,22 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="20.02.0" date="2020-02-01">
+      <description>
+	<p>
+	  Bugfixes and better unicode support
+	</p>
+        <ul>
+	  <li>The MacOs build should now generate working .dmg installers</li>
+	  <li>Another small tutorial</li>
+	  <li>Symbols sidebar: Correctly remember additional symbols</li>
+	  <li>Unicode chars can now be input using the hexcode+alt+x method</li>
+	  <li>A unicode sidebar that isn't shown by default as it starts up slow</li>
+	  <li>Resolved an assert shown by some systems on startup</li>
+	  <li>Many corrections to the display routines</li>
+        </ul>
+      </description>
+    </release>
     <release version="20.01.3" date="2020-01-22">
       <description>
 	<p>
