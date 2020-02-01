@@ -74,20 +74,20 @@ private:
 class SidebarKeyEvent: public wxCommandEvent
 {
 public:
-	SidebarKeyEvent(int id = 0)
+	explicit SidebarKeyEvent(int id = 0)
         		:  wxCommandEvent(id) { }
  
-	SidebarKeyEvent(const SidebarKeyEvent& event)
+	explicit SidebarKeyEvent(const SidebarKeyEvent& event)
           :  wxCommandEvent(event) {}
 };
 
 class SymboladdEvent: public wxCommandEvent
 {
 public:
-	SymboladdEvent(int id = 0)
+	explicit SymboladdEvent(int id = 0)
         		:  wxCommandEvent(id) { }
  
-	SymboladdEvent(const SymboladdEvent& event)
+	explicit SymboladdEvent(const SymboladdEvent& event)
           :  wxCommandEvent(event) {}
 };
 
