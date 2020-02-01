@@ -25,7 +25,7 @@
   This file contains the definition of the class Charbutton that allows to 
   select arbitrary unicode symbols.
  */
-#include <UnicodeSidebar.h>
+#include "UnicodeSidebar.h"
 #include <wx/grid.h>
 
 #ifndef CHARBUTTON_H
