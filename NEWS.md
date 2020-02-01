@@ -1,4 +1,4 @@
-#Current
+#20.02.0
  * The MacOs build should now generate working .dmg installers
  * Another small tutorial
  * Symbols sidebar: Correctly remember additional symbols
