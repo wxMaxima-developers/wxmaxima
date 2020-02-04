@@ -49,6 +49,7 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   wxPanel(parent),
   m_worksheet(worksheet)
 {
+  wxWindowUpdateLocker speedUp(this);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
   m_regex = new wxTextCtrl(this, wxID_ANY);
@@ -56,7 +57,7 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   m_regex->Connect(wxEVT_TEXT, wxCommandEventHandler(UnicodeSidebar::OnRegExEvent), NULL, this);
   m_grid = new wxGrid(this, wxID_ANY);
   m_grid->CreateGrid(0,3);
-  
+  m_grid->BeginBatch();
   box->Add(m_regex, wxSizerFlags().Expand().Proportion(10));
   box->Add(m_grid, wxSizerFlags().Expand().Proportion(100));
   Connect(wxEVT_PAINT, wxPaintEventHandler(UnicodeSidebar::OnPaint), NULL, this);
@@ -64,6 +65,7 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   m_grid->Connect(wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler(UnicodeSidebar::OnDClick), NULL, this);
   m_grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(UnicodeSidebar::OnRightClick), NULL, this);
   m_grid->Connect(wxEVT_GRID_CELL_CHANGING, wxGridEventHandler(UnicodeSidebar::OnChangeAttempt), NULL, this);
+  m_grid->EndBatch();
   SetSizerAndFit(box);
 //  box->SetSizeHints(this);
 }
