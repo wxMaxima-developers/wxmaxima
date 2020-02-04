@@ -68,7 +68,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       nextChar = wxT(' ');
 
     // Handle newline characters (hard+soft line break)
-    if ((Ch == wxT('\n')) || (Ch == wxT('\r')))
+    if (m_linebreaks.Contains(Ch))
     {
       m_tokens.push_back(new Token(wxChar(Ch)));
       ++it;
@@ -427,4 +427,10 @@ const wxString MaximaTokenizer::m_spaces = wxT(" \t")
   wxT("\u2006") // 1/6 em space
   wxT("\u2007") // figure space
   wxT("\u2008") // punctuation space
+  wxT("\t")
   wxT("\r"); // A soft linebreak
+
+const wxString MaximaTokenizer::m_linebreaks =
+  wxT("\n")
+  wxT("+2028")
+  wxT("+2029");

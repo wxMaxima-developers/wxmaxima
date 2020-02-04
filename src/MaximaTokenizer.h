@@ -91,6 +91,8 @@ protected:
   static const wxString m_not_alphas;
   //! Space characters
   static const wxString m_spaces;
+  //! Linebreak characters
+  static const wxString m_linebreaks;
 };
 
 #endif // MAXIMATOKENIZER_H
