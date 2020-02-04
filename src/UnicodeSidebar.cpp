@@ -165,7 +165,7 @@ void UnicodeSidebar::OnPaint(wxPaintEvent &event)
     wxStringTokenizer items(line, wxT(";"), wxTOKEN_RET_EMPTY_ALL);
     wxString number = items.GetNextToken();
     wxString name   = items.GetNextToken();
-    if(!name.IsEmpty() && (name != "<control>") &&
+    if(!name.IsEmpty() && (name != "<control>")&& (!name.StartsWith("<Plane")) &&
        (regex_string.IsEmpty())
       )
     {
