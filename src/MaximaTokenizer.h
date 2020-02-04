@@ -91,6 +91,10 @@ protected:
   static const wxString m_not_alphas;
   //! Space characters
   static const wxString m_spaces;
+  //! Plus sign
+  static const wxString m_plusSigns;
+  //! Minus sign
+  static const wxString m_minusSigns;
   //! Linebreak characters
   static const wxString m_linebreaks;
 };
