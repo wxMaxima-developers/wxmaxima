@@ -44,6 +44,9 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_fontWeight(wxFONTWEIGHT_NORMAL),
   m_fontEncoding(wxFONTENCODING_DEFAULT)
 {
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
+
   m_errorIndex = -1;
   m_autoAnswer = false;
   m_numberOfLines = 1;
@@ -3236,13 +3239,16 @@ void EditorCell::InsertText(wxString text)
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
+
 //  m_width = m_height = m_maxDrop = m_center = -1;
   StyleText();
 }
 
 void EditorCell::PasteFromClipboard(const bool &primary)
 {
-    wxTheClipboard->UsePrimarySelection(primary);
+  wxTheClipboard->UsePrimarySelection(primary);
   wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));
   if (wxTheClipboard->IsSupported(wxDF_TEXT))
   {
@@ -3925,6 +3931,9 @@ void EditorCell::SetValue(const wxString &text)
   FindMatchingParens();
   m_containsChanges = true;
 
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
+
   // Style the text.
   StyleText();
   if (m_group != NULL)
@@ -3990,6 +3999,9 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool ignoreCa
   // If text is selected setting the selection again updates m_selectionString
   if (m_selectionStart > 0)
     SetSelection(m_selectionStart, m_selectionEnd);
+
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
 
   return count;
 }
