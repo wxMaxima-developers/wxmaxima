@@ -32,6 +32,15 @@
 
 MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
 {
+  commands.Replace("\uFE62","+");
+  commands.Replace("\uFF0B","+");
+  commands.Replace("\uFB29","+");
+  commands.Replace("\u2795","+");
+  commands.Replace("\u2064","+");
+  commands.Replace("\u2796","-");
+  commands.Replace("\uFE63","-");
+  commands.Replace("\uFF0D","-");
+  
   // ----------------------------------------------------------------
   // --------------------- Step one:                -----------------
   // --------------------- Break a line into tokens -----------------
@@ -414,7 +423,7 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch)
 
 const wxString MaximaTokenizer::m_additional_alphas = wxT("\\_%µ");
 const wxString MaximaTokenizer::m_not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212");
-const wxString MaximaTokenizer::m_spaces = wxT(" \t")
+const wxString MaximaTokenizer::m_spaces = wxT(" ")
   wxT("\u00A0") // A non-breakable space
   wxT("\xDCB6") // A non-breakable space (alternate version)
   wxT("\u1680") // Ogham space mark
