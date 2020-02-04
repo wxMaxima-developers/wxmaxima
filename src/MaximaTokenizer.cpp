@@ -432,5 +432,5 @@ const wxString MaximaTokenizer::m_spaces = wxT(" \t")
 
 const wxString MaximaTokenizer::m_linebreaks =
   wxT("\n")
-  wxT("+2028")
-  wxT("+2029");
+  wxT("\u2028")
+  wxT("\u2029");
