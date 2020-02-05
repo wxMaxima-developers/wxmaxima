@@ -107,14 +107,20 @@ if(NOT TARGET OpenMP::OpenMP_CXX)
     find_package(Threads REQUIRED)
     add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
     set_property(TARGET OpenMP::OpenMP_CXX
-                 PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
+        PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
     # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
     set_property(TARGET OpenMP::OpenMP_CXX
-                 PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
-
+        PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
+    target_link_libraries(wxmaxima PUBLIC OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
+else()
+    find_package(OpenMP)
+    if(OpenMP_CXX_FOUND)
+	target_link_libraries(wxmaxima PUBLIC OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
+    else()
+	target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
+    endif()    
 endif()
 
-target_link_libraries(wxmaxima PUBLIC OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
 
 include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
