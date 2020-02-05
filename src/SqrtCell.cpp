@@ -366,10 +366,3 @@ bool SqrtCell::BreakUp()
   }
   return false;
 }
-
-void SqrtCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
-}

@@ -77,8 +77,6 @@ public:
 
   bool BreakUp() override;
 
-  void Unbreak() override;
-
   wxString ToString() override;
 
   wxString ToMatlab() override;

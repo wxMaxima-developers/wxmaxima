@@ -316,14 +316,3 @@ bool LimitCell::BreakUp()
   }
   return false;
 }
-
-void LimitCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-  {
-    m_name->UnbreakList();
-    m_base->UnbreakList();
-    m_under->UnbreakList();
-  }
-  Cell::Unbreak();
-}

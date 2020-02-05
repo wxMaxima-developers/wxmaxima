@@ -207,10 +207,3 @@ bool ConjugateCell::BreakUp()
   }
   return false;
 }
-
-void ConjugateCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
-}

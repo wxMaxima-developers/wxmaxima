@@ -104,8 +104,6 @@ public:
 
   void SetupBreakUps();
 
-  void Unbreak() override;
-
 protected:
   //! The numerator
   std::shared_ptr<Cell> m_num;

@@ -429,13 +429,3 @@ bool FracCell::BreakUp()
   }
   return false;
 }
-
-void FracCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-  {
-    m_num->UnbreakList();
-    m_denom->UnbreakList();
-  }
-  Cell::Unbreak();
-}

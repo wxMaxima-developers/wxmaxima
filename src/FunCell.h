@@ -84,8 +84,6 @@ public:
 
   bool BreakUp() override;
 
-  void Unbreak() override;
-
 protected:
   std::shared_ptr<Cell> m_nameCell;
   std::shared_ptr<Cell> m_argCell;

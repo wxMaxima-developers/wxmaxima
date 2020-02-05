@@ -69,8 +69,6 @@ public:
 
   bool BreakUp() override;
 
-  void Unbreak() override;
-
   void RecalculateHeight(int fontsize) override;
   
   void RecalculateWidths(int fontsize) override;

@@ -289,13 +289,3 @@ bool ExptCell::BreakUp()
   }
   return false;
 }
-
-void ExptCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-  {
-    m_baseCell->UnbreakList();
-    m_exptCell->UnbreakList();
-  }
-  Cell::Unbreak();
-}

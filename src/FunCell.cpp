@@ -205,13 +205,3 @@ bool FunCell::BreakUp()
   }
   return false;
 }
-
-void FunCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-  {
-    m_nameCell->UnbreakList();
-    m_argCell->UnbreakList();
-  }
-  Cell::Unbreak();
-}

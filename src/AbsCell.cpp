@@ -216,10 +216,3 @@ bool AbsCell::BreakUp()
   }
   return false;
 }
-
-void AbsCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
-}

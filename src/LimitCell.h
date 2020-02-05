@@ -70,7 +70,6 @@ public:
 
   wxString ToMathML() override;
 
-  void Unbreak() override;
   bool BreakUp() override;
 
 protected:

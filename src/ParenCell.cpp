@@ -541,10 +541,3 @@ bool ParenCell::BreakUp()
   }
   return false;
 }
-
-void ParenCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
-}

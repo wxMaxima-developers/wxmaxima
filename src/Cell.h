@@ -766,7 +766,7 @@ class Cell
 
     This function tries to return a cell to the single-line form.
    */
-  virtual void Unbreak();
+  void Unbreak();
 
   /*! Unbreak this line
 

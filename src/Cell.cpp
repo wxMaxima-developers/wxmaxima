@@ -1186,14 +1186,12 @@ void Cell::ResetData()
   m_maxCenter = -1;
   m_maxDrop   = -1;
   std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
+  #pragma omp parallel for 
   for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
-      Cell *tmp = it->get();
-      while(tmp != NULL)
-      {
+      #pragma omp parallel for nowait
+      for(Cell *tmp = it->get(); tmp != NULL; tmp = tmp -> m_next)
         tmp->ResetData();
-        tmp = tmp -> m_next;
-      }
     }
 }
 
@@ -1217,14 +1215,16 @@ Cell *Cell::last()
 
 void Cell::Unbreak()
 {
-//  if(m_isBrokenIntoLines)
-  ResetData();
+  if(m_isBrokenIntoLines)
+    ResetData();
 
   m_isBrokenIntoLines = false;
   m_nextToDraw = m_next;
 
   // Unbreak the inner cells, too
   std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
+  #pragma omp parallel for 
+  #pragma omp private tmp
   for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     Cell *tmp = it->get();
