@@ -8,14 +8,14 @@
  * Many corrections to the display routines
 
 #20.01.3
- * Language selection now works even on system with missing language support
+ * Language selection now works even on systems with missing language support
  * Resolved a copy-and-paste regression
  * A russian translation update by OlesyaGerasimenko
  * German translation updates
- * Improved stability of the communication with maxima
- * Preparation for maxima's pre-sub-and supscript feature
+ * Improved stability of the communication with Maxima
+ * Preparation for Maxima's pre-sub-and supscript feature
  * Corrected a few visual glitches of the worksheet
- * More tutorials describing a few of maxima's features
+ * More tutorials describing a few of Maxima's features
 
 #20.01.2
  * Corrected html export of the lowest sectioning unit
