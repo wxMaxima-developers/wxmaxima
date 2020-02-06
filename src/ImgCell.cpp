@@ -72,13 +72,13 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove, wxFileSystem *filesystem)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : Cell(parent, config, cellPointers)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
-    m_image = std::shared_ptr<Image>(new Image(m_configuration, image, remove, filesystem));
+    m_image = std::shared_ptr<Image>(new Image(m_configuration, image, filesystem, remove));
   else
     m_image = std::shared_ptr<Image>(new Image(m_configuration));
   m_drawBoundingBox = false;
@@ -86,7 +86,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
-  m_image = std::shared_ptr<Image>(new Image(m_configuration, image, remove));
+  m_image = std::shared_ptr<Image>(new Image(m_configuration, remove, image));
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap)

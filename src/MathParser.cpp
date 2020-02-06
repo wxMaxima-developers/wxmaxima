@@ -954,11 +954,14 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString filename(node->GetChildren()->GetContent());
 
         if (m_fileSystem) // loading from zip
-          imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, m_fileSystem.get());
+          imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, m_fileSystem, false);
         else
         {
           if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
-            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, true, NULL);
+          {
+            std::shared_ptr <wxFileSystem> noFS;
+            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, true);
+          }
           else
           {
             // This is the only case show_image() produces ergo this is the only
@@ -969,8 +972,8 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
                     (wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + filename))
                     )
               filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
-
-            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, NULL);
+            std::shared_ptr <wxFileSystem> noFS;
+            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, false);
           }
         }
         wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
@@ -978,7 +981,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
         {
           #pragma omp task
-          imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem.get());
+          imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
         }
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           imageCell->DrawRectangle(false);
@@ -1002,7 +1005,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       else if (tagName == wxT("slide"))
       {
         bool del = node->GetAttribute(wxT("del"), wxT("false")) == wxT("true");
-        SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem.get());
+        SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem);
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
         wxString framerate;

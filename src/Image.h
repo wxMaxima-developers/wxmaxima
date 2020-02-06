@@ -84,7 +84,7 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
    */
-  Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   ~Image();
 
@@ -94,7 +94,7 @@ public:
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
    */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem = NULL);
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
   /*! Returns the gnuplot source file name of this image
 
     If maxima has deleted the temporary file in the meantime or if it comes from 
@@ -136,7 +136,7 @@ public:
   { return m_extension; };
 
   //! Loads an image from a file
-  void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {return m_maxWidth;}

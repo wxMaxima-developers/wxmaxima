@@ -129,7 +129,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 }
 
 // constructor which loads an image
-Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *filesystem)
+Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
 {
   m_svgImage = NULL;
   m_svgRast = NULL;
@@ -139,12 +139,12 @@ Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *
   m_height = 1;
   m_maxWidth = -1;
   m_maxHeight = -1;
-  LoadImage(image, remove, filesystem);
+  LoadImage(image, filesystem, remove);
 }
 
 Image::~Image()
 {
-  #pragma omp critical (gnuplotdata)
+  #pragma omp taskwait
   {
     if(m_gnuplotSource != wxEmptyString)
     {
@@ -162,9 +162,8 @@ Image::~Image()
   wxDELETE(m_svgImage);
 }
 
-void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem)
+void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
 {
-  #pragma omp critical (gnuplotdata)
   {
     m_gnuplotSource = gnuplotFilename;
     m_gnuplotData = dataFilename;
@@ -340,7 +339,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
 wxMemoryBuffer Image::GetGnuplotSource()
 {
   wxMemoryBuffer retval;
-  #pragma omp critical (gnuplotdata)
+  #pragma omp taskwait
   {
   
     wxMemoryOutputStream output;
@@ -372,7 +371,7 @@ wxMemoryBuffer Image::GetGnuplotSource()
 wxMemoryBuffer Image::GetGnuplotData()
 {
   wxMemoryBuffer retval;
-  #pragma omp critical (gnuplotdata)
+  #pragma omp taskwait
   {
   
     wxMemoryOutputStream output;
@@ -405,7 +404,7 @@ wxString Image::GnuplotData()
 {
   if((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData)))
   {
-    #pragma omp critical (gnuplotdata)
+  #pragma omp taskwait
     {
     // Move the gnuplot data and data file into our temp directory
       wxFileName gnuplotSourceFile(m_gnuplotSource);
@@ -441,7 +440,7 @@ wxString Image::GnuplotSource()
 {
   if((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource)))
   {
-    #pragma omp critical (gnuplotdata)
+  #pragma omp taskwait
     {
       // Move the gnuplot source and data file into our temp directory
       wxFileName gnuplotSourceFile(m_gnuplotSource);
@@ -638,7 +637,7 @@ void Image::LoadImage(const wxBitmap &bitmap)
   m_height = 1;
 }
 
-void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
+void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
 {
   m_imageName = image;
   m_compressedImage.Clear();

@@ -146,7 +146,8 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
-    ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, false);
+    std::shared_ptr <wxFileSystem> noFS;
+    ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, noFS, false);
     GroupCell::AppendOutput(ic);
   }
 

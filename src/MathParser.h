@@ -142,7 +142,7 @@ private:
   Cell::CellPointers *m_cellPointers;
   Configuration **m_configuration;
   bool m_highlight;
-  std::unique_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
+  std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
 };
 
 #endif // MATHPARSER_H
