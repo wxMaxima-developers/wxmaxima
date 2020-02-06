@@ -38,6 +38,7 @@
 #include <wx/tooltip.h>
 #include <wx/dcbuffer.h>
 #include <wx/wupdlock.h>
+#include <wx/event.h>
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
 #include "BitmapOut.h"
@@ -77,6 +78,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
 #endif
     ),m_cellPointers(this)
 {
+  m_dontSkipScrollEvent = false;
+  m_newxPosition = -1;
+  m_newyPosition = -1;
   m_tree = NULL;
   m_autocompletePopup = NULL;
   #ifdef __WXGTK__
@@ -205,6 +209,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(Worksheet::OnKillFocus));
   Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(Worksheet::OnScrollChanged));
+  Connect(wxEVT_SCROLLWIN_THUMBTRACK, wxScrollWinEventHandler(Worksheet::OnThumbtrack));
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event)
@@ -3266,6 +3271,21 @@ void Worksheet::QuestionAnswered()
   m_questionPrompt = false;
 }
 
+void Worksheet::UpdateScrollPos()
+{
+  if(m_newxPosition > 0)
+  {
+    m_dontSkipScrollEvent = true;
+    SetScrollPos(wxHORIZONTAL, m_newxPosition);
+  }
+  if(m_newyPosition > 0)
+  {
+    m_dontSkipScrollEvent = true;
+    SetScrollPos(wxVERTICAL, m_newyPosition);
+  }
+  m_newyPosition = -1;
+  m_newxPosition = -1;
+}
 GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start)
 {
   wxASSERT(start != NULL);
@@ -8043,6 +8063,38 @@ void Worksheet::OnScrollChanged(wxScrollEvent &WXUNUSED(ev))
   // We don't want to start the autosave while the user is scrolling through
   // the document since this will shortly halt the scroll
   m_keyboardInactiveTimer.StartOnce(10000);
+}
+
+void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
+{
+  // We don't want to start the autosave while the user is scrolling through
+  // the document since this will shortly halt the scroll
+  m_keyboardInactiveTimer.StartOnce(10000);
+  if (CanAnimate())
+   {
+     //! Step the slide show.
+     SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+     tmp->AnimationRunning(false);
+  
+     if (ev.GetEventType() == wxEVT_SCROLLWIN_LINEUP)
+       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+     else
+       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
+    
+     wxRect rect = m_cellPointers.m_selectionStart->GetRect();
+     RequestRedraw(rect);
+   }
+  else
+  {
+    ScrolledAwayFromEvaluation();
+
+    if(ev.GetOrientation() == wxHORIZONTAL)
+      m_newxPosition = ev.GetPosition();
+    else
+      m_newyPosition = ev.GetPosition();
+    if(m_dontSkipScrollEvent)
+      ev.Skip();
+  }
 }
 
 wxString Worksheet::GetInputAboveCaret()

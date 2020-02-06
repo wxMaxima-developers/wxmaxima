@@ -4208,6 +4208,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     }
   }
 
+  if(m_worksheet != NULL)
+    m_worksheet->UpdateScrollPos();
+
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
   if (m_worksheet->m_findDialog != NULL)

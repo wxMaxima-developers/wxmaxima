@@ -81,6 +81,12 @@ wxMaxima can display it.
 class Worksheet : public wxScrolled<wxWindow>
 {
 private:
+  // The x position to scroll to
+  int m_newxPosition;
+  // The y position to scroll to
+  int m_newyPosition;
+  // false = collect scroll events without redrawing for every single one  
+  bool m_dontSkipScrollEvent;
   //! Which zoom level were we at when we started the zoom gesture?
   double m_zoomAtGestureStart;
   //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?
@@ -1385,6 +1391,8 @@ public:
 
   //! Called if the user is scrolling through the document.
   void OnScrollChanged(wxScrollEvent &ev);
+  //! Called if the user uses the touchpad for scrolling
+  void OnThumbtrack(wxScrollWinEvent &ev);
 
   /*! Do an incremental search from the cursor or the point the last search started at
 
@@ -1479,6 +1487,8 @@ public:
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
    */
   void OpenQuestionCaret(wxString txt = wxT(""));
+  //! Execute all collected scroll events in one go.
+  void UpdateScrollPos();
 
   /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
 

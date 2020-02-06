@@ -24,12 +24,7 @@
 END
 
 echo "Converting UnicodeData.txt to embeddable C code"
-rm -f UnicodeData.txt.gz
-gzip -k UnicodeData.txt
+cat UnicodeData.txt |cut -d ";" -f 1-2 |gzip -c > UnicodeData.txt.gz
 xxd -i "UnicodeData.txt.gz" >> "UnicodeData.h"
 rm -f UnicodeData.txt.gz
-echo "Converting ../COPYING to embeddable C code"
-gzip -c ../COPYING > License.gz
-xxd -i "License.gz" > "License.h"
-rm -f License.gz
 
