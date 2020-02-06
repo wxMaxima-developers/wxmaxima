@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 #else
 int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdShow )
 {
-    wxEntryStart(nCmdShow, lpCmdLine);
+  wxEntryStart(hI, hPrevI, lpCmdLine nCmdShow);
     wxTheApp->CallOnInit();
     #pragma omp parallel
     #pragma omp master
