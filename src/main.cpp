@@ -52,7 +52,31 @@ FORCE_LINK(gnome_print)
 #endif
 
 
-IMPLEMENT_APP(MyApp)
+IMPLEMENT_APP_NO_MAIN(MyApp);
+IMPLEMENT_WX_THEME_SUPPORT;
+
+#ifndef __WXMSW__
+int main(int argc, char *argv[])
+{
+    wxEntryStart( argc, argv );
+    wxTheApp->CallOnInit();
+    #pragma omp parallel
+    #pragma omp master
+    wxTheApp->OnRun();
+    return 0;
+}
+#else
+int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdShow )
+{
+    wxEntryStart(nCmdShow, lpCmdLine);
+    wxTheApp->CallOnInit();
+    #pragma omp parallel
+    #pragma omp master
+    wxTheApp->OnRun();
+    return 0;
+}
+#endif
+
 std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 

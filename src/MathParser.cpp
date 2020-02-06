@@ -976,8 +976,10 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
         wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
         if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
+        {
+          #pragma omp task
           imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem.get());
-
+        }
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           imageCell->DrawRectangle(false);
 

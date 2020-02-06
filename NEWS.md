@@ -1,3 +1,26 @@
+#Current
+ * wxMaxima now uses Multi-threading in a limited set of places
+ * Better scroll wheel support
+
+# Multi-Threading
+Most modern computers allow to use more than CPU core at a time.
+This can greatly boost the performance of an application. But there
+are tasks that are not suited for that:
+ * Essentially everything that involves GUI actions is not thread-save.
+   The main purpose of wxMaxima is providing a GUI
+ * Loops in which every run requires knowing the result of the last cannot
+   be split into multiple threads (which includes most of the
+   string and list processing)
+ * If the program waits for the result, anyway calculating it in a separate 
+   thread doesn't help
+ * If a task is memory-limited and accesses memory in a linear way dividing 
+   the task into threads can increase the memory access times (due to 
+   constantly switching memory rows)
+ * Additionally for short operations the overhead of starting a new 
+   thread is way higher than the gain
+This means wxMaxima can use multiple threads, but will only be sped
+up by doing so in a very limited set of places. 
+
 #20.02.0
  * The MacOs build should now generate working .dmg installers
  * Another small tutorial

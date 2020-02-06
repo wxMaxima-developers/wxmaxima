@@ -4,6 +4,8 @@
 # CMakeLists.txt changes
 file(GLOB SOURCE_FILES *.cpp *.h nanoSVG/*.h)
 
+include(FindOpenMP)
+
 # VERSION_GREATER_EQUAL would normally be the way to go here.
 # But in Nov 2012 some Ubuntu versions still use a cmake that
 # doesn't support it.

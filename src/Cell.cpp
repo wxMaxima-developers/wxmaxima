@@ -192,23 +192,16 @@ Cell *Cell::CopyList()
 
 void Cell::ClearCacheList()
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ClearCache();
-    tmp = tmp->m_next;
-  }
 }
 
 void Cell::SetGroupList(Cell *group)
 {
-  Cell *tmp = this;
-  while (tmp != NULL)
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->SetGroup(group);
     tmp->SetParent(this);
-    tmp = tmp->m_next;
   }
 }
 
@@ -252,9 +245,7 @@ void Cell::SetGroup(Cell *group)
 
 void Cell::FontsChangedList()
 {
-  Cell *tmp = this;
-  
-  while(tmp != NULL)
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->FontsChanged();
     std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
@@ -263,7 +254,6 @@ void Cell::FontsChangedList()
       if(*it != NULL)
         (*it)->FontsChangedList();
     }
-    tmp = tmp->m_next;
   }
 }
 
@@ -479,13 +469,8 @@ void Cell::RecalculateList(int fontsize)
 
 void Cell::ResetSizeList()
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ResetSize();
-    tmp = tmp->m_next;
-  }
 }
 
 
@@ -1186,11 +1171,10 @@ void Cell::ResetData()
   m_maxCenter = -1;
   m_maxDrop   = -1;
   std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
-  #pragma omp parallel for 
   for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
-      #pragma omp parallel for nowait
       for(Cell *tmp = it->get(); tmp != NULL; tmp = tmp -> m_next)
+        
         tmp->ResetData();
     }
 }
@@ -1223,8 +1207,6 @@ void Cell::Unbreak()
 
   // Unbreak the inner cells, too
   std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
-  #pragma omp parallel for 
-  #pragma omp private tmp
   for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     Cell *tmp = it->get();
@@ -1238,12 +1220,8 @@ void Cell::Unbreak()
 
 void Cell::UnbreakList()
 {
-  Cell *tmp = this;
-  while (tmp != NULL)
-  {
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->Unbreak();
-    tmp = tmp->m_next;
-  }
 }
 
 // cppcheck-suppress functionStatic

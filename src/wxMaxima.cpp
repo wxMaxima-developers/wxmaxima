@@ -186,6 +186,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
+  // Needed for making wxSocket work for multiple threads
   wxSocketBase::Initialize();
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
@@ -3623,7 +3624,8 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
   {
     if (xmlcells->GetType() != wxXML_TEXT_NODE)
     {
-      Cell *mc = mp.ParseTag(xmlcells, false);
+      Cell *mc;
+      mc =mp.ParseTag(xmlcells, false);
       if (mc != NULL)
       {
         GroupCell *cell = dynamic_cast<GroupCell *>(mc);
