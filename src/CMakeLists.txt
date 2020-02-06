@@ -4,8 +4,6 @@
 # CMakeLists.txt changes
 file(GLOB SOURCE_FILES *.cpp *.h nanoSVG/*.h)
 
-include(FindOpenMP)
-
 # VERSION_GREATER_EQUAL would normally be the way to go here.
 # But in Nov 2012 some Ubuntu versions still use a cmake that
 # doesn't support it.
@@ -104,6 +102,8 @@ if(WIN32)
     configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" ../wxmaxima-local.bat)
 endif()
 
+
+find_package(OpenMP)
 # For CMake < 3.9, we need to make the target ourselves
 if(NOT TARGET OpenMP::OpenMP_CXX)
     find_package(Threads REQUIRED)
@@ -113,16 +113,12 @@ if(NOT TARGET OpenMP::OpenMP_CXX)
     # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
     set_property(TARGET OpenMP::OpenMP_CXX
         PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
-    target_link_libraries(wxmaxima PUBLIC OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
-else()
-    find_package(OpenMP)
-    if(OpenMP_CXX_FOUND)
 	target_link_libraries(wxmaxima PUBLIC OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
-    else()
-	target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
-    endif()    
+elseif(OpenMP_CXX_FOUND)
+	target_link_libraries(wxmaxima PUBLIC OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
+else()
+    target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 endif()
-
 
 include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
