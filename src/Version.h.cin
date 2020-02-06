@@ -2,3 +2,5 @@
 #ifndef GITVERSION
 #define GITVERSION "@VERSION@"
 #endif
+#define OPENMP @OpenMP_CXX_FOUND@
+#define OPENMP_VER @OpenMP_CXX_SPEC_DATE@

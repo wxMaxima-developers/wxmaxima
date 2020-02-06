@@ -980,7 +980,11 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
         if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
         {
+          #ifdef OPENMP
+          #if OPENMP_VER >= 201511
           #pragma omp task
+          #endif
+          #endif
           imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
         }
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
