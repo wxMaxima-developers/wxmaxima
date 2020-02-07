@@ -7,6 +7,7 @@ wxmaxima (20.02.0-1) unstable; urgency=medium
   * Added a simple packaging test
   * Made the build tests optional which resolved a lintian informational waring
   * ibus-gtk3 is now a hard requirement: With xim on GTK3 wxWidgets flickers.
+  * Added openMP as a dependency as it speeds up draw().
   * dropped the now-unneeded override of dh_auto_install
 
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 10 Nov 2019 21:54:36 +0100
