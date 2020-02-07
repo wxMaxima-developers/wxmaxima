@@ -19,12 +19,18 @@ If you want to install into a special prefix (not `/usr/local`), use
 
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/your/installation/prefix ..
 
-in the cmake call above.
+in the cmake call above. By default, wxMaxima tries to use OpenMP for
+parallelization, if the compiler supports that. You can remove OpenMP
+support with the option -DUSE_OPENMP=NO in the cmake call.
 
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on MacOs
 also .dmg), the following command will create them:
 
     cmake --build . -- package
+
+At least CMake 3.7.0 is required to build wxMaxima. If your OS provides
+an older version (e.g. Ubuntu 14.04) download a recent version from
+https://cmake.org/download/ and use that.
 
 #### Ubuntu or Debian the build prerequisites
 
@@ -35,7 +41,7 @@ repositories and not only the binary packages) by the simpler
 
     sudo apt-get build-dep wxmaxima
 
-#### CentOs+Redhat build prerequisites
+#### CentOS and Redhat build prerequisites
 CentOS / Redhat have rather old versions of CMake and wxWidgets installed,
 install "cmake3" and "wxGTK3-devel" from the "Extra Packages for Enterprise Linux (EPEL)"
 repository, to compile wxMaxima. (and use "cmake3" instead of "cmake" to call
@@ -78,10 +84,10 @@ target.
 Additional information for packagers
 ------------------------------------
 
-On linux wxMaxima's "make test" target requires a way to connect to a
+On Linux wxMaxima's "make test" target requires a way to connect to a
 display - which by default doesn't exist on a build server. The 
 following command should succeed even there, though:
 
     xvfb-run make test
-	
+
 
