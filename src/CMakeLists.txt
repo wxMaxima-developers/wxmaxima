@@ -102,7 +102,7 @@ if(WIN32)
     configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" ../wxmaxima-local.bat)
 endif()
 
-option(USE_OPENMP "Use OpenMP for parallelizing code." NO)
+option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
 
 if(USE_OPENMP)
 	find_package(OpenMP)

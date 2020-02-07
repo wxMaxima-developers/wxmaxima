@@ -24,6 +24,7 @@
 */
 
 #include "Image.h"
+#include "Version.h"
 #define NANOSVG_ALL_COLOR_KEYWORDS
 #define NANOSVG_IMPLEMENTATION
 #define NANOSVGRAST_IMPLEMENTATION

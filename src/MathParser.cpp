@@ -32,6 +32,7 @@
 
 #include "MathParser.h"
 
+#include "Version.h"
 #include "FracCell.h"
 #include "ExptCell.h"
 #include "TextCell.h"
@@ -982,6 +983,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         {
           #ifdef OPENMP
           #if OPENMP_VER >= 201511
+          wxLogMessage(_("Starting a background task that reads the gnuplot data"));
           #pragma omp task
           #endif
           #endif
