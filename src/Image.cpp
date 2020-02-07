@@ -145,7 +145,7 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
 
 Image::~Image()
 {
-  #ifdef OPENMP
+  #ifdef OPENMP_VER
   #if OPENMP_VER >= 201511
   #pragma omp taskwait
   #endif
@@ -344,7 +344,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::
 wxMemoryBuffer Image::GetGnuplotSource()
 {
   wxMemoryBuffer retval;
-  #ifdef OPENMP
+  #ifdef OPENMP_VER
   #if OPENMP_VER >= 201511
   #pragma omp taskwait
   #endif
@@ -380,7 +380,7 @@ wxMemoryBuffer Image::GetGnuplotSource()
 wxMemoryBuffer Image::GetGnuplotData()
 {
   wxMemoryBuffer retval;
-  #ifdef OPENMP
+  #ifdef OPENMP_VER
   #if OPENMP_VER >= 201511
   #pragma omp taskwait
   #endif
@@ -417,7 +417,7 @@ wxString Image::GnuplotData()
 {
   if((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData)))
   {
-    #ifdef OPENMP
+    #ifdef OPENMP_VER
     #if OPENMP_VER >= 201511
     #pragma omp taskwait
     #endif
@@ -457,7 +457,7 @@ wxString Image::GnuplotSource()
 {
   if((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource)))
   {
-    #ifdef OPENMP
+    #ifdef OPENMP_VER
     #if OPENMP_VER >= 201511
     #pragma omp taskwait
     #endif

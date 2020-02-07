@@ -6404,6 +6404,11 @@ bool Worksheet::ExportToMAC(wxString file)
 */
 bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 {
+  #ifdef OPENMP
+  #if OPENMP_VER >= 201511
+  #pragma omp taskwait
+  #endif
+  #endif
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
   // Don't update the worksheet whilst exporting
