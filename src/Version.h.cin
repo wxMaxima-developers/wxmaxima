@@ -2,5 +2,6 @@
 #ifndef GITVERSION
 #define GITVERSION "@VERSION@"
 #endif
-#define OPENMP @OpenMP_CXX_FOUND@
-#define OPENMP_VER @OpenMP_CXX_SPEC_DATE@
+#if 0@OpenMP_CXX_SPEC_DATE@ >= 201511
+#define HAS_OPENMP_TASKS 1
+#endif

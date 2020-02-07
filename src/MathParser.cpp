@@ -981,11 +981,8 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
         if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
         {
-          #ifdef OPENMP_VER
-          #if OPENMP_VER >= 201511
-          wxLogMessage(_("Starting a background task that reads the gnuplot data"));
+          #ifdef HAS_OPENMP_TASKS
           #pragma omp task
-          #endif
           #endif
           imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
         }
