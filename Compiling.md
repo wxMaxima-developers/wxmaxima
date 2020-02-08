@@ -28,7 +28,7 @@ also .dmg), the following command will create them:
 
 #### Ubuntu or Debian the build prerequisites
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
+    sudo apt-get install build-essential libomp-dev libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
