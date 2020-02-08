@@ -4,7 +4,7 @@
 # CMakeLists.txt changes
 file(GLOB SOURCE_FILES *.cpp *.h nanoSVG/*.h)
 
-option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." YES)
+option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
