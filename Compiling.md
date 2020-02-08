@@ -23,6 +23,9 @@ in the cmake call above. By default, wxMaxima tries to use OpenMP for
 parallelization, if the compiler supports that. You can remove OpenMP
 support with the option -DUSE_OPENMP=NO in the cmake call.
 
+If installed, wxMaxima will automatically use cppcheck to check the
+source for bugs. You can disable that with: -DUSE_CPPCHECK=NO
+
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on MacOs
 also .dmg), the following command will create them:
 
