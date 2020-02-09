@@ -199,3 +199,6 @@ add_custom_target(gpg DEPENDS dist
 include(CPack)
 include(InstallRequiredSystemLibraries)
   
+
+include(CheckIncludeFileCXX)
+CHECK_INCLUDE_FILE_CXX("omp.h" HAVE_OMP_HEADER)

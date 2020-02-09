@@ -145,7 +145,7 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
 
 Image::~Image()
 {
-  #ifdef HAS_OPENMP_TASKS
+  #if HAVE_OPENMP_TASKS
   #pragma omp taskwait
   #endif
   {
@@ -342,7 +342,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::
 wxMemoryBuffer Image::GetGnuplotSource()
 {
   wxMemoryBuffer retval;
-  #ifdef HAS_OPENMP_TASKS
+  #if HAVE_OPENMP_TASKS
   #pragma omp taskwait
   #endif
   {
@@ -376,7 +376,7 @@ wxMemoryBuffer Image::GetGnuplotSource()
 wxMemoryBuffer Image::GetGnuplotData()
 {
   wxMemoryBuffer retval;
-  #ifdef HAS_OPENMP_TASKS
+  #if HAVE_OPENMP_TASKS
   #pragma omp taskwait
   #endif
   {
@@ -411,7 +411,7 @@ wxString Image::GnuplotData()
 {
   if((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData)))
   {
-    #ifdef HAS_OPENMP_TASKS
+    #if HAVE_OPENMP_TASKS
     #pragma omp taskwait
     #endif
     {
@@ -449,7 +449,7 @@ wxString Image::GnuplotSource()
 {
   if((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource)))
   {
-    #ifdef HAS_OPENMP_TASKS
+    #if HAVE_OPENMP_TASKS
     #pragma omp taskwait
     #endif
     {

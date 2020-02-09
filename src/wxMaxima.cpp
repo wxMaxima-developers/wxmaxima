@@ -3716,10 +3716,11 @@ void wxMaxima::SetupVariables()
   #endif
   #endif
   
-  #ifdef HAS_OPENMP_TASKS
+  #if HAVE_OPENMP_TASKS
   wxmaximaversion_lisp += "_OpenMP";
   #ifdef OPENMP_SPEC_DATE
-  wxmaximaversion_lisp += "_" + OPENMP_SPEC_DATE;
+  wxmaximaversion_lisp += "_";
+  wxmaximaversion_lisp += + OPENMP_SPEC_DATE;
   #endif
   #endif
   
