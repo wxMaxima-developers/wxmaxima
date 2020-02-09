@@ -4,4 +4,5 @@
 #endif
 #if 0@OpenMP_CXX_SPEC_DATE@ >= 201511
 #define HAS_OPENMP_TASKS 1
+#define OPENMP_SPEC_DATE "@OpenMP_CXX_SPEC_DATE@"
 #endif

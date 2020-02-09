@@ -49,6 +49,7 @@
 #include "Plot2dWiz.h"
 #include "SeriesWiz.h"
 #include "SumWiz.h"
+#include "Version.h"
 #include "Plot3dWiz.h"
 #include "ConfigDialogue.h"
 #include "Gen1Wiz.h"
@@ -3686,6 +3687,42 @@ void wxMaxima::SetupVariables()
   SendMaxima(cmd);
 
   wxString wxmaximaversion_lisp(wxT(GITVERSION));
+
+  #ifdef __WXMSW__
+  wxmaximaversion_lisp += "_MSW";
+  #endif
+  #ifdef __WXMOTIF__
+  wxmaximaversion_lisp += "_MOTIF";
+  #endif
+  #ifdef __WXDFB__
+  wxmaximaversion_lisp += "_DIRECTFB";
+  #endif
+  #ifdef __WXUNIVERSAL__
+  wxmaximaversion_lisp += "_WXUNIVERSAL";
+  #endif
+  #ifdef __WXOSX__
+  wxmaximaversion_lisp += "_MAC";
+  #endif
+    
+  #ifdef __WXGTK__
+  #ifdef __WXGTK3__
+  wxmaximaversion_lisp += "_GTK3";
+  #else
+  #ifdef __WXGTK2__
+  wxmaximaversion_lisp += "_GTK2";
+  #else
+  wxmaximaversion_lisp += "_GTKX";
+  #endif
+  #endif
+  #endif
+  
+  #ifdef HAS_OPENMP_TASKS
+  wxmaximaversion_lisp += "_OpenMP";
+  #ifdef OPENMP_SPEC_DATE
+  wxmaximaversion_lisp += "_" + OPENMP_SPEC_DATE;
+  #endif
+  #endif
+  
   wxmaximaversion_lisp.Replace("\\","\\\\");
   wxmaximaversion_lisp.Replace("\"","\\\"");
 
