@@ -9298,7 +9298,6 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
         wxMaximaFrame::ShowPane(menu_pane_variables,true);
       }
       return;
-      break;
     case menu_insert_previous_output:
       output = true;
       type = GC_TYPE_CODE;
@@ -9311,11 +9310,9 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_autocomplete:
       m_worksheet->Autocomplete();
       return;
-      break;
     case menu_autocomplete_templates:
       m_worksheet->Autocomplete(AutoComplete::tmplte);
       return;
-      break;
     case menu_convert_to_code:
       if (m_worksheet->GetActiveCell())
       {
@@ -9425,7 +9422,6 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       m_worksheet->Recalculate();
       m_worksheet->SetFocus();
       return;
-      break;
     case menu_insert_image:
     case menu_format_image:
     {

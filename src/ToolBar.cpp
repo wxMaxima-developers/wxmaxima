@@ -499,31 +499,22 @@ GroupType ToolBar::GetCellType()
   {
   case 1:
     return GC_TYPE_TEXT;
-    break;
   case 2:
     return GC_TYPE_TITLE;
-    break;
   case 3:
     return GC_TYPE_SECTION;
-    break;    
   case 4:
     return GC_TYPE_SUBSECTION;
-    break;
   case 5:
     return GC_TYPE_SUBSUBSECTION;
-    break;
   case 6:
     return GC_TYPE_HEADING5;
-    break;
   case 7:
     return GC_TYPE_HEADING6;
-    break;
   case 8:
     return GC_TYPE_IMAGE;
-    break;
   case 9:
     return GC_TYPE_PAGEBREAK;
-    break;
   default:
     return GC_TYPE_CODE;
   }

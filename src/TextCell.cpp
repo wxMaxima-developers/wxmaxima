@@ -1424,15 +1424,12 @@ wxString TextCell::ToMathML()
         return wxT("<mo>") + text + wxT("</mo>\n");
       else
         return wxT("<mi>") + text + wxT("</mi>\n");
-      break;
     case TS_NUMBER:
       return wxT("<mn>") + text + wxT("</mn>\n");
-      break;
 
     case TS_LABEL:
     case TS_USERLABEL:
       return wxT("<mtext>") + text + wxT("</mtext></mtd><mtd>\n");
-      break;
 
     case TS_STRING:
     default:
@@ -1509,7 +1506,6 @@ wxString TextCell::ToOMML()
     case TS_LABEL:
     case TS_USERLABEL:
       return wxEmptyString;
-      break;
 
     case TS_STRING:
     default:

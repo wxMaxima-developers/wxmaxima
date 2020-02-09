@@ -307,10 +307,8 @@ wxString Configuration::GetAutosubscript_string() const
   {
   case 0:
     return "nil";
-    break;
   case 1:
     return "t";
-    break;
   default:
     return "'all";
   }
