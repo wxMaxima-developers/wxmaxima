@@ -313,7 +313,6 @@ wxString Configuration::GetAutosubscript_string() const
     break;
   default:
     return "'all";
-    break;
   }
 }
 

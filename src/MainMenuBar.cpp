@@ -29,7 +29,7 @@ MainMenuBar::MainMenuBar() : wxMenuBar()
 {
 }
 
-void MainMenuBar::Enable(int id, bool enable)
+void MainMenuBar::EnableItem(int id, bool enable)
 {
   if(IsEnabled(id) != enable)
     wxMenuBar::Enable(id,enable);

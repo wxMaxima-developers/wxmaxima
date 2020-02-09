@@ -421,7 +421,7 @@ class Cell
    */
   virtual void Draw(wxPoint point);
 
-  virtual void Draw(){Draw(m_currentPoint);}
+  void Draw(){Draw(m_currentPoint);}
 
   /*! Draw this list of cells
 

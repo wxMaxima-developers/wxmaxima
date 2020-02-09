@@ -506,12 +506,12 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           break;
         case userinput:
           m_bytesFromMaxima_last = 0;
-          m_MenuBar->Enable(menu_remove_output, false);
+          m_MenuBar->EnableItem(menu_remove_output, false);
           RightStatusText(_("Maxima asks a question"));
           break;
         case sending:
           m_bytesFromMaxima_last = 0;
-          m_MenuBar->Enable(menu_remove_output, true);
+          m_MenuBar->EnableItem(menu_remove_output, true);
           RightStatusText(_("Sending a command to maxima"));
           // We don't evaluate any cell right now.
           break;
@@ -523,17 +523,17 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           if (m_worksheet->FollowEvaluation())
             m_worksheet->SetSelection(NULL);
 
-          m_MenuBar->Enable(menu_remove_output, true);
+          m_MenuBar->EnableItem(menu_remove_output, true);
           RightStatusText(_("Ready for user input"));
           // We don't evaluate any cell right now.
           break;
         case calculating:
           m_bytesFromMaxima_last = 0;
-          m_MenuBar->Enable(menu_remove_output, false);
+          m_MenuBar->EnableItem(menu_remove_output, false);
           RightStatusText(_("Maxima is calculating"), false);
           break;
         case transferring:
-          m_MenuBar->Enable(menu_remove_output, false);
+          m_MenuBar->EnableItem(menu_remove_output, false);
           m_bytesFromMaxima_last = m_bytesFromMaxima;
           m_bytesReadDisplayTimer.StartOnce(300);
           if(m_bytesFromMaxima == 0)
@@ -545,17 +545,17 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           break;
         case parsing:
           m_bytesFromMaxima_last = 0;
-          m_MenuBar->Enable(menu_remove_output, false);
+          m_MenuBar->EnableItem(menu_remove_output, false);
           RightStatusText(_("Parsing output"),false);
           break;
         case disconnected:
           m_bytesFromMaxima_last = 0;
-          m_MenuBar->Enable(menu_remove_output, false);
+          m_MenuBar->EnableItem(menu_remove_output, false);
           RightStatusText(_("Not connected to maxima"));
           break;
         case wait_for_start:
           m_bytesFromMaxima_last = 0;
-          m_MenuBar->Enable(menu_remove_output, false);
+          m_MenuBar->EnableItem(menu_remove_output, false);
           RightStatusText(_("Maxima started. Waiting for connection..."));
           break;
       }
