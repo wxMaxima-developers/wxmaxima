@@ -3524,7 +3524,7 @@ void EditorCell::StyleTextCode()
       else
       {
         lastSpace = NULL;
-        lastSpacePos = -1;
+        lastSpacePos = 0;
       }      
       continue;
     }
@@ -3571,7 +3571,7 @@ void EditorCell::StyleTextTexts()
   {
     SetFont();
     wxString line;
-    int lastSpacePos = -1;
+    unsigned int lastSpacePos = 0;
     wxString::const_iterator lastSpaceIt;
     int lastLineStart = 0;
     int width;
@@ -3597,7 +3597,7 @@ void EditorCell::StyleTextTexts()
         {
           // Can we introduce a soft line break?
           // One of the next questions will be: Do we need to?
-          if (lastSpacePos >= 0)
+          if (lastSpacePos > 0)
           {
             // How far has the current line to be indented?
             if ((!indentPixels.empty()) && (!newLine))
@@ -3616,7 +3616,7 @@ void EditorCell::StyleTextTexts()
               i = lastSpacePos;
               it = lastSpaceIt;
               lastLineStart = i + 1;
-              lastSpacePos = -1;
+              lastSpacePos = 0;
               break;
             }
           }
@@ -3631,7 +3631,7 @@ void EditorCell::StyleTextTexts()
             line = m_text.SubString(lastLineStart, i);
 
           lastLineStart = i + 1;
-          lastSpacePos = -1;
+          lastSpacePos = 0;
           break;
         }
         else
@@ -3661,7 +3661,7 @@ void EditorCell::StyleTextTexts()
             {
               // We need a line break. Does the current line contain a space we can
               // break the line at?
-              if (lastSpacePos >= 0)
+              if (lastSpacePos > 0)
               {
                 // Introduce a soft line break
                 m_text[lastSpacePos] = wxT('\r');
@@ -3670,7 +3670,7 @@ void EditorCell::StyleTextTexts()
                 it = lastSpaceIt;
                 ++it;
                 lastLineStart = i;
-                lastSpacePos = -1;
+                lastSpacePos = 0;
                 break;
               }
               else
@@ -3680,7 +3680,7 @@ void EditorCell::StyleTextTexts()
                   m_text[i] = wxT('\r');
                   line = m_text.SubString(lastLineStart, i - 1);
                   lastLineStart = i + 1;
-                  lastSpacePos = -1;
+                  lastSpacePos = 0;
                   break;
                 }
               }

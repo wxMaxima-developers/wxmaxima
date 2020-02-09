@@ -4082,7 +4082,7 @@ bool wxMaxima::InterpretDataFromMaxima()
     m_dispReadOut = true;
   }
 
-  long length_old = -1;
+  size_t length_old = 0;
 
   while (length_old != m_currentOutput.Length())
   {
