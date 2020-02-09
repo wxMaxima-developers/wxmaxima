@@ -130,7 +130,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 }
 
 // constructor which loads an image
-Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
+Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
   m_svgImage = NULL;
   m_svgRast = NULL;
@@ -165,7 +165,7 @@ Image::~Image()
   wxDELETE(m_svgImage);
 }
 
-void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
+void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> &filesystem)
 {
   {
     m_gnuplotSource = gnuplotFilename;
@@ -648,7 +648,7 @@ void Image::LoadImage(const wxBitmap &bitmap)
   m_height = 1;
 }
 
-void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
+void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
   m_imageName = image;
   m_compressedImage.Clear();

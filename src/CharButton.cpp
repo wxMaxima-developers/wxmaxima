@@ -38,7 +38,7 @@ void CharButton::ForwardToParent(wxMouseEvent &event)
     GetParent()->GetEventHandler()->QueueEvent(new wxMouseEvent(event));
 }
 
-void CharButton::CharButtonPressed(wxMouseEvent &event)
+void CharButton::CharButtonPressed(wxMouseEvent &WXUNUSED(event))
 {
   wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, (long)(m_char));
   m_worksheet->GetEventHandler()->QueueEvent(ev);

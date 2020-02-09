@@ -59,7 +59,8 @@ public:
     \param cellPointers All pointers that might point to this cell and that need to
                         be set to NULL if this cell is deleted.
    */
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr<wxFileSystem> &filesystem, int framerate = -1);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
   SlideShow(const SlideShow &cell);
   Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();

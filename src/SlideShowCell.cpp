@@ -46,10 +46,24 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> &filesystem, int framerate) :
   Cell(parent, config, cellPointers),
   m_fileSystem(filesystem)
 
+{
+  m_timer = NULL;
+  m_animationRunning = true;
+  m_size = m_displayed = 0;
+  m_type = MC_TYPE_SLIDE;
+  m_framerate = framerate;
+  m_imageBorderWidth = Scale_Px(1);
+  m_drawBoundingBox = false;
+  if(m_animationRunning)
+    ReloadTimer();
+}
+
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
+  Cell(parent, config, cellPointers)
 {
   m_timer = NULL;
   m_animationRunning = true;
@@ -147,7 +161,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 }
 
 SlideShow::SlideShow(const SlideShow &cell):
-  SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers, cell.m_fileSystem)
+  SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   CopyCommonData(cell);
   AnimationRunning(false);
