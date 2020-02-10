@@ -39,10 +39,6 @@
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 
-#ifdef HAVE_OMP_HEADER
-#include <omp.h>
-#endif
-
 /*! Manages an auto-scaling image
 
   This class keeps two versions of an image:
@@ -224,11 +220,6 @@ private:
   
   NSVGimage* m_svgImage;
   struct NSVGrasterizer* m_svgRast;
-
-  #ifdef HAVE_OMP_HEADER
-  omp_lock_t m_gnuplotLock;
-  #endif
-  
 };
 
 #endif // IMAGE_H
