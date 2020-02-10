@@ -113,6 +113,7 @@ if(USE_OPENMP AND OpenMP_CXX_FOUND)
 	        PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
 	endif()
 	target_link_libraries(wxmaxima OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
+	set(CMAKE_INSTALL_OPENMP_LIBRARIES TRUE) # Include OpenMP libraries in the required system libraries
 else()
     target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 endif()
@@ -196,9 +197,11 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} k
   --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
+if(WIN32)
+    include(InstallRequiredSystemLibraries)
+    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
+endif()
 include(CPack)
-include(InstallRequiredSystemLibraries)
-  
 
 include(CheckIncludeFileCXX)
 CHECK_INCLUDE_FILE_CXX("omp.h" HAVE_OMP_HEADER)
