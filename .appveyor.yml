@@ -50,7 +50,7 @@ before_build:
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu -DUSE_OPENMP=YES ..
+  - cmd: cmake -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
