@@ -4074,43 +4074,36 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newString, bool keep
       return false;
   }
 
+  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+  wxString text_left = text.SubString(0, start - 1);
+  wxString text_right = text.SubString(end, text.Length());
+  m_text = text_left+
+    newString +
+    text_right;
+  StyleText();
+  
+  m_containsChanges = true;
+  m_positionOfCaret = start + newString.Length();
+  
+  if(replaceMaximaString)
   {
-    // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-    wxString text_left = text.SubString(0, start - 1);
-    wxString text_right = text.SubString(end, text.Length());
-    m_text = text_left+
-             newString +
-             text_right;
-    StyleText();
-
-    m_containsChanges = true;
-    m_positionOfCaret = start + newString.Length();
-
-    if(replaceMaximaString)
+    if((newString.EndsWith("\"") || (text_right.StartsWith("\""))))
     {
-      if((newString.EndsWith("\"") || (text_right.StartsWith("\""))))
-      {
-        if(!((newString.EndsWith("\"") && (text_right.StartsWith("\"")))))
-          m_positionOfCaret--;
-      }
+      if(!((newString.EndsWith("\"") && (text_right.StartsWith("\"")))))
+        m_positionOfCaret--;
     }
-
-    if (keepSelected)
-    {
-      SetSelection(start, m_positionOfCaret);
-    }
-    else
-    {
-      ClearSelection();
-    }
-
-    if (GetType() == MC_TYPE_INPUT)
-      FindMatchingParens();
-
-    StyleText();
-    return true;
   }
-  return false;
+  
+  if (keepSelected)
+    SetSelection(start, m_positionOfCaret);
+  else
+    ClearSelection();
+  
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
+  
+  StyleText();
+  return true;
 }
 
 wxString EditorCell::GetSelectionString() const 
