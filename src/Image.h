@@ -39,7 +39,7 @@
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 
-#if HAVE_OMP_HEADER
+#ifdef HAVE_OMP_HEADER
 #include <omp.h>
 #endif
 
@@ -225,7 +225,7 @@ private:
   NSVGimage* m_svgImage;
   struct NSVGrasterizer* m_svgRast;
 
-  #if HAVE_OMP_HEADER 
+  #ifdef HAVE_OMP_HEADER
   omp_lock_t m_gnuplotLock;
   #endif
   
