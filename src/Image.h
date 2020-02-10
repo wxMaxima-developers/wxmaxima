@@ -30,6 +30,7 @@
 #define IMAGE_H
 
 #include "Cell.h"
+#include "Version.h"
 #include <wx/image.h>
 
 #include <wx/filesys.h>
@@ -37,6 +38,10 @@
 #include <wx/buffer.h>
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
+
+#if HAVE_OMP_HEADER
+#include <omp.h>
+#endif
 
 /*! Manages an auto-scaling image
 
@@ -206,6 +211,8 @@ protected:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
+  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> &filesystem);
+
 private:
   Configuration **m_configuration;
   //! The upper width limit for displaying this image
@@ -217,6 +224,11 @@ private:
   
   NSVGimage* m_svgImage;
   struct NSVGrasterizer* m_svgRast;
+
+  #if HAVE_OMP_HEADER 
+  omp_lock_t m_gnuplotLock;
+  #endif
+  
 };
 
 #endif // IMAGE_H
