@@ -118,10 +118,7 @@ void AutoComplete::LoadSymbols()
   #pragma omp task
   #endif
   LoadSymbols_BackgroundTask();
-}
 
-void AutoComplete::LoadSymbols_BackgroundTask()
-{
   for (int i = command; i <= unit; i++)
   {
     if (m_wordList[i].GetCount() != 0)
@@ -129,7 +126,10 @@ void AutoComplete::LoadSymbols_BackgroundTask()
   }
 
   LoadBuiltinSymbols();
-  
+}
+
+void AutoComplete::LoadSymbols_BackgroundTask()
+{  
   for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
       it != m_configuration->m_escCodes.end();
       ++it)
