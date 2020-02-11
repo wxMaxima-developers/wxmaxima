@@ -78,6 +78,9 @@ wxBitmap Image::GetUnscaledBitmap() const
 
 Image::Image(Configuration **config)
 {
+  #ifdef HAVE_OMP_HEADER
+  omp_init_lock(&m_gnuplotLock);
+  #endif
   m_configuration = config;
   m_width = 1;
   m_height = 1;
@@ -93,6 +96,9 @@ Image::Image(Configuration **config)
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 {
+  #ifdef HAVE_OMP_HEADER
+  omp_init_lock(&m_gnuplotLock);
+  #endif
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
@@ -119,6 +125,9 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
+  #ifdef HAVE_OMP_HEADER
+  omp_init_lock(&m_gnuplotLock);
+  #endif
   m_svgImage = NULL;
   m_svgRast = NULL;
   m_configuration = config;
@@ -132,6 +141,9 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 // constructor which loads an image
 Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
+  #ifdef HAVE_OMP_HEADER
+  omp_init_lock(&m_gnuplotLock);
+  #endif
   m_svgImage = NULL;
   m_svgRast = NULL;
   m_configuration = config;
@@ -145,8 +157,12 @@ Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFil
 
 Image::~Image()
 {
-  #if HAVE_OPENMP_TASKS
+  #ifdef HAVE_OMP_HEADER
+  omp_set_lock(&m_gnuplotLock);
+  #else
+  #ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
+  #endif
   #endif
   {
     if(m_gnuplotSource != wxEmptyString)
@@ -163,13 +179,18 @@ Image::~Image()
     }
   }
   wxDELETE(m_svgImage);
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_gnuplotLock);
+  #endif
 }
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
 {
   std::shared_ptr<wxFileSystem> keepFilesystemAlive(filesystem);
+  #ifdef HAVE_OMP_HEADER
+  omp_set_lock(&m_gnuplotLock);
+  #endif
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that processes the gnuplot source of an image."));
   #pragma omp task
   #endif
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
@@ -177,7 +198,6 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const
 
 void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
 {
-  std::shared_ptr<wxFileSystem> keepFilesystemAlive(filesystem);
   {
     m_gnuplotSource = gnuplotFilename;
     m_gnuplotData = dataFilename;
@@ -348,13 +368,20 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       }
     }
   }
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_gnuplotLock);
+  #endif
 }
 
 wxMemoryBuffer Image::GetGnuplotSource()
 {
   wxMemoryBuffer retval;
+  #ifdef HAVE_OMP_HEADER
+  omp_set_lock(&m_gnuplotLock);
+  #else
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
+  #endif
   #endif
   {
   
@@ -381,14 +408,22 @@ wxMemoryBuffer Image::GetGnuplotSource()
                         output.GetOutputStreamBuffer()->GetBufferSize());
     }
   }
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_gnuplotLock);
+  #endif
+
   return retval;
 }
 
 wxMemoryBuffer Image::GetGnuplotData()
 {
   wxMemoryBuffer retval;
+  #ifdef HAVE_OMP_HEADER
+  omp_set_lock(&m_gnuplotLock);
+  #else
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
+  #endif
   #endif
   {
   
@@ -415,6 +450,9 @@ wxMemoryBuffer Image::GetGnuplotData()
                         output.GetOutputStreamBuffer()->GetBufferSize());
     }
   }
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_gnuplotLock);
+  #endif
   return retval;
 }
 
@@ -422,8 +460,12 @@ wxString Image::GnuplotData()
 {
   if((!m_gnuplotData.IsEmpty()) && (!wxFileExists(m_gnuplotData)))
   {
+    #ifdef HAVE_OMP_HEADER
+    omp_set_lock(&m_gnuplotLock);
+    #else
     #ifdef HAVE_OPENMP_TASKS
     #pragma omp taskwait
+    #endif
     #endif
     {
     // Move the gnuplot data and data file into our temp directory
@@ -453,6 +495,9 @@ wxString Image::GnuplotData()
       }
     }
   }
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_gnuplotLock);
+  #endif
   return m_gnuplotData;
 }
 
@@ -460,8 +505,12 @@ wxString Image::GnuplotSource()
 {
   if((!m_gnuplotSource.IsEmpty()) && (!wxFileExists(m_gnuplotSource)))
   {
+    #ifdef HAVE_OMP_HEADER
+    omp_set_lock(&m_gnuplotLock);
+    #else
     #ifdef HAVE_OPENMP_TASKS
     #pragma omp taskwait
+    #endif
     #endif
     {
       // Move the gnuplot source and data file into our temp directory
@@ -493,6 +542,9 @@ wxString Image::GnuplotSource()
       }
     }
   }
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_gnuplotLock);
+  #endif
   // Restore the data file, as well.
   GnuplotData();
   return m_gnuplotSource;
