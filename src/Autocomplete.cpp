@@ -131,6 +131,9 @@ void AutoComplete::LoadSymbols()
       it != m_configuration->m_escCodes.end();
       ++it)
     m_wordList[esccommand].Add(it->first);
+  m_wordList[command].Sort();
+  m_wordList[tmplte].Sort();
+  m_wordList[unit].Sort();
 }
 
 void AutoComplete::LoadSymbols_BackgroundTask()
@@ -205,10 +208,6 @@ void AutoComplete::LoadSymbols_BackgroundTask()
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
   }
-  
-  m_wordList[command].Sort();
-  m_wordList[tmplte].Sort();
-  m_wordList[unit].Sort();
   m_builtInLoadFiles.Sort();
   m_builtInDemoFiles.Sort();
 }
