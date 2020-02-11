@@ -282,6 +282,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
 void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
 {
   #ifdef HAVE_OPENMP_TASKS
+  wxLogMessage(_("Starting a background task that scans for autocompletible file names."));
   #pragma omp critical AutocompleteFiles
   #pragma omp task
   #endif
