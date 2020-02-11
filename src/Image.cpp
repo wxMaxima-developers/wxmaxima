@@ -56,7 +56,7 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 
 wxBitmap Image::GetUnscaledBitmap()
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   if (m_svgRast)
   {
     std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
@@ -190,25 +190,25 @@ Image::~Image()
 
 wxMemoryBuffer Image::GetCompressedImage()
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   return m_compressedImage;
 }
 
 size_t Image::GetOriginalWidth()
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   return m_originalWidth;
 }
 
 size_t Image::GetOriginalHeight()
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   return m_originalHeight;
 }
 
 bool Image::IsOk()
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   return m_isOk;
 }
 
@@ -591,6 +591,7 @@ wxString Image::GnuplotSource()
  
 wxSize Image::ToImageFile(wxString filename)
 {
+  WaitForLoad waitforload(&m_imageLoadLock);
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
   if (filename.Lower().EndsWith(GetExtension().Lower()))
@@ -663,7 +664,7 @@ wxSize Image::ToImageFile(wxString filename)
 wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
 
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
@@ -745,7 +746,7 @@ wxBitmap Image::GetBitmap(double scale)
 
 void Image::LoadImage(const wxBitmap &bitmap)
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
   m_isOk = image.IsOk();
@@ -763,14 +764,20 @@ void Image::LoadImage(const wxBitmap &bitmap)
   m_height = 1;
 }
 
+wxString Image::GetExtension()
+{
+  WaitForLoad waitforload(&m_imageLoadLock);
+  return m_extension;
+}
+
 void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
   m_fs_keepalive_imagedata = filesystem;
   // If we don't have fine-grained locking using omp.h we don't profit from sending the
   // load process to the background and therefore load images from the main thread.
   #ifdef HAVE_OMP_HEADER
   wxLogMessage(_("Starting background thread that loads an image"));
+  omp_set_lock(&m_imageLoadLock);
   #if HAVE_OPENMP_TASKS
   #pragma omp task
   #endif
@@ -778,16 +785,8 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
   LoadImage_Backgroundtask(image, filesystem, remove);
 }
 
-wxString Image::GetExtension()
-{
-  WaitForLoad waitForLoad(m_imageLoadLock);
-  return m_extension;
-}
-
-
 void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
   m_imageName = image;
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
@@ -922,14 +921,16 @@ void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFil
       else
         m_isOk = false;
     }
-    Recalculate();
   }
   m_fs_keepalive_imagedata.reset();
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_imageLoadLock);
+  #endif
 }
 
 void Image::Recalculate(double scale)
 {
-  WaitForLoad waitForLoad(m_imageLoadLock);
+  WaitForLoad waitforload(&m_imageLoadLock);
   int width = m_originalWidth;
   int height = m_originalHeight;
   Configuration *configuration = (*m_configuration);

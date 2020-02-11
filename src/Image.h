@@ -187,21 +187,21 @@ public:
   class WaitForLoad
   {
   public:
-    WaitForLoad(omp_lock_t imageLoadLock):
+    WaitForLoad(omp_lock_t *imageLoadLock):
       m_imageLoadLock(imageLoadLock)
       {
         #ifdef HAVE_OMP_HEADER
-        omp_set_lock(&m_imageLoadLock);
+        omp_set_lock(imageLoadLock);
         #endif
       }
       ~WaitForLoad()
       {
         #ifdef HAVE_OMP_HEADER
-        omp_unset_lock(&m_imageLoadLock);
+        omp_unset_lock(m_imageLoadLock);
         #endif
       }
   private:
-    omp_lock_t m_imageLoadLock;
+    omp_lock_t *m_imageLoadLock;
   };
   
   //! The image in its original compressed form
