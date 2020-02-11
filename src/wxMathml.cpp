@@ -17,7 +17,6 @@ wxMathML::wxMathML()
   wxZlibInputStream zstream(istream);
   wxTextInputStream textIn(zstream);
   wxString line;
-  m_wxMathML = wxEmptyString;
   
   while(!istream.Eof())
   {
@@ -29,47 +28,51 @@ wxMathML::wxMathML()
 
 wxString wxMathML::GetCmd()
 {
-  wxString cmd;
-  
-  wxStringTokenizer lines(m_wxMathML,wxT("\n"));
-  while(lines.HasMoreTokens())
-  {
-    wxString line = lines.GetNextToken();
-    wxString lineWithoutComments;
-
-    bool stringIs = false;
-    wxChar lastChar = wxT('\n');
-    wxString::const_iterator ch = line.begin();
-    while (ch < line.end())
+  if(m_maximaCMD.IsEmpty())
     {
-      // Remove formatting spaces
-      if(((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
-	  ++ch;
-      else
+      wxStringTokenizer lines(m_wxMathML,wxT("\n"));
+      while(lines.HasMoreTokens())
 	{
-	  // Handle backslashes that might escape double quotes
-	  if (*ch == wxT('\\'))
-	    {
-	      lineWithoutComments += *ch;
-	      ++ch;
-	    }
-	  else
-	    {
-	      // Handle strings
-	      if (*ch == wxT('\"'))
-		stringIs = !stringIs;
+	  wxString line = lines.GetNextToken();
+	  wxString lineWithoutComments;
 
-	      // Handle comments
-	      if ((*ch == wxT(';')) && (!stringIs))
-		break;
+	  bool stringIs = false;
+	  wxChar lastChar = wxT('\n');
+	  wxString::const_iterator ch = line.begin();
+	  while (ch < line.end())
+	    {
+	      // Remove formatting spaces
+	      if(((lastChar == '\n') && ((*ch == ' ') || (*ch == '\t'))))
+		++ch;
+	      else
+		{
+		  // Handle backslashes that might escape double quotes
+		  if (*ch == wxT('\\'))
+		    {
+		      lineWithoutComments += *ch;
+		      ++ch;
+		    }
+		  else
+		    {
+		      // Handle strings
+		      if (*ch == wxT('\"'))
+			stringIs = !stringIs;
+
+		      // Handle comments
+		      if ((*ch == wxT(';')) && (!stringIs))
+			break;
+		    }
+		  lineWithoutComments += *ch;
+		  lastChar = *ch;
+		  ++ch;
+		}
 	    }
-	  lineWithoutComments += *ch;
-	  lastChar = *ch;
-	  ++ch;
+	  m_maximaCMD += lineWithoutComments + " ";
 	}
+      wxASSERT_MSG(m_maximaCMD.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
+      m_maximaCMD = wxT(":lisp-quiet ") + m_maximaCMD + "\n";
     }
-    cmd += lineWithoutComments + " ";
-  }
-  wxASSERT_MSG(cmd.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
-  return wxT(":lisp-quiet ") + cmd + "\n";
+  return m_maximaCMD;
 }
+
+wxString wxMathML::m_maximaCMD;
