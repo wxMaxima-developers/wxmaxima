@@ -102,11 +102,12 @@ public:
   
   //! Returns a list of possible autocompletions for the string "partial"
   wxArrayString CompleteSymbol(wxString partial, autoCompletionType type = command);
-  wxString FixTemplate(wxString templ);
+  static wxString FixTemplate(wxString templ);
 
 private:
 
   void LoadSymbols_BackgroundTask();
+  void BuiltinSymbols_BackgroundTask();
 
   //! Replace the list of files in the directory the worksheet file is in to the load files list
   void UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);
@@ -250,7 +251,7 @@ private:
   };
 
   wxArrayString m_wordList[7];
-  wxRegEx m_args;
+  static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };
 

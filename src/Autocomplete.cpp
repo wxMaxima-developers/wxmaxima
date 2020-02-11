@@ -38,94 +38,114 @@
 
 AutoComplete::AutoComplete(Configuration *configuration)
 {
-  wxASSERT(m_args.Compile(wxT("[[]<([^>]*)>[]]")));
   m_configuration = configuration;
 }
 
 void AutoComplete::ClearWorksheetWords()
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteBuiltins)
+  #endif
   m_worksheetWords.clear();
 }
 
 void AutoComplete::AddSymbols(wxString xml)
 {
-  wxXmlDocument xmldoc;
-  wxStringInputStream xmlStream(xml);
-  xmldoc.Load(xmlStream, wxT("UTF-8"));
-  wxXmlNode *node = xmldoc.GetRoot();
-  if(node != NULL)
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteBuiltins)
+  #endif
   {
-    wxXmlNode *children = node->GetChildren();
-    while (children != NULL)
+    wxXmlDocument xmldoc;
+    wxStringInputStream xmlStream(xml);
+    xmldoc.Load(xmlStream, wxT("UTF-8"));
+    wxXmlNode *node = xmldoc.GetRoot();
+    if(node != NULL)
     {
-      if(children->GetType() == wxXML_ELEMENT_NODE)
-      { 
-        if (children->GetName() == wxT("function"))
-        {
-          wxXmlNode *val = children->GetChildren();
-          if(val)
+      wxXmlNode *children = node->GetChildren();
+      while (children != NULL)
+      {
+        if(children->GetType() == wxXML_ELEMENT_NODE)
+        { 
+          if (children->GetName() == wxT("function"))
           {
-            wxString name = val->GetContent();
-            AddSymbol(name, command);
+            wxXmlNode *val = children->GetChildren();
+            if(val)
+            {
+              wxString name = val->GetContent();
+              AddSymbol(name, command);
+            }
+          }
+          
+          if (children->GetName() == wxT("template"))
+          {
+            wxXmlNode *val = children->GetChildren();
+            if(val)
+            {
+              wxString name = val->GetContent();
+              AddSymbol(name, tmplte);
+            }
+          }
+          
+          if (children->GetName() == wxT("unit"))
+          {
+            wxXmlNode *val = children->GetChildren();
+            if(val)
+            {
+              wxString name = val->GetContent();
+              AddSymbol(name, unit);
+            }
+          }
+          
+          if (children->GetName() == wxT("value"))
+          {
+            wxXmlNode *val = children->GetChildren();
+            if(val)
+            {
+              wxString name = val->GetContent();
+              AddSymbol(name, command);
+            }
           }
         }
-
-        if (children->GetName() == wxT("template"))
-        {
-          wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
-            wxString name = val->GetContent();
-            AddSymbol(name, tmplte);
-          }
-        }
-
-        if (children->GetName() == wxT("unit"))
-        {
-          wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
-            wxString name = val->GetContent();
-            AddSymbol(name, unit);
-          }
-        }
-
-        if (children->GetName() == wxT("value"))
-        {
-          wxXmlNode *val = children->GetChildren();
-          if(val)
-          {
-            wxString name = val->GetContent();
-            AddSymbol(name, command);
-          }
-        }
+        children = children->GetNext();
       }
-      children = children->GetNext();
     }
   }
 }
 void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 {
-  wxArrayString::const_iterator it;
-  for (it = wordlist.begin(); it != wordlist.end(); ++it)
-    m_worksheetWords[*it] = 1;
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteBuiltins)
+  #endif
+  {
+    wxArrayString::const_iterator it;
+    for (it = wordlist.begin(); it != wordlist.end(); ++it)
+      m_worksheetWords[*it] = 1;
+  }
 }
 
 void AutoComplete::LoadSymbols()
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that setups the autocomplete list."));
+  wxLogMessage(_("Starting a background task that setups the autocomplete builtins list."));
+  #pragma omp critical (AutocompleteBuiltins)
+  #pragma omp task
+  #endif
+  BuiltinSymbols_BackgroundTask();
+  #ifdef HAVE_OPENMP_TASKS
+  wxLogMessage(_("Starting a background task that setups the autocompletable files list."));
   #pragma omp critical (AutocompleteFiles)
   #pragma omp task
   #endif
   LoadSymbols_BackgroundTask();
+}
 
-  for (int i = command; i <= unit; i++)
-  {
-    if (m_wordList[i].GetCount() != 0)
-      m_wordList[i].Clear();
-  }
-
+void AutoComplete::BuiltinSymbols_BackgroundTask()
+{
+  m_wordList[command].Clear();
+  m_wordList[tmplte].Clear();
+  m_wordList[esccommand].Clear();
+  m_wordList[unit].Clear();
+  
   LoadBuiltinSymbols();
 
   for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
@@ -139,6 +159,9 @@ void AutoComplete::LoadSymbols()
 
 void AutoComplete::LoadSymbols_BackgroundTask()
 {
+  m_wordList[loadfile].Clear();
+  m_wordList[demofile].Clear();
+  m_wordList[generalfile].Clear();
   // Error dialogues need to be created by the foreground thread.
   SuppressErrorDialogs suppressor;
   wxString line;
@@ -343,64 +366,67 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   wxArrayString perfectCompletions;
 
   #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteBuiltins)
   #pragma omp critical (AutocompleteFiles)
   #endif
-  if(
-    ((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
-    (partial.EndsWith("\""))
-    )
-    partial = partial.Left(partial.Length() - 1);
-  
-  wxASSERT_MSG((type >= command) && (type <= unit), _("Bug: Autocompletion requested for unknown type of item."));
-  
-  if (type != tmplte)
   {
-    for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
+    if(
+      ((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
+      (partial.EndsWith("\""))
+      )
+      partial = partial.Left(partial.Length() - 1);
+  
+    wxASSERT_MSG((type >= command) && (type <= unit), _("Bug: Autocompletion requested for unknown type of item."));
+  
+    if (type != tmplte)
     {
-      if (m_wordList[type][i].StartsWith(partial) &&
-          completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
-        completions.Add(m_wordList[type][i]);
-    }
-  }
-  else
-  {
-    for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
-    {
-      wxString templ = m_wordList[type][i];
-      if (templ.StartsWith(partial))
+      for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
       {
-        if (completions.Index(templ) == wxNOT_FOUND)
-          completions.Add(templ);
-        if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial &&
-            perfectCompletions.Index(templ) == wxNOT_FOUND)
-          perfectCompletions.Add(templ);
+        if (m_wordList[type][i].StartsWith(partial) &&
+            completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
+          completions.Add(m_wordList[type][i]);
       }
     }
-  }
-
-  // Add a list of words that were definied on the work sheet but that aren't
-  // defined as maxima commands or functions.
-  if (type == command)
-  {
-    WorksheetWords::const_iterator it;
-    for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it)
+    else
     {
-      if (it->first.StartsWith(partial))
+      for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
       {
-        if (completions.Index(it->first) == wxNOT_FOUND)
+        wxString templ = m_wordList[type][i];
+        if (templ.StartsWith(partial))
         {
-          completions.Add(it->first);
+          if (completions.Index(templ) == wxNOT_FOUND)
+            completions.Add(templ);
+          if (templ.SubString(0, templ.Find(wxT("(")) - 1) == partial &&
+              perfectCompletions.Index(templ) == wxNOT_FOUND)
+            perfectCompletions.Add(templ);
         }
       }
     }
+
+    // Add a list of words that were definied on the work sheet but that aren't
+    // defined as maxima commands or functions.
+    if (type == command)
+    {
+      WorksheetWords::const_iterator it;
+      for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it)
+      {
+        if (it->first.StartsWith(partial))
+        {
+          if (completions.Index(it->first) == wxNOT_FOUND)
+          {
+            completions.Add(it->first);
+          }
+        }
+      }
+    }
+
+    completions.Sort();
   }
-
-  completions.Sort();
-
   if (perfectCompletions.Count() > 0)
     return perfectCompletions;
   return completions;
 }
+
 
 void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
 {
@@ -444,6 +470,7 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
   }
 }
 
+
 wxString AutoComplete::FixTemplate(wxString templ)
 {
   templ.Replace(wxT(" "), wxEmptyString);
@@ -454,3 +481,5 @@ wxString AutoComplete::FixTemplate(wxString templ)
 
   return templ;
 }
+
+wxRegEx AutoComplete::m_args("[[]<([^>]*)>[]]");
