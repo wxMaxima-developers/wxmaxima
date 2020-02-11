@@ -1082,6 +1082,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 
 wxMaxima::~wxMaxima()
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
   KillMaxima(false);
   MyApp::m_topLevelWindows.remove(this);
   if(MyApp::m_topLevelWindows.empty())
