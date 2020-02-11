@@ -65,6 +65,8 @@ public:
 
   explicit AutoComplete(Configuration *configuration);
 
+  ~AutoComplete();
+  
   Configuration *m_configuration;
 
   //! Load all autocomplete symbols wxMaxima knows about by itself

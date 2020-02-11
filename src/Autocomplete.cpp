@@ -123,6 +123,13 @@ void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
   }
 }
 
+AutoComplete::~AutoComplete()
+{
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
+}
+
 void AutoComplete::LoadSymbols()
 {
   #ifdef HAVE_OPENMP_TASKS
