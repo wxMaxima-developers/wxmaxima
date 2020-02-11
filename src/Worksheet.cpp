@@ -34,6 +34,7 @@
 #include "MaxSizeChooser.h"
 #include "SVGout.h"
 #include "EMFout.h"
+#include "Version.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include <wx/dcbuffer.h>
