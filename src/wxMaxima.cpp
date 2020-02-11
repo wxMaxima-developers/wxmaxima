@@ -8289,6 +8289,10 @@ bool wxMaxima::SaveOnClose()
 
 void wxMaxima::OnClose(wxCloseEvent &event)
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
+  
   if(event.GetEventType() == wxEVT_END_SESSION)
     KillMaxima();
 
