@@ -34,6 +34,7 @@
 #include <wx/textfile.h>
 #include <wx/filename.h>
 #include <wx/xml/xml.h>
+#include "ErrorRedirector.h"
 
 AutoComplete::AutoComplete(Configuration *configuration)
 {
@@ -137,7 +138,9 @@ void AutoComplete::LoadSymbols()
 }
 
 void AutoComplete::LoadSymbols_BackgroundTask()
-{  
+{
+  // Error dialogues need to be created by the foreground thread.
+  SuppressErrorDialogs suppressor;
   wxString line;
 
   /// Load private symbol list (do something different on Windows).
