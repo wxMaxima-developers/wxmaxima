@@ -68,7 +68,7 @@ public:
   Configuration *m_configuration;
 
   //! Load all autocomplete symbols wxMaxima knows about by itself
-  bool LoadSymbols();
+  void LoadSymbols();
 
   /*! Makes wxMaxima know all its builtin symbols.
 
@@ -105,6 +105,8 @@ public:
   wxString FixTemplate(wxString templ);
 
 private:
+
+  void LoadSymbols_BackgroundTask();
 
   //! Replace the list of files in the directory the worksheet file is in to the load files list
   void UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);

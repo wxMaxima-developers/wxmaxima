@@ -1423,8 +1423,8 @@ public:
 
   wxString GetOutputAboveCaret();
 
-  bool LoadSymbols()
-  { return m_autocomplete->LoadSymbols(); }
+  void LoadSymbols()
+  { m_autocomplete->LoadSymbols(); }
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
