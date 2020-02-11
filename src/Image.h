@@ -225,6 +225,7 @@ private:
   NSVGimage* m_svgImage;
   struct NSVGrasterizer* m_svgRast;
 
+  std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
   #ifdef HAVE_OMP_HEADER
   omp_lock_t m_gnuplotLock;
   #endif

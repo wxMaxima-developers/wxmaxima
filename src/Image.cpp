@@ -186,6 +186,7 @@ Image::~Image()
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
 {
+  m_fs_keepalive_gnuplotdata = filesystem;
   std::shared_ptr<wxFileSystem> keepFilesystemAlive(filesystem);
   #ifdef HAVE_OMP_HEADER
   omp_set_lock(&m_gnuplotLock);
@@ -368,6 +369,7 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       }
     }
   }
+  m_fs_keepalive_gnuplotdata.reset();
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_gnuplotLock);
   #endif
