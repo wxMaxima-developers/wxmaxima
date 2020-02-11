@@ -56,7 +56,9 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 
 wxBitmap Image::GetUnscaledBitmap()
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   if (m_svgRast)
   {
     std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
@@ -190,25 +192,33 @@ Image::~Image()
 
 wxMemoryBuffer Image::GetCompressedImage()
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   return m_compressedImage;
 }
 
 size_t Image::GetOriginalWidth()
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   return m_originalWidth;
 }
 
 size_t Image::GetOriginalHeight()
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   return m_originalHeight;
 }
 
 bool Image::IsOk()
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   return m_isOk;
 }
 
@@ -591,7 +601,9 @@ wxString Image::GnuplotSource()
  
 wxSize Image::ToImageFile(wxString filename)
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
   if (filename.Lower().EndsWith(GetExtension().Lower()))
@@ -664,7 +676,9 @@ wxSize Image::ToImageFile(wxString filename)
 wxBitmap Image::GetBitmap(double scale) 
 {
   Recalculate(scale);
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
 
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
@@ -746,7 +760,9 @@ wxBitmap Image::GetBitmap(double scale)
 
 void Image::LoadImage(const wxBitmap &bitmap)
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
   m_isOk = image.IsOk();
@@ -766,7 +782,9 @@ void Image::LoadImage(const wxBitmap &bitmap)
 
 wxString Image::GetExtension()
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   return m_extension;
 }
 
@@ -930,7 +948,9 @@ void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFil
 
 void Image::Recalculate(double scale)
 {
+  #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
   int width = m_originalWidth;
   int height = m_originalHeight;
   Configuration *configuration = (*m_configuration);
