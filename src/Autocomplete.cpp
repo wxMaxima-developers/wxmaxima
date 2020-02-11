@@ -126,15 +126,15 @@ void AutoComplete::LoadSymbols()
   }
 
   LoadBuiltinSymbols();
-}
 
-void AutoComplete::LoadSymbols_BackgroundTask()
-{  
   for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
       it != m_configuration->m_escCodes.end();
       ++it)
     m_wordList[esccommand].Add(it->first);
+}
 
+void AutoComplete::LoadSymbols_BackgroundTask()
+{  
   wxString line;
 
   /// Load private symbol list (do something different on Windows).
