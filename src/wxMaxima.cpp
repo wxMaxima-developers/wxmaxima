@@ -145,7 +145,6 @@ void wxMaxima::ConfigChanged()
 #else
   bool usepngCairo=true;
 #endif
-  wxLogMessage(_("Sending configuration data to maxima."));
   config->Read(wxT("usepngCairo"), &usepngCairo);
   if (usepngCairo)
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
