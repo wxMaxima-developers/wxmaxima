@@ -54,8 +54,9 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
   return retval;
 }
 
-wxBitmap Image::GetUnscaledBitmap() const
+wxBitmap Image::GetUnscaledBitmap()
 {
+  WaitForLoad();
   if (m_svgRast)
   {
     std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
@@ -81,6 +82,7 @@ Image::Image(Configuration **config)
 {
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_gnuplotLock);
+  omp_init_lock(&m_imageLoadLock);
   #endif
   m_configuration = config;
   m_width = 1;
@@ -99,11 +101,13 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 {
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_gnuplotLock);
+  omp_init_lock(&m_imageLoadLock);
   #endif
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
   m_extension = type;
+  m_isOk = false;
   m_width = 1;
   m_height = 1;
   m_originalWidth = 640;
@@ -128,10 +132,12 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_gnuplotLock);
+  omp_init_lock(&m_imageLoadLock);
   #endif
   m_svgImage = NULL;
   m_svgRast = NULL;
   m_configuration = config;
+  m_isOk = false;
   m_width = 1;
   m_height = 1;
   m_maxWidth = -1;
@@ -140,15 +146,18 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 }
 
 // constructor which loads an image
-Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove):
+  m_fs_keepalive_imagedata(filesystem)
 {
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_gnuplotLock);
+  omp_init_lock(&m_imageLoadLock);
   #endif
   m_svgImage = NULL;
   m_svgRast = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
+  m_isOk = false;
   m_width = 1;
   m_height = 1;
   m_maxWidth = -1;
@@ -158,12 +167,10 @@ Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFil
 
 Image::~Image()
 {
-  #ifdef HAVE_OMP_HEADER
-  omp_set_lock(&m_gnuplotLock);
-  #else
+  m_isOk = false;
+  WaitForLoad();
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
-  #endif
   #endif
   {
     if(m_gnuplotSource != wxEmptyString)
@@ -180,10 +187,32 @@ Image::~Image()
     }
   }
   wxDELETE(m_svgImage);
-  #ifdef HAVE_OMP_HEADER
-  omp_unset_lock(&m_gnuplotLock);
-  #endif
 }
+
+wxMemoryBuffer Image::GetCompressedImage()
+{
+  WaitForLoad();
+  return m_compressedImage;
+}
+
+size_t Image::GetOriginalWidth()
+{
+  WaitForLoad();
+  return m_originalWidth;
+}
+
+size_t Image::GetOriginalHeight()
+{
+  WaitForLoad();
+  return m_originalHeight;
+}
+
+bool Image::IsOk()
+{
+  WaitForLoad();
+  return m_isOk;
+}
+
 
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
 {
@@ -725,6 +754,28 @@ void Image::LoadImage(const wxBitmap &bitmap)
 
 void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
+  m_fs_keepalive_imagedata = filesystem;
+  // If we don't have fine-grained locking using omp.h we don't profit from sending the
+  // load process to the background and therefore load images from the main thread.
+  #if HAVE_OMP_HEADER 
+  omp_set_lock(&m_imageLoadLock);
+  wxLogMessage(_("Starting background thread that loads an image"));
+  #if HAVE_OPENMP_TASKS
+  #pragma omp task
+  #endif
+  #endif
+  LoadImage_Backgroundtask(image, filesystem, remove);
+}
+
+wxString Image::GetExtension()
+{
+  WaitForLoad();
+  return m_extension;
+}
+
+
+void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+{
   m_imageName = image;
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
@@ -861,6 +912,7 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
     }
     Recalculate();
   }
+  m_fs_keepalive_imagedata.reset();
 }
 
 void Image::Recalculate(double scale)

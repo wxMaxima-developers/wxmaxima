@@ -137,8 +137,7 @@ public:
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   
   //! Returns the file name extension of the current image
-  wxString GetExtension() const
-  { return m_extension; };
+  wxString GetExtension();
 
   //! Loads an image from a file
   void LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
@@ -162,10 +161,10 @@ public:
   wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk() const {return m_isOk;}
+  bool IsOk();
   
   //! Returns the image in its unscaled form
-  wxBitmap GetUnscaledBitmap() const;
+  wxBitmap GetUnscaledBitmap();
 
   //! Can be called to specify a specific scale
   void Recalculate(double scale = 1.0);
@@ -176,17 +175,23 @@ public:
   long m_height;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage() const
-  { return m_compressedImage; }
+  wxMemoryBuffer GetCompressedImage();
 
   //! Returns the original width
-  size_t GetOriginalWidth() const
-  { return m_originalWidth; }
+  size_t GetOriginalWidth();
 
   //! Returns the original height
-  size_t GetOriginalHeight() const
-  { return m_originalHeight; }
+  size_t GetOriginalHeight();
 
+  //! Wait until the image is loaded
+  void WaitForLoad()
+    {
+      #if HAVE_OMP_HEADER 
+      omp_set_lock(&m_imageLoadLock);
+      omp_unset_lock(&m_imageLoadLock);
+      #endif
+    }
+  
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
 
@@ -211,6 +216,7 @@ protected:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
+  void LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove);
   void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
 
 private:
@@ -226,8 +232,10 @@ private:
   struct NSVGrasterizer* m_svgRast;
 
   std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
+  std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;
   #ifdef HAVE_OMP_HEADER
   omp_lock_t m_gnuplotLock;
+  omp_lock_t m_imageLoadLock;
   #endif
   
 };

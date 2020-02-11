@@ -46,7 +46,7 @@ public:
   ImgCell &operator=(const ImgCell&) = delete;
 
   //! Tell the image which gnuplot files it was made from
-  void GnuplotSource(wxString sourcefile, wxString datafile, const std::shared_ptr<wxFileSystem> filesystem)
+  void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
     {
       if(m_image != NULL)
         m_image->GnuplotSource(sourcefile,datafile, filesystem);
