@@ -49,6 +49,21 @@ void AutoComplete::ClearWorksheetWords()
   m_worksheetWords.clear();
 }
 
+void AutoComplete::ClearLoadfileList()
+{
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteFiles)
+  #endif
+  m_wordList[loadfile] = m_builtInLoadFiles;
+}
+void AutoComplete::ClearDemofileList()
+{
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteFiles)
+  #endif
+  m_wordList[demofile] = m_builtInDemoFiles;
+}
+
 void AutoComplete::AddSymbols(wxString xml)
 {
   #ifdef HAVE_OPENMP_TASKS
@@ -72,7 +87,7 @@ void AutoComplete::AddSymbols(wxString xml)
             if(val)
             {
               wxString name = val->GetContent();
-              AddSymbol(name, command);
+              AddSymbol_nowait(name, command);
             }
           }
           
@@ -82,7 +97,7 @@ void AutoComplete::AddSymbols(wxString xml)
             if(val)
             {
               wxString name = val->GetContent();
-              AddSymbol(name, tmplte);
+              AddSymbol_nowait(name, tmplte);
             }
           }
           
@@ -92,7 +107,7 @@ void AutoComplete::AddSymbols(wxString xml)
             if(val)
             {
               wxString name = val->GetContent();
-              AddSymbol(name, unit);
+              AddSymbol_nowait(name, unit);
             }
           }
           
@@ -102,7 +117,7 @@ void AutoComplete::AddSymbols(wxString xml)
             if(val)
             {
               wxString name = val->GetContent();
-              AddSymbol(name, command);
+              AddSymbol_nowait(name, command);
             }
           }
         }
@@ -134,13 +149,11 @@ void AutoComplete::LoadSymbols()
 {
   #ifdef HAVE_OPENMP_TASKS
   wxLogMessage(_("Starting a background task that setups the autocomplete builtins list."));
-  #pragma omp critical (AutocompleteBuiltins)
   #pragma omp task
   #endif
   BuiltinSymbols_BackgroundTask();
   #ifdef HAVE_OPENMP_TASKS
   wxLogMessage(_("Starting a background task that setups the autocompletable files list."));
-  #pragma omp critical (AutocompleteFiles)
   #pragma omp task
   #endif
   LoadSymbols_BackgroundTask();
@@ -148,173 +161,193 @@ void AutoComplete::LoadSymbols()
 
 void AutoComplete::BuiltinSymbols_BackgroundTask()
 {
-  m_wordList[command].Clear();
-  m_wordList[tmplte].Clear();
-  m_wordList[esccommand].Clear();
-  m_wordList[unit].Clear();
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteBuiltins)
+  #endif
+  {
+    m_wordList[command].Clear();
+    m_wordList[tmplte].Clear();
+    m_wordList[esccommand].Clear();
+    m_wordList[unit].Clear();
   
-  LoadBuiltinSymbols();
+    LoadBuiltinSymbols();
 
-  for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
-      it != m_configuration->m_escCodes.end();
-      ++it)
-    m_wordList[esccommand].Add(it->first);
-  m_wordList[command].Sort();
-  m_wordList[tmplte].Sort();
-  m_wordList[unit].Sort();
+    for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
+        it != m_configuration->m_escCodes.end();
+        ++it)
+      m_wordList[esccommand].Add(it->first);
+    m_wordList[command].Sort();
+    m_wordList[tmplte].Sort();
+    m_wordList[unit].Sort();
+  }
 }
 
 void AutoComplete::LoadSymbols_BackgroundTask()
 {
-  m_wordList[loadfile].Clear();
-  m_wordList[demofile].Clear();
-  m_wordList[generalfile].Clear();
-  // Error dialogues need to be created by the foreground thread.
-  SuppressErrorDialogs suppressor;
-  wxString line;
-
-  /// Load private symbol list (do something different on Windows).
-  wxString privateList;
-  privateList = Dirstructure::Get()->UserAutocompleteFile();
-
-  if (wxFileExists(privateList))
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteFiles)
+  #endif
   {
-    wxTextFile priv(privateList);
+    m_wordList[loadfile].Clear();
+    m_wordList[demofile].Clear();
+    m_wordList[generalfile].Clear();
+    // Error dialogues need to be created by the foreground thread.
+    SuppressErrorDialogs suppressor;
+    wxString line;
 
-    priv.Open();
+    /// Load private symbol list (do something different on Windows).
+    wxString privateList;
+    privateList = Dirstructure::Get()->UserAutocompleteFile();
 
-    for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+    if (wxFileExists(privateList))
     {
-      if (line.StartsWith(wxT("FUNCTION: ")) ||
-          line.StartsWith(wxT("OPTION  : ")))
-        m_wordList[command].Add(line.Mid(10));
-      else if (line.StartsWith(wxT("TEMPLATE: ")))
-        m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
-      else if (line.StartsWith(wxT("UNIT: ")))
-        m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+      wxTextFile priv(privateList);
+
+      priv.Open();
+
+      for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+      {
+        if (line.StartsWith(wxT("FUNCTION: ")) ||
+            line.StartsWith(wxT("OPTION  : ")))
+          m_wordList[command].Add(line.Mid(10));
+        else if (line.StartsWith(wxT("TEMPLATE: ")))
+          m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
+        else if (line.StartsWith(wxT("UNIT: ")))
+          m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+      }
+
+      priv.Close();
     }
-
-    priv.Close();
-  }
   
-  // Prepare a list of all built-in loadable files of maxima.
-  {
-    GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
-    if(m_configuration->MaximaShareDir() != wxEmptyString)
+    // Prepare a list of all built-in loadable files of maxima.
     {
-      wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
-      shareDir.MakeAbsolute();
+      GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
+      if(m_configuration->MaximaShareDir() != wxEmptyString)
+      {
+        wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
+        shareDir.MakeAbsolute();
+        wxLogMessage(
+          wxString::Format(
+            _("Autocompletion: Scanning %s for loadable lisp files."),
+            shareDir.GetFullPath().utf8_str()));
+        wxDir maximadir(shareDir.GetFullPath());
+        if(maximadir.IsOpened())
+          maximadir.Traverse(maximaLispIterator);
+      }
+      GetMacFiles userLispIterator (m_builtInLoadFiles);
+ 
+      wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
+      userDir.MakeAbsolute();
+      wxDir maximauserfilesdir(userDir.GetFullPath());
       wxLogMessage(
         wxString::Format(
           _("Autocompletion: Scanning %s for loadable lisp files."),
-          shareDir.GetFullPath().utf8_str()));
-      wxDir maximadir(shareDir.GetFullPath());
+          userDir.GetFullPath().utf8_str()));
+      if(maximauserfilesdir.IsOpened())
+        maximauserfilesdir.Traverse(userLispIterator);
+    }
+  
+
+    // Prepare a list of all built-in demos of maxima.
+    {
+      wxFileName demoDir(m_configuration->MaximaShareDir() + "/");
+      demoDir.MakeAbsolute();
+      demoDir.RemoveLastDir();
+      GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
+      wxLogMessage(
+        wxString::Format(
+          _("Autocompletion: Scanning %s for loadable demo files."),
+          demoDir.GetFullPath().utf8_str()));
+
+      wxDir maximadir(demoDir.GetFullPath());
       if(maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator);
     }
-    GetMacFiles userLispIterator (m_builtInLoadFiles);
- 
-    wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
-    userDir.MakeAbsolute();
-    wxDir maximauserfilesdir(userDir.GetFullPath());
-    wxLogMessage(
-      wxString::Format(
-        _("Autocompletion: Scanning %s for loadable lisp files."),
-        userDir.GetFullPath().utf8_str()));
-    if(maximauserfilesdir.IsOpened())
-      maximauserfilesdir.Traverse(userLispIterator);
+    m_builtInLoadFiles.Sort();
+    m_builtInDemoFiles.Sort();
   }
-  
-
-  // Prepare a list of all built-in demos of maxima.
-  {
-    wxFileName demoDir(m_configuration->MaximaShareDir() + "/");
-    demoDir.MakeAbsolute();
-    demoDir.RemoveLastDir();
-    GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
-    wxLogMessage(
-      wxString::Format(
-        _("Autocompletion: Scanning %s for loadable demo files."),
-        demoDir.GetFullPath().utf8_str()));
-
-    wxDir maximadir(demoDir.GetFullPath());
-    if(maximadir.IsOpened())
-      maximadir.Traverse(maximaLispIterator);
-  }
-  m_builtInLoadFiles.Sort();
-  m_builtInDemoFiles.Sort();
 }
 
 void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir)
 {
-  // Remove the opening quote from the partial.
-  if(partial[0] == wxT('\"'))
-    partial = partial.Right(partial.Length()-1);
-  
-  partial.Replace(wxFileName::GetPathSeparator(), "/");
-  int pos;
-  if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
-    partial = wxEmptyString;
-  else
-    partial = partial.Left(pos);
-  wxString prefix = partial + wxT("/");
-  
-  // Determine if we need to add the path to maxima's current dir to the path in partial
-  if(!wxFileName(partial).IsAbsolute())
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteFiles)
+  #endif
   {
-    partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+    // Remove the opening quote from the partial.
+    if(partial[0] == wxT('\"'))
+      partial = partial.Right(partial.Length()-1);
+  
     partial.Replace(wxFileName::GetPathSeparator(), "/");
-  }
+    int pos;
+    if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
+      partial = wxEmptyString;
+    else
+      partial = partial.Left(pos);
+    wxString prefix = partial + wxT("/");
   
-  // Determine the name of the directory
-  if((partial != wxEmptyString) && wxDirExists(partial))
-    partial += "/";
+    // Determine if we need to add the path to maxima's current dir to the path in partial
+    if(!wxFileName(partial).IsAbsolute())
+    {
+      partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+      partial.Replace(wxFileName::GetPathSeparator(), "/");
+    }
+  
+    // Determine the name of the directory
+    if((partial != wxEmptyString) && wxDirExists(partial))
+      partial += "/";
 
-  // Remove all files from the maxima directory from the demo file list
-  ClearDemofileList();
+    // Remove all files from the maxima directory from the demo file list
+    ClearDemofileList();
 
-  // Add all files from the maxima directory to the demo file list
-  if(partial != wxT("//"))
-  {
-    GetDemoFiles userLispIterator(m_wordList[demofile], prefix);
-    wxDir demofilesdir(partial);
-    if(demofilesdir.IsOpened())
-      demofilesdir.Traverse(userLispIterator);
+    // Add all files from the maxima directory to the demo file list
+    if(partial != wxT("//"))
+    {
+      GetDemoFiles userLispIterator(m_wordList[demofile], prefix);
+      wxDir demofilesdir(partial);
+      if(demofilesdir.IsOpened())
+        demofilesdir.Traverse(userLispIterator);
+    }
   }
 }
 
 void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
 {
-  // Remove the opening quote from the partial.
-  if(partial[0] == wxT('\"'))
-    partial = partial.Right(partial.Length()-1);
-  
-  partial.Replace(wxFileName::GetPathSeparator(), "/");
-  int pos;
-  if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
-    partial = wxEmptyString;
-  else
-    partial = partial.Left(pos);
-  wxString prefix = partial + wxT("/");
-  
-  // Determine if we need to add the path to maxima's current dir to the path in partial
-  if(!wxFileName(partial).IsAbsolute())
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteFiles)
+  #endif
   {
-    partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+    // Remove the opening quote from the partial.
+    if(partial[0] == wxT('\"'))
+      partial = partial.Right(partial.Length()-1);
+  
     partial.Replace(wxFileName::GetPathSeparator(), "/");
-  }
+    int pos;
+    if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
+      partial = wxEmptyString;
+    else
+      partial = partial.Left(pos);
+    wxString prefix = partial + wxT("/");
   
-  // Determine the name of the directory
-  if((partial != wxEmptyString) && wxDirExists(partial))
-    partial += "/";
+    // Determine if we need to add the path to maxima's current dir to the path in partial
+    if(!wxFileName(partial).IsAbsolute())
+    {
+      partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+      partial.Replace(wxFileName::GetPathSeparator(), "/");
+    }
   
-  // Add all files from the maxima directory to the demo file list
-  if(partial != wxT("//"))
-  {
-    GetGeneralFiles fileIterator(m_wordList[generalfile], prefix);
-    wxDir generalfilesdir(partial);
-    if(generalfilesdir.IsOpened())
-      generalfilesdir.Traverse(fileIterator);
+    // Determine the name of the directory
+    if((partial != wxEmptyString) && wxDirExists(partial))
+      partial += "/";
+  
+    // Add all files from the maxima directory to the demo file list
+    if(partial != wxT("//"))
+    {
+      GetGeneralFiles fileIterator(m_wordList[generalfile], prefix);
+      wxDir generalfilesdir(partial);
+      if(generalfilesdir.IsOpened())
+        generalfilesdir.Traverse(fileIterator);
+    }
   }
 }
 
@@ -323,46 +356,42 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
   #ifdef HAVE_OPENMP_TASKS
   wxLogMessage(_("Starting a background task that scans for autocompletible file names."));
   #pragma omp critical (AutocompleteFiles)
-  #pragma omp task
   #endif
-  UpdateLoadFiles_BackgroundTask(partial, maximaDir);
-}
-
-void AutoComplete::UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir)
-{
-  // Remove the opening quote from the partial.
-  if(partial[0] == wxT('\"'))
-    partial = partial.Right(partial.Length()-1);
-  
-  partial.Replace(wxFileName::GetPathSeparator(), "/");
-  int pos;
-  if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
-    partial = wxEmptyString;
-  else
-    partial = partial.Left(pos);
-  wxString prefix = partial + wxT("/");
-  
-  // Determine if we need to add the path to maxima's current dir to the path in partial
-  if(!wxFileName(partial).IsAbsolute())
   {
-    partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+    // Remove the opening quote from the partial.
+    if(partial[0] == wxT('\"'))
+      partial = partial.Right(partial.Length()-1);
+  
     partial.Replace(wxFileName::GetPathSeparator(), "/");
-  }
+    int pos;
+    if ((pos = partial.Find(wxT('/'), true)) == wxNOT_FOUND)
+      partial = wxEmptyString;
+    else
+      partial = partial.Left(pos);
+    wxString prefix = partial + wxT("/");
   
-  // Determine the name of the directory
-  if((partial != wxEmptyString) && wxDirExists(partial))
-    partial += "/";
+    // Determine if we need to add the path to maxima's current dir to the path in partial
+    if(!wxFileName(partial).IsAbsolute())
+    {
+      partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+      partial.Replace(wxFileName::GetPathSeparator(), "/");
+    }
+  
+    // Determine the name of the directory
+    if((partial != wxEmptyString) && wxDirExists(partial))
+      partial += "/";
 
-  // Remove all files from the maxima directory from the load file list
-  ClearLoadfileList();
+    // Remove all files from the maxima directory from the load file list
+    ClearLoadfileList();
 
-  // Add all files from the maxima directory to the load file list
-  if(partial != wxT("//"))
-  {
-    GetMacFiles userLispIterator(m_wordList[loadfile], prefix);
-    wxDir loadfilesdir(partial);
-    if(loadfilesdir.IsOpened())
-      loadfilesdir.Traverse(userLispIterator);
+    // Add all files from the maxima directory to the load file list
+    if(partial != wxT("//"))
+    {
+      GetMacFiles userLispIterator(m_wordList[loadfile], prefix);
+      wxDir loadfilesdir(partial);
+      if(loadfilesdir.IsOpened())
+        loadfilesdir.Traverse(userLispIterator);
+    }
   }
 }
 
@@ -434,8 +463,16 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   return completions;
 }
 
-
 void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
+{
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical (AutocompleteBuiltins)
+  #pragma omp critical (AutocompleteFiles)
+  #endif
+  AddSymbol_nowait(fun, type);
+}
+
+void AutoComplete::AddSymbol_nowait(wxString fun, autoCompletionType type)
 {
   /// Check for function of template
   if (fun.StartsWith(wxT("FUNCTION: ")))
