@@ -106,6 +106,9 @@ public:
 
 private:
 
+  //! Replace the list of files in the directory the worksheet file is in to the load files list
+  void UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);
+
   wxArrayString m_builtInLoadFiles;
   wxArrayString m_builtInDemoFiles;
 

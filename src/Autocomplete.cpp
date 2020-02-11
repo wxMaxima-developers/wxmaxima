@@ -111,96 +111,98 @@ void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 }
 
 bool AutoComplete::LoadSymbols()
-{  
-  for (int i = command; i <= unit; i++)
+{
   {
-    if (m_wordList[i].GetCount() != 0)
-      m_wordList[i].Clear();
-  }
-
-  LoadBuiltinSymbols();
-  
-  for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
-      it != m_configuration->m_escCodes.end();
-      ++it)
-    m_wordList[esccommand].Add(it->first);
-
-  wxString line;
-
-  /// Load private symbol list (do something different on Windows).
-  wxString privateList;
-  privateList = Dirstructure::Get()->UserAutocompleteFile();
-
-  if (wxFileExists(privateList))
-  {
-    wxTextFile priv(privateList);
-
-    priv.Open();
-
-    for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+    for (int i = command; i <= unit; i++)
     {
-      if (line.StartsWith(wxT("FUNCTION: ")) ||
-          line.StartsWith(wxT("OPTION  : ")))
-        m_wordList[command].Add(line.Mid(10));
-      else if (line.StartsWith(wxT("TEMPLATE: ")))
-        m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
-      else if (line.StartsWith(wxT("UNIT: ")))
-        m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+      if (m_wordList[i].GetCount() != 0)
+        m_wordList[i].Clear();
     }
 
-    priv.Close();
-  }
+    LoadBuiltinSymbols();
   
-  // Prepare a list of all built-in loadable files of maxima.
-  {
-    GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
-    if(m_configuration->MaximaShareDir() != wxEmptyString)
+    for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
+        it != m_configuration->m_escCodes.end();
+        ++it)
+      m_wordList[esccommand].Add(it->first);
+
+    wxString line;
+
+    /// Load private symbol list (do something different on Windows).
+    wxString privateList;
+    privateList = Dirstructure::Get()->UserAutocompleteFile();
+
+    if (wxFileExists(privateList))
     {
-      wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
-      shareDir.MakeAbsolute();
+      wxTextFile priv(privateList);
+
+      priv.Open();
+
+      for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+      {
+        if (line.StartsWith(wxT("FUNCTION: ")) ||
+            line.StartsWith(wxT("OPTION  : ")))
+          m_wordList[command].Add(line.Mid(10));
+        else if (line.StartsWith(wxT("TEMPLATE: ")))
+          m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
+        else if (line.StartsWith(wxT("UNIT: ")))
+          m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+      }
+
+      priv.Close();
+    }
+  
+    // Prepare a list of all built-in loadable files of maxima.
+    {
+      GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
+      if(m_configuration->MaximaShareDir() != wxEmptyString)
+      {
+        wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
+        shareDir.MakeAbsolute();
+        wxLogMessage(
+          wxString::Format(
+            _("Autocompletion: Scanning %s for loadable lisp files."),
+            shareDir.GetFullPath().utf8_str()));
+        wxDir maximadir(shareDir.GetFullPath());
+        if(maximadir.IsOpened())
+          maximadir.Traverse(maximaLispIterator);
+      }
+      GetMacFiles userLispIterator (m_builtInLoadFiles);
+ 
+      wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
+      userDir.MakeAbsolute();
+      wxDir maximauserfilesdir(userDir.GetFullPath());
       wxLogMessage(
         wxString::Format(
           _("Autocompletion: Scanning %s for loadable lisp files."),
-          shareDir.GetFullPath().utf8_str()));
-      wxDir maximadir(shareDir.GetFullPath());
+          userDir.GetFullPath().utf8_str()));
+      if(maximauserfilesdir.IsOpened())
+        maximauserfilesdir.Traverse(userLispIterator);
+    }
+  
+
+    // Prepare a list of all built-in demos of maxima.
+    {
+      wxFileName demoDir(m_configuration->MaximaShareDir() + "/");
+      demoDir.MakeAbsolute();
+      demoDir.RemoveLastDir();
+      GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
+      wxLogMessage(
+        wxString::Format(
+          _("Autocompletion: Scanning %s for loadable demo files."),
+          demoDir.GetFullPath().utf8_str()));
+
+      wxDir maximadir(demoDir.GetFullPath());
       if(maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator);
     }
-    GetMacFiles userLispIterator (m_builtInLoadFiles);
- 
-    wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
-    userDir.MakeAbsolute();
-    wxDir maximauserfilesdir(userDir.GetFullPath());
-    wxLogMessage(
-      wxString::Format(
-        _("Autocompletion: Scanning %s for loadable lisp files."),
-        userDir.GetFullPath().utf8_str()));
-    if(maximauserfilesdir.IsOpened())
-      maximauserfilesdir.Traverse(userLispIterator);
-  }
   
-
-  // Prepare a list of all built-in demos of maxima.
-  {
-    wxFileName demoDir(m_configuration->MaximaShareDir() + "/");
-    demoDir.MakeAbsolute();
-    demoDir.RemoveLastDir();
-    GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
-    wxLogMessage(
-      wxString::Format(
-        _("Autocompletion: Scanning %s for loadable demo files."),
-        demoDir.GetFullPath().utf8_str()));
-
-    wxDir maximadir(demoDir.GetFullPath());
-    if(maximadir.IsOpened())
-      maximadir.Traverse(maximaLispIterator);
+    m_wordList[command].Sort();
+    m_wordList[tmplte].Sort();
+    m_wordList[unit].Sort();
+    m_builtInLoadFiles.Sort();
+    m_builtInDemoFiles.Sort();
   }
-  
-  m_wordList[command].Sort();
-  m_wordList[tmplte].Sort();
-  m_wordList[unit].Sort();
-  m_builtInLoadFiles.Sort();
-  m_builtInDemoFiles.Sort();
   return false;
 }
 
@@ -279,6 +281,15 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
 
 void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical AutocompleteFiles
+  #pragma omp task
+  #endif
+  UpdateLoadFiles_BackgroundTask(partial, maximaDir);
+}
+
+void AutoComplete::UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir)
+{
   // Remove the opening quote from the partial.
   if(partial[0] == wxT('\"'))
     partial = partial.Right(partial.Length()-1);
@@ -320,7 +331,10 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
 {
   wxArrayString completions;
   wxArrayString perfectCompletions;
-  
+
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp critical AutocompleteFiles
+  #endif
   if(
     ((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
     (partial.EndsWith("\""))
