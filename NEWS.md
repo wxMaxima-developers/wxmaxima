@@ -1,6 +1,8 @@
 #Current
- * wxMaxima now uses Multi-threading in a limited set of places
+ * wxMaxima now uses Multi-threading, if a new enough OpenMP can be found
  * Better scroll wheel support
+ * Cppcheck code analysis now is only run if explicitly enabled
+ * The minimum cmake version now is 3.7
 
 # Multi-Threading
 Most modern computers allow to use more than CPU core at a time.
@@ -18,8 +20,8 @@ are tasks that are not suited for that:
    constantly switching memory rows)
  * Additionally for short operations the overhead of starting a new 
    thread is way higher than the gain
-This means wxMaxima can use multiple threads, but will only be sped
-up by doing so in a very limited set of places. 
+This means wxMaxima can use multiple threads. But the number of places
+this is possible in is surprisingly low.
 
 #20.02.0
  * The MacOs build should now generate working .dmg installers
