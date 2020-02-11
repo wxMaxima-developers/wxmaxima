@@ -186,7 +186,7 @@ public:
   //! Wait until the image is loaded
   void WaitForLoad()
     {
-      #if HAVE_OMP_HEADER 
+      #ifdef HAVE_OMP_HEADER
       omp_set_lock(&m_imageLoadLock);
       omp_unset_lock(&m_imageLoadLock);
       #endif
