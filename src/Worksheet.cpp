@@ -6644,7 +6644,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     {
       zip.CloseEntry();
 
-      wxFSFile *fsfile = fsystem->OpenFile(memFsName);
+      wxFSFile *fsfile;
+      #ifdef HAVE_OPENMP_TASKS
+      #pragma omp critical (OpenFSFile)
+      #endif
+      fsfile = fsystem->OpenFile(memFsName);
 
       if (fsfile)
       {
@@ -6700,7 +6704,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // actually managed to save it correctly.
   {
     wxFileSystem fs;
-    std::unique_ptr<wxFSFile> fsfile(fs.OpenFile(filename));
+    std::unique_ptr<wxFSFile> fsfile;
+    #ifdef HAVE_OPENMP_TASKS
+    #pragma omp critical (OpenFSFile)
+    #endif
+    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
     
     // Did we succeed in opening the file?
     if (!fsfile)

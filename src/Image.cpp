@@ -294,7 +294,11 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
   else
   {
     {
-      wxFSFile *fsfile = filesystem->OpenFile(m_gnuplotSource);
+      wxFSFile *fsfile;
+      #ifdef HAVE_OPENMP_TASKS
+      #pragma omp critical (OpenFSFile)
+      #endif
+      fsfile = filesystem->OpenFile(m_gnuplotSource);
       if (fsfile)
       { // open successful
         std::unique_ptr<wxInputStream> input(fsfile->GetStream());
@@ -338,7 +342,11 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       }
     }
     {
-      wxFSFile *fsfile = filesystem->OpenFile(m_gnuplotData);
+      wxFSFile *fsfile;
+      #ifdef HAVE_OPENMP_TASKS
+      #pragma omp critical (OpenFSFile)
+      #endif
+      fsfile = filesystem->OpenFile(m_gnuplotData);
       if (fsfile)
       { // open successful
         wxInputStream *input = fsfile->GetStream();
@@ -723,7 +731,11 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
 
   if (filesystem)
   {
-    std::unique_ptr<wxFSFile> fsfile(filesystem->OpenFile(image));
+    std::unique_ptr<wxFSFile> fsfile;
+    #ifdef HAVE_OPENMP_TASKS
+    #pragma omp critical (OpenFSFile)
+    #endif
+    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(image));
     if (fsfile)
     { // open successful
 
