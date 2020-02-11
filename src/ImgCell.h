@@ -35,7 +35,7 @@ class ImgCell : public Cell
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
@@ -46,7 +46,7 @@ public:
   ImgCell &operator=(const ImgCell&) = delete;
 
   //! Tell the image which gnuplot files it was made from
-  void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
+  void GnuplotSource(wxString sourcefile, wxString datafile, const std::shared_ptr<wxFileSystem> filesystem)
     {
       if(m_image != NULL)
         m_image->GnuplotSource(sourcefile,datafile, filesystem);
