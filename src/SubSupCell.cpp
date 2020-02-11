@@ -138,8 +138,8 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
   if(m_postSubCell)
   {
-    postWidth = m_postSubCell->GetFullWidth();
     m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    postWidth = m_postSubCell->GetFullWidth();
   }
   if(m_postSupCell)
   {
