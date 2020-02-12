@@ -488,11 +488,11 @@ add_test(
     COMMAND wxmaxima --logtostdout --pipe --batch commentBegin.wxm)
 set_tests_properties(comment_begin PROPERTIES TIMEOUT 60)
 
-add_test(
-    NAME threadtest
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-    COMMAND wxmaxima --logtostdout --pipe --batch threadtest.wxm)
-set_tests_properties(threadtest PROPERTIES TIMEOUT 160)
+# add_test(
+#     NAME threadtest
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#     COMMAND wxmaxima --logtostdout --pipe --batch threadtest.wxm)
+# set_tests_properties(threadtest PROPERTIES TIMEOUT 160)
 
 add_test(
     NAME autosave
