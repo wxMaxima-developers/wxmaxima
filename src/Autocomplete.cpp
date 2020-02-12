@@ -171,14 +171,15 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
     m_wordList[unit].Clear();
   
     LoadBuiltinSymbols();
-
+    
     for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
         it != m_configuration->m_escCodes.end();
         ++it)
-      m_wordList[esccommand].Add(it->first);
+       m_wordList[esccommand].Add(it->first);
     m_wordList[command].Sort();
     m_wordList[tmplte].Sort();
     m_wordList[unit].Sort();
+    m_wordList[esccommand].Sort();
   }
 }
 
@@ -188,9 +189,6 @@ void AutoComplete::LoadSymbols_BackgroundTask()
   #pragma omp critical (AutocompleteFiles)
   #endif
   {
-    m_wordList[loadfile].Clear();
-    m_wordList[demofile].Clear();
-    m_wordList[generalfile].Clear();
     // Error dialogues need to be created by the foreground thread.
     SuppressErrorDialogs suppressor;
     wxString line;
@@ -467,7 +465,6 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
 {
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (AutocompleteBuiltins)
-  #pragma omp critical (AutocompleteFiles)
   #endif
   AddSymbol_nowait(fun, type);
 }

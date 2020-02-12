@@ -1677,6 +1677,9 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   {
     wxLogMessage(_("Connection to Maxima lost."));
     //  KillMaxima();
+    #ifdef HAVE_OPENMP_TASKS
+    #pragma omp taskwait
+    #endif
     break;
   }
   case wxSOCKET_CONNECTION :
@@ -2038,6 +2041,9 @@ void wxMaxima::BecomeLogTarget()
 
 void wxMaxima::KillMaxima(bool logMessage)
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
   m_closing = true;
   m_worksheet->m_variablesPane->ResetValues();
   m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
@@ -2129,6 +2135,9 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
   wxLogMessage(_("Maxima process (pid %i) has terminated with exit code %i."),
                event.GetPid(), event.GetExitCode());
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
   if(m_maximaStdout)
   {
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
