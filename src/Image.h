@@ -188,7 +188,7 @@ public:
   class WaitForLoad
   {
   public:
-    WaitForLoad(omp_lock_t *imageLoadLock):
+    explicit WaitForLoad(omp_lock_t *imageLoadLock):
       m_imageLoadLock(imageLoadLock)
       {
         omp_set_lock(imageLoadLock);
