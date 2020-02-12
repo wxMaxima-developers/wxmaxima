@@ -385,6 +385,9 @@ void Worksheet::RequestRedraw(GroupCell *start)
 
 Worksheet::~Worksheet()
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif  
   if(wxConfig::Get() != NULL)
     wxConfig::Get()->Flush();
   if (HasCapture())
@@ -1094,6 +1097,9 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
  */
 void Worksheet::ClearDocument()
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
   CloseAutoCompletePopup();
   SetSelection(NULL);
   SetActiveCell(NULL, false);
