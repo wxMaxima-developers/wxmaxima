@@ -3735,7 +3735,7 @@ void wxMaxima::SetupVariables()
   #ifdef OPENMP_SPEC_DATE
   wxmaximaversion_lisp += + OPENMP_SPEC_DATE;
   #ifdef HAVE_OMP_HEADER
-  wxmaximaversion_lisp += + "_Locks";
+  wxmaximaversion_lisp += + "+Locks";
   #endif
   #endif
   #endif
