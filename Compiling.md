@@ -55,14 +55,16 @@ the newer version of CMake in the commands above).
 On Mac OS X you most probably need the command-line compiler one can tell 
 XCode to install. Additionally wxWidgets needs to be installed, which can
 be done using homebrew, fink or macports and should be named wxWidgets or
-wxMac there.
+wxMac there. If libomp is installed, as well, wxMaxima is able to speed
+up some more tasks using multithreading.
 
 ### Compiling on Windows
 
 On Windows install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
-of the installer. Also select po4a, cmake and install pandoc.
+of the installer. Also select po4a, cmake, openmp (if openmp is 
+available) and install pandoc.
 Then run the MinGW Shell and follow the instructions for compiling
 wxWidgets and wxMaxima with cmake.
 
