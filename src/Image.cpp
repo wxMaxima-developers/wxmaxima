@@ -176,6 +176,7 @@ Image::~Image()
   {
     if(m_gnuplotSource != wxEmptyString)
     {
+      SuppressErrorDialogs logNull;
       if(wxFileExists(m_gnuplotSource))
         wxRemoveFile(m_gnuplotSource);
       
@@ -846,7 +847,10 @@ void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFil
 
       file.Close();
       if (ok && remove)
+      {
+        SuppressErrorDialogs logNull;
         wxRemoveFile(image);
+      }
     }
   }
 
