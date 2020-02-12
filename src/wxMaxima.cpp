@@ -2044,11 +2044,11 @@ void wxMaxima::KillMaxima(bool logMessage)
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
   #endif
+  if(logMessage && (m_closing || (m_process == NULL) || (m_pid > 0)))
+    wxLogMessage(_("Killing Maxima."));
   m_closing = true;
   m_worksheet->m_variablesPane->ResetValues();
   m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
-  if(logMessage)
-    wxLogMessage(_("Killing Maxima."));
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
