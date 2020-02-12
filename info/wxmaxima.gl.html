@@ -76,7 +76,7 @@
 <li><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.4</span> Plotting only shows an closed empty envelope with an error message</a></li>
 <li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</a></li>
 <li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</a></li>
-<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</a></li>
+<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</a></li>
 <li><a href="#maxima-is-forever-calculating-and-not-responding-to-input"><span class="toc-section-number">3.8</span> Maxima is forever calculating and not responding to input</a></li>
 <li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</a></li>
 <li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
@@ -121,7 +121,7 @@
 <h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
 <h2 id="maxima-and-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> and wxMaxima</h2>
 <p>In the open-source domain big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.</p>
-<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="http://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
+<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
 <figure>
@@ -415,7 +415,7 @@ with_slider_draw3d(
         y,-π,π
     )
 )$</code></pre>
-<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intiution:</p>
+<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intuition:</p>
 <pre><code>wxanimate_autoplay:true;
 wxanimate_framerate:20;
 with_slider_draw3d(
@@ -435,7 +435,7 @@ with_slider_draw3d(
 <li><code>with_slider</code> and</li>
 <li><code>wxanimate</code>.</li>
 </ul>
-<p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable wxanimate_framerate can be used:</p>
+<p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable <code>wxanimate_framerate</code> can be used:</p>
 <pre><code>wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$</code></pre>
 <p>The animation functions use <em>maxima</em>’s <code>makelist</code> command and therefore shares the pitfall that the slider variable’s value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:</p>
@@ -580,7 +580,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><p>If nothing else helps <em>Maxima</em> contains a replay feature:</p>
 <p>%i1 playback();</p></li>
 </ul>
-<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</h2>
+<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
 <p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
 <h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
 <p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
@@ -593,7 +593,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
 <h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
-<p>If your <em>Maxima</em> is based on sbcl the following lines have to be added to your <code>.sblrc</code>:</p>
+<p>If your <em>Maxima</em> is based on sbcl the following lines have to be added to your <code>.sbclrc</code>:</p>
 <pre><code>(setf sb-impl::*default-external-format* :utf-8)</code></pre>
 <p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>

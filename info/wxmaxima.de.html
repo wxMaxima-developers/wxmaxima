@@ -73,7 +73,7 @@
 <li><a href="#statt-eines-diagramms-wird-ein-briefumschlag-mit-einer-fehlermeldung"><span class="toc-section-number">3.4</span> Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung</a></li>
 <li><a href="#animationen-enden-in-error-undefined-variable"><span class="toc-section-number">3.5</span> Animationen enden in “Error: Undefined Variable”</a></li>
 <li><a href="#undo-erinnert-sich-nicht-an-das-was-ich-brauche"><span class="toc-section-number">3.6</span> Undo erinnert sich nicht an das, was ich brauche</a></li>
-<li><a href="#wxmaxima-meldet-gleich-beim-hochfahren-maxima-hat-sich-beendet."><span class="toc-section-number">3.7</span> wxMaxima meldet gleich beim Hochfahren “Maxima hat sich beendet.”</a></li>
+<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</a></li>
 <li><a href="#maxima-hört-nicht-auf-zu-rechnen-und-reagiert-nicht-auf-eingaben"><span class="toc-section-number">3.8</span> Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben</a></li>
 <li><a href="#sbcl-beschwert-sich-über-einen-mangel-an-speicher"><span class="toc-section-number">3.9</span> SBCL beschwert sich über einen Mangel an Speicher</a></li>
 <li><a href="#ubuntu-die-tastatur-ist-langsam-oder-ignoriert-einzelne-tasten"><span class="toc-section-number">3.10</span> Ubuntu: Die Tastatur ist langsam oder ignoriert einzelne Tasten</a></li>
@@ -118,7 +118,7 @@
 <h1 id="einführung-in-wxmaxima"><span class="header-section-number">1</span> Einführung in wxMaxima</h1>
 <h2 id="maxima-and-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> and wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, dass dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein “Sende an die CD”-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
-<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="http://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
+<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
 <figure>
@@ -418,7 +418,7 @@ with_slider_draw3d(
         y,-π,π
     )
 )$</code></pre>
-<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intiution:</p>
+<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intuition:</p>
 <pre><code>wxanimate_autoplay:true;
 wxanimate_framerate:20;
 with_slider_draw3d(
@@ -438,7 +438,7 @@ with_slider_draw3d(
 <li><code>with_slider</code> and</li>
 <li><code>wxanimate</code>.</li>
 </ul>
-<p>Die Standard-Bildwiderholrate für Animationen kann im Konfigurations-Dialog von <em>wxMaxima</em> eingestellt werden. Um die Geschwindigkeit einer einzelnen Animation zu ändern, kann die Variable <code>wxanimate_framerate</code> geändert werden:</p>
+<p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable <code>wxanimate_framerate</code> can be used:</p>
 <pre><code>wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$</code></pre>
 <p>Die Animations-Funktionen haben eine Eigentümlichkeit, die daher rührt, dass sie makelist verwenden: Der Parameter, der sich von Bild zu Bild ändert, wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende Beispiel scheitert daher:</p>
@@ -583,7 +583,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><p>Wenn nichts anderes funktioniert, bietet Maxima die Möglichkeit an, alle bisherigen Befehle nochmals auszuführen:</p>
 <p>%i1 playback();</p></li>
 </ul>
-<h2 id="wxmaxima-meldet-gleich-beim-hochfahren-maxima-hat-sich-beendet."><span class="header-section-number">3.7</span> wxMaxima meldet gleich beim Hochfahren “Maxima hat sich beendet.”</h2>
+<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
 <p>Ein möglicher Grund ist, dass Maxima nicht dort gefunden worden kann, wo dies in wxMaxima’s Konfigurationsdialog angegeben ist. Korrektur des dort angegebenen Pfades zum Programm löst dieses Problem.</p>
 <h2 id="maxima-hört-nicht-auf-zu-rechnen-und-reagiert-nicht-auf-eingaben"><span class="header-section-number">3.8</span> Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben</h2>
 <p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
@@ -596,7 +596,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="ubuntu-die-tastatur-ist-langsam-oder-ignoriert-einzelne-tasten"><span class="header-section-number">3.10</span> Ubuntu: Die Tastatur ist langsam oder ignoriert einzelne Tasten</h2>
 <p>Das Installieren von <code>ibus-gtk</code> behebt dieses Problem meist.</p>
 <h2 id="maxima-mag-griechische-buchstaben-und-umlaute-nicht"><span class="header-section-number">3.11</span> <em>Maxima</em> mag griechische Buchstaben und Umlaute nicht</h2>
-<p>Wenn <em>Maxima</em> mittels sbcl compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
+<p>If your <em>Maxima</em> is based on sbcl the following lines have to be added to your <code>.sbclrc</code>:</p>
 <pre><code>(setf sb-impl::*default-external-format* :utf-8)</code></pre>
 <p>Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit sbcl compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den Ort zu nennen:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
