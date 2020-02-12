@@ -167,8 +167,8 @@ void FracCell::RecalculateHeight(int fontsize)
 
   if(m_isBrokenIntoLines)
   {
-    m_height = m_num->GetHeightList();
-    m_center = m_num->GetCenterList();
+    m_height = 2;
+    m_center = 1;
   }
   else
   {
