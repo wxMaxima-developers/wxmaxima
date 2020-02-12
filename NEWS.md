@@ -1,5 +1,5 @@
 #Current
- * wxMaxima now uses Multi-threading, if a new enough OpenMP can be found
+ * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
  * Better scroll wheel support
  * Cppcheck code analysis now is only run if explicitly enabled
  * The minimum cmake version now is 3.7
@@ -9,12 +9,12 @@ Most modern computers allow to use more than CPU core at a time.
 This can greatly boost the performance of an application. But there
 are tasks that are not suited for that:
  * Essentially everything that involves GUI actions is not thread-save.
-   The main purpose of wxMaxima is providing a GUI
+   The main purpose of wxMaxima is providing a GUI, though.
  * Loops in which every run requires knowing the result of the last cannot
-   be split into multiple threads (which includes most of the
-   string and list processing)
- * If the program waits for the result, anyway calculating it in a separate 
-   thread doesn't help
+   be split into multiple threads. This includes most of the string and 
+   list processing.
+ * If the program needs the result now trying to calculate this result 
+   in a separate thread doesn't help.
  * If a task is memory-limited and accesses memory in a linear way dividing 
    the task into threads can increase the memory access times (due to 
    constantly switching memory rows)
