@@ -47,7 +47,7 @@ Introduction to wxMaxima
 
 In the open-source domain big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.
 
-A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](http://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.
+A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.
 
 ### _Maxima_
 
@@ -459,7 +459,7 @@ The same functionality for 3D plots is accessible as `with_slider_draw3d`, which
         )
     )$
 
-If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intiution:
+If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intuition:
 
     wxanimate_autoplay:true;
     wxanimate_framerate:20;
@@ -481,7 +481,7 @@ For those more familiar with `plot` than with `draw` there is a second set of fu
 * `with_slider` and
 * `wxanimate`.
 
-Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable wxanimate\_framerate can be used:
+Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable `wxanimate_framerate` can be used:
 
     wxanimate(a, 10,
         sin(a*x), [x,-5,5]), wxanimate_framerate=6$
@@ -696,7 +696,7 @@ There are separate undo functions for cell operations and for changes inside of 
     %i1 playback();
 
 
-## _wxMaxima_ starts up with the message “Maxima process Terminated.”
+## _wxMaxima_ starts up with the message “Maxima process terminated.”
 
 One possible reason is that _Maxima_ cannot be found in the location that is set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore won’t run at all. Setting the path to a working _Maxima_ binary should fix this problem.
 
@@ -719,7 +719,7 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 ## _wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts
 
-If your _Maxima_ is based on sbcl the following lines have to be added to your `.sblrc`:
+If your _Maxima_ is based on sbcl the following lines have to be added to your `.sbclrc`:
 
     (setf sb-impl::*default-external-format* :utf-8)
 
