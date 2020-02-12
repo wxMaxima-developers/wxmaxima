@@ -1,6 +1,7 @@
 #Current
  * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
  * Better scroll wheel support
+ * A Russian translation update by OlesyaGerasimenko
  * Cppcheck code analysis now is only run if explicitly enabled
  * The minimum cmake version now is 3.7
 
