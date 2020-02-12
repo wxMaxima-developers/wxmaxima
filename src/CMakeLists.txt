@@ -83,6 +83,7 @@ elseif(APPLE)
 	)
   install(CODE "
    include(BundleUtilities)
+   set(BU_CHMOD_BUNDLE_ITEMS TRUE)
    fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")
    " COMPONENT Runtime)
 else()
