@@ -4,6 +4,7 @@
  * A Russian translation update by OlesyaGerasimenko
  * Cppcheck code analysis now is only run if explicitly enabled
  * The minimum cmake version now is 3.7
+ * It was possible that a part of a fraction wasn't displayed
 
 # Multi-Threading
 Most modern computers allow to use more than CPU core at a time.
