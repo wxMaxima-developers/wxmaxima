@@ -3734,6 +3734,9 @@ void wxMaxima::SetupVariables()
   wxmaximaversion_lisp += "_OpenMP";
   #ifdef OPENMP_SPEC_DATE
   wxmaximaversion_lisp += + OPENMP_SPEC_DATE;
+  #ifdef HAVE_OMP_HEADER
+  wxmaximaversion_lisp += + "_Locks";
+  #endif
   #endif
   #endif
   
@@ -7811,13 +7814,23 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
         wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
         _("yes")
         );
-
+      #ifdef HAVE_OPENMP_TASKS
+      description += wxString::Format(_("\nMultiprocessing using OpenMP %s"), OPENMP_SPEC_DATE);
+      #ifdef HAVE_OMP_HEADER
+      description += _("\nUsing fine-grained OpenMP locks");
+      #else
+      description += _("\nNo fine-grained OpenMP locks built in");
+      #endif
+      #else
+      description += _("\nNo OpenMP support");
+      #endif
+      
       if (m_maximaVersion != wxEmptyString)
         description += _("\nMaxima version: ") + m_maximaVersion + " ("+m_maximaArch+")";
       else
         description += _("\nNot connected.");
       if (m_lispVersion != wxEmptyString)
-        description += _("\nLisp: ") + m_lispType + " " + m_lispVersion;
+        description += _("\nMaxima compiled using: ") + m_lispType + " " + m_lispVersion;
 
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
