@@ -33,7 +33,7 @@
 #include "../art/draw/images.h"
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
-  wxDialog(parent, -1, _("Plot an explicit expression"))
+  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -80,12 +80,18 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     vbox->Add(m_filledfunc, wxSizerFlags().Expand());
   }
 
-  vbox->Add(
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  hbox->Add(
     new SvgPanel(
       this,
       Draw_Explicit_svg_gz,Draw_Explicit_svg_gz_len),
-    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Center().Border(wxALL,5)
     );
+  vbox->Add(
+    hbox,
+    wxSizerFlags(20).Expand()
+    );
+
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -125,7 +131,7 @@ wxString ExplicitWiz::GetValue()
 }
 
 ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
-  wxDialog(parent, -1, _("Plot an explicit expression"))
+  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -183,11 +189,16 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
   else
     SetName("DrawImplicitWiz2D");
 
-  vbox->Add(
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  hbox->Add(
     new SvgPanel(
       this,
       Draw_Implicit_svg_gz,Draw_Implicit_svg_gz_len),
-    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Border(wxALL,5).Center()
+    );
+  vbox->Add(
+    hbox,
+    wxSizerFlags(20).Expand()
     );
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -225,7 +236,7 @@ wxString ImplicitWiz::GetValue()
 
 
 AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, _("Plot an explicit expression"))
+  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -426,7 +437,7 @@ void DrawWiz::OnParametricFocus(wxFocusEvent &WXUNUSED(event))
 }
 
 DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"),dimensions))
+  wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"),dimensions), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -513,7 +524,7 @@ wxString DrawWiz::GetValue()
 
 
 Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
-  wxDialog(parent, -1, _("Settings for the following 3d plots"))
+  wxDialog(parent, -1, _("Settings for the following 3d plots"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -604,7 +615,7 @@ void WizContour::OnRadioButton(wxCommandEvent& WXUNUSED(dummy))
 }
 
 WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
-  wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"))
+  wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -647,12 +658,19 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
 
   m_contourBoth->SetValue(true);
   
-  vbox->Add(
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  hbox->Add(
     m_image = new SvgPanel(
       this,
       Draw_ContourBoth_svg_gz,Draw_ContourBoth_svg_gz_len),
-    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Border(wxALL,5).Center()
     );
+  vbox->Add(
+    hbox,
+    wxSizerFlags(20).Expand()
+    );
+
+
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
   wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -708,7 +726,7 @@ wxString WizContour::GetValue()
 }
 
 ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, _("Plot an parametric curve"))
+  wxDialog(parent, -1, _("Plot an parametric curve"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {  
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -747,11 +765,16 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
   vbox->Add(new wxStaticText(this,-1, _("End value of the parameter")), wxSizerFlags());
   vbox->Add(m_parameterEnd = new BTextCtrl(this,-1, config, "2"), wxSizerFlags().Expand());
 
-  vbox->Add(
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  hbox->Add(
     new SvgPanel(
       this,
       Draw_Parametric_svg_gz,Draw_Parametric_svg_gz_len),
-    wxSizerFlags(20).Expand().Border(wxALL,5).Center()
+    wxSizerFlags(20).Border(wxALL,5).Center()
+    );
+  vbox->Add(
+    hbox,
+    wxSizerFlags(20).Expand()
     );
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -785,7 +808,7 @@ wxString ParametricWiz::GetValue()
 }
 
 WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr) :
-  wxDialog(parent,-1, _("Draw points"))
+  wxDialog(parent,-1, _("Draw points"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -906,7 +929,7 @@ wxString WizPoints::GetValue()
 
 //! A wizard that sets the draw accuracy
 WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent,-1, _("Speed versus accuracy"))
+  wxDialog(parent,-1, _("Speed versus accuracy"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
