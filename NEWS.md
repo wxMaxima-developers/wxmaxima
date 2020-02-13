@@ -1,5 +1,7 @@
 #Current
  * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
+ * Part of the added performance is only effective if omp.h (often in the 
+   libomp package) is installed.
  * Better scroll wheel support
  * A Russian translation update by OlesyaGerasimenko
  * It was possible that a part of a fraction wasn't displayed
