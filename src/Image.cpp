@@ -795,11 +795,14 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
   m_fs_keepalive_imagedata = filesystem;
   // If we don't have fine-grained locking using omp.h we don't profit from sending the
   // load process to the background and therefore load images from the main thread.
+  // Loading images is of rather high priority as they are needed during the
+  // recalculation that follows
   #ifdef HAVE_OMP_HEADER
   wxLogMessage(_("Starting background thread that loads an image"));
   omp_set_lock(&m_imageLoadLock);
   #if HAVE_OPENMP_TASKS
   #pragma omp task
+  #pragma omp prioriy 10
   #endif
   #endif
   LoadImage_Backgroundtask(image, filesystem, remove);
