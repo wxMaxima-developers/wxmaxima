@@ -34,6 +34,15 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_nameCell(new TextCell(parent, config, cellPointers)),
   m_argCell(new TextCell(parent, config, cellPointers))
 {
+  m_nameCell_Last = m_nameCell.get();
+  if(m_nameCell_Last)
+    while(m_nameCell_Last->m_next)
+      m_nameCell_Last = m_nameCell_Last->m_next;
+
+  m_argCell_Last = m_argCell.get(); 
+  if(m_argCell_Last)
+    while(m_argCell_Last->m_next)
+      m_argCell_Last = m_argCell_Last->m_next;
 }
 
 FunCell::FunCell(const FunCell &cell):
@@ -66,14 +75,23 @@ void FunCell::SetName(Cell *name)
   if (name == NULL)
     return;
   m_nameCell = std::shared_ptr<Cell>(name);
+
+  
+  m_nameCell_Last = name;
+  while(m_nameCell_Last->m_next)
+    m_nameCell_Last = m_nameCell_Last->m_next;
   name->SetStyle(TS_FUNCTION);
 }
 
 void FunCell::SetArg(Cell *arg)
-{
+{  
   if (arg == NULL)
     return;
   m_argCell = std::shared_ptr<Cell>(arg);
+
+  m_argCell_Last = arg;
+  while(m_argCell_Last->m_next)
+    m_argCell_Last = m_argCell_Last->m_next;
 }
 
 void FunCell::RecalculateWidths(int fontsize)
@@ -196,8 +214,8 @@ bool FunCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_nameCell->m_nextToDraw = m_argCell.get();
-    m_argCell->m_nextToDraw = m_nextToDraw;
+    m_nameCell_Last->m_nextToDraw = m_argCell.get();
+    m_argCell_Last->m_nextToDraw = m_nextToDraw;
     m_nextToDraw = m_nameCell.get();
     m_width = 0;
     ResetData();    

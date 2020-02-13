@@ -87,6 +87,8 @@ public:
 protected:
   std::shared_ptr<Cell> m_nameCell;
   std::shared_ptr<Cell> m_argCell;
+  Cell *m_nameCell_Last;
+  Cell *m_argCell_Last;
 };
 
 
