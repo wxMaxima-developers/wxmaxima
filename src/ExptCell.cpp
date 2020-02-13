@@ -169,13 +169,13 @@ void ExptCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    m_expt_yoffset = m_exptCell->GetDrop() + PowRise();
+    m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
 
-    m_height = m_baseCell->GetHeight();
-    m_center = m_baseCell->GetCenter();
+    m_height = m_baseCell->GetHeightList();
+    m_center = m_baseCell->GetCenterList();
 
-    int baseHeight = m_baseCell->GetHeight() - m_baseCell->GetDrop();
-    int exptHeight = m_exptCell->GetHeight() - m_exptCell->GetDrop() + m_expt_yoffset;
+    int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
+    int exptHeight = m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
     
     if(baseHeight < exptHeight)
     {
@@ -282,9 +282,9 @@ bool ExptCell::BreakUp()
       m_expt_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
     m_nextToDraw = m_baseCell.get();
+    m_height = 1;
+    m_center = 1;
     ResetData();    
-    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;
