@@ -37,6 +37,7 @@
 class UnicodeSidebar : public wxPanel
 {
 public:
+  //! The constructor
   UnicodeSidebar(wxWindow *parent, wxWindow *worksheet);
 
   /* The destructor
@@ -56,11 +57,17 @@ public:
   void UpdateDisplay();
 
 protected:
+  //! Is called if a menu item is selected
   void OnMenu(wxCommandEvent &event);
+  //! Is called if a paint command is issued
   void OnPaint(wxPaintEvent &event);
+  //! Is called if the control is resized
   void OnSize(wxSizeEvent &event);
+  //! Is called if the control is double-clicked at
   void OnDClick(wxGridEvent &event);
+  //! Is called if the control is right-clicked at
   void OnRightClick(wxGridEvent &event);
+  //! Is called if the user tries to edit the control's text
   void OnChangeAttempt(wxGridEvent &event);
   
 private:
@@ -71,6 +78,7 @@ private:
   wxTextCtrl *m_regex;
 };
 
+//! An event that simulates a keypress and can be issued by UnicodeSidebar
 class SidebarKeyEvent: public wxCommandEvent
 {
 public:
@@ -81,6 +89,7 @@ public:
           :  wxCommandEvent(event) {}
 };
 
+//! An event that can be issued by UnicodeSidebar and tells the symbols sidebar to add a symbol
 class SymboladdEvent: public wxCommandEvent
 {
 public:
