@@ -51,6 +51,23 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="20.02.1" date="2020-02-13">
+      <description>
+	<p>
+	  Bugfixes and better unicode support.
+	</p>
+        <ul>
+	  <li>wxMaxima now can use Multi-threading, if a new enough OpenMP is found</li>
+	  <li>Better scroll wheel support</li>
+	  <li>A Russian translation update by OlesyaGerasimenko</li>
+	  <li>It was possible that a part of a fraction wasn't displayed</li>
+	  <li>Several additional bug fixes</li>
+	  <li>Cppcheck code analysis now is only run if explicitly enabled</li>
+	  <li>The minimum cmake version now is 3.7</li>
+        </ul>
+      </description>
+    </release>
+
     <release version="20.02.0" date="2020-02-01">
       <description>
 	<p>

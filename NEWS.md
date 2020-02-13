@@ -2,9 +2,10 @@
  * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
  * Better scroll wheel support
  * A Russian translation update by OlesyaGerasimenko
+ * It was possible that a part of a fraction wasn't displayed
+ * Several additional bug fixes
  * Cppcheck code analysis now is only run if explicitly enabled
  * The minimum cmake version now is 3.7
- * It was possible that a part of a fraction wasn't displayed
 
 # Multi-Threading
 Most modern computers allow to use more than CPU core at a time.
