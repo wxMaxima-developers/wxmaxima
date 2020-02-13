@@ -142,7 +142,7 @@ void FracCell::RecalculateWidths(int fontsize)
       else
         m_horizontalGapRight = 0;
       
-      m_width = wxMax(m_num->GetFullWidth(), m_denom->GetFullWidth()) +
+      m_width = wxMax(m_displayedNum->GetFullWidth(), m_displayedDenom->GetFullWidth()) +
         2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
     }
   }
