@@ -802,7 +802,6 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
   omp_set_lock(&m_imageLoadLock);
   #if HAVE_OPENMP_TASKS
   #pragma omp task
-  #pragma omp prioriy 10
   #endif
   #endif
   LoadImage_Backgroundtask(image, filesystem, remove);
