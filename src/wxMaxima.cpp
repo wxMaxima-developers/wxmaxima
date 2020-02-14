@@ -1465,7 +1465,6 @@ void wxMaxima::StripLispComments(wxString &s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
-  StatusMaximaBusy(sending);
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
@@ -2755,13 +2754,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   if (end == wxNOT_FOUND)
     return;
 
-  if (m_worksheet->m_evaluationQueue.m_workingGroupChanged)
-  {
-    // Clear the monitor that shows the xml representation of the output of the
-    // current maxima command.
-    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-      m_xmlInspector->Clear();
-  }
+  m_maximaBusy = false;
   m_bytesFromMaxima = 0;
 
   wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
@@ -4104,6 +4097,9 @@ bool wxMaxima::InterpretDataFromMaxima()
 
   m_currentOutput += m_newCharsFromMaxima;
   m_newCharsFromMaxima = wxEmptyString;
+  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+    m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
+
   if (!m_dispReadOut &&
       (m_currentOutput != wxT("\n")) &&
       (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
@@ -9116,12 +9112,9 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 //! Tries to evaluate next group cell in queue
 //
 // Calling this function should not do anything dangerous
-void wxMaxima::TriggerEvaluation(bool ignoreBusy)
+void wxMaxima::TriggerEvaluation()
 {
   // If evaluation is already running we don't have anything to do
-  if(ignoreBusy)
-  m_maximaBusy = false;
-
   if(m_maximaBusy)
     return;
 
@@ -9164,6 +9157,11 @@ void wxMaxima::TriggerEvaluation(bool ignoreBusy)
   // Display the evaluation queue's status.
   EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
 
+  // We don't want to evaluate a new cell if the user still has to answer
+  // a question.
+  if (m_worksheet->QuestionPending())
+    return;
+
   // Maxima is connected and the queue contains an item.
 
   // From now on we look every second if we got some output from a crashing
@@ -9174,6 +9172,11 @@ void wxMaxima::TriggerEvaluation(bool ignoreBusy)
 
   if (m_worksheet->m_evaluationQueue.m_workingGroupChanged)
   {
+    // Clear the monitor that shows the xml representation of the output of the
+    // current maxima command.
+    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+      m_xmlInspector->Clear();
+
     // If the cell's output that we are about to remove contains the currently
     // selected cells we undo the selection.
     if (m_worksheet->GetSelectionStart())
