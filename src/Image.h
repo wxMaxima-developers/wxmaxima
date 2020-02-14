@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -30,6 +30,7 @@
 #define IMAGE_H
 
 #include "Cell.h"
+#include "Version.h"
 #include <wx/image.h>
 
 #include <wx/filesys.h>
@@ -37,6 +38,10 @@
 #include <wx/buffer.h>
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
+
+#ifdef HAVE_OMP_HEADER
+#include <omp.h>
+#endif
 
 /*! Manages an auto-scaling image
 
@@ -84,7 +89,7 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
    */
-  Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  Image(Configuration **config, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   ~Image();
 
@@ -94,7 +99,7 @@ public:
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
    */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem = NULL);
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
   /*! Returns the gnuplot source file name of this image
 
     If maxima has deleted the temporary file in the meantime or if it comes from 
@@ -132,11 +137,10 @@ public:
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   
   //! Returns the file name extension of the current image
-  wxString GetExtension() const
-  { return m_extension; };
+  wxString GetExtension();
 
   //! Loads an image from a file
-  void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  void LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {return m_maxWidth;}
@@ -157,10 +161,10 @@ public:
   wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk() const {return m_isOk;}
+  bool IsOk();
   
   //! Returns the image in its unscaled form
-  wxBitmap GetUnscaledBitmap() const;
+  wxBitmap GetUnscaledBitmap();
 
   //! Can be called to specify a specific scale
   void Recalculate(double scale = 1.0);
@@ -171,17 +175,33 @@ public:
   long m_height;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage() const
-  { return m_compressedImage; }
+  wxMemoryBuffer GetCompressedImage();
 
   //! Returns the original width
-  size_t GetOriginalWidth() const
-  { return m_originalWidth; }
+  size_t GetOriginalWidth();
 
   //! Returns the original height
-  size_t GetOriginalHeight() const
-  { return m_originalHeight; }
+  size_t GetOriginalHeight();
 
+  //! Wait until the image is loaded
+  #ifdef HAVE_OMP_HEADER
+  class WaitForLoad
+  {
+  public:
+    explicit WaitForLoad(omp_lock_t *imageLoadLock):
+      m_imageLoadLock(imageLoadLock)
+      {
+        omp_set_lock(imageLoadLock);
+      }
+      ~WaitForLoad()
+      {
+        omp_unset_lock(m_imageLoadLock);
+      }
+  private:
+    omp_lock_t *m_imageLoadLock;
+  };
+  #endif
+  
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
 
@@ -206,6 +226,9 @@ protected:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
+  void LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove);
+  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
+
 private:
   Configuration **m_configuration;
   //! The upper width limit for displaying this image
@@ -217,6 +240,14 @@ private:
   
   NSVGimage* m_svgImage;
   struct NSVGrasterizer* m_svgRast;
+
+  std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
+  std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;
+  #ifdef HAVE_OMP_HEADER
+  omp_lock_t m_gnuplotLock;
+  omp_lock_t m_imageLoadLock;
+  #endif
+  
 };
 
 #endif // IMAGE_H

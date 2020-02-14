@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -81,26 +81,34 @@ void DiffCell::SetBase(Cell *base)
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Cell::RecalculateWidths(fontsize);
-  if(!m_isBrokenIntoLines)
-  {
     m_baseCell->RecalculateWidthsList(fontsize);
     m_diffCell->RecalculateWidthsList(fontsize);
+  if(!m_isBrokenIntoLines)
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-  }
+  else
+    m_width = 0;
   Cell::RecalculateWidths(fontsize);
 }
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
+  m_baseCell->RecalculateHeightList(fontsize);
+  m_diffCell->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
-    m_baseCell->RecalculateHeightList(fontsize);
-    m_diffCell->RecalculateHeightList(fontsize);
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
+  else
+    m_center = m_height = 0;
+  Cell::RecalculateHeight(fontsize);
 }
 
 void DiffCell::Draw(wxPoint point)

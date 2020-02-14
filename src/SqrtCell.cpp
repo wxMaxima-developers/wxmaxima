@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -94,13 +94,13 @@ void SqrtCell::SetInner(Cell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Configuration *configuration = (*m_configuration);
-  if(!m_isBrokenIntoLines)
-  {
-    m_innerCell->RecalculateWidthsList(fontsize);
-    m_open->RecalculateWidths(fontsize);
-    m_close->RecalculateWidths(fontsize);
-  }
+  m_innerCell->RecalculateWidthsList(fontsize);
+  m_open->RecalculateWidths(fontsize);
+  m_close->RecalculateWidths(fontsize);
 
   if (configuration->CheckTeXFonts())
   {
@@ -173,6 +173,9 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
 void SqrtCell::RecalculateHeight(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   if(!m_isBrokenIntoLines)
   {
     m_innerCell->RecalculateHeightList(fontsize);
@@ -183,12 +186,13 @@ void SqrtCell::RecalculateHeight(int fontsize)
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
@@ -361,11 +365,4 @@ bool SqrtCell::BreakUp()
     return true;
   }
   return false;
-}
-
-void SqrtCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
 }

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -54,6 +54,20 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_print = true;
 }
 
+// These false-positive warnings only appear in old versions of cppcheck
+// that don't fully understand constructor delegation, still.
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_last1
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_print
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_numberOfExtensions
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth1
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight1
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signWidth
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signTopHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
+// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
 ParenCell::ParenCell(const ParenCell &cell):
  ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
@@ -172,15 +186,15 @@ void ParenCell::SetFont(int fontsize)
 
 void ParenCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Configuration *configuration = (*m_configuration);
   
-  if(!m_isBrokenIntoLines)
-  {
-    m_innerCell->RecalculateWidthsList(fontsize);
-    m_innerCell->RecalculateHeightList(fontsize);
-    m_open->RecalculateWidthsList(fontsize);
-    m_close->RecalculateWidthsList(fontsize);
-  }
+  m_innerCell->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateHeightList(fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_close->RecalculateWidthsList(fontsize);
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetHeightList();
@@ -238,7 +252,9 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Configuration *configuration = (*m_configuration);
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
@@ -292,12 +308,13 @@ void ParenCell::RecalculateHeight(int fontsize)
       m_center = m_height / 2;   
     }
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && (InUpdateRegion()))
+  if (DrawThisCell(point))
   { 
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
@@ -523,11 +540,4 @@ bool ParenCell::BreakUp()
     return true;
   }
   return false;
-}
-
-void ParenCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
 }

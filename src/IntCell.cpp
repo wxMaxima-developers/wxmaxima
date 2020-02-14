@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -121,6 +121,9 @@ void IntCell::SetVar(Cell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
@@ -204,6 +207,10 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
+
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Cell::RecalculateHeight(fontsize);
 
   m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
@@ -230,7 +237,7 @@ void IntCell::RecalculateHeight(int fontsize)
 void IntCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     

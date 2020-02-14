@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -52,7 +52,31 @@ FORCE_LINK(gnome_print)
 #endif
 
 
-IMPLEMENT_APP(MyApp)
+IMPLEMENT_APP_NO_MAIN(MyApp);
+IMPLEMENT_WX_THEME_SUPPORT;
+
+#ifndef __WXMSW__
+int main(int argc, char *argv[])
+{
+  wxEntryStart( argc, argv );
+  wxTheApp->CallOnInit();
+  #pragma omp parallel
+  #pragma omp master
+  wxTheApp->OnRun();
+  return 0;
+}
+#else
+int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdShow )
+{
+  wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow);
+  wxTheApp->CallOnInit();
+  #pragma omp parallel
+  #pragma omp master
+  wxTheApp->OnRun();
+  return 0;
+}
+#endif
+
 std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 
@@ -97,7 +121,7 @@ bool MyApp::OnInit()
   #endif
   #endif
 
-  wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
+  wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
 
   m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
   m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));
@@ -212,9 +236,8 @@ bool MyApp::OnInit()
     wxFileName configFile(ini);
     configFile.MakeAbsolute();
     Configuration::m_configfileLocation_override = configFile.GetFullPath();
-    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
-                                   wxEmptyString,
-                                   Configuration::m_configfileLocation_override));
+    wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString,
+                               Configuration::m_configfileLocation_override));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
@@ -363,9 +386,7 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, uns
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
-  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title);
-  if (!file.IsEmpty() )
-    frame->SetOpenFile(file);
+  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title, file);
   if (wxmData)
   {
     // Unzip the .wxm file
@@ -397,7 +418,6 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, uns
 
   SetTopWindow(frame);
   frame->Show(true);
-  frame->InitSession();
   frame->ShowTip(false);
 }
 
@@ -412,6 +432,16 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
   case wxMaxima::menu_help_3d:
     NewWindow(wxEmptyString, false, false,
               displaying3DCurves_wxm_gz, displaying3DCurves_wxm_gz_len);
+    break;
+
+  case wxMaxima::menu_help_varnames:
+    NewWindow(wxEmptyString, false, false,
+              variableNames_wxm_gz, variableNames_wxm_gz_len);
+    break;
+    
+  case wxMaxima::menu_help_fittingData:
+    NewWindow(wxEmptyString, false, false,
+              fittingEquations_wxm_gz, fittingEquations_wxm_gz_len);
     break;
   case wxMaxima::menu_help_solving:
     NewWindow(wxEmptyString, false, false,

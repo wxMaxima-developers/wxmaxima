@@ -194,7 +194,8 @@ wxString EvaluationQueue::GetCommand()
       userLabel = retval.Left(colonPos);
       userLabel.Trim(true);
       userLabel.Trim(false);
-      if ((wxIsalpha(userLabel[0])) || (userLabel[0] == wxT('\\')) || (userLabel[0] == wxT('_')))
+      if ((wxIsalpha(userLabel[0])) || (userLabel[0] == wxT('\\')) || (userLabel[0] >127) ||
+          (userLabel[0] == wxT('_')))
       {
         for (size_t i = 0; i < userLabel.Length(); i++)
         {
@@ -202,7 +203,7 @@ wxString EvaluationQueue::GetCommand()
             i++;
           else
           {
-            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] != '[') && (userLabel[i] != ']'))
+            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] < 128) && (userLabel[i] != '[') && (userLabel[i] != ']'))
             {
               userLabel = wxEmptyString;
               break;

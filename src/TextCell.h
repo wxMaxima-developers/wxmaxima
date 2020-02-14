@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -37,7 +37,6 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  //! \todo: m_alt+m_altJs+m_altText+m_altJsText are all needed?
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
   Cell *Copy() override {return new TextCell(*this);}
@@ -116,7 +115,7 @@ protected:
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
-  bool NeedsRecalculation() override;
+  bool NeedsRecalculation(int fontSize) override;
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
@@ -132,7 +131,6 @@ protected:
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 
-  bool m_alt, m_altJs;
   int m_realCenter;
   /*! The font size we had the last time we were recalculating this cell
 
@@ -143,7 +141,6 @@ protected:
   double m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
-  double m_lastZoomFactor;
 private:
   class SizeHash_internals
   {
@@ -187,8 +184,6 @@ private:
   wxString m_initialToolTip;
   //! The number of digits we did display the last time we displayed a number.
   int m_displayedDigits_old;
-
-  int m_fontsize_old;
 };
 
 #endif // TEXTCELL_H

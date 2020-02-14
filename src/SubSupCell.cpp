@@ -30,6 +30,7 @@
 #include "SubSupCell.h"
 #include "TextCell.h"
 #include <wx/config.h>
+#include "wx/config.h"
 
 #define SUBSUP_DEC 3
 
@@ -78,13 +79,7 @@ void SubSupCell::SetPreSup(Cell *index)
 {
   if (index == NULL)
     return;
-  if(m_preSupCell)
-  {
-    m_preSupCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
-    m_preSupCell->AppendCell(index);
-  }
-  else
-    m_preSupCell = std::shared_ptr<Cell>(index);
+  m_preSupCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_preSupCell);
 }
 
@@ -92,13 +87,7 @@ void SubSupCell::SetPreSub(Cell *index)
 {
   if (index == NULL)
     return;
-  if(m_preSubCell)
-  {
-    m_preSubCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
-    m_preSubCell->AppendCell(index);
-  }
-  else
-    m_preSubCell = std::shared_ptr<Cell>(index);
+  m_preSubCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_preSubCell);
 }
 
@@ -106,13 +95,7 @@ void SubSupCell::SetPostSup(Cell *index)
 {
   if (index == NULL)
     return;
-  if(m_postSupCell)
-  {
-    m_postSupCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
-    m_postSupCell->AppendCell(index);
-  }
-  else
-    m_postSupCell = std::shared_ptr<Cell>(index);
+  m_postSupCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_postSupCell);
 }
 
@@ -120,13 +103,7 @@ void SubSupCell::SetPostSub(Cell *index)
 {
   if (index == NULL)
     return;
-  if(m_postSubCell)
-  {
-    m_postSubCell->AppendCell(new TextCell(m_parent, m_configuration, m_cellPointers, ", "));
-    m_postSubCell->AppendCell(index);
-  }
-  else
-    m_postSubCell = std::shared_ptr<Cell>(index);
+  m_postSubCell = std::shared_ptr<Cell>(index);
   m_innerCellList.push_back(m_postSubCell);
 }
 
@@ -134,9 +111,8 @@ void SubSupCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
-  if(m_postSubCell)
-    SetPostSub(index);
   m_postSubCell = std::shared_ptr<Cell>(index);
+  m_innerCellList.push_back(index);
 }
 
 void SubSupCell::SetBase(Cell *base)
@@ -144,28 +120,35 @@ void SubSupCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
+  m_innerCellList.push_back(base);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
 {
   if (expt == NULL)
     return;
-  if(m_postSupCell)
-    SetPostSup(expt);
   m_postSupCell = std::shared_ptr<Cell>(expt);
 }
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
   m_baseCell->RecalculateWidthsList(fontsize);
+  if(m_postSubCell)    
+    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_postSupCell)    
+    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_preSubCell)    
+    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_preSupCell)    
+    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int preWidth = 0;
   int postWidth = 0;
 
   if(m_postSubCell)
   {
-    postWidth = m_postSubCell->GetFullWidth();
     m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    postWidth = m_postSubCell->GetFullWidth();
   }
   if(m_postSupCell)
   {
@@ -189,7 +172,9 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateHeightList(fontsize);
 
   int subHeight = 0;
@@ -222,12 +207,13 @@ void SubSupCell::RecalculateHeight(int fontsize)
   m_center = supHeight +
     m_baseCell->GetCenterList() -
     Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+  Cell::RecalculateHeight(fontsize);
 }
 
 void SubSupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     wxPoint in;
 
@@ -388,13 +374,13 @@ wxString SubSupCell::ToTeX()
       if(m_preSupCell)
         s += "^{" + m_preSupCell->ListToTeX() + "}";
       if(m_preSubCell)
-        s += "_{" + m_preSubCell->ListToTeX() + "}";
+        s += "^{" + m_preSubCell->ListToTeX() + "}";
     }
     s += wxT("{") + m_baseCell->ListToTeX() + "}";
     if(m_postSupCell)
       s += "^{" + m_postSupCell->ListToTeX() + "}";
     if(m_postSubCell)
-      s += "_{" + m_postSubCell->ListToTeX() + "}";
+      s += "^{" + m_postSubCell->ListToTeX() + "}";
   }
   return s;
 }
@@ -442,8 +428,8 @@ wxString SubSupCell::ToMathML()
       else
         retval += "<none/>";
     }
+    retval += wxT("</mmultiscripts>\n");
   }
-  retval += wxT("</mmultiscripts>\n");
   return retval;
 }
 wxString SubSupCell::ToOMML()

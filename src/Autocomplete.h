@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015 Gunter Königsmann     <wxMaxima@physikbuch.de>
@@ -62,13 +62,13 @@ public:
     esccommand, //! Esc commmands describing symbols
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
-
   explicit AutoComplete(Configuration *configuration);
 
-  Configuration *m_configuration;
-
+  //! The destructor of AutoComplete
+  ~AutoComplete();
+  
   //! Load all autocomplete symbols wxMaxima knows about by itself
-  bool LoadSymbols();
+  void LoadSymbols();
 
   /*! Makes wxMaxima know all its builtin symbols.
 
@@ -96,19 +96,33 @@ public:
   //! Clear the list of words that appear in the workSheet's code cells
   void ClearWorksheetWords();
   //! Clear the list of files load() can be applied on
-  void ClearLoadfileList(){m_wordList[loadfile] = m_builtInLoadFiles;}
+  void ClearLoadfileList();
   //! Clear the list of files demo() can be applied on
-  void ClearDemofileList(){m_wordList[demofile] = m_builtInDemoFiles;}
+  void ClearDemofileList();
   
   //! Returns a list of possible autocompletions for the string "partial"
   wxArrayString CompleteSymbol(wxString partial, autoCompletionType type = command);
-  wxString FixTemplate(wxString templ);
+  //! Basically runs a regex over templates
+  static wxString FixTemplate(wxString templ);
 
 private:
+  //! An AddSymbol that doesn't wait for background tasks to finish
+  void AddSymbol_nowait(wxString fun, autoCompletionType type = command);
+  //! The configuration storage
+  Configuration *m_configuration;
+  //! Loads the list of loadable files and can be run in a background task
+  void LoadSymbols_BackgroundTask();
+  //! Prepares the list of built-in symbols and can be run in a background task
+  void BuiltinSymbols_BackgroundTask();
 
+  //! Replace the list of files in the directory the worksheet file is in to the load files list
+  void UpdateLoadFiles_BackgroundTask(wxString partial, wxString maximaDir);
+  //! The list of loadable files maxima provides
   wxArrayString m_builtInLoadFiles;
+  //! The list of demo files maxima provides
   wxArrayString m_builtInDemoFiles;
 
+  //! Scans the maxima directory for a list of loadable files
   class GetGeneralFiles : public wxDirTraverser
   {
   public:
@@ -138,6 +152,7 @@ private:
     wxString m_prefix;
   };
 
+  //! Recursively scans the maxima directory for a list of .mac files
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
   public:
@@ -177,6 +192,7 @@ private:
     wxString m_prefix;
   };
   
+  //! Scans the user directory for a list of .mac files
   class GetMacFiles : public GetMacFiles_includingSubdirs
   {
   public:
@@ -193,6 +209,7 @@ private:
       }
   };
   
+  //! Scans a directory for a list of demo files
   class GetDemoFiles_includingSubdirs : public wxDirTraverser
   {
   public:
@@ -228,6 +245,7 @@ private:
     wxString m_prefix;
   };
   
+  //! Scans the maxima directory for a list of demo files
   class GetDemoFiles : public GetDemoFiles_includingSubdirs
   {
   public:
@@ -244,8 +262,9 @@ private:
       }
   };
 
+  //! The lists of autocompletible symbols for the classes defined in autoCompletionType
   wxArrayString m_wordList[7];
-  wxRegEx m_args;
+  static wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };
 

@@ -34,10 +34,12 @@
 #include "MaxSizeChooser.h"
 #include "SVGout.h"
 #include "EMFout.h"
+#include "Version.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include <wx/dcbuffer.h>
 #include <wx/wupdlock.h>
+#include <wx/event.h>
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
 #include "BitmapOut.h"
@@ -77,6 +79,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
 #endif
     ),m_cellPointers(this)
 {
+  m_dontSkipScrollEvent = false;
+  m_newxPosition = -1;
+  m_newyPosition = -1;
   m_tree = NULL;
   m_autocompletePopup = NULL;
   #ifdef __WXGTK__
@@ -179,6 +184,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
           wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
+  Connect(SIDEBARKEYEVENT,
+          wxCommandEventHandler(Worksheet::OnSidebarKey),
+          NULL, this);
   Connect(wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(Worksheet::EraseBackground));
   Connect(
     popid_complete_00, popid_complete_00 + AC_MENU_LENGTH,
@@ -202,6 +210,16 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(Worksheet::OnKillFocus));
   Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(Worksheet::OnScrollChanged));
+  Connect(wxEVT_SCROLLWIN_THUMBTRACK, wxScrollWinEventHandler(Worksheet::OnThumbtrack));
+}
+
+void Worksheet::OnSidebarKey(wxCommandEvent &event)
+{
+  SetFocus();
+  if(GetActiveCell())
+    GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
+  else
+    OpenHCaret(wxString(wxChar(event.GetId())));
 }
 
 void Worksheet::EraseBackground(wxEraseEvent &WXUNUSED(event)){}
@@ -367,6 +385,9 @@ void Worksheet::RequestRedraw(GroupCell *start)
 
 Worksheet::~Worksheet()
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif  
   if(wxConfig::Get() != NULL)
     wxConfig::Get()->Flush();
   if (HasCapture())
@@ -439,9 +460,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   // Don't attempt to draw in a window of the size 0.
   if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
-
-  // Inform all cells how wide our display is
-  m_configuration->SetCanvasSize(GetClientSize());
 
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
@@ -641,7 +659,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       // Only actually clear the image cache if there is a screen's height between
       // us and the image's position: Else the chance is too high that we will
       // very soon have to generated a scaled image again.
-      if ((cellRect.GetBottom() <= m_lastBottom - height) || (cellRect.GetTop() >= m_lastTop + height))
+      if ((cellRect.GetBottom() <= m_lastBottom - 2 * height) || (cellRect.GetTop() >= m_lastTop + 2 * height))
       {
         if (tmp->GetOutput())
           tmp->GetOutput()->ClearCacheList();
@@ -736,7 +754,6 @@ GroupCell *Worksheet::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
 
-  m_configuration->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate(where, false);
@@ -860,8 +877,6 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   tmp->AppendOutput(newCell);
   
   UpdateConfigurationClientSize();
-  
-  tmp->ResetSize();
   Recalculate(tmp);
   
   if (FollowEvaluation())
@@ -924,7 +939,7 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 bool Worksheet::RecalculateIfNeeded()
 {
   bool recalculate = true;
-
+  UpdateConfigurationClientSize();
   if((m_recalculateStart == NULL) || (GetTree() == NULL))
     recalculate = false;
 
@@ -943,14 +958,11 @@ bool Worksheet::RecalculateIfNeeded()
     m_recalculateStart = GetTree();
 
   GroupCell *tmp;
-  m_configuration->SetCanvasSize(GetClientSize());
 
   if (m_recalculateStart == NULL)
     tmp = GetTree();
   else
     tmp = m_recalculateStart;
-
-  m_configuration->SetCanvasSize(GetClientSize());
 
   UpdateConfigurationClientSize();
 
@@ -1085,6 +1097,9 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
  */
 void Worksheet::ClearDocument()
 {
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif
   CloseAutoCompletePopup();
   SetSelection(NULL);
   SetActiveCell(NULL, false);
@@ -3263,6 +3278,21 @@ void Worksheet::QuestionAnswered()
   m_questionPrompt = false;
 }
 
+void Worksheet::UpdateScrollPos()
+{
+  if(m_newxPosition > 0)
+  {
+    m_dontSkipScrollEvent = true;
+    SetScrollPos(wxHORIZONTAL, m_newxPosition);
+  }
+  if(m_newyPosition > 0)
+  {
+    m_dontSkipScrollEvent = true;
+    SetScrollPos(wxVERTICAL, m_newyPosition);
+  }
+  m_newyPosition = -1;
+  m_newxPosition = -1;
+}
 GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start)
 {
   wxASSERT(start != NULL);
@@ -6381,6 +6411,11 @@ bool Worksheet::ExportToMAC(wxString file)
 */
 bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 {
+  #ifdef OPENMP
+  #if OPENMP_VER >= 201511
+  #pragma omp taskwait
+  #endif
+  #endif
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
   // Don't update the worksheet whilst exporting
@@ -6616,7 +6651,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     {
       zip.CloseEntry();
 
-      wxFSFile *fsfile = fsystem->OpenFile(memFsName);
+      wxFSFile *fsfile;
+      #ifdef HAVE_OPENMP_TASKS
+      #pragma omp critical (OpenFSFile)
+      #endif
+      fsfile = fsystem->OpenFile(memFsName);
 
       if (fsfile)
       {
@@ -6672,7 +6711,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // actually managed to save it correctly.
   {
     wxFileSystem fs;
-    std::unique_ptr<wxFSFile> fsfile(fs.OpenFile(filename));
+    std::unique_ptr<wxFSFile> fsfile;
+    #ifdef HAVE_OPENMP_TASKS
+    #pragma omp critical (OpenFSFile)
+    #endif
+    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
     
     // Did we succeed in opening the file?
     if (!fsfile)
@@ -8040,6 +8083,38 @@ void Worksheet::OnScrollChanged(wxScrollEvent &WXUNUSED(ev))
   // We don't want to start the autosave while the user is scrolling through
   // the document since this will shortly halt the scroll
   m_keyboardInactiveTimer.StartOnce(10000);
+}
+
+void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
+{
+  // We don't want to start the autosave while the user is scrolling through
+  // the document since this will shortly halt the scroll
+  m_keyboardInactiveTimer.StartOnce(10000);
+  if (CanAnimate())
+   {
+     //! Step the slide show.
+     SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+     tmp->AnimationRunning(false);
+  
+     if (ev.GetEventType() == wxEVT_SCROLLWIN_LINEUP)
+       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
+     else
+       tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
+    
+     wxRect rect = m_cellPointers.m_selectionStart->GetRect();
+     RequestRedraw(rect);
+   }
+  else
+  {
+    ScrolledAwayFromEvaluation();
+
+    if(ev.GetOrientation() == wxHORIZONTAL)
+      m_newxPosition = ev.GetPosition();
+    else
+      m_newyPosition = ev.GetPosition();
+    if(m_dontSkipScrollEvent)
+      ev.Skip();
+  }
 }
 
 wxString Worksheet::GetInputAboveCaret()

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2008-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -508,7 +508,7 @@ public:
 
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation() override;
+  bool NeedsRecalculation(int fontSize) override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored

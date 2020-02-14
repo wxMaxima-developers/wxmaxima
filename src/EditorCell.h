@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -528,6 +528,9 @@ public:
   int GetCaretPosition() const
   { return m_positionOfCaret; }
 
+  //! Convert a number to unicode chars.
+  void ConvertNumToUNicodeChar();
+
   //! Set the cursor's current position inside the cell.
   void SetCaretPosition(int pos)
     { m_positionOfCaret = pos;
@@ -551,6 +554,9 @@ public:
   {
     SetSelection(m_lastSelectionStart, 0);
   }
+
+  void SetType(CellType type) override;
+  void SetStyle(TextStyle style) override;
 
   //! Return to the selection after the cell has been left downwards
   void ReturnToSelectionFromBot()
@@ -641,12 +647,14 @@ private:
       return m_text;
     }
 
+
+  
     //! Changes the piece of text kept in this token
     void SetText(wxString text)
     {
       m_text = text;
     }
-
+    
     //! Changes the indentation level of this token
     void SetIndentation(int indentPixels, wxString indentString = wxEmptyString)
     {

@@ -46,6 +46,7 @@
 <li><a href="#use-jsmath-fonts"><span class="toc-section-number">1.4.3</span> Use jsMath fonts</a></li>
 <li><a href="#match-parenthesis-in-text-controls"><span class="toc-section-number">1.4.4</span> Match parenthesis in text controls</a></li>
 <li><a href="#dont-save-the-worksheet-automatically"><span class="toc-section-number">1.4.5</span> Don’t save the worksheet automatically</a></li>
+<li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.4.6</span> Where is the configuration saved?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
@@ -75,7 +76,7 @@
 <li><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.4</span> Plotting only shows an closed empty envelope with an error message</a></li>
 <li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</a></li>
 <li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</a></li>
-<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</a></li>
+<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</a></li>
 <li><a href="#maxima-is-forever-calculating-and-not-responding-to-input"><span class="toc-section-number">3.8</span> Maxima is forever calculating and not responding to input</a></li>
 <li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</a></li>
 <li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
@@ -120,7 +121,7 @@
 <h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
 <h2 id="maxima-and-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> and wxMaxima</h2>
 <p>In the open-source domain big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.</p>
-<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="http://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
+<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
 <figure>
@@ -245,7 +246,8 @@ perp          a &quot;perpendicular&quot; sign
 leadsto       a &quot;leads to&quot; sign
 -&gt;            a right arrow
 --&gt;           a long right arrow</code></pre>
-<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <code>&lt;kbd&gt;ESC&lt;/kbd&gt;number of the character&lt;kbd&gt;ESC&lt;/kbd&gt;</code>. <code>&lt;kbd&gt;ESC&lt;/kbd&gt;61&lt;kbd&gt;ESC&lt;/kbd&gt;</code> therefore results in an <code>a</code>.</p>
+<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.</p>
+<p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
 <h3 id="side-panes"><span class="header-section-number">1.2.5</span> Side Panes</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
@@ -324,12 +326,15 @@ Ordinary text</code></pre>
 <li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
 </ul>
 <h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.5</span> Don’t save the worksheet automatically</h3>
-<p>If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
+<p>If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
 <p>If this option isn’t set wxMaxima behaves more like a modern cellphone app:</p>
 <ul>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
+<h3 id="where-is-the-configuration-saved"><span class="header-section-number">1.4.6</span> Where is the configuration saved?</h3>
+<p>If you are using Unix/Linux, a file <code>.wxMaxima</code> in your homedirectory is used for saving wxMaxima’s configuration. (Since the filename starts with a dot, it will be a hidden file).</p>
+<p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for wxMaxima at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
 <h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
 <p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session. described here.</p>
@@ -387,7 +392,7 @@ Ordinary text</code></pre>
 <h3 id="opening-embedded-plots-in-interactive-gnuplot-windows"><span class="header-section-number">2.3.4</span> Opening embedded plots in interactive gnuplot windows</h3>
 <p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot</code> isn’t supported by this feature) and the file size of the underlying gnuplot project isn’t way too high <em>wxMaxima</em> offers a right-click menu that allows to open the plot in an interactive gnuplot window.</p>
 <h3 id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
-<p>On MS Windows if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot” gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
+<p>On MS Windows, if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot”, gnuplot offers the possibility to open a console window, where gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
 <h3 id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.6</span> Embedding animations into the spreadsheet</h3>
 <p>3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. <em>wxMaxima</em> allows to export this animation as an animated gif.</p>
 <p>The first two arguments for <code>with_slider_draw</code> are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for <code>wxdraw2d</code>:</p>
@@ -414,7 +419,7 @@ with_slider_draw3d(
         y,-π,π
     )
 )$</code></pre>
-<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intiution:</p>
+<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intuition:</p>
 <pre><code>wxanimate_autoplay:true;
 wxanimate_framerate:20;
 with_slider_draw3d(
@@ -434,7 +439,7 @@ with_slider_draw3d(
 <li><code>with_slider</code> and</li>
 <li><code>wxanimate</code>.</li>
 </ul>
-<p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable wxanimate_framerate can be used:</p>
+<p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable <code>wxanimate_framerate</code> can be used:</p>
 <pre><code>wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$</code></pre>
 <p>The animation functions use <em>maxima</em>’s <code>makelist</code> command and therefore shares the pitfall that the slider variable’s value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:</p>
@@ -445,7 +450,7 @@ with_slider_draw(
     grid=true,
     explicit(f,x,0,10)
 )$</code></pre>
-<p>If <em>Maxima</em> is explicitely asked to substitute the slider’s value plotting works fine instead:</p>
+<p>If <em>Maxima</em> is explicitly asked to substitute the slider’s value plotting works fine instead:</p>
 <pre><code>f:sin(a*x);
 with_slider_draw(
     b,makelist(i/2,i,1,10),
@@ -471,10 +476,10 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h3 id="the-plot-using-draw-sidepane"><span class="header-section-number">2.3.8</span> The “Plot using draw” sidepane</h3>
 <p>The “Plot using draw” sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
-<p>Generates the sceleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
+<p>Generates the skeleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
 <p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em> has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
-<p>Generates the sceleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
+<p>Generates the skeleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
 <h4 id="expression"><span class="header-section-number">2.3.8.3</span> Expression</h4>
 <p>Appends a standard plot of an expression like <code>sin(x)</code>, <code>x*sin(x)</code> or <code>x^2+2*x-4</code> to the <code>draw()</code> command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.</p>
 <h4 id="implicit-plot"><span class="header-section-number">2.3.8.4</span> Implicit plot</h4>
@@ -578,7 +583,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><p>If nothing else helps <em>Maxima</em> contains a replay feature:</p>
 <p>%i1 playback();</p></li>
 </ul>
-<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</h2>
+<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
 <p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
 <h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
 <p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
@@ -591,7 +596,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
 <h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
-<p>If your <em>Maxima</em> is based on sbcl the following lines have to be added to your <code>.sblrc</code>:</p>
+<p>If your <em>Maxima</em> is based on sbcl the following lines have to be added to your <code>.sbclrc</code>:</p>
 <pre><code>(setf sb-impl::*default-external-format* :utf-8)</code></pre>
 <p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>

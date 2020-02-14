@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -202,6 +202,7 @@ public:
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
+  wxBitmap GetEvalAllBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetEvalBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
   wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));

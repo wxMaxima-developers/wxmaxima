@@ -391,16 +391,7 @@ public:
   //! Returns the maximum sensible width for a text line [in characters]:
   // On big 16:9 screens text tends to get \b very wide before it hits the right margin.
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
-  int GetLineWidth() const
-  {
-    if (
-      (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor) ||
-      (m_printing)
-      )
-      return m_clientWidth;
-    else
-      return (int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
-  }
+  int GetLineWidth() const;
 
   int GetDefaultFontSize() const
   { return m_defaultFontSize; }

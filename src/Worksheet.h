@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -47,6 +47,7 @@
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
 #include "TableOfContents.h"
+#include "UnicodeSidebar.h"
 #include "ToolBar.h"
 
 /*! The canvas that contains the spreadsheet the whole program is about.
@@ -80,6 +81,12 @@ wxMaxima can display it.
 class Worksheet : public wxScrolled<wxWindow>
 {
 private:
+  // The x position to scroll to
+  int m_newxPosition;
+  // The y position to scroll to
+  int m_newyPosition;
+  // false = collect scroll events without redrawing for every single one  
+  bool m_dontSkipScrollEvent;
   //! Which zoom level were we at when we started the zoom gesture?
   double m_zoomAtGestureStart;
   //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?
@@ -448,6 +455,8 @@ private:
 
   void OnMouseRightDown(wxMouseEvent &event);
 
+  void OnSidebarKey(wxCommandEvent &event);
+  
   void OnMouseLeftUp(wxMouseEvent &event);
 
   //! Is called if we loose the mouse connection whilst selecting text/cells
@@ -1382,6 +1391,8 @@ public:
 
   //! Called if the user is scrolling through the document.
   void OnScrollChanged(wxScrollEvent &ev);
+  //! Called if the user uses the touchpad for scrolling
+  void OnThumbtrack(wxScrollWinEvent &ev);
 
   /*! Do an incremental search from the cursor or the point the last search started at
 
@@ -1412,8 +1423,8 @@ public:
 
   wxString GetOutputAboveCaret();
 
-  bool LoadSymbols()
-  { return m_autocomplete->LoadSymbols(); }
+  void LoadSymbols()
+  { m_autocomplete->LoadSymbols(); }
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
@@ -1476,6 +1487,8 @@ public:
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
    */
   void OpenQuestionCaret(wxString txt = wxT(""));
+  //! Execute all collected scroll events in one go.
+  void UpdateScrollPos();
 
   /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
 

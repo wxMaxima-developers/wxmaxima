@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -103,6 +103,7 @@ public:
     menu_pane_xmlInspector, //!< Both the "toggle the xml monitor" command and the monitor pane
     menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
     menu_pane_greek,     //!< Both the "toggle the greek pane" command and the "greek" pane
+    menu_pane_unicode,   //!< Both the "toggle the unicode pane" command and the "unicode" pane
     menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
     menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
     menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane
@@ -474,6 +475,8 @@ public:
     menu_help_numberformats,
     menu_help_tolerances,
     menu_help_3d,
+    menu_help_varnames,
+    menu_help_fittingData,
     menu_help_tutorials_end, //! End of bundled tutorials
     menu_show_toolbar,
     menu_history_previous,
@@ -484,6 +487,7 @@ public:
     maxima_process_id,
     gnuplot_process_id,
     menu_additionalSymbols,
+    enable_unicodePane,
     menu_showLatinGreekLookalikes,
     menu_showGreekMu
   };
@@ -509,7 +513,7 @@ public:
      - true: show the sidebar
      - false: hide it
    */
-  void ShowPane(Event id, bool show);
+  void ShowPane(Event id, bool show = true);
 
   //! Adds a command to the list  of recently used maxima commands
   void AddToHistory(wxString cmd)
@@ -637,23 +641,6 @@ private:
   wxPanel *CreateMathPane();
 
   wxPanel *CreateFormatPane();
-
-  class CharButton: public wxPanel
-  {
-  public:
-    /*! A flat, compact button for the greek and the symbols pane
-      
-      \param parent The parent panel/window
-      \param ch The unicode symbol
-      \param description The help text for the symbol
-      \param matchesMaximaCommand true means that this symbol is automatically
-      translated into a maxima command/operator
-      
-    */
-    CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
-  protected:
-      void ForwardToParent(wxMouseEvent &event);
-  };
   
   //! The class for the sidebar with the draw commands
   class DrawPane: public wxPanel
@@ -708,7 +695,7 @@ private:
   class GreekPane : public wxPanel
   {
   public:
-    GreekPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
+    GreekPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
   protected:
     void UpdateSymbols();
     void OnMouseRightDown(wxMouseEvent &event);
@@ -717,12 +704,13 @@ private:
     Configuration *m_configuration;
     wxFlexGridSizer *m_lowercaseSizer;
     wxFlexGridSizer *m_uppercaseSizer;
+    Worksheet *m_worksheet;
   };
 
   class SymbolsPane : public wxPanel
   {
   public:
-    SymbolsPane(wxWindow *parent, Configuration *configuration, int ID = wxID_ANY);
+    SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
     //! Update the "user symbols" portion of the symbols pane.
     void UpdateUserSymbols();
   protected:
@@ -735,6 +723,7 @@ private:
     std::list<wxPanel *> m_userSymbolButtons;
     wxGridSizer *m_userSymbolsSizer;
     Configuration *m_configuration;
+    Worksheet *m_worksheet;
   };
 
   wxPanel *CreateSymbolsPane();
@@ -750,8 +739,6 @@ protected:
 
   //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
-
-  void CharacterButtonPressed(wxMouseEvent &event);
 
   bool ToolbarIsShown();
   //! The manager for dynamic screen layouts

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -202,7 +202,12 @@ wxString Dirstructure::MaximaDefaultLocation()
   maximaLocation = "/usr/local/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
-  
+
+  wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
+  maximaLocation = "/opt/local/bin/maxima";
+  if (wxFileExists(maximaLocation))
+    return maximaLocation;
+
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = "/usr/bin/maxima";
   if (wxFileExists(maximaLocation))

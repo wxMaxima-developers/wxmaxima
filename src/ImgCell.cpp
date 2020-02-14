@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -72,13 +72,13 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove, wxFileSystem *filesystem)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
   : Cell(parent, config, cellPointers)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
-    m_image = std::shared_ptr<Image>(new Image(m_configuration, image, remove, filesystem));
+    m_image = std::shared_ptr<Image>(new Image(m_configuration, image, filesystem, remove));
   else
     m_image = std::shared_ptr<Image>(new Image(m_configuration));
   m_drawBoundingBox = false;
@@ -86,7 +86,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
-  m_image = std::shared_ptr<Image>(new Image(m_configuration, image, remove));
+  m_image = std::shared_ptr<Image>(new Image(m_configuration, remove, image));
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap)
@@ -159,7 +159,6 @@ void ImgCell::RecalculateWidths(int fontsize)
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
   if (m_image)
   {
@@ -170,6 +169,7 @@ void ImgCell::RecalculateHeight(int fontsize)
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point)

@@ -2165,14 +2165,14 @@
 	   (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
 		   (wxxml-fix-string filename))
 	   (format t "</variables>~%")))
-     (setq *wxmaxima-nested-loads* (+ *wxmaxima-nested-loads* 1))
+     (incf *wxmaxima-nested-loads*)
      ;; Load the file
      (unwind-protect
 	 (load_original_wxmaxima filename)
        (progn
 	 ;; After loading the file: Tell wxMaxima we have finished loading the file
 	 ;; and what autocompletable symbols we know about.
-	 (setq *wxmaxima-nested-loads* (- *wxmaxima-nested-loads* 1))))
+	 (decf *wxmaxima-nested-loads* )))
      (if (< *wxmaxima-nested-loads* 1)
 	 (wxPrint_autocompletesymbols))
      ))

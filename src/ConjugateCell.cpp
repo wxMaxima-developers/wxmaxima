@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -85,13 +85,14 @@ void ConjugateCell::SetInner(Cell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
+  m_innerCell->RecalculateWidthsList(fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_close->RecalculateWidthsList(fontsize);
   if(!m_isBrokenIntoLines)
-  {
-    m_innerCell->RecalculateWidthsList(fontsize);
-    m_open->RecalculateWidthsList(fontsize);
-    m_close->RecalculateWidthsList(fontsize);
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
-  }
   else
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
@@ -99,12 +100,14 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
+  m_innerCell->RecalculateHeightList(fontsize);
+  m_open->RecalculateHeightList(fontsize);
+  m_close->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
-    m_innerCell->RecalculateHeightList(fontsize);
-    m_open->RecalculateHeightList(fontsize);
-    m_close->RecalculateHeightList(fontsize);
     m_height = m_innerCell->GetHeightList() + Scale_Px(4);
     m_center = m_innerCell->GetCenterList() + Scale_Px(2);
   }
@@ -113,12 +116,13 @@ void ConjugateCell::RecalculateHeight(int fontsize)
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     
@@ -202,11 +206,4 @@ bool ConjugateCell::BreakUp()
     return true;
   }
   return false;
-}
-
-void ConjugateCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-    m_innerCell->UnbreakList();
-  Cell::Unbreak();
 }

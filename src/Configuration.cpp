@@ -307,13 +307,10 @@ wxString Configuration::GetAutosubscript_string() const
   {
   case 0:
     return "nil";
-    break;
   case 1:
     return "t";
-    break;
   default:
     return "'all";
-    break;
   }
 }
 
@@ -376,7 +373,6 @@ void Configuration::ReadConfig()
   config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
-  m_symbolPaneAdditionalChars = wxT("Øü§");
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);
@@ -526,6 +522,20 @@ wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
   font.SetPointSize(fontSize1);
 
   return font;
+}
+
+int Configuration::GetLineWidth() const
+{
+  // The default line width is the width of the viewport minus the indentation minus
+  // roughly one char
+  int lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
+                                           GetCellBracketWidth() + m_defaultFontSize);
+
+  // If that was suspiciously wide we reduce the default line width again.
+  if((lineWidth >= Scale_Px(double(m_defaultFontSize)) * LineWidth_em()) &&
+     (!m_printing))
+    lineWidth = Scale_Px(double(m_defaultFontSize)) * LineWidth_em();
+  return lineWidth;
 }
 
 Configuration::drawMode Configuration::GetParenthesisDrawMode()
@@ -807,7 +817,7 @@ void Configuration::WriteStyles(wxString file)
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-    config = new wxFileConfig(wxT("wxMaxima"),wxEmptyString,file);
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
   config->Write(wxT("Style/fontname"), m_fontName);

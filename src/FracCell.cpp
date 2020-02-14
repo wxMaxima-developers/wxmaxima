@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -102,6 +102,8 @@ void FracCell::SetDenom(Cell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
   if(m_exponent || m_isBrokenIntoLines)
   {
     m_displayedNum->RecalculateWidthsList(fontsize);
@@ -125,7 +127,7 @@ void FracCell::RecalculateWidths(int fontsize)
       m_width = 0;
     else
     {
-      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 3);
+      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 2);
       
       // We want half a space's widh of blank space to separate us from the
       // next minus.
@@ -140,7 +142,7 @@ void FracCell::RecalculateWidths(int fontsize)
       else
         m_horizontalGapRight = 0;
       
-      m_width = wxMax(m_num->GetFullWidth(), m_denom->GetFullWidth()) +
+      m_width = wxMax(m_displayedNum->GetFullWidth(), m_displayedDenom->GetFullWidth()) +
         2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
     }
   }
@@ -149,7 +151,8 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
   if(m_exponent || m_isBrokenIntoLines)
   {
     m_displayedNum->RecalculateHeightList(fontsize);
@@ -164,8 +167,8 @@ void FracCell::RecalculateHeight(int fontsize)
 
   if(m_isBrokenIntoLines)
   {
-    m_height = m_num->GetHeightList();
-    m_center = m_num->GetCenterList();
+    m_height = 2;
+    m_center = 1;
   }
   else
   {
@@ -181,12 +184,13 @@ void FracCell::RecalculateHeight(int fontsize)
       m_center = wxMax(m_num->GetCenterList(), m_denom->GetCenterList());
     }
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 void FracCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     
@@ -417,21 +421,11 @@ bool FracCell::BreakUp()
     if (m_num_Last != NULL)
       m_num_Last->m_nextToDraw = m_divide.get();
     m_divide->m_nextToDraw = m_displayedDenom.get();
-    m_displayedDenom->m_nextToDraw = m_nextToDraw;
+    m_denom_Last->m_nextToDraw = m_nextToDraw;
     wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
     m_nextToDraw = m_displayedNum.get();
     ResetData();    
     return true;
   }
   return false;
-}
-
-void FracCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-  {
-    m_num->UnbreakList();
-    m_denom->UnbreakList();
-  }
-  Cell::Unbreak();
 }

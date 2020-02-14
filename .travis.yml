@@ -25,6 +25,8 @@ addons:
     - gettext
     - doxygen
     - graphviz
+    - gnuplot
+    - gnuplot-x11
     - rpm
     - cmake
     - maxima
@@ -42,7 +44,7 @@ install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";
   brew install ccache; brew link ccache;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin;
-  brew install gettext wxwidgets pandoc; fi
+  brew install gettext wxwidgets pandoc libomp; fi
 notifications:
   email:
     on_success: change
@@ -54,17 +56,17 @@ script:
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
 - mkdir build
 #- cp .travis/CTestCustom.cmake build
-- cd build && cmake .. && cmake --build .
+- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=`ldconfig -p|grep "libSegFault.so "|head -1|sed -e "s/^.* //g"` xvfb-run -a make test; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a make test; fi
 - cd ..
 - openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d
 - chmod 0600 id_rsa
 - eval `ssh-agent -s`
 - ssh-add id_rsa
 - cat .travis/known_hosts >>~/.ssh/known_hosts
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;cp build/*.app wxMaxima.app;echo "put wxMaxima.dmg;put wxMaxima.app"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi
 - ccache -s
 deploy:
   provider: releases
@@ -72,7 +74,7 @@ deploy:
   prerelease: false
   api_key:
     secure: Zoo6p3CTOMf7mUcUuTrTz03U8xSIvhRCGRQlLGzcU3eF7/bNyo7MyXlePSC3bPsi+Fs7BX41eakQV2E2ycBnwRxMapOAxMv9yhk+nnlGSrS5tagNP1ljcqT30JJrEyDGBVP3S1FqiqMyzESiZLvaYmMzbFyisaiF4Cn6O+XxyU2xRz3EEX6sdhnkd9txU0rwjw/TUksG2xrtJdiOaCKXjjTVbJx1R4pAu2BWIfnFVrliwNNIDVby2riBeqO0QSt5NxU5OuWFXYX9Q6RlxlRmAr6njCVi7GA4uG/c5x7WNKjPiOXFpy2LyvRMlTY2hEL0KVeCqYUArvMkLM3ELyoniQvv+QJk+MnAcvdF+04ioIO9/rhYTtU5bjmZI1uAnzPsXGZJXgIRdxmDcGnFZJbmwlolp/kZtBKR9pwqPOYT2Xymg7QkJwy9R4MaCv2/6EZ/zHxi3qRxiKH+zhT8Ymdsn0UUe96pGw6oiOOdQPvxcOPCVmmJyxjVr9OkvBYjd5yRGZHdfXAs5ZfJGdotVq6OWq906ISQkOdAB2CDSklmGjXEf3d1RSxiueSC2rQa0h+/6kDzyRyHKFX+dtdLlHqKdvjRWXVmDMXrZ+qj6oZTykfa5s8BzcykmsLnVS1txw8at4P3/BsFshUAuMPmBg3cs7dLpwezEN+Yu+4dxkImYX4=
-  file: build/*.dmg
+  file: build/src/*.dmg
   cleanup: false
   on:
     tags: true

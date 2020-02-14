@@ -44,6 +44,9 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_fontWeight(wxFONTWEIGHT_NORMAL),
   m_fontEncoding(wxFONTENCODING_DEFAULT)
 {
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
+
   m_errorIndex = -1;
   m_autoAnswer = false;
   m_numberOfLines = 1;
@@ -69,7 +72,7 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_firstLineOnly = false;
   m_historyPosition = -1;
   SetValue(TabExpand(text, 0));
-//  ResetSize();  
+  ResetSize();  
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input)
@@ -590,12 +593,48 @@ wxString EditorCell::ToXML()
   return head + xmlstring + wxT("</editor>\n");
 }
 
+void EditorCell::ConvertNumToUNicodeChar()
+{
+  if(m_positionOfCaret <= 0 )
+    return;
+  int numLen = 0;
+  while((m_positionOfCaret > 0) &&
+        (((m_text [m_positionOfCaret - 1] >= '0') &&
+          (m_text [m_positionOfCaret - 1] <= '9')) ||
+         ((m_text [m_positionOfCaret - 1] >= 'a') &&
+          (m_text [m_positionOfCaret - 1] <= 'f')) ||
+         ((m_text [m_positionOfCaret - 1] >= 'A') &&
+          (m_text [m_positionOfCaret - 1] <= 'F')))
+    )
+  {
+    numLen++;
+    m_positionOfCaret--;
+  }
+
+  wxString numString = m_text.SubString(m_positionOfCaret, m_positionOfCaret + numLen - 1);
+  long number;
+  if(!numString.ToLong(&number, 16))
+    return;
+
+  wxString newChar;
+  {
+    wxLogNull suppressConversationErrors;
+    newChar = wxChar(number);
+  }
+  m_text = m_text.Left(m_positionOfCaret) +
+    newChar +
+    m_text.Right(m_text.Length() - m_positionOfCaret - numLen);
+  m_positionOfCaret+= newChar.Length();
+}
+
 void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
+  if (configuration->GetZoomFactor() != m_lastZoomFactor)
+    m_widths.clear();
 
   m_isDirty = false;
-  if (NeedsRecalculation())
+  if (NeedsRecalculation(fontsize))
   {
     StyleText();
     m_fontSize_Last = Scale_Px(fontsize);
@@ -981,6 +1020,18 @@ void EditorCell::Draw(wxPoint point)
     UnsetPen();
 
   }
+}
+
+void EditorCell::SetType(CellType type)
+{
+  m_widths.clear();
+  Cell::SetType(type);
+}
+
+void EditorCell::SetStyle(TextStyle style)
+{
+  m_widths.clear();
+  Cell::SetStyle(style);
 }
 
 void EditorCell::SetFont()
@@ -1547,6 +1598,12 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 {
   bool done = true;
 
+  if(((event.GetKeyCode() == 'x') || (event.GetKeyCode() == 'u')) && (event.AltDown()))
+  {
+    ConvertNumToUNicodeChar();
+    return true;
+  }
+  
   if ((event.GetKeyCode() != WXK_DOWN) &&
       (event.GetKeyCode() != WXK_PAGEDOWN) &&
       (event.GetKeyCode() != WXK_PAGEUP) &&
@@ -3182,13 +3239,16 @@ void EditorCell::InsertText(wxString text)
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
+
 //  m_width = m_height = m_maxDrop = m_center = -1;
   StyleText();
 }
 
 void EditorCell::PasteFromClipboard(const bool &primary)
 {
-    wxTheClipboard->UsePrimarySelection(primary);
+  wxTheClipboard->UsePrimarySelection(primary);
   wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));
   if (wxTheClipboard->IsSupported(wxDF_TEXT))
   {
@@ -3382,13 +3442,8 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
   width = GetTextSize(token).GetWidth();
   lineWidth += width;
 
-  // Normally the cell begins at the x position m_currentPoint.x - but sometimes
-  // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin = Scale_Px(configuration->GetLabelWidth() +
-                         configuration->GetCellBracketWidth());
-
   if (
-          (lineWidth + xmargin + indentationPixels >= configuration->GetLineWidth()) &&
+          (lineWidth + indentationPixels >= configuration->GetLineWidth()) &&
           (lastSpace != NULL) && (lastSpace->GetText() != "\r"))
   {
     int charWidth;
@@ -3469,14 +3524,14 @@ void EditorCell::StyleTextCode()
       else
       {
         lastSpace = NULL;
-        lastSpacePos = -1;
+        lastSpacePos = 0;
       }      
       continue;
     }
     
     // Most of the other item types can contain Newlines - that we want as separate tokens
     wxString txt = tokenString;
-    wxString line;      
+    wxString line;
     for (wxString::const_iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
     {
       if(*it2 != '\n')
@@ -3506,12 +3561,6 @@ void EditorCell::StyleTextTexts()
 {
   Configuration *configuration = (*m_configuration);
 
-  // Normally the cell begins at the x position m_currentPoint.x - but sometimes
-  // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin =
-  Scale_Px(configuration->GetLabelWidth()) +
-  configuration->GetCellBracketWidth();
-
   // Remove all bullets of item lists as we will introduce them again in the next
   // step, as well.
   m_text.Replace(wxT("\u2022"), wxT("*"));
@@ -3522,7 +3571,7 @@ void EditorCell::StyleTextTexts()
   {
     SetFont();
     wxString line;
-    int lastSpacePos = -1;
+    unsigned int lastSpacePos = 0;
     wxString::const_iterator lastSpaceIt;
     int lastLineStart = 0;
     int width;
@@ -3548,7 +3597,7 @@ void EditorCell::StyleTextTexts()
         {
           // Can we introduce a soft line break?
           // One of the next questions will be: Do we need to?
-          if (lastSpacePos >= 0)
+          if (lastSpacePos > 0)
           {
             // How far has the current line to be indented?
             if ((!indentPixels.empty()) && (!newLine))
@@ -3559,7 +3608,7 @@ void EditorCell::StyleTextTexts()
             // How long is the current line already?
             width = GetTextSize(m_text.SubString(lastLineStart, i)).GetWidth();
             // Do we need to introduce a soft line break?
-            if (width + xmargin + indent >= configuration->GetLineWidth())
+            if (width + indent >= configuration->GetLineWidth())
             {
               // We need a line break in front of the last space
               m_text[lastSpacePos] = wxT('\r');
@@ -3567,7 +3616,7 @@ void EditorCell::StyleTextTexts()
               i = lastSpacePos;
               it = lastSpaceIt;
               lastLineStart = i + 1;
-              lastSpacePos = -1;
+              lastSpacePos = 0;
               break;
             }
           }
@@ -3582,7 +3631,7 @@ void EditorCell::StyleTextTexts()
             line = m_text.SubString(lastLineStart, i);
 
           lastLineStart = i + 1;
-          lastSpacePos = -1;
+          lastSpacePos = 0;
           break;
         }
         else
@@ -3608,11 +3657,11 @@ void EditorCell::StyleTextTexts()
 
             // Does the line extend too much to the right to fit on the screen /
             // to be easy to read?
-            if (width + m_currentPoint.x + indent >= configuration->GetLineWidth())
+            if (width + indent >= configuration->GetLineWidth())
             {
               // We need a line break. Does the current line contain a space we can
               // break the line at?
-              if (lastSpacePos >= 0)
+              if (lastSpacePos > 0)
               {
                 // Introduce a soft line break
                 m_text[lastSpacePos] = wxT('\r');
@@ -3621,7 +3670,7 @@ void EditorCell::StyleTextTexts()
                 it = lastSpaceIt;
                 ++it;
                 lastLineStart = i;
-                lastSpacePos = -1;
+                lastSpacePos = 0;
                 break;
               }
               else
@@ -3631,7 +3680,7 @@ void EditorCell::StyleTextTexts()
                   m_text[i] = wxT('\r');
                   line = m_text.SubString(lastLineStart, i - 1);
                   lastLineStart = i + 1;
-                  lastSpacePos = -1;
+                  lastSpacePos = 0;
                   break;
                 }
               }
@@ -3882,6 +3931,9 @@ void EditorCell::SetValue(const wxString &text)
   FindMatchingParens();
   m_containsChanges = true;
 
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
+
   // Style the text.
   StyleText();
   if (m_group != NULL)
@@ -3947,6 +3999,9 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool ignoreCa
   // If text is selected setting the selection again updates m_selectionString
   if (m_selectionStart > 0)
     SetSelection(m_selectionStart, m_selectionEnd);
+
+  m_text.Replace(wxT("\u2028"), "\n");
+  m_text.Replace(wxT("\u2029"), "\n");
 
   return count;
 }
@@ -4019,43 +4074,36 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newString, bool keep
       return false;
   }
 
+  // We cannot use SetValue() here, since SetValue() tends to move the cursor.
+  wxString text_left = text.SubString(0, start - 1);
+  wxString text_right = text.SubString(end, text.Length());
+  m_text = text_left+
+    newString +
+    text_right;
+  StyleText();
+  
+  m_containsChanges = true;
+  m_positionOfCaret = start + newString.Length();
+  
+  if(replaceMaximaString)
   {
-    // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-    wxString text_left = text.SubString(0, start - 1);
-    wxString text_right = text.SubString(end, text.Length());
-    m_text = text_left+
-             newString +
-             text_right;
-    StyleText();
-
-    m_containsChanges = true;
-    m_positionOfCaret = start + newString.Length();
-
-    if(replaceMaximaString)
+    if((newString.EndsWith("\"") || (text_right.StartsWith("\""))))
     {
-      if((newString.EndsWith("\"") || (text_right.StartsWith("\""))))
-      {
-        if(!((newString.EndsWith("\"") && (text_right.StartsWith("\"")))))
-          m_positionOfCaret--;
-      }
+      if(!((newString.EndsWith("\"") && (text_right.StartsWith("\"")))))
+        m_positionOfCaret--;
     }
-
-    if (keepSelected)
-    {
-      SetSelection(start, m_positionOfCaret);
-    }
-    else
-    {
-      ClearSelection();
-    }
-
-    if (GetType() == MC_TYPE_INPUT)
-      FindMatchingParens();
-
-    StyleText();
-    return true;
   }
-  return false;
+  
+  if (keepSelected)
+    SetSelection(start, m_positionOfCaret);
+  else
+    ClearSelection();
+  
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
+  
+  StyleText();
+  return true;
 }
 
 wxString EditorCell::GetSelectionString() const 

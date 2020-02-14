@@ -1,10 +1,89 @@
-# wxMaxima 19.12.4 - Stable:
+#Current
+ * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
+ * Part of the added performance is only effective if omp.h (often in the 
+   libomp package) is installed.
+ * Better scroll wheel support
+ * A Russian translation update by OlesyaGerasimenko
+ * It was possible that a part of a fraction wasn't displayed
+ * Several additional bug fixes
+ * Cppcheck code analysis now is only run if explicitly enabled
+ * The minimum cmake version now is 3.7
 
-Since 19.12.3 depending on the system allocated immense amounts of 
+# Multi-Threading
+Most modern computers allow to use more than CPU core at a time.
+This can greatly boost the performance of an application. But there
+are tasks that are not suited for that:
+ * Essentially everything that involves GUI actions is not thread-save.
+   The main purpose of wxMaxima is providing a GUI, though.
+ * Loops in which every run requires knowing the result of the last cannot
+   be split into multiple threads. This includes most of the string and 
+   list processing.
+ * If the program needs the result now trying to calculate this result 
+   in a separate thread doesn't help.
+ * If a task is memory-limited and accesses memory in a linear way dividing 
+   the task into threads can increase the memory access times (due to 
+   constantly switching memory rows)
+ * Additionally for short operations the overhead of starting a new 
+   thread is way higher than the gain
+This means wxMaxima can use multiple threads. But the number of places
+this is possible in is surprisingly low.
+
+#20.02.0
+ * The MacOs build should now generate working .dmg installers
+ * Another small tutorial
+ * Symbols sidebar: Correctly remember additional symbols
+ * Unicode chars can now be input using the <hexcode>alt+x method
+ * A unicode sidebar that isn't shown by default as it starts up slow
+ * Resolved an assert shown by some systems on startup
+ * Many corrections to the display routines
+
+#20.01.3
+ * Language selection now works even on systems with missing language support
+ * Resolved a copy-and-paste regression
+ * A russian translation update by OlesyaGerasimenko
+ * German translation updates
+ * Improved stability of the communication with Maxima
+ * Preparation for Maxima's pre-sub-and supscript feature
+ * Corrected a few visual glitches of the worksheet
+ * More tutorials describing a few of Maxima's features
+
+#20.01.2
+ * Corrected html export of the lowest sectioning unit
+ * Sometimes text after fractions wasn't displayed
+ * Copy-and-paste should now work in more cases
+ * Selecting text within fractions should now work again
+ * Corrected a few display glitches of the worksheet
+ * wxMaxima now comes with five example files
+ * More and better-working mouse-over tooltips
+
+#20.01.1
+ * Nice menu icons for the operating systems that support this
+ * Started to bundle small tutorials with wxMaxima
+ * Many small additional bug fixes
+
+#19.12.4
+Since 19.12.3 depending on the system allocated immense amounts of
 RAM and crashed a 19.12.4 had to be released. Together they port
 many big improvements to the display code.
 
- * A Russian translation update by OlesyaGerasimenko
+ * Resolved a crash whilst unpacking the svg icons.
+
+# Transition to C++11 - Part II
+
+Many annoying bugs have to do with memory management. Typical examples are:
+ * Out-of-bonds reads and writes: n+1 bytes of an n-bytes-long string are
+   read or written.
+ * Use of uninitialized memory: Memory is first read and then set to the
+   value that one would have wanted to read from it.
+ * Use-after-free: Memory was first marked as "free" and then used again.
+ * Memory Leaks: Memory isn't marked as "free" even if it is no more used.
+Against the last two of these bugs C++11 offers automatic pointers that
+stay allocated while they are in used and then are automatically marked
+as free. In the next wxMaxima release about 2500 lines will be changed
+in order to make use of that functionality.
+
+#19.12.3
+ * A Russian traslation update by OlesyaGerasimenko
  * The manual is now found on Gentoo, too
  * Big improvements to the maths output
  * A major speedUp by caching already-determined text snippet sizes
@@ -14,26 +93,19 @@ many big improvements to the display code.
    many places
  * Many additional small bug fixes.
 
+#19.12.2
+ * An hungarian translation update by István Blahota
+ * Drastically sped up the lookalike char detection
+ * Fixes for many small bugs
+ * Many changes that prevent typical programming errors
+ * Saving to .wxm sets the worksheet to "saved" again
+ * More cases of modern wxWidgets signal handling
+ * svg support that unfortunately lacks a font renderer
+ * Right-click menus for the symbols sidebars
+ * (Mostly) fixed the index in the manual
+ * Allow building and installing the manual in other formats (epub, pdf, ...)
 
-# Transition to C++11 - Part II
-
-Many annoying bugs have to do with memory management. Typical examples are:
- * Out-of-bonds reads and writes: n+1 bytes of an n-bytes-long string are
-   read or written. 
- * Use of uninitialized memory: Memory is first read and then set to the 
-   value that one would have wanted to read from it.
- * Use-after-free: Memory was first marked as "free" and then used again.
- * Memory Leaks: Memory isn't marked as "free" even if it is no more used.
-Against the last two of these bugs C++11 offers automatic pointers that 
-stay allocated while they are in used and then are automatically marked 
-as free. In the next wxMaxima release about 2500 lines will be changed 
-in order to make use of that functionality.
-
-# wxMaxima 19.12.1 - Stable:
-
-If the maxima-discuss list asks for an additional feature that is the Right Time
-for a new release:
-
+#19.12.1
  * Made the tooltips more visible
  * Added a warning tooltip about missing multiplication signs
  * Sped up drawing of new cells correcting the size calculations
@@ -42,12 +114,7 @@ for a new release:
  * A few additional bug fixes that (besides others) resolve a potential crash
  * An option to turn all multiplication dots on
 
-# wxMaxima 19.12.0 - Stable:
-
-This release provides many under-the-hood changes partially caused by 
-switching to C++11 and partially by cppcheck finding bugs and constructs
-that can cause bugs later. 
-
+#19.12.0
   * wxMaxima now uses C++11 that makes the code more readable and helps
 	finding bugs
   * If found wxMaxima now asks cppcheck to find bugs
@@ -62,18 +129,18 @@ that can cause bugs later.
 
 The next wxMaxima release will make use of C++11 features: I *hope* that C++
 has been out long enough in 2019 that every relevant compiler supports it.
-C++11 brings in features that allow to make compilation fail on otherwise 
+C++11 brings in features that allow to make compilation fail on otherwise
 hard-to-detect bugs, some features that might make the code easier to read...
 ...and I am afraid that plain old c++ might look antiquated one day.
 
 Additionally it will contain many bug fixes hoping that I won't fix bugs that
-in retrospect didn't exist... ...on the plus side the program should again 
+in retrospect didn't exist... ...on the plus side the program should again
 have gotten faster by giving the compiler additional hints for optimization
 and the transition has shrunk wxMaxima by about 100 lines. Much help with
-finding bugs came from the cppcheck utility which caused changes in over 
+finding bugs came from the cppcheck utility which caused changes in over
 1700 lines of code, mainly in order to prevent possible future bugs.
 
-# wxMaxima 19.11.1 - Stable
+#19.11.1
   * Improved italian translation by Marco Ciampa
   * Autocompletion no more causes asserts
   * A better logic that decides which cell to send to maxima
@@ -81,7 +148,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * The help files now are installed in the Right Place
   * Many additional small bug fixes
 
-# wxMaxima 19.11.0 - Stable
+#19.11.0
   * Chinese translation updates from liulitchi
   * Turkish translation updates from TufanSirin
   * Hungarian translation updates from Blahota István
@@ -96,50 +163,54 @@ finding bugs came from the cppcheck utility which caused changes in over
   * A speedup by preventing recursive calls to resize functions
   * Corrected parametric plots in the plot wizard
   * A command-line switch that copies all log messages to stderr.
-  * Batch mode no more adds documents to "recent documents"
-  * For purists: A "don't offer known answers" config option
-  * Now some toolbar items can be disabled
-  * Added more toolbar buttons that evaluate cells
-  * Many bug fixes
+  * Batch mode no more adds documents to "recent documents".
+  * For purists: A "don't offer known answers" config option.
+  * Now some toolbar items can be disabled.
+  * Added more toolbar buttons that evaluate cells.
+  * Many additional bug fixes
 
-# wxMaxima 19.10.0 - Stable
+#19.10.0
   * Corrected a Regression: The better display of exponents failed for exp(x^2).
   * Seems like some Windows computers only have a numpad enter key.
   * Chinese translation updates from liulitchi.
   * Russian translation updates from OlesyaGerasimenko.
 
-# wxMaxima 19.09.1 - Stable
+#19.09.1
   * The names of greek letters are no more converted to greek letters in variable
-	names by default
-  * Smarter Formatting of asterisk and hyphen
-  * An automatic per-commit Windows Build for Appveyor
-  * Always recalculate the worksheet size when needed
-  * Better vertical alignment of exponents
-  * The layout is now more consigstent between platforms
-  * Chinese translation updates from liulitchi
-  * wxMaxima now remembers the question for each answer, not only its number
-  * Now the manual can be localized, too
-  * Non-breaking spaces are now replaced by ordinary spaces
-    before being sent to maxima
-  * As always: Many additional bug fixes
+    names by default.
+  * Smarter Formatting of asterisk and hyphen.
+  * An automatic per-commit Windows build for Appveyor.
+  * Always recalculate the worksheet size when needed.
+  * Better vertical alignment of exponents.
+  * The layout is now more consistent between platforms.
+  * Chinese translation updates from liulitchi.
+  * wxMaxima now remembers the question for each answer, not only its number.
+  * Now the manual can be localized, too.
+  * Non-breaking spaces are now replaced by ordinary spaces before being sent to Maxima.
+  * Many other bug fixes.
 
-# wxMaxima 19.09.0 - Stable
+#19.09.0
   * Handle timeouts when writing to maxima and partial writes.
   * Worksheet text disappeared on scrolling on some platforms.
-  * Sped up sending code to maxima.
+  * Sped up sending code to Maxima.
   * Removed quoting of Unicode characters within strings sent to maxima.
 
-# wxMaxima 19.08.0 - Stable
-  * Handle timeouts when writing to maxima and partial writes.
-  * Worksheet text disappeared on scrolling on some platforms.
-  * Sped up sending code to maxima.
-  * Removed quoting of Unicode characters within strings sent to maxima.
-
-# wxMaxima 19.07.1 - Stable
+#19.08.1
   * Bugfixes for nearly every instance something was drawn on the screen.
-  * Better handling of multi-cell lisp code
+  * Better handling of multi-cell Lisp code
 
-# wxMaxima 19.07.0 - Stable
+#19.08.0
+  * Updated the russian translation
+  * More and better test cases
+  * Another SpeedUp
+  * Correctly handle nested comments
+  * Format lisp code correctly
+  * Correctly read the default style
+  * Gracefully handle invalid colors
+  * Changed the default communication port to 40100
+  * Several fixes for different combinations of wxWidgets and GTK versions
+
+#19.07.0
  * Many improvements and bugfixes in the LaTeX and HTML export function
  * Many updated translations
  * Resolved a freeze on autocompletion
@@ -147,45 +218,45 @@ finding bugs came from the cppcheck utility which caused changes in over
  * Simplified the recalculation logic in order to squash the remaining bugs
  * Simplified the sync between input and output cells
 
-# wxMaxima 19.05.7 - Stable
- * In conjunction with a new enough maxima worksheets can now start
-   with a :lisp command.
- 
-# wxMaxima 19.05.6 - Stable
+#19.05.7
+ * Support :lisp as the first command of the worksheet, in case that
+   Maxima is new enough to support that.
+
+#19.05.6
  * Correctly save the autosave interval
- * A better logic for saving on exit if autosave is on and the file 
+ * A better logic for saving on exit if autosave is on and the file
    cannot be created.
- 
-# wxMaxima 19.05.5 - Stable
+
+#19.05.5
  * An updated hungarian translation
- * The new maxima command cartesian_product_list is now known to
+ * The new Maxima command cartesian_product_list is now known to
    the autocompletion.
  * Better xim compatibility.
 
-# wxMaxima 19.05.4 - Stable
+#19.05.4
  * Corrected saving formatting styles in the config dialogue
  * Allow to change the title etc. font again
  * Correctly output uppercase greek letters in TeX
  * Re-enable the old-style ESC commands.
  * Made wxMaxima default to auto-searching for the maxima binary.
 
-# wxMaxima 19.05.3 - Stable
+#19.05.3
  * Corrected the autowrap line width for high zoom factors
  * Added a few missing "Update the user interface" events
 
-# wxMaxima 19.05.2 - Stable
+#19.05.2
  * Sometimes the auto-evaluation of the worksheet auto-triggered
  * Support for broken locales that for valid non-ascii chars returned
    isprint()= false
  * Corrected reading font sizes from styles and configuring styles.
 
-# wxMaxima 19.05.1 - Stable
+#19.05.1
  * Fixes for various combinations of GTK and wxWidgets versions
  * A working Mac version
  * A few Windows bug Fixes
  * Big performance improvements.
 
-# wxMaxima 19.05.0 - Stable
+#19.05.0
  * Another ArchLinux displaying issue
  * More GTK3 compatibility
  * Resolved a windows hang
@@ -193,42 +264,39 @@ finding bugs came from the cppcheck utility which caused changes in over
  * Performance improvements and bugfixes
  * Many code optimizations.
 
-# wxMaxima 19.04.3 - Stable
- * wxMaxima now informs maxima which front-end is in use.
+#19.04.3
+ * wxMaxima now informs Maxima which front-end is in use.
 
-# wxMaxima 19.04.2 - Stable
+#19.04.2
  * Corrected the size of error messages
- * A "Copy to mathlab"-feature.
- * Maxima now delays interpreting the data from maxima until it encounters
-   a newline or an Timer expires.
- * EMF output no no more causes crashes and strange behaviour.
+ * A "Copy to Matlab/Octave"-feature.
+ * wxMaxima now delays interpreting the data from Maxima until it encounters
+   a newline or a timer expires.
+ * EMF output no more causes crashes and strange behaviour.
  * RTF output should now work again
  * entermatrix() now works again.
  * Better help file detection on MS Windows.
 
-# wxMaxima 19.04.1 - Stable
+#19.04.1
  * Corrected the size of error messages
- 
-# wxMaxima 19.04.0 - Stable
 
+#19.04.0
  * The cursor width now is taken from the current screen
  * Autocompletion sometimes cleared the result after inputting it
  * Added more commands to autocompletion
  * Spanish and italian translation updates
- * We no more need to re-implement maxima's load() routine.
+ * We no more need to re-implement Maxima's load() routine.
    Instead we call the original one now.
  * Animations now on load remember which slide they stopped at.
  * A more error-proof language selection.
  * If the system looks like it uses UTF8 by default the locale name
-   that is passed to maxima now ends in ".UTF8" which should resolve
-   the "setting locale failed" errors from maxima.
+   that is passed to Maxima now ends in ".UTF8" which should resolve
+   the "setting locale failed" errors from Maxima.
  * Corrected the initial size of error messages.
  * Many additional bug fixes
  * Code cleanups
 
-
-# wxMaxima 19.03.1 - Stable
-
+#19.03.1
  * HighDPI fixes for ArchLinux, Windows and SuSE
  * Resolved crashes on RedHat and MS Windows
  * SBCL's compilation messages now appear in the status bar, not
@@ -237,40 +305,327 @@ finding bugs came from the cppcheck utility which caused changes in over
  * Many small bug fixes.
  * wxWidgets >= 3.1.0: Corrected the toolbar icon size.
 
-# wxMaxima 19.03.0 - Stable
-
+#19.03.0
  * The ESC sequences for inputting symbols now use autocompletion.
  * Use wxAutoBufferedPaintDC for drawing the worksheet instead of
    implementing our own version of it.
  * The usual bug fixes, this time including one bug fix that makes
-   wxMaxima work again on Gentoo and help path lookup fixes for
-   different operating systems.
+   wxMaxima work again on Gentoo and some help path lookup fixes.
 
-# wxMaxima 19.02.2 - Stable
+#19.01.1-19.02.2:
+ * Bug fixes only
 
- * Corrected the GTK3 fix
- * Cleaned up the cleanup process on closing wxMaxima
+#19.01.0
+ * Many bugfixes for the display code
+ * The desktop integration files now adher to the newest standards
+ * Refactoring in order to make the code easier to understand.
+ * Spelling fixes
+ * Shipped around a wxWidgets <3.1 bug for embedding bitmaps in svg
+ * Many Links were updated to https
+ * A better help file detection that still works if there is no .hhp file.
+ * A command-line option that allows to specify the location of Maxima.
 
-# wxMaxima 19.02.1 - Stable
+#18.12.0
+  * Use C++'s strong typing for more enums.
+  * Another big SpeedUp.
+  * Now we make sure that the Manifest telling wxMaxima is high-DPI aware is
+    the only manifest packaged with the .exe file.
+  * Tried to simplify the display code
+  * Source file and function names that more closely their current meaning.
+  * Many bug fixes.
+  * Now we pass the canonical locale name to Maxima, not the short one.
+  * We no more try to set Maxima's locale if it doesn't differ from the system's
+    default one.
 
-* Support for the broken ArchLinux compiler
-* Resolved the Crash on Closing for Mac Os
-* A "File open" bug that was depending on the language setting
-* Corrected scrolling on wxWidgets 3.1.3 for GTK3
+#18.11.2
+  * Better horizontal spacing of cells that are wider than lines
 
-# wxMaxima 19.02.0 - Stable
+#18.11.1
+  * Better horizontal spacing of headings.
 
-* Resolved a cell size recalculation bug
-* Better wxWidgets 3.1.2 compatibility
-* Improved performance
+#18.11.0
+  * GTK3 Compatibility
+  * Worked around C compiler bugs that truncated the beginning of long strings
+  * Zoom gestures for more computers
+  * A better lisp mode
+  * Limit cells now can be broken into lines if they are too wide for the window
+  * Major performance improvements
+  * Several appearance improvements
+  * Many additional bug fixes
 
-# wxMaxima 19.01.3 - Stable
+#18.10
+  * Defer any try to change Maxima's configuration until all questions are answered.
+  * A menu item that sets the autosubscript feature for the current worksheet.
+  * A menu allowing to switch floats to engineering format.
+  * Maxima can now pass the values of variables to wxMaxima.
+  * Autocompletion for functions from lisp-only packages and for all of Maxima's.
+    built in functions.
+  * A context-sensitive "draw" sidepane.
+  * We now allow a packet from Maxima to end in the middle of an unicode codepoint.
+  * If the name of a lisp function is known it now is displayed.
+  * A right-click menu that copies an animation to the clipboard.
+  * A new default value for the current MathJaX release.
+  * A "recent packages" menu for packages loaded from load() or from the menu.
+  * Advertise the current file and the file's state to the Operating System
+  * Copy as Enhanced Metafile (Windows only).
+  * Code simplifications.
+  * A dockable panel for the debug messages.
+  * A more modern theme.
+  * Draw: A right-click menu allowing to open images from the current session as
+    interactive gnuplot sessions.
+  * Migrate the config file to a XDG-compatible location if wxWidgets is new enough
+    to support it.
+  * A "Tip of the day" dialogue that allows for resizing, scrollbars and work while
+    it is still open.
+  * Matrices can now be displayed using round and square brackets.
+  * Various High-DPI enhancements.
+  * Enhancements for low-resolution screens.
+  * Many bug fixes.
+  * Reduced the number of autogenerated files, installed files and external
+    dependencies to a minimum.
+  * Big performance improvements, again.
 
-* Repaired compilation on MacOs for wxWidgets 3.1.1.
-* Better path detection on MS Windows
-* The "-m" switch needed for the appimage
+#18.02
+  * More tooltips
+  * A menu containing the most important commands for lists.
+  * TableOfContents: A right-click menu item that allows to toggle display of section numbers
+  * The size of images can now be restricted to any amount of centimeters.
+  * On a few operating systems: The network indicator icon now knows how much CPU
+    power Maxima uses.
+  * Autocompletion now suggests the names of built-in packages for load(), batch()
+    and batchload().
+  * Autocompletion now suggests the names of built-in demos for demo().
+  * wxMaxima can now handle requests to display raw lisp elements.
+  * A drop-down box for changing cell styles
+  * If an input cell is hidden and has no output it now is no more displayed
+    as a blank vertical space.
+  * wxMaxima no more requires the icon files, tooltips and autocompletion files to be
+    shipped as separate files, which makes creating a ready-to-install package of wxMaxima
+    easier and less error-prone.
+  * Autosave is now enabled by default on new installs.
+  * Big code cleanups.
+  * Many bugfixes
+  * Many performance improvements
+  * Dropped the autotools as the cmake build of wxMaxima is way more powerful.
 
-# wxMaxima 19.01.2 - Stable
+#17.10
+  * Jump to the char containing the error on encountering unmatched parenthesis.
+  * Try to place the cursor near the error in all other cases.
+  * Attempt to mark the whole error message in red. This is bound to fail in
+    some cases as Maxima sometimes only sends part of an error message through
+    the error() command. But it is better than nothing.
+  * Detect and mark most warnings.
+  * A "evaluate cells below" right-click-menu item.
+  * Autosave now even works for unsaved documents adding them to the
+    "recent documents" list if needed.
+  * Big parenthesis are now drawn using unicode characters, if available.
+  * Nicer integral, Product and Sum signs, optionally including antialiassing
+    even if no font provides them.
+  * MouseOver tooltips for some of the more exotic worksheet items.
+  * A "Copy as svg" function that is as good as wxSVGFileDc allows us to be.
+  * Worksheet objects now can provide their own ToolTips.
+  * Config Dialogue: An editor for the startup file.
+  * It is now possible to select which formats "Ctrl+C" should place data on
+    the clipboard in.
+  * Now multiple animations can run concurrently and can be told to autostart.
+  * A menu entry that allows to select 1D and ASCII Art Maths
+  * Recent files that currently don't exist are grayed out now.
+  * A command-line switch that triggers evaluation on startup of wxMaxima
+  * Many Bug Fixes and Performance improvements.
 
-* Corrected the calculation of image heights
-* Corrected the line break algorithm for printing.
+#17.05
+  * A config item that allows to disable printing of Cell brackets.
+  * Cell brackets of inactive cells can now be hidden.
+  * Due to popular demand we can now suppress the output of automatic labels.
+  * The option to use a Minus instead of a Hyphen.
+  * Table of Contents: Folded items are now grayed out.
+  * Table of Contents: A right-click menu.
+  * Copy-and-paste now includes hidden cells and folded items.
+  * Eye Candy: An indicator that shows when Maxima and wxMaxima exchange data.
+    Double-clicking this indicator opens up the network monitor.
+  * Autocompletion now collects words from the current code cell, too.
+  * Better indentation of if clauses and loops.
+  * If the number is too long to display it now is still possible to copy it.
+  * Documented that box() highlights text in Maxima's output.
+  * the with_slider type of commands now uses wxstatusbar() in order to provide
+  * progress information for the user.
+  * Several scrolling fixes, again.
+  * Two concurrent wxMaxima instances now no more overwrite each other's "Recent files"
+    list.
+  * If a error message or question arises or Maxima finishes calculating and the window
+    currently isn't active the operating system is asked to notify the user in a
+    non-disrupting way. For the case of the end of a calculation this can be turned off.
+  * The notification can be activated for the case that the window isn't active and Maxima
+    finishes calculating, too.
+  * Invalid XML tags are now handled more gracefully
+  * Deduplicated the code for saving .wxm files
+  * content.xml files that have been extracted from a broken .wxmx file (e.G.
+    using a text editor as UTF8-encoded TeXt without BOM can now be loaded by
+    wxMaxima in order to reconstruct the worksheet.
+  * MacOs: Upgrading from a previous version should no more cause crashes due to
+    font issues.
+  * MathJaX export can now be configured to instruct the html export to download
+    MathJaX from a different URL: They moved the URL one can use and might do so
+    again somewhere in the future.
+  * Maximum number of digits and if we use user-defined labels now are no more
+    hardcoded into the worksheet at evaluation time.
+  * Anwers to Maxima's questions are now remembered across sessions.
+  * CMake is now our main build system: It is supported under MSVC, XCode,
+    Code::Blocks, its output looks much nicer than the one from the autotools
+    and setting it up uses much more straightforward constructs.
+    The recipe to build a debian package using cmake can be found at
+    https://code.launchpad.net/~peterpall/wxmaxima/packaging
+  * Massive speed-ups
+  * File/Open can now import .mac and .out files from Xmaxima
+  * Many additional bug fixes and stability enhancements.
+
+#16.12
+  * Not a change in wxMaxima, but useful: In Maxima >5.38 the load() command can
+    load .wxm files like it would load .mac files.
+  * Better detection and diagnosis for Maxima process that terminate unexpectedly
+    even if the OS fails to notify us that the network connection with
+    Maxima has dropped.
+  * Incremental search
+  * Automatic line wrap
+  * Bullet lists now use real bullets.
+  * Markdown: Block quote support
+  * A button that temporarily hides all code cells
+  * Massive speedups in the drawing code.
+  * Added a wxstatusbar() command that allows a long-ranging block() to send a string
+    about its progress to the status bar.
+  * Support for cells that are >5000 pixels wide
+  * Better High-DPI support
+  * A Kabyle Translation for users of wxWidgets >= 3.0.1
+  * Holding the "evaluate" key now evaluates all cells of the document one-by-one
+  * .wxm files now include image cells
+  * Drag-and-drop now handles image cells
+  * Copy bitmap now can generate higher-resolution bitmaps
+  * The application we drag-and-drop to now can select a format to get the data in
+    including RTF, MathML, wxm, bitmap and plain text.
+  * A new "copy as plain text" right-click menu item that copies the input and
+    output of a cell.
+  * An all-new manual and improved documentation of the source code.
+  * More unicode characters in the symbols pane
+  * Several content assistent enhancements for platforms that support it.
+  * Corrected a few scrolling bugs.
+  * Shift+Click now selects text or cells.
+  * Several small editor enhancements.
+  * Even if we scrolled away from evaluation wxMaxima now scrolls back to the
+    cell if an error occurs.
+  * Integrals should now always be saved correctly.
+  * Errors in xml from Maxima or in the output cells of .wxmx files now result in error
+    messages, not in silently discarded math elements.
+  * Many additional bug fixes and performance improvements.
+
+#16.04
+  * A TeX-like subscript notation: A_1 is now by default shown as an A with
+    an 1 as subscript
+  * High-quality icons for high-dpi screens.
+  * Some broken .wxmx files generated with wxMaxima 13.04 and older will now
+    automatically be repaired
+  * Tried to make communication with Maxima more stable
+  * Debug: A monitor for the xml communication between Maxima and wxMaxima
+  * Leading White-space in front of a character that has to be escaped in
+    XML is no more ignored.
+  * jpeg-encoded images are now no more converted to much larger png files
+    on saving .wxmx files and on exporting.
+  * Images will now actually be converted to the target format.
+  * Bumped the minor version of the .wxmx format: Some old versions of
+    wxMaxima will replace .jpg files embedded in .wxmx files by a
+    placeholder on load
+  * Increased both speed and memory-efficiency of image handling
+  * Save the zoom factor at exit and reload it on opening a new file
+  * An option that makes wxMaxima use user-defined labels instead of %o where an
+    user-defined label exists. Works well together with unchecking the
+    "export code cells" config item.
+  * A separate text style for user-defined labels.
+  * The "evaluate all cells" and "evaluate till here" now start with a fresh
+    instance of Maxima
+  * TeX export now should work with most unicode chars we have ESC sequences
+    for.
+  * An auto-repair functionality that repairs most .wxmx files wxMaxima 13.04
+    was not able to open again.
+  * A few new ESC sequences and markdown commands.
+  * "#" now is shown as a "not equal" sign as a "not equal" sign already would
+    be interpreted as "#".
+  * Teach CCL on Windows how to deal with unicode variable names like
+    ü and α. For SBCL the necessary change has been done on the Maxima side.
+  * Sidebars for symbols
+  * Printing text cells now works again
+  * The <ESC> key now works as a shortcut that closes the search dialogue.
+  * A copy-to-MathML feature
+  * Many bug, usability and performance fixes
+  * Most importantly: If it is a cursor it now blinks.
+
+#15.08
+  * Compatibility with Maxima 5.37.0
+  * MathJAX now provides scalable equations and extended drag-and-drop for the html export.
+  * The table-of-contents-sidebar now shows the current cursor position
+  * Fixed a few instances of cursors jumping out of the screen
+  * Fixed a few instances of cursors jumping to the beginning or end of the worksheet
+  * Better detection which cell Maxima is processing and if it still is doing so
+  * Regression: Hiding the toolbar didn't work on some systems
+  * Markdown support for <=, >=, <=>, <-, ->, <->, => and +/- symbols.
+  * An option to not export Maxima's input as well as the output.
+  * An option to use High-resolution bitmaps for the HTML export.
+  * Images that are too big for the window now are displayed in a scaled-down version.
+  * Fixed the support for out-of-tree-bulds that was broken in 15.04
+  * Meaningful ALT texts for the HTML export to provide accessibility
+  * An option to include the .wxmx file in the .html export
+  * Performance fixes that are espectionally effective for MSW
+  * Unification of some platform-specific code
+  * bash autocompletion
+  * A fourth sectioning level
+  * Made entering uppercase greek letters easier and documented how to input special
+	unicode symbols
+  * Syntax highlighting in code cells
+  * Automatic highlighting of text equal to the currrently selected one.
+  * A batch mode that pauses evaluation if Maxima asks a question.
+  * A "halt on error" feature
+  * Now evaluation of a new command is only triggered if evaluation of the last
+	command has finished. This means that output from Maxima is always appended
+	to the right cell.
+  * Un-broke error and question handling for multiple commands per cell. Sincewe now send
+	Maxima's input command-per-command this means a cell with multiple commands is no
+	more evaluated faster than multiple cells with single commands each.
+  * If ever a end-of-evaluation marker gets lost there is a new "trigger evaluation"
+	menu entry in the Maxima menu.
+  * On wxGtk autocompletion was replaced by a content assistant that is based on the
+	surprisingly powerful autocompletion feature.
+  * Ctrl+Tab now launches the autocompletion (or content assistant, if available)
+  * Tab and Shift+Tab now indent and unindent regions.
+  * Ctrl+Mouse wheel and Ctrl++/- now zoom in and out of the worksheet.
+  * Allow Extending selection from part of a single cell to multiple cells.
+  * A Autoindent functionality.
+
+#15.04.0
+  * wxWidgets 3.0 is now a mandatory requirement
+  * Various bugfixes
+  * Loads of stability and performance fixes
+  * Adjustable framerate for animations
+  * A version-control friendly flavour of the wxmx format
+  * A mimetype marker at the beginning of wxmx files
+  * Better desktop integration
+  * An offline manual
+  * Autodetection of Maxima's working directory on Mac and Windows
+  * Use gnuplot_postamble instead of gnuplot_preamble
+  * Dropped the hard dependency of TeXinfo
+  * Translation updates
+  * LaTeX: Use centered dots for multiplications
+  * LaTeX: Added an option to select if superscripts should be
+    placed above or after subscripts
+  * LaTeX: Allow the user to add additional commands to the preamble.
+  * Export of animations to pdf (via a pdfTeX file run) and html
+  * Now complex conjugates are drawn as overstrike text.
+  * bumped the minor version number of .wxmx: overstrike text is
+    a new feature and therefore a file containing it cannot be read by
+    old wxMaxima versions.
+  * An autosave functionality that makes Maxima work more like a mobile
+    app whose documents are always saved.
+  * A table-of-contents pane for faster navigation
+  * It is now possible to scroll away from a running evaluation for
+    arbitrary lengths of time and to choose to follow the evaluation
+    process again.
+  * Now TeX scales down images that are obviously too big for the page.
+  * An undo for cell deletes and for adding cells.
+  * Autocompletion for units from ezUnits

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -35,8 +35,7 @@ class ImgCell : public Cell
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
-          wxFileSystem *filesystem = NULL);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
@@ -47,7 +46,7 @@ public:
   ImgCell &operator=(const ImgCell&) = delete;
 
   //! Tell the image which gnuplot files it was made from
-  void GnuplotSource(wxString sourcefile, wxString datafile, wxFileSystem *filesystem = NULL)
+  void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
     {
       if(m_image != NULL)
         m_image->GnuplotSource(sourcefile,datafile, filesystem);

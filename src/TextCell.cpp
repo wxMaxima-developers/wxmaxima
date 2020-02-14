@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -33,8 +33,6 @@
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
                    wxString text, TextStyle style) : Cell(parent, config, cellPointers)
 {
-  m_alt = false;
-  m_altJs = false;
   switch(m_textStyle = style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
@@ -340,7 +338,7 @@ void TextCell::SetValue(const wxString &text)
                       "an equation was expected but was lacking an \"=\"."));
     }
   }
-  m_alt = m_altJs = false;
+  SetAltText();
   ResetSize();
 }
 
@@ -382,15 +380,16 @@ wxSize TextCell::GetTextSize(wxString const &text)
   if(it != m_widths.end())
     return it->second;
 
-  // Ask wxWidgets to return this text piece's size (slow!)
+  // Ask wxWidgets to return this text piece's size (slow, but the only way if
+  // there is no cached size).
   wxSize sz = dc->GetTextExtent(text);
   m_widths[fontSize] = sz;
   return sz;
 }
 
-bool TextCell::NeedsRecalculation()
+bool TextCell::NeedsRecalculation(int fontSize)
 {
-  return Cell::NeedsRecalculation() ||
+  return Cell::NeedsRecalculation(fontSize) ||
     (
       (m_textStyle == TS_USERLABEL) &&
       (!(*m_configuration)->UseUserLabels())
@@ -410,11 +409,9 @@ void TextCell::RecalculateWidths(int fontsize)
 {
   if(fontsize < 1)
     fontsize = m_fontSize;
-  if(fontsize != m_fontsize_old)
-    ResetSize();
   Configuration *configuration = (*m_configuration);
   
-  if(NeedsRecalculation())
+  if(NeedsRecalculation(fontsize))
   {      
     m_fontSize = m_fontsize_old = fontsize;
     wxDC *dc = configuration->GetDC();
@@ -433,9 +430,7 @@ void TextCell::RecalculateWidths(int fontsize)
       (m_userDefinedLabel != wxEmptyString)
       )
       m_textStyle = TS_USERLABEL;
-    
-    SetAltText();
-    
+        
     // If the config settings about how many digits to display has changed we
     // need to regenerate the info which number to show.
     if (
@@ -450,7 +445,6 @@ void TextCell::RecalculateWidths(int fontsize)
     }
     
     m_lastCalculationFontSize = fontsize;
-
 
     if(m_numStart != wxEmptyString)
     {      
@@ -501,6 +495,8 @@ void TextCell::RecalculateWidths(int fontsize)
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
         wxString text = m_text;
+        if(!m_altText.IsEmpty())
+          text = m_altText;
 
         if(m_textStyle == TS_USERLABEL)
         {
@@ -550,7 +546,7 @@ void TextCell::RecalculateWidths(int fontsize)
         m_center = m_height / 2;
       }
       // Check if we are using jsMath and have jsMath character
-      else if (m_altJs && configuration->CheckTeXFonts())
+      else if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
       {      
         wxSize sz = GetTextSize(m_altJsText);
         m_width = sz.GetWidth();
@@ -560,18 +556,12 @@ void TextCell::RecalculateWidths(int fontsize)
       }
 
       /// We are using a special symbol
-      else if (m_alt)
+      else if (!m_altText.IsEmpty())
       {
         wxSize sz = GetTextSize(m_altText);
         m_width = sz.GetWidth();
         m_height = sz.GetHeight();
       }
-      else if (m_displayedText.IsEmpty())
-      {
-        m_height = m_fontSize;
-        m_width = 0;
-      }
-
       /// This is the default.
       else
       {
@@ -587,7 +577,7 @@ void TextCell::RecalculateWidths(int fontsize)
       if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
       {
         m_height = 0;
-        m_width = m_width / 4;
+        m_width = Scale_Px(fontsize) / 4;
       }
     }
   }
@@ -605,7 +595,7 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (NeedsRecalculation())
+    if (NeedsRecalculation(m_fontsize_old))
       RecalculateWidths(m_fontSize);
     
     if (InUpdateRegion())
@@ -661,13 +651,13 @@ void TextCell::Draw(wxPoint point)
                      point.y - m_realCenter + MC_TEXT_PADDING);
       }
         /// Check if we are using jsMath and have jsMath character
-      else if (m_altJs && configuration->CheckTeXFonts())
+      else if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
         dc->DrawText(m_altJsText,
                     point.x + MC_TEXT_PADDING,
                     point.y - m_realCenter + MC_TEXT_PADDING);
 
         /// We are using a special symbol
-      else if (m_alt)
+      else if (!m_altText.IsEmpty())
         dc->DrawText(m_altText,
                     point.x + MC_TEXT_PADDING,
                     point.y - m_realCenter + MC_TEXT_PADDING);
@@ -748,7 +738,7 @@ void TextCell::SetFont(int fontsize)
   wxFont font = configuration->GetFont(m_textStyle,fontsize);
 
   // Use jsMath
-  if (m_altJs && configuration->CheckTeXFonts())
+  if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
     font.SetFaceName(m_texFontname);
   
   if (!font.IsOk())
@@ -1434,15 +1424,12 @@ wxString TextCell::ToMathML()
         return wxT("<mo>") + text + wxT("</mo>\n");
       else
         return wxT("<mi>") + text + wxT("</mi>\n");
-      break;
     case TS_NUMBER:
       return wxT("<mn>") + text + wxT("</mn>\n");
-      break;
 
     case TS_LABEL:
     case TS_USERLABEL:
       return wxT("<mtext>") + text + wxT("</mtext></mtd><mtd>\n");
-      break;
 
     case TS_STRING:
     default:
@@ -1519,7 +1506,6 @@ wxString TextCell::ToOMML()
     case TS_LABEL:
     case TS_USERLABEL:
       return wxEmptyString;
-      break;
 
     case TS_STRING:
     default:
@@ -1630,7 +1616,6 @@ bool TextCell::IsShortNum()
 
 void TextCell::SetAltText()
 {
-  m_altJs = m_alt = false;
   if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
     return;
 
@@ -1639,11 +1624,8 @@ void TextCell::SetAltText()
   {
     if((*m_configuration)->Latin2Greek())
     {
-      m_altJs = true;
       m_altJsText = GetGreekStringTeX();
-      m_texFontname = CMMI10;
-      
-      m_alt = true;
+      m_texFontname = CMMI10;      
       m_altText = GetGreekStringUnicode();
     }
   }
@@ -1660,11 +1642,8 @@ void TextCell::SetAltText()
         m_texFontname = CMMI10;
       else
         m_texFontname = CMSY10;
-      m_altJs = true;
     }
     m_altText = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
-    if (m_altText != wxEmptyString)
-      m_alt = true;
 // #if defined __WXMSW__
 //     m_altText = GetSymbolSymbol(configuration->CheckKeepPercent());
 //     if (m_altText != wxEmptyString)

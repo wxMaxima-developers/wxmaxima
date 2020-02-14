@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -129,6 +129,9 @@ void ExptCell::SetBase(Cell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateWidthsList(fontsize);
@@ -146,7 +149,9 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateHeightList(fontsize);
@@ -164,16 +169,13 @@ void ExptCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    m_exptCell->RecalculateHeightList(fontsize);
-    m_baseCell->RecalculateHeightList(fontsize);
+    m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
 
-    m_expt_yoffset = m_exptCell->GetDrop() + PowRise();
+    m_height = m_baseCell->GetHeightList();
+    m_center = m_baseCell->GetCenterList();
 
-    m_height = m_baseCell->GetHeight();
-    m_center = m_baseCell->GetCenter();
-
-    int baseHeight = m_baseCell->GetHeight() - m_baseCell->GetDrop();
-    int exptHeight = m_exptCell->GetHeight() - m_exptCell->GetDrop() + m_expt_yoffset;
+    int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
+    int exptHeight = m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
     
     if(baseHeight < exptHeight)
     {
@@ -183,6 +185,7 @@ void ExptCell::RecalculateHeight(int fontsize)
     else
       m_expt_yoffset += baseHeight - exptHeight;
   }
+  Cell::RecalculateHeight(fontsize);
 }
 
 wxString ExptCell::ToString()
@@ -279,20 +282,10 @@ bool ExptCell::BreakUp()
       m_expt_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;
     m_nextToDraw = m_baseCell.get();
+    m_height = 1;
+    m_center = 1;
     ResetData();    
-    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
     return true;
   }
   return false;
-}
-
-void ExptCell::Unbreak()
-{
-  if (m_isBrokenIntoLines)
-  {
-    m_baseCell->UnbreakList();
-    m_exptCell->UnbreakList();
-  }
-  Cell::Unbreak();
 }

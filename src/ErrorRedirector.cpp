@@ -94,7 +94,7 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       now.SetToCurrent();
 
       wxString record = now.FormatTime() + ": " + msg;
-      std::cerr << record.utf8_str() << "\n";
+      std::cerr << record << "\n";
     }
 }
 

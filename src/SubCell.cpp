@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -77,6 +77,9 @@ void SubCell::SetBase(Cell *base)
 
 void SubCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
@@ -86,18 +89,21 @@ void SubCell::RecalculateWidths(int fontsize)
 
 void SubCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
+  Cell::RecalculateHeight(fontsize);
 }
 
 void SubCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     wxPoint bs, in;
 

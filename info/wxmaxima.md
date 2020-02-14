@@ -47,7 +47,7 @@ Introduction to wxMaxima
 
 In the open-source domain big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.
 
-A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](http://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.
+A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.
 
 ### _Maxima_
 
@@ -91,11 +91,11 @@ The figure below shows different cell types (Title cells, section cells, subsect
 
 The worksheet is organized in cells. Each cell can contain other cells or the following types of content:
 
-*   one or more lines of _Maxima_ input
-*   one or more image
-*   output of,  or a question from, _Maxima_
-*   a text block that can for example be used for documentation
-*   a title, section or a subsection.
+* one or more lines of _Maxima_ input
+* one or more image
+* output of,  or a question from, _Maxima_
+* a text block that can for example be used for documentation
+* a title, section or a subsection.
 
 The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu,  using the hot keys shown in the menu or using the drop-down list in the toolbar.
 
@@ -105,8 +105,8 @@ If the user tries to select a complete sentence a word processor will try to ext
 
 What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
-*   A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.
-*   A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
+* A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.
+* A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
 
 ### Command autocompletion
 
@@ -124,8 +124,8 @@ For most countries the codepage of 256 characters that has been chosen does not 
 
 _Maxima_ allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
-*   A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
-*   Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:
+* A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
+* Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:
 
 ~~~~
 a alpha    i iota      r rho
@@ -201,7 +201,9 @@ leadsto       a "leads to" sign
 -->           a long right arrow
 ~~~~
 
-If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing `<kbd>ESC</kbd>number of the character<kbd>ESC</kbd>`. `<kbd>ESC</kbd>61<kbd>ESC</kbd>` therefore results in an `a`.
+If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.
+
+<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.
 
 Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
@@ -253,9 +255,9 @@ Other symbols the html and TeX export will recognize are `<=` and `>=` for compa
 
 Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of _wxMaxima_ to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:
 
-*   <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell.
-*   <kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.
-*   <kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.
+* <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell.
+* <kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.
+* <kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.
 
 ### Raw TeX in the TeX export
 
@@ -292,8 +294,8 @@ This xml-based file format saves the complete worksheet including things like th
 
 For some common configuration variables _wxMaxima_ offers two ways of configuring:
 
-*   The configuration dialog box below lets you change their default values for the current and subsequent sessions.
-*   Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.
+* The configuration dialog box below lets you change their default values for the current and subsequent sessions.
+* Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.
 
 ![wxMaxima configuration 1](./wxMaxima_configuration_001.png)
 
@@ -322,17 +324,24 @@ It also contains the option to use jsMath fonts. It is a good idea to install th
 
 This option enables two things:
 
-*   If an opening parenthesis, bracket or double quote is entered _wxMaxima_ will insert a closing one after it.
-*   If text is selected if any of these keys is pressed the selected text will be put between the matched signs.
+* If an opening parenthesis, bracket or double quote is entered _wxMaxima_ will insert a closing one after it.
+* If text is selected if any of these keys is pressed the selected text will be put between the matched signs.
 
 ### Don't save the worksheet automatically
 
-If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
+If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
 
 If this option isn't set wxMaxima behaves more like a modern cellphone app:
 
-*   Files are saved automatically on exit
-*   And the file will automatically be saved every 3 minutes.
+* Files are saved automatically on exit
+* And the file will automatically be saved every 3 minutes.
+
+### Where is the configuration saved?
+
+If you are using Unix/Linux, a file `.wxMaxima` in your homedirectory is used for saving wxMaxima's configuration. (Since the filename starts with a dot, it will be a hidden file).
+
+If you are using Windows, the configuration will be stored in the registry. You will find the entries for wxMaxima at the following position in the registry: `HKEY_CURRENT_USER\Software\wxMaxima`
+
 
 * * *
 
@@ -346,8 +355,8 @@ _wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its ma
 
 if `wxsubscripts` is set to true variable names of the format `x_y` are displayed using a subscript if
 
-*   `y` is a single letter
-*   `y` is an integer
+* `y` is a single letter
+* `y` is an integer
 
 If the variable name doesn’t match these requirements it can still be declared as "to be subscripted" using the command `wxdeclare_subscript(variable_name);` or `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a variable as subscripted can be reverted using the following command: `wxdeclare_subscript(variable_name,false);`
 
@@ -416,7 +425,7 @@ If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't support
 
 ### Opening gnuplot's command console in `plot` windows
 
-On MS Windows if in _Maxima_'s variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot" gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to "steal" the keyboard focus for a short time every time a plot is prepared.
+On MS Windows, if in _Maxima_'s variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot", gnuplot offers the possibility to open a console window, where gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to "steal" the keyboard focus for a short time every time a plot is prepared.
 
 ### Embedding animations into the spreadsheet
 
@@ -450,7 +459,7 @@ The same functionality for 3D plots is accessible as `with_slider_draw3d`, which
         )
     )$
 
-If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intiution:
+If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intuition:
 
     wxanimate_autoplay:true;
     wxanimate_framerate:20;
@@ -469,10 +478,10 @@ If the general shape of the plot is what matters it might suffice to move the pl
 
 For those more familiar with `plot` than with `draw` there is a second set of functions:
 
- * `with_slider` and
- * `wxanimate`.
+* `with_slider` and
+* `wxanimate`.
 
-Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable wxanimate\_framerate can be used:
+Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable `wxanimate_framerate` can be used:
 
     wxanimate(a, 10,
         sin(a*x), [x,-5,5]), wxanimate_framerate=6$
@@ -487,7 +496,7 @@ The animation functions use _maxima_'s `makelist` command and therefore shares t
         explicit(f,x,0,10)
     )$
 
-If _Maxima_ is explicitely asked to substitute the slider’s value plotting works fine instead:
+If _Maxima_ is explicitly asked to substitute the slider’s value plotting works fine instead:
 
     f:sin(a*x);
     with_slider_draw(
@@ -521,13 +530,13 @@ The "Plot using draw" sidebar hides a simple code generator that allows to gener
 
 #### 2D
 
-Generates the sceleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
+Generates the skeleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
 
 One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_ has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
 
 #### 3D
 
-Generates the sceleton of a `draw()` command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.
+Generates the skeleton of a `draw()` command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.
 
 #### Expression
 
@@ -587,18 +596,18 @@ if the `.wxmx` file format is being used embedding files in a _wxMaxima_ project
 
 The config dialogue of _wxMaxima_ offers to edit two files with commands that are executed on startup:
 
- * A file that contains commands that are executed on starting up _Maxima_, and
- * one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_.
+* A file that contains commands that are executed on starting up _Maxima_, and
+* one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_.
 
 ## Special variables wx...
 
-*   `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
-*   `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_.
-*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality.
-*   `wxplot_size` defines the resolution of embedded plots.
-*   `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to `false` from the config dialogue.
-*   `wxanimate_framerate`: The number of frames per second the following animations have to be played back with.
-*   `wxanimate_autoplay`: Automatically play animations by default?
+* `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
+* `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_.
+* `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality.
+* `wxplot_size` defines the resolution of embedded plots.
+* `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to `false` from the config dialogue.
+* `wxanimate_framerate`: The number of frames per second the following animations have to be played back with.
+* `wxanimate_autoplay`: Automatically play animations by default?
 
 ## Pretty-printing 2D output
 
@@ -623,8 +632,8 @@ Also, because a matrix is a list of lists, matrices can be converted to tables i
 
 _wxMaxima_ provides a few functions that gather bug reporting information about the current system:
 
-*   `wxbuild_info()` gathers information about the currently running version of _wxMaxima_
-*   `wxbug_report()` tells how and where to file bugs
+* `wxbuild_info()` gathers information about the currently running version of _wxMaxima_
+* `wxbug_report()` tells how and where to file bugs
 
 * * *
 
@@ -666,10 +675,10 @@ This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to
 
 Possible reasons for this error are:
 
-*   The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
-*   _Maxima_ tried to do something the currently installed version of gnuplot isn’t able to understand. In this case a file ending in .gnuplot in the directory _Maxima_’s variable maxima\_userdir points to contains the instructions from _Maxima_ to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.
-*   Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
-*   Gnuplot didn’t output a valid .png file.
+* The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
+* _Maxima_ tried to do something the currently installed version of gnuplot isn’t able to understand. In this case a file ending in .gnuplot in the directory _Maxima_’s variable maxima\_userdir points to contains the instructions from _Maxima_ to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.
+* Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
+* Gnuplot didn’t output a valid .png file.
 
 ## Plotting an animation results in “error: undefined variable”
 
@@ -679,15 +688,15 @@ The value of the slider variable by default is only substituted into the express
 
 There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:
 
-*   _wxMaxima_ actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.
-*   If you still have a way to find out what label _Maxima_ has assigned to the cell just type in the cell’s label and its contents will reappear.
-*   If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently.
-*   If nothing else helps _Maxima_ contains a replay feature:
+* _wxMaxima_ actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.
+* If you still have a way to find out what label _Maxima_ has assigned to the cell just type in the cell’s label and its contents will reappear.
+* If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently.
+* If nothing else helps _Maxima_ contains a replay feature:
 
     %i1 playback();
 
 
-## _wxMaxima_ starts up with the message “Maxima process Terminated.”
+## _wxMaxima_ starts up with the message “Maxima process terminated.”
 
 One possible reason is that _Maxima_ cannot be found in the location that is set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore won’t run at all. Setting the path to a working _Maxima_ binary should fix this problem.
 
@@ -710,7 +719,7 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 ## _wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts
 
-If your _Maxima_ is based on sbcl the following lines have to be added to your `.sblrc`:
+If your _Maxima_ is based on sbcl the following lines have to be added to your `.sbclrc`:
 
     (setf sb-impl::*default-external-format* :utf-8)
 
@@ -786,19 +795,19 @@ Command-line arguments
 
 Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. _wxMaxima_ still provides some command line switches, though.
 
-*   `-v` or `--version`: Output the version information
-*   `-h` or `--help`: Output a short help text
-*   `-o` or `--open=<str>`: Open the filename given as argument to this command-line switch
-*   `-e` or `--eval`: Evaluate the file after opening it.
-*   `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
-*  `--logtostdout`:                 Log all "debug messages" sidebar messages to stderr, too.
-*  `--pipe`:                        Pipe messages from Maxima to stdout.
-*  `--exit-on-error`:               Close the program on any maxima error.
-*   `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch
+* `-v` or `--version`: Output the version information
+* `-h` or `--help`: Output a short help text
+* `-o` or `--open=<str>`: Open the filename given as argument to this command-line switch
+* `-e` or `--eval`: Evaluate the file after opening it.
+* `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes _Maxima_ generate output files. Batch-processing will be stopped if _wxMaxima_ detects that _Maxima_ has output an error and will pause if _Maxima_ has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
+* `--logtostdout`:                 Log all "debug messages" sidebar messages to stderr, too.
+* `--pipe`:                        Pipe messages from Maxima to stdout.
+* `--exit-on-error`:               Close the program on any maxima error.
+* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch
 * `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
-*  `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler `<str>`.
-*  `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments
-*   `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
+* `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler `<str>`.
+* `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments
+* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
 
 Instead of a minus some operating systems might use a dash in front of the command-line switches.
 

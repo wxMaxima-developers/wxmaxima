@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -77,6 +77,9 @@ std::list<std::shared_ptr<Cell>> MatrCell::GetInnerCells()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 2));
@@ -103,7 +106,9 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 2));
@@ -129,12 +134,13 @@ void MatrCell::RecalculateHeight(int fontsize)
   if (m_height == 0)
     m_height = fontsize + Scale_Px(10);
   m_center = m_height / 2;
+  Cell::RecalculateHeight(fontsize);
 }
 
 void MatrCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();

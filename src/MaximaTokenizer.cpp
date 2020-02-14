@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -31,7 +31,7 @@
 #include <wx/string.h>
 
 MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
-{
+{  
   // ----------------------------------------------------------------
   // --------------------- Step one:                -----------------
   // --------------------- Break a line into tokens -----------------
@@ -68,7 +68,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       nextChar = wxT(' ');
 
     // Handle newline characters (hard+soft line break)
-    if ((Ch == wxT('\n')) || (Ch == wxT('\r')))
+    if (m_linebreaks.Contains(Ch))
     {
       m_tokens.push_back(new Token(wxChar(Ch)));
       ++it;
@@ -246,18 +246,36 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
                    (lastChar == 'h') || (lastChar == 'H') ||
                    (lastChar == 'l') || (lastChar == 'L')
                    ) && (
-                     (*it == '+') ||
-                     (*it == '-') ||
-                     (*it == wxT('\u2212'))
+                     (m_plusSigns.Contains(*it)) ||
+                     (m_minusSigns.Contains(*it))
                      )
                  )))
       {
-        token += wxString(*it);
+        wxChar ch = *it;
+        for (wxString::const_iterator it3 = m_plusSigns.begin(); it3 != m_plusSigns.end(); ++it3)
+          if(ch == *it3)
+            ch = '+';
+        for (wxString::const_iterator it3 = m_minusSigns.begin(); it3 != m_minusSigns.end(); ++it3)
+          if(ch == *it3)
+            ch = '-';
+        token += ch;
         lastChar = *it;
         ++it;
       }
       
       m_tokens.push_back(new Token(token, TS_CODE_NUMBER));
+      continue;
+    }
+    if (m_plusSigns.Contains(Ch))
+    {
+      wxString token = "+";
+      m_tokens.push_back(new Token(token));
+      continue;
+    }
+    if (m_minusSigns.Contains(Ch))
+    {
+      wxString token = "-";
+      m_tokens.push_back(new Token(token));
       continue;
     }
     // Merge consecutive spaces into one single token
@@ -413,8 +431,16 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch)
 }
 
 const wxString MaximaTokenizer::m_additional_alphas = wxT("\\_%µ");
-const wxString MaximaTokenizer::m_not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212");
-const wxString MaximaTokenizer::m_spaces = wxT(" \t")
+const wxString MaximaTokenizer::m_not_alphas = wxT("\u00B7\u2212\u2260\u2264\u2265\u2265\u2212\u00B2\u00B3\u00BD\u221E\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u2264\u2265\u2212")
+  wxT("\uFE62")
+  wxT("\uFF0B")
+  wxT("\uFB29")
+  wxT("\u2795")
+  wxT("\u2064")
+  wxT("\u2796")
+  wxT("\uFE63")
+  wxT("\uFF0D");
+const wxString MaximaTokenizer::m_spaces = wxT(" ")
   wxT("\u00A0") // A non-breakable space
   wxT("\xDCB6") // A non-breakable space (alternate version)
   wxT("\u1680") // Ogham space mark
@@ -427,4 +453,24 @@ const wxString MaximaTokenizer::m_spaces = wxT(" \t")
   wxT("\u2006") // 1/6 em space
   wxT("\u2007") // figure space
   wxT("\u2008") // punctuation space
+  wxT("\t")
   wxT("\r"); // A soft linebreak
+
+const wxString MaximaTokenizer::m_linebreaks =
+  wxT("\n")
+  wxT("\u2028")
+  wxT("\u2029");
+
+const wxString MaximaTokenizer::m_plusSigns =
+  "+"
+  wxT("\uFE62")
+  wxT("\uFF0B")
+  wxT("\uFB29")
+  wxT("\u2795")
+  wxT("\u2064");
+
+const wxString MaximaTokenizer::m_minusSigns =
+  "-"
+  wxT("\u2796")
+  wxT("\uFE63")
+  wxT("\uFF0D");

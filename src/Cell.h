@@ -421,7 +421,7 @@ class Cell
    */
   virtual void Draw(wxPoint point);
 
-  virtual void Draw(){Draw(m_currentPoint);}
+  void Draw(){Draw(m_currentPoint);}
 
   /*! Draw this list of cells
 
@@ -546,7 +546,7 @@ class Cell
   virtual wxRect GetRect(bool wholeList = false);
 
   //! True, if something that affects the cell size has changed.
-  virtual bool NeedsRecalculation();
+  virtual bool NeedsRecalculation(int fontSize);
   
   virtual wxString GetDiffPart();
 
@@ -557,8 +557,7 @@ class Cell
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize)
-    {m_fontSize = fontsize;}
+  virtual void RecalculateHeight(int fontsize);
 
   /*! Recalculate the height of this list of cells
 
@@ -767,7 +766,7 @@ class Cell
 
     This function tries to return a cell to the single-line form.
    */
-  virtual void Unbreak();
+  void Unbreak();
 
   /*! Unbreak this line
 
@@ -1059,12 +1058,13 @@ protected:
 
 protected:
   CellPointers *m_cellPointers;
-
+  //! The zoom factor at the time of the last recalculation.
+  double m_lastZoomFactor;
+  int m_fontsize_old;
+  bool m_isBrokenIntoLines_old;
 private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old;
-  //! The zoom factor at the time of the last recalculation.
-  double m_lastZoomFactor;
 };
 
 #endif // MATHCELL_H

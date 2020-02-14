@@ -146,7 +146,8 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
-    ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, false);
+    std::shared_ptr <wxFileSystem> noFS;
+    ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, noFS, false);
     GroupCell::AppendOutput(ic);
   }
 
@@ -505,6 +506,7 @@ void GroupCell::SetOutput(Cell *output)
 
   m_lastInOutput = m_output.get();
 
+  m_outputHeight = -1;
   if(m_output != NULL)
   {
     m_output->SetGroup(this);
@@ -514,36 +516,42 @@ void GroupCell::SetOutput(Cell *output)
   }
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
-//  ResetSize();
+  ResetSize();
+  ResetData();
   GroupCell::Recalculate();
 }
 
 void GroupCell::RemoveOutput()
 {
   m_numberedAnswersCount = 0;
-  // If there is nothing to do we can skip the rest of this action.
   if (m_output == NULL)
     return;
+  // If there is nothing to do we can skip the rest of this action.
 
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
 
-  if (!(GetGroupType() == GC_TYPE_IMAGE))
-  {
+  if (GetGroupType() != GC_TYPE_IMAGE)
     m_output = NULL;
-  }
 
   m_cellPointers->m_errorList.Remove(this);
   // Calculate the new cell height.
 
-  ResetSize();
-  ResetData();
-  RecalculateHeight((*m_configuration)->GetDefaultFontSize());
-  (*m_configuration)->AdjustWorksheetSize(true);
   m_isHidden = false;
 
+  // ResetSize();
+  // ResetData();
+
+  m_outputHeight = 0;
+  m_height = m_inputHeight;
+  if(m_inputLabel)
+    m_width = m_inputLabel->GetFullWidth();
+  else
+    m_width = 50;
+  (*m_configuration)->AdjustWorksheetSize(true);
+  
   // Move all cells that follow the current one up by the amount this cell has shrinked.
-  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
+  GroupCell *cell = this;
   while(cell != NULL)
     cell = cell->UpdateYPosition();
   UpdateCellsInGroup();
@@ -583,7 +591,12 @@ void GroupCell::AppendOutput(Cell *cell)
       while (m_lastInOutput->m_next != NULL)
         m_lastInOutput = m_lastInOutput->m_next;
   }
-//  Recalculate();
+  m_output->ResetSize();
+  m_output->ResetSize();
+  m_outputHeight = -1;
+  ResetSize();
+  ResetData();
+  GroupCell::Recalculate();
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
 }
@@ -661,7 +674,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   
-  if (NeedsRecalculation())
+  if (NeedsRecalculation(fontsize))
   {
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -920,9 +933,9 @@ void GroupCell::RecalculateHeightOutput()
   (*m_configuration)->AdjustWorksheetSize(true);
 }
 
-bool GroupCell::NeedsRecalculation()
+bool GroupCell::NeedsRecalculation(int fontSize)
 {
-  return Cell::NeedsRecalculation() ||
+  return Cell::NeedsRecalculation(fontSize) ||
     ((GetInput() != NULL) &&
      ((GetInput()->GetWidth() <= 0) || (GetInput()->GetHeight() <= 0) ||
       (GetInput()->GetCurrentPoint().x <= 0) || (GetInput()->GetCurrentPoint().y <= 0)
@@ -931,9 +944,7 @@ bool GroupCell::NeedsRecalculation()
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
-  Cell::RecalculateHeight(fontsize);
-
-  if(NeedsRecalculation())
+  if(NeedsRecalculation(fontsize))
   {
     m_outputRect.SetHeight(0);
     RecalculateHeightInput();   
@@ -943,6 +954,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 //  if (((m_height <= 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
 //    m_height = configuration->GetCellBracketWidth();
   
+  Cell::RecalculateHeight(fontsize);
   UpdateYPosition();
 }
 
@@ -953,7 +965,9 @@ GroupCell *GroupCell::UpdateYPosition()
   if (m_previous == NULL)
   {
     m_currentPoint.x = configuration->GetIndent();
-    m_currentPoint.y = configuration->GetBaseIndent() + GetCenterList();
+    if(m_center < 0)
+      Recalculate();
+    m_currentPoint.y = configuration->GetBaseIndent() + GetCenter();
   }
   else
   {

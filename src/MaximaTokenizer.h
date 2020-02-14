@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -91,6 +91,12 @@ protected:
   static const wxString m_not_alphas;
   //! Space characters
   static const wxString m_spaces;
+  //! Plus sign
+  static const wxString m_plusSigns;
+  //! Minus sign
+  static const wxString m_minusSigns;
+  //! Linebreak characters
+  static const wxString m_linebreaks;
 };
 
 #endif // MAXIMATOKENIZER_H

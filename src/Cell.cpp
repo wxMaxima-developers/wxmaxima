@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -62,9 +62,10 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
+  m_isBrokenIntoLines_old = false;
   m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
-  m_clientWidth_old = -1;
+  m_fontsize_old = m_clientWidth_old = -1;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
@@ -191,23 +192,16 @@ Cell *Cell::CopyList()
 
 void Cell::ClearCacheList()
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ClearCache();
-    tmp = tmp->m_next;
-  }
 }
 
 void Cell::SetGroupList(Cell *group)
 {
-  Cell *tmp = this;
-  while (tmp != NULL)
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->SetGroup(group);
     tmp->SetParent(this);
-    tmp = tmp->m_next;
   }
 }
 
@@ -251,9 +245,7 @@ void Cell::SetGroup(Cell *group)
 
 void Cell::FontsChangedList()
 {
-  Cell *tmp = this;
-  
-  while(tmp != NULL)
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->FontsChanged();
     std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
@@ -262,7 +254,6 @@ void Cell::FontsChangedList()
       if(*it != NULL)
         (*it)->FontsChangedList();
     }
-    tmp = tmp->m_next;
   }
 }
 
@@ -322,14 +313,17 @@ int Cell::GetCenterList()
   return m_maxCenter;
 }
 
-bool Cell::NeedsRecalculation()
+bool Cell::NeedsRecalculation(int fontSize)
 {
-  return (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+  bool result = (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+    (fontSize != m_fontsize_old) ||
+    (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
     ((*m_configuration)->RecalculationForce()) ||
     (*m_configuration)->FontChanged();
+  return result;
 }
 
 /***
@@ -475,13 +469,8 @@ void Cell::RecalculateList(int fontsize)
 
 void Cell::ResetSizeList()
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ResetSize();
-    tmp = tmp->m_next;
-  }
 }
 
 
@@ -514,10 +503,16 @@ void Cell::RecalculateWidthsList(const int &fontsize)
   }
 }
 
-void Cell::RecalculateWidths(int fontsize)
+void Cell::RecalculateWidths(int WXUNUSED(fontsize))
+{
+}
+
+void Cell::RecalculateHeight(int fontsize)
 {
   ResetData();
   m_fontSize = fontsize;
+  m_fontsize_old = fontsize;
+  m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
 }
@@ -1178,12 +1173,9 @@ void Cell::ResetData()
   std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
   for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
     {
-      Cell *tmp = it->get();
-      while(tmp != NULL)
-      {
+      for(Cell *tmp = it->get(); tmp != NULL; tmp = tmp -> m_next)
+        
         tmp->ResetData();
-        tmp = tmp -> m_next;
-      }
     }
 }
 
@@ -1207,8 +1199,8 @@ Cell *Cell::last()
 
 void Cell::Unbreak()
 {
-//  if(m_isBrokenIntoLines)
-  ResetData();
+  if(m_isBrokenIntoLines)
+    ResetData();
 
   m_isBrokenIntoLines = false;
   m_nextToDraw = m_next;
@@ -1228,12 +1220,8 @@ void Cell::Unbreak()
 
 void Cell::UnbreakList()
 {
-  Cell *tmp = this;
-  while (tmp != NULL)
-  {
+  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->Unbreak();
-    tmp = tmp->m_next;
-  }
 }
 
 // cppcheck-suppress functionStatic

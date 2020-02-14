@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2007-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -59,7 +59,8 @@ public:
     \param cellPointers All pointers that might point to this cell and that need to
                         be set to NULL if this cell is deleted.
    */
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const std::shared_ptr<wxFileSystem> &filesystem, int framerate = -1);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
   SlideShow(const SlideShow &cell);
   Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();
@@ -160,7 +161,7 @@ protected:
   bool m_animationRunning;
   int m_size;
   int m_displayed;
-  wxFileSystem *m_fileSystem;
+  std::shared_ptr<wxFileSystem> m_fileSystem;
   vector<std::shared_ptr<Image>> m_images;
 
   void RecalculateHeight(int fontsize) override;
