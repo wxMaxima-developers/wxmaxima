@@ -4,17 +4,26 @@
 ;; Gunter Königsmann, 2014-2018
 ;;  SPDX-License-Identifier: GPL-2.0+
 
-;; MathML-printing
-;; Created by David Drysdale (DMD), December 2002/January 2003
+;; This file isn't directly loaded by maxima on startup of wxMaxima.
+;; Instead generate_wxmathml.sh, when run manually, generates a
+;; gzip'ed version that is included in the wxMaxima binary and 
+;; sent to maxima using a :lisp-quiet command.
 ;;
+;; Rationale: This approach means that wxMaxima doesn't need to
+;; know where wxMathml.lisp was moved by the ArchLinux, Gentoo,
+;; Macports, cygwin, fink, homebrew, app-in-dmg, Ubuntu or similar
+;; packager.
+
+;; The MathML-printing part (which makes up most of this file)
+;; was created by David Drysdale (DMD), December 2002/January 2003
 ;; closely based on the original TeX conversion code in mactex.lisp,
 ;; for which the following credits apply:
 ;;   (c) copyright 1987, Richard J. Fateman
 ;;   small corrections and additions: Andrey Grozin, 2001
 ;;   additional additions: Judah Milgram (JM), September 2001
 ;;   additional corrections: Barton Willis (BLW), October 2001
-;; Method:
 
+;; Method:
 ;; Producing wxml from a Maxima internal expression is done by
 ;; a reversal of the parsing process.  Fundamentally, a
 ;; traversal of the expression tree is produced by the program,
