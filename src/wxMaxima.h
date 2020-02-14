@@ -451,8 +451,12 @@ protected:
 
   void DumpProcessOutput();
 
-  //! Try to evaluate the next command for maxima that is in the evaluation queue
-  void TriggerEvaluation();
+  /*! Try to evaluate the next command for maxima that is in the evaluation queue
+
+    \param ignoreBusy If this parameter is true data is sent even if we still haven't
+    processed maxima's "need input" prompt.
+   */
+  void TriggerEvaluation(bool ignoreBusy = false);
 
   void TryUpdateInspector();
 
