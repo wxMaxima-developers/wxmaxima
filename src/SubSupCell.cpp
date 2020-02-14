@@ -112,7 +112,7 @@ void SubSupCell::SetIndex(Cell *index)
   if (index == NULL)
     return;
   m_postSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(index);
+  m_innerCellList.push_back(m_postSubCell);
 }
 
 void SubSupCell::SetBase(Cell *base)
@@ -120,7 +120,7 @@ void SubSupCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
-  m_innerCellList.push_back(base);
+  m_innerCellList.push_back(m_baseCell);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
