@@ -95,8 +95,6 @@ public:
 
   //! Clear the list of words that appear in the workSheet's code cells
   void ClearWorksheetWords();
-  //! Clear the list of files load() can be applied on
-  void ClearLoadfileList();
   //! Clear the list of files demo() can be applied on
   void ClearDemofileList();
   

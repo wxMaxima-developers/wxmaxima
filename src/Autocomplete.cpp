@@ -49,13 +49,6 @@ void AutoComplete::ClearWorksheetWords()
   m_worksheetWords.clear();
 }
 
-void AutoComplete::ClearLoadfileList()
-{
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp critical (AutocompleteFiles)
-  #endif
-  m_wordList[loadfile] = m_builtInLoadFiles;
-}
 void AutoComplete::ClearDemofileList()
 {
   #ifdef HAVE_OPENMP_TASKS
@@ -380,7 +373,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
       partial += "/";
 
     // Remove all files from the maxima directory from the load file list
-    ClearLoadfileList();
+    m_wordList[loadfile] = m_builtInLoadFiles;
 
     // Add all files from the maxima directory to the load file list
     if(partial != wxT("//"))
