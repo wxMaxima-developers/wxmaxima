@@ -35,3 +35,4 @@ if(UNIX)
     file(COPY ${DATAFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
+add_subdirectory(winrc)
