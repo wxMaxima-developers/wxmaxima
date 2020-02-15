@@ -18,7 +18,6 @@ set(PIXMAPS
 
 if(WIN32)
     add_subdirectory(fonts)
-    add_subdirectory(winrc)
 else()
     install(FILES ${PIXMAPS}                                                                     DESTINATION share/pixmaps)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima                                           DESTINATION share/bash-completion/completions)
