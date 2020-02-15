@@ -1,7 +1,7 @@
-/* Automatically generated file using generate_wxmathml.sh                              */
+/* Automatically generated file using generate_unicodedata.sh                           */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2018 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)               */
+/* Copyright (C) 2020 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -15,9 +15,9 @@
 
 /* You should have received a copy of the GNU General Public License                    */
 /* along with this program; if not, write to the Free Software                          */
-/* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            */
+/* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
 unsigned char UnicodeData_txt_gz[] = {
-  0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x9c, 0xfd,
+  0x1f, 0x8b, 0x08, 0x00, 0xca, 0xdc, 0x47, 0x5e, 0x00, 0x03, 0x9c, 0xfd,
   0xeb, 0x8e, 0xac, 0xba, 0x12, 0x35, 0x0a, 0xfe, 0xff, 0x9e, 0xa2, 0x5e,
   0x60, 0x4a, 0xc9, 0x1d, 0x94, 0xad, 0x96, 0x0c, 0x98, 0x4c, 0x2a, 0x2f,
   0xe4, 0x04, 0xb2, 0x6a, 0x66, 0xfd, 0xed, 0xbf, 0x47, 0xe7, 0x48, 0xad,
