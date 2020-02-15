@@ -1,7 +1,7 @@
 (format t "<suppressOutput>")
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2018
+;; Gunter Königsmann, 2014-2020
 ;;  SPDX-License-Identifier: GPL-2.0+
 
 ;; This file isn't directly loaded by maxima on startup of wxMaxima.
@@ -145,7 +145,7 @@
     (format t "To report a Maxima bug, you must have a Sourceforge account.~%~%")
     (format t "A problem in the graphical user interface is probably a wxMaxima bug.~%")
     (format t "The wxMaxima bug database is available at~%")
-    (format t "    https://github.com/wxMaxima-developers/wxmaxima/issues?direction=desc&sort=created&state=open~%")
+    (format t "    https://github.com/wxMaxima-developers/wxmaxima/issues~%")
     (format t "Submit bug reports by following the 'New issue' link on that page.~%~%")
     (format t "Please check before submitting, if your bug was already reported.~%~%")
     (format t "Please include the following information with your bug report:~%")
