@@ -176,6 +176,8 @@ set(CPACK_DEBIAN_PACKAGE_SUGGESTS "jsmath-fonts")
 
 set(CPACK_RPM_PACKAGE_SUGGESTS "jsmath-fonts")
 
+#TODO: For wxWidgets >= 3.1.3 MANIFEST_FILE can contain the path wx/msw/wx_dpi_aware.manifest instead.
+MANIFEST_FILE = ../data/winrc/wxmaxima.manifest
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES
   "build/"
