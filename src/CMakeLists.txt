@@ -91,10 +91,14 @@ else()
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
 
+#TODO: For wxWidgets >= 3.1.3 MANIFEST_FILE can contain the path wx/msw/wx_dpi_aware.manifest instead.
+set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
+
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 if(WIN32)
-    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" ../wxmaxima-local.bat)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat" ../wxmaxima-local.bat)
 endif()
 
 option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
@@ -176,8 +180,6 @@ set(CPACK_DEBIAN_PACKAGE_SUGGESTS "jsmath-fonts")
 
 set(CPACK_RPM_PACKAGE_SUGGESTS "jsmath-fonts")
 
-#TODO: For wxWidgets >= 3.1.3 MANIFEST_FILE can contain the path wx/msw/wx_dpi_aware.manifest instead.
-MANIFEST_FILE = ../data/winrc/wxmaxima.manifest
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES
   "build/"
