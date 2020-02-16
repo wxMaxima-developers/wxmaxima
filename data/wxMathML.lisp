@@ -2042,43 +2042,21 @@
      (declare (ignore fnname))
      t))
 
-;;; A function that loads bitmaps from files as a slideshow.
-;;; Todo: Replace this function by at least half-way-optimized LISP code.
-  (progn
-    (defprop $wxanimate_from_imgfiles t translated)
-    (add2lnc '$wxanimate_from_imgfiles $props)
-    (defmtrfun ($wxanimate_from_imgfiles $any mdefine t nil)
-      ($x)
-      (declare (special $x))
-      (progn
-	#+clisp (finish-output)
-	(simplify (mfunction-call $printf t '"<mth><slide"))
-	(cond
-	 ((is-boole-check (trd-msymeval $wxanimate_autoplay '$wxanimate_autoplay))
-	  (simplify (mfunction-call $printf t '" running=\"false\""))))
-	(cond
-	 ((like
-	   (simplify
-	    `((mfactorial)
-	      ,(trd-msymeval $wxanimate_framerate '$wxanimate_framerate)))
-	   '$wxanimate_framerate)
-	  (simplify
-	   (mfunction-call $printf t '" fr=\"~d\""
-			   (trd-msymeval $wxanimate_framerate
-					 '$wxanimate_framerate)))))
-	(simplify (mfunction-call $printf t '">"))
-	(do (($i)
-	     (mdo (cdr $x) (cdr mdo)))
-	    ((null mdo) '$done)
-	    (declare (special $i))
-	    (setq $i (car mdo))
-	    (simplify (mfunction-call $printf t '"~a;" $i)))
-	(simplify (mfunction-call $printf t '"</slide></mth>"))
-	#+clisp (finish-output)
-	)
-      ))
-
-
+  ;;; A function that loads bitmaps from files as a slideshow.
+  ;;; Todo: Replace this function by at least half-way-optimized LISP code.
+  (defun $wxanimate_from_imgfiles (names)
+    (if (listp names)
+	(progn
+	  (format t "<mth>~%<slide ")
+	  (if (eql $wxanimate_autoplay 't)
+	      (format t " running=\"false\""))
+	  (format t " fr=\"~d\"" $wxanimate_framerate)
+	  (format t ">")
+	  (mapcar (lambda (x) (format t "~a;" x)) (cdr names))
+	  (format t "</slide>~%</mth>~%")
+	  )
+      (merror (intl:gettext "wxanimate_from_imgfiles: Expected a list!"))))
+  
   (when ($file_search "wxmaxima-init")
     ($load "wxmaxima-init"))
 
