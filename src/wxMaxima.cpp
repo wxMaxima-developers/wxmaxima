@@ -7999,7 +7999,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case menu_build_info:
-      MenuCommand(wxT("wxbuild_info()$"));
+      MenuCommand(wxT("build_info();"));
       break;
 
     case menu_bug_report:
