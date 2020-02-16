@@ -2127,10 +2127,10 @@
        (progn
 	 ;; After loading the file: Tell wxMaxima we have finished loading the file
 	 ;; and what autocompletable symbols we know about.
-	 (decf *wxmaxima-nested-loads* )))
-     (if (< *wxmaxima-nested-loads* 1)
-	 (wxPrint_autocompletesymbols))
-     ))
+	 (progn
+	   (decf *wxmaxima-nested-loads* )
+	   (if (< *wxmaxima-nested-loads* 1)
+	       (wxPrint_autocompletesymbols)))))))
   (format t "</suppressOutput>~%")
   ;; Publish all new global variables maxima might contain to wxMaxima's
   ;; autocompletion feature.
