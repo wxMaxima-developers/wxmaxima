@@ -40,12 +40,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxZlibInputStream zstream(istream);
   wxTextInputStream textIn(zstream);
   wxString line;
-
-  
-  while(!line.Contains("GNU GENERAL PUBLIC LICENSE"))
-    line = textIn.ReadLine();
-  
-  wxString licenseText = line + "\n";
+  wxString licenseText;
   
   while(!istream.Eof())
   {
