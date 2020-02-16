@@ -52,7 +52,7 @@ cat >License.h <<END
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
 END
 
-gzip -c ../COPYING > License.gz
+gzip -c ../GPL.txt > License.gz
 xxd -i "License.gz" >> "License.h"
 rm -f License.gz
 
