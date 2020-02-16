@@ -53,6 +53,6 @@ cat >License.h <<END
 END
 
 gzip -c ../COPYING > License.gz
-xxd -i "License.gz" > "License.h"
+xxd -i "License.gz" >> "License.h"
 rm -f License.gz
 
