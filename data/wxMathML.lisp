@@ -2044,18 +2044,23 @@
 
   ;;; A function that loads bitmaps from files as a slideshow.
   ;;; Todo: Replace this function by at least half-way-optimized LISP code.
-  (defun $wxanimate_from_imgfiles (names)
-    (if (listp names)
-	(progn
-	  (format t "<mth>~%<slide ")
-	  (if (eql $wxanimate_autoplay 't)
-	      (format t " running=\"false\""))
-	  (format t " fr=\"~d\"" $wxanimate_framerate)
-	  (format t ">")
-	  (mapcar (lambda (x) (format t "~a;" x)) (cdr names))
-	  (format t "</slide>~%</mth>~%")
-	  )
-      (merror (intl:gettext "wxanimate_from_imgfiles: Expected a list!"))))
+  (defun $wxanimate_from_imgfiles (&rest names)
+    (progn
+      (format t "<mth>~%<slide ")
+      (if (eql $wxanimate_autoplay 't)
+	  (format t " running=\"false\""))
+      (format t " fr=\"~d\"" $wxanimate_framerate)
+      (format t ">")
+      (mapcar (lambda (x)
+		(if
+		    (listp x)
+		    (mapcar (lambda (x2)
+			      (format t "~a;" x2))
+			      (cdr x))
+		  (format t "~a;" x)))
+	      names)
+      (format t "</slide>~%</mth>~%")
+      ))
   
   (when ($file_search "wxmaxima-init")
     ($load "wxmaxima-init"))
