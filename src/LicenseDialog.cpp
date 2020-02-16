@@ -39,9 +39,14 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxMemoryInputStream istream(License_gz, License_gz_len);
   wxZlibInputStream zstream(istream);
   wxTextInputStream textIn(zstream);
-  wxString licenseText;
   wxString line;
 
+  
+  while(!line.Contains("GNU GENERAL PUBLIC LICENSE"))
+    line = textIn.ReadLine();
+  
+  wxString licenseText = line + "\n";
+  
   while(!istream.Eof())
   {
     line = textIn.ReadLine();
@@ -55,6 +60,13 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
   license->SetMinSize(wxSize(550*GetContentScaleFactor(),500*GetContentScaleFactor()));
   license->SetValue(licenseText);  
   vbox->Add(license, wxSizerFlags().Expand());
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  buttonSizer->Add(okButton);
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+
   SetName("License");
   wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
