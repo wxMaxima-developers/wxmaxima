@@ -1,7 +1,8 @@
 (format t "<suppressOutput>")
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2018
+;; Gunter Königsmann, 2014-2020
+;; Robert Dodier,     2019-2020
 ;;  SPDX-License-Identifier: GPL-2.0+
 
 ;; This file isn't directly loaded by maxima on startup of wxMaxima.
@@ -145,7 +146,7 @@
     (format t "To report a Maxima bug, you must have a Sourceforge account.~%~%")
     (format t "A problem in the graphical user interface is probably a wxMaxima bug.~%")
     (format t "The wxMaxima bug database is available at~%")
-    (format t "    https://github.com/wxMaxima-developers/wxmaxima/issues?direction=desc&sort=created&state=open~%")
+    (format t "    https://github.com/wxMaxima-developers/wxmaxima/issues~%")
     (format t "Submit bug reports by following the 'New issue' link on that page.~%~%")
     (format t "Please check before submitting, if your bug was already reported.~%~%")
     (format t "Please include the following information with your bug report:~%")
@@ -2079,43 +2080,26 @@
      (declare (ignore fnname))
      t))
 
-;;; A function that loads bitmaps from files as a slideshow.
-;;; Todo: Replace this function by at least half-way-optimized LISP code.
-  (progn
-    (defprop $wxanimate_from_imgfiles t translated)
-    (add2lnc '$wxanimate_from_imgfiles $props)
-    (defmtrfun ($wxanimate_from_imgfiles $any mdefine t nil)
-      ($x)
-      (declare (special $x))
-      (progn
-	#+clisp (finish-output)
-	(simplify (mfunction-call $printf t '"<math><slide"))
-	(cond
-	 ((is-boole-check (trd-msymeval $wxanimate_autoplay '$wxanimate_autoplay))
-	  (simplify (mfunction-call $printf t '" running=\"false\""))))
-	(cond
-	 ((like
-	   (simplify
-	    `((mfactorial)
-	      ,(trd-msymeval $wxanimate_framerate '$wxanimate_framerate)))
-	   '$wxanimate_framerate)
-	  (simplify
-	   (mfunction-call $printf t '" fr=\"~d\""
-			   (trd-msymeval $wxanimate_framerate
-					 '$wxanimate_framerate)))))
-	(simplify (mfunction-call $printf t '">"))
-	(do (($i)
-	     (mdo (cdr $x) (cdr mdo)))
-	    ((null mdo) '$done)
-	    (declare (special $i))
-	    (setq $i (car mdo))
-	    (simplify (mfunction-call $printf t '"~a;" $i)))
-	(simplify (mfunction-call $printf t '"</slide></math>"))
-	#+clisp (finish-output)
-	)
+  ;;; A function that loads bitmaps from files as a slideshow.
+  ;;; Todo: Replace this function by at least half-way-optimized LISP code.
+  (defun $wxanimate_from_imgfiles (&rest names)
+    (progn
+      (format t "<mth>~%<slide ")
+      (if (eql $wxanimate_autoplay 't)
+	  (format t " running=\"false\""))
+      (format t " fr=\"~d\"" $wxanimate_framerate)
+      (format t ">")
+      (mapcar (lambda (x)
+		(if
+		    (listp x)
+		    (mapcar (lambda (x2)
+			      (format t "~a;" x2))
+			      (cdr x))
+		  (format t "~a;" x)))
+	      names)
+      (format t "</slide>~%</mth>~%")
       ))
-
-
+  
   (when ($file_search "wxmaxima-init")
     ($load "wxmaxima-init"))
 

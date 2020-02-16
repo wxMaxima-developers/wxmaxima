@@ -49,13 +49,6 @@ void AutoComplete::ClearWorksheetWords()
   m_worksheetWords.clear();
 }
 
-void AutoComplete::ClearLoadfileList()
-{
-  #ifdef HAVE_OPENMP_TASKS
-  #pragma omp critical (AutocompleteFiles)
-  #endif
-  m_wordList[loadfile] = m_builtInLoadFiles;
-}
 void AutoComplete::ClearDemofileList()
 {
   #ifdef HAVE_OPENMP_TASKS
@@ -65,6 +58,15 @@ void AutoComplete::ClearDemofileList()
 }
 
 void AutoComplete::AddSymbols(wxString xml)
+{
+  #ifdef HAVE_OPENMP_TASKS
+  wxLogMessage(_("Starting a background task that compiles a new list of autocompletible maxima commands."));
+  #pragma omp task
+  #endif
+  AddSymbols_Backgroundtask(xml);
+}
+
+void AutoComplete::AddSymbols_Backgroundtask(wxString xml)
 {
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (AutocompleteBuiltins)
@@ -233,7 +235,6 @@ void AutoComplete::LoadSymbols_BackgroundTask()
           maximadir.Traverse(maximaLispIterator);
       }
       GetMacFiles userLispIterator (m_builtInLoadFiles);
- 
       wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
       userDir.MakeAbsolute();
       wxDir maximauserfilesdir(userDir.GetFullPath());
@@ -243,6 +244,12 @@ void AutoComplete::LoadSymbols_BackgroundTask()
           userDir.GetFullPath().utf8_str()));
       if(maximauserfilesdir.IsOpened())
         maximauserfilesdir.Traverse(userLispIterator);
+      wxLogMessage(
+        wxString::Format(
+          _("Found %li loadable files."),
+          m_builtInLoadFiles.GetCount()
+          )
+        );
     }
   
 
@@ -261,6 +268,12 @@ void AutoComplete::LoadSymbols_BackgroundTask()
       if(maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator);
     }
+    wxLogMessage(
+      wxString::Format(
+        _("Found %li demo files."),
+        m_builtInDemoFiles.GetCount()
+        )
+      );
     m_builtInLoadFiles.Sort();
     m_builtInDemoFiles.Sort();
   }
@@ -380,7 +393,7 @@ void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
       partial += "/";
 
     // Remove all files from the maxima directory from the load file list
-    ClearLoadfileList();
+    m_wordList[loadfile] = m_builtInLoadFiles;
 
     // Add all files from the maxima directory to the load file list
     if(partial != wxT("//"))

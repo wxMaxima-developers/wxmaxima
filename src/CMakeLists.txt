@@ -91,10 +91,18 @@ else()
     install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
 
+if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
+    set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
+else()
+    set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
+endif()
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
+
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 if(WIN32)
-    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" ../wxmaxima-local.bat)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat" ../wxmaxima-local.bat)
 endif()
 
 option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
