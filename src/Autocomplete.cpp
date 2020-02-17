@@ -536,4 +536,4 @@ wxString AutoComplete::FixTemplate(wxString templ)
   return templ;
 }
 
-wxRegEx AutoComplete::m_args("[[]<([^>]*)>[]]");
+wxRegEx AutoComplete::m_args("[<\\([^>]*\\)>]");
