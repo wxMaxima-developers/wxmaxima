@@ -43,12 +43,12 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxString line;
   wxString licenseText;
 
-  wxTextCtrl *license = new wxTextCtrl(this, -1,
-                                       wxEmptyString, wxDefaultPosition,
-                                       wxDefaultSize,
-                                       wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY);
+  m_license = new wxTextCtrl(this, -1,
+                             wxEmptyString, wxDefaultPosition,
+                             wxDefaultSize,
+                             wxTE_MULTILINE | wxHSCROLL | wxTE_READONLY);
   
-  wxFont fnt = license->GetFont();
+  wxFont fnt = m_license->GetFont();
   wxClientDC dc(this );
   dc.SetFont(fnt);
   long textWidth = 0;
@@ -58,20 +58,53 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
     licenseText += line + wxT("\n");
     wxSize linesize = dc.GetTextExtent(line);
     if(linesize.x > textWidth)
+    {
       textWidth = linesize.x;
+      m_longestLine = line;
+    }
   }
   
-  license->SetMinSize(wxSize(textWidth + 20*GetContentScaleFactor(),550*GetContentScaleFactor()));
-  license->SetValue(licenseText);  
-  vbox->Add(license, wxSizerFlags().Expand().Border(wxALL, 5));
+  m_license->SetMinSize(wxSize(textWidth + 20*GetContentScaleFactor(),550*GetContentScaleFactor()));
+  m_license->SetValue(licenseText);  
+  vbox->Add(m_license, wxSizerFlags(10).Expand().Border(wxALL, 5));
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
-  buttonSizer->Add(okButton);
+  buttonSizer->Add(okButton, wxSizerFlags());
   okButton->SetDefault(); 
-  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  vbox->Add(buttonSizer, wxSizerFlags(0).Right());
 
   SetName("License");
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(LicenseDialog::OnSize));
   SetSizerAndFit(vbox);
+}
+
+void LicenseDialog::OnSize(wxSizeEvent &event)
+{
+  wxFont fnt = m_license->GetFont();
+  wxClientDC dc(this );
+  double pointSize = 8;
+  int width;
+  do
+  {
+#if wxCHECK_VERSION(3, 1, 2)
+    pointSize += .1;
+    fnt.SetFractionalPointSize(pointSize);
+#else
+    pointSize += 1;
+    fnt.SetPointSize(pointSize);
+#endif
+    dc.SetFont(fnt);
+    width = dc.GetTextExtent(m_longestLine).x;
+  } while((pointSize < 128) && (width < event.GetSize().x));
+#if wxCHECK_VERSION(3, 1, 2)
+  pointSize -= .1;
+  fnt.SetFractionalPointSize(pointSize);
+#else
+  pointSize -= 1;
+  fnt.SetPointSize(pointSize);
+#endif
+  m_license->SetFont(fnt);
+  event.Skip();
 }
