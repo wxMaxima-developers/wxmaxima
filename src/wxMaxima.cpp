@@ -7947,7 +7947,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
     {
       LicenseDialog *dlg = new LicenseDialog(this);
       dlg->Show();
-      dlg->Destroy();
     }
     break;
 
