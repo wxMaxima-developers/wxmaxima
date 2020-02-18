@@ -247,7 +247,7 @@ void AutoComplete::LoadSymbols_BackgroundTask()
       wxLogMessage(
         wxString::Format(
           _("Found %li loadable files."),
-          m_builtInLoadFiles.GetCount()
+          (unsigned long)m_builtInLoadFiles.GetCount()
           )
         );
     }
@@ -271,7 +271,7 @@ void AutoComplete::LoadSymbols_BackgroundTask()
     wxLogMessage(
       wxString::Format(
         _("Found %li demo files."),
-        m_builtInDemoFiles.GetCount()
+        (unsigned long)m_builtInDemoFiles.GetCount()
         )
       );
     m_builtInLoadFiles.Sort();

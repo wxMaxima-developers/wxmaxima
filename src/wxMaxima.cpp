@@ -2582,6 +2582,7 @@ void wxMaxima::ReadVariables(wxString &data)
           }
           if(var->GetName() == wxT("value"))
           {
+            value.Trim(true);
             wxXmlNode *valnode = var->GetChildren();
             if(valnode)
             {
