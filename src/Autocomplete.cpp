@@ -198,7 +198,9 @@ void AutoComplete::LoadSymbols_BackgroundTask()
     /// Load private symbol list (do something different on Windows).
     wxString privateList;
     privateList = Dirstructure::Get()->UserAutocompleteFile();
-
+    wxLogMessage(wxString::Format(
+                   _("Trying to load a list of autocompletible symbols from file %s"),
+                   privateList));
     if (wxFileExists(privateList))
     {
       wxTextFile priv(privateList);
@@ -222,13 +224,15 @@ void AutoComplete::LoadSymbols_BackgroundTask()
     // Prepare a list of all built-in loadable files of maxima.
     {
       GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
-      if(m_configuration->MaximaShareDir() != wxEmptyString)
+      wxString sharedir = m_configuration->MaximaShareDir();
+      sharedir.Replace("\n","");
+      if(sharedir != wxEmptyString)
       {
-        wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
+        wxFileName shareDir(sharedir + "/");
         shareDir.MakeAbsolute();
         wxLogMessage(
           wxString::Format(
-            _("Autocompletion: Scanning %s for loadable lisp files."),
+            _("Autocompletion: Scanning %s recursively for loadable lisp files."),
             shareDir.GetFullPath().utf8_str()));
         wxDir maximadir(shareDir.GetFullPath());
         if(maximadir.IsOpened())

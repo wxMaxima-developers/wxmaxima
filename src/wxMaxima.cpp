@@ -2582,7 +2582,6 @@ void wxMaxima::ReadVariables(wxString &data)
           }
           if(var->GetName() == wxT("value"))
           {
-            value.Trim(true);
             wxXmlNode *valnode = var->GetChildren();
             if(valnode)
             {
@@ -2631,6 +2630,7 @@ void wxMaxima::ReadVariables(wxString &data)
             }
             if(name == "*maxima-sharedir*")
             {
+              value.Trim(true);
               m_worksheet->m_configuration->MaximaShareDir(value);
               wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),value.utf8_str()));
               /// READ FUNCTIONS FOR AUTOCOMPLETION
