@@ -224,7 +224,7 @@ void AutoComplete::LoadSymbols_BackgroundTask()
           else if (option.Replace(&line, ""))
             m_wordList[command].Add(line);
           else if (templte.Replace(&line, ""))
-            m_wordList[tmplte].Add(line);
+            m_wordList[tmplte].Add(FixTemplate(line));
           else if (unt.Replace(&line, ""))
             m_wordList[unit].Add(line);
           else
