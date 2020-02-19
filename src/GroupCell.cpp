@@ -1519,19 +1519,19 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 	    // \section{Chapter 1
 	    //
 	    // }
-            str = wxT("\n\\section{") + str.Trim() + wxT("}\n");
+            str = wxT("\n\\section{") + str.Trim() + wxT("}");
             break;
           case TS_SUBSECTION:
-            str = wxT("\n\\subsection{") + str.Trim() + wxT("}\n");
+            str = wxT("\n\\subsection{") + str.Trim() + wxT("}");
             break;
           case TS_SUBSUBSECTION:
-            str = wxT("\n\\subsubsection{") + str.Trim() + wxT("}\n");
+            str = wxT("\n\\subsubsection{") + str.Trim() + wxT("}");
             break;
           case TS_HEADING5:
-            str = wxT("\n\\paragraph{") + str.Trim() + wxT("}\n");
+            str = wxT("\n\\paragraph{") + str.Trim() + wxT("}");
             break;
           case TS_HEADING6:
-            str = wxT("\n\\subparagraph{") + str.Trim() + wxT("}\n");
+            str = wxT("\n\\subparagraph{") + str.Trim() + wxT("}");
             break;
           default:
             if (str.StartsWith(wxT("TeX:")))

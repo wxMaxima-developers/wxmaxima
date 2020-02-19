@@ -784,15 +784,14 @@ void Image::LoadImage(const wxBitmap &bitmap)
 
 wxString Image::GetExtension()
 {
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
   return m_extension;
 }
 
 void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
   m_fs_keepalive_imagedata = filesystem;
+  m_extension = wxFileName(image).GetExt();
+  m_extension = m_extension.Lower();
   // If we don't have fine-grained locking using omp.h we don't profit from sending the
   // load process to the background and therefore load images from the main thread.
   // Loading images is of rather high priority as they are needed during the
@@ -858,9 +857,6 @@ void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFil
   }
 
   m_isOk = false;
-
-  m_extension = wxFileName(image).GetExt();
-  m_extension = m_extension.Lower();
 
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
