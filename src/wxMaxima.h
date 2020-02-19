@@ -199,9 +199,9 @@ public:
   {
   public:
     explicit VersionNumber(wxString version);
-    int Major() const {return m_major;}
-    int Minor() const {return m_minor;}
-    int Patchlevel() const {return m_patchlevel;}
+    long Major() const {return m_major;}
+    long Minor() const {return m_minor;}
+    long Patchlevel() const {return m_patchlevel;}
     friend bool operator<(const VersionNumber& v1, const VersionNumber& v2);
     friend bool operator>(const VersionNumber& v1, const VersionNumber& v2);
   private:
