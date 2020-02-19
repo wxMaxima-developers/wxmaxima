@@ -79,7 +79,7 @@ public:
 #else
 
   wxString UserAutocompleteFile() const
-  { return UserConfDir() + wxT(".wxmaxima.ac"); }
+  { return UserConfDir() + wxT("wxmaxima.ac"); }
 
 #endif
 

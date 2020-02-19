@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 08:31+0100\n"
+"POT-Creation-Date: 2020-02-19 19:33+0100\n"
 "PO-Revision-Date: 2019-07-04 14:57+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -494,6 +494,11 @@ msgstr "ASCII kullanan 2B eşitlikler"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2131
 msgid "3D"
 msgstr "3B"
+
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:232
+#, c-format
+msgid ": Can't interpret line: %s"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4224
 #, c-format
@@ -991,16 +996,20 @@ msgstr "Başlangıç Değeri"
 msgid "Auto-indent new lines"
 msgstr "Otomatik girintili yeni satırlar"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:297
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr "Otomatik Tamamlama: Yüklenebilir demo dosyaları için% s taranıyor."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:231
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:243
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:276
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
 msgstr "Otomatik Tamamlama: Yüklenebilir lisp dosyaları için% s taranıyor."
+
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#, c-format
+msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:926
 msgid "Autodetect"
@@ -1171,7 +1180,7 @@ msgid ""
 msgstr ""
 "Hata: Boşlukları çıkardıktan sonra wxMathml.lisp beklenenden daha kısa!"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:426
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:459
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hata: Bilinmeyen bir öge için otomatik tamamlama isteği."
 
@@ -3291,12 +3300,12 @@ msgstr ""
 msgid "Format:"
 msgstr "Format:"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:273
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:306
 #, c-format
 msgid "Found %li demo files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:249
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:282
 #, c-format
 msgid "Found %li loadable files."
 msgstr ""
@@ -3493,7 +3502,7 @@ msgstr "KarmaşıkSayı bir ifadenin gerçek kısmını hesapla"
 msgid "Gnuplot Data File Name: "
 msgstr "Gnuplot Veri Dosyası Adı "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2630
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2629
 #, c-format
 msgid "Gnuplot can be found at %s"
 msgstr ""
@@ -4807,7 +4816,7 @@ msgid ""
 "declaring the exponent:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2620
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2619
 #, c-format
 msgid "Maxima architecture: %s"
 msgstr ""
@@ -4974,7 +4983,7 @@ msgstr ""
 "hatalar verebilir. örnek : 0.1 için 3602879701896397/36028797018963968 "
 "verebilir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2599
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2598
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
 msgstr ""
@@ -4987,12 +4996,12 @@ msgstr ""
 "Maxima'da değişkene değer verirken ':' kullanılır ('a : 3;') vefonksiyon "
 "yazılırken ':=' kullanılır.('f(x) := x^2;')."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2604
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2603
 #, c-format
 msgid "Maxima uses temp directory %s"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2615
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2614
 #, c-format
 msgid "Maxima version: %s"
 msgstr ""
@@ -5039,7 +5048,7 @@ msgid ""
 "window the curve can be rotated in:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2625
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2624
 #, c-format
 msgid "Maxima's manual lies in directory %s"
 msgstr ""
@@ -7268,21 +7277,21 @@ msgstr "Parametrenin başlangıç ​​değeri"
 msgid "Starting Maxima process failed"
 msgstr "Maxima'yı başlatma işlemi hata ile sonuçlandı"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:63
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:65
 msgid ""
 "Starting a background task that compiles a new list of autocompletible "
 "maxima commands."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:368
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:401
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:158
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
 msgid "Starting a background task that setups the autocompletable files list."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:153
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
 msgid "Starting a background task that setups the autocomplete builtins list."
 msgstr ""
 
@@ -8118,6 +8127,11 @@ msgid ""
 msgstr ""
 "Antialias çizgilerini deneyin (bir pikselin bir kısmıyla hareket ettirmeyi "
 "sağlar, ancak netliklerini azaltır)."
+
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:204
+#, c-format
+msgid "Trying to load a list of autocompletible symbols from file %s"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4728
 msgid "Trying to open a file with an empty name!"

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 08:31+0100\n"
-"PO-Revision-Date: 2020-02-19 08:37+0100\n"
+"POT-Creation-Date: 2020-02-19 19:33+0100\n"
+"PO-Revision-Date: 2020-02-19 19:33+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -520,6 +520,11 @@ msgstr "2D-Gleichungen aus Standard-Zeichen"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2131
 msgid "3D"
 msgstr "3D"
+
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:232
+#, c-format
+msgid ": Can't interpret line: %s"
+msgstr ": Nichtinterpretierbare Zeile: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4224
 #, c-format
@@ -1056,16 +1061,20 @@ msgstr "Randwert"
 msgid "Auto-indent new lines"
 msgstr "Automatisches Einrücken neuer Zeilen"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:297
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr "Autovervollständigung: Durchsuche %s nach Demodateien."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:231
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:243
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:276
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
 msgstr "Autovervollständigung: Durchsuche %s nach Lisp-Dateien."
+
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#, c-format
+msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
+msgstr "Autovervollständigung: Durchsuche %s rekursiv nach Lisp-Dateien."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:926
 msgid "Autodetect"
@@ -1249,7 +1258,7 @@ msgstr ""
 "Fehler: Nach dem Entfernen von Leertasten und Zeilenwechseln ist wxMathml."
 "lisp kürzer als erwartet!"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:426
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:459
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 "Fehler: Textvervollständigung für eine unbekannte Kategorie aufgerufen."
@@ -3414,12 +3423,12 @@ msgstr ""
 msgid "Format:"
 msgstr "Format:"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:273
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:306
 #, c-format
 msgid "Found %li demo files."
 msgstr "%i Demo-Dateien gefunden."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:249
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:282
 #, c-format
 msgid "Found %li loadable files."
 msgstr "%i ladbare Dateien gefunden."
@@ -3619,7 +3628,7 @@ msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 msgid "Gnuplot Data File Name: "
 msgstr "Name der Datendatei für Gnuplot:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2630
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2629
 #, c-format
 msgid "Gnuplot can be found at %s"
 msgstr "Gnuplot kann unter %s gefunden werden"
@@ -5048,7 +5057,7 @@ msgstr ""
 "bfloat() zu Bigfloats konvergiert werden, oder, indem ein \"b\" statt eines "
 "\"e\" ihren Exponenten definiert:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2620
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2619
 #, c-format
 msgid "Maxima architecture: %s"
 msgstr "Architektur von Maxima: %s"
@@ -5221,7 +5230,7 @@ msgstr ""
 "3602879701896397/36028797018963968 statt 0.1 verwenden, was einen "
 "(allerdings sehr kleinen) Fehler in die Rechnung einführt."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2599
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2598
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
 msgstr "Die Konfigurationsdateien von Maxima liegen unter %s"
@@ -5235,12 +5244,12 @@ msgstr ""
 "Variable 'a' den Wert 3 mit 'a : 3'. Der Operator ':=' definiert "
 "Funktionen,  z. B. 'f(x) := x^2'."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2604
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2603
 #, c-format
 msgid "Maxima uses temp directory %s"
 msgstr "Temporäre Dateien von Maxima liegen im Verzeichnis %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2615
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2614
 #, c-format
 msgid "Maxima version: %s"
 msgstr "Maxima-Version: %s"
@@ -5292,7 +5301,7 @@ msgstr ""
 "einem interaktiven Fenster öffnen\" anzuwählen und das Bild in diesem "
 "Fenster zu drehen:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2625
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2624
 #, c-format
 msgid "Maxima's manual lies in directory %s"
 msgstr "Maxima's Handbuch liegt im Ordner %s"
@@ -7600,25 +7609,27 @@ msgstr "Startwert des x-Parameters"
 msgid "Starting Maxima process failed"
 msgstr "Start von Maxima ist fehlgeschlagen"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:63
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:65
 msgid ""
 "Starting a background task that compiles a new list of autocompletible "
 "maxima commands."
-msgstr "Starte einen Hintergrundtask, der eine neue Liste autovervollständigbarer Maxima-Befehle zusammenbaut."
+msgstr ""
+"Starte einen Hintergrundtask, der eine neue Liste autovervollständigbarer "
+"Maxima-Befehle zusammenbaut."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:368
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:401
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
 "Starte einen Hintergrundtask, der Dateinamen für das automatische "
 "Vervollständigen sucht."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:158
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
 msgid "Starting a background task that setups the autocompletable files list."
 msgstr ""
 "Starte einen Hintergrundtask, der die Liste der Dateien für das "
 "Autovervollständigen zusammenstellt."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:153
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
 msgid "Starting a background task that setups the autocomplete builtins list."
 msgstr ""
 "Starte einen Hintergrundtask, der die Liste der eingebauten Kommandos "
@@ -8508,6 +8519,13 @@ msgid ""
 msgstr ""
 "Nutze eine Bildkantenglättung (Linien, die nicht genau auf Bildpunkte "
 "treffen, werden keine Pixeltreppen, sondern unscharf)"
+
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:204
+#, c-format
+msgid "Trying to load a list of autocompletible symbols from file %s"
+msgstr ""
+"Versuche, eine Liste autovervollständigbarer Symbole aus der Datei %s zu "
+"laden"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4728
 msgid "Trying to open a file with an empty name!"

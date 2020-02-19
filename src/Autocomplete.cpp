@@ -35,6 +35,8 @@
 #include <wx/filename.h>
 #include <wx/xml/xml.h>
 #include "ErrorRedirector.h"
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 
 AutoComplete::AutoComplete(Configuration *configuration)
 {
@@ -207,20 +209,47 @@ void AutoComplete::LoadSymbols_BackgroundTask()
 
       priv.Open();
 
+      wxRegEx function("^[fF][uU][nN][cC][tT][iI][oO][nN] *: *");
+      wxRegEx option  ("^[oO][pP][tT][iI][oO][nN] *: *");
+      wxRegEx templte ("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
+      wxRegEx unt    ("^[uU][nN][iI][tT] *: *");
       for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
       {
-        if (line.StartsWith(wxT("FUNCTION: ")) ||
-            line.StartsWith(wxT("OPTION  : ")))
-          m_wordList[command].Add(line.Mid(10));
-        else if (line.StartsWith(wxT("TEMPLATE: ")))
-          m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
-        else if (line.StartsWith(wxT("UNIT: ")))
-          m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+        line.Trim(true);
+        line.Trim(false);
+        if(!line.StartsWith("#"))
+        {
+          if (function.Replace(&line, ""))
+            m_wordList[command].Add(line);
+          else if (option.Replace(&line, ""))
+            m_wordList[command].Add(line);
+          else if (templte.Replace(&line, ""))
+            m_wordList[tmplte].Add(line);
+          else if (unt.Replace(&line, ""))
+            m_wordList[unit].Add(line);
+          else
+            wxLogMessage(privateList +
+                         wxString::Format(_(": Can't interpret line: %s")), line);
+        }
       }
-
       priv.Close();
     }
-  
+    else
+    {
+      SuppressErrorDialogs logNull;
+      wxFileOutputStream output(privateList);
+      if(output.IsOk())
+      {
+        wxTextOutputStream text(output);
+        text << "# The format of the entries in this file is:\n";
+        text << "# FUNCTION: myfunction\n";
+        text << "# OPTION: myvariable\n";
+        text << "# UNIT: myunit\n";
+        text << "# Template: mycommand(<expr>, <x>)";
+        text.Flush();
+      }
+    }
+    
     // Prepare a list of all built-in loadable files of maxima.
     {
       GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
