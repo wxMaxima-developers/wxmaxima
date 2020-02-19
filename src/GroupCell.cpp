@@ -1506,6 +1506,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
       if (GetEditable() != NULL && !m_isHidden)
       {
         str = GetEditable()->ListToTeX();
+        str.Trim(true);
         switch (GetEditable()->GetStyle())
         {
           case TS_TITLE:
