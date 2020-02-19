@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 19:33+0100\n"
+"POT-Creation-Date: 2020-02-19 19:36+0100\n"
 "PO-Revision-Date: 2019-07-04 14:57+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -996,17 +996,17 @@ msgstr "Başlangıç Değeri"
 msgid "Auto-indent new lines"
 msgstr "Otomatik girintili yeni satırlar"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:297
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:300
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr "Otomatik Tamamlama: Yüklenebilir demo dosyaları için% s taranıyor."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:276
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:279
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
 msgstr "Otomatik Tamamlama: Yüklenebilir lisp dosyaları için% s taranıyor."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:267
 #, c-format
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr ""
@@ -1180,7 +1180,7 @@ msgid ""
 msgstr ""
 "Hata: Boşlukları çıkardıktan sonra wxMathml.lisp beklenenden daha kısa!"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:459
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:462
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hata: Bilinmeyen bir öge için otomatik tamamlama isteği."
 
@@ -3300,12 +3300,12 @@ msgstr ""
 msgid "Format:"
 msgstr "Format:"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:306
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:309
 #, c-format
 msgid "Found %li demo files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:282
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:285
 #, c-format
 msgid "Found %li loadable files."
 msgstr ""
@@ -6569,6 +6569,10 @@ msgstr ""
 "\"Yapılandır\" bölümünden \"Use JSmath fonts\"= JSmath fontlarını kullan ı "
 "seçmek sorunu çözebilir."
 
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:260
+msgid "Seems like the package with the maxima share files isn't installed."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 msgid "Select"
 msgstr "Seç"
@@ -7283,7 +7287,7 @@ msgid ""
 "maxima commands."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:401
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:404
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
 

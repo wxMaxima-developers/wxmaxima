@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 19:33+0100\n"
+"POT-Creation-Date: 2020-02-19 19:36+0100\n"
 "PO-Revision-Date: 2019-12-11 13:07+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -998,17 +998,17 @@ msgstr "Értékadás"
 msgid "Auto-indent new lines"
 msgstr "Új sorok automatikus behúzása"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:297
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:300
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr "Automatikus kiegészítés:%s felderítése betölthető demo fájlokhoz."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:276
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:279
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
 msgstr "Automatikus kiegészítés:%s felderítése betölthető lisp fájlokhoz."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:267
 #, c-format
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr ""
@@ -1182,7 +1182,7 @@ msgid ""
 msgstr ""
 "Hiba: Az üres helyek eltávolítása után a wxMathml.lisp a vártnál rövidebb!"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:459
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:462
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hiba: Automatikus kiegészítési kérés ismeretlen típusú elemhez."
 
@@ -3312,12 +3312,12 @@ msgstr ""
 msgid "Format:"
 msgstr "Formátum:"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:306
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:309
 #, c-format
 msgid "Found %li demo files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:282
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:285
 #, c-format
 msgid "Found %li loadable files."
 msgstr ""
@@ -6613,6 +6613,10 @@ msgstr ""
 "html oldalról és a \"jsMath karakterek használata\" bejelölése a "
 "beállításoknál megoldást jelenthet."
 
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:260
+msgid "Seems like the package with the maxima share files isn't installed."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 msgid "Select"
 msgstr "Kijelölés"
@@ -7337,7 +7341,7 @@ msgid ""
 "maxima commands."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:401
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:404
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
 

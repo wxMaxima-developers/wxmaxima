@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 19:33+0100\n"
+"POT-Creation-Date: 2020-02-19 19:36+0100\n"
 "PO-Revision-Date: 2019-11-12 13:32+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1000,17 +1000,17 @@ msgstr "Al valore"
 msgid "Auto-indent new lines"
 msgstr "Auto indenta a capo"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:297
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:300
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr "Autocompletamento: scansione di %s per file demo caricabili."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:276
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:279
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
 msgstr "Autocompletamento: scansione di %s per file lisp caricabili."
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:267
 #, c-format
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr ""
@@ -1188,7 +1188,7 @@ msgid ""
 msgstr ""
 "Bug: dopo la rimozione dello spazio wxMathml.lisp è più corto del previsto!"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:459
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:462
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Bug: autocompletamento richiesto per tipo sconosciuto di elemento."
 
@@ -3333,12 +3333,12 @@ msgstr ""
 msgid "Format:"
 msgstr "Formato:"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:306
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:309
 #, c-format
 msgid "Found %li demo files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:282
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:285
 #, c-format
 msgid "Found %li loadable files."
 msgstr ""
@@ -6649,6 +6649,10 @@ msgstr ""
 "fonts.html impostando \"Usa font JSmath\" nella finestra di configurazione "
 "dovrebbe risolvere il problema."
 
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:260
+msgid "Seems like the package with the maxima share files isn't installed."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 msgid "Select"
 msgstr "Seleziona"
@@ -7367,7 +7371,7 @@ msgid ""
 "maxima commands."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:401
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:404
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
 

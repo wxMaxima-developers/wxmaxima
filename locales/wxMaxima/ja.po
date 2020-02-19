@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 19:33+0100\n"
+"POT-Creation-Date: 2020-02-19 19:36+0100\n"
 "PO-Revision-Date: 2016-10-18 22:57+0900\n"
 "Last-Translator: ARATA Mizuki <minorinoki@gmail.com>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -988,17 +988,17 @@ msgstr "初期条件"
 msgid "Auto-indent new lines"
 msgstr "改行で自動インデント"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:297
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:300
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:276
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:279
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:264
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:267
 #, c-format
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr ""
@@ -1162,7 +1162,7 @@ msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:459
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:462
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
@@ -3274,12 +3274,12 @@ msgstr ""
 msgid "Format:"
 msgstr "表示方法："
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:306
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:309
 #, c-format
 msgid "Found %li demo files."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:282
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:285
 #, c-format
 msgid "Found %li loadable files."
 msgstr ""
@@ -6418,6 +6418,10 @@ msgid ""
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:260
+msgid "Seems like the package with the maxima share files isn't installed."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 #, fuzzy
 msgid "Select"
@@ -7133,7 +7137,7 @@ msgid ""
 "maxima commands."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:401
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:404
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
 

@@ -255,7 +255,10 @@ void AutoComplete::LoadSymbols_BackgroundTask()
       GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
       wxString sharedir = m_configuration->MaximaShareDir();
       sharedir.Replace("\n","");
-      if(sharedir != wxEmptyString)
+      sharedir.Replace("\r","");
+      if(sharedir.IsEmpty())
+        wxLogMessage(_("Seems like the package with the maxima share files isn't installed."));
+      else
       {
         wxFileName shareDir(sharedir + "/");
         shareDir.MakeAbsolute();
