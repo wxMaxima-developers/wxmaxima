@@ -35,7 +35,6 @@
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
-#include <wx/regex.h>
 #include <wx/wupdlock.h>
 #include "../data/UnicodeData.h"
 #include <memory>

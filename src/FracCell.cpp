@@ -27,7 +27,6 @@
 */
 
 #include "FracCell.h"
-#include "TextCell.h"
 
 #define FRAC_DEC 1
 

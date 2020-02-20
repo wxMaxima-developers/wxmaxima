@@ -30,7 +30,6 @@
 #define DPI_REFERENCE 96.0
 
 #include "Printout.h"
-#include "GroupCell.h"
 
 #include <wx/config.h>
 #include <wx/busyinfo.h>

@@ -34,7 +34,6 @@
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/string.h>
-#include <wx/config.h>
 
 
 //! A class that maintains a list of recent documents.

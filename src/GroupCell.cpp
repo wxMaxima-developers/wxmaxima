@@ -35,7 +35,6 @@
 #include "GroupCell.h"
 #include "SlideShowCell.h"
 #include "TextCell.h"
-#include "EditorCell.h"
 #include "ImgCell.h"
 #include "BitmapOut.h"
 #include "list"

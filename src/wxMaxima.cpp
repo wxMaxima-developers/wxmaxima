@@ -85,7 +85,6 @@
 #include <wx/filename.h>
 #include <wx/artprov.h>
 #include <wx/aboutdlg.h>
-#include <wx/utils.h>
 #include <wx/mstream.h>
 
 #include <wx/zipstrm.h>
@@ -94,7 +93,6 @@
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
-#include <wx/wupdlock.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>

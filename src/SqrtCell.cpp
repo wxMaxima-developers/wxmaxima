@@ -27,7 +27,6 @@
  */
 
 #include "SqrtCell.h"
-#include "TextCell.h"
 
 #define SIGN_FONT_SCALE 2.0
 

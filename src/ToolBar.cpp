@@ -30,13 +30,10 @@
 #include "../art/toolbar/images.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include "GroupCell.h"
 #include <wx/display.h>
 #include <wx/artprov.h>
 #include <wx/filename.h>
 #include "SvgBitmap.h"
-#include <wx/mstream.h>
-#include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include "Image.h"

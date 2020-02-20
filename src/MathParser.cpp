@@ -33,9 +33,7 @@
 #include "MathParser.h"
 
 #include "Version.h"
-#include "FracCell.h"
 #include "ExptCell.h"
-#include "TextCell.h"
 #include "SubCell.h"
 #include "SqrtCell.h"
 #include "LimitCell.h"
@@ -48,7 +46,6 @@
 #include "SumCell.h"
 #include "IntCell.h"
 #include "FunCell.h"
-#include "EditorCell.h"
 #include "ImgCell.h"
 #include "SubSupCell.h"
 #include "SlideShowCell.h"

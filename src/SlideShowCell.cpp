@@ -41,7 +41,6 @@
 #include <wx/utils.h>
 #include <wx/clipbrd.h>
 #include <wx/config.h>
-#include "wx/config.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>

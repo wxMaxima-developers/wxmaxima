@@ -27,7 +27,6 @@
  */
 
 #include "ExptCell.h"
-#include "TextCell.h"
 
 #define EXPT_DEC 2
 
