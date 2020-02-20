@@ -72,16 +72,8 @@ public:
 
   /*! The file private accellerator key information is stored in
 
-    \todo Document this file in the texinfo manual
    */
-#if defined __WXMSW__
-  wxString UserAutocompleteFile() const {return UserConfDir()+wxT("wxmax.ac");}
-#else
-
-  wxString UserAutocompleteFile() const
-  { return UserConfDir() + wxT("wxmaxima.ac"); }
-
-#endif
+  wxString UserAutocompleteFile();
 
   //! The path to wxMaxima's own AutoComplete file
   wxString AutocompleteFile() const
