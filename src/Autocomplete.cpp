@@ -184,60 +184,60 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
     m_wordList[tmplte].Sort();
     m_wordList[unit].Sort();
     m_wordList[esccommand].Sort();
-  }
 
-  wxString line;
+    wxString line;
 
-  /// Load private symbol list (do something different on Windows).
-  wxString privateList;
-  privateList = Dirstructure::Get()->UserAutocompleteFile();
-  wxLogMessage(wxString::Format(
-                 _("Trying to load a list of autocompletible symbols from file %s"),
-                 privateList));
-  if (wxFileExists(privateList))
-  {
-    wxTextFile priv(privateList);
-
-    priv.Open();
-
-    wxRegEx function("^[fF][uU][nN][cC][tT][iI][oO][nN] *: *");
-    wxRegEx option  ("^[oO][pP][tT][iI][oO][nN] *: *");
-    wxRegEx templte ("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
-    wxRegEx unt    ("^[uU][nN][iI][tT] *: *");
-    for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+    /// Load private symbol list (do something different on Windows).
+    wxString privateList;
+    privateList = Dirstructure::Get()->UserAutocompleteFile();
+    wxLogMessage(wxString::Format(
+                   _("Trying to load a list of autocompletible symbols from file %s"),
+                   privateList));
+    if (wxFileExists(privateList))
     {
-      line.Trim(true);
-      line.Trim(false);
-      if(!line.StartsWith("#"))
+      wxTextFile priv(privateList);
+
+      priv.Open();
+
+      wxRegEx function("^[fF][uU][nN][cC][tT][iI][oO][nN] *: *");
+      wxRegEx option  ("^[oO][pP][tT][iI][oO][nN] *: *");
+      wxRegEx templte ("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
+      wxRegEx unt    ("^[uU][nN][iI][tT] *: *");
+      for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
       {
-        if (function.Replace(&line, ""))
-          m_wordList[command].Add(line);
-        else if (option.Replace(&line, ""))
-          m_wordList[command].Add(line);
-        else if (templte.Replace(&line, ""))
-          m_wordList[tmplte].Add(FixTemplate(line));
-        else if (unt.Replace(&line, ""))
-          m_wordList[unit].Add(line);
-        else
-          wxLogMessage(privateList +
-                       wxString::Format(_(": Can't interpret line: %s")), line);
+        line.Trim(true);
+        line.Trim(false);
+        if(!line.StartsWith("#"))
+        {
+          if (function.Replace(&line, ""))
+            m_wordList[command].Add(line);
+          else if (option.Replace(&line, ""))
+            m_wordList[command].Add(line);
+          else if (templte.Replace(&line, ""))
+            m_wordList[tmplte].Add(FixTemplate(line));
+          else if (unt.Replace(&line, ""))
+            m_wordList[unit].Add(line);
+          else
+            wxLogMessage(privateList +
+                         wxString::Format(_(": Can't interpret line: %s")), line);
+        }
       }
+      priv.Close();
     }
-    priv.Close();
-  }
-  else
-  {
-    SuppressErrorDialogs logNull;
-    wxFileOutputStream output(privateList);
-    if(output.IsOk())
+    else
     {
-      wxTextOutputStream text(output);
-      text << "# The format of the entries in this file is:\n";
-      text << "# FUNCTION: myfunction\n";
-      text << "# OPTION: myvariable\n";
-      text << "# UNIT: myunit\n";
-      text << "# Template: mycommand(<expr>, <x>)";
-      text.Flush();
+      SuppressErrorDialogs logNull;
+      wxFileOutputStream output(privateList);
+      if(output.IsOk())
+      {
+        wxTextOutputStream text(output);
+        text << "# The format of the entries in this file is:\n";
+        text << "# FUNCTION: myfunction\n";
+        text << "# OPTION: myvariable\n";
+        text << "# UNIT: myunit\n";
+        text << "# Template: mycommand(<expr>, <x>)";
+        text.Flush();
+      }
     }
   }
 }
@@ -269,7 +269,7 @@ void AutoComplete::LoadSymbols_BackgroundTask()
             shareDir.GetFullPath().utf8_str()));
         wxDir maximadir(shareDir.GetFullPath());
         if(maximadir.IsOpened())
-          maximadir.Traverse(maximaLispIterator);
+          maximadir.Traverse(maximaLispIterator); //todo
       }
       GetMacFiles userLispIterator (m_builtInLoadFiles);
       wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
