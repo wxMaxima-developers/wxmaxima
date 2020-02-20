@@ -41,7 +41,7 @@ endif()
 # Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
+  set(SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc ${SOURCE_FILES})
 endif()
 
 # Version.h is generated in the binary dir
@@ -96,6 +96,8 @@ if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
 else()
     set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
 endif()
+
+file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
 
