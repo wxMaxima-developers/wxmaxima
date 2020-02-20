@@ -229,4 +229,19 @@ wxString Dirstructure::MaximaDefaultLocation()
   return wxT("maxima");
 }
 
+wxString Dirstructure::UserAutocompleteFile()
+{
+  wxString newFileName = UserConfDir() + wxT("wxmaxima.ac");
+  if(!wxFileExists(newFileName))
+  {
+    wxString potentialOldFile = UserConfDir() + wxT(".wxmaxima.ac");
+    if(wxFileExists(potentialOldFile))
+      wxRenameFile(potentialOldFile, newFileName);
+    potentialOldFile = UserConfDir() + wxT(".wxmax.ac");
+    if(wxFileExists(potentialOldFile))
+      wxRenameFile(potentialOldFile, newFileName);
+  }
+  return newFileName;
+}
+
 Dirstructure *Dirstructure::m_dirStructure;
