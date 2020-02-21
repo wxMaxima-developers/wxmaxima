@@ -90,7 +90,7 @@ as free. In the next wxMaxima release about 2500 lines will be changed
 in order to make use of that functionality.
 
 #19.12.3
- * A Russian traslation update by OlesyaGerasimenko
+ * A Russian translation update by OlesyaGerasimenko
  * The manual is now found on Gentoo, too
  * Big improvements to the maths output
  * A major speedUp by caching already-determined text snippet sizes
@@ -586,7 +586,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * Made entering uppercase greek letters easier and documented how to input special
 	unicode symbols
   * Syntax highlighting in code cells
-  * Automatic highlighting of text equal to the currrently selected one.
+  * Automatic highlighting of text equal to the currently selected one.
   * A batch mode that pauses evaluation if Maxima asks a question.
   * A "halt on error" feature
   * Now evaluation of a new command is only triggered if evaluation of the last
