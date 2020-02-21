@@ -219,8 +219,7 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
-  COMMAND ${gpg} k
-  --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
 if(WIN32)
     include(InstallRequiredSystemLibraries)
