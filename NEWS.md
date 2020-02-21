@@ -1,9 +1,9 @@
 #20.02.2
  * Resolved two deadlocks that were introduced in 20.02.1
  * Resolved two asserts on MS Windows
- * Many additional bug fixes
- * Another small performance boost
  * Actually included the russian translation update
+ * Many code cleanups and additional bug fixes
+ * Another small performance boost
 
 #20.02.1
  * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
