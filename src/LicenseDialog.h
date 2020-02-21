@@ -46,6 +46,7 @@ protected:
 private:
   wxString m_longestLine;
   wxTextCtrl *m_license;
+  bool m_movedToStart;
 };
 
 #endif // LICENSEDIALOG_H

@@ -40,6 +40,7 @@ LicenseDialog::LicenseDialog(wxWindow *parent) :
   wxMemoryInputStream istream(License_gz, License_gz_len);
   wxZlibInputStream zstream(istream);
   wxTextInputStream textIn(zstream);
+  m_movedToStart = false;
   wxString line;
   wxString licenseText;
 
@@ -107,4 +108,9 @@ void LicenseDialog::OnSize(wxSizeEvent &event)
 #endif
   m_license->SetFont(fnt);
   event.Skip();
+  if(!m_movedToStart)
+  {
+    m_license->SetInsertionPoint(0);
+    m_license->ShowPosition(0);
+  }
 }
