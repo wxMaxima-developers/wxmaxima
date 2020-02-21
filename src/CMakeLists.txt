@@ -111,6 +111,8 @@ option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
 
 if(USE_OPENMP)
 	find_package(OpenMP)
+	include(CheckIncludeFileCXX)
+	check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
 endif()
 if(USE_OPENMP AND OpenMP_CXX_FOUND)
 	# For CMake < 3.9, we need to make the target ourselves
@@ -227,5 +229,3 @@ if(WIN32)
 endif()
 include(CPack)
 
-include(CheckIncludeFileCXX)
-CHECK_INCLUDE_FILE_CXX("omp.h" HAVE_OMP_HEADER)
