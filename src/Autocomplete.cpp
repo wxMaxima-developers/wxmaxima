@@ -231,6 +231,12 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
       if(output.IsOk())
       {
         wxTextOutputStream text(output);
+        text << "# This file allows users to add their own symbols\n";
+        text << "# to wxMaxima's autocompletion feature.\n";
+        text << "# If a useful built-in symbol of Maxima is lacking\n";
+        text << "# in wxMaxima's autocompletion please inform the wxMaxima\n";
+        text << "# maintainers about this!\n";
+        text << "# \n";
         text << "# The format of the entries in this file is:\n";
         text << "# FUNCTION: myfunction\n";
         text << "# OPTION: myvariable\n";
