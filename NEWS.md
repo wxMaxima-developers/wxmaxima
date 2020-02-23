@@ -1,3 +1,6 @@
+#Curent:
+ * Support for pre- and post- super- and subscripts written by Robert Dodier
+
 #20.02.2
  * Resolved two deadlocks that were introduced in 20.02.1
  * Resolved two asserts on MS Windows

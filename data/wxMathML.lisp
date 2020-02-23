@@ -2,6 +2,7 @@
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
 ;; Gunter Königsmann, 2014-2020
+;; Robert Dodier,     2019-2020
 ;;  SPDX-License-Identifier: GPL-2.0+
 
 ;; This file isn't directly loaded by maxima on startup of wxMaxima.
@@ -158,7 +159,44 @@
   (defun wxxml-get (x p)
     (if (symbolp x) (get x p)))
 
-  (defun wxxml-array (x l r &aux f)
+  ;; Adapted from DIMENSION-ARRAY and DIMENSION-INDICES in Maxima src/displa.lisp.
+  (defun wxxml-array (x l r &aux base-symbol)
+    (if (eq (caar x) 'mqapply)
+      (setq base-symbol (cadr x) x (cdr x))
+      (setq base-symbol (caar x)))
+    (let
+      ((display-indices (safe-mget base-symbol 'display-indices))
+       (indices (cdr x)))
+      (if (and (> (length display-indices) 0) (not (= (length display-indices) (length indices))))
+        ;; Ignore DISPLAY-INDICES if it's nonempty and not the same size as INDICES.
+        (setq display-indices nil))
+      (let (pre-subscripts pre-superscripts post-subscripts post-superscripts)
+        (if display-indices
+          (progn
+            (setq pre-subscripts (extract-indices indices display-indices '$presubscript)
+                  pre-superscripts (extract-indices indices display-indices '$presuperscript)
+                  post-subscripts (extract-indices indices display-indices '$postsubscript)
+                  post-superscripts (extract-indices indices display-indices '$postsuperscript))
+            (wxxml-array-with-display-properties base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts))
+          (wxxml-array-no-display-properties x l r)))))
+
+  (defun wxxml-array-with-display-properties (base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
+    (let*
+      ((mrow-terminate (list (concatenate 'string "</mrow>" (coerce (list #\Newline) 'string))))
+       (pre-subscripts-xml (if pre-subscripts (wxxml-list pre-subscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
+       (pre-superscripts-xml (if pre-superscripts (wxxml-list pre-superscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
+       (post-subscripts-xml (if post-subscripts (wxxml-list post-subscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
+       (post-superscripts-xml (if post-superscripts (wxxml-list post-superscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
+       (mmultiscripts-xml
+         (append l (list "<mmultiscripts>") (wxxml base-symbol nil nil 'mparen 'mparen)
+                 post-subscripts-xml post-superscripts-xml
+                 (list (concatenate 'string "<mprescripts/>" (coerce (list #\Newline) 'string)))
+                 pre-subscripts-xml pre-superscripts-xml
+                 (list (concatenate 'string "</mmultiscripts>" (coerce (list #\Newline) 'string)))
+                 r)))
+      mmultiscripts-xml))
+
+  (defun wxxml-array-no-display-properties (x l r &aux f)
     (if (eq 'mqapply (caar x))
 	(setq f (cadr x)
 	      x (cdr x)
@@ -742,9 +780,9 @@
 
   (defun wxxml-mquotient (x l r)
     (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
-    (setq l (wxxml (cadr x) (append l '("<f><mrow>")) nil 'mparen 'mparen)
+    (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
 	  r (wxxml (caddr x) (list "</mrow><mrow>")
-		   (append '("</mrow></f>")r) 'mparen 'mparen))
+		   (append '("</mrow></mfrac>")r) 'mparen 'mparen))
     (append l r))
 
   (defprop $matrix wxxml-matrix-test wxxml)
@@ -886,11 +924,11 @@
 
   (defun wxxml-choose (x l r)
     `(,@l
-      "<p print=\"no\"><f line=\"no\"><mrow>"
+      "<p print=\"no\"><mfrac line=\"no\"><mrow>"
       ,@(wxxml (cadr x) nil nil 'mparen 'mparen)
       "</mrow><mrow>"
       ,@(wxxml (caddr x) nil nil 'mparen 'mparen)
-      "</mrow></f></p>"
+      "</mrow></mfrac></p>"
       ,@r))
 
 
@@ -1184,7 +1222,7 @@
     (let ((*print-circle* nil)
 	  (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
       (mapc #'princ
-	    (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen)))
+	    (wxxml x '("<math>") '("</math>") 'mparen 'mparen)))
     #+clisp (finish-output)
     )
 

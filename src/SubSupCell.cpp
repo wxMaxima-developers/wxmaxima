@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2007-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -28,7 +28,9 @@
  */
 
 #include "SubSupCell.h"
+#include "TextCell.h"
 #include <wx/config.h>
+#include "wx/config.h"
 
 #define SUBSUP_DEC 3
 
@@ -110,6 +112,7 @@ void SubSupCell::SetIndex(Cell *index)
   if (index == NULL)
     return;
   m_postSubCell = std::shared_ptr<Cell>(index);
+  m_innerCellList.push_back(m_postSubCell);
 }
 
 void SubSupCell::SetBase(Cell *base)
@@ -117,6 +120,7 @@ void SubSupCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
+  m_innerCellList.push_back(m_baseCell);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
@@ -128,10 +132,15 @@ void SubSupCell::SetExponent(Cell *expt)
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateWidthsList(fontsize);
+  if(m_postSubCell)    
+    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_postSupCell)    
+    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_preSubCell)    
+    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_preSupCell)    
+    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int preWidth = 0;
   int postWidth = 0;
@@ -419,19 +428,38 @@ wxString SubSupCell::ToMathML()
       else
         retval += "<none/>";
     }
+    retval += wxT("</mmultiscripts>\n");
   }
   return retval;
 }
 wxString SubSupCell::ToOMML()
 {
-  wxString retval = wxT("<m:sSubSup><m:e>") +
-    m_baseCell->ListToOMML() + wxT("</m:e><m:sup>");
+  wxString retval;
+  if(m_preSupCell || m_preSubCell)
+  {
+    retval += "<m:sSubSup><m:e><m:r></m:r></m:e><m:sub>";
+    if(m_preSubCell)
+      retval += m_preSubCell->ListToOMML();
+    else
+      retval += "<m:r></m:r>";
+    retval += "</m:sub><m:sup>";
+    if(m_preSupCell)
+      retval += m_preSupCell->ListToOMML();
+    else
+      retval += "<m:r></m:r>";
+    retval += "</m:sup></m:sSubSup>\n";
+  }
+  retval += wxT("<m:sSubSup><m:e>") + m_baseCell->ListToOMML() + "</m:e><m:sub>";
   if(m_postSubCell)
     retval += m_postSubCell->ListToOMML();
-  retval += wxT("</m:sup><m:sub>");
+  else
+    retval += "<m:r></m:r>";
+  retval += "</m:sub><m:sup>";
   if(m_postSupCell)
     retval += m_postSupCell->ListToOMML();
-  retval += wxT("</m:sub></m:sSubSup>\n");
+  else
+    retval += "<m:r></m:r>";
+  retval += "</m:sup></m:sSubSup>\n";
   return retval;
 }
 
