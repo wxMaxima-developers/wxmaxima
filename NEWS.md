@@ -480,7 +480,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * Maximum number of digits and if we use user-defined labels now are no more
     hardcoded into the worksheet at evaluation time.
   * Anwers to Maxima's questions are now remembered across sessions.
-  * CMake is now our main build system: It is supported under MSVC, XCode,
+  * CMake is now our main build system: It is supported under MSVC, Xcode,
     Code::Blocks, its output looks much nicer than the one from the autotools
     and setting it up uses much more straightforward constructs.
     The recipe to build a debian package using cmake can be found at
