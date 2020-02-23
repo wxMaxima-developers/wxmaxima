@@ -7883,6 +7883,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Jonathan Wakely"));
       info.AddDeveloper(wxT("Mika Kahkonen"));
       info.AddDeveloper(wxT("Kuba Ober"));
+      info.AddDeveloper(wxT("Lauri Nurmi"));
       info.AddDeveloper(wxT("Lennart Ferlemann"));
       info.AddDeveloper(wxT("Lennart Jern"));
       info.AddDeveloper(wxT("Liu Lizhi"));
