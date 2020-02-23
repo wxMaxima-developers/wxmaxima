@@ -177,25 +177,30 @@
                   pre-superscripts (extract-indices indices display-indices '$presuperscript)
                   post-subscripts (extract-indices indices display-indices '$postsubscript)
                   post-superscripts (extract-indices indices display-indices '$postsuperscript))
-            (wxxml-array-with-display-properties base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts))
+            (wxxml-array-with-display-properties x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts))
           (wxxml-array-no-display-properties x l r)))))
 
-  (defun wxxml-array-with-display-properties (base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
+  (defun wxxml-array-with-display-properties (x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
     (let*
       ((mrow-terminate (list (concatenate 'string "</mrow>" (coerce (list #\Newline) 'string))))
        (pre-subscripts-xml (if pre-subscripts (wxxml-list pre-subscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
        (pre-superscripts-xml (if pre-superscripts (wxxml-list pre-superscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
        (post-subscripts-xml (if post-subscripts (wxxml-list post-subscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
        (post-superscripts-xml (if post-superscripts (wxxml-list post-superscripts (list "<mrow>") mrow-terminate "<mi>,</mi>") (list "<none/>")))
-       (mmultiscripts-xml
-         (append l (list "<mmultiscripts>") (wxxml base-symbol nil nil 'mparen 'mparen)
-                 post-subscripts-xml post-superscripts-xml
-                 (list (concatenate 'string "<mprescripts/>" (coerce (list #\Newline) 'string)))
-                 pre-subscripts-xml pre-superscripts-xml
-                 (list (concatenate 'string "</mmultiscripts>" (coerce (list #\Newline) 'string)))
-                 r)))
-      mmultiscripts-xml))
-
+       (mmultiscripts-xml       
+	(append l (list (format nil "<mmultiscripts altCopy=\"~{~a~}\">" (mstring x)))
+			(wxxml base-symbol nil nil 'mparen 'mparen)
+			post-subscripts-xml post-superscripts-xml
+			(list (concatenate
+			       'string "<mprescripts/>"
+			       (coerce (list #\Newline) 'string)))
+			pre-subscripts-xml pre-superscripts-xml
+			(list (concatenate
+			       'string "</mmultiscripts>"
+			       (coerce (list #\Newline) 'string)))
+			r)))
+       mmultiscripts-xml))
+    
   (defun wxxml-array-no-display-properties (x l r &aux f)
     (if (eq 'mqapply (caar x))
 	(setq f (cadr x)
