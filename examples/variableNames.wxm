@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.02.0 ] */
+/* [ Created with wxMaxima version 20.02.2 ] */
 /* [wxMaxima: title   start ]
 Advanced variable names
    [wxMaxima: title   end   ] */
@@ -135,6 +135,22 @@ T\̂/U_Test;
 
 
 /* [wxMaxima: section start ]
+Pre- and post- super- and subscripts
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Thanks to Robert Dodier it is now possible to equip variables with super-, and subscripts that are displayed left of the variable name, too:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+declare_index_properties(A,[postsubscript,postsuperscript,presubscript,presuperscript])$
+A[postsubscript,postsuperscript,presubscript,presuperscript];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
 A weird example, just for showing off
    [wxMaxima: section end   ] */
 
@@ -168,4 +184,4 @@ xkcd_55:sqrt(💓)=\?;
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.02.0"$
+"Created with wxMaxima 20.02.2"$
