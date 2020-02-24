@@ -1055,7 +1055,7 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("get_index_properties"); // FUNCTION
   m_wordList[tmplte ].Add("get_index_properties(<var>)"); // OPTION
   m_wordList[command].Add("declare_index_properties"); // FUNCTION
-  m_wordList[tmplte ].Add("declare_index_properties(<var>, <prop1>, <...>)"); // OPTION
+  m_wordList[tmplte ].Add("declare_index_properties(<var>, [<prop1>, <...>])"); // OPTION
   m_wordList[command].Add("presuperscript"); // OPTION
   m_wordList[command].Add("postsuperscript"); // OPTION
   m_wordList[command].Add("presubscript"); // OPTION
