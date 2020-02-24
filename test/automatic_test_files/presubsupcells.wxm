@@ -1,147 +1,62 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.02.2 ] */
-/* [wxMaxima: input   start ] */
-declare_index_properties(A,[postsubscript,postsuperscript,presubscript,presuperscript])$
-A[postsubscript,postsuperscript,presubscript,presuperscript];
-/* [wxMaxima: input   end   ] */
+/* [ Created with wxMaxima version 20.02.3-DevelopmentSnapshot ] */
+/* [wxMaxima: section start ]
+Pre-and-post-sub-and-sup-cells
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Four arrows pointing to an O:
+   [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-declare_index_properties(B,[postsubscript,postsuperscript,presuperscript,presubscript])$
-B[postsubscript,postsuperscript,presuperscript,presubscript];
+lst:listify(permutations([[postsubscript,↖], [postsuperscript,↙], [presuperscript,↘], [presubscript,↗]]))$
+for i in lst do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
 /* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Three arrows pointing to an O:
+   [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-declare_index_properties(C,[postsubscript,presubscript,postsuperscript,presuperscript])$
-C[postsubscript,presubscript,postsuperscript,presuperscript];
+for i in unique(sort(map('rest,lst))) do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
 /* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two arrows pointing to an O:
+   [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-declare_index_properties(D,[postsubscript,presubscript,presuperscript,postsuperscript])$
-D[postsubscript,presubscript,presuperscript,postsuperscript];
+for i in unique(sort(map('rest,map('rest,lst)))) do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
 /* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+One arrow pointing to an O:
+   [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-declare_index_properties(E,[postsubscript,presuperscript,postsuperscript,presubscript])$
-E[postsubscript,presuperscript,postsuperscript,presubscript];
+for i in unique(sort(map('rest,map('rest,map('rest,lst))))) do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: input   start ] */
-declare_index_properties(F,[postsubscript,presuperscript,presubscript,postsuperscript])$
-F[postsubscript,presuperscript,presubscript,postsuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(G,[postsuperscript,postsubscript,presubscript,presuperscript])$
-G[postsuperscript,postsubscript,presubscript,presuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(H,[postsuperscript,postsubscript,presuperscript,presubscript])$
-H[postsuperscript,postsubscript,presuperscript,presubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(I,[postsuperscript,presubscript,postsubscript,presuperscript])$
-I[postsuperscript,presubscript,postsubscript,presuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(J,[postsuperscript,presubscript,presuperscript,postsubscript])$
-J[postsuperscript,presubscript,presuperscript,postsubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(K,[postsuperscript,presuperscript,postsubscript,presubscript])$
-K[postsuperscript,presuperscript,postsubscript,presubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(L,[postsuperscript,presuperscript,presubscript,postsubscript])$
-L[postsuperscript,presuperscript,presubscript,postsubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(M,[presubscript,postsubscript,postsuperscript,presuperscript])$
-M[presubscript,postsubscript,postsuperscript,presuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(N,[presubscript,postsubscript,presuperscript,postsuperscript])$
-N[presubscript,postsubscript,presuperscript,postsuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(O,[presubscript,postsuperscript,postsubscript,presuperscript])$
-O[presubscript,postsuperscript,postsubscript,presuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(P,[presubscript,postsuperscript,presuperscript,postsubscript])$
-P[presubscript,postsuperscript,presuperscript,postsubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(Q,[presubscript,presuperscript,postsubscript,postsuperscript])$
-Q[presubscript,presuperscript,postsubscript,postsuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(R,[presubscript,presuperscript,postsuperscript,postsubscript])$
-R[presubscript,presuperscript,postsuperscript,postsubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(S,[presuperscript,postsubscript,postsuperscript,presubscript])$
-S[presuperscript,postsubscript,postsuperscript,presubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(T,[presuperscript,postsubscript,presubscript,postsuperscript])$
-T[presuperscript,postsubscript,presubscript,postsuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(U,[presuperscript,postsuperscript,postsubscript,presubscript])$
-U[presuperscript,postsuperscript,postsubscript,presubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(V,[presuperscript,postsuperscript,presubscript,postsubscript])$
-V[presuperscript,postsuperscript,presubscript,postsubscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(W,[presuperscript,presubscript,postsubscript,postsuperscript])$
-W[presuperscript,presubscript,postsubscript,postsuperscript];
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-declare_index_properties(X,[presuperscript,presubscript,postsuperscript,postsubscript])$
-X[presuperscript,presubscript,postsuperscript,postsubscript];
-/* [wxMaxima: input   end   ] */
+/* [wxMaxima: section start ]
+More or less index properties than indices
+   [wxMaxima: section end   ] */
 
 
 /* [wxMaxima: input   start ] */
@@ -506,4 +421,4 @@ X[a];
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.02.2"$
+"Created with wxMaxima 20.02.3-DevelopmentSnapshot"$
