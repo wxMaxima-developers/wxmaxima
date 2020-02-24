@@ -445,21 +445,17 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
       continue;
     }
     
-    if(child->GetName() == "none")
+    if(child->GetName() != "none")
     {
-      pre = !pre;
-      child = GetNextTag(child);
-      continue;
+      if(pre && subscript)
+        subsup->SetPreSub(ParseTag(child, false));
+      if(pre && (!subscript))
+        subsup->SetPreSup(ParseTag(child, false));
+      if((!pre) && subscript)
+        subsup->SetPostSub(ParseTag(child, false));
+      if((!pre) && (!subscript))
+        subsup->SetPostSup(ParseTag(child, false));
     }
-    
-    if(pre && subscript)
-      subsup->SetPreSub(ParseTag(child, false));
-    if(pre && (!subscript))
-      subsup->SetPreSup(ParseTag(child, false));
-    if((!pre) && subscript)
-      subsup->SetPostSub(ParseTag(child, false));
-    if((!pre) && (!subscript))
-      subsup->SetPostSup(ParseTag(child, false));
     subscript = !subscript;
     child = SkipWhitespaceNode(child);
     child = GetNextTag(child);
