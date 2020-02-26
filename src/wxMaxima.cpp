@@ -85,7 +85,6 @@
 #include <wx/filename.h>
 #include <wx/artprov.h>
 #include <wx/aboutdlg.h>
-#include <wx/utils.h>
 #include <wx/mstream.h>
 
 #include <wx/zipstrm.h>
@@ -94,7 +93,6 @@
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
-#include <wx/wupdlock.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>
@@ -1114,8 +1112,8 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
     return true;
   }
 
-  if (files[0].EndsWith(wxT(".wxm")) ||
-      files[0].EndsWith(wxT(".wxmx")))
+  if (files[0].Lower().EndsWith(wxT(".wxm")) ||
+      files[0].Lower().EndsWith(wxT(".wxmx")))
   {
     if (m_wxmax->m_worksheet->GetTree() != NULL &&
         !m_wxmax->DocumentSaved())
@@ -1136,11 +1134,11 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
     return true;
   }
 
-  if (files[0].EndsWith(wxT(".png")) ||
-      files[0].EndsWith(wxT(".jpeg")) ||
-      files[0].EndsWith(wxT(".jpg")) ||
-      files[0].EndsWith(wxT(".svg")) ||
-      files[0].EndsWith(wxT(".svgz"))
+  if (files[0].Lower().EndsWith(wxT(".png")) ||
+      files[0].Lower().EndsWith(wxT(".jpeg")) ||
+      files[0].Lower().EndsWith(wxT(".jpg")) ||
+      files[0].Lower().EndsWith(wxT(".svg")) ||
+      files[0].Lower().EndsWith(wxT(".svgz"))
     )
   {
     m_wxmax->LoadImage(files[0]);
@@ -2630,6 +2628,7 @@ void wxMaxima::ReadVariables(wxString &data)
             }
             if(name == "*maxima-sharedir*")
             {
+              value.Trim(true);
               m_worksheet->m_configuration->MaximaShareDir(value);
               wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),value.utf8_str()));
               /// READ FUNCTIONS FOR AUTOCOMPLETION
@@ -4071,12 +4070,12 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 
 #if defined (__WXMSW__)
-  if(MaximaHelpFile.EndsWith(wxT(".chm")))
+  if(MaximaHelpFile.Lower().EndsWith(wxT(".chm")))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else
 #endif
   {
-    if(MaximaHelpFile.EndsWith(wxT(".html")))
+    if(MaximaHelpFile.Lower().EndsWith(wxT(".html")))
       wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+wxT("#Item: ")+keyword).BuildURI());
     else
       ShowHTMLHelp(MaximaHelpFile,keyword);
@@ -4751,7 +4750,7 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
       ReReadConfig();
     }
   }
-  else if (file.EndsWith(wxT(".wxm")))
+  else if (file.Lower().EndsWith(wxT(".wxm")))
   {
     retval = OpenWXMFile(file, m_worksheet);
     if(retval)
@@ -4763,7 +4762,7 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
     }
   }
 
-  else if (file.EndsWith(wxT(".mac")))
+  else if (file.Lower().EndsWith(wxT(".mac")))
   {
     retval = OpenMACFile(file, m_worksheet);
     if(retval)
@@ -4774,7 +4773,7 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
       ReReadConfig();
     }
   }
-  else if (file.EndsWith(wxT(".out")))
+  else if (file.Lower().EndsWith(wxT(".out")))
   {
     retval = OpenMACFile(file, m_worksheet);
     if(retval)
@@ -4918,8 +4917,8 @@ bool wxMaxima::SaveFile(bool forceSave)
 
   if (file.Length())
   {
-    if (!file.EndsWith(wxT(".wxm")) &&
-        (!file.EndsWith(wxT(".wxmx")))
+    if (!file.Lower().EndsWith(wxT(".wxm")) &&
+        (!file.Lower().EndsWith(wxT(".wxmx")))
             )
     {
       switch (ext)
@@ -4939,7 +4938,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     config->Write(wxT("defaultExt"), wxT("wxmx"));
 
     m_lastPath = wxPathOnly(file);
-    if (file.EndsWith(wxT(".wxm")))
+    if (file.Lower().EndsWith(wxT(".wxm")))
     {
       config->Write(wxT("defaultExt"), wxT("wxm"));
       if (!m_worksheet->ExportToMAC(file))
@@ -5405,9 +5404,9 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
         if (file.Length())
         {
           int ext = fileDialog.GetFilterIndex();
-          if ((!file.EndsWith(wxT(".html"))) &&
-              (!file.EndsWith(wxT(".mac"))) &&
-              (!file.EndsWith(wxT(".tex")))
+          if ((!file.Lower().EndsWith(wxT(".html"))) &&
+              (!file.Lower().EndsWith(wxT(".mac"))) &&
+              (!file.Lower().EndsWith(wxT(".tex")))
                   )
           {
             switch (ext)
@@ -5426,7 +5425,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             }
           }
 
-          if (file.EndsWith(wxT(".tex")))
+          if (file.Lower().EndsWith(wxT(".tex")))
           {
             StatusExportStart();
 
@@ -5442,7 +5441,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             else
               StatusExportFinished();
           }
-          else if (file.EndsWith(wxT(".mac")))
+          else if (file.Lower().EndsWith(wxT(".mac")))
           {
             StatusExportStart();
 
@@ -7884,6 +7883,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Jonathan Wakely"));
       info.AddDeveloper(wxT("Mika Kahkonen"));
       info.AddDeveloper(wxT("Kuba Ober"));
+      info.AddDeveloper(wxT("Lauri Nurmi"));
       info.AddDeveloper(wxT("Lennart Ferlemann"));
       info.AddDeveloper(wxT("Lennart Jern"));
       info.AddDeveloper(wxT("Liu Lizhi"));
@@ -7946,8 +7946,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
     case menu_license:
     {
       LicenseDialog *dlg = new LicenseDialog(this);
-      dlg->ShowModal();
-      dlg->Destroy();
+      dlg->Show();
     }
     break;
 
@@ -7999,7 +7998,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case menu_build_info:
-      MenuCommand(wxT("wxbuild_info()$"));
+      MenuCommand(wxT("build_info();"));
       break;
 
     case menu_bug_report:
@@ -8216,9 +8215,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &event)
           cmd << name << wxT(": ");
 
         wxString format;
-        if (file.EndsWith(wxT(".csv")))
+        if (file.Lower().EndsWith(wxT(".csv")))
           format = wxT("csv");
-        else if (file.EndsWith(wxT(".tab")))
+        else if (file.Lower().EndsWith(wxT(".tab")))
           format = wxT("tab");
 
         if (format != wxEmptyString)
@@ -8804,8 +8803,8 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event)
 
   if (SaveNecessary() &&
       (
-              (file.EndsWith(wxT(".wxmx"))) ||
-              (file.EndsWith(wxT(".wxm")))
+              (file.Lower().EndsWith(wxT(".wxmx"))) ||
+              (file.Lower().EndsWith(wxT(".wxm")))
       )
           )
   {
@@ -8854,8 +8853,8 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
 
   if (SaveNecessary() &&
       (
-              (file.EndsWith(wxT(".wxmx"))) ||
-              (file.EndsWith(wxT(".wxm")))
+              (file.Lower().EndsWith(wxT(".wxmx"))) ||
+              (file.Lower().EndsWith(wxT(".wxm")))
       )
           )
   {

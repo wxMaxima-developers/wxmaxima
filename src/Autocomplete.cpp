@@ -35,6 +35,8 @@
 #include <wx/filename.h>
 #include <wx/xml/xml.h>
 #include "ErrorRedirector.h"
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 
 AutoComplete::AutoComplete(Configuration *configuration)
 {
@@ -182,6 +184,67 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
     m_wordList[tmplte].Sort();
     m_wordList[unit].Sort();
     m_wordList[esccommand].Sort();
+
+    wxString line;
+
+    /// Load private symbol list (do something different on Windows).
+    wxString privateList;
+    privateList = Dirstructure::Get()->UserAutocompleteFile();
+    wxLogMessage(wxString::Format(
+                   _("Trying to load a list of autocompletible symbols from file %s"),
+                   privateList));
+    if (wxFileExists(privateList))
+    {
+      wxTextFile priv(privateList);
+
+      priv.Open();
+
+      wxRegEx function("^[fF][uU][nN][cC][tT][iI][oO][nN] *: *");
+      wxRegEx option  ("^[oO][pP][tT][iI][oO][nN] *: *");
+      wxRegEx templte ("^[tT][eE][mM][pP][lL][aA][tT][eE] *: *");
+      wxRegEx unt    ("^[uU][nN][iI][tT] *: *");
+      for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+      {
+        line.Trim(true);
+        line.Trim(false);
+        if(!line.StartsWith("#"))
+        {
+          if (function.Replace(&line, ""))
+            m_wordList[command].Add(line);
+          else if (option.Replace(&line, ""))
+            m_wordList[command].Add(line);
+          else if (templte.Replace(&line, ""))
+            m_wordList[tmplte].Add(FixTemplate(line));
+          else if (unt.Replace(&line, ""))
+            m_wordList[unit].Add(line);
+          else
+            wxLogMessage(privateList +
+                         wxString::Format(_(": Can't interpret line: %s")), line);
+        }
+      }
+      priv.Close();
+    }
+    else
+    {
+      SuppressErrorDialogs logNull;
+      wxFileOutputStream output(privateList);
+      if(output.IsOk())
+      {
+        wxTextOutputStream text(output);
+        text << "# This file allows users to add their own symbols\n";
+        text << "# to wxMaxima's autocompletion feature.\n";
+        text << "# If a useful built-in symbol of Maxima is lacking\n";
+        text << "# in wxMaxima's autocompletion please inform the wxMaxima\n";
+        text << "# maintainers about this!\n";
+        text << "# \n";
+        text << "# The format of the entries in this file is:\n";
+        text << "# FUNCTION: myfunction\n";
+        text << "# OPTION: myvariable\n";
+        text << "# UNIT: myunit\n";
+        text << "# Template: mycommand(<expr>, <x>)";
+        text.Flush();
+      }
+    }
   }
 }
 
@@ -193,46 +256,26 @@ void AutoComplete::LoadSymbols_BackgroundTask()
   {
     // Error dialogues need to be created by the foreground thread.
     SuppressErrorDialogs suppressor;
-    wxString line;
-
-    /// Load private symbol list (do something different on Windows).
-    wxString privateList;
-    privateList = Dirstructure::Get()->UserAutocompleteFile();
-
-    if (wxFileExists(privateList))
-    {
-      wxTextFile priv(privateList);
-
-      priv.Open();
-
-      for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
-      {
-        if (line.StartsWith(wxT("FUNCTION: ")) ||
-            line.StartsWith(wxT("OPTION  : ")))
-          m_wordList[command].Add(line.Mid(10));
-        else if (line.StartsWith(wxT("TEMPLATE: ")))
-          m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
-        else if (line.StartsWith(wxT("UNIT: ")))
-          m_wordList[unit].Add(FixTemplate(line.Mid(6)));
-      }
-
-      priv.Close();
-    }
-  
+    
     // Prepare a list of all built-in loadable files of maxima.
     {
       GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
-      if(m_configuration->MaximaShareDir() != wxEmptyString)
+      wxString sharedir = m_configuration->MaximaShareDir();
+      sharedir.Replace("\n","");
+      sharedir.Replace("\r","");
+      if(sharedir.IsEmpty())
+        wxLogMessage(_("Seems like the package with the maxima share files isn't installed."));
+      else
       {
-        wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
+        wxFileName shareDir(sharedir + "/");
         shareDir.MakeAbsolute();
         wxLogMessage(
           wxString::Format(
-            _("Autocompletion: Scanning %s for loadable lisp files."),
+            _("Autocompletion: Scanning %s recursively for loadable lisp files."),
             shareDir.GetFullPath().utf8_str()));
         wxDir maximadir(shareDir.GetFullPath());
         if(maximadir.IsOpened())
-          maximadir.Traverse(maximaLispIterator);
+          maximadir.Traverse(maximaLispIterator); //todo
       }
       GetMacFiles userLispIterator (m_builtInLoadFiles);
       wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
@@ -247,7 +290,7 @@ void AutoComplete::LoadSymbols_BackgroundTask()
       wxLogMessage(
         wxString::Format(
           _("Found %li loadable files."),
-          m_builtInLoadFiles.GetCount()
+          (unsigned long)m_builtInLoadFiles.GetCount()
           )
         );
     }
@@ -271,7 +314,7 @@ void AutoComplete::LoadSymbols_BackgroundTask()
     wxLogMessage(
       wxString::Format(
         _("Found %li demo files."),
-        m_builtInDemoFiles.GetCount()
+        (unsigned long)m_builtInDemoFiles.GetCount()
         )
       );
     m_builtInLoadFiles.Sort();
@@ -536,4 +579,4 @@ wxString AutoComplete::FixTemplate(wxString templ)
   return templ;
 }
 
-wxRegEx AutoComplete::m_args("[[]<([^>]*)>[]]");
+wxRegEx AutoComplete::m_args("[<\\([^>]*\\)>]");

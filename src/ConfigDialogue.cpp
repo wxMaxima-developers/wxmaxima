@@ -32,7 +32,6 @@
 #include "ConfigDialogue.h"
 #include "BTextCtrl.h"
 #include "Cell.h"
-#include "Configuration.h"
 #include "Dirstructure.h"
 #include <wx/config.h>
 #include <wx/display.h>
@@ -45,7 +44,6 @@
 #include <wx/settings.h>
 #include <wx/filename.h>
 #include "../art/config/images.h"
-#include <wx/config.h>
 #include <wx/dcbuffer.h>
 #include "SvgBitmap.h"
 #include <wx/mstream.h>

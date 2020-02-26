@@ -26,7 +26,6 @@
 
 #include "BitmapOut.h"
 #include "Configuration.h"
-#include "GroupCell.h"
 
 #include <wx/config.h>
 #include <wx/clipbrd.h>

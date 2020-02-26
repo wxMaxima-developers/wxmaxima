@@ -29,7 +29,6 @@
 
 
 #include "AbsCell.h"
-#include "TextCell.h"
 
 AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),

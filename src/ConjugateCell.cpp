@@ -27,7 +27,6 @@
  */
 
 #include "ConjugateCell.h"
-#include "TextCell.h"
 
 ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),

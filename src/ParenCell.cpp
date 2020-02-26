@@ -28,7 +28,6 @@
  */
 
 #include "ParenCell.h"
-#include "TextCell.h"
 
 ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),

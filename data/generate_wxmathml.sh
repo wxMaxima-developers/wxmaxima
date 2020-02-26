@@ -24,13 +24,12 @@ cat >wxMathML.h <<END
 END
 
 echo "Converting wxMathML.lisp to embeddable C code"
-rm -f wxMathML.lisp.gz
-gzip -k wxMathML.lisp
-xxd -i "wxMathML.lisp.gz" >> "wxMathML.h"
+gzip -c -n wxMathML.lisp >wxMathML.lisp.gz
+xxd -i wxMathML.lisp.gz >>wxMathML.h
 rm -f wxMathML.lisp.gz
 
 
-echo "Converting ../COPYING to embeddable C code"
+echo "Converting ../GPL.txt to embeddable C code"
 cat >License.h <<END
 /* Automatically generated file using generate_wxmathml.sh                              */
 /* This file is part of wxMaxima.                                                       */
@@ -52,7 +51,7 @@ cat >License.h <<END
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
 END
 
-gzip -c ../COPYING > License.gz
-xxd -i "License.gz" > "License.h"
+gzip -c -n ../GPL.txt >License.gz
+xxd -i "License.gz" >>License.h
 rm -f License.gz
 

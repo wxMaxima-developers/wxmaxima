@@ -33,9 +33,7 @@
 #include "MathParser.h"
 
 #include "Version.h"
-#include "FracCell.h"
 #include "ExptCell.h"
-#include "TextCell.h"
 #include "SubCell.h"
 #include "SqrtCell.h"
 #include "LimitCell.h"
@@ -48,7 +46,6 @@
 #include "SumCell.h"
 #include "IntCell.h"
 #include "FunCell.h"
-#include "EditorCell.h"
 #include "ImgCell.h"
 #include "SubSupCell.h"
 #include "SlideShowCell.h"
@@ -448,21 +445,17 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
       continue;
     }
     
-    if(child->GetName() == "none")
+    if(child->GetName() != "none")
     {
-      pre = !pre;
-      child = GetNextTag(child);
-      continue;
+      if(pre && subscript)
+        subsup->SetPreSub(ParseTag(child, false));
+      if(pre && (!subscript))
+        subsup->SetPreSup(ParseTag(child, false));
+      if((!pre) && subscript)
+        subsup->SetPostSub(ParseTag(child, false));
+      if((!pre) && (!subscript))
+        subsup->SetPostSup(ParseTag(child, false));
     }
-    
-    if(pre && subscript)
-      subsup->SetPreSub(ParseTag(child, false));
-    if(pre && (!subscript))
-      subsup->SetPreSup(ParseTag(child, false));
-    if((!pre) && subscript)
-      subsup->SetPostSub(ParseTag(child, false));
-    if((!pre) && (!subscript))
-      subsup->SetPostSup(ParseTag(child, false));
     subscript = !subscript;
     child = SkipWhitespaceNode(child);
     child = GetNextTag(child);

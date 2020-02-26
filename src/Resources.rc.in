@@ -9,6 +9,6 @@ wxMANIFEST_ID 24 "@MANIFEST_FILE@"
 #define wxUSE_NO_MANIFEST 1
 #include "wx/msw/wx.rc"
 
-icon0 ICON "@CMAKE_SOURCE_DIR@/data/winrc/maximaicon.ico"
-icon1 ICON "@CMAKE_SOURCE_DIR@/data/winrc/wxmac-doc.ico"
+icon0 ICON "@WINDOWS_ICON_DIR@/maximaicon.ico"
+icon1 ICON "@WINDOWS_ICON_DIR@/wxmac-doc.ico"
 

@@ -53,7 +53,7 @@ the newer version of CMake in the commands above).
 #### Compiling on Mac OS X prerequisites
 
 On Mac OS X you most probably need the command-line compiler one can tell 
-XCode to install. Additionally wxWidgets needs to be installed, which can
+Xcode to install. Additionally wxWidgets needs to be installed, which can
 be done using homebrew, fink or macports and should be named wxWidgets or
 wxMac there. If libomp is installed, as well, wxMaxima is able to speed
 up some more tasks using multithreading.

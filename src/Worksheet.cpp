@@ -43,8 +43,6 @@
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
 #include "BitmapOut.h"
-#include "EditorCell.h"
-#include "GroupCell.h"
 #include "SlideShowCell.h"
 #include "ImgCell.h"
 #include "MarkDown.h"

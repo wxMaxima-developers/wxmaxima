@@ -41,7 +41,7 @@ endif()
 # Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
+  set(SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc ${SOURCE_FILES})
 endif()
 
 # Version.h is generated in the binary dir
@@ -97,18 +97,23 @@ else()
     set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
 endif()
 
+file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
-configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 if(WIN32)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat" ../wxmaxima-local.bat)
+else()
+    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 endif()
 
 option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
 
 if(USE_OPENMP)
-	find_package(OpenMP)
+    find_package(OpenMP)
+    include(CheckIncludeFileCXX)
+    check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
 endif()
 if(USE_OPENMP AND OpenMP_CXX_FOUND)
 	# For CMake < 3.9, we need to make the target ourselves
@@ -141,15 +146,14 @@ else()
     message(STATUS "No OpenMP found => Not using multiprocessing.")
 endif()
 
-include(CheckIncludeFiles)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
 
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
-endif()
-
-if(APPLE)
+    include(InstallRequiredSystemLibraries)
+    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
+elseif(APPLE)
     set(CPACK_GENERATOR "DragNDrop;TGZ;TBZ2") # Build DMG packages on MacOS
     set(CPACK_BINARY_DragNDrop "ON")
 else()
@@ -160,7 +164,7 @@ else()
 	message(STATUS "rpmbuild not found - no RPM package will be build with make package.")
     else()
 	message(STATUS "rpmbuild found - RPM package can be build with make package.")
-	list(APPEND  CPACK_GENERATOR "RPM")
+	list(APPEND CPACK_GENERATOR "RPM")
     endif()
 endif()
 
@@ -173,9 +177,9 @@ set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.n
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_PACKAGE_SECTION "science")
 if(WIN32)
-#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data\\\\io.github.wxmaxima_developers.wxMaxima.png")
+    set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data\\\\wxmaxima.bmp")
 else()
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
+    set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
 endif()
 set(CPACK_PACKAGE_VERSION "${VERSION}")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
@@ -217,14 +221,8 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
-  COMMAND ${gpg} k
-  --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
-if(WIN32)
-    include(InstallRequiredSystemLibraries)
-    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
-endif()
+
 include(CPack)
 
-include(CheckIncludeFileCXX)
-CHECK_INCLUDE_FILE_CXX("omp.h" HAVE_OMP_HEADER)

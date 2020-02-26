@@ -1,4 +1,17 @@
-#Current
+#20.02.4
+ * Corrected a few last bugs for pre- and post- super- and subscripts
+
+#20.02.3
+ * Support for pre- and post- super- and subscripts provided by Robert Dodier
+
+#20.02.2
+ * Resolved two deadlocks that were introduced in 20.02.1
+ * Resolved two asserts on MS Windows
+ * Actually included the russian translation update
+ * Many code cleanups and additional bug fixes
+ * Another small performance boost
+
+#20.02.1
  * wxMaxima now can use Multi-threading, if a new enough OpenMP is found
  * Part of the added performance is only effective if omp.h (often in the 
    libomp package) is installed.
@@ -83,7 +96,7 @@ as free. In the next wxMaxima release about 2500 lines will be changed
 in order to make use of that functionality.
 
 #19.12.3
- * A Russian traslation update by OlesyaGerasimenko
+ * A Russian translation update by OlesyaGerasimenko
  * The manual is now found on Gentoo, too
  * Big improvements to the maths output
  * A major speedUp by caching already-determined text snippet sizes
@@ -470,7 +483,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * Maximum number of digits and if we use user-defined labels now are no more
     hardcoded into the worksheet at evaluation time.
   * Anwers to Maxima's questions are now remembered across sessions.
-  * CMake is now our main build system: It is supported under MSVC, XCode,
+  * CMake is now our main build system: It is supported under MSVC, Xcode,
     Code::Blocks, its output looks much nicer than the one from the autotools
     and setting it up uses much more straightforward constructs.
     The recipe to build a debian package using cmake can be found at
@@ -579,7 +592,7 @@ finding bugs came from the cppcheck utility which caused changes in over
   * Made entering uppercase greek letters easier and documented how to input special
 	unicode symbols
   * Syntax highlighting in code cells
-  * Automatic highlighting of text equal to the currrently selected one.
+  * Automatic highlighting of text equal to the currently selected one.
   * A batch mode that pauses evaluation if Maxima asks a question.
   * A "halt on error" feature
   * Now evaluation of a new command is only triggered if evaluation of the last

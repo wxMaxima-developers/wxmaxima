@@ -21,10 +21,13 @@ cat >UnicodeData.h <<END
 /* You should have received a copy of the GNU General Public License                    */
 /* along with this program; if not, write to the Free Software                          */
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
+
+/* The license of UnicodeData.txt can be found at: https://www.unicode.org/license.html */
+
 END
 
 echo "Converting UnicodeData.txt to embeddable C code"
-cat UnicodeData.txt |cut -d ";" -f 1-2 |gzip -c > UnicodeData.txt.gz
-xxd -i "UnicodeData.txt.gz" >> "UnicodeData.h"
+cut -d ";" -f 1-2 <UnicodeData.txt | gzip -c -n >UnicodeData.txt.gz
+xxd -i "UnicodeData.txt.gz" >>UnicodeData.h
 rm -f UnicodeData.txt.gz
 

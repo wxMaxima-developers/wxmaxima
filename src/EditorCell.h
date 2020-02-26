@@ -28,7 +28,6 @@
 
 #include <vector>
 #include <list>
-#include <vector>
 #include "MaximaTokenizer.h"
 
 /*! \file
