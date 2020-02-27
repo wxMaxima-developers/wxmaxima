@@ -94,18 +94,16 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 
 Cell::~Cell()
 {
-  // Find the last cell in this list of cells
-  Cell *last = this;
-  while (last->m_next != NULL)
-    last = last->m_next;
-
-  // Delete all cells beginning with the last one
-  while ((last != NULL) && (last != this))
+  // Delete this list of cells without using a recursive function call that can
+  // run us out of stack space
+  MarkAsDeleted();
+  Cell *next = m_next;
+  while (m_next != NULL)
   {
-    Cell *tmp = last;
-    last = last->m_previous;
-    wxDELETE(tmp);
-    last->m_next = NULL;
+    Cell *cell = next;
+    next = next->m_next;
+    cell->m_next = NULL;
+    wxDELETE(cell);
   }
 }
 
