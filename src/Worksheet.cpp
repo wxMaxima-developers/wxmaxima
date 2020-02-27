@@ -383,6 +383,9 @@ void Worksheet::RequestRedraw(GroupCell *start)
 
 Worksheet::~Worksheet()
 {
+  TreeUndo_ClearRedoActionList();
+  TreeUndo_ClearUndoActionList();
+
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
   #endif  
