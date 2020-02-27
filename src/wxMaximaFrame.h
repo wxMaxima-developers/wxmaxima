@@ -64,7 +64,7 @@ public:
 
   /*! The destructor
   */
-  ~wxMaximaFrame();
+  virtual ~wxMaximaFrame();
 
   /*! Shows or hides the toolbar
     \param show

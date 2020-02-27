@@ -3648,7 +3648,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
     if (xmlcells->GetType() != wxXML_TEXT_NODE)
     {
       Cell *mc;
-      mc =mp.ParseTag(xmlcells, false);
+      mc = mp.ParseTag(xmlcells, false);
       if (mc != NULL)
       {
         GroupCell *cell = dynamic_cast<GroupCell *>(mc);

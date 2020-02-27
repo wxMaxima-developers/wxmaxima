@@ -105,7 +105,7 @@ public:
            const wxString &filename = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
-  ~wxMaxima();
+  virtual ~wxMaxima();
 
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStdout = true;}

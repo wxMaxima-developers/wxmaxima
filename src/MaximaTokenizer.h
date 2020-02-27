@@ -29,6 +29,7 @@
 #include "TextStyle.h"
 #include "Configuration.h"
 #include <list>
+#include <memory>
 
 /*!\file
 
@@ -63,7 +64,7 @@ public:
     wxString m_text;
     TextStyle m_style;
   };
-  typedef std::list<Token *> TokenList;
+  typedef std::list<std::shared_ptr<Token>> TokenList;
   static bool IsAlpha(wxChar ch);
   static bool IsNum(wxChar ch);
   static bool IsAlphaNum(wxChar ch);

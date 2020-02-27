@@ -419,6 +419,7 @@ wxString GroupCell::ToWXM(bool wxm)
 
 GroupCell::~GroupCell()
 {
+  std::cerr<<"~groupcell\n";
   GroupCell::MarkAsDeleted();
   wxDELETE(m_hiddenTree);
   m_hiddenTree = NULL;
