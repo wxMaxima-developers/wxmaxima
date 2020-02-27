@@ -4496,6 +4496,7 @@ void Worksheet::DestroyTree()
   SetHCaret(NULL);
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
+  wxDELETE(m_tree);
   m_tree = NULL;
   m_last = NULL;
 }
