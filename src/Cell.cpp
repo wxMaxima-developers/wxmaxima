@@ -1541,6 +1541,12 @@ bool Cell::CellPointers::ErrorList::Contains(Cell *cell)
   return false;
 }
 
+std::list<std::shared_ptr<Cell>> Cell::GetInnerCells()
+{
+  std::list<std::shared_ptr<Cell>> retval;
+  return retval;
+}
+
 void Cell::MarkAsDeleted()
 {
   // Delete all pointers to this cell
@@ -1561,7 +1567,7 @@ void Cell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
-
+  
   // Delete all pointers to the cells this cell contains
   std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
   for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
