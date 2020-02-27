@@ -151,7 +151,7 @@ public:
   bool AnimationRunning() const {return m_animationRunning;}
   void AnimationRunning(bool run);
 protected:
-  wxTimer *m_timer;
+  std::shared_ptr<wxTimer> m_timer;
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.

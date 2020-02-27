@@ -98,7 +98,7 @@ void SlideShow::ReloadTimer()
   if(!m_timer)
   {
     // Tell MathCtrl about our timer.
-    m_timer = new wxTimer(m_cellPointers->GetMathCtrl(), wxNewId());
+    m_timer = std::shared_ptr<wxTimer>(new wxTimer(m_cellPointers->GetMathCtrl(), wxNewId()));
     m_cellPointers->m_slideShowTimers[this] = m_timer->GetId();
   }
   
