@@ -281,10 +281,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
-  m_clientStream = NULL;
-  m_client = NULL;
-  m_clientTextStream = NULL;
-
   bool server = false;
   m_port = m_worksheet->m_configuration->DefaultPort();
   while (!(server = StartServer()))
@@ -1710,7 +1706,7 @@ void wxMaxima::OnMaximaConnect()
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
     
-  m_client = m_server->Accept(false);
+  m_client = std::shared_ptr<wxSocketBase>(m_server->Accept(false));
   if(!m_client)
   {
     wxLogMessage(_("Connection attempt, but connection failed."));
@@ -1725,7 +1721,7 @@ void wxMaxima::OnMaximaConnect()
   else
   {
     wxLogMessage(_("Connected."));
-    m_clientStream = new wxSocketInputStream(*m_client);
+    m_clientStream = std::shared_ptr<wxSocketInputStream>(new wxSocketInputStream(*m_client));
     m_clientTextStream = std::unique_ptr<wxTextInputStream>(
       new wxTextInputStream(*m_clientStream, wxT('\t'),
                             wxConvUTF8));

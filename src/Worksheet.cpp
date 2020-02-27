@@ -393,12 +393,12 @@ Worksheet::~Worksheet()
     wxConfig::Get()->Flush();
   if (HasCapture())
     ReleaseMouse();
-
+  
   m_mainToolBar = NULL;
 
   ClearDocument();
-
   m_configuration = NULL;
+  wxDELETE(m_dc);
   m_dc = NULL;
   wxDELETE(m_tree);
   m_tree =NULL;
@@ -6653,11 +6653,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     {
       zip.CloseEntry();
 
-      wxFSFile *fsfile;
+      std::unique_ptr<wxFSFile> fsfile;
       #ifdef HAVE_OPENMP_TASKS
       #pragma omp critical (OpenFSFile)
       #endif
-      fsfile = fsystem->OpenFile(memFsName);
+      fsfile = std::unique_ptr<wxFSFile>(fsystem->OpenFile(memFsName));
 
       if (fsfile)
       {
@@ -6717,7 +6717,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     #ifdef HAVE_OPENMP_TASKS
     #pragma omp critical (OpenFSFile)
     #endif
-    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
+    std::unique_ptr<wxFSFile> fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
     
     // Did we succeed in opening the file?
     if (!fsfile)

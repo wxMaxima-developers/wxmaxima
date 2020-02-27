@@ -657,8 +657,8 @@ protected:
     return m_CWD;
   }
 
-  wxSocketBase *m_client;
-  wxSocketInputStream *m_clientStream;
+  std::shared_ptr<wxSocketBase> m_client;
+  std::shared_ptr<wxSocketInputStream> m_clientStream;
   std::unique_ptr<wxTextInputStream> m_clientTextStream;
   wxSocketServer *m_server;
   wxProcess *m_process;
