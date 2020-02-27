@@ -98,7 +98,7 @@ Cell::~Cell()
   // run us out of stack space
   MarkAsDeleted();
   Cell *next = m_next;
-  while (m_next != NULL)
+  while (next != NULL)
   {
     Cell *cell = next;
     next = next->m_next;
