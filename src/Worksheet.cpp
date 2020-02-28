@@ -6422,7 +6422,6 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   wxBusyCursor crs;
   // Don't update the worksheet whilst exporting
   wxWindowUpdateLocker noUpdates(this);
-  wxLogMessage(_("Starting to save the worksheet as .wxmx"));
   // delete temp file if it already exists
   wxString backupfile = file + wxT("~");
   if (wxFileExists(backupfile))
@@ -6756,7 +6755,6 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   if (markAsSaved)
     SetSaved(true);
 
-  wxLogMessage(_("wxmx file saved"));
   return true;
 }
 
