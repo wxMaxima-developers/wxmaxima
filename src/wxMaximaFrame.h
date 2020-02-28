@@ -194,6 +194,7 @@ public:
     menu_atvalue,
     menu_lhs,
     menu_rhs,
+    menu_wxmaximahelp,
     menu_maximahelp,
     menu_example,
     menu_apropos,

@@ -591,6 +591,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_maximahelp, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
+  Connect(menu_wxmaximahelp, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_example, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(menu_apropos, wxEVT_MENU,
@@ -7955,6 +7957,10 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
         ShowMaximaHelp(expr);
       else
         ShowWxMaximaHelp();
+      break;
+
+    case menu_wxmaximahelp:
+      ShowWxMaximaHelp();
       break;
 
     case menu_maximahelp:

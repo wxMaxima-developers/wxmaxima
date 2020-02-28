@@ -1295,12 +1295,15 @@ m_listMenu->AppendSeparator();
   // Help menu
   m_HelpMenu = new wxMenu;
 #if defined __WXOSX__
-  m_HelpMenu->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
+  m_HelpMenu->Append(wxID_HELP, _("Context-sensitive &Help\tCtrl+?"),
                      _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
-  APPEND_MENU_ITEM(m_HelpMenu, wxID_HELP, _("wxMaxima &Help\tF1"),
+  APPEND_MENU_ITEM(m_HelpMenu, wxID_HELP, _("Context-sensitive &Help\tF1"),
                    _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
+  m_HelpMenu->Append(menu_wxmaximahelp, _("&Maxima help"),
+                     _("The offline manual of maxima"),
+                     wxITEM_NORMAL);
   m_HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
                      _("The offline manual of maxima"),
                      wxITEM_NORMAL);
