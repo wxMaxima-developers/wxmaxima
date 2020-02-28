@@ -856,11 +856,11 @@ void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFil
 
   if (filesystem)
   {
-    std::unique_ptr<wxFSFile> fsfile;
+    wxFSFile * fsfile;
     #ifdef HAVE_OPENMP_TASKS
     #pragma omp critical (OpenFSFile)
     #endif
-    fsfile = std::unique_ptr<wxFSFile>(filesystem->OpenFile(image));
+    fsfile = filesystem->OpenFile(image);
     if (fsfile)
     { // open successful
 

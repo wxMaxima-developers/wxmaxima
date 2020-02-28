@@ -3372,19 +3372,19 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   wxString filename = wxmxURI + wxT("#zip:content.xml");
 
   // Open the file
-  std::unique_ptr<wxFSFile> fsfile;
+  wxFSFile *fsfile;
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (OpenFSFile)
   #endif
-  fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
+  fsfile = fs.OpenFile(filename);
   if (!fsfile)
   {
     filename = wxmxURI + wxT("#zip:/content.xml");
-    std::unique_ptr<wxFSFile> fsfile;
+    wxFSFile *fsfile;
     #ifdef HAVE_OPENMP_TASKS
     #pragma omp critical (OpenFSFile)
     #endif
-    fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
+    fsfile = fs.OpenFile(filename);
   }
 
   // Did we succeed in opening the file?
@@ -3397,11 +3397,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
       // a letter of ascii code 27 in content.xml. Let's filter this char out.
 
       // Re-open the file.
-      std::unique_ptr<wxFSFile> fsfile;
+      wxFSFile *fsfile;
       #ifdef HAVE_OPENMP_TASKS
       #pragma omp critical (OpenFSFile)
       #endif
-      fsfile = std::unique_ptr<wxFSFile>(fs.OpenFile(filename));
+      fsfile = fs.OpenFile(filename);
       if (fsfile)
       {
         // Read the file into a string
