@@ -421,6 +421,10 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
           m_gnuplotData_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
                                               mstream.GetOutputStreamBuffer()->GetBufferSize());
         }
+        #ifdef HAVE_OPENMP_TASKS
+        #pragma omp critical (OpenFSFile)
+        #endif
+        delete fsfile;
       }
     }
   }
