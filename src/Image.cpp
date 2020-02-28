@@ -262,6 +262,9 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       {
         wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
         m_gnuplotData_Compressed.Clear();
+        #ifdef HAVE_OMP_HEADER
+        omp_unset_lock(&m_gnuplotLock);
+        #endif
         return;
       }
       
@@ -457,10 +460,15 @@ wxMemoryBuffer Image::GetGnuplotSource()
   #endif
   #endif
   {  
-    if(m_gnuplotSource_Compressed.GetDataLen() < 2)
+    if(
+      (m_gnuplotSource_Compressed.GetDataLen() < 2) || 
+      (m_gnuplotData_Compressed.GetDataLen() < 2))
+    {
+      #ifdef HAVE_OMP_HEADER
+      omp_unset_lock(&m_gnuplotLock);
+      #endif
       return retval;
-    if(m_gnuplotData_Compressed.GetDataLen() < 2)
-      return retval;
+    }
     wxMemoryOutputStream output;
     wxTextOutputStream textOut(output);
     if(output.IsOk())
@@ -502,10 +510,15 @@ wxMemoryBuffer Image::GetGnuplotData()
   #endif
   #endif
   {
-    if(m_gnuplotSource_Compressed.GetDataLen() < 2)
+    if(
+      (m_gnuplotSource_Compressed.GetDataLen() < 2) || 
+      (m_gnuplotData_Compressed.GetDataLen() < 2))
+    {
+      #ifdef HAVE_OMP_HEADER
+      omp_unset_lock(&m_gnuplotLock);
+      #endif
       return retval;
-    if(m_gnuplotData_Compressed.GetDataLen() < 2)
-      return retval;
+    }
     
     wxMemoryOutputStream output;
     wxTextOutputStream textOut(output);
