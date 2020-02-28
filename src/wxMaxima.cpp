@@ -5266,7 +5266,7 @@ bool wxMaxima::AutoSave()
   {
     saved = m_worksheet->ExportToWXMX(m_tempfileName);
 
-    wxLogMessage(_("Autosaving as temp file"));
+    wxLogMessage(wxString::Format(_("Autosaving as temp file %s"), m_tempfileName));
     if((m_tempfileName != oldTempFile) && saved)
     {
       if(!oldTempFile.IsEmpty())
@@ -5274,7 +5274,7 @@ bool wxMaxima::AutoSave()
         if(wxFileExists(oldTempFile))
         {
           SuppressErrorDialogs blocker;
-          wxLogMessage(_("Trying to remove the old temp file"));
+          wxLogMessage(wxString::Format(_("Trying to remove the old temp file %s"), oldTempFile));
           wxRemoveFile(oldTempFile);
         }
       }
@@ -5284,7 +5284,8 @@ bool wxMaxima::AutoSave()
   }
   else
   {
-    wxLogMessage(_("Autosaving the .wxmx file"));
+    wxLogMessage(wxString::Format(_("Autosaving the .wxmx file as %s"),
+                                  m_worksheet->m_currentFile));
     saved = SaveFile(false);
   }
   
