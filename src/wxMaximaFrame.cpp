@@ -1241,7 +1241,7 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->AppendSeparator();
   m_listMenu->Append(menu_list_sort, _("Sort"));
   m_listMenu->Append(menu_list_remove_duplicates, _("Remove duplicates"),_("Remove all list elements that appear twice in a row. Normally used in conjunction with sort."));
-m_listMenu->AppendSeparator();
+  m_listMenu->AppendSeparator();
   m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list. Useful for creating stacks.") );
   m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list. Useful for creating stacks."));
   m_listMenu->AppendSeparator();
@@ -1346,8 +1346,6 @@ m_listMenu->AppendSeparator();
                      wxITEM_NORMAL);
 #ifndef __WXOSX__
   m_HelpMenu->AppendSeparator();
-#endif
-#ifndef __WXOSX__
   APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT,
     _("About"),
     _("About wxMaxima"), wxT("stock_about"));
