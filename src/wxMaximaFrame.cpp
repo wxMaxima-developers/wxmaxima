@@ -419,7 +419,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Make sure that some of the settings that comprise the perspektive actualle
   // make sense.
   m_worksheet->m_mainToolBar->Realize();
-  // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
+  // It somehow is possible to hide the Maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
   m_manager.GetPane(wxT("console")).Show(true);
 
@@ -511,7 +511,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
         case sending:
           m_bytesFromMaxima_last = 0;
           m_MenuBar->EnableItem(menu_remove_output, true);
-          RightStatusText(_("Sending a command to maxima"));
+          RightStatusText(_("Sending a command to Maxima"));
           // We don't evaluate any cell right now.
           break;
         case waiting:
@@ -550,7 +550,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
         case disconnected:
           m_bytesFromMaxima_last = 0;
           m_MenuBar->EnableItem(menu_remove_output, false);
-          RightStatusText(_("Not connected to maxima"));
+          RightStatusText(_("Not connected to Maxima"));
           break;
         case wait_for_start:
           m_bytesFromMaxima_last = 0;
@@ -925,7 +925,7 @@ void wxMaximaFrame::SetupMenu()
                        _("Display last result in TeX form"), wxITEM_NORMAL);
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->Append(menu_jumptoerror, _("Jump to first error"),
-                       _("Jump to the first cell maxima has reported an error in."),
+                       _("Jump to the first cell Maxima has reported an error in."),
                        wxITEM_NORMAL);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
@@ -1305,7 +1305,7 @@ m_listMenu->AppendSeparator();
                      _("The offline manual of wxMaxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
-                     _("The offline manual of maxima"),
+                     _("The offline manual of Maxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_example, _("&Example..."),
                      _("Show an example of usage"),
@@ -1316,11 +1316,11 @@ m_listMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_HelpMenu, menu_show_tip, _("Show &Tips..."),
                    _("Show a tip"), wxART_TIP);
   m_HelpMenu->AppendSeparator();
-  m_HelpMenu->Append(menu_help_solving, _("Solving equations with maxima"),
+  m_HelpMenu->Append(menu_help_solving, _("Solving equations with Maxima"),
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_numberformats, _("Number types"),
                      "", wxITEM_NORMAL);
-  m_HelpMenu->Append(menu_help_tolerances, _("Tolerance calculations with maxima"),
+  m_HelpMenu->Append(menu_help_tolerances, _("Tolerance calculations with Maxima"),
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_3d, _("Displaying 3d curves"),
                      "", wxITEM_NORMAL);
@@ -1908,7 +1908,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u00B3'), _("to the power of 3"), true), 0, wxALL | wxEXPAND,
                            2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u221A'),
-                                      _("sqrt (needs parenthesis for its argument to work as a maxima command)"), true),
+                                      _("sqrt (needs parenthesis for its argument to work as a Maxima command)"), true),
                            0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2148')), 0, wxALL | wxEXPAND, 2);
   builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2147')), 0, wxALL | wxEXPAND, 2);
