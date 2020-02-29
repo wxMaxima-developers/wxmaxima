@@ -5254,6 +5254,7 @@ bool wxMaxima::AutoSave()
   if(!SaveNecessary())
     return true;
   
+  bool savedWas = m_worksheet->IsSaved();
   bool saved;
   wxString oldTempFile = m_tempfileName;
   m_tempfileName = wxStandardPaths::Get().GetTempDir()+
@@ -5280,17 +5281,19 @@ bool wxMaxima::AutoSave()
       }
     }
     RegisterAutoSaveFile();
-    m_fileSaved = false;
   }
   else
   {
     wxLogMessage(wxString::Format(_("Autosaving the .wxmx file as %s"),
                                   m_worksheet->m_currentFile));
-    saved = SaveFile(false);
+    savedWas = saved = SaveFile(false);
   }
-  
+
+  m_worksheet->SetSaved(savedWas);
+  ResetTitle(savedWas, true);
+
   oldTempFile = m_tempfileName;
-  return saved;
+  return savedWas;
 }
 
 void wxMaxima::FileMenu(wxCommandEvent &event)
@@ -8878,8 +8881,6 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
     OpenWXMXFile(file, m_worksheet, true);
     m_tempfileName = file;
     m_worksheet->m_currentFile = wxEmptyString;    
-    m_worksheet->SetSaved(false);
-    ResetTitle(false, true);
     m_worksheet->m_currentFile = wxEmptyString;    
   }
   else
