@@ -8880,11 +8880,10 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
     m_worksheet->m_currentFile = wxEmptyString;    
     m_worksheet->SetSaved(false);
     ResetTitle(false, true);
+    m_worksheet->m_currentFile = wxEmptyString;    
   }
   else
-  {
     LoggingMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
-  }
 }
 
 bool wxMaxima::SaveNecessary()
