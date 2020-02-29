@@ -1301,8 +1301,8 @@ m_listMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_HelpMenu, wxID_HELP, _("Context-sensitive &Help\tF1"),
                    _("Show wxMaxima help"), wxT("gtk-help"));
 #endif
-  m_HelpMenu->Append(menu_wxmaximahelp, _("&Maxima help"),
-                     _("The offline manual of maxima"),
+  m_HelpMenu->Append(menu_wxmaximahelp, _("wxMaxima help"),
+                     _("The offline manual of wxMaxima"),
                      wxITEM_NORMAL);
   m_HelpMenu->Append(menu_maximahelp, _("&Maxima help"),
                      _("The offline manual of maxima"),
