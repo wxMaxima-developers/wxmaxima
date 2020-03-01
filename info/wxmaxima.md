@@ -622,11 +622,11 @@ The function `table_form()` displays a 2D list in a form that is more readable t
 
 As the next example shows, the lists that are assembled by the `table_form` command can be created before the command is executed.
 
-![A third table example](./Matrix%20table%20example.png)
+![A third table example](./MatrixTableExample.png)
 
 Also, because a matrix is a list of lists, matrices can be converted to tables in a similar fashion.
 
-![Another table_form example](./Second%20table%20example.png)
+![Another table_form example](./SecondTableExample.png)
 
 ## Bug reporting
 
