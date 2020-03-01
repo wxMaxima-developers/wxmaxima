@@ -3,7 +3,7 @@ The wxMaxima user manual {-}
 
 wxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra system (CAS). wxMaxima allows one to use all of _Maxima_’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for _Maxima_.
 
-[![wxMaxima logo](./wxMaximaLogo.png)](wxMaximaLogo)
+![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }
 
 Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on [Contents](#SEC_Contents "Full table of contents") here or on the line below the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. Finally, an [index](#Index "Alphabetical index") provides an alphabetical listing of many of the items in the manual with links to these items.
 
@@ -53,7 +53,7 @@ A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS ca
 
 _Maxima_ is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, _Maxima_ can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.
 
-![Maxima screenshot](./maxima_screenshot.png)
+![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }
 
 Extensive documentation for _Maxima_ is  [available in the internet](http://maxima.sourceforge.net/documentation.html). Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems that would be the F1 key) causes wxMaxima’s context-sensitive help feature will automatically jump to _Maxima_’s manual page for the command at the cursor.
 
@@ -61,7 +61,7 @@ Extensive documentation for _Maxima_ is  [available in the internet](http://maxi
 
 wxMaxima is a graphical user interface that provides the full functionality and flexibility of _Maxima_. wxMaxima offers users a graphical display and many features that make working with _Maxima_ easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for _wxMaxima_, including workbooks to illustrate aspects of its use, is online at the wxMaxima [help site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help menu.
 
-![wxMaxima window](./wxMaximaWindow.png)
+![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }
 
 The calculations that are entered in _wxMaxima_ are performed by the _Maxima_ command-line tool in the background.
 
@@ -76,7 +76,7 @@ One of the very few things that are not standard in wxMaxima is that it organize
 
 If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. The type of this cell can be selected in the toolbar. If a code cell is created the cell can be sent to _maxima_, which causes the result of the calculation to be displayed below the code. A pair of such commands is shown below.
 
-![Input/output cell](./InputCell.png)
+![Input/output cell](./InputCell.png){ id=img_InputCell }
 
 On evaluation of an input cell's contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets a label that begins with `%o` and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The `%o`\-style label _Maxima_ auto-generates will also be accessible, though.
 
@@ -84,7 +84,7 @@ Besides the input cells wxMaxima allows for text cells for documentation, image 
 
 The figure below shows different cell types (Title cells, section cells, subsection cells, text cells, input/output cells and an image cell.
 
-![Example of different wxMaxima cells](./cell-example.png)
+![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-example }
 
 
 ### Cells
@@ -103,7 +103,7 @@ The default behavior of _wxMaxima_ when text is entered is to automatically crea
 
 If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise _wxMaxima_ if more than one cell is selected will extend the selection to whole cells.
 
-What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
+What isn't standard is that _wxMaxima_ provides dragwidth=1185 height=991-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
 * A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.
 * A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
@@ -112,7 +112,7 @@ What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by def
 
 _wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.
 
-![ezUnits](./ezUnits.png)
+![ezUnits](./ezUnits.png){ id=img_ezUnits }
 
 Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).
 
@@ -212,7 +212,7 @@ Please note that most of these symbols (notable exceptions are the logic symbols
 
 Shortcuts to the most important _Maxima_ commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. They all can be moved to other locations inside or outside the _wxMaxima_ window. Other useful panes is the one that allows to input Greek letters using the mouse.
 
-![Example of different side panes](./SidePanes.png)
+![Example of different side panes](./SidePanes.png){ id=img_SidePanes }
 
 ### MathML output
 
@@ -276,7 +276,7 @@ One Example:
 
 A .mac file named Quadratic.mac was created. It consists of two commands: `f(x) := (x - 5)^2;` and `wxdraw2d( explicit(f(x),x,-5,15))`. The result of entering that batch file appears below. (Some directory path information is deleted.)
 
-![Batch image](./BatchImage.png)
+![Batch image](./BatchImage.png){ id=img_BatchImage }
 
     %i1 read("test.mac");
 
@@ -297,7 +297,7 @@ For some common configuration variables _wxMaxima_ offers two ways of configurin
 * The configuration dialog box below lets you change their default values for the current and subsequent sessions.
 * Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.
 
-![wxMaxima configuration 1](./wxMaxima_configuration_001.png)
+![wxMaxima configuration 1](./wxMaxima_configuration_001.png){ id=img_wxMaxima_configuration_001 }
 
 ### Default animation framerate
 
@@ -315,7 +315,7 @@ In order to set the plot size of a single graph only use the following notation 
 
 The style menu allows customization that pertains to the appearance of your notebook as you work.
 
-![wxMaxima configuration 2](./wxMaxima_configuration_002.png)
+![wxMaxima configuration 2](./wxMaxima_configuration_002.png){ id=img_wxMaxima_configuration_002 }
 
 It also contains the option to use jsMath fonts. It is a good idea to install these fonts since they were especially designed for mathematics and tend to resolve issues that can be caused by broken fonts. If they are not installed on your computer, the option to activate them will not be highlighted. The jsMath fonts can be found on [this site](https://www.mpim-bonn.mpg.de/node/258). The site describes JsMath fonts and provides installation instructions.
 
@@ -622,11 +622,11 @@ The function `table_form()` displays a 2D list in a form that is more readable t
 
 As the next example shows, the lists that are assembled by the `table_form` command can be created before the command is executed.
 
-![A third table example](./MatrixTableExample.png)
+![A third table example](./MatrixTableExample.png){ id=img_MatrixTableExample }
 
 Also, because a matrix is a list of lists, matrices can be converted to tables in a similar fashion.
 
-![Another table_form example](./SecondTableExample.png)
+![Another table_form example](./SecondTableExample.png){ id=img_SecondTableExample }
 
 ## Bug reporting
 
@@ -710,7 +710,7 @@ SBCL by default comes with a memory limit that allows it to run even on low-end 
 
 One way to provide _maxima_ (and thus sbcl) with command line parameters is the "Additional parameters for Maxima" field of _wxMaxima_’s configuration dialogue.
 
-![sbcl memory](./sbclMemory.png)
+![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }
 
 
 ## Input sometimes is sluggish/ignoring keys on Ubuntu

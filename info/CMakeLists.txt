@@ -82,7 +82,7 @@ if(PANDOC AND PO4A_TRANSLATE)
         message(STATUS "pandoc version >= 2 found - using option --pdf-engine=${LATEX}")
         set(PANDOC_TEXSELECT_OPTION "--pdf-engine=${LATEX}")
     endif()
-    set(PANDOC_ARGS --number-sections --table-of-contents -s --metadata title="wxMaxima")
+    set(PANDOC_ARGS --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima")
     if(NOT LATEX)
         message(STATUS "lualatex or xelatex required for building the pdf manual.")
     endif()
@@ -122,7 +122,8 @@ else()
     endforeach()
 endif()
 
-file(GLOB WXMAXIMA_ADDITIONAL_HELP_FILES *.jpg *.png)
+file(COPY wxmaxima.css DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB WXMAXIMA_ADDITIONAL_HELP_FILES *.jpg *.png *.css)
 install(FILES ${WXMAXIMA_ADDITIONAL_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
 
