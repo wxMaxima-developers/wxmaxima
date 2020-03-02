@@ -53,49 +53,89 @@
 .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n  
 .TH "WXMAXIMA" "1" 
 .SH "NAME" 
-wxmaxima \(em wxWidgets interface for maxima 
+wxmaxima \- wxWidgets interface for Maxima
 .SH "SYNOPSIS" 
 .PP 
-\fBwxmaxima\fR 
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [input file...]
 .SH "DESCRIPTION" 
 .PP 
-This manual page documents briefly the 
+This manual page documents briefly the
 \fBwxmaxima\fR command and originally was written for the \fBDebian\fP
-distribution because the original program did not have a manual 
+distribution because the original program did not have a manual
 page at this time. Instead, it has extensive documentation that is
 in accessible using it's Help menu.
 .PP 
-\fBwxmaxima\fR is a rather self-explanatory 
-front-end to the maxima computer algebra system. It  
-provides a graphical interface and 2D formatted output display 
-for maxima. Its menu system facilitates the access to a huge part of 
-the maxima native set of commands and also to a browsable maxima 
-help. The dialogue windows make easy the introduction of 
+\fBwxmaxima\fR is a rather self-explanatory graphical
+front-end to the Maxima computer algebra system. It
+provides a graphical interface and 2D formatted output display
+for Maxima. Its menu system facilitates the access to a huge part of
+the Maxima native set of commands and also to a browsable Maxima
+help. The dialogue windows make easy the introduction of
 mathematical entities such as limits, matrices, etc. Besides that
-it extends maxima with a few powerful features like the ability to
+it extends Maxima with a few powerful features like the ability to
 create diagrams with one parameter bound to a slider gui control.
-.PP 
-maxima is a free (GPL) common lisp implementation based of the 
-original computer algebra system Macsyma developed at MIT. It 
-has full documentation (HTML and info) included in the  
-maxima-doc Debian package. 
-.PP 
-It uses the cross-platform GUI toolkit wxWidgets and 
-runs natively on many operative systems. 
- 
-.SH "OPTIONS" 
+.PP
+Maxima is a free (GPL) common lisp implementation based of the
+original computer algebra system Macsyma developed at MIT. It
+has full documentation (HTML and info) included in the
+maxima-doc Debian package.
+.PP
+It uses the cross-platform GUI toolkit wxWidgets and
+runs natively on many operative systems.
+
+.SH "OPTIONS"
 .TP
 .I \-h, \-\-help
 Help: prints a list of options.
 
 .TP
-.I \-V, \-\-version
+.I \-v, \-\-version
 Prints the current version.
 
 .TP
 .I \-b, \-\-batch
 processes the file, saves it afterwards. Will halt if wxMaxima finds an
-error message in maxima's output and pause if maxima asks a question.
+error message in Maxima's output and pause if Maxima asks a question.
+
+.TP
+.I \-o, \-\-open=<str>
+Open a file at startup.
+
+.TP
+.I \-e, \-\-eval=<str>
+Evaluate the file after opening it.
+
+.TP
+.I \-\-logtostdout
+Log all "debug messages" sidebar messages to stderr, too.
+
+.TP
+.I \-\-pipe
+Pipe messages from Maxima to stdout.
+
+.TP
+.I \-\-exit-on-error
+Close the program on any Maxima error.
+
+.TP
+.I \-f, --ini=<str>
+Allows to specify a file to store the configuration in
+
+.TP
+.I \-u, \-\-use-version=<str>
+Use Maxima version <str>.
+
+.TP
+.I \-l, \-\-lisp=<str>
+Use a Maxima compiled with lisp compiler <str>.
+
+.TP
+.I \-X, \-\-extra-args=<str>
+Allows to specify extra Maxima arguments
+
+.TP
+.I \-m, \-\-maxima=<str>
+allows to specify the location of the Maxima binary
 
 .SH "SEE ALSO" 
 .PP 
