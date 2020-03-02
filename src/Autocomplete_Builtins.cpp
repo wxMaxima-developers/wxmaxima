@@ -118,6 +118,7 @@ bool AutoComplete::LoadBuiltinSymbols()
   m_wordList[command].Add("testsuite_files"); // OPTION
   m_wordList[command].Add("share_testsuite_files"); // OPTION
   m_wordList[command].Add("display_all"); // OPTION
+  m_wordList[command].Add("display_index_separator"); // OPTION
   m_wordList[command].Add("display_known_bugs"); // OPTION
   m_wordList[command].Add("tests"); // OPTION
   m_wordList[command].Add("time"); // OPTION
