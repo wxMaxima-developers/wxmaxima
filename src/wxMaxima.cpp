@@ -4019,7 +4019,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
     return helpfile;
   wxLogMessage(wxString::Format(failmsg, helpfile));
   
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_singlepage.html");
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
 #if defined (__WXMSW__)
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
@@ -4032,7 +4032,7 @@ void wxMaxima::ShowWxMaximaHelp()
 {
   wxString helpfile = SearchwxMaximaHelp();
   if(!helpfile.IsEmpty())
-    wxLaunchDefaultBrowser(helpfile);
+    wxLaunchDefaultBrowser(wxURI("file://"+helpfile).BuildURI());
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
