@@ -1,9 +1,10 @@
 #20.02.4
  * Corrected a few last bugs for pre- and post- super- and subscripts
+ * Many improvements to the manpage and the html documentation.
  * Improved support for pre- and post- super- and subscripts provided 
    by Robert Dodier
- * wxWidget'sintegrated help browser on some platforms was broken in 
-   many ways => now the default web browser is used.
+ * wxWidget's integrated help browser on some platforms was broken 
+   => now the default web browser is used.
 
 #20.02.3
  * Support for pre- and post- super- and subscripts provided by Robert Dodier
