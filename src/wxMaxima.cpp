@@ -3824,16 +3824,18 @@ void wxMaxima::ShowTip(bool force)
   tip->Show();
 }
 
-wxString wxMaxima::GetHelpFile()
+wxString wxMaxima::GetMaximaHelpFile()
 {
   // Some operating systems don't like "//" or similar in paths.
-  wxFileName helpFile(GetHelpFile2());
+  wxFileName helpFile(GetMaximaHelpFile2());
   helpFile.MakeAbsolute();
   return helpFile.GetFullPath();
 }
 
-wxString wxMaxima::GetHelpFile2()
+wxString wxMaxima::GetMaximaHelpFile2()
 {
+  wxString searchText = _("Searching for maxima help file %s");
+
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
 
@@ -3851,9 +3853,41 @@ wxString wxMaxima::GetHelpFile2()
   if (headerFile.Length() && wxFileExists(headerFile))
     return headerFile;
   else
-    headerFile = m_maximaDocDir + wxT("/maxima.hhp");
-  
-  wxString searchText = _("Searching for maxima help file %s");
+    headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+  headerFile = m_maximaDocDir + wxT("/maxima.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+    headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+  headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+  headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
+  if(wxFileExists(headerFile))
+    return headerFile;
+
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
@@ -3909,50 +3943,14 @@ wxString wxMaxima::GetHelpFile2()
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  #ifdef __WXMSW__
-  headerFile = m_maximaDocDir + wxT("/chm/maxima.chm");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/../chm/maxima.chm");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-  #endif
-
   return wxEmptyString;
 }
 
 void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
 {
-  if(GetHelpFile().EndsWith("hhp"))
-    m_htmlhelpCtrl.AddBook(GetHelpFile());
+  wxString maximaHelpFile = GetMaximaHelpFile();
+  if(maximaHelpFile.EndsWith("hhp"))
+    m_htmlhelpCtrl.AddBook(maximaHelpFile);
   else
     m_htmlhelpCtrl.AddBook(helpfile);
 
@@ -3986,7 +3984,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
   wxString helpfile;
   wxString lang_long = m_locale->GetCanonicalName();
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_long + ".hhp";
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_long + ".html";
 #if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
@@ -3997,7 +3995,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
     return helpfile;
   wxLogMessage(wxString::Format(failmsg, helpfile));
     
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".hhp";
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".html";
 #if defined (__WXMSW__)
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
@@ -4005,7 +4003,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
     return helpfile;
   wxLogMessage(wxString::Format(failmsg, helpfile));
 
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".hhp";
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
 #if defined (__WXMSW__)
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
@@ -4013,7 +4011,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
     return helpfile;
   wxLogMessage(wxString::Format(failmsg, helpfile));
     
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".hhp";
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
 #if defined (__WXMSW__)
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
@@ -4021,7 +4019,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
     return helpfile;
   wxLogMessage(wxString::Format(failmsg, helpfile));
   
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.hhp");
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_singlepage.html");
 #if defined (__WXMSW__)
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
@@ -4033,15 +4031,8 @@ wxString wxMaxima::SearchwxMaximaHelp()
 void wxMaxima::ShowWxMaximaHelp()
 {
   wxString helpfile = SearchwxMaximaHelp();
-  
-  wxLogMessage(wxString::Format(_("wxMaxima help should be at %s."),helpfile));
-  wxString helpcontents = helpfile;
-  helpcontents.Replace(".hhp",".html");
-  if(GetHelpFile().EndsWith("hhp"))
-    m_htmlhelpCtrl.AddBook(GetHelpFile());
-  m_htmlhelpCtrl.AddBook(helpfile);
-
-  m_htmlhelpCtrl.DisplaySection(helpcontents);
+  if(!helpfile.IsEmpty())
+    wxLaunchDefaultBrowser(helpfile);
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
@@ -4058,7 +4049,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
      keyword = wxT("draw2d");
   if(keyword == wxT("with_slider_draw3d"))
      keyword = wxT("draw3d");
-  wxString MaximaHelpFile = GetHelpFile();
+  wxString MaximaHelpFile = GetMaximaHelpFile();
   if (MaximaHelpFile.Length() == 0)
   {
     LoggingMessageBox(_("wxMaxima could not find help files."
@@ -4066,18 +4057,55 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
                  _("Error"), wxICON_ERROR | wxOK);
     return;
   }
-
-#if defined (__WXMSW__)
-  if(MaximaHelpFile.Lower().EndsWith(wxT(".chm")))
-    ShowCHMHelp(MaximaHelpFile,keyword);
-  else
-#endif
+  
+  if(MaximaHelpFile.Lower().EndsWith(wxT(".html")))
   {
-    if(MaximaHelpFile.Lower().EndsWith(wxT(".html")))
-      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+wxT("#Item: ")+keyword).BuildURI());
+    if(m_helpFileAnchors.empty())
+    {
+      wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
+      wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
+      wxRegEx correctUnderscores("_0[0-9]+[a-z]");
+      if(wxFileExists(MaximaHelpFile))
+      {
+        wxFileInputStream input(MaximaHelpFile);
+        if(input.IsOk())
+        {
+          wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+          while(input.IsOk() && !input.Eof())
+          {
+            wxString line = text.ReadLine();
+            wxStringTokenizer tokens(line, wxT(">"));
+            while(tokens.HasMoreTokens())
+            {
+              wxString token = tokens.GetNextToken();
+              wxString oldToken(token);
+              if(idExtractor.Replace(&token, "\\1")>0)
+              {
+                wxString id = token;
+                correctUnderscores.Replace(&token, "_");
+                token.Replace("-", " ");
+                if(!token.EndsWith("-1"))
+                  m_helpFileAnchors[token] = id;
+              }
+            }
+          }
+        }
+      }
+    }
+    if(keyword.IsEmpty())
+    {
+      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile).BuildURI());
+    }
     else
-      ShowHTMLHelp(MaximaHelpFile,keyword);
+    {
+      keyword = m_helpFileAnchors[keyword];
+      if(keyword.IsEmpty())
+        keyword = "Function-and-Variable-Index";
+      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+wxT("#")+keyword).BuildURI());
+    }
   }
+  else
+    ShowHTMLHelp(MaximaHelpFile,keyword);
 }
 
 bool wxMaxima::InterpretDataFromMaxima()

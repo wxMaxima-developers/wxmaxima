@@ -150,9 +150,9 @@ public:
 
   /*! Get the name of the help file
    */
-  wxString GetHelpFile();
+  wxString GetMaximaHelpFile();
   //! An helper function for GetHelpFile()
-  wxString GetHelpFile2();
+  wxString GetMaximaHelpFile2();
 
   void ShowMaximaHelp(wxString keyword = wxEmptyString);
 
@@ -265,6 +265,9 @@ private:
   bool m_exitAfterEval;
   //! Can we display the "ready" prompt right now?
   bool m_ready;
+
+  WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
+  HelpFileAnchors m_helpFileAnchors;
 
   /*! A human-readable presentation of eventual unmatched-parenthesis type errors
 
