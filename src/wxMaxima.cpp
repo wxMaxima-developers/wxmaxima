@@ -4033,6 +4033,8 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString helpfile = SearchwxMaximaHelp();
   if(!helpfile.IsEmpty())
     wxLaunchDefaultBrowser(wxURI("file://"+helpfile).BuildURI());
+  else
+    wxLaunchDefaultBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
@@ -4050,17 +4052,14 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   if(keyword == wxT("with_slider_draw3d"))
      keyword = wxT("draw3d");
   wxString MaximaHelpFile = GetMaximaHelpFile();
-  if (MaximaHelpFile.Length() == 0)
-  {
-    LoggingMessageBox(_("wxMaxima could not find help files."
-                           "\n\nPlease check your installation."),
-                 _("Error"), wxICON_ERROR | wxOK);
-    return;
-  }
   
-  if(MaximaHelpFile.Lower().EndsWith(wxT(".html")))
+  if(!(MaximaHelpFile.Lower().EndsWith(wxT(".html"))))
   {
-    if(m_helpFileAnchors.empty())
+    ShowHTMLHelp(MaximaHelpFile,keyword);
+  }
+  else
+  {
+    if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
     {
       wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
@@ -4104,20 +4103,14 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
         }
       }
     }
+    keyword = m_helpFileAnchors[keyword];
     if(keyword.IsEmpty())
-    {
-      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile).BuildURI());
-    }
+      keyword = "Function-and-Variable-Index";
+    if(!MaximaHelpFile.IsEmpty())
+      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+"#"+keyword).BuildURI());
     else
-    {
-      keyword = m_helpFileAnchors[keyword];
-      if(keyword.IsEmpty())
-        keyword = "Function-and-Variable-Index";
-      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+wxT("#")+keyword).BuildURI());
-    }
+      wxLaunchDefaultBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html#"+keyword);
   }
-  else
-    ShowHTMLHelp(MaximaHelpFile,keyword);
 }
 
 bool wxMaxima::InterpretDataFromMaxima()
