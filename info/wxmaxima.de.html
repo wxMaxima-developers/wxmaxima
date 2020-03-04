@@ -11,6 +11,7 @@
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
+  <link rel="stylesheet" href="wxmaxima.css" />
 </head>
 <body>
 <header id="title-block-header">
@@ -92,7 +93,9 @@
 </nav>
 <h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
 <p>wxMaxima is a graphical user interface (GUI) for the <em>Maxima</em> computer algebra system (CAS). wxMaxima allows one to use all of <em>Maxima</em>’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for <em>Maxima</em>.</p>
-<p><a href="wxMaximaLogo"><img src="./wxMaximaLogo.png" alt="wxMaxima logo" /></a></p>
+<figure>
+<img src="./wxMaximaLogo.png" alt="wxMaxima logo" id="img_wxMaximaLogo" /><figcaption>wxMaxima logo</figcaption>
+</figure>
 <p>Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen Kapitel der Dokumentation. <a href="#SEC_Contents%20%22Detailliertes%20Inhaltsverzeichnis%22">Contents</a> fürt zu einer entsprechenden Sektion, die eine genauere Navigation ermöglicht. Zudem steht ein (#Index “Alphabetischer Index”) zur Verfügung, der auf viele Punkte des Handbuchs verweist.</p>
 <ul>
 <li><a href="#Introduction" title="Introduction to wxMaxima">Introduction</a>:</li>
@@ -122,13 +125,13 @@
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
 <figure>
-<img src="./maxima_screenshot.png" alt="Maxima screenshot" /><figcaption>Maxima screenshot</figcaption>
+<img src="./maxima_screenshot.png" alt="Maxima screenshot" id="img_maxima_screenshot" /><figcaption>Maxima screenshot</figcaption>
 </figure>
 <p>Extensive documentation for <em>Maxima</em> is <a href="http://maxima.sourceforge.net/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems that would be the F1 key) causes wxMaxima’s context-sensitive help feature will automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p>wxMaxima is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the wxMaxima <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
-<img src="./wxMaximaWindow.png" alt="wxMaxima window" /><figcaption>wxMaxima window</figcaption>
+<img src="./wxMaximaWindow.png" alt="wxMaxima window" id="img_wxMaximaWindow" /><figcaption>wxMaxima window</figcaption>
 </figure>
 <p>The calculations that are entered in <em>wxMaxima</em> are performed by the <em>Maxima</em> command-line tool in the background.</p>
 <h2 id="grundlagen-zum-arbeitsblatt"><span class="header-section-number">1.2</span> Grundlagen zum Arbeitsblatt</h2>
@@ -137,13 +140,13 @@
 <p>One of the very few things that are not standard in wxMaxima is that it organizes the data for <em>Maxima</em> into cells that are evaluated (which means: sent to <em>Maxima</em>) only when the user requests this. When a cell is evaluated, all commands in that cell, and only that cell, are evaluated as a batch. (The preceding statement is not quite accurate: One can select a set of adjacent cells and evaluate them together. Also, one can instruct <em>Maxima</em> to evaluate all cells in a workbook in one pass.) <em>wxMaxima</em>’s approach to submitting commands for execution might feel unfamiliar at the first sight. It does, however, drastically ease work with big documents (where the user certainly does not want every small change to automatically to trigger a full re-evaluation of the whole document). Also, this approach is very handy for debugging.</p>
 <p>If text is typed into <em>wxMaxima</em> it automatically creates a new worksheet cell. The type of this cell can be selected in the toolbar. If a code cell is created the cell can be sent to <em>maxima</em>, which causes the result of the calculation to be displayed below the code. A pair of such commands is shown below.</p>
 <figure>
-<img src="./InputCell.png" alt="Input/output cell" /><figcaption>Input/output cell</figcaption>
+<img src="./InputCell.png" alt="Input/output cell" id="img_InputCell" /><figcaption>Input/output cell</figcaption>
 </figure>
 <p>On evaluation of an input cell’s contents the input cell <em>Maxima</em> assigns a label to the input (by default shown in red and recognizable by the <code>%i</code>) by which it can be referenced later in the <em>wxMaxima</em> session. The output that <em>Maxima</em> generates also gets a label that begins with <code>%o</code> and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The <code>%o</code>-style label <em>Maxima</em> auto-generates will also be accessible, though.</p>
 <p>Außer Code-Zellen kennt wxMaxima auch Testzellen und solche mit Bildern oder Überschriften. Jede Zelle hat ihren eigenen Speicher für das Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen eigenen Speicher für die Rückgängigmachen-Funktion.</p>
 <p>Die nun folgende Abbildung zeigt verschiedene Zelltypen.</p>
 <figure>
-<img src="./cell-example.png" alt="Ein Beispiel verschiedener Zelltypen" /><figcaption>Ein Beispiel verschiedener Zelltypen</figcaption>
+<img src="./cell-example.png" alt="Example of different wxMaxima cells" id="img_cell-example" /><figcaption>Example of different wxMaxima cells</figcaption>
 </figure>
 <h3 id="cells"><span class="header-section-number">1.2.1</span> Cells</h3>
 <p>Das Arbeitsblatt ist in Zellen aufgeteilt, von denen jede mehr Zellen oder Elemente der folgenden Typen enthalten kann:</p>
@@ -165,7 +168,7 @@
 <h3 id="auto-vervollständigung"><span class="header-section-number">1.2.3</span> Auto-Vervollständigung</h3>
 <p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
-<img src="./ezUnits.png" alt="ezUnits" /><figcaption>ezUnits</figcaption>
+<img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
 <p>Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).</p>
 <h4 id="griechische-zeichen"><span class="header-section-number">1.2.3.1</span> Griechische Zeichen</h4>
@@ -249,7 +252,7 @@ leadsto       a &quot;leads to&quot; sign
 <h3 id="seitenleisten"><span class="header-section-number">1.2.4</span> Seitenleisten</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
 <figure>
-<img src="./cell-example.png" alt="Ein Beispiel verschiedener Zelltypen" /><figcaption>Ein Beispiel verschiedener Zelltypen</figcaption>
+<img src="./SidePanes.png" alt="Example of different side panes" id="img_SidePanes" /><figcaption>Example of different side panes</figcaption>
 </figure>
 <h3 id="mathml-ausgabe"><span class="header-section-number">1.2.5</span> MathML-Ausgabe</h3>
 <p>Einige Textverarbeitungen verstehen entweder MathML (Der Formeleditor von LibreOffice 5.1 kann zumindest entsprechende Gleichungen importieren). Andere unterstützen Mathematik im RTF-Format. <em>wxMaxima</em> bietet daher einige entsprechende Optionen im Rechtsklick-Menü an.</p>
@@ -288,7 +291,7 @@ Normaler Text</code></pre>
 <p>Ein Beispiel:</p>
 <p>Eine .mac-Datei mit dem Namen Quadratic.mac wurde erstellt, die aus zwei Befehlen besteht: <code>f(x):=(x-5)^2;</code> und <code>wxdraw2d(explicit(f(x),x,-1,15));</code>. Das Ergebnis dieser Befehle (ohne die Pfade, die darin enthalten sind) sieht folgendermaßen aus:</p>
 <figure>
-<img src="./BatchImage.png" alt="Batch image" /><figcaption>Batch image</figcaption>
+<img src="./BatchImage.png" alt="Batch image" id="img_BatchImage" /><figcaption>Batch image</figcaption>
 </figure>
 <p>%i1 read(“test.mac”);</p>
 <p>.mac-Dateien eignen sich dafür, eine Bibliothek von Maxima-Befehlen aufzubauen. Ausreichend Information über die Struktur eines <em>wxMaxima</em>-Arbeitsblatts, dass sie es erlauben, dieses wieder zu rekonstruieren, enthalten sie aber nicht.</p>
@@ -303,7 +306,7 @@ Normaler Text</code></pre>
 <li>Ebenso können sie von Maxima aus überschrieben werden.</li>
 </ul>
 <figure>
-<img src="./wxMaxima_configuration_001.png" alt="wxMaxima configuration 1" /><figcaption>wxMaxima configuration 1</figcaption>
+<img src="./wxMaxima_configuration_001.png" alt="wxMaxima configuration 1" id="img_wxMaxima_configuration_001" /><figcaption>wxMaxima configuration 1</figcaption>
 </figure>
 <h3 id="die-standard-bildwiederholrate-bei-animationen"><span class="header-section-number">1.3.5</span> Die Standard-Bildwiederholrate bei Animationen</h3>
 <p>Die Bildwiederholgeschwindigkeit für Animationen wird in der Variable <code>wxanimate_framerate</code> gespeichert. wxMaxima setzt sie auf den Wert aus dem Konfigurationsdialog, wenn ein neues <em>Maxima</em> gestartet wird.</p>
@@ -314,7 +317,7 @@ Normaler Text</code></pre>
 <h3 id="jsmath-zeichensätze"><span class="header-section-number">1.3.7</span> jsMath-Zeichensätze</h3>
 <p>Im “Stil”-Menü können Einstellungen vorgenommen werden, die das Aussehen des Arbeitsblattes beeinflussen.</p>
 <figure>
-<img src="./wxMaxima_configuration_002.png" alt="wxMaxima configuration 2" /><figcaption>wxMaxima configuration 2</figcaption>
+<img src="./wxMaxima_configuration_002.png" alt="wxMaxima configuration 2" id="img_wxMaxima_configuration_002" /><figcaption>wxMaxima configuration 2</figcaption>
 </figure>
 <p>Eine dieser Einstellungen ist die Option, jsMath-Zeichensätze zu verwenden, die speziell für die Mathematik entworfen wurden. Falls sie auf dem aktuellen System nicht installiert sind, können sie von <a href="https://www.mpim-bonn.mpg.de/node/258">dieser Seite</a>. heruntergeladen werden, wo es auch eine Installationsanleitung gibt.</p>
 <h3 id="automatisches-schließen-von-klammern"><span class="header-section-number">1.3.8</span> Automatisches Schließen von Klammern</h3>
@@ -532,11 +535,11 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 )$</code></pre>
 <p>Das folgende Beispiel zeigt das Zusammensetzen der Listen für solch eine Tabelle.</p>
 <figure>
-<img src="./Matrix%20table%20example.png" alt="Ein drittes Tabellen-Beispiel" /><figcaption>Ein drittes Tabellen-Beispiel</figcaption>
+<img src="./MatrixTableExample.png" alt="A third table example" id="img_MatrixTableExample" /><figcaption>A third table example</figcaption>
 </figure>
 <p>Da Matrizen effektiv Listen von Listen sind, können auch sie in Tabellen verwandelt werden.</p>
 <figure>
-<img src="./Second%20table%20example.png" alt="Ein anderes table_form Beispiel" /><figcaption>Ein anderes table_form Beispiel</figcaption>
+<img src="./SecondTableExample.png" alt="Another table_form example" id="img_SecondTableExample" /><figcaption>Another table_form example</figcaption>
 </figure>
 <h2 id="fehler-melden"><span class="header-section-number">2.8</span> Fehler melden</h2>
 <p><em>wxMaxima</em> bietet einige Funktionen für das Melden von Fehlern an:</p>
@@ -591,7 +594,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>SBCL reserviert gleich beim Hochfahren allen Speicher, den es im Betrieb nutzen will. Wird mehr Speicher benöigt, muss ihm über den Kommandozeilenparameter <code>--dynamic-space-size</code> gesagt werden, wie viel Speicher benötigt wird. SBCL kann nur in etwa die Hälfte des freien Speiches des Systems verwenden. Auf 32-Bit-Rechnern ist dies meist unter 999 Megabytes.</p>
 <p>Kommandozeilenparameter für Maxima können in <em>wxMaxima</em>’s Konfigurationsdialog eingegeben werden.</p>
 <figure>
-<img src="./sbclMemory.png" alt="sbcl memory" /><figcaption>sbcl memory</figcaption>
+<img src="./sbclMemory.png" alt="sbcl memory" id="img_sbclMemory" /><figcaption>sbcl memory</figcaption>
 </figure>
 <h2 id="ubuntu-die-tastatur-ist-langsam-oder-ignoriert-einzelne-tasten"><span class="header-section-number">3.10</span> Ubuntu: Die Tastatur ist langsam oder ignoriert einzelne Tasten</h2>
 <p>Das Installieren von <code>ibus-gtk</code> behebt dieses Problem meist.</p>
