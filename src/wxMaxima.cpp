@@ -4032,9 +4032,14 @@ void wxMaxima::ShowWxMaximaHelp()
 {
   wxString helpfile = SearchwxMaximaHelp();
   if(!helpfile.IsEmpty())
+  {
     wxLaunchDefaultBrowser(wxURI("file://"+helpfile).BuildURI());
+  }
   else
+  {
+    wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the wxMaxima homepage")));
     wxLaunchDefaultBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
+  }
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
@@ -4053,7 +4058,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
      keyword = wxT("draw3d");
   wxString MaximaHelpFile = GetMaximaHelpFile();
   
-  if(!(MaximaHelpFile.Lower().EndsWith(wxT(".html"))))
+  if((!(MaximaHelpFile.Lower().EndsWith(wxT(".html")))) && (!MaximaHelpFile.IsEmpty()))
   {
     ShowHTMLHelp(MaximaHelpFile,keyword);
   }
@@ -4107,9 +4112,14 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     if(keyword.IsEmpty())
       keyword = "Function-and-Variable-Index";
     if(!MaximaHelpFile.IsEmpty())
+    {
       wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+"#"+keyword).BuildURI());
+    }
     else
-      wxLaunchDefaultBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html#"+keyword);
+    {
+      wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the maxima homepage")));
+      wxLaunchDefaultBrowser("http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#"+keyword);
+    }
   }
 }
 
