@@ -4064,6 +4064,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     {
       wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
+      wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx correctUnderscores("_0[0-9]+[a-z]");
       if(wxFileExists(MaximaHelpFile))
       {
@@ -4086,6 +4087,17 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
                 token.Replace("-", " ");
                 if(!token.EndsWith("-1"))
                   m_helpFileAnchors[token] = id;
+              }
+              else
+              {
+                if(idExtractor_oldManual.Replace(&token, "\\1")>0)
+                {
+                  wxString id = token;
+                  correctUnderscores.Replace(&token, "_");
+                  token.Replace("-", " ");
+                  if(!token.EndsWith("-1"))
+                    m_helpFileAnchors[token] = id;
+                }
               }
             }
           }
