@@ -6658,7 +6658,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 #ifdef HAVE_OPENMP_TASKS
 #pragma omp critical (OpenFSFile)
 #endif
-        std::shared_ptr<wxFSFile> fsfile = std::shared_ptr<wxFSFile>(fsystem->OpenFile(memFsName));
+        fsfile = std::shared_ptr<wxFSFile>(fsystem->OpenFile(memFsName));
 
         if (fsfile)
         {
