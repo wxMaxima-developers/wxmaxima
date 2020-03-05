@@ -6657,7 +6657,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
       #ifdef HAVE_OPENMP_TASKS
       #pragma omp critical (OpenFSFile)
       #endif
-      fsfile = fsystem->OpenFile(memFsName);
+      std::shared_ptr<wxFSFile> fsfile = std::shared_ptr<wxFSFile>(fsystem->OpenFile(memFsName));
 
       if (fsfile)
       {
@@ -6713,11 +6713,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // actually managed to save it correctly.
   {
     wxFileSystem fs;
-    wxFSFile *fsfile;
+    std::shared_ptr<wxFSFile> fsfile;
     #ifdef HAVE_OPENMP_TASKS
     #pragma omp critical (OpenFSFile)
     #endif
-    fsfile = fs.OpenFile(filename);
+    fsfile = std::shared_ptr<wxFSFile>(fs.OpenFile(filename));
     
     // Did we succeed in opening the file?
     if (!fsfile)
