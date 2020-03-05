@@ -6590,99 +6590,100 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 
   xmlText +=  wxT("\n</wxMaximaDocument>");
 
-  // Prepare reading the files we have stored in memory
-  std::unique_ptr<wxFileSystem> fsystem(new wxFileSystem);
-  fsystem->AddHandler(new wxMemoryFSHandler);
-  fsystem->ChangePathTo(wxT("memory:"), true);
-
-  // In wxWidgets 3.1.1 fsystem->FindFirst crashes if we don't have a file
-  // in the memory filesystem => Let's create a file just to make sure
-  // one exists.
-  wxMemoryBuffer dummyBuf;
-  wxMemoryFSHandler::AddFile("dummyfile",
-                             dummyBuf.GetData(),
-                             dummyBuf.GetDataLen());
-
-  // Let wxWidgets test if the document can be read again by the XML parser before
-  // the user finds out the hard way.
   {
-    wxXmlDocument doc;
+    // Prepare reading the files we have stored in memory
+    std::unique_ptr<wxFileSystem> fsystem(new wxFileSystem);
+    fsystem->AddHandler(new wxMemoryFSHandler);
+    fsystem->ChangePathTo(wxT("memory:"), true);
+
+    // In wxWidgets 3.1.1 fsystem->FindFirst crashes if we don't have a file
+    // in the memory filesystem => Let's create a file just to make sure
+    // one exists.
+    wxMemoryBuffer dummyBuf;
+    wxMemoryFSHandler::AddFile("dummyfile",
+                               dummyBuf.GetData(),
+                               dummyBuf.GetDataLen());
+
+    // Let wxWidgets test if the document can be read again by the XML parser before
+    // the user finds out the hard way.
     {
-      wxMemoryOutputStream ostream;
-      wxTextOutputStream txtstrm(ostream);
-      txtstrm.WriteString(xmlText);
-      wxMemoryInputStream istream(ostream);
-      doc.Load(istream);
+      wxXmlDocument doc;
+      {
+        wxMemoryOutputStream ostream;
+        wxTextOutputStream txtstrm(ostream);
+        txtstrm.WriteString(xmlText);
+        wxMemoryInputStream istream(ostream);
+        doc.Load(istream);
+      }
+
+      // If we fail to load the document we abort the safe process as it will
+      // only destroy data.
+      // But we can still put the erroneous data into the clipboard for debugging purposes.
+      if (!doc.IsOk())
+      {
+        if (wxTheClipboard->Open())
+        {
+          wxDataObjectComposite *data = new wxDataObjectComposite;
+          data->Add(new wxTextDataObject(xmlText));
+          wxTheClipboard->SetData(data);
+          wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
+        }
+
+        // Remove all files from our internal filesystem
+        wxString memFsName = fsystem->FindFirst("*", wxFILE);
+        while(memFsName != wxEmptyString)
+        {
+          wxString name = memFsName.Right(memFsName.Length()-7);
+          wxMemoryFSHandler::RemoveFile(name);
+          memFsName = fsystem->FindNext();
+        }
+        return false;
+      }
     }
 
-    // If we fail to load the document we abort the safe process as it will
-    // only destroy data.
-    // But we can still put the erroneous data into the clipboard for debugging purposes.
-    if (!doc.IsOk())
-    {
-      if (wxTheClipboard->Open())
-      {
-        wxDataObjectComposite *data = new wxDataObjectComposite;
-        data->Add(new wxTextDataObject(xmlText));
-        wxTheClipboard->SetData(data);
-        wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
-      }
+    // wxWidgets could pretty-print the XML document now. But as no-one will
+    // look at it, anyway, there might be no good reason to do so.
+    if (GetTree() != NULL)output << xmlText;
 
-      // Remove all files from our internal filesystem
-      wxString memFsName = fsystem->FindFirst("*", wxFILE);
-      while(memFsName != wxEmptyString)
+    // Move all files we have stored in memory during saving to zip file
+    wxString memFsName = fsystem->FindFirst("*", wxFILE);
+    while(memFsName != wxEmptyString)
+    {
+      wxString name = memFsName.Right(memFsName.Length()-7);
+      if(name != wxT("dummyfile"))
       {
-        wxString name = memFsName.Right(memFsName.Length()-7);
-        wxMemoryFSHandler::RemoveFile(name);
-        memFsName = fsystem->FindNext();
+        zip.CloseEntry();
+
+        wxFSFile *fsfile;
+#ifdef HAVE_OPENMP_TASKS
+#pragma omp critical (OpenFSFile)
+#endif
+        std::shared_ptr<wxFSFile> fsfile = std::shared_ptr<wxFSFile>(fsystem->OpenFile(memFsName));
+
+        if (fsfile)
+        {
+          // The data for gnuplot is likely to change in its entirety if it
+          // ever changes => We can store it in a compressed form.
+          if(name.EndsWith(wxT(".data")))
+            zip.SetLevel(9);
+          else
+            zip.SetLevel(0);
+
+          zip.PutNextEntry(name);
+          std::unique_ptr<wxInputStream> imagefile(fsfile->GetStream());
+
+          while (!(imagefile->Eof()))
+            imagefile->Read(zip);
+        }
       }
+      wxMemoryFSHandler::RemoveFile(name);
+      memFsName = fsystem->FindNext();
+    }
+    if (!out.Close())
       return false;
-    }
+    if (!zip.Close())
+      return false;
   }
-
-  // wxWidgets could pretty-print the XML document now. But as no-one will
-  // look at it, anyway, there might be no good reason to do so.
-  if (GetTree() != NULL)output << xmlText;
-
-  // Move all files we have stored in memory during saving to zip file
-  wxString memFsName = fsystem->FindFirst("*", wxFILE);
-  while(memFsName != wxEmptyString)
-  {
-    wxString name = memFsName.Right(memFsName.Length()-7);
-    if(name != wxT("dummyfile"))
-    {
-      zip.CloseEntry();
-
-      wxFSFile *fsfile;
-      #ifdef HAVE_OPENMP_TASKS
-      #pragma omp critical (OpenFSFile)
-      #endif
-      std::shared_ptr<wxFSFile> fsfile = std::shared_ptr<wxFSFile>(fsystem->OpenFile(memFsName));
-
-      if (fsfile)
-      {
-        // The data for gnuplot is likely to change in its entirety if it
-        // ever changes => We can store it in a compressed form.
-        if(name.EndsWith(wxT(".data")))
-          zip.SetLevel(9);
-        else
-          zip.SetLevel(0);
-
-        zip.PutNextEntry(name);
-        std::unique_ptr<wxInputStream> imagefile(fsfile->GetStream());
-
-        while (!(imagefile->Eof()))
-          imagefile->Read(zip);
-      }
-    }
-    wxMemoryFSHandler::RemoveFile(name);
-    memFsName = fsystem->FindNext();
-  }
-
-  if (!zip.Close())
-    return false;
-  if (!out.Close())
-    return false;
 
   // If all data is saved now we can overwrite the actual save file.
   // We will try to do so a few times if we suspect a MSW virus scanner or similar
