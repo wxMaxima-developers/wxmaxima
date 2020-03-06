@@ -93,6 +93,7 @@
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
+#include <wx/mimetype.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>
@@ -4033,7 +4034,18 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString helpfile = SearchwxMaximaHelp();
   if(!helpfile.IsEmpty())
   {
-    wxLaunchDefaultBrowser(wxURI("file://"+helpfile).BuildURI());
+    wxString URI = wxURI("file://"+helpfile).BuildURI();
+    // On gnome 3.35.91 wxLaunchDefaultBrowser outputs an error message to stdout
+    // (No application is registered as handling this file) and returns true.
+    // Let's work around this by finding the default browser the Hard Way.
+    // if(!wxLaunchDefaultBrowser(URI))
+    {
+      wxMimeTypesManager manager;
+      wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+      wxString command = filetype->GetOpenCommand(URI);
+      std::cerr<<command<<"\n";
+      wxExecute(command);
+    }
   }
   else
   {
