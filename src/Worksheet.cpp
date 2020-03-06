@@ -6681,8 +6681,6 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     }
     if (!out.Close())
       return false;
-    if (!zip.Close())
-      return false;
   }
 
   // If all data is saved now we can overwrite the actual save file.
