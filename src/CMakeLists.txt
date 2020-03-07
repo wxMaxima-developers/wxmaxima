@@ -64,7 +64,6 @@ file(GLOB RESOURCE_FILES
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 elseif(APPLE)
     set(MACOSX_BUNDLE TRUE)
     SET(MACOSX_BUNDLE_NAME wxmaxima)
@@ -75,13 +74,6 @@ elseif(APPLE)
 	MACOSX_BUNDLE TRUE
 	RESOURCE "${RESOURCE_FILES}"
 	)
-    install(
-	TARGETS wxmaxima
-	BUNDLE  DESTINATION .
-	RUNTIME DESTINATION bin
-	COMPONENT Runtime
-#	RESOURCE DESTINATION .
-	)
   install(CODE "
    include(BundleUtilities)
    set(BU_CHMOD_BUNDLE_ITEMS TRUE)
@@ -89,8 +81,9 @@ elseif(APPLE)
    " COMPONENT Runtime)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
-    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 endif()
+
+
 
 if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
@@ -148,6 +141,15 @@ else()
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+
+if(APPLE)
+    install(TARGETS wxmaxima
+	     BUNDLE  DESTINATION .
+	     RUNTIME DESTINATION bin
+	     COMPONENT Runtime)
+else()
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+endif()
 
 # Build Packages
 if(WIN32)
