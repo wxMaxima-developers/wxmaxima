@@ -4040,7 +4040,7 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString helpfile = SearchwxMaximaHelp();
   if(!helpfile.IsEmpty())
   {
-    wxString URI = wxURI("file://"+helpfile).BuildURI();
+    wxString URI = "file://"+helpfile;
     // On gnome 3.35.91 wxLaunchDefaultBrowser outputs an error message to stdout
     // (No application is registered as handling this file) and returns true.
     // Let's work around this by finding the default browser the Hard Way.
@@ -4131,7 +4131,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       keyword = "Function-and-Variable-Index";
     if(!MaximaHelpFile.IsEmpty())
     {
-      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+"#"+keyword).BuildURI());
+      wxLaunchDefaultBrowser("file://"+MaximaHelpFile+"#"+keyword);
     }
     else
     {
