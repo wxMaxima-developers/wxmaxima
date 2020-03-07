@@ -118,6 +118,7 @@ if(PANDOC AND PO4A_TRANSLATE)
 
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
+	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
     endforeach()
 else()
     foreach(BASENAME ${BASENAMES})
