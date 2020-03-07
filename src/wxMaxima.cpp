@@ -185,8 +185,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
-  // Needed for making wxSocket work for multiple threads
-  wxSocketBase::Initialize();
+  // Needed for making wxSocket work for multiple threads. We currently don't
+  // use this feature.
+  // wxSocketBase::Initialize();
+  
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
   m_locale = locale;
@@ -1749,8 +1751,7 @@ bool wxMaxima::StartServer()
   RightStatusText(wxString::Format(_("Starting server on port %d"), m_port));
 
   wxIPV4address addr;
-
-  addr.LocalHost();
+  addr.AnyAddress();
   addr.Service(m_port);
 
   m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT);
