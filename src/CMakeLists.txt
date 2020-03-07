@@ -68,6 +68,7 @@ if(WIN32)
 elseif(APPLE)
     set(MACOSX_BUNDLE TRUE)
     SET(MACOSX_BUNDLE_NAME wxmaxima)
+    SET(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
     list(APPEND SOURCE_FILES ${RESOURCE_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
