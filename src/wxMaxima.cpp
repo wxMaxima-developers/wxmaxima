@@ -288,6 +288,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_port = m_worksheet->m_configuration->DefaultPort();
   while (!(server = StartServer()))
   {
+    wxLogMessage(
+      wxString::Format(
+        _("Starting a server on %i in order to allow maxima to connect failed"),m_port));
     m_port++;
     if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535))
     {
@@ -1751,10 +1754,12 @@ bool wxMaxima::StartServer()
   RightStatusText(wxString::Format(_("Starting server on port %d"), m_port));
 
   wxIPV4address addr;
-  addr.AnyAddress();
-  addr.Service(m_port);
+  if(!addr.AnyAddress())
+    wxLogMessage(_("Cannot set the communication address to localhost."));
+  if(!addr.Service(m_port))
+    wxLogMessage(wxString::Format(_("Cannot set the communication port to %i."), m_port));
 
-  m_server = new wxSocketServer(addr, wxSOCKET_NOWAIT);
+  m_server = new wxSocketServer(addr);
   if(!m_server)
     return false;
   if (!m_server->IsOk())
