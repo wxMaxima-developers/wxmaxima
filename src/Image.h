@@ -190,9 +190,7 @@ public:
     explicit WaitForLoad(omp_lock_t *imageLoadLock);
     ~WaitForLoad();
   private:
-    #ifdef HAVE_OMP_HEADER
     omp_lock_t *m_imageLoadLock;
-    #endif
   };
   
   //! The image in its original compressed form
