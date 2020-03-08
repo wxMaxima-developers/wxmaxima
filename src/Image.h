@@ -184,6 +184,7 @@ public:
   size_t GetOriginalHeight();
 
   //! Wait until the image is loaded
+  #ifdef HAVE_OMP_HEADER
   class WaitForLoad
   {
   public:
@@ -192,6 +193,7 @@ public:
   private:
     omp_lock_t *m_imageLoadLock;
   };
+  #endif
   
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
