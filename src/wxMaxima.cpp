@@ -191,6 +191,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
+  m_exitAfterEval = false;
   m_locale = locale;
   wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName());
   m_isLogTarget = MyApp::m_topLevelWindows.empty();
