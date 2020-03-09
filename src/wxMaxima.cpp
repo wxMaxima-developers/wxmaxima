@@ -4040,6 +4040,11 @@ wxString wxMaxima::SearchwxMaximaHelp()
 void wxMaxima::ShowWxMaximaHelp()
 {
   wxString helpfile = SearchwxMaximaHelp();
+#ifdef __WINDOWS__
+  // Replace \ with / in the path as directory separator.
+  helpfile.Replace("\\", "/", true);
+#endif
+
   if(!helpfile.IsEmpty())
   {
     wxString URI = "file://"+helpfile;
