@@ -997,12 +997,15 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
       else if (tagName == wxT("slide"))
       {
+        wxString gnuplotSources;
+        wxString gnuplotData;
         bool del = node->GetAttribute(wxT("del"), wxT("false")) == wxT("true");
+        node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources);
+        node->GetAttribute(wxT("gnuplotData"), &gnuplotData);
         SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem);
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
         wxString framerate;
-        wxStringTokenizer tokens(str, wxT(";"));
         if (node->GetAttribute(wxT("fr"), &framerate))
         {
           long fr;
@@ -1017,16 +1020,35 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
         }
         if (node->GetAttribute(wxT("running"), wxT("true")) == wxT("false"))
           slideShow->AnimationRunning(false);
-        while (tokens.HasMoreTokens())
+        wxStringTokenizer imageFiles(str, wxT(";"));
+        int numImgs = 0;
+        while (imageFiles.HasMoreTokens())
         {
-          wxString token = tokens.GetNextToken();
-          if (token.Length())
+          wxString imageFile = imageFiles.GetNextToken();
+          if (imageFile.Length())
           {
-            images.Add(token);
+            images.Add(imageFile);
+            numImgs++;
           }
         }
         if (slideShow)
+        {
           slideShow->LoadImages(images, del);
+          wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
+          wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
+          for(int i=0; i<numImgs; i++)
+          {
+            if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
+            {
+              slideShow->GnuplotSource(
+                i,
+                gnuplotFiles.GetNextToken(),
+                dataFiles.GetNextToken(),
+                m_fileSystem
+                );
+            }
+          }
+        }
         tmp = slideShow;
       }
       else if (tagName == wxT("editor"))

@@ -338,6 +338,8 @@ wxString SlideShow::ToTeX()
 wxString SlideShow::ToXML()
 {
   wxString images;
+  wxString gnuplotSourceFiles;
+  wxString gnuplotDataFiles;
 
   for (int i = 0; i < m_size; i++)
   {
@@ -345,6 +347,46 @@ wxString SlideShow::ToXML()
     // add the file to memory
     if (m_images[i])
     {
+      // Anonymize the name of our temp directory for saving
+      wxString gnuplotSource;
+      wxString gnuplotData;
+      if(m_images[i]->GnuplotData() != wxEmptyString)
+      {
+        wxFileName gnuplotDataFile(m_images[i]->GnuplotData());
+        gnuplotData = gnuplotDataFile.GetFullName();
+      }
+      if(m_images[i]->GnuplotSource() != wxEmptyString)
+      {
+        wxFileName gnuplotSourceFile(m_images[i]->GnuplotSource());
+        gnuplotSource = gnuplotSourceFile.GetFullName();
+      }
+
+      // Save the gnuplot source, if necessary.
+      if(gnuplotSource != wxEmptyString)
+      {
+        gnuplotSourceFiles += gnuplotSource + ";";
+        wxMemoryBuffer data = m_images[i]->GetGnuplotSource();
+        if(data.GetDataLen() > 0)
+        {
+          wxMemoryFSHandler::AddFile(gnuplotSource,
+                                     data.GetData(),
+                                     data.GetDataLen()
+            );
+        }
+      }
+      if(gnuplotData != wxEmptyString)
+      {
+        gnuplotDataFiles += gnuplotData + ";";
+        wxMemoryBuffer data = m_images[i]->GetGnuplotData();
+        if(data.GetDataLen() > 0)
+        {
+          wxMemoryFSHandler::AddFile(gnuplotData,
+                                     data.GetData(),
+                                     data.GetDataLen()
+            );
+        }
+      }
+      
       if (m_images[i]->GetCompressedImage())
         wxMemoryFSHandler::AddFile(basename + m_images[i]->GetExtension(),
                                    m_images[i]->GetCompressedImage().GetData(),
@@ -356,6 +398,8 @@ wxString SlideShow::ToXML()
   }
 
   wxString flags;
+  flags = " gnuplotSources=\"" + gnuplotSourceFiles + "\"";
+  flags += " gnuplotData=\"" + gnuplotDataFiles + "\"";
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
   if (m_animationRunning)

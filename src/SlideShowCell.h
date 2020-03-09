@@ -155,6 +155,11 @@ public:
       return (!m_images[m_displayed]->GnuplotSource().IsEmpty());
     }
 
+  void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
+    {
+      m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem);
+    }
+
   wxString GnuplotSource() const override
     {
       if(m_images[m_displayed] == NULL)
