@@ -6679,9 +6679,8 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
         wxMemoryFSHandler::RemoveFile(name);
         memFsName = fsystem->FindNext();
       }
-      // Closing out closes zip, too, for some reason.
-//      if (!out.Close())
-      //      return false;
+      if (!zip.Close())
+        return false;
     }
   }
   // If all data is saved now we can overwrite the actual save file.
