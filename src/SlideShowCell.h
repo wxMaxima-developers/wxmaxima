@@ -150,6 +150,26 @@ public:
 
   bool AnimationRunning() const {return m_animationRunning;}
   void AnimationRunning(bool run);
+  bool CanPopOut() override
+    {
+      return (!m_images[m_displayed]->GnuplotSource().IsEmpty());
+    }
+
+  wxString GnuplotSource() const override
+    {
+      if(m_images[m_displayed] == NULL)
+        return wxEmptyString;
+      else
+        return m_images[m_displayed]->GnuplotSource();
+    }
+  wxString GnuplotData() const override
+    {
+      if(m_images[m_displayed] == NULL)
+        return wxEmptyString;
+      else
+        return m_images[m_displayed]->GnuplotData();
+    }
+
 protected:
   std::shared_ptr<wxTimer> m_timer;
   /*! The framerate of this cell.

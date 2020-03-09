@@ -4051,7 +4051,6 @@ void wxMaxima::ShowWxMaximaHelp()
       wxMimeTypesManager manager;
       wxFileType * filetype = manager.GetFileTypeFromExtension("html");
       wxString command = filetype->GetOpenCommand(URI);
-      std::cerr<<command<<"\n";
       wxExecute(command);
     }
   }
@@ -5670,13 +5669,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   {
     if(m_worksheet->m_cellPointers.m_selectionStart == NULL)
       return;
-    if(m_worksheet->m_cellPointers.m_selectionStart->GetType() != MC_TYPE_IMAGE)
-      return;
-    if(m_worksheet->m_cellPointers.m_selectionStart != m_worksheet->m_cellPointers.m_selectionEnd)
-      return;
 
     wxString gnuplotSource =
-      dynamic_cast<ImgCell *>(m_worksheet->m_cellPointers.m_selectionStart)->GnuplotSource();
+      m_worksheet->m_cellPointers.m_selectionStart->GnuplotSource();
     if(gnuplotSource == wxEmptyString)
       return;
 

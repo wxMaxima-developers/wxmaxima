@@ -148,12 +148,32 @@ int SlideShow::SetFrameRate(int Freq)
 
 void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 {
-  m_size = images.GetCount();
+  int size = 0;
 
-  for (int i = 0; i < m_size; i++)
+  wxString gnuplotFilename;
+  wxString dataFilename;
+
+  for (int i = 0; i < images.GetCount(); i++)
   {
-    m_images.push_back(std::shared_ptr<Image>(
-                         new Image(m_configuration, images[i], m_fileSystem, deleteRead)));
+    if(images[i].EndsWith(".gnuplot"))
+      gnuplotFilename = images[i];
+    else
+    {
+      if(images[i].EndsWith(".data"))
+        dataFilename = images[i];
+      else
+      {
+        m_images.push_back(std::shared_ptr<Image>(
+                             new Image(m_configuration, images[i], m_fileSystem, deleteRead)));
+        if(gnuplotFilename != wxEmptyString)
+        {
+          std::shared_ptr<wxFileSystem> filesystem;
+          if(m_images.back())
+            m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
+        }
+        m_size++;
+      }
+    }
   }
   m_fileSystem = NULL;
   m_displayed = 0;

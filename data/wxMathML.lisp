@@ -1584,6 +1584,8 @@
 				 ($wxstatusbar (format nil "Preparing Frame #~d" frameno))
 				 (setf frameno (+ 1 frameno))
 				 (let* ((filename (wxplot-filename nil))
+					(gnuplotfilename (wxplot-gnuplotfilename))
+					(datafilename (wxplot-datafilename))
 					(args (cons scene-head
 						    (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
 							    args))))
@@ -1591,11 +1593,21 @@
 							      (if $wxplot_usesvg "~a.svg" "~a.png")
 							      filename)
 						      images))
+ 				   (setq images
+					 (cons
+					  (format nil "~a/~a" $maxima_tempdir gnuplotfilename)
+					  images))
+ 				   (setq images
+					 (cons
+					  (format nil "~a/~a" $maxima_tempdir datafilename)
+					  images))
 				   ($apply '$draw
 					   (append
 					    `((mlist simp)
 					      ((mequal simp) $terminal ,(if $wxplot_usesvg '$svg
 									  (if $wxplot_pngcairo '$pngcairo '$png)))
+					      ((mequal simp) $gnuplot_file_name ,gnuplotfilename)
+					      ((mequal simp) $data_file_name ,datafilename)
 					      ((mequal simp) $file_name ,filename))
 					    (get-pic-size-opt)
 					    (list args)))))

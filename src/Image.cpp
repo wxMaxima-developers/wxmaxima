@@ -571,6 +571,11 @@ wxString Image::GnuplotData()
       wxTextOutputStream textOut(output);
       if(output.IsOk())
       {
+        if(m_gnuplotData_Compressed.GetDataLen() <= 1)
+        {
+          wxLogMessage(_("No gnuplot data!"));
+          return wxEmptyString;
+        }
         wxMemoryInputStream mstream(
           m_gnuplotData_Compressed.GetData(),
           m_gnuplotData_Compressed.GetDataLen()
@@ -617,21 +622,29 @@ wxString Image::GnuplotSource()
       if(output.IsOk())
       {
 
+        if(m_gnuplotSource_Compressed.GetDataLen() <= 1)
+        {
+          wxLogMessage(_("No gnuplot source!"));
+          return wxEmptyString;
+        }
         wxMemoryInputStream mstream(
           m_gnuplotSource_Compressed.GetData(),
           m_gnuplotSource_Compressed.GetDataLen()
           );
         wxZlibInputStream zstream(mstream);
-        wxTextInputStream textIn(zstream);
-        wxString line;
-  
-        while(!zstream.Eof())
+        if(zstream.IsOk())
         {
-          line = textIn.ReadLine();
-          line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
-          textOut << line + wxT("\n");
+          wxTextInputStream textIn(zstream);
+          wxString line;
+          
+          while(!zstream.Eof())
+          {
+            line = textIn.ReadLine();
+            line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
+            textOut << line + wxT("\n");
+          }
+          textOut.Flush();
         }
-        textOut.Flush();
       }
     }
   }
@@ -669,6 +682,8 @@ wxSize Image::ToImageFile(wxString filename)
     wxString svgContents_string;
     wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
     wxZlibInputStream zstream(istream);
+    if(!zstream.IsOk())
+      return wxSize(-1, -1);
     wxTextInputStream textIn(zstream);
     wxString line;
     while(!zstream.Eof())

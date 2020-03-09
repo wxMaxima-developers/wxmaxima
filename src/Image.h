@@ -100,7 +100,16 @@ public:
     memory in their compressed form.
    */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
-  /*! Returns the gnuplot source file name of this image
+
+  //! Load the gnuplot source file from the system's filesystem
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
+    {
+      // Create an empty filesystem pointer (which means: Use the system's filesystem)
+      std::shared_ptr<wxFileSystem> filesystem;
+      GnuplotSource(gnuplotFilename, dataFilename, filesystem);
+    }
+
+/*! Returns the gnuplot source file name of this image
 
     If maxima has deleted the temporary file in the meantime or if it comes from 
     a .wxmx file and has never been created from maxima the file is created by this 

@@ -52,7 +52,7 @@ public:
         m_image->GnuplotSource(sourcefile,datafile, filesystem);
     }
   //! The name of the file with gnuplot commands that created this file
-  wxString GnuplotSource() const
+  wxString GnuplotSource() const override
     {
       if(m_image == NULL)
         return wxEmptyString;
@@ -60,7 +60,7 @@ public:
         return m_image->GnuplotSource();
     }
   //! The name of the file with gnuplot data needed for creating this file
-  wxString GnuplotData() const
+  wxString GnuplotData() const override
     {
       if(m_image == NULL)
         return wxEmptyString;
@@ -136,6 +136,10 @@ public:
 
   wxString ToXML() override;
 
+  bool CanPopOut() override
+    {
+      return (!m_image->GnuplotSource().IsEmpty());
+    }
 protected:
   std::shared_ptr<Image> m_image;
   

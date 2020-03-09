@@ -1396,13 +1396,12 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
         }
       }
-      if (IsSelected(MC_TYPE_IMAGE))
+      if(
+        ((m_cellPointers.m_selectionStart != NULL) &&
+         (m_cellPointers.m_selectionStart)->CanPopOut()))
       {
-        if(dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->GnuplotSource() != wxEmptyString)
-        {
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_popup_gnuplot, _("Popout interactively"), wxEmptyString, wxITEM_NORMAL);
-        }
       }
     }
     else if (m_cellPointers.m_selectionStart != NULL)
@@ -1493,15 +1492,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
         }
-        if((m_cellPointers.m_selectionStart != NULL) &&
-           (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE) &&
-           (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->GnuplotSource() != wxEmptyString))
+        if(
+          ((m_cellPointers.m_selectionStart != NULL) &&
+           (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->CanPopOut())))
         {
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_popup_gnuplot, _("Popout interactively"), wxEmptyString, wxITEM_NORMAL);
         }
       }
-
       else
       {
         if (CanCopy(true))

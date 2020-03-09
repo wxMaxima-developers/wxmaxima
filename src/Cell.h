@@ -863,6 +863,23 @@ class Cell
            || (!input && IsComment());
   }
 
+  //! Can this cell be popped out interactively in gnuplot?
+  virtual bool CanPopOut()
+    {
+      return false;
+    }
+  
+  /*! Retrieve the gnuplot source data for this image 
+
+    wxEmptyString means: No such data.
+   */
+  virtual wxString GnuplotSource() const {return wxEmptyString;}
+  /*! Retrieve the gnuplot data file's contents for this image 
+
+    wxEmptyString means: No such data.
+   */
+  virtual wxString GnuplotData() const{return wxEmptyString;}
+
   //! Processes a key event.
   virtual void ProcessEvent(wxKeyEvent &WXUNUSED(event))
   {}
