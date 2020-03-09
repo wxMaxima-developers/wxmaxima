@@ -3958,6 +3958,11 @@ wxString wxMaxima::GetMaximaHelpFile2()
 void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
 {
   wxString maximaHelpFile = GetMaximaHelpFile();
+#ifdef __WINDOWS__
+  // replace \ with / als directory separator
+  maximaHelpFile.Replace("\\", "/", true);
+#endif
+
   if(maximaHelpFile.EndsWith("hhp"))
     m_htmlhelpCtrl.AddBook(maximaHelpFile);
   else
@@ -4081,6 +4086,12 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   if(keyword == wxT("with_slider_draw3d"))
      keyword = wxT("draw3d");
   wxString MaximaHelpFile = GetMaximaHelpFile();
+#ifdef __WINDOWS__
+  // replace \ with / als directory separator
+  maximaHelpFile.Replace("\\", "/", true);
+#endif
+
+
   
   if((!(MaximaHelpFile.Lower().EndsWith(wxT(".html")))) && (!MaximaHelpFile.IsEmpty()))
   {
