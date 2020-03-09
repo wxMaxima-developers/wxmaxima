@@ -4137,7 +4137,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       keyword = "Function-and-Variable-Index";
     if(!MaximaHelpFile.IsEmpty())
     {
-      wxLaunchDefaultBrowser(MaximaHelpFile + "#" + keyword);
+      wxLaunchDefaultBrowser("file://"+MaximaHelpFile+"#"+keyword);
     }
     else
     {
