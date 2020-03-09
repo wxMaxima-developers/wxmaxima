@@ -794,6 +794,11 @@ public:
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
+  //! The maximum number of Megabytes of gnuplot sources we should store
+  int MaxGnuplotMegabytes() const {return m_maxGnuplotMegabytes;}
+  void MaxGnuplotMegabytes(int megaBytes)
+    {wxConfig::Get()->Write("maxGnuplotMegabytes",m_maxGnuplotMegabytes = megaBytes);}
+
   bool OfferKnownAnswers() const {return m_offerKnownAnswers;}
   void OfferKnownAnswers(bool offerKnownAnswers)
     {wxConfig::Get()->Write("offerKnownAnswers",m_offerKnownAnswers = offerKnownAnswers);}
@@ -946,6 +951,7 @@ private:
   bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
   int m_defaultPort;
+  int m_maxGnuplotMegabytes;
   wxString m_documentclass;
   wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;

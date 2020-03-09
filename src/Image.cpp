@@ -258,7 +258,7 @@ void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString 
       // Don't cache the data for unreasonably long files.
       wxStructStat strucStat;
       wxStat(dataFilename, &strucStat);
-      if (strucStat.st_size > 25*1000*1000)
+      if (strucStat.st_size > (*m_configuration)->MaxGnuplotMegabytes()*1000*1000)
       {
         wxLogMessage(_("Too much gnuplot data => Not storing it in the worksheet"));
         m_gnuplotData_Compressed.Clear();

@@ -76,7 +76,7 @@ Configuration::Configuration(wxDC *dc) :
   m_abortOnError = true;
   m_clientWidth = 1024;
   m_defaultPort = 49152;
-
+  m_maxGnuplotMegabytes = 12;
   m_clientHeight = 768;
   m_indentMaths=true;
   if(m_maximaLocation_override != wxEmptyString)
@@ -364,6 +364,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
+  config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);

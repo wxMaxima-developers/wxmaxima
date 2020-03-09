@@ -227,8 +227,7 @@ private:
 
   //! The panel that allows to specify startup commands
   wxPanel *CreateStartupPanel();
-
-  // end wxGlade
+  
 protected:
   //! The name of maxima's startup file.
   wxString m_startupFileName;
@@ -331,7 +330,7 @@ protected:
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
-  // end wxGlade
+  wxSpinCtrl *m_maxGnuplotMegabytes;
 
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);

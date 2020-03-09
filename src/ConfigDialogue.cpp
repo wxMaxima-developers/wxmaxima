@@ -313,6 +313,7 @@ void ConfigDialogue::SetProperties()
   m_autoSave->SetToolTip(
           _("If this checkbox is checked wxMaxima automatically saves the file closing and every few minutes giving wxMaxima a more cellphone-app-like feel as the file is virtually always saved. If this checkbox is unchecked from time to time a backup is made in the temp folder instead."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
+  m_maxGnuplotMegabytes->SetToolTip(_("wxMaxima normally stores the gnuplot sources for every plot made using draw() in order to be able to open plots interactively in gnuplot later. This setting defines the limit [in Megabytes per plot] for this feature."));
   m_defaultPlotWidth->SetToolTip(
           _("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
   m_defaultPlotHeight->SetToolTip(
@@ -480,6 +481,7 @@ void ConfigDialogue::SetProperties()
   m_abortOnError->SetValue(configuration->GetAbortOnError());
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(defaultFramerate);
+  m_maxGnuplotMegabytes->SetValue(configuration->MaxGnuplotMegabytes());
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
@@ -817,7 +819,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
 
   wxArrayString languages;
@@ -869,11 +871,19 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 
   wxStaticText *df = new wxStaticText(panel, -1, _("Default animation framerate:"));
   m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
-                                      200);
+                                      200);    
   grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultFramerate, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
+  wxStaticText *mm = new wxStaticText(panel, -1, _("Interactive popup memory limit [MB/plot]:"));
+  m_maxGnuplotMegabytes = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
+                                         2000);
+  
+  grid_sizer->Add(mm, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_maxGnuplotMegabytes, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+  vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+  
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   vsizer->Add(m_savePanes, 0, wxALL, 5);
 
@@ -1188,6 +1198,7 @@ void ConfigDialogue::WriteSettings()
   configuration->UseSVG(m_usesvg->GetValue());
   configuration->AntiAliasLines(m_antialiasLines->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
+  configuration->MaxGnuplotMegabytes(m_maxGnuplotMegabytes->GetValue());
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
