@@ -133,15 +133,8 @@ public:
   void ClearCache()
     { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
   
-  //! Reads the compressed image into a memory buffer
-  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
-  
   //! Returns the file name extension of the current image
   wxString GetExtension();
-
-  //! Loads an image from a file
-  void LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
-
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {return m_maxWidth;}
   //! The maximum height this image shall be displayed with
@@ -230,6 +223,10 @@ protected:
   void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
 
 private:
+  //! Loads an image from a file
+  void LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  //! Reads the compressed image into a memory buffer
+  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);  
   Configuration **m_configuration;
   //! The upper width limit for displaying this image
   double m_maxWidth;

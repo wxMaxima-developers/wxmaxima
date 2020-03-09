@@ -192,6 +192,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
   m_exitAfterEval = false;
+  m_exitOnError = false;
   m_locale = locale;
   wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName());
   m_isLogTarget = MyApp::m_topLevelWindows.empty();
@@ -9951,9 +9952,3 @@ bool wxMaxima::m_pipeToStdout = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;
-
-/* Local Variables:       */
-/* mode: text             */
-/* c-file-style:  "linux" */
-/* c-basic-offset: 2      */
-/* indent-tabs-mode: nil  */

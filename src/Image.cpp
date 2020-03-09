@@ -36,49 +36,6 @@
 #include "SvgBitmap.h"
 #include "ErrorRedirector.h"
 
-wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
-{
-  wxMemoryBuffer retval;
-  
-  char *buf = new char[8192];
-
-  while (data->CanRead())
-  {
-    data->Read(buf, 8192);
-    size_t siz;
-    retval.AppendData(buf, siz = data->LastRead());
-  }
-
-  delete[] buf;
-  return retval;
-}
-
-wxBitmap Image::GetUnscaledBitmap()
-{
-  #ifdef HAVE_OMP_HEADER
-  WaitForLoad waitforload(&m_imageLoadLock);
-  #endif
-  if (m_svgRast)
-  {
-    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
-    if(!imgdata)
-      return wxBitmap();
-        
-    nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata.get(),
-                  m_originalWidth, m_originalHeight, m_originalWidth*4);
-    return SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
-  }
-  else
-  {
-    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-    wxImage img(istream, wxBITMAP_TYPE_ANY);
-    wxBitmap bmp;
-    if (img.Ok())
-      bmp = wxBitmap(img);
-    return bmp;
-  }
-}
-
 Image::Image(Configuration **config)
 {
   #ifdef HAVE_OMP_HEADER
@@ -194,6 +151,49 @@ Image::~Image()
     }
   }
   wxDELETE(m_svgImage);
+}
+
+wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
+{
+  wxMemoryBuffer retval;
+  
+  char *buf = new char[8192];
+
+  while (data->CanRead())
+  {
+    data->Read(buf, 8192);
+    size_t siz;
+    retval.AppendData(buf, siz = data->LastRead());
+  }
+
+  delete[] buf;
+  return retval;
+}
+
+wxBitmap Image::GetUnscaledBitmap()
+{
+  #ifdef HAVE_OMP_HEADER
+  WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
+  if (m_svgRast)
+  {
+    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
+    if(!imgdata)
+      return wxBitmap();
+        
+    nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata.get(),
+                  m_originalWidth, m_originalHeight, m_originalWidth*4);
+    return SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
+  }
+  else
+  {
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    wxImage img(istream, wxBITMAP_TYPE_ANY);
+    wxBitmap bmp;
+    if (img.Ok())
+      bmp = wxBitmap(img);
+    return bmp;
+  }
 }
 
 wxMemoryBuffer Image::GetCompressedImage()
@@ -719,6 +719,7 @@ wxSize Image::ToImageFile(wxString filename)
 
 wxBitmap Image::GetBitmap(double scale) 
 {
+  // Recalculate contains its own WaitForLoad object.
   Recalculate(scale);
   #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);
