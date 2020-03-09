@@ -840,7 +840,6 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
   // recalculation that follows
   #ifdef HAVE_OMP_HEADER
   wxLogMessage(_("Starting background thread that loads an image"));
-  omp_set_lock(&m_imageLoadLock);
   #if HAVE_OPENMP_TASKS
   #pragma omp task
   #endif
@@ -850,6 +849,10 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
 
 void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
 {
+  #ifdef HAVE_OMP_HEADER
+  WaitForLoad waitforload(&m_imageLoadLock);
+  #endif
+
   m_imageName = image;
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
