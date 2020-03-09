@@ -4088,7 +4088,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   wxString MaximaHelpFile = GetMaximaHelpFile();
 #ifdef __WINDOWS__
   // replace \ with / als directory separator
-  maximaHelpFile.Replace("\\", "/", true);
+  MaximaHelpFile.Replace("\\", "/", true);
 #endif
 
 
