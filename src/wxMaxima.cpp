@@ -3388,55 +3388,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   fsfile = fs.OpenFile(filename);
   if (!fsfile)
   {
-    filename = wxmxURI + wxT("#zip:/content.xml");
-    wxFSFile *fsfile;
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp critical (OpenFSFile)
-    #endif
-    fsfile = fs.OpenFile(filename);
-  }
-
-  // Did we succeed in opening the file?
-  if (fsfile)
-  {
-    // Let's see if we can load the XML contained in this file.
-    if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
-    {
-      // If we cannot read the file a typical error in old wxMaxima versions was to include
-      // a letter of ascii code 27 in content.xml. Let's filter this char out.
-
-      // Re-open the file.
-      wxFSFile *fsfile;
-      #ifdef HAVE_OPENMP_TASKS
-      #pragma omp critical (OpenFSFile)
-      #endif
-      fsfile = fs.OpenFile(filename);
-      if (fsfile)
-      {
-        // Read the file into a string
-        wxString s;
-        wxTextInputStream istream1(*fsfile->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-        while (!fsfile->GetStream()->Eof())
-          s += istream1.ReadLine() + wxT("\n");
-
-        // Remove the illegal character
-        s.Replace(wxT('\u001b'), wxT("\u238B"));
-
-        {
-          // Write the string into a memory buffer
-          wxMemoryOutputStream ostream;
-          wxTextOutputStream txtstrm(ostream);
-          txtstrm.WriteString(s);
-          wxMemoryInputStream istream(ostream);
-
-          // Try to load the file from the memory buffer.
-          xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
-        }
-      }
-    }
-  }
-  else
-  {
     if(m_worksheet)
     {
       m_worksheet->RecalculateForce();
@@ -3449,7 +3400,56 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
     RightStatusText(_("File could not be opened"));
     return false;
   }
-
+  else
+  {
+    filename = wxmxURI + wxT("#zip:/content.xml");
+    wxFSFile *fsfile;
+    #ifdef HAVE_OPENMP_TASKS
+    #pragma omp critical (OpenFSFile)
+    #endif
+    fsfile = fs.OpenFile(filename);
+    
+    // Did we succeed in opening the file?
+    if (fsfile)
+    {
+      // Let's see if we can load the XML contained in this file.
+      if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
+      {
+        // If we cannot read the file a typical error in old wxMaxima versions was to include
+        // a letter of ascii code 27 in content.xml. Let's filter this char out.
+        
+        // Re-open the file.
+        wxFSFile *fsfile;
+        #ifdef HAVE_OPENMP_TASKS
+        #pragma omp critical (OpenFSFile)
+        #endif
+        fsfile = fs.OpenFile(filename);
+        if (fsfile)
+        {
+          // Read the file into a string
+          wxString s;
+          wxTextInputStream istream1(*fsfile->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+          while (!fsfile->GetStream()->Eof())
+            s += istream1.ReadLine() + wxT("\n");
+          
+          // Remove the illegal character
+          s.Replace(wxT('\u001b'), wxT("\u238B"));
+          
+          {
+            // Write the string into a memory buffer
+            wxMemoryOutputStream ostream;
+            wxTextOutputStream txtstrm(ostream);
+            txtstrm.WriteString(s);
+            wxMemoryInputStream istream(ostream);
+            
+            // Try to load the file from the memory buffer.
+            xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+          }
+        }
+      }
+    }
+  }
+  
   if (!xmldoc.IsOk())
   {
     LoggingMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
@@ -3871,8 +3871,8 @@ wxString wxMaxima::GetMaximaHelpFile2()
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
-
-    headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
+  
+  headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
