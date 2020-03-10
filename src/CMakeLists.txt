@@ -20,7 +20,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND USE_CPPCHECK)
 	    "--language=c++"
 	    "--template=gcc"
 	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
-	    "-i ${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/"
 	)
     else()
 	message(STATUS "cppcheck not found.")
