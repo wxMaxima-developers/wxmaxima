@@ -4052,7 +4052,16 @@ void wxMaxima::ShowWxMaximaHelp()
 
   if(!helpfile.IsEmpty())
   {
-    wxString URI = "file://"+helpfile;
+    // A Unix absolute path starts with a "/", so a valid file URI
+    // file:///path/to/helpfile (3 slashes) is constructed.
+    // On Windows the path starts e.g. with C:/path/to/helpfile
+    // so a third "/" must be inserted.
+    // Otherwise "C" might be considered as hostname.
+    wxString URI = "file://"+
+#ifdef __WINDOWS__
+                   "/" +
+#endif
+                   helpfile;
     wxLogMessage("wxMaxima help file URI: " + URI);
     // On gnome 3.35.91 wxLaunchDefaultBrowser outputs an error message to stdout
     // (No application is registered as handling this file) and returns true.
@@ -4149,9 +4158,18 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       keyword = "Function-and-Variable-Index";
     if(!MaximaHelpFile.IsEmpty())
     {
-	  wxString maximaHelpfileURI = "file://"+MaximaHelpFile+"#"+keyword;
-	  wxLogMessage(maximaHelpfileURI);
-	  wxLaunchDefaultBrowser(maximaHelpfileURI);
+      // A Unix absolute path starts with a "/", so a valid file URI
+      // file:///path/to/helpfile (3 slashes!!) is constructed.
+      // On Windows the path starts e.g. with C:/path/to/helpfile
+      // so a third "/" must be inserted.
+      // Otherwise "C" might be considered as hostname.
+      wxString maximaHelpfileURI = "file://"+
+#ifdef __WINDOWS__
+                                   "/" +
+#endif
+                                   MaximaHelpFile+"#"+keyword;
+      wxLogMessage(maximaHelpfileURI);
+      wxLaunchDefaultBrowser(maximaHelpfileURI);
     }
     else
     {
