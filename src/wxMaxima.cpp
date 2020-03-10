@@ -4057,9 +4057,9 @@ void wxMaxima::ShowWxMaximaHelp()
     // On Windows the path starts e.g. with C:/path/to/helpfile
     // so a third "/" must be inserted.
     // Otherwise "C" might be considered as hostname.
-    wxString URI = "file://"+
+    wxString URI = wxString("file://")+
 #ifdef __WINDOWS__
-                   "/" +
+                   wxString("/") +
 #endif
                    helpfile;
     wxLogMessage("wxMaxima help file URI: " + URI);
@@ -4163,9 +4163,9 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       // On Windows the path starts e.g. with C:/path/to/helpfile
       // so a third "/" must be inserted.
       // Otherwise "C" might be considered as hostname.
-      wxString maximaHelpfileURI = "file://"+
+      wxString maximaHelpfileURI = wxString("file://")+
 #ifdef __WINDOWS__
-                                   "/" +
+                                   wxString("/") +
 #endif
                                    MaximaHelpFile+"#"+keyword;
       wxLogMessage(maximaHelpfileURI);
