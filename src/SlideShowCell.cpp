@@ -148,12 +148,10 @@ int SlideShow::SetFrameRate(int Freq)
 
 void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 {
-  int size = 0;
-
   wxString gnuplotFilename;
   wxString dataFilename;
 
-  for (int i = 0; i < images.GetCount(); i++)
+  for (size_t i = 0; i < images.GetCount(); i++)
   {
     if(images[i].EndsWith(".gnuplot"))
       gnuplotFilename = images[i];
