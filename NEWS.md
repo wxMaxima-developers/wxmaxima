@@ -5,6 +5,10 @@
    by Robert Dodier
  * wxWidget's integrated help browser on some platforms was broken 
    => now the default web browser is used.
+ * Animation frames created using draw() now can be popped out 
+   interactively.
+ * New config option for the max amount of gnuplot data to save for 
+   this feature.
 
 #20.02.3
  * Support for pre- and post- super- and subscripts provided by Robert Dodier

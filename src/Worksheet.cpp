@@ -6432,256 +6432,262 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     wxFFileOutputStream out(backupfile);
     if (!out.IsOk())
       return false;
-    wxZipOutputStream zip(out);
-    if (!zip.IsOk())
-      return false;
-    wxTextOutputStream output(zip);
-
-    /* The first zip entry is a file named "mimetype": This makes sure that the mimetype
-       is always stored at the same position in the file. This is common practice. One
-       example from an ePub file:
-
-       00000000  50 4b 03 04 14 00 00 08  00 00 cd bd 0a 43 6f 61  |PK...........Coa|
-       00000010  ab 2c 14 00 00 00 14 00  00 00 08 00 00 00 6d 69  |.,............mi|
-       00000020  6d 65 74 79 70 65 61 70  70 6c 69 63 61 74 69 6f  |metypeapplicatio|
-       00000030  6e 2f 65 70 75 62 2b 7a  69 70 50 4b 03 04 14 00  |n/epub+zipPK....|
-
-    */
-
-    // Make sure that the mime type is stored as plain text.
-    //
-    // We will keep that setting for the rest of the file for the following reasons:
-    //  - Compression of the .zip file won't improve compression of the embedded .png images
-    //  - The text part of the file is too small to justify compression
-    //  - not compressing the text part of the file allows version control systems to
-    //    determine which lines have changed and to track differences between file versions
-    //    efficiently (in a compressed text virtually every byte might change when one
-    //    byte at the start of the uncompressed original is)
-    //  - and if anything crashes in a bad way chances are high that the uncompressed
-    //    contents of the .wxmx file can be rescued using a text editor.
-    //  Who would - under these circumstances - care about a kilobyte?
-    zip.SetLevel(0);
-    zip.PutNextEntry(wxT("mimetype"));
-    output << wxT("text/x-wxmathml");
-    zip.CloseEntry();
-    zip.PutNextEntry(wxT("format.txt"));
-    output << wxT(
-      "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
-      ".wxmx files are .xml-based files contained in a .zip container like .odt\n"
-      "or .docx files. After changing their name to end in .zip the .xml and\n"
-      "eventual bitmap files inside them can be extracted using any .zip file\n"
-      "viewer.\n"
-      "The reason why part of a .wxmx file still might still seem to make sense in a\n"
-      "ordinary text viewer is that the text portion of .wxmx by default\n"
-      "isn't compressed: The text is typically small and compressing it would\n"
-      "mean that changing a single character would (with a high probability) change\n"
-      "big parts of the  whole contents of the compressed .zip archive.\n"
-      "Even if version control tools like git and svn that remember all changes\n"
-      "that were ever made to a file can handle binary files compression would\n"
-      "make the changed part of the file bigger and therefore seriously reduce\n"
-      "the efficiency of version control\n\n"
-      "wxMaxima can be downloaded from https://github.com/wxMaxima-developers/wxmaxima.\n"
-      "It also is part of the windows installer for maxima\n"
-      "(https://wxmaxima-developers.github.io/wxmaxima/).\n\n"
-      "If a .wxmx file is broken but the content.xml portion of the file can still be\n"
-      "viewed using an text editor just save the xml's text as \"content.xml\"\n"
-      "and try to open it using a recent version of wxMaxima.\n"
-      "If it is valid XML (the XML header is intact, all opened tags are closed again,\n"
-      "the text is saved with the text encoding \"UTF8 without BOM\" and the few\n"
-      "special characters XML requires this for are properly escaped)\n"
-      "chances are high that wxMaxima will be able to recover all code and text\n"
-      "from the XML file.\n\n"
-      );
-    zip.CloseEntry();
-
-    // next zip entry is "content.xml", xml of GetTree()
-
-    zip.PutNextEntry(wxT("content.xml"));
-    wxString xmlText;
-
-    xmlText << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    xmlText << wxT("\n<!--   Created using wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
-    xmlText << wxT("\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
-
-    // write document
-    xmlText << wxT("\n<wxMaximaDocument version=\"");
-    xmlText << DOCUMENT_VERSION_MAJOR << wxT(".");
-    xmlText << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
-    xmlText << int(100.0 * m_configuration->GetZoomFactor()) << wxT("\"");
-
-    // **************************************************************************
-    // Find out the number of the cell the cursor is at and save this information
-    // if we find it
-
-    // Determine which cell the cursor is at.
-    long ActiveCellNumber = 1;
-    GroupCell *cursorCell = NULL;
-    if (m_hCaretActive)
     {
-      cursorCell = GetHCaret();
-
-      // If the cursor is before the 1st cell in the worksheet the cell number
-      // is 0.
-      if (!cursorCell)
-        ActiveCellNumber = 0;
-    }
-    else
-    {
-      if (GetActiveCell())
-        cursorCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
-    }
-
-    if (cursorCell == NULL)
-      ActiveCellNumber = 0;
-    // We want to save the information that the cursor is in the nth cell.
-    // Count the cells until then.
-    GroupCell *tmp = GetTree();
-    if (tmp == NULL)
-      ActiveCellNumber = -1;
-    if (ActiveCellNumber > 0)
-    {
-      while ((tmp) && (tmp != cursorCell))
+      wxZipOutputStream zip(out);
+      if (!zip.IsOk())
+        return false;
       {
-        tmp = tmp->GetNext();
-        ActiveCellNumber++;
-      }
-    }
-    // Paranoia: What happens if we didn't find the cursor?
-    if (tmp == NULL) ActiveCellNumber = -1;
+        wxTextOutputStream output(zip);
 
-    // If we know where the cursor was we save this piece of information.
-    // If not we omit it.
-    if (ActiveCellNumber >= 0)
-      xmlText << wxString::Format(wxT(" activecell=\"%li\""), ActiveCellNumber);
+        /* The first zip entry is a file named "mimetype": This makes sure that the mimetype
+           is always stored at the same position in the file. This is common practice. One
+           example from an ePub file:
 
+           00000000  50 4b 03 04 14 00 00 08  00 00 cd bd 0a 43 6f 61  |PK...........Coa|
+           00000010  ab 2c 14 00 00 00 14 00  00 00 08 00 00 00 6d 69  |.,............mi|
+           00000020  6d 65 74 79 70 65 61 70  70 6c 69 63 61 74 69 6f  |metypeapplicatio|
+           00000030  6e 2f 65 70 75 62 2b 7a  69 70 50 4b 03 04 14 00  |n/epub+zipPK....|
 
-    // Save the variables list for the "variables" sidepane.
-    wxArrayString variables = m_variablesPane->GetVarnames();
-    if(variables.GetCount() > 1)
-    {
-      long varcount = variables.GetCount() - 1;
-      xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
-      for(unsigned long i = 0; i<variables.GetCount(); i++)
-        xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]).utf8_str());
-    }
-  
-    xmlText << ">\n";
+        */
 
-    // Reset image counter
-    m_cellPointers.WXMXResetCounter();
+        // Make sure that the mime type is stored as plain text.
+        //
+        // We will keep that setting for the rest of the file for the following reasons:
+        //  - Compression of the .zip file won't improve compression of the embedded .png images
+        //  - The text part of the file is too small to justify compression
+        //  - not compressing the text part of the file allows version control systems to
+        //    determine which lines have changed and to track differences between file versions
+        //    efficiently (in a compressed text virtually every byte might change when one
+        //    byte at the start of the uncompressed original is)
+        //  - and if anything crashes in a bad way chances are high that the uncompressed
+        //    contents of the .wxmx file can be rescued using a text editor.
+        //  Who would - under these circumstances - care about a kilobyte?
+        zip.SetLevel(0);
+        zip.PutNextEntry(wxT("mimetype"));
+        output << wxT("text/x-wxmathml");
+        zip.CloseEntry();
+        zip.PutNextEntry(wxT("format.txt"));
+        output << wxT(
+          "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
+          ".wxmx files are .xml-based files contained in a .zip container like .odt\n"
+          "or .docx files. After changing their name to end in .zip the .xml and\n"
+          "eventual bitmap files inside them can be extracted using any .zip file\n"
+          "viewer.\n"
+          "The reason why part of a .wxmx file still might still seem to make sense in a\n"
+          "ordinary text viewer is that the text portion of .wxmx by default\n"
+          "isn't compressed: The text is typically small and compressing it would\n"
+          "mean that changing a single character would (with a high probability) change\n"
+          "big parts of the  whole contents of the compressed .zip archive.\n"
+          "Even if version control tools like git and svn that remember all changes\n"
+          "that were ever made to a file can handle binary files compression would\n"
+          "make the changed part of the file bigger and therefore seriously reduce\n"
+          "the efficiency of version control\n\n"
+          "wxMaxima can be downloaded from https://github.com/wxMaxima-developers/wxmaxima.\n"
+          "It also is part of the windows installer for maxima\n"
+          "(https://wxmaxima-developers.github.io/wxmaxima/).\n\n"
+          "If a .wxmx file is broken but the content.xml portion of the file can still be\n"
+          "viewed using an text editor just save the xml's text as \"content.xml\"\n"
+          "and try to open it using a recent version of wxMaxima.\n"
+          "If it is valid XML (the XML header is intact, all opened tags are closed again,\n"
+          "the text is saved with the text encoding \"UTF8 without BOM\" and the few\n"
+          "special characters XML requires this for are properly escaped)\n"
+          "chances are high that wxMaxima will be able to recover all code and text\n"
+          "from the XML file.\n\n"
+          );
+        zip.CloseEntry();
 
-    if (GetTree())
-      xmlText += GetTree()->ListToXML();
+        // next zip entry is "content.xml", xml of GetTree()
 
-    // Delete all but one control character from the string: there should be
-    // no way for them to enter this string, anyway. But sometimes they still
-    // do...
-    for (wxString::const_iterator it = xmlText.begin(); it != xmlText.end(); ++it)
-    {
-      wxChar c = *it;
-      if ((c < wxT('\t')) ||
-          ((c > wxT('\n')) && (c < wxT(' '))) ||
-          (c == wxChar((char) 0x7F))
-        )
-      {
-        // *it = wxT(' ');
-      }
-    }
+        zip.PutNextEntry(wxT("content.xml"));
+        wxString xmlText;
 
-    xmlText +=  wxT("\n</wxMaximaDocument>");
+        xmlText << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        xmlText << wxT("\n<!--   Created using wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
+        xmlText << wxT("\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
 
-    {
-      // Prepare reading the files we have stored in memory
-      std::unique_ptr<wxFileSystem> fsystem(new wxFileSystem);
-      fsystem->AddHandler(new wxMemoryFSHandler);
-      fsystem->ChangePathTo(wxT("memory:"), true);
+        // write document
+        xmlText << wxT("\n<wxMaximaDocument version=\"");
+        xmlText << DOCUMENT_VERSION_MAJOR << wxT(".");
+        xmlText << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
+        xmlText << int(100.0 * m_configuration->GetZoomFactor()) << wxT("\"");
 
-      // In wxWidgets 3.1.1 fsystem->FindFirst crashes if we don't have a file
-      // in the memory filesystem => Let's create a file just to make sure
-      // one exists.
-      wxMemoryBuffer dummyBuf;
-      wxMemoryFSHandler::AddFile("dummyfile",
-                                 dummyBuf.GetData(),
-                                 dummyBuf.GetDataLen());
+        // **************************************************************************
+        // Find out the number of the cell the cursor is at and save this information
+        // if we find it
 
-      // Let wxWidgets test if the document can be read again by the XML parser before
-      // the user finds out the hard way.
-      {
-        wxXmlDocument doc;
+        // Determine which cell the cursor is at.
+        long ActiveCellNumber = 1;
+        GroupCell *cursorCell = NULL;
+        if (m_hCaretActive)
         {
-          wxMemoryOutputStream ostream;
-          wxTextOutputStream txtstrm(ostream);
-          txtstrm.WriteString(xmlText);
-          wxMemoryInputStream istream(ostream);
-          doc.Load(istream);
+          cursorCell = GetHCaret();
+
+          // If the cursor is before the 1st cell in the worksheet the cell number
+          // is 0.
+          if (!cursorCell)
+            ActiveCellNumber = 0;
+        }
+        else
+        {
+          if (GetActiveCell())
+            cursorCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
         }
 
-        // If we fail to load the document we abort the safe process as it will
-        // only destroy data.
-        // But we can still put the erroneous data into the clipboard for debugging purposes.
-        if (!doc.IsOk())
+        if (cursorCell == NULL)
+          ActiveCellNumber = 0;
+        // We want to save the information that the cursor is in the nth cell.
+        // Count the cells until then.
+        GroupCell *tmp = GetTree();
+        if (tmp == NULL)
+          ActiveCellNumber = -1;
+        if (ActiveCellNumber > 0)
         {
-          if (wxTheClipboard->Open())
+          while ((tmp) && (tmp != cursorCell))
           {
-            wxDataObjectComposite *data = new wxDataObjectComposite;
-            data->Add(new wxTextDataObject(xmlText));
-            wxTheClipboard->SetData(data);
-            wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
+            tmp = tmp->GetNext();
+            ActiveCellNumber++;
+          }
+        }
+        // Paranoia: What happens if we didn't find the cursor?
+        if (tmp == NULL) ActiveCellNumber = -1;
+
+        // If we know where the cursor was we save this piece of information.
+        // If not we omit it.
+        if (ActiveCellNumber >= 0)
+          xmlText << wxString::Format(wxT(" activecell=\"%li\""), ActiveCellNumber);
+
+
+        // Save the variables list for the "variables" sidepane.
+        wxArrayString variables = m_variablesPane->GetVarnames();
+        if(variables.GetCount() > 1)
+        {
+          long varcount = variables.GetCount() - 1;
+          xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
+          for(unsigned long i = 0; i<variables.GetCount(); i++)
+            xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]).utf8_str());
+        }
+  
+        xmlText << ">\n";
+
+        // Reset image counter
+        m_cellPointers.WXMXResetCounter();
+
+        if (GetTree())
+          xmlText += GetTree()->ListToXML();
+
+        // Delete all but one control character from the string: there should be
+        // no way for them to enter this string, anyway. But sometimes they still
+        // do...
+        for (wxString::const_iterator it = xmlText.begin(); it != xmlText.end(); ++it)
+        {
+          wxChar c = *it;
+          if ((c < wxT('\t')) ||
+              ((c > wxT('\n')) && (c < wxT(' '))) ||
+              (c == wxChar((char) 0x7F))
+            )
+          {
+            // *it = wxT(' ');
+          }
+        }
+
+        xmlText +=  wxT("\n</wxMaximaDocument>");
+
+        {
+          // Prepare reading the files we have stored in memory
+          std::unique_ptr<wxFileSystem> fsystem(new wxFileSystem);
+          fsystem->AddHandler(new wxMemoryFSHandler);
+          fsystem->ChangePathTo(wxT("memory:"), true);
+
+          // In wxWidgets 3.1.1 fsystem->FindFirst crashes if we don't have a file
+          // in the memory filesystem => Let's create a file just to make sure
+          // one exists.
+          wxMemoryBuffer dummyBuf;
+          wxMemoryFSHandler::AddFile("dummyfile",
+                                     dummyBuf.GetData(),
+                                     dummyBuf.GetDataLen());
+
+          // Let wxWidgets test if the document can be read again by the XML parser before
+          // the user finds out the hard way.
+          {
+            wxXmlDocument doc;
+            {
+              wxMemoryOutputStream ostream;
+              wxTextOutputStream txtstrm(ostream);
+              txtstrm.WriteString(xmlText);
+              wxMemoryInputStream istream(ostream);
+              doc.Load(istream);
+            }
+
+            // If we fail to load the document we abort the safe process as it will
+            // only destroy data.
+            // But we can still put the erroneous data into the clipboard for debugging purposes.
+            if (!doc.IsOk())
+            {
+              if (wxTheClipboard->Open())
+              {
+                wxDataObjectComposite *data = new wxDataObjectComposite;
+                data->Add(new wxTextDataObject(xmlText));
+                wxTheClipboard->SetData(data);
+                wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
+              }
+
+              // Remove all files from our internal filesystem
+              wxString memFsName = fsystem->FindFirst("*", wxFILE);
+              while(memFsName != wxEmptyString)
+              {
+                wxString name = memFsName.Right(memFsName.Length()-7);
+                wxMemoryFSHandler::RemoveFile(name);
+                memFsName = fsystem->FindNext();
+              }
+              return false;
+            }
           }
 
-          // Remove all files from our internal filesystem
+          // wxWidgets could pretty-print the XML document now. But as no-one will
+          // look at it, anyway, there might be no good reason to do so.
+          if (GetTree() != NULL)output << xmlText;
+
+          // Move all files we have stored in memory during saving to zip file
           wxString memFsName = fsystem->FindFirst("*", wxFILE);
           while(memFsName != wxEmptyString)
           {
             wxString name = memFsName.Right(memFsName.Length()-7);
-            wxMemoryFSHandler::RemoveFile(name);
-            memFsName = fsystem->FindNext();
-          }
-          return false;
-        }
-      }
+            if(name != wxT("dummyfile"))
+            {
+              zip.CloseEntry();
 
-      // wxWidgets could pretty-print the XML document now. But as no-one will
-      // look at it, anyway, there might be no good reason to do so.
-      if (GetTree() != NULL)output << xmlText;
-
-      // Move all files we have stored in memory during saving to zip file
-      wxString memFsName = fsystem->FindFirst("*", wxFILE);
-      while(memFsName != wxEmptyString)
-      {
-        wxString name = memFsName.Right(memFsName.Length()-7);
-        if(name != wxT("dummyfile"))
-        {
-          zip.CloseEntry();
-
-          wxFSFile *fsfile;
+              wxFSFile *fsfile;
 #ifdef HAVE_OPENMP_TASKS
 #pragma omp critical (OpenFSFile)
 #endif
-          fsfile = fsystem->OpenFile(memFsName);
+              fsfile = fsystem->OpenFile(memFsName);
 
-          if (fsfile)
-          {
-            // The data for gnuplot is likely to change in its entirety if it
-            // ever changes => We can store it in a compressed form.
-            if(name.EndsWith(wxT(".data")))
-              zip.SetLevel(9);
-            else
-              zip.SetLevel(0);
+              if (fsfile)
+              {
+                // The data for gnuplot is likely to change in its entirety if it
+                // ever changes => We can store it in a compressed form.
+                if(name.EndsWith(wxT(".data")))
+                  zip.SetLevel(9);
+                else
+                  zip.SetLevel(0);
 
-            zip.PutNextEntry(name);
-            std::unique_ptr<wxInputStream> imagefile(fsfile->GetStream());
+                zip.PutNextEntry(name);
+                std::unique_ptr<wxInputStream> imagefile(fsfile->GetStream());
 
-            while (!(imagefile->Eof()))
-              imagefile->Read(zip);
+                while (!(imagefile->Eof()))
+                  imagefile->Read(zip);
+              }
+            }
+            wxMemoryFSHandler::RemoveFile(name);
+            memFsName = fsystem->FindNext();
           }
         }
-        wxMemoryFSHandler::RemoveFile(name);
-        memFsName = fsystem->FindNext();
       }
-      if (!zip.Close())
+      if(!zip.Close())
         return false;
     }
+    if (!out.Close())
+      return false;
   }
   // If all data is saved now we can overwrite the actual save file.
   // We will try to do so a few times if we suspect a MSW virus scanner or similar
@@ -6722,7 +6728,8 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     {
       wxLogMessage(_(wxT("Saving succeeded, but the file could not be read again \u21D2 Not replacing the old saved file.")));
       return false;
-    }    
+    }
+    wxDELETE(fsfile);
   }
   
   {

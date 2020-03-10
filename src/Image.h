@@ -140,7 +140,10 @@ public:
     Will recreate the scaled image as soon as needed.
    */
   void ClearCache()
-    { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
+    {
+      if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
+        m_scaledBitmap.Create(1, 1);
+    }
   
   //! Returns the file name extension of the current image
   wxString GetExtension();
