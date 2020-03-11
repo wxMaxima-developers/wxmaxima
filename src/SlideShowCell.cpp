@@ -188,10 +188,8 @@ void SlideShow::LoadImages(wxString imageFile)
   m_size = 0;
   for (size_t i = 0; i < count; i++)
   {
-    std::cerr<<"image "<<i<<"\n";
     wxImage image;
     image.LoadFile(imageFile, wxBITMAP_TYPE_ANY, i);
-    std::cerr<<"image2 "<<i<<"\n";
     m_images.push_back(std::shared_ptr<Image>(
                          new Image(m_configuration, wxBitmap(image))));
     m_size++;

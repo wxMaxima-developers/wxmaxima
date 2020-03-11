@@ -969,7 +969,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
                     )
               filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
             std::shared_ptr <wxFileSystem> noFS;
-            if(wxImage::GetImageCount(filename) < 2)
+            if(wxImage::GetImageCount(filename) < 2)           
               imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, false);
             else
               imageCell = new SlideShow(NULL, m_configuration, m_cellPointers, filename, false);
