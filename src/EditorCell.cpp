@@ -3174,14 +3174,12 @@ bool EditorCell::CopyToClipboard()
     if(wxTheClipboard->SetData(new wxTextDataObject(s)))
     {
       wxLogMessage(_("Copied text from EditorCell: ") + s);
-      wxTheClipboard->Flush();
     }
     else
     {
       if(wxTheClipboard->SetData(new wxTextDataObject(s)))
       {
         wxLogMessage(_("Copied text from EditorCell: ") + s);
-        wxTheClipboard->Flush();
       }
       else
         wxLogMessage(_("Cannot put the copied text on the clipboard"));
