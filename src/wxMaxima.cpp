@@ -93,7 +93,6 @@
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
-#include <wx/mimetype.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>
@@ -4049,7 +4048,7 @@ void wxMaxima::ShowWxMaximaHelp()
                    wxString("/") +
 #endif
                    helpfile;
-    wxLogMessage("wxMaxima help file URI: " + URI);
+    wxLogMessage(wxString::Format(_("wxMaxima help file URI: %s"), URI));
     // On gnome 3.35.91 wxLaunchDefaultBrowser outputs an error message to stdout
     // (No application is registered as handling this file) and returns true.
     // Let's work around this by finding the default browser the Hard Way.
@@ -4155,8 +4154,13 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
                                    wxString("/") +
 #endif
                                    MaximaHelpFile+"#"+keyword;
-      wxLogMessage(maximaHelpfileURI);
-      wxLaunchDefaultBrowser(maximaHelpfileURI);
+      wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI));
+      {
+        wxMimeTypesManager manager;
+        wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+        wxString command = filetype->GetOpenCommand(maximaHelpfileURI);
+        wxExecute(command);
+      }
     }
     else
     {
