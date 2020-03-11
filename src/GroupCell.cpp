@@ -146,7 +146,11 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
     std::shared_ptr <wxFileSystem> noFS;
-    ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, noFS, false);
+    Cell *ic;
+    if(wxImage::GetImageCount(initString) < 2)
+      ic = new ImgCell(this, m_configuration, m_cellPointers, initString, noFS, false);
+    else
+      ic = new SlideShow(this, m_configuration, m_cellPointers, initString, false);
     GroupCell::AppendOutput(ic);
   }
 

@@ -9568,9 +9568,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
                                      _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
-      {
         m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE);
-      }
       m_worksheet->SetFocus();
       return;
     }

@@ -80,10 +80,13 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
 {
   LoadImages(image);
 }
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove):
+
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove):
   SlideShow(parent, config, cellPointers)
 {
-  
+  LoadImages(image);
+  if(remove)
+    wxRemoveFile(image);
 }
 
 
@@ -171,6 +174,22 @@ void SlideShow::LoadImages(wxMemoryBuffer imageData)
     wxMemoryInputStream istream2(imageData.GetData(), imageData.GetDataLen());
     wxImage image;
     image.LoadFile(istream2, wxBITMAP_TYPE_ANY, i);
+    m_images.push_back(std::shared_ptr<Image>(
+                         new Image(m_configuration, wxBitmap(image))));
+    m_size++;
+  }
+}
+
+void SlideShow::LoadImages(wxString imageFile)
+{
+  wxImage images;
+  size_t count = wxImage::GetImageCount(imageFile);
+
+  m_size = 0;
+  for (size_t i = 0; i < count; i++)
+  {
+    wxImage image;
+    image.LoadFile(imageFile, wxBITMAP_TYPE_ANY, i);
     m_images.push_back(std::shared_ptr<Image>(
                          new Image(m_configuration, wxBitmap(image))));
     m_size++;
