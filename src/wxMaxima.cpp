@@ -4141,8 +4141,6 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       }
     }
     keyword = m_helpFileAnchors[keyword];
-    if(keyword.IsEmpty())
-      keyword = "Function-and-Variable-Index";
     if(!MaximaHelpFile.IsEmpty())
     {
       // A Unix absolute path starts with a "/", so a valid file URI
@@ -4154,7 +4152,10 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 #ifdef __WINDOWS__
                                    wxString("/") +
 #endif
-                                   MaximaHelpFile+"#"+keyword;
+                                   MaximaHelpFile;
+      if(!keyword.IsEmpty()) {
+        maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
+      }
       wxLogMessage(maximaHelpfileURI);
       wxLaunchDefaultBrowser(maximaHelpfileURI);
     }
