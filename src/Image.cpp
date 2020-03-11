@@ -101,6 +101,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
   m_maxWidth = -1;
   m_maxHeight = -1;
   LoadImage(bitmap);
+  m_scaledBitmap.Create(1, 1);
 }
 
 // constructor which loads an image
@@ -809,9 +810,14 @@ wxBitmap Image::GetBitmap(double scale)
   if (m_height < 1)m_height = 1;
 
   // Create a scaled bitmap and return it.
-  wxImage img = m_scaledBitmap.ConvertToImage();
-  img.Rescale(m_width, m_height, wxIMAGE_QUALITY_BICUBIC);
-  m_scaledBitmap = wxBitmap(img, 24);
+  if(m_scaledBitmap.IsOk())
+  {
+    wxImage img = m_scaledBitmap.ConvertToImage();
+    img.Rescale(m_width, m_height, wxIMAGE_QUALITY_BICUBIC);
+    m_scaledBitmap = wxBitmap(img, 24);
+  }
+  else
+    m_scaledBitmap = wxBitmap(1,1);
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_gnuplotLock);
   #endif
