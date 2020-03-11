@@ -74,6 +74,19 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   if(m_animationRunning)
     ReloadTimer();
 }
+
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type):
+  SlideShow(parent, config, cellPointers)
+{
+  LoadImages(image);
+}
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove):
+  SlideShow(parent, config, cellPointers)
+{
+  
+}
+
+
 int SlideShow::GetFrameRate() const
 {
   int framerate = 2;
@@ -144,6 +157,24 @@ int SlideShow::SetFrameRate(int Freq)
   }
 
   return m_framerate;
+}
+
+void SlideShow::LoadImages(wxMemoryBuffer imageData)
+{
+  wxImage images;
+  wxMemoryInputStream istream(imageData.GetData(), imageData.GetDataLen());
+  size_t count = wxImage::GetImageCount(istream);
+
+  m_size = 0;
+  for (size_t i = 0; i < count; i++)
+  {
+    wxMemoryInputStream istream2(imageData.GetData(), imageData.GetDataLen());
+    wxImage image;
+    image.LoadFile(istream2, wxBITMAP_TYPE_ANY, i);
+    m_images.push_back(std::shared_ptr<Image>(
+                         new Image(m_configuration, wxBitmap(image))));
+    m_size++;
+  }
 }
 
 void SlideShow::LoadImages(wxArrayString images, bool deleteRead)

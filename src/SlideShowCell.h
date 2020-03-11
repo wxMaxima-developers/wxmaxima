@@ -62,9 +62,14 @@ public:
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const std::shared_ptr<wxFileSystem> &filesystem, int framerate = -1);
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
   SlideShow(const SlideShow &cell);
+  //! A constructor that loads the compressed file from a wxMemoryBuffer
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove);
+
   Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();
   SlideShow &operator=(const SlideShow&) = delete;
+  void LoadImages(wxMemoryBuffer imageData);
 
   //! A class that publishes wxm data to the clipboard
   static wxDataFormat m_gifFormat;
