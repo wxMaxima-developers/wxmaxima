@@ -118,7 +118,7 @@ public:
   double GetMaxWidth() const {if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
   double GetHeightList() const {if(m_image != NULL) return m_image->GetHeightList();else return -1;}
   void SetMaxWidth(double width) const {if(m_image != NULL) return m_image->SetMaxWidth(width);}
-  void SetListHeight(double height) const {if(m_image != NULL) return m_image->SetListHeight(height);}
+  void SetMaxHeight(double height) const {if(m_image != NULL) return m_image->SetMaxHeight(height);}
 
   void RecalculateHeight(int fontsize) override;
 

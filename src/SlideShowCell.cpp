@@ -201,28 +201,33 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   wxString gnuplotFilename;
   wxString dataFilename;
 
-  for (size_t i = 0; i < images.GetCount(); i++)
+  if(images.GetCount() == 1)
   {
-    if(images[i].EndsWith(".gnuplot"))
-      gnuplotFilename = images[i];
-    else
+    LoadImages(images[0]);
+  }
+  else
+    for (size_t i = 0; i < images.GetCount(); i++)
     {
-      if(images[i].EndsWith(".data"))
-        dataFilename = images[i];
+      if(images[i].EndsWith(".gnuplot"))
+        gnuplotFilename = images[i];
       else
       {
-        m_images.push_back(std::shared_ptr<Image>(
-                             new Image(m_configuration, images[i], m_fileSystem, deleteRead)));
-        if(gnuplotFilename != wxEmptyString)
+        if(images[i].EndsWith(".data"))
+          dataFilename = images[i];
+        else
         {
-          std::shared_ptr<wxFileSystem> filesystem;
-          if(m_images.back())
-            m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
+          m_images.push_back(std::shared_ptr<Image>(
+                               new Image(m_configuration, images[i], m_fileSystem, deleteRead)));
+          if(gnuplotFilename != wxEmptyString)
+          {
+            std::shared_ptr<wxFileSystem> filesystem;
+            if(m_images.back())
+              m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
+          }
+          m_size++;
         }
-        m_size++;
       }
     }
-  }
   m_fileSystem = NULL;
   m_displayed = 0;
 }

@@ -944,7 +944,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
       else if (tagName == wxT("img"))
       {
-        ImgCell *imageCell;
+        Cell *imageCell;
         wxString filename(node->GetChildren()->GetContent());
 
         if (m_fileSystem) // loading from zip
@@ -954,45 +954,51 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
           if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
           {
             std::shared_ptr <wxFileSystem> noFS;
-            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, true);
+            if(wxImage::GetImageCount(filename) < 2)
+              imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, true);
+            else
+              imageCell = new SlideShow(NULL, m_configuration, m_cellPointers, filename, true);
           }
           else
           {
             // This is the only case show_image() produces ergo this is the only
             // case we might get a local path
-
             if (
                     (!wxFileExists(filename)) &&
                     (wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + filename))
                     )
               filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
             std::shared_ptr <wxFileSystem> noFS;
-            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, false);
+            if(wxImage::GetImageCount(filename) < 2)
+              imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, false);
+            else
+              imageCell = new SlideShow(NULL, m_configuration, m_cellPointers, filename, false);
           }
         }
         wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
         wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
-        if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
+        if(imageCell->GetType() == MC_TYPE_IMAGE)
         {
-          imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+          if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
+          {
+            dynamic_cast<ImgCell *>(imageCell)->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+          }
+          if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
+            dynamic_cast<ImgCell *>(imageCell)->DrawRectangle(false);
+          wxString sizeString;
+          if ((sizeString = node->GetAttribute(wxT("maxWidth"), wxT("-1"))) != wxT("-1"))
+          {
+            double width;
+            if(sizeString.ToDouble(&width))
+              dynamic_cast<ImgCell *>(imageCell)->SetMaxWidth(width);
+          }
+          if ((sizeString = node->GetAttribute(wxT("maxHeight"), wxT("-1"))) != wxT("-1"))
+          {
+            double height;
+            if(sizeString.ToDouble(&height))
+              dynamic_cast<ImgCell *>(imageCell)->SetMaxHeight(height);
+          }
         }
-        if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
-          imageCell->DrawRectangle(false);
-
-        wxString sizeString;
-        if ((sizeString = node->GetAttribute(wxT("maxWidth"), wxT("-1"))) != wxT("-1"))
-        {
-          double width;
-          if(sizeString.ToDouble(&width))
-            imageCell->SetMaxWidth(width);
-        }
-        if ((sizeString = node->GetAttribute(wxT("maxHeight"), wxT("-1"))) != wxT("-1"))
-        {
-          double height;
-          if(sizeString.ToDouble(&height))
-            imageCell->SetMaxWidth(height);
-        }
-
         tmp = imageCell;
       }
       else if (tagName == wxT("slide"))

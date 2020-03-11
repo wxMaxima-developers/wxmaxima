@@ -8510,7 +8510,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
           m_fileSaved = false;
 
         dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
-        dynamic_cast<ImgCell *>(output)->SetListHeight(chooser->GetHeightList());
+        dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetHeightList());
       }
     }
     m_worksheet->RecalculateForce();

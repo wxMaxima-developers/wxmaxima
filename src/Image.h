@@ -154,7 +154,7 @@ public:
   //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){m_maxWidth = width;}
   //! Set the maximum height this image shall be displayed with
-  void   SetListHeight(double height){m_maxHeight = height;}
+  void   SetMaxHeight(double height){m_maxHeight = height;}
   
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
