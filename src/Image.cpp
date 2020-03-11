@@ -780,28 +780,8 @@ wxBitmap Image::GetBitmap(double scale)
       m_scaledBitmap = wxBitmap(img);
     else
     {
-      m_isOk = false;
-      // Create a "image not loaded" bitmap.
-      m_scaledBitmap.Create(m_width, m_height);
-
-      wxString error;
-      if(m_imageName != wxEmptyString)
-        error = wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
-      else
-        error = wxString::Format(_("Error: Cannot render the image."));
-
-      wxMemoryDC dc;
-      dc.SelectObject(m_scaledBitmap);
-
-      int width = 0, height = 0;
-      dc.GetTextExtent(error, &width, &height);
-
-      dc.DrawRectangle(0, 0, m_width - 1, m_height - 1);
-      dc.DrawLine(0, 0, m_width - 1, m_height - 1);
-      dc.DrawLine(0, m_height - 1, m_width - 1, 0);
-
-      dc.GetTextExtent(error, &width, &height);
-      dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
+      m_scaledBitmap = InvalidBitmap();
+      img = m_scaledBitmap.ConvertToImage();
     }
   }
 
@@ -822,6 +802,35 @@ wxBitmap Image::GetBitmap(double scale)
   omp_unset_lock(&m_gnuplotLock);
   #endif
   return m_scaledBitmap;
+}
+
+wxBitmap Image::InvalidBitmap()
+{
+  wxBitmap retval;
+  m_isOk = false;
+  // Create a "image not loaded" bitmap.
+  retval.Create(m_width, m_height);
+  
+  wxString error;
+  if(m_imageName != wxEmptyString)
+    error = wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
+  else
+    error = wxString::Format(_("Error: Cannot render the image."));
+  
+  wxMemoryDC dc;
+  dc.SelectObject(retval);
+  
+  int width = 0, height = 0;
+  dc.GetTextExtent(error, &width, &height);
+  
+  dc.DrawRectangle(0, 0, m_width - 1, m_height - 1);
+  dc.DrawLine(0, 0, m_width - 1, m_height - 1);
+  dc.DrawLine(0, m_height - 1, m_width - 1, 0);
+  
+  dc.GetTextExtent(error, &width, &height);
+  dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
+
+  return retval;
 }
 
 void Image::LoadImage(const wxBitmap &bitmap)
@@ -1007,7 +1016,10 @@ void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFil
         m_isOk = true;
       }
       else
-        m_isOk = false;
+      {
+        m_scaledBitmap = InvalidBitmap();
+        Image = m_scaledBitmap.ConvertToImage();
+      }
     }
   }
   m_fs_keepalive_imagedata.reset();
