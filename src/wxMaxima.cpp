@@ -3357,11 +3357,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   // open wxmx file
   wxXmlDocument xmldoc;
 
-  // We get only absolute paths so the path should start with a "/"
-  //if(!file.StartsWith(wxT("/")))
-  //  file = wxT("/") + file;
-
   wxFileSystem fs;
+  
   wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
   // wxURI doesn't know that a "#" in a file name is a literal "#" and
   // not an anchor within the file so we have to care about url-encoding
@@ -3381,11 +3378,11 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   wxString filename = wxmxURI + wxT("#zip:content.xml");
 
   // Open the file
-  wxFSFile *fsfile;
+  std::shared_ptr<wxFSFile> fsfile;
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (OpenFSFile)
   #endif
-  fsfile = fs.OpenFile(filename);
+  fsfile = std::shared_ptr<wxFSFile>(fs.OpenFile(filename));
   if (!fsfile)
   {
     if(m_worksheet)
@@ -3402,54 +3399,43 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   }
   else
   {
-    filename = wxmxURI + wxT("#zip:/content.xml");
-    wxFSFile *fsfile;
-    #ifdef HAVE_OPENMP_TASKS
-    #pragma omp critical (OpenFSFile)
-    #endif
-    fsfile = fs.OpenFile(filename);
-    
-    // Did we succeed in opening the file?
-    if (fsfile)
+    // Let's see if we can load the XML contained in this file.
+    if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
     {
-      // Let's see if we can load the XML contained in this file.
-      if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
+      // If we cannot read the file a typical error in old wxMaxima versions was to include
+      // a letter of ascii code 27 in content.xml. Let's filter this char out.
+      
+      // Re-open the file.
+      std::shared_ptr<wxFSFile> fsfile2;
+      #ifdef HAVE_OPENMP_TASKS
+      #pragma omp critical (OpenFSFile)
+      #endif
+      fsfile2 = std::shared_ptr<wxFSFile>(fs.OpenFile(filename));
+      if (fsfile2)
       {
-        // If we cannot read the file a typical error in old wxMaxima versions was to include
-        // a letter of ascii code 27 in content.xml. Let's filter this char out.
+        // Read the file into a string
+        wxString s;
+        wxTextInputStream istream1(*fsfile2->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+        while (!fsfile2->GetStream()->Eof())
+          s += istream1.ReadLine() + wxT("\n");
         
-        // Re-open the file.
-        wxFSFile *fsfile;
-        #ifdef HAVE_OPENMP_TASKS
-        #pragma omp critical (OpenFSFile)
-        #endif
-        fsfile = fs.OpenFile(filename);
-        if (fsfile)
+        // Remove the illegal character
+        s.Replace(wxT('\u001b'), wxT("\u238B"));
+        
         {
-          // Read the file into a string
-          wxString s;
-          wxTextInputStream istream1(*fsfile->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-          while (!fsfile->GetStream()->Eof())
-            s += istream1.ReadLine() + wxT("\n");
+          // Write the string into a memory buffer
+          wxMemoryOutputStream ostream;
+          wxTextOutputStream txtstrm(ostream);
+          txtstrm.WriteString(s);
+          wxMemoryInputStream istream(ostream);
           
-          // Remove the illegal character
-          s.Replace(wxT('\u001b'), wxT("\u238B"));
-          
-          {
-            // Write the string into a memory buffer
-            wxMemoryOutputStream ostream;
-            wxTextOutputStream txtstrm(ostream);
-            txtstrm.WriteString(s);
-            wxMemoryInputStream istream(ostream);
-            
-            // Try to load the file from the memory buffer.
-            xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
-          }
+          // Try to load the file from the memory buffer.
+          xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
         }
       }
     }
   }
-  
+
   if (!xmldoc.IsOk())
   {
     LoggingMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
