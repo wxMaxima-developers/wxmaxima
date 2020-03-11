@@ -267,6 +267,7 @@ bool MyApp::OnInit()
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
+  wxImage::AddHandler(new wxGIFHandler);
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 

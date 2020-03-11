@@ -1143,6 +1143,7 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
   if (files[0].Lower().EndsWith(wxT(".png")) ||
       files[0].Lower().EndsWith(wxT(".jpeg")) ||
       files[0].Lower().EndsWith(wxT(".jpg")) ||
+      files[0].Lower().EndsWith(wxT(".gif")) ||
       files[0].Lower().EndsWith(wxT(".svg")) ||
       files[0].Lower().EndsWith(wxT(".svgz"))
     )
@@ -5846,6 +5847,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
                                    wxT("image.png"), wxT("png"),
                                    _("PNG image (*.png)|*.png|"
                                      "JPEG image (*.jpg)|*.jpg|"
+                                     "GIF image (*.gif)|*.gif|"
+                                     "Scaleable vector graphics (*.svg)|*.svg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
                                      "Portable animap (*.pnm)|*.pnm|"
                                      "Tagged image file format (*.tif)|*.tif|"
@@ -8836,6 +8839,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         "Compressed Scalable Vector Image (*.svgz)|*.svgz|"
         "PNG image (*.png)|*.png|"
         "JPEG image (*.jpg)|*.jpg|"
+        "GIF image (*.gif)|*.gif|"
         "Windows bitmap (*.bmp)|*.bmp|"
         "Portable anymap (*.pnm)|*.pnm|"
         "Tagged image file format (*.tif)|*.tif|"
@@ -8845,6 +8849,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       selectorString = _("PNG image (*.png)|*.png|"
                          "JPEG image (*.jpg)|*.jpg|"
                          "Windows bitmap (*.bmp)|*.bmp|"
+                         "GIF image (*.gif)|*.gif|"
                          "Portable anymap (*.pnm)|*.pnm|"
                          "Tagged image file format (*.tif)|*.tif|"
                          "X pixmap (*.xpm)|*.xpm"
@@ -9552,7 +9557,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     {
       wxString file = wxFileSelector(_("Insert Image"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.svg;*.svgz"),
+                                     _("Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"),
                                      wxFD_OPEN);
       if (file != wxEmptyString)
       {

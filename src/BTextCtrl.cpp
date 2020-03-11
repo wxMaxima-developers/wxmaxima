@@ -59,6 +59,11 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 #else
   Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
 #endif
+  #ifdef __WXOSX__
+  #if wxCHECK_VERSION(3, 1, 1)
+  OSXDisableAllSmartSubstitutions();
+  #endif
+  #endif
 }
 
 
