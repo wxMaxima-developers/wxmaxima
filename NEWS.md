@@ -4,12 +4,13 @@
  * Improved support for pre- and post- super- and subscripts provided 
    by Robert Dodier
  * wxWidget's integrated help browser on some platforms was broken 
-   => now the default web browser is used.
+   => now the default web browser is used
  * Support for importing static and some types of animated gif files
  * Animation frames created using draw() now can be popped out 
-   interactively.
+   interactively
  * A option to se the max amount of gnuplot data to save for 
-   this feature.
+   this feature
+ * wxMaxima now no more crashes on FreeBSD
  * As always: Many additional bugfixes.
 
 #20.02.3
