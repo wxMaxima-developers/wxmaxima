@@ -1577,7 +1577,7 @@
 					    ((mequal simp) $file_name ,file-name))
 					  (get-pic-size-opt)
 					  imgs))
-				 "")
+				 (format t "<math><img del=\"yes\">~a.gif</img></math>" file-name))
 			     ;; If file_name is not set, show the animation in wxMaxima
 			     (progn
 			       (dolist (aval (reverse (cdr a-range)))
