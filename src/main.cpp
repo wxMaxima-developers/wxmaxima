@@ -82,122 +82,122 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
-  Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-  Connect(wxMaximaFrame::menu_help_tutorials_start, wxMaximaFrame::menu_help_tutorials_end,
-          wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+  {
+    // On the Mac if any of these commands outputs text to stderr maxima fails to
+    // connect to wxMaxima.
+    #ifdef __WXMAC__
+    wxLogNull noStdErr;
+    #endif
     
-  #if wxUSE_ON_FATAL_EXCEPTION
-  wxHandleFatalExceptions(true);
-  #endif
-  // MSW: Perhaps that is faster.
-  wxSystemOptions::SetOption("msw.display.directdraw","1");
-  // No spell checking in our dialog's input portions on the mac.
-  wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker","0");
-  
-  // Migrate an eventual old config file to the location XDG wants it to be.
-  #ifndef __WXMSW__
-  #if wxCHECK_VERSION(3, 1, 1)
-  wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
-  wxString configFileOld = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
-    wxStandardPaths::Get().MakeConfigFileName(
-      wxString(wxT("wxMaxima")),
-      wxStandardPaths::ConfigFileConv_Dot);
-  wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_XDG);
-  wxString configFileXDG = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
-    wxStandardPaths::Get().MakeConfigFileName(
-      wxString(wxT("wxMaxima")),
-      wxStandardPaths::ConfigFileConv_Ext);
-
-  if(!wxFileExists(configFileXDG))
-  {
-    wxFileName xdgDir(configFileXDG);
-    wxString dirName(xdgDir.GetPath());
-    if(!wxDirExists(dirName))
-      wxMkDir(dirName,0x700);
-    wxLogNull blocker;
-    if(wxFileExists(configFileOld))
-      wxCopyFile(configFileOld,configFileXDG);
-  }
-  #endif
-  #endif
-
-  wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
-
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));
-  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
-  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
-  wxConfigBase *config = wxConfig::Get();
-  int lang = wxLocale::GetSystemLanguage();
-  if(lang == wxLANGUAGE_UNKNOWN)
-    lang = wxLANGUAGE_DEFAULT;
-  if(config->Read(wxT("language"), &lang))
-  {
-    if(wxLocale::IsAvailable(lang))
+    Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+    Connect(wxMaximaFrame::menu_help_tutorials_start, wxMaximaFrame::menu_help_tutorials_end,
+            wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
+    
+    // If supported: Generate symbolic backtraces on crashes.
+    #if wxUSE_ON_FATAL_EXCEPTION
+    wxHandleFatalExceptions(true);
+    #endif
+    // MSW: This should be faster, but might crash on closing on Win7.
+    wxSystemOptions::SetOption("msw.display.directdraw","1");
+    // No spell checking in our dialog's input portions on the mac.
+    wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker","0");
+    
+    // Migrate an eventual old config file to the location XDG wants it to be.
+    #ifndef __WXMSW__
+    #if wxCHECK_VERSION(3, 1, 1)
+    wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
+    wxString configFileOld = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+      wxStandardPaths::Get().MakeConfigFileName(
+        wxString(wxT("wxMaxima")),
+        wxStandardPaths::ConfigFileConv_Dot);
+    wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_XDG);
+    wxString configFileXDG = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+      wxStandardPaths::Get().MakeConfigFileName(
+        wxString(wxT("wxMaxima")),
+        wxStandardPaths::ConfigFileConv_Ext);
+    
+    if(!wxFileExists(configFileXDG))
     {
-      if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
-         (lang != wxLocale::GetSystemLanguage()))
+      wxFileName xdgDir(configFileXDG);
+      wxString dirName(xdgDir.GetPath());
+      if(!wxDirExists(dirName))
+        wxMkDir(dirName,0x700);
+      wxLogNull blocker;
+      if(wxFileExists(configFileOld))
+        wxCopyFile(configFileOld,configFileXDG);
+    }
+    #endif
+    #endif
+    wxLogNull dummy;
+    wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
+    
+    m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
+    m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));
+    m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
+    m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+    wxConfigBase *config = wxConfig::Get();
+    int lang = wxLocale::GetSystemLanguage();
+    if(lang == wxLANGUAGE_UNKNOWN)
+      lang = wxLANGUAGE_DEFAULT;
+    if(config->Read(wxT("language"), &lang))
+    {
+      if(wxLocale::IsAvailable(lang))
       {
-        m_locale.Init(lang);
-        wxString localeName = m_locale.GetCanonicalName();
-        wxLogDebug(wxString::Format(_("wxMaxima's locale is set to to %i: %s"), lang, localeName.utf8_str()));
-        if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
-           (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
-           (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
-           (m_locale.GetSystemEncoding() == wxFONTENCODING_DEFAULT))
-          localeName+=wxT(".UTF-8");
-        if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
-          localeName+=wxT(".UTF-16");
-        if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
-          localeName+=wxT(".UTF-32");
-        
-        wxLogDebug(wxString::Format(_("Setting Maxima's locale to %s."),localeName.utf8_str()));
-        wxSetEnv(wxT("LANG"), localeName);
-      }
-      else
-      {
-        if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT))
+        if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
+           (lang != wxLocale::GetSystemLanguage()))
         {
           m_locale.Init(lang);
           wxString localeName = m_locale.GetCanonicalName();
-          wxLogDebug(
-            wxString::Format(_("Setting wxMaxima's language to the system language %s"),
-                             localeName.utf8_str())
-            );
+          wxLogDebug(wxString::Format(_("wxMaxima's locale is set to to %i: %s"), lang, localeName.utf8_str()));
+          if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
+             (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
+             (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
+             (m_locale.GetSystemEncoding() == wxFONTENCODING_DEFAULT))
+            localeName+=wxT(".UTF-8");
+          if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
+            localeName+=wxT(".UTF-16");
+          if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
+            localeName+=wxT(".UTF-32");
+          
+          wxSetEnv(wxT("LANG"), localeName);
         }
         else
-          wxLogDebug(wxString::Format(_("Not setting language %i"), lang));
+        {
+          if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT))
+          {
+            m_locale.Init(lang);
+            wxString localeName = m_locale.GetCanonicalName();
+          }
+        }
+      }
+      else
+      {
+        wxLogNull blocker;
+        m_locale.Init(lang);
       }
     }
     else
-    {
-      wxLogDebug("According to the OS the current language isn't available!");
-      wxLogNull blocker;
-      m_locale.Init(lang);
-    }
+      m_locale.Init(wxLANGUAGE_DEFAULT);
+    m_locale.AddCatalog(wxT("wxMaxima"));
+    m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
   }
-  else
-    m_locale.Init(wxLANGUAGE_DEFAULT);
-  m_locale.AddCatalog(wxT("wxMaxima"));
-  m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
-
+  
   bool exitAfterEval = false;
   bool evalOnStartup = false;
-
   wxCmdLineParser cmdLineParser(argc, argv);
-
+  
   static const wxCmdLineEntryDesc cmdLineDesc[] =
-          {
-            {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
-                  /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
-                   * using a own window and we want the message on the command line. If a user enters a command
-                   * line option, he expects probably a answer just on the command line... */
-                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, 0},
-                  {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
-                  {wxCMD_LINE_SWITCH, "e", "eval",
-                   "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
-                  {wxCMD_LINE_SWITCH, "b", "batch",
-                   "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
+    {
+      {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
+      /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
+       * using a own window and we want the message on the command line. If a user enters a command
+       * line option, he expects probably a answer just on the command line... */
+      {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, 0},
+      {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
+      {wxCMD_LINE_SWITCH, "e", "eval",
+       "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
+      {wxCMD_LINE_SWITCH, "b", "batch",
+       "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "logtostdout",
                    "Log all \"debug messages\" sidebar messages to stderr, too.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "pipe",
