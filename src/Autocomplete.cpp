@@ -192,7 +192,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
     privateList = Dirstructure::Get()->UserAutocompleteFile();
     wxLogMessage(wxString::Format(
                    _("Trying to load a list of autocompletible symbols from file %s"),
-                   privateList));
+                   privateList.utf8_str()));
     if (wxFileExists(privateList))
     {
       wxTextFile priv(privateList);

@@ -3171,18 +3171,17 @@ bool EditorCell::CopyToClipboard()
   wxString s = m_text.SubString(start, end);
   if (!s.IsEmpty() && (wxTheClipboard->Open()))
   {
-    if(wxTheClipboard->SetData(new wxTextDataObject(s)))
+    if(!wxTheClipboard->SetData(new wxTextDataObject(s)))
     {
-      wxLogMessage(_("Copied text from EditorCell: ") + s);
-    }
-    else
-    {
-      if(wxTheClipboard->SetData(new wxTextDataObject(s)))
+      wxLogMessage(_("Cannot put the copied text on the clipboard (1st try)"));
+      wxMicroSleep(500000);
+      if(!wxTheClipboard->SetData(new wxTextDataObject(s)))
       {
-        wxLogMessage(_("Copied text from EditorCell: ") + s);
+        wxLogMessage(_("Cannot put the copied text on the clipboard (2nd try)"));
+        wxMicroSleep(500000);
+        if(!wxTheClipboard->SetData(new wxTextDataObject(s)))
+          wxLogMessage(_("Cannot put the copied text on the clipboard"));
       }
-      else
-        wxLogMessage(_("Cannot put the copied text on the clipboard"));
     }
     wxTheClipboard->Close();
     return true;

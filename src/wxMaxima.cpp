@@ -3894,7 +3894,7 @@ wxString wxMaxima::GetMaximaHelpFile2()
     return headerFile;
 
   // Gentoo needs this one
-  headerFile = wxString::Format("/usr/share/doc/maxima-%s/html/maxima.hhp",m_maximaVersion);
+  headerFile = wxString::Format("/usr/share/doc/maxima-%s/html/maxima.hhp",m_maximaVersion.utf8_str());
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
@@ -3994,7 +3994,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
     return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
+  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
     
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".html";
 #if defined (__WXMSW__)
@@ -4002,7 +4002,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
     return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
+  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
 
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
 #if defined (__WXMSW__)
@@ -4010,7 +4010,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
     return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
+  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
     
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
 #if defined (__WXMSW__)
@@ -4018,14 +4018,14 @@ wxString wxMaxima::SearchwxMaximaHelp()
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
     return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
+  wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
   
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
 #if defined (__WXMSW__)
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(!wxFileExists(helpfile))
-    wxLogMessage(wxString::Format(failmsg, helpfile));
+    wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
   return helpfile;
 }
 
@@ -4158,7 +4158,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       if(!keyword.IsEmpty()) {
         maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
       }
-      wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI));
+      wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
       {
         wxMimeTypesManager manager;
         wxFileType * filetype = manager.GetFileTypeFromExtension("html");
@@ -4820,7 +4820,7 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
   }
   if(!(wxFileExists(file)))
   {
-    wxLogError(_("Trying to open the non-existing file %s"), file);
+    wxLogError(_("Trying to open the non-existing file %s"), file.utf8_str());
     return false;
   }
 
@@ -4937,7 +4937,7 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
   }
 
   if(!retval)
-    LeftStatusText(wxString::Format("Errors trying to open the file %s.", file));
+    LeftStatusText(wxString::Format("Errors trying to open the file %s.", file.utf8_str()));
 
   if(retval)
   {
@@ -5361,7 +5361,7 @@ bool wxMaxima::AutoSave()
   {
     saved = m_worksheet->ExportToWXMX(m_tempfileName);
 
-    wxLogMessage(wxString::Format(_("Autosaving as temp file %s"), m_tempfileName));
+    wxLogMessage(wxString::Format(_("Autosaving as temp file %s"), m_tempfileName.utf8_str()));
     if((m_tempfileName != oldTempFile) && saved)
     {
       if(!oldTempFile.IsEmpty())
@@ -5369,7 +5369,7 @@ bool wxMaxima::AutoSave()
         if(wxFileExists(oldTempFile))
         {
           SuppressErrorDialogs blocker;
-          wxLogMessage(wxString::Format(_("Trying to remove the old temp file %s"), oldTempFile));
+          wxLogMessage(wxString::Format(_("Trying to remove the old temp file %s"), oldTempFile.utf8_str()));
           wxRemoveFile(oldTempFile);
         }
       }
@@ -5379,7 +5379,7 @@ bool wxMaxima::AutoSave()
   else
   {
     wxLogMessage(wxString::Format(_("Autosaving the .wxmx file as %s"),
-                                  m_worksheet->m_currentFile));
+                                  m_worksheet->m_currentFile.utf8_str()));
     savedWas = saved = SaveFile(false);
   }
 
@@ -7914,7 +7914,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       description += wxString::Format(
         _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"),
         wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
-        _("yes")
+        _("yes").utf8_str()
         );
       #ifdef HAVE_OPENMP_TASKS
       description += wxString::Format(_("\nMultiprocessing using OpenMP %s"), OPENMP_SPEC_DATE);

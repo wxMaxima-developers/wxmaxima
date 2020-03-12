@@ -408,9 +408,9 @@ wxString MatrCell::ToXML()
   if (m_specialMatrix)
     s = wxString::Format(
       wxT("<tb") + flags + wxT(" special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
-            m_inferenceMatrix ? wxT("true") : wxT("false"),
-            m_rowNames ? wxT("true") : wxT("false"),
-            m_colNames ? wxT("true") : wxT("false"));
+            m_inferenceMatrix ? "true" : "false",
+            m_rowNames ? "true" : "false",
+            m_colNames ? "true" : "false");
   else
     s = wxT("<tb") +flags +wxT(">");
 

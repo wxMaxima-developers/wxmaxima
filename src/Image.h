@@ -94,7 +94,7 @@ public:
   ~Image();
 
   //! Creates a bitmap showing an error message
-  wxBitmap InvalidBitmap();
+  void InvalidBitmap();
 
   /*! Sets the name of the gnuplot source and data file of this image
 
