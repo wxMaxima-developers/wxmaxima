@@ -122,7 +122,11 @@ public:
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID,
             //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID
+            WAITFORSTRING_ID,
+            /*! We have given Maxima enough time to do the important 
+
+              now it is time to compile the list of helpfile anchors */
+            COMPILEHELPANCHORS_ID
   };
 
   /*! A timer that determines when to do the next autosave;
@@ -139,6 +143,9 @@ public:
 
   //! A timer that tells us to wait until maxima ends its data.
   wxTimer m_waitForStringEndTimer;
+
+  //! A timer that ells us that we now can do the low-prio compilation of help anchors
+  wxTimer m_compileHelpAnchorsTimer;
   
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
@@ -200,7 +207,10 @@ public:
     long m_patchlevel;
   };
 
-private:  
+private:
+  #ifdef HAVE_OMP_HEADER
+  omp_lock_t m_helpFileAnchorsLock;
+  #endif
   //! wxm data the worksheet is populated from 
   wxString m_initialWorkSheetContents;
   static bool m_pipeToStdout;
@@ -268,6 +278,7 @@ private:
   wxMemoryBuffer m_uncompletedChars;
 
 protected:
+  void CompileHelpFileAnchors();
   //! The gnuplot process info
   wxProcess *m_gnuplotProcess;
   //! Is this window active?

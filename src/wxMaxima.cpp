@@ -185,6 +185,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
+  #ifdef HAVE_OMP_HEADER
+  omp_init_lock(&m_helpFileAnchorsLock);
+  #endif
   // Needed for making wxSocket work for multiple threads. We currently don't
   // use this feature.
   // wxSocketBase::Initialize();
@@ -264,6 +267,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
   m_waitForStringEndTimer.SetOwner(this, WAITFORSTRING_ID);
+  m_compileHelpAnchorsTimer.SetOwner(this, COMPILEHELPANCHORS_ID);
+  
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
   Connect(
     wxEVT_TIMER,
@@ -2641,6 +2646,10 @@ void wxMaxima::ReadVariables(wxString &data)
               wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),value.utf8_str()));
               /// READ FUNCTIONS FOR AUTOCOMPLETION
               m_worksheet->LoadSymbols();
+              if(m_helpFileAnchors.empty())
+              {
+                m_compileHelpAnchorsTimer.StartOnce(10000);
+              }
             }
             if(name == "*lisp-name*")
             {
@@ -4076,6 +4085,66 @@ void wxMaxima::ShowHelp(wxString keyword)
     ShowMaximaHelp(keyword);
 }
 
+void wxMaxima::CompileHelpFileAnchors()
+{
+  wxString MaximaHelpFile = GetMaximaHelpFile();
+  #ifdef HAVE_OMP_HEADER
+  omp_set_lock(&m_helpFileAnchorsLock);
+  #else
+  #ifdef HAVE_OPENMP_TASKS
+  #pragma omp taskwait
+  #endif  
+  #endif
+
+  if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
+  {
+    wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
+    wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
+    wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
+    wxRegEx correctUnderscores("_0[0-9]+[a-z]");
+    if(wxFileExists(MaximaHelpFile))
+    {
+      wxFileInputStream input(MaximaHelpFile);
+      if(input.IsOk())
+      {
+        wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+        while(input.IsOk() && !input.Eof())
+        {
+          wxString line = text.ReadLine();
+          wxStringTokenizer tokens(line, wxT(">"));
+          while(tokens.HasMoreTokens())
+          {
+            wxString token = tokens.GetNextToken();
+            wxString oldToken(token);
+            if(idExtractor.Replace(&token, "\\1")>0)
+            {
+              wxString id = token;
+              correctUnderscores.Replace(&token, "_");
+              token.Replace("-", " ");
+              if(!token.EndsWith("-1"))
+                m_helpFileAnchors[token] = id;
+            }
+            else
+            {
+              if(idExtractor_oldManual.Replace(&token, "\\1")>0)
+              {
+                wxString id = token;
+                correctUnderscores.Replace(&token, "_");
+                token.Replace("-", " ");
+                if(!token.EndsWith("-1"))
+                  m_helpFileAnchors[token] = id;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  #ifdef HAVE_OMP_HEADER
+  omp_unset_lock(&m_helpFileAnchorsLock);
+  #endif
+}
+
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
   if(keyword == wxT("wxdraw"))
@@ -4104,51 +4173,8 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
   else
   {
-    if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
-    {
-      wxBusyCursor crs;
-      wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
-      wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
-      wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
-      wxRegEx correctUnderscores("_0[0-9]+[a-z]");
-      if(wxFileExists(MaximaHelpFile))
-      {
-        wxFileInputStream input(MaximaHelpFile);
-        if(input.IsOk())
-        {
-          wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-          while(input.IsOk() && !input.Eof())
-          {
-            wxString line = text.ReadLine();
-            wxStringTokenizer tokens(line, wxT(">"));
-            while(tokens.HasMoreTokens())
-            {
-              wxString token = tokens.GetNextToken();
-              wxString oldToken(token);
-              if(idExtractor.Replace(&token, "\\1")>0)
-              {
-                wxString id = token;
-                correctUnderscores.Replace(&token, "_");
-                token.Replace("-", " ");
-                if(!token.EndsWith("-1"))
-                  m_helpFileAnchors[token] = id;
-              }
-              else
-              {
-                if(idExtractor_oldManual.Replace(&token, "\\1")>0)
-                {
-                  wxString id = token;
-                  correctUnderscores.Replace(&token, "_");
-                  token.Replace("-", " ");
-                  if(!token.EndsWith("-1"))
-                    m_helpFileAnchors[token] = id;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    wxBusyCursor crs;
+    CompileHelpFileAnchors();
     keyword = m_helpFileAnchors[keyword];
     if(keyword.IsEmpty())
       keyword = "Function-and-Variable-Index";
@@ -5314,6 +5340,12 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 {
   switch (event.GetId())
   {
+    case COMPILEHELPANCHORS_ID:
+      #if HAVE_OPENMP_TASKS
+      #pragma omp task
+      CompileHelpFileAnchors();
+      #endif
+      break;
     case WAITFORSTRING_ID:
       if(InterpretDataFromMaxima())
         wxLogMessage(_("String from maxima apparently didn't end in a newline"));
