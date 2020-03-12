@@ -74,35 +74,45 @@ Dirstructure::Dirstructure()
 
 wxString Dirstructure::ResourcesDir() const
 {
-  // Our ressources dir is somewhere near to the dir the binary can be found.
-  wxFileName exe(wxStandardPaths::Get().GetExecutablePath());
-  
-  // We only need the drive and the directory part of the path to the binary
-  exe.ClearExt();
-  exe.SetName(wxEmptyString);
-  
-  // If the binary is in a source or bin folder the resources dir is one level above
-  wxArrayString dirs = exe.GetDirs();
-  if((dirs.Last().Upper() == wxT("SRC")) || (dirs.Last().Upper() == wxT("BIN")))
+  wxString exepath = wxStandardPaths::Get().GetExecutablePath();
+  if(!exepath.IsEmpty())
   {
-    exe.RemoveLastDir();
-    dirs = exe.GetDirs();
+    // Our ressources dir is somewhere near to the dir the binary can be found.
+    wxFileName exe(exepath);
+    
+    // We only need the drive and the directory part of the path to the binary
+    exe.ClearExt();
+    exe.SetName(wxEmptyString);
+    
+    // If the binary is in a source or bin folder the resources dir is one level above
+    wxArrayString dirs = exe.GetDirs();
+    if((dirs.Last().Upper() == wxT("SRC")) || (dirs.Last().Upper() == wxT("BIN")))
+    {
+      exe.RemoveLastDir();
+      dirs = exe.GetDirs();
+    }
+    
+    // If the binary is in the wxMaxima folder the resources dir is two levels above as we
+    // are in MacOS/wxmaxima
+    if((dirs.Last().Upper() == wxT("MACOS")))
+      exe.RemoveLastDir();
+    
+    // If there is a Resources folder the ressources are there
+    if(wxDirExists(exe.GetPath() + wxT("/Resources")))
+      exe.AppendDir("Resources");
+    
+    // If there is a share folder the ressources are there
+    if(wxDirExists(exe.GetPath() + wxT("/share")))
+      exe.AppendDir("share");
+
+    
+    exepath = exe.GetPath();
   }
-  
-  // If the binary is in the wxMaxima folder the resources dir is two levels above as we
-  // are in MacOS/wxmaxima
-  if((dirs.Last().Upper() == wxT("MACOS")))
-    exe.RemoveLastDir();
-  
-  // If there is a Resources folder the ressources are there
-  if(wxDirExists(exe.GetPath() + wxT("/Resources")))
-    exe.AppendDir("Resources");
-  
-  // If there is a share folder the ressources are there
-  if(wxDirExists(exe.GetPath() + wxT("/share")))
-    exe.AppendDir("share");
-  
-  return exe.GetPath();
+  else
+  {
+    exepath = CMAKE_INSTALL_PREFIX;
+  }
+  return exepath;
 }
 
 wxString Dirstructure::DataDir() const
