@@ -292,7 +292,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   {
     wxLogMessage(
       wxString::Format(
-        _("Starting a server on %i in order to allow maxima to connect failed"),m_port));
+        _("Trying to start a server on port %i instead"),m_port));
     m_port++;
     if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535))
     {
