@@ -148,16 +148,6 @@ public:
 
   void ShowTip(bool force);
 
-  /*! Get the name of the help file
-   */
-  wxString GetMaximaHelpFile();
-  //! An helper function for GetHelpFile()
-  wxString GetMaximaHelpFile2();
-
-  void ShowMaximaHelp(wxString keyword = wxEmptyString);
-
-  void ShowWxMaximaHelp();
-
   void SetWXMdata(wxString data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on statup?
   void EvalOnStartup(bool eval)
@@ -295,7 +285,23 @@ protected:
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent &event);
 
+  /*! Get the name of the help file
+   */
+  wxString GetMaximaHelpFile();
+  //! An helper function for GetHelpFile()
+  wxString GetMaximaHelpFile2();
+
+  //! Show the help for maxima
+  void ShowMaximaHelp(wxString keyword = wxEmptyString);
+
+  //! Show the help for wxMaxima
+  void ShowWxMaximaHelp();
+  
+  //! Show the maxima help in MSW's proprietary help format
   void ShowCHMHelp(wxString helpfile, wxString keyword);
+  
+  //! Try to determine if help is needed for maxima or wxMaxima and show this help
+  void ShowHelp(wxString keyword);
 
   /*! Launches the HTML help browser
 

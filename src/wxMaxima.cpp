@@ -4031,6 +4031,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
 
 void wxMaxima::ShowWxMaximaHelp()
 {
+  std::cerr<<"wxMaximaHelp\n";
   wxString helpfile = SearchwxMaximaHelp();
 #ifdef __WINDOWS__
   // Replace \ with / in the path as directory separator.
@@ -4068,8 +4069,18 @@ void wxMaxima::ShowWxMaximaHelp()
   }
 }
 
+void wxMaxima::ShowHelp(wxString keyword)
+{
+  std::cerr<<"Help\n";
+  if((keyword.IsEmpty()) || (keyword == "%"))
+    ShowWxMaximaHelp();
+  else
+    ShowMaximaHelp(keyword);
+}
+
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
+  std::cerr<<"MaximaHelp\n";
   if(keyword == wxT("wxdraw"))
      keyword = wxT("draw");
   if(keyword == wxT("wxdraw2d"))
@@ -8049,10 +8060,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case wxID_HELP:
-      if((expr != "%") && (expr != wxEmptyString))
-        ShowMaximaHelp(expr);
-      else
-        ShowWxMaximaHelp();
+      ShowHelp(expr);
       break;
 
     case menu_wxmaximahelp:
