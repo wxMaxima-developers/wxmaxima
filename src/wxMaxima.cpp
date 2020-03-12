@@ -4106,6 +4106,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   {
     if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
     {
+      wxBusyCursor crs;
       wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
