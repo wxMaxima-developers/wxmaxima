@@ -32,10 +32,10 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPane
 					wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
 
   vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(10));
-
+    
   SetSizerAndFit(vbox);
   if(becomeLogTarget)
-    BecomeLogTarget();
+    BecomeLogTarget();    
 
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
@@ -60,10 +60,18 @@ void LogPane::BecomeLogTarget()
   m_isLogTarget = true;
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));  
   m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
+  #ifdef wxUSE_STD_IOSTREAM
+  // On the mac if we output stuff on std::cerr the communication to maxima drops
+  // => Try redirecting any std stream we can.
+  m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
+  #endif
 }
 
 LogPane::~LogPane()
 {
   DropLogTarget();
+  #ifdef wxUSE_STD_IOSTREAM
+  m_textRedirector.reset();
+  #endif
 }
 

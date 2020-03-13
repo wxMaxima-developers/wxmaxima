@@ -47,6 +47,9 @@ private:
   std::unique_ptr<ErrorRedirector> m_errorRedirector;
   wxLog *m_logPanelTarget;
   bool m_isLogTarget;
+  #ifdef wxUSE_STD_IOSTREAM
+  std::unique_ptr<wxStreamToTextRedirector> m_textRedirector;
+  #endif
 };
 
 #endif // LOGPANE_H

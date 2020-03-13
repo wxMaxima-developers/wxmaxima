@@ -82,12 +82,11 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
+  // On the Mac if any of these commands outputs text to stderr maxima fails to
+  // connect to wxMaxima. We therefore delay all output to the log until there
+  // is a window that can display it on the GUI instead.
+  wxLogBuffer noStdErr;
   {
-    // On the Mac if any of these commands outputs text to stderr maxima fails to
-    // connect to wxMaxima.
-    #ifdef __WXMAC__
-    wxLogNull noStdErr;
-    #endif
     
     Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
     Connect(wxMaximaFrame::menu_help_tutorials_start, wxMaximaFrame::menu_help_tutorials_end,
@@ -122,13 +121,11 @@ bool MyApp::OnInit()
       wxString dirName(xdgDir.GetPath());
       if(!wxDirExists(dirName))
         wxMkDir(dirName,0x700);
-      wxLogNull blocker;
       if(wxFileExists(configFileOld))
         wxCopyFile(configFileOld,configFileXDG);
     }
     #endif
     #endif
-    wxLogNull dummy;
     wxConfig::Set(new wxConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
     
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
@@ -148,7 +145,7 @@ bool MyApp::OnInit()
         {
           m_locale.Init(lang);
           wxString localeName = m_locale.GetCanonicalName();
-          wxLogDebug(wxString::Format(_("wxMaxima's locale is set to to %i: %s"), lang, localeName.utf8_str()));
+          wxLogMessage(wxString::Format(_("wxMaxima's locale is set to to %i: %s"), lang, localeName.utf8_str()));
           if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
              (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
              (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
@@ -172,7 +169,6 @@ bool MyApp::OnInit()
       }
       else
       {
-        wxLogNull blocker;
         m_locale.Init(lang);
       }
     }
@@ -339,13 +335,15 @@ bool MyApp::OnInit()
   if (cmdLineParser.Found(wxT("e")))
     evalOnStartup = true;
 
+  bool windowOpened = false;
+  
   if (cmdLineParser.Found(wxT("o"), &file))
   {
     wxFileName FileName = file;
     FileName.MakeAbsolute();
     wxString CanonicalFilename = FileName.GetFullPath();
     NewWindow(wxString(CanonicalFilename), evalOnStartup, exitAfterEval);
-    return true;
+    windowOpened = true;
   }
 
   if(cmdLineParser.GetParamCount() > 0)
@@ -358,10 +356,15 @@ bool MyApp::OnInit()
       wxString CanonicalFilename = FileName.GetFullPath();
       NewWindow(CanonicalFilename, evalOnStartup, exitAfterEval);
     }
+    windowOpened = true;
   }
-  else
+
+  if(!windowOpened)
     NewWindow();
 
+  // Now we can finally send our debug output to a window without making
+  // std::cerr confusing the mac.
+  wxLogMessage(noStdErr.GetBuffer());
   return true;
 }
 
