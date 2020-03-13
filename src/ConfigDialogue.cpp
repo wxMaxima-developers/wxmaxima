@@ -1157,7 +1157,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
   config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
-  config->Write(wxT("matchParens"), m_matchParens->GetValue());
+  configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());

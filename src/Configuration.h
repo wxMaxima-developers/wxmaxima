@@ -513,6 +513,8 @@ public:
   
   bool GetMatchParens() const
     { return m_matchParens; }
+  void SetMatchParens(bool matchParens)
+    { wxConfig::Get()->Write(wxT("matchParens"), m_matchParens = matchParens); }
 
   bool GetChangeAsterisk() const
     { return m_changeAsterisk; }
