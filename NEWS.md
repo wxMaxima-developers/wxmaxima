@@ -8,7 +8,7 @@
  * Support for importing static and some types of animated gif files
  * Animation frames created using draw() now can be popped out 
    interactively
- * A option to se the max amount of gnuplot data to save for 
+ * A option to configure the max amount of gnuplot data to save for 
    this feature
  * wxMaxima now no more crashes on FreeBSD
  * As always: Many additional bugfixes.
