@@ -364,7 +364,9 @@ bool MyApp::OnInit()
 
   // Now we can finally send our debug output to a window without making
   // std::cerr confusing the mac.
-  wxLogMessage(noStdErr.GetBuffer());
+  wxString logMessagesSoFar = noStdErr.GetBuffer();
+  if(!logMessagesSoFar.IsEmpty())
+    wxLogMessage("Log messages during early startup: " + logMessagesSoFar);
   return true;
 }
 
