@@ -20,7 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "LogPane.h"
-
+#include "ErrorRedirector.h"
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {
   m_isLogTarget = false;
@@ -61,10 +61,9 @@ void LogPane::BecomeLogTarget()
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));
   m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
   #ifdef wxUSE_STD_IOSTREAM
-  // On the mac if we output stuff on std::cerr the communication to maxima drops
-  // => It would be good to try redirecting any std stream we can. But
   // what if we redirect our log output to std::cerr?
-  //  m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
+  if(!ErrorRedirector::LoggingToStdErr())
+    m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
   #endif
 }
 

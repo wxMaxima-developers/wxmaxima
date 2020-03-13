@@ -87,6 +87,10 @@ public:
 
   //! Output all log messages to stderr, too.
   static void LogToStdErr(){m_logToStdErr = true;}
+
+  //! Output all log messages to stderr, too.
+  static bool LoggingToStdErr(){return m_logToStdErr;}
+
 protected:
   //! the current log target
   wxLog *m_logNew;
