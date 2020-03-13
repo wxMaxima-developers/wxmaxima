@@ -1,4 +1,4 @@
-#20.02.4
+#20.03.0
  * Corrected a few last bugs for pre- and post- super- and subscripts
  * Many improvements to the manpage and the html documentation
  * Improved support for pre- and post- super- and subscripts provided 
@@ -11,6 +11,8 @@
  * A option to configure the max amount of gnuplot data to save for 
    this feature
  * wxMaxima now no more crashes on FreeBSD
+ * wxMaxima now tries not to use stderr as stderr on the mac breaks
+   communication with maxima.
  * As always: Many additional bugfixes.
 
 #20.02.3

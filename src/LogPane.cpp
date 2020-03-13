@@ -58,12 +58,13 @@ void LogPane::DropLogTarget()
 void LogPane::BecomeLogTarget()
 {
   m_isLogTarget = true;
-  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));  
+  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));
   m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
   #ifdef wxUSE_STD_IOSTREAM
   // On the mac if we output stuff on std::cerr the communication to maxima drops
-  // => Try redirecting any std stream we can.
-  m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
+  // => It would be good to try redirecting any std stream we can. But
+  // what if we redirect our log output to std::cerr?
+  //  m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
   #endif
 }
 

@@ -51,6 +51,30 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="20.03.0" date="2020-03-13">
+      <description>
+	<p>
+	  A bugfix-only release.
+	</p>
+        <ul>
+	  <li>Corrected a few last bugs for pre- and post- super- and subscripts</li>
+	  <li>Many improvements to the manpage and the html documentation</li>
+	  <li>Improved support for pre- and post- super- and subscripts provided 
+	  by Robert Dodier</li>
+	  <li>wxWidget's integrated help browser on some platforms was broken 
+	  => now the default web browser is used</li>
+	  <li>Support for importing static and some types of animated gif files</li>
+	  <li>Animation frames created using draw() now can be popped out 
+	  interactively</li>
+	  <li>A option to configure the max amount of gnuplot data to save for 
+	  this feature</li>
+	  <li>wxMaxima now no more crashes on FreeBSD</li>
+	  <li>wxMaxima now tries not to use stderr as stderr on the mac breaks
+	  communication with maxima</li>
+	  <li>As always: Many additional bugfixes</li>
+        </ul>
+      </description>
+    </release>
     <release version="20.02.4" date="2020-02-24">
       <description>
 	<p>
