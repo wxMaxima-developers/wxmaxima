@@ -127,8 +127,6 @@ private:
   static wxDataFormat m_rtfFormat2;
 
   /*! An object that can be filled with MathML data for the clipboard
-
-    \todo Is there a way to make this object share its data with MathMLDataObject2?
    */
   class MathMLDataObject : public wxCustomDataObject
   {
@@ -165,8 +163,6 @@ private:
   };
 
   /*! An object that can be filled with MathML data for the clipboard
-
-    \todo Is there a way to make this object share its data with RTFDataObject2?
    */
   class RtfDataObject : public wxCustomDataObject
   {

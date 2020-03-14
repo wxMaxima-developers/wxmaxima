@@ -1398,7 +1398,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       }
       if(
         ((m_cellPointers.m_selectionStart != NULL) &&
-         (m_cellPointers.m_selectionStart)->CanPopOut()))
+         m_cellPointers.m_selectionStart->CanPopOut()))
       {
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_popup_gnuplot, _("Popout interactively"), wxEmptyString, wxITEM_NORMAL);
@@ -1494,7 +1494,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         }
         if(
           ((m_cellPointers.m_selectionStart != NULL) &&
-           (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->CanPopOut())))
+           (m_cellPointers.m_selectionStart->CanPopOut())))
         {
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_popup_gnuplot, _("Popout interactively"), wxEmptyString, wxITEM_NORMAL);
