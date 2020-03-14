@@ -1704,7 +1704,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
                 continue;
               if(cmdName.EndsWith("pkg"))
                 continue;
-              if(wordUnderCursor.StartsWith(cmdName))
+              if(cmdName.StartsWith(wordUnderCursor))
               {
                 if (wordUnderCursor != cmdName)
                   sameBeginning.Add(cmdName);
