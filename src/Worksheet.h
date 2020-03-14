@@ -878,7 +878,17 @@ public:
     popid_popup_gnuplot,
     popid_fold,
     popid_unfold,
-    popid_maxsizechooser
+    popid_maxsizechooser,
+    popid_suggestion1,
+    popid_suggestion2,
+    popid_suggestion3,
+    popid_suggestion4,
+    popid_suggestion5,
+    popid_suggestion6,
+    popid_suggestion7,
+    popid_suggestion8,
+    popid_suggestion9,
+    popid_suggestion10,
   };
 
   //! The constructor
@@ -1504,7 +1514,8 @@ public:
   HelpFileAnchors m_helpFileAnchors;
   //! Is the help file anchors available
   bool m_helpFileAnchorsUsable;
-
+  //! Suggestions for how the word that was right-clicked on could continue
+  wxArrayString m_replacementsForCurrentWord;
   //Simple iterator over a Maxima input string, skipping comments and strings
   class SimpleMathConfigurationIterator
   {

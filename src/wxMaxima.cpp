@@ -1085,6 +1085,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(wxEVT_ICONIZE,
           wxIconizeEventHandler(wxMaxima::OnMinimize), NULL, this);
   Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL, this);
+  Connect(Worksheet::popid_suggestion1,Worksheet::popid_suggestion10, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
   m_worksheet->SetFocus();
   m_autoSaveTimer.StartOnce(180000);
 }
@@ -4098,6 +4100,7 @@ void wxMaxima::CompileHelpFileAnchors()
 
   if(m_worksheet->m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
   {
+    int foundAnchors = 0;
     wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
     wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
@@ -4122,7 +4125,10 @@ void wxMaxima::CompileHelpFileAnchors()
               correctUnderscores.Replace(&token, "_");
               token.Replace("-", " ");
               if(!token.EndsWith("-1"))
+              {
                 m_worksheet->m_helpFileAnchors[token] = id;
+                foundAnchors++;
+              }
             }
             else
             {
@@ -4132,21 +4138,25 @@ void wxMaxima::CompileHelpFileAnchors()
                 correctUnderscores.Replace(&token, "_");
                 token.Replace("-", " ");
                 if(!token.EndsWith("-1"))
+                {
                   m_worksheet->m_helpFileAnchors[token] = id;
+                  foundAnchors++;
+                }
               }
             }
           }
         }
       }
     }
+    m_worksheet->m_helpFileAnchors["wxdraw"] = m_worksheet->m_helpFileAnchors["draw"];
+    m_worksheet->m_helpFileAnchors["wxdraw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
+    m_worksheet->m_helpFileAnchors["wxdraw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+    m_worksheet->m_helpFileAnchors["with_slider_draw"] = m_worksheet->m_helpFileAnchors["draw"];
+    m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
+    m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+    m_worksheet->m_helpFileAnchorsUsable = true;
+    wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
   }
-  m_worksheet->m_helpFileAnchors["wxdraw"] = m_worksheet->m_helpFileAnchors["draw"];
-  m_worksheet->m_helpFileAnchors["wxdraw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
-  m_worksheet->m_helpFileAnchors["wxdraw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
-  m_worksheet->m_helpFileAnchors["with_slider_draw"] = m_worksheet->m_helpFileAnchors["draw"];
-  m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
-  m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
-  m_worksheet->m_helpFileAnchorsUsable = true;
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_helpFileAnchorsLock);
   #endif
@@ -9402,6 +9412,18 @@ void wxMaxima::TriggerEvaluation()
     m_worksheet->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();
   }
+}
+
+void wxMaxima::ReplaceSuggestion(wxCommandEvent &event)
+{
+  int index = event.GetId() - Worksheet::popid_suggestion1;
+
+  EditorCell *editor = m_worksheet->GetActiveCell();
+  if(editor == NULL)
+    return;
+  editor->SelectWordUnderCaret(false);
+  editor->ReplaceSelection(editor->GetWordUnderCaret(), m_worksheet->m_replacementsForCurrentWord[index]);
+
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent &event)

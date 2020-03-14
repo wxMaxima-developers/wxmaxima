@@ -370,6 +370,7 @@ protected:
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
   void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks
+  void ReplaceSuggestion(wxCommandEvent &event);   //!< Processes clicks on suggestions
   void Interrupt(wxCommandEvent &event);           //!< Interrupt button and hotkey presses
   //! Make the menu item, toolbars and panes visible that should be visible right now.
   void UpdateMenus(wxUpdateUIEvent &event);     //!< Enables and disables the Right menu buttons

@@ -35,6 +35,7 @@
 #include "SVGout.h"
 #include "EMFout.h"
 #include "Version.h"
+#include "levenshtein/levenshtein.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include <wx/dcbuffer.h>
@@ -1691,8 +1692,44 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           if((group->GetEditable() != NULL) && (group->GetEditable()->ContainsPoint(wxPoint(downx, downy))))
           {
             wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
+            wxArrayString dst[4];
+            wxArrayString sameBeginning;
             if(m_helpFileAnchorsUsable &&(!m_helpFileAnchors[wordUnderCursor].IsEmpty()))
               popupMenu->Append(wxID_HELP, wxString::Format(_("Help on %s"), wordUnderCursor));
+            HelpFileAnchors::const_iterator it;
+            for (it = m_helpFileAnchors.begin(); it != m_helpFileAnchors.end(); ++it)
+            {
+              wxString cmdName = it->first;
+              if(cmdName.EndsWith("_"))
+                continue;
+              if(cmdName.EndsWith("pkg"))
+                continue;
+              if(wordUnderCursor.StartsWith(cmdName))
+              {
+                if (wordUnderCursor != cmdName)
+                  sameBeginning.Add(cmdName);
+              }
+              else
+              {
+                int dstnce = LevenshteinDistance(wordUnderCursor, cmdName);
+                if((dstnce<=4) && (dstnce > 0)) dst[dstnce-1].Add(cmdName);
+              }
+            }
+            m_replacementsForCurrentWord.Clear();
+            if(sameBeginning.GetCount() <= 10)
+              m_replacementsForCurrentWord = sameBeginning;
+            for(int o = 0; o<4; o++)
+            {
+              if(m_replacementsForCurrentWord.GetCount() + dst[o].GetCount() <= 10)
+              {
+                for(int i = 0; i<dst[o].GetCount(); i++)
+                  m_replacementsForCurrentWord.Add(dst[o][i]);
+              }
+              else
+                break;
+            }
+            for(int i = 0; i<m_replacementsForCurrentWord.GetCount(); i++)
+              popupMenu->Append(popid_suggestion1 + i, m_replacementsForCurrentWord[i]);
           }
           popupMenu->AppendSeparator();
           popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),

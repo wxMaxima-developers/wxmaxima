@@ -61,7 +61,6 @@ void LogPane::BecomeLogTarget()
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));
   m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
   #ifdef wxUSE_STD_IOSTREAM
-  // what if we redirect our log output to std::cerr?
   if(!ErrorRedirector::LoggingToStdErr())
     m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
   #endif
