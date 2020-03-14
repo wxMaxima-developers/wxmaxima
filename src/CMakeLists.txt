@@ -2,7 +2,7 @@
 
 # The result of the following command is only re-generated on
 # CMakeLists.txt changes
-file(GLOB SOURCE_FILES *.cpp *.h nanoSVG/*.h)
+file(GLOB SOURCE_FILES *.cpp *.h nanoSVG/*.h levenshtein/*.cpp)
 
 option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
 
