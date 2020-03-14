@@ -1,3 +1,8 @@
+#Current
+ * Resolved a crash on right-clicking a GroupCell
+ * Help works again in the german translation
+ * Removed an unnecessary info dialogue on startup
+
 #20.03.0
  * Corrected a few last bugs for pre- and post- super- and subscripts
  * Many improvements to the manpage and the html documentation
