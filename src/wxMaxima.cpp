@@ -2646,7 +2646,7 @@ void wxMaxima::ReadVariables(wxString &data)
               wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),value.utf8_str()));
               /// READ FUNCTIONS FOR AUTOCOMPLETION
               m_worksheet->LoadSymbols();
-              if(m_helpFileAnchors.empty())
+              if(m_worksheet->m_helpFileAnchors.empty())
               {
                 m_compileHelpAnchorsTimer.StartOnce(10000);
               }
@@ -4096,7 +4096,7 @@ void wxMaxima::CompileHelpFileAnchors()
   #endif  
   #endif
 
-  if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
+  if(m_worksheet->m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
   {
     wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
@@ -4122,7 +4122,7 @@ void wxMaxima::CompileHelpFileAnchors()
               correctUnderscores.Replace(&token, "_");
               token.Replace("-", " ");
               if(!token.EndsWith("-1"))
-                m_helpFileAnchors[token] = id;
+                m_worksheet->m_helpFileAnchors[token] = id;
             }
             else
             {
@@ -4132,7 +4132,7 @@ void wxMaxima::CompileHelpFileAnchors()
                 correctUnderscores.Replace(&token, "_");
                 token.Replace("-", " ");
                 if(!token.EndsWith("-1"))
-                  m_helpFileAnchors[token] = id;
+                  m_worksheet->m_helpFileAnchors[token] = id;
               }
             }
           }
@@ -4140,6 +4140,13 @@ void wxMaxima::CompileHelpFileAnchors()
       }
     }
   }
+  m_worksheet->m_helpFileAnchors["wxdraw"] = m_worksheet->m_helpFileAnchors["draw"];
+  m_worksheet->m_helpFileAnchors["wxdraw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
+  m_worksheet->m_helpFileAnchors["wxdraw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+  m_worksheet->m_helpFileAnchors["with_slider_draw"] = m_worksheet->m_helpFileAnchors["draw"];
+  m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
+  m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+  m_worksheet->m_helpFileAnchorsUsable = true;
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_helpFileAnchorsLock);
   #endif
@@ -4147,18 +4154,6 @@ void wxMaxima::CompileHelpFileAnchors()
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
-  if(keyword == wxT("wxdraw"))
-     keyword = wxT("draw");
-  if(keyword == wxT("wxdraw2d"))
-     keyword = wxT("draw2d");
-  if(keyword == wxT("wxdraw3d"))
-     keyword = wxT("draw3d");
-  if(keyword == wxT("with_slider_draw"))
-     keyword = wxT("draw");
-  if(keyword == wxT("with_slider_draw2d"))
-     keyword = wxT("draw2d");
-  if(keyword == wxT("with_slider_draw3d"))
-     keyword = wxT("draw3d");
   wxString MaximaHelpFile = GetMaximaHelpFile();
 #ifdef __WINDOWS__
   // replace \ with / als directory separator
@@ -4175,7 +4170,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   {
     wxBusyCursor crs;
     CompileHelpFileAnchors();
-    keyword = m_helpFileAnchors[keyword];
+    keyword = m_worksheet->m_helpFileAnchors[keyword];
     if(keyword.IsEmpty())
       keyword = "Function-and-Variable-Index";
     if(!MaximaHelpFile.IsEmpty())

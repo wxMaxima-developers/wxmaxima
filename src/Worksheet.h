@@ -126,6 +126,7 @@ private:
   //! A second way to publish RTF data on the clipboard
   static wxDataFormat m_rtfFormat2;
 
+  WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
   /*! An object that can be filled with MathML data for the clipboard
    */
   class MathMLDataObject : public wxCustomDataObject
@@ -1498,6 +1499,11 @@ public:
 
   //! Returns the index in (%i...) or (%o...)
   int GetCellIndex(Cell *cell) const;
+
+  //! All anchors for keywords maxima's helpfile contains
+  HelpFileAnchors m_helpFileAnchors;
+  //! Is the help file anchors available
+  bool m_helpFileAnchorsUsable;
 
   //Simple iterator over a Maxima input string, skipping comments and strings
   class SimpleMathConfigurationIterator

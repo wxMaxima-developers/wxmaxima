@@ -77,6 +77,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
 #endif
     ),m_cellPointers(this)
 {
+  m_helpFileAnchorsUsable = false;
   m_dontSkipScrollEvent = false;
   m_newxPosition = -1;
   m_newyPosition = -1;
@@ -1687,6 +1688,12 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       switch (group->GetGroupType())
       {
         case GC_TYPE_CODE:
+          if((group->GetEditable() != NULL) && (group->GetEditable()->ContainsPoint(wxPoint(downx, downy))))
+          {
+            wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
+            if(m_helpFileAnchorsUsable &&(!m_helpFileAnchors[wordUnderCursor].IsEmpty()))
+              popupMenu->Append(wxID_HELP, wxString::Format(_("Help on %s"), wordUnderCursor));
+          }
           popupMenu->AppendSeparator();
           popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                      _("Automatically fill in answers known from the last run"));
