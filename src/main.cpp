@@ -145,7 +145,6 @@ bool MyApp::OnInit()
         {
           m_locale.Init(lang);
           wxString localeName = m_locale.GetCanonicalName();
-          wxLogMessage(wxString::Format(_("wxMaxima's locale is set to to %i: %s"), lang, localeName.utf8_str()));
           if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
              (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
              (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
