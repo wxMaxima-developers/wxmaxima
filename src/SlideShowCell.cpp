@@ -47,10 +47,9 @@
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const std::shared_ptr <wxFileSystem> &filesystem, int framerate) :
   Cell(parent, config, cellPointers),
+  m_timer(NULL),
   m_fileSystem(filesystem)
-
 {
-  m_timer = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
@@ -62,9 +61,10 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
-  Cell(parent, config, cellPointers)
+  Cell(parent, config, cellPointers),
+  m_timer(NULL),
+  m_fileSystem(NULL)
 {
-  m_timer = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
