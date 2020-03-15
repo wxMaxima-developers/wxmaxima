@@ -307,7 +307,7 @@ void ToolBar::AddTools()
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
   if(ShowHelp())
-    AddTool(tb_help, _("Help"), GetHelpBitmap(), _("Show Maxima help"));
+    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(), _("Show Maxima help"));
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
@@ -379,7 +379,7 @@ void ToolBar::UpdateBitmaps()
                            media_playback_stop_svg_gz,media_playback_stop_svg_gz_len);
   SetToolBitmap(tb_animation_startStop,
                 m_PlayButton);
-  SetToolBitmap(tb_help,GetHelpBitmap());
+  SetToolBitmap(wxID_HELP,GetHelpBitmap());
   Realize();
 }
   

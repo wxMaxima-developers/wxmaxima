@@ -98,7 +98,6 @@ public:
     tb_eval_all,
     tb_evaltillhere,
     tb_evaluate_rest,
-    tb_help,
     tb_animation_startStop,
     tb_animation_start,
     tb_animation_stop,

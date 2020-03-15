@@ -756,8 +756,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(ToolBar::tb_interrupt, wxEVT_TOOL,
           wxCommandEventHandler(wxMaxima::Interrupt), NULL, this);
-  Connect(ToolBar::tb_help, wxEVT_TOOL,
-          wxCommandEventHandler(wxMaxima::HelpMenu), NULL, this);
   Connect(ToolBar::tb_animation_startStop, wxEVT_TOOL,
           wxCommandEventHandler(wxMaxima::FileMenu), NULL, this);
   Connect(ToolBar::tb_animation_start, wxEVT_TOOL,
@@ -8089,10 +8087,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       dlg->Show();
     }
     break;
-
-    case ToolBar::tb_help:
-      ShowWxMaximaHelp();
-      break;
 
     case wxID_HELP:
       ShowHelp(expr);
