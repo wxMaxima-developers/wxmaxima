@@ -51,6 +51,21 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="20.03.1" date="2020-03-15">
+      <description>
+	<p>
+	  The last release introduced a crash that was easy to trigger.
+	  In order to prevent a situation in which every packager has to
+	  search for a remedy separately a new release was made.
+	</p>
+        <ul>
+	  <li>Resolved a crash on right-clicking a GroupCell</li>
+	  <li>Help works again in the german translation</li>
+	  <li>Removed an unnecessary info dialogue on startup</li>
+	  <li>Right-click-suggestions for similar command names</li>
+        </ul>
+      </description>
+    </release>
     <release version="20.03.0" date="2020-03-13">
       <description>
 	<p>
