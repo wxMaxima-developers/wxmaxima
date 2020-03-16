@@ -11,7 +11,7 @@ and simple animations. wxMaxima is distributed under the GPL license.
 
 wxMaxima is included with the Windows and the Macintosh installer for
 Maxima. Packages are also available for many Linux distributions. Screenshots
-and documentation can be found at http://wxMaxima-developers.github.io/wxmaxima/
+and documentation can be found at https://wxmaxima-developers.github.io/wxmaxima/
 
 
 
