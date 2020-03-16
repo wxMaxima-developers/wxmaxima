@@ -89,10 +89,21 @@ target.
 Additional information for packagers
 ------------------------------------
 
+### Running the test suite on a virtual machine
+
 On Linux wxMaxima's "make test" target requires a way to connect to a
 display - which by default doesn't exist on a build server. The 
 following command should succeed even there, though:
 
     xvfb-run make test
 
+If anyone has an idea on how to do a similar thing on a Mac I would
+be very thankful.
 
+### Creating a standalone wxMaxima
+
+wxMaxima, if linked statically, is pretty standalone and therefore fit for
+creating a portable app: The only external file wxMaxima requires 
+(besides a working maxima installation) is the wxMaxima help file and if 
+this help file cannot be found it will instruct the web browser to open 
+the online version of the manual instead.
