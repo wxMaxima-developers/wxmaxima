@@ -379,7 +379,7 @@ Plotting (having fundamentally to do with graphics) is a place where a graphical
 
 ### Embedding a plot into the work sheet
 
-_Maxima_ normally instructs the external program gnuplot to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the work sheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”. For example `wxplot` corresponds to `plot`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to `histogram`.
+_Maxima_ normally instructs the external program gnuplot to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the work sheet instead _wxMaxima_ provides its own set of plot functions that don’t differ from the corresponding _maxima_ functions save in their name: They are all prefixed by a “wx”. For example `wxplot2d` corresponds to `plot2d`, `wxplot3d` corresponds to `plot3d`, `wxdraw` corresponds to `draw` and `wxhistogram` corresponds to `histogram`.
 
 ### Making embedded plots bigger or smaller
 
@@ -421,7 +421,7 @@ Gnuplot doesn’t seem to provide a portable way of determining whether it suppo
 
 ### Opening embedded plots in interactive gnuplot windows
 
-If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't supported by this feature) and the file size of the underlying gnuplot project isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive gnuplot window.
+If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and `wxplot3d` isn't supported by this feature) and the file size of the underlying gnuplot project isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive gnuplot window.
 
 ### Opening gnuplot's command console in `plot` windows
 
