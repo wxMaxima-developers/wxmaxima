@@ -14,7 +14,7 @@ Any help is always welcome.
 
 ### Specialities of the manual
 
-[po4a](http://po4a.alioth.debian.org/) po4a offers to translate the characters 
+[po4a](https://po4a.org) offers to translate the characters
 that contain the formatting hints for the markdown parser, too. If you remove 
 them or exchange them by something completely different the formatting will change, too.
 
