@@ -1695,7 +1695,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             wxArrayString dst[4];
             wxArrayString sameBeginning;
             if(m_helpFileAnchorsUsable &&(!m_helpFileAnchors[wordUnderCursor].IsEmpty()))
-              popupMenu->Append(wxID_HELP, wxString::Format(_("Help on %s"), wordUnderCursor));
+              popupMenu->Append(wxID_HELP, wxString::Format(_("Help on \"%s\""), wordUnderCursor));
             HelpFileAnchors::const_iterator it;
             for (it = m_helpFileAnchors.begin(); it != m_helpFileAnchors.end(); ++it)
             {
