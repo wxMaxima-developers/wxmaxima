@@ -150,7 +150,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("It is possible to add custom symbols to the \"symbols\" sidebar by copying them into the respective field in the configuration dialogue.")
     );
   m_tips.Add(
-    _("Maxima's strengths are manipulating equations and in symbolic calculations. It therefore makes sense to use functions (as opposed to equations with labels) sparingly and to keep the actual values of variables in a list, instead of directly assigning them values. An example session that does do so would be:\n\n/* We keep the actual values in a list so we can use them lateron */\n    Values:[a=10,c=100];\n    Pyth:a^2+b^2=c^2;\n    solve(%,b);\n    result:%[2];\n    at(result,Values);\n    float(%);")
+    _("Maxima's strengths are manipulating equations and in symbolic calculations. It therefore makes sense to use functions (as opposed to equations with labels) sparingly and to keep the actual values of variables in a list, instead of directly assigning them values. An example session that does do so would be:\n\n/* We keep the actual values in a list so we can use them later on */\n    Values:[a=10,c=100];\n    Pyth:a^2+b^2=c^2;\n    solve(%,b);\n    result:%[2];\n    at(result,Values);\n    float(%);")
     );
   m_tips.Add(
     _("Equations have several advantages over functions. For example they can be manipulated with factor(), expand() and similar functions. They can easily be introduced one into another. Also they are always printed out as 2D maths.")

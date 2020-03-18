@@ -362,13 +362,13 @@ If the variable name doesn’t match these requirements it can still be declared
 
 ## User feedback in the statusbar
 
-Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevelated.
+Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevaluated.
 
     (%i2)   for i:1 thru 10 do (
                 /* Tell the user how far we got */
                 wxstatusbar(concat("Pass ",i)),
                 /* (sleep n) is a Lisp function, which can be used */
-                /* with the charcacter "?" before. It delays the */
+                /* with the character "?" before. It delays the */
                 /* program execution (here: for 3 seconds) */
                 ?sleep(3)
             )$

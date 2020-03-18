@@ -5902,7 +5902,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
                                      "GIF image (*.gif)|*.gif|"
                                      "Scaleable vector graphics (*.svg)|*.svg|"
                                      "Windows bitmap (*.bmp)|*.bmp|"
-                                     "Portable animap (*.pnm)|*.pnm|"
+                                     "Portable anymap (*.pnm)|*.pnm|"
                                      "Tagged image file format (*.tif)|*.tif|"
                                      "X pixmap (*.xpm)|*.xpm"
                                      ),

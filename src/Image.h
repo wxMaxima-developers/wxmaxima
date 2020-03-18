@@ -47,7 +47,7 @@
 
   This class keeps two versions of an image:
     - The image in its original compressed format. This way the image can losslessly
-      be exported lateron
+      be exported later on
     - A bitmap version of the image that is scaled down to a size that makes sense 
       with the current viewport.
 
