@@ -244,7 +244,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const
   m_fs_keepalive_gnuplotdata = filesystem;
   std::shared_ptr<wxFileSystem> keepFilesystemAlive(filesystem);
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting backgound task that loads the gnuplot data for a plot."));
+  wxLogMessage(_("Starting background task that loads the gnuplot data for a plot."));
   #pragma omp task
   #endif
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);

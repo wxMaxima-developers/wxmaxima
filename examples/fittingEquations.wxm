@@ -267,7 +267,7 @@ approach2:y=a*exp(k*t);
 
 /* [wxMaxima: comment start ]
 Unfortunately it is hard to fit to experimental data to this approach in many ways, for example:
- * One part of this curve results in low values. Even small measurement noise on this part will yield widely incorrect results for the curve parameters as the fitter is trying to model the noise, too, and as noise in nonlinear systems tends not to be averanged out completely.
+ * One part of this curve results in low values. Even small measurement noise on this part will yield widely incorrect results for the curve parameters as the fitter is trying to model the noise, too, and as noise in nonlinear systems tends not to be averaged out completely.
  * Another part of this curve contains quite in high values and is sensitive to even small changes in k. As the fitter wants to keep the overall error low it will therefore respect this part much more than the lower, more good-natured part of the curve.
  * Starting from the wrong point and optimizing a and k in the direction that reduces the error most in each step might lead to a point that is far from being the solution
  * and trying to use lsquares_estimates to find the ideal solution often leads to numbers that exceed the floating-point range (or exact numbers longer than the computer's memory).
