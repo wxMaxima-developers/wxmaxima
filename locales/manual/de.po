@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-16 21:43+0100\n"
-"PO-Revision-Date: 2019-10-30 07:36+0100\n"
+"POT-Creation-Date: 2020-03-18 19:43+0100\n"
+"PO-Revision-Date: 2020-03-19 21:11+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -992,7 +992,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:207
 msgid ""
 "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`."
-msgstr ""
+msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein `a`."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:209
@@ -1190,14 +1190,14 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
-msgstr ""
+msgstr "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette Zelle."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> triggers the auto-completion mechanism."
-msgstr ""
+msgstr "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> startet das automatische Vervollständigen."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
@@ -1533,7 +1533,7 @@ msgstr "und sie werden alle n Minuten zwischengespeichert."
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:340
 msgid "### Where is the configuration saved?"
-msgstr ""
+msgstr "### Wo wird die Konfiguration gespeichert?"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:342
@@ -1541,7 +1541,7 @@ msgid ""
 "If you are using Unix/Linux, a file `.wxMaxima` in your homedirectory is "
 "used for saving wxMaxima's configuration. (Since the filename starts with a "
 "dot, it will be a hidden file)."
-msgstr ""
+msgstr "Unter Linux-ähnlichen Systemen wird im Home-Verzeichnis oder einem Unterordner davon eine Datei namens .wMmaxima abgelegt (der \".\" am Beginn des Dateinamens versteckt die Datei)."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:344
@@ -1549,7 +1549,7 @@ msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for wxMaxima at the following position in the "
 "registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
-msgstr ""
+msgstr "Unter Windows wird die Konfiguration in der Registry unter `HKEY_CURRENT_USER\\\\Software\\\\wxMaxima` gespeichert"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:350
@@ -1623,6 +1623,15 @@ msgstr "## Meldungen in der Statusleiste"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:366
+#, fuzzy
+#| msgid ""
+#| "Long-running commands can provide user-feedback in the status bar. This "
+#| "user feedback is replaced by any new feedback that is placed there "
+#| "(allowing to use it as a progress indicator) and is deleted as soon as "
+#| "the current command sent to _maxima_ is finished. It is safe to use "
+#| "`wxstatusbar()` even in libraries that might be used with plain _Maxima_ "
+#| "(as opposed to _wxMaxima_): If _wxMaxima_ isn't present the "
+#| "`wxstatusbar()` command will just be left unevelated."
 msgid ""
 "Long-running commands can provide user-feedback in the status bar. This user "
 "feedback is replaced by any new feedback that is placed there (allowing to "
@@ -1630,7 +1639,7 @@ msgid ""
 "command sent to _maxima_ is finished. It is safe to use `wxstatusbar()` even "
 "in libraries that might be used with plain _Maxima_ (as opposed to "
 "_wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will "
-"just be left unevelated."
+"just be left unevaluated."
 msgstr ""
 "Kommandos, die lange arbeiten, können Fortschrittsinformationen in die "
 "Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. "
@@ -1656,7 +1665,7 @@ msgid ""
 "                /* Tell the user how far we got */\n"
 "                wxstatusbar(concat(\"Pass \",i)),\n"
 "                /* (sleep n) is a Lisp function, which can be used */\n"
-"                /* with the charcacter \"?\" before. It delays the */\n"
+"                /* with the character \"?\" before. It delays the */\n"
 "                /* program execution (here: for 3 seconds) */\n"
 "                ?sleep(3)\n"
 "            )$\n"
@@ -1987,6 +1996,20 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    wxanimate_autoplay:true;\n"
+"    wxanimate_framerate:20;\n"
+"    with_slider_draw3d(\n"
+"        α,makelist(i,i,1,360,3),\n"
+"        title=sconcat(\\\"α=\\\",α),\n"
+"        surface_hide=true,\n"
+"        contour=both,\n"
+"        view=[60,α],\n"
+"        explicit(\n"
+"            sin(x)*sin(y),\n"
+"            x,-π,π,\n"
+"            y,-π,π\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:463
@@ -1994,7 +2017,7 @@ msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make it's 3D nature available to the "
 "intuition:"
-msgstr ""
+msgstr "Wenn es nur um die generelle Form der Kurve geht, reicht es oft, das Bild ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:478
@@ -2015,6 +2038,20 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    wxanimate_autoplay:true;\n"
+"    wxanimate_framerate:20;\n"
+"    with_slider_draw3d(\n"
+"        t,makelist(i,i,0,2*π,.05*π),\n"
+"        title=sconcat(\\\"α=\\\",α),\n"
+"        surface_hide=true,\n"
+"        contour=both,\n"
+"        view=[60,30+5*sin(t)],\n"
+"        explicit(\n"
+"            sin(x)*y^2,\n"
+"            x,-2*π,2*π,\n"
+"            y,-2*π,2*π\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:480
@@ -3099,6 +3136,12 @@ msgid ""
 ");\n"
 "~~~~\n"
 msgstr ""
+"~~~~\n"
+"wxdraw2d(\n"
+"    file_name=\\\"test\\\",\n"
+"    explicit(sin(x),x,1,10)\n"
+");\n"
+"~~~~\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:744
@@ -3132,6 +3175,24 @@ msgid ""
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents));\n"
 msgstr ""
+"~~~~\n"
+"load(\\\"draw\\\");\n"
+"pngdraw(name,[contents]):=\n"
+"(\n"
+"    draw(\n"
+"        append(\n"
+"            [\n"
+"                terminal=pngcairo,\n"
+"                dimensions=wxplot_size,\n"
+"                file_name=name\n"
+"            ],\n"
+"            contents\n"
+"        )\n"
+"    ),\n"
+"    show_image(printf(false,\\\"~a.png\\\",name))\n"
+");\n"
+"pngdraw2d(name,[contents]):=\n"
+"    pngdraw(name,gr2d(contents)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:768
@@ -3183,6 +3244,8 @@ msgid ""
 "FAQ\n"
 "===\n"
 msgstr ""
+"Häufig gestellte Fragen\n"
+"======================="
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:785
@@ -3205,7 +3268,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:789
 #, no-wrap
 msgid "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
-msgstr ""
+msgstr "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:794
@@ -3226,7 +3289,7 @@ msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
 "still provides some command line switches, though."
-msgstr ""
+msgstr "Die Kommandozeile wird auf vielen Betriebssystemen nur selten genutzt. Das _wxMaxima_ bietet jedoch dennoch mehrere Kommandozeilenoptionen an."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
@@ -3254,7 +3317,7 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
-msgstr ""
+msgstr "`-e` oder `--eval`: Evaluiere die Datei nach dem Öffnen."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
@@ -3266,7 +3329,7 @@ msgid ""
 "output an error and will pause if _Maxima_ has a question: Mathematics is "
 "somewhat interactive by nature so a completely interaction-free batch "
 "processing cannot always be guaranteed."
-msgstr ""
+msgstr "`-b` oder `--batch`: Nach dem Öffnen werden alle Code-Zellen der Datei(en) evaluiert und die Datei danach geschlossen. Dies ist beispielsweise praktisch, wenn _Maxima_ Dateien generiert. Wenn Maxima Fehler detektiert, wird dieser Vorgang abgebrochen, eventuelle Fragen an den User (Mathematik ist an einigen Stellen ein interaktiver Prozess) werden wie üblich an den User weitergereicht."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
