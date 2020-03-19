@@ -197,7 +197,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_exitAfterEval = false;
   m_exitOnError = false;
   m_locale = locale;
-  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName());
+  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
+               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
+  wxString lang;
+  if(wxGetEnv("LANG", &lang))
+    wxLogMessage("LANG=" + lang);
   m_isLogTarget = MyApp::m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
