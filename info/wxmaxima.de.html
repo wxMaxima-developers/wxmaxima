@@ -45,7 +45,7 @@
 <li><a href="#jsmath-zeichensätze"><span class="toc-section-number">1.3.7</span> jsMath-Zeichensätze</a></li>
 <li><a href="#automatisches-schließen-von-klammern"><span class="toc-section-number">1.3.8</span> Automatisches Schließen von Klammern</a></li>
 <li><a href="#arbeitsblatt-nicht-automatisch-speichern"><span class="toc-section-number">1.3.9</span> Arbeitsblatt nicht automatisch speichern</a></li>
-<li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.3.10</span> Where is the configuration saved?</a></li>
+<li><a href="#wo-wird-die-konfiguration-gespeichert"><span class="toc-section-number">1.3.10</span> Wo wird die Konfiguration gespeichert?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#erweiterungen-für-maxima"><span class="toc-section-number">2</span> Erweiterungen für <em>Maxima</em></a><ul>
@@ -84,7 +84,7 @@
 <li><a href="#kann-ich-das-seitenverhältnis-des-plots-angeben"><span class="toc-section-number">3.12.2</span> Kann ich das Seitenverhältnis des Plots angeben?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
+<li><a href="#häufig-gestellte-fragen"><span class="toc-section-number">4</span> Häufig gestellte Fragen</a><ul>
 <li><a href="#gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="toc-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</a></li>
 </ul></li>
 <li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
@@ -247,7 +247,7 @@ leadsto       a &quot;leads to&quot; sign
 -&gt;            a right arrow
 --&gt;           a long right arrow</code></pre>
 <p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.</p>
-<p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
+<p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
 <h3 id="seitenleisten"><span class="header-section-number">1.2.4</span> Seitenleisten</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
@@ -278,8 +278,8 @@ Normaler Text</code></pre>
 <h3 id="tastenkürzel"><span class="header-section-number">1.2.7</span> Tastenkürzel</h3>
 <p>Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit diesen übersetzt werden könen, falls die Tastatur der aktuellen Sprache dies erforderlich macht. Nicht dort dokumentiert ist:</p>
 <ul>
-<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell.</li>
-<li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.</li>
+<li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette Zelle.</li>
+<li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> startet das automatische Vervollständigen.</li>
 <li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
 </ul>
 <h3 id="direkte-eingabe-von-tex-befehlen"><span class="header-section-number">1.2.8</span> Direkte Eingabe von TeX-Befehlen</h3>
@@ -333,9 +333,9 @@ Normaler Text</code></pre>
 <li>Dateien werden beim Schließen automatisch gespeichert</li>
 <li>und sie werden alle n Minuten zwischengespeichert.</li>
 </ul>
-<h3 id="where-is-the-configuration-saved"><span class="header-section-number">1.3.10</span> Where is the configuration saved?</h3>
-<p>If you are using Unix/Linux, a file <code>.wxMaxima</code> in your homedirectory is used for saving wxMaxima’s configuration. (Since the filename starts with a dot, it will be a hidden file).</p>
-<p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for wxMaxima at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
+<h3 id="wo-wird-die-konfiguration-gespeichert"><span class="header-section-number">1.3.10</span> Wo wird die Konfiguration gespeichert?</h3>
+<p>Unter Linux-ähnlichen Systemen wird im Home-Verzeichnis oder einem Unterordner davon eine Datei namens .wMmaxima abgelegt (der “.” am Beginn des Dateinamens versteckt die Datei).</p>
+<p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\\Software\\wxMaxima</code> gespeichert</p>
 <hr />
 <h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
 <p><em>wxMaxima</em>’s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em>Maxima</em> hinzu:</p>
@@ -411,7 +411,7 @@ Normaler Text</code></pre>
 wxanimate_framerate:20;
 with_slider_draw3d(
     α,makelist(i,i,1,360,3),
-    title=sconcat(&quot;α=&quot;,α),
+    title=sconcat(\&quot;α=\&quot;,α),
     surface_hide=true,
     contour=both,
     view=[60,α],
@@ -421,12 +421,12 @@ with_slider_draw3d(
         y,-π,π
     )
 )$</code></pre>
-<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it’s 3D nature available to the intuition:</p>
+<p>Wenn es nur um die generelle Form der Kurve geht, reicht es oft, das Bild ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:</p>
 <pre><code>wxanimate_autoplay:true;
 wxanimate_framerate:20;
 with_slider_draw3d(
     t,makelist(i,i,0,2*π,.05*π),
-    title=sconcat(&quot;α=&quot;,α),
+    title=sconcat(\&quot;α=\&quot;,α),
     surface_hide=true,
     contour=both,
     view=[60,30+5*sin(t)],
@@ -608,11 +608,11 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>ausgeben?</p>
 <p>Das Arbeitsblatt enthält png-Dateien. wxMaxima erlaubt dem User anzugeben, wo sie generiert werden sollen:</p>
 <pre><code>wxdraw2d(
-    file_name=&quot;test&quot;,
+    file_name=\&quot;test\&quot;,
     explicit(sin(x),x,1,10)
 );</code></pre>
 <p>Wenn ein unterschiedliches Format benutzt wird, ist es einfacher, Bilder zu generieren und dann in daas Arbeitsblatt zu importieren:</p>
-<pre><code>load(&quot;draw&quot;);
+<pre><code>load(\&quot;draw\&quot;);
 pngdraw(name,[contents]):=
 (
     draw(
@@ -625,10 +625,10 @@ pngdraw(name,[contents]):=
             contents
         )
     ),
-    show_image(printf(false,&quot;~a.png&quot;,name))
+    show_image(printf(false,\&quot;~a.png\&quot;,name))
 );
 pngdraw2d(name,[contents]):=
-    pngdraw(name,gr2d(contents));
+    pngdraw(name,gr2d(contents)
 
 pngdraw2d(&quot;Test&quot;,
         explicit(sin(x),x,1,10)
@@ -640,27 +640,27 @@ pngdraw2d(&quot;Test&quot;,
      explicit(sin(x),x,1,10)
  ),wxplot_size=[1000,1000];</code></pre>
 <hr />
-<h1 id="faq"><span class="header-section-number">4</span> FAQ</h1>
+<h1 id="häufig-gestellte-fragen"><span class="header-section-number">4</span> Häufig gestellte Fragen</h1>
 <h2 id="gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="header-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</h2>
 <p>Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (“Export”-&gt;“Additional lines for the TeX preamble”) angeben.</p>
 <pre><code>\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
 <hr />
 <h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
-<p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>
+<p>Die Kommandozeile wird auf vielen Betriebssystemen nur selten genutzt. Das <em>wxMaxima</em> bietet jedoch dennoch mehrere Kommandozeilenoptionen an.</p>
 <ul>
 <li><code>-v</code> or <code>--version</code>: Gibt die Versionsnummer aus</li>
 <li><code>-h</code> or <code>--help</code>: Gibt einen kurzen Hilfetext aus</li>
 <li><code>-o</code> or <code>--open=&lt;str&gt;</code>: Open the filename given as argument to this command-line switch</li>
-<li><code>-e</code> or <code>--eval</code>: Evaluate the file after opening it.</li>
-<li><code>-b</code> or <code>--batch</code>: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes <em>Maxima</em> generate output files. Batch-processing will be stopped if <em>wxMaxima</em> detects that <em>Maxima</em> has output an error and will pause if <em>Maxima</em> has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.</li>
-<li><code>--logtostdout</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
-<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
-<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
-<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
-<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-e</code> oder <code>--eval</code>: Evaluiere die Datei nach dem Öffnen.</li>
+<li><code>-b</code> oder <code>--batch</code>: Nach dem Öffnen werden alle Code-Zellen der Datei(en) evaluiert und die Datei danach geschlossen. Dies ist beispielsweise praktisch, wenn <em>Maxima</em> Dateien generiert. Wenn Maxima Fehler detektiert, wird dieser Vorgang abgebrochen, eventuelle Fragen an den User (Mathematik ist an einigen Stellen ein interaktiver Prozess) werden wie üblich an den User weitergereicht.</li>
+<li><code>--logtostdout</code>: Gebe alle all Debug-Nachrichten auch auf die Konsole aus.</li>
+<li><code>--pipe</code>: Gebe die Nachrichten von Maxima auch auf die Konsole aus.</li>
+<li><code>--exit-on-error</code>: Schließe wxMaxima, wenn Maxima einen Fehler detektiert.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Speichere die Konfiguration in der Datei <code>&lt;str&gt;</code></li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Verwende Maxima-Version <code>&lt;str&gt;</code></li>
 <li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a maxima compiled with lisp compiler <code>&lt;str&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra maxima arguments</li>
-<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Erlaubt, Maxima zusätzliche Argumente mitzugeben</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: Sagt, wo die ausführbare Datei von <em>maxima</em> liegt.</li>
 </ul>
 <p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minusses.</p>
 <hr />

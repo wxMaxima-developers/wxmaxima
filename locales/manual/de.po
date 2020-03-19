@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-18 19:43+0100\n"
-"PO-Revision-Date: 2020-03-19 21:11+0100\n"
+"PO-Revision-Date: 2020-03-19 21:37+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -3192,7 +3192,7 @@ msgstr ""
 "    show_image(printf(false,\\\"~a.png\\\",name))\n"
 ");\n"
 "pngdraw2d(name,[contents]):=\n"
-"    pngdraw(name,gr2d(contents)"
+"    pngdraw(name,gr2d(contents)\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:768
@@ -3245,7 +3245,7 @@ msgid ""
 "===\n"
 msgstr ""
 "Häufig gestellte Fragen\n"
-"======================="
+"=======================\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:785
@@ -3344,6 +3344,14 @@ msgid ""
 "* `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments\n"
 "* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
 msgstr ""
+"* `--logtostdout`:                 Gebe alle all Debug-Nachrichten auch auf die Konsole aus.\n"
+"* `--pipe`:                        Gebe die Nachrichten von Maxima auch auf die Konsole aus.\n"
+"* `--exit-on-error`:               Schließe wxMaxima, wenn Maxima einen Fehler detektiert.\n"
+"* `-f` or `--ini=<str>`:           Speichere die Konfiguration in der Datei `<str>`\n"
+"* `-u`, `--use-version=<str>`:     Verwende Maxima-Version `<str>`\n"
+"* `-l`, `--lisp=<str>`:            Use a maxima compiled with lisp compiler `<str>`.\n"
+"* `-X`, `--extra-args=<str>`:      Erlaubt, Maxima zusätzliche Argumente mitzugeben\n"
+"* `-m` or `--maxima=<str>`:        Sagt, wo die ausführbare Datei von _maxima_ liegt.\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:813
