@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the wxMaxima package.
 #
 # Sergey Semerikov <cc@kpi.dp.ua>, 2007.
-# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017, 2018, 2019.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017, 2018, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-18 19:43+0100\n"
-"PO-Revision-Date: 2019-02-17 16:54+0200\n"
+"PO-Revision-Date: 2020-03-20 20:58+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 19.03.70\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 20.03.70\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:2
@@ -27,6 +27,8 @@ msgid ""
 "The wxMaxima user manual {-}\n"
 "============================\n"
 msgstr ""
+"Підручник користувача wxMaxima {-}\n"
+"==================================\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:5
@@ -41,7 +43,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:7
 msgid "![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
-msgstr ""
+msgstr "![Логотип wxMaxima](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:9
@@ -60,52 +62,52 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:11
 msgid "[Introduction](#Introduction \"Introduction to wxMaxima\"):"
-msgstr ""
+msgstr "[Вступ](#Introduction \"Вступ до wxMaxima\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:15
 msgid "wxMaxima basics"
-msgstr ""
+msgstr "Основи wxMaxima"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:17
 msgid "[Extensions](#Extensions \"Extensions\"):"
-msgstr ""
+msgstr "[Розширення](#Extensions \"Розширення\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:21
 msgid "The commands wxMaxima adds to _Maxima_"
-msgstr ""
+msgstr "Команди, які wxMaxima додає до _Maxima_"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:23
 msgid "[Troubleshooting](#Troubleshooting \"Troubleshooting\"):"
-msgstr ""
+msgstr "[Усування вад](#Troubleshooting \"Усування вад\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:27
 msgid "What to do if wxMaxima does not work as expected"
-msgstr ""
+msgstr "Що робити, якщо wxMaxima працює неправильно"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:29
 msgid "[FAQ](#FAQ \"FAQ\"):"
-msgstr ""
+msgstr "[Поширені питання](#FAQ \"Поширені питання та відповіді на них\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:33
 msgid "Frequently asked questions"
-msgstr ""
+msgstr "Поширені питання та відповіді на них"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:35
 msgid "[CommandLine](#CommandLine \"_Maxima_ Command Line\"):"
-msgstr ""
+msgstr "[Командний рядок](#CommandLine \"Командний рядок _Maxima_\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:39
 msgid "The command-line arguments wxMaxima supports"
-msgstr ""
+msgstr "Параметри командного рядка, підтримку яких передбачено у wxMaxima"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:41
@@ -115,7 +117,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:791
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:817
 msgid "* *"
-msgstr ""
+msgstr "* *"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:44
@@ -124,11 +126,13 @@ msgid ""
 "Introduction to wxMaxima\n"
 "========================\n"
 msgstr ""
+"Вступ до wxMaxima\n"
+"=================\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:47
 msgid "## _Maxima_ and wxMaxima"
-msgstr ""
+msgstr "## _Maxima_ і wxMaxima"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:49
@@ -163,7 +167,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:53
 msgid "### _Maxima_"
-msgstr ""
+msgstr "### _Maxima_"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:55
@@ -183,6 +187,7 @@ msgstr ""
 msgid ""
 "![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 msgstr ""
+"![Знімок вікна Maxima](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:59
@@ -198,7 +203,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:61
 msgid "### wxMaxima"
-msgstr ""
+msgstr "### wxMaxima"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:63
@@ -218,7 +223,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:65
 msgid "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
-msgstr ""
+msgstr "![Вікно wxMaxima](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:67
@@ -230,7 +235,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:70
 msgid "## Workbook basics"
-msgstr ""
+msgstr "## Основи роботи із книгою"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:72
@@ -280,7 +285,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:80
 msgid "![Input/output cell](./InputCell.png){ id=img_InputCell }"
-msgstr ""
+msgstr "![Комірка введення-виведення](./InputCell.png){ id=img_InputCell }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:82
@@ -322,7 +327,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:91
 msgid "### Cells"
-msgstr ""
+msgstr "### Комірки"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:93
@@ -339,7 +344,7 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:99
 msgid "one or more image"
-msgstr ""
+msgstr "одне або декілька зображень"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:99
@@ -368,7 +373,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:103
 msgid "### Horizontal and vertical cursors"
-msgstr ""
+msgstr "### Горизонтальний і вертикальний курсори"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:105
@@ -410,7 +415,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:112
 msgid "### Command autocompletion"
-msgstr ""
+msgstr "### Автоматичне доповнення команд"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:114
@@ -425,7 +430,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:116
 msgid "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
-msgstr ""
+msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:118
@@ -441,7 +446,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:120
 msgid "#### Greek characters"
-msgstr ""
+msgstr "#### Грецькі літери"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:122
@@ -602,7 +607,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:212
 msgid "### Side Panes"
-msgstr ""
+msgstr "### Бічні панелі"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:214
@@ -618,12 +623,12 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:216
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
-msgstr ""
+msgstr "![Приклад різних бічних панелей](./SidePanes.png){ id=img_SidePanes }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:218
 msgid "### MathML output"
-msgstr ""
+msgstr "### Виведення коду MathML"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:220
@@ -638,7 +643,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:223
 msgid "### Markdown support"
-msgstr ""
+msgstr "### Підтримка Markdown"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:225
@@ -684,7 +689,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:251
 msgid "~~~~ cogito => sum.  ~~~~"
-msgstr ""
+msgstr "~~~~ cogito => sum.  ~~~~"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:253
@@ -698,7 +703,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:255
 msgid "### Hotkeys"
-msgstr ""
+msgstr "### Клавіатурні скорочення"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:257
@@ -715,6 +720,8 @@ msgstr ""
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
 msgstr ""
+"<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> вилучає увесь вміст"
+" комірки."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
@@ -722,16 +729,18 @@ msgid ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> triggers the auto-completion mechanism."
 msgstr ""
+"<kbd>CTRL</kbd>+<kbd>TAB</kbd> або <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB<"
+"/kbd> перемикає механізм автоматичного доповнення."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
 msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
-msgstr ""
+msgstr "<kbd>SHIFT</kbd>+<kbd>ПРОБІЛ</kbd> вставляє нерозривний пробіл."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:263
 msgid "### Raw TeX in the TeX export"
-msgstr ""
+msgstr "### Код TeX у експортованому TeX"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:265
@@ -744,7 +753,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:267
 msgid "## File Formats"
-msgstr ""
+msgstr "## Формати файлів"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:269
@@ -756,7 +765,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:272
 msgid "### .mac"
-msgstr ""
+msgstr "### .mac"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:274
@@ -769,7 +778,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:276
 msgid "One Example:"
-msgstr ""
+msgstr "Один приклад:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:278
@@ -789,7 +798,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:282
 #, no-wrap
 msgid "    %i1 read(\"test.mac\");\n"
-msgstr ""
+msgstr "    %i1 read(\"test.mac\");\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:284
@@ -802,7 +811,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:286
 msgid "### .wxm"
-msgstr ""
+msgstr "### .wxm"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:288
@@ -817,7 +826,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:290
 msgid "### .wxmx"
-msgstr ""
+msgstr "### .wxmx"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:292
@@ -829,7 +838,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:294
 msgid "## Configuration options"
-msgstr ""
+msgstr "## Параметри налаштування"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:296
@@ -859,11 +868,13 @@ msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
 msgstr ""
+"![Налаштування wxMaxima 1](./wxMaxima_configuration_001.png)"
+"{ id=img_wxMaxima_configuration_001 }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:303
 msgid "### Default animation framerate"
-msgstr ""
+msgstr "### Типова частота кадрів анімації"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:305
@@ -896,12 +907,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:313
 #, no-wrap
 msgid "    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
-msgstr ""
+msgstr "    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:315
 msgid "### Use jsMath fonts"
-msgstr ""
+msgstr "### Використовувати шрифти jsMath"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:317
@@ -916,6 +927,8 @@ msgid ""
 "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
 "{ id=img_wxMaxima_configuration_002 }"
 msgstr ""
+"![Налаштування wxMaxima 2](./wxMaxima_configuration_002.png)"
+"{ id=img_wxMaxima_configuration_002 }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:321
@@ -932,12 +945,12 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:324
 msgid "### Match parenthesis in text controls"
-msgstr ""
+msgstr "### Перевіряти баланс дужок у тексті"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:326
 msgid "This option enables two things:"
-msgstr ""
+msgstr "За допомогою цього пункту можна увімкнути дві речі:"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:329
@@ -985,7 +998,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:340
 msgid "### Where is the configuration saved?"
-msgstr ""
+msgstr "### Де зберігаються налаштування?"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:342
@@ -1010,6 +1023,8 @@ msgid ""
 "Extensions to _Maxima_\n"
 "======================\n"
 msgstr ""
+"Розширення _Maxima_\n"
+"===================\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:353
@@ -1026,7 +1041,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:355
 msgid "## Subscripted variables"
-msgstr ""
+msgstr "## Змінні із індексами"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:357
@@ -1038,12 +1053,12 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:360
 msgid "`y` is a single letter"
-msgstr ""
+msgstr "`y` є одинарною літерою"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:360
 msgid "`y` is an integer"
-msgstr ""
+msgstr "`y` є цілим числом"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:362
@@ -1091,7 +1106,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:377
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:731
 msgid "## Plotting"
-msgstr ""
+msgstr "## Креслення"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:379
@@ -1140,6 +1155,8 @@ msgid ""
 "    %i1 wxplot_size:[1200,800];\n"
 "    %o1 [1200,800];\n"
 msgstr ""
+"    %i1 wxplot_size:[1200,800];\n"
+"    %o1 [1200,800];\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:397
@@ -1152,6 +1169,12 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    %i2 wxdraw2d(\n"
+"        explicit(\n"
+"            sin(x),\n"
+"            x,1,10\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:399
@@ -1167,6 +1190,8 @@ msgid ""
 "     %i1 wxplot_size:[1200,800];\n"
 "     %o1 [1200,800];\n"
 msgstr ""
+"     %i1 wxplot_size:[1200,800];\n"
+"     %o1 [1200,800];\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:409
@@ -1179,6 +1204,12 @@ msgid ""
 "             )\n"
 "         ),wxplot_size=[1600,800]$\n"
 msgstr ""
+"     %i1 wxdraw2d(\n"
+"             explicit(\n"
+"                 sin(x),\n"
+"                 x,1,10\n"
+"             )\n"
+"         ),wxplot_size=[1600,800]$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:416
@@ -1191,6 +1222,12 @@ msgid ""
 "        )\n"
 "    ),wxplot_size=[1600,800]$\n"
 msgstr ""
+"    %i1 wxdraw2d(\n"
+"        explicit(\n"
+"            sin(x),\n"
+"            x,1,10\n"
+"        )\n"
+"    ),wxplot_size=[1600,800]$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:419
@@ -1275,6 +1312,14 @@ msgid ""
 "        ),grid=true\n"
 "    );\n"
 msgstr ""
+"    with_slider_draw(\n"
+"        f,[1,2,3,4,5,6,7,10],\n"
+"        title=concat(\"f=\",f,\"Hz\"),\n"
+"        explicit(\n"
+"            sin(2*%pi*f*x),\n"
+"            x,0,1\n"
+"        ),grid=true\n"
+"    );\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:446
@@ -1302,6 +1347,20 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    wxanimate_autoplay:true;\n"
+"    wxanimate_framerate:20;\n"
+"    with_slider_draw3d(\n"
+"        α,makelist(i,i,1,360,3),\n"
+"        title=sconcat(\"α=\",α),\n"
+"        surface_hide=true,\n"
+"        contour=both,\n"
+"        view=[60,α],\n"
+"        explicit(\n"
+"            sin(x)*sin(y),\n"
+"            x,-π,π,\n"
+"            y,-π,π\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:463
@@ -1330,6 +1389,20 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    wxanimate_autoplay:true;\n"
+"    wxanimate_framerate:20;\n"
+"    with_slider_draw3d(\n"
+"        t,makelist(i,i,0,2*π,.05*π),\n"
+"        title=sconcat(\"α=\",α),\n"
+"        surface_hide=true,\n"
+"        contour=both,\n"
+"        view=[60,30+5*sin(t)],\n"
+"        explicit(\n"
+"            sin(x)*y^2,\n"
+"            x,-2*π,2*π,\n"
+"            y,-2*π,2*π\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:480
@@ -1341,12 +1414,12 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:483
 msgid "`with_slider` and"
-msgstr ""
+msgstr "`with_slider` і"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:483
 msgid "`wxanimate`."
-msgstr ""
+msgstr "`wxanimate`."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:485
@@ -1363,6 +1436,8 @@ msgid ""
 "    wxanimate(a, 10,\n"
 "        sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 msgstr ""
+"    wxanimate(a, 10,\n"
+"        sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:490
@@ -1385,6 +1460,13 @@ msgid ""
 "        explicit(f,x,0,10)\n"
 "    )$\n"
 msgstr ""
+"    f:sin(a*x);\n"
+"    with_slider_draw(\n"
+"        a,makelist(i/2,i,1,10),\n"
+"        title=concat(\"a=\",float(a)),\n"
+"        grid=true,\n"
+"        explicit(f,x,0,10)\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:500
@@ -1408,6 +1490,16 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    f:sin(a*x);\n"
+"    with_slider_draw(\n"
+"        b,makelist(i/2,i,1,10),\n"
+"        title=concat(\"a=\",float(b)),\n"
+"        grid=true,\n"
+"        explicit(\n"
+"            subst(a=b,f),\n"
+"            x,0,10\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:513
@@ -1426,7 +1518,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:517
 #, no-wrap
 msgid "    load(draw);\n"
-msgstr ""
+msgstr "    load(draw);\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:520
@@ -1435,6 +1527,8 @@ msgid ""
 "    /* Parabola in window #1 */\n"
 "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
 msgstr ""
+"    /* Парабола у вікні 1 */\n"
+"    draw1d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:523
@@ -1443,6 +1537,8 @@ msgid ""
 "    /* Parabola in window #2 */\n"
 "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
 msgstr ""
+"    /* Парабола у вікні 2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:526
@@ -1451,6 +1547,8 @@ msgid ""
 "    /* Paraboloid in window #3 */\n"
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
+"    /* Параболоїд у вікні 3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:528
@@ -1468,7 +1566,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:532
 msgid "#### 2D"
-msgstr ""
+msgstr "#### 2D"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:534
@@ -1491,7 +1589,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:538
 msgid "#### 3D"
-msgstr ""
+msgstr "#### 3D"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:540
@@ -1504,7 +1602,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:542
 msgid "#### Expression"
-msgstr ""
+msgstr "#### Вираз"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:544
@@ -1518,7 +1616,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:546
 msgid "#### Implicit plot"
-msgstr ""
+msgstr "#### Графік неявної функції"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:548
@@ -1532,7 +1630,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:550
 msgid "#### Parametric plot"
-msgstr ""
+msgstr "#### Графік параметричної функції"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:552
@@ -1546,7 +1644,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:554
 msgid "#### Points"
-msgstr ""
+msgstr "#### Точки"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:556
@@ -1559,7 +1657,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:558
 msgid "#### Diagram title"
-msgstr ""
+msgstr "#### Заголовок діаграми"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:560
@@ -1569,17 +1667,17 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:562
 msgid "#### Axis"
-msgstr ""
+msgstr "#### Вісь"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:564
 msgid "Sets up the axis."
-msgstr ""
+msgstr "Налаштовує вісі."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:566
 msgid "#### Contour"
-msgstr ""
+msgstr "#### Контур"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:568
@@ -1593,7 +1691,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:570
 msgid "#### Plot name"
-msgstr ""
+msgstr "#### Назва графіка"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:572
@@ -1606,7 +1704,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:574
 msgid "#### Line color"
-msgstr ""
+msgstr "#### Колір лінії"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:576
@@ -1618,7 +1716,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:578
 msgid "#### Fill color"
-msgstr ""
+msgstr "#### Колір заповнення"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:580
@@ -1630,7 +1728,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:582
 msgid "#### Grid"
-msgstr ""
+msgstr "#### Сітка"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:584
@@ -1640,7 +1738,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:586
 msgid "#### Accuracy"
-msgstr ""
+msgstr "#### Точність"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:588
@@ -1652,7 +1750,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
 msgid "## Embedding graphics"
-msgstr ""
+msgstr "## Вбудовування графіків"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:592
@@ -1667,12 +1765,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:594
 #, no-wrap
 msgid "    show_image(\"man.png\");\n"
-msgstr ""
+msgstr "    show_image(\"man.png\");\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:596
 msgid "## Startup files"
-msgstr ""
+msgstr "## Файли запуску"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:598
@@ -1697,7 +1795,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:603
 msgid "## Special variables wx..."
-msgstr ""
+msgstr "## Спеціальні змінні wx..."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:611
@@ -1777,6 +1875,12 @@ msgid ""
 "        ]\n"
 "    )$\n"
 msgstr ""
+"    table_form(\n"
+"        [\n"
+"            [1,2],\n"
+"            [3,4]\n"
+"        ]\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:624
@@ -1791,6 +1895,8 @@ msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
 msgstr ""
+"![Третій приклад таблиці](./MatrixTableExample.png)"
+"{ id=img_MatrixTableExample }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:628
@@ -1805,11 +1911,13 @@ msgid ""
 "![Another table_form example](./SecondTableExample.png)"
 "{ id=img_SecondTableExample }"
 msgstr ""
+"![Ще один приклад table_form](./SecondTableExample.png)"
+"{ id=img_SecondTableExample }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:632
 msgid "## Bug reporting"
-msgstr ""
+msgstr "## Звітування про вади"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:634
@@ -2327,14 +2435,19 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
 #, no-wrap
 msgid ""
-"* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
+"* `--logtostdout`:                 Log all \"debug messages\" sidebar"
+" messages to stderr, too.\n"
 "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
 "* `--exit-on-error`:               Close the program on any maxima error.\n"
-"* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch\n"
+"* `-f` or `--ini=<str>`: Use the init file that was given as argument to this"
+" command-line switch\n"
 "* `-u`, `--use-version=<str>`:     Use maxima version `<str>`.\n"
-"* `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler `<str>`.\n"
-"* `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments\n"
-"* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
+"* `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler"
+" `<str>`.\n"
+"* `-X`, `--extra-args=<str>`:        Allows to specify extra maxima"
+" arguments\n"
+"* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_"
+" binary\n"
 msgstr ""
 
 #. type: Plain text
@@ -2357,7 +2470,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**A**\n"
-"[Animations](#embedding-animations-into-the-spreadsheet): commands to embed animations into a _wxMaxima_ workbook\n"
+"[Animations](#embedding-animations-into-the-spreadsheet): commands to embed"
+" animations into a _wxMaxima_ workbook\n"
 msgstr ""
 
 #. type: Plain text
@@ -2426,7 +2540,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**D**\n"
-"[Drag and drop](#Drag%20and%20drop): Copying and pasting material in one or more cells or executing a sequence of cells\n"
+"[Drag and drop](#Drag%20and%20drop): Copying and pasting material in one or"
+" more cells or executing a sequence of cells\n"
 msgstr ""
 
 #. type: Plain text
@@ -2434,7 +2549,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**F**\n"
-"[File Info](#special-variables-wx...): command to print name and location of currently-open wxMaxima workbook\n"
+"[File Info](#special-variables-wx...): command to print name and location of"
+" currently-open wxMaxima workbook\n"
 msgstr ""
 
 #. type: Plain text
@@ -2449,7 +2565,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**G**\n"
-"[Greek characters](#greek-characters): Ways to enter Greek letters into a _wxMaxima_ workbook (see Side Panels below)\n"
+"[Greek characters](#greek-characters): Ways to enter Greek letters into a"
+" _wxMaxima_ workbook (see Side Panels below)\n"
 msgstr ""
 
 #. type: Plain text
@@ -2471,7 +2588,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**I**\n"
-"[Input/Output Cells](#Input%20Output%20Cell): Cells that contain one or more commands and the results of executing the command(s)\n"
+"[Input/Output Cells](#Input%20Output%20Cell): Cells that contain one or more"
+" commands and the results of executing the command(s)\n"
 msgstr ""
 
 #. type: Plain text
@@ -2502,7 +2620,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**M**\n"
-"[Macro files](#mac): .mac files, batch files that can be entered into _wxMaxima_ workbooks\n"
+"[Macro files](#mac): .mac files, batch files that can be entered into"
+" _wxMaxima_ workbooks\n"
 msgstr ""
 
 #. type: Plain text
@@ -2535,7 +2654,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**N**\n"
-"[Name of file](#special-variables-wx...): command to print name and location of currently-open _wxMaxima_ workbook\n"
+"[Name of file](#special-variables-wx...): command to print name and location"
+" of currently-open _wxMaxima_ workbook\n"
 msgstr ""
 
 #. type: Plain text
@@ -2543,7 +2663,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**P**\n"
-"[Plot, aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect ratio for a plot\n"
+"[Plot, aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect"
+" ratio for a plot\n"
 msgstr ""
 
 #. type: Plain text
@@ -2607,7 +2728,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**S**\n"
-"[Side Panes](#side-panes): collections of buttons that open dialog boxes, enter commands, and enter special characters\n"
+"[Side Panes](#side-panes): collections of buttons that open dialog boxes,"
+" enter commands, and enter special characters\n"
 msgstr ""
 
 #. type: Plain text
@@ -2634,7 +2756,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**T**\n"
-"[Table](#pretty-printing-2d-output): show lists of text and values as a table\n"
+"[Table](#pretty-printing-2d-output): show lists of text and values as a"
+" table\n"
 msgstr ""
 
 #. type: Plain text
@@ -2649,7 +2772,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**U**\n"
-"[undo](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to recover lost cell contents\n"
+"[undo](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to recover"
+" lost cell contents\n"
 msgstr ""
 
 #. type: Plain text
@@ -2657,7 +2781,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "**W**\n"
-"[with\\_slider\\_draw](#embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw`\n"
+"[with\\_slider\\_draw](#embedding-animations-into-the-spreadsheet): command"
+" to embed animations -- alternative: `wxanimate_draw`\n"
 msgstr ""
 
 #. type: Plain text
