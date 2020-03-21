@@ -58,6 +58,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_drawBoundingBox = false;
   if(m_animationRunning)
     ReloadTimer();
+  m_width = m_height = -1;
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
@@ -65,6 +66,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_timer(NULL),
   m_fileSystem(NULL)
 {
+  m_width = m_height = -1;
   m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
