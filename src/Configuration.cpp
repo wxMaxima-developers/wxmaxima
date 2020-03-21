@@ -708,7 +708,8 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
 
 wxString Configuration::GetFontName(int type) const
 {
-  wxString retval = m_fontName;
+  wxString retval = FontName();
+  std::cerr<<retval;
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
       type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
     retval = m_styles[type].FontName();

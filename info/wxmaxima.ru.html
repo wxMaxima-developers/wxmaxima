@@ -508,9 +508,10 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="startup-files"><span class="header-section-number">2.5</span> Startup files</h2>
 <p>The config dialogue of <em>wxMaxima</em> offers to edit two files with commands that are executed on startup:</p>
 <ul>
-<li>A file that contains commands that are executed on starting up <em>Maxima</em>, and</li>
-<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>.</li>
+<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>~/.maxima/maxima-init.mac</code></li>
+<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>~/.maxima/wxmaxima-init.mac</code></li>
 </ul>
+<p>These files are in the Maxima user directory, usually <code>.maxima/</code> in the user’s home directory, the location can be found out with the command: <code>maxima_userdir;</code></p>
 <h2 id="special-variables-wx"><span class="header-section-number">2.6</span> Special variables wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>
