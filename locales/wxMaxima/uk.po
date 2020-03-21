@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-18 19:45+0100\n"
+"POT-Creation-Date: 2020-03-21 11:31+0100\n"
 "PO-Revision-Date: 2020-03-20 21:00+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.03.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:183
@@ -132,12 +132,12 @@ msgid ""
 " * The \"symbols\" sidebar now should allow for easy access to these "
 "characters.\n"
 msgstr ""
-" * Відкрийте бічну панель «математичні символи» (якщо її ще не показано),"
-" наведіть на неї вказівник миші і клацніть правою кнопкою миші\n"
-" * Перетягніть і скиньте комбінований символ до вікна «Додавання нового"
-" символу», наприклад, один із наведених нижче.\n"
-" * На бічній панелі «Символи» тепер має з'явитися пункт для спрощення доступу"
-" до відповідного символу.\n"
+" * Відкрийте бічну панель «математичні символи» (якщо її ще не показано), "
+"наведіть на неї вказівник миші і клацніть правою кнопкою миші\n"
+" * Перетягніть і скиньте комбінований символ до вікна «Додавання нового "
+"символу», наприклад, один із наведених нижче.\n"
+" * На бічній панелі «Символи» тепер має з'явитися пункт для спрощення "
+"доступу до відповідного символу.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1641
 msgid ""
@@ -858,8 +858,8 @@ msgid ""
 "Allows to specify which not-builtin unicode symbols should be displayed in "
 "the symbols sidebar along with the built-in symbols."
 msgstr ""
-"Надає змогу вказати, які невбудовані символи Юнікод має бути показано на"
-" бічній панелі символів разом із вбудованими символами."
+"Надає змогу вказати, які невбудовані символи Юнікод має бути показано на "
+"бічній панелі символів разом із вбудованими символами."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1275
 msgid "All|*"
@@ -1308,7 +1308,7 @@ msgstr "Вада: немає останньої комірки у квадрат
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3168
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
-#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:589
+#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2380
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2518
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2565
@@ -1469,10 +1469,10 @@ msgid ""
 "(it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's "
 "config dialogue the setting for maxima's location is wrong."
 msgstr ""
-"Не вдалося запустити maxima. Найімовірнішою причиною є те, що maxima не"
-" встановлено (отримати пакунки можна з сайта http://maxima.sourceforge.net)"
-" або у вікні налаштовування wxMaxima встановлено помилковий каталог"
-" розташування maxima."
+"Не вдалося запустити maxima. Найімовірнішою причиною є те, що maxima не "
+"встановлено (отримати пакунки можна з сайта http://maxima.sourceforge.net) "
+"або у вікні налаштовування wxMaxima встановлено помилковий каталог "
+"розташування maxima."
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:56
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:58
@@ -1545,12 +1545,14 @@ msgstr "Не вдалося розмістити скопійований тек
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3178
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
-"Не вдалося розмістити скопійований текст у буфері обміну даними (перша спроба)"
+"Не вдалося розмістити скопійований текст у буфері обміну даними (перша "
+"спроба)"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3182
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
-"Не вдалося розмістити скопійований текст у буфері обміну даними (друга спроба)"
+"Не вдалося розмістити скопійований текст у буфері обміну даними (друга "
+"спроба)"
 
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:86
 #, c-format
@@ -2760,12 +2762,12 @@ msgstr "Помилка під час спроби записати дані до
 msgid "Error!"
 msgstr "Помилка!"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:828
+#: /home/gunter/src/wxmaxima/src/Image.cpp:832
 #, c-format
 msgid "Error: Cannot render %s."
 msgstr "Помилка: не вдалося обробити %s."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:830
+#: /home/gunter/src/wxmaxima/src/Image.cpp:834
 msgid "Error: Cannot render the image."
 msgstr "Помилка: не вдалося обробити зображення."
 
@@ -3357,8 +3359,8 @@ msgid ""
 "For many problems Maxima's solve() program instantly finds a list of "
 "solutions:\n"
 msgstr ""
-"Для багатьох задач програма solve() у Maxima може негайно знайти список"
-" розв'язків:\n"
+"Для багатьох задач програма solve() у Maxima може негайно знайти список "
+"розв'язків:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:397
 msgid ""
@@ -3481,8 +3483,8 @@ msgid ""
 "GTK_IM_MODULE is set to \"xim\" and GTK3 is in use. Expect the program to "
 "hideously flicker, see https://trac.wxwidgets.org/ticket/18462."
 msgstr ""
-"GTK_IM_MODULE встановлено у значення «xim» і використано GTK3. Слід очікувати"
-" огидне блимання, див. https://trac.wxwidgets.org/ticket/18462."
+"GTK_IM_MODULE встановлено у значення «xim» і використано GTK3. Слід "
+"очікувати огидне блимання, див. https://trac.wxwidgets.org/ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:161
 msgid "Galician"
@@ -3577,7 +3579,7 @@ msgstr "Знайти уявну частину комплексного вира
 msgid "Get the real part of complex expression"
 msgstr "Знайти дійсну частину комплексного виразу"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:397
+#: /home/gunter/src/wxmaxima/src/Image.cpp:401
 msgid "Gnuplot Data File Name: "
 msgstr "Назва файла даних gnuplot: "
 
@@ -3710,8 +3712,8 @@ msgid ""
 "Hide all multiplication signs that aren't really necessary for understanding "
 "the equation"
 msgstr ""
-"Приховувати усі символи множення, які не є обов'язковими для розуміння"
-" рівняння"
+"Приховувати усі символи множення, які не є обов'язковими для розуміння "
+"рівняння"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:753
 msgid "Hide all panes"
@@ -3802,9 +3804,9 @@ msgid ""
 "same isn't true with IEEE floating-point numbers like the ones the computer "
 "uses:\n"
 msgstr ""
-"Якщо у математиці дві речі скорочуються, вони роблять це без будь-якої"
-" похибки. Цього не можна сказати про числа з рухомою крапкою IEEE, подібні до"
-" тих, які використовуються для обчислень комп'ютерами:\n"
+"Якщо у математиці дві речі скорочуються, вони роблять це без будь-якої "
+"похибки. Цього не можна сказати про числа з рухомою крапкою IEEE, подібні до "
+"тих, які використовуються для обчислень комп'ютерами:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1360
 msgid ""
@@ -3905,11 +3907,11 @@ msgid ""
 "file is virtually always saved. If this checkbox is unchecked from time to "
 "time a backup is made in the temp folder instead."
 msgstr ""
-"Якщо позначено цей пункт, wxMaxima автоматично зберігатиме файл при закритті"
-" і кожні декілька хвилин. Це надасть wxMaxima подібної до мобільного телефону"
-" поведінки, оскільки файл майже завжди перебуватиме у збереженому стані. Якщо"
-" цей пункт не буде позначено, програма час від часу створюватиме резервну"
-" копію файла у теці тимчасових даних."
+"Якщо позначено цей пункт, wxMaxima автоматично зберігатиме файл при закритті "
+"і кожні декілька хвилин. Це надасть wxMaxima подібної до мобільного телефону "
+"поведінки, оскільки файл майже завжди перебуватиме у збереженому стані. Якщо "
+"цей пункт не буде позначено, програма час від часу створюватиме резервну "
+"копію файла у теці тимчасових даних."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:303
 msgid ""
@@ -3917,10 +3919,10 @@ msgid ""
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
 msgstr ""
-"Якщо буде позначено цей пункт, програма відкриватиме нову комірку коду"
-" кожного разу, коли maxima надсилатиме запит щодо даних. Якщо пункт не"
-" позначено, нову комірку коду буде відкрито, коли користувач починатиме"
-" вводити код."
+"Якщо буде позначено цей пункт, програма відкриватиме нову комірку коду "
+"кожного разу, коли maxima надсилатиме запит щодо даних. Якщо пункт не "
+"позначено, нову комірку коду буде відкрито, коли користувач починатиме "
+"вводити код."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1556
 msgid ""
@@ -3933,8 +3935,8 @@ msgid ""
 "If this isn't a function returning a lambda() expression a multiplication "
 "sign (*) between closing and opening parenthesis is missing here."
 msgstr ""
-"Якщо це не функція, яка повертає вираз lambda(), не вистачає символу множення"
-" (*) між початковою і завершальною круглими дужками."
+"Якщо це не функція, яка повертає вираз lambda(), не вистачає символу "
+"множення (*) між початковою і завершальною круглими дужками."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:336
 msgid ""
@@ -3997,9 +3999,8 @@ msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
 msgstr ""
-"файли зображень (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg,"
-" *.svgz)|*.png;*.jpg;*."
-"bmp;*.xpm;*.gif;*.svg;*.svgz"
+"файли зображень (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*."
+"jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2141
 msgid "Implicit Plot"
@@ -4797,12 +4798,12 @@ msgid ""
 "floating-point numbers by the exact fraction it most likely means and warns "
 "about doing so:\n"
 msgstr ""
-"Багато комп'ютерних програм налаштовано так, що вони показують малі числа як"
-" «0» або показують лише перші декілька цифр після десяткової крапки у"
-" припущенні, що похибка від округлення не накопичуватиметься (прикладом"
-" швидкого накопичення такої похибки є поліном Вілкінсона). Натомість, функція"
-" solve у Maxima намагається замінити числа із рухомою крапкою точним дробом і"
-" попереджає про це:\n"
+"Багато комп'ютерних програм налаштовано так, що вони показують малі числа як "
+"«0» або показують лише перші декілька цифр після десяткової крапки у "
+"припущенні, що похибка від округлення не накопичуватиметься (прикладом "
+"швидкого накопичення такої похибки є поліном Вілкінсона). Натомість, функція "
+"solve у Maxima намагається замінити числа із рухомою крапкою точним дробом і "
+"попереджає про це:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:851
 msgid ""
@@ -5381,8 +5382,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:269
 msgid "Most probable cause: Two commas or similar separators in a row."
 msgstr ""
-"Найімовірніша причина: використання двох ком або подібних роздільників"
-" поспіль."
+"Найімовірніша причина: використання двох ком або подібних роздільників "
+"поспіль."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:271
 msgid ""
@@ -5410,10 +5411,10 @@ msgid ""
 "wxMaxima automatically fill in all answers it still remembers from a "
 "previous run."
 msgstr ""
-"Більшості питань можна уникнути за допомогою команд assume() та declare()."
-" Якщо зробити це неможливо, за допомогою кнопки «Автоматично відповідати на"
-" питання» можна наказати wxMaxima автоматично заповнювати усі поля"
-" відповідей, які програма пам'ятає із попереднього запуску."
+"Більшості питань можна уникнути за допомогою команд assume() та declare(). "
+"Якщо зробити це неможливо, за допомогою кнопки «Автоматично відповідати на "
+"питання» можна наказати wxMaxima автоматично заповнювати усі поля "
+"відповідей, які програма пам'ятає із попереднього запуску."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:306
 msgid "Moving pictures\n"
@@ -5507,11 +5508,11 @@ msgstr "Без контурних ліній"
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr "Наприкінці команди немає символу долара ($) або крапки з комою (;)"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:586
+#: /home/gunter/src/wxmaxima/src/Image.cpp:590
 msgid "No gnuplot data!"
 msgstr "Немає даних gnuplot!"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:637
+#: /home/gunter/src/wxmaxima/src/Image.cpp:641
 msgid "No gnuplot source!"
 msgstr "Немає початкового коду gnuplot!"
 
@@ -5879,12 +5880,10 @@ msgid ""
 "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
-"зображення PNG (*png)|*png|зображення JPEG (*jpg)|*jpg|зображення GIF"
-" (*gif)|*.gif|"
-"масштабована векторна графіка (*.svg)|*.svg|растрове зображення Windows"
-" (*.bmp)|*.bmp|портативний anymap (*.pnm)|*.pnm|формат файлів зображень із"
-" мітками (*.tif)|*."
-"tif|растрова карта X (*.xpm)|*.xpm"
+"зображення PNG (*png)|*png|зображення JPEG (*jpg)|*jpg|зображення GIF (*gif)|"
+"*.gif|масштабована векторна графіка (*.svg)|*.svg|растрове зображення "
+"Windows (*.bmp)|*.bmp|портативний anymap (*.pnm)|*.pnm|формат файлів "
+"зображень із мітками (*.tif)|*.tif|растрова карта X (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8898
 msgid ""
@@ -5893,16 +5892,15 @@ msgid ""
 "format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 "зображення PNG (*png)|*.png|зображення JPEG (*.jpg)|*.jpg|Windows bitmap (*."
-"bmp)|*.bmp|зображення GIF (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged"
-" image file format (*.tif)|*."
-"tif|X pixmap (*.xpm)|*.xpm"
+"bmp)|*.bmp|зображення GIF (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged "
+"image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:343
 msgid ""
 "PNG images can be read by old wxMaxima versions - but aren't really scalable."
 msgstr ""
-"Зображення PNG можна було читати у старих версіях wxMaxima, але такі"
-" зображення не можна масштабувати."
+"Зображення PNG можна було читати у старих версіях wxMaxima, але такі "
+"зображення не можна масштабувати."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7531
 msgid "Pade approximation"
@@ -6210,9 +6208,9 @@ msgid ""
 "Produced invalid XML. The erroneous XML data has therefore not been saved "
 "but has been put on the clipboard in order to allow to debug it."
 msgstr ""
-"Створено некоректний код XML. Через це помилкові дані XML не збережено, а"
-" записано до буфера обміну даними з метою уможливлення діагностики причин"
-" помилки."
+"Створено некоректний код XML. Через це помилкові дані XML не збережено, а "
+"записано до буфера обміну даними з метою уможливлення діагностики причин "
+"помилки."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7772
 msgid "Product"
@@ -6383,14 +6381,14 @@ msgstr "Повідомити про ваду"
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2124
 msgid "Resolving to 1D layout for one cell in order to save time"
 msgstr ""
-"Визначаємо одновимірне компонування для однієї комірки з метою заощадження"
-" часу"
+"Визначаємо одновимірне компонування для однієї комірки з метою заощадження "
+"часу"
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2178
 msgid "Resolving to linear layout for one big cell in order to save time"
 msgstr ""
-"Визначаємо лінійне компонування для однієї великої комірки з метою"
-" заощадження часу"
+"Визначаємо лінійне компонування для однієї великої комірки з метою "
+"заощадження часу"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:895
 msgid "Restart Maxima"
@@ -6696,13 +6694,11 @@ msgid ""
 "gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
 "image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
-"зображення масштабованої векторної графіки (*.svg)|*.svg|зображення стисненої"
-" векторної графіки (*."
-"svgz)|*.svgz|зображення PNG (*.png)|*.png|зображення JPEG"
-" (*.jpg)|*.jpg|зображення GIF (*."
-"gif)|*.gif|растрове зображення Windows (*.bmp)|*.bmp|портативна універсальна"
-" карта (*.pnm)|*.pnm|формат файлів з мітками (*.tif)|*.tif|растрова карта X"
-" (*.xpm)|*.xpm"
+"зображення масштабованої векторної графіки (*.svg)|*.svg|зображення "
+"стисненої векторної графіки (*.svgz)|*.svgz|зображення PNG (*.png)|*.png|"
+"зображення JPEG (*.jpg)|*.jpg|зображення GIF (*.gif)|*.gif|растрове "
+"зображення Windows (*.bmp)|*.bmp|портативна універсальна карта (*.pnm)|*.pnm|"
+"формат файлів з мітками (*.tif)|*.tif|растрова карта X (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8190
 msgid "Scatterplot"
@@ -7190,10 +7186,10 @@ msgid ""
 "symbolically and to keep the actual numerical input values in a separate "
 "list like the following one:\n"
 msgstr ""
-"Оскільки це часто призводить до розгляду загальних випадків, які надають"
-" змогу дізнатися про фундаментальні речі, найкращим підходом є розв'язання"
-" усіх рівнянь у символьній формі із зберіганням вказаних в умові числових"
-" значень у окремому списку, ось так:\n"
+"Оскільки це часто призводить до розгляду загальних випадків, які надають "
+"змогу дізнатися про фундаментальні речі, найкращим підходом є розв'язання "
+"усіх рівнянь у символьній формі із зберіганням вказаних в умові числових "
+"значень у окремому списку, ось так:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:514
 msgid ""
@@ -7476,32 +7472,32 @@ msgid ""
 "Starting a background task that compiles a new list of autocompletible "
 "maxima commands."
 msgstr ""
-"Запускаємо фонове завдання, яке збирає новий список автоматичного доповнення"
-" для команд maxima."
+"Запускаємо фонове завдання, яке збирає новий список автоматичного доповнення "
+"для команд maxima."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:411
 msgid "Starting a background task that scans for autocompletible file names."
 msgstr ""
-"Запускаємо фонове завдання сканування назв файлів для автоматичного"
-" доповнення."
+"Запускаємо фонове завдання сканування назв файлів для автоматичного "
+"доповнення."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
 msgid "Starting a background task that setups the autocompletable files list."
 msgstr ""
-"Запускаємо фонове завдання налаштовування списку файлів для автоматичного"
-" доповнення."
+"Запускаємо фонове завдання налаштовування списку файлів для автоматичного "
+"доповнення."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
 msgid "Starting a background task that setups the autocomplete builtins list."
 msgstr ""
-"Запускаємо фонове завдання налаштовування списку вбудованих даних для"
-" автоматичного доповнення."
+"Запускаємо фонове завдання налаштовування списку вбудованих даних для "
+"автоматичного доповнення."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:247
+#: /home/gunter/src/wxmaxima/src/Image.cpp:251
 msgid "Starting background task that loads the gnuplot data for a plot."
 msgstr "Запускаємо фонове завдання, яке завантажує дані gnuplot для креслення."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:884
+#: /home/gunter/src/wxmaxima/src/Image.cpp:888
 msgid "Starting background thread that loads an image"
 msgstr "Запускаємо фоновий потік обробки, який завантажує зображення"
 
@@ -7830,7 +7826,7 @@ msgid "The half of the equation that is to the right of the \"=\""
 msgstr "Частина рівняння праворуч від символу «=»"
 
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:130
-#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:529
+#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:531
 msgid ""
 "The image could not be displayed. It may be broken, in a wrong format or be "
 "the result of gnuplot not being able to write the image or not being able to "
@@ -7864,8 +7860,8 @@ msgid ""
 "The list of time-dependent variables to solve to doesn't match the time-"
 "dependent variables the list of dgls contains."
 msgstr ""
-"Список залежних від часу змінних для розв'язання не збігається зі списком"
-" залежних від часу змінних, який містить dgls."
+"Список залежних від часу змінних для розв'язання не збігається зі списком "
+"залежних від часу змінних, який містить dgls."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7214
 msgid ""
@@ -7893,8 +7889,8 @@ msgid ""
 "The maximum size of the expressions wxMaxima is allowed to display can be "
 "changed in the configuration dialogue."
 msgstr ""
-"Максимальний розмір виразів wxMaxima, який можна показувати, можна змінити за "
-"допомогою діалогового вікна налаштовування."
+"Максимальний розмір виразів wxMaxima, який можна показувати, можна змінити "
+"за допомогою діалогового вікна налаштовування."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:632
 msgid "The natural approach to fitting data to exponential curves would be:\n"
@@ -7927,8 +7923,8 @@ msgid ""
 "The options the document class LaTeX is instructed to use for our documents "
 "gets."
 msgstr ""
-"Параметри класу документів LaTeX, який слід використовувати для наших"
-" документів."
+"Параметри класу документів LaTeX, який слід використовувати для наших "
+"документів."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:644
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:684
@@ -8335,7 +8331,7 @@ msgstr "Обчислення припустимого відхилення\n"
 msgid "Tolerance calculations with Maxima"
 msgstr "Обчислення припустимого відхилення за допомогою Maxima"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:273
+#: /home/gunter/src/wxmaxima/src/Image.cpp:277
 msgid "Too much gnuplot data => Not storing it in the worksheet"
 msgstr "Забагато даних gnuplot => не зберігаємо їх на робочому аркуші"
 
@@ -8356,9 +8352,9 @@ msgstr ""
 "Намагатися згладити лінії (дозволяє посувати лінії на частки пікселя, але "
 "зменшує чіткість)."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:139
 #: /home/gunter/src/wxmaxima/src/Image.cpp:143
-#: /home/gunter/src/wxmaxima/src/Image.cpp:151
+#: /home/gunter/src/wxmaxima/src/Image.cpp:147
+#: /home/gunter/src/wxmaxima/src/Image.cpp:155
 #, c-format
 msgid "Trying to delete gnuplot file %s"
 msgstr "Намагаємося вилучити файл gnuplot %s"
@@ -8434,8 +8430,8 @@ msgid ""
 "Unable to interpret the version info I got from http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt: "
 msgstr ""
-"Не вдалося визначити дані щодо версій з http://wxMaxima-developers.github."
-"io/wxmaxima/version.txt: "
+"Не вдалося визначити дані щодо версій з http://wxMaxima-developers.github.io/"
+"wxmaxima/version.txt: "
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:281
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:423
@@ -8772,9 +8768,9 @@ msgid ""
 "Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys and "
 "non-ASCII characters might not work."
 msgstr ""
-"Попередження: GTK_IM_MODULE встановлено у значення «xim», що означає, що"
-" деякі клавіатурні скорочення та введення символів поза ASCII може не"
-" працювати."
+"Попередження: GTK_IM_MODULE встановлено у значення «xim», що означає, що "
+"деякі клавіатурні скорочення та введення символів поза ASCII може не "
+"працювати."
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:646
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:655
@@ -8832,8 +8828,8 @@ msgid ""
 "Whenever a numerical value is needed this list can be introduced into any "
 "equation:\n"
 msgstr ""
-"Коли нам знадобиться числове значення, цей список можна використати у"
-" будь-якому рівнянні:\n"
+"Коли нам знадобиться числове значення, цей список можна використати у будь-"
+"якому рівнянні:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5027
 msgid ""
@@ -9015,8 +9011,8 @@ msgid ""
 "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
 "\" />\n"
 msgstr ""
-"_%d.gif\"  alt=\"Анімована діаграма\" loading=\"lazy\" style=\"max-width:90%%;"
-"\" />\n"
+"_%d.gif\"  alt=\"Анімована діаграма\" loading=\"lazy\" style=\"max-"
+"width:90%%;\" />\n"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5669
 #, c-format
@@ -9424,12 +9420,12 @@ msgid ""
 "therefore in most cases don't work as an array index thatneeds to be an "
 "exact integer number."
 msgstr ""
-"оператор [] намагався видобути елемент зі списку, матриці, рівняння або"
-" масиву. Але замість цілого числа було використано щось, чиє числове значення"
-" є невідомим або не є цілим числом.\n"
-"Округлення чисел із рухомою крапкою містить невеликі похибки, тому"
-" здебільшого його результати не можна використовувати як індекс у масиві,"
-" який має бути цілим числом."
+"оператор [] намагався видобути елемент зі списку, матриці, рівняння або "
+"масиву. Але замість цілого числа було використано щось, чиє числове значення "
+"є невідомим або не є цілим числом.\n"
+"Округлення чисел із рухомою крапкою містить невеликі похибки, тому "
+"здебільшого його результати не можна використовувати як індекс у масиві, "
+"який має бути цілим числом."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:739
 msgid "the x and the y coordinate."
@@ -9579,12 +9575,11 @@ msgid ""
 "nanosvg).\n"
 "The unicode character list has been compiled by the Unicode Consortium."
 msgstr ""
-"wxMaxima є графічним інтерфейсом користувача до системи комп'ютерної алгебри"
-" Maxima, який працює на багатьох програмних платформах і який засновано на"
-" wxWidgets.\n"
-"Для обробки графіки svg у програмі використано nanosvg"
-" (https://github.com/memononen/"
-"nanosvg).\n"
+"wxMaxima є графічним інтерфейсом користувача до системи комп'ютерної алгебри "
+"Maxima, який працює на багатьох програмних платформах і який засновано на "
+"wxWidgets.\n"
+"Для обробки графіки svg у програмі використано nanosvg (https://github.com/"
+"memononen/nanosvg).\n"
 "Список символів Юнікод зібрано Unicode Consortium."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:180
@@ -9593,10 +9588,9 @@ msgid ""
 "contribute. Join the wxMaxima development at: https://github.com/wxMaxima-"
 "developers/wxmaxima"
 msgstr ""
-"wxMaxima потрібні нові розробники. Це проєкт із відкритим кодом, до якого ви"
-" можете долучитися. Долучайтеся до розробки wxMaxima за допомогою настанов на"
-" цій сторінці: https://github.com/wxMaxima-"
-"developers/wxmaxima"
+"wxMaxima потрібні нові розробники. Це проєкт із відкритим кодом, до якого ви "
+"можете долучитися. Долучайтеся до розробки wxMaxima за допомогою настанов на "
+"цій сторінці: https://github.com/wxMaxima-developers/wxmaxima"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:177
 msgid ""
@@ -9604,10 +9598,10 @@ msgid ""
 "translate wxMaxima and the manual to your language. Join the wxMaxima "
 "development at: https://github.com/wxMaxima-developers/wxmaxima"
 msgstr ""
-"wxMaxima потрібні перекладачі. Розробники не володіють усіма мовами світу."
-" Допоможіть нам у перекладі інтерфейсу та підручника з wxMaxima вашою рідною"
-" мовою. Долучайтеся до перекладу wxMaxima за допомогою настанов на цій"
-" сторінці: https://github.com/wxMaxima-developers/wxmaxima"
+"wxMaxima потрібні перекладачі. Розробники не володіють усіма мовами світу. "
+"Допоможіть нам у перекладі інтерфейсу та підручника з wxMaxima вашою рідною "
+"мовою. Долучайтеся до перекладу wxMaxima за допомогою настанов на цій "
+"сторінці: https://github.com/wxMaxima-developers/wxmaxima"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:316
 msgid ""
@@ -9615,11 +9609,11 @@ msgid ""
 "draw() in order to be able to open plots interactively in gnuplot later. "
 "This setting defines the limit [in Megabytes per plot] for this feature."
 msgstr ""
-"Зазвичай, wxMaxima зберігає початковий код gnuplot для усіх креслень, які"
-" виконуються за допомогою функції draw() з метою уможливлення наступного"
-" інтерактивного відкриття креслень у gnuplot. За допомогою цього параметра"
-" можна визначити обмеження (у мегабайтах на одне креслення) для використання"
-" цієї можливості."
+"Зазвичай, wxMaxima зберігає початковий код gnuplot для усіх креслень, які "
+"виконуються за допомогою функції draw() з метою уможливлення наступного "
+"інтерактивного відкриття креслень у gnuplot. За допомогою цього параметра "
+"можна визначити обмеження (у мегабайтах на одне креслення) для використання "
+"цієї можливості."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:141
 msgid ""
@@ -9639,9 +9633,9 @@ msgid ""
 "set it automatically offers to enter the last answer to this question the "
 "user has input."
 msgstr ""
-"wxMaxima запам'ятовує відповіді на питання maxima. Якщо позначено цей пункт,"
-" програма автоматично пропонуватиме ввести останню відповідь на питання, яку"
-" було введено користувачем."
+"wxMaxima запам'ятовує відповіді на питання maxima. Якщо позначено цей пункт, "
+"програма автоматично пропонуватиме ввести останню відповідь на питання, яку "
+"було введено користувачем."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:670
 msgid "wxMaxima startup file location: "

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-21 10:52+0100\n"
+"POT-Creation-Date: 2020-03-21 11:31+0100\n"
 "PO-Revision-Date: 2020-03-19 21:00+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -1358,7 +1358,7 @@ msgstr "Interner Fehler: Kein Ende des Arguments einer Wurzel!"
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3168
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
-#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:589
+#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2380
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2518
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2565
@@ -2827,12 +2827,12 @@ msgstr "Fehler beim Senden an Maxima"
 msgid "Error!"
 msgstr "Fehler!"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:828
+#: /home/gunter/src/wxmaxima/src/Image.cpp:832
 #, c-format
 msgid "Error: Cannot render %s."
 msgstr "Fehler: Kann %s nicht rendern."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:830
+#: /home/gunter/src/wxmaxima/src/Image.cpp:834
 msgid "Error: Cannot render the image."
 msgstr "Fehler: Kann das Bild nicht rendern."
 
@@ -3655,7 +3655,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:397
+#: /home/gunter/src/wxmaxima/src/Image.cpp:401
 msgid "Gnuplot Data File Name: "
 msgstr "Name der Datendatei für Gnuplot:"
 
@@ -5669,11 +5669,11 @@ msgstr "Keine Höhenlinien"
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr "Kein Dollarzeichen ($) oder Semikolon (;) am Ende eines Befehls"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:586
+#: /home/gunter/src/wxmaxima/src/Image.cpp:590
 msgid "No gnuplot data!"
 msgstr "Keine Gnuplot-Daten!"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:637
+#: /home/gunter/src/wxmaxima/src/Image.cpp:641
 msgid "No gnuplot source!"
 msgstr "Kein Gnuplot-Quellcode des Diagramms!"
 
@@ -7683,12 +7683,12 @@ msgstr ""
 "Starte einen Hintergrundtask, der die Liste der eingebauten Kommandos "
 "zusammenstellt."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:247
+#: /home/gunter/src/wxmaxima/src/Image.cpp:251
 msgid "Starting background task that loads the gnuplot data for a plot."
 msgstr ""
 "Starte einen Hintergrundtaask, der die Gnuplotdaten für ein Diagramm lädt."
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:884
+#: /home/gunter/src/wxmaxima/src/Image.cpp:888
 msgid "Starting background thread that loads an image"
 msgstr "Starte einen Hintergrundtask, der ein Bild lädt"
 
@@ -8026,7 +8026,7 @@ msgid "The half of the equation that is to the right of the \"=\""
 msgstr "Die Seite der Gleichung, die rechts vom \"=\" steht."
 
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:130
-#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:529
+#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:531
 msgid ""
 "The image could not be displayed. It may be broken, in a wrong format or be "
 "the result of gnuplot not being able to write the image or not being able to "
@@ -8563,7 +8563,7 @@ msgstr "Toleranzberechnungen\n"
 msgid "Tolerance calculations with Maxima"
 msgstr "Toleranzberechnungen mit Maxima"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:273
+#: /home/gunter/src/wxmaxima/src/Image.cpp:277
 msgid "Too much gnuplot data => Not storing it in the worksheet"
 msgstr "Zu viele Gnuplot-Daten => Speichere sie nicht im Arbeitsblatt"
 
@@ -8584,9 +8584,9 @@ msgstr ""
 "Nutze eine Bildkantenglättung (Linien, die nicht genau auf Bildpunkte "
 "treffen, werden keine Pixeltreppen, sondern unscharf)"
 
-#: /home/gunter/src/wxmaxima/src/Image.cpp:139
 #: /home/gunter/src/wxmaxima/src/Image.cpp:143
-#: /home/gunter/src/wxmaxima/src/Image.cpp:151
+#: /home/gunter/src/wxmaxima/src/Image.cpp:147
+#: /home/gunter/src/wxmaxima/src/Image.cpp:155
 #, c-format
 msgid "Trying to delete gnuplot file %s"
 msgstr "Versuche die Gnuplotdatei %s zu löschen"
