@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-18 19:43+0100\n"
+"POT-Creation-Date: 2020-03-21 10:48+0100\n"
 "PO-Revision-Date: 2020-03-19 21:37+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -146,7 +146,6 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:639
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:779
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:791
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:817
 msgid "* *"
 msgstr "* *"
 
@@ -1190,14 +1189,18 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell."
-msgstr "<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette Zelle."
+msgstr ""
+"<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette "
+"Zelle."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
 msgid ""
 "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
 "kbd> triggers the auto-completion mechanism."
-msgstr "<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> startet das automatische Vervollständigen."
+msgstr ""
+"<kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</"
+"kbd> startet das automatische Vervollständigen."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
@@ -1541,7 +1544,10 @@ msgid ""
 "If you are using Unix/Linux, a file `.wxMaxima` in your homedirectory is "
 "used for saving wxMaxima's configuration. (Since the filename starts with a "
 "dot, it will be a hidden file)."
-msgstr "Unter Linux-ähnlichen Systemen wird im Home-Verzeichnis oder einem Unterordner davon eine Datei namens .wMmaxima abgelegt (der \".\" am Beginn des Dateinamens versteckt die Datei)."
+msgstr ""
+"Unter Linux-ähnlichen Systemen wird im Home-Verzeichnis oder einem "
+"Unterordner davon eine Datei namens .wMmaxima abgelegt (der \".\" am Beginn "
+"des Dateinamens versteckt die Datei)."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:344
@@ -1549,7 +1555,9 @@ msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for wxMaxima at the following position in the "
 "registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
-msgstr "Unter Windows wird die Konfiguration in der Registry unter `HKEY_CURRENT_USER\\\\Software\\\\wxMaxima` gespeichert"
+msgstr ""
+"Unter Windows wird die Konfiguration in der Registry unter `HKEY_CURRENT_USER"
+"\\\\Software\\\\wxMaxima` gespeichert"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:350
@@ -2017,7 +2025,9 @@ msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make it's 3D nature available to the "
 "intuition:"
-msgstr "Wenn es nur um die generelle Form der Kurve geht, reicht es oft, das Bild ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:"
+msgstr ""
+"Wenn es nur um die generelle Form der Kurve geht, reicht es oft, das Bild "
+"ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:478
@@ -3289,7 +3299,9 @@ msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
 "still provides some command line switches, though."
-msgstr "Die Kommandozeile wird auf vielen Betriebssystemen nur selten genutzt. Das _wxMaxima_ bietet jedoch dennoch mehrere Kommandozeilenoptionen an."
+msgstr ""
+"Die Kommandozeile wird auf vielen Betriebssystemen nur selten genutzt. Das "
+"_wxMaxima_ bietet jedoch dennoch mehrere Kommandozeilenoptionen an."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
@@ -3329,7 +3341,13 @@ msgid ""
 "output an error and will pause if _Maxima_ has a question: Mathematics is "
 "somewhat interactive by nature so a completely interaction-free batch "
 "processing cannot always be guaranteed."
-msgstr "`-b` oder `--batch`: Nach dem Öffnen werden alle Code-Zellen der Datei(en) evaluiert und die Datei danach geschlossen. Dies ist beispielsweise praktisch, wenn _Maxima_ Dateien generiert. Wenn Maxima Fehler detektiert, wird dieser Vorgang abgebrochen, eventuelle Fragen an den User (Mathematik ist an einigen Stellen ein interaktiver Prozess) werden wie üblich an den User weitergereicht."
+msgstr ""
+"`-b` oder `--batch`: Nach dem Öffnen werden alle Code-Zellen der Datei(en) "
+"evaluiert und die Datei danach geschlossen. Dies ist beispielsweise "
+"praktisch, wenn _Maxima_ Dateien generiert. Wenn Maxima Fehler detektiert, "
+"wird dieser Vorgang abgebrochen, eventuelle Fragen an den User (Mathematik "
+"ist an einigen Stellen ein interaktiver Prozess) werden wie üblich an den "
+"User weitergereicht."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
@@ -3354,7 +3372,7 @@ msgstr ""
 "* `-m` or `--maxima=<str>`:        Sagt, wo die ausführbare Datei von _maxima_ liegt.\n"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:813
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:812
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."
@@ -3362,395 +3380,57 @@ msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
 "Schrägstrich statt eines Minusses."
 
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:819
-#, no-wrap
-msgid ""
-"Annotated Index\n"
-"===============\n"
-msgstr ""
-"Alphabetischer Index\n"
-"====================\n"
+#~ msgid ""
+#~ "Annotated Index\n"
+#~ "===============\n"
+#~ msgstr ""
+#~ "Alphabetischer Index\n"
+#~ "====================\n"
 
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:823
-#, no-wrap
-msgid ""
-"**A**\n"
-"[Animations](#embedding-animations-into-the-spreadsheet): commands to embed animations into a _wxMaxima_ workbook\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:825
-msgid ""
-"[Animations, failure](#Outputting-animations-doesn_0027t-work): why creation "
-"and execution of some animations might not work"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:827
-msgid "[Autocompletion](#command-autocompletion): using _wxMaxima_ a command"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:829
-msgid ""
-"[Aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect ratio "
-"for a plot"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:831
-msgid ""
-"[Autosave](#Autosave-interval): set interval for saving a _wxMaxima_ session "
-"file (workbook)"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:834
-#, no-wrap
-msgid ""
-"**C**\n"
-"[Cells](#cells): the nature and use of cells in a _wxMaxima_ workbook\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:836
-msgid ""
-"[Cells, Input/Output](#Input%20Output%20Cell): Cells that contain one or "
-"more commands and the results of executing the command(s)"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:838
-msgid ""
-"[Command autocompletion](#command-autocompletion): using _wxMaxima_ a command"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:840
-msgid ""
-"[Configure wxMaxima](#configuration-options): how to configure a _wxMaxima_ "
-"workbook"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:842
-msgid ""
-"[Cursors, vertical and horizontal](#horizontal-and-vertical-cursors): "
-"entering text or selecting entered material"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:845
-#, no-wrap
-msgid ""
-"**D**\n"
-"[Drag and drop](#Drag%20and%20drop): Copying and pasting material in one or more cells or executing a sequence of cells\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:848
-#, no-wrap
-msgid ""
-"**F**\n"
-"[File Info](#special-variables-wx...): command to print name and location of currently-open wxMaxima workbook\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:850
-msgid ""
-"[File Formats](#file-formats): types of files that _wxMaxima_ can create and "
-"open"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:853
-#, no-wrap
-msgid ""
-"**G**\n"
-"[Greek characters](#greek-characters): Ways to enter Greek letters into a _wxMaxima_ workbook (see Side Panels below)\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:856
-#, no-wrap
-msgid ""
-"**H**\n"
-"[HTML](#markdown-support): export material as html\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:858
-msgid ""
-"[Hotkeys](#hotkeys): shortcut key combinations, alternatives to menu options"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:861
-#, no-wrap
-msgid ""
-"**I**\n"
-"[Input/Output Cells](#Input%20Output%20Cell): Cells that contain one or more commands and the results of executing the command(s)\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:864
-#, no-wrap
-msgid ""
-"**J**\n"
-"[jsMath](#use-jsmath-font): useful fonts set for mathematical expressions\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:867
-#, no-wrap
-msgid ""
-"**L**\n"
-"[LaTeX](#markdown-support): export material as LaTeX\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:869
-msgid ""
-"[Lost content](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to "
-"recover lost cell contents"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:872
-#, no-wrap
-msgid ""
-"**M**\n"
-"[Macro files](#mac): .mac files, batch files that can be entered into _wxMaxima_ workbooks\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:874
-msgid ""
-"[MathML](#mathml-output): export mathematical expressions with MathML markup"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:876
-msgid "[Matrix](#Matrix): Create a matrix and convert the matrix to a table"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:878
-msgid ""
-"[Maxima and wxMaxima](#maxima-and-wxmaxima): the relationship between the "
-"Maxima CAS and the _wxMaxima_ front-end"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:880
-msgid ""
-"[Maxima-wxMaxima connection](#cannot-connect-to-maxima): possible reasons "
-"from failure of _wxMaxima_ to communicate with _Maxima_"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:883
-#, no-wrap
-msgid ""
-"**N**\n"
-"[Name of file](#special-variables-wx...): command to print name and location of currently-open _wxMaxima_ workbook\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:886
-#, no-wrap
-msgid ""
-"**P**\n"
-"[Plot, aspect ratio](#can-i-set-the-aspect-ratio-of-a-plot): set the aspect ratio for a plot\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:888
-msgid ""
-"[Plot, embedding](#embedding-a-plot-into-the-work-sheet): embed a _Maxima_\\-"
-"generated plot in a _wxMaxima_ workbook"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:890
-msgid ""
-"[Plot, failure](#plotting-only-shows-an-closed-empty-envelope-with-an-error-"
-"message): some reasons that attempts to plot might fail"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:892
-msgid ""
-"[Plot file, embedding](#embedding-graphics): embed a plot file in a "
-"_wxMaxima_ workbook"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:894
-msgid ""
-"[Plot size](#making-embedded-plots-bigger-or-smaller): control the size of "
-"embedded plots"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:896
-msgid ""
-"[Plots, better quality](#better-quality-plots): notes related to the quality "
-"of gnuplot plots"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:898
-msgid ""
-"[Plots, multiple](#opening-multiple-plots-in-contemporaneous-windows): open "
-"multiple plots in contemporaneous windows"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:900
-msgid ""
-"[Progress indicators](#statusbar): Giving user feedback in the status bar"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:903
-#, fuzzy, no-wrap
-#| msgid "## I lost a cell contents and undo doesn’t remember"
-msgid ""
-"**R**\n"
-"[Recover lost content](#i-lost-a-cell-contents-and-undo-doesnt-remember)\n"
-msgstr "## Undo erinnert sich nicht an das, was ich brauche"
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:906
-#, no-wrap
-msgid ""
-"**S**\n"
-"[Side Panes](#side-panes): collections of buttons that open dialog boxes, enter commands, and enter special characters\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:908
-msgid ""
-"[Startup file location](#startup-files): location of an initialization file "
-"that is passed to _wxMaxima_ when it opens"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:910
-msgid "[Status bar](#statusbar): Giving user feedback in the status bar"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:912
 #, fuzzy
-#| msgid ""
-#| "[Subscripted variables](#Subscripted-variables): using the command "
-#| "`wxsubscripts` to display subscripted variables"
-msgid ""
-"[Subscripted variables](#subscripted-variables): using the command "
-"`wxsubscripts` to display subscripted variables"
-msgstr ""
-"[Variablen mit Subscript](#Subscripted-variables): wxsubsripts zeigt "
-"[Variablen mit Subscript](#Subscripted-variables) an"
+#~| msgid "## I lost a cell contents and undo doesn’t remember"
+#~ msgid ""
+#~ "**R**\n"
+#~ "[Recover lost content](#i-lost-a-cell-contents-and-undo-doesnt-remember)\n"
+#~ msgstr "## Undo erinnert sich nicht an das, was ich brauche"
 
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:915
-#, fuzzy, no-wrap
-#| msgid ""
-#| "**T**\n"
-#| "[Table](#Pretty_002dprinting-2D-output): show lists of text and values as a table\n"
-msgid ""
-"**T**\n"
-"[Table](#pretty-printing-2d-output): show lists of text and values as a table\n"
-msgstr ""
-"**T**\n"
-"[Table](#Pretty_002dprinting-2D-output): Zeigt Listen und Werte als Tabelle an\n"
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:917
 #, fuzzy
-#| msgid ""
-#| "[TeX markup](#Raw-TeX-in-the-TeX-export): allows TeX markup to be entered "
-#| "into a text file"
-msgid ""
-"[TeX markup](#raw-tex-in-the-tex-export): allows TeX markup to be entered "
-"into a text file"
-msgstr ""
-"[TeX markup](#Raw-TeX-in-the-TeX-export): Erlaubt es, TeX in eine textdatei "
-"einzugeben"
+#~| msgid ""
+#~| "[Subscripted variables](#Subscripted-variables): using the command "
+#~| "`wxsubscripts` to display subscripted variables"
+#~ msgid ""
+#~ "[Subscripted variables](#subscripted-variables): using the command "
+#~ "`wxsubscripts` to display subscripted variables"
+#~ msgstr ""
+#~ "[Variablen mit Subscript](#Subscripted-variables): wxsubsripts zeigt "
+#~ "[Variablen mit Subscript](#Subscripted-variables) an"
 
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:920
-#, no-wrap
-msgid ""
-"**U**\n"
-"[undo](#i-lost-a-cell-contents-and-undo-doesnt-remember): ways to recover lost cell contents\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:923
-#, no-wrap
-msgid ""
-"**W**\n"
-"[with\\_slider\\_draw](#embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw`\n"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:925
-msgid ""
-"[with\\_slider\\_draw3d](#embedding-animations-into-the-spreadsheet): "
-"command to embed animations -- alternative: `wxanimate_draw3d`"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:927
-msgid ""
-"[wxanimate\\_draw](#embedding-animations-into-the-spreadsheet): command to "
-"embed animations"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:929
-msgid ""
-"[wxanimate\\_draw3d](#embedding-animations-into-the-spreadsheet): command to "
-"embed animations"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:931
-msgid ""
-"[wxMaxima and Maxima](#maxima-and-wxmaxima): the relationship between the "
-"_Maxima_ CAS and the _wxMaxima_ front-end"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:933
 #, fuzzy
-#| msgid "wxMaxima basics"
-msgid "[wxMaxima documentation](#wxMaxima)"
-msgstr "Die Grundlagen"
+#~| msgid ""
+#~| "**T**\n"
+#~| "[Table](#Pretty_002dprinting-2D-output): show lists of text and values as a table\n"
+#~ msgid ""
+#~ "**T**\n"
+#~ "[Table](#pretty-printing-2d-output): show lists of text and values as a table\n"
+#~ msgstr ""
+#~ "**T**\n"
+#~ "[Table](#Pretty_002dprinting-2D-output): Zeigt Listen und Werte als Tabelle an\n"
 
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:935
-msgid ""
-"[wxMaxima workbook structure](#the-workbook-approach): central features of a "
-"_wxMaxima_ workbook"
-msgstr ""
+#, fuzzy
+#~| msgid ""
+#~| "[TeX markup](#Raw-TeX-in-the-TeX-export): allows TeX markup to be "
+#~| "entered into a text file"
+#~ msgid ""
+#~ "[TeX markup](#raw-tex-in-the-tex-export): allows TeX markup to be entered "
+#~ "into a text file"
+#~ msgstr ""
+#~ "[TeX markup](#Raw-TeX-in-the-TeX-export): Erlaubt es, TeX in eine "
+#~ "textdatei einzugeben"
 
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:937
-msgid "[wxm and wxmx files](#file-formats): formats for _wxMaxima_ workbooks"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:938
-msgid ""
-"[wxmx data](#how-to-save-data-from-a-broken-.wxmx-file): retrieve data from "
-"a broken wxmx file"
-msgstr ""
+#, fuzzy
+#~| msgid "wxMaxima basics"
+#~ msgid "[wxMaxima documentation](#wxMaxima)"
+#~ msgstr "Die Grundlagen"
 
 #~ msgid "`Ctrl+Shift+Delete` deletes a complete cell."
 #~ msgstr "`Ctrl+Shift+Delete` löscht die aktuelle Zelle."
