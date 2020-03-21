@@ -821,11 +821,11 @@ void Configuration::WriteStyles(wxString file)
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
-  config->Write(wxT("Style/fontname"), m_fontName);
+  config->Write("Style/fontname", m_fontName);
   config->Write(wxT("fontSize"), m_defaultFontSize);
   config->Write(wxT("mathfontsize"), m_mathFontSize);
   config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
-  config->Write(wxT("Style/Math/fontname"), m_mathFontName);
+  config->Write("Style/Math/fontname", m_mathFontName);
   
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");

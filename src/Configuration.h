@@ -815,7 +815,9 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  void MathFontName(wxString name){m_mathFontName = name;}
+  wxString FontName()const {return m_fontName;}
+  void FontName(wxString name){wxConfig::Get()->Write("Style/fontname",m_fontName = name);}
+  void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
   wxString MathFontName()const {return m_mathFontName;}
   //! Get the worksheet this configuration storage is valid for
   int GetAutosubscript_Num() const {return m_autoSubscript;}

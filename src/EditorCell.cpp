@@ -1045,7 +1045,8 @@ void EditorCell::SetFont()
 
   m_fontSize = Scale_Px(m_fontSize);
 
-  m_fontName = configuration->GetFontName(m_textStyle);
+  m_fontName = configuration->GetFontName();
+  std::cerr<<m_fontName<<"\n";
   // Cells that save answers are displayed differently to
   // ordinary cells in order to make transparent that this cell is special.
   if(!m_autoAnswer)
