@@ -1722,13 +1722,13 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             {
               if(m_replacementsForCurrentWord.GetCount() + dst[o].GetCount() <= 10)
               {
-                for(int i = 0; i<dst[o].GetCount(); i++)
+                for(unsigned int i = 0; i<dst[o].GetCount(); i++)
                   m_replacementsForCurrentWord.Add(dst[o][i]);
               }
               else
                 break;
             }
-            for(int i = 0; i<m_replacementsForCurrentWord.GetCount(); i++)
+            for(unsigned int i = 0; i<m_replacementsForCurrentWord.GetCount(); i++)
               popupMenu->Append(popid_suggestion1 + i, m_replacementsForCurrentWord[i]);
           }
           popupMenu->AppendSeparator();

@@ -77,7 +77,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
     ReloadTimer();
 }
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type):
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString WXUNUSED(type)):
   SlideShow(parent, config, cellPointers)
 {
   LoadImages(image);
