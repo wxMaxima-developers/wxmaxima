@@ -45,8 +45,8 @@ Image::Image(Configuration **config)
   m_configuration = config;
   m_width = 1;
   m_height = 1;
-  m_originalWidth = 1;
-  m_originalHeight = 1;
+  m_originalWidth = 640;
+  m_originalHeight = 480;
   m_scaledBitmap.Create(1, 1);
   m_isOk = false;
   m_maxWidth = -1;
@@ -102,6 +102,8 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
   m_height = 1;
   m_maxWidth = -1;
   m_maxHeight = -1;
+  m_originalWidth = 640;
+  m_originalHeight = 480;
   LoadImage(bitmap);
   m_scaledBitmap.Create(1, 1);
 }
@@ -123,6 +125,8 @@ Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFil
   m_height = 1;
   m_maxWidth = -1;
   m_maxHeight = -1;
+  m_originalWidth = 640;
+  m_originalHeight = 480;
   LoadImage(image, filesystem, remove);
 }
 
@@ -1070,10 +1074,12 @@ void Image::Recalculate(double scale)
   if (viewPortWidth < 10)
     viewPortWidth = 10;
 
+  scale = 1.0;
+  
   // Shrink to .9* the canvas size, if needed
   if (scale * width > .9 * viewPortWidth)
     scale = .9 * viewPortWidth / width;
-
+  
   if (scale * height > .9 * viewPortHeight)
   {
     if (scale > .9 * viewPortHeight / height)
@@ -1089,13 +1095,6 @@ void Image::Recalculate(double scale)
   // Set the width of the scaled image
   m_height = (int) (scale * height);
   m_width = (int) (scale * width);
-
-  if((m_height < 1) || (m_width < 1))
-  {
-    scale = 1;
-    m_height = (int) (scale * height);
-    m_width = (int) (scale * width);
-  }
 
   if((m_height < 1) || (m_width < 1))
   {
