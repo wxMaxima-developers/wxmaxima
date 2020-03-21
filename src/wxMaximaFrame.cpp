@@ -380,7 +380,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     MaxSize(greekPane->GetEffectiveMinSize());
 
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
-    Show(false).Gripper(false).CloseButton(true).PinButton();
+    Show(false).Gripper(false).CloseButton(true).PinButton(true);
 
   m_manager.GetPane(wxT("unicode")) = m_manager.GetPane(wxT("unicode")).
     Show(false).Gripper(false).CloseButton(true).PinButton();
@@ -416,7 +416,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.LoadPerspective(perspective,false);
   }
 
-  // Make sure that some of the settings that comprise the perspektive actualle
+  // Make sure that some of the settings that comprise the perspektive actually
   // make sense.
   m_worksheet->m_mainToolBar->Realize();
   // It somehow is possible to hide the Maxima worksheet - which renders wxMaxima
