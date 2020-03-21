@@ -596,8 +596,10 @@ if the `.wxmx` file format is being used embedding files in a _wxMaxima_ project
 
 The config dialogue of _wxMaxima_ offers to edit two files with commands that are executed on startup:
 
-* A file that contains commands that are executed on starting up _Maxima_, and
-* one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_.
+* A file that contains commands that are executed on starting up _Maxima_: `~/.maxima/maxima-init.mac`
+* one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_: `~/.maxima/wxmaxima-init.mac`
+
+These files are in the Maxima user directory, usually `.maxima/` in the user's home directory, the location can be found out with the command: `maxima_userdir;`
 
 ## Special variables wx...
 

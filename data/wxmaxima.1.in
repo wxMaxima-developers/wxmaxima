@@ -84,6 +84,14 @@ allows to specify the location of the Maxima binary
 .I ~/.wxMaxima
 The personal wxMaxima initialization file, where user specific settings are stored.
 
+.TP
+.I ~/.maxima/wxmaxima-init.mac
+If the Maxima user directory - usually
+.I ~/.maxima/
+- contains a text file named
+.I wxmaxima-init.mac
+the contents of the file is passed to Maxima automatically every time a new worksheet has been started.
+
 .SH BUGS
 If you find a bug in wxMaxima, please report it in the
 .UR https://github.com/wxMaxima-developers/wxmaxima/issues
