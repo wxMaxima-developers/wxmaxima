@@ -709,7 +709,6 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
 wxString Configuration::GetFontName(int type) const
 {
   wxString retval = FontName();
-  std::cerr<<retval;
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
       type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
     retval = m_styles[type].FontName();
@@ -747,7 +746,7 @@ void Configuration::ReadStyles(wxString file)
   }
   
   // Font
-  config->Read(wxT("Style/fontname"), &m_fontName);
+  config->Read(wxT("Style/Default/Style/Text/fontname"), &m_fontName);
 #ifdef __WXOSX_MAC__
   if (m_fontName.IsEmpty())
   {
@@ -760,7 +759,6 @@ void Configuration::ReadStyles(wxString file)
   int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding) encoding;
-
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
 #ifdef __WXOSX_MAC__
   if (m_mathFontName.IsEmpty())
@@ -822,7 +820,7 @@ void Configuration::WriteStyles(wxString file)
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
-  config->Write("Style/fontname", m_fontName);
+  config->Write("Style/Default/Style/Text/fontname", m_fontName);
   config->Write(wxT("fontSize"), m_defaultFontSize);
   config->Write(wxT("mathfontsize"), m_mathFontSize);
   config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));

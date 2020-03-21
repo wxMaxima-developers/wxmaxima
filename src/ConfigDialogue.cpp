@@ -1052,8 +1052,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxStaticText *df = new wxStaticText(panel, -1, _("Default font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
-  if (m_configuration->m_styles[TS_DEFAULT].FontName() != wxEmptyString)
-    m_getFont->SetLabel(m_configuration->m_styles[TS_DEFAULT].FontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
+  if (m_configuration->FontName() != wxEmptyString)
+    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
@@ -1368,13 +1368,14 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     if (event.GetId() == font_family)
     {
       m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
+      m_configuration->FontName(font.GetFaceName());
       m_configuration->SetFontEncoding(font.GetEncoding());
       m_configuration->SetDefaultFontSize(wxMax(
                                             wxMin(
                                               font.GetPointSize(), MC_MAX_SIZE),
                                             MC_MIN_SIZE)
         );
-      m_getFont->SetLabel(m_configuration->m_styles[TS_DEFAULT].FontName() +
+      m_getFont->SetLabel(m_configuration->FontName() +
                           wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
     }
     else
