@@ -77,18 +77,29 @@ elseif(APPLE)
         RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
 	RESOURCE "${RESOURCE_FILES}"
 	)
-  install(CODE "
-   include(BundleUtilities)
-   set_target_properties(wxmaxima PROPERTIES
-	MACOSX_BUNDLE TRUE
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-	RESOURCE "${RESOURCE_FILES}
-        )"
-   )
-   set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-   fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")
-   " COMPONENT Runtime)
+   install
+   (
+       CODE
+       # The bundle utilities need to be run in a
+       # separate step, meaning from within a string.
+       # they provide the fixup command that makes the
+       # .dylibs run from within the app bundle.
+       "
+           include(BundleUtilities)
+           # the separate step doesn't know about
+           # the values our variables had in the
+           # cmakefile so we need to set them again.
+           set_target_properties(wxmaxima PROPERTIES
+	       MACOSX_BUNDLE TRUE
+               RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+               RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+	       RESOURCE \"${RESOURCE_FILES}\"
+           )
+           set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+           fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")
+       " 
+       COMPONENT Runtime
+    )
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
