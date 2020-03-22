@@ -74,18 +74,27 @@ elseif(APPLE)
 	RESOURCE "${RESOURCE_FILES}"
 	)
    if(MACOSX_BUNDLE)
-       install(
-           # The bundle utilities need to be run in a
-           # separate step, meaning from within a string.
-           # they provide the fixup command that makes the
-           # .dylibs run from within the app bundle.
-           CODE "include(BundleUtilities)
-               # the separate step doesn't know about
-               # the values our variables had in the
-               # cmakefile so we need to set them again.
-               set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-               fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")" 
-           COMPONENT Runtime)
+       set_target_properties(wxmaxima PROPERTIES
+            MACOSX_BUNDLE TRUE
+            RESOURCE "${RESOURCE_FILES}"
+	)
+
+        install(
+            # The bundle utilities need to be run in a
+            # separate step, meaning from within a string.
+            # they provide the fixup command that makes the
+            # .dylibs run from within the app bundle.
+            CODE "include(BundleUtilities)
+                # the separate step doesn't know about
+                # the values our variables had in the
+                # cmakefile so we need to set them again.
+                set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+                fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")" 
+            COMPONENT Runtime)
+    else()
+        set_target_properties(wxmaxima PROPERTIES
+            RESOURCE "${RESOURCE_FILES}"
+	)
     endif()
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
@@ -167,10 +176,10 @@ if(WIN32)
 elseif(APPLE)
     # If we have generated an .apk bundle we can package this in a DMG image
     if(MACOSX_BUNDLE)
-	set(CPACK_GENERATOR "DragNDrop")
+        set(CPACK_GENERATOR "DragNDrop")
         set(CPACK_BINARY_DragNDrop "ON")
     else()
-	set(CPACK_GENERATOR "TGZ;TBZ2")
+        set(CPACK_GENERATOR "TGZ;TBZ2")
     endif()
 else()
     set(CPACK_GENERATOR "DEB;TGZ;TBZ2")
