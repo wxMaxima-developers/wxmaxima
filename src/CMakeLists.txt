@@ -83,7 +83,8 @@ elseif(APPLE)
 	MACOSX_BUNDLE TRUE
         RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
         RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-	RESOURCE "${RESOURCE_FILES}"
+	RESOURCE "${RESOURCE_FILES}
+        )"
    )
    set(BU_CHMOD_BUNDLE_ITEMS TRUE)
    fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")
