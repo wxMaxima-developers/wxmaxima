@@ -77,8 +77,7 @@ elseif(APPLE)
         RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
 	RESOURCE "${RESOURCE_FILES}"
 	)
-   install
-   (
+   install(
        CODE
        # The bundle utilities need to be run in a
        # separate step, meaning from within a string.
