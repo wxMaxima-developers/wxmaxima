@@ -1316,6 +1316,10 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
   {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_WARNING);
   }
+  else if (type == MC_TYPE_TEXT)
+  {
+    lastLine = DoRawConsoleAppend(s, MC_TYPE_TEXT);
+  }
   else
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
 
