@@ -92,10 +92,8 @@ elseif(APPLE)
            set(RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
            set(RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS))
            set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-           fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")
-       " 
-       COMPONENT Runtime
-    )
+           fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")" 
+       COMPONENT Runtime)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
