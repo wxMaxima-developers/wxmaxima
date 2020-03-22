@@ -73,8 +73,8 @@ elseif(APPLE)
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
 	MACOSX_BUNDLE TRUE
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.app/Contents/MacOS
 	RESOURCE "${RESOURCE_FILES}"
 	)
    install(
@@ -157,7 +157,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_
 
 if(APPLE)
     install(TARGETS wxmaxima
-	     BUNDLE  DESTINATION .
+	     BUNDLE  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 	     RUNTIME DESTINATION bin
 	     COMPONENT Runtime)
 else()
