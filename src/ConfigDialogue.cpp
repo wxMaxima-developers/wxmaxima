@@ -1049,7 +1049,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxBoxSizer *hbox_sizer_3 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
-  wxStaticText *df = new wxStaticText(panel, -1, _("Default font:"));
+  wxStaticText *df = new wxStaticText(panel, -1, _("Documentation+Code font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
   if (m_configuration->FontName() != wxEmptyString)

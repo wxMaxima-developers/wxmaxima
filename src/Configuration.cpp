@@ -236,7 +236,7 @@ Configuration::Configuration(wxDC *dc) :
   m_mathFontSize = m_defaultFontSize;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
-  m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
+  m_styles[TS_TEXT].Set(_("Status Text"),*wxBLACK, false, false, false, 12);
   m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
   m_styles[TS_CODE_FUNCTION].Set(_("Code highlighting: Functions"),wxColor(128,0,0), false, true, false);
   m_styles[TS_CODE_COMMENT].Set(_("Code highlighting: Comments"),wxColor(64,64,64), false, true, false);

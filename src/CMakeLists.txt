@@ -165,8 +165,13 @@ if(WIN32)
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 elseif(APPLE)
-    set(CPACK_GENERATOR "DragNDrop;TGZ;TBZ2") # Build DMG packages on MacOS
-    set(CPACK_BINARY_DragNDrop "ON")
+    # If we have generated an .apk bundle we can package this in a DMG image
+    if(MACOSX_BUNDLE)
+	set(CPACK_GENERATOR "DragNDrop")
+        set(CPACK_BINARY_DragNDrop "ON")
+    else()
+	set(CPACK_GENERATOR "TGZ;TBZ2")
+    endif()
 else()
     set(CPACK_GENERATOR "DEB;TGZ;TBZ2")
     # build RPMs only if rpmbuild is installed

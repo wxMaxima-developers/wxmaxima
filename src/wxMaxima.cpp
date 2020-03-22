@@ -2440,7 +2440,7 @@ void wxMaxima::ReadMiscText(wxString &data)
         if(warning)
           m_worksheet->m_cellPointers.m_currentTextCell = ConsoleAppend(textline, MC_TYPE_WARNING);
         else
-          m_worksheet->m_cellPointers.m_currentTextCell = ConsoleAppend(textline, MC_TYPE_DEFAULT);
+          m_worksheet->m_cellPointers.m_currentTextCell = ConsoleAppend(textline, MC_TYPE_TEXT);
       }
     }
     if(lines.HasMoreTokens())
