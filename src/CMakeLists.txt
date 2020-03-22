@@ -66,15 +66,12 @@ file(GLOB RESOURCE_FILES
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
 elseif(APPLE)
-    set(MACOSX_BUNDLE TRUE)
     SET(MACOSX_BUNDLE_NAME wxmaxima)
     SET(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
     list(APPEND SOURCE_FILES ${RESOURCE_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
 	MACOSX_BUNDLE TRUE
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
 	RESOURCE "${RESOURCE_FILES}"
 	)
    install(
@@ -86,9 +83,6 @@ elseif(APPLE)
            # the separate step doesn't know about
            # the values our variables had in the
            # cmakefile so we need to set them again.
-           set(MACOSX_BUNDLE TRUE)
-           set(RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
-           set(RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
            set(BU_CHMOD_BUNDLE_ITEMS TRUE)
            fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")" 
        COMPONENT Runtime)

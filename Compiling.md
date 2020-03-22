@@ -35,6 +35,16 @@ At least CMake 3.7.0 is required to build wxMaxima. If your OS provides
 an older version (e.g. Ubuntu 14.04) download a recent version from
 https://cmake.org/download/ and use that.
 
+#### Mac Os: Creating a portable .apk and .dmg installer
+
+Just replace the 
+
+	cmake ..
+
+by a
+
+	cmake -DMACOSX_BUNDLE=YES ..
+
 #### Ubuntu or Debian the build prerequisites
 
     sudo apt-get install build-essential libomp-dev libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake pandoc po4a
