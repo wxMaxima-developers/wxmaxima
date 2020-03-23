@@ -8039,6 +8039,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Mariusz Libera"));
       info.AddDeveloper(wxT("Matcha Zaq"));
       info.AddDeveloper(wxT("Mihai Moldovan"));
+      info.AddDeveloper(wxT("MSoegtropIMC"));
       info.AddDeveloper(wxT("Murmele <Murmele@users.noreply.github.com>"));
       info.AddDeveloper(wxT("Nicola Stanislao Vitale"));
       info.AddDeveloper(wxT("Olesya Gerasimenko"));
