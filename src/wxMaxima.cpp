@@ -182,7 +182,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty()),
   m_openFile(filename),
-  m_gnuplotcommand("gnuplot"),
+  m_gnuplotcommand(Dirstructure::GnuplotDefaultLocation("gnuplot")),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
   #ifdef HAVE_OMP_HEADER
@@ -2640,8 +2640,8 @@ void wxMaxima::ReadVariables(wxString &data)
             }
             if(name == "gnuplot_command")
             {
-              m_gnuplotcommand = value;
-              wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),value.utf8_str()));
+              m_gnuplotcommand = Dirstructure::GnuplotDefaultLocation(value);
+              wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
             }
             if(name == "*maxima-sharedir*")
             {
@@ -3708,9 +3708,8 @@ void wxMaxima::SetupVariables()
   wxString cmd;
 
 #if defined (__WXOSX__)
-  wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
-  if (wxFileExists(gnuplotbin))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")\n");
+  if (wxFileExists(m_gnuplotcommand))
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand + wxT("\")\n");
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
@@ -5786,28 +5785,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
    textOut.Flush();
     }
       
-    // Find gnuplot
-    wxString gnuplot_binary;
-    if(wxFileName(m_gnuplotcommand).IsAbsolute())
-      gnuplot_binary = m_gnuplotcommand;
-    else
-    {
-      wxPathList pathlist;
-      pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
-      pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../");
-      pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
-      pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
-      pathlist.AddEnvList(wxT("PATH"));
-      gnuplot_binary = pathlist.FindAbsoluteValidPath(m_gnuplotcommand);
-      if(gnuplot_binary == wxEmptyString)
-        gnuplot_binary = pathlist.FindAbsoluteValidPath(m_gnuplotcommand + wxT(".exe"));
-      if(gnuplot_binary == wxEmptyString)
-        gnuplot_binary = pathlist.FindAbsoluteValidPath(m_gnuplotcommand + wxT(".exe"));
-      if(gnuplot_binary == wxEmptyString)
-        gnuplot_binary = m_gnuplotcommand;
-    }
     // Execute gnuplot
-    wxString cmdline = gnuplot_binary + wxT(" " + gnuplotSource + wxT(".popout"));
+    wxString cmdline = m_gnuplotcommand + wxT(" " + gnuplotSource + wxT(".popout"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
     
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);

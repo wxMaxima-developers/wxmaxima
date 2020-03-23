@@ -89,8 +89,11 @@ public:
   wxString LocaleDir() const
   { return ResourcesDir() + wxT("/locale"); }
 
-  //! The path we pass to the operating system if we want it to locate maxima instead
+  //! The executable file path to the maxima executable (or .bat on Windows)
   static wxString MaximaDefaultLocation();
+
+  //! The executable file path to the gnuplot executable
+  static wxString GnuplotDefaultLocation(wxString pathguess);
 
   static Dirstructure *Get()
     {
