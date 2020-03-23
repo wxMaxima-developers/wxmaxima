@@ -57,7 +57,7 @@ script:
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
 - mkdir build
 #- cp .travis/CTestCustom.cmake build
-- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug -DMACOSX_BUNDLE=TRUE -DCMAKE_MACOSX_BUNDLE=TRUE .. && cmake --build .
+- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug -DMACOSX_BUNDLE=TRUE .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a make test; fi
