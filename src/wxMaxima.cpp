@@ -4130,7 +4130,7 @@ void wxMaxima::CompileHelpFileAnchors()
               wxString id = token;
               correctUnderscores.Replace(&token, "_");
               token.Replace("-", " ");
-              if(!token.EndsWith("-1"))
+              if((!token.EndsWith("-1")) && (!token.Contains(" ")))
               {
                 m_worksheet->m_helpFileAnchors[token] = id;
                 foundAnchors++;
@@ -4143,7 +4143,7 @@ void wxMaxima::CompileHelpFileAnchors()
                 wxString id = token;
                 correctUnderscores.Replace(&token, "_");
                 token.Replace("-", " ");
-                if(!token.EndsWith("-1"))
+                if((!token.EndsWith("-1")) && (!token.Contains(" ")))
                 {
                   m_worksheet->m_helpFileAnchors[token] = id;
                   foundAnchors++;
