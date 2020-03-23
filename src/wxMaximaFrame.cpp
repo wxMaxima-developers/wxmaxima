@@ -197,18 +197,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   SetTitle(_("untitled"));
 #endif
 
-  m_manager.AddPane(m_worksheet,
-                    wxAuiPaneInfo().Name(wxT("console")).
-                            Center().
-                            CloseButton(false).
-                            CaptionVisible(false).
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            MinSize(wxSize(100,100)).
-                            PaneBorder(false).Row(2));
-
   m_manager.AddPane(m_history,
                     wxAuiPaneInfo().Name(wxT("history")).
                             Show(false).CloseButton(true).PinButton().
@@ -372,7 +360,19 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     LeftDockable(false).DockFixed().
                     RightDockable(false).Gripper(false).Row(1)
     );
-
+  
+  m_manager.AddPane(m_worksheet,
+                    wxAuiPaneInfo().Name(wxT("console")).
+                    Center().
+                    CloseButton(false).
+                    CaptionVisible(false).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
+                    MinSize(wxSize(100,100)).
+                    PaneBorder(false).Row(2));
+  
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
     MinSize(greekPane->GetEffectiveMinSize()).
     BestSize(greekPane->GetEffectiveMinSize()).
