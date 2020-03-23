@@ -236,7 +236,7 @@ Configuration::Configuration(wxDC *dc) :
   m_mathFontSize = m_defaultFontSize;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
-  m_styles[TS_TEXT].Set(_("Status Text"),*wxBLACK, false, false, false, 12);
+  m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
   m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
   m_styles[TS_CODE_FUNCTION].Set(_("Code highlighting: Functions"),wxColor(128,0,0), false, true, false);
   m_styles[TS_CODE_COMMENT].Set(_("Code highlighting: Comments"),wxColor(64,64,64), false, true, false);
@@ -248,10 +248,10 @@ Configuration::Configuration(wxDC *dc) :
   m_styles[TS_GREEK_CONSTANT].Set(_("Greek constants"),*wxBLACK, false, true, false);
   m_styles[TS_HEADING6].Set(_("Heading 6"),*wxBLACK, true, false, false, 14);
   m_styles[TS_HEADING5].Set(_("Heading 5"),*wxBLACK, true, false, false, 15);
-  m_styles[TS_SUBSUBSECTION].Set(_("Subsubsection cell"),*wxBLACK, true, false, false, 16);
-  m_styles[TS_SUBSECTION].Set(_("Subsection cell"),*wxBLACK, true, false, false, 16);
-  m_styles[TS_SECTION].Set(_("Section cell"),*wxBLACK, true, true, false, 18);
-  m_styles[TS_TITLE].Set(_("Title cell"),*wxBLACK, true, false, true, 24);
+  m_styles[TS_SUBSUBSECTION].Set(_("Subsubsection cell (Heading 4)"),*wxBLACK, true, false, false, 16);
+  m_styles[TS_SUBSECTION].Set(_("Subsection cell (Heading 3)"),*wxBLACK, true, false, false, 16);
+  m_styles[TS_SECTION].Set(_("Section cell (Heading 2)"),*wxBLACK, true, true, false, 18);
+  m_styles[TS_TITLE].Set(_("Title cell (Heading 1)"),*wxBLACK, true, false, true, 24);
   m_styles[TS_WARNING].Set(_("Maxima warnings"),wxColor(wxT("orange")), true, false, false, 12);
   m_styles[TS_ERROR].Set(_("Maxima errors"),*wxRED, false, false, false, 12);
   m_styles[TS_MAIN_PROMPT].Set(_("Input labels"),wxColor(wxT("rgb(255,128,128)")), false, false, false);
