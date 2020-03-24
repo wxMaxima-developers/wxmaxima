@@ -3712,9 +3712,9 @@ void wxMaxima::SetupVariables()
   wxString cmd;
 
 #if defined (__WXOSX__)
-  wxString gunplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
-  if (wxFileExists(gunplot_binary))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gunplot_binary + wxT("\")\n");
+  wxString gnuplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
+  if (wxFileExists(gnuplot_binary))
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplot_binary + wxT("\")\n");
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
