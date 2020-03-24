@@ -13,17 +13,17 @@ Computeralgebrasystem Maxima. Es stellt ein graphisches Userinterface und
 2D formatierte Ausgaben von Maxima dar.
 Das Men\(:usystem erm\(:oglicht den einfachen Zugriff zu vielen Maxima
 Befehlen und zur Maxima Hilfe.
-Dialogfenster erm\(:oglichen einen einfache Einf\(:uhrung von 
+Dialogfenster erm\(:oglichen eine einfache Einf\(:uhrung von
 mathematischen Konstrukten wie Limits, Matrizen, etc.
 Zus\(:atzlich wird Maxima um M\(:oglichkeiten erweitert, wie beispielsweise
 die M\(:oglichkeit Diagramme mit Hilfe eines Sliders \(:uber die GUI zu animieren.
 
 .PP
-Maxima ist ein freies (GPL) Computeralgebrasystem, programmiert in Commaon Lisp. 
-Es basiert auf dem Computeralgebrasystem Macsyma, welches am MIT entwickelt wurde
-Eine umfangereiche Dokumenation ist inkludiert (und online verf\(:ugbar).
+Maxima ist ein freies (GPL) Computeralgebrasystem, programmiert in Common Lisp.
+Es basiert auf dem Computeralgebrasystem Macsyma, welches am MIT entwickelt wurde.
+Eine umfangreiche Dokumentation ist inkludiert (und online verf\(:ugbar).
 .PP
-wxMaxima verwendet das Toolkit wxWidgets welches unter vielen Betriebssystemen unterst\(:utzt wird.
+wxMaxima verwendet das Toolkit wxWidgets welches von vielen Betriebssystemen unterst\(:utzt wird.
 
 .SH "OPTIONEN"
 .TP
@@ -32,20 +32,20 @@ Gibt die Liste der Kommandozeilen-Optionen aus.
 
 .TP
 .I \-v, \-\-version
-Gibt die wxMaxma Version aus.
+Gibt die wxMaxima Version aus.
 
 .TP
 .I \-b, \-\-batch
-Verarbeitet eine Datei im Batch-Modus und speichert es danach.
+Verarbeitet eine Datei im Batch-Modus und speichert sie danach.
 W\(:urde anhalten, wenn Maxima eine Fehlermeldung produziert oder eine Frage stellt.
 
 .TP
 .I \-o, \-\-open=<str>
-\(:offnet eine Datei nach dem Programmstart.
+\(:Offnet eine Datei nach dem Programmstart.
 
 .TP
 .I \-e, \-\-eval=<str>
-\(:offnet eine Datei und verarbeitet sie nach dem Programmstart.
+\(:Offnet eine Datei und verarbeitet sie nach dem Programmstart.
 
 .TP
 .I \-\-logtostdout
