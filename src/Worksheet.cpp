@@ -6530,7 +6530,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
           "It also is part of the windows installer for maxima\n"
           "(https://wxmaxima-developers.github.io/wxmaxima/).\n\n"
           "If a .wxmx file is broken but the content.xml portion of the file can still be\n"
-          "viewed using an text editor just save the xml's text as \"content.xml\"\n"
+          "viewed using a text editor just save the xml's text as \"content.xml\"\n"
           "and try to open it using a recent version of wxMaxima.\n"
           "If it is valid XML (the XML header is intact, all opened tags are closed again,\n"
           "the text is saved with the text encoding \"UTF8 without BOM\" and the few\n"
@@ -7310,7 +7310,7 @@ bool Worksheet::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, st
     FoldOccurred();
 
   wxASSERT_MSG(CanDeleteRegion(action->m_start, action->m_newCellsEnd),
-               _("Got a request to undo an action that involves an delete which isn't possible at this moment."));
+               _("Got a request to undo an action that involves a delete which isn't possible at this moment."));
 
   // Set the cursor to a sane position.
   if (action->m_newCellsEnd->m_next)

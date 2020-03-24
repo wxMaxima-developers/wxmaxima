@@ -621,7 +621,7 @@ protected:
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
   void ReReadConfig();  
-  //! Remember an temporary autosave file name.
+  //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
 private:
   //! How many bytes did maxima send us when we updated the statusbar?

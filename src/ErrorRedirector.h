@@ -105,7 +105,7 @@ private:
   static  bool m_logToStdErr;
 };
 
-//! If an variable of this class is alive errors won't create popup dialogues
+//! If a variable of this class is alive errors won't create popup dialogues
 class SuppressErrorDialogs 
 {
 public:

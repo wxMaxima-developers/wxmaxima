@@ -296,7 +296,7 @@ protected:
   /*! Get the name of the help file
    */
   wxString GetMaximaHelpFile();
-  //! An helper function for GetHelpFile()
+  //! A helper function for GetHelpFile()
   wxString GetMaximaHelpFile2();
 
   //! Show the help for maxima
@@ -417,7 +417,7 @@ protected:
   //! Triggered when we get new chars from maxima.
   void OnNewChars();
 
-  /*! Add a parameter to an draw command
+  /*! Add a parameter to a draw command
 
     \param cmd The parameter to  add to the draw command
     \param dimensionsOfNewDrawCommand The number of dimensions the new draw command needs to 

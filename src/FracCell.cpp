@@ -416,12 +416,12 @@ bool FracCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in an numerator!"));
+    wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in a numerator!"));
     if (m_num_Last != NULL)
       m_num_Last->m_nextToDraw = m_divide.get();
     m_divide->m_nextToDraw = m_displayedDenom.get();
     m_denom_Last->m_nextToDraw = m_nextToDraw;
-    wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in an denominator!"));
+    wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in a denominator!"));
     m_nextToDraw = m_displayedNum.get();
     ResetData();    
     return true;

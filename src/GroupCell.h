@@ -254,7 +254,7 @@ public:
 
   /*! Recalculates the height of this GroupCell and all cells inside it if needed.
 
-    This command will also assign the GroupCell an y coordinate it is plotted at.
+    This command will also assign the GroupCell a y coordinate it is plotted at.
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
@@ -380,7 +380,7 @@ public:
 
   /* Draw this GroupCell
 
-     Also assigns all output cells contained in this GroupCell an y coordinate.
+     Also assigns all output cells contained in this GroupCell a y coordinate.
 
     \attention The height the output has needs to be in sync with the height
     calculation done during RecalculateAppended() and during

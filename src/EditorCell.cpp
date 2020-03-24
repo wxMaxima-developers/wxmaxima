@@ -2425,7 +2425,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
               m_positionOfCaret += 1;
             }
 
-            // If this operator happens to be the first letter of an comment start sign
+            // If this operator happens to be the first letter of a comment start sign
             // we remove the "%" again as the unability to begin a code cell with a
             // comment in the obvious way tends to surprise users.
             if((len == 3) && (m_positionOfCaret == 3) && (m_text.StartsWith(wxT("%/*"))))

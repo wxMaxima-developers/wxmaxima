@@ -726,7 +726,7 @@ wxString WizContour::GetValue()
 }
 
 ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, _("Plot an parametric curve"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Plot a parametric curve"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
 {  
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

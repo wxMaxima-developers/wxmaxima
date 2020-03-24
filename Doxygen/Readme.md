@@ -32,7 +32,7 @@ The main things that are important to know are:
  - It is organized in GroupCells that each can contain a cell containing a list of
    cells containing a label and the user input and a list of cells containing the
    output label and 2d math from maxima.
- - All cells contain pointers so they can be used as a part of an double-linked list
+ - All cells contain pointers so they can be used as a part of a double-linked list
    for the logical order they appear in and a second double-linked list that tells 
    which cell to draw next. The latter is needed for handling the fact that some
    things (like fractions) can be displayed as 2D maths and in a more linear way.

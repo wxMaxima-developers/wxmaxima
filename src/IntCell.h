@@ -67,7 +67,7 @@ public:
 
   enum IntegralType
   {
-    INT_DEF, //!< An definite integral, meaning an integral with limits.
+    INT_DEF, //!< A definite integral, meaning an integral with limits.
     INT_IDEF //!> An indefinite integral, meaning an integral without limits
   };
 

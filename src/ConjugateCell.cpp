@@ -194,7 +194,7 @@ bool ConjugateCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell.get();
-    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an conjugateCell!"));
+    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in a conjugateCell!"));
     if (m_last != NULL)
       m_last->m_nextToDraw = m_close.get();
     m_close->m_nextToDraw = m_nextToDraw;

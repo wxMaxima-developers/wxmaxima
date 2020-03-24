@@ -34,7 +34,7 @@
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"
 
-/*! An wxBitmap with a constructor that generates the image from SVG.
+/*! A wxBitmap with a constructor that generates the image from SVG.
  */
 class SvgBitmap: public wxBitmap
 {

@@ -291,7 +291,7 @@ void BitmapOut::Draw()
 
 wxSize BitmapOut::ToFile(wxString file)
 {
-  // Assign an resolution to the bitmap.
+  // Assign a resolution to the bitmap.
   wxImage img = m_bmp.ConvertToImage();
   int resolution = img.GetOptionInt(wxIMAGE_OPTION_RESOLUTION);
   if (resolution <= 0)

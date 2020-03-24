@@ -61,7 +61,7 @@ public:
   explicit Variablespane(wxWindow *parent, wxWindowID id = wxID_ANY);
   //! Called when a variable name was changed
   void OnTextChange(wxGridEvent &event);
-  //! Called after te user has entered an variable name but before it is committed
+  //! Called after te user has entered a variable name but before it is committed
   void OnTextChanging(wxGridEvent &event);
   //! Called on right-clicking the variables list
   void OnRightClick(wxGridEvent &event);

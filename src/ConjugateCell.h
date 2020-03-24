@@ -28,10 +28,10 @@
 
 /*! \file
 
-  This file defines the class for the cell type that represents an conjugate(x) block.
+  This file defines the class for the cell type that represents a conjugate(x) block.
  */
 
-/*! A cell that represents an conjugate(x) block
+/*! A cell that represents a conjugate(x) block
 
   In the case that this cell is broken into two lines in the order of
   m_nextToDraw this cell is represented by the following individual 

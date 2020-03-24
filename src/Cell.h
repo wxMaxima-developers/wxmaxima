@@ -696,7 +696,7 @@ class Cell
   //! Convert this list to its LaTeX representation
   virtual wxString ListToTeX();
 
-  //! Convert this list to an representation fit for saving in a .wxmx file
+  //! Convert this list to a representation fit for saving in a .wxmx file
   virtual wxString ListToXML();
 
   //! Convert this list to a MathML representation
@@ -743,10 +743,10 @@ class Cell
   //! Convert this cell to its LaTeX representation
   virtual wxString ToTeX();
 
-  //! Convert this cell to an representation fit for saving in a .wxmx file
+  //! Convert this cell to a representation fit for saving in a .wxmx file
   virtual wxString ToXML();
 
-  //! Convert this cell to an representation fit for saving in a .wxmx file
+  //! Convert this cell to a representation fit for saving in a .wxmx file
   virtual wxString ToMathML();
 
   //! Escape a string for RTF

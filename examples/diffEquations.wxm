@@ -6,12 +6,12 @@ Solving differential equations
 
 
 /* [wxMaxima: comment start ]
-If the equation that defines the shape of a curve references the steepness of the curve (diff('f(x),x)), the steepness of the steepness of the curve (diff('f(x),x,2)) or any other derivation if the curve the result is an differential equation that describes the general shapes the curve can have without describing its actual height.
+If the equation that defines the shape of a curve references the steepness of the curve (diff('f(x),x)), the steepness of the steepness of the curve (diff('f(x),x,2)) or any other derivation of the curve the result is a differential equation that describes the general shapes the curve can have without describing its actual height.
    [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: comment start ]
-Often an differential equation has a solution that cannot be expressed symbolically as mathematics lacks the necessary functions. In other cases one has to guess the general form of the solution and the computer only helps in finding the values of the parameters this solution contains. In the simple cases an engineer encounters on a daily basis maxima can do this automatically, instead.
+Often a differential equation has a solution that cannot be expressed symbolically as mathematics lacks the necessary functions. In other cases one has to guess the general form of the solution and the computer only helps in finding the values of the parameters this solution contains. In the simple cases an engineer encounters on a daily basis maxima can do this automatically, instead.
    [wxMaxima: comment end   ] */
 
 

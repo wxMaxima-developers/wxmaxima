@@ -615,7 +615,7 @@ public:
     Printable characters are handled by OnChar instead.
    */
   void OnKeyDown(wxKeyEvent &event);
-  //! Change the style of an cell
+  //! Change the style of a cell
   void SetCellStyle(GroupCell *group, GroupType style);
 
   //! Renumber all sections

@@ -7004,7 +7004,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                expr, wxT("i"), wxT("1"), wxT("100"), wxT("1"),
                                m_worksheet->m_configuration,
                                this, -1, _("Create a list from a rule"), true);
-    wiz->SetLabel1ToolTip(_("The rule that explains how to generate the value of an list item.\n"
+    wiz->SetLabel1ToolTip(_("The rule that explains how to generate the value of a list item.\n"
                             "Might be something like \"i\", \"i^2\" or \"sin(i)\""));
     wiz->SetLabel2ToolTip(_("The number of the item which is stepped from \"Index Start\" to \"Index End\"."));
     wiz->SetValue(expr);
@@ -7032,7 +7032,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                expr, wxT("i"), wxT("list"),
                                m_worksheet->m_configuration,
                                this, -1, _("Create a list from another list"), true);
-    wiz->SetLabel1ToolTip(_("The rule that explains how to generate the value of an list item.\n"
+    wiz->SetLabel1ToolTip(_("The rule that explains how to generate the value of a list item.\n"
                             "Might be something like \"i\", \"i^2\" or \"sin(i)\""));
     wiz->SetLabel2ToolTip(_("The variable the value of the current source item is stored in."));
     wiz->SetValue(expr);
@@ -9033,7 +9033,7 @@ bool wxMaxima::SaveNecessary()
   if(m_worksheet->GetTree() == NULL)
     return false;
 
-  // No need to save a document only consisting of an prompt
+  // No need to save a document only consisting of a prompt
   if(m_worksheet->GetTree()->Empty())
     return false;
 
