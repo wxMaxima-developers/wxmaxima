@@ -29,11 +29,14 @@
   DirStructure informs about what directory is to be found where on the current system.
 */
 
-
 #include "Dirstructure.h"
 #include <wx/filename.h>
 #include <wx/dir.h>
 #include "Version.h"
+
+// This macro is used to mark the macports prefix, so that it can be easily patched
+// The MacPorts port file for wxMaxima uses this, so don't remove this!
+#define OSX_MACPORTS_PREFIX "/opt/local"
 
 Dirstructure::Dirstructure()
 {
@@ -214,7 +217,7 @@ wxString Dirstructure::MaximaDefaultLocation()
     return maximaLocation;
 
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
-  maximaLocation = "/opt/local/bin/maxima";
+  maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
@@ -237,6 +240,65 @@ wxString Dirstructure::MaximaDefaultLocation()
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
 #endif
   return wxT("maxima");
+}
+
+wxString Dirstructure::GnuplotDefaultLocation(wxString pathguess)
+{
+  wxString gnuplot_binary;
+
+  if(wxFileName(pathguess).IsAbsolute())
+    gnuplot_binary = pathguess;
+  else
+  {
+    wxPathList pathlist;
+
+    // Add paths relative to the path of the wxMaxima executable
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
+
+    // Add paths from the PATH environment variable
+    pathlist.AddEnvList(wxT("PATH"));
+
+    // Add OSX specific paths
+#ifdef __WXOSX__
+    // MacPorts:
+    // The MacPorts default binary path /opt/local/bin/ is not in the PATH for applications.
+    // It is added to .profile, but this is only used by shells.
+    // => Add the default MacPorts binary path /opt/local/bin/ to our search path list.
+    //
+    // Homebrew:
+    // Homebrew installs binaries in /usr/local/bin, which is in the PATH by default.
+    //
+    // Application packages including gnuplot:
+    // The above wxMaxima executable relative logic should work
+    //
+    // If gnuplot is somewhere else (e.g. non default MacPort or Homebrew path), the command
+    //   gnuplot_command:"/opt/local/bin/gnuplot"$
+    // must be added manually to ~/.maxima/wxmaxima-init.mac
+    // This should be documented for the installer packages, e.g. as MacPorts "notes" field.
+    pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
+#endif
+
+    // Find executable "gnuplot" in our list of paths
+    gnuplot_binary = pathlist.FindAbsoluteValidPath(pathguess);
+    // If not successfull, Find executable "gnuplot.exe" in our list of paths
+    if(gnuplot_binary == wxEmptyString)
+      gnuplot_binary = pathlist.FindAbsoluteValidPath(pathguess + wxT(".exe"));
+    // If not successfull, use the original command (better than empty for error messaqges)
+    if(gnuplot_binary == wxEmptyString)
+    {
+      wxLogMessage(_("Gnuplot not found, using the default: ") + pathguess);
+      gnuplot_binary = pathguess;
+    }
+    else
+    {
+      wxLogMessage(_("Gnuplot found at: ") + gnuplot_binary);
+    }    
+  }
+
+  return gnuplot_binary;
 }
 
 wxString Dirstructure::UserAutocompleteFile()
