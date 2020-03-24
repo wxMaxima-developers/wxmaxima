@@ -3715,6 +3715,7 @@ void wxMaxima::SetupVariables()
   wxString gnuplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
   if (wxFileExists(gnuplot_binary))
     cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplot_binary + wxT("\")\n");
+  wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), gnuplot_binary.utf8_str()));
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
