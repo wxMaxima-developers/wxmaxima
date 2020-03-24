@@ -182,7 +182,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty()),
   m_openFile(filename),
-  m_gnuplotcommand(Dirstructure::GnuplotDefaultLocation("gnuplot")),
+  m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
 {
   #ifdef HAVE_OMP_HEADER
@@ -2640,7 +2640,7 @@ void wxMaxima::ReadVariables(wxString &data)
             }
             if(name == "gnuplot_command")
             {
-              m_gnuplotcommand = Dirstructure::GnuplotDefaultLocation(value);
+              m_gnuplotcommand = value;
               wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
             }
             if(name == "*maxima-sharedir*")
@@ -3708,8 +3708,9 @@ void wxMaxima::SetupVariables()
   wxString cmd;
 
 #if defined (__WXOSX__)
-  if (wxFileExists(m_gnuplotcommand))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand + wxT("\")\n");
+  wxString gunplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
+  if (wxFileExists(gunplot_binary))
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gunplot_binary + wxT("\")\n");
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
@@ -5786,7 +5787,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     }
       
     // Execute gnuplot
-    wxString cmdline = m_gnuplotcommand + wxT(" " + gnuplotSource + wxT(".popout"));
+    wxString cmdline = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand) + wxT(" " + gnuplotSource + wxT(".popout"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
     
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
