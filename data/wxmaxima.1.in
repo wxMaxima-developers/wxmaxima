@@ -1,24 +1,24 @@
 .TH "WXMAXIMA" "1" "@CURRENTDATE@" "wxMaxima @VERSION@"
-.SH "NAME" 
+.SH "NAME"
 wxmaxima \- wxWidgets interface for Maxima
 
-.SH "SYNOPSIS" 
-.PP 
+.SH "SYNOPSIS"
+.PP
 \fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [input file...]
 
-.SH "DESCRIPTION" 
-.PP 
+.SH "DESCRIPTION"
+.PP
 \fBwxmaxima\fR is a rather self-explanatory graphical
 front-end to the Maxima computer algebra system. It
 provides a graphical interface and 2D formatted output display
-for Maxima. Its menu system facilitates the access to a huge part of
+for Maxima. Its menu system facilitates access to a huge part of
 the Maxima native set of commands and also to a browsable Maxima
 help. The dialogue windows make easy the introduction of
-mathematical entities such as limits, matrices, etc. Besides that
+mathematical entities such as limits, matrices, etc. Besides that,
 it extends Maxima with a few powerful features like the ability to
 create diagrams with one parameter bound to a slider gui control.
 .PP
-Maxima is a free (GPL) common lisp implementation based of the
+Maxima is a free (GPL) common lisp implementation based on the
 original computer algebra system Macsyma developed at MIT. It
 has full documentation (HTML and info) included.
 .PP
@@ -36,7 +36,7 @@ Prints the current version.
 
 .TP
 .I \-b, \-\-batch
-processes the file, saves it afterwards. Will halt if wxMaxima finds an
+processes the file, saves it afterward. Will halt if wxMaxima finds an
 error message in Maxima's output and pause if Maxima asks a question.
 
 .TP
@@ -61,7 +61,7 @@ Close the program on any Maxima error.
 
 .TP
 .I \-f, --ini=<str>
-Allows to specify a file to store the configuration in
+Allows specifying a file to store the configuration in
 
 .TP
 .I \-u, \-\-use-version=<str>
@@ -82,10 +82,10 @@ allows to specify the location of the Maxima binary
 .SH FILES
 .TP
 .I ~/.wxMaxima
-The personal wxMaxima initialization file, where user specific settings are stored [wxWidgets <=3.0].
+The personal wxMaxima initialization file, where user-specific settings are stored [wxWidgets <=3.0].
 .TP
 .I ~/.config/wxMaxima.conf
-The personal wxMaxima initialization file, where user specific settings are stored [wxWidgets >3.0].
+The personal wxMaxima initialization file, where user-specific settings are stored [wxWidgets >3.0].
 
 .TP
 .I ~/.maxima/wxmaxima-init.mac
@@ -93,7 +93,7 @@ If the Maxima user directory - usually
 .I ~/.maxima/
 - contains a text file named
 .I wxmaxima-init.mac
-the contents of the file is passed to Maxima automatically every time a new worksheet has been started.
+the contents of the file are passed to Maxima automatically every time a new worksheet has been started.
 
 .SH BUGS
 If you find a bug in wxMaxima, please report it in the
@@ -102,7 +102,7 @@ wxMaxima bug database
 .UE
 
 (Please check first, if it was not already reported.) And if you have a fix,
-that would be great. wxMaxima is an open source project, where you can contribute.
+that would be great. wxMaxima is an open-source project, where you can contribute.
 
 If the issue is a mathematical bug, it might be a bug in Maxima (the
 backend, which does the mathematical computations), not wxMaxima
