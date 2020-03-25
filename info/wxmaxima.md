@@ -47,7 +47,7 @@ Introduction to wxMaxima
 
 In the open-source domain big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.
 
-A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.
+A computer algebra system (CAS) like _Maxima_ fits into this framework. A CAS can provide the logic behind an arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., [Sage](https://www.sagemath.org/)). Alternatively, it can be used directly as a free-standing system. _Maxima_ can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.
 
 ### _Maxima_
 
@@ -59,7 +59,7 @@ Extensive documentation for _Maxima_ is  [available in the internet](http://maxi
 
 ### wxMaxima
 
-wxMaxima is a graphical user interface that provides the full functionality and flexibility of _Maxima_. wxMaxima offers users a graphical display and many features that make working with _Maxima_ easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for _wxMaxima_, including workbooks to illustrate aspects of its use, is online at the wxMaxima [help site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help menu.
+wxMaxima is a graphical user interface that provides the full functionality and flexibility of _Maxima_. wxMaxima offers users a graphical display and many features that make working with _Maxima_ easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for _wxMaxima_, including workbooks to illustrate aspects of its use, is online at the wxMaxima [help site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help menu.
 
 ![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }
 
@@ -122,7 +122,7 @@ Computers traditionally store characters in 8-bit values. This allows for a maxi
 
 For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.
 
-_Maxima_ allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
+_Maxima_ allows for unicode characters if it was compiled using a Lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
 * A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
 * Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:
@@ -205,7 +205,7 @@ If a special symbol isn’t in the list it is possible to input arbitrary unicod
 
 <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.
 
-Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
+Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
 
 ### Side Panes
@@ -552,7 +552,7 @@ Steps a variable from a lower limit to an upper limit and uses two expressions l
 
 #### Points
 
-Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, an 2D array or one list or array for each axis.
+Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, a 2D array or one list or array for each axis.
 
 #### Diagram title
 
@@ -649,7 +649,7 @@ Troubleshooting
 
 ## Cannot connect to _Maxima_
 
-Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since _Maxima_ is being run by a lisp processor the process communication that is blocked from does not necessarily have to be named "maxima". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.
+Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since _Maxima_ is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named "maxima". Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.
 
 On Un\*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.
 
@@ -671,7 +671,7 @@ Normally _wxMaxima_ waits for the whole 2D formula to be transferred before it b
        length(t)
     )$
 
-## Plotting only shows an closed empty envelope with an error message
+## Plotting only shows a closed empty envelope with an error message
 
 This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to instruct gnuplot to create.
 
@@ -684,7 +684,7 @@ Possible reasons for this error are:
 
 ## Plotting an animation results in “error: undefined variable”
 
-The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using an `subst` command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.
+The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a `subst` command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.
 
 ## I lost a cell contents and undo doesn’t remember
 
@@ -807,8 +807,8 @@ Most operating systems provide less complicated ways of starting programs than t
 * `--exit-on-error`:               Close the program on any maxima error.
 * `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch
 * `-u`, `--use-version=<str>`:     Use maxima version `<str>`.
-* `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler `<str>`.
-* `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments
+* `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.
+* `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
 * `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
 
 Instead of a minus some operating systems might use a dash in front of the command-line switches.
