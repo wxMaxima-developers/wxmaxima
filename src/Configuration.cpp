@@ -402,7 +402,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("copyEMF"), &m_copyEMF );
   config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
   config->Read(wxT("maxima"), &m_maximaUserLocation);
-  // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
+  // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaUserLocation.IsSameAs(wxT("1")))
     m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 

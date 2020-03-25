@@ -815,7 +815,7 @@ class Cell
     will point to the sqrtCell, then to a cell containing the word "sqrt", 
     then one that represents the opening and closing parenthesis 
     (that will again be followed by a list containing the "(", the 
-    contents and the ")" of the parenthesis as individdual elements) 
+    contents and the ")" of the parenthesis as individual elements) 
     and then the cell that follows the SqrtCell. 
 
     See also m_next.
@@ -1008,7 +1008,7 @@ protected:
      - x=the left border of the cell
      - y=the vertical center of the cell. Which (per example in the case of a fraction)
        might not be the physical center but the vertical position of the horizontal line
-       between nummerator and denominator.
+       between numerator and denominator.
 
     The current point is recalculated 
      - for GroupCells by GroupCell::RecalculateHeight

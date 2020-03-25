@@ -59,7 +59,7 @@ public:
     loadfile,//! loadable files
     demofile,//! loadable files
     generalfile,//! general files
-    esccommand, //! Esc commmands describing symbols
+    esccommand, //! Esc commands describing symbols
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
   explicit AutoComplete(Configuration *configuration);

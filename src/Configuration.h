@@ -903,7 +903,7 @@ private:
   bool m_autoIndent;
   //! Do we want to automatically close parenthesis?
   bool m_matchParens;
-  //! Do we want to automatically insert new cells conaining a "%" at the end of every command?
+  //! Do we want to automatically insert new cells containing a "%" at the end of every command?
   bool m_insertAns;
   //! Do we want to automatically open a new cell if maxima has finished evaluating its input?
   bool m_openHCaret;

@@ -50,7 +50,7 @@
   complicated. But in UTF-8 all non-standard-ASCII-characters use more than one
   byte making iterating over every single char of the string the only way of
   determining which address char n is at. An iterator is the only way of not
-  having to determine the address of every single char indepently. 
+  having to determine the address of every single char independently.
 
   \todo Draw only tokens that are in the redraw region.
  */
@@ -179,7 +179,7 @@ public:
   void IndexSearchStartedAt(int index)
   { m_cellPointers->m_indexSearchStartedAt = index; }
 
-  //! Set the string that is to be highlighted as "identical to the curent selection"
+  //! Set the string that is to be highlighted as "identical to the current selection"
   void SetSelectionString(wxString string)
   { m_cellPointers->m_selectionString = string; }
 

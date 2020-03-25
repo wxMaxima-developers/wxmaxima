@@ -70,7 +70,7 @@ public:
   //! Set the directory the help file is stored in
   void HelpDir(wxString helpDir){m_helpDir = helpDir;}
 
-  /*! The file private accellerator key information is stored in
+  /*! The file private accelerator key information is stored in
 
    */
   wxString UserAutocompleteFile();

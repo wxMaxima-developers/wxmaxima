@@ -180,7 +180,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   StatusMaximaBusy(waiting);
 
   #if defined (__WXMSW__)
-  // On Windows the taskbar icon needs to reside in the Ressources file the linker
+  // On Windows the taskbar icon needs to reside in the Resources file the linker
   // includes. Also it needs to be in Microsoft's own .ico format =>
   // This file we don't ship with the source, but take it from the Resources
   // file instead.

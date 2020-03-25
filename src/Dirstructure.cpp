@@ -80,7 +80,7 @@ wxString Dirstructure::ResourcesDir() const
   wxString exepath = wxStandardPaths::Get().GetExecutablePath();
   if(!exepath.IsEmpty())
   {
-    // Our ressources dir is somewhere near to the dir the binary can be found.
+    // Our resources dir is somewhere near to the dir the binary can be found.
     wxFileName exe(exepath);
     
     // We only need the drive and the directory part of the path to the binary
@@ -100,11 +100,11 @@ wxString Dirstructure::ResourcesDir() const
     if((dirs.Last().Upper() == wxT("MACOS")))
       exe.RemoveLastDir();
     
-    // If there is a Resources folder the ressources are there
+    // If there is a Resources folder the resources are there
     if(wxDirExists(exe.GetPath() + wxT("/Resources")))
       exe.AppendDir("Resources");
     
-    // If there is a share folder the ressources are there
+    // If there is a share folder the resources are there
     if(wxDirExists(exe.GetPath() + wxT("/share")))
       exe.AppendDir("share");
 

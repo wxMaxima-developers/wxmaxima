@@ -88,7 +88,7 @@ public:
   wxString ToOMML() override;
 
 protected:
-  //! The contents of the abs() comand
+  //! The contents of the abs() command
   std::shared_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
   std::shared_ptr<TextCell> m_open;

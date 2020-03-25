@@ -73,7 +73,7 @@ public:
     m_fracStyle = style;
   }
 
-  //! Set the nummerator for the fraction
+  //! Set the numerator for the fraction
   void SetNum(Cell *num);
 
   //! Set the denominator of the fraction

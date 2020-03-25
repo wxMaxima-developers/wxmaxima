@@ -135,7 +135,7 @@ public:
     has been inactive for >10s so the autosave won't cause the application to shortly
     stop responding due to saving the file while the user is typing a word.
 
-    This timer is used in one-shot mode so in the unikely case that saving needs more
+    This timer is used in one-shot mode so in the unlikely case that saving needs more
     time than this timer to expire the user still got a chance to do something against
     it between two expirys. 
    */

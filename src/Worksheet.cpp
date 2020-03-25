@@ -489,7 +489,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   // before we proceed.
   RecalculateIfNeeded();
 
-  // Create a graphics context that supports antialiassing, but on MSW
+  // Create a graphics context that supports antialiasing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dc);
   #else
@@ -518,7 +518,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   }
   DoPrepareDC(dcm);
   m_configuration->SetContext(dcm);
-  // Create a graphics context that supports antialiassing, but on MSW
+  // Create a graphics context that supports antialiasing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dcm);
   #endif
@@ -1285,7 +1285,7 @@ void Worksheet::UnfoldAll()
   }
 }
 
-// Returns the tree from start to end and connets the pointers the right way
+// Returns the tree from start to end and connects the pointers the right way
 // so that GetTree() stays 'correct' - also works in hidden trees
 GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
 {
@@ -3875,7 +3875,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       ScrolledAwayFromEvaluation();
       break;
     }
-      // These are ingored
+      // These are ignored
     case WXK_WINDOWS_LEFT:
     case WXK_WINDOWS_RIGHT:
     case WXK_WINDOWS_MENU:

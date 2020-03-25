@@ -104,7 +104,7 @@ private:
     calculates some widths in.
   */
   int m_scrollUnit;
-  /*! The drawing contect used for calculating sizes.
+  /*! The drawing context used for calculating sizes.
 
     Drawing is done from a wxPaintDC in OnPaint() instead.
   */
@@ -411,16 +411,16 @@ private:
     \param asData
       - true:  The cells are copied in the order they are stored. m_next and m_previous
                therefore point to the right places. But m_nextToDraw 
-               will be treated as aliasses of m_next and m_previous.
+               will be treated as aliases of m_next and m_previous.
       - false: If a cell is broken into individual lines m_nextToDraw won't point to the
                next cell that is to be displayed. It will point to the cell containing the
                function name instead that is followed by the cell containing its contents.
                This is accurately copied if asdata=false. But m_next and m_previous are
-               treated as mere aliasses of m_nextToDraw in this case.
+               treated as mere aliases of m_nextToDraw in this case.
   */
   Cell *CopySelection(Cell *start, Cell *end, bool asData = false);
 
-  //! Get the cordinates of the bottom right point of the worksheet.
+  //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
 
   //! Is executed if a timer associated with Worksheet has expired.
@@ -1301,7 +1301,7 @@ public:
     If it does do so can be queried by FollowEvaluation(). Changing the
     behavior (for example because the user has scrolled away from the
     cell being evaluated and now clearly wants the cursor to stay where
-    it is) can be archieved by FollowEvaluation(true) or
+    it is) can be achieved by FollowEvaluation(true) or
     FollowEvaluation(false).
    */
   void FollowEvaluation(bool followEvaluation);
@@ -1408,19 +1408,19 @@ public:
    */
   bool FindIncremental(wxString str, bool down, bool ignoreCase);
 
-  /*! Find the next ocourrence of a string
+  /*! Find the next occurrence of a string
 
     Used by the find dialog.
    */
   bool FindNext(wxString str, bool down, bool ignoreCase, bool warn = true);
 
-  /*! Replace the current ocourrence of a string
+  /*! Replace the current occurrence of a string
 
     Used by the find dialog.
    */
   void Replace(wxString oldString, wxString newString, bool ignoreCase);
 
-  /*! Replace all ocourrences of a string
+  /*! Replace all occurrences of a string
 
     Used by the find dialog.
    */
