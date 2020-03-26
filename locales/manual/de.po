@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-26 11:02+0100\n"
-"PO-Revision-Date: 2020-03-19 21:37+0100\n"
+"PO-Revision-Date: 2020-03-26 13:26+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2557,7 +2557,7 @@ msgid ""
 "These files are in the Maxima user directory, usually `.maxima/` in the "
 "user's home directory, the location can be found out with the command: "
 "`maxima_userdir;`"
-msgstr ""
+msgstr "Diese Dateien liegen im Benutzerverzeichnis von maxima, normalerweise im Ordner `.maxima` im Home-Verzeichnis. Der genaue Ort kann über das Kommando `maxima_userdir;` ermittelt werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
@@ -3264,6 +3264,10 @@ msgid ""
 ");\n"
 "~~~~\n"
 msgstr ""
+"pngdraw2d(\\\"Test\\\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
+"~~~~\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:772

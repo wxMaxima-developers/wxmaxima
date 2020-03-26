@@ -514,7 +514,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>~/.maxima/maxima-init.mac</code></li>
 <li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>~/.maxima/wxmaxima-init.mac</code></li>
 </ul>
-<p>These files are in the Maxima user directory, usually <code>.maxima/</code> in the user’s home directory, the location can be found out with the command: <code>maxima_userdir;</code></p>
+<p>Diese Dateien liegen im Benutzerverzeichnis von maxima, normalerweise im Ordner <code>.maxima</code> im Home-Verzeichnis. Der genaue Ort kann über das Kommando <code>maxima_userdir;</code> ermittelt werden.</p>
 <h2 id="variablen-die-wxmaxima-definiert"><span class="header-section-number">2.6</span> Variablen, die wxMaxima definiert</h2>
 <ul>
 <li><code>wxsubscripts</code> informiert <em>Maxima</em>, welche Variablen mit Unterstrich (z.B. <code>R_150</code>) in Variablen mit Subscript konvertieren soll. Details werden unter <code>wxdeclare_subscript</code> beschrieben.</li>
@@ -629,7 +629,7 @@ pngdraw(name,[contents]):=
 pngdraw2d(name,[contents]):=
     pngdraw(name,gr2d(contents)
 
-pngdraw2d(&quot;Test&quot;,
+pngdraw2d(\&quot;Test\&quot;,
         explicit(sin(x),x,1,10)
 );</code></pre>
 <h3 id="kann-ich-das-seitenverhältnis-des-plots-angeben"><span class="header-section-number">3.12.2</span> Kann ich das Seitenverhältnis des Plots angeben?</h3>
