@@ -4107,19 +4107,19 @@ void wxMaxima::CompileHelpFileAnchors()
 
   if(m_worksheet->m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
   {
-    m_worksheet->m_helpFileAnchors["wxbarsplot"] = m_worksheet->m_helpFileAnchors["barsplot"];
-    m_worksheet->m_helpFileAnchors["wxboxplot"] = m_worksheet->m_helpFileAnchors["boxplot"];
-    m_worksheet->m_helpFileAnchors["wxhistogram"] = m_worksheet->m_helpFileAnchors["histogram"];
-    m_worksheet->m_helpFileAnchors["wxpiechart"] = m_worksheet->m_helpFileAnchors["piechart"];
-    m_worksheet->m_helpFileAnchors["wxscatterplot"] = m_worksheet->m_helpFileAnchors["scatterplot"];
-    m_worksheet->m_helpFileAnchors["wxstarplot"] = m_worksheet->m_helpFileAnchors["starplot"];
-    m_worksheet->m_helpFileAnchors["wxdrawdf"] = m_worksheet->m_helpFileAnchors["drawdf"];
-    m_worksheet->m_helpFileAnchors["wxdraw"] = m_worksheet->m_helpFileAnchors["draw"];
-    m_worksheet->m_helpFileAnchors["wxdraw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
-    m_worksheet->m_helpFileAnchors["wxdraw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
-    m_worksheet->m_helpFileAnchors["with_slider_draw"] = m_worksheet->m_helpFileAnchors["draw"];
-    m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
-    m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+    m_worksheet->m_helpFileAnchors["wxbarsplot"] = "barsplot";
+    m_worksheet->m_helpFileAnchors["wxboxplot"] = "boxplot";
+    m_worksheet->m_helpFileAnchors["wxhistogram"] = "histogram";
+    m_worksheet->m_helpFileAnchors["wxpiechart"] = "piechart";
+    m_worksheet->m_helpFileAnchors["wxscatterplot"] = "scatterplot";
+    m_worksheet->m_helpFileAnchors["wxstarplot"] = "starplot";
+    m_worksheet->m_helpFileAnchors["wxdrawdf"] = "drawdf";
+    m_worksheet->m_helpFileAnchors["wxdraw"] = "draw";
+    m_worksheet->m_helpFileAnchors["wxdraw2d"] = "draw2d";
+    m_worksheet->m_helpFileAnchors["wxdraw3d"] = "draw3d";
+    m_worksheet->m_helpFileAnchors["with_slider_draw"] = "draw";
+    m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = "draw2d";
+    m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = "draw3d";
     m_worksheet->m_helpFileAnchorsUsable = true;
 
     int foundAnchors = 0;
