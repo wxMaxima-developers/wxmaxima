@@ -1,3 +1,9 @@
+The manual
+==========
+
+This folder contains wxMaxima's manual (wxmaxima.md) and all files that are needed
+in order to generate translated HTML files from it.
+
 The Translation of the manual
 =============================
 
