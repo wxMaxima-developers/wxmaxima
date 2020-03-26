@@ -4851,6 +4851,8 @@ wxString wxMaxima::GetDefaultEntry()
   wxString retval;
   if (m_worksheet->GetActiveCell() != NULL)
     return retval = m_worksheet->GetActiveCell()->GetWordUnderCaret();
+  if(m_worksheet->IsSelected(MC_TYPE_DEFAULT))
+    return m_worksheet->GetSelectionStart()->ToString(); 
   if (retval.IsEmpty())
     retval = "%";
   return retval;

@@ -1408,6 +1408,13 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     }
     else if (m_cellPointers.m_selectionStart != NULL)
     {
+      if (IsSelected(MC_TYPE_DEFAULT))
+      {
+        wxString wordUnderCursor = GetSelectionStart()->ToString();
+        std::cerr<<wordUnderCursor<<"\n";
+        if(m_helpFileAnchorsUsable &&(!m_helpFileAnchors[wordUnderCursor].IsEmpty()))
+          popupMenu->Append(wxID_HELP, wxString::Format(_("Help on \"%s\""), wordUnderCursor));
+      }
       if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP)
       {
 

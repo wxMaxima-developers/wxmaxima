@@ -74,7 +74,7 @@
 <li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to <em>Maxima</em></a></li>
 <li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
 <li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command</a></li>
-<li><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.4</span> Plotting only shows an closed empty envelope with an error message</a></li>
+<li><a href="#plotting-only-shows-a-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.4</span> Plotting only shows a closed empty envelope with an error message</a></li>
 <li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</a></li>
 <li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</a></li>
 <li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</a></li>
@@ -123,7 +123,7 @@
 <h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
 <h2 id="maxima-and-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> and wxMaxima</h2>
 <p>In the open-source domain big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.</p>
-<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind a arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
+<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind an arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
 <figure>
@@ -131,7 +131,7 @@
 </figure>
 <p>Extensive documentation for <em>Maxima</em> is <a href="http://maxima.sourceforge.net/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems that would be the F1 key) causes wxMaxima’s context-sensitive help feature will automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
-<p>wxMaxima is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as an HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the wxMaxima <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
+<p>wxMaxima is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the wxMaxima <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
 <img src="./wxMaximaWindow.png" alt="wxMaxima window" id="img_wxMaximaWindow" /><figcaption>wxMaxima window</figcaption>
 </figure>
@@ -176,7 +176,7 @@
 <h4 id="greek-characters"><span class="header-section-number">1.2.4.1</span> Greek characters</h4>
 <p>Computers traditionally store characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
 <p>For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.</p>
-<p><em>Maxima</em> allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn’t care about the font encoding. As at least one of this is likely to be true <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
+<p><em>Maxima</em> allows for unicode characters if it was compiled using a Lisp compiler that either supports lisp or that doesn’t care about the font encoding. As at least one of this is likely to be true <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
 <ul>
 <li>A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character’s name.</li>
 <li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
@@ -250,7 +250,7 @@ leadsto       a &quot;leads to&quot; sign
 --&gt;           a long right arrow</code></pre>
 <p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
-<p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
+<p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
 <h3 id="side-panes"><span class="header-section-number">1.2.5</span> Side Panes</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
 <figure>
@@ -485,7 +485,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h4 id="parametric-plot"><span class="header-section-number">2.3.8.5</span> Parametric plot</h4>
 <p>Steps a variable from a lower limit to an upper limit and uses two expressions like <code>t*sin(t)</code> and <code>t*cos(t)</code> for generating the x, y (and in 3D plots also z) coordinates of a curve that is put into the current draw command.</p>
 <h4 id="points"><span class="header-section-number">2.3.8.6</span> Points</h4>
-<p>Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, an 2D array or one list or array for each axis.</p>
+<p>Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, a 2D array or one list or array for each axis.</p>
 <h4 id="diagram-title"><span class="header-section-number">2.3.8.7</span> Diagram title</h4>
 <p>Draws a title on the upper end of the diagram,</p>
 <h4 id="axis"><span class="header-section-number">2.3.8.8</span> Axis</h4>
@@ -549,7 +549,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red foreground.</p>
 <h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
 <h2 id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
-<p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
+<p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>On Un*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
 <h2 id="how-to-save-data-from-a-broken-.wxmx-file"><span class="header-section-number">3.2</span> How to save data from a broken .wxmx file</h2>
 <p>Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn’t turn on compression which makes the contents of .wxmx files viewable in any text editor.</p>
@@ -563,7 +563,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
    t:makelist(i,i,1000000),
    length(t)
 )$</code></pre>
-<h2 id="plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="header-section-number">3.4</span> Plotting only shows an closed empty envelope with an error message</h2>
+<h2 id="plotting-only-shows-a-closed-empty-envelope-with-an-error-message"><span class="header-section-number">3.4</span> Plotting only shows a closed empty envelope with an error message</h2>
 <p>This means that <em>wxMaxima</em> could not read the file <em>Maxima</em> that was supposed to instruct gnuplot to create.</p>
 <p>Possible reasons for this error are:</p>
 <ul>
@@ -573,7 +573,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li>Gnuplot didn’t output a valid .png file.</li>
 </ul>
 <h2 id="plotting-an-animation-results-in-error-undefined-variable"><span class="header-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</h2>
-<p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using an <code>subst</code> command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.</p>
+<p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a <code>subst</code> command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.</p>
 <h2 id="i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="header-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</h2>
 <p>There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:</p>
 <ul>
@@ -655,8 +655,8 @@ pngdraw2d(&quot;Test&quot;,
 <li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
 <li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
 <li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a maxima compiled with lisp compiler <code>&lt;str&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra maxima arguments</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
 <li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
 </ul>
 <p>Instead of a minus some operating systems might use a dash in front of the command-line switches.</p>
