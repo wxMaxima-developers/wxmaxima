@@ -1411,9 +1411,11 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       if (IsSelected(MC_TYPE_DEFAULT))
       {
         wxString wordUnderCursor = GetSelectionStart()->ToString();
-        std::cerr<<wordUnderCursor<<"\n";
         if(m_helpFileAnchorsUsable &&(!m_helpFileAnchors[wordUnderCursor].IsEmpty()))
+        {          
           popupMenu->Append(wxID_HELP, wxString::Format(_("Help on \"%s\""), wordUnderCursor));
+          popupMenu->AppendSeparator();
+        }
       }
       if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP)
       {
