@@ -2656,7 +2656,7 @@ void wxMaxima::ReadVariables(wxString &data)
               m_worksheet->LoadSymbols();
               if(m_worksheet->m_helpFileAnchors.empty())
               {
-                m_compileHelpAnchorsTimer.StartOnce(10000);
+                m_compileHelpAnchorsTimer.StartOnce(4000);
               }
             }
             if(name == "*lisp-name*")
