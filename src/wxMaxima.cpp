@@ -4107,6 +4107,21 @@ void wxMaxima::CompileHelpFileAnchors()
 
   if(m_worksheet->m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
   {
+    m_worksheet->m_helpFileAnchors["wxbarsplot"] = m_worksheet->m_helpFileAnchors["barsplot"];
+    m_worksheet->m_helpFileAnchors["wxboxplot"] = m_worksheet->m_helpFileAnchors["boxplot"];
+    m_worksheet->m_helpFileAnchors["wxhistogram"] = m_worksheet->m_helpFileAnchors["histogram"];
+    m_worksheet->m_helpFileAnchors["wxpiechart"] = m_worksheet->m_helpFileAnchors["piechart"];
+    m_worksheet->m_helpFileAnchors["wxscatterplot"] = m_worksheet->m_helpFileAnchors["scatterplot"];
+    m_worksheet->m_helpFileAnchors["wxstarplot"] = m_worksheet->m_helpFileAnchors["starplot"];
+    m_worksheet->m_helpFileAnchors["wxdrawdf"] = m_worksheet->m_helpFileAnchors["drawdf"];
+    m_worksheet->m_helpFileAnchors["wxdraw"] = m_worksheet->m_helpFileAnchors["draw"];
+    m_worksheet->m_helpFileAnchors["wxdraw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
+    m_worksheet->m_helpFileAnchors["wxdraw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+    m_worksheet->m_helpFileAnchors["with_slider_draw"] = m_worksheet->m_helpFileAnchors["draw"];
+    m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
+    m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
+    m_worksheet->m_helpFileAnchorsUsable = true;
+
     int foundAnchors = 0;
     wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
@@ -4155,13 +4170,6 @@ void wxMaxima::CompileHelpFileAnchors()
         }
       }
     }
-    m_worksheet->m_helpFileAnchors["wxdraw"] = m_worksheet->m_helpFileAnchors["draw"];
-    m_worksheet->m_helpFileAnchors["wxdraw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
-    m_worksheet->m_helpFileAnchors["wxdraw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
-    m_worksheet->m_helpFileAnchors["with_slider_draw"] = m_worksheet->m_helpFileAnchors["draw"];
-    m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = m_worksheet->m_helpFileAnchors["draw2d"];
-    m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = m_worksheet->m_helpFileAnchors["draw3d"];
-    m_worksheet->m_helpFileAnchorsUsable = true;
     wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
   }
   #ifdef HAVE_OMP_HEADER
