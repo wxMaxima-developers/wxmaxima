@@ -81,11 +81,8 @@ Erlaubt, den Pfad zum Maxima Programm anzugeben.
 
 .SH DATEIEN
 .TP
-.I ~/.wxMaxima
-Die pers\(:onliche wxMaxima Initialisierungsdatei, wo pers\(:onliche Einstellungen gespeichert werden [wxWidgets <3.1.1].
-.TP
-.I ~/.config/wxMaxima.conf
-Das pers\(:onliche wxMaxima Initialisierungsdatei, wo pers\(:onliche Einstellungen gespeichert werden [wxWidgets >=3.1.1].
+.I @WXMAXIMA_CONFIGFILE_PATH@
+Die pers\(:onliche wxMaxima Initialisierungsdatei, wo pers\(:onliche Einstellungen gespeichert werden.
 
 .TP
 .I ~/.maxima/wxmaxima-init.mac

@@ -77,15 +77,12 @@ Allows to specify extra Maxima arguments
 
 .TP
 .I \-m, \-\-maxima=<str>
-allows to specify the location of the Maxima binary
+Allows to specify the location of the Maxima binary.
 
 .SH FILES
 .TP
-.I ~/.wxMaxima
-The personal wxMaxima initialization file, where user-specific settings are stored [wxWidgets <3.1.1].
-.TP
-.I ~/.config/wxMaxima.conf
-The personal wxMaxima initialization file, where user-specific settings are stored [wxWidgets >=3.1.1].
+.I @WXMAXIMA_CONFIGFILE_PATH@
+The personal wxMaxima initialization file, where user-specific settings are stored.
 
 .TP
 .I ~/.maxima/wxmaxima-init.mac
