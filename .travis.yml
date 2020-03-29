@@ -2,8 +2,6 @@ language: cpp
 os:
 - linux
 - osx
-#dist:
-#- eoan
 branches:
   except:
   - gh_pages
@@ -11,13 +9,15 @@ branches:
   - DebianPackaging_NightlyBuild
 dist: bionic
 env:
+  global:
   - LANG=en_US.UTF-8
+  - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
 cache:
   ccache: true
   directories:
-  - $HOME/Library/Caches/Homebrew
-  - /usr/local/Homebrew
-  - /usr/local/Cellar/ccache
+  - "$HOME/Library/Caches/Homebrew"
+  - "/usr/local/Homebrew"
+  - "/usr/local/Cellar/ccache"
 addons:
   apt:
     packages:
@@ -56,31 +56,28 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
 - mkdir build
-#- cp .travis/CTestCustom.cmake build
-- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug -DMACOSX_BUNDLE=TRUE .. && cmake --build .
+- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug
+  -DMACOSX_BUNDLE=TRUE .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a make test; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc
+  -print-file-name=libSegFault.so) xvfb-run -a make test; fi
 - cd ..
-- if test a$encrypted_f94fa95f949a_key != a; then openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d; chmod 0600 id_rsa; eval `ssh-agent -s`; ssh-add id_rsa; cat .travis/known_hosts >>~/.ssh/known_hosts; if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi; fi
+- if test a$encrypted_f94fa95f949a_key != a; then openssl aes-256-cbc -K $encrypted_f94fa95f949a_key
+  -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d; chmod
+  0600 id_rsa; eval `ssh-agent -s`; ssh-add id_rsa; cat .travis/known_hosts >>~/.ssh/known_hosts;
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put
+  wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi; fi
 - ccache -s
 deploy:
   provider: releases
-  draft: false
   prerelease: false
+  draft: false
   skip_cleanup: true
   api_key:
-    secure: Zoo6p3CTOMf7mUcUuTrTz03U8xSIvhRCGRQlLGzcU3eF7/bNyo7MyXlePSC3bPsi+Fs7BX41eakQV2E2ycBnwRxMapOAxMv9yhk+nnlGSrS5tagNP1ljcqT30JJrEyDGBVP3S1FqiqMyzESiZLvaYmMzbFyisaiF4Cn6O+XxyU2xRz3EEX6sdhnkd9txU0rwjw/TUksG2xrtJdiOaCKXjjTVbJx1R4pAu2BWIfnFVrliwNNIDVby2riBeqO0QSt5NxU5OuWFXYX9Q6RlxlRmAr6njCVi7GA4uG/c5x7WNKjPiOXFpy2LyvRMlTY2hEL0KVeCqYUArvMkLM3ELyoniQvv+QJk+MnAcvdF+04ioIO9/rhYTtU5bjmZI1uAnzPsXGZJXgIRdxmDcGnFZJbmwlolp/kZtBKR9pwqPOYT2Xymg7QkJwy9R4MaCv2/6EZ/zHxi3qRxiKH+zhT8Ymdsn0UUe96pGw6oiOOdQPvxcOPCVmmJyxjVr9OkvBYjd5yRGZHdfXAs5ZfJGdotVq6OWq906ISQkOdAB2CDSklmGjXEf3d1RSxiueSC2rQa0h+/6kDzyRyHKFX+dtdLlHqKdvjRWXVmDMXrZ+qj6oZTykfa5s8BzcykmsLnVS1txw8at4P3/BsFshUAuMPmBg3cs7dLpwezEN+Yu+4dxkImYX4=
-  file: build/src/*.dmg
-  cleanup: false
+    secure: llKC2D/xCA+2EjUbXOREFDXYKuKpRLBl6tXPXulgYfn+QcorAZxEVP30+T6cQDOjeEPvHu2zCp2NBhNKHVgWSn/vBXzeGqD5XhYCp68AK4TUDo//IjeFvbKRdEpWZtTGAhiZMn/mWNUQI8g/w0XrUJyvBnnbBCggnMFvOXcIBZux1R+YLaIZGTc7LaKu4Gjqvaq3hEnlGyAs5MeOLUv5mQddeHKuAEIPxkE10ctFg2gdgY5XlhKrMPCYmWzxqa3ZsBqQZOHvmo4PvD29OlYecPlCAm/X7oWctu5P1IGMVydIXj9iAs/S2GWWAK70tFkRBKUO/mO4N/WP+sMtvntn/28iwIbxfjTawUXLNzIEuH+PMaWW1SMOOfOlETvNemFsnPIxNoOwy6yzVZLm/wIsFTXoIRUqpesgCxJe7+n+bwHeBe34D6qQ7SI/7BOTdcKHiHiW1DyluQ7L4rEC7ExQxDuJwss2wR/3ZozWBxUaE0Ycid8EIIdf5gZjn8DWlk6vz73tFa4foNm1s57qojrjBv6H0BgXgPWKf/xUYF6UuVbc+nc9wFZpUnUnG2ACHlJs5ue7spcTIV+oHyI677lFNwRCRH/iAC876shLsK2uVg2PYvc2Z4nMGzKksYp3Cd3ORd+9f2OvS9RFT587YJKHWj1h4Pynw914DZrxu/imsBE=
+  file: wxMaxima.dmg
   on:
+    repo: wxMaxima-developers/wxmaxima
     tags: true
-before_cache:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
-# Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
-# Cache only .git files under "/usr/local/Homebrew" so "brew update" does not take 5min every build
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
-env:
-  global:
-    - LANG=en_US.UTF-8
-    - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
+    all_branches: true
