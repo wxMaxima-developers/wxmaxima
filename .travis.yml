@@ -68,7 +68,7 @@ deploy:
   provider: releases
   prerelease: false
   draft: false
-  skip_cleanup: true
+  cleanup: false
   api_key:
     secure: llKC2D/xCA+2EjUbXOREFDXYKuKpRLBl6tXPXulgYfn+QcorAZxEVP30+T6cQDOjeEPvHu2zCp2NBhNKHVgWSn/vBXzeGqD5XhYCp68AK4TUDo//IjeFvbKRdEpWZtTGAhiZMn/mWNUQI8g/w0XrUJyvBnnbBCggnMFvOXcIBZux1R+YLaIZGTc7LaKu4Gjqvaq3hEnlGyAs5MeOLUv5mQddeHKuAEIPxkE10ctFg2gdgY5XlhKrMPCYmWzxqa3ZsBqQZOHvmo4PvD29OlYecPlCAm/X7oWctu5P1IGMVydIXj9iAs/S2GWWAK70tFkRBKUO/mO4N/WP+sMtvntn/28iwIbxfjTawUXLNzIEuH+PMaWW1SMOOfOlETvNemFsnPIxNoOwy6yzVZLm/wIsFTXoIRUqpesgCxJe7+n+bwHeBe34D6qQ7SI/7BOTdcKHiHiW1DyluQ7L4rEC7ExQxDuJwss2wR/3ZozWBxUaE0Ycid8EIIdf5gZjn8DWlk6vz73tFa4foNm1s57qojrjBv6H0BgXgPWKf/xUYF6UuVbc+nc9wFZpUnUnG2ACHlJs5ue7spcTIV+oHyI677lFNwRCRH/iAC876shLsK2uVg2PYvc2Z4nMGzKksYp3Cd3ORd+9f2OvS9RFT587YJKHWj1h4Pynw914DZrxu/imsBE=
   file: wxMaxima.dmg
