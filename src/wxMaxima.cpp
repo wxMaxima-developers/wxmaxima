@@ -5015,7 +5015,8 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
   m_worksheet->RecalculateForce();
   wxUpdateUIEvent dummy;
   UpdateMenus(dummy);
-
+  m_worksheet->UpdateMLast();
+  
   return retval;
 }
 
