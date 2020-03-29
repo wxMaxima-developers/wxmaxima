@@ -5012,6 +5012,10 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
   else
     RightStatusText(_("File could not be opened"));
 
+  m_worksheet->RecalculateForce();
+  wxUpdateUIEvent dummy;
+  UpdateMenus(dummy);
+
   return retval;
 }
 
