@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-22 17:47+0100\n"
-"PO-Revision-Date: 2020-02-12 11:12MSK\n"
+"PO-Revision-Date: 2020-03-30 17:11+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 19.12.3\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:183
 #, c-format
@@ -52,6 +52,8 @@ msgid ""
 "\n"
 "Maxima compiled using: "
 msgstr ""
+"\n"
+"Сборка Maxima была выполнена с помощью:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7983
 msgid ""
@@ -67,18 +69,24 @@ msgid ""
 "\n"
 "Multiprocessing using OpenMP %s"
 msgstr ""
+"\n"
+"Многопроцессорная обработка с помощью OpenMP %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7979
 msgid ""
 "\n"
 "No OpenMP support"
 msgstr ""
+"\n"
+"Нет поддержки OpenMP"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7976
 msgid ""
 "\n"
 "No fine-grained OpenMP locks built in"
 msgstr ""
+"\n"
+"Нет встроенных детальных блокировок OpenMP"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7985
 msgid ""
@@ -93,6 +101,8 @@ msgid ""
 "\n"
 "Using fine-grained OpenMP locks"
 msgstr ""
+"\n"
+"Используются детальные блокировки OpenMP"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:969
 msgid "      -X \"--dynamic-space-size <int>\""
@@ -519,7 +529,7 @@ msgstr "3D"
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:222
 #, c-format
 msgid ": Can't interpret line: %s"
-msgstr ""
+msgstr ": не удалось разобрать строку: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4360
 #, c-format
@@ -609,7 +619,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1422
 msgid "A ridiculously advanced example\n"
-msgstr ""
+msgstr "Очень сложный пример\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:334
 msgid ""
@@ -1065,6 +1075,8 @@ msgstr ""
 #, c-format
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr ""
+"Автодополнение: рекурсивное сканирование %s на наличие файлов Lisp, которые"
+" можно загрузить."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:924
 msgid "Autodetect"
@@ -1108,12 +1120,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5416
 #, c-format
 msgid "Autosaving as temp file %s"
-msgstr ""
+msgstr "Автосохранение во временный файл %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5433
 #, c-format
 msgid "Autosaving the .wxmx file as %s"
-msgstr ""
+msgstr "Автосохранение файла .wxmx как %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:768
 msgid "Autosubscript"
@@ -1595,10 +1607,12 @@ msgstr "Не удалось поместить скопированный тек
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3178
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
+"Не удалось поместить скопированный текст в буфер обмена (первая попытка)"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3182
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
+"Не удалось поместить скопированный текст в буфер обмена (вторая попытка)"
 
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:86
 #, c-format
@@ -1607,12 +1621,12 @@ msgstr "Не удалось удалить файл %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1774
 msgid "Cannot set the communication address to localhost."
-msgstr ""
+msgstr "Не удалось установить адрес связи в значение localhost."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1776
 #, c-format
 msgid "Cannot set the communication port to %i."
-msgstr ""
+msgstr "Не удалось установить порт связи в значение %i."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5821
 msgid "Cannot start gnuplot"
@@ -1827,7 +1841,7 @@ msgstr "Компиляция %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4110
 msgid "Compiling the list of anchors the maxima manual provides"
-msgstr ""
+msgstr "Компиляция списка ключевых слов из руководства пользователя Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:837
 msgid "Complete Word\tCtrl+K"
@@ -1924,11 +1938,11 @@ msgstr "Содержимое"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1298
 msgid "Context-sensitive &Help\tCtrl+?"
-msgstr ""
+msgstr "Контекстная &справка\tCtrl+?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1301
 msgid "Context-sensitive &Help\tF1"
-msgstr ""
+msgstr "Контекстная &справка\tF1"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1677
 msgid "Continuing sending data to maxima."
@@ -2507,7 +2521,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1052
 msgid "Documentation+Code font:"
-msgstr ""
+msgstr "Шрифт документации и кода:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:727
 msgid "Documentclass for TeX export:"
@@ -3432,17 +3446,17 @@ msgstr "Формат:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4164
 #, c-format
 msgid "Found %i anchors."
-msgstr ""
+msgstr "Найдено ключевых слов: %i."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:316
 #, c-format
 msgid "Found %li demo files."
-msgstr ""
+msgstr "Найдено демонстрационных файлов: %li."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:292
 #, c-format
 msgid "Found %li loadable files."
-msgstr ""
+msgstr "Найдено доступных для загрузки файлов: %li."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:122
 #, c-format
@@ -3720,7 +3734,7 @@ msgstr "Кнопка «Справка»"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1698
 #, c-format
 msgid "Help on \"%s\""
-msgstr ""
+msgstr "Справка по «%s»"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:296
 msgid "Hide"
@@ -3924,6 +3938,11 @@ msgid ""
 "differential equation that describes the general shapes the curve can have "
 "without describing its actual height.\n"
 msgstr ""
+"Если уравнение, которое определяет форму кривой, содержит наклон кривой"
+" (diff('f(x),x)), наклон наклона кривой (diff('f(x),x,2)) или любую другую"
+" производную, результатом является дифференциальное уравнение, которое"
+" описывает общие формы, которые может иметь кривая, не описывая её"
+" фактическую высоту.\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:312
 msgid ""
@@ -4086,6 +4105,8 @@ msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
 msgstr ""
+"Файлы изображений (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg,"
+" *.svgz)|*.png;*.jpg;*.bmp;*.xpm;*.gif;*.svg;*.svgz"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2141
 msgid "Implicit Plot"
@@ -4445,7 +4466,7 @@ msgstr "Умное скрытие квадратных скобок полей"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:868
 msgid "Interactive popup memory limit [MB/plot]:"
-msgstr ""
+msgstr "Ограничение памяти для интерактивного открытия [МБ/график]:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1232
 msgid "Interleave"
@@ -4581,6 +4602,8 @@ msgstr "Перейти к первой ошибке"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:928
 msgid "Jump to the first cell Maxima has reported an error in."
 msgstr ""
+"Перейти к первому полю, в отношении которого от Maxima поступило сообщение об"
+" ошибке."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1259
 msgid ""
@@ -4966,6 +4989,18 @@ msgid ""
 "have problems aligning and scaling with the rest of the text and might use "
 "fonts that don't match the rest of the document."
 msgstr ""
+"MathJAX создаёт масштабируемые высококачественные представления двумерных"
+" расчётов, которые можно перетаскивать, а также предоставляет опции"
+" управления доступностью. Недостатками MathJAX являются необходимость наличия"
+" JavaScript и трата времени на набор уравнений.\n"
+"MathML работает намного быстрее MathJaX, если поддерживается браузером. Но во"
+" многих реализациях MathML не хватает необходимых возможностей.\n"
+"Растровые изображения требуют отправки большего объёма данных, чем первые два"
+" варианта. Они не поддерживают расширенные возможности, например,"
+" перетаскивание или опции управления доступностью. Кроме того, сложно"
+" выполнять их выравнивание и масштабирование относительно остального текста."
+" В растровых изображениях могут использоваться шрифты, которые не"
+" соответствуют шрифтам остального документа."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:748
 msgid "MathML + MathJaX as Fill-In"
@@ -5323,6 +5358,19 @@ msgid ""
 "    at(result,Values);\n"
 "    float(%);"
 msgstr ""
+"Maxima позволяет преобразовывать уравнения и выполнять символьные вычисления."
+" Поэтому лучше пореже использовать функции (а чаще — уравнения с метками) и"
+" сохранять фактические значения переменных в списке, а не назначать"
+" переменным значения напрямую. Пример такого сеанса:\n"
+"\n"
+"/* Фактические значения сохраняются в списке, чтобы их можно было"
+" использовать в дальнейшем */\n"
+"    Values:[a=10,c=100];\n"
+"    Pyth:a^2+b^2=c^2;\n"
+"    solve(%,b);\n"
+"    result:%[2];\n"
+"    at(result,Values);\n"
+"    float(%);"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:49
 msgid ""
@@ -5611,11 +5659,11 @@ msgstr "Без знака доллара ($) или точки с запятой
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:590
 msgid "No gnuplot data!"
-msgstr ""
+msgstr "Нет данных Gnuplot!"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:641
 msgid "No gnuplot source!"
-msgstr ""
+msgstr " Нет исходного кода Gnuplot!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4001
 #, c-format
@@ -5708,7 +5756,7 @@ msgstr "Неверное число уравнений!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:553
 msgid "Not connected to Maxima"
-msgstr ""
+msgstr "Нет соединения с Maxima"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:581
 msgid "Now we generate a matrix of values lsquares can deal with:\n"
@@ -5925,7 +5973,7 @@ msgstr "Открытие файла"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4207
 #, c-format
 msgid "Opening help file %s"
-msgstr ""
+msgstr "Открытие файла справки %s"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:78
 msgid "Optional: A 2nd expression that defines a region to fill"
@@ -5993,6 +6041,9 @@ msgid ""
 "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
+"PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|GIF (*.gif)|*.gif|"
+"SVG (*.svg)|*.svg|Windows Bitmap (*.bmp)|*.bmp|Portable "
+"anymap (*.pnm)|*.pnm|TIFF (*.tif)|*.tif|X PixMap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8902
 msgid ""
@@ -6000,6 +6051,9 @@ msgid ""
 "bmp|GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file "
 "format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
+"PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|Windows Bitmap (*.bmp)|*.bmp|GIF"
+" (*.gif)|*.gif|Portable "
+"anymap (*.pnm)|*.pnm|TIFF (*.tif)|*.tif|X PixMap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:343
 msgid ""
@@ -6244,7 +6298,7 @@ msgstr "Postscript (*.eps)|*.eps|Все|*"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1670
 msgid "Pre- and post- super- and subscripts\n"
-msgstr ""
+msgstr "Левые и правые верхние и нижние индексы\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7898
 msgid "Precision"
@@ -6622,6 +6676,10 @@ msgid ""
 "often one encounters similar in real live including a big fraction of the "
 "glitches one can find in computer games.\n"
 msgstr ""
+"Рамп и Уилкинсон привели примеры простых полиномов, где ошибка накапливается"
+" очень быстро и становится огромной. В реальной жизни подобные случаи"
+" встречаются очень часто (примером может служить значительная доля сбоев в"
+" компьютерных играх).\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5815
 msgid "Running gnuplot as: "
@@ -6799,6 +6857,10 @@ msgid ""
 "gif)|*.gif|Windows bitmap (*.bmp)|*.bmp|Portable anymap (*.pnm)|*.pnm|Tagged "
 "image file format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
+"SVG (*.svg)|*.svg|SVGZ (*."
+"svgz)|*.svgz|PNG(*.png)|*.png|JPEG (*.jpg)|*.jpg|GIF (*."
+"gif)|*.gif|Windows Bitmap (*.bmp)|*.bmp|Portable "
+"anymap (*.pnm)|*.pnm|TIFF (*.tif)|*.tif|X PixMap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8194
 msgid "Scatterplot"
@@ -6855,7 +6917,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:267
 msgid "Seems like the package with the maxima share files isn't installed."
-msgstr ""
+msgstr "Вероятно, пакет с общими файлами Maxima не установлен."
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 msgid "Select"
@@ -6928,7 +6990,7 @@ msgstr "Отправка сигнала SIGINT в Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:514
 msgid "Sending a command to Maxima"
-msgstr ""
+msgstr "Отправка команды в Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2118
 msgid "Sending a wxSIGKILL to maxima has failed"
@@ -7440,7 +7502,7 @@ msgstr "Решение уравнений\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1319
 msgid "Solving equations with Maxima"
-msgstr ""
+msgstr "Решение уравнений с помощью Maxima"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:324
 msgid ""
@@ -7584,26 +7646,28 @@ msgid ""
 "Starting a background task that compiles a new list of autocompletible "
 "maxima commands."
 msgstr ""
+"Запуск фоновой задачи по компиляции нового списка команд Maxima для"
+" автодополнения."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:411
 msgid "Starting a background task that scans for autocompletible file names."
-msgstr "Запуск фоновой задачи по поиску автодополняемых файлов."
+msgstr "Запуск фоновой задачи по поиску файлов для автодополнения."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
 msgid "Starting a background task that setups the autocompletable files list."
-msgstr ""
+msgstr "Запуск фоновой задачи по созданию списка файлов для автодополнения."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
 msgid "Starting a background task that setups the autocomplete builtins list."
-msgstr ""
+msgstr "Запуск фоновой задачи по созданию списка встроенных команд."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:251
 msgid "Starting background task that loads the gnuplot data for a plot."
-msgstr ""
+msgstr "Запуск фоновой задачи по загрузке данных Gnuplot для графика."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:888
 msgid "Starting background thread that loads an image"
-msgstr ""
+msgstr "Запуск фонового потока для загрузки изображения"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2277
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4994
@@ -7618,7 +7682,7 @@ msgstr "Не удалось запустить сервер"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1770
 #, c-format
 msgid "Starting server on port %d"
-msgstr "Запуск сервера на порту %d"
+msgstr "Запуск сервера на порте %d"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6467
 msgid "Starting to save the worksheet as .wxmx"
@@ -7638,7 +7702,7 @@ msgstr "Статистика\tAlt+Shift+S"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:239
 msgid "Status Text"
-msgstr ""
+msgstr "Текст состояния"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5362
 msgid "String from maxima apparently didn't end in a newline"
@@ -7787,6 +7851,8 @@ msgid ""
 "Thanks to Robert Dodier it is now possible to equip variables with super-, "
 "and subscripts that are displayed left of the variable name, too:\n"
 msgstr ""
+"Благодаря Robert Dodier появилась возможность дополнять переменные верхними и"
+" нижними индексами, которые отображаются слева от имени переменной:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:162
 msgid ""
@@ -8029,11 +8095,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1308
 msgid "The offline manual of Maxima"
-msgstr ""
+msgstr "Автономное руководство по Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1305
 msgid "The offline manual of wxMaxima"
-msgstr ""
+msgstr "Автономное руководство по wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:355
 msgid ""
@@ -8476,11 +8542,11 @@ msgstr "Расчёты допусков\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1323
 msgid "Tolerance calculations with Maxima"
-msgstr ""
+msgstr "Расчёты допусков с помощью Maxima"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:277
 msgid "Too much gnuplot data => Not storing it in the worksheet"
-msgstr ""
+msgstr "Слишком большой объём данных Gnuplot => Они не будут сохранены в листе"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:128
 #, c-format
@@ -8504,12 +8570,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Image.cpp:155
 #, c-format
 msgid "Trying to delete gnuplot file %s"
-msgstr ""
+msgstr "Попытка удалить файл Gnuplot %s"
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:194
 #, c-format
 msgid "Trying to load a list of autocompletible symbols from file %s"
-msgstr ""
+msgstr "Попытка загрузить список символов автодополнения из файла %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4864
 msgid "Trying to open a file with an empty name!"
@@ -8523,7 +8589,7 @@ msgstr "Попытка открыть несуществующий файл %s"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5424
 #, c-format
 msgid "Trying to remove the old temp file %s"
-msgstr ""
+msgstr "Попытка удалить старый временный файл %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1740
 msgid "Trying to restart maxima."
@@ -8532,7 +8598,7 @@ msgstr "Попытка перезапустить Maxima."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:304
 #, c-format
 msgid "Trying to start a server on port %i instead"
-msgstr ""
+msgstr "Попытка запустить сервер на порте %i"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:175
 msgid "Turkish"
@@ -8635,6 +8701,25 @@ msgid ""
 "leads to numbers that exceed the floating-point range (or exact numbers "
 "longer than the computer's memory).\n"
 msgstr ""
+"К сожалению, по ряду причин с экспериментальными данными сложно работать по"
+" этому подходу, например:\n"
+" * Одна часть кривой состоит из низких значений. Даже небольшой шум измерения"
+" в этой части приведёт к крайне некорректным результатам определения"
+" параметров кривой, так как средство аппроксимации пытается смоделировать"
+" также и шум, а шум в нелинейных системах обычно не удаётся полностью"
+" усреднить.\n"
+" * Другая часть кривой содержит довольно высокие значения и чувствительна"
+" даже к небольшим изменениям k. Так как средство аппроксимации пытается"
+" сохранить общую погрешность на низком уровне, оно будет непропорционально"
+" учитывать эту часть, придавая больший вес части кривой с низкими"
+" значениями.\n"
+" * Выбор неверной начальной точки и оптимизация a и k в направлении, которое"
+" больше всего уменьшает погрешность, может привести к нахождению точки,"
+" которая очень далека от решения.\n"
+" * Кроме того, попытка использовать lsquares_estimates для поиска идеального"
+" решения часто даёт числа, которые находятся за пределами диапазона чисел с"
+" плавающей точкой (или точные числа, длина которых превышает поддерживаемую"
+" оперативной памятью компьютера).\n"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:293
 msgid "Unhide"
@@ -9550,6 +9635,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1909
 msgid "sqrt (needs parenthesis for its argument to work as a Maxima command)"
 msgstr ""
+"sqrt (для аргумента нужны скобки, чтобы можно было использовать функцию в"
+" качестве команды Maxima)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1934
 msgid "subset"
@@ -9727,7 +9814,7 @@ msgstr "Ошибка при загрузке wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1304
 msgid "wxMaxima help"
-msgstr ""
+msgstr "Справка по wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7961
 msgid ""
@@ -9768,6 +9855,11 @@ msgid ""
 "draw() in order to be able to open plots interactively in gnuplot later. "
 "This setting defines the limit [in Megabytes per plot] for this feature."
 msgstr ""
+"Обычно wxMaxima сохраняет исходники Gnuplot для каждого графика, созданного с"
+" помощью draw() — это позволяет в дальнейшем интерактивно открывать графики в"
+" Gnuplot. "
+"Этот параметр определяет предельное количество памяти [в мегабайтах на"
+" график], которое выделяется для этой возможности."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:141
 msgid ""
