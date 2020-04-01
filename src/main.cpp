@@ -30,7 +30,7 @@
 #include <wx/intl.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
-
+#include <wx/utils.h> 
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
 #include <wx/sysopt.h>
@@ -96,8 +96,13 @@ bool MyApp::OnInit()
     #if wxUSE_ON_FATAL_EXCEPTION
     wxHandleFatalExceptions(true);
     #endif
-    // MSW: This should be faster, but might crash on closing on Win7.
-    wxSystemOptions::SetOption("msw.display.directdraw","1");
+    int major;
+    int minorM
+      wxGetOsVersion(&major, &minor);
+    
+    // Directdraw should be faster, but crashes on closing on Win7.
+    if((major >6) || (minor >1))
+      wxSystemOptions::SetOption("msw.display.directdraw","1");
     // No spell checking in our dialog's input portions on the mac.
     wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker","0");
     
