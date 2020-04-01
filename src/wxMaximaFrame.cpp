@@ -100,7 +100,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_logPane = new LogPane(this, -1, becomeLogTarget);
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
   #ifdef __WXMSW__
-  wxLogMessage(_("Running on MS Windows"));
+  if(wxSystemOptions::IsFalse("msw.display.directdraw"))
+    wxLogMessage(_("Running on MS Windows"));
+  else
+    wxLogMessage(_("Running on MS Windows using DirectDraw"));
   #endif
   #ifdef __WXMOTIF__
   wxLogMessage(_("Running on Motif"));
