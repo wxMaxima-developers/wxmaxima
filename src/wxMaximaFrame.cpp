@@ -41,6 +41,7 @@
 #include <wx/persist/toplevel.h>
 #include <wx/display.h>
 #include <wx/wupdlock.h>
+#include <wx/sysopt.h>
 #include "wxMaximaIcon.h"
 #include "Gen1Wiz.h"
 #include "UnicodeSidebar.h"
