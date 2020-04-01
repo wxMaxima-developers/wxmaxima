@@ -97,8 +97,8 @@ bool MyApp::OnInit()
     wxHandleFatalExceptions(true);
     #endif
     int major;
-    int minorM
-      wxGetOsVersion(&major, &minor);
+    int minor;
+    wxGetOsVersion(&major, &minor);
     
     // Directdraw should be faster, but crashes on closing on Win7.
     if((major > 6) || ((major == 6) && (minor >1)))
