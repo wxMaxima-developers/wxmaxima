@@ -353,6 +353,7 @@ class Cell
   {
     bool result = (m_breakLine == breakLine);
     m_breakLine = breakLine;
+    return result;
   }
 
   //! Does this cell to start with a linebreak?
