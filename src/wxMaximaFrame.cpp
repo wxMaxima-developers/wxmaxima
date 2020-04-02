@@ -61,7 +61,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   wxWindowUpdateLocker noUpdates(this);
-
   // Add some shortcuts that aren't automatically set by menu entries.
   wxAcceleratorEntry entries[27];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
