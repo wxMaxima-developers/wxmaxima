@@ -986,7 +986,8 @@ bool Worksheet::RecalculateIfNeeded()
     tmp = tmp->GetNext();
   }
 
-  AdjustSize();
+  if(m_configuration->AdjustWorksheetSize())
+    AdjustSize();
   m_configuration->RecalculationForce(false);
   m_configuration->FontChanged(false);
 
