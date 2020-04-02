@@ -105,6 +105,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   else
     wxLogMessage(_("Running on MS Windows using DirectDraw"));
   #endif
+  
+  int major = 0;
+  int minor = 0;
+  wxGetOsVersion(&major, &minor);
+  wxLogMessage(wxString::Format(_("OS Version: %i.%i"), major, minor));
+  
   #ifdef __WXMOTIF__
   wxLogMessage(_("Running on Motif"));
   #endif
