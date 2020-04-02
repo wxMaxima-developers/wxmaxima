@@ -5,7 +5,9 @@
  * Right-click-suggestions for similar command names
  * Corrected the initial slideshow size
  * An Ukrainian translation update from Yuri Chornoivan
+ * A Russian translation update from OlesyaGerasimenko
  * Many spelling corrections and better formulations
+ * Another noticeable SpeedUp
 
 #20.03.0
  * Corrected a few last bugs for pre- and post- super- and subscripts
