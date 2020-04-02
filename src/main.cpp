@@ -103,6 +103,8 @@ bool MyApp::OnInit()
     // Directdraw should be faster, but crashes on closing on Win7.
     if((major > 6) || ((major == 6) && (minor >1)))
       wxSystemOptions::SetOption("msw.display.directdraw","1");
+    else
+      wxSystemOptions::SetOption("msw.display.directdraw","0");
     // No spell checking in our dialog's input portions on the mac.
     wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker","0");
     
