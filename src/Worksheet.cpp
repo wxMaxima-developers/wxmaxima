@@ -7843,10 +7843,10 @@ void Worksheet::MergeCells()
 
   m_cellPointers.m_selectionStart = m_cellPointers.m_selectionStart->GetNext();
   DeleteSelection();
-  editor->GetGroup()->ResetSize();
   dynamic_cast<GroupCell *>(editor->GetGroup())->ResetInputLabel();
   dynamic_cast<GroupCell *>(editor->GetGroup())->RemoveOutput();
   editor->ResetSize();
+  editor->GetGroup()->ResetSize();
   Recalculate();
   SetActiveCell(editor, true);
   ScrolledAwayFromEvaluation();

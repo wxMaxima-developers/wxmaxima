@@ -277,7 +277,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_logPane,
                     wxAuiPaneInfo().Name(wxT("log")).
-                            Show(false).CloseButton(true).PinButton().
+                            Show(true).CloseButton(true).PinButton().
                             DockFixed(false).
                             Gripper(false).
                             TopDockable(true).
