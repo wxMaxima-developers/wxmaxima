@@ -219,7 +219,7 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
             m_wordList[unit].Add(line);
           else
             wxLogMessage(privateList +
-                         wxString::Format(_(": Can't interpret line: %s")), line);
+                         wxString::Format(_(": Can't interpret line: %s")), line.utf8_str());
         }
       }
       priv.Close();
