@@ -507,7 +507,7 @@ void Cell::RecalculateWidths(int WXUNUSED(fontsize))
 
 void Cell::RecalculateHeight(int fontsize)
 {
-  if(RecalculateNeeded)
+  if(NeedsRecalculation(fontsize))
     ResetData();
   m_fontSize = fontsize;
   m_fontsize_old = fontsize;
