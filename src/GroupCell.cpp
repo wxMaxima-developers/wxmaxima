@@ -719,8 +719,8 @@ void GroupCell::RecalculateWidths(int fontsize)
       }
     }
     BreakLines();
+    ResetData();
   }
-  ResetData();
   Cell::RecalculateWidths(fontsize);
 }
 
