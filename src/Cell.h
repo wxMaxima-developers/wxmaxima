@@ -349,8 +349,11 @@ class Cell
   int m_imageBorderWidth;
 
   //! Do we want this cell to start with a linebreak?
-  void SoftLineBreak(bool breakLine = true)
-  { m_breakLine = breakLine; }
+  bool SoftLineBreak(bool breakLine = true)
+  {
+    bool result = (m_breakLine == breakLine);
+    m_breakLine = breakLine;
+  }
 
   //! Does this cell to start with a linebreak?
   bool LineBreakAtBeginning() const

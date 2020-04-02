@@ -190,8 +190,10 @@ void BitmapOut::BreakLines()
   {
     if (!tmp->m_isBrokenIntoLines)
     {
-      tmp->SoftLineBreak(false);
-      tmp->ResetData();
+      if(tmp->SoftLineBreak(false))
+      {
+        tmp->ResetData();
+      }
       if (tmp->BreakLineHere() ||
           (currentWidth + tmp->GetWidth() >= fullWidth))
       {
