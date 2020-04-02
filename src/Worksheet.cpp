@@ -4351,6 +4351,7 @@ void Worksheet::AdjustSize()
     
     SetScrollRate(m_scrollUnit, m_scrollUnit);
   }
+  m_configuration->AdjustWorksheetSize(false);
 }
 
 /***
