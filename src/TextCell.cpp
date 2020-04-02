@@ -580,9 +580,9 @@ void TextCell::RecalculateWidths(int fontsize)
         m_width = Scale_Px(fontsize) / 4;
       }
     }
+    if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
+    m_realCenter = m_center = m_height / 2;
   }
-  if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
-  m_realCenter = m_center = m_height / 2;
   Cell::RecalculateWidths(fontsize);
 }
 
