@@ -450,7 +450,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.GetPane(wxT("greek")) =
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton(true).PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("log")) =
-    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton(true).PinButton().Resizable().Gripper(false);
+    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton(true).PinButton().Resizable().Gripper(false).Show(false);
   m_manager.GetPane(wxT("variables")) =
     m_manager.GetPane(wxT("variables")).Caption(_("Variables")).CloseButton(true).PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
