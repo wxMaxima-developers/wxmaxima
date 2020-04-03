@@ -232,8 +232,7 @@ Configuration::Configuration(wxDC *dc) :
   else
     m_mathFontName = wxEmptyString;
   #endif
-  m_defaultFontSize = 12;
-  m_mathFontSize = m_defaultFontSize;
+  m_mathFontSize = 12;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
   m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
@@ -530,12 +529,12 @@ int Configuration::GetLineWidth() const
   // The default line width is the width of the viewport minus the indentation minus
   // roughly one char
   int lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
-                                           GetCellBracketWidth() + m_defaultFontSize);
+                                           GetCellBracketWidth() + GetDefaultFontSize());
 
   // If that was suspiciously wide we reduce the default line width again.
-  if((lineWidth >= Scale_Px(double(m_defaultFontSize)) * LineWidth_em()) &&
+  if((lineWidth >= Scale_Px(double(GetDefaultFontSize())) * LineWidth_em()) &&
      (!m_printing))
-    lineWidth = Scale_Px(double(m_defaultFontSize)) * LineWidth_em();
+    lineWidth = Scale_Px(double(GetDefaultFontSize())) * LineWidth_em();
   return lineWidth;
 }
 
@@ -754,7 +753,6 @@ void Configuration::ReadStyles(wxString file)
   }
 #endif
 
-  config->Read(wxT("fontSize"), &m_defaultFontSize);
   config->Read(wxT("mathfontsize"), &m_mathFontSize);
   int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
@@ -821,7 +819,6 @@ void Configuration::WriteStyles(wxString file)
 
   // Font
   config->Write("Style/Default/Style/Text/fontname", m_fontName);
-  config->Write(wxT("fontSize"), m_defaultFontSize);
   config->Write(wxT("mathfontsize"), m_mathFontSize);
   config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
   config->Write("Style/Math/fontname", m_mathFontName);

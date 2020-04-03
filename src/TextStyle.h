@@ -40,9 +40,9 @@ public:
   Style():m_color(*wxBLACK),
           m_bold(false),
           m_italic(false),
-          m_underlined(false)
+          m_underlined(false),
+          m_fontSize(10)
     {
-      m_fontSize = 10;
     };
   //! Read thisstyle from a config source
   void Read(wxConfigBase *config, wxString where);
@@ -52,7 +52,7 @@ public:
   void Set(wxString name,
            wxColor color,
            bool bold = false, bool italic = false, bool underlined = false,
-           int fontSize=10)
+           int fontSize = 10)
     {
       m_name = name;
       m_color = color;

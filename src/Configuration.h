@@ -394,10 +394,12 @@ public:
   int GetLineWidth() const;
 
   int GetDefaultFontSize() const
-  { return m_defaultFontSize; }
+  { return m_styles[TS_DEFAULT].FontSize(); }
 
   void SetDefaultFontSize(int fontSize)
-  { m_defaultFontSize = fontSize; }
+  {
+    m_styles[TS_DEFAULT].FontSize(fontSize);
+  }
 
   int GetMathFontSize() const
   { return m_mathFontSize; }
@@ -916,7 +918,7 @@ private:
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
   wxString m_fontName;
-  int m_defaultFontSize, m_mathFontSize;
+  int m_mathFontSize;
   wxString m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
