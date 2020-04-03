@@ -400,7 +400,7 @@ Worksheet::~Worksheet()
 
   ClearDocument();
   m_configuration = NULL;
-  wxDELETE(m_dc);
+//  wxDELETE(m_dc);
   m_dc = NULL;
   wxDELETE(m_tree);
   m_tree =NULL;
