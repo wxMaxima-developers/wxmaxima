@@ -1322,11 +1322,12 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   wxFont font;
   int fontsize = m_configuration->GetDefaultFontSize();
   wxString fontName;
-
+  
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-
+  
   if (
     (st == TS_TEXT)          ||
+    (st == TS_DEFAULT)       ||
     (st == TS_TITLE)         ||
     (st == TS_HEADING6)      ||
     (st == TS_HEADING5)      ||
@@ -1362,7 +1363,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   
   font.SetPointSize(fontsize);
   font = wxGetFontFromUser(this, font);
-
+  
   if (font.IsOk())
   {
     if (event.GetId() == font_family)
