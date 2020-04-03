@@ -312,6 +312,7 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
 
   wxApp::SetExitOnFrameDelete(false);
+  wxMenuBar::SetAutoWindowMenu(true);
   wxMenuBar *menuBar = new wxMenuBar;
   // Enables the window list on MacOs.
   menuBar->SetAutoWindowMenu(true);
