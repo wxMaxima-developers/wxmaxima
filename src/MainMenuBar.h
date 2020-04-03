@@ -29,9 +29,8 @@
 #include <wx/wx.h>
 #include <wx/menu.h>
 
-/*! A panel that shows an example image
+/*! A menu bar that flickers less on MS windows
 
-  From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
  */
 class MainMenuBar : public wxMenuBar
 {
