@@ -7848,7 +7848,7 @@ void Worksheet::MergeCells()
   dynamic_cast<GroupCell *>(editor->GetGroup())->RemoveOutput();
   editor->ResetSize();
   editor->GetGroup()->ResetSize();
-  Recalculate();
+  Recalculate(editor->GetGroup());
   SetActiveCell(editor, true);
   ScrolledAwayFromEvaluation();
 }
