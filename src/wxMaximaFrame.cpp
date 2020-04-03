@@ -635,7 +635,9 @@ void wxMaximaFrame::SetupMenu()
   
   m_MenuBar = new MainMenuBar();
   // Enables the window list on MacOs.
+  #ifdef __WXMAC__
   m_MenuBar->SetAutoWindowMenu(true);
+  #endif
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
