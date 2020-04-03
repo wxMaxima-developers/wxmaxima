@@ -38,10 +38,10 @@ class Style
 public:
   //! The constructor
   Style():m_color(*wxBLACK),
+          m_fontSize(10),
           m_bold(false),
           m_italic(false),
-          m_underlined(false),
-          m_fontSize(10)
+          m_underlined(false)
     {
     };
   //! Read thisstyle from a config source
