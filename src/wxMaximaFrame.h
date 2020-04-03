@@ -60,7 +60,7 @@ public:
   wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
-                long style = wxDEFAULT_FRAME_STYLE, bool becomeLogTarget = true);
+                long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
 
   /*! The destructor
   */

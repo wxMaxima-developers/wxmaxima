@@ -179,7 +179,7 @@ void wxMaxima::ConfigChanged()
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
                    const wxString &filename, const wxPoint pos, const wxSize size) :
-  wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
+  wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
                 MyApp::m_topLevelWindows.empty()),
   m_openFile(filename),
   m_gnuplotcommand("gnuplot"),
