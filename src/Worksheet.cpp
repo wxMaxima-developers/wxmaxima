@@ -953,6 +953,7 @@ bool Worksheet::RecalculateIfNeeded()
   {
     if(m_configuration->AdjustWorksheetSize())
       AdjustSize();
+    m_recalculateStart = NULL;
     return false;
   }
   m_configuration->AdjustWorksheetSize(false);

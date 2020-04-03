@@ -4403,9 +4403,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
       )
     {
+      m_updateEvaluationQueueLengthDisplay = false;
       event.RequestMore();
       return;
     }
+    m_updateEvaluationQueueLengthDisplay = false;
   }
 
   if(m_worksheet != NULL)
@@ -4444,6 +4446,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
                                      !(m_findData.GetFlags() & wxFR_MATCHCASE));
         }
 
+        m_oldFindString = m_worksheet->m_findDialog->GetData()->GetFindString();
+        m_oldFindFlags = m_worksheet->m_findDialog->GetData()->GetFlags();
         m_worksheet->RequestRedraw();
         event.RequestMore();
         return;
@@ -4505,9 +4509,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // contents sooner or later we should do so now that wxMaxima is idle.
   if (m_worksheet->m_scheduleUpdateToc)
   {
+    m_worksheet->m_scheduleUpdateToc = false;
     if (m_worksheet->m_tableOfContents)
     {
-      m_worksheet->m_scheduleUpdateToc = false;
       GroupCell *cursorPos;
       cursorPos = m_worksheet->GetHCaret();
       if ((!m_worksheet->HCaretActive()) && (cursorPos == m_worksheet->GetLastCell()))
