@@ -634,6 +634,8 @@ void wxMaximaFrame::SetupMenu()
   SuppressErrorDialogs iconWarningBlocker;
   
   m_MenuBar = new MainMenuBar();
+  // Enables the window list on MacOs.
+  m_MenuBar->SetAutoWindowMenu(true);
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);

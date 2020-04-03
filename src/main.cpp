@@ -313,6 +313,8 @@ bool MyApp::OnInit()
 
   wxApp::SetExitOnFrameDelete(false);
   wxMenuBar *menuBar = new wxMenuBar;
+  // Enables the window list on MacOs.
+  menuBar->SetAutoWindowMenu(true);
   wxMenu *fileMenu = new wxMenu;
   fileMenu->Append(wxID_NEW, _("&New\tCtrl+N"));
   fileMenu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
