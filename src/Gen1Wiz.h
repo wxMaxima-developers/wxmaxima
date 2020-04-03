@@ -39,7 +39,7 @@ public:
           const wxString &warning = wxEmptyString,
           const wxString &warningToolTip = wxEmptyString,
           const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+          const wxSize &size = wxDefaultSize, long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
 
   wxString GetValue()
   {

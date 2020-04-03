@@ -33,7 +33,7 @@
 #include "../art/draw/images.h"
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
-  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -131,7 +131,7 @@ wxString ExplicitWiz::GetValue()
 }
 
 ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
-  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -236,7 +236,7 @@ wxString ImplicitWiz::GetValue()
 
 
 AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Plot an explicit expression"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -437,7 +437,7 @@ void DrawWiz::OnParametricFocus(wxFocusEvent &WXUNUSED(event))
 }
 
 DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"),dimensions), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"),dimensions), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -524,7 +524,7 @@ wxString DrawWiz::GetValue()
 
 
 Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
-  wxDialog(parent, -1, _("Settings for the following 3d plots"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Settings for the following 3d plots"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -615,7 +615,7 @@ void WizContour::OnRadioButton(wxCommandEvent& WXUNUSED(dummy))
 }
 
 WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
-  wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -726,7 +726,7 @@ wxString WizContour::GetValue()
 }
 
 ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent, -1, _("Plot a parametric curve"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent, -1, _("Plot a parametric curve"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {  
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -808,7 +808,7 @@ wxString ParametricWiz::GetValue()
 }
 
 WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr) :
-  wxDialog(parent,-1, _("Draw points"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent,-1, _("Draw points"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -929,7 +929,7 @@ wxString WizPoints::GetValue()
 
 //! A wizard that sets the draw accuracy
 WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions) :
-  wxDialog(parent,-1, _("Speed versus accuracy"), wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER)
+  wxDialog(parent,-1, _("Speed versus accuracy"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
