@@ -475,6 +475,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     .CloseButton(true).PinButton().Resizable().PaneBorder(true).Movable(true);
   SetupMenu();
   m_manager.Update();
+  Layout();
 }
 
 wxSize wxMaximaFrame::DoGetBestClientSize() const
