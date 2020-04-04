@@ -10,20 +10,20 @@ add_custom_target(odt)
 add_custom_target(epub)
 add_custom_target(html5 ALL)
 
-function(generate_wxmaxima_documentation BASENAME FORMAT PANDOC_TEXSELECT_OPTION)
+function(generate_wxmaxima_documentation FORMAT PANDOC_TEXSELECT_OPTION)
     set(FILEEXTENSION "${FORMAT}")
     # for html5 format set the file extension to .html
     if(FILEEXTENSION STREQUAL "html5")
         set(FILEEXTENSION "html")
     endif()
     add_custom_command(
-        OUTPUT ${BASENAME}.${FORMAT}
+        OUTPUT ${BASENAME}.${FILEEXTENSION}
         DEPENDS ${BASENAME}.md
         COMMAND ${PANDOC} ${BASENAME}.md -t ${FORMAT} -o ${BASENAME}.${FILEEXTENSION} ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}
         COMMENT "Generating ${BASENAME}.${FORMAT}")
-    add_custom_target(${BASENAME}.${FORMAT}.stamp DEPENDS ${BASENAME}.${FORMAT})
-    add_dependencies(${FORMAT} ${BASENAME}.${FORMAT}.stamp)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.${FORMAT} DESTINATION share/doc/wxmaxima OPTIONAL)
+    add_custom_target(build_${BASENAME}.${FILEEXTENSION} DEPENDS ${BASENAME}.${FILEEXTENSION})
+    add_dependencies(${FORMAT} build_${BASENAME}.${FILEEXTENSION})
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.${FILEEXTENSION} DESTINATION share/doc/wxmaxima OPTIONAL)
 endfunction()
 
 
@@ -34,7 +34,6 @@ endfunction()
 # this by hand.
 set(BASENAMES "wxmaxima")
 file(GLOB POFILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
-file(GLOB MANUAL_DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/*.po wxmaxima.md)
 foreach(POFILE ${POFILES})
     string(REGEX REPLACE ".*/(.*).po$" "wxmaxima.\\1" BASENAME ${POFILE})
     list(APPEND BASENAMES ${BASENAME})
@@ -108,29 +107,13 @@ if(PANDOC AND PO4A_TRANSLATE)
 	    endif()
 	endif()
 
-	add_custom_command(OUTPUT ${BASENAME}.html
-	    COMMAND generate_wxmaxima_documentation(${BASENAME} html5 "")
-	    )
-	add_custom_target(generate_wxmaxima_html_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
-	add_custom_command(OUTPUT ${BASENAME}.odt
-	    COMMAND generate_wxmaxima_documentation(${BASENAME} odt "")
-	    )
-	add_custom_target(generate_wxmaxima_odt_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
-	add_custom_command(OUTPUT ${BASENAME}.docx
-	    COMMAND generate_wxmaxima_documentation(${BASENAME} docx "")
-	    )
-	add_custom_target(generate_wxmaxima_docx_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
-	add_custom_command(OUTPUT ${BASENAME}.epub
-	    COMMAND generate_wxmaxima_documentation(${BASENAME} epub "")
-	    )
-	add_custom_target(generate_wxmaxima_epub_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
-
-	add_custom_command(OUTPUT ${BASENAME}.pdf
-	    COMMAND generate_wxmaxima_documentation(${BASENAME} pdf "${PANDOC_TEXSELECT_OPTION}")
-	    )
-	if(LATEX)
-	    add_custom_target(generate_wxmaxima_pdf_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
-	endif()
+    generate_wxmaxima_documentation(html5 "")
+    generate_wxmaxima_documentation(odt "")
+    generate_wxmaxima_documentation(docx "")
+    generate_wxmaxima_documentation(epub "")
+    if(LATEX)
+        generate_wxmaxima_documentation(pdf "${PANDOC_TEXSELECT_OPTION}")
+    endif()
 
 
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
