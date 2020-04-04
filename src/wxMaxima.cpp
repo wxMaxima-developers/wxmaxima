@@ -1483,6 +1483,8 @@ void wxMaxima::StripLispComments(wxString &s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
+  if(!m_client)
+    return;
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
@@ -1557,33 +1559,14 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         StatusMaximaBusy(waiting);
 
       wxScopedCharBuffer const data_raw = s.utf8_str();
-#ifdef __WXMSW__
-      // On MS Windows we don't get a signal that tells us if a write has
-      // finishes. But it seems a write always succeeds
-      if(m_client) m_client->Write(data_raw.data(), data_raw.length());
-#else
-      // On Linux (and most probably all other non MS-Windows systems) we get a
-      // signal that tells us a write command has finished - and tells us how many
-      // bytes were sent. Which (at least on BSD) might be lower than we wanted.
-      if(m_rawDataToSend.GetDataLen() > 0)
-      {
-        // We are already sending => append everything except the trailing NULL
-        // char at the end of the string to the buffer containing the data we want
-        // to send.
-        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
-      }
-      else
-      {
-        // Put everything except the NULL char at the end of the string into the
-        // buffer containing the data we want to send
-        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
-        // Now we have done this we attempt to send the data. If our try falls
-        // short we'll find that out in the client event of the type wxSOCKET_OUTPUT
-        // that will follow the write.
-        if(m_client) m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
-      }
-#endif
-      if ((!m_client) || m_client->Error()) {
+      // We get a signal that tells us a write command has finished - and tells
+      // us how many bytes were sent. Which (at least on BSD) might be lower
+      // than we wanted.
+      bool stillSending = (m_rawDataToSend.GetDataLen() != 0);
+      m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
+      if(!stillSending)
+        m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
+      if (m_client->Error()) {
         wxLogMessage(_("Error writing to Maxima"));
         return;
       }
@@ -1665,11 +1648,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   case wxSOCKET_OUTPUT:
   {
     if((!m_client) || (!m_client->IsConnected()))
-    {
-      m_rawBytesSent = 0;
-      m_rawDataToSend.Clear();
       return;
-    }
     long int bytesWritten = m_client->LastWriteCount();
     m_rawBytesSent  += bytesWritten;
     if(m_rawDataToSend.GetDataLen() > m_rawBytesSent)
@@ -2183,8 +2162,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
     if(!o.IsEmpty())
       wxLogMessage(_("Last message from maxima's stderr: %s"), o.utf8_str());
   }
-  m_rawDataToSend.Clear();
-  m_rawBytesSent = 0;
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
@@ -4243,8 +4220,6 @@ bool wxMaxima::InterpretDataFromMaxima()
 
   m_currentOutput += m_newCharsFromMaxima;
   m_newCharsFromMaxima = wxEmptyString;
-  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-    m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
 
   if (!m_dispReadOut &&
       (m_currentOutput != wxT("\n")) &&
@@ -4258,11 +4233,11 @@ bool wxMaxima::InterpretDataFromMaxima()
 
   while (length_old != m_currentOutput.Length())
   {
-    if (m_currentOutput.StartsWith("\n<"))
-      m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
-
     length_old = m_currentOutput.Length();
 
+    if (m_currentOutput.StartsWith("\n<"))
+      m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
+    
     GroupCell *oldActiveCell = NULL;
     GroupCell *newActiveCell = NULL;
 
