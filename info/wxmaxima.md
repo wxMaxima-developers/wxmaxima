@@ -338,7 +338,8 @@ If this option isn't set wxMaxima behaves more like a modern cellphone app:
 
 ### Where is the configuration saved?
 
-If you are using Unix/Linux, a file `.wxMaxima` in your homedirectory is used for saving wxMaxima's configuration. (Since the filename starts with a dot, it will be a hidden file).
+If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your homedirectory (if you are using wxWidgets < 3.1.1), or .config/wxMaxima.conf ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. wxWidgets ist the cross-plattform GUI library, which is the base for wxMaxima (therefore the `wx` in the name).
+(Since the filename starts with a dot, .wxMaxima or .config will be hidden).
 
 If you are using Windows, the configuration will be stored in the registry. You will find the entries for wxMaxima at the following position in the registry: `HKEY_CURRENT_USER\Software\wxMaxima`
 
