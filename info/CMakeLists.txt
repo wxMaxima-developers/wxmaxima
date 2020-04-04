@@ -111,25 +111,25 @@ if(PANDOC AND PO4A_TRANSLATE)
 	add_custom_command(OUTPUT ${BASENAME}.html
 	    COMMAND generate_wxmaxima_documentation(${BASENAME} html5 "")
 	    )
-	add_custom_target(generate_wxmaxima_html_${BASENAME} DEPENDS ${MANUAL_DEPENDS})
+	add_custom_target(generate_wxmaxima_html_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
 	add_custom_command(OUTPUT ${BASENAME}.odt
 	    COMMAND generate_wxmaxima_documentation(${BASENAME} odt "")
 	    )
-	add_custom_target(generate_wxmaxima_odt_${BASENAME} DEPENDS ${MANUAL_DEPENDS})
+	add_custom_target(generate_wxmaxima_odt_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
 	add_custom_command(OUTPUT ${BASENAME}.docx
 	    COMMAND generate_wxmaxima_documentation(${BASENAME} docx "")
 	    )
-	add_custom_target(generate_wxmaxima_docx_${BASENAME} DEPENDS ${MANUAL_DEPENDS})
+	add_custom_target(generate_wxmaxima_docx_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
 	add_custom_command(OUTPUT ${BASENAME}.epub
 	    COMMAND generate_wxmaxima_documentation(${BASENAME} epub "")
 	    )
-	add_custom_target(generate_wxmaxima_epub_${BASENAME} DEPENDS ${MANUAL_DEPENDS})
+	add_custom_target(generate_wxmaxima_epub_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
 
 	add_custom_command(OUTPUT ${BASENAME}.pdf
 	    COMMAND generate_wxmaxima_documentation(${BASENAME} pdf "${PANDOC_TEXSELECT_OPTION}")
 	    )
 	if(LATEX)
-	    add_custom_target(generate_wxmaxima_pdf_${BASENAME} DEPENDS ${MANUAL_DEPENDS})
+	    add_custom_target(generate_wxmaxima_pdf_${BASENAME} ALL DEPENDS ${MANUAL_DEPENDS})
 	endif()
 
 
