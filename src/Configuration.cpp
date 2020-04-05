@@ -373,6 +373,8 @@ void Configuration::ReadConfig()
   config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
+  config->Read("parameters", &m_maximaParameters);
+  
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);

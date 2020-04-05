@@ -3784,9 +3784,7 @@ void wxMaxima::SetupVariables()
 wxString wxMaxima::GetCommand(bool params)
 {
   Configuration *configuration = m_worksheet->m_configuration;
-  wxString parameters, command = configuration->MaximaLocation();
-  wxConfig::Get()->Read(wxT("parameters"), &parameters);
-
+  wxString command = configuration->MaximaLocation();
 
 #if defined (__WXOSX__)
   if (command.EndsWith(wxT(".app"))) // if pointing to a Maxima.app
@@ -3805,7 +3803,7 @@ wxString wxMaxima::GetCommand(bool params)
     // escape quotes
     command.Replace(wxT("\""), wxT("\\\""));
     // surround with quotes
-    command = wxT("\"") + command + wxT("\" ") + parameters;
+    command = wxT("\"") + command + wxT("\" ") + m_worksheet->m_configuration->MaximaParameters();
   }
   else
   {

@@ -322,7 +322,7 @@ public:
 
   /*! Set the indentation of GroupCells
 
-    Normallly this parameter is automatically calculated
+    Normally this parameter is automatically calculated
    */
   void SetIndent(int indent)
   {
@@ -665,6 +665,14 @@ public:
       m_autodetectMaxima = autodetectmaxima);
   }
 
+  //! Parameters to the maxima binary
+  wxString MaximaParameters() const {return m_maximaParameters;}
+  //! The parameters we pass to the maxima binary
+  void MaximaParameters(wxString parameters){wxConfig::Get()->Write(
+      "parameters",
+      m_maximaParameters = parameters);
+  }
+
   //! The auto-detected maxima location
   static wxString MaximaDefaultLocation();
 
@@ -924,6 +932,7 @@ private:
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
   bool m_outdated;
+  wxString m_maximaParameters;
   wxString m_defaultToolTip;
   bool m_TeXFonts;
   bool m_keepPercent;

@@ -436,7 +436,7 @@ void ConfigDialogue::SetProperties()
   wxCommandEvent dummy;
   MaximaLocationChanged(dummy);
 
-  m_additionalParameters->SetValue(mc);
+  m_additionalParameters->SetValue(configuration->MaximaParameters());
   m_savePanes->SetValue(savePanes);
   m_usesvg->SetValue(configuration->UseSVG());
   m_antialiasLines->SetValue(configuration->AntiAliasLines());
@@ -1154,7 +1154,7 @@ void ConfigDialogue::WriteSettings()
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
-  config->Write(wxT("parameters"), m_additionalParameters->GetValue());
+  configuration->MaximaParameters(m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
   config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
   configuration->SetMatchParens(m_matchParens->GetValue());
