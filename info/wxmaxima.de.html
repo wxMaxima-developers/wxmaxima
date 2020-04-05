@@ -333,7 +333,7 @@ Normaler Text</code></pre>
 <li>und sie werden alle n Minuten zwischengespeichert.</li>
 </ul>
 <h3 id="wo-wird-die-konfiguration-gespeichert"><span class="header-section-number">1.3.10</span> Wo wird die Konfiguration gespeichert?</h3>
-<p>Unter Linux-ähnlichen Systemen wird im Home-Verzeichnis oder einem Unterordner davon eine Datei namens .wMmaxima abgelegt (der “.” am Beginn des Dateinamens versteckt die Datei).</p>
+<p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your homedirectory (if you are using wxWidgets &lt; 3.1.1), or .config/wxMaxima.conf ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. wxWidgets ist the cross-plattform GUI library, which is the base for wxMaxima (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, .wxMaxima or .config will be hidden).</p>
 <p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\\Software\\wxMaxima</code> gespeichert</p>
 <hr />
 <h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>

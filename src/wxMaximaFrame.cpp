@@ -381,8 +381,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     RightDockable(true).
                     MinSize(wxSize(100,100)).
                     PaneBorder(false).Row(2));
-    
-  m_manager.Update();
+
+  SetupMenu();
+  {
+    // MacOs generates semitransparent instead of hidden items if the
+    // items in question were never shown => Let's display the frame with
+    // all items visible and then hide the ones we want to.
+    m_manager.Update();
+    Layout();
+  }
+  
   m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector").Show(false);
   m_manager.GetPane("stats") = m_manager.GetPane("stats").Show(false);
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).Show(false);
@@ -479,7 +487,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton(true).PinButton().Resizable().PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
     .CloseButton(true).PinButton().Resizable().PaneBorder(true).Movable(true);
-  SetupMenu();
   m_manager.Update();
   Layout();
 }
