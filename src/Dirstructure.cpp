@@ -286,7 +286,7 @@ wxString Dirstructure::GnuplotDefaultLocation(wxString pathguess)
     // If not successful, Find executable "gnuplot.exe" in our list of paths
     if(gnuplot_binary == wxEmptyString)
       gnuplot_binary = pathlist.FindAbsoluteValidPath(pathguess + wxT(".exe"));
-    // If not successful, use the original command (better than empty for error messaqges)
+    // If not successful, use the original command (better than empty for error messages)
     if(gnuplot_binary == wxEmptyString)
     {
       wxLogMessage(_("Gnuplot not found, using the default: ") + pathguess);
