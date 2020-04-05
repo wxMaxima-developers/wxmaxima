@@ -141,45 +141,35 @@ bool MyApp::OnInit()
     m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
     wxConfigBase *config = wxConfig::Get();
     int lang = wxLocale::GetSystemLanguage();
+    config->Read(wxT("language"), &lang);
     if(lang == wxLANGUAGE_UNKNOWN)
       lang = wxLANGUAGE_DEFAULT;
-    if(config->Read(wxT("language"), &lang))
+    if(lang != wxLANGUAGE_UNKNOWN)
     {
-      if(wxLocale::IsAvailable(lang))
+      m_locale.Init(lang);
+
+      // Do we reckong we improve something if we set maxima's language, as well?
+      if((wxLocale::IsAvailable(lang)) && (lang != wxLANGUAGE_DEFAULT))
       {
-        if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
-           (lang != wxLocale::GetSystemLanguage()))
+        // Set maxima's language, as well.
+        wxString localeName = m_locale.GetCanonicalName();
+        if(lang != wxLocale::GetSystemLanguage())
         {
-          m_locale.Init(lang);
-          wxString localeName = m_locale.GetCanonicalName();
-          if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
-             (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
-             (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
-             (m_locale.GetSystemEncoding() == wxFONTENCODING_DEFAULT))
-            localeName+=wxT(".UTF-8");
           if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
             localeName+=wxT(".UTF-16");
-          if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
-            localeName+=wxT(".UTF-32");
-          
+          else
+          {
+            if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
+              localeName+=wxT(".UTF-32");
+            else
+            {
+              localeName+=wxT(".UTF-8");
+            }            
+          }
           wxSetEnv(wxT("LANG"), localeName);
         }
-        else
-        {
-          if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT))
-          {
-            m_locale.Init(lang);
-            wxString localeName = m_locale.GetCanonicalName();
-          }
-        }
-      }
-      else
-      {
-        m_locale.Init(lang);
       }
     }
-    else
-      m_locale.Init(wxLANGUAGE_DEFAULT);
     m_locale.AddCatalog(wxT("wxMaxima"));
     m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
   }
