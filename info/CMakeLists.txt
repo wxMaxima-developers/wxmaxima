@@ -13,16 +13,20 @@ add_custom_target(html5 ALL)
 function(generate_wxmaxima_documentation FORMAT PANDOC_TEXSELECT_OPTION)
     set(FILEEXTENSION "${FORMAT}")
     # for html5 format set the file extension to .html
-    if(FILEEXTENSION STREQUAL "html5")
-        set(FILEEXTENSION "html")
+    if(FILEEXTENSION STREQUAL "html")
+        set(FORMAT "html5")
+    endif()
+    # set the format to "latex" to generate pdf.
+    if(FILEEXTENSION STREQUAL "pdf")
+        set(FORMAT "latex")
     endif()
     add_custom_command(
         OUTPUT ${BASENAME}.${FILEEXTENSION}
         DEPENDS ${BASENAME}.md
         COMMAND ${PANDOC} ${BASENAME}.md -t ${FORMAT} -o ${BASENAME}.${FILEEXTENSION} ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}
-        COMMENT "Generating ${BASENAME}.${FORMAT}")
+        COMMENT "Generating ${BASENAME}.${FILEEXTENSION}")
     add_custom_target(build_${BASENAME}.${FILEEXTENSION} DEPENDS ${BASENAME}.${FILEEXTENSION})
-    add_dependencies(${FORMAT} build_${BASENAME}.${FILEEXTENSION})
+    add_dependencies(${FILEEXTENSION} build_${BASENAME}.${FILEEXTENSION})
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.${FILEEXTENSION} DESTINATION share/doc/wxmaxima OPTIONAL)
 endfunction()
 
