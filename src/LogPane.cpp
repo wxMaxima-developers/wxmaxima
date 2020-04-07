@@ -31,16 +31,16 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPane
 					wxDefaultSize,
 					wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
 
-  vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(10));
+  m_textCtrl->SetMinSize(wxSize(wxSystemSettings::GetMetric( wxSYS_SCREEN_X )/10,
+                                wxSystemSettings::GetMetric( wxSYS_SCREEN_Y )/10));
+  vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(1));
     
-  SetSizerAndFit(vbox);
   if(becomeLogTarget)
     BecomeLogTarget();    
 
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
-  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
-                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
+  SetSizerAndFit(vbox);
 }
 
 void LogPane::DropLogTarget()
