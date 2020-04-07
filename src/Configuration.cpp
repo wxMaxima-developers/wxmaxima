@@ -70,6 +70,7 @@ Configuration::Configuration(wxDC *dc) :
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
+  m_language = wxLANGUAGE_DEFAULT;
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = labels_prefer_user;
@@ -363,6 +364,10 @@ void Configuration::ReadConfig()
     config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
+  config->Read("language", &m_language);
+  if (m_language == wxLANGUAGE_UNKNOWN)
+    m_language = wxLANGUAGE_DEFAULT;
+
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
@@ -461,7 +466,7 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
-wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
+wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 {
   wxString fontName;
   wxFontStyle fontStyle;
@@ -488,7 +493,7 @@ wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
     fontSize = 4;
 
   // The font size scales with the worksheet
-  int fontSize1 = Scale_Px(fontSize);
+  long fontSize1 = Scale_Px(fontSize);
 
   // Ensure a sane minimum font size
   if (fontSize1 < 4)
@@ -526,11 +531,11 @@ wxFont Configuration::GetFont(TextStyle textStyle, int fontSize) const
   return font;
 }
 
-int Configuration::GetLineWidth() const
+long Configuration::GetLineWidth() const
 {
   // The default line width is the width of the viewport minus the indentation minus
   // roughly one char
-  int lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
+  long lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
                                            GetCellBracketWidth() + GetDefaultFontSize());
 
   // If that was suspiciously wide we reduce the default line width again.
@@ -587,7 +592,7 @@ bool Configuration::IsEqual(wxBitmap bitmap1, wxBitmap bitmap2)
 
   wxImage img1=bitmap1.ConvertToImage();
   wxImage img2=bitmap2.ConvertToImage();
-  int bytes = img1.GetWidth()*img1.GetHeight()*3;
+  long bytes = img1.GetWidth()*img1.GetHeight()*3;
 
   if(bytes < 0)
     return false;
@@ -640,7 +645,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   }
   
   // Letters with width or height = 0 don't exist in the current font
-  int width1,height1,descent1;
+  wxCoord width1,height1,descent1;
   GetDC()->SetFont(font);
   GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
   if((width1 < 1) || (height1-descent1 < 1))
@@ -648,14 +653,14 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
     m_charsInFontMap[name] = false;
     return false;
   }
-  int width2,height2,descent2;
+  wxCoord width2,height2,descent2;
   GetDC()->GetTextExtent(char2,&width2,&height2,&descent2);
   if((width2 < 1) || (height2-descent2 < 1))
   {
     m_charsInFontMap[name] = false;
     return false;
   }
-  int width3,height3,descent3;
+  wxCoord width3,height3,descent3;
   GetDC()->GetTextExtent(char3,&width3,&height3,&descent3);
   if((width3 < 1) || (height3-descent3 < 1))
   {
@@ -707,7 +712,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   }
 }
 
-wxString Configuration::GetFontName(int type) const
+wxString Configuration::GetFontName(long type) const
 {
   wxString retval = FontName();
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
@@ -756,7 +761,7 @@ void Configuration::ReadStyles(wxString file)
 #endif
 
   config->Read(wxT("mathfontsize"), &m_mathFontSize);
-  int encoding = m_fontEncoding;
+  long encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding) encoding;
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
@@ -871,14 +876,14 @@ void Configuration::WriteStyles(wxString file)
   }
 }
 
-wxFontWeight Configuration::IsBold(int st) const
+wxFontWeight Configuration::IsBold(long st) const
 {
   if (m_styles[st].Bold())
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
-wxFontStyle Configuration::IsItalic(int st) const
+wxFontStyle Configuration::IsItalic(long st) const
 {
   if (m_styles[st].Italic())
     return wxFONTSTYLE_SLANT;
@@ -894,16 +899,16 @@ wxString Configuration::GetSymbolFontName() const
 #endif
 }
 
-wxColour Configuration::GetColor(int st) const
+wxColour Configuration::GetColor(long st) const
 {
   if (m_outdated)
     return m_styles[TS_OUTDATED].Color();
   return m_styles[st].Color();
 }
 
-int Configuration::Scale_Px(double px) const
+long Configuration::Scale_Px(double px) const
 {
-  int retval = round(px * GetZoomFactor());
+  long retval = round(px * GetZoomFactor());
   if (retval < 1)
     retval = 1;
   return retval;

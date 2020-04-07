@@ -169,7 +169,7 @@ public:
       return GetZoomFactor() * m_mathFontSize / 2;
   }
 
-  int GetCellBracketWidth() const
+  long GetCellBracketWidth() const
   {
     return (int) (GetZoomFactor() * 16);
   }
@@ -211,7 +211,7 @@ public:
 
     Is used for displaying/printing/exporting of text/maths.
    */
-  int Scale_Px(double px) const;
+  long Scale_Px(double px) const;
 
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor() const
@@ -230,19 +230,19 @@ public:
         return m_dc;
     }
   
-  wxString GetFontName(int type = TS_DEFAULT) const;
+  wxString GetFontName(long type = TS_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
   wxString GetSymbolFontName() const;
 
-  wxColour GetColor(int st) const;
+  wxColour GetColor(long st) const;
 
-  wxFontWeight IsBold(int st) const;
+  wxFontWeight IsBold(long st) const;
 
-  wxFontStyle IsItalic(int st) const;
+  wxFontStyle IsItalic(long st) const;
 
-  bool IsUnderlined(int st) const {return m_styles[st].Underlined();}
+  bool IsUnderlined(long st) const {return m_styles[st].Underlined();}
 
   //! Force a full recalculation?
   void RecalculationForce(bool force)
@@ -266,11 +266,11 @@ public:
     m_fontEncoding = encoding;
   }
 
-  int GetLabelWidth() const
+  long GetLabelWidth() const
   { return m_labelWidth * 14; }
 
   //! Get the indentation of GroupCells.
-  int GetIndent() const
+  long GetIndent() const
   {
     if (m_indent < 0)
       return 3 * GetCellBracketWidth() / 2;
@@ -287,9 +287,9 @@ public:
   wxSize GetPPI(wxWindow *win) const;
   
   //! How much vertical space is to be left between two group cells?
-  int GetCursorWidth() const
+  long GetCursorWidth() const
   {
-    int ppi;
+    long ppi;
 
     if(!m_printing)
       ppi = GetPPI().x;
@@ -303,7 +303,7 @@ public:
   }
   
   //! The y position the worksheet starts at
-  int GetBaseIndent() const
+  long GetBaseIndent() const
   {
     if (GetCursorWidth() < 12)
       return 12;
@@ -312,7 +312,7 @@ public:
   }
 
   //! The vertical space between GroupCells
-  int GetGroupSkip() const
+  long GetGroupSkip() const
   {
     if (GetCursorWidth() < 10)
       return 20;
@@ -324,7 +324,7 @@ public:
 
     Normally this parameter is automatically calculated
    */
-  void SetIndent(int indent)
+  void SetIndent(long indent)
   {
     if(m_indent != indent)
       RecalculationForce(true);
@@ -332,7 +332,7 @@ public:
   }
 
   //! Set the width of the visible window for GetClientWidth()
-  void SetClientWidth(int width)
+  void SetClientWidth(long width)
   {
     if(m_clientWidth != width)
       RecalculationForce(true);
@@ -352,15 +352,15 @@ public:
     }
   
   //! Set the height of the visible window for GetClientHeight()
-  void SetClientHeight(int height)
+  void SetClientHeight(long height)
   { m_clientHeight = height; }
 
   //! Returns the width of the visible portion of the worksheet
-  int GetClientWidth() const
+  long GetClientWidth() const
   { return m_clientWidth; }
 
   //! Returns the height of the visible portion of the worksheet
-  int GetClientHeight() const
+  long GetClientHeight() const
   { return m_clientHeight; }
 
   //! Calculates the default line width for the worksheet
@@ -373,7 +373,7 @@ public:
   }
 
   //! The minimum sensible line width in withs of a letter.
-  int LineWidth_em() const 
+  long LineWidth_em() const 
   {
     if(!m_printing)
       return m_lineWidth_em;
@@ -385,23 +385,23 @@ public:
   void AutoSaveAsTempFile(bool asTempFile){wxConfig::Get()->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile = asTempFile);}
 
   //! Set the minimum sensible line width in widths of a letter.
-  void LineWidth_em(int width)
+  void LineWidth_em(long width)
   { m_lineWidth_em = width; }
 
   //! Returns the maximum sensible width for a text line [in characters]:
   // On big 16:9 screens text tends to get \b very wide before it hits the right margin.
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
-  int GetLineWidth() const;
+  long GetLineWidth() const;
 
-  int GetDefaultFontSize() const
+  long GetDefaultFontSize() const
   { return m_styles[TS_DEFAULT].FontSize(); }
 
-  void SetDefaultFontSize(int fontSize)
+  void SetDefaultFontSize(long fontSize)
   {
     m_styles[TS_DEFAULT].FontSize(fontSize);
   }
 
-  int GetMathFontSize() const
+  long GetMathFontSize() const
   { return m_mathFontSize; }
 
   void SetMathFontSize(double size)
@@ -422,7 +422,7 @@ public:
      - 1: Automatic line breaks only for text cells
      - 2: Automatic line breaks for text and code cells.
   */
-  void SetAutoWrap(int autoWrap)
+  void SetAutoWrap(long autoWrap)
   {
     wxConfig::Get()->Write(wxT("autoWrapMode"), m_autoWrap = autoWrap);
   }
@@ -439,7 +439,7 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  int GetFontSize(TextStyle st) const
+  long GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return m_styles[st].FontSize();
@@ -576,10 +576,10 @@ public:
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
    */
-  int GetDisplayedDigits() const
+  long GetDisplayedDigits() const
   { return m_displayedDigits; }
 
-  void SetDisplayedDigits(int displayedDigits)
+  void SetDisplayedDigits(long displayedDigits)
   {
     wxASSERT_MSG(displayedDigits >= 20, _("Bug: Maximum number of digits that is to be displayed is too low!"));
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
@@ -626,7 +626,7 @@ public:
   bool ShowBrackets(bool show)
   { return m_showBrackets = show; }
 
-  //! Print the cell brackets [displayed left to each group cell showing its extend]?
+  //! Prlong the cell brackets [displayed left to each group cell showing its extend]?
   bool PrintBrackets() const
   { return m_printBrackets; }
 
@@ -760,11 +760,11 @@ public:
     {
       wxConfig::Get()->Write(wxT("useSVG"), m_useSVG = useSVG );
     }
-  void ShowLength(int length)
+  void ShowLength(long length)
     {
       wxConfig::Get()->Write(wxT("showLength"), m_showLength = length);
     }
-  int ShowLength() const {return m_showLength;}
+  long ShowLength() const {return m_showLength;}
 
   //! Sets the default toolTip for new cells
   void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
@@ -793,22 +793,26 @@ public:
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
    */
-  wxFont GetFont(TextStyle textStyle, int fontSize) const;
+  wxFont GetFont(TextStyle textStyle, long fontSize) const;
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
   void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
 
-  int DefaultPort() const {return m_defaultPort;}
-  void DefaultPort(int port){wxConfig::Get()->Write("defaultPort",m_defaultPort = port);}
+  long DefaultPort() const {return m_defaultPort;}
+  void DefaultPort(long port){wxConfig::Get()->Write("defaultPort",m_defaultPort = port);}
   bool GetAbortOnError() const {return m_abortOnError;}
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
+  bool GetLanguage() const {return m_language;}
+  void SetLanguage(bool language)
+    {wxConfig::Get()->Write("language",m_language = language);}
+
   //! The maximum number of Megabytes of gnuplot sources we should store
-  int MaxGnuplotMegabytes() const {return m_maxGnuplotMegabytes;}
-  void MaxGnuplotMegabytes(int megaBytes)
+  long MaxGnuplotMegabytes() const {return m_maxGnuplotMegabytes;}
+  void MaxGnuplotMegabytes(long megaBytes)
     {wxConfig::Get()->Write("maxGnuplotMegabytes",m_maxGnuplotMegabytes = megaBytes);}
 
   bool OfferKnownAnswers() const {return m_offerKnownAnswers;}
@@ -830,8 +834,8 @@ public:
   void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
   wxString MathFontName()const {return m_mathFontName;}
   //! Get the worksheet this configuration storage is valid for
-  int GetAutosubscript_Num() const {return m_autoSubscript;}
-  void SetAutosubscript_Num(int autosubscriptnum)
+  long GetAutosubscript_Num() const {return m_autoSubscript;}
+  void SetAutosubscript_Num(long autosubscriptnum)
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
   wxString GetAutosubscript_string() const;
   //! Determine the default background color of the worksheet
@@ -857,6 +861,8 @@ public:
 private:
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
+  //! The number of the language wxMaxima uses.
+  long m_language;
   //! Autodetect maxima's location?
   bool m_autodetectMaxima;
   //! The worksheet all cells are drawn on
@@ -864,7 +870,7 @@ private:
   //! Has the font changed?
   bool m_fontChanged;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
-  int m_autoSubscript;
+  long m_autoSubscript;
   //! The worksheet this configuration storage is valid for
   wxWindow *m_workSheet;
   //! A replacement for the non-existing "==" operator for wxBitmaps.
@@ -895,7 +901,7 @@ private:
   wxSize m_canvasSize;
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
   bool m_showBrackets;
-  //! Print the cell brackets [displayed left to each group cell showing its extend]?
+  //! Prlong the cell brackets [displayed left to each group cell showing its extend]?
   bool m_printBrackets;
   /*! Replace a "*" by a centered dot?
     
@@ -906,9 +912,9 @@ private:
   //! Notify the user if maxima is idle
   bool m_notifyIfIdle;
   //! How many digits of a number we show by default?
-  int m_displayedDigits;
+  long m_displayedDigits;
   //! Automatically wrap long lines?
-  int m_autoWrap;
+  long m_autoWrap;
   //! Automatically indent long lines?
   bool m_autoIndent;
   //! Do we want to automatically close parenthesis?
@@ -918,15 +924,15 @@ private:
   //! Do we want to automatically open a new cell if maxima has finished evaluating its input?
   bool m_openHCaret;
   //! The width of input and output labels [in chars]
-  int m_labelWidth;
-  int m_indent;
+  long m_labelWidth;
+  long m_indent;
   bool m_latin2greek;
   bool m_antiAliasLines;
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
   wxString m_fontName;
-  int m_mathFontSize;
+  long m_mathFontSize;
   wxString m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
@@ -938,11 +944,11 @@ private:
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
-  int m_clientWidth;
-  int m_clientHeight;
+  long m_clientWidth;
+  long m_clientHeight;
   wxFontEncoding m_fontEncoding;
   bool m_printing;
-  int m_lineWidth_em;
+  long m_lineWidth_em;
   showLabels m_showLabelChoice;
   bool m_fixReorderedIndices;
   wxString m_mathJaxURL;
@@ -951,7 +957,7 @@ private:
   bool m_copyBitmap;
   bool m_copyMathML;
   bool m_copyMathMLHTML;
-  int m_showLength;
+  long m_showLength;
   //!< don't add ; in lisp mode
   bool m_inLispMode;
   bool m_enterEvaluates;
@@ -965,8 +971,8 @@ private:
   bool m_abortOnError;
   bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
-  int m_defaultPort;
-  int m_maxGnuplotMegabytes;
+  long m_defaultPort;
+  long m_maxGnuplotMegabytes;
   wxString m_documentclass;
   wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;

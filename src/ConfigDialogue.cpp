@@ -149,31 +149,31 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
   m_svgRast = nsvgCreateRasterizer();
-  m_languages[_("(Use default language)")]=wxLANGUAGE_DEFAULT;
-  m_languages[_("Catalan")]=wxLANGUAGE_CATALAN;
-  m_languages[_("Chinese (Simplified)")]=wxLANGUAGE_CHINESE_SIMPLIFIED;
-  m_languages[_("Chinese (traditional)")]=wxLANGUAGE_CHINESE_TRADITIONAL;
-  m_languages[_("Czech")]=wxLANGUAGE_CZECH;
-  m_languages[_("Danish")]=wxLANGUAGE_DANISH;
-  m_languages[_("English")]=wxLANGUAGE_ENGLISH;
-  m_languages[_("Finnish")]=wxLANGUAGE_FINNISH;
-  m_languages[_("French")]=wxLANGUAGE_FRENCH;
-  m_languages[_("Galician")]=wxLANGUAGE_GALICIAN;
-  m_languages[_("German")]=wxLANGUAGE_GERMAN;
-  m_languages[_("Greek")]=wxLANGUAGE_GREEK;
-  m_languages[_("Hungarian")]=wxLANGUAGE_HUNGARIAN;
-  m_languages[_("Italian")]=wxLANGUAGE_ITALIAN;
-  m_languages[_("Japanese")]=wxLANGUAGE_JAPANESE;
+  m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
+  m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
+  m_languages[_("Chinese (Simplified)")] = wxLANGUAGE_CHINESE_SIMPLIFIED;
+  m_languages[_("Chinese (traditional)")] = wxLANGUAGE_CHINESE_TRADITIONAL;
+  m_languages[_("Czech")] = wxLANGUAGE_CZECH;
+  m_languages[_("Danish")] = wxLANGUAGE_DANISH;
+  m_languages[_("English")] = wxLANGUAGE_ENGLISH;
+  m_languages[_("Finnish")] = wxLANGUAGE_FINNISH;
+  m_languages[_("French")] = wxLANGUAGE_FRENCH;
+  m_languages[_("Galician")] = wxLANGUAGE_GALICIAN;
+  m_languages[_("German")] = wxLANGUAGE_GERMAN;
+  m_languages[_("Greek")] = wxLANGUAGE_GREEK;
+  m_languages[_("Hungarian")] = wxLANGUAGE_HUNGARIAN;
+  m_languages[_("Italian")] = wxLANGUAGE_ITALIAN;
+  m_languages[_("Japanese")] = wxLANGUAGE_JAPANESE;
 #if wxCHECK_VERSION(3, 0, 1)
-  m_languages[_("Kabyle")]=wxLANGUAGE_KABYLE;
+  m_languages[_("Kabyle")] = wxLANGUAGE_KABYLE;
 #endif
-  m_languages[_("Norwegian")]=wxLANGUAGE_NORWEGIAN_BOKMAL;
-  m_languages[_("Polish")]=wxLANGUAGE_POLISH;
-  m_languages[_("Portuguese (Brazilian)")]=wxLANGUAGE_PORTUGUESE_BRAZILIAN;
-  m_languages[_("Russian")]=wxLANGUAGE_RUSSIAN;
-  m_languages[_("Spanish")]=wxLANGUAGE_SPANISH;
-  m_languages[_("Turkish")]=wxLANGUAGE_TURKISH;
-  m_languages[_("Ukrainian")]=wxLANGUAGE_UKRAINIAN;
+  m_languages[_("Norwegian")] = wxLANGUAGE_NORWEGIAN_BOKMAL;
+  m_languages[_("Polish")] = wxLANGUAGE_POLISH;
+  m_languages[_("Portuguese (Brazilian)")] = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
+  m_languages[_("Russian")] = wxLANGUAGE_RUSSIAN;
+  m_languages[_("Spanish")] = wxLANGUAGE_SPANISH;
+  m_languages[_("Turkish")] = wxLANGUAGE_TURKISH;
+  m_languages[_("Ukrainian")] = wxLANGUAGE_UKRAINIAN;
   
   m_configuration = cfg;
 #if defined __WXOSX__
@@ -821,9 +821,9 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
     new wxStaticText(panel, -1, _("Language:")), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxConfigBase *config = wxConfig::Get();
-  int lang = wxLANGUAGE_DEFAULT;
-  config->Read(wxT("language"), &lang);
+  int lang = m_configuration->GetLanguage();
   unsigned int i = 0;
+  // First set the language to "default".
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == wxLANGUAGE_DEFAULT)
@@ -833,6 +833,8 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
     }
     ++i;
   }
+
+  // Now try to set the language to the one from the config
   i = 0;
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
@@ -1208,15 +1210,17 @@ void ConfigDialogue::WriteSettings()
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
-  long i = 0;
-  config->Write(wxT("language"), (int) wxLANGUAGE_DEFAULT);
-  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
-    if(i++ == m_language->GetSelection())
-      config->Write(wxT("language"), it->second);
+    configuration->SetLanguage((int) wxLANGUAGE_DEFAULT);
+    long i = 0;
+    for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+    {
+      if(i == m_language->GetSelection())
+        configuration->SetLanguage(it->second);
+    }
   }
   configuration->SymbolPaneAdditionalChars(m_symbolPaneAdditionalChars->GetValue());
-
+  
   configuration->CopyBitmap(m_copyBitmap->GetValue());
   configuration->CopyMathML(m_copyMathML->GetValue());
   configuration->CopyMathMLHTML(m_copyMathMLHTML->GetValue());
