@@ -2,21 +2,21 @@
 
 include(FindPerl)
 
-# "make pdf" creates the manual in PDF form. The other of the targets that now
+# "make pdf" creates the manual in PDF form. The other targets that now
 # follow do the same for other formats
 add_custom_target(pdf)
 add_custom_target(docx)
 add_custom_target(odt)
 add_custom_target(epub)
-add_custom_target(html5 ALL)
+add_custom_target(html ALL)
 
-function(generate_wxmaxima_documentation FORMAT PANDOC_TEXSELECT_OPTION)
-    set(FILEEXTENSION "${FORMAT}")
-    # for html5 format set the file extension to .html
+function(generate_wxmaxima_documentation FILEEXTENSION PANDOC_TEXSELECT_OPTION)
+    set(FORMAT "${FILEEXTENSION}")
+    # Set the format to "html5" to generate html with pandoc.
     if(FILEEXTENSION STREQUAL "html")
         set(FORMAT "html5")
     endif()
-    # set the format to "latex" to generate pdf.
+    # Set the format to "latex" to generate pdf with pandoc.
     if(FILEEXTENSION STREQUAL "pdf")
         set(FORMAT "latex")
     endif()
@@ -52,22 +52,19 @@ endif()
 find_program(PO4A_TRANSLATE po4a-translate)
 if(NOT PO4A_TRANSLATE)
     message(WARNING "po4a-translate not found. Localized documentation can not be converted from Markdown.")
-endif()
-
-if (NOT PO4A_TRANSLATE)
     message(STATUS "No po4a-translate binary")
     if(NOT PO4A_TRANSLATE)
         find_package(Perl)
-	 if(PERL_FOUND)
-	    message(STATUS "Found perl")
-	    find_file(PO4A_TRANSLATE po4a-translate)
-	    if(PO4A_TRANSLATE)
-		message(STATUS "Found po4a-translate")
-		get_filename_component(PO4A_TRANSLATE_DIR ${PO4A_TRANSLATE} DIRECTORY)
-		set(PO4A-TRANSLATE ${PERL_EXECUTABLE} -I${PO4A_TRANSLATE_DIR}/lib ${PO4A_TRANSLATE})
-		message(STATUS "PO4A_TRANSLATE = ${PO4A_TRANSLATE}")
-	    endif()
-	endif()
+        if(PERL_FOUND)
+            message(STATUS "Found perl")
+            find_file(PO4A_TRANSLATE po4a-translate)
+            if(PO4A_TRANSLATE)
+                message(STATUS "Found po4a-translate file")
+                get_filename_component(PO4A_TRANSLATE_DIR ${PO4A_TRANSLATE} DIRECTORY)
+                set(PO4A-TRANSLATE ${PERL_EXECUTABLE} -I${PO4A_TRANSLATE_DIR}/lib ${PO4A_TRANSLATE})
+                message(STATUS "PO4A_TRANSLATE = ${PO4A_TRANSLATE}")
+            endif()
+        endif()
     endif()
 endif()
 
@@ -80,8 +77,7 @@ endif()
 if(PANDOC AND PO4A_TRANSLATE)
     execute_process(
         COMMAND ${PANDOC} --version
-        OUTPUT_VARIABLE PANDOC_VERSION_TEXT
-	)
+        OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
     # get pandoc major version number, if >2 use --pdf-engine else --latex-engine (they changed the name of the command line option)
     string(REGEX REPLACE "^pandoc ([0-9]).*$" "\\1"  PANDOC_VERSION ${PANDOC_VERSION_TEXT})
     if(PANDOC_VERSION LESS_EQUAL 1)
@@ -99,36 +95,36 @@ if(PANDOC AND PO4A_TRANSLATE)
     file(COPY ${IMAGEFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
     foreach(BASENAME ${BASENAMES})
-	string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
-	string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
+        string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
+        string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
 
-	if(PO4A_TRANSLATE)
-	    if(NOT BASENAME STREQUAL "wxmaxima")
-		add_custom_command(
-		    OUTPUT ${BASENAME}.md
-		    DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-		    COMMAND ${PO4A_TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
-	    endif()
-	endif()
+        if(PO4A_TRANSLATE)
+            if(NOT BASENAME STREQUAL "wxmaxima")
+                add_custom_command(
+                    OUTPUT ${BASENAME}.md
+                    DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+                    COMMAND ${PO4A_TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
+            endif()
+        endif()
 
-    generate_wxmaxima_documentation(html5 "")
-    generate_wxmaxima_documentation(odt "")
-    generate_wxmaxima_documentation(docx "")
-    generate_wxmaxima_documentation(epub "")
-    if(LATEX)
-        generate_wxmaxima_documentation(pdf "${PANDOC_TEXSELECT_OPTION}")
-    endif()
+        generate_wxmaxima_documentation(html "")
+        generate_wxmaxima_documentation(odt "")
+        generate_wxmaxima_documentation(docx "")
+        generate_wxmaxima_documentation(epub "")
+        if(LATEX)
+            generate_wxmaxima_documentation(pdf "${PANDOC_TEXSELECT_OPTION}")
+        endif()
 
 
-	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
-	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
     endforeach()
 else()
     foreach(BASENAME ${BASENAMES})
-	install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
-	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima OPTIONAL)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima OPTIONAL)
     endforeach()
 endif()
 
