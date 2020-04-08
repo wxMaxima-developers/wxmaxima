@@ -709,9 +709,9 @@ It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ has
 
 ## My SBCL-based _Maxima_ runs out of memory
 
-SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits sbcl can be provided with the command line parameter `--dynamic-space-size` that tells sbcl how many megabytes it should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes, 1800. A 64-bit sbcl version running on windows can be instructed to use more than the about 1280 Megabytes compiling lapack needs.
+The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits sbcl can be provided with the command line parameter `--dynamic-space-size` that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling lapack needs.
 
-One way to provide _maxima_ (and thus sbcl) with command line parameters is the "Additional parameters for Maxima" field of _wxMaxima_’s configuration dialogue.
+One way to provide _Maxima_ (and thus SBCL) with command line parameters is the "Additional parameters for Maxima" field of _wxMaxima_’s configuration dialogue.
 
 ![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }
 
@@ -722,7 +722,7 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 ## _wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts
 
-If your _Maxima_ is based on sbcl the following lines have to be added to your `.sbclrc`:
+If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:
 
     (setf sb-impl::*default-external-format* :utf-8)
 
