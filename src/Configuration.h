@@ -807,7 +807,7 @@ public:
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
   bool GetLanguage() const {return m_language;}
-  void SetLanguage(bool language)
+  void SetLanguage(int language)
     {wxConfig::Get()->Write("language",m_language = language);}
 
   //! The maximum number of Megabytes of gnuplot sources we should store
