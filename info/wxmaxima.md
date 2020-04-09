@@ -278,7 +278,7 @@ A .mac file named Quadratic.mac was created. It consists of two commands: `f(x) 
 
 ![Batch image](./BatchImage.png){ id=img_BatchImage }
 
-    %i1 read("test.mac");
+    read("test.mac");
 
 You can be use `.mac` files for writing own library of macros. But since they don’t contain enough structural information they cannot be read back as a _wxMaxima_ session.
 
@@ -365,14 +365,14 @@ If the variable name doesn’t match these requirements it can still be declared
 
 Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevaluated.
 
-    (%i2)   for i:1 thru 10 do (
-                /* Tell the user how far we got */
-                wxstatusbar(concat("Pass ",i)),
-                /* (sleep n) is a Lisp function, which can be used */
-                /* with the character "?" before. It delays the */
-                /* program execution (here: for 3 seconds) */
-                ?sleep(3)
-            )$
+    for i:1 thru 10 do (
+        /* Tell the user how far we got */
+        wxstatusbar(concat("Pass ",i)),
+        /* (sleep n) is a Lisp function, which can be used */
+        /* with the character "?" before. It delays the */
+        /* program execution (here: for 3 seconds) */
+        ?sleep(3)
+    )$
 
 ## Plotting
 
@@ -386,10 +386,8 @@ _Maxima_ normally instructs the external program gnuplot to open a separate wind
 
 As noted above, the configure dialog provides a way to change the default size plots are created with which sets the starting value of `wxplot_size`. The plotting routines of _wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
 
-    %i1 wxplot_size:[1200,800];
-    %o1 [1200,800];
-
-    %i2 wxdraw2d(
+    wxplot_size:[1200,800]$
+    wxdraw2d(
         explicit(
             sin(x),
             x,1,10
@@ -398,22 +396,12 @@ As noted above, the configure dialog provides a way to change the default size p
 
 If the size of only one plot is to be changed _Maxima_ provides a canonical way to change an attribute only for the current cell.
 
-     %i1 wxplot_size:[1200,800];
-     %o1 [1200,800];
-
-     %i1 wxdraw2d(
-             explicit(
-                 sin(x),
-                 x,1,10
-             )
-         ),wxplot_size=[1600,800]$
-
-    %i1 wxdraw2d(
+     wxdraw2d(
         explicit(
             sin(x),
             x,1,10
         )
-    ),wxplot_size=[1600,800]$
+     ),wxplot_size=[1600,800]$
 
 
 ### Better quality plots
@@ -698,7 +686,7 @@ There are separate undo functions for cell operations and for changes inside of 
 * If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently.
 * If nothing else helps _Maxima_ contains a replay feature:
 
-    %i1 playback();
+    playback();
 
 
 ## _wxMaxima_ starts up with the message “Maxima process terminated.”
