@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-02 11:27+0200\n"
-"PO-Revision-Date: 2020-03-26 13:25+0100\n"
+"PO-Revision-Date: 2020-04-09 08:33+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -3666,7 +3666,7 @@ msgstr "Gnuplot kann unter %s gefunden werden"
 
 #: /home/gunter/src/wxmaxima/src/Dirstructure.cpp:297
 msgid "Gnuplot found at: "
-msgstr ""
+msgstr "Gnuplot gefunden als: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2150
 msgid "Gnuplot has closed."
@@ -3674,7 +3674,7 @@ msgstr "Gnuplot wurde beendet."
 
 #: /home/gunter/src/wxmaxima/src/Dirstructure.cpp:292
 msgid "Gnuplot not found, using the default: "
-msgstr ""
+msgstr "Gnuplot nicht gefunden. Verwende: "
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7324
 msgid ""
@@ -3953,7 +3953,7 @@ msgid ""
 "(diff('f(x),x,2)) or any other derivation if the curve the result is a "
 "differential equation that describes the general shapes the curve can have "
 "without describing its actual height.\n"
-msgstr ""
+msgstr "Wenn die Gleichung, die die Form einer Kurve f(x) definiert, ihre Steilheit (diff('f(x),x)), deren Steilheit (diff('f(x),x,2)) oder eine deren Ableitungen enthält, legt die Gleichung zwar die generelle Form der Kurve fest, aber beschreibt nicht mehr ihre absolute Höhe.\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:312
 msgid ""
@@ -6713,7 +6713,7 @@ msgstr "Graphikausgabe über MS Windows"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:107
 msgid "Running on MS Windows using DirectDraw"
-msgstr ""
+msgstr "Verwende DirectDraw zur Anzeige des Arbeitsblatts"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:119
 msgid "Running on Mac OS"
@@ -6903,7 +6903,7 @@ msgstr "Kapitel"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:253
 msgid "Section cell (Heading 2)"
-msgstr ""
+msgstr "Sektion (2. Gliederungsebene)"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:142
 msgid "See also the speed <-> accuracy button."
@@ -7132,7 +7132,7 @@ msgstr "Setze einige Vorbedingungen für wxMaxima"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3718
 #, c-format
 msgid "Setting gnuplot_binary to %s"
-msgstr ""
+msgstr "Setze die Adresse von Gnuplot auf %s"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:527
 msgid "Settings for the following 3d plots"
@@ -7764,7 +7764,7 @@ msgstr "Unterkapitel"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:252
 msgid "Subsection cell (Heading 3)"
-msgstr ""
+msgstr "Untersektion (3. Gliederungsebene)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1649
 msgid "Subst..."
@@ -7788,7 +7788,7 @@ msgstr "Unter-Unterkapitel"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:251
 msgid "Subsubsection cell (Heading 4)"
-msgstr ""
+msgstr "Unter-Untersektion (4. Gliederungsebene)"
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:59
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7755
@@ -8457,7 +8457,7 @@ msgstr "Title (Hoch- und Tiefstellen als x_{10} oder x^{10})"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:254
 msgid "Title cell (Heading 1)"
-msgstr ""
+msgstr "Titel (1. Gliederungsebene)"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:72
 msgid ""

@@ -759,13 +759,14 @@ GroupCell *Worksheet::InsertGroupCells(
 
   if (renumbersections)
     NumberSections();
-  Recalculate(where, false);
+  Recalculate(where);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(cells, lastOfCellsToInsert, undoBuffer);
 
   RequestRedraw(where);
+  AdjustSize();
   return lastOfCellsToInsert;
 }
 
