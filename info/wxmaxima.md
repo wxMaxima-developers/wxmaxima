@@ -5,7 +5,7 @@ wxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra s
 
 ![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }
 
-Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on [Contents](#SEC_Contents "Full table of contents") here or on the line below the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. Finally, an [index](#Index "Alphabetical index") provides an alphabetical listing of many of the items in the manual with links to these items.
+Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on [Contents](#TOC) here the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual.
 
 * [Introduction](#Introduction "Introduction to wxMaxima"):
 
