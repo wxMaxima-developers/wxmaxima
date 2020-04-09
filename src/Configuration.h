@@ -806,7 +806,7 @@ public:
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
-  bool GetLanguage() const {return m_language;}
+  int GetLanguage() const {return m_language;}
   void SetLanguage(int language)
     {wxConfig::Get()->Write("language",m_language = language);}
 
