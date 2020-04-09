@@ -1603,7 +1603,7 @@ msgid ""
 "if `wxsubscripts` is set to true variable names of the format `x_y` are "
 "displayed using a subscript if"
 msgstr ""
-"Wenn `wxxsubscripts` auf `true` gesetzt ist, werden Variablennamen im Format "
+"Wenn `wxsubscripts` auf `true` gesetzt ist, werden Variablennamen im Format "
 "`x_y` mit einem tiefgestellten `y` dargestellt, wenn"
 
 #. type: Bullet: '* '
@@ -1916,9 +1916,9 @@ msgid ""
 "every time a plot is prepared."
 msgstr ""
 "Wenn unter Windows die Variable `gnuplot_command` auf \"wgnuplot\" geändert "
-"wird, erlaubt gnuplot, eine Kommandokonsole zu öffnen, stielt aber jedes "
-"Mal, wenn ein Diagramm gezeichnet wird, die Zeichen, die währenddessen in "
-"die Tastatur eingegeben werden."
+"wird, erlaubt gnuplot, eine Kommandokonsole zu öffnen, stiehlt aber jedes "
+"Mal, wenn ein Diagramm gezeichnet wird, den Tastaturfokus für kurze Zeit "
+"(die Zeichen, die währenddessen eingegeben werden, verschwinden)."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:432
@@ -1990,7 +1990,7 @@ msgid ""
 "The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
 "which allows for rotating 3d plots:"
 msgstr ""
-"Für 3D-Diagramme ist dieselve Funktionalität als `with_slider_draw3d` "
+"Für 3D-Diagramme ist dieselbe Funktionalität als `with_slider_draw3d` "
 "verfügbar, die auch rotierende 3D-Diagramme erstellen kann:"
 
 #. type: Plain text
@@ -2538,7 +2538,7 @@ msgstr ""
 msgid ""
 "A file that contains commands that are executed on starting up _Maxima_: `~/."
 "maxima/maxima-init.mac`"
-msgstr "Eine Datei mit Befehlen, die _Maxima_ beim Hochfahren ausführt und"
+msgstr "Eine Datei mit Befehlen, die _Maxima_ beim Hochfahren ausführt: `~/.maxima/maxima-init.mac`"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:602
@@ -2551,7 +2551,7 @@ msgid ""
 "_Maxima_: `~/.maxima/wxmaxima-init.mac`"
 msgstr ""
 "Eine Datei mit zusätzlichen Kommandos, die ausgeführt werden, wenn _Maxima_ "
-"von _wxMaxima_ gestartet wird."
+"von _wxMaxima_ gestartet wird: `~/.maxima/wxmaxima-init.mac`"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:604
@@ -3231,7 +3231,7 @@ msgid ""
 "then to import them into the worksheet again:"
 msgstr ""
 "Wenn ein unterschiedliches Format benutzt wird, ist es einfacher, Bilder zu "
-"generieren und dann in daas Arbeitsblatt zu importieren:"
+"generieren und dann in das Arbeitsblatt zu importieren:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:766
@@ -3375,8 +3375,8 @@ msgid ""
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
 "still provides some command line switches, though."
 msgstr ""
-"Die Kommandozeile wird auf vielen Betriebssystemen nur selten genutzt. Das "
-"_wxMaxima_ bietet jedoch dennoch mehrere Kommandozeilenoptionen an."
+"Die meisten Betriebssysteme bieten unkompliziertere Arten, um ein GUI-Programm zu starten, als die Kommandozeile. "
+"_wxMaxima_ bietet trotzdem mehrere Kommandozeilenoptionen an."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
@@ -3451,7 +3451,7 @@ msgstr ""
 "* `--exit-on-error`:               Schließe wxMaxima, wenn Maxima einen Fehler detektiert.\n"
 "* `-f` or `--ini=<str>`:           Speichere die Konfiguration in der Datei `<str>`\n"
 "* `-u`, `--use-version=<str>`:     Verwende Maxima-Version `<str>`\n"
-"* `-l`, `--lisp=<str>`:            Use a maxima compiled with lisp compiler `<str>`.\n"
+"* `-l`, `--lisp=<str>`:            Verwende ein Maxima, das mit dem Lisp Compiler `<str>` compiliert wurde.\n"
 "* `-X`, `--extra-args=<str>`:      Erlaubt, Maxima zusätzliche Argumente mitzugeben\n"
 "* `-m` or `--maxima=<str>`:        Sagt, wo die ausführbare Datei von _maxima_ liegt.\n"
 
