@@ -668,8 +668,10 @@ Normally _wxMaxima_ waits for the whole 2D formula to be transferred before it b
 
     for i:1 thru 10 do (
        disp(i),
-       t:makelist(i,i,1000000),
-       length(t)
+       /* (sleep n) is a Lisp function, which can be used */
+       /* with the character "?" before. It delays the */
+       /* program execution (here: for 3 seconds) */
+       ?sleep(3)
     )$
 
 ## Plotting only shows a closed empty envelope with an error message
