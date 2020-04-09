@@ -686,8 +686,9 @@ There are separate undo functions for cell operations and for changes inside of 
 * If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently.
 * If nothing else helps _Maxima_ contains a replay feature:
 
-    playback();
-
+~~~~
+playback();
+~~~~
 
 ## _wxMaxima_ starts up with the message “Maxima process terminated.”
 
