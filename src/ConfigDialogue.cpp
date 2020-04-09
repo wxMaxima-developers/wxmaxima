@@ -1217,6 +1217,7 @@ void ConfigDialogue::WriteSettings()
     {
       if(i == m_language->GetSelection())
         configuration->SetLanguage(it->second);
+      ++i;
     }
   }
   configuration->SymbolPaneAdditionalChars(m_symbolPaneAdditionalChars->GetValue());
