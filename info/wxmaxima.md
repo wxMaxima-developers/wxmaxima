@@ -626,12 +626,13 @@ _wxMaxima_ provides a few functions that gather bug reporting information about 
 * `wxbuild_info()` gathers information about the currently running version of _wxMaxima_
 * `wxbug_report()` tells how and where to file bugs
 
-* * *
-
 
 ## Marking output being drawn in red
 
 _Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red foreground.
+
+* * *
+
 
 Troubleshooting
 ===============
