@@ -7,31 +7,31 @@ wxMaxima is a graphical user interface (GUI) for the _Maxima_ computer algebra s
 
 Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on [Contents](#TOC) here the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual.
 
-* [Introduction](#Introduction "Introduction to wxMaxima"):
+* [Introduction](#introduction-to-wxmaxima "Introduction to wxMaxima"):
 
 
 
 wxMaxima basics
 
-* [Extensions](#Extensions "Extensions"):
+* [Extensions](#extensions-to-maxima "Extensions"):
 
 
 
 The commands wxMaxima adds to _Maxima_
 
-* [Troubleshooting](#Troubleshooting "Troubleshooting"):
+* [Troubleshooting](#troubleshooting "Troubleshooting"):
 
 
 
 What to do if wxMaxima does not work as expected
 
-* [FAQ](#FAQ "FAQ"):
+* [FAQ](#faq "FAQ"):
 
 
 
 Frequently asked questions
 
-* [CommandLine](#CommandLine "_Maxima_ Command Line"):
+* [CommandLine](#command-line-arguments "_Maxima_ Command Line"):
 
 
 
