@@ -770,7 +770,6 @@ Cell *MathParser::ParseTableTag(wxXmlNode *node)
 
 Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
 {
-  //  wxYield();
   Cell *retval = NULL;
   Cell *cell = NULL;
   bool warning = all;

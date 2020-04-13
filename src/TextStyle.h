@@ -44,7 +44,7 @@ public:
           m_underlined(false)
     {
     };
-  //! Read thisstyle from a config source
+  //! Read this style from a config source
   void Read(wxConfigBase *config, wxString where);
   //! Write this style to a config source
   void Write(wxConfigBase *config, wxString where);
@@ -91,6 +91,11 @@ public:
   void Color(int r, int g, int b){m_color = wxColor(r,g,b);}
   //! Get the color of this style
   wxColor Color() const{return m_color;}
+  /*! Make this color differ from the background by a noticeable amount
+
+    Useful for black/white background theme changes
+   */
+  void MakeColorDifferFromBackground(wxColor backgroundColor);
 private:
   wxColor m_color;
   wxString m_fontName;
