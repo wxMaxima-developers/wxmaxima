@@ -100,23 +100,23 @@
 </figure>
 <p>Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on <a href="#TOC">Contents</a> here the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual.</p>
 <ul>
-<li><a href="#Introduction" title="Вступ до wxMaxima">Вступ</a>:</li>
+<li><a href="#introduction-to-wxmaxima" title="Introduction to wxMaxima">Introduction</a>:</li>
 </ul>
 <p>Основи wxMaxima</p>
 <ul>
-<li><a href="#Extensions" title="Розширення">Розширення</a>:</li>
+<li><a href="#extensions-to-maxima" title="Extensions">Extensions</a>:</li>
 </ul>
 <p>Команди, які wxMaxima додає до <em>Maxima</em></p>
 <ul>
-<li><a href="#Troubleshooting" title="Усування вад">Усування вад</a>:</li>
+<li><a href="#troubleshooting" title="Troubleshooting">Troubleshooting</a>:</li>
 </ul>
 <p>Що робити, якщо wxMaxima працює неправильно</p>
 <ul>
-<li><a href="#FAQ" title="Поширені питання та відповіді на них">Поширені питання</a>:</li>
+<li><a href="#faq" title="FAQ">FAQ</a>:</li>
 </ul>
 <p>Поширені питання та відповіді на них</p>
 <ul>
-<li><a href="#CommandLine" title="Командний рядок _Maxima_">Командний рядок</a>:</li>
+<li><a href="#command-line-arguments" title="_Maxima_ Command Line">CommandLine</a>:</li>
 </ul>
 <p>Параметри командного рядка, підтримку яких передбачено у wxMaxima</p>
 <hr />
@@ -532,9 +532,9 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><code>wxbuild_info()</code> gathers information about the currently running version of <em>wxMaxima</em></li>
 <li><code>wxbug_report()</code> tells how and where to file bugs</li>
 </ul>
-<hr />
 <h2 id="marking-output-being-drawn-in-red"><span class="header-section-number">2.9</span> Marking output being drawn in red</h2>
 <p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red foreground.</p>
+<hr />
 <h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
 <h2 id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>

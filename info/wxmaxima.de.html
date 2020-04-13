@@ -19,7 +19,7 @@
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
+<li><a href="#das-handbuch-von-wxmaxima">Das Handbuch von wxMaxima</a></li>
 <li><a href="#einführung-in-wxmaxima"><span class="toc-section-number">1</span> Einführung in wxMaxima</a><ul>
 <li><a href="#maxima-and-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> and wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
@@ -90,30 +90,30 @@
 <li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
-<p>wxMaxima is a graphical user interface (GUI) for the <em>Maxima</em> computer algebra system (CAS). wxMaxima allows one to use all of <em>Maxima</em>’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for <em>Maxima</em>.</p>
+<h2 id="das-handbuch-von-wxmaxima" class="unnumbered">Das Handbuch von wxMaxima</h2>
+<p>wxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-Algebrasystem Maxima. wxMaxima erlaubt die Nutzung aller Funktionien dieses Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses Handbuch beschreibt die Features, die wxMaxima zu einer der beliebtesten graphischen Benutzerumgebung für Maxima gemacht haben.</p>
 <figure>
 <img src="./wxMaximaLogo.png" alt="wxMaxima logo" id="img_wxMaximaLogo" /><figcaption>wxMaxima logo</figcaption>
 </figure>
-<p>Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on <a href="#TOC">Contents</a> here the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual.</p>
+<p>Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen Kapitel der Dokumentation. <a href="#SEC_Contents%20%22Detailliertes%20Inhaltsverzeichnis%22">Contents</a> fürt zu einer entsprechenden Sektion, die eine genauere Navigation ermöglicht.</p>
 <ul>
-<li><a href="#Introduction" title="Introduction to wxMaxima">Introduction</a>:</li>
+<li><a href="#Introduction" title="Einführung in wxMaxima">Introduction</a>:</li>
 </ul>
-<p>wxMaxima basics</p>
+<p>Die Grundlagen</p>
 <ul>
-<li><a href="#Extensions" title="Extensions">Extensions</a>:</li>
+<li><a href="#Extensions" title="Erweiterungen">Extensions</a>:</li>
 </ul>
-<p>The commands wxMaxima adds to <em>Maxima</em></p>
+<p>Die Kommandos, mittels deren wxMaxima Maxima erweitert</p>
 <ul>
-<li><a href="#Fehlersuche" title="Fehlersuche">Troubleshooting</a>:</li>
+<li><a href="#troubleshooting" title="Troubleshooting">Troubleshooting</a>:</li>
 </ul>
 <p>Was tun, wenn wxMaxima nicht wie erwartet funktioniert</p>
 <ul>
-<li>• <a href="#FAQ" title="Häufig gestellte Fragen">FAQ</a>:</li>
+<li><a href="#faq" title="FAQ">FAQ</a>:</li>
 </ul>
 <p>Frequently asked questions</p>
 <ul>
-<li><a href="#CommandLine" title="_Maxima_ Command Line">CommandLine</a>:</li>
+<li><a href="#command-line-arguments" title="_Maxima_ Command Line">CommandLine</a>:</li>
 </ul>
 <p>Die Kommandozeilenargumente von wxMaxima</p>
 <hr />
@@ -534,9 +534,9 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><code>wxbuild_info()</code> sammelt Informationen über die derzeit ausgeführte Version von <em>wxMaxima</em></li>
 <li><code>wxbug_report()</code> sagt, wo und wie Fehler gemeldet werden können</li>
 </ul>
-<hr />
 <h2 id="rotes-markieren-von-formelteilen"><span class="header-section-number">2.9</span> Rotes Markieren von Formelteilen</h2>
 <p>Der <code>box()</code>-Befehl stellt sein Argument in <em>wxMaxima</em> rot dar.</p>
+<hr />
 <h1 id="fehlersuche"><span class="header-section-number">3</span> Fehlersuche</h1>
 <h2 id="keine-verbindung-zu-maxima"><span class="header-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em></h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
