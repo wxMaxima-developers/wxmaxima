@@ -35,7 +35,7 @@ msgid ""
 "make wxMaxima one of the most popular GUIs for _Maxima_."
 msgstr ""
 "wxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-"
-"Algebrasystem Maxima. wxMaxima erlaubt die Nutzung aller Funktionien dieses "
+"Algebrasystem Maxima. wxMaxima erlaubt die Nutzung aller Funktionen dieses "
 "Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses "
 "Handbuch beschreibt die Features, die wxMaxima zu einer der beliebtesten "
 "graphischen Benutzerumgebung für Maxima gemacht haben."
@@ -59,7 +59,7 @@ msgstr "Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:11
 msgid "[Introduction](#introduction-to-wxmaxima \"Introduction to wxMaxima\"):"
-msgstr "[Introduction](#Introduction \"Einführung in wxMaxima\"):"
+msgstr "[Introduction](#einführung-in-wxmaxima \"Einführung in wxMaxima\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:15
@@ -69,7 +69,7 @@ msgstr "Die Grundlagen"
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:17
 msgid "[Extensions](#extensions-to-maxima \"Extensions\"):"
-msgstr "[Extensions](#Extensions \"Erweiterungen\"):"
+msgstr "[Extensions](#erweiterungen-für-maxima \"Erweiterungen\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:21
@@ -79,7 +79,7 @@ msgstr "Die Kommandos, mittels deren wxMaxima Maxima erweitert"
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:23
 msgid "[Troubleshooting](#troubleshooting \"Troubleshooting\"):"
-msgstr "[Troubleshooting](#Fehlersuche \"Fehlersuche\"):"
+msgstr "[Troubleshooting](#fehlersuche \"Fehlersuche\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:27
@@ -89,7 +89,7 @@ msgstr "Was tun, wenn wxMaxima nicht wie erwartet funktioniert"
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:29
 msgid "[FAQ](#faq \"FAQ\"):"
-msgstr "[FAQ](#FAQ \"Häufig gestellte Fragen\"):"
+msgstr "[FAQ](#häufig-gestellte-fragen \"Häufig gestellte Fragen\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:33
@@ -99,7 +99,7 @@ msgstr "Häufig gestellte Fragen"
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:35
 msgid "[CommandLine](#command-line-arguments \"_Maxima_ Command Line\"):"
-msgstr "[CommandLine](#CommandLine \"Kommandozeilenparameter für Maxima\"):"
+msgstr "[CommandLine](#kommandozeilen-optionen \"Kommandozeilenparameter für Maxima\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:39
@@ -270,10 +270,6 @@ msgstr "![wxMaxima window](./wxMaximaWindow.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:67
-#, fuzzy
-#| msgid ""
-#| "The calculations that are entered in _wxMaxima_ are performed by the "
-#| "Maxima command-line tool in the background."
 msgid ""
 "The calculations that are entered in _wxMaxima_ are performed by the "
 "_Maxima_ command-line tool in the background."
@@ -288,16 +284,6 @@ msgstr "## Grundlagen zum Arbeitsblatt"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:72
-#, fuzzy
-#| msgid ""
-#| "Much of wxMaxima is self-explaining, but some details require attention. "
-#| "[This site](https://wxMaxima-developers.github.io/wxmaxima/help.html) "
-#| "contains a number of workbooks that address various aspects of wxMaxima. "
-#| "Working through some of these (particularly the \"10 minute (wx)Maxima "
-#| "tutorial\") will increase one’s familiarity with both the content of "
-#| "_Maxima_ and the use of wxMaxima to interact with Maxima. This manual "
-#| "concentrates on describing aspects of wxMaxima that are not likely to be "
-#| "self-evident and that might not be covered in the online material."
 msgid ""
 "Much of wxMaxima is self-explaining, but some details require attention. "
 "[This site](https://wxMaxima-developers.github.io/wxmaxima/help.html) "
@@ -356,13 +342,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:78
-#, fuzzy
-#| msgid ""
-#| "If text is typed into _wxMaxima_ it automatically creates a new worksheet "
-#| "cell. The type of this cell can be selected in the toolbar. If a code "
-#| "cell is created the cell can be sent to maxima, which causes the result "
-#| "of the calculation to be displayed below the code. A pair of such "
-#| "commands is shown below."
 msgid ""
 "If text is typed into _wxMaxima_ it automatically creates a new worksheet "
 "cell. The type of this cell can be selected in the toolbar. If a code cell "
@@ -372,15 +351,13 @@ msgid ""
 msgstr ""
 "Wenn Text in _wxMaxima_ eingegeben wird, erzeugt er automatisch eine neue "
 "Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an "
-"Maxima gesendet werden und das Resultat dieser Aktion wird unter der Zelle "
+"_Maxima_ gesendet werden und das Resultat dieser Aktion wird unter der Zelle "
 "angezeigt, wie unten abgebildet."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:80
-#, fuzzy
-#| msgid "![Input/output cell](./InputCell.jpg)"
 msgid "![Input/output cell](./InputCell.png){ id=img_InputCell }"
-msgstr "![Input/output cell](./InputCell.jpg)"
+msgstr "![Input/output Zelle](./InputCell.png){ id=img_InputCell }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:82
@@ -426,8 +403,6 @@ msgstr "Die nun folgende Abbildung zeigt verschiedene Zelltypen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:88
-#, fuzzy
-#| msgid "![Example of different wxMaxima cells](./cell-example.png)"
 msgid ""
 "![Example of different wxMaxima cells](./cell-example.png){ id=img_cell-"
 "example }"
@@ -491,8 +466,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:103
-#, fuzzy
-#| msgid "### Horizontal and vertical cursors"
 msgid "### Horizontal and vertical cursors"
 msgstr "### Horizontale und vertikale Cursors"
 
@@ -557,13 +530,6 @@ msgstr "### Auto-Vervollständigung"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:114
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_ contains an autocompletion feature that is triggered via the "
-#| "menu (Cell/Complete Word) or alternatively by pressing the key "
-#| "combination Ctrl+&gt;Space&lt;. The autocompletion is context-sensitive. "
-#| "For example if activated within an unit specification for ezUnits it will "
-#| "offer a list of applicable units."
 msgid ""
 "_wxMaxima_ contains an autocompletion feature that is triggered via the menu "
 "(Cell/Complete Word) or alternatively by pressing the key combination "
@@ -573,27 +539,18 @@ msgid ""
 msgstr ""
 "wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu "
 "vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt "
-"wird, oder die Tastenkombination Strg+Leertaste gedrückt wird. Die "
+"wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die "
 "automatische Vervollständigung erkennt oft den Kontext, in dem sie "
 "ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für "
 "ezUnits vorschlagen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:116
-#, fuzzy
-#| msgid "![ezUnits](./ezUnits.png)"
 msgid "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
-msgstr "![ezUnits](./ezUnits.png)"
+msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:118
-#, fuzzy
-#| msgid ""
-#| "Besides completing a file name, an unit name or the current command’s or "
-#| "variable’s name the autocompletion is able to show a template for most of "
-#| "the commands indicating the type (and meaning) of the parameters this "
-#| "program expects. To activate this feature press &lt;Shift&gt;+&lt;Ctrl&gt;"
-#| "+&lt;Space&gt; or select the respective menu item (Cell/Show Template)."
 msgid ""
 "Besides completing a file name, an unit name or the current command’s or "
 "variable’s name the autocompletion is able to show a template for most of "
@@ -604,9 +561,8 @@ msgid ""
 msgstr ""
 "Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines "
 "Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der "
-"erwarteten Argumente angezeigt werden. Hierfür muss einfach &lt;Shift&gt;"
-"+&lt;Strg&gt;+&lt;Leertaste&gt; gedrückt werden, oder der entsprechende "
-"Menüeintrag gewählt (Zelle/Zeige Parameter)."
+"erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> "
+"gedrückt werden, oder der entsprechende Menüeintrag gewählt (Zelle/Zeige Parameter)."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:120
@@ -629,14 +585,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:124
-#, fuzzy
-#| msgid ""
-#| "For most countries the codepage of 256 characters that has been chosen "
-#| "does not include Greek letters, though. To overcome this limitation "
-#| "Unicode has been invented: This is a method of including characters that "
-#| "are not normally used in the English language in a text that (as long as "
-#| "only the basic form of Latin characters is used) looks like plain 8-bit "
-#| "ASCII."
 msgid ""
 "For most countries the codepage of 256 characters that has been chosen does "
 "not include things like Greek letters, though, that are frequently used in "
@@ -646,7 +594,7 @@ msgid ""
 msgstr ""
 "Für die Mehrzahl der Länder ist aus diesem Grund eine Codepage mit 256 "
 "Zeichen definiert worden, die allerdings in den meisten Ländern "
-"beispielsweise keine griechischen Buchstaben verwendet, die in der "
+"beispielsweise keine griechischen Buchstaben beinhaltet, die in der "
 "Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde "
 "Unicode entwickelt: Eine Weise, Zeichen auszudrücken, die englischen Text "
 "wie gewohnt arbeiten lässt, jedoch auch Zeichen zulässt, die mehr als 8 bits "
@@ -654,19 +602,13 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:126
-#, fuzzy
-#| msgid ""
-#| "_Maxima_ allows for unicode characters if it was compiled using a lisp "
-#| "compiler that either supports lisp or that doesn't care about the font "
-#| "encoding. As at least one of this is likely to be true _wxMaxima_ "
-#| "provides a method of entering Greek characters using the keyboard:"
 msgid ""
 "_Maxima_ allows for unicode characters if it was compiled using a Lisp "
 "compiler that either supports lisp or that doesn't care about the font "
 "encoding. As at least one of this is likely to be true _wxMaxima_ provides a "
 "method of entering Greek characters using the keyboard:"
 msgstr ""
-"Wenn Maxima mit einem Compiler generiert wurde, der Unicode unterstützt oder "
+"Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt oder "
 "sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, "
 "unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet "
 "_wxMaxima_ eine Methode an, griechische Zeichen mit einer nicht-griechischen "
@@ -674,29 +616,21 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:129
-#, fuzzy
-#| msgid ""
-#| "A greek letter can be entered by pressing the <ESC> key and then starting "
-#| "to type the greek character's name."
 msgid ""
 "A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
 "starting to type the greek character's name."
 msgstr ""
-"Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <ESC>-"
+"Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <kbd>ESC</kbd>-"
 "Taste gedrückt wird, und dann sein Name einzugeben begonnen wird."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:129
-#, fuzzy
-#| msgid ""
-#| "Alternatively it can be entered by pressing <ESC>, one letter and <ESC> "
-#| "again. In this case the following letters are supported:"
 msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and "
 "<kbd>ESC</kbd> again. In this case the following letters are supported:"
 msgstr ""
-"Ebenso kann er eingegeben werden, indem <ESC> gedrückt wird, ein Buchstabe "
-"und dann erneut <ESC>:"
+"Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein Buchstabe "
+"und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die folgenden Zeichen unterstützt:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:148
@@ -746,7 +680,7 @@ msgid ""
 "The same mechanism also allows to enter some miscellaneous mathematical "
 "symbols:"
 msgstr ""
-"Derselbe Mechanismus erlaubt es auch, einige andere Symbole einzugeben:"
+"Derselbe Mechanismus erlaubt es auch, einige andere mathematische Symbole einzugeben:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:203
@@ -911,19 +845,13 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:205
-#, fuzzy
-#| msgid ""
-#| "If a special symbol isn’t in the list it is possible to input arbitrary "
-#| "unicode characters by pressing `<ESC>number of the character<ESC>`. "
-#| "`<ESC>61<ESC>` therefore results in an `a`."
 msgid ""
 "If a special symbol isn’t in the list it is possible to input arbitrary "
 "unicode characters by pressing <kbd>ESC</kbd> [number of the character] "
 "<kbd>ESC</kbd>."
 msgstr ""
 "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können "
-"Zeichen auch als <ESC> (Nummer des Zeichens) <ESC> eingegeben werden. "
-"<ESC>61<ESC> ergibt auf diese Weise ein `a`."
+"Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden. "
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:207
@@ -933,13 +861,6 @@ msgstr "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein `a`."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:209
-#, fuzzy
-#| msgid ""
-#| "Please note that most of these symbols (notable exceptions are the logic "
-#| "symbols) do not have a special meaning in _Maxima_ and therefore will be "
-#| "interpreted as ordinary characters - or might provoke unexpected results "
-#| "in case that the _Maxima_ is being run by a lisp that doesn’t support "
-#| "dealing with special Unicode characters."
 msgid ""
 "Please note that most of these symbols (notable exceptions are the logic "
 "symbols) do not have a special meaning in _Maxima_ and therefore will be "
@@ -949,7 +870,8 @@ msgid ""
 msgstr ""
 "Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) "
 "haben keine direkte Entsprechung in _Maxima_ und werden daher als normale "
-"Zeichen interpretiert."
+"Zeichen interpretiert. Falls _Maxima_ eine Lisp-Version verwendet, die "
+"Unicode nicht unterstützt, kann das eine Fehlermeldung verursachen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:212
@@ -984,10 +906,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:216
-#, fuzzy
-#| msgid "![Example of different side panes](./SidePanes.png)"
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
-msgstr "![Ein Beispiel verschiedener Zelltypen](./cell-example.png)"
+msgstr "![Beispiele verschiedener Seitenbereiche](./SidePanes.png){ id=img_SidePanes }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:218
@@ -1015,10 +935,6 @@ msgstr "### Markdown-Unterstützung"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:225
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_offers a set of standard markdown conventions that don't "
-#| "collide with mathematical notation. One of this elements is bullet lists."
 msgid ""
 "_wxMaxima_ offers a set of standard markdown conventions that don't collide "
 "with mathematical notation. One of this elements is bullet lists."
@@ -1053,9 +969,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:237
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_ will recognize text starting with > chars as block quotes:"
 msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:"
 msgstr "_wxMaxima_ erkennt Text, der mit einem \">\" beginnt, als ein Zitat:"
 
@@ -1142,12 +1055,9 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
-#, fuzzy
-#| msgid "`Shift+Space` inserts a non-breaking space."
 msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
 msgstr ""
-"`Shift+Leertaste` fügt eine Leertaste ein, die nicht in einen Zeilenumbruch "
-"umgewandelt werden kann."
+"<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> fügt ein nicht-umbrechbares Leerzeichen ein."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:263
@@ -1171,14 +1081,10 @@ msgstr "## Dateiformate"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:269
-#, fuzzy
-#| msgid ""
-#| "The material that is developed in a wxMaxima session can be stored for "
-#| "later use in any of three ways:"
 msgid ""
 "The material that is developed in a _wxMaxima_ session can be stored for "
 "later use in any of three ways:"
-msgstr "Das Arbeitsblatt kann auf verschiedene Weisen ausgegeben werden:"
+msgstr "Das Arbeitsblatt kann auf verschiedene Weisen gespeichert werden:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:272
@@ -1218,17 +1124,14 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:280
-#, fuzzy
-#| msgid "![Batch image](./BatchImage.png)"
 msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
-msgstr "![Batch image](./BatchImage.png)"
+msgstr "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:282
-#, fuzzy, no-wrap
-#| msgid "    %i1 read(\"test.mac\");\n"
+#, no-wrap
 msgid "    read(\"test.mac\");\n"
-msgstr "%i1 read(\"test.mac\");\n"
+msgstr "    read(\"test.mac\");\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:284
@@ -1249,13 +1152,6 @@ msgstr "### .wxm"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:288
-#, fuzzy
-#| msgid ""
-#| ".wxm files contains the worksheet except _maxima_'s output. On maxima "
-#| "versions >5.38 they can be read using _Maxima_'s `load()` function just "
-#| "as .mac files can be. With this plain-text format it sometimes is "
-#| "unavoidable that worksheets that use new features are not downwards-"
-#| "compatible with older versions of _wxMaxima_."
 msgid ""
 ".wxm files contains the worksheet except _Maxima_'s output. On Maxima "
 "versions >5.38 they can be read using _Maxima_'s `load()` function just as ."
@@ -1263,10 +1159,10 @@ msgid ""
 "that worksheets that use new features are not downwards-compatible with "
 "older versions of _wxMaxima_."
 msgstr ""
-".wxm-Dateinen sollten das Arbeitsblatt außer _Maxima_'s Ausgabe enthalten. "
-"_Maxima_ >5.38 kann .wxm-Dateien über den load()-Befehl lesen. Das .wxm-"
+".wxm-Dateien sollten das Arbeitsblatt außer _Maxima_'s Ausgabe enthalten. "
+"_Maxima_ >5.38 kann .wxm-Dateien über den `load()`-Befehl lesen. Das .wxm-"
 "Format ist allerdings oft weniger kompatibel mit älteren Versionen von "
-"wxMaxima, als das .wxmx-Format."
+"_wxMaxima_, als das .wxmx-Format."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:290
@@ -1313,12 +1209,11 @@ msgstr "Ebenso können sie von Maxima aus überschrieben werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:301
-#, fuzzy
-#| msgid "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
-msgstr "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
+msgstr "![wxMaxima Konfiguration 1](./wxMaxima_configuration_001.png)"
+"{ id=img_wxMaxima_configuration_001 }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:303
@@ -1381,12 +1276,11 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:319
-#, fuzzy
-#| msgid "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
 msgid ""
 "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
 "{ id=img_wxMaxima_configuration_002 }"
-msgstr "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
+msgstr "![wxMaxima Konfiguration 2](./wxMaxima_configuration_002.png)"
+"{ id=img_wxMaxima_configuration_002 }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:321
@@ -2291,11 +2185,6 @@ msgstr "#### Punkte"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:545
-#, fuzzy
-#| msgid ""
-#| "Draws many points that can optionally be joined. The coordinates of the "
-#| "points are taken from a list of lists, an 2D array or one list or array "
-#| "for each axis."
 msgid ""
 "Draws many points that can optionally be joined. The coordinates of the "
 "points are taken from a list of lists, a 2D array or one list or array for "
@@ -2448,10 +2337,6 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
-#, fuzzy
-#| msgid ""
-#| "A file that contains commands that are executed on starting up _Maxima_, "
-#| "and"
 msgid ""
 "A file that contains commands that are executed on starting up _Maxima_: `~/."
 "maxima/maxima-init.mac`"
@@ -2461,10 +2346,6 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
-#, fuzzy
-#| msgid ""
-#| "one file of additional commands that are executed if _wxMaxima_ is "
-#| "starting _Maxima_."
 msgid ""
 "one file of additional commands that are executed if _wxMaxima_ is starting "
 "_Maxima_: `~/.maxima/wxmaxima-init.mac`"
@@ -2552,8 +2433,7 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:602
 msgid "`wxanimate_autoplay`: Automatically play animations by default?"
-msgstr ""
-"`wxanimate_autoplay`: Sollen Animationen automatisch abgespielt werden?"
+msgstr "`wxanimate_autoplay`: Sollen Animationen automatisch abgespielt werden?"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:604
@@ -2602,12 +2482,11 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:617
-#, fuzzy
-#| msgid "![A third table example](./Matrix%20table%20example.png)"
 msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
-msgstr "![Ein drittes Tabellen-Beispiel](./Matrix%20table%20example.png)"
+msgstr "![Ein drittes Tabellen-Beispiel](./MatrixTableExample.png)"
+"{ id=img_MatrixTableExample }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:619
@@ -2620,12 +2499,10 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:621
-#, fuzzy
-#| msgid "![Another table_form example](./Second%20table%20example.png)"
 msgid ""
 "![Another table_form example](./SecondTableExample.png)"
 "{ id=img_SecondTableExample }"
-msgstr "![Ein anderes table_form Beispiel](./Second%20table%20example.png)"
+msgstr "![Ein anderes table_form Beispiel](./SecondTableExample.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:623
@@ -2824,9 +2701,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:667
-#, fuzzy
-#| msgid ""
-#| "## Plotting only shows an closed empty envelope with an error message"
 msgid "## Plotting only shows a closed empty envelope with an error message"
 msgstr ""
 "## Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung "
@@ -2894,12 +2768,6 @@ msgstr "## Animationen enden in \"Error: Undefined Variable\""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:680
-#, fuzzy
-#| msgid ""
-#| "The value of the slider variable by default is only substituted into the "
-#| "expression that is to be plotted if it is visible there. Using an `subst` "
-#| "command that substitutes the slider variable into the equation to plot "
-#| "(there should be an example of this in this manual) resolves this problem."
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
@@ -2968,11 +2836,8 @@ msgstr "~~~~ playback(); ~~~~"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:695
-#, fuzzy
-#| msgid ""
-#| "## _wxMaxima_ starts up with the message “Maxima process Terminated.”"
 msgid "## _wxMaxima_ starts up with the message “Maxima process terminated.”"
-msgstr "## wxMaxima meldet gleich beim Hochfahren \"Maxima hat sich beendet.\""
+msgstr "## _wxMaxima_ meldet gleich beim Hochfahren \"Maxima hat sich beendet.\""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:697
@@ -2993,20 +2858,14 @@ msgstr "## Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:701
-#, fuzzy
-#| msgid ""
-#| "It is theoretically possible that wxMaxima doesn’t realize that Maxima "
-#| "has finished calculating and therefore never gets informed it can send "
-#| "new data to Maxima. If this is the case “Trigger evaluation” might "
-#| "resynchronize the two programs."
 msgid ""
 "It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ "
 "has finished calculating and therefore never gets informed it can send new "
 "data to _Maxima_. If this is the case “Trigger evaluation” might "
 "resynchronize the two programs."
 msgstr ""
-"Theoretisch kann es passeieren, daß wxMaxima nicht erkennt, dass Maxima "
-"fertig ist und daher nie neue Befehle an Maxima sendet. In diesem Fall kann "
+"Theoretisch kann es passieren, daß wxMaxima nicht erkennt, dass Maxima "
+"mit der Berechnung fertig ist und daher nie neue Befehle an Maxima sendet. In diesem Fall kann "
 "der Befehl 'Trigger Evaluation' die Synchronisation wieder herstellen."
 
 #. type: Plain text
@@ -3045,25 +2904,18 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:707
-#, fuzzy
-#| msgid ""
-#| "One way to provide _maxima_ (and thus sbcl) with command line parameters "
-#| "is the \"Additional parameters for Maxima\" field of _wxMaxima_’s "
-#| "configuration dialogue."
 msgid ""
 "One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
 "dialogue."
 msgstr ""
-"Kommandozeilenparameter für Maxima können in _wxMaxima_'s "
+"Kommandozeilenparameter für _Maxima_ (und daher für SBCL) können in _wxMaxima_'s "
 "Konfigurationsdialog eingegeben werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:709
-#, fuzzy
-#| msgid "![sbcl memory](./sbclMemory.png)"
 msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
-msgstr "![sbcl memory](./sbclMemory.png)"
+msgstr "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:712
@@ -3076,19 +2928,17 @@ msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
 "launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
-msgstr "Das Installieren von `ibus-gtk` behebt dieses Problem meist."
+msgstr "Das Installieren von `ibus-gtk` behebt dieses Problem meist. Auf ([https://"
+"bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
+"launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) findet man genauere Angaben dazu."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:716
 msgid "## _wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
-msgstr "## _Maxima_ mag griechische Buchstaben und Umlaute nicht"
+msgstr "## _wxMaxima_ stoppt, wenn _Maxima_ griechische Buchstaben oder Umlaute verarbeitet"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:718
-#, fuzzy
-#| msgid ""
-#| "If your _Maxima_ is based on sbcl the following lines have to be added to "
-#| "your `.sblrc`:"
 msgid ""
 "If your _Maxima_ is based on SBCL the following lines have to be added to "
 "your `.sbclrc`:"
@@ -3287,10 +3137,7 @@ msgstr "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:789
-#, fuzzy, no-wrap
-#| msgid ""
-#| "Introduction to wxMaxima\n"
-#| "========================\n"
+#, no-wrap
 msgid ""
 "Command-line arguments\n"
 "======================\n"
@@ -3357,16 +3204,7 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
-#, fuzzy, no-wrap
-#| msgid ""
-#| "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
-#| "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
-#| "* `--exit-on-error`:               Close the program on any maxima error.\n"
-#| "* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch\n"
-#| "* `-u`, `--use-version=<str>`:     Use maxima version `<str>`.\n"
-#| "* `-l`, `--lisp=<str>`:              Use a maxima compiled with lisp compiler `<str>`.\n"
-#| "* `-X`, `--extra-args=<str>`:        Allows to specify extra maxima arguments\n"
-#| "* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
+#, no-wrap
 msgid ""
 "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
 "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
