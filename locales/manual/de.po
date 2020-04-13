@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-13 09:45+0200\n"
-"PO-Revision-Date: 2020-04-13 09:49+0200\n"
+"PO-Revision-Date: 2020-04-13 10:07+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -78,8 +78,6 @@ msgstr "Die Kommandos, mittels deren wxMaxima Maxima erweitert"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:23
-#, fuzzy
-#| msgid "[Troubleshooting](#Troubleshooting \"Troubleshooting\"):"
 msgid "[Troubleshooting](#troubleshooting \"Troubleshooting\"):"
 msgstr "[Troubleshooting](#Fehlersuche \"Fehlersuche\"):"
 
@@ -90,25 +88,18 @@ msgstr "Was tun, wenn wxMaxima nicht wie erwartet funktioniert"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:29
-#, fuzzy
-#| msgid "[FAQ](#FAQ \"FAQ\"):"
 msgid "[FAQ](#faq \"FAQ\"):"
-msgstr "• [FAQ](#FAQ \"Häufig gestellte Fragen\"):"
+msgstr "[FAQ](#FAQ \"Häufig gestellte Fragen\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:33
-#, fuzzy
-#| msgid "Frequently asked questions"
 msgid "Frequently asked questions"
 msgstr "Häufig gestellte Fragen"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:35
-#, fuzzy
-#| msgid "• [CommandLine](#CommandLine \"Maxima Command Line\"):"
 msgid "[CommandLine](#command-line-arguments \"_Maxima_ Command Line\"):"
-msgstr ""
-"• [CommandLine](#CommandLine \\\"Kommandozeilenparameter für Maxima\\\"):"
+msgstr "[CommandLine](#CommandLine \"Kommandozeilenparameter für Maxima\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:39
@@ -136,10 +127,8 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:47
-#, fuzzy
-#| msgid "## Maxima and wxMaxima"
 msgid "## _Maxima_ and wxMaxima"
-msgstr "## Maxima und wxMaxima"
+msgstr "## _Maxima_ und wxMaxima"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:49
@@ -171,16 +160,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:51
-#, fuzzy
-#| msgid ""
-#| "A computer algebra system (CAS) like Maxima fits into this framework. A "
-#| "CAS can provide the logic behind a arbitrary precision calculator "
-#| "application or it can do automatic transforms of formulas in the "
-#| "background of a bigger system (e.g., [Sage](http://www.sagemath.org/)). "
-#| "Alternatively, it can be used directly as a free-standing system. Maxima "
-#| "can be accessed via a command line. Often, however, an interface like "
-#| "wxMaxima proves a more efficient way to access the software, especially "
-#| "for newcomers. computer algebra system."
 msgid ""
 "A computer algebra system (CAS) like _Maxima_ fits into this framework. A "
 "CAS can provide the logic behind an arbitrary precision calculator "
@@ -199,23 +178,11 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:53
-#, fuzzy
-#| msgid "### Maxima"
 msgid "### _Maxima_"
-msgstr "### Maxima"
+msgstr "### _Maxima_"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:55
-#, fuzzy
-#| msgid ""
-#| "Maxima is a full-featured computer algebra system (CAS). A CAS is a "
-#| "program that can solve mathematical problems by rearranging formulas and "
-#| "finding a formula that solves the problem as opposed to just outputting "
-#| "the numeric value of the result. In other words, Maxima can serve as a "
-#| "calculator that gives numerical representations of variables, and it can "
-#| "also provide analytical solutions. Furthermore, it offers a range of "
-#| "numerical methods of analysis for equations or systems of equations that "
-#| "cannot be solved analytically."
 msgid ""
 "_Maxima_ is a full-featured computer algebra system (CAS). A CAS is a "
 "program that can solve mathematical problems by rearranging formulas and "
@@ -234,22 +201,12 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:57
-#, fuzzy
-#| msgid "![Maxima screenshot](./maxima_screenshot.png)"
 msgid ""
 "![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
-msgstr "![Maxima screenshot](./maxima_screenshot.png)"
+msgstr "![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:59
-#, fuzzy
-#| msgid ""
-#| "Extensive documentation for Maxima is [available in the internet](http://"
-#| "maxima.sourceforge.net/documentation.html). Part of this documentation is "
-#| "also available in wxMaxima’s help menu. Pressing the Help key (on most "
-#| "systems that would be the F1 key) causes wxMaxima’s context-sensitive "
-#| "help feature will automatically jump to Maxima’s manual page for the "
-#| "command at the cursor."
 msgid ""
 "Extensive documentation for _Maxima_ is [available in the internet](http://"
 "maxima.sourceforge.net/documentation.html). Part of this documentation is "

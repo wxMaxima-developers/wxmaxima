@@ -21,7 +21,7 @@
 <ul>
 <li><a href="#das-handbuch-von-wxmaxima">Das Handbuch von wxMaxima</a></li>
 <li><a href="#einführung-in-wxmaxima"><span class="toc-section-number">1</span> Einführung in wxMaxima</a><ul>
-<li><a href="#maxima-and-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> and wxMaxima</a><ul>
+<li><a href="#maxima-und-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> und wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
 </ul></li>
@@ -105,28 +105,28 @@
 </ul>
 <p>Die Kommandos, mittels deren wxMaxima Maxima erweitert</p>
 <ul>
-<li><a href="#troubleshooting" title="Troubleshooting">Troubleshooting</a>:</li>
+<li><a href="#Fehlersuche" title="Fehlersuche">Troubleshooting</a>:</li>
 </ul>
 <p>Was tun, wenn wxMaxima nicht wie erwartet funktioniert</p>
 <ul>
-<li><a href="#faq" title="FAQ">FAQ</a>:</li>
+<li><a href="#FAQ" title="Häufig gestellte Fragen">FAQ</a>:</li>
 </ul>
-<p>Frequently asked questions</p>
+<p>Häufig gestellte Fragen</p>
 <ul>
-<li><a href="#command-line-arguments" title="_Maxima_ Command Line">CommandLine</a>:</li>
+<li><a href="#CommandLine" title="Kommandozeilenparameter für Maxima">CommandLine</a>:</li>
 </ul>
 <p>Die Kommandozeilenargumente von wxMaxima</p>
 <hr />
 <h1 id="einführung-in-wxmaxima"><span class="header-section-number">1</span> Einführung in wxMaxima</h1>
-<h2 id="maxima-and-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> and wxMaxima</h2>
+<h2 id="maxima-und-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> und wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, dass dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein “Sende an die CD”-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
-<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind an arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like wxMaxima proves a more efficient way to access the software, especially for newcomers.</p>
+<p>Ein Computer-Algebrasystem (CAS) wie Maxima ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrecher liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="http://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von wxMaxima aus, das eine komfortablere Bedienung unterstützt.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
-<p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
+<p>Maxima ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem löst. Auch wenn es darauf spezialisiert ist, mit Buchstaben zu rechnen, bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur numerische Lösungen existieren.</p>
 <figure>
 <img src="./maxima_screenshot.png" alt="Maxima screenshot" id="img_maxima_screenshot" /><figcaption>Maxima screenshot</figcaption>
 </figure>
-<p>Extensive documentation for <em>Maxima</em> is <a href="http://maxima.sourceforge.net/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems that would be the F1 key) causes wxMaxima’s context-sensitive help feature will automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
+<p>Umfangreiche Dokumentation für Maxima ist <a href="http://maxima.sourceforge.net/documentation.html">im Internet verfügbar</a>. Teile davon sind auch im Hilfe-Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die F1-Taste) startet eine Suche nach einem geeigneten Thema darin.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p>wxMaxima is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example wxMaxima allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the wxMaxima <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
