@@ -228,18 +228,6 @@ msgstr "### wxMaxima"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:63
-#, fuzzy
-#| msgid ""
-#| "wxMaxima is a graphical user interface that provides the full "
-#| "functionality and flexibility of Maxima. wxMaxima offers users a "
-#| "graphical display and many features that make working with Maxima easier. "
-#| "For example wxMaxima allows one to export any cell’s contents (or, if "
-#| "that is needed, any part of a formula, as well) as text, as LaTeX or as "
-#| "MathML specification at a simple right-click. Indeed, an entire workbook "
-#| "can be exported, either as an HTML file or as a LaTeX file. Documentation "
-#| "for wxMaxima, including workbooks to illustrate aspects of its use, is "
-#| "online at the wxMaxima [help site](https://wxMaxima-developers.github.io/"
-#| "wxmaxima/help.html), as well as via the help menu."
 msgid ""
 "wxMaxima is a graphical user interface that provides the full functionality "
 "and flexibility of _Maxima_. wxMaxima offers users a graphical display and "
@@ -431,8 +419,6 @@ msgstr "Eine oder mehr Zeilen an Eingabe für _Maxima_"
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:99
-#, fuzzy
-#| msgid "one or more image"
 msgid "one or more image"
 msgstr "Ein oder mehrere Bilder"
 
@@ -2318,7 +2304,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:583
 #, no-wrap
 msgid "    show_image(\"man.png\");\n"
-msgstr "    show_image(\\\"man.png\\\");\n"
+msgstr "    show_image(\"Mensch.png\");\n"
 
 # ## Startbefehle
 #. type: Plain text
@@ -3126,8 +3112,8 @@ msgid ""
 "lines for the TeX preamble\"):"
 msgstr ""
 "Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. "
-"indem sie das entsprechende Feld im Konfigurationsdialog (\"Export\"->"
-"\"Additional lines for the TeX preamble\") angeben."
+"indem sie das entsprechende Feld im Konfigurationsdialog (\"Exportieren\"->"
+"\"Zusätzliche Zeilen für die LaTeX preamble\") angeben."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:784
@@ -3176,8 +3162,7 @@ msgid ""
 "`-o` or `--open=<str>`: Open the filename given as argument to this command-"
 "line switch"
 msgstr ""
-"`-f` oder `--ini`: Speichere die Konfiguration in der Datei, deren Name auf "
-"diesen Schalter folgt."
+"`-o` oder `--open=<str>`: Öffnet den Dateinamen, der als Argument dieser Kommandozeilenoption angegeben wurde."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
