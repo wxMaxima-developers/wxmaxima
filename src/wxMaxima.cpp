@@ -1615,7 +1615,7 @@ void wxMaxima::TryToReadDataFromMaxima()
   // data and before we had been able to process it.
   if(m_client == NULL)
     return;
-  if(clientStream == NULL)
+  if(m_clientStream == NULL)
     return;
   if(!m_client->IsConnected())
     return;

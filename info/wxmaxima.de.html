@@ -333,8 +333,8 @@ Normaler Text</code></pre>
 <li>und sie werden alle n Minuten zwischengespeichert.</li>
 </ul>
 <h3 id="wo-wird-die-konfiguration-gespeichert"><span class="header-section-number">1.3.10</span> Wo wird die Konfiguration gespeichert?</h3>
-<p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über wxbuild_info() oder über das Hilfe-&gt;Über-Menü abgerufen werden. [wxWidgets] (https://wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
-<p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\\Software\\wxMaxima</code> gespeichert</p>
+<p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über wxbuild_info() oder über das Hilfe-&gt;Über-Menü abgerufen werden. <a href="https://wxwidgets.org/">wxWidgets</a> ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
+<p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\Software\wxMaxima</code> gespeichert.</p>
 <hr />
 <h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
 <p><em>wxMaxima</em>’s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em>Maxima</em> hinzu:</p>
@@ -346,19 +346,18 @@ Normaler Text</code></pre>
 </ul>
 <p>Wenn nicht, kann jede Variable als mit tiefgestelltem <code>y</code> ausgestattet deklariert werden mittels <code>wxdeclare_subscript(variablenname);</code> oder <code>wxdeclare_subscript([variablenname1,variablenname2,...]);</code> Rückgängig gemacht werden kann dies mittels <code>wxdeclare_subscript(variablenname,false);</code></p>
 <h2 id="meldungen-in-der-statusleiste"><span class="header-section-number">2.2</span> Meldungen in der Statusleiste</h2>
-<p>Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to <em>maxima</em> is finished. It is safe to use <code>wxstatusbar()</code> even in libraries that might be used with plain <em>Maxima</em> (as opposed to <em>wxMaxima</em>): If <em>wxMaxima</em> isn’t present the <code>wxstatusbar()</code> command will just be left unevaluated.</p>
-<pre><code>for i:1 thru 10 do (
-    /* Tell the user how far we got */
-    wxstatusbar(concat(&quot;Pass &quot;,i)),
-    /* (sleep n) is a Lisp function, which can be used */
-    /* with the character &quot;?&quot; before. It delays the */
-    /* program execution (here: for 3 seconds) */
-    ?sleep(3)
-)$</code></pre>
+<p>Kommandos, die lange arbeiten, können Fortschrittsinformationen in die Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. <code>wxstatusbar()</code> kann sogar in Bibliotheken verwendet werden, bei denen nicht bekannt ist, ob sie mit <em>wxMaxima</em> oder in einem <em>Maxima</em> ohne Frontend verwendet werden: Wenn <em>wxMaxima</em> diese Funktion nicht definiert hat, wird sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter bearbeitet.</p>
+<pre><code>(%i2) for i:1 thru 10 do (
+        /* Gib dem User Bescheid, wie weit wir schon sind */
+        wxstatusbar(concat(&quot;Pass &quot;,i)),
+        /* (sleep n) ist eine Lisp-Funktion, die mit einem &quot;?&quot; Zeichen vorher verwendet werden kann. */
+        /* Sie verzögert die Programmausführung für n Sekunden (in diesem Beispiel: für 3 Sekunden). */
+        ?sleep(3)
+    )$</code></pre>
 <h2 id="diagramme"><span class="header-section-number">2.3</span> Diagramme</h2>
 <p>Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu tun, weswegen an dieser Stelle Erweiterungen von Maxima zu erwarten sind.</p>
 <h3 id="der-einbau-von-diagrammen-in-das-arbeitsblatt"><span class="header-section-number">2.3.1</span> Der Einbau von Diagrammen in das Arbeitsblatt</h3>
-<p><em>Maxima</em> normally instructs the external program gnuplot to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the work sheet instead <em>wxMaxima</em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”. For example <code>wxplot2d</code> corresponds to <code>plot2d</code>, <code>wxplot3d</code> corresponds to <code>plot3d</code>, <code>wxdraw</code> corresponds to <code>draw</code> and <code>wxhistogram</code> corresponds to <code>histogram</code>.</p>
+<p><em>Maxima</em> weist normalerweise gnuplot an, Diagramme in eigenen Fenstern darzustellen. Wenn dem entsprechenden <code>draw</code> oder <code>plot</code>-Kommando ein “wx” vorangestellt wird, wird das Bild stattdessen in das Arbeitsblatt eingebaut: <code>wxplot2d</code> arbeitet wie <code>plot2d</code>, aber im Arbeitsblatt, <code>wxplot3d</code> entspricht <code>plot3d</code>, <code>wxdraw</code> und <code>wxhistogram</code> funktionieren wie <code>draw</code> und <code>histogram</code>, aber betten das Resultat ein.</p>
 <h3 id="die-größe-eingebetteter-diagramme"><span class="header-section-number">2.3.2</span> Die Größe eingebetteter Diagramme</h3>
 <p>Wie bereits beschrieben kann die Größe von Diagrammen mittels der Variable <code>wxplot_size</code> definiert werden. Ihr Inhalt kann jederzeit gelesen oder geändert werden:</p>
 <pre><code>wxplot_size:[1200,800]$
@@ -369,16 +368,16 @@ wxdraw2d(
     )
 )$</code></pre>
 <p>Wenn die Größe nur des aktuellen Diagramms geändert werden soll, erlaubt <em>Maxima</em> dies auf die folgende Weise zu tun:</p>
-<pre><code> wxdraw2d(
+<pre><code>wxdraw2d(
     explicit(
         sin(x),
         x,1,10
     )
- ),wxplot_size=[1600,800]$</code></pre>
+),wxplot_size=[1600,800]$</code></pre>
 <h3 id="hochqualitativere-diagramme"><span class="header-section-number">2.3.3</span> Hochqualitativere Diagramme</h3>
 <p>Gnuplot bietet keine unfehlbare Möglichkeit an, ob es Cairo unterstützt, eine Bibliothek, die Graphik mit Antialiasing und den unterschiedlichsten Linienmustern zu zeichnen erlaubt. Wurde gnuplot mit diesen Möglichkeiten ausgestattet, schaltet die entsprechende Option im Konfigurationsmenü oder ein <code>wxplot_pngcairo:true</code> die Unterstützung hierfür ein. Wurde gnuplot ohne diese Möglichkeit erstellt, führt <code>wxplot_pngcairo:true</code> jedoch zu leeren Plots.</p>
 <h3 id="die-größe-eingebetteter-diagramme-1"><span class="header-section-number">2.3.4</span> Die Größe eingebetteter Diagramme</h3>
-<p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot2d</code> and <code>wxplot3d</code> isn’t supported by this feature) and the file size of the underlying gnuplot project isn’t way too high <em>wxMaxima</em> offers a right-click menu that allows to open the plot in an interactive gnuplot window.</p>
+<p>Wenn ein Diagramm mittels einem <code>wxdraw</code>-ähnlichen Befehl erstellt wurde (<code>wxplot2d</code> und <code>wxplot3d</code> werden hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang ist, bietet <em>wxMaxima</em> einen Rechts-Klick-Menüpunkt an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet.</p>
 <h3 id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
 <p>On MS Windows, if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot”, gnuplot offers the possibility to open a console window, where gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
 <h3 id="einbetten-von-animationen-in-das-arbeitsblatt"><span class="header-section-number">2.3.6</span> Einbetten von Animationen in das Arbeitsblatt</h3>
@@ -427,7 +426,7 @@ with_slider_draw3d(
 <li><code>with_slider</code> and</li>
 <li><code>wxanimate</code>.</li>
 </ul>
-<p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable <code>wxanimate_framerate</code> can be used:</p>
+<p>Die Standard-Bildwiderholrate für Animationen kann im Konfigurations-Dialog von <em>wxMaxima</em> eingestellt werden. Um die Geschwindigkeit einer einzelnen Animation zu ändern, kann die Variable <code>wxanimate_framerate</code> geändert werden:</p>
 <pre><code>wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$</code></pre>
 <p>Die Animations-Funktionen haben eine Eigentümlichkeit, die daher rührt, dass sie makelist verwenden: Der Parameter, der sich von Bild zu Bild ändert, wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende Beispiel scheitert daher:</p>
@@ -438,7 +437,7 @@ with_slider_draw(
     grid=true,
     explicit(f,x,0,10)
 )$</code></pre>
-<p>If <em>Maxima</em> is explicitly asked to substitute the slider’s value plotting works fine instead:</p>
+<p>Wenn <em>Maxima</em> explizit gebeten wird, den Wert einzusetzen, funktioniert der Befehl stattdessen:</p>
 <pre><code>f:sin(a*x);
 with_slider_draw(
     b,makelist(i/2,i,1,10),
