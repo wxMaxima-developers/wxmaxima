@@ -633,6 +633,12 @@ public:
   showLabels GetLabelChoice() const
   { return m_showLabelChoice; }
 
+  bool InvertBackground(){return m_invertBackground;}
+  void InvertBackground(bool invert)
+    {
+    wxConfig::Get()->Write("invertBackground", m_invertBackground = invert);
+    }
+  
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
   bool ShowAutomaticLabels() const
   { return (m_showLabelChoice < labels_useronly); }
@@ -640,7 +646,7 @@ public:
   //! Do we want at all to show labels?
   bool UseUserLabels() const
   { return m_showLabelChoice > labels_automatic; }
-
+  
   //! Do we want at all to show labels?
   bool ShowLabels() const
   { return m_showLabelChoice < labels_none; }
@@ -989,6 +995,7 @@ private:
   bool m_greekSidebar_ShowLatinLookalikes;
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
+  bool m_invertBackground;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

@@ -52,6 +52,7 @@ Configuration::Configuration(wxDC *dc) :
   m_fontChanged = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
+  m_invertBackground = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -368,6 +369,7 @@ void Configuration::ReadConfig()
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
 
+  config->Read("invertBackground", m_invertBackground);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
