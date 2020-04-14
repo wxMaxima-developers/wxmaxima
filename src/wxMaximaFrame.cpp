@@ -95,6 +95,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxAcceleratorTable accel(27, entries);
   SetAcceleratorTable(accel);
     
+  // We need to create one pane which doesn't do a lot before the log pane
+  // Otherwise the log pane will be displayed in a very strange way
+  // The gistorx pane was chosen randomly
+  m_history = new History(this, -1);
+
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this, -1, becomeLogTarget);
@@ -172,9 +177,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   
   // console
   m_worksheet = new Worksheet(this, -1);
-
-  // history
-  m_history = new History(this, -1);
 
   // The table of contents
   m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
@@ -303,7 +305,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             LeftDockable(true).
                             RightDockable(true).
                             PaneBorder(true).
-                            FloatingSize(m_logPane->GetEffectiveMinSize()).
+                            FloatingSize(variables->GetEffectiveMinSize()).
                             Bottom());
 
   m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration, m_worksheet);
