@@ -1613,9 +1613,12 @@ void wxMaxima::TryToReadDataFromMaxima()
 
   // It is theoretically possible that the client has exited after sending us
   // data and before we had been able to process it.
-  if (!m_client || (!m_client->IsConnected()))
+  if(m_client == NULL)
     return;
-
+  if(clientStream == NULL)
+    return;
+  if(!m_client->IsConnected())
+    return;
   if(!m_client->IsData())
     return;
 
