@@ -397,10 +397,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     Gripper(false).CloseButton(true).PinButton(true);
 
   m_manager.GetPane("symbols") = m_manager.GetPane("symbols").
-    Show(true).Gripper(false).CloseButton(true));
+    Show(true).Gripper(false).CloseButton(true);
 
   m_manager.GetPane("draw") = m_manager.GetPane("draw").
-    Show(true).CloseButton(true).Gripper(false));
+    Show(true).CloseButton(true).Gripper(false);
 
 
   // Read the perspektive (the sidebar state and positions).
@@ -423,9 +423,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_worksheet->m_mainToolBar->Realize();
   // It somehow is possible to hide the Maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
-  m_manager.GetPane(wxT("console")).Show(true);
+  m_manager.GetPane("console").Show(true);
 
-  m_manager.GetPane(wxT("console")) = m_manager.GetPane(wxT("console")).
+  m_manager.GetPane("console") = m_manager.GetPane("console").
     Center().
     CloseButton(false).
     CaptionVisible(false).
@@ -447,7 +447,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("greek")) =
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true).
-    Show(true).Gripper(false).CloseButton(true));
+    Show(true).Gripper(false).CloseButton(true);
 
   m_manager.GetPane(wxT("log")) =
     m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true);
