@@ -1621,7 +1621,8 @@ void wxMaxima::TryToReadDataFromMaxima()
     return;
   if(!m_client->IsData())
     return;
-
+  if(m_clientTextStream == NULL)
+    return;
   m_statusBar->NetworkStatus(StatusBar::receive);
 
   // Read all new lines of text we received.
