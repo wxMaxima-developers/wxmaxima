@@ -1372,7 +1372,7 @@ msgstr ""
 "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der "
 "Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/"
 "wxMaxima.conf`. Die wxWidgets-Version kann über wxbuild_info() oder über das "
-"Hilfe->Über-Menü abgerufen werden. [wxWidgets] (https://wxwidgets.org/) ist "
+"Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://wxwidgets.org/) ist "
 "eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten "
 "Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich "
 "ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als "
@@ -1386,7 +1386,7 @@ msgid ""
 "registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 msgstr ""
 "Unter Windows wird die Konfiguration in der Registry unter `HKEY_CURRENT_USER"
-"\\\\Software\\\\wxMaxima` gespeichert"
+"\\Software\\wxMaxima` gespeichert."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:351
@@ -1460,15 +1460,6 @@ msgstr "## Meldungen in der Statusleiste"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:367
-#, fuzzy
-#| msgid ""
-#| "Long-running commands can provide user-feedback in the status bar. This "
-#| "user feedback is replaced by any new feedback that is placed there "
-#| "(allowing to use it as a progress indicator) and is deleted as soon as "
-#| "the current command sent to _maxima_ is finished. It is safe to use "
-#| "`wxstatusbar()` even in libraries that might be used with plain _Maxima_ "
-#| "(as opposed to _wxMaxima_): If _wxMaxima_ isn't present the "
-#| "`wxstatusbar()` command will just be left unevelated."
 msgid ""
 "Long-running commands can provide user-feedback in the status bar. This user "
 "feedback is replaced by any new feedback that is placed there (allowing to "
@@ -1480,7 +1471,7 @@ msgid ""
 msgstr ""
 "Kommandos, die lange arbeiten, können Fortschrittsinformationen in die "
 "Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. "
-"wxstatusbar() kann sogar in Bibliotheken verwendet werden, bei denen nicht "
+"`wxstatusbar()` kann sogar in Bibliotheken verwendet werden, bei denen nicht "
 "bekannt ist, ob sie mit _wxMaxima_ oder in einem _Maxima_ ohne Frontend "
 "verwendet werden: Wenn _wxMaxima_ diese Funktion nicht definiert hat, wird "
 "sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter "
@@ -1488,15 +1479,7 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:376
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    (%i2)\tfor i:1 thru 10 do (\n"
-#| "\t            /* Tell the user how far we got */\n"
-#| "\t            wxstatusbar(concat(\"Pass \",i)),\n"
-#| "\t            /* (sleep n) is a Lisp function, which can be used with \"?\" before. */\n"
-#| "\t            /* it delays the program execution for some time (here for 3 seconds) */\n"
-#| "\t            ?sleep(3)\n"
-#| "\t        )$\n"
+#, no-wrap
 msgid ""
 "    for i:1 thru 10 do (\n"
 "        /* Tell the user how far we got */\n"
@@ -1508,10 +1491,10 @@ msgid ""
 "    )$\n"
 msgstr ""
 "    (%i2) for i:1 thru 10 do (\n"
-"            /* Tell the user how far we got */\n"
-"            wxstatusbar(concat(\\\"Pass \\\",i)),\n"
-"            /* (sleep n) is a Lisp function, which can be used with \\\"?\\\" before. */\n"
-"            /* it delays the program execution for some time (here for 3 seconds) */\n"
+"            /* Gib dem User Bescheid, wie weit wir schon sind */\n"
+"            wxstatusbar(concat(\"Pass \",i)),\n"
+"            /* (sleep n) ist eine Lisp-Funktion, die mit einem \"?\" Zeichen vorher verwendet werden kann. */\n"
+"            /* Sie verzögert die Programmausführung für n Sekunden (in diesem Beispiel: für 3 Sekunden). */\n"
 "            ?sleep(3)\n"
 "        )$\n"
 
@@ -1538,15 +1521,6 @@ msgstr "### Der Einbau von Diagrammen in das Arbeitsblatt"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:384
-#, fuzzy
-#| msgid ""
-#| "_Maxima_ normally instructs the external program gnuplot to open a "
-#| "separate window for every diagram it creates. Since many times it is "
-#| "convenient to embed graphs into the work sheet instead _wxMaxima_ "
-#| "provides its own set of plot functions that don’t differ from the "
-#| "corresponding _maxima_ functions save in their name: They are all "
-#| "prefixed by a “wx”. For example `wxplot` corresponds to `plot`, `wxdraw` "
-#| "corresponds to `draw` and `wxhistogram` corresponds to `histogram`."
 msgid ""
 "_Maxima_ normally instructs the external program gnuplot to open a separate "
 "window for every diagram it creates. Since many times it is convenient to "
@@ -1559,7 +1533,7 @@ msgstr ""
 "_Maxima_ weist normalerweise gnuplot an, Diagramme in eigenen Fenstern "
 "darzustellen. Wenn dem entsprechenden `draw` oder `plot`-Kommando ein \"wx\" "
 "vorangestellt wird, wird das Bild stattdessen in das Arbeitsblatt eingebaut: "
-"`wxplot` arbeitet wie `plot`, aber im Arbeitsblatt, `wxdraw` und "
+"`wxplot2d` arbeitet wie `plot2d`, aber im Arbeitsblatt, `wxplot3d` entspricht `plot3d`, `wxdraw` und "
 "`wxhistogram` funktionieren wie `draw` und `histogram`, aber betten das "
 "Resultat ein."
 
@@ -1583,14 +1557,7 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:396
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    %i2 wxdraw2d(\n"
-#| "        explicit(\n"
-#| "            sin(x),\n"
-#| "            x,1,10\n"
-#| "        )\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
 "    wxplot_size:[1200,800]$\n"
 "    wxdraw2d(\n"
@@ -1600,7 +1567,8 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
-"    %i2 wxdraw2d(\n"
+"    wxplot_size:[1200,800]$\n"
+"    wxdraw2d(\n"
 "        explicit(\n"
 "            sin(x),\n"
 "            x,1,10\n"
@@ -1618,14 +1586,7 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:405
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    %i1 wxdraw2d(\n"
-#| "        explicit(\n"
-#| "            sin(x),\n"
-#| "            x,1,10\n"
-#| "        )\n"
-#| "    ),wxplot_size=[1600,800]$\n"
+#, no-wrap
 msgid ""
 "     wxdraw2d(\n"
 "        explicit(\n"
@@ -1634,7 +1595,7 @@ msgid ""
 "        )\n"
 "     ),wxplot_size=[1600,800]$\n"
 msgstr ""
-"    %i1 wxdraw2d(\n"
+"    wxdraw2d(\n"
 "        explicit(\n"
 "            sin(x),\n"
 "            x,1,10\n"
@@ -1672,12 +1633,6 @@ msgstr "### Die Größe eingebetteter Diagramme"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:414
-#, fuzzy
-#| msgid ""
-#| "If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't "
-#| "supported by this feature) and the file size of the underlying gnuplot "
-#| "project isn't way too high _wxMaxima_ offers a right-click menu that "
-#| "allows to open the plot in an interactive gnuplot window."
 msgid ""
 "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
 "`wxplot3d` isn't supported by this feature) and the file size of the "
@@ -1685,7 +1640,7 @@ msgid ""
 "click menu that allows to open the plot in an interactive gnuplot window."
 msgstr ""
 "Wenn ein Diagramm mittels einem `wxdraw`-ähnlichen Befehl erstellt wurde "
-"(`wxplot` wird hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang "
+"(`wxplot2d` und `wxplot3d` werden hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang "
 "ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt an, der das Diagramm in "
 "einem interaktiven Gnuplot-Fenster öffnet."
 
@@ -1893,11 +1848,6 @@ msgstr "`wxanimate_draw3d`:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:474
-#, fuzzy
-#| msgid ""
-#| "Normally the animations are played back or exported with the frame rate "
-#| "chosen in the configuration of _wxMaxima_. To set the speed an individual "
-#| "animation is played back the variable wxanimate\\_framerate can be used:"
 msgid ""
 "Normally the animations are played back or exported with the frame rate "
 "chosen in the configuration of _wxMaxima_. To set the speed an individual "
@@ -1952,10 +1902,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:489
-#, fuzzy
-#| msgid ""
-#| "If _Maxima_ is explicitely asked to substitute the slider’s value "
-#| "plotting works fine instead:"
 msgid ""
 "If _Maxima_ is explicitly asked to substitute the slider’s value plotting "
 "works fine instead:"
