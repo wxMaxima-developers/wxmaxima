@@ -50,7 +50,7 @@ if(GETTEXT_FOUND)
 	    TARGET ${LANG}_po
 	    DEPENDS ${LANG}.po
 	    COMMENT "Creating and installing the PO- and GMO-file for language ${LANG}"
-	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} -N ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po wxMaxima.pot -U
+	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po wxMaxima.pot -U
 	    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po -o "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
 	    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
 	# Call msgmerge for each language and create a merged language file
