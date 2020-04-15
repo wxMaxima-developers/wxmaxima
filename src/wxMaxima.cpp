@@ -744,6 +744,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_fullscreen, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_invertWorksheetBackground, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(ToolBar::tb_hideCode, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_copy_as_bitmap, wxEVT_MENU,
@@ -5984,6 +5986,13 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       break;
     case menu_fullscreen:
       ShowFullScreen(!IsFullScreen());
+      break;
+    case menu_invertWorksheetBackground:
+      m_worksheet->m_configuration->InvertBackground(
+        !m_worksheet->m_configuration->InvertBackground());
+      m_Maxima_Panes_Sub->Check(menu_invertWorksheetBackground,
+                        m_worksheet->m_configuration->InvertBackground());
+      m_worksheet->Refresh();
       break;
     case ToolBar::tb_hideCode:
       m_worksheet->m_configuration->ShowCodeCells(!m_worksheet->m_configuration->ShowCodeCells());

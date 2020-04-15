@@ -821,9 +821,9 @@ void EditorCell::Draw(wxPoint point)
       if(GetStyle() == TS_TEXT)
       {
         br = wxTheBrushList->FindOrCreateBrush(
-          configuration->GetColor(TS_TEXT_BACKGROUND));
+          configuration->EditorBackgroundColor());
         pen = wxThePenList->FindOrCreatePen(
-          configuration->GetColor(TS_TEXT_BACKGROUND),
+          configuration->EditorBackgroundColor(),
           0,
           wxPENSTYLE_SOLID);
       }

@@ -101,7 +101,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   GetTargetWindow()->SetBackgroundStyle(wxBG_STYLE_PAINT);  
-  SetBackgroundColour(*wxWHITE);
   m_virtualWidth_Last = -1;
   m_virtualHeight_Last = -1;
  
@@ -119,15 +118,16 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   m_mouseMotionWas = false;
   m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
-  m_configuration = &m_configurationTopInstance;
-  m_configuration->SetBackgroundBrush(
-    *(wxTheBrushList->FindOrCreateBrush(*wxWHITE, wxBRUSHSTYLE_SOLID)));
-
+  m_configuration = &m_configurationTopInstance;  
   m_dc = new wxClientDC(this);
   m_configuration->SetContext(*m_dc);
   m_autocomplete  = new AutoComplete(m_configuration);
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
+  SetBackgroundColour(m_configuration->DefaultBackgroundColor());
+  m_configuration->SetBackgroundBrush(
+    *(wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor(),
+                                        wxBRUSHSTYLE_SOLID)));  
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
@@ -438,6 +438,9 @@ Worksheet::~Worksheet()
 
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 {    
+  m_configuration->SetBackgroundBrush(
+    *(wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor(),
+                                        wxBRUSHSTYLE_SOLID)));
   wxAutoBufferedPaintDC dc(this);
   if(!dc.IsOk())
     return;
@@ -8885,7 +8888,7 @@ wxString Worksheet::RTFStart()
   document += wxT("{\\colortbl;\n");
   for (int i = 1; i < NUMBEROFSTYLES; i++)
   {
-    wxColor color = wxColor(m_configuration->GetColor(i));
+    wxColor color = wxColor(m_configuration->GetColor((TextStyle) i));
     if (color.IsOk())
       document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;\n"), color.Red(), color.Green(), color.Blue());
     else

@@ -803,7 +803,12 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
                              _("Toggle full screen editing"), wxITEM_NORMAL);
 #endif
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_invertWorksheetBackground, _("Invert worksheet brightness"));
+  m_Maxima_Panes_Sub->Check(menu_invertWorksheetBackground,
+                    m_worksheet->m_configuration->InvertBackground());
 
+  
   m_MenuBar->Append(m_Maxima_Panes_Sub, _("View"));
 
 

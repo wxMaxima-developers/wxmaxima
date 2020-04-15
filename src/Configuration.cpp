@@ -369,7 +369,7 @@ void Configuration::ReadConfig()
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
 
-  config->Read("invertBackground", m_invertBackground);
+  config->Read("invertBackground", &m_invertBackground);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
@@ -533,6 +533,42 @@ wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
   return font;
 }
 
+wxColor Configuration::DefaultBackgroundColor()
+{
+  if(InvertBackground())
+    return InvertColour(m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
+  else
+    return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();
+}
+
+wxColor Configuration::EditorBackgroundColor()
+{
+  if(InvertBackground())
+    return InvertColour(m_styles[TS_TEXT_BACKGROUND].GetColor());
+  else
+    return m_styles[TS_TEXT_BACKGROUND].GetColor();
+}
+
+void Configuration::SetPrinting(bool printing)
+{
+  m_printing = printing;
+  if(printing)
+    m_invertBackground = false;
+  else
+    wxConfig::Get()->Read("invertBackground", m_invertBackground);
+  if(printing)
+    ClipToDrawRegion(false);
+}
+
+wxColour Configuration::InvertColour(wxColour col)
+{
+  return wxColour(
+    255 - col.Red(),
+    255 - col.Green(),
+    255 - col.Blue(),
+    col.Alpha());
+}
+
 long Configuration::GetLineWidth() const
 {
   // The default line width is the width of the viewport minus the indentation minus
@@ -618,6 +654,7 @@ void Configuration::SetZoomFactor(double newzoom)
 Configuration::~Configuration()
 {
   WriteStyles();
+  wxConfigBase *config = wxConfig::Get();
 }
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
@@ -901,11 +938,17 @@ wxString Configuration::GetSymbolFontName() const
 #endif
 }
 
-wxColour Configuration::GetColor(long st) const
+wxColour Configuration::GetColor(TextStyle style)
 {
+  wxColour col = m_styles[style].GetColor();
   if (m_outdated)
-    return m_styles[TS_OUTDATED].Color();
-  return m_styles[st].Color();
+    col = m_styles[TS_OUTDATED].Color();
+
+  if(InvertBackground() &&
+     (style != TS_TEXT_BACKGROUND) &&
+     (style != TS_DOCUMENT_BACKGROUND))
+    col = MakeColorDifferFromBackground(col);
+    return col;
 }
 
 long Configuration::Scale_Px(double px) const
@@ -914,6 +957,24 @@ long Configuration::Scale_Px(double px) const
   if (retval < 1)
     retval = 1;
   return retval;
+}
+
+wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
+{
+  int newBrightness = 255 - (color.Red() + color.Green() + color.Blue()) / 3;
+  if(color == DefaultBackgroundColor())
+  {
+    return InvertColour(color);
+  }
+  else
+  {
+    int maxOldCol = wxMax(wxMax(color.Red(), color.Green()), color.Blue());
+    return wxColour(
+      newBrightness * color.Red() / maxOldCol,
+      newBrightness * color.Green() / maxOldCol,
+      newBrightness * color.Blue() / maxOldCol
+      );
+  }
 }
 
 wxString Configuration::m_maximaLocation_override;

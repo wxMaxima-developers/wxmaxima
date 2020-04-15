@@ -601,6 +601,7 @@ void TextCell::Draw(wxPoint point)
     if (InUpdateRegion())
     {
       SetFont(m_fontSize);
+      // Sets the foreground color
       SetForeground();
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))

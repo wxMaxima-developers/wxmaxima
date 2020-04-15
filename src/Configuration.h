@@ -236,8 +236,6 @@ public:
   // cppcheck-suppress functionConst
   wxString GetSymbolFontName() const;
 
-  wxColour GetColor(long st) const;
-
   wxFontWeight IsBold(long st) const;
 
   wxFontStyle IsItalic(long st) const;
@@ -497,13 +495,8 @@ public:
     to output objects that are outside the region that currently is
     redrawn.
   */
-  void SetPrinting(bool printing)
-    {
-      m_printing = printing;
-      if(printing)
-        ClipToDrawRegion(false);
-    }
-
+  void SetPrinting(bool printing);
+  
   /*! Are we currently printing?
 
     This affects the bitmap scale as well as the fact if we want
@@ -512,6 +505,18 @@ public:
   */
   bool GetPrinting() const
     { return m_printing; }
+
+  //! Gets the color for a text style
+  wxColour GetColor(TextStyle style);
+  
+  //! Inverts a color: In 2020 wxColor still lacks this functionality
+  wxColour InvertColour(wxColour col);
+  
+  /*! Make this color differ from the background by a noticeable amount
+    
+    Useful for black/white background theme changes
+  */
+  wxColor MakeColorDifferFromBackground(wxColor color);
   
   bool GetMatchParens() const
     { return m_matchParens; }
@@ -845,7 +850,9 @@ public:
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
   wxString GetAutosubscript_string() const;
   //! Determine the default background color of the worksheet
-  wxColor DefaultBackgroundColor() const {return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();}
+  wxColor DefaultBackgroundColor();
+  //! Determine the default background color of editorcells
+  wxColor EditorBackgroundColor();
   //! Do we want to save time by only redrawing the area currently shown on the screen?
   bool ClipToDrawRegion() const {return m_clipToDrawRegion;}
   //! Do we want to save time by only redrawing the area currently shown on the screen?

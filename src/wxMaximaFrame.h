@@ -490,7 +490,8 @@ public:
     menu_additionalSymbols,
     enable_unicodePane,
     menu_showLatinGreekLookalikes,
-    menu_showGreekMu
+    menu_showGreekMu,
+    menu_invertWorksheetBackground
   };
 
   /*! Update the recent documents list

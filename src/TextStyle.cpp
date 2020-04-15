@@ -70,20 +70,3 @@ void Style::Write(wxConfigBase *config, wxString where)
   config->Write(where + wxT("Style/Text/fontname"),
 		m_fontName);
 }
-
-void Style::MakeColorDifferFromBackground(wxColor backgroundColor)
-{
-  int difference = 0;
-  difference += abs((signed)m_color.Red() - (signed)backgroundColor.Red());
-  difference += abs((signed)m_color.Green() - (signed)backgroundColor.Green());
-  difference += abs((signed)m_color.Blue() - (signed)backgroundColor.Blue());
-  if(difference < 64)
-  {
-    int brightness = 255 - (m_color.Red() + m_color.Green() + m_color.Blue()) / 3;
-    m_color = wxColour(
-      brightness * m_color.Red() / 255,
-      brightness * m_color.Green() / 255,
-      brightness * m_color.Blue() / 255
-      );
-  }
-}
