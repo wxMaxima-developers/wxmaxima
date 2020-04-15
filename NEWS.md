@@ -1,6 +1,7 @@
 #Current
  * Resolved a crash on right-clicking a GroupCell
  * Help works again in the german translation
+ * View/Invert worksheet brightness now toggles an instant dark worksheet mode
  * Removed an unnecessary info dialogue on startup
  * Right-click-suggestions for similar command names
  * Corrected the initial slideshow size

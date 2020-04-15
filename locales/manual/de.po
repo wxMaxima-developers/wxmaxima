@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 09:45+0200\n"
+"POT-Creation-Date: 2020-04-15 21:47+0200\n"
 "PO-Revision-Date: 2020-04-13 10:07+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -54,7 +54,12 @@ msgid ""
 "manual. Clicking on [Contents](#TOC) here the short table of contents moves "
 "the cursor to an extended table of contents. This extended table can be used "
 "to navigate more directly to specific parts of the manual."
-msgstr "Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen Kapitel der Dokumentation. [Contents](#SEC_Contents \\\"Detailliertes Inhaltsverzeichnis\\\") fürt zu einer entsprechenden Sektion, die eine genauere Navigation ermöglicht."
+msgstr ""
+"Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu "
+"erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen "
+"Kapitel der Dokumentation. [Contents](#SEC_Contents \\\"Detailliertes "
+"Inhaltsverzeichnis\\\") fürt zu einer entsprechenden Sektion, die eine "
+"genauere Navigation ermöglicht."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:11
@@ -99,7 +104,9 @@ msgstr "Häufig gestellte Fragen"
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:35
 msgid "[CommandLine](#command-line-arguments \"_Maxima_ Command Line\"):"
-msgstr "[CommandLine](#kommandozeilen-optionen \"Kommandozeilenparameter für Maxima\"):"
+msgstr ""
+"[CommandLine](#kommandozeilen-optionen \"Kommandozeilenparameter für Maxima"
+"\"):"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:39
@@ -111,7 +118,7 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:348
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:635
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:774
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:790
 msgid "* *"
 msgstr "* *"
 
@@ -203,7 +210,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:57
 msgid ""
 "![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
-msgstr "![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
+msgstr ""
+"![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:59
@@ -525,8 +533,8 @@ msgid ""
 msgstr ""
 "wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu "
 "vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt "
-"wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die "
-"automatische Vervollständigung erkennt oft den Kontext, in dem sie "
+"wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt "
+"wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie "
 "ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für "
 "ezUnits vorschlagen."
 
@@ -547,8 +555,9 @@ msgid ""
 msgstr ""
 "Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines "
 "Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der "
-"erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> "
-"gedrückt werden, oder der entsprechende Menüeintrag gewählt (Zelle/Zeige Parameter)."
+"erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>"
+"+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende "
+"Menüeintrag gewählt (Zelle/Zeige Parameter)."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:120
@@ -594,8 +603,8 @@ msgid ""
 "encoding. As at least one of this is likely to be true _wxMaxima_ provides a "
 "method of entering Greek characters using the keyboard:"
 msgstr ""
-"Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt oder "
-"sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, "
+"Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt "
+"oder sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, "
 "unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet "
 "_wxMaxima_ eine Methode an, griechische Zeichen mit einer nicht-griechischen "
 "Tastatur einzugeben:"
@@ -606,8 +615,9 @@ msgid ""
 "A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
 "starting to type the greek character's name."
 msgstr ""
-"Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <kbd>ESC</kbd>-"
-"Taste gedrückt wird, und dann sein Name einzugeben begonnen wird."
+"Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die "
+"<kbd>ESC</kbd>-Taste gedrückt wird, und dann sein Name einzugeben begonnen "
+"wird."
 
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:129
@@ -615,8 +625,9 @@ msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and "
 "<kbd>ESC</kbd> again. In this case the following letters are supported:"
 msgstr ""
-"Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein Buchstabe "
-"und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die folgenden Zeichen unterstützt:"
+"Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein "
+"Buchstabe und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die "
+"folgenden Zeichen unterstützt:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:148
@@ -666,7 +677,8 @@ msgid ""
 "The same mechanism also allows to enter some miscellaneous mathematical "
 "symbols:"
 msgstr ""
-"Derselbe Mechanismus erlaubt es auch, einige andere mathematische Symbole einzugeben:"
+"Derselbe Mechanismus erlaubt es auch, einige andere mathematische Symbole "
+"einzugeben:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:203
@@ -837,7 +849,8 @@ msgid ""
 "<kbd>ESC</kbd>."
 msgstr ""
 "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können "
-"Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden. "
+"Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> "
+"eingegeben werden. "
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:207
@@ -893,7 +906,9 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:216
 msgid "![Example of different side panes](./SidePanes.png){ id=img_SidePanes }"
-msgstr "![Beispiele verschiedener Seitenbereiche](./SidePanes.png){ id=img_SidePanes }"
+msgstr ""
+"![Beispiele verschiedener Seitenbereiche](./SidePanes.png)"
+"{ id=img_SidePanes }"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:218
@@ -1043,7 +1058,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:261
 msgid "<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space."
 msgstr ""
-"<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> fügt ein nicht-umbrechbares Leerzeichen ein."
+"<kbd>SHIFT</kbd>+<kbd>SPACE</kbd> fügt ein nicht-umbrechbares Leerzeichen "
+"ein."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:263
@@ -1198,7 +1214,8 @@ msgstr "Ebenso können sie von Maxima aus überschrieben werden."
 msgid ""
 "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
-msgstr "![wxMaxima Konfiguration 1](./wxMaxima_configuration_001.png)"
+msgstr ""
+"![wxMaxima Konfiguration 1](./wxMaxima_configuration_001.png)"
 "{ id=img_wxMaxima_configuration_001 }"
 
 #. type: Plain text
@@ -1265,7 +1282,8 @@ msgstr ""
 msgid ""
 "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
 "{ id=img_wxMaxima_configuration_002 }"
-msgstr "![wxMaxima Konfiguration 2](./wxMaxima_configuration_002.png)"
+msgstr ""
+"![wxMaxima Konfiguration 2](./wxMaxima_configuration_002.png)"
 "{ id=img_wxMaxima_configuration_002 }"
 
 #. type: Plain text
@@ -1533,9 +1551,9 @@ msgstr ""
 "_Maxima_ weist normalerweise gnuplot an, Diagramme in eigenen Fenstern "
 "darzustellen. Wenn dem entsprechenden `draw` oder `plot`-Kommando ein \"wx\" "
 "vorangestellt wird, wird das Bild stattdessen in das Arbeitsblatt eingebaut: "
-"`wxplot2d` arbeitet wie `plot2d`, aber im Arbeitsblatt, `wxplot3d` entspricht `plot3d`, `wxdraw` und "
-"`wxhistogram` funktionieren wie `draw` und `histogram`, aber betten das "
-"Resultat ein."
+"`wxplot2d` arbeitet wie `plot2d`, aber im Arbeitsblatt, `wxplot3d` "
+"entspricht `plot3d`, `wxdraw` und `wxhistogram` funktionieren wie `draw` und "
+"`histogram`, aber betten das Resultat ein."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:386
@@ -1640,9 +1658,9 @@ msgid ""
 "click menu that allows to open the plot in an interactive gnuplot window."
 msgstr ""
 "Wenn ein Diagramm mittels einem `wxdraw`-ähnlichen Befehl erstellt wurde "
-"(`wxplot2d` und `wxplot3d` werden hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang "
-"ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt an, der das Diagramm in "
-"einem interaktiven Gnuplot-Fenster öffnet."
+"(`wxplot2d` und `wxplot3d` werden hier nicht unterstüzt) und die Gnuplot-"
+"Datei nicht allzu lang ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt "
+"an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:416
@@ -2365,7 +2383,8 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:602
 msgid "`wxanimate_autoplay`: Automatically play animations by default?"
-msgstr "`wxanimate_autoplay`: Sollen Animationen automatisch abgespielt werden?"
+msgstr ""
+"`wxanimate_autoplay`: Sollen Animationen automatisch abgespielt werden?"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:604
@@ -2417,7 +2436,8 @@ msgstr ""
 msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
-msgstr "![Ein drittes Tabellen-Beispiel](./MatrixTableExample.png)"
+msgstr ""
+"![Ein drittes Tabellen-Beispiel](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
 
 #. type: Plain text
@@ -2769,7 +2789,8 @@ msgstr "~~~~ playback(); ~~~~"
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:695
 msgid "## _wxMaxima_ starts up with the message “Maxima process terminated.”"
-msgstr "## _wxMaxima_ meldet gleich beim Hochfahren \"Maxima hat sich beendet.\""
+msgstr ""
+"## _wxMaxima_ meldet gleich beim Hochfahren \"Maxima hat sich beendet.\""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:697
@@ -2796,9 +2817,10 @@ msgid ""
 "data to _Maxima_. If this is the case “Trigger evaluation” might "
 "resynchronize the two programs."
 msgstr ""
-"Theoretisch kann es passieren, daß wxMaxima nicht erkennt, dass Maxima "
-"mit der Berechnung fertig ist und daher nie neue Befehle an Maxima sendet. In diesem Fall kann "
-"der Befehl 'Trigger Evaluation' die Synchronisation wieder herstellen."
+"Theoretisch kann es passieren, daß wxMaxima nicht erkennt, dass Maxima mit "
+"der Berechnung fertig ist und daher nie neue Befehle an Maxima sendet. In "
+"diesem Fall kann der Befehl 'Trigger Evaluation' die Synchronisation wieder "
+"herstellen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:703
@@ -2841,8 +2863,8 @@ msgid ""
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
 "dialogue."
 msgstr ""
-"Kommandozeilenparameter für _Maxima_ (und daher für SBCL) können in _wxMaxima_'s "
-"Konfigurationsdialog eingegeben werden."
+"Kommandozeilenparameter für _Maxima_ (und daher für SBCL) können in "
+"_wxMaxima_'s Konfigurationsdialog eingegeben werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:709
@@ -2860,14 +2882,18 @@ msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
 "launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) for details."
-msgstr "Das Installieren von `ibus-gtk` behebt dieses Problem meist. Auf ([https://"
+msgstr ""
+"Das Installieren von `ibus-gtk` behebt dieses Problem meist. Auf ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
-"launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) findet man genauere Angaben dazu."
+"launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558)) findet man genauere "
+"Angaben dazu."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:716
 msgid "## _wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
-msgstr "## _wxMaxima_ stoppt, wenn _Maxima_ griechische Buchstaben oder Umlaute verarbeitet"
+msgstr ""
+"## _wxMaxima_ stoppt, wenn _Maxima_ griechische Buchstaben oder Umlaute "
+"verarbeitet"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:718
@@ -3068,7 +3094,22 @@ msgid "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 msgstr "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:789
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+msgid "## Is there a dark mode?"
+msgstr ""
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:788
+msgid ""
+"If wxWidgets is new enough wxMaxima will automatically be in dark mode if "
+"the rest of the operating system is. The worksheet itself is by default "
+"equipped with a bright background. But it can be configured otherwise. "
+"Alternatively there is a `View/Invert worksheet brightness` menu entry that "
+"allows to quickly convert the worksheet from dark to bright and vice versa."
+msgstr ""
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:793
 #, no-wrap
 msgid ""
 "Command-line arguments\n"
@@ -3078,7 +3119,7 @@ msgstr ""
 "======================\n"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:792
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:796
 msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
@@ -3089,17 +3130,17 @@ msgstr ""
 "mehrere Kommandozeilenoptionen an."
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
 msgid "`-v` or `--version`: Output the version information"
 msgstr "`-v` or `--version`: Gibt die Versionsnummer aus"
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
 msgid "`-h` or `--help`: Output a short help text"
 msgstr "`-h` or `--help`: Gibt einen kurzen Hilfetext aus"
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
 #, fuzzy
 #| msgid ""
 #| "`-f` or `--ini`: Use the init file that was given as argument to this "
@@ -3108,15 +3149,16 @@ msgid ""
 "`-o` or `--open=<str>`: Open the filename given as argument to this command-"
 "line switch"
 msgstr ""
-"`-o` oder `--open=<str>`: Öffnet den Dateinamen, der als Argument dieser Kommandozeilenoption angegeben wurde."
+"`-o` oder `--open=<str>`: Öffnet den Dateinamen, der als Argument dieser "
+"Kommandozeilenoption angegeben wurde."
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr "`-e` oder `--eval`: Evaluiere die Datei nach dem Öffnen."
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
 msgid ""
 "`-b` or `--batch`: If the command-line opens a file all cells in this file "
 "are evaluated and the file is saved afterwards. This is for example useful "
@@ -3134,7 +3176,7 @@ msgstr ""
 "User weitergereicht."
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
 #, no-wrap
 msgid ""
 "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
@@ -3156,7 +3198,7 @@ msgstr ""
 "* `-m` or `--maxima=<str>`:        Sagt, wo die ausführbare Datei von _maxima_ liegt.\n"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:807
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."

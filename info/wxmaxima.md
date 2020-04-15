@@ -782,6 +782,10 @@ There is: Just add the following lines to the LaTeX preamble (for example by usi
 
     \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
 
+## Is there a dark mode?
+
+If wxWidgets is new enough wxMaxima will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.
+
 * * *
 
 
