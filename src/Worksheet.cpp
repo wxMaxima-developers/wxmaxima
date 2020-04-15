@@ -881,6 +881,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   tmp->AppendOutput(newCell);
   
   UpdateConfigurationClientSize();
+  m_configuration->AdjustWorksheetSize();
   Recalculate(tmp);
   
   if (FollowEvaluation())
@@ -950,14 +951,15 @@ bool Worksheet::RecalculateIfNeeded()
   if(m_dc == NULL)
     recalculate = false;
 
+  if(m_configuration->AdjustWorksheetSize())
+    AdjustSize();
+  m_configuration->AdjustWorksheetSize(false);
+
   if(!recalculate)
   {
-    if(m_configuration->AdjustWorksheetSize())
-      AdjustSize();
     m_recalculateStart = NULL;
     return false;
   }
-  m_configuration->AdjustWorksheetSize(false);
 
   if(!GetTree()->Contains(m_recalculateStart))
     m_recalculateStart = GetTree();

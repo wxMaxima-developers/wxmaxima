@@ -1441,6 +1441,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
   if(cell)
   {
+    m_worksheet->m_configuration->AdjustWorksheetSize();
     m_worksheet->Recalculate(cell->GetGroup());
     if (scrollToCaret)
       m_worksheet->ScrollToCaret();
