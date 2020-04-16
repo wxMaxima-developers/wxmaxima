@@ -4122,7 +4122,6 @@ void wxMaxima::CompileHelpFileAnchors()
     m_worksheet->m_helpFileAnchors["wxdraw"] = "draw";
     m_worksheet->m_helpFileAnchors["wxdraw2d"] = "draw2d";
     m_worksheet->m_helpFileAnchors["wxdraw3d"] = "draw3d";
-    m_worksheet->m_helpFileAnchors["%solve"] = "to_poly_solve";
     m_worksheet->m_helpFileAnchors["with_slider_draw"] = "draw";
     m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = "draw2d";
     m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = "draw3d";
@@ -4179,6 +4178,8 @@ void wxMaxima::CompileHelpFileAnchors()
     }
     wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
   }
+  if(m_worksheet->m_helpFileAnchors["%solve"].IsEmpty())
+    m_worksheet->m_helpFileAnchors["%solve"] = m_worksheet->m_helpFileAnchors["to_poly_solve"];
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_helpFileAnchorsLock);
   #endif
