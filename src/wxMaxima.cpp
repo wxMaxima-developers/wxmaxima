@@ -4122,6 +4122,7 @@ void wxMaxima::CompileHelpFileAnchors()
     m_worksheet->m_helpFileAnchors["wxdraw"] = "draw";
     m_worksheet->m_helpFileAnchors["wxdraw2d"] = "draw2d";
     m_worksheet->m_helpFileAnchors["wxdraw3d"] = "draw3d";
+    m_worksheet->m_helpFileAnchors["%solve"] = "to_poly_solve";
     m_worksheet->m_helpFileAnchors["with_slider_draw"] = "draw";
     m_worksheet->m_helpFileAnchors["with_slider_draw2d"] = "draw2d";
     m_worksheet->m_helpFileAnchors["with_slider_draw3d"] = "draw3d";
@@ -4131,8 +4132,7 @@ void wxMaxima::CompileHelpFileAnchors()
     wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
     wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
-    wxRegEx correctUnderscores("_0[0-9]+[a-z]");
-    wxRegEx remove_g_t("^g[_]t");
+    wxString escapeChars = "<=>[]`%?;\\$%&+-*/.!\'@#:^_";
     if(wxFileExists(MaximaHelpFile))
     {
       wxFileInputStream input(MaximaHelpFile);
@@ -4147,65 +4147,30 @@ void wxMaxima::CompileHelpFileAnchors()
           {
             wxString token = tokens.GetNextToken();
             wxString oldToken(token);
+            wxString id;
             if(idExtractor.Replace(&token, "\\1")>0)
-            {              
-              wxString id = token;
-              token.Replace("_0025","%");
-              token.Replace("_003f","?");
-              token.Replace("_003b",";");
-              token.Replace("_0022","\"");
-              token.Replace("_0024","$");
-              token.Replace("_0025","%");
-              token.Replace("_0026","&");
-              token.Replace("_002B","+");
-              token.Replace("_002D","-");
-              token.Replace("_002E",".");
-              token.Replace("_0021","!");
-              token.Replace("_0027","'");
-              token.Replace("_0040","@");
-              token.Replace("_0023","#");
-              token.Replace("_003A",":");
-              token.Replace("_005E","^");
+              id = token;
+            else
+            {
+              if(idExtractor_oldManual.Replace(&token, "\\1")>0)
+                id = token;
+            }
+            if(!id.IsEmpty())
+            {
+              // In anchors a space is represented by a hyphen
               token.Replace("-", " ");
-              correctUnderscores.Replace(&token, "_");
+              // Some other chars including the minus are represented by "_00xx"
+              // where xx is being the ascii code of the char.
+              for(wxString::const_iterator it = escapeChars.begin(); it != escapeChars.end(); ++it)
+                token.Replace(wxString::Format("_00%x",(char)*it), *it);
+              // What the g_t means I don't know. But we don't need it
               if(token.StartsWith("g_t"))
                 token = token.Right(token.Length()-3);
+              //! Tokens that end with "-1" aren't too useful, normally.
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))
               {
                 m_worksheet->m_helpFileAnchors[token] = id;
                 foundAnchors++;
-              }
-            }
-            else
-            {
-              if(idExtractor_oldManual.Replace(&token, "\\1")>0)
-              {
-                wxString id = token;
-                token.Replace("_0025","%");
-                token.Replace("_003f","?");
-                token.Replace("_003b",";");
-                token.Replace("_0022","\"");
-                token.Replace("_0024","$");
-                token.Replace("_0025","%");
-                token.Replace("_0026","&");
-                token.Replace("_002B","+");
-                token.Replace("_002D","-");
-                token.Replace("_002E",".");
-                token.Replace("_0021","!");
-                token.Replace("_0027","'");
-                token.Replace("_0040","@");
-                token.Replace("_0023","#");
-                token.Replace("_003A",":");
-                token.Replace("_005E","^");
-                token.Replace("-", " ");
-                correctUnderscores.Replace(&token, "_");
-                if(token.StartsWith("g_t"))
-                  token = token.Right(token.Length()-3);
-                if((!token.EndsWith("-1")) && (!token.Contains(" ")))
-                {
-                  m_worksheet->m_helpFileAnchors[token] = id;
-                  foundAnchors++;
-                }
               }
             }
           }
@@ -4221,6 +4186,10 @@ void wxMaxima::CompileHelpFileAnchors()
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
+  if(keyword.StartsWith("(%i"))
+    keyword = "inchar";
+  if(keyword.StartsWith("(%o"))
+    keyword = "outchar";
   wxString MaximaHelpFile = GetMaximaHelpFile();
 #ifdef __WINDOWS__
   // replace \ with / als directory separator
