@@ -3087,7 +3087,7 @@ wxString EditorCell::GetWordUnderCaret()
   unsigned long pos = 0;
   for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&'))
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') && !((*it == '%') && (retval.IsEmpty())))
     {
       if(pos >= start)
         return retval;
@@ -3139,7 +3139,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
       }
       continue;
     }        
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '?') &&
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '?') && !(*it == '%') &&
        !((*it == '\"') && includeDoubleQuotes))
     {
       // !!toRight is 0, if toRight is false or guaranteed to be 1, if toRight is true
