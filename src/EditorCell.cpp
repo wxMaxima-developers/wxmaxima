@@ -3112,7 +3112,7 @@ wxString EditorCell::GetWordUnderCaret()
   if(retval.IsEmpty())
     {
       if(!m_text.IsEmpty())
-        retval = m_text[start];
+        retval = wxString(m_text.GetChar(start));
     }
   return retval;
 }
