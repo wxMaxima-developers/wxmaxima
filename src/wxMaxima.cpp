@@ -4132,7 +4132,7 @@ void wxMaxima::CompileHelpFileAnchors()
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
     wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
     wxRegEx correctUnderscores("_0[0-9]+[a-z]");
-    wxRegEx remove_g_t("^g_t_");
+    wxRegEx remove_g_t("^g[_]t");
     if(wxFileExists(MaximaHelpFile))
     {
       wxFileInputStream input(MaximaHelpFile);
@@ -4151,12 +4151,26 @@ void wxMaxima::CompileHelpFileAnchors()
             {              
               wxString id = token;
               token.Replace("_0025","%");
+              token.Replace("_003f","?");
+              token.Replace("_003b",";");
+              token.Replace("_0022","\"");
               token.Replace("_0024","$");
-              correctUnderscores.Replace(&token, "_");
-              remove_g_t.Replace(&token, "_");
+              token.Replace("_0025","%");
+              token.Replace("_0026","&");
+              token.Replace("_002B","+");
+              token.Replace("_002D","-");
+              token.Replace("_002E",".");
+              token.Replace("_0021","!");
+              token.Replace("_0027","'");
+              token.Replace("_0040","@");
+              token.Replace("_0035","#");
               token.Replace("-", " ");
+              correctUnderscores.Replace(&token, "_");
+              if(token.StartsWith("g_t"))
+                token = token.Right(token.Length()-3);
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))
               {
+                std::cerr<<"\""<<token<<"\"\n";
                 m_worksheet->m_helpFileAnchors[token] = id;
                 foundAnchors++;
               }
@@ -4196,8 +4210,6 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   // replace \ with / als directory separator
   MaximaHelpFile.Replace("\\", "/", true);
 #endif
-
-
   
   if((!(MaximaHelpFile.Lower().EndsWith(wxT(".html")))) && (!MaximaHelpFile.IsEmpty()))
   {
@@ -4207,6 +4219,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   {
     wxBusyCursor crs;
     CompileHelpFileAnchors();
+    std::cerr<<"keyword =\""<<keyword<<"\"\n";
     keyword = m_worksheet->m_helpFileAnchors[keyword];
     if(keyword.IsEmpty())
       keyword = "Function-and-Variable-Index";
