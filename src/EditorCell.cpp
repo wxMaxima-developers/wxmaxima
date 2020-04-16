@@ -3077,9 +3077,9 @@ void EditorCell::CommentSelection()
 
 wxString EditorCell::GetWordUnderCaret()
 {
-  unsigned long start = m_positionOfCaret;
   if(m_positionOfCaret < 0)
     return wxEmptyString;
+  unsigned long start = m_positionOfCaret;
   if(start >= m_text.Length())
     start = m_text.Length();
 
@@ -3090,7 +3090,7 @@ wxString EditorCell::GetWordUnderCaret()
     if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') && !(*it == '%') && !(*it == '?'))
     {
       if(pos >= start)
-        return retval;
+        break;
       else
         retval = wxEmptyString;
     }
@@ -3116,7 +3116,7 @@ wxString EditorCell::GetWordUnderCaret()
     }
   return retval;
 }
-    
+
 /***
  * SelectWordUnderCaret
  * - called from MathCtrl::OnDoubleClick, MathCtrl::Autocomplete and wxMaxima::HelpMenu

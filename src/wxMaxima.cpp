@@ -4163,7 +4163,7 @@ void wxMaxima::CompileHelpFileAnchors()
               token.Replace("_0021","!");
               token.Replace("_0027","'");
               token.Replace("_0040","@");
-              token.Replace("_0035","#");
+              token.Replace("_0023","#");
               token.Replace("_003A",":");
               token.Replace("_005E","^");
               token.Replace("-", " ");
@@ -4172,7 +4172,6 @@ void wxMaxima::CompileHelpFileAnchors()
                 token = token.Right(token.Length()-3);
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))
               {
-                std::cerr<<"\""<<token<<"\"\n";
                 m_worksheet->m_helpFileAnchors[token] = id;
                 foundAnchors++;
               }
@@ -4195,7 +4194,7 @@ void wxMaxima::CompileHelpFileAnchors()
                 token.Replace("_0021","!");
                 token.Replace("_0027","'");
                 token.Replace("_0040","@");
-                token.Replace("_0035","#");
+                token.Replace("_0023","#");
                 token.Replace("_003A",":");
                 token.Replace("_005E","^");
                 token.Replace("-", " ");
@@ -4236,7 +4235,6 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   {
     wxBusyCursor crs;
     CompileHelpFileAnchors();
-    std::cerr<<"keyword =\""<<keyword<<"\"\n";
     keyword = m_worksheet->m_helpFileAnchors[keyword];
     if(keyword.IsEmpty())
       keyword = "Function-and-Variable-Index";
