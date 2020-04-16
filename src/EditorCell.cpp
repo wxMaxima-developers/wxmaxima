@@ -3087,7 +3087,7 @@ wxString EditorCell::GetWordUnderCaret()
   unsigned long pos = 0;
   for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') && !((*it == '%') && (retval.IsEmpty())))
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') && !(*it == '%'))
     {
       if(pos >= start)
         return retval;

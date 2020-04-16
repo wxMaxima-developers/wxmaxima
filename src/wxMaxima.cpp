@@ -4132,6 +4132,7 @@ void wxMaxima::CompileHelpFileAnchors()
     wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
     wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
     wxRegEx correctUnderscores("_0[0-9]+[a-z]");
+    wxRegEx remove_g_t("^g_t_");
     if(wxFileExists(MaximaHelpFile))
     {
       wxFileInputStream input(MaximaHelpFile);
@@ -4147,9 +4148,12 @@ void wxMaxima::CompileHelpFileAnchors()
             wxString token = tokens.GetNextToken();
             wxString oldToken(token);
             if(idExtractor.Replace(&token, "\\1")>0)
-            {
+            {              
               wxString id = token;
+              token.Replace("_0025","%");
+              token.Replace("_0024","$");
               correctUnderscores.Replace(&token, "_");
+              remove_g_t.Replace(&token, "_");
               token.Replace("-", " ");
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))
               {
@@ -4162,7 +4166,10 @@ void wxMaxima::CompileHelpFileAnchors()
               if(idExtractor_oldManual.Replace(&token, "\\1")>0)
               {
                 wxString id = token;
+                token.Replace("_0025","%");
+                token.Replace("_0024","$");
                 correctUnderscores.Replace(&token, "_");
+                remove_g_t.Replace(&token, "_");
                 token.Replace("-", " ");
                 if((!token.EndsWith("-1")) && (!token.Contains(" ")))
                 {
