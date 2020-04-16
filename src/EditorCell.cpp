@@ -3087,7 +3087,7 @@ wxString EditorCell::GetWordUnderCaret()
   unsigned long pos = 0;
   for (wxString::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') && !(*it == '%'))
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&') && !(*it == '%') && !(*it == '?'))
     {
       if(pos >= start)
         return retval;
@@ -3109,6 +3109,11 @@ wxString EditorCell::GetWordUnderCaret()
       }
     }
   }
+  if(retval.IsEmpty())
+    {
+      if(!m_text.IsEmpty())
+        retval = m_text[start];
+    }
   return retval;
 }
     
