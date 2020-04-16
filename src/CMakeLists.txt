@@ -73,7 +73,7 @@ elseif(APPLE)
     set_target_properties(wxmaxima PROPERTIES
 	RESOURCE "${RESOURCE_FILES}"
 	)
-   if(MACOSX_BUNDLE)
+   if(APPLE)
        set_target_properties(wxmaxima PROPERTIES
             MACOSX_BUNDLE TRUE
             RESOURCE "${RESOURCE_FILES}"
@@ -175,12 +175,8 @@ if(WIN32)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 elseif(APPLE)
     # If we have generated an .apk bundle we can package this in a DMG image
-    if(MACOSX_BUNDLE)
-        set(CPACK_GENERATOR "DragNDrop")
-        set(CPACK_BINARY_DragNDrop "ON")
-    else()
-        set(CPACK_GENERATOR "TGZ;TBZ2")
-    endif()
+    set(CPACK_GENERATOR "DragNDrop")
+    set(CPACK_BINARY_DragNDrop "ON")
 else()
     set(CPACK_GENERATOR "DEB;TGZ;TBZ2")
     # build RPMs only if rpmbuild is installed
