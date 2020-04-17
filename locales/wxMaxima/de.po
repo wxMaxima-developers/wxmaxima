@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 18:41+0200\n"
-"PO-Revision-Date: 2020-04-17 13:44+0200\n"
+"PO-Revision-Date: 2020-04-17 19:03+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -507,7 +507,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:543
 msgid "...and over this list we can iterate efficiently again:\n"
-msgstr ""
+msgstr "...über diese Liste zu iterieren geht wieder sehr effizient:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1921
 msgid "1/2"
@@ -710,7 +710,7 @@ msgid ""
 "the list. But if one plans to iterate through the whole list, anyway (as one "
 "normally has to) this work isn't much of an overhead - and maxima offers "
 "several functions for this purpose:\n"
-msgstr ""
+msgstr "Um ein beliebiges Listenelement ansprechen zu können, muss man, um dessen Adresse zu ermitteln, erst über alle vorhergehenden Elemente iterieren. Aber wenn man sowieso alle Listenelemente durcharbeiten will (wie es meist der Fall ist), geht das schnell. Maxima bietet für diesen Zweck gleich ein Bündel an Funktionen an:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2198
 msgid "Accuracy"
@@ -1447,7 +1447,7 @@ msgstr "&Info über Maxima"
 msgid ""
 "But you can also tell makelist to iterate over a list - which is quite "
 "fast:\n"
-msgstr ""
+msgstr "Aber man kann makelist auch sagen, es soll über eine Liste iterieren - was sehr schnell ist:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1228
 msgid ""
@@ -3172,17 +3172,16 @@ msgid "Factorials and &Gamma"
 msgstr "Fakultät und &Gamma"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:399
-#, fuzzy
 msgid "Fast access to all list elements\n"
-msgstr "Extrahiere Elemente der Liste"
+msgstr "Schneller Zugriff auf alle Listenelemente\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1346
 msgid "Fast list access"
-msgstr ""
+msgstr "Schneller Zugriff auf Listen"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:377
 msgid "Fast list access\n"
-msgstr ""
+msgstr "Schneller Zugriff auf Listen\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:311
 msgid "Fatal error"
@@ -3438,7 +3437,7 @@ msgstr "Für alle Fans von XKCD:\n"
 msgid ""
 "For does do nearly the same as makelist except that it doesn't return a "
 "list.:\n"
-msgstr ""
+msgstr "for() tut fast dasselbe, wie makelist(), nur liefert es keine Liste zurück:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:338
 msgid ""
@@ -4038,6 +4037,9 @@ msgid ""
 "is needed and each element knows where in the computer's memory the next "
 "list element is stored.\n"
 msgstr ""
+"Wenn jemand eine größere Menge an Daten speichern will, gibt es dazu grob zwei Methoden:\n"
+" * Arrays: Wenn bekannt ist, dass n Elemente zu speichern sind, und dass alle die Größe m haben, ist es das einfachste, n*m Bytes an Speicher zu reservieren. Die Adresse eines beliebigen Elements ist dann schnell ermittelt.\n"
+"  * Listen: Wenn ein neues Listenelement gebraucht wird, wird Speicher dafür reserviert. Zudem wird jedem Element gesagt, wo sich das Nächste befindet.\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:147
 msgid ""
@@ -4078,7 +4080,7 @@ msgid ""
 "lambda() command to generate a name-less function with one argument: Just "
 "passlambda() first the list of the arguments the new command shall have and "
 "the contents of that command:\n"
-msgstr ""
+msgstr "Wenn die Funktion, die man auf die Liste loslassen will, nur einmal verwendet wird, und man ihr keinen Namen geben will, kann man lambda() bitten, eine namenlose Funktion mit einem Argument zu generieren: Man muss dafür nur lambda() erst die Liste der Argumente und dann den Inhalt der neuen Funktion geben:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1448
 msgid ""
@@ -4680,7 +4682,7 @@ msgstr ""
 msgid ""
 "It is possible to access all list elements by accessing and removing the "
 "first element repeatedly:\n"
-msgstr ""
+msgstr "Es ist möglich, alle Elemente einer Liste durchzuarbeiten, indem man stets das erste Element liest, und dann entfernt:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:150
 msgid ""
@@ -4733,7 +4735,7 @@ msgstr "Element"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:503
 msgid "Iterating through two lists at the same time\n"
-msgstr ""
+msgstr "Iterieren über zwei Listen zur selben Zeit\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7047
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7285
@@ -5007,9 +5009,8 @@ msgid "List:"
 msgstr "Liste:"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:382
-#, fuzzy
 msgid "Lists and Arrays\n"
-msgstr "Liste der Arrays"
+msgstr "Listen und Arrays\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1082
 msgid "Load"
@@ -5078,6 +5079,8 @@ msgid ""
 "is shaped like a list.\n"
 "The most widely known form of this command is:\n"
 msgstr ""
+"makelist() ist ein Schweizer Armeemesser, wenn man irgendetwas in Listenform haben will.\n"
+"Die bekannteste Version von makelist() ist:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1323
 msgid ""
@@ -5336,7 +5339,7 @@ msgid ""
 "double elements. But determining the length of a list or the address the nth "
 "list item is stored at means having to iterate through the list querying "
 "each item where the next list item can be found.\n"
-msgstr ""
+msgstr "Maxima liebt listen: Man kann sie jederzeit um neue Elemente erweitern. Man kann problemlos Elemente entfernen. Sie vertauschen? Man vertauscht die Pointer auf das nchste Element. Maxima kennt eine schnelle Sortierfunktion und eine, die Duplikate entfernt. Aber die Länge einer Liste, oder die Adresse des n-ten Elements zu ermitteln bedeutet, jedes einzelne Element nach seinem Nachfolger zu fragen, bis die gewünschte Information vorliegt.\n"
 
 #: /home/gunter/src/wxmaxima/src/Dirstructure.cpp:151
 #, c-format
@@ -5945,7 +5948,7 @@ msgstr "Laden wir also das Paket mit dem Fitter:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:523
 msgid "Now we extract the list of arguments to the matrix() command:\n"
-msgstr ""
+msgstr "Nun extrahieren wir die Argumente des matrix()-Befehls:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:762
 msgid "Now we generate a matrix of values lsquares can deal with:\n"
@@ -6064,7 +6067,7 @@ msgstr "Betriebssystem: %s, Version %i.%i"
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:533
 msgid ""
 "Of course all of these commands can be executed in one long command line:\n"
-msgstr ""
+msgstr "Natürlich kann man all dies auch in einer einzelnen Zeile unterbringen:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:616
 msgid "Offer known answers"
@@ -6121,7 +6124,7 @@ msgstr "Einstichproben t-Test"
 msgid ""
 "One way to do so efficiently is to use the pop() method on both lists. The "
 "other is to make a list of lists:\n"
-msgstr ""
+msgstr "Eine Möglichkeit, dies zu tun, ist es, pop() auf beide Listen loszulassen. Die andere Möglichkeit ist die Verwendung einer Liste von Listen:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1349
 msgid "Online tutorials"
@@ -9618,7 +9621,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:436
 msgid "for\n"
-msgstr ""
+msgstr "for\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1196
 msgid "from a list"
@@ -9697,18 +9700,16 @@ msgid "logscale"
 msgstr "Logarithmische Skala"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:409
-#, fuzzy
 msgid "makelist\n"
-msgstr "Eine Liste erzeugen"
+msgstr "makelist\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:467
 msgid "map\n"
-msgstr ""
+msgstr "map\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:472
-#, fuzzy
 msgid "map runs the same function on every single list element:\n"
-msgstr "Funktion auf jedes Listenelement anwenden"
+msgstr "map wendet dieselbe Funktion auf jedes Listenelement an\n"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:827
 msgid "matrix([x_1,x_2,...],[y_1,y_2,...])"
@@ -9823,7 +9824,7 @@ msgstr "Plus oder Minus"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:451
 msgid "pop\n"
-msgstr ""
+msgstr "pop\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1961
 msgid "proportional to"
