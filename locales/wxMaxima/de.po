@@ -2051,7 +2051,7 @@ msgstr "Konvertierung der Daten zu einer kontinuierlichen Kurve\n"
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:752
 msgid ""
 "Converting the result into a list of equations is a bit more complicated:\n"
-msgstr "Die Konvertierung des Resultats in eine Liste von Gleichungen ist ewas kompizierter:\n"
+msgstr "Die Konvertierung des Resultats in eine Liste von Gleichungen ist ewas komplizierter:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1262
 msgid "Converts a matrix to a list of lists"
@@ -3854,7 +3854,7 @@ msgstr ""
 "Für das Verständnis dieses Konstrukts:\n"
 " * args() konvertiert eine Matrix zu einer Liste von Listen,\n"
 " * Der makelist()-Befehl geht diese Liste Zeile für Zeile durch und weist den Inhalt der Zeile (die die Werte für x und y enthält) i zu\n"
-" * rhs() und lhs() extrahieren die Seite rechter und Linker Hand einer Gleichung (also die Teile, die links und rechts vom \"=\" stehen.\n"
+" * rhs() und lhs() extrahieren die Seite rechter und linker Hand einer Gleichung (also die Teile, die links und rechts vom \"=\" stehen.\n"
 " * Da wir wissen, dass die Werte für x und y in i enthalten sind, können wir diese mittels subst() in errval einsetzen, jene Gleichung, die den Fehler in diesem Punkt berechnet.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:762
@@ -3871,7 +3871,7 @@ msgid ""
 msgstr ""
 "Erläuterung dieses Konstrukts:\n"
 " * map() setzt einen Befehl auf jedes Element einer Liste an\n"
-" * map() soll ein Kommando aufrufen, das \"[a,3]\" zu einem \"a=3\" konvertiert. Da wir dieses Kommando aber nur ein einziges Mal benötigen, lohnt es sich nicht, ihm einen Namen zu geben. lambda() generieert daher für uns eine unbenannte Funktion mit einem Parameter, x.\n"
+" * map() soll ein Kommando aufrufen, das \"[a,3]\" zu einem \"a=3\" konvertiert. Da wir dieses Kommando aber nur ein einziges Mal benötigen, lohnt es sich nicht, ihm einen Namen zu geben. lambda() generiert daher für uns eine unbenannte Funktion mit einem Parameter, x.\n"
 " * args() konvertiert wieder die Matrix zu einer Liste von Listen und\n"
 " * Wir müssen unsere Eingangsdaten in eine Matrix konvertieren, um sie transponieren zu können (also, um die Zeilen und Spalten miteinander zu vertauschen).\n"
 
