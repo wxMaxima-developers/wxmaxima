@@ -4361,6 +4361,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
         lines.Add(tokenizer.GetNextToken());
       m_worksheet->InsertGroupCells(
         m_worksheet->CreateTreeFromWXMCode(lines));
+      m_worksheet->Recalculate();
+      m_worksheet->RecalculateIfNeeded();
+      m_worksheet->UpdateMLast();
       m_worksheet->SetSaved(true);
       m_initialWorkSheetContents = wxEmptyString;
     }
