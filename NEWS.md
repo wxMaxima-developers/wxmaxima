@@ -5,9 +5,11 @@
  * Removed an unnecessary info dialogue on startup
  * Right-click-suggestions for similar command names
  * Corrected the initial slideshow size
+ * Extended the "fitting data" example
  * An Ukrainian translation update from Yuri Chornoivan
  * A Russian translation update from OlesyaGerasimenko
  * Many spelling corrections and better formulations
+ * A big number of small bug-fixes
  * Another noticeable SpeedUp
 
 #20.03.0
