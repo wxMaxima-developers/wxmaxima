@@ -36,7 +36,12 @@
 
 // This macro is used to mark the macports prefix, so that it can be easily patched
 // The MacPorts port file for wxMaxima uses this, so don't remove this!
+// Note: this is not done with a define passed through cmake because I didn't find a way
+// to pass paths which need quoting through cmake.
 #define OSX_MACPORTS_PREFIX "/opt/local"
+// If set to 1, the macports path is put first into the search path (after app package paths).
+// This could be done with a define but then it doesn't make sense to use a different method.
+#define OSX_MACPORTS_PREFER 0
 
 Dirstructure::Dirstructure()
 {
@@ -210,22 +215,29 @@ wxString Dirstructure::MaximaDefaultLocation()
   maximaLocation = "/Applications/maxima.app";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
-  
+
+  // The Macports path (if it is prefered over homebrew)
+#if OSX_MACPORTS_PREFER
+  wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
+  maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
+  if (wxFileExists(maximaLocation))
+    return maximaLocation;
+#endif
+
+  // The homebrew path
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = "/usr/local/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
+  // The Macports path (if it is not prefered over homebrew)
+#if !OSX_MACPORTS_PREFER
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
   if (wxFileExists(maximaLocation))
     return maximaLocation;
+#endif
 
-  wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
-  maximaLocation = "/usr/bin/maxima";
-  if (wxFileExists(maximaLocation))
-    return maximaLocation;
-  
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = "/usr/bin/maxima";
   if (wxFileExists(maximaLocation))
