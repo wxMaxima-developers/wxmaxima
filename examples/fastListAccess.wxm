@@ -90,6 +90,42 @@ while not emptyp(list3) do
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: subsect start ]
+map
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+map runs the same function on every single list element:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+map(sin,list2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If the function one wants to run on each list element is only used once and one doesn't want to give this one-time-function a name one can ask the lambda() command to generate a name-less function with one argument: Just passlambda() first the list of the arguments the new command shall have and the contents of that command:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+map(
+    lambda(
+        [x],
+        sin(cos(x))
+    ),
+    list2
+);
+/* [wxMaxima: input   end   ] */
+
+
 /* [wxMaxima: section start ]
 Iterating through two lists at the same time
    [wxMaxima: section end   ] */
