@@ -115,16 +115,11 @@ if(PANDOC AND PO4A_TRANSLATE)
             generate_wxmaxima_documentation(pdf "${PANDOC_TEXSELECT_OPTION}")
         endif()
 
-
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
         install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
     endforeach()
 else()
     foreach(BASENAME ${BASENAMES})
         install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima OPTIONAL)
     endforeach()
 endif()
 

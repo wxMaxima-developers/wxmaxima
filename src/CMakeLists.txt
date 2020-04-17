@@ -58,7 +58,6 @@ file(GLOB RESOURCE_FILES
     ${CMAKE_SOURCE_DIR}/info/*.html
     ${CMAKE_SOURCE_DIR}/info/*.jpg
     ${CMAKE_SOURCE_DIR}/info/*.png
-    ${CMAKE_SOURCE_DIR}/info/*.hhp
     ${CMAKE_SOURCE_DIR}/data/PkgInfo
     ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
     ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
