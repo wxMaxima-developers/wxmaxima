@@ -5,9 +5,10 @@
  * Removed an unnecessary info dialogue on startup
  * Right-click-suggestions for similar command names
  * Corrected the initial slideshow size
- * Extended the "fitting data" example
  * An Ukrainian translation update from Yuri Chornoivan
  * A Russian translation update from OlesyaGerasimenko
+ * Extended the "fitting data" example
+ * A example on how to iterate through lists efficiently
  * Many spelling corrections and better formulations
  * A big number of small bug-fixes
  * Another noticeable SpeedUp

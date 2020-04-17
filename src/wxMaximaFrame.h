@@ -475,6 +475,7 @@ public:
     menu_help_diffequations,
     menu_help_numberformats,
     menu_help_tolerances,
+    menu_help_listaccess,
     menu_help_3d,
     menu_help_varnames,
     menu_help_fittingData,

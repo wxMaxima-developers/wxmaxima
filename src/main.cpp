@@ -440,7 +440,12 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     NewWindow(wxEmptyString, false, false,
               variableNames_wxm_gz, variableNames_wxm_gz_len);
     break;
-    
+
+  case wxMaxima::menu_help_listaccess:
+    NewWindow(wxEmptyString, false, false,
+              fastListAccess_wxm_gz, fastListAccess_wxm_gz_len);
+    break;
+
   case wxMaxima::menu_help_fittingData:
     NewWindow(wxEmptyString, false, false,
               fittingEquations_wxm_gz, fittingEquations_wxm_gz_len);
