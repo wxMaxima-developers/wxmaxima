@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 12:08+0200\n"
-"PO-Revision-Date: 2020-04-15 21:51+0200\n"
+"PO-Revision-Date: 2020-04-17 13:44+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2045,14 +2045,13 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr "Ersetze Winkelfunktionen durch Exponentialfunktionen"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:537
-#, fuzzy
 msgid "Converting the data to an continuous curve\n"
 msgstr "Konvertierung der Daten zu einer kontinuierlichen Kurve\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:752
 msgid ""
 "Converting the result into a list of equations is a bit more complicated:\n"
-msgstr ""
+msgstr "Die Konvertierung des Resultats in eine Liste von Gleichungen ist ewas kompizierter:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1262
 msgid "Converts a matrix to a list of lists"
@@ -3320,7 +3319,7 @@ msgstr "Gleichungen an echte Messdaten anlegen\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:741
 msgid "Fitting the data is simple:\n"
-msgstr ""
+msgstr "Die Daten zu fitten ist einfach:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:604
 msgid "Fitting this curve will yield a better result as the first attempt:\n"
@@ -3852,6 +3851,11 @@ msgid ""
 "subst() in orer to substitute the elements in i into errval, the equation "
 "that tells us how big the error in this point is.\n"
 msgstr ""
+"Für das Verständnis dieses Konstrukts:\n"
+" * args() konvertiert eine Matrix zu einer Liste von Listen,\n"
+" * Der makelist()-Befehl geht diese Liste Zeile für Zeile durch und weist den Inhalt der Zeile (die die Werte für x und y enthält) i zu\n"
+" * rhs() und lhs() extrahieren die Seite rechter und Linker Hand einer Gleichung (also die Teile, die links und rechts vom \"=\" stehen.\n"
+" * Da wir wissen, dass die Werte für x und y in i enthalten sind, können wir diese mittels subst() in errval einsetzen, jene Gleichung, die den Fehler in diesem Punkt berechnet.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:762
 msgid ""
@@ -3865,6 +3869,11 @@ msgid ""
 " * we need to convert our input data into a list in order to transpose it "
 "(which means: exchange the columns by rows and vice versa)\n"
 msgstr ""
+"Erläuterung dieses Konstrukts:\n"
+" * map() setzt einen Befehl auf jedes Element einer Liste an\n"
+" * map() soll ein Kommando aufrufen, das \"[a,3]\" zu einem \"a=3\" konvertiert. Da wir dieses Kommando aber nur ein einziges Mal benötigen, lohnt es sich nicht, ihm einen Namen zu geben. lambda() generieert daher für uns eine unbenannte Funktion mit einem Parameter, x.\n"
+" * args() konvertiert wieder die Matrix zu einer Liste von Listen und\n"
+" * Wir müssen unsere Eingangsdaten in eine Matrix konvertieren, um sie transponieren zu können (also, um die Zeilen und Spalten miteinander zu vertauschen).\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8196
 msgid "Histogram"
@@ -3983,7 +3992,6 @@ msgstr ""
 "speichert."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:33
-#, fuzzy
 msgid ""
 "If the equation that defines the shape of a curve references the steepness "
 "of the curve (diff('f(x),x)), the steepness of the steepness of the curve "
@@ -5270,7 +5278,7 @@ msgid ""
 "but is a bit more complicated to use. For example it requires us to manually "
 "compile a list of the errors we want to minimize. Let's do that for data2_i "
 "and approach1:\n"
-msgstr ""
+msgstr "Maxima bietet auch einen zweiten Algorithmus an, der oft besser funktioniert, aber komplizierter einzusetzen ist. So müssen wir die Liste der Fehler, die wir minimieren wollen, von Hand zusammen bauen, was wir im Folgenden für data2_i und approach1 tun:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:305
 msgid ""
@@ -5829,7 +5837,7 @@ msgstr "Nicht mit Maxima verbunden\""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:731
 msgid "Now let's load the package that contains the other fitter:\n"
-msgstr ""
+msgstr "Laden wir also das Paket mit dem Fitter:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:581
 msgid "Now we generate a matrix of values lsquares can deal with:\n"
@@ -5943,7 +5951,7 @@ msgstr "OK"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:112
 #, c-format
 msgid "OS: %s Version %i.%i"
-msgstr ""
+msgstr "Betriebssystem: %s, Version %i.%i"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:616
 msgid "Offer known answers"
@@ -8243,7 +8251,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:721
 msgid "The result is a list of error values, each in the following format:\n"
-msgstr ""
+msgstr "Das Resultat ist eine Liste der Höhe von Fehlern im folgenden Format:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:591
 msgid ""
@@ -8254,7 +8262,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:771
 msgid "The result isn't too bad, this time, neither:\n"
-msgstr ""
+msgstr "Dieses Resultat ist gar nicht so schlecht:\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:159
 msgid "The result was indefinite."
@@ -8998,7 +9006,7 @@ msgstr "Nutzung von mehr oder weniger Stichproben\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:685
 msgid "Using a different fitting algorithm\n"
-msgstr ""
+msgstr "Verwendung eines anderen Algorithmus für das Fitten\n"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:42
 msgid "Value"
