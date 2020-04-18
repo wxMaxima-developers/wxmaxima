@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-15 21:47+0200\n"
+"POT-Creation-Date: 2020-04-18 09:08+0200\n"
 "PO-Revision-Date: 2016-07-10 20:53+0100\n"
 "Last-Translator: Belkacem Mohammed <belkacem77@gmail.com>\n"
 "Language-Team: kabyle <kab@li.org>\n"
@@ -105,7 +105,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:348
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:635
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:774
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:790
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:794
 msgid "* *"
 msgstr ""
 
@@ -2269,7 +2269,22 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:793
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:790
+msgid ""
+"## wxMaxima sometimes hangs for a several seconds once in the first minute"
+msgstr ""
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:792
+msgid ""
+"wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to "
+"background tasks, which normally goes totally unnoticed. In the moment the "
+"result of such a task is needed, though, it is possible that wxMaxima needs "
+"to wait a couple of seconds before it can continue its work."
+msgstr ""
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:797
 #, no-wrap
 msgid ""
 "Command-line arguments\n"
@@ -2277,7 +2292,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:796
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:800
 msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
@@ -2285,29 +2300,29 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
 msgid "`-v` or `--version`: Output the version information"
 msgstr ""
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
 msgid "`-h` or `--help`: Output a short help text"
 msgstr ""
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
 msgid ""
 "`-o` or `--open=<str>`: Open the filename given as argument to this command-"
 "line switch"
 msgstr ""
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr ""
 
 #. type: Bullet: '* '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
 msgid ""
 "`-b` or `--batch`: If the command-line opens a file all cells in this file "
 "are evaluated and the file is saved afterwards. This is for example useful "
@@ -2319,7 +2334,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:810
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:814
 #, no-wrap
 msgid ""
 "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
@@ -2333,7 +2348,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:815
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."

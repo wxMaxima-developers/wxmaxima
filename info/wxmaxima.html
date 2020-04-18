@@ -90,6 +90,7 @@
 <li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
 <li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
 <li><a href="#is-there-a-dark-mode"><span class="toc-section-number">4.2</span> Is there a dark mode?</a></li>
+<li><a href="#wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="toc-section-number">4.3</span> wxMaxima sometimes hangs for a several seconds once in the first minute</a></li>
 </ul></li>
 <li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
 </ul>
@@ -636,6 +637,8 @@ pngdraw2d(&quot;Test&quot;,
 <pre><code>\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
 <h2 id="is-there-a-dark-mode"><span class="header-section-number">4.2</span> Is there a dark mode?</h2>
 <p>If wxWidgets is new enough wxMaxima will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
+<h2 id="wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="header-section-number">4.3</span> wxMaxima sometimes hangs for a several seconds once in the first minute</h2>
+<p>wxMaxima delegates some big tasks like parsing maxima’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.</p>
 <hr />
 <h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>

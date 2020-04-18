@@ -26,7 +26,7 @@
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
 </ul></li>
 <li><a href="#grundlagen-zum-arbeitsblatt"><span class="toc-section-number">1.2</span> Grundlagen zum Arbeitsblatt</a><ul>
-<li><a href="#cells"><span class="toc-section-number">1.2.1</span> Cells</a></li>
+<li><a href="#zellen"><span class="toc-section-number">1.2.1</span> Zellen</a></li>
 <li><a href="#horizontale-und-vertikale-cursors"><span class="toc-section-number">1.2.2</span> Horizontale und vertikale Cursors</a></li>
 <li><a href="#auto-vervollständigung"><span class="toc-section-number">1.2.3</span> Auto-Vervollständigung</a></li>
 <li><a href="#seitenleisten"><span class="toc-section-number">1.2.4</span> Seitenleisten</a></li>
@@ -87,6 +87,7 @@
 <li><a href="#häufig-gestellte-fragen"><span class="toc-section-number">4</span> Häufig gestellte Fragen</a><ul>
 <li><a href="#gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="toc-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</a></li>
 <li><a href="#gibt-es-einen-dark-mode"><span class="toc-section-number">4.2</span> Gibt es einen Dark Mode?</a></li>
+<li><a href="#wxmaxima-hängt-in-der-ersten-minute-manchmal-einmal-für-mehrere-sekunden"><span class="toc-section-number">4.3</span> wxMaxima hängt in der ersten Minute manchmal einmal für mehrere Sekunden</a></li>
 </ul></li>
 <li><a href="#kommandozeilen-optionen"><span class="toc-section-number">5</span> Kommandozeilen-Optionen</a></li>
 </ul>
@@ -137,18 +138,18 @@
 <h2 id="grundlagen-zum-arbeitsblatt"><span class="header-section-number">1.2</span> Grundlagen zum Arbeitsblatt</h2>
 <p>wxMaxima ist größtenteils selbsterklärend. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Diese Internetseite</a> bietet einige Beispiele an, wovon das “10-Minuten-Tutorial” besonders zu empfehlen ist. Dieses Handbuch beschreibt einige zusätzliche Aspekte von wxMaxima.</p>
 <p>Der Arbeitsblatt-Ansatz</p>
-<p>One of the very few things that are not standard in wxMaxima is that it organizes the data for <em>Maxima</em> into cells that are evaluated (which means: sent to <em>Maxima</em>) only when the user requests this. When a cell is evaluated, all commands in that cell, and only that cell, are evaluated as a batch. (The preceding statement is not quite accurate: One can select a set of adjacent cells and evaluate them together. Also, one can instruct <em>Maxima</em> to evaluate all cells in a workbook in one pass.) <em>wxMaxima</em>’s approach to submitting commands for execution might feel unfamiliar at the first sight. It does, however, drastically ease work with big documents (where the user certainly does not want every small change to automatically to trigger a full re-evaluation of the whole document). Also, this approach is very handy for debugging.</p>
+<p>Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt von wxMaxima in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an <em>Maxima</em> gesendet werden. Dieser Ansatz ist jedoch für die Fehlersuche praktisch. Auch hat der gegenüber der Alternative, nach jeder Änderung alle Zellen im das Arbeitsblatt neu auszuwerten, oft viel Zeit.</p>
 <p>Wenn Text in <em>wxMaxima</em> eingegeben wird, erzeugt er automatisch eine neue Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an <em>Maxima</em> gesendet werden und das Resultat dieser Aktion wird unter der Zelle angezeigt, wie unten abgebildet.</p>
 <figure>
 <img src="./InputCell.png" alt="Input/output Zelle" id="img_InputCell" /><figcaption>Input/output Zelle</figcaption>
 </figure>
-<p>On evaluation of an input cell’s contents the input cell <em>Maxima</em> assigns a label to the input (by default shown in red and recognizable by the <code>%i</code>) by which it can be referenced later in the <em>wxMaxima</em> session. The output that <em>Maxima</em> generates also gets a label that begins with <code>%o</code> and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The <code>%o</code>-style label <em>Maxima</em> auto-generates will also be accessible, though.</p>
+<p>Wird eine Code-Zelle ausgewertet, weist ihr <em>Maxima</em> eine Marke zu (standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem <code>%i</code>), über das sie später wieder referenziert werden kann. Für die Ausgabe wird eine Marke generiert, die standardmäßig mit <code>%o</code> beginnt und nicht angezeigt wird, außer der Benutzer hat der Formel einen sprechenden Namen gegeben, der stattdessen angezeigt werden kann.</p>
 <p>Außer Code-Zellen kennt wxMaxima auch Testzellen und solche mit Bildern oder Überschriften. Jede Zelle hat ihren eigenen Speicher für das Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen eigenen Speicher für die Rückgängigmachen-Funktion.</p>
 <p>Die nun folgende Abbildung zeigt verschiedene Zelltypen.</p>
 <figure>
 <img src="./cell-example.png" alt="Ein Beispiel verschiedener Zelltypen" /><figcaption>Ein Beispiel verschiedener Zelltypen</figcaption>
 </figure>
-<h3 id="cells"><span class="header-section-number">1.2.1</span> Cells</h3>
+<h3 id="zellen"><span class="header-section-number">1.2.1</span> Zellen</h3>
 <p>Das Arbeitsblatt ist in Zellen aufgeteilt, von denen jede mehr Zellen oder Elemente der folgenden Typen enthalten kann:</p>
 <ul>
 <li>Eine oder mehr Zeilen an Eingabe für <em>Maxima</em></li>
@@ -636,23 +637,25 @@ pngdraw2d(\&quot;Test\&quot;,
 <pre><code>\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
 <h2 id="gibt-es-einen-dark-mode"><span class="header-section-number">4.2</span> Gibt es einen Dark Mode?</h2>
 <p>Wenn wxWidgets neu genug ist, sollte wxMaxima sich automatisch im Dark Mode befinden, wenn der Rest des Betriebssystems es ist. Das Arbeitsblatt selbst besitzt standardmäßig einen hellen Hintergrund. Dies kann aber über die Konfiguration geändert werden. Als Alternative erlaubt <code>Ansicht/Invertiere die Helligkeit des Arbeitsblattes</code>, das Arbeitsblatt schnell zwischen hell und dunkel umzustellen.</p>
+<h2 id="wxmaxima-hängt-in-der-ersten-minute-manchmal-einmal-für-mehrere-sekunden"><span class="header-section-number">4.3</span> wxMaxima hängt in der ersten Minute manchmal einmal für mehrere Sekunden</h2>
+<p>wxMaxima lagert große Aufgaben, wie das Interpretieren des &gt;1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.</p>
 <hr />
 <h1 id="kommandozeilen-optionen"><span class="header-section-number">5</span> Kommandozeilen-Optionen</h1>
 <p>Die meisten Betriebssysteme bieten unkompliziertere Arten, um ein GUI-Programm zu starten, als die Kommandozeile. <em>wxMaxima</em> bietet trotzdem mehrere Kommandozeilenoptionen an.</p>
 <ul>
-<li><code>-v</code> or <code>--version</code>: Gibt die Versionsnummer aus</li>
-<li><code>-h</code> or <code>--help</code>: Gibt einen kurzen Hilfetext aus</li>
-<li><code>-o</code> or <code>--open=&lt;str&gt;</code>: Open the filename given as argument to this command-line switch</li>
+<li><code>-v</code> oder <code>--version</code>: Gibt die Versionsnummer aus</li>
+<li><code>-h</code> oder <code>--help</code>: Gibt einen kurzen Hilfetext aus</li>
+<li><code>-o</code> oder <code>--open=&lt;str&gt;</code>: Öffnet den Dateinamen, der als Argument dieser Kommandozeilenoption angegeben wurde.</li>
 <li><code>-e</code> oder <code>--eval</code>: Evaluiere die Datei nach dem Öffnen.</li>
 <li><code>-b</code> oder <code>--batch</code>: Nach dem Öffnen werden alle Code-Zellen der Datei(en) evaluiert und die Datei danach geschlossen. Dies ist beispielsweise praktisch, wenn <em>Maxima</em> Dateien generiert. Wenn Maxima Fehler detektiert, wird dieser Vorgang abgebrochen, eventuelle Fragen an den User (Mathematik ist an einigen Stellen ein interaktiver Prozess) werden wie üblich an den User weitergereicht.</li>
 <li><code>--logtostdout</code>: Gebe alle all Debug-Nachrichten auch auf die Konsole aus.</li>
 <li><code>--pipe</code>: Gebe die Nachrichten von Maxima auch auf die Konsole aus.</li>
 <li><code>--exit-on-error</code>: Schließe wxMaxima, wenn Maxima einen Fehler detektiert.</li>
-<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Speichere die Konfiguration in der Datei <code>&lt;str&gt;</code></li>
+<li><code>-f</code> oder <code>--ini=&lt;str&gt;</code>: Speichere die Konfiguration in der Datei <code>&lt;str&gt;</code></li>
 <li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Verwende Maxima-Version <code>&lt;str&gt;</code></li>
 <li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Verwende ein Maxima, das mit dem Lisp Compiler <code>&lt;str&gt;</code> compiliert wurde.</li>
 <li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Erlaubt, Maxima zusätzliche Argumente mitzugeben</li>
-<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: Sagt, wo die ausführbare Datei von <em>maxima</em> liegt.</li>
+<li><code>-m</code> oder <code>--maxima=&lt;str&gt;</code>: Sagt, wo die ausführbare Datei von <em>maxima</em> liegt.</li>
 </ul>
 <p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minusses.</p>
 </body>

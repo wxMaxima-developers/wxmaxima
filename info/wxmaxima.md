@@ -786,6 +786,10 @@ There is: Just add the following lines to the LaTeX preamble (for example by usi
 
 If wxWidgets is new enough wxMaxima will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a `View/Invert worksheet brightness` menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.
 
+## wxMaxima sometimes hangs for a several seconds once in the first minute
+
+wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.
+
 * * *
 
 

@@ -1,4 +1,4 @@
-#Current
+#20.04.0
  * Resolved a crash on right-clicking a GroupCell
  * Help works again in the german translation
  * View/Invert worksheet brightness now toggles an instant dark worksheet mode
@@ -7,6 +7,7 @@
  * Corrected the initial slideshow size
  * An Ukrainian translation update from Yuri Chornoivan
  * A Russian translation update from OlesyaGerasimenko
+ * A more stable language selection mechanism
  * Extended the "fitting data" example
  * A example on how to iterate through lists efficiently
  * Many spelling corrections and better formulations
