@@ -484,7 +484,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"If the function one wants to run on each list element is only used once and one doesn't want to give this one-time-function a name one can ask the lambda() command to generate a name-less function with one argument: Just passlambda() first the list of the arguments the new command shall have and the contents of that command:\n" 
+L"If the function one wants to run on each list element is only used once and one doesn't want to give this one-time-function a name one can ask the lambda() command to generate a name-less function with one argument: Just pass lambda() first the list of the arguments the new command shall have and the contents of that command:\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
