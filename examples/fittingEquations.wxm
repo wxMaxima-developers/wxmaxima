@@ -340,7 +340,7 @@ Hints for understanding this construct:
  * args() converts a matrix to a list of lists, 
  * The makelist() command steps through this list and for each  data point assigns the list of the x and y value to i
  * rhs() and lhs() extract the right hand side and the left hand side of an equation (the part right and left of the "=") 
- * and since we know which element in i means which variable we can use subst() in orer to substitute the elements in i into errval, the equation that tells us how big the error in this point is.
+ * and since we know which element in i means which variable we can use subst() in order to substitute the elements in i into errval, the equation that tells us how big the error in this point is.
    [wxMaxima: comment end   ] */
 
 
