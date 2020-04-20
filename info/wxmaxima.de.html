@@ -51,7 +51,7 @@
 <li><a href="#wo-wird-die-konfiguration-gespeichert"><span class="toc-section-number">1.4.6</span> Wo wird die Konfiguration gespeichert?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#erweiterungen-für-maxima"><span class="toc-section-number">2</span> Erweiterungen für <em>Maxima</em></a><ul>
 <li><a href="#variablen-mit-tiefgestelltem-index"><span class="toc-section-number">2.1</span> Variablen mit tiefgestelltem Index</a></li>
 <li><a href="#meldungen-in-der-statusleiste"><span class="toc-section-number">2.2</span> Meldungen in der Statusleiste</a></li>
 <li><a href="#diagramme"><span class="toc-section-number">2.3</span> Diagramme</a><ul>
@@ -71,7 +71,7 @@
 <li><a href="#fehler-melden"><span class="toc-section-number">2.8</span> Fehler melden</a></li>
 <li><a href="#rotes-markieren-von-formelteilen"><span class="toc-section-number">2.9</span> Rotes Markieren von Formelteilen</a></li>
 </ul></li>
-<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#fehlersuche"><span class="toc-section-number">3</span> Fehlersuche</a><ul>
 <li><a href="#keine-verbindung-zu-maxima-möglich"><span class="toc-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em> möglich</a></li>
 <li><a href="#wie-repariere-ich-kaputte-.wxmx-dateien"><span class="toc-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</a></li>
 <li><a href="#ich-will-statusmeldungen-ausgeben-während-mein-befehl-ausgeführt-wird"><span class="toc-section-number">3.3</span> Ich will Statusmeldungen ausgeben, während mein Befehl ausgeführt wird</a></li>
@@ -167,11 +167,11 @@
 <p>Wenn in einer Textverarbeitung versucht wird, einen Satz auszuwählen, wird diese versuchen, Beginn und Ende der Auswahl so zu verschieben, dass ganze Wörter ausgewählt sind. <em>wxMaxima</em> wird aus diesem Grund, wenn mehr als eine Zelle ausgewählt wird, die Auswahl auf ganze Zellen ausdehnen.</p>
 <p>Was ungewöhnlich erscheinen kann ist, dass <em>wxMaxima</em> alternativ einen vertikalen oder einen horizontalen Cursor darstellen kann:</p>
 <ul>
-<li>The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.</li>
+<li>Der Curser wird vertikal dargestellt wird, wenn er zwischen zwei Zellen zu liegen kommt.</li>
 <li>Innerhalb einer Zelle wird der Cursor vertikal dargestellt.</li>
 </ul>
 <h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
-<p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed.</p>
+<p>Die Befehle in einer Codezelle werden ausgeführt, sobald <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> key im Nummernblock gedrückt wird.</p>
 <h3 id="auto-vervollständigung"><span class="header-section-number">1.2.5</span> Auto-Vervollständigung</h3>
 <p>wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für ezUnits vorschlagen.</p>
 <figure>
@@ -186,73 +186,59 @@
 <li>Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <kbd>ESC</kbd>-Taste gedrückt wird, und dann sein Name einzugeben begonnen wird.</li>
 <li>Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein Buchstabe und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die folgenden Zeichen unterstützt:</li>
 </ul>
-<pre><code>a alpha    i iota      r rho
-b beta     k kappa     s sigma
-g gamma    l lambda    t tau
-d delta    m mu        u upsilon
-e epsilon  n nu        f phi
-z zeta     x xi        c chi
-h eta      om omicron  y psi
-q theta    p pi        o omega
-A Alpha    I Iota      R Rho
-B Beta     K Kappa     S Sigma
-G Gamma    L Lambda    T Tau
-D Delta    M Mu        U Upsilon
-E Epsilon  N Nu        P Phi
-Z Zeta     X Xi        C Chi
-H Eta      Om Omicron  Y Psi
-T Theta    P Pi        O Omega</code></pre>
+<pre><code></code></pre>
+<p>a alpha i iota r rho b beta k kappa s sigma g gamma l lambda t tau d delta m mu u upsilon e epsilon n nu f phi z zeta x xi c chi h eta om omicron y psi q theta p pi o omega A Alpha I Iota R Rho B Beta K Kappa S Sigma G Gamma L Lambda T Tau D Delta M Mu U Upsilon E Epsilon N Nu P Phi Z Zeta X Xi C Chi H Eta Om Omicron Y Psi T Theta P Pi O Omega ~~~<sub> </sub>~~~</p>
 <p>Derselbe Mechanismus erlaubt es auch, einige andere mathematische Symbole einzugeben:</p>
-<pre><code>hbar          planck&#39;s constant: a h with a horizontal bar above it
-Hbar          a H with a horizontal bar above it
-2             squared
-3             to the power of three
+<pre><code>hbar          planck&#39;s Konstante: ein h mit einem horizontalen Balken darüber
+Hbar          ein H mit einem horizontalen Balken darüber
+2             hoch 2
+3             hoch 3
 /2            1/2
-partial       partial sign (the d of dx/dt)
-integral      integral sign
-sq            root
-ii            imaginary
-ee            element
+partial       partiell (das d von dx/dt)
+integral      Das integral-Zeichen
+sq            Wurzel
+ii            die imaginäre Einheit
+ee            Element
 in            in
-impl,implies  implies
-inf           infinity
-empty         empty
-TB            Big triangle right
-tb            small triangle right
-and           and
-or            or
-xor           xor
+impl,implies  impliziert
+inf           unendlich
+empty         leere Menge
+TB            Großes Dreieck nach rechts
+tb            Kleines Dreieck nach rechts
+and           und
+or            oder
+xor           exklusiv oder
 nand          nand
 nor           nor
-equiv         equivalent
-not           not
+equiv         äquivalent
+not           nicht
 union         union
-inter         intersection
-subseteq      subset or equal
-subset        subset
-notsubseteq   not subset or equal
-notsubset     not subset
-approx        approximately
-propto        proportional to
+inter         intersektion
+subseteq      Untermenge oder gleich
+subset        Untermenge
+notsubseteq   Nicht Untermenge oder gleich
+notsubset     Nicht Untermenge
+approx        etwa
+propto        proportional zu
 neq,!=,/=
-or #          not equal to
-+/- or pm     a plus/minus sign
-&lt;= or leq     equal or less than
-&gt;= or geq     equal or greater than
-&lt;&lt; or ll      much less than
-&gt;&gt; or gg      much greater than
-equiv         equivalent to
-qed           end of proof
-nabla         a nabla operator
-sum           sum sign
-prod          product sign
-exists        &quot;there exists&quot; sign
-nexists       &quot;there is no&quot; sign
-parallel      a &quot;parallel&quot; sign
-perp          a &quot;perpendicular&quot; sign
-leadsto       a &quot;leads to&quot; sign
--&gt;            a right arrow
---&gt;           a long right arrow</code></pre>
+or #          ungleich
++/- or pm     ein Plus/;inus-Zeichen
+&lt;= or leq     Kleiner gleich
+&gt;= or geq     Größer gleich
+&lt;&lt; or ll      Viel kleiner als
+&gt;&gt; or gg      Viel größer als
+equiv         äquivalent zu
+qed           Ende des Beweises
+nabla         Der Nabla-Operator
+sum           Das Summenzeichen
+prod          Das Produktzeichen
+exists        &quot;Es existiert&quot;
+nexists       &quot;es gibt kein&quot;
+parallel      parallel
+perp          senkrecht
+leadsto       führt zu
+-&gt;            Pfeil nach rechts
+--&gt;           Ein langer Pfeil nach rechts</code></pre>
 <p>Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein <code>a</code>.</p>
 <p>Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) haben keine direkte Entsprechung in <em>Maxima</em> und werden daher als normale Zeichen interpretiert. Falls <em>Maxima</em> eine Lisp-Version verwendet, die Unicode nicht unterstützt, kann das eine Fehlermeldung verursachen.</p>
@@ -265,21 +251,13 @@ leadsto       a &quot;leads to&quot; sign
 <p>Einige Textverarbeitungen verstehen entweder MathML (Der Formeleditor von LibreOffice 5.1 kann zumindest entsprechende Gleichungen importieren). Andere unterstützen Mathematik im RTF-Format. <em>wxMaxima</em> bietet daher einige entsprechende Optionen im Rechtsklick-Menü an.</p>
 <h3 id="markdown-unterstützung"><span class="header-section-number">1.2.8</span> Markdown-Unterstützung</h3>
 <p><em>wxMaxima</em> unterstützt einige Markdown-Kommandos, die nicht mit Konstrukten kollidieren, die in mathematischen Formeln vorkommen. Eines dieser Elemente sind Aufzählungen:</p>
-<pre><code>Ordinary text
- * One item, indentation level 1
- * Another item at indentation level 1
-   * An item at a second indentation level
-   * A second item at the second indentation level
- * A third item at the first indentation level
-Ordinary text</code></pre>
+<pre><code></code></pre>
+<p>Normaler Text * Ein eingerückter Aufzählungspunkt * Ein zweiter Aufzählungspunkt * Eine Aufzählung in der Aufzählung * Ein zweiter Aufzählungspunkt der Aufzählung in der Aufzählung * Ein Punkt in der äußeren Aufzählung Normaler text ~~~<sub> </sub>~~~</p>
 <p><em>wxMaxima</em> erkennt Text, der mit einem “&gt;” beginnt, als ein Zitat:</p>
-<pre><code>Ordinary text
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-Ordinary text</code></pre>
+<pre><code></code></pre>
+<p>Normaler Text &gt; Zitat Zitat Zitat &gt; Zitat Zitat Zitat Zitat &gt; Zitat Zitat Zitat &gt; Zitat Zitat Zitat Normaler Text ~~~~</p>
 <p>Die Text- und HTML-Ausgabe von <em>wxMaxima</em> erkennen auch <code>=&gt;</code> und ersetzen es durch das entsprechende Unicode-Symbol:</p>
-<pre><code>cogito =&gt; sum.</code></pre>
+<pre><code>cogito =&gt; sum</code></pre>
 <p>Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind <code>&lt;=</code> und <code>&gt;=</code>, <code>&lt;=&gt;</code>, einfache Pfeile (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) und <code>+/-</code>. Die TeX-Ausgabe erkennt ebenfalls <code>&lt;&lt;</code> und <code>&gt;&gt;</code>.</p>
 <h3 id="tastenkürzel"><span class="header-section-number">1.2.9</span> Tastenkürzel</h3>
 <p>Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit diesen übersetzt werden könen, falls die Tastatur der aktuellen Sprache dies erforderlich macht. Nicht dort dokumentiert ist:</p>
@@ -343,7 +321,7 @@ Ordinary text</code></pre>
 <p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über wxbuild_info() oder über das Hilfe-&gt;Über-Menü abgerufen werden. <a href="https://wxwidgets.org/">wxWidgets</a> ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
 <p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\Software\wxMaxima</code> gespeichert.</p>
 <hr />
-<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
+<h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
 <p><em>wxMaxima</em>’s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em>Maxima</em> hinzu:</p>
 <h2 id="variablen-mit-tiefgestelltem-index"><span class="header-section-number">2.1</span> Variablen mit tiefgestelltem Index</h2>
 <p>Wenn <code>wxsubscripts</code> auf <code>true</code> gesetzt ist, werden Variablennamen im Format <code>x_y</code> mit einem tiefgestellten <code>y</code> dargestellt, wenn</p>
@@ -542,7 +520,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="rotes-markieren-von-formelteilen"><span class="header-section-number">2.9</span> Rotes Markieren von Formelteilen</h2>
 <p>Der <code>box()</code>-Befehl stellt sein Argument in <em>wxMaxima</em> rot dar.</p>
 <hr />
-<h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
+<h1 id="fehlersuche"><span class="header-section-number">3</span> Fehlersuche</h1>
 <h2 id="keine-verbindung-zu-maxima-möglich"><span class="header-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em> möglich</h2>
 <p><em>Maxima</em> und wxMaxima kommunizieren über ein lokales Netzwerk miteinander. Dies kann durch eine übereifrige Firewall unterbunden werden, die auch Verbindungen innerhalb des Rechners verbietet. Manchmal ist es schwer, herauszufinden, welches Programm erlaubt sein soll, da <em>Maxima</em> manchmal unter Namen wie sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert.</p>
 <p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das “loopback”-Netzwerkgerät nicht korrekt eingestellt ist.</p>
