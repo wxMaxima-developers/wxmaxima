@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-18 09:13+0200\n"
+"POT-Creation-Date: 2020-04-20 07:40+0200\n"
 "PO-Revision-Date: 2020-03-30 17:11+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -152,14 +152,14 @@ msgstr ""
 " * ̃\n"
 " * ̅\n"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3486
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3721
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3446
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3681
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3797
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i скрытых строк"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3489
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3449
 msgid " ... + 1 hidden line"
 msgstr " ... + 1 скрытая строка"
 
@@ -633,7 +633,7 @@ msgstr ""
 "Коэффициент масштабирования для распечатки. Полезно при печати больших "
 "уравнений на маленьких страницах PDF."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4239
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4199
 msgid "A section heading"
 msgstr "Заголовок раздела"
 
@@ -653,19 +653,19 @@ msgstr "Пространство между групповыми полями"
 msgid "A static plot"
 msgstr "Статический график"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4251
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4211
 msgid "A sub-sub-sub-subsection heading"
 msgstr "Заголовок под-под-под-подраздела"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4248
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4208
 msgid "A sub-sub-subsection heading"
 msgstr "Заголовок под-под-подраздела"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4245
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4205
 msgid "A sub-subsection heading"
 msgstr "Заголовок под-подраздела"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4242
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4202
 msgid "A subsection heading"
 msgstr "Заголовок подраздела"
 
@@ -1370,7 +1370,7 @@ msgstr "Ошибка: нет последнего поля внутри квад
 
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:334
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:351
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3173
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3133
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
@@ -1386,7 +1386,7 @@ msgstr "Ошибка: нет последнего поля внутри квад
 msgid "Bug: The clipboard is already opened"
 msgstr "Ошибка: буфер обмена уже открыт."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3256
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3216
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 "Ошибка: буфер обмена не был открыт при выполнении вставки в поле редактора."
@@ -1425,15 +1425,15 @@ msgstr ""
 "Ошибка: запрос на отмену действия для поля, расположенного за пределами "
 "листа."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4257
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4217
 msgid "Bug: Unknown type of text"
 msgstr "Ошибка: неизвестный тип текста."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2815
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2775
 msgid "Bug: x position of cell is unknown!"
 msgstr "Ошибка: неизвестное положение поля по x!"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2816
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2776
 msgid "Bug: y position of cell is unknown!"
 msgstr "Ошибка: неизвестное положение поля по y!"
 
@@ -1618,16 +1618,16 @@ msgid ""
 msgstr ""
 "Не удалось найти исполняемый файл Maxima, и он не указан в диалоге настройки."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3190
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3150
 msgid "Cannot put the copied text on the clipboard"
 msgstr "Не удалось поместить скопированный текст в буфер обмена"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3183
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3143
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
 "Не удалось поместить скопированный текст в буфер обмена (первая попытка)"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3187
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3147
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
 "Не удалось поместить скопированный текст в буфер обмена (вторая попытка)"
@@ -1832,7 +1832,7 @@ msgstr "Переменные, разделённые запятыми"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Команды, которые выполняются при каждом запуске Maxima."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4254
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4214
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr "Комментарий (обычный текст на листе, который не передаётся в Maxima)"
 
@@ -5254,7 +5254,7 @@ msgstr ""
 "дополнительное вертикальное пространство, чтобы было проще отличить строки с "
 "разными уравнениями от строк с одним и тем же уравнением."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4233
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4193
 msgid "Maxima code"
 msgstr "Код Maxima"
 
@@ -8799,7 +8799,7 @@ msgstr "Двухвыборочный t-тест"
 msgid "Type"
 msgstr "Тип"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4267
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4227
 msgid "Type in text"
 msgstr "Введите текст"
 

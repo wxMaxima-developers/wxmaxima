@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-18 09:13+0200\n"
+"POT-Creation-Date: 2020-04-20 07:40+0200\n"
 "PO-Revision-Date: 2020-04-19 09:31+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:183
@@ -149,14 +149,14 @@ msgstr ""
 " * ̃\n"
 " * ̅\n"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3486
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3721
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3446
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3681
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3797
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i прихованих рядків"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3489
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3449
 msgid " ... + 1 hidden line"
 msgstr " ... + 1 прихований рядок"
 
@@ -630,7 +630,7 @@ msgstr ""
 "Масштаб для друку. Корисно для друку великих рівнянь на маленьких сторінках "
 "pdf."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4239
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4199
 msgid "A section heading"
 msgstr "Заголовок розділу"
 
@@ -650,19 +650,19 @@ msgstr "Пробіл між GroupCell"
 msgid "A static plot"
 msgstr "Статичний графік"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4251
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4211
 msgid "A sub-sub-sub-subsection heading"
 msgstr "Заголовок під-під-під-підрозділу"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4248
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4208
 msgid "A sub-sub-subsection heading"
 msgstr "Заголовок під-під-підрозділу"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4245
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4205
 msgid "A sub-subsection heading"
 msgstr "Заголовок підпідрозділу"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4242
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4202
 msgid "A subsection heading"
 msgstr "Заголовок підрозділу"
 
@@ -709,10 +709,10 @@ msgid ""
 "normally has to) this work isn't much of an overhead - and maxima offers "
 "several functions for this purpose:\n"
 msgstr ""
-"Для доступу до випадкового запису у списку потрібна вартісна ітерація над"
-" списком. Але якщо ітерація списком все одно виконуватиметься (як це зазвичай"
-" відбувається), ця ітерація не додає великого навантаження — у maxima"
-" передбачено декілька функцій для цієї мети:\n"
+"Для доступу до випадкового запису у списку потрібна вартісна ітерація над "
+"списком. Але якщо ітерація списком все одно виконуватиметься (як це зазвичай "
+"відбувається), ця ітерація не додає великого навантаження — у maxima "
+"передбачено декілька функцій для цієї мети:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2200
 msgid "Accuracy"
@@ -1361,7 +1361,7 @@ msgstr "Вада: немає останньої комірки у квадрат
 
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:334
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:351
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3173
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3133
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
@@ -1377,7 +1377,7 @@ msgstr "Вада: немає останньої комірки у квадрат
 msgid "Bug: The clipboard is already opened"
 msgstr "Вада: буфер обміну вже відкрито"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3256
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3216
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr "Вада: буфер обміну не відкрито для вставляння до комірки редактора"
 
@@ -1413,15 +1413,15 @@ msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4257
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4217
 msgid "Bug: Unknown type of text"
 msgstr "Вада: невідомий тип тексту"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2815
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2775
 msgid "Bug: x position of cell is unknown!"
 msgstr "Вада: позиція комірки за x є невідомою!"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2816
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2776
 msgid "Bug: y position of cell is unknown!"
 msgstr "Вада: позиція комірки за y є невідомою!"
 
@@ -1434,8 +1434,8 @@ msgid ""
 "But you can also tell makelist to iterate over a list - which is quite "
 "fast:\n"
 msgstr ""
-"Але ви також можете наказати makelist виконувати ітерацію над списком — це"
-" доволі швидко:\n"
+"Але ви також можете наказати makelist виконувати ітерацію над списком — це "
+"доволі швидко:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1228
 msgid ""
@@ -1613,17 +1613,17 @@ msgstr ""
 "Не вдалося знайти виконуваний файл maxima, а у діалоговому вікні "
 "налаштовування не вказано виконуваного файла."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3190
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3150
 msgid "Cannot put the copied text on the clipboard"
 msgstr "Не вдалося розмістити скопійований текст у буфері обміну даними"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3183
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3143
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
 "Не вдалося розмістити скопійований текст у буфері обміну даними (перша "
 "спроба)"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3187
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3147
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
 "Не вдалося розмістити скопійований текст у буфері обміну даними (друга "
@@ -1831,7 +1831,7 @@ msgstr "Змінні, відокремлені комами"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Команди, які виконуються під час кожного запуску maxima."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4254
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4214
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 "Коментар (звичайний текст на робочому аркуші, який не передаватиметься "
@@ -3877,13 +3877,13 @@ msgid ""
 msgstr ""
 "Декілька підказок для розуміння цієї конструкції:\n"
 " * args() перетворює матрицю на список списків, \n"
-" * команда makelist() виконує покрокову оброббку цього списку і для кожної"
-" точки даних встановлює для списку x і y значення i\n"
-" * rhs() і lhs() видобувають праву і ліву частину рівнянь (частини праворуч і"
-" ліворуч від знаку «=») \n"
-" * і, оскільки ми знаємо яку змінну означає елемент у i, ми можемо"
-" скористатися subst() для заміни елементів у i на errval, рівнянні, яке"
-" визначає, наскільки великою є похибка у цій точці.\n"
+" * команда makelist() виконує покрокову оброббку цього списку і для кожної "
+"точки даних встановлює для списку x і y значення i\n"
+" * rhs() і lhs() видобувають праву і ліву частину рівнянь (частини праворуч "
+"і ліворуч від знаку «=») \n"
+" * і, оскільки ми знаємо яку змінну означає елемент у i, ми можемо "
+"скористатися subst() для заміни елементів у i на errval, рівнянні, яке "
+"визначає, наскільки великою є похибка у цій точці.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:943
 msgid ""
@@ -3899,13 +3899,13 @@ msgid ""
 msgstr ""
 "Декілька підказок щодо цього рядка:\n"
 " * Map застосовує команду до кожного з елементів списку\n"
-" * Нам потрібне map із командою, яка перетворює щось типу «[a,3]» на «a=3»."
-" Але ми не будемо повторно використовувати цю команду, тому немає сенсу"
-" надавати цій команді якусь назву. Тому ми використовуємо lambda() для"
-" створення неіменованої команди із одним параметром, x.\n"
+" * Нам потрібне map із командою, яка перетворює щось типу «[a,3]» на «a=3». "
+"Але ми не будемо повторно використовувати цю команду, тому немає сенсу "
+"надавати цій команді якусь назву. Тому ми використовуємо lambda() для "
+"створення неіменованої команди із одним параметром, x.\n"
 " * args знову перетворює матрицю на список списків і\n"
-" * нам потрібно перетворити наші вхідні дані на список для того, щоб"
-" транспонувати його (тобто поміняти рядки і стовпчики місцями)\n"
+" * нам потрібно перетворити наші вхідні дані на список для того, щоб "
+"транспонувати його (тобто поміняти рядки і стовпчики місцями)\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8199
 msgid "Histogram"
@@ -4023,14 +4023,14 @@ msgid ""
 "is needed and each element knows where in the computer's memory the next "
 "list element is stored.\n"
 msgstr ""
-"Якщо потрібно зберегти якусь послідовність записів, загалом існує два"
-" способи:\n"
-" * Масиви: якщо вам наперед відомо, що слід зберегти n записів, і всі з них"
-" матимуть однаковий розмір m, можна наперед отримати m*n байтів пам'яті."
-" Визначення адреси початку k-го елемента у цьому випадку є дуже простим.\n"
-" * Списки: пам'ять для кожного елемента списку отримується у момент, коли цей"
-" елемент потрібен, і кожен елемент списку містить дані щодо того, де у"
-" пам'яті зберігається наступний елемент списку.\n"
+"Якщо потрібно зберегти якусь послідовність записів, загалом існує два "
+"способи:\n"
+" * Масиви: якщо вам наперед відомо, що слід зберегти n записів, і всі з них "
+"матимуть однаковий розмір m, можна наперед отримати m*n байтів пам'яті. "
+"Визначення адреси початку k-го елемента у цьому випадку є дуже простим.\n"
+" * Списки: пам'ять для кожного елемента списку отримується у момент, коли "
+"цей елемент потрібен, і кожен елемент списку містить дані щодо того, де у "
+"пам'яті зберігається наступний елемент списку.\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:147
 msgid ""
@@ -4073,11 +4073,11 @@ msgid ""
 "pass lambda() first the list of the arguments the new command shall have and "
 "the contents of that command:\n"
 msgstr ""
-"Якщо функція, яку слід використати для обробки кожного з елементів списку,"
-" використовується лише один раз, і ви не хочете давати цій одноразовій"
-" функції назву, можна викликати команду lambda() для створення неіменованої"
-" функції із одним аргументом: просто передайте lambda() спершу список"
-" аргументів, які повинна мати нова команда, а потім вміст цієї команди:\n"
+"Якщо функція, яку слід використати для обробки кожного з елементів списку, "
+"використовується лише один раз, і ви не хочете давати цій одноразовій "
+"функції назву, можна викликати команду lambda() для створення неіменованої "
+"функції із одним аргументом: просто передайте lambda() спершу список "
+"аргументів, які повинна мати нова команда, а потім вміст цієї команди:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1448
 msgid ""
@@ -4675,8 +4675,8 @@ msgid ""
 "It is possible to access all list elements by accessing and removing the "
 "first element repeatedly:\n"
 msgstr ""
-"Доступ до всіх елементів списку можна отримати послідовно читаючи перший"
-" елемент списку, а потім вилучаючи його:\n"
+"Доступ до всіх елементів списку можна отримати послідовно читаючи перший "
+"елемент списку, а потім вилучаючи його:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:150
 msgid ""
@@ -4852,7 +4852,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1509
-#, no-c-format
+#, fuzzy, c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5070,8 +5070,8 @@ msgid ""
 "is shaped like a list.\n"
 "The most widely known form of this command is:\n"
 msgstr ""
-"Makelist — доволі універсальна функція, якщо те, що вам слід створити, є"
-" чимось подібним до списку.\n"
+"Makelist — доволі універсальна функція, якщо те, що вам слід створити, є "
+"чимось подібним до списку.\n"
 "Найпоширенішою формою цієї команди є така:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1323
@@ -5280,7 +5280,7 @@ msgstr ""
 "розрізнення рядків різних рівнянь і рядків одного рівняння, поділеного на "
 "рядки."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4233
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4193
 msgid "Maxima code"
 msgstr "Код Maxima"
 
@@ -5336,13 +5336,13 @@ msgid ""
 "list item is stored at means having to iterate through the list querying "
 "each item where the next list item can be found.\n"
 msgstr ""
-"Maxima чудово працює зі списками: до списків дуже просто додавати записи,"
-" коли це потрібно. Дуже просто вилучати записи зі списків. Записи списку"
-" можна перевпорядкувати простим переставлянням декількох вказівників. У"
-" Maxima передбачено швидкі методу упорядковування списків для вилучення"
-" дублікатів елементів. Але для визначення довжини списку або адреси n-го"
-" запису списку доводиться виконувати ітерацію списком із опитуванням кожного"
-" елемента щодо того, де можна знайти наступний елемент списку.\n"
+"Maxima чудово працює зі списками: до списків дуже просто додавати записи, "
+"коли це потрібно. Дуже просто вилучати записи зі списків. Записи списку "
+"можна перевпорядкувати простим переставлянням декількох вказівників. У "
+"Maxima передбачено швидкі методу упорядковування списків для вилучення "
+"дублікатів елементів. Але для визначення довжини списку або адреси n-го "
+"запису списку доводиться виконувати ітерацію списком із опитуванням кожного "
+"елемента щодо того, де можна знайти наступний елемент списку.\n"
 
 #: /home/gunter/src/wxmaxima/src/Dirstructure.cpp:156
 #, c-format
@@ -5385,10 +5385,10 @@ msgid ""
 "compile a list of the errors we want to minimize. Let's do that for data2_i "
 "and approach1:\n"
 msgstr ""
-"У Maxima передбачено ще один алгоритм, який часто дає навіть кращі"
-" результати, але є дещо складнішими у використанні. Наприклад, для його"
-" використання слід створити список похибок, які нам слід мінімізувати."
-" Зробімо це для data2_i і approach1:\n"
+"У Maxima передбачено ще один алгоритм, який часто дає навіть кращі "
+"результати, але є дещо складнішими у використанні. Наприклад, для його "
+"використання слід створити список похибок, які нам слід мінімізувати. "
+"Зробімо це для data2_i і approach1:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:305
 msgid ""
@@ -6069,8 +6069,8 @@ msgstr "ОС: %s версія %i.%i"
 msgid ""
 "Of course all of these commands can be executed in one long command line:\n"
 msgstr ""
-"Звичайно, усі ці команди може бути виконано у одному довгому командному"
-" рядку:\n"
+"Звичайно, усі ці команди може бути виконано у одному довгому командному "
+"рядку:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:616
 msgid "Offer known answers"
@@ -6130,8 +6130,8 @@ msgid ""
 "One way to do so efficiently is to use the pop() method on both lists. The "
 "other is to make a list of lists:\n"
 msgstr ""
-"Одним з ефективних способів досягти цього є використання методу pop() для"
-" обох списків. Іншим є створення списку зі списків:\n"
+"Одним з ефективних способів досягти цього є використання методу pop() для "
+"обох списків. Іншим є створення списку зі списків:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1351
 msgid "Online tutorials"
@@ -8863,7 +8863,7 @@ msgstr "Двовибіркова t-перевірка"
 msgid "Type"
 msgstr "Тип"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4267
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4227
 msgid "Type in text"
 msgstr "Введіть текст"
 
@@ -9274,7 +9274,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1523
-#, no-c-format
+#, fuzzy, c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "

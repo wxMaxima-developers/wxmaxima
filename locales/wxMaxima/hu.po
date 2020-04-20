@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-18 09:13+0200\n"
+"POT-Creation-Date: 2020-04-20 07:40+0200\n"
 "PO-Revision-Date: 2019-12-11 13:07+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -128,14 +128,14 @@ msgid ""
 " * ̅\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3486
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3721
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3446
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3681
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3797
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i rejtett sorok"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3489
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3449
 msgid " ... + 1 hidden line"
 msgstr " ... + 1 rejtett sor"
 
@@ -602,7 +602,7 @@ msgstr ""
 "Nyomtatásra szolgáló skála. Hasznos nagy egyenletek kinyomtatására kis pdf "
 "oldalakon."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4239
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4199
 msgid "A section heading"
 msgstr "Fejezetcím"
 
@@ -620,19 +620,19 @@ msgstr "Szóköz a csoportcellák között"
 msgid "A static plot"
 msgstr "Statikus ábrázolás"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4251
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4211
 msgid "A sub-sub-sub-subsection heading"
 msgstr "Al-al-al-alfejezet cím"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4248
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4208
 msgid "A sub-sub-subsection heading"
 msgstr "Al-al-alfejezet cím"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4245
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4205
 msgid "A sub-subsection heading"
 msgstr "Al-alfejezetcím"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4242
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4202
 msgid "A subsection heading"
 msgstr "Alfejezetcím"
 
@@ -1290,7 +1290,7 @@ msgstr "Hiba: Nincs utolsó cella egy négyzetgyökön belül!"
 
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:334
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:351
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3173
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3133
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
@@ -1306,7 +1306,7 @@ msgstr "Hiba: Nincs utolsó cella egy négyzetgyökön belül!"
 msgid "Bug: The clipboard is already opened"
 msgstr "Hiba: A vágólap már meg van nyitva"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3256
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3216
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 "Hiba: A vágólapot nem lehet megnyitni a szerkesztő cellába történő "
@@ -1341,15 +1341,15 @@ msgstr ""
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4257
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4217
 msgid "Bug: Unknown type of text"
 msgstr "Hiba: Ismeretlen szövegtípus"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2815
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2775
 msgid "Bug: x position of cell is unknown!"
 msgstr "Hiba: a cella x pozíciója ismeretlen!"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2816
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2776
 msgid "Bug: y position of cell is unknown!"
 msgstr "Hiba: a cella y pozíciója ismeretlen!"
 
@@ -1528,15 +1528,15 @@ msgstr ""
 "Nem található maximális bináris és nincs bináris kiválasztva a konfigurációs "
 "párbeszédablakban."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3190
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3150
 msgid "Cannot put the copied text on the clipboard"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3183
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3143
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3187
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3147
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
 
@@ -1739,7 +1739,7 @@ msgstr "Vesszővel elválasztott változók"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Maxima parancsok végrehajtása a Maxima minden egyes indulásakor."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4254
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4214
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr "Megjegyzés (szokásos munkalap-szöveg, amely a Maxima nem futtat)"
 
@@ -5044,7 +5044,7 @@ msgstr ""
 "könnyebben észrevegyük, hogy melyik sorban kezdődik egy új egyenlet, és "
 "melyben csak az előző sor tartalma folytatatódik."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4233
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4193
 msgid "Maxima code"
 msgstr "Maxima kód"
 
@@ -8452,7 +8452,7 @@ msgstr "Kétmintás t-próba"
 msgid "Type"
 msgstr "Típus"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4267
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4227
 msgid "Type in text"
 msgstr "Gépelés szövegbe"
 

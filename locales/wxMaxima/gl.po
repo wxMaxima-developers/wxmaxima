@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-18 09:13+0200\n"
+"POT-Creation-Date: 2020-04-20 07:40+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <gl@li.org>\n"
@@ -124,14 +124,14 @@ msgid ""
 " * ̅\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3486
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3721
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3446
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3681
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3797
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3489
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3449
 msgid " ... + 1 hidden line"
 msgstr ""
 
@@ -595,7 +595,7 @@ msgid ""
 "pdf pages."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4239
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4199
 msgid "A section heading"
 msgstr ""
 
@@ -614,20 +614,20 @@ msgstr ""
 msgid "A static plot"
 msgstr "Gráfico paramétrico"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4251
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4211
 msgid "A sub-sub-sub-subsection heading"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4248
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4208
 msgid "A sub-sub-subsection heading"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4245
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4205
 #, fuzzy
 msgid "A sub-subsection heading"
 msgstr "Cela de subsubsección"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4242
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4202
 #, fuzzy
 msgid "A subsection heading"
 msgstr "Cela de subsubsección"
@@ -1277,7 +1277,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:334
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:351
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3173
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3133
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
@@ -1293,7 +1293,7 @@ msgstr ""
 msgid "Bug: The clipboard is already opened"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3256
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3216
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 
@@ -1325,15 +1325,15 @@ msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Fallo: Solicitude de desfacer para unha cela fóra da folla de traballo."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4257
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4217
 msgid "Bug: Unknown type of text"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2815
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2775
 msgid "Bug: x position of cell is unknown!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2816
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2776
 msgid "Bug: y position of cell is unknown!"
 msgstr ""
 
@@ -1506,15 +1506,15 @@ msgid ""
 "Cannot find a maxima binary and no binary chosen in the config dialogue."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3190
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3150
 msgid "Cannot put the copied text on the clipboard"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3183
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3143
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3187
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3147
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
 
@@ -1721,7 +1721,7 @@ msgstr ""
 msgid "Commands that are executed at every start of maxima."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4254
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4214
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 
@@ -4991,7 +4991,7 @@ msgid ""
 "continues the one from the last line."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4233
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4193
 #, fuzzy
 msgid "Maxima code"
 msgstr "Icona de wxMaxima"
@@ -8268,7 +8268,7 @@ msgstr "Contrataste t de dúas mostras"
 msgid "Type"
 msgstr "Tipo:"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4267
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4227
 #, fuzzy
 msgid "Type in text"
 msgstr "Copiar como imaxen"

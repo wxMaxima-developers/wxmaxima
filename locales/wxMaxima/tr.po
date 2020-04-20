@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-18 09:13+0200\n"
+"POT-Creation-Date: 2020-04-20 07:40+0200\n"
 "PO-Revision-Date: 2019-07-04 14:57+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -126,14 +126,14 @@ msgid ""
 " * ̅\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3486
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3721
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3446
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3681
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3797
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i gizlenmiş satırlar"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3489
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3449
 msgid " ... + 1 hidden line"
 msgstr "... + 1 gizlenmiş satır"
 
@@ -600,7 +600,7 @@ msgstr ""
 "Çıktı için ölçek faktörü. Küçük pdf sayfalarına büyük denklemler yazdırmak "
 "için yararlıdır."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4239
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4199
 msgid "A section heading"
 msgstr "Bir Kısım başlığı"
 
@@ -618,19 +618,19 @@ msgstr "Grup hücreler arası bir boşluk"
 msgid "A static plot"
 msgstr "Statik bir çizim"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4251
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4211
 msgid "A sub-sub-sub-subsection heading"
 msgstr "Bir alt alt-alt-alt kısım başlığı"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4248
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4208
 msgid "A sub-sub-subsection heading"
 msgstr "Bir alt alt-alt-alt-kısım başlığı"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4245
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4205
 msgid "A sub-subsection heading"
 msgstr "Alt-alt kısım başlığı"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4242
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4202
 msgid "A subsection heading"
 msgstr "Alt-Kısım Hücresi"
 
@@ -1287,7 +1287,7 @@ msgstr "Hata: Bir karekök ün içinde son hücre yok!"
 
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:334
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:351
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3173
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3133
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:591
@@ -1303,7 +1303,7 @@ msgstr "Hata: Bir karekök ün içinde son hücre yok!"
 msgid "Bug: The clipboard is already opened"
 msgstr "Hata:Pano zaten açılmış"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3256
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3216
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr "Hata:Pano, bir düzenleyici hücresine yapıştırmaya açık değil"
 
@@ -1339,15 +1339,15 @@ msgstr ""
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hata: Geri al isteği çalışma yaprağı dışındaki bir hücreye ait."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4257
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4217
 msgid "Bug: Unknown type of text"
 msgstr "Hata: Bilinmeyen metin türü"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2815
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2775
 msgid "Bug: x position of cell is unknown!"
 msgstr "Hata: hücrenin x konumu bilinmiyor!"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2816
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2776
 msgid "Bug: y position of cell is unknown!"
 msgstr "Hata: hücrenin y konumu bilinmiyor!"
 
@@ -1523,15 +1523,15 @@ msgstr ""
 "Bir Maxima ikili dosyası bulunamıyor ve Yapılandır diyalog penceresinde "
 "hiçbir ikili seçilmemiş."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3190
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3150
 msgid "Cannot put the copied text on the clipboard"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3183
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3143
 msgid "Cannot put the copied text on the clipboard (1st try)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3187
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3147
 msgid "Cannot put the copied text on the clipboard (2nd try)"
 msgstr ""
 
@@ -1736,7 +1736,7 @@ msgstr ""
 msgid "Commands that are executed at every start of maxima."
 msgstr "Her yeni başlamada gerçekleştirilecek Maxima komutları."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4254
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4214
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr "Yorum(maximayla uyumlu olmayan çalışma sayfası metni)"
 
@@ -5006,7 +5006,7 @@ msgstr ""
 "yalnızca son satıra devam ettiğini ayırt etmeyi kolaylaştırmak için "
 "denklemler arasında ekstra dikey boşluk eklenir."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4233
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4193
 msgid "Maxima code"
 msgstr "Maxima kodu"
 
@@ -8398,7 +8398,7 @@ msgstr "İki Örnek t-testi"
 msgid "Type"
 msgstr "Tip"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4267
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4227
 msgid "Type in text"
 msgstr "Metin içine yaz"
 

@@ -73,7 +73,7 @@
 <li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
 <li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to <em>Maxima</em></a></li>
 <li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
-<li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command</a></li>
+<li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</a></li>
 <li><a href="#plotting-only-shows-a-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.4</span> Plotting only shows a closed empty envelope with an error message</a></li>
 <li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</a></li>
 <li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</a></li>
@@ -83,7 +83,7 @@
 <li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
 <li><a href="#wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="toc-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</a></li>
 <li><a href="#plotting-1"><span class="toc-section-number">3.12</span> Plotting</a><ul>
-<li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at"><span class="toc-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at</a></li>
+<li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="toc-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</a></li>
 <li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</a></li>
 </ul></li>
 </ul></li>
@@ -270,9 +270,13 @@ leadsto       a &quot;leads to&quot; sign
  * A third item at the first indentation level
 Ordinary text</code></pre>
 <p><em>wxMaxima</em> will recognize text starting with <code>&gt;</code> chars as block quotes:</p>
-<p>~~~~ Ordinary text &gt; quote quote quote quote &gt; quote quote quote quote &gt; quote quote quote quote Ordinary text ~~~~</p>
+<pre><code>Ordinary text
+&gt; quote quote quote quote
+&gt; quote quote quote quote
+&gt; quote quote quote quote
+Ordinary text</code></pre>
 <p><em>wxMaxima</em>’s TeX and html output will also recognize <code>=&gt;</code> and replace it by the corresponding unicode sign:</p>
-<p>~~~~ cogito =&gt; sum. ~~~~</p>
+<pre><code>cogito =&gt; sum.</code></pre>
 <p>Other symbols the html and TeX export will recognize are <code>&lt;=</code> and <code>&gt;=</code> for comparisons, a double-pointed double arrow (<code>&lt;=&gt;</code>), single- headed arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are recognized.</p>
 <h3 id="hotkeys"><span class="header-section-number">1.2.8</span> Hotkeys</h3>
 <p>Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of <em>wxMaxima</em> to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:</p>
@@ -545,8 +549,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn’t turn on compression which makes the contents of .wxmx files viewable in any text editor.</p>
 <p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a wxmx~ file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file’s contents.</p>
 <p>If the text file containing this contents is saved as a file ending in .xml <em>wxMaxima</em> will know how to recover the text of the document from it.</p>
-<h2 id="i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command"><span class="header-section-number">3.3</span> I want some debug info to be displayed on the screen before my command</h2>
-<p>has finished</p>
+<h2 id="i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="header-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</h2>
 <p>Normally <em>wxMaxima</em> waits for the whole 2D formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a <code>disp</code> command, though, that will provide debug output immediately and without waiting for the current <em>Maxima</em> command to finish:</p>
 <pre><code>for i:1 thru 10 do (
    disp(i),
@@ -574,7 +577,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li>If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all <em>Maxima</em> commands that have been issued recently.</li>
 <li>If nothing else helps <em>Maxima</em> contains a replay feature:</li>
 </ul>
-<p>~~~~ playback(); ~~~~</p>
+<pre><code>playback();</code></pre>
 <h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
 <p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
 <h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
@@ -593,8 +596,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="plotting-1"><span class="header-section-number">3.12</span> Plotting</h2>
-<h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at</h3>
-<p>once?</p>
+<h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
 <p>The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:</p>
 <pre><code>wxdraw2d(
     file_name=&quot;test&quot;,
