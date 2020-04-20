@@ -9355,7 +9355,6 @@ void wxMaxima::TriggerEvaluation()
     tmp->RemoveOutput();
     m_worksheet->RequestRedraw();
   }
-
   wxString text = m_worksheet->m_evaluationQueue.GetCommand();
   m_commandIndex = m_worksheet->m_evaluationQueue.GetIndex();
   if ((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
@@ -9377,7 +9376,8 @@ void wxMaxima::TriggerEvaluation()
       m_worksheet->m_cellPointers.SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
 
-      SendMaxima(m_configCommands + text, true);
+      SendMaxima(m_configCommands);
+      SendMaxima(text, true);
       m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values anew
       m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
