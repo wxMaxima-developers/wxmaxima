@@ -103,6 +103,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this, -1, becomeLogTarget);
+  wxEventBlocker logBlocker(m_logPane);
+  
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
   #ifdef __WXMSW__
   if(wxSystemOptions::IsFalse("msw.display.directdraw"))
@@ -177,12 +179,15 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   
   // console
   m_worksheet = new Worksheet(this, -1);
+  wxEventBlocker worksheetBlocker(m_worksheet);
 
   // The table of contents
   m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
 
   m_xmlInspector = new XmlInspector(this, -1);
+  wxEventBlocker xmlInspectorBlocker(m_xmlInspector);
   m_statusBar = new StatusBar(this, -1);
+  wxEventBlocker statusbarBlocker(m_statusBar);
   SetStatusBar(m_statusBar);
   m_StatusSaving = false;
   // If we need to set the status manually for the first time using StatusMaximaBusy
@@ -238,7 +243,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             PaneBorder(true).
                             Right());
 
-  m_manager.AddPane(CreateStatPane(),
+  wxPanel *statPane;
+  m_manager.AddPane(statPane = CreateStatPane(),
                     wxAuiPaneInfo().Name(wxT("stats")).
                             CloseButton(true).PinButton(true).
                             TopDockable(true).
@@ -247,8 +253,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             RightDockable(true).
                             PaneBorder(true).
                             Left());
+  wxEventBlocker statBlocker(statPane);
 
   wxPanel *greekPane = new GreekPane(this, m_worksheet->m_configuration, m_worksheet);
+  wxEventBlocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                             CloseButton(true).PinButton(true).
@@ -263,6 +271,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Left());
 
   wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet);
+  wxEventBlocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo().Name(wxT("unicode")).
                             CloseButton(true).PinButton(true).
@@ -291,6 +300,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     Left());
 
   wxPanel *variables = new wxPanel(this,wxID_ANY);
+  wxEventBlocker variablesBlocker(variables);
   m_worksheet->m_variablesPane = new Variablespane(variables,wxID_ANY);
   wxSizer *variablesSizer = new wxBoxSizer(wxVERTICAL);
   variablesSizer->Add(m_worksheet->m_variablesPane,wxSizerFlags().Expand());
@@ -309,6 +319,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Bottom());
 
   m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration, m_worksheet);
+  wxEventBlocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).             
                             DockFixed(false).CloseButton(true).
@@ -349,7 +360,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     RightDockable(true).
                     PaneBorder(true).
                     Left());
-
+  wxEventBlocker drawBlocker(m_drawPane);
+  
   m_worksheet->m_mainToolBar = new ToolBar(this);
   
   m_manager.AddPane(m_worksheet->m_mainToolBar,
