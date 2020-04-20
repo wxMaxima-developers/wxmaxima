@@ -105,8 +105,12 @@ If the user tries to select a complete sentence a word processor will try to ext
 
 What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
-* A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.
+* The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there. 
 * A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
+
+### Sending cells to Maxima
+
+The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed.
 
 ### Command autocompletion
 

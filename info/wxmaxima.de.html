@@ -29,12 +29,13 @@
 <li><a href="#der-arbeitsblatt-ansatz"><span class="toc-section-number">1.2.1</span> Der Arbeitsblatt-Ansatz</a></li>
 <li><a href="#zellen"><span class="toc-section-number">1.2.2</span> Zellen</a></li>
 <li><a href="#horizontale-und-vertikale-cursors"><span class="toc-section-number">1.2.3</span> Horizontale und vertikale Cursors</a></li>
-<li><a href="#auto-vervollständigung"><span class="toc-section-number">1.2.4</span> Auto-Vervollständigung</a></li>
-<li><a href="#seitenleisten"><span class="toc-section-number">1.2.5</span> Seitenleisten</a></li>
-<li><a href="#mathml-ausgabe"><span class="toc-section-number">1.2.6</span> MathML-Ausgabe</a></li>
-<li><a href="#markdown-unterstützung"><span class="toc-section-number">1.2.7</span> Markdown-Unterstützung</a></li>
-<li><a href="#tastenkürzel"><span class="toc-section-number">1.2.8</span> Tastenkürzel</a></li>
-<li><a href="#direkte-eingabe-von-tex-befehlen"><span class="toc-section-number">1.2.9</span> Direkte Eingabe von TeX-Befehlen</a></li>
+<li><a href="#sending-cells-to-maxima"><span class="toc-section-number">1.2.4</span> Sending cells to Maxima</a></li>
+<li><a href="#auto-vervollständigung"><span class="toc-section-number">1.2.5</span> Auto-Vervollständigung</a></li>
+<li><a href="#seitenleisten"><span class="toc-section-number">1.2.6</span> Seitenleisten</a></li>
+<li><a href="#mathml-ausgabe"><span class="toc-section-number">1.2.7</span> MathML-Ausgabe</a></li>
+<li><a href="#markdown-unterstützung"><span class="toc-section-number">1.2.8</span> Markdown-Unterstützung</a></li>
+<li><a href="#tastenkürzel"><span class="toc-section-number">1.2.9</span> Tastenkürzel</a></li>
+<li><a href="#direkte-eingabe-von-tex-befehlen"><span class="toc-section-number">1.2.10</span> Direkte Eingabe von TeX-Befehlen</a></li>
 </ul></li>
 <li><a href="#dateiformate"><span class="toc-section-number">1.3</span> Dateiformate</a><ul>
 <li><a href="#mac"><span class="toc-section-number">1.3.1</span> .mac</a></li>
@@ -166,16 +167,18 @@
 <p>Wenn in einer Textverarbeitung versucht wird, einen Satz auszuwählen, wird diese versuchen, Beginn und Ende der Auswahl so zu verschieben, dass ganze Wörter ausgewählt sind. <em>wxMaxima</em> wird aus diesem Grund, wenn mehr als eine Zelle ausgewählt wird, die Auswahl auf ganze Zellen ausdehnen.</p>
 <p>Was ungewöhnlich erscheinen kann ist, dass <em>wxMaxima</em> alternativ einen vertikalen oder einen horizontalen Cursor darstellen kann:</p>
 <ul>
-<li>A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use <kbd>CTRL</kbd>+<kbd>ENTER</kbd> or <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> to execute the highlighted cells.</li>
+<li>The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.</li>
 <li>Innerhalb einer Zelle wird der Cursor vertikal dargestellt.</li>
 </ul>
-<h3 id="auto-vervollständigung"><span class="header-section-number">1.2.4</span> Auto-Vervollständigung</h3>
+<h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
+<p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed.</p>
+<h3 id="auto-vervollständigung"><span class="header-section-number">1.2.5</span> Auto-Vervollständigung</h3>
 <p>wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für ezUnits vorschlagen.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
 <p>Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende Menüeintrag gewählt (Zelle/Zeige Parameter).</p>
-<h4 id="griechische-zeichen"><span class="header-section-number">1.2.4.1</span> Griechische Zeichen</h4>
+<h4 id="griechische-zeichen"><span class="header-section-number">1.2.5.1</span> Griechische Zeichen</h4>
 <p>Computer speichern Zeichen meist als 8-Bit-Werte, was maximal 256 unterschiedliche Typen von Zeichen erlaubt. Die meisten Sprachen nutzen inklusive Steuerzeichen, Ziffern und ein paar Zeichen, aus denen Graphiken zusammengesetzt werden können, weniger als dies.</p>
 <p>Für die Mehrzahl der Länder ist aus diesem Grund eine Codepage mit 256 Zeichen definiert worden, die allerdings in den meisten Ländern beispielsweise keine griechischen Buchstaben beinhaltet, die in der Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde Unicode entwickelt: Eine Weise, Zeichen auszudrücken, die englischen Text wie gewohnt arbeiten lässt, jedoch auch Zeichen zulässt, die mehr als 8 bits lang sind.</p>
 <p>Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt oder sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet <em>wxMaxima</em> eine Methode an, griechische Zeichen mit einer nicht-griechischen Tastatur einzugeben:</p>
@@ -253,14 +256,14 @@ leadsto       a &quot;leads to&quot; sign
 <p>Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein <code>a</code>.</p>
 <p>Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) haben keine direkte Entsprechung in <em>Maxima</em> und werden daher als normale Zeichen interpretiert. Falls <em>Maxima</em> eine Lisp-Version verwendet, die Unicode nicht unterstützt, kann das eine Fehlermeldung verursachen.</p>
-<h3 id="seitenleisten"><span class="header-section-number">1.2.5</span> Seitenleisten</h3>
-<p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
+<h3 id="seitenleisten"><span class="header-section-number">1.2.6</span> Seitenleisten</h3>
+<p>Die meisten <em>Maxima</em>-Befehle und eine Liste der zuletzt verwendeten Befehle werden in Seitenleisten angeboten, die über das "Ansicht-Menü aktiviert und an beliebige Stellen in oder außerhalb des <em>wxMaxima</em>-Fensters verschoben werden können. Ebenso kann eine Seitenleiste mit griechischen Buchstaben geöffnet werden, die eine alternative Methode anbietet, griechische Buchstaben einzugeben.</p>
 <figure>
 <img src="./SidePanes.png" alt="Beispiele verschiedener Seitenbereiche" id="img_SidePanes" /><figcaption>Beispiele verschiedener Seitenbereiche</figcaption>
 </figure>
-<h3 id="mathml-ausgabe"><span class="header-section-number">1.2.6</span> MathML-Ausgabe</h3>
+<h3 id="mathml-ausgabe"><span class="header-section-number">1.2.7</span> MathML-Ausgabe</h3>
 <p>Einige Textverarbeitungen verstehen entweder MathML (Der Formeleditor von LibreOffice 5.1 kann zumindest entsprechende Gleichungen importieren). Andere unterstützen Mathematik im RTF-Format. <em>wxMaxima</em> bietet daher einige entsprechende Optionen im Rechtsklick-Menü an.</p>
-<h3 id="markdown-unterstützung"><span class="header-section-number">1.2.7</span> Markdown-Unterstützung</h3>
+<h3 id="markdown-unterstützung"><span class="header-section-number">1.2.8</span> Markdown-Unterstützung</h3>
 <p><em>wxMaxima</em> unterstützt einige Markdown-Kommandos, die nicht mit Konstrukten kollidieren, die in mathematischen Formeln vorkommen. Eines dieser Elemente sind Aufzählungen:</p>
 <pre><code>Ordinary text
  * One item, indentation level 1
@@ -278,14 +281,14 @@ Ordinary text</code></pre>
 <p>Die Text- und HTML-Ausgabe von <em>wxMaxima</em> erkennen auch <code>=&gt;</code> und ersetzen es durch das entsprechende Unicode-Symbol:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
 <p>Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind <code>&lt;=</code> und <code>&gt;=</code>, <code>&lt;=&gt;</code>, einfache Pfeile (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) und <code>+/-</code>. Die TeX-Ausgabe erkennt ebenfalls <code>&lt;&lt;</code> und <code>&gt;&gt;</code>.</p>
-<h3 id="tastenkürzel"><span class="header-section-number">1.2.8</span> Tastenkürzel</h3>
+<h3 id="tastenkürzel"><span class="header-section-number">1.2.9</span> Tastenkürzel</h3>
 <p>Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit diesen übersetzt werden könen, falls die Tastatur der aktuellen Sprache dies erforderlich macht. Nicht dort dokumentiert ist:</p>
 <ul>
 <li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> löscht eine komplette Zelle.</li>
 <li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> startet das automatische Vervollständigen.</li>
 <li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> fügt ein nicht-umbrechbares Leerzeichen ein.</li>
 </ul>
-<h3 id="direkte-eingabe-von-tex-befehlen"><span class="header-section-number">1.2.9</span> Direkte Eingabe von TeX-Befehlen</h3>
+<h3 id="direkte-eingabe-von-tex-befehlen"><span class="header-section-number">1.2.10</span> Direkte Eingabe von TeX-Befehlen</h3>
 <p>Wenn eine Textzelle mit “TeX:” beginnt, wird der Rest ihres Inhalts bei der Konvertierung des Dokuments nach TeX unverändert ausgegeben.</p>
 <h2 id="dateiformate"><span class="header-section-number">1.3</span> Dateiformate</h2>
 <p>Das Arbeitsblatt kann auf verschiedene Weisen gespeichert werden:</p>
@@ -552,7 +555,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <pre><code>for i:1 thru 10 do (
    disp(i),
    /* (sleep n) is a Lisp function, which can be used */
-   /* with the character &quot;?&quot; before. It delays the */
+   /* with the character \&quot;?\&quot; before. It delays the */
    /* program execution (here: for 3 seconds) */
    ?sleep(3)
 )$</code></pre>

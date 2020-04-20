@@ -1,3 +1,12 @@
+#Current
+ * Many spell corrections and bugfixes
+ * Faster start-up by avoiding unneeded redraw events
+ * Updated Russian translation by OlesyaGerasimenko
+ * Updated Ukrainian translation by Yuri Chornoivan
+ * Many corrections to the german translation
+ * The history sidebar now works again
+ * Strings were searched for comment starts when adding line endings
+
 #20.04.0
  * Resolved a crash on right-clicking a GroupCell
  * Help works again in the german translation
