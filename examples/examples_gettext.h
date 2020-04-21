@@ -715,7 +715,7 @@ L"/* [wxMaxima: input   end   ] */\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: subsect start ]\n"  + _(
-L"Converting the data to an continuous curve\n" 
+L"Converting the data to a continuous curve\n" 
 ) + L"   [wxMaxima: subsect end   ] */\n"  
 L"\n" 
 L"\n" 
