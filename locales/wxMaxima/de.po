@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-20 20:35+0200\n"
+"POT-Creation-Date: 2020-04-21 17:21+0200\n"
 "PO-Revision-Date: 2020-04-17 19:03+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -118,7 +118,7 @@ msgstr "      -u <nummer>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1912
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1962
 msgid ""
 " * Open the \"mathematical symbols\" sidebar (if it isn't already displayed) "
 "and right-click on it\n"
@@ -134,7 +134,7 @@ msgstr ""
 " * Nun sollte die \"Symbole\"-Seitenleiste einen halbwegs einfachen Zugriff "
 "auf die betreffenden Symbole bieten.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1924
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1974
 msgid ""
 " * ̂\n"
 " * ̃\n"
@@ -461,7 +461,7 @@ msgstr "(Kein gültiger Variablenname)"
 msgid "(Use default language)"
 msgstr "(Standardsprache verwenden)"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1936
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1986
 msgid ""
 "* First enter the character you want to equip with new accents or the like.\n"
 "* Then add a Backslash (\"\\\") in order to tell maxima that the symbol that "
@@ -583,7 +583,7 @@ msgstr ""
 "Wahrscheinlichste Fehlerursache: Ein fehlendes Komma zwichen zwei "
 "Listenelementen."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1919
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1969
 msgid "A few combining diacritics are:\n"
 msgstr "Ein paar geeignete Symbole sind:\n"
 
@@ -620,7 +620,7 @@ msgstr ""
 "Zeichenbefehls ein \"wx\" angehängt wird.\n"
 "\"draw\" wird so zu \"wxdraw\", plot zu \"wxplot\" etc."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1705
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1755
 msgid "A ridiculously advanced example\n"
 msgstr "Ein lächerlich kompliziertes Beispiel\n"
 
@@ -636,7 +636,7 @@ msgstr ""
 msgid "A section heading"
 msgstr "Ein Kapiteltitel"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1463
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1513
 msgid ""
 "A simple voltage divider of R_1 and R_2 is powered by a voltage source U_In. "
 "In which range can U_Out lie?\n"
@@ -672,6 +672,11 @@ msgstr "Unter-Unterkapitelzelle"
 msgid "A symbol from the configuration dialogue"
 msgstr "Ein Symbol aus dem Konfigurationsdialog"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:968
+#, fuzzy
+msgid "A third fitting algorithm\n"
+msgstr "Verwendung eines anderen Algorithmus für das Fitten\n"
+
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:192
 msgid ""
 "A variable that can be assigned a number to.\n"
@@ -682,7 +687,7 @@ msgstr ""
 "Wird von solve() und algsys() verwendet, falls es unendlich viele Resultate "
 "gibt."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1969
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:2019
 msgid "A weird example, just for showing off\n"
 msgstr "Ein wildes Beispiel, um anzugeben\n"
 
@@ -725,7 +730,7 @@ msgstr "Genauigkeit"
 msgid "Active cell bracket"
 msgstr "Klammern aktive Zelle"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1931
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1981
 msgid "Actually using combining diacritics\n"
 msgstr "Verwendung der kombinierenden Symbole\n"
 
@@ -818,10 +823,12 @@ msgstr "Zusätzliche Parameter für Maxima:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Zusätzliche Symbole für die \"Symbole\"-Seitenliste:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1248
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1298
+#, fuzzy
 msgid ""
-"Additionally have given nearly all equations names that allow to reference "
-"the whenever we need them. For example we can print them out again:\n"
+"Additionally haven given nearly all equations names allows us to reference "
+"the equations whenever we need them. For example we can print them out "
+"again:\n"
 msgstr ""
 "Zusätzlich haben wir nahezu allen Gleichungen Namen gegeben, über die sie "
 "später wieder angesprochen werden können. Beispielsweise können wir sie "
@@ -835,16 +842,6 @@ msgstr ""
 "Desweiteren schlägt https://ieeexplore.ieee.org/document/5999593 eine "
 "iterative Ermittlung des Einflusses des Rauschens an:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1285
-msgid ""
-"Additionally the left hand side and the right hand side can be extracted "
-"using the command lhs() and rhs() which allows to use the part left or right "
-"to to the \"=\" in a new equation:\n"
-msgstr ""
-"Weiterhin kann die Seite linker Hand oder rechter Hand des "
-"Gleichheitszeichens mittels der Kommandos lhs() und rhs() extrahiert "
-"werden:\n"
-
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:120
 msgid ""
 "Additionally we are interested only in the first item in the result list:\n"
@@ -852,11 +849,22 @@ msgstr ""
 "Zudem interessieren wir uns nur für den ersten Eintrag in der Liste der "
 "Resultate:\n"
 
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1335
+#, fuzzy
+msgid ""
+"Additionally, the left hand side and the right hand side can be extracted "
+"using the command lhs() and rhs(), which allows to use the part left or "
+"right of the \"=\" in a new equation:\n"
+msgstr ""
+"Weiterhin kann die Seite linker Hand oder rechter Hand des "
+"Gleichheitszeichens mittels der Kommandos lhs() und rhs() extrahiert "
+"werden:\n"
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1358
 msgid "Advanced variable names"
 msgstr "Variablennamen für Fortgeschrittene"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1819
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1869
 msgid "Advanced variable names\n"
 msgstr "Variablennamen für Fortgeschrittene\n"
 
@@ -946,7 +954,7 @@ msgstr "Eine Integrationskonstante."
 msgid "Animation framerate..."
 msgstr "Bildwiederholrate für Animationen:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1028
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1078
 msgid ""
 "Another drawback is that mathematics is based on the fact that two things "
 "that cancel each other out actually do so:\n"
@@ -958,7 +966,7 @@ msgstr ""
 msgid "Antialias lines."
 msgstr "Kantenglättung für Linien."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1003
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1053
 msgid ""
 "Any other number can be converted to a floating-point one using the float() "
 "keyword:\n"
@@ -990,7 +998,7 @@ msgstr "Anhängen eines Elements"
 msgid "Append an element to an existing list"
 msgstr "Füge ein Element zu einer Liste hinzu"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1638
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1688
 msgid "Appending lists of tolerances\n"
 msgstr "Aneinanderhängen von Listen mit toleranzbehafteten Bauteilwerten\n"
 
@@ -1052,7 +1060,7 @@ msgstr ""
 "gut darin, sich bewegende Bilder räumlich zu erfassen. wxMaxima erlaubt, "
 "solch ein Ding in das Arbeitsplatz einzubetten:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1238
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1288
 msgid ""
 "As seen above the last equation displayed by maxima can be referenced by "
 "using the placeholder \"%\":\n"
@@ -1060,7 +1068,7 @@ msgstr ""
 "Wie oben gesehen werden kann, kann die letzte von Maxima ausgegebene "
 "Gleichung über den Platzhalter \"%\" referenziert werden:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1608
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1658
 msgid "As we have guessed the 2nd voltage divider was the better one.\n"
 msgstr ""
 "Wie zu erwarten war, ist der zweite Spannungsteiler deutlich besser als der "
@@ -1225,7 +1233,7 @@ msgstr ""
 msgid "Beta"
 msgstr "Beta"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1072
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1122
 msgid "Bigfloats\n"
 msgstr "Bigfloats\n"
 
@@ -1241,7 +1249,7 @@ msgstr "Skalierung der Bitmaps für den Export"
 msgid "Bitmaps"
 msgstr "Bild"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1305
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1355
 msgid "Boiling it down to numbers\n"
 msgstr "Errechnen konkreter Zahlen\n"
 
@@ -1253,7 +1261,7 @@ msgstr "Fett"
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr "Vertikaler und horizontaler Cursor sind gleichzeitig aktiv"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1185
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1235
 msgid ""
 "Both solutions solve() offers are valid. We can pick any of them manually, "
 "for example:\n"
@@ -1456,9 +1464,10 @@ msgstr ""
 "Aber man kann makelist auch sagen, es soll über eine Liste iterieren - was "
 "sehr schnell ist:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1228
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1278
+#, fuzzy
 msgid ""
-"By choosing [a,b] as the list of solution variables maxima is automatically "
+"By choosing [a,b] as the list of solution variables, maxima is automatically "
 "told to eliminate these two variables on the right side of the equations, if "
 "possible.\n"
 msgstr ""
@@ -1466,7 +1475,7 @@ msgstr ""
 "angegeben wurden, versucht Maximaxima, diese beiden Variablen, wenn möglich, "
 "aus der rechten Seite der Gleichungen zu eliminieren.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1670
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1720
 msgid ""
 "By default the wrstcse package tests all combinations of 3 values per "
 "tol[n]: The minimum, the maximum and the typical value. If we only want to "
@@ -1491,7 +1500,7 @@ msgstr ""
 "'Eingabe wertet die Zelle aus' geändert werden. Die Funktion der beiden "
 "Befehle 'Umschalt-Eingabe' und 'Eingabe' wird ausgetauscht."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1881
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1931
 msgid ""
 "By escaping it with a backslash nearly every symbol can be made to be "
 "interpreted as an ordinary character:\n"
@@ -1499,7 +1508,7 @@ msgstr ""
 "Ein Backslash erlaubt es, Maxima für fast beliebige Symbole anzuweisen, dass "
 "diese als ganz normales Zeichen zu interpretieren sind:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1195
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1245
 msgid ""
 "By having given this equation a name (\"sol2\") we gained a way to re-use "
 "this equation later.\n"
@@ -2070,7 +2079,8 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr "Ersetze Winkelfunktionen durch Exponentialfunktionen"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:718
-msgid "Converting the data to an continuous curve\n"
+#, fuzzy
+msgid "Converting the data to a continuous curve\n"
 msgstr "Konvertierung der Daten zu einer kontinuierlichen Kurve\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:933
@@ -2424,7 +2434,7 @@ msgstr "Ordnung:"
 msgid "Derivative:"
 msgstr "Ableitung:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1710
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1760
 msgid "Description of the problem\n"
 msgstr "Beschreibung des Problems\n"
 
@@ -2606,7 +2616,7 @@ msgstr "&Gleichungen"
 msgid "E&xit\tCtrl+Q"
 msgstr "B&eenden\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1907
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1957
 msgid "Easy access to combining diacritics\n"
 msgstr "Einfacher Zugriff auf kombinierende Symbole\n"
 
@@ -2704,7 +2714,7 @@ msgstr "Endwert des Parameters"
 msgid "Ended lisp mode after receiving a maxima prompt!"
 msgstr "Lisp-Modus beendet, da Maxima nach Maxima-Befehlen fragt."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1824
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1874
 msgid "Engineer-style Subscripts\n"
 msgstr "Tiefstellen für Ingenieure\n"
 
@@ -2824,7 +2834,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1897
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1947
 msgid "Equipping any character with accents\n"
 msgstr "Versehen eines beliebigen Zeichens mit Akzenten\n"
 
@@ -2982,7 +2992,7 @@ msgstr "&Den Rest evaluieren"
 msgid "Evaluate to point"
 msgstr "&Zellen bis hier evaluieren"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1099
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1149
 msgid "Exact numbers\n"
 msgstr "Exakte Zahlen\n"
 
@@ -3340,7 +3350,7 @@ msgstr ""
 "Zuerst generieren wir die neuen Daten- und Zeitvektoren. Wie immer wird "
 "dafür aufgrund eines Bugs in makelist() ein Aufruf von subst() benötigt.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1494
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1544
 msgid "First we load the tolerance calculation package:\n"
 msgstr "Zuerst laden wir das Toleranzberechnungs-Paket:\n"
 
@@ -3374,7 +3384,7 @@ msgstr ""
 msgid "Fixed font in text controls"
 msgstr "Schriftart mit fester Breite in Texteingabefeldern"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:978
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1028
 msgid "Floating-point numbers\n"
 msgstr "Fließkommazahlen\n"
 
@@ -3436,7 +3446,7 @@ msgstr "Schriftart für mathematische Zeichen in einem Dokument."
 msgid "Fonts"
 msgstr "Schriftarten"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1991
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:2041
 msgid "For all xkcd fans:\n"
 msgstr "Für alle Fans von XKCD:\n"
 
@@ -3482,7 +3492,7 @@ msgstr ""
 "   Ctrl+6: Paragraph\n"
 "   Ctrl+7: Unterparagraph\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1170
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1220
 msgid ""
 "For many problems Maxima's solve() program instantly finds a list of "
 "solutions:\n"
@@ -3666,7 +3676,7 @@ msgstr ""
 msgid "Generate list elements using a rule"
 msgstr "Erzeuge Listenelemente anhand einer Regel"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1752
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1802
 msgid "Generating a list of 100 sets of possible values of \"coords\"\n"
 msgstr "Erzeugung einer Liste von 100 Sätzen möglicher werte für \"coords\"\n"
 
@@ -3983,9 +3993,10 @@ msgstr "Anfangswertproblem 2. Grades"
 msgid "Identical to"
 msgstr "Identisch zu"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1310
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1360
+#, fuzzy
 msgid ""
-"If in mathematics two things cancel each other out they do so exactly. The "
+"If in mathematics two things cancel each other out, they do so exactly. The "
 "same isn't true with IEEE floating-point numbers like the ones the computer "
 "uses:\n"
 msgstr ""
@@ -3993,7 +4004,7 @@ msgstr ""
 "genau. Mit IEEE-Fließkommazahlen, wie sie der Computer intern verwendet, ist "
 "dies nicht der Fall:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1643
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1693
 msgid ""
 "If it is necessary to append two lists of values with tolerances to each "
 "other without risking a collision of tol[n] that happen to have the same n "
@@ -4100,7 +4111,7 @@ msgstr ""
 "dafür nur lambda() erst die Liste der Argumente und dann den Inhalt der "
 "neuen Funktion geben:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1448
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1498
 msgid ""
 "If the outcome of a calculation depends on many factors determining manually "
 "which cases are the worst-case one is a manual and error-prone process. "
@@ -4136,7 +4147,7 @@ msgstr ""
 "aler Toleranzen.\n"
 "Die letzten beiden Methoden werden hier beschrieben.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1695
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1745
 msgid ""
 "If this calculation is repeated it will naturally result in slightly "
 "different numeric values:\n"
@@ -4166,7 +4177,7 @@ msgstr ""
 "Maxima Daten anfordert. Andererweise wird die neue Zelle erst erstellt, wenn "
 "der Benutzer Text eingibt."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1839
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1889
 msgid ""
 "If this feature is over-eager (or not eagerly enough) wxMaxima offers "
 "additional control:\n"
@@ -4190,7 +4201,7 @@ msgstr ""
 "Wenn diese Option aktiv wird, wird die aktuelle Datei im .wxmx-Format an "
 "einem Ort abgelegt, auf den ein Link vom HTML-Export zeigt."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1094
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1144
 msgid ""
 "If too low or to high a number of digits is displayed here when right-"
 "clicking on such a number opens up a menu that allows to customize this "
@@ -4208,17 +4219,18 @@ msgstr ""
 "Falls wir keinen Fehler gemacht haben, kann Maxima nun die Gleichung finden, "
 "die die generelle Form aller nur möglichen Ladekurven definiert:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1552
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1602
 msgid "If we just want to know the typical value we can do the following:\n"
 msgstr ""
 "Wenn wir nur den typischen Wert kennen wollen, dann könnnen wir das Folgende "
 "tun:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1160
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1210
+#, fuzzy
 msgid ""
 "If you are studying mathematics the good news is that solving equations is "
-"an art a computer can help with in many special cases but that often relies "
-"on human creativity for finding algorithms and ways.\n"
+"an art, a computer can help with in many special cases, but that often "
+"relies on human creativity for finding algorithms and ways.\n"
 msgstr ""
 "Für denjenigen, der Mathematik studiert, wird es eine gute Nachricht sein, "
 "dass ein Computer oft beim Lösen von Gleichungen helfen kann, aber oft die "
@@ -4343,7 +4355,7 @@ msgstr ""
 "lesbarer, wenn Exponenten hinter, nicht direkt über tiefgestelltem Text "
 "dargestellt werden. Diese Option wählt, was von beidem erwünscht ist."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1387
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1437
 msgid ""
 "In this case maxima offers several options to at least find the numerical "
 "values, two examples are given below:\n"
@@ -4447,7 +4459,7 @@ msgstr "Anfangswertproblem (&2) ..."
 msgid "Input labels"
 msgstr "Eingabemarken"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1489
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1539
 msgid "Input values that include a tolerance\n"
 msgstr "Eingangswerte mit Toleranz\n"
 
@@ -4774,7 +4786,7 @@ msgstr "Springe zum ersten Fehler"
 msgid "Jump to the first cell Maxima has reported an error in."
 msgstr "Springe zur ersten Zelle, in der Maxima einen Fehler meldet."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1542
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1592
 msgid ""
 "Just substituting the values into the equations provides us with the "
 "equation containing the real values and the tolerances in wrstcse's "
@@ -4880,7 +4892,7 @@ msgstr "Die Seite links vom \"=\""
 msgid "Length"
 msgstr "Länge"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1509
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
 #, c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
@@ -4895,7 +4907,7 @@ msgid ""
 "like:\n"
 msgstr "Wie haben nun erraten, dass die Kurve eine Parabel sein kann:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1974
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:2024
 msgid ""
 "Let's hope the font that is used to display this includes cherries, pear and "
 "banana symbols.\n"
@@ -5103,11 +5115,12 @@ msgstr ""
 "haben will.\n"
 "Die bekannteste Version von makelist() ist:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1323
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1373
+#, fuzzy
 msgid ""
 "Many computer programs are configured to show small numbers as \"0\" or only "
-"to show the first few digits after the decimal dot hoping that the rest is a "
-"rounding error that doesn't add up (see wilkinson's polynomial for an "
+"to show the first few digits after the decimal point hoping that the rest is "
+"a rounding error that doesn't add up (see wilkinson's polynomial for an "
 "example where this happens quickly). Maxima's solve instead tries to replace "
 "floating-point numbers by the exact fraction it most likely means and warns "
 "about doing so:\n"
@@ -5119,7 +5132,7 @@ msgstr ""
 "geschieht). Maxima's solve()-Befehl ersetzt stattdessen Fließkommazahlen "
 "durch Brüche mit einem ähnlichen Wert und warnt, dass es dies tut:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1134
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1184
 msgid ""
 "Many hard-to-find errors can be avoided by using exact numbers. It is "
 "therefore wise to use exact numbers wherever possible and only to convert "
@@ -5197,15 +5210,16 @@ msgstr "MathML Beschreibung"
 msgid "Mathematical Symbols"
 msgstr "Mathematische Symbole"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1468
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1518
 msgid "Mathematical description\n"
 msgstr "Mathematische Beschreibung\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1155
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1205
+#, fuzzy
 msgid ""
 "Mathematics can be seen as a language consisting only of a rather small set "
 "of words and only a handful of grammatical rules. Both sets are carefully "
-"chosen, though, that by simply reformulating the question in many cases the "
+"chosen, though, allowing simply reformulating the question in many cases the "
 "answer can be found.\n"
 msgstr ""
 "Die Mathematik kann als eine Sprache gesehen werden, die nur wenige Wörter "
@@ -5246,7 +5260,7 @@ msgstr "Matrix"
 msgid "Maxima"
 msgstr "Maxima"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1043
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1093
 msgid ""
 "Maxima allows to customize the format floating-point numbers are displayed "
 "in:\n"
@@ -5254,7 +5268,7 @@ msgstr ""
 "Maxima erlaubt es, das Format festzulegen, wie Fließkommazahlen dargestellt "
 "werden:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1077
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1127
 msgid ""
 "Maxima alternatively provides its own implementation of floating-point "
 "numbers that are slow (they have to be processed in software), but can be "
@@ -5322,6 +5336,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:257
 msgid "Maxima errors"
 msgstr "Fehlermeldungen von Maxima"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:973
+msgid ""
+"Maxima even offers a third fitting algorithm that is even able to understand "
+"constraints:\n"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9308
 msgid "Maxima has finished calculating."
@@ -5707,11 +5727,11 @@ msgstr "Nicht-zusammengehörige Klammern"
 msgid "Modulus"
 msgstr "Modulo"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1680
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1730
 msgid "Monte carlo analysis\n"
 msgstr "Monte-Carlo-Analyse\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:983
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1033
 msgid ""
 "Most computers include floating-point units that make relatively-high-"
 "precision calculations very fast. If a number is input with a decimal dot or "
@@ -5989,7 +6009,7 @@ msgstr ""
 "Nun gibt es wir genügend viel Informationen, um die Eingangsspannung zu "
 "berechnen:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1618
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1668
 msgid ""
 "Now we want to tell maxima that the voltage source provides a voltage "
 "between 4V and 6V, typically 4.5V. For doing this a specialized function "
@@ -6007,7 +6027,7 @@ msgstr "Ny"
 msgid "Num. deg:"
 msgstr "Grad Zähler:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:973
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1023
 msgid "Number formats\n"
 msgstr "Zahlenformate\n"
 
@@ -6478,7 +6498,7 @@ msgstr "Plot in Datei:"
 msgid "Plot using Draw"
 msgstr "Plotte mittels Draw"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1762
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1812
 msgid "Plotting these lists\n"
 msgstr "Plotten dieser Listen\n"
 
@@ -6534,7 +6554,7 @@ msgstr "Portugiesisch (Brasilien)"
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript-Datei (*.eps)|*.eps|Alle|*"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1953
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:2003
 msgid "Pre- and post- super- and subscripts\n"
 msgstr "Pre- und Post- super- und Subskripte\n"
 
@@ -6588,7 +6608,7 @@ msgstr "Dokument drucken"
 msgid "Print floating-point numbers with exponents dividable by 2"
 msgstr "Gebe Fließkommazahlen mit durch 3 teilbaren Exponenten aus"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1537
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1587
 msgid "Print out the results\n"
 msgstr "Ausgeben der Resultate\n"
 
@@ -6653,7 +6673,7 @@ msgstr "Alle Zellen des Dokuments auswerten, die über dem Cursor stehen"
 msgid "Re-evaluate all cells below the one the cursor is in"
 msgstr "Alle Zellen des Dokuments auswerten, die unter dem Cursor stehen"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1233
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1283
 msgid "Re-using the solutions\n"
 msgstr "Wiederverwendung von Lösungen\n"
 
@@ -6885,7 +6905,7 @@ msgstr "Nullstellen eines &Polynoms"
 msgid "Roots of Polynomial (bfloat)"
 msgstr "Nullstellen eines Polynoms (bfloat)"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1720
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1770
 msgid "Round holes can be described as follows:\n"
 msgstr "Runde Löcher können folgendermaßen beschrieben werden:\n"
 
@@ -6904,7 +6924,7 @@ msgstr "Zeilen:"
 msgid "Rule:"
 msgstr "Regel:"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1038
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1088
 msgid ""
 "Rump and Wilkinson have provided warning examples of simple polynomials "
 "where this adds up to catastrophic errors quickly and it is surprising how "
@@ -7542,7 +7562,7 @@ msgstr "Zeigt, wie viele Stellen einer Zahl angezeigt werden"
 msgid "Sigma"
 msgstr "Sigma"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1165
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1215
 msgid "Simple equations\n"
 msgstr "Einfache Gleichungen\n"
 
@@ -7586,12 +7606,13 @@ msgstr "Vereinfache die Summe"
 msgid "Simplify trigonometric expression"
 msgstr "Ausdruck mit Winkelfunktionen vereinfachen"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1333
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1383
+#, fuzzy
 msgid ""
-"Since it often is the general case that allows to learn about the "
-"fundamental mechanisms often a good approach is to solve everything "
-"symbolically and to keep the actual numerical input values in a separate "
-"list like the following one:\n"
+"Since it is the general case that allows to learn about the fundamental "
+"mechanisms often a good approach is to solve everything symbolically and to "
+"keep the actual numerical input values in a separate list like the following "
+"one:\n"
 msgstr ""
 "Oft sind Formeln geeignet, viel über die einem Problem zugrundeliegenden "
 "Mechanismen zu lernen. Es empfiehlt sich daher im Regelfall, soweit wie "
@@ -7677,12 +7698,13 @@ msgstr "Löse algebraisches System"
 msgid "Solve algebraic system of equations"
 msgstr "Algebraisches Gleichungssystem lösen"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1211
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1261
+#, fuzzy
 msgid ""
 "Solve also accepts lists as its arguments. In this case it will only find "
-"solutions if the following conditions are all met:\n"
+"solutions, if the following conditions are all met:\n"
 " * The number of linearly independent equations matches the number of "
-"variables to solve to\n"
+"variables to solve.\n"
 " * The solution doesn't completely change its form depending on the range "
 "one variable is in.\n"
 msgstr ""
@@ -7743,7 +7765,7 @@ msgstr "Lösen von Differentialgleichungen"
 msgid "Solving differential equations\n"
 msgstr "Das Lösen von Differentialgleichungen\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1150
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1200
 msgid "Solving equations\n"
 msgstr "Das Lösen von Gleichungen\n"
 
@@ -7762,7 +7784,7 @@ msgstr ""
 "werden allerdings zusätzliche LaTeX-Pakete benötigt, um aus der TeX-Datei "
 "PDF-Dateien zu generiern."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1367
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1417
 msgid ""
 "Some solutions have never been assigned a name in mathematics. One popular "
 "example would be:\n"
@@ -7770,7 +7792,7 @@ msgstr ""
 "Einigen Lösungen wurde nie ein Name gegeben. Ein beliebtes Beispiel hierfür "
 "wäre:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1715
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1765
 msgid ""
 "Someone constructs a magic drill that is guaranteed to generate holes that "
 "exactly meet 3 points. But that points unfortunately all have tolerances. We "
@@ -7831,7 +7853,7 @@ msgstr "Andere arten von Kurven"
 msgid "Special constants"
 msgstr "Besondere Konstanten"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1613
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1663
 msgid "Specifying complex tolerances\n"
 msgstr "Das Spezifizieren komplexer Toleranzbereiche\n"
 
@@ -8105,7 +8127,7 @@ msgstr ""
 msgid "Text equal to selection"
 msgstr "Identisch mit Auswahl"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1958
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:2008
 msgid ""
 "Thanks to Robert Dodier it is now possible to equip variables with super-, "
 "and subscripts that are displayed left of the variable name, too:\n"
@@ -8172,7 +8194,7 @@ msgstr ""
 msgid "The color of the next line to draw"
 msgstr "Die Farbe der nächsten Kurve"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1738
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1788
 msgid "The coordinates of the points the holes touch\n"
 msgstr "Die Koordinaten der Punkte, die von den Löchern berührt werden\n"
 
@@ -8217,7 +8239,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Die Dokumentklasse für den Export von LaTeX-Dokumenten "
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1018
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1068
 msgid ""
 "The drawback the enhanced speed comes with is that using floating-point "
 "numbers come with inaccuracies that might hit when one least expects them. "
@@ -8388,7 +8410,7 @@ msgstr ""
 "die Datendichte am höchsten ist und überprüfen wir, wie damit umzugehen "
 "ist.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1458
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1508
 msgid "The problem\n"
 msgstr "Das Problem\n"
 
@@ -8475,7 +8497,7 @@ msgstr ""
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr "Zeichne eine Kurve"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1504
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1554
 msgid ""
 "The tolerance calculation package lets tol[n] tolerate between -1 and 1. "
 "tol[n] with the same n are coupled tolerances that share the same value. In "
@@ -8490,7 +8512,7 @@ msgstr ""
 "zusätzlich als Variablenname verwendet wird, dem ein Wert zugewiesen wird. "
 "Ansonsten wird tol[name] durch tol[<variableninhalt>] ersetzt.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1104
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1154
 msgid ""
 "The type of number maxima was written for is exact numbers instead. Maxima "
 "assumes any number that doesn't contain a decimal dot to be intended as "
@@ -8528,7 +8550,7 @@ msgstr ""
 "Wenn dies reproduzierbar ist, bittet das wxMaxima-Team um einen Bug Report "
 "für wxMaxima."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1578
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1628
 msgid ""
 "Then we ask wrstcse to print out the tolerances of the right hand side of "
 "our equation \"uout\":\n"
@@ -8556,7 +8578,7 @@ msgstr ""
 "\n"
 "Bitte berichten Sie dies als Programmfehler."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1479
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1529
 msgid ""
 "These equations are simple enough that there is no need to use solve() to "
 "introduce them into each other:\n"
@@ -8622,7 +8644,7 @@ msgstr ""
 "Gleichung gefittet werden, bei der ein Parameter auf unendlich zu setzen "
 "ist, um ein befriedigendes Ergebnis zu erhalten."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1588
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1638
 msgid ""
 "This result is still - well, hard to interpret, because Maxima didn't know "
 "the value of U_In which is necessary to decide which of all the terms is the "
@@ -8634,17 +8656,7 @@ msgstr ""
 "welcher das Minimum ist. Wir können Maxima jedoch über die notwendigen "
 "Fakten informieren:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1200
-msgid ""
-"This time the type of solutions we can get depends on the value of a which "
-"is why maxima asked about it. One can avoid asking questions by telling the "
-"answers to maxima's assume database:\n"
-msgstr ""
-"Dieses Mal hängt die Art der Lösung von der Antwort der Frage ab. Maxima "
-"besitzt eine \"assume\"-Datenbank, über die man derartige Fragen vermeiden "
-"kann:\n"
-
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1685
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1735
 msgid ""
 "This time we want the tolerance package to use 1000 random sets of values "
 "and to find the best and worst case that can be reached using these values:\n"
@@ -8652,6 +8664,17 @@ msgstr ""
 "Dieses Mal wollen wir von der Toleranzberechnung, dass sie 1000 Sätze von "
 "Werten nutzen soll und den höchsten und niedrigsten Wert zu nennen, den sie "
 "damit erhielt.\n"
+
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1250
+#, fuzzy
+msgid ""
+"This time, the type of solutions we can get depends on the value of a, which "
+"is why maxima asked about it. One can avoid asking questions by telling the "
+"answers to maxima's assume database:\n"
+msgstr ""
+"Dieses Mal hängt die Art der Lösung von der Antwort der Frage ab. Maxima "
+"besitzt eine \"assume\"-Datenbank, über die man derartige Fragen vermeiden "
+"kann:\n"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:447
 #, c-format
@@ -8800,7 +8823,7 @@ msgstr "Numerische Ausgabe ein/aus"
 msgid "Toggle the visibility of code cells"
 msgstr "Macht die Codezellen sichtbar oder unsichtbar"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1443
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1493
 msgid "Tolerance calculations\n"
 msgstr "Toleranzberechnungen\n"
 
@@ -8949,16 +8972,17 @@ msgid "Unfold all folded sections"
 msgstr "Alle zugeklappten Sektionen aufklappen"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:823
+#, fuzzy
 msgid ""
 "Unfortunately it is hard to fit to experimental data to this approach in "
 "many ways, for example:\n"
 " * One part of this curve results in low values. Even small measurement "
 "noise on this part will yield widely incorrect results for the curve "
 "parameters as the fitter is trying to model the noise, too, and as noise in "
-"nonlinear systems tends not to be averanged out completely.\n"
-" * Another part of this curve contains quite in high values and is sensitive "
-"to even small changes in k. As the fitter wants to keep the overall error "
-"low it will therefore respect this part much more than the lower, more good-"
+"nonlinear systems tends not to be averaged out completely.\n"
+" * Another part of this curve contains very high values and is sensitive to "
+"even small changes in k. As the fitter wants to keep the overall error low "
+"it will therefore respect this part much more than the lower, more good-"
 "natured part of the curve.\n"
 " * Starting from the wrong point and optimizing a and k in the direction "
 "that reduces the error most in each step might lead to a point that is far "
@@ -8971,11 +8995,10 @@ msgstr ""
 "eine e-Funktion zu fitten:\n"
 " * Ein Teil der Kurve besteht aus niedrigen Werten. Da dieser Bereich aus "
 "einer nichtlinearen Funktion besteht, wird jegliches Rauschen hier nicht "
-"herausgemittelt, sondern die Werte verfälschen.\n"
-" * Ein weiterer Teil der Kurve besteht aus hohen Werten und wird von kleinen "
-"Änderungen der Eingangswerte stark beeinflusst. Um den durchschnittlichen "
-"Fehler gering zu halten, wird der Fitter diesen Bereich überproportional "
-"berücksichtigen.\n"
+"herausgemittelt, sondern die Werte verfälschen.\\n * Ein weiterer Teil der "
+"Kurve besteht aus hohen Werten und wird von kleinen Änderungen der "
+"Eingangswerte stark beeinflusst. Um den durchschnittlichen Fehler gering zu "
+"halten, wird der Fitter diesen Bereich überproportional berücksichtigen.\n"
 " * Wenn die Suche nach Parametern am falschen Ort begonnen wird, ist es "
 "leicht, an einem Punkt zu enden, der besser als alle Punkte in seiner Nähe "
 "ist, aber nicht die gesuchte Lösung.\n"
@@ -9019,7 +9042,7 @@ msgstr "Zeige den Inhalt"
 msgid "Unicode chars\tAlt+Shift+U"
 msgstr "Unicode-Zeichen\\tAlt+Shift+U"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1902
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1952
 msgid ""
 "Unicode supports so-called \"combining diacritics\" that allow to assemble a "
 "character from several elements. Maxima might not know that the individual "
@@ -9153,7 +9176,7 @@ msgstr "Benutzerdefinierte Marken"
 msgid "User-defined labels if available"
 msgstr "Benutzerdefinierte Marken, falls vorhanden"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1665
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1715
 msgid "Using a bigger or lower number of samples\n"
 msgstr "Nutzung von mehr oder weniger Stichproben\n"
 
@@ -9177,7 +9200,7 @@ msgstr "Wert:"
 msgid "Variable"
 msgstr "Variable"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1876
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1926
 msgid ""
 "Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
 msgstr "Variablen- and Gleichungsnamen mit \"'\", \"+\" oder \"-\"\n"
@@ -9278,11 +9301,11 @@ msgstr ""
 msgid "Warning: Lookalike chars: "
 msgstr "Warnung: Schwer unterscheidbare Zeichen: "
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1274
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1324
 msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Wir können sie in andere Gleichungen hineinsubstituieren:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1523
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
 #, c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
@@ -9293,11 +9316,11 @@ msgstr ""
 "mit ganzen 10% an Toleranz, die jedoch immer identisch weit in dieselbe "
 "Richtung tolerieren werden.\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1258
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1308
 msgid "We can use them as an input to solve:\n"
 msgstr "Wir können dies durch solve lassen:\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1567
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1617
 msgid ""
 "We now want to test all combinations of minimum, typical or maximum value, "
 "instead.\n"
@@ -9313,7 +9336,7 @@ msgstr ""
 msgid "Welcome to wxMaxima"
 msgstr "Willkommen bei wxMaxima"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1362
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1412
 msgid "What if there exists no symbolical solution?\n"
 msgstr "Was, wenn es keine symbolische Lösung gibt?\n"
 
@@ -9332,7 +9355,7 @@ msgstr ""
 "anwenden, können Sie diesen im Dokument markieren und dann den Menübefehl "
 "ausführen."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1347
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1397
 msgid ""
 "Whenever a numerical value is needed this list can be introduced into any "
 "equation:\n"
@@ -9637,11 +9660,11 @@ msgstr ""
 "Buchstabe ist.\n"
 "all=Alles nach einem Unterstrich wird tiefgestellt."
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1423
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1473
 msgid "find_root\n"
 msgstr "find_root\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1428
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1478
 msgid ""
 "find_root even works if the equation isn't differentiable and searches for a "
 "solution in between two points.\n"
@@ -9749,11 +9772,11 @@ msgstr "matrix([x_1,x_2,...],[y_1,y_2,...])"
 msgid "matrix[i,j]:"
 msgstr "Matrix"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1403
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1453
 msgid "mnewton\n"
 msgstr "mnewton\n"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1408
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1458
 msgid ""
 "mnewton uses a modified version of newton's method for finding a solution of "
 "a nonlinear, but differentiable, statical and monotonic function near to a "
@@ -9897,7 +9920,7 @@ msgstr "Der Bereich für die 2. y-Achse (automatisch, wenn leer)"
 msgid "sigma"
 msgstr "sigma"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1377
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1427
 msgid ""
 "solve() which tries to find a symbolical solution is bound to fail here and "
 "tells us how far it got:\n"
@@ -10013,7 +10036,7 @@ msgstr "Nutze als Parameterliste einer Funktion"
 msgid "use the actual values stored"
 msgstr "verwende die konkreten in der Liste gespeicherten Variablenwerte"
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1660
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1710
 msgid ""
 "wc_tolappend() appends values with tolerances and renumbers the tol[n]\n"
 msgstr ""
@@ -10039,7 +10062,7 @@ msgstr "wxMaxima %d"
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
-#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1829
+#: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1879
 msgid ""
 "wxMaxima allows to use engineer-style subscripts in variable or function "
 "names:\n"
@@ -10264,7 +10287,7 @@ msgstr "zeta"
 #~ " * One part of this curve results in low values. Even small measurement "
 #~ "noise on this part will yield widely incorrect results for the curve "
 #~ "parameters as the fitter is trying to model the noise, too, and as noise "
-#~ "in nonlinear systems tends not to be averaged out completely.\n"
+#~ "in nonlinear systems tends not to be averanged out completely.\n"
 #~ " * Another part of this curve contains quite in high values and is "
 #~ "sensitive to even small changes in k. As the fitter wants to keep the "
 #~ "overall error low it will therefore respect this part much more than the "
@@ -10280,11 +10303,11 @@ msgstr "zeta"
 #~ "eine e-Funktion zu fitten:\n"
 #~ " * Ein Teil der Kurve besteht aus niedrigen Werten. Da dieser Bereich aus "
 #~ "einer nichtlinearen Funktion besteht, wird jegliches Rauschen hier nicht "
-#~ "herausgemittelt, sondern die Werte verfälschen.\\n * Ein weiterer Teil "
-#~ "der Kurve besteht aus hohen Werten und wird von kleinen Änderungen der "
-#~ "Eingangswerte stark beeinflusst. Um den durchschnittlichen Fehler gering "
-#~ "zu halten, wird der Fitter diesen Bereich überproportional "
-#~ "berücksichtigen.\n"
+#~ "herausgemittelt, sondern die Werte verfälschen.\n"
+#~ " * Ein weiterer Teil der Kurve besteht aus hohen Werten und wird von "
+#~ "kleinen Änderungen der Eingangswerte stark beeinflusst. Um den "
+#~ "durchschnittlichen Fehler gering zu halten, wird der Fitter diesen "
+#~ "Bereich überproportional berücksichtigen.\n"
 #~ " * Wenn die Suche nach Parametern am falschen Ort begonnen wird, ist es "
 #~ "leicht, an einem Punkt zu enden, der besser als alle Punkte in seiner "
 #~ "Nähe ist, aber nicht die gesuchte Lösung.\n"

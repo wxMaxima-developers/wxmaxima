@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.03.1-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 20.04.0-DevelopmentSnapshot ] */
 /* [wxMaxima: title   start ]
 Fitting equations to real measurement data
    [wxMaxima: title   end   ] */
@@ -410,6 +410,56 @@ wxdraw2d(
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: section start ]
+A third fitting algorithm
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima even offers a third fitting algorithm that is even able to understand constraints:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+? fmin_cobyla;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("fmin_cobyla")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+fmin_cobyla(
+    lsquares_mse(
+        data1,[x,y],approach1
+    ),
+    [a,b,c],
+    [0,0,0]
+);
+params5:%[1];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+rec5:subst(params5,approach1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    grid=true,xlabel="x",ylabel="y",
+    key="Measured data",color=gray,points_joined=true,line_type='dashes,point_type='none,
+    points(data1),
+    color=red,key="Reconstructed",
+    explicit(rhs(rec5),x,-10,10),
+    color=blue,key="Original",
+    explicit(fun1,x,-10,10)
+)$
+/* [wxMaxima: input   end   ] */
+
+
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.03.1-DevelopmentSnapshot"$
+"Created with wxMaxima 20.04.0-DevelopmentSnapshot"$
