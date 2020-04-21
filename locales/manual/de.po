@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-21 16:41+0200\n"
-"PO-Revision-Date: 2020-04-20 21:16+0200\n"
+"POT-Creation-Date: 2020-04-21 20:53+0200\n"
+"PO-Revision-Date: 2020-04-21 20:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -19,7 +19,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:2
 #, fuzzy, no-wrap
 #| msgid "The wxMaxima user manual {-}\n"
-msgid "The wxMaxima user manual {-}\n"
+msgid "The wxMaxima user manual {-}"
 msgstr "Das Handbuch von wxMaxima {-}\n"
 
 #. type: Plain text
@@ -114,7 +114,7 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 #: ../../info/wxmaxima.md:44
 #, fuzzy, no-wrap
 #| msgid "Introduction to wxMaxima\n"
-msgid "Introduction to wxMaxima\n"
+msgid "Introduction to wxMaxima"
 msgstr "Einführung in wxMaxima\n"
 
 #. type: Title ##
@@ -584,7 +584,7 @@ msgstr ""
 "folgenden Zeichen unterstützt:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:152
+#: ../../info/wxmaxima.md:134
 #, fuzzy, no-wrap
 #| msgid ""
 #| "a alpha    i iota      r rho\n"
@@ -604,7 +604,6 @@ msgstr ""
 #| "H Eta      Om Omicron  Y Psi\n"
 #| "T Theta    P Pi        O Omega\n"
 msgid ""
-"~~~~\n"
 "a alpha    i iota      r rho\n"
 "b beta     k kappa     s sigma\n"
 "g gamma    l lambda    t tau\n"
@@ -621,7 +620,6 @@ msgid ""
 "Z Zeta     X Xi        C Chi\n"
 "H Eta      Om Omicron  Y Psi\n"
 "T Theta    P Pi        O Omega\n"
-"~~~~\n"
 msgstr ""
 "~~~~\n"
 "a alpha    i iota      r rho\n"
@@ -652,7 +650,7 @@ msgstr ""
 "einzugeben:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:207
+#: ../../info/wxmaxima.md:155
 #, fuzzy, no-wrap
 #| msgid ""
 #| "hbar          planck's constant: a h with a horizontal bar above it\n"
@@ -706,7 +704,6 @@ msgstr ""
 #| "->            a right arrow\n"
 #| "-->           a long right arrow\n"
 msgid ""
-"~~~~\n"
 "hbar          planck's constant: a h with a horizontal bar above it\n"
 "Hbar          a H with a horizontal bar above it\n"
 "2             squared\n"
@@ -757,7 +754,6 @@ msgid ""
 "leadsto       a \"leads to\" sign\n"
 "->            a right arrow\n"
 "-->           a long right arrow\n"
-"~~~~\n"
 msgstr ""
 "hbar          planck's Konstante: ein h mit einem horizontalen Balken darüber\n"
 "Hbar          ein H mit einem horizontalen Balken darüber\n"
@@ -903,7 +899,7 @@ msgstr ""
 "sind Aufzählungen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:239
+#: ../../info/wxmaxima.md:230
 #, fuzzy, no-wrap
 #| msgid ""
 #| "Ordinary text\n"
@@ -914,7 +910,6 @@ msgstr ""
 #| " * A third item at the first indentation level\n"
 #| "Ordinary text\n"
 msgid ""
-"~~~~\n"
 "Ordinary text\n"
 " * One item, indentation level 1\n"
 " * Another item at indentation level 1\n"
@@ -922,7 +917,6 @@ msgid ""
 "   * A second item at the second indentation level\n"
 " * A third item at the first indentation level\n"
 "Ordinary text\n"
-"~~~~\n"
 msgstr ""
 "~~~~\n"
 "Normaler Text\n"
@@ -941,22 +935,22 @@ msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n
 msgstr "_wxMaxima_ erkennt Text, der mit einem \">\" beginnt, als ein Zitat:\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:249
+#: ../../info/wxmaxima.md:242
 #, fuzzy, no-wrap
 #| msgid ""
+#| "~~~~\n"
 #| "Ordinary text\n"
 #| "> quote quote quote quote\n"
 #| "> quote quote quote quote\n"
 #| "> quote quote quote quote\n"
 #| "Ordinary text\n"
+#| "~~~~\n"
 msgid ""
-"~~~~\n"
 "Ordinary text\n"
 "> quote quote quote quote\n"
 "> quote quote quote quote\n"
 "> quote quote quote quote\n"
 "Ordinary text\n"
-"~~~~\n"
 msgstr ""
 "~~~~\n"
 "Normaler Text\n"
@@ -965,6 +959,7 @@ msgstr ""
 "> Zitat Zitat Zitat\n"
 "> Zitat Zitat Zitat\n"
 "Normaler Text\n"
+"~~~~\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:251
@@ -973,14 +968,17 @@ msgid "_wxMaxima_'s TeX and html output will also recognize `=>` and replace it 
 msgstr "Die Text- und HTML-Ausgabe von _wxMaxima_ erkennen auch `=>` und ersetzen es durch das entsprechende Unicode-Symbol:\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:255
+#: ../../info/wxmaxima.md:252
 #, fuzzy, no-wrap
-#| msgid "cogito => sum.\n"
-msgid ""
+#| msgid ""
+#| "~~~~\n"
+#| "cogito => sum.\n"
+#| "~~~~\n"
+msgid "cogito => sum.\n"
+msgstr ""
 "~~~~\n"
-"cogito => sum.\n"
+"cogito => sum\n"
 "~~~~\n"
-msgstr "cogito => sum\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:257
@@ -1364,9 +1362,9 @@ msgstr ""
 #. type: Title =
 #: ../../info/wxmaxima.md:355
 #, fuzzy, no-wrap
-#| msgid "Extensions to _Maxima_"
-msgid "Extensions to _Maxima_\n"
-msgstr "Erweiterungen für _Maxima_"
+#| msgid "Extensions to _Maxima_\n"
+msgid "Extensions to _Maxima_"
+msgstr "Erweiterungen für _Maxima_\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:358
@@ -2441,9 +2439,9 @@ msgstr "Der `box()`-Befehl stellt sein Argument in _wxMaxima_ rot dar."
 #. type: Title =
 #: ../../info/wxmaxima.md:642
 #, fuzzy, no-wrap
-#| msgid "Troubleshooting"
-msgid "Troubleshooting\n"
-msgstr "Fehlersuche"
+#| msgid "Troubleshooting\n"
+msgid "Troubleshooting"
+msgstr "Fehlersuche\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:644
@@ -2702,11 +2700,10 @@ msgstr ""
 "bisherigen Befehle nochmals auszuführen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:697
-#, fuzzy
-#| msgid "playback();\n"
-msgid "~~~~ playback(); ~~~~"
-msgstr "playback();\n"
+#: ../../info/wxmaxima.md:694
+#, fuzzy, no-wrap
+msgid "playback();\n"
+msgstr "~~~~ playback(); ~~~~"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:698
@@ -2859,20 +2856,20 @@ msgstr ""
 "wo sie generiert werden sollen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:741
+#: ../../info/wxmaxima.md:735
 #, fuzzy, no-wrap
 #| msgid ""
+#| "~~~~\n"
 #| "wxdraw2d(\n"
 #| "    file_name=\"test\",\n"
 #| "    explicit(sin(x),x,1,10)\n"
 #| ");\n"
+#| "~~~~\n"
 msgid ""
-"~~~~\n"
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
 "    explicit(sin(x),x,1,10)\n"
 ");\n"
-"~~~~\n"
 msgstr ""
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
@@ -2889,7 +2886,7 @@ msgstr ""
 "generieren und dann in das Arbeitsblatt zu importieren:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:762
+#: ../../info/wxmaxima.md:744
 #, fuzzy, no-wrap
 #| msgid ""
 #| "~~~~\n"
@@ -2911,7 +2908,6 @@ msgstr ""
 #| "pngdraw2d(name,[contents]):=\n"
 #| "    pngdraw(name,gr2d(contents));\n"
 msgid ""
-"~~~~\n"
 "load(\"draw\");\n"
 "pngdraw(name,[contents]):=\n"
 "(\n"
@@ -2929,6 +2925,10 @@ msgid ""
 ");\n"
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents));\n"
+"\n"
+"pngdraw2d(\"Test\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
 msgstr ""
 "~~~~\n"
 "load(\\\"draw\\\");\n"
@@ -2948,20 +2948,6 @@ msgstr ""
 ");\n"
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents)\n"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:767
-#, no-wrap
-msgid ""
-"pngdraw2d(\"Test\",\n"
-"        explicit(sin(x),x,1,10)\n"
-");\n"
-"~~~~\n"
-msgstr ""
-"pngdraw2d(\\\"Test\\\",\n"
-"        explicit(sin(x),x,1,10)\n"
-");\n"
-"~~~~\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:768
@@ -3054,7 +3040,7 @@ msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten
 #: ../../info/wxmaxima.md:801
 #, fuzzy, no-wrap
 #| msgid "Command-line arguments\n"
-msgid "Command-line arguments\n"
+msgid "Command-line arguments"
 msgstr "Kommandozeilen-Optionen\n"
 
 #. type: Plain text
@@ -3140,6 +3126,17 @@ msgid ""
 msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
 "Schrägstrich statt eines Minusses."
+
+#~ msgid ""
+#~ "pngdraw2d(\"Test\",\n"
+#~ "        explicit(sin(x),x,1,10)\n"
+#~ ");\n"
+#~ "~~~~\n"
+#~ msgstr ""
+#~ "pngdraw2d(\\\"Test\\\",\n"
+#~ "        explicit(sin(x),x,1,10)\n"
+#~ ");\n"
+#~ "~~~~\n"
 
 #~ msgid ""
 #~ "A horizontal cursor that is able to select any number of whole cells. "
