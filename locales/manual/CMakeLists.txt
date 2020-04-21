@@ -18,7 +18,7 @@ if(PO4A-UPDATEPO)
         add_custom_command(
 	    DEPENDS ${CMAKE_SOURCE_DIR}/info/wxmaxima.md
 	    OUTPUT ${LANG}.po
-            COMMAND ${PO4A-UPDATEPO} -f text -o markdown -m "${WXMAXIMA_MD_RELATIVE}" -p "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po" -M UTF-8
+            COMMAND ${PO4A-UPDATEPO} -f text -o markdown -m "${WXMAXIMA_MD_RELATIVE}" -p "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" -M UTF-8
             COMMENT "Created and updated ${LANG}.po in order to sync the file with the changes in ${CMAKE_SOURCE_DIR}/info/wxmaxima.md"
         )
     endforeach()
