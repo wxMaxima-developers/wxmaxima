@@ -78,7 +78,7 @@ if(PANDOC AND PO4A_TRANSLATE)
     execute_process(
         COMMAND ${PANDOC} --version
         OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
-    # get pandoc major version number, if >2 use --pdf-engine else --latex-engine (they changed the name of the command line option)
+    # get pandoc major version number, if >=2 use --pdf-engine else --latex-engine (they changed the name of the command line option)
     string(REGEX REPLACE "^pandoc ([0-9]).*$" "\\1"  PANDOC_VERSION ${PANDOC_VERSION_TEXT})
     if(PANDOC_VERSION LESS_EQUAL 1)
         message(STATUS "pandoc version < 2 found - using option --latex-engine=${LATEX}")
