@@ -13,9 +13,9 @@ file(GLOB TRANSLATION_FILES *.po)
 if(PO4A-UPDATEPO)
     foreach(POFILE ${TRANSLATION_FILES})
         string(REGEX REPLACE ".*/(.*).po$" "\\1" LANG ${POFILE})
-
+        file(RELATIVE_PATH WXMAXIMA_MD_RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/info/wxmaxima.md")
         add_custom_target(manual_${LANG}_po
-            COMMAND ${PO4A-UPDATEPO} -f text -o markdown -m ${CMAKE_SOURCE_DIR}/info/wxmaxima.md -p "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" -M UTF-8
+            COMMAND ${PO4A-UPDATEPO} -f text -o markdown -m "${WXMAXIMA_MD_RELATIVE}" -p "${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po" -M UTF-8
             COMMENT "Created and updated ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po in order to sync the file with the changes in ${CMAKE_SOURCE_DIR}/info/wxmaxima.md"
         )
         add_dependencies(update-locale-manual manual_${LANG}_po)
