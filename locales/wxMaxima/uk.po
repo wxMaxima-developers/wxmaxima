@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-21 17:21+0200\n"
-"PO-Revision-Date: 2020-04-20 10:18+0300\n"
+"PO-Revision-Date: 2020-04-21 20:22+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:183
@@ -671,9 +671,8 @@ msgid "A symbol from the configuration dialogue"
 msgstr "Символ із діалогового вікна налаштовування"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:968
-#, fuzzy
 msgid "A third fitting algorithm\n"
-msgstr "Використовуємо інший алгоритм апроксимації\n"
+msgstr "Третій алгоритм апроксимації\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:192
 msgid ""
@@ -818,7 +817,6 @@ msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Додаткові символи для бічної панелі «символи»:"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1298
-#, fuzzy
 msgid ""
 "Additionally haven given nearly all equations names allows us to reference "
 "the equations whenever we need them. For example we can print them out "
@@ -843,7 +841,6 @@ msgid ""
 msgstr "Крім того, нам цікавий лише перший запис у списку результатів:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1335
-#, fuzzy
 msgid ""
 "Additionally, the left hand side and the right hand side can be extracted "
 "using the command lhs() and rhs(), which allows to use the part left or "
@@ -1446,7 +1443,6 @@ msgstr ""
 "доволі швидко:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1278
-#, fuzzy
 msgid ""
 "By choosing [a,b] as the list of solution variables, maxima is automatically "
 "told to eliminate these two variables on the right side of the equations, if "
@@ -2064,7 +2060,6 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr "Перетворювати тригонометричні функції у експоненційну форму"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:718
-#, fuzzy
 msgid "Converting the data to a continuous curve\n"
 msgstr "Перетворення даних у неперервну криву\n"
 
@@ -3971,7 +3966,6 @@ msgid "Identical to"
 msgstr "Ідентичний до"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1360
-#, fuzzy
 msgid ""
 "If in mathematics two things cancel each other out, they do so exactly. The "
 "same isn't true with IEEE floating-point numbers like the ones the computer "
@@ -4205,7 +4199,6 @@ msgid "If we just want to know the typical value we can do the following:\n"
 msgstr "Якщо нам потрібне лише типове значення, можна зробити так:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1210
-#, fuzzy
 msgid ""
 "If you are studying mathematics the good news is that solving equations is "
 "an art, a computer can help with in many special cases, but that often "
@@ -4864,7 +4857,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5087,7 +5080,6 @@ msgstr ""
 "Найпоширенішою формою цієї команди є така:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1373
-#, fuzzy
 msgid ""
 "Many computer programs are configured to show small numbers as \"0\" or only "
 "to show the first few digits after the decimal point hoping that the rest is "
@@ -5191,7 +5183,6 @@ msgid "Mathematical description\n"
 msgstr "Математичний опис\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1205
-#, fuzzy
 msgid ""
 "Mathematics can be seen as a language consisting only of a rather small set "
 "of words and only a handful of grammatical rules. Both sets are carefully "
@@ -5317,6 +5308,8 @@ msgid ""
 "Maxima even offers a third fitting algorithm that is even able to understand "
 "constraints:\n"
 msgstr ""
+"У Maxima передбачено і третій алгоритм апроксимації, який навіть здатен"
+" врахувати обмеження:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9308
 msgid "Maxima has finished calculating."
@@ -7591,7 +7584,6 @@ msgid "Simplify trigonometric expression"
 msgstr "Спростити тригонометричний вираз"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1383
-#, fuzzy
 msgid ""
 "Since it is the general case that allows to learn about the fundamental "
 "mechanisms often a good approach is to solve everything symbolically and to "
@@ -7684,7 +7676,6 @@ msgid "Solve algebraic system of equations"
 msgstr "Розв'язати систему алгебраїчних рівнянь"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1261
-#, fuzzy
 msgid ""
 "Solve also accepts lists as its arguments. In this case it will only find "
 "solutions, if the following conditions are all met:\n"
@@ -8652,7 +8643,6 @@ msgstr ""
 "може бути отримано на основі цих даних:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1250
-#, fuzzy
 msgid ""
 "This time, the type of solutions we can get depends on the value of a, which "
 "is why maxima asked about it. One can avoid asking questions by telling the "
@@ -8957,7 +8947,6 @@ msgid "Unfold all folded sections"
 msgstr "Розгорнути всі згорнути розділи"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:823
-#, fuzzy
 msgid ""
 "Unfortunately it is hard to fit to experimental data to this approach in "
 "many ways, for example:\n"
@@ -9298,7 +9287,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
