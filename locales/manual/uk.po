@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-04-21 17:32+0200\n"
-"PO-Revision-Date: 2020-04-21 20:17+0300\n"
+"PO-Revision-Date: 2020-04-22 22:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -518,11 +518,10 @@ msgstr ""
 "клавіш зі стрілками. Цей курсор працює подібно до курсора у текстовому "
 "редакторі."
 
-#. type: Title ###
-#: ../../info/wxmaxima.md:111
-#, fuzzy, no-wrap
+#. type: Title ###: ../../info/wxmaxima.md:111
+#, no-wrap
 msgid "Sending cells to Maxima"
-msgstr "Розширення _Maxima_\n"
+msgstr "Надсилання комірок для обчислення у Maxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:114
@@ -575,6 +574,12 @@ msgid ""
 "<kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective "
 "menu item (Cell/Show Template).\n"
 msgstr ""
+"Окрім доповнення, назви файла, назви модуля або назви поточної команди чи"
+" змінної, засіб автоматичного доповнення може показувати шаблони для"
+" більшості команд, вказуючи тип (і значення) параметрів, які очікує отримати"
+" відповідна програма. Щоб задіяти цю можливість, натисніть комбінацію клавіш"
+" <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>ПРОБІЛ</kbd> або виберіть відповідний"
+" пункт меню (Комірка/Показати шаблон).\n"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:123
@@ -591,6 +596,11 @@ msgid ""
 "rectangles for menus _etc_.) of nearly any given language can fit within "
 "that limit."
 msgstr ""
+"Комп'ютери традиційно зберігають символи у форматі 8-бітових значень. Це"
+" уможливлює існування наборів, що складаються лише із 256 різних символів. У"
+" такий набір може бути включено усі літери, цифри та символи керування"
+" (завершення передавання, кінець рядка, лінії та кутики для малювання меню"
+" _тощо_) майже будь-якої європейської мови."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:128
@@ -601,6 +611,11 @@ msgid ""
 "An encoding that makes english text work like normal, but to use characters "
 "whose keycode are more than 8 bits long."
 msgstr ""
+"Втім, у більшості мов до вибраної кодової сторінки із 256 символів не можна"
+" включити додаткові символи, зокрема літери грецької абетки, які широко"
+" використовуються у математичних формулах. Щоб подолати обмеження подібного"
+" типу, було винайдено Юнікод — кодування, яке працює для латиниці, але"
+" використовує символи, код яких є числом, що не вкладається до 8 бітів."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
@@ -610,6 +625,11 @@ msgid ""
 "encoding. As at least one of this is likely to be true _wxMaxima_ provides a "
 "method of entering Greek characters using the keyboard:"
 msgstr ""
+"_Maxima_ уможливлює використання символів Юнікоду, якщо програму було зібрано"
+" за допомогою компілятора Lisp, у якому передбачено підтримку lisp або"
+" такого, який є нейтральним щодо кодування символів. Оскільки, хоча б одна з"
+" цих вимог, зазвичай, справджується, у _wxMaxima_ реалізовано спосіб введення"
+" грецьких символів з клавіатури:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:133
@@ -729,6 +749,56 @@ msgid ""
 "->            a right arrow\n"
 "-->           a long right arrow\n"
 msgstr ""
+"hbar          стала Планка: h із горизонтальною рискою згори\n"
+"Hbar          H із горизонтальною рискою згори\n"
+"2             квадрат\n"
+"3             куб\n"
+"/2            1/2\n"
+"partial       знак частинної похідної (d у dx/dt)\n"
+"integral      символ інтеграла\n"
+"sq            корінь\n"
+"ii            уявна одиниця\n"
+"ee            елемент\n"
+"in            включається\n"
+"impl,implies  випливає\n"
+"inf           нескінченність\n"
+"empty         порожня множина\n"
+"TB            великий трикутник праворуч\n"
+"tb            малий трикутник праворуч\n"
+"and           і\n"
+"or            або\n"
+"xor           виключне або\n"
+"nand          ні-і\n"
+"nor           ні-або\n"
+"equiv         еквівалентний\n"
+"not           ні\n"
+"union         об'єднання\n"
+"inter         перетин\n"
+"subseteq      підмножина або рівна множина\n"
+"subset        підмножина\n"
+"notsubseteq   не підмножина або рівна множина\n"
+"notsubset     не підмножина\n"
+"approx        приблизно\n"
+"propto        пропорційне до\n"
+"neq,!=,/=\n"
+"або #         не рівне\n"
+"+/- або pm    плюс-мінус\n"
+"<= або leq    менше або дорівнює\n"
+">= або geq    більше або дорівнює\n"
+"<< або ll     набагато менше за\n"
+">> або gg     набагато більше за\n"
+"equiv         є еквівалентним\n"
+"qed           що і слід було довести\n"
+"nabla         набла-оператор\n"
+"sum           знак суми\n"
+"prod          знак добутку\n"
+"exists        знак «існує»\n"
+"nexists       знак «не існує»\n"
+"parallel      знак «паралельно»\n"
+"perp          знак «перпендикулярно»\n"
+"leadsto       знак «випливає»\n"
+"->            стрілка праворуч\n"
+"-->           довга стрілка праворуч\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:209
@@ -738,6 +808,10 @@ msgid ""
 "unicode characters by pressing <kbd>ESC</kbd> [number of the character] "
 "<kbd>ESC</kbd>.\n"
 msgstr ""
+"Якщо спеціального символу немає у списку, ви можете ввести його як довільний"
+" символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер"
+" символу] "
+"<kbd>ESC</kbd>.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:211
@@ -755,6 +829,11 @@ msgid ""
 "that doesn’t support dealing with Unicode characters they might cause an "
 "error message instead."
 msgstr ""
+"Будь ласка, зауважте, що більшість цих символів (виключеннями є логічні"
+" символи) не мають спеціального значення у _Maxima_ і тому можуть бути"
+" оброблені як звичайні символи. Якщо _Maxima_ зібрано із Lisp, у якому не"
+" передбачено обробки символів Юнікоду, використання цих символів може"
+" призвести до показу повідомлення про помилку."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:215
@@ -772,6 +851,12 @@ msgid ""
 "the _wxMaxima_ window. Other useful panes is the one that allows to input "
 "Greek letters using the mouse."
 msgstr ""
+"Доступ до найважливіших команд _Maxima_ або речей, подібних до таблиці"
+" змісту, вікон із діагностичними повідомленнями або журналу останніх виданих"
+" команд можна отримати за допомогою бічних панелей. Увімкнути бічні панелі"
+" можна за допомогою меню «Перегляд». Панелі можна пересувати як всередині"
+" вікна _wxMaxima_, так і ззовні. Ще однією корисною панеллю є панель введення"
+" грецьких літер за допомогою вказівника миші."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:220
@@ -793,6 +878,12 @@ msgid ""
 "clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers "
 "several entries in the right-click menu."
 msgstr ""
+"Деякі текстові процесори і подібні програми або розпізнають вхідні дані"
+" MathML і автоматично вставляють їх до придатного для редагування рівняння,"
+" або (подібно до LibreOffice 5.1) мають у складі редактор рівнянь, у якому"
+" передбачено можливість імпортування даних MathML з буфера обміну даними. У"
+" інших редакторах передбачено підтримку формул у RTF. Через це у _wxMaxima_"
+" передбачено декілька відповідних пунктів у контекстному меню."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:226
@@ -933,6 +1024,10 @@ msgid ""
 "that follows the `TeX:` marker. Using this feature allows the entry of TeX "
 "markup within the _wxMaxima_ workbook."
 msgstr ""
+"Якщо текстову комірку буде розпочато з `TeX:` у експортованих у форматі TeX"
+" даних буде буквально відтворено текст, який вказано після позначки `TeX:`."
+" За допомогою цієї можливості можна використовувати розмітку TeX у робочій"
+" книзі _wxMaxima_."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:270
@@ -998,6 +1093,9 @@ msgid ""
 "they don’t contain enough structural information they cannot be read back as "
 "a _wxMaxima_ session."
 msgstr ""
+"Ви можете використовувати файли `.mac` для написання власної бібліотеки"
+" макросів. Але оскільки у них не міститься достатніх даних щодо структури, їх"
+" не можна читати як сеанс _wxMaxima_."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:289
@@ -1028,6 +1126,9 @@ msgid ""
 "This xml-based file format saves the complete worksheet including things "
 "like the zoom factor and the watchlist. It is the preferred file format."
 msgstr ""
+"У цьому заснованому на xml форматі файлів зберігається увесь робочий аркуш,"
+" включно із даними щодо масштабу та списком спостереження. Цей формат файлів"
+" є рекомендованим."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:297
@@ -1100,6 +1201,9 @@ msgid ""
 "After the next start plots embedded into the worksheet will be created with "
 "this size if the value of `wxplot_size` isn't changed by _maxima_."
 msgstr ""
+"Після наступного запуску креслення, які вбудовано до робочого аркуша, буде"
+" створено з цим розміром, якщо значення `wxplot_size` не було змінено"
+" _maxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:315
@@ -1179,6 +1283,8 @@ msgid ""
 "If text is selected if any of these keys is pressed the selected text will "
 "be put between the matched signs."
 msgstr ""
+"Якщо при натисканні якоїсь із цих комбінацій клавіш було позначено фрагмент"
+" тексту, цей текст буде вставлено між відповідними символами."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:334
@@ -1272,6 +1378,8 @@ msgid ""
 "if `wxsubscripts` is set to true variable names of the format `x_y` are "
 "displayed using a subscript if"
 msgstr ""
+"якщо встановлено значення true для `wxsubscripts`, назви змінних у форматі"
+" `x_y` буде показано як літеру із нижнім індексом, якщо"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:365
@@ -1347,6 +1455,9 @@ msgid ""
 "graphical user interface will have to provide some extensions to the "
 "original program."
 msgstr ""
+"Креслення (яке фундаментально пов'язано із графікою) є місцем, де графічний"
+" інтерфейс користувача має надавати якісь додаткові можливості до"
+" оригінальної програми."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:385
@@ -1533,6 +1644,9 @@ msgid ""
 "The same functionality for 3D plots is accessible as `with_slider_draw3d`, "
 "which allows for rotating 3d plots:"
 msgstr ""
+"Доступ до тих самих можливостей для просторових креслень можна отримати за"
+" допомогою функції `with_slider_draw3d`, яка надає можливість обертати"
+" просторові креслення:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:454
@@ -1936,6 +2050,7 @@ msgid ""
 "Sets the line color for the following plots the current draw command "
 "contains."
 msgstr ""
+"Встановлює колір лінії для наступних креслень у поточній команді малювання."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:570
@@ -1949,6 +2064,8 @@ msgid ""
 "Sets the fill color for the following plots the current draw command "
 "contains."
 msgstr ""
+"Встановлює колір заповнення для наступних креслень у поточній команді"
+" малювання."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:574
@@ -1974,6 +2091,8 @@ msgid ""
 "Allows to select an adequate point in the speed vs. accuracy tradeoff that "
 "is part of any plot program."
 msgstr ""
+"Надає змогу вибрати адекватну позицію у компромісному питанні «швидкість чи"
+" точність?», яке є частиною будь-якої програми для креслення."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:582
@@ -2609,6 +2728,8 @@ msgid ""
 "If a different format is to be used it is easier to generate the images and "
 "then to import them into the worksheet again:"
 msgstr ""
+"Якщо має бути використано якийсь інший формат зображень, простіше створити"
+" зображення окремо, а потім імпортувати їх до робочого аркуша:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:744
