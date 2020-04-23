@@ -1074,7 +1074,12 @@ void Image::Recalculate(double scale)
   if (viewPortWidth < 10)
     viewPortWidth = 10;
 
-  scale = 1.0;
+  if (!configuration->GetPrinting())
+  {
+    // Change the scale only if we are not printing.
+    // Resetting the scale for printing makes the images become too small.
+    scale = 1.0;
+  }
   
   // Shrink to .9* the canvas size, if needed
   if (scale * width > .9 * viewPortWidth)
