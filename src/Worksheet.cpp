@@ -980,15 +980,15 @@ bool Worksheet::RecalculateIfNeeded()
   int height;
   GetClientSize(&width, &height);
 
+  wxPoint upperLeftScreenCorner;
+  CalcScrolledPosition(0, 0,
+                       &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
+  m_configuration->SetVisibleRegion(wxRect(upperLeftScreenCorner,
+                                           upperLeftScreenCorner + wxPoint(width,height)));
+  m_configuration->SetWorksheetPosition(GetPosition());
+
   while (tmp != NULL)
   {
-    wxPoint upperLeftScreenCorner;
-    CalcScrolledPosition(0, 0,
-                         &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
-    m_configuration->SetVisibleRegion(wxRect(upperLeftScreenCorner,
-                                      upperLeftScreenCorner + wxPoint(width,height)));
-    m_configuration->SetWorksheetPosition(GetPosition());
-
     tmp->Recalculate();
     tmp = tmp->GetNext();
   }
