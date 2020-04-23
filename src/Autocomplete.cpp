@@ -287,10 +287,11 @@ void AutoComplete::LoadSymbols_BackgroundTask()
           userDir.GetFullPath().utf8_str()));
       if(maximauserfilesdir.IsOpened())
         maximauserfilesdir.Traverse(userLispIterator);
+      int num = m_builtInLoadFiles.GetCount();
       wxLogMessage(
         wxString::Format(
-          _("Found %li loadable files."),
-          (unsigned long)m_builtInLoadFiles.GetCount()
+          _("Found %i loadable files."),
+          num
           )
         );
     }
@@ -310,13 +311,14 @@ void AutoComplete::LoadSymbols_BackgroundTask()
       wxDir maximadir(demoDir.GetFullPath());
       if(maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator);
+      int num = m_builtInDemoFiles.GetCount();
+      wxLogMessage(
+        wxString::Format(
+          _("Found %i demo files."),
+          num
+          )
+        );
     }
-    wxLogMessage(
-      wxString::Format(
-        _("Found %li demo files."),
-        (unsigned long)m_builtInDemoFiles.GetCount()
-        )
-      );
     m_builtInLoadFiles.Sort();
     m_builtInDemoFiles.Sort();
   }

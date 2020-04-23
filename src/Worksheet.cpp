@@ -863,8 +863,6 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   if (newCell == NULL)
     return;
 
-  OutputChanged();
-
   GroupCell *tmp = GetWorkingGroup(true);
 
   if (tmp == NULL)
@@ -884,8 +882,10 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   tmp->AppendOutput(newCell);
   
   UpdateConfigurationClientSize();
-  m_configuration->AdjustWorksheetSize();
-  Recalculate(tmp);
+  if(tmp->m_next == NULL)
+    UpdateMLast();
+  OutputChanged();
+  Recalculate(tmp, false);
   
   if (FollowEvaluation())
   {
