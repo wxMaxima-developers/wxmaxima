@@ -145,8 +145,7 @@ wxString FunCell::ToString()
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
-  wxString s = m_nameCell->ListToString() + m_argCell->ListToString();
-  return s;
+  return m_nameCell->ListToString() + m_argCell->ListToString();
 }
 
 wxString FunCell::ToMatlab()
