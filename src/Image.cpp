@@ -1106,8 +1106,9 @@ void Image::Recalculate(double scale)
     m_height = 100;
     m_width = 100;
   }
-// Clear this cell's image cache if it doesn't contain an image of the size
-  // we need right now.
-  if (m_scaledBitmap.GetWidth() != m_width)
+  // Clear this cell's image cache if it doesn't contain an image of the size
+  // we need right now. Printing uses unscaled bitmaps, so the cache is left
+  // unchanged then.
+  if (!configuration->GetPrinting() && m_scaledBitmap.GetWidth() != m_width)
     ClearCache();
 }
