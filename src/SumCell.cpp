@@ -30,6 +30,7 @@
 
 #include "SumCell.h"
 #include "TextCell.h"
+#include "FontCache.h"
 
 SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
@@ -119,27 +120,35 @@ void SumCell::RecalculateWidths(int fontsize)
     m_over = std::shared_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
-//   if (configuration->CheckTeXFonts())
-//   {
-//     wxDC *dc = configuration->GetDC();
-//     double fontsize1 = Scale_Px(configuration->GetMathFontSize());
-//     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-//                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-//                 configuration->GetTeXCMEX());
-//     if (!font.IsOk())
-//       configuration->CheckTeXFonts(false);
-  
-// #if wxCHECK_VERSION(3, 1, 2)
-//     font.SetFractionalPointSize(fontsize1);
-// #else
-//     font.SetPointSize(fontsize1);
-// #endif
-//     dc->SetFont(font);
-//     dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signHeight);
-//     m_signWCenter = m_signWidth / 2;
-//     m_signTop = (2 * m_signHeight) / 5;
-//     m_signHeight = (2 * m_signHeight) / 5;
-//   }
+  if (false)
+  {
+    Configuration *configuration = *m_configuration;
+    if (configuration->CheckTeXFonts())
+    {
+      wxDC *dc = configuration->GetDC();
+      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+
+      wxFont font =
+        FontCache::GetAFont(wxFontInfo(fontsize1)
+                              .Family(wxFONTFAMILY_MODERN)
+                              .Style(wxFONTSTYLE_NORMAL)
+                              .Weight(wxFONTWEIGHT_NORMAL)
+                              .Underlined(false)
+                              .FaceName(configuration->GetTeXCMEX()));
+
+      if (!font.IsOk())
+        configuration->CheckTeXFonts(false);
+
+      dc->SetFont(font);
+#if 0
+      dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signHeight);
+      m_signWCenter = m_signWidth / 2;
+      m_signTop = (2 * m_signHeight) / 5;
+      m_signHeight = (2 * m_signHeight) / 5;
+#endif
+    }
+  } // if (false)
+
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
   m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
   m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
@@ -184,27 +193,35 @@ void SumCell::Draw(wxPoint point)
     over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2);
     m_over->DrawList(over);
 
-// //     if (configuration->CheckTeXFonts())
-// //     {
-// //       SetForeground();
-// //       double fontsize1 = Scale_Px(configuration->GetMathFontSize());
-// //       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-// //                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-// //                   configuration->GetTeXCMEX());
-// //       if (!font.IsOk())
-// //         font = *wxNORMAL_FONT;
-// //       wxASSERT(fontsize1 > 0);
-// // #if wxCHECK_VERSION(3, 1, 2)
-// //       font.SetFractionalPointSize(fontsize1);
-// // #else
-// //       font.SetPointSize(fontsize1);
-// // #endif
-// //       dc->SetFont(font);
-// //       dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
-// //                   sign.x + m_signWCenter - m_signWidth / 2,
-// //                   sign.y - m_signTop);
-// //     }
-// //     else
+    if (false /*this code is disabled*/ && configuration->CheckTeXFonts())
+    {
+      /*this code is disabled*/
+      SetForeground();
+      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+      wxASSERT(fontsize1 > 0);
+
+      auto req = wxFontInfo(fontsize1)
+                   .Family(wxFONTFAMILY_MODERN)
+                   .Style(wxFONTSTYLE_NORMAL)
+                   .Weight(wxFONTWEIGHT_NORMAL)
+                   .Underlined(false)
+                   .FaceName(configuration->GetTeXCMEX());
+
+      wxFont font = FontCache::GetAFont(req);
+
+      if (!font.IsOk()) {
+        FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
+        font = FontCache::GetAFont(req);
+      }
+
+      dc->SetFont(font);
+#if 0
+      dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
+                   sign.x + m_signWCenter - m_signWidth / 2,
+                   sign.y - m_signTop);
+#endif
+    }
+    else
     {
       SetPen(1.5);
       if (m_sumStyle == SM_SUM)

@@ -27,6 +27,7 @@
 #include "Configuration.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
+#include "FontCache.h"
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/font.h>
@@ -223,14 +224,17 @@ Configuration::Configuration(wxDC *dc) :
   m_parenthesisDrawMode = unknown;
 
   #ifdef __WXMSW__
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetStyle(wxFONTSTYLE_NORMAL );
-  if(font.IsOk())
-    m_fontName = wxT("Linux Libertine O");
-  if(font.IsOk())
-    m_mathFontName = wxT("Linux Libertine O");
+  auto req = wxFontInfo()
+               .Family(wxFONTFAMILY_MODERN)
+               .FaceName(wxT("Linux Libertine O"))
+               .Style(wxFONTSTYLE_NORMAL);
+
+  wxFont font = FontCache::GetAFont(req);
+  if (font.IsOk())
+  {
+    m_fontName = req.GetFaceName();
+    m_mathFontName = req.GetFaceName();
+  }
   else
     m_mathFontName = wxEmptyString;
   #endif
@@ -507,28 +511,34 @@ wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
   fontWeight = IsBold(textStyle);
   
   fontEncoding = GetFontEncoding();
-  
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(fontName);
-  font.SetEncoding(fontEncoding);
-  font.SetStyle(fontStyle);
-  font.SetWeight(fontWeight);
-  font.SetUnderlined(underlined);
-  font.SetEncoding(fontEncoding);
+
+  wxFont font =
+    FontCache::GetAFont(wxFontInfo(fontSize1)
+                          .Family(wxFONTFAMILY_MODERN)
+                          .FaceName(fontName)
+                          .Encoding(fontEncoding)
+                          .Style(fontStyle)
+                          .Weight(fontWeight)
+                          .Underlined(underlined)
+                          .Encoding(fontEncoding));
+
   if (!font.IsOk())
   {
-    font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetEncoding(fontEncoding);
-    font.SetStyle(fontStyle);
-    font.SetWeight(fontWeight);
-    font.SetUnderlined(underlined);
+    font =
+      FontCache::GetAFont(wxFontInfo(fontSize1)
+                            .Family(wxFONTFAMILY_MODERN)
+                            .Encoding(fontEncoding)
+                            .Style(fontStyle)
+                            .Weight(fontWeight)
+                            .Underlined(underlined));
   }
   
   if (!font.IsOk())
-    font = *wxNORMAL_FONT;
-  
-  font.SetPointSize(fontSize1);
+  {
+    auto req = wxFontInfo(fontSize1);
+    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
+    font = FontCache::GetAFont(req);
+  }
 
   return font;
 }
@@ -598,7 +608,9 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
       m_parenthesisDrawMode = assembled_unicode;
       return m_parenthesisDrawMode;
     }
-    font.SetFaceName(wxT("Linux Libertine"));
+    auto req = FontInfo::GetFor(font)
+               .FaceName(wxT("Linux Libertine"));
+    font = FontCache::GetAFont(req);
     if (CharsExistInFont(font,
                          wxT(PAREN_OPEN_TOP_UNICODE),
                          wxT(PAREN_OPEN_EXTEND_UNICODE),
@@ -608,8 +620,8 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
       m_parenthesisDrawMode = assembled_unicode_fallbackfont;
       return m_parenthesisDrawMode;
     }
-      
-    font.SetFaceName(wxT("Linux Libertine O"));
+    req.FaceName(wxT("Linux Libertine O"));
+    font = FontCache::GetAFont(req);
     if (CharsExistInFont(font,
                          wxT(PAREN_OPEN_TOP_UNICODE),
                          wxT(PAREN_OPEN_EXTEND_UNICODE),

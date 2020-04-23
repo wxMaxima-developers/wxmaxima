@@ -33,6 +33,7 @@
 #include "BTextCtrl.h"
 #include "Cell.h"
 #include "Dirstructure.h"
+#include "FontCache.h"
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/fileconf.h>
@@ -1294,22 +1295,25 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 {
-    wxFont font;
+  wxFontInfo req;
 #ifdef __WXMSW__
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetStyle(wxFONTSTYLE_NORMAL );
-  if(!font.IsOk())
+  req = wxFontInfo()
+    .Family(wxFONTFAMILY_MODERN)
+    .FaceName(wxT("Linux Libertine O"))
+    .Style(wxFONTSTYLE_NORMAL);
+  if (!FontCache::GetAFont(req).IsOk())
 #endif
-    font = wxFont(m_configuration->GetMathFontSize(), wxFONTFAMILY_DEFAULT,
-                  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
-                  false, m_configuration->MathFontName());
+  req = wxFontInfo(m_configuration->GetMathFontSize())
+          .Family(wxFONTFAMILY_DEFAULT)
+          .Style(wxFONTSTYLE_NORMAL)
+          .Weight(wxFONTWEIGHT_NORMAL)
+          .Underlined(false)
+          .FaceName(m_configuration->MathFontName());
+  if (!FontCache::GetAFont(req).IsOk())
+    req = FontInfo::GetFor(*wxNORMAL_FONT);
 
-  if(!font.IsOk())
-    font = *wxNORMAL_FONT;
-
-  wxFont math;
-  math = wxGetFontFromUser(this, font);
+  wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req));
+  FontCache::Get().AddFont(math);
 
   if (math.Ok())
   {
@@ -1324,7 +1328,6 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 {
-  wxFont font;
   int fontsize = m_configuration->GetDefaultFontSize();
   wxString fontName;
   
@@ -1346,28 +1349,29 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   }
   else
     fontName = m_configuration->m_styles[TS_DEFAULT].FontName();
-  
-  font = wxFont(fontsize,
-                wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
-                wxFONTWEIGHT_NORMAL,
-                false, fontName,
-                m_fontEncoding);
 
-  if(!font.IsOk())
+  auto req = wxFontInfo(fontsize)
+          .Family(wxFONTFAMILY_DEFAULT).Style(wxFONTSTYLE_NORMAL)
+          .Weight(wxFONTWEIGHT_NORMAL)
+          .Underlined(false).FaceName(fontName)
+          .Encoding(m_fontEncoding);
+
+  wxFont font = FontCache::GetAFont(req);
+
+  if (!font.IsOk())
   {
     fontName = wxT("Linux Libertine O");
-    font = wxFont(fontsize,
-                  wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
-                  wxFONTWEIGHT_NORMAL,
-                  false, fontName,
-                  m_fontEncoding);
+    req.FaceName(fontName);
+    font = FontCache::GetAFont(req);
   }
-  
-  if(!font.IsOk())
-    font = *wxNORMAL_FONT;
-  
-  font.SetPointSize(fontsize);
+
+  if (!font.IsOk()) {
+    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
+    font = FontCache::GetAFont(req);
+  }
+
   font = wxGetFontFromUser(this, font);
+  req = FontCache::AddAFont(font);
   
   if (font.IsOk())
   {
@@ -1641,12 +1645,17 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
     italic = wxFONTSTYLE_SLANT;
   if (m_underlined)
     underlined = true;
-  wxFont font = wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font);
-  if(!font.IsOk())
-    font = *wxNORMAL_FONT;
 
-  font.SetPointSize(m_size);
-  if(font.IsOk())
+  auto req = wxFontInfo(m_size).Family(wxFONTFAMILY_MODERN)
+               .Italic(italic).Bold(bold).Underlined(underlined).FaceName(m_font);
+  wxFont font = FontCache::GetAFont(req);
+  if (!font.IsOk())
+  {
+    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
+    font = FontCache::GetAFont(req);
+  }
+
+  if (font.IsOk())
     dc.SetFont(font);
 
   dc.GetTextExtent(example, &text_width, &text_height);

@@ -28,6 +28,7 @@
  */
 
 #include "TextCell.h"
+#include "FontCache.h"
 #include "wx/config.h"
 
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
@@ -504,17 +505,14 @@ void TextCell::RecalculateWidths(int fontsize)
           m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
         }
 
-        wxFont font = dc->GetFont();
         double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
         if(fontsize1 < 4)
           fontsize1 = 4;
-#if wxCHECK_VERSION(3, 1, 2)
-        font.SetFractionalPointSize(fontsize1);
-#else
-        font.SetPointSize(fontsize1);
-#endif
-        dc->SetFont(font);
 
+        auto req = FontInfo::GetFor(FontCache::AddAFont(dc->GetFont()));
+        FontInfo::SetPointSize(req, fontsize1);
+        wxFont font = FontCache::GetAFont(req);
+        dc->SetFont(font);
       
         m_width = Scale_Px(configuration->GetLabelWidth());
         // We will decrease it before use
@@ -522,22 +520,16 @@ void TextCell::RecalculateWidths(int fontsize)
         wxSize labelSize = GetTextSize(text);
         wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
                      _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-        font = dc->GetFont();
-#if wxCHECK_VERSION(3, 1, 2)
-        font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
-#else
-        font.SetPointSize(Scale_Px(m_fontSizeLabel));
-#endif
-        labelSize = GetTextSize(text);
+
         while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
         {
 #if wxCHECK_VERSION(3, 1, 2)
           m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
 #else
           m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          font.SetPointSize(Scale_Px(m_fontSizeLabel));
 #endif
+          FontInfo::SetPointSize(req, m_fontSizeLabel);
+          font = FontCache::GetAFont(req);
           dc->SetFont(font);
           labelSize = GetTextSize(text);
         } 
@@ -699,12 +691,9 @@ void TextCell::Draw(wxPoint point)
 
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
-  wxFont font(dc->GetFont());
-#if wxCHECK_VERSION(3, 1, 2)
-  font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
-#else
-  font.SetPointSize(Scale_Px(m_fontSizeLabel));
-#endif
+  auto req = wxFontInfo(Scale_Px(m_fontSizeLabel));
+  FontInfo::CopyWithoutSize(&dc->GetFont(), req);
+  auto font = FontCache::GetAFont(req);
   dc->SetFont(font);
 }
 
@@ -735,21 +724,28 @@ void TextCell::SetFont(int fontsize)
       )
       m_fontSize = fontsize;
   }
-    
-  wxFont font = configuration->GetFont(m_textStyle,fontsize);
+
+  wxFont font = configuration->GetFont(m_textStyle, fontsize);
+  auto req = FontInfo::GetFor(font);
 
   // Use jsMath
   if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
-    font.SetFaceName(m_texFontname);
-  
-  if (!font.IsOk())
   {
-    font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetFaceName(wxEmptyString);
+    req.FaceName(m_texFontname);
+    font = FontCache::GetAFont(req);
   }
   
   if (!font.IsOk())
+  {
+    req.Family(wxFONTFAMILY_MODERN).FaceName(wxEmptyString);
+    font = FontCache::GetAFont(req);
+  }
+  
+  if (!font.IsOk())
+  {
     font = *wxNORMAL_FONT;
+    req = FontInfo::GetFor(font);
+  }
 
   if(m_fontSize < 4)
     m_fontSize = 4;
@@ -760,20 +756,17 @@ void TextCell::SetFont(int fontsize)
   {
     if((*m_configuration)->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
     {
-      font.SetStyle(wxFONTSTYLE_NORMAL);
+      req.Style(wxFONTSTYLE_NORMAL);
     }
     else
     {
-      font.SetStyle(wxFONTSTYLE_ITALIC);
+      req.Style(wxFONTSTYLE_ITALIC);
     }
   }
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
-#if wxCHECK_VERSION(3, 1, 2)
-  font.SetFractionalPointSize(Scale_Px(m_fontSize));
-#else
-  font.SetPointSize(Scale_Px(m_fontSize));
-#endif
+  FontInfo::SetPointSize(req, Scale_Px(m_fontSize));
+  font = FontCache::GetAFont(req);
 
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -782,7 +775,9 @@ void TextCell::SetFont(int fontsize)
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())
   {
-    dc->SetFont(wxFontInfo(10));
+    req = wxFontInfo(10);
+    font = FontCache::GetAFont(req);
+    dc->SetFont(font);
   }
 }
 
