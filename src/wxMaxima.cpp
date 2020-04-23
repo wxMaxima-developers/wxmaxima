@@ -1234,15 +1234,9 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
     wxBusyCursor crs;
 
     if (s.StartsWith("<mth>") || s.StartsWith("<math>"))
-    {
-      std::cerr<<"Test: \""<<s<<"\"\n";
       DoConsoleAppend("<span>" + s + "</span>", type, false, true, userLabel);
-    }
     else
-    {
       lastLine = DoRawConsoleAppend(s, type);
-      s = wxEmptyString;
-    }
   }
   else if (type == MC_TYPE_PROMPT)
   {
