@@ -31,6 +31,7 @@
 #include <wx/regex.h>
 
 #include "EditorCell.h"
+#include "FontCache.h"
 #include "wxMaxima.h"
 #include "MarkDown.h"
 #include "wxMaximaFrame.h"
@@ -1061,35 +1062,36 @@ void EditorCell::SetFont()
   m_underlined = configuration->IsUnderlined(m_textStyle);
   m_fontEncoding = configuration->GetFontEncoding();
 
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(m_fontName);
-  font.SetEncoding(m_fontEncoding);
-  font.SetStyle(m_fontStyle);
-  font.SetWeight(m_fontWeight);
-  font.SetUnderlined(m_underlined);
-  font.SetEncoding(m_fontEncoding);
-  if (!font.IsOk())
-  {
-    wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
-    font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetEncoding(m_fontEncoding);
-    font.SetStyle(m_fontStyle);
-    font.SetWeight(m_fontWeight);
-    font.SetUnderlined(m_underlined);
-  }
-
-  if (!font.IsOk())
-    font = *wxNORMAL_FONT;
-
   wxASSERT(m_fontSize >= 0);
   if(m_fontSize < 4)
     m_fontSize = 4;
-#if wxCHECK_VERSION(3, 1, 2)
-  font.SetFractionalPointSize(m_fontSize);
-#else
-  font.SetPointSize(m_fontSize);
-#endif
+
+  wxFont font =
+    FontCache::GetAFont(wxFontInfo(m_fontSize)
+                          .Family(wxFONTFAMILY_MODERN)
+                          .FaceName(m_fontName)
+                          .Encoding(m_fontEncoding)
+                          .Style(m_fontStyle)
+                          .Weight(m_fontWeight)
+                          .Underlined(m_underlined)
+                          .Encoding(m_fontEncoding));
+  if (!font.IsOk())
+  {
+    wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
+    font =
+      FontCache::GetAFont(wxFontInfo(m_fontSize)
+                            .Family(wxFONTFAMILY_MODERN)
+                            .Encoding(m_fontEncoding)
+                            .Style(m_fontStyle)
+                            .Weight(m_fontWeight)
+                            .Underlined(m_underlined));
+  }
+  if (!font.IsOk()) {
+    auto req = wxFontInfo(m_fontSize);
+    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
+    font = FontCache::GetAFont(req);
+  }
+
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc->SetFont(font);

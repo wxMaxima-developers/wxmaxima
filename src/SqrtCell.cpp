@@ -27,6 +27,7 @@
  */
 
 #include "SqrtCell.h"
+#include "FontCache.h"
 
 #define SIGN_FONT_SCALE 2.0
 
@@ -109,13 +110,15 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_signFontScale = 1.0;
     double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                configuration->GetTeXCMEX());
-#if wxCHECK_VERSION(3, 1, 2)
-    font.SetFractionalPointSize(fontsize1);
-#else
-    font.SetPointSize(fontsize1);
-#endif
+
+    wxFont font =
+      FontCache::GetAFont(wxFontInfo(fontsize1)
+                            .Family(wxFONTFAMILY_MODERN)
+                            .Style(wxFONTSTYLE_NORMAL)
+                            .Weight(wxFONTWEIGHT_NORMAL)
+                            .Underlined(false)
+                            .FaceName(configuration->GetTeXCMEX()));
+
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -150,14 +153,16 @@ void SqrtCell::RecalculateWidths(int fontsize)
     }
 
     fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
-    font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                  configuration->GetTeXCMEX());
     wxASSERT(fontsize1 > 0);
-#if wxCHECK_VERSION(3, 1, 2)
-    font.SetFractionalPointSize(fontsize1);
-#else
-    font.SetPointSize(fontsize1);
-#endif
+
+    font =
+      FontCache::GetAFont(wxFontInfo(fontsize1)
+                            .Family(wxFONTFAMILY_MODERN)
+                            .Style(wxFONTSTYLE_NORMAL)
+                            .Weight(wxFONTWEIGHT_NORMAL)
+                            .Underlined(false)
+                            .FaceName(configuration->GetTeXCMEX()));
+
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -205,15 +210,16 @@ void SqrtCell::Draw(wxPoint point)
       in.x += m_signWidth;
 
       double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale);
-
-      wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                  configuration->GetTeXCMEX());
       wxASSERT(fontsize1 > 0);
-#if wxCHECK_VERSION(3, 1, 2)
-      font.SetFractionalPointSize(fontsize1);
-#else
-      font.SetPointSize(fontsize1);
-#endif
+
+      wxFont font =
+        FontCache::GetAFont(wxFontInfo(fontsize1)
+                              .Family(wxFONTFAMILY_MODERN)
+                              .Style(wxFONTSTYLE_NORMAL)
+                              .Weight(wxFONTWEIGHT_NORMAL)
+                              .Underlined(false)
+                              .FaceName(configuration->GetTeXCMEX()));
+
       dc->SetFont(font);
       SetForeground();
       if (m_signType < 4)

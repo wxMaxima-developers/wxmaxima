@@ -28,6 +28,7 @@
  */
 
 #include "ParenCell.h"
+#include "FontCache.h"
 
 ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
@@ -134,13 +135,14 @@ void ParenCell::SetFont(int fontsize)
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
+  wxFontInfo req;
   wxFont font;
   if(m_bigParenType == Configuration::ascii)
-    font = configuration->GetFont(TS_FUNCTION, fontsize);
+    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, fontsize));
   else
-    font = configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize());
+    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize()));
 
-  wxASSERT(font.GetPointSize() > 0);
+  wxASSERT(req.GetPointSize() > 0);
 
   switch(m_bigParenType)
   {
@@ -149,29 +151,30 @@ void ParenCell::SetFont(int fontsize)
     break;
 
   case Configuration::assembled_unicode_fallbackfont:
-    font.SetFaceName(wxT("Linux Libertine"));
+    req.FaceName(wxT("Linux Libertine"));
     break;
 
   case Configuration::assembled_unicode_fallbackfont2:
-    font.SetFaceName(wxT("Linux Libertine O"));
+    req.FaceName(wxT("Linux Libertine O"));
     break;
 
   default:
     break;
   }
 
-  font.SetStyle(wxFONTSTYLE_NORMAL);
-  font.SetUnderlined(false);
+  req.Style(wxFONTSTYLE_NORMAL).Underlined(false);
+  font = FontCache::GetAFont(req);
   if (!font.IsOk())
   {
-    font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetStyle(wxFONTSTYLE_NORMAL);
-    font.SetFaceName(wxEmptyString);
-    font.SetUnderlined(false);
+    req.Family(wxFONTFAMILY_MODERN)
+      .Style(wxFONTSTYLE_NORMAL)
+      .FaceName(wxEmptyString)
+      .Underlined(false);
+    font = FontCache::GetAFont(req);
   }
 
   if (!font.IsOk())
-    font = *wxNORMAL_FONT;
+    font = FontCache::GetAFont(*wxNORMAL_FONT);
 
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())

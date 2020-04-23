@@ -27,6 +27,7 @@
 */
 
 #include "TextStyle.h"
+#include "FontCache.h"
 #include <wx/colour.h>
 
 void Style::Read(wxConfigBase *config, wxString where)
@@ -49,14 +50,16 @@ void Style::Read(wxConfigBase *config, wxString where)
 #ifdef __WXOSX_MAC__
   if(m_fontName == wxEmptyString) m_fontName = "Monaco";
 #endif
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(m_fontName);
+  auto req = wxFontInfo()
+               .Family(wxFONTFAMILY_MODERN)
+               .FaceName(m_fontName);
+  wxFont font = FontCache::GetAFont(req);
   if (!font.IsOk())
-    {
-      font = wxFontInfo(10);
-      m_fontName = font.GetFaceName();
-    }
+  {
+    req = wxFontInfo(10);
+    font = FontCache::GetAFont(req);
+    m_fontName = font.GetFaceName();
+  }
 }
 
 void Style::Write(wxConfigBase *config, wxString where)
