@@ -1197,14 +1197,12 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
 
-  // If the string we have to append is empty we return immediately.
+  // If the string we have to append only contains whitespace we return immediately.
+  // TODO: Is a printf(false,"~%")$ a real use-case?
   wxString t(s);
-  t.Trim();
-  t.Trim(false);
-  if (t.Length() == 0)
-  {
+  t.Trim();t.Trim(false);
+  if (t.IsEmpty())
     return NULL;
-  }
 
   if (m_maxOutputCellsPerCommand > 0)
   {
