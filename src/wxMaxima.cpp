@@ -1233,56 +1233,17 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
     // Show a busy cursor whilst interpreting and layouting potentially long data from maxima.
     wxBusyCursor crs;
 
-    while (s.Length() > 0)
+    if (s.StartsWith("<mth>") || s.StartsWith("<math>"))
     {
-      int start = wxMax(s.Find(wxT("<mth")), s.Find(wxT("<math")));
-
-      if (start == wxNOT_FOUND)
-      {
-        t = s;
-        t.Trim();
-        t.Trim(false);
-        if (t.Length())
-          lastLine = DoRawConsoleAppend(s, MC_TYPE_DEFAULT);
-        s = wxEmptyString;
-      }
-      else
-      {
-
-        // If the string does begin with a <mth> we add the
-        // part of the string that precedes the <mth> to the console
-        // first.
-        wxString pre = s.SubString(0, start - 1);
-        wxString pre1(pre);
-        pre1.Trim();
-        pre1.Trim(false);
-        if (pre1.Length())
-          DoRawConsoleAppend(pre, MC_TYPE_DEFAULT);
-
-        // If the math tag ends inside this string we add the whole tag.
-        int mthTagLen;
-        int end = FindTagEnd(s,"</mth>");
-        if(end >= 0)
-          mthTagLen = 5;
-        else
-        {
-          end = FindTagEnd(s,"</math>");
-          mthTagLen = 6;
-        }
-        if (end == wxNOT_FOUND)
-          end = s.Length();
-        else
-          end += mthTagLen;
-        wxString rest = s.SubString(start, end);
-
-        DoConsoleAppend(wxT("<span>") + rest +
-                        wxT("</span>"), type, false, true, userLabel);
-        s = s.SubString(end + 1, s.Length());
-      }
-//      wxSafeYield();
+      std::cerr<<"Test: \""<<s<<"\"\n";
+      DoConsoleAppend("<span>" + s + "</span>", type, false, true, userLabel);
+    }
+    else
+    {
+      lastLine = DoRawConsoleAppend(s, type);
+      s = wxEmptyString;
     }
   }
-
   else if (type == MC_TYPE_PROMPT)
   {
     m_lastPrompt = s;
