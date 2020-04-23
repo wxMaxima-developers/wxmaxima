@@ -4,6 +4,7 @@
  * Updated Ukrainian translation by Yuri Chornoivan
  * Many corrections to the german translation
  * The history sidebar now works again
+ * TextCells with copy-alt-text caused an crash
  * A few additional small bugfixes
  * Strings were searched for comment starts when adding line endings
  * Faster start-up by avoiding unneeded redraw events

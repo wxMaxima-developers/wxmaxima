@@ -144,7 +144,7 @@ wxString FunCell::ToString()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
-    return m_altCopyText + Cell::ListToString();
+    return m_altCopyText;
   wxString s = m_nameCell->ListToString() + m_argCell->ListToString();
   return s;
 }
