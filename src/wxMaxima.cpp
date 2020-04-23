@@ -1234,7 +1234,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
     wxBusyCursor crs;
 
     if (s.StartsWith("<mth>") || s.StartsWith("<math>"))
-      DoConsoleAppend("<span>" + s + "</span>", type, false, true, userLabel);
+      DoConsoleAppend("<span>" + s + "</span>", type, true, true, userLabel);
     else
       lastLine = DoRawConsoleAppend(s, type);
   }
