@@ -756,11 +756,11 @@ void TextCell::SetFont(int fontsize)
   {
     if((*m_configuration)->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
     {
-      req.Style(wxFONTSTYLE_NORMAL);
+      req.Italic(false);
     }
     else
     {
-      req.Style(wxFONTSTYLE_ITALIC);
+      req.Italic(true);
     }
   }
 

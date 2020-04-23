@@ -475,7 +475,6 @@ void Configuration::ReadConfig()
 wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 {
   wxString fontName;
-  wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
   bool underlined = IsUnderlined(textStyle);
@@ -507,8 +506,6 @@ wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 
 
   fontName = GetFontName(textStyle);
-  fontStyle = IsItalic(textStyle);
-  fontWeight = IsBold(textStyle);
   
   fontEncoding = GetFontEncoding();
 
@@ -517,8 +514,8 @@ wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
                           .Family(wxFONTFAMILY_MODERN)
                           .FaceName(fontName)
                           .Encoding(fontEncoding)
-                          .Style(fontStyle)
-                          .Weight(fontWeight)
+                          .Italic(IsItalic(textStyle))
+                          .Bold(IsBold(textStyle))
                           .Underlined(underlined)
                           .Encoding(fontEncoding));
 
@@ -528,8 +525,8 @@ wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
       FontCache::GetAFont(wxFontInfo(fontSize1)
                             .Family(wxFONTFAMILY_MODERN)
                             .Encoding(fontEncoding)
-                            .Style(fontStyle)
-                            .Weight(fontWeight)
+                            .Italic(IsItalic(textStyle))
+                            .Bold(IsBold(textStyle))
                             .Underlined(underlined));
   }
   

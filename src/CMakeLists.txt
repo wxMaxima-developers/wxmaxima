@@ -64,7 +64,7 @@ file(GLOB RESOURCE_FILES
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-elseif(APPLE)
+elseif(APPLE) 
     SET(MACOSX_BUNDLE_NAME wxmaxima)
     SET(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
     list(APPEND SOURCE_FILES ${RESOURCE_FILES})

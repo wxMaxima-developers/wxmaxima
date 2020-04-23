@@ -114,8 +114,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
     wxFont font =
       FontCache::GetAFont(wxFontInfo(fontsize1)
                             .Family(wxFONTFAMILY_MODERN)
-                            .Style(wxFONTSTYLE_NORMAL)
-                            .Weight(wxFONTWEIGHT_NORMAL)
+                            .Italic(false)
+                            .Bold(false)
                             .Underlined(false)
                             .FaceName(configuration->GetTeXCMEX()));
 
@@ -158,8 +158,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
     font =
       FontCache::GetAFont(wxFontInfo(fontsize1)
                             .Family(wxFONTFAMILY_MODERN)
-                            .Style(wxFONTSTYLE_NORMAL)
-                            .Weight(wxFONTWEIGHT_NORMAL)
+                            .Italic(false)
+                            .Bold(false)
                             .Underlined(false)
                             .FaceName(configuration->GetTeXCMEX()));
 
@@ -215,8 +215,8 @@ void SqrtCell::Draw(wxPoint point)
       wxFont font =
         FontCache::GetAFont(wxFontInfo(fontsize1)
                               .Family(wxFONTFAMILY_MODERN)
-                              .Style(wxFONTSTYLE_NORMAL)
-                              .Weight(wxFONTWEIGHT_NORMAL)
+                              .Italic(false)
+                              .Bold(false)
                               .Underlined(false)
                               .FaceName(configuration->GetTeXCMEX()));
 

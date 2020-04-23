@@ -147,8 +147,8 @@ void IntCell::RecalculateWidths(int fontsize)
     wxFont font =
       FontCache::GetAFont(wxFontInfo(fontsize1)
                             .Family(wxFONTFAMILY_MODERN)
-                            .Style(wxFONTSTYLE_NORMAL)
-                            .Weight(wxFONTWEIGHT_NORMAL)
+                            .Italic(false)
+                            .Bold(false)
                             .Underlined(false)
                             .FaceName(configuration->GetTeXCMEX()));
     if (!font.IsOk())
@@ -265,8 +265,8 @@ void IntCell::Draw(wxPoint point)
       wxFont font =
         FontCache::GetAFont(wxFontInfo(fontsize1)
                               .Family(wxFONTFAMILY_MODERN)
-                              .Style(wxFONTSTYLE_NORMAL)
-                              .Weight(wxFONTWEIGHT_NORMAL)
+                              .Italic(false)
+                              .Bold(false)
                               .Underlined(false)
                               .FaceName(configuration->GetTeXCMEX()));
 

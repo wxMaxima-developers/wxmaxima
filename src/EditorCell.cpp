@@ -1071,8 +1071,8 @@ void EditorCell::SetFont()
                           .Family(wxFONTFAMILY_MODERN)
                           .FaceName(m_fontName)
                           .Encoding(m_fontEncoding)
-                          .Style(m_fontStyle)
-                          .Weight(m_fontWeight)
+                          .Italic(m_fontStyle == wxFONTSTYLE_SLANT)
+                          .Bold(configuration->IsBold(m_textStyle))
                           .Underlined(m_underlined)
                           .Encoding(m_fontEncoding));
   if (!font.IsOk())
@@ -1082,8 +1082,8 @@ void EditorCell::SetFont()
       FontCache::GetAFont(wxFontInfo(m_fontSize)
                             .Family(wxFONTFAMILY_MODERN)
                             .Encoding(m_fontEncoding)
-                            .Style(m_fontStyle)
-                            .Weight(m_fontWeight)
+                            .Italic(m_fontStyle == wxFONTSTYLE_SLANT)
+                            .Bold(configuration->IsBold(m_textStyle))
                             .Underlined(m_underlined));
   }
   if (!font.IsOk()) {

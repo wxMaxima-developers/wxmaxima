@@ -162,12 +162,12 @@ void ParenCell::SetFont(int fontsize)
     break;
   }
 
-  req.Style(wxFONTSTYLE_NORMAL).Underlined(false);
+  req.Italic(false).Underlined(false);
   font = FontCache::GetAFont(req);
   if (!font.IsOk())
   {
     req.Family(wxFONTFAMILY_MODERN)
-      .Style(wxFONTSTYLE_NORMAL)
+      .Italic(false)
       .FaceName(wxEmptyString)
       .Underlined(false);
     font = FontCache::GetAFont(req);

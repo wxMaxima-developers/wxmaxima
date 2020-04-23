@@ -1305,8 +1305,8 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 #endif
   req = wxFontInfo(m_configuration->GetMathFontSize())
           .Family(wxFONTFAMILY_DEFAULT)
-          .Style(wxFONTSTYLE_NORMAL)
-          .Weight(wxFONTWEIGHT_NORMAL)
+          .Italic(false)
+          .Light(false)
           .Underlined(false)
           .FaceName(m_configuration->MathFontName());
   if (!FontCache::GetAFont(req).IsOk())
@@ -1351,8 +1351,8 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     fontName = m_configuration->m_styles[TS_DEFAULT].FontName();
 
   auto req = wxFontInfo(fontsize)
-          .Family(wxFONTFAMILY_DEFAULT).Style(wxFONTSTYLE_NORMAL)
-          .Weight(wxFONTWEIGHT_NORMAL)
+          .Family(wxFONTFAMILY_DEFAULT).Italic(false)
+          .Light(false)
           .Underlined(false).FaceName(fontName)
           .Encoding(m_fontEncoding);
 
