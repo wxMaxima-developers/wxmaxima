@@ -110,7 +110,11 @@ wxFontInfo GetFor(const wxFont &font)
   if (font.IsUsingSizeInPixels())
     request = wxFontInfo(font.GetPixelSize());
   else
+#if wxCHECK_VERSION(3, 1, 2)
     request = wxFontInfo(font.GetFractionalPointSize());
+#else
+    request = wxFontInfo(font.GetPointSize());
+#endif
   return request
 #if wxCHECK_VERSION(3, 1, 2)
     .Style(font.GetStyle())
