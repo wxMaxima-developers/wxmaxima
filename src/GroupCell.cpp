@@ -726,7 +726,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 
 void GroupCell::InputHeightChanged()
 {
-  ResetData();
+//  ResetData();
   ResetSize();
   EditorCell *editorCell = GetEditable();
   if (editorCell != NULL) {
@@ -975,8 +975,9 @@ GroupCell *GroupCell::UpdateYPosition()
   else
   {
     m_currentPoint.x = configuration->GetIndent();
+    wxASSERT(m_previous->GetCurrentPoint().y > 0);
     if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
+      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->GetCurrentPoint().y +
         dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
         configuration->GetGroupSkip();
     else
