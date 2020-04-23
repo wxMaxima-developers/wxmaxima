@@ -954,13 +954,13 @@ bool Worksheet::RecalculateIfNeeded()
   if(m_dc == NULL)
     recalculate = false;
 
-  if(m_configuration->AdjustWorksheetSize())
-    AdjustSize();
-  m_configuration->AdjustWorksheetSize(false);
 
   if(!recalculate)
   {
     m_recalculateStart = NULL;
+    if(m_configuration->AdjustWorksheetSize())
+      AdjustSize();
+    m_configuration->AdjustWorksheetSize(false);
     return false;
   }
 
@@ -998,7 +998,10 @@ bool Worksheet::RecalculateIfNeeded()
   m_configuration->RecalculationForce(false);
   m_configuration->FontChanged(false);
 
+  m_configuration->AdjustWorksheetSize(false);
+
   m_recalculateStart = NULL;
+
   return true;
 }
 
