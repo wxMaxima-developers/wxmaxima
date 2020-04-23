@@ -29,7 +29,7 @@
 <li><a href="#використання-робочих-книг"><span class="toc-section-number">1.2.1</span> Використання робочих книг</a></li>
 <li><a href="#комірки"><span class="toc-section-number">1.2.2</span> Комірки</a></li>
 <li><a href="#горизонтальний-і-вертикальний-курсори"><span class="toc-section-number">1.2.3</span> Горизонтальний і вертикальний курсори</a></li>
-<li><a href="#sending-cells-to-maxima"><span class="toc-section-number">1.2.4</span> Sending cells to Maxima</a></li>
+<li><a href="#надсилання-комірок-для-обчислення-у-maxima"><span class="toc-section-number">1.2.4</span> Надсилання комірок для обчислення у Maxima</a></li>
 <li><a href="#автоматичне-доповнення-команд"><span class="toc-section-number">1.2.5</span> Автоматичне доповнення команд</a></li>
 <li><a href="#бічні-панелі"><span class="toc-section-number">1.2.6</span> Бічні панелі</a></li>
 <li><a href="#виведення-коду-mathml"><span class="toc-section-number">1.2.7</span> Виведення коду MathML</a></li>
@@ -170,18 +170,18 @@
 <li>Курсор буде намальовано горизонтально, якщо його пересунуто до проміжку між двома комірками, або якщо користувач клацнув кнопкою миші у проміжку між двома комірками.</li>
 <li>Вертикальний курсор, який працює у комірці. Цей курсор активується пересуванням курсора всередину комірки за допомогою вказівника миші або клавіш зі стрілками. Цей курсор працює подібно до курсора у текстовому редакторі.</li>
 </ul>
-<h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
+<h3 id="надсилання-комірок-для-обчислення-у-maxima"><span class="header-section-number">1.2.4</span> Надсилання комірок для обчислення у Maxima</h3>
 <p>Команду у комірці буде виконано одразу після натискання комбінацій клавіш <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> або клавіші <kbd>ENTER</kbd> на клавіатурі.</p>
 <h3 id="автоматичне-доповнення-команд"><span class="header-section-number">1.2.5</span> Автоматичне доповнення команд</h3>
 <p>У <em>wxMaxima</em> реалізовано можливість автоматичного доповнення коду, якою можна скористатися за допомогою меню (Комірка/Доповнити слово) або натисканням комбінації клавіш <kbd>CTRL</kbd>+<kbd>Пробіл</kbd>. Автоматичне доповнення є чутливим до регістру символів. Наприклад, якщо його активувати зі специфікацією модулів для ezUnits, воно запропонує список відповідних модулів.</p>
 <figure>
 <img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
 </figure>
-<p>Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).</p>
+<p>Окрім доповнення, назви файла, назви модуля або назви поточної команди чи змінної, засіб автоматичного доповнення може показувати шаблони для більшості команд, вказуючи тип (і значення) параметрів, які очікує отримати відповідна програма. Щоб задіяти цю можливість, натисніть комбінацію клавіш <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>ПРОБІЛ</kbd> або виберіть відповідний пункт меню (Комірка/Показати шаблон).</p>
 <h4 id="грецькі-літери"><span class="header-section-number">1.2.5.1</span> Грецькі літери</h4>
-<p>Computers traditionally store characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
-<p>For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.</p>
-<p><em>Maxima</em> allows for unicode characters if it was compiled using a Lisp compiler that either supports lisp or that doesn’t care about the font encoding. As at least one of this is likely to be true <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
+<p>Комп’ютери традиційно зберігають символи у форматі 8-бітових значень. Це уможливлює існування наборів, що складаються лише із 256 різних символів. У такий набір може бути включено усі літери, цифри та символи керування (завершення передавання, кінець рядка, лінії та кутики для малювання меню <em>тощо</em>) майже будь-якої європейської мови.</p>
+<p>Втім, у більшості мов до вибраної кодової сторінки із 256 символів не можна включити додаткові символи, зокрема літери грецької абетки, які широко використовуються у математичних формулах. Щоб подолати обмеження подібного типу, було винайдено Юнікод — кодування, яке працює для латиниці, але використовує символи, код яких є числом, що не вкладається до 8 бітів.</p>
+<p><em>Maxima</em> уможливлює використання символів Юнікоду, якщо програму було зібрано за допомогою компілятора Lisp, у якому передбачено підтримку lisp або такого, який є нейтральним щодо кодування символів. Оскільки, хоча б одна з цих вимог, зазвичай, справджується, у <em>wxMaxima</em> реалізовано спосіб введення грецьких символів з клавіатури:</p>
 <ul>
 <li>Грецьку літеру можна ввести натисканням клавіші <kbd>ESC</kbd> з наступним введенням назви символу грецької абетки.</li>
 <li>Крім того, можна натиснути <kbd>ESC</kbd>, ввести одну літеру і натиснути <kbd>ESC</kbd> ще раз. У цьому випадку прив’язка до літер є такою:</li>
@@ -203,66 +203,66 @@ Z Дзета    X Ксі       C Хі
 H Ета      Om Омікрон  Y Псі
 T Тета     P Пі        O Омега</code></pre>
 <p>У той самий спосіб можна вводити різноманітні математичні символи:</p>
-<pre><code>hbar          planck&#39;s constant: a h with a horizontal bar above it
-Hbar          a H with a horizontal bar above it
-2             squared
-3             to the power of three
+<pre><code>hbar          стала Планка: h із горизонтальною рискою згори
+Hbar          H із горизонтальною рискою згори
+2             квадрат
+3             куб
 /2            1/2
-partial       partial sign (the d of dx/dt)
-integral      integral sign
-sq            root
-ii            imaginary
-ee            element
-in            in
-impl,implies  implies
-inf           infinity
-empty         empty
-TB            Big triangle right
-tb            small triangle right
-and           and
-or            or
-xor           xor
-nand          nand
-nor           nor
-equiv         equivalent
-not           not
-union         union
-inter         intersection
-subseteq      subset or equal
-subset        subset
-notsubseteq   not subset or equal
-notsubset     not subset
-approx        approximately
-propto        proportional to
+partial       знак частинної похідної (d у dx/dt)
+integral      символ інтеграла
+sq            корінь
+ii            уявна одиниця
+ee            елемент
+in            включається
+impl,implies  випливає
+inf           нескінченність
+empty         порожня множина
+TB            великий трикутник праворуч
+tb            малий трикутник праворуч
+and           і
+or            або
+xor           виключне або
+nand          ні-і
+nor           ні-або
+equiv         еквівалентний
+not           ні
+union         об&#39;єднання
+inter         перетин
+subseteq      підмножина або рівна множина
+subset        підмножина
+notsubseteq   не підмножина або рівна множина
+notsubset     не підмножина
+approx        приблизно
+propto        пропорційне до
 neq,!=,/=
-or #          not equal to
-+/- or pm     a plus/minus sign
-&lt;= or leq     equal or less than
-&gt;= or geq     equal or greater than
-&lt;&lt; or ll      much less than
-&gt;&gt; or gg      much greater than
-equiv         equivalent to
-qed           end of proof
-nabla         a nabla operator
-sum           sum sign
-prod          product sign
-exists        &quot;there exists&quot; sign
-nexists       &quot;there is no&quot; sign
-parallel      a &quot;parallel&quot; sign
-perp          a &quot;perpendicular&quot; sign
-leadsto       a &quot;leads to&quot; sign
--&gt;            a right arrow
---&gt;           a long right arrow</code></pre>
-<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.</p>
+або #         не рівне
++/- або pm    плюс-мінус
+&lt;= або leq    менше або дорівнює
+&gt;= або geq    більше або дорівнює
+&lt;&lt; або ll     набагато менше за
+&gt;&gt; або gg     набагато більше за
+equiv         є еквівалентним
+qed           що і слід було довести
+nabla         набла-оператор
+sum           знак суми
+prod          знак добутку
+exists        знак «існує»
+nexists       знак «не існує»
+parallel      знак «паралельно»
+perp          знак «перпендикулярно»
+leadsto       знак «випливає»
+-&gt;            стрілка праворуч
+--&gt;           довга стрілка праворуч</code></pre>
+<p>Якщо спеціального символу немає у списку, ви можете ввести його як довільний символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер символу] <kbd>ESC</kbd>.</p>
 <p>Отже, <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> дасть «a».</p>
-<p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
+<p>Будь ласка, зауважте, що більшість цих символів (виключеннями є логічні символи) не мають спеціального значення у <em>Maxima</em> і тому можуть бути оброблені як звичайні символи. Якщо <em>Maxima</em> зібрано із Lisp, у якому не передбачено обробки символів Юнікоду, використання цих символів може призвести до показу повідомлення про помилку.</p>
 <h3 id="бічні-панелі"><span class="header-section-number">1.2.6</span> Бічні панелі</h3>
-<p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
+<p>Доступ до найважливіших команд <em>Maxima</em> або речей, подібних до таблиці змісту, вікон із діагностичними повідомленнями або журналу останніх виданих команд можна отримати за допомогою бічних панелей. Увімкнути бічні панелі можна за допомогою меню «Перегляд». Панелі можна пересувати як всередині вікна <em>wxMaxima</em>, так і ззовні. Ще однією корисною панеллю є панель введення грецьких літер за допомогою вказівника миші.</p>
 <figure>
 <img src="./SidePanes.png" alt="Приклад різних бічних панелей" id="img_SidePanes" /><figcaption>Приклад різних бічних панелей</figcaption>
 </figure>
 <h3 id="виведення-коду-mathml"><span class="header-section-number">1.2.7</span> Виведення коду MathML</h3>
-<p>Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. <em>wxMaxima</em> therefore offers several entries in the right-click menu.</p>
+<p>Деякі текстові процесори і подібні програми або розпізнають вхідні дані MathML і автоматично вставляють їх до придатного для редагування рівняння, або (подібно до LibreOffice 5.1) мають у складі редактор рівнянь, у якому передбачено можливість імпортування даних MathML з буфера обміну даними. У інших редакторах передбачено підтримку формул у RTF. Через це у <em>wxMaxima</em> передбачено декілька відповідних пунктів у контекстному меню.</p>
 <h3 id="підтримка-markdown"><span class="header-section-number">1.2.8</span> Підтримка Markdown</h3>
 <p>У <em>wxMaxima</em> ви зможете скористатися стандартними варіантами розмітки, які не суперечать математичним позначенням. Одним із елементів розмітки є невпорядковані списки.</p>
 <pre><code>Звичайний текст
@@ -289,7 +289,7 @@ leadsto       a &quot;leads to&quot; sign
 <li><kbd>SHIFT</kbd>+<kbd>ПРОБІЛ</kbd> вставляє нерозривний пробіл.</li>
 </ul>
 <h3 id="код-tex-у-експортованому-tex"><span class="header-section-number">1.2.10</span> Код TeX у експортованому TeX</h3>
-<p>If a text cell begins with <code>TeX:</code> the TeX export contains the literal text that follows the <code>TeX:</code> marker. Using this feature allows the entry of TeX markup within the <em>wxMaxima</em> workbook.</p>
+<p>Якщо текстову комірку буде розпочато з <code>TeX:</code> у експортованих у форматі TeX даних буде буквально відтворено текст, який вказано після позначки <code>TeX:</code>. За допомогою цієї можливості можна використовувати розмітку TeX у робочій книзі <em>wxMaxima</em>.</p>
 <h2 id="формати-файлів"><span class="header-section-number">1.3</span> Формати файлів</h2>
 <p>Матеріал, який було отримано під час сеансу роботи у <em>wxMaxima</em> може бути збережено для наступного використання у три способи:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
@@ -300,11 +300,11 @@ leadsto       a &quot;leads to&quot; sign
 <img src="./BatchImage.png" alt="Зображення пакетного файла" id="img_BatchImage" /><figcaption>Зображення пакетного файла</figcaption>
 </figure>
 <pre><code>read(&quot;test.mac&quot;);</code></pre>
-<p>You can be use <code>.mac</code> files for writing own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em>wxMaxima</em> session.</p>
+<p>Ви можете використовувати файли <code>.mac</code> для написання власної бібліотеки макросів. Але оскільки у них не міститься достатніх даних щодо структури, їх не можна читати як сеанс <em>wxMaxima</em>.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>.wxm files contains the worksheet except <em>Maxima</em>’s output. On Maxima versions &gt;5.38 they can be read using <em>Maxima</em>’s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
-<p>This xml-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.</p>
+<p>У цьому заснованому на xml форматі файлів зберігається увесь робочий аркуш, включно із даними щодо масштабу та списком спостереження. Цей формат файлів є рекомендованим.</p>
 <h2 id="параметри-налаштування"><span class="header-section-number">1.4</span> Параметри налаштування</h2>
 <p>Для деяких типових змінних налаштувань у <em>wxMaxima</em> передбачено два способи налаштовування:</p>
 <ul>
@@ -317,7 +317,7 @@ leadsto       a &quot;leads to&quot; sign
 <h3 id="типова-частота-кадрів-анімації"><span class="header-section-number">1.4.1</span> Типова частота кадрів анімації</h3>
 <p>The animation framerate that is used for new animations is kept in the variable <code>wxanimate_framerate</code>. The initial value this variable will contain in a new worksheet can be changed using the configuration dialogue.</p>
 <h3 id="типовий-розмір-креслення-для-нових-сеансів-maxima"><span class="header-section-number">1.4.2</span> Типовий розмір креслення для нових сеансів <em>maxima</em></h3>
-<p>After the next start plots embedded into the worksheet will be created with this size if the value of <code>wxplot_size</code> isn’t changed by <em>maxima</em>.</p>
+<p>Після наступного запуску креслення, які вбудовано до робочого аркуша, буде створено з цим розміром, якщо значення <code>wxplot_size</code> не було змінено <em>maxima</em>.</p>
 <p>Щоб встановити розмір графіка для окремого графіка, можна скористатися наведеною нижче конструкцією, яка встановить значення змінної лише для одної команди:</p>
 <pre><code>wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$</code></pre>
 <h3 id="використовувати-шрифти-jsmath"><span class="header-section-number">1.4.3</span> Використовувати шрифти jsMath</h3>
@@ -330,7 +330,7 @@ leadsto       a &quot;leads to&quot; sign
 <p>За допомогою цього пункту можна увімкнути дві речі:</p>
 <ul>
 <li>Якщо ви введете у <em>wxMaxima</em> початкову круглу або квадратну дужку або подвійні лапки, програма автоматично вставить завершальну дужку або лапки за нею.</li>
-<li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
+<li>Якщо при натисканні якоїсь із цих комбінацій клавіш було позначено фрагмент тексту, цей текст буде вставлено між відповідними символами.</li>
 </ul>
 <h3 id="не-зберігати-робочий-аркуш-автоматично"><span class="header-section-number">1.4.5</span> Не зберігати робочий аркуш автоматично</h3>
 <p>If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
@@ -346,7 +346,7 @@ leadsto       a &quot;leads to&quot; sign
 <h1 id="розширення-maxima"><span class="header-section-number">2</span> Розширення <em>Maxima</em></h1>
 <p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session. described here.</p>
 <h2 id="змінні-із-індексами"><span class="header-section-number">2.1</span> Змінні із індексами</h2>
-<p>if <code>wxsubscripts</code> is set to true variable names of the format <code>x_y</code> are displayed using a subscript if</p>
+<p>якщо встановлено значення true для <code>wxsubscripts</code>, назви змінних у форматі <code>x_y</code> буде показано як літеру із нижнім індексом, якщо</p>
 <ul>
 <li><code>y</code> є одинарною літерою</li>
 <li><code>y</code> є цілим числом</li>
@@ -363,7 +363,7 @@ leadsto       a &quot;leads to&quot; sign
    ?sleep(3)
 )$</code></pre>
 <h2 id="креслення"><span class="header-section-number">2.3</span> Креслення</h2>
-<p>Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.</p>
+<p>Креслення (яке фундаментально пов’язано із графікою) є місцем, де графічний інтерфейс користувача має надавати якісь додаткові можливості до оригінальної програми.</p>
 <h3 id="вбудовування-креслення-до-робочого-аркуша"><span class="header-section-number">2.3.1</span> Вбудовування креслення до робочого аркуша</h3>
 <p><em>Maxima</em> normally instructs the external program gnuplot to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the work sheet instead <em>wxMaxima</em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”. For example <code>wxplot2d</code> corresponds to <code>plot2d</code>, <code>wxplot3d</code> corresponds to <code>plot3d</code>, <code>wxdraw</code> corresponds to <code>draw</code> and <code>wxhistogram</code> corresponds to <code>histogram</code>.</p>
 <h3 id="збільшення-або-зменшення-вбудованих-креслень"><span class="header-section-number">2.3.2</span> Збільшення або зменшення вбудованих креслень</h3>
@@ -399,7 +399,7 @@ wxdraw2d(
         x,0,1
     ),grid=true
 );</code></pre>
-<p>The same functionality for 3D plots is accessible as <code>with_slider_draw3d</code>, which allows for rotating 3d plots:</p>
+<p>Доступ до тих самих можливостей для просторових креслень можна отримати за допомогою функції <code>with_slider_draw3d</code>, яка надає можливість обертати просторові креслення:</p>
 <pre><code>wxanimate_autoplay:true;
 wxanimate_framerate:20;
 with_slider_draw3d(
@@ -492,13 +492,13 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h4 id="назва-графіка"><span class="header-section-number">2.3.8.10</span> Назва графіка</h4>
 <p>Adds a legend entry showing the next plot’s name to the legend of the diagram. An empty name disables generating legend entries for the following plots.</p>
 <h4 id="колір-лінії"><span class="header-section-number">2.3.8.11</span> Колір лінії</h4>
-<p>Sets the line color for the following plots the current draw command contains.</p>
+<p>Встановлює колір лінії для наступних креслень у поточній команді малювання.</p>
 <h4 id="колір-заповнення"><span class="header-section-number">2.3.8.12</span> Колір заповнення</h4>
-<p>Sets the fill color for the following plots the current draw command contains.</p>
+<p>Встановлює колір заповнення для наступних креслень у поточній команді малювання.</p>
 <h4 id="сітка"><span class="header-section-number">2.3.8.13</span> Сітка</h4>
 <p>Відкриває допоміжне вікно, за допомогою якого можна налаштувати лінії сітки.</p>
 <h4 id="точність"><span class="header-section-number">2.3.8.14</span> Точність</h4>
-<p>Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.</p>
+<p>Надає змогу вибрати адекватну позицію у компромісному питанні «швидкість чи точність?», яке є частиною будь-якої програми для креслення.</p>
 <h2 id="вбудовування-графіків"><span class="header-section-number">2.4</span> Вбудовування графіків</h2>
 <p>if the <code>.wxmx</code> file format is being used embedding files in a <em>wxMaxima</em> project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
 <pre><code>show_image(&quot;man.png&quot;);</code></pre>
@@ -605,7 +605,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
     file_name=&quot;test&quot;,
     explicit(sin(x),x,1,10)
 );</code></pre>
-<p>If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:</p>
+<p>Якщо має бути використано якийсь інший формат зображень, простіше створити зображення окремо, а потім імпортувати їх до робочого аркуша:</p>
 <pre><code>load(&quot;draw&quot;);
 pngdraw(name,[contents]):=
 (
