@@ -1074,7 +1074,12 @@ void Image::Recalculate(double scale)
   if (viewPortWidth < 10)
     viewPortWidth = 10;
 
-  scale = 1.0;
+  if (!configuration->GetPrinting())
+  {
+    // Change the scale only if we are not printing.
+    // Resetting the scale for printing makes the images become too small.
+    scale = 1.0;
+  }
   
   // Shrink to .9* the canvas size, if needed
   if (scale * width > .9 * viewPortWidth)
@@ -1101,8 +1106,9 @@ void Image::Recalculate(double scale)
     m_height = 100;
     m_width = 100;
   }
-// Clear this cell's image cache if it doesn't contain an image of the size
-  // we need right now.
-  if (m_scaledBitmap.GetWidth() != m_width)
+  // Clear this cell's image cache if it doesn't contain an image of the size
+  // we need right now. Printing uses unscaled bitmaps, so the cache is left
+  // unchanged then.
+  if (!configuration->GetPrinting() && m_scaledBitmap.GetWidth() != m_width)
     ClearCache();
 }
