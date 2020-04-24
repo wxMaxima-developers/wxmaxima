@@ -780,6 +780,7 @@ void TextCell::SetFont(int fontsize)
   {
     req = wxFontInfo(10);
     font = FontCache::GetAFont(req);
+    font.SetPointSize(Scale_Px(m_fontSize));
     dc->SetFont(font);
   }
 }
