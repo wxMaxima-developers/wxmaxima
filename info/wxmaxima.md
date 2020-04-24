@@ -288,7 +288,7 @@ You can be use `.mac` files for writing own library of macros. But since they do
 
 ### .wxm
 
-.wxm files contains the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
+.wxm files contain the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
 
 ### .wxmx
 
@@ -354,7 +354,7 @@ If you are using Windows, the configuration will be stored in the registry. You 
 Extensions to _Maxima_
 ======================
 
-_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its main purpose is to pass along commands to _Maxima_ and to report the results of executing those commands. In some cases, however, _wxMaxima_ adds functionality to _Maxima_. _wxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima_ enhances the inclusion of graphics into a session. described here.
+_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its main purpose is to pass along commands to _Maxima_ and to report the results of executing those commands. In some cases, however, _wxMaxima_ adds functionality to _Maxima_. _wxMaxima_’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that _wxMaxima_ enhances the inclusion of graphics into a session.
 
 ## Subscripted variables
 
@@ -452,7 +452,7 @@ The same functionality for 3D plots is accessible as `with_slider_draw3d`, which
         )
     )$
 
-If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intuition:
+If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make its 3D nature available to the intuition:
 
     wxanimate_autoplay:true;
     wxanimate_framerate:20;
@@ -525,7 +525,7 @@ The "Plot using draw" sidebar hides a simple code generator that allows to gener
 
 Generates the skeleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
 
-One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_ has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
+One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_) has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
 
 #### 3D
 
@@ -581,7 +581,7 @@ Allows to select an adequate point in the speed vs. accuracy tradeoff that is pa
 
 ## Embedding graphics
 
-if the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
+If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
     show_image("man.png");
 
