@@ -1053,8 +1053,8 @@ void EditorCell::SetFont()
     m_fontStyle = configuration->IsItalic(m_textStyle);
   else
   {
-    if(configuration->IsItalic(m_textStyle) != wxFONTSTYLE_SLANT)
-      m_fontStyle = wxFONTSTYLE_SLANT;
+    if(configuration->IsItalic(m_textStyle) != wxFONTSTYLE_ITALIC)
+      m_fontStyle = wxFONTSTYLE_ITALIC;
     else
       m_fontStyle = wxFONTSTYLE_NORMAL;
   }
@@ -1071,8 +1071,8 @@ void EditorCell::SetFont()
                           .Family(wxFONTFAMILY_MODERN)
                           .FaceName(m_fontName)
                           .Encoding(m_fontEncoding)
-                          .Italic(m_fontStyle == wxFONTSTYLE_SLANT)
-                          .Bold(configuration->IsBold(m_textStyle))
+                          .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
+                          .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
                           .Underlined(m_underlined)
                           .Encoding(m_fontEncoding));
   if (!font.IsOk())
@@ -1082,8 +1082,8 @@ void EditorCell::SetFont()
       FontCache::GetAFont(wxFontInfo(m_fontSize)
                             .Family(wxFONTFAMILY_MODERN)
                             .Encoding(m_fontEncoding)
-                            .Italic(m_fontStyle == wxFONTSTYLE_SLANT)
-                            .Bold(configuration->IsBold(m_textStyle))
+                            .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
+                            .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
                             .Underlined(m_underlined));
   }
   if (!font.IsOk()) {
