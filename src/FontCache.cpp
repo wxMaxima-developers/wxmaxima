@@ -167,7 +167,8 @@ void SetPixelSize(wxFontInfo &info, wxSize size)
 template <typename T>
 static std::size_t mixHash(std::size_t seed, const T &value)
 {
-  seed ^= std::hash<T>{}(value) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+  std::hash<T> hsh(value);
+  seed ^= hsh(value) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
   return seed;
 }
 
