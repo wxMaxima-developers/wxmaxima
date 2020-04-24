@@ -505,14 +505,8 @@ void TextCell::RecalculateWidths(int fontsize)
           m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
         }
 
-        double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
-        if(fontsize1 < 4)
-          fontsize1 = 4;
 
-        auto req = FontInfo::GetFor(FontCache::AddAFont(dc->GetFont()));
-        FontInfo::SetPointSize(req, fontsize1);
-        wxFont font = FontCache::GetAFont(req);
-        dc->SetFont(font);
+        wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
       
         m_width = Scale_Px(configuration->GetLabelWidth());
         // We will decrease it before use
@@ -525,11 +519,11 @@ void TextCell::RecalculateWidths(int fontsize)
         {
 #if wxCHECK_VERSION(3, 1, 2)
           m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+          font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
 #else
           m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+          font.SetPointSize(Scale_Px(m_fontSizeLabel));
 #endif
-          FontInfo::SetPointSize(req, m_fontSizeLabel);
-          font = FontCache::GetAFont(req);
           dc->SetFont(font);
           labelSize = GetTextSize(text);
         } 
