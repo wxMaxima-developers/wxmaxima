@@ -373,9 +373,9 @@ TextCell::TextCell(const TextCell &cell):
 double TextCell::GetScaledTextSize() const
 {
   if((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-    return Scale_Px(m_fontSize);
-  else
     return Scale_Px(m_fontSizeLabel);
+  else
+    return Scale_Px(m_fontSize);
 
 }
 
