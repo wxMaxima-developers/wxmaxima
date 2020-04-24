@@ -35,18 +35,17 @@ wxFont FontCache::GetFont(const wxFontInfo &request)
     m_misses ++;
     return {request};
   }
-  auto font = m_cache.try_emplace(request, request);
+  auto font = m_cache.emplace(request, request);
   assert(font.first != m_cache.end());
   m_misses += font.second ? 1 : 0;
   m_hits += font.second ? 0 : 1;
   return font.first->second;
 }
 
-wxFontInfo FontCache::AddFont(const wxFontInfo &info, const wxFont &font)
+wxFontInfo FontCache::AddFont(wxFontInfo info, const wxFont &font)
 {
-  auto &request = info;
-  m_cache.insert_or_assign(request, font);
-  return request;
+  m_cache.emplace(info, font);
+  return info;
 }
 
 wxFontInfo FontCache::AddFont(const wxFont &font)

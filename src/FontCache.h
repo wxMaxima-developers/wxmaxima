@@ -76,7 +76,7 @@ public:
   FontCache() = default;
   ~FontCache();
   wxFont GetFont(const wxFontInfo &request);
-  wxFontInfo AddFont(const wxFontInfo &info, const wxFont &font);
+  wxFontInfo AddFont(wxFontInfo info, const wxFont &font);
   wxFontInfo AddFont(const wxFont &font);
   bool IsOk(const wxFontInfo &request);
   int GetHits() const { return m_hits; }
