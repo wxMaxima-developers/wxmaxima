@@ -47,6 +47,8 @@ public:
   
   ~TextCell();  
 
+  double GetScaledTextSize() const;
+  
   virtual void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
