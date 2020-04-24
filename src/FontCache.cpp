@@ -185,13 +185,22 @@ std::size_t hash<wxFontInfo>::operator()(const wxFontInfo &fi) const
   h = mixHash(h, fi.GetFamily());
   h = mixHash(h, fi.GetFaceName());
   h = mixHash(h, fi.GetStyle());
+#if wxCHECK_VERSION(3, 1, 2)
   h = mixHash(h, fi.GetNumericWeight());
+#else
+  h = mixHash(h, fi.GetWeight() == wxFONTWEIGHT_BOLD);
+  h = mixHash(h, fi.GetWeight() == wxFONTWEIGHT_LIGHT);
+#endif
   h = mixHash(h, fi.IsUnderlined() ? wxFONTFLAG_UNDERLINED : 0);
   h = mixHash(h, fi.IsStrikethrough() ? wxFONTFLAG_STRIKETHROUGH : 0);
   if (fi.IsUsingSizeInPixels())
     h = mixHash(h, fi.GetPixelSize());
   else
+#if wxCHECK_VERSION(3, 1, 2)
     h = mixHash(h, fi.GetFractionalPointSize());
+#else
+    h = mixHash(h, fi.GetPointSize());
+#endif
   return h;
 }
 
@@ -200,10 +209,17 @@ bool equal_to<wxFontInfo>::operator()(const wxFontInfo &l, const wxFontInfo &r) 
   return
     l.IsUsingSizeInPixels() == r.IsUsingSizeInPixels() &&
     ((l.IsUsingSizeInPixels() && l.GetPixelSize() == r.GetPixelSize()) ||
-     (!l.IsUsingSizeInPixels() && l.GetFractionalPointSize() == r.GetFractionalPointSize())) &&
+     (!l.IsUsingSizeInPixels() &&
+
+#if wxCHECK_VERSION(3, 1, 2)
+      (l.GetFractionalPointSize() == r.GetFractionalPointSize())
+#else
+      (l.GetPointSize() == r.GetPointSize())
+#endif
+       )) &&
     l.GetFamily() == r.GetFamily() &&
     l.GetFaceName() == r.GetFaceName() &&
-    l.GetNumericWeight() == r.GetNumericWeight() &&
+    l.GetWeight() == r.GetWeight() &&
     l.IsUnderlined() == r.IsUnderlined() &&
     l.IsStrikethrough() == r.IsStrikethrough() &&
     l.GetEncoding() == r.GetEncoding();
