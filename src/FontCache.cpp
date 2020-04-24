@@ -26,7 +26,7 @@
 
 FontCache::~FontCache()
 {
-  wxLogDebug("~FontCache: hits=%d misses=%d h:m ratio=%.2f",
+  wxLogMessage("~FontCache: hits=%d misses=%d h:m ratio=%.2f",
              m_hits, m_misses, double(m_hits)/m_misses);
 }
 
