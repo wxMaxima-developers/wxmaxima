@@ -131,7 +131,7 @@ _Maxima_ allows for unicode characters if it was compiled using a Lisp compiler 
 * A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
 * Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:
 
-~~~~
+~~~
 a alpha    i iota      r rho
 b beta     k kappa     s sigma
 g gamma    l lambda    t tau
@@ -148,11 +148,11 @@ E Epsilon  N Nu        P Phi
 Z Zeta     X Xi        C Chi
 H Eta      Om Omicron  Y Psi
 T Theta    P Pi        O Omega
-~~~~
+~~~
 
 The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
-~~~~
+~~~
 hbar          planck's constant: a h with a horizontal bar above it
 Hbar          a H with a horizontal bar above it
 2             squared
@@ -203,7 +203,7 @@ perp          a "perpendicular" sign
 leadsto       a "leads to" sign
 ->            a right arrow
 -->           a long right arrow
-~~~~
+~~~
 
 If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.
 
@@ -227,7 +227,7 @@ Several word processors and similar programs either recognize MathML input and a
 
 _wxMaxima_ offers a set of standard markdown conventions that don't collide with mathematical notation. One of this elements is bullet lists.
 
-~~~~
+~~~
 Ordinary text
  * One item, indentation level 1
  * Another item at indentation level 1
@@ -235,23 +235,23 @@ Ordinary text
    * A second item at the second indentation level
  * A third item at the first indentation level
 Ordinary text
-~~~~
+~~~
 
 _wxMaxima_ will recognize text starting with `>` chars as block quotes:
 
-~~~~
+~~~
 Ordinary text
 > quote quote quote quote
 > quote quote quote quote
 > quote quote quote quote
 Ordinary text
-~~~~
+~~~
 
 _wxMaxima_'s TeX and html output will also recognize `=>` and replace it by the corresponding unicode sign:
 
-~~~~
+~~~
 cogito => sum.
-~~~~
+~~~
 
 Other symbols the html and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
@@ -651,7 +651,7 @@ On Un\*x computers another possible reason would be that the loopback network th
 
 Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn't turn on compression which makes the contents of .wxmx files viewable in any text editor.
 
-If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a wxmx~ file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file's contents.
+If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `wxmx~` file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file's contents.
 
 If the text file containing this contents is saved as a file ending in .xml _wxMaxima_ will know how to recover the text of the document from it.
 
@@ -691,9 +691,9 @@ There are separate undo functions for cell operations and for changes inside of 
 * If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently.
 * If nothing else helps _Maxima_ contains a replay feature:
 
-~~~~
+~~~
 playback();
-~~~~
+~~~
 
 ## _wxMaxima_ starts up with the message “Maxima process terminated.”
 
@@ -732,16 +732,16 @@ The folder this file has to be placed in is system- and installation-specific. B
 
 The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:
 
-~~~~
+~~~
 wxdraw2d(
     file_name="test",
     explicit(sin(x),x,1,10)
 );
-~~~~
+~~~
 
 If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:
 
-~~~~
+~~~
 load("draw");
 pngdraw(name,[contents]):=
 (
@@ -763,7 +763,7 @@ pngdraw2d(name,[contents]):=
 pngdraw2d("Test",
         explicit(sin(x),x,1,10)
 );
-~~~~
+~~~
 
 ### Can I set the aspect ratio of a plot?
 
