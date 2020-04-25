@@ -934,7 +934,7 @@ wxFontWeight Configuration::IsBold(long st) const
 wxFontStyle Configuration::IsItalic(long st) const
 {
   if (m_styles[st].Italic())
-    return wxFONTSTYLE_SLANT;
+    return wxFONTSTYLE_ITALIC;
   return wxFONTSTYLE_NORMAL;
 }
 

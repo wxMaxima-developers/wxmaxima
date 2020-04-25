@@ -370,11 +370,20 @@ TextCell::TextCell(const TextCell &cell):
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
+double TextCell::GetScaledTextSize() const
+{
+  if((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    return Scale_Px(m_fontSizeLabel);
+  else
+    return Scale_Px(m_fontSize);
+
+}
+
 wxSize TextCell::GetTextSize(wxString const &text)
 {
   wxDC *dc = (*m_configuration)->GetDC();
-  double fontSize = dc->GetFont().GetPointSize();
-
+  double fontSize = GetScaledTextSize();
+ 
   SizeHash::const_iterator it = m_widths.find(fontSize);
 
   // If we already know this text piece's size we return the cached value
@@ -449,7 +458,7 @@ void TextCell::RecalculateWidths(int fontsize)
 
     if(m_numStart != wxEmptyString)
     {      
-      double fontSize = dc->GetFont().GetPointSize();
+      double fontSize = GetScaledTextSize();
       {
         SizeHash::const_iterator it = m_numstartWidths.find(fontSize);    
         if(it != m_numstartWidths.end())
@@ -505,14 +514,8 @@ void TextCell::RecalculateWidths(int fontsize)
           m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
         }
 
-        double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
-        if(fontsize1 < 4)
-          fontsize1 = 4;
 
-        auto req = FontInfo::GetFor(FontCache::AddAFont(dc->GetFont()));
-        FontInfo::SetPointSize(req, fontsize1);
-        wxFont font = FontCache::GetAFont(req);
-        dc->SetFont(font);
+        wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
       
         m_width = Scale_Px(configuration->GetLabelWidth());
         // We will decrease it before use
@@ -525,11 +528,11 @@ void TextCell::RecalculateWidths(int fontsize)
         {
 #if wxCHECK_VERSION(3, 1, 2)
           m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+          font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
 #else
           m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+          font.SetPointSize(Scale_Px(m_fontSizeLabel));
 #endif
-          FontInfo::SetPointSize(req, m_fontSizeLabel);
-          font = FontCache::GetAFont(req);
           dc->SetFont(font);
           labelSize = GetTextSize(text);
         } 
@@ -598,10 +601,10 @@ void TextCell::Draw(wxPoint point)
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
+        SetFontSizeForLabel(dc);
         if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
             configuration->ShowLabels())
         {
-          SetFontSizeForLabel(dc);
           // Draw the label
           if(m_textStyle == TS_USERLABEL)
           {
@@ -691,9 +694,8 @@ void TextCell::Draw(wxPoint point)
 
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
-  auto req = wxFontInfo(Scale_Px(m_fontSizeLabel));
-  FontInfo::CopyWithoutSize(&dc->GetFont(), req);
-  auto font = FontCache::GetAFont(req);
+  wxFont font = (*m_configuration)->GetFont(m_textStyle, GetScaledTextSize());
+  font.SetPointSize(GetScaledTextSize());
   dc->SetFont(font);
 }
 
@@ -767,6 +769,7 @@ void TextCell::SetFont(int fontsize)
   wxASSERT(Scale_Px(m_fontSize) > 0);
   FontInfo::SetPointSize(req, Scale_Px(m_fontSize));
   font = FontCache::GetAFont(req);
+  font.SetPointSize(Scale_Px(m_fontSize));
 
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -777,6 +780,7 @@ void TextCell::SetFont(int fontsize)
   {
     req = wxFontInfo(10);
     font = FontCache::GetAFont(req);
+    font.SetPointSize(Scale_Px(m_fontSize));
     dc->SetFont(font);
   }
 }
