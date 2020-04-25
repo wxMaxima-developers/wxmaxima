@@ -282,7 +282,11 @@ A .mac file named Quadratic.mac was created. It consists of two commands: `f(x) 
 
 ![Batch image](./BatchImage.png){ id=img_BatchImage }
 
-    read("test.mac");
+~~~maxima
+
+read("test.mac");
+
+~~~
 
 You can be use `.mac` files for writing own library of macros. But since they don’t contain enough structural information they cannot be read back as a _wxMaxima_ session.
 
@@ -314,7 +318,9 @@ After the next start plots embedded into the worksheet will be created with this
 In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:
 
 ~~~maxima
+
 wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$
+
 ~~~
 
 ### Use jsMath fonts
@@ -605,7 +611,9 @@ Allows to select an adequate point in the speed vs. accuracy tradeoff that is pa
 If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
 ~~~maxima
+
 show_image("man.png");
+
 ~~~
 
 ## Startup files
@@ -719,7 +727,9 @@ There are separate undo functions for cell operations and for changes inside of 
 * If nothing else helps _Maxima_ contains a replay feature:
 
 ~~~maxima
+
 playback();
+
 ~~~
 
 ## _wxMaxima_ starts up with the message “Maxima process terminated.”
@@ -748,7 +758,9 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:
 
 ~~~lisp
+
 (setf sb-impl::*default-external-format* :utf-8)
+
 ~~~
 
 The folder this file has to be placed in is system- and installation-specific. But any sbcl-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
@@ -815,8 +827,10 @@ FAQ
 
 There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"):
 
-~~~
+~~~latex
+
 \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+
 ~~~
 
 ## Is there a dark mode?
