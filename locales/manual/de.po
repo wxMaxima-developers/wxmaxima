@@ -17,8 +17,7 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
-#, fuzzy, no-wrap
-#| msgid "The wxMaxima user manual {-}\n"
+#, no-wrap
 msgid "The wxMaxima user manual {-}\n"
 msgstr "Das Handbuch von wxMaxima {-}\n"
 
@@ -112,8 +111,7 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:44
-#, fuzzy, no-wrap
-#| msgid "Introduction to wxMaxima\n"
+#, no-wrap
 msgid "Introduction to wxMaxima\n"
 msgstr "Einführung in wxMaxima\n"
 
@@ -478,10 +476,9 @@ msgstr "Innerhalb einer Zelle wird der Cursor vertikal dargestellt."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:111
-#, fuzzy, no-wrap
-#| msgid "Extensions to _Maxima_\n"
+#, no-wrap
 msgid "Sending cells to Maxima"
-msgstr "Erweiterungen für _Maxima_\n"
+msgstr "Eingabezellen an _Maxima_ schicken"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:114
@@ -904,15 +901,7 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:239
-#, fuzzy, no-wrap
-#| msgid ""
-#| "Ordinary text\n"
-#| " * One item, indentation level 1\n"
-#| " * Another item at indentation level 1\n"
-#| "   * An item at a second indentation level\n"
-#| "   * A second item at the second indentation level\n"
-#| " * A third item at the first indentation level\n"
-#| "Ordinary text\n"
+#, no-wrap
 msgid ""
 "~~~\n"
 "Ordinary text\n"
@@ -924,7 +913,7 @@ msgid ""
 "Ordinary text\n"
 "~~~\n"
 msgstr ""
-"~~~~\n"
+"~~~\n"
 "Normaler Text\n"
 " * Ein eingerückter Aufzählungspunkt\n"
 " * Ein zweiter Aufzählungspunkt\n"
@@ -932,7 +921,7 @@ msgstr ""
 "   * Ein zweiter Aufzählungspunkt der Aufzählung in der Aufzählung\n"
 " * Ein Punkt in der äußeren Aufzählung\n"
 "Normaler text\n"
-"~~~~\n"
+"~~~\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:241
@@ -942,15 +931,7 @@ msgstr "_wxMaxima_ erkennt Text, der mit einem \">\" beginnt, als ein Zitat:\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:249
-#, fuzzy, no-wrap
-#| msgid ""
-#| "~~~~\n"
-#| "Ordinary text\n"
-#| "> quote quote quote quote\n"
-#| "> quote quote quote quote\n"
-#| "> quote quote quote quote\n"
-#| "Ordinary text\n"
-#| "~~~~\n"
+#, no-wrap
 msgid ""
 "~~~\n"
 "Ordinary text\n"
@@ -960,14 +941,14 @@ msgid ""
 "Ordinary text\n"
 "~~~\n"
 msgstr ""
-"~~~~\n"
+"~~~\n"
 "Normaler Text\n"
 "> Zitat Zitat Zitat\n"
 "> Zitat Zitat Zitat Zitat\n"
 "> Zitat Zitat Zitat\n"
 "> Zitat Zitat Zitat\n"
 "Normaler Text\n"
-"~~~~\n"
+"~~~\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:251
@@ -977,19 +958,15 @@ msgstr "Die Text- und HTML-Ausgabe von _wxMaxima_ erkennen auch `=>` und ersetze
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:255
-#, fuzzy, no-wrap
-#| msgid ""
-#| "~~~~\n"
-#| "cogito => sum.\n"
-#| "~~~~\n"
+#, no-wrap
 msgid ""
 "~~~\n"
 "cogito => sum.\n"
 "~~~\n"
 msgstr ""
-"~~~~\n"
+"~~~\n"
 "cogito => sum\n"
-"~~~~\n"
+"~~~\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:257
@@ -1120,10 +1097,8 @@ msgstr "    load(draw);\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:288
-#, fuzzy
-#| msgid "    read(\"test.mac\");\n"
 msgid "read(\"test.mac\");"
-msgstr "    read(\"test.mac\");\n"
+msgstr "read(\"test.mac\");"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:290 ../../info/wxmaxima.md:325
@@ -1152,8 +1127,7 @@ msgstr ".wxm"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:296
-#, fuzzy, no-wrap
-#| msgid ".wxm files contains the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.\n"
+#, no-wrap
 msgid ".wxm files contain the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.\n"
 msgstr ".wxm-Dateien sollten das Arbeitsblatt außer _Maxima_'s Ausgabe enthalten. _Maxima_ >5.38 kann .wxm-Dateien über den `load()`-Befehl lesen. Das .wxm-Format ist allerdings oft weniger kompatibel mit älteren Versionen von _wxMaxima_, als das .wxmx-Format.\n"
 
@@ -1254,10 +1228,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:323
-#, fuzzy
-#| msgid "    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
 msgid "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$"
-msgstr "    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
+msgstr "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:326
@@ -1390,22 +1362,12 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:363
-#, fuzzy, no-wrap
-#| msgid "Extensions to _Maxima_\n"
+#, no-wrap
 msgid "Extensions to _Maxima_\n"
 msgstr "Erweiterungen für _Maxima_\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:366
-#, fuzzy
-#| msgid ""
-#| "_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, "
-#| "its main purpose is to pass along commands to _Maxima_ and to report the "
-#| "results of executing those commands. In some cases, however, _wxMaxima_ "
-#| "adds functionality to _Maxima_. _wxMaxima_’s ability to generate reports "
-#| "by exporting a workbook’s contents to HTML and LaTeX files has been "
-#| "mentioned. This section considers some ways that _wxMaxima_ enhances the "
-#| "inclusion of graphics into a session. described here."
 msgid ""
 "_wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, "
 "its main purpose is to pass along commands to _Maxima_ and to report the "
@@ -1488,15 +1450,6 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:390
 #, fuzzy, no-wrap
-#| msgid ""
-#| "    for i:1 thru 10 do (\n"
-#| "        /* Tell the user how far we got */\n"
-#| "        wxstatusbar(concat(\"Pass \",i)),\n"
-#| "        /* (sleep n) is a Lisp function, which can be used */\n"
-#| "        /* with the character \"?\" before. It delays the */\n"
-#| "        /* program execution (here: for 3 seconds) */\n"
-#| "        ?sleep(3)\n"
-#| "    )$\n"
 msgid ""
 "~~~maxima\n"
 "for i:1 thru 10 do (\n"
@@ -1838,11 +1791,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:473
-#, fuzzy
-#| msgid ""
-#| "If the general shape of the plot is what matters it might suffice to move "
-#| "the plot just a little bit in order to make it's 3D nature available to "
-#| "the intuition:"
 msgid ""
 "If the general shape of the plot is what matters it might suffice to move "
 "the plot just a little bit in order to make its 3D nature available to the "
@@ -2131,12 +2079,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:556
-#, fuzzy
-#| msgid ""
-#| "One helpful feature of the 2D button is that it allows to setup the scene "
-#| "as an animation in which a variable (by default it is _t_ has a different "
-#| "value in each frame: Often an moving 2D plot allows easier interpretation "
-#| "than the same data in a non-moving 3D one."
 msgid ""
 "One helpful feature of the 2D button is that it allows to setup the scene as "
 "an animation in which a variable (by default it is _t_) has a different "
@@ -2201,7 +2143,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:569
 #, no-wrap
 msgid "Parametric plot"
-msgstr "#### Parametrisch"
+msgstr "Parametrische Plots"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:572
@@ -2219,7 +2161,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:573
 #, no-wrap
 msgid "Points"
-msgstr "#### Punkte"
+msgstr "Punkte"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:576
@@ -2248,7 +2190,7 @@ msgstr "Bestimmt den Titel des Diagramms."
 #: ../../info/wxmaxima.md:581
 #, no-wrap
 msgid "Axis"
-msgstr "#### Achsen"
+msgstr "Achsen"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:584
@@ -2277,7 +2219,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:589
 #, no-wrap
 msgid "Plot name"
-msgstr "#### Name der Kurve"
+msgstr "Name der Kurve"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:592
@@ -2352,12 +2294,6 @@ msgstr "Einbetten von Bildern"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:612
-#, fuzzy
-#| msgid ""
-#| "if the `.wxmx` file format is being used embedding files in a _wxMaxima_ "
-#| "project can be done as easily as per drag-and-drop. But sometimes (for "
-#| "example if an image’s contents might change later on in a session) it is "
-#| "better to tell the file to load the image on evaluation:"
 msgid ""
 "If the `.wxmx` file format is being used embedding files in a _wxMaxima_ "
 "project can be done as easily as per drag-and-drop. But sometimes (for "
@@ -2369,10 +2305,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:616
-#, fuzzy
-#| msgid "    show_image(\"man.png\");\n"
 msgid "show_image(\"man.png\");"
-msgstr "    show_image(\"Mensch.png\");\n"
+msgstr "show_image(\"Mensch.png\");"
 
 # ## Startbefehle
 #. type: Title ##
@@ -2614,8 +2548,7 @@ msgstr "Der `box()`-Befehl stellt sein Argument in _wxMaxima_ rot dar."
 
 #. type: Title =
 #: ../../info/wxmaxima.md:675
-#, fuzzy, no-wrap
-#| msgid "Troubleshooting\n"
+#, no-wrap
 msgid "Troubleshooting\n"
 msgstr "Fehlersuche\n"
 
@@ -2676,20 +2609,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:688
-#, fuzzy
-#| msgid ""
-#| "If the zip signature at the end of the file is still intact after "
-#| "renaming a broken .wxmx file to .zip most operating systems will provide "
-#| "a way to extract any portion of information that is stored inside it. The "
-#| "can be done when there is the need of recovering the original image files "
-#| "from a text processor document. If the zip signature isn’t intact that "
-#| "does not need to be the end of the world: If _wxMaxima_ during saving "
-#| "detected that something went wrong there will be a wxmx~ file whose "
-#| "contents might help and even if there isn’t such a file: If the "
-#| "configuration option is set that .wxmx files have to be optimized for "
-#| "version control it is possible to rename the .wxmx file to a .txt file "
-#| "and to use a text editor to recover the XML portion of the file's "
-#| "contents."
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
 "broken .wxmx file to .zip most operating systems will provide a way to "
@@ -2833,7 +2752,7 @@ msgstr "Gnuplot hat keine funktionsfähige .png-Datei ausgegeben."
 #: ../../info/wxmaxima.md:716
 #, no-wrap
 msgid "Plotting an animation results in “error: undefined variable”"
-msgstr "## Animationen enden in \"Error: Undefined Variable\""
+msgstr "Animationen enden in \"Error: Undefined Variable\""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:719
@@ -2901,10 +2820,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:732
-#, fuzzy
-#| msgid "~~~ playback(); ~~~"
 msgid "playback();"
-msgstr "~~~ playback(); ~~~"
+msgstr "~~~ playback();"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:735
@@ -3051,7 +2968,7 @@ msgstr "    :lisp (sb-impl::userinit-pathname)\n"
 #: ../../info/wxmaxima.md:772
 #, no-wrap
 msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
-msgstr "ann _wxMaxima_ das eingebettete Diagramm gleich noch als Datei ausgeben?"
+msgstr "Kann _wxMaxima_ das eingebettete Diagramm gleich noch als Datei ausgeben?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:775
@@ -3276,8 +3193,7 @@ msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten
 
 #. type: Title =
 #: ../../info/wxmaxima.md:848
-#, fuzzy, no-wrap
-#| msgid "Command-line arguments\n"
+#, no-wrap
 msgid "Command-line arguments\n"
 msgstr "Kommandozeilen-Optionen\n"
 
