@@ -27,7 +27,6 @@
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include <vector>
-#include "GroupCell.h"
 
 #ifndef XMLINSPECTOR_H
 #define XMLINSPECTOR_H

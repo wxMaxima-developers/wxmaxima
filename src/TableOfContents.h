@@ -30,7 +30,6 @@
 #include <wx/listctrl.h>
 #include <vector>
 #include "GroupCell.h"
-#include "EditorCell.h"
 
 #ifndef TABLEOFCONTENTS_H
 #define TABLEOFCONTENTS_H

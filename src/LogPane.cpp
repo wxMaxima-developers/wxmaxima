@@ -20,7 +20,6 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "LogPane.h"
-#include "ErrorRedirector.h"
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {
   m_isLogTarget = false;

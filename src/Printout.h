@@ -34,7 +34,6 @@
 
 #include <vector>
 
-#include "Cell.h"
 #include "GroupCell.h"
 
 using namespace std;

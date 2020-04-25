@@ -45,7 +45,6 @@ surrounding the worksheet.
 #include "Version.h"
 #include "MainMenuBar.h"
 #include "History.h"
-#include "ToolBar.h"
 #include "XmlInspector.h"
 #include "StatusBar.h"
 #include "LogPane.h"
