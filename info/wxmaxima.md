@@ -313,7 +313,9 @@ After the next start plots embedded into the worksheet will be created with this
 
 In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:
 
-    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$
+~~~maxima
+wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$
+~~~
 
 ### Use jsMath fonts
 
@@ -369,14 +371,16 @@ If the variable name doesn’t match these requirements it can still be declared
 
 Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevaluated.
 
-    for i:1 thru 10 do (
-        /* Tell the user how far we got */
-        wxstatusbar(concat("Pass ",i)),
-        /* (sleep n) is a Lisp function, which can be used */
-        /* with the character "?" before. It delays the */
-        /* program execution (here: for 3 seconds) */
-        ?sleep(3)
-    )$
+~~~maxima
+for i:1 thru 10 do (
+    /* Tell the user how far we got */
+    wxstatusbar(concat("Pass ",i)),
+    /* (sleep n) is a Lisp function, which can be used */
+    /* with the character "?" before. It delays the */
+    /* program execution (here: for 3 seconds) */
+    ?sleep(3)
+)$
+~~~
 
 ## Plotting
 
@@ -390,23 +394,26 @@ _Maxima_ normally instructs the external program gnuplot to open a separate wind
 
 As noted above, the configure dialog provides a way to change the default size plots are created with which sets the starting value of `wxplot_size`. The plotting routines of _wxMaxima_ respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
 
-    wxplot_size:[1200,800]$
-    wxdraw2d(
-        explicit(
-            sin(x),
-            x,1,10
-        )
-    )$
+~~~maxima
+wxplot_size:[1200,800]$
+wxdraw2d(
+    explicit(
+        sin(x),
+        x,1,10
+    )
+)$
+~~~
 
 If the size of only one plot is to be changed _Maxima_ provides a canonical way to change an attribute only for the current cell.
 
-     wxdraw2d(
-        explicit(
-            sin(x),
-            x,1,10
-        )
-     ),wxplot_size=[1600,800]$
-
+~~~maxima
+wxdraw2d(
+    explicit(
+        sin(x),
+        x,1,10
+    )
+),wxplot_size=[1600,800]$
+~~~
 
 ### Better quality plots
 
@@ -426,48 +433,54 @@ On MS Windows, if in _Maxima_'s variable `gnuplot_command` "gnuplot" is replaced
 
 The first two arguments for `with_slider_draw` are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for `wxdraw2d`:
 
-    with_slider_draw(
-        f,[1,2,3,4,5,6,7,10],
-        title=concat("f=",f,"Hz"),
-        explicit(
-            sin(2*%pi*f*x),
-            x,0,1
-        ),grid=true
-    );
+~~~maxima
+with_slider_draw(
+    f,[1,2,3,4,5,6,7,10],
+    title=concat("f=",f,"Hz"),
+    explicit(
+        sin(2*%pi*f*x),
+        x,0,1
+    ),grid=true
+);
+~~~
 
 The same functionality for 3D plots is accessible as `with_slider_draw3d`, which allows for rotating 3d plots:
 
-    wxanimate_autoplay:true;
-    wxanimate_framerate:20;
-    with_slider_draw3d(
-        α,makelist(i,i,1,360,3),
-        title=sconcat("α=",α),
-        surface_hide=true,
-        contour=both,
-        view=[60,α],
-        explicit(
-            sin(x)*sin(y),
-            x,-π,π,
-            y,-π,π
-        )
-    )$
+~~~maxima
+wxanimate_autoplay:true;
+wxanimate_framerate:20;
+with_slider_draw3d(
+    α,makelist(i,i,1,360,3),
+    title=sconcat("α=",α),
+    surface_hide=true,
+    contour=both,
+    view=[60,α],
+    explicit(
+        sin(x)*sin(y),
+        x,-π,π,
+        y,-π,π
+    )
+)$
+~~~
 
 If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make its 3D nature available to the intuition:
 
-    wxanimate_autoplay:true;
-    wxanimate_framerate:20;
-    with_slider_draw3d(
-        t,makelist(i,i,0,2*π,.05*π),
-        title=sconcat("α=",α),
-        surface_hide=true,
-        contour=both,
-        view=[60,30+5*sin(t)],
-        explicit(
-            sin(x)*y^2,
-            x,-2*π,2*π,
-            y,-2*π,2*π
-        )
-    )$
+~~~maxima
+wxanimate_autoplay:true;
+wxanimate_framerate:20;
+with_slider_draw3d(
+    t,makelist(i,i,0,2*π,.05*π),
+    title=sconcat("α=",α),
+    surface_hide=true,
+    contour=both,
+    view=[60,30+5*sin(t)],
+    explicit(
+        sin(x)*y^2,
+        x,-2*π,2*π,
+        y,-2*π,2*π
+    )
+)$
+~~~
 
 For those more familiar with `plot` than with `draw` there is a second set of functions:
 
@@ -476,46 +489,54 @@ For those more familiar with `plot` than with `draw` there is a second set of fu
 
 Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable `wxanimate_framerate` can be used:
 
-    wxanimate(a, 10,
-        sin(a*x), [x,-5,5]), wxanimate_framerate=6$
+~~~maxima
+wxanimate(a, 10,
+    sin(a*x), [x,-5,5]), wxanimate_framerate=6$
+~~~
 
 The animation functions use _maxima_'s `makelist` command and therefore shares the pitfall that the slider variable's value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:
 
-    f:sin(a*x);
-    with_slider_draw(
-        a,makelist(i/2,i,1,10),
-        title=concat("a=",float(a)),
-        grid=true,
-        explicit(f,x,0,10)
-    )$
+~~~maxima
+f:sin(a*x);
+with_slider_draw(
+    a,makelist(i/2,i,1,10),
+    title=concat("a=",float(a)),
+    grid=true,
+    explicit(f,x,0,10)
+)$
+~~~
 
 If _Maxima_ is explicitly asked to substitute the slider’s value plotting works fine instead:
 
-    f:sin(a*x);
-    with_slider_draw(
-        b,makelist(i/2,i,1,10),
-        title=concat("a=",float(b)),
-        grid=true,
-        explicit(
-            subst(a=b,f),
-            x,0,10
-        )
-    )$
+~~~maxima
+f:sin(a*x);
+with_slider_draw(
+    b,makelist(i/2,i,1,10),
+    title=concat("a=",float(b)),
+    grid=true,
+    explicit(
+        subst(a=b,f),
+        x,0,10
+    )
+)$
+~~~
 
 ### Opening multiple plots in contemporaneous windows
 
 While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:
 
-    load(draw);
+~~~maxima
+load(draw);
 
-    /* Parabola in window #1 */
-    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
+/* Parabola in window #1 */
+draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
 
-    /* Parabola in window #2 */
-    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
+/* Parabola in window #2 */
+draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
 
-    /* Paraboloid in window #3 */
-    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
+/* Paraboloid in window #3 */
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
+~~~
 
 ### The "Plot using draw" sidepane
 
@@ -583,7 +604,9 @@ Allows to select an adequate point in the speed vs. accuracy tradeoff that is pa
 
 If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
-    show_image("man.png");
+~~~maxima
+show_image("man.png");
+~~~
 
 ## Startup files
 
@@ -608,12 +631,14 @@ These files are in the Maxima user directory, usually `.maxima/` in the user's h
 
 The function `table_form()` displays a 2D list in a form that is more readable than the output _Maxima_’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a "done" statement.
 
-    table_form(
-        [
-            [1,2],
-            [3,4]
-        ]
-    )$
+~~~maxima
+table_form(
+    [
+        [1,2],
+        [3,4]
+    ]
+)$
+~~~
 
 As the next example shows, the lists that are assembled by the `table_form` command can be created before the command is executed.
 
@@ -659,13 +684,15 @@ If the text file containing this contents is saved as a file ending in .xml _wxM
 
 Normally _wxMaxima_ waits for the whole 2D formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a `disp` command, though, that will provide debug output immediately and without waiting for the current _Maxima_ command to finish:
 
-    for i:1 thru 10 do (
-       disp(i),
-       /* (sleep n) is a Lisp function, which can be used */
-       /* with the character "?" before. It delays the */
-       /* program execution (here: for 3 seconds) */
-       ?sleep(3)
-    )$
+~~~maxima
+for i:1 thru 10 do (
+   disp(i),
+   /* (sleep n) is a Lisp function, which can be used */
+   /* with the character "?" before. It delays the */
+   /* program execution (here: for 3 seconds) */
+   ?sleep(3)
+)$
+~~~
 
 ## Plotting only shows a closed empty envelope with an error message
 
@@ -691,7 +718,7 @@ There are separate undo functions for cell operations and for changes inside of 
 * If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all _Maxima_ commands that have been issued recently.
 * If nothing else helps _Maxima_ contains a replay feature:
 
-~~~
+~~~maxima
 playback();
 ~~~
 
@@ -720,7 +747,9 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:
 
-    (setf sb-impl::*default-external-format* :utf-8)
+~~~lisp
+(setf sb-impl::*default-external-format* :utf-8)
+~~~
 
 The folder this file has to be placed in is system- and installation-specific. But any sbcl-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
 
@@ -732,7 +761,7 @@ The folder this file has to be placed in is system- and installation-specific. B
 
 The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:
 
-~~~
+~~~maxima
 wxdraw2d(
     file_name="test",
     explicit(sin(x),x,1,10)
@@ -741,7 +770,7 @@ wxdraw2d(
 
 If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:
 
-~~~
+~~~maxima
 load("draw");
 pngdraw(name,[contents]):=
 (
@@ -769,10 +798,12 @@ pngdraw2d("Test",
 
 Not directly using _Maxima_. But there are gnuplot commands for it:
 
-     wxdraw2d(
-         proportional_axis=xy,
-         explicit(sin(x),x,1,10)
-     ),wxplot_size=[1000,1000];
+~~~maxima
+wxdraw2d(
+    proportional_axis=xy,
+    explicit(sin(x),x,1,10)
+),wxplot_size=[1000,1000];
+~~~
 
 * * *
 
@@ -784,7 +815,9 @@ FAQ
 
 There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"):
 
-    \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+~~~
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+~~~
 
 ## Is there a dark mode?
 
