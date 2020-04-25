@@ -216,7 +216,7 @@ wxString Dirstructure::MaximaDefaultLocation()
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
-  // The Macports path (if it is prefered over homebrew)
+  // The Macports path (if it is preferred over homebrew)
 #if OSX_MACPORTS_PREFER
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
@@ -230,7 +230,7 @@ wxString Dirstructure::MaximaDefaultLocation()
   if (wxFileExists(maximaLocation))
     return maximaLocation;
 
-  // The Macports path (if it is not prefered over homebrew)
+  // The Macports path (if it is not preferred over homebrew)
 #if !OSX_MACPORTS_PREFER
   wxLogMessage(wxString::Format(notFound,maximaLocation.utf8_str()));
   maximaLocation = OSX_MACPORTS_PREFIX "/bin/maxima";
