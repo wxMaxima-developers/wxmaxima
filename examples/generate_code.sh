@@ -24,7 +24,7 @@ cat >examples_gettext.h <<END
 /* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            */
 
 #include <wx/wx.h>
-#include <wx/string.h
+#include <wx/string.h>
 
 wxString examples = 
 END
