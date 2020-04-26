@@ -29,15 +29,9 @@ branches:
 
 # scripts to run before build
 before_build:
-# pandoc normally is installed using chocolatey. But currently (10/2019) that results
-# in a powershell error => let's install it manually instead.
   - cmd: echo Installing pandoc...
-  - ps: Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-windows-x86_64.zip'
-  - cmd: 7z x pandoc-2.7.3-windows-x86_64.zip -o"C:\Program Files (x86)\Pandoc\"
-#  - cmd: echo Installing pandoc...
-#  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\pandoc-2.7.3-windows-x86_64"
-#  - cmd: choco install pandoc
-  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+  - ps: choco install -y pandoc
+  - cmd: refreshenv
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.3
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.3/wxWidgets-3.1.3.7z'
