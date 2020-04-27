@@ -1353,7 +1353,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     return 0;
 
   // A list of by how many chars we need to indent the current line.
-  std::list<int> indentChars;
+  std::vector<int> indentChars;
   indentChars.push_back(0);
 
   wxString::const_iterator it = m_text.begin();
@@ -3535,8 +3535,8 @@ void EditorCell::StyleTextTexts()
 
     // Is this a new line - or the remainder of the line after a soft break?
     bool newLine = true;
-    std::list<wxString> prefixes;
-    std::list<int> indentPixels;
+    std::vector<wxString> prefixes;
+    std::vector<int> indentPixels;
     wxString indentChar;
 
     unsigned int i = 0;
