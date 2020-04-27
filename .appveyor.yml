@@ -34,7 +34,9 @@ before_build:
   - cmd: refreshenv
   - cmd: echo Installing po4a...
   - ps: choco install -y --no-progress xsltproc
-  - cmd: cpanm --notest https://github.com/mquinson/po4a/releases/download/v0.57/po4a-0.57.tar.gz
+  - cmd: dir C:\strawberry\perl\bin
+  - cmd: echo %PATH%
+  - cmd: c:\strawberry\perl\bin\cpanm.bat --notest https://github.com/mquinson/po4a/releases/download/v0.57/po4a-0.57.tar.gz
   - cmd: refreshenv
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.3
