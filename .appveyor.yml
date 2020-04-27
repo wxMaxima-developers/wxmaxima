@@ -32,6 +32,10 @@ before_build:
   - cmd: echo Installing pandoc...
   - ps: choco install -y --no-progress pandoc
   - cmd: refreshenv
+  - cmd: echo Installing po4a...
+  - ps: choco install -y --no-progress xsltproc
+  - cmd: cpanm --notest https://github.com/mquinson/po4a/releases/download/v0.57/po4a-0.57.tar.gz
+  - cmd: refreshenv
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.3
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.3/wxWidgets-3.1.3.7z'
