@@ -93,7 +93,6 @@
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
-#include <wx/mimetype.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>

@@ -105,7 +105,7 @@ If the user tries to select a complete sentence a word processor will try to ext
 
 What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
-* The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there. 
+* The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.
 * A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
 
 ### Sending cells to Maxima
@@ -684,7 +684,7 @@ On Un\*x computers another possible reason would be that the loopback network th
 
 Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn't turn on compression which makes the contents of .wxmx files viewable in any text editor.
 
-If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `wxmx~` file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file's contents.
+If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `wxmx~` file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file's contents.
 
 If the text file containing this contents is saved as a file ending in .xml _wxMaxima_ will know how to recover the text of the document from it.
 
