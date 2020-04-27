@@ -472,6 +472,118 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
+void Configuration::UpdateWorksheetFonts()
+{
+  for(int i = (TextStyle)0; i<NUMBEROFSTYLES; i++)
+  {
+    TextStyle style = (TextStyle) i;
+    wxFont font;
+    switch(style)
+    {
+    case TS_DEFAULT            :
+    case TS_VARIABLE           :
+    case TS_NUMBER             :
+    case TS_FUNCTION           :
+    case TS_SPECIAL_CONSTANT   :
+    case TS_GREEK_CONSTANT     :
+    case TS_STRING             :
+    case TS_MAIN_PROMPT        :
+    case TS_OTHER_PROMPT       :
+    case TS_LABEL              :
+    case TS_USERLABEL          :
+    case TS_HIGHLIGHT          :
+    case TS_WARNING            :
+    case TS_ERROR              :
+    case TS_TEXT               :
+    case TS_TEXT_BACKGROUND    :
+    case TS_DOCUMENT_BACKGROUND:
+    case TS_CELL_BRACKET       :
+    case TS_ACTIVE_CELL_BRACKET:
+    case TS_CURSOR             :
+    case TS_SELECTION          :
+    case TS_EQUALSSELECTION    :
+    case TS_OUTDATED           :
+      font.SetFaceName(MathFontName());
+      break;
+//    case TS_INPUT              :
+//    case TS_HEADING6           :
+//    case TS_HEADING5           :
+//    case TS_SUBSUBSECTION      :
+//    case TS_SUBSECTION         :
+//    case TS_SECTION            :
+//    case TS_TITLE              :
+//    case TS_CODE_VARIABLE      :
+//    case TS_CODE_FUNCTION      :
+//    case TS_CODE_COMMENT       :
+//    case TS_CODE_NUMBER        :
+//    case TS_CODE_STRING        :
+//    case TS_CODE_OPERATOR      :
+//    case TS_CODE_LISP          :
+//    case TS_CODE_ENDOFLINE     :
+    default:
+      font.SetFaceName(FontName());
+      break;
+    }
+    if(!font.IsOk())
+    {
+      font.SetFaceName(wxEmptyString);
+      font.SetFamily(wxFONTFAMILY_MODERN);
+    }
+    if ((style == TS_TITLE) ||
+        (style == TS_SECTION) ||
+        (style == TS_SUBSECTION) ||
+        (style == TS_SUBSUBSECTION) ||
+        (style == TS_HEADING5) || 
+        (style == TS_HEADING6))
+    {
+      // Titles have a fixed font size 
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(GetFontSize(style));
+#else
+      font.SetPointSize(GetFontSize(style));
+#endif
+    }
+    else
+    {
+      // Font with maths has a dynamic font size that might be reduced for example
+      // within fractions, subscripts or superscripts.
+      if (
+        (style != TS_MAIN_PROMPT) &&
+        (style != TS_OTHER_PROMPT) &&
+        (style != TS_ERROR) &&
+        (style != TS_WARNING)
+        )
+      {
+#if wxCHECK_VERSION(3, 1, 2)
+        font.SetFractionalPointSize(GetDefaultFontSize(style));
+#else
+        font.SetPointSize(GetDefaultFontSize());
+#endif
+      }
+    }
+    if(IsItalic(style) != wxFONTSTYLE_NORMAL)
+      font.SetStyle(wxFONTSTYLE_ITALIC);
+    if(IsBold(style) != wxFONTWEIGHT_NORMAL)
+      font.MakeBold();
+    if(IsUnderlined(style))
+      font.MakeUnderlined();
+    m_worksheetFonts[style] = font;
+  }
+}
+
+wxFont Configuration::GetWorksheetFont(TextStyle style) const
+{
+  wxASSERT((style > 0) && (style < NUMBEROFSTYLES));
+  wxFont font = m_worksheetFonts[style];
+  
+#if wxCHECK_VERSION(3, 1, 2)
+  font.SetFractionalPointSize(Scale_Px(font.GetFractionalPointSize()));
+#else
+  font.SetPointSize(Scale_Px(font.GetPointSize()));
+#endif
+  return font;
+}
+
 wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 {
   wxString fontName;

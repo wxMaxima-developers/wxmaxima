@@ -844,6 +844,11 @@ public:
   void FontName(wxString name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
   void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
   wxString MathFontName()const {return m_mathFontName;}
+
+  //! Update the list of fonts associated to the worksheet styles
+  void UpdateWorksheetFonts();
+  //! Get the font for the given worksheet style
+  wxFont GetWorksheetFont(TextStyle style) const;
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(long autosubscriptnum)
@@ -1003,6 +1008,7 @@ private:
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
   bool m_invertBackground;
+  wxFont m_worksheetFonts[NUMBEROFSTYLES];
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
