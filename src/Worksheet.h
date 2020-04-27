@@ -214,43 +214,47 @@ private:
     @{
   */
 
-  //! The description of one action for the undo (or redo) command
+  /*! The description of one action for the undo (or redo) command.
+    This object is immutable - the undo/redo buffer cannot be modified.
+   */
   class TreeUndoAction
   {
   public:
-    void Clear()
+    TreeUndoAction(GroupCell *start, const wxString &oldText) :
+        m_start(start), m_oldText(oldText)
     {
-      m_start = NULL;
-      m_oldText = wxEmptyString;
-      m_newCellsEnd = NULL;
-      wxDELETE(m_oldCells);
-      m_oldCells = NULL;
-      m_partOfAtomicAction = false;
+      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
+    }
+    TreeUndoAction(GroupCell *start, GroupCell *end) :
+        m_start(start), m_newCellsEnd(end)
+    {
+      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
+    }
+    TreeUndoAction(GroupCell *start, GroupCell *end, GroupCell *oldCells) :
+        m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
+    {
+      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
     }
 
-    TreeUndoAction()
-    {
-      m_start = NULL;
-      m_newCellsEnd = NULL;
-      m_oldCells = NULL;
-      m_partOfAtomicAction = false;
-    }
+    /*! True = This undo action is only part of an atomic undo action.
 
-    //! True = This undo action is only part of an atomic undo action.
-    bool m_partOfAtomicAction;
+      This is the only mutable part of this action: is is used to indicate its relation to
+      other actions in the undo list.
+     */
+    bool m_partOfAtomicAction = false;
 
     /*! The position this action started at.
 
       NULL = At the begin of the document.
     */
-    GroupCell *m_start;
+    GroupCell *const m_start = nullptr;
 
     /*! The old contents of the cell start
 
       if this field != wxEmptyString this field contains the old contents of the text
       cell pointed to by the field start.
     */
-    wxString m_oldText;
+    const wxString m_oldText;
 
     /*! This action inserted all cells from start to newCellsEnd.
 
@@ -258,7 +262,7 @@ private:
 
       If this field's value is NULL no cells have to be deleted to undo this action.
     */
-    GroupCell *m_newCellsEnd;
+    GroupCell *const m_newCellsEnd = nullptr;
 
     /*! Cells that were deleted in this action.
 
@@ -267,14 +271,17 @@ private:
 
       If this field's value is NULL no cells have to be added to undo this action.
     */
-    GroupCell *m_oldCells;
+    GroupCell *const m_oldCells = nullptr;
   };
 
+  //! The type of the list of tree actions that can be undone
+  using UndoActions = std::list<TreeUndoAction>;
+
   //! The list of tree actions that can be undone
-  std::list<TreeUndoAction *> treeUndoActions;
+  UndoActions treeUndoActions;
 
   //! The list of tree actions that can be redone
-  std::list<TreeUndoAction *> treeRedoActions;
+  UndoActions treeRedoActions;
 
   //! The text the TreeUndo_ActiveCell contained when we entered it
   wxString m_treeUndo_ActiveCellOldText;
@@ -286,13 +293,13 @@ private:
   void TreeUndo_ClearUndoActionList();
 
   //! Remove one action ftom the action list
-  void TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList);
+  void TreeUndo_DiscardAction(UndoActions *actionList);
 
   //! Add another action to this undo action
-  void TreeUndo_AppendAction(std::list<TreeUndoAction *> *actionList)
+  void TreeUndo_AppendAction(UndoActions *actionList)
     {
       if(!actionList->empty())
-        actionList->front()->m_partOfAtomicAction = true;
+        actionList->front().m_partOfAtomicAction = true;
     }
 
   //! Add another action to this undo action
@@ -312,20 +319,20 @@ private:
     \param sourcelist The list to take the undo information from
     \param undoForThisOperation The list to write the information to how on to undo this undo op
   */
-  bool TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperation);
 
   /*! Undo a text change
 
     Called from TreeUndo().*/
-  bool TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoTextChange(UndoActions *sourcelist, UndoActions *undoForThisOperation);
   /*! Undo a call deletion
 
     Called from TreeUndo().*/
-  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellDeletion(UndoActions *sourcelist, UndoActions *undoForThisOperation);
   /*! Undo adding cells
 
     Called from TreeUndo().*/
-  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellAddition(UndoActions *sourcelist, UndoActions *undoForThisOperation);
 
   //! Undo a tree operation.
   bool TreeUndo()
@@ -357,7 +364,7 @@ private:
       - treeUedoActions for the normal undo buffer or
       - treeRedoActions for the buffer that allows reverting undos
   */
-  void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer);
+  void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, UndoActions *undoBuffer);
 
 
   /*! Remember that these cells were just added so this addition can be undone.
@@ -919,7 +926,7 @@ public:
    */
   GroupCell *InsertGroupCells(GroupCell *cells,
                               GroupCell *where,
-                              std::list<TreeUndoAction *> *undoBuffer
+                              UndoActions *undoBuffer
   );
 
   /*! Insert group cells into the worksheet
@@ -1000,7 +1007,7 @@ public:
   void DeleteRegion(
           GroupCell *start,
           GroupCell *end,
-          std::list<TreeUndoAction *> *undoBuffer
+          UndoActions *undoBuffer
   );
 
   /*! Move a range of cells from the document to the undo buffer
