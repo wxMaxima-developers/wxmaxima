@@ -67,9 +67,9 @@ SumCell::~SumCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> SumCell::GetInnerCells()
+Cell::InnerCells SumCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_under)
     innerCells.push_back(m_under);
   if(m_over)
@@ -92,7 +92,7 @@ void SumCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_base = std::shared_ptr<Cell>(base);
-  m_paren->SetInner(m_base);
+  static_cast<ParenCell&>(*m_paren).SetInner(m_base);
   m_displayedBase = m_paren;
 }
 

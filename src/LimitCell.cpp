@@ -68,9 +68,9 @@ LimitCell::~LimitCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> LimitCell::GetInnerCells()
+Cell::InnerCells LimitCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)

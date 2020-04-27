@@ -44,7 +44,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_last = NULL;
   m_signType = 0;
   m_signFontScale = 0;
-  m_open->DontEscapeOpeningParenthesis();
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
@@ -68,9 +68,9 @@ SqrtCell::~SqrtCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> SqrtCell::GetInnerCells()
+Cell::InnerCells SqrtCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)

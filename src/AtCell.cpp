@@ -51,9 +51,9 @@ AtCell::~AtCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> AtCell::GetInnerCells()
+Cell::InnerCells AtCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)

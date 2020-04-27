@@ -115,12 +115,6 @@ void ImgCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> ImgCell::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> innerCells;
-  return innerCells;
-}
-
 wxString ImgCell::GetToolTip(const wxPoint &point)
 {
   if(ContainsPoint(point))

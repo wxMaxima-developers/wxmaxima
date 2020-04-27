@@ -408,12 +408,6 @@ void EditorCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> EditorCell::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> innerCells;
-  return innerCells;
-}
-
 wxString EditorCell::ToTeX()
 {
   wxString text = m_text;

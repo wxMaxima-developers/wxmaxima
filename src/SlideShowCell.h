@@ -94,7 +94,6 @@ public:
   
   virtual wxString GetToolTip(const wxPoint &point) override;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   void MarkAsDeleted()  override;
 
   /*! Remove all cached scaled images from memory

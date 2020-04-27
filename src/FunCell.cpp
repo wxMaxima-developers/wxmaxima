@@ -60,9 +60,9 @@ FunCell::~FunCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> FunCell::GetInnerCells()
+Cell::InnerCells FunCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_nameCell)
     innerCells.push_back(m_nameCell);
   if(m_argCell)

@@ -59,9 +59,9 @@ SubSupCell::~SubSupCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> SubSupCell::GetInnerCells()
+Cell::InnerCells SubSupCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_postSubCell)
@@ -287,12 +287,8 @@ wxString SubSupCell::ToString()
   }
   else
   {
-    std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
-    while(!innerCells.empty())
-    {
-      s += "[" + innerCells.front()->ListToString() + "]";
-      innerCells.pop_front();
-    }
+    for (auto &cell : std::as_const(m_innerCellList))
+      s += "[" + cell->ListToString() + "]";
   }
   return s;
 }
@@ -316,18 +312,15 @@ wxString SubSupCell::ToMatlab()
   }
   else
   {
-    std::list<std::shared_ptr<Cell>> innerCells = m_innerCellList;
-
     s += "[";
     bool first = false;
     
-    while(!innerCells.empty())
+    for (auto &cell : std::as_const(m_innerCellList))
     {
       if(!first)
         s += ";";
       first = true;
-      s += innerCells.front()->ListToMatlab();
-      innerCells.pop_front();
+      s += cell->ListToMatlab();
     }
     s += "]";
   }

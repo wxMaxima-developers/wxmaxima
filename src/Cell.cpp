@@ -36,10 +36,9 @@ wxString Cell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 
   wxString toolTip;
-  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
-  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  for (auto &cell : GetInnerCells())
   {
-    Cell *tmp = it->get();
+    Cell *tmp = cell.get();
     while(tmp != NULL)
     {
       if((toolTip = tmp->GetToolTip(point)) != wxEmptyString)
@@ -205,22 +204,19 @@ void Cell::SetGroupList(Cell *group)
   }
 }
 
-int Cell::CellsInListRecursive()
+int Cell::CellsInListRecursive() const
 {
-  
   //! The number of cells the current group contains (-1, if no GroupCell)
   int cells = 0;
 
-  Cell *tmp = this;
-
+  const Cell *tmp = this;
   while(tmp != NULL)
   {
     cells ++;
-    std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
-    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    for (auto &cell : tmp->GetInnerCells())
     {
-      if(*it != NULL)
-        cells += (*it)->CellsInListRecursive();
+      if(cell)
+        cells += cell->CellsInListRecursive();
     }
     tmp = tmp->m_next;
   }
@@ -235,11 +231,10 @@ void Cell::SetGroup(Cell *group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
   }
   
-  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
-  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+  for (auto &cell : GetInnerCells())
   {
-    if(*it != NULL)
-      (*it)->SetGroupList(group);
+    if(cell)
+      cell->SetGroupList(group);
   }
 }
 
@@ -248,11 +243,10 @@ void Cell::FontsChangedList()
   for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->FontsChanged();
-    std::list<std::shared_ptr<Cell>> cellList = tmp->GetInnerCells();
-    for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+    for (auto &cell : tmp->GetInnerCells())
     {
-      if(*it != NULL)
-        (*it)->FontsChangedList();
+      if(cell)
+        cell->FontsChangedList();
     }
   }
 }
@@ -1122,10 +1116,9 @@ void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   *first = NULL;
   *last = NULL;
 
-  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
-  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+  for (auto &cell : GetInnerCells())
     {
-      Cell *tmp = it->get();
+      Cell *tmp = cell.get();
       while(tmp != NULL)
       {
         if (tmp->ContainsRect(rect))
@@ -1171,11 +1164,9 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
-  std::list<std::shared_ptr<Cell>> cellList = GetInnerCells();
-  for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
+  for (auto &cell : GetInnerCells())
     {
-      for(Cell *tmp = it->get(); tmp != NULL; tmp = tmp -> m_next)
-        
+      for(Cell *tmp = cell.get(); tmp != NULL; tmp = tmp -> m_next)
         tmp->ResetData();
     }
 }
@@ -1207,10 +1198,9 @@ void Cell::Unbreak()
   m_nextToDraw = m_next;
 
   // Unbreak the inner cells, too
-  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
-  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  for (auto &cell : GetInnerCells())
   {
-    Cell *tmp = it->get();
+    Cell *tmp = cell.get();
     while(tmp != NULL)
     {
       tmp->Unbreak();
@@ -1423,21 +1413,17 @@ wxAccStatus Cell::GetChild(int childId, wxAccessible **child)
     *child = this;
     return wxACC_OK;
   }
-  else
+  if (childId > 0)
   {
-    if (childId > 0)
+    childId --;
+    auto innerCells = m_parent->GetInnerCells();
+    if (unsigned(childId) < innerCells.size())
     {
-      std::list<std::shared_ptr<Cell>> cellList = m_parent->GetInnerCells();
-      int cnt = 1;
-      for (std::list<std::shared_ptr<Cell>>::const_iterator it = cellList.begin(); it != cellList.end(); ++it)
-        if (cnt++ == childId)
-        {
-          *child = &(*it->get());
-          return wxACC_OK;
-        }
+      *child = innerCells[childId].get();
+      return wxACC_OK;
     }
-    return wxACC_FAIL;
   }
+  return wxACC_FAIL;
 }
 
 wxAccStatus Cell::GetFocus(int *childId, wxAccessible **child)
@@ -1534,20 +1520,9 @@ wxString Cell::CellPointers::WXMXGetNewFileName()
   return file;
 }
 
-bool Cell::CellPointers::ErrorList::Contains(Cell *cell)
+Cell::InnerCells Cell::GetInnerCells() const
 {
-  for(std::list<Cell *>::const_iterator it = m_errorList.begin(); it != m_errorList.end();++it)
-  {
-    if((*it)==cell)
-      return true;
-  }
-  return false;
-}
-
-std::list<std::shared_ptr<Cell>> Cell::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> retval;
-  return retval;
+  return {};
 }
 
 void Cell::MarkAsDeleted()
@@ -1572,10 +1547,9 @@ void Cell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
   
   // Delete all pointers to the cells this cell contains
-  std::list<std::shared_ptr<Cell>> innerCells = GetInnerCells();
-  for(std::list<std::shared_ptr<Cell>>::const_iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  for (auto &cell : GetInnerCells())
   {
-    Cell *tmp = it->get();
+    Cell *tmp = cell.get();
     while(tmp != NULL)
     {
       tmp->MarkAsDeleted();
