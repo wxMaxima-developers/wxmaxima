@@ -30,7 +30,7 @@ branches:
 # scripts to run before build
 before_build:
   - cmd: echo Installing pandoc...
-  - ps: choco install -y pandoc
+  - ps: choco install -y --no-progress pandoc
   - cmd: refreshenv
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.3
