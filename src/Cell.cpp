@@ -1320,8 +1320,8 @@ wxAccStatus Cell::GetDescription(int childId, wxString *description)
   }
   else
   {
-    Cell *cell = NULL;
-    if(GetChild(childId,&cell) == wxACC_OK)
+    wxAccessible *cell = NULL;
+    if(GetChild(childId, &cell) == wxACC_OK)
     {
       if(cell != NULL)
         return cell->GetDescription(0, description);
@@ -1352,10 +1352,10 @@ wxAccStatus Cell::GetValue (int childId, wxString *strValue)
   if(strValue == NULL)
     return wxACC_FAIL;
 
-  Cell *cell;
-  if(GetChild(childId,&cell) == wxACC_OK)
+  wxAccessible *cell;
+  if(GetChild(childId, &cell) == wxACC_OK)
   {
-    *strValue = cell->ToString();
+    *strValue = static_cast<Cell*>(cell)->ToString();
     return wxACC_OK;
   }
   else
@@ -1365,14 +1365,14 @@ wxAccStatus Cell::GetValue (int childId, wxString *strValue)
   }
 }
 
-wxAccStatus Cell::GetChildCount (int *childCount)
+wxAccStatus Cell::GetChildCount(int *childCount)
 {
   *childCount = GetInnerCells().size();
   return wxACC_OK;
 }
 
 wxAccStatus Cell::HitTest(const wxPoint &pt,
-	int *childId, Cell  **childObject)
+    int *childId, wxAccessible  **childObject)
 {
   wxRect rect;
   GetLocation(rect, 0);
@@ -1391,7 +1391,7 @@ wxAccStatus Cell::HitTest(const wxPoint &pt,
     GetChildCount(&childCount);
     for (int i = 0; i < childCount; i++)
     {
-      Cell *child;
+      wxAccessible *child;
       GetChild(i, &child);
       child->GetLocation(rect, 0);
       if (rect.Contains(pt))
@@ -1411,7 +1411,7 @@ wxAccStatus Cell::HitTest(const wxPoint &pt,
   }
 }
 
-wxAccStatus Cell::GetChild(int childId, Cell  **child)
+wxAccStatus Cell::GetChild(int childId, wxAccessible **child)
 {
   if(child == NULL)
     return wxACC_FAIL;
@@ -1438,7 +1438,7 @@ wxAccStatus Cell::GetChild(int childId, Cell  **child)
   }
 }
 
-wxAccStatus Cell::GetFocus (int *childId, wxAccessible **child)
+wxAccStatus Cell::GetFocus(int *childId, wxAccessible **child)
 {
   int childCount;
   GetChildCount(&childCount);
@@ -1446,7 +1446,7 @@ wxAccStatus Cell::GetFocus (int *childId, wxAccessible **child)
   for(int i = 0; i < childCount;i++)
   {
     int dummy1;
-    Cell *cell = NULL;
+    wxAccessible *cell = NULL;
     GetChild(i + 1, &cell);
     if (cell != NULL)
       if(cell->GetFocus(&dummy1, child) == wxACC_OK)
@@ -1485,7 +1485,7 @@ wxAccStatus Cell::GetLocation(wxRect &rect, int elementId)
   }
   else
   {
-    Cell *cell = NULL;
+    wxAccessible *cell = NULL;
 	if (GetChild(elementId, &cell) == wxACC_OK)
 		return cell->GetLocation(rect, 0);
   }

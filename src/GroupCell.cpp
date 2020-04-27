@@ -2552,7 +2552,7 @@ wxAccStatus GroupCell::GetDescription(int childId, wxString *description)
   }
   else
   {
-    Cell *cell = NULL;
+    wxAccessible *cell = NULL;
     if (GetChild(childId, &cell) == wxACC_OK)
     {
       return cell->GetDescription(0, description);
@@ -2592,7 +2592,7 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
   }
   else
   {
-    Cell *child = NULL;
+    wxAccessible *child = NULL;
 	if (GetChild(elementId, &child) == wxACC_OK)
 		return child->GetLocation(rect, 0);
   }
