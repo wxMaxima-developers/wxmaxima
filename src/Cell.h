@@ -282,23 +282,23 @@ class Cell
   int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
 #if wxUSE_ACCESSIBILITY
   //! Accessibility: Describe the current cell to a Screen Reader
-  virtual wxAccStatus GetDescription(int childId, wxString *description);
+  wxAccStatus GetDescription(int childId, wxString *description) override;
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (wxAccessible ** parent);
+  wxAccStatus GetParent (wxAccessible ** parent) override;
   //! Accessibility: How many childs of this cell GetChild() can retrieve?
-  virtual wxAccStatus GetChildCount (int *childCount);
+  wxAccStatus GetChildCount (int *childCount) override;
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
-  virtual wxAccStatus GetChild (int childId, Cell **child);
+  wxAccStatus GetChild (int childId, wxAccessible **child) override;
   //! Accessibility: Does this or a child cell currently own the focus?
-  virtual wxAccStatus GetFocus (int *childId, wxAccessible **child);
+  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
   //! Accessibility: Where is this cell to be found?
-  virtual wxAccStatus GetLocation (wxRect &rect, int elementId);
+  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
   //! Is pt inside this cell or a child cell?
   wxAccStatus HitTest (const wxPoint &pt,
-                       int *childId, Cell **childObject);
+                      int *childId, wxAccessible **childObject) override;
   //! Accessibility: What is the contents of this cell?
-  virtual wxAccStatus GetValue (int childId, wxString *strValue);
-  virtual wxAccStatus GetRole (int childId, wxAccRole *role);
+  wxAccStatus GetValue (int childId, wxString *strValue) override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) override;
 #endif
   
   wxString m_toolTip;

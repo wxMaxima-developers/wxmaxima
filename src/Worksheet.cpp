@@ -9101,13 +9101,13 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest (const wxPoint &pt,
   else
   {
 	int id = 0;
-    GroupCell *cell = m_worksheet->GetTree();
+    wxAccessible *cell = m_worksheet->GetTree();
 
     while(cell != NULL)
     {
       id++;
-      cell = cell->GetNext();
-      if((cell != NULL) && (cell->HitTest(pt, childId,(Cell **) childObject) == wxACC_OK))
+      cell = static_cast<Cell*>(cell)->GetNext();
+      if((cell != NULL) && (cell->HitTest(pt, childId, childObject) == wxACC_OK))
       {
         if(childId != NULL)
           *childId = id;
