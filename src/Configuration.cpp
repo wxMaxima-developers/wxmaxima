@@ -555,7 +555,7 @@ void Configuration::UpdateWorksheetFonts()
         )
       {
 #if wxCHECK_VERSION(3, 1, 2)
-        font.SetFractionalPointSize(GetDefaultFontSize(style));
+        font.SetFractionalPointSize(GetDefaultFontSize());
 #else
         font.SetPointSize(GetDefaultFontSize());
 #endif
