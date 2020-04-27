@@ -37,7 +37,6 @@ before_build:
   - cmd: dir C:\strawberry\perl\bin
   - cmd: set PATH=C:\strawberry\perl\bin;%PATH%
   - cmd: echo %PATH%
-  - cmd: c:\strawberry\perl\bin\cpanm.bat LWP::Protocol::https
   - cmd: c:\strawberry\perl\bin\cpanm.bat --notest https://github.com/mquinson/po4a/releases/download/v0.57/po4a-0.57.tar.gz
   - cmd: refreshenv
   - cmd: echo Downloading and unpacking wxWidgets...
