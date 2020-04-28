@@ -563,7 +563,7 @@ public:
   }
 
   //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
-  MaximaTokenizer::TokenList GetTokens() const {return m_tokens;}
+  const MaximaTokenizer::TokenList &GetTokens() const {return m_tokens;}
 
   void SetNextToDraw(Cell *next) override;
 

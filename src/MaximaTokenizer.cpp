@@ -51,7 +51,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     }
     token.Trim(true);
     if(!token.IsEmpty())
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_LISP)));
+      m_tokens.emplace_back(token, TS_CODE_LISP);
   }
   while (it < commands.end())
   {
@@ -70,7 +70,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     // Handle newline characters (hard+soft line break)
     if (m_linebreaks.Contains(Ch))
     {
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(wxChar(Ch))));
+      m_tokens.emplace_back(wxChar(Ch));
       ++it;
       continue;
     }
@@ -139,7 +139,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           ++it;
         }
       }
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_COMMENT)));
+      m_tokens.emplace_back(token, TS_CODE_COMMENT);
       continue;
     }
     // Handle operators and :lisp commands
@@ -168,11 +168,11 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
             token += wxString(*it);
             ++it;
           }
-          m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_LISP)));
+          m_tokens.emplace_back(token, TS_CODE_LISP);
         }
           else
           {
-            m_tokens.push_back(std::shared_ptr<Token>(new Token(wxString(Ch), TS_CODE_OPERATOR)));
+            m_tokens.emplace_back(wxString(Ch), TS_CODE_OPERATOR);
             ++it;
           }
       }
@@ -185,7 +185,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           token.Replace(wxT("-"), wxT("\u2212"));
         }
         
-        m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_OPERATOR)));
+        m_tokens.emplace_back(token, TS_CODE_OPERATOR);
         ++it;
       }
       continue;
@@ -215,7 +215,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         else if(Ch == wxT('\"'))
           break;
       }
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_STRING)));
+      m_tokens.emplace_back(token, TS_CODE_STRING);
       continue;
     }
     // Handle number-like symbols
@@ -223,7 +223,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     {
        wxString token = Ch;
        ++it;
-       m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_NUMBER)));
+       m_tokens.emplace_back(token, TS_CODE_NUMBER);
        continue;
     } 
     // Handle numbers. Numbers begin with a digit, but can continue with letters and can
@@ -263,19 +263,19 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         ++it;
       }
       
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_NUMBER)));
+      m_tokens.emplace_back(token, TS_CODE_NUMBER);
       continue;
     }
     if (m_plusSigns.Contains(Ch))
     {
       wxString token = "+";
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token)));
+      m_tokens.emplace_back(token);
       continue;
     }
     if (m_minusSigns.Contains(Ch))
     {
       wxString token = "-";
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token)));
+      m_tokens.emplace_back(token);
       continue;
     }
     // Merge consecutive spaces into one single token
@@ -291,7 +291,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         if (++it < commands.end())
           Ch = *it;
       }
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(token)));
+      m_tokens.emplace_back(token);
       continue;
     }
     // Handle keywords
@@ -319,7 +319,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
               token += Ch;
             else
             {
-              m_tokens.push_back(std::shared_ptr<Token>(new Token(token)));
+              m_tokens.emplace_back(token);
               token = wxEmptyString;
 
               break;
@@ -336,7 +336,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           token += wxString(*it);
           ++it;
         }
-        m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_LISP)));
+        m_tokens.emplace_back(token, TS_CODE_LISP);
       }
       else
       {
@@ -359,7 +359,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
             token == wxT("not") ||
             token == wxT("true") ||
             token == wxT("false"))
-          m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_FUNCTION)));
+          m_tokens.emplace_back(token, TS_CODE_FUNCTION);
         else
         {
           // Let's look what the next char looks like
@@ -368,13 +368,13 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
                  ((*it3 == ' ') || (*it3 == '\t') || (*it3 == '\n') || (*it3 == '\r')))
             ++it3;
           if(it3 >= commands.end())
-            m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_VARIABLE)));
+            m_tokens.emplace_back(token, TS_CODE_VARIABLE);
           else
           {
             if(*it3 == '(')
-              m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_FUNCTION)));
+              m_tokens.emplace_back(token, TS_CODE_FUNCTION);
             else
-              m_tokens.push_back(std::shared_ptr<Token>(new Token(token, TS_CODE_VARIABLE)));
+              m_tokens.emplace_back(token, TS_CODE_VARIABLE);
           }
         }
       }
@@ -382,14 +382,14 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     }   
     if((Ch == '$') || (Ch == ';'))
     {
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(wxString(Ch), TS_CODE_ENDOFLINE)));
+      m_tokens.emplace_back(wxString(Ch), TS_CODE_ENDOFLINE);
       ++it;
       continue;
     }
 
     {
       // Everything that hasn't been handled until now.
-      m_tokens.push_back(std::shared_ptr<Token>(new Token(wxString(Ch))));
+      m_tokens.emplace_back(wxString(Ch));
       ++it;
       continue;
     }
@@ -474,3 +474,9 @@ const wxString MaximaTokenizer::m_minusSigns =
   wxT("\u2796")
   wxT("\uFE63")
   wxT("\uFF0D");
+
+const wxString MaximaTokenizer::m_unicodeNumbers =
+  wxT("\u00BD\u00B2\u00B3\u221E");
+
+const wxString MaximaTokenizer::m_operators =
+  wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}");
