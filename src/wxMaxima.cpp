@@ -105,6 +105,13 @@
 
 wxDECLARE_APP (MyApp);
 
+void MyApp::DelistTopLevelWindow(wxMaxima *window)
+{
+  auto pos = std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
+  if (pos != m_topLevelWindows.end())
+    m_topLevelWindows.erase(pos);
+}
+
 void wxMaxima::ConfigChanged()
 {
   if(m_worksheet->GetTree())
@@ -1100,7 +1107,8 @@ wxMaxima::~wxMaxima()
   #pragma omp taskwait
   #endif
   KillMaxima(false);
-  MyApp::m_topLevelWindows.remove(this);
+  MyApp::DelistTopLevelWindow(this);
+
   if(MyApp::m_topLevelWindows.empty())
     wxExit();
   else
@@ -8487,7 +8495,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if(m_fileSaved)
     RemoveTempAutosavefile();
   KillMaxima();
-  MyApp::m_topLevelWindows.remove(this);
+  MyApp::DelistTopLevelWindow(this);
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)

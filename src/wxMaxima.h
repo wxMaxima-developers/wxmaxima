@@ -805,7 +805,8 @@ public:
 
   void NewTutorialWindow(wxString contents);
 
-  static std::list<wxMaxima *> m_topLevelWindows;
+  static std::vector<wxMaxima *> m_topLevelWindows;
+  static void DelistTopLevelWindow(wxMaxima *);
 
   void OnFileMenu(wxCommandEvent &ev);
 

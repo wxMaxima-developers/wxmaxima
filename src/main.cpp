@@ -77,7 +77,7 @@ int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdSho
 }
 #endif
 
-std::list<wxMaxima *> MyApp::m_topLevelWindows;
+std::vector<wxMaxima *> MyApp::m_topLevelWindows;
 
 
 bool MyApp::OnInit()
@@ -484,17 +484,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     }
     case wxID_EXIT:
     {
-      std::list<wxMaxima *>::const_iterator it=m_topLevelWindows.begin();
-      while(it != m_topLevelWindows.end())
+      for (wxMaxima *win : std::as_const(m_topLevelWindows))
       {
-        if (*it != NULL)
-        {
-          wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
-          event->SetCanVeto(true);
-          event->SetLoggingOff(false);
-          (*it)->GetEventHandler()->QueueEvent(event);
-        }
-        ++it;
+        wxASSERT(win);
+        wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
+        event->SetCanVeto(true);
+        event->SetLoggingOff(false);
+        win->GetEventHandler()->QueueEvent(event);
       }
     }
     break;
