@@ -132,15 +132,13 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
 {
   if(cell == NULL)
     return;
-  MaximaTokenizer::TokenList tokens = cell->GetEditable()->GetTokens();
-  MaximaTokenizer::TokenList::const_iterator it;
   wxString token;
   int index = 0;
-  for (it = tokens.begin(); it != tokens.end(); ++it)
+  for (auto const &tok : cell->GetEditable()->GetTokens())
   {
-    wxString itemText = (*it)->GetText();
+    const TextStyle itemStyle = tok.GetStyle();
+    wxString itemText = tok.GetText();
     itemText.Replace(wxT("\u00a0"), " ");
-    TextStyle itemStyle = (*it)->GetStyle();
     index += itemText.Length();
     if(itemStyle != TS_CODE_COMMENT)
       token += itemText;

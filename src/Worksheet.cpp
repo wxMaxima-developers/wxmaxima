@@ -6284,13 +6284,12 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\uFF0B"), "+"); // unicode big plus
   s.Replace(wxT("\uFB29"), "+"); // hebrew alternate plus
 
-  MaximaTokenizer::TokenList tokens = MaximaTokenizer(s, m_configuration).GetTokens();
   wxString retval;
   
-  for(MaximaTokenizer::TokenList::const_iterator it = tokens.begin(); it != tokens.end(); ++it)
+  for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens())
   {
-    wxString tokenString = (*it)->GetText();
-    switch((*it)->GetStyle())
+    auto &tokenString = tok.GetText();
+    switch(tok.GetStyle())
     {
     case TS_DEFAULT:
     case TS_CODE_OPERATOR:
@@ -6315,10 +6314,11 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
       retval += tokenString;
       break;
     default:
-      if(tokenString == wxT("\u221E")) tokenString = " inf ";
+      if(tokenString == wxT("\u221E")) {retval += wxT(" inf ");continue;}
       retval += tokenString;
     }
   }
+
   retval.Replace(wxT("\u00B2"), "^2");
   retval.Replace(wxT("\u00B3"), "^3");
   retval.Replace(wxT("\u00BD"), "(1/2)");

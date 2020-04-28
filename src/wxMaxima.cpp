@@ -9138,19 +9138,17 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   if (text.EndsWith(wxT("\\")))
     return (_("Cell ends in a backslash"));
 
-  MaximaTokenizer::TokenList tokens =
-    MaximaTokenizer(text, m_worksheet->m_configuration).GetTokens();
 
   index = 0;
   bool endingNeeded = true;
   wxChar lastnonWhitespace;
   wxChar lastnonWhitespace_Next = wxT(' ');
-  MaximaTokenizer::TokenList::const_iterator it;
   std::list<wxChar> delimiters;
-  for (it = tokens.begin(); it != tokens.end(); ++it)
+
+  for (auto const &tok : MaximaTokenizer(text, m_worksheet->m_configuration).PopTokens())
   {
-    wxString itemText = (*it)->GetText();
-    TextStyle itemStyle = (*it)->GetStyle();
+    auto &itemText = tok.GetText();
+    const TextStyle itemStyle = tok.GetStyle();
     index += itemText.Length();
 
     lastnonWhitespace = lastnonWhitespace_Next;
@@ -9216,7 +9214,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       continue;
     }
 
-    if((*it)->GetStyle() == TS_CODE_LISP)
+    if(itemStyle == TS_CODE_LISP)
     {
       endingNeeded = false;
       continue;

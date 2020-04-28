@@ -616,11 +616,10 @@ void GroupCell::UpdateConfusableCharWarnings()
     code += GetOutput()->VariablesAndFunctionsList();
   // Extract all variable and command names from the cell including input and output
   CmdsAndVariables cmdsAndVariables;
-  MaximaTokenizer::TokenList
-    m_tokens = MaximaTokenizer(code, *m_configuration).GetTokens();
-  for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
-    if(((*it)->GetStyle() == TS_CODE_VARIABLE) || ((*it)->GetStyle() == TS_CODE_FUNCTION))
-      cmdsAndVariables[(*it)->GetText()] = 1;
+
+  for (auto const &tok : MaximaTokenizer(code, *m_configuration).PopTokens())
+    if((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
+      cmdsAndVariables[tok.GetText()] = 1;
   
   // Now we step through all the words we found
   while(!cmdsAndVariables.empty())

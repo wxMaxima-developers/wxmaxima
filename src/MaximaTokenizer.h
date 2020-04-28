@@ -49,39 +49,31 @@ public:
   class Token
   {
   public:
-    Token(){m_style = TS_DEFAULT;}
-    explicit Token(wxString text) : m_text(text){m_style = TS_DEFAULT;}
-    Token(wxString text, TextStyle style) :
-      m_text(text),
-      m_style(style)
-      {}
-    Token& operator=(const Token& t){m_text = t.m_text;m_style = t.m_style; return *this;}
-    Token(const Token &token){*this = token;}
-    TextStyle GetStyle() const {return m_style;}
-    wxString GetText() const {return m_text;}
-    operator wxString() const {return GetText();}
+    Token() = default;
+    explicit Token(wxString&& text) : m_text(std::move(text)) {}
+    explicit Token(const wxString &text) : m_text(text) {}
+    Token(wxString&& text, TextStyle style) : m_text(std::move(text)), m_style(style) {}
+    Token(const wxString& text, TextStyle style) : m_text(text), m_style(style) {}
+    Token& operator=(Token&& t) { m_text = std::move(t.m_text); m_style = t.m_style; return *this; }
+    Token& operator=(const Token& t) { m_text = t.m_text; m_style = t.m_style; return *this; }
+    Token(Token&& token) { *this = std::move(token); }
+    Token(const Token &token) { *this = token ;}
+    TextStyle GetStyle() const { return m_style; }
+    const wxString &GetText() const { return m_text; }
+    operator const wxString &() const { return m_text; }
   private:
     wxString m_text;
-    TextStyle m_style;
+    TextStyle m_style = TS_DEFAULT;
   };
-  typedef std::list<std::shared_ptr<Token>> TokenList;
   static bool IsAlpha(wxChar ch);
   static bool IsNum(wxChar ch);
   static bool IsAlphaNum(wxChar ch);
   static bool IsSpace(wxChar ch);
-  static const wxString UnicodeNumbers()
-    {
-      return wxString(
-        wxT("\u00BD\u00B2\u00B3\u221E")
-        );
-    }
-  static const wxString Operators(){return wxString(
-      wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}"
-        )
-      );}
+  static const wxString &UnicodeNumbers() { return m_unicodeNumbers; }
+  static const wxString &Operators() { return m_operators; }
 
-  TokenList GetTokens(){return m_tokens;}
-
+  using TokenList = std::vector<Token>;
+  TokenList PopTokens() && { return std::move(m_tokens); }
   
 protected:
   //! The tokens the string is divided into
@@ -98,6 +90,10 @@ protected:
   static const wxString m_minusSigns;
   //! Linebreak characters
   static const wxString m_linebreaks;
+  //! Unicode numbers
+  static const wxString m_unicodeNumbers;
+  //! Operators
+  static const wxString m_operators;
 };
 
 #endif // MAXIMATOKENIZER_H
