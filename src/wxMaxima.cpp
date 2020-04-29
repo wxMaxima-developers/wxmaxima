@@ -1596,7 +1596,8 @@ void wxMaxima::TryToReadDataFromMaxima()
     // a big data transfer
     if(newBytes++>100000)
     {
-      CallAfter(this, wxWakeUpIdle);
+      // Make sure that the idle loop is triggered that causes more data to be read
+      CallAfter(&wxWakeUpIdle);
       return;
     }
   }
@@ -2328,6 +2329,8 @@ void wxMaxima::ReadMiscText(wxString &data)
   wxString miscText = data.Left(miscTextLen);
   data = data.Right(data.Length() - miscTextLen);
 
+  if(miscText == "\r")
+    return;
   // Stupid DOS and MAC line endings. The first of these commands won't work
   // if the "\r" is the last char of a packet containing a part of a very long
   // string. But running a search-and-replace
@@ -2440,7 +2443,7 @@ void wxMaxima::ReadStatusBar(wxString &data)
 
   m_worksheet->m_cellPointers.m_currentTextCell = NULL;
 
-  wxString sts = wxT("</statusbar>");
+  wxString sts = wxT("</statusbar>\n");
   int end;
   if ((end = FindTagEnd(data,sts)) != wxNOT_FOUND)
   {
