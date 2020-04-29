@@ -4092,17 +4092,18 @@ void EditorCell::ClearSelection()
  */
 bool EditorCell::FindNextTemplate(bool left)
 {
-  wxRegEx varsRegex;
+  static wxRegEx leftVarsRegex, rightVarsRegex;
+  static const bool leftVarsRegexOk = leftVarsRegex.Compile(wxT("(<[^> \n]+>)[^>]*$"));
+  static const bool rightVarsRegexOk = rightVarsRegex.Compile(wxT("(<[^> \n]+>)"));
 
-  if (left)
-    wxASSERT(varsRegex.Compile(wxT("(<[^> \n]+>)[^>]*$")));
-  else
-    wxASSERT(varsRegex.Compile(wxT("(<[^> \n]+>)")));
+  wxASSERT(leftVarsRegexOk);
+  wxASSERT(rightVarsRegexOk);
+
+  const wxRegEx &varsRegex = left ? leftVarsRegex : rightVarsRegex;
 
   int positionOfCaret = m_positionOfCaret;
   if (!left && m_selectionEnd != -1)
     positionOfCaret = m_selectionEnd;
-
 
   // Splits the string into first (from caret in the direction of search)
   // and second (the rest of the string)
