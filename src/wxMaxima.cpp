@@ -1583,6 +1583,7 @@ void wxMaxima::TryToReadDataFromMaxima()
   // Read all new lines of text we received.
   wxChar chr;
 
+  int newBytes = 0;
   while((m_client->IsConnected()) && (m_client->IsData()) && (m_clientStream != NULL) &&
         (!m_clientStream->Eof()))
   {
@@ -1591,6 +1592,13 @@ void wxMaxima::TryToReadDataFromMaxima()
       break;
     if(chr != '\0')
       m_newCharsFromMaxima += chr;
+    // Trigger the gui every few kilobytes so it stays responsible during
+    // a big data transfer
+    if(newBytes++>100000)
+    {
+      CallAfter(this, wxWakeUpIdle);
+      return;
+    }
   }
 
   if(m_pipeToStdout)
