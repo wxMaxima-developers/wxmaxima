@@ -42,8 +42,7 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   Cell(parent, config, cellPointers),
   m_text(text),
   m_fontStyle(wxFONTSTYLE_NORMAL),
-  m_fontWeight(wxFONTWEIGHT_NORMAL),
-  m_fontEncoding(wxFONTENCODING_DEFAULT)
+  m_fontWeight(wxFONTWEIGHT_NORMAL)
 {
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
@@ -1060,7 +1059,6 @@ void EditorCell::SetFont()
   }
   m_fontWeight = configuration->IsBold(m_textStyle);
   m_underlined = configuration->IsUnderlined(m_textStyle);
-  m_fontEncoding = configuration->GetFontEncoding();
 
   wxASSERT(m_fontSize >= 0);
   if(m_fontSize < 4)
@@ -1070,18 +1068,15 @@ void EditorCell::SetFont()
     FontCache::GetAFont(wxFontInfo(m_fontSize)
                           .Family(wxFONTFAMILY_MODERN)
                           .FaceName(m_fontName)
-                          .Encoding(m_fontEncoding)
                           .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
                           .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                          .Underlined(m_underlined)
-                          .Encoding(m_fontEncoding));
+                          .Underlined(m_underlined));
   if (!font.IsOk())
   {
     wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
     font =
       FontCache::GetAFont(wxFontInfo(m_fontSize)
                             .Family(wxFONTFAMILY_MODERN)
-                            .Encoding(m_fontEncoding)
                             .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
                             .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
                             .Underlined(m_underlined));

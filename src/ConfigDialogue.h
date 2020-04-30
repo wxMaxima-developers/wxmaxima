@@ -309,7 +309,6 @@ protected:
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getFont;
   wxButton *m_getStyleFont;
-  wxFontEncoding m_fontEncoding;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
   ColorPanel *m_styleColor;

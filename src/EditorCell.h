@@ -743,7 +743,6 @@ private:
   wxFontWeight m_fontWeight;
   bool m_underlined;
   wxString m_fontName;
-  wxFontEncoding m_fontEncoding;
   bool m_saveValue;
   //! true, if this function has changed since the last evaluation by maxima
   bool m_containsChanges;

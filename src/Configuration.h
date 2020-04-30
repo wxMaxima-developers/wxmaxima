@@ -254,16 +254,6 @@ public:
     return m_forceUpdate;
   }
 
-  wxFontEncoding GetFontEncoding() const
-  {
-    return m_fontEncoding;
-  }
-
-  void SetFontEncoding(wxFontEncoding encoding)
-  {
-    m_fontEncoding = encoding;
-  }
-
   long GetLabelWidth() const
   { return m_labelWidth * 14; }
 
@@ -964,7 +954,6 @@ private:
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   long m_clientWidth;
   long m_clientHeight;
-  wxFontEncoding m_fontEncoding;
   bool m_printing;
   long m_lineWidth_em;
   showLabels m_showLabelChoice;

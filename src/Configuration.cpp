@@ -239,7 +239,6 @@ Configuration::Configuration(wxDC *dc) :
     m_mathFontName = wxEmptyString;
   #endif
   m_mathFontSize = 12;
-  m_fontEncoding = wxFONTENCODING_DEFAULT;
   m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
   m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
   m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
@@ -587,7 +586,6 @@ wxFont Configuration::GetWorksheetFont(TextStyle style) const
 wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 {
   wxString fontName;
-  wxFontEncoding fontEncoding;
   bool underlined = IsUnderlined(textStyle);
   
   if ((textStyle == TS_TITLE) ||
@@ -618,24 +616,19 @@ wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 
   fontName = GetFontName(textStyle);
   
-  fontEncoding = GetFontEncoding();
-
   wxFont font =
     FontCache::GetAFont(wxFontInfo(fontSize1)
                           .Family(wxFONTFAMILY_MODERN)
                           .FaceName(fontName)
-                          .Encoding(fontEncoding)
                           .Italic(IsItalic(textStyle))
                           .Bold(IsBold(textStyle))
-                          .Underlined(underlined)
-                          .Encoding(fontEncoding));
+                          .Underlined(underlined));
 
   if (!font.IsOk())
   {
     font =
       FontCache::GetAFont(wxFontInfo(fontSize1)
                             .Family(wxFONTFAMILY_MODERN)
-                            .Encoding(fontEncoding)
                             .Italic(IsItalic(textStyle))
                             .Bold(IsBold(textStyle))
                             .Underlined(underlined));
@@ -919,9 +912,6 @@ void Configuration::ReadStyles(wxString file)
 #endif
 
   config->Read(wxT("mathfontsize"), &m_mathFontSize);
-  long encoding = m_fontEncoding;
-  config->Read(wxT("fontEncoding"), &encoding);
-  m_fontEncoding = (wxFontEncoding) encoding;
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
 #ifdef __WXOSX_MAC__
   if (m_mathFontName.IsEmpty())
@@ -985,7 +975,6 @@ void Configuration::WriteStyles(wxString file)
   // Font
   config->Write("Style/Default/Style/Text/fontname", m_fontName);
   config->Write(wxT("mathfontsize"), m_mathFontSize);
-  config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
   config->Write("Style/Math/fontname", m_mathFontName);
   
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");

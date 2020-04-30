@@ -1055,12 +1055,12 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
   if (m_configuration->FontName() != wxEmptyString)
-    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%ld)"), m_configuration->GetDefaultFontSize()));
+    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   if (!m_configuration->MathFontName().IsEmpty())
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%ld)"), m_configuration->GetMathFontSize()));
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
 
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   wxArrayString m_styleFor_choices;
@@ -1319,7 +1319,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     m_configuration->MathFontName(math.GetFaceName());
     m_configuration->SetMathFontSize(math.GetPointSize());
     math.SetPointSize(m_configuration->GetMathFontSize());
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
   }
 
   UpdateExample();
@@ -1352,8 +1352,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   auto req = wxFontInfo(fontsize)
           .Family(wxFONTFAMILY_DEFAULT).Italic(false)
           .Light(false)
-          .Underlined(false).FaceName(fontName)
-          .Encoding(m_fontEncoding);
+          .Underlined(false).FaceName(fontName);
 
   wxFont font = FontCache::GetAFont(req);
 
@@ -1378,14 +1377,13 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     {
       m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
       m_configuration->FontName(font.GetFaceName());
-      m_configuration->SetFontEncoding(font.GetEncoding());
       m_configuration->SetDefaultFontSize(wxMax(
                                             wxMin(
                                               font.GetPointSize(), MC_MAX_SIZE),
                                             MC_MIN_SIZE)
         );
       m_getFont->SetLabel(m_configuration->FontName() +
-                          wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
+                          wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
     }
     else
     {
