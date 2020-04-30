@@ -36,6 +36,11 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+# Clang requires that flag (that should fix the error on travis too)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_definitions(-Wno-c++11-narrowing)
+endif()
+
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to 'Debug' as none was specified.")
