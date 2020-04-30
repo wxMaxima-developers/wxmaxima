@@ -1713,7 +1713,7 @@ void wxMaxima::OnMaximaConnect()
   else
   {
     wxLogMessage(_("Connected."));
-    m_clientStream = std::shared_ptr<wxSocketInputStream>(new wxSocketInputStream(*m_client));
+    m_clientStream = std::make_shared<wxSocketInputStream>(*m_client);
     m_clientTextStream = std::unique_ptr<wxTextInputStream>(
       new wxTextInputStream(*m_clientStream, wxT('\t'),
                             wxConvUTF8));
