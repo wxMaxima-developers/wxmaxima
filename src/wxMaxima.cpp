@@ -1714,9 +1714,7 @@ void wxMaxima::OnMaximaConnect()
   {
     wxLogMessage(_("Connected."));
     m_clientStream = std::make_shared<wxSocketInputStream>(*m_client);
-    m_clientTextStream = std::unique_ptr<wxTextInputStream>(
-      new wxTextInputStream(*m_clientStream, wxT('\t'),
-                            wxConvUTF8));
+    m_clientTextStream.reset(new wxTextInputStream(*m_clientStream, wxT('\t'), wxConvUTF8));
     m_client->SetEventHandler(*GetEventHandler());
     m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
     m_client->Notify(true);
@@ -3370,7 +3368,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (OpenFSFile)
   #endif
-  fsfile = std::shared_ptr<wxFSFile>(fs.OpenFile(filename));
+  fsfile.reset(fs.OpenFile(filename));
   if (!fsfile)
   {
     if(m_worksheet)
@@ -3398,7 +3396,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
       #ifdef HAVE_OPENMP_TASKS
       #pragma omp critical (OpenFSFile)
       #endif
-      fsfile2 = std::shared_ptr<wxFSFile>(fs.OpenFile(filename));
+      fsfile2.reset(fs.OpenFile(filename));
       if (fsfile2)
       {
         // Read the file into a string
