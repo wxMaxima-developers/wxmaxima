@@ -52,6 +52,9 @@ void Style::Read(wxConfigBase *config, wxString where)
 #endif
   auto req = wxFontInfo()
                .Family(wxFONTFAMILY_MODERN)
+               .Bold(m_bold)
+               .Italic(m_italic)
+               .Underlined(m_underlined)
                .FaceName(m_fontName);
   wxFont font = FontCache::GetAFont(req);
   if (!font.IsOk())
