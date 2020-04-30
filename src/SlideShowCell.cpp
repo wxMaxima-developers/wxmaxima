@@ -220,7 +220,6 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
             std::make_shared<Image>(m_configuration, images[i], m_fileSystem, deleteRead));
           if(gnuplotFilename != wxEmptyString)
           {
-            std::shared_ptr<wxFileSystem> filesystem;
             if(m_images.back())
               m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
           }
