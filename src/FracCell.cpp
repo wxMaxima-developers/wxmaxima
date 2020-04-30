@@ -32,11 +32,11 @@
 
 FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_num(new TextCell(parent, config, cellPointers)),
-  m_denom(new TextCell(parent, config, cellPointers)),
-  m_numParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
-  m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
-  m_divide(new TextCell(parent, config, cellPointers, "/"))
+  m_num(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_denom(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_numParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
+  m_denomParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
+  m_divide(std::make_shared<TextCell>(parent, config, cellPointers, "/"))
 {
   m_divide->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;

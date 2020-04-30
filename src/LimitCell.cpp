@@ -33,12 +33,12 @@
 
 LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_name(new TextCell(parent, config, cellPointers)),
-  m_open(new TextCell(parent, config, cellPointers, "(")),
-  m_base(new TextCell(parent, config, cellPointers)),
-  m_comma(new TextCell(parent, config, cellPointers, ",")),
-  m_under(new TextCell(parent, config, cellPointers)),
-  m_close(new TextCell(parent, config, cellPointers, ")"))
+  m_name(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
+  m_base(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_comma(std::make_shared<TextCell>(parent, config, cellPointers, ",")),
+  m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);

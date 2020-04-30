@@ -32,11 +32,11 @@
 
 ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell(new TextCell(parent, config, cellPointers)),
-  m_exptCell(new TextCell(parent, config, cellPointers)),
-  m_open(new TextCell(parent, config, cellPointers, "(")),
-  m_close(new TextCell(parent, config, cellPointers, ")")),
-  m_exp(new TextCell(parent, config, cellPointers, "^"))
+  m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_exptCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")")),
+  m_exp(std::make_shared<TextCell>(parent, config, cellPointers, "^"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);

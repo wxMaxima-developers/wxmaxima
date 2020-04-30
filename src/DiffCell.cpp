@@ -32,8 +32,8 @@
 
 DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell(new TextCell(parent, config, cellPointers)),
-  m_diffCell(new TextCell(parent, config, cellPointers))
+  m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_diffCell(std::make_shared<TextCell>(parent, config, cellPointers))
 {
 }
 

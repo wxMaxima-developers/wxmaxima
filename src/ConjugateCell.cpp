@@ -30,9 +30,9 @@
 
 ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_innerCell(new TextCell(parent, config, cellPointers, "")),
-  m_open(new TextCell(parent, config, cellPointers, "conjugate(")),
-  m_close(new TextCell(parent, config, cellPointers, ")"))
+  m_innerCell(std::make_shared<TextCell>(parent, config, cellPointers, "")),
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "conjugate(")),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_last = NULL;

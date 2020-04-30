@@ -34,8 +34,8 @@
 SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_innerCell(new TextCell(parent, config, cellPointers)),
-  m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
-  m_close(new TextCell(parent, config, cellPointers, ")"))
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "sqrt(")),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_signSize = 50;
