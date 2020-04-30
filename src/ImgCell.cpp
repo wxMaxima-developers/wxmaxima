@@ -72,7 +72,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : Cell(parent, config, cellPointers)
 {
   m_type = MC_TYPE_IMAGE;

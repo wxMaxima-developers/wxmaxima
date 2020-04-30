@@ -45,7 +45,7 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const std::shared_ptr <wxFileSystem> &filesystem, int framerate) :
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
   Cell(parent, config, cellPointers),
   m_timer(NULL),
   m_fileSystem(filesystem)
