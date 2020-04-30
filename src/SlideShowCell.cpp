@@ -176,8 +176,7 @@ void SlideShow::LoadImages(wxMemoryBuffer imageData)
     wxMemoryInputStream istream2(imageData.GetData(), imageData.GetDataLen());
     wxImage image;
     image.LoadFile(istream2, wxBITMAP_TYPE_ANY, i);
-    m_images.push_back(std::shared_ptr<Image>(
-                         new Image(m_configuration, wxBitmap(image))));
+    m_images.push_back(std::make_shared<Image>(m_configuration, wxBitmap(image)));
     m_size++;
   }
 }
@@ -192,8 +191,7 @@ void SlideShow::LoadImages(wxString imageFile)
   {
     wxImage image;
     image.LoadFile(imageFile, wxBITMAP_TYPE_ANY, i);
-    m_images.push_back(std::shared_ptr<Image>(
-                         new Image(m_configuration, wxBitmap(image))));
+    m_images.push_back(std::make_shared<Image>(m_configuration, wxBitmap(image)));
     m_size++;
   }
 }
@@ -218,8 +216,8 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
           dataFilename = images[i];
         else
         {
-          m_images.push_back(std::shared_ptr<Image>(
-                               new Image(m_configuration, images[i], m_fileSystem, deleteRead)));
+          m_images.push_back(
+            std::make_shared<Image>(m_configuration, images[i], m_fileSystem, deleteRead));
           if(gnuplotFilename != wxEmptyString)
           {
             std::shared_ptr<wxFileSystem> filesystem;
@@ -241,7 +239,7 @@ SlideShow::SlideShow(const SlideShow &cell):
   AnimationRunning(false);
 
   for (size_t i = 0; i < cell.m_images.size(); i++)
-    m_images.push_back(std::shared_ptr<Image>(new Image(*cell.m_images[i])));
+    m_images.push_back(std::make_shared<Image>(*cell.m_images[i]));
 
   m_framerate = cell.m_framerate;
   m_displayed = true;
