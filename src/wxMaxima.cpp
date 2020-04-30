@@ -9004,7 +9004,6 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
     OpenWXMXFile(file, m_worksheet, true);
     m_tempfileName = file;
     m_worksheet->m_currentFile = wxEmptyString;    
-    m_worksheet->m_currentFile = wxEmptyString;    
   }
   else
     LoggingMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);

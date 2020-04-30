@@ -587,7 +587,6 @@ wxFont Configuration::GetWorksheetFont(TextStyle style) const
 wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
 {
   wxString fontName;
-  wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
   bool underlined = IsUnderlined(textStyle);
   
@@ -775,7 +774,6 @@ void Configuration::SetZoomFactor(double newzoom)
 Configuration::~Configuration()
 {
   WriteStyles();
-  wxConfigBase *config = wxConfig::Get();
 }
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
@@ -1069,7 +1067,7 @@ wxColour Configuration::GetColor(TextStyle style)
      (style != TS_TEXT_BACKGROUND) &&
      (style != TS_DOCUMENT_BACKGROUND))
     col = MakeColorDifferFromBackground(col);
-    return col;
+  return col;
 }
 
 long Configuration::Scale_Px(double px) const

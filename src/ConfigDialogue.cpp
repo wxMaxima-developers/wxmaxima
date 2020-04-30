@@ -821,7 +821,6 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(
     new wxStaticText(panel, -1, _("Language:")), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxConfigBase *config = wxConfig::Get();
   int lang = m_configuration->GetLanguage();
   unsigned int i = 0;
   // First set the language to "default".

@@ -94,9 +94,11 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 
 Cell::~Cell()
 {
+  // Remove stale pointers that point to this cell.
+  // Derived classes need to call their own MarkAsDeleted()
+  Cell::MarkAsDeleted();
   // Delete this list of cells without using a recursive function call that can
   // run us out of stack space
-  MarkAsDeleted();
   Cell *next = m_next;
   while (next != NULL)
   {

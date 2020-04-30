@@ -2666,7 +2666,7 @@ bool EditorCell::AddEnding()
         (!(*it)->GetText().StartsWith("\t")) &&
         (!(*it)->GetText().StartsWith("\n")) &&
         (!(*it)->GetText().StartsWith("\r")) &&
-        (!itemStyle == TS_CODE_COMMENT)
+        (!(itemStyle == TS_CODE_COMMENT))
         )
         endingNeeded = true;
     }
