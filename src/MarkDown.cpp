@@ -26,32 +26,31 @@
 */
 
 #include "MarkDown.h"
+#include <wx/tokenzr.h>
+#include <wx/regex.h>
 
 MarkDownParser::~MarkDownParser()
 {
 }
 
-MarkDownParser::MarkDownParser(Configuration *cfg)
+MarkDownParser::MarkDownParser(Configuration *cfg) :
+    m_configuration(cfg)
 {
-  m_configuration = cfg;
 }
 
 wxString MarkDownParser::MarkDown(wxString str)
 {
   // Replace all markdown equivalents of arrows and similar symbols by the
   // according symbols
-  for (replaceList::const_iterator it = regexReplaceList.begin();
-       it != regexReplaceList.end();
-       ++it)
-    (*it)->DoReplace(&str);
+  DoReplacementsOn(str);
 
   // The result of this action
-  wxString result = wxEmptyString;
+  wxString result;
 
   // The list of indentation levels for bullet lists we found
   // so far
-  std::list<size_t> indentationLevels;
-  std::list<wxChar> indentationTypes;
+  std::vector<size_t> indentationLevels;
+  std::vector<wxChar> indentationTypes;
 
   // Now process the input string line-by-line.
   wxStringTokenizer lines(str, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
@@ -59,11 +58,9 @@ wxString MarkDownParser::MarkDown(wxString str)
   {
     wxString line = lines.GetNextToken();
     wxString quotingStart;
-    wxString lineTrimmed = line;
-    lineTrimmed.Trim(false);
 
     wxString st = line;
-    st = st.Trim(false);
+    st.Trim(false);
     size_t index = line.Length() - st.Length();
 
     // Determine the amount of indentation and the contents of the rest
@@ -83,8 +80,8 @@ wxString MarkDownParser::MarkDown(wxString str)
       {
 
         // Remove the bullet list start marker from our string.
-        st = st.Right(st.Length() - 2);
-        st = st.Trim(false);
+        st.Remove(0, 2);
+        st.Trim(false);
 
         // Let's see if this is the first item in the list
         if (indentationLevels.empty())
@@ -127,18 +124,20 @@ wxString MarkDownParser::MarkDown(wxString str)
         result += itemizeItem();
 
         // Add the item itself
+        while (!st.IsEmpty() && st.Last() == ' ')
+          st.Truncate(st.Length() - 1); // We can't use Trim, since it removes newlines too!
+        if(st.EndsWith(newLine()))
+          st.Truncate(st.Length() - newLine().Length());
         st.Trim();
-        if(st.EndsWith(NewLine()))
-          st = st.Left(st.Length() - NewLine().Length());
         result += st += wxT(" ");
       }
-      else if (st.StartsWith(quoteChar() + wxT(" ")))
+      else if (st.StartsWith(quoteChar() + wxT(' ')))
       {
         // We are part of a quotation.
         //
         // Remove the bullet list start marker from our string.
-        st = st.Right(st.Length() - quoteChar().Length() - 1);
-        st = st.Trim(false);
+        st.Remove(0, quoteChar().Length() + 1);
+        st.Trim(false);
 
         // Let's see if this is the first item in the list
         if (indentationLevels.empty())
@@ -192,7 +191,7 @@ wxString MarkDownParser::MarkDown(wxString str)
              (!result.EndsWith(itemizeEnd())) &&
              (!result.EndsWith(quoteEnd()))
             )
-            result += NewLine();
+            result += newLine();
           if (indentationLevels.back() > index)
           {
             while ((!indentationLevels.empty()) &&
@@ -211,7 +210,7 @@ wxString MarkDownParser::MarkDown(wxString str)
             }
           }
         }
-        line = line.Right(line.Length() - index);
+        line.Remove(0, index);
         result += line;
       }
     }
@@ -233,70 +232,50 @@ wxString MarkDownParser::MarkDown(wxString str)
   return result;
 }
 
-MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
+struct Replacer
 {
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-      new RegexReplacer(wxT("#"), wxT("\\\\#"))));
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-      new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longleftrightarrow}"))));
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-    new RegexReplacer(wxT("=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longrightarrow}"))));
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-        new RegexReplacer(wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longleftrightarrow}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longrightarrow}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|-"), wxT("\\\\ensuremath{\\\\longleftarrow}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|="), wxT("\\\\ensuremath{\\\\leq}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|>\\|="), wxT("\\\\ensuremath{\\\\geq}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}"))));
+  wxRegEx regex;
+  wxString replacement;
+  Replacer(const wxChar *regex, const wxChar *replacement) :
+      replacement(replacement)
+  {
+    bool result = this->regex.Compile(regex);
+    wxASSERT_MSG(result, "A Markdown parser regex has failed to compile.");
+  }
+};
+
+void MarkDownTeX::DoReplacementsOn(wxString &str)
+{
+  static const Replacer replacers[] = {
+    {(wxT("#")), (wxT("\\\\#"))},
+    {wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longleftrightarrow}")},
+    {wxT("=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longrightarrow}")},
+    {wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longleftrightarrow}")},
+    {wxT("-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longrightarrow}")},
+    {wxT("\\\\verb\\|<\\|-"), wxT("\\\\ensuremath{\\\\longleftarrow}")},
+    {wxT("\\\\verb\\|<\\|="), wxT("\\\\ensuremath{\\\\leq}")},
+    {wxT("\\\\verb\\|>\\|="), wxT("\\\\ensuremath{\\\\geq}")},
+    {wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}")},
+    {wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}")},
+    {wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}")},
+  };
+  for (auto &replacer : replacers)
+    replacer.regex.Replace(&str, replacer.replacement);
 }
 
-MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
+void MarkDownHTML::DoReplacementsOn(wxString &str)
 {
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&lt);=\\&gt;"), wxT("\u21d4"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("=\\&gt);"), wxT("\u21d2"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("&lt);-\\&gt;"), wxT("\u2194"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("-\\&gt);"), wxT("\u2192"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&lt);-"), wxT("\u2190"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&lt);="), wxT("\u2264"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&gt);="), wxT("\u2265"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\+/-"), wxT("\u00B1"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\u00A0"), wxT("\u00A0"))));
+  static const Replacer replacers[] = {
+    {wxT("\\&lt);=\\&gt;"), wxT("\u21d4")},
+    {wxT("=\\&gt);"), wxT("\u21d2")},
+    {wxT("&lt);-\\&gt;"), wxT("\u2194")},
+    {wxT("-\\&gt);"), wxT("\u2192")},
+    {wxT("\\&lt);-"), wxT("\u2190")},
+    {wxT("\\&lt);="), wxT("\u2264")},
+    {wxT("\\&gt);="), wxT("\u2265")},
+    {wxT("\\+/-"), wxT("\u00B1")},
+    {wxT("\u00A0"), wxT("\u00A0")},
+  };
+  for (auto &replacer : replacers)
+    replacer.regex.Replace(&str, replacer.replacement);
 }
