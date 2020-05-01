@@ -63,7 +63,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   AbsCell &operator=(const AbsCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void SetInner(Cell *inner);
 
@@ -91,9 +91,9 @@ protected:
   //! The contents of the abs() command
   std::shared_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
-  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<Cell> m_open;
   //! The cell containing the closing parenthesis
-  std::shared_ptr<TextCell> m_close;
+  std::shared_ptr<Cell> m_close;
   //! The last element of m_innerCell
   Cell *m_last;
 };

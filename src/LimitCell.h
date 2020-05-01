@@ -44,7 +44,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   LimitCell &operator=(const LimitCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void RecalculateHeight(int fontsize) override;
 
@@ -74,11 +74,11 @@ public:
 
 protected:
   std::shared_ptr<Cell> m_name;
-  std::shared_ptr<TextCell> m_open;
+  std::shared_ptr<Cell> m_open;
   std::shared_ptr<Cell> m_base;
-  std::shared_ptr<TextCell> m_comma;
+  std::shared_ptr<Cell> m_comma;
   std::shared_ptr<Cell> m_under;
-  std::shared_ptr<TextCell> m_close;
+  std::shared_ptr<Cell> m_close;
   Cell *m_name_last;
   Cell *m_base_last;
   Cell *m_under_last;

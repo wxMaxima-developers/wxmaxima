@@ -82,9 +82,9 @@ ParenCell::~ParenCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> ParenCell::GetInnerCells()
+Cell::InnerCells ParenCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)

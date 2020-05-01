@@ -263,12 +263,6 @@ void SlideShow::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> SlideShow::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> innerCells;
-  return innerCells;
-}
-
 void SlideShow::SetDisplayedIndex(int ind)
 {
   if (ind >= 0 && ind < m_size)

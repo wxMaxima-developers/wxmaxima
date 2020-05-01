@@ -34,7 +34,7 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
   m_open(new TextCell(parent, config, cellPointers, "conjugate(")),
   m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_open->DontEscapeOpeningParenthesis();
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_last = NULL;
 }
 
@@ -58,9 +58,9 @@ ConjugateCell::~ConjugateCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> ConjugateCell::GetInnerCells()
+Cell::InnerCells ConjugateCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)

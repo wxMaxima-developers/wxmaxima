@@ -447,16 +447,15 @@ void GroupCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> GroupCell::GetInnerCells()
+Cell::InnerCells GroupCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
-  if (m_groupType != GC_TYPE_PAGEBREAK)
-  {
-    if(GetInput())
-      innerCells.push_back(m_inputLabel);
-    if(GetOutput())
-      innerCells.push_back(m_output);
-  }
+  if (m_groupType == GC_TYPE_PAGEBREAK) return {};
+
+  InnerCells innerCells;
+  if(GetInput())
+    innerCells.push_back(m_inputLabel);
+  if(GetOutput())
+    innerCells.push_back(m_output);
   return innerCells;
 }
 

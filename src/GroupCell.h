@@ -114,7 +114,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted() override;
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   /*! Which GroupCell was the last maxima was working on?
 

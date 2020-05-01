@@ -35,7 +35,7 @@ public:
   DiffCell &operator=(const DiffCell&) = delete;
   ~DiffCell();
   
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void SetBase(Cell *base);
 

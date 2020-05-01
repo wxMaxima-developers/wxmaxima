@@ -52,9 +52,9 @@ DiffCell::~DiffCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> DiffCell::GetInnerCells()
+Cell::InnerCells DiffCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_diffCell)

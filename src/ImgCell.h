@@ -68,7 +68,6 @@ public:
         return m_image->GnuplotData();
     }
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   void MarkAsDeleted() override;
 
   void LoadImage(wxString image, bool remove = true);
