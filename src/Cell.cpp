@@ -216,6 +216,8 @@ int Cell::CellsInListRecursive() const
     for (auto &cell : tmp->GetInnerCells())
     {
       if(cell)
+        // I believe with the if(cell) we cannot use std::accumulate here.
+        // cppcheck-suppress useStlAlgorithm
         cells += cell->CellsInListRecursive();
     }
     tmp = tmp->m_next;
