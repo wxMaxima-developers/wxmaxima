@@ -36,92 +36,33 @@
  */
 class MarkDownParser
 {
-protected:
-  Configuration *m_configuration;
-  virtual void DoReplacementsOn(wxString &str) = 0;
-
 public:
-  explicit MarkDownParser(Configuration *cfg);
-  virtual ~MarkDownParser();
-
+  struct ElementPack;
+  virtual ~MarkDownParser();  
   wxString MarkDown(wxString str);
 
-private:
-  virtual const wxString &itemizeBegin()=0;      //!< The marker for the begin of an item list
-  virtual const wxString &itemizeEnd()=0;        //!< The marker for the end of an item list
-  virtual const wxString &quoteChar()=0;         //!< The marker for a quote
-  virtual const wxString &quoteBegin()=0;        //!< The marker that says we want to start quote
-  virtual const wxString &quoteEnd()=0;          //!< The marker that says we want to end quote
-  virtual const wxString &itemizeItem()=0;       //!< The marker for the begin of an item
-  virtual const wxString &itemizeEndItem()=0;    //!< The marker for the end of an item
-  virtual const wxString &newLine()=0;           //!< The marker for the beginning of a new line
+protected:
+  Configuration *m_configuration;
+  const ElementPack &m_e;
+
+  explicit MarkDownParser(Configuration *cfg, const ElementPack &elts);
+  virtual void DoReplacementsOn(wxString &str) = 0;
 };
 
 //! A markdown parser for TeX
 class MarkDownTeX : public MarkDownParser
 {
 public:
-  explicit MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg) {}
+  explicit MarkDownTeX(Configuration *cfg);
   void DoReplacementsOn(wxString &str) override;
-
-private:
-  const wxString &quoteBegin() override
-  { static const wxString s = wxT("\\begin{quote}\n"); return s; }
-
-  const wxString &quoteEnd() override
-  { static const wxString s = wxT("\\end{quote}\n"); return s; }
-
-  const wxString &quoteChar() override
-  { static const wxString s = wxT("\\ensuremath{>}"); return s; }
-
-  const wxString &itemizeBegin() override
-  { static const wxString s = wxT("\\begin{itemize}\n"); return s; }
-
-  const wxString &itemizeEnd() override
-  { static const wxString s = wxT("\\end{itemize}\n"); return s; }
-
-  const wxString &itemizeItem() override
-  { static const wxString s = wxT("\\item "); return s; }
-
-  const wxString &itemizeEndItem() override
-  { static const wxString s; return s; }
-
-  const wxString &newLine() override
-  { static const wxString s = wxT("\n\n"); return s; }
-
 };
 
 //! A markdown parser for HTML
 class MarkDownHTML : public MarkDownParser
 {
 public:
-  explicit MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg) {}
+  explicit MarkDownHTML(Configuration *cfg);
   void DoReplacementsOn(wxString &str) override;
-
-private:
-  const wxString &quoteChar() override
-  { static const wxString s =  wxT("&gt;"); return s; }
-
-  const wxString &quoteBegin() override
-  { static const wxString s =  wxT("<blockquote>\n"); return s; }
-
-  const wxString &quoteEnd() override
-  { static const wxString s =  wxT("</blockquote>\n"); return s; }
-
-  const wxString &itemizeBegin() override
-  { static const wxString s =  wxT("<ul>\n"); return s; }
-
-  const wxString &itemizeEnd() override
-  { static const wxString s =  wxT("</ul>\n"); return s; }
-
-  const wxString &itemizeItem() override
-  { static const wxString s =  wxT("<li>"); return s; }
-
-  const wxString &itemizeEndItem() override
-  { static const wxString s =  wxT("</li>\n"); return s; }
-
-  const wxString &newLine() override
-  { static const wxString s =  wxT("<br/>"); return s; }
 };
 
 #endif // MARKDOWN_H

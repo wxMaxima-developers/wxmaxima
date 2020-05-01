@@ -33,10 +33,22 @@ MarkDownParser::~MarkDownParser()
 {
 }
 
-MarkDownParser::MarkDownParser(Configuration *cfg) :
-    m_configuration(cfg)
+MarkDownParser::MarkDownParser(Configuration *cfg, const ElementPack &elts) :
+    m_configuration(cfg), m_e(elts)
 {
 }
+
+struct MarkDownParser::ElementPack
+{
+  wxString quoteBegin;        //!< The marker that says we want to start quote
+  wxString quoteEnd;          //!< The marker that says we want to end quote
+  wxString quoteChar;         //!< The marker for a quote
+  wxString itemizeBegin;      //!< The marker for the begin of an item list
+  wxString itemizeEnd;        //!< The marker for the end of an item list
+  wxString itemizeItem;       //!< The marker for the begin of an item
+  wxString itemizeEndItem;    //!< The marker for the end of an item
+  wxString newLine;           //!< The marker for the beginning of a new line
+};
 
 wxString MarkDownParser::MarkDown(wxString str)
 {
@@ -87,7 +99,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         if (indentationLevels.empty())
         {
           // This is the first item => Start the itemization.
-          result += itemizeBegin();
+          result += m_e.itemizeBegin;
           indentationLevels.push_back(index);
           indentationTypes.push_back(wxT('*'));
         }
@@ -95,14 +107,14 @@ wxString MarkDownParser::MarkDown(wxString str)
         {
           // End the previous item before we start a new one on the same level.
           if (index == indentationLevels.back())
-            result += itemizeEndItem();
+            result += m_e.itemizeEndItem;
         }
 
         // Did we switch to a higher indentation level?
         if (index > indentationLevels.back())
         {
           // A higher identation level => add the itemization-start-command.
-          result += itemizeBegin();
+          result += m_e.itemizeBegin;
           indentationLevels.push_back(index);
           indentationTypes.push_back(wxT('*'));
         }
@@ -112,38 +124,38 @@ wxString MarkDownParser::MarkDown(wxString str)
         {
           while (!indentationLevels.empty() && (index < indentationLevels.back()))
           {
-            result += itemizeEndItem();
-            result += itemizeEnd();
+            result += m_e.itemizeEndItem;
+            result += m_e.itemizeEnd;
             indentationLevels.pop_back();
             indentationTypes.pop_back();
           }
-          result += itemizeEndItem();
+          result += m_e.itemizeEndItem;
         }
 
         // Add a new item marker.
-        result += itemizeItem();
+        result += m_e.itemizeItem;
 
         // Add the item itself
         while (!st.IsEmpty() && st.Last() == ' ')
           st.Truncate(st.Length() - 1); // We can't use Trim, since it removes newlines too!
-        if(st.EndsWith(newLine()))
-          st.Truncate(st.Length() - newLine().Length());
+        if(st.EndsWith(m_e.newLine))
+          st.Truncate(st.Length() - m_e.newLine.Length());
         st.Trim();
         result += st += wxT(" ");
       }
-      else if (st.StartsWith(quoteChar() + wxT(' ')))
+      else if (st.StartsWith(m_e.quoteChar + wxT(' ')))
       {
         // We are part of a quotation.
         //
         // Remove the bullet list start marker from our string.
-        st.Remove(0, quoteChar().Length() + 1);
+        st.Remove(0, m_e.quoteChar.Length() + 1);
         st.Trim(false);
 
         // Let's see if this is the first item in the list
         if (indentationLevels.empty())
         {
           // This is the first item => Start the itemization.
-          result += quoteBegin();
+          result += m_e.quoteBegin;
           indentationLevels.push_back(index);
           indentationTypes.push_back(wxT('>'));
         }
@@ -155,7 +167,7 @@ wxString MarkDownParser::MarkDown(wxString str)
           if (indentationLevels.back() < index)
           {
             // A new identation level => add the itemization-start-command.
-            result += quoteBegin();
+            result += m_e.quoteBegin;
             indentationLevels.push_back(index);
             indentationTypes.push_back(wxT('>'));
           }
@@ -166,11 +178,11 @@ wxString MarkDownParser::MarkDown(wxString str)
           {
             if (indentationTypes.back() == wxT('*'))
             {
-              result += itemizeEndItem();
-              result += itemizeEnd();
+              result += m_e.itemizeEndItem;
+              result += m_e.itemizeEnd;
             }
             else
-              result += quoteEnd();
+              result += m_e.quoteEnd;
             indentationLevels.pop_back();
             indentationTypes.pop_back();
           }
@@ -187,11 +199,11 @@ wxString MarkDownParser::MarkDown(wxString str)
         {
           // Add the text to the output.
           if((result != wxEmptyString) &&
-             (!result.EndsWith(itemizeEndItem())) &&
-             (!result.EndsWith(itemizeEnd())) &&
-             (!result.EndsWith(quoteEnd()))
+             (!result.EndsWith(m_e.itemizeEndItem)) &&
+             (!result.EndsWith(m_e.itemizeEnd)) &&
+             (!result.EndsWith(m_e.quoteEnd))
             )
-            result += newLine();
+            result += m_e.newLine;
           if (indentationLevels.back() > index)
           {
             while ((!indentationLevels.empty()) &&
@@ -199,11 +211,11 @@ wxString MarkDownParser::MarkDown(wxString str)
             {
               if (indentationTypes.back() == wxT('*'))
               {
-                result += itemizeEndItem();
-                result += itemizeEnd();
+                result += m_e.itemizeEndItem;
+                result += m_e.itemizeEnd;
               }
               else
-                result += quoteEnd();
+                result += m_e.quoteEnd;
 
               indentationLevels.pop_back();
               indentationTypes.pop_back();
@@ -221,15 +233,58 @@ wxString MarkDownParser::MarkDown(wxString str)
   {
     if (indentationTypes.back() == wxT('*'))
     {
-      result += itemizeEndItem();
-      result += itemizeEnd();
+      result += m_e.itemizeEndItem;
+      result += m_e.itemizeEnd;
     }
     else
-      result += quoteEnd();
+      result += m_e.quoteEnd;
     indentationLevels.pop_back();
     indentationTypes.pop_back();
   }
   return result;
+}
+
+struct TeXElementPack : public MarkDownParser::ElementPack
+{
+  TeXElementPack()
+  {
+    quoteBegin = wxT("\\begin{quote}\n");
+    quoteEnd = wxT("\\end{quote}\n");
+    quoteChar = wxT("\\ensuremath{>}");
+    itemizeBegin = wxT("\\begin{itemize}\n");
+    itemizeEnd = wxT("\\end{itemize}\n");
+    itemizeItem = wxT("\\item ");
+    itemizeEndItem = wxString{};
+    newLine = wxT("\n\n");
+  }
+};
+static const TeXElementPack texElementPack;
+
+MarkDownTeX::MarkDownTeX(Configuration *configuration) :
+    MarkDownParser(configuration, texElementPack)
+{
+}
+
+struct HTMLElementPack : public MarkDownParser::ElementPack
+{
+  HTMLElementPack()
+  {
+    quoteBegin =  wxT("<blockquote>\n");
+    quoteEnd =  wxT("</blockquote>\n");
+    quoteChar =  wxT("&gt;");
+    itemizeBegin =  wxT("<ul>\n");
+    itemizeEnd =  wxT("</ul>\n");
+    itemizeItem =  wxT("<li>");
+    itemizeEndItem =  wxT("</li>\n");
+    newLine =  wxT("<br/>");
+  }
+};
+static const HTMLElementPack htmlElementPack;
+
+
+MarkDownHTML::MarkDownHTML(Configuration *configuration) :
+    MarkDownParser(configuration, htmlElementPack)
+{
 }
 
 struct Replacer
