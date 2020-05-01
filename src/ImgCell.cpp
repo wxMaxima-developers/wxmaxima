@@ -72,27 +72,27 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : Cell(parent, config, cellPointers)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
-    m_image = std::shared_ptr<Image>(new Image(m_configuration, image, filesystem, remove));
+    m_image = std::make_shared<Image>(m_configuration, image, filesystem, remove);
   else
-    m_image = std::shared_ptr<Image>(new Image(m_configuration));
+    m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
 }
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
-  m_image = std::shared_ptr<Image>(new Image(m_configuration, remove, image));
+  m_image = std::make_shared<Image>(m_configuration, remove, image);
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap)
 {
   m_width = m_height = -1;
-  m_image = std::shared_ptr<Image>(new Image(m_configuration, bitmap));
+  m_image = std::make_shared<Image>(m_configuration, bitmap);
 }
 
 ImgCell::ImgCell(const ImgCell &cell):
@@ -101,7 +101,7 @@ ImgCell::ImgCell(const ImgCell &cell):
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;
-  m_image = std::shared_ptr<Image>(new Image(*cell.m_image));
+  m_image = std::make_shared<Image>(*cell.m_image);
 }
 
 ImgCell::~ImgCell()
@@ -113,12 +113,6 @@ void ImgCell::MarkAsDeleted()
 {
   ClearCache();
   Cell::MarkAsDeleted();
-}
-
-std::list<std::shared_ptr<Cell>> ImgCell::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> innerCells;
-  return innerCells;
 }
 
 wxString ImgCell::GetToolTip(const wxPoint &point)

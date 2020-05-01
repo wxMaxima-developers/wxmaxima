@@ -35,7 +35,7 @@ class ImgCell : public Cell
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
@@ -68,7 +68,6 @@ public:
         return m_image->GnuplotData();
     }
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   void MarkAsDeleted() override;
 
   void LoadImage(wxString image, bool remove = true);

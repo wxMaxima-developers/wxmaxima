@@ -52,7 +52,7 @@ public:
     //! This class can be derived from wxAccessible which has no copy constructor
   SumCell operator=(const SumCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
   
   void RecalculateHeight(int fontsize) override;
   void RecalculateWidths(int fontsize) override;
@@ -86,7 +86,7 @@ protected:
   std::shared_ptr<Cell> m_base;
   std::shared_ptr<Cell> m_under;
   std::shared_ptr<Cell> m_over;
-  std::shared_ptr<ParenCell> m_paren;
+  std::shared_ptr<Cell> m_paren;
   std::shared_ptr<Cell> m_displayedBase;
   int m_signHeight;
   double m_signWidth;

@@ -56,7 +56,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   ExptCell &operator=(const ExptCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   //! Set the mantissa
   void SetBase(Cell *base);
@@ -97,9 +97,9 @@ public:
 protected:
   std::shared_ptr<Cell> m_baseCell;
   std::shared_ptr<Cell> m_exptCell;
-  std::shared_ptr<TextCell> m_open;
-  std::shared_ptr<TextCell> m_close;
-  std::shared_ptr<TextCell> m_exp;
+  std::shared_ptr<Cell> m_open;
+  std::shared_ptr<Cell> m_close;
+  std::shared_ptr<Cell> m_exp;
   Cell *m_expt_last;
   Cell *m_base_last;
   bool m_isMatrix;

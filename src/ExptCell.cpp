@@ -32,11 +32,11 @@
 
 ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell(new TextCell(parent, config, cellPointers)),
-  m_exptCell(new TextCell(parent, config, cellPointers)),
-  m_open(new TextCell(parent, config, cellPointers, "(")),
-  m_close(new TextCell(parent, config, cellPointers, ")")),
-  m_exp(new TextCell(parent, config, cellPointers, "^"))
+  m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_exptCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")")),
+  m_exp(std::make_shared<TextCell>(parent, config, cellPointers, "^"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
@@ -45,7 +45,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_base_last = m_baseCell.get();
   m_expt_last = m_exptCell.get();
   m_isMatrix = false;
-  m_open->DontEscapeOpeningParenthesis();
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 
 ExptCell::ExptCell(const ExptCell &cell):
@@ -79,9 +79,9 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-std::list<std::shared_ptr<Cell>> ExptCell::GetInnerCells()
+Cell::InnerCells ExptCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_exptCell)

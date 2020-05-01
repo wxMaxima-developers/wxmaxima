@@ -51,8 +51,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   FracCell &operator=(const FracCell&) = delete;
 
-  
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   //! All types of fractions we support
   enum FracType
@@ -110,11 +109,11 @@ protected:
   //! The denominator
   std::shared_ptr<Cell> m_denom;
   //! A parenthesis around the numerator
-  std::shared_ptr<ParenCell> m_numParenthesis;
+  std::shared_ptr<Cell> m_numParenthesis;
   //! A parenthesis around the denominator
-  std::shared_ptr<ParenCell> m_denomParenthesis;
+  std::shared_ptr<Cell> m_denomParenthesis;
   //! The "/" sign
-  std::shared_ptr<TextCell> m_divide;
+  std::shared_ptr<Cell> m_divide;
   //! The last element of the numerator
   Cell *m_num_Last;
   //! The last element of the denominator

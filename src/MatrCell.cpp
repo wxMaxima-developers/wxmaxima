@@ -64,12 +64,12 @@ MatrCell::~MatrCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> MatrCell::GetInnerCells()
+Cell::InnerCells MatrCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
-  for (unsigned int i = 0; i < m_cells.size(); i++)
-    if(m_cells[i])
-      innerCells.push_back(m_cells[i]);
+  InnerCells innerCells;
+  innerCells.reserve(m_cells.size());
+  std::copy_if(m_cells.begin(), m_cells.end(), std::back_inserter(innerCells),
+               [](const std::shared_ptr<Cell> &cell){ return bool(cell); });
   return innerCells;
 }
 

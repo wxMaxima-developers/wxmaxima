@@ -78,9 +78,9 @@ IntCell::~IntCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> IntCell::GetInnerCells()
+Cell::InnerCells IntCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)

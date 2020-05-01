@@ -38,7 +38,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   SubSupCell operator=(const SubSupCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
   
   void SetBase(Cell *base);
 
@@ -78,7 +78,7 @@ protected:
   std::shared_ptr<Cell> m_postSubCell;
   std::shared_ptr<Cell> m_preSupCell;
   std::shared_ptr<Cell> m_preSubCell;
-  std::list<std::shared_ptr<Cell>> m_innerCellList;
+  InnerCells m_innerCellList;
 };
 
 #endif // SUBSUPCELL_H

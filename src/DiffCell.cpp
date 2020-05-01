@@ -32,8 +32,8 @@
 
 DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell(new TextCell(parent, config, cellPointers)),
-  m_diffCell(new TextCell(parent, config, cellPointers))
+  m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_diffCell(std::make_shared<TextCell>(parent, config, cellPointers))
 {
 }
 
@@ -52,9 +52,9 @@ DiffCell::~DiffCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> DiffCell::GetInnerCells()
+Cell::InnerCells DiffCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_diffCell)

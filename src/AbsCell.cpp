@@ -36,7 +36,7 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_close(new TextCell(parent, config, cellPointers, wxT(")"))),
   m_last(NULL)
 {
-  m_open->DontEscapeOpeningParenthesis();
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
 }
 
@@ -59,9 +59,9 @@ AbsCell::~AbsCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> AbsCell::GetInnerCells()
+Cell::InnerCells AbsCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)

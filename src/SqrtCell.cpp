@@ -34,8 +34,8 @@
 SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_innerCell(new TextCell(parent, config, cellPointers)),
-  m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
-  m_close(new TextCell(parent, config, cellPointers, ")"))
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "sqrt(")),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_signSize = 50;
@@ -44,7 +44,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_last = NULL;
   m_signType = 0;
   m_signFontScale = 0;
-  m_open->DontEscapeOpeningParenthesis();
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
@@ -68,9 +68,9 @@ SqrtCell::~SqrtCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> SqrtCell::GetInnerCells()
+Cell::InnerCells SqrtCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)

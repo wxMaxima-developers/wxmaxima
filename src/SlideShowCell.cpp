@@ -45,7 +45,7 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const std::shared_ptr <wxFileSystem> &filesystem, int framerate) :
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
   Cell(parent, config, cellPointers),
   m_timer(NULL),
   m_fileSystem(filesystem)
@@ -116,7 +116,7 @@ void SlideShow::ReloadTimer()
   if(!m_timer)
   {
     // Tell MathCtrl about our timer.
-    m_timer = std::shared_ptr<wxTimer>(new wxTimer(m_cellPointers->GetMathCtrl(), wxNewId()));
+    m_timer = std::make_shared<wxTimer>(m_cellPointers->GetMathCtrl(), wxNewId());
     m_cellPointers->m_slideShowTimers[this] = m_timer->GetId();
   }
   
@@ -176,8 +176,7 @@ void SlideShow::LoadImages(wxMemoryBuffer imageData)
     wxMemoryInputStream istream2(imageData.GetData(), imageData.GetDataLen());
     wxImage image;
     image.LoadFile(istream2, wxBITMAP_TYPE_ANY, i);
-    m_images.push_back(std::shared_ptr<Image>(
-                         new Image(m_configuration, wxBitmap(image))));
+    m_images.push_back(std::make_shared<Image>(m_configuration, wxBitmap(image)));
     m_size++;
   }
 }
@@ -192,8 +191,7 @@ void SlideShow::LoadImages(wxString imageFile)
   {
     wxImage image;
     image.LoadFile(imageFile, wxBITMAP_TYPE_ANY, i);
-    m_images.push_back(std::shared_ptr<Image>(
-                         new Image(m_configuration, wxBitmap(image))));
+    m_images.push_back(std::make_shared<Image>(m_configuration, wxBitmap(image)));
     m_size++;
   }
 }
@@ -218,11 +216,10 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
           dataFilename = images[i];
         else
         {
-          m_images.push_back(std::shared_ptr<Image>(
-                               new Image(m_configuration, images[i], m_fileSystem, deleteRead)));
+          m_images.push_back(
+            std::make_shared<Image>(m_configuration, images[i], m_fileSystem, deleteRead));
           if(gnuplotFilename != wxEmptyString)
           {
-            std::shared_ptr<wxFileSystem> filesystem;
             if(m_images.back())
               m_images.back()->GnuplotSource(gnuplotFilename, dataFilename);
           }
@@ -241,7 +238,7 @@ SlideShow::SlideShow(const SlideShow &cell):
   AnimationRunning(false);
 
   for (size_t i = 0; i < cell.m_images.size(); i++)
-    m_images.push_back(std::shared_ptr<Image>(new Image(*cell.m_images[i])));
+    m_images.push_back(std::make_shared<Image>(*cell.m_images[i]));
 
   m_framerate = cell.m_framerate;
   m_displayed = true;
@@ -261,12 +258,6 @@ void SlideShow::MarkAsDeleted()
   StopTimer();
   ClearCache();
   Cell::MarkAsDeleted();
-}
-
-std::list<std::shared_ptr<Cell>> SlideShow::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> innerCells;
-  return innerCells;
 }
 
 void SlideShow::SetDisplayedIndex(int ind)

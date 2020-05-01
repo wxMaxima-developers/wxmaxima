@@ -89,7 +89,7 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
    */
-  Image(Configuration **config, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   ~Image();
 
@@ -102,7 +102,7 @@ public:
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
    */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
 
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
@@ -234,12 +234,12 @@ protected:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-  void LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove);
-  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem);
+  void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
+  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
 
 private:
   //! Loads an image from a file
-  void LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove = true);
+  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer
   static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);  
   Configuration **m_configuration;

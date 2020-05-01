@@ -31,8 +31,8 @@
 
 AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell (new TextCell(parent, config, cellPointers)),
-  m_indexCell(new TextCell(parent, config, cellPointers))
+  m_baseCell (std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_indexCell(std::make_shared<TextCell>(parent, config, cellPointers))
 {
 }
 
@@ -51,9 +51,9 @@ AtCell::~AtCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> AtCell::GetInnerCells()
+Cell::InnerCells AtCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)
