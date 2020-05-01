@@ -81,12 +81,6 @@ TextCell::~TextCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> TextCell::GetInnerCells()
-{
-  std::list<std::shared_ptr<Cell>> innerCells;
-  return innerCells;
-}
-
 void TextCell::SetStyle(TextStyle style)
 {
   m_widths.clear();

@@ -43,8 +43,6 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   TextCell &operator=(const TextCell&) = delete;
   
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
-  
   ~TextCell();  
 
   double GetScaledTextSize() const;

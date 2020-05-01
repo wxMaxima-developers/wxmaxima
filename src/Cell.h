@@ -28,7 +28,6 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
-#include <list>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #if wxUSE_ACCESSIBILITY
@@ -38,7 +37,9 @@
 #endif // wxUSE_ACCESSIBILITY
 #include "Configuration.h"
 #include "TextStyle.h"
+#include <algorithm>
 #include <memory>
+#include <vector>
 
 /*! The supported types of math cells
  */
@@ -152,24 +153,24 @@ class Cell
     class ErrorList
     {
     public:
-      ErrorList(){};
+      ErrorList() = default;
       //! Is the list of errors empty?
-      bool Empty() const {return m_errorList.empty();}
+      bool Empty() const {return m_errors.empty();}
       //! Remove one specific GroupCell from the list of errors
-      void Remove(Cell * cell){m_errorList.remove(cell);}
+      void Remove(Cell * cell){m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());}
       //! Does the list of GroupCell with errors contain cell?
-      bool Contains(Cell * cell);
+      bool Contains(Cell * cell) const {return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();}
       //! Mark this GroupCell as containing errors
-      void Add(Cell * cell){m_errorList.push_back(cell);}
+      void Add(Cell * cell){m_errors.push_back(cell);}
       //! The first GroupCell with error that is still in the list
-      Cell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+      Cell *FirstError() const {return m_errors.empty() ? NULL : m_errors.front();}
       //! The last GroupCell with errors in the list
-      Cell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+      Cell *LastError() const {return m_errors.empty() ? NULL : m_errors.back();}
       //! Empty the list of GroupCells with errors
-      void Clear(){m_errorList.clear();}
+      void Clear(){m_errors.clear();}
     private:
       //! A list of GroupCells that contain errors
-      std::list<Cell *> m_errorList;
+      std::vector<Cell *> m_errors;
     };
 
     //! The list of cells maxima has complained about errors in
@@ -313,7 +314,7 @@ class Cell
   virtual ~Cell();
 
   //! How many cells does this cell contain?
-  int CellsInListRecursive();
+  int CellsInListRecursive() const;
 
   /*! If the cell is moved to the undo buffer this function drops pointers to it
   
@@ -1047,7 +1048,8 @@ protected:
   wxString m_altCopyText;
   Configuration **m_configuration;
 
-  virtual std::list<std::shared_ptr<Cell>> GetInnerCells();
+  using InnerCells = std::vector<std::shared_ptr<Cell>>;
+  virtual InnerCells GetInnerCells() const;
 
 protected:
   //! The height of this cell.

@@ -56,7 +56,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   ConjugateCell &operator=(const ConjugateCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void SetInner(Cell *inner);
 
@@ -64,8 +64,8 @@ public:
 
 protected:
   std::shared_ptr<Cell> m_innerCell;
-  std::shared_ptr<TextCell> m_open;
-  std::shared_ptr<TextCell> m_close;
+  std::shared_ptr<Cell> m_open;
+  std::shared_ptr<Cell> m_close;
   Cell *m_last;
 
   void RecalculateHeight(int fontsize) override;

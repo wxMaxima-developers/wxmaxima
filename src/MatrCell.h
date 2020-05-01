@@ -39,7 +39,7 @@ public:
   MatrCell &operator=(const MatrCell&) = delete;
   ~MatrCell();
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void RecalculateHeight(int fontsize) override;
 

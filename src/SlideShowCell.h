@@ -59,7 +59,7 @@ public:
     \param cellPointers All pointers that might point to this cell and that need to
                         be set to NULL if this cell is deleted.
    */
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const std::shared_ptr<wxFileSystem> &filesystem, int framerate = -1);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
   SlideShow(const SlideShow &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
@@ -94,7 +94,6 @@ public:
   
   virtual wxString GetToolTip(const wxPoint &point) override;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
   void MarkAsDeleted()  override;
 
   /*! Remove all cached scaled images from memory
@@ -161,7 +160,7 @@ public:
       return (!m_images[m_displayed]->GnuplotSource().IsEmpty());
     }
 
-  void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
+  void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
     {
       m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem);
     }

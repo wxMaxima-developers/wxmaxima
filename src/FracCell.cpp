@@ -32,11 +32,11 @@
 
 FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_num(new TextCell(parent, config, cellPointers)),
-  m_denom(new TextCell(parent, config, cellPointers)),
-  m_numParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
-  m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
-  m_divide(new TextCell(parent, config, cellPointers, "/"))
+  m_num(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_denom(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_numParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
+  m_denomParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
+  m_divide(std::make_shared<TextCell>(parent, config, cellPointers, "/"))
 {
   m_divide->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;
@@ -66,9 +66,9 @@ FracCell::~FracCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> FracCell::GetInnerCells()
+Cell::InnerCells FracCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_divide)
     innerCells.push_back(m_divide);
   // Contains m_num
@@ -85,7 +85,7 @@ void FracCell::SetNum(Cell *num)
   if (num == NULL)
     return;
   m_num = std::shared_ptr<Cell>(num);
-  m_numParenthesis->SetInner(m_num);
+  static_cast<ParenCell&>(*m_numParenthesis).SetInner(m_num);
   m_num_Last = num;
   SetupBreakUps();
 }
@@ -95,7 +95,7 @@ void FracCell::SetDenom(Cell *denom)
   if (denom == NULL)
     return;
   m_denom = std::shared_ptr<Cell>(denom);
-  m_denomParenthesis->SetInner(m_denom);
+  static_cast<ParenCell&>(*m_denomParenthesis).SetInner(m_denom);
   SetupBreakUps();
 }
 

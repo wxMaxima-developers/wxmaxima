@@ -57,7 +57,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   SqrtCell &operator=(const SqrtCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void SetInner(Cell *inner);
 
@@ -83,8 +83,8 @@ public:
 
 protected:
   std::shared_ptr<Cell> m_innerCell;
-  std::shared_ptr<TextCell> m_open;
-  std::shared_ptr<TextCell> m_close;
+  std::shared_ptr<Cell> m_open;
+  std::shared_ptr<Cell> m_close;
   Cell *m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;

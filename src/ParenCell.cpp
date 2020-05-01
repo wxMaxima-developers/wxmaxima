@@ -32,9 +32,9 @@
 
 ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_innerCell(new TextCell(parent, config, cellPointers)),
-  m_open(new TextCell(parent, config, cellPointers, wxT("("))),
-  m_close(new TextCell(parent, config, cellPointers, wxT(")")))
+  m_innerCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_open(std::make_shared<TextCell>(parent, config, cellPointers, wxT("("))),
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, wxT(")")))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
@@ -82,9 +82,9 @@ ParenCell::~ParenCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> ParenCell::GetInnerCells()
+Cell::InnerCells ParenCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)

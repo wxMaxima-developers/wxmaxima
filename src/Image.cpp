@@ -109,7 +109,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 }
 
 // constructor which loads an image
-Image::Image(Configuration **config, wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove):
+Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
   m_fs_keepalive_imagedata(filesystem)
 {
   #ifdef HAVE_OMP_HEADER
@@ -243,10 +243,9 @@ bool Image::IsOk()
 }
 
 
-void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
+void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
 {
   m_fs_keepalive_gnuplotdata = filesystem;
-  std::shared_ptr<wxFileSystem> keepFilesystemAlive(filesystem);
   #ifdef HAVE_OPENMP_TASKS
   wxLogMessage(_("Starting background task that loads the gnuplot data for a plot."));
   #pragma omp task
@@ -254,7 +253,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, const
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
 }
 
-void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, const std::shared_ptr<wxFileSystem> &filesystem)
+void Image::LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
 {
   #ifdef HAVE_OMP_HEADER
   omp_set_lock(&m_gnuplotLock);
@@ -875,7 +874,7 @@ wxString Image::GetExtension()
   return m_extension;
 }
 
-void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
 {
   m_fs_keepalive_imagedata = filesystem;
   m_extension = wxFileName(image).GetExt();
@@ -893,7 +892,7 @@ void Image::LoadImage(wxString image, const std::shared_ptr<wxFileSystem> &files
   LoadImage_Backgroundtask(image, filesystem, remove);
 }
 
-void Image::LoadImage_Backgroundtask(wxString image, const std::shared_ptr<wxFileSystem> &filesystem, bool remove)
+void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
 {
   #ifdef HAVE_OMP_HEADER
   WaitForLoad waitforload(&m_imageLoadLock);

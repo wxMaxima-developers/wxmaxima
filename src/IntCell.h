@@ -46,7 +46,7 @@ public:
   IntCell &operator=(const IntCell&) = delete;
   ~IntCell();
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void RecalculateHeight(int fontsize) override;
 

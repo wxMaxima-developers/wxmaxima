@@ -67,9 +67,9 @@ SumCell::~SumCell()
   MarkAsDeleted();
 }
 
-std::list<std::shared_ptr<Cell>> SumCell::GetInnerCells()
+Cell::InnerCells SumCell::GetInnerCells() const
 {
-  std::list<std::shared_ptr<Cell>> innerCells;
+  InnerCells innerCells;
   if(m_under)
     innerCells.push_back(m_under);
   if(m_over)
@@ -92,7 +92,7 @@ void SumCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_base = std::shared_ptr<Cell>(base);
-  m_paren->SetInner(m_base);
+  static_cast<ParenCell&>(*m_paren).SetInner(m_base);
   m_displayedBase = m_paren;
 }
 
@@ -117,7 +117,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_signWCenter = m_signWidth / 2.0;
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = std::shared_ptr<TextCell>(new TextCell(m_group, m_configuration, m_cellPointers));
+    m_over = std::make_shared<TextCell>(m_group, m_configuration, m_cellPointers);
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (false)

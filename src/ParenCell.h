@@ -59,7 +59,7 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   ParenCell &operator=(const ParenCell&) = delete;
 
-  std::list<std::shared_ptr<Cell>> GetInnerCells() override;
+  InnerCells GetInnerCells() const override;
 
   void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
   void SetInner(std::shared_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
@@ -95,8 +95,8 @@ protected:
   Configuration::drawMode m_bigParenType;
   void SetFont(int fontsize);
   std::shared_ptr<Cell> m_innerCell;
-  std::shared_ptr<TextCell> m_open;
-  std::shared_ptr<TextCell> m_close;
+  std::shared_ptr<Cell> m_open;
+  std::shared_ptr<Cell> m_close;
   Cell *m_last1;
   bool m_print;
   int m_numberOfExtensions;
