@@ -109,6 +109,9 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 }
 
 // constructor which loads an image
+// filesystem cannot be passed by const reference as we want to keep the
+// pointer to the file system alive in a background task
+// cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
   m_fs_keepalive_imagedata(filesystem)
 {
@@ -243,6 +246,9 @@ bool Image::IsOk()
 }
 
 
+// filesystem cannot be passed by const reference as we want to keep the
+// pointer to the file system alive in a background task
+// cppcheck-suppress performance symbolName=filesystem
 void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
 {
   m_fs_keepalive_gnuplotdata = filesystem;
@@ -874,6 +880,9 @@ wxString Image::GetExtension()
   return m_extension;
 }
 
+// filesystem cannot be passed by const reference as we want to keep the
+// pointer to the file system alive in a background task
+// cppcheck-suppress performance symbolName=filesystem
 void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
 {
   m_fs_keepalive_imagedata = filesystem;
