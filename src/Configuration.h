@@ -576,7 +576,7 @@ public:
 
   void SetDisplayedDigits(long displayedDigits)
   {
-    wxASSERT_MSG(displayedDigits >= 20, _("Bug: Maximum number of digits that is to be displayed is too low!"));
+    wxASSERT_MSG(displayedDigits >= 0, _("Bug: Maximum number of digits that is to be displayed is too low!"));
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
   }
   
