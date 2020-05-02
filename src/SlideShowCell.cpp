@@ -45,6 +45,9 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
+// filesystem cannot be passed by const reference as we want to keep the
+// pointer to the file system alive in a background task
+// cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
   Cell(parent, config, cellPointers),
   m_timer(NULL),
