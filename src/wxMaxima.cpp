@@ -5426,7 +5426,7 @@ bool wxMaxima::AutoSave()
   {
     wxLogMessage(wxString::Format(_("Autosaving the .wxmx file as %s"),
                                   m_worksheet->m_currentFile.utf8_str()));
-    savedWas = saved = SaveFile(false);
+    savedWas = SaveFile(false);
   }
 
   m_worksheet->SetSaved(savedWas);
