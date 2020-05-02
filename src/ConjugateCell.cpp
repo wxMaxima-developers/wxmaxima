@@ -34,6 +34,7 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
   m_open(std::make_shared<TextCell>(parent, config, cellPointers, "conjugate(")),
   m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
+  m_nextToDraw = NULL;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_last = NULL;
 }
@@ -44,6 +45,7 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
 ConjugateCell::ConjugateCell(const ConjugateCell &cell):
  ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
@@ -193,11 +195,11 @@ bool ConjugateCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell.get();
+    m_open->SetNextToDraw(m_innerCell.get());
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in a conjugateCell!"));
     if (m_last != NULL)
-      m_last->m_nextToDraw = m_close.get();
-    m_close->m_nextToDraw = m_nextToDraw;
+      m_last->SetNextToDraw(m_close.get());
+    m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open.get();
     ResetData();        
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
@@ -205,4 +207,12 @@ bool ConjugateCell::BreakUp()
     return true;
   }
   return false;
+}
+
+void ConjugateCell::SetNextToDraw(Cell *next)
+{
+  if(m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

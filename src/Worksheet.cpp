@@ -615,7 +615,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
           tmp->DrawBoundingBox(dc, false);
         if (tmp == m_cellPointers.m_selectionEnd)
           break;
-        tmp = tmp->m_nextToDraw;
+        tmp = tmp->GetNextToDraw();
       } // end while (1)
     }
   }
@@ -750,10 +750,14 @@ GroupCell *Worksheet::InsertGroupCells(
   prev = where;
 
   cells->m_previous = where;
-  lastOfCellsToInsert->m_next = lastOfCellsToInsert->m_nextToDraw = next;
+  lastOfCellsToInsert->m_next = next;
+  lastOfCellsToInsert->SetNextToDraw(next);
 
   if (prev)
-    prev->m_next = prev->m_nextToDraw = cells;
+  {
+    prev->m_next = cells;
+    prev->SetNextToDraw(cells);
+  }
   if (next)
     next->m_previous = lastOfCellsToInsert;
   // make sure m_last still points to the last cell of the worksheet!!
@@ -1305,11 +1309,15 @@ GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
   Cell *prev = start->m_previous;
   Cell *next = end->m_next;
 
-  end->m_next = end->m_nextToDraw = NULL;
+  end->m_next = NULL;
+  end->SetNextToDraw(NULL);
   start->m_previous = NULL;
 
   if (prev)
-    prev->m_next = prev->m_nextToDraw = next;
+  {
+    prev->m_next = next;
+    prev->SetNextToDraw(next);
+  }
   if (next)
     next->m_previous = prev;
   // fix m_last if we tore it
@@ -1363,7 +1371,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 
         if (tmp == m_cellPointers.m_selectionEnd)
           break;
-        tmp = tmp->m_nextToDraw;
+        tmp = tmp->GetNextToDraw();
       }
     }
   }
@@ -2363,7 +2371,7 @@ wxString Worksheet::GetString(bool lb)
     s += tmp->ToString();
     if (tmp == m_cellPointers.m_selectionEnd)
       break;
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
   return s;
 }
@@ -2999,18 +3007,25 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
   if(start->m_previous == NULL)
     m_tree = end->GetNext();
   else
-    start->m_previous->m_next = start->m_previous->m_nextToDraw = end->m_next;
+  {
+    start->m_previous->m_next = end->m_next;
+    start->m_previous->SetNextToDraw(end->m_next);
+  }
 
   if (end->m_next != NULL)
     end->m_next->m_previous = start->m_previous;
   else
   {
     if(start->m_previous != NULL)
-      start->m_previous->m_next = start->m_previous->m_nextToDraw =NULL;
+    {
+      start->m_previous->m_next = NULL;
+      start->m_previous->SetNextToDraw(NULL);
+    }
   }
 
   // Add an "end of tree" marker to both ends of the list of deleted cells
-  end->m_next = end->m_nextToDraw = NULL;
+  end->m_next = NULL;
+  end->SetNextToDraw(NULL);
   start->m_previous = NULL;
 
   // Do we have an undo buffer for this action?
@@ -4732,7 +4747,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData)
     if (asData)
       tmp = tmp->m_next;
     else
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->GetNextToDraw();
   }
 
   return out;
@@ -6128,7 +6143,8 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
         tree = last = cell;
       else
       {
-        last->m_next = last->m_nextToDraw = cell;
+        last->m_next = cell;
+        last->SetNextToDraw(cell);
         last->m_next->m_previous = last;
 
         last = last->GetNext();

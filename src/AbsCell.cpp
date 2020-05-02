@@ -36,6 +36,7 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_close(new TextCell(parent, config, cellPointers, wxT(")"))),
   m_last(NULL)
 {
+  m_nextToDraw = NULL;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
 }
@@ -46,6 +47,7 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 AbsCell::AbsCell(const AbsCell &cell):
   AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
@@ -201,11 +203,11 @@ bool AbsCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell.get();
+    m_open->SetNextToDraw(m_innerCell.get());
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an absCell!"));
     if (m_last != NULL)
-      m_last->m_nextToDraw = m_close.get();
-    m_close->m_nextToDraw = m_nextToDraw;
+      m_last->SetNextToDraw(m_close.get());
+    m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open.get();
     ResetData();    
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
@@ -214,4 +216,12 @@ bool AbsCell::BreakUp()
     return true;
   }
   return false;
+}
+
+void AbsCell::SetNextToDraw(Cell *next)
+{
+  if(m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

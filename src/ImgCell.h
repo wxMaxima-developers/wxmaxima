@@ -139,6 +139,11 @@ public:
     {
       return (!m_image->GnuplotSource().IsEmpty());
     }
+
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
 protected:
   std::shared_ptr<Image> m_image;
   
@@ -151,6 +156,7 @@ protected:
   }
 
 private:
+  Cell *m_nextToDraw;
   bool m_drawBoundingBox;
 };
 

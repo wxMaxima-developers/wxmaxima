@@ -40,6 +40,7 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
+  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_comma->SetStyle(TS_FUNCTION);
@@ -54,6 +55,7 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 LimitCell::LimitCell(const LimitCell &cell):
  LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_base)
     SetBase(cell.m_base->CopyList());
@@ -304,15 +306,23 @@ bool LimitCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_name_last->m_nextToDraw = m_open.get();
-    m_open->m_nextToDraw = m_base.get();
-    m_base_last->m_nextToDraw = m_comma.get();
-    m_comma->m_nextToDraw = m_under.get();
-    m_under_last->m_nextToDraw = m_close.get();
-    m_close->m_nextToDraw = m_nextToDraw;
+    m_name_last->SetNextToDraw(m_open.get());
+    m_open->SetNextToDraw(m_base.get());
+    m_base_last->SetNextToDraw(m_comma.get());
+    m_comma->SetNextToDraw(m_under.get());
+    m_under_last->SetNextToDraw(m_close.get());
+    m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_name.get();
     ResetData();    
     return true;
   }
   return false;
+}
+
+void LimitCell::SetNextToDraw(Cell *next)
+{
+  if(m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

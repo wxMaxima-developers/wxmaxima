@@ -53,6 +53,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_timer(NULL),
   m_fileSystem(filesystem)
 {
+  m_nextToDraw = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
@@ -69,6 +70,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_timer(NULL),
   m_fileSystem(NULL)
 {
+  m_nextToDraw = NULL;
   m_width = m_height = -1;
   m_animationRunning = true;
   m_size = m_displayed = 0;
@@ -83,12 +85,14 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString WXUNUSED(type)):
   SlideShow(parent, config, cellPointers)
 {
+  m_nextToDraw = NULL;
   LoadImages(image);
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove):
   SlideShow(parent, config, cellPointers)
 {
+  m_nextToDraw = NULL;
   LoadImages(image);
   if(remove)
     wxRemoveFile(image);
@@ -237,6 +241,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 SlideShow::SlideShow(const SlideShow &cell):
   SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   AnimationRunning(false);
 
@@ -627,3 +632,9 @@ bool SlideShow::CopyAnimationToClipboard()
 }
 
 wxDataFormat SlideShow::m_gifFormat(wxT("image/gif"));
+
+void SlideShow::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
+}
+

@@ -33,11 +33,13 @@
 SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers)
 {
+  m_nextToDraw = NULL;
 }
 
 SubCell::SubCell(const SubCell &cell):
   SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
@@ -190,4 +192,9 @@ wxString SubCell::ToXML()
   
   return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
            m_indexCell->ListToXML() + wxT("</r></i>");
+}
+
+void SubCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

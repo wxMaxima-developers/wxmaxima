@@ -35,6 +35,7 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_drops(vector<int>()),
   m_centers(vector<int>())
 {
+  m_nextToDraw = NULL;
   m_matWidth = 0;
   m_matHeight = 0;
   m_specialMatrix = false;
@@ -46,6 +47,7 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 MatrCell::MatrCell(const MatrCell &cell):
  MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
@@ -430,4 +432,9 @@ void MatrCell::SetDimension()
 {
   if (m_matHeight != 0)
     m_matWidth = m_matWidth / m_matHeight;
+}
+
+void MatrCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

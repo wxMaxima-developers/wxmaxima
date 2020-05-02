@@ -246,7 +246,8 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
           if (last == NULL) last = cell;
           else
           {
-            last->m_next = last->m_nextToDraw = cell;
+            last->m_next = cell;
+            last->SetNextToDraw(cell);
             last->m_next->m_previous = last;
 
             last = last->m_next;

@@ -87,6 +87,12 @@ public:
 
   wxString ToOMML() override;
 
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
+private:
+  Cell *m_nextToDraw;
 protected:
   //! The contents of the abs() command
   std::shared_ptr<Cell> m_innerCell;

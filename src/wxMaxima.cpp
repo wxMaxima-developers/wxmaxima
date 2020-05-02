@@ -3640,7 +3640,8 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
         else
         {
           // The rest of the cells
-          last->m_next = last->m_nextToDraw = cell;
+          last->m_next = cell;
+          last->SetNextToDraw(cell);
           last->m_next->m_previous = last;
 
           last = last->GetNext();

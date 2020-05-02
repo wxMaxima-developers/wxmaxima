@@ -797,7 +797,7 @@ class Cell
     drawn as a single 2D object or the nominator, the cell containing the "/" and 
     the denominator are pointed to by GetNextToDraw() as single separate objects.
    */
-  virtual Cell *GetNextToDraw() const {return m_nextToDraw;}
+  virtual Cell *GetNextToDraw() const = 0;
   
   /*! The previous cell in the list of cells
     
@@ -805,27 +805,14 @@ class Cell
     m_nextToDraw and m_next
    */
   Cell *m_previous;
-  /*! The next cell to draw
-    
-    For cells that are drawn as an atomic construct this pointer points 
-    to the cell that follows this one just like m_next would.
-    
-    In the case that a cell is broken into two or more lines the cell
-    itself won't be drawn, but will be handled as a list of individual
-    elements that can be drawn on individual lines, if needed.
+  /*! Tells this cell which one should be the next cell to be drawn
 
-    In the example of a SqrtCell if the SqrtCell isn't broken into lines
-    m_nextToDraw will point to the cell following the SqrtCell. If the
-    SqrtCell is broken into lines the list made up by m_nextToDraw 
-    will point to the sqrtCell, then to a cell containing the word "sqrt", 
-    then one that represents the opening and closing parenthesis 
-    (that will again be followed by a list containing the "(", the 
-    contents and the ")" of the parenthesis as individual elements) 
-    and then the cell that follows the SqrtCell. 
+    If the cell is displayed as 2d object this sets the pointer to the next cell.
 
-    See also m_next.
+    If the cell is broken into lines this sets the pointer of the last of the 
+    list of cells this cell is displayed as.
    */
-  Cell *m_nextToDraw;
+  virtual void SetNextToDraw(Cell *next) = 0;
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     

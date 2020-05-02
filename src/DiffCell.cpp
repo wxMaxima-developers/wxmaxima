@@ -35,11 +35,13 @@ DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_diffCell(std::make_shared<TextCell>(parent, config, cellPointers))
 {
+  m_nextToDraw = NULL;
 }
 
 DiffCell::DiffCell(const DiffCell &cell):
  DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_diffCell)
     SetDiff(cell.m_diffCell->CopyList());
@@ -202,4 +204,9 @@ wxString DiffCell::ToXML()
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+}
+
+void DiffCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

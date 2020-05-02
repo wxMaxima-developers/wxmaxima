@@ -219,7 +219,6 @@ public:
 
   // Get the next cell in the list.
   virtual GroupCell *GetNext() const override {if (m_next != NULL) return dynamic_cast<GroupCell *>(m_next); else return NULL;}
-  virtual GroupCell *GetNextToDraw() const override {if (m_nextToDraw != NULL) return dynamic_cast<GroupCell *>(m_nextToDraw); else return NULL;}
 
   static wxString TexEscapeOutputCell(wxString Input);
 
@@ -429,7 +428,11 @@ public:
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
-  
+
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
@@ -524,6 +527,7 @@ protected:
   Cell *m_lastInOutput;
   static wxString m_lookalikeChars;
 private:
+  Cell *m_nextToDraw;
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;
   wxRect m_outputRect;

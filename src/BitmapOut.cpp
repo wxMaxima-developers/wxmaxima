@@ -203,7 +203,7 @@ void BitmapOut::BreakLines()
       else
         currentWidth += (tmp->GetWidth());
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }
 
@@ -233,7 +233,7 @@ void BitmapOut::GetMaxPoint(int *width, int *height) const
         *width = wxMax(currentWidth, *width);
       }
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }
 
@@ -282,7 +282,7 @@ void BitmapOut::Draw()
           drop = tmp->m_next->GetMaxDrop();
         }
       }
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->GetNextToDraw();
     }
   }
   // Update the bitmap's size information.
@@ -359,6 +359,6 @@ void BitmapOut::BreakUpCells()
         tmp->RecalculateHeight(tmp->IsMath() ? mfontsize : fontsize);
       }
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }

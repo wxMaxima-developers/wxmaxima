@@ -67,7 +67,6 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
   m_fontsize_old = m_clientWidth_old = -1;
   m_next = NULL;
   m_previous = NULL;
-  m_nextToDraw = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
@@ -273,13 +272,18 @@ void Cell::AppendCell(Cell *p_next)
   LastInList->m_next = p_next;
   LastInList->m_next->m_previous = LastInList;
 
+  wxASSERT(LastInList != NULL);
+  
+  if(LastInList == NULL)
+    return;
+  
   // Search the last cell in the list that is sorted by the drawing order
   Cell *LastToDraw = LastInList;
-  while (LastToDraw->m_nextToDraw != NULL)
-    LastToDraw = LastToDraw->m_nextToDraw;
+  while (LastToDraw->GetNextToDraw() != NULL)
+    LastToDraw = LastToDraw->GetNextToDraw();
 
   // Append p_next to this list.
-  LastToDraw->m_nextToDraw = p_next;
+  LastToDraw->SetNextToDraw(p_next);
 }
 
 Cell *Cell::GetGroup()
@@ -303,7 +307,7 @@ int Cell::GetCenterList()
         break;
       if(!tmp->m_isBrokenIntoLines)
         m_maxCenter = wxMax(m_maxCenter, tmp->m_center);
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->GetNextToDraw();
     }
   }
   return m_maxCenter;
@@ -337,7 +341,7 @@ int Cell::GetMaxDrop()
         break;
       if(!tmp->m_isBrokenIntoLines)
         m_maxDrop = wxMax(m_maxDrop, tmp->m_height - tmp->m_center);
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->GetNextToDraw();
     }
   }
   return m_maxDrop;
@@ -388,7 +392,7 @@ int Cell::GetLineWidth()
       if (width > m_lineWidth)
         m_lineWidth = width;
 
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->GetNextToDraw();
       if(tmp != NULL)
       {
         if(tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
@@ -446,8 +450,8 @@ void Cell::DrawList(wxPoint point)
   {
     tmp->Draw(point);
     point.x += tmp->m_width;
-    wxASSERT(tmp != tmp->m_nextToDraw);
-    tmp = tmp->m_nextToDraw;
+    wxASSERT(tmp != tmp->GetNextToDraw());
+    tmp = tmp->GetNextToDraw();
   }
 }
 
@@ -459,7 +463,7 @@ void Cell::RecalculateList(int fontsize)
   {
     tmp->RecalculateWidths(fontsize);
     tmp->RecalculateHeight(fontsize);
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }
 
@@ -634,7 +638,7 @@ wxString Cell::VariablesAndFunctionsList()
       (tmp->GetStyle() == TS_VARIABLE) ||
       (tmp->GetStyle() == TS_FUNCTION))
       retval += tmp->ToString() + " ";      
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
   return retval;
 }
@@ -669,7 +673,7 @@ wxString Cell::ListToString()
     retval += tmp->ToString();
 
     firstline = false;
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
   return retval;
 }
@@ -709,7 +713,7 @@ wxString Cell::ListToMatlab()
 	  retval += tmp->ToMatlab();
 
 	  firstline = false;
-	  tmp = tmp->m_nextToDraw;
+	  tmp = tmp->GetNextToDraw();
 	}
 
 	return retval;
@@ -1093,8 +1097,8 @@ void Cell::SelectFirst(const wxRect &rect, Cell **first)
 {
   if (rect.Intersects(GetRect(false)))
     *first = this;
-  else if (m_nextToDraw != NULL)
-    m_nextToDraw->SelectFirst(rect, first);
+  else if (GetNextToDraw() != NULL)
+    GetNextToDraw()->SelectFirst(rect, first);
   else
     *first = NULL;
 }
@@ -1106,8 +1110,8 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
 {
   if (rect.Intersects(GetRect(false)))
     *last = this;
-  if (m_nextToDraw != NULL)
-    m_nextToDraw->SelectLast(rect, last);
+  if (GetNextToDraw() != NULL)
+    GetNextToDraw()->SelectLast(rect, last);
 }
 
 /***
@@ -1197,7 +1201,7 @@ void Cell::Unbreak()
     ResetData();
 
   m_isBrokenIntoLines = false;
-  m_nextToDraw = m_next;
+  SetNextToDraw(m_next);
 
   // Unbreak the inner cells, too
   for (auto &cell : GetInnerCells())

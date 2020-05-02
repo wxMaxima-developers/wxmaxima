@@ -180,6 +180,12 @@ public:
         return m_images[m_displayed]->GnuplotData();
     }
 
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
+private:
+    Cell *m_nextToDraw;
 protected:
   std::shared_ptr<wxTimer> m_timer;
   /*! The framerate of this cell.

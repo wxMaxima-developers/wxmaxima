@@ -90,6 +90,13 @@ public:
 
   void RoundedParens(bool rounded)
   { m_roundedParens = rounded;}
+
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
+private:
+    Cell *m_nextToDraw;
 protected:
   unsigned int m_matWidth;
   bool m_roundedParens;

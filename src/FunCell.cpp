@@ -34,6 +34,7 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_nameCell(new TextCell(parent, config, cellPointers)),
   m_argCell(new TextCell(parent, config, cellPointers))
 {
+  m_nextToDraw = NULL;
   m_nameCell_Last = m_nameCell.get();
   if(m_nameCell_Last)
     while(m_nameCell_Last->m_next)
@@ -48,6 +49,7 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 FunCell::FunCell(const FunCell &cell):
  FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_nameCell)
     SetName(cell.m_nameCell->CopyList());
@@ -213,12 +215,20 @@ bool FunCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_nameCell_Last->m_nextToDraw = m_argCell.get();
-    m_argCell_Last->m_nextToDraw = m_nextToDraw;
+    m_nameCell_Last->SetNextToDraw(m_argCell.get());
+    m_argCell_Last->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_nameCell.get();
     m_width = 0;
     ResetData();    
     return true;
   }
   return false;
+}
+
+void FunCell::SetNextToDraw(Cell *next)
+{
+  if(m_isBrokenIntoLines)
+    m_argCell_Last->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

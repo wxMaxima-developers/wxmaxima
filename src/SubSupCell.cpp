@@ -36,11 +36,13 @@
 
 SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) : Cell(parent, config, cellPointers)
 {
+  m_nextToDraw = NULL;
 }
 
 SubSupCell::SubSupCell(const SubSupCell &cell):
  SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
@@ -491,4 +493,9 @@ wxString SubSupCell::ToXML()
     retval += "</ie>";
   }
   return retval;
+}
+
+void SubSupCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

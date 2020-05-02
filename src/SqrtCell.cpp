@@ -37,6 +37,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_open(std::make_shared<TextCell>(parent, config, cellPointers, "sqrt(")),
   m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
+  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_signSize = 50;
   m_signWidth = 18;
@@ -57,6 +58,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 SqrtCell::SqrtCell(const SqrtCell &cell):
  SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
@@ -357,11 +359,11 @@ bool SqrtCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->m_nextToDraw = m_innerCell.get();
+    m_open->SetNextToDraw(m_innerCell.get());
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell inside a square root!"));
     if (m_last != NULL)
-      m_last->m_nextToDraw = m_close.get();
-    m_close->m_nextToDraw = m_nextToDraw;
+      m_last->SetNextToDraw(m_close.get());
+    m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open.get();
 
     ResetData();
@@ -370,4 +372,12 @@ bool SqrtCell::BreakUp()
     return true;
   }
   return false;
+}
+
+void SqrtCell::SetNextToDraw(Cell *next)
+{
+  if(m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

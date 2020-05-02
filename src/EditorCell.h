@@ -565,6 +565,10 @@ public:
   //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
   MaximaTokenizer::TokenList GetTokens() const {return m_tokens;}
 
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
 protected:
   void FontsChanged() override
     {
@@ -573,6 +577,7 @@ protected:
       m_widths.clear();
     }
 private:
+  Cell *m_nextToDraw;
   //! Determines the size of a text snippet
   wxSize GetTextSize(wxString const &text);
   //! Mark this cell as "Automatically answer questions".

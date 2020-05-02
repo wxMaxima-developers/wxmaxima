@@ -141,7 +141,11 @@ protected:
   double m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
+  void SetNextToDraw(Cell *next) override;
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
 private:
+  Cell *m_nextToDraw;
   class SizeHash_internals
   {
   public:

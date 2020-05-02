@@ -44,6 +44,7 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_fontStyle(wxFONTSTYLE_NORMAL),
   m_fontWeight(wxFONTWEIGHT_NORMAL)
 {
+  m_nextToDraw = NULL;
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 
@@ -273,6 +274,7 @@ wxString EditorCell::PrependNBSP(wxString input)
 EditorCell::EditorCell(const EditorCell &cell):
   EditorCell(cell.m_group, cell.m_configuration, cell.m_cellPointers, cell.m_text)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
 }
 
@@ -4277,3 +4279,8 @@ wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role)
 }
 
 #endif
+
+void EditorCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
+}

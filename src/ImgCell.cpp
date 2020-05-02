@@ -42,6 +42,7 @@
 
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers) : Cell(parent, config, cellpointers)
 {
+  m_nextToDraw = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
@@ -52,6 +53,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   Cell(parent, config, cellPointers),
   m_image(new Image(m_configuration, image, type))
 {
+  m_nextToDraw = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
@@ -63,6 +65,7 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_image(new Image(m_configuration, bitmap))
 
 {
+  m_nextToDraw = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
@@ -75,6 +78,7 @@ int ImgCell::s_counter = 0;
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : Cell(parent, config, cellPointers)
 {
+  m_nextToDraw = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
@@ -98,6 +102,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 ImgCell::ImgCell(const ImgCell &cell):
  ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;
@@ -374,4 +379,9 @@ bool ImgCell::CopyToClipboard()
     return res;
   }
   return false;
+}
+
+void ImgCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

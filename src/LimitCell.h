@@ -72,6 +72,12 @@ public:
 
   bool BreakUp() override;
 
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
+private:
+    Cell *m_nextToDraw;
 protected:
   std::shared_ptr<Cell> m_name;
   std::shared_ptr<Cell> m_open;

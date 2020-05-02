@@ -89,6 +89,12 @@ public:
 
   wxString ToXML() override;
 
+  void SetNextToDraw(Cell *next) override;
+
+  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+
+private:
+    Cell *m_nextToDraw;
 protected:
    /*! How to create a big parenthesis sign?
    */

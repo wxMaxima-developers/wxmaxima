@@ -38,6 +38,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")")),
   m_exp(std::make_shared<TextCell>(parent, config, cellPointers, "^"))
 {
+  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_exp->SetStyle(TS_FUNCTION);
@@ -51,6 +52,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 ExptCell::ExptCell(const ExptCell &cell):
   ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
@@ -273,13 +275,13 @@ bool ExptCell::BreakUp()
     m_isBrokenIntoLines = true;
     wxASSERT_MSG(m_base_last != NULL, _("Bug: No last cell in the base of an exptCell!"));
     if (m_base_last != NULL)
-      m_base_last->m_nextToDraw = m_exp.get();
-    m_exp->m_nextToDraw = m_open.get();
-    m_open->m_nextToDraw = m_exptCell.get();
+      m_base_last->SetNextToDraw(m_exp.get());
+    m_exp->SetNextToDraw(m_open.get());
+    m_open->SetNextToDraw(m_exptCell.get());
     wxASSERT_MSG(m_expt_last != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
     if (m_expt_last != NULL)
-      m_expt_last->m_nextToDraw = m_close.get();
-    m_close->m_nextToDraw = m_nextToDraw;
+      m_expt_last->SetNextToDraw(m_close.get());
+    m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_baseCell.get();
     m_height = 1;
     m_center = 1;
@@ -287,4 +289,9 @@ bool ExptCell::BreakUp()
     return true;
   }
   return false;
+}
+
+void ExptCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

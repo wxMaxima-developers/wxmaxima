@@ -34,6 +34,7 @@
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
                    wxString text, TextStyle style) : Cell(parent, config, cellPointers)
 {
+  m_nextToDraw = NULL;
   switch(m_textStyle = style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
@@ -350,6 +351,7 @@ TextCell::TextCell(const TextCell &cell):
   m_userDefinedLabel(cell.m_userDefinedLabel),
   m_displayedText(cell.m_displayedText)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
@@ -1966,6 +1968,10 @@ wxString TextCell::GetSymbolTeX() const
   return wxEmptyString;
 }
 
+void TextCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
+}
 
 // RegExes all TextCells share.
 wxRegEx TextCell::m_unescapeRegEx(wxT("\\\\(.)"));

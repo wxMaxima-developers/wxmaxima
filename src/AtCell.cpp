@@ -34,11 +34,13 @@ AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers)
   m_baseCell (std::make_shared<TextCell>(parent, config, cellPointers)),
   m_indexCell(std::make_shared<TextCell>(parent, config, cellPointers))
 {
+  m_nextToDraw = NULL;
 }
 
 AtCell::AtCell(const AtCell &cell):
  AtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
@@ -172,4 +174,9 @@ wxString AtCell::ToXML()
   
   return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
          m_indexCell->ListToXML() + wxT("</r></at>");
+}
+
+void AtCell::SetNextToDraw(Cell *next)
+{
+  m_nextToDraw = next;
 }

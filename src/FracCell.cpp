@@ -38,6 +38,7 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_denomParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
   m_divide(std::make_shared<TextCell>(parent, config, cellPointers, "/"))
 {
+  m_nextToDraw = NULL;
   m_divide->SetStyle(TS_VARIABLE);
   m_num_Last = NULL;
   m_denom_Last = NULL;
@@ -51,6 +52,7 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 FracCell::FracCell(const FracCell &cell):
  FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
+  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_num)
     SetNum(cell.m_num->CopyList());
@@ -416,15 +418,27 @@ bool FracCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
+    if((m_num != NULL) && (m_num->m_next != NULL))
+      m_displayedNum = m_numParenthesis;
+    if((m_denom != NULL) && (m_denom->m_next != NULL))
+      m_displayedDenom = m_denomParenthesis;
     wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in a numerator!"));
     if (m_num_Last != NULL)
-      m_num_Last->m_nextToDraw = m_divide.get();
-    m_divide->m_nextToDraw = m_displayedDenom.get();
-    m_denom_Last->m_nextToDraw = m_nextToDraw;
+      m_displayedNum->SetNextToDraw(m_divide.get());
+    m_divide->SetNextToDraw(m_displayedDenom.get());
+    m_displayedDenom->SetNextToDraw(m_nextToDraw);
     wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in a denominator!"));
     m_nextToDraw = m_displayedNum.get();
     ResetData();    
     return true;
   }
   return false;
+}
+
+void FracCell::SetNextToDraw(Cell *next)
+{
+  if(m_isBrokenIntoLines)
+    m_denomParenthesis->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }
