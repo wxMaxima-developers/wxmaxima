@@ -5395,7 +5395,6 @@ bool wxMaxima::AutoSave()
     return true;
   
   bool savedWas = m_worksheet->IsSaved();
-  bool saved;
   wxString oldTempFile = m_tempfileName;
   m_tempfileName = wxStandardPaths::Get().GetTempDir()+
     wxString::Format("/untitled_%li_%li.wxmx",
@@ -5405,7 +5404,7 @@ bool wxMaxima::AutoSave()
   if (m_worksheet->m_configuration->AutoSaveAsTempFile() ||
       m_worksheet->m_currentFile.IsEmpty())
   {
-    saved = m_worksheet->ExportToWXMX(m_tempfileName);
+    bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
 
     wxLogMessage(wxString::Format(_("Autosaving as temp file %s"), m_tempfileName.utf8_str()));
     if((m_tempfileName != oldTempFile) && saved)
