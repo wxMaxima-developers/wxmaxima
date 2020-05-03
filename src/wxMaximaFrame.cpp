@@ -62,7 +62,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // everything.
   wxWindowUpdateLocker noUpdates(this);
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[27];
+  wxAcceleratorEntry entries[37];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
@@ -92,7 +92,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[24].Set(wxACCEL_CTRL, wxT('c'), wxID_COPY);
   entries[25].Set(wxACCEL_CTRL, wxT('x'), wxID_CUT);
   entries[26].Set(wxACCEL_CTRL, wxT('v'), wxID_PASTE);
-  wxAcceleratorTable accel(27, entries);
+  entries[27].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('b'), menu_show_toolbar);
+  entries[28].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('m'), menu_pane_math);
+  entries[29].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('s'), menu_pane_stats);
+  entries[30].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('g'), menu_pane_greek);
+  entries[31].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('u'), menu_pane_unicode);
+  entries[32].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('i'), menu_pane_history);
+  entries[33].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('t'), menu_pane_structure);
+  entries[34].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('c'), menu_pane_format);
+  entries[35].Set(wxACCEL_ALT | wxACCEL_CTRL, wxT('h'), ToolBar::tb_hideCode);
+  entries[36].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('-'), menu_pane_hideall);
+  wxAcceleratorTable accel(37, entries);
   SetAcceleratorTable(accel);
     
   // We need to create one pane which doesn't do a lot before the log pane
