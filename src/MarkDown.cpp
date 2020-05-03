@@ -1,6 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2015-2018  Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2020  Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -52,6 +53,74 @@ struct MarkDownParser::ElementPack
   wxString newLine;           //!< The marker for the beginning of a new line
 };
 
+// Indentation level type
+enum class LVL {
+  NONE,
+  BULLET,
+  QUOTE,
+  TEXT
+};
+
+class MarkDownParser::IndentManager
+{
+  struct Level
+  {
+    ssize_t level = -1;
+    LVL type = LVL::NONE;
+    Level() = default;
+    Level(ssize_t level, LVL type) : level(level), type(type) {}
+  };
+  std::vector<Level> m_levels{Level{}};
+  bool m_lastOpWasDown = false;
+  const MarkDownParser::ElementPack &m_e;
+  wxString &m_result;
+
+public:
+  IndentManager(const MarkDownParser::ElementPack &ep, wxString &result) :
+      m_e(ep), m_result(result) {}
+  ~IndentManager() { CloseAll(); }
+  LVL LastType() const { return m_levels.back().type; }
+  void CloseAll() { SetLevel(-1, LVL::NONE); }
+  void SetLevel(ssize_t level, LVL type)
+  {
+    wxASSERT(level >= 0 || type == LVL::NONE);
+    while (level < m_levels.back().level)
+    {
+      // Close out levels above current one
+      auto &last = m_levels.back();
+      if (last.type == LVL::BULLET)
+        m_result << m_e.itemizeEndItem << m_e.itemizeEnd;
+      else if (last.type == LVL::QUOTE)
+        m_result << m_e.quoteEnd;
+      m_levels.pop_back();
+      m_lastOpWasDown = true;
+    }
+    auto &last = m_levels.back();
+    if (level > last.level)
+    {
+      if (type == LVL::BULLET)
+      {
+        if (last.type != LVL::QUOTE)
+          m_result << m_e.itemizeBegin << m_e.itemizeItem;
+        else
+          type = LVL::TEXT;  // Bullet lists are not recognized in a quotation.
+      }
+      else if (type == LVL::QUOTE)
+        m_result << m_e.quoteBegin;
+      m_levels.emplace_back(level, type);
+    }
+    else
+    {
+      wxASSERT(level == last.level);
+      if (type == LVL::BULLET)
+        m_result << m_e.itemizeEndItem << m_e.itemizeItem;
+      else if (type == LVL::TEXT && !m_lastOpWasDown)
+        m_result << m_e.newLine;
+    }
+    m_lastOpWasDown = false;
+  }
+};
+
 wxString MarkDownParser::MarkDown(wxString str)
 {
   static wxString bulletSpace{wxT("* ")};
@@ -61,18 +130,10 @@ wxString MarkDownParser::MarkDown(wxString str)
   // according symbols
   DoReplacementsOn(str);
 
-  // The result of this action
+  // MarkDown parsed into the desired format
   wxString result;
 
-  // The list of indentation levels for bullet lists we found
-  // so far
-  struct Indent
-  {
-    ssize_t level;
-    char type;
-    Indent (ssize_t level, wxChar type) : level(level), type(type) {}
-  };
-  std::vector<Indent> indentations;
+  MarkDownParser::IndentManager indents(m_e, result);
 
   wxString::const_iterator const strEnd = str.end();
   wxString::const_iterator nextLine = str.begin();
@@ -86,145 +147,34 @@ wxString MarkDownParser::MarkDown(wxString str)
     nextLine = (lineEnd == strEnd) ? lineEnd : std::next(lineEnd);
     auto const lineStart = line;
 
-    // Skip opening whitespace
+    // Skip opening whitespace, skip the line if if it has only whitespace
     line = AdvanceTrim(line, lineEnd);
-    ssize_t const level = std::distance(lineStart, line);
-
-    // Skip the line if it had nothing but whitespace
     if (line == lineEnd)
       continue;
 
-    // Let's see if the line is the start of a bullet list item?
-    if ((indentations.empty() || indentations.back().type == '*')
-        && AdvanceOverOne(line, lineEnd, bulletSpace))
-    {
-      // The line is the start of a bullet list item; we skipped the start marker now.
+    // Compute the level of the line's indentation
+    ssize_t const level = std::distance(lineStart, line);
 
-      // Skip leading and trailing whitespace
-      line = AdvanceTrim(line, RetractTrim(line, lineEnd));
-
-      // Let's see if this is the first item in the list
-      // or if we switched to a higher indentation level
-      if (indentations.empty() || level > indentations.back().level)
-      {
-        // This is the first item on this level => Start the itemization.
-        result += m_e.itemizeBegin;
-        indentations.emplace_back(level, '*');
-      }
-      // Are we at the same level?
-      else if (level == indentations.back().level)
-      {
-        // End the previous item before we start a new one on the same level.
-        result += m_e.itemizeEndItem;
-      }
-      // Or did we switch to a lower indentation level?
-      else if (level < indentations.back().level)
-      {
-        while (!indentations.empty() && (level < indentations.back().level))
-        {
-          result += m_e.itemizeEndItem;
-          result += m_e.itemizeEnd;
-          indentations.pop_back();
-        }
-        result += m_e.itemizeEndItem;
-      }
-
-      // Add a new item marker.
-      result += m_e.itemizeItem;
-
-      // Add the item itself
-      // Discard whitespace at the end of the item
-      result.append(line, RetractTrim(line, lineEnd)) += wxT(' ');
-    }
+    if (AdvanceOverOne(line, lineEnd, bulletSpace))
+      indents.SetLevel(level, LVL::BULLET);
     else if (AdvanceOverOne(line, lineEnd, quoteSpace))
-    {
-      // We are part of a quotation; we skipped the quote start marker.
-
-      // Skip leading and trailing whitespace
-      line = AdvanceTrim(line, RetractTrim(line, lineEnd));
-
-      // Let's see if this is the first item in the list,
-      // or if we are on a new indentation level?
-      if (indentations.empty() || level > indentations.back().level)
-      {
-        // This is the first item => Start the itemization.
-        result += m_e.quoteBegin;
-        indentations.emplace_back(level, '>');
-      }
-      else
-      {
-        // We are inside a bullet list
-
-        // End lists if we are at an old indentation level.
-        // cppcheck-suppress knownConditionTrueFalse
-        while (!indentations.empty() && (level < indentations.back().level))
-       {
-          if (indentations.back().type == '*')
-          {
-            result += m_e.itemizeEndItem;
-            result += m_e.itemizeEnd;
-          }
-          else
-            result += m_e.quoteEnd;
-          indentations.pop_back();
-        }
-      }
-      result.append(line, RetractTrim(line, lineEnd)) += wxT(' ');
-    }
+      indents.SetLevel(level, LVL::QUOTE);
     else
-    {
-      // Ordinary text.
-      //
-      // If we are at a old indentation level we need to end some lists
-      // and add a new item if we still are inside a list.
-      if (!indentations.empty())
-      {
-        // Add the text to the output.
-        if((result != wxEmptyString) &&
-           (!result.EndsWith(m_e.itemizeEndItem)) &&
-           (!result.EndsWith(m_e.itemizeEnd)) &&
-           (!result.EndsWith(m_e.quoteEnd))
-          )
-          result += m_e.newLine;
-        if (indentations.back().level > level)
-        {
-          while ((!indentations.empty()) &&
-                 (indentations.back().level > level))
-          {
-            if (indentations.back().type == '*')
-            {
-              result += m_e.itemizeEndItem;
-              result += m_e.itemizeEnd;
-            }
-            else
-              result += m_e.quoteEnd;
+      indents.SetLevel(level, LVL::TEXT);
 
-            indentations.pop_back();
-          }
-        }
-      }
-      result.append(line, RetractTrim(line, lineEnd));
-    }
+    // Skip leading and trailing whitespace
+    line = AdvanceTrim(line, RetractTrim(line, lineEnd));
+    result.append(line, RetractTrim(line, lineEnd));
+    if (indents.LastType() != LVL::TEXT)
+      result += wxT(' ');
   }
 
-  // Close all item lists
-  while (!indentations.empty())
-  {
-    if (indentations.back().type == wxT('*'))
-    {
-      result += m_e.itemizeEndItem;
-      result += m_e.itemizeEnd;
-    }
-    else
-      result += m_e.quoteEnd;
-    indentations.pop_back();
-  }
   return result;
 }
 
-struct TeXElementPack : public MarkDownParser::ElementPack
+struct MarkDownTeX::ElementPack : public MarkDownParser::ElementPack
 {
-  TeXElementPack()
+  ElementPack()
   {
     quoteBegin = wxT("\\begin{quote}\n");
     quoteEnd = wxT("\\end{quote}\n");
@@ -236,16 +186,16 @@ struct TeXElementPack : public MarkDownParser::ElementPack
     newLine = wxT("\n\n");
   }
 };
-static const TeXElementPack texElementPack;
+const MarkDownTeX::ElementPack MarkDownTeX::elementPack;
 
 MarkDownTeX::MarkDownTeX(Configuration *configuration) :
-    MarkDownParser(configuration, texElementPack)
+    MarkDownParser(configuration, elementPack)
 {
 }
 
-struct HTMLElementPack : public MarkDownParser::ElementPack
+struct MarkDownHTML::ElementPack : public MarkDownParser::ElementPack
 {
-  HTMLElementPack()
+  ElementPack()
   {
     quoteBegin =  wxT("<blockquote>\n");
     quoteEnd =  wxT("</blockquote>\n");
@@ -257,11 +207,11 @@ struct HTMLElementPack : public MarkDownParser::ElementPack
     newLine =  wxT("<br/>");
   }
 };
-static const HTMLElementPack htmlElementPack;
+const MarkDownHTML::ElementPack MarkDownHTML::elementPack;
 
 
 MarkDownHTML::MarkDownHTML(Configuration *configuration) :
-    MarkDownParser(configuration, htmlElementPack)
+    MarkDownParser(configuration, elementPack)
 {
 }
 

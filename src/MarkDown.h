@@ -36,12 +36,13 @@
  */
 class MarkDownParser
 {
+  class IndentManager;
 public:
-  struct ElementPack;
   virtual ~MarkDownParser();  
   wxString MarkDown(wxString str);
 
 protected:
+  struct ElementPack;
   Configuration *m_configuration;
   const ElementPack &m_e;
 
@@ -52,6 +53,8 @@ protected:
 //! A markdown parser for TeX
 class MarkDownTeX : public MarkDownParser
 {
+  struct ElementPack;
+  static const ElementPack elementPack;
 public:
   explicit MarkDownTeX(Configuration *cfg);
   void DoReplacementsOn(wxString &str) override;
@@ -60,6 +63,8 @@ public:
 //! A markdown parser for HTML
 class MarkDownHTML : public MarkDownParser
 {
+  struct ElementPack;
+  static const ElementPack elementPack;
 public:
   explicit MarkDownHTML(Configuration *cfg);
   void DoReplacementsOn(wxString &str) override;
