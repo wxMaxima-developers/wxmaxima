@@ -220,7 +220,7 @@ void Emfout::BreakLines()
       else
         currentWidth += (tmp->GetWidth());
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }
 
@@ -254,7 +254,7 @@ void Emfout::GetMaxPoint(int *width, int *height)
       }
       bigSkip = tmp->m_bigSkip;
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }
 
@@ -301,7 +301,7 @@ void Emfout::Draw()
           drop = tmp->m_next->GetMaxDrop();
         }
       }
-      tmp = tmp->m_nextToDraw;
+      tmp = tmp->GetNextToDraw();
     }
   }
 }
@@ -377,7 +377,7 @@ void Emfout::BreakUpCells()
         tmp->RecalculateHeight(tmp->IsMath() ? mfontsize : fontsize);
       }
     }
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->GetNextToDraw();
   }
 }
 #endif // wxUSE_ENH_METAFILE
