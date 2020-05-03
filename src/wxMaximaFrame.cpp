@@ -102,7 +102,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[34].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('c'), menu_pane_format);
   entries[35].Set(wxACCEL_ALT | wxACCEL_CTRL, wxT('h'), ToolBar::tb_hideCode);
   entries[36].Set(wxACCEL_ALT | wxACCEL_SHIFT, wxT('-'), menu_pane_hideall);
-  wxAcceleratorTable accel(37, entries);
+  wxAcceleratorTable accel(sizeof(entries)/sizeof(entries[0]), entries);
   SetAcceleratorTable(accel);
     
   // We need to create one pane which doesn't do a lot before the log pane
