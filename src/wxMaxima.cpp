@@ -1706,7 +1706,7 @@ void wxMaxima::OnMaximaConnect()
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
     
-  m_client = std::shared_ptr<wxSocketBase>(m_server->Accept(false));
+  m_client.reset(m_server->Accept(false));
   if(!m_client)
   {
     wxLogMessage(_("Connection attempt, but connection failed."));
@@ -1721,7 +1721,7 @@ void wxMaxima::OnMaximaConnect()
   else
   {
     wxLogMessage(_("Connected."));
-    m_clientStream = std::make_shared<wxSocketInputStream>(*m_client);
+    m_clientStream.reset(new wxSocketInputStream(*m_client));
     m_clientTextStream.reset(new wxTextInputStream(*m_clientStream, wxT('\t'), wxConvUTF8));
     m_client->SetEventHandler(*GetEventHandler());
     m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
