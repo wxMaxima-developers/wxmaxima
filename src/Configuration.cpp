@@ -332,7 +332,7 @@ void Configuration::SetBackgroundBrush(wxBrush brush)
 
 bool Configuration::MaximaFound(wxString location)
 {
-  if(location == wxEmptyString)
+  if(location.IsEmpty())
     return false;
   
   bool maximaFound = false;
@@ -869,7 +869,7 @@ wxString Configuration::GetFontName(long type) const
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
       type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
     retval = m_styles[type].FontName();
-  if(retval == wxEmptyString)
+  if(retval.IsEmpty())
     retval = m_fontName;
   
   if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
@@ -894,7 +894,7 @@ wxString Configuration::MaximaDefaultLocation()
 void Configuration::ReadStyles(wxString file)
 {
   wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
+  if (file.IsEmpty())
     config = wxConfig::Get();
   else
   {
@@ -967,7 +967,7 @@ void Configuration::ReadStyles(wxString file)
 void Configuration::WriteStyles(wxString file)
 {
   wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
+  if (file.IsEmpty())
     config = wxConfig::Get();
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);

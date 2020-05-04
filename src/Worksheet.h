@@ -777,7 +777,7 @@ public:
 
     Does convert the not equal sign to a '#' and similar.
    */
-  wxString UnicodeToMaxima(wxString s);
+  wxString UnicodeToMaxima(const wxString &s);
 
   //! Scroll to the start of the worksheet.
   void ScrollToStart()
@@ -1486,8 +1486,19 @@ public:
   bool QuestionPending()
   { return m_questionPrompt; }
   //!@}
+
+  //! Parses a single node line out of the wxm file
+  wxString Worksheet::GetNodeLineFromWXMCode(
+    const wxChar *startMarker, const wxChar *endMarker,
+    wxArrayString::const_iterator &wxmLine, wxArrayString::const_iterator const wxmEnd);
+
+  //! Converts a single wxm lines into cells
+  GroupCell *CreateNodeFromWXMCode(const wxChar *startMarker, const wxChar *endMarker,
+    wxArrayString::const_iterator &wxmLine, const wxArrayString::const_iterator wxmEnd,
+    GroupType type, bool &hide, wxString *lineOut);
+
   //! Converts a wxm description into individual cells
-  GroupCell *CreateTreeFromWXMCode(wxArrayString wxmLines);
+  GroupCell *CreateTreeFromWXMCode(const wxArrayString &wxmLines);
 
   /*! Does maxima wait for the answer of a question?
 

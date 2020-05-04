@@ -146,7 +146,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
       token.Trim(false);
       if (!token.IsEmpty())
         m_commands.emplace_back(token, index);
-      token.Clear();
+      token << Empty();
       continue;
     }
 

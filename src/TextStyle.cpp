@@ -48,7 +48,7 @@ void Style::Read(wxConfigBase *config, wxString where)
   config->Read(where + wxT("Style/Text/fontname"),
 	       &m_fontName);
 #ifdef __WXOSX_MAC__
-  if(m_fontName == wxEmptyString) m_fontName = "Monaco";
+  if(m_fontName.IsEmpty()) m_fontName = "Monaco";
 #endif
   auto req = wxFontInfo()
                .Family(wxFONTFAMILY_MODERN)

@@ -108,7 +108,7 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 wxString History::GetCommand(bool next)
 {
   if (commands.GetCount() == 0)
-    return wxEmptyString;
+    return {};
 
   else if (next)
   {

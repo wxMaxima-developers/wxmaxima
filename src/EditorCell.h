@@ -35,6 +35,8 @@
   This file contains the definition of the class EditorCell
  */
 
+struct RowCol { int row = 0; int col = 0; };
+
 /*! This class defines what the user sees as input cell
   
   This class handles input cells including:
@@ -97,19 +99,19 @@ private:
 public:
   //! The constructor
   EditorCell(Cell *parent, Configuration **config,
-             CellPointers *cellPointers, wxString text = wxEmptyString);
+             CellPointers *cellPointers, wxString text = {});
   EditorCell(const EditorCell &cell);
   Cell *Copy() override {return new EditorCell(*this);}
   ~EditorCell();
 
   //! Insert the symbol that corresponds to the ESC command txt
-  void InsertEscCommand(wxString txt){InsertText(InterpretEscapeString(txt));}
+  void InsertEscCommand(const wxString &txt){InsertText(InterpretEscapeString(txt));}
 
   //! Get the whole maxima command that is currently under the cursor (including all arguments)
-  wxString GetFullCommandUnderCursor();
+  wxString GetFullCommandUnderCursor() const;
 
   //! Add a new parameter to a draw- or similar command including the comma, if needed.
-  void AddDrawParameter(wxString param);
+  void AddDrawParameter(const wxString &param);
 
   //! May this Editor Cell contain the answer to a question?
   void AutoAnswer(bool autoAnswer){m_autoAnswer = autoAnswer;}
@@ -209,11 +211,8 @@ public:
   */
   static wxString TabExpand(wxString input, long posInLine);
 
-  //! Escape all chars that cannot be used in HTML otherwise
-  static wxString EscapeHTMLChars(wxString input);
-
   //! Convert all but the first of a row of multiple spaces to non-breakable
-  static wxString PrependNBSP(wxString input);
+  static wxString PrependNBSP(const wxString &input);
 
   //! Recalculate the widths of the current cell.
   void RecalculateWidths(int fontsize) override;
@@ -306,10 +305,16 @@ public:
   bool AddEnding() override;
 
   //! Determines which line and column the pos'th char is at.
-  void PositionToXY(int position, unsigned int *x, unsigned int *y);
+  RowCol PositionToXY(int position) const;
+
+  //! Determines which line and column the pos'th char is at.
+  void PositionToXY(int position, unsigned int *x, unsigned int *y) const;
 
   //! Determines which index the char at the position "x chars left, y chars down" is at.
-  int XYToPosition(int x, int y);
+  int XYToPosition(RowCol xy) const;
+
+  //! Determines which index the char at the position "x chars left, y chars down" is at.
+  int XYToPosition(int x, int y) const;
 
   //! The screen coordinates of the cursor
   wxPoint PositionToPoint(int fontsize, int pos = -1) override;
@@ -640,23 +645,15 @@ private:
       m_width = -1;
     }
 
-    void SetWidth(int width){m_width = width;}
-    void ResetSize(){SetWidth(-1);}
+    void SetWidth(int width) {m_width = width;}
+    void ResetSize() {SetWidth(-1);}
     int GetWidth() const {return m_width;}
     bool SizeKnown() const {return GetWidth() >= 0;}
     //! Returns the piece of text
-    wxString GetText() const
-    {
-      return m_text;
-    }
-
-
+    const wxString &GetText() const {return m_text;}
   
     //! Changes the piece of text kept in this token
-    void SetText(wxString text)
-    {
-      m_text = text;
-    }
+    void SetText(const wxString &text) {m_text = text;}
     
     //! Changes the indentation level of this token
     void SetIndentation(int indentPixels, wxString indentString = wxEmptyString)
@@ -705,7 +702,7 @@ private:
     \todo We should provide an alternative function that allows to resume the calculation
     for the next word/line - which would provide an additional speedup.
    */
-  int GetIndentDepth(wxString text, int positionOfCaret);
+  int GetIndentDepth(const wxString &text, int positionOfCaret);
 
   /*! Handle ESC shortcuts for special characters
 
@@ -713,7 +710,7 @@ private:
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */
-  wxString InterpretEscapeString(wxString txt) const;
+  wxString InterpretEscapeString(const wxString &txt) const;
 
   wxString m_text;
   wxArrayString m_textHistory;

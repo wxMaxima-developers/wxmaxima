@@ -240,7 +240,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
     AppendRows();
   else
     for(int i = 0; i < GetNumberRows() - 1; i++)
-      if(GetCellValue(i,0) == wxEmptyString)
+      if(GetCellValue(i,0).IsEmpty())
         DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(VarReadEvent);
@@ -404,7 +404,7 @@ bool Variablespane::IsValidVariable(wxString var)
       return false;
   }
 
-  if(var == wxEmptyString)
+  if(var.IsEmpty())
     return false;
   if((var[0] >= '0') && (var[0] <= '9'))
     return false;    

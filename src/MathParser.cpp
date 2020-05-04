@@ -919,7 +919,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
           // Backwards compatibility to 17.04/17.12:
           // If we cannot find the user-defined label's text but still know that there
           // is one it's value has been saved as "automatic label" instead.
-          if(user_lbl == wxEmptyString)
+          if(user_lbl.IsEmpty())
           {
             user_lbl = dynamic_cast<TextCell *>(tmp)->GetValue();
             user_lbl = user_lbl.substr(1,user_lbl.Length() - 2);

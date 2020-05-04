@@ -55,7 +55,7 @@ public:
   wxString GnuplotSource() const override
     {
       if(m_image == NULL)
-        return wxEmptyString;
+        return {};
       else
         return m_image->GnuplotSource();
     }
@@ -63,7 +63,7 @@ public:
   wxString GnuplotData() const override
     {
       if(m_image == NULL)
-        return wxEmptyString;
+        return {};
       else
         return m_image->GnuplotData();
     }
@@ -108,7 +108,7 @@ public:
 
   //! Returns the file name extension that matches the image type
   wxString GetExtension() const
-  { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
+  { if (m_image)return m_image->GetExtension(); else return {}; }
 
   //! Returns the original compressed version of the image
   wxMemoryBuffer GetCompressedImage() const

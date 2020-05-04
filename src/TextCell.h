@@ -37,7 +37,7 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
+  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
   Cell *Copy() override {return new TextCell(*this);}
   //! This class can be derived from wxAccessible which has no copy constructor
@@ -53,7 +53,7 @@ public:
   void SetValue(const wxString &text) override;
 
   //! Set the automatic label maxima has assigned the current equation
-  void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
+  void SetUserDefinedLabel(const wxString &userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
 
   void RecalculateWidths(int fontsize) override;
 
@@ -102,7 +102,7 @@ public:
   virtual void SetType(CellType type) override;
 
 protected:
-  wxSize GetTextSize(wxString const &text);
+  wxSize GetTextSize(const wxString &text);
   void SetAltText();
 
   void FontsChanged() override

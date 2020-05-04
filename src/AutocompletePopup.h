@@ -66,7 +66,7 @@ class AutocompletePopup : public wxListView, public wxComboPopup
     {
       if ( m_value >= 0 )
         return wxListView::GetItemText(m_value);
-      return wxEmptyString;
+      return {};
     }
 protected:
   int m_value; // current item index

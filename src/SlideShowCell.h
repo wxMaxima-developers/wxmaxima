@@ -168,14 +168,14 @@ public:
   wxString GnuplotSource() const override
     {
       if(m_images[m_displayed] == NULL)
-        return wxEmptyString;
+        return {};
       else
         return m_images[m_displayed]->GnuplotSource();
     }
   wxString GnuplotData() const override
     {
       if(m_images[m_displayed] == NULL)
-        return wxEmptyString;
+        return {};
       else
         return m_images[m_displayed]->GnuplotData();
     }

@@ -44,7 +44,7 @@
 class MaximaTokenizer
 {
 public:
-  MaximaTokenizer(wxString commands, Configuration *configuration);
+  MaximaTokenizer(const wxString &commands, Configuration *configuration);
 
   class Token
   {

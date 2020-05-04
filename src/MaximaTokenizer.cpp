@@ -31,7 +31,7 @@
 #include <wx/string.h>
 #include <vector>
 
-MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
+MaximaTokenizer::MaximaTokenizer(const wxString &commands, Configuration *configuration)
 {  
   // ----------------------------------------------------------------
   // --------------------- Step one:                -----------------

@@ -144,7 +144,7 @@ void FunCell::Draw(wxPoint point)
 wxString FunCell::ToString()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
   return m_nameCell->ListToString() + m_argCell->ListToString();
@@ -153,7 +153,7 @@ wxString FunCell::ToString()
 wxString FunCell::ToMatlab()
 {
   if (m_isBrokenIntoLines)
-	return wxEmptyString;
+	return {};
   if (m_altCopyText != wxEmptyString)
 	return m_altCopyText + Cell::ListToMatlab();
   wxString s = m_nameCell->ListToMatlab() + m_argCell->ListToMatlab();
@@ -163,7 +163,7 @@ wxString FunCell::ToMatlab()
 wxString FunCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
 
   wxString s;
 
@@ -188,7 +188,7 @@ wxString FunCell::ToTeX()
 wxString FunCell::ToXML()
 {
 //  if (m_isBrokenIntoLines)
-//    return wxEmptyString;
+//    return {};
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
@@ -199,7 +199,7 @@ wxString FunCell::ToXML()
 wxString FunCell::ToMathML()
 {
 //  if (m_isBrokenIntoLines)
-//    return wxEmptyString;
+//    return {};
   return wxT("<mrow>") + m_nameCell->ListToMathML() +
          wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
 }

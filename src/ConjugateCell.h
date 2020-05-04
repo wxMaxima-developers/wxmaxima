@@ -72,7 +72,7 @@ protected:
   std::shared_ptr<Cell> m_innerCell;
   std::shared_ptr<Cell> m_open;
   std::shared_ptr<Cell> m_close;
-  Cell *m_last;
+  Cell *m_last = {};
 
   void RecalculateHeight(int fontsize) override;
 

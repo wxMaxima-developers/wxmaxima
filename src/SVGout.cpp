@@ -46,7 +46,7 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale) :
   m_svgFormat = wxDataFormat(wxT("image/svg+xml"));
 
   m_filename = filename;
-  if (m_filename == wxEmptyString)
+  if (m_filename.IsEmpty())
     m_filename = wxFileName::CreateTempFileName(wxStandardPaths::Get().GetTempDir ()+wxT("/wxmaxima_"));
   {
     wxFileName name(m_filename);

@@ -1512,7 +1512,7 @@ void wxMaximaFrame::ReReadConfig()
     wxDELETE(config);
     config = NULL;
     
-    if (Configuration::m_configfileLocation_override == wxEmptyString)
+    if (Configuration::m_configfileLocation_override.IsEmpty())
     {
       wxLogMessage(_("Re-Reading the config from the default location."));
       wxConfig::Set(new wxConfig(wxT("wxMaxima")));

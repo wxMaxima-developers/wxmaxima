@@ -311,7 +311,7 @@ void SqrtCell::Draw(wxPoint point)
 wxString SqrtCell::ToString()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
   else
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
 }
@@ -319,7 +319,7 @@ wxString SqrtCell::ToString()
 wxString SqrtCell::ToMatlab()
 {
   if (m_isBrokenIntoLines)
-	return wxEmptyString;
+	return {};
   else
 	return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
 }
@@ -327,7 +327,7 @@ wxString SqrtCell::ToMatlab()
 wxString SqrtCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
   else
     return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
 }
@@ -346,7 +346,7 @@ wxString SqrtCell::ToOMML()
 wxString SqrtCell::ToXML()
 {
 //  if (m_isBrokenIntoLines)
-//    return wxEmptyString;
+//    return {};
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");

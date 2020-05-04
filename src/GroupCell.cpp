@@ -1468,7 +1468,7 @@ wxString GroupCell::ToRTF()
 wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxASSERT_MSG((imgCounter != NULL), _(wxT("Bug: No image counter to write to!")));
-  if (imgCounter == NULL) return wxEmptyString;
+  if (imgCounter == NULL) return {};
   wxString str;
   switch (m_groupType)
   {
@@ -1650,7 +1650,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter)
 {
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
-  if (imgCounter == NULL) return wxEmptyString;
+  if (imgCounter == NULL) return {};
 
   wxString str;
 
@@ -1661,7 +1661,7 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
     wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
     if (!wxDirExists(imgDir))
       if (!wxMkdir(imgDir))
-        return wxEmptyString;
+        return {};
 
     // Do we want to output LaTeX animations?
     bool AnimateLaTeX = true;

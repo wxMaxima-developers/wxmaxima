@@ -691,8 +691,8 @@ public:
 
   /*! Could a maxima binary be found in the path we expect it to be in?
 
-    \param location The location to search for maxima in. 
-    If location == wxEmptyString the default location from the configuration 
+    \param location The location to search for maxima in.
+    If location.IsEmpty() the default location from the configuration
     is taken.
    */
   static bool MaximaFound(wxString location = wxEmptyString);

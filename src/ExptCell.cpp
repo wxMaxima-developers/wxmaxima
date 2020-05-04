@@ -194,7 +194,7 @@ wxString ExptCell::ToString()
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
   wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
     s += wxT("^");
@@ -210,7 +210,7 @@ wxString ExptCell::ToMatlab()
   if (m_altCopyText != wxEmptyString)
 	return m_altCopyText;
   if (m_isBrokenIntoLines)
-	return wxEmptyString;
+	return {};
   wxString s = m_baseCell->ListToMatlab() + wxT("^");
   if (m_isMatrix)
 	s += wxT("^");
@@ -224,7 +224,7 @@ wxString ExptCell::ToMatlab()
 wxString ExptCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
                m_exptCell->ListToTeX() + wxT("}}");
   return s;
@@ -259,7 +259,7 @@ wxString ExptCell::ToOMML()
 wxString ExptCell::ToXML()
 {
 //  if (m_isBrokenIntoLines)
-//    return wxEmptyString;
+//    return {};
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");

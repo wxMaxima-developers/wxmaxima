@@ -145,7 +145,7 @@ wxString MatWiz::GetValue()
       else
       {
         wxString entry = m_inputs[i * m_width + j]->GetValue();
-        if (entry == wxEmptyString)
+        if (entry.IsEmpty())
           entry = wxT("0");
         cmd += entry;
       }

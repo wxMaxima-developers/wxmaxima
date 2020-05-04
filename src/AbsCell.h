@@ -101,7 +101,7 @@ protected:
   //! The cell containing the closing parenthesis
   std::shared_ptr<Cell> m_close;
   //! The last element of m_innerCell
-  Cell *m_last;
+  Cell *m_last = {};
 };
 
 #endif // ABSCELL_H

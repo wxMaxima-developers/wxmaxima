@@ -394,7 +394,7 @@ wxString SumCell::ToXML()
 
   if (m_sumStyle == SM_PROD)
     type = wxT("prod");
-  else if (m_over->ListToString() == wxEmptyString)
+  else if (m_over->ListToString().IsEmpty())
     type = wxT("lsum");
 
 

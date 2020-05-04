@@ -80,15 +80,15 @@ void ActualValuesStorageWiz::OnValueChange(wxGridEvent &event)
     else
     {
       if((event.GetRow()>0) &&
-         (m_grid->GetCellValue(event.GetRow()-1,0) == wxEmptyString) &&
-         (m_grid->GetCellValue(event.GetRow()-1,1) == wxEmptyString))
+         (m_grid->GetCellValue(event.GetRow()-1,0).IsEmpty()) &&
+         (m_grid->GetCellValue(event.GetRow()-1,1).IsEmpty()))
         m_grid->DeleteRows(event.GetRow()-1);
     }
   }
   else
   {
-    if((m_grid->GetCellValue(event.GetRow(),0) == wxEmptyString) &&
-       (m_grid->GetCellValue(event.GetRow(),1) == wxEmptyString))
+    if((m_grid->GetCellValue(event.GetRow(),0).IsEmpty()) &&
+       (m_grid->GetCellValue(event.GetRow(),1).IsEmpty()))
       m_grid->DeleteRows(event.GetRow());
   }
 }

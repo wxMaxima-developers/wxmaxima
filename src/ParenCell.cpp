@@ -508,7 +508,7 @@ wxString ParenCell::ToMathML()
 wxString ParenCell::ToXML()
 {
 //  if( m_isBrokenIntoLines )
-//    return wxEmptyString;
+//    return {};
   wxString s = m_innerCell->ListToXML();
   wxString flags;
   if (m_forceBreakLine)

@@ -47,7 +47,7 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
   m_emfFormat = wxDataFormat(wxT("image/x-emf"));
 
   m_filename = filename;
-  if (m_filename == wxEmptyString)
+  if (m_filename.IsEmpty())
     m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
 
   m_dc = NULL;

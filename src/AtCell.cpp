@@ -131,49 +131,41 @@ void AtCell::Draw(wxPoint point)
 
 wxString AtCell::ToString()
 {
-  wxString s = wxT("at(");
-  s += m_baseCell->ListToString();
-  s += wxT(",") + m_indexCell->ListToString() + wxT(")");
-  return s;
+  static const wxString format{wxT("at(%s,%s)")};
+  return wxString::Format(format, m_baseCell->ListToString(), m_indexCell->ListToString());
 }
 
 wxString AtCell::ToMatlab()
 {
-  wxString s = wxT("at(");
-  s += m_baseCell->ListToMatlab();
-  s += wxT(",") + m_indexCell->ListToMatlab() + wxT(")");
-  return s;
+  static const wxString format{wxT("at(%s,%s)")};
+  return wxString::Format(m_baseCell->ListToMatlab(), m_indexCell->ListToMatlab());
 }
 
 wxString AtCell::ToTeX()
 {
-  wxString s = wxT("\\left. ");
-  s += m_baseCell->ListToTeX();
-  s += wxT("\\right|_{") + m_indexCell->ListToTeX() + wxT("}");
-  return s;
+  static const wxString format{wxT("\\left. %s\\right|_{%s}")};
+  return wxString::Format(m_baseCell->ListToTeX(), m_indexCell->ListToTeX());
 }
 
 wxString AtCell::ToMathML()
 {
-  return wxT("<msub>") + m_baseCell->ListToMathML() +
-         m_indexCell->ListToMathML() + wxT("</msub>\n");
+  static const wxString format{wxT("<msub>%s%s</msub>\n")};
+  return wxString::Format(m_baseCell->ListToMathML(), m_indexCell->ListToMathML());
 }
 
 wxString AtCell::ToOMML()
 {
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
-         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+  static const wxString format{wxT("<m:sSub><m:e>%s</m:e><m:sub>%s</m:sub></m:sSub>\n")};
+  return wxString::Format(format, m_baseCell->ListToOMML(), m_indexCell->ListToOMML());
 }
-
 
 wxString AtCell::ToXML()
 {
-  wxString flags;
-  if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
-  
-  return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
-         m_indexCell->ListToXML() + wxT("</r></at>");
+  static const wxString breaklineFlags{wxT(" breakline=\"true\"")};
+  static const wxString format{wxT("<at%s><r>%s</r><r>%s</r></at>")};
+  return wxString::Format(format,
+                          m_forceBreakLine ? breaklineFlags : wxString{},
+                          m_baseCell->ListToXML(), m_indexCell->ListToXML());
 }
 
 void AtCell::SetNextToDraw(Cell *next)

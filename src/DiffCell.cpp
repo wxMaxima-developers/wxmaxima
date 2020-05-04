@@ -132,78 +132,76 @@ void DiffCell::Draw(wxPoint point)
 wxString DiffCell::ToString()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
+    return {};
+  static const wxString format{wxT("'diff(%s%s)")};
   Cell *tmp = m_baseCell->m_next;
-  wxString s = wxT("'diff(");
-  if (tmp != NULL)
-    s += tmp->ListToString();
-  s += m_diffCell->ListToString();
-  s += wxT(")");
-  return s;
+  return wxString::Format(format,
+                          tmp ? tmp->ListToString() : wxString{},
+                          m_diffCell->ListToString());
 }
 
 wxString DiffCell::ToMatlab()
 {
   if (m_isBrokenIntoLines)
-	return wxEmptyString;
+	return {};
+  static const wxString format{wxT("'diff(%s%s)")};
   Cell *tmp = m_baseCell->m_next;
-  wxString s = wxT("'diff(");
-  if (tmp != NULL)
-	s += tmp->ListToMatlab();
-  s += m_diffCell->ListToMatlab();
-  s += wxT(")");
-  return s;
+  return wxString::Format(format,
+                          tmp ? tmp->ListToMatlab() : wxString{},
+                          m_diffCell->ListToMatlab());
 }
 
 wxString DiffCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
-  wxString diff = m_diffCell->ListToTeX();
-  wxString function = m_baseCell->ListToTeX();
+    return {};
 
+  // TODO: This is slow. The configuration should be cached.
   bool usePartialForDiff = false;
   wxConfig::Get()->Read(wxT("usePartialForDiff"), &usePartialForDiff);
+
+  wxString diff = m_diffCell->ListToTeX();
   if (usePartialForDiff)
     diff.Replace(wxT("\\frac{d}{d"), wxT("\\frac{\\partial}{\\partial"));
 
-  wxString s = diff + function;
-  return s;
+  static const wxString format{wxT("%s%s")};
+  return wxString::Format(format, diff, m_diffCell->ListToTeX());
 }
 
 wxString DiffCell::ToMathML()
 {
-  wxString retval;
-
-  retval = wxT("<mrow>") + m_diffCell->ListToMathML();
-  if (m_baseCell)
-    retval += m_baseCell->ListToMathML();
-  retval += wxT("</mrow>\n");
-  // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
-  // if(m_baseCell)
-  //   retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
-  // retval += wxT("</apply>");
-  return retval;
+#if 0
+  static const wxString format{wxT("<apply><diff/><ci>%s</ci>%s%s%s</apply>")};
+  static const wxString left{wxT("<ci>")};
+  static const wxString right{wxT("</ci>")};
+  return wxString::Format(format,
+                          m_diffCell->ListToMathML(),
+                          m_baseCell ? left : wxString{},
+                          m_baseCell ? m_baseCell->ListToMathML() : wxString{},
+                          m_baseCell ? right : wxString{});
+#endif
+  static const wxString format{wxT("<mrow>%s%s</mrow>\n")};
+  return wxString::Format(format,
+                          m_diffCell->ListToMathML(),
+                          m_baseCell ? m_baseCell->ListToMathML() : wxString{});
 }
 
 wxString DiffCell::ToOMML()
 {
-  wxString retval;
-
-  retval = m_diffCell->ListToOMML();
-  if (m_baseCell)
-    retval += m_baseCell->ListToOMML();
-
-  return retval;
+  static const wxString format(wxT("%s%s"));
+  return m_baseCell
+           ? wxString::Format(format, m_diffCell->ListToOMML(), m_baseCell->ListToOMML())
+           : m_diffCell->ListToOMML();
 }
 
 wxString DiffCell::ToXML()
 {
-  wxString flags;
-  if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
-
-  return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+  static const wxString breaklineFlags{wxT(" breakline=\"true\"")};
+  static const wxString format{wxT("<d%s>%s%s</d>")};
+  return wxString::Format(format,
+                          m_forceBreakLine ? breaklineFlags : wxString{},
+                          m_diffCell->ListToXML(),
+                          m_baseCell->ListToXML());
 }
 
 void DiffCell::SetNextToDraw(Cell *next)

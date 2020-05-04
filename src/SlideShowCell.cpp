@@ -536,7 +536,7 @@ wxString SlideShow::GetToolTip(const wxPoint &point)
       return m_toolTip;
   }
   else
-    return wxEmptyString;
+    return {};
 }
 
 wxSize SlideShow::ToGif(wxString file)

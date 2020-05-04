@@ -30,11 +30,13 @@
 
 #include "AbsCell.h"
 
+static const wxString absText{wxT("abs(")};
+static const wxString absParen{wxT(")")};
+
 AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_open(new TextCell(parent, config, cellPointers, wxT("abs("))),
-  m_close(new TextCell(parent, config, cellPointers, wxT(")"))),
-  m_last(NULL)
+  m_open(new TextCell(parent, config, cellPointers, absText)),
+  m_close(new TextCell(parent, config, cellPointers, absParen))
 {
   m_nextToDraw = NULL;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
@@ -55,9 +57,9 @@ AbsCell::AbsCell(const AbsCell &cell):
 
 AbsCell::~AbsCell()
 {
-  m_innerCell = NULL;
-  m_open = NULL;
-  m_close = NULL;
+  m_innerCell.reset();
+  m_open.reset();
+  m_close.reset();
   MarkAsDeleted();
 }
 
@@ -153,49 +155,51 @@ void AbsCell::Draw(wxPoint point)
 wxString AbsCell::ToString()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
-  wxString s;
-  s = wxT("abs(") + m_innerCell->ListToString() + wxT(")");
-  return s;
+    return {};
+  static const wxString format{wxT("abs(%s)")};
+  return wxString::Format(format, m_innerCell->ListToString());
 }
 
 wxString AbsCell::ToMatlab()
 {
   if (m_isBrokenIntoLines)
-	return wxEmptyString;
-  wxString s;
-  s = wxT("abs(") + m_innerCell->ListToMatlab() + wxT(")");
-  return s;
+    return {};
+  static const wxString format{wxT("abs(%s)")};
+  return wxString::Format(format, m_innerCell->ListToMatlab());
 }
 
 wxString AbsCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
-    return wxEmptyString;
-  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
+    return {};
+  static const wxString format{wxT("\\left| %s\\right| ")};
+  return wxString::Format(format, m_innerCell->ListToTeX());
 }
 
 wxString AbsCell::ToMathML()
 {
-  return wxT("<row><mo>|</mo>") +
-         m_innerCell->ListToMathML() +
-         wxT("<mo>|</mo></row>\n");
-//  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
+#if 0
+  static const wxString format{wxT("<apply><abs/><ci>%s</ci></apply>")};
+#endif
+  static const wxString format{wxT("<row><mo>|</mo>%s<mo>|</mo></row>\n")};
+  return wxString::Format(format, m_innerCell->ListToMathML());
 }
 
 wxString AbsCell::ToOMML()
 {
-  return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
-         m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
+  static const wxString format{
+    wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>%s</m:e></m:d>")
+  };
+  return wxString::Format(format, m_innerCell->ListToOMML());
 }
 
 wxString AbsCell::ToXML()
 {
-  wxString flags;
-  if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
-  
-  return wxT("<a") +flags + wxT(">") + m_innerCell->ListToXML() + wxT("</a>");
+  static const wxString breaklineFlags{wxT(" breakline=\"true\"")};
+  static const wxString format{wxT("<a%s>%s</a>")};
+  return wxString::Format(format,
+                          m_forceBreakLine ? breaklineFlags : wxString{},
+                          m_innerCell->ListToXML());
 }
 
 bool AbsCell::BreakUp()

@@ -135,7 +135,7 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
       return m_toolTip;
   }
   else
-    return wxEmptyString;
+    return {};
 }
 
 void ImgCell::RecalculateWidths(int fontsize)

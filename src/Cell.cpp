@@ -33,7 +33,7 @@
 wxString Cell::GetToolTip(const wxPoint &point)
 {
   if(!ContainsPoint(point))
-    return wxEmptyString;
+    return {};
 
   wxString toolTip;
   for (auto &cell : GetInnerCells())
@@ -622,7 +622,7 @@ bool Cell::IsOperator() const
  */
 wxString Cell::ToString()
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::VariablesAndFunctionsList()
@@ -680,7 +680,7 @@ wxString Cell::ListToString()
 
 wxString Cell::ToMatlab()
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ListToMatlab()
@@ -721,7 +721,7 @@ wxString Cell::ListToMatlab()
 
 wxString Cell::ToTeX()
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ListToTeX()
@@ -742,12 +742,12 @@ wxString Cell::ListToTeX()
 
 wxString Cell::ToXML()
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ToMathML()
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ListToMathML(bool startofline)
@@ -854,8 +854,8 @@ wxString Cell::OMML2RTF(wxXmlNode *node)
 
 wxString Cell::OMML2RTF(wxString ommltext)
 {
-  if (ommltext == wxEmptyString)
-    return wxEmptyString;
+  if (ommltext.IsEmpty())
+    return {};
 
   wxString result;
   wxXmlDocument ommldoc;
@@ -945,7 +945,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline))
     wxString token = tmp->ToOMML();
 
     // End exporting the equation if we reached the end of the equation.
-    if (token == wxEmptyString)
+    if (token.IsEmpty())
       break;
 
     retval += token;
@@ -1004,7 +1004,7 @@ wxString Cell::ListToRTF(bool startofline)
         while (tmp != NULL)
         {
           // A non-equation item starts a new rtf item
-          if (tmp->ToOMML() == wxEmptyString)
+          if (tmp->ToOMML().IsEmpty())
             break;
 
           // A newline starts a new equation
@@ -1070,7 +1070,7 @@ wxString Cell::ListToXML()
  */
 wxString Cell::GetDiffPart()
 {
-  return wxEmptyString;
+  return {};
 }
 
 /***

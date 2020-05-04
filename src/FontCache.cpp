@@ -20,13 +20,13 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "FontCache.h"
+#include <wx/hashmap.h>
 #include <wx/log.h>
 #include <functional>
-#include <string>
 
 FontCache::~FontCache()
 {
-  wxLogMessage("~FontCache: hits=%d misses=%d h:m ratio=%.2f",
+  wxLogDebug("~FontCache: hits=%d misses=%d h:m ratio=%.2f",
              m_hits, m_misses, double(m_hits)/m_misses);
 }
 
@@ -186,7 +186,7 @@ std::size_t hash<wxFontInfo>::operator()(const wxFontInfo &fi) const
   std::size_t h = 0;
   h = mixHash(h, fi.GetEncoding());
   h = mixHash(h, fi.GetFamily());
-  h = mixHash(h, std::string(fi.GetFaceName().mb_str()));
+  h = mixHash(h, wxStringHash()(fi.GetFaceName()));
   h = mixHash(h, fi.GetStyle());
 #if wxCHECK_VERSION(3, 1, 2)
   h = mixHash(h, fi.GetNumericWeight());

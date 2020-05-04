@@ -32,7 +32,7 @@
 #include "wx/config.h"
 
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
-                   wxString text, TextStyle style) : Cell(parent, config, cellPointers)
+                   const wxString &text, TextStyle style) : Cell(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
   switch(m_textStyle = style)
@@ -169,20 +169,10 @@ void TextCell::SetValue(const wxString &text)
     if (m_text == wxT("inf"))
       SetToolTip( wxT("-∞."));
 
-    if(m_text.StartsWith("%r"))
+    if (m_text.StartsWith("%r"))
     {
-      wxString number;
-
-      number = m_text.Right(m_text.Length()-2);
-
-      bool isrnum = (number != wxEmptyString);
-     
-      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
-        if(!wxIsdigit(*it))
-        {
-          isrnum = false;
-          break;
-        }
+      bool isrnum =
+        m_text.Length() > 2 && std::all_of(m_text.cbegin() + 2, m_text.cend(), wxIsdigit);
 
       if(isrnum)
         SetToolTip( _("A variable that can be assigned a number to.\n"
@@ -190,22 +180,12 @@ void TextCell::SetValue(const wxString &text)
     }
 
   
-    if(m_text.StartsWith("%i"))
+    if (m_text.StartsWith("%i"))
     {
-      wxString number;
+      bool isinum =
+        m_text.Length() > 2 && std::all_of(m_text.cbegin() + 2, m_text.cend(), wxIsdigit);
 
-      number = m_text.Right(m_text.Length()-2);
-
-      bool isinum = (number != wxEmptyString);
-     
-      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
-        if(!wxIsdigit(*it))
-        {
-          isinum = false;
-          break;
-        }
-      
-      if(isinum)
+      if (isinum)
         SetToolTip( _("An integration constant."));
     }
   }
@@ -500,16 +480,15 @@ void TextCell::RecalculateWidths(int fontsize)
       // they fit in
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        wxString text = m_text;
-        if(!m_altText.IsEmpty())
-          text = m_altText;
+        wxString text;
 
-        if(m_textStyle == TS_USERLABEL)
+        if (m_textStyle == TS_USERLABEL)
         {
-          text = wxT("(") + m_userDefinedLabel + wxT(")");
-          m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+          text = wxT('(') + m_userDefinedLabel + wxT(')');
+          m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
         }
-
+        else
+          text = m_altText.IsEmpty() ? m_text : m_altText;
 
         wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
       
@@ -517,7 +496,7 @@ void TextCell::RecalculateWidths(int fontsize)
         // We will decrease it before use
         m_fontSizeLabel = m_fontSize + 1;
         wxSize labelSize = GetTextSize(text);
-        wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
+        wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                      _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
 
         while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
@@ -607,7 +586,7 @@ void TextCell::Draw(wxPoint point)
             wxString text = m_userDefinedLabel;
             SetToolTip(m_text);
             m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-            dc->DrawText(wxT("(") + text + wxT(")"),
+            dc->DrawText(wxT('(') + text + wxT(')'),
                          point.x + MC_TEXT_PADDING,
                          point.y - m_realCenter + MC_TEXT_PADDING);
           }
@@ -813,36 +792,40 @@ wxString TextCell::ToString()
       // are quoted by a backslash: They cannot be quoted by quotation
       // marks since maxima would'nt allow strings here.
     {
-      wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
-      bool isOperator = true;
+      static const wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
+      bool isOperator = false;
       if(m_text.Length() > 1)
       {
-        for (size_t i = 0; i < m_text.Length(); i++)
-        {
-          if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
-          {
-            isOperator = false;
+        for (auto ch : m_text)
+          if (ch == wxT(' ') || charsNeedingQuotes.Find(ch) == wxNOT_FOUND)
             break;
-          }
-        }
+        isOperator = true;
       }
 
       if (!isOperator)
       {
-        wxString lastChar;
-        if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
+        std::basic_string<wxChar> newText;
+        auto prev = text.cbegin(), end = text.cend();
+        if ((m_dontEscapeOpeningParenthesis) && !text.IsEmpty() && (text[text.Length() - 1] == wxT('(')))
+          end --;
+
+        for (auto it = prev; it != end; it++)
         {
-          lastChar = text[text.Length() - 1];
-          text = text.Left(text.Length() - 1);
+          if (!charsNeedingQuotes.Find(*it))
+            continue;
+          std::copy(prev, it, std::back_inserter(newText));
+          newText.push_back(wxT('\\'));
+          prev = it;
         }
-        for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
-          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
-        text += lastChar;
+        if (!newText.empty() || text.end() != end)
+          std::copy(prev, text.cend(), std::back_inserter(newText));
+
+        if (!newText.empty()) text = newText;
       }
       break;
     }
     case TS_STRING:
-      text = wxT("\"") + text + wxT("\"");
+      text = wxT('"') + text + wxT('"');
       break;
 
       // Labels sometimes end with a few spaces. But if they are long they don't do
@@ -1360,8 +1343,8 @@ wxString TextCell::ToTeX()
 
 wxString TextCell::ToMathML()
 {
-  if(m_displayedText == wxEmptyString)
-    return wxEmptyString;
+  if(m_displayedText.IsEmpty())
+    return {};
   wxString text = XMLescape(m_displayedText);
 
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
@@ -1445,11 +1428,11 @@ wxString TextCell::ToOMML()
           ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->HardLineBreak())) &&
           (HardLineBreak())
           )
-    return wxEmptyString;
+    return {};
 
   // Labels are text-only.
   if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
-    return wxEmptyString;
+    return {};
 
   wxString text = XMLescape(m_displayedText);
 
@@ -1501,7 +1484,7 @@ wxString TextCell::ToOMML()
 
     case TS_LABEL:
     case TS_USERLABEL:
-      return wxEmptyString;
+      return {};
 
     case TS_STRING:
     default:
@@ -1517,7 +1500,7 @@ wxString TextCell::ToRTF()
   wxString retval;
   wxString text = m_displayedText;
 
-  if (m_displayedText == wxEmptyString)
+  if (m_displayedText.IsEmpty())
     return(wxT(" "));
   
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
@@ -1814,7 +1797,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent) const
       return wxString(wxT("\u03C0"));
   }
 
-  return wxEmptyString;
+  return {};
 }
 
 wxString TextCell::GetGreekStringTeX() const
@@ -1927,7 +1910,7 @@ wxString TextCell::GetGreekStringTeX() const
   else if (txt == wxT("%Omega"))
     return wxT("\u00CA");
 
-  return wxEmptyString;
+  return {};
 }
 
 wxString TextCell::GetSymbolTeX() const
@@ -1965,7 +1948,7 @@ wxString TextCell::GetSymbolTeX() const
     return wxT("\u00C8");
 */
 
-  return wxEmptyString;
+  return {};
 }
 
 void TextCell::SetNextToDraw(Cell *next)

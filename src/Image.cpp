@@ -593,7 +593,7 @@ wxString Image::GnuplotData()
         if(m_gnuplotData_Compressed.GetDataLen() <= 1)
         {
           wxLogMessage(_("No gnuplot data!"));
-          return wxEmptyString;
+          return {};
         }
         wxMemoryInputStream mstream(
           m_gnuplotData_Compressed.GetData(),
@@ -644,7 +644,7 @@ wxString Image::GnuplotSource()
         if(m_gnuplotSource_Compressed.GetDataLen() <= 1)
         {
           wxLogMessage(_("No gnuplot source!"));
-          return wxEmptyString;
+          return {};
         }
         wxMemoryInputStream mstream(
           m_gnuplotSource_Compressed.GetData(),
