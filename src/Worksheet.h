@@ -132,7 +132,7 @@ private:
   class MathMLDataObject : public wxCustomDataObject
   {
   public:
-    explicit MathMLDataObject(wxString data);
+    explicit MathMLDataObject(const wxString &data);
 
     MathMLDataObject();
 
@@ -406,7 +406,7 @@ private:
   };
 
   //! Add a line to a file.
-  void AddLineToFile(wxTextFile &output, wxString s);
+  void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
   Cell *CopySelection(bool asData = false);
@@ -638,7 +638,7 @@ public:
 
     This command will be ignored if the wxMaxima window is currently active
    */
-  void SetNotification(wxString message, int flags = wxICON_INFORMATION);
+  void SetNotification(const wxString &message, int flags = wxICON_INFORMATION);
 
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
@@ -1059,7 +1059,7 @@ public:
 
   void MergeCells();
   
-  void SetLastQuestion(wxString lastQuestion){m_lastQuestion = lastQuestion;}
+  void SetLastQuestion(const wxString &lastQuestion){m_lastQuestion = lastQuestion;}
   wxString GetLastQuestion(){return m_lastQuestion;}
 
   //! Add the currently selected cells to the clipboard and delete them.
@@ -1113,14 +1113,14 @@ public:
   //! Copy a rtf version of the current selection to the clipboard
   bool CopyRTF();
 
-  wxSize CopyToFile(wxString file);
+  wxSize CopyToFile(const wxString &file);
 
-  wxSize CopyToFile(wxString file, Cell *start, Cell *end, bool asData = false, int scale = 1);
+  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, int scale = 1);
 
   void CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::vector<int> &cellMap);
 
   //! Export the file to an html document
-  bool ExportToHTML(wxString file);
+  bool ExportToHTML(const wxString &file);
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
 
@@ -1130,14 +1130,14 @@ public:
   ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);
 
   //! Export the file to a text file maxima's load command can read
-  bool ExportToMAC(wxString file);
+  bool ExportToMAC(const wxString &file);
 
   /*! export to xml compatible file
     \param file The file name
     \param markAsSaved false means that this action doesn't clear the
                              worksheet's "modified" status.
   */
-  bool ExportToWXMX(wxString file, bool markAsSaved = true);
+  bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
   //! The start of a RTF document
   wxString RTFStart();
@@ -1146,7 +1146,7 @@ public:
   wxString RTFEnd();
 
   //! export to a LaTeX file
-  bool ExportToTeX(wxString file);
+  bool ExportToTeX(const wxString &file);
 
   /*! Convert the current selection to a string
     \param lb
@@ -1272,7 +1272,7 @@ public:
   GroupCell *GetHCaret();
 
   //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt = wxEmptyString)
+  void OpenHCaret(const wxString &txt = {})
     {
       if(m_mainToolBar == NULL)
         OpenHCaret(txt, GC_TYPE_CODE);
@@ -1281,7 +1281,7 @@ public:
     }
 
   //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt, GroupType type);
+  void OpenHCaret(const wxString &txt, GroupType type);
 
   //! Activates the horizontal cursor
   void ShowHCaret();
@@ -1413,25 +1413,25 @@ public:
     Used by the find dialog.
     \todo Keep a list of positions the last few letters were found at?
    */
-  bool FindIncremental(wxString str, bool down, bool ignoreCase);
+  bool FindIncremental(const wxString &str, bool down, bool ignoreCase);
 
   /*! Find the next occurrence of a string
 
     Used by the find dialog.
    */
-  bool FindNext(wxString str, bool down, bool ignoreCase, bool warn = true);
+  bool FindNext(const wxString &str, bool down, bool ignoreCase, bool warn = true);
 
   /*! Replace the current occurrence of a string
 
     Used by the find dialog.
    */
-  void Replace(wxString oldString, wxString newString, bool ignoreCase);
+  void Replace(const wxString &oldString, const wxString &newString, bool ignoreCase);
 
   /*! Replace all occurrences of a string
 
     Used by the find dialog.
    */
-  int ReplaceAll(wxString oldString, wxString newString, bool ignoreCase);
+  int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase);
 
   wxString GetInputAboveCaret();
 
@@ -1443,16 +1443,16 @@ public:
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
   //! Add a symbol to the autocompletion list
-  void AddSymbol(wxString fun, AutoComplete::autoCompletionType type = AutoComplete::command)
+  void AddSymbol(const wxString &fun, AutoComplete::autoCompletionType type = AutoComplete::command)
   { m_autocomplete->AddSymbol(fun, type); }
 
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxString xml)
   { m_autocomplete->AddSymbols(xml); }
 
-  void SetActiveCellText(wxString text);
+  void SetActiveCellText(const wxString &text);
 
-  bool InsertText(wxString text);
+  bool InsertText(const wxString &text);
 
   void OpenNextOrCreateCell();
 

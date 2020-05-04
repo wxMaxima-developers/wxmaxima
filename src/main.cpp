@@ -337,8 +337,8 @@ bool MyApp::OnInit()
   {
     wxFileName FileName = file;
     FileName.MakeAbsolute();
-    wxString CanonicalFilename = FileName.GetFullPath();
-    NewWindow(wxString(CanonicalFilename), evalOnStartup, exitAfterEval);
+    wxString canonicalFilename = FileName.GetFullPath();
+    NewWindow(canonicalFilename, evalOnStartup, exitAfterEval);
     windowOpened = true;
   }
 
@@ -377,7 +377,7 @@ int MyApp::OnRun()
   return 0;
 }
 
-void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
+void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
 {
   int numberOfWindows = m_topLevelWindows.size();
 

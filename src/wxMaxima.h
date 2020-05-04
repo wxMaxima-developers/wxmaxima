@@ -83,7 +83,7 @@
 class MyAboutDialog : public wxDialog
 {
 public:
-  MyAboutDialog(wxWindow *parent, int id, const wxString title, wxString description);
+  MyAboutDialog(wxWindow *parent, int id, const wxString &title, const wxString &description);
 
   ~MyAboutDialog()
   {};
@@ -110,7 +110,7 @@ public:
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStdout = true;}
   static void ExitOnError(){m_exitOnError = true;}
-  static void ExtraMaximaArgs(wxString args){m_extraMaximaArgs = args;}
+  static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
 
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
@@ -155,7 +155,7 @@ public:
 
   void ShowTip(bool force);
 
-  void SetWXMdata(wxString data){m_initialWorkSheetContents = data;}
+  void SetWXMdata(const wxString &data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on statup?
   void EvalOnStartup(bool eval)
     {
@@ -177,8 +177,7 @@ public:
   void SendMaxima(wxString s, bool addToHistory = false);
 
   //! Open a file
-  bool OpenFile(wxString file,
-                wxString command = wxEmptyString);
+  bool OpenFile(const wxString &file, const wxString &command ={});
 
   //! Does this document need saving?
   bool DocumentSaved()
@@ -195,7 +194,7 @@ public:
   class VersionNumber
   {
   public:
-    explicit VersionNumber(wxString version);
+    explicit VersionNumber(const wxString &version);
     long Major() const {return m_major;}
     long Minor() const {return m_minor;}
     long Patchlevel() const {return m_patchlevel;}
@@ -300,23 +299,23 @@ protected:
   wxString GetMaximaHelpFile2();
 
   //! Show the help for maxima
-  void ShowMaximaHelp(wxString keyword = wxEmptyString);
+  void ShowMaximaHelp(wxString = {});
 
   //! Show the help for wxMaxima
   void ShowWxMaximaHelp();
   
   //! Show the maxima help in MSW's proprietary help format
-  void ShowCHMHelp(wxString helpfile, wxString keyword);
+  void ShowCHMHelp(const wxString &helpfile, const wxString &keyword);
   
   //! Try to determine if help is needed for maxima or wxMaxima and show this help
-  void ShowHelp(wxString keyword);
+  void ShowHelp(const wxString &keyword);
 
   /*! Launches the HTML help browser
 
     \param helpfile The name of the file the help browser has to be launched with
     \param keyword The keyword to show help for
   */
-  void ShowHTMLHelp(wxString helpfile, wxString keyword = wxEmptyString);
+  void ShowHTMLHelp(const wxString &helpfile, const wxString &keyword = {});
 
   void CheckForUpdates(bool reportUpToDate = false);
 
@@ -357,7 +356,7 @@ protected:
   bool InterpretDataFromMaxima();
   bool m_dataFromMaximaIs;
   
-  void MenuCommand(wxString cmd);                  //!< Inserts command cmd into the worksheet
+  void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
   void AlgebraMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
@@ -431,9 +430,9 @@ protected:
     NULL, if there is no such line (for example if the appended object is 
     maths instead).
    */
-  TextCell *ConsoleAppend(wxString s, CellType type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, CellType  type, 
-                       bool newLine = true, bool bigSkip = true, wxString userLabel = wxEmptyString);
+  TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
+  void DoConsoleAppend(wxString s, CellType  type,
+                       bool newLine = true, bool bigSkip = true, const wxString &userLabel = {});
 
   /*!Append one or more lines of ordinary unicode text to the console
 
@@ -476,7 +475,7 @@ protected:
 
   void UpdateDrawPane();
   
-  wxString ExtractFirstExpression(wxString entry);
+  wxString ExtractFirstExpression(const wxString &entry);
 
   wxString GetDefaultEntry();
   
@@ -520,7 +519,7 @@ protected:
   int GetMiscTextEnd(const wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
-  int FindTagEnd(wxString &data, const wxString &tag);
+  int FindTagEnd(const wxString &data, const wxString &tag);
 
   /*! Reads text that isn't enclosed between xml tags.
 
@@ -630,25 +629,25 @@ protected:
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */
-  bool OpenXML(wxString file, Worksheet *document);
+  bool OpenXML(const wxString &file, Worksheet *document);
 
   //! Complains if the version string from the XML file indicates too low a maxima version
-  bool CheckWXMXVersion(wxString docversion);
+  bool CheckWXMXVersion(const wxString &docversion);
 
   //! Reads the contents of a .mac or a .out file. Used by OpenMacFile
-  wxString ReadMacContents(wxString file);
+  wxString ReadMacContents(const wxString &file);
 
   //! Opens a .mac file or a .out file from Xmaxima
-  bool OpenMACFile(wxString file, Worksheet *document, bool clearDocument = true);
+  bool OpenMACFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxm file
-  bool OpenWXMFile(wxString file, Worksheet *document, bool clearDocument = true);
+  bool OpenWXMFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxmx file
-  bool OpenWXMXFile(wxString file, Worksheet *document, bool clearDocument = true);
+  bool OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Loads a wxmx description
-  GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
+  GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
 
   /*! Saves the current file
 
@@ -801,9 +800,7 @@ public:
     \param evalOnStartup Do we want to execute the file automatically, but halt on error?
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
-  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, int wxmLen = 0);
-
-  void NewTutorialWindow(wxString contents);
+  void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, int wxmLen = 0);
 
   static std::vector<wxMaxima *> m_topLevelWindows;
   static void DelistTopLevelWindow(wxMaxima *);

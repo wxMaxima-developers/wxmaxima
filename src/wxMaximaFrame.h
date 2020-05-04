@@ -518,7 +518,7 @@ public:
   void ShowPane(Event id, bool show = true);
 
   //! Adds a command to the list  of recently used maxima commands
-  void AddToHistory(wxString cmd)
+  void AddToHistory(const wxString &cmd)
   { m_history->AddToHistory(cmd); }
 
   enum ToolbarStatus
@@ -676,9 +676,9 @@ private:
       int m_dimensions;
     };
 public:
-  void LeftStatusText(wxString text, bool saveInLog = true)
+  void LeftStatusText(const wxString &text, bool saveInLog = true)
     {m_newLeftStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
-  void RightStatusText(wxString text, bool saveInLog = true)
+  void RightStatusText(const wxString &text, bool saveInLog = true)
     {m_newRightStatusText = true; m_rightStatusText = text; if(saveInLog)wxLogMessage(text);}
 protected:
   //! Do we have new text to output in the Right half of the Status Bar?

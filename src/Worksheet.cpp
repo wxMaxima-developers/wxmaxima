@@ -3112,7 +3112,7 @@ void Worksheet::OpenQuestionCaret(wxString txt)
   RequestRedraw();
 }
 
-void Worksheet::OpenHCaret(wxString txt, GroupType type)
+void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
 {
   CloseAutoCompletePopup();
 
@@ -4182,7 +4182,7 @@ void Worksheet::ClearNotification()
   }
 }
 
-void Worksheet::SetNotification(wxString message, int flags)
+void Worksheet::SetNotification(const wxString &message, int flags)
 {
   if(m_windowActive)
     return;
@@ -4664,7 +4664,7 @@ bool Worksheet::CopyRTF()
   return true;
 }
 
-wxSize Worksheet::CopyToFile(wxString file)
+wxSize Worksheet::CopyToFile(const wxString &file)
 {
 
   if (m_cellPointers.m_selectionStart != NULL &&
@@ -4690,7 +4690,7 @@ wxSize Worksheet::CopyToFile(wxString file)
   }
 }
 
-wxSize Worksheet::CopyToFile(wxString file, Cell *start, Cell *end,
+wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
                             bool asData, int scale)
 {
   Cell *tmp = CopySelection(start, end, asData);
@@ -4739,7 +4739,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData)
   return out;
 }
 
-void Worksheet::AddLineToFile(wxTextFile &output, wxString s)
+void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s)
 {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
@@ -4861,7 +4861,7 @@ void Worksheet::CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::v
 /***
  * Export content to a HTML file.
  */
-bool Worksheet::ExportToHTML(wxString file)
+bool Worksheet::ExportToHTML(const wxString &file)
 {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
@@ -6147,7 +6147,7 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
 
 /*! Export the file as TeX code
  */
-bool Worksheet::ExportToTeX(wxString file)
+bool Worksheet::ExportToTeX(const wxString &file)
 {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
@@ -6386,7 +6386,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
   }
 }
 
-bool Worksheet::ExportToMAC(wxString file)
+bool Worksheet::ExportToMAC(const wxString &file)
 {
   bool wasSaved = m_saved;
   
@@ -6476,7 +6476,7 @@ bool Worksheet::ExportToMAC(wxString file)
   since the last save. Then the original .wxmx file is replaced in a
   (hopefully) atomic operation.
 */
-bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
+bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
 {
   #ifdef OPENMP
   #if OPENMP_VER >= 201511
@@ -8217,7 +8217,7 @@ wxString Worksheet::GetOutputAboveCaret()
   return output;
 }
 
-bool Worksheet::FindIncremental(wxString str, bool down, bool ignoreCase)
+bool Worksheet::FindIncremental(const wxString &str, bool down, bool ignoreCase)
 {
   if (SearchStart() != NULL)
   {
@@ -8230,7 +8230,7 @@ bool Worksheet::FindIncremental(wxString str, bool down, bool ignoreCase)
     return true;
 }
 
-bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
+bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase, bool warn)
 {
   if (GetTree() == NULL)
     return false;
@@ -8413,7 +8413,7 @@ void Worksheet::ScrollToCaret()
   }
 }
 
-void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
+void Worksheet::Replace(const wxString &oldString, const wxString &newString, bool ignoreCase)
 {
   if (GetActiveCell() != NULL)
   {
@@ -8431,7 +8431,7 @@ void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
   }
 }
 
-int Worksheet::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
+int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase)
 {
   m_cellPointers.ResetSearchStart();
 
@@ -8720,7 +8720,7 @@ void Worksheet::OnComplete(wxCommandEvent &event)
 }
 
 
-void Worksheet::SetActiveCellText(wxString text)
+void Worksheet::SetActiveCellText(const wxString &text)
 {
   EditorCell *active = dynamic_cast<EditorCell *>(GetActiveCell());
   if (active != NULL)
@@ -8744,7 +8744,7 @@ void Worksheet::SetActiveCellText(wxString text)
     OpenHCaret(text);
 }
 
-bool Worksheet::InsertText(wxString text)
+bool Worksheet::InsertText(const wxString &text)
 {
   CloseAutoCompletePopup();
 
@@ -8825,7 +8825,7 @@ Worksheet::MathMLDataObject::MathMLDataObject() : wxCustomDataObject(m_mathmlFor
 {
 }
 
-Worksheet::MathMLDataObject::MathMLDataObject(wxString data) : wxCustomDataObject(m_mathmlFormat),
+Worksheet::MathMLDataObject::MathMLDataObject(const wxString &data) : wxCustomDataObject(m_mathmlFormat),
                                                                m_databuf(data.utf8_str())
 
 {
@@ -8922,11 +8922,9 @@ wxString Worksheet::RTFStart()
 
 wxString Worksheet::RTFEnd()
 {
-  wxString document;
   // Close the document
-  document += wxT("}\n}");
 
-  return document;
+  return wxT("}\n}");
 }
 
 void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
