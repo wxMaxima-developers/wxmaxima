@@ -87,25 +87,16 @@ public:
     while (level < m_levels.back().level)
     {
       // Close out levels above current one
-      auto &last = m_levels.back();
-      if (last.type == LVL::BULLET)
-        m_result << m_e.itemizeEndItem << m_e.itemizeEnd;
-      else if (last.type == LVL::QUOTE)
-        m_result << m_e.quoteEnd;
-      m_levels.pop_back();
+      if (CloseLevel(type))
+        m_levels.pop_back();
       m_lastOpWasDown = true;
     }
     auto &last = m_levels.back();
-    if (level > last.level)
+    if (level > last.level || type != last.type)
     {
       if (type == LVL::BULLET)
-      {
-        if (last.type != LVL::QUOTE)
-          m_result << m_e.itemizeBegin << m_e.itemizeItem;
-        else
-          type = LVL::TEXT;  // Bullet lists are not recognized in a quotation.
-      }
-      else if (type == LVL::QUOTE)
+        m_result << m_e.itemizeBegin << m_e.itemizeItem;
+      else if (type == LVL::QUOTE && last.type != LVL::QUOTE)
         m_result << m_e.quoteBegin;
       m_levels.emplace_back(level, type);
     }
@@ -118,6 +109,25 @@ public:
         m_result << m_e.newLine;
     }
     m_lastOpWasDown = false;
+  }
+  bool CloseLevel(LVL forType)
+  {
+    auto &last = m_levels.back();
+    if (last.type == LVL::BULLET)
+      m_result << m_e.itemizeEndItem << m_e.itemizeEnd;
+    else if (last.type == LVL::QUOTE && forType != LVL::QUOTE)
+      m_result << m_e.quoteEnd;
+    else
+      return false;
+    return true;
+  }
+  void OpenLevel(LVL type)
+  {
+    auto &last = m_levels.back();
+    if (type == LVL::BULLET)
+      m_result << m_e.itemizeBegin << m_e.itemizeItem;
+    else if (type == LVL::QUOTE && last.type != LVL::QUOTE)
+      m_result << m_e.quoteBegin;
   }
 };
 
