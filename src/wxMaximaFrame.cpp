@@ -44,6 +44,7 @@
 #include <wx/sysopt.h>
 #include "wxMaximaIcon.h"
 #include "Gen1Wiz.h"
+#include "StringUtils.h"
 #include "UnicodeSidebar.h"
 #include "CharButton.h"
 
@@ -154,7 +155,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     wxString::Format(_("Translations are read from %s."), Dirstructure::Get()->LocaleDir())
       );
 
-  if(Configuration::m_configfileLocation_override != wxEmptyString)
+  if (!Configuration::m_configfileLocation_override.IsEmpty())
     wxLogMessage(wxString::Format(_("Reading the config from %s."),
                                   Configuration::m_configfileLocation_override.utf8_str()));
   else
@@ -434,7 +435,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
-  if(perspective != wxEmptyString)
+  if (!perspective.IsEmpty())
   {
     // Loads the window states. We tell wxaui not to recalculate and display the
     // results of this step now as we will do so manually after
@@ -1439,7 +1440,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
     {
       wxFileName filename(recentDocuments.front());
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
-      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+      wxString label = wxString::Format("%s   [ %s ]", fullname, path);
       recentDocuments.pop_front();
 
       m_recentDocumentsMenu->Append(i, label);
@@ -1463,13 +1464,11 @@ void wxMaximaFrame::UpdateRecentDocuments()
       wxStructStat stat;
       wxStat(filename,&stat);
       wxDateTime modified(stat.st_mtime);
-      wxString label= filename + wxT(" (") +
-        modified.FormatDate() + wxT(" ") +
-        modified.FormatTime() + wxT(")");
+      wxString label = wxString::Format("%s (%s %s)",
+                                        filename, modified.FormatDate(), modified.FormatTime());
 
       if (!separatorAdded)
-        m_recentDocumentsMenu->Append(menu_recent_document_separator,
-                                      wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
+        m_recentDocumentsMenu->Append(menu_recent_document_separator, wxString(), wxString(), wxITEM_SEPARATOR);
       separatorAdded = true;
       m_recentDocumentsMenu->Append(i, label);
       unsavedDocuments.pop_front();
@@ -1483,11 +1482,9 @@ void wxMaximaFrame::UpdateRecentDocuments()
     {
       wxFileName filename = recentPackages.front();
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
-      wxString label;
-      if(path != wxEmptyString)
-        label = fullname + wxT("   [ ") + path + wxT(" ]");
-      else
-        label = fullname;
+      wxString label = fullname;
+      if (!path.IsEmpty())
+        label << liT("   [ ") << path << liT(" ]");
       recentPackages.pop_front();
 
       m_recentPackagesMenu->Append(i, label);
@@ -1503,7 +1500,7 @@ void wxMaximaFrame::ReReadConfig()
   // On MSW re-reading the config is only necessary if the config is read from
   // the registry
   #ifdef __WXMSW__
-  if (Configuration::m_configfileLocation_override != wxEmptyString)
+  if (!Configuration::m_configfileLocation_override.IsEmpty())
   #endif
   {
     // Delete the old config
@@ -1522,7 +1519,7 @@ void wxMaximaFrame::ReReadConfig()
       wxLogMessage(wxString::Format(_("Re-Reading the config from %s."),
                      Configuration::m_configfileLocation_override.utf8_str()));
       wxConfig::Set(new wxConfig(wxT("wxMaxima"),
-                                 wxEmptyString, Configuration::m_configfileLocation_override));
+                                 {}, Configuration::m_configfileLocation_override));
     }
   }
   #endif
@@ -1540,7 +1537,7 @@ void wxMaximaFrame::RegisterAutoSaveFile()
 
 void wxMaximaFrame::RemoveTempAutosavefile()
 {
-  if(m_tempfileName != wxEmptyString)
+  if (!m_tempfileName.IsEmpty())
   {
     // Don't delete the file if we have opened it and haven't saved it under a
     // different name yet.
@@ -1550,7 +1547,7 @@ void wxMaximaFrame::RemoveTempAutosavefile()
       wxRemoveFile(m_tempfileName);
     }
   }
-  m_tempfileName = wxEmptyString;
+  m_tempfileName.Clear();
 }
 
 bool wxMaximaFrame::IsPaneDisplayed(Event id)
@@ -2050,8 +2047,8 @@ void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event)
 void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 {
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
-  popupMenu->Append(menu_additionalSymbols, _("Add more symbols"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(enable_unicodePane, _("Show all unicode symbols"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(menu_additionalSymbols, _("Add more symbols"), wxString(), wxITEM_NORMAL);
+  popupMenu->Append(enable_unicodePane, _("Show all unicode symbols"), wxString(), wxITEM_NORMAL);
   PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
 }
 
