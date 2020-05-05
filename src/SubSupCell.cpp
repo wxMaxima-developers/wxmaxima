@@ -114,7 +114,6 @@ void SubSupCell::SetIndex(Cell *index)
   if (index == NULL)
     return;
   m_postSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(m_postSubCell);
 }
 
 void SubSupCell::SetBase(Cell *base)
@@ -122,7 +121,6 @@ void SubSupCell::SetBase(Cell *base)
   if (base == NULL)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
-  m_innerCellList.push_back(m_baseCell);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
@@ -274,18 +272,18 @@ wxString SubSupCell::ToString()
 
   wxString s;
   if (m_baseCell->IsCompound())
-    s += wxT("(") + m_baseCell->ListToString() + wxT(")");
+    s += "(" + m_baseCell->ListToString() + ")";
   else
     s += m_baseCell->ListToString();
   if(m_innerCellList.empty())
   {
-    s += wxT("[") + m_postSubCell->ListToString() + wxT("]");
-    s += wxT("^");
+    s += "[" + m_postSubCell->ListToString() + "]";
+    s += "^";
     if (m_postSupCell->IsCompound())
-      s += wxT("(");
+      s += "(";
     s += m_postSupCell->ListToString();
     if (m_postSupCell->IsCompound())
-      s += wxT(")");
+      s += ")";
   }
   else
   {
@@ -299,18 +297,18 @@ wxString SubSupCell::ToMatlab()
 {
   wxString s;
   if (m_baseCell->IsCompound())
-	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
+	s += "(" + m_baseCell->ListToMatlab() + ")";
   else
 	s += m_baseCell->ListToMatlab();
   if(m_innerCellList.empty())
   {
-    s += wxT("[") + m_postSubCell->ListToMatlab() + wxT("]");
-    s += wxT("^");
+    s += "[" + m_postSubCell->ListToMatlab() + "]";
+    s += "^";
     if (m_postSupCell->IsCompound())
-      s += wxT("(");
+      s += "(";
     s += m_postSupCell->ListToMatlab();
     if (m_postSupCell->IsCompound())
-      s += wxT(")");
+      s += ")";
   }
   else
   {
@@ -335,7 +333,7 @@ wxString SubSupCell::ToTeX()
 
   bool TeXExponentsAfterSubscript = false;
 
-  config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
+  config->Read("TeXExponentsAfterSubscript", &TeXExponentsAfterSubscript);
 
   wxString s;
 
@@ -343,7 +341,7 @@ wxString SubSupCell::ToTeX()
   {
     if (TeXExponentsAfterSubscript)
     {
-      s = wxT("{{{") + m_baseCell->ListToTeX() + "}";
+      s = "{{{" + m_baseCell->ListToTeX() + "}";
       if(m_postSubCell)
         s += "_{" + m_postSubCell->ListToTeX() + "}";
       s += "}";
@@ -353,7 +351,7 @@ wxString SubSupCell::ToTeX()
     }
     else
     {
-      s = wxT("{{") + m_baseCell->ListToTeX() + "}";
+      s = "{{" + m_baseCell->ListToTeX() + "}";
       if(m_postSubCell)
         s +="_{" + m_postSubCell->ListToTeX() + "}";
       if(m_postSupCell)
@@ -371,7 +369,7 @@ wxString SubSupCell::ToTeX()
       if(m_preSubCell)
         s += "^{" + m_preSubCell->ListToTeX() + "}";
     }
-    s += wxT("{") + m_baseCell->ListToTeX() + "}";
+    s += "{" + m_baseCell->ListToTeX() + "}";
     if(m_postSupCell)
       s += "^{" + m_postSupCell->ListToTeX() + "}";
     if(m_postSubCell)
@@ -385,7 +383,7 @@ wxString SubSupCell::ToMathML()
   wxString retval;
   if(m_innerCellList.empty())
   {
-    retval = wxT("<msubsup>") +
+    retval = "<msubsup>" +
       m_baseCell->ListToMathML();
     if(m_postSubCell)
       retval += m_postSubCell->ListToMathML();
@@ -395,7 +393,7 @@ wxString SubSupCell::ToMathML()
       m_postSupCell->ListToMathML();
     else
       retval += "<mrow/>";
-    retval += wxT("</msubsup>\n");
+    retval += "</msubsup>\n";
   }
   else
   {
@@ -423,7 +421,7 @@ wxString SubSupCell::ToMathML()
       else
         retval += "<none/>";
     }
-    retval += wxT("</mmultiscripts>\n");
+    retval += "</mmultiscripts>\n";
   }
   return retval;
 }
@@ -444,7 +442,7 @@ wxString SubSupCell::ToOMML()
       retval += "<m:r></m:r>";
     retval += "</m:sup></m:sSubSup>\n";
   }
-  retval += wxT("<m:sSubSup><m:e>") + m_baseCell->ListToOMML() + "</m:e><m:sub>";
+  retval += "<m:sSubSup><m:e>" + m_baseCell->ListToOMML() + "</m:e><m:sub>";
   if(m_postSubCell)
     retval += m_postSubCell->ListToOMML();
   else
@@ -462,10 +460,10 @@ wxString SubSupCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
 
   if (m_altCopyText != wxEmptyString)
-    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
+    flags += " altCopy=\"" + XMLescape(m_altCopyText) + "\"";
 
   wxString retval;
   if(m_innerCellList.empty())
