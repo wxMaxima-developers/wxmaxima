@@ -26,6 +26,7 @@
 */
 
 #include "MarkDown.h"
+#include <vector>
 
 MarkDownParser::~MarkDownParser()
 {
@@ -40,18 +41,22 @@ wxString MarkDownParser::MarkDown(wxString str)
 {
   // Replace all markdown equivalents of arrows and similar symbols by the
   // according symbols
-  for (replaceList::const_iterator it = regexReplaceList.begin();
-       it != regexReplaceList.end();
-       ++it)
-    (*it)->DoReplace(&str);
+  for (auto const &repl : m_regexReplaceList)
+    repl.DoReplace(str);
 
   // The result of this action
   wxString result = wxEmptyString;
 
   // The list of indentation levels for bullet lists we found
   // so far
-  std::list<size_t> indentationLevels;
-  std::list<wxChar> indentationTypes;
+
+  enum class IT { Bullet, Quote };
+  struct Indent {
+    size_t level;
+    IT type;
+    Indent(size_t level, IT type) : level(level), type(type) {}
+  };
+  std::vector<Indent> indentations;
 
   // Now process the input string line-by-line.
   wxStringTokenizer lines(str, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
@@ -79,7 +84,7 @@ wxString MarkDownParser::MarkDown(wxString str)
 
       // Let's see if the line is the start of a bullet list item
       if ((st.StartsWith("* ")) &&
-          ((indentationTypes.empty())||(indentationTypes.back() == wxT('*'))))
+          ((indentations.empty())||(indentations.back().type == IT::Bullet)))
       {
 
         // Remove the bullet list start marker from our string.
@@ -87,38 +92,35 @@ wxString MarkDownParser::MarkDown(wxString str)
         st = st.Trim(false);
 
         // Let's see if this is the first item in the list
-        if (indentationLevels.empty())
+        if (indentations.empty())
         {
           // This is the first item => Start the itemization.
           result += itemizeBegin();
-          indentationLevels.push_back(index);
-          indentationTypes.push_back(wxT('*'));
+          indentations.emplace_back(index, IT::Bullet);
         }
         else
         {
           // End the previous item before we start a new one on the same level.
-          if (index == indentationLevels.back())
+          if (index == indentations.back().level)
             result += itemizeEndItem();
         }
 
         // Did we switch to a higher indentation level?
-        if (index > indentationLevels.back())
+        if (index > indentations.back().level)
         {
           // A higher identation level => add the itemization-start-command.
           result += itemizeBegin();
-          indentationLevels.push_back(index);
-          indentationTypes.push_back(wxT('*'));
+          indentations.emplace_back(index, IT::Bullet);
         }
 
         // Did we switch to a lower indentation level?
-        if (index < indentationLevels.back())
+        if (index < indentations.back().level)
         {
-          while (!indentationLevels.empty() && (index < indentationLevels.back()))
+          while (!indentations.empty() && (index < indentations.back().level))
           {
             result += itemizeEndItem();
             result += itemizeEnd();
-            indentationLevels.pop_back();
-            indentationTypes.pop_back();
+            indentations.pop_back();
           }
           result += itemizeEndItem();
         }
@@ -141,39 +143,36 @@ wxString MarkDownParser::MarkDown(wxString str)
         st = st.Trim(false);
 
         // Let's see if this is the first item in the list
-        if (indentationLevels.empty())
+        if (indentations.empty())
         {
           // This is the first item => Start the itemization.
           result += quoteBegin();
-          indentationLevels.push_back(index);
-          indentationTypes.push_back(wxT('>'));
+          indentations.emplace_back(index, IT::Quote);
         }
         else
         {
           // We are inside a bullet list.
 
           // Are we on a new indentation level?
-          if (indentationLevels.back() < index)
+          if (indentations.back().level < index)
           {
             // A new identation level => add the itemization-start-command.
             result += quoteBegin();
-            indentationLevels.push_back(index);
-            indentationTypes.push_back(wxT('>'));
+            indentations.emplace_back(index, IT::Quote);
           }
 
           // End lists if we are at a old indentation level.
           // cppcheck-suppress knownConditionTrueFalse
-          while (!indentationLevels.empty() && (indentationLevels.back() > index))
+          while (!indentations.empty() && (indentations.back().level > index))
           {
-            if (indentationTypes.back() == wxT('*'))
+            if (indentations.back().type == IT::Bullet)
             {
               result += itemizeEndItem();
               result += itemizeEnd();
             }
             else
               result += quoteEnd();
-            indentationLevels.pop_back();
-            indentationTypes.pop_back();
+            indentations.pop_back();
           }
         }
         result += st += wxT(" ");
@@ -184,7 +183,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         //
         // If we are at a old indentation level we need to end some lists
         // and add a new item if we still are inside a list.
-        if (!indentationLevels.empty())
+        if (!indentations.empty())
         {
           // Add the text to the output.
           if((result != wxEmptyString) &&
@@ -193,12 +192,12 @@ wxString MarkDownParser::MarkDown(wxString str)
              (!result.EndsWith(quoteEnd()))
             )
             result += NewLine();
-          if (indentationLevels.back() > index)
+          if (indentations.back().level > index)
           {
-            while ((!indentationLevels.empty()) &&
-                   (indentationLevels.back() > index))
+            while ((!indentations.empty()) &&
+                   (indentations.back().level > index))
             {
-              if (indentationTypes.back() == wxT('*'))
+              if (indentations.back().type == IT::Bullet)
               {
                 result += itemizeEndItem();
                 result += itemizeEnd();
@@ -206,8 +205,7 @@ wxString MarkDownParser::MarkDown(wxString str)
               else
                 result += quoteEnd();
 
-              indentationLevels.pop_back();
-              indentationTypes.pop_back();
+              indentations.pop_back();
             }
           }
         }
@@ -218,85 +216,63 @@ wxString MarkDownParser::MarkDown(wxString str)
   }
 
   // Close all item lists
-  while (!indentationLevels.empty())
+  for (auto indent = indentations.rbegin(); indent != indentations.rend(); ++ indent)
   {
-    if (indentationTypes.back() == wxT('*'))
+    if (indent->type == IT::Bullet)
     {
       result += itemizeEndItem();
       result += itemizeEnd();
     }
     else
       result += quoteEnd();
-    indentationLevels.pop_back();
-    indentationTypes.pop_back();
   }
   return result;
 }
 
 MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
 {
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-      new RegexReplacer(wxT("#"), wxT("\\\\#"))));
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-      new RegexReplacer(wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longleftrightarrow}"))));
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-    new RegexReplacer(wxT("=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longrightarrow}"))));
-  regexReplaceList.push_back(
-    std::shared_ptr<RegexReplacer>(
-        new RegexReplacer(wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longleftrightarrow}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longrightarrow}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|-"), wxT("\\\\ensuremath{\\\\longleftarrow}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|="), wxT("\\\\ensuremath{\\\\leq}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|>\\|="), wxT("\\\\ensuremath{\\\\geq}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}"))));
+  m_regexReplaceList.emplace_back(
+    wxT("#"), wxT("\\\\#"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|<\\|=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longleftrightarrow}"));
+  m_regexReplaceList.emplace_back(
+    wxT("=\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\Longrightarrow}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|<\\|-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longleftrightarrow}"));
+  m_regexReplaceList.emplace_back(
+    wxT("-\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\longrightarrow}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|<\\|-"), wxT("\\\\ensuremath{\\\\longleftarrow}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|<\\|="), wxT("\\\\ensuremath{\\\\leq}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|>\\|="), wxT("\\\\ensuremath{\\\\geq}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\+/-"), wxT("\\\\ensuremath{\\\\pm}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|>\\|\\\\verb\\|>\\|"), wxT("\\\\ensuremath{\\\\gg}"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\\\verb\\|<\\|\\\\verb\\|<\\|"), wxT("\\\\ensuremath{\\\\ll}"));
 }
 
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
 {
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&lt);=\\&gt;"), wxT("\u21d4"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("=\\&gt);"), wxT("\u21d2"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("&lt);-\\&gt;"), wxT("\u2194"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("-\\&gt);"), wxT("\u2192"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&lt);-"), wxT("\u2190"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&lt);="), wxT("\u2264"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\&gt);="), wxT("\u2265"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\\+/-"), wxT("\u00B1"))));
-  regexReplaceList.push_back(
-        std::shared_ptr<RegexReplacer>(
-          new RegexReplacer(wxT("\u00A0"), wxT("\u00A0"))));
+  m_regexReplaceList.emplace_back(
+    wxT("\\&lt);=\\&gt;"), wxT("\u21d4"));
+  m_regexReplaceList.emplace_back(
+    wxT("=\\&gt);"), wxT("\u21d2"));
+  m_regexReplaceList.emplace_back(
+    wxT("&lt);-\\&gt;"), wxT("\u2194"));
+  m_regexReplaceList.emplace_back(
+    wxT("-\\&gt);"), wxT("\u2192"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\&lt);-"), wxT("\u2190"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\&lt);="), wxT("\u2264"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\&gt);="), wxT("\u2265"));
+  m_regexReplaceList.emplace_back(
+    wxT("\\+/-"), wxT("\u00B1"));
+  m_regexReplaceList.emplace_back(
+    wxT("\u00A0"), wxT("\u00A0"));
 }

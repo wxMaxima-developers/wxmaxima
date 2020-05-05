@@ -19,7 +19,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-/*!\file
+/*! \file
   This file contains the code for MarkDownParser.
 
   MarkDownParser is the class that handles the markdown syntax
@@ -34,7 +34,6 @@
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 #include <list>
-#include <memory>
 #include "Configuration.h"
 
 /*! A generic markdown Parser.
@@ -56,17 +55,17 @@ protected:
     {
     }
 
-    void DoReplace(wxString *line)
+    void DoReplace(wxString &line) const
     {
-      Replace(line, replaceBy);
+      Replace(&line, replaceBy);
     }
 
   private:
     wxString replaceBy; //!< The thing we replace it with
   };
 
-  typedef std::list<std::shared_ptr<RegexReplacer>> replaceList;
-  replaceList regexReplaceList;
+  using ReplaceList = std::list<RegexReplacer>;
+  ReplaceList m_regexReplaceList;
 public:
   explicit MarkDownParser(Configuration *cfg);
 
@@ -75,8 +74,8 @@ public:
   wxString MarkDown(wxString str);
 
   //! A list of things we want to replace.
-  replaceList RegexReplaceList() const
-    { return regexReplaceList; }
+  const ReplaceList &RegexReplaceList() const
+    { return m_regexReplaceList; }
 
 private:
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
