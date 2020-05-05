@@ -45,8 +45,8 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_fontStyle(wxFONTSTYLE_NORMAL),
   m_fontWeight(wxFONTWEIGHT_NORMAL)
 {
-  static const CharForCharSubstitutions substs = {{0x2028, '\n'}, {0x2029, '\n'}, {}};
-  ReplaceChars(m_text, substs);
+  static const CharToCharTable table = {{L'\u2028', '\n'}, {L'\u2029', '\n'}, {}};
+  TableReplace(m_text, table);
 
   m_nextToDraw = NULL;
   m_errorIndex = -1;
@@ -218,8 +218,8 @@ wxString EditorCell::ToString()
   return ToString(false);
 }
 
-static const CharForCharSubstitutions breaksToSpaces = {
-  {'\r', ' '},        // Remove all soft line breaks
+static const CharToCharTable breaksToSpaces = {
+  {L'\r',     ' '},   // Remove all soft line breaks
   {L'\u00a0', ' '},   // Convert non-breakable spaces to breakable ones
   {}
 };
@@ -232,9 +232,9 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
     long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
     if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
-    return ReplacedChars(m_text.SubString(start, end), breaksToSpaces);
+    return TableReplaced(m_text.SubString(start, end), breaksToSpaces);
   }
-  return ReplacedChars(m_text, breaksToSpaces);
+  return TableReplaced(m_text, breaksToSpaces);
 }
 
 wxString EditorCell::ToMatlab()
@@ -250,9 +250,9 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection)
     long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
     if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
-    return ReplacedChars(m_text.SubString(start, end), breaksToSpaces);
+    return TableReplaced(m_text.SubString(start, end), breaksToSpaces);
   }
-  return ReplacedChars(m_text, breaksToSpaces);
+  return TableReplaced(m_text, breaksToSpaces);
 }
 
 wxString EditorCell::ToRTF()
@@ -469,7 +469,7 @@ wxString EditorCell::ToTeX()
   return text;
 }
 
-static const StringForCharSubstitutions xmlEscapes = {
+static const CharToStringTable xmlEscapes = {
   {wxT('&'), wxT("&amp;")},
   {wxT('<'), wxT("&lt;")},
   {wxT('>'), wxT("&gt;")},
@@ -516,7 +516,7 @@ wxString EditorCell::ToXML()
 
   return wxString{fasT(
            "<editor ")} + std::move(head) + liT(">\n"
-           "  <line>") + ReplacedChars(m_text, xmlEscapes) + liT("</line>\n"
+           "  <line>") + TableReplaced(m_text, xmlEscapes) + liT("</line>\n"
            "</editor>\n");
 }
 
@@ -3587,9 +3587,9 @@ void EditorCell::StyleTextTexts()
 
           // Equip bullet lists with real bullets
           if (line_trimmed.StartsWith(wxT("* ")))
-            line[line.find("*")] = wxT('\u2022');
+            line[line.find("*")] = L'\u2022';
           if (line_trimmed.StartsWith(wxT("\u00B7 ")))
-            line[line.find("\u00B7")] = wxT('\u2022');
+            line[line.find("\u00B7")] = L'\u2022';
 
           // Remember what a continuation for this indenting object would begin with
           prefixes.push_back(wxT("  ") + line.Left(line.Length() - line_trimmed.Length()));

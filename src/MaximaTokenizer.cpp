@@ -76,7 +76,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands, Configuration *config
       continue;
     }
     // Check for comments
-    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\u00B7'))))
+    if ((Ch == '/') && ((nextChar == '*') || (nextChar == L'\u00B7')))
     {
       wxString token;
       // Add the comment start
@@ -107,7 +107,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands, Configuration *config
           nextCh = *it3;
 
         // handle comment begins within comments.
-        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\u00B7'))))
+        if((*it == '/') && ((nextCh == '*') || (nextCh == L'\u00B7')))
         {
           commentDepth++;
           token += *it;
@@ -120,7 +120,7 @@ MaximaTokenizer::MaximaTokenizer(const wxString &commands, Configuration *config
           continue;
         }
         // handle comment endings
-        if(((*it == '*') || (*it == wxT('\u00B7'))) && (nextCh == '/'))
+        if(((*it == '*') || (*it == L'\u00B7')) && (nextCh == '/'))
         {
           commentDepth--;
           token += *it;

@@ -5423,13 +5423,13 @@ bool Worksheet::ExportToHTML(const wxString &file)
             {
             case Configuration::mathJaX_TeX:
             {
-              static const StringForCharSubstitutions Escapes = {
-                {'<', {fasT("&lt;")}},
-                {'&', {fasT("&amp;")}},
-                {'>', {fasT("&gt;")}},
+              static const CharToStringTable Escapes = {
+                {'<', wxT("&lt;")},
+                {'&', wxT("&amp;")},
+                {'>', wxT("&gt;")},
                 {}
               };
-              wxString line = ReplacedChars(chunk->ListToTeX(), Escapes);
+              wxString line = TableReplaced(chunk->ListToTeX(), Escapes);
               // Work around a known limitation in MathJaX: According to
               // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
               // be interpreted as Text, not as TeX for a long while.
@@ -6108,16 +6108,36 @@ bool Worksheet::ExportToTeX(const wxString &file)
 
 wxString Worksheet::UnicodeToMaxima(const wxString &s)
 {
-  static const CharForCharSubstitutions substs1 = {
-    { 0x2052, '-'}, // commercial minus sign
-    { 0xFE63, '-'}, // unicode small minus sign
-    { 0xFF0D, '-'}, // unicode big minus sign
-    { 0xFF0B, '+'}, // unicode big plus
-    { 0xFB29, '+'}, // hebrew alternate plus
+  static const CharToCharTable substs1 = {
+    { L'\u2052', '-' }, // commercial minus sign
+    { L'\uFE63', '-' }, // unicode small minus sign
+    { L'\uFF0D', '-' }, // unicode big minus sign
+    { L'\uFF0B', '+' }, // unicode big plus
+    { L'\uFB29', '+' }, // hebrew alternate plus
     {}
   };
-  wxString src = ReplacedChars(s, substs1);
-  wxString retval;
+
+  static const CharToStringTable functionSubsts = {
+    { L'\u221A', wxT(" sqrt ") },
+    { L'\u222B', wxT(" integrate ") },
+    { L'\u2211', wxT(" sum ") },
+    { L'\u220F', wxT(" product ") },
+    { L'\u2148', wxT(" %i ") },
+    { L'\u2147', wxT(" %e ") },
+    { L'\u22C0', wxT(" and ") },
+    { L'\u22C1', wxT(" or ") },
+    { L'\u22BB', wxT(" xor ") },
+    { L'\u22BC', wxT(" nand ") },
+    { L'\u22BD', wxT(" nor ") },
+    { L'\u21D2', wxT(" implies ") },
+    { L'\u21D4', wxT(" equiv ") },
+    { L'\u00AC', wxT(" not ") },
+    { L'\u03C0', wxT(" %pi ") },
+    {}
+  };
+
+  wxString src = TableReplaced(s, substs1);
+  wxString retval, tmp;
   
   for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens())
   {
@@ -6128,48 +6148,35 @@ wxString Worksheet::UnicodeToMaxima(const wxString &s)
     case TS_CODE_OPERATOR:
     case TS_CODE_VARIABLE:
     case TS_CODE_FUNCTION:
-      if(tokenString == wxT("\u221A")) {retval += liT(" sqrt ");continue;}
-      if(tokenString == wxT("\u222B")) {retval += liT(" integrate ");continue;}
-      if(tokenString == wxT("\u2211")) {retval += liT(" sum ");continue;}
-      if(tokenString == wxT("\u220F")) {retval += liT(" product ");continue;}
-      if(tokenString == wxT("\u2148")) {retval += liT(" %i ");continue;}
-      if(tokenString == wxT("\u2147")) {retval += liT(" %e ");continue;}
-      if(tokenString == wxT("\u22C0")) {retval += liT(" and ");continue;}
-      if(tokenString == wxT("\u22C1")) {retval += liT(" or ");continue;}
-      if(tokenString == wxT("\u22BB")) {retval += liT(" xor ");continue;}
-      if(tokenString == wxT("\u22BC")) {retval += liT(" nand ");continue;}
-      if(tokenString == wxT("\u22BD")) {retval += liT(" nor ");continue;}
-      if(tokenString == wxT("\u21D2")) {retval += liT(" implies ");continue;}
-      if(tokenString == wxT("\u21D4")) {retval += liT(" equiv ");continue;}
-      if(tokenString == wxT("\u00AC")) {retval += liT(" not ");continue;}
-      if(tokenString == wxT("\u03C0")) {retval += liT(" %pi ");continue;}
-      // Only executed if none of the conditions that can be found above fires
+      tmp = TableReplaced(tokenString, functionSubsts);
+      if (!tmp.IsEmpty()) {retval += tmp; continue;}
+      // Only executed if none of the substitutions found above has matched
       retval += tokenString;
       break;
     default:
-      if(tokenString == wxT("\u221E")) {retval += wxT(" inf ");continue;}
+      if(tokenString == wxT("\u221E")) {retval += wxT(" inf "); continue;}
       retval += tokenString;
     }
   }
 
-  static const StringForCharSubstitutions substs2 = {
-    {0x00B2, {fasT("^2")}},
-    {0x00B3, {fasT("^3")}},
-    {0x00BD, {fasT("(1/2)")}},
-    {0x2205, {fasT("[]")}},   // An empty list
-    {0x2212, { wxT('-')}},
-    {0x2260, { wxT("#")}},    // The "not equal" sign
-    {0x2264, {fasT("<=")}},
-    {0x2265, {fasT(">=")}},
-    {0x00B7, { wxT('*')}},    // An unicode multiplication sign
-    {0x2052, { wxT('-')}},    // commercial minus sign
-    {0xFE63, { wxT('-')}},    // unicode small minus sign
-    {0xFF0D, { wxT('-')}},    // unicode big minus sign
-    {0xFF0B, { wxT('+')}},    // unicode big plus
-    {0xFB29, { wxT('+')}},    // hebrew alternate plus
+  static const CharToStringTable substs2 = {
+    { L'\u00B2', wxT("^2")},
+    { L'\u00B3', wxT("^3")},
+    { L'\u00BD', wxT("(1/2)")},
+    { L'\u2205', wxT("[]")},   // An empty list
+    { L'\u2212', wxT('-')},
+    { L'\u2260', wxT("#")},    // The "not equal" sign
+    { L'\u2264', wxT("<=")},
+    { L'\u2265', wxT(">=")},
+    { L'\u00B7', wxT('*')},    // An unicode multiplication sign
+    { L'\u2052', wxT('-')},    // commercial minus sign
+    { L'\uFE63', wxT('-')},    // unicode small minus sign
+    { L'\uFF0D', wxT('-')},    // unicode big minus sign
+    { L'\uFF0B', wxT('+')},    // unicode big plus
+    { L'\uFB29', wxT('+')},    // hebrew alternate plus
     {}
   };
-  return ReplacedChars(retval, substs2);
+  return TableReplaced(retval, substs2);
 }
 
 void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap,

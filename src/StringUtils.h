@@ -27,6 +27,9 @@
 #include <algorithm>
 #include <vector>
 
+//! An empty string that can be passed via const reference.
+extern const wxString wxmEmptyString;
+
 /* General Notes on wxString
  *
  * 1. When wxString uses wchar_t for Unicode, the Empty() and Clear() both call
@@ -70,49 +73,55 @@ using StringView = wxScopedCharTypeBuffer<wxStringCharType>;
  * It consists of pairs of a character with a replacement string.
  * The table must be terminated by a default-constructed element.
  */
-struct StringForCharSubstitution
+struct CharToStringEntry
 {
   wxUniChar match = '\0';
   wxString replacement;
 };
 
-using StringForCharSubstitutions = const StringForCharSubstitution[];
+using CharToStringTable = const CharToStringEntry[];
 
 /*! This is a character substitution table.
  *
  * It consists of pairs with character to replace followed by the replacement character.
  * The table must be terminated by default-constructed element.
  */
-struct CharForCharSubstitution
+struct CharToCharEntry
 {
   wxUniChar match = '\0';
   wxUniChar replacement;
 };
-using CharForCharSubstitutions = const CharForCharSubstitution[];
+using CharToCharTable = const CharToCharEntry[];
 
 //! Return the input string transformed with substitutions in the substitution table
-wxString ReplacedChars(const wxString &input, StringForCharSubstitutions substs);
-wxString ReplacedChars(const wxString &input, CharForCharSubstitutions substs);
+wxString TableReplaced(const wxString &input, CharToStringTable table, int *count = nullptr);
+wxString TableReplaced(const wxString &input, CharToCharTable table, int *count = nullptr);
 
-//! Transform the string by substituting using the substitution table
-void ReplaceChars(wxString &string, StringForCharSubstitutions substs);
-void ReplaceChars(wxString &string, CharForCharSubstitutions substs);
+//! Transform the string by substituting using the substitution table.
+//! Returns the number of replacements performed.
+int TableReplace(wxString &string, CharToStringTable table);
+int TableReplace(wxString &string, CharToCharTable table);
+
+//! Return the replacement for the entire input string with value from the substitution table,
+//! or empty string if none found.
+wxString TableReplacedWhole(const wxString &input, CharToStringTable table);
+wxString TableReplacedWhole(const wxString &input, CharToCharTable table);
 
 namespace StringUtils
 {
-extern const StringForCharSubstitutions HTMLEscapes;
+extern const CharToStringTable HTMLEscapes;
 }
 
 //! Return a string with escaping applied to all chars that cannot be used in HTML
 inline wxString EscapedHTMLChars(const wxString &input)
 {
-  return ReplacedChars(input, StringUtils::HTMLEscapes);
+  return TableReplaced(input, StringUtils::HTMLEscapes);
 }
 
 //! Escape all chars that cannot be used in HTML
 inline void EscapeHTMLChars(wxString &input)
 {
-  ReplaceChars(input, StringUtils::HTMLEscapes);
+  TableReplace(input, StringUtils::HTMLEscapes);
 }
 
 //! A macro used to wrap a string literal that can be appended to a wxString and
@@ -277,48 +286,8 @@ inline StringView ViewRight(const wxString &string, size_t count)
 }
 
 //
-// String Editing and Modifications
+// String Modifications
 //
-
-struct EditOp
-{
-  enum OpFlags {
-    OpInsert = 1 << 0,
-    OpMask = 0xFF << 0,
-    IdxOriginal = 0 << 8,
-    IdxMask = 0xFF << 8,
-    TypeWxChar = 1 << 16,
-    TypeWxCharEnc = 2 << 16,
-    TypeWxStringP = 3 << 16,
-    TypeLiteral = 4 << 16,
-    TypeMask = 0xFF << 16
-  };
-  int flags, index;
-  union {
-    wxUniChar ch;
-    decltype(wxStringOperations::EncodeChar(0)) chEnc;
-    const wxString* strP;
-    StringLiteral lit;
-  };
-  EditOp(OpFlags op, OpFlags idx, int index, wxUniChar ch) :
-      flags((op&OpMask) | (idx&IdxMask)), index(index)
-  {
-    if (wxStringOperations::IsSingleCodeUnitCharacter(ch))
-      flags |= TypeWxChar, this->ch = ch;
-    else
-      flags |= TypeWxCharEnc, chEnc = wxStringOperations::EncodeChar(ch);
-  }
-  EditOp(OpFlags op, OpFlags idx, int index, const wxString &str) :
-      flags((op&OpMask) | (idx&IdxMask) | TypeWxStringP), index(index), strP(&str) {}
-  EditOp(OpFlags op, OpFlags idx, int index, StringLiteral &&lit) :
-      flags((op&OpMask) | (idx&IdxMask) | TypeLiteral), index(index), lit(std::move(lit)) {}
-};
-
-/*! Edits the string by applying editing operations to it.
- * Minimum amount of data motion is performed.
- * THIS CODE IS NOT READY FOR USE YET.
- */
-void EditString(wxString &, std::initializer_list<EditOp>);
 
 /*! Appends a given number of initial characters of the source string.
  *! Negative lengths are relative to the source string length.
@@ -446,6 +415,16 @@ inline bool RetractOver(wxString::const_iterator begin, wxString::const_iterator
 // Comparisons
 //
 
+//! Returns whether the given character is equal to one of the other arguments,
+//! checked in order.
+template <typename Arg, typename ...Args>
+inline bool IsOneOf(wxUniChar ch, Arg arg, Args...args)
+{
+  return ch == arg || IsOneOf(ch, (args)...);
+}
+
+inline bool IsOneOf(wxUniChar) { return false; }
+
 //! Returns whether a range starts with a given string.
 inline bool StartsWith(wxString::const_iterator begin, wxString::const_iterator end, const wxString &needle)
 {
@@ -496,14 +475,49 @@ inline bool EndsWith(const wxString &str, StringLiteral &&needle)
   return str.compare(str.size() - needle.len, needle.len, needle.ptr, needle.len) == 0;
 }
 
-//! Returns whether the given character is equal to one of the other arguments,
-//! checked in order.
-template <typename Arg, typename ...Args>
-inline bool IsOneOf(wxUniChar ch, Arg arg, Args...args)
-{
-  return ch == arg || IsOneOf(ch, (args)...);
-}
+//
+// String Editing (WIP)
+//
 
-inline bool IsOneOf(wxUniChar) { return false; }
+#if 0
+struct EditOp
+{
+  enum OpFlags {
+    OpInsert = 1 << 0,
+    OpMask = 0xFF << 0,
+    IdxOriginal = 0 << 8,
+    IdxMask = 0xFF << 8,
+    TypeWxChar = 1 << 16,
+    TypeWxCharEnc = 2 << 16,
+    TypeWxStringP = 3 << 16,
+    TypeLiteral = 4 << 16,
+    TypeMask = 0xFF << 16
+  };
+  int flags, index;
+  union {
+    wxUniChar ch;
+    decltype(wxStringOperations::EncodeChar(0)) chEnc;
+    const wxString* strP;
+    StringLiteral lit;
+  };
+  EditOp(OpFlags op, OpFlags idx, int index, wxUniChar ch) :
+      flags((op&OpMask) | (idx&IdxMask)), index(index)
+  {
+    if (wxStringOperations::IsSingleCodeUnitCharacter(ch))
+      flags |= TypeWxChar, this->ch = ch;
+    else
+      flags |= TypeWxCharEnc, chEnc = wxStringOperations::EncodeChar(ch);
+  }
+  EditOp(OpFlags op, OpFlags idx, int index, const wxString &str) :
+      flags((op&OpMask) | (idx&IdxMask) | TypeWxStringP), index(index), strP(&str) {}
+  EditOp(OpFlags op, OpFlags idx, int index, StringLiteral &&lit) :
+      flags((op&OpMask) | (idx&IdxMask) | TypeLiteral), index(index), lit(std::move(lit)) {}
+};
+
+/*! Edits the string by applying editing operations to it.
+ * Minimum amount of data motion is performed.
+ */
+void EditString(wxString &, std::initializer_list<EditOp>);
+#endif
 
 #endif // WXMAXIMA_STRINGUTILS_H

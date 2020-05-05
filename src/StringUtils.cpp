@@ -22,69 +22,105 @@
 #include "StringUtils.h"
 #include <array>
 
+const wxString wxmEmptyString;
+
 namespace StringUtils
 {
 
-const StringForCharSubstitutions HTMLEscapes = {
-  {'&',  {fasT("&amp;")}},
-  {'\"', {fasT("&quot;")}},
-  {'<',  {fasT("&lt;")}},
-  {'>',  {fasT("&gt;")}},
-  {'\n', {fasT("<br/>\n")}},
-  {'\r', {fasT(" ")}},
+const CharToStringTable HTMLEscapes = {
+  {wxT('&'),  wxT("&amp;")},
+  {wxT('\"'), wxT("&quot;")},
+  {wxT('<'),  wxT("&lt;")},
+  {wxT('>'),  wxT("&gt;")},
+  {wxT('\n'), wxT("<br/>\n")},
+  {wxT('\r'), wxT(" ")},
   {}
 };
 
 }
 
-wxString ReplacedChars(const wxString &input, StringForCharSubstitutions substs)
+wxString TableReplaced(const wxString &input, CharToStringTable table, int *count)
 {
+  int n = 0;
   wxString retval;
   retval.reserve(input.size());
   for (auto ch : input)
   {
-    for (auto *subst = substs; subst->match; subst++)
+    for (auto *entry = table; entry->match; entry++)
     {
-      if (ch == subst->match)
+      if (ch == entry->match)
       {
-        retval += subst->replacement;
+        ++ n;
+        retval += entry->replacement;
         goto nextchar;
       }
     }
     retval += ch;
   nextchar: ;
   }
+  if (count) *count = n;
   return retval;
 }
 
-void ReplaceChars(wxString &string, StringForCharSubstitutions substs)
+int TableReplace(wxString &string, CharToStringTable table)
 {
-  string = ReplacedChars(std::move(string), substs);
+  int count = 0;
+  string = TableReplaced(std::move(string), table, &count);
+  return count;
 }
 
-wxString ReplacedChars(const wxString &input, CharForCharSubstitutions substs)
+wxString TableReplaced(const wxString &input, CharToCharTable table, int *count)
 {
+  int n = 0;
   wxString retval;
   retval.reserve(input.size());
   for (wxUniChar ch : input)
   {
-    for (auto *subst = substs; subst->match; subst++)
-      if (ch == subst->match)
+    for (auto *entry = table; entry->match; entry++)
+      if (ch == entry->match)
       {
-        retval += subst->replacement;
+        ++ n;
+        retval += entry->replacement;
         goto nextchar;
       }
     retval += ch;
   nextchar: ;
   }
+  if (count) *count = n;
   return retval;
 }
 
-void ReplaceChars(wxString &string, CharForCharSubstitutions substs)
+int TableReplace(wxString &string, CharToCharTable substs)
 {
-  string = ReplacedChars(std::move(string), substs);
+  int count = 0;
+  string = TableReplaced(std::move(string), substs, &count);
+  return count;
 }
 
+wxString TableReplacedWhole(const wxString &input, CharToStringTable table)
+{
+  wxString retval;
+  for (auto *entry = table; entry->match; entry++)
+  {
+    if (input == entry->match)
+      return entry->replacement;
+  }
+  return {};
+}
+
+wxString TableReplacedWhole(const wxString &input, CharToCharTable table)
+{
+  wxString retval;
+  for (auto *entry = table; entry->match; entry++)
+  {
+    if (input == entry->match)
+      return entry->replacement;
+  }
+  return {};
+}
+
+#if 0
+// This is WIP
 struct MoveOp
 {
   std::initializer_list<EditOp>::const_iterator op;
@@ -188,3 +224,4 @@ void EditString(wxString &str, std::initializer_list<EditOp> ops)
   // Shrink the size if needed
   if (delta < 0) str.resize(str.size() - delta);;
 }
+#endif

@@ -114,6 +114,14 @@ public:
     */
     menu_pane_stats,
 
+    /*! Used only for naming the toolbar pane.
+
+      Since this enum is used for iterating over the panes, it is vital
+      that it stays after the last pane in this enum.
+    */
+    named_pane_toolbar,
+    named_pane_console,
+
     input_line_id,
     refresh_id,
     menu_batch_id,
@@ -729,6 +737,9 @@ private:
   };
 
   wxPanel *CreateSymbolsPane();
+  wxAuiPaneInfo &GetPane(Event id);
+  const wxString &GetPaneName(Event id);
+  void SetupPanes();
 
 protected:
   SymbolsPane *m_symbolsPane;
