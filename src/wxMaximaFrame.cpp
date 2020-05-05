@@ -2049,11 +2049,9 @@ void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
 {
   wxLogNull blocker;
-  while (!m_userSymbolButtons.empty())
-  {
-    m_userSymbolButtons.front()->Destroy();
-    m_userSymbolButtons.pop_front();
-  }
+  for (auto button : m_userSymbolButtons)
+    button->Destroy();
+  m_userSymbolButtons.clear();
 
   if (m_userSymbols == NULL)
     return;

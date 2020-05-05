@@ -722,7 +722,7 @@ private:
     //! A panel that shows all user-defined symbols on the symbols pane.
     wxPanel *m_userSymbols;
     //! A button per user defined symbol
-    std::list<wxPanel *> m_userSymbolButtons;
+    std::vector<wxPanel *> m_userSymbolButtons;
     wxGridSizer *m_userSymbolsSizer;
     Configuration *m_configuration;
     Worksheet *m_worksheet;

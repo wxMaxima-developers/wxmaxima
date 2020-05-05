@@ -96,7 +96,7 @@
 
 #include <wx/url.h>
 #include <wx/sstream.h>
-#include <list>
+#include <vector>
 #include <memory>
 
 #if defined __WXOSX__
@@ -9151,7 +9151,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   bool endingNeeded = true;
   wxChar lastnonWhitespace;
   wxChar lastnonWhitespace_Next = wxT(' ');
-  std::list<wxChar> delimiters;
+  std::vector<wxChar> delimiters;
 
   for (auto const &tok : MaximaTokenizer(text, m_worksheet->m_configuration).PopTokens())
   {
