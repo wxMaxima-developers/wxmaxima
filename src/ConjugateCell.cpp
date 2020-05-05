@@ -149,7 +149,7 @@ wxString ConjugateCell::ToString()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
-    return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
+    return "conjugate(" + m_innerCell->ListToString() + ")";
 }
 
 wxString ConjugateCell::ToMatlab()
@@ -157,7 +157,7 @@ wxString ConjugateCell::ToMatlab()
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
   else
-	return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
+	return "conjugate(" + m_innerCell->ListToMatlab() + ")";
 }
 
 wxString ConjugateCell::ToTeX()
@@ -165,29 +165,29 @@ wxString ConjugateCell::ToTeX()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
-    return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
+    return "\\overline{" + m_innerCell->ListToTeX() + "}";
 }
 
 wxString ConjugateCell::ToMathML()
 {
-//  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
-  return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
-         wxT("<mo>&#xaf;</mo></mover>\n");
+//  return "<apply><conjugate/><ci>" + m_innerCell->ListToMathML() + "</ci></apply>";
+  return "<mover accent=\"true\">" + m_innerCell->ListToMathML() +
+         "<mo>&#xaf;</mo></mover>\n";
 }
 
 wxString ConjugateCell::ToOMML()
 {
-  return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
-         m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
+  return "<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>" +
+         m_innerCell->ListToOMML() + "</m:e></m:bar>";
 }
 
 wxString ConjugateCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
 
-  return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</cj>");
+  return "<cj" + flags + ">" + m_innerCell->ListToXML() + "</cj>";
 }
 
 bool ConjugateCell::BreakUp()

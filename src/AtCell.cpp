@@ -131,38 +131,38 @@ void AtCell::Draw(wxPoint point)
 
 wxString AtCell::ToString()
 {
-  wxString s = wxT("at(");
+  wxString s = "at(";
   s += m_baseCell->ListToString();
-  s += wxT(",") + m_indexCell->ListToString() + wxT(")");
+  s += "," + m_indexCell->ListToString() + ")";
   return s;
 }
 
 wxString AtCell::ToMatlab()
 {
-  wxString s = wxT("at(");
+  wxString s = "at(";
   s += m_baseCell->ListToMatlab();
-  s += wxT(",") + m_indexCell->ListToMatlab() + wxT(")");
+  s += "," + m_indexCell->ListToMatlab() + ")";
   return s;
 }
 
 wxString AtCell::ToTeX()
 {
-  wxString s = wxT("\\left. ");
+  wxString s = "\\left. ";
   s += m_baseCell->ListToTeX();
-  s += wxT("\\right|_{") + m_indexCell->ListToTeX() + wxT("}");
+  s += "\\right|_{" + m_indexCell->ListToTeX() + "}";
   return s;
 }
 
 wxString AtCell::ToMathML()
 {
-  return wxT("<msub>") + m_baseCell->ListToMathML() +
-         m_indexCell->ListToMathML() + wxT("</msub>\n");
+  return "<msub>" + m_baseCell->ListToMathML() +
+         m_indexCell->ListToMathML() + "</msub>\n";
 }
 
 wxString AtCell::ToOMML()
 {
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
-         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+  return "<m:sSub><m:e>" + m_baseCell->ListToOMML() + "</m:e><m:sub>" +
+         m_indexCell->ListToOMML() + "</m:sub></m:sSub>\n";
 }
 
 
@@ -170,10 +170,10 @@ wxString AtCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
   
-  return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
-         m_indexCell->ListToXML() + wxT("</r></at>");
+  return "<at" + flags + "><r>" + m_baseCell->ListToXML() + "</r><r>" +
+         m_indexCell->ListToXML() + "</r></at>";
 }
 
 void AtCell::SetNextToDraw(Cell *next)

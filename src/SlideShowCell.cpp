@@ -109,7 +109,7 @@ int SlideShow::GetFrameRate() const
   {
     wxConfigBase *config = wxConfig::Get();
 
-    config->Read(wxT("DefaultFramerate"), &framerate);
+    config->Read("DefaultFramerate", &framerate);
   }
   if (framerate > 30)
     framerate = 30;
@@ -376,17 +376,17 @@ void SlideShow::Draw(wxPoint point)
 
 wxString SlideShow::ToString()
 {
-  return wxT(" << Animation >> ");
+  return " << Animation >> ";
 }
 
 wxString SlideShow::ToMatlab()
 {
-  return wxT(" << Animation >> ");
+  return " << Animation >> ";
 }
 
 wxString SlideShow::ToTeX()
 {
-  return wxT(" << Graphics >> ");
+  return " << Graphics >> ";
 }
 
 wxString SlideShow::ToXML()
@@ -448,23 +448,23 @@ wxString SlideShow::ToXML()
         );
     }
 
-    images += basename + m_images[i]->GetExtension() + wxT(";");
+    images += basename + m_images[i]->GetExtension() + ";";
   }
 
   wxString flags;
   flags = " gnuplotSources=\"" + gnuplotSourceFiles + "\"";
   flags += " gnuplotData=\"" + gnuplotDataFiles + "\"";
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
   if (m_animationRunning)
-    flags += wxT(" running=\"true\"");
+    flags += " running=\"true\"";
   else
-    flags += wxT(" running=\"false\"");
-  flags += wxString::Format(wxT(" frame=\"%i\""),m_displayed);
+    flags += " running=\"false\"";
+  flags += wxString::Format(" frame=\"%i\"",m_displayed);
 
   if (m_framerate > 0)
-    flags +=  wxString::Format(wxT(" fr=\"%i\""), GetFrameRate());
-  return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
+    flags +=  wxString::Format(" fr=\"%i\"", GetFrameRate());
+  return "\n<slide" + flags + ">" + images + "</slide>";
 }
 
 wxSize SlideShow::ToImageFile(wxString file)
@@ -478,29 +478,29 @@ wxString SlideShow::ToRTF()
   // image.
 
   // Lines that are common to all types of images
-  wxString header = wxT("{\\pict");
-  wxString footer = wxT("}\n");
+  wxString header = "{\\pict";
+  wxString footer = "}\n";
 
   // Extract the description of the image data
   wxString image;
   wxMemoryBuffer imgdata;
-  if (m_images[m_displayed]->GetExtension().Lower() == wxT("png"))
+  if (m_images[m_displayed]->GetExtension().Lower() == "png")
   {
     imgdata = m_images[m_displayed]->GetCompressedImage();
-    image = wxT("\\pngblip\n");
+    image = "\\pngblip\n";
   }
   else if (
-          (m_images[m_displayed]->GetExtension().Lower() == wxT("jpg")) ||
-          (m_images[m_displayed]->GetExtension().Lower() == wxT("jpeg"))
+          (m_images[m_displayed]->GetExtension().Lower() == "jpg") ||
+          (m_images[m_displayed]->GetExtension().Lower() == "jpeg")
           )
   {
     imgdata = m_images[m_displayed]->GetCompressedImage();
-    image = wxT("\\jpegblip\n");
+    image = "\\jpegblip\n";
   }
   else
   {
     // Convert any non-rtf-enabled format to .png before adding it to the .rtf file.
-    image = wxT("\\pngblip\n");
+    image = "\\pngblip\n";
     wxImage imagedata = m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage();
     wxMemoryOutputStream stream;
     imagedata.SaveFile(stream, wxBITMAP_TYPE_PNG);
@@ -508,7 +508,7 @@ wxString SlideShow::ToRTF()
                        stream.GetOutputStreamBuffer()->GetBufferSize());
   }
 
-  image += wxString::Format(wxT("\\picw%lu\\pich%lu "),
+  image += wxString::Format("\\picw%lu\\pich%lu ",
                             (unsigned long)m_images[m_displayed]->GetOriginalWidth(),
                             (unsigned long)m_images[m_displayed]->GetOriginalHeight()
   );
@@ -631,7 +631,7 @@ bool SlideShow::CopyAnimationToClipboard()
   return false;
 }
 
-wxDataFormat SlideShow::m_gifFormat(wxT("image/gif"));
+wxDataFormat SlideShow::m_gifFormat("image/gif");
 
 void SlideShow::SetNextToDraw(Cell *next)
 {

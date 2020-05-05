@@ -134,11 +134,11 @@ wxString DiffCell::ToString()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   Cell *tmp = m_baseCell->m_next;
-  wxString s = wxT("'diff(");
+  wxString s = "'diff(";
   if (tmp != NULL)
     s += tmp->ListToString();
   s += m_diffCell->ListToString();
-  s += wxT(")");
+  s += ")";
   return s;
 }
 
@@ -147,11 +147,11 @@ wxString DiffCell::ToMatlab()
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
   Cell *tmp = m_baseCell->m_next;
-  wxString s = wxT("'diff(");
+  wxString s = "'diff(";
   if (tmp != NULL)
 	s += tmp->ListToMatlab();
   s += m_diffCell->ListToMatlab();
-  s += wxT(")");
+  s += ")";
   return s;
 }
 
@@ -163,9 +163,9 @@ wxString DiffCell::ToTeX()
   wxString function = m_baseCell->ListToTeX();
 
   bool usePartialForDiff = false;
-  wxConfig::Get()->Read(wxT("usePartialForDiff"), &usePartialForDiff);
+  wxConfig::Get()->Read("usePartialForDiff", &usePartialForDiff);
   if (usePartialForDiff)
-    diff.Replace(wxT("\\frac{d}{d"), wxT("\\frac{\\partial}{\\partial"));
+    diff.Replace("\\frac{d}{d", "\\frac{\\partial}{\\partial");
 
   wxString s = diff + function;
   return s;
@@ -175,14 +175,14 @@ wxString DiffCell::ToMathML()
 {
   wxString retval;
 
-  retval = wxT("<mrow>") + m_diffCell->ListToMathML();
+  retval = "<mrow>" + m_diffCell->ListToMathML();
   if (m_baseCell)
     retval += m_baseCell->ListToMathML();
-  retval += wxT("</mrow>\n");
-  // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
+  retval += "</mrow>\n";
+  // retval = "<apply><diff/><ci>" + m_diffCell->ListToMathML() + "</ci>";
   // if(m_baseCell)
-  //   retval += wxT("<ci>") + m_baseCell->ListToMathML() + wxT("</ci>") ;
-  // retval += wxT("</apply>");
+  //   retval += "<ci>" + m_baseCell->ListToMathML() + "</ci>" ;
+  // retval += "</apply>";
   return retval;
 }
 
@@ -201,9 +201,9 @@ wxString DiffCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
 
-  return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+  return "<d" + flags + ">" + m_diffCell->ListToXML() + m_baseCell->ListToXML() + "</d>";
 }
 
 void DiffCell::SetNextToDraw(Cell *next)

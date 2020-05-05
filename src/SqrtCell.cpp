@@ -122,7 +122,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
                             .FaceName(configuration->GetTeXCMEX()));
 
     dc->SetFont(font);
-    dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
+    dc->GetTextExtent("s", &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
     
@@ -166,7 +166,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
                             .FaceName(configuration->GetTeXCMEX()));
 
     dc->SetFont(font);
-    dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
+    dc->GetTextExtent("s", &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
   }
@@ -227,9 +227,9 @@ void SqrtCell::Draw(wxPoint point)
       if (m_signType < 4)
       {
         dc->DrawText(
-                m_signType == 1 ? wxT("p") :
-                m_signType == 2 ? wxT("q") :
-                m_signType == 3 ? wxT("r") : wxT("s"),
+                m_signType == 1 ? "p" :
+                m_signType == 2 ? "q" :
+                m_signType == 3 ? "r" : "s",
                 point.x,
                 point.y - m_innerCell->GetCenterList() - m_signTop);
       }
@@ -243,16 +243,16 @@ void SqrtCell::Draw(wxPoint point)
                      _("Font issue: The sqrt() sign has the size 0! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
         if (dy <= 0)
           dy = 1;
-        dc->DrawText(wxT("t"),
+        dc->DrawText("t",
                     point.x,
                     yBottom);
-        dc->DrawText(wxT("v"),
+        dc->DrawText("v",
                     point.x,
                     yTop);
         while (yTop < yBottom)
         {
           yTop += dy;
-          dc->DrawText(wxT("u"),
+          dc->DrawText("u",
                       point.x,
                       yTop);
         }
@@ -313,15 +313,15 @@ wxString SqrtCell::ToString()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
-    return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
+    return "sqrt(" + m_innerCell->ListToString() + ")";
 }
 
 wxString SqrtCell::ToMatlab()
 {
   if (m_isBrokenIntoLines)
-	return wxEmptyString;
+    return wxEmptyString;
   else
-	return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
+    return "sqrt(" + m_innerCell->ListToMatlab() + ")";
 }
 
 wxString SqrtCell::ToTeX()
@@ -329,18 +329,18 @@ wxString SqrtCell::ToTeX()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
-    return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
+    return "\\sqrt{" + m_innerCell->ListToTeX() + "}";
 }
 
 wxString SqrtCell::ToMathML()
 {
-  return wxT("<msqrt>") + m_innerCell->ListToMathML() + wxT("</msqrt>\n");
+  return "<msqrt>" + m_innerCell->ListToMathML() + "</msqrt>\n";
 }
 
 wxString SqrtCell::ToOMML()
 {
-  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") + m_innerCell->ListToOMML() +
-         wxT("</m:e></m:rad>\n");
+  return "<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>" + m_innerCell->ListToOMML() +
+         "</m:e></m:rad>\n";
 }
 
 wxString SqrtCell::ToXML()
@@ -349,9 +349,9 @@ wxString SqrtCell::ToXML()
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
 
-  return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");
+  return "<q" + flags + ">" + m_innerCell->ListToXML() + "</q>";
 }
 
 bool SqrtCell::BreakUp()

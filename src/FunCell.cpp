@@ -168,17 +168,17 @@ wxString FunCell::ToTeX()
   wxString s;
 
   if (
-    (m_nameCell->ToString() == wxT("sin")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
-    (m_nameCell->ToString() == wxT("cosh")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
-    (m_nameCell->ToString() == wxT("log")) ||
-    (m_nameCell->ToString() == wxT("cot")) ||
-    (m_nameCell->ToString() == wxT("sec")) ||
-    (m_nameCell->ToString() == wxT("csc")) ||
-    (m_nameCell->ToString() == wxT("tan"))
+    (m_nameCell->ToString() == "sin") ||
+    (m_nameCell->ToString() == "cos") ||
+    (m_nameCell->ToString() == "cosh") ||
+    (m_nameCell->ToString() == "cos") ||
+    (m_nameCell->ToString() == "log") ||
+    (m_nameCell->ToString() == "cot") ||
+    (m_nameCell->ToString() == "sec") ||
+    (m_nameCell->ToString() == "csc") ||
+    (m_nameCell->ToString() == "tan")
     )
-    s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() + wxT("}");
+    s = "\\" + m_nameCell->ToString() + "{" + m_argCell->ListToTeX() + "}";
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
   
@@ -191,17 +191,17 @@ wxString FunCell::ToXML()
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
-  return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() + wxT("</r>") +
-         m_argCell->ListToXML() + wxT("</fn>");
+    flags += " breakline=\"true\"";
+  return "<fn" + flags + "><r>" + m_nameCell->ListToXML() + "</r>" +
+         m_argCell->ListToXML() + "</fn>";
 }
 
 wxString FunCell::ToMathML()
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
-  return wxT("<mrow>") + m_nameCell->ListToMathML() +
-         wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
+  return "<mrow>" + m_nameCell->ListToMathML() +
+         "<mo>&#x2061;</mo>" + m_argCell->ListToMathML() + "</mrow>\n";
 }
 
 wxString FunCell::ToOMML()

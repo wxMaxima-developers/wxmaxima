@@ -1,3 +1,4 @@
+
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
@@ -409,7 +410,7 @@ void IntCell::Draw(wxPoint point)
 
 wxString IntCell::ToString()
 {
-  wxString s = wxT("integrate(");
+  wxString s = "integrate(";
 
   s += m_base->ListToString();
 
@@ -424,17 +425,17 @@ wxString IntCell::ToString()
   wxString to = m_over->ListToString();
   wxString from = m_under->ListToString();
 
-  s += wxT(",") + var;
+  s += "," + var;
   if (m_intStyle == INT_DEF)
-    s += wxT(",") + from + wxT(",") + to;
+    s += "," + from + "," + to;
 
-  s += wxT(")");
+  s += ")";
   return s;
 }
 
 wxString IntCell::ToMatlab()
 {
-  wxString s = wxT("integrate(");
+  wxString s = "integrate(";
 
   s += m_base->ListToMatlab();
 
@@ -449,30 +450,30 @@ wxString IntCell::ToMatlab()
   wxString to = m_over->ListToMatlab();
   wxString from = m_under->ListToMatlab();
 
-  s += wxT(",") + var;
+  s += "," + var;
   if (m_intStyle == INT_DEF)
-	s += wxT(",") + from + wxT(",") + to;
+	s += "," + from + "," + to;
 
-  s += wxT(")");
+  s += ")";
   return s;
 }
 
 wxString IntCell::ToTeX()
 {
-  wxString s = wxT("\\int");
+  wxString s = "\\int";
 
   wxString to = m_over->ListToTeX();
   wxString from = m_under->ListToTeX();
 
   if (m_intStyle == INT_DEF)
-    s += wxT("_{") + from + wxT("}^{") + to + wxT("}");
+    s += "_{" + from + "}^{" + to + "}";
   else
-    s += wxT(" ");
+    s += " ";
 
-  s += wxT("{\\left. ");
+  s += "{\\left. ";
   s += m_base->ListToTeX();
   s += m_var->ListToTeX();
-  s += wxT("\\right.}");
+  s += "\\right.}";
 
   return s;
 }
@@ -492,17 +493,17 @@ wxString IntCell::ToMathML()
 
   wxString retval;
   if (from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<mo>&#x222B;</mo>") + base;
+    retval = "<mo>&#x222B;</mo>" + base;
   if (from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<mover><mo>&#x222B;</mo>") + to + wxT("</mover>") + base;
+    retval = "<mover><mo>&#x222B;</mo>" + to + "</mover>" + base;
   if (!from.IsEmpty() && to.IsEmpty())
-    retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
+    retval = "<munder><mo>&#x222B;</mo>" + from + "</munder>" + base;
   if (!from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>\n") + base;
+    retval = "<munderover><mo>&#x222B;</mo>" + from + to + "</munderover>\n" + base;
   if (!var.IsEmpty())
     retval = retval + var;
 
-  return (wxT("<mrow>") + retval + wxT("</mrow>"));
+  return ("<mrow>" + retval + "</mrow>");
 }
 
 wxString IntCell::ToOMML()
@@ -522,10 +523,10 @@ wxString IntCell::ToOMML()
 
   retval = wxT("<m:nary><m:naryPr><m:chr>\u222b</m:chr></m:naryPr>");
   if (from != wxEmptyString)
-    retval += wxT("<m:sub>") + from + wxT("</m:sub>");
+    retval += "<m:sub>" + from + "</m:sub>";
   if (to != wxEmptyString)
-    retval += wxT("<m:sup>") + to + wxT("</m:sup>");
-  retval += wxT("<m:e><m:r>") + base + var + wxT("</m:r></m:e></m:nary>");
+    retval += "<m:sup>" + to + "</m:sup>";
+  retval += "<m:e><m:r>" + base + var + "</m:r></m:e></m:nary>";
 
   return retval;
 }
@@ -535,31 +536,31 @@ wxString IntCell::ToXML()
   wxString from;
   if (m_under != NULL)
     from = m_under->ListToXML();
-  from = wxT("<r>") + from + wxT("</r>");
+  from = "<r>" + from + "</r>";
 
   wxString to;
   if (m_over != NULL)
     to = m_over->ListToXML();
-  to = wxT("<r>") + to + wxT("</r>");
+  to = "<r>" + to + "</r>";
 
   wxString base;
   if (m_base != NULL)
     base = m_base->ListToXML();
-  base = wxT("<r>") + base + wxT("</r>");
+  base = "<r>" + base + "</r>";
 
   wxString var;
   if (m_var != NULL)
     var = m_var->ListToXML();
-  var = wxT("<r>") + var + wxT("</r>");
+  var = "<r>" + var + "</r>";
 
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
 
   if (m_intStyle != INT_DEF)
-    flags += wxT(" def=\"false\">");
+    flags += " def=\"false\">";
   
-  return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
+  return "<in" + flags + ">" + from + to + base + var + "</in>";
 }
 
 void IntCell::SetNextToDraw(Cell *next)

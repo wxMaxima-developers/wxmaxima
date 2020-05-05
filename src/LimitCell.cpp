@@ -204,35 +204,35 @@ void LimitCell::Draw(wxPoint point)
 
 wxString LimitCell::ToString()
 {
-  wxString s(wxT("limit"));
+  wxString s("limit");
   wxString under = m_under->ListToString();
   wxString base = m_base->ListToString();
-  wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
-  wxString to = under.SubString(under.Find(wxT("->")) + 2,
+  wxString var = under.SubString(0, under.Find("->") - 1);
+  wxString to = under.SubString(under.Find("->") + 2,
 								under.Length() - 1);
-  if (to.Right(1) == wxT("+"))
-	to = to.Left(to.Length() - 1) + wxT(",plus");
-  if (to.Right(1) == wxT("-"))
-	to = to.Left(to.Length() - 1) + wxT(",minus");
+  if (to.Right(1) == "+")
+	to = to.Left(to.Length() - 1) + ",plus";
+  if (to.Right(1) == "-")
+	to = to.Left(to.Length() - 1) + ",minus";
 
-  s += wxT("(") + base + wxT(",") + var + wxT(",") + to + wxT(")");
+  s += "(" + base + "," + var + "," + to + ")";
   return s;
 }
 
 wxString LimitCell::ToMatlab()
 {
-  wxString s(wxT("limit"));
+  wxString s("limit");
   wxString under = m_under->ListToMatlab();
   wxString base = m_base->ListToMatlab();
-  wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
-  wxString to = under.SubString(under.Find(wxT("->")) + 2,
+  wxString var = under.SubString(0, under.Find("->") - 1);
+  wxString to = under.SubString(under.Find("->") + 2,
                                 under.Length() - 1);
-  if (to.Right(1) == wxT("+"))
-    to = to.Left(to.Length() - 1) + wxT(",plus");
-  if (to.Right(1) == wxT("-"))
-    to = to.Left(to.Length() - 1) + wxT(",minus");
+  if (to.Right(1) == "+")
+    to = to.Left(to.Length() - 1) + ",plus";
+  if (to.Right(1) == "-")
+    to = to.Left(to.Length() - 1) + ",minus";
 
-  s += wxT("(") + base + wxT(",") + var + wxT(",") + to + wxT(")");
+  s += "(" + base + "," + var + "," + to + ")";
   return s;
 }
 
@@ -240,11 +240,11 @@ wxString LimitCell::ToTeX()
 {
   wxString under = m_under->ListToTeX();
   wxString base = m_base->ListToTeX();
-  int varEnd = under.Find(wxT("->"));
+  int varEnd = under.Find("->");
   int toStart = 0;
   if(varEnd == wxNOT_FOUND)
   {
-    varEnd = under.Find(wxT("\\mbox{\\rightarrow }"));
+    varEnd = under.Find("\\mbox{\\rightarrow }");
     if(varEnd != wxNOT_FOUND)
     {
       toStart = varEnd + 19;
@@ -260,7 +260,7 @@ wxString LimitCell::ToTeX()
   wxString var = under.SubString(0, varEnd);
   wxString to = under.SubString(toStart,
                                 under.Length() - 1);
-  wxString s = wxT("\\lim_{") + var + wxT("\\to ") + to + wxT("}{") + base + wxT("}");
+  wxString s = "\\lim_{" + var + "\\to " + to + "}{" + base + "}";
   return s;
 }
 
@@ -273,9 +273,9 @@ wxString LimitCell::ToMathML()
 
   wxString retval;
   if (from.IsEmpty())
-    retval = wxT("<mo>lim</mo>") + base;
+    retval = "<mo>lim</mo>" + base;
   else
-    retval = wxT("<munder><mo>lim</mo>") + from + wxT("</munder>\n");
+    retval = "<munder><mo>lim</mo>" + from + "</munder>\n";
   return (retval);
 }
 
@@ -283,9 +283,9 @@ wxString LimitCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += wxT(" breakline=\"true\"");
+    flags += " breakline=\"true\"";
 
-  return _T("<lm") + flags + wxT("><r>") + m_name->ListToXML() + _T("</r><r>") +
+  return _T("<lm") + flags + "><r>" + m_name->ListToXML() + _T("</r><r>") +
          m_under->ListToXML() + _T("</r><r>") +
          m_base->ListToXML() + _T("</r></lm>");
 }
@@ -293,7 +293,7 @@ wxString LimitCell::ToXML()
 wxString LimitCell::ToOMML()
 {
   wxString under = m_under->ListToOMML();
-  under.Replace(wxT("->"), wxT("\u2192"));
+  under.Replace("->", wxT("\u2192"));
 
   return _T("<m:func><m:fName><m:limLow><m:e><m:r>lim</m:r></m:e><m:lim>") +
          under + _T("</m:lim></m:limLow></m:fName><m:e>") +
