@@ -37,7 +37,8 @@
 #include "TextCell.h"
 #include "ImgCell.h"
 #include "BitmapOut.h"
-#include "list"
+#include <functional>
+#include <set>
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) :
   Cell(this, config, cellPointers)
@@ -610,59 +611,45 @@ void GroupCell::UpdateConfusableCharWarnings()
   ClearToolTip();
 
   wxString code;
-  if(GetInput())
-    code += GetInput()->ListToString() + " ";
-  if(GetOutput())
-    code += GetOutput()->VariablesAndFunctionsList();
+  if (GetInput())
+    code << GetInput()->ListToString() << wxT(' ');
+  if (GetOutput())
+    code << GetOutput()->VariablesAndFunctionsList();
   // Extract all variable and command names from the cell including input and output
-  CmdsAndVariables cmdsAndVariables;
 
-  for (auto const &tok : MaximaTokenizer(code, *m_configuration).PopTokens())
-    if((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
-      cmdsAndVariables[tok.GetText()] = 1;
+  // The tokens are retained in this variable so that we can use references to them
+  auto tokens = MaximaTokenizer(code, *m_configuration).PopTokens();
+  // A set of references to the token texts
+  std::set<std::reference_wrapper<const wxString>> cmdsAndVariables;
+
+  for (auto const &tok : tokens)
+    if ((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
+      cmdsAndVariables.insert(std::cref(tok.GetText()));
   
-  // Now we step through all the words we found
-  while(!cmdsAndVariables.empty())
-  {
-    CmdsAndVariables::iterator cmp = cmdsAndVariables.begin();
-    wxString word;
-    word = cmp->first;
-    cmdsAndVariables.erase(cmp);
-    // Now iterate through all remaining words
-    cmp = cmdsAndVariables.begin();
-    while(cmp != cmdsAndVariables.end())
+  // Iterate over all word pairs
+  for (auto word = cmdsAndVariables.cbegin(); word != cmdsAndVariables.cend(); ++ word)
+    for (auto cmp = std::next(word); cmp != cmdsAndVariables.cend(); ++ cmp)
     {
       // iterate through all lookalike chars
-      for (wxString::const_iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
+      for (auto it = m_lookalikeChars.cbegin(); it < m_lookalikeChars.cend(); )
       {
-        wxChar ch1 = *it;
-        ++it;
-        wxASSERT(it < m_lookalikeChars.end());
-        wxChar ch2 = *it;
-        wxString word_subst = word;
-        if(word_subst.Replace(ch1,ch2))
-        {
-          if(cmp->first == word_subst)
-            AddToolTip(_("Warning: Lookalike chars: ") +
-                       cmp->first.utf8_str() + wxT("\u2260") +
-                       word.utf8_str()
-              );
-        }
-        word_subst = word;
-        if(word_subst.Replace(ch2,ch1))
-        {
-          if(cmp->first == word_subst)
-            AddToolTip(_("Warning: Lookalike chars: ") +
-                       cmp->first +
-                       wxT(" \u2260 ") +
-                       word
-              );
-        }
-          
+        wxChar ch1 = *it++, ch2 = *it++;
+        wxASSERT(it <= m_lookalikeChars.end());
+        wxString word_subst = *word;
+        if (word_subst.Replace(ch1, ch2) && *cmp == word_subst)
+          AddToolTip(_("Warning: Lookalike chars: ") +
+                     cmp->get().utf8_str() + wxT("\u2260") +
+                     word->get().utf8_str()
+                     );
+        word_subst = *word;
+        if (word_subst.Replace(ch2, ch1) && *cmp == word_subst)
+          AddToolTip(_("Warning: Lookalike chars: ") +
+                     *cmp +
+                     wxT(" \u2260 ") +
+                     *word
+                     );
       }
-      ++cmp;
     }
-  }
 }
 
 void GroupCell::Recalculate()
