@@ -226,7 +226,7 @@ Configuration::Configuration(wxDC *dc) :
   #ifdef __WXMSW__
   auto req = wxFontInfo()
                .Family(wxFONTFAMILY_MODERN)
-               .FaceName("Linux Libertine O")
+               .FaceName(wxT("Linux Libertine O"))
                .Style(wxFONTSTYLE_NORMAL);
 
   wxFont font = FontCache::GetAFont(req);
@@ -256,12 +256,12 @@ Configuration::Configuration(wxDC *dc) :
   m_styles[TS_SUBSECTION].Set(_("Subsection cell (Heading 3)"),*wxBLACK, true, false, false, 16);
   m_styles[TS_SECTION].Set(_("Section cell (Heading 2)"),*wxBLACK, true, true, false, 18);
   m_styles[TS_TITLE].Set(_("Title cell (Heading 1)"),*wxBLACK, true, false, true, 24);
-  m_styles[TS_WARNING].Set(_("Maxima warnings"),wxColor("orange"), true, false, false, 12);
+  m_styles[TS_WARNING].Set(_("Maxima warnings"),wxColor(wxT("orange")), true, false, false, 12);
   m_styles[TS_ERROR].Set(_("Maxima errors"),*wxRED, false, false, false, 12);
-  m_styles[TS_MAIN_PROMPT].Set(_("Input labels"),wxColor("rgb(255,128,128)"), false, false, false);
+  m_styles[TS_MAIN_PROMPT].Set(_("Input labels"),wxColor(wxT("rgb(255,128,128)")), false, false, false);
   m_styles[TS_OTHER_PROMPT].Set(_("Maxima questions"),*wxRED, false, true, false);
-  m_styles[TS_LABEL].Set(_("Output labels"),wxColor("rgb(255,192,128)"), false, false, false);
-  m_styles[TS_USERLABEL].Set(_("User-defined labels"),wxColor("rgb(255,64,0)"), false, false, false);
+  m_styles[TS_LABEL].Set(_("Output labels"),wxColor(wxT("rgb(255,192,128)")), false, false, false);
+  m_styles[TS_USERLABEL].Set(_("User-defined labels"),wxColor(wxT("rgb(255,64,0)")), false, false, false);
   m_styles[TS_SPECIAL_CONSTANT].Set(_("Special constants"),*wxBLACK, false, false, false);
   m_styles[TS_INPUT].Set(_("Maxima input"),*wxBLUE, false, false, false);
   m_styles[TS_NUMBER].Set(_("Numbers"),*wxBLACK, false, false, false);
@@ -272,12 +272,12 @@ Configuration::Configuration(wxDC *dc) :
   m_styles[TS_HIGHLIGHT].Set(_("Highlight (dpart)"),*wxRED);
   m_styles[TS_TEXT_BACKGROUND].Set(_("Text cell background"),*wxWHITE);
   m_styles[TS_DOCUMENT_BACKGROUND].Set(_("Document background"),*wxWHITE);
-  m_styles[TS_CELL_BRACKET].Set(_("Cell bracket"),wxColour("rgb(0,0,0)"));
-  m_styles[TS_ACTIVE_CELL_BRACKET].Set(_("Active cell bracket"),"rgb(255,0,0)");
-  m_styles[TS_CURSOR].Set(_("Cursor"),"rgb(0,0,0)");
+  m_styles[TS_CELL_BRACKET].Set(_("Cell bracket"),wxColour(wxT("rgb(0,0,0)")));
+  m_styles[TS_ACTIVE_CELL_BRACKET].Set(_("Active cell bracket"),wxT("rgb(255,0,0)"));
+  m_styles[TS_CURSOR].Set(_("Cursor"),wxT("rgb(0,0,0)"));
   m_styles[TS_SELECTION].Set(_("Selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
   m_styles[TS_EQUALSSELECTION].Set(_("Text equal to selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
-  m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor("rgb(153,153,153)")) ;
+  m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
   ReadConfig();
 }
 
@@ -340,7 +340,7 @@ bool Configuration::MaximaFound(wxString location)
     maximaFound = true;
 
   // Find a maxima within an application package.
-  if (wxFileExists(location + "/Contents/Resources/maxima.sh"))
+  if (wxFileExists(location + wxT("/Contents/Resources/maxima.sh")))
     maximaFound = true;
 
   // Don't complain if PATH doesn't yield a result.
@@ -349,7 +349,7 @@ bool Configuration::MaximaFound(wxString location)
   if(!(location.EndsWith("/") || location.EndsWith("\\")))
   {
     wxPathList pathlist;
-    pathlist.AddEnvList("PATH");
+    pathlist.AddEnvList(wxT("PATH"));
     wxString path = pathlist.FindAbsoluteValidPath(location);
     if (!path.empty())
       maximaFound = true;
@@ -362,10 +362,10 @@ void Configuration::ReadConfig()
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
-  if(!config->Read("AutoSaveAsTempFile", &m_autoSaveAsTempFile))
+  if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
     long autoSaveMinutes = 0;
-    config->Read("autoSaveMinutes", &autoSaveMinutes);
+    config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
   config->Read("language", &m_language);
@@ -375,11 +375,11 @@ void Configuration::ReadConfig()
   config->Read("invertBackground", &m_invertBackground);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
-  config->Read("documentclass", &m_documentclass);
-  config->Read("documentclassoptions", &m_documentclassOptions);
-  config->Read("latin2greek", &m_latin2greek);
-  config->Read("enterEvaluates", &m_enterEvaluates);
-  config->Read("hidemultiplicationsign", &m_hidemultiplicationsign);
+  config->Read(wxT("documentclass"), &m_documentclass);
+  config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
+  config->Read(wxT("latin2greek"), &m_latin2greek);
+  config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
+  config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
   config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
@@ -391,69 +391,69 @@ void Configuration::ReadConfig()
     m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
   }
   
-  config->Read("TOCshowsSectionNumbers", &m_TOCshowsSectionNumbers);
-  config->Read("autoWrapMode", &m_autoWrap);
-  config->Read("mathJaxURL_UseUser", &m_mathJaxURL_UseUser);
-  config->Read("useUnicodeMaths", &m_useUnicodeMaths);
-  config->Read("mathJaxURL", &m_mathJaxURL);
-  config->Read("autosubscript", &m_autoSubscript);
-  config->Read("antiAliasLines", &m_antiAliasLines);
-  config->Read("indentMaths", &m_indentMaths);
-  config->Read("abortOnError",&m_abortOnError);
+  config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
+  config->Read(wxT("autoWrapMode"), &m_autoWrap);
+  config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
+  config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
+  config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
+  config->Read(wxT("autosubscript"), &m_autoSubscript);
+  config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
+  config->Read(wxT("indentMaths"), &m_indentMaths);
+  config->Read(wxT("abortOnError"),&m_abortOnError);
   config->Read("defaultPort",&m_defaultPort);
-  config->Read("fixReorderedIndices", &m_fixReorderedIndices);
-  config->Read("showLength", &m_showLength);
-  config->Read("printScale", &m_printScale);
-  config->Read("useSVG", &m_useSVG);
-  config->Read("copyBitmap", &m_copyBitmap);
-  config->Read("copyMathML", &m_copyMathML);
-  config->Read("copyMathMLHTML", &m_copyMathMLHTML);
-  config->Read("copyRTF", &m_copyRTF);
-  config->Read("copySVG", &m_copySVG );
-  config->Read("copyEMF", &m_copyEMF );
-  config->Read("autodetectMaxima", &m_autodetectMaxima);
-  config->Read("maxima", &m_maximaUserLocation);
+  config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
+  config->Read(wxT("showLength"), &m_showLength);
+  config->Read(wxT("printScale"), &m_printScale);
+  config->Read(wxT("useSVG"), &m_useSVG);
+  config->Read(wxT("copyBitmap"), &m_copyBitmap);
+  config->Read(wxT("copyMathML"), &m_copyMathML);
+  config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
+  config->Read(wxT("copyRTF"), &m_copyRTF);
+  config->Read(wxT("copySVG"), &m_copySVG );
+  config->Read(wxT("copyEMF"), &m_copyEMF );
+  config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
+  config->Read(wxT("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (m_maximaUserLocation.IsSameAs("1"))
+  if (m_maximaUserLocation.IsSameAs(wxT("1")))
     m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
   m_autoIndent = true;
-  config->Read("autoIndent", &m_autoIndent);
+  config->Read(wxT("autoIndent"), &m_autoIndent);
 
   int showLabelChoice;
-  config->Read("showLabelChoice", &showLabelChoice);
+  config->Read(wxT("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels) showLabelChoice; 
 
-  config->Read("changeAsterisk", &m_changeAsterisk);
+  config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
-  config->Read("notifyIfIdle", &m_notifyIfIdle);
+  config->Read(wxT("notifyIfIdle"), &m_notifyIfIdle);
 
-  config->Read("hideBrackets", &m_hideBrackets);
+  config->Read(wxT("hideBrackets"), &m_hideBrackets);
 
   m_displayedDigits = 100;
-  config->Read("displayedDigits", &m_displayedDigits);
+  config->Read(wxT("displayedDigits"), &m_displayedDigits);
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
 
   m_restartOnReEvaluation = true;
-  config->Read("restartOnReEvaluation", &m_restartOnReEvaluation);
+  config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
   m_matchParens = true;
-  config->Read("matchParens", &m_matchParens);
+  config->Read(wxT("matchParens"), &m_matchParens);
 
   m_insertAns = false;
-  config->Read("insertAns", &m_insertAns);
+  config->Read(wxT("insertAns"), &m_insertAns);
 
   m_openHCaret = false;
-  config->Read("openHCaret", &m_openHCaret);
+  config->Read(wxT("openHCaret"), &m_openHCaret);
   
   m_labelWidth = 4;
-  config->Read("labelWidth", &m_labelWidth);
+  config->Read(wxT("labelWidth"), &m_labelWidth);
 
-  config->Read("printBrackets", &m_printBrackets);
+  config->Read(wxT("printBrackets"), &m_printBrackets);
 
   m_zoomFactor = 1.0;
-  config->Read("ZoomFactor", &m_zoomFactor);
+  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
 
   if (wxFontEnumerator::IsValidFacename(m_fontCMEX = CMEX10) &&
       wxFontEnumerator::IsValidFacename(m_fontCMSY = CMSY10) &&
@@ -462,11 +462,11 @@ void Configuration::ReadConfig()
       wxFontEnumerator::IsValidFacename(m_fontCMTI = CMTI10))
   {
     m_TeXFonts = true;
-    config->Read("usejsmath", &m_TeXFonts);
+    config->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
   m_keepPercent = true;
-  wxConfig::Get()->Read("keepPercent", &m_keepPercent);
+  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
 
   ReadStyles();
 }
@@ -701,32 +701,32 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
     m_parenthesisDrawMode = handdrawn;
     wxFont font = GetFont(TS_FUNCTION,20);
     if (CharsExistInFont(font,
-                         PAREN_OPEN_TOP_UNICODE,
-                         PAREN_OPEN_EXTEND_UNICODE,
-                         PAREN_OPEN_BOTTOM_UNICODE)
+                         wxT(PAREN_OPEN_TOP_UNICODE),
+                         wxT(PAREN_OPEN_EXTEND_UNICODE),
+                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
       )
     {
       m_parenthesisDrawMode = assembled_unicode;
       return m_parenthesisDrawMode;
     }
     auto req = FontInfo::GetFor(font)
-               .FaceName("Linux Libertine");
+               .FaceName(wxT("Linux Libertine"));
     font = FontCache::GetAFont(req);
     if (CharsExistInFont(font,
-                         PAREN_OPEN_TOP_UNICODE,
-                         PAREN_OPEN_EXTEND_UNICODE,
-                         PAREN_OPEN_BOTTOM_UNICODE)
+                         wxT(PAREN_OPEN_TOP_UNICODE),
+                         wxT(PAREN_OPEN_EXTEND_UNICODE),
+                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
       )
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont;
       return m_parenthesisDrawMode;
     }
-    req.FaceName("Linux Libertine O");
+    req.FaceName(wxT("Linux Libertine O"));
     font = FontCache::GetAFont(req);
     if (CharsExistInFont(font,
-                         PAREN_OPEN_TOP_UNICODE,
-                         PAREN_OPEN_EXTEND_UNICODE,
-                         PAREN_OPEN_BOTTOM_UNICODE)
+                         wxT(PAREN_OPEN_TOP_UNICODE),
+                         wxT(PAREN_OPEN_EXTEND_UNICODE),
+                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
       )
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
@@ -760,7 +760,7 @@ void Configuration::SetZoomFactor(double newzoom)
     newzoom = GetMinZoomFactor();
 
   m_zoomFactor = newzoom;
-  wxConfig::Get()->Write("ZoomFactor", m_zoomFactor);
+  wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
   RecalculationForce(true);
 }
 
@@ -783,7 +783,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   }
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
-  if (font.GetFaceName() == "Monaco")
+  if (font.GetFaceName() == wxT("Monaco"))
   {
     m_charsInFontMap[name] = false;
     return false;
@@ -903,7 +903,7 @@ void Configuration::ReadStyles(wxString file)
   }
   
   // Font
-  config->Read("Style/Default/Style/Text/fontname", &m_fontName);
+  config->Read(wxT("Style/Default/Style/Text/fontname"), &m_fontName);
 #ifdef __WXOSX_MAC__
   if (m_fontName.IsEmpty())
   {
@@ -911,8 +911,8 @@ void Configuration::ReadStyles(wxString file)
   }
 #endif
 
-  config->Read("mathfontsize", &m_mathFontSize);
-  config->Read("Style/Math/fontname", &m_mathFontName);
+  config->Read(wxT("mathfontsize"), &m_mathFontSize);
+  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
 #ifdef __WXOSX_MAC__
   if (m_mathFontName.IsEmpty())
   {
@@ -954,11 +954,11 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_DOCUMENT_BACKGROUND].Read(config, "Style/DocumentBackground/");
   m_styles[TS_ERROR].Read(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Read(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,"Style/ActiveCellBracket/");
-  m_styles[TS_CURSOR].Read(config,"Style/ActiveCellBracket/");
-  m_styles[TS_SELECTION].Read(config,"Style/Selection/");
-  m_styles[TS_EQUALSSELECTION].Read(config,"Style/EqualsSelection/");
-  m_styles[TS_OUTDATED].Read(config,"Style/Outdated/");
+  m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Read(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Read(config,wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
 
 }
@@ -970,11 +970,11 @@ void Configuration::WriteStyles(wxString file)
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-    config = new wxFileConfig("wxMaxima", wxEmptyString, file);
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
   config->Write("Style/Default/Style/Text/fontname", m_fontName);
-  config->Write("mathfontsize", m_mathFontSize);
+  config->Write(wxT("mathfontsize"), m_mathFontSize);
   config->Write("Style/Math/fontname", m_mathFontName);
   
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
@@ -1011,11 +1011,11 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_DOCUMENT_BACKGROUND].Write(config, "Style/DocumentBackground/");
   m_styles[TS_ERROR].Write(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,"Style/ActiveCellBracket/");
-  m_styles[TS_CURSOR].Write(config,"Style/ActiveCellBracket/");
-  m_styles[TS_SELECTION].Write(config,"Style/Selection/");
-  m_styles[TS_EQUALSSELECTION].Write(config,"Style/EqualsSelection/");
-  m_styles[TS_OUTDATED].Write(config,"Style/Outdated/");
+  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
   if(file != wxEmptyString)
   {
     config->Flush();
@@ -1040,7 +1040,7 @@ wxFontStyle Configuration::IsItalic(long st) const
 wxString Configuration::GetSymbolFontName() const
 {
 #if defined __WXMSW__
-  return "Symbol";
+  return wxT("Symbol");
 #else
   return m_fontName;
 #endif
