@@ -57,8 +57,8 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_outputRect.width = 0;
   m_outputRect.height = 0;
   m_group = this;
-  m_fontSize = (*m_configuration)->GetDefaultFontSize();
-  m_mathFontSize = (*m_configuration)->GetMathFontSize();
+  m_fontSize = (*m_configuration)->FontSize();
+  m_mathFontSize = (*m_configuration)->MathFontSize();
   m_forceBreakLine = true;
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
@@ -672,10 +672,10 @@ void GroupCell::UpdateConfusableCharWarnings()
 
 void GroupCell::Recalculate()
 {
-  m_fontSize = (*m_configuration)->GetDefaultFontSize();
-  m_mathFontSize = (*m_configuration)->GetMathFontSize();
-  GroupCell::RecalculateWidths((*m_configuration)->GetDefaultFontSize());
-  GroupCell::RecalculateHeight((*m_configuration)->GetDefaultFontSize());
+  m_fontSize = (*m_configuration)->FontSize();
+  m_mathFontSize = (*m_configuration)->MathFontSize();
+  GroupCell::RecalculateWidths((*m_configuration)->FontSize());
+  GroupCell::RecalculateHeight((*m_configuration)->FontSize());
 }
 
 void GroupCell::RecalculateWidths(int fontsize)
@@ -736,7 +736,7 @@ void GroupCell::InputHeightChanged()
   EditorCell *editorCell = GetEditable();
   if (editorCell != NULL) {
     editorCell->ResetSize();
-    editorCell->RecalculateWidths((*m_configuration)->GetDefaultFontSize());
+    editorCell->RecalculateWidths((*m_configuration)->FontSize());
   }
   if (m_inputLabel != NULL) {
     m_inputLabel->ResetData();
@@ -788,7 +788,7 @@ void GroupCell::RecalculateHeightInput()
     m_width = configuration->GetCellBracketWidth();
     m_height = 2;
     m_center = 0;
-    Cell::RecalculateWidthsList((*m_configuration)->GetDefaultFontSize());
+    Cell::RecalculateWidthsList((*m_configuration)->FontSize());
     return;
   }
   
@@ -797,7 +797,7 @@ void GroupCell::RecalculateHeightInput()
   {
     if(m_inputLabel)
     {
-      m_inputLabel->RecalculateHeightList((*m_configuration)->GetDefaultFontSize());
+      m_inputLabel->RecalculateHeightList((*m_configuration)->FontSize());
       m_center = m_inputLabel->GetCenterList();
       m_height = m_inputLabel->GetHeightList();
     }
@@ -814,8 +814,8 @@ void GroupCell::RecalculateHeightInput()
     while (tmp != NULL)
     {
       tmp->RecalculateHeight(tmp->IsMath() ?
-                             (*m_configuration)->GetMathFontSize() :
-                             (*m_configuration)->GetDefaultFontSize());
+                             (*m_configuration)->MathFontSize() :
+                             (*m_configuration)->FontSize());
       tmp = tmp->m_next;
     }
   }
@@ -869,23 +869,23 @@ void GroupCell::RecalculateHeightOutput()
     
   if(m_height < 0)
   {
-    m_fontSize = configuration->GetDefaultFontSize();
-    m_mathFontSize = (*m_configuration)->GetMathFontSize();
+    m_fontSize = configuration->FontSize();
+    m_mathFontSize = (*m_configuration)->MathFontSize();
     
-    RecalculateWidths(configuration->GetDefaultFontSize());
+    RecalculateWidths(configuration->FontSize());
     RecalculateHeightInput();
   }
   m_output->HardLineBreak();
 
   Cell *tmp = m_output.get();
-  m_mathFontSize = configuration->GetMathFontSize();
+  m_mathFontSize = configuration->MathFontSize();
 
   // Recalculate widths of cells
   while (tmp != NULL)
   {
     tmp->RecalculateWidths(tmp->IsMath() ?
-                           (*m_configuration)->GetMathFontSize() :
-                           (*m_configuration)->GetDefaultFontSize());
+                           (*m_configuration)->FontSize() :
+                           (*m_configuration)->FontSize());
     tmp = tmp->m_next;
   }
 
@@ -897,8 +897,8 @@ void GroupCell::RecalculateHeightOutput()
   while (tmp != NULL)
   {
     tmp->RecalculateHeight(tmp->IsMath() ?
-                           (*m_configuration)->GetMathFontSize() :
-                           (*m_configuration)->GetDefaultFontSize());
+                           (*m_configuration)->MathFontSize() :
+                           (*m_configuration)->FontSize());
     tmp->ResetData();
     tmp = tmp->m_next;
   }
@@ -2039,7 +2039,7 @@ void GroupCell::BreakLines(Cell *cell)
     if(m_output != NULL)
     {
       m_output->ResetSizeList();
-      m_output->RecalculateList((*m_configuration)->GetMathFontSize());
+      m_output->RecalculateList((*m_configuration)->MathFontSize());
     }
     ResetData();
   }

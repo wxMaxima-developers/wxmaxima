@@ -1037,7 +1037,7 @@ void EditorCell::SetFont()
 
   m_fontSize = configuration->GetFontSize(m_textStyle);
   if (m_fontSize < 4)
-    m_fontSize = configuration->GetDefaultFontSize();
+    m_fontSize = configuration->FontSize();
 
   m_fontSize = Scale_Px(m_fontSize);
 

@@ -133,7 +133,7 @@ void ParenCell::SetFont(int fontsize)
   if(m_bigParenType == Configuration::ascii)
     req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, fontsize));
   else
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize()));
+    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, configuration->MathFontSize()));
 
   wxASSERT(req.GetPointSize() > 0);
 
@@ -315,7 +315,7 @@ void ParenCell::Draw(wxPoint point)
     wxDC *dc = configuration->GetDC();
     wxPoint innerCellPos(point);
 
-    SetFont(configuration->GetMathFontSize());
+    SetFont(configuration->MathFontSize());
     
     switch(m_bigParenType)
     {            

@@ -1994,7 +1994,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = GetActiveCell()->GetCaretPosition();
     if (GetActiveCell()->SelectionActive()) startingChar = dynamic_cast<EditorCell *>(GetActiveCell())->GetSelectionStart();
-    m_down = wxPoint(GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize(), startingChar));
+    m_down = wxPoint(GetActiveCell()->PositionToPoint(m_configuration->FontSize(), startingChar));
     GetActiveCell()->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -3595,8 +3595,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     SetSaved(false);
 
     int height = activeCell->GetHeight();
-    //   int fontsize = m_configuration->GetDefaultFontSize();
-    int fontsize = m_configuration->GetDefaultFontSize();
+    int fontsize = m_configuration->FontSize();
 
     GetActiveCell()->RecalculateWidths(wxMax(fontsize, MC_MIN_SIZE));
     GetActiveCell()->RecalculateHeight(wxMax(fontsize, MC_MIN_SIZE));
@@ -4319,7 +4318,10 @@ void Worksheet::GetMaxPoint(int *width, int *height)
   {
     currentHeight += tmp->GetHeightList();
     currentHeight += m_configuration->GetGroupSkip();
-    int currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth() + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize());
+    int currentWidth =
+      m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->FontSize())
+      + tmp->GetWidth()
+      + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->FontSize());
     *width = wxMax(currentWidth, *width);
     tmp = tmp->m_next;
   }
@@ -7574,7 +7576,7 @@ void Worksheet::ShowPoint(wxPoint point)
   width -= wxSystemSettings::GetMetric(wxSYS_HTHUMB_X);
 
   Configuration *configuration = m_configuration;
-  int fontsize_px = configuration->GetZoomFactor() * configuration->GetDefaultFontSize();
+  int fontsize_px = configuration->GetZoomFactor() * configuration->FontSize();
   if (
           (point.y - fontsize_px < view_y) ||
           (point.y + fontsize_px > view_y + height - 20)
@@ -8357,11 +8359,11 @@ bool Worksheet::CaretVisibleIs()
   {
     if (GetActiveCell())
     {
-      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->FontSize());
       if (point.y < 1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(m_configuration->FontSize());
       }
       return PointVisibleIs(point);
     }
@@ -8382,12 +8384,12 @@ void Worksheet::ScrollToCaret()
   {
     if (GetActiveCell())
     {
-      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->FontSize());
       if ((point.x < 0) || (point.y < 0))
       {
         RecalculateForce();
         RecalculateIfNeeded();
-        point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(m_configuration->FontSize());
       }
       if (QuestionPending())
       {
@@ -8640,7 +8642,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
 
     // Find the position for the popup menu
     RecalculateIfNeeded();
-    wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
+    wxPoint pos = editor->PositionToPoint(m_configuration->FontSize());
     // There might be no current point yet in this EditorCell.
     if((pos.x < 0) || (pos.y < 0))
       pos = editor->GetGroup()->GetCurrentPoint();

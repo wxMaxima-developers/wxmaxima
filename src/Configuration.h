@@ -165,7 +165,7 @@ public:
     if (ShowAutomaticLabels())
       return 0;
     else
-      return GetZoomFactor() * m_mathFontSize / 2;
+      return GetZoomFactor() * MathFontSize() / 2;
   }
 
   long GetCellBracketWidth() const
@@ -380,20 +380,6 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
-  long GetDefaultFontSize() const
-  { return m_styles[TS_DEFAULT].FontSize(); }
-
-  void SetDefaultFontSize(long fontSize)
-  {
-    m_styles[TS_DEFAULT].FontSize(fontSize);
-  }
-
-  long GetMathFontSize() const
-  { return m_mathFontSize; }
-
-  void SetMathFontSize(double size)
-  { m_mathFontSize = size; }
-
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
   { return m_autoWrap > 0; }
@@ -426,12 +412,6 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  long GetFontSize(TextStyle st) const
-  {
-    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].FontSize();
-    return 0;
-  }
 
   /*! Reads the style settings 
 
@@ -829,15 +809,23 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  const wxString &FontName()const {return m_fontName;}
-  void FontName(const wxString &name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
-  void MathFontName(const wxString &name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
-  const wxString &MathFontName()const {return m_mathFontName;}
+  const wxString &FontName()const {return m_styles[TS_DEFAULT].FontName();}
+  void FontName(const wxString &name, bool save = true);
+
+  long FontSize() const { return m_styles[TS_DEFAULT].FontSize(); }
+  void FontSize(long fontSize, bool save = false);
+
+  const wxString &MathFontName() const {return m_styles[TS_NUMBER].FontName();}
+  void MathFontName(const wxString &name, bool save = true);
+
+  long MathFontSize() const { return m_styles[TS_NUMBER].FontSize(); }
+  void MathFontSize(double size);
+
+  long GetFontSize(TextStyle st) const { return m_styles[st].FontSize(); }
 
   //! Update the list of fonts associated to the worksheet styles
   void UpdateWorksheetFonts();
-  //! Get the font for the given worksheet style
-  wxFont GetWorksheetFont(TextStyle style) const;
+
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(long autosubscriptnum)
@@ -938,9 +926,6 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  wxString m_fontName;
-  long m_mathFontSize;
-  wxString m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
@@ -996,7 +981,6 @@ private:
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
   bool m_invertBackground;
-  wxFont m_worksheetFonts[NUMBEROFSTYLES];
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

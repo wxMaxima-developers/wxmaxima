@@ -496,7 +496,7 @@ void TextCell::RecalculateWidths(int fontsize)
           m_unescapeRegEx.ReplaceAll(&text, stR("\\1"));
         }
 
-        wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
+        wxFont font = configuration->GetFont(m_textStyle, configuration->FontSize());
       
         m_width = Scale_Px(configuration->GetLabelWidth());
         // We will decrease it before use

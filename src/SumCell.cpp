@@ -128,7 +128,7 @@ void SumCell::RecalculateWidths(int fontsize)
     if (configuration->CheckTeXFonts())
     {
       wxDC *dc = configuration->GetDC();
-      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+      double fontsize1 = Scale_Px(configuration->MathFontSize());
 
       wxFont font =
         FontCache::GetAFont(wxFontInfo(fontsize1)
@@ -199,7 +199,7 @@ void SumCell::Draw(wxPoint point)
     {
       /*this code is disabled*/
       SetForeground();
-      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+      double fontsize1 = Scale_Px(configuration->MathFontSize());
       wxASSERT(fontsize1 > 0);
 
       auto req = wxFontInfo(fontsize1)

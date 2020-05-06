@@ -1054,13 +1054,13 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxStaticText *df = new wxStaticText(panel, -1, _("Documentation+Code font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
-  if (m_configuration->FontName() != wxEmptyString)
-    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+  if (!m_configuration->FontName().IsEmpty())
+    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->FontSize()));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   if (!m_configuration->MathFontName().IsEmpty())
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->MathFontSize()));
 
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   wxArrayString m_styleFor_choices;
@@ -1157,8 +1157,8 @@ void ConfigDialogue::WriteSettings()
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
-  config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
-  config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
+  config->Write(wxT("fontSize"), m_configuration->FontSize());
+  config->Write(wxT("mathFontsize"), m_configuration->MathFontSize());
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
@@ -1302,7 +1302,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     .Style(wxFONTSTYLE_NORMAL);
   if (!FontCache::GetAFont(req).IsOk())
 #endif
-  req = wxFontInfo(m_configuration->GetMathFontSize())
+  req = wxFontInfo(m_configuration->MathFontSize())
           .Family(wxFONTFAMILY_DEFAULT)
           .Italic(false)
           .Light(false)
@@ -1317,9 +1317,9 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
   if (math.Ok())
   {
     m_configuration->MathFontName(math.GetFaceName());
-    m_configuration->SetMathFontSize(math.GetPointSize());
-    math.SetPointSize(m_configuration->GetMathFontSize());
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
+    m_configuration->MathFontSize(math.GetPointSize());
+    math.SetPointSize(m_configuration->MathFontSize());
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->MathFontSize()));
   }
 
   UpdateExample();
@@ -1327,7 +1327,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 {
-  int fontsize = m_configuration->GetDefaultFontSize();
+  int fontsize = m_configuration->FontSize();
   wxString fontName;
   
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
@@ -1377,13 +1377,14 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     {
       m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
       m_configuration->FontName(font.GetFaceName());
-      m_configuration->SetDefaultFontSize(wxMax(
-                                            wxMin(
-                                              font.GetPointSize(), MC_MAX_SIZE),
-                                            MC_MIN_SIZE)
+      m_configuration->FontSize(
+        wxMax(
+          wxMin(
+            font.GetPointSize(), MC_MAX_SIZE),
+          MC_MIN_SIZE)
         );
       m_getFont->SetLabel(m_configuration->FontName() +
-                          wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+                          wxString::Format(wxT(" (%g)"), (double)m_configuration->FontSize()));
     }
     else
     {
@@ -1474,7 +1475,7 @@ void ConfigDialogue::UpdateExample()
   if (st == TS_TEXT_BACKGROUND)
     color = m_configuration->m_styles[st].Color();
 
-  int fontsize = m_configuration->GetDefaultFontSize();
+  int fontsize = m_configuration->FontSize();
   if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 ||
       st == TS_SUBSUBSECTION || st == TS_SUBSECTION ||
       st == TS_SECTION || st == TS_TITLE)
@@ -1482,12 +1483,12 @@ void ConfigDialogue::UpdateExample()
     fontsize = m_configuration->m_styles[st].FontSize();
     m_configuration->m_styles[st].FontName();
     if (fontsize <= 0)
-      fontsize = m_configuration->GetDefaultFontSize();
+      fontsize = m_configuration->FontSize();
   }
   else if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||
            st == TS_SPECIAL_CONSTANT)
   {
-    fontsize = m_configuration->GetMathFontSize();
+    fontsize = m_configuration->MathFontSize();
   }
 
   if (st == TS_TEXT_BACKGROUND)

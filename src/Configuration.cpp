@@ -233,13 +233,13 @@ Configuration::Configuration(wxDC *dc) :
   wxFont font = FontCache::GetAFont(req);
   if (font.IsOk())
   {
-    m_fontName = req.GetFaceName();
-    m_mathFontName = req.GetFaceName();
+    FontName(req.GetFaceName(), false);
+    MathFontName(req.GetFaceName(), false);
   }
   else
-    m_mathFontName = wxEmptyString;
+    MathFontName({}, false);
   #endif
-  m_mathFontSize = 12;
+  MathFontSize(12);
   m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
   m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
   m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
@@ -472,6 +472,90 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
+void Configuration::FontName(const wxString &name, bool save)
+{
+  if (save)
+    wxConfig::Get()->Write("Style/Default/Style/Text/fontname", name);
+
+  m_styles[TS_DEFAULT].FontName(name);
+}
+
+void Configuration::FontSize(long fontSize, bool save)
+{
+  (void)save;
+  m_styles[TS_DEFAULT].FontSize(fontSize);
+
+  /*
+  {
+    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
+      return m_styles[st].FontSize();
+    return 0;
+  }
+*/
+}
+
+void Configuration::MathFontName(const wxString &name, bool save)
+{
+  if (save)
+    wxConfig::Get()->Write("Style/Math/fontname", name);
+
+  m_styles[TS_NUMBER].FontName(name);
+  m_styles[TS_VARIABLE].FontName(name);
+  m_styles[TS_FUNCTION].FontName(name);
+  m_styles[TS_SPECIAL_CONSTANT].FontName(name);
+  m_styles[TS_STRING].FontName(name);
+}
+
+void Configuration::MathFontSize(double size)
+{
+  m_styles[TS_NUMBER].FontSize(size);
+}
+
+/*
+ *   TS_DEFAULT             = 0,
+  TS_VARIABLE            = 1,
+  TS_NUMBER              = 2,
+  TS_FUNCTION            = 3,
+  TS_SPECIAL_CONSTANT    = 4,
+  TS_GREEK_CONSTANT      = 5,
+  TS_STRING              = 6,
+  TS_INPUT               = 7,
+  TS_MAIN_PROMPT         = 8,
+  TS_OTHER_PROMPT        = 9,
+  TS_LABEL               = 10,
+  TS_USERLABEL           = 11,
+  TS_HIGHLIGHT           = 12,
+  TS_WARNING             = 13,
+  TS_ERROR               = 14,
+  TS_TEXT                = 15,
+  TS_HEADING6            = 16,
+  TS_HEADING5            = 17,
+  TS_SUBSUBSECTION       = 18,
+  TS_SUBSECTION          = 19,
+  TS_SECTION             = 20,
+  TS_TITLE               = 21,
+  TS_TEXT_BACKGROUND     = 22,
+  TS_DOCUMENT_BACKGROUND = 23,
+  TS_CELL_BRACKET        = 24,
+  TS_ACTIVE_CELL_BRACKET = 25,
+  TS_CURSOR              = 26,
+  TS_SELECTION           = 27,
+  TS_EQUALSSELECTION     = 28,
+  TS_OUTDATED            = 29,
+  TS_CODE_VARIABLE       = 30,
+  TS_CODE_FUNCTION       = 31,
+  TS_CODE_COMMENT        = 32,
+  TS_CODE_NUMBER         = 33,
+  TS_CODE_STRING         = 34,
+  TS_CODE_OPERATOR       = 35,
+  TS_CODE_LISP           = 36,
+  TS_CODE_ENDOFLINE      = 37,
+*/
+
+
+
+
+
 void Configuration::UpdateWorksheetFonts()
 {
   for(int i = (TextStyle)0; i<NUMBEROFSTYLES; i++)
@@ -481,12 +565,12 @@ void Configuration::UpdateWorksheetFonts()
     switch(style)
     {
     case TS_DEFAULT            :
-    case TS_VARIABLE           :
-    case TS_NUMBER             :
-    case TS_FUNCTION           :
-    case TS_SPECIAL_CONSTANT   :
+    case TS_VARIABLE           : //
+    case TS_NUMBER             : //
+    case TS_FUNCTION           : //
+    case TS_SPECIAL_CONSTANT   : //
     case TS_GREEK_CONSTANT     :
-    case TS_STRING             :
+    case TS_STRING             : //
     case TS_MAIN_PROMPT        :
     case TS_OTHER_PROMPT       :
     case TS_LABEL              :
@@ -555,9 +639,9 @@ void Configuration::UpdateWorksheetFonts()
         )
       {
 #if wxCHECK_VERSION(3, 1, 2)
-        font.SetFractionalPointSize(GetDefaultFontSize());
+        font.SetFractionalPointSize(FontSize());
 #else
-        font.SetPointSize(GetDefaultFontSize());
+        font.SetPointSize(FontSize());
 #endif
       }
     }
@@ -567,21 +651,7 @@ void Configuration::UpdateWorksheetFonts()
       font.MakeBold();
     if(IsUnderlined(style))
       font.MakeUnderlined();
-    m_worksheetFonts[style] = font;
   }
-}
-
-wxFont Configuration::GetWorksheetFont(TextStyle style) const
-{
-  wxASSERT((style > 0) && (style < NUMBEROFSTYLES));
-  wxFont font = m_worksheetFonts[style];
-  
-#if wxCHECK_VERSION(3, 1, 2)
-  font.SetFractionalPointSize(Scale_Px(font.GetFractionalPointSize()));
-#else
-  font.SetPointSize(Scale_Px(font.GetPointSize()));
-#endif
-  return font;
 }
 
 wxFont Configuration::GetFont(TextStyle textStyle, long fontSize) const
@@ -686,12 +756,12 @@ long Configuration::GetLineWidth() const
   // The default line width is the width of the viewport minus the indentation minus
   // roughly one char
   long lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
-                                           GetCellBracketWidth() + GetDefaultFontSize());
+                                           GetCellBracketWidth() + FontSize());
 
   // If that was suspiciously wide we reduce the default line width again.
-  if((lineWidth >= Scale_Px(double(GetDefaultFontSize())) * LineWidth_em()) &&
+  if((lineWidth >= Scale_Px(double(FontSize())) * LineWidth_em()) &&
      (!m_printing))
-    lineWidth = Scale_Px(double(GetDefaultFontSize())) * LineWidth_em();
+    lineWidth = Scale_Px(double(FontSize())) * LineWidth_em();
   return lineWidth;
 }
 
@@ -868,17 +938,16 @@ bool Configuration::CharsExistInFont(wxFont font, wchar_t char1, wchar_t char2, 
 
 const wxString &Configuration::GetFontName(long type) const
 {
-  wxString retval = FontName();
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
-      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
-    retval = m_styles[type].FontName();
-  if(retval == wxEmptyString)
-    retval = m_fontName;
-  
   if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
-    retval = m_mathFontName;
-  return retval;
+      type == TS_SPECIAL_CONSTANT || type == TS_STRING ||
+      type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
+      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
+  {
+    auto &retval = m_styles[type].FontName();
+    if (!retval.IsEmpty())
+      return retval;
+  }
+  return FontName();
 }
 
 const wxString &Configuration::MaximaLocation() const
@@ -902,8 +971,11 @@ const wxString &Configuration::MathJaXURL_Auto() {
 
 void Configuration::ReadStyles(const wxString &file)
 {
+  wxString tmpStr;
+  long tmpLong;
+
   wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
+  if (file.IsEmpty())
     config = wxConfig::Get();
   else
   {
@@ -912,22 +984,23 @@ void Configuration::ReadStyles(const wxString &file)
   }
   
   // Font
-  config->Read(wxT("Style/Default/Style/Text/fontname"), &m_fontName);
+  config->Read(wxT("Style/Default/Style/Text/fontname"), &tmpStr);
 #ifdef __WXOSX_MAC__
-  if (m_fontName.IsEmpty())
+  if (tmpStr.IsEmpty())
   {
-    m_fontName = "Monaco";
+    tmpStr = wxT("Monaco");
   }
 #endif
+  FontName(tmpStr, false);
 
-  config->Read(wxT("mathfontsize"), &m_mathFontSize);
-  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
+  config->Read(wxT("mathfontsize"), &tmpLong);
+  config->Read(wxT("Style/Math/fontname"), &tmpStr);
 #ifdef __WXOSX_MAC__
-  if (m_mathFontName.IsEmpty())
-  {
-    m_mathFontName = "Monaco";
-  }
+  if (tmpStr.IsEmpty())
+    tmpStr = wxT("Monaco");
 #endif
+  MathFontSize(tmpLong);
+  MathFontName(tmpStr, false);
   
   m_styles[TS_DEFAULT].Read(config, "Style/Default/");
   m_styles[TS_TEXT].Read(config, "Style/Text/");
@@ -982,9 +1055,9 @@ void Configuration::WriteStyles(const wxString &file)
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
-  config->Write("Style/Default/Style/Text/fontname", m_fontName);
-  config->Write(wxT("mathfontsize"), m_mathFontSize);
-  config->Write("Style/Math/fontname", m_mathFontName);
+  config->Write("Style/Default/Style/Text/fontname", FontName());
+  config->Write(wxT("mathfontsize"), MathFontSize());
+  config->Write("Style/Math/fontname", MathFontName());
   
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
