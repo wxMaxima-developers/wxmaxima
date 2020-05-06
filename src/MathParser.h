@@ -46,7 +46,7 @@ inside a wxmx file
 class MathParser
 {
 public:
-  MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
+  MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator
