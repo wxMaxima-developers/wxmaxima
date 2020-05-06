@@ -172,6 +172,24 @@ GroupCell::GroupCell(const GroupCell &cell):
   AutoAnswer(cell.m_autoAnswer);
 }
 
+void GroupCell::UpdateCellsInGroup(OutOp op, Cell *cell)
+{
+  switch (op)
+  {
+  case OutOp::Set:
+  case OutOp::Remove:
+    if(m_output != NULL)
+      m_cellsInGroup = 2 + m_output->CellsInListRecursive();
+    else
+      m_cellsInGroup = 2;
+    break;
+  case OutOp::Append:
+    m_cellsInGroup += cell->CellsInListRecursive();
+    break;
+  }
+}
+
+
 void GroupCell::SetCellStyle(int style)
 {
   if(GetEditable() == NULL)
@@ -519,7 +537,7 @@ void GroupCell::SetOutput(Cell *output)
       m_lastInOutput = m_lastInOutput->m_next;
     m_output->ResetSizeList();
   }
-  UpdateCellsInGroup();
+  UpdateCellsInGroup(OutOp::Set);
   UpdateConfusableCharWarnings();
   ResetSize();
   ResetData();
@@ -559,7 +577,7 @@ void GroupCell::RemoveOutput()
   GroupCell *cell = this;
   while(cell != NULL)
     cell = cell->UpdateYPosition();
-  UpdateCellsInGroup();
+  UpdateCellsInGroup(OutOp::Remove);
   UpdateConfusableCharWarnings();
 }
 
@@ -601,8 +619,8 @@ void GroupCell::AppendOutput(Cell *cell)
   m_outputHeight = -1;
   ResetSize();
   ResetData();
-  GroupCell::Recalculate();
-  UpdateCellsInGroup();
+  // Do not call GroupCell::Recalculate() here - it will happen on demand
+  UpdateCellsInGroup(OutOp::Append, cell);
   UpdateConfusableCharWarnings();
 }
 

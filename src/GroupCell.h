@@ -536,11 +536,7 @@ private:
   //! The number of cells the current group contains (-1, if no GroupCell)
   int m_cellsInGroup;
   int m_numberedAnswersCount;
-  void UpdateCellsInGroup(){
-    if(m_output != NULL)
-      m_cellsInGroup = 2 + m_output->CellsInListRecursive();
-    else
-      m_cellsInGroup = 2;
-  }
+  enum class OutOp { Set, Append, Remove };
+  void UpdateCellsInGroup(OutOp op, Cell *cell = {});
 };
 #endif /* GROUPCELL_H */
