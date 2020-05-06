@@ -2224,7 +2224,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   m_closing = false; // when restarting maxima this is temporarily true
 
   wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
-  prompt_compact.Replace(wxT("\n"), wxT("\u21b2"));
+  prompt_compact.Replace("\n", "\u21b2");
 
 
   wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
@@ -2715,7 +2715,7 @@ bool wxMaxima::QueryVariableValue()
   if(m_varNamesToQuery.GetCount() > 0)
   {
     SendMaxima(":lisp-quiet (wx-query-variable \"" +
-               m_varNamesToQuery.Last() + "\")\n");
+               m_varNamesToQuery.Last()+"\")\n");
     m_varNamesToQuery.RemoveAt(m_varNamesToQuery.GetCount()-1);
     return true;
   }
@@ -2786,7 +2786,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_worksheet->m_evaluationQueue.RemoveFirst();
 
     //m_lastPrompt = o.Mid(1,o.Length()-1);
-    //m_lastPrompt.Replace(")", ":", false);
+    //m_lastPrompt.Replace(")"), ":", false);
     m_lastPrompt = o;
     // remove the event maxima has just processed from the evaluation queue
     // if we remove a command from the evaluation queue the next output line will be the
@@ -2921,10 +2921,10 @@ void wxMaxima::SetCWD(wxString file)
     wxLogMessage(_("Telling maxima about the new working directory."));
     m_configCommands += ":lisp-quiet (setf $wxfilename \"" +
       filenamestring +
-      "\")\n";
+      "\"\n";
     m_configCommands += ":lisp-quiet (setf $wxdirname \"" +
       dirname +
-      "\")\n";
+      "\"\n";
 
     m_configCommands += ":lisp-quiet (wx-cd \"" + filenamestring + "\")\n";
     if (m_ready)
@@ -3671,9 +3671,9 @@ void wxMaxima::SetupVariables()
   wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
   SendMaxima(":lisp-quiet (progn (setf *prompt-suffix* \"" +
              m_promptSuffix +
-             "\") (setf *prompt-prefix* \"" +
+             "\" (setf *prompt-prefix* \"" +
              m_promptPrefix +
-             "\") (setf $in_netmath nil) (setf $show_openplot t))\n");
+             "\" (setf $in_netmath nil) (setf $show_openplot t))\n");
 
   wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml;
@@ -3686,7 +3686,7 @@ void wxMaxima::SetupVariables()
     cmd += "\n:lisp-quiet (setf $gnuplot_command \"" + gnuplot_binary + "\")\n";
   wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), gnuplot_binary.utf8_str()));
 #endif
-  cmd.Replace(wxT("\\"), wxT("/"));
+  cmd.Replace("\\", "/");
   SendMaxima(cmd);
 
   wxString wxmaximaversion_lisp(GITVERSION);
@@ -4870,7 +4870,7 @@ bool wxMaxima::OpenFile(wxString file, wxString command)
   
   if (command.Length() > 0)
   {
-    MenuCommand(command + "(\"" + unixFilename + "\")$");
+    MenuCommand(command + "(\"" + unixFilename + "\"$");
     if(command == "load")
     {
       ReReadConfig();
@@ -5785,7 +5785,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     }
       
     // Execute gnuplot
-    wxString cmdline = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand) + " " + gnuplotSource + ".popout";
+    wxString cmdline = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand) + " " + gnuplotSource + wxT(".popout");
     wxLogMessage(_("Running gnuplot as: " + cmdline));
     
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
