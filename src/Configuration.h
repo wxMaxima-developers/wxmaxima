@@ -181,7 +181,7 @@ public:
   //! Define if we want to hide brackets that are not under the pointer.
   void HideBrackets(bool hide)
   {
-    wxConfig::Get()->Write(wxT("hideBrackets"), m_hideBrackets = hide);
+    wxConfig::Get()->Write("hideBrackets", m_hideBrackets = hide);
   }
 
   //! Hide brackets that are not under the pointer?
@@ -191,7 +191,7 @@ public:
   //! Define if we want to hide brackets that are not under the pointer.
   void PrintScale(double scale)
   {
-    wxConfig::Get()->Write(wxT("printScale"), m_printScale = scale);
+    wxConfig::Get()->Write("printScale", m_printScale = scale);
   }
 
   //! Sets the zoom factor the worksheet is displayed at
@@ -370,7 +370,7 @@ public:
   }
 
   bool AutoSaveAsTempFile() const {return m_autoSaveAsTempFile;}
-  void AutoSaveAsTempFile(bool asTempFile){wxConfig::Get()->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile = asTempFile);}
+  void AutoSaveAsTempFile(bool asTempFile){wxConfig::Get()->Write("AutoSaveAsTempFile", m_autoSaveAsTempFile = asTempFile);}
 
   //! Set the minimum sensible line width in widths of a letter.
   void LineWidth_em(long width)
@@ -412,7 +412,7 @@ public:
   */
   void SetAutoWrap(long autoWrap)
   {
-    wxConfig::Get()->Write(wxT("autoWrapMode"), m_autoWrap = autoWrap);
+    wxConfig::Get()->Write("autoWrapMode", m_autoWrap = autoWrap);
   }
 
   //! Do we want automatic indentation?
@@ -421,12 +421,12 @@ public:
 
   void SetAutoIndent(bool autoIndent)
   {
-    wxConfig::Get()->Write(wxT("autoIndent"), m_autoIndent = autoIndent);
+    wxConfig::Get()->Write("autoIndent", m_autoIndent = autoIndent);
   }
 
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
-  void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
+  void IndentMaths(bool indent){wxConfig::Get()->Write("indentMaths", m_indentMaths=indent);}
   long GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
@@ -511,14 +511,14 @@ public:
   bool GetMatchParens() const
     { return m_matchParens; }
   void SetMatchParens(bool matchParens)
-    { wxConfig::Get()->Write(wxT("matchParens"), m_matchParens = matchParens); }
+    { wxConfig::Get()->Write("matchParens", m_matchParens = matchParens); }
 
   bool GetChangeAsterisk() const
     { return m_changeAsterisk; }
   
   void SetChangeAsterisk(bool changeAsterisk)
     {
-      wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
+      wxConfig::Get()->Write("changeAsterisk", m_changeAsterisk = changeAsterisk);
     }
   
   bool HidemultiplicationSign() const
@@ -528,7 +528,7 @@ public:
 
   void HidemultiplicationSign(bool show)
     {
-      wxConfig::Get()->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign = show);
+      wxConfig::Get()->Write("hidemultiplicationsign", m_hidemultiplicationsign = show);
     }
   
   bool Latin2Greek() const
@@ -536,25 +536,25 @@ public:
 
   void Latin2Greek(bool latin2greek)
     {
-      wxConfig::Get()->Write(wxT("latin2greek"), m_latin2greek = latin2greek);
+      wxConfig::Get()->Write("latin2greek", m_latin2greek = latin2greek);
     }
 
   bool GreekSidebar_ShowLatinLookalikes() const
     {return m_greekSidebar_ShowLatinLookalikes;}
   void GreekSidebar_ShowLatinLookalikes(bool show)
-    {wxConfig::Get()->Write(wxT("greekSidebar_ShowLatinLookalikes"),
+    {wxConfig::Get()->Write("greekSidebar_ShowLatinLookalikes",
                             m_greekSidebar_ShowLatinLookalikes = show);}
 
   bool GreekSidebar_Show_mu() const
     {return m_greekSidebar_Show_mu;}
   void GreekSidebar_Show_mu(bool show)
-    {wxConfig::Get()->Write(wxT("greekSidebar_Show_mu"),
+    {wxConfig::Get()->Write("greekSidebar_Show_mu",
                             m_greekSidebar_Show_mu = show);}
 
   wxString SymbolPaneAdditionalChars() const
     {return m_symbolPaneAdditionalChars;}
   void SymbolPaneAdditionalChars(wxString symbols)
-    {wxConfig::Get()->Write(wxT("symbolPaneAdditionalChars"),
+    {wxConfig::Get()->Write("symbolPaneAdditionalChars",
                             m_symbolPaneAdditionalChars = symbols);}
 
   
@@ -564,7 +564,7 @@ public:
 
   void NotifyIfIdle(bool notify)
   {
-    wxConfig::Get()->Write(wxT("notifyIfIdle"), m_notifyIfIdle = notify);
+    wxConfig::Get()->Write("notifyIfIdle", m_notifyIfIdle = notify);
   }
 
   /*! Returns the maximum number of displayed digits
@@ -577,7 +577,7 @@ public:
   void SetDisplayedDigits(long displayedDigits)
   {
     wxASSERT_MSG(displayedDigits >= 0, _("Bug: Maximum number of digits that is to be displayed is too low!"));
-    wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
+    wxConfig::Get()->Write("displayedDigits", m_displayedDigits = displayedDigits);
   }
   
   wxRect GetUpdateRegion() const {return m_updateRegion;}
@@ -587,7 +587,7 @@ public:
 
   void SetInsertAns(bool insertAns)
   {
-    wxConfig::Get()->Write(wxT("insertAns"), m_insertAns = insertAns);
+    wxConfig::Get()->Write("insertAns", m_insertAns = insertAns);
   }
 
   bool GetOpenHCaret() const
@@ -595,7 +595,7 @@ public:
 
   void SetOpenHCaret(bool openHCaret)
   {
-    wxConfig::Get()->Write(wxT("openHCaret"), m_openHCaret = openHCaret);
+    wxConfig::Get()->Write("openHCaret", m_openHCaret = openHCaret);
   }
 
   bool RestartOnReEvaluation() const
@@ -603,7 +603,7 @@ public:
 
   void RestartOnReEvaluation(bool arg)
   {
-    wxConfig::Get()->Write(wxT("restartOnReEvaluation"), m_restartOnReEvaluation = arg);
+    wxConfig::Get()->Write("restartOnReEvaluation", m_restartOnReEvaluation = arg);
   }
 
   //! Reads the size of the current worksheet's visible window. See SetCanvasSize
@@ -649,12 +649,12 @@ public:
   //! Sets the value of the Configuration ChoiceBox that treads displaying labels
   void SetLabelChoice(showLabels choice)
   {
-    wxConfig::Get()->Write(wxT("showLabelChoice"), (int) (m_showLabelChoice = choice));
+    wxConfig::Get()->Write("showLabelChoice", (int) (m_showLabelChoice = choice));
   }
 
   bool PrintBrackets(bool print)
   {
-    wxConfig::Get()->Write(wxT("printBrackets"), m_printBrackets = print);
+    wxConfig::Get()->Write("printBrackets", m_printBrackets = print);
     return print;
   }
 
@@ -662,7 +662,7 @@ public:
   bool AutodetectMaxima() const {return m_autodetectMaxima;}
   //! Autodetect maxima's location?
   void AutodetectMaxima(bool autodetectmaxima){wxConfig::Get()->Write(
-      wxT("autodetectMaxima"),
+      "autodetectMaxima",
       m_autodetectMaxima = autodetectmaxima);
   }
 
@@ -686,7 +686,7 @@ public:
   //! Sets the location of the maxima binary.
   void MaximaUserLocation(wxString maxima)
   {
-    wxConfig::Get()->Write(wxT("maxima"), m_maximaUserLocation = maxima);
+    wxConfig::Get()->Write("maxima", m_maximaUserLocation = maxima);
   }
 
   /*! Could a maxima binary be found in the path we expect it to be in?
@@ -703,67 +703,67 @@ public:
 
   void FixReorderedIndices(bool fix)
   {
-    wxConfig::Get()->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices = fix);
+    wxConfig::Get()->Write("fixReorderedIndices", m_fixReorderedIndices = fix);
   }
 
   //! Returns the URL MathJaX can be found at.
   wxString MathJaXURL() const {if(m_mathJaxURL_UseUser) return m_mathJaxURL; else return MathJaXURL_Auto();}
   wxString MathJaXURL_User() const { return m_mathJaxURL;}
   bool MathJaXURL_UseUser() const { return m_mathJaxURL_UseUser;}
-  void MathJaXURL_UseUser(bool useUser){wxConfig::Get()->Write(wxT("mathJaxURL_UseUser"),
+  void MathJaXURL_UseUser(bool useUser){wxConfig::Get()->Write("mathJaxURL_UseUser",
                                                                m_mathJaxURL_UseUser = useUser);}
 
   bool EnterEvaluates() const {return m_enterEvaluates;}
-  void EnterEvaluates(bool enterEvaluates) {wxConfig::Get()->Write(wxT("enterEvaluates"),
+  void EnterEvaluates(bool enterEvaluates) {wxConfig::Get()->Write("enterEvaluates",
                                                                 m_enterEvaluates = enterEvaluates);}
-  static wxString MathJaXURL_Auto() { return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML");}
+  static wxString MathJaXURL_Auto() { return "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML";}
   //! Returns the URL MathJaX can be found at.
-  void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
+  void MathJaXURL(wxString url){wxConfig::Get()->Write("mathJaxURL", m_mathJaxURL = url);}
   bool AntiAliasLines() const {return m_antiAliasLines;}
   void AntiAliasLines(bool antiAlias)
     {
-      wxConfig::Get()->Write(wxT("antiAliasLines"), m_antiAliasLines = antiAlias );
+      wxConfig::Get()->Write("antiAliasLines", m_antiAliasLines = antiAlias );
     }
 
   bool CopyBitmap() const {return m_copyBitmap;}
   void CopyBitmap(bool copyBitmap)
     {
-      wxConfig::Get()->Write(wxT("copyBitmap"), m_copyBitmap = copyBitmap );
+      wxConfig::Get()->Write("copyBitmap", m_copyBitmap = copyBitmap );
     }
   
   bool CopyMathML() const {return m_copyMathML;}
   void CopyMathML(bool copyMathML)
     {
-      wxConfig::Get()->Write(wxT("copyMathML"), m_copyMathML = copyMathML );
+      wxConfig::Get()->Write("copyMathML", m_copyMathML = copyMathML );
     }
   bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
   void CopyMathMLHTML(bool copyMathMLHTML)
     {
-      wxConfig::Get()->Write(wxT("copyMathMLHTML"), m_copyMathMLHTML = copyMathMLHTML );
+      wxConfig::Get()->Write("copyMathMLHTML", m_copyMathMLHTML = copyMathMLHTML );
     }
   bool CopyRTF() const {return m_copyRTF;}
   void CopyRTF(bool copyRTF)
     {
-      wxConfig::Get()->Write(wxT("copyRTF"), m_copyRTF = copyRTF );
+      wxConfig::Get()->Write("copyRTF", m_copyRTF = copyRTF );
     }
   bool CopySVG() const {return m_copySVG;}
   void CopySVG(bool copySVG)
     {
-      wxConfig::Get()->Write(wxT("copySVG"), m_copySVG = copySVG );
+      wxConfig::Get()->Write("copySVG", m_copySVG = copySVG );
     }
   bool CopyEMF() const {return m_copyEMF;}
   void CopyEMF(bool copyEMF)
     {
-      wxConfig::Get()->Write(wxT("copyEMF"), m_copyEMF = copyEMF );
+      wxConfig::Get()->Write("copyEMF", m_copyEMF = copyEMF );
     }
   bool UseSVG(){return m_useSVG;}
   void UseSVG(bool useSVG)
     {
-      wxConfig::Get()->Write(wxT("useSVG"), m_useSVG = useSVG );
+      wxConfig::Get()->Write("useSVG", m_useSVG = useSVG );
     }
   void ShowLength(long length)
     {
-      wxConfig::Get()->Write(wxT("showLength"), m_showLength = length);
+      wxConfig::Get()->Write("showLength", m_showLength = length);
     }
   long ShowLength() const {return m_showLength;}
 
@@ -776,14 +776,14 @@ public:
 
   void TocShowsSectionNumbers(bool showSectionNumbers)
     {
-      wxConfig::Get()->Write(wxT("TOCshowsSectionNumbers"), (m_TOCshowsSectionNumbers = showSectionNumbers));
+      wxConfig::Get()->Write("TOCshowsSectionNumbers", (m_TOCshowsSectionNumbers = showSectionNumbers));
     }
 
   bool TocShowsSectionNumbers() const {return m_TOCshowsSectionNumbers;}
 
   void UseUnicodeMaths(bool useunicodemaths)
     {
-      wxConfig::Get()->Write(wxT("useUnicodeMaths"), (m_useUnicodeMaths = useunicodemaths));
+      wxConfig::Get()->Write("useUnicodeMaths", (m_useUnicodeMaths = useunicodemaths));
     }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
