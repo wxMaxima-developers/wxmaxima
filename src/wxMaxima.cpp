@@ -3116,17 +3116,16 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
             }
           }
 
-          //  Convert the comment block to an array of lines
-          wxStringTokenizer tokenizer(line, "\n");
-          wxArrayString commentLines;
-          while ( tokenizer.HasMoreTokens() )
-            commentLines.Add(tokenizer.GetNextToken());
-
-          // Interpret this array of lines as wxm code.
-          GroupCell *cell;
-          document->InsertGroupCells(
-            cell = m_worksheet->CreateTreeFromWXMCode(commentLines),
-            last);
+          // Convert the comment block to lines and interpret them as wxm code.
+          GroupCell *cell = [this, &line]
+          {
+            TreeGenerator treeGen(m_worksheet);
+            wxStringTokenizer tokenizer(line, "\n");
+            while (tokenizer.HasMoreTokens())
+              treeGen.ProcessLine(tokenizer.GetNextToken());
+            return treeGen.PopTree();
+          }();
+          document->InsertGroupCells(cell, last);
           last = cell;
 
         }
@@ -3252,37 +3251,35 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
   RightStatusText(_("Opening file"));
   wxWindowUpdateLocker noUpdates(document);
 
-  // open wxm file
-  wxTextFile inputFile(file);
-  wxArrayString wxmLines;
-
-  if (!inputFile.Open())
+  GroupCell *tree = [this, file]() -> GroupCell*
   {
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    // Load the wxm file
+    wxTextFile inputFile(file);
+
+    if (!inputFile.Open())
+    {
+      LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+      StatusMaximaBusy(waiting);
+      RightStatusText(_("File could not be opened"));
+      return {};
+    }
+
+    if (inputFile.GetFirstLine() !=
+        wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
+    {
+      LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+      return {};
+    }
+
+    TreeGenerator treeGen(m_worksheet);
+    treeGen.ProcessLine(inputFile.GetFirstLine());
+    while (!inputFile.Eof())
+      treeGen.ProcessLine(inputFile.GetNextLine());
+    return treeGen.PopTree();
+  }();
+
+  if (!tree)
     return false;
-  }
-
-  if (inputFile.GetFirstLine() !=
-      wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
-  {
-    inputFile.Close();
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    return false;
-  }
-  wxString line;
-  for (line = inputFile.GetFirstLine();
-       !inputFile.Eof();
-       line = inputFile.GetNextLine())
-  {
-    wxmLines.Add(line);
-  }
-  wxmLines.Add(line);
-
-  inputFile.Close();
-
-  GroupCell *tree = m_worksheet->CreateTreeFromWXMCode(wxmLines);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
@@ -4324,18 +4321,21 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     //! wxm data the worksheet is populated from 
     if(!m_initialWorkSheetContents.IsEmpty())
     {
-      //  Convert the comment block to an array of lines
-      wxStringTokenizer tokenizer(m_initialWorkSheetContents, "\n");
-      wxArrayString lines;
-      while ( tokenizer.HasMoreTokens() )
-        lines.Add(tokenizer.GetNextToken());
-      m_worksheet->InsertGroupCells(
-        m_worksheet->CreateTreeFromWXMCode(lines));
+      auto *contents = [this]
+      {
+        //  Convert the comment block to an array of lines
+        TreeGenerator treeGen(m_worksheet);
+        wxStringTokenizer tokenizer(m_initialWorkSheetContents, "\n");
+        while (tokenizer.HasMoreTokens())
+          treeGen.ProcessLine(tokenizer.GetNextToken());
+        return treeGen.PopTree();
+      }();
+      m_worksheet->InsertGroupCells(contents);
       m_worksheet->Recalculate();
       m_worksheet->RecalculateIfNeeded();
       m_worksheet->UpdateMLast();
       m_worksheet->SetSaved(true);
-      m_initialWorkSheetContents = wxEmptyString;
+      m_initialWorkSheetContents.Truncate(0); // Keep the memory allocation
     }
   }
   // Update the info what maxima is currently doing

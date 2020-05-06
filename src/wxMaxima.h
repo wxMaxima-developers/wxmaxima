@@ -155,7 +155,7 @@ public:
 
   void ShowTip(bool force);
 
-  void SetWXMdata(wxString data){m_initialWorkSheetContents = data;}
+  void SetWXMdata(const wxString &data){ m_initialWorkSheetContents = data; }
   //! Do we want to evaluate the document on statup?
   void EvalOnStartup(bool eval)
     {

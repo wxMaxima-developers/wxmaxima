@@ -81,6 +81,7 @@ wxMaxima can display it.
 class Worksheet : public wxScrolled<wxWindow>
 {
 private:
+  friend class TreeGenerator;
   // The x position to scroll to
   int m_newxPosition;
   // The y position to scroll to
@@ -1486,16 +1487,12 @@ public:
   bool QuestionPending()
   { return m_questionPrompt; }
   //!@}
-  //! Converts a wxm description into individual cells
-  GroupCell *CreateTreeFromWXMCode(wxArrayString wxmLines);
 
-  /*! Does maxima wait for the answer of a question?
-
-*/
+  //! Does maxima wait for the answer of a question?
   void QuestionPending(bool pending)
   { m_questionPrompt = pending; }
 
-//! Does the GroupCell cell points to contain the question currently asked by maxima?
+  //! Does the GroupCell cell points to contain the question currently asked by maxima?
   bool GCContainsCurrentQuestion(GroupCell *cell);
 
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
@@ -1585,6 +1582,24 @@ protected:
   int m_pointer_y;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas;
+};
+
+//! Builds Cell Trees from WMX File's Lines
+class TreeGenerator
+{
+  TreeGenerator(const TreeGenerator &) = delete;
+  void operator=(const TreeGenerator &) = delete;
+public:
+  TreeGenerator(Worksheet *worksheet);
+  ~TreeGenerator();
+  void ProcessLine(const wxString &wmxLine);
+  GroupCell *PopTree();
+
+private:
+  struct Impl;
+  bool m_busyCursor = false;
+  Impl *m = nullptr;
+  std::vector<Impl> m_implStack;
 };
 
 #endif // WORKSHEET_H
