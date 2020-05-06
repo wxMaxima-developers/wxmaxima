@@ -32,8 +32,8 @@
 
 AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_open(new TextCell(parent, config, cellPointers, "abs(")),
-  m_close(new TextCell(parent, config, cellPointers, "")),
+  m_open(new TextCell(parent, config, cellPointers, wxT("abs("))),
+  m_close(new TextCell(parent, config, cellPointers, wxT(")"))),
   m_last(NULL)
 {
   m_nextToDraw = NULL;
@@ -155,7 +155,7 @@ wxString AbsCell::ToString()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString s;
-  s = "abs(" + m_innerCell->ListToString() + ")";
+  s = wxT("abs(") + m_innerCell->ListToString() + wxT(")");
   return s;
 }
 
@@ -164,7 +164,7 @@ wxString AbsCell::ToMatlab()
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
   wxString s;
-  s = "abs(" + m_innerCell->ListToMatlab() + ")";
+  s = wxT("abs(") + m_innerCell->ListToMatlab() + wxT(")");
   return s;
 }
 
@@ -172,30 +172,30 @@ wxString AbsCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
-  return "\\left| " + m_innerCell->ListToTeX() + "\\right| ";
+  return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
 }
 
 wxString AbsCell::ToMathML()
 {
-  return "<row><mo>|</mo>" +
+  return wxT("<row><mo>|</mo>") +
          m_innerCell->ListToMathML() +
-         "<mo>|</mo></row>\n";
-//  return "<apply><abs/><ci>" + m_innerCell->ListToMathML() + "</ci></apply>";
+         wxT("<mo>|</mo></row>\n");
+//  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
 }
 
 wxString AbsCell::ToOMML()
 {
-  return "<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>" +
-         m_innerCell->ListToOMML() + "</m:e></m:d>";
+  return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
+         m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
 wxString AbsCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += " breakline=\"true\"";
+    flags += wxT(" breakline=\"true\"");
   
-  return "<a" +flags + ">" + m_innerCell->ListToXML() + "</a>";
+  return wxT("<a") +flags + wxT(">") + m_innerCell->ListToXML() + wxT("</a>");
 }
 
 bool AbsCell::BreakUp()

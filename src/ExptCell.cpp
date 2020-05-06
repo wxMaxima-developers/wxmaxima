@@ -195,11 +195,11 @@ wxString ExptCell::ToString()
     return m_altCopyText;
   if (m_isBrokenIntoLines)
     return wxEmptyString;
-  wxString s = m_baseCell->ListToString() + "^";
+  wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
-    s += "^";
+    s += wxT("^");
   if (m_exptCell->IsCompound())
-    s += "(" + m_exptCell->ListToString() + ")";
+    s += wxT("(") + m_exptCell->ListToString() + wxT(")");
   else
     s += m_exptCell->ListToString();
   return s;
@@ -211,11 +211,11 @@ wxString ExptCell::ToMatlab()
 	return m_altCopyText;
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
-  wxString s = m_baseCell->ListToMatlab() + "^";
+  wxString s = m_baseCell->ListToMatlab() + wxT("^");
   if (m_isMatrix)
-	s += "^";
+	s += wxT("^");
   if (m_exptCell->IsCompound())
-	s += "(" + m_exptCell->ListToMatlab() + ")";
+	s += wxT("(") + m_exptCell->ListToMatlab() + wxT(")");
   else
 	s += m_exptCell->ListToMatlab();
   return s;
@@ -225,17 +225,17 @@ wxString ExptCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
-  wxString s = "{{" + m_baseCell->ListToTeX() + "}^{" +
-               m_exptCell->ListToTeX() + "}}";
+  wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
+               m_exptCell->ListToTeX() + wxT("}}");
   return s;
 }
 
 wxString ExptCell::GetDiffPart()
 {
-  wxString s(",");
+  wxString s(wxT(","));
   if (m_baseCell != NULL)
     s += m_baseCell->ListToString();
-  s += ",";
+  s += wxT(",");
   if (m_exptCell != NULL)
     s += m_exptCell->ListToString();
   return s;
@@ -243,17 +243,17 @@ wxString ExptCell::GetDiffPart()
 
 wxString ExptCell::ToMathML()
 {
-  return "<msup>" +
+  return wxT("<msup>") +
          m_baseCell->ListToMathML() +
          m_exptCell->ListToMathML() +
-         "</msup>\n";
-//  return "<apply><power/>" + m_baseCell->ListToMathML() + m_exptCell->ListToMathML() + "</apply>";
+         wxT("</msup>\n");
+//  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_exptCell->ListToMathML() + wxT("</apply>");
 }
 
 wxString ExptCell::ToOMML()
 {
-  return "<m:sSup><m:e>" + m_baseCell->ListToOMML() + "</m:e><m:sup>" +
-         m_exptCell->ListToOMML() + "</m:sup></m:sSup>\n";
+  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
+         m_exptCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
 }
 
 wxString ExptCell::ToXML()
@@ -262,9 +262,9 @@ wxString ExptCell::ToXML()
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
-    flags += " breakline=\"true\"";
+    flags += wxT(" breakline=\"true\"");
 
-  return "<e" + flags + "><r>" + m_baseCell->ListToXML() + _T("</r><r>") +
+  return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
          m_exptCell->ListToXML() + _T("</r></e>");
 }
 

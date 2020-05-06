@@ -128,10 +128,10 @@ wxString SubCell::ToString()
 
   wxString s;
   if (m_baseCell->IsCompound())
-    s += "(" + m_baseCell->ListToString() + ")";
+    s += wxT("(") + m_baseCell->ListToString() + wxT(")");
   else
     s += m_baseCell->ListToString();
-  s += "[" + m_indexCell->ListToString() + "]";
+  s += wxT("[") + m_indexCell->ListToString() + wxT("]");
   return s;
 }
 
@@ -144,10 +144,10 @@ wxString SubCell::ToMatlab()
 
   wxString s;
   if (m_baseCell->IsCompound())
-	s += "(" + m_baseCell->ListToMatlab() + ")";
+	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
   else
 	s += m_baseCell->ListToMatlab();
-  s += "[" + m_indexCell->ListToMatlab() + "]";
+  s += wxT("[") + m_indexCell->ListToMatlab() + wxT("]");
   return s;
 }
 
@@ -157,41 +157,41 @@ wxString SubCell::ToTeX()
   wxString base = m_baseCell->ListToTeX();
   wxString index = m_indexCell->ListToTeX();
   if (base.Length() > 1)
-    s = "{{" + base + "}_";
+    s = wxT("{{") + base + wxT("}_");
   else
-    s = "{" + base + "_";
+    s = wxT("{") + base + wxT("_");
   if (index.Length() > 1)
-    s += "{" + index + "}}";
+    s += wxT("{") + index + wxT("}}");
   else
-    s += index + "}";
+    s += index + wxT("}");
   return s;
 }
 
 wxString SubCell::ToMathML()
 {
-  return "<msub>" +
+  return wxT("<msub>") +
          m_baseCell->ListToMathML() +
          m_indexCell->ListToMathML() +
-         "</msub>\n";
+         wxT("</msub>\n");
 }
 
 wxString SubCell::ToOMML()
 {
-  return "<m:sSub><m:e>" + m_baseCell->ListToOMML() + "</m:e><m:sub>" +
-         m_indexCell->ListToOMML() + "</m:sub></m:sSub>\n";
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
+         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
 wxString SubCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += " breakline=\"true\"";
+    flags += wxT(" breakline=\"true\"");
 
   if (m_altCopyText != wxEmptyString)
-    flags += " altCopy=\"" + XMLescape(m_altCopyText) + "\"";
+    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
   
-  return "<i" + flags + "><r>" + m_baseCell->ListToXML() + "</r><r>" +
-           m_indexCell->ListToXML() + "</r></i>";
+  return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
+           m_indexCell->ListToXML() + wxT("</r></i>");
 }
 
 void SubCell::SetNextToDraw(Cell *next)

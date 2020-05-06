@@ -133,12 +133,12 @@ void FracCell::RecalculateWidths(int fontsize)
       // We want half a space's widh of blank space to separate us from the
       // next minus.
       
-      if (((m_previous != NULL) && (m_previous->ToString().EndsWith("-"))))
+      if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
         m_horizontalGapLeft = m_protrusion;
       else
         m_horizontalGapLeft = 0;
       
-      if (((m_next != NULL) && (m_next->ToString().StartsWith("-"))))
+      if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
         m_horizontalGapRight = m_protrusion;
       else
         m_horizontalGapRight = 0;
@@ -245,18 +245,18 @@ wxString FracCell::ToString()
     if (m_fracStyle == FC_NORMAL)
     {
       if (m_num->IsCompound())
-        s += "(" + m_num->ListToString() + ")/";
+        s += wxT("(") + m_num->ListToString() + wxT(")/");
       else
-        s += m_num->ListToString() + "/";
+        s += m_num->ListToString() + wxT("/");
       if (m_denom->IsCompound())
-        s += "(" + m_denom->ListToString() + ")";
+        s += wxT("(") + m_denom->ListToString() + wxT(")");
       else
         s += m_denom->ListToString();
     }
     else if (m_fracStyle == FC_CHOOSE)
     {
-      s = "binomial(" + m_num->ListToString() + "," +
-          m_denom->ListToString() + ")";
+      s = wxT("binomial(") + m_num->ListToString() + wxT(",") +
+          m_denom->ListToString() + wxT(")");
     }
     else
     {
@@ -288,18 +288,18 @@ wxString FracCell::ToMatlab()
 	if (m_fracStyle == FC_NORMAL)
 	{
 	  if (m_num->IsCompound())
-		s += "(" + m_num->ListToMatlab() + ")/";
+		s += wxT("(") + m_num->ListToMatlab() + wxT(")/");
 	  else
-		s += m_num->ListToMatlab() + "/";
+		s += m_num->ListToMatlab() + wxT("/");
 	  if (m_denom->IsCompound())
-		s += "(" + m_denom->ListToMatlab() + ")";
+		s += wxT("(") + m_denom->ListToMatlab() + wxT(")");
 	  else
 		s += m_denom->ListToMatlab();
 	}
 	else if (m_fracStyle == FC_CHOOSE)
 	{
-	  s = "binomial(" + m_num->ListToMatlab() + "," +
-		  m_denom->ListToMatlab() + ")";
+	  s = wxT("binomial(") + m_num->ListToMatlab() + wxT(",") +
+		  m_denom->ListToMatlab() + wxT(")");
 	}
 	else
 	{
@@ -330,13 +330,13 @@ wxString FracCell::ToTeX()
   {
     if (m_fracStyle == FC_CHOOSE)
     {
-      s = "\\begin{pmatrix}" + m_num->ListToTeX() + "\\\\\n" +
-          m_denom->ListToTeX() + "\\end{pmatrix}";
+      s = wxT("\\begin{pmatrix}") + m_num->ListToTeX() + wxT("\\\\\n") +
+          m_denom->ListToTeX() + wxT("\\end{pmatrix}");
     }
     else
     {
-      s = "\\frac{" + m_num->ListToTeX() + "}{" +
-          m_denom->ListToTeX() + "}";
+      s = wxT("\\frac{") + m_num->ListToTeX() + wxT("}{") +
+          m_denom->ListToTeX() + wxT("}");
     }
   }
   return s;
@@ -344,17 +344,17 @@ wxString FracCell::ToTeX()
 
 wxString FracCell::ToMathML()
 {
-  return "<mfrac>" +
+  return wxT("<mfrac>") +
          m_num->ListToMathML() +
-         m_denom->ListToMathML() + "</mfrac>\n";
+         m_denom->ListToMathML() + wxT("</mfrac>\n");
 }
 
 
 wxString FracCell::ToOMML()
 {
-  return "<m:f><m:num>" +
-         m_num->ListToOMML() + "</m:num><m:den>" +
-         m_denom->ListToOMML() + "</m:den></m:f>\n";
+  return wxT("<m:f><m:num>") +
+         m_num->ListToOMML() + wxT("</m:num><m:den>") +
+         m_denom->ListToOMML() + wxT("</m:den></m:f>\n");
 }
 
 wxString FracCell::ToXML()
@@ -363,9 +363,9 @@ wxString FracCell::ToXML()
                _T("f") : _T("f line = \"no\"");
   wxString diffStyle;
   if (m_fracStyle == FC_DIFF)
-    diffStyle = " diffstyle=\"yes\"";
+    diffStyle = wxT(" diffstyle=\"yes\"");
   if (m_forceBreakLine)
-    diffStyle += " breakline=\"true\"";
+    diffStyle += wxT(" breakline=\"true\"");
 
   return _T("<") + s + diffStyle + _T("><r>") +
          m_num->ListToXML() + _T("</r><r>") +

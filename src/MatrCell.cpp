@@ -267,22 +267,22 @@ void MatrCell::Draw(wxPoint point)
 
 wxString MatrCell::ToString()
 {
-  wxString s = "matrix(\n";
+  wxString s = wxT("matrix(\n");
   for (unsigned int i = 0; i < m_matHeight; i++)
   {
-    s += "\t\t[";
+    s += wxT("\t\t[");
     for (unsigned int j = 0; j < m_matWidth; j++)
     {
 	  s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
-        s += ",\t";
+        s += wxT(",\t");
     }
-    s += "]";
+    s += wxT("]");
     if (i < m_matHeight - 1)
-      s += ",";
-    s += "\n";
+      s += wxT(",");
+    s += wxT("\n");
   }
-  s += "\t";
+  s += wxT("\t)");
   return s;
 }
 
@@ -291,20 +291,20 @@ wxString MatrCell::ToMatlab()
 	//ToDo: We ignore colNames and rowNames here. Are they currently in use?
 	wxString s;
 
-	s = "[";
+	s = wxT("[");
 	for (unsigned int i = 0; i < m_matHeight; i++)
 	{
 	  for (unsigned int j = 0; j < m_matWidth; j++)
 	  {
 		s += m_cells[i * m_matWidth + j]->ListToMatlab();
 		if (j < m_matWidth - 1)
-		  s += ", ";
+		  s += wxT(", ");
 	  }
 	  if (i < m_matHeight - 1)
-		s += ";\n";
+		s += wxT(";\n");
 	}
 
-	s += "];";
+	s += wxT("];");
 
 	return s;
 }
@@ -317,16 +317,16 @@ wxString MatrCell::ToTeX()
   if (!m_specialMatrix)
   {
     if(m_roundedParens)
-      s = "\\begin{pmatrix}";
+      s = wxT("\\begin{pmatrix}");
     else
-      s = "\\begin{bmatrix}";
+      s = wxT("\\begin{bmatrix}");
   }
   else
   {
-    s = "\\begin{array}{";
+    s = wxT("\\begin{array}{");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      s += "c";
-    s += "}";
+      s += wxT("c");
+    s += wxT("}");
   }
   for (unsigned int i = 0; i < m_matHeight; i++)
   {
@@ -334,20 +334,20 @@ wxString MatrCell::ToTeX()
     {
       s += m_cells[i * m_matWidth + j]->ListToTeX();
       if (j < m_matWidth - 1)
-        s += " & ";
+        s += wxT(" & ");
     }
     if (i < m_matHeight - 1)
-      s += "\\\\\n";
+      s += wxT("\\\\\n");
   }
   if (!m_specialMatrix)
   {
     if(m_roundedParens)
-      s += "\\end{pmatrix}";
+      s += wxT("\\end{pmatrix}");
     else
-      s += "\\end{bmatrix}";
+      s += wxT("\\end{bmatrix}");
   }
   else
-    s += "\\end{array}";
+    s += wxT("\\end{array}");
   return s;
 }
 
@@ -355,19 +355,19 @@ wxString MatrCell::ToMathML()
 {
   wxString retval;
   if (!m_specialMatrix)
-    retval = "<mrow><mo>(</mo><mrow>";
-  retval += "<mtable>";
+    retval = wxT("<mrow><mo>(</mo><mrow>");
+  retval += wxT("<mtable>");
 
   for (unsigned int i = 0; i < m_matHeight; i++)
   {
-    retval += "<mtr>";
+    retval += wxT("<mtr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      retval += "<mtd>" + m_cells[i * m_matWidth + j]->ListToMathML() + "</mtd>";
-    retval += "</mtr>";
+      retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() + wxT("</mtd>");
+    retval += wxT("</mtr>");
   }
-  retval += "</mtable>\n";
+  retval += wxT("</mtable>\n");
   if (!m_specialMatrix)
-    retval += "</mrow><mo>)</mo></mrow>\n";
+    retval += wxT("</mrow><mo>)</mo></mrow>\n");
   return retval;
 }
 
@@ -375,26 +375,26 @@ wxString MatrCell::ToOMML()
 {
   wxString retval;
 
-  retval = "<m:d>";
+  retval = wxT("<m:d>");
   if (!m_specialMatrix)
   {
     if(m_roundedParens)
-      retval += "<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>";
+      retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
     else
-      retval += "<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>";
+      retval += wxT("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
   }
   
-  retval += "<m:e><m:m>";
+  retval += wxT("<m:e><m:m>");
 
   for (unsigned int i = 0; i < m_matHeight; i++)
   {
-    retval += "<m:mr>";
+    retval += wxT("<m:mr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      retval += "<m:e>" + m_cells[i * m_matWidth + j]->ListToOMML() + "</m:e>";
-    retval += "</m:mr>";
+      retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() + wxT("</m:e>");
+    retval += wxT("</m:mr>");
   }
 
-  retval += "</m:m></m:e></m:d>";
+  retval += wxT("</m:m></m:e></m:d>");
   return retval;
 }
 
@@ -402,28 +402,28 @@ wxString MatrCell::ToXML()
 {
   wxString flags;
   if (m_forceBreakLine)
-    flags += " breakline=\"true\"";
+    flags += wxT(" breakline=\"true\"");
   if (m_roundedParens)
-    flags += " roundedParens=\"true\"";
+    flags += wxT(" roundedParens=\"true\"");
 
   wxString s = wxEmptyString;
   if (m_specialMatrix)
     s = wxString::Format(
-      "<tb" + flags + " special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">",
+      wxT("<tb") + flags + wxT(" special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
             m_inferenceMatrix ? "true" : "false",
             m_rowNames ? "true" : "false",
             m_colNames ? "true" : "false");
   else
-    s = "<tb" +flags +">";
+    s = wxT("<tb") +flags +wxT(">");
 
   for (unsigned int i = 0; i < m_matHeight; i++)
   {
-    s += "<mtr>";
+    s += wxT("<mtr>");
     for (unsigned int j = 0; j < m_matWidth; j++)
-      s += "<mtd>" + m_cells[i * m_matWidth + j]->ListToXML() + "</mtd>";
-    s += "</mtr>";
+      s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() + wxT("</mtd>");
+    s += wxT("</mtr>");
   }
-  s += "</tb>";
+  s += wxT("</tb>");
 
   return s;
 }
