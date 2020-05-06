@@ -32,14 +32,14 @@
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
 
-#define PAREN_OPEN_TOP_UNICODE     "\u239b"
-#define PAREN_OPEN_EXTEND_UNICODE  "\u239c"
-#define PAREN_OPEN_BOTTOM_UNICODE  "\u239d"
-#define PAREN_CLOSE_TOP_UNICODE    "\u239e"
-#define PAREN_CLOSE_EXTEND_UNICODE "\u239f"
-#define PAREN_CLOSE_BOTTOM_UNICODE "\u23a0"
-#define SUM_SIGN "\u2211"
-#define PROD_SIGN "\u220F"
+#define PAREN_OPEN_TOP_UNICODE     L'\u239b'
+#define PAREN_OPEN_EXTEND_UNICODE  L'\u239c'
+#define PAREN_OPEN_BOTTOM_UNICODE  L'\u239d'
+#define PAREN_CLOSE_TOP_UNICODE    L'\u239e'
+#define PAREN_CLOSE_EXTEND_UNICODE L'\u239f'
+#define PAREN_CLOSE_BOTTOM_UNICODE L'\u23a0'
+#define SUM_SIGN L'\u2211'
+#define PROD_SIGN L'\u220F'
 #define SUM_DEC 2
 
 //! The width of the horizontally-drawn cursor
@@ -114,10 +114,10 @@ public:
   StringHash m_escCodes;
 
   //! Set maxima's working directory
-  void SetWorkingDirectory(wxString dir)
+  void SetWorkingDirectory(const wxString &dir)
   { m_workingdir = dir; }
 
-  wxString GetWorkingDirectory() const
+  const wxString &GetWorkingDirectory() const
   { return m_workingdir; }
 
   void ReadConfig();
@@ -230,11 +230,11 @@ public:
         return m_dc;
     }
   
-  wxString GetFontName(long type = TS_DEFAULT) const;
+  const wxString &GetFontName(long type = TS_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  wxString GetSymbolFontName() const;
+  const wxString &GetSymbolFontName() const;
 
   wxFontWeight IsBold(long st) const;
 
@@ -439,13 +439,13 @@ public:
     If a file name is given the settings are read from a file.
   */
   
-  void ReadStyles(wxString file = wxEmptyString);
+  void ReadStyles(const wxString &file = {});
   
   /*! Saves the style settings 
 
     If a file name is given the settings are written to a file.
   */
-  void WriteStyles(wxString file = wxEmptyString);
+  void WriteStyles(const wxString &file = {});
   
   void Outdated(bool outdated)
   { m_outdated = outdated; }
@@ -459,19 +459,19 @@ public:
   bool CheckKeepPercent() const
   { return m_keepPercent; }
 
-  wxString GetTeXCMRI() const
+  const wxString &GetTeXCMRI() const
   { return m_fontCMRI; }
 
-  wxString GetTeXCMSY() const
+  const wxString &GetTeXCMSY() const
   { return m_fontCMSY; }
 
-  wxString GetTeXCMEX() const
+  const wxString &GetTeXCMEX() const
   { return m_fontCMEX; }
 
-  wxString GetTeXCMMI() const
+  const wxString &GetTeXCMMI() const
   { return m_fontCMMI; }
 
-  wxString GetTeXCMTI() const
+  const wxString &GetTeXCMTI() const
   { return m_fontCMTI; }
 
   bool ShowCodeCells() const
@@ -551,9 +551,9 @@ public:
     {wxConfig::Get()->Write(wxT("greekSidebar_Show_mu"),
                             m_greekSidebar_Show_mu = show);}
 
-  wxString SymbolPaneAdditionalChars() const
+  const wxString &SymbolPaneAdditionalChars() const
     {return m_symbolPaneAdditionalChars;}
-  void SymbolPaneAdditionalChars(wxString symbols)
+  void SymbolPaneAdditionalChars(const wxString &symbols)
     {wxConfig::Get()->Write(wxT("symbolPaneAdditionalChars"),
                             m_symbolPaneAdditionalChars = symbols);}
 
@@ -667,24 +667,24 @@ public:
   }
 
   //! Parameters to the maxima binary
-  wxString MaximaParameters() const {return m_maximaParameters;}
+  const wxString &MaximaParameters() const {return m_maximaParameters;}
   //! The parameters we pass to the maxima binary
-  void MaximaParameters(wxString parameters){wxConfig::Get()->Write(
+  void MaximaParameters(const wxString &parameters){wxConfig::Get()->Write(
       "parameters",
       m_maximaParameters = parameters);
   }
 
   //! The auto-detected maxima location
-  static wxString MaximaDefaultLocation();
+  static const wxString &MaximaDefaultLocation();
 
   //! Returns the location of the maxima binary.
-  wxString MaximaLocation() const;
+  const wxString &MaximaLocation() const;
 
   //! Returns the location of the maxima binary the user has selected.
-  wxString MaximaUserLocation() const {return m_maximaUserLocation;}
+  const wxString &MaximaUserLocation() const {return m_maximaUserLocation;}
 
   //! Sets the location of the maxima binary.
-  void MaximaUserLocation(wxString maxima)
+  void MaximaUserLocation(const wxString &maxima)
   {
     wxConfig::Get()->Write(wxT("maxima"), m_maximaUserLocation = maxima);
   }
@@ -695,7 +695,7 @@ public:
     If location == wxEmptyString the default location from the configuration 
     is taken.
    */
-  static bool MaximaFound(wxString location = wxEmptyString);
+  static bool MaximaFound(const wxString &location = {});
 
   //! Renumber out-of-order cell labels on saving.
   bool FixReorderedIndices() const
@@ -716,9 +716,9 @@ public:
   bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {wxConfig::Get()->Write(wxT("enterEvaluates"),
                                                                 m_enterEvaluates = enterEvaluates);}
-  static wxString MathJaXURL_Auto() { return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML");}
+  static const wxString &MathJaXURL_Auto();
   //! Returns the URL MathJaX can be found at.
-  void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
+  void MathJaXURL(const wxString &url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
   bool AntiAliasLines() const {return m_antiAliasLines;}
   void AntiAliasLines(bool antiAlias)
     {
@@ -768,9 +768,9 @@ public:
   long ShowLength() const {return m_showLength;}
 
   //! Sets the default toolTip for new cells
-  void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
+  void SetDefaultCellToolTip(const wxString &defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
-  wxString GetDefaultCellToolTip() const {return m_defaultToolTip;}
+  const wxString &GetDefaultCellToolTip() const {return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
@@ -820,20 +820,20 @@ public:
   void OfferKnownAnswers(bool offerKnownAnswers)
     {wxConfig::Get()->Write("offerKnownAnswers",m_offerKnownAnswers = offerKnownAnswers);}
   
-  wxString Documentclass() const {return m_documentclass;}
-  void Documentclass(wxString clss){wxConfig::Get()->Write("documentclass",m_documentclass = clss);}
-  wxString DocumentclassOptions() const {return m_documentclassOptions;}
-  void DocumentclassOptions(wxString classOptions){wxConfig::Get()->Write("documentclassoptions",m_documentclassOptions = classOptions);}
+  const wxString &Documentclass() const {return m_documentclass;}
+  void Documentclass(const wxString &clss){wxConfig::Get()->Write("documentclass",m_documentclass = clss);}
+  const wxString &DocumentclassOptions() const {return m_documentclassOptions;}
+  void DocumentclassOptions(const wxString &classOptions){wxConfig::Get()->Write("documentclassoptions",m_documentclassOptions = classOptions);}
 
   
   htmlExportFormat HTMLequationFormat() const {return m_htmlEquationFormat;}
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  wxString FontName()const {return m_fontName;}
-  void FontName(wxString name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
-  void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
-  wxString MathFontName()const {return m_mathFontName;}
+  const wxString &FontName()const {return m_fontName;}
+  void FontName(const wxString &name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
+  void MathFontName(const wxString &name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
+  const wxString &MathFontName()const {return m_mathFontName;}
 
   //! Update the list of fonts associated to the worksheet styles
   void UpdateWorksheetFonts();
@@ -843,7 +843,7 @@ public:
   long GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(long autosubscriptnum)
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
-  wxString GetAutosubscript_string() const;
+  const wxString &GetAutosubscript_string() const;
   //! Determine the default background color of the worksheet
   wxColor DefaultBackgroundColor();
   //! Determine the default background color of editorcells
@@ -861,8 +861,8 @@ public:
   wxRect GetVisibleRegion() const {return m_visibleRegion;}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
   wxPoint GetWorksheetPosition() const {return m_worksheetPosition;}
-  wxString MaximaShareDir() const {return m_maximaShareDir;}
-  void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
+  const wxString &MaximaShareDir() const {return m_maximaShareDir;}
+  void MaximaShareDir(const wxString &dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
   Style m_styles[NUMBEROFSTYLES];
@@ -895,7 +895,7 @@ private:
       As these might be costly operations it is important to cache the result
       of this function.
    */
-  bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3);
+  bool CharsExistInFont(wxFont font, const wxString &char1, const wxString &char2, const wxString &char3);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;

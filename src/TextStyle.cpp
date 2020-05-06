@@ -30,7 +30,7 @@
 #include "FontCache.h"
 #include <wx/colour.h>
 
-void Style::Read(wxConfigBase *config, wxString where)
+void Style::Read(wxConfigBase *config, const wxString &where)
 {
   wxString tmp;
   wxColor col;
@@ -65,7 +65,7 @@ void Style::Read(wxConfigBase *config, wxString where)
   }
 }
 
-void Style::Write(wxConfigBase *config, wxString where)
+void Style::Write(wxConfigBase *config, const wxString &where)
 {
   config->Write(where + wxT("color"), Color().GetAsString());
   config->Write(where + wxT("bold"), m_bold);

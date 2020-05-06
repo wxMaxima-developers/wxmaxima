@@ -38,7 +38,7 @@
 
 Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
-  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML"),
+  m_mathJaxURL(MathJaXURL_Auto()),
   m_documentclass("article"),
   m_documentclassOptions("fleqn"),
   m_symbolPaneAdditionalChars("Øü§")
@@ -305,16 +305,16 @@ wxSize Configuration::GetPPI(wxWindow *win) const
   return ppi;
 }
 
-wxString Configuration::GetAutosubscript_string() const
+const wxString &Configuration::GetAutosubscript_string() const
 {
   switch (m_autoSubscript)
   {
   case 0:
-    return "nil";
+    return stR("nil");
   case 1:
-    return "t";
+    return stR("t");
   default:
-    return "'all";
+    return stR("'all");
   }
 }
 
@@ -330,9 +330,9 @@ void Configuration::SetBackgroundBrush(wxBrush brush)
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
-bool Configuration::MaximaFound(wxString location)
+bool Configuration::MaximaFound(const wxString &location)
 {
-  if(location == wxEmptyString)
+  if(location.IsEmpty())
     return false;
   
   bool maximaFound = false;
@@ -701,9 +701,9 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
     m_parenthesisDrawMode = handdrawn;
     wxFont font = GetFont(TS_FUNCTION,20);
     if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
+                         PAREN_OPEN_TOP_UNICODE,
+                         PAREN_OPEN_EXTEND_UNICODE,
+                         PAREN_OPEN_BOTTOM_UNICODE)
       )
     {
       m_parenthesisDrawMode = assembled_unicode;
@@ -713,9 +713,9 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
                .FaceName(wxT("Linux Libertine"));
     font = FontCache::GetAFont(req);
     if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
+                         PAREN_OPEN_TOP_UNICODE,
+                         PAREN_OPEN_EXTEND_UNICODE,
+                         PAREN_OPEN_BOTTOM_UNICODE)
       )
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont;
@@ -724,9 +724,9 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
     req.FaceName(wxT("Linux Libertine O"));
     font = FontCache::GetAFont(req);
     if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
+                         PAREN_OPEN_TOP_UNICODE,
+                         PAREN_OPEN_EXTEND_UNICODE,
+                         PAREN_OPEN_BOTTOM_UNICODE)
       )
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
@@ -769,7 +769,7 @@ Configuration::~Configuration()
   WriteStyles();
 }
 
-bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
+bool Configuration::CharsExistInFont(wxFont font, const wxString &char1, const wxString &char2, const wxString &char3)
 {
   wxString name = char1 + char2 + char3;
   CharsInFontMap::const_iterator it = m_charsInFontMap.find(name);
@@ -863,7 +863,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   }
 }
 
-wxString Configuration::GetFontName(long type) const
+const wxString &Configuration::GetFontName(long type) const
 {
   wxString retval = FontName();
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
@@ -878,7 +878,7 @@ wxString Configuration::GetFontName(long type) const
   return retval;
 }
 
-wxString Configuration::MaximaLocation() const
+const wxString &Configuration::MaximaLocation() const
 {
   if(m_autodetectMaxima)
     return MaximaDefaultLocation();
@@ -886,12 +886,18 @@ wxString Configuration::MaximaLocation() const
     return m_maximaUserLocation;
 }
 
-wxString Configuration::MaximaDefaultLocation()
-{ 
-  return Dirstructure::Get()->MaximaDefaultLocation();
+const wxString &Configuration::MaximaDefaultLocation()
+{
+  static wxString defaultLocation;
+  defaultLocation = Dirstructure::Get()->MaximaDefaultLocation();
+  return defaultLocation;
 }
 
-void Configuration::ReadStyles(wxString file)
+const wxString &Configuration::MathJaXURL_Auto() {
+  return stR("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML");
+}
+
+void Configuration::ReadStyles(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
@@ -964,10 +970,10 @@ void Configuration::ReadStyles(wxString file)
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(wxString file)
+void Configuration::WriteStyles(const wxString &file)
 {
   wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
+  if (file.IsEmpty())
     config = wxConfig::Get();
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
@@ -1037,10 +1043,10 @@ wxFontStyle Configuration::IsItalic(long st) const
   return wxFONTSTYLE_NORMAL;
 }
 
-wxString Configuration::GetSymbolFontName() const
+const wxString &Configuration::GetSymbolFontName() const
 {
 #if defined __WXMSW__
-  return wxT("Symbol");
+  return stR("Symbol");
 #else
   return m_fontName;
 #endif

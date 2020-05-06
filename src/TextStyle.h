@@ -45,11 +45,11 @@ public:
     {
     };
   //! Read this style from a config source
-  void Read(wxConfigBase *config, wxString where);
+  void Read(wxConfigBase *config, const wxString &where);
   //! Write this style to a config source
-  void Write(wxConfigBase *config, wxString where);
+  void Write(wxConfigBase *config, const wxString &where);
   //! Set this style
-  void Set(wxString name,
+  void Set(const wxString &name,
            wxColor color,
            bool bold = false, bool italic = false, bool underlined = false,
            int fontSize = 10)
@@ -78,13 +78,13 @@ public:
   //! Set the font size of this style
   void FontSize(int size){m_fontSize = size;}
   //! The font name of this style
-  wxString FontName() const{return m_fontName;}
+  const wxString &FontName() const{return m_fontName;}
   //! Set the font name of this style
-  void FontName(wxString name){m_fontName = name;}
+  void FontName(const wxString &name){m_fontName = name;}
   //! Get the color of this style
   wxColor GetColor() const{return m_color;}
   //! Set the color of this style
-  wxString Name() const{return m_name;}
+  const wxString &Name() const{return m_name;}
   //! Set the color of this style
   void Color(wxColor color){m_color = color;}
   //! Set the color of this style
