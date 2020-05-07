@@ -27,9 +27,8 @@
   select arbitrary unicode symbols.
  */
 
-
 #include "CharButton.h"
-#include <wx/button.h>
+#include "UnicodeSidebar.h"
 
 void CharButton::ForwardToParent(wxMouseEvent &event)
 {
@@ -44,19 +43,22 @@ void CharButton::CharButtonPressed(wxMouseEvent &WXUNUSED(event))
   m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
 
-CharButton::CharButton (wxPanel *parent, wxWindow *worksheet, wxChar ch, wxString description, bool WXUNUSED(matchesMaximaCommand)) : wxPanel(parent, wxID_ANY),
-                                                                                                                 m_char(ch),
-                                                                                                                 m_worksheet(worksheet)
+CharButton::CharButton(wxPanel *parent, wxWindow *worksheet, const Definition &def) :
+    wxPanel(parent, wxID_ANY),
+    m_char(def.symbol),
+    m_worksheet(worksheet)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxStaticText *text = new wxStaticText(this, wxID_ANY, wxString(ch));
+  wxStaticText *text = new wxStaticText(this, wxID_ANY, {def.symbol});
   vbox->Add(text, 1, wxALL | wxCENTER, 0);
 
-  if (description.Length() > 0)
-    text->SetToolTip(description);
+  if (!def.description.IsEmpty())
+    text->SetToolTip(def.description);
   Connect(wxEVT_LEFT_UP, wxMouseEventHandler(CharButton::CharButtonPressed), NULL, this);
   text->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(CharButton::CharButtonPressed), NULL, this);
   text->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
   SetSizerAndFit(vbox);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
 }
+
+const wxString CharButton::Definition::empty;

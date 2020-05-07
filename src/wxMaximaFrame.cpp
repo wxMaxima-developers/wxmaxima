@@ -1844,75 +1844,86 @@ void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event)
 
 void wxMaximaFrame::GreekPane::UpdateSymbols()
 {
+  enum class Cond { None, Show_mu, ShowLatinLookalikes };
+  struct EnabledDefinition : CharButton::Definition
+  {
+    Cond condition;
+    EnabledDefinition(wchar_t sym, const wxString &descr = empty, Cond cond = Cond::None) :
+        CharButton::Definition{sym, descr}, condition(cond) {}
+  };
+
+  static const EnabledDefinition lowerCaseDefs[] =
+    {
+      {L'\u03B1', _("alpha")},
+      {L'\u03B2', _("beta")},
+      {L'\u03B3', _("gamma")},
+      {L'\u03B4', _("delta")},
+      {L'\u03B5', _("epsilon")},
+      {L'\u03B6', _("zeta")},
+      {L'\u03B7', _("eta")},
+      {L'\u03B8', _("theta")},
+      {L'\u03B9', _("iota")},
+      {L'\u03BA', _("kappa")},
+      {L'\u03BB', _("lambda")},
+      {L'\u03BC', _("mu"), Cond::Show_mu},
+      {L'\u03BD', _("nu")},
+      {L'\u03BE', _("xi")},
+      {L'\u03BF', _("omicron"), Cond::ShowLatinLookalikes},
+      {L'\u03C0', _("pi")},
+      {L'\u03C1', _("rho")},
+      {L'\u03C3', _("sigma")},
+      {L'\u03C4', _("tau")},
+      {L'\u03C5', _("upsilon")},
+      {L'\u03C6', _("phi")},
+      {L'\u03C7', _("chi")},
+      {L'\u03C8', _("psi")},
+      {L'\u03C9', _("omega")},
+      };
+
+  static const EnabledDefinition upperCaseDefs[] =
+    {
+      {L'\u0391', ("Alpha"), Cond::ShowLatinLookalikes},
+      {L'\u0392', _("Beta"), Cond::ShowLatinLookalikes},
+      {L'\u0393', _("Gamma")},
+      {L'\u0394', _("Delta")},
+      {L'\u0395', _("Epsilon"), Cond::ShowLatinLookalikes},
+      {L'\u0396', _("Zeta"), Cond::ShowLatinLookalikes},
+      {L'\u0397', _("Eta"), Cond::ShowLatinLookalikes},
+      {L'\u0398', _("Theta")},
+      {L'\u0399', _("Iota"), Cond::ShowLatinLookalikes},
+      {L'\u039A', _("Kappa"), Cond::ShowLatinLookalikes},
+      {L'\u039B', _("Lambda")},
+      {L'\u039C', _("Mu"), Cond::ShowLatinLookalikes},
+      {L'\u039D', _("Nu"), Cond::ShowLatinLookalikes},
+      {L'\u039E', _("Xi")},
+      {L'\u039F', _("Omicron"), Cond::ShowLatinLookalikes},
+      {L'\u03A0', _("Pi")},
+      {L'\u03A1', _("Rho"), Cond::ShowLatinLookalikes},
+      {L'\u03A3', _("Sigma")},
+      {L'\u03A4', _("Tau"), Cond::ShowLatinLookalikes},
+      {L'\u03A5', _("Upsilon"), Cond::ShowLatinLookalikes},
+      {L'\u03A6', _("Phi"), Cond::ShowLatinLookalikes},
+      {L'\u03A7', _("Chi"), Cond::ShowLatinLookalikes},
+      {L'\u03A8', _("Psi")},
+      {L'\u03A9', _("Omega")},
+      };
+
+  bool const Show_mu = m_configuration->GreekSidebar_Show_mu();
+  bool const ShowLatinLookalikes = m_configuration->GreekSidebar_ShowLatinLookalikes();
+
   m_lowercaseSizer->Clear(true);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B1'), _("alpha")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B2'), _("beta")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B3'), _("gamma")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B4'), _("delta")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B5'), _("epsilon")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B6'), _("zeta")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B7'), _("eta")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B8'), _("theta")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03B9'), _("iota")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03BA'), _("kappa")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03BB'), _("lambda")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_Show_mu())
-    m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03BC'), _("mu")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03BD'), _("nu")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03BE'), _("xi")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-    m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03BF'), _("omicron")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C0'), _("pi")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C1'), _("rho")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C3'), _("sigma")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C4'), _("tau")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C5'), _("upsilon")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C6'), _("phi")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C7'), _("chi")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C8'), _("psi")), 0, wxALL | wxEXPAND, 2);
-  m_lowercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03C9'), _("omega")), 0, wxALL | wxEXPAND, 2);
+  for (auto &def : lowerCaseDefs)
+    if (def.condition == Cond::None ||
+        (def.condition == Cond::Show_mu && Show_mu) ||
+        (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
+      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, def), 0, wxALL | wxEXPAND, 2);
+
   m_uppercaseSizer->Clear(true);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-  {
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0391'), _("Alpha")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0392'), _("Beta")), 0, wxALL | wxEXPAND, 2);
-  }
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0393'), _("Gamma")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0394'), _("Delta")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-  {
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0395'), _("Epsilon")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0396'), _("Zeta")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0397'), _("Eta")), 0, wxALL | wxEXPAND, 2);
-  }
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0398'), _("Theta")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-  {
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u0399'), _("Iota")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u039A'), _("Kappa")), 0, wxALL | wxEXPAND, 2);
-  }
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u039B'), _("Lambda")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-  {
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u039C'), _("Mu")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u039D'), _("Nu")), 0, wxALL | wxEXPAND, 2);
-  }
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u039E'), _("Xi")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u039F'), _("Omicron")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A0'), _("Pi")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A1'), _("Rho")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A3'), _("Sigma")), 0, wxALL | wxEXPAND, 2);
-  if(m_configuration->GreekSidebar_ShowLatinLookalikes())
-  {
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A4'), _("Tau")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A5'), _("Upsilon")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A6'), _("Phi")), 0, wxALL | wxEXPAND, 2);
-    m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A7'), _("Chi")), 0, wxALL | wxEXPAND, 2);
-  }
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A8'), _("Psi")), 0, wxALL | wxEXPAND, 2);
-  m_uppercaseSizer->Add(new CharButton(this, m_worksheet, wxT('\u03A9'), _("Omega")), 0, wxALL | wxEXPAND, 2);
+  for (auto &def : upperCaseDefs)
+    if (def.condition == Cond::None ||
+        (def.condition == Cond::Show_mu && Show_mu) ||
+        (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
+      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, def), 0, wxALL | wxEXPAND, 2);
 }
 
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
@@ -1931,6 +1942,59 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   m_configuration(configuration),
   m_worksheet(worksheet)
 {
+  const CharButton::Definition symbolButtonDefinitions[] = {
+    {L'\u00BD', _("1/2"), true},
+    {L'\u00B2', _("to the power of 2"), true},
+    {L'\u00B3', _("to the power of 3"), true},
+    {L'\u221A', _("sqrt (needs parenthesis for its argument to work as a Maxima command)"), true},
+    {L'\u2148'},
+    {L'\u2147'},
+    {L'\u210F'},
+    {L'\u2208', _("in")},
+    {L'\u2203', _("exists")},
+    {L'\u2204', _("there is no")},
+    {L'\u21D2', _("\"implies\" symbol"), true},
+    {L'\u221E', _("Infinity"), true},
+    {L'\u2205', _("empty")},
+    {L'\u25b6'},
+    {L'\u25b8'},
+    {L'\u22C0', _("and"), true},
+    {L'\u22C1', _("or"), true},
+    {L'\u22BB', _("xor"), true},
+    {L'\u22BC', _("nand"), true},
+    {L'\u22BD', _("nor"), true},
+    {L'\u21D4', _("equivalent"), true},
+    {L'\u00b1', _("plus or minus")},
+    {L'\u00AC', _("not"), true},
+    {L'\u22C3', _("union")},
+    {L'\u22C2', _("intersection")},
+    {L'\u2286', _("subset or equal")},
+    {L'\u2282', _("subset")},
+    {L'\u2288', _("not subset or equal")},
+    {L'\u2284', _("not subset")},
+    {L'\u0127'},
+    {L'\u0126'},
+    {L'\u2202', _("partial sign")},
+    {L'\u2207', _("nabla sign")},
+    {L'\u222b', _("Integral sign")},
+    {L'\u2245'},
+    {L'\u221d', _("proportional to")},
+    {L'\u2260', _("not bytewise identical"), true},
+    {L'\u2264', _("less or equal"), true},
+    {L'\u2265', _("greater than or equal"), true},
+    {L'\u226A', _("much less than")},
+    {L'\u226B', _("much greater than")},
+    {L'\u2263', _("Identical to")},
+    {L'\u2211', _("Sum sign")},
+    {L'\u220F', _("Product sign")},
+    {L'\u2225', _("Parallel to")},
+    {L'\u27C2', _("Perpendicular to")},
+    {L'\u219D', _("Leads to")},
+    {L'\u2192', _("Right arrow")},
+    {L'\u27F6', _("Long Right arrow")},
+    {L'\u220e', _("End of proof")},
+  };
+
   m_userSymbols = NULL;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -1942,63 +2006,8 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   builtInSymbolsSizer->SetFlexibleDirection(wxBOTH);
   for (int i = 0; i < 8; i++)
     builtInSymbolsSizer->AddGrowableCol(i, 1);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u00BD'), _("1/2"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u00B2'), _("to the power of 2"), true), 0, wxALL | wxEXPAND,
-                           2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u00B3'), _("to the power of 3"), true), 0, wxALL | wxEXPAND,
-                           2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u221A'),
-                                      _("sqrt (needs parenthesis for its argument to work as a Maxima command)"), true),
-                           0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2148')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2147')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u210F')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2208'), _("in")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2203'), _("exists")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2204'), _("there is no")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u21D2'), _("\"implies\" symbol"), true), 0,
-                           wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u221E'), _("Infinity"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2205'), _("empty")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u25b6')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u25b8')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22C0'), _("and"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22C1'), _("or"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22BB'), _("xor"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22BC'), _("nand"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22BD'), _("nor"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u21D4'), _("equivalent"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u00b1'), _("plus or minus")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u00AC'), _("not"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22C3'), _("union")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u22C2'), _("intersection")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2286'), _("subset or equal")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2282'), _("subset")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2288'), _("not subset or equal")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2284'), _("not subset")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u0127')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u0126')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2202'), _("partial sign")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2207'), _("nabla sign")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u222b'), _("Integral sign")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2245')), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u221d'), _("proportional to")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2260'), _("not bytewise identical"), true), 0,
-                           wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2264'), _("less or equal"), true), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2265'), _("greater than or equal"), true), 0,
-                           wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u226A'), _("much less than")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u226B'), _("much greater than")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2263'), _("Identical to")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2211'), _("Sum sign")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u220F'), _("Product sign")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2225'), _("Parallel to")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u27C2'), _("Perpendicular to")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u219D'), _("Leads to")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u2192'), _("Right arrow")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u27F6'), _("Long Right arrow")), 0, wxALL | wxEXPAND, 2);
-  builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, wxT('\u220e'), _("End of proof")), 0, wxALL | wxEXPAND, 2);
+  for (auto &def : symbolButtonDefinitions)
+    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, def), 0, wxALL | wxEXPAND, 2);
   builtInSymbols->SetSizer(builtInSymbolsSizer);
   vbox->Add(builtInSymbols, 0, style, border);
 
@@ -2061,14 +2070,10 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
   m_userSymbols->DestroyChildren();
 
   // Populate the pane with a button per user symbol
-  wxString userChars = m_configuration->SymbolPaneAdditionalChars();
-  for (wxString::const_iterator it = userChars.begin(); it < userChars.end(); ++it)
+  for (auto ch : m_configuration->SymbolPaneAdditionalChars())
   {
-    wxPanel *button;
-    {
-      button = new CharButton(m_userSymbols, m_worksheet, *it,
-                              _("A symbol from the configuration dialogue"));
-    }
+    wxPanel *button = new CharButton(m_userSymbols, m_worksheet,
+                                     {ch, _("A symbol from the configuration dialogue")});
     m_userSymbolButtons.push_back(button);
     m_userSymbolsSizer->Add(button, 0, wxALL | wxEXPAND, 2);
   }
