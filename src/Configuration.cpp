@@ -25,16 +25,17 @@
  */
 
 #include "Configuration.h"
+#include "Cell.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include "FontCache.h"
+#include "StringUtils.h"
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/font.h>
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
-#include "Cell.h"
 
 Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
@@ -769,9 +770,11 @@ Configuration::~Configuration()
   WriteStyles();
 }
 
-bool Configuration::CharsExistInFont(wxFont font, const wxString &char1, const wxString &char2, const wxString &char3)
+bool Configuration::CharsExistInFont(wxFont font, wchar_t char1, wchar_t char2, wchar_t char3)
 {
-  wxString name = char1 + char2 + char3;
+  wxString name;
+  name.reserve(12);
+  name << char1 << char2 << char3;
   CharsInFontMap::const_iterator it = m_charsInFontMap.find(name);
   if(it != m_charsInFontMap.end())
     return it->second;
@@ -783,7 +786,7 @@ bool Configuration::CharsExistInFont(wxFont font, const wxString &char1, const w
   }
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
-  if (font.GetFaceName() == wxT("Monaco"))
+  if (font.GetFaceName() == stR("Monaco"))
   {
     m_charsInFontMap[name] = false;
     return false;

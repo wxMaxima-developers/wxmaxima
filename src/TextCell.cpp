@@ -113,6 +113,7 @@ void TextCell::SetValue(const wxString &text)
   m_text = text;
   ResetSize();
   m_text.Replace(stR("\xDCB6"), stR("\u00A0")); // A non-breakable space
+    // FIXME: this replaces "\u00DCB6" ie. "ÜB6" with NBSP - this is a typo
   m_text.Replace(stR("\n"), {});
   m_text.Replace(stR("-->"), stR("\u2794"));
   m_text.Replace(stR(" -->"), stR("\u2794"));

@@ -279,7 +279,7 @@ void test_StartsWith()
   wxString str = wxT("abcdef");
   bool rc = StartsWith(str.begin(), str.end(), wxT(""));
   check(rc);
-  rc = StartsWith(str, liT(""));
+  rc = StartsWith(str, wxT(""));
   check(rc);
   rc = StartsWith(str.begin(), str.begin(), wxT(""));
   check(rc);
@@ -287,23 +287,23 @@ void test_StartsWith()
   check(rc);
   rc = StartsWith(str.begin(), str.end(), wxT("abcdefg"));
   check(!rc);
-  rc = StartsWith(str, liT("abcdefg"));
+  rc = StartsWith(str, wxT("abcdefg"));
   check(!rc);
   rc = StartsWith(str.begin(), str.end(), wxT("abcdefgh"));
   check(!rc);
-  rc = StartsWith(str, liT("abcdefgh"));
+  rc = StartsWith(str, wxT("abcdefgh"));
   check(!rc);
   rc = StartsWith(str.begin(), str.end(), wxT("abcdef"));
   check(rc);
-  rc = StartsWith(str, liT("abcdef"));
+  rc = StartsWith(str, wxT("abcdef"));
   check(rc);
   rc = StartsWith(str.begin(), str.end(), wxT("abc"));
   check(rc);
-  rc = StartsWith(str, liT("abc"));
+  rc = StartsWith(str, wxT("abc"));
   check(rc);
   rc = StartsWith(str.begin(), str.end(), wxT("a"));
   check(rc);
-  rc = StartsWith(str, liT("a"));
+  rc = StartsWith(str, wxT("a"));
   check(rc);
 }
 
@@ -312,7 +312,7 @@ void test_EndsWith()
   wxString str = wxT("abcdef");
   bool rc = EndsWith(str.begin(), str.end(), wxT(""));
   check(rc);
-  rc = EndsWith(str, liT(""));
+  rc = EndsWith(str, wxT(""));
   check(rc);
   rc = EndsWith(str.begin(), str.begin(), wxT(""));
   check(rc);
@@ -320,23 +320,23 @@ void test_EndsWith()
   check(rc);
   rc = EndsWith(str.begin(), str.end(), wxT("zabcdef"));
   check(!rc);
-  rc = EndsWith(str, liT("zabcdef"));
+  rc = EndsWith(str, wxT("zabcdef"));
   check(!rc);
   rc = EndsWith(str.begin(), str.end(), wxT("yzabcdef"));
   check(!rc);
-  rc = EndsWith(str, liT("yzabcdef"));
+  rc = EndsWith(str, wxT("yzabcdef"));
   check(!rc);
   rc = EndsWith(str.begin(), str.end(), wxT("abcdef"));
   check(rc);
-  rc = EndsWith(str, liT("abcdef"));
+  rc = EndsWith(str, wxT("abcdef"));
   check(rc);
   rc = EndsWith(str.begin(), str.end(), wxT("def"));
   check(rc);
-  rc = EndsWith(str, liT("def"));
+  rc = EndsWith(str, wxT("def"));
   check(rc);
   rc = EndsWith(str.begin(), str.end(), wxT("f"));
   check(rc);
-  rc = EndsWith(str, liT("f"));
+  rc = EndsWith(str, wxT("f"));
   check(rc);
 }
 
@@ -366,23 +366,23 @@ void test_literal_operators_impl()
   check(out == wxT("ab"));
   out << wxT("cdef");
   check(out == wxT("abcdef"));
-  out << liT("ghi");
+  out << wxT("ghi");
   check(out == wxT("abcdefghi"));
 
   out = String(wxT("ab")) += wxT("");
   check(out == wxT("ab"));
-  out += liT("");
+  out += wxT("");
   check(out == wxT("ab"));
   out += wxT("cdef");
   check(out == wxT("abcdef"));
-  out += liT("ghi");
+  out += wxT("ghi");
   check(out == wxT("abcdefghi"));
 
   out = String(wxT("ab")) + wxT("");
   check(out == wxT("ab"));
-  out = out + liT("");
+  out = out + wxT("");
   check(out == wxT("ab"));
-  out = out + liT("cdef");
+  out = out + wxT("cdef");
   check(out == wxT("abcdef"));
 }
 

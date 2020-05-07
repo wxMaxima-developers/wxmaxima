@@ -31,15 +31,14 @@
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
-
-#define PAREN_OPEN_TOP_UNICODE     L'\u239b'
-#define PAREN_OPEN_EXTEND_UNICODE  L'\u239c'
-#define PAREN_OPEN_BOTTOM_UNICODE  L'\u239d'
-#define PAREN_CLOSE_TOP_UNICODE    L'\u239e'
-#define PAREN_CLOSE_EXTEND_UNICODE L'\u239f'
-#define PAREN_CLOSE_BOTTOM_UNICODE L'\u23a0'
-#define SUM_SIGN L'\u2211'
-#define PROD_SIGN L'\u220F'
+static constexpr wchar_t PAREN_OPEN_TOP_UNICODE     = L'\u239b';
+static constexpr wchar_t PAREN_OPEN_EXTEND_UNICODE  = L'\u239c';
+static constexpr wchar_t PAREN_OPEN_BOTTOM_UNICODE  = L'\u239d';
+static constexpr wchar_t PAREN_CLOSE_TOP_UNICODE    = L'\u239e';
+static constexpr wchar_t PAREN_CLOSE_EXTEND_UNICODE = L'\u239f';
+static constexpr wchar_t PAREN_CLOSE_BOTTOM_UNICODE = L'\u23a0';
+static constexpr wchar_t SUM_SIGN = L'\u2211';
+static constexpr wchar_t PROD_SIGN = L'\u220F';
 #define SUM_DEC 2
 
 //! The width of the horizontally-drawn cursor
@@ -895,7 +894,7 @@ private:
       As these might be costly operations it is important to cache the result
       of this function.
    */
-  bool CharsExistInFont(wxFont font, const wxString &char1, const wxString &char2, const wxString &char3);
+  bool CharsExistInFont(wxFont font, wchar_t char1, wchar_t char2, wchar_t char3);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;

@@ -20,6 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "ActualValuesStorageWiz.h"
+#include "StringUtils.h"
 
 ActualValuesStorageWiz::ActualValuesStorageWiz(Configuration *WXUNUSED(cfg),
           wxWindow *parent, int id, const wxString &title,
@@ -107,20 +108,20 @@ void ActualValuesStorageWiz::set_properties()
 wxString ActualValuesStorageWiz::GetValue()
 {
   bool firstline = true;
-  wxString retval = wxT("[");
+  wxString retval = {L'['};
   for(int i = 0;i < m_grid->GetNumberRows(); i++)
   {
     if((m_grid->GetCellValue(i,0) != wxEmptyString) ||
        (m_grid->GetCellValue(i,1) != wxEmptyString))
-    {
+    { 
       if (!firstline)
-        retval += wxT(",\n");
+        retval += stR(",\n");
       else
-        retval += wxT("\n");
-      retval += wxT("    ") + m_grid->GetCellValue(i,0) + wxT("=") + m_grid->GetCellValue(i,1);
+        retval += L'\n';
+      retval << stR("    ") << m_grid->GetCellValue(i,0) << L'=' << m_grid->GetCellValue(i,1);
       firstline = false;
     }
   }
-  retval += wxT("\n]");
+  retval += stR("\n]");
   return retval;
 }
