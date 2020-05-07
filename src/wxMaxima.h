@@ -235,7 +235,7 @@ private:
   //! All configuration commands we still have to send to maxima
   wxString m_configCommands;
   //! A RegEx that matches gnuplot errors.
-  wxRegEx m_gnuplotErrorRegex;
+  static wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 
   bool AbortOnError();
   //! This string allows us to detect when the string we search for has changed.
@@ -245,7 +245,7 @@ private:
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
   bool m_hasEvaluatedCells;
   //! Searches for maxima's output prompts
-  wxRegEx m_outputPromptRegEx;
+  static wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
   int m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display 
@@ -698,27 +698,42 @@ protected:
   wxString m_currentOutputEnd;
   //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
+  //! A marker for the start of maths
+  static wxString m_mathPrefix1;
+  //! A marker for the start of maths
+  static wxString m_mathPrefix2;
+  //! A marker for the end of maths
+  static wxString m_mathSuffix1;
+  //! A marker for the end of maths
+  static wxString m_mathSuffix2;
   //! The marker for the start of a input prompt
-  wxString m_promptPrefix;
+  static wxString m_promptPrefix;
   //! The marker for the end of a input prompt
-  wxString m_promptSuffix;
+  static wxString m_promptSuffix;
   //! The marker for the start of a variables section
-  wxString m_variablesPrefix;
+  static wxString m_variablesPrefix;
   //! The marker for the end of a variables section
-  wxString m_variablesSuffix;
+  static wxString m_variablesSuffix;
+  //! The marker for the start of a variables section
+  static wxString m_statusbarPrefix;
+  //! The marker for the end of a variables section
+  static wxString m_statusbarSuffix;
   //! The marker for the start of a "add variables" section
-  wxString m_addVariablesPrefix;
+  static wxString m_addVariablesPrefix;
   //! The marker for the end of a "add variables" section
-  wxString m_addVariablesSuffix;
+  static wxString m_addVariablesSuffix;
   //! The marker for the start of a list of autocompletion templates
-  wxString m_symbolsPrefix;
+  static wxString m_symbolsPrefix;
   //! The marker for the end of a list of autocompletion templates
-  wxString m_symbolsSuffix;
+  static wxString m_symbolsSuffix;
   //! The marker that tells to start suppressing any output from maxima
-  wxString m_suppressOutputPrefix;
+  static wxString m_suppressOutputPrefix;
   //! The marker that tells to stop to suppress any output from maxima
-  wxString m_suppressOutputSuffix;
-  wxString m_firstPrompt;
+  static wxString m_suppressOutputSuffix;
+  //! The first prompt maxima will output
+  static wxString m_firstPrompt;
+  //! An empty wxxml symbols section
+  static wxString m_emptywxxmlSymbols;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   wxString m_lastPrompt;
   wxString m_lastPath;
@@ -749,10 +764,10 @@ protected:
 #endif
   wxHtmlHelpController m_htmlhelpCtrl;
   wxFindReplaceData m_findData;
-  wxRegEx m_funRegEx;
-  wxRegEx m_varRegEx;
-  wxRegEx m_blankStatementRegEx;
-  wxRegEx m_sbclCompilationRegEx;
+  static wxRegEx m_funRegEx;
+  static wxRegEx m_varRegEx;
+  static wxRegEx m_blankStatementRegEx;
+  static wxRegEx m_sbclCompilationRegEx;
   MathParser m_parser;
   bool m_maximaBusy;
   wxMemoryBuffer m_rawDataToSend;

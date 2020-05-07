@@ -218,14 +218,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_updateControls = true;
   m_commandIndex = -1;
   m_isActive = true;
-  wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfigBase *config = wxConfig::Get();
   // If maxima fails to come up directly on startup of wxMaxima there is no need to retry.
   m_unsuccessfulConnectionAttempts = 11;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_pid = -1;
-  wxASSERT(m_gnuplotErrorRegex.Compile(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: ")));
   m_hasEvaluatedCells = false;
   m_process = NULL;
   m_maximaStdout = NULL;
@@ -233,17 +231,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_ready = false;
   m_first = true;
   m_dispReadOut = false;
-  m_promptPrefix = wxT("<PROMPT-P/>");
-  m_promptSuffix = wxT("<PROMPT-S/>");
-  m_suppressOutputPrefix = wxT("<suppressOutput>");
-  m_suppressOutputSuffix = wxT("</suppressOutput>");
-  m_symbolsPrefix = wxT("<wxxml-symbols>");
-  m_symbolsSuffix = wxT("</wxxml-symbols>");
-  m_variablesPrefix = wxT("<variables>");
-  m_variablesSuffix = wxT("</variables>");
-  m_addVariablesPrefix = wxT("<watch_variables_add>");
-  m_addVariablesSuffix = wxT("</watch_variables_add>");
-  m_firstPrompt = wxT("(%i1) ");
 
   m_server = NULL;
 
@@ -282,14 +269,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 #endif
 
   StatusMaximaBusy(disconnected);
-
-  /// RegEx for function definitions
-  wxASSERT(m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:=")));
-  // RegEx for variable definitions
-  wxASSERT(m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:")));
-  // RegEx for blank statement removal
-  wxASSERT(m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)")));
-  wxASSERT(m_sbclCompilationRegEx.Compile(wxT("; compiling (.* \\.*)")));
 
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
@@ -1230,7 +1209,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
     // Show a busy cursor whilst interpreting and layouting potentially long data from maxima.
     wxBusyCursor crs;
 
-    if (s.StartsWith("<mth>") || s.StartsWith("<math>"))
+    if (s.StartsWith(m_mathPrefix1) || s.StartsWith(m_mathPrefix2))
       DoConsoleAppend("<span>" + s + "</span>", type, true, true, userLabel);
     else
       lastLine = DoRawConsoleAppend(s, type);
@@ -2262,7 +2241,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 int wxMaxima::GetMiscTextEnd(const wxString &data)
 {
   // These tests are redundant with later tests. But they are faster.
-  if(data.StartsWith("<mth>") || (data.StartsWith("<math>")))
+  if(data.StartsWith(m_mathPrefix1) || (data.StartsWith(m_mathPrefix2)))
     return 0;
   if(data.StartsWith("<lbl>"))
     return 0;
@@ -2279,7 +2258,7 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   if(data.StartsWith(m_suppressOutputPrefix))
     return 0;
 
-  int mthpos = wxMax(data.Find("<mth>"), data.Find("<math>"));
+  int mthpos = wxMax(data.Find(m_mathPrefix1), data.Find(m_mathPrefix2));
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
   int prmptpos = data.Find(m_promptPrefix);
@@ -2435,18 +2414,16 @@ int wxMaxima::FindTagEnd(wxString &data, const wxString &tag)
 
 void wxMaxima::ReadStatusBar(wxString &data)
 {
-  wxString statusbarStart = wxT("<statusbar>");
-  if (!data.StartsWith(statusbarStart))
+  if (!data.StartsWith(m_statusbarPrefix))
     return;
 
   m_worksheet->m_cellPointers.m_currentTextCell = NULL;
 
-  wxString sts = wxT("</statusbar>\n");
   int end;
-  if ((end = FindTagEnd(data,sts)) != wxNOT_FOUND)
+  if ((end = FindTagEnd(data,m_statusbarSuffix)) != wxNOT_FOUND)
   {
     wxXmlDocument xmldoc;
-    wxString xml = data.Left( end + sts.Length());
+    wxString xml = data.Left( end + m_statusbarSuffix.Length());
     wxStringInputStream xmlStream(xml);
     xmldoc.Load(xmlStream, wxT("UTF-8"));
     wxXmlNode *node = xmldoc.GetRoot();
@@ -2457,7 +2434,7 @@ void wxMaxima::ReadStatusBar(wxString &data)
         LeftStatusText(contents->GetContent(), false);
     }
     // Remove the status bar info from the data string
-    data = data.Right(data.Length()-end-sts.Length());
+    data = data.Right(data.Length()-end-m_statusbarSuffix.Length());
   }
 }
 
@@ -2466,7 +2443,7 @@ void wxMaxima::ReadStatusBar(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-  if ((!data.StartsWith("<mth>")) && (!data.StartsWith("<math>")))
+  if ((!data.StartsWith(m_mathPrefix1)) && (!data.StartsWith(m_mathPrefix2)))
     return;
 
   m_worksheet->m_cellPointers.m_currentTextCell = NULL;
@@ -2474,13 +2451,13 @@ void wxMaxima::ReadMath(wxString &data)
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
   int mthTagLen;
-  int end = FindTagEnd(data,"</mth>");
+  int end = FindTagEnd(data, m_mathSuffix1);
   if(end >= 0)
-    mthTagLen = 6;
+    mthTagLen = m_mathSuffix1.Length();
   else
   {
-    end = FindTagEnd(data,"</math>");
-    mthTagLen = 7;
+    end = FindTagEnd(data, m_mathSuffix2);
+    mthTagLen = m_mathSuffix2.Length();
   }
   if(end >= 0)
   {
@@ -2854,7 +2831,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_worksheet->m_configuration->SetDefaultCellToolTip(
           _("Most questions can be avoided using the assume() "
             "and the declare() command. If that isn't possible the \"Automatically answer questions\" button makes wxMaxima automatically fill in all answers it still remembers from a previous run."));
-      if (wxMax(o.Find(wxT("<mth>")), o.Find(wxT("<math>"))) >= 0)
+      if (wxMax(o.Find(m_mathPrefix1), o.Find(m_mathPrefix1)) >= 0)
         DoConsoleAppend(o, MC_TYPE_PROMPT);
       else
         DoRawConsoleAppend(o, MC_TYPE_PROMPT);
@@ -4220,7 +4197,7 @@ bool wxMaxima::InterpretDataFromMaxima()
 
   if (!m_dispReadOut &&
       (m_currentOutput != wxT("\n")) &&
-      (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
+      (m_currentOutput != m_emptywxxmlSymbols))
   {
     StatusMaximaBusy(transferring);
     m_dispReadOut = true;
@@ -10019,3 +9996,27 @@ bool wxMaxima::m_pipeToStdout = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;
+wxRegEx  wxMaxima::m_outputPromptRegEx(wxT("<lbl>.*</lbl>"));
+wxString wxMaxima::m_promptPrefix(wxT("<PROMPT-P/>"));
+wxString wxMaxima::m_promptSuffix(("<PROMPT-S/>"));
+wxRegEx  wxMaxima::m_funRegEx(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
+wxRegEx  wxMaxima::m_varRegEx(wxT("^ *([[:alnum:]%_]+) *:"));
+wxRegEx  wxMaxima::m_blankStatementRegEx(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
+wxRegEx  wxMaxima::m_sbclCompilationRegEx(wxT("; compiling (.* \\.*)"));
+wxRegEx  wxMaxima::m_gnuplotErrorRegex(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: "));
+wxString wxMaxima::m_suppressOutputPrefix(wxT("<suppressOutput>"));
+wxString wxMaxima::m_suppressOutputSuffix(wxT("</suppressOutput>"));
+wxString wxMaxima::m_symbolsPrefix(wxT("<wxxml-symbols>"));
+wxString wxMaxima::m_symbolsSuffix(wxT("</wxxml-symbols>"));
+wxString wxMaxima::m_variablesPrefix(wxT("<variables>"));
+wxString wxMaxima::m_variablesSuffix(wxT("</variables>"));
+wxString wxMaxima::m_addVariablesPrefix(wxT("<watch_variables_add>"));
+wxString wxMaxima::m_addVariablesSuffix(wxT("</watch_variables_add>"));
+wxString wxMaxima::m_statusbarPrefix(wxT("<statusbar>"));
+wxString wxMaxima::m_statusbarSuffix(wxT("</statusbar>\n"));
+wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
+wxString wxMaxima::m_mathPrefix1(wxT("<mth>"));
+wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
+wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));
+wxString wxMaxima::m_mathSuffix2(wxT("</math>"));
+wxString wxMaxima::m_emptywxxmlSymbols(wxT("<wxxml-symbols></wxxml-symbols>"));
