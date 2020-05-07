@@ -366,7 +366,7 @@ Ordinary text</code></pre>
 <a class="sourceLine" id="cb6-2" title="2"><span class="fu">read</span>(<span class="st">&quot;test.mac&quot;</span>);</a></code></pre></div>
 <p>Ви можете використовувати файли <code>.mac</code> для написання власної бібліотеки макросів. Але оскільки у них не міститься достатніх даних щодо структури, їх не можна читати як сеанс <em>wxMaxima</em>.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
-<p>.wxm files contain the worksheet except <em>Maxima</em>’s output. On Maxima versions &gt;5.38 they can be read using <em>Maxima</em>’s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
+<p>Файли .wxm містять дані робочого аркуша, окрім виведених даних <em>Maxima</em>. У версіях Maxima &gt;5.38 їх можна прочитати за допомогою функції <code>load()</code> <em>Maxima</em>, так само, як можна прочитати файли .mac. У цьому текстовому форматі іноді є неусувна проблема — робочі аркуші із новими можливостями не є зворотно сумісними із застарілими версіями <em>wxMaxima</em>.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
 <p>У цьому заснованому на xml форматі файлів зберігається увесь робочий аркуш, включно із даними щодо масштабу та списком спостереження. Цей формат файлів є рекомендованим.</p>
 <h2 id="параметри-налаштування"><span class="header-section-number">1.4</span> Параметри налаштування</h2>
@@ -409,7 +409,7 @@ Ordinary text</code></pre>
 <p>Якщо ви користуєтеся Windows, налаштування буде збережено у реєстрі. Записи wxMaxima можна знайти у цій гілці: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
 <h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
-<p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session.</p>
+<p>Основним призначенням <em>wxMaxima</em> є забезпечення графічного інтерфейсу до <em>Maxima</em>. Отже, основним завданням програми є передавання команд до <em>Maxima</em> і сповіщення користувача про результат виконання цих команд. Втім, у деяких випадках, <em>wxMaxima</em> розширює функціональні можливості <em>Maxima</em>. Ми вже згадували про здатність <em>wxMaxima</em> створювати звіти експортуванням вмісту робочої книги до файлів HTML і LaTeX. У цьому розділі ми розглянемо деякі способи, у які <em>wxMaxima</em> удосконалює включення графіки до сеансу.</p>
 <h2 id="змінні-із-індексами"><span class="header-section-number">2.1</span> Змінні із індексами</h2>
 <p>якщо встановлено значення true для <code>wxsubscripts</code>, назви змінних у форматі <code>x_y</code> буде показано як літеру із нижнім індексом, якщо</p>
 <ul>
@@ -479,7 +479,7 @@ Ordinary text</code></pre>
 <a class="sourceLine" id="cb12-12" title="12">        <span class="cn">y</span>,-π,π</a>
 <a class="sourceLine" id="cb12-13" title="13">    )</a>
 <a class="sourceLine" id="cb12-14" title="14">)$</a></code></pre></div>
-<p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make its 3D nature available to the intuition:</p>
+<p>Якщо важливою є загальна форма креслення, може бути достатнім трошки пересунути креслення з метою зробити його просторову природу інтуїтивно зрозумілою:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb13-1" title="1"><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="cn">with_slider_draw3d</span>(</a>
@@ -537,7 +537,7 @@ Ordinary text</code></pre>
 <p>Бічна панель «Накреслити за допомогою Draw» приховує простий генератор коду, який уможливлює створення сцен, які використовують певну гнучкість пакунка <em>draw</em>, з яким постачається <em>maxima</em>.</p>
 <h4 id="двовимірний"><span class="header-section-number">2.3.8.1</span> Двовимірний</h4>
 <p>Створює каркас команди <code>draw()</code>, яка малює плоску сцену. Цю сцену пізніше може бути заповнено за допомогою команд, які створюють вміст сцени, наприклад, за допомогою кнопок у рядках під кнопкою «Плоский».</p>
-<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
+<p>Однією з корисних можливостей кнопки «Плоский» є те, що вона надає змогу налаштувати сцену як анімацію, у якій змінна (типовою змінною є <em>t</em>) має різне значення для кожного з кадрів: часто динамічне плоске креслення надає змогу простіше інтерпретувати дані за ті самі у формі нерухомого просторового креслення.</p>
 <h4 id="тривимірний"><span class="header-section-number">2.3.8.2</span> Тривимірний</h4>
 <p>Створює каркас команди <code>draw()</code>, яка малює просторову сцену. Якщо не налаштовано ні двовимірну, ні тривимірну сцену, усі інші кнопки налаштовуватимуть двовимірну сцену, яка містить команду, яку створює кнопка.</p>
 <h4 id="вираз"><span class="header-section-number">2.3.8.3</span> Вираз</h4>
@@ -565,7 +565,7 @@ Ordinary text</code></pre>
 <h4 id="точність"><span class="header-section-number">2.3.8.14</span> Точність</h4>
 <p>Надає змогу вибрати адекватну позицію у компромісному питанні «швидкість чи точність?», яке є частиною будь-якої програми для креслення.</p>
 <h2 id="вбудовування-графіків"><span class="header-section-number">2.4</span> Вбудовування графіків</h2>
-<p>If the <code>.wxmx</code> file format is being used embedding files in a <em>wxMaxima</em> project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
+<p>Якщо використано формат файлів <code>.wxmx</code>, вбудовування файлів до проєкту <em>wxMaxima</em> можна виконати простим перетягуванням зі скиданням. Але іноді (наприклад, якщо вміст зображення може бути змінено згодом протягом роботи у сеансі), краще наказати програмі завантажувати файл зображення при обробці команд:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb18-1" title="1"></a>
 <a class="sourceLine" id="cb18-2" title="2"><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</a></code></pre></div>
 <h2 id="файли-запуску"><span class="header-section-number">2.5</span> Файли запуску</h2>
@@ -581,12 +581,12 @@ Ordinary text</code></pre>
 <li><code>wxfilename</code>: у цій змінній зберігається назва файла, який зараз відкрито у <em>wxMaxima</em>.</li>
 <li><code>wxplot_pngcairo</code> визначає те, чи намагатиметься <em>wxMaxima</em> скористатися терміналом pngcairo <em>gnuplot</em>, який надає доступ до ширшого вибору стилів ліній та кращої якості зображення.</li>
 <li><code>wxplot_size</code> визначає роздільну здатність для вбудованих креслень.</li>
-<li><code>wxchangedir</code>: On most operating systems <em>wxMaxima</em> automatically sets <em>Maxima</em>’s working directory to the directory of the current file. This allows file I/O (e.g. by <code>read_matrix</code>) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to <code>false</code> from the config dialogue.</li>
+<li><code>wxchangedir</code>: у більшості операційних систем <em>wxMaxima</em> автоматично встановлює для робочого каталогу <em>Maxima</em> каталог поточного файла. Це уможливлює роботу введення-виведення до файла (наприклад, за допомогою <code>read_matrix</code>) без визначення усього шляху до файла, який має бути прочитано або записано. У Windows ця можливість іноді спричиняє повідомлення про помилку, тому варто встановити для цього параметра значення <code>false</code> у діалоговому вікні налаштовування.</li>
 <li><code>wxanimate_framerate</code>: частота у кадрах на секунду, із якою відтворюватимуться наступі анімації.</li>
 <li><code>wxanimate_autoplay</code>: типово автоматично відтворювати анімації?</li>
 </ul>
 <h2 id="структурний-друк-двовимірних-даних"><span class="header-section-number">2.7</span> Структурний друк двовимірних даних</h2>
-<p>The function <code>table_form()</code> displays a 2D list in a form that is more readable than the output <em>Maxima</em>’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a “done” statement.</p>
+<p>Функція <code>table_form()</code> показує двовимірний список у формі, яка є зручнішою для читання, за виведені дані типової підпрограми виведення даних <em>Maxima</em>. Вхідними даними є список одного або декількох списків. Подібно до команди друку, ця команда виводить дані, навіть якщо її завершити символом долара. Завершення команди символом крапки з комою призводить до виведення тієї самої таблиці разом із інструкцією «done».</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb19-1" title="1"><span class="cn">table_form</span>(</a>
 <a class="sourceLine" id="cb19-2" title="2">    [</a>
 <a class="sourceLine" id="cb19-3" title="3">        [<span class="dv">1</span>,<span class="dv">2</span>],</a>
@@ -612,14 +612,14 @@ Ordinary text</code></pre>
 <hr />
 <h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
 <h2 id="не-вдається-зєднатися-із-maxima"><span class="header-section-number">3.1</span> Не вдається з’єднатися із <em>Maxima</em></h2>
-<p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
-<p>On Un*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
+<p>Оскільки <em>Maxima</em> (програма, яка виконує самі обчислення) і <em>wxMaxima</em> (програма, яка надає простий у користуванні інтерфейс користувача) є окремими програмами, які обмінюються даними за допомогою з’єднання локальною мережею. Тому найімовірнішою причиною є те, що це з’єднання чомусь не працює. Наприклад, брандмауер може бути налаштовано таким чином, що він не просто запобігає неуповноваженим з’єднання з інтернету (і, можливо, також перехоплює з’єднання із інтернетом), але і блокує обмін даними між процесами на тому самому комп’ютері. Зауважте, що оскільки <em>Maxima</em> виконується процесором Lisp, процес. із яким блокується обмін даними, не обов’язково називається «maxima». Типовими назвами програм, які відкривають з’єднання мережі, можуть бути sbcl, gcl, ccl, lisp.exe або щось подібне.</p>
+<p>У системах Un*x іншою можливою причиною є те, що петльову мережу, яка забезпечує з’єднання мережі між двома програмам, які працюють на одному комп’ютері, не налаштовано належним чином.</p>
 <h2 id="як-зберегти-дані-із-пошкодженого-файла-.wxmx"><span class="header-section-number">3.2</span> Як зберегти дані із пошкодженого файла .wxmx</h2>
-<p>Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn’t turn on compression which makes the contents of .wxmx files viewable in any text editor.</p>
-<p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file’s contents.</p>
+<p>На внутрішньому рівні більшість сучасних форматів на основі xml є звичайними файлами zip. wxMaxima не увімкнула стискання, що робить вміст файлів .wxmx придатним до перекладу у будь-якому текстовому редакторі.</p>
+<p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file’s contents.</p>
 <p>Якщо текстовий файл, що містить ці дані, збережено як файл із суфіксом назви .xml, <em>wxMaxima</em> відомий спосіб відновлення тексту документа з цього файла.</p>
 <h2 id="хочу-бачити-діагностичні-відомості-на-екрані-перш-ніж-команда-завершить-свою-роботу"><span class="header-section-number">3.3</span> Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу</h2>
-<p>Normally <em>wxMaxima</em> waits for the whole 2D formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a <code>disp</code> command, though, that will provide debug output immediately and without waiting for the current <em>Maxima</em> command to finish:</p>
+<p>Зазвичай, <em>wxMaxima</em> очікує, доки буде передано усю двовимірну формулу, перш ніж починає виводити дані. Таким чином заощаджується час, який могло б бути витрачено на постійні спроби вивести незавершену формулу. Втім, існує команда <code>disp</code>, яка може виводити діагностичні дані негайно, не очікуючи на завершення поточної команди <em>Maxima</em>:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
 <a class="sourceLine" id="cb20-2" title="2">   <span class="fu">disp</span>(<span class="cn">i</span>),</a>
 <a class="sourceLine" id="cb20-3" title="3">   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></a>
@@ -632,28 +632,28 @@ Ordinary text</code></pre>
 <p>Можливими причинами цієї помилки є такі:</p>
 <ul>
 <li>Команда креслення є частиною стороннього пакунка, наприклад <code>implicit_plot</code>, але цей пакунок не було завантажено командою <code>load()</code> <em>Maxima</em> до того, як команду було передано на виконання.</li>
-<li><em>Maxima</em> tried to do something the currently installed version of gnuplot isn’t able to understand. In this case a file ending in .gnuplot in the directory <em>Maxima</em>’s variable maxima_userdir points to contains the instructions from <em>Maxima</em> to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.</li>
-<li>Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the “Use the cairo terminal for plot” checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em>Maxima</em>.</li>
+<li><em>Maxima</em> спробувала зробити щось, що не змогла обробити поточна встановлена версія gnuplot. У цьому випадку, файл із суфіксом назви .gnuplot у каталозі, на який вказує змінна <em>Maxima</em> maxima_userdir, містить команди, які <em>Maxima</em> передавала gnuplot. Здебільшого, вміст цього файла є дуже корисним для діагностування проблеми.</li>
+<li>Gnuplot було наказано використовувати бібліотеку pngcairo, яка надає можливості згладжування зображення та додаткових стилів ліній, але саму програму не було зібрано із підтримкою цієї бібліотеки. Вирішення: зніміть позначку з пункту «Використовувати термінал cairo для креслення» у діалоговому вікні налаштувань і не встановлюйте для <code>wxplot_pngcairo</code> значення true з коду <em>Maxima</em>.</li>
 <li>Gnuplot не вивів коректного файла .png.</li>
 </ul>
 <h2 id="спроба-накреслити-анімацію-призводить-до-повідомлення-помилка-невизначена-змінна"><span class="header-section-number">3.5</span> Спроба накреслити анімацію призводить до повідомлення «помилка: невизначена змінна»</h2>
-<p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a <code>subst</code> command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.</p>
+<p>Значення змінної повзунка, типово, буде підставлено до виразу для креслення, лише якщо воно є видимим у цьому виразі. Використання команди <code>subst</code>, яка підставляє змінну повзунка до рівняння, яке слід накреслити (у цьому підручнику є такий приклад), має усунути проблему.</p>
 <h2 id="втрачено-вміст-комірок-і-скасовування-дій-не-допомагає"><span class="header-section-number">3.6</span> Втрачено вміст комірок і скасовування дій не допомагає</h2>
-<p>There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:</p>
+<p>У програмі передбачено окремі функції скасовування дій для дій з комірками і для дій усередині комірок, тому така подія має бути дуже рідкісною. Якщо таке все ж сталося, існує декілька способів відновити дані:</p>
 <ul>
-<li><em>wxMaxima</em> actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.</li>
-<li>If you still have a way to find out what label <em>Maxima</em> has assigned to the cell just type in the cell’s label and its contents will reappear.</li>
-<li>If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all <em>Maxima</em> commands that have been issued recently.</li>
+<li>У <em>wxMaxima</em> є два списки скасовування дій: загальний буфер скасовування, який є активним, якщо не позначено жодної комірки, та окремі буфери комірок, які є активним, якщо курсор перебуває у відповідній комірці. Варто спробувати скористатися обома варіантами скасовування, щоб спробувати дістатися потрібного вам попереднього значення.</li>
+<li>Якщо у вас лишився доступ до мітки, яку <em>Maxima</em> призначила комірці, просто введіть до комірки цю мітку, і програма покаже її вміст.</li>
+<li>Якщо доступу не лишилося, не панікуйте. У меню «Перегляд» є пункт для показу панелі журналу, на якій буде показано усі команди <em>Maxima</em>, які було нещодавно віддано.</li>
 <li>Якщо ніщо інше не допомагає, у <em>Maxima</em> є функція для відтворення усіх команд:</li>
 </ul>
 <div class="sourceCode" id="cb21"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb21-1" title="1"></a>
 <a class="sourceLine" id="cb21-2" title="2"><span class="fu">playback</span>();</a></code></pre></div>
 <h2 id="wxmaxima-запускається-із-повідомленням-процес-maxima-несподівано-перервав-роботу."><span class="header-section-number">3.7</span> <em>wxMaxima</em> запускається із повідомленням «Процес Maxima несподівано перервав роботу.»</h2>
-<p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
+<p>Однією з можливих причин є те, що <em>Maxima</em> не вдалося знайти у каталозі, який вказано на сторінці «Maxima» діалогового вікна налаштовування <em>wxMaxima</em>, а отже, програму взагалі не запущено. Встановлення адреси коректного виконуваного файла <em>Maxima</em> має виправити цю проблему.</p>
 <h2 id="maxima-висне-при-обчислення-і-не-відповідає-на-команди"><span class="header-section-number">3.8</span> Maxima висне при обчислення і не відповідає на команди</h2>
-<p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
+<p>Теоретично можливий випадок, коли <em>wxMaxima</em> не може розпізнати момент завершення обчислень у <em>Maxima</em> і тому ніколи не дізнається про те, що може надсилати нові дані до <em>Maxima</em>. У цьому випадку команда виконання обчислення може відновити синхронізацію між двома програмами.</p>
 <h2 id="версії-maxima-на-основі-sbcl-не-вистачає-оперативної-памяті"><span class="header-section-number">3.9</span> Версії <em>Maxima</em> на основі SBCL не вистачає оперативної пам’яті</h2>
-<p>The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits sbcl can be provided with the command line parameter <code>--dynamic-space-size</code> that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling lapack needs.</p>
+<p>Компілятор Lisp SBCL типово позначається із обмеженням на використання пам’яті, яке надає змогу запускати його на слабких комп’ютерах. При компіляції великих пакунків програмного забезпечення, зокрема lapack, або роботі з великими списками або формулами це обмеження може заважати нормальній роботі. Щоб зняти обмеження, sbcl можна передати параметр <code>--dynamic-space-size</code>, який вказуватиме SBCL, скільки мегабайтів пам’яті слід зарезервувати. У 32-бітовому Windows-SBCL можна зарезервувати до 999 мегабайтів. У 64-бітовій версії SBCL, яку запущено у Windows, можна наказати програмі використовувати понад близько 1280 мегабайтів, чого має бути достатньо для збирання lapack.</p>
 <p>Одним зі способів передати <em>Maxima</em> (а отже, SBCL) параметри командного рядка є поле «Додаткові параметри для Maxima» вікна налаштовування <em>wxMaxima</em>.</p>
 <figure>
 <img src="./sbclMemory.png" alt="sbcl memory" id="img_sbclMemory" /><figcaption>sbcl memory</figcaption>
@@ -708,9 +708,9 @@ Ordinary text</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb27-1" title="1"></a>
 <a class="sourceLine" id="cb27-2" title="2"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</a></code></pre></div>
 <h2 id="чи-передбачено-у-програмі-темний-режим"><span class="header-section-number">4.2</span> Чи передбачено у програмі «темний» режим?</h2>
-<p>If wxWidgets is new enough wxMaxima will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
+<p>Якщо бібліотека wxWidgets є достатньо новою, wxMaxima автоматично працюватиме у темному режимі, якщо у ньому працює решта операційної системи. Сам робочий аркуш типово має світле тло. Втім, колір тла можна змінити. Крім того, ви можете скористатися пунктом меню «Перегляд/Інвертувати яскравість робочого аркуша», за допомогою якого можна швидко перетворити робочий аркуш з темного на світлий, і навпаки.</p>
 <h2 id="wxmaxima-іноді-повисає-на-декілька-секунд-під-час-першої-хвилини-роботи"><span class="header-section-number">4.3</span> wxMaxima іноді повисає на декілька секунд під час першої хвилини роботи</h2>
-<p>wxMaxima delegates some big tasks like parsing maxima’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.</p>
+<p>wxMaxima передає певні складні завдання, зокрема завдання з обробки підручника з maxima, який складається з понад 1000 сторінок, фоновим завданням, що, зазвичай, відбувається зовсім непомітно. Втім, у момент, коли може знадобитися результат виконання такого завдання, wxMaxima може знадобитися декілька секунд для відновлення нормальної роботи.</p>
 <hr />
 <h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
 <p>У більшості операційних систем передбачено простіші способи запуску програми, ніж командний рядок, тому навряд ви запускатиме програму з командного рядка. Втім, у <em>wxMaxima</em> передбачено декілька корисних параметрів командного рядка.</p>
@@ -719,15 +719,15 @@ Ordinary text</code></pre>
 <li><code>-h</code> або <code>--help</code>: вивести короткий довідковий текст</li>
 <li><code>-o</code> або <code>--open=&lt;рядок&gt;</code>: відкрити файл, який передано як аргумент до цього параметра командного рядка</li>
 <li><code>-e</code> або <code>--eval</code>: обробити файл після його відкриття</li>
-<li><code>-b</code> or <code>--batch</code>: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes <em>Maxima</em> generate output files. Batch-processing will be stopped if <em>wxMaxima</em> detects that <em>Maxima</em> has output an error and will pause if <em>Maxima</em> has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.</li>
-<li><code>--logtostdout</code>: Log all “debug messages” sidebar messages to stderr, too.</li>
-<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
-<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
-<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
-<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
-<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>-b</code> або <code>--batch</code>: якщо ви відкриваєте файл з командного рядка, усі комірки у цьому файлі обчислюються, а потім програма виконує збереження файла. Це, наприклад, корисно, якщо сеанс, який описано у файлі, призводить до того, що <em>Maxima</em> щось виводить до файлів. Пакетну обробку буде зупинено, якщо <em>wxMaxima</em> виявить, що <em>Maxima</em> вивела повідомлення про помилку, і призупинить обробку, якщо <em>Maxima</em> задасть питання: математика є дещо інтерактивною за природою, тому повністю автономна пакетна обробка можлива далеко не завжди.</li>
+<li><code>--logtostdout</code>: записувати до stderr і усі «діагностичні повідомлення» бічної панелі.</li>
+<li><code>--pipe</code>: передавати каналом повідомлення від Maxima до stdout.</li>
+<li><code>--exit-on-error</code>: завершити роботу програми за будь-якої помилки maxima.</li>
+<li><code>-f</code> або <code>--ini=&lt;рядок&gt;</code>: скористатися файлом init, який передано як аргумент цього параметра командного рядка</li>
+<li><code>-u</code>, <code>--use-version=&lt;рядок&gt;</code>: скористатися версією maxima <code>&lt;рядок&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;рядок&gt;</code>: скористатися Maxima, яку зібрано за допомогою компілятора Lisp <code>&lt;рядок&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;рядок&gt;</code>: надає змогу вказати додаткові аргументи Maxima</li>
+<li><code>-m</code> або <code>--maxima=&lt;рядок&gt;</code>: надає змогу вказати розташування виконуваного файла <em>maxima</em></li>
 </ul>
 <p>Замість символу мінуса у деяких операційних системах перед перемикачами командного рядка використовується тире.</p>
 </body>

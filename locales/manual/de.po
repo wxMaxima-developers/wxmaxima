@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-25 11:17+0200\n"
+"POT-Creation-Date: 2020-05-07 19:37+0200\n"
 "PO-Revision-Date: 2020-04-21 20:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -17,8 +17,9 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
-#, no-wrap
-msgid "The wxMaxima user manual {-}\n"
+#, fuzzy, no-wrap
+#| msgid "The wxMaxima user manual {-}\n"
+msgid "The wxMaxima user manual {-}"
 msgstr "Das Handbuch von wxMaxima {-}\n"
 
 #. type: Plain text
@@ -111,8 +112,9 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:44
-#, no-wrap
-msgid "Introduction to wxMaxima\n"
+#, fuzzy, no-wrap
+#| msgid "Introduction to wxMaxima\n"
+msgid "Introduction to wxMaxima"
 msgstr "Einführung in wxMaxima\n"
 
 #. type: Title ##
@@ -581,7 +583,7 @@ msgstr ""
 "folgenden Zeichen unterstützt:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:152
+#: ../../info/wxmaxima.md:134
 #, fuzzy, no-wrap
 #| msgid ""
 #| "a alpha    i iota      r rho\n"
@@ -601,7 +603,6 @@ msgstr ""
 #| "H Eta      Om Omicron  Y Psi\n"
 #| "T Theta    P Pi        O Omega\n"
 msgid ""
-"~~~\n"
 "a alpha    i iota      r rho\n"
 "b beta     k kappa     s sigma\n"
 "g gamma    l lambda    t tau\n"
@@ -618,7 +619,6 @@ msgid ""
 "Z Zeta     X Xi        C Chi\n"
 "H Eta      Om Omicron  Y Psi\n"
 "T Theta    P Pi        O Omega\n"
-"~~~\n"
 msgstr ""
 "~~~~\n"
 "a alpha    i iota      r rho\n"
@@ -649,7 +649,7 @@ msgstr ""
 "einzugeben:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:207
+#: ../../info/wxmaxima.md:155
 #, fuzzy, no-wrap
 #| msgid ""
 #| "hbar          planck's constant: a h with a horizontal bar above it\n"
@@ -703,7 +703,6 @@ msgstr ""
 #| "->            a right arrow\n"
 #| "-->           a long right arrow\n"
 msgid ""
-"~~~\n"
 "hbar          planck's constant: a h with a horizontal bar above it\n"
 "Hbar          a H with a horizontal bar above it\n"
 "2             squared\n"
@@ -754,7 +753,6 @@ msgid ""
 "leadsto       a \"leads to\" sign\n"
 "->            a right arrow\n"
 "-->           a long right arrow\n"
-"~~~\n"
 msgstr ""
 "hbar          planck's Konstante: ein h mit einem horizontalen Balken darüber\n"
 "Hbar          ein H mit einem horizontalen Balken darüber\n"
@@ -900,10 +898,19 @@ msgstr ""
 "sind Aufzählungen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:239
-#, no-wrap
+#: ../../info/wxmaxima.md:230
+#, fuzzy, no-wrap
+#| msgid ""
+#| "~~~\n"
+#| "Ordinary text\n"
+#| " * One item, indentation level 1\n"
+#| " * Another item at indentation level 1\n"
+#| "   * An item at a second indentation level\n"
+#| "   * A second item at the second indentation level\n"
+#| " * A third item at the first indentation level\n"
+#| "Ordinary text\n"
+#| "~~~\n"
 msgid ""
-"~~~\n"
 "Ordinary text\n"
 " * One item, indentation level 1\n"
 " * Another item at indentation level 1\n"
@@ -911,7 +918,6 @@ msgid ""
 "   * A second item at the second indentation level\n"
 " * A third item at the first indentation level\n"
 "Ordinary text\n"
-"~~~\n"
 msgstr ""
 "~~~\n"
 "Normaler Text\n"
@@ -930,16 +936,22 @@ msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n
 msgstr "_wxMaxima_ erkennt Text, der mit einem \">\" beginnt, als ein Zitat:\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:249
-#, no-wrap
+#: ../../info/wxmaxima.md:242
+#, fuzzy, no-wrap
+#| msgid ""
+#| "~~~\n"
+#| "Ordinary text\n"
+#| "> quote quote quote quote\n"
+#| "> quote quote quote quote\n"
+#| "> quote quote quote quote\n"
+#| "Ordinary text\n"
+#| "~~~\n"
 msgid ""
-"~~~\n"
 "Ordinary text\n"
 "> quote quote quote quote\n"
 "> quote quote quote quote\n"
 "> quote quote quote quote\n"
 "Ordinary text\n"
-"~~~\n"
 msgstr ""
 "~~~\n"
 "Normaler Text\n"
@@ -957,12 +969,13 @@ msgid "_wxMaxima_'s TeX and html output will also recognize `=>` and replace it 
 msgstr "Die Text- und HTML-Ausgabe von _wxMaxima_ erkennen auch `=>` und ersetzen es durch das entsprechende Unicode-Symbol:\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:255
-#, no-wrap
-msgid ""
-"~~~\n"
-"cogito => sum.\n"
-"~~~\n"
+#: ../../info/wxmaxima.md:252
+#, fuzzy, no-wrap
+#| msgid ""
+#| "~~~\n"
+#| "cogito => sum.\n"
+#| "~~~\n"
+msgid "cogito => sum.\n"
 msgstr ""
 "~~~\n"
 "cogito => sum\n"
@@ -1087,25 +1100,31 @@ msgstr ""
 msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 msgstr "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 
-#. type: Plain text
-#: ../../info/wxmaxima.md:286 ../../info/wxmaxima.md:321
-#: ../../info/wxmaxima.md:614 ../../info/wxmaxima.md:730
-#, fuzzy
+#. type: Code fence info string
+#: ../../info/wxmaxima.md:285 ../../info/wxmaxima.md:320
+#: ../../info/wxmaxima.md:380 ../../info/wxmaxima.md:403
+#: ../../info/wxmaxima.md:415 ../../info/wxmaxima.md:442
+#: ../../info/wxmaxima.md:455 ../../info/wxmaxima.md:474
+#: ../../info/wxmaxima.md:498 ../../info/wxmaxima.md:505
+#: ../../info/wxmaxima.md:517 ../../info/wxmaxima.md:534
+#: ../../info/wxmaxima.md:613 ../../info/wxmaxima.md:642
+#: ../../info/wxmaxima.md:695 ../../info/wxmaxima.md:729
+#: ../../info/wxmaxima.md:776 ../../info/wxmaxima.md:785
+#: ../../info/wxmaxima.md:813
+#, fuzzy, no-wrap
 #| msgid "    load(draw);\n"
-msgid "~~~maxima"
+msgid "maxima"
 msgstr "    load(draw);\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:288
-msgid "read(\"test.mac\");"
+#: ../../info/wxmaxima.md:285
+#, fuzzy, no-wrap
+#| msgid "read(\"test.mac\");"
+msgid ""
+"\n"
+"read(\"test.mac\");\n"
+"\n"
 msgstr "read(\"test.mac\");"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:290 ../../info/wxmaxima.md:325
-#: ../../info/wxmaxima.md:618 ../../info/wxmaxima.md:734
-#: ../../info/wxmaxima.md:765 ../../info/wxmaxima.md:835
-msgid "~~~"
-msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:292
@@ -1227,8 +1246,13 @@ msgstr ""
 "werden:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:323
-msgid "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$"
+#: ../../info/wxmaxima.md:320
+#, fuzzy, no-wrap
+#| msgid "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$"
+msgid ""
+"\n"
+"wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
+"\n"
 msgstr "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$"
 
 #. type: Title ###
@@ -1362,8 +1386,9 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:363
-#, no-wrap
-msgid "Extensions to _Maxima_\n"
+#, fuzzy, no-wrap
+#| msgid "Extensions to _Maxima_\n"
+msgid "Extensions to _Maxima_"
 msgstr "Erweiterungen für _Maxima_\n"
 
 #. type: Plain text
@@ -1448,10 +1473,9 @@ msgstr ""
 "bearbeitet. "
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:390
+#: ../../info/wxmaxima.md:380
 #, fuzzy, no-wrap
 msgid ""
-"~~~maxima\n"
 "for i:1 thru 10 do (\n"
 "    /* Tell the user how far we got */\n"
 "    wxstatusbar(concat(\"Pass \",i)),\n"
@@ -1460,7 +1484,6 @@ msgid ""
 "    /* program execution (here: for 3 seconds) */\n"
 "    ?sleep(3)\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    for i:1 thru 10 do (\n"
 "        /* Gib dem User Bescheid, wie weit wir schon sind */\n"
@@ -1532,7 +1555,7 @@ msgstr ""
 "geändert werden:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:412
+#: ../../info/wxmaxima.md:403
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    wxplot_size:[1200,800]$\n"
@@ -1543,7 +1566,6 @@ msgstr ""
 #| "        )\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "wxplot_size:[1200,800]$\n"
 "wxdraw2d(\n"
 "    explicit(\n"
@@ -1551,7 +1573,6 @@ msgid ""
 "        x,1,10\n"
 "    )\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    wxplot_size:[1200,800]$\n"
 "    wxdraw2d(\n"
@@ -1571,7 +1592,7 @@ msgstr ""
 "_Maxima_ dies auf die folgende Weise zu tun:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:423
+#: ../../info/wxmaxima.md:415
 #, fuzzy, no-wrap
 #| msgid ""
 #| "     wxdraw2d(\n"
@@ -1581,14 +1602,12 @@ msgstr ""
 #| "        )\n"
 #| "     ),wxplot_size=[1600,800]$\n"
 msgid ""
-"~~~maxima\n"
 "wxdraw2d(\n"
 "    explicit(\n"
 "        sin(x),\n"
 "        x,1,10\n"
 "    )\n"
 "),wxplot_size=[1600,800]$\n"
-"~~~\n"
 msgstr ""
 "    wxdraw2d(\n"
 "        explicit(\n"
@@ -1697,7 +1716,7 @@ msgstr ""
 "akzeptiert:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:452
+#: ../../info/wxmaxima.md:442
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    with_slider_draw(\n"
@@ -1709,7 +1728,6 @@ msgstr ""
 #| "        ),grid=true\n"
 #| "    );\n"
 msgid ""
-"~~~maxima\n"
 "with_slider_draw(\n"
 "    f,[1,2,3,4,5,6,7,10],\n"
 "    title=concat(\"f=\",f,\"Hz\"),\n"
@@ -1718,7 +1736,6 @@ msgid ""
 "        x,0,1\n"
 "    ),grid=true\n"
 ");\n"
-"~~~\n"
 msgstr ""
 "    with_slider_draw(\n"
 "        f,[1,2,3,4,5,6,7,10],\n"
@@ -1739,7 +1756,7 @@ msgstr ""
 "verfügbar, die auch rotierende 3D-Diagramme erstellen kann:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:471
+#: ../../info/wxmaxima.md:455
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    wxanimate_autoplay:true;\n"
@@ -1757,7 +1774,6 @@ msgstr ""
 #| "        )\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
 "with_slider_draw3d(\n"
@@ -1772,7 +1788,6 @@ msgid ""
 "        y,-π,π\n"
 "    )\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    wxanimate_autoplay:true;\n"
 "    wxanimate_framerate:20;\n"
@@ -1800,7 +1815,7 @@ msgstr ""
 "ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:490
+#: ../../info/wxmaxima.md:474
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    wxanimate_autoplay:true;\n"
@@ -1818,7 +1833,6 @@ msgstr ""
 #| "        )\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
 "with_slider_draw3d(\n"
@@ -1833,7 +1847,6 @@ msgid ""
 "        y,-2*π,2*π\n"
 "    )\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    wxanimate_autoplay:true;\n"
 "    wxanimate_framerate:20;\n"
@@ -1881,16 +1894,14 @@ msgstr ""
 "Animation zu ändern, kann die Variable `wxanimate_framerate` geändert werden:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:502
+#: ../../info/wxmaxima.md:498
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    wxanimate(a, 10,\n"
 #| "        sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
 msgid ""
-"~~~maxima\n"
 "wxanimate(a, 10,\n"
 "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
-"~~~\n"
 msgstr ""
 "    wxanimate(a, 10,\n"
 "        sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
@@ -1909,7 +1920,7 @@ msgstr ""
 "Beispiel scheitert daher:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:514
+#: ../../info/wxmaxima.md:505
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    f:sin(a*x);\n"
@@ -1920,7 +1931,6 @@ msgstr ""
 #| "        explicit(f,x,0,10)\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
 "    a,makelist(i/2,i,1,10),\n"
@@ -1928,7 +1938,6 @@ msgid ""
 "    grid=true,\n"
 "    explicit(f,x,0,10)\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    f:sin(a*x);\n"
 "    with_slider_draw(\n"
@@ -1948,7 +1957,7 @@ msgstr ""
 "Befehl stattdessen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:529
+#: ../../info/wxmaxima.md:517
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    f:sin(a*x);\n"
@@ -1962,7 +1971,6 @@ msgstr ""
 #| "        )\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
 "    b,makelist(i/2,i,1,10),\n"
@@ -1973,7 +1981,6 @@ msgid ""
 "        x,0,10\n"
 "    )\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    f:sin(a*x);\n"
 "    with_slider_draw(\n"
@@ -2000,48 +2007,20 @@ msgstr ""
 "Systemen das folgende Beispiel von Mario Rodriguez auszuführen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:536
-#, fuzzy
-#| msgid "    load(draw);\n"
-msgid "~~~maxima load(draw);"
-msgstr "    load(draw);\n"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:539
-#, fuzzy
-#| msgid ""
-#| "    /* Parabola in window #1 */\n"
-#| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#: ../../info/wxmaxima.md:534
+#, no-wrap
 msgid ""
-"/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
+"load(draw);\n"
+"\n"
+"/* Parabola in window #1 */\n"
+"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+"\n"
+"/* Parabola in window #2 */\n"
+"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+"\n"
+"/* Paraboloid in window #3 */\n"
+"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
-"    /* Eine Parabel in Fenster #1 */\n"
-"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:542
-#, fuzzy
-#| msgid ""
-#| "    /* Parabola in window #2 */\n"
-#| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-msgid ""
-"/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
-msgstr ""
-"    /* Eine Parabel in Fenster #2 */\n"
-"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-
-#. type: Plain text
-#: ../../info/wxmaxima.md:546
-#, fuzzy
-#| msgid ""
-#| "    /* Paraboloid in window #3 */\n"
-#| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-msgid ""
-"/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
-"x,-1,1,y,-1,1)); ~~~"
-msgstr ""
-"    /* Ein Paraboloid in Fenster #3 */\n"
-"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:547
@@ -2304,8 +2283,13 @@ msgstr ""
 "ist aber auch möglich, _Maxima_ anzuweisen, Bilder einzubauen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:616
-msgid "show_image(\"man.png\");"
+#: ../../info/wxmaxima.md:613
+#, fuzzy, no-wrap
+#| msgid "show_image(\"man.png\");"
+msgid ""
+"\n"
+"show_image(\"man.png\");\n"
+"\n"
 msgstr "show_image(\"Mensch.png\");"
 
 # ## Startbefehle
@@ -2446,7 +2430,7 @@ msgstr ""
 "anstelle eines `;` unterdrückt werden."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:650
+#: ../../info/wxmaxima.md:642
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    table_form(\n"
@@ -2456,14 +2440,12 @@ msgstr ""
 #| "        ]\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "table_form(\n"
 "    [\n"
 "        [1,2],\n"
 "        [3,4]\n"
 "    ]\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    table_form(\n"
 "        [\n"
@@ -2548,8 +2530,9 @@ msgstr "Der `box()`-Befehl stellt sein Argument in _wxMaxima_ rot dar."
 
 #. type: Title =
 #: ../../info/wxmaxima.md:675
-#, no-wrap
-msgid "Troubleshooting\n"
+#, fuzzy, no-wrap
+#| msgid "Troubleshooting\n"
+msgid "Troubleshooting"
 msgstr "Fehlersuche\n"
 
 #. type: Title ##
@@ -2609,18 +2592,32 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:688
+#, fuzzy
+#| msgid ""
+#| "If the zip signature at the end of the file is still intact after "
+#| "renaming a broken .wxmx file to .zip most operating systems will provide "
+#| "a way to extract any portion of information that is stored inside it. The "
+#| "can be done when there is the need of recovering the original image files "
+#| "from a text processor document. If the zip signature isn’t intact that "
+#| "does not need to be the end of the world: If _wxMaxima_ during saving "
+#| "detected that something went wrong there will be a `wxmx~` file whose "
+#| "contents might help and even if there isn’t such a file: If the "
+#| "configuration option is set that .wxmx files have to be optimized for "
+#| "version control it is possible to rename the .wxmx file to a .txt file "
+#| "and to use a text editor to recover the XML portion of the file's "
+#| "contents."
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
 "broken .wxmx file to .zip most operating systems will provide a way to "
-"extract any portion of information that is stored inside it. The can be done "
-"when there is the need of recovering the original image files from a text "
-"processor document. If the zip signature isn’t intact that does not need to "
-"be the end of the world: If _wxMaxima_ during saving detected that something "
-"went wrong there will be a `wxmx~` file whose contents might help and even "
-"if there isn’t such a file: If the configuration option is set that .wxmx "
-"files have to be optimized for version control it is possible to rename the ."
-"wxmx file to a .txt file and to use a text editor to recover the XML portion "
-"of the file's contents."
+"extract any portion of information that is stored inside it. This can be "
+"done when there is the need of recovering the original image files from a "
+"text processor document. If the zip signature isn’t intact that does not "
+"need to be the end of the world: If _wxMaxima_ during saving detected that "
+"something went wrong there will be a `wxmx~` file whose contents might help "
+"and even if there isn’t such a file: If the configuration option is set "
+"that .wxmx files have to be optimized for version control it is possible to "
+"rename the .wxmx file to a .txt file and to use a text editor to recover the "
+"XML portion of the file's contents."
 msgstr ""
 "Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach "
 "<irgendwas>.zip umbenennen, entpacken, reparieren, neu packen und wieder "
@@ -2658,7 +2655,7 @@ msgstr ""
 "steht. Das `disp`-Kommando wird hingegen sofort ausgeführt:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:704
+#: ../../info/wxmaxima.md:695
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    for i:1 thru 10 do (\n"
@@ -2669,7 +2666,6 @@ msgstr ""
 #| "       ?sleep(3)\n"
 #| "    )$\n"
 msgid ""
-"~~~maxima\n"
 "for i:1 thru 10 do (\n"
 "   disp(i),\n"
 "   /* (sleep n) is a Lisp function, which can be used */\n"
@@ -2677,7 +2673,6 @@ msgid ""
 "   /* program execution (here: for 3 seconds) */\n"
 "   ?sleep(3)\n"
 ")$\n"
-"~~~\n"
 msgstr ""
 "    for i:1 thru 10 do (\n"
 "       disp(i),\n"
@@ -2819,8 +2814,13 @@ msgstr ""
 "bisherigen Befehle nochmals auszuführen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:732
-msgid "playback();"
+#: ../../info/wxmaxima.md:729
+#, fuzzy, no-wrap
+#| msgid "playback();"
+msgid ""
+"\n"
+"playback();\n"
+"\n"
 msgstr "playback();"
 
 #. type: Title ##
@@ -2934,16 +2934,20 @@ msgstr ""
 "Wenn _Maxima_ mittels sbcl compiliert wurde, können die folgenden Befehle "
 "zur `.sbclrc` hinzugefügt werden:"
 
-#. type: Plain text
-#: ../../info/wxmaxima.md:761
-msgid "~~~lisp"
+#. type: Code fence info string
+#: ../../info/wxmaxima.md:760
+#, no-wrap
+msgid "lisp"
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:763
-#, fuzzy
+#: ../../info/wxmaxima.md:760
+#, fuzzy, no-wrap
 #| msgid "    (setf sb-impl::*default-external-format* :utf-8)\n"
-msgid "(setf sb-impl::*default-external-format* :utf-8)"
+msgid ""
+"\n"
+"(setf sb-impl::*default-external-format* :utf-8)\n"
+"\n"
 msgstr "    (setf sb-impl::*default-external-format* :utf-8)\n"
 
 #. type: Plain text
@@ -2980,7 +2984,7 @@ msgstr ""
 "wo sie generiert werden sollen:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:782
+#: ../../info/wxmaxima.md:776
 #, fuzzy, no-wrap
 #| msgid ""
 #| "~~~~\n"
@@ -2990,12 +2994,10 @@ msgstr ""
 #| ");\n"
 #| "~~~~\n"
 msgid ""
-"~~~maxima\n"
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
 "    explicit(sin(x),x,1,10)\n"
 ");\n"
-"~~~\n"
 msgstr ""
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
@@ -3012,7 +3014,7 @@ msgstr ""
 "generieren und dann in das Arbeitsblatt zu importieren:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:803
+#: ../../info/wxmaxima.md:785
 #, fuzzy, no-wrap
 #| msgid ""
 #| "~~~~\n"
@@ -3034,7 +3036,6 @@ msgstr ""
 #| "pngdraw2d(name,[contents]):=\n"
 #| "    pngdraw(name,gr2d(contents));\n"
 msgid ""
-"~~~maxima\n"
 "load(\"draw\");\n"
 "pngdraw(name,[contents]):=\n"
 "(\n"
@@ -3052,6 +3053,10 @@ msgid ""
 ");\n"
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents));\n"
+"\n"
+"pngdraw2d(\"Test\",\n"
+"        explicit(sin(x),x,1,10)\n"
+");\n"
 msgstr ""
 "~~~~\n"
 "load(\\\"draw\\\");\n"
@@ -3072,25 +3077,6 @@ msgstr ""
 "pngdraw2d(name,[contents]):=\n"
 "    pngdraw(name,gr2d(contents)\n"
 
-#. type: Plain text
-#: ../../info/wxmaxima.md:808
-#, fuzzy, no-wrap
-#| msgid ""
-#| "pngdraw2d(\"Test\",\n"
-#| "        explicit(sin(x),x,1,10)\n"
-#| ");\n"
-#| "~~~~\n"
-msgid ""
-"pngdraw2d(\"Test\",\n"
-"        explicit(sin(x),x,1,10)\n"
-");\n"
-"~~~\n"
-msgstr ""
-"pngdraw2d(\\\"Test\\\",\n"
-"        explicit(sin(x),x,1,10)\n"
-");\n"
-"~~~~\n"
-
 #. type: Title ###
 #: ../../info/wxmaxima.md:809
 #, no-wrap
@@ -3103,7 +3089,7 @@ msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
 msgstr "Nicht direkt bei _Maxima_. Aber es gibt Gnuplot-Kommandos dafür:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:819
+#: ../../info/wxmaxima.md:813
 #, fuzzy, no-wrap
 #| msgid ""
 #| "     wxdraw2d(\n"
@@ -3111,12 +3097,10 @@ msgstr "Nicht direkt bei _Maxima_. Aber es gibt Gnuplot-Kommandos dafür:"
 #| "         explicit(sin(x),x,1,10)\n"
 #| "     ),wxplot_size=[1000,1000];\n"
 msgid ""
-"~~~maxima\n"
 "wxdraw2d(\n"
 "    proportional_axis=xy,\n"
 "    explicit(sin(x),x,1,10)\n"
 "),wxplot_size=[1000,1000];\n"
-"~~~\n"
 msgstr ""
 "     wxdraw2d(\n"
 "         proportional_axis=xy,\n"
@@ -3145,16 +3129,20 @@ msgstr "Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreibe
 msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgstr "Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (\"Exportieren\"->\"Zusätzliche Zeilen für die LaTeX preamble\") angeben.\n"
 
-#. type: Plain text
-#: ../../info/wxmaxima.md:831
-msgid "~~~latex"
+#. type: Code fence info string
+#: ../../info/wxmaxima.md:830
+#, no-wrap
+msgid "latex"
 msgstr ""
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:833
-#, fuzzy
+#: ../../info/wxmaxima.md:830
+#, fuzzy, no-wrap
 #| msgid "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
-msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}"
+msgid ""
+"\n"
+"\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
+"\n"
 msgstr "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 
 #. type: Title ##
@@ -3193,8 +3181,9 @@ msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten
 
 #. type: Title =
 #: ../../info/wxmaxima.md:848
-#, no-wrap
-msgid "Command-line arguments\n"
+#, fuzzy, no-wrap
+#| msgid "Command-line arguments\n"
+msgid "Command-line arguments"
 msgstr "Kommandozeilen-Optionen\n"
 
 #. type: Plain text
@@ -3280,6 +3269,59 @@ msgid ""
 msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
 "Schrägstrich statt eines Minusses."
+
+#, fuzzy
+#~| msgid "    load(draw);\n"
+#~ msgid "~~~maxima load(draw);"
+#~ msgstr "    load(draw);\n"
+
+#, fuzzy
+#~| msgid ""
+#~| "    /* Parabola in window #1 */\n"
+#~| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ msgid ""
+#~ "/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
+#~ msgstr ""
+#~ "    /* Eine Parabel in Fenster #1 */\n"
+#~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+
+#, fuzzy
+#~| msgid ""
+#~| "    /* Parabola in window #2 */\n"
+#~| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ msgid ""
+#~ "/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
+#~ msgstr ""
+#~ "    /* Eine Parabel in Fenster #2 */\n"
+#~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+
+#, fuzzy
+#~| msgid ""
+#~| "    /* Paraboloid in window #3 */\n"
+#~| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+#~ msgid ""
+#~ "/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
+#~ "x,-1,1,y,-1,1)); ~~~"
+#~ msgstr ""
+#~ "    /* Ein Paraboloid in Fenster #3 */\n"
+#~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+
+#, fuzzy
+#~| msgid ""
+#~| "pngdraw2d(\"Test\",\n"
+#~| "        explicit(sin(x),x,1,10)\n"
+#~| ");\n"
+#~| "~~~~\n"
+#~ msgid ""
+#~ "pngdraw2d(\"Test\",\n"
+#~ "        explicit(sin(x),x,1,10)\n"
+#~ ");\n"
+#~ "~~~\n"
+#~ msgstr ""
+#~ "pngdraw2d(\\\"Test\\\",\n"
+#~ "        explicit(sin(x),x,1,10)\n"
+#~ ");\n"
+#~ "~~~~\n"
 
 #~ msgid ""
 #~ "A horizontal cursor that is able to select any number of whole cells. "
