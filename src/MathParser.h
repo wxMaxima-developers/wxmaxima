@@ -32,7 +32,7 @@ The header file for the xml cell parser
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
-
+#include <wx/regex.h>
 #include "Cell.h"
 #include "TextCell.h"
 #include "EditorCell.h"
@@ -135,7 +135,7 @@ private:
   Cell *ParseMmultiscriptsTag(wxXmlNode *node);
   
   wxString m_userDefinedLabel;
-  wxRegEx m_graphRegex;
+  static wxRegEx m_graphRegex;
 
   CellType m_ParserStyle;
   int m_FracStyle;

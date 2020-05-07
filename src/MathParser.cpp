@@ -27,7 +27,6 @@
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/sstream.h>
-#include <wx/regex.h>
 #include <wx/intl.h>
 
 #include "MathParser.h"
@@ -77,7 +76,6 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
 
 MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile)
 {
-  wxASSERT(m_graphRegex.Compile(wxT("[[:cntrl:]]")));
   m_configuration = cfg;
   m_cellPointers = cellPointers;
   m_ParserStyle = MC_TYPE_DEFAULT;
@@ -1185,3 +1183,5 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
   }
   return cell;
 }
+
+wxRegEx MathParser::m_graphRegex(wxT("[[:cntrl:]]"));
