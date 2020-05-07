@@ -7424,12 +7424,12 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperat
 
   bool actionContinues;
   do{
-    const TreeUndoAction &action = sourcelist->front();
-    if (action.m_newCellsEnd)
+    const TreeUndoAction &actn = sourcelist->front();
+    if (actn.m_newCellsEnd)
       TreeUndoCellAddition(sourcelist, undoForThisOperation);
     else
     {
-      if (action.m_oldCells != NULL)
+      if (actn.m_oldCells != NULL)
         TreeUndoCellDeletion(sourcelist, undoForThisOperation);
       else
         TreeUndoTextChange(sourcelist, undoForThisOperation);
