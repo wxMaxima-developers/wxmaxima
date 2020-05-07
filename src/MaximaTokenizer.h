@@ -28,7 +28,7 @@
 #include <wx/arrstr.h>
 #include "TextStyle.h"
 #include "Configuration.h"
-#include <list>
+#include <vector>
 #include <memory>
 
 /*!\file
