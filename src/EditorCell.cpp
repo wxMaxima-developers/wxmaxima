@@ -1353,7 +1353,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     return 0;
 
   // A list of by how many chars we need to indent the current line.
-  std::list<int> indentChars;
+  std::vector<int> indentChars;
   indentChars.push_back(0);
 
   wxString::const_iterator it = m_text.begin();
@@ -2638,14 +2638,11 @@ bool EditorCell::AddEnding()
   if(GetType() != MC_TYPE_INPUT)
     return false;
   
-  MaximaTokenizer::TokenList tokens =
-    MaximaTokenizer(m_text, *m_configuration).GetTokens();
-
   bool endingNeeded = true;
   
-  for (MaximaTokenizer::TokenList::const_iterator it = tokens.begin(); it != tokens.end(); ++it)
+  for (auto const &tok : MaximaTokenizer(m_text, *m_configuration).PopTokens())
   {
-    TextStyle itemStyle = (*it)->GetStyle();
+    TextStyle itemStyle = tok.GetStyle();
     if ((itemStyle == TS_CODE_ENDOFLINE) || (itemStyle == TS_CODE_LISP))
     {
       endingNeeded = false;
@@ -2653,10 +2650,10 @@ bool EditorCell::AddEnding()
     else
     {
       if(
-        (!(*it)->GetText().StartsWith(" ")) &&
-        (!(*it)->GetText().StartsWith("\t")) &&
-        (!(*it)->GetText().StartsWith("\n")) &&
-        (!(*it)->GetText().StartsWith("\r")) &&
+        (!tok.GetText().StartsWith(" ")) &&
+        (!tok.GetText().StartsWith("\t")) &&
+        (!tok.GetText().StartsWith("\n")) &&
+        (!tok.GetText().StartsWith("\r")) &&
         (!(itemStyle == TS_CODE_COMMENT))
         )
         endingNeeded = true;
@@ -3444,19 +3441,17 @@ void EditorCell::StyleTextCode()
   }
 
   // Split the line into commands, numbers etc.
-  m_tokens = MaximaTokenizer(textToStyle, *m_configuration).GetTokens();
+  m_tokens = MaximaTokenizer(textToStyle, *m_configuration).PopTokens();
 
   // Now handle the text pieces one by one
   wxString lastTokenWithText;
   int pos = 0;
   int lineWidth = 0;
-  MaximaTokenizer::Token token;
 
-  for(MaximaTokenizer::TokenList::const_iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
+  for (auto const &token : m_tokens)
   {
     pos += token.GetText().Length();
-    token = *(*it);
-    wxString tokenString = token.GetText();
+    auto &tokenString = token.GetText();
     if (tokenString.IsEmpty())
       continue;
     wxChar Ch = tokenString[0];
@@ -3535,8 +3530,8 @@ void EditorCell::StyleTextTexts()
 
     // Is this a new line - or the remainder of the line after a soft break?
     bool newLine = true;
-    std::list<wxString> prefixes;
-    std::list<int> indentPixels;
+    std::vector<wxString> prefixes;
+    std::vector<int> indentPixels;
     wxString indentChar;
 
     unsigned int i = 0;

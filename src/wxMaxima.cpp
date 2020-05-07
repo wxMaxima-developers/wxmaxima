@@ -105,6 +105,13 @@
 
 wxDECLARE_APP (MyApp);
 
+void MyApp::DelistTopLevelWindow(wxMaxima *window)
+{
+  auto pos = std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
+  if (pos != m_topLevelWindows.end())
+    m_topLevelWindows.erase(pos);
+}
+
 void wxMaxima::ConfigChanged()
 {
   if(m_worksheet->GetTree())
@@ -1079,7 +1086,8 @@ wxMaxima::~wxMaxima()
   #pragma omp taskwait
   #endif
   KillMaxima(false);
-  MyApp::m_topLevelWindows.remove(this);
+  MyApp::DelistTopLevelWindow(this);
+
   if(MyApp::m_topLevelWindows.empty())
     wxExit();
   else
@@ -1163,7 +1171,7 @@ void wxMaxima::FirstOutput()
  * It will call
  * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
  */
-TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
+TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &userLabel)
 {
   TextCell *lastLine = NULL;
   // If we want to append an error message to the worksheet and there is no cell
@@ -1260,7 +1268,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
 }
 
 void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
-                               bool bigSkip, wxString userLabel)
+                               bool bigSkip, const wxString &userLabel)
 {
   Cell *cell;
 
@@ -1677,7 +1685,7 @@ void wxMaxima::OnMaximaConnect()
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
     
-  m_client = std::shared_ptr<wxSocketBase>(m_server->Accept(false));
+  m_client.reset(m_server->Accept(false));
   if(!m_client)
   {
     wxLogMessage(_("Connection attempt, but connection failed."));
@@ -1692,7 +1700,7 @@ void wxMaxima::OnMaximaConnect()
   else
   {
     wxLogMessage(_("Connected."));
-    m_clientStream = std::make_shared<wxSocketInputStream>(*m_client);
+    m_clientStream.reset(new wxSocketInputStream(*m_client));
     m_clientTextStream.reset(new wxTextInputStream(*m_clientStream, wxT('\t'), wxConvUTF8));
     m_client->SetEventHandler(*GetEventHandler());
     m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
@@ -2404,7 +2412,7 @@ void wxMaxima::ReadMiscText(wxString &data)
     m_worksheet->m_cellPointers.m_currentTextCell = NULL;
 }
 
-int wxMaxima::FindTagEnd(wxString &data, const wxString &tag)
+int wxMaxima::FindTagEnd(const wxString &data, const wxString &tag)
 {
   if((m_currentOutputEnd == wxEmptyString) || (m_currentOutputEnd.Find(tag) != wxNOT_FOUND))
     return data.Find(tag);
@@ -2913,7 +2921,7 @@ void wxMaxima::SetCWD(wxString file)
   }
 }
 
-wxString wxMaxima::ReadMacContents(wxString file)
+wxString wxMaxima::ReadMacContents(const wxString &file)
 {
   bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
 
@@ -2963,7 +2971,7 @@ wxString wxMaxima::ReadMacContents(wxString file)
   return macContents;
 }
 
-bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocument)
+bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document, bool clearDocument)
 {
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
@@ -3213,7 +3221,7 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
 
 // OpenWXMFile
 // Clear document (if clearDocument == true), then insert file
-bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocument)
+bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clearDocument)
 {
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
@@ -3285,7 +3293,7 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
   return true;
 }
 
-bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocument)
+bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument)
 {
   wxLogMessage(_("Opening a wxmx file"));
   // Show a busy cursor while we open a file.
@@ -3500,7 +3508,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   return true;
 }
 
-bool wxMaxima::CheckWXMXVersion(wxString docversion)
+bool wxMaxima::CheckWXMXVersion(const wxString &docversion)
 {
   double version = 1.0;
   if (docversion.ToDouble(&version))
@@ -3523,7 +3531,7 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
   return true;
 }
 
-bool wxMaxima::OpenXML(wxString file, Worksheet *document)
+bool wxMaxima::OpenXML(const wxString &file, Worksheet *document)
 {
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
@@ -3584,7 +3592,7 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
   return true;
 }
 
-GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename)
+GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename)
 {
   // Show a busy cursor as long as we export a .gif file (which might be a lengthy
   // action).
@@ -3904,7 +3912,7 @@ wxString wxMaxima::GetMaximaHelpFile2()
   return wxEmptyString;
 }
 
-void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
+void wxMaxima::ShowHTMLHelp(const wxString &helpfile, const wxString &keyword)
 {
   wxString maximaHelpFile = GetMaximaHelpFile();
 #ifdef __WINDOWS__
@@ -3926,7 +3934,7 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
 }
 
 #if defined (__WXMSW__)
-void wxMaxima::ShowCHMHelp(wxString helpfile, wxString keyword)
+void wxMaxima::ShowCHMHelp(const wxString &helpfile, const wxString &keyword)
 {
   if (m_chmhelpFile != helpfile)
     m_chmhelpCtrl.LoadFile(helpfile);
@@ -4030,7 +4038,7 @@ void wxMaxima::ShowWxMaximaHelp()
   }
 }
 
-void wxMaxima::ShowHelp(wxString keyword)
+void wxMaxima::ShowHelp(const wxString &keyword)
 {
   if((keyword.IsEmpty()) || (keyword == "%"))
     ShowWxMaximaHelp();
@@ -4532,7 +4540,7 @@ void wxMaxima::UpdateDrawPane()
 ///  Menu and button events
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::MenuCommand(wxString cmd)
+void wxMaxima::MenuCommand(const wxString &cmd)
 {
   m_worksheet->SetFocus();
   m_worksheet->OpenHCaret(cmd);
@@ -4788,7 +4796,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
   m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
 
-wxString wxMaxima::ExtractFirstExpression(wxString entry)
+wxString wxMaxima::ExtractFirstExpression(const wxString &entry)
 {
   int semicolon = entry.Find(';');
   int dollar = entry.Find('$');
@@ -4822,7 +4830,7 @@ wxString wxMaxima::GetDefaultEntry()
   return retval;
 }
 
-bool wxMaxima::OpenFile(wxString file, wxString command)
+bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
 {
   wxBusyCursor crs;
   bool retval = true;
@@ -8464,7 +8472,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if(m_fileSaved)
     RemoveTempAutosavefile();
   KillMaxima();
-  MyApp::m_topLevelWindows.remove(this);
+  MyApp::DelistTopLevelWindow(this);
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
@@ -9115,19 +9123,17 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   if (text.EndsWith(wxT("\\")))
     return (_("Cell ends in a backslash"));
 
-  MaximaTokenizer::TokenList tokens =
-    MaximaTokenizer(text, m_worksheet->m_configuration).GetTokens();
 
   index = 0;
   bool endingNeeded = true;
   wxChar lastnonWhitespace;
   wxChar lastnonWhitespace_Next = wxT(' ');
-  MaximaTokenizer::TokenList::const_iterator it;
   std::list<wxChar> delimiters;
-  for (it = tokens.begin(); it != tokens.end(); ++it)
+
+  for (auto const &tok : MaximaTokenizer(text, m_worksheet->m_configuration).PopTokens())
   {
-    wxString itemText = (*it)->GetText();
-    TextStyle itemStyle = (*it)->GetStyle();
+    auto &itemText = tok.GetText();
+    const TextStyle itemStyle = tok.GetStyle();
     index += itemText.Length();
 
     lastnonWhitespace = lastnonWhitespace_Next;
@@ -9193,7 +9199,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       continue;
     }
 
-    if((*it)->GetStyle() == TS_CODE_LISP)
+    if(itemStyle == TS_CODE_LISP)
     {
       endingNeeded = false;
       continue;
@@ -9792,7 +9798,7 @@ void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event))
   m_worksheet->OnFollow();
 }
 
-wxMaxima::VersionNumber::VersionNumber(wxString version) :
+wxMaxima::VersionNumber::VersionNumber(const wxString &version) :
   m_major(0),
   m_minor(0),
   m_patchlevel(0)

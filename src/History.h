@@ -50,7 +50,7 @@ public:
   ~History();
 
   //! Add a file to the recently opened files list.
-  void AddToHistory(wxString cmd);
+  void AddToHistory(const wxString &cmd);
 
   void OnRegExEvent(wxCommandEvent &ev);
 

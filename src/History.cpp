@@ -54,7 +54,7 @@ History::~History()
 {
 }
 
-void History::AddToHistory(wxString cmd)
+void History::AddToHistory(const wxString &cmd)
 {
   wxString lineends = wxT(";$");
   if (cmd.StartsWith(wxT(":lisp")))

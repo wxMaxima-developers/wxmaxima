@@ -34,19 +34,34 @@ that still have to be sent to maxima.
 
 #include "GroupCell.h"
 #include "wx/arrstr.h"
-#include <list>
+#include <vector>
 
 //! A simple FIFO queue with manual removal of elements
 class EvaluationQueue
 {
 private:
 
-  class command{
+  class Command{
   public:
-    command(wxString string, int index): m_indexStart(index), m_command(string){}
-    wxString GetString() const {return m_command;}
-    void AddEnding(){m_command += ";";}
-    int GetIndex() const {return m_indexStart;}
+    Command(const wxString &string, int index) : m_indexStart(index), m_command(string) {}
+    Command(Command &&o) : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
+    Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
+    Command &operator=(Command &&o)
+    {
+      m_indexStart = o.m_indexStart;
+      m_command = std::move(o.m_command);
+      return *this;
+    }
+    Command &operator=(const Command &o)
+    {
+      m_indexStart = o.m_indexStart;
+      m_command = o.m_command;
+      return *this;
+    }
+
+    const wxString &GetString() const { return m_command; }
+    void AddEnding() { m_command += ";"; }
+    int GetIndex() const { return m_indexStart; }
   private:
     int m_indexStart;
     wxString m_command;
@@ -59,12 +74,12 @@ private:
        as an answer to an eventual question and
        - we need to know when to switch to the next cell
   */
-  std::list<EvaluationQueue::command> m_commands;
+  std::vector<EvaluationQueue::Command> m_commands;
   int m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
   //! The groupCells in the evaluation Queue.
-  std::list<GroupCell *>m_queue;
+  std::vector<GroupCell *> m_queue;
 
   //! Adds all commands in commandString as separate tokens to the queue.
   void AddTokens(GroupCell *cell);
@@ -107,10 +122,7 @@ public:
   //! Is GroupCell gr part of the evaluation queue?
   bool IsLastInQueue(GroupCell *gr)
   {
-    if (m_queue.empty())
-      return false;
-    else
-      return (gr == m_queue.front());
+    return !m_queue.empty() && (gr == m_queue.front());
   }
 
   //! Is GroupCell gr part of the evaluation queue?
@@ -141,19 +153,13 @@ public:
   void Clear();
 
   //! Return the next command that needs to be evaluated.
-  wxString GetCommand();  
+  wxString GetCommand();
 
   //! Get the size of the queue [in cells]
-  int Size() const
-  {
-    return m_size;
-  }
+  int Size() const { return m_size; }
 
   //! Get the size of the queue
-  int CommandsLeftInCell() const
-  {
-    return m_commands.size();
-  }
+  int CommandsLeftInCell() const { return m_commands.size(); }
 };
 
 

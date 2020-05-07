@@ -132,7 +132,7 @@ private:
   class MathMLDataObject : public wxCustomDataObject
   {
   public:
-    explicit MathMLDataObject(wxString data);
+    explicit MathMLDataObject(const wxString &data);
 
     MathMLDataObject();
 
@@ -214,43 +214,47 @@ private:
     @{
   */
 
-  //! The description of one action for the undo (or redo) command
+  /*! The description of one action for the undo (or redo) command.
+    This object is immutable - the undo/redo buffer cannot be modified.
+   */
   class TreeUndoAction
   {
   public:
-    void Clear()
+    TreeUndoAction(GroupCell *start, const wxString &oldText) :
+        m_start(start), m_oldText(oldText)
     {
-      m_start = NULL;
-      m_oldText = wxEmptyString;
-      m_newCellsEnd = NULL;
-      wxDELETE(m_oldCells);
-      m_oldCells = NULL;
-      m_partOfAtomicAction = false;
+      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
+    }
+    TreeUndoAction(GroupCell *start, GroupCell *end) :
+        m_start(start), m_newCellsEnd(end)
+    {
+      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
+    }
+    TreeUndoAction(GroupCell *start, GroupCell *end, GroupCell *oldCells) :
+        m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
+    {
+      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
     }
 
-    TreeUndoAction()
-    {
-      m_start = NULL;
-      m_newCellsEnd = NULL;
-      m_oldCells = NULL;
-      m_partOfAtomicAction = false;
-    }
+    /*! True = This undo action is only part of an atomic undo action.
 
-    //! True = This undo action is only part of an atomic undo action.
-    bool m_partOfAtomicAction;
+      This is the only mutable part of this action: is is used to indicate its relation to
+      other actions in the undo list.
+     */
+    bool m_partOfAtomicAction = false;
 
     /*! The position this action started at.
 
       NULL = At the begin of the document.
     */
-    GroupCell *m_start;
+    GroupCell *const m_start = nullptr;
 
     /*! The old contents of the cell start
 
       if this field != wxEmptyString this field contains the old contents of the text
       cell pointed to by the field start.
     */
-    wxString m_oldText;
+    const wxString m_oldText;
 
     /*! This action inserted all cells from start to newCellsEnd.
 
@@ -258,7 +262,7 @@ private:
 
       If this field's value is NULL no cells have to be deleted to undo this action.
     */
-    GroupCell *m_newCellsEnd;
+    GroupCell *const m_newCellsEnd = nullptr;
 
     /*! Cells that were deleted in this action.
 
@@ -267,14 +271,17 @@ private:
 
       If this field's value is NULL no cells have to be added to undo this action.
     */
-    GroupCell *m_oldCells;
+    GroupCell *const m_oldCells = nullptr;
   };
 
+  //! The type of the list of tree actions that can be undone
+  using UndoActions = std::list<TreeUndoAction>;
+
   //! The list of tree actions that can be undone
-  std::list<TreeUndoAction *> treeUndoActions;
+  UndoActions treeUndoActions;
 
   //! The list of tree actions that can be redone
-  std::list<TreeUndoAction *> treeRedoActions;
+  UndoActions treeRedoActions;
 
   //! The text the TreeUndo_ActiveCell contained when we entered it
   wxString m_treeUndo_ActiveCellOldText;
@@ -286,13 +293,13 @@ private:
   void TreeUndo_ClearUndoActionList();
 
   //! Remove one action ftom the action list
-  void TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList);
+  void TreeUndo_DiscardAction(UndoActions *actionList);
 
   //! Add another action to this undo action
-  void TreeUndo_AppendAction(std::list<TreeUndoAction *> *actionList)
+  void TreeUndo_AppendAction(UndoActions *actionList)
     {
       if(!actionList->empty())
-        actionList->front()->m_partOfAtomicAction = true;
+        actionList->front().m_partOfAtomicAction = true;
     }
 
   //! Add another action to this undo action
@@ -312,20 +319,20 @@ private:
     \param sourcelist The list to take the undo information from
     \param undoForThisOperation The list to write the information to how on to undo this undo op
   */
-  bool TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperation);
 
   /*! Undo a text change
 
     Called from TreeUndo().*/
-  bool TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoTextChange(UndoActions *sourcelist, UndoActions *undoForThisOperation);
   /*! Undo a call deletion
 
     Called from TreeUndo().*/
-  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellDeletion(UndoActions *sourcelist, UndoActions *undoForThisOperation);
   /*! Undo adding cells
 
     Called from TreeUndo().*/
-  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation);
+  bool TreeUndoCellAddition(UndoActions *sourcelist, UndoActions *undoForThisOperation);
 
   //! Undo a tree operation.
   bool TreeUndo()
@@ -357,7 +364,7 @@ private:
       - treeUedoActions for the normal undo buffer or
       - treeRedoActions for the buffer that allows reverting undos
   */
-  void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer);
+  void TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, UndoActions *undoBuffer);
 
 
   /*! Remember that these cells were just added so this addition can be undone.
@@ -399,7 +406,7 @@ private:
   };
 
   //! Add a line to a file.
-  void AddLineToFile(wxTextFile &output, wxString s);
+  void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
   Cell *CopySelection(bool asData = false);
@@ -631,7 +638,7 @@ public:
 
     This command will be ignored if the wxMaxima window is currently active
    */
-  void SetNotification(wxString message, int flags = wxICON_INFORMATION);
+  void SetNotification(const wxString &message, int flags = wxICON_INFORMATION);
 
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
@@ -919,7 +926,7 @@ public:
    */
   GroupCell *InsertGroupCells(GroupCell *cells,
                               GroupCell *where,
-                              std::list<TreeUndoAction *> *undoBuffer
+                              UndoActions *undoBuffer
   );
 
   /*! Insert group cells into the worksheet
@@ -1000,7 +1007,7 @@ public:
   void DeleteRegion(
           GroupCell *start,
           GroupCell *end,
-          std::list<TreeUndoAction *> *undoBuffer
+          UndoActions *undoBuffer
   );
 
   /*! Move a range of cells from the document to the undo buffer
@@ -1052,7 +1059,7 @@ public:
 
   void MergeCells();
   
-  void SetLastQuestion(wxString lastQuestion){m_lastQuestion = lastQuestion;}
+  void SetLastQuestion(const wxString &lastQuestion){m_lastQuestion = lastQuestion;}
   wxString GetLastQuestion(){return m_lastQuestion;}
 
   //! Add the currently selected cells to the clipboard and delete them.
@@ -1106,14 +1113,14 @@ public:
   //! Copy a rtf version of the current selection to the clipboard
   bool CopyRTF();
 
-  wxSize CopyToFile(wxString file);
+  wxSize CopyToFile(const wxString &file);
 
-  wxSize CopyToFile(wxString file, Cell *start, Cell *end, bool asData = false, int scale = 1);
+  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, int scale = 1);
 
   void CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::vector<int> &cellMap);
 
   //! Export the file to an html document
-  bool ExportToHTML(wxString file);
+  bool ExportToHTML(const wxString &file);
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
 
@@ -1123,14 +1130,14 @@ public:
   ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);
 
   //! Export the file to a text file maxima's load command can read
-  bool ExportToMAC(wxString file);
+  bool ExportToMAC(const wxString &file);
 
   /*! export to xml compatible file
     \param file The file name
     \param markAsSaved false means that this action doesn't clear the
                              worksheet's "modified" status.
   */
-  bool ExportToWXMX(wxString file, bool markAsSaved = true);
+  bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
   //! The start of a RTF document
   wxString RTFStart();
@@ -1139,7 +1146,7 @@ public:
   wxString RTFEnd();
 
   //! export to a LaTeX file
-  bool ExportToTeX(wxString file);
+  bool ExportToTeX(const wxString &file);
 
   /*! Convert the current selection to a string
     \param lb
@@ -1265,7 +1272,7 @@ public:
   GroupCell *GetHCaret();
 
   //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt = wxEmptyString)
+  void OpenHCaret(const wxString &txt = {})
     {
       if(m_mainToolBar == NULL)
         OpenHCaret(txt, GC_TYPE_CODE);
@@ -1274,7 +1281,7 @@ public:
     }
 
   //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt, GroupType type);
+  void OpenHCaret(const wxString &txt, GroupType type);
 
   //! Activates the horizontal cursor
   void ShowHCaret();
@@ -1406,25 +1413,25 @@ public:
     Used by the find dialog.
     \todo Keep a list of positions the last few letters were found at?
    */
-  bool FindIncremental(wxString str, bool down, bool ignoreCase);
+  bool FindIncremental(const wxString &str, bool down, bool ignoreCase);
 
   /*! Find the next occurrence of a string
 
     Used by the find dialog.
    */
-  bool FindNext(wxString str, bool down, bool ignoreCase, bool warn = true);
+  bool FindNext(const wxString &str, bool down, bool ignoreCase, bool warn = true);
 
   /*! Replace the current occurrence of a string
 
     Used by the find dialog.
    */
-  void Replace(wxString oldString, wxString newString, bool ignoreCase);
+  void Replace(const wxString &oldString, const wxString &newString, bool ignoreCase);
 
   /*! Replace all occurrences of a string
 
     Used by the find dialog.
    */
-  int ReplaceAll(wxString oldString, wxString newString, bool ignoreCase);
+  int ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase);
 
   wxString GetInputAboveCaret();
 
@@ -1436,16 +1443,16 @@ public:
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
   //! Add a symbol to the autocompletion list
-  void AddSymbol(wxString fun, AutoComplete::autoCompletionType type = AutoComplete::command)
+  void AddSymbol(const wxString &fun, AutoComplete::autoCompletionType type = AutoComplete::command)
   { m_autocomplete->AddSymbol(fun, type); }
 
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxString xml)
   { m_autocomplete->AddSymbols(xml); }
 
-  void SetActiveCellText(wxString text);
+  void SetActiveCellText(const wxString &text);
 
-  bool InsertText(wxString text);
+  bool InsertText(const wxString &text);
 
   void OpenNextOrCreateCell();
 

@@ -20,16 +20,15 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#ifndef CHARBUTTON_H
+#define CHARBUTTON_H
+
 /*! \file
 
   This file contains the definition of the class Charbutton that allows to 
   select arbitrary unicode symbols.
  */
-#include "UnicodeSidebar.h"
-#include <wx/grid.h>
-
-#ifndef CHARBUTTON_H
-#define CHARBUTTON_H
+#include <wx/panel.h>
 
 /*! This class generates a pane containing the last commands that were issued.
 
@@ -37,20 +36,25 @@
 class CharButton : public wxPanel
 {
 public:
+  //! A definition of this button, used to construct it.
+  struct Definition
+  {
+    wchar_t symbol = {};                 ///< The unicode symbol
+    const wxString description = empty;  ///< The help text for the symbol
+    bool matchesMaximaCommand = false;   ///< Whether this symbol is automatically translated into a maxima command/operator
+    static const wxString empty;
+  };
+
   /*! A flat, compact button for the greek and the symbols pane
-    
+
     \param parent The parent panel/window
-    \param ch The unicode symbol
-    \param description The help text for the symbol
-    \param matchesMaximaCommand true means that this symbol is automatically
-    translated into a maxima command/operator
-    
+    \param def The definition of the button
   */
-  CharButton(wxPanel *parent, wxWindow *worksheet, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
+  CharButton(wxPanel *parent, wxWindow *worksheet, const Definition &def);
 protected:
   void ForwardToParent(wxMouseEvent &event);
   void CharButtonPressed(wxMouseEvent &event);
-  wxChar m_char;
+  wchar_t m_char;
 private:
   wxWindow *m_worksheet;
 };

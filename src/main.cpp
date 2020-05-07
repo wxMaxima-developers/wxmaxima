@@ -77,7 +77,7 @@ int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdSho
 }
 #endif
 
-std::list<wxMaxima *> MyApp::m_topLevelWindows;
+std::vector<wxMaxima *> MyApp::m_topLevelWindows;
 
 
 bool MyApp::OnInit()
@@ -337,8 +337,8 @@ bool MyApp::OnInit()
   {
     wxFileName FileName = file;
     FileName.MakeAbsolute();
-    wxString CanonicalFilename = FileName.GetFullPath();
-    NewWindow(wxString(CanonicalFilename), evalOnStartup, exitAfterEval);
+    wxString canonicalFilename = FileName.GetFullPath();
+    NewWindow(canonicalFilename, evalOnStartup, exitAfterEval);
     windowOpened = true;
   }
 
@@ -377,7 +377,7 @@ int MyApp::OnRun()
   return 0;
 }
 
-void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
+void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEval, unsigned char *wxmData, int wxmLen)
 {
   int numberOfWindows = m_topLevelWindows.size();
 
@@ -484,17 +484,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     }
     case wxID_EXIT:
     {
-      std::list<wxMaxima *>::const_iterator it=m_topLevelWindows.begin();
-      while(it != m_topLevelWindows.end())
+      for (wxMaxima *win : m_topLevelWindows)
       {
-        if (*it != NULL)
-        {
-          wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
-          event->SetCanVeto(true);
-          event->SetLoggingOff(false);
-          (*it)->GetEventHandler()->QueueEvent(event);
-        }
-        ++it;
+        wxASSERT(win);
+        wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
+        event->SetCanVeto(true);
+        event->SetLoggingOff(false);
+        win->GetEventHandler()->QueueEvent(event);
       }
     }
     break;

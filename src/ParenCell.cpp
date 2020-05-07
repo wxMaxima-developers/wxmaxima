@@ -98,19 +98,8 @@ Cell::InnerCells ParenCell::GetInnerCells() const
 
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
-  if (inner == NULL)
-    return;
-  m_innerCell = std::shared_ptr<Cell>(inner);
-
-  m_type = type;
-  // Tell the first of our inter cell not to begin with a multiplication dot.
-  m_innerCell->m_SuppressMultiplicationDot = true;
-
-  // Search for the last of the inner cells
-  while (inner->m_next != NULL)
-    inner = inner->m_next;
-  m_last1 = inner;
-  ResetSize();
+  if (inner != NULL)
+    SetInner(std::shared_ptr<Cell>(inner), type);
 }
 
 void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
@@ -120,13 +109,14 @@ void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
   m_innerCell = inner;
 
   m_type = type;
-  // Tell the first of our inter cell not to begin with a multiplication dot.
+  // Tell the first of our inner cells not to begin with a multiplication dot.
   m_innerCell->m_SuppressMultiplicationDot = true;
 
-  m_last1 = inner.get();
   // Search for the last of the inner cells
-  while (m_last1->m_next != NULL)
-    m_last1 = m_last1->m_next;
+  Cell *last1 = inner.get();
+  while (last1->m_next != NULL)
+    last1 = last1->m_next;
+  m_last1 = last1;
   ResetSize();
 }
 

@@ -715,7 +715,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
 GroupCell *Worksheet::InsertGroupCells(
         GroupCell *cells,
         GroupCell *where,
-        std::list<TreeUndoAction *> *undoBuffer
+        UndoActions *undoBuffer
 )
 {
   if (!cells)
@@ -2836,12 +2836,9 @@ void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *e
   TreeUndo_MarkCellsAsAdded(parentOfStart, end, &treeUndoActions);
 }
 
-void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
+void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, UndoActions *undoBuffer)
 {
-  TreeUndoAction *undoAction = new TreeUndoAction;
-  undoAction->m_start = start;
-  undoAction->m_newCellsEnd = end;
-  undoBuffer->push_front(undoAction);
+  undoBuffer->emplace_front(start, end);
   TreeUndo_LimitUndoBuffer();
 }
 
@@ -2871,18 +2868,15 @@ void Worksheet::TreeUndo_ClearBuffers()
   TreeUndo_ActiveCell = NULL;
 }
 
-void Worksheet::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
+void Worksheet::TreeUndo_DiscardAction(UndoActions *actionList)
 {
   if(!actionList->empty())
   {
     do
     {
-      TreeUndoAction *Action = actionList->back();
-      wxDELETE(Action);
-      Action = NULL;
       actionList->pop_back();
     }
-    while(!actionList->empty() && (actionList->back()->m_partOfAtomicAction));
+    while(!actionList->empty() && (actionList->back().m_partOfAtomicAction));
   }
 }
 
@@ -2906,11 +2900,7 @@ void Worksheet::TreeUndo_CellLeft()
     (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue())
     )
   {
-    TreeUndoAction *undoAction = new TreeUndoAction;
-    undoAction->m_start = activeCell;
-    wxASSERT_MSG(undoAction->m_start != NULL, _("Bug: Trying to record a cell contents change for undo without a cell."));
-    undoAction->m_oldText = m_treeUndo_ActiveCellOldText;
-    treeUndoActions.push_front(undoAction);
+    treeUndoActions.emplace_front(activeCell, m_treeUndo_ActiveCellOldText);
     TreeUndo_LimitUndoBuffer();
     TreeUndo_ClearRedoActionList();
   }
@@ -2956,7 +2946,7 @@ void Worksheet::DeleteRegion(
   DeleteRegion(start, end, &treeUndoActions);
 }
 
-void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
+void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, UndoActions *undoBuffer)
 {
   m_cellPointers.ResetSearchStart();
   if(end == NULL)
@@ -3032,11 +3022,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
   if (undoBuffer != NULL)
   {
     // We have an undo buffer => add the deleted cells there
-    TreeUndoAction *undoAction = new TreeUndoAction;
-    undoAction->m_start = cellBeforeStart;
-    undoAction->m_oldCells = start;
-    undoAction->m_newCellsEnd = NULL;
-    undoBuffer->push_front(undoAction);
+    undoBuffer->emplace_front(cellBeforeStart, nullptr, start);
     TreeUndo_LimitUndoBuffer();
   }
   else
@@ -3126,7 +3112,7 @@ void Worksheet::OpenQuestionCaret(wxString txt)
   RequestRedraw();
 }
 
-void Worksheet::OpenHCaret(wxString txt, GroupType type)
+void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
 {
   CloseAutoCompletePopup();
 
@@ -4196,7 +4182,7 @@ void Worksheet::ClearNotification()
   }
 }
 
-void Worksheet::SetNotification(wxString message, int flags)
+void Worksheet::SetNotification(const wxString &message, int flags)
 {
   if(m_windowActive)
     return;
@@ -4678,7 +4664,7 @@ bool Worksheet::CopyRTF()
   return true;
 }
 
-wxSize Worksheet::CopyToFile(wxString file)
+wxSize Worksheet::CopyToFile(const wxString &file)
 {
 
   if (m_cellPointers.m_selectionStart != NULL &&
@@ -4704,7 +4690,7 @@ wxSize Worksheet::CopyToFile(wxString file)
   }
 }
 
-wxSize Worksheet::CopyToFile(wxString file, Cell *start, Cell *end,
+wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
                             bool asData, int scale)
 {
   Cell *tmp = CopySelection(start, end, asData);
@@ -4753,7 +4739,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData)
   return out;
 }
 
-void Worksheet::AddLineToFile(wxTextFile &output, wxString s)
+void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s)
 {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
@@ -4875,7 +4861,7 @@ void Worksheet::CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::v
 /***
  * Export content to a HTML file.
  */
-bool Worksheet::ExportToHTML(wxString file)
+bool Worksheet::ExportToHTML(const wxString &file)
 {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
@@ -6161,7 +6147,7 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
 
 /*! Export the file as TeX code
  */
-bool Worksheet::ExportToTeX(wxString file)
+bool Worksheet::ExportToTeX(const wxString &file)
 {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
@@ -6298,13 +6284,12 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\uFF0B"), "+"); // unicode big plus
   s.Replace(wxT("\uFB29"), "+"); // hebrew alternate plus
 
-  MaximaTokenizer::TokenList tokens = MaximaTokenizer(s, m_configuration).GetTokens();
   wxString retval;
   
-  for(MaximaTokenizer::TokenList::const_iterator it = tokens.begin(); it != tokens.end(); ++it)
+  for (auto const &tok : MaximaTokenizer(s, m_configuration).PopTokens())
   {
-    wxString tokenString = (*it)->GetText();
-    switch((*it)->GetStyle())
+    auto &tokenString = tok.GetText();
+    switch(tok.GetStyle())
     {
     case TS_DEFAULT:
     case TS_CODE_OPERATOR:
@@ -6329,10 +6314,11 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
       retval += tokenString;
       break;
     default:
-      if(tokenString == wxT("\u221E")) tokenString = " inf ";
+      if(tokenString == wxT("\u221E")) {retval += wxT(" inf ");continue;}
       retval += tokenString;
     }
   }
+
   retval.Replace(wxT("\u00B2"), "^2");
   retval.Replace(wxT("\u00B3"), "^3");
   retval.Replace(wxT("\u00BD"), "(1/2)");
@@ -6400,7 +6386,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
   }
 }
 
-bool Worksheet::ExportToMAC(wxString file)
+bool Worksheet::ExportToMAC(const wxString &file)
 {
   bool wasSaved = m_saved;
   
@@ -6490,7 +6476,7 @@ bool Worksheet::ExportToMAC(wxString file)
   since the last save. Then the original .wxmx file is replaced in a
   (hopefully) atomic operation.
 */
-bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
+bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
 {
   #ifdef OPENMP
   #if OPENMP_VER >= 201511
@@ -7266,10 +7252,10 @@ bool Worksheet::CanTreeUndo()
   {
     // If the next undo action will delete cells we have to look if we are allowed
     // to do this.
-    if (treeUndoActions.front()->m_newCellsEnd)
+    if (treeUndoActions.front().m_newCellsEnd)
       return CanDeleteRegion(
-              treeUndoActions.front()->m_start,
-              treeUndoActions.front()->m_newCellsEnd
+              treeUndoActions.front().m_start,
+              treeUndoActions.front().m_newCellsEnd
       );
     else return true;
   }
@@ -7285,10 +7271,10 @@ bool Worksheet::CanTreeRedo()
   {
     // If the next redo action will delete cells we have to look if we are allowed
     // to do this.
-    if (treeRedoActions.front()->m_newCellsEnd)
+    if (treeRedoActions.front().m_newCellsEnd)
       return CanDeleteRegion(
-              treeRedoActions.front()->m_start,
-              treeRedoActions.front()->m_newCellsEnd
+              treeRedoActions.front().m_start,
+              treeRedoActions.front().m_newCellsEnd
       );
     else return true;
   }
@@ -7324,64 +7310,64 @@ bool Worksheet::CanMergeSelection()
   return true;
 }
 
-bool Worksheet::TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndoCellDeletion(UndoActions *sourcelist, UndoActions *undoForThisOperation)
 {
-  TreeUndoAction *action = sourcelist->front();
-  GroupCell *newCursorPos = action->m_oldCells;
+  const TreeUndoAction &action = sourcelist->front();
+  GroupCell *newCursorPos = action.m_oldCells;
   if(newCursorPos != NULL)
     while(newCursorPos->m_next != NULL)
       newCursorPos = newCursorPos->GetNext();
-  InsertGroupCells(action->m_oldCells, action->m_start, undoForThisOperation);
+  InsertGroupCells(action.m_oldCells, action.m_start, undoForThisOperation);
   SetHCaret(newCursorPos);
   return true;
 }
 
-bool Worksheet::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndoCellAddition(UndoActions *sourcelist, UndoActions *undoForThisOperation)
 {
-  TreeUndoAction *action = sourcelist->front();
-  wxASSERT_MSG(action->m_start != NULL,
+  const TreeUndoAction &action = sourcelist->front();
+  wxASSERT_MSG(action.m_start != NULL,
                _("Bug: Got a request to delete the cell above the beginning of the worksheet."));
 
   // We make the cell we want to end the deletion with visible.
-  if (action->m_newCellsEnd->RevealHidden())
+  if (action.m_newCellsEnd->RevealHidden())
     FoldOccurred();
 
-  wxASSERT_MSG(CanDeleteRegion(action->m_start, action->m_newCellsEnd),
+  wxASSERT_MSG(CanDeleteRegion(action.m_start, action.m_newCellsEnd),
                _("Got a request to undo an action that involves a delete which isn't possible at this moment."));
 
   // Set the cursor to a sane position.
-  if (action->m_newCellsEnd->m_next)
-    SetHCaret(action->m_newCellsEnd->GetNext());
+  if (action.m_newCellsEnd->m_next)
+    SetHCaret(action.m_newCellsEnd->GetNext());
   else
-    SetHCaret(dynamic_cast<GroupCell *>(action->m_start->m_previous));
+    SetHCaret(dynamic_cast<GroupCell *>(action.m_start->m_previous));
 
   // Actually delete the cells we want to remove.
-  DeleteRegion(action->m_start, action->m_newCellsEnd, undoForThisOperation);
+  DeleteRegion(action.m_start, action.m_newCellsEnd, undoForThisOperation);
   return true;
 }
 
-bool Worksheet::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist, UndoActions *undoForThisOperation)
 {
-  TreeUndoAction *action = sourcelist->front();
+  const TreeUndoAction &action = sourcelist->front();
 
-  wxASSERT_MSG(action->m_start != NULL,
+  wxASSERT_MSG(action.m_start != NULL,
                _("Bug: Got a request to change the contents of the cell above the beginning of the worksheet."));
 
 
-  if (!GetTree()->Contains(action->m_start))
+  if (!GetTree()->Contains(action.m_start))
   {
-    wxASSERT_MSG(GetTree()->Contains(action->m_start), _("Bug: Undo request for cell outside worksheet."));
+    wxASSERT_MSG(GetTree()->Contains(action.m_start), _("Bug: Undo request for cell outside worksheet."));
     return false;
   }
 
-  if (action->m_start)
+  if (action.m_start)
   {
 
     // If this action actually does do nothing - we have not done anything
     // and want to make another attempt on undoing things.
     if (
-      (action->m_oldText == action->m_start->GetEditable()->GetValue()) ||
-      (action->m_oldText + wxT(";") == action->m_start->GetEditable()->GetValue())
+      (action.m_oldText == action.m_start->GetEditable()->GetValue()) ||
+      (action.m_oldText + wxT(";") == action.m_start->GetEditable()->GetValue())
       )
     {
       sourcelist->pop_front();
@@ -7389,32 +7375,29 @@ bool Worksheet::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std:
     }
 
     // Document the old state of this cell so the next action can be undone.
-    TreeUndoAction *undoAction = new TreeUndoAction;
-    undoAction->m_start = action->m_start;
-    undoAction->m_oldText = action->m_start->GetEditable()->GetValue();
-    undoForThisOperation->push_front(undoAction);
+    undoForThisOperation->emplace_front(action.m_start, action.m_start->GetEditable()->GetValue());
 
     // Revert the old cell state
-    action->m_start->GetEditable()->SetValue(action->m_oldText);
+    action.m_start->GetEditable()->SetValue(action.m_oldText);
 
     // Make sure that the cell we have to work on is in the visible part of the tree.
-    if (action->m_start->RevealHidden())
+    if (action.m_start->RevealHidden())
       FoldOccurred();
 
-    SetHCaret(action->m_start);
+    SetHCaret(action.m_start);
 
     Recalculate(true);
     RequestRedraw();
 
-    wxASSERT_MSG(action->m_newCellsEnd == NULL,
+    wxASSERT_MSG(action.m_newCellsEnd == NULL,
                  _("Bug: Got a request to first change the contents of a cell and to then undelete it."));
-    wxASSERT_MSG(action->m_oldCells == NULL, _("Bug: Undo action with both cell contents change and cell addition."));
+    wxASSERT_MSG(action.m_oldCells == NULL, _("Bug: Undo action with both cell contents change and cell addition."));
     return true;
   }
   return false;
 }
 
-bool Worksheet::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperation)
 {
   if (sourcelist->empty())
     return false;
@@ -7429,36 +7412,34 @@ bool Worksheet::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<Tree
 
   if(sourcelist->empty())
     return false;
-  TreeUndoAction *action = sourcelist->front();
-  if(action == NULL)
-    return false;
 
-  if (action->m_start)
+  const TreeUndoAction &action = sourcelist->front();
+
+  if (action.m_start)
   {
     // Make sure that the cell we work on is in the visible part of the tree.
-    if (action->m_start->RevealHidden())
+    if (action.m_start->RevealHidden())
       FoldOccurred();
   }
 
   bool actionContinues;
   do{
-    action = sourcelist->front();
-    if (action->m_newCellsEnd)
+    const TreeUndoAction &action = sourcelist->front();
+    if (action.m_newCellsEnd)
       TreeUndoCellAddition(sourcelist, undoForThisOperation);
     else
     {
-      if (action->m_oldCells != NULL)
+      if (action.m_oldCells != NULL)
         TreeUndoCellDeletion(sourcelist, undoForThisOperation);
       else
         TreeUndoTextChange(sourcelist, undoForThisOperation);
     }
     TreeUndo_AppendAction(undoForThisOperation);
     sourcelist->pop_front();
-    if(!sourcelist->empty())
-      actionContinues = sourcelist->front()->m_partOfAtomicAction;
-  } while (actionContinues && (!sourcelist->empty()));
+    actionContinues = !sourcelist->empty() && sourcelist->front().m_partOfAtomicAction;
+  } while (actionContinues);
   if(!undoForThisOperation->empty())
-    undoForThisOperation->front()->m_partOfAtomicAction = false;
+    undoForThisOperation->front().m_partOfAtomicAction = false;
   Recalculate(true);
   RequestRedraw();
   return true;
@@ -8236,7 +8217,7 @@ wxString Worksheet::GetOutputAboveCaret()
   return output;
 }
 
-bool Worksheet::FindIncremental(wxString str, bool down, bool ignoreCase)
+bool Worksheet::FindIncremental(const wxString &str, bool down, bool ignoreCase)
 {
   if (SearchStart() != NULL)
   {
@@ -8249,7 +8230,7 @@ bool Worksheet::FindIncremental(wxString str, bool down, bool ignoreCase)
     return true;
 }
 
-bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
+bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase, bool warn)
 {
   if (GetTree() == NULL)
     return false;
@@ -8432,7 +8413,7 @@ void Worksheet::ScrollToCaret()
   }
 }
 
-void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
+void Worksheet::Replace(const wxString &oldString, const wxString &newString, bool ignoreCase)
 {
   if (GetActiveCell() != NULL)
   {
@@ -8450,7 +8431,7 @@ void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
   }
 }
 
-int Worksheet::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
+int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString, bool ignoreCase)
 {
   m_cellPointers.ResetSearchStart();
 
@@ -8739,7 +8720,7 @@ void Worksheet::OnComplete(wxCommandEvent &event)
 }
 
 
-void Worksheet::SetActiveCellText(wxString text)
+void Worksheet::SetActiveCellText(const wxString &text)
 {
   EditorCell *active = dynamic_cast<EditorCell *>(GetActiveCell());
   if (active != NULL)
@@ -8763,7 +8744,7 @@ void Worksheet::SetActiveCellText(wxString text)
     OpenHCaret(text);
 }
 
-bool Worksheet::InsertText(wxString text)
+bool Worksheet::InsertText(const wxString &text)
 {
   CloseAutoCompletePopup();
 
@@ -8844,7 +8825,7 @@ Worksheet::MathMLDataObject::MathMLDataObject() : wxCustomDataObject(m_mathmlFor
 {
 }
 
-Worksheet::MathMLDataObject::MathMLDataObject(wxString data) : wxCustomDataObject(m_mathmlFormat),
+Worksheet::MathMLDataObject::MathMLDataObject(const wxString &data) : wxCustomDataObject(m_mathmlFormat),
                                                                m_databuf(data.utf8_str())
 
 {
@@ -8941,11 +8922,9 @@ wxString Worksheet::RTFStart()
 
 wxString Worksheet::RTFEnd()
 {
-  wxString document;
   // Close the document
-  document += wxT("}\n}");
 
-  return document;
+  return wxT("}\n}");
 }
 
 void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
