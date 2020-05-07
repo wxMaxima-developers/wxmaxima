@@ -484,7 +484,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     }
     case wxID_EXIT:
     {
-      for (wxMaxima *win : std::as_const(m_topLevelWindows))
+      for (wxMaxima *win : m_topLevelWindows)
       {
         wxASSERT(win);
         wxCloseEvent *event = new wxCloseEvent(wxEVT_CLOSE_WINDOW);
