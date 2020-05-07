@@ -29,6 +29,7 @@
 #include "MaximaTokenizer.h"
 #include <wx/wx.h>
 #include <wx/string.h>
+#include <vector>
 
 MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
 {  
