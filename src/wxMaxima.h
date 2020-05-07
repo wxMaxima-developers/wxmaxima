@@ -714,6 +714,10 @@ protected:
   static wxString m_variablesPrefix;
   //! The marker for the end of a variables section
   static wxString m_variablesSuffix;
+  //! The marker for the start of a prompt
+  static wxString m_outputPromptPrefix;
+  //! The marker for the end of a prompt
+  static wxString m_outputPromptSuffix;
   //! The marker for the start of a variables section
   static wxString m_statusbarPrefix;
   //! The marker for the end of a variables section

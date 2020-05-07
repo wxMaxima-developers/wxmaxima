@@ -2243,9 +2243,9 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   // These tests are redundant with later tests. But they are faster.
   if(data.StartsWith(m_mathPrefix1) || (data.StartsWith(m_mathPrefix2)))
     return 0;
-  if(data.StartsWith("<lbl>"))
+  if(data.StartsWith(m_outputPromptPrefix))
     return 0;
-  if(data.StartsWith("<statusbar>"))
+  if(data.StartsWith(m_statusbarPrefix))
     return 0;
   if(data.StartsWith(m_promptPrefix))
     return 0;
@@ -2259,8 +2259,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     return 0;
 
   int mthpos = wxMax(data.Find(m_mathPrefix1), data.Find(m_mathPrefix2));
-  int lblpos = data.Find("<lbl>");
-  int statpos = data.Find("<statusbar>");
+  int lblpos = data.Find(m_outputPromptPrefix);
+  int statpos = data.Find(m_statusbarPrefix);
   int prmptpos = data.Find(m_promptPrefix);
   int symbolspos = data.Find(m_symbolsPrefix);
   int suppressOutputPos = data.Find(m_suppressOutputPrefix);
@@ -10020,3 +10020,5 @@ wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
 wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));
 wxString wxMaxima::m_mathSuffix2(wxT("</math>"));
 wxString wxMaxima::m_emptywxxmlSymbols(wxT("<wxxml-symbols></wxxml-symbols>"));
+wxString wxMaxima::m_outputPromptPrefix(wxT("<lbl>"));
+wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
