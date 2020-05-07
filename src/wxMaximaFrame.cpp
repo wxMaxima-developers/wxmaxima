@@ -1848,8 +1848,11 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
   struct EnabledDefinition : CharButton::Definition
   {
     Cond condition;
-    EnabledDefinition(wchar_t sym, const wxString &descr = empty, Cond cond = Cond::None) :
+    EnabledDefinition(wchar_t sym, const wxString &descr, Cond cond = Cond::None) :
         CharButton::Definition{sym, descr}, condition(cond) {}
+    explicit EnabledDefinition(wchar_t sym):
+        EnabledDefinition(sym, empty)
+      {}
   };
 
   static const EnabledDefinition lowerCaseDefs[] =
