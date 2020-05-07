@@ -245,7 +245,7 @@ private:
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
   bool m_hasEvaluatedCells;
   //! Searches for maxima's output prompts
-  static wxRegEx m_outputPromptRegEx;
+//  static wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
   int m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display 
@@ -715,9 +715,9 @@ protected:
   //! The marker for the end of a variables section
   static wxString m_variablesSuffix;
   //! The marker for the start of a prompt
-  static wxString m_outputPromptPrefix;
+//  static wxString m_outputPromptPrefix;
   //! The marker for the end of a prompt
-  static wxString m_outputPromptSuffix;
+//  static wxString m_outputPromptSuffix;
   //! The marker for the start of a variables section
   static wxString m_statusbarPrefix;
   //! The marker for the end of a variables section

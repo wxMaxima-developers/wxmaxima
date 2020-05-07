@@ -2243,8 +2243,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   // These tests are redundant with later tests. But they are faster.
   if(data.StartsWith(m_mathPrefix1) || (data.StartsWith(m_mathPrefix2)))
     return 0;
-  if(data.StartsWith(m_outputPromptPrefix))
-    return 0;
+//  if(data.StartsWith(m_outputPromptPrefix))
+//    return 0;
   if(data.StartsWith(m_statusbarPrefix))
     return 0;
   if(data.StartsWith(m_promptPrefix))
@@ -2259,7 +2259,7 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     return 0;
 
   int mthpos = wxMax(data.Find(m_mathPrefix1), data.Find(m_mathPrefix2));
-  int lblpos = data.Find(m_outputPromptPrefix);
+//  int lblpos = data.Find(m_outputPromptPrefix);
   int statpos = data.Find(m_statusbarPrefix);
   int prmptpos = data.Find(m_promptPrefix);
   int symbolspos = data.Find(m_symbolsPrefix);
@@ -2270,8 +2270,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   int tagPos = data.Length();
   if ((mthpos != wxNOT_FOUND) && (mthpos < tagPos))
     tagPos = mthpos;
-  if ((tagPos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND) && (lblpos < tagPos)))
-    tagPos = lblpos;
+//  if ((tagPos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND) && (lblpos < tagPos)))
+//    tagPos = lblpos;
   if ((tagPos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND) && (statpos < tagPos)))
     tagPos = statpos;
   if ((tagPos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND) && (prmptpos < tagPos)))
@@ -9996,7 +9996,7 @@ bool wxMaxima::m_pipeToStdout = false;
 bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;
-wxRegEx  wxMaxima::m_outputPromptRegEx(wxT("<lbl>.*</lbl>"));
+//wxRegEx  wxMaxima::m_outputPromptRegEx(wxT("<lbl>.*</lbl>"));
 wxString wxMaxima::m_promptPrefix(wxT("<PROMPT-P/>"));
 wxString wxMaxima::m_promptSuffix(("<PROMPT-S/>"));
 wxRegEx  wxMaxima::m_funRegEx(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
@@ -10020,5 +10020,5 @@ wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
 wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));
 wxString wxMaxima::m_mathSuffix2(wxT("</math>"));
 wxString wxMaxima::m_emptywxxmlSymbols(wxT("<wxxml-symbols></wxxml-symbols>"));
-wxString wxMaxima::m_outputPromptPrefix(wxT("<lbl>"));
-wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
+//wxString wxMaxima::m_outputPromptPrefix(wxT("<lbl>"));
+//wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
