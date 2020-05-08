@@ -1687,6 +1687,7 @@ void wxMaxima::OnMaximaConnect()
     
   m_client.reset(m_server->Accept(false));
   if(!m_client)
+
   {
     wxLogMessage(_("Connection attempt, but connection failed."));
     m_unsuccessfulConnectionAttempts++;

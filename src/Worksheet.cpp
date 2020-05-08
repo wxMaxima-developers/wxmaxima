@@ -4220,12 +4220,27 @@ void Worksheet::OnChar(wxKeyEvent &event)
 {
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
-  if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
+  if(event.AltDown() &&
+     (
+       (event.GetKeyCode() == WXK_UP) ||
+       (event.GetKeyCode() == WXK_DOWN) ||
+       (
+         (event.GetUnicodeKey() >= 32) &&
+         (event.GetUnicodeKey() <= 128)
+         )
+       )
+    )
   {
     event.Skip();
     return;
   }
 
+  if(event.GetUnicodeKey() == WXK_NONE)
+  {
+    event.Skip();
+    return;
+  }
+    
   if (m_autocompletePopup != NULL)
   {
     // We don't want autocompletion to be able to trigger another autocompletion:
