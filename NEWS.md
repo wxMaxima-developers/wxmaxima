@@ -8,6 +8,9 @@
  * A few additional small bugfixes
  * Strings were searched for comment starts when adding line endings
  * Faster start-up by avoiding unneeded redraw events
+ * A big number of performance improvements
+ * Corrected a bug that sometimes caused parts of equatioons not to be displayed
+ * As this allows to improve performance and stability C++14 is now used
 
 #20.04.0
  * Resolved a crash on right-clicking a GroupCell
