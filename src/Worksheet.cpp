@@ -90,10 +90,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   {
     if(gtk_input_method==wxT("xim"))
     {
-      wxLogWarning(_("Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys and non-ASCII characters might not work."));
-      #ifdef __WXGTK3__
-      wxLogError(_("GTK_IM_MODULE is set to \"xim\" and GTK3 is in use. Expect the program to hideously flicker, see https://trac.wxwidgets.org/ticket/18462."));
-      #endif
+      wxLogError(_("GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and hotkeys to be broken, see for example https://trac.wxwidgets.org/ticket/18462."));
     }
   }
   #endif

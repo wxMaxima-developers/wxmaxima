@@ -62,36 +62,23 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // everything.
   wxWindowUpdateLocker noUpdates(this);
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[27];
-  entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
-  entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
+  wxAcceleratorEntry entries[16];
+  entries[0].Set(wxACCEL_CTRL, wxT('K'), menu_autocomplete);
+  entries[1].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
-  entries[3].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE, menu_autocomplete_templates);
-  entries[4].Set(wxACCEL_ALT, wxT('I'), wxID_ZOOM_IN);
-  entries[5].Set(wxACCEL_ALT, wxT('O'), wxID_ZOOM_OUT);
-  entries[6].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE, menu_convert_to_code);
-  entries[7].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'), menu_convert_to_comment);
-  entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'), menu_convert_to_title);
-  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'), menu_convert_to_section);
-  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
-  entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
-  entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
-  // wxWidgets can read the hotkeys that now follow from the menus. But it doesn't
-  // do so on debian if the input method is xim.
-  entries[13].Set(wxACCEL_CTRL, wxT('+'), wxID_ZOOM_IN);
-  entries[14].Set(wxACCEL_CTRL, wxT('-'), wxID_ZOOM_OUT);
-  entries[15].Set(wxACCEL_CTRL, wxT('0'), menu_insert_input);
-  entries[16].Set(wxACCEL_CTRL, wxT('1'), menu_add_comment);
-  entries[17].Set(wxACCEL_CTRL, wxT('2'), menu_add_title);
-  entries[18].Set(wxACCEL_CTRL, wxT('3'), menu_add_section);
-  entries[19].Set(wxACCEL_CTRL, wxT('4'), menu_add_subsection);
-  entries[20].Set(wxACCEL_CTRL, wxT('5'), menu_add_subsubsection);
-  entries[21].Set(wxACCEL_CTRL, wxT('6'), menu_add_heading5);
-  entries[22].Set(wxACCEL_CTRL, wxT('7'), menu_add_heading6);
-  entries[23].Set(wxACCEL_CTRL, wxT('.'), menu_interrupt_id); // Standard on the Mac
-  entries[24].Set(wxACCEL_CTRL, wxT('c'), wxID_COPY);
-  entries[25].Set(wxACCEL_CTRL, wxT('x'), wxID_CUT);
-  entries[26].Set(wxACCEL_CTRL, wxT('v'), wxID_PASTE);
+  entries[3].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
+  entries[4].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('K'), menu_autocomplete_templates);
+  entries[5].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE, menu_autocomplete_templates);
+  entries[6].Set(wxACCEL_ALT, wxT('I'), wxID_ZOOM_IN);
+  entries[7].Set(wxACCEL_ALT, wxT('O'), wxID_ZOOM_OUT);
+  entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE, menu_convert_to_code);
+  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'), menu_convert_to_comment);
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'), menu_convert_to_title);
+  entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'), menu_convert_to_section);
+  entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
+  entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
+  entries[14].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
+  entries[15].Set(wxACCEL_CTRL, wxT('.'), menu_interrupt_id); // Standard on the Mac
   wxAcceleratorTable accel(sizeof(entries)/sizeof(entries[0]), entries);
   SetAcceleratorTable(accel);
     
@@ -731,6 +718,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Paste text from clipboard"),
                      wxITEM_NORMAL);
 
+  m_EditMenu->Append(wxID_FIND, _("Find\tCtrl+F"), _("Find and replace"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
   m_EditMenu->Append(wxID_FIND, _("Find\tCtrl+F"), _("Find and replace"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
@@ -861,9 +849,9 @@ void wxMaximaFrame::SetupMenu()
                      _("Create a new cell with previous input"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_insert_previous_output, _("Copy Previous Output\tCtrl+U"),
                      _("Create a new cell with previous output"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_autocomplete, _("Complete Word\tCtrl+K"),
+  m_CellMenu->Append(menu_autocomplete, _("Complete Word\tCtrl+Space"),
                      _("Complete word"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl+Shift+K"),
+  m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl+Shift+Space"),
                      _("Show function template"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
   m_CellMenu->Append(menu_insert_input, _("Insert Input &Cell\tCtrl+0"),
