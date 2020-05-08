@@ -9,7 +9,7 @@
  * Strings were searched for comment starts when adding line endings
  * Faster start-up by avoiding unneeded redraw events
  * A big number of performance improvements
- * Corrected a bug that sometimes caused parts of equatioons not to be displayed
+ * Corrected a bug that sometimes caused parts of equations not to be displayed
  * As this allows to improve performance and stability C++14 is now used
 
 #20.04.0
