@@ -82,7 +82,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
+<li><a href="#das-handbuch-von-wxmaxima">Das Handbuch von wxMaxima</a></li>
 <li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
 <li><a href="#maxima-und-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> und wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
@@ -114,7 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#wo-wird-die-konfiguration-gespeichert"><span class="toc-section-number">1.4.6</span> Wo wird die Konfiguration gespeichert?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#erweiterungen-für-maxima"><span class="toc-section-number">2</span> Erweiterungen für <em>Maxima</em></a><ul>
 <li><a href="#variablen-mit-tiefgestelltem-index"><span class="toc-section-number">2.1</span> Variablen mit tiefgestelltem Index</a></li>
 <li><a href="#meldungen-in-der-statusleiste"><span class="toc-section-number">2.2</span> Meldungen in der Statusleiste</a></li>
 <li><a href="#diagramme"><span class="toc-section-number">2.3</span> Diagramme</a><ul>
@@ -159,7 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
+<h1 id="das-handbuch-von-wxmaxima" class="unnumbered">Das Handbuch von wxMaxima</h1>
 <p>wxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-Algebrasystem Maxima. wxMaxima erlaubt die Nutzung aller Funktionen dieses Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses Handbuch beschreibt die Features, die wxMaxima zu einer der beliebtesten graphischen Benutzerumgebung für Maxima gemacht haben.</p>
 <figure>
 <img src="./wxMaximaLogo.png" alt="wxMaxima logo" id="img_wxMaximaLogo" /><figcaption>wxMaxima logo</figcaption>
@@ -328,19 +328,11 @@ leadsto       a &quot;leads to&quot; sign
 <p>Einige Textverarbeitungen verstehen entweder MathML (Der Formeleditor von LibreOffice 5.1 kann zumindest entsprechende Gleichungen importieren). Andere unterstützen Mathematik im RTF-Format. <em>wxMaxima</em> bietet daher einige entsprechende Optionen im Rechtsklick-Menü an.</p>
 <h3 id="markdown-unterstützung"><span class="header-section-number">1.2.8</span> Markdown-Unterstützung</h3>
 <p><em>wxMaxima</em> unterstützt einige Markdown-Kommandos, die nicht mit Konstrukten kollidieren, die in mathematischen Formeln vorkommen. Eines dieser Elemente sind Aufzählungen:</p>
-<pre><code>Ordinary text
- * One item, indentation level 1
- * Another item at indentation level 1
-   * An item at a second indentation level
-   * A second item at the second indentation level
- * A third item at the first indentation level
-Ordinary text</code></pre>
+<pre><code></code></pre>
+<p>Normaler Text * Ein eingerückter Aufzählungspunkt * Ein zweiter Aufzählungspunkt * Eine Aufzählung in der Aufzählung * Ein zweiter Aufzählungspunkt der Aufzählung in der Aufzählung * Ein Punkt in der äußeren Aufzählung Normaler text ~~<sub> </sub>~~</p>
 <p><em>wxMaxima</em> erkennt Text, der mit einem “&gt;” beginnt, als ein Zitat:</p>
-<pre><code>Ordinary text
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-Ordinary text</code></pre>
+<pre><code></code></pre>
+<p>Normaler Text &gt; Zitat Zitat Zitat &gt; Zitat Zitat Zitat Zitat &gt; Zitat Zitat Zitat &gt; Zitat Zitat Zitat Normaler Text ~~<sub> </sub>~~</p>
 <p>Die Text- und HTML-Ausgabe von <em>wxMaxima</em> erkennen auch <code>=&gt;</code> und ersetzen es durch das entsprechende Unicode-Symbol:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
 <p>Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind <code>&lt;=</code> und <code>&gt;=</code>, <code>&lt;=&gt;</code>, einfache Pfeile (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) und <code>+/-</code>. Die TeX-Ausgabe erkennt ebenfalls <code>&lt;&lt;</code> und <code>&gt;&gt;</code>.</p>
@@ -408,7 +400,7 @@ Ordinary text</code></pre>
 <p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über wxbuild_info() oder über das Hilfe-&gt;Über-Menü abgerufen werden. <a href="https://wxwidgets.org/">wxWidgets</a> ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
 <p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\Software\wxMaxima</code> gespeichert.</p>
 <hr />
-<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
+<h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
 <p><em>wxMaxima</em>’s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em>Maxima</em> hinzu:</p>
 <h2 id="variablen-mit-tiefgestelltem-index"><span class="header-section-number">2.1</span> Variablen mit tiefgestelltem Index</h2>
 <p>Wenn <code>wxsubscripts</code> auf <code>true</code> gesetzt ist, werden Variablennamen im Format <code>x_y</code> mit einem tiefgestellten <code>y</code> dargestellt, wenn</p>
@@ -419,27 +411,28 @@ Ordinary text</code></pre>
 <p>Wenn nicht, kann jede Variable als mit tiefgestelltem <code>y</code> ausgestattet deklariert werden mittels <code>wxdeclare_subscript(variablenname);</code> oder <code>wxdeclare_subscript([variablenname1,variablenname2,...]);</code> Rückgängig gemacht werden kann dies mittels <code>wxdeclare_subscript(variablenname,false);</code></p>
 <h2 id="meldungen-in-der-statusleiste"><span class="header-section-number">2.2</span> Meldungen in der Statusleiste</h2>
 <p>Kommandos, die lange arbeiten, können Fortschrittsinformationen in die Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. <code>wxstatusbar()</code> kann sogar in Bibliotheken verwendet werden, bei denen nicht bekannt ist, ob sie mit <em>wxMaxima</em> oder in einem <em>Maxima</em> ohne Frontend verwendet werden: Wenn <em>wxMaxima</em> diese Funktion nicht definiert hat, wird sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter bearbeitet.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
-<a class="sourceLine" id="cb8-2" title="2">    <span class="co">/* Tell the user how far we got */</span></a>
-<a class="sourceLine" id="cb8-3" title="3">    <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),</a>
-<a class="sourceLine" id="cb8-4" title="4">    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></a>
-<a class="sourceLine" id="cb8-5" title="5">    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></a>
-<a class="sourceLine" id="cb8-6" title="6">    <span class="co">/* program execution (here: for 3 seconds) */</span></a>
-<a class="sourceLine" id="cb8-7" title="7">    ?<span class="cn">sleep</span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb8-8" title="8">)$</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb8-1" title="1">    <span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
+<a class="sourceLine" id="cb8-2" title="2">        <span class="co">/* Gib dem User Bescheid, wie weit wir schon sind */</span></a>
+<a class="sourceLine" id="cb8-3" title="3">        <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),</a>
+<a class="sourceLine" id="cb8-4" title="4">        <span class="co">/* (sleep n) ist eine Lisp-Funktion, die mit einem */</span></a>
+<a class="sourceLine" id="cb8-5" title="5">        <span class="co">/* &quot;?&quot; Zeichen vorher verwendet werden kann. */</span></a>
+<a class="sourceLine" id="cb8-6" title="6">        <span class="co">/* Sie verzögert die Programmausführung für n Sekunden */</span></a>
+<a class="sourceLine" id="cb8-7" title="7">        <span class="co">/* (in diesem Beispiel: für 3 Sekunden). */</span></a>
+<a class="sourceLine" id="cb8-8" title="8">        ?<span class="cn">sleep</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb8-9" title="9">    )$</a></code></pre></div>
 <h2 id="diagramme"><span class="header-section-number">2.3</span> Diagramme</h2>
 <p>Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu tun, weswegen an dieser Stelle Erweiterungen von Maxima zu erwarten sind.</p>
 <h3 id="der-einbau-von-diagrammen-in-das-arbeitsblatt"><span class="header-section-number">2.3.1</span> Der Einbau von Diagrammen in das Arbeitsblatt</h3>
 <p><em>Maxima</em> weist normalerweise gnuplot an, Diagramme in eigenen Fenstern darzustellen. Wenn dem entsprechenden <code>draw</code> oder <code>plot</code>-Kommando ein “wx” vorangestellt wird, wird das Bild stattdessen in das Arbeitsblatt eingebaut: <code>wxplot2d</code> arbeitet wie <code>plot2d</code>, aber im Arbeitsblatt, <code>wxplot3d</code> entspricht <code>plot3d</code>, <code>wxdraw</code> und <code>wxhistogram</code> funktionieren wie <code>draw</code> und <code>histogram</code>, aber betten das Resultat ein.</p>
 <h3 id="eingebettete-diagramme-größer-oder-kleiner-machen"><span class="header-section-number">2.3.2</span> Eingebettete Diagramme größer oder kleiner machen</h3>
 <p>Wie bereits beschrieben kann die Größe von Diagrammen mittels der Variable <code>wxplot_size</code> definiert werden. Ihr Inhalt kann jederzeit gelesen oder geändert werden:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb9-1" title="1"><span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="cn">wxdraw2d</span>(</a>
-<a class="sourceLine" id="cb9-3" title="3">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb9-4" title="4">        <span class="fu">sin</span>(<span class="cn">x</span>),</a>
-<a class="sourceLine" id="cb9-5" title="5">        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></a>
-<a class="sourceLine" id="cb9-6" title="6">    )</a>
-<a class="sourceLine" id="cb9-7" title="7">)$</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb9-1" title="1">    <span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</a>
+<a class="sourceLine" id="cb9-2" title="2">    <span class="cn">wxdraw2d</span>(</a>
+<a class="sourceLine" id="cb9-3" title="3">        <span class="cn">explicit</span>(</a>
+<a class="sourceLine" id="cb9-4" title="4">            <span class="fu">sin</span>(<span class="cn">x</span>),</a>
+<a class="sourceLine" id="cb9-5" title="5">            <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></a>
+<a class="sourceLine" id="cb9-6" title="6">        )</a>
+<a class="sourceLine" id="cb9-7" title="7">    )$</a></code></pre></div>
 <p>Wenn die Größe nur des aktuellen Diagramms geändert werden soll, erlaubt <em>Maxima</em> dies auf die folgende Weise zu tun:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb10-1" title="1"><span class="cn">wxdraw2d</span>(</a>
 <a class="sourceLine" id="cb10-2" title="2">    <span class="cn">explicit</span>(</a>
@@ -525,14 +518,14 @@ Ordinary text</code></pre>
 <p>Strenggenommen kein Feature von <em>wxMaxima</em>. Aber Maxima erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">load</span>(<span class="fu">draw</span>);</a>
 <a class="sourceLine" id="cb17-2" title="2"></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="co">/* Parabola in window #1 */</span></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="co">/* Parabel in Fenster #1 */</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="st">&quot;draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));</span></a>
 <a class="sourceLine" id="cb17-5" title="5"></a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="co">/* Parabola in window #2 */</span></a>
-<a class="sourceLine" id="cb17-7" title="7"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
+<a class="sourceLine" id="cb17-6" title="6"><span class="st">/* Parabel in Fenster #2 */</span></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="st">draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));</span></a>
 <a class="sourceLine" id="cb17-8" title="8"></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="co">/* Paraboloid in window #3 */</span></a>
-<a class="sourceLine" id="cb17-10" title="10"><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
+<a class="sourceLine" id="cb17-9" title="9"><span class="st">/* Paraboloid in Fenster #3 */</span></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="st">draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</span></a></code></pre></div>
 <h3 id="die-plotte-mittels-draw-seitenleiste"><span class="header-section-number">2.3.8</span> Die “Plotte mittels Draw”-Seitenleiste</h3>
 <p>Die “Plotte mittels Draw”-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des <em>draw</em>-Pakets von <em>Maxima</em> zu nutzen.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
