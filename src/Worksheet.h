@@ -233,7 +233,6 @@ private:
     TreeUndoAction(GroupCell *start, GroupCell *end, GroupCell *oldCells) :
         m_start(start), m_newCellsEnd(end), m_oldCells(oldCells)
     {
-      wxASSERT_MSG(start, _("Bug: Trying to record a cell contents change for undo without a cell."));
     }
 
     /*! True = This undo action is only part of an atomic undo action.
