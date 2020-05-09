@@ -1550,8 +1550,8 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   if (configuration->ShowCodeCells())
   {
     str += wxString::Format(
-      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n",
-      configuration->GetLabelWidth()/14
+      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%eem}\\color{red}\\bfseries\n",
+      (double)configuration->GetLabelWidth()/14
       ) + m_inputLabel->ToTeX() +
       wxString("\n\\end{minipage}");
     if (m_inputLabel->m_next != NULL)
