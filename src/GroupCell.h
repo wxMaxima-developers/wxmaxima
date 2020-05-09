@@ -221,7 +221,7 @@ public:
   void AppendInput(Cell *cell);
 
   // Get the next cell in the list.
-  virtual GroupCell *GetNext() const override {if (m_next != NULL) return dynamic_cast<GroupCell *>(m_next); else return NULL;}
+  virtual GroupCell *GetNext() const override {return dynamic_cast<GroupCell *>(m_next);}
 
   static wxString TexEscapeOutputCell(wxString Input);
 
