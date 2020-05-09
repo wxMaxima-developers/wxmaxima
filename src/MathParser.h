@@ -57,8 +57,23 @@ public:
   Cell *ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
 
   Cell *ParseTag(wxXmlNode *node, bool all = true);
+  Cell *ParseTagContents(wxXmlNode *node);
 
 private:
+  //! A storage for a tag and the function to call if one encounters it
+  class TagFunction
+  {
+  public:
+    TagFunction(wxString tag, Cell * (MathParser::* function)(wxXmlNode *node)):
+      m_tag(tag),
+      m_function(function)
+      {}
+    wxString m_tag;
+    Cell * (MathParser::* m_function)(wxXmlNode *node);
+  };
+
+  //! Who you gonna call if you encounter any of these tags?
+  static std::vector<TagFunction> m_knownTags;
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
 
   Cell *HandleNullPointer(Cell *cell);
@@ -99,8 +114,23 @@ private:
   Cell *ParseFracTag(wxXmlNode *node);
 
   Cell *ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
+  Cell *ParseVariableNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_VARIABLE);}
+  Cell *ParseOperatorNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
+  Cell *ParseMiscTextTag(wxXmlNode *node);
+  Cell *ParseNumberTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_NUMBER);}
+  Cell *ParseHiddenOperatorTag(wxXmlNode *node);
+  Cell *ParseGreekTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_GREEK_CONSTANT);}
+  Cell *ParseSpecialConstantTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_SPECIAL_CONSTANT);}
+  Cell *ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
+  Cell *ParseSpaceTag(wxXmlNode *node){return new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));}
+  Cell *ParseMthTag(wxXmlNode *node);
+  Cell *ParseOutputLabelTag(wxXmlNode *node);
+  Cell *ParseStringTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_STRING);}
+  Cell *ParseHighlightTag(wxXmlNode *node);
+  Cell *ParseImageTag(wxXmlNode *node);
+  Cell *ParseSlideshowTag(wxXmlNode *node);
 
-  Cell *ParseCharCode(wxXmlNode *node, TextStyle style = TS_DEFAULT);
+  Cell *ParseCharCode(wxXmlNode *node);
 
   Cell *ParseSupTag(wxXmlNode *node);
 
