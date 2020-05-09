@@ -46,6 +46,11 @@ inside a wxmx file
 class MathParser
 {
 public:
+  /* The constructor
+
+     \todo I guess we could increase the performance further by putting the 
+     most-frequently-used tags to the front of the list.
+   */
   MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
@@ -72,7 +77,8 @@ private:
     Cell * (MathParser::* m_function)(wxXmlNode *node);
   };
 
-  //! Who you gonna call if you encounter any of these tags?
+  /*! Who you gonna call if you encounter any of these tags?
+   */
   static std::vector<TagFunction> m_knownTags;
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
 
