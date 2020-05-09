@@ -57,7 +57,8 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   SqrtCell &operator=(const SqrtCell&) = delete;
 
-  InnerCells GetInnerCells() const override;
+  InnerCellIterator InnerBegin() const override { return &m_innerCell; }
+  InnerCellIterator InnerEnd() const override { return &m_close+1; }
 
   void SetInner(Cell *inner);
 
@@ -88,6 +89,7 @@ public:
 private:
     Cell *m_nextToDraw;
 protected:
+  // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_innerCell;
   std::shared_ptr<Cell> m_open;
   std::shared_ptr<Cell> m_close;

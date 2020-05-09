@@ -84,18 +84,6 @@ ParenCell::~ParenCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells ParenCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_innerCell)
-    innerCells.push_back(m_innerCell);
-  if(m_open)
-    innerCells.push_back(m_open);
-  if(m_close)
-    innerCells.push_back(m_close);
-  return innerCells;
-}
-
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner != NULL)

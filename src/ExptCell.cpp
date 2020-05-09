@@ -81,23 +81,6 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-Cell::InnerCells ExptCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_baseCell)
-    innerCells.push_back(m_baseCell);
-  if(m_exptCell)
-    innerCells.push_back(m_exptCell);
-  if(m_exp)
-    innerCells.push_back(m_exp);
-  if(m_open)
-    innerCells.push_back(m_open);
-  if(m_close)
-    innerCells.push_back(m_close);
-  return innerCells;
-}
-
-
 void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)

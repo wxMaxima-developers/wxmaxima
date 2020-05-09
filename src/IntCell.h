@@ -46,7 +46,8 @@ public:
   IntCell &operator=(const IntCell&) = delete;
   ~IntCell();
 
-  InnerCells GetInnerCells() const override;
+  InnerCellIterator InnerBegin() const override { return &m_base; }
+  InnerCellIterator InnerEnd() const override { return &m_var+1; }
 
   void RecalculateHeight(int fontsize) override;
 
@@ -96,6 +97,7 @@ public:
 private:
     Cell *m_nextToDraw;
 protected:
+  // The pointers below point to inner cells and must be kept contiguous.
   //! The part of the formula that is to be integrated.
   std::shared_ptr<Cell> m_base;
   //! The lower limit of the integral

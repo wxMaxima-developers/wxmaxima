@@ -80,20 +80,6 @@ IntCell::~IntCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells IntCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_base)
-    innerCells.push_back(m_base);
-  if(m_under)
-    innerCells.push_back(m_under);
-  if(m_over)
-    innerCells.push_back(m_over);
-  if(m_var)
-    innerCells.push_back(m_var);
-  return innerCells;
-}
-
 void IntCell::SetOver(Cell *name)
 {
   if (name == NULL)

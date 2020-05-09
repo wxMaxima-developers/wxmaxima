@@ -62,16 +62,6 @@ FunCell::~FunCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells FunCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_nameCell)
-    innerCells.push_back(m_nameCell);
-  if(m_argCell)
-    innerCells.push_back(m_argCell);
-  return innerCells;
-}
-
 void FunCell::SetName(Cell *name)
 {
   if (name == NULL)

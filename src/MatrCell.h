@@ -39,7 +39,10 @@ public:
   MatrCell &operator=(const MatrCell&) = delete;
   ~MatrCell();
 
-  InnerCells GetInnerCells() const override;
+  InnerCellIterator InnerBegin() const override
+  { return m_cells.empty() ? InnerCellIterator{} : &m_cells.front(); }
+  InnerCellIterator InnerEnd() const override
+  { return m_cells.empty() ? InnerCellIterator{} : &m_cells.back() + 1; }
 
   void RecalculateHeight(int fontsize) override;
 
@@ -102,6 +105,7 @@ protected:
   bool m_roundedParens;
   unsigned int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
+  //! Collections of pointers to inner cells.
   vector<std::shared_ptr<Cell>> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;

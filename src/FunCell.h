@@ -58,7 +58,8 @@ public:
   ~FunCell();
   FunCell &operator=(const FunCell&) = delete;
 
-  InnerCells GetInnerCells() const override;
+  InnerCellIterator InnerBegin() const override { return &m_nameCell; }
+  InnerCellIterator InnerEnd() const override { return &m_argCell+1; }
 
   void SetName(Cell *name);
 
@@ -91,6 +92,7 @@ public:
 private:
     Cell *m_nextToDraw;
 protected:
+  // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_nameCell;
   std::shared_ptr<Cell> m_argCell;
   Cell *m_nameCell_Last;

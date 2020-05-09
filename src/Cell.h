@@ -1035,8 +1035,31 @@ protected:
   wxString m_altCopyText;
   Configuration **m_configuration;
 
-  using InnerCells = std::vector<std::shared_ptr<Cell>>;
-  virtual InnerCells GetInnerCells() const;
+  class InnerCellIterator
+  {
+    const std::shared_ptr<Cell> *ptr = {};
+  public:
+    InnerCellIterator() = default;
+    InnerCellIterator(const std::shared_ptr<Cell> *p) : ptr(p) {}
+    InnerCellIterator(const InnerCellIterator &o) = default;
+    InnerCellIterator &operator=(const InnerCellIterator &o) = default;
+    InnerCellIterator operator++(int) {
+      auto ret = *this;
+      ptr ++;
+      return ret;
+    }
+    InnerCellIterator &operator++() { ++ptr; return *this; }
+    bool operator==(const InnerCellIterator &o) const { return ptr == o.ptr; }
+    bool operator!=(const InnerCellIterator &o) const { return ptr != o.ptr; }
+    operator bool() const { return ptr && ptr->get(); }
+    operator Cell*() const { return ptr ? ptr->get() : nullptr; }
+    Cell *operator->() const { return ptr ? ptr->get() : nullptr; }
+  };
+
+  //! Iterator to the beginning of the inner cell range
+  virtual InnerCellIterator InnerBegin() const;
+  //! Iterator to the end of the inner cell range
+  virtual InnerCellIterator InnerEnd() const;
 
 protected:
   //! The height of this cell.

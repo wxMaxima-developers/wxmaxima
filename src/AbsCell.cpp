@@ -61,18 +61,6 @@ AbsCell::~AbsCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells AbsCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_innerCell)
-    innerCells.push_back(m_innerCell);
-  if(m_open)
-    innerCells.push_back(m_open);
-  if(m_close)
-    innerCells.push_back(m_close);
-  return innerCells;
-}
-
 void AbsCell::SetInner(Cell *inner)
 {
   if (inner == NULL)

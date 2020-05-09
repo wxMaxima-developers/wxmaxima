@@ -114,7 +114,10 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted() override;
-  InnerCells GetInnerCells() const override;
+
+  InnerCellIterator InnerBegin() const override { return &m_inputLabel; }
+  InnerCellIterator InnerEnd() const override
+  { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerBegin() : &m_output+1; }
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -518,6 +521,7 @@ protected:
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
   GroupType m_groupType;
+  // The pointers below point to inner cells and must be kept contiguous.
   //! The input label of this cell. Is followed by the input of the cell.
   std::shared_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains

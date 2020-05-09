@@ -66,17 +66,6 @@ MatrCell::~MatrCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells MatrCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  innerCells.reserve(m_cells.size());
-  std::copy_if(m_cells.begin(), m_cells.end(), std::back_inserter(innerCells),
-               [](const std::shared_ptr<Cell> &cell){ return bool(cell); });
-  return innerCells;
-}
-
-
-
 void MatrCell::RecalculateWidths(int fontsize)
 {
   if(!NeedsRecalculation(fontsize))

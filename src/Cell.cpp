@@ -32,20 +32,15 @@
 
 wxString Cell::GetToolTip(const wxPoint &point)
 {
-  if(!ContainsPoint(point))
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return {};
 
   wxString toolTip;
-  for (auto &cell : GetInnerCells())
-  {
-    Cell *tmp = cell.get();
-    while(tmp != NULL)
-    {
-      if((toolTip = tmp->GetToolTip(point)) != wxEmptyString)
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      if (!(toolTip = tmp->GetToolTip(point)).IsEmpty())
         return toolTip;
-      tmp = tmp -> m_next;
-    }
-  }
+
   return m_toolTip;
 }
 
@@ -208,18 +203,16 @@ int Cell::CellsInListRecursive() const
   //! The number of cells the current group contains (-1, if no GroupCell)
   int cells = 0;
 
-  const Cell *tmp = this;
-  while(tmp != NULL)
+  for (const Cell *tmp = this; tmp; tmp = tmp->m_next)
   {
-    cells ++;
-    for (auto &cell : tmp->GetInnerCells())
+    ++ cells;
+    for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
     {
-      if(cell)
+      if (cell)
         // I believe with the if(cell) we cannot use std::accumulate here.
         // cppcheck-suppress useStlAlgorithm
         cells += cell->CellsInListRecursive();
     }
-    tmp = tmp->m_next;
   }
   return cells;
 }
@@ -227,28 +220,22 @@ int Cell::CellsInListRecursive() const
 void Cell::SetGroup(Cell *group)
 {
   m_group = group;
-  if(group != NULL)
-  {
+  if (group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
-  }
   
-  for (auto &cell : GetInnerCells())
-  {
-    if(cell)
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    if (cell)
       cell->SetGroupList(group);
-  }
 }
 
 void Cell::FontsChangedList()
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (Cell *tmp = this; tmp; tmp = tmp->m_next)
   {
     tmp->FontsChanged();
-    for (auto &cell : tmp->GetInnerCells())
-    {
-      if(cell)
+    for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
+      if (cell)
         cell->FontsChangedList();
-    }
   }
 }
 
@@ -1119,21 +1106,15 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
  */
 void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
-  *first = NULL;
-  *last = NULL;
+  *first = nullptr;
+  *last = nullptr;
 
-  for (auto &cell : GetInnerCells())
-    {
-      Cell *tmp = cell.get();
-      while(tmp != NULL)
-      {
-        if (tmp->ContainsRect(rect))
-          tmp->SelectRect(rect, first, last);
-        tmp = tmp->m_next;
-      }
-    }
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      if (tmp->ContainsRect(rect))
+        tmp->SelectRect(rect, first, last);
 
-  if (*first == NULL || *last == NULL)
+  if (!*first || !*last)
   {
     *first = this;
     *last = this;
@@ -1170,11 +1151,9 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
-  for (auto &cell : GetInnerCells())
-    {
-      for(Cell *tmp = cell.get(); tmp != NULL; tmp = tmp -> m_next)
-        tmp->ResetData();
-    }
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      tmp->ResetData();
 }
 
 Cell *Cell::first()
@@ -1204,15 +1183,9 @@ void Cell::Unbreak()
   SetNextToDraw(m_next);
 
   // Unbreak the inner cells, too
-  for (auto &cell : GetInnerCells())
-  {
-    Cell *tmp = cell.get();
-    while(tmp != NULL)
-    {
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
       tmp->Unbreak();
-      tmp = tmp -> m_next;
-    }
-  }
 }
 
 void Cell::UnbreakList()
@@ -1365,7 +1338,10 @@ wxAccStatus Cell::GetValue (int childId, wxString *strValue)
 
 wxAccStatus Cell::GetChildCount(int *childCount)
 {
-  *childCount = GetInnerCells().size();
+  int count = 0;
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    count += (cell ? 1 : 0);
+  *childCount = count;
   return wxACC_OK;
 }
 
@@ -1411,24 +1387,17 @@ wxAccStatus Cell::HitTest(const wxPoint &pt,
 
 wxAccStatus Cell::GetChild(int childId, wxAccessible **child)
 {
-  if(child == NULL)
+  if (!child)
     return wxACC_FAIL;
 
   if (childId == 0)
-  {
-    *child = this;
-    return wxACC_OK;
-  }
+    return (*child = this), wxACC_OK;
+
   if (childId > 0)
-  {
-    childId --;
-    auto innerCells = m_parent->GetInnerCells();
-    if (unsigned(childId) < innerCells.size())
-    {
-      *child = innerCells[childId].get();
-      return wxACC_OK;
-    }
-  }
+    for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+      if (cell && (--childId == 0))
+        return (*child = cell), wxACC_OK;
+
   return wxACC_FAIL;
 }
 
@@ -1526,10 +1495,8 @@ wxString Cell::CellPointers::WXMXGetNewFileName()
   return file;
 }
 
-Cell::InnerCells Cell::GetInnerCells() const
-{
-  return {};
-}
+Cell::InnerCellIterator Cell::InnerBegin() const { return {}; }
+Cell::InnerCellIterator Cell::InnerEnd() const { return {}; }
 
 void Cell::MarkAsDeleted()
 {
@@ -1553,13 +1520,7 @@ void Cell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
   
   // Delete all pointers to the cells this cell contains
-  for (auto &cell : GetInnerCells())
-  {
-    Cell *tmp = cell.get();
-    while(tmp != NULL)
-    {
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
       tmp->MarkAsDeleted();
-      tmp = tmp -> m_next;
-    }
-  }
 }

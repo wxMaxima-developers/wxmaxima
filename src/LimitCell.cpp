@@ -70,24 +70,6 @@ LimitCell::~LimitCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells LimitCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_base)
-    innerCells.push_back(m_base);
-  if(m_under)
-    innerCells.push_back(m_under);
-  if(m_name)
-    innerCells.push_back(m_name);
-  if(m_open)
-    innerCells.push_back(m_open);
-  if(m_comma)
-    innerCells.push_back(m_comma);
-  if(m_close)
-    innerCells.push_back(m_close);
-  return innerCells;
-}
-
 void LimitCell::SetName(Cell *name)
 {
   if (name == NULL)

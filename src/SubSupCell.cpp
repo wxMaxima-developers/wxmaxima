@@ -61,52 +61,40 @@ SubSupCell::~SubSupCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells SubSupCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_baseCell)
-    innerCells.push_back(m_baseCell);
-  if(m_postSubCell)
-    innerCells.push_back(m_postSubCell);
-  if(m_postSupCell)
-    innerCells.push_back(m_postSupCell);
-  if(m_preSubCell)
-    innerCells.push_back(m_preSubCell);
-  if(m_preSupCell)
-    innerCells.push_back(m_preSupCell);
-  return innerCells;
-}
-
 void SubSupCell::SetPreSup(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
+  wxASSERT(!m_preSupCell);
   m_preSupCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(m_preSupCell);
+  m_scriptCells.push_back(m_preSupCell);
 }
 
 void SubSupCell::SetPreSub(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
+  wxASSERT(!m_preSubCell);
   m_preSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(m_preSubCell);
+  m_scriptCells.push_back(m_preSubCell);
 }
 
 void SubSupCell::SetPostSup(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
+  wxASSERT(!m_postSupCell);
   m_postSupCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(m_postSupCell);
+  m_scriptCells.push_back(m_postSupCell);
 }
 
 void SubSupCell::SetPostSub(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
+  wxASSERT(!m_postSubCell);
   m_postSubCell = std::shared_ptr<Cell>(index);
-  m_innerCellList.push_back(m_postSubCell);
+  m_scriptCells.push_back(m_postSubCell);
 }
 
 void SubSupCell::SetIndex(Cell *index)
@@ -275,7 +263,7 @@ wxString SubSupCell::ToString()
     s += "(" + m_baseCell->ListToString() + ")";
   else
     s += m_baseCell->ListToString();
-  if(m_innerCellList.empty())
+  if (m_scriptCells.empty())
   {
     s += "[" + m_postSubCell->ListToString() + "]";
     s += "^";
@@ -287,7 +275,7 @@ wxString SubSupCell::ToString()
   }
   else
   {
-    for (auto &cell : m_innerCellList)
+    for (auto &cell : m_scriptCells)
       s += "[" + cell->ListToString() + "]";
   }
   return s;
@@ -300,7 +288,7 @@ wxString SubSupCell::ToMatlab()
 	s += "(" + m_baseCell->ListToMatlab() + ")";
   else
 	s += m_baseCell->ListToMatlab();
-  if(m_innerCellList.empty())
+  if (m_scriptCells.empty())
   {
     s += "[" + m_postSubCell->ListToMatlab() + "]";
     s += "^";
@@ -315,7 +303,7 @@ wxString SubSupCell::ToMatlab()
     s += "[";
     bool first = false;
     
-    for (auto &cell : m_innerCellList)
+    for (auto &cell : m_scriptCells)
     {
       if(!first)
         s += ";";
@@ -337,7 +325,7 @@ wxString SubSupCell::ToTeX()
 
   wxString s;
 
-  if(m_innerCellList.empty())
+  if (m_scriptCells.empty())
   {
     if (TeXExponentsAfterSubscript)
     {
@@ -381,7 +369,7 @@ wxString SubSupCell::ToTeX()
 wxString SubSupCell::ToMathML()
 {
   wxString retval;
-  if(m_innerCellList.empty())
+  if (m_scriptCells.empty())
   {
     retval = "<msubsup>" +
       m_baseCell->ListToMathML();
@@ -466,7 +454,7 @@ wxString SubSupCell::ToXML()
     flags += " altCopy=\"" + XMLescape(m_altCopyText) + "\"";
 
   wxString retval;
-  if(m_innerCellList.empty())
+  if (m_scriptCells.empty())
   {
     retval = "<ie" + flags + "><r>" + m_baseCell->ListToXML()
       + "</r><r>";
