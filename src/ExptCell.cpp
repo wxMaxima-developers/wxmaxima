@@ -34,9 +34,9 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   Cell(parent, config, cellPointers),
   m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_exptCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_exp(std::make_shared<TextCell>(parent, config, cellPointers, "^")),
   m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
-  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")")),
-  m_exp(std::make_shared<TextCell>(parent, config, cellPointers, "^"))
+  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);

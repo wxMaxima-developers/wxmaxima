@@ -33,11 +33,11 @@
 
 LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
+  m_base(std::make_shared<TextCell>(parent, config, cellPointers)),
+  m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_name(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
-  m_base(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_comma(std::make_shared<TextCell>(parent, config, cellPointers, ",")),
-  m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
   m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;

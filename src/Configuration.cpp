@@ -787,7 +787,7 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
     wxUniChar ch;
     wxSize size;
     wxImage image;
-    Params(wxUniChar ch) : ch(ch) {}
+    explicit Params(wxUniChar ch) : ch(ch) {}
   };
   std::vector<Params> P(chars.begin(), chars.end());
 
