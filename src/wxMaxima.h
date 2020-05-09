@@ -818,6 +818,8 @@ public:
     \param file The file name
     \param evalOnStartup Do we want to execute the file automatically, but halt on error?
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
+    \param wxmData A gnuzipped version of the .wxm file containing the initial worksheet contents
+    \param wxmLen  The length of wxmData
    */
   void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, int wxmLen = 0);
 

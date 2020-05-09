@@ -48,6 +48,7 @@ public:
   /*! A flat, compact button for the greek and the symbols pane
 
     \param parent The parent panel/window
+    \param worksheet The worksheet this button sends char events to
     \param def The definition of the button
   */
   CharButton(wxPanel *parent, wxWindow *worksheet, const Definition &def);

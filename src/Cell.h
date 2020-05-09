@@ -553,7 +553,7 @@ class Cell
       - true: Get the rectangle for this cell and the ones that follow it in the list of cells
       - false: Get the rectangle for this cell only.
    */
-  virtual wxRect GetRect(bool wholeList = false);
+  virtual wxRect GetRect(bool all = false);
 
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(int fontSize);
