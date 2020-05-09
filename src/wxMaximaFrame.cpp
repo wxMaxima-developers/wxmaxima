@@ -665,7 +665,7 @@ void wxMaximaFrame::SetupMenu()
   m_FileMenu->Append(menu_batch_id, _("&Batch File...\tCtrl+B"),
                      _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
   m_FileMenu->Append(menu_export_html, _("&Export..."),
-                     _("Export document to a HTML or pdfLaTeX file"), wxITEM_NORMAL);
+                     _("Export document to a HTML or LaTeX file"), wxITEM_NORMAL);
   m_FileMenu->AppendSeparator();
   APPEND_MENU_ITEM(m_FileMenu, wxID_PRINT, _("&Print...\tCtrl+P"),
                    _("Print document"), wxT("gtk-print"));

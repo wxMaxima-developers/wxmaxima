@@ -5515,7 +5515,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
                               file + wxT(".") + fileExt,
                               _("HTML file (*.html)|*.html|"
                                         "maxima batch file (*.mac)|*.mac|"
-                                        "pdfLaTeX file (*.tex)|*.tex"
+                                        "LaTeX file (*.tex)|*.tex"
                               ),
                               wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
