@@ -993,7 +993,7 @@ class Cell
   }
   //! Tells this cell where it is placed on the worksheet
   void SetCurrentPoint(int x, int y){
-    SetCurrentPint(wxPoint(x,y));
+    SetCurrentPoint(wxPoint(x,y));
   }
   //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
