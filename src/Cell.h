@@ -921,6 +921,7 @@ class Cell
   virtual void SetFocus(bool WXUNUSED(focus))
   {}
 
+  //! Sets the foreground color
   void SetForeground();
 
   virtual bool IsActive() const
@@ -947,18 +948,18 @@ class Cell
 
   //! Define which Sell is the GroupCell this list of cells belongs to
   virtual void SetGroup(Cell *group);
-  
+  //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
   {
     m_textStyle = style;
     ResetData();
   }
-
+  //! Is this cell possibly output of maxima?
   bool IsMath() const;
 
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
-  
+  //! What to put on the clipboard if this cell is to be copied as text
   void SetAltCopyText(wxString text)
   { m_altCopyText = text; }
 
@@ -984,12 +985,17 @@ class Cell
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
+  //! Tells this cell where it is placed on the worksheet
   void SetCurrentPoint(wxPoint point){m_currentPoint = point;
     if((m_currentPoint.x >=0) &&
        (m_currentPoint.y >=0))
   m_currentPoint_Last = point;
   }
-  void SetCurrentPoint(int x, int y){m_currentPoint = wxPoint(x,y);}
+  //! Tells this cell where it is placed on the worksheet
+  void SetCurrentPoint(int x, int y){
+    SetCurrentPint(wxPoint(x,y));
+  }
+  //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   
 protected:
