@@ -38,8 +38,9 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   SubSupCell operator=(const SubSupCell&) = delete;
 
-  InnerCells GetInnerCells() const override;
-  
+  InnerCellIterator InnerBegin() const override { return &m_baseCell; }
+  InnerCellIterator InnerEnd() const override { return &m_preSupCell+1; }
+
   void SetBase(Cell *base);
 
   void SetIndex(Cell *index);
@@ -79,12 +80,15 @@ public:
 private:
   Cell *m_nextToDraw;
 protected:
+  // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;
-  std::shared_ptr<Cell> m_postSupCell;
   std::shared_ptr<Cell> m_postSubCell;
-  std::shared_ptr<Cell> m_preSupCell;
+  std::shared_ptr<Cell> m_postSupCell;
   std::shared_ptr<Cell> m_preSubCell;
-  InnerCells m_innerCellList;
+  std::shared_ptr<Cell> m_preSupCell;
+  //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
+  //! nor SetExponent.
+  std::vector<std::shared_ptr<Cell>> m_scriptCells;
 };
 
 #endif // SUBSUPCELL_H

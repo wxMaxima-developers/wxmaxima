@@ -53,16 +53,6 @@ AtCell::~AtCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells AtCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_baseCell)
-    innerCells.push_back(m_baseCell);
-  if(m_indexCell)
-    innerCells.push_back(m_indexCell);
-  return innerCells;
-}
-
 void AtCell::SetIndex(Cell *index)
 {
   if (index == NULL)

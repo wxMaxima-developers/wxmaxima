@@ -54,17 +54,6 @@ DiffCell::~DiffCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells DiffCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_baseCell)
-    innerCells.push_back(m_baseCell);
-  if(m_diffCell)
-    innerCells.push_back(m_diffCell);
-  return innerCells;
-}
-
-
 void DiffCell::SetDiff(Cell *diff)
 {
   if (diff == NULL)

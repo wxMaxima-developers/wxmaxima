@@ -114,7 +114,10 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted() override;
-  InnerCells GetInnerCells() const override;
+
+  InnerCellIterator InnerBegin() const override { return &m_inputLabel; }
+  InnerCellIterator InnerEnd() const override
+  { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerBegin() : &m_output+1; }
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -218,7 +221,7 @@ public:
   void AppendInput(Cell *cell);
 
   // Get the next cell in the list.
-  virtual GroupCell *GetNext() const override {if (m_next != NULL) return dynamic_cast<GroupCell *>(m_next); else return NULL;}
+  virtual GroupCell *GetNext() const override {return dynamic_cast<GroupCell *>(m_next);}
 
   static wxString TexEscapeOutputCell(wxString Input);
 
@@ -437,54 +440,44 @@ public:
   wxAccStatus GetDescription(int childId, wxString *description) override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
 
+  // TODO This class is not used anyhere.
   class HCaretCell: public wxAccessible
   {
   public:
-    explicit HCaretCell(GroupCell* group) : wxAccessible()
-      {
-        m_group = group;
-      }
+    explicit HCaretCell(GroupCell* group) : wxAccessible(), m_group(group) {}
+
     //! Describe the current cell to a Screen Reader
-    virtual wxAccStatus GetDescription(int childId, wxString *description)
-      {
-        if (description != NULL)
-        {
-          *description = _("A space between GroupCells");
-          return wxACC_OK;
-        }
-        return wxACC_FAIL;
-      }
+    wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description) override
+    {
+      if (description)
+        return (*description = _("A space between GroupCells")), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
     //! Inform the Screen Reader which cell is the parent of this one
-    wxAccStatus GetParent (wxAccessible ** parent)
-      {
-        if (parent != NULL)
-        {
-          *parent = m_group;
-          return wxACC_OK;
-        }
-        return wxACC_FAIL;
-      }
-  //! How many childs of this cell GetChild() can retrieve?
-    wxAccStatus GetChildCount (int *childCount)
-      {
-        if (childCount != NULL)
-        {
-          *childCount = 0;
-          return wxACC_OK;
-        }
-        return wxACC_FAIL;
-      }
+    wxAccStatus GetParent (wxAccessible ** parent) override
+    {
+      if (parent)
+        return (*parent = m_group), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
+    //! How many childs of this cell GetChild() can retrieve?
+    wxAccStatus GetChildCount (int *childCount) override
+    {
+      if (childCount)
+        return (*childCount = 0), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
     //! Retrieve a child cell. childId=0 is the current cell
-    wxAccStatus GetChild (int childId, wxAccessible **child)
-      {
-        if((childId != 0) || (child == NULL))
-          return wxACC_FAIL;
-        else
-        {
-          *child = this;
-          return wxACC_OK;
-        }
-      }
+    wxAccStatus GetChild (int childId, wxAccessible **child) override
+    {
+      if (childId == 0 && child)
+        return (*child = this), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
     // //! Does this or a child cell currently own the focus?
     // wxAccStatus GetFocus (int *childId, wxAccessible **child)
     //   {
@@ -496,7 +489,7 @@ public:
     // //! Is pt inside this cell or a child cell?
     // wxAccStatus HitTest (const wxPoint &pt,
     //                      int *childId, wxAccessible **childObject);
-    wxAccStatus GetRole (int childId, wxAccRole *role);
+    wxAccStatus GetRole (int childId, wxAccRole *role) override;
 
   private:
 	GroupCell *m_group;
@@ -518,6 +511,7 @@ protected:
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
   GroupType m_groupType;
+  // The pointers below point to inner cells and must be kept contiguous.
   //! The input label of this cell. Is followed by the input of the cell.
   std::shared_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains

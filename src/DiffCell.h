@@ -35,7 +35,8 @@ public:
   DiffCell &operator=(const DiffCell&) = delete;
   ~DiffCell();
   
-  InnerCells GetInnerCells() const override;
+  InnerCellIterator InnerBegin() const override { return &m_baseCell; }
+  InnerCellIterator InnerEnd() const override { return &m_diffCell+1; }
 
   void SetBase(Cell *base);
 
@@ -66,6 +67,7 @@ public:
 private:
     Cell *m_nextToDraw;
 protected:
+  // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;
   std::shared_ptr<Cell> m_diffCell;
 };

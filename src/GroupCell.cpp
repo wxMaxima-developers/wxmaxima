@@ -448,18 +448,6 @@ void GroupCell::MarkAsDeleted()
   Cell::MarkAsDeleted();
 }
 
-Cell::InnerCells GroupCell::GetInnerCells() const
-{
-  if (m_groupType == GC_TYPE_PAGEBREAK) return {};
-
-  InnerCells innerCells;
-  if(GetInput())
-    innerCells.push_back(m_inputLabel);
-  if(GetOutput())
-    innerCells.push_back(m_output);
-  return innerCells;
-}
-
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
 {
   wxString retval(Input);

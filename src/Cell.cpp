@@ -32,20 +32,15 @@
 
 wxString Cell::GetToolTip(const wxPoint &point)
 {
-  if(!ContainsPoint(point))
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return {};
 
   wxString toolTip;
-  for (auto &cell : GetInnerCells())
-  {
-    Cell *tmp = cell.get();
-    while(tmp != NULL)
-    {
-      if((toolTip = tmp->GetToolTip(point)) != wxEmptyString)
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      if (!(toolTip = tmp->GetToolTip(point)).IsEmpty())
         return toolTip;
-      tmp = tmp -> m_next;
-    }
-  }
+
   return m_toolTip;
 }
 
@@ -208,18 +203,16 @@ int Cell::CellsInListRecursive() const
   //! The number of cells the current group contains (-1, if no GroupCell)
   int cells = 0;
 
-  const Cell *tmp = this;
-  while(tmp != NULL)
+  for (const Cell *tmp = this; tmp; tmp = tmp->m_next)
   {
-    cells ++;
-    for (auto &cell : tmp->GetInnerCells())
+    ++ cells;
+    for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
     {
-      if(cell)
+      if (cell)
         // I believe with the if(cell) we cannot use std::accumulate here.
         // cppcheck-suppress useStlAlgorithm
         cells += cell->CellsInListRecursive();
     }
-    tmp = tmp->m_next;
   }
   return cells;
 }
@@ -227,28 +220,22 @@ int Cell::CellsInListRecursive() const
 void Cell::SetGroup(Cell *group)
 {
   m_group = group;
-  if(group != NULL)
-  {
+  if (group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
-  }
   
-  for (auto &cell : GetInnerCells())
-  {
-    if(cell)
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    if (cell)
       cell->SetGroupList(group);
-  }
 }
 
 void Cell::FontsChangedList()
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (Cell *tmp = this; tmp; tmp = tmp->m_next)
   {
     tmp->FontsChanged();
-    for (auto &cell : tmp->GetInnerCells())
-    {
-      if(cell)
+    for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
+      if (cell)
         cell->FontsChangedList();
-    }
   }
 }
 
@@ -1119,21 +1106,15 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
  */
 void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
-  *first = NULL;
-  *last = NULL;
+  *first = nullptr;
+  *last = nullptr;
 
-  for (auto &cell : GetInnerCells())
-    {
-      Cell *tmp = cell.get();
-      while(tmp != NULL)
-      {
-        if (tmp->ContainsRect(rect))
-          tmp->SelectRect(rect, first, last);
-        tmp = tmp->m_next;
-      }
-    }
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      if (tmp->ContainsRect(rect))
+        tmp->SelectRect(rect, first, last);
 
-  if (*first == NULL || *last == NULL)
+  if (!*first || !*last)
   {
     *first = this;
     *last = this;
@@ -1170,11 +1151,9 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
-  for (auto &cell : GetInnerCells())
-    {
-      for(Cell *tmp = cell.get(); tmp != NULL; tmp = tmp -> m_next)
-        tmp->ResetData();
-    }
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      tmp->ResetData();
 }
 
 Cell *Cell::first()
@@ -1204,15 +1183,9 @@ void Cell::Unbreak()
   SetNextToDraw(m_next);
 
   // Unbreak the inner cells, too
-  for (auto &cell : GetInnerCells())
-  {
-    Cell *tmp = cell.get();
-    while(tmp != NULL)
-    {
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
       tmp->Unbreak();
-      tmp = tmp -> m_next;
-    }
-  }
 }
 
 void Cell::UnbreakList()
@@ -1308,156 +1281,118 @@ bool Cell::IsMath() const
 #if wxUSE_ACCESSIBILITY
 wxAccStatus Cell::GetDescription(int childId, wxString *description)
 {
-  if(description == NULL)
+  if (!description)
     return wxACC_FAIL;
 
   if (childId == 0)
-  {
-	  *description = _("Math output");
-	  return wxACC_OK;
-  }
-  else
-  {
-    wxAccessible *cell = NULL;
-    if(GetChild(childId, &cell) == wxACC_OK)
-    {
-      if(cell != NULL)
-        return cell->GetDescription(0, description);
-    }
-  }
+    return (*description = _("Math output")), wxACC_OK;
 
-  *description = wxEmptyString;
-  return wxACC_FAIL;
+  wxAccessible *cell = {};
+  if (GetChild(childId, &cell) == wxACC_OK && cell)
+    return cell->GetDescription(0, description);
+
+  return (description->clear()), wxACC_FAIL;
 }
 
 wxAccStatus Cell::GetParent (wxAccessible **parent)
 {
-  if(parent == NULL)
+  if (!parent)
     return wxACC_FAIL;
 
-  if(*parent != this)
-    *parent = m_parent;
-  else
-  {
-    if((*m_configuration)->GetWorkSheet() != NULL)
-      *parent = (*m_configuration)->GetWorkSheet()->GetAccessible();
-  }
-  return  wxACC_OK;
+  if (*parent != this)
+    return (*parent = m_parent), wxACC_OK;
+
+  if ((*m_configuration)->GetWorkSheet())
+    *parent = (*m_configuration)->GetWorkSheet()->GetAccessible();
+
+  return wxACC_OK;
 }
 
 wxAccStatus Cell::GetValue (int childId, wxString *strValue)
 {
-  if(strValue == NULL)
+  if (!strValue)
     return wxACC_FAIL;
 
   wxAccessible *cell;
-  if(GetChild(childId, &cell) == wxACC_OK)
-  {
-    *strValue = static_cast<Cell*>(cell)->ToString();
-    return wxACC_OK;
-  }
-  else
-  {
-    *strValue = wxEmptyString;
-    return wxACC_FAIL;
-  }
+  if (GetChild(childId, &cell) == wxACC_OK)
+    return (*strValue = static_cast<Cell*>(cell)->ToString()), wxACC_OK;
+
+  return (strValue->clear()), wxACC_FAIL;
 }
 
 wxAccStatus Cell::GetChildCount(int *childCount)
 {
-  *childCount = GetInnerCells().size();
-  return wxACC_OK;
+  if (!childCount)
+    return wxACC_FAIL;
+
+  int count = 0;
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    count += (cell ? 1 : 0);
+
+  return (*childCount = count), wxACC_OK;
 }
 
-wxAccStatus Cell::HitTest(const wxPoint &pt,
-    int *childId, wxAccessible  **childObject)
+wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, wxAccessible **child)
 {
   wxRect rect;
   GetLocation(rect, 0);
   // If this cell doesn't contain the point none of the sub-cells does.
   if (!rect.Contains(pt))
+    return (childId && (*childId = 0)), (child && (*child = NULL)),
+           wxACC_FAIL;
+
+  int id = 0; // Child #0 is this very cell
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
   {
-    if (childObject != NULL)
-      *childObject = NULL;
-    if (childId != NULL)
-      *childId = 0;
-    return wxACC_FAIL;
+    // GetChildCount(), GetChild(), and this loop all skip null children - thus
+    // the child identifiers present the same via the accessibility API.
+    if (!cell)
+      continue;
+    ++ id; // The first valid inner cell will have id #1, and so on.
+
+    cell->GetLocation(rect, 0);
+    if (rect.Contains(pt))
+      return (childId && (*childId = id)), (child && (*child = cell)),
+             wxACC_OK;
   }
-  else
-  {
-    int childCount;
-    GetChildCount(&childCount);
-    for (int i = 0; i < childCount; i++)
-    {
-      wxAccessible *child;
-      GetChild(i, &child);
-      child->GetLocation(rect, 0);
-      if (rect.Contains(pt))
-      {
-        if (childObject != NULL)
-          *childObject = child;
-        if (childId != NULL)
-          *childId = i;
-        return wxACC_OK;
-      }
-    }
-    if (childObject != NULL)
-      *childObject = this;
-    if (childId != NULL)
-      *childId = 0;
-    return wxACC_OK;
-  }
+
+  return (childId && (*childId = 0)), (child && (*child = this)),
+         wxACC_OK;
 }
 
 wxAccStatus Cell::GetChild(int childId, wxAccessible **child)
 {
-  if(child == NULL)
+  if (!child)
     return wxACC_FAIL;
 
   if (childId == 0)
-  {
-    *child = this;
-    return wxACC_OK;
-  }
+    return (*child = this), wxACC_OK;
+
   if (childId > 0)
-  {
-    childId --;
-    auto innerCells = m_parent->GetInnerCells();
-    if (unsigned(childId) < innerCells.size())
-    {
-      *child = innerCells[childId].get();
-      return wxACC_OK;
-    }
-  }
+    for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+      if (cell && (--childId == 0))
+        return (*child = cell), wxACC_OK;
+
   return wxACC_FAIL;
 }
 
 wxAccStatus Cell::GetFocus(int *childId, wxAccessible **child)
 {
-  int childCount;
-  GetChildCount(&childCount);
-
-  for(int i = 0; i < childCount;i++)
+  int id = 0;
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++cell)
   {
-    int dummy1;
-    wxAccessible *cell = NULL;
-    GetChild(i + 1, &cell);
-    if (cell != NULL)
-      if(cell->GetFocus(&dummy1, child) == wxACC_OK)
-      {
-        if(childId != NULL)
-          *childId = i+1;
-        if(child != NULL)
-          *child = cell;
-        return wxACC_OK;
-      }
+    if (!cell)
+      continue;
+    ++ id;
+
+    int dummy;
+    if (cell->GetFocus(&dummy, child) == wxACC_OK)
+      return (childId && (*childId = id)), (child && (*child = cell)),
+             wxACC_OK;
   }
 
-  if(childId != NULL)
-    *childId = 0;
-  if(child != NULL)
-    *child = NULL;
-  return wxACC_FAIL;
+  return (childId && (*childId = 0)), (child && (*child = nullptr)),
+         wxACC_FAIL;
 }
 
 wxAccStatus Cell::GetLocation(wxRect &rect, int elementId)
@@ -1477,23 +1412,20 @@ wxAccStatus Cell::GetLocation(wxRect &rect, int elementId)
     rect = wxRect(rect.GetTopLeft()+(*m_configuration)->GetWorksheetPosition(),rect.GetBottomRight()+(*m_configuration)->GetWorksheetPosition());
     return wxACC_OK;
   }
-  else
-  {
-    wxAccessible *cell = NULL;
-	if (GetChild(elementId, &cell) == wxACC_OK)
-		return cell->GetLocation(rect, 0);
-  }
+
+  wxAccessible *cell = NULL;
+  if (GetChild(elementId, &cell) == wxACC_OK)
+    return cell->GetLocation(rect, 0);
+
   return wxACC_FAIL;
 }
 
-wxAccStatus Cell::GetRole (int WXUNUSED(childId), wxAccRole *role)
+wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role)
 {
-  if(role != NULL)
-  {
-    *role =   wxROLE_SYSTEM_STATICTEXT;
-    return wxACC_OK;
-  }
-  else return wxACC_FAIL;
+  if (!role)
+    return wxACC_FAIL;
+
+  return (*role = wxROLE_SYSTEM_STATICTEXT), wxACC_OK;
 }
 
 #endif
@@ -1526,10 +1458,8 @@ wxString Cell::CellPointers::WXMXGetNewFileName()
   return file;
 }
 
-Cell::InnerCells Cell::GetInnerCells() const
-{
-  return {};
-}
+Cell::InnerCellIterator Cell::InnerBegin() const { return {}; }
+Cell::InnerCellIterator Cell::InnerEnd() const { return {}; }
 
 void Cell::MarkAsDeleted()
 {
@@ -1553,13 +1483,7 @@ void Cell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
   
   // Delete all pointers to the cells this cell contains
-  for (auto &cell : GetInnerCells())
-  {
-    Cell *tmp = cell.get();
-    while(tmp != NULL)
-    {
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
       tmp->MarkAsDeleted();
-      tmp = tmp -> m_next;
-    }
-  }
 }

@@ -281,22 +281,27 @@ class Cell
     Is used for displaying/printing/exporting of text/maths
    */
   int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
+
 #if wxUSE_ACCESSIBILITY
+  // The methods marked final indicate that their implementation within Cell
+  // should be sufficient. If that's not the case, the final qualification can be
+  // removed with due caution.
+  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
+  wxAccStatus GetParent (wxAccessible ** parent) override final;
+  //! Accessibility: How many childs of this cell GetChild() can retrieve?
+  wxAccStatus GetChildCount (int *childCount) override final;
+  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
+  wxAccStatus GetChild (int childId, wxAccessible **child) override final;
+  //! Accessibility: Is pt inside this cell or a child cell?
+  wxAccStatus HitTest (const wxPoint &pt,
+                      int *childId, wxAccessible **childObject) override final;
+
   //! Accessibility: Describe the current cell to a Screen Reader
   wxAccStatus GetDescription(int childId, wxString *description) override;
-  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (wxAccessible ** parent) override;
-  //! Accessibility: How many childs of this cell GetChild() can retrieve?
-  wxAccStatus GetChildCount (int *childCount) override;
-  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
-  wxAccStatus GetChild (int childId, wxAccessible **child) override;
   //! Accessibility: Does this or a child cell currently own the focus?
   wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
   //! Accessibility: Where is this cell to be found?
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
-  //! Is pt inside this cell or a child cell?
-  wxAccStatus HitTest (const wxPoint &pt,
-                      int *childId, wxAccessible **childObject) override;
   //! Accessibility: What is the contents of this cell?
   wxAccStatus GetValue (int childId, wxString *strValue) override;
   wxAccStatus GetRole (int childId, wxAccRole *role) override;
@@ -1035,8 +1040,31 @@ protected:
   wxString m_altCopyText;
   Configuration **m_configuration;
 
-  using InnerCells = std::vector<std::shared_ptr<Cell>>;
-  virtual InnerCells GetInnerCells() const;
+  class InnerCellIterator
+  {
+    const std::shared_ptr<Cell> *ptr = {};
+  public:
+    InnerCellIterator() = default;
+    InnerCellIterator(const std::shared_ptr<Cell> *p) : ptr(p) {}
+    InnerCellIterator(const InnerCellIterator &o) = default;
+    InnerCellIterator &operator=(const InnerCellIterator &o) = default;
+    InnerCellIterator operator++(int) {
+      auto ret = *this;
+      ptr ++;
+      return ret;
+    }
+    InnerCellIterator &operator++() { ++ptr; return *this; }
+    bool operator==(const InnerCellIterator &o) const { return ptr == o.ptr; }
+    bool operator!=(const InnerCellIterator &o) const { return ptr != o.ptr; }
+    operator bool() const { return ptr && ptr->get(); }
+    operator Cell*() const { return ptr ? ptr->get() : nullptr; }
+    Cell *operator->() const { return ptr ? ptr->get() : nullptr; }
+  };
+
+  //! Iterator to the beginning of the inner cell range
+  virtual InnerCellIterator InnerBegin() const;
+  //! Iterator to the end of the inner cell range
+  virtual InnerCellIterator InnerEnd() const;
 
 protected:
   //! The height of this cell.

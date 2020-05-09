@@ -51,7 +51,8 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   FracCell &operator=(const FracCell&) = delete;
 
-  InnerCells GetInnerCells() const override;
+  InnerCellIterator InnerBegin() const override { return &m_divide; }
+  InnerCellIterator InnerEnd() const override { return &m_displayedDenom+1; }
 
   //! All types of fractions we support
   enum FracType
@@ -118,14 +119,15 @@ protected:
   std::shared_ptr<Cell> m_numParenthesis;
   //! A parenthesis around the denominator
   std::shared_ptr<Cell> m_denomParenthesis;
-  //! The "/" sign
-  std::shared_ptr<Cell> m_divide;
   //! The last element of the numerator
   Cell *m_num_Last;
   //! The last element of the denominator
   Cell *m_denom_Last;
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
+  // The pointers below point to inner cells and must be kept contiguous.
+  //! The "/" sign
+  std::shared_ptr<Cell> m_divide;
   //! The displayed version of the numerator, if needed with parenthesis
   std::shared_ptr<Cell> m_displayedNum;
   //! The displayed version of the denominator, if needed with parenthesis

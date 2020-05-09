@@ -70,18 +70,6 @@ SqrtCell::~SqrtCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells SqrtCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_innerCell)
-    innerCells.push_back(m_innerCell);
-  if(m_open)
-    innerCells.push_back(m_open);
-  if(m_close)
-    innerCells.push_back(m_close);
-  return innerCells;
-}
-
 void SqrtCell::SetInner(Cell *inner)
 {
   if (inner == NULL)

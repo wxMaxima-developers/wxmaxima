@@ -69,19 +69,6 @@ SumCell::~SumCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells SumCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_under)
-    innerCells.push_back(m_under);
-  if(m_over)
-    innerCells.push_back(m_over);
-  // Contains m_base
-  if(m_paren)
-    innerCells.push_back(m_paren);
-  return innerCells;
-}
-
 void SumCell::SetOver(Cell *over)
 {
   if (over == NULL)

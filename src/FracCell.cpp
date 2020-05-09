@@ -68,20 +68,6 @@ FracCell::~FracCell()
   MarkAsDeleted();
 }
 
-Cell::InnerCells FracCell::GetInnerCells() const
-{
-  InnerCells innerCells;
-  if(m_divide)
-    innerCells.push_back(m_divide);
-  // Contains m_num
-  if(m_displayedNum)
-    innerCells.push_back(m_displayedNum);
-  // Contains m_denom
-  if(m_displayedDenom)
-    innerCells.push_back(m_displayedDenom);
-  return innerCells;
-}
-
 void FracCell::SetNum(Cell *num)
 {
   if (num == NULL)
