@@ -281,22 +281,27 @@ class Cell
     Is used for displaying/printing/exporting of text/maths
    */
   int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
+
 #if wxUSE_ACCESSIBILITY
+  // The methods marked final indicate that their implementation within Cell
+  // should be sufficient. If that's not the case, the final qualification can be
+  // removed with due caution.
+  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
+  wxAccStatus GetParent (wxAccessible ** parent) override final;
+  //! Accessibility: How many childs of this cell GetChild() can retrieve?
+  wxAccStatus GetChildCount (int *childCount) override final;
+  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
+  wxAccStatus GetChild (int childId, wxAccessible **child) override final;
+  //! Accessibility: Is pt inside this cell or a child cell?
+  wxAccStatus HitTest (const wxPoint &pt,
+                      int *childId, wxAccessible **childObject) override final;
+
   //! Accessibility: Describe the current cell to a Screen Reader
   wxAccStatus GetDescription(int childId, wxString *description) override;
-  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (wxAccessible ** parent) override;
-  //! Accessibility: How many childs of this cell GetChild() can retrieve?
-  wxAccStatus GetChildCount (int *childCount) override;
-  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
-  wxAccStatus GetChild (int childId, wxAccessible **child) override;
   //! Accessibility: Does this or a child cell currently own the focus?
   wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
   //! Accessibility: Where is this cell to be found?
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
-  //! Is pt inside this cell or a child cell?
-  wxAccStatus HitTest (const wxPoint &pt,
-                      int *childId, wxAccessible **childObject) override;
   //! Accessibility: What is the contents of this cell?
   wxAccStatus GetValue (int childId, wxString *strValue) override;
   wxAccStatus GetRole (int childId, wxAccRole *role) override;
