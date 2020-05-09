@@ -28,6 +28,7 @@
 #include <wx/fontenum.h>
 #include "LoggingMessageDialog.h"
 #include "TextStyle.h"
+#include <vector>
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
@@ -328,15 +329,21 @@ public:
   }
   //! Has a font changed?
   bool FontChanged() const {return m_fontChanged;}
-  WX_DECLARE_STRING_HASH_MAP( bool, CharsInFontMap);
-  CharsInFontMap m_charsInFontMap;
+
+  struct CharsExist {
+    wxString chars;
+    bool exist;
+    CharsExist(const wxString &chars, bool exist) : chars(chars), exist(exist) {}
+  };
+  std::vector<CharsExist> m_charsInFont;
+
   //! Has a font changed?
   void FontChanged(bool fontChanged)
     {
       m_fontChanged = fontChanged;
       if(fontChanged)
         RecalculationForce(true);
-      m_charsInFontMap.clear();
+      m_charsInFont.clear();
     }
   
   //! Set the height of the visible window for GetClientHeight()
@@ -881,8 +888,6 @@ private:
   long m_autoSubscript;
   //! The worksheet this configuration storage is valid for
   wxWindow *m_workSheet;
-  //! A replacement for the non-existing "==" operator for wxBitmaps.
-  static bool IsEqual(wxBitmap bitmap1, wxBitmap bitmap2);
   /*! Do these chars exist in the given font?
 
     wxWidgets currently doesn't define such a function. But we can do the following:
@@ -895,7 +900,7 @@ private:
       As these might be costly operations it is important to cache the result
       of this function.
    */
-  bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3);
+  bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;

@@ -696,15 +696,16 @@ long Configuration::GetLineWidth() const
 
 Configuration::drawMode Configuration::GetParenthesisDrawMode()
 {
-  if(m_parenthesisDrawMode == unknown)
+  if (m_parenthesisDrawMode == unknown)
   {
+    static const wxString parens{
+      (wxT(PAREN_OPEN_TOP_UNICODE)
+         wxT(PAREN_OPEN_EXTEND_UNICODE)
+           wxT(PAREN_OPEN_BOTTOM_UNICODE))};
+
     m_parenthesisDrawMode = handdrawn;
-    wxFont font = GetFont(TS_FUNCTION,20);
-    if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
-      )
+    wxFont font = GetFont(TS_FUNCTION, 20);
+    if (CharsExistInFont(font, parens))
     {
       m_parenthesisDrawMode = assembled_unicode;
       return m_parenthesisDrawMode;
@@ -712,22 +713,14 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
     auto req = FontInfo::GetFor(font)
                .FaceName(wxT("Linux Libertine"));
     font = FontCache::GetAFont(req);
-    if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
-      )
+    if (CharsExistInFont(font, parens))
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont;
       return m_parenthesisDrawMode;
     }
     req.FaceName(wxT("Linux Libertine O"));
     font = FontCache::GetAFont(req);
-    if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
-      )
+    if (CharsExistInFont(font, parens))
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
       return m_parenthesisDrawMode;
@@ -736,20 +729,17 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
   return m_parenthesisDrawMode;
 }
 
-bool Configuration::IsEqual(wxBitmap bitmap1, wxBitmap bitmap2)
+//! A comparison operator for wxImage
+static bool operator==(const wxImage &a, const wxImage &b)
 {
-  if (bitmap1.GetSize() != bitmap2.GetSize())
+  if (a.GetSize() != b.GetSize())
     return false;
 
-  wxImage img1=bitmap1.ConvertToImage();
-  wxImage img2=bitmap2.ConvertToImage();
-  long bytes = img1.GetWidth()*img1.GetHeight()*3;
-
-  if(bytes < 0)
+  long bytes = a.GetWidth() * b.GetHeight() * 3;
+  if (bytes < 0)
     return false;
 
-  bool equal = (memcmp(img1.GetData(),img2.GetData(),bytes) == 0);
-  return equal;
+  return memcmp(a.GetData(), b.GetData(), bytes) == 0;
 }
 
 void Configuration::SetZoomFactor(double newzoom)
@@ -769,98 +759,72 @@ Configuration::~Configuration()
   WriteStyles();
 }
 
-bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
+bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
 {
-  wxString name = char1 + char2 + char3;
-  CharsInFontMap::const_iterator it = m_charsInFontMap.find(name);
-  if(it != m_charsInFontMap.end())
-    return it->second;
+  wxASSERT(!chars.empty());
+  for (auto const &ex : m_charsInFont)
+    if (ex.chars == chars)
+      return ex.exist;
 
-  if(!font.IsOk())
+  auto const cache = [this, &chars](bool result)
   {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
+    m_charsInFont.emplace_back(chars, result);
+    return result;
+  };
+
+  if (!font.IsOk())
+    return cache(false);
+
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
   if (font.GetFaceName() == wxT("Monaco"))
-  {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
+    return cache(false);
 
-  if(!m_useUnicodeMaths)
-  {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
+  if (!m_useUnicodeMaths)
+    return cache(false);
   
+  struct Params {
+    wxUniChar ch;
+    wxSize size;
+    wxImage image;
+    Params(wxUniChar ch) : ch(ch) {}
+  };
+  std::vector<Params> P(chars.begin(), chars.end());
+
   // Letters with width or height = 0 don't exist in the current font
-  wxCoord width1,height1,descent1;
   GetDC()->SetFont(font);
-  GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
-  if((width1 < 1) || (height1-descent1 < 1))
+  for (auto &p : P)
   {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
-  wxCoord width2,height2,descent2;
-  GetDC()->GetTextExtent(char2,&width2,&height2,&descent2);
-  if((width2 < 1) || (height2-descent2 < 1))
-  {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
-  wxCoord width3,height3,descent3;
-  GetDC()->GetTextExtent(char3,&width3,&height3,&descent3);
-  if((width3 < 1) || (height3-descent3 < 1))
-  {
-    m_charsInFontMap[name] = false;
-    return false;
+    wxCoord descent;
+    GetDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
+    if ((p.size.x < 1) || ((p.size.y-descent) < 1))
+      return cache(false);
   }
 
-  if(((width1 != width2) &&
-      (width1 != width3) &&
-      (width2 != width3))||
-     ((height1 != height2) &&
-      (height1 != height3) &&
-      (height2 != height3)))
-  {
-    m_charsInFontMap[name] = true;
-    return true;
-  }
-  
-  wxBitmap bmp1(width1,height1);
-  wxMemoryDC dc1(bmp1);
-  dc1.SetFont(font);
-  dc1.SelectObject(bmp1);
-  dc1.Clear();
-  dc1.DrawText(char1,wxPoint(0,0));
-  
-  wxBitmap bmp2(width2,height2);
-  wxMemoryDC dc2(bmp2);
-  dc2.SetFont(font);
-  dc2.SelectObject(bmp2);
-  dc2.Clear();
-  dc2.DrawText(char2,wxPoint(0,0));
-  
-  wxBitmap bmp3(width3,height3);
-  wxMemoryDC dc3(bmp3);
-  dc3.SetFont(font);
-  dc3.SelectObject(bmp3);
-  dc3.Clear();
-  dc3.DrawText(char3,wxPoint(0,0));
+  bool allDifferentSizes = true;
+  for (auto i = P.begin(); allDifferentSizes && i != P.end(); ++i)
+    for (auto j = i+1; allDifferentSizes && j != P.end(); ++j)
+      allDifferentSizes &= i->size != j->size;
 
-  if(IsEqual(bmp1,bmp2) || IsEqual(bmp2,bmp3) || IsEqual(bmp1,bmp3))
+  if (allDifferentSizes)
+    return cache(true);
+
+  for (auto &p : P)
   {
-    m_charsInFontMap[name] = false;
-    return false;
+    wxBitmap bmp(p.size);
+    wxMemoryDC dc(bmp);
+    dc.SetFont(font);
+    dc.Clear();
+    dc.DrawText(p.ch, wxPoint(0,0));
+    p.image = bmp.ConvertToImage();
   }
-  else
-  {
-    m_charsInFontMap[name] = false;
-    return true;
-  }
+
+  for (auto i = P.begin(); i != P.end(); ++i)
+    for (auto j = i+1; j != P.end(); ++j)
+      if (i->image == j->image)
+        return cache(false);
+
+  return cache(true);
 }
 
 wxString Configuration::GetFontName(long type) const
