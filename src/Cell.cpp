@@ -527,12 +527,6 @@ bool Cell::DrawThisCell(wxPoint point)
   return(InUpdateRegion());
 }
 
-/*! Get the rectangle around this cell
-
-  \param all
-   - true  return the rectangle around the whole line.
-   - false return the rectangle around this cell.
- */
 wxRect Cell::GetRect(bool wholeList)
 {
   if (wholeList)

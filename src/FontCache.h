@@ -49,8 +49,7 @@ struct equal_to<wxFontInfo> {
 
 } // namespace std
 
-/*! \namespace
- * Provides extension methods for the wxFontInfo class.
+/*! Provides extension methods for the wxFontInfo class.
  */
 namespace FontInfo
 {
