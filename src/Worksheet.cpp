@@ -5423,8 +5423,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
     // Tell users that have disabled JavaScript why they don't get 2d maths.
     output << wxT("<noscript>");
     output << wxT("<div class=\"error message\">");
-    output
-            << wxT("<p>Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</p>");
+    output << wxT("<p>Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</p>");
     output << wxT("</div>");
     output << wxT("</noscript>");
 
@@ -5626,9 +5625,9 @@ bool Worksheet::ExportToHTML(const wxString &file)
         case GC_TYPE_TEXT:
           output << wxT("\n\n<!-- Text cell -->\n\n\n");
           output << wxT("<div class=\"comment\">\n");
-          output << wxT("<p>\n");
+          // A text cell can include block-level HTML elements, e.g. <ul> ... </ul> (converted from Markdown)
+          // Therefore do not output <p> ... </p> elements, that would result in invalid HTML.
           output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())) + "\n";
-          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_SECTION:
