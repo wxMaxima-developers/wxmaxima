@@ -121,17 +121,21 @@ private:
    */
   wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);
 
-  /*! Convert XML to a group tree
+  /*! \defgroup GroupCellParsing Methods that generate GroupCells from XML
+    @{
+  */
 
-    This function is responsible for creating
-    a tree of groupcells when loading XML document.
+  /*! Convert XML to a tree of group cells
+
+    This function is responsible for creating a tree of groupcells when loading XML document.
+
     \attention Any changes in GroupCell structure or methods
-    has to be reflected here in order to ensure proper
-    loading of WXMX files.
+    has to be reflected here in order to ensure proper loading of WXMX files.
   */
   Cell *ParseCellTag(wxXmlNode *node);
   //! Convert a code cell tag to a GroupCell
   GroupCell *GroupCellFromCodeTag(wxXmlNode *node);
+  //! Convert a image tag to a GroupCell
   GroupCell *GroupCellFromImageTag(wxXmlNode *node);
   GroupCell *GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node))
     {
@@ -162,7 +166,8 @@ private:
     {
       return new GroupCell(m_configuration, GC_TYPE_TEXT, m_cellPointers);
     }
-
+  /* @} */
+  
   Cell *ParseEditorTag(wxXmlNode *node);
 
   Cell *ParseFracTag(wxXmlNode *node);
