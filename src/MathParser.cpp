@@ -48,7 +48,12 @@
 #include "ImgCell.h"
 #include "SubSupCell.h"
 #include "SlideShowCell.h"
-#include "GroupCell.h"
+
+/*! Calls a member function from a function pointer
+
+  \todo Replace this by a C++17 construct when we switch to C++17
+ */
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))         
 
 wxXmlNode *MathParser::SkipWhitespaceNode(wxXmlNode *node)
 {
@@ -80,49 +85,62 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
   m_cellPointers = cellPointers;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;
-  if(m_knownTags.empty())
+  if(m_innerTags.empty())
   {
-    m_knownTags.push_back(TagFunction(wxT("v"), &MathParser::ParseVariableNameTag));
-    m_knownTags.push_back(TagFunction(wxT("mi"), &MathParser::ParseVariableNameTag));
-    m_knownTags.push_back(TagFunction(wxT("mo"), &MathParser::ParseOperatorNameTag));
-    m_knownTags.push_back(TagFunction(wxT("t"), &MathParser::ParseMiscTextTag));
-    m_knownTags.push_back(TagFunction(wxT("n"), &MathParser::ParseNumberTag));
-    m_knownTags.push_back(TagFunction(wxT("mn"), &MathParser::ParseNumberTag));
-    m_knownTags.push_back(TagFunction(wxT("p"), &MathParser::ParseParenTag));
-    m_knownTags.push_back(TagFunction(wxT("f"), &MathParser::ParseFracTag));
-    m_knownTags.push_back(TagFunction(wxT("mfrac"), &MathParser::ParseFracTag));
-    m_knownTags.push_back(TagFunction(wxT("e"), &MathParser::ParseSupTag));
-    m_knownTags.push_back(TagFunction(wxT("msup"), &MathParser::ParseSupTag));
-    m_knownTags.push_back(TagFunction(wxT("i"), &MathParser::ParseSubTag));
-    m_knownTags.push_back(TagFunction(wxT("munder"), &MathParser::ParseSubTag));
-    m_knownTags.push_back(TagFunction(wxT("fn"), &MathParser::ParseFunTag));
-    m_knownTags.push_back(TagFunction(wxT("g"), &MathParser::ParseGreekTag));
-    m_knownTags.push_back(TagFunction(wxT("s"), &MathParser::ParseSpecialConstantTag));
-    m_knownTags.push_back(TagFunction(wxT("fnm"), &MathParser::ParseFunctionNameTag));
-    m_knownTags.push_back(TagFunction(wxT("q"), &MathParser::ParseSqrtTag));
-    m_knownTags.push_back(TagFunction(wxT("d"), &MathParser::ParseDiffTag));
-    m_knownTags.push_back(TagFunction(wxT("sm"), &MathParser::ParseSumTag));
-    m_knownTags.push_back(TagFunction(wxT("in"), &MathParser::ParseIntTag));
-    m_knownTags.push_back(TagFunction(wxT("mspace"), &MathParser::ParseSpaceTag));
-    m_knownTags.push_back(TagFunction(wxT("at"), &MathParser::ParseAtTag));
-    m_knownTags.push_back(TagFunction(wxT("t"), &MathParser::ParseAbsTag));
-    m_knownTags.push_back(TagFunction(wxT("cj"), &MathParser::ParseConjugateTag));
-    m_knownTags.push_back(TagFunction(wxT("ie"), &MathParser::ParseSubSupTag));
-    m_knownTags.push_back(TagFunction(wxT("mmultiscripts"), &MathParser::ParseMmultiscriptsTag));
-    m_knownTags.push_back(TagFunction(wxT("lm"), &MathParser::ParseLimitTag));
-    m_knownTags.push_back(TagFunction(wxT("r"), &MathParser::ParseTagContents));
-    m_knownTags.push_back(TagFunction(wxT("mrow"), &MathParser::ParseTagContents));
-    m_knownTags.push_back(TagFunction(wxT("tb"), &MathParser::ParseTableTag));
-    m_knownTags.push_back(TagFunction(wxT("mth"), &MathParser::ParseMthTag));
-    m_knownTags.push_back(TagFunction(wxT("line"), &MathParser::ParseMthTag));
-    m_knownTags.push_back(TagFunction(wxT("lbl"), &MathParser::ParseOutputLabelTag));
-    m_knownTags.push_back(TagFunction(wxT("st"), &MathParser::ParseStringTag));
-    m_knownTags.push_back(TagFunction(wxT("hl"), &MathParser::ParseHighlightTag));
-    m_knownTags.push_back(TagFunction(wxT("img"), &MathParser::ParseImageTag));
-    m_knownTags.push_back(TagFunction(wxT("slide"), &MathParser::ParseSlideshowTag));
-    m_knownTags.push_back(TagFunction(wxT("editor"), &MathParser::ParseEditorTag));
-    m_knownTags.push_back(TagFunction(wxT("cell"), &MathParser::ParseCellTag));
-    m_knownTags.push_back(TagFunction(wxT("ascii"), &MathParser::ParseCharCode));
+    m_innerTags.push_back(TagFunction(wxT("v"), &MathParser::ParseVariableNameTag));
+    m_innerTags.push_back(TagFunction(wxT("mi"), &MathParser::ParseVariableNameTag));
+    m_innerTags.push_back(TagFunction(wxT("mo"), &MathParser::ParseOperatorNameTag));
+    m_innerTags.push_back(TagFunction(wxT("t"), &MathParser::ParseMiscTextTag));
+    m_innerTags.push_back(TagFunction(wxT("n"), &MathParser::ParseNumberTag));
+    m_innerTags.push_back(TagFunction(wxT("mn"), &MathParser::ParseNumberTag));
+    m_innerTags.push_back(TagFunction(wxT("p"), &MathParser::ParseParenTag));
+    m_innerTags.push_back(TagFunction(wxT("f"), &MathParser::ParseFracTag));
+    m_innerTags.push_back(TagFunction(wxT("mfrac"), &MathParser::ParseFracTag));
+    m_innerTags.push_back(TagFunction(wxT("e"), &MathParser::ParseSupTag));
+    m_innerTags.push_back(TagFunction(wxT("msup"), &MathParser::ParseSupTag));
+    m_innerTags.push_back(TagFunction(wxT("i"), &MathParser::ParseSubTag));
+    m_innerTags.push_back(TagFunction(wxT("munder"), &MathParser::ParseSubTag));
+    m_innerTags.push_back(TagFunction(wxT("fn"), &MathParser::ParseFunTag));
+    m_innerTags.push_back(TagFunction(wxT("g"), &MathParser::ParseGreekTag));
+    m_innerTags.push_back(TagFunction(wxT("s"), &MathParser::ParseSpecialConstantTag));
+    m_innerTags.push_back(TagFunction(wxT("fnm"), &MathParser::ParseFunctionNameTag));
+    m_innerTags.push_back(TagFunction(wxT("q"), &MathParser::ParseSqrtTag));
+    m_innerTags.push_back(TagFunction(wxT("d"), &MathParser::ParseDiffTag));
+    m_innerTags.push_back(TagFunction(wxT("sm"), &MathParser::ParseSumTag));
+    m_innerTags.push_back(TagFunction(wxT("in"), &MathParser::ParseIntTag));
+    m_innerTags.push_back(TagFunction(wxT("mspace"), &MathParser::ParseSpaceTag));
+    m_innerTags.push_back(TagFunction(wxT("at"), &MathParser::ParseAtTag));
+    m_innerTags.push_back(TagFunction(wxT("t"), &MathParser::ParseAbsTag));
+    m_innerTags.push_back(TagFunction(wxT("cj"), &MathParser::ParseConjugateTag));
+    m_innerTags.push_back(TagFunction(wxT("ie"), &MathParser::ParseSubSupTag));
+    m_innerTags.push_back(TagFunction(wxT("mmultiscripts"), &MathParser::ParseMmultiscriptsTag));
+    m_innerTags.push_back(TagFunction(wxT("lm"), &MathParser::ParseLimitTag));
+    m_innerTags.push_back(TagFunction(wxT("r"), &MathParser::ParseTagContents));
+    m_innerTags.push_back(TagFunction(wxT("mrow"), &MathParser::ParseTagContents));
+    m_innerTags.push_back(TagFunction(wxT("tb"), &MathParser::ParseTableTag));
+    m_innerTags.push_back(TagFunction(wxT("mth"), &MathParser::ParseMthTag));
+    m_innerTags.push_back(TagFunction(wxT("line"), &MathParser::ParseMthTag));
+    m_innerTags.push_back(TagFunction(wxT("lbl"), &MathParser::ParseOutputLabelTag));
+    m_innerTags.push_back(TagFunction(wxT("st"), &MathParser::ParseStringTag));
+    m_innerTags.push_back(TagFunction(wxT("hl"), &MathParser::ParseHighlightTag));
+    m_innerTags.push_back(TagFunction(wxT("img"), &MathParser::ParseImageTag));
+    m_innerTags.push_back(TagFunction(wxT("slide"), &MathParser::ParseSlideshowTag));
+    m_innerTags.push_back(TagFunction(wxT("editor"), &MathParser::ParseEditorTag));
+    m_innerTags.push_back(TagFunction(wxT("cell"), &MathParser::ParseCellTag));
+    m_innerTags.push_back(TagFunction(wxT("ascii"), &MathParser::ParseCharCode));
+  }
+  if(m_groupTags.empty())
+  {
+    m_groupTags.push_back(GroupCellTagFunction(wxT("code"), &MathParser::GroupCellFromCodeTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("image"), &MathParser::GroupCellFromImageTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("pagebreak"), &MathParser::GroupCellFromPagebreakTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("text"), &MathParser::GroupCellFromTextTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("title"), &MathParser::GroupCellFromTitleTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("section"), &MathParser::GroupCellFromSectionTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("subsection"), &MathParser::GroupCellFromSubsectionTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("subsubsection"), &MathParser::GroupCellFromSubsubsectionTag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("heading5"), &MathParser::GroupCellHeading5Tag));
+    m_groupTags.push_back(GroupCellTagFunction(wxT("heading6"), &MathParser::GroupCellHeading6Tag));
   }
   m_highlight = false;
   if (zipfile.Length() > 0)
@@ -328,6 +346,7 @@ Cell *MathParser::ParseMthTag(wxXmlNode *node)
     retval = new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));
   return retval;
 }
+
 // ParseCellTag
 // This function is responsible for creating
 // a tree of groupcells when loading XML document.
@@ -342,163 +361,125 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
   bool hide = (node->GetAttribute(wxT("hide"), wxT("false")) == wxT("true")) ? true : false;
   // read (group)cell type
   wxString type = node->GetAttribute(wxT("type"), wxT("text"));
-  wxString sectioning_level = node->GetAttribute(wxT("sectioning_level"), wxT("0"));
 
-  if (type == wxT("code"))
+  std::vector<GroupCellTagFunction>::const_iterator it;
+  for (it = m_groupTags.begin(); it != m_groupTags.end(); ++it)
   {
-    group = new GroupCell(m_configuration, GC_TYPE_CODE, m_cellPointers);
-    wxString isAutoAnswer = node->GetAttribute(wxT("auto_answer"), wxT("no"));
-    if(isAutoAnswer == wxT("yes"))
-      group->AutoAnswer(true);
-    int i = 1;
-    wxString answer;
-    wxString question;
-    while (node->GetAttribute(wxString::Format(wxT("answer%i"),i),&answer))
+    if(type == it->m_tag)
     {
-      if(node->GetAttribute(wxString::Format(wxT("question%i"),i),&question))
-        group->SetAnswer(question,answer);
-      else
-        group->SetAnswer(wxString::Format(wxT("Question #%i"),i),answer);
-      i++;
+      group =  CALL_MEMBER_FN(*this,it->m_function)(node);
+      break;
     }
-    wxXmlNode *children = node->GetChildren();
-    children = SkipWhitespaceNode(children);
-    while (children)
+  }
+  
+  if(group == NULL) return group;
+  
+  wxXmlNode *children = node->GetChildren();
+  children = SkipWhitespaceNode(children);
+  while (children)
+  {
+    if (children->GetName() == wxT("editor"))
     {
-      if (children->GetName() == wxT("input"))
+      std::unique_ptr<Cell> ed(ParseEditorTag(children));
+      if(ed)
+        group->SetEditableContent(ed->GetValue());
+    }
+    else if (children->GetName() == wxT("fold"))
+    { // This GroupCell contains folded groupcells
+      wxXmlNode *xmlcells = children->GetChildren();
+      xmlcells = SkipWhitespaceNode(xmlcells);
+      Cell *tree = NULL;
+      Cell *last = NULL;
+      while (xmlcells)
       {
-        std::unique_ptr<Cell> editor(ParseTag(children->GetChildren()));
-        if (editor == NULL)
-          editor = std::unique_ptr<Cell>(
-            new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
-        if(editor)
-          group->SetEditableContent(editor->GetValue());
+        Cell *cell = ParseTag(xmlcells, false);
+        
+        if (cell == NULL)
+          continue;
+        
+        if (tree == NULL) tree = cell;
+        
+        if (last == NULL) last = cell;
+        else
+        {
+          last->m_next = cell;
+          last->SetNextToDraw(cell);
+          last->m_next->m_previous = last;
+          
+          last = last->m_next;
+        }
+        xmlcells = GetNextTag(xmlcells);
       }
-      if (children->GetName() == wxT("output"))
-      {
-        group->AppendOutput(HandleNullPointer(ParseTag(children->GetChildren())));
-      }
-      children = GetNextTag(children);
+      if (tree)
+        group->HideTree(dynamic_cast<GroupCell *>(tree));
     }
-  }
-  else if (type == wxT("image"))
-  {
-    group = new GroupCell(m_configuration, GC_TYPE_IMAGE, m_cellPointers);
-    wxXmlNode *children = node->GetChildren();
-    children = SkipWhitespaceNode(children);
-    while (children)
+    else if (children->GetName() == wxT("input"))
     {
-      if (children->GetName() == wxT("editor"))
-      {
-        std::unique_ptr<Cell> ed( ParseEditorTag(children));
-        if(ed)
-          group->SetEditableContent(ed->GetValue());
-      }
-      else
-        group->AppendOutput(ParseTag(children));
-      children = GetNextTag(children);
-    }
-  }
-  else if (type == wxT("pagebreak"))
-  {
-    group = new GroupCell(m_configuration, GC_TYPE_PAGEBREAK, m_cellPointers);
-  }
-  else if (type == wxT("text"))
-  {
-    group = new GroupCell(m_configuration, GC_TYPE_TEXT, m_cellPointers);
-    std::unique_ptr<Cell> editor(ParseTag(node->GetChildren()));
-    if (editor == NULL)
-      editor = std::unique_ptr<Cell>(
-        new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
-    if(editor)
-      group->SetEditableContent(editor->GetValue());
-  }
-  else
-  {
-    // text types
-    if (type == wxT("title"))
-      group = new GroupCell(m_configuration, GC_TYPE_TITLE, m_cellPointers);
-    else if (type == wxT("section"))
-      group = new GroupCell(m_configuration, GC_TYPE_SECTION, m_cellPointers);
-    else if (type == wxT("subsection"))
-    {
-      group = NULL;
-      // We save subsubsections as subsections with a higher sectioning level:
-      // This makes them backwards-compatible in the way that they are displayed
-      // as subsections on old wxMaxima installations.
-      // A sectioning level of the value 0 means that the file is too old to
-      // provide a sectioning level.
-      if ((sectioning_level == wxT("0")) || (sectioning_level == wxT("3")))
-        group = new GroupCell(m_configuration, GC_TYPE_SUBSECTION, m_cellPointers);
-      if (sectioning_level == wxT("4"))
-        group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION, m_cellPointers);
-      if (sectioning_level == wxT("5"))
-        group = new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
-      if (group == NULL)
-        group = new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
-    }
-    else if (type == wxT("subsubsection"))
-    {
-      group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION, m_cellPointers);
-    }
-    else if (type == wxT("heading5"))
-    {
-      group = new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
-    }
-    else if (type == wxT("heading6"))
-    {
-      group = new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
+      std::unique_ptr<Cell> editor(ParseTag(children->GetChildren()));
+      if (editor == NULL)
+        editor = std::unique_ptr<Cell>(
+          new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents")));
+      if(editor)
+        group->SetEditableContent(editor->GetValue());
     }
     else
-      return NULL;
-
-    wxXmlNode *children = node->GetChildren();
-    children = SkipWhitespaceNode(children);
-    while (children)
     {
-      if (children->GetName() == wxT("editor"))
-      {
-        std::unique_ptr<Cell> ed(ParseEditorTag(children));
-        if(ed)
-          group->SetEditableContent(ed->GetValue());
-      }
-      else if (children->GetName() == wxT("fold"))
-      { // we have folded groupcells
-        wxXmlNode *xmlcells = children->GetChildren();
-        xmlcells = SkipWhitespaceNode(xmlcells);
-        Cell *tree = NULL;
-        Cell *last = NULL;
-        while (xmlcells)
-        {
-          Cell *cell = ParseTag(xmlcells, false);
-
-          if (cell == NULL)
-            continue;
-
-          if (tree == NULL) tree = cell;
-
-          if (last == NULL) last = cell;
-          else
-          {
-            last->m_next = cell;
-            last->SetNextToDraw(cell);
-            last->m_next->m_previous = last;
-
-            last = last->m_next;
-          }
-          xmlcells = GetNextTag(xmlcells);
-        }
-        if (tree)
-          group->HideTree(dynamic_cast<GroupCell *>(tree));
-      }
-      children = GetNextTag(children);
+      group->AppendOutput(HandleNullPointer(ParseTag(children)));
     }
+
+    children = GetNextTag(children);
   }
 
   group->SetGroup(group);
   group->Hide(hide);
   return group;
 }
+
+GroupCell *MathParser::GroupCellFromSubsectionTag(wxXmlNode *node)
+{
+  wxString sectioning_level = node->GetAttribute(wxT("sectioning_level"), wxT("0"));
+  GroupCell *group = NULL;
+  // We save subsubsections as subsections with a higher sectioning level:
+  // This makes them backwards-compatible in the way that they are displayed
+  // as subsections on old wxMaxima installations.
+  // A sectioning level of the value 0 means that the file is too old to
+  // provide a sectioning level.
+  if ((sectioning_level == wxT("0")) || (sectioning_level == wxT("3")))
+    group = new GroupCell(m_configuration, GC_TYPE_SUBSECTION, m_cellPointers);
+  if (sectioning_level == wxT("4"))
+    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION, m_cellPointers);
+  if (sectioning_level == wxT("5"))
+    group = new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
+  if (group == NULL)
+    group = new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
+  return group;
+}
+
+GroupCell *MathParser::GroupCellFromImageTag(wxXmlNode *node)
+{
+  return new GroupCell(m_configuration, GC_TYPE_IMAGE, m_cellPointers);
+}
+
+GroupCell *MathParser::GroupCellFromCodeTag(wxXmlNode *node)
+{
+  GroupCell *group = new GroupCell(m_configuration, GC_TYPE_CODE, m_cellPointers);
+  wxString isAutoAnswer = node->GetAttribute(wxT("auto_answer"), wxT("no"));
+  if(isAutoAnswer == wxT("yes"))
+    group->AutoAnswer(true);
+  int i = 1;
+  wxString answer;
+  wxString question;
+  while (node->GetAttribute(wxString::Format(wxT("answer%i"),i),&answer))
+  {
+    if(node->GetAttribute(wxString::Format(wxT("question%i"),i),&question))
+      group->SetAnswer(question,answer);
+    else
+      group->SetAnswer(wxString::Format(wxT("Question #%i"),i),answer);
+    i++;
+  }
+  return group;
+}
+
 
 Cell *MathParser::HandleNullPointer(Cell *cell)
 {
@@ -1022,16 +1003,15 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
 
       Cell *tmp = NULL;
       std::vector<TagFunction>::const_iterator it;
-      for (it = m_knownTags.begin(); it != m_knownTags.end(); ++it)
+      for (it = m_innerTags.begin(); it != m_innerTags.end(); ++it)
       {
         if(tagName == it->m_tag)
         {
-          #define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))         
           tmp =  CALL_MEMBER_FN(*this,it->m_function)(node);
           break;
         }
       }
-      if ((tmp == NULL) && (it == m_knownTags.end()) && (node->GetChildren()))
+      if ((tmp == NULL) && (it == m_innerTags.end()) && (node->GetChildren()))
         tmp = ParseTag(node->GetChildren());
 
       // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
@@ -1147,4 +1127,6 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
 }
 
 wxRegEx MathParser::m_graphRegex(wxT("[[:cntrl:]]"));
-std::vector<MathParser::TagFunction> MathParser::m_knownTags;
+std::vector<MathParser::TagFunction> MathParser::m_innerTags;
+std::vector<MathParser::GroupCellTagFunction> MathParser::m_groupTags;
+
