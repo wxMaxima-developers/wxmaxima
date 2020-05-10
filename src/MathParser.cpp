@@ -362,12 +362,11 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
   // read (group)cell type
   wxString type = node->GetAttribute(wxT("type"), wxT("text"));
 
-  std::vector<GroupCellTagFunction>::const_iterator it;
-  for (it = m_groupTags.begin(); it != m_groupTags.end(); ++it)
+  for (auto it : m_groupTags)
   {
-    if(type == it->m_tag)
+    if(type == it.m_tag)
     {
-      group =  CALL_MEMBER_FN(*this,it->m_function)(node);
+      group =  CALL_MEMBER_FN(*this,it.m_function)(node);
       break;
     }
   }
@@ -1002,16 +1001,15 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       wxString tagName(node->GetName());
 
       Cell *tmp = NULL;
-      std::vector<TagFunction>::const_iterator it;
-      for (it = m_innerTags.begin(); it != m_innerTags.end(); ++it)
+      for (auto it : m_innerTags)
       {
-        if(tagName == it->m_tag)
+        if(tagName == it.m_tag)
         {
-          tmp =  CALL_MEMBER_FN(*this,it->m_function)(node);
+          tmp =  CALL_MEMBER_FN(*this,it.m_function)(node);
           break;
         }
       }
-      if ((tmp == NULL) && (it == m_innerTags.end()) && (node->GetChildren()))
+      if ((tmp == NULL) && (node->GetChildren()))
         tmp = ParseTag(node->GetChildren());
 
       // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
