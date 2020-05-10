@@ -1549,11 +1549,17 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   // Input cells
   if (configuration->ShowCodeCells())
   {
+    // For LaTeX export we must use a dot as decimal separator
+    // Save LC_NUMERIC, set it to "C", print out the float and then restore it.
+    char* saved_lc_numeric = strdup(setlocale(LC_NUMERIC, NULL)); // get current LC_NUMERIC locale
+    setlocale(LC_NUMERIC, "C");
     str += wxString::Format(
-      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%eem}\\color{red}\\bfseries\n",
+      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
       (double)configuration->GetLabelWidth()/14
       ) + m_inputLabel->ToTeX() +
       wxString("\n\\end{minipage}");
+    setlocale(LC_NUMERIC, saved_lc_numeric);
+    free(saved_lc_numeric);
     if (m_inputLabel->m_next != NULL)
     {
 
