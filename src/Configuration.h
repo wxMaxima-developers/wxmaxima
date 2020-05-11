@@ -135,6 +135,7 @@ public:
     m_dc = &dc;
     m_antialiassingDC = NULL;
   }
+  void UnsetContext() {m_dc = NULL;}
 
   void SetBackgroundBrush(wxBrush brush);
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}

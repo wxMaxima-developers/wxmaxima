@@ -20,29 +20,21 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#include "Cell.h"
 #ifndef EMFOUT_H
 #define EMFOUT_H
 
+#include "OutCommon.h"
+
 #if wxUSE_ENH_METAFILE
 #include <wx/msw/enhmeta.h>
-/* Renders portions of the work sheet (including 2D maths) as extended Metafile.
+#include <memory>
 
-   Let's hope it provides as useful.
- */
-class Emfout
+//! Renders portions of the work sheet (including 2D maths) as extended Metafile.
+class Emfout final
 {
 public:
-  /*! The constructor.
-  */
-  explicit Emfout(Configuration **configuration, wxString filename = wxEmptyString);
-  //! This class doesn't have a copy constructor
-  Emfout(const Emfout&) = delete;
-  //! This class doesn't have a = operator
-  Emfout& operator=(const Emfout&) = delete;
+  explicit Emfout(Configuration **configuration, const wxString &filename = {});
   ~Emfout();
-
-  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
 
   /*! Renders tree as emf
 
@@ -54,78 +46,17 @@ public:
   //! Copies the emf representation of the list of cells that was passed to SetData()
   bool ToClipboard();
 
-protected:
-  void DestroyTree();
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  void RecalculateWidths();
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  void BreakLines();
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  void RecalculateHeight();
-
-  void GetMaxPoint(int *width, int *height);
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  void BreakUpCells();
-
-  bool Layout();
-
-  void Draw();
-
-  Cell *m_tree;
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  double GetRealHeight();
-
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  double GetRealWidth();
-
-
-  /*! An object that can be filled with EMF data for the clipboard
-   */
-  class EMFDataObject : public wxCustomDataObject
-  {
-  public:
-    explicit EMFDataObject(wxMemoryBuffer data);
-
-    EMFDataObject();
-
-  private:
-    //! A class that publishes MathML data to the clipboard
-    wxCharBuffer m_databuf;
-  };
+  //! Returns the emf representation in a format that can be placed on the clipBoard.
+  wxCustomDataObject *GetDataObject();
 
 private:
-  //! The name of a temp file we create while calculating the emf size.
-  wxString m_tempFileName;
+  std::unique_ptr<Cell> m_tree;
+  OutCommon m_cmn;
   //! The draw context we draw to during recalculation.
-  wxEnhMetaFileDC *m_recalculationDc;
-  //! The draw context we draw to.
-  wxEnhMetaFileDC *m_dc;
-  static wxDataFormat m_emfFormat;
-  wxString m_filename;
-  Configuration **m_configuration, *m_oldconfig;
-  //! How many times the natural resolution do we want this emfout to be?
-  double m_scale;
-  //! The width of the current emfout;
-  int m_width;
-  //! The height of the current emfout;
-  int m_height;
-  //! The resolution of the emfout.
-  wxSize m_ppi;
+  wxEnhMetaFileDC m_recalculationDc;
 
-public:
-  //! Returns the emf representation in a format that can be placed on the clipBoard.
-  EMFDataObject *GetDataObject();
+  bool Layout();
 };
+
 #endif // wxUSE_ENH_METAFILE
 #endif // EMFOUT_H

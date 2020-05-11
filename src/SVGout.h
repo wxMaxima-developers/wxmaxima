@@ -23,21 +23,21 @@
 #ifndef SVGOUT_H
 #define SVGOUT_H
 
-#include "Cell.h"
-
+#include "OutCommon.h"
 #include <wx/dcsvg.h>
+#include <memory>
+
 /* Renders portions of the work sheet (including 2D maths) as svg.
 
    This is used for exporting HTML with embedded maths as a scalable vector
    graphics and for them on the clipboard
  */
-class Svgout
+class Svgout final
 {
 public:
   /*! The constructor.
   */
-  explicit Svgout(Configuration **configuration, wxString filename = wxEmptyString, double scale = 1.0);
-
+  explicit Svgout(Configuration **configuration, const wxString &filename = {}, double scale = 1.0);
   ~Svgout();
   
   /*! Renders tree as svg
@@ -50,72 +50,13 @@ public:
   //! Copies the svg representation of the list of cells that was passed to SetData()
   bool ToClipboard();
 
-protected:
-  void DestroyTree();
-
-  // cppcheck-suppress functionConst
-  void RecalculateWidths();
-
-  // cppcheck-suppress functionConst
-  void BreakLines();
-
-  // cppcheck-suppress functionConst
-  void RecalculateHeight();
-
-  void GetMaxPoint(int *width, int *height);
-
-  // cppcheck-suppress functionConst
-  void BreakUpCells();
-
-  bool Layout();
-
-  void Draw();
-
-  Cell *m_tree;
-
-  double GetRealHeight() const;
-
-  double GetRealWidth() const;
-
-  
-  /*! An object that can be filled with SVG data for the clipboard
-   */
-  class SVGDataObject : public wxCustomDataObject
-  {
-  public:
-    explicit SVGDataObject(wxMemoryBuffer data);
-
-    SVGDataObject();
-
-  private:
-    //! A class that publishes MathML data to the clipboard
-    wxCharBuffer m_databuf;
-  };
+  //! Returns the svg representation in a format that can be placed on the clipBoard.
+  wxCustomDataObject *GetDataObject();
 
 private:
-  //! This class doesn't have a copy constructor
-  Svgout(const Svgout&) = delete;
-  //! This class doesn't have a = operator
-  Svgout& operator=(const Svgout&) = delete;
-
-  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
-  //! The name of a temp file we create while calculating the svg size.
-  wxString m_tempFileName;
-  //! The draw context we draw to during recalculation.
-  wxSVGFileDC *m_recalculationDc;
-  //! The draw context we draw to.
-  wxSVGFileDC *m_dc;
-  static wxDataFormat m_svgFormat;
-  wxString m_filename;
-  Configuration **m_configuration, *m_oldconfig;
-  //! How many times the natural resolution do we want this svgout to be?
-  double m_scale;
-  //! The width of the current svgout;
-  int m_width;
-  //! The height of the current svgout;
-  int m_height;
-  //! The resolution of the svgout.
-  wxSize m_ppi;
+  std::unique_ptr<Cell> m_tree;
+  OutCommon m_cmn;
+  wxSVGFileDC m_recalculationDc;
 
   /*! The current working directory we were in when we started creating a svg file
 
@@ -124,9 +65,8 @@ private:
     directory.
    */
   wxString m_CWD;
-public:
-  //! Returns the svg representation in a format that can be placed on the clipBoard.
-  SVGDataObject *GetDataObject();
+
+  bool Layout();
 };
 
 #endif // SVGOUT_H
