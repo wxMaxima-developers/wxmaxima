@@ -3208,8 +3208,8 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
   if (event.ControlDown() && event.AltDown())
   {
     if (
-            (event.GetUnicodeKey() == wxT('{')) ||
-            (event.GetUnicodeKey() == wxT('}'))
+            (event.GetUnicodeKey() != wxT('{')) &&
+            (event.GetUnicodeKey() != wxT('}'))
             )
     {
       event.Skip();
@@ -3220,6 +3220,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
   if (m_autocompletePopup != NULL)
   {
     m_autocompletePopup->OnKeyDown(event);
+    event.Skip();
     return;
   }
 
@@ -4227,12 +4228,6 @@ void Worksheet::OnChar(wxKeyEvent &event)
          )
        )
     )
-  {
-    event.Skip();
-    return;
-  }
-
-  if(event.GetUnicodeKey() == WXK_NONE)
   {
     event.Skip();
     return;
