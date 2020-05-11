@@ -110,7 +110,7 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
     m_innerTags[wxT("in")] = &MathParser::ParseIntTag;
     m_innerTags[wxT("mspace")] = &MathParser::ParseSpaceTag;
     m_innerTags[wxT("at")] = &MathParser::ParseAtTag;
-    m_innerTags[wxT("t")] = &MathParser::ParseAbsTag;
+    m_innerTags[wxT("a")] = &MathParser::ParseAbsTag;
     m_innerTags[wxT("cj")] = &MathParser::ParseConjugateTag;
     m_innerTags[wxT("ie")] = &MathParser::ParseSubSupTag;
     m_innerTags[wxT("mmultiscripts")] = &MathParser::ParseMmultiscriptsTag;
