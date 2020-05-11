@@ -53,7 +53,7 @@
 
   \todo Replace this by a C++17 construct when we switch to C++17
  */
-#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))         
+#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))         
 
 wxXmlNode *MathParser::SkipWhitespaceNode(wxXmlNode *node)
 {
@@ -87,60 +87,60 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
   m_FracStyle = FracCell::FC_NORMAL;
   if(m_innerTags.empty())
   {
-    m_innerTags.push_back(TagFunction(wxT("v"), &MathParser::ParseVariableNameTag));
-    m_innerTags.push_back(TagFunction(wxT("mi"), &MathParser::ParseVariableNameTag));
-    m_innerTags.push_back(TagFunction(wxT("mo"), &MathParser::ParseOperatorNameTag));
-    m_innerTags.push_back(TagFunction(wxT("t"), &MathParser::ParseMiscTextTag));
-    m_innerTags.push_back(TagFunction(wxT("n"), &MathParser::ParseNumberTag));
-    m_innerTags.push_back(TagFunction(wxT("mn"), &MathParser::ParseNumberTag));
-    m_innerTags.push_back(TagFunction(wxT("p"), &MathParser::ParseParenTag));
-    m_innerTags.push_back(TagFunction(wxT("f"), &MathParser::ParseFracTag));
-    m_innerTags.push_back(TagFunction(wxT("mfrac"), &MathParser::ParseFracTag));
-    m_innerTags.push_back(TagFunction(wxT("e"), &MathParser::ParseSupTag));
-    m_innerTags.push_back(TagFunction(wxT("msup"), &MathParser::ParseSupTag));
-    m_innerTags.push_back(TagFunction(wxT("i"), &MathParser::ParseSubTag));
-    m_innerTags.push_back(TagFunction(wxT("munder"), &MathParser::ParseSubTag));
-    m_innerTags.push_back(TagFunction(wxT("fn"), &MathParser::ParseFunTag));
-    m_innerTags.push_back(TagFunction(wxT("g"), &MathParser::ParseGreekTag));
-    m_innerTags.push_back(TagFunction(wxT("s"), &MathParser::ParseSpecialConstantTag));
-    m_innerTags.push_back(TagFunction(wxT("fnm"), &MathParser::ParseFunctionNameTag));
-    m_innerTags.push_back(TagFunction(wxT("q"), &MathParser::ParseSqrtTag));
-    m_innerTags.push_back(TagFunction(wxT("d"), &MathParser::ParseDiffTag));
-    m_innerTags.push_back(TagFunction(wxT("sm"), &MathParser::ParseSumTag));
-    m_innerTags.push_back(TagFunction(wxT("in"), &MathParser::ParseIntTag));
-    m_innerTags.push_back(TagFunction(wxT("mspace"), &MathParser::ParseSpaceTag));
-    m_innerTags.push_back(TagFunction(wxT("at"), &MathParser::ParseAtTag));
-    m_innerTags.push_back(TagFunction(wxT("t"), &MathParser::ParseAbsTag));
-    m_innerTags.push_back(TagFunction(wxT("cj"), &MathParser::ParseConjugateTag));
-    m_innerTags.push_back(TagFunction(wxT("ie"), &MathParser::ParseSubSupTag));
-    m_innerTags.push_back(TagFunction(wxT("mmultiscripts"), &MathParser::ParseMmultiscriptsTag));
-    m_innerTags.push_back(TagFunction(wxT("lm"), &MathParser::ParseLimitTag));
-    m_innerTags.push_back(TagFunction(wxT("r"), &MathParser::ParseTagContents));
-    m_innerTags.push_back(TagFunction(wxT("mrow"), &MathParser::ParseTagContents));
-    m_innerTags.push_back(TagFunction(wxT("tb"), &MathParser::ParseTableTag));
-    m_innerTags.push_back(TagFunction(wxT("mth"), &MathParser::ParseMthTag));
-    m_innerTags.push_back(TagFunction(wxT("line"), &MathParser::ParseMthTag));
-    m_innerTags.push_back(TagFunction(wxT("lbl"), &MathParser::ParseOutputLabelTag));
-    m_innerTags.push_back(TagFunction(wxT("st"), &MathParser::ParseStringTag));
-    m_innerTags.push_back(TagFunction(wxT("hl"), &MathParser::ParseHighlightTag));
-    m_innerTags.push_back(TagFunction(wxT("img"), &MathParser::ParseImageTag));
-    m_innerTags.push_back(TagFunction(wxT("slide"), &MathParser::ParseSlideshowTag));
-    m_innerTags.push_back(TagFunction(wxT("editor"), &MathParser::ParseEditorTag));
-    m_innerTags.push_back(TagFunction(wxT("cell"), &MathParser::ParseCellTag));
-    m_innerTags.push_back(TagFunction(wxT("ascii"), &MathParser::ParseCharCode));
+    m_innerTags[wxT("v")] = &MathParser::ParseVariableNameTag;
+    m_innerTags[wxT("mi")] = &MathParser::ParseVariableNameTag;
+    m_innerTags[wxT("mo")] = &MathParser::ParseOperatorNameTag;
+    m_innerTags[wxT("t")] = &MathParser::ParseMiscTextTag;
+    m_innerTags[wxT("n")] = &MathParser::ParseNumberTag;
+    m_innerTags[wxT("mn")] = &MathParser::ParseNumberTag;
+    m_innerTags[wxT("p")] = &MathParser::ParseParenTag;
+    m_innerTags[wxT("f")] = &MathParser::ParseFracTag;
+    m_innerTags[wxT("mfrac")] = &MathParser::ParseFracTag;
+    m_innerTags[wxT("e")] = &MathParser::ParseSupTag;
+    m_innerTags[wxT("msup")] = &MathParser::ParseSupTag;
+    m_innerTags[wxT("i")] = &MathParser::ParseSubTag;
+    m_innerTags[wxT("munder")] = &MathParser::ParseSubTag;
+    m_innerTags[wxT("fn")] = &MathParser::ParseFunTag;
+    m_innerTags[wxT("g")] = &MathParser::ParseGreekTag;
+    m_innerTags[wxT("s")] = &MathParser::ParseSpecialConstantTag;
+    m_innerTags[wxT("fnm")] = &MathParser::ParseFunctionNameTag;
+    m_innerTags[wxT("q")] = &MathParser::ParseSqrtTag;
+    m_innerTags[wxT("d")] = &MathParser::ParseDiffTag;
+    m_innerTags[wxT("sm")] = &MathParser::ParseSumTag;
+    m_innerTags[wxT("in")] = &MathParser::ParseIntTag;
+    m_innerTags[wxT("mspace")] = &MathParser::ParseSpaceTag;
+    m_innerTags[wxT("at")] = &MathParser::ParseAtTag;
+    m_innerTags[wxT("t")] = &MathParser::ParseAbsTag;
+    m_innerTags[wxT("cj")] = &MathParser::ParseConjugateTag;
+    m_innerTags[wxT("ie")] = &MathParser::ParseSubSupTag;
+    m_innerTags[wxT("mmultiscripts")] = &MathParser::ParseMmultiscriptsTag;
+    m_innerTags[wxT("lm")] = &MathParser::ParseLimitTag;
+    m_innerTags[wxT("r")] = &MathParser::ParseTagContents;
+    m_innerTags[wxT("mrow")] = &MathParser::ParseTagContents;
+    m_innerTags[wxT("tb")] = &MathParser::ParseTableTag;
+    m_innerTags[wxT("mth")] = &MathParser::ParseMthTag;
+    m_innerTags[wxT("line")] = &MathParser::ParseMthTag;
+    m_innerTags[wxT("lbl")] = &MathParser::ParseOutputLabelTag;
+    m_innerTags[wxT("st")] = &MathParser::ParseStringTag;
+    m_innerTags[wxT("hl")] = &MathParser::ParseHighlightTag;
+    m_innerTags[wxT("img")] = &MathParser::ParseImageTag;
+    m_innerTags[wxT("slide")] = &MathParser::ParseSlideshowTag;
+    m_innerTags[wxT("editor")] = &MathParser::ParseEditorTag;
+    m_innerTags[wxT("cell")] = &MathParser::ParseCellTag;
+    m_innerTags[wxT("ascii")] = &MathParser::ParseCharCode;
   }
   if(m_groupTags.empty())
   {
-    m_groupTags.push_back(GroupCellTagFunction(wxT("code"), &MathParser::GroupCellFromCodeTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("image"), &MathParser::GroupCellFromImageTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("pagebreak"), &MathParser::GroupCellFromPagebreakTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("text"), &MathParser::GroupCellFromTextTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("title"), &MathParser::GroupCellFromTitleTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("section"), &MathParser::GroupCellFromSectionTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("subsection"), &MathParser::GroupCellFromSubsectionTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("subsubsection"), &MathParser::GroupCellFromSubsubsectionTag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("heading5"), &MathParser::GroupCellHeading5Tag));
-    m_groupTags.push_back(GroupCellTagFunction(wxT("heading6"), &MathParser::GroupCellHeading6Tag));
+    m_groupTags[wxT("code")] = &MathParser::GroupCellFromCodeTag;
+    m_groupTags[wxT("image")] = &MathParser::GroupCellFromImageTag;
+    m_groupTags[wxT("pagebreak")] = &MathParser::GroupCellFromPagebreakTag;
+    m_groupTags[wxT("text")] = &MathParser::GroupCellFromTextTag;
+    m_groupTags[wxT("title")] = &MathParser::GroupCellFromTitleTag;
+    m_groupTags[wxT("section")] = &MathParser::GroupCellFromSectionTag;
+    m_groupTags[wxT("subsection")] = &MathParser::GroupCellFromSubsectionTag;
+    m_groupTags[wxT("subsubsection")] = &MathParser::GroupCellFromSubsubsectionTag;
+    m_groupTags[wxT("heading5")] = &MathParser::GroupCellHeading5Tag;
+    m_groupTags[wxT("heading6")] = &MathParser::GroupCellHeading6Tag;
   }
   m_highlight = false;
   if (zipfile.Length() > 0)
@@ -362,16 +362,11 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
   // read (group)cell type
   wxString type = node->GetAttribute(wxT("type"), wxT("text"));
 
-  for (auto it : m_groupTags)
-  {
-    if(type == it.m_tag)
-    {
-      group =  CALL_MEMBER_FN(*this,it.m_function)(node);
-      break;
-    }
-  }
-  
-  if(group == NULL) return group;
+  GroupCell * (MathParser::* function)(wxXmlNode *node) = m_groupTags[type];
+  if (function != NULL)
+    group =  CALL_MEMBER_FN(*this,function)(node);
+  else  
+    return group;
   
   wxXmlNode *children = node->GetChildren();
   children = SkipWhitespaceNode(children);
@@ -1001,14 +996,11 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       wxString tagName(node->GetName());
 
       Cell *tmp = NULL;
-      for (auto it : m_innerTags)
-      {
-        if(tagName == it.m_tag)
-        {
-          tmp =  CALL_MEMBER_FN(*this,it.m_function)(node);
-          break;
-        }
-      }
+
+      Cell * (MathParser::* function)(wxXmlNode *node) = m_innerTags[tagName];
+      if (function != NULL)
+          tmp =  CALL_MEMBER_FN(*this, function)(node);
+
       if ((tmp == NULL) && (node->GetChildren()))
         tmp = ParseTag(node->GetChildren());
 
@@ -1125,6 +1117,6 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
 }
 
 wxRegEx MathParser::m_graphRegex(wxT("[[:cntrl:]]"));
-std::vector<MathParser::TagFunction> MathParser::m_innerTags;
-std::vector<MathParser::GroupCellTagFunction> MathParser::m_groupTags;
+MathParser::MathCellFunctionHash MathParser::m_innerTags;
+MathParser::GroupCellFunctionHash MathParser::m_groupTags;
 

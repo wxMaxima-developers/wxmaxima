@@ -33,6 +33,7 @@ The header file for the xml cell parser
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/regex.h>
+#include <wx/hashmap.h>
 #include "Cell.h"
 #include "TextCell.h"
 #include "EditorCell.h"
@@ -90,11 +91,18 @@ private:
     GroupCell * (MathParser::* m_function)(wxXmlNode *node);
   };
 
+  //! A pointer to a method that handles an XML tag for a type of Cell
+  typedef Cell *(MathParser::*MathCellFunc)(wxXmlNode *node);
+  WX_DECLARE_STRING_HASH_MAP(MathCellFunc, MathCellFunctionHash);
+  //! A pointer to a method that handles an XML tag for a type of GroupCell
+  typedef GroupCell *(MathParser::*GroupCellFunc)(wxXmlNode *node);
+  WX_DECLARE_STRING_HASH_MAP(GroupCellFunc, GroupCellFunctionHash);
+
   /*! Who you gonna call if you encounter any of these math cell tags?
    */
-  static std::vector<TagFunction> m_innerTags;
+  static MathCellFunctionHash m_innerTags;
   //! A list of functions to call on encountering all types of GroupCell tags
-  static std::vector<GroupCellTagFunction> m_groupTags;
+  static GroupCellFunctionHash m_groupTags;
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
   //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
