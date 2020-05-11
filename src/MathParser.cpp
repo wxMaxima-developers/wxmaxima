@@ -1056,10 +1056,6 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
   return retval;
 }
 
-/***
- * Parse the string s, which is (correct) xml fragment.
- * Put the result in line.
- */
 Cell *MathParser::ParseLine(wxString s, CellType style)
 {
   m_ParserStyle = style;

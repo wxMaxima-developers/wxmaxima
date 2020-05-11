@@ -61,8 +61,15 @@ public:
   ~MathParser();
 
   void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
+  /***
+   * Parse the string s, which is (correct) xml fragment.
+   * Put the result in line.
+   */
   Cell *ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
-
+  /***
+   * Parse the node and return the corresponding tag.
+   */
+  
   Cell *ParseTag(wxXmlNode *node, bool all = true);
   Cell *ParseTagContents(wxXmlNode *node);
 
