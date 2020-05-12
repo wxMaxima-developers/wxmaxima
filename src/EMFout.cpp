@@ -25,359 +25,59 @@
  */
 
 #include "EMFout.h"
-#include "ErrorRedirector.h"
-#include <wx/txtstrm.h>
-#include <wx/filename.h>
-#include <wx/wfstream.h>
-#include "Configuration.h"
-#include "GroupCell.h"
-#include <wx/config.h>
-#include <wx/log.h>
-#include <wx/clipbrd.h>
+#include "Cell.h"
 
 #if wxUSE_ENH_METAFILE
 
-Emfout::Emfout(Configuration **configuration, wxString filename)
+Emfout::Emfout(Configuration **configuration, const wxString &filename) :
+    m_cmn(configuration, filename, 500, 1.0),
+    m_recalculationDc(m_cmn.GetTempFilename(), 3000, 50000)
 {
-  m_width = m_height = -1;
-  m_scale = 1;
-  m_configuration = configuration;
-  m_oldconfig = *m_configuration;
-  m_tree = NULL;
-  m_emfFormat = wxDataFormat(wxT("image/x-emf"));
-
-  m_filename = filename;
-  if (m_filename == wxEmptyString)
-    m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-
-  m_dc = NULL;
-
-  wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
-  m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,3000,50000);
-  *m_configuration = new Configuration(m_recalculationDc);
-  (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->SetClientWidth(3000);
-  (*m_configuration)->SetZoomFactor_temporarily(1);
-  // The last time I tried it the vertical positioning of the elements
-  // of a big unicode parenthesis wasn't accurate enough in emf to be
-  // usable. Also the probability was high that the right font wasn't
-  // available in inkscape.
-  (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
-  (*m_configuration)->ClipToDrawRegion(false);
-  (*m_configuration)->RecalculationForce(true);
+  m_cmn.SetRecalculationContext(m_recalculationDc);
+  auto &config = m_cmn.GetConfiguration();
+  config.SetContext(m_recalculationDc);
+  config.SetClientWidth(3000);
+  config.RecalculationForce(true);
 }
 
 Emfout::~Emfout()
-{
-  wxDELETE(m_tree);
-  m_tree = NULL;
-  wxDELETE(*m_configuration);
-  wxDELETE(m_dc);
-  m_dc = NULL;
-  wxDELETE(m_recalculationDc);
-  m_recalculationDc = NULL;
-  if(wxFileExists(m_tempFileName))
-  {
-    // We don't want a braindead virus scanner that disallows us to delete our temp
-    // files to trigger asserts.
-    SuppressErrorDialogs messageBlocker;
-    
-    if(!wxRemoveFile(m_tempFileName))
-      wxLogMessage(_("Cannot remove the file %s"),m_tempFileName.utf8_str());
-  }
-  *m_configuration = m_oldconfig;
-  (*m_configuration)->FontChanged(true);
-  (*m_configuration)->RecalculationForce(true);
-  m_configuration = NULL;
-}
+{}
 
 wxSize Emfout::SetData(Cell *tree)
 {
-  wxDELETE(m_tree);
-  m_tree = tree;
-  if(m_tree != NULL)
-  {
-    m_tree = tree;
-    m_tree->ResetSize();
-    if(Layout())
-      return wxSize(m_width, m_height);
-    else
-      return wxSize(-1,-1);
-  }
-  else
-    return wxSize(-1,-1);
+  m_tree.reset(tree);
+  if (m_tree && Layout())
+      return m_cmn.GetSize();
+
+  return wxDefaultSize;
 }
 
 bool Emfout::Layout()
 {
-  if(m_recalculationDc == NULL)
+  if (!m_cmn.PrepareLayout(m_tree.get()))
     return false;
-  
-  (*m_configuration)->SetContext(*m_recalculationDc);
 
-  if (m_tree->GetType() != MC_TYPE_GROUP)
-  {
-    RecalculateWidths();
-    BreakUpCells();
-    BreakLines();
-    RecalculateHeight();
-  }
-  else
-  {
-    GroupCell *tmp = dynamic_cast<GroupCell *>(m_tree);
-    while (tmp != NULL)
-    {
-      tmp->Recalculate();
-      tmp = tmp->GetNext();
-    }
-  }
-
-  if(!m_recalculationDc->IsOk())
-  {
-    return false;
-  }
-
-  GetMaxPoint(&m_width, &m_height);
-  if(m_dc != NULL)
-  {
-    m_dc->Close();
-    wxDELETE(m_dc);
-  }
   // Let's switch to a DC of the right size for our object.
-  m_dc = new wxEnhMetaFileDC(m_filename, m_width, m_height);
-  if(m_dc != NULL)
-  {
-    (*m_configuration)->SetContext(*m_dc);
-    
-    Draw();
-    // Closing the DC seems to trigger the actual output of the file.
-    m_dc->Close();
-    wxDELETE(m_dc);
-    m_dc = NULL;
-  }
+  auto size = m_cmn.GetSize();
+  auto &config = m_cmn.GetConfiguration();
+  wxEnhMetaFileDC dc(m_cmn.GetFilename(), size.x, size.y);
+
+  config.SetContext(dc);
+  m_cmn.Draw(m_tree.get());
+  m_metaFile.reset(dc.Close()); // Closing the DC triggers the output of the file.
+  config.UnsetContext();
+
   return true;
 }
 
-double Emfout::GetRealWidth()
+wxEnhMetaFileDataObject *Emfout::GetDataObject()
 {
-  return m_width;
-}
-
-double Emfout::GetRealHeight()
-{
-  return m_height;
-}
-
-void Emfout::RecalculateHeight()
-{
-  int fontsize = 12;
-  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-  int mfontsize = fontsize;
-  wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  Cell *tmp = m_tree;
-
-  while (tmp != NULL)
-  {
-    tmp->RecalculateHeight(tmp->IsMath() ? mfontsize : fontsize);
-    tmp = tmp->m_next;
-  }
-}
-
-void Emfout::RecalculateWidths()
-{
-  int fontsize = 12;
-  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-  int mfontsize = fontsize;
-  wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  Cell *tmp = m_tree;
-
-  while (tmp != NULL)
-  {
-    tmp->RecalculateWidths(tmp->IsMath() ? mfontsize : fontsize);
-    tmp = tmp->m_next;
-  }
-}
-
-void Emfout::BreakLines()
-{
-  int fullWidth = 500;
-  int currentWidth = 0;
-
-  Cell *tmp = m_tree;
-
-  while (tmp != NULL)
-  {
-    if (!tmp->m_isBrokenIntoLines)
-    {
-      tmp->SoftLineBreak(false);
-      tmp->ResetData();
-      if (tmp->BreakLineHere() ||
-          (currentWidth + tmp->GetWidth() >= fullWidth))
-      {
-        currentWidth = tmp->GetWidth();
-        tmp->SoftLineBreak(true);
-      }
-      else
-        currentWidth += (tmp->GetWidth());
-    }
-    tmp = tmp->GetNextToDraw();
-  }
-}
-
-void Emfout::GetMaxPoint(int *width, int *height)
-{
-  Cell *tmp = m_tree;
-  int currentHeight = 0;
-  int currentWidth = 0;
-  *width = 0;
-  *height = 0;
-  bool bigSkip = false;
-  bool firstCell = true;
-  while (tmp != NULL)
-  {
-    if (!tmp->m_isBrokenIntoLines)
-    {
-      if (tmp->BreakLineHere() || firstCell)
-      {
-        firstCell = false;
-        currentHeight += tmp->GetHeightList();
-        if (bigSkip)
-          currentHeight += MC_LINE_SKIP;
-        *height = currentHeight;
-        currentWidth = tmp->GetWidth();
-        *width = wxMax(currentWidth, *width);
-      }
-      else
-      {
-        currentWidth += (tmp->GetWidth());
-        *width = wxMax(currentWidth, *width);
-      }
-      bigSkip = tmp->m_bigSkip;
-    }
-    tmp = tmp->GetNextToDraw();
-  }
-}
-
-void Emfout::Draw()
-{
-  Cell *tmp = m_tree;
-
-  if (tmp != NULL)
-  {
-    wxPoint point;
-    point.x = 0;
-    point.y = tmp->GetCenterList();
-    int fontsize = 12;
-    int drop = tmp->GetMaxDrop();
-
-    wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-    int mfontsize = fontsize;
-    wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-
-    while (tmp != NULL)
-    {
-      if (!tmp->m_isBrokenIntoLines)
-      {
-        tmp->Draw(point);
-        if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
-        {
-          point.x = 0;
-          point.y += drop + tmp->m_next->GetCenterList();
-          if (tmp->m_bigSkip)
-            point.y += MC_LINE_SKIP;
-          drop = tmp->m_next->GetMaxDrop();
-        }
-        else
-          point.x += (tmp->GetWidth());
-      }
-      else
-      {
-        if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
-        {
-          point.x = 0;
-          point.y += drop + tmp->m_next->GetCenterList();
-          if (tmp->m_bigSkip)
-            point.y += MC_LINE_SKIP;
-          drop = tmp->m_next->GetMaxDrop();
-        }
-      }
-      tmp = tmp->GetNextToDraw();
-    }
-  }
-}
-
-Emfout::EMFDataObject::EMFDataObject() : wxCustomDataObject(m_emfFormat)
-{
-}
-
-Emfout::EMFDataObject::EMFDataObject(wxMemoryBuffer data) : wxCustomDataObject(m_emfFormat)
-{
-  SetData(data.GetBufSize(), data.GetData());
-}
-
-
-wxDataFormat Emfout::m_emfFormat;
-
-Emfout::EMFDataObject *Emfout::GetDataObject()
-{
-  wxMemoryBuffer emfContents;
-  {
-    char *data =(char *) malloc(8192);
-    wxFileInputStream str(m_filename);
-    if(str.IsOk())
-      while (!str.Eof())
-      {
-        str.Read(data,8192);
-        emfContents.AppendData(data,str.LastRead());
-      }
-    free(data);
-  }
-  if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
-  {
-    // Don't output error messages if the worst thing that can happen is that we
-    // cannot clean up a temp file
-
-    SuppressErrorDialogs messageBlocker;
-
-    wxRemoveFile(m_filename);
-  }
-  m_filename = wxEmptyString;
-
-  return new EMFDataObject(emfContents);
+  return m_metaFile ? new wxEnhMetaFileDataObject(*m_metaFile) : nullptr;
 }
 
 bool Emfout::ToClipboard()
 {
-  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
-  if (wxTheClipboard->Open())
-  {
-    bool res = wxTheClipboard->SetData(GetDataObject());
-    wxTheClipboard->Close();
-    m_filename = wxEmptyString;
-    return res;
-  }
-  return false;
+  return m_metaFile && m_metaFile->SetClipboard();
 }
 
-void Emfout::BreakUpCells()
-{
-  Cell *tmp = m_tree;
-  int fontsize = 12;
-  wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-  int mfontsize = fontsize;
-  wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-
-  while (tmp != NULL)
-  {
-    if (tmp->GetWidth() > 500)
-    {
-      if (tmp->BreakUp())
-      {
-        tmp->RecalculateWidths(tmp->IsMath() ? mfontsize : fontsize);
-        tmp->RecalculateHeight(tmp->IsMath() ? mfontsize : fontsize);
-      }
-    }
-    tmp = tmp->GetNextToDraw();
-  }
-}
 #endif // wxUSE_ENH_METAFILE
