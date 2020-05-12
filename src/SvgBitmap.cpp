@@ -24,8 +24,6 @@
   The C code that generates bitmaps from compressed svg data
 */
 
-
-
 #include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
@@ -41,23 +39,23 @@ SvgBitmap::SvgBitmap(unsigned char *data, size_t len, int width, int height)
   wxMemoryInputStream istream(data, len);
   wxZlibInputStream zstream(istream);
   wxTextInputStream textIn(zstream);
-  wxString svgContents_string;
-  wxString line;
-  while(!zstream.Eof())
+  std::string svgContents;
+  while (!zstream.Eof())
   {
-    line = textIn.ReadLine();
-    svgContents_string += line + wxT("\n");
+    auto utf8 = textIn.ReadLine().utf8_str();
+    svgContents.append(utf8.data(), utf8.length());
+    svgContents.append(1, '\n');
   }
   
   // Render the .svgz image
-  if(m_svgRast == NULL)
+  if (!m_svgRast)
     m_svgRast = nsvgCreateRasterizer();
-  if(m_svgRast == NULL)
+  if (!m_svgRast ||
+      svgContents.empty())
     wxBitmap::operator=(GetInvalidBitmap(width));
-  std::unique_ptr<char> svgContents((char *)strdup(svgContents_string.utf8_str()));
-  if(svgContents == NULL)
-    wxBitmap::operator=(GetInvalidBitmap(width));
-  m_svgImage = std::unique_ptr<NSVGimage>(nsvgParse(svgContents.get(), "px", 96));
+
+  char *svgContentsChars = const_cast<char*>(svgContents.data());
+  m_svgImage.reset(nsvgParse(svgContentsChars, "px", 96));
   SetSize(width, height);
 }
 
@@ -66,13 +64,14 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height)
   // Set the bitmap to the new size
   wxBitmap::operator=(wxBitmap(width, height, 32));
 
-  if(m_svgImage == NULL)
+  if (!m_svgImage)
   {
     wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
   }
+
   std::unique_ptr<unsigned char> imgdata(new unsigned char[width*height*4]);        
-  if(imgdata == NULL)
+  if (!imgdata)
   {
     wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
