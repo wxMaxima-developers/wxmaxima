@@ -2578,24 +2578,21 @@ void EditorCell::FindMatchingParens()
     m_paren1 = m_paren2 = -1;
 }
 
-wxString EditorCell::InterpretEscapeString(wxString txt) const
+wxString EditorCell::InterpretEscapeString(const wxString &txt) const
 {
-  wxString retval = (*m_configuration)->m_escCodes[txt];
+  auto &escCode = Configuration::GetEscCode(txt);
+  if (!escCode.empty())
+    return escCode;
 
-  if(retval == wxEmptyString)
+  long int unicodeval = -1;
+  if (txt.ToLong(&unicodeval, 16))
   {
-    long int unicodeval = -1;
-    if (txt.ToLong(&unicodeval, 16))
-    {
-      if (unicodeval >= 32)
-        retval = wxString(wxChar(unicodeval));
-      else
-        retval = wxT(" ");
-    }
+    if (unicodeval > 32)
+      return wxUniChar(unicodeval);
+    return wxT(" ");
   }
-  return retval;
+  return {};
 }
-
 
 void EditorCell::DeactivateCursor()
 {

@@ -713,7 +713,7 @@ private:
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */
-  wxString InterpretEscapeString(wxString txt) const;
+  wxString InterpretEscapeString(const wxString &txt) const;
 
   wxString m_text;
   wxArrayString m_textHistory;

@@ -103,126 +103,137 @@ Configuration::Configuration(wxDC *dc) :
   m_showLength = 2;
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
-  m_escCodes["pm"]    = wxT("\u00B1");
-  m_escCodes["+/-"]   = wxT("\u00B1");
-  m_escCodes["alpha"] = wxT("\u03B1");
-  m_escCodes["beta"]  = wxT("\u03B2");
-  m_escCodes["gamma"] = wxT("\u03B3");
-  m_escCodes["delta"] = wxT("\u03B4");
-  m_escCodes["epsilon"] = wxT("\u03B5");
-  m_escCodes["zeta"] = wxT("\u03B6");
-  m_escCodes["eta"] = wxT("\u03B7");
-  m_escCodes["theta"] = wxT("\u03B8");
-  m_escCodes["iota"] = wxT("\u03B9");
-  m_escCodes["kappa"] = wxT("\u03BA");
-  m_escCodes["lambda"] = wxT("\u03BB");
-  m_escCodes["mu"] = wxT("\u03BC");
-  m_escCodes["nu"] = wxT("\u03BD");
-  m_escCodes["xi"] = wxT("\u03BE");
-  m_escCodes["om"] = wxT("\u03BF");
-  m_escCodes["omicron"] = wxT("\u03BF");
-  m_escCodes["nabla"] = wxT("\u2207");
-  m_escCodes["pi"] = wxT("\u03C0");
-  m_escCodes["rho"] = wxT("\u03C1");
-  m_escCodes["sigma"] = wxT("\u03C3");
-  m_escCodes["tau"] = wxT("\u03C4");
-  m_escCodes["upsilon"] = wxT("\u03C5");
-  m_escCodes["phi"] = wxT("\u03C6");
-  m_escCodes["chi"] = wxT("\u03C7");
-  m_escCodes["psi"] = wxT("\u03C8");
-  m_escCodes["omega"] = wxT("\u03C9");
-  m_escCodes["Alpha"] = wxT("\u0391");
-  m_escCodes["Beta"] = wxT("\u0392");
-  m_escCodes["Gamma"] = wxT("\u0393");
-  m_escCodes["Delta"] = wxT("\u0394");
-  m_escCodes["Epsilon"] = wxT("\u0395");
-  m_escCodes["Zeta"] = wxT("\u0396");
-  m_escCodes["Eta"] = wxT("\u0397");
-  m_escCodes["Theta"] = wxT("\u0398");
-  m_escCodes["Iota"] = wxT("\u0399");
-  m_escCodes["Kappa"] = wxT("\u039A");
-  m_escCodes["Lambda"] = wxT("\u039B");
-  m_escCodes["Mu"] = wxT("\u039C");
-  m_escCodes["Nu"] = wxT("\u039D");
-  m_escCodes["Xi"] = wxT("\u039E");
-  m_escCodes["Omicron"] = wxT("\u039F");
-  m_escCodes["Pi"] = wxT("\u03A0");
-  m_escCodes["Rho"] = wxT("\u03A1");
-  m_escCodes["Sigma"] = wxT("\u03A3");
-  m_escCodes["Tau"] = wxT("\u03A4");
-  m_escCodes["Upsilon"] = wxT("\u03A5");
-  m_escCodes["Phi"] = wxT("\u03A6");
-  m_escCodes["Chi"] = wxT("\u03A7");
-  m_escCodes["Psi"] = wxT("\u03A8");
-  m_escCodes["Omega"] = wxT("\u03A9");
-  m_escCodes["Ohm"] = wxT("\u03A9");
-  //////////////////////////
-  m_escCodes["^2"] = wxT("\u00B2");
-  m_escCodes["^3"] = wxT("\u00B3");
-  m_escCodes["/2"] = wxT("\u00BD");
-  m_escCodes["sq"] = wxT("\u221A");
-  m_escCodes["ii"] = wxT("\u2148");
-  m_escCodes["ee"] = wxT("\u2147");
-  m_escCodes["hb"] = wxT("\u210F");
-  m_escCodes["in"] = wxT("\u2208");
-  m_escCodes["impl"] = wxT("\u21D2");
-  m_escCodes["inf"] = wxT("\u221e");
-  m_escCodes["empty"] = wxT("\u2205");
-  m_escCodes["TB"] = wxT("\u25b6");
-  m_escCodes["tb"] = wxT("\u25b8");
-  m_escCodes["and"] = wxT("\u22C0");
-  m_escCodes["or"] = wxT("\u22C1");
-  m_escCodes["xor"] = wxT("\u22BB");
-  m_escCodes["nand"] = wxT("\u22BC");
-  m_escCodes["nor"] = wxT("\u22BD");
-  m_escCodes["implies"] = wxT("\u21D2");
-  m_escCodes["=>"] = wxT("\u21D2");
-  m_escCodes["equiv"] = wxT("\u21D4");
-  m_escCodes["<=>"] = wxT("\u21D4");
-  m_escCodes["not"] = wxT("\u00AC");
-  m_escCodes["union"] = wxT("\u22C3");
-  m_escCodes["inter"] = wxT("\u22C2");
-  m_escCodes["subseteq"] = wxT("\u2286");
-  m_escCodes["subset"] = wxT("\u2282");
-  m_escCodes["notsubseteq"] = wxT("\u2288");
-  m_escCodes["notsubset"] = wxT("\u2284");
-  m_escCodes["hbar"] = wxT("\u0127");
-  m_escCodes["Hbar"] = wxT("\u0126");
-  m_escCodes["partial"] = wxT("\u2202");
-  m_escCodes["integral"] = wxT("\u222b");
-  m_escCodes["approx"] = wxT("\u2245");
-  m_escCodes["prop"] = wxT("\u221d");
-  m_escCodes["propto"] = wxT("\u221d");
-  m_escCodes["neq"] = wxT("\u2260");
-  m_escCodes["!="] = wxT("\u2260");
-  m_escCodes["/="] = wxT("\u2260");
-  m_escCodes["#"] = wxT("\u2260");
-  m_escCodes["<="] = wxT("\u2264");
-  m_escCodes["leq"] = wxT("\u2264");
-  m_escCodes[">="] = wxT("\u2265");
-  m_escCodes["geq"] = wxT("\u2265");
-  m_escCodes["ll"] = wxT("\u226A");
-  m_escCodes["<<"] = wxT("\u226A");
-  m_escCodes["gg"] = wxT("\u226B");
-  m_escCodes[">>"] = wxT("\u226B");
-  m_escCodes["qed"] = wxT("\u220E");
-  m_escCodes["equiv"] = wxT("\u2263");
-  m_escCodes["sum"] = wxT("\u2211");
-  m_escCodes["prod"] = wxT("\u220F");
-  m_escCodes["product"] = wxT("\u220F");
-  m_escCodes["exists"] = wxT("\u2203");
-  m_escCodes["nexists"] = wxT("\u2204");
-  m_escCodes["parallel"] = wxT("\u2225");
-  m_escCodes["perp"] = wxT("\u27C2");
-  m_escCodes["perpendicular"] = wxT("\u27C2");
-  m_escCodes["bot"] = wxT("\u27C2");
-  m_escCodes["leadsto"] = wxT("\u219D");
-  m_escCodes["->"] = wxT("\u2192");
-  m_escCodes["-->"] = wxT("\u27F6");
-  m_escCodes[" --> "] = wxT("\u27F6");
-
   m_parenthesisDrawMode = unknown;
+  
+  InitStyles();
+}
 
+static const Configuration::EscCodeContainer &EscCodes()
+{
+  static const Configuration::EscCodeContainer escCodes{
+    {wxT("pm"), wxT("\u00B1")},
+    {wxT("+/-"), wxT("\u00B1")},
+    {wxT("alpha"), wxT("\u03B1")},
+    {wxT("beta"), wxT("\u03B2")},
+    {wxT("gamma"), wxT("\u03B3")},
+    {wxT("delta"), wxT("\u03B4")},
+    {wxT("epsilon"), wxT("\u03B5")},
+    {wxT("zeta"), wxT("\u03B6")},
+    {wxT("eta"), wxT("\u03B7")},
+    {wxT("theta"), wxT("\u03B8")},
+    {wxT("iota"), wxT("\u03B9")},
+    {wxT("kappa"), wxT("\u03BA")},
+    {wxT("lambda"), wxT("\u03BB")},
+    {wxT("mu"), wxT("\u03BC")},
+    {wxT("nu"), wxT("\u03BD")},
+    {wxT("xi"), wxT("\u03BE")},
+    {wxT("om"), wxT("\u03BF")},
+    {wxT("omicron"), wxT("\u03BF")},
+    {wxT("nabla"), wxT("\u2207")},
+    {wxT("pi"), wxT("\u03C0")},
+    {wxT("rho"), wxT("\u03C1")},
+    {wxT("sigma"), wxT("\u03C3")},
+    {wxT("tau"), wxT("\u03C4")},
+    {wxT("upsilon"), wxT("\u03C5")},
+    {wxT("phi"), wxT("\u03C6")},
+    {wxT("chi"), wxT("\u03C7")},
+    {wxT("psi"), wxT("\u03C8")},
+    {wxT("omega"), wxT("\u03C9")},
+    {wxT("Alpha"), wxT("\u0391")},
+    {wxT("Beta"), wxT("\u0392")},
+    {wxT("Gamma"), wxT("\u0393")},
+    {wxT("Delta"), wxT("\u0394")},
+    {wxT("Epsilon"), wxT("\u0395")},
+    {wxT("Zeta"), wxT("\u0396")},
+    {wxT("Eta"), wxT("\u0397")},
+    {wxT("Theta"), wxT("\u0398")},
+    {wxT("Iota"), wxT("\u0399")},
+    {wxT("Kappa"), wxT("\u039A")},
+    {wxT("Lambda"), wxT("\u039B")},
+    {wxT("Mu"), wxT("\u039C")},
+    {wxT("Nu"), wxT("\u039D")},
+    {wxT("Xi"), wxT("\u039E")},
+    {wxT("Omicron"), wxT("\u039F")},
+    {wxT("Pi"), wxT("\u03A0")},
+    {wxT("Rho"), wxT("\u03A1")},
+    {wxT("Sigma"), wxT("\u03A3")},
+    {wxT("Tau"), wxT("\u03A4")},
+    {wxT("Upsilon"), wxT("\u03A5")},
+    {wxT("Phi"), wxT("\u03A6")},
+    {wxT("Chi"), wxT("\u03A7")},
+    {wxT("Psi"), wxT("\u03A8")},
+    {wxT("Omega"), wxT("\u03A9")},
+    {wxT("Ohm"), wxT("\u03A9")},
+    //////////////////////////
+    {wxT("^2"), wxT("\u00B2")},
+    {wxT("^3"), wxT("\u00B3")},
+    {wxT("/2"), wxT("\u00BD")},
+    {wxT("sq"), wxT("\u221A")},
+    {wxT("ii"), wxT("\u2148")},
+    {wxT("ee"), wxT("\u2147")},
+    {wxT("hb"), wxT("\u210F")},
+    {wxT("in"), wxT("\u2208")},
+    {wxT("impl"), wxT("\u21D2")},
+    {wxT("inf"), wxT("\u221e")},
+    {wxT("empty"), wxT("\u2205")},
+    {wxT("TB"), wxT("\u25b6")},
+    {wxT("tb"), wxT("\u25b8")},
+    {wxT("and"), wxT("\u22C0")},
+    {wxT("or"), wxT("\u22C1")},
+    {wxT("xor"), wxT("\u22BB")},
+    {wxT("nand"), wxT("\u22BC")},
+    {wxT("nor"), wxT("\u22BD")},
+    {wxT("implies"), wxT("\u21D2")},
+    {wxT("=>"), wxT("\u21D2")},
+    {wxT("equiv"), wxT("\u21D4")},
+    {wxT("<=>"), wxT("\u21D4")},
+    {wxT("not"), wxT("\u00AC")},
+    {wxT("union"), wxT("\u22C3")},
+    {wxT("inter"), wxT("\u22C2")},
+    {wxT("subseteq"), wxT("\u2286")},
+    {wxT("subset"), wxT("\u2282")},
+    {wxT("notsubseteq"), wxT("\u2288")},
+    {wxT("notsubset"), wxT("\u2284")},
+    {wxT("hbar"), wxT("\u0127")},
+    {wxT("Hbar"), wxT("\u0126")},
+    {wxT("partial"), wxT("\u2202")},
+    {wxT("integral"), wxT("\u222b")},
+    {wxT("approx"), wxT("\u2245")},
+    {wxT("prop"), wxT("\u221d")},
+    {wxT("propto"), wxT("\u221d")},
+    {wxT("neq"), wxT("\u2260")},
+    {wxT("!="), wxT("\u2260")},
+    {wxT("/="), wxT("\u2260")},
+    {wxT("#"), wxT("\u2260")},
+    {wxT("<="), wxT("\u2264")},
+    {wxT("leq"), wxT("\u2264")},
+    {wxT(">="), wxT("\u2265")},
+    {wxT("geq"), wxT("\u2265")},
+    {wxT("ll"), wxT("\u226A")},
+    {wxT("<<"), wxT("\u226A")},
+    {wxT("gg"), wxT("\u226B")},
+    {wxT(">>"), wxT("\u226B")},
+    {wxT("qed"), wxT("\u220E")},
+    {wxT("equiv"), wxT("\u2263")},
+    {wxT("sum"), wxT("\u2211")},
+    {wxT("prod"), wxT("\u220F")},
+    {wxT("product"), wxT("\u220F")},
+    {wxT("exists"), wxT("\u2203")},
+    {wxT("nexists"), wxT("\u2204")},
+    {wxT("parallel"), wxT("\u2225")},
+    {wxT("perp"), wxT("\u27C2")},
+    {wxT("perpendicular"), wxT("\u27C2")},
+    {wxT("bot"), wxT("\u27C2")},
+    {wxT("leadsto"), wxT("\u219D")},
+    {wxT("->"), wxT("\u2192")},
+    {wxT("-->"), wxT("\u27F6")},
+    {wxT(" --> "), wxT("\u27F6")},
+    };
+  return escCodes;
+}
+
+void Configuration::InitStyles()
+{
   #ifdef __WXMSW__
   auto req = wxFontInfo()
                .Family(wxFONTFAMILY_MODERN)
@@ -280,6 +291,21 @@ Configuration::Configuration(wxDC *dc) :
   m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
   ReadConfig();
 }
+
+const wxString &Configuration::GetEscCode(const wxString &key)
+{
+  static wxString empty;
+  auto &escCodes = EscCodes();
+  auto it = escCodes.find(key);
+  if (it != escCodes.end())
+    return it->second;
+  return empty;
+}
+
+Configuration::EscCodeIterator Configuration::EscCodesBegin()
+{ return EscCodes().cbegin(); }
+Configuration::EscCodeIterator Configuration::EscCodesEnd()
+{ return EscCodes().cend(); }
 
 wxSize Configuration::GetPPI(wxWindow *win) const
 {

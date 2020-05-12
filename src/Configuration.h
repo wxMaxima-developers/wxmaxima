@@ -26,8 +26,10 @@
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/fontenum.h>
+#include <wx/hashmap.h>
 #include "LoggingMessageDialog.h"
 #include "TextStyle.h"
+#include <unordered_map>
 #include <vector>
 
 #define MC_LINE_SKIP Scale_Px(2)
@@ -110,10 +112,6 @@ public:
     unknown
   };
 
-  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
-  //! A list of all symbols that can be entered using Esc-Codes
-  StringHash m_escCodes;
-
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
@@ -150,7 +148,16 @@ public:
 
   static wxString m_maximaLocation_override;
   static wxString m_configfileLocation_override;
-  
+
+  using EscCodeContainer = std::unordered_map<wxString, wxString, wxStringHash>;
+  using EscCodeIterator = EscCodeContainer::const_iterator;
+
+  //! Retrieve a symbol for the escape code typed after the Escape key.
+  static const wxString &GetEscCode(const wxString &key);
+  //! Iterators over the escape code list
+  static EscCodeIterator EscCodesBegin();
+  static EscCodeIterator EscCodesEnd();
+
   static double GetMinZoomFactor()
   { return 0.1; }
 
@@ -1004,6 +1011,9 @@ private:
   wxString m_symbolPaneAdditionalChars;
   bool m_invertBackground;
   wxFont m_worksheetFonts[NUMBEROFSTYLES];
+
+  //! Initialize the text styles on construction.
+  void InitStyles();
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
