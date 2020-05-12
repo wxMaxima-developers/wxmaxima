@@ -64,26 +64,20 @@ bool Emfout::Layout()
 
   config.SetContext(dc);
   m_cmn.Draw(m_tree.get());
-  dc.Close(); // Closing the DC seems to trigger the actual output of the file.
+  m_metaFile.reset(dc.Close()); // Closing the DC triggers the output of the file.
   config.UnsetContext();
 
   return true;
 }
 
-static wxDataFormat &Format()
+wxEnhMetaFileDataObject *Emfout::GetDataObject()
 {
-  static wxDataFormat format(wxT("image/x-emf"));
-  return format;
-}
-
-wxCustomDataObject *Emfout::GetDataObject()
-{
-  return m_cmn.GetDataObject(Format()).release();
+  return m_metaFile ? new wxEnhMetaFileDataObject(*m_metaFile) : nullptr;
 }
 
 bool Emfout::ToClipboard()
 {
-  return m_cmn.ToClipboard(Format());
+  return m_metaFile && m_metaFile->SetClipboard();
 }
 
 #endif // wxUSE_ENH_METAFILE

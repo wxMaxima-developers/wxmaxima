@@ -30,6 +30,7 @@
 
 
 #include "wxMaxima.h"
+#include "CompositeDataObject.h"
 #include "ErrorRedirector.h"
 #include "MaxSizeChooser.h"
 #include "SVGout.h"
@@ -2697,7 +2698,11 @@ bool Worksheet::CopyCells()
 
   if (wxTheClipboard->Open())
   {
+#if wxUSE_ENH_METAFILE
+    auto *data = new CompositeDataObject;
+#else
     wxDataObjectComposite *data = new wxDataObjectComposite;
+#endif
     wxString wxm;
     wxString str;
     wxString rtf = RTFStart();

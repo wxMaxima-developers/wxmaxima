@@ -47,13 +47,15 @@ public:
   bool ToClipboard();
 
   //! Returns the emf representation in a format that can be placed on the clipBoard.
-  wxCustomDataObject *GetDataObject();
+  wxEnhMetaFileDataObject *GetDataObject();
 
 private:
   std::unique_ptr<Cell> m_tree;
   OutCommon m_cmn;
   //! The draw context we draw to during recalculation.
   wxEnhMetaFileDC m_recalculationDc;
+  //! The most recently rendered metafile - used to paste to clipboard.
+  std::unique_ptr<wxEnhMetaFile> m_metaFile;
 
   bool Layout();
 };
