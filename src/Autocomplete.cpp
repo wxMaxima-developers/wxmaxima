@@ -176,10 +176,9 @@ void AutoComplete::BuiltinSymbols_BackgroundTask()
   
     LoadBuiltinSymbols();
     
-    for(Configuration::StringHash::const_iterator it = m_configuration->m_escCodes.begin();
-        it != m_configuration->m_escCodes.end();
-        ++it)
+    for (auto it = Configuration::EscCodesBegin(); it != Configuration::EscCodesEnd(); ++it)
        m_wordList[esccommand].Add(it->first);
+
     m_wordList[command].Sort();
     m_wordList[tmplte].Sort();
     m_wordList[unit].Sort();
