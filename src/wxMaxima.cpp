@@ -257,9 +257,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_oldFindString = wxEmptyString;
   m_oldFindFlags = 0;
   m_worksheet->m_currentFile = wxEmptyString;
-  int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
-  wxConfig::Get()->Read(wxT("findFlags"), &findFlags);
-  m_findData.SetFlags(findFlags);
+  m_findData.SetFlags(m_worksheet->m_configuration->FindFlags());
   m_worksheet->SetFocus();
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
@@ -5963,6 +5961,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if (m_worksheet->m_findDialog == NULL)
         m_worksheet->m_findDialog = new FindReplaceDialog(
                 this,
+                &m_worksheet->m_configuration,
                 &m_findData,
                 _("Find and Replace"));
 

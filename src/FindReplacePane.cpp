@@ -31,8 +31,9 @@
 #include <wx/stattext.h>
 #include <wx/button.h>
 
-FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data) :
-        wxPanel(parent, -1)
+FindReplacePane::FindReplacePane(wxWindow *parent, Configuration **config, wxFindReplaceData *data) :
+    wxPanel(parent, -1),
+    m_configuration(*config)
 {
   m_active = true;
   m_findReplaceData = data;
@@ -164,7 +165,7 @@ void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event))
 {
   m_findReplaceData->SetFlags(
           !((m_findReplaceData->GetFlags() & (!wxFR_DOWN)) | (m_forward->GetValue() * wxFR_DOWN)));
-  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
+  m_configuration->FindFlags(wxFindReplaceFlags(m_findReplaceData->GetFlags()));
 }
 
 
@@ -172,7 +173,7 @@ void FindReplacePane::OnMatchCase(wxCommandEvent &event)
 {
   m_findReplaceData->SetFlags(
           (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) | (event.IsChecked() * wxFR_MATCHCASE));
-  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
+  m_configuration->FindFlags(wxFindReplaceFlags(m_findReplaceData->GetFlags()));
 }
 
 void FindReplacePane::OnActivate(wxActivateEvent &event)

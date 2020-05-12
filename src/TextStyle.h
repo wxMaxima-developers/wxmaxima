@@ -99,6 +99,7 @@ private:
   bool m_bold;
   bool m_italic;
   bool m_underlined;
+  friend class Configuration; // access to m_fontSize
 };
 
 /*! All text styles known to wxMaxima

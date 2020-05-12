@@ -1208,7 +1208,7 @@ void ConfigDialogue::WriteSettings()
   configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
-  configuration->MathJaXURL(m_mathJaxURL->GetValue());
+  configuration->MathJaXURL_User(m_mathJaxURL->GetValue());
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
   {
     configuration->SetLanguage((int) wxLANGUAGE_DEFAULT);

@@ -37,11 +37,14 @@
 #include <wx/checkbox.h>
 #include <wx/textctrl.h>
 
+class Configuration;
+
 /*! The find+replace pane
  */
 class FindReplacePane : public wxPanel
 {
 private:
+  Configuration *&m_configuration;
   //! The storage the search strings and settings are kept in
   wxFindReplaceData *m_findReplaceData;
   //! Is this pane currently in focus?
@@ -56,7 +59,7 @@ private:
   wxCheckBox *m_matchCase;
 
 public:
-  FindReplacePane(wxWindow *parent, wxFindReplaceData *data);
+  FindReplacePane(wxWindow *parent, Configuration **config, wxFindReplaceData *data);
 
   wxString GetFindString()
   { return m_findReplaceData->GetFindString(); }

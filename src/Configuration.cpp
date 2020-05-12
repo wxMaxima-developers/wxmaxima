@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2016-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020 Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@
  */
 
 #include "Configuration.h"
+#include "Compatibility.h"
+#include "Cell.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include "FontCache.h"
@@ -34,77 +37,223 @@
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
-#include "Cell.h"
+#include <type_traits>
+
+using enum_config_type = int;
+
+template <typename T>
+bool CfgReader(wxConfigBase &config, const wxString &key, void *cache)
+{
+  using read_type =
+    typename std::conditional<std::is_enum<T>::value, enum_config_type, T>::type;
+
+  T *Tcache = static_cast<T*>(cache);
+  if (!std::is_enum<T>::value)
+    return config.Read(key, (read_type*)Tcache);
+  else
+  {
+    read_type value = static_cast<read_type>(*Tcache);
+    bool rc = config.Read(key, &value);
+    *Tcache = static_cast<T>(value);
+    return rc;
+  }
+}
+
+template <typename T>
+bool CfgWriter(wxConfigBase &config, const wxString &key, void *cache, const void *newValue)
+{
+  using write_type =
+    typename std::conditional<std::is_enum<T>::value, enum_config_type, T>::type;
+
+  if (newValue)
+    *static_cast<T*>(cache) = *static_cast<const T*>(newValue);
+  return config.Write(key, static_cast<write_type>(*static_cast<const T*>(cache)));
+}
+
+template <typename T>
+void CfgDefInitializer(Configuration &, void *cache, intptr_t)
+{
+  *static_cast<T*>(cache) = {};
+}
+
+template <typename T, typename I>
+void CfgInitializer(Configuration &, void *cache, intptr_t initValue)
+{
+  *static_cast<T*>(cache) = (I)initValue;
+  static_assert(sizeof(I) <= sizeof(intptr_t),
+                "Attempt at initialization with an object that's too large to fit.");
+}
+
+struct initializer_tag {};
+
+struct Configuration::SettingDefinition
+{
+  using Initializer = void (*)(Configuration &configuration, void *cache, intptr_t initValue);
+  using Preprocessor = bool (*)(wxConfigBase &configIO, Configuration &configuration, const void *newValue);
+  using Postprocessor = void (*)(wxConfigBase &configIO, Configuration &configuration, bool didRead);
+
+  wxString key;
+  void *cache;
+  intptr_t initValue = {};
+  Initializer initializer = {};
+  Preprocessor writePreprocess = {};
+  bool (*writer)(wxConfigBase &, const wxString &key, void *cache, const void *newValue);
+  bool (*reader)(wxConfigBase &, const wxString &key, void *cache);
+  Postprocessor readPostprocess = {};
+
+  template <typename T>
+  SettingDefinition(const wchar_t *key, T &cache)
+    : key(key), cache(&cache), initializer(CfgDefInitializer<T>),
+      writer(CfgWriter<T>), reader(CfgReader<T>)  {}
+
+  template <typename T, typename I>
+  SettingDefinition(const wchar_t *key, T &cache, I initvalue)
+    : key(key), cache(&cache), initValue((intptr_t)initvalue),
+      initializer(CfgInitializer<T, I>), writer(CfgWriter<T>), reader(CfgReader<T>)
+  {}
+
+  template <typename T, typename I>
+  SettingDefinition(const wchar_t *key, T &cache, I initvalue, Postprocessor readPostprocess)
+    : key(key), cache(&cache), initValue((intptr_t)(initvalue)),
+      initializer(CfgInitializer<T, I>), writer(CfgWriter<T>), reader(CfgReader<T>),
+      readPostprocess(readPostprocess)
+  {}
+
+  template <typename T>
+  SettingDefinition(const wchar_t *key, T &cache, initializer_tag, Initializer initializer, Postprocessor readPostprocess)
+    : key(key), cache(&cache), initializer(initializer),
+      writer(CfgWriter<T>), reader(CfgReader<T>),
+      readPostprocess(readPostprocess)
+  {}
+
+  void Initialize(Configuration &config) const
+  {
+    wxASSERT(initializer);
+    initializer(config, cache, initValue);
+  }
+  bool Read(Configuration &config, wxConfigBase &io) const
+  {
+    Initialize(config);
+    bool didRead = false;
+    if (reader)
+      didRead = reader(io, key, cache);
+    if (readPostprocess)
+      readPostprocess(io, config, didRead);
+    return didRead;
+  }
+  bool Write(Configuration &config, wxConfigBase &io, const void *newValue) const
+  {
+    bool canWrite = true, didWrite = false;
+    if (writePreprocess)
+      canWrite = writePreprocess(io, config, newValue);
+    if (writer && canWrite)
+      didWrite = writer(io, key, cache, newValue);
+    return didWrite;
+  }
+};
 
 Configuration::Configuration(wxDC *dc) :
-  m_dc(dc),
-  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML"),
-  m_documentclass("article"),
-  m_documentclassOptions("fleqn"),
-  m_symbolPaneAdditionalChars("Øü§")
+    m_defs
+    {
+      // These entries should be kept in alphabetic order.
+      {wxT("abortOnError"), m_abortOnError, true},
+      {wxT("antiAliasLines"), m_antiAliasLines, true},
+      {wxT("autodetectMaxima"), m_autodetectMaxima, true},
+      {wxT("autoIndent"), m_autoIndent, true},
+      {wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile, false, [](auto &io, auto &config, bool didRead)
+       {
+         if (didRead) return;
+         long autoSaveMinutes = 0;
+         io.Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
+         config.m_autoSaveAsTempFile = (autoSaveMinutes == 0);
+       }},
+      {wxT("autosubscript"), m_autoSubscript, 1},
+      {wxT("autoWrapMode"), m_autoWrap, 3},
+      {wxT("changeAsterisk"), m_changeAsterisk, true},
+      {wxT("copyBitmap"), m_copyBitmap, false},
+      // Do not copy by default - otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
+      // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
+      // for maxima-discuss.
+      {wxT("copyEMF"), m_copyEMF, false},
+      {wxT("copyMathML"), m_copyMathML, true},
+      {wxT("copyMathMLHTML"), m_copyMathMLHTML, false},
+      {wxT("copyRTF"), m_copyRTF, true},
+      {wxT("copySVG"), m_copySVG, true},
+      {wxT("defaultPort"), m_defaultPort, 49152},
+      {wxT("displayedDigits"), m_displayedDigits, 100, [](auto &, auto &config, bool didRead)
+       // On set: wxASSERT_MSG(displayedDigits >= 0, _("Bug: Maximum number of digits that is to be displayed is too low!"));
+       {
+         if (didRead && config.m_displayedDigits <= 20)
+           config.m_displayedDigits = 20;
+       }},
+      {wxT("documentclass"), m_documentclass, L"article"},
+      {wxT("documentclassoptions"), m_documentclassOptions, L"fleqn"},
+      {wxT("enterEvaluates"), m_enterEvaluates, false},
+      {wxT("findFlags"), m_findFlags, wxFindReplaceFlags(wxFR_DOWN | wxFR_MATCHCASE)},
+      {wxT("fixReorderedIndices"), m_fixReorderedIndices, true},
+      {wxT("fontSize"), m_styles[TS_DEFAULT].m_fontSize, 12},
+      {wxT("greekSidebar_ShowLatinLookalikes"), m_greekSidebar_ShowLatinLookalikes, false},
+      {wxT("greekSidebar_Show_mu"), m_greekSidebar_Show_mu, false},
+      {wxT("hidebrackets"), m_hideBrackets, true},
+      {wxT("hidemultiplicationsign"), m_hidemultiplicationsign, true},
+      {wxT("HTMLequationFormat"), m_htmlEquationFormat, mathJaX_TeX},
+      {wxT("indentMaths"), m_indentMaths, true},
+      {wxT("insertAns"), m_insertAns, false},
+      {wxT("invertBackground"), m_invertBackground, false},
+      {wxT("keepPercent"), m_keepPercent, true},
+      {wxT("labelWidth"), m_labelWidth, 4},
+      {wxT("language"), m_language, wxLANGUAGE_DEFAULT, [](auto &, auto &config, auto)
+       {
+         if (config.m_language == wxLANGUAGE_UNKNOWN)
+           config.m_language = wxLANGUAGE_DEFAULT;
+       }},
+      {wxT("latin2greek"), m_latin2greek, false},
+      {wxT("matchParens"), m_matchParens, true},
+      {wxT("mathJaxURL"), m_mathJaxURL, MathJaXURL_Auto()},
+      {wxT("mathJaxURL_UseUser"), m_mathJaxURL_UseUser, false},
+      {wxT("maxGnuplotMegabytes"), m_maxGnuplotMegabytes, 12},
+      {wxT("maxima"), m_maximaUserLocation,
+       initializer_tag{}, [](auto &config, auto, intptr_t)
+       {
+         if (!config.m_maximaLocation_override.empty())
+           config.m_maximaUserLocation = config.m_maximaLocation_override;
+         else
+           config.m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+       },
+       [](auto &, auto &config, bool)
+       {
+         // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
+         if (config.m_maximaUserLocation.IsSameAs(wxT("1")))
+           config.m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+       }},
+      {wxT("notifyIfIdle"), m_notifyIfIdle, true},
+      {wxT("offerKnownAnswers"), m_offerKnownAnswers, true},
+      {wxT("openHCaret"), m_openHCaret, false},
+      {wxT("parameters"), m_maximaParameters, L""},
+      {wxT("printBrackets"), m_printBrackets, false},
+      {wxT("printScale"), m_printScale, 1.0},
+      {wxT("restartOnReEvaluation"), m_restartOnReEvaluation, true},
+      {wxT("showLabelChoice"), m_showLabelChoice, labels_prefer_user},
+      {wxT("showLength"), m_showLength, 2},
+      {wxT("Style/Default/Style/Text/fontname"), m_fontName, L""}, // TODO initializer here maybe
+      {wxT("Style/Math/fontname"), m_mathFontName, L""}, // TODO initializer here maybe
+      {wxT("mathfontsize"), m_mathFontSize, 12},
+      {wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars, L"Øü§"},
+      {wxT("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers, false},
+      {wxT("usejsmath"), m_TeXFonts, HasTeXFonts()},
+      {wxT("useSVG"), m_useSVG, false},
+      {wxT("useUnicodeMaths"), m_useUnicodeMaths, true},
+      {wxT("ZoomFactor"), m_zoomFactor, 1.0},
+      },
+    m_dc(dc)
 {
   SetBackgroundBrush(*wxWHITE_BRUSH);
-  m_hidemultiplicationsign = true;
-  m_autoSaveAsTempFile = false;
-  m_inLispMode = false;
-  m_htmlEquationFormat = mathJaX_TeX;
-  m_autodetectMaxima = true;
-  m_clipToDrawRegion = true;
-  m_fontChanged = true;
-  m_mathJaxURL_UseUser = false;
-  m_TOCshowsSectionNumbers = false;
-  m_invertBackground = false;
-  m_antialiassingDC = NULL;
-  m_parenthesisDrawMode = unknown;
-  m_zoomFactor = 1.0; // affects returned fontsizes
-  m_useSVG = false;
-  m_changeAsterisk = true;
-  m_workSheet = NULL;
-  m_latin2greek = false;
-  m_enterEvaluates = false;
-  m_printScale = 1.0;
-  m_forceUpdate = false;
-  m_outdated = false;
-  m_printing = false;
-  m_TeXFonts = false;
-  m_notifyIfIdle = true;
-  m_fixReorderedIndices = true;
-  m_showBrackets = true;
-  m_printBrackets = false;
-  m_hideBrackets = true;
-  m_language = wxLANGUAGE_DEFAULT;
-  m_lineWidth_em = 88;
-  m_adjustWorksheetSizeNeeded = false;
-  m_showLabelChoice = labels_prefer_user;
-  m_abortOnError = true;
-  m_defaultPort = 49152;
-  m_maxGnuplotMegabytes = 12;
-  m_clientWidth = 1024;
-  m_clientHeight = 768;
-  m_indentMaths=true;
-  if(m_maximaLocation_override != wxEmptyString)
-    m_maximaUserLocation = m_maximaLocation_override;
-  else
-    m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
-  m_indent = -1;
-  m_autoSubscript = 1;
-  m_antiAliasLines = true;
-  m_showCodeCells = true;
-  m_greekSidebar_ShowLatinLookalikes = false;
-  m_greekSidebar_Show_mu = false;
-  m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
-  // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
-  // for maxima-discuss.
-  m_copyMathML = true;
-  m_copyMathMLHTML = false;
-  m_copyRTF = true;
-  m_copySVG = true;
-  m_copyEMF = false;
-  m_showLength = 2;
-  m_useUnicodeMaths = true;
-  m_offerKnownAnswers = true;
-  m_parenthesisDrawMode = unknown;
-  
+
+  for (auto const &def : m_defs)
+  {
+    def.Initialize(*this);
+  }
+
   InitStyles();
 }
 
@@ -247,9 +396,8 @@ void Configuration::InitStyles()
     m_mathFontName = req.GetFaceName();
   }
   else
-    m_mathFontName = wxEmptyString;
+    m_mathFontName.clear();
   #endif
-  m_mathFontSize = 12;
   m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
   m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
   m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
@@ -307,6 +455,38 @@ Configuration::EscCodeIterator Configuration::EscCodesBegin()
 Configuration::EscCodeIterator Configuration::EscCodesEnd()
 { return EscCodes().cend(); }
 
+Configuration::SettingDefinition *Configuration::LookupDef(const void *cache)
+{
+  auto def = std::find_if(m_defs.begin(), m_defs.end(), [cache](auto const &def){
+    return def.cache == cache;
+  });
+  return (def != m_defs.end()) ? &*def : nullptr;
+}
+
+bool Configuration::ConfigWrite(void *cache, const void *newValue)
+{
+  return ConfigWrite(*wxConfig::Get(), cache, newValue);
+}
+bool Configuration::ConfigWrite(wxConfigBase &io, void *cache, const void *newValue)
+{
+  auto *def = LookupDef(cache);
+  return def && def->Write(*this, io, newValue);
+}
+
+bool Configuration::ConfigRead(void *cache)
+{
+  return ConfigRead(*wxConfig::Get(), cache);
+}
+bool Configuration::ConfigRead(wxConfigBase &io, void *cache)
+{
+  auto *def = LookupDef(cache);
+  if (def && def->Read(*this, io))
+    return true;
+  if (def)
+    def->Initialize(*this);
+  return false;
+}
+
 wxSize Configuration::GetPPI(wxWindow *win) const
 {
   if(win == NULL)
@@ -331,17 +511,11 @@ wxSize Configuration::GetPPI(wxWindow *win) const
   return ppi;
 }
 
-wxString Configuration::GetAutosubscript_string() const
+const wxString &Configuration::GetAutosubscript_string() const
 {
-  switch (m_autoSubscript)
-  {
-  case 0:
-    return "nil";
-  case 1:
-    return "t";
-  default:
-    return "'all";
-  }
+  static const wxString strings[] = {"nil", "t", "'all"};
+  auto index = std::clamp(m_autoSubscript, 0l, 2l);
+  return strings[index];
 }
 
 void Configuration::ShowCodeCells(bool show)
@@ -349,16 +523,16 @@ void Configuration::ShowCodeCells(bool show)
   m_showCodeCells = show;
 }
 
-void Configuration::SetBackgroundBrush(wxBrush brush)
+void Configuration::SetBackgroundBrush(const wxBrush &brush)
 {
   m_BackgroundBrush = brush;
   m_tooltipBrush = brush;
   m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
-bool Configuration::MaximaFound(wxString location)
+bool Configuration::MaximaFound(const wxString &location)
 {
-  if(location == wxEmptyString)
+  if (location.empty())
     return false;
   
   bool maximaFound = false;
@@ -372,7 +546,7 @@ bool Configuration::MaximaFound(wxString location)
   // Don't complain if PATH doesn't yield a result.
   SuppressErrorDialogs logNull;
 
-  if(!(location.EndsWith("/") || location.EndsWith("\\")))
+  if (!(location.EndsWith("/") || location.EndsWith("\\")))
   {
     wxPathList pathlist;
     pathlist.AddEnvList(wxT("PATH"));
@@ -386,113 +560,11 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   wxConfigBase *config = wxConfig::Get();
-  m_autoWrap = 3;
 
-  if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
+  for (auto const &def : m_defs)
   {
-    long autoSaveMinutes = 0;
-    config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
-    m_autoSaveAsTempFile = (autoSaveMinutes == 0);
+    def.Read(*this, *config);
   }
-  config->Read("language", &m_language);
-  if (m_language == wxLANGUAGE_UNKNOWN)
-    m_language = wxLANGUAGE_DEFAULT;
-
-  config->Read("invertBackground", &m_invertBackground);
-  config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
-  config->Read("offerKnownAnswers", &m_offerKnownAnswers);
-  config->Read(wxT("documentclass"), &m_documentclass);
-  config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
-  config->Read(wxT("latin2greek"), &m_latin2greek);
-  config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
-  config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
-  config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
-  config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
-  config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
-  config->Read("parameters", &m_maximaParameters);
-  
-  {
-    int tmp;
-    config->Read("HTMLequationFormat", &tmp);
-    m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
-  }
-  
-  config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
-  config->Read(wxT("autoWrapMode"), &m_autoWrap);
-  config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
-  config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
-  config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
-  config->Read(wxT("autosubscript"), &m_autoSubscript);
-  config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
-  config->Read(wxT("indentMaths"), &m_indentMaths);
-  config->Read(wxT("abortOnError"),&m_abortOnError);
-  config->Read("defaultPort",&m_defaultPort);
-  config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
-  config->Read(wxT("showLength"), &m_showLength);
-  config->Read(wxT("printScale"), &m_printScale);
-  config->Read(wxT("useSVG"), &m_useSVG);
-  config->Read(wxT("copyBitmap"), &m_copyBitmap);
-  config->Read(wxT("copyMathML"), &m_copyMathML);
-  config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
-  config->Read(wxT("copyRTF"), &m_copyRTF);
-  config->Read(wxT("copySVG"), &m_copySVG );
-  config->Read(wxT("copyEMF"), &m_copyEMF );
-  config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
-  config->Read(wxT("maxima"), &m_maximaUserLocation);
-  // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (m_maximaUserLocation.IsSameAs(wxT("1")))
-    m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
-
-  m_autoIndent = true;
-  config->Read(wxT("autoIndent"), &m_autoIndent);
-
-  int showLabelChoice;
-  config->Read(wxT("showLabelChoice"), &showLabelChoice);
-  m_showLabelChoice = (showLabels) showLabelChoice; 
-
-  config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
-
-  config->Read(wxT("notifyIfIdle"), &m_notifyIfIdle);
-
-  config->Read(wxT("hideBrackets"), &m_hideBrackets);
-
-  m_displayedDigits = 100;
-  config->Read(wxT("displayedDigits"), &m_displayedDigits);
-  if (m_displayedDigits <= 20)
-    m_displayedDigits = 20;
-
-  m_restartOnReEvaluation = true;
-  config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
-
-  m_matchParens = true;
-  config->Read(wxT("matchParens"), &m_matchParens);
-
-  m_insertAns = false;
-  config->Read(wxT("insertAns"), &m_insertAns);
-
-  m_openHCaret = false;
-  config->Read(wxT("openHCaret"), &m_openHCaret);
-  
-  m_labelWidth = 4;
-  config->Read(wxT("labelWidth"), &m_labelWidth);
-
-  config->Read(wxT("printBrackets"), &m_printBrackets);
-
-  m_zoomFactor = 1.0;
-  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
-
-  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = CMEX10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMSY = CMSY10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMRI = CMR10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMMI = CMMI10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMTI = CMTI10))
-  {
-    m_TeXFonts = true;
-    config->Read(wxT("usejsmath"), &m_TeXFonts);
-  }
-
-  m_keepPercent = true;
-  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
 
   ReadStyles();
 }
@@ -775,8 +847,7 @@ void Configuration::SetZoomFactor(double newzoom)
   if (newzoom < GetMinZoomFactor())
     newzoom = GetMinZoomFactor();
 
-  m_zoomFactor = newzoom;
-  wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
+  CWrite(m_zoomFactor, newzoom);
   RecalculationForce(true);
 }
 
@@ -785,6 +856,17 @@ Configuration::~Configuration()
   WriteStyles();
 }
 
+/**
+  wxWidgets currently doesn't define such a function. But we can do the following:
+  - Test if any of these characters has the width or height 0 (or even less)
+    which clearly indicates that this char doesn't exist.
+  - Test if any two of the characters are equal when rendered as bitmaps:
+    If they are we most probably didn't get render real characters but rather
+    render placeholders for characters.
+
+  As these might be costly operations it is important to cache the result
+  of this function.
+ */
 bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
 {
   wxASSERT(!chars.empty());
@@ -881,33 +963,26 @@ wxString Configuration::MaximaDefaultLocation()
   return Dirstructure::Get()->MaximaDefaultLocation();
 }
 
-void Configuration::ReadStyles(wxString file)
+void Configuration::ReadStyles(const wxString &file)
 {
-  wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
-    config = wxConfig::Get();
-  else
+  std::unique_ptr<wxFileInputStream> stream;
+  std::unique_ptr<wxFileConfig> fileConfig;
+  if (!file.empty())
   {
-    wxFileInputStream str(file);
-    config = new wxFileConfig(str);
+    stream.reset(new wxFileInputStream(file));
+    fileConfig.reset(new wxFileConfig(wxT("wxMaxima"), {}, file));
   }
+  wxConfigBase *config = fileConfig ? fileConfig.get() : wxConfig::Get();
   
-  // Font
-  config->Read(wxT("Style/Default/Style/Text/fontname"), &m_fontName);
+  ConfigRead(*config, &m_fontName);
+  ConfigRead(*config, &m_mathFontName);
+  ConfigRead(*config, &m_mathFontSize);
+
 #ifdef __WXOSX_MAC__
   if (m_fontName.IsEmpty())
-  {
-    m_fontName = "Monaco";
-  }
-#endif
-
-  config->Read(wxT("mathfontsize"), &m_mathFontSize);
-  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
-#ifdef __WXOSX_MAC__
+    m_fontName = wxT("Monaco");
   if (m_mathFontName.IsEmpty())
-  {
-    m_mathFontName = "Monaco";
-  }
+    m_mathFontName = wxT("Monaco");
 #endif
   
   m_styles[TS_DEFAULT].Read(config, "Style/Default/");
@@ -950,22 +1025,20 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
-
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(wxString file)
+void Configuration::WriteStyles(const wxString &file)
 {
-  wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
-    config = wxConfig::Get();
-  else
-    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+  std::unique_ptr<wxFileConfig> fileConfig;
+  if (!file.empty())
+    fileConfig.reset(new wxFileConfig(wxT("wxMaxima"), {}, file));
 
-  // Font
-  config->Write("Style/Default/Style/Text/fontname", m_fontName);
-  config->Write(wxT("mathfontsize"), m_mathFontSize);
-  config->Write("Style/Math/fontname", m_mathFontName);
+  wxConfigBase *config = fileConfig ? fileConfig.get() : wxConfig::Get();
+
+  ConfigWrite(*config, &m_fontName);
+  ConfigWrite(*config, &m_mathFontSize);
+  ConfigWrite(*config, &m_mathFontName);
   
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
@@ -1006,11 +1079,9 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
-  if(file != wxEmptyString)
-  {
-    config->Flush();
-    delete config;
-  }
+
+  if (fileConfig)
+    fileConfig->Flush();
 }
 
 wxFontWeight Configuration::IsBold(long st) const
@@ -1073,6 +1144,16 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
       newBrightness * color.Blue() / maxOldCol
       );
   }
+}
+
+bool Configuration::HasTeXFonts()
+{
+  return
+    wxFontEnumerator::IsValidFacename(m_fontCMEX = CMEX10) &&
+    wxFontEnumerator::IsValidFacename(m_fontCMSY = CMSY10) &&
+    wxFontEnumerator::IsValidFacename(m_fontCMRI = CMR10) &&
+    wxFontEnumerator::IsValidFacename(m_fontCMMI = CMMI10) &&
+    wxFontEnumerator::IsValidFacename(m_fontCMTI = CMTI10);
 }
 
 wxString Configuration::m_maximaLocation_override;

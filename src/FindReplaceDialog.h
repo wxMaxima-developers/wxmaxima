@@ -39,7 +39,7 @@
 class FindReplaceDialog : public wxDialog
 {
 public:
-  FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title,
+  FindReplaceDialog(wxWindow *parent, Configuration **config, wxFindReplaceData *data, const wxString &title,
                     int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   //! Returns the standard wxFindReplaceData data structure
