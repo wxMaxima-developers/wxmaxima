@@ -122,14 +122,14 @@ Besides completing a file name, an unit name or the current command’s or varia
 
 #### Greek characters
 
-Computers traditionally store characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus _etc_.) of nearly any given language can fit within that limit.
+Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus _etc_.) of nearly any given language can fit within that limit.
 
-For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.
+For most countries the codepage of 256 characters that has been chosen, does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation [Unicode](https://home.unicode.org/) has been invented: An encoding that makes english text work like normal, but to use much more than 256 characters.
 
-_Maxima_ allows for unicode characters if it was compiled using a Lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
+_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that either supports unicode or that doesn't care about the font encoding. As at least one of this is likely to be true. _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
 * A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
-* Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:
+* Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:
 
 ~~~
 a alpha    i iota      r rho
