@@ -39,6 +39,69 @@
 #include <wx/fileconf.h>
 #include <type_traits>
 
+#define WITH_CFG_LIST2 \
+  /**/ \
+  CFG_OBSERVER(Documentclass, wxString, wxT("article")) \
+  CFG_OBSERVER(DocumentclassOptions, wxString, wxT("fleqn")) \
+  CFG_OBSERVER(FontName, wxString, {}) \
+  CFG_OBSERVER(MathFontName, wxString, {}) \
+  CFG_OBSERVER(MathJaXURL_User, wxString, Configuration::MathJaXURL_Auto()) \
+  CFG_OBSERVER(MaximaParameters, wxString, {}) \
+  CFG_OBSERVER(MaximaUserLocation, wxString, Configure::InitLocation()) \
+  CFG_OBSERVER(SymbolPaneAdditionalChars, wxString, wxT("Øü§")) \
+  /**/ \
+  CFG_OBSERVER(PrintScale, double, 1.0) \
+  CFG_OBSERVER(ZoomFactor, double, 1.0) \
+  /**/ \
+  CFG_OBSERVER(DefaultFontSize, long, 12) \
+  CFG_OBSERVER(DefaultPort, long, 49152) \
+  CFG_OBSERVER(DisplayedDigits, long, 100)/**/ \
+  CFG_OBSERVER(LabelWidth, long, 4) \
+  CFG_OBSERVER(Language, long, wxLANGUAGE_DEFAULT) \
+  CFG_OBSERVER(MathFontSize, long, 12) \
+  CFG_OBSERVER(MaxGnuplotMegabytes, long, 12) \
+  /**/ \
+  CFG_OBSERVER(AutoSubscript, AutoSubscript, AutoSubscript::integer_or_letter) \
+  CFG_OBSERVER(AutoWrap, AutoWrap, AutoWrap::text_and_code) \
+  CFG_OBSERVER(FindFlags, wxFindReplaceFlags, wxFindReplaceFlags(wxFR_DOWN | wxFR_MATCHCASE)) \
+  CFG_OBSERVER(HTMLequationFormat, HtmlExportFormat, HtmlExportFormat::mathJax_TeX) \
+  CFG_OBSERVER(LabelChoice, ShowLabels, ShowLabels::prefer_user) \
+  CFG_OBSERVER(ShowLength, bool, ShowLength::not_extremely_long) \
+  CFG_OBSERVER(AbortOnError, bool, true) \
+  CFG_OBSERVER(AntiAliasLines, bool, true) \
+  CFG_OBSERVER(AutodetectMaxima, bool, true) \
+  CFG_OBSERVER(AutoIndent, bool, true) \
+  CFG_OBSERVER(AutoSaveAsTempFile, bool, false)/**/ \
+  CFG_OBSERVER(ChangeAsterisk, bool, true) \
+  CFG_OBSERVER(CopyBitmap, bool, false) \
+  CFG_OBSERVER(CopyEMF, bool, false) \
+  CFG_OBSERVER(CopyMathML, bool, true) \
+  CFG_OBSERVER(CopyMathMLHTML, bool, false) \
+  CFG_OBSERVER(CopyRTF, bool, true) \
+  CFG_OBSERVER(CopySVG, bool, true) \
+  CFG_OBSERVER(EnterEvaluates, bool, false) \
+  CFG_OBSERVER(FixReorderedIndices, bool, true) \
+  CFG_OBSERVER(GreekSidebar_ShowLatinLookalikes, bool, false) \
+  CFG_OBSERVER(GreekSidebar_Show_mu, bool, false) \
+  CFG_OBSERVER(HideBrackets, bool, true) \
+  CFG_OBSERVER(HidemultiplicationSign, bool, true) \
+  CFG_OBSERVER(IndentMaths, bool, true) \
+  CFG_OBSERVER(InsertAns, bool, false) \
+  CFG_OBSERVER(InvertBackground, bool, false) \
+  CFG_OBSERVER(KeepPercent, bool, true) \
+  CFG_OBSERVER(Latin2Greek, bool, false) \
+  CFG_OBSERVER(MatchParens, bool, true) \
+  CFG_OBSERVER(MathJaXURL_UseUser, bool, false) \
+  CFG_OBSERVER(NotifyIfIdle, bool, true) \
+  CFG_OBSERVER(OfferKnownAnswers, bool, true) \
+  CFG_OBSERVER(OpenHCaret, bool, false) \
+  CFG_OBSERVER(PrintBrackets, bool, false) \
+  CFG_OBSERVER(RestartOnReEvaluation, bool, true) \
+  CFG_OBSERVER(TeXFonts, bool, Configuration::HasTeXFonts()) \
+  CFG_OBSERVER(TocShowsSectionNumbers, bool, false) \
+  CFG_OBSERVER(UseSVG, bool, false) \
+  CFG_OBSERVER(UseUnicodeMaths, bool, true) \
+
 using enum_config_type = int;
 
 template <typename T>

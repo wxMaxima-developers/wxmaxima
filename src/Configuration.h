@@ -70,6 +70,155 @@
 #define LIBERTINE8 "LinLibertine_RZah.ttf"
 #define LIBERTINE9 "LinLibertine_RZIah.ttf"
 
+//! The type of the AutoSubscript configuration entry
+enum class AutoSubscript
+{
+  never = 0,
+  integer_or_letter = 1,
+  all_var_names = 2
+};
+
+//! The type of the AutoWrap configuration entry
+enum class AutoWrap
+{
+  no = 0,
+  text = 1,
+  code = 2,          // reserved but not implemented
+  text_and_code = 3, // reserved but not implemented
+};
+
+//! The type of the HtmlExportFormat configuration entry
+//! The export formats we support for HTML equations
+enum class HtmlExportFormat
+{
+  mathJaX_TeX = 0,
+  bitmap = 1,
+  mathML_mathJaX = 2,
+  svg = 3
+};
+
+//! The type of the ShowLabels configuration entry
+enum class ShowLabels
+{
+  automatic = 0,
+  prefer_user = 1,
+  useronly = 2,
+  none = 3
+};
+
+//! The type of the ShowLength configuration entry
+enum class ShowLength
+{
+  no = 0,
+  not_very_long = 1,
+  not_extremely_long = 2,
+  yes = 3
+};
+
+/*! A list of all configuration values and their types
+ *
+ * The list should be ordered in descending order of object sizes,
+ * to minimize alignment padding in the Configuration object.
+ * The entries should be sorted alphabetically for ease of maintenance.
+ *
+ * To use the list, define the macro CFG_(name, type) that uses
+ * the information, and invoke this macro. Don't forget to undefine CFG_ to prevent
+ * clashes.
+ */
+#define WITH_CFG_LIST \
+  /* wxStrings */ \
+  CFG_(Documentclass, wxString,) \
+  CFG_(DocumentclassOptions, wxString,) \
+  CFG_(FontName, wxString,) \
+  CFG_(MathFontName, wxString,) \
+  CFG_(MathJaXURL_User, wxString,) \
+  CFG_(MaximaParameters, wxString,) \
+  CFG_(MaximaUserLocation, wxString,) \
+  CFG_(SymbolPaneAdditionalChars, wxString,) \
+  /* doubles */ \
+  CFG_(PrintScale, double,) \
+  CFG_(ZoomFactor, double,) \
+  /* longs (may be the size of int) */ \
+  CFG_(DefaultFontSize, long,) \
+  CFG_(DefaultPort, long,) \
+  CFG_(DisplayedDigits, long,) \
+  CFG_(LabelWidth, long,) \
+  CFG_(Language, long,) \
+  CFG_(MathFontSize, long,) \
+  CFG_(MaxGnuplotMegabytes, long,) \
+  /* enumerated types (size of int or smaller) */ \
+  CFG_(AutoSubscript, enum AutoSubscript,) \
+  CFG_(AutoWrap, enum AutoWrap,) \
+  CFG_(FindFlags, wxFindReplaceFlags,) \
+  CFG_(HTMLequationFormat, enum HtmlExportFormat,) \
+  CFG_(LabelChoice, enum ShowLabels,) \
+  /* bools */ \
+  CFG_(ShowLength, bool,) \
+  CFG_(AbortOnError, bool,) \
+  CFG_(AntiAliasLines, bool,) \
+  CFG_(AutodetectMaxima, bool,) \
+  CFG_(AutoIndent, bool,) \
+  CFG_(AutoSaveAsTempFile, bool,) \
+  CFG_(ChangeAsterisk, bool,) \
+  CFG_(CopyBitmap, bool,) \
+  CFG_(CopyEMF, bool,) \
+  CFG_(CopyMathML, bool,) \
+  CFG_(CopyMathMLHTML, bool,) \
+  CFG_(CopyRTF, bool,) \
+  CFG_(CopySVG, bool,) \
+  CFG_(EnterEvaluates, bool,) \
+  CFG_(FixReorderedIndices, bool,) \
+  CFG_(GreekSidebar_ShowLatinLookalikes, bool,) \
+  CFG_(GreekSidebar_Show_mu, bool,) \
+  CFG_(HideBrackets, bool,) \
+  CFG_(HidemultiplicationSign, bool,) \
+  CFG_(IndentMaths, bool,) \
+  CFG_(InsertAns, bool,) \
+  CFG_(InvertBackground, bool,) \
+  CFG_(KeepPercent, bool,) \
+  CFG_(Latin2Greek, bool,) \
+  CFG_(MatchParens, bool,) \
+  CFG_(MathJaXURL_UseUser, bool,) \
+  CFG_(NotifyIfIdle, bool,) \
+  CFG_(OfferKnownAnswers, bool,) \
+  CFG_(OpenHCaret, bool,) \
+  CFG_(PrintBrackets, bool,) \
+  CFG_(RestartOnReEvaluation, bool,) \
+  CFG_(TeXFonts, bool,) \
+  CFG_(TocShowsSectionNumbers, bool,) \
+  CFG_(UseSVG, bool,) \
+  CFG_(UseUnicodeMaths, bool,) \
+
+
+//! An enumeration of all configuration entries
+enum class CFG
+{
+#define CFG_(name, type, comment) name,
+  WITH_CFG_LIST
+#undef CFG_
+};
+
+template <typename T> struct CFGTypes
+{
+  using getter_output = T;
+  using setter_input = T;
+};
+
+template <> struct CFGTypes<wxString>
+{
+  using getter_output = const wxString &;
+  using setter_input = const wxString &;
+};
+
+#if 0
+template <CFG> struct CFGTraits;
+
+#define CFG_(name, type) \
+  template <> struct CFGTraits<CFG::name> { using value_type = type; };
+  WITH_CFG_LIST
+#undef CFG_
+#endif
+
 /*! The configuration storage for the current worksheet.
 
   Caching the information here means we don't need to search for the configuration
@@ -85,23 +234,6 @@
 class Configuration final
 {
 public:
-  //! The export formats we support for HTML equations
-  enum htmlExportFormat
-  {
-    mathJaX_TeX = 0,
-    bitmap = 1,
-    mathML_mathJaX = 2,
-    svg = 3
-  };
-
-  enum showLabels
-  {
-    labels_automatic = 0,
-    labels_prefer_user = 1,
-    labels_useronly = 2,
-    labels_none = 3
-  };
-
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
@@ -138,24 +270,35 @@ public:
   //
   // Stored and Cached Configuration Settings
   // Those settings are retained in the configuration file or registry.
+  // Keep the additional getters/setters in alphabetic order.
+  //
+
+#define CFG_(Name, Type, Description) \
+  typename CFGTypes<Type>::getter_output Name() const { return CRead(m_##Name); } \
+  void Name(typename CFGTypes<Type>::setter_input val) { CWrite(m_##Name, val); }
+  WITH_CFG_LIST
+#undef CFG_
+
+
+  // End of Stored Configuration Settings
+  //
+
   //
   // These entries should be kept in alphabetic order of the m_.... cache members.
 
-  bool GetAbortOnError() const            {return m_abortOnError;}
-  void SetAbortOnError(bool abortOnError) {CWrite(m_abortOnError, abortOnError);}
-  bool AntiAliasLines() const         {return m_antiAliasLines;}
-  void AntiAliasLines(bool antiAlias) {CWrite(m_antiAliasLines, antiAlias);}
-  //! Autodetect maxima's location? (If false the user-specified location is used)
-  bool AutodetectMaxima() const                {return m_autodetectMaxima;}
-  //! Autodetect maxima's location?
-  void AutodetectMaxima(bool autodetectmaxima) {CWrite(m_autodetectMaxima, autodetectmaxima);}
-  //! Do we want automatic indentation?
-  bool GetAutoIndent() const          {return m_autoIndent;}
+
+  /*! \fn bool Configuration::AutodetectMaxima() const
+   * \brief Autodetect maxima's location? (If false the user-specified location is used)
+   */
+  /*! \fn bool Configuration::
+  //! Do we want automatic indentation of long lines?
+  bool GetAutoIndent() const   {return CRead(m_autoIndent);}
   void SetAutoIndent(bool autoIndent) {CWrite(m_autoIndent, autoIndent);}
-  bool AutoSaveAsTempFile() const          {return m_autoSaveAsTempFile;}
+  //! Should autosave into a temp file instead of open file?
+  bool AutoSaveAsTempFile() const   {return CRead(m_autoSaveAsTempFile);}
   void AutoSaveAsTempFile(bool asTempFile) {CWrite(m_autoSaveAsTempFile, asTempFile);}
-  //! Get the worksheet this configuration storage is valid for
-  long GetAutosubscript_Num() const                {return m_autoSubscript;}
+  //! Which objects do we want to convert into subscripts if they occur after an underscore?
+  long GetAutosubscript_Num() const           {return CRead(m_autoSubscript);}
   void SetAutosubscript_Num(long autosubscriptnum) {CWrite(m_autoSubscript, autosubscriptnum);}
   const wxString &GetAutosubscript_string() const;
   //! Do we want to have automatic line breaks for text cells?
@@ -170,6 +313,11 @@ public:
      - 2: Automatic line breaks for text and code cells.
   */
   void SetAutoWrap(long autoWrap) {CWrite(m_autoWrap, autoWrap);};
+  /*! Replace a "*" by a centered dot?
+
+    Normally we ask the parser for this piece of information. But during recalculation
+    of widths while selecting text we don't know our parser.
+   */
   bool GetChangeAsterisk() const              {return m_changeAsterisk;}
   void SetChangeAsterisk(bool changeAsterisk) {CWrite(m_changeAsterisk, changeAsterisk);}
   bool CopyBitmap() const          {return m_copyBitmap;}
@@ -220,17 +368,21 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const      {return m_indentMaths;}
   void IndentMaths(bool indent) {CWrite(m_indentMaths, indent);}
+  //! Do we want to automatically insert new cells containing a "%" at the end of every command?
   bool GetInsertAns() const         {return m_insertAns;}
   void SetInsertAns(bool insertAns) {CWrite(m_insertAns, insertAns);}
   bool InvertBackground()            {return m_invertBackground;}
   void InvertBackground(bool invert) {CWrite(m_invertBackground, invert);}
   bool CheckKeepPercent() const {return m_keepPercent;}
   void KeepPercent(bool val)    {CWrite(m_keepPercent, val);}
+  //! The width of input and output labels [in chars]
   long GetLabelWidth() const {return m_labelWidth * 14;}
+  //! The number of the language wxMaxima uses.
   int  GetLanguage() const        {return m_language;}
   void SetLanguage(long language) {CWrite(m_language, language);}
   bool Latin2Greek() const           {return m_latin2greek;}
   void Latin2Greek(bool latin2greek) {CWrite(m_latin2greek, latin2greek);}
+  //! Do we want to automatically close parenthesis?
   bool GetMatchParens() const           {return m_matchParens;}
   void SetMatchParens(bool matchParens) {CWrite(m_matchParens, matchParens);}
   const wxString &MathJaXURL_User() const   {return m_mathJaxURL;}
@@ -249,6 +401,7 @@ public:
   void NotifyIfIdle(bool notify) {CWrite(m_notifyIfIdle, notify);}
   bool OfferKnownAnswers() const                 {return m_offerKnownAnswers;}
   void OfferKnownAnswers(bool offerKnownAnswers) {CWrite(m_offerKnownAnswers, offerKnownAnswers);}
+  //! Do we want to automatically open a new cell if maxima has finished evaluating its input?
   bool GetOpenHCaret() const          {return m_openHCaret;}
   void SetOpenHCaret(bool openHCaret) {CWrite(m_openHCaret, openHCaret);}
   //! Parameters to the maxima binary
@@ -258,6 +411,7 @@ public:
   //! Print the cell brackets [displayed left to each group cell showing its extend]?
   bool PrintBrackets() const     {return m_printBrackets;}
   void PrintBrackets(bool print) {CWrite(m_printBrackets, print);}
+  //! The scale for printing
   double PrintScale() const     {return m_printScale;}
   void PrintScale(double scale) {CWrite(m_printScale, scale);}
   bool RestartOnReEvaluation() const   {return m_restartOnReEvaluation;}
@@ -581,98 +735,17 @@ public:
   Style m_styles[NUMBEROFSTYLES];
 
 private:  
-  //
   // Configuration Settings Cache
-  // These values are cached from the configuration file/registry. They should not be
-  // accessed directly from outside - only via the setters/getters.
-  // All the values are initialized by the constructor per the configuration entry
-  // definitions - do not set any default values here, they'll be overwritten.
-  //
-  bool m_abortOnError;
-  bool m_antiAliasLines;
-  //! Autodetect maxima's location?
-  bool m_autodetectMaxima;
-  //! Automatically indent long lines?
-  bool m_autoIndent;
-  //! Should autosave into a temp file instead of open file?
-  bool m_autoSaveAsTempFile;
-  //! Which objects do we want to convert into subscripts if they occur after an underscore?
-  long m_autoSubscript;
-  //! Automatically wrap long lines?
-  long m_autoWrap;
-  /*! Replace a "*" by a centered dot?
+#define CFG_(Name, Type, Comment) Type m_##Name;
+  WITH_CFG_LIST
+#undef CFG_
+  // End of cache
 
-    Normally we ask the parser for this piece of information. But during recalculation
-    of widths while selecting text we don't know our parser.
-   */
-  bool m_changeAsterisk;
-  bool m_copyBitmap;
-  bool m_copyEMF;
-  bool m_copyMathML;
-  bool m_copyMathMLHTML;
-  bool m_copyRTF;
-  bool m_copySVG;
-  long m_defaultPort;
-  //! How many digits of a number we show by default?
-  long m_displayedDigits;
-  wxString m_documentclass;
-  wxString m_documentclassOptions;
-  bool m_enterEvaluates;
-  wxFindReplaceFlags m_findFlags;
-  bool m_fixReorderedIndices;
-  bool m_greekSidebar_ShowLatinLookalikes;
-  bool m_greekSidebar_Show_mu;
-  //! Hide brackets that are not under the pointer
-  bool m_hideBrackets;
-  bool m_hidemultiplicationsign;
-  htmlExportFormat m_htmlEquationFormat;
-  bool m_indentMaths;
-  //! Do we want to automatically insert new cells containing a "%" at the end of every command?
-  bool m_insertAns;
-  bool m_invertBackground;
-  bool m_keepPercent;
-  //! The width of input and output labels [in chars]
-  long m_labelWidth;
-  //! The number of the language wxMaxima uses.
-  long m_language;
-  bool m_latin2greek;
-  //! Do we want to automatically close parenthesis?
-  bool m_matchParens;
-  wxString m_mathJaxURL;
-  bool m_mathJaxURL_UseUser;
-  long m_maxGnuplotMegabytes;
-  wxString m_maximaUserLocation;
-  //! Notify the user if maxima is idle
-  bool m_notifyIfIdle;
-  bool m_offerKnownAnswers;
-  //! Do we want to automatically open a new cell if maxima has finished evaluating its input?
-  bool m_openHCaret;
-  wxString m_maximaParameters;
-  //! Print the cell brackets [displayed left to each group cell showing its extend]?
-  bool m_printBrackets;
-  //! The scale for printing
-  double m_printScale;
-  bool m_restartOnReEvaluation;
-  showLabels m_showLabelChoice;
-  long m_showLength;
-  wxString m_fontName;
-  wxString m_mathFontName;
-  long m_mathFontSize;
-  wxString m_symbolPaneAdditionalChars;
-  bool m_TOCshowsSectionNumbers;
-  bool m_TeXFonts;
-  bool m_useSVG;
-  bool m_useUnicodeMaths;
-  double m_zoomFactor;
-
-  //
-  // End of cached entries
   // Start of entries used in definition initialization
 
-  // Used by to initialize m_texFonts via HasTeXFonts()
+  //! Used by to initialize m_texFonts via HasTeXFonts()
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
 
-  //
   // End of entries used in definition initalization
 
   //! A definition of a configuration setting
@@ -686,6 +759,11 @@ private:
 
   //! Returns the setting definition for a given cache entry, or null if not found.
   SettingDefinition *LookupDef(const void *cache);
+
+  //! Reads the value of a given cache entry
+  template <typename T>
+  T CRead(T &field) const { return field; }
+  const wxString &CRead(const wxString &field) const { return field; }
 
   //! Writes a new value of a given cache entry
   template <typename T>
