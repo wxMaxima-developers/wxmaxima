@@ -577,7 +577,7 @@ protected:
       m_widths.clear();
     }
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
   //! Determines the size of a text snippet
   wxSize GetTextSize(wxString const &text);
   //! Mark this cell as "Automatically answer questions".
