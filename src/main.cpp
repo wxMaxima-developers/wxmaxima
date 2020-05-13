@@ -497,6 +497,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
   }
 }
 
+// cppcheck-suppress unusedFunction
 void MyApp::MacNewFile()
 {
   wxWindow *frame = GetTopWindow();
@@ -504,6 +505,7 @@ void MyApp::MacNewFile()
     NewWindow();
 }
 
+// cppcheck-suppress unusedFunction
 void MyApp::MacOpenFile(const wxString &file)
 {
   NewWindow(file);

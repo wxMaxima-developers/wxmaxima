@@ -798,14 +798,19 @@ private:
 
 #endif
 
+#ifdef __WMXAC__
+#define WX_MAC_OVERRIDE override
+#else
+#define WX_MAC_OVERRIDE
+#endif
 
 // cppcheck-suppress noConstructor
 class MyApp : public wxApp
 {
 public:
-  virtual bool OnInit();
-  virtual int OnRun();
-  virtual int OnExit();
+  bool OnInit() override;
+  int OnRun() override;
+  int OnExit() override;
   wxLocale m_locale;
 
   /*! Create a new window
@@ -828,10 +833,10 @@ public:
 
   void OnFileMenu(wxCommandEvent &ev);
 
-  virtual void MacNewFile();
   void BecomeLogTarget();
 
-  virtual void MacOpenFile(const wxString &file);
+  void MacNewFile() WX_MAC_OVERRIDE;
+  void MacOpenFile(const wxString &file) WX_MAC_OVERRIDE;
 
 private:
   //! The name of the config file. Empty = Use the default one.

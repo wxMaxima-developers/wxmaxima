@@ -79,6 +79,7 @@ wxSize OutCommon::GetScaledSize() const
   return {w, h};
 }
 
+// cppcheck-suppress unusedFunction
 wxSize OutCommon::GetInvScaledSize() const
 {
   int w = std::lround(m_size.x / m_scale);
@@ -297,6 +298,7 @@ OutCommon::DataObject::DataObject(const wxDataFormat &format, const wxMemoryBuff
     m_databuf(0)
     // We can't point m_databuf to data here, since TakeData calls Free() and will ruin it!
 {
+  // cppcheck-suppress useInitializationList
   m_databuf = data;
 }
 
@@ -311,6 +313,7 @@ size_t OutCommon::DataObject::GetDataSize() const
   return m_databuf.GetDataLen();
 }
 
+// cppcheck-suppress unusedFunction
 void OutCommon::DataObject::Free()
 {
   m_databuf.Clear();
