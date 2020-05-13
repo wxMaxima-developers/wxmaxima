@@ -242,12 +242,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>Окрім доповнення, назви файла, назви модуля або назви поточної команди чи змінної, засіб автоматичного доповнення може показувати шаблони для більшості команд, вказуючи тип (і значення) параметрів, які очікує отримати відповідна програма. Щоб задіяти цю можливість, натисніть комбінацію клавіш <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>ПРОБІЛ</kbd> або виберіть відповідний пункт меню (Комірка/Показати шаблон).</p>
 <h4 id="грецькі-літери"><span class="header-section-number">1.2.5.1</span> Грецькі літери</h4>
-<p>Комп’ютери традиційно зберігають символи у форматі 8-бітових значень. Це уможливлює існування наборів, що складаються лише із 256 різних символів. У такий набір може бути включено усі літери, цифри та символи керування (завершення передавання, кінець рядка, лінії та кутики для малювання меню <em>тощо</em>) майже будь-якої європейської мови.</p>
-<p>Втім, у більшості мов до вибраної кодової сторінки із 256 символів не можна включити додаткові символи, зокрема літери грецької абетки, які широко використовуються у математичних формулах. Щоб подолати обмеження подібного типу, було винайдено Юнікод — кодування, яке працює для латиниці, але використовує символи, код яких є числом, що не вкладається до 8 бітів.</p>
-<p><em>Maxima</em> уможливлює використання символів Юнікоду, якщо програму було зібрано за допомогою компілятора Lisp, у якому передбачено підтримку lisp або такого, який є нейтральним щодо кодування символів. Оскільки, хоча б одна з цих вимог, зазвичай, справджується, у <em>wxMaxima</em> реалізовано спосіб введення грецьких символів з клавіатури:</p>
+<p>Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
+<p>For most countries the codepage of 256 characters that has been chosen, does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation <a href="https://home.unicode.org/">Unicode</a> has been invented: An encoding that makes english text work like normal, but to use much more than 256 characters.</p>
+<p><em>Maxima</em> allows Unicode, if it was compiled using a Lisp compiler that either supports unicode or that doesn’t care about the font encoding. As at least one of this is likely to be true. <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
 <ul>
 <li>Грецьку літеру можна ввести натисканням клавіші <kbd>ESC</kbd> з наступним введенням назви символу грецької абетки.</li>
-<li>Крім того, можна натиснути <kbd>ESC</kbd>, ввести одну літеру і натиснути <kbd>ESC</kbd> ще раз. У цьому випадку прив’язка до літер є такою:</li>
+<li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
 </ul>
 <pre><code>a alpha    i iota      r rho
 b beta     k kappa     s sigma
@@ -316,7 +316,7 @@ perp          a &quot;perpendicular&quot; sign
 leadsto       a &quot;leads to&quot; sign
 -&gt;            a right arrow
 --&gt;           a long right arrow</code></pre>
-<p>Якщо спеціального символу немає у списку, ви можете ввести його як довільний символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер символу] <kbd>ESC</kbd>.</p>
+<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p>Отже, <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> дасть «a».</p>
 <p>Будь ласка, зауважте, що більшість цих символів (виключеннями є логічні символи) не мають спеціального значення у <em>Maxima</em> і тому можуть бути оброблені як звичайні символи. Якщо <em>Maxima</em> зібрано із Lisp, у якому не передбачено обробки символів Юнікоду, використання цих символів може призвести до показу повідомлення про помилку.</p>
 <h3 id="бічні-панелі"><span class="header-section-number">1.2.6</span> Бічні панелі</h3>

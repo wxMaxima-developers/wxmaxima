@@ -242,12 +242,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).</p>
 <h4 id="greek-characters"><span class="header-section-number">1.2.5.1</span> Greek characters</h4>
-<p>Computers traditionally store characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
-<p>For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.</p>
-<p><em>Maxima</em> allows for unicode characters if it was compiled using a Lisp compiler that either supports lisp or that doesn’t care about the font encoding. As at least one of this is likely to be true <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
+<p>Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
+<p>For most countries the codepage of 256 characters that has been chosen, does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation <a href="https://home.unicode.org/">Unicode</a> has been invented: An encoding that makes english text work like normal, but to use much more than 256 characters.</p>
+<p><em>Maxima</em> allows Unicode, if it was compiled using a Lisp compiler that either supports unicode or that doesn’t care about the font encoding. As at least one of this is likely to be true. <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
 <ul>
 <li>A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character’s name.</li>
-<li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
+<li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
 </ul>
 <pre><code>a alpha    i iota      r rho
 b beta     k kappa     s sigma
@@ -316,7 +316,7 @@ perp          a &quot;perpendicular&quot; sign
 leadsto       a &quot;leads to&quot; sign
 -&gt;            a right arrow
 --&gt;           a long right arrow</code></pre>
-<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.</p>
+<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
 <h3 id="side-panes"><span class="header-section-number">1.2.6</span> Side Panes</h3>

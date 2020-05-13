@@ -152,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li><a href="#häufig-gestellte-fragen"><span class="toc-section-number">4</span> Häufig gestellte Fragen</a><ul>
-<li><a href="#gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="toc-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</a></li>
+<li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
 <li><a href="#gibt-es-einen-dark-mode"><span class="toc-section-number">4.2</span> Gibt es einen Dark Mode?</a></li>
 <li><a href="#wxmaxima-hängt-in-der-ersten-minute-manchmal-einmal-für-mehrere-sekunden"><span class="toc-section-number">4.3</span> wxMaxima hängt in der ersten Minute manchmal einmal für mehrere Sekunden</a></li>
 </ul></li>
@@ -242,12 +242,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende Menüeintrag gewählt (Zelle/Zeige Parameter).</p>
 <h4 id="griechische-zeichen"><span class="header-section-number">1.2.5.1</span> Griechische Zeichen</h4>
-<p>Computer speichern Zeichen meist als 8-Bit-Werte, was maximal 256 unterschiedliche Typen von Zeichen erlaubt. Die meisten Sprachen nutzen inklusive Steuerzeichen, Ziffern und ein paar Zeichen, aus denen Graphiken zusammengesetzt werden können, weniger als dies.</p>
-<p>Für die Mehrzahl der Länder ist aus diesem Grund eine Codepage mit 256 Zeichen definiert worden, die allerdings in den meisten Ländern beispielsweise keine griechischen Buchstaben beinhaltet, die in der Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde Unicode entwickelt: Eine Weise, Zeichen auszudrücken, die englischen Text wie gewohnt arbeiten lässt, jedoch auch Zeichen zulässt, die mehr als 8 bits lang sind.</p>
-<p>Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt oder sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet <em>wxMaxima</em> eine Methode an, griechische Zeichen mit einer nicht-griechischen Tastatur einzugeben:</p>
+<p>Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
+<p>For most countries the codepage of 256 characters that has been chosen, does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation <a href="https://home.unicode.org/">Unicode</a> has been invented: An encoding that makes english text work like normal, but to use much more than 256 characters.</p>
+<p><em>Maxima</em> allows Unicode, if it was compiled using a Lisp compiler that either supports unicode or that doesn’t care about the font encoding. As at least one of this is likely to be true. <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
 <ul>
 <li>Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <kbd>ESC</kbd>-Taste gedrückt wird, und dann sein Name einzugeben begonnen wird.</li>
-<li>Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein Buchstabe und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die folgenden Zeichen unterstützt:</li>
+<li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
 </ul>
 <pre><code>a alpha    i iota      r rho
 b beta     k kappa     s sigma
@@ -316,7 +316,7 @@ perp          a &quot;perpendicular&quot; sign
 leadsto       a &quot;leads to&quot; sign
 -&gt;            a right arrow
 --&gt;           a long right arrow</code></pre>
-<p>Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden.</p>
+<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> erzeugt daher ein <code>a</code>.</p>
 <p>Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) haben keine direkte Entsprechung in <em>Maxima</em> und werden daher als normale Zeichen interpretiert. Falls <em>Maxima</em> eine Lisp-Version verwendet, die Unicode nicht unterstützt, kann das eine Fehlermeldung verursachen.</p>
 <h3 id="seitenleisten"><span class="header-section-number">1.2.6</span> Seitenleisten</h3>
@@ -696,7 +696,7 @@ leadsto       a &quot;leads to&quot; sign
 <a class="sourceLine" id="cb26-4" title="4">),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</a></code></pre></div>
 <hr />
 <h1 id="häufig-gestellte-fragen"><span class="header-section-number">4</span> Häufig gestellte Fragen</h1>
-<h2 id="gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="header-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</h2>
+<h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
 <p>Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (“Exportieren”-&gt;“Zusätzliche Zeilen für die LaTeX preamble”) angeben.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb27-1" title="1"></a>
 <a class="sourceLine" id="cb27-2" title="2"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</a></code></pre></div>

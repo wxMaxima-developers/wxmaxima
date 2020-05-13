@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-07 19:37+0200\n"
+"POT-Creation-Date: 2020-05-13 19:12+0200\n"
 "PO-Revision-Date: 2020-05-08 07:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -517,8 +517,15 @@ msgstr "Griechische Zeichen"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:126
+#, fuzzy
+#| msgid ""
+#| "Computers traditionally store characters in 8-bit values. This allows for "
+#| "a maximum of 256 different characters. All letters, numbers, and control "
+#| "symbols (end of transmission, end of string, lines and edges for drawing "
+#| "rectangles for menus _etc_.) of nearly any given language can fit within "
+#| "that limit."
 msgid ""
-"Computers traditionally store characters in 8-bit values. This allows for a "
+"Computers traditionally stored characters in 8-bit values. This allows for a "
 "maximum of 256 different characters. All letters, numbers, and control "
 "symbols (end of transmission, end of string, lines and edges for drawing "
 "rectangles for menus _etc_.) of nearly any given language can fit within "
@@ -531,12 +538,19 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:128
+#, fuzzy
+#| msgid ""
+#| "For most countries the codepage of 256 characters that has been chosen "
+#| "does not include things like Greek letters, though, that are frequently "
+#| "used in mathematics. To overcome this type of limitation Unicode has been "
+#| "invented: An encoding that makes english text work like normal, but to "
+#| "use characters whose keycode are more than 8 bits long."
 msgid ""
-"For most countries the codepage of 256 characters that has been chosen does "
+"For most countries the codepage of 256 characters that has been chosen, does "
 "not include things like Greek letters, though, that are frequently used in "
-"mathematics. To overcome this type of limitation Unicode has been invented: "
-"An encoding that makes english text work like normal, but to use characters "
-"whose keycode are more than 8 bits long."
+"mathematics. To overcome this type of limitation [Unicode](https://home."
+"unicode.org/) has been invented: An encoding that makes english text work "
+"like normal, but to use much more than 256 characters."
 msgstr ""
 "Für die Mehrzahl der Länder ist aus diesem Grund eine Codepage mit 256 "
 "Zeichen definiert worden, die allerdings in den meisten Ländern "
@@ -548,11 +562,17 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
+#, fuzzy
+#| msgid ""
+#| "_Maxima_ allows for unicode characters if it was compiled using a Lisp "
+#| "compiler that either supports lisp or that doesn't care about the font "
+#| "encoding. As at least one of this is likely to be true _wxMaxima_ "
+#| "provides a method of entering Greek characters using the keyboard:"
 msgid ""
-"_Maxima_ allows for unicode characters if it was compiled using a Lisp "
-"compiler that either supports lisp or that doesn't care about the font "
-"encoding. As at least one of this is likely to be true _wxMaxima_ provides a "
-"method of entering Greek characters using the keyboard:"
+"_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
+"either supports unicode or that doesn't care about the font encoding. As at "
+"least one of this is likely to be true. _wxMaxima_ provides a method of "
+"entering Greek characters using the keyboard:"
 msgstr ""
 "Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt "
 "oder sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, "
@@ -572,15 +592,21 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:133
+#, fuzzy
+#| msgid ""
+#| "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter "
+#| "and <kbd>ESC</kbd> again. In this case the following letters are "
+#| "supported:"
 msgid ""
-"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and "
-"<kbd>ESC</kbd> again. In this case the following letters are supported:"
+"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
+"two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
+"following letters are supported:"
 msgstr ""
 "Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein "
 "Buchstabe und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die "
 "folgenden Zeichen unterstützt:"
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:134
 #, fuzzy, no-wrap
 #| msgid ""
@@ -646,7 +672,7 @@ msgstr ""
 "Derselbe Mechanismus erlaubt es auch, einige andere mathematische Symbole "
 "einzugeben:"
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:155
 #, fuzzy, no-wrap
 #| msgid ""
@@ -805,8 +831,9 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:209
-#, no-wrap
-msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.\n"
+#, fuzzy, no-wrap
+#| msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.\n"
+msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
 msgstr "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden.\n"
 
 #. type: Plain text
@@ -895,7 +922,7 @@ msgstr ""
 "kollidieren, die in mathematischen Formeln vorkommen. Eines dieser Elemente "
 "sind Aufzählungen:"
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:230
 #, no-wrap
 msgid ""
@@ -923,7 +950,7 @@ msgstr ""
 msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
 msgstr "_wxMaxima_ erkennt Text, der mit einem \">\" beginnt, als ein Zitat:\n"
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:242
 #, no-wrap
 msgid ""
@@ -948,7 +975,7 @@ msgstr ""
 msgid "_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by the corresponding unicode sign:\n"
 msgstr "Die Text- und HTML-Ausgabe von _wxMaxima_ erkennen auch `=>` und ersetzen es durch das entsprechende Unicode-Symbol:\n"
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:252
 #, no-wrap
 msgid "cogito => sum.\n"
@@ -1073,29 +1100,17 @@ msgstr ""
 msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 msgstr "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 
-#. type: Code fence info string
-#: ../../info/wxmaxima.md:285 ../../info/wxmaxima.md:320
-#: ../../info/wxmaxima.md:380 ../../info/wxmaxima.md:403
-#: ../../info/wxmaxima.md:415 ../../info/wxmaxima.md:442
-#: ../../info/wxmaxima.md:455 ../../info/wxmaxima.md:474
-#: ../../info/wxmaxima.md:498 ../../info/wxmaxima.md:505
-#: ../../info/wxmaxima.md:517 ../../info/wxmaxima.md:534
-#: ../../info/wxmaxima.md:613 ../../info/wxmaxima.md:642
-#: ../../info/wxmaxima.md:695 ../../info/wxmaxima.md:729
-#: ../../info/wxmaxima.md:776 ../../info/wxmaxima.md:785
-#: ../../info/wxmaxima.md:813
-#, no-wrap
-msgid "maxima"
-msgstr "maxima"
-
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:285
 #, fuzzy, no-wrap
 msgid ""
 "\n"
 "read(\"test.mac\");\n"
 "\n"
-msgstr "\nread(\"test.mac\");\n\n"
+msgstr ""
+"\n"
+"read(\"test.mac\");\n"
+"\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:292
@@ -1216,14 +1231,17 @@ msgstr ""
 "Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt "
 "werden:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:320
 #, no-wrap
 msgid ""
 "\n"
 "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
 "\n"
-msgstr "\nwxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n\n"
+msgstr ""
+"\n"
+"wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
+"\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:326
@@ -1441,7 +1459,7 @@ msgstr ""
 "sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter "
 "bearbeitet. "
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:380
 #, no-wrap
 msgid ""
@@ -1523,7 +1541,7 @@ msgstr ""
 "`wxplot_size` definiert werden. Ihr Inhalt kann jederzeit gelesen oder "
 "geändert werden:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:403
 #, no-wrap
 msgid ""
@@ -1552,7 +1570,7 @@ msgstr ""
 "Wenn die Größe nur des aktuellen Diagramms geändert werden soll, erlaubt "
 "_Maxima_ dies auf die folgende Weise zu tun:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:415
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1676,7 +1694,7 @@ msgstr ""
 "annehmen soll. Darauf folgen die ganz normalen Argumente, die `wxdraw2d` "
 "akzeptiert:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:442
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1716,7 +1734,7 @@ msgstr ""
 "Für 3D-Diagramme ist dieselbe Funktionalität als `with_slider_draw3d` "
 "verfügbar, die auch rotierende 3D-Diagramme erstellen kann:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:455
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1775,7 +1793,7 @@ msgstr ""
 "Wenn es nur um die generelle Form der Kurve geht, reicht es oft, das Bild "
 "ein wenig zu bewegen, so, dass es von der Intuition erfasst werden kann:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:474
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1854,7 +1872,7 @@ msgstr ""
 "von _wxMaxima_ eingestellt werden. Um die Geschwindigkeit einer einzelnen "
 "Animation zu ändern, kann die Variable `wxanimate_framerate` geändert werden:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:498
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1880,7 +1898,7 @@ msgstr ""
 "wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende "
 "Beispiel scheitert daher:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:505
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1917,7 +1935,7 @@ msgstr ""
 "Wenn _Maxima_ explizit gebeten wird, den Wert einzusetzen, funktioniert der "
 "Befehl stattdessen:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:517
 #, fuzzy, no-wrap
 #| msgid ""
@@ -1967,7 +1985,7 @@ msgstr ""
 "Strenggenommen kein Feature von _wxMaxima_. Aber Maxima erlaubt auf vielen "
 "Systemen das folgende Beispiel von Mario Rodriguez auszuführen:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:534
 #, no-wrap
 msgid ""
@@ -2253,7 +2271,7 @@ msgstr ""
 "Das `.wxmx`-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es "
 "ist aber auch möglich, _Maxima_ anzuweisen, Bilder einzubauen:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:613
 #, fuzzy, no-wrap
 #| msgid "show_image(\"man.png\");"
@@ -2400,7 +2418,7 @@ msgstr ""
 "Tabellenform. Das abschließende `done` kann durch Verwendung eines `$` "
 "anstelle eines `;` unterdrückt werden."
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:642
 #, fuzzy, no-wrap
 #| msgid ""
@@ -2625,7 +2643,7 @@ msgstr ""
 "Normalerweise gibt _wxMaxima_ erst etwas aus, wenn die komplette Ausgabe "
 "steht. Das `disp`-Kommando wird hingegen sofort ausgeführt:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:695
 #, fuzzy, no-wrap
 #| msgid ""
@@ -2784,7 +2802,7 @@ msgstr ""
 "Wenn nichts anderes funktioniert, bietet Maxima die Möglichkeit an, alle "
 "bisherigen Befehle nochmals auszuführen:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:729
 #, fuzzy, no-wrap
 #| msgid "playback();"
@@ -2905,13 +2923,7 @@ msgstr ""
 "Wenn _Maxima_ mittels sbcl compiliert wurde, können die folgenden Befehle "
 "zur `.sbclrc` hinzugefügt werden:"
 
-#. type: Code fence info string
-#: ../../info/wxmaxima.md:760
-#, no-wrap
-msgid "lisp"
-msgstr "lisp"
-
-#. type: Plain text
+#. type: Fenced code block (lisp)
 #: ../../info/wxmaxima.md:760
 #, fuzzy, no-wrap
 #| msgid "    (setf sb-impl::*default-external-format* :utf-8)\n"
@@ -2954,7 +2966,7 @@ msgstr ""
 "Das Arbeitsblatt enthält png-Dateien. wxMaxima erlaubt dem User anzugeben, "
 "wo sie generiert werden sollen:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:776
 #, fuzzy, no-wrap
 #| msgid ""
@@ -2984,7 +2996,7 @@ msgstr ""
 "Wenn ein unterschiedliches Format benutzt wird, ist es einfacher, Bilder zu "
 "generieren und dann in das Arbeitsblatt zu importieren:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:785
 #, fuzzy, no-wrap
 #| msgid ""
@@ -3059,7 +3071,7 @@ msgstr "Kann ich das Seitenverhältnis des Plots angeben?"
 msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
 msgstr "Nicht direkt bei _Maxima_. Aber es gibt Gnuplot-Kommandos dafür:"
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:813
 #, fuzzy, no-wrap
 #| msgid ""
@@ -3090,8 +3102,9 @@ msgstr ""
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:826
-#, no-wrap
-msgid "Is there a way to make more text fit on a LaTeX page?"
+#, fuzzy, no-wrap
+#| msgid "Is there a way to make more text fit on a LaTeX page?"
+msgid "Is there a way to make more text fit on a pdfLaTeX page?"
 msgstr "Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?"
 
 #. type: Plain text
@@ -3100,13 +3113,7 @@ msgstr "Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?"
 msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgstr "Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (\"Exportieren\"->\"Zusätzliche Zeilen für die LaTeX preamble\") angeben.\n"
 
-#. type: Code fence info string
-#: ../../info/wxmaxima.md:830
-#, no-wrap
-msgid "latex"
-msgstr "latex"
-
-#. type: Plain text
+#. type: Fenced code block (latex)
 #: ../../info/wxmaxima.md:830
 #, fuzzy, no-wrap
 #| msgid "    \\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
@@ -3240,6 +3247,15 @@ msgid ""
 msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
 "Schrägstrich statt eines Minusses."
+
+#~ msgid "maxima"
+#~ msgstr "maxima"
+
+#~ msgid "lisp"
+#~ msgstr "lisp"
+
+#~ msgid "latex"
+#~ msgstr "latex"
 
 #, fuzzy
 #~| msgid "    load(draw);\n"

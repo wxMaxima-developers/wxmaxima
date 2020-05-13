@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-05-07 19:37+0200\n"
+"POT-Creation-Date: 2020-05-13 19:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -432,7 +432,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:126
 msgid ""
-"Computers traditionally store characters in 8-bit values. This allows for a "
+"Computers traditionally stored characters in 8-bit values. This allows for a "
 "maximum of 256 different characters. All letters, numbers, and control "
 "symbols (end of transmission, end of string, lines and edges for drawing "
 "rectangles for menus _etc_.) of nearly any given language can fit within "
@@ -442,20 +442,20 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:128
 msgid ""
-"For most countries the codepage of 256 characters that has been chosen does "
+"For most countries the codepage of 256 characters that has been chosen, does "
 "not include things like Greek letters, though, that are frequently used in "
-"mathematics. To overcome this type of limitation Unicode has been invented: "
-"An encoding that makes english text work like normal, but to use characters "
-"whose keycode are more than 8 bits long."
+"mathematics. To overcome this type of limitation [Unicode](https://home."
+"unicode.org/) has been invented: An encoding that makes english text work "
+"like normal, but to use much more than 256 characters."
 msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
 msgid ""
-"_Maxima_ allows for unicode characters if it was compiled using a Lisp "
-"compiler that either supports lisp or that doesn't care about the font "
-"encoding. As at least one of this is likely to be true _wxMaxima_ provides a "
-"method of entering Greek characters using the keyboard:"
+"_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
+"either supports unicode or that doesn't care about the font encoding. As at "
+"least one of this is likely to be true. _wxMaxima_ provides a method of "
+"entering Greek characters using the keyboard:"
 msgstr ""
 
 #. type: Bullet: '* '
@@ -468,11 +468,12 @@ msgstr ""
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:133
 msgid ""
-"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter and "
-"<kbd>ESC</kbd> again. In this case the following letters are supported:"
+"Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
+"two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
+"following letters are supported:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:134
 #, no-wrap
 msgid ""
@@ -501,7 +502,7 @@ msgid ""
 "symbols:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:155
 #, no-wrap
 msgid ""
@@ -560,7 +561,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:209
 #, no-wrap
-msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.\n"
+msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
 msgstr ""
 
 #. type: Plain text
@@ -630,7 +631,7 @@ msgid ""
 "with mathematical notation. One of this elements is bullet lists."
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:230
 #, no-wrap
 msgid ""
@@ -649,7 +650,7 @@ msgstr ""
 msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:242
 #, no-wrap
 msgid ""
@@ -666,7 +667,7 @@ msgstr ""
 msgid "_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by the corresponding unicode sign:\n"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block
 #: ../../info/wxmaxima.md:252
 #, no-wrap
 msgid "cogito => sum.\n"
@@ -772,22 +773,7 @@ msgstr ""
 msgid "![Batch image](./BatchImage.png){ id=img_BatchImage }"
 msgstr ""
 
-#. type: Code fence info string
-#: ../../info/wxmaxima.md:285 ../../info/wxmaxima.md:320
-#: ../../info/wxmaxima.md:380 ../../info/wxmaxima.md:403
-#: ../../info/wxmaxima.md:415 ../../info/wxmaxima.md:442
-#: ../../info/wxmaxima.md:455 ../../info/wxmaxima.md:474
-#: ../../info/wxmaxima.md:498 ../../info/wxmaxima.md:505
-#: ../../info/wxmaxima.md:517 ../../info/wxmaxima.md:534
-#: ../../info/wxmaxima.md:613 ../../info/wxmaxima.md:642
-#: ../../info/wxmaxima.md:695 ../../info/wxmaxima.md:729
-#: ../../info/wxmaxima.md:776 ../../info/wxmaxima.md:785
-#: ../../info/wxmaxima.md:813
-#, no-wrap
-msgid "maxima"
-msgstr ""
-
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:285
 #, no-wrap
 msgid ""
@@ -898,7 +884,7 @@ msgid ""
 "notation can be used that sets a variable’s value for one command only:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:320
 #, no-wrap
 msgid ""
@@ -1086,7 +1072,7 @@ msgid ""
 "just be left unevaluated."
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:380
 #, no-wrap
 msgid ""
@@ -1148,7 +1134,7 @@ msgid ""
 "of the following plots:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:403
 #, no-wrap
 msgid ""
@@ -1168,7 +1154,7 @@ msgid ""
 "way to change an attribute only for the current cell."
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:415
 #, no-wrap
 msgid ""
@@ -1254,7 +1240,7 @@ msgid ""
 "`wxdraw2d`:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:442
 #, no-wrap
 msgid ""
@@ -1275,7 +1261,7 @@ msgid ""
 "which allows for rotating 3d plots:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:455
 #, no-wrap
 msgid ""
@@ -1303,7 +1289,7 @@ msgid ""
 "intuition:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:474
 #, no-wrap
 msgid ""
@@ -1348,7 +1334,7 @@ msgid ""
 "animation is played back the variable `wxanimate_framerate` can be used:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:498
 #, no-wrap
 msgid ""
@@ -1365,7 +1351,7 @@ msgid ""
 "Therefore the following example will fail:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:505
 #, no-wrap
 msgid ""
@@ -1385,7 +1371,7 @@ msgid ""
 "works fine instead:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:517
 #, no-wrap
 msgid ""
@@ -1415,7 +1401,7 @@ msgid ""
 "from a post from Mario Rodriguez to the _Maxima_ mailing list:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:534
 #, no-wrap
 msgid ""
@@ -1658,7 +1644,7 @@ msgid ""
 "better to tell the file to load the image on evaluation:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:613
 #, no-wrap
 msgid ""
@@ -1776,7 +1762,7 @@ msgid ""
 "semicolon results in the same table along with a \"done\" statement."
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:642
 #, no-wrap
 msgid ""
@@ -1944,7 +1930,7 @@ msgid ""
 "_Maxima_ command to finish:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:695
 #, no-wrap
 msgid ""
@@ -2065,7 +2051,7 @@ msgstr ""
 msgid "If nothing else helps _Maxima_ contains a replay feature:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:729
 #, no-wrap
 msgid ""
@@ -2163,13 +2149,7 @@ msgid ""
 "your `.sbclrc`:"
 msgstr ""
 
-#. type: Code fence info string
-#: ../../info/wxmaxima.md:760
-#, no-wrap
-msgid "lisp"
-msgstr ""
-
-#. type: Plain text
+#. type: Fenced code block (lisp)
 #: ../../info/wxmaxima.md:760
 #, no-wrap
 msgid ""
@@ -2206,7 +2186,7 @@ msgid ""
 "they should be generated:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:776
 #, no-wrap
 msgid ""
@@ -2223,7 +2203,7 @@ msgid ""
 "then to import them into the worksheet again:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:785
 #, no-wrap
 msgid ""
@@ -2261,7 +2241,7 @@ msgstr ""
 msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
 msgstr ""
 
-#. type: Plain text
+#. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:813
 #, no-wrap
 msgid ""
@@ -2291,13 +2271,7 @@ msgstr ""
 msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgstr ""
 
-#. type: Code fence info string
-#: ../../info/wxmaxima.md:830
-#, no-wrap
-msgid "latex"
-msgstr ""
-
-#. type: Plain text
+#. type: Fenced code block (latex)
 #: ../../info/wxmaxima.md:830
 #, no-wrap
 msgid ""
