@@ -31,7 +31,6 @@
 #include <wx/regex.h>
 
 #include "EditorCell.h"
-#include "FontCache.h"
 #include "wxMaxima.h"
 #include "MarkDown.h"
 #include "wxMaximaFrame.h"
@@ -40,11 +39,8 @@
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
   Cell(parent, config, cellPointers),
-  m_text(text),
-  m_fontStyle(wxFONTSTYLE_NORMAL),
-  m_fontWeight(wxFONTWEIGHT_NORMAL)
+  m_text(text)
 {
-  m_nextToDraw = NULL;
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 
@@ -57,7 +53,6 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_oldSelectionEnd = -1;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
-  m_fontSize = -1;
   m_fontSize_Last = -1;
   m_positionOfCaret = 0;
   m_caretColumn = -1; // used when moving up/down between lines
@@ -66,7 +61,6 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_paren1 = m_paren2 = -1;
   m_isDirty = false;
   m_hasFocus = false;
-  m_underlined = false;
   m_saveValue = false;
   m_containsChanges = false;
   m_containsChangesCheck = false;
@@ -859,7 +853,7 @@ void EditorCell::Draw(wxPoint point)
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != wxMin(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start, end, TS_EQUALSSELECTION, m_fontSize);
+          MarkSelection(start, end, TS_EQUALSSELECTION, m_style.GetFontSize());
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -874,7 +868,7 @@ void EditorCell::Draw(wxPoint point)
       if (m_selectionStart >= 0)
         MarkSelection(wxMin(m_selectionStart, m_selectionEnd),
                       wxMax(m_selectionStart, m_selectionEnd),
-                      TS_SELECTION, m_fontSize);
+                      TS_SELECTION, m_style.GetFontSize());
 
       //
       // Matching parens - draw only if we don't have selection
@@ -888,7 +882,7 @@ void EditorCell::Draw(wxPoint point)
 #endif
         dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION)))); //highlight c.
 
-        wxPoint matchPoint = PositionToPoint(m_fontSize, m_paren1);
+        wxPoint matchPoint = PositionToPoint(m_style.GetFontSize(), m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         wxRect matchRect(matchPoint.x + 1,
@@ -896,7 +890,7 @@ void EditorCell::Draw(wxPoint point)
                          width - 1, height - 1);
         if (InUpdateRegion(matchRect))
           dc->DrawRectangle(CropToUpdateRegion(matchRect));
-        matchPoint = PositionToPoint(m_fontSize, m_paren2);
+        matchPoint = PositionToPoint(m_style.GetFontSize(), m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         matchRect = wxRect(matchPoint.x + 1,
                            matchPoint.y + Scale_Px(2) - m_center + 1,
@@ -1035,54 +1029,25 @@ void EditorCell::SetFont()
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize < 4)
-    m_fontSize = configuration->GetDefaultFontSize();
+  auto fontSize = Scale_Px(m_style.GetBaseFontSize());
+  if (fontSize < 4)
+    fontSize = configuration->GetDefaultFontSize();
+  m_style.SetFontSize(fontSize);
 
-  m_fontSize = Scale_Px(m_fontSize);
-
-  m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
   // ordinary cells in order to make transparent that this cell is special.
-  if(!m_autoAnswer)
-    m_fontStyle = configuration->IsItalic(m_textStyle);
-  else
-  {
-    if(configuration->IsItalic(m_textStyle) != wxFONTSTYLE_ITALIC)
-      m_fontStyle = wxFONTSTYLE_ITALIC;
-    else
-      m_fontStyle = wxFONTSTYLE_NORMAL;
-  }
-  m_fontWeight = configuration->IsBold(m_textStyle);
-  m_underlined = configuration->IsUnderlined(m_textStyle);
+  m_style.UnsetStyle(); // reset to base style italics setting
+  if (m_autoAnswer)
+    m_style.SetItalic(!m_style.IsItalic());
 
-  wxASSERT(m_fontSize >= 0);
-  if(m_fontSize < 4)
-    m_fontSize = 4;
-
-  wxFont font =
-    FontCache::GetAFont(wxFontInfo(m_fontSize)
-                          .Family(wxFONTFAMILY_MODERN)
-                          .FaceName(m_fontName)
-                          .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
-                          .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                          .Underlined(m_underlined));
+  wxFont font = m_style.GetFont();
   if (!font.IsOk())
   {
     wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
-    font =
-      FontCache::GetAFont(wxFontInfo(m_fontSize)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
-                            .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                            .Underlined(m_underlined));
+    m_style.UnsetFontName();
+    font = m_style.GetFont();
   }
-  if (!font.IsOk()) {
-    auto req = wxFontInfo(m_fontSize);
-    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-    font = FontCache::GetAFont(req);
-  }
-
+  // The font cache ensures that a valid font is always provided.
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc->SetFont(font);
@@ -1107,7 +1072,7 @@ void EditorCell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-  dc->SetTextForeground(configuration->GetColor(m_textStyle));
+  dc->SetTextForeground(m_style.GetColor());
 }
 
 wxString EditorCell::GetCurrentCommand()

@@ -216,9 +216,9 @@ void SubSupCell::Draw(wxPoint point)
     {
       wxPoint presub = point;
       presub.x += preWidth - m_preSubCell->GetFullWidth();
-      presub.y += m_baseCell->GetMaxDrop() +
-        m_preSubCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+      presub.y += m_baseCell->GetMaxDrop()
+                  + m_preSubCell->GetCenterList()
+                  - Scale_Px(.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_preSubCell->DrawList(presub);
     }
 
@@ -226,9 +226,10 @@ void SubSupCell::Draw(wxPoint point)
     {
       wxPoint presup = point;
       presup.x += preWidth - m_preSupCell->GetFullWidth();
-      presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList()
-        - m_preSupCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+      presup.y -= m_baseCell->GetCenterList()
+                  + m_preSupCell->GetHeightList()
+                  - m_preSupCell->GetCenterList()
+                  - Scale_Px(.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_preSupCell->DrawList(presup);
     }
 
@@ -238,16 +239,17 @@ void SubSupCell::Draw(wxPoint point)
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     if(m_postSubCell)
     {
-      in.y = point.y + m_baseCell->GetMaxDrop() +
-        m_postSubCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+      in.y = point.y + m_baseCell->GetMaxDrop()
+             + m_postSubCell->GetCenterList()
+             - Scale_Px(.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_postSubCell->DrawList(in);
     }
     if(m_postSupCell)
     {
-      in.y = point.y - m_baseCell->GetCenterList() - m_postSupCell->GetHeightList()
-        + m_postSupCell->GetCenterList() +
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+      in.y = point.y - m_baseCell->GetCenterList()
+             - m_postSupCell->GetHeightList()
+             + m_postSupCell->GetCenterList()
+             + Scale_Px(.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_postSupCell->DrawList(in);
     }
   }

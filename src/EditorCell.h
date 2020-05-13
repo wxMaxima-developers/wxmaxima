@@ -743,10 +743,6 @@ private:
   bool m_isDirty;
   bool m_displayCaret;
   bool m_hasFocus;
-  wxFontStyle m_fontStyle;
-  wxFontWeight m_fontWeight;
-  bool m_underlined;
-  wxString m_fontName;
   bool m_saveValue;
   //! true, if this function has changed since the last evaluation by maxima
   bool m_containsChanges;

@@ -8677,7 +8677,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     wxASSERT((pos.x>=0) && (pos.y >=0));
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
     // The popup menu appears half a character too high.
-    pos.y += m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT));
+    pos.y += m_configuration->Scale_Px(m_configuration->GetStyle(TS_TEXT).GetFontSize());
     m_autocompletePopup = new AutocompletePopup(this,editor,m_autocomplete,type,&m_autocompletePopup);
 
     // If necessary: Scroll right or down so that the pop-up is visible as a whole.

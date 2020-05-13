@@ -30,7 +30,6 @@
 
 #include "SumCell.h"
 #include "TextCell.h"
-#include "FontCache.h"
 
 SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
@@ -116,14 +115,7 @@ void SumCell::RecalculateWidths(int fontsize)
     {
       wxDC *dc = configuration->GetDC();
       double fontsize1 = Scale_Px(configuration->GetMathFontSize());
-
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Italic(false)
-                              .Bold(false)
-                              .Underlined(false)
-                              .FaceName(configuration->GetTeXCMEX()));
+      wxFont font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
 
       if (!font.IsOk())
         configuration->CheckTeXFonts(false);
@@ -188,20 +180,7 @@ void SumCell::Draw(wxPoint point)
       SetForeground();
       double fontsize1 = Scale_Px(configuration->GetMathFontSize());
       wxASSERT(fontsize1 > 0);
-
-      auto req = wxFontInfo(fontsize1)
-                   .Family(wxFONTFAMILY_MODERN)
-                   .Italic(false)
-                   .Bold(false)
-                   .Underlined(false)
-                   .FaceName(configuration->GetTeXCMEX());
-
-      wxFont font = FontCache::GetAFont(req);
-
-      if (!font.IsOk()) {
-        FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-        font = FontCache::GetAFont(req);
-      }
+      wxFont font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
 
       dc->SetFont(font);
 #if 0

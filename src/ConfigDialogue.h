@@ -60,7 +60,8 @@ enum
   style_font_family,
   language_id,
   save_id,
-  load_id
+  load_id,
+  checkbox_custom_font,
 };
 
 /*! The configuration dialog
@@ -117,31 +118,15 @@ private:
   public:
     //! The constructor
     ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
-      {
-#if defined (__WXOSX__)
-        m_size = 12;
-#else
-        m_size = 10;
-#endif
-        m_italic = false;
-        m_bold = false;
-        m_underlined = false;
-        Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint));
-      };
+    {
+      Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint));
+    };
 
     //! Sets all user-changable elements of style of the example at once.
-    void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
-      {
-        m_fgColor = fg_color;
-        m_italic = italic;
-        m_bold = bold;
-        m_underlined = underlined;
-        m_font = font;
-      }
-
-    //! Sets the font size of the example
-    void SetFontSize(int size)
-      { m_size = size; }
+    void SetStyle(const Style *style)
+    {
+      m_style = style;
+    }
 
   private:
     /*! Actually updates the formatting example
@@ -150,18 +135,10 @@ private:
     */
     void OnPaint(wxPaintEvent &event);
 
-    //! The foreground color of the currently selected item type
-    wxColour m_fgColor;
-    //! Is the currently selected item type displayed in italic?
-    bool m_italic;
-    //! Is the currently selected item type displayed in bold?
-    bool m_bold;
-    //! Is the currently selected item type displayed underlined?
-    bool m_underlined;
-    //! The font the currently selected item type is displayed with
-    wxString m_font;
-    //! The size of the characters of the currently selected item type
-    int m_size;
+    //! The style of the currently selected item type
+    const Style *m_style = &m_dummyStyle_;
+    //! The style used as a placeholder until actual style is set
+    const Style m_dummyStyle_;
   };
 
   /*! A rectangle showing the color of an item
@@ -309,8 +286,10 @@ protected:
   wxChoice *m_showUserDefinedLabels;
   wxButton *m_getFont;
   wxButton *m_getStyleFont;
+  wxCheckBox *m_customFontCB;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
+  wxStaticText *m_baseStyle;
   ColorPanel *m_styleColor;
   wxCheckBox *m_boldCB;
   wxCheckBox *m_italicCB;
@@ -324,7 +303,6 @@ protected:
   wxCheckBox *m_useUnicodeMaths;
   wxCheckBox *m_keepPercentWithSpecials;
   wxBookCtrlBase *m_notebook;
-  wxStaticText *m_mathFont;
   wxButton *m_getMathFont;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;

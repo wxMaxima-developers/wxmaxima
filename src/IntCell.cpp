@@ -27,7 +27,6 @@
 */
 
 #include "IntCell.h"
-#include "FontCache.h"
 #include "TextCell.h"
 
 #if defined __WXMSW__
@@ -131,22 +130,9 @@ void IntCell::RecalculateWidths(int fontsize)
     wxDC *dc = configuration->GetDC();
     double fontsize1 = Scale_Px(fontsize * 1.5);
     wxASSERT(fontsize1 > 0);
-
-    wxFont font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(false)
-                            .Bold(false)
-                            .Underlined(false)
-                            .FaceName(configuration->GetTeXCMEX()));
-    if (!font.IsOk())
-    {
-      auto req = wxFontInfo(fontsize1);
-      FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-      font = FontCache::GetAFont(req);
-    }
-
+    wxFont font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
     dc->SetFont(font);
+
     dc->GetTextExtent(wxT("\u005A"), &m_signWidth, &m_signHeight);
 
 #if defined __WXMSW__
@@ -167,21 +153,7 @@ void IntCell::RecalculateWidths(int fontsize)
     wxDC *dc = configuration->GetDC();
     double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
     wxASSERT(fontsize1 > 0);
-
-    wxFont font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Style(wxFONTSTYLE_NORMAL)
-                            .Weight(wxFONTWEIGHT_NORMAL)
-                            .Underlined(false)
-                            .FaceName(configuration->GetSymbolFontName()));
-
-    if(!font.IsOk())
-    {
-      auto req = wxFontInfo(fontsize1);
-      FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-      font = FontCache::GetAFont(req);
-    }
+    wxFont font = configuration->GetFont(TS_SYMBOL_DEFAULT, fontsize1);
 
     dc->SetFont(font);
     dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
@@ -247,16 +219,13 @@ void IntCell::Draw(wxPoint point)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      double fontsize1 = Scale_Px(m_fontSize * 1.5);
+      // TODO It needs to be checked whether it would make more sense to
+      // use the style's base size here: does anything set the cell-level font size
+      // for this cell? As it stands, this code replicates original functionality
+      // and uses the local size - which may be unset and thus revert to the base size.
+      double fontsize1 = Scale_Px(m_style.GetFontSize() * 1.5);
       wxASSERT(fontsize1 > 0);
-
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Italic(false)
-                              .Bold(false)
-                              .Underlined(false)
-                              .FaceName(configuration->GetTeXCMEX()));
+      wxFont font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
 
       if (!font.IsOk())
         configuration->CheckTeXFonts(false);
@@ -273,14 +242,7 @@ void IntCell::Draw(wxPoint point)
       double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
       int m_signWCenter = m_signWidth / 2;
       wxASSERT(fontsize1 > 0);
-
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Style(wxFONTSTYLE_NORMAL)
-                              .Weight(wxFONTWEIGHT_NORMAL)
-                              .Underlined(false)
-                              .FaceName(configuration->GetSymbolFontName()));
+      wxFont font = configuration->GetFont(TS_SYMBOL_DEFAULT, fontsize1);
 
       dc->SetFont(font);
       dc->DrawText(INTEGRAL_TOP,

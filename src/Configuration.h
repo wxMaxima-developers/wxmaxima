@@ -52,12 +52,6 @@
 #define MC_MIN_SIZE 6
 #define MC_MAX_SIZE 48
 
-#define CMEX10 "jsMath-cmex10"
-#define CMSY10 "jsMath-cmsy10"
-#define CMR10  "jsMath-cmr10"
-#define CMMI10 "jsMath-cmmi10"
-#define CMTI10 "jsMath-cmti10"
-
 #define LIBERTINE1 "LinLibertine_DRah.ttf"
 #define LIBERTINE2 "LinLibertine_I.ttf"
 #define LIBERTINE3 "LinLibertine_Mah.ttf"
@@ -175,7 +169,7 @@ public:
     if (ShowAutomaticLabels())
       return 0;
     else
-      return GetZoomFactor() * m_mathFontSize / 2;
+      return GetZoomFactor() * m_styles[TS_MATH_DEFAULT].GetFontSize() / 2;
   }
 
   long GetCellBracketWidth() const
@@ -238,19 +232,8 @@ public:
       else
         return m_dc;
     }
-  
-  wxString GetFontName(long type = TS_DEFAULT) const;
 
-  // cppcheck-suppress functionStatic
-  // cppcheck-suppress functionConst
-  wxString GetSymbolFontName() const;
-
-  wxFontWeight IsBold(long st) const;
-
-  wxFontStyle IsItalic(long st) const;
-
-  bool IsUnderlined(long st) const {return m_styles[st].Underlined();}
-
+public:
   //! Force a full recalculation?
   void RecalculationForce(bool force)
   {
@@ -335,6 +318,7 @@ public:
       RecalculationForce(true);
     m_clientWidth = width;
   }
+
   //! Has a font changed?
   bool FontChanged() const {return m_fontChanged;}
 
@@ -396,19 +380,11 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
-  long GetDefaultFontSize() const
-  { return m_styles[TS_DEFAULT].FontSize(); }
-
-  void SetDefaultFontSize(long fontSize)
-  {
-    m_styles[TS_DEFAULT].FontSize(fontSize);
-  }
-
   long GetMathFontSize() const
-  { return m_mathFontSize; }
-
-  void SetMathFontSize(double size)
-  { m_mathFontSize = size; }
+  { return GetStyle(TS_MATH_DEFAULT).GetFontSize(); }
+  
+  long GetDefaultFontSize() const
+  { return GetStyle(TS_DEFAULT).GetFontSize(); }
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
@@ -442,18 +418,14 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  long GetFontSize(TextStyle st) const
-  {
-    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].FontSize();
-    return 0;
-  }
+
+  const Style &GetStyle(TextStyle st) const { return m_styles[st]; }
+  Style &GetWritableStyle(TextStyle st) { return m_styles[st]; }
 
   /*! Reads the style settings 
 
     If a file name is given the settings are read from a file.
   */
-  
   void ReadStyles(wxString file = wxEmptyString);
   
   /*! Saves the style settings 
@@ -473,21 +445,6 @@ public:
 
   bool CheckKeepPercent() const
   { return m_keepPercent; }
-
-  wxString GetTeXCMRI() const
-  { return m_fontCMRI; }
-
-  wxString GetTeXCMSY() const
-  { return m_fontCMSY; }
-
-  wxString GetTeXCMEX() const
-  { return m_fontCMEX; }
-
-  wxString GetTeXCMMI() const
-  { return m_fontCMMI; }
-
-  wxString GetTeXCMTI() const
-  { return m_fontCMTI; }
 
   bool ShowCodeCells() const
   { return m_showCodeCells; }
@@ -802,14 +759,16 @@ public:
     }
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
+  const Style &Configuration::GetParenthesisStyle();
   drawMode GetParenthesisDrawMode();
+
   /*! Get the font for a given text style
 
     \param textStyle The text style to get the font for
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
-    font styles than the rest.
+    font styles than the rest. The default value is ignored
    */
-  wxFont GetFont(TextStyle textStyle, long fontSize) const;
+  const wxFont &GetFont(TextStyle textStyle, long fontSize = -1) const;
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -845,15 +804,12 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  wxString FontName()const {return m_fontName;}
-  void FontName(wxString name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
-  void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
-  wxString MathFontName()const {return m_mathFontName;}
+  Style DefaultStyle() const { return m_styles[TS_DEFAULT]; }
+  void SetDefaultStyle(const Style &style);
 
-  //! Update the list of fonts associated to the worksheet styles
-  void UpdateWorksheetFonts();
-  //! Get the font for the given worksheet style
-  wxFont GetWorksheetFont(TextStyle style) const;
+  Style MathStyle() const { return m_styles[TS_MATH_DEFAULT]; }
+  void SetMathStyle(const Style &style);
+
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(long autosubscriptnum)
@@ -880,8 +836,14 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
-  Style m_styles[NUMBEROFSTYLES];
+
+  static bool HasTeXFonts();
+  static const std::vector<wxString> &GetTeXFontNames();
+  static const std::vector<wxString> &GetLibertineFontNames();
+
 private:
+  Style m_styles[NUMBEROFSTYLES];
+
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -911,6 +873,7 @@ private:
   bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   drawMode m_parenthesisDrawMode;
+  Style m_parenthesisStyle;
   wxString m_workingdir;
 
   wxString m_maximaUserLocation;
@@ -952,9 +915,6 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  wxString m_fontName;
-  long m_mathFontSize;
-  wxString m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
@@ -964,7 +924,6 @@ private:
   bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
-  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   long m_clientWidth;
   long m_clientHeight;
   bool m_printing;

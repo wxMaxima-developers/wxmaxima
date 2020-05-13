@@ -28,7 +28,6 @@
  */
 
 #include "ParenCell.h"
-#include "FontCache.h"
 
 ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
@@ -45,7 +44,8 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_charWidth1 = 12;
   m_charHeight = 12;
   m_charHeight1 = 12;
-  m_fontSize = 10;
+  m_style.BaseOn((*config)->GetStyle(TS_FUNCTION));
+  m_style.SetFontSize(10);
   m_last1 = NULL;
   m_signTopHeight = 12;
   m_signHeight = 50;
@@ -115,14 +115,10 @@ void ParenCell::SetFont(int fontsize)
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  wxFontInfo req;
-  wxFont font;
   if(m_bigParenType == Configuration::ascii)
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, fontsize));
+    m_style.SetFontSize(fontsize);
   else
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize()));
-
-  wxASSERT(req.GetPointSize() > 0);
+    m_style.SetFontSize(configuration->GetMathFontSize());
 
   switch(m_bigParenType)
   {
@@ -131,30 +127,29 @@ void ParenCell::SetFont(int fontsize)
     break;
 
   case Configuration::assembled_unicode_fallbackfont:
-    req.FaceName(wxT("Linux Libertine"));
+    m_style.SetFontName(FontName(wxT("Linux Libertine"))); // TODO Use a centrally managed font
     break;
 
   case Configuration::assembled_unicode_fallbackfont2:
-    req.FaceName(wxT("Linux Libertine O"));
+    m_style.SetFontName(FontName(wxT("Linux Libertine O"))); // TODO Use a centrally managed font
     break;
 
   default:
     break;
   }
 
-  req.Italic(false).Underlined(false);
-  font = FontCache::GetAFont(req);
+  m_style.SetItalic(false);
+  m_style.SetUnderlined(false);
+
+  wxFont font = m_style.GetFont();
   if (!font.IsOk())
   {
-    req.Family(wxFONTFAMILY_MODERN)
-      .Italic(false)
-      .FaceName(wxEmptyString)
-      .Underlined(false);
-    font = FontCache::GetAFont(req);
+    m_style.UnsetFontName(); // TODO Such failures must be centrally handled
+    font = m_style.GetFont();
   }
 
-  if (!font.IsOk())
-    font = FontCache::GetAFont(*wxNORMAL_FONT);
+  // FIXME All this font detection business should be done within the style system,
+  // whenever the style is changed.
 
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())

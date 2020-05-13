@@ -618,7 +618,7 @@ class Cell
   virtual void SetType(CellType type);
 
   TextStyle GetStyle() const
-  { return m_textStyle; }
+  { return m_styleId; }
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
@@ -949,11 +949,7 @@ class Cell
   //! Define which Sell is the GroupCell this list of cells belongs to
   virtual void SetGroup(Cell *group);
   //! Sets the TextStyle of this cell
-  virtual void SetStyle(TextStyle style)
-  {
-    m_textStyle = style;
-    ResetData();
-  }
+  virtual void SetStyle(TextStyle style);
   //! Is this cell possibly output of maxima?
   bool IsMath() const;
 
@@ -1096,9 +1092,8 @@ protected:
   int m_maxCenter;
   int m_maxDrop;
   CellType m_type;
-  TextStyle m_textStyle;
-  //! The font size is smaller in super- and subscripts.
-  double m_fontSize;
+  Style m_style; //!< Note: the font size is smaller in super- and subscripts.
+  TextStyle m_styleId;
 
 protected:
   CellPointers *m_cellPointers;

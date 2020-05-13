@@ -268,26 +268,22 @@ bool MyApp::OnInit()
     if(dir != wxEmptyString)
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-  /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
-  wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");  
-  if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  wxFont::AddPrivateFont(fontPrefix + wxT(CMR10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMMI10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMMI10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMTI10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMTI10) + wxT(".ttf"));
+  auto const &fontDir = m_dirstruct.FontDir();
+
+  /* Add private jsMath fonts, if they exist */
+  for (auto &faceName : Configuration::GetTeXFontNames())
+  {
+    auto fontFile = wxString::Format("%s/%s.ttf", fontDir, faceName);
+    if (wxFileExists(fontFile)) wxFont::AddPrivateFont(fontFile);
+  }
 
   /* Add private Libertine fonts, if they exist */
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE1))) 
-	  wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE1));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE2))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE2));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE3))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE3));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE4))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE4));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE5))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE5));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE6))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE6));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE7))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE7));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE8))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE8));
-  if (wxFileExists(fontPrefix + wxT(LIBERTINE9))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE9));
+  for (auto &faceName : Configuration::GetLibertineFontNames())
+  {
+    auto fontFile = wxString::Format("%s/%s.ttf", fontDir, faceName);
+    if (wxFileExists(fontFile)) wxFont::AddPrivateFont(fontFile);
+  }
 #endif
   wxSetWorkingDirectory(oldWorkingDir);
 

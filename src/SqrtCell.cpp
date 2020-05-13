@@ -27,7 +27,6 @@
  */
 
 #include "SqrtCell.h"
-#include "FontCache.h"
 
 #define SIGN_FONT_SCALE 2.0
 
@@ -100,14 +99,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_signFontScale = 1.0;
     double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
-
-    wxFont font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(false)
-                            .Bold(false)
-                            .Underlined(false)
-                            .FaceName(configuration->GetTeXCMEX()));
+    wxFont font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
 
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -144,14 +136,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
     fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
-
-    font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(false)
-                            .Bold(false)
-                            .Underlined(false)
-                            .FaceName(configuration->GetTeXCMEX()));
+    font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
 
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -199,18 +184,11 @@ void SqrtCell::Draw(wxPoint point)
 
       in.x += m_signWidth;
 
-      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale);
+      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_style.GetFontSize() * m_signFontScale);
       wxASSERT(fontsize1 > 0);
-
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Italic(false)
-                              .Bold(false)
-                              .Underlined(false)
-                              .FaceName(configuration->GetTeXCMEX()));
-
+      wxFont font = configuration->GetFont(TS_TEX_CMEX, fontsize1);
       dc->SetFont(font);
+
       SetForeground();
       if (m_signType < 4)
       {

@@ -93,6 +93,15 @@ void SubCell::RecalculateHeight(int fontsize)
 
 void SubCell::Draw(wxPoint point)
 {
+  // TODO
+  // We must decide whether text Style should have a setting for font scaling at the
+  // point of use, and if so - how to get the scaled vs. unscaled size.
+  // As it stands, this cell seems to manage m_style.FontSize (former m_fontSize)
+  // as if it was unscaled. However, as an example, the EditorCell stores the scaled
+  // font in m_style, and uses m_style.BaseFontSize to rescale it. It would help to
+  // make that behavior consistent across all celss, and factor out as much of it as
+  // possible to prevent future divergence.
+
   Cell::Draw(point);
   if (DrawThisCell(point))
   {
@@ -105,7 +114,7 @@ void SubCell::Draw(wxPoint point)
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetCenterList() -
-           Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+           Scale_Px(.8 * m_style.GetFontSize() + MC_EXP_INDENT);
     m_indexCell->DrawList(in);
   }
 }

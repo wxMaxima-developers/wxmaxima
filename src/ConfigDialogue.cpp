@@ -22,18 +22,15 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-/*\file
+/*! \file
 
-  The C code for ConfigDialogue, the preferences dialog.
+  The definition of ConfigDialogue, the preferences dialog.
 */
-
-
 
 #include "ConfigDialogue.h"
 #include "BTextCtrl.h"
 #include "Cell.h"
 #include "Dirstructure.h"
-#include "FontCache.h"
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/fileconf.h>
@@ -492,11 +489,7 @@ void ConfigDialogue::SetProperties()
   else
     m_getStyleFont->Enable(false);
 
-  if (!wxFontEnumerator::IsValidFacename(CMEX10) ||
-      !wxFontEnumerator::IsValidFacename(CMSY10) ||
-      !wxFontEnumerator::IsValidFacename(CMR10)  ||
-      !wxFontEnumerator::IsValidFacename(CMMI10) ||
-      !wxFontEnumerator::IsValidFacename(CMTI10))
+  if (!Configuration::HasTeXFonts())
     m_useJSMath->Enable(false);
 }
 
@@ -1034,6 +1027,11 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
   return panel;
 }
 
+static wxString StyleLabel(const Style &style)
+{
+  return wxString::Format(wxT("%s (%.0f)"), style.GetFontName().GetAsString(), style.GetFontSize());
+}
+
 wxPanel *ConfigDialogue::CreateStylePanel()
 {
   Configuration *configuration = m_configuration;
@@ -1051,40 +1049,45 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxBoxSizer *hbox_sizer_3 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
-  wxStaticText *df = new wxStaticText(panel, -1, _("Documentation+Code font:"));
+  auto *docAndCodeFont = new wxStaticText(panel, -1, _("Documentation+Code font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
-  
-  if (m_configuration->FontName() != wxEmptyString)
-    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
 
-  m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
+  auto *style = &m_configuration->GetStyle(TS_DEFAULT);
+  if (!style->GetFontName().empty())
+    m_getFont->SetLabel(StyleLabel(*style));
+
+  auto *mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
-  if (!m_configuration->MathFontName().IsEmpty())
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
+  style = &m_configuration->GetStyle(TS_MATH_DEFAULT);
+  if (!style->GetFontName().empty())
+    m_getMathFont->SetLabel(StyleLabel(*style));
 
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   wxArrayString m_styleFor_choices;
-  for(int i = 0; i < NUMBEROFSTYLES; i++)
-    m_styleFor_choices.Add(m_configuration->m_styles[i].Name());
+  for(TextStyle i = {}; i < NUMBEROFSTYLES; i = TextStyle(i+1))
+    m_styleFor_choices.Add(m_configuration->GetStyle(i).GetName());
   m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), m_styleFor_choices,
                              wxLB_SINGLE);
   m_styleFor->Connect(wxEVT_LISTBOX,
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
                          NULL, this);
 
+  m_baseStyle = new wxStaticText(panel, -1, {}, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL | wxST_NO_AUTORESIZE);
+
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1));
+  m_customFontCB = new wxCheckBox(panel, checkbox_custom_font, _("Custom Font"));
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), 30),
                                 wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
-  m_boldCB = new wxCheckBox(panel, checkbox_bold, _("Bold"));
-  m_italicCB = new wxCheckBox(panel, checkbox_italic, _("Italic"));
-  m_underlinedCB = new wxCheckBox(panel, checkbox_underlined, _("Underlined"));
+  m_boldCB = new wxCheckBox(panel, checkbox_bold, _("Bold"), wxDefaultPosition, wxDefaultSize, wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
+  m_italicCB = new wxCheckBox(panel, checkbox_italic, _("Italic"), wxDefaultPosition, wxDefaultSize, wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
+  m_underlinedCB = new wxCheckBox(panel, checkbox_underlined, _("Underlined"), wxDefaultPosition, wxDefaultSize, wxCHK_3STATE | wxCHK_ALLOW_3RD_STATE_FOR_USER);
   m_examplePanel = new ExamplePanel(panel, -1, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), 60));
   m_loadStyle = new wxButton(panel, load_id, _("Load"));
   m_saveStyle = new wxButton(panel, save_id, _("Save"));
 
-  grid_sizer_1->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(docAndCodeFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(m_getFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer_1->Add(m_mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer_1->Add(mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(10, 10);
   grid_sizer_1->Add(m_useJSMath, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -1096,14 +1099,16 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   sb_sizer_1->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 0);
   vsizer->Add(sb_sizer_1, 1, wxALL | wxEXPAND, 3);
 
+  vbox_sizer->Add(m_baseStyle, 0, wxALL | wxALIGN_LEFT, 5);
   vbox_sizer->Add(m_styleColor, 0, wxALL | wxALIGN_CENTER, 5);
   vbox_sizer->Add(m_getStyleFont, 0, wxALL | wxALIGN_CENTER, 5);
+  vbox_sizer->Add(m_customFontCB, 0, wxALL | wxALIGN_CENTER, 5);
   hbox_sizer_1->Add(m_boldCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   hbox_sizer_1->Add(m_italicCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   hbox_sizer_1->Add(m_underlinedCB, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vbox_sizer->Add(hbox_sizer_1, 1, wxALL | wxEXPAND, 0);
   vbox_sizer->Add(m_examplePanel, 0, wxALL | wxEXPAND, 5);
-  hbox_sizer_2->Add(m_styleFor, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  hbox_sizer_2->Add(m_styleFor, 0, wxALL | wxEXPAND, 5);
   hbox_sizer_2->Add(vbox_sizer, 1, wxALL | wxEXPAND, 0);
   sb_sizer_2->Add(hbox_sizer_2, 0, wxALL | wxEXPAND, 0);
 
@@ -1157,8 +1162,8 @@ void ConfigDialogue::WriteSettings()
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
-  config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
-  config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
+  config->Write(wxT("fontSize"),  m_configuration->GetStyle(TS_DEFAULT).GetFontSize());
+  config->Write(wxT("mathFontsize"), m_configuration->GetStyle(TS_MATH_DEFAULT).GetFontSize());
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
@@ -1292,123 +1297,109 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
   }
 }
 
-void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
+void ConfigDialogue::OnMathBrowse(wxCommandEvent& WXUNUSED(event))
 {
-  wxFontInfo req;
-#ifdef __WXMSW__
-  req = wxFontInfo()
-    .Family(wxFONTFAMILY_MODERN)
-    .FaceName(wxT("Linux Libertine O"))
-    .Style(wxFONTSTYLE_NORMAL);
-  if (!FontCache::GetAFont(req).IsOk())
-#endif
-  req = wxFontInfo(m_configuration->GetMathFontSize())
-          .Family(wxFONTFAMILY_DEFAULT)
-          .Italic(false)
-          .Light(false)
-          .Underlined(false)
-          .FaceName(m_configuration->MathFontName());
-  if (!FontCache::GetAFont(req).IsOk())
-    req = FontInfo::GetFor(*wxNORMAL_FONT);
+  Style &style = m_configuration->GetWritableStyle(TS_MATH_DEFAULT);
+  wxFont math = style.GetFont();
 
-  wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req));
-  FontCache::Get().AddFont(math);
+  math = wxGetFontFromUser(this, math);
+  if (!math.Ok())
+    return;
 
-  if (math.Ok())
-  {
-    m_configuration->MathFontName(math.GetFaceName());
-    m_configuration->SetMathFontSize(math.GetPointSize());
-    math.SetPointSize(m_configuration->GetMathFontSize());
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
-  }
+  style.SetFontName(FontName(math.GetFaceName()));
+  style.SetFontSize(Style::GetFontSize(math));
+  m_configuration->SetMathStyle(style);
 
+  m_getMathFont->SetLabel(StyleLabel(style));
   UpdateExample();
 }
 
-void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
+void ConfigDialogue::OnChangeFontFamily(wxCommandEvent& event)
 {
-  int fontsize = m_configuration->GetDefaultFontSize();
-  wxString fontName;
-  
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  
-  if (
-    (st == TS_TEXT)          ||
-    (st == TS_DEFAULT)       ||
-    (st == TS_TITLE)         ||
-    (st == TS_HEADING6)      ||
-    (st == TS_HEADING5)      ||
-    (st == TS_SUBSUBSECTION) ||
-    (st == TS_SUBSECTION)    ||
-    (st == TS_SECTION))
-  {
-    if (m_configuration->m_styles[st].FontSize() != 0)
-      fontsize = m_configuration->m_styles[st].FontSize();
-    fontName = m_configuration->m_styles[st].FontName();
-  }
-  else
-    fontName = m_configuration->m_styles[TS_DEFAULT].FontName();
+  Style style = m_configuration->GetStyle(st);
 
-  auto req = wxFontInfo(fontsize)
-          .Family(wxFONTFAMILY_DEFAULT).Italic(false)
-          .Light(false)
-          .Underlined(false).FaceName(fontName);
-
-  wxFont font = FontCache::GetAFont(req);
+  auto font = style.GetFont();
+  font = wxGetFontFromUser(this, font);
 
   if (!font.IsOk())
-  {
-    fontName = wxT("Linux Libertine O");
-    req.FaceName(fontName);
-    font = FontCache::GetAFont(req);
-  }
+    return;
 
-  if (!font.IsOk()) {
-    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-    font = FontCache::GetAFont(req);
-  }
-
-  font = wxGetFontFromUser(this, font);
-  req = FontCache::AddAFont(font);
-  
-  if (font.IsOk())
+  if (event.GetId() == font_family)
   {
-    if (event.GetId() == font_family)
-    {
-      m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
-      m_configuration->FontName(font.GetFaceName());
-      m_configuration->SetDefaultFontSize(wxMax(
-                                            wxMin(
-                                              font.GetPointSize(), MC_MAX_SIZE),
-                                            MC_MIN_SIZE)
-        );
-      m_getFont->SetLabel(m_configuration->FontName() +
-                          wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
-    }
-    else
-    {
-      m_configuration->m_styles[st].FontName(font.GetFaceName());
-      m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE,font.GetPointSize()));
-    }
+    // We're setting the default font
+    wxASSERT(st == TS_DEFAULT);
+    style.SetFontName(FontName(font.GetFaceName()));
+    style.SetFontSize(wxMax(wxMin(Style::GetFontSize(font), MC_MAX_SIZE), MC_MIN_SIZE));
+    style.SetEncoding(font.GetEncoding());
   }
+  else
+  {
+    style.SetFontName(FontName(font.GetFaceName()));
+    style.SetFontSize(wxMax(Style::GetFontSize(font), MC_MIN_SIZE));
+  }
+  m_getFont->SetLabel(StyleLabel(style));
   UpdateExample();
 }
 
 void ConfigDialogue::OnChangeColor()
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  wxColour col = wxGetColourFromUser(this, m_configuration->m_styles[st].Color());
+  auto &style = m_configuration->GetWritableStyle(st);
+  wxColour col = wxGetColourFromUser(this, style.GetColor());
   if (col.IsOk())
-    m_configuration->m_styles[st].Color(col);
+    style.SetColor(col);
   UpdateExample();
 }
 
-void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
+void ConfigDialogue::OnChangeStyle(wxCommandEvent& WXUNUSED(event))
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  m_styleColor->SetColor(m_configuration->m_styles[st].Color());
+  auto &style = m_configuration->GetStyle(st);
+
+  const wxString &baseName = style.GetBaseName();
+  if (!baseName.empty())
+    m_baseStyle->SetLabel(wxString::Format(_("Based on: %s"), baseName));
+  else
+    m_baseStyle->SetLabel(_("A Base Style"));
+
+  m_styleColor->SetColor(style.GetColor());
+  m_customFontCB->SetValue(style.IsFontSelected());
+  m_getStyleFont->Enable(m_customFontCB->GetValue());
+
+  m_boldCB->SetValue(style.IsBold());
+  m_italicCB->SetValue(style.IsItalic());
+  m_underlinedCB->SetValue(style.IsUnderlined());
+  if (!style.IsWeightSet())
+    m_boldCB->Set3StateValue(wxCHK_UNDETERMINED);
+  if (!style.IsFontStyleSet())
+    m_italicCB->Set3StateValue(wxCHK_UNDETERMINED);
+  if (!style.IsUnderlinedSet())
+    m_underlinedCB->Set3StateValue(wxCHK_UNDETERMINED);
+
+  switch (st)
+  {
+  case TS_TEXT_BACKGROUND:
+  case TS_DOCUMENT_BACKGROUND:
+    m_boldCB->Disable();
+    m_italicCB->Disable();
+    m_underlinedCB->Disable();
+    m_customFontCB->Disable();
+    m_getStyleFont->Disable();
+    break;
+  default:
+    m_boldCB->Enable();
+    m_italicCB->Enable();
+    m_underlinedCB->Enable();
+    m_customFontCB->Enable();
+    m_getStyleFont->Enable();
+  }
+
+#if 0
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
+
+
   if (st >= TS_TEXT&& st <= TS_TITLE)
     m_getStyleFont->Enable(true);
   else
@@ -1437,20 +1428,22 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
       m_boldCB->Enable(true);
       m_italicCB->Enable(true);
       m_underlinedCB->Enable(true);
-      m_boldCB->SetValue(m_configuration->m_styles[st].Bold());
-      m_italicCB->SetValue(m_configuration->m_styles[st].Italic());
-      m_underlinedCB->SetValue(m_configuration->m_styles[st].Underlined());
+      m_boldCB->SetValue(style.IsBold());
+      m_italicCB->SetValue(style.IsItalic());
+      m_underlinedCB->SetValue(style.IsUnderlined());
     }
   }
+#endif
   UpdateExample();
 }
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  m_configuration->m_styles[st].Bold(m_boldCB->GetValue());
-  m_configuration->m_styles[st].Italic(m_italicCB->GetValue());
-  m_configuration->m_styles[st].Underlined(m_underlinedCB->GetValue());
+  auto &style = m_configuration->GetWritableStyle(st);
+  style.SetBold(m_boldCB->GetValue());
+  style.SetItalic(m_italicCB->GetValue());
+  style.SetUnderlined(m_underlinedCB->GetValue());
   UpdateExample();
 }
 
@@ -1465,61 +1458,20 @@ void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
 void ConfigDialogue::UpdateExample()
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
+  auto &style = m_configuration->GetStyle(st);
 
-  m_styleColor->SetColor(m_configuration->m_styles[st].Color());
+  m_styleColor->SetColor(style.GetColor());
+  m_examplePanel->SetStyle(&m_configuration->GetStyle(st));
+    // let's be explicit that the address passed to SetStyle is of a permanent object
 
-  wxColour color(m_configuration->m_styles[st].Color());
-  wxString font(m_configuration->m_styles[TS_DEFAULT].FontName());
+  auto bgColor =
+    (st == TS_TEXT_BACKGROUND ||
+     st == TS_TEXT)
+    ? m_configuration->GetStyle(TS_TEXT_BACKGROUND).GetColor()
+      : m_configuration->GetStyle(TS_DOCUMENT_BACKGROUND).GetColor();
 
-  if (st == TS_TEXT_BACKGROUND)
-    color = m_configuration->m_styles[st].Color();
-
-  int fontsize = m_configuration->GetDefaultFontSize();
-  if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 ||
-      st == TS_SUBSUBSECTION || st == TS_SUBSECTION ||
-      st == TS_SECTION || st == TS_TITLE)
-  {
-    fontsize = m_configuration->m_styles[st].FontSize();
-    m_configuration->m_styles[st].FontName();
-    if (fontsize <= 0)
-      fontsize = m_configuration->GetDefaultFontSize();
-  }
-  else if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||
-           st == TS_SPECIAL_CONSTANT)
-  {
-    fontsize = m_configuration->GetMathFontSize();
-  }
-
-  if (st == TS_TEXT_BACKGROUND)
-  {
-    m_examplePanel->SetFontSize(m_configuration->m_styles[st].FontSize());
-    m_examplePanel->SetStyle(m_configuration->m_styles[st].Color(),
-                             m_configuration->m_styles[st].Italic(),
-                             m_configuration->m_styles[st].Bold(),
-                             m_configuration->m_styles[st].Underlined(),
-                             m_configuration->m_styles[st].FontName());
-  }
-  else
-  {
-    m_examplePanel->SetFontSize(fontsize);
-    m_examplePanel->SetStyle(color,
-                             m_configuration->m_styles[st].Italic(),
-                             m_configuration->m_styles[st].Bold(),
-                             m_configuration->m_styles[st].Underlined(),
-                             m_configuration->m_styles[st].FontName());
-  }
-
-  if (st == TS_TEXT_BACKGROUND ||
-      st == TS_TEXT)
-  {
-    if(m_examplePanel->GetBackgroundColour() != m_configuration->m_styles[TS_TEXT_BACKGROUND].Color())
-      m_examplePanel->SetBackgroundColour(m_configuration->m_styles[TS_TEXT_BACKGROUND].Color());
-  }
-  else
-  {
-    if(m_examplePanel->GetBackgroundColour() != m_configuration->m_styles[TS_DOCUMENT_BACKGROUND].Color())
-    m_examplePanel->SetBackgroundColour(m_configuration->m_styles[TS_DOCUMENT_BACKGROUND].Color());
-  }
+  if(m_examplePanel->GetBackgroundColour() != bgColor)
+    m_examplePanel->SetBackgroundColour(bgColor);
 
   m_examplePanel->Refresh();
 }
@@ -1628,32 +1580,15 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
   wxPaintDC dc(this);
   int panel_width, panel_height;
   int text_width, text_height;
-  wxFontWeight bold = wxFONTWEIGHT_NORMAL;
-  wxFontStyle italic = wxFONTSTYLE_NORMAL;
-  bool underlined = false;
 
   GetClientSize(&panel_width, &panel_height);
 
-  dc.SetTextForeground(m_fgColor);
-
-  if (m_bold)
-    bold = wxFONTWEIGHT_BOLD;
-  if (m_italic)
-    italic = wxFONTSTYLE_SLANT;
-  if (m_underlined)
-    underlined = true;
-
-  auto req = wxFontInfo(m_size).Family(wxFONTFAMILY_MODERN)
-               .Italic(italic).Bold(bold).Underlined(underlined).FaceName(m_font);
-  wxFont font = FontCache::GetAFont(req);
-  if (!font.IsOk())
-  {
-    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-    font = FontCache::GetAFont(req);
-  }
-
+  const wxFont &font = m_style->GetFont();
   if (font.IsOk())
     dc.SetFont(font);
+  else
+    // This is not likely to happen.
+    example = _("Font Is Unavailable");
 
   dc.GetTextExtent(example, &text_width, &text_height);
 
