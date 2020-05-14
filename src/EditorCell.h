@@ -54,10 +54,8 @@
 
   \todo Draw only tokens that are in the redraw region.
  */
-class EditorCell : public Cell
+class EditorCell final : public Cell
 {
-private:
-
   #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) override;
   wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
@@ -73,34 +71,36 @@ private:
   //! A list of all potential autoComplete targets within this cell
   wxArrayString m_wordList;
 
-  //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, TextStyle style, int fontsize);
-
-  /*! The start of the current selection.
-
-     - >0: the position of the cursors in characters from start
-     - -1: Currently no selection is active
-
-     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-   */
-  long m_selectionStart;
-  /*! The end of the current selection.
-
-     - >0: the position of the cursors in characters from start
-     - -1: Currently no selection is active
-
-     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-   */
-  long m_selectionEnd;
-  long m_oldSelectionStart;
-  long m_oldSelectionEnd;
 public:
   //! The constructor
-  EditorCell(Cell *parent, Configuration **config,
-             CellPointers *cellPointers, wxString text = wxEmptyString);
+  EditorCell(Cell *parent, Configuration **config, const wxString &text = {});
   EditorCell(const EditorCell &cell);
-  Cell *Copy() override {return new EditorCell(*this);}
+  OwningCellPtr Copy() override {return OwningCellPtr{new EditorCell(*this)};}
   ~EditorCell();
+
+  struct Selection
+  {
+    /*! The start of the current selection.
+     * - >0: the position of the cursors in characters from start
+     * - -1: Currently no selection is active
+     *
+     * If the selection has been done from right to left selectionStart>selectionEnd.
+     */
+    int start = -1;
+    /*! The end of the current selection.
+     * - >0: the position of the cursors in characters from start
+     * - -1: Currently no selection is active
+     *
+     * If the selection has been done from right to left selectionStart>selectionEnd.
+     */
+    int end = -1;
+    //! Return a selection with start<=end
+    Selection GetOrdered() const { return {std::min(start, end), std::max(start, end)}; }
+    bool IsActive() const { return start >= 0 && end >= 0; }
+    bool operator==(const Selection &o) const { return start == o.start && end == o.end; }
+    size_t size() const { return (end > start) ? (end - start) : (start - end);}
+    bool empty() const { return start == end; }
+  };
 
   //! Insert the symbol that corresponds to the ESC command txt
   void InsertEscCommand(wxString txt){InsertText(InterpretEscapeString(txt));}
@@ -116,7 +116,7 @@ public:
 
   //! Which cell the blinking cursor is in?
   EditorCell *GetActiveCell() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell); }
+  { return m_cellPointers->m_activeCell.CastAs<EditorCell*>(); }
 
   /*! Tells where the mouse selection has started.
 
@@ -124,7 +124,7 @@ public:
     remove this pointer.
    */
   EditorCell *MouseSelectionStart() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn); }
+  { return m_cellPointers->m_cellMouseSelectionStartedIn.CastAs<EditorCell*>(); }
 
   /*! Tells where the keyboard selection has started.
 
@@ -132,7 +132,7 @@ public:
     remove this pointer.
    */
   EditorCell *KeyboardSelectionStart() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn); }
+  { return m_cellPointers->m_cellKeyboardSelectionStartedIn.CastAs<EditorCell*>(); }
 
   /*! Tells where the search has started.
 
@@ -140,7 +140,7 @@ public:
     remove this pointer.
    */
   EditorCell *SearchStart() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn); }
+  { return m_cellPointers->m_cellSearchStartedIn.CastAs<EditorCell*>(); }
 
   /*! At which character inside its cell has the search started?
 
@@ -164,7 +164,7 @@ public:
   void SearchStartedHere()
   {
     m_cellPointers->m_cellSearchStartedIn = this;
-    m_cellPointers->m_indexSearchStartedAt = m_positionOfCaret;
+    m_cellPointers->m_indexSearchStartedAt = m_state.positionOfCaret;
   }
 
   //! Remember that this is the cell the mouse selection was started in.
@@ -189,17 +189,6 @@ public:
 
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged;
-
-  /*! Tell this cell to remove it from all gui actions.
-
-    Normally the gui keeps various pointers to a cell: The cell below the cursor,
-    the cell the selection was started at, the cell that was the last cell maxima
-    appended output to...
-
-    Running this command tells the cell to remove these pointers as the cell is 
-    no more displayed currently.
-   */
-  void MarkAsDeleted() override;
 
   /*! Expand all tabulators.
 
@@ -263,10 +252,7 @@ public:
 
     Naturally all soft line breaks are converted back to spaces beforehand.
    */
-  wxString GetValue() const override
-  {
-    return m_text;
-  }
+  wxString GetValue() const override { return m_state.text; }
 
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 
@@ -334,42 +320,35 @@ public:
   void PasteFromClipboard(const bool &primary = false) override;
 
   //! Get the character position the selection has been started with
-  int GetSelectionStart() const
-  { return m_selectionStart; }
+  int GetSelectionStart() const {return m_state.selection.start;}
 
   //! Get the character position the selection has been ended with
-  int GetSelectionEnd() const
-  { return m_selectionEnd; }
+  int GetSelectionEnd() const {return m_state.selection.end;}
 
   //! Select the whole text contained in this Cell
   void SelectAll() override
   {
-    m_selectionStart = 0;
-    m_selectionEnd = m_positionOfCaret = m_text.Length();
+    m_state.selection.start = 0;
+    m_state.selection.end = m_state.positionOfCaret = m_state.text.size();
   }
 
   //! Does the selection currently span the whole cell?
   bool AllSelected() const
-  {
-    return (m_selectionStart == 0) && (m_selectionEnd == (long) m_text.Length());
-  }
-
-  //! Unselect everything.
-  void SelectNone()
-  {
-    m_selectionStart = m_selectionEnd = 0;
-  }
+  { return m_state.selection.start == 0 && m_state.selection.end == int(m_state.text.Length()); }
 
   //! Is there any text selected right now?
-  bool SelectionActive() const
-  {
-    return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
-  }
+  bool SelectionActive() const { return m_state.selection.IsActive(); }
 
-  bool CanCopy() const override
-  {
-    return m_selectionStart != -1;
-  }
+  //! Unselect everything.
+  void SelectNone() { m_state.selection.start = m_state.selection.end = 0; }
+
+  //! Extend the selection to the current position of the caret.
+  void ExtendSelectionToCaret() {SetSelection({m_state.selection.start, m_state.positionOfCaret});}
+
+  //! Reset the selection to zero size, beginning at the caret.
+  void NewSelectionFromCaret() {SetSelection({m_state.positionOfCaret, m_state.positionOfCaret});}
+
+  bool CanCopy() const override {return SelectionActive();}
 
   bool FindMatchingQuotes();
 
@@ -378,21 +357,12 @@ public:
   int GetLineWidth(unsigned int line, int pos);
 
   //! true, if this cell's width has to be recalculated.
-  bool IsDirty() const override
-  {
-    return m_isDirty;
-  }
+  bool IsDirty() const override {return m_isDirty;}
 
   //! Toggles the visibility of the cursor which is used to make it blink.
-  void SwitchCaretDisplay() override
-  {
-    m_displayCaret = !m_displayCaret;
-  }
+  void SwitchCaretDisplay() override {m_displayCaret = !m_displayCaret;}
 
-  void SetFocus(bool focus) override
-  {
-    m_hasFocus = focus;
-  }
+  void SetFocus(bool focus) override {m_hasFocus = focus;}
 
   void SetFirstLineOnly(bool show = true)
   {
@@ -405,19 +375,16 @@ public:
     StyleText();
   }
 
-  bool IsActive() const override
-  { return this == m_cellPointers->m_activeCell; }
+  bool IsActive() const override {return this == m_cellPointers->m_activeCell.get();}
 
   //! Is the cursor at the start of this cell?
-  bool CaretAtStart() const
-  { return m_positionOfCaret == 0; }
+  bool CaretAtStart() const {return m_state.positionOfCaret == 0;}
 
   //! Move the cursor to the start of this cell
   void CaretToStart();
 
   //! Is the cursor at the end of this cell?
-  bool CaretAtEnd() const
-  { return m_positionOfCaret == (long) m_text.Length(); }
+  bool CaretAtEnd() const {return m_state.positionOfCaret == int(m_state.text.size());}
 
   //! Move the cursor to the end of this cell
   void CaretToEnd();
@@ -453,8 +420,7 @@ public:
   void ClearUndo();
 
   //! Query if this cell needs to be re-evaluated by maxima
-  bool ContainsChanges() const
-  { return m_containsChanges; }
+  bool ContainsChanges() const {return m_containsChanges;}
 
   //! Set the information if this cell needs to be re-evaluated by maxima
   void ContainsChanges(bool changes)
@@ -478,13 +444,9 @@ public:
    */
   bool FindNext(wxString str, bool down, bool ignoreCase);
 
-  void SetSelection(int start, int end);
+  void SetSelection(Selection sel);
 
-  void GetSelection(int *start, int *end) const
-  {
-    *start = m_selectionStart;
-    *end = m_selectionEnd;
-  }
+  Selection GetSelection() const {return m_state.selection;}
 
   /*! Replace the current selection with a string
 
@@ -498,7 +460,7 @@ public:
     \param ignoreCase true = ignore the case of the string to replace
     \param replaceMaximaString true = replace strings including the double quotes.
    */
-  bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
+  bool ReplaceSelection(const wxString &oldStr, const wxString &newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
 
   //! Convert the current selection to a string
   wxString GetSelectionString() const;
@@ -513,54 +475,44 @@ public:
   void ClearSelection();
 
   //! Sets the index the error is at
-  void SetErrorIndex(int index){m_errorIndex = index;}
+  void SetErrorIndex(int index) {m_errorIndex = index;}
 
   bool ErrorIndexSet() const {return m_errorIndex >= 0;}
 
-  void GotoError(){SetCaretPosition(m_errorIndex);ActivateCursor();}
+  void GotoError() {SetCaretPosition(m_errorIndex);ActivateCursor();}
 
   //! Start a new line and optionally auto-indent it.
   void ProcessNewline(bool keepCursorAtStartOfLine = true);
 
   //! Get the cursor's current position inside the cell.
-  int GetCaretPosition() const
-  { return m_positionOfCaret; }
+  int GetCaretPosition() const {return m_state.positionOfCaret;}
 
   //! Convert a number to unicode chars.
   void ConvertNumToUNicodeChar();
 
   //! Set the cursor's current position inside the cell.
   void SetCaretPosition(int pos)
-    { m_positionOfCaret = pos;
-      if(m_positionOfCaret < -1)
-        m_positionOfCaret = -1;
-      if(m_positionOfCaret > (signed long)m_text.Length())
-        m_positionOfCaret = m_text.Length();
-    }
+  {
+    int textSize = m_state.text.size();
+    pos = (pos<-1) ? -1 : (pos>textSize) ? textSize : pos;
+    m_state.positionOfCaret = pos;
+  }
 
   bool FindNextTemplate(bool left = false);
 
   void InsertText(wxString text);
 
-  wxString TextInFrontOfSelection() const
-  {
-    return GetValue().Mid(1, m_selectionStart);
-  }
+  wxString TextInFrontOfSelection() const {return GetValue().Mid(1, m_state.selection.start);}
 
   //! Return to the selection after the cell has been left upwards
-  void ReturnToSelectionFromTop()
-  {
-    SetSelection(m_lastSelectionStart, 0);
-  }
+  void ReturnToSelectionFromTop() {SetSelection({m_lastSelectionStart, 0});}
 
   void SetType(CellType type) override;
   void SetStyle(TextStyle style) override;
 
   //! Return to the selection after the cell has been left downwards
   void ReturnToSelectionFromBot()
-  {
-    SetSelection(m_lastSelectionStart, m_text.Length());
-  }
+  { SetSelection({m_lastSelectionStart, int(m_state.text.size())}); }
 
   //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
   const MaximaTokenizer::TokenList &GetTokens() const {return m_tokens;}
@@ -569,15 +521,28 @@ public:
 
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
-protected:
-  void FontsChanged() override
-    {
-      ResetSize();
-      ResetData();
-      m_widths.clear();
-    }
 private:
-  Cell *m_nextToDraw = {};
+  void FontsChanged() override
+  {
+    ResetSize();
+    ResetData();
+    m_widths.clear();
+  }
+
+  //! Draw a box that marks the current selection
+  void MarkSelection(Selection sel, TextStyle style, int fontsize);
+
+  //! Removes the current selection and returns the caret to the beginning of the selection.
+  //! Creates and entry in the undo history
+  void EraseSelection();
+
+  //! Counts the number of characters from the caret till the end of the current Ctrl-word,
+  //! in either direction (positive or negative).
+  size_t SizeOfWordAtCaret(int dir = +1) const;
+
+  Selection m_oldSelection;
+
+  CellPtr m_nextToDraw;
   //! Determines the size of a text snippet
   wxSize GetTextSize(wxString const &text);
   //! Mark this cell as "Automatically answer questions".
@@ -645,18 +610,10 @@ private:
     int GetWidth() const {return m_width;}
     bool SizeKnown() const {return GetWidth() >= 0;}
     //! Returns the piece of text
-    wxString GetText() const
-    {
-      return m_text;
-    }
+    wxString GetText() const {return m_text;}
 
-
-  
     //! Changes the piece of text kept in this token
-    void SetText(wxString text)
-    {
-      m_text = text;
-    }
+    void SetText(wxString text) {m_text = text;}
     
     //! Changes the indentation level of this token
     void SetIndentation(int indentPixels, wxString indentString = wxEmptyString)
@@ -666,27 +623,15 @@ private:
     }
 
     //! By how many pixels do we need to indent this line due to a bullet list or similar?
-    int GetIndentPixels() const
-    {
-      return m_indentPixels;
-    }
+    int GetIndentPixels() const {return m_indentPixels;}
 
-    wxString GetIndentChar() const
-    {
-      return m_indentChar;
-    }
+    wxString GetIndentChar() const {return m_indentChar;}
 
 //! If StyleSet() is true this function returns the color of this text portion
-    TextStyle GetStyle() const
-    {
-      return m_style;
-    }
+    TextStyle GetStyle() const {return m_style;}
 
     // Has a individual text style been set for this text portion?
-    bool StyleSet() const
-    {
-      return m_styleThisText;
-    }
+    bool StyleSet() const  {return m_styleThisText;}
   };
 
   std::vector<StyledText> m_styledText;
@@ -715,15 +660,18 @@ private:
    */
   wxString InterpretEscapeString(const wxString &txt) const;
 
-  wxString m_text;
-  wxArrayString m_textHistory;
-  std::vector<int> m_positionHistory;
-  std::vector<int> m_startHistory;
-  std::vector<int> m_endHistory;
+  struct State
+  {
+    wxString text;
+    Selection selection;
+    //! Where inside this cell is the cursor?
+    int positionOfCaret = 0;
+  };
+
+  State m_state;
+  std::vector<State> m_history;
   //! Where in the undo history are we?
   ptrdiff_t m_historyPosition;
-  //! Where inside this cell is the cursor?
-  int m_positionOfCaret;
   //! Which column the cursor would be if the current line were long enough?
   int m_caretColumn;
   long m_lastSelectionStart;
