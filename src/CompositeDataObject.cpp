@@ -62,6 +62,7 @@ void CompositeDataObject::Add(wxDataObject *object, bool preferred)
 
   // Add all remaining formats
   for (auto &addedFormat : addedFormats)
+    // cppcheck-suppress useStlAlgorithm
     m_entries.emplace_back(addedFormat, objPtr);
 }
 
@@ -72,6 +73,7 @@ wxDataObject *CompositeDataObject::GetObject(const wxDataFormat& format,
     return 0;
 
   for (auto &entry : m_entries)
+    // cppcheck-suppress useStlAlgorithm
     if (entry.format == format)
       return entry.object.get();
 
@@ -105,6 +107,7 @@ void CompositeDataObject::GetAllFormats(wxDataFormat *formats, Direction dir) co
 size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const
 {
   for (auto &entry : m_entries)
+    // cppcheck-suppress useStlAlgorithm
     if (entry.format == format)
       return entry.object->GetDataSize(format);
 
@@ -114,6 +117,7 @@ size_t CompositeDataObject::GetDataSize(const wxDataFormat &format) const
 bool CompositeDataObject::GetDataHere(const wxDataFormat &format, void *buf) const
 {
   for (auto &entry : m_entries)
+    // cppcheck-suppress useStlAlgorithm
     if (entry.format == format)
       return entry.object->GetDataHere(format, buf);
 
