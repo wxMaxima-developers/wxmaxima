@@ -123,6 +123,7 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
     m_innerTags[wxT("lbl")] = &MathParser::ParseOutputLabelTag;
     m_innerTags[wxT("st")] = &MathParser::ParseStringTag;
     m_innerTags[wxT("hl")] = &MathParser::ParseHighlightTag;
+    m_innerTags[wxT("h")] = &MathParser::ParseHiddenOperatorTag;
     m_innerTags[wxT("img")] = &MathParser::ParseImageTag;
     m_innerTags[wxT("slide")] = &MathParser::ParseSlideshowTag;
     m_innerTags[wxT("editor")] = &MathParser::ParseEditorTag;
