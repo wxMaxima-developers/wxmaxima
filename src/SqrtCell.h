@@ -58,7 +58,7 @@ public:
   SqrtCell &operator=(const SqrtCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
-  InnerCellIterator InnerEnd() const override { return InnerCellIterator(&m_close); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
   void SetInner(Cell *inner);
 
