@@ -115,9 +115,9 @@ public:
    */
   void MarkAsDeleted() override;
 
-  InnerCellIterator InnerBegin() const override { return &m_inputLabel; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_inputLabel); }
   InnerCellIterator InnerEnd() const override
-  { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerBegin() : &m_output+1; }
+    { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerCellIterator(InnerBegin()) : ++InnerCellIterator(&m_output); }
 
   /*! Which GroupCell was the last maxima was working on?
 

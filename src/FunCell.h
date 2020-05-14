@@ -58,8 +58,8 @@ public:
   ~FunCell();
   FunCell &operator=(const FunCell&) = delete;
 
-  InnerCellIterator InnerBegin() const override { return &m_nameCell; }
-  InnerCellIterator InnerEnd() const override { return &m_argCell+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_argCell); }
 
   void SetName(Cell *name);
 

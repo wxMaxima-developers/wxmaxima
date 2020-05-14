@@ -1051,7 +1051,7 @@ protected:
     const std::shared_ptr<Cell> *ptr = {};
   public:
     InnerCellIterator() = default;
-    InnerCellIterator(const std::shared_ptr<Cell> *p) : ptr(p) {}
+    explicit InnerCellIterator(const std::shared_ptr<Cell> *p) : ptr(p) {}
     InnerCellIterator(const InnerCellIterator &o) = default;
     InnerCellIterator &operator=(const InnerCellIterator &o) = default;
     InnerCellIterator operator++(int) {

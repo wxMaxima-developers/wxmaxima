@@ -44,8 +44,8 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   LimitCell &operator=(const LimitCell&) = delete;
 
-  InnerCellIterator InnerBegin() const override { return &m_base; }
-  InnerCellIterator InnerEnd() const override { return &m_close+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
   void RecalculateHeight(int fontsize) override;
 

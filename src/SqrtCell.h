@@ -57,8 +57,8 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   SqrtCell &operator=(const SqrtCell&) = delete;
 
-  InnerCellIterator InnerBegin() const override { return &m_innerCell; }
-  InnerCellIterator InnerEnd() const override { return &m_close+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
+  InnerCellIterator InnerEnd() const override { return InnerCellIterator(&m_close); }
 
   void SetInner(Cell *inner);
 

@@ -38,8 +38,8 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   SubSupCell operator=(const SubSupCell&) = delete;
 
-  InnerCellIterator InnerBegin() const override { return &m_baseCell; }
-  InnerCellIterator InnerEnd() const override { return &m_preSupCell+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_preSupCell); }
 
   void SetBase(Cell *base);
 

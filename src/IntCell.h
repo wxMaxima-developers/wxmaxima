@@ -46,8 +46,8 @@ public:
   IntCell &operator=(const IntCell&) = delete;
   ~IntCell();
 
-  InnerCellIterator InnerBegin() const override { return &m_base; }
-  InnerCellIterator InnerEnd() const override { return &m_var+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_var); }
 
   void RecalculateHeight(int fontsize) override;
 

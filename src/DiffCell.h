@@ -35,8 +35,8 @@ public:
   DiffCell &operator=(const DiffCell&) = delete;
   ~DiffCell();
   
-  InnerCellIterator InnerBegin() const override { return &m_baseCell; }
-  InnerCellIterator InnerEnd() const override { return &m_diffCell+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
 
   void SetBase(Cell *base);
 

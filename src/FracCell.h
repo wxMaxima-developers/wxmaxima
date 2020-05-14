@@ -51,8 +51,8 @@ public:
   //! This class can be derived from wxAccessible which has no copy constructor
   FracCell &operator=(const FracCell&) = delete;
 
-  InnerCellIterator InnerBegin() const override { return &m_divide; }
-  InnerCellIterator InnerEnd() const override { return &m_displayedDenom+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }
 
   //! All types of fractions we support
   enum FracType

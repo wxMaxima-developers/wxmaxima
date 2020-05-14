@@ -52,8 +52,8 @@ public:
     //! This class can be derived from wxAccessible which has no copy constructor
   SumCell operator=(const SumCell&) = delete;
 
-  InnerCellIterator InnerBegin() const override { return &m_under; }
-  InnerCellIterator InnerEnd() const override { return &m_paren+1; }
+  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_under); }
+  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_paren); }
   
   void RecalculateHeight(int fontsize) override;
   void RecalculateWidths(int fontsize) override;

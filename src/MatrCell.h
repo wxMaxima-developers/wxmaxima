@@ -40,9 +40,9 @@ public:
   ~MatrCell();
 
   InnerCellIterator InnerBegin() const override
-  { return m_cells.empty() ? InnerCellIterator{} : &m_cells.front(); }
+    { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }
   InnerCellIterator InnerEnd() const override
-  { return m_cells.empty() ? InnerCellIterator{} : &m_cells.back() + 1; }
+    { return m_cells.empty() ? InnerCellIterator{} : ++InnerCellIterator(&m_cells.back()); }
 
   void RecalculateHeight(int fontsize) override;
 
