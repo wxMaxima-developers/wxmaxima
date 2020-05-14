@@ -789,6 +789,7 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
 {
   wxASSERT(!chars.empty());
   for (auto const &ex : m_charsInFont)
+    // cppcheck-suppress useStlAlgorithm
     if (ex.chars == chars)
       return ex.exist;
 
