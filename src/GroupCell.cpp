@@ -39,7 +39,7 @@
 #include "BitmapOut.h"
 #include "list"
 
-GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) :
+GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString) :
   Cell(this, config, cellPointers)
 {
   m_nextToDraw = NULL;
@@ -138,7 +138,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
       break;
   }
 
-  if ((editor != NULL) && (initString != wxEmptyString))
+  if (editor && !initString.empty())
     editor->SetValue(initString);
 
   // when creating an image cell, if a string is provided
@@ -159,7 +159,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 }
 
 GroupCell::GroupCell(const GroupCell &cell):
-  GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers, wxEmptyString)
+  GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
