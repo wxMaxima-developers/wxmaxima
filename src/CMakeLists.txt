@@ -64,19 +64,17 @@ file(GLOB RESOURCE_FILES
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-elseif(APPLE) 
-    SET(MACOSX_BUNDLE_NAME wxmaxima)
-    SET(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
+elseif(APPLE)
+    set(MACOSX_BUNDLE_NAME wxmaxima)
+    set(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
     list(APPEND SOURCE_FILES ${RESOURCE_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
-    set_target_properties(wxmaxima PROPERTIES
-	RESOURCE "${RESOURCE_FILES}"
-	)
-   if(APPLE)
-       set_target_properties(wxmaxima PROPERTIES
+    set_target_properties(wxmaxima PROPERTIES RESOURCE "${RESOURCE_FILES}")
+    if(APPLE)
+        set_target_properties(wxmaxima PROPERTIES
             MACOSX_BUNDLE TRUE
             RESOURCE "${RESOURCE_FILES}"
-	)
+        )
 
         install(
             # The bundle utilities need to be run in a
@@ -84,16 +82,16 @@ elseif(APPLE)
             # they provide the fixup command that makes the
             # .dylibs run from within the app bundle.
             CODE "include(BundleUtilities)
-                # the separate step doesn't know about
-                # the values our variables had in the
-                # cmakefile so we need to set them again.
-                set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-                fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")" 
+            # the separate step doesn't know about
+            # the values our variables had in the
+            # cmakefile so we need to set them again.
+            set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+            fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")"
             COMPONENT Runtime)
     else()
         set_target_properties(wxmaxima PROPERTIES
             RESOURCE "${RESOURCE_FILES}"
-	)
+    )
     endif()
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
@@ -144,13 +142,13 @@ endif()
 
 if(USE_OPENMP AND OpenMP_CXX_FOUND)
     if(OpenMP_CXX_SPEC_DATE LESS 201107)
-    	message(STATUS "OpenMP too old to be used for multiprocessing in wxMaxima (" ${OpenMP_CXX_SPEC_DATE} ").")
+        message(STATUS "OpenMP too old to be used for multiprocessing in wxMaxima (" ${OpenMP_CXX_SPEC_DATE} ").")
     else()
-	if(HAVE_OMP_HEADER)
- 	    message(STATUS "Using OpenMP for multiprocessing.")
-	else()
- 	    message(STATUS "Using OpenMP, but omp.h missing => Can use multiprocessing only in a few cases.")
-	endif()
+        if(HAVE_OMP_HEADER)
+            message(STATUS "Using OpenMP for multiprocessing.")
+        else()
+            message(STATUS "Using OpenMP, but omp.h missing => Can use multiprocessing only in a few cases.")
+        endif()
     endif()
 else()
     message(STATUS "No OpenMP found => Not using multiprocessing.")

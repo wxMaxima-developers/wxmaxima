@@ -37,18 +37,17 @@ if(MSVC)
 endif()
 
 # Clang requires that flag (that should fix the error on travis too)
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_definitions(-Wno-c++11-narrowing)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_definitions(-Wno-c++11-narrowing)
 endif()
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "Setting build type to 'Debug' as none was specified.")
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
-  set(CMAKE_INSTALL_DEBUG_LIBRARIES 1)
-  # Set the possible values of build type for cmake-gui
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
-    "MinSizeRel" "RelWithDebInfo")
+    message(STATUS "Setting build type to 'Debug' as none was specified.")
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_INSTALL_DEBUG_LIBRARIES 1)
+    # Set the possible values of build type for cmake-gui
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
 
