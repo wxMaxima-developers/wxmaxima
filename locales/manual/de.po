@@ -517,13 +517,6 @@ msgstr "Griechische Zeichen"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:126
-#, fuzzy
-#| msgid ""
-#| "Computers traditionally store characters in 8-bit values. This allows for "
-#| "a maximum of 256 different characters. All letters, numbers, and control "
-#| "symbols (end of transmission, end of string, lines and edges for drawing "
-#| "rectangles for menus _etc_.) of nearly any given language can fit within "
-#| "that limit."
 msgid ""
 "Computers traditionally stored characters in 8-bit values. This allows for a "
 "maximum of 256 different characters. All letters, numbers, and control "
@@ -538,13 +531,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:128
-#, fuzzy
-#| msgid ""
-#| "For most countries the codepage of 256 characters that has been chosen "
-#| "does not include things like Greek letters, though, that are frequently "
-#| "used in mathematics. To overcome this type of limitation Unicode has been "
-#| "invented: An encoding that makes english text work like normal, but to "
-#| "use characters whose keycode are more than 8 bits long."
 msgid ""
 "For most countries the codepage of 256 characters that has been chosen, does "
 "not include things like Greek letters, though, that are frequently used in "
@@ -556,18 +542,11 @@ msgstr ""
 "Zeichen definiert worden, die allerdings in den meisten Ländern "
 "beispielsweise keine griechischen Buchstaben beinhaltet, die in der "
 "Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde "
-"Unicode entwickelt: Eine Weise, Zeichen auszudrücken, die englischen Text "
-"wie gewohnt arbeiten lässt, jedoch auch Zeichen zulässt, die mehr als 8 bits "
-"lang sind."
+"[Unicode](https://home.unicode.org/) entwickelt: Eine Weise, Zeichen auszudrücken, die englischen Text "
+"wie gewohnt arbeiten lässt, aber viel mehr als 256 Zeichen ermöglicht."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
-#, fuzzy
-#| msgid ""
-#| "_Maxima_ allows for unicode characters if it was compiled using a Lisp "
-#| "compiler that either supports lisp or that doesn't care about the font "
-#| "encoding. As at least one of this is likely to be true _wxMaxima_ "
-#| "provides a method of entering Greek characters using the keyboard:"
 msgid ""
 "_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
 "either supports unicode or that doesn't care about the font encoding. As at "
@@ -575,7 +554,7 @@ msgid ""
 "entering Greek characters using the keyboard:"
 msgstr ""
 "Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt "
-"oder sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, "
+"oder sich nicht darum kümmert, auf welche Weise Zeichen codiert werden, "
 "unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet "
 "_wxMaxima_ eine Methode an, griechische Zeichen mit einer nicht-griechischen "
 "Tastatur einzugeben:"
@@ -592,18 +571,13 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:133
-#, fuzzy
-#| msgid ""
-#| "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter "
-#| "and <kbd>ESC</kbd> again. In this case the following letters are "
-#| "supported:"
 msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
 "two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
 "following letters are supported:"
 msgstr ""
 "Ebenso kann er eingegeben werden, indem <kbd>ESC</kbd> gedrückt wird, ein "
-"Buchstabe und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die "
+"Buchstabe (bzw. zwei für den griechischen Buchstaben omicorn) und dann erneut <kbd>ESC</kbd>. In diesem Fall werden die "
 "folgenden Zeichen unterstützt:"
 
 #. type: Fenced code block
@@ -831,10 +805,8 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:209
-#, fuzzy, no-wrap
-#| msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.\n"
 msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
-msgstr "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens) <kbd>ESC</kbd> eingegeben werden.\n"
+msgstr "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens (hexadezimal)) <kbd>ESC</kbd> eingegeben werden.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:211
