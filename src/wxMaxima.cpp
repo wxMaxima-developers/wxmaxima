@@ -69,6 +69,7 @@
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
 #include "wxMaximaIcon.h"
+#include "WXMformat.h"
 #include "ErrorRedirector.h"
 
 #include <wx/colordlg.h>
@@ -3103,10 +3104,9 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document, bool clear
           // Interpret this array of lines as wxm code.
           GroupCell *cell;
           document->InsertGroupCells(
-            cell = m_worksheet->CreateTreeFromWXMCode(commentLines),
+            cell = Format::TreeFromWXM(commentLines, &m_worksheet->m_configuration, &m_worksheet->m_cellPointers),
             last);
           last = cell;
-
         }
           else
         {
@@ -3260,7 +3260,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
 
   inputFile.Close();
 
-  GroupCell *tree = m_worksheet->CreateTreeFromWXMCode(wxmLines);
+  GroupCell *tree = Format::TreeFromWXM(wxmLines, &m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
@@ -4308,7 +4308,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       while ( tokenizer.HasMoreTokens() )
         lines.Add(tokenizer.GetNextToken());
       m_worksheet->InsertGroupCells(
-        m_worksheet->CreateTreeFromWXMCode(lines));
+        Format::TreeFromWXM(lines, &m_worksheet->m_configuration, &m_worksheet->m_cellPointers));
       m_worksheet->Recalculate();
       m_worksheet->RecalculateIfNeeded();
       m_worksheet->UpdateMLast();

@@ -36,6 +36,7 @@
 #define EMPTY_INPUT_LABEL wxT(" -->  ")
 
 //! All types a GroupCell can be of
+// This enum's elements must be synchronized with (WXMFormat.h) WXMHeaderId.
 enum GroupType
 {
   GC_TYPE_CODE,
@@ -185,14 +186,6 @@ public:
   void UpdateConfusableCharWarnings();
   
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
-
-  /*! Convert the current cell to its wxm representation.
-
-    \param wxm:
-    - true: We mean to export to a .wxm file.
-    - false: We generate a.mac file instead that doesn't look nice with a dedicated comment per input line.
-   */
-  wxString ToWXM(bool wxm = true);
 
   wxString ToRTF() override;
 
