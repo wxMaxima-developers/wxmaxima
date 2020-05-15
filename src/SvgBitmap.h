@@ -40,8 +40,8 @@ class SvgBitmap: public wxBitmap
 {
 public:
 //! A constructor that loads the data into a wxBitmap
-  SvgBitmap(unsigned char *data, size_t len, int width = 640, int height = 480);
-  SvgBitmap(unsigned char *data, size_t len, wxSize siz);
+  SvgBitmap(const unsigned char *data, size_t len, int width = 640, int height = 480);
+  SvgBitmap(const unsigned char *data, size_t len, wxSize siz);
 
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
@@ -50,10 +50,8 @@ public:
   //! Sets the bitmap to a new size and renders the svg image at this size.
   const SvgBitmap& SetSize(wxSize siz){return SetSize(siz.x, siz.y);}
   //! Gets the original size of the svg image
-  wxSize GetOriginalSize(){if(m_svgImage)
-      return wxSize(m_svgImage->width, m_svgImage->height);
-    else
-      return wxSize(-1, -1);}
+  wxSize GetOriginalSize() const
+  { return m_svgImage ? wxSize(m_svgImage->width, m_svgImage->height) : wxDefaultSize; }
   /*! An "invalid bitmap" sign
     
     We should make the image static and generate it on start-up 
