@@ -5819,325 +5819,175 @@ void Worksheet::CodeCellVisibilityChanged()
   ScrollToCaret();
 }
 
-GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
+GroupCell *Worksheet::CreateTreeFromWXMCode(const wxArrayString &wxmLines)
 {
-  // Show a busy cursor as long as we export a .gif file (which might be a lengthy
-  // action).
-  wxBusyCursor crs;
-  bool hide = false;
-  GroupCell *tree = NULL;
-  GroupCell *last = NULL;
-  GroupCell *cell = NULL;
+  auto wxmLine = wxmLines.begin();
+  auto const end = wxmLines.end();
 
-  wxString question;
-  
-  while (!wxmLines.IsEmpty())
+  //! Consumes and concatenates lines until a closing tag is reached,
+  //! consumes the tag and returns the line.
+  const auto getLinesUntil = [&wxmLine, end](const wxChar *tag) -> wxString
   {
-    cell = NULL;
+    wxString line;
+    while (wxmLine != end)
+    {
+      auto const thisLn = wxmLine++;
+      if (*thisLn == tag)
+        break;
+      if (!line.empty())
+        line += wxT('\n');
+      line += *thisLn;
+    }
+    return line;
+  };
 
-    if (wxmLines.Item(0) == wxT("/* [wxMaxima: hide output   ] */"))
+  bool hide = false;
+  //! Hides the cell if a hide flag was set
+  const auto hideCell = [&hide](GroupCell *cell)
+  {
+    if (hide && cell)
+    {
+      cell->Hide(true);
+      hide = false;
+    }
+  };
+
+  // Show a busy cursor while we read
+  wxBusyCursor crs;
+  GroupCell *tree = {};
+  GroupCell *last = {};
+  wxString question;
+
+  while (wxmLine != end)
+  {
+    GroupCell *cell = {};
+    auto const headerLn = wxmLine ++;
+
+    if (false); // Needed to keep the remaining tests uniform
+
+      // Read hide tag
+    else if (*headerLn == wxT("/* [wxMaxima: hide output   ] */"))
       hide = true;
 
-      // Print title
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: title   start ]"))
+      // Read title
+    else if (*headerLn ==       wxT("/* [wxMaxima: title   start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: title   end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: title   end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_TITLE, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-      // Print section
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: section start ]"))
+      // Read section
+    else if (*headerLn ==       wxT("/* [wxMaxima: section start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: section end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: section end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_SECTION, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-      // Print subsection
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: subsect start ]"))
+      // Read subsection
+    else if (*headerLn ==       wxT("/* [wxMaxima: subsect start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: subsect end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: subsect end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_SUBSECTION, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-    // print subsubsection
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: subsubsect start ]"))
+      // Read subsubsection
+    else if (*headerLn ==       wxT("/* [wxMaxima: subsubsect start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: subsubsect end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: subsubsect end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_SUBSUBSECTION, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-    // print heading5
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: heading5 start ]"))
+      // Read heading5
+    else if (*headerLn ==       wxT("/* [wxMaxima: heading5 start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: heading5 end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: heading5 end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_HEADING5, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-    // print heading6
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: heading6 start ]"))
+      // Read heading6
+    else if (*headerLn ==       wxT("/* [wxMaxima: heading6 start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: heading6 end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: heading6 end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_HEADING6, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-      // Print comment
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: comment start ]"))
+      // Read comment
+    else if (*headerLn ==       wxT("/* [wxMaxima: comment start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: comment end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: comment end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_TEXT, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
 
-      // Print an image
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: caption start ]"))
+      // Read an image caption
+    else if (*headerLn ==       wxT("/* [wxMaxima: caption start ]"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: caption end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      auto line = getLinesUntil(wxT("   [wxMaxima: caption end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_IMAGE, &m_cellPointers);
       cell->GetEditable()->SetValue(line);
-
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
-
-      // Gracefully handle captions without images
-      if(wxmLines.IsEmpty())
-        break;
-
-      wxmLines.RemoveAt(0);
-      if (wxmLines.Item(0) == wxT("/* [wxMaxima: image   start ]"))
-      {
-        wxmLines.RemoveAt(0);
-
-        // Read the image type
-        wxString imgtype = wxmLines.Item(0);
-        wxmLines.RemoveAt(0);
-
-        wxString ln;
-        while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("   [wxMaxima: image   end   ] */")))
-        {
-          if (ln.Length() == 0)
-            ln += wxmLines.Item(0);
-          else
-            ln += wxT("\n") + wxmLines.Item(0);
-
-          wxmLines.RemoveAt(0);
-        }
-
-        cell->SetOutput(
-          new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(ln), imgtype));
-      }
+      hideCell(cell);
     }
-      // Print input
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: input   start ] */"))
+
+      // Read an image bitmap
+    else if (last && last->GetGroupType() == GC_TYPE_IMAGE && wxmLine != end
+             && *headerLn ==  wxT("/* [wxMaxima: image   start ]"))
     {
-      wxmLines.RemoveAt(0);
+      // Read the image type
+      wxString const imgtype = *wxmLine ++;
+      auto ln = getLinesUntil(wxT("   [wxMaxima: image   end   ] */"));
+      last->SetOutput(
+        new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(ln), imgtype));
+    }
 
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: input   end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-
+      // Read input
+    else if (*headerLn ==       wxT("/* [wxMaxima: input   start ] */"))
+    {
+      auto line = getLinesUntil(wxT("/* [wxMaxima: input   end   ] */"));
       cell = new GroupCell(&m_configuration, GC_TYPE_CODE, &m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      hideCell(cell);
     }
-    if (wxmLines.Item(0) == wxT("/* [wxMaxima: answer  start ] */"))
+
+      // Read an answer
+    else if (*headerLn ==       wxT("/* [wxMaxima: answer  start ] */"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: answer  end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
-      if((last != NULL) && (!question.IsEmpty()))
+      auto line = getLinesUntil(wxT("/* [wxMaxima: answer  end   ] */"));
+      if (last && !question.empty())
         last->SetAnswer(question, line);
     }
-    if (wxmLines.Item(0) == wxT("/* [wxMaxima: question  start ] */"))
+
+      // Read a question
+    else if (*headerLn ==       wxT("/* [wxMaxima: question  start ] */"))
     {
-      wxmLines.RemoveAt(0);
-
-      wxString line;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: question  end   ] */")))
-      {
-        if (line.Length() == 0)
-          line += wxmLines.Item(0);
-        else
-          line += wxT("\n") + wxmLines.Item(0);
-
-        wxmLines.RemoveAt(0);
-      }
+      auto line = getLinesUntil(wxT("/* [wxMaxima: question  end   ] */"));
       question = line;
     }
-    if (wxmLines.Item(0) == wxT("/* [wxMaxima: autoanswer    ] */"))
+
+      // Read autoanswer tag
+    else if (*headerLn == wxT("/* [wxMaxima: autoanswer    ] */"))
     {
-      if(last != NULL)
+      if (last)
         last->AutoAnswer(true);
     }
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: page break    ] */"))
-    {
-      wxmLines.RemoveAt(0);
 
+      // Read page break tag
+    else if (*headerLn == wxT("/* [wxMaxima: page break    ] */"))
+    {
       cell = new GroupCell(&m_configuration, GC_TYPE_PAGEBREAK, &m_cellPointers);
     }
 
-    else if (wxmLines.Item(0) == wxT("/* [wxMaxima: fold    start ] */"))
+      // Read a folded tree and build it
+    else if (*headerLn ==                  wxT("/* [wxMaxima: fold    start ] */"))
     {
-      wxmLines.RemoveAt(0);
-
       wxArrayString hiddenTree;
-      while ((!wxmLines.IsEmpty()) && (wxmLines.Item(0) != wxT("/* [wxMaxima: fold    end   ] */")))
-      {
-        hiddenTree.Add(wxmLines.Item(0));
-        wxmLines.RemoveAt(0);
-      }
+      while (wxmLine != end && *wxmLine != wxT("/* [wxMaxima: fold    end   ] */"))
+        hiddenTree.Add(*wxmLine ++);
+
       last->HideTree(CreateTreeFromWXMCode(hiddenTree));
     }
 
@@ -6153,13 +6003,8 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString wxmLines)
 
         last = last->GetNext();
       }
-      cell = NULL;
     }
-
-    if (!wxmLines.IsEmpty())
-      wxmLines.RemoveAt(0);
   }
-
   return tree;
 }
 
