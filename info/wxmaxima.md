@@ -131,24 +131,24 @@ _Maxima_ allows Unicode, if it was compiled using a Lisp compiler that either su
 * A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the greek character's name.
 * Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:
 
-~~~
-a alpha    i iota      r rho
-b beta     k kappa     s sigma
-g gamma    l lambda    t tau
-d delta    m mu        u upsilon
-e epsilon  n nu        f phi
-z zeta     x xi        c chi
-h eta      om omicron  y psi
-q theta    p pi        o omega
-A Alpha    I Iota      R Rho
-B Beta     K Kappa     S Sigma
-G Gamma    L Lambda    T Tau
-D Delta    M Mu        U Upsilon
-E Epsilon  N Nu        P Phi
-Z Zeta     X Xi        C Chi
-H Eta      Om Omicron  Y Psi
-T Theta    P Pi        O Omega
-~~~
+| key | greek letter | key | greek letter | key | greek letter |
+|:---:|:------------:|:---:|:------------:|:---:|:------------:|
+|  a  |     alpha    |  i  |     iota     |  r  |      rho     |
+|  b  |     beta     |  k  |     kappa    |  s  |     sigma    |
+|  g  |     gamma    |  l  |    lambda    |  t  |      tau     |
+|  d  |     delta    |  m  |      mu      |  u  |    upsilon   |
+|  e  |    epsilon   |  n  |      nu      |  f  |      phi     |
+|  z  |     zeta     |  x  |      xi      |  c  |      chi     |
+|  h  |      eta     |  om |    omicron   |  y  |      psi     |
+|  q  |     theta    |  p  |      pi      |  o  |     omega    |
+|  A  |     Alpha    |  I  |     Iota     |  R  |      Rho     |
+|  B  |     Beta     |  K  |     Kappa    |  S  |     Sigma    |
+|  G  |     Gamma    |  L  |    Lambda    |  T  |      Tau     |
+|  D  |     Delta    |  M  |      Mu      |  U  |    Upsilon   |
+|  E  |    Epsilon   |  N  |      Nu      |  P  |      Phi     |
+|  Z  |     Zeta     |  X  |      Xi      |  C  |      Chi     |
+|  H  |      Eta     |  Om |    Omicron   |  Y  |      Psi     |
+|  T  |     Theta    |  P  |      Pi      |  O  |     Omega    |
 
 The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
