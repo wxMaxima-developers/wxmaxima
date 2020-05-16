@@ -34,6 +34,7 @@
 #include <wx/textfile.h>
 #include <wx/combo.h>
 #include <wx/listctrl.h>
+#include <wx/wupdlock.h>
 
 void AutocompletePopup::UpdateResults()
 {
@@ -67,9 +68,7 @@ void AutocompletePopup::UpdateResults()
     m_parent->GetParent()->Refresh();
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
-    *m_doneptr = NULL;
-    Destroy();
-    break;
+    return void(Destroy());
   case 0:
     if(m_type != AutoComplete::esccommand)
     {
@@ -78,9 +77,7 @@ void AutocompletePopup::UpdateResults()
     }
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
-    *m_doneptr = NULL;
-    Destroy();
-    break;
+    return void(Destroy());
   default:
     DeleteAllItems();
     for(unsigned int i=0; i < m_completions.GetCount(); i++)
@@ -146,8 +143,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     m_parent->GetParent()->Refresh();
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
-    *m_doneptr = NULL;
-    Destroy();
+    return void(Destroy());
   }
   break;
   case WXK_LEFT:
@@ -163,9 +159,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     m_parent->GetParent()->Refresh();
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
-    *m_doneptr = NULL;
-    Destroy();
-    break;
+    return void(Destroy());
   case WXK_UP:
   case WXK_NUMPAD_UP:
   {
@@ -249,9 +243,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
 
-    *m_doneptr = NULL;
-    Destroy();
-    break;
+    return void(Destroy());
   }
   default:
     event.Skip();
@@ -266,6 +258,7 @@ bool AutocompletePopup::Create(wxWindow* parent)
                                    wxLC_REPORT |
                                    wxLC_NO_HEADER |
                                    wxLC_SINGLE_SEL);
+  wxWindowUpdateLocker lock(this);
   InsertColumn(0,wxEmptyString);
   UpdateResults();
   SetColumnWidth(0, wxLIST_AUTOSIZE);
@@ -299,60 +292,45 @@ void AutocompletePopup::OnClick(wxMouseEvent& WXUNUSED(event))
 
   m_value = wxListView::GetFirstSelected();
 
-  {
-    if (m_value < 0)
-      m_value = 0;
-    m_partial = m_completions[m_value];
-    if(m_type != AutoComplete::esccommand)
-      m_editor->ReplaceSelection(
-        m_editor->GetSelectionString(),
-        m_partial
-        );
-    else
-      m_editor->InsertEscCommand(m_partial);
-    m_parent->GetParent()->Refresh();
-    if (!m_editor->IsActive())
-      m_editor->ActivateCursor();
-    *m_doneptr = NULL;
-    Destroy();
-  }
-}
-
-void AutocompletePopup::OnDismiss()
-{
-  *m_doneptr = NULL;
-}
-
-void AutocompletePopup::OnClose(wxCloseEvent& WXUNUSED(event))
-{
-  *m_doneptr = NULL;
+  if (m_value < 0)
+    m_value = 0;
+  m_partial = m_completions[m_value];
+  if(m_type != AutoComplete::esccommand)
+    m_editor->ReplaceSelection(
+      m_editor->GetSelectionString(),
+      m_partial
+      );
+  else
+    m_editor->InsertEscCommand(m_partial);
+  m_parent->GetParent()->Refresh();
+  if (!m_editor->IsActive())
+    m_editor->ActivateCursor();
+  return void(Destroy());
 }
 
 AutocompletePopup::~AutocompletePopup()
 {
   GetParent()->SetFocus();
-  *m_doneptr = NULL;
 }
 
 AutocompletePopup::AutocompletePopup(
   wxWindow *parent, EditorCell *editor, AutoComplete *autocomplete,
   AutoComplete::autoCompletionType type,
-  AutocompletePopup **doneptr): wxListView(), wxComboPopup()
-{
-  m_parent = parent;
-  m_doneptr = doneptr;
-  m_autocomplete = autocomplete;
-  m_editor = editor;
-  m_type = type;
-  m_length = 0;
+  AutocompletePopup **doneptr) :
+    m_parent(parent),
+    m_doneptr{*doneptr},
+    m_autocomplete(autocomplete),
+    m_editor(editor),
+    m_type(type)
+{  
+  wxASSERT_MSG(!*doneptr, "Attempted to create coexistent autocomplete popups.");
 
-  if(m_type != AutoComplete::esccommand)
+  if (m_type != AutoComplete::esccommand)
     m_partial = m_editor->GetSelectionString();
       
   Connect(wxEVT_CHAR, wxKeyEventHandler(AutocompletePopup::OnChar), NULL, this);
   Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(AutocompletePopup::OnKeyDown), NULL, this);
   Connect(wxEVT_LEFT_UP, wxMouseEventHandler(AutocompletePopup::OnClick), NULL, this);
-  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(AutocompletePopup::OnClose), NULL, this);
 }
 
 void AutocompletePopup::OnChar(wxKeyEvent &event)
@@ -401,13 +379,12 @@ void AutocompletePopup::OnChar(wxKeyEvent &event)
     m_parent->GetParent()->Refresh();
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
-    *m_doneptr = NULL;
-    Destroy();
         
     // Tell MathCtrl to handle this key event the normal way.
     wxKeyEvent *keyEvent = new wxKeyEvent(event);
     m_parent->GetEventHandler()->QueueEvent(keyEvent);
-    return;
+
+    return void(Destroy());
   }
 }
 
