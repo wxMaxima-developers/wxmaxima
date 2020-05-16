@@ -34,6 +34,7 @@
 #include <wx/textfile.h>
 #include <wx/combo.h>
 #include <wx/listctrl.h>
+#include <wx/wupdlock.h>
 
 void AutocompletePopup::UpdateResults()
 {
@@ -257,6 +258,7 @@ bool AutocompletePopup::Create(wxWindow* parent)
                                    wxLC_REPORT |
                                    wxLC_NO_HEADER |
                                    wxLC_SINGLE_SEL);
+  wxWindowUpdateLocker lock(this);
   InsertColumn(0,wxEmptyString);
   UpdateResults();
   SetColumnWidth(0, wxLIST_AUTOSIZE);
