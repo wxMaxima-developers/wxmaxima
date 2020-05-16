@@ -1335,7 +1335,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       }
 
       incompleteTextCell->SetValue(newVal);
-      if(s == wxEmptyString)
+      if(s.IsEmpty())
       {
         dynamic_cast<GroupCell *>(incompleteTextCell->GetGroup())->ResetSize();
         dynamic_cast<GroupCell *>(incompleteTextCell->GetGroup())->Recalculate();
@@ -1431,7 +1431,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   // cell is placed in the evaluation queue we need to catch it here.
   int index;
   wxString parenthesisError = GetUnmatchedParenthesisState(s,index);
-  if (parenthesisError == wxEmptyString)
+  if (parenthesisError.IsEmpty())
   {
     s = m_worksheet->UnicodeToMaxima(s);
 
@@ -2416,7 +2416,7 @@ void wxMaxima::ReadMiscText(wxString &data)
 
 int wxMaxima::FindTagEnd(const wxString &data, const wxString &tag)
 {
-  if((m_currentOutputEnd == wxEmptyString) || (m_currentOutputEnd.Find(tag) != wxNOT_FOUND))
+  if((m_currentOutputEnd.IsEmpty()) || (m_currentOutputEnd.Find(tag) != wxNOT_FOUND))
     return data.Find(tag);
   else
     return wxNOT_FOUND;
@@ -2888,7 +2888,7 @@ void wxMaxima::SetCWD(wxString file)
 
   wxFileName filename(file);
 
-  if (filename.GetPath() == wxEmptyString)
+  if (filename.GetPath().IsEmpty())
     filename.AssignDir(wxGetCwd());
 
   // Escape all backslashes in the filename if needed by the OS.
@@ -3678,7 +3678,7 @@ void wxMaxima::ShowHTMLHelp(const wxString &helpfile, const wxString &keyword)
 
   if ((keyword == wxT("%")) ||
       (keyword == wxT(" << Graphics >> ")) ||
-      (keyword == wxEmptyString))
+      (keyword.IsEmpty()))
     m_htmlhelpCtrl.DisplayContents();
   else
     m_htmlhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
@@ -4585,7 +4585,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
 {
   wxBusyCursor crs;
   bool retval = true;
-  if (file == wxEmptyString)
+  if (file.IsEmpty())
   {
     wxLogError(_("Trying to open a file with an empty name!"));
     return false;
@@ -5486,7 +5486,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
     wxString gnuplotSource =
       m_worksheet->m_cellPointers.m_selectionStart->GnuplotSource();
-    if(gnuplotSource == wxEmptyString)
+    if(gnuplotSource.IsEmpty())
       return;
 
     if(!wxFileExists(gnuplotSource))
@@ -6280,7 +6280,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxEmptyString;
-        if(wiz->GetValue1() == wxEmptyString)
+        if(wiz->GetValue1().IsEmpty())
           cmd = wiz->GetValue1() + wxT(":");
         cmd += wxT("matrixmap(") + wiz->GetValue2() + wxT(", ")
               + wiz->GetValue3() + wxT(");");
@@ -8711,7 +8711,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
 
   wxString file = m_unsavedDocuments.Get(event.GetId() - menu_unsaved_document_0);
 
-  if(file == wxEmptyString)
+  if(file.IsEmpty())
     return;
 
   if (SaveNecessary() &&
@@ -8869,7 +8869,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 {
   text.Trim(true);
   text.Trim(false);
-  if(text == wxEmptyString)
+  if(text.IsEmpty())
     return (wxEmptyString);
   if (text.EndsWith(wxT("\\")))
     return (_("Cell ends in a backslash"));
@@ -9055,7 +9055,7 @@ void wxMaxima::TriggerEvaluation()
   {
     int index;
     wxString parenthesisError = GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true),index);
-    if (parenthesisError == wxEmptyString)
+    if (parenthesisError.IsEmpty())
     {
       if (m_worksheet->FollowEvaluation())
       {
@@ -9664,7 +9664,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
-  if (m_worksheet->m_currentFile == wxEmptyString)
+  if (m_worksheet->m_currentFile.IsEmpty())
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;
