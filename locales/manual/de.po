@@ -2617,15 +2617,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:695
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    for i:1 thru 10 do (\n"
-#| "       disp(i),\n"
-#| "       /* (sleep n) is a Lisp function, which can be used */\n"
-#| "       /* with the character \"?\" before. It delays the */\n"
-#| "       /* program execution (here: for 3 seconds) */\n"
-#| "       ?sleep(3)\n"
-#| "    )$\n"
+#, no-wrap
 msgid ""
 "for i:1 thru 10 do (\n"
 "   disp(i),\n"
@@ -2635,13 +2627,14 @@ msgid ""
 "   ?sleep(3)\n"
 ")$\n"
 msgstr ""
-"    for i:1 thru 10 do (\n"
-"       disp(i),\n"
-"       /* (sleep n) is a Lisp function, which can be used */\n"
-"       /* with the character \\\"?\\\" before. It delays the */\n"
-"       /* program execution (here: for 3 seconds) */\n"
-"       ?sleep(3)\n"
-"    )$\n"
+"for i:1 thru 10 do (\n"
+"   disp(i),\n"
+"   /* (sleep n) ist eine Lisp-Funktion, die mit einem */\n"
+"   /* \"?\" Zeichen vorher verwendet werden kann. */\n"
+"   /* Sie verzögert die Programmausführung für n Sekunden */\n"
+"   /* (in diesem Beispiel: für 3 Sekunden). */\n"
+"   ?sleep(3)\n"
+")$\n"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:705
@@ -2755,7 +2748,7 @@ msgid ""
 "If you still have a way to find out what label _Maxima_ has assigned to the "
 "cell just type in the cell’s label and its contents will reappear."
 msgstr ""
-"Wenn die Ausgabe einer Marke (z.B. %o20) zugewiesen wurde, kann diese Marke "
+"Wenn die Ausgabe einer Marke (z.B. `%o20`) zugewiesen wurde, kann diese Marke "
 "eingegeben werden und der betreffende Text erscheint."
 
 #. type: Bullet: '* '
