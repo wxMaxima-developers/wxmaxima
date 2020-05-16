@@ -35,6 +35,7 @@
 #include "MaxSizeChooser.h"
 #include "SVGout.h"
 #include "EMFout.h"
+#include "WXMformat.h"
 #include "Version.h"
 #include "levenshtein/levenshtein.h"
 #include <wx/richtext/richtextbuffer.h>
@@ -2719,7 +2720,7 @@ bool Worksheet::CopyCells()
 
       if(m_configuration->CopyRTF())
         rtf += tmp->ToRTF();
-      wxm += tmp->ToWXM();
+      wxm += Format::TreeToWXM(tmp);
 
       if (tmp == end)
         break;
@@ -5819,195 +5820,6 @@ void Worksheet::CodeCellVisibilityChanged()
   ScrollToCaret();
 }
 
-GroupCell *Worksheet::CreateTreeFromWXMCode(const wxArrayString &wxmLines)
-{
-  auto wxmLine = wxmLines.begin();
-  auto const end = wxmLines.end();
-
-  //! Consumes and concatenates lines until a closing tag is reached,
-  //! consumes the tag and returns the line.
-  const auto getLinesUntil = [&wxmLine, end](const wxChar *tag) -> wxString
-  {
-    wxString line;
-    while (wxmLine != end)
-    {
-      auto const thisLn = wxmLine++;
-      if (*thisLn == tag)
-        break;
-      if (!line.empty())
-        line += wxT('\n');
-      line += *thisLn;
-    }
-    return line;
-  };
-
-  bool hide = false;
-  //! Hides the cell if a hide flag was set
-  const auto hideCell = [&hide](GroupCell *cell)
-  {
-    if (hide && cell)
-    {
-      cell->Hide(true);
-      hide = false;
-    }
-  };
-
-  // Show a busy cursor while we read
-  wxBusyCursor crs;
-  GroupCell *tree = {};
-  GroupCell *last = {};
-  wxString question;
-
-  while (wxmLine != end)
-  {
-    GroupCell *cell = {};
-    auto const headerLn = wxmLine ++;
-
-    if (false); // Needed to keep the remaining tests uniform
-
-      // Read hide tag
-    else if (*headerLn == wxT("/* [wxMaxima: hide output   ] */"))
-      hide = true;
-
-      // Read title
-    else if (*headerLn ==       wxT("/* [wxMaxima: title   start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: title   end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_TITLE, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read section
-    else if (*headerLn ==       wxT("/* [wxMaxima: section start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: section end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_SECTION, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read subsection
-    else if (*headerLn ==       wxT("/* [wxMaxima: subsect start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: subsect end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_SUBSECTION, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read subsubsection
-    else if (*headerLn ==       wxT("/* [wxMaxima: subsubsect start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: subsubsect end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_SUBSUBSECTION, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read heading5
-    else if (*headerLn ==       wxT("/* [wxMaxima: heading5 start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: heading5 end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_HEADING5, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read heading6
-    else if (*headerLn ==       wxT("/* [wxMaxima: heading6 start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: heading6 end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_HEADING6, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read comment
-    else if (*headerLn ==       wxT("/* [wxMaxima: comment start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: comment end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_TEXT, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read an image caption
-    else if (*headerLn ==       wxT("/* [wxMaxima: caption start ]"))
-    {
-      auto line = getLinesUntil(wxT("   [wxMaxima: caption end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_IMAGE, &m_cellPointers);
-      cell->GetEditable()->SetValue(line);
-      hideCell(cell);
-    }
-
-      // Read an image bitmap
-    else if (last && last->GetGroupType() == GC_TYPE_IMAGE && wxmLine != end
-             && *headerLn ==  wxT("/* [wxMaxima: image   start ]"))
-    {
-      // Read the image type
-      wxString const imgtype = *wxmLine ++;
-      auto ln = getLinesUntil(wxT("   [wxMaxima: image   end   ] */"));
-      last->SetOutput(
-        new ImgCell(NULL, &m_configuration, &m_cellPointers, wxBase64Decode(ln), imgtype));
-    }
-
-      // Read input
-    else if (*headerLn ==       wxT("/* [wxMaxima: input   start ] */"))
-    {
-      auto line = getLinesUntil(wxT("/* [wxMaxima: input   end   ] */"));
-      cell = new GroupCell(&m_configuration, GC_TYPE_CODE, &m_cellPointers, line);
-      hideCell(cell);
-    }
-
-      // Read an answer
-    else if (*headerLn ==       wxT("/* [wxMaxima: answer  start ] */"))
-    {
-      auto line = getLinesUntil(wxT("/* [wxMaxima: answer  end   ] */"));
-      if (last && !question.empty())
-        last->SetAnswer(question, line);
-    }
-
-      // Read a question
-    else if (*headerLn ==       wxT("/* [wxMaxima: question  start ] */"))
-    {
-      auto line = getLinesUntil(wxT("/* [wxMaxima: question  end   ] */"));
-      question = line;
-    }
-
-      // Read autoanswer tag
-    else if (*headerLn == wxT("/* [wxMaxima: autoanswer    ] */"))
-    {
-      if (last)
-        last->AutoAnswer(true);
-    }
-
-      // Read page break tag
-    else if (*headerLn == wxT("/* [wxMaxima: page break    ] */"))
-    {
-      cell = new GroupCell(&m_configuration, GC_TYPE_PAGEBREAK, &m_cellPointers);
-    }
-
-      // Read a folded tree and build it
-    else if (*headerLn ==                  wxT("/* [wxMaxima: fold    start ] */"))
-    {
-      wxArrayString hiddenTree;
-      while (wxmLine != end && *wxmLine != wxT("/* [wxMaxima: fold    end   ] */"))
-        hiddenTree.Add(*wxmLine ++);
-
-      last->HideTree(CreateTreeFromWXMCode(hiddenTree));
-    }
-
-    if (cell)
-    { // if we have created a cell in this pass
-      if (!tree)
-        tree = last = cell;
-      else
-      {
-        last->m_next = cell;
-        last->SetNextToDraw(cell);
-        last->m_next->m_previous = last;
-
-        last = last->GetNext();
-      }
-    }
-  }
-  return tree;
-}
-
 /*! Export the file as TeX code
  */
 bool Worksheet::ExportToTeX(const wxString &file)
@@ -6215,8 +6027,7 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
   //
   while (tmp != NULL)
   {
-
-    AddLineToFile(output, tmp->ToWXM(wxm));
+    AddLineToFile(output, Format::TreeToWXM(tmp));
 
     if ((wxm)&&(tmp->GetGroupType() == GC_TYPE_CODE))
     {
@@ -6278,7 +6089,7 @@ bool Worksheet::ExportToMAC(const wxString &file)
 
   if (wxm)
   {
-    AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"));
+    AddLineToFile(backupfile, Format::WXMFirstLine);
     wxString version(wxT(GITVERSION));
     AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"));
   }
@@ -7544,7 +7355,7 @@ void Worksheet::PasteFromClipboard()
         lines_array.Add(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
-      GroupCell *contents = CreateTreeFromWXMCode(lines_array);
+      GroupCell *contents = Format::TreeFromWXM(lines_array, &m_configuration, &m_cellPointers);
 
       // Add the result of the last operation to the worksheet.
       if (contents)

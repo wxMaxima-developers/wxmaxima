@@ -1485,8 +1485,6 @@ public:
   bool QuestionPending()
   { return m_questionPrompt; }
   //!@}
-  //! Converts a wxm description into individual cells
-  GroupCell *CreateTreeFromWXMCode(const wxArrayString &wxmLines);
 
   /*! Does maxima wait for the answer of a question?
 
