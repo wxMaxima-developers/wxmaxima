@@ -44,54 +44,46 @@
 //! The maximum number of popup menu entries we show at the same time
 #define AC_MENU_LENGTH 25
 
-class AutocompletePopup : public wxListView, public wxComboPopup
-{
-  // Initialize member variables
-  virtual void Init()
-    {
-      m_value = -1;
-    }
-  
+class AutocompletePopup final : public wxListView, public wxComboPopup
+{  
   // Return pointer to the created control
-  virtual wxWindow *GetControl() { return this; }
+  wxWindow *GetControl() override { return this; }
+
   // Translate string into a list selection
-  virtual void SetStringValue(const wxString& s)
-    {
-      int n = wxListView::FindItem(-1,s);
-      if ( n >= 0 && n < wxListView::GetItemCount() )
-        wxListView::Select(n);
-    }
+  void SetStringValue(const wxString& s) override
+  {
+    int n = wxListView::FindItem(-1,s);
+    if (n >= 0 && n < wxListView::GetItemCount() )
+      wxListView::Select(n);
+  }
   // Get list selection as a string
-  virtual wxString GetStringValue() const
-    {
-      if ( m_value >= 0 )
-        return wxListView::GetItemText(m_value);
-      return wxEmptyString;
-    }
-protected:
-  int m_value; // current item index
+  wxString GetStringValue() const override
+  { return (m_value >= 0) ? wxListView::GetItemText(m_value) : wxString(); }
+
+private:
+  struct DonePtr { AutocompletePopup*& observer; ~DonePtr() { observer = nullptr; } };
+  int m_value = -1; // current item index
   //! The current string in the autocompletion
   wxString m_partial;
-private:
-  wxWindow *m_parent;
+
+  wxWindow *m_parent = {};
+  const DonePtr m_doneptr;
   wxArrayString m_completions;
-  AutoComplete *m_autocomplete;
-  size_t m_length;
-  EditorCell *m_editor;
+  AutoComplete *m_autocomplete = {};
+  size_t m_length = 0;
+  EditorCell *m_editor = {};
   AutoComplete::autoCompletionType m_type;
-  AutocompletePopup **m_doneptr;
-protected:
-  void OnDismiss();
-  void OnClose(wxCloseEvent &event);
+
   //! The position of our pop-up
   wxPoint m_position;
   //! The visible rectangle of the screen
   wxRect m_screenRect;
+
 public:
   //! Define where the popup will appear on Create()
   void SetPosition(wxPoint pos){m_position = pos;}
   //! Create popup control
-  virtual bool Create(wxWindow* parent);
+  bool Create(wxWindow* parent) override;
   ~AutocompletePopup();
   //! Gets the info which keycode the current keypress results in
   void OnChar(wxKeyEvent &event);
