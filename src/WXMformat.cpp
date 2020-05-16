@@ -176,7 +176,7 @@ static wxString &TreeToWXM(wxString &retval, GroupCell *cell, bool wxm)
     if (cell->GetLabel() && cell->GetLabel()->GetType() == MC_TYPE_IMAGE)
     {
       ImgCell *image = dynamic_cast<ImgCell *>(cell->GetLabel());
-      retval << Headers.GetStart(WXM_IMAGE)
+      retval << Headers.GetStart(WXM_IMAGE) << '\n'
              << image->GetExtension() << '\n'
              << wxBase64Encode(image->GetCompressedImage()) << '\n'
              << Headers.GetEnd(WXM_IMAGE);
