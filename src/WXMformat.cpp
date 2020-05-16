@@ -527,10 +527,7 @@ GroupCell *ParseMACContents(const wxString &macContents,
   line.Trim(true);
   line.Trim(false);
   if (!line.empty())
-  {
-    GroupCell *cell;
-    appendCell((cell = new GroupCell(config, GC_TYPE_CODE, cellPointers, line), last));
-  }
+    appendCell(new GroupCell(config, GC_TYPE_CODE, cellPointers, line), last);
 
   return tree;
 }
