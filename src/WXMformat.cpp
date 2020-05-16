@@ -106,6 +106,7 @@ public:
   static WXMHeaderId LookupStart(const wxString &start)
   {
     for (auto &c : WXMHeaders)
+      // cppcheck-suppress useStlAlgorithm
       if (c.start == start) return c.id;
     return WXM_INVALID;
   }
@@ -425,9 +426,9 @@ GroupCell *ParseMACContents(const wxString &macContents,
       // Skip to the end of the comment
       while (s.ch != macContents.end())
       {
-        wxChar c = *s.ch++;
-        bool finished = (s.lastChar == wxT('*') && c == wxT('/'));
-        line += s.lastChar = c;
+        wxChar ch = *s.ch++;
+        bool finished = (s.lastChar == wxT('*') && ch == wxT('/'));
+        line += s.lastChar = ch;
         if (finished) break;
       }
 
@@ -504,7 +505,7 @@ GroupCell *ParseMACContents(const wxString &macContents,
     else if (c == '\\')
     {
       line += s.lastChar = c;
-      s.ch ++;
+      ++s.ch;
     }
     // Handle all other chars
     else
