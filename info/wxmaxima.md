@@ -152,58 +152,57 @@ _Maxima_ allows Unicode, if it was compiled using a Lisp compiler that either su
 
 The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
-~~~
-hbar          planck's constant: a h with a horizontal bar above it
-Hbar          a H with a horizontal bar above it
-2             squared
-3             to the power of three
-/2            1/2
-partial       partial sign (the d of dx/dt)
-integral      integral sign
-sq            root
-ii            imaginary
-ee            element
-in            in
-impl,implies  implies
-inf           infinity
-empty         empty
-TB            Big triangle right
-tb            small triangle right
-and           and
-or            or
-xor           xor
-nand          nand
-nor           nor
-equiv         equivalent
-not           not
-union         union
-inter         intersection
-subseteq      subset or equal
-subset        subset
-notsubseteq   not subset or equal
-notsubset     not subset
-approx        approximately
-propto        proportional to
-neq,!=,/=
-or #          not equal to
-+/- or pm     a plus/minus sign
-<= or leq     equal or less than
->= or geq     equal or greater than
-<< or ll      much less than
->> or gg      much greater than
-equiv         equivalent to
-qed           end of proof
-nabla         a nabla operator
-sum           sum sign
-prod          product sign
-exists        "there exists" sign
-nexists       "there is no" sign
-parallel      a "parallel" sign
-perp          a "perpendicular" sign
-leadsto       a "leads to" sign
-->            a right arrow
--->           a long right arrow
-~~~
+| keys to enter  | mathematical symbol                                   |
+|----------------|-------------------------------------------------------|
+| hbar           | planck's constant: a h with a horizontal bar above it |
+| Hbar           | a H with a horizontal bar above it                    |
+| 2              | squared                                               |
+| 3              | to the power of three                                 |
+| /2             | 1/2                                                   |
+| partial        | partial sign (the d of dx/dt)                         |
+| integral       | integral sign                                         |
+| sq             | root                                                  |
+| ii             | imaginary                                             |
+| ee             | element                                               |
+| in             | in                                                    |
+| impl implies   | implies                                               |
+| inf            | infinity                                              |
+| empty          | empty                                                 |
+| TB             | Big triangle right                                    |
+| tb             | small triangle right                                  |
+| and            | and                                                   |
+| or             | or                                                    |
+| xor            | xor                                                   |
+| nand           | nand                                                  |
+| nor            | nor                                                   |
+| equiv          | equivalent                                            |
+| not            | not                                                   |
+| union          | union                                                 |
+| inter          | intersection                                          |
+| subseteq       | subset or equal                                       |
+| subset         | subset                                                |
+| notsubseteq    | not subset or equal                                   |
+| notsubset      | not subset                                            |
+| approx         | approximately                                         |
+| propto         | proportional to                                       |
+| neq != /= or # | not equal to                                          |
+| +/- or pm      | a plus/minus sign                                     |
+| <= or leq      | equal or less than                                    |
+| >= or geq      | equal or greater than                                 |
+| << or ll       | much less than                                        |
+| >> or gg       | much greater than                                     |
+| equiv          | equivalent to                                         |
+| qed            | end of proof                                          |
+| nabla          | a nabla operator                                      |
+| sum            | sum sign                                              |
+| prod           | product sign                                          |
+| exists         | there exists sign                                     |
+| nexists        | there is no sign                                      |
+| parallel       | a parallel sign                                       |
+| perp           | a perpendicular sign                                  |
+| leadsto        | a leads to sign                                       |
+| ->             | a right arrow                                         |
+| -->            | a long right arrow                                    |
 
 If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.
 
