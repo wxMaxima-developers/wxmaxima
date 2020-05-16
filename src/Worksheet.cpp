@@ -6089,7 +6089,7 @@ bool Worksheet::ExportToMAC(const wxString &file)
 
   if (wxm)
   {
-    AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"));
+    AddLineToFile(backupfile, Format::WXMFirstLine);
     wxString version(wxT(GITVERSION));
     AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"));
   }

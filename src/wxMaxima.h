@@ -634,9 +634,6 @@ protected:
   //! Complains if the version string from the XML file indicates too low a maxima version
   bool CheckWXMXVersion(const wxString &docversion);
 
-  //! Reads the contents of a .mac or a .out file. Used by OpenMacFile
-  wxString ReadMacContents(const wxString &file);
-
   //! Opens a .mac file or a .out file from Xmaxima
   bool OpenMACFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 

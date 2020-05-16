@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+//            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
 //            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2020      Kuba Ober <kuba@bertec.com>
@@ -26,12 +27,16 @@
 #include "WXMformat.h"
 #include "ImgCell.h"
 #include <wx/debug.h>
+#include <wx/textbuf.h>
+#include <wx/tokenzr.h>
 #include <algorithm>
 #include <cstdlib>
 #include <vector>
 
 namespace Format
 {
+
+const wxString WXMFirstLine = wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
 
 static constexpr GroupType NoGroup = GroupType(-1);
 
@@ -353,6 +358,216 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
       last = last->GetNext();
     }
   }
+  return tree;
+}
+
+GroupCell *ParseWXMFile(wxTextBuffer &text,
+                        Configuration **config, Cell::CellPointers *cellPointers)
+{
+  wxArrayString wxmLines;
+  for (auto line = text.GetFirstLine(); ; line = text.GetNextLine())
+  {
+    wxmLines.Add(line);
+    if (text.Eof())
+      break;
+  }
+
+  GroupCell *tree = Format::TreeFromWXM(wxmLines, config, cellPointers);
+  return tree;
+}
+
+GroupCell *ParseMACContents(const wxString &macContents,
+                            Configuration **config, Cell::CellPointers *cellPointers)
+{
+  GroupCell *tree = {}, *last = {};
+  auto const appendCell = [&last, &tree](GroupCell *cell)
+  {
+    if (last)
+      last->AppendCell(cell);
+    else
+      tree = cell;
+
+    last = cell;
+  };
+
+  auto const end = macContents.end();
+
+  struct State { wxChar lastChar; wxString::const_iterator ch; };
+  auto const readUntil = [end](wxString &line, State s, wxChar until)
+  {
+    while (s.ch != end)
+    {
+      wxChar c = *s.ch++;
+      line += s.lastChar = c;
+      if (c == until)
+        break;
+    }
+    return s;
+  };
+
+  wxString line;
+  for (State s{' ', macContents.begin()}; s.ch != macContents.end(); )
+  {
+    wxChar c = *s.ch;
+    // Handle comments
+    if (s.lastChar == '/' && c == '*')
+    {
+      // Does the current line contain nothing but a comment?
+      bool isCommentLine = false;
+      wxString trimmed = line;
+      trimmed.Trim(false);
+      if (trimmed == wxT('/'))
+      {
+        isCommentLine = true;
+        line = trimmed;
+      }
+
+      // Skip to the end of the comment
+      while (s.ch != macContents.end())
+      {
+        wxChar c = *s.ch++;
+        bool finished = (s.lastChar == wxT('*') && c == wxT('/'));
+        line += s.lastChar = c;
+        if (finished) break;
+      }
+
+      if (isCommentLine)
+      {
+        line.Trim(true);
+        line.Trim(false);
+
+        // Is this a comment from wxMaxima?
+        if (line.StartsWith(wxT("/* [wxMaxima: ")))
+        {
+          // Add the rest of this comment block to the "line".
+          while(
+            !line.EndsWith(" end   ] */") &&
+            !line.EndsWith(" end   ] */\n")
+            )
+          {
+            s = readUntil(line, s, '\n');
+          }
+
+          // If the last block was a caption block we need to read in the image
+          // the caption was for, as well.
+          if (line.StartsWith(Headers.GetStart(WXM_CAPTION)))
+          {
+            if (s.ch != macContents.end())
+              line += s.lastChar = *s.ch++;
+
+            s = readUntil(line, s, '\n');
+
+            while(
+              !line.EndsWith(" end   ] */") &&
+              !line.EndsWith(" end   ] */\n")
+              )
+            {
+              s = readUntil(line, s, '\n');
+            }
+          }
+
+          //  Convert the comment block to an array of lines
+          wxStringTokenizer tokenizer(line, "\n");
+          wxArrayString commentLines;
+          while (tokenizer.HasMoreTokens())
+            commentLines.Add(tokenizer.GetNextToken());
+
+          // Interpret this array of lines as wxm code.
+          GroupCell *cell;
+          appendCell((cell = TreeFromWXM(commentLines, config, cellPointers)));
+        }
+        else
+        {
+          if ((line.EndsWith(" */")) || (line.EndsWith("\n*/")))
+            line.Truncate(line.length() - 3);
+          else
+            line.Truncate(line.length() - 2);
+
+          if ((line.StartsWith("/* ")) || (line.StartsWith("/*\n")))
+            line.erase(0, 3);
+          else
+            line.erase(0, 2);
+
+          GroupCell *cell;
+          appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, cellPointers, line)));
+        }
+        line.clear();
+      }
+    }
+    // Handle strings
+    else if (c == '\"')
+    {
+      // Skip to the end of the string
+      s = readUntil(line, s, '"');
+    }
+    // Handle escaped chars
+    else if (c == '\\')
+    {
+      line += s.lastChar = c;
+      s.ch ++;
+    }
+    // Handle all other chars
+    else
+    {
+      line += c;
+
+      // A line ending followed by a new line means: We want to insert a new code cell.
+      if ((s.lastChar == wxT('$') || s.lastChar == wxT(';')) && (c == wxT('\n')))
+      {
+        line.Trim(true);
+        line.Trim(false);
+        GroupCell *cell;
+        appendCell((cell = new GroupCell(config, GC_TYPE_CODE, cellPointers, line)));
+        line.clear();
+      }
+      s.lastChar = c;
+    }
+  }
+
+  line.Trim(true);
+  line.Trim(false);
+  if (!line.empty())
+  {
+    GroupCell *cell;
+    appendCell((cell = new GroupCell(config, GC_TYPE_CODE, cellPointers, line), last));
+  }
+
+  return tree;
+}
+
+GroupCell *ParseMACFile(wxTextBuffer &text, bool xMaximaFile,
+                        Configuration **config, Cell::CellPointers *cellPointers)
+{
+  bool input = true;
+  wxString macContents;
+
+  for (auto line = text.GetFirstLine(); ; line = text.GetNextLine())
+  {
+    if (xMaximaFile)
+    {
+      // Detect output cells.
+      if (line.StartsWith(wxT("(%o")))
+        input = false;
+
+      if (line.StartsWith(wxT("(%i")))
+      {
+        int end = line.Find(wxT(")"));
+        if (end > 0)
+        {
+          line = line.Right(line.Length() - end - 2);
+          input = true;
+        }
+      }
+    }
+
+    if (input)
+      macContents << line << wxT('\n');
+
+    if (text.Eof())
+      break;
+  }
+
+  GroupCell *tree = Format::ParseMACContents(macContents, config, cellPointers);
   return tree;
 }
 

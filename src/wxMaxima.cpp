@@ -2923,56 +2923,6 @@ void wxMaxima::SetCWD(wxString file)
   }
 }
 
-wxString wxMaxima::ReadMacContents(const wxString &file)
-{
-  bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
-
-    // open mac file
-  wxTextFile inputFile(file);
-
-  if (!inputFile.Open())
-  {
-    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
-    return wxEmptyString;
-  }
-
-  bool input = true;
-  wxString macContents;
-  wxString line = inputFile.GetFirstLine();
-  do
-  {
-    if(xMaximaFile)
-    {
-      // Detect output cells.
-      if(line.StartsWith(wxT("(%o")))
-        input = false;
-
-      if(line.StartsWith(wxT("(%i")))
-      {
-        int end = line.Find(wxT(")"));
-        if(end > 0)
-        {
-          line = line.Right(line.Length() - end - 2);
-          input = true;
-        }
-      }
-
-    }
-
-    if(input)
-      macContents += line + wxT("\n");
-
-    if(!inputFile.Eof())
-      line = inputFile.GetNextLine();
-
-  } while (!inputFile.Eof());
-  inputFile.Close();
-
-  return macContents;
-}
-
 bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document, bool clearDocument)
 {
   // Show a busy cursor while we open the file.
@@ -2981,217 +2931,27 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document, bool clear
   RightStatusText(_("Opening file"));
   wxWindowUpdateLocker noUpdates(document);
 
-  wxString macContents = ReadMacContents(file);
+  bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
 
-  if(macContents == wxEmptyString)
+  // open mac file
+  wxTextFile inputFile(file);
+
+  if (!inputFile.Open())
+  {
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    RightStatusText(_("File could not be opened"));
     return false;
+  }
 
   if (clearDocument)
     document->ClearDocument();
 
-  GroupCell *last = NULL;
-  wxString line = wxEmptyString;
-  wxChar lastChar = wxT(' ');
-  wxString::const_iterator ch = macContents.begin();
-  while (ch != macContents.end())
-  {
+  auto tree = Format::ParseMACFile(inputFile, xMaximaFile,
+                                   &(document->m_configuration),
+                                   &(document->m_cellPointers));
 
-    // Handle comments
-    if((*ch == '*') && (lastChar == '/'))
-    {
-      // Does the current line contain nothing but a comment?
-      bool isCommentLine = false;
-      wxString test = line;
-      test.Trim(false);
-      if(test == wxT("/"))
-      {
-        isCommentLine = true;
-        line.Trim(false);
-      }
-
-      // Skip to the end of the comment
-      while (ch != macContents.end())
-      {
-        line += *ch;
-
-        if ((lastChar == wxT('*')) && (*ch == wxT('/')))
-        {
-          lastChar = *ch;
-          if(ch != macContents.end())
-            ++ch;
-          break;
-        }
-
-        lastChar = *ch;
-        if(ch != macContents.end())
-          ++ch;
-      }
-
-      if(isCommentLine)
-      {
-        line.Trim(true);
-        line.Trim(false);
-
-        // Is this a comment from wxMaxima?
-        if(line.StartsWith(wxT("/* [wxMaxima: ")))
-        {
-
-          // Add the rest of this comment block to the "line".
-          while(
-            (
-              !(
-                  (line.EndsWith(" end   ] */")) ||
-                  (line.EndsWith(" end   ] */\n"))
-                  )
-              ) &&
-            (ch != macContents.end())
-            )
-          {
-            while(ch != macContents.end())
-            {
-              wxChar c = *ch;
-              line += *ch;
-              ++ch;
-              if(c == wxT('\n'))
-                break;
-            }
-          }
-
-          // If the last block was a caption block we need to read in the image
-          // the caption was for, as well.
-          if(line.StartsWith(wxT("/* [wxMaxima: caption start ]")))
-          {
-            if(ch != macContents.end())
-            {
-              line += *ch;
-              ++ch;
-            }
-            while(ch != macContents.end())
-            {
-              wxChar c = *ch;
-              line += *ch;
-              ++ch;
-              if(c == wxT('\n'))
-                break;
-            }
-            while(
-              (
-                !(
-                  (line.EndsWith(" end   ] */")) ||
-                  (line.EndsWith(" end   ] */\n"))
-                  )
-              ) &&
-              (ch != macContents.end())
-              )
-            {
-              while(ch != macContents.end())
-              {
-                wxChar c = *ch;
-                line += *ch;
-                ++ch;
-                if(c == wxT('\n'))
-                  break;
-              }
-            }
-          }
-
-          //  Convert the comment block to an array of lines
-          wxStringTokenizer tokenizer(line, "\n");
-          wxArrayString commentLines;
-          while ( tokenizer.HasMoreTokens() )
-            commentLines.Add(tokenizer.GetNextToken());
-
-          // Interpret this array of lines as wxm code.
-          GroupCell *cell;
-          document->InsertGroupCells(
-            cell = Format::TreeFromWXM(commentLines, &m_worksheet->m_configuration, &m_worksheet->m_cellPointers),
-            last);
-          last = cell;
-        }
-          else
-        {
-          GroupCell *cell;
-
-          if((line.StartsWith("/* ")) || (line.StartsWith("/*\n")))
-            line = line.SubString(3,line.length()-1);
-          else
-            line = line.SubString(2,line.length()-1);
-
-          if((line.EndsWith(" */")) || (line.EndsWith("\n*/")))
-            line = line.SubString(0,line.length()-4);
-          else
-            line = line.SubString(0,line.length()-3);
-
-          document->InsertGroupCells(
-            cell = new GroupCell(&(document->m_configuration),
-                                 GC_TYPE_TEXT, &document->m_cellPointers,
-                                 line),
-            last);
-          last = cell;
-        }
-
-        line = wxEmptyString;
-      }
-    }
-    // Handle strings
-    else if((*ch == '\"') )
-    {
-      // Skip to the end of the string
-      while (ch != macContents.end())
-      {
-        line += *ch;
-
-        if ((*ch == wxT('\"')))
-        {
-          lastChar = *ch;
-          if(ch != macContents.end())
-            ++ch;
-          break;
-        }
-      }
-    }
-    // Handle escaped chars
-    else if((*ch == '\\') )
-    {
-      if(ch != macContents.end())
-      {
-        line += *ch;
-        lastChar = *ch;
-        ++ch;
-      }
-    }
-    else
-    {
-      line += *ch;
-
-      // A line ending followed by a new line means: We want to insert a new code cell.
-      if(((lastChar == wxT('$')) || ((lastChar == wxT(';')))) && (*ch == wxT('\n')))
-      {
-        line.Trim(true);
-        line.Trim(false);
-        GroupCell *cell;
-        document->InsertGroupCells(
-          cell = new GroupCell(&(document->m_configuration),
-                        GC_TYPE_CODE, &document->m_cellPointers, line),
-          last);
-        last = cell;
-        line = wxEmptyString;
-      }
-      lastChar = *ch;
-      if(ch != macContents.end())
-        ++ch;
-    }
-  }
-
-  line.Trim(true);
-  line.Trim(false);
-  if(line != wxEmptyString)
-  {
-    document->InsertGroupCells(
-      new GroupCell(&(document->m_configuration),
-                    GC_TYPE_CODE, &document->m_cellPointers, line),
-      last);
-  }
+  document->InsertGroupCells(tree, nullptr);
 
   if (clearDocument)
   {
@@ -3232,7 +2992,6 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
 
   // open wxm file
   wxTextFile inputFile(file);
-  wxArrayString wxmLines;
 
   if (!inputFile.Open())
   {
@@ -3242,25 +3001,16 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
     return false;
   }
 
-  if (inputFile.GetFirstLine() !=
-      wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
+  if (inputFile.GetFirstLine() != Format::WXMFirstLine)
   {
     inputFile.Close();
     LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
-  wxString line;
-  for (line = inputFile.GetFirstLine();
-       !inputFile.Eof();
-       line = inputFile.GetNextLine())
-  {
-    wxmLines.Add(line);
-  }
-  wxmLines.Add(line);
 
+  GroupCell *tree = Format::ParseWXMFile(inputFile,
+                                         &m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
   inputFile.Close();
-
-  GroupCell *tree = Format::TreeFromWXM(wxmLines, &m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
