@@ -792,6 +792,13 @@ bool TextCell::IsOperator() const
 
 wxString TextCell::ToString()
 {
+  static const wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
+  static const wxString charsWithQuotes = []{
+    wxString retval;
+    for (auto ch : charsNeedingQuotes) { retval << '\\' << ch; }
+    return retval;
+  }();
+
   wxString text;
   if (m_altCopyText != wxEmptyString)
     text = m_altCopyText;
@@ -813,7 +820,6 @@ wxString TextCell::ToString()
       // are quoted by a backslash: They cannot be quoted by quotation
       // marks since maxima would'nt allow strings here.
     {
-      wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
       bool isOperator = true;
       if(m_text.Length() > 1)
       {
@@ -836,7 +842,7 @@ wxString TextCell::ToString()
           text = text.Left(text.Length() - 1);
         }
         for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
-          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+          text.Replace(charsNeedingQuotes[i], charsWithQuotes wxT("\\") + wxString(charsNeedingQuotes[i]));
         text += lastChar;
       }
       break;

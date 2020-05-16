@@ -596,6 +596,7 @@ void GroupCell::AppendOutput(Cell *cell)
 void GroupCell::UpdateConfusableCharWarnings()
 {
   ClearToolTip();
+  return;
 
   wxString code;
   if(GetInput())

@@ -22,6 +22,167 @@
 #include "StringUtils.h"
 #include <array>
 
+//
+// StringView
+//
+
+StringView::size_type StringView::copy(pointer dest, size_type count, size_type pos) const
+{
+  if (pos > size())
+    throw std::out_of_range("StringView::copy(): position is greater than size()");
+  auto const rcount = std::min(count == npos ? size() : count, size() - pos);
+  std::copy_n(s + pos, rcount, dest);
+  return rcount;
+}
+
+StringView StringView::substr(size_type pos, size_type count) const
+{
+  if (pos > size())
+    throw std::out_of_range("StringView::substr(): position is greater than size()");
+  auto const rcount = std::min(count == npos ? size() : count, size() - pos);
+  return {s+pos, rcount};
+}
+
+int StringView::compare(StringView v) const noexcept
+{
+  auto rcount = std::min(len, v.len);
+  for (const_pointer left = s, right = v.s; rcount; --rcount)
+  {
+    value_type l = *left++, r = *right++;
+    if (l < r) return -1; else if (l > r) return 1;
+  }
+  if (len < v.len) return -1;
+  else if (len > v.len) return 1;
+  else return 0;
+}
+
+bool StringView::starts_with(const_pointer s) const
+{
+  for (auto it = begin(); it != end(); ++ it, ++ s)
+  {
+    auto const ch = *s;
+    if (!ch || ch != *it)
+      return false;
+  }
+  return true;
+}
+
+StringView::size_type StringView::find(StringView v, size_type pos) const noexcept
+{
+  if (pos >= size() || v.empty())
+    return npos;
+  auto found = std::search(std::next(begin(), pos), end(), v.begin(), v.end());
+  return (found != end()) ? std::distance(begin(), found) : npos;
+}
+
+StringView::size_type StringView::rfind(StringView v, size_type pos) const noexcept
+{
+  if (pos == npos)
+    pos = size();
+  if (pos == 0 || v.empty())
+    return npos;
+  auto found = std::find_end(begin(), std::next(begin(), pos), v.begin(), v.end());
+  return (found != end()) ? std::distance(begin(), found) : npos;
+}
+
+StringView::size_type StringView::find_first_of(StringView v, size_type pos) const noexcept
+{
+  if (pos >= size() || v.empty())
+    return npos;
+  for (auto it = std::next(begin(), pos); it != end(); ++it)
+    if (v.find(*it) != npos)
+      return std::distance(begin(), it);
+  return npos;
+}
+
+StringView::size_type StringView::find_first_of(const_pointer s, size_type pos) const
+{
+  if (pos >= size() || !*s)
+    return npos;
+
+  value_type cmp = *std::next(begin(), pos);
+  value_type ch;
+  const_pointer s_end;
+  for (s_end = s; (ch = *s_end); ++ s_end)
+    if (ch == cmp)
+      return pos;
+
+  return find_first_of(StringView(s, s_end), pos + 1);
+}
+
+StringView::size_type StringView::find_last_of(StringView v, size_type pos) const noexcept
+{
+  if (pos == npos)
+    pos = size();
+  if (empty() || v.empty())
+    return npos;
+  auto const last = begin() + pos;
+  for (auto it = std::prev(end(), 1); it >= last; --it)
+    if (v.find(*it) != npos)
+      return std::distance(begin(), it);
+  return npos;
+}
+
+StringView::size_type StringView::find_first_not_of(StringView v, size_type pos) const noexcept
+{
+  if (pos >= size())
+    return npos;
+  if (v.empty())
+    return empty() ? npos : 0;
+  if (v.size() == 1)
+    return find_first_not_of(v[0], pos);
+  for (auto it = std::next(begin(), pos); it != end(); ++it)
+    if (v.find(*it) == npos)
+      return std::distance(begin(), it);
+  return npos;
+}
+
+StringView::size_type StringView::find_first_not_of(value_type ch, size_type pos) const noexcept
+{
+  for (auto it = std::next(begin(), pos); it != end(); ++it)
+    if (*it != ch)
+      return std::distance(begin(), it);
+  return npos;
+}
+
+StringView::size_type StringView::find_first_not_of(const_pointer s, size_type pos) const
+{
+  auto it = std::next(begin(), pos);
+  if (it >= end())
+    return npos;
+
+  value_type cmp = *it++, ch;
+  const_pointer s_end;
+  bool matched = false;
+  for (s_end = s; (ch = *s_end); ++ s_end)
+    matched |= (ch == cmp);
+
+  if (s == s_end)
+    return npos;
+  if (!matched)
+    return 0;
+
+  return find_first_not_of(StringView(s, s_end), 1);
+
+  for (; it != end(); ++ it)
+  {
+    matched = false;
+    cmp = *it;
+    for (auto s2 = s; s2 != s_end; ++s2)
+      matched |= (ch == cmp);
+    if (!matched)
+      return std::distance(begin(), it);
+  }
+  return npos;
+}
+
+
+
+
+//
+//
+//
+
 namespace StringUtils
 {
 
@@ -188,3 +349,70 @@ void EditString(wxString &str, std::initializer_list<EditOp> ops)
   // Shrink the size if needed
   if (delta < 0) str.resize(str.size() - delta);;
 }
+
+bool AdvanceOverOne(wxString::const_iterator &ioBegin, wxString::const_iterator end,
+                    const wxStringCharType *needle, size_t length)
+{
+  auto begin = ioBegin;
+  auto *nBegin = needle, *nEnd = needle + length;
+  while (nBegin != nEnd)
+  {
+    if (begin == end) return false;
+    if (*begin++ != *nBegin++) return false;
+  }
+  ioBegin = begin;
+  return true;
+}
+
+bool RetractOverOne(wxString::const_iterator begin, wxString::const_iterator &ioEnd,
+                    const wxStringCharType *needle, size_t length)
+{
+  auto end = ioEnd;
+  auto *nBegin = needle, *nEnd = needle + length;
+  while (nBegin != nEnd)
+  {
+    if (begin == end) return false;
+    if (*--end != *--nEnd) return false;
+  }
+  ioEnd = end;
+  return true;
+}
+
+bool RetractOver(wxString::const_iterator begin, wxString::const_iterator &ioEnd,
+                 const wxChar ch)
+{
+  auto end = ioEnd;
+  if (begin == end || *--end != ch) return false;
+  if (begin != end)
+  {
+    while (*--end == ch && begin != end);
+    ++end;
+  }
+  ioEnd = end;
+  return true;
+}
+
+bool StartsWith(wxString::const_iterator begin, wxString::const_iterator end,
+                const wxStringCharType *needle, size_t length)
+{
+  auto *nBegin = needle, *nEnd = needle + length;
+  while (nBegin != nEnd)
+  {
+    if (begin == end) return false;
+    if (*begin++ != *nBegin++) return false;
+  }
+  return true;
+}
+
+inline bool EndsWith(wxString::const_iterator begin, wxString::const_iterator end,
+                     const wxStringCharType *needle, size_t length)
+{
+  auto *nBegin = needle, *nEnd = needle + length;
+  while (nBegin != nEnd)
+  {
+    if (begin == end) return false;
+    if (*--end != *--nEnd) return false;
+  }
+  return true;
+}
+

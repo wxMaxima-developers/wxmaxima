@@ -3459,12 +3459,12 @@ void EditorCell::StyleTextCode()
       // All spaces except the last one (that could cause a line break)
       // share the same token
       if (tokenString.Length() > 1)
-        m_styledText.push_back(StyledText(tokenString.Right(tokenString.Length()-1)));
+        m_styledText.emplace_back(tokenString.Right(tokenString.Length()-1));
       
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
       // introduce a soft line break.
-      m_styledText.push_back(StyledText(wxT(" ")));
+      m_styledText.emplace_back(wxT(" "));
       if (!m_styledText.empty())
       {
         lastSpace = &m_styledText.back();
