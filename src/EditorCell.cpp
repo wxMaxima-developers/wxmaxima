@@ -1237,10 +1237,14 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
 
 size_t EditorCell::BeginningOfLine(long pos) const
 {
+  if (m_text.empty())
+    return 0;
+  if (pos > long(m_text.size()))
+    pos = long(m_text.size());
   if (pos > 0)
     pos--;
-  if (pos < 0) pos = 0;
-
+  if (pos < 0)
+    pos = 0;
   while (pos > 0)
   {
     if ((m_text[pos] == wxT('\n')) || (m_text[pos] == wxT('\r')))
@@ -1254,10 +1258,10 @@ size_t EditorCell::BeginningOfLine(long pos) const
 
 size_t EditorCell::EndOfLine(long pos)
 {
-  if (pos < 0) pos = 0;
-  while (pos < (long) m_text.length() && m_text[pos] != wxT('\n') && m_text[pos] != wxT('\r'))
+  if (pos < 0)
+    pos = 0;
+  while (pos < (long)m_text.length() && m_text[pos] != wxT('\n') && m_text[pos] != wxT('\r'))
     pos++;
-
   return pos;
 }
 
