@@ -83,7 +83,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <nav id="TOC">
 <ul>
 <li><a href="#das-handbuch-von-wxmaxima">Das Handbuch von wxMaxima</a></li>
-<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
+<li><a href="#einführung-in-wxmaxima"><span class="toc-section-number">1</span> Einführung in wxMaxima</a><ul>
 <li><a href="#maxima-und-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> und wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
@@ -166,15 +166,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen Kapitel der Dokumentation. <a href="#SEC_Contents%20%22Detailliertes%20Inhaltsverzeichnis%22">Contents</a> führt zu einer entsprechenden Sektion, die eine genauere Navigation ermöglicht.</p>
 <ul>
-<li><a href="#einführung-in-wxmaxima" title="Einführung in wxMaxima">Introduction</a>:</li>
+<li><a href="#einführung-in-wxmaxima" title="Einführung in wxMaxima">Einführung</a>:</li>
 </ul>
 <p>Die Grundlagen</p>
 <ul>
-<li><a href="#erweiterungen-für-maxima" title="Erweiterungen">Extensions</a>:</li>
+<li><a href="#erweiterungen-für-maxima" title="Erweiterungen">Erweiterungen</a>:</li>
 </ul>
-<p>Die Kommandos, mittels deren wxMaxima Maxima erweitert</p>
+<p>Die Kommandos, mittels deren wxMaxima <em>Maxima</em> erweitert</p>
 <ul>
-<li><a href="#fehlersuche" title="Fehlersuche">Troubleshooting</a>:</li>
+<li><a href="#fehlersuche" title="Fehlersuche">Fehlersuche</a>:</li>
 </ul>
 <p>Was tun, wenn wxMaxima nicht wie erwartet funktioniert</p>
 <ul>
@@ -182,11 +182,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Häufig gestellte Fragen</p>
 <ul>
-<li><a href="#kommandozeilen-optionen" title="Kommandozeilenparameter für Maxima">CommandLine</a>:</li>
+<li><a href="#kommandozeilen-optionen" title="Kommandozeilenparameter für Maxima">Befehlszeile</a>:</li>
 </ul>
 <p>Die Kommandozeilenargumente von wxMaxima</p>
 <hr />
-<h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
+<h1 id="einführung-in-wxmaxima"><span class="header-section-number">1</span> Einführung in wxMaxima</h1>
 <h2 id="maxima-und-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> und wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, dass dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein “Sende an die CD”-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
 <p>Ein Computer-Algebrasystem (CAS) wie Maxima ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrecher liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="http://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von wxMaxima aus, das eine komfortablere Bedienung unterstützt.</p>
@@ -617,7 +617,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Normaler Text &gt; Zitat Zitat Zitat &gt; Zitat Zitat Zitat Zitat &gt; Zitat Zitat Zitat &gt; Zitat Zitat Zitat Normaler Text ~~<sub> </sub>~~</p>
 <p>Die Text- und HTML-Ausgabe von <em>wxMaxima</em> erkennen auch <code>=&gt;</code> und ersetzen es durch das entsprechende Unicode-Symbol:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
-<p>Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind <code>&lt;=</code> und <code>&gt;=</code>, <code>&lt;=&gt;</code>, einfache Pfeile (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) und <code>+/-</code>. Die TeX-Ausgabe erkennt ebenfalls <code>&lt;&lt;</code> und <code>&gt;&gt;</code>.</p>
+<p>Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind <code>&lt;=</code> und <code>&gt;=</code>, <code>&lt;=&gt;</code>, einfache Pfeile (<code>&lt;-&gt;</code>, <code>-&gt;</code> und <code>&lt;-</code>) und <code>+/-</code>. Die TeX-Ausgabe erkennt ebenfalls <code>&lt;&lt;</code> und <code>&gt;&gt;</code>.</p>
 <h3 id="tastenkürzel"><span class="header-section-number">1.2.9</span> Tastenkürzel</h3>
 <p>Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit diesen übersetzt werden können, falls die Tastatur der aktuellen Sprache dies erforderlich macht. Nicht dort dokumentiert ist:</p>
 <ul>
@@ -679,7 +679,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>und sie werden alle n Minuten zwischengespeichert.</li>
 </ul>
 <h3 id="wo-wird-die-konfiguration-gespeichert"><span class="header-section-number">1.4.6</span> Wo wird die Konfiguration gespeichert?</h3>
-<p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über wxbuild_info() oder über das Hilfe-&gt;Über-Menü abgerufen werden. <a href="https://wxwidgets.org/">wxWidgets</a> ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
+<p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über <code>wxbuild_info()</code> oder über das Hilfe-&gt;Über-Menü abgerufen werden. <a href="https://www.wxwidgets.org/">wxWidgets</a> ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
 <p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\Software\wxMaxima</code> gespeichert.</p>
 <hr />
 <h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
@@ -777,7 +777,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Die Standard-Bildwiderholrate für Animationen kann im Konfigurations-Dialog von <em>wxMaxima</em> eingestellt werden. Um die Geschwindigkeit einer einzelnen Animation zu ändern, kann die Variable <code>wxanimate_framerate</code> geändert werden:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb12-1" title="1"><span class="cn">wxanimate</span>(<span class="cn">a</span>, <span class="dv">10</span>,</a>
 <a class="sourceLine" id="cb12-2" title="2">    <span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>), [<span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>]), <span class="cn">wxanimate_framerate</span>=<span class="dv">6</span>$</a></code></pre></div>
-<p>Die Animations-Funktionen haben eine Eigentümlichkeit, die daher rührt, dass sie makelist verwenden: Der Parameter, der sich von Bild zu Bild ändert, wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende Beispiel scheitert daher:</p>
+<p>Die Animations-Funktionen haben eine Eigentümlichkeit, die daher rührt, dass sie <code>makelist</code> verwenden: Der Parameter, der sich von Bild zu Bild ändert, wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende Beispiel scheitert daher:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb13-1" title="1"><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="cn">with_slider_draw</span>(</a>
 <a class="sourceLine" id="cb13-3" title="3">    <span class="cn">a</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</a>
@@ -816,11 +816,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
 <p>Wie “2D”, aber für dreidimensionale Diagramme.</p>
 <h4 id="ausdruck"><span class="header-section-number">2.3.8.3</span> Ausdruck</h4>
-<p>Fügt den aktuellen <code>draw()</code>-Befehl den Plot einer Kurve wie <code>sin(x)</code> oder <code>x^2+2*x-4</code> hinzu. Besteht noch kein <code>draw()</code>-Befehl, wird automatisch eine 2D-Szene erzeugt.</p>
+<p>Fügt den aktuellen <code>draw()</code>-Befehl den Plot einer Kurve wie <code>sin(x)</code>, <code>x*sin(x)</code> oder <code>x^2+2*x-4</code> hinzu. Besteht noch kein <code>draw()</code>-Befehl, wird automatisch eine 2D-Szene erzeugt.</p>
 <h4 id="impliziter-plot"><span class="header-section-number">2.3.8.4</span> Impliziter Plot</h4>
 <p>Markiert alle Punkte, an denen eine Bedingung wie <code>y=sin(x)</code>, <code>y*sin(x)=3</code> oder <code>x^2+y^2=4</code> erfüllt ist und zeichnet diese Kurve in das aktuelle Diagramm ein. Gibt es kein aktuelles Diagramm, wird ein 2D-Diagramm erzeugt.</p>
 <h4 id="parametrische-plots"><span class="header-section-number">2.3.8.5</span> Parametrische Plots</h4>
-<p>Bewegt eine Variable von einem Start- zu einem Endwert und verwendet getrennte Ausdrücke wie <code>t*sin(t)</code> und <code>t*cos(t)</code>, um die x-, die y- und (in 3D-Diagrammen die z-Koordinate zu generieren.</p>
+<p>Bewegt eine Variable von einem Start- zu einem Endwert und verwendet getrennte Ausdrücke wie <code>t*sin(t)</code> und <code>t*cos(t)</code>, um die x-, die y- (und in 3D-Diagrammen auch die z-) Koordinaten zu generieren.</p>
 <h4 id="punkte"><span class="header-section-number">2.3.8.6</span> Punkte</h4>
 <p>Zeichnet eine Reihe von Punkten, die optional miteinander verbunden werden. Die Koordinaten der Punkte können aus einer Liste von Listen, einem 2-dimensionalen Array oder einer Liste oder einem Array pro Axe entnommen werden.</p>
 <h4 id="diagrammtitel"><span class="header-section-number">2.3.8.7</span> Diagrammtitel</h4>
@@ -842,7 +842,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="einbetten-von-bildern"><span class="header-section-number">2.4</span> Einbetten von Bildern</h2>
 <p>Das <code>.wxmx</code>-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es ist aber auch möglich, <em>Maxima</em> anzuweisen, Bilder einzubauen:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb16-1" title="1"></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</a></code></pre></div>
+<a class="sourceLine" id="cb16-2" title="2"><span class="cn">show_image</span>(<span class="st">&quot;Mensch.png&quot;</span>);</a></code></pre></div>
 <h2 id="startbefehle"><span class="header-section-number">2.5</span> Startbefehle</h2>
 <p>Der Konfigurationsdialog von <em>wxMaxima</em> bietet an, zwei Dateien mit <em>Maxima</em>-Befehlen zu bearbeiten:</p>
 <ul>
@@ -856,7 +856,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>wxfilename</code>: Diese Variable sagt, welchen Dateinamen das Arbeitsblatt laut <em>wxMaxima</em> besitzt.</li>
 <li><code>wxplot_pngcairo</code> sagt Maxima, ob es versuchen soll, gnuplot zu instruieren, pngcairo zu nutzen, um hochqualitative Bilder zu nutzen.</li>
 <li><code>wxplot_size</code> legt die Größe eingebetteter Diagramme fest.</li>
-<li><code>wxchangedir</code>: Normalerweise setzt <em>wxMaxima</em> <em>Maxima</em>’s Arbeitsverzeichnis auf dasjenige, in dem sich das Arbeitsblatt befindet. Dies ist praktisch, wenn Maxima auf Dateien zugreifen soll (z.B. via <code>read_matrix</code>. Unter Windows geht dieses Feature manchmal schief und kann daher auf <code>false</code> gesetzt werden.</li>
+<li><code>wxchangedir</code>: Normalerweise setzt <em>wxMaxima</em> <em>Maxima</em>’s Arbeitsverzeichnis auf dasjenige, in dem sich das Arbeitsblatt befindet. Dies ist praktisch, wenn Maxima auf Dateien zugreifen soll (z.B. via <code>read_matrix</code>). Unter Windows geht dieses Feature manchmal schief und kann daher auf <code>false</code> gesetzt werden.</li>
 <li><code>wxanimate_framerate</code>: Die Geschwindigkeit, mit der Animationen abgespielt werden sollen.</li>
 <li><code>wxanimate_autoplay</code>: Sollen Animationen automatisch abgespielt werden?</li>
 </ul>
@@ -891,7 +891,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das “loopback”-Netzwerkgerät nicht korrekt eingestellt ist.</p>
 <h2 id="wie-repariere-ich-kaputte-.wxmx-dateien"><span class="header-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</h2>
 <p>Die meisten xml-basierten Formate sind von ihrem Inhalt her einfache .zip-Dateien. <em>wxMaxima</em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
-<p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file’s contents.</p>
+<p>Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach <irgendwas>.zip umbenennen, entpacken, reparieren, neu packen und wieder nach <irgendwas>.wxmx umbenennen. Dies ist auch eine praktische Möglichkeit, Word oder Powerpoint die originalen Bilddateien zu entlocken. Ist dies nicht der Fall, ist dies nicht das Ende der Welt: Oft gibt es eine funktionierende <code>wxmx~</code>-Datei. Und auch wenn diese Backupdatei nicht existiert: Wenn die Konfigurationsoption gesetzt ist, daß .wxmx Dateien für Versionskontrollsysteme optimiert werden sollen, sind sie nicht komprimiert; man kann sie dann in eine .txt-Datei umbenennen und den xml-Anteil aus der .wxmx-Datei mit einem Texteditor kopieren.</p>
 <p>Wird dieser Text als .xml-Datei gespeichert, weiß <em>wxMaxima</em>, wie man ihn wieder öffnet.</p>
 <h2 id="ich-will-statusmeldungen-ausgeben-während-mein-befehl-ausgeführt-wird"><span class="header-section-number">3.3</span> Ich will Statusmeldungen ausgeben, während mein Befehl ausgeführt wird</h2>
 <p>Normalerweise gibt <em>wxMaxima</em> erst etwas aus, wenn die komplette Ausgabe steht. Das <code>disp</code>-Kommando wird hingegen sofort ausgeführt:</p>
@@ -1005,6 +1005,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Erlaubt, Maxima zusätzliche Argumente mitzugeben</li>
 <li><code>-m</code> oder <code>--maxima=&lt;str&gt;</code>: Sagt, wo die ausführbare Datei von <em>maxima</em> liegt.</li>
 </ul>
-<p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minusses.</p>
+<p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minuszeichens.</p>
 </body>
 </html>
