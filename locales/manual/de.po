@@ -827,7 +827,7 @@ msgstr "cogito => sum.\n"
 #: ../../info/wxmaxima.md:256
 #, no-wrap
 msgid "Other symbols the html and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
-msgstr "Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind `<=` und `>=`, `<=>`, einfache Pfeile (`<->`, `->` and `<-`) und `+/-`. Die TeX-Ausgabe erkennt ebenfalls `<<` und `>>`.\n"
+msgstr "Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind `<=` und `>=`, `<=>`, einfache Pfeile (`<->`, `->` und `<-`) und `+/-`. Die TeX-Ausgabe erkennt ebenfalls `<<` und `>>`.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:257
@@ -1202,7 +1202,7 @@ msgstr "Wo wird die Konfiguration gespeichert?"
 msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your homedirectory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for wxMaxima (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
-msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über wxbuild_info() oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.\n"
+msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:356
@@ -1736,7 +1736,7 @@ msgid ""
 "Therefore the following example will fail:"
 msgstr ""
 "Die Animations-Funktionen haben eine Eigentümlichkeit, die daher rührt, dass "
-"sie makelist verwenden: Der Parameter, der sich von Bild zu Bild ändert, "
+"sie `makelist` verwenden: Der Parameter, der sich von Bild zu Bild ändert, "
 "wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende "
 "Beispiel scheitert daher:"
 
@@ -1927,7 +1927,7 @@ msgid ""
 "no draw command a 2D scene with the plot is generated. Each scene can be "
 "filled with any number of plots."
 msgstr ""
-"Fügt den aktuellen `draw()`-Befehl den Plot einer Kurve wie `sin(x)` oder "
+"Fügt den aktuellen `draw()`-Befehl den Plot einer Kurve wie `sin(x)`, `x*sin(x)` oder "
 "`x^2+2*x-4` hinzu. Besteht noch kein `draw()`-Befehl, wird automatisch eine "
 "2D-Szene erzeugt."
 
@@ -1964,8 +1964,8 @@ msgid ""
 "command."
 msgstr ""
 "Bewegt eine Variable von einem Start- zu einem Endwert und verwendet "
-"getrennte Ausdrücke wie `t*sin(t)` und `t*cos(t)`, um die x-, die y- und (in "
-"3D-Diagrammen die z-Koordinate zu generieren."
+"getrennte Ausdrücke wie `t*sin(t)` und `t*cos(t)`, um die x-, die y- (und in "
+"3D-Diagrammen auch die z-) Koordinaten zu generieren."
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:572
@@ -2115,7 +2115,7 @@ msgstr ""
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:612
-#, fuzzy, no-wrap
+#, no-wrap
 #| msgid "show_image(\"man.png\");"
 msgid ""
 "\n"
@@ -2423,20 +2423,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:687
-#, fuzzy
-#| msgid ""
-#| "If the zip signature at the end of the file is still intact after "
-#| "renaming a broken .wxmx file to .zip most operating systems will provide "
-#| "a way to extract any portion of information that is stored inside it. The "
-#| "can be done when there is the need of recovering the original image files "
-#| "from a text processor document. If the zip signature isn’t intact that "
-#| "does not need to be the end of the world: If _wxMaxima_ during saving "
-#| "detected that something went wrong there will be a `wxmx~` file whose "
-#| "contents might help and even if there isn’t such a file: If the "
-#| "configuration option is set that .wxmx files have to be optimized for "
-#| "version control it is possible to rename the .wxmx file to a .txt file "
-#| "and to use a text editor to recover the XML portion of the file's "
-#| "contents."
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
 "broken .wxmx file to .zip most operating systems will provide a way to "
@@ -2452,11 +2438,14 @@ msgid ""
 msgstr ""
 "Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach "
 "<irgendwas>.zip umbenennen, entpacken, reparieren, neu packen und wieder "
-"nach <irgendwas>.wxmx umbenennen. Dies ist auch eine praktische möglichkeit, "
+"nach <irgendwas>.wxmx umbenennen. Dies ist auch eine praktische Möglichkeit, "
 "Word oder Powerpoint die originalen Bilddateien zu entlocken. Ist dies nicht "
 "der Fall, ist dies nicht das Ende der Welt: Oft gibt es eine funktionierende "
-"wxmx~-Datei. Wenn nicht, kann der xml-Anteil aus der .wxmx-Datei mit einem "
-"Texteditor kopiert werden."
+"`wxmx~`-Datei. Und auch wenn diese Backupdatei nicht existiert: "
+"Wenn die Konfigurationsoption gesetzt ist, daß .wxmx Dateien für Versionskontrollsysteme "
+"optimiert werden sollen, sind sie nicht komprimiert; man kann sie dann in eine "
+".txt-Datei umbenennen und den xml-Anteil aus der .wxmx-Datei mit einem "
+"Texteditor kopieren."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:689
@@ -3081,7 +3070,7 @@ msgid ""
 "command-line switches."
 msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
-"Schrägstrich statt eines Minusses."
+"Schrägstrich statt eines Minuszeichens."
 
 #, fuzzy
 #~| msgid ""
