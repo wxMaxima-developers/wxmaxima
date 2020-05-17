@@ -90,7 +90,7 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(src)
 
-install(FILES COPYING README README.md DESTINATION share/wxmaxima)
+install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
 
 # include wxWidgets DLLs on Windows on appveyor
 if(WIN32 AND APPVEYOR_BUILD)
