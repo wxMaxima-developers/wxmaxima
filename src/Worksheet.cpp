@@ -717,6 +717,10 @@ GroupCell *Worksheet::InsertGroupCells(
         UndoActions *undoBuffer
 )
 {
+  bool worksheetSizeHasChanged = true;
+  if((where) && (where->m_next))
+    worksheetSizeHasChanged = false;
+
   if (!cells)
     return NULL; // nothing to insert
 
@@ -771,6 +775,9 @@ GroupCell *Worksheet::InsertGroupCells(
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(cells, lastOfCellsToInsert, undoBuffer);
 
+  if(worksheetSizeHasChanged)
+    UpdateMLast();
+  
   RequestRedraw(where);
   AdjustSize();
   return lastOfCellsToInsert;
