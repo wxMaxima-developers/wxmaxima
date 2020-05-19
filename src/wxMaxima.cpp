@@ -9703,7 +9703,8 @@ int wxMaxima::SaveDocumentP()
 
 void wxMaxima::OnActivate(wxActivateEvent &event)
 {
-  m_worksheet->WindowActive(event.GetActive());
+  if (m_worksheet)
+    m_worksheet->WindowActive(event.GetActive());
   event.Skip();
 }
 

@@ -689,6 +689,9 @@ public:
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
   Cell::CellPointers m_cellPointers;
 
+  //! The reference to a pointer that observes this object's lifetime
+  Worksheet* &m_observer;
+
   /*! Update the table of contents
 
     This function actually only schedules the update of the table-of-contents-tab.
@@ -898,7 +901,7 @@ public:
   };
 
   //! The constructor
-  Worksheet(wxWindow *parent, int id, wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
+  Worksheet(wxWindow *parent, int id, Worksheet *&observer, wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
 
   //! The destructor
   ~Worksheet();

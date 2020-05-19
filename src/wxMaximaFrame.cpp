@@ -165,7 +165,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Now it is time to construct the window contents.
   
   // console
-  m_worksheet = new Worksheet(this, -1);
+  new Worksheet(this, -1, m_worksheet);
   wxEventBlocker worksheetBlocker(m_worksheet);
 
   // The table of contents

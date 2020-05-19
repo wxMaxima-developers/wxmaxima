@@ -71,14 +71,16 @@
 #include "memory"
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
-Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
+Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos, wxSize size) :
   wxScrolled<wxWindow>(
     parent, id, pos, size,
     wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
     | wxSUNKEN_BORDER
 #endif
-    ),m_cellPointers(this)
+    ),
+    m_cellPointers(this),
+    m_observer(observer)
 {
   m_helpFileAnchorsUsable = false;
   m_dontSkipScrollEvent = false;
@@ -210,6 +212,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size) :
   Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(Worksheet::OnSetFocus));
   Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(Worksheet::OnScrollChanged));
   Connect(wxEVT_SCROLLWIN_THUMBTRACK, wxScrollWinEventHandler(Worksheet::OnThumbtrack));
+  observer = this;
 }
 
 void Worksheet::OnSidebarKey(wxCommandEvent &event)
@@ -403,6 +406,7 @@ Worksheet::~Worksheet()
   m_dc = NULL;
   wxDELETE(m_tree);
   m_tree =NULL;
+  m_observer = nullptr;
 }
 
 #if wxCHECK_VERSION(3, 1, 2)
