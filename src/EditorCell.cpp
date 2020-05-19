@@ -3061,10 +3061,9 @@ wxString EditorCell::GetWordUnderCaret()
     }
   }
   if(retval.IsEmpty())
-    {
-      if(!m_text.IsEmpty())
+    if (!m_text.IsEmpty() && start < m_text.size())
         retval = wxString(m_text.GetChar(start));
-    }
+
   return retval;
 }
 
