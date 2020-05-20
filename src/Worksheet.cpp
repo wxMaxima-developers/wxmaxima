@@ -2004,7 +2004,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = GetActiveCell()->GetCaretPosition();
     if (GetActiveCell()->SelectionActive()) startingChar = dynamic_cast<EditorCell *>(GetActiveCell())->GetSelectionStart();
-    m_down = wxPoint(GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize(), startingChar));
+    m_down = wxPoint(GetActiveCell()->PositionToPoint(startingChar));
     GetActiveCell()->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -3612,11 +3612,9 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     SetSaved(false);
 
     int height = activeCell->GetHeight();
-    //   int fontsize = m_configuration->GetDefaultFontSize();
-    int fontsize = m_configuration->GetDefaultFontSize();
 
-    GetActiveCell()->RecalculateWidths(wxMax(fontsize, MC_MIN_SIZE));
-    GetActiveCell()->RecalculateHeight(wxMax(fontsize, MC_MIN_SIZE));
+    GetActiveCell()->RecalculateWidths();
+    GetActiveCell()->RecalculateHeight();
 
     if (height != GetActiveCell()->GetHeight() ||
         GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
@@ -8344,7 +8342,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     wxASSERT((pos.x>=0) && (pos.y >=0));
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
     // The popup menu appears half a character too high.
-    pos.y += m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT));
+    pos.y += m_configuration->GetStyle(TS_TEXT).GetFontSize();
     wxASSERT(!m_autocompletePopup);
     m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
 

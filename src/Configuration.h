@@ -175,7 +175,7 @@ public:
     if (ShowAutomaticLabels())
       return 0;
     else
-      return GetZoomFactor() * m_mathFontSize / 2;
+      return GetZoomFactor() * GetMathFontSize() / 2;
   }
 
   long GetCellBracketWidth() const
@@ -405,10 +405,10 @@ public:
   }
 
   long GetMathFontSize() const
-  { return m_mathFontSize; }
+  { return m_styles[TS_MATH].GetFontSize(); }
 
   void SetMathFontSize(double size)
-  { m_mathFontSize = size; }
+  { m_styles[TS_MATH].SetFontSize(size); }
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
@@ -442,27 +442,36 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  long GetFontSize(TextStyle st) const
-  {
-    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].GetFontSize();
-    return 0;
-  }
 
   const wxString &GetStyleName(TextStyle textStyle) const;
+
+  /*! Retrieves a given style, ready for use. No further adjustments are necessary to
+   * the style. Optionally, the text size can be overridden.
+
+    \param textStyle The text style to resolve the style for.
+    \param fontSize Only relevant for math cells: Super- and subscripts can have different
+    font styles than the rest.
+   */
+  Style GetStyle(TextStyle textStyle, long fontSize = -1) const;
+
+  //! Sets the given style after applying rules to it, such as propagation in the style
+  //! hierarchy, etc. If no newStyle is given, the style is refreshed based on its
+  //! dependencies.
+  void SetStyle(TextStyle st, const Style *newStyle);
+  void SetStyle(TextStyle st, const Style &newStyle) { SetStyle(st, &newStyle); }
 
   /*! Reads the style settings 
 
     If a file name is given the settings are read from a file.
   */
   
-  void ReadStyles(wxString file = wxEmptyString);
+  void ReadStyles(const wxString &file = {});
   
   /*! Saves the style settings 
 
     If a file name is given the settings are written to a file.
   */
-  void WriteStyles(wxString file = wxEmptyString);
+  void WriteStyles(const wxString &file = {});
   
   void Outdated(bool outdated)
   { m_outdated = outdated; }
@@ -806,15 +815,6 @@ public:
 
   drawMode GetParenthesisDrawMode();
 
-
-  /*! Get the resolved text Style for a given text style identifier.
-
-    \param textStyle The text style to resolve the style for.
-    \param fontSize Only relevant for math cells: Super- and subscripts can have different
-    font styles than the rest.
-   */
-  Style GetStyle(TextStyle textStyle, long fontSize) const;
-
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
@@ -849,10 +849,18 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  AFontName FontName() const {return m_fontName;}
-  void FontName(AFontName name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",(m_fontName = name).GetAsString());}
-  void MathFontName(AFontName name){wxConfig::Get()->Write("Style/Math/fontname",(m_mathFontName = name).GetAsString());}
-  class AFontName MathFontName()const {return m_mathFontName;}
+  AFontName FontName() const {return m_styles[TS_DEFAULT].GetFontName();}
+  void FontName(AFontName name)
+  {
+    m_styles[TS_DEFAULT].SetFontName(name);
+    wxConfig::Get()->Write("Style/Default/Style/Text/fontname", name.GetAsString());
+  }
+  void MathFontName(AFontName name)
+  {
+    m_styles[TS_MATH].SetFontName(name);
+    wxConfig::Get()->Write("Style/Math/fontname", name.GetAsString());
+  }
+  class AFontName MathFontName()const {return m_styles[TS_MATH].GetFontName();}
 
   //! Update the list of fonts associated to the worksheet styles
   void UpdateWorksheetFonts();
@@ -884,8 +892,9 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
-  Style m_styles[NUMBEROFSTYLES];
 private:
+  Style m_styles[NUMBEROFSTYLES];
+
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -956,9 +965,7 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  AFontName m_fontName;
-  long m_mathFontSize;
-  AFontName m_mathFontName;
+
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;

@@ -63,11 +63,10 @@ public:
   void SetPower(Cell *power);
 
   //! By how much do we want to rise the power?
-  double PowRise() const {return Scale_Px(.3 * m_fontSize);}
+  double PowRise() const {return 0.3 * m_style.GetFontSize();}
   
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight() override;
+  void RecalculateWidths() override;
 
   virtual void Draw(wxPoint point) override;
 

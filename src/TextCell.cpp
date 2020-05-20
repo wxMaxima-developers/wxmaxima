@@ -65,15 +65,12 @@ TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_displayedDigits_old = -1;
   m_height = -1;
   m_realCenter = m_center = -1;
-  m_lastCalculationFontSize = -1;
-  m_fontSize = 10;
-  m_fontSizeLabel = 10;
+  //m_fontSizeLabel = 10;
   m_lastZoomFactor = -1;
   TextCell::SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
   m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
-  m_fontsize_old = -1;
 }
 
 TextCell::~TextCell()
@@ -357,46 +354,44 @@ TextCell::TextCell(const TextCell &cell):
   m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
   m_lastZoomFactor = -1;
-  m_fontSizeLabel = -1;
   m_displayedDigits_old = -1;
-  m_lastCalculationFontSize = -1;
   m_realCenter = -1;
-  m_fontsize_old = -1;
   m_textStyle = cell.m_textStyle;
   m_highlight = cell.m_highlight;
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
-double TextCell::GetScaledTextSize() const
+const Style &TextCell::GetScaledTextStyle() const
 {
-  if((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-    return Scale_Px(m_fontSizeLabel);
+  if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    return m_labelStyle;
   else
-    return Scale_Px(m_fontSize);
-
+    return m_style;
 }
 
 wxSize TextCell::GetTextSize(wxString const &text)
-{
-  wxDC *dc = (*m_configuration)->GetDC();
-  double fontSize = GetScaledTextSize();
+{  
+  auto style = GetScaledTextStyle();
  
-  SizeHash::const_iterator it = m_widths.find(fontSize);
+  SizeHash::const_iterator it = m_widths.find(style.GetFontSize());
 
   // If we already know this text piece's size we return the cached value
-  if(it != m_widths.end())
+  if (it != m_widths.end())
     return it->second;
+
+  wxDC *dc = (*m_configuration)->GetDC();
+  dc->SetFont(style.GetFont());
 
   // Ask wxWidgets to return this text piece's size (slow, but the only way if
   // there is no cached size).
   wxSize sz = dc->GetTextExtent(text);
-  m_widths[fontSize] = sz;
+  m_widths[style.GetFontSize()] = sz;
   return sz;
 }
 
-bool TextCell::NeedsRecalculation(int fontSize)
+bool TextCell::NeedsRecalculation()
 {
-  return Cell::NeedsRecalculation(fontSize) ||
+  return Cell::NeedsRecalculation() ||
     (
       (m_textStyle == TS_USERLABEL) &&
       (!(*m_configuration)->UseUserLabels())
@@ -412,17 +407,14 @@ bool TextCell::NeedsRecalculation(int fontSize)
       );
 }
 
-void TextCell::RecalculateWidths(int fontsize)
+void TextCell::RecalculateWidths()
 {
-  if(fontsize < 1)
-    fontsize = m_fontSize;
   Configuration *configuration = (*m_configuration);
   
-  if(NeedsRecalculation(fontsize))
-  {      
-    m_fontSize = m_fontsize_old = fontsize;
+  if(NeedsRecalculation())
+  {
     wxDC *dc = configuration->GetDC();
-    SetFont(fontsize);
+    SetFont();
 
     // If the setting has changed and we want to show a user-defined label
     // instead of an automatic one or vice versa we decide that here.
@@ -450,14 +442,14 @@ void TextCell::RecalculateWidths(int fontsize)
       m_ellipsisWidths.clear();
       m_numEndWidths.clear();
     }
-    
-    m_lastCalculationFontSize = fontsize;
+
 
     if(m_numStart != wxEmptyString)
-    {      
-      double fontSize = GetScaledTextSize();
+    {
+      auto const style = GetScaledTextStyle();
+      auto const fontSize = style.GetFontSize();
       {
-        SizeHash::const_iterator it = m_numstartWidths.find(fontSize);    
+        SizeHash::const_iterator it = m_numstartWidths.find(fontSize);
         if(it != m_numstartWidths.end())
           m_numStartWidth = it->second;
         else
@@ -512,25 +504,26 @@ void TextCell::RecalculateWidths(int fontsize)
         }
 
 
-        Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
+       // Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
       
         m_width = Scale_Px(configuration->GetLabelWidth());
         // We will decrease it before use
-        m_fontSizeLabel = m_fontSize + 1;
+        m_labelStyle = m_style.FontSize(m_style.GetFontSize() + 1);
         wxSize labelSize = GetTextSize(text);
         wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
                      _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
 
-        while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
+        while ((labelSize.GetWidth() >= m_width) && (m_labelStyle.GetFontSize() > 2))
         {
+          auto fontSize = m_labelStyle.GetFontSize();
 #if wxCHECK_VERSION(3, 1, 2)
-          m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          style.SetFontSize(Scale_Px(m_fontSizeLabel));
+          fontSize -= Scale_Px(.3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4);
+          m_labelStyle.SetFontSize(fontSize);
 #else
           m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
           style.SetFontSize(Scale_Px(m_fontSizeLabel));
 #endif
-          dc->SetFont(style.GetFont());
+          dc->SetFont(m_labelStyle.GetFont());
           labelSize = GetTextSize(text);
         } 
         m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
@@ -569,13 +562,13 @@ void TextCell::RecalculateWidths(int fontsize)
       if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
       {
         m_height = 0;
-        m_width = Scale_Px(fontsize) / 4;
+        m_width = m_style.GetFontSize() / 4;
       }
     }
     if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
     m_realCenter = m_center = m_height / 2;
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
 void TextCell::Draw(wxPoint point)
@@ -587,12 +580,12 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (NeedsRecalculation(m_fontsize_old))
-      RecalculateWidths(m_fontSize);
+    if (NeedsRecalculation())
+      RecalculateWidths();
     
     if (InUpdateRegion())
     {
-      SetFont(m_fontSize);
+      SetFont();
       // Sets the foreground color
       SetForeground();
       /// Labels and prompts have special fontsize
@@ -691,39 +684,16 @@ void TextCell::Draw(wxPoint point)
 
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
-  auto style = (*m_configuration)->GetStyle(m_textStyle, GetScaledTextSize());
+  auto style = GetScaledTextStyle();
   dc->SetFont(style.GetFont());
 }
 
-void TextCell::SetFont(int fontsize)
+void TextCell::SetFont()
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  if ((m_textStyle == TS_TITLE) ||
-      (m_textStyle == TS_SECTION) ||
-      (m_textStyle == TS_SUBSECTION) ||
-      (m_textStyle == TS_SUBSUBSECTION) ||
-      (m_textStyle == TS_HEADING5) || 
-      (m_textStyle == TS_HEADING6))
-  {
-    // Titles have a fixed font size 
-    m_fontSize = configuration->GetFontSize(m_textStyle);
-  }
-  else
-  {
-    // Font within maths has a dynamic font size that might be reduced for example
-    // within fractions, subscripts or superscripts.
-    if (
-      (m_textStyle != TS_MAIN_PROMPT) &&
-      (m_textStyle != TS_OTHER_PROMPT) &&
-      (m_textStyle != TS_ERROR) &&
-      (m_textStyle != TS_WARNING)
-      )
-      m_fontSize = fontsize;
-  }
-
-  auto style = configuration->GetStyle(m_textStyle, fontsize);
+  auto style = configuration->GetStyle(m_textStyle);
 
   // Use jsMath
   if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
@@ -735,9 +705,9 @@ void TextCell::SetFont(int fontsize)
   if (!style.IsFontOk())
     style = Style::FromNormalFont();
 
-  if (m_fontSize < 4)
-    m_fontSize = 4;
-  
+  if (style.GetFontSize() < 4)
+    style.SetFontSize(Scale_Px(4));
+
   // Mark special variables that are printed as ordinary letters as being special.
   if ((!(*m_configuration)->CheckKeepPercent()) &&
       ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
@@ -748,9 +718,6 @@ void TextCell::SetFont(int fontsize)
       style.SetItalic(true);
   }
 
-  wxASSERT(Scale_Px(m_fontSize) > 0);
-  style.SetFontSize(Scale_Px(m_fontSize));
-
   wxASSERT_MSG(style.IsFontOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc->SetFont(style.GetFont());
@@ -758,7 +725,7 @@ void TextCell::SetFont(int fontsize)
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())
   {
-    style = Style(Scale_Px(m_fontSize));
+    style = Style(style.GetFontSize());
     dc->SetFont(style.GetFont());
   }
 }

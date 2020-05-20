@@ -91,22 +91,22 @@ void SumCell::SetUnder(Cell *under)
   m_under = std::shared_ptr<Cell>(under);
 }
 
-void SumCell::RecalculateWidths(int fontsize)
+void SumCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_displayedBase->RecalculateWidthsList(fontsize);
+  m_displayedBase->RecalculateWidthsList();
   m_signHeight = m_displayedBase->GetHeightList();
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
   else
     m_signWidth = 4.0 * m_signHeight / 5.0;
   m_signWCenter = m_signWidth / 2.0;
-  m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_under->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
     m_over = std::make_shared<TextCell>(m_group, m_configuration, m_cellPointers);
-  m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (false)
   {
@@ -137,24 +137,24 @@ void SumCell::RecalculateWidths(int fontsize)
   m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
 
   ResetData();
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void SumCell::RecalculateHeight(int fontsize)
+void SumCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_displayedBase->RecalculateHeightList(fontsize);
+  m_under->RecalculateHeightList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateHeightList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_displayedBase->RecalculateHeightList();
 
   m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
                  m_displayedBase->GetCenterList());
   m_height = m_center +
              wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
                  m_displayedBase->GetMaxDrop());
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void SumCell::Draw(wxPoint point)

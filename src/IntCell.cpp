@@ -107,12 +107,11 @@ void IntCell::SetVar(Cell *var)
   m_var = std::shared_ptr<Cell>(var);
 }
 
-void IntCell::RecalculateWidths(int fontsize)
+void IntCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
   m_signHeight = Scale_Px(35 * configuration->GetZoomFactor());
@@ -120,15 +119,15 @@ void IntCell::RecalculateWidths(int fontsize)
   if(m_signWidth < 4)
     m_signWidth = 4;
 
-  m_base->RecalculateWidthsList(fontsize);
-  m_var->RecalculateWidthsList(fontsize);
-  m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_base->RecalculateWidthsList();
+  m_var->RecalculateWidthsList();
+  m_under->RecalculateWidthsList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_over->RecalculateWidthsList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - 5));
 
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    double fontsize1 = Scale_Px(fontsize * 1.5);
+    double fontsize1 = m_style.GetFontSize() * 1.5;
     wxASSERT(fontsize1 > 0);
 
     Style style = Style(fontsize1)
@@ -188,21 +187,21 @@ void IntCell::RecalculateWidths(int fontsize)
       m_signHeight = Scale_Px(35);
 #endif
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void IntCell::RecalculateHeight(int fontsize)
+void IntCell::RecalculateHeight()
 {
 
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 
-  m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  m_base->RecalculateHeightList(fontsize);
-  m_var->RecalculateHeightList(fontsize);
+  m_under->RecalculateHeightList(); //wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_over->RecalculateHeightList(); //wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_base->RecalculateHeightList();
+  m_var->RecalculateHeightList();
 
   if (m_intStyle == INT_DEF)
   {
@@ -234,7 +233,7 @@ void IntCell::Draw(wxPoint point)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      double fontsize1 = Scale_Px(m_fontSize * 1.5);
+      double fontsize1 = m_style.GetFontSize() * 1.5;
       wxASSERT(fontsize1 > 0);
 
       Style style = Style(fontsize1)

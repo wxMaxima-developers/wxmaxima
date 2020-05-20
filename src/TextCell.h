@@ -39,10 +39,10 @@ private:
 public:
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
-  Cell *Copy() override {return new TextCell(*this);}  
-  ~TextCell();  
+  Cell *Copy() override {return new TextCell(*this);}
+  ~TextCell();
 
-  double GetScaledTextSize() const;
+  const Style &GetScaledTextStyle() const;
   
   virtual void SetStyle(TextStyle style) override;
   
@@ -52,11 +52,11 @@ public:
   //! Set the automatic label maxima has assigned the current equation
   void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
 
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateWidths() override;
 
   virtual void Draw(wxPoint point) override;
 
-  void SetFont(int fontsize);
+  void SetFont();
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
@@ -112,7 +112,7 @@ protected:
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
-  bool NeedsRecalculation(int fontSize) override;
+  bool NeedsRecalculation() override;
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
@@ -135,9 +135,11 @@ protected:
     \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
     size has changed and we need to re-calculate the text width.
    */
-  double m_lastCalculationFontSize;
-  //! The actual font size for labels (that have a fixed width)
-  double m_fontSizeLabel;
+  //double m_lastCalculationFontSize;
+
+  //! The actual style for labels (that have a fixed width) - this is adjusted to fit
+  //! the label into the width.
+  Style m_labelStyle;
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 

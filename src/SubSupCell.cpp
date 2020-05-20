@@ -118,84 +118,84 @@ void SubSupCell::SetExponent(Cell *expt)
   m_postSupCell = std::shared_ptr<Cell>(expt);
 }
 
-void SubSupCell::RecalculateWidths(int fontsize)
+void SubSupCell::RecalculateWidths()
 {
-  m_baseCell->RecalculateWidthsList(fontsize);
-  if(m_postSubCell)    
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_postSupCell)    
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSubCell)    
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  if(m_preSupCell)    
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_baseCell->RecalculateWidthsList();
+  if(m_postSubCell)
+    m_postSubCell->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_postSupCell)
+    m_postSupCell->RecalculateWidthsList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_preSubCell)
+    m_preSubCell->RecalculateWidthsList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  if(m_preSupCell)
+    m_preSupCell->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   int preWidth = 0;
   int postWidth = 0;
 
   if(m_postSubCell)
   {
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     postWidth = m_postSubCell->GetFullWidth();
   }
   if(m_postSupCell)
   {
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     postWidth = wxMax(postWidth, m_postSupCell->GetFullWidth());
   }
   if(m_preSubCell)
   {
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     preWidth = m_preSubCell->GetFullWidth();
   }
   if(m_preSupCell)
   {
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
   }
 
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void SubSupCell::RecalculateHeight(int fontsize)
+void SubSupCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_baseCell->RecalculateHeightList(fontsize);
+  m_baseCell->RecalculateHeightList();
 
   int subHeight = 0;
   if(m_preSubCell)
   {
-    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateHeightList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     subHeight = m_preSubCell->GetHeightList();
   }
   if(m_postSubCell)
   {
-    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateHeightList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     subHeight = wxMax(subHeight, m_postSubCell->GetHeightList());
   }
   
   int supHeight = 0;
   if(m_preSupCell)
   {
-    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateHeightList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     supHeight = m_preSupCell->GetHeightList();
   }
   if(m_postSupCell)
   {
-    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateHeightList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
     supHeight = wxMax(supHeight, m_postSupCell->GetHeightList());
   }
   
   m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
-             2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+             2 * (0.8 * m_style.GetFontSize() + MC_EXP_INDENT);
 
   m_center = supHeight +
     m_baseCell->GetCenterList() -
-    Scale_Px(.8 * fontsize + MC_EXP_INDENT);
-  Cell::RecalculateHeight(fontsize);
+             (0.8 * m_style.GetFontSize() + MC_EXP_INDENT);
+  Cell::RecalculateHeight();
 }
 
 void SubSupCell::Draw(wxPoint point)
@@ -218,7 +218,7 @@ void SubSupCell::Draw(wxPoint point)
       presub.x += preWidth - m_preSubCell->GetFullWidth();
       presub.y += m_baseCell->GetMaxDrop() +
         m_preSubCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+                  (0.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_preSubCell->DrawList(presub);
     }
 
@@ -228,7 +228,7 @@ void SubSupCell::Draw(wxPoint point)
       presup.x += preWidth - m_preSupCell->GetFullWidth();
       presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList()
         - m_preSupCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        (0.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_preSupCell->DrawList(presup);
     }
 
@@ -240,14 +240,14 @@ void SubSupCell::Draw(wxPoint point)
     {
       in.y = point.y + m_baseCell->GetMaxDrop() +
         m_postSubCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        (0.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_postSubCell->DrawList(in);
     }
     if(m_postSupCell)
     {
       in.y = point.y - m_baseCell->GetCenterList() - m_postSupCell->GetHeightList()
         + m_postSupCell->GetCenterList() +
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        (0.8 * m_style.GetFontSize() + MC_EXP_INDENT);
       m_postSupCell->DrawList(in);
     }
   }

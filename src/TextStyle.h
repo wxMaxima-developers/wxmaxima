@@ -110,7 +110,7 @@ public:
   bool operator==(const Style &o) const = delete;
 
   //! Read this style from a config source
-  void Read(wxConfigBase *config, const wxString &where);
+  Style &Read(wxConfigBase *config, const wxString &where);
   //! Write this style to a config source
   void Write(wxConfigBase *config, const wxString &where) const;
 
@@ -185,6 +185,12 @@ public:
   const wxFont& GetFont() const { return (m.fontHash && m.font) ? *m.font : LookupFont(); }
   const wxFont& GetFontAt(double fontSize) const;
   void SetFromFont(const wxFont&);
+  //! Sets all font-related properties based on another style, including size, font style and weight
+  did_change SetFontFrom(const Style&);
+  //! Sets font-face-only properties based on another style
+  did_change SetFontFaceFrom(const Style&);
+  //! Sets font-face and size only properties based on another style
+  did_change SetFontFaceAndSizeFrom(const Style&);
 
   static bool IsFractionalFontSizeSupported();
   static double GetFontSize(const wxFont &);
@@ -291,6 +297,7 @@ enum TextStyle
   TS_CODE_OPERATOR       = 35,
   TS_CODE_LISP           = 36,
   TS_CODE_ENDOFLINE      = 37,
+  TS_MATH                = 38,
   NUMBEROFSTYLES //!< This is not a style, but its value tells us how many styles are defined
 };
 

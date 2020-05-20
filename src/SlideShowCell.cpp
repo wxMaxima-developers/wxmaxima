@@ -276,7 +276,7 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(int fontsize)
+void SlideShow::RecalculateWidths()
 {
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
@@ -305,12 +305,12 @@ void SlideShow::RecalculateWidths(int fontsize)
     }
   }       
   m_center = m_height / 2;
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void SlideShow::RecalculateHeight(int fontsize)
+void SlideShow::RecalculateHeight()
 {
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
   // The rest is already done on recalculating the width.
 }
 

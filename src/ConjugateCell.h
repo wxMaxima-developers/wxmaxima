@@ -73,9 +73,8 @@ protected:
   std::shared_ptr<Cell> m_close;
   Cell *m_last;
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight() override;
+  void RecalculateWidths() override;
 
   virtual void Draw(wxPoint point) override;
 

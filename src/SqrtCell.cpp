@@ -81,23 +81,23 @@ void SqrtCell::SetInner(Cell *inner)
       m_last = m_last->m_next;
 }
 
-void SqrtCell::RecalculateWidths(int fontsize)
+void SqrtCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
   Configuration *configuration = (*m_configuration);
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidths(fontsize);
-  m_close->RecalculateWidths(fontsize);
+  m_innerCell->RecalculateWidthsList();
+  m_open->RecalculateWidths();
+  m_close->RecalculateWidths();
 
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    m_innerCell->RecalculateHeightList(fontsize);
+    m_innerCell->RecalculateHeightList();
 
     m_signFontScale = 1.0;
-    double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+    double fontsize1 = SIGN_FONT_SCALE * m_style.GetFontSize() * m_signFontScale;
     wxASSERT(fontsize1 > 0);
 
     auto style = Style(fontsize1)
@@ -136,7 +136,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
       m_signFontScale = 1.0;
     }
 
-    fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+    fontsize1 = SIGN_FONT_SCALE * m_style.GetFontSize() * m_signFontScale;
     wxASSERT(fontsize1 > 0);
 
     style = Style(fontsize1)
@@ -151,25 +151,25 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
   if(m_isBrokenIntoLines)
     m_width = 0;
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void SqrtCell::RecalculateHeight(int fontsize)
+void SqrtCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
   if(!m_isBrokenIntoLines)
   {
-    m_innerCell->RecalculateHeightList(fontsize);
+    m_innerCell->RecalculateHeightList();
     m_height = m_innerCell->GetHeightList() + Scale_Px(3);
     m_center = m_innerCell->GetCenterList() + Scale_Px(3);
-    m_open->RecalculateHeightList(fontsize);
-    m_close->RecalculateHeightList(fontsize);
+    m_open->RecalculateHeightList();
+    m_close->RecalculateHeightList();
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void SqrtCell::Draw(wxPoint point)
@@ -188,7 +188,7 @@ void SqrtCell::Draw(wxPoint point)
 
       in.x += m_signWidth;
 
-      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale);
+      double fontsize1 = SIGN_FONT_SCALE * m_style.GetFontSize() * m_signFontScale;
       wxASSERT(fontsize1 > 0);
 
       auto style = Style(fontsize1)

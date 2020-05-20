@@ -288,6 +288,31 @@ did_change Style::SetFontNameFromFont()
   return SetFontName(AFontName(GetFont().GetFaceName()));
 }
 
+//! Sets all font-related properties based on another style, including size, font style and weight
+did_change Style::SetFontFrom(const Style &o)
+{
+  return
+    SetFontFaceAndSizeFrom(o) &&
+    SetFontStyle(o.GetFontStyle()) &&
+    SetWeight(o.GetWeight()) &&
+    SetUnderlined(o.IsUnderlined()) &&
+    SetStrikethrough(o.IsStrikethrough());
+
+}
+//! Sets font-face-only properties based on another style
+did_change Style::SetFontFaceFrom(const Style &o)
+{
+  return
+    SetFontName(o.GetFontName()) &&
+    SetEncoding(o.GetEncoding()) &&
+    SetFamily(o.GetFamily());
+}
+//! Sets font-face and size only properties based on another style
+did_change Style::SetFontFaceAndSizeFrom(const Style &o)
+{
+  return SetFontFaceFrom(o) && SetFontSize(o.GetFontSize());
+}
+
 did_change Style::SetFontSize(double size)
 {
   if (m.fontSize == size) return false;
@@ -509,7 +534,7 @@ static const wxString k_strikethrough = wxT("%s/strikethrough");
 static const wxString k_fontsize = wxT("%s/Style/Text/fontsize");
 static const wxString k_fontname = wxT("%s/Style/Text/fontname");
 
-void Style::Read(wxConfigBase *config, const wxString &where)
+Style &Style::Read(wxConfigBase *config, const wxString &where)
 {
   wxString tmpStr;
   bool tmpBool;
@@ -535,6 +560,7 @@ void Style::Read(wxConfigBase *config, const wxString &where)
     SetFontName(AFontName(tmpStr));
 
   // Validation is deferred to the point of first use, etc.
+  return *this;
 }
 
 void Style::Write(wxConfigBase *config, const wxString &where) const

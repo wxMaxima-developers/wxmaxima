@@ -39,9 +39,7 @@
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
   Cell(parent, config, cellPointers),
-  m_text(text),
-  m_fontStyle(wxFONTSTYLE_NORMAL),
-  m_fontWeight(wxFONTWEIGHT_NORMAL)
+  m_text(text)
 {
   m_nextToDraw = NULL;
   m_text.Replace(wxT("\u2028"), "\n");
@@ -56,8 +54,6 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_oldSelectionEnd = -1;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
-  m_fontSize = -1;
-  m_fontSize_Last = -1;
   m_positionOfCaret = 0;
   m_caretColumn = -1; // used when moving up/down between lines
   m_selectionStart = -1;
@@ -65,7 +61,6 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_paren1 = m_paren2 = -1;
   m_isDirty = false;
   m_hasFocus = false;
-  m_underlined = false;
   m_saveValue = false;
   m_containsChanges = false;
   m_containsChangesCheck = false;
@@ -622,17 +617,16 @@ void EditorCell::ConvertNumToUNicodeChar()
   m_positionOfCaret+= newChar.Length();
 }
 
-void EditorCell::RecalculateWidths(int fontsize)
+void EditorCell::RecalculateWidths()
 {
   Configuration *configuration = (*m_configuration);
   if (configuration->GetZoomFactor() != m_lastZoomFactor)
     m_widths.clear();
 
   m_isDirty = false;
-  if (NeedsRecalculation(fontsize))
+  if (NeedsRecalculation())
   {
     StyleText();
-    m_fontSize_Last = Scale_Px(fontsize);
     wxDC *dc = configuration->GetDC();
     SetFont();
 
@@ -685,7 +679,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
 wxString EditorCell::ToHTML()
@@ -741,7 +735,7 @@ wxString EditorCell::ToHTML()
   return retval;
 }
 
-void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsize)
+void EditorCell::MarkSelection(long start, long end, TextStyle style)
 {
   Configuration *configuration = (*m_configuration);
   if ((start < 0) || (end < 0)) return;
@@ -762,8 +756,8 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsi
     while (pos1 < end && m_text.GetChar(pos1) != '\n' && m_text.GetChar(pos1) != '\r')
       pos1++;
 
-    point = PositionToPoint(fontsize, pos2);  // left  point
-    point1 = PositionToPoint(fontsize, pos1); // right point
+    point = PositionToPoint(pos2);  // left  point
+    point1 = PositionToPoint(pos1); // right point
     long selectionWidth = point1.x - point.x;
     wxRect rect;
 #if defined(__WXOSX__)
@@ -858,7 +852,7 @@ void EditorCell::Draw(wxPoint point)
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != wxMin(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start, end, TS_EQUALSSELECTION, m_fontSize);
+          MarkSelection(start, end, TS_EQUALSSELECTION);
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -873,7 +867,7 @@ void EditorCell::Draw(wxPoint point)
       if (m_selectionStart >= 0)
         MarkSelection(wxMin(m_selectionStart, m_selectionEnd),
                       wxMax(m_selectionStart, m_selectionEnd),
-                      TS_SELECTION, m_fontSize);
+                      TS_SELECTION);
 
       //
       // Matching parens - draw only if we don't have selection
@@ -887,7 +881,7 @@ void EditorCell::Draw(wxPoint point)
 #endif
         dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION)))); //highlight c.
 
-        wxPoint matchPoint = PositionToPoint(m_fontSize, m_paren1);
+        wxPoint matchPoint = PositionToPoint(m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         wxRect matchRect(matchPoint.x + 1,
@@ -895,7 +889,7 @@ void EditorCell::Draw(wxPoint point)
                          width - 1, height - 1);
         if (InUpdateRegion(matchRect))
           dc->DrawRectangle(CropToUpdateRegion(matchRect));
-        matchPoint = PositionToPoint(m_fontSize, m_paren2);
+        matchPoint = PositionToPoint(m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         matchRect = wxRect(matchPoint.x + 1,
                            matchPoint.y + Scale_Px(2) - m_center + 1,
@@ -1034,50 +1028,16 @@ void EditorCell::SetFont()
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize < 4)
-    m_fontSize = configuration->GetDefaultFontSize();
+  m_style = configuration->GetStyle(m_textStyle);
 
-  m_fontSize = Scale_Px(m_fontSize);
-
-  m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
   // ordinary cells in order to make transparent that this cell is special.
-  if(!m_autoAnswer)
-    m_fontStyle = configuration->IsItalic(m_textStyle);
-  else
-  {
-    if(configuration->IsItalic(m_textStyle) != wxFONTSTYLE_ITALIC)
-      m_fontStyle = wxFONTSTYLE_ITALIC;
-    else
-      m_fontStyle = wxFONTSTYLE_NORMAL;
-  }
-  m_fontWeight = configuration->IsBold(m_textStyle);
-  m_underlined = configuration->IsUnderlined(m_textStyle);
+  if (m_autoAnswer)
+    m_style.SetItalic(!m_style.IsItalic());
 
-  wxASSERT(m_fontSize >= 0);
-  if(m_fontSize < 4)
-    m_fontSize = 4;
-
-  auto style = Style(m_fontSize)
-                 .FontName(m_fontName)
-                 .FontStyle(m_fontStyle)
-                 .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                 .Underlined(m_underlined);
-
-  if (!style.IsFontOk())
-  {
-    wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
-    style.SetFontName({});
-  }
-  if (!style.IsFontOk()) {
-    style = Style::FromNormalFont();
-    style.SetFontSize(m_fontSize);
-  }
-
-  wxASSERT_MSG(style.IsFontOk(),
+  wxASSERT_MSG(m_style.IsFontOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-  dc->SetFont(style.GetFont());
+  dc->SetFont(m_style.GetFont());
 }
 
 wxSize EditorCell::GetTextSize(wxString const &text)
@@ -2717,7 +2677,7 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
+wxPoint EditorCell::PositionToPoint(int pos)
 {
   SetFont();
 

@@ -138,7 +138,7 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 }
 
-void ImgCell::RecalculateWidths(int fontsize)
+void ImgCell::RecalculateWidths()
 {
   Configuration *configuration = (*m_configuration);
   if (m_image)
@@ -156,10 +156,10 @@ void ImgCell::RecalculateWidths(int fontsize)
       m_image->Recalculate();
     m_width = m_image->m_width + 2 * m_imageBorderWidth;
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void ImgCell::RecalculateHeight(int fontsize)
+void ImgCell::RecalculateHeight()
 {
   Configuration *configuration = (*m_configuration);
   if (m_image)
@@ -174,7 +174,7 @@ void ImgCell::RecalculateHeight(int fontsize)
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void ImgCell::Draw(wxPoint point)

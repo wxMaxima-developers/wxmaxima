@@ -66,29 +66,29 @@ void SubCell::SetBase(Cell *base)
   m_baseCell = std::shared_ptr<Cell>(base);
 }
 
-void SubCell::RecalculateWidths(int fontsize)
+void SubCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_baseCell->RecalculateWidthsList(fontsize);
-  m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
+  m_baseCell->RecalculateWidthsList();
+  m_indexCell->RecalculateWidthsList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
             Scale_Px(2);
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void SubCell::RecalculateHeight(int fontsize)
+void SubCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
+  m_baseCell->RecalculateHeightList();
+  m_indexCell->RecalculateHeightList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
-             Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+             (0.8 * m_style.GetFontSize() + Scale_Px(MC_EXP_INDENT));
   m_center = m_baseCell->GetCenter();
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void SubCell::Draw(wxPoint point)
@@ -105,7 +105,7 @@ void SubCell::Draw(wxPoint point)
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetCenterList() -
-           Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+           (0.8 * m_style.GetFontSize() + Scale_Px(MC_EXP_INDENT));
     m_indexCell->DrawList(in);
   }
 }

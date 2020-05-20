@@ -86,27 +86,27 @@ void FunCell::SetArg(Cell *arg)
     m_argCell_Last = m_argCell_Last->m_next;
 }
 
-void FunCell::RecalculateWidths(int fontsize)
+void FunCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_argCell->RecalculateWidthsList(fontsize);
-  m_nameCell->RecalculateWidthsList(fontsize);
+  m_argCell->RecalculateWidthsList();
+  m_nameCell->RecalculateWidthsList();
   m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
 
   if(m_isBrokenIntoLines)
     m_width = 0;
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void FunCell::RecalculateHeight(int fontsize)
+void FunCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_nameCell->RecalculateHeightList(fontsize);
-  m_argCell->RecalculateHeightList(fontsize);
+  m_nameCell->RecalculateHeightList();
+  m_argCell->RecalculateHeightList();
   if(!m_isBrokenIntoLines)
   {
     m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
@@ -114,7 +114,7 @@ void FunCell::RecalculateHeight(int fontsize)
   }
   else
     m_height = 0;
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void FunCell::Draw(wxPoint point)

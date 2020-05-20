@@ -1295,28 +1295,23 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 {
-  Style style;
+  Style style = m_configuration->GetStyle(TS_MATH);
 #ifdef __WXMSW__
-  style
-    .FontName(AFontName(wxT("Linux Libertine O")));
   if (!style.GetFont().IsOk())
+    style.SetFontName(AFontName(wxT("Linux Libertine O")));
 #endif
-  style = Style()
-          .FontSize(m_configuration->GetMathFontSize())
-          .FontName(m_configuration->MathFontName());
   if (!style.GetFont().IsOk())
     style = Style::FromNormalFont();
 
   wxFont math = wxGetFontFromUser(this, style.GetFont());
 
-  if (math.Ok())
+  if (math.IsOk())
   {
-    m_configuration->MathFontName(AFontName(math.GetFaceName()));
-    m_configuration->SetMathFontSize(math.GetPointSize());
-    math.SetPointSize(m_configuration->GetMathFontSize());
+    style.SetFromFont(math);
+    m_configuration->SetStyle(TS_MATH, style);
     m_getMathFont->SetLabel(wxString::Format(wxT("%s (%g)"),
-                                             m_configuration->MathFontName().GetAsString(),
-                                             (double)m_configuration->GetMathFontSize()));
+                                             style.GetFontName().GetAsString(),
+                                             style.GetFontSize()));
   }
 
   UpdateExample();
@@ -1324,36 +1319,12 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 {
-  int fontsize = m_configuration->GetDefaultFontSize();
-  AFontName fontName;
-  
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  
-  if (
-    (st == TS_TEXT)          ||
-    (st == TS_DEFAULT)       ||
-    (st == TS_TITLE)         ||
-    (st == TS_HEADING6)      ||
-    (st == TS_HEADING5)      ||
-    (st == TS_SUBSUBSECTION) ||
-    (st == TS_SUBSECTION)    ||
-    (st == TS_SECTION))
-  {
-    if (m_configuration->m_styles[st].GetFontSize() != 0)
-      fontsize = m_configuration->m_styles[st].GetFontSize();
-    fontName = m_configuration->m_styles[st].GetFontName();
-  }
-  else
-    fontName = m_configuration->m_styles[TS_DEFAULT].GetFontName();
-
-  Style style;
-  style
-    .FontSize(fontsize)
-    .FontName(fontName);
+  auto style = m_configuration->GetStyle(st);
 
   if (!style.IsFontOk())
   {
-    fontName = AFontName(wxT("Linux Libertine O"));
+    auto fontName = AFontName(wxT("Linux Libertine O"));
     style.FontName(fontName);
   }
 
@@ -1367,20 +1338,17 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     style.SetFromFont(userFont);
     if (event.GetId() == font_family)
     {
-      m_configuration->m_styles[TS_DEFAULT].FontName(style.GetFontName());
-      m_configuration->FontName(style.GetFontName());
-      m_configuration->SetDefaultFontSize(wxMax(
-                                            wxMin(
-                                              style.GetFontSize(), MC_MAX_SIZE),
-                                            MC_MIN_SIZE)
-        );
-      m_getFont->SetLabel(m_configuration->FontName() +
-                          wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+      m_configuration->SetStyle(TS_DEFAULT, style);
+      m_getMathFont->SetLabel(wxString::Format(wxT("%s (%g)"),
+                                               style.GetFontName().GetAsString(),
+                                               style.GetFontSize()));
+
+      m_getFont->SetLabel(wxString::Format(wxT("%s (%g)"),
+                                           style.GetFontName().GetAsString(), style.GetFontSize()));
     }
     else
     {
-      m_configuration->m_styles[st].FontName(style.GetFontName());
-      m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE, style.GetFontSize()));
+      m_configuration->SetStyle(st, style);
     }
   }
   UpdateExample();
@@ -1389,16 +1357,21 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 void ConfigDialogue::OnChangeColor()
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  wxColour col = wxGetColourFromUser(this, m_configuration->m_styles[st].GetColor());
+  auto style = m_configuration->GetStyle(st);
+  wxColour col = wxGetColourFromUser(this, style.GetColor());
   if (col.IsOk())
-    m_configuration->m_styles[st].SetColor(col);
+  {
+    style.SetColor(col);
+    m_configuration->SetStyle(st, style);
+  }
   UpdateExample();
 }
 
 void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  m_styleColor->SetColor(m_configuration->m_styles[st].GetColor());
+  auto const style = m_configuration->GetStyle(st);
+  m_styleColor->SetColor(style.GetColor());
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
   if (st >= TS_TEXT&& st <= TS_TITLE)
@@ -1420,9 +1393,9 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
     }
     else
     {
-      m_boldCB->SetValue(m_configuration->m_styles[st].IsBold());
-      m_italicCB->SetValue(m_configuration->m_styles[st].IsItalic());
-      m_underlinedCB->SetValue(m_configuration->m_styles[st].IsUnderlined());
+      m_boldCB->SetValue(style.IsBold());
+      m_italicCB->SetValue(style.IsItalic());
+      m_underlinedCB->SetValue(style.IsUnderlined());=======
     }
   }
   else
@@ -1430,9 +1403,9 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
     m_boldCB->Enable(true);
     m_italicCB->Enable(true);
     m_underlinedCB->Enable(true);
-    m_boldCB->SetValue(m_configuration->m_styles[st].IsBold());
-    m_italicCB->SetValue(m_configuration->m_styles[st].IsItalic());
-    m_underlinedCB->SetValue(m_configuration->m_styles[st].IsUnderlined());
+    m_boldCB->SetValue(style.IsBold());
+    m_italicCB->SetValue(style.IsItalic());
+    m_underlinedCB->SetValue(style.IsUnderlined());
   }
   UpdateExample();
 }
@@ -1440,9 +1413,11 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
-  m_configuration->m_styles[st].SetBold(m_boldCB->GetValue());
-  m_configuration->m_styles[st].SetItalic(m_italicCB->GetValue());
-  m_configuration->m_styles[st].SetUnderlined(m_underlinedCB->GetValue());
+  auto style = m_configuration->GetStyle(st);
+  style.SetBold(m_boldCB->GetValue());
+  style.SetItalic(m_italicCB->GetValue());
+  style.SetUnderlined(m_underlinedCB->GetValue());
+  m_configuration->SetStyle(st, style);
   UpdateExample();
 }
 
@@ -1457,51 +1432,14 @@ void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
 void ConfigDialogue::UpdateExample()
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
+  auto const style = m_configuration->GetStyle(st);
 
-  m_styleColor->SetColor(m_configuration->m_styles[st].GetColor());
+  m_styleColor->SetColor(style.GetColor());
+  m_examplePanel->SetStyle(style);
 
-  wxColour color(m_configuration->m_styles[st].GetColor());
-  wxString font(m_configuration->m_styles[TS_DEFAULT].GetFontName().GetAsString());
+  TextStyle bgStyle = (st == TS_TEXT_BACKGROUND || st == TS_TEXT) ? TS_TEXT_BACKGROUND : TS_DOCUMENT_BACKGROUND;
 
-  if (st == TS_TEXT_BACKGROUND)
-    color = m_configuration->m_styles[st].GetColor();
-
-  int fontsize = m_configuration->GetDefaultFontSize();
-  if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 ||
-      st == TS_SUBSUBSECTION || st == TS_SUBSECTION ||
-      st == TS_SECTION || st == TS_TITLE)
-  {
-    fontsize = m_configuration->m_styles[st].GetFontSize();
-    if (fontsize <= 0)
-      fontsize = m_configuration->GetDefaultFontSize();
-  }
-  else if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||
-           st == TS_SPECIAL_CONSTANT)
-  {
-    fontsize = m_configuration->GetMathFontSize();
-  }
-
-  if (st == TS_TEXT_BACKGROUND)
-  {
-    m_examplePanel->SetStyle(m_configuration->m_styles[st]);
-  }
-  else
-  {
-    Style style = m_configuration->m_styles[st];
-    style.SetFontSize(fontsize);
-    style.SetColor(color);
-    m_examplePanel->SetStyle(m_configuration->m_styles[st]);
-  }
-
-  if (st == TS_TEXT_BACKGROUND ||
-      st == TS_TEXT)
-  {
-    m_examplePanel->SetBackgroundColour(m_configuration->m_styles[TS_TEXT_BACKGROUND].GetColor());
-  }
-  else
-  {
-    m_examplePanel->SetBackgroundColour(m_configuration->m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
-  }
+  m_examplePanel->SetBackgroundColour(m_configuration->GetStyle(bgStyle).GetColor());
 }
 
 void ConfigDialogue::OnTabChange(wxBookCtrlEvent &event)

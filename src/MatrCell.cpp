@@ -63,14 +63,14 @@ MatrCell::~MatrCell()
   MarkAsDeleted();
 }
 
-void MatrCell::RecalculateWidths(int fontsize)
+void MatrCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
-    m_cells[i]->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 2));
+    m_cells[i]->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - 2));
   }
   m_widths.clear();
   for (unsigned int i = 0; i < m_matWidth; i++)
@@ -89,17 +89,17 @@ void MatrCell::RecalculateWidths(int fontsize)
   }
   if (m_width < Scale_Px(14))
     m_width = Scale_Px(14);
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void MatrCell::RecalculateHeight(int fontsize)
+void MatrCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
-    m_cells[i]->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 2));
+    m_cells[i]->RecalculateHeightList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - 2));
   }
   m_centers.clear();
   m_drops.clear();
@@ -120,9 +120,9 @@ void MatrCell::RecalculateHeight(int fontsize)
     m_height += (m_centers[i] + m_drops[i] + Scale_Px(10));
   }
   if (m_height == 0)
-    m_height = fontsize + Scale_Px(10);
+    m_height = m_style.GetFontSize() + Scale_Px(10);
   m_center = m_height / 2;
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void MatrCell::Draw(wxPoint point)

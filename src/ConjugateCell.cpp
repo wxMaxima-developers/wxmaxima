@@ -72,29 +72,29 @@ void ConjugateCell::SetInner(Cell *inner)
       m_last = m_last->m_next;
 }
 
-void ConjugateCell::RecalculateWidths(int fontsize)
+void ConjugateCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateWidthsList();
+  m_open->RecalculateWidthsList();
+  m_close->RecalculateWidthsList();
   if(!m_isBrokenIntoLines)
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
   else
     m_width = 0;
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void ConjugateCell::RecalculateHeight(int fontsize)
+void ConjugateCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
+  m_innerCell->RecalculateHeightList();
+  m_open->RecalculateHeightList();
+  m_close->RecalculateHeightList();
   if(!m_isBrokenIntoLines)
   {
     m_height = m_innerCell->GetHeightList() + Scale_Px(4);
@@ -105,7 +105,7 @@ void ConjugateCell::RecalculateHeight(int fontsize)
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void ConjugateCell::Draw(wxPoint point)

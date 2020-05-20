@@ -72,7 +72,7 @@ private:
   wxArrayString m_wordList;
 
   //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, TextStyle style, int fontsize);
+  void MarkSelection(long start, long end, TextStyle style);
 
   /*! The start of the current selection.
 
@@ -214,7 +214,7 @@ public:
   static wxString PrependNBSP(wxString input);
 
   //! Recalculate the widths of the current cell.
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateWidths() override;
 
   virtual void Draw(wxPoint point) override;
 
@@ -310,7 +310,7 @@ public:
   int XYToPosition(int x, int y);
 
   //! The screen coordinates of the cursor
-  wxPoint PositionToPoint(int fontsize, int pos = -1) override;
+  wxPoint PositionToPoint(int pos = -1) override;
 
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(const wxPoint &point) override;
@@ -727,11 +727,7 @@ private:
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
   unsigned int m_numberOfLines;
-  /*! The font size we were called with  the last time
 
-    We need to know this in order to be able to detect we need a full recalculation.
-   */
-  double m_fontSize_Last;
   WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
   //! Cached widths of text snippets, one width per style
   StringHash m_widths;
@@ -741,10 +737,7 @@ private:
   bool m_isDirty;
   bool m_displayCaret;
   bool m_hasFocus;
-  wxFontStyle m_fontStyle;
-  wxFontWeight m_fontWeight;
-  bool m_underlined;
-  class AFontName m_fontName;
+
   bool m_saveValue;
   //! true, if this function has changed since the last evaluation by maxima
   bool m_containsChanges;

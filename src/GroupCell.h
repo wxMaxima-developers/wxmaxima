@@ -250,7 +250,7 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
-  void RecalculateHeight(int fontsize) override;
+  void RecalculateHeight() override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
   virtual wxRect GetRect(bool all = false) override;
@@ -263,7 +263,7 @@ public:
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
    */
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateWidths() override;
 
   /*! Recalculate the size of this GroupCell.
 
@@ -494,7 +494,7 @@ public:
 
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation(int fontSize) override;
+  bool NeedsRecalculation() override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
@@ -506,8 +506,6 @@ protected:
   std::shared_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
   std::shared_ptr<Cell> m_output;
-  //! Is this cell folded (which hides its contents)?
-  int m_mathFontSize;
   Cell *m_lastInOutput;
   static wxString m_lookalikeChars;
 private:

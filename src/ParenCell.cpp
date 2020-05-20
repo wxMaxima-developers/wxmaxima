@@ -36,6 +36,7 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_close(std::make_shared<TextCell>(parent, config, cellPointers, wxT(")")))
 {
   m_nextToDraw = NULL;
+  this->SetStyle(TS_FUNCTION);
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_numberOfExtensions = 0;
@@ -44,7 +45,7 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_charWidth1 = 12;
   m_charHeight = 12;
   m_charHeight1 = 12;
-  m_fontSize = 10;
+  //m_fontSize = 10;
   m_last1 = NULL;
   m_signTopHeight = 12;
   m_signHeight = 50;
@@ -107,20 +108,20 @@ void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
   ResetSize();
 }
 
-void ParenCell::SetFont(int fontsize)
+void ParenCell::SetFont()
 {
-  wxASSERT(fontsize >= 1);
-
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  Style style;
+  // FIXME
+  /*
   if (m_bigParenType == Configuration::ascii)
     style = configuration->GetStyle(TS_FUNCTION, fontsize);
   else
     style = configuration->GetStyle(TS_FUNCTION, configuration->GetMathFontSize());
+*/
 
-  wxASSERT(style.GetFontSize() > 0);
+  auto style = m_style;
 
   switch(m_bigParenType)
   {
@@ -160,22 +161,23 @@ void ParenCell::SetFont(int fontsize)
   SetForeground();
 }
 
-void ParenCell::RecalculateWidths(int fontsize)
+void ParenCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
   Configuration *configuration = (*m_configuration);
   
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateWidthsList();
+  m_innerCell->RecalculateHeightList();
+  m_open->RecalculateWidthsList();
+  m_close->RecalculateWidthsList();
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetHeightList();
-  if (fontsize < 4) fontsize = 4;
-  int fontsize1 = Scale_Px(fontsize);
+
+  int fontsize1 = m_style.GetFontSize();
+
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
@@ -190,7 +192,7 @@ void ParenCell::RecalculateWidths(int fontsize)
     m_bigParenType = configuration->GetParenthesisDrawMode();
     if(m_bigParenType != Configuration::handdrawn)
     {
-      SetFont(fontsize);
+      SetFont();
       int signWidth1,signWidth2,signWidth3,descent,leading;
       dc->GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
       m_signTopHeight -= 2*descent + Scale_Px(1);
@@ -223,26 +225,26 @@ void ParenCell::RecalculateWidths(int fontsize)
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
   if(m_isBrokenIntoLines)
     m_width = 0;
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void ParenCell::RecalculateHeight(int fontsize)
+void ParenCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
 
   Configuration *configuration = (*m_configuration);
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
 
-  SetFont(fontsize);
+  SetFont();
   wxDC *dc = configuration->GetDC();
   dc->GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
   if(m_charHeight1 < 2)
     m_charHeight1 = 2;
 
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
+  m_open->RecalculateHeightList();
+  m_close->RecalculateHeightList();
 
   if (m_isBrokenIntoLines)
   {
@@ -284,7 +286,7 @@ void ParenCell::RecalculateHeight(int fontsize)
       m_center = m_height / 2;   
     }
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void ParenCell::Draw(wxPoint point)
@@ -296,7 +298,7 @@ void ParenCell::Draw(wxPoint point)
     wxDC *dc = configuration->GetDC();
     wxPoint innerCellPos(point);
 
-    SetFont(configuration->GetMathFontSize());
+    SetFont();
     
     switch(m_bigParenType)
     {            

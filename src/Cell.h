@@ -560,7 +560,7 @@ class Cell
   virtual wxRect GetRect(bool all = false);
 
   //! True, if something that affects the cell size has changed.
-  virtual bool NeedsRecalculation(int fontSize);
+  virtual bool NeedsRecalculation();
   
   virtual wxString GetDiffPart();
 
@@ -571,14 +571,14 @@ class Cell
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize);
+  virtual void RecalculateHeight();
 
   /*! Recalculate the height of this list of cells
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
-  void RecalculateHeightList(int fontsize);
+  void RecalculateHeightList();
 
   /*! Recalculate the width of this cell.
 
@@ -587,20 +587,20 @@ class Cell
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
-  virtual void RecalculateWidths(int fontsize);
+  virtual void RecalculateWidths() {}
 
   /*! Recalculates all widths of this list of cells.
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
-  void RecalculateWidthsList(const int &fontsize);
+  void RecalculateWidthsList();
 
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
    */
-  void RecalculateList(int fontsize);
+  void RecalculateList();
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
@@ -913,8 +913,8 @@ class Cell
   virtual void SetMatchParens(bool WXUNUSED(match))
   {}
 
-  virtual wxPoint PositionToPoint(int WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
-  { return wxPoint(-1, -1); }
+  virtual wxPoint PositionToPoint(int WXUNUSED(pos) = -1)
+  { return wxDefaultPosition; }
 
   virtual bool IsDirty() const
   { return false; }
@@ -958,8 +958,6 @@ class Cell
     m_textStyle = style;
     ResetData();
   }
-  //! Is this cell possibly output of maxima?
-  bool IsMath() const;
 
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
@@ -1100,15 +1098,21 @@ protected:
   int m_maxCenter;
   int m_maxDrop;
   CellType m_type;
+
   TextStyle m_textStyle;
-  //! The font size is smaller in super- and subscripts.
-  double m_fontSize;
+
+  /*! The style, resolved for m_textStyle.
+   * The font size is smaller in super- and subscripts.
+   */
+  Style m_style;
+
+  Style m_lastStyle;
 
 protected:
   CellPointers *m_cellPointers;
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor;
-  int m_fontsize_old;
+
   bool m_isBrokenIntoLines_old;
 private:
   //! The client width at the time of the last recalculation.

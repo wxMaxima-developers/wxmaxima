@@ -39,9 +39,8 @@ public:
   void SetBase(Cell *base);
   void SetIndex(Cell *index);
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight() override;
+  void RecalculateWidths() override;
 
   virtual void Draw(wxPoint point) override;
 

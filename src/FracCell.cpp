@@ -87,21 +87,21 @@ void FracCell::SetDenom(Cell *denom)
   SetupBreakUps();
 }
 
-void FracCell::RecalculateWidths(int fontsize)
+void FracCell::RecalculateWidths()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_displayedNum->RecalculateWidthsList(fontsize);
-    m_displayedDenom->RecalculateWidthsList(fontsize);
+    m_displayedNum->RecalculateWidthsList();
+    m_displayedDenom->RecalculateWidthsList();
   }
   else
   {
-    m_displayedNum->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_displayedDenom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateWidthsList(); // FIXME wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedDenom->RecalculateWidthsList(); // FIXMA wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  m_divide->RecalculateWidths(fontsize);
+  m_divide->RecalculateWidths();
   
   if (m_exponent)
   {
@@ -114,7 +114,7 @@ void FracCell::RecalculateWidths(int fontsize)
       m_width = 0;
     else
     {
-      m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 2);
+      m_protrusion = m_style.GetFontSize() / 2;
       
       // We want half a space's widh of blank space to separate us from the
       // next minus.
@@ -133,24 +133,24 @@ void FracCell::RecalculateWidths(int fontsize)
         2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
     }
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths();
 }
 
-void FracCell::RecalculateHeight(int fontsize)
+void FracCell::RecalculateHeight()
 {
-  if(!NeedsRecalculation(fontsize))
+  if(!NeedsRecalculation())
     return;
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_displayedNum->RecalculateHeightList(fontsize);
-    m_displayedDenom->RecalculateHeightList(fontsize);
+    m_displayedNum->RecalculateHeightList();
+    m_displayedDenom->RecalculateHeightList();
   }
   else
   {
-    m_displayedNum->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_displayedDenom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateHeightList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedDenom->RecalculateHeightList(); //FIXME wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  m_divide->RecalculateHeight(fontsize);
+  m_divide->RecalculateHeight();
 
   if(m_isBrokenIntoLines)
   {
@@ -171,7 +171,7 @@ void FracCell::RecalculateHeight(int fontsize)
       m_center = wxMax(m_num->GetCenterList(), m_denom->GetCenterList());
     }
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight();
 }
 
 void FracCell::Draw(wxPoint point)

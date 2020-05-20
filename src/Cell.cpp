@@ -58,8 +58,9 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
 {
   m_isBrokenIntoLines_old = false;
   m_isHidableMultSign = false;
+  m_lastStyle.SetFontSize(-1);
   m_lastZoomFactor = -1;
-  m_fontsize_old = m_clientWidth_old = -1;
+  m_clientWidth_old = -1;
   m_next = NULL;
   m_previous = NULL;
   m_fullWidth = -1;
@@ -82,7 +83,6 @@ Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
   m_imageBorderWidth = 0;
   SetCurrentPoint(wxPoint(-1, -1));
   m_toolTip = (*m_configuration)->GetDefaultCellToolTip();
-  m_fontSize = (*m_configuration)->GetMathFontSize();
 }
 
 Cell::~Cell()
@@ -300,16 +300,25 @@ int Cell::GetCenterList()
   return m_maxCenter;
 }
 
-bool Cell::NeedsRecalculation(int fontSize)
+bool Cell::NeedsRecalculation()
 {
-  bool result = (m_width < 0) || (m_height < 0) || (m_center < 0) ||
-    (fontSize != m_fontsize_old) ||
-    (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
-    (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
-    (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
-    (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
-    ((*m_configuration)->RecalculationForce()) ||
-    (*m_configuration)->FontChanged();
+  // This comparison takes care of detecting changes in font, zoom, etc.
+  auto curStyle = (*m_configuration)->GetStyle(m_textStyle);
+  bool styleChanged = !m_lastStyle.IsStyleEqualTo(curStyle);
+  // TODO likely unnecessary since styles are scaled and thus zoom factor change
+  // will make the style stale
+  bool zoomFactorChanged = m_lastZoomFactor != (*m_configuration)->GetZoomFactor();
+  wxASSERT(!zoomFactorChanged || styleChanged);
+
+  if (styleChanged)
+    m_style = curStyle;
+
+  bool result =  styleChanged ||
+                (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+                (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
+                (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
+                (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
+                ((*m_configuration)->RecalculationForce());
   return result;
 }
 
@@ -442,14 +451,14 @@ void Cell::DrawList(wxPoint point)
   }
 }
 
-void Cell::RecalculateList(int fontsize)
+void Cell::RecalculateList()
 {
   Cell *tmp = this;
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(fontsize);
-    tmp->RecalculateHeight(fontsize);
+    tmp->RecalculateWidths();
+    tmp->RecalculateHeight();
     tmp = tmp->GetNextToDraw();
   }
 }
@@ -461,13 +470,13 @@ void Cell::ResetSizeList()
 }
 
 
-void Cell::RecalculateHeightList(int fontsize)
+void Cell::RecalculateHeightList()
 {
   Cell *tmp = this;
 
   while (tmp != NULL)
   {
-    tmp->RecalculateHeight(fontsize);
+    tmp->RecalculateHeight();
     tmp = tmp->m_next;
   }
 }
@@ -479,29 +488,24 @@ void Cell::RecalculateHeightList(int fontsize)
 
   Should set: set m_width.
 */
-void Cell::RecalculateWidthsList(const int &fontsize)
+void Cell::RecalculateWidthsList()
 {
   Cell *tmp = this;
 
   while (tmp != NULL)
   {
-    tmp->RecalculateWidths(fontsize);
+    tmp->RecalculateWidths();
     tmp = tmp->m_next;
   }
 }
 
-void Cell::RecalculateWidths(int WXUNUSED(fontsize))
+void Cell::RecalculateHeight()
 {
-}
-
-void Cell::RecalculateHeight(int fontsize)
-{
-  if(NeedsRecalculation(fontsize))
+  if (NeedsRecalculation())
     ResetData();
-  m_fontSize = fontsize;
-  m_fontsize_old = fontsize;
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
+  m_lastStyle = (*m_configuration)->GetStyle(m_textStyle);
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
 }
 
@@ -1263,13 +1267,6 @@ void Cell::SetForeground()
   }
 
   dc->SetTextForeground(color);
-}
-
-bool Cell::IsMath() const
-{
-  return !(m_textStyle == TS_LABEL ||
-           m_textStyle == TS_USERLABEL ||
-           m_textStyle == TS_INPUT);
 }
 
 #if wxUSE_ACCESSIBILITY
