@@ -108,7 +108,7 @@ private:
 
     Drawing is done from a wxPaintDC in OnPaint() instead.
   */
-  wxDC *m_dc;
+  wxClientDC m_dc;
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?
@@ -590,7 +590,6 @@ private:
   wxTimer m_caretTimer;
   //! True if no changes have to be saved.
   bool m_saved;
-  AutoComplete *m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
   AutocompletePopup *m_autocompletePopup;
@@ -647,6 +646,8 @@ public:
     with the print settings might be active.
    */
   Configuration *m_configuration;
+  //! The storage for the autocompletion feature
+  AutoComplete m_autocomplete;
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()
   {
@@ -1440,17 +1441,17 @@ public:
   wxString GetOutputAboveCaret();
 
   void LoadSymbols()
-  { m_autocomplete->LoadSymbols(); }
+  { m_autocomplete.LoadSymbols(); }
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
   //! Add a symbol to the autocompletion list
   void AddSymbol(const wxString &fun, AutoComplete::autoCompletionType type = AutoComplete::command)
-  { m_autocomplete->AddSymbol(fun, type); }
+  { m_autocomplete.AddSymbol(fun, type); }
 
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxString xml)
-  { m_autocomplete->AddSymbols(xml); }
+  { m_autocomplete.AddSymbols(xml); }
 
   void SetActiveCellText(const wxString &text);
 

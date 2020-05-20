@@ -1,0 +1,86 @@
+{
+   make_disabled
+   Memcheck:Cond
+   obj:/usr/lib/x86_64-linux-gnu/libpixman-1.so.0.38.4
+   fun:pixman_image_composite32
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   fun:cairo_paint
+   obj:/usr/lib/x86_64-linux-gnu/libwx_gtk3u_core-3.0.so.0.5.0
+   fun:_ZN22wxAuiDefaultToolBarArt10DrawButtonER4wxDCP8wxWindowRK16wxAuiToolBarItemRK6wxRect
+}
+
+{
+   alphablend
+   Memcheck:Cond
+   fun:_ZN12wxColourBase10AlphaBlendEhhd
+   fun:_ZN12wxColourBase12MakeDisabledEPhS0_S0_h
+   fun:_ZNK7wxImage17ConvertToDisabledEh
+   fun:_ZN12wxAuiToolBar7AddToolEiRK8wxStringRK8wxBitmapS5_10wxItemKindS2_S2_P8wxObject
+   fun:_ZN12wxAuiToolBar7AddToolEiRK8wxStringRK8wxBitmapS2_10wxItemKind
+   fun:_ZN7ToolBar8AddToolsEv
+   fun:_ZN7ToolBarC1EP8wxWindow
+   fun:_ZN13wxMaximaFrameC1EP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelb
+   fun:_ZN8wxMaximaC1EP8wxWindowiP8wxLocale8wxStringRKS4_7wxPoint6wxSize
+   fun:_ZN5MyApp9NewWindowERK8wxStringbbPhi
+   fun:_ZN5MyApp6OnInitEv
+   fun:_ZN16wxAppConsoleBase10CallOnInitEv
+}
+
+{
+   pixbuf
+   Memcheck:Cond
+   obj:/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4000.0
+   fun:gdk_pixbuf_scale
+   fun:gdk_pixbuf_scale_simple
+   obj:/usr/lib/x86_64-linux-gnu/libwx_gtk3u_core-3.0.so.0.5.0
+   fun:_ZN13wxArtProvider9GetBitmapERK8wxStringS2_RK6wxSize
+   fun:_ZN7ToolBar9GetBitmapE8wxStringPhm6wxSize
+   fun:_ZN7ToolBar13GetOpenBitmapE6wxSize
+   fun:_ZN7ToolBar8AddToolsEv
+   fun:_ZN7ToolBarC1EP8wxWindow
+   fun:_ZN13wxMaximaFrameC1EP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelb
+}
+
+
+{
+   rsvg
+   Memcheck:Cond
+   obj:/usr/lib/x86_64-linux-gnu/librsvg-2.so.2.47.0
+   fun:rsvg_rust_handle_get_pixbuf_sub
+   obj:/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.so
+   fun:gdk_pixbuf_loader_close
+   obj:/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4000.0
+   fun:gdk_pixbuf_new_from_stream_at_scale
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2404.16
+   fun:gtk_icon_info_load_icon
+   fun:gtk_icon_theme_load_icon_for_scale
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2404.16
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2404.16
+   obj:/usr/lib/x86_64-linux-gnu/libwx_gtk3u_core-3.0.so.0.5.0
+}
+
+{
+   pixman
+   Memcheck:Cond
+   obj:/usr/lib/x86_64-linux-gnu/libpixman-1.so.0.38.4
+   obj:/usr/lib/x86_64-linux-gnu/libpixman-1.so.0.38.4
+   fun:pixman_image_composite32
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0
+}
+

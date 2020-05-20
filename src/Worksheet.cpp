@@ -79,8 +79,11 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
     | wxSUNKEN_BORDER
 #endif
     ),
-    m_cellPointers(this),
-    m_observer(observer)
+  m_dc(this),
+  m_configuration(&m_configurationTopInstance),
+  m_autocomplete(&m_configurationTopInstance),
+  m_cellPointers(this),
+  m_observer(observer)
 {
   m_helpFileAnchorsUsable = false;
   m_dontSkipScrollEvent = false;
@@ -119,10 +122,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
   m_mouseMotionWas = false;
   m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
-  m_configuration = &m_configurationTopInstance;  
-  m_dc = new wxClientDC(this);
-  m_configuration->SetContext(*m_dc);
-  m_autocomplete  = new AutoComplete(m_configuration);
+  m_configuration->SetContext(m_dc);
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
@@ -402,8 +402,6 @@ Worksheet::~Worksheet()
 
   ClearDocument();
   m_configuration = NULL;
-//  wxDELETE(m_dc);
-  m_dc = NULL;
   wxDELETE(m_tree);
   m_tree =NULL;
   m_observer = nullptr;
@@ -512,14 +510,14 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   #endif
   if(!m_memory.IsOk())
   {
-    m_configuration->SetContext(*m_dc);
+    m_configuration->SetContext(m_dc);
     return;
   }
   dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
   dcm.SelectObject(m_memory);
   if(!dcm.IsOk())
   {
-    m_configuration->SetContext(*m_dc);
+    m_configuration->SetContext(m_dc);
     return;
   }
   DoPrepareDC(dcm);
@@ -595,7 +593,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   
   if (GetTree() == NULL)
   {
-    m_configuration->SetContext(*m_dc);
+    m_configuration->SetContext(m_dc);
     return;
   }
   
@@ -700,7 +698,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
           0, rect.GetTop());
   #endif
   
-  m_configuration->SetContext(*m_dc);
+  m_configuration->SetContext(m_dc);
   m_configuration->UnsetAntialiassingDC();
   m_lastTop = top;
   m_lastBottom = bottom;
@@ -963,9 +961,6 @@ bool Worksheet::RecalculateIfNeeded()
   bool recalculate = true;
   UpdateConfigurationClientSize();
   if((m_recalculateStart == NULL) || (GetTree() == NULL))
-    recalculate = false;
-
-  if(m_dc == NULL)
     recalculate = false;
 
 
@@ -8249,15 +8244,15 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
         type = AutoComplete::generalfile;
 
       if(type == AutoComplete::demofile)
-        m_autocomplete->UpdateDemoFiles(partial,
+        m_autocomplete.UpdateDemoFiles(partial,
                                        wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
 
       if(type == AutoComplete::loadfile)
-        m_autocomplete->UpdateLoadFiles(partial,
+        m_autocomplete.UpdateLoadFiles(partial,
                                        wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
 
       if(type == AutoComplete::generalfile)
-        m_autocomplete->UpdateGeneralFiles(partial,
+        m_autocomplete.UpdateGeneralFiles(partial,
                                           wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
     }
   }
@@ -8266,7 +8261,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
   {
     // Update the list of words that might not be defined as maxima function or variable
     // but that still appear on the workSheet.
-    m_autocomplete->ClearWorksheetWords();
+    m_autocomplete.ClearWorksheetWords();
     GroupCell *tmp = GetTree();
     while (tmp != NULL)
     {
@@ -8275,7 +8270,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
       {
         // Only collect words from Code Cells.
         if ((tmp->GetGroupType() == GC_TYPE_CODE) && (tmp->GetEditable() != NULL))
-          m_autocomplete->AddWorksheetWords(tmp->GetEditable()->GetWordList());
+          m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
       }
       else
       {
@@ -8293,14 +8288,14 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
             if (wordList.Index(partial) != wxNOT_FOUND)
               wordList.Remove(partial);
           }
-          m_autocomplete->AddWorksheetWords(wordList);
+          m_autocomplete.AddWorksheetWords(wordList);
         }
       }
       tmp = tmp->GetNext();
     }
   }
 
-  m_completions = m_autocomplete->CompleteSymbol(partial, type);
+  m_completions = m_autocomplete.CompleteSymbol(partial, type);
   m_completions.Sort();
   m_autocompleteTemplates = (type == AutoComplete::tmplte);
 
@@ -8346,7 +8341,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     // The popup menu appears half a character too high.
     pos.y += m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT));
     wxASSERT(!m_autocompletePopup);
-    m_autocompletePopup = new AutocompletePopup(this,editor,m_autocomplete,type,&m_autocompletePopup);
+    m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
 
     // If necessary: Scroll right or down so that the pop-up is visible as a whole.
     wxPoint topleft;
