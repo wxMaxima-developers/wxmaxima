@@ -744,7 +744,7 @@ private:
   wxFontStyle m_fontStyle;
   wxFontWeight m_fontWeight;
   bool m_underlined;
-  wxString m_fontName;
+  class AFontName m_fontName;
   bool m_saveValue;
   //! true, if this function has changed since the last evaluation by maxima
   bool m_containsChanges;

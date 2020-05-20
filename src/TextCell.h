@@ -126,7 +126,7 @@ protected:
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
   wxString m_altText, m_altJsText;
-  wxString m_fontname, m_texFontname;
+  class AFontName m_fontname, m_texFontname;
 
   int m_realCenter;
   /*! The font size we had the last time we were recalculating this cell

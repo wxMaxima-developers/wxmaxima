@@ -28,7 +28,6 @@
  */
 
 #include "TextCell.h"
-#include "FontCache.h"
 #include "wx/config.h"
 
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
@@ -246,6 +245,7 @@ void TextCell::SetValue(const wxString &text)
   }
   else
   {
+    // FIXME This is a hot path
     if((text.Contains(wxT("LINE SEARCH FAILED. SEE")))||
        (text.Contains(wxT("DOCUMENTATION OF ROUTINE MCSRCH"))) ||
        (text.Contains(wxT("ERROR RETURN OF LINE SEARCH:"))) ||
@@ -512,7 +512,7 @@ void TextCell::RecalculateWidths(int fontsize)
         }
 
 
-        wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
+        Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
       
         m_width = Scale_Px(configuration->GetLabelWidth());
         // We will decrease it before use
@@ -525,12 +525,12 @@ void TextCell::RecalculateWidths(int fontsize)
         {
 #if wxCHECK_VERSION(3, 1, 2)
           m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
+          style.SetFontSize(Scale_Px(m_fontSizeLabel));
 #else
           m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          font.SetPointSize(Scale_Px(m_fontSizeLabel));
+          style.SetFontSize(Scale_Px(m_fontSizeLabel));
 #endif
-          dc->SetFont(font);
+          dc->SetFont(style.GetFont());
           labelSize = GetTextSize(text);
         } 
         m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
@@ -691,9 +691,8 @@ void TextCell::Draw(wxPoint point)
 
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
-  wxFont font = (*m_configuration)->GetFont(m_textStyle, GetScaledTextSize());
-  font.SetPointSize(GetScaledTextSize());
-  dc->SetFont(font);
+  auto style = (*m_configuration)->GetStyle(m_textStyle, GetScaledTextSize());
+  dc->SetFont(style.GetFont());
 }
 
 void TextCell::SetFont(int fontsize)
@@ -724,29 +723,19 @@ void TextCell::SetFont(int fontsize)
       m_fontSize = fontsize;
   }
 
-  wxFont font = configuration->GetFont(m_textStyle, fontsize);
-  auto req = FontInfo::GetFor(font);
+  auto style = configuration->GetStyle(m_textStyle, fontsize);
 
   // Use jsMath
   if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
-  {
-    req.FaceName(m_texFontname);
-    font = FontCache::GetAFont(req);
-  }
-  
-  if (!font.IsOk())
-  {
-    req.Family(wxFONTFAMILY_MODERN).FaceName(wxEmptyString);
-    font = FontCache::GetAFont(req);
-  }
-  
-  if (!font.IsOk())
-  {
-    font = *wxNORMAL_FONT;
-    req = FontInfo::GetFor(font);
-  }
+    style.SetFontName(m_texFontname);
 
-  if(m_fontSize < 4)
+  if (!style.IsFontOk())
+    style.SetFontName({});
+  
+  if (!style.IsFontOk())
+    style = Style::FromNormalFont();
+
+  if (m_fontSize < 4)
     m_fontSize = 4;
   
   // Mark special variables that are printed as ordinary letters as being special.
@@ -754,31 +743,23 @@ void TextCell::SetFont(int fontsize)
       ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
   {
     if((*m_configuration)->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
-    {
-      req.Italic(false);
-    }
+      style.SetItalic(false);
     else
-    {
-      req.Italic(true);
-    }
+      style.SetItalic(true);
   }
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
-  FontInfo::SetPointSize(req, Scale_Px(m_fontSize));
-  font = FontCache::GetAFont(req);
-  font.SetPointSize(Scale_Px(m_fontSize));
+  style.SetFontSize(Scale_Px(m_fontSize));
 
-  wxASSERT_MSG(font.IsOk(),
+  wxASSERT_MSG(style.IsFontOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-  dc->SetFont(font);
+  dc->SetFont(style.GetFont());
   
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())
   {
-    req = wxFontInfo(10);
-    font = FontCache::GetAFont(req);
-    font.SetPointSize(Scale_Px(m_fontSize));
-    dc->SetFont(font);
+    style = Style(Scale_Px(m_fontSize));
+    dc->SetFont(style.GetFont());
   }
 }
 
@@ -1622,7 +1603,7 @@ void TextCell::SetAltText()
     if((*m_configuration)->Latin2Greek())
     {
       m_altJsText = GetGreekStringTeX();
-      m_texFontname = CMMI10;      
+      m_texFontname = (*m_configuration)->GetTeXCMMI();
       m_altText = GetGreekStringUnicode();
     }
   }
@@ -1631,14 +1612,14 @@ void TextCell::SetAltText()
   else
   {
     m_altJsText = GetSymbolTeX();
-    if (m_altJsText != wxEmptyString)
+    if (!m_altJsText.empty())
     {
       if (m_text == wxT("+") || m_text == wxT("="))
-        m_texFontname = CMR10;
+        m_texFontname = (*m_configuration)->GetTeXCMRI();
       else if (m_text == wxT("%pi"))
-        m_texFontname = CMMI10;
+        m_texFontname = (*m_configuration)->GetTeXCMMI();
       else
-        m_texFontname = CMSY10;
+        m_texFontname = (*m_configuration)->GetTeXCMSY();
     }
     m_altText = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
 // #if defined __WXMSW__

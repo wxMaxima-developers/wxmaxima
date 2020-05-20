@@ -27,7 +27,6 @@
  */
 
 #include "SqrtCell.h"
-#include "FontCache.h"
 
 #define SIGN_FONT_SCALE 2.0
 
@@ -101,15 +100,10 @@ void SqrtCell::RecalculateWidths(int fontsize)
     double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
 
-    wxFont font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(false)
-                            .Bold(false)
-                            .Underlined(false)
-                            .FaceName(configuration->GetTeXCMEX()));
+    auto style = Style(fontsize1)
+                   .FontName(configuration->GetTeXCMEX());
 
-    dc->SetFont(font);
+    dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
@@ -145,15 +139,10 @@ void SqrtCell::RecalculateWidths(int fontsize)
     fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
 
-    font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(false)
-                            .Bold(false)
-                            .Underlined(false)
-                            .FaceName(configuration->GetTeXCMEX()));
+    style = Style(fontsize1)
+              .FontName(configuration->GetTeXCMEX());
 
-    dc->SetFont(font);
+    dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
@@ -202,15 +191,10 @@ void SqrtCell::Draw(wxPoint point)
       double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale);
       wxASSERT(fontsize1 > 0);
 
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Italic(false)
-                              .Bold(false)
-                              .Underlined(false)
-                              .FaceName(configuration->GetTeXCMEX()));
+      auto style = Style(fontsize1)
+                     .FontName(configuration->GetTeXCMEX());
 
-      dc->SetFont(font);
+      dc->SetFont(style.GetFont());
       SetForeground();
       if (m_signType < 4)
       {
