@@ -449,6 +449,8 @@ public:
     return 0;
   }
 
+  const wxString &GetStyleName(TextStyle textStyle) const;
+
   /*! Reads the style settings 
 
     If a file name is given the settings are read from a file.

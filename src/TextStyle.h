@@ -140,7 +140,6 @@ public:
   AFontName GetFontName() const;
   double GetFontSize() const;
   const wxColor &GetColor() const;
-  const wxString &GetName() const { return m.styleName; }
 
   using did_change = bool;
   did_change SetFamily(wxFontFamily family);
@@ -158,7 +157,6 @@ public:
   did_change SetFontSize(double size);
   did_change SetColor(const wxColor &color);
   did_change SetColor(wxSystemColour sysColour);
-  did_change SetName(const wxString &styleName);
 
   Style& Family(wxFontFamily family) { return SetFamily(family), *this; }
   Style& Encoding(wxFontEncoding encoding) { return SetEncoding(encoding), *this; }
@@ -176,7 +174,6 @@ public:
   Style& Color(uint8_t r, uint8_t g, uint8_t b) { return SetColor({r, g, b}), *this; }
   Style& Color(wxSystemColour sysColour) { return SetColor(sysColour), *this; }
   Style& ChangeLightness(int alpha) { return SetColor(GetColor().ChangeLightness(alpha)), *this; }
-  Style& Name(const wxString &name) { return SetName(name), *this; }
 
   wxFontInfo GetAsFontInfo() const;
 
@@ -218,7 +215,6 @@ private:
     mutable const wxFont *font = nullptr;
 
     wxColor color = Default_Color();
-    wxString styleName; // TODO This should be interned as well
     Data() : underlined(false), strikethrough(false), isNotOK(false) {}
     static constexpr enum class NotOK_t {} NotOK = {};
     Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
