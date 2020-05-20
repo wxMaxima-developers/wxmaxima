@@ -1013,7 +1013,7 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
       if(svgContents)
       {
         m_svgImage = nsvgParse(svgContents, "px", ppi);
-        delete(svgContents);
+        free(svgContents);
       }
 
       if(m_svgImage)
