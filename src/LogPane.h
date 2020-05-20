@@ -26,7 +26,7 @@
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include "ErrorRedirector.h"
-#include "memory"
+#include <memory>
 
 /*! A "debug messages" sidepane
 
@@ -45,7 +45,7 @@ private:
   wxTextCtrl *m_textCtrl;
   //! Redirects all error messages to gui dialogues
   std::unique_ptr<ErrorRedirector> m_errorRedirector;
-  wxLog *m_logPanelTarget;
+  std::unique_ptr<wxLog> m_logPanelTarget;
   bool m_isLogTarget;
   #ifdef wxUSE_STD_IOSTREAM
   std::unique_ptr<wxStreamToTextRedirector> m_textRedirector;

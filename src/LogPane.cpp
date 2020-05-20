@@ -23,7 +23,6 @@
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {
   m_isLogTarget = false;
-  m_logPanelTarget = NULL;
   wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
 
   m_textCtrl = new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -57,7 +56,8 @@ void LogPane::DropLogTarget()
 void LogPane::BecomeLogTarget()
 {
   m_isLogTarget = true;
-  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));
+  m_logPanelTarget = std::unique_ptr<wxLog>(new wxLogTextCtrl(m_textCtrl));
+  wxLog::SetActiveTarget(m_logPanelTarget.get());
   m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
   #ifdef wxUSE_STD_IOSTREAM
   if(!ErrorRedirector::LoggingToStdErr())
