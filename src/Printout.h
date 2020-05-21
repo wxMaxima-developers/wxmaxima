@@ -36,8 +36,6 @@
 
 #include "GroupCell.h"
 
-using namespace std;
-
 class Printout : public wxPrintout
 {
 public:
@@ -79,7 +77,7 @@ private:
   bool m_printConfigCreated;
   wxString m_title;
   std::unique_ptr<GroupCell> m_tree;
-  vector<GroupCell *> m_pages;
+  std::vector<GroupCell *> m_pages;
   double m_scaleFactor;
 };
 

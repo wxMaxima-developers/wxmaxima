@@ -27,8 +27,6 @@
 
 #include <vector>
 
-using namespace std;
-
 class MatrCell : public Cell
 {
 public:
@@ -106,10 +104,10 @@ protected:
   unsigned int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
   //! Collections of pointers to inner cells.
-  vector<std::shared_ptr<Cell>> m_cells;
-  vector<int> m_widths;
-  vector<int> m_drops;
-  vector<int> m_centers;
+  std::vector<std::shared_ptr<Cell>> m_cells;
+  std::vector<int> m_widths;
+  std::vector<int> m_drops;
+  std::vector<int> m_centers;
 };
 
 #endif // MATRCELL_H

@@ -29,8 +29,6 @@
 
 #include <vector>
 
-using namespace std;
-
 class MatWiz : public wxDialog
 {
 public:
@@ -60,7 +58,7 @@ private:
 
   int m_width, m_height;
   int m_matrixType;
-  vector<BTextCtrl *> m_inputs;
+  std::vector<BTextCtrl *> m_inputs;
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;

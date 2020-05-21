@@ -41,8 +41,6 @@
 
 #include <vector>
 
-using namespace std;
-
 class SlideShow : public Cell
 {
 public:
@@ -198,7 +196,7 @@ protected:
   int m_size;
   int m_displayed;
   std::shared_ptr<wxFileSystem> m_fileSystem;
-  vector<std::shared_ptr<Image>> m_images;
+  std::vector<std::shared_ptr<Image>> m_images;
 
   void RecalculateHeight(int fontsize) override;
 
