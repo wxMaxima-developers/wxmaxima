@@ -3596,7 +3596,7 @@ void EditorCell::StyleTextTexts()
 
           // Spaces, newlines and reaching the end of the text all trigger
           // auto-wrapping
-          if ((*it == ' ') || (*it == '\n') || (nextChar >= m_text.end()))
+          if ((*it == ' ') || (nextChar >= m_text.end()))
           {
             
             // Determine the current line's length
