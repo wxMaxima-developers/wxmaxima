@@ -30,10 +30,7 @@
 #include "MatrCell.h"
 
 MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_widths(vector<int>()),
-  m_drops(vector<int>()),
-  m_centers(vector<int>())
+  Cell(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
   m_matWidth = 0;

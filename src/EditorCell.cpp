@@ -3105,14 +3105,14 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
     }
     pos++;   
   }
-  if(pos > 0)
+  if (pos > 0)
     SetSelection(start, pos);
   m_positionOfCaret = pos;
   
-  if (left != right)
+  if (pos > 0 && start != pos)
     return m_cellPointers->m_selectionString;
   else
-    return wxString(wxT("%"));
+    return wxT("%");
   
 }
 
