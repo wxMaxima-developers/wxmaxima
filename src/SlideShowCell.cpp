@@ -245,8 +245,8 @@ SlideShow::SlideShow(const SlideShow &cell):
   CopyCommonData(cell);
   AnimationRunning(false);
 
-  for (size_t i = 0; i < cell.m_images.size(); i++)
-    m_images.push_back(std::make_shared<Image>(*cell.m_images[i]));
+  m_images.reserve(cell.m_images.size());
+  std::copy(cell.m_images.begin(), cell.m_images.end(), std::back_inserter(m_images));
 
   m_framerate = cell.m_framerate;
   m_displayed = true;
