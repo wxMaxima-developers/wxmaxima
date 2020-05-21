@@ -57,7 +57,6 @@ protected:
 private:
   wxString GetTip(unsigned int n);
   int m_num;
-  struct NSVGrasterizer* m_svgRast;
   wxTextCtrl *m_tip;
   wxString GetTip();
   wxCheckBox *m_showAtStartup;
