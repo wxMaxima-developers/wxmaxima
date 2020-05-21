@@ -66,7 +66,6 @@ public:
 
   Cell *Copy() override {return new SlideShow(*this);}
   ~SlideShow();
-  SlideShow &operator=(const SlideShow&) = delete;
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
 

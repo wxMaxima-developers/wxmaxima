@@ -32,11 +32,7 @@ public:
   SubSupCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SubSupCell(const SubSupCell &cell);
   Cell *Copy() override {return new SubSupCell(*this);}
-
   ~SubSupCell();
-
-  //! This class can be derived from wxAccessible which has no copy constructor
-  SubSupCell operator=(const SubSupCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_preSupCell); }

@@ -51,11 +51,7 @@ public:
   SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SqrtCell(const SqrtCell &cell);
   Cell *Copy() override {return new SqrtCell(*this);}
-
   ~SqrtCell();
-
-  //! This class can be derived from wxAccessible which has no copy constructor
-  SqrtCell &operator=(const SqrtCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

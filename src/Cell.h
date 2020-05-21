@@ -106,6 +106,10 @@ class Cell: public wxAccessible
 class Cell
 #endif
 {
+  // This class can be derived from wxAccessible which has no copy constructor
+  void operator=(const Cell&) = delete;
+  Cell(const Cell&) = delete;
+
   public:
 
     /*! The storage for pointers to cells.

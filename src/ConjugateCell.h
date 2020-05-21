@@ -53,9 +53,6 @@ public:
   Cell *Copy() override {return new ConjugateCell(*this);}
   ~ConjugateCell();
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  ConjugateCell &operator=(const ConjugateCell&) = delete;
-
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 

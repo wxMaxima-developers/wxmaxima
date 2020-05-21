@@ -48,9 +48,6 @@ public:
   Cell *Copy() override {return new FracCell(*this);}
   ~FracCell();
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  FracCell &operator=(const FracCell&) = delete;
-
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }
 

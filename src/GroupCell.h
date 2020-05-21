@@ -72,9 +72,6 @@ public:
   Cell *Copy() override {return new GroupCell(*this);}
   ~GroupCell();
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  GroupCell &operator=(const GroupCell&) = delete;
-
   wxString GetAnswer(int answer)
     {
       if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
