@@ -258,6 +258,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
 ConfigDialogue::~ConfigDialogue()
 {
+  if(m_svgRast)
+    free(m_svgRast);
 }
 
 
