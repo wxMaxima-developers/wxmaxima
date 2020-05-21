@@ -33,8 +33,7 @@
 #include "Image.h"
 #include "invalidImage.h"
 
-SvgBitmap::SvgBitmap(const unsigned char *data, size_t len, int width, int height):
-  m_svgImage(NULL)
+SvgBitmap::SvgBitmap(const unsigned char *data, size_t len, int width, int height)
 {
   // Unzip the .svgz image
   wxMemoryInputStream istream(data, len);
@@ -60,43 +59,36 @@ SvgBitmap::SvgBitmap(const unsigned char *data, size_t len, int width, int heigh
   if (svgContents.size() < 1)
     wxBitmap::operator=(GetInvalidBitmap(width));
 
-  m_svgImage = nsvgParse(svgContents.data(), "px", 96);
+  m_svgImage.reset(nsvgParse(svgContents.data(), "px", 96));
   SetSize(width, height);
 }
 
 SvgBitmap::~SvgBitmap()
-{
-  if(m_svgImage != NULL)
-    free(m_svgImage);
-}
+{}
 
 const SvgBitmap &SvgBitmap::SetSize(int width, int height)
 {
   // Set the bitmap to the new size
   wxBitmap::operator=(wxBitmap(width, height, 32));
 
-  if(m_svgImage == NULL)
+  if (!m_svgImage)
   {
     wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
   }
-  unsigned char *imgdata = new unsigned char[width*height*4];
-  if(imgdata == NULL)
-  {
-    wxBitmap::operator=(GetInvalidBitmap(width));
-    return *this;
-  }
+  std::vector<unsigned char> imgdata(width*height*4);
+
   // Actually render the bitmap
-  nsvgRasterize(m_svgRast, m_svgImage, 0,0,
+  nsvgRasterize(m_svgRast, m_svgImage.get(), 0,0,
                 wxMin((double)width/(double)m_svgImage->width,
                       (double)height/(double)m_svgImage->height),
-                imgdata,
+                imgdata.data(),
                 width, height, width*4);
 
   // Copy the bitmap to this object's bitmap storage
   wxAlphaPixelData bmpdata(*this);
   wxAlphaPixelData::Iterator dst(bmpdata);
-  const unsigned char* rgba = imgdata;
+  const unsigned char* rgba = imgdata.data();
   for( int y = 0; y < height; y++)
   {
     dst.MoveTo(bmpdata, 0, y);
@@ -111,13 +103,19 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height)
       rgba += 4;
     }
   }
-  delete[] imgdata;
   return *this;
 }
 
 SvgBitmap::SvgBitmap(const unsigned char *data, size_t len, wxSize siz):
   SvgBitmap(data, len, siz.x, siz.y)
 {}
+
+SvgBitmap &SvgBitmap::operator=(SvgBitmap &&o)
+{
+  wxBitmap::operator=(o);
+  m_svgImage = std::move(o.m_svgImage);
+  return *this;
+}
 
 wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
 {
