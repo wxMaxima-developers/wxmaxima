@@ -1979,8 +1979,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       *sharedMemoryContents = *sharedMemoryContents | value;
       wxLogMessage(_("Sending an interrupt signal to Maxima."));
       UnmapViewOfFile(sharedMemoryAddress);
-      if (sharedMemoryHandle)
-        CloseHandle(sharedMemoryHandle);
+      CloseHandle(sharedMemoryHandle);
       sharedMemoryAddress = NULL;
       sharedMemoryHandle = NULL;
     }
