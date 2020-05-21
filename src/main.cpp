@@ -63,6 +63,8 @@ int main(int argc, char *argv[])
   #pragma omp parallel
   #pragma omp master
   wxTheApp->OnRun();
+  delete wxConfig::Get();
+
   return 0;
 }
 #else
