@@ -162,6 +162,8 @@ Image::~Image()
   }
   if(m_svgImage)
     free(m_svgImage);
+  if(m_svgRast)
+    free(m_svgRast);
 }
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
