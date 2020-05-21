@@ -82,8 +82,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
-<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
+<li><a href="#підручник-користувача-wxmaxima">Підручник користувача wxMaxima</a></li>
+<li><a href="#вступ-до-wxmaxima"><span class="toc-section-number">1</span> Вступ до wxMaxima</a><ul>
 <li><a href="#maxima-і-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> і wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
@@ -114,7 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#де-зберігаються-налаштування"><span class="toc-section-number">1.4.6</span> Де зберігаються налаштування?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#розширення-maxima"><span class="toc-section-number">2</span> Розширення <em>Maxima</em></a><ul>
 <li><a href="#змінні-із-індексами"><span class="toc-section-number">2.1</span> Змінні із індексами</a></li>
 <li><a href="#візуальний-супровід-дій-користувача-у-смужці-стану"><span class="toc-section-number">2.2</span> Візуальний супровід дій користувача у смужці стану</a></li>
 <li><a href="#креслення"><span class="toc-section-number">2.3</span> Креслення</a><ul>
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#звітування-про-вади"><span class="toc-section-number">2.8</span> Звітування про вади</a></li>
 <li><a href="#як-зробити-так-щоб-виведені-дані-було-показано-червоним-кольором"><span class="toc-section-number">2.9</span> Як зробити так, щоб виведені дані було показано червоним кольором?</a></li>
 </ul></li>
-<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#вирішення-проблем"><span class="toc-section-number">3</span> Вирішення проблем</a><ul>
 <li><a href="#не-вдається-зєднатися-із-maxima"><span class="toc-section-number">3.1</span> Не вдається з’єднатися із <em>Maxima</em></a></li>
 <li><a href="#як-зберегти-дані-із-пошкодженого-файла-.wxmx"><span class="toc-section-number">3.2</span> Як зберегти дані із пошкодженого файла .wxmx</a></li>
 <li><a href="#хочу-бачити-діагностичні-відомості-на-екрані-перш-ніж-команда-завершить-свою-роботу"><span class="toc-section-number">3.3</span> Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу</a></li>
@@ -156,10 +156,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#чи-передбачено-у-програмі-темний-режим"><span class="toc-section-number">4.2</span> Чи передбачено у програмі «темний» режим?</a></li>
 <li><a href="#wxmaxima-іноді-повисає-на-декілька-секунд-під-час-першої-хвилини-роботи"><span class="toc-section-number">4.3</span> wxMaxima іноді повисає на декілька секунд під час першої хвилини роботи</a></li>
 </ul></li>
-<li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
+<li><a href="#параметри-командного-рядка"><span class="toc-section-number">5</span> Параметри командного рядка</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
+<h1 id="підручник-користувача-wxmaxima" class="unnumbered">Підручник користувача wxMaxima</h1>
 <p>wxMaxima — графічний інтерфейс користувача до системи комп’ютерної алгебри (СКА) <em>Maxima</em>. За допомогою wxMaxima можна користуватися усіма функціями <em>Maxima</em>. Крім того, у програмі передбачено зручні допоміжні програми для доступу до найпоширеніших можливостей СКА. У цьому підручнику наведено опис деяких можливостей, які роблять wxMaxima одним із найпопулярніших графічних інтерфейсів <em>Maxima</em>.</p>
 <figure>
 <img src="./wxMaximaLogo.png" alt="Логотип wxMaxima" id="img_wxMaximaLogo" /><figcaption>Логотип wxMaxima</figcaption>
@@ -186,7 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Параметри командного рядка, підтримку яких передбачено у wxMaxima</p>
 <hr />
-<h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
+<h1 id="вступ-до-wxmaxima"><span class="header-section-number">1</span> Вступ до wxMaxima</h1>
 <h2 id="maxima-і-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> і wxMaxima</h2>
 <p>У системі програмного забезпечення з відкритим кодом великі системи, зазвичай, діляться на менші проєкти, з якими простіше працювати невеликим групам розробників. Наприклад, програма для запису компакт-дисків складається з засобу командного рядка, який, власне, виконує запис компакт-диска, і графічного інтерфейсу користувача, за допомогою користувачі можуть виконати потрібні їм дії, не запам’ятовуючи параметрів командного рядка і, загалом, взагалі не маючи справи із командним рядком. Однією із переваг цього підходу є те, що робота з розробки засобу командного рядка може бути використана багатьма програмами: той самий засіб командного рядка для запису компакт-дисків можна використати у додатку надсилання даних на компакт-диск у програмі для керування файлами, для функції «записати на компакт-диск» у музичному програвачі та для запису компакт-диска у програмі для резервного копіювання на DVD. Ще однією перевагою є поділ одного великого завдання на менші частини, що надає змогу розробникам надавати декілька інтерфейсів користувача для однієї програми.</p>
 <p>Система комп’ютерної алгебри (СКА), подібна до <em>Maxima</em>, дуже добре вкладається у цю схему. СКА може надавати логіку до програми-калькулятора із довільною точністю обчислень або може виконувати автоматичні перетворення форму у фоновому режимі для більших систем (наприклад, <a href="https://www.sagemath.org/">Sage</a>). Крім того, нею можна користуватися і безпосередньо, як самостійною системою. Доступ до <em>Maxima</em> можна отримати з командного рядка. Втім, часто інтерфейси, подібні до wxMaxima, є набагато ефективнішим способом доступу до програмного забезпечення, особливо для початківців.</p>
@@ -242,12 +242,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>Окрім доповнення, назви файла, назви модуля або назви поточної команди чи змінної, засіб автоматичного доповнення може показувати шаблони для більшості команд, вказуючи тип (і значення) параметрів, які очікує отримати відповідна програма. Щоб задіяти цю можливість, натисніть комбінацію клавіш <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>ПРОБІЛ</kbd> або виберіть відповідний пункт меню (Комірка/Показати шаблон).</p>
 <h4 id="грецькі-літери"><span class="header-section-number">1.2.5.1</span> Грецькі літери</h4>
-<p>Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
-<p>For most countries the codepage of 256 characters that has been chosen, does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation <a href="https://home.unicode.org/">Unicode</a> has been invented: An encoding that makes english text work like normal, but to use much more than 256 characters.</p>
-<p><em>Maxima</em> allows Unicode, if it was compiled using a Lisp compiler that either supports unicode or that doesn’t care about the font encoding. As at least one of this is likely to be true. <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
+<p>Комп’ютери традиційно зберігають символи у форматі 8-бітових значень. Це уможливлює існування наборів, що складаються лише із 256 різних символів. У такий набір може бути включено усі літери, цифри та символи керування (завершення передавання, кінець рядка, лінії та кутики для малювання меню <em>тощо</em>) майже будь-якої європейської мови.</p>
+<p>Втім, у більшості мов до вибраної кодової сторінки із 256 символів не можна включити додаткові символи, зокрема літери грецької абетки, які широко використовуються у математичних формулах. Щоб подолати обмеження подібного типу, було винайдено <a href="https://home.unicode.org/">Юнікод</a> — кодування, яке працює для латиниці, але використовує набагато більше за 256 символів.</p>
+<p><em>Maxima</em> уможливлює використання символів Юнікоду, якщо програму було зібрано за допомогою компілятора Lisp, у якому передбачено підтримку Юнікоду або такого, який є нейтральним щодо кодування символів. Оскільки, хоча б одна з цих вимог, зазвичай, справджується, у <em>wxMaxima</em> реалізовано спосіб введення грецьких символів з клавіатури:</p>
 <ul>
 <li>Грецьку літеру можна ввести натисканням клавіші <kbd>ESC</kbd> з наступним введенням назви символу грецької абетки.</li>
-<li>Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:</li>
+<li>Крім того, можна натиснути <kbd>ESC</kbd>, ввести одну літеру (чи дві літери для грецької літери «омікрон») і натиснути <kbd>ESC</kbd> ще раз. У цьому випадку прив’язка до літер є такою:</li>
 </ul>
 <table>
 <thead>
@@ -263,131 +263,131 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">a</td>
-<td style="text-align: center;">alpha</td>
+<td style="text-align: center;">альфа</td>
 <td style="text-align: center;">i</td>
-<td style="text-align: center;">iota</td>
+<td style="text-align: center;">йота</td>
 <td style="text-align: center;">r</td>
-<td style="text-align: center;">rho</td>
+<td style="text-align: center;">ро</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">b</td>
-<td style="text-align: center;">beta</td>
+<td style="text-align: center;">бета</td>
 <td style="text-align: center;">k</td>
-<td style="text-align: center;">kappa</td>
+<td style="text-align: center;">каппа</td>
 <td style="text-align: center;">s</td>
-<td style="text-align: center;">sigma</td>
+<td style="text-align: center;">сигма</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">g</td>
-<td style="text-align: center;">gamma</td>
+<td style="text-align: center;">гамма</td>
 <td style="text-align: center;">l</td>
-<td style="text-align: center;">lambda</td>
+<td style="text-align: center;">лямбда</td>
 <td style="text-align: center;">t</td>
-<td style="text-align: center;">tau</td>
+<td style="text-align: center;">тау</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">d</td>
-<td style="text-align: center;">delta</td>
+<td style="text-align: center;">дельта</td>
 <td style="text-align: center;">m</td>
-<td style="text-align: center;">mu</td>
+<td style="text-align: center;">мю</td>
 <td style="text-align: center;">u</td>
-<td style="text-align: center;">upsilon</td>
+<td style="text-align: center;">упсилоn</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">e</td>
-<td style="text-align: center;">epsilon</td>
+<td style="text-align: center;">епсилон</td>
 <td style="text-align: center;">n</td>
-<td style="text-align: center;">nu</td>
+<td style="text-align: center;">ню</td>
 <td style="text-align: center;">f</td>
-<td style="text-align: center;">phi</td>
+<td style="text-align: center;">фі</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">z</td>
-<td style="text-align: center;">zeta</td>
+<td style="text-align: center;">дзета</td>
 <td style="text-align: center;">x</td>
-<td style="text-align: center;">xi</td>
+<td style="text-align: center;">ксі</td>
 <td style="text-align: center;">c</td>
-<td style="text-align: center;">chi</td>
+<td style="text-align: center;">хі</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">h</td>
-<td style="text-align: center;">eta</td>
+<td style="text-align: center;">ета</td>
 <td style="text-align: center;">om</td>
-<td style="text-align: center;">omicron</td>
+<td style="text-align: center;">омікрон</td>
 <td style="text-align: center;">y</td>
-<td style="text-align: center;">psi</td>
+<td style="text-align: center;">псі</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">q</td>
-<td style="text-align: center;">theta</td>
+<td style="text-align: center;">тета</td>
 <td style="text-align: center;">p</td>
-<td style="text-align: center;">pi</td>
+<td style="text-align: center;">пі</td>
 <td style="text-align: center;">o</td>
-<td style="text-align: center;">omega</td>
+<td style="text-align: center;">омега</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">A</td>
-<td style="text-align: center;">Alpha</td>
+<td style="text-align: center;">Альфа</td>
 <td style="text-align: center;">I</td>
-<td style="text-align: center;">Iota</td>
+<td style="text-align: center;">Йота</td>
 <td style="text-align: center;">R</td>
-<td style="text-align: center;">Rho</td>
+<td style="text-align: center;">Ро</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">B</td>
-<td style="text-align: center;">Beta</td>
+<td style="text-align: center;">Бета</td>
 <td style="text-align: center;">K</td>
-<td style="text-align: center;">Kappa</td>
+<td style="text-align: center;">Каппа</td>
 <td style="text-align: center;">S</td>
-<td style="text-align: center;">Sigma</td>
+<td style="text-align: center;">Сигма</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">G</td>
-<td style="text-align: center;">Gamma</td>
+<td style="text-align: center;">Гамма</td>
 <td style="text-align: center;">L</td>
-<td style="text-align: center;">Lambda</td>
+<td style="text-align: center;">Лямбда</td>
 <td style="text-align: center;">T</td>
-<td style="text-align: center;">Tau</td>
+<td style="text-align: center;">Тау</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">D</td>
-<td style="text-align: center;">Delta</td>
+<td style="text-align: center;">Дельта</td>
 <td style="text-align: center;">M</td>
-<td style="text-align: center;">Mu</td>
+<td style="text-align: center;">Мю</td>
 <td style="text-align: center;">U</td>
-<td style="text-align: center;">Upsilon</td>
+<td style="text-align: center;">Упсилон</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">E</td>
-<td style="text-align: center;">Epsilon</td>
+<td style="text-align: center;">Епсилон</td>
 <td style="text-align: center;">N</td>
-<td style="text-align: center;">Nu</td>
+<td style="text-align: center;">Ню</td>
 <td style="text-align: center;">P</td>
-<td style="text-align: center;">Phi</td>
+<td style="text-align: center;">Фі</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Z</td>
-<td style="text-align: center;">Zeta</td>
+<td style="text-align: center;">Дзета</td>
 <td style="text-align: center;">X</td>
-<td style="text-align: center;">Xi</td>
+<td style="text-align: center;">Ксі</td>
 <td style="text-align: center;">C</td>
-<td style="text-align: center;">Chi</td>
+<td style="text-align: center;">Хі</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">H</td>
-<td style="text-align: center;">Eta</td>
+<td style="text-align: center;">Ета</td>
 <td style="text-align: center;">Om</td>
-<td style="text-align: center;">Omicron</td>
+<td style="text-align: center;">Омікрон</td>
 <td style="text-align: center;">Y</td>
-<td style="text-align: center;">Psi</td>
+<td style="text-align: center;">Псі</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">T</td>
-<td style="text-align: center;">Theta</td>
+<td style="text-align: center;">Тета</td>
 <td style="text-align: center;">P</td>
-<td style="text-align: center;">Pi</td>
+<td style="text-align: center;">Пі</td>
 <td style="text-align: center;">O</td>
-<td style="text-align: center;">Omega</td>
+<td style="text-align: center;">Омега</td>
 </tr>
 </tbody>
 </table>
@@ -395,26 +395,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <table>
 <thead>
 <tr class="header">
-<th>keys to enter</th>
-<th>mathematical symbol</th>
+<th>введений рядок</th>
+<th>математичний символ</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>hbar</td>
-<td>planck’s constant: a h with a horizontal bar above it</td>
+<td>стала Планка: h із горизонтальною рискою згори</td>
 </tr>
 <tr class="even">
 <td>Hbar</td>
-<td>a H with a horizontal bar above it</td>
+<td>H із горизонтальною рискою згори</td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td>squared</td>
+<td>квадрат</td>
 </tr>
 <tr class="even">
 <td>3</td>
-<td>to the power of three</td>
+<td>куб</td>
 </tr>
 <tr class="odd">
 <td>/2</td>
@@ -422,183 +422,183 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="even">
 <td>partial</td>
-<td>partial sign (the d of dx/dt)</td>
+<td>знак частинної похідної (d у dx/dt)</td>
 </tr>
 <tr class="odd">
 <td>integral</td>
-<td>integral sign</td>
+<td>символ інтеграла</td>
 </tr>
 <tr class="even">
 <td>sq</td>
-<td>root</td>
+<td>корінь</td>
 </tr>
 <tr class="odd">
 <td>ii</td>
-<td>imaginary</td>
+<td>уявна одиниця</td>
 </tr>
 <tr class="even">
 <td>ee</td>
-<td>element</td>
+<td>елемент</td>
 </tr>
 <tr class="odd">
 <td>in</td>
-<td>in</td>
+<td>включається</td>
 </tr>
 <tr class="even">
 <td>impl implies</td>
-<td>implies</td>
+<td>випливає</td>
 </tr>
 <tr class="odd">
 <td>inf</td>
-<td>infinity</td>
+<td>нескінченність</td>
 </tr>
 <tr class="even">
 <td>empty</td>
-<td>empty</td>
+<td>порожня множина</td>
 </tr>
 <tr class="odd">
 <td>TB</td>
-<td>Big triangle right</td>
+<td>великий трикутник праворуч</td>
 </tr>
 <tr class="even">
 <td>tb</td>
-<td>small triangle right</td>
+<td>малий трикутник праворуч</td>
 </tr>
 <tr class="odd">
 <td>and</td>
-<td>and</td>
+<td>і</td>
 </tr>
 <tr class="even">
 <td>or</td>
-<td>or</td>
+<td>або</td>
 </tr>
 <tr class="odd">
 <td>xor</td>
-<td>xor</td>
+<td>виключне або</td>
 </tr>
 <tr class="even">
 <td>nand</td>
-<td>nand</td>
+<td>ні-і</td>
 </tr>
 <tr class="odd">
 <td>nor</td>
-<td>nor</td>
+<td>ні-або</td>
 </tr>
 <tr class="even">
 <td>equiv</td>
-<td>equivalent</td>
+<td>еквівалентний</td>
 </tr>
 <tr class="odd">
 <td>not</td>
-<td>not</td>
+<td>ні</td>
 </tr>
 <tr class="even">
 <td>union</td>
-<td>union</td>
+<td>об’єднання</td>
 </tr>
 <tr class="odd">
 <td>inter</td>
-<td>intersection</td>
+<td>перетин</td>
 </tr>
 <tr class="even">
 <td>subseteq</td>
-<td>subset or equal</td>
+<td>підмножина або рівна множина</td>
 </tr>
 <tr class="odd">
 <td>subset</td>
-<td>subset</td>
+<td>підмножина</td>
 </tr>
 <tr class="even">
 <td>notsubseteq</td>
-<td>not subset or equal</td>
+<td>не підмножина або рівна множина</td>
 </tr>
 <tr class="odd">
 <td>notsubset</td>
-<td>not subset</td>
+<td>не підмножина</td>
 </tr>
 <tr class="even">
 <td>approx</td>
-<td>approximately</td>
+<td>приблизно</td>
 </tr>
 <tr class="odd">
 <td>propto</td>
-<td>proportional to</td>
+<td>пропорційне до</td>
 </tr>
 <tr class="even">
-<td>neq != /= or #</td>
-<td>not equal to</td>
+<td>neq != /= або #</td>
+<td>не рівне</td>
 </tr>
 <tr class="odd">
-<td>+/- or pm</td>
-<td>a plus/minus sign</td>
+<td>+/- або pm</td>
+<td>плюс-мінус</td>
 </tr>
 <tr class="even">
-<td>&lt;= or leq</td>
-<td>equal or less than</td>
+<td>&lt;= або leq</td>
+<td>менше або дорівнює</td>
 </tr>
 <tr class="odd">
-<td>&gt;= or geq</td>
-<td>equal or greater than</td>
+<td>&gt;= або geq</td>
+<td>більше або дорівнює</td>
 </tr>
 <tr class="even">
-<td>&lt;&lt; or ll</td>
-<td>much less than</td>
+<td>&lt;&lt; або ll</td>
+<td>набагато менше</td>
 </tr>
 <tr class="odd">
-<td>&gt;&gt; or gg</td>
-<td>much greater than</td>
+<td>&gt;&gt; або gg</td>
+<td>набагато більше</td>
 </tr>
 <tr class="even">
 <td>equiv</td>
-<td>equivalent to</td>
+<td>є еквівалентним</td>
 </tr>
 <tr class="odd">
 <td>qed</td>
-<td>end of proof</td>
+<td>що і слід було довести</td>
 </tr>
 <tr class="even">
 <td>nabla</td>
-<td>a nabla operator</td>
+<td>набла-оператор</td>
 </tr>
 <tr class="odd">
 <td>sum</td>
-<td>sum sign</td>
+<td>знак суми</td>
 </tr>
 <tr class="even">
 <td>prod</td>
-<td>product sign</td>
+<td>знак добутку</td>
 </tr>
 <tr class="odd">
 <td>exists</td>
-<td>there exists sign</td>
+<td>знак «існує»</td>
 </tr>
 <tr class="even">
 <td>nexists</td>
-<td>there is no sign</td>
+<td>знак «не існує»</td>
 </tr>
 <tr class="odd">
 <td>parallel</td>
-<td>a parallel sign</td>
+<td>знак «паралельно»</td>
 </tr>
 <tr class="even">
 <td>perp</td>
-<td>a perpendicular sign</td>
+<td>знак «перпендикулярно»</td>
 </tr>
 <tr class="odd">
 <td>leadsto</td>
-<td>a leads to sign</td>
+<td>знак «випливає»</td>
 </tr>
 <tr class="even">
 <td>-&gt;</td>
-<td>a right arrow</td>
+<td>стрілка праворуч</td>
 </tr>
 <tr class="odd">
 <td>–&gt;</td>
-<td>a long right arrow</td>
+<td>довга стрілка праворуч</td>
 </tr>
 </tbody>
 </table>
-<p>If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
+<p>Якщо спеціального символу немає у списку, ви можете ввести його як довільний символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер символу (шістнадцятковий)] <kbd>ESC</kbd>.</p>
 <p>Отже, <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> дасть «a».</p>
 <p>Будь ласка, зауважте, що більшість цих символів (виключеннями є логічні символи) не мають спеціального значення у <em>Maxima</em> і тому можуть бути оброблені як звичайні символи. Якщо <em>Maxima</em> зібрано із Lisp, у якому не передбачено обробки символів Юнікоду, використання цих символів може призвести до показу повідомлення про помилку.</p>
 <h3 id="бічні-панелі"><span class="header-section-number">1.2.6</span> Бічні панелі</h3>
@@ -610,19 +610,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Деякі текстові процесори і подібні програми або розпізнають вхідні дані MathML і автоматично вставляють їх до придатного для редагування рівняння, або (подібно до LibreOffice 5.1) мають у складі редактор рівнянь, у якому передбачено можливість імпортування даних MathML з буфера обміну даними. У інших редакторах передбачено підтримку формул у RTF. Через це у <em>wxMaxima</em> передбачено декілька відповідних пунктів у контекстному меню.</p>
 <h3 id="підтримка-markdown"><span class="header-section-number">1.2.8</span> Підтримка Markdown</h3>
 <p>У <em>wxMaxima</em> ви зможете скористатися стандартними варіантами розмітки, які не суперечать математичним позначенням. Одним із елементів розмітки є невпорядковані списки.</p>
-<pre><code>Ordinary text
- * One item, indentation level 1
- * Another item at indentation level 1
-   * An item at a second indentation level
-   * A second item at the second indentation level
- * A third item at the first indentation level
-Ordinary text</code></pre>
+<pre><code>Звичайний текст
+ * Один пункт, рівень відступу 1
+ * Інший пункт на рівні відступу 1
+   * Пункт на другому рівні відступу
+   * Другий пункт на другому рівні відступу
+ * Третій пункт на першому рівні відступу
+Звичайний текст</code></pre>
 <p>У <em>wxMaxima</em> фрагменти тексту, які розпочинаються з символів <code>&gt;</code> вважаються блоками цитат:</p>
-<pre><code>Ordinary text
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-Ordinary text</code></pre>
+<pre><code>Звичайний текст
+&gt; цитата цитата цитата цитата
+&gt; цитата цитата цитата цитата
+&gt; цитата цитата цитата цитата
+Звичайний текст</code></pre>
 <p>У коді TeX та HTML <em>wxMaxima</em> також розпізнається рядок <code>=&gt;</code>, який програма замінює на відповідний символ Юнікод:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
 <p>Іншими символами, які буде розпізнано під час експортування до HTML або TeX, є <code>&lt;=</code> і <code>&gt;=</code> для порівнянь, двобічна стрілка (<code>&lt;=&gt;</code>), одинарні стрілки (<code>&lt;-&gt;</code>, <code>-&gt;</code> і <code>&lt;-</code>), а також <code>+/-</code> як відповідний знак. Для експортування у код TeX передбачено також підтримку перетворення <code>&lt;&lt;</code> і <code>&gt;&gt;</code>.</p>
@@ -690,7 +690,7 @@ Ordinary text</code></pre>
 <p>Якщо ви користуєтеся Unix/Linux, дані налаштувань буде збережено до файла <code>.wxMaxima</code> у вашому домашньому каталозі (якщо ви користуєтеся wxWidgets &lt; 3.1.1), або <code>.config/wxMaxima.conf</code> ((стандартний каталог XDG), якщо використано wxWidgets &gt;= 3.1.1). Визначити версію wxWidgets можна за допомогою команди <code>wxbuild_info();</code> або пункту меню «Довідка -&gt; Про програму». <a href="https://www.wxwidgets.org/">wxWidgets</a> є бібліотекою графічного інтерфейсу користувача, яка працює на багатьох платформах і є основою wxMaxima (звідси <code>wx</code> у назві програми). (Оскільки назви файлів починається з крапки, файл <code>.wxMaxima</code> і каталог<code>.config</code> є прихованими).</p>
 <p>Якщо ви користуєтеся Windows, налаштування буде збережено у реєстрі. Записи wxMaxima можна знайти у цій гілці: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
-<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
+<h1 id="розширення-maxima"><span class="header-section-number">2</span> Розширення <em>Maxima</em></h1>
 <p>Основним призначенням <em>wxMaxima</em> є забезпечення графічного інтерфейсу до <em>Maxima</em>. Отже, основним завданням програми є передавання команд до <em>Maxima</em> і сповіщення користувача про результат виконання цих команд. Втім, у деяких випадках, <em>wxMaxima</em> розширює функціональні можливості <em>Maxima</em>. Ми вже згадували про здатність <em>wxMaxima</em> створювати звіти експортуванням вмісту робочої книги до файлів HTML і LaTeX. У цьому розділі ми розглянемо деякі способи, у які <em>wxMaxima</em> удосконалює включення графіки до сеансу.</p>
 <h2 id="змінні-із-індексами"><span class="header-section-number">2.1</span> Змінні із індексами</h2>
 <p>якщо встановлено значення true для <code>wxsubscripts</code>, назви змінних у форматі <code>x_y</code> буде показано як літеру із нижнім індексом, якщо</p>
@@ -702,11 +702,11 @@ Ordinary text</code></pre>
 <h2 id="візуальний-супровід-дій-користувача-у-смужці-стану"><span class="header-section-number">2.2</span> Візуальний супровід дій користувача у смужці стану</h2>
 <p>Команди, які виконуються довго, можуть надавати користувачам інформацію на смужці стану. Цю інформацію буде замінено на будь-яку нову інформацію, яку програма надсилатиме туди (це надає змогу використовувати смужку стану як індикатор поступу), і буде вилучено, щойно буде завершено виконання поточної команди, яку надіслано до <em>maxima</em>. Команду <code>wxstatusbar()</code> можна безпечно використовувати навіть у бібліотеках, які може бути використано у звичайній <em>Maxima</em> (без <em>wxMaxima</em>): якщо <em>wxMaxima</em> немає, команда <code>wxstatusbar()</code> просто не оброблятиметься.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="co">/* Tell the user how far we got */</span></a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="co">/* Повідомляємо користувачу, наскільки далеко зайшли */</span></a>
 <a class="sourceLine" id="cb6-3" title="3">    <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),</a>
-<a class="sourceLine" id="cb6-4" title="4">    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></a>
-<a class="sourceLine" id="cb6-5" title="5">    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></a>
-<a class="sourceLine" id="cb6-6" title="6">    <span class="co">/* program execution (here: for 3 seconds) */</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="co">/* (sleep n) — функція Lisp, якою можна скористатися */</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="co">/* із додаванням перед нею символу «?». Команда затримує */</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    <span class="co">/* виконання програми (у нашому прикладі, на 3 секунди) */</span></a>
 <a class="sourceLine" id="cb6-7" title="7">    ?<span class="cn">sleep</span>(<span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb6-8" title="8">)$</a></code></pre></div>
 <h2 id="креслення"><span class="header-section-number">2.3</span> Креслення</h2>
@@ -807,13 +807,13 @@ Ordinary text</code></pre>
 <p>Хоча <em>wxMaxima</em> не надає доступу до цієї можливості, ця функція <em>Maxima</em> (у конфігураціях, де передбачено її підтримку) іноді є дуже зручною. Наведений нижче приклад походить із допису Маріо Родрігеса (Mario Rodriguez) у списку листування <em>Maxima</em>:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">load</span>(<span class="fu">draw</span>);</a>
 <a class="sourceLine" id="cb15-2" title="2"></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co">/* Parabola in window #1 */</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">/* Парабола у вікні 1 */</span></a>
 <a class="sourceLine" id="cb15-4" title="4"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
 <a class="sourceLine" id="cb15-5" title="5"></a>
-<a class="sourceLine" id="cb15-6" title="6"><span class="co">/* Parabola in window #2 */</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">/* Парабола у вікні 2 */</span></a>
 <a class="sourceLine" id="cb15-7" title="7"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
 <a class="sourceLine" id="cb15-8" title="8"></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="co">/* Paraboloid in window #3 */</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">/* Параболоїд у вікні 3 */</span></a>
 <a class="sourceLine" id="cb15-10" title="10"><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <h3 id="бічна-панель-накреслити-за-допомогою-draw"><span class="header-section-number">2.3.8</span> Бічна панель «Накреслити за допомогою Draw»</h3>
 <p>Бічна панель «Накреслити за допомогою Draw» приховує простий генератор коду, який уможливлює створення сцен, які використовують певну гнучкість пакунка <em>draw</em>, з яким постачається <em>maxima</em>.</p>
@@ -892,22 +892,22 @@ Ordinary text</code></pre>
 <h2 id="як-зробити-так-щоб-виведені-дані-було-показано-червоним-кольором"><span class="header-section-number">2.9</span> Як зробити так, щоб виведені дані було показано червоним кольором?</h2>
 <p>Команда <code>box()</code> <em>Maxima</em> призводити до того, що <em>wxMaxima</em> виводить її аргумент червоним кольором.</p>
 <hr />
-<h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
+<h1 id="вирішення-проблем"><span class="header-section-number">3</span> Вирішення проблем</h1>
 <h2 id="не-вдається-зєднатися-із-maxima"><span class="header-section-number">3.1</span> Не вдається з’єднатися із <em>Maxima</em></h2>
 <p>Оскільки <em>Maxima</em> (програма, яка виконує самі обчислення) і <em>wxMaxima</em> (програма, яка надає простий у користуванні інтерфейс користувача) є окремими програмами, які обмінюються даними за допомогою з’єднання локальною мережею. Тому найімовірнішою причиною є те, що це з’єднання чомусь не працює. Наприклад, брандмауер може бути налаштовано таким чином, що він не просто запобігає неуповноваженим з’єднання з інтернету (і, можливо, також перехоплює з’єднання із інтернетом), але і блокує обмін даними між процесами на тому самому комп’ютері. Зауважте, що оскільки <em>Maxima</em> виконується процесором Lisp, процес. із яким блокується обмін даними, не обов’язково називається «maxima». Типовими назвами програм, які відкривають з’єднання мережі, можуть бути sbcl, gcl, ccl, lisp.exe або щось подібне.</p>
 <p>У системах Un*x іншою можливою причиною є те, що петльову мережу, яка забезпечує з’єднання мережі між двома програмам, які працюють на одному комп’ютері, не налаштовано належним чином.</p>
 <h2 id="як-зберегти-дані-із-пошкодженого-файла-.wxmx"><span class="header-section-number">3.2</span> Як зберегти дані із пошкодженого файла .wxmx</h2>
 <p>На внутрішньому рівні більшість сучасних форматів на основі xml є звичайними файлами zip. wxMaxima не увімкнула стискання, що робить вміст файлів .wxmx придатним до перекладу у будь-якому текстовому редакторі.</p>
-<p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help.</p>
-<p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file’s contents (it starts with <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
-<p>If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in <code>.xml</code>, <em>wxMaxima</em> will know how to recover the text of the document from it.</p>
+<p>Якщо підпис zip наприкінці файла є неушкодженим після перейменовування пошкодженого файла .wxmx на .zip, у більшості операційних систем передбачено спосіб видобування будь-якої частини даних, яка у ньому зберігається. Виконати таке видобування можна, якщо потрібно відновити початкові файли зображень з документа текстового процесора. Якщо підпис zip пошкоджено, це ще не кінець світу: якщо <em>wxMaxima</em> під час збереження виявила якусь помилку, має ще бути файл wxmx~, чий вміст може допомогти у відновленні даних.</p>
+<p>І навіть якщо такого файла не існує — якщо встановлено параметр налаштування для оптимізації файлів .wxmx для системи керування версіями, можна перейменувати файл .wxmx на файл .txt і скористатися текстовим редактором для відновлення частини XML із вмісту файла (він починається з <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> і завершується <code>&lt;/wxMaximaDocument&gt;</code>. До і після цього фрагмента тексту у текстовому редакторі ви побачите непридатні до читання двійкові дані).</p>
+<p>Якщо текстовий файл, що містить ці дані (наприклад скопійовані і вставлені як текст до звичайного файла), збережено як файл із суфіксом назви .xml, <em>wxMaxima</em> відомий спосіб відновлення тексту документа з цього файла.</p>
 <h2 id="хочу-бачити-діагностичні-відомості-на-екрані-перш-ніж-команда-завершить-свою-роботу"><span class="header-section-number">3.3</span> Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу</h2>
 <p>Зазвичай, <em>wxMaxima</em> очікує, доки буде передано усю двовимірну формулу, перш ніж починає виводити дані. Таким чином заощаджується час, який могло б бути витрачено на постійні спроби вивести незавершену формулу. Втім, існує команда <code>disp</code>, яка може виводити діагностичні дані негайно, не очікуючи на завершення поточної команди <em>Maxima</em>:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
 <a class="sourceLine" id="cb18-2" title="2">   <span class="fu">disp</span>(<span class="cn">i</span>),</a>
-<a class="sourceLine" id="cb18-3" title="3">   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></a>
-<a class="sourceLine" id="cb18-4" title="4">   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></a>
-<a class="sourceLine" id="cb18-5" title="5">   <span class="co">/* program execution (here: for 3 seconds) */</span></a>
+<a class="sourceLine" id="cb18-3" title="3">   <span class="co">/* (sleep n) — функція Lisp, якою можна скористатися */</span></a>
+<a class="sourceLine" id="cb18-4" title="4">   <span class="co">/* із додаванням перед нею символу «?». Команда затримує */</span></a>
+<a class="sourceLine" id="cb18-5" title="5">   <span class="co">/* виконання програми (у нашому прикладі, на 3 секунди) */</span></a>
 <a class="sourceLine" id="cb18-6" title="6">   ?<span class="cn">sleep</span>(<span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb18-7" title="7">)$</a></code></pre></div>
 <h2 id="на-кресленні-показано-лише-закриту-порожню-обгортку-із-повідомленням-про-помилку"><span class="header-section-number">3.4</span> На кресленні показано лише закриту порожню обгортку із повідомленням про помилку</h2>
@@ -995,7 +995,7 @@ Ordinary text</code></pre>
 <h2 id="wxmaxima-іноді-повисає-на-декілька-секунд-під-час-першої-хвилини-роботи"><span class="header-section-number">4.3</span> wxMaxima іноді повисає на декілька секунд під час першої хвилини роботи</h2>
 <p>wxMaxima передає певні складні завдання, зокрема завдання з обробки підручника з maxima, який складається з понад 1000 сторінок, фоновим завданням, що, зазвичай, відбувається зовсім непомітно. Втім, у момент, коли може знадобитися результат виконання такого завдання, wxMaxima може знадобитися декілька секунд для відновлення нормальної роботи.</p>
 <hr />
-<h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
+<h1 id="параметри-командного-рядка"><span class="header-section-number">5</span> Параметри командного рядка</h1>
 <p>У більшості операційних систем передбачено простіші способи запуску програми, ніж командний рядок, тому навряд ви запускатиме програму з командного рядка. Втім, у <em>wxMaxima</em> передбачено декілька корисних параметрів командного рядка.</p>
 <ul>
 <li><code>-v</code> або <code>--version</code>: вивести дані щодо версії програми</li>
