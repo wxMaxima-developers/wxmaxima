@@ -5057,7 +5057,7 @@ bool wxMaxima::AbortOnError()
   ExitAfterEval(false);
   EvalOnStartup(false);
 
-  if (m_worksheet->m_notificationMessage != NULL)
+  if (m_worksheet->m_notificationMessage)
   {
     if (m_worksheet->GetWorkingGroup(true) !=
         m_worksheet->m_notificationMessage->m_errorNotificationCell)
