@@ -77,6 +77,9 @@ int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdSho
   #pragma omp parallel
   #pragma omp master
   wxTheApp->OnRun();
+  wxConfigBase *config = wxConfig::Get();
+  config->Flush();
+  delete config;
   return 0;
 }
 #endif
