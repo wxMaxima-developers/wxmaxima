@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-08 18:04+0200\n"
-"PO-Revision-Date: 2020-04-21 20:22+0300\n"
+"PO-Revision-Date: 2020-05-21 09:52+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:183
@@ -1865,9 +1865,8 @@ msgid "Compiling the list of anchors the maxima manual provides"
 msgstr "Компілюємо список прив'язок, які надаються підручником з Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:852
-#, fuzzy
 msgid "Complete Word\tCtrl+Space"
-msgstr "Завершити слово\tCtrl+K"
+msgstr "Завершити слово\tCtrl+Пробіл"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:853
 msgid "Complete word"
@@ -3494,14 +3493,14 @@ msgid "Found %i anchors."
 msgstr "Знайдено %i прив'язок."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:317
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i demo files."
-msgstr "Знайдено %li файлів демонстрацій."
+msgstr "Знайдено %i файлів демонстрацій."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:293
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i loadable files."
-msgstr "Знайдено %li придатних до завантаження файлів."
+msgstr "Знайдено %i придатних до завантаження файлів."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:122
 #, c-format
@@ -3593,14 +3592,14 @@ msgid "GIF image (*.gif)|*.gif"
 msgstr "зображення GIF (*.gif)|*.gif"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:93
-#, fuzzy
 msgid ""
 "GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and "
 "hotkeys to be broken, see for example https://trac.wxwidgets.org/"
 "ticket/18462."
 msgstr ""
-"GTK_IM_MODULE встановлено у значення «xim» і використано GTK3. Слід "
-"очікувати огидне блимання, див. https://trac.wxwidgets.org/ticket/18462."
+"GTK_IM_MODULE встановлено у значення «xim». Слід "
+"очікувати огидне блимання і непрацездатність клавіатурних скорочень, див."
+" https://trac.wxwidgets.org/ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:162
 msgid "Galician"
@@ -4859,7 +4858,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -7413,9 +7412,8 @@ msgid "Show Maxima help"
 msgstr "Показати довідку з Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:854
-#, fuzzy
 msgid "Show Template\tCtrl+Shift+Space"
-msgstr "Показати шаблон\tCtrl+Shift+K"
+msgstr "Показати шаблон\tCtrl+Shift+Пробіл"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1332
 msgid "Show a tip"
@@ -9281,7 +9279,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
