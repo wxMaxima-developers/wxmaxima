@@ -102,6 +102,8 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSi
 ToolBar::~ToolBar()
 {
   m_plotSlider = NULL;
+  if(m_svgRast != NULL)
+    free(m_svgRast);
 }
 
 void ToolBar::UpdateSlider(SlideShow *cell)

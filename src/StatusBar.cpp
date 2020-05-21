@@ -62,6 +62,12 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
   Connect(wxEVT_TIMER, wxTimerEventHandler(StatusBar::OnTimerEvent));
 }
 
+StatusBar::~StatusBar()
+{
+  if(m_svgRast)
+    free(m_svgRast);
+}
+
 void StatusBar::UpdateBitmaps()
 {
   wxSize ppi(-1,-1);
