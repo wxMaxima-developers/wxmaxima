@@ -67,7 +67,7 @@ SvgBitmap::SvgBitmap(const unsigned char *data, size_t len, int width, int heigh
 SvgBitmap::~SvgBitmap()
 {
   if(m_svgImage != NULL)
-    delete m_svgImage;
+    free(m_svgImage);
 }
 
 const SvgBitmap &SvgBitmap::SetSize(int width, int height)
