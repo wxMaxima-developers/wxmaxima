@@ -1414,33 +1414,33 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
   else
     m_getStyleFont->Enable(false);
 
-  // Background color only
-  if (st > TS_TITLE)
-  {
-    m_boldCB->SetValue(false);
-    m_italicCB->SetValue(false);
-    m_underlinedCB->SetValue(false);
-    m_boldCB->Enable(false);
-    m_italicCB->Enable(false);
-    m_underlinedCB->Enable(false);
-  }
-  else
+  // Colors only
+  if (st >= TS_TITLE)
   {
     if (st > TS_OUTDATED)
     {
       m_boldCB->Enable(false);
       m_italicCB->Enable(false);
       m_underlinedCB->Enable(false);
+      m_boldCB->SetValue(false);
+      m_italicCB->SetValue(false);
+      m_underlinedCB->SetValue(false);
     }
     else
     {
-      m_boldCB->Enable(true);
-      m_italicCB->Enable(true);
-      m_underlinedCB->Enable(true);
       m_boldCB->SetValue(m_configuration->m_styles[st].Bold());
       m_italicCB->SetValue(m_configuration->m_styles[st].Italic());
       m_underlinedCB->SetValue(m_configuration->m_styles[st].Underlined());
     }
+  }
+  else
+  {
+    m_boldCB->Enable(true);
+    m_italicCB->Enable(true);
+    m_underlinedCB->Enable(true);
+    m_boldCB->SetValue(m_configuration->m_styles[st].Bold());
+    m_italicCB->SetValue(m_configuration->m_styles[st].Italic());
+    m_underlinedCB->SetValue(m_configuration->m_styles[st].Underlined());
   }
   UpdateExample();
 }
