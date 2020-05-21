@@ -106,7 +106,7 @@ ImgCell::ImgCell(const ImgCell &cell):
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;
-  m_image = std::make_shared<Image>(*cell.m_image);
+  m_image = cell.m_image;
 }
 
 ImgCell::~ImgCell()

@@ -52,7 +52,6 @@ Image::Image(Configuration **config)
   m_maxWidth = -1;
   m_maxHeight = -1;
   m_svgImage = NULL;
-  m_svgRast = NULL;
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -71,7 +70,6 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   m_originalWidth = 640;
   m_originalHeight = 480;
   m_svgImage = NULL;
-  m_svgRast = NULL;
   
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
@@ -95,7 +93,6 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
   omp_init_lock(&m_imageLoadLock);
   #endif
   m_svgImage = NULL;
-  m_svgRast = NULL;
   m_configuration = config;
   m_isOk = false;
   m_width = 1;
@@ -120,7 +117,6 @@ Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSyste
   omp_init_lock(&m_imageLoadLock);
   #endif
   m_svgImage = NULL;
-  m_svgRast = NULL;
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   m_isOk = false;
@@ -162,24 +158,19 @@ Image::~Image()
   }
   if(m_svgImage)
     free(m_svgImage);
-  if(m_svgRast)
-    free(m_svgRast);
 }
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {
   wxMemoryBuffer retval;
-  
-  char *buf = new char[8192];
+  std::vector<char> buf(8192);
 
   while (data->CanRead())
   {
-    data->Read(buf, 8192);
-    size_t siz;
-    retval.AppendData(buf, siz = data->LastRead());
+    data->Read(buf.data(), buf.size());
+    retval.AppendData(buf.data(), data->LastRead());
   }
 
-  delete[] buf;
   return retval;
 }
 
@@ -197,13 +188,11 @@ wxBitmap Image::GetUnscaledBitmap()
 
   if (m_svgRast)
   {
-    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_originalWidth*m_originalHeight*4]);
-    if(!imgdata)
-      return wxBitmap();
-        
-    nsvgRasterize(m_svgRast, m_svgImage, 0,0,1, imgdata.get(),
+    std::vector<unsigned char> imgdata(m_originalWidth*m_originalHeight*4);
+
+    nsvgRasterize(m_svgRast.get(), m_svgImage, 0,0,1, imgdata.data(),
                   m_originalWidth, m_originalHeight, m_originalWidth*4);
-    return SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_originalWidth, m_originalHeight);
+    return SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_originalWidth, m_originalHeight);
   }
   else
   {
@@ -776,21 +765,15 @@ wxBitmap Image::GetBitmap(double scale)
   if (m_svgRast)
   {
     // First create rgba data
-    std::unique_ptr<unsigned char> imgdata(new unsigned char[m_width*m_height*4]);
-    if(!imgdata)
-    {
-      #ifdef HAVE_OMP_HEADER
-      omp_unset_lock(&m_gnuplotLock);
-      #endif
-      return wxBitmap();
-    }
-    nsvgRasterize(m_svgRast, m_svgImage, 0,0,
+    std::vector<unsigned char> imgdata(m_width*m_height*4);
+
+    nsvgRasterize(m_svgRast.get(), m_svgImage, 0,0,
                   ((double)m_width)/((double)m_originalWidth),
-                  imgdata.get(), m_width, m_height, m_width*4);
+                  imgdata.data(), m_width, m_height, m_width*4);
     #ifdef HAVE_OMP_HEADER
     omp_unset_lock(&m_gnuplotLock);
     #endif
-    return m_scaledBitmap = SvgBitmap::RGBA2wxBitmap(imgdata.get(), m_width, m_height);
+    return m_scaledBitmap = SvgBitmap::RGBA2wxBitmap(imgdata.data(), m_width, m_height);
   }
   else
   {
@@ -1019,10 +1002,11 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
         free(svgContents);
       }
 
-      if(m_svgImage)
+      if (m_svgImage)
       {
-	m_svgRast = nsvgCreateRasterizer();
-        if(m_svgRast)
+        if (!m_svgRast)
+          m_svgRast.reset(nsvgCreateRasterizer());
+        if (m_svgRast)
           m_isOk = true;
         m_originalWidth = m_svgImage->width;
         m_originalHeight = m_svgImage->height;

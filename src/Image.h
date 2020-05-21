@@ -66,7 +66,7 @@
     - One could even delete the cached scaled images for all cells that currently 
       are off-screen in order to save memory.
  */
-class Image
+class Image final
 {
 public:
   //! A constructor that generates an empty image. See LoadImage()
@@ -214,7 +214,7 @@ public:
   wxMemoryBuffer m_compressedImage;
 
   //! Can this image be exported in SVG format?
-  bool CanExportSVG() const {return m_svgRast != NULL;}
+  bool CanExportSVG() const {return m_svgRast != nullptr;}
 protected:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
@@ -251,7 +251,7 @@ private:
   wxString m_imageName;
   
   NSVGimage* m_svgImage;
-  struct NSVGrasterizer* m_svgRast;
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
 
   std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
   std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;
