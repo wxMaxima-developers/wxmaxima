@@ -160,7 +160,8 @@ Image::~Image()
         wxRemoveFile(m_gnuplotData);
     }
   }
-  wxDELETE(m_svgImage);
+  if(m_svgImage)
+    free(m_svgImage);
 }
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
