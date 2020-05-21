@@ -33,9 +33,6 @@ public:
   Cell *Copy() override {return new AtCell(*this);}
   ~AtCell();
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  AtCell &operator=(const AtCell&) = delete;
-
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_indexCell); }
   

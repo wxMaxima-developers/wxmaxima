@@ -56,7 +56,6 @@ public:
   FunCell(const FunCell &cell);
   Cell *Copy() override {return new FunCell(*this);}
   ~FunCell();
-  FunCell &operator=(const FunCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_argCell); }

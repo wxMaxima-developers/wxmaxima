@@ -38,11 +38,7 @@ public:
   LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   LimitCell(const LimitCell &cell);
   Cell *Copy() override {return new LimitCell(*this);}
-
   ~LimitCell();
-
-  //! This class can be derived from wxAccessible which has no copy constructor
-  LimitCell &operator=(const LimitCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

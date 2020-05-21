@@ -60,9 +60,6 @@ public:
   Cell *Copy() override {return new AbsCell(*this);}
   ~AbsCell();
 
-  //! This class can be derived from wxAccessible which has no copy constructor
-  AbsCell &operator=(const AbsCell&) = delete;
-
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 

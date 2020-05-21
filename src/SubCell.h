@@ -31,10 +31,7 @@ public:
   SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SubCell(const SubCell &cell);
   Cell *Copy() override {return new SubCell(*this);}
-
   ~SubCell();
-
-  SubCell operator=(const SubCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_indexCell); }

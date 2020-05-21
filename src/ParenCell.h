@@ -53,11 +53,7 @@ public:
   ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ParenCell(const ParenCell &cell);
   Cell *Copy() override {return new ParenCell(*this);}
-
   ~ParenCell();
-
-  //! This class can be derived from wxAccessible which has no copy constructor
-  ParenCell &operator=(const ParenCell&) = delete;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

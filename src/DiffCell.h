@@ -31,8 +31,6 @@ public:
   DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   DiffCell(const DiffCell &cell);
   Cell *Copy() override {return new DiffCell(*this);}
-  //! This class can be derived from wxAccessible which has no copy constructor
-  DiffCell &operator=(const DiffCell&) = delete;
   ~DiffCell();
   
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }

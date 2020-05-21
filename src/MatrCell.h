@@ -33,8 +33,6 @@ public:
   MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   MatrCell(const MatrCell &cell);
   Cell *Copy() override {return new MatrCell(*this);}
-  //! This class can be derived from wxAccessible which has no copy constructor
-  MatrCell &operator=(const MatrCell&) = delete;
   ~MatrCell();
 
   InnerCellIterator InnerBegin() const override
