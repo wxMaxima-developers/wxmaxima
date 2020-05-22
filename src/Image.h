@@ -73,7 +73,7 @@ public:
   explicit Image(Configuration **config);
 
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  Image(Configuration **config, wxMemoryBuffer image, wxString type);
+  Image(Configuration **config, wxMemoryBuffer image, const wxString &type);
 
   /*! A constructor that loads a bitmap
 
@@ -89,7 +89,8 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
    */
-  Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  Image(Configuration **config, const wxString &image,
+        std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   ~Image();
 
@@ -102,7 +103,8 @@ public:
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
    */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+  void GnuplotSource(const wxString &gnuplotFilename, const wxString &dataFilename,
+                     std::shared_ptr<wxFileSystem> filesystem);
 
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
@@ -134,22 +136,22 @@ public:
   wxString GnuplotData();
 
   //! Returns the gnuplot source of this image
-  wxMemoryBuffer GetGnuplotSource();
+  wxMemoryBuffer GetGnuplotSource() const;
   //! Returns the gnuplot data of this image
-  wxMemoryBuffer GetGnuplotData();
+  wxMemoryBuffer GetGnuplotData() const;
   
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
    */
   void ClearCache()
-    {
-      if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
-        m_scaledBitmap.Create(1, 1);
-    }
+  {
+    if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
+      m_scaledBitmap.Create(1, 1);
+  }
   
   //! Returns the file name extension of the current image
-  wxString GetExtension();
+  const wxString &GetExtension() const {return m_extension;}
   //! The maximum width this image shall be displayed with
   double GetMaxWidth() const {return m_maxWidth;}
   //! The maximum height this image shall be displayed with
@@ -163,13 +165,13 @@ public:
   void LoadImage(const wxBitmap &bitmap);
 
   //! Saves the image in its original form, or as .png if it originates in a bitmap
-  wxSize ToImageFile(wxString filename);
+  wxSize ToImageFile(const wxString &filename);
 
   //! Returns the bitmap being displayed with custom scale
   wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk();
+  bool IsOk() const;
   
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
@@ -178,18 +180,18 @@ public:
   void Recalculate(double scale = 1.0);
 
   //! The width of the scaled image
-  long m_width;
+  long m_width = 1;
   //! The height of the scaled image
-  long m_height;
+  long m_height = 1;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage();
+  wxMemoryBuffer GetCompressedImage() const;
 
   //! Returns the original width
-  size_t GetOriginalWidth();
+  size_t GetOriginalWidth() const;
 
   //! Returns the original height
-  size_t GetOriginalHeight();
+  size_t GetOriginalHeight() const;
 
   //! Wait until the image is loaded
   #ifdef HAVE_OMP_HEADER
@@ -222,35 +224,38 @@ private:
   //! A zipped version of the gnuplot data needed in order to create this image.
   wxMemoryBuffer m_gnuplotData_Compressed;
   //! The width of the unscaled image
-  size_t m_originalWidth;
+  size_t m_originalWidth = 640;
   //! The height of the unscaled image
-  size_t m_originalHeight;
+  size_t m_originalHeight = 480;
   //! The bitmap, scaled down to the screen size
   wxBitmap m_scaledBitmap;
   //! The file extension for the current image type
   wxString m_extension;
   //! Does this image contain an actual image?
-  bool m_isOk;
+  bool m_isOk = false;
   //! The gnuplot source file for this image, if any.
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-  void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
-  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+  void LoadImage_Backgroundtask(const wxString &image,
+                                std::shared_ptr<wxFileSystem> filesystem, bool remove);
+  void LoadGnuplotSource_Backgroundtask(const wxString &gnuplotFilename,
+                                        const wxString &dataFilename,
+                                        std::shared_ptr<wxFileSystem> filesystem);
+  void LoadGnuplot_Subtask(std::shared_ptr<wxFileSystem> filesystem);
 
   //! Loads an image from a file
-  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
-  //! Reads the compressed image into a memory buffer
-  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
+  void LoadImage(const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+
   Configuration **m_configuration;
   //! The upper width limit for displaying this image
-  double m_maxWidth;
+  double m_maxWidth = -1;
   //! The upper height limit for displaying this image
-  double m_maxHeight;
+  double m_maxHeight = -1;
   //! The name of the image, if known.
   wxString m_imageName;
   
-  NSVGimage* m_svgImage = {};
+  std::unique_ptr<NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
 
   std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;

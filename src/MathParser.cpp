@@ -146,7 +146,7 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
   m_highlight = false;
   if (zipfile.Length() > 0)
   {
-    m_fileSystem = std::unique_ptr<wxFileSystem>(new wxFileSystem());
+    m_fileSystem = std::make_shared<wxFileSystem>();
     m_fileSystem->ChangePathTo(zipfile + wxT("#zip:/"), true);
   }
 }
