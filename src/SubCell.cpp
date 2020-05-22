@@ -56,14 +56,14 @@ void SubCell::SetIndex(Cell *index)
 {
   if (!index)
     return;
-  m_indexCell = std::shared_ptr<Cell>(index);
+  m_indexCell.reset(index);
 }
 
 void SubCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_baseCell = std::shared_ptr<Cell>(base);
+  m_baseCell.reset(base);
 }
 
 void SubCell::RecalculateWidths(int fontsize)

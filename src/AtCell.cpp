@@ -31,8 +31,8 @@
 
 AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell (std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_indexCell(std::make_shared<TextCell>(parent, config, cellPointers))
+  m_baseCell (new TextCell(parent, config, cellPointers)),
+  m_indexCell(new TextCell(parent, config, cellPointers))
 {
   m_nextToDraw = NULL;
 }
@@ -57,14 +57,14 @@ void AtCell::SetIndex(Cell *index)
 {
   if (!index)
     return;
-  m_indexCell = std::shared_ptr<Cell>(index);
+  m_indexCell.reset(index);
 }
 
 void AtCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_baseCell = std::shared_ptr<Cell>(base);
+  m_baseCell.reset(base);
 }
 
 void AtCell::RecalculateWidths(int fontsize)

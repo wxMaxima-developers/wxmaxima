@@ -33,12 +33,12 @@
 
 LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
-    m_base(std::make_shared<TextCell>(parent, config, cellPointers)),
-    m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
-    m_name(std::make_shared<TextCell>(parent, config, cellPointers)),
-    m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
-    m_comma(std::make_shared<TextCell>(parent, config, cellPointers, ",")),
-    m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
+    m_base(new TextCell(parent, config, cellPointers)),
+    m_under(new TextCell(parent, config, cellPointers)),
+    m_name(new TextCell(parent, config, cellPointers)),
+    m_open(new TextCell(parent, config, cellPointers, "(")),
+    m_comma(new TextCell(parent, config, cellPointers, ",")),
+    m_close(new TextCell(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
@@ -74,7 +74,7 @@ void LimitCell::SetName(Cell *name)
 {
   if (!name)
     return;
-  m_name = std::shared_ptr<Cell>(name);
+  m_name.reset(name);
   m_name_last = name;
   while(m_name_last->m_next != NULL)
     m_name_last = m_name_last->m_next;
@@ -84,7 +84,7 @@ void LimitCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_base = std::shared_ptr<Cell>(base);
+  m_base.reset(base);
   m_base_last = base;
   while(m_base_last->m_next != NULL)
     m_base_last = m_base_last->m_next;
@@ -94,7 +94,7 @@ void LimitCell::SetUnder(Cell *under)
 {
   if (!under)
     return;
-  m_under = std::shared_ptr<Cell>(under);
+  m_under.reset(under);
   m_under_last = under;
   while(m_under_last->m_next != NULL)
     m_under_last = m_under_last->m_next;

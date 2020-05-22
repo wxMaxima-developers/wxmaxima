@@ -34,8 +34,8 @@
 SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_innerCell(new TextCell(parent, config, cellPointers)),
-    m_open(std::make_shared<TextCell>(parent, config, cellPointers, "sqrt(")),
-    m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
+    m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
+    m_close(new TextCell(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
@@ -74,7 +74,7 @@ void SqrtCell::SetInner(Cell *inner)
 {
   if (!inner)
     return;
-  m_innerCell = std::shared_ptr<Cell>(inner);
+  m_innerCell.reset(inner);
 
   m_last = inner;
   if (m_last != NULL)

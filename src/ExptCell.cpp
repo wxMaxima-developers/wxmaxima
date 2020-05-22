@@ -31,12 +31,12 @@
 #define EXPT_DEC 2
 
 ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_exptCell(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_exp(std::make_shared<TextCell>(parent, config, cellPointers, "^")),
-  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
-  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
+    Cell(parent, config, cellPointers),
+    m_baseCell(new TextCell(parent, config, cellPointers)),
+    m_exptCell(new TextCell(parent, config, cellPointers)),
+    m_exp(new TextCell(parent, config, cellPointers, "^")),
+    m_open(new TextCell(parent, config, cellPointers, "(")),
+    m_close(new TextCell(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
@@ -50,7 +50,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 }
 
 ExptCell::ExptCell(const ExptCell &cell):
-  ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -85,7 +85,7 @@ void ExptCell::SetPower(Cell *power)
 {
   if (!power)
     return;
-  m_exptCell = std::shared_ptr<Cell>(power);
+  m_exptCell.reset(power);
 
   if (!m_exptCell->IsCompound())
   {
@@ -103,7 +103,7 @@ void ExptCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_baseCell = std::shared_ptr<Cell>(base);
+  m_baseCell.reset(base);
 
   m_base_last = base;
   if (m_base_last != NULL)

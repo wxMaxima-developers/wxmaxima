@@ -62,7 +62,7 @@ void AbsCell::SetInner(Cell *inner)
 {
   if (!inner)
     return;
-  m_innerCell = std::shared_ptr<Cell>(inner);
+  m_innerCell.reset(inner);
 
   m_last = m_innerCell.get();
   if (m_last != NULL)

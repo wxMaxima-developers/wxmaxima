@@ -66,8 +66,7 @@ void FunCell::SetName(Cell *name)
 {
   if (!name)
     return;
-  m_nameCell = std::shared_ptr<Cell>(name);
-
+  m_nameCell.reset(name);
   
   m_nameCell_Last = name;
   while(m_nameCell_Last->m_next)
@@ -79,7 +78,7 @@ void FunCell::SetArg(Cell *arg)
 {  
   if (!arg)
     return;
-  m_argCell = std::shared_ptr<Cell>(arg);
+  m_argCell.reset(arg);
 
   m_argCell_Last = arg;
   while(m_argCell_Last->m_next)

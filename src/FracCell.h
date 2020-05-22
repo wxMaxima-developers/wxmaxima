@@ -106,9 +106,9 @@ private:
   //! The denominator
   std::shared_ptr<Cell> m_denom;
   //! A parenthesis around the numerator
-  std::shared_ptr<Cell> m_numParenthesis;
+  std::shared_ptr<ParenCell> m_numParenthesis;
   //! A parenthesis around the denominator
-  std::shared_ptr<Cell> m_denomParenthesis;
+  std::shared_ptr<ParenCell> m_denomParenthesis;
   //! The last element of the numerator
   Cell *m_num_Last;
   //! The last element of the denominator

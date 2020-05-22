@@ -32,9 +32,9 @@
 
 ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
-    m_innerCell(std::make_shared<TextCell>(parent, config, cellPointers)),
-    m_open(std::make_shared<TextCell>(parent, config, cellPointers, wxT("("))),
-    m_close(std::make_shared<TextCell>(parent, config, cellPointers, wxT(")")))
+    m_innerCell(new TextCell(parent, config, cellPointers)),
+    m_open(new TextCell(parent, config, cellPointers, wxT("("))),
+    m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);

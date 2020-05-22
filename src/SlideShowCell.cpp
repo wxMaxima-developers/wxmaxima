@@ -140,7 +140,7 @@ void SlideShow::StopTimer()
     {
       m_timer->Stop();
       m_cellPointers->m_slideShowTimers.erase(this);
-      m_timer = NULL;
+      m_timer.reset();
     }
 }
 

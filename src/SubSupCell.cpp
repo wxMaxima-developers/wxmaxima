@@ -67,7 +67,7 @@ void SubSupCell::SetPreSup(Cell *index)
   if (!index)
     return;
   wxASSERT(!m_preSupCell);
-  m_preSupCell = std::shared_ptr<Cell>(index);
+  m_preSupCell.reset(index);
   m_scriptCells.push_back(m_preSupCell);
 }
 
@@ -76,7 +76,7 @@ void SubSupCell::SetPreSub(Cell *index)
   if (!index)
     return;
   wxASSERT(!m_preSubCell);
-  m_preSubCell = std::shared_ptr<Cell>(index);
+  m_preSubCell.reset(index);
   m_scriptCells.push_back(m_preSubCell);
 }
 
@@ -85,7 +85,7 @@ void SubSupCell::SetPostSup(Cell *index)
   if (!index)
     return;
   wxASSERT(!m_postSupCell);
-  m_postSupCell = std::shared_ptr<Cell>(index);
+  m_postSupCell.reset(index);
   m_scriptCells.push_back(m_postSupCell);
 }
 
@@ -94,7 +94,7 @@ void SubSupCell::SetPostSub(Cell *index)
   if (!index)
     return;
   wxASSERT(!m_postSubCell);
-  m_postSubCell = std::shared_ptr<Cell>(index);
+  m_postSubCell.reset(index);
   m_scriptCells.push_back(m_postSubCell);
 }
 
@@ -102,21 +102,21 @@ void SubSupCell::SetIndex(Cell *index)
 {
   if (!index)
     return;
-  m_postSubCell = std::shared_ptr<Cell>(index);
+  m_postSubCell.reset(index);
 }
 
 void SubSupCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_baseCell = std::shared_ptr<Cell>(base);
+  m_baseCell.reset(base);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
 {
   if (!expt)
     return;
-  m_postSupCell = std::shared_ptr<Cell>(expt);
+  m_postSupCell.reset(expt);
 }
 
 void SubSupCell::RecalculateWidths(int fontsize)

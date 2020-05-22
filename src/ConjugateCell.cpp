@@ -29,10 +29,10 @@
 #include "ConjugateCell.h"
 
 ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_innerCell(std::make_shared<TextCell>(parent, config, cellPointers, "")),
-  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "conjugate(")),
-  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
+    Cell(parent, config, cellPointers),
+    m_innerCell(new TextCell(parent, config, cellPointers, wxString{})),
+    m_open(new TextCell(parent, config, cellPointers, "conjugate(")),
+    m_close(new TextCell(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
@@ -64,7 +64,7 @@ void ConjugateCell::SetInner(Cell *inner)
 {
   if (!inner)
     return;
-  m_innerCell = std::shared_ptr<Cell>(inner);
+  m_innerCell.reset(inner);
 
   m_last = m_innerCell.get();
   if (m_last != NULL)

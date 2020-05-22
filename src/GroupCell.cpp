@@ -69,9 +69,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
+      m_inputLabel.reset(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
     else
-      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
+      m_inputLabel.reset(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -338,7 +338,7 @@ void GroupCell::SetInput(Cell *input)
 {
   if (!input)
     return;
-  m_inputLabel = std::shared_ptr<Cell>(input);
+  m_inputLabel.reset(input);
   m_inputLabel->SetGroup(this);
 }
 
@@ -346,7 +346,7 @@ void GroupCell::AppendInput(Cell *cell)
 {
   if (!m_inputLabel)
   {
-    m_inputLabel = std::shared_ptr<Cell>(cell);
+    m_inputLabel.reset(cell);
   }
   else
   {
@@ -403,7 +403,7 @@ void GroupCell::RemoveOutput()
     m_cellPointers->m_answerCell = NULL;
 
   if (GetGroupType() != GC_TYPE_IMAGE)
-    m_output = NULL;
+    m_output.reset();
 
   m_cellPointers->m_errorList.Remove(this);
   // Calculate the new cell height.
@@ -436,7 +436,7 @@ void GroupCell::AppendOutput(Cell *cell)
   cell->SetGroupList(this);
   if (!m_output)
   {
-    m_output = std::shared_ptr<Cell>(cell);
+    m_output.reset(cell);
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);

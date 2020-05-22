@@ -84,28 +84,28 @@ void IntCell::SetOver(Cell *name)
 {
   if (!name)
     return;
-  m_over = std::shared_ptr<Cell>(name);
+  m_over.reset(name);
 }
 
 void IntCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_base = std::shared_ptr<Cell>(base);
+  m_base.reset(base);
 }
 
 void IntCell::SetUnder(Cell *under)
 {
   if (!under)
     return;
-  m_under = std::shared_ptr<Cell>(under);
+  m_under.reset(under);
 }
 
 void IntCell::SetVar(Cell *var)
 {
   if (var)
     return;
-  m_var = std::shared_ptr<Cell>(var);
+  m_var.reset(var);
 }
 
 void IntCell::RecalculateWidths(int fontsize)
