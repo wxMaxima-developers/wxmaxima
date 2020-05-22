@@ -26,7 +26,7 @@
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include "ErrorRedirector.h"
-#include <memory>
+#include "stx/optional.hpp"
 
 /*! A "debug messages" sidepane
 
@@ -36,19 +36,20 @@ class LogPane : public wxPanel
 public:
   explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
   void BecomeLogTarget();
-  void SetBatchMode(){m_errorRedirector->SetBatchMode();}
+  void SetBatchMode() {m_errorRedirector->SetBatchMode();}
   void DropLogTarget();
+  bool IsLogTarget() {return m_logPanelTarget.has_value();}
   ~LogPane();
 
 private:
   //! The textctrl all log messages appear on
   wxTextCtrl *m_textCtrl;
-  //! Redirects all error messages to gui dialogues
-  std::unique_ptr<ErrorRedirector> m_errorRedirector;
-  std::unique_ptr<wxLog> m_logPanelTarget;
-  bool m_isLogTarget;
+  //! Shows all error messages on gui dialogues
+  stx::optional<wxLogTextCtrl> m_logPanelTarget;
+  //! Redirects error messages - here to a wxLog
+  stx::optional<ErrorRedirector> m_errorRedirector;
   #ifdef wxUSE_STD_IOSTREAM
-  std::unique_ptr<wxStreamToTextRedirector> m_textRedirector;
+  stx::optional<wxStreamToTextRedirector> m_textRedirector;
   #endif
 };
 

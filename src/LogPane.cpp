@@ -22,7 +22,6 @@
 #include "LogPane.h"
 LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {
-  m_isLogTarget = false;
   wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
 
   m_textCtrl = new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -33,7 +32,7 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPane
                                 wxSystemSettings::GetMetric( wxSYS_SCREEN_Y )/10));
   vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(1));
     
-  if(becomeLogTarget)
+  if (becomeLogTarget)
     BecomeLogTarget();    
 
   // m_logPanelTarget->SetRepetitionCounting();
@@ -43,33 +42,27 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPane
 
 void LogPane::DropLogTarget()
 {
-  // m_logPanelTarget is automatically destroyed in this step.
-  if(m_isLogTarget)
+  if (m_errorRedirector)
   {
-    m_errorRedirector = NULL;
-    wxLog::SetActiveTarget(NULL);
+    m_errorRedirector.reset(); // redirector restores old target on destruction
+    wxLog::SetActiveTarget(nullptr); // but we don't want to be a target
   }
-  m_logPanelTarget = NULL;
-  m_isLogTarget = false;
+  m_logPanelTarget.reset();
 }
 
 void LogPane::BecomeLogTarget()
 {
-  m_isLogTarget = true;
-  m_logPanelTarget = std::unique_ptr<wxLog>(new wxLogTextCtrl(m_textCtrl));
-  wxLog::SetActiveTarget(m_logPanelTarget.get());
-  m_errorRedirector = std::unique_ptr<ErrorRedirector>(new ErrorRedirector(new wxLogGui()));
+  m_logPanelTarget.emplace(m_textCtrl);
+  wxLog::SetActiveTarget(&*m_logPanelTarget);
+  m_errorRedirector.emplace(std::unique_ptr<wxLog>(new wxLogGui()));
   #ifdef wxUSE_STD_IOSTREAM
-  if(!ErrorRedirector::LoggingToStdErr())
-    m_textRedirector = std::unique_ptr<wxStreamToTextRedirector>(new wxStreamToTextRedirector(m_textCtrl));
+  if (!ErrorRedirector::LoggingToStdErr())
+    m_textRedirector.emplace(m_textCtrl);
   #endif
 }
 
 LogPane::~LogPane()
 {
   DropLogTarget();
-  #ifdef wxUSE_STD_IOSTREAM
-  m_textRedirector.reset();
-  #endif
 }
 
