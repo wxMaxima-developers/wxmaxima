@@ -1424,12 +1424,12 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role)
 
 #endif
 
-Cell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
+Cell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl) :
+  m_mathCtrl(mathCtrl)
 {
   m_scrollToCell = false;
   m_cellToScrollTo = NULL;
   m_wxmxImgCounter = 0;
-  m_mathCtrl = mathCtrl;
   m_cellMouseSelectionStartedIn = NULL;
   m_cellKeyboardSelectionStartedIn = NULL;
   m_cellUnderPointer = NULL;
