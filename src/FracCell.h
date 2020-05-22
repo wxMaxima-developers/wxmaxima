@@ -99,7 +99,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   //! The numerator
   std::shared_ptr<Cell> m_num;

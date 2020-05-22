@@ -34,9 +34,7 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
     m_open(new TextCell(parent, config, cellPointers, "conjugate(")),
     m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_nextToDraw = NULL;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
-  m_last = NULL;
 }
 
 // Old cppcheck bugs:
@@ -45,7 +43,6 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
 ConjugateCell::ConjugateCell(const ConjugateCell &cell):
  ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());

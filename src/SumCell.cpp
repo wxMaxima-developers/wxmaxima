@@ -39,7 +39,6 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
     m_over(new TextCell(parent, config, cellPointers)),
     m_paren(new ParenCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
   m_signHeight = 50;
   m_signTop = (2 * m_signHeight) / 5;
   m_signWidth = 30;
@@ -53,7 +52,6 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 SumCell::SumCell(const SumCell &cell) :
     SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_base)
     SetBase(cell.m_base->CopyList());

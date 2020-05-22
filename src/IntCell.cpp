@@ -44,7 +44,6 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
     m_over(new TextCell(parent, config, cellPointers)),
     m_var(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
   m_signHeight = 35;
   m_signWidth = 18;
   m_signTop = m_signHeight / 2;
@@ -62,7 +61,6 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 IntCell::IntCell(const IntCell &cell):
     IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_base)
     SetBase(cell.m_base->CopyList());

@@ -38,7 +38,6 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
     m_open(new TextCell(parent, config, cellPointers, "(")),
     m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_exp->SetStyle(TS_FUNCTION);
@@ -52,7 +51,6 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 ExptCell::ExptCell(const ExptCell &cell):
     ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());

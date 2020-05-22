@@ -34,7 +34,6 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_nameCell(new TextCell(parent, config, cellPointers)),
   m_argCell(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
   m_nameCell_Last = m_nameCell.get();
   if(m_nameCell_Last)
     while(m_nameCell_Last->m_next)
@@ -49,7 +48,6 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 FunCell::FunCell(const FunCell &cell):
  FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_nameCell)
     SetName(cell.m_nameCell->CopyList());

@@ -62,7 +62,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;

@@ -79,7 +79,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   unsigned int m_matWidth;
   bool m_roundedParens;

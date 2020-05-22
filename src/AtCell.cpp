@@ -34,13 +34,11 @@ AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers)
   m_baseCell (new TextCell(parent, config, cellPointers)),
   m_indexCell(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
 }
 
 AtCell::AtCell(const AtCell &cell):
  AtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());

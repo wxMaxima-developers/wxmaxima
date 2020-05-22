@@ -50,10 +50,8 @@
 // cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(parent, config, cellPointers),
-    m_timer(NULL),
     m_fileSystem(filesystem)
 {
-  m_nextToDraw = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
@@ -66,11 +64,8 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
-    Cell(parent, config, cellPointers),
-    m_timer(NULL),
-    m_fileSystem(NULL)
+    Cell(parent, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   m_width = m_height = -1;
   m_animationRunning = true;
   m_size = m_displayed = 0;
@@ -78,21 +73,19 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_framerate = framerate;
   m_imageBorderWidth = Scale_Px(1);
   m_drawBoundingBox = false;
-  if(m_animationRunning)
+  if (m_animationRunning)
     ReloadTimer();
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString WXUNUSED(type)):
     SlideShow(parent, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   LoadImages(image);
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove):
     SlideShow(parent, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   LoadImages(image);
   if (remove)
     wxRemoveFile(image);
@@ -241,7 +234,6 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 SlideShow::SlideShow(const SlideShow &cell):
   SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   AnimationRunning(false);
 
@@ -251,7 +243,6 @@ SlideShow::SlideShow(const SlideShow &cell):
   m_framerate = cell.m_framerate;
   m_displayed = true;
   m_size = cell.m_size;
-  m_fileSystem = NULL;
   m_drawBoundingBox = cell.m_drawBoundingBox;
 }
 

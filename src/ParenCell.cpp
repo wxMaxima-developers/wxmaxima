@@ -36,7 +36,6 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
     m_open(new TextCell(parent, config, cellPointers, wxT("("))),
     m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
-  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_numberOfExtensions = 0;
@@ -46,7 +45,6 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_charHeight = 12;
   m_charHeight1 = 12;
   m_fontSize = 10;
-  m_last1 = NULL;
   m_signTopHeight = 12;
   m_signHeight = 50;
   m_signBotHeight = 12;
@@ -72,7 +70,6 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 ParenCell::ParenCell(const ParenCell &cell):
     ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList(), cell.m_type);

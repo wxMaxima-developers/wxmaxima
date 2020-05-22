@@ -38,10 +38,7 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
   m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
-  m_nextToDraw = NULL;
   m_divide->SetStyle(TS_VARIABLE);
-  m_num_Last = NULL;
-  m_denom_Last = NULL;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
   m_horizontalGapLeft = 0;
@@ -52,7 +49,6 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 FracCell::FracCell(const FracCell &cell):
     FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_num)
     SetNum(cell.m_num->CopyList());

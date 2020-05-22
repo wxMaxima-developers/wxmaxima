@@ -42,15 +42,12 @@
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString) :
     Cell(this, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   m_numberedAnswersCount = 0;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
   m_labelWidth_cached = 0;
-  m_hiddenTree = NULL;
-  m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
   m_outputRect.width = 0;
@@ -63,7 +60,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_type = MC_TYPE_GROUP;
   m_isHidden = false;
   m_groupType = groupType;
-  m_lastInOutput = NULL;
 
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK)
@@ -160,7 +156,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 GroupCell::GroupCell(const GroupCell &cell):
     GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_inputLabel)
     SetInput(cell.m_inputLabel->CopyList());
@@ -305,7 +300,6 @@ GroupCell::~GroupCell()
 {
   GroupCell::MarkAsDeleted();
   wxDELETE(m_hiddenTree);
-  m_hiddenTree = NULL;
 }
 
 void GroupCell::MarkAsDeleted()

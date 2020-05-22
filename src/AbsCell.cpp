@@ -33,10 +33,8 @@
 AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_open(new TextCell(parent, config, cellPointers, wxT("abs("))),
-  m_close(new TextCell(parent, config, cellPointers, wxT(")"))),
-  m_last(NULL)
+  m_close(new TextCell(parent, config, cellPointers, wxT(")")))
 {
-  m_nextToDraw = NULL;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
 }
@@ -47,7 +45,6 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 AbsCell::AbsCell(const AbsCell &cell):
   AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());

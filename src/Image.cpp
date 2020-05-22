@@ -51,7 +51,6 @@ Image::Image(Configuration **config)
   m_isOk = false;
   m_maxWidth = -1;
   m_maxHeight = -1;
-  m_svgImage = NULL;
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -69,7 +68,6 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   m_height = 1;
   m_originalWidth = 640;
   m_originalHeight = 480;
-  m_svgImage = NULL;
   
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
@@ -92,7 +90,6 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
   omp_init_lock(&m_gnuplotLock);
   omp_init_lock(&m_imageLoadLock);
   #endif
-  m_svgImage = NULL;
   m_configuration = config;
   m_isOk = false;
   m_width = 1;

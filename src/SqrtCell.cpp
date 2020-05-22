@@ -37,7 +37,6 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
     m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
     m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_signSize = 50;
   m_signWidth = 18;
@@ -58,7 +57,6 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 SqrtCell::SqrtCell(const SqrtCell &cell):
     SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());

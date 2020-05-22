@@ -35,13 +35,11 @@ DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_baseCell(new TextCell(parent, config, cellPointers)),
   m_diffCell(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
 }
 
 DiffCell::DiffCell(const DiffCell &cell):
  DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_diffCell)
     SetDiff(cell.m_diffCell->CopyList());

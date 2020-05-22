@@ -135,7 +135,7 @@ private:
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
   { m_drawBoundingBox = true; }
 
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
   bool m_drawBoundingBox;
 };
 

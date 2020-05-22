@@ -83,13 +83,13 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_innerCell;
   std::shared_ptr<Cell> m_open;
   std::shared_ptr<Cell> m_close;
-  Cell *m_last;
+  Cell *m_last = {};
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;

@@ -40,7 +40,6 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
     m_comma(new TextCell(parent, config, cellPointers, ",")),
     m_close(new TextCell(parent, config, cellPointers, ")"))
 {
-  m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_comma->SetStyle(TS_FUNCTION);
@@ -55,7 +54,6 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 LimitCell::LimitCell(const LimitCell &cell):
     LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_base)
     SetBase(cell.m_base->CopyList());
