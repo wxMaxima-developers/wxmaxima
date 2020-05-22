@@ -38,7 +38,7 @@
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
                                                  m_ppi(wxSize(-1,-1))
 {
-  m_svgRast = nsvgCreateRasterizer();
+  m_svgRast.reset(nsvgCreateRasterizer());
   int widths[] = {-1, 300, GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;
@@ -63,10 +63,7 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
 }
 
 StatusBar::~StatusBar()
-{
-  if(m_svgRast)
-    free(m_svgRast);
-}
+{}
 
 void StatusBar::UpdateBitmaps()
 {

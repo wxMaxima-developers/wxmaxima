@@ -102,7 +102,7 @@ public:
   void WriteSettings();
 
 private:
-  struct NSVGrasterizer* m_svgRast;
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   Configuration *m_configuration;
   

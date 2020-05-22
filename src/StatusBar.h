@@ -31,6 +31,7 @@
 #include <wx/timer.h>
 #include <wx/statbmp.h>
 #include <wx/statusbr.h>
+#include <memory>
 
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
@@ -74,7 +75,7 @@ protected:
   void HandleTimerEvent();
 
 private:
-  struct NSVGrasterizer* m_svgRast;
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The display resolution
   wxSize m_ppi;
   /*! How many percents of the available CPU power does maxima use?

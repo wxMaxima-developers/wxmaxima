@@ -149,7 +149,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
-  m_svgRast = nsvgCreateRasterizer();
+  m_svgRast.reset(nsvgCreateRasterizer());
   m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
   m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
   m_languages[_("Chinese (Simplified)")] = wxLANGUAGE_CHINESE_SIMPLIFIED;
@@ -257,10 +257,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 }
 
 ConfigDialogue::~ConfigDialogue()
-{
-  if(m_svgRast)
-    free(m_svgRast);
-}
+{}
 
 
 void ConfigDialogue::UsesvgChanged(

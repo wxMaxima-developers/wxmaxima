@@ -102,8 +102,6 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSi
 ToolBar::~ToolBar()
 {
   m_plotSlider = NULL;
-  if(m_svgRast != NULL)
-    free(m_svgRast);
 }
 
 void ToolBar::UpdateSlider(SlideShow *cell)
@@ -138,7 +136,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   m_canSave_old = true;
   m_canPrint_old = true;
   m_canEvalTillHere_old = true;
-  m_svgRast = nsvgCreateRasterizer();
+  m_svgRast.reset(nsvgCreateRasterizer());
 
   m_needsInformation = false;
   m_AnimationStartStopState = Inactive;
