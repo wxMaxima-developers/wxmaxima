@@ -304,17 +304,9 @@ GroupCell::~GroupCell()
 
 void GroupCell::MarkAsDeleted()
 {
-  if(this == m_cellPointers->m_selectionStart)
-    m_cellPointers->m_selectionStart = NULL;
-  if(this == m_cellPointers->m_selectionEnd)
-    m_cellPointers->m_selectionEnd = NULL;
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   m_cellPointers->m_errorList.Remove(this);
-  if (this == m_cellPointers->m_workingGroup)
-    m_cellPointers->m_workingGroup = NULL;
-  if (this == m_cellPointers->m_lastWorkingGroup)
-    m_cellPointers->m_lastWorkingGroup = NULL;
   if (this == m_cellPointers->m_groupCellUnderPointer)
     m_cellPointers->m_groupCellUnderPointer = NULL;
 
