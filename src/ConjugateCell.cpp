@@ -53,10 +53,6 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
 
 ConjugateCell::~ConjugateCell()
 {
-  if(this == m_cellPointers->m_selectionStart)
-    m_cellPointers->m_selectionStart = NULL;
-  if(this == m_cellPointers->m_selectionEnd)
-    m_cellPointers->m_selectionEnd = NULL;
   MarkAsDeleted();
 }
 
