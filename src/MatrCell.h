@@ -27,7 +27,7 @@
 
 #include <vector>
 
-class MatrCell : public Cell
+class MatrCell final : public Cell
 {
 public:
   MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -44,7 +44,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void AddNewCell(Cell *cell)
   {
@@ -95,8 +95,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   unsigned int m_matWidth;
   bool m_roundedParens;
   unsigned int m_matHeight;

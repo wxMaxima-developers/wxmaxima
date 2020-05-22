@@ -36,7 +36,7 @@
 
   This class represents an integral including the integral sign and its contents.
  */
-class IntCell : public Cell
+class IntCell final : public Cell
 {
 public:
   IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -51,7 +51,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
@@ -93,8 +93,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   //! The part of the formula that is to be integrated.
   std::shared_ptr<Cell> m_base;

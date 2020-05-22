@@ -45,7 +45,7 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell. 
  */
-class ExptCell : public Cell
+class ExptCell final : public Cell
 {
 public:
   ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -69,7 +69,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -97,8 +97,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;
   std::shared_ptr<Cell> m_exptCell;

@@ -40,7 +40,7 @@ enum
   SM_PROD
 };
 
-class SumCell : public Cell
+class SumCell final : public Cell
 {
 public:
   SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -54,7 +54,7 @@ public:
   void RecalculateHeight(int fontsize) override;
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
@@ -85,8 +85,7 @@ public:
 
 private:
   Cell *m_nextToDraw;
-  
-protected:
+
   std::shared_ptr<Cell> m_base;
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_under;

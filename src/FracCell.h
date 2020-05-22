@@ -40,7 +40,7 @@
        on the screen, or
      - as a linear division (\f$ a/b \f$) if it doesn't. 
  */
-class FracCell : public Cell
+class FracCell final : public Cell
 {
 public:
   FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -63,7 +63,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetFracStyle(int style)
   {
@@ -106,8 +106,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   //! The numerator
   std::shared_ptr<Cell> m_num;
   //! The denominator

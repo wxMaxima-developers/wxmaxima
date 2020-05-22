@@ -64,7 +64,7 @@ Items where a list of groupcells can be folded include
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
  */
-class GroupCell : public Cell
+class GroupCell final : public Cell
 {
 public:
   GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString = {});
@@ -210,8 +210,8 @@ public:
 
   void AppendInput(Cell *cell);
 
-  // Get the next cell in the list.
-  virtual GroupCell *GetNext() const override {return dynamic_cast<GroupCell *>(m_next);}
+  //! Get the next cell in the list.
+  GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(m_next); }
 
   static wxString TexEscapeOutputCell(wxString Input);
 
@@ -253,7 +253,7 @@ public:
   void RecalculateHeight(int fontsize) override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
-  virtual wxRect GetRect(bool all = false) override;
+  wxRect GetRect(bool all = false) override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
@@ -381,9 +381,9 @@ public:
     by RecalculateHeightOutput().
 
    */
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
-  virtual bool AddEnding() override
+  bool AddEnding() override
     {
       if(GetEditable() != NULL)
         return GetEditable()->AddEnding();
@@ -510,7 +510,7 @@ protected:
   int m_mathFontSize;
   Cell *m_lastInOutput;
   static wxString m_lookalikeChars;
-private:
+
   Cell *m_nextToDraw;
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;

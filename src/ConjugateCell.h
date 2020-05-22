@@ -45,7 +45,7 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
  */
-class ConjugateCell : public Cell
+class ConjugateCell final : public Cell
 {
 public:
   ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -66,7 +66,7 @@ public:
 
 private:
   Cell *m_nextToDraw;
-protected:
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_innerCell;
   std::shared_ptr<Cell> m_open;
@@ -77,7 +77,7 @@ protected:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 

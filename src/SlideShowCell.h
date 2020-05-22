@@ -41,7 +41,7 @@
 
 #include <vector>
 
-class SlideShow : public Cell
+class SlideShow final : public Cell
 {
 public:
   /*! The constructor
@@ -89,7 +89,7 @@ public:
 
   bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  virtual wxString GetToolTip(const wxPoint &point) override;
+  wxString GetToolTip(const wxPoint &point) override;
 
   void MarkAsDeleted()  override;
 
@@ -98,7 +98,7 @@ public:
     To be called when the slideshow is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
    */
-  virtual void ClearCache() override;
+  void ClearCache() override;
 
   void LoadImages(wxArrayString images, bool deleteRead);
 
@@ -119,7 +119,7 @@ public:
   //! Exports the whole animation as animated gif
   wxSize ToGif(wxString file);
 
-  bool CopyToClipboard()  override;
+  bool CopyToClipboard() override;
   
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();
@@ -182,8 +182,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   std::shared_ptr<wxTimer> m_timer;
   /*! The framerate of this cell.
 
@@ -201,7 +201,7 @@ protected:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -213,12 +213,11 @@ protected:
 
   wxString ToXML() override;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
+  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   {
     m_drawBoundingBox = true;
   }
 
-private:
   bool m_drawBoundingBox;
 };
 

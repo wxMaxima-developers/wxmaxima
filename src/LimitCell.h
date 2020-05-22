@@ -32,7 +32,7 @@
 #include "Cell.h"
 #include "TextCell.h"
 
-class LimitCell : public Cell
+class LimitCell final : public Cell
 {
 public:
   LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -47,7 +47,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
@@ -74,8 +74,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_base;
   std::shared_ptr<Cell> m_under;

@@ -47,7 +47,7 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
  */
-class ParenCell : public Cell
+class ParenCell final : public Cell
 {
 public:
   ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
@@ -70,7 +70,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   bool BreakUp() override;
 
@@ -91,9 +91,9 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
-   /*! How to create a big parenthesis sign?
+  Cell *m_nextToDraw;
+
+  /*! How to create a big parenthesis sign?
    */
   Configuration::drawMode m_bigParenType;
   void SetFont(int fontsize);

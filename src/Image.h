@@ -215,7 +215,8 @@ public:
 
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const {return m_svgRast != nullptr;}
-protected:
+
+private:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
   //! A zipped version of the gnuplot data needed in order to create this image.
@@ -237,7 +238,6 @@ protected:
   void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
   void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
 
-private:
   //! Loads an image from a file
   void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer

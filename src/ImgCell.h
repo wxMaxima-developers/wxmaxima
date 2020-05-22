@@ -30,7 +30,7 @@
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 
-class ImgCell : public Cell
+class ImgCell final : public Cell
 {
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
@@ -39,8 +39,8 @@ public:
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
-  Cell *Copy() override {return new ImgCell(*this);}
-  ~ImgCell();
+  Cell *Copy() override { return new ImgCell(*this); }
+  ~ImgCell() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor
   ImgCell &operator=(const ImgCell&) = delete;
@@ -92,10 +92,10 @@ public:
     The scaled version of the image will be recreated automatically once it is 
     needed.
    */
-  virtual void ClearCache() override
+  void ClearCache() override
   { if (m_image)m_image->ClearCache(); }
 
-  virtual wxString GetToolTip(const wxPoint &point) override;
+  wxString GetToolTip(const wxPoint &point) override;
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);
@@ -123,7 +123,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -144,7 +144,7 @@ public:
 
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
-protected:
+private:
   std::shared_ptr<Image> m_image;
   
   static int s_counter;
@@ -155,7 +155,6 @@ protected:
     m_drawBoundingBox = true;
   }
 
-private:
   Cell *m_nextToDraw;
   bool m_drawBoundingBox;
 };
