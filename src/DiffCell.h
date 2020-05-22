@@ -65,8 +65,8 @@ private:
   Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_baseCell;
-  std::shared_ptr<Cell> m_diffCell;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_diffCell;
 };
 
 #endif // DIFFCELL_H

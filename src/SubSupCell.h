@@ -76,14 +76,14 @@ private:
   Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_baseCell;
-  std::shared_ptr<Cell> m_postSubCell;
-  std::shared_ptr<Cell> m_postSupCell;
-  std::shared_ptr<Cell> m_preSubCell;
-  std::shared_ptr<Cell> m_preSupCell;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_postSubCell;
+  std::unique_ptr<Cell> m_postSupCell;
+  std::unique_ptr<Cell> m_preSubCell;
+  std::unique_ptr<Cell> m_preSupCell;
   //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
   //! nor SetExponent.
-  std::vector<std::shared_ptr<Cell>> m_scriptCells;
+  std::vector<Cell*> m_scriptCells;
 };
 
 #endif // SUBSUPCELL_H

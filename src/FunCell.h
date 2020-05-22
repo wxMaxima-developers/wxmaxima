@@ -91,8 +91,8 @@ private:
   Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_nameCell;
-  std::shared_ptr<Cell> m_argCell;
+  std::unique_ptr<Cell> m_nameCell;
+  std::unique_ptr<Cell> m_argCell;
   Cell *m_nameCell_Last = {};
   Cell *m_argCell_Last = {};
 };

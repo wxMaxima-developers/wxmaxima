@@ -81,14 +81,16 @@ public:
 
 private:
   Cell *m_nextToDraw = {};
-
-  std::shared_ptr<Cell> m_base;
+  
+  ParenCell *Paren() const { return static_cast<ParenCell*>(m_paren.get()); }
+  // The base cell is owned by the paren
+  Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
   // The pointers below point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_under;
-  std::shared_ptr<Cell> m_over;
-  std::shared_ptr<Cell> m_paren;
+  std::unique_ptr<Cell> m_under;
+  std::unique_ptr<Cell> m_over;
+  std::unique_ptr<Cell> m_paren;
   // The pointers above point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_displayedBase;
+  Cell *m_displayedBase = {};
   int m_signHeight;
   double m_signWidth;
   int m_sumStyle;

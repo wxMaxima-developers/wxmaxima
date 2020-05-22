@@ -93,11 +93,11 @@ private:
 
   // The pointers below point to inner cells and must be kept contiguous.
   //! The contents of the abs() command
-  std::shared_ptr<Cell> m_innerCell;
+  std::unique_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
-  std::shared_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_open;
   //! The cell containing the closing parenthesis
-  std::shared_ptr<Cell> m_close;
+  std::unique_ptr<Cell> m_close;
   //! The last element of m_innerCell
   Cell *m_last = {};
 };
