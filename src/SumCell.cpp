@@ -34,11 +34,11 @@
 
 SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
-    m_base(new TextCell(parent, config, cellPointers)),
     m_under(new TextCell(parent, config, cellPointers)),
     m_over(new TextCell(parent, config, cellPointers)),
     m_paren(new ParenCell(parent, config, cellPointers))
 {
+  wxASSERT(Base()); // m_paren constructs its inner cell by default
   m_signHeight = 50;
   m_signTop = (2 * m_signHeight) / 5;
   m_signWidth = 30;
@@ -53,8 +53,8 @@ SumCell::SumCell(const SumCell &cell) :
     SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   CopyCommonData(cell);
-  if (cell.m_base)
-    SetBase(cell.m_base->CopyList());
+  if (cell.Base())
+    SetBase(cell.Base()->CopyList());
   if (cell.m_under)
   SetUnder(cell.m_under->CopyList());
   if (cell.m_over)
@@ -78,9 +78,9 @@ void SumCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_base.reset(base);
-  static_cast<ParenCell&>(*m_paren).SetInner(m_base);
-  m_displayedBase = m_paren;
+  Paren()->SetInner(base);
+  wxASSERT(Base() == base);
+  m_displayedBase = m_paren.get();
 }
 
 void SumCell::SetUnder(Cell *under)
@@ -274,7 +274,7 @@ wxString SumCell::ToString()
     s = wxT("sum(");
   else
     s = wxT("product(");
-  s += m_base->ListToString();
+  s += Base()->ListToString();
 
   Cell *tmp = m_under.get();
   wxString var = tmp->ToString();
@@ -302,7 +302,7 @@ wxString SumCell::ToMatlab()
 	s = wxT("sum(");
   else
 	s = wxT("product(");
-  s += m_base->ListToMatlab();
+  s += Base()->ListToMatlab();
 
   Cell *tmp = m_under.get();
   wxString var = tmp->ToMatlab();
@@ -339,14 +339,14 @@ wxString SumCell::ToTeX()
 
 
   s += wxT("{\\left. ");
-  s += m_base->ListToTeX();
+  s += Base()->ListToTeX();
   s += wxT("\\right.}");
   return s;
 }
 
 wxString SumCell::ToOMML()
 {
-  wxString base = m_base->ListToOMML();
+  wxString base = Base()->ListToOMML();
   wxString from = m_under ? m_under->ListToOMML() : wxString{};
   wxString to = m_over ? m_over->ListToOMML() : wxString{};
 
@@ -385,12 +385,12 @@ wxString SumCell::ToXML()
     
   return wxT("<sm type=\"") + flags + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
          m_over->ListToXML() + _T("</r><r>") +
-         m_base->ListToXML() + _T("</r></sm>");
+         Base()->ListToXML() + _T("</r></sm>");
 }
 
 wxString SumCell::ToMathML()
 {
-  wxString base = m_base->ListToMathML();
+  wxString base = Base()->ListToMathML();
 
   wxString from;
   if (m_under) from = m_under->ListToMathML();

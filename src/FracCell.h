@@ -102,26 +102,33 @@ private:
   Cell *m_nextToDraw = {};
 
   //! The numerator
-  std::shared_ptr<Cell> m_num;
+  Cell *Num() const { return m_numParenthesis->GetInner(); }
   //! The denominator
-  std::shared_ptr<Cell> m_denom;
-  //! A parenthesis around the numerator
-  std::shared_ptr<ParenCell> m_numParenthesis;
-  //! A parenthesis around the denominator
-  std::shared_ptr<ParenCell> m_denomParenthesis;
+  Cell *Denom() const { return m_denomParenthesis->GetInner(); }
+
+  //! A parenthesis around the numerator, owns the numerator
+  std::unique_ptr<ParenCell> const m_numParenthesis;
+  //! A parenthesis around the denominator, owns the denominaotr
+  std::unique_ptr<ParenCell> const m_denomParenthesis;
+  //! The owner of the "/" sign
+  const std::unique_ptr<Cell> m_divideOwner;
   //! The last element of the numerator
-  Cell *m_num_Last;
+  Cell *m_num_Last = {};
   //! The last element of the denominator
-  Cell *m_denom_Last;
+  Cell *m_denom_Last = {};
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
+
+
   // The pointers below point to inner cells and must be kept contiguous.
   //! The "/" sign
-  std::shared_ptr<Cell> m_divide;
+  Cell* const m_divide = m_divideOwner.get();
   //! The displayed version of the numerator, if needed with parenthesis
-  std::shared_ptr<Cell> m_displayedNum;
+  Cell* m_displayedNum = {};
   //! The displayed version of the denominator, if needed with parenthesis
-  std::shared_ptr<Cell> m_displayedDenom;
+  Cell* m_displayedDenom = {};
+  // The pointers above point to inner cells and must be kept contiguous.
+
   //! The way the fraction should be displayed
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?

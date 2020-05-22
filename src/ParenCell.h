@@ -58,8 +58,9 @@ public:
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
+  Cell *GetInner() const { return m_innerCell.get(); }
   void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
-  void SetInner(std::shared_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
+  void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
   void SetPrint(bool print) { m_print = print; }
 
@@ -94,9 +95,9 @@ private:
   Configuration::drawMode m_bigParenType;
   void SetFont(int fontsize);
   // The pointers below point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_innerCell;
-  std::shared_ptr<Cell> m_open;
-  std::shared_ptr<Cell> m_close;
+  std::unique_ptr<Cell> m_innerCell;
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_close;
   Cell *m_last1 = {};
   bool m_print;
   int m_numberOfExtensions;

@@ -495,9 +495,9 @@ protected:
   GroupType m_groupType;
   // The pointers below point to inner cells and must be kept contiguous.
   //! The input label of this cell. Is followed by the input of the cell.
-  std::shared_ptr<Cell> m_inputLabel;
+  std::unique_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
-  std::shared_ptr<Cell> m_output;
+  std::unique_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
   Cell *m_lastInOutput = {};
