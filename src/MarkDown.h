@@ -50,32 +50,27 @@ protected:
   class RegexReplacer : public wxRegEx
   {
   public:
-    RegexReplacer(wxString From, wxString To) :
-      wxRegEx(From),
-      replaceBy(To)
-    {
-    }
+    RegexReplacer(wxString from, const wxString &to) :
+      wxRegEx(from),
+      replaceBy(to)
+    {}
 
-    void DoReplace(wxString *line)
-    {
-      Replace(line, replaceBy);
-    }
+    void DoReplace(wxString &line) const
+    { Replace(&line, replaceBy); }
 
   private:
     wxString replaceBy; //!< The thing we replace it with
   };
 
-  typedef std::list<std::shared_ptr<RegexReplacer>> replaceList;
+  typedef std::list<RegexReplacer> replaceList;
   replaceList regexReplaceList;
 public:
   explicit MarkDownParser(Configuration *cfg);
 
-  virtual ~MarkDownParser();
-
   wxString MarkDown(wxString str);
 
   //! A list of things we want to replace.
-  replaceList RegexReplaceList() const
+  const replaceList &RegexReplaceList() const
     { return regexReplaceList; }
 
 private:
