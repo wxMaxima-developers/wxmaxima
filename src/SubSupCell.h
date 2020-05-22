@@ -31,7 +31,7 @@ class SubSupCell final : public Cell
 public:
   SubSupCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SubSupCell(const SubSupCell &cell);
-  Cell *Copy() override {return new SubSupCell(*this);}
+  Cell *Copy() override { return new SubSupCell(*this); }
   ~SubSupCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
@@ -69,9 +69,8 @@ public:
 
   wxString ToMathML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

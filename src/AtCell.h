@@ -30,7 +30,7 @@ class AtCell final : public Cell
 public:
   AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   AtCell(const AtCell &cell);
-  Cell *Copy() override {return new AtCell(*this);}
+  Cell *Copy() override { return new AtCell(*this); }
   ~AtCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
@@ -57,9 +57,8 @@ public:
 
   wxString ToMathML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

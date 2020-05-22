@@ -50,7 +50,7 @@ class ConjugateCell final : public Cell
 public:
   ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ConjugateCell(const ConjugateCell &cell);
-  Cell *Copy() override {return new ConjugateCell(*this);}
+  Cell *Copy() override { return new ConjugateCell(*this); }
   ~ConjugateCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
@@ -61,8 +61,7 @@ public:
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

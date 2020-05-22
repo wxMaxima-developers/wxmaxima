@@ -110,7 +110,7 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 Image::Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove):
-  m_fs_keepalive_imagedata(filesystem)
+    m_fs_keepalive_imagedata(filesystem)
 {
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_gnuplotLock);

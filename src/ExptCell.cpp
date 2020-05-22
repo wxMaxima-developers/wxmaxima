@@ -83,7 +83,7 @@ void ExptCell::Draw(wxPoint point)
 
 void ExptCell::SetPower(Cell *power)
 {
-  if (power == NULL)
+  if (!power)
     return;
   m_exptCell = std::shared_ptr<Cell>(power);
 
@@ -101,7 +101,7 @@ void ExptCell::SetPower(Cell *power)
 
 void ExptCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
 
@@ -272,9 +272,4 @@ bool ExptCell::BreakUp()
     return true;
   }
   return false;
-}
-
-void ExptCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

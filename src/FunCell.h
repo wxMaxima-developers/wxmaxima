@@ -54,7 +54,7 @@ class FunCell final : public Cell
 public:
   FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   FunCell(const FunCell &cell);
-  Cell *Copy() override {return new FunCell(*this);}
+  Cell *Copy() override { return new FunCell(*this); }
   ~FunCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
@@ -85,7 +85,6 @@ public:
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
-
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:

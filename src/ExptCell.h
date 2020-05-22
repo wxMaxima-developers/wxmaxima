@@ -50,7 +50,7 @@ class ExptCell final : public Cell
 public:
   ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ExptCell(const ExptCell &cell);
-  Cell *Copy() override {return new ExptCell(*this);}
+  Cell *Copy() override { return new ExptCell(*this); }
   ~ExptCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
@@ -85,16 +85,12 @@ public:
 
   wxString GetDiffPart() override;
 
-  void IsMatrix(bool isMatrix)
-  {
-    m_isMatrix = isMatrix;
-  }
+  void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
 
   bool BreakUp() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

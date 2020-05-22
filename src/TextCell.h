@@ -36,10 +36,11 @@ class TextCell final : public Cell
 private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
+
 public:
-  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
+  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
-  Cell *Copy() override {return new TextCell(*this);}  
+  Cell *Copy() override { return new TextCell(*this); }  
   ~TextCell();  
 
   double GetScaledTextSize() const;
@@ -62,8 +63,7 @@ public:
 
     The "(" is the opening parenthesis of a function instead.
    */
-  void DontEscapeOpeningParenthesis()
-  { m_dontEscapeOpeningParenthesis = true; }
+  void DontEscapeOpeningParenthesis() { m_dontEscapeOpeningParenthesis = true; }
 
   wxString ToString() override;
 
@@ -83,8 +83,7 @@ public:
 
   bool IsOperator() const override;
 
-  wxString GetValue() const override
-  { return m_text; }
+  wxString GetValue() const override { return m_text; }
 
   wxString GetGreekStringTeX() const;
 
@@ -138,8 +137,8 @@ private:
   double m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
-  void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 
   Cell *m_nextToDraw;

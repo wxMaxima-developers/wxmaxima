@@ -47,26 +47,15 @@ public:
 
   //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, std::shared_ptr<wxFileSystem> filesystem)
-    {
-      if(m_image != NULL)
-        m_image->GnuplotSource(sourcefile,datafile, filesystem);
-    }
+  { if (m_image) m_image->GnuplotSource(sourcefile,datafile, filesystem); }
+
   //! The name of the file with gnuplot commands that created this file
   wxString GnuplotSource() const override
-    {
-      if(m_image == NULL)
-        return wxEmptyString;
-      else
-        return m_image->GnuplotSource();
-    }
+  { return m_image ? m_image->GnuplotSource() : wxString(); }
+
   //! The name of the file with gnuplot data needed for creating this file
   wxString GnuplotData() const override
-    {
-      if(m_image == NULL)
-        return wxEmptyString;
-      else
-        return m_image->GnuplotData();
-    }
+  { return m_image ? m_image->GnuplotData() : wxString{}; }
 
   void MarkAsDeleted() override;
 
@@ -92,8 +81,7 @@ public:
     The scaled version of the image will be recreated automatically once it is 
     needed.
    */
-  void ClearCache() override
-  { if (m_image)m_image->ClearCache(); }
+  void ClearCache() override { if (m_image) m_image->ClearCache(); }
 
   wxString GetToolTip(const wxPoint &point) override;
   
@@ -103,21 +91,19 @@ public:
   //! Copies the cell to the system's clipboard
   bool CopyToClipboard() override;
 
-  void DrawRectangle(bool draw)
-  { m_drawRectangle = draw; }
+  void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 
   //! Returns the file name extension that matches the image type
   wxString GetExtension() const
   { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
 
   //! Returns the original compressed version of the image
-  wxMemoryBuffer GetCompressedImage() const
-  { return m_image->m_compressedImage; }
+  wxMemoryBuffer GetCompressedImage() const { return m_image->m_compressedImage; }
 
-  double GetMaxWidth() const {if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
-  double GetHeightList() const {if(m_image != NULL) return m_image->GetHeightList();else return -1;}
-  void SetMaxWidth(double width) const {if(m_image != NULL) return m_image->SetMaxWidth(width);}
-  void SetMaxHeight(double height) const {if(m_image != NULL) return m_image->SetMaxHeight(height);}
+  double GetMaxWidth() const { return m_image ? m_image->GetMaxWidth() : -1; }
+  double GetHeightList() const { return m_image ? m_image->GetHeightList() : -1; }
+  void SetMaxWidth(double width) const { if (m_image) m_image->SetMaxWidth(width); }
+  void SetMaxHeight(double height) const { if (m_image) m_image->SetMaxHeight(height); }
 
   void RecalculateHeight(int fontsize) override;
 
@@ -135,14 +121,10 @@ public:
 
   wxString ToXML() override;
 
-  bool CanPopOut() override
-    {
-      return (!m_image->GnuplotSource().IsEmpty());
-    }
+  bool CanPopOut() override { return !m_image->GnuplotSource().empty(); }
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   std::shared_ptr<Image> m_image;
@@ -150,10 +132,8 @@ private:
   static int s_counter;
   bool m_drawRectangle;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
-  {
-    m_drawBoundingBox = true;
-  }
+  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
+  { m_drawBoundingBox = true; }
 
   Cell *m_nextToDraw;
   bool m_drawBoundingBox;

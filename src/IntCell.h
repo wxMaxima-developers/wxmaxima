@@ -41,7 +41,7 @@ class IntCell final : public Cell
 public:
   IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   IntCell(const IntCell &cell);
-  Cell *Copy() override {return new IntCell(*this);}
+  Cell *Copy() override { return new IntCell(*this); }
   ~IntCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
@@ -71,10 +71,7 @@ public:
   };
 
   //! Choose between definite and indefinite integrals
-  void SetIntStyle(IntegralType style)
-  {
-    m_intStyle = style;
-  }
+  void SetIntStyle(IntegralType style) { m_intStyle = style; }
 
   wxString ToString() override;
 
@@ -88,9 +85,8 @@ public:
 
   wxString ToXML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

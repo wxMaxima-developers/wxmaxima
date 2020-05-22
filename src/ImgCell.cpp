@@ -50,8 +50,8 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointer
 }
 
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type) :
-  Cell(parent, config, cellPointers),
-  m_image(new Image(m_configuration, image, type))
+    Cell(parent, config, cellPointers),
+    m_image(new Image(m_configuration, image, type))
 {
   m_nextToDraw = NULL;
   m_type = MC_TYPE_IMAGE;
@@ -61,9 +61,8 @@ ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 }
 
 ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap) :
-  Cell(parent, config, cellPointers),
-  m_image(new Image(m_configuration, bitmap))
-
+    Cell(parent, config, cellPointers),
+    m_image(new Image(m_configuration, bitmap))
 {
   m_nextToDraw = NULL;
   m_type = MC_TYPE_IMAGE;
@@ -100,7 +99,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 }
 
 ImgCell::ImgCell(const ImgCell &cell):
- ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -379,9 +378,4 @@ bool ImgCell::CopyToClipboard()
     return res;
   }
   return false;
-}
-
-void ImgCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

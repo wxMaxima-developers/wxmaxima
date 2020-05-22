@@ -30,7 +30,7 @@ class SubCell final : public Cell
 public:
   SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SubCell(const SubCell &cell);
-  Cell *Copy() override {return new SubCell(*this);}
+  Cell *Copy() override { return new SubCell(*this); }
   ~SubCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
@@ -58,9 +58,8 @@ public:
 
   wxString ToXML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
   
 private:
   Cell *m_nextToDraw;

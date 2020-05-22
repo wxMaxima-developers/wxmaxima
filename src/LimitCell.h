@@ -37,7 +37,7 @@ class LimitCell final : public Cell
 public:
   LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   LimitCell(const LimitCell &cell);
-  Cell *Copy() override {return new LimitCell(*this);}
+  Cell *Copy() override { return new LimitCell(*this); }
   ~LimitCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
@@ -70,7 +70,6 @@ public:
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
-
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:

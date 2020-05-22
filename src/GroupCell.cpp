@@ -40,7 +40,7 @@
 #include "list"
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString) :
-  Cell(this, config, cellPointers)
+    Cell(this, config, cellPointers)
 {
   m_nextToDraw = NULL;
   m_numberedAnswersCount = 0;
@@ -76,7 +76,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  EditorCell *editor = NULL;
+  EditorCell *editor = {};
 
   switch (groupType)
   {
@@ -134,7 +134,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
       AppendInput(editor);
       break;
     default:
-      editor = NULL;
       break;
   }
 
@@ -147,7 +146,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   {
     std::shared_ptr <wxFileSystem> noFS;
     Cell *ic;
-    if(wxImage::GetImageCount(initString) < 2)
+    if (wxImage::GetImageCount(initString) < 2)
       ic = new ImgCell(this, m_configuration, m_cellPointers, initString, noFS, false);
     else
       ic = new SlideShow(this, m_configuration, m_cellPointers, initString, false);
@@ -159,7 +158,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 }
 
 GroupCell::GroupCell(const GroupCell &cell):
-  GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers)
+    GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -173,7 +172,7 @@ GroupCell::GroupCell(const GroupCell &cell):
 
 void GroupCell::SetCellStyle(int style)
 {
-  if(GetEditable() == NULL)
+  if (!GetEditable())
     return;
   
   switch (style)
@@ -337,7 +336,7 @@ wxString GroupCell::TexEscapeOutputCell(wxString Input)
 
 void GroupCell::SetInput(Cell *input)
 {
-  if (input == NULL)
+  if (!input)
     return;
   m_inputLabel = std::shared_ptr<Cell>(input);
   m_inputLabel->SetGroup(this);
@@ -345,7 +344,7 @@ void GroupCell::SetInput(Cell *input)
 
 void GroupCell::AppendInput(Cell *cell)
 {
-  if (m_inputLabel == NULL)
+  if (!m_inputLabel)
   {
     m_inputLabel = std::shared_ptr<Cell>(cell);
   }
@@ -374,7 +373,7 @@ void GroupCell::SetOutput(Cell *output)
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   
-  m_output = std::shared_ptr<Cell>(output);
+  m_output.reset(output);
 
   m_lastInOutput = m_output.get();
 
@@ -435,7 +434,7 @@ void GroupCell::AppendOutput(Cell *cell)
   wxASSERT_MSG(cell != NULL, _("Bug: Trying to append NULL to a group cell."));
   if (cell == NULL) return;
   cell->SetGroupList(this);
-  if (m_output == NULL)
+  if (!m_output)
   {
     m_output = std::shared_ptr<Cell>(cell);
 

@@ -55,15 +55,12 @@ AbsCell::AbsCell(const AbsCell &cell):
 
 AbsCell::~AbsCell()
 {
-  m_innerCell = NULL;
-  m_open = NULL;
-  m_close = NULL;
   MarkAsDeleted();
 }
 
 void AbsCell::SetInner(Cell *inner)
 {
-  if (inner == NULL)
+  if (!inner)
     return;
   m_innerCell = std::shared_ptr<Cell>(inner);
 

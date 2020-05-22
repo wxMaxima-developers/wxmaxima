@@ -50,7 +50,7 @@ class SqrtCell final : public Cell
 public:
   SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SqrtCell(const SqrtCell &cell);
-  Cell *Copy() override {return new SqrtCell(*this);}
+  Cell *Copy() override { return new SqrtCell(*this); }
   ~SqrtCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
@@ -80,7 +80,7 @@ public:
 
   void SetNextToDraw(Cell *next) override;
 
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

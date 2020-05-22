@@ -47,7 +47,7 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
-  if(cell.m_innerCell)
+  if (cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList());
 }
 
@@ -62,7 +62,7 @@ ConjugateCell::~ConjugateCell()
 
 void ConjugateCell::SetInner(Cell *inner)
 {
-  if (inner == NULL)
+  if (!inner)
     return;
   m_innerCell = std::shared_ptr<Cell>(inner);
 

@@ -57,7 +57,7 @@ class AbsCell final : public Cell
 public:
   AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   AbsCell(const AbsCell &cell);
-  Cell *Copy() override {return new AbsCell(*this);}
+  Cell *Copy() override { return new AbsCell(*this); }
   ~AbsCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
@@ -86,8 +86,7 @@ public:
   wxString ToOMML() override;
 
   void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

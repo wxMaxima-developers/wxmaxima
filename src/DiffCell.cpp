@@ -56,7 +56,7 @@ DiffCell::~DiffCell()
 
 void DiffCell::SetDiff(Cell *diff)
 {
-  if (diff == NULL)
+  if (!diff)
     return;
   m_diffCell = std::shared_ptr<Cell>(diff);
 
@@ -65,7 +65,7 @@ void DiffCell::SetDiff(Cell *diff)
 
 void DiffCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
 }
@@ -193,9 +193,4 @@ wxString DiffCell::ToXML()
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
-}
-
-void DiffCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

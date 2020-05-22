@@ -52,7 +52,7 @@ class ParenCell final : public Cell
 public:
   ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ParenCell(const ParenCell &cell);
-  Cell *Copy() override {return new ParenCell(*this);}
+  Cell *Copy() override { return new ParenCell(*this); }
   ~ParenCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
@@ -61,10 +61,7 @@ public:
   void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
   void SetInner(std::shared_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
-  void SetPrint(bool print)
-  {
-    m_print = print;
-  }
+  void SetPrint(bool print) { m_print = print; }
 
   void RecalculateHeight(int fontsize) override;
 
@@ -87,8 +84,7 @@ public:
   wxString ToXML() override;
 
   void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

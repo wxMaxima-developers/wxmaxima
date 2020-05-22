@@ -30,9 +30,9 @@ class DiffCell final : public Cell
 public:
   DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   DiffCell(const DiffCell &cell);
-  Cell *Copy() override {return new DiffCell(*this);}
+  Cell *Copy() override { return new DiffCell(*this); }
   ~DiffCell();
-  
+
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
 
@@ -58,9 +58,8 @@ public:
 
   wxString ToXML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

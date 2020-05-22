@@ -34,13 +34,14 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) : Cell(parent, config, cellPointers)
+SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) :
+    Cell(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
 }
 
 SubSupCell::SubSupCell(const SubSupCell &cell):
- SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -99,21 +100,21 @@ void SubSupCell::SetPostSub(Cell *index)
 
 void SubSupCell::SetIndex(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
   m_postSubCell = std::shared_ptr<Cell>(index);
 }
 
 void SubSupCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
 }
 
 void SubSupCell::SetExponent(Cell *expt)
 {
-  if (expt == NULL)
+  if (!expt)
     return;
   m_postSupCell = std::shared_ptr<Cell>(expt);
 }
@@ -479,9 +480,4 @@ wxString SubSupCell::ToXML()
     retval += "</ie>";
   }
   return retval;
-}
-
-void SubSupCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

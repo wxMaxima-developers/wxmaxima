@@ -70,7 +70,7 @@ FracCell::~FracCell()
 
 void FracCell::SetNum(Cell *num)
 {
-  if (num == NULL)
+  if (!num)
     return;
   m_num = std::shared_ptr<Cell>(num);
   static_cast<ParenCell&>(*m_numParenthesis).SetInner(m_num);
@@ -80,7 +80,7 @@ void FracCell::SetNum(Cell *num)
 
 void FracCell::SetDenom(Cell *denom)
 {
-  if (denom == NULL)
+  if (!denom)
     return;
   m_denom = std::shared_ptr<Cell>(denom);
   static_cast<ParenCell&>(*m_denomParenthesis).SetInner(m_denom);
@@ -288,21 +288,19 @@ wxString FracCell::ToMatlab()
 		  m_denom->ListToMatlab() + wxT(")");
 	}
 	else
-	{
-	  Cell *tmp = m_denom.get();
-	  while (tmp != NULL)
+    {
+      for (Cell *tmp = m_denom.get(); tmp; tmp = tmp->m_next)
 	  {
 		tmp = tmp->m_next;   // Skip the d
-		if (tmp == NULL)
+        if (!tmp)
 		  break;
 		tmp = tmp->m_next;   // Skip the *
-		if (tmp == NULL)
+        if (!tmp)
 		  break;
 		s += tmp->GetDiffPart();
 		tmp = tmp->m_next;   // Skip the *
-		if (tmp == NULL)
+        if (!tmp)
 		  break;
-		tmp = tmp->m_next;
 	  }
 	}
   }
@@ -383,13 +381,13 @@ void FracCell::SetupBreakUps()
     m_displayedDenom = m_denom;
   }
   m_num_Last = m_displayedNum.get();
-  if (m_num_Last != NULL)
+  if (m_num_Last)
   {
     while (m_num_Last->m_next != NULL)
       m_num_Last = m_num_Last->m_next;
   }
   m_denom_Last = m_displayedDenom.get();
-  if (m_denom_Last != NULL)
+  if (m_denom_Last)
   {
     while (m_denom_Last->m_next != NULL)
       m_denom_Last = m_denom_Last->m_next;
@@ -404,16 +402,16 @@ bool FracCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    if((m_num != NULL) && (m_num->m_next != NULL))
+    if(m_num && m_num->m_next)
       m_displayedNum = m_numParenthesis;
-    if((m_denom != NULL) && (m_denom->m_next != NULL))
+    if(m_denom && m_denom->m_next)
       m_displayedDenom = m_denomParenthesis;
-    wxASSERT_MSG(m_num_Last != NULL, _("Bug: No last cell in a numerator!"));
-    if (m_num_Last != NULL)
+    wxASSERT_MSG(m_num_Last, _("Bug: No last cell in a numerator!"));
+    if (m_num_Last)
       m_displayedNum->SetNextToDraw(m_divide.get());
     m_divide->SetNextToDraw(m_displayedDenom.get());
     m_displayedDenom->SetNextToDraw(m_nextToDraw);
-    wxASSERT_MSG(m_denom_Last != NULL, _("Bug: No last cell in a denominator!"));
+    wxASSERT_MSG(m_denom_Last, _("Bug: No last cell in a denominator!"));
     m_nextToDraw = m_displayedNum.get();
     ResetData();    
     return true;

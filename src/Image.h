@@ -241,7 +241,7 @@ private:
   //! Loads an image from a file
   void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
   //! Reads the compressed image into a memory buffer
-  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);  
+  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration **m_configuration;
   //! The upper width limit for displaying this image
   double m_maxWidth;

@@ -64,7 +64,7 @@ public:
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove);
 
-  Cell *Copy() override {return new SlideShow(*this);}
+  Cell *Copy() override { return new SlideShow(*this); }
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
@@ -102,16 +102,14 @@ public:
 
   void LoadImages(wxArrayString images, bool deleteRead);
 
-  int GetDisplayedIndex() const
-  { return m_displayed; }
+  int GetDisplayedIndex() const { return m_displayed; }
 
   wxImage GetBitmap(int n) const
   { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
 
-  int Length() const
-  { return m_size; }
+  int Length() const { return m_size; }
 
   //! Exports the image the slideshow currently displays
   wxSize ToImageFile(wxString file);
@@ -150,35 +148,30 @@ public:
    */
   int SetFrameRate(int Freq);
 
-  bool AnimationRunning() const {return m_animationRunning;}
+  bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
   bool CanPopOut() override
-    {
-      return (!m_images[m_displayed]->GnuplotSource().IsEmpty());
-    }
+  { return (!m_images[m_displayed]->GnuplotSource().empty()); }
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
-    {
-      m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem);
-    }
+  { m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem); }
 
   wxString GnuplotSource() const override
-    {
-      if(m_images[m_displayed] == NULL)
-        return wxEmptyString;
-      else
-        return m_images[m_displayed]->GnuplotSource();
-    }
+  {
+    if (!m_images[m_displayed])
+      return wxEmptyString;
+    else
+      return m_images[m_displayed]->GnuplotSource();
+  }
   wxString GnuplotData() const override
-    {
-      if(m_images[m_displayed] == NULL)
-        return wxEmptyString;
-      else
-        return m_images[m_displayed]->GnuplotData();
-    }
+  {
+    if (!m_images[m_displayed])
+      return wxEmptyString;
+    else
+      return m_images[m_displayed]->GnuplotData();
+  }
 
-  void SetNextToDraw(Cell *next) override;
-
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
@@ -214,9 +207,7 @@ private:
   wxString ToXML() override;
 
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
-  {
-    m_drawBoundingBox = true;
-  }
+  { m_drawBoundingBox = true; }
 
   bool m_drawBoundingBox;
 };

@@ -45,7 +45,7 @@ class FracCell final : public Cell
 public:
   FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   FracCell(const FracCell &cell);
-  Cell *Copy() override {return new FracCell(*this);}
+  Cell *Copy() override { return new FracCell(*this); }
   ~FracCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
@@ -65,10 +65,7 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void SetFracStyle(int style)
-  {
-    m_fracStyle = style;
-  }
+  void SetFracStyle(int style) { m_fracStyle = style; }
 
   //! Set the numerator for the fraction
   void SetNum(Cell *num);
@@ -77,10 +74,7 @@ public:
   void SetDenom(Cell *denom);
 
   //! Answers the question if this is an operator by returning "true".
-  bool IsOperator() const override
-  {
-    return true;
-  }
+  bool IsOperator() const override { return true; }
 
   wxString ToString() override;
 
@@ -102,8 +96,7 @@ public:
   void SetupBreakUps();
 
   void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;

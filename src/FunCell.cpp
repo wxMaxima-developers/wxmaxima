@@ -64,7 +64,7 @@ FunCell::~FunCell()
 
 void FunCell::SetName(Cell *name)
 {
-  if (name == NULL)
+  if (!name)
     return;
   m_nameCell = std::shared_ptr<Cell>(name);
 
@@ -77,7 +77,7 @@ void FunCell::SetName(Cell *name)
 
 void FunCell::SetArg(Cell *arg)
 {  
-  if (arg == NULL)
+  if (!arg)
     return;
   m_argCell = std::shared_ptr<Cell>(arg);
 

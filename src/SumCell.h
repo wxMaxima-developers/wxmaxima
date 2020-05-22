@@ -45,7 +45,7 @@ class SumCell final : public Cell
 public:
   SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SumCell(const SumCell &cell);
-  Cell *Copy() override {return new SumCell(*this);}
+  Cell *Copy() override { return new SumCell(*this); }
   ~SumCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_under); }
@@ -62,10 +62,7 @@ public:
 
   void SetOver(Cell *over);
 
-  void SetSumStyle(int style)
-  {
-    m_sumStyle = style;
-  }
+  void SetSumStyle(int style) { m_sumStyle = style; }
 
   wxString ToString() override;
 
@@ -79,9 +76,8 @@ public:
 
   wxString ToOMML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;
