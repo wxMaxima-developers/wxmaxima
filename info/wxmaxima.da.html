@@ -805,16 +805,16 @@ Ordinary text</code></pre>
 <a class="sourceLine" id="cb14-10" title="10">)$</a></code></pre></div>
 <h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</h3>
 <p>While not being a provided by <em>wxMaxima</em> this feature of <em>Maxima</em> (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the <em>Maxima</em> mailing list:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1"><span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb15-2" title="2"></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co">/* Parabola in window #1 */</span></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb15-5" title="5"></a>
-<a class="sourceLine" id="cb15-6" title="6"><span class="co">/* Parabola in window #2 */</span></a>
-<a class="sourceLine" id="cb15-7" title="7"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb15-8" title="8"></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="co">/* Paraboloid in window #3 */</span></a>
-<a class="sourceLine" id="cb15-10" title="10"><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
+<pre><code>load(draw);
+
+/* Parabola in window #1 */
+draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
+
+/* Parabola in window #2 */
+draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
+
+/* Paraboloid in window #3 */
+draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h3 id="the-plot-using-draw-sidepane"><span class="header-section-number">2.3.8</span> The “Plot using draw” sidepane</h3>
 <p>The “Plot using draw” sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-05-18 09:05+0200\n"
+"POT-Creation-Date: 2020-05-24 16:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1404,20 +1404,34 @@ msgid ""
 "from a post from Mario Rodriguez to the _Maxima_ mailing list:"
 msgstr ""
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:533
+#. type: Plain text
+#: ../../info/wxmaxima.md:535
+#, no-wrap
+msgid "    load(draw);\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:538
 #, no-wrap
 msgid ""
-"load(draw);\n"
-"\n"
-"/* Parabola in window #1 */\n"
-"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Parabola in window #2 */\n"
-"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Paraboloid in window #3 */\n"
-"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+"    /* Parabola in window #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:541
+#, no-wrap
+msgid ""
+"    /* Parabola in window #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+msgstr ""
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:544
+#, no-wrap
+msgid ""
+"    /* Paraboloid in window #3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
 
 #. type: Title ###

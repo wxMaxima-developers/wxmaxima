@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-05-18 09:05+0200\n"
+"POT-Creation-Date: 2020-05-24 16:08+0200\n"
 "PO-Revision-Date: 2020-05-21 10:21+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -13,14 +13,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
 #, no-wrap
-#| msgid "The wxMaxima user manual {-}\n"
 msgid "The wxMaxima user manual {-}"
 msgstr "Підручник користувача wxMaxima {-}"
 
@@ -116,7 +115,6 @@ msgstr "Параметри командного рядка, підтримку �
 #. type: Title =
 #: ../../info/wxmaxima.md:44
 #, no-wrap
-#| msgid "Introduction to wxMaxima\n"
 msgid "Introduction to wxMaxima"
 msgstr "Вступ до wxMaxima"
 
@@ -528,14 +526,8 @@ msgstr "Надсилання комірок для обчислення у Maxim
 #. type: Plain text
 #: ../../info/wxmaxima.md:114
 #, no-wrap
-msgid ""
-"The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd"
-">, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the"
-" keypad is pressed.\n"
-msgstr ""
-"Команду у комірці буде виконано одразу після натискання комбінацій клавіш <"
-"kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> або"
-" клавіші <kbd>ENTER</kbd> на клавіатурі.\n"
+msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed.\n"
+msgstr "Команду у комірці буде виконано одразу після натискання комбінацій клавіш <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> або клавіші <kbd>ENTER</kbd> на клавіатурі.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:115
@@ -546,19 +538,8 @@ msgstr "Автоматичне доповнення команд"
 #. type: Plain text
 #: ../../info/wxmaxima.md:118
 #, no-wrap
-msgid ""
-"_wxMaxima_ contains an autocompletion feature that is triggered via the menu"
-" (Cell/Complete Word) or alternatively by pressing the key combination <kbd"
-">CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For"
-" example if activated within an unit specification for ezUnits it will offer"
-" a list of applicable units.\n"
-msgstr ""
-"У _wxMaxima_ реалізовано можливість автоматичного доповнення коду, якою можна"
-" скористатися за допомогою меню (Комірка/Доповнити слово) або натисканням"
-" комбінації клавіш <kbd>CTRL</kbd>+<kbd>Пробіл</kbd>. Автоматичне доповнення"
-" є чутливим до регістру символів. Наприклад, якщо його активувати зі"
-" специфікацією модулів для ezUnits, воно запропонує список відповідних"
-" модулів.\n"
+msgid "_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.\n"
+msgstr "У _wxMaxima_ реалізовано можливість автоматичного доповнення коду, якою можна скористатися за допомогою меню (Комірка/Доповнити слово) або натисканням комбінації клавіш <kbd>CTRL</kbd>+<kbd>Пробіл</kbd>. Автоматичне доповнення є чутливим до регістру символів. Наприклад, якщо його активувати зі специфікацією модулів для ezUnits, воно запропонує список відповідних модулів.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:120
@@ -568,20 +549,8 @@ msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 #. type: Plain text
 #: ../../info/wxmaxima.md:122
 #, no-wrap
-msgid ""
-"Besides completing a file name, an unit name or the current command’s or"
-" variable’s name the autocompletion is able to show a template for most of"
-" the commands indicating the type (and meaning) of the parameters this"
-" program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL<"
-"/kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show"
-" Template).\n"
-msgstr ""
-"Окрім доповнення, назви файла, назви модуля або назви поточної команди чи"
-" змінної, засіб автоматичного доповнення може показувати шаблони для"
-" більшості команд, вказуючи тип (і значення) параметрів, які очікує отримати"
-" відповідна програма. Щоб задіяти цю можливість, натисніть комбінацію клавіш"
-" <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>ПРОБІЛ</kbd> або виберіть відповідний"
-" пункт меню (Комірка/Показати шаблон).\n"
+msgid "Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
+msgstr "Окрім доповнення, назви файла, назви модуля або назви поточної команди чи змінної, засіб автоматичного доповнення може показувати шаблони для більшості команд, вказуючи тип (і значення) параметрів, які очікує отримати відповідна програма. Щоб задіяти цю можливість, натисніть комбінацію клавіш <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>ПРОБІЛ</kbd> або виберіть відповідний пункт меню (Комірка/Показати шаблон).\n"
 
 #. type: Title ####
 #: ../../info/wxmaxima.md:123
@@ -591,12 +560,6 @@ msgstr "Грецькі літери"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:126
-#| msgid ""
-#| "Computers traditionally store characters in 8-bit values. This allows for "
-#| "a maximum of 256 different characters. All letters, numbers, and control "
-#| "symbols (end of transmission, end of string, lines and edges for drawing "
-#| "rectangles for menus _etc_.) of nearly any given language can fit within "
-#| "that limit."
 msgid ""
 "Computers traditionally stored characters in 8-bit values. This allows for a "
 "maximum of 256 different characters. All letters, numbers, and control "
@@ -612,12 +575,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:128
-#| msgid ""
-#| "For most countries the codepage of 256 characters that has been chosen "
-#| "does not include things like Greek letters, though, that are frequently "
-#| "used in mathematics. To overcome this type of limitation Unicode has been "
-#| "invented: An encoding that makes english text work like normal, but to "
-#| "use characters whose keycode are more than 8 bits long."
 msgid ""
 "For most countries the codepage of 256 characters that has been chosen, does "
 "not include things like Greek letters, though, that are frequently used in "
@@ -628,17 +585,11 @@ msgstr ""
 "Втім, у більшості мов до вибраної кодової сторінки із 256 символів не можна "
 "включити додаткові символи, зокрема літери грецької абетки, які широко "
 "використовуються у математичних формулах. Щоб подолати обмеження подібного "
-"типу, було винайдено [Юнікод](https://home."
-"unicode.org/) — кодування, яке працює для латиниці, але використовує набагато"
-" більше за 256 символів."
+"типу, було винайдено [Юнікод](https://home.unicode.org/) — кодування, яке "
+"працює для латиниці, але використовує набагато більше за 256 символів."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
-#| msgid ""
-#| "_Maxima_ allows for unicode characters if it was compiled using a Lisp "
-#| "compiler that either supports lisp or that doesn't care about the font "
-#| "encoding. As at least one of this is likely to be true _wxMaxima_ "
-#| "provides a method of entering Greek characters using the keyboard:"
 msgid ""
 "_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
 "either supports unicode or that doesn't care about the font encoding. As at "
@@ -662,18 +613,14 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:133
-#| msgid ""
-#| "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter "
-#| "and <kbd>ESC</kbd> again. In this case the following letters are "
-#| "supported:"
 msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
 "two for the greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
 "following letters are supported:"
 msgstr ""
-"Крім того, можна натиснути <kbd>ESC</kbd>, ввести одну літеру (чи дві літери"
-" для грецької літери «омікрон») і натиснути "
-"<kbd>ESC</kbd> ще раз. У цьому випадку прив'язка до літер є такою:"
+"Крім того, можна натиснути <kbd>ESC</kbd>, ввести одну літеру (чи дві літери "
+"для грецької літери «омікрон») і натиснути <kbd>ESC</kbd> ще раз. У цьому "
+"випадку прив'язка до літер є такою:"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:152
@@ -835,21 +782,13 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:208
 #, no-wrap
-#| msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character] <kbd>ESC</kbd>.\n"
-msgid ""
-"If a special symbol isn’t in the list it is possible to input arbitrary"
-" unicode characters by pressing <kbd>ESC</kbd> [number of the character"
-" (hexadecimal)] <kbd>ESC</kbd>.\n"
-msgstr ""
-"Якщо спеціального символу немає у списку, ви можете ввести його як довільний"
-" символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер символу"
-" (шістнадцятковий)] <kbd>ESC</kbd>.\n"
+msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
+msgstr "Якщо спеціального символу немає у списку, ви можете ввести його як довільний символ Юнікод натисканням послідовності клавіш <kbd>ESC</kbd> [номер символу (шістнадцятковий)] <kbd>ESC</kbd>.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:210
 #, no-wrap
-msgid ""
-"<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
+msgid "<kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an `a`.\n"
 msgstr "Отже, <kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> дасть «a».\n"
 
 #. type: Plain text
@@ -936,16 +875,6 @@ msgstr ""
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:229
 #, no-wrap
-#| msgid ""
-#| "~~~\n"
-#| "Ordinary text\n"
-#| " * One item, indentation level 1\n"
-#| " * Another item at indentation level 1\n"
-#| "   * An item at a second indentation level\n"
-#| "   * A second item at the second indentation level\n"
-#| " * A third item at the first indentation level\n"
-#| "Ordinary text\n"
-#| "~~~\n"
 msgid ""
 "Ordinary text\n"
 " * One item, indentation level 1\n"
@@ -966,23 +895,12 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:240
 #, no-wrap
-msgid ""
-"_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
-msgstr ""
-"У _wxMaxima_ фрагменти тексту, які розпочинаються з символів `>` вважаються"
-" блоками цитат:\n"
+msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:\n"
+msgstr "У _wxMaxima_ фрагменти тексту, які розпочинаються з символів `>` вважаються блоками цитат:\n"
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:241
 #, no-wrap
-#| msgid ""
-#| "~~~\n"
-#| "Ordinary text\n"
-#| "> quote quote quote quote\n"
-#| "> quote quote quote quote\n"
-#| "> quote quote quote quote\n"
-#| "Ordinary text\n"
-#| "~~~\n"
 msgid ""
 "Ordinary text\n"
 "> quote quote quote quote\n"
@@ -999,36 +917,20 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:250
 #, no-wrap
-msgid ""
-"_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by"
-" the corresponding unicode sign:\n"
-msgstr ""
-"У коді TeX та HTML _wxMaxima_ також розпізнається рядок `=>`, який програма"
-" замінює на відповідний символ Юнікод:\n"
+msgid "_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by the corresponding unicode sign:\n"
+msgstr "У коді TeX та HTML _wxMaxima_ також розпізнається рядок `=>`, який програма замінює на відповідний символ Юнікод:\n"
 
 #. type: Fenced code block
 #: ../../info/wxmaxima.md:251
 #, no-wrap
-#| msgid ""
-#| "~~~\n"
-#| "cogito => sum.\n"
-#| "~~~\n"
 msgid "cogito => sum.\n"
 msgstr "cogito => sum.\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:256
 #, no-wrap
-msgid ""
-"Other symbols the html and TeX export will recognize are `<=` and `>=` for"
-" comparisons, a double-pointed double arrow (`<=>`), single- headed arrows"
-" (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also"
-" `<<` and `>>` are recognized.\n"
-msgstr ""
-"Іншими символами, які буде розпізнано під час експортування до HTML або TeX,"
-" є `<=` і `>=` для порівнянь, двобічна стрілка (`<=>`), одинарні стрілки (`<-"
-">`, `->` і `<-`), а також `+/-` як відповідний знак. Для експортування у код"
-" TeX передбачено також підтримку перетворення `<<` і `>>`.\n"
+msgid "Other symbols the html and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.\n"
+msgstr "Іншими символами, які буде розпізнано під час експортування до HTML або TeX, є `<=` і `>=` для порівнянь, двобічна стрілка (`<=>`), одинарні стрілки (`<->`, `->` і `<-`), а також `+/-` як відповідний знак. Для експортування у код TeX передбачено також підтримку перетворення `<<` і `>>`.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:257
@@ -1149,7 +1051,6 @@ msgstr "![Зображення пакетного файла](./BatchImage.png){
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:284
 #, no-wrap
-#| msgid "read(\"test.mac\");"
 msgid ""
 "\n"
 "read(\"test.mac\");\n"
@@ -1179,18 +1080,8 @@ msgstr ".wxm"
 #. type: Plain text
 #: ../../info/wxmaxima.md:295
 #, no-wrap
-msgid ""
-".wxm files contain the worksheet except _Maxima_'s output. On Maxima versions"
-" >5.38 they can be read using _Maxima_'s `load()` function just as .mac files"
-" can be. With this plain-text format it sometimes is unavoidable that"
-" worksheets that use new features are not downwards-compatible with older"
-" versions of _wxMaxima_.\n"
-msgstr ""
-"Файли .wxm містять дані робочого аркуша, окрім виведених даних _Maxima_. У"
-" версіях Maxima >5.38 їх можна прочитати за допомогою функції `load()`"
-" _Maxima_, так само, як можна прочитати файли .mac. У цьому текстовому"
-" форматі іноді є неусувна проблема — робочі аркуші із новими можливостями не"
-" є зворотно сумісними із застарілими версіями _wxMaxima_.\n"
+msgid ".wxm files contain the worksheet except _Maxima_'s output. On Maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.\n"
+msgstr "Файли .wxm містять дані робочого аркуша, окрім виведених даних _Maxima_. У версіях Maxima >5.38 їх можна прочитати за допомогою функції `load()` _Maxima_, так само, як можна прочитати файли .mac. У цьому текстовому форматі іноді є неусувна проблема — робочі аркуші із новими можливостями не є зворотно сумісними із застарілими версіями _wxMaxima_.\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:296
@@ -1300,7 +1191,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:319
 #, no-wrap
-#| msgid "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$"
 msgid ""
 "\n"
 "wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
@@ -1428,26 +1318,11 @@ msgstr "Де зберігаються налаштування?"
 #: ../../info/wxmaxima.md:354
 #, no-wrap
 msgid ""
-"If you are using Unix/Linux, the configuration information will be saved in a"
-" file `.wxMaxima` in your homedirectory (if you are using wxWidgets < 3.1.1),"
-" or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used)."
-" You can retrieve the wxWidgets version from the command `wxbuild_info();` or"
-" by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/)"
-" is the cross-platform GUI library, which is the base for wxMaxima (therefore"
-" the `wx` in the name).\n"
-"(Since the filename starts with a dot, `.wxMaxima` or `.config` will be"
-" hidden).\n"
+"If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your homedirectory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for wxMaxima (therefore the `wx` in the name).\n"
+"(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
 msgstr ""
-"Якщо ви користуєтеся Unix/Linux, дані налаштувань буде збережено до файла"
-" `.wxMaxima` у вашому домашньому каталозі (якщо ви користуєтеся wxWidgets <"
-" 3.1.1), або `.config/wxMaxima.conf` ((стандартний каталог XDG), якщо"
-" використано wxWidgets >= 3.1.1). Визначити версію wxWidgets можна за"
-" допомогою команди `wxbuild_info();` або пункту меню «Довідка -> Про"
-" програму». [wxWidgets](https://www.wxwidgets.org/) є бібліотекою графічного"
-" інтерфейсу користувача, яка працює на багатьох платформах і є основою"
-" wxMaxima (звідси `wx` у назві програми).\n"
-"(Оскільки назви файлів починається з крапки, файл `.wxMaxima` і "
-" каталог`.config` є прихованими).\n"
+"Якщо ви користуєтеся Unix/Linux, дані налаштувань буде збережено до файла `.wxMaxima` у вашому домашньому каталозі (якщо ви користуєтеся wxWidgets < 3.1.1), або `.config/wxMaxima.conf` ((стандартний каталог XDG), якщо використано wxWidgets >= 3.1.1). Визначити версію wxWidgets можна за допомогою команди `wxbuild_info();` або пункту меню «Довідка -> Про програму». [wxWidgets](https://www.wxwidgets.org/) є бібліотекою графічного інтерфейсу користувача, яка працює на багатьох платформах і є основою wxMaxima (звідси `wx` у назві програми).\n"
+"(Оскільки назви файлів починається з крапки, файл `.wxMaxima` і  каталог`.config` є прихованими).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:356
@@ -1462,7 +1337,6 @@ msgstr ""
 #. type: Title =
 #: ../../info/wxmaxima.md:362
 #, no-wrap
-#| msgid "Extensions to _Maxima_\n"
 msgid "Extensions to _Maxima_"
 msgstr "Розширення _Maxima_"
 
@@ -1556,17 +1430,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:379
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "for i:1 thru 10 do (\n"
-#| "    /* Tell the user how far we got */\n"
-#| "    wxstatusbar(concat(\"Pass \",i)),\n"
-#| "    /* (sleep n) is a Lisp function, which can be used */\n"
-#| "    /* with the character \"?\" before. It delays the */\n"
-#| "    /* program execution (here: for 3 seconds) */\n"
-#| "    ?sleep(3)\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "for i:1 thru 10 do (\n"
 "    /* Tell the user how far we got */\n"
@@ -1654,16 +1517,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:402
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxplot_size:[1200,800]$\n"
-#| "wxdraw2d(\n"
-#| "    explicit(\n"
-#| "        sin(x),\n"
-#| "        x,1,10\n"
-#| "    )\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "wxplot_size:[1200,800]$\n"
 "wxdraw2d(\n"
@@ -1693,15 +1546,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:414
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxdraw2d(\n"
-#| "    explicit(\n"
-#| "        sin(x),\n"
-#| "        x,1,10\n"
-#| "    )\n"
-#| "),wxplot_size=[1600,800]$\n"
-#| "~~~\n"
 msgid ""
 "wxdraw2d(\n"
 "    explicit(\n"
@@ -1821,17 +1665,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:441
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "with_slider_draw(\n"
-#| "    f,[1,2,3,4,5,6,7,10],\n"
-#| "    title=concat(\"f=\",f,\"Hz\"),\n"
-#| "    explicit(\n"
-#| "        sin(2*%pi*f*x),\n"
-#| "        x,0,1\n"
-#| "    ),grid=true\n"
-#| ");\n"
-#| "~~~\n"
 msgid ""
 "with_slider_draw(\n"
 "    f,[1,2,3,4,5,6,7,10],\n"
@@ -1864,23 +1697,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:454
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxanimate_autoplay:true;\n"
-#| "wxanimate_framerate:20;\n"
-#| "with_slider_draw3d(\n"
-#| "    α,makelist(i,i,1,360,3),\n"
-#| "    title=sconcat(\"α=\",α),\n"
-#| "    surface_hide=true,\n"
-#| "    contour=both,\n"
-#| "    view=[60,α],\n"
-#| "    explicit(\n"
-#| "        sin(x)*sin(y),\n"
-#| "        x,-π,π,\n"
-#| "        y,-π,π\n"
-#| "    )\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
@@ -1926,23 +1742,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:473
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxanimate_autoplay:true;\n"
-#| "wxanimate_framerate:20;\n"
-#| "with_slider_draw3d(\n"
-#| "    t,makelist(i,i,0,2*π,.05*π),\n"
-#| "    title=sconcat(\"α=\",α),\n"
-#| "    surface_hide=true,\n"
-#| "    contour=both,\n"
-#| "    view=[60,30+5*sin(t)],\n"
-#| "    explicit(\n"
-#| "        sin(x)*y^2,\n"
-#| "        x,-2*π,2*π,\n"
-#| "        y,-2*π,2*π\n"
-#| "    )\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "wxanimate_autoplay:true;\n"
 "wxanimate_framerate:20;\n"
@@ -2007,11 +1806,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:497
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxanimate(a, 10,\n"
-#| "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
-#| "~~~\n"
 msgid ""
 "wxanimate(a, 10,\n"
 "    sin(a*x), [x,-5,5]), wxanimate_framerate=6$\n"
@@ -2034,16 +1828,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:504
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "f:sin(a*x);\n"
-#| "with_slider_draw(\n"
-#| "    a,makelist(i/2,i,1,10),\n"
-#| "    title=concat(\"a=\",float(a)),\n"
-#| "    grid=true,\n"
-#| "    explicit(f,x,0,10)\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
@@ -2073,19 +1857,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:516
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "f:sin(a*x);\n"
-#| "with_slider_draw(\n"
-#| "    b,makelist(i/2,i,1,10),\n"
-#| "    title=concat(\"a=\",float(b)),\n"
-#| "    grid=true,\n"
-#| "    explicit(\n"
-#| "        subst(a=b,f),\n"
-#| "        x,0,10\n"
-#| "    )\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "f:sin(a*x);\n"
 "with_slider_draw(\n"
@@ -2127,31 +1898,39 @@ msgstr ""
 "нижче приклад походить із допису Маріо Родрігеса (Mario Rodriguez) у списку "
 "листування _Maxima_:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:533
-#, no-wrap
+#. type: Plain text
+#: ../../info/wxmaxima.md:535
+#, fuzzy, no-wrap
+#| msgid "~~~maxima load(draw);"
+msgid "    load(draw);\n"
+msgstr "~~~maxima load(draw);"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:538
+#, fuzzy, no-wrap
+#| msgid "/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
 msgid ""
-"load(draw);\n"
-"\n"
-"/* Parabola in window #1 */\n"
-"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Parabola in window #2 */\n"
-"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Paraboloid in window #3 */\n"
-"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-msgstr ""
-"load(draw);\n"
-"\n"
-"/* Парабола у вікні 1 */\n"
-"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Парабола у вікні 2 */\n"
-"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Параболоїд у вікні 3 */\n"
-"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+"    /* Parabola in window #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+msgstr "    /* Парабола у вікні 1 */ draw1d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:541
+#, fuzzy, no-wrap
+#| msgid "/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
+msgid ""
+"    /* Parabola in window #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+msgstr "/* Парабола у вікні 2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:544
+#, fuzzy, no-wrap
+#| msgid "/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ~~~"
+msgid ""
+"    /* Paraboloid in window #3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+msgstr "/* Параболоїд у вікні 3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ~~~"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:546
@@ -2430,7 +2209,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:612
 #, no-wrap
-#| msgid "show_image(\"man.png\");"
 msgid ""
 "\n"
 "show_image(\"man.png\");\n"
@@ -2586,15 +2364,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:641
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "table_form(\n"
-#| "    [\n"
-#| "        [1,2],\n"
-#| "        [3,4]\n"
-#| "    ]\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "table_form(\n"
 "    [\n"
@@ -2693,7 +2462,6 @@ msgstr ""
 #. type: Title =
 #: ../../info/wxmaxima.md:674
 #, no-wrap
-#| msgid "Troubleshooting\n"
 msgid "Troubleshooting"
 msgstr "Вирішення проблем"
 
@@ -2761,19 +2529,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:687
-#| msgid ""
-#| "If the zip signature at the end of the file is still intact after "
-#| "renaming a broken .wxmx file to .zip most operating systems will provide "
-#| "a way to extract any portion of information that is stored inside it. The "
-#| "can be done when there is the need of recovering the original image files "
-#| "from a text processor document. If the zip signature isn’t intact that "
-#| "does not need to be the end of the world: If _wxMaxima_ during saving "
-#| "detected that something went wrong there will be a `wxmx~` file whose "
-#| "contents might help and even if there isn’t such a file: If the "
-#| "configuration option is set that .wxmx files have to be optimized for "
-#| "version control it is possible to rename the .wxmx file to a .txt file "
-#| "and to use a text editor to recover the XML portion of the file's "
-#| "contents."
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
 "broken .wxmx file to .zip most operating systems will provide a way to "
@@ -2795,46 +2550,25 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:689
 #, no-wrap
-msgid ""
-"And even if there isn’t such a file: The `.wxmx` file is a container format"
-" and the XML portion is stored uncompressed. It it is possible to rename the"
-" `.wxmx` file to a `.txt` file and to use a text editor to recover the XML"
-" portion of the file's contents (it starts with `<?xml version=\"1.0\""
-" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after"
-" that text you will see some unreadable binary contents in the text editor).\n"
-msgstr ""
-" І навіть якщо такого файла не існує — якщо встановлено параметр "
-"налаштування для оптимізації файлів .wxmx для системи керування версіями, "
-"можна перейменувати файл .wxmx на файл .txt і скористатися текстовим "
-"редактором для відновлення частини XML із вмісту файла (він починається з `<"
-"?xml version=\"1.0\" encoding=\"UTF-8\"?>` і завершується `</wxMaximaDocument"
-">`. До і після цього фрагмента тексту у текстовому редакторі ви побачите"
-" непридатні до читання двійкові дані).\n"
+msgid "And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).\n"
+msgstr " І навіть якщо такого файла не існує — якщо встановлено параметр налаштування для оптимізації файлів .wxmx для системи керування версіями, можна перейменувати файл .wxmx на файл .txt і скористатися текстовим редактором для відновлення частини XML із вмісту файла (він починається з `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` і завершується `</wxMaximaDocument>`. До і після цього фрагмента тексту у текстовому редакторі ви побачите непридатні до читання двійкові дані).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:691
-#| msgid ""
-#| "If the text file containing this contents is saved as a file ending in ."
-#| "xml _wxMaxima_ will know how to recover the text of the document from it."
 msgid ""
 "If a text file containing only this contents (e.g. copy and paste this text "
 "into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
 "how to recover the text of the document from it."
 msgstr ""
-"Якщо текстовий файл, що містить ці дані (наприклад скопійовані і вставлені як"
-" текст до звичайного файла), збережено як файл із суфіксом "
-"назви .xml, _wxMaxima_ відомий спосіб відновлення тексту документа з цього "
-"файла."
+"Якщо текстовий файл, що містить ці дані (наприклад скопійовані і вставлені "
+"як текст до звичайного файла), збережено як файл із суфіксом назви .xml, "
+"_wxMaxima_ відомий спосіб відновлення тексту документа з цього файла."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:692
 #, no-wrap
-msgid ""
-"I want some debug info to be displayed on the screen before my command has"
-" finished"
-msgstr ""
-"Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою"
-" роботу"
+msgid "I want some debug info to be displayed on the screen before my command has finished"
+msgstr "Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:695
@@ -2854,16 +2588,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:696
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "for i:1 thru 10 do (\n"
-#| "   disp(i),\n"
-#| "   /* (sleep n) is a Lisp function, which can be used */\n"
-#| "   /* with the character \"?\" before. It delays the */\n"
-#| "   /* program execution (here: for 3 seconds) */\n"
-#| "   ?sleep(3)\n"
-#| ")$\n"
-#| "~~~\n"
 msgid ""
 "for i:1 thru 10 do (\n"
 "   disp(i),\n"
@@ -2885,9 +2609,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:706
 #, no-wrap
 msgid "Plotting only shows a closed empty envelope with an error message"
-msgstr ""
-"На кресленні показано лише закриту порожню обгортку із повідомленням про"
-" помилку"
+msgstr "На кресленні показано лише закриту порожню обгортку із повідомленням про помилку"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:709
@@ -2954,9 +2676,7 @@ msgstr "Gnuplot не вивів коректного файла .png."
 #: ../../info/wxmaxima.md:717
 #, no-wrap
 msgid "Plotting an animation results in “error: undefined variable”"
-msgstr ""
-"Спроба накреслити анімацію призводить до повідомлення «помилка: невизначена"
-" змінна»"
+msgstr "Спроба накреслити анімацію призводить до повідомлення «помилка: невизначена змінна»"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:720
@@ -3031,7 +2751,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:730
 #, no-wrap
-#| msgid "playback();"
 msgid ""
 "\n"
 "playback();\n"
@@ -3045,9 +2764,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:736
 #, no-wrap
 msgid "_wxMaxima_ starts up with the message “Maxima process terminated.”"
-msgstr ""
-"_wxMaxima_ запускається із повідомленням «Процес Maxima несподівано перервав"
-" роботу.»"
+msgstr "_wxMaxima_ запускається із повідомленням «Процес Maxima несподівано перервав роботу.»"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:739
@@ -3130,8 +2847,7 @@ msgstr "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
 #: ../../info/wxmaxima.md:753
 #, no-wrap
 msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
-msgstr ""
-"При введенні даних програма уповільнюється або пропускає символи в Ubuntu"
+msgstr "При введенні даних програма уповільнюється або пропускає символи в Ubuntu"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:756
@@ -3149,8 +2865,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:757
 #, no-wrap
 msgid "_wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
-msgstr ""
-"_wxMaxima_ припиняє роботу, коли _Maxima_ обробляє грецькі символи або умляути"
+msgstr "_wxMaxima_ припиняє роботу, коли _Maxima_ обробляє грецькі символи або умляути"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:760
@@ -3164,7 +2879,6 @@ msgstr ""
 #. type: Fenced code block (lisp)
 #: ../../info/wxmaxima.md:761
 #, no-wrap
-#| msgid "(setf sb-impl::*default-external-format* :utf-8)"
 msgid ""
 "\n"
 "(setf sb-impl::*default-external-format* :utf-8)\n"
@@ -3196,11 +2910,8 @@ msgstr "    :lisp (sb-impl::userinit-pathname)\n"
 #. type: Title ###
 #: ../../info/wxmaxima.md:773
 #, no-wrap
-msgid ""
-"Can I make _wxMaxima_ output both image files and embedded plots at once?"
-msgstr ""
-"Чи можна зробити так, щоб _wxMaxima_ виводила дані одразу до файлів зображень"
-" і до вбудованих до аркуша креслень?"
+msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
+msgstr "Чи можна зробити так, щоб _wxMaxima_ виводила дані одразу до файлів зображень і до вбудованих до аркуша креслень?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:776
@@ -3214,13 +2925,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:777
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxdraw2d(\n"
-#| "    file_name=\"test\",\n"
-#| "    explicit(sin(x),x,1,10)\n"
-#| ");\n"
-#| "~~~\n"
 msgid ""
 "wxdraw2d(\n"
 "    file_name=\"test\",\n"
@@ -3244,25 +2948,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:786
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "load(\"draw\");\n"
-#| "pngdraw(name,[contents]):=\n"
-#| "(\n"
-#| "    draw(\n"
-#| "        append(\n"
-#| "            [\n"
-#| "                terminal=pngcairo,\n"
-#| "                dimensions=wxplot_size,\n"
-#| "                file_name=name\n"
-#| "            ],\n"
-#| "            contents\n"
-#| "        )\n"
-#| "    ),\n"
-#| "    show_image(printf(false,\"~a.png\",name))\n"
-#| ");\n"
-#| "pngdraw2d(name,[contents]):=\n"
-#| "    pngdraw(name,gr2d(contents));\n"
 msgid ""
 "load(\"draw\");\n"
 "pngdraw(name,[contents]):=\n"
@@ -3323,13 +3008,6 @@ msgstr ""
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:814
 #, no-wrap
-#| msgid ""
-#| "~~~maxima\n"
-#| "wxdraw2d(\n"
-#| "    proportional_axis=xy,\n"
-#| "    explicit(sin(x),x,1,10)\n"
-#| "),wxplot_size=[1000,1000];\n"
-#| "~~~\n"
 msgid ""
 "wxdraw2d(\n"
 "    proportional_axis=xy,\n"
@@ -3360,19 +3038,12 @@ msgstr "Чи є якийсь спосіб умістити більше текс
 #. type: Plain text
 #: ../../info/wxmaxima.md:830
 #, no-wrap
-msgid ""
-"There is: Just add the following lines to the LaTeX preamble (for example by"
-" using the respective field in the config dialogue (\"Export\"->\"Additional"
-" lines for the TeX preamble\"):\n"
-msgstr ""
-"Звичайно, є. Просто додайте вказані нижче рядки до преамбули LaTeX"
-" (наприклад, за допомогою відповідного поля у діалоговому вікні"
-" налаштовування («Експорт->Додаткові рядки до преамбули TeX»)):\n"
+msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
+msgstr "Звичайно, є. Просто додайте вказані нижче рядки до преамбули LaTeX (наприклад, за допомогою відповідного поля у діалоговому вікні налаштовування («Експорт->Додаткові рядки до преамбули TeX»)):\n"
 
 #. type: Fenced code block (latex)
 #: ../../info/wxmaxima.md:831
 #, no-wrap
-#| msgid "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}"
 msgid ""
 "\n"
 "\\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
@@ -3408,28 +3079,17 @@ msgstr ""
 #: ../../info/wxmaxima.md:841
 #, no-wrap
 msgid "wxMaxima sometimes hangs for a several seconds once in the first minute"
-msgstr ""
-"wxMaxima іноді повисає на декілька секунд під час першої хвилини роботи"
+msgstr "wxMaxima іноді повисає на декілька секунд під час першої хвилини роботи"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:844
 #, no-wrap
-msgid ""
-"wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to"
-" background tasks, which normally goes totally unnoticed. In the moment the"
-" result of such a task is needed, though, it is possible that wxMaxima needs"
-" to wait a couple of seconds before it can continue its work.\n"
-msgstr ""
-"wxMaxima передає певні складні завдання, зокрема завдання з обробки"
-" підручника з maxima, який складається з понад 1000 сторінок, фоновим"
-" завданням, що, зазвичай, відбувається зовсім непомітно. Втім, у момент, коли"
-" може знадобитися результат виконання такого завдання, wxMaxima може"
-" знадобитися декілька секунд для відновлення нормальної роботи.\n"
+msgid "wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.\n"
+msgstr "wxMaxima передає певні складні завдання, зокрема завдання з обробки підручника з maxima, який складається з понад 1000 сторінок, фоновим завданням, що, зазвичай, відбувається зовсім непомітно. Втім, у момент, коли може знадобитися результат виконання такого завдання, wxMaxima може знадобитися декілька секунд для відновлення нормальної роботи.\n"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:849
 #, no-wrap
-#| msgid "Command-line arguments\n"
 msgid "Command-line arguments"
 msgstr "Параметри командного рядка"
 
@@ -3493,35 +3153,23 @@ msgstr ""
 #: ../../info/wxmaxima.md:866
 #, no-wrap
 msgid ""
-"* `--logtostdout`:                 Log all \"debug messages\" sidebar"
-" messages to stderr, too.\n"
+"* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
 "* `--pipe`:                        Pipe messages from Maxima to stdout.\n"
 "* `--exit-on-error`:               Close the program on any maxima error.\n"
-"* `-f` or `--ini=<str>`: Use the init file that was given as argument to this"
-" command-line switch\n"
+"* `-f` or `--ini=<str>`: Use the init file that was given as argument to this command-line switch\n"
 "* `-u`, `--use-version=<str>`:     Use maxima version `<str>`.\n"
-"* `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler"
-" `<str>`.\n"
-"* `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima"
-" arguments\n"
-"* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_"
-" binary\n"
+"* `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.\n"
+"* `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments\n"
+"* `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary\n"
 msgstr ""
-"* `--logtostdout`:                 записувати до stderr і усі «діагностичні"
-" повідомлення» бічної панелі.\n"
-"* `--pipe`:                        передавати каналом повідомлення від Maxima"
-" до stdout.\n"
-"* `--exit-on-error`:               завершити роботу програми за будь-якої"
-" помилки maxima.\n"
-"* `-f` або `--ini=<рядок>`: скористатися файлом init, який передано як"
-" аргумент цього параметра командного рядка\n"
+"* `--logtostdout`:                 записувати до stderr і усі «діагностичні повідомлення» бічної панелі.\n"
+"* `--pipe`:                        передавати каналом повідомлення від Maxima до stdout.\n"
+"* `--exit-on-error`:               завершити роботу програми за будь-якої помилки maxima.\n"
+"* `-f` або `--ini=<рядок>`: скористатися файлом init, який передано як аргумент цього параметра командного рядка\n"
 "* `-u`, `--use-version=<рядок>`:   скористатися версією maxima `<рядок>`.\n"
-"* `-l`, `--lisp=<рядок>`:          скористатися Maxima, яку зібрано за"
-" допомогою компілятора Lisp `<рядок>`.\n"
-"* `-X`, `--extra-args=<рядок>`:    надає змогу вказати додаткові аргументи"
-" Maxima\n"
-"* `-m` або `--maxima=<рядок>`:     надає змогу вказати розташування"
-" виконуваного файла _maxima_\n"
+"* `-l`, `--lisp=<рядок>`:          скористатися Maxima, яку зібрано за допомогою компілятора Lisp `<рядок>`.\n"
+"* `-X`, `--extra-args=<рядок>`:    надає змогу вказати додаткові аргументи Maxima\n"
+"* `-m` або `--maxima=<рядок>`:     надає змогу вказати розташування виконуваного файла _maxima_\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:867
@@ -3531,6 +3179,29 @@ msgid ""
 msgstr ""
 "Замість символу мінуса у деяких операційних системах перед перемикачами "
 "командного рядка використовується тире."
+
+#~ msgid ""
+#~ "load(draw);\n"
+#~ "\n"
+#~ "/* Parabola in window #1 */\n"
+#~ "draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Parabola in window #2 */\n"
+#~ "draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Paraboloid in window #3 */\n"
+#~ "draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+#~ msgstr ""
+#~ "load(draw);\n"
+#~ "\n"
+#~ "/* Парабола у вікні 1 */\n"
+#~ "draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Парабола у вікні 2 */\n"
+#~ "draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Параболоїд у вікні 3 */\n"
+#~ "draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #, fuzzy
 #~| msgid ""
@@ -3765,37 +3436,6 @@ msgstr ""
 
 #~ msgid "~~~"
 #~ msgstr "~~~"
-
-#~| msgid "    load(draw);\n"
-#~ msgid "~~~maxima load(draw);"
-#~ msgstr "~~~maxima load(draw);"
-
-#~| msgid ""
-#~| "    /* Parabola in window #1 */\n"
-#~| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-#~ msgid ""
-#~ "/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
-#~ msgstr ""
-#~ "    /* Парабола у вікні 1 */ draw1d(terminal=[wxt,1],explicit(x^2,"
-#~ "x,-1,1));"
-
-#~| msgid ""
-#~| "    /* Parabola in window #2 */\n"
-#~| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-#~ msgid ""
-#~ "/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
-#~ msgstr ""
-#~ "/* Парабола у вікні 2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
-
-#~| msgid ""
-#~| "    /* Paraboloid in window #3 */\n"
-#~| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-#~ msgid ""
-#~ "/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
-#~ "x,-1,1,y,-1,1)); ~~~"
-#~ msgstr ""
-#~ "/* Параболоїд у вікні 3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
-#~ "x,-1,1,y,-1,1)); ~~~"
 
 #~| msgid ""
 #~| "wxdraw2d(\n"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-18 09:05+0200\n"
+"POT-Creation-Date: 2020-05-24 16:08+0200\n"
 "PO-Revision-Date: 2020-05-08 07:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -1827,31 +1827,51 @@ msgstr ""
 "Strenggenommen kein Feature von _wxMaxima_. Aber Maxima erlaubt auf vielen "
 "Systemen das folgende Beispiel von Mario Rodriguez auszuführen:"
 
-#. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:533
-#, no-wrap
+#. type: Plain text
+#: ../../info/wxmaxima.md:535
+#, fuzzy, no-wrap
+#| msgid "    load(draw);\n"
+msgid "    load(draw);\n"
+msgstr "    load(draw);\n"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:538
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    /* Parabola in window #1 */\n"
+#| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
 msgid ""
-"load(draw);\n"
-"\n"
-"/* Parabola in window #1 */\n"
-"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Parabola in window #2 */\n"
-"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Paraboloid in window #3 */\n"
-"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+"    /* Parabola in window #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
 msgstr ""
-"load(draw);\n"
-"\n"
-"/* Parabel in Fenster #1 */\n"
-"\"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Parabel in Fenster #2 */\n"
-"draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-"\n"
-"/* Paraboloid in Fenster #3 */\n"
-"draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+"    /* Eine Parabel in Fenster #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:541
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    /* Parabola in window #2 */\n"
+#| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+msgid ""
+"    /* Parabola in window #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+msgstr ""
+"    /* Eine Parabel in Fenster #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+
+#. type: Plain text
+#: ../../info/wxmaxima.md:544
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    /* Paraboloid in window #3 */\n"
+#| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+msgid ""
+"    /* Paraboloid in window #3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+msgstr ""
+"    /* Ein Paraboloid in Fenster #3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:546
@@ -2454,9 +2474,9 @@ msgid ""
 "into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
 "how to recover the text of the document from it."
 msgstr ""
-"Wird eine Textdatei mit diesem Text (z.B. indem er mit Copy+Paste in eine neue Datei eingefügt wird) "
-"als `.xml`-Datei gespeichert, weiß _wxMaxima_, wie man den Text-Teil des Dokuments rekonstruiert."
-
+"Wird eine Textdatei mit diesem Text (z.B. indem er mit Copy+Paste in eine "
+"neue Datei eingefügt wird) als `.xml`-Datei gespeichert, weiß _wxMaxima_, "
+"wie man den Text-Teil des Dokuments rekonstruiert."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:692
@@ -3074,6 +3094,29 @@ msgstr ""
 "Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen "
 "Schrägstrich statt eines Minuszeichens."
 
+#~ msgid ""
+#~ "load(draw);\n"
+#~ "\n"
+#~ "/* Parabola in window #1 */\n"
+#~ "draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Parabola in window #2 */\n"
+#~ "draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Paraboloid in window #3 */\n"
+#~ "draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+#~ msgstr ""
+#~ "load(draw);\n"
+#~ "\n"
+#~ "/* Parabel in Fenster #1 */\n"
+#~ "\"draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Parabel in Fenster #2 */\n"
+#~ "draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
+#~ "\n"
+#~ "/* Paraboloid in Fenster #3 */\n"
+#~ "draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
+
 #, fuzzy
 #~| msgid ""
 #~| "a alpha    i iota      r rho\n"
@@ -3293,42 +3336,6 @@ msgstr ""
 
 #~ msgid "latex"
 #~ msgstr "latex"
-
-#, fuzzy
-#~| msgid "    load(draw);\n"
-#~ msgid "~~~maxima load(draw);"
-#~ msgstr "    load(draw);\n"
-
-#, fuzzy
-#~| msgid ""
-#~| "    /* Parabola in window #1 */\n"
-#~| "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-#~ msgid ""
-#~ "/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
-#~ msgstr ""
-#~ "    /* Eine Parabel in Fenster #1 */\n"
-#~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-
-#, fuzzy
-#~| msgid ""
-#~| "    /* Parabola in window #2 */\n"
-#~| "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-#~ msgid ""
-#~ "/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
-#~ msgstr ""
-#~ "    /* Eine Parabel in Fenster #2 */\n"
-#~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-
-#, fuzzy
-#~| msgid ""
-#~| "    /* Paraboloid in window #3 */\n"
-#~| "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-#~ msgid ""
-#~ "/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
-#~ "x,-1,1,y,-1,1)); ~~~"
-#~ msgstr ""
-#~ "    /* Ein Paraboloid in Fenster #3 */\n"
-#~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #, fuzzy
 #~| msgid ""
