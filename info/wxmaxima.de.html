@@ -798,16 +798,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb14-10" title="10">)$</a></code></pre></div>
 <h3 id="mehrere-diagramme-gleichzeitig-in-fenstern-öffnen"><span class="header-section-number">2.3.7</span> Mehrere Diagramme gleichzeitig in Fenstern öffnen</h3>
 <p>Strenggenommen kein Feature von <em>wxMaxima</em>. Aber Maxima erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:</p>
-<pre><code>load(draw);
-
-/* Parabola in window #1 */
-draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
-
-/* Parabola in window #2 */
-draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
-
-/* Paraboloid in window #3 */
-draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1"></a>
+<a class="sourceLine" id="cb15-2" title="2">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
+<a class="sourceLine" id="cb15-3" title="3">    </a>
+<a class="sourceLine" id="cb15-4" title="4">    <span class="co">/* Parabola in window #1 */</span></a>
+<a class="sourceLine" id="cb15-5" title="5">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
+<a class="sourceLine" id="cb15-6" title="6">    </a>
+<a class="sourceLine" id="cb15-7" title="7">    <span class="co">/* Parabola in window #2 */</span></a>
+<a class="sourceLine" id="cb15-8" title="8">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
+<a class="sourceLine" id="cb15-9" title="9">    </a>
+<a class="sourceLine" id="cb15-10" title="10">    <span class="co">/* Paraboloid in window #3 */</span></a>
+<a class="sourceLine" id="cb15-11" title="11">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <h3 id="die-plotte-mittels-draw-seitenleiste"><span class="header-section-number">2.3.8</span> Die “Plotte mittels Draw”-Seitenleiste</h3>
 <p>Die “Plotte mittels Draw”-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des <em>draw</em>-Pakets von <em>Maxima</em> zu nutzen.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>

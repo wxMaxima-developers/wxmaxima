@@ -530,6 +530,7 @@ with_slider_draw(
 
 While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:
 
+~~~maxima
 
     load(draw);
     
@@ -542,6 +543,7 @@ While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups tha
     /* Paraboloid in window #3 */
     draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 
+~~~
 
 ### The "Plot using draw" sidepane
 
