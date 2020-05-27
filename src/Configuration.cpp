@@ -38,7 +38,7 @@
 
 Configuration::Configuration(wxDC *dc) :
   m_dc(dc),
-  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML"),
+  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"),
   m_documentclass("article"),
   m_documentclassOptions("fleqn"),
   m_symbolPaneAdditionalChars("Øü§")
