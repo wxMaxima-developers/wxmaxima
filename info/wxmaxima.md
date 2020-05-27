@@ -585,7 +585,7 @@ Sets up the axis.
 
 #### Contour
 
-(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current draw() command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.
+(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current `draw()` command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.
 
 #### Plot name
 
@@ -621,10 +621,11 @@ show_image("man.png");
 
 The config dialogue of _wxMaxima_ offers to edit two files with commands that are executed on startup:
 
-* A file that contains commands that are executed on starting up _Maxima_: `~/.maxima/maxima-init.mac`
-* one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_: `~/.maxima/wxmaxima-init.mac`
+* A file that contains commands that are executed on starting up _Maxima_: `maxima-init.mac`
+* one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_: `wxmaxima-init.mac`
 
-These files are in the Maxima user directory, usually `.maxima/` in the user's home directory, the location can be found out with the command: `maxima_userdir;`
+These files are in the Maxima user directory (usually `maxima` in Windows, `.maxima` otherwise) in the user's home directory / user profile directory. The location can be found out with the command: `maxima_userdir;`
+
 
 ## Special variables wx...
 
