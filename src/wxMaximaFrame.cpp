@@ -717,8 +717,6 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(wxID_PASTE, _("Paste\tCtrl+V"),
                      _("Paste text from clipboard"),
                      wxITEM_NORMAL);
-
-  m_EditMenu->Append(wxID_FIND, _("Find\tCtrl+F"), _("Find and replace"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
   m_EditMenu->Append(wxID_FIND, _("Find\tCtrl+F"), _("Find and replace"), wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
