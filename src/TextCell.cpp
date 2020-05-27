@@ -265,7 +265,8 @@ void TextCell::SetValue(const wxString &text)
       SetToolTip( _("Most probable cause: Two commas or similar separators in a row."));
     if(text.Contains(wxT("Illegal use of delimiter")))
       SetToolTip( _("Most probable cause: an operator was directly followed by a closing parenthesis."));
-    
+    if(text.StartsWith(wxT("find_root: function has same sign at endpoints: ")))
+      SetToolTip( _("find_root only works if the function the solution is searched for crosses the solution exactly once in the given range."));
     if(text.StartsWith(wxT("part: fell off the end.")))
       SetToolTip( _("part() or the [] operator was used in order to extract the nth element "
                     "of something that was less than n elements long."));
