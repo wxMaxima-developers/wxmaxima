@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-28 23:06+0200\n"
-"PO-Revision-Date: 2020-04-21 20:57+0200\n"
+"PO-Revision-Date: 2020-05-28 23:11+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -945,7 +945,7 @@ msgstr "Eine Integrationskonstante."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3977
 msgid "Anchors file has no top node."
-msgstr ""
+msgstr "Die Datei mit den Handbuch-Ankern hat keinen obersten XML-Knoten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1275
 msgid "Animation framerate..."
@@ -5887,12 +5887,12 @@ msgstr "Kein Dollarzeichen ($) oder Semikolon (;) am Ende eines Befehls"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3988
 msgid "No entries in the caches for the subjects the manual contains."
-msgstr ""
+msgstr "Keine Einträge im Zwischenspeicher für Handbucheinträge."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3956
 msgid ""
 "No file with the subjects the manual contained in the last wxMaxima run."
-msgstr ""
+msgstr "Keine Datei für die Handbucheinträge gefunden."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:587
 msgid "No gnuplot data!"
@@ -8201,17 +8201,17 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3962
 msgid "The cache for the subjects the manual contains cannot be read."
-msgstr ""
+msgstr "Der Zwischenspeicher für die Handbucheinträge kann nicht gelesen werden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3969
 msgid "The cache for the subjects the manual contains has no head node."
-msgstr ""
+msgstr "Der Zwischenspeicher für die Handbucheinträge hat keinen obersten Knoten."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3982
 msgid ""
 "The cache for the subjects the manual contains is from a different Maxima "
 "version."
-msgstr ""
+msgstr "Der Zwischenspeicher für die Handbucheinträge ist von einer anderen Maxima-Version."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2196
 msgid "The color of the next line to draw"
@@ -8639,6 +8639,10 @@ msgid ""
 "It caches the list of subjects maxima's manual offers and is automatically\n"
 "overwritten if maxima's version changes or the file cannot be read"
 msgstr ""
+"Diese Datei wird von wxMaxima generiert.\n"
+"Sie speichert die Liste der Einträge in das Handbuch von Maxima zwischen und wird\n"
+"automatisch überschrieben, wenn eine andere Version von Maxima verwendet wird, oder\n"
+"die Datei nicht lesbar ist"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:675
 msgid ""
