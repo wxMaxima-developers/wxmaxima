@@ -1985,8 +1985,8 @@
 					;  (wx-print-variable '*maxima-topdir*)
     (wx-print-variable '$gnuplot_command)
     (wx-print-variable '*maxima-demodir*)
+    (wx-print-variable '*autoconf-version*) ; Must be queried before maxima-sharedir is
     (wx-print-variable '*maxima-sharedir*)
-    (wx-print-variable '*autoconf-version*)
     (wx-print-variable '*autoconf-host*)
     (format t "<variable><name>*lisp-name*</name><value>~a</value></variable>"
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-type))

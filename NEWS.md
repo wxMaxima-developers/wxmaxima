@@ -11,6 +11,7 @@
  * A big number of performance improvements
  * Corrected a bug that sometimes caused parts of equations not to be displayed
  * As this allows to improve performance and stability C++14 is now used
+ * Speed boost The list of anchors from the manual is now cached on disk
 
 #20.04.0
  * Resolved a crash on right-clicking a GroupCell

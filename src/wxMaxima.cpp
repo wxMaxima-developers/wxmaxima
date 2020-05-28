@@ -2610,7 +2610,8 @@ void wxMaxima::ReadVariables(wxString &data)
               m_worksheet->LoadSymbols();
               if(m_worksheet->m_helpFileAnchors.empty())
               {
-                m_compileHelpAnchorsTimer.StartOnce(4000);
+                if(!LoadManualAnchorsFromCache())
+                  m_compileHelpAnchorsTimer.StartOnce(4000);
               }
             }
             if(name == "*lisp-name*")
@@ -3798,6 +3799,8 @@ void wxMaxima::ShowHelp(const wxString &keyword)
 
 void wxMaxima::CompileHelpFileAnchors()
 {
+  SuppressErrorDialogs suppressor;
+  
   wxString MaximaHelpFile = GetMaximaHelpFile();
   #ifdef HAVE_OMP_HEADER
   omp_set_lock(&m_helpFileAnchorsLock);
@@ -3873,13 +3876,131 @@ void wxMaxima::CompileHelpFileAnchors()
         }
       }
     }
+    if(m_worksheet->m_helpFileAnchors["%solve"].IsEmpty())
+      m_worksheet->m_helpFileAnchors["%solve"] = m_worksheet->m_helpFileAnchors["to_poly_solve"];
+    
     wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
+    wxXmlAttribute *maximaVersion = new wxXmlAttribute(
+      wxT("maxima_version"),
+      m_maximaVersion);
+    wxXmlNode *topNode = new wxXmlNode(
+      NULL,
+      wxXML_ELEMENT_NODE, wxEmptyString,
+      wxEmptyString
+      );
+    wxXmlNode *headNode = new wxXmlNode(
+      topNode,
+      wxXML_ELEMENT_NODE, wxT("maxima_toc"),
+      wxEmptyString,
+      maximaVersion
+      );
+
+    
+    wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
+
+    Worksheet::HelpFileAnchors::const_iterator it;
+    for (it = m_worksheet->m_helpFileAnchors.begin(); it != m_worksheet->m_helpFileAnchors.end(); ++it)
+    {
+      wxXmlNode *manualEntry =
+        new wxXmlNode(
+          headNode,
+          wxXML_ELEMENT_NODE,
+          "entry");
+      wxXmlNode *anchorNode = new wxXmlNode(
+        manualEntry,
+        wxXML_ELEMENT_NODE,
+        "anchor");
+      new wxXmlNode(
+        anchorNode,
+        wxXML_TEXT_NODE,
+        wxEmptyString,
+        it->second);
+      wxXmlNode *keyNode = new wxXmlNode(
+        manualEntry,
+        wxXML_ELEMENT_NODE,
+        "key");
+      new wxXmlNode(
+        keyNode,
+        wxXML_TEXT_NODE,
+        wxEmptyString,
+        it->first);
+    }
+    wxXmlDocument xmlDoc;
+    xmlDoc.SetDocumentNode(topNode);
+    wxString saveName = Dirstructure::AnchorsCacheFile();
+    wxLogMessage(wxString::Format(_("Trying to cache the anchors in the file %s."),
+                                  saveName.utf8_str()));
+    xmlDoc.Save(saveName);
   }
-  if(m_worksheet->m_helpFileAnchors["%solve"].IsEmpty())
-    m_worksheet->m_helpFileAnchors["%solve"] = m_worksheet->m_helpFileAnchors["to_poly_solve"];
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_helpFileAnchorsLock);
   #endif
+}
+
+
+bool wxMaxima::LoadManualAnchorsFromCache()
+{
+  SuppressErrorDialogs suppressor;
+  wxString anchorsFile = Dirstructure::Get()->AnchorsCacheFile();
+  if(!wxFileExists(anchorsFile))
+  {
+    wxLogMessage(_("No anchors file from previous wxMaxima run."));
+    return false;
+  }
+  wxXmlDocument xmlDocument(anchorsFile);
+  if(!xmlDocument.IsOk())
+  {
+    wxLogMessage(_("Anchors file cannot be read."));
+    wxRemoveFile(anchorsFile);
+    return false;
+  }
+  wxXmlNode *headNode = xmlDocument.GetDocumentNode();
+  if(!headNode)
+  {
+    wxLogMessage(_("Anchors file has no head node ."));
+    return false;
+  }
+  headNode = headNode->GetChildren();
+  if(!headNode)
+  {
+    wxLogMessage(_("Anchors file has no top node."));
+    return false;
+  }
+  if(headNode->GetAttribute(wxT("maxima_version")) != m_maximaVersion)
+  {
+    wxLogMessage(_("Maxima version from anchors file doesn't match current maxima version."));
+    return false;
+  }
+  wxXmlNode *entry = headNode->GetChildren();
+  if(entry == NULL)
+  {
+    wxLogMessage(_("No entries in anchors file."));
+    return false;
+  }
+  while(entry)
+  {
+    if(entry->GetName() == wxT("entry"))
+    {
+      wxString key;
+      wxString anchor;
+      wxXmlNode *node = entry->GetChildren();
+      while(node)
+      {
+        if((node->GetName() == wxT("anchor")) && (node->GetChildren()))
+          anchor = node->GetChildren()->GetContent();
+        if((node->GetName() == wxT("key")) && (node->GetChildren()))
+          key = node->GetChildren()->GetContent();
+        node = node->GetNext();
+      }
+      if((!key.IsEmpty()) && (!anchor.IsEmpty()))
+        m_worksheet->m_helpFileAnchors[key] = anchor;
+    }
+    entry = entry->GetNext();
+  }
+  bool done = !m_worksheet->m_helpFileAnchors.empty();
+  if(done)
+    wxLogMessage(wxString::Format(_("Read the anchors for the maxima manual from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
+  return done;
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)

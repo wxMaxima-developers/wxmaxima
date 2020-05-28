@@ -274,7 +274,10 @@ private:
   wxMemoryBuffer m_uncompletedChars;
 
 protected:
+  //! Collect all keyword anchors in the help file
   void CompileHelpFileAnchors();
+  //! Load the result from the last CompileHelpFileAnchors from the disk cache
+  bool LoadManualAnchorsFromCache();
   //! The gnuplot process info
   wxProcess *m_gnuplotProcess;
   //! Is this window active?

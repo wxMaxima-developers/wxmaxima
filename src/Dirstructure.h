@@ -55,9 +55,9 @@ private:
 
 public:
   //! The directory the user stores its data in.
-  wxString UserConfDir() const {return m_userConfDir;}
+  static wxString UserConfDir() {return m_userConfDir;}
   //! Set the directory the user stores its data in.
-  void UserConfDir(wxString userConfDir) {m_userConfDir = userConfDir + wxT("/");}
+  static void UserConfDir(wxString userConfDir) {m_userConfDir = userConfDir + wxT("/");}
 
   //! The directory general data is stored in
   wxString DataDir() const;
@@ -95,13 +95,19 @@ public:
   //! The executable file path to the gnuplot executable
   static wxString GnuplotDefaultLocation(wxString pathguess);
 
+  static wxString
+    AnchorsCacheFile()
+    {
+      return UserConfDir() + "/manual_anchors.xml";
+    }
+  
   static Dirstructure *Get()
     {
       return m_dirStructure;
     }
 private:
   wxString m_helpDir;
-  wxString m_userConfDir;
+  static wxString m_userConfDir;
   static Dirstructure *m_dirStructure;
 };
 

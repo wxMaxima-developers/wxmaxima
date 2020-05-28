@@ -80,6 +80,8 @@ wxMaxima can display it.
 */
 class Worksheet : public wxScrolled<wxWindow>
 {
+public:
+  WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
 private:
   // The x position to scroll to
   int m_newxPosition;
@@ -126,7 +128,6 @@ private:
   //! A second way to publish RTF data on the clipboard
   static wxDataFormat m_rtfFormat2;
 
-  WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
   /*! An object that can be filled with MathML data for the clipboard
    */
   class MathMLDataObject : public wxCustomDataObject

@@ -329,3 +329,4 @@ wxString Dirstructure::UserAutocompleteFile()
 }
 
 Dirstructure *Dirstructure::m_dirStructure;
+wxString Dirstructure::m_userConfDir;
