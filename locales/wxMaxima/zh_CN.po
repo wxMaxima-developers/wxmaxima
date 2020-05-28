@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-28 22:55+0200\n"
+"POT-Creation-Date: 2020-05-28 23:06+0200\n"
 "PO-Revision-Date: 2019-10-20 12:34+0800\n"
 "Last-Translator: litchi <kz-xy@163.com>\n"
 "Language-Team: amateur\n"
@@ -865,14 +865,6 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:209
 msgid "An integration constant."
 msgstr "积分常量"
-
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3962
-msgid "Anchors file cannot be read."
-msgstr ""
-
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3969
-msgid "Anchors file has no head node ."
-msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3977
 msgid "Anchors file has no top node."
@@ -5023,10 +5015,6 @@ msgstr ""
 msgid "Maxima uses temp directory %s"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3982
-msgid "Maxima version from anchors file doesn't match current maxima version."
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2587
 #, c-format
 msgid "Maxima version: %s"
@@ -5333,10 +5321,6 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3956
-msgid "No anchors file from previous wxMaxima run."
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:622
 msgid "No contour lines"
 msgstr ""
@@ -5346,7 +5330,12 @@ msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3988
-msgid "No entries in anchors file."
+msgid "No entries in the caches for the subjects the manual contains."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3956
+msgid ""
+"No file with the subjects the manual contained in the last wxMaxima run."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:587
@@ -6081,7 +6070,7 @@ msgstr "读入矩阵..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4014
 #, c-format
-msgid "Read the anchors for the maxima manual from %s"
+msgid "Read the entries the maxima manual offers from %s"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:544
@@ -7499,6 +7488,20 @@ msgid ""
 "was expected but was lacking an \"=\"."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3962
+msgid "The cache for the subjects the manual contains cannot be read."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3969
+msgid "The cache for the subjects the manual contains has no head node."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3982
+msgid ""
+"The cache for the subjects the manual contains is from a different Maxima "
+"version."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2196
 msgid "The color of the next line to draw"
 msgstr ""
@@ -8049,7 +8052,8 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3940
 #, fuzzy, c-format
-msgid "Trying to cache the anchors in the file %s."
+msgid ""
+"Trying to cache the list of subjects the manual contains in the file %s."
 msgstr "尝试打开不存在的%s文件"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:142

@@ -3937,7 +3937,7 @@ void wxMaxima::CompileHelpFileAnchors()
     xmlDoc.AppendToProlog(commentNode);
 
     wxString saveName = Dirstructure::AnchorsCacheFile();
-    wxLogMessage(wxString::Format(_("Trying to cache the anchors in the file %s."),
+    wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the manual contains in the file %s."),
                                   saveName.utf8_str()));
     xmlDoc.Save(saveName);
   }
@@ -3953,20 +3953,20 @@ bool wxMaxima::LoadManualAnchorsFromCache()
   wxString anchorsFile = Dirstructure::Get()->AnchorsCacheFile();
   if(!wxFileExists(anchorsFile))
   {
-    wxLogMessage(_("No anchors file from previous wxMaxima run."));
+    wxLogMessage(_("No file with the subjects the manual contained in the last wxMaxima run."));
     return false;
   }
   wxXmlDocument xmlDocument(anchorsFile);
   if(!xmlDocument.IsOk())
   {
-    wxLogMessage(_("Anchors file cannot be read."));
+    wxLogMessage(_("The cache for the subjects the manual contains cannot be read."));
     wxRemoveFile(anchorsFile);
     return false;
   }
   wxXmlNode *headNode = xmlDocument.GetDocumentNode();
   if(!headNode)
   {
-    wxLogMessage(_("Anchors file has no head node ."));
+    wxLogMessage(_("The cache for the subjects the manual contains has no head node."));
     return false;
   }
   headNode = headNode->GetChildren();
@@ -3979,13 +3979,13 @@ bool wxMaxima::LoadManualAnchorsFromCache()
   }
   if(headNode->GetAttribute(wxT("maxima_version")) != m_maximaVersion)
   {
-    wxLogMessage(_("Maxima version from anchors file doesn't match current maxima version."));
+    wxLogMessage(_("The cache for the subjects the manual contains is from a different Maxima version."));
     return false;
   }
   wxXmlNode *entry = headNode->GetChildren();
   if(entry == NULL)
   {
-    wxLogMessage(_("No entries in anchors file."));
+    wxLogMessage(_("No entries in the caches for the subjects the manual contains."));
     return false;
   }
   while(entry)
@@ -4011,7 +4011,7 @@ bool wxMaxima::LoadManualAnchorsFromCache()
   bool done = !m_worksheet->m_helpFileAnchors.empty();
   if(done)
   {
-    wxLogMessage(wxString::Format(_("Read the anchors for the maxima manual from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
+    wxLogMessage(wxString::Format(_("Read the entries the maxima manual offers from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
     m_worksheet->m_helpFileAnchorsUsable = true;
   }
   return done;
