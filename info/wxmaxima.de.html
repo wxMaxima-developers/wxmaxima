@@ -829,7 +829,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="achsen"><span class="header-section-number">2.3.8.8</span> Achsen</h4>
 <p>Die Einstellungen für die Achsen.</p>
 <h4 id="höhenlinien"><span class="header-section-number">2.3.8.9</span> Höhenlinien</h4>
-<p>(Nur für 3D-Diagramme): Erzeugt Höhenlinien auf der zu zeichnenden Oberfläche, dem Boden des Diagramms oder auf Beiden. Kann optional auch nur die Höhenlinen in der Ansicht von Oben zeichnen.</p>
+<p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
 <h4 id="name-der-kurve"><span class="header-section-number">2.3.8.10</span> Name der Kurve</h4>
 <p>Fügt einen Eintrag zur Legende hinzu, der für die nächsten Objekte gilt. Ein leerer Name bedeutet, dass die nun folgenden Objekte keinen eigenen Eintrag erhalten.</p>
 <h4 id="linienfarbe"><span class="header-section-number">2.3.8.11</span> Linienfarbe</h4>
@@ -847,10 +847,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="startbefehle"><span class="header-section-number">2.5</span> Startbefehle</h2>
 <p>Der Konfigurationsdialog von <em>wxMaxima</em> bietet an, zwei Dateien mit <em>Maxima</em>-Befehlen zu bearbeiten:</p>
 <ul>
-<li>Eine Datei mit Befehlen, die <em>Maxima</em> beim Hochfahren ausführt: <code>~/.maxima/maxima-init.mac</code></li>
-<li>Eine Datei mit zusätzlichen Kommandos, die ausgeführt werden, wenn <em>Maxima</em> von <em>wxMaxima</em> gestartet wird: <code>~/.maxima/wxmaxima-init.mac</code></li>
+<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>maxima-init.mac</code></li>
+<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
 </ul>
-<p>Diese Dateien liegen im Benutzerverzeichnis von maxima, normalerweise im Ordner <code>.maxima</code> im Home-Verzeichnis. Der genaue Ort kann über das Kommando <code>maxima_userdir;</code> ermittelt werden.</p>
+<p>These files are in the Maxima user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
 <h2 id="spezielle-variablen-die-wxmaxima-definiert"><span class="header-section-number">2.6</span> Spezielle Variablen, die wxMaxima definiert</h2>
 <ul>
 <li><code>wxsubscripts</code> informiert <em>Maxima</em>, welche Variablen mit Unterstrich (z.B. <code>R_150</code>) in Variablen mit Subscript konvertieren soll. Details werden unter <code>wxdeclare_subscript</code> beschrieben.</li>

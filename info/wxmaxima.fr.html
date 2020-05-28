@@ -836,7 +836,7 @@ Ordinary text</code></pre>
 <h4 id="axis"><span class="header-section-number">2.3.8.8</span> Axis</h4>
 <p>Sets up the axis.</p>
 <h4 id="contour"><span class="header-section-number">2.3.8.9</span> Contour</h4>
-<p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current draw() command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
+<p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
 <h4 id="plot-name"><span class="header-section-number">2.3.8.10</span> Plot name</h4>
 <p>Adds a legend entry showing the next plot’s name to the legend of the diagram. An empty name disables generating legend entries for the following plots.</p>
 <h4 id="line-color"><span class="header-section-number">2.3.8.11</span> Line color</h4>
@@ -854,10 +854,10 @@ Ordinary text</code></pre>
 <h2 id="startup-files"><span class="header-section-number">2.5</span> Startup files</h2>
 <p>The config dialogue of <em>wxMaxima</em> offers to edit two files with commands that are executed on startup:</p>
 <ul>
-<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>~/.maxima/maxima-init.mac</code></li>
-<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>~/.maxima/wxmaxima-init.mac</code></li>
+<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>maxima-init.mac</code></li>
+<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
 </ul>
-<p>These files are in the Maxima user directory, usually <code>.maxima/</code> in the user’s home directory, the location can be found out with the command: <code>maxima_userdir;</code></p>
+<p>These files are in the Maxima user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
 <h2 id="special-variables-wx"><span class="header-section-number">2.6</span> Special variables wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>

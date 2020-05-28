@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-05-24 18:27+0200\n"
+"POT-Creation-Date: 2020-05-28 18:13+0200\n"
 "PO-Revision-Date: 2020-05-21 10:21+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -1450,7 +1450,7 @@ msgstr ""
 ")$\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:390 ../../info/wxmaxima.md:773
+#: ../../info/wxmaxima.md:390 ../../info/wxmaxima.md:774
 #, no-wrap
 msgid "Plotting"
 msgstr "Креслення"
@@ -2106,9 +2106,16 @@ msgstr "Контур"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:589
+#, fuzzy
+#| msgid ""
+#| "(Only for 3D plots): Adds contour lines similar to the ones one can find "
+#| "in a map of a mountain to the plot commands that follow in the current "
+#| "draw() command and/or to the ground plane of the diagram. Alternatively "
+#| "this wizard allows skipping drawing the curves entirely only showing the "
+#| "contour plot."
 msgid ""
 "(Only for 3D plots): Adds contour lines similar to the ones one can find in "
-"a map of a mountain to the plot commands that follow in the current draw() "
+"a map of a mountain to the plot commands that follow in the current `draw()` "
 "command and/or to the ground plane of the diagram. Alternatively this wizard "
 "allows skipping drawing the curves entirely only showing the contour plot."
 msgstr ""
@@ -2241,41 +2248,54 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:626
+#, fuzzy
+#| msgid ""
+#| "A file that contains commands that are executed on starting up _Maxima_: "
+#| "`~/.maxima/maxima-init.mac`"
 msgid ""
-"A file that contains commands that are executed on starting up _Maxima_: `~/."
-"maxima/maxima-init.mac`"
+"A file that contains commands that are executed on starting up _Maxima_: "
+"`maxima-init.mac`"
 msgstr ""
 "Файла, у якому містяться команди, які виконуються під час запуску _Maxima_: "
 "`~/.maxima/maxima-init.mac`"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:626
+#, fuzzy
+#| msgid ""
+#| "one file of additional commands that are executed if _wxMaxima_ is "
+#| "starting _Maxima_: `~/.maxima/wxmaxima-init.mac`"
 msgid ""
 "one file of additional commands that are executed if _wxMaxima_ is starting "
-"_Maxima_: `~/.maxima/wxmaxima-init.mac`"
+"_Maxima_: `wxmaxima-init.mac`"
 msgstr ""
 "одного файла із додатковими командами, які виконуються, якщо _wxMaxima_ "
 "запускає _Maxima_: `~/.maxima/wxmaxima-init.mac`"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:628
+#, fuzzy
+#| msgid ""
+#| "These files are in the Maxima user directory, usually `.maxima/` in the "
+#| "user's home directory, the location can be found out with the command: "
+#| "`maxima_userdir;`"
 msgid ""
-"These files are in the Maxima user directory, usually `.maxima/` in the "
-"user's home directory, the location can be found out with the command: "
-"`maxima_userdir;`"
+"These files are in the Maxima user directory (usually `maxima` in Windows, `."
+"maxima` otherwise) in the user's home directory / user profile directory. "
+"The location can be found out with the command: `maxima_userdir;`"
 msgstr ""
 "Ці файли зберігаються у каталозі користувача Maxima, зазвичай, каталозі `."
 "maxima/` у домашній теці користувача. Розташування файлів можна визначити за "
 "допомогою такої команди: `maxima_userdir;`"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:629
+#: ../../info/wxmaxima.md:630
 #, no-wrap
 msgid "Special variables wx..."
 msgstr "Спеціальні змінні wx..."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid ""
 "`wxsubscripts` tells _Maxima_ if it should convert variable names that "
 "contain an underscore (`R_150` or the like) into subscripted variables. See "
@@ -2288,7 +2308,7 @@ msgstr ""
 "які саме назви змінних буде перетворено автоматично."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid ""
 "`wxfilename`: This variable contains the name of the file currently opened "
 "in _wxMaxima_."
@@ -2297,7 +2317,7 @@ msgstr ""
 "_wxMaxima_."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid ""
 "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo "
 "terminal that provides more line styles and a better overall graphics "
@@ -2308,12 +2328,12 @@ msgstr ""
 "ліній та кращої якості зображення."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid "`wxplot_size` defines the resolution of embedded plots."
 msgstr "`wxplot_size` визначає роздільну здатність для вбудованих креслень."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid ""
 "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
 "_Maxima_’s working directory to the directory of the current file. This "
@@ -2331,7 +2351,7 @@ msgstr ""
 "діалоговому вікні налаштовування."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid ""
 "`wxanimate_framerate`: The number of frames per second the following "
 "animations have to be played back with."
@@ -2340,18 +2360,18 @@ msgstr ""
 "відтворюватимуться наступі анімації."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:638
+#: ../../info/wxmaxima.md:639
 msgid "`wxanimate_autoplay`: Automatically play animations by default?"
 msgstr "`wxanimate_autoplay`: типово автоматично відтворювати анімації?"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:639
+#: ../../info/wxmaxima.md:640
 #, no-wrap
 msgid "Pretty-printing 2D output"
 msgstr "Структурний друк двовимірних даних"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:642
+#: ../../info/wxmaxima.md:643
 msgid ""
 "The function `table_form()` displays a 2D list in a form that is more "
 "readable than the output _Maxima_’s default output routine. The input is a "
@@ -2367,7 +2387,7 @@ msgstr ""
 "самої таблиці разом із інструкцією «done»."
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:643
+#: ../../info/wxmaxima.md:644
 #, no-wrap
 msgid ""
 "table_form(\n"
@@ -2385,7 +2405,7 @@ msgstr ""
 ")$\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:653
+#: ../../info/wxmaxima.md:654
 msgid ""
 "As the next example shows, the lists that are assembled by the `table_form` "
 "command can be created before the command is executed."
@@ -2394,7 +2414,7 @@ msgstr ""
 "можна створювати до виконання команди."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:655
+#: ../../info/wxmaxima.md:656
 msgid ""
 "![A third table example](./MatrixTableExample.png)"
 "{ id=img_MatrixTableExample }"
@@ -2403,7 +2423,7 @@ msgstr ""
 "{ id=img_MatrixTableExample }"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:657
+#: ../../info/wxmaxima.md:658
 msgid ""
 "Also, because a matrix is a list of lists, matrices can be converted to "
 "tables in a similar fashion."
@@ -2412,7 +2432,7 @@ msgstr ""
 "таблиці у подібний же спосіб."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:659
+#: ../../info/wxmaxima.md:660
 msgid ""
 "![Another table_form example](./SecondTableExample.png)"
 "{ id=img_SecondTableExample }"
@@ -2421,13 +2441,13 @@ msgstr ""
 "{ id=img_SecondTableExample }"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:660
+#: ../../info/wxmaxima.md:661
 #, no-wrap
 msgid "Bug reporting"
 msgstr "Звітування про вади"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:663
+#: ../../info/wxmaxima.md:664
 msgid ""
 "_wxMaxima_ provides a few functions that gather bug reporting information "
 "about the current system:"
@@ -2436,7 +2456,7 @@ msgstr ""
 "системи для звітування щодо вад:"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:666
+#: ../../info/wxmaxima.md:667
 msgid ""
 "`wxbuild_info()` gathers information about the currently running version of "
 "_wxMaxima_"
@@ -2444,19 +2464,19 @@ msgstr ""
 "`wxbuild_info()` збирає відомості щодо поточної запущеної версії _wxMaxima_"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:666
+#: ../../info/wxmaxima.md:667
 msgid "`wxbug_report()` tells how and where to file bugs"
 msgstr ""
 "`wxbug_report()` надає відомості щодо того, як і де слід повідомляти про вади"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:668
+#: ../../info/wxmaxima.md:669
 #, no-wrap
 msgid "Marking output being drawn in red"
 msgstr "Як зробити так, щоб виведені дані було показано червоним кольором?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:671
+#: ../../info/wxmaxima.md:672
 msgid ""
 "_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a "
 "red foreground."
@@ -2465,19 +2485,19 @@ msgstr ""
 "аргумент червоним кольором."
 
 #. type: Title =
-#: ../../info/wxmaxima.md:676
+#: ../../info/wxmaxima.md:677
 #, no-wrap
 msgid "Troubleshooting"
 msgstr "Вирішення проблем"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:678
+#: ../../info/wxmaxima.md:679
 #, no-wrap
 msgid "Cannot connect to _Maxima_"
 msgstr "Не вдається з'єднатися із _Maxima_"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:681
+#: ../../info/wxmaxima.md:682
 msgid ""
 "Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ "
 "(providing the easy-to-use user interface) are separate programs that "
@@ -2505,7 +2525,7 @@ msgstr ""
 "мережі, можуть бути sbcl, gcl, ccl, lisp.exe або щось подібне."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:683
+#: ../../info/wxmaxima.md:684
 msgid ""
 "On Un\\*x computers another possible reason would be that the loopback "
 "network that provides network connections between two programs in the same "
@@ -2516,13 +2536,13 @@ msgstr ""
 "комп'ютері, не налаштовано належним чином."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:684
+#: ../../info/wxmaxima.md:685
 #, no-wrap
 msgid "How to save data from a broken .wxmx file"
 msgstr "Як зберегти дані із пошкодженого файла .wxmx"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:687
+#: ../../info/wxmaxima.md:688
 msgid ""
 "Internally most modern xml-based formats are ordinary zip-files. wxMaxima "
 "doesn't turn on compression which makes the contents of .wxmx files viewable "
@@ -2533,7 +2553,7 @@ msgstr ""
 "придатним до перекладу у будь-якому текстовому редакторі."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:689
+#: ../../info/wxmaxima.md:690
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
 "broken .wxmx file to .zip most operating systems will provide a way to "
@@ -2553,13 +2573,13 @@ msgstr ""
 "даних."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:691
+#: ../../info/wxmaxima.md:692
 #, no-wrap
 msgid "And even if there isn’t such a file: The `.wxmx` file is a container format and the XML portion is stored uncompressed. It it is possible to rename the `.wxmx` file to a `.txt` file and to use a text editor to recover the XML portion of the file's contents (it starts with `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` and ends with `</wxMaximaDocument>`. Before and after that text you will see some unreadable binary contents in the text editor).\n"
 msgstr " І навіть якщо такого файла не існує — якщо встановлено параметр налаштування для оптимізації файлів .wxmx для системи керування версіями, можна перейменувати файл .wxmx на файл .txt і скористатися текстовим редактором для відновлення частини XML із вмісту файла (він починається з `<?xml version=\"1.0\" encoding=\"UTF-8\"?>` і завершується `</wxMaximaDocument>`. До і після цього фрагмента тексту у текстовому редакторі ви побачите непридатні до читання двійкові дані).\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:693
+#: ../../info/wxmaxima.md:694
 msgid ""
 "If a text file containing only this contents (e.g. copy and paste this text "
 "into a new file) is saved as a file ending in `.xml`, _wxMaxima_ will know "
@@ -2570,13 +2590,13 @@ msgstr ""
 "_wxMaxima_ відомий спосіб відновлення тексту документа з цього файла."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:694
+#: ../../info/wxmaxima.md:695
 #, no-wrap
 msgid "I want some debug info to be displayed on the screen before my command has finished"
 msgstr "Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:697
+#: ../../info/wxmaxima.md:698
 msgid ""
 "Normally _wxMaxima_ waits for the whole 2D formula to be transferred before "
 "it begins to typeset. This saves time for making many attempts to typeset a "
@@ -2591,7 +2611,7 @@ msgstr ""
 "завершення поточної команди _Maxima_:"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:698
+#: ../../info/wxmaxima.md:699
 #, no-wrap
 msgid ""
 "for i:1 thru 10 do (\n"
@@ -2611,13 +2631,13 @@ msgstr ""
 ")$\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:708
+#: ../../info/wxmaxima.md:709
 #, no-wrap
 msgid "Plotting only shows a closed empty envelope with an error message"
 msgstr "На кресленні показано лише закриту порожню обгортку із повідомленням про помилку"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:711
+#: ../../info/wxmaxima.md:712
 msgid ""
 "This means that _wxMaxima_ could not read the file _Maxima_ that was "
 "supposed to instruct gnuplot to create."
@@ -2626,12 +2646,12 @@ msgstr ""
 "наказати створити gnuplot."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:713
+#: ../../info/wxmaxima.md:714
 msgid "Possible reasons for this error are:"
 msgstr "Можливими причинами цієї помилки є такі:"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:718
+#: ../../info/wxmaxima.md:719
 msgid ""
 "The plotting command is part of a third-party package like `implicit_plot` "
 "but this package was not loaded by _Maxima_’s `load()` command before trying "
@@ -2642,7 +2662,7 @@ msgstr ""
 "команду було передано на виконання."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:718
+#: ../../info/wxmaxima.md:719
 msgid ""
 "_Maxima_ tried to do something the currently installed version of gnuplot "
 "isn’t able to understand. In this case a file ending in .gnuplot in the "
@@ -2657,7 +2677,7 @@ msgstr ""
 "для діагностування проблеми."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:718
+#: ../../info/wxmaxima.md:719
 msgid ""
 "Gnuplot was instructed to use the pngcairo library that provides "
 "antialiasing and additional line styles, but it was not compiled to support "
@@ -2673,18 +2693,18 @@ msgstr ""
 "значення true з коду _Maxima_."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:718
+#: ../../info/wxmaxima.md:719
 msgid "Gnuplot didn’t output a valid .png file."
 msgstr "Gnuplot не вивів коректного файла .png."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:719
+#: ../../info/wxmaxima.md:720
 #, no-wrap
 msgid "Plotting an animation results in “error: undefined variable”"
 msgstr "Спроба накреслити анімацію призводить до повідомлення «помилка: невизначена змінна»"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:722
+#: ../../info/wxmaxima.md:723
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Using a `subst` "
@@ -2697,13 +2717,13 @@ msgstr ""
 "підручнику є такий приклад), має усунути проблему."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:723
+#: ../../info/wxmaxima.md:724
 #, no-wrap
 msgid "I lost a cell contents and undo doesn’t remember"
 msgstr "Втрачено вміст комірок і скасовування дій не допомагає"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:726
+#: ../../info/wxmaxima.md:727
 msgid ""
 "There are separate undo functions for cell operations and for changes inside "
 "of cells so chances are low that this ever happens. If it does there are "
@@ -2714,7 +2734,7 @@ msgstr ""
 "таке все ж сталося, існує декілька способів відновити дані:"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:731
+#: ../../info/wxmaxima.md:732
 msgid ""
 "_wxMaxima_ actually has two undo features: The global undo buffer that is "
 "active if no cell is selected and a per-cell undo buffer that is active if "
@@ -2728,7 +2748,7 @@ msgstr ""
 "дістатися потрібного вам попереднього значення."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:731
+#: ../../info/wxmaxima.md:732
 msgid ""
 "If you still have a way to find out what label _Maxima_ has assigned to the "
 "cell just type in the cell’s label and its contents will reappear."
@@ -2737,7 +2757,7 @@ msgstr ""
 "введіть до комірки цю мітку, і програма покаже її вміст."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:731
+#: ../../info/wxmaxima.md:732
 msgid ""
 "If you don’t: Don’t panic. In the “View” menu there is a way to show a "
 "history pane that shows all _Maxima_ commands that have been issued recently."
@@ -2747,14 +2767,14 @@ msgstr ""
 "нещодавно віддано."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:731
+#: ../../info/wxmaxima.md:732
 msgid "If nothing else helps _Maxima_ contains a replay feature:"
 msgstr ""
 "Якщо ніщо інше не допомагає, у _Maxima_ є функція для відтворення усіх "
 "команд:"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:732
+#: ../../info/wxmaxima.md:733
 #, no-wrap
 msgid ""
 "\n"
@@ -2766,13 +2786,13 @@ msgstr ""
 "\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:738
+#: ../../info/wxmaxima.md:739
 #, no-wrap
 msgid "_wxMaxima_ starts up with the message “Maxima process terminated.”"
 msgstr "_wxMaxima_ запускається із повідомленням «Процес Maxima несподівано перервав роботу.»"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:741
+#: ../../info/wxmaxima.md:742
 msgid ""
 "One possible reason is that _Maxima_ cannot be found in the location that is "
 "set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
@@ -2785,13 +2805,13 @@ msgstr ""
 "коректного виконуваного файла _Maxima_ має виправити цю проблему."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:742
+#: ../../info/wxmaxima.md:743
 #, no-wrap
 msgid "Maxima is forever calculating and not responding to input"
 msgstr "Maxima висне при обчислення і не відповідає на команди"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:745
+#: ../../info/wxmaxima.md:746
 msgid ""
 "It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ "
 "has finished calculating and therefore never gets informed it can send new "
@@ -2804,13 +2824,13 @@ msgstr ""
 "обчислення може відновити синхронізацію між двома програмами."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:746
+#: ../../info/wxmaxima.md:747
 #, no-wrap
 msgid "My SBCL-based _Maxima_ runs out of memory"
 msgstr "Версії _Maxima_ на основі SBCL не вистачає оперативної пам'яті"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:749
+#: ../../info/wxmaxima.md:750
 msgid ""
 "The Lisp compiler SBCL by default comes with a memory limit that allows it "
 "to run even on low-end computers. When compiling a big software package like "
@@ -2833,7 +2853,7 @@ msgstr ""
 "достатньо для збирання lapack."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:751
+#: ../../info/wxmaxima.md:752
 msgid ""
 "One way to provide _Maxima_ (and thus SBCL) with command line parameters is "
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
@@ -2844,18 +2864,18 @@ msgstr ""
 "_wxMaxima_."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:753
+#: ../../info/wxmaxima.md:754
 msgid "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
 msgstr "![sbcl memory](./sbclMemory.png){ id=img_sbclMemory }"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:755
+#: ../../info/wxmaxima.md:756
 #, no-wrap
 msgid "Input sometimes is sluggish/ignoring keys on Ubuntu"
 msgstr "При введенні даних програма уповільнюється або пропускає символи в Ubuntu"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:758
+#: ../../info/wxmaxima.md:759
 msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
@@ -2867,13 +2887,13 @@ msgstr ""
 "+bug/1421558))."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:759
+#: ../../info/wxmaxima.md:760
 #, no-wrap
 msgid "_wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
 msgstr "_wxMaxima_ припиняє роботу, коли _Maxima_ обробляє грецькі символи або умляути"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:762
+#: ../../info/wxmaxima.md:763
 msgid ""
 "If your _Maxima_ is based on SBCL the following lines have to be added to "
 "your `.sbclrc`:"
@@ -2882,7 +2902,7 @@ msgstr ""
 "`.sbclrc`:"
 
 #. type: Fenced code block (lisp)
-#: ../../info/wxmaxima.md:763
+#: ../../info/wxmaxima.md:764
 #, no-wrap
 msgid ""
 "\n"
@@ -2894,7 +2914,7 @@ msgstr ""
 "\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:770
+#: ../../info/wxmaxima.md:771
 msgid ""
 "The folder this file has to be placed in is system- and installation-"
 "specific. But any sbcl-based _Maxima_ that already has evaluated a cell in "
@@ -2907,19 +2927,19 @@ msgstr ""
 "повідомить, де його можна знайти, у відповідь на таку команду:"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:772
+#: ../../info/wxmaxima.md:773
 #, no-wrap
 msgid "    :lisp (sb-impl::userinit-pathname)\n"
 msgstr "    :lisp (sb-impl::userinit-pathname)\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:775
+#: ../../info/wxmaxima.md:776
 #, no-wrap
 msgid "Can I make _wxMaxima_ output both image files and embedded plots at once?"
 msgstr "Чи можна зробити так, щоб _wxMaxima_ виводила дані одразу до файлів зображень і до вбудованих до аркуша креслень?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:778
+#: ../../info/wxmaxima.md:779
 msgid ""
 "The worksheet embeds .png files. wxMaxima allows the user to specify where "
 "they should be generated:"
@@ -2928,7 +2948,7 @@ msgstr ""
 "вказати, де має бути створено ці файли:"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:779
+#: ../../info/wxmaxima.md:780
 #, no-wrap
 msgid ""
 "wxdraw2d(\n"
@@ -2942,7 +2962,7 @@ msgstr ""
 ");\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:787
+#: ../../info/wxmaxima.md:788
 msgid ""
 "If a different format is to be used it is easier to generate the images and "
 "then to import them into the worksheet again:"
@@ -2951,7 +2971,7 @@ msgstr ""
 "зображення окремо, а потім імпортувати їх до робочого аркуша:"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:788
+#: ../../info/wxmaxima.md:789
 #, no-wrap
 msgid ""
 "load(\"draw\");\n"
@@ -2999,19 +3019,19 @@ msgstr ""
 ");\n"
 
 #. type: Title ###
-#: ../../info/wxmaxima.md:812
+#: ../../info/wxmaxima.md:813
 #, no-wrap
 msgid "Can I set the aspect ratio of a plot?"
 msgstr "Чи можна встановити співвідношення розмірів зображення креслення?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:815
+#: ../../info/wxmaxima.md:816
 msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
 msgstr ""
 "Не безпосередньо, за допомогою _Maxima_. Але для цього є команди gnuplot:"
 
 #. type: Fenced code block (maxima)
-#: ../../info/wxmaxima.md:816
+#: ../../info/wxmaxima.md:817
 #, no-wrap
 msgid ""
 "wxdraw2d(\n"
@@ -3025,7 +3045,7 @@ msgstr ""
 "),wxplot_size=[1000,1000];\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:827
+#: ../../info/wxmaxima.md:828
 #, no-wrap
 msgid ""
 "FAQ\n"
@@ -3035,19 +3055,19 @@ msgstr ""
 "====================================\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:829
+#: ../../info/wxmaxima.md:830
 #, no-wrap
 msgid "Is there a way to make more text fit on a pdfLaTeX page?"
 msgstr "Чи є якийсь спосіб умістити більше тексту на сторінку pdfLaTeX?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:832
+#: ../../info/wxmaxima.md:833
 #, no-wrap
 msgid "There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (\"Export\"->\"Additional lines for the TeX preamble\"):\n"
 msgstr "Звичайно, є. Просто додайте вказані нижче рядки до преамбули LaTeX (наприклад, за допомогою відповідного поля у діалоговому вікні налаштовування («Експорт->Додаткові рядки до преамбули TeX»)):\n"
 
 #. type: Fenced code block (latex)
-#: ../../info/wxmaxima.md:833
+#: ../../info/wxmaxima.md:834
 #, no-wrap
 msgid ""
 "\n"
@@ -3059,13 +3079,13 @@ msgstr ""
 "\n"
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:839
+#: ../../info/wxmaxima.md:840
 #, no-wrap
 msgid "Is there a dark mode?"
 msgstr "Чи передбачено у програмі «темний» режим?"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:842
+#: ../../info/wxmaxima.md:843
 msgid ""
 "If wxWidgets is new enough wxMaxima will automatically be in dark mode if "
 "the rest of the operating system is. The worksheet itself is by default "
@@ -3081,25 +3101,25 @@ msgstr ""
 "з темного на світлий, і навпаки."
 
 #. type: Title ##
-#: ../../info/wxmaxima.md:843
+#: ../../info/wxmaxima.md:844
 #, no-wrap
 msgid "wxMaxima sometimes hangs for a several seconds once in the first minute"
 msgstr "wxMaxima іноді повисає на декілька секунд під час першої хвилини роботи"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:846
+#: ../../info/wxmaxima.md:847
 #, no-wrap
 msgid "wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.\n"
 msgstr "wxMaxima передає певні складні завдання, зокрема завдання з обробки підручника з maxima, який складається з понад 1000 сторінок, фоновим завданням, що, зазвичай, відбувається зовсім непомітно. Втім, у момент, коли може знадобитися результат виконання такого завдання, wxMaxima може знадобитися декілька секунд для відновлення нормальної роботи.\n"
 
 #. type: Title =
-#: ../../info/wxmaxima.md:851
+#: ../../info/wxmaxima.md:852
 #, no-wrap
 msgid "Command-line arguments"
 msgstr "Параметри командного рядка"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:854
+#: ../../info/wxmaxima.md:855
 msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
@@ -3111,17 +3131,17 @@ msgstr ""
 "параметрів командного рядка."
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:868
+#: ../../info/wxmaxima.md:869
 msgid "`-v` or `--version`: Output the version information"
 msgstr "`-v` або `--version`: вивести дані щодо версії програми"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:868
+#: ../../info/wxmaxima.md:869
 msgid "`-h` or `--help`: Output a short help text"
 msgstr "`-h` або `--help`: вивести короткий довідковий текст"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:868
+#: ../../info/wxmaxima.md:869
 msgid ""
 "`-o` or `--open=<str>`: Open the filename given as argument to this command-"
 "line switch"
@@ -3130,12 +3150,12 @@ msgstr ""
 "параметра командного рядка"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:868
+#: ../../info/wxmaxima.md:869
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr "`-e` або `--eval`: обробити файл після його відкриття"
 
 #. type: Bullet: '* '
-#: ../../info/wxmaxima.md:868
+#: ../../info/wxmaxima.md:869
 msgid ""
 "`-b` or `--batch`: If the command-line opens a file all cells in this file "
 "are evaluated and the file is saved afterwards. This is for example useful "
@@ -3155,7 +3175,7 @@ msgstr ""
 "далеко не завжди."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:868
+#: ../../info/wxmaxima.md:869
 #, no-wrap
 msgid ""
 "* `--logtostdout`:                 Log all \"debug messages\" sidebar messages to stderr, too.\n"
@@ -3177,7 +3197,7 @@ msgstr ""
 "* `-m` або `--maxima=<рядок>`:     надає змогу вказати розташування виконуваного файла _maxima_\n"
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:869
+#: ../../info/wxmaxima.md:870
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."
@@ -3191,25 +3211,36 @@ msgstr ""
 #~ msgstr "~~~maxima load(draw);"
 
 #, fuzzy
-#~| msgid "/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
+#~| msgid ""
+#~| "/* Parabola in window #1 */ draw2d(terminal=[wxt,1],explicit(x^2,"
+#~| "x,-1,1));"
 #~ msgid ""
 #~ "    /* Parabola in window #1 */\n"
 #~ "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
-#~ msgstr "    /* Парабола у вікні 1 */ draw1d(terminal=[wxt,1],explicit(x^2,x,-1,1));"
+#~ msgstr ""
+#~ "    /* Парабола у вікні 1 */ draw1d(terminal=[wxt,1],explicit(x^2,"
+#~ "x,-1,1));"
 
 #, fuzzy
-#~| msgid "/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
+#~| msgid ""
+#~| "/* Parabola in window #2 */ draw2d(terminal=[wxt,2],explicit(x^2,"
+#~| "x,-1,1));"
 #~ msgid ""
 #~ "    /* Parabola in window #2 */\n"
 #~ "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
-#~ msgstr "/* Парабола у вікні 2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
+#~ msgstr ""
+#~ "/* Парабола у вікні 2 */ draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));"
 
 #, fuzzy
-#~| msgid "/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ~~~"
+#~| msgid ""
+#~| "/* Paraboloid in window #3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
+#~| "x,-1,1,y,-1,1)); ~~~"
 #~ msgid ""
 #~ "    /* Paraboloid in window #3 */\n"
 #~ "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
-#~ msgstr "/* Параболоїд у вікні 3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1)); ~~~"
+#~ msgstr ""
+#~ "/* Параболоїд у вікні 3 */ draw3d(terminal=[wxt,3],explicit(x^2+y^2,"
+#~ "x,-1,1,y,-1,1)); ~~~"
 
 #, fuzzy
 #~| msgid ""

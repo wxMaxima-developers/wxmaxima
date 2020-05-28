@@ -836,7 +836,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="вісь"><span class="header-section-number">2.3.8.8</span> Вісь</h4>
 <p>Налаштовує вісі.</p>
 <h4 id="контур"><span class="header-section-number">2.3.8.9</span> Контур</h4>
-<p>(Лише для просторових креслень) Додає контурні лінії, подібні до тих, які можна знайти на карті висот, до команд креслення, які йдуть за нею у поточній команді draw() і/або до площини основи діаграми. Крім того, цей майстер надає змогу повністю пропустити малювання кривих і показати лише контурне креслення.</p>
+<p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
 <h4 id="назва-графіка"><span class="header-section-number">2.3.8.10</span> Назва графіка</h4>
 <p>Додає запис умовних позначень із назвою наступного креслення на панель умовних позначень діаграми. Порожнє значення назви вимикає створення записів умовних позначень для наступних креслень.</p>
 <h4 id="колір-лінії"><span class="header-section-number">2.3.8.11</span> Колір лінії</h4>
@@ -854,10 +854,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="файли-запуску"><span class="header-section-number">2.5</span> Файли запуску</h2>
 <p>У діалоговому вікні налаштовування <em>wxMaxima</em> передбачено можливість редагування двох файлів із командами, які виконуються під час запуску програми:</p>
 <ul>
-<li>Файла, у якому містяться команди, які виконуються під час запуску <em>Maxima</em>: <code>~/.maxima/maxima-init.mac</code></li>
-<li>одного файла із додатковими командами, які виконуються, якщо <em>wxMaxima</em> запускає <em>Maxima</em>: <code>~/.maxima/wxmaxima-init.mac</code></li>
+<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>maxima-init.mac</code></li>
+<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
 </ul>
-<p>Ці файли зберігаються у каталозі користувача Maxima, зазвичай, каталозі <code>.maxima/</code> у домашній теці користувача. Розташування файлів можна визначити за допомогою такої команди: <code>maxima_userdir;</code></p>
+<p>These files are in the Maxima user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
 <h2 id="спеціальні-змінні-wx"><span class="header-section-number">2.6</span> Спеціальні змінні wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> вказує <em>Maxima</em>, чи слід перетворювати назви змінних, які містять символ підкреслювання (<code>R_150</code> або подібні змінні) на змінні із нижніми індексами. Див. <code>wxdeclare_subscript</code>, щоб дізнатися більше про те, які саме назви змінних буде перетворено автоматично.</li>
