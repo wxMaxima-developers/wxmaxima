@@ -4010,7 +4010,10 @@ bool wxMaxima::LoadManualAnchorsFromCache()
   }
   bool done = !m_worksheet->m_helpFileAnchors.empty();
   if(done)
+  {
     wxLogMessage(wxString::Format(_("Read the anchors for the maxima manual from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
+    m_worksheet->m_helpFileAnchorsUsable = true;
+  }
   return done;
 }
 
