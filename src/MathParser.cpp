@@ -249,7 +249,7 @@ Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
 
 Cell *MathParser::ParseImageTag(wxXmlNode *node)
 {
-  Cell *imageCell;
+  Cell *imageCell = {};
   wxString filename(node->GetChildren()->GetContent());
 
   if (m_fileSystem) // loading from zip
@@ -259,7 +259,7 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
     if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
     {
       std::shared_ptr <wxFileSystem> noFS;
-      if(wxImage::GetImageCount(filename) < 2)
+      if (wxImage::GetImageCount(filename) < 2)
         imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, true);
       else
         imageCell = new SlideShow(NULL, m_configuration, m_cellPointers, filename, true);
@@ -274,7 +274,7 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
         )
         filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
       std::shared_ptr <wxFileSystem> noFS;
-      if(wxImage::GetImageCount(filename) < 2)           
+      if (wxImage::GetImageCount(filename) < 2)
         imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, noFS, false);
       else
         imageCell = new SlideShow(NULL, m_configuration, m_cellPointers, filename, false);
@@ -282,9 +282,9 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
   }
   wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
   wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
-  if(imageCell->GetType() == MC_TYPE_IMAGE)
+  if (imageCell->GetType() == MC_TYPE_IMAGE)
   {
-    if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
+    if (!gnuplotSource.empty())
     {
       dynamic_cast<ImgCell *>(imageCell)->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
     }
@@ -718,7 +718,7 @@ Cell *MathParser::ParseFunTag(wxXmlNode *node)
   fun->SetStyle(TS_FUNCTION);
   fun->SetArg(HandleNullPointer(ParseTag(child, false)));
   ParseCommonAttrs(node, fun);
-  if((fun != NULL) && (fun->ToString().Contains(")(")))
+  if (fun->ToString().Contains(")("))
     fun->SetToolTip(_("If this isn't a function returning a lambda() expression a multiplication sign (*) between closing and opening parenthesis is missing here."));
   return fun;
 }
