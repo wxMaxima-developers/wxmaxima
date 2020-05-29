@@ -1725,6 +1725,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           if((group->GetEditable() != NULL) && (group->GetEditable()->ContainsPoint(wxPoint(downx, downy))))
           {
             wxString wordUnderCursor = group->GetEditable()->GetWordUnderCaret();
+            std::cerr<<wordUnderCursor<<"\n";
             wxArrayString dst[4];
             wxArrayString sameBeginning;
             if(m_helpFileAnchorsUsable)
