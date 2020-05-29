@@ -697,16 +697,21 @@ public:
     ref = nullptr;
     return *this;
   }
+
+#if 0
+  optional& operator=(const optional& rhs) noexcept {
+    ref = rhs.ref;
+    return *this;
+  }
   
-  // optional& operator=(const optional& rhs) noexcept {
-    // ref = rhs.ref;
-    // return *this;
-  // }
-  
-  // optional& operator=(optional&& rhs) noexcept {
-    // ref = rhs.ref;
-    // return *this;
-  // }
+  optional& operator=(optional&& rhs) noexcept {
+    ref = rhs.ref;
+    return *this;
+  }
+#else
+  optional& operator=(const optional& rhs) noexcept = delete;
+  optional& operator=(optional&& rhs) noexcept = delete;
+#endif
   
   template <typename U>
   auto operator=(U&& rhs) noexcept
