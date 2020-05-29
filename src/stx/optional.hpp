@@ -31,7 +31,7 @@
 #endif
 
 #if defined(__has_include) && !defined(STX_NO_STD_OPTIONAL)
-#    if __has_include(<optional>) && (__cplusplus > 201402)
+#   if __has_include(<optional>) && (__cplusplus > 201402)
 #       include <optional>
         namespace STX_NAMESPACE_NAME {
             using std::optional;
@@ -43,21 +43,8 @@
             using std::in_place;
         }
 #       define STX_HAVE_STD_OPTIONAL 1
-#   elif __has_include(<experimental/optional>)
-#       include <experimental/optional>
-        namespace STX_NAMESPACE_NAME {
-            using std::experimental::optional;
-            using std::experimental::bad_optional_access;
-            using std::experimental::nullopt_t;
-            using std::experimental::nullopt;
-            using std::experimental::make_optional;
-            using std::experimental::in_place_t;
-            using std::experimental::in_place;
-        }
-#       define STX_HAVE_STD_OPTIONAL 1
-#    endif // __hasinclude(optional)
+#   endif // __hasinclude(optional)
 #endif // defined(__hasinclude)
-
 
 #ifndef STX_HAVE_STD_OPTIONAL
 
@@ -78,13 +65,13 @@
 #   elif (__GNUC__ > 4)
 #     define TR2_OPTIONAL_GCC_4_8_AND_HIGHER___
 #   endif
-#
+
 #   if (__GNUC__ == 4) && (__GNUC_MINOR__ >= 7)
 #     define TR2_OPTIONAL_GCC_4_7_AND_HIGHER___
 #   elif (__GNUC__ > 4)
 #     define TR2_OPTIONAL_GCC_4_7_AND_HIGHER___
 #   endif
-#
+
 #   if (__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && (__GNUC_PATCHLEVEL__ >= 1)
 #     define TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
 #   elif (__GNUC__ == 4) && (__GNUC_MINOR__ >= 9)
@@ -93,7 +80,7 @@
 #     define TR2_OPTIONAL_GCC_4_8_1_AND_HIGHER___
 #   endif
 # endif
-#
+
 # if defined __clang_major__
 #   if (__clang_major__ == 3 && __clang_minor__ >= 5)
 #     define TR2_OPTIONAL_CLANG_3_5_AND_HIGHTER_
@@ -106,7 +93,7 @@
 #     define TR2_OPTIONAL_CLANG_3_4_2_AND_HIGHER_
 #   endif
 # endif
-#
+
 # if defined _MSC_VER
 #   if (_MSC_VER >= 1900)
 #     define TR2_OPTIONAL_MSVC_2015_AND_HIGHER___
