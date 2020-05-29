@@ -297,6 +297,7 @@ OutCommon::DataObject::DataObject(const wxDataFormat &format, const wxMemoryBuff
     m_databuf(0)
     // We can't point m_databuf to data here, since TakeData calls Free() and will ruin it!
 {
+  // cppcheck-suppress useInitializationList
   m_databuf = data;
 }
 
