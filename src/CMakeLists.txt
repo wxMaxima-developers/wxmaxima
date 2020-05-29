@@ -1,8 +1,12 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-# The result of the following command is only re-generated on
-# CMakeLists.txt changes
-file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp *.h)
+# The result of the following command on Cmake < 3.11.0 is only re-generated on
+# CMakeLists.txt changes. Latter versions support CONFIGURE_DEPENDS
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.11.0")
+    file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp *.h)
+else()
+    file(GLOB SOURCE_FILES *.cpp *.h */*.h */*.cpp)
+endif()
 
 option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
 
