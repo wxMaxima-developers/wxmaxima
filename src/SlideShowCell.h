@@ -41,7 +41,7 @@
 
 #include <vector>
 
-class SlideShow : public Cell
+class SlideShow final : public Cell
 {
 public:
   /*! The constructor
@@ -64,7 +64,7 @@ public:
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove);
 
-  Cell *Copy() override {return new SlideShow(*this);}
+  Cell *Copy() override { return new SlideShow(*this); }
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
@@ -89,7 +89,7 @@ public:
 
   bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  virtual wxString GetToolTip(const wxPoint &point) override;
+  wxString GetToolTip(const wxPoint &point) override;
 
   void MarkAsDeleted()  override;
 
@@ -98,20 +98,18 @@ public:
     To be called when the slideshow is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
    */
-  virtual void ClearCache() override;
+  void ClearCache() override;
 
   void LoadImages(wxArrayString images, bool deleteRead);
 
-  int GetDisplayedIndex() const
-  { return m_displayed; }
+  int GetDisplayedIndex() const { return m_displayed; }
 
   wxImage GetBitmap(int n) const
   { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
 
-  int Length() const
-  { return m_size; }
+  int Length() const { return m_size; }
 
   //! Exports the image the slideshow currently displays
   wxSize ToImageFile(wxString file);
@@ -119,7 +117,7 @@ public:
   //! Exports the whole animation as animated gif
   wxSize ToGif(wxString file);
 
-  bool CopyToClipboard()  override;
+  bool CopyToClipboard() override;
   
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();
@@ -150,40 +148,35 @@ public:
    */
   int SetFrameRate(int Freq);
 
-  bool AnimationRunning() const {return m_animationRunning;}
+  bool AnimationRunning() const { return m_animationRunning; }
   void AnimationRunning(bool run);
   bool CanPopOut() override
-    {
-      return (!m_images[m_displayed]->GnuplotSource().IsEmpty());
-    }
+  { return (!m_images[m_displayed]->GnuplotSource().empty()); }
 
   void GnuplotSource(int image, wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem)
-    {
-      m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem);
-    }
+  { m_images[image]->GnuplotSource(gnuplotFilename, dataFilename, filesystem); }
 
   wxString GnuplotSource() const override
-    {
-      if(m_images[m_displayed] == NULL)
-        return wxEmptyString;
-      else
-        return m_images[m_displayed]->GnuplotSource();
-    }
+  {
+    if (!m_images[m_displayed])
+      return wxEmptyString;
+    else
+      return m_images[m_displayed]->GnuplotSource();
+  }
   wxString GnuplotData() const override
-    {
-      if(m_images[m_displayed] == NULL)
-        return wxEmptyString;
-      else
-        return m_images[m_displayed]->GnuplotData();
-    }
+  {
+    if (!m_images[m_displayed])
+      return wxEmptyString;
+    else
+      return m_images[m_displayed]->GnuplotData();
+  }
 
-  void SetNextToDraw(Cell *next) override;
-
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   std::shared_ptr<wxTimer> m_timer;
   /*! The framerate of this cell.
 
@@ -201,7 +194,7 @@ protected:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -213,12 +206,9 @@ protected:
 
   wxString ToXML() override;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
-  {
-    m_drawBoundingBox = true;
-  }
+  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
+  { m_drawBoundingBox = true; }
 
-private:
   bool m_drawBoundingBox;
 };
 

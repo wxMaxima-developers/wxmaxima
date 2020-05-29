@@ -27,39 +27,29 @@
 
 #include <vector>
 
-class MatrCell : public Cell
+class MatrCell final : public Cell
 {
 public:
   MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   MatrCell(const MatrCell &cell);
-  Cell *Copy() override {return new MatrCell(*this);}
+  Cell *Copy() override { return new MatrCell(*this); }
   ~MatrCell();
 
   InnerCellIterator InnerBegin() const override
-    { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }
+  { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }
   InnerCellIterator InnerEnd() const override
-    { return m_cells.empty() ? InnerCellIterator{} : ++InnerCellIterator(&m_cells.back()); }
+  { return m_cells.empty() ? InnerCellIterator{} : ++InnerCellIterator(&m_cells.back()); }
 
   void RecalculateHeight(int fontsize) override;
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
-  void AddNewCell(Cell *cell)
-  {
-    m_cells.push_back(std::shared_ptr<Cell>(cell));
-  }
+  void AddNewCell(Cell *cell) { m_cells.push_back(std::shared_ptr<Cell>(cell)); }
 
-  void NewRow()
-  {
-    m_matHeight++;
-  }
-
-  void NewColumn()
-  {
-    m_matWidth++;
-  }
+  void NewRow() { m_matHeight++; }
+  void NewColumn() { m_matWidth++; }
 
   void SetDimension();
 
@@ -75,28 +65,22 @@ public:
 
   wxString ToXML() override;
 
-  void SetSpecialFlag(bool special)
-  { m_specialMatrix = special; }
+  void SetSpecialFlag(bool special) { m_specialMatrix = special; }
 
-  void SetInferenceFlag(bool inference)
-  { m_inferenceMatrix = inference; }
+  void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
 
-  void RowNames(bool rn)
-  { m_rowNames = rn; }
+  void RowNames(bool rn) { m_rowNames = rn; }
 
-  void ColNames(bool cn)
-  { m_colNames = cn; }
+  void ColNames(bool cn) { m_colNames = cn; }
 
-  void RoundedParens(bool rounded)
-  { m_roundedParens = rounded;}
+  void RoundedParens(bool rounded) { m_roundedParens = rounded;}
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   unsigned int m_matWidth;
   bool m_roundedParens;
   unsigned int m_matHeight;

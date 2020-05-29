@@ -31,10 +31,10 @@
 #include "FontCache.h"
 
 ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_innerCell(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_open(std::make_shared<TextCell>(parent, config, cellPointers, wxT("("))),
-  m_close(std::make_shared<TextCell>(parent, config, cellPointers, wxT(")")))
+    Cell(parent, config, cellPointers),
+    m_innerCell(std::make_shared<TextCell>(parent, config, cellPointers)),
+    m_open(std::make_shared<TextCell>(parent, config, cellPointers, wxT("("))),
+    m_close(std::make_shared<TextCell>(parent, config, cellPointers, wxT(")")))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
@@ -70,11 +70,11 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
 ParenCell::ParenCell(const ParenCell &cell):
- ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
-  if(cell.m_innerCell)
+  if (cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList(), cell.m_type);
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
@@ -86,13 +86,13 @@ ParenCell::~ParenCell()
 
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
-  if (inner != NULL)
+  if (inner)
     SetInner(std::shared_ptr<Cell>(inner), type);
 }
 
 void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
 {
-  if (inner == NULL)
+  if (!inner)
     return;
   m_innerCell = inner;
 

@@ -40,12 +40,12 @@ enum
   SM_PROD
 };
 
-class SumCell : public Cell
+class SumCell final : public Cell
 {
 public:
   SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SumCell(const SumCell &cell);
-  Cell *Copy() override {return new SumCell(*this);}
+  Cell *Copy() override { return new SumCell(*this); }
   ~SumCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_under); }
@@ -54,7 +54,7 @@ public:
   void RecalculateHeight(int fontsize) override;
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetBase(Cell *base);
 
@@ -62,10 +62,7 @@ public:
 
   void SetOver(Cell *over);
 
-  void SetSumStyle(int style)
-  {
-    m_sumStyle = style;
-  }
+  void SetSumStyle(int style) { m_sumStyle = style; }
 
   wxString ToString() override;
 
@@ -79,14 +76,12 @@ public:
 
   wxString ToOMML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;
-  
-protected:
+
   std::shared_ptr<Cell> m_base;
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_under;

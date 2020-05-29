@@ -49,9 +49,9 @@
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
-  Cell(parent, config, cellPointers),
-  m_timer(NULL),
-  m_fileSystem(filesystem)
+    Cell(parent, config, cellPointers),
+    m_timer(NULL),
+    m_fileSystem(filesystem)
 {
   m_nextToDraw = NULL;
   m_animationRunning = true;
@@ -60,15 +60,15 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_framerate = framerate;
   m_imageBorderWidth = Scale_Px(1);
   m_drawBoundingBox = false;
-  if(m_animationRunning)
+  if (m_animationRunning)
     ReloadTimer();
   m_width = m_height = -1;
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
-  Cell(parent, config, cellPointers),
-  m_timer(NULL),
-  m_fileSystem(NULL)
+    Cell(parent, config, cellPointers),
+    m_timer(NULL),
+    m_fileSystem(NULL)
 {
   m_nextToDraw = NULL;
   m_width = m_height = -1;
@@ -83,18 +83,18 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString WXUNUSED(type)):
-  SlideShow(parent, config, cellPointers)
+    SlideShow(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
   LoadImages(image);
 }
 
 SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove):
-  SlideShow(parent, config, cellPointers)
+    SlideShow(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
   LoadImages(image);
-  if(remove)
+  if (remove)
     wxRemoveFile(image);
 }
 
@@ -120,7 +120,7 @@ int SlideShow::GetFrameRate() const
 
 void SlideShow::ReloadTimer()
 {
-  if(!m_timer)
+  if (!m_timer)
   {
     // Tell MathCtrl about our timer.
     m_timer = std::make_shared<wxTimer>(m_cellPointers->GetMathCtrl(), wxNewId());
@@ -136,7 +136,7 @@ void SlideShow::ReloadTimer()
 
 void SlideShow::StopTimer()
 {
-    if(m_timer)
+    if (m_timer)
     {
       m_timer->Stop();
       m_cellPointers->m_slideShowTimers.erase(this);
@@ -632,9 +632,3 @@ bool SlideShow::CopyAnimationToClipboard()
 }
 
 wxDataFormat SlideShow::m_gifFormat(wxT("image/gif"));
-
-void SlideShow::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
-}
-

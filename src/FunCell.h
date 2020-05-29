@@ -49,12 +49,12 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell. 
 */
-class FunCell : public Cell
+class FunCell final : public Cell
 {
 public:
   FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   FunCell(const FunCell &cell);
-  Cell *Copy() override {return new FunCell(*this);}
+  Cell *Copy() override { return new FunCell(*this); }
   ~FunCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
@@ -68,7 +68,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -85,12 +85,11 @@ public:
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
-
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_nameCell;
   std::shared_ptr<Cell> m_argCell;

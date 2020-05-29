@@ -31,13 +31,13 @@
 #define SUB_DEC 2
 
 SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers)
+    Cell(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
 }
 
 SubCell::SubCell(const SubCell &cell):
-  SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -54,14 +54,14 @@ SubCell::~SubCell()
 
 void SubCell::SetIndex(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
   m_indexCell = std::shared_ptr<Cell>(index);
 }
 
 void SubCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
 }
@@ -181,9 +181,4 @@ wxString SubCell::ToXML()
   
   return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
            m_indexCell->ListToXML() + wxT("</r></i>");
-}
-
-void SubCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

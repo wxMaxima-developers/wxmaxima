@@ -25,12 +25,12 @@
 
 #include "Cell.h"
 
-class SubCell : public Cell
+class SubCell final : public Cell
 {
 public:
   SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   SubCell(const SubCell &cell);
-  Cell *Copy() override {return new SubCell(*this);}
+  Cell *Copy() override { return new SubCell(*this); }
   ~SubCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
@@ -44,7 +44,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -58,13 +58,12 @@ public:
 
   wxString ToXML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
   
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;
   std::shared_ptr<Cell> m_indexCell;

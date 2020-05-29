@@ -42,8 +42,9 @@ public:
 //! A constructor that loads the data into a wxBitmap
   SvgBitmap(const unsigned char *data, size_t len, int width = 640, int height = 480);
   SvgBitmap(const unsigned char *data, size_t len, wxSize siz);
-  ~SvgBitmap();
-  
+  ~SvgBitmap() override;
+  SvgBitmap &operator=(SvgBitmap &&o);
+
   //! Converts rgba data to a wxBitmap
   static wxBitmap RGBA2wxBitmap(const unsigned char imgdata[],const int &width, const int &height);
   //! Sets the bitmap to a new size and renders the svg image at this size.
@@ -66,7 +67,7 @@ private:
   //! No idea what nanoSVG stores here. But can be shared between images.
   static struct NSVGrasterizer* m_svgRast;
   //! The renderable svg image after we have read it in
-  NSVGimage *m_svgImage;
+  std::unique_ptr<NSVGimage, decltype(std::free)*> m_svgImage{nullptr, std::free};
 };
 
 #endif // SVGBITMAP_H

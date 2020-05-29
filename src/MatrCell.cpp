@@ -30,7 +30,7 @@
 #include "MatrCell.h"
 
 MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers)
+    Cell(parent, config, cellPointers)
 {
   m_nextToDraw = NULL;
   m_matWidth = 0;
@@ -42,7 +42,7 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 }
 
 MatrCell::MatrCell(const MatrCell &cell):
- MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -418,9 +418,4 @@ void MatrCell::SetDimension()
 {
   if (m_matHeight != 0)
     m_matWidth = m_matWidth / m_matHeight;
-}
-
-void MatrCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

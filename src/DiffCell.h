@@ -25,14 +25,14 @@
 
 #include "Cell.h"
 
-class DiffCell : public Cell
+class DiffCell final : public Cell
 {
 public:
   DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   DiffCell(const DiffCell &cell);
-  Cell *Copy() override {return new DiffCell(*this);}
+  Cell *Copy() override { return new DiffCell(*this); }
   ~DiffCell();
-  
+
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
 
@@ -44,7 +44,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -58,13 +58,12 @@ public:
 
   wxString ToXML() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;
   std::shared_ptr<Cell> m_diffCell;

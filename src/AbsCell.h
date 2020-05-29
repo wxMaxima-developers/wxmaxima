@@ -52,12 +52,12 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this AbsCell.  
  */
-class AbsCell : public Cell
+class AbsCell final : public Cell
 {
 public:
   AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   AbsCell(const AbsCell &cell);
-  Cell *Copy() override {return new AbsCell(*this);}
+  Cell *Copy() override { return new AbsCell(*this); }
   ~AbsCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
@@ -71,7 +71,7 @@ public:
   
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -86,12 +86,11 @@ public:
   wxString ToOMML() override;
 
   void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
   Cell *m_nextToDraw;
-protected:
+
   // The pointers below point to inner cells and must be kept contiguous.
   //! The contents of the abs() command
   std::shared_ptr<Cell> m_innerCell;

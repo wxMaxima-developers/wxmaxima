@@ -31,20 +31,21 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-class TextCell : public Cell
+class TextCell final : public Cell
 {
 private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
+
 public:
-  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_FUNCTION);
+  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
-  Cell *Copy() override {return new TextCell(*this);}  
+  Cell *Copy() override { return new TextCell(*this); }  
   ~TextCell();  
 
   double GetScaledTextSize() const;
   
-  virtual void SetStyle(TextStyle style) override;
+  void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
@@ -54,7 +55,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetFont(int fontsize);
 
@@ -62,8 +63,7 @@ public:
 
     The "(" is the opening parenthesis of a function instead.
    */
-  void DontEscapeOpeningParenthesis()
-  { m_dontEscapeOpeningParenthesis = true; }
+  void DontEscapeOpeningParenthesis() { m_dontEscapeOpeningParenthesis = true; }
 
   wxString ToString() override;
 
@@ -83,8 +83,7 @@ public:
 
   bool IsOperator() const override;
 
-  wxString GetValue() const override
-  { return m_text; }
+  wxString GetValue() const override { return m_text; }
 
   wxString GetGreekStringTeX() const;
 
@@ -96,9 +95,9 @@ public:
 
   bool IsShortNum() override;
 
-  virtual void SetType(CellType type) override;
+  void SetType(CellType type) override;
 
-protected:
+private:
   wxSize GetTextSize(wxString const &text);
   void SetAltText();
 
@@ -138,10 +137,10 @@ protected:
   double m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
-  void SetNextToDraw(Cell *next) override;
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
-private:
+
   Cell *m_nextToDraw;
   class SizeHash_internals
   {

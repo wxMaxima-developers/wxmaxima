@@ -38,11 +38,11 @@
 #endif
 
 IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_base(new TextCell(parent, config, cellPointers)),
-  m_under(new TextCell(parent, config, cellPointers)),
-  m_over(new TextCell(parent, config, cellPointers)),
-  m_var(new TextCell(parent, config, cellPointers))
+    Cell(parent, config, cellPointers),
+    m_base(new TextCell(parent, config, cellPointers)),
+    m_under(new TextCell(parent, config, cellPointers)),
+    m_over(new TextCell(parent, config, cellPointers)),
+    m_var(new TextCell(parent, config, cellPointers))
 {
   m_nextToDraw = NULL;
   m_signHeight = 35;
@@ -60,7 +60,7 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
 IntCell::IntCell(const IntCell &cell):
- IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -82,35 +82,35 @@ IntCell::~IntCell()
 
 void IntCell::SetOver(Cell *name)
 {
-  if (name == NULL)
+  if (!name)
     return;
   m_over = std::shared_ptr<Cell>(name);
 }
 
 void IntCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_base = std::shared_ptr<Cell>(base);
 }
 
 void IntCell::SetUnder(Cell *under)
 {
-  if (under == NULL)
+  if (!under)
     return;
   m_under = std::shared_ptr<Cell>(under);
 }
 
 void IntCell::SetVar(Cell *var)
 {
-  if (var == NULL)
+  if (var)
     return;
   m_var = std::shared_ptr<Cell>(var);
 }
 
 void IntCell::RecalculateWidths(int fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
+  if (!NeedsRecalculation(fontsize))
     return;
 
   wxASSERT(fontsize >= 1);
@@ -546,9 +546,4 @@ wxString IntCell::ToXML()
     flags += wxT(" def=\"false\">");
   
   return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
-}
-
-void IntCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
 }

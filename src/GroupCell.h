@@ -64,12 +64,12 @@ Items where a list of groupcells can be folded include
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
  */
-class GroupCell : public Cell
+class GroupCell final : public Cell
 {
 public:
   GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
-  Cell *Copy() override {return new GroupCell(*this);}
+  Cell *Copy() override { return new GroupCell(*this); }
   ~GroupCell();
 
   wxString GetAnswer(int answer)
@@ -90,18 +90,19 @@ public:
       return answer;
     }
   //! Does this GroupCell save the answer to a question?
-  bool AutoAnswer() const {return m_autoAnswer;}
+  bool AutoAnswer() const { return m_autoAnswer; }
   //! Does this GroupCell save the answer to a question?
-  void AutoAnswer(bool autoAnswer){
+  void AutoAnswer(bool autoAnswer)
+  {
     m_autoAnswer = autoAnswer;
     if(GetEditable() != NULL) GetEditable()->AutoAnswer(autoAnswer);
   }
   // Add a new answer to the cell
   void SetAnswer(wxString question, wxString answer)
-    {
-      if(answer != wxEmptyString)
-        m_knownAnswers[question] = answer;
-    }
+  {
+    if (answer != wxEmptyString)
+      m_knownAnswers[question] = answer;
+  }
   /*! Tell this cell to remove it from all gui actions.
 
     Normally the gui keeps various pointers to a cell: The cell below the cursor,
@@ -115,7 +116,7 @@ public:
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_inputLabel); }
   InnerCellIterator InnerEnd() const override
-    { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerCellIterator(InnerBegin()) : ++InnerCellIterator(&m_output); }
+  { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerCellIterator(InnerBegin()) : ++InnerCellIterator(&m_output); }
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -123,9 +124,7 @@ public:
     this pointer.
    */
   GroupCell *GetLastWorkingGroup() const
-  {
-    return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup);
-  }
+  { return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup); }
 
   /*! Marks the cell that is under the mouse pointer.
 
@@ -141,11 +140,9 @@ public:
   wxString GetToolTip(const wxPoint &point)  override;
 
   // general methods
-  GroupType GetGroupType() const
-  { return m_groupType; }
+  GroupType GetGroupType() const { return m_groupType; }
 
-  void SetGroupType(GroupType type)
-  { m_groupType = type; }
+  void SetGroupType(GroupType type) { m_groupType = type; }
 
   void SetCellStyle(int style);
 
@@ -210,13 +207,12 @@ public:
 
   void AppendInput(Cell *cell);
 
-  // Get the next cell in the list.
-  virtual GroupCell *GetNext() const override {return dynamic_cast<GroupCell *>(m_next);}
+  //! Get the next cell in the list.
+  GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(m_next); }
 
   static wxString TexEscapeOutputCell(wxString Input);
 
-  Cell *GetPrompt()
-    { return m_inputLabel.get(); }
+  Cell *GetPrompt() { return m_inputLabel.get(); }
 
   EditorCell *GetInput() const
     {
@@ -230,8 +226,7 @@ public:
 
     See also GetOutput();
   */
-  Cell *GetLabel()
-    { return m_output.get(); }
+  Cell *GetLabel() { return m_output.get(); }
 
   /*! Returns the list of cells the output consists of, starting after the label.
 
@@ -241,8 +236,7 @@ public:
   { if (m_output == NULL) return NULL; else return m_output->m_next; }
 
   //! Determine which rectangle is occupied by this GroupCell
-  wxRect GetOutputRect() const
-  { return m_outputRect; }
+  wxRect GetOutputRect() const { return m_outputRect; }
 
   /*! Recalculates the height of this GroupCell and all cells inside it if needed.
 
@@ -253,7 +247,7 @@ public:
   void RecalculateHeight(int fontsize) override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
-  virtual wxRect GetRect(bool all = false) override;
+  wxRect GetRect(bool all = false) override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
@@ -310,8 +304,7 @@ public:
   }
 
   //! Get the tree of cells that got hidden by folding this cell
-  GroupCell *GetHiddenTree()
-  { return m_hiddenTree; }
+  GroupCell *GetHiddenTree() { return m_hiddenTree; }
 
   /*! Fold the current cell
 
@@ -381,9 +374,9 @@ public:
     by RecalculateHeightOutput().
 
    */
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
-  virtual bool AddEnding() override
+  bool AddEnding() override
     {
       if(GetEditable() != NULL)
         return GetEditable()->AddEnding();
@@ -404,12 +397,10 @@ public:
   wxString ToString() override;
 
   //! Is this cell part of the evaluation Queue?
-  void InEvaluationQueue(bool inQueue)
-  { m_inEvaluationQueue = inQueue; }
+  void InEvaluationQueue(bool inQueue) { m_inEvaluationQueue = inQueue; }
 
   //! Is this cell the last cell in the evaluation Queue?
-  void LastInEvaluationQueue(bool last)
-  { m_lastInEvaluationQueue = last; }
+  void LastInEvaluationQueue(bool last) { m_lastInEvaluationQueue = last; }
 
   //! Called on MathCtrl resize
   void OnSize();
@@ -424,7 +415,7 @@ public:
 
   void SetNextToDraw(Cell *next) override;
 
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) override;
@@ -497,6 +488,7 @@ protected:
   bool NeedsRecalculation(int fontSize) override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
+
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
@@ -510,7 +502,7 @@ protected:
   int m_mathFontSize;
   Cell *m_lastInOutput;
   static wxString m_lookalikeChars;
-private:
+
   Cell *m_nextToDraw;
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;

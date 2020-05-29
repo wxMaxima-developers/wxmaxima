@@ -55,14 +55,14 @@ AtCell::~AtCell()
 
 void AtCell::SetIndex(Cell *index)
 {
-  if (index == NULL)
+  if (!index)
     return;
   m_indexCell = std::shared_ptr<Cell>(index);
 }
 
 void AtCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_baseCell = std::shared_ptr<Cell>(base);
 }
@@ -166,7 +166,3 @@ wxString AtCell::ToXML()
          m_indexCell->ListToXML() + wxT("</r></at>");
 }
 
-void AtCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
-}

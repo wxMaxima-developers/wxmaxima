@@ -32,13 +32,13 @@
 #define LIMIT_FONT_SIZE_DECREASE 1
 
 LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_base(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_name(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
-  m_comma(std::make_shared<TextCell>(parent, config, cellPointers, ",")),
-  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
+    Cell(parent, config, cellPointers),
+    m_base(std::make_shared<TextCell>(parent, config, cellPointers)),
+    m_under(std::make_shared<TextCell>(parent, config, cellPointers)),
+    m_name(std::make_shared<TextCell>(parent, config, cellPointers)),
+    m_open(std::make_shared<TextCell>(parent, config, cellPointers, "(")),
+    m_comma(std::make_shared<TextCell>(parent, config, cellPointers, ",")),
+    m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
@@ -53,7 +53,7 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
 LimitCell::LimitCell(const LimitCell &cell):
- LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -72,7 +72,7 @@ LimitCell::~LimitCell()
 
 void LimitCell::SetName(Cell *name)
 {
-  if (name == NULL)
+  if (!name)
     return;
   m_name = std::shared_ptr<Cell>(name);
   m_name_last = name;
@@ -82,7 +82,7 @@ void LimitCell::SetName(Cell *name)
 
 void LimitCell::SetBase(Cell *base)
 {
-  if (base == NULL)
+  if (!base)
     return;
   m_base = std::shared_ptr<Cell>(base);
   m_base_last = base;
@@ -92,7 +92,7 @@ void LimitCell::SetBase(Cell *base)
 
 void LimitCell::SetUnder(Cell *under)
 {
-  if (under == NULL)
+  if (!under)
     return;
   m_under = std::shared_ptr<Cell>(under);
   m_under_last = under;

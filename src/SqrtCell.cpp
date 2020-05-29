@@ -32,10 +32,10 @@
 #define SIGN_FONT_SCALE 2.0
 
 SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_innerCell(new TextCell(parent, config, cellPointers)),
-  m_open(std::make_shared<TextCell>(parent, config, cellPointers, "sqrt(")),
-  m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
+    Cell(parent, config, cellPointers),
+    m_innerCell(new TextCell(parent, config, cellPointers)),
+    m_open(std::make_shared<TextCell>(parent, config, cellPointers, "sqrt(")),
+    m_close(std::make_shared<TextCell>(parent, config, cellPointers, ")"))
 {
   m_nextToDraw = NULL;
   m_open->SetStyle(TS_FUNCTION);
@@ -56,7 +56,7 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(const SqrtCell &cell):
- SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -72,7 +72,7 @@ SqrtCell::~SqrtCell()
 
 void SqrtCell::SetInner(Cell *inner)
 {
-  if (inner == NULL)
+  if (!inner)
     return;
   m_innerCell = std::shared_ptr<Cell>(inner);
 

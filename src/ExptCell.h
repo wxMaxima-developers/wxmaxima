@@ -45,12 +45,12 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell. 
  */
-class ExptCell : public Cell
+class ExptCell final : public Cell
 {
 public:
   ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
   ExptCell(const ExptCell &cell);
-  Cell *Copy() override {return new ExptCell(*this);}
+  Cell *Copy() override { return new ExptCell(*this); }
   ~ExptCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
@@ -69,7 +69,7 @@ public:
 
   void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   wxString ToString() override;
 
@@ -85,20 +85,16 @@ public:
 
   wxString GetDiffPart() override;
 
-  void IsMatrix(bool isMatrix)
-  {
-    m_isMatrix = isMatrix;
-  }
+  void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
 
   bool BreakUp() override;
 
-  void SetNextToDraw(Cell *next) override;
-
-  Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-    Cell *m_nextToDraw;
-protected:
+  Cell *m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::shared_ptr<Cell> m_baseCell;
   std::shared_ptr<Cell> m_exptCell;
