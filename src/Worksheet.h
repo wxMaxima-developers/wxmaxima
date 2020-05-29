@@ -30,6 +30,7 @@
 #ifndef WORKSHEET_H
 #define WORKSHEET_H
 
+#include "stx/optional.hpp"
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>
@@ -628,7 +629,7 @@ public:
   void NumberSections();
 
   //! A error notification message
-  Notification *m_notificationMessage;
+  stx::optional<Notification> m_notificationMessage;
   //! Is this window active?
   void WindowActive(bool active){m_windowActive = active;}
   //! Clears the notification message from SetNotification

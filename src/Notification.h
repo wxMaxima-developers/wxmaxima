@@ -41,16 +41,18 @@
   focus between the user action that caused maxima to run a command and the moment the 
   command has finished or has caused an error.
  */
-class Notification: public wxNotificationMessage
+class Notification final: public wxNotificationMessage
 {
 public:
   //! A constructor that doesn't take any arguments
   Notification();
   //! A constructor that completely prepares the notification, but doesn't call Show() yet.
   explicit Notification(const wxString &title,
-                        const wxString &message=wxEmptyString,
+                        const wxString &message = {},
                         wxWindow *parent=NULL,
                         int flags=wxICON_INFORMATION);
+  //! A destructor that also closes the notification
+  ~Notification() override {Close();}
   //! Makes the notification appear.
   virtual bool Show(int duration = Timeout_Auto);
   //! Informs the notification which the main window is it notified for.

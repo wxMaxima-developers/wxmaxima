@@ -30,6 +30,7 @@
 #define ERRORREDIRECTOR_H
 
 #include <wx/log.h>
+#include <memory>
 
 //! Redirect error messages (but not warnings) to a second target.
 class ErrorRedirector : public wxLog
@@ -44,23 +45,21 @@ public:
      Sets the specified @c logger (which may be NULL) as the default log
      target but the log messages are also passed to the previous log target if any.
   */
-  explicit ErrorRedirector(wxLog* logger);
+  explicit ErrorRedirector(std::unique_ptr<wxLog> &&newLog);
 
-  /**
-     Destroys the previous log target.
-  */
-  virtual ~ErrorRedirector();
+  //! Restores the previous log target
+  ~ErrorRedirector() override;
 
   /*! This method is called from the idle loop.
 
     All log targets collect log messages between calls to Flush.
   */
-  virtual void Flush();
+  void Flush() override;
 
-  virtual void DoLogRecord(wxLogLevel level,
-                           const wxString& msg,
-                           const wxLogRecordInfo& info);
- 
+  void DoLogRecord(wxLogLevel level,
+                   const wxString& msg,
+                   const wxLogRecordInfo& info) override;
+
   /**
      Detaches the old log target so it won't be destroyed when the wxLogChain object
      is destroyed.
@@ -75,15 +74,16 @@ public:
   wxLog* GetOldLog() const;
 
   /**
-     Sets another log target to use (may be NULL).
+     Sets and takes ownership of another log target to use (may be nullptr).
 
-     The log target specified in the wxLogChain(wxLog*) constructor or in a
-     previous call to this function is deleted.
+     The previously owned logger - if any - is destroyed.
      This doesn't change the old log target value (the one the messages are
      forwarded to) which still remains the same as was active when wxLogChain
      object was created.
   */
-  void SetLog(wxLog* logger);
+  void SetLog(std::unique_ptr<wxLog> &&logger);
+  //! Sets ourseves as the log target
+  void SetLogThis();
 
   //! Output all log messages to stderr, too.
   static void LogToStdErr(){m_logToStdErr = true;}
@@ -92,13 +92,14 @@ public:
   static bool LoggingToStdErr(){return m_logToStdErr;}
 
 protected:
-  //! the current log target
-  wxLog *m_logNew;
-  
+  //! the current log target - equal to m_logOwned or this
+  wxLog *m_logNew = {};  
   //! the previous log target
-  wxLog *m_logOld;
+  wxLog *const m_logOld = {};
+  //! the owned new log, of null if no log is owned
+  std::unique_ptr<wxLog> m_logOwned;
 
-  bool m_batchMode;
+  bool m_batchMode = false;
 
 private:
   //! Output all log messages to stderr, too?
