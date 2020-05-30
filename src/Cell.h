@@ -265,7 +265,7 @@ class Cell
     //! If m_scrollToCell = true: Which cell do we need to scroll to?
     Cell *m_cellToScrollTo;
     //! The function to call if an animation has to be stepped.
-    wxScrolledCanvas *m_mathCtrl;
+    wxScrolledCanvas *const m_mathCtrl;
     //! The image counter for saving .wxmx files
     int m_wxmxImgCounter;
   };

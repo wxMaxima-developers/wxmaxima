@@ -177,7 +177,7 @@ public:
 private:
   Cell *m_nextToDraw = {};
 
-  std::shared_ptr<wxTimer> m_timer;
+  wxTimer m_timer{m_cellPointers->GetMathCtrl(), wxNewId()};
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.

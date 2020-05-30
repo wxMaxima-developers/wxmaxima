@@ -113,28 +113,18 @@ int SlideShow::GetFrameRate() const
 
 void SlideShow::ReloadTimer()
 {
-  if (!m_timer)
+  if (!m_timer.IsRunning())
   {
     // Tell MathCtrl about our timer.
-    m_timer = std::make_shared<wxTimer>(m_cellPointers->GetMathCtrl(), wxNewId());
-    m_cellPointers->m_slideShowTimers[this] = m_timer->GetId();
-  }
-  
-  if(m_timer)
-  {
-    if(!m_timer->IsRunning())
-      m_timer->StartOnce(1000 / GetFrameRate());
+    m_cellPointers->m_slideShowTimers[this] = m_timer.GetId();
+    m_timer.StartOnce(1000 / GetFrameRate());
   }
 }
 
 void SlideShow::StopTimer()
 {
-    if (m_timer)
-    {
-      m_timer->Stop();
-      m_cellPointers->m_slideShowTimers.erase(this);
-      m_timer.reset();
-    }
+  m_timer.Stop();
+  m_cellPointers->m_slideShowTimers.erase(this);
 }
 
 void SlideShow::AnimationRunning(bool run)
