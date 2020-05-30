@@ -32,16 +32,13 @@
 
 FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_num(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_denom(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_numParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
-  m_denomParenthesis(std::make_shared<ParenCell>(m_group, m_configuration, m_cellPointers)),
-  m_divide(std::make_shared<TextCell>(parent, config, cellPointers, "/"))
+  m_num(new TextCell(parent, config, cellPointers)),
+  m_denom(new TextCell(parent, config, cellPointers)),
+  m_numParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
+  m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
+  m_divide(new TextCell(parent, config, cellPointers, "/"))
 {
-  m_nextToDraw = NULL;
   m_divide->SetStyle(TS_VARIABLE);
-  m_num_Last = NULL;
-  m_denom_Last = NULL;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
   m_horizontalGapLeft = 0;
@@ -50,13 +47,12 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 }
 
 FracCell::FracCell(const FracCell &cell):
- FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
-  if(cell.m_num)
+  if (cell.m_num)
     SetNum(cell.m_num->CopyList());
-  if(cell.m_denom)
+  if (cell.m_denom)
     SetDenom(cell.m_denom->CopyList());
   m_fracStyle = cell.m_fracStyle;
   m_exponent = cell.m_exponent;
@@ -72,8 +68,8 @@ void FracCell::SetNum(Cell *num)
 {
   if (!num)
     return;
-  m_num = std::shared_ptr<Cell>(num);
-  static_cast<ParenCell&>(*m_numParenthesis).SetInner(m_num);
+  m_num.reset(num);
+  m_numParenthesis->SetInner(m_num);
   m_num_Last = num;
   SetupBreakUps();
 }
@@ -82,8 +78,8 @@ void FracCell::SetDenom(Cell *denom)
 {
   if (!denom)
     return;
-  m_denom = std::shared_ptr<Cell>(denom);
-  static_cast<ParenCell&>(*m_denomParenthesis).SetInner(m_denom);
+  m_denom.reset(denom);
+  m_denomParenthesis->SetInner(m_denom);
   SetupBreakUps();
 }
 

@@ -46,7 +46,7 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void AddNewCell(Cell *cell) { m_cells.push_back(std::shared_ptr<Cell>(cell)); }
+  void AddNewCell(Cell *cell) { m_cells.emplace_back(cell); }
 
   void NewRow() { m_matHeight++; }
   void NewColumn() { m_matWidth++; }
@@ -79,7 +79,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   unsigned int m_matWidth;
   bool m_roundedParens;

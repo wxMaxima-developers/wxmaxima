@@ -250,7 +250,7 @@ private:
   //! The name of the image, if known.
   wxString m_imageName;
   
-  NSVGimage* m_svgImage;
+  NSVGimage* m_svgImage = {};
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
 
   std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;

@@ -33,13 +33,11 @@
 SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers)
 {
-  m_nextToDraw = NULL;
 }
 
 SubCell::SubCell(const SubCell &cell):
     SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
@@ -56,14 +54,14 @@ void SubCell::SetIndex(Cell *index)
 {
   if (!index)
     return;
-  m_indexCell = std::shared_ptr<Cell>(index);
+  m_indexCell.reset(index);
 }
 
 void SubCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_baseCell = std::shared_ptr<Cell>(base);
+  m_baseCell.reset(base);
 }
 
 void SubCell::RecalculateWidths(int fontsize)

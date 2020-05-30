@@ -89,7 +89,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
   //! The contents of the abs() command
@@ -99,7 +99,7 @@ private:
   //! The cell containing the closing parenthesis
   std::shared_ptr<Cell> m_close;
   //! The last element of m_innerCell
-  Cell *m_last;
+  Cell *m_last = {};
 };
 
 #endif // ABSCELL_H

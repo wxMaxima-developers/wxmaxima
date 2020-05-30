@@ -39,7 +39,6 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
     m_over(new TextCell(parent, config, cellPointers)),
     m_paren(new ParenCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
   m_signHeight = 50;
   m_signTop = (2 * m_signHeight) / 5;
   m_signWidth = 30;
@@ -53,7 +52,6 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 SumCell::SumCell(const SumCell &cell) :
     SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_base)
     SetBase(cell.m_base->CopyList());
@@ -73,14 +71,14 @@ void SumCell::SetOver(Cell *over)
 {
   if (!over)
     return;
-  m_over = std::shared_ptr<Cell>(over);
+  m_over.reset(over);
 }
 
 void SumCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_base = std::shared_ptr<Cell>(base);
+  m_base.reset(base);
   static_cast<ParenCell&>(*m_paren).SetInner(m_base);
   m_displayedBase = m_paren;
 }
@@ -89,7 +87,7 @@ void SumCell::SetUnder(Cell *under)
 {
   if (!under)
     return;
-  m_under = std::shared_ptr<Cell>(under);
+  m_under.reset(under);
 }
 
 void SumCell::RecalculateWidths(int fontsize)
@@ -106,7 +104,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_signWCenter = m_signWidth / 2.0;
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (!m_over)
-    m_over = std::make_shared<TextCell>(m_group, m_configuration, m_cellPointers);
+    m_over.reset(new TextCell(m_group, m_configuration, m_cellPointers));
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (false)

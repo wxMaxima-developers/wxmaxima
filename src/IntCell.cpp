@@ -44,7 +44,6 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
     m_over(new TextCell(parent, config, cellPointers)),
     m_var(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
   m_signHeight = 35;
   m_signWidth = 18;
   m_signTop = m_signHeight / 2;
@@ -62,7 +61,6 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 IntCell::IntCell(const IntCell &cell):
     IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_base)
     SetBase(cell.m_base->CopyList());
@@ -84,28 +82,28 @@ void IntCell::SetOver(Cell *name)
 {
   if (!name)
     return;
-  m_over = std::shared_ptr<Cell>(name);
+  m_over.reset(name);
 }
 
 void IntCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_base = std::shared_ptr<Cell>(base);
+  m_base.reset(base);
 }
 
 void IntCell::SetUnder(Cell *under)
 {
   if (!under)
     return;
-  m_under = std::shared_ptr<Cell>(under);
+  m_under.reset(under);
 }
 
 void IntCell::SetVar(Cell *var)
 {
   if (var)
     return;
-  m_var = std::shared_ptr<Cell>(var);
+  m_var.reset(var);
 }
 
 void IntCell::RecalculateWidths(int fontsize)

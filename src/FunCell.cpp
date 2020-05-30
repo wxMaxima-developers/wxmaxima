@@ -34,7 +34,6 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_nameCell(new TextCell(parent, config, cellPointers)),
   m_argCell(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
   m_nameCell_Last = m_nameCell.get();
   if(m_nameCell_Last)
     while(m_nameCell_Last->m_next)
@@ -49,7 +48,6 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
 FunCell::FunCell(const FunCell &cell):
  FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_nameCell)
     SetName(cell.m_nameCell->CopyList());
@@ -66,8 +64,7 @@ void FunCell::SetName(Cell *name)
 {
   if (!name)
     return;
-  m_nameCell = std::shared_ptr<Cell>(name);
-
+  m_nameCell.reset(name);
   
   m_nameCell_Last = name;
   while(m_nameCell_Last->m_next)
@@ -79,7 +76,7 @@ void FunCell::SetArg(Cell *arg)
 {  
   if (!arg)
     return;
-  m_argCell = std::shared_ptr<Cell>(arg);
+  m_argCell.reset(arg);
 
   m_argCell_Last = arg;
   while(m_argCell_Last->m_next)

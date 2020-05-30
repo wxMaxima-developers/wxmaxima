@@ -87,7 +87,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   /*! How to create a big parenthesis sign?
    */
@@ -97,7 +97,7 @@ private:
   std::shared_ptr<Cell> m_innerCell;
   std::shared_ptr<Cell> m_open;
   std::shared_ptr<Cell> m_close;
-  Cell *m_last1;
+  Cell *m_last1 = {};
   bool m_print;
   int m_numberOfExtensions;
   int m_charWidth, m_charHeight;

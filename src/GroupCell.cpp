@@ -42,15 +42,12 @@
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString) :
     Cell(this, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   m_numberedAnswersCount = 0;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
   m_labelWidth_cached = 0;
-  m_hiddenTree = NULL;
-  m_hiddenTreeParent = NULL;
   m_outputRect.x = -1;
   m_outputRect.y = -1;
   m_outputRect.width = 0;
@@ -63,15 +60,14 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_type = MC_TYPE_GROUP;
   m_isHidden = false;
   m_groupType = groupType;
-  m_lastInOutput = NULL;
 
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
+      m_inputLabel.reset(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
     else
-      m_inputLabel = std::shared_ptr<Cell>(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
+      m_inputLabel.reset(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -160,7 +156,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 GroupCell::GroupCell(const GroupCell &cell):
     GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if (cell.m_inputLabel)
     SetInput(cell.m_inputLabel->CopyList());
@@ -305,7 +300,6 @@ GroupCell::~GroupCell()
 {
   GroupCell::MarkAsDeleted();
   wxDELETE(m_hiddenTree);
-  m_hiddenTree = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
@@ -338,7 +332,7 @@ void GroupCell::SetInput(Cell *input)
 {
   if (!input)
     return;
-  m_inputLabel = std::shared_ptr<Cell>(input);
+  m_inputLabel.reset(input);
   m_inputLabel->SetGroup(this);
 }
 
@@ -346,7 +340,7 @@ void GroupCell::AppendInput(Cell *cell)
 {
   if (!m_inputLabel)
   {
-    m_inputLabel = std::shared_ptr<Cell>(cell);
+    m_inputLabel.reset(cell);
   }
   else
   {
@@ -403,7 +397,7 @@ void GroupCell::RemoveOutput()
     m_cellPointers->m_answerCell = NULL;
 
   if (GetGroupType() != GC_TYPE_IMAGE)
-    m_output = NULL;
+    m_output.reset();
 
   m_cellPointers->m_errorList.Remove(this);
   // Calculate the new cell height.
@@ -436,7 +430,7 @@ void GroupCell::AppendOutput(Cell *cell)
   cell->SetGroupList(this);
   if (!m_output)
   {
-    m_output = std::shared_ptr<Cell>(cell);
+    m_output.reset(cell);
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);

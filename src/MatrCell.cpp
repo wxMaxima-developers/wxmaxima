@@ -32,7 +32,6 @@
 MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   m_matWidth = 0;
   m_matHeight = 0;
   m_specialMatrix = false;
@@ -44,7 +43,6 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 MatrCell::MatrCell(const MatrCell &cell):
     MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
@@ -55,7 +53,7 @@ MatrCell::MatrCell(const MatrCell &cell):
   m_matHeight = cell.m_matHeight;
   for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
     if(i < cell.m_cells.size())
-      (m_cells).push_back(std::shared_ptr<Cell>(cell.m_cells[i]->CopyList()));
+      (m_cells).emplace_back(cell.m_cells[i]->CopyList());
 }
 
 MatrCell::~MatrCell()

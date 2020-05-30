@@ -141,7 +141,7 @@ private:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
   class SizeHash_internals
   {
   public:

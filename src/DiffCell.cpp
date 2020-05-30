@@ -32,16 +32,14 @@
 
 DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
-  m_baseCell(std::make_shared<TextCell>(parent, config, cellPointers)),
-  m_diffCell(std::make_shared<TextCell>(parent, config, cellPointers))
+  m_baseCell(new TextCell(parent, config, cellPointers)),
+  m_diffCell(new TextCell(parent, config, cellPointers))
 {
-  m_nextToDraw = NULL;
 }
 
 DiffCell::DiffCell(const DiffCell &cell):
  DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   if(cell.m_diffCell)
     SetDiff(cell.m_diffCell->CopyList());
@@ -58,7 +56,7 @@ void DiffCell::SetDiff(Cell *diff)
 {
   if (!diff)
     return;
-  m_diffCell = std::shared_ptr<Cell>(diff);
+  m_diffCell.reset(diff);
 
   m_diffCell->m_SuppressMultiplicationDot = true;
 }
@@ -67,7 +65,7 @@ void DiffCell::SetBase(Cell *base)
 {
   if (!base)
     return;
-  m_baseCell = std::shared_ptr<Cell>(base);
+  m_baseCell.reset(base);
 }
 
 void DiffCell::RecalculateWidths(int fontsize)

@@ -489,8 +489,8 @@ protected:
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
 
-  GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
-  GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
+  GroupCell *m_hiddenTree = {}; //!< here hidden (folded) tree of GCs is stored
+  GroupCell *m_hiddenTreeParent = {}; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
   GroupType m_groupType;
   // The pointers below point to inner cells and must be kept contiguous.
@@ -500,10 +500,10 @@ protected:
   std::shared_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
-  Cell *m_lastInOutput;
+  Cell *m_lastInOutput = {};
   static wxString m_lookalikeChars;
 
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;
   wxRect m_outputRect;

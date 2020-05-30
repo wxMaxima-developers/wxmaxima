@@ -175,7 +175,7 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-  Cell *m_nextToDraw;
+  Cell *m_nextToDraw = {};
 
   std::shared_ptr<wxTimer> m_timer;
   /*! The framerate of this cell.
