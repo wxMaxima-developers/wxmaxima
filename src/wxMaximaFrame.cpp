@@ -463,7 +463,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // The XML inspector scares many users and displaying long XML responses there slows
   // down wxMaxima => disable the XML inspector on startup.
   m_manager.GetPane(wxT("XmlInspector")).Show(false).PaneBorder(true).Movable(true);
-  m_manager.GetPane(wxT("unicode")).Show(false).PaneBorder(true).Movable(true);
+  m_manager.GetPane(wxT("unicode")) = m_manager.GetPane(wxT("unicode")).Caption(_("Unicode characters")).Show(false).PaneBorder(true).Movable(true);
 
   m_manager.GetPane(wxT("structure")) =
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
