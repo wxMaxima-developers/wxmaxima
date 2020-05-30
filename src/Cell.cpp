@@ -1424,8 +1424,8 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role)
 
 #endif
 
-Cell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl) :
-  m_mathCtrl(mathCtrl)
+Cell::CellPointers::CellPointers(wxScrolledCanvas *worksheet) :
+  m_worksheet(worksheet)
 {
   m_scrollToCell = false;
   m_cellToScrollTo = NULL;

@@ -123,7 +123,7 @@ class Cell
   public:
     void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
     Cell *CellToScrollTo(){return m_cellToScrollTo;}
-    explicit CellPointers(wxScrolledCanvas *mathCtrl);
+    explicit CellPointers(wxScrolledCanvas *worksheet);
     /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
       
       \param resortToLast true = if we already have set the cell maxima works on to NULL
@@ -257,15 +257,15 @@ class Cell
     WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
     SlideShowTimersList m_slideShowTimers;
 
-    wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
+    wxScrolledCanvas *GetWorksheet(){return m_worksheet;}
 
     //! Is scrolling to a cell scheduled?
     bool m_scrollToCell;
   private:
     //! If m_scrollToCell = true: Which cell do we need to scroll to?
     Cell *m_cellToScrollTo;
-    //! The function to call if an animation has to be stepped.
-    wxScrolledCanvas *const m_mathCtrl;
+    //! The object of the function to call if an animation has to be stepped.
+    wxScrolledCanvas *const m_worksheet;
     //! The image counter for saving .wxmx files
     int m_wxmxImgCounter;
   };

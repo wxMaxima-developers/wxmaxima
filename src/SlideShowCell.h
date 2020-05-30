@@ -177,7 +177,7 @@ public:
 private:
   Cell *m_nextToDraw = {};
 
-  wxTimer m_timer{m_cellPointers->GetMathCtrl(), wxNewId()};
+  wxTimer m_timer{m_cellPointers->GetWorksheet(), wxNewId()};
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
