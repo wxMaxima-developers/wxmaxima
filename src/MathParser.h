@@ -216,8 +216,8 @@ private:
   Cell *ParseSpecialConstantTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_SPECIAL_CONSTANT);}
   //! Parse a function name tag to a Cell. 
   Cell *ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
-  //! Parse a space tag to a Cell. 
-  Cell *ParseSpaceTag(wxXmlNode *node){return new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));}
+  //! Parse a space tag to a Cell.
+  Cell *ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));}
   /*! Parse a math-in-maths tag to a Cell. 
 
     \todo Does such a thing actually exist?
