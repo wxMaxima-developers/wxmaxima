@@ -1632,6 +1632,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("variables")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
+      m_manager.GetPane(wxT("draw")).Show(false);
       ShowToolBar(false);
       break;
     default:
