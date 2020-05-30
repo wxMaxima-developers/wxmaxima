@@ -82,8 +82,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#das-handbuch-von-wxmaxima">Das Handbuch von wxMaxima</a></li>
-<li><a href="#einführung-in-wxmaxima"><span class="toc-section-number">1</span> Einführung in wxMaxima</a><ul>
+<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
+<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
 <li><a href="#maxima-und-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> und wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
@@ -114,7 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#wo-wird-die-konfiguration-gespeichert"><span class="toc-section-number">1.4.6</span> Wo wird die Konfiguration gespeichert?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#erweiterungen-für-maxima"><span class="toc-section-number">2</span> Erweiterungen für <em>Maxima</em></a><ul>
+<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
 <li><a href="#variablen-mit-tiefgestelltem-index"><span class="toc-section-number">2.1</span> Variablen mit tiefgestelltem Index</a></li>
 <li><a href="#meldungen-in-der-statusleiste"><span class="toc-section-number">2.2</span> Meldungen in der Statusleiste</a></li>
 <li><a href="#diagramme"><span class="toc-section-number">2.3</span> Diagramme</a><ul>
@@ -152,14 +152,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li><a href="#häufig-gestellte-fragen"><span class="toc-section-number">4</span> Häufig gestellte Fragen</a><ul>
-<li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
+<li><a href="#gibt-es-eine-möglichkeit-mehr-text-auf-eine-latex-seite-zu-schreiben"><span class="toc-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?</a></li>
 <li><a href="#gibt-es-einen-dark-mode"><span class="toc-section-number">4.2</span> Gibt es einen Dark Mode?</a></li>
 <li><a href="#wxmaxima-hängt-in-der-ersten-minute-manchmal-einmal-für-mehrere-sekunden"><span class="toc-section-number">4.3</span> wxMaxima hängt in der ersten Minute manchmal einmal für mehrere Sekunden</a></li>
 </ul></li>
 <li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
 </ul>
 </nav>
-<h1 id="das-handbuch-von-wxmaxima" class="unnumbered">Das Handbuch von wxMaxima</h1>
+<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
 <p>wxMaxima ist ein graphisches Benutzerinterface (GUI) für das Computer-Algebrasystem Maxima. wxMaxima erlaubt die Nutzung aller Funktionen dieses Programms und bietet Assistenten für dessen wichtigste Funktionen an. Dieses Handbuch beschreibt die Features, die wxMaxima zu einer der beliebtesten graphischen Benutzerumgebung für Maxima gemacht haben.</p>
 <figure>
 <img src="./wxMaximaLogo.png" alt="wxMaxima logo" id="img_wxMaximaLogo" /><figcaption>wxMaxima logo</figcaption>
@@ -186,7 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Die Kommandozeilenargumente von wxMaxima</p>
 <hr />
-<h1 id="einführung-in-wxmaxima"><span class="header-section-number">1</span> Einführung in wxMaxima</h1>
+<h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
 <h2 id="maxima-und-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> und wxMaxima</h2>
 <p>Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, dass dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein “Sende an die CD”-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können.</p>
 <p>Ein Computer-Algebrasystem (CAS) wie Maxima ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrecher liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. <a href="http://www.sagemath.org/">Sage</a> umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von wxMaxima aus, das eine komfortablere Bedienung unterstützt.</p>
@@ -682,7 +682,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei <code>.wxMaxima</code> gespeichert, oder (für wxWidgets &gt;3.1.1) in <code>.config/wxMaxima.conf</code>. Die wxWidgets-Version kann über <code>wxbuild_info()</code> oder über das Hilfe-&gt;Über-Menü abgerufen werden. <a href="https://www.wxwidgets.org/">wxWidgets</a> ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das <code>wx</code> im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.</p>
 <p>Unter Windows wird die Konfiguration in der Registry unter <code>HKEY_CURRENT_USER\Software\wxMaxima</code> gespeichert.</p>
 <hr />
-<h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
+<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
 <p><em>wxMaxima</em>’s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em>Maxima</em> hinzu:</p>
 <h2 id="variablen-mit-tiefgestelltem-index"><span class="header-section-number">2.1</span> Variablen mit tiefgestelltem Index</h2>
 <p>Wenn <code>wxsubscripts</code> auf <code>true</code> gesetzt ist, werden Variablennamen im Format <code>x_y</code> mit einem tiefgestellten <code>y</code> dargestellt, wenn</p>
@@ -847,8 +847,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="startbefehle"><span class="header-section-number">2.5</span> Startbefehle</h2>
 <p>Der Konfigurationsdialog von <em>wxMaxima</em> bietet an, zwei Dateien mit <em>Maxima</em>-Befehlen zu bearbeiten:</p>
 <ul>
-<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>maxima-init.mac</code></li>
-<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
+<li>Eine Datei mit Befehlen, die <em>Maxima</em> beim Hochfahren ausführt: <code>maxima-init.mac</code></li>
+<li>Eine Datei mit zusätzlichen Kommandos, die ausgeführt werden, wenn <em>Maxima</em> von <em>wxMaxima</em> gestartet wird: <code>wxmaxima-init.mac</code></li>
 </ul>
 <p>These files are in the Maxima user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
 <h2 id="spezielle-variablen-die-wxmaxima-definiert"><span class="header-section-number">2.6</span> Spezielle Variablen, die wxMaxima definiert</h2>
@@ -981,7 +981,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb24-4" title="4">),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</a></code></pre></div>
 <hr />
 <h1 id="häufig-gestellte-fragen"><span class="header-section-number">4</span> Häufig gestellte Fragen</h1>
-<h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
+<h2 id="gibt-es-eine-möglichkeit-mehr-text-auf-eine-latex-seite-zu-schreiben"><span class="header-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?</h2>
 <p>Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (“Exportieren”-&gt;“Zusätzliche Zeilen für die LaTeX preamble”) angeben.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1"></a>
 <a class="sourceLine" id="cb25-2" title="2"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</a></code></pre></div>
