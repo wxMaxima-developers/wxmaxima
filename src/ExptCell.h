@@ -96,11 +96,11 @@ private:
   Cell *m_nextToDraw = {};
 
   // The pointers below point to inner cells and must be kept contiguous.
-  std::shared_ptr<Cell> m_baseCell;
-  std::shared_ptr<Cell> m_exptCell;
-  std::shared_ptr<Cell> m_exp;
-  std::shared_ptr<Cell> m_open;
-  std::shared_ptr<Cell> m_close;
+  std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_exptCell;
+  std::unique_ptr<Cell> m_exp;
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_close;
   Cell *m_expt_last = {};
   Cell *m_base_last = {};
   bool m_isMatrix;

@@ -1052,23 +1052,46 @@ protected:
 
   class InnerCellIterator
   {
-    const std::shared_ptr<Cell> *ptr = {};
+    enum class Uses { SmartPtr, RawPtr};
+    using SmartPtr = const std::unique_ptr<Cell> *;
+    using RawPtr = Cell* const*;
+    void const* m_ptr = {};
+    Uses m_uses = Uses::SmartPtr;
+    Cell *GetInner() const
+    {
+      if (!m_ptr) return {};
+      if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr>(m_ptr)->get();
+      else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr>(m_ptr);
+      else return {};
+    }
   public:
     InnerCellIterator() = default;
-    explicit InnerCellIterator(const std::shared_ptr<Cell> *p) : ptr(p) {}
+    explicit InnerCellIterator(const std::unique_ptr<Cell> *p) : m_ptr(p), m_uses(Uses::SmartPtr) {}
+    explicit InnerCellIterator(Cell* const *p) : m_ptr(p), m_uses(Uses::RawPtr) {}
     InnerCellIterator(const InnerCellIterator &o) = default;
     InnerCellIterator &operator=(const InnerCellIterator &o) = default;
-    InnerCellIterator operator++(int) {
+    InnerCellIterator operator++(int)
+    {
       auto ret = *this;
-      ptr ++;
-      return ret;
+      return operator++(), ret;
     }
-    InnerCellIterator &operator++() { ++ptr; return *this; }
-    bool operator==(const InnerCellIterator &o) const { return ptr == o.ptr; }
-    bool operator!=(const InnerCellIterator &o) const { return ptr != o.ptr; }
-    operator bool() const { return ptr && ptr->get(); }
-    operator Cell*() const { return ptr ? ptr->get() : nullptr; }
-    Cell *operator->() const { return ptr ? ptr->get() : nullptr; }
+    InnerCellIterator &operator++()
+    {
+      if (m_ptr)
+      {
+        if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr&>(m_ptr);
+        else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr&>(m_ptr);
+        else;
+      }
+      return *this;
+    }
+    bool operator==(const InnerCellIterator &o) const
+    { return m_uses == o.m_uses && m_ptr == o.m_ptr; }
+    bool operator!=(const InnerCellIterator &o) const
+    { return m_uses != o.m_uses || m_ptr != o.m_ptr; }
+    operator bool() const { return GetInner(); }
+    operator Cell*() const { return GetInner(); }
+    Cell *operator->() const { return GetInner(); }
   };
 
   //! Iterator to the beginning of the inner cell range

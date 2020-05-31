@@ -60,46 +60,53 @@ SubSupCell::~SubSupCell()
   MarkAsDeleted();
 }
 
+static void RemoveCell(std::vector<Cell*> &cells, Cell *const cell)
+{
+  cells.erase(
+    std::remove(cells.begin(), cells.end(), cell), cells.end());
+}
+
 void SubSupCell::SetPreSup(Cell *index)
 {
   if (!index)
     return;
-  wxASSERT(!m_preSupCell);
+  RemoveCell(m_scriptCells, m_preSupCell.get());
   m_preSupCell.reset(index);
-  m_scriptCells.push_back(m_preSupCell);
+  m_scriptCells.push_back(index);
 }
 
 void SubSupCell::SetPreSub(Cell *index)
 {
   if (!index)
     return;
-  wxASSERT(!m_preSubCell);
+  RemoveCell(m_scriptCells, m_preSubCell.get());
   m_preSubCell.reset(index);
-  m_scriptCells.push_back(m_preSubCell);
+  m_scriptCells.push_back(index);
 }
 
 void SubSupCell::SetPostSup(Cell *index)
 {
   if (!index)
     return;
-  wxASSERT(!m_postSupCell);
+  RemoveCell(m_scriptCells, m_postSupCell.get());
   m_postSupCell.reset(index);
-  m_scriptCells.push_back(m_postSupCell);
+  m_scriptCells.push_back(index);
 }
 
 void SubSupCell::SetPostSub(Cell *index)
 {
   if (!index)
     return;
-  wxASSERT(!m_postSubCell);
+ RemoveCell(m_scriptCells, m_postSubCell.get());
   m_postSubCell.reset(index);
-  m_scriptCells.push_back(m_postSubCell);
+  m_scriptCells.push_back(index);
 }
 
 void SubSupCell::SetIndex(Cell *index)
 {
   if (!index)
     return;
+  RemoveCell(m_scriptCells, m_postSubCell.get());
   m_postSubCell.reset(index);
 }
 
@@ -114,6 +121,7 @@ void SubSupCell::SetExponent(Cell *expt)
 {
   if (!expt)
     return;
+  RemoveCell(m_scriptCells, m_postSupCell.get());
   m_postSupCell.reset(expt);
 }
 

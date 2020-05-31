@@ -84,21 +84,21 @@ ParenCell::~ParenCell()
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner)
-    SetInner(std::shared_ptr<Cell>(inner), type);
+    SetInner(std::unique_ptr<Cell>(inner), type);
 }
 
-void ParenCell::SetInner(std::shared_ptr<Cell> inner, CellType type)
+void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
 {
   if (!inner)
     return;
-  m_innerCell = inner;
+  m_innerCell = std::move(inner);
 
   m_type = type;
   // Tell the first of our inner cells not to begin with a multiplication dot.
   m_innerCell->m_SuppressMultiplicationDot = true;
 
   // Search for the last of the inner cells
-  Cell *last1 = inner.get();
+  Cell *last1 = m_innerCell.get();
   while (last1->m_next != NULL)
     last1 = last1->m_next;
   m_last1 = last1;
