@@ -90,13 +90,16 @@ void ConjugateCell::RecalculateHeight(int fontsize)
   m_close->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
-    m_height = m_innerCell->GetHeightList() + Scale_Px(4);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(2);
+    m_height = m_innerCell->GetHeightList() + Scale_Px(6);
+    m_center = m_innerCell->GetCenterList() + Scale_Px(6);
   }
   else
   {
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    // The ConjugateCell itself isn't displayed if it is broken into lines.
+    // insted m_open, m_innerCell and m_close are => We can set our size to 0
+    // in this case.
+    m_height = 0;
+    m_center = 0;
   }
   Cell::RecalculateHeight(fontsize);
 }
@@ -116,9 +119,9 @@ void ConjugateCell::Draw(wxPoint point)
     m_innerCell->DrawList(in);
 
     dc->DrawLine(point.x + Scale_Px(2),
-                 point.y - m_center + Scale_Px(2),
+                 point.y - m_center + Scale_Px(6),
                  point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + Scale_Px(2)
+                 point.y - m_center + Scale_Px(6)
       );
     //                point.y - m_center + m_height - Scale_Px(2));
     UnsetPen();
