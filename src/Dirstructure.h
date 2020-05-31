@@ -79,9 +79,6 @@ public:
   wxString AutocompleteFile() const
   { return DataDir() + wxT("/autocomplete.txt"); }
 
-  //! The directory art is stored relative to
-  wxString ArtDir() const;
-
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC

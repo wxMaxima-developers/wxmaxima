@@ -134,18 +134,6 @@ wxString Dirstructure::DataDir() const
   return dir;
 }
 
-wxString Dirstructure::ArtDir() const
-{
-  wxString dir = ResourcesDir();
-  if(wxDirExists(dir + wxT("/wxMaxima")))
-    dir += wxT("/wxMaxima");
-
-  if(wxDirExists(dir + wxT("/art")))
-    dir += wxT("/art");
-
-  return dir;
-}
-
 wxString Dirstructure::MaximaDefaultLocation()
 {
   wxString maximaLocation;
