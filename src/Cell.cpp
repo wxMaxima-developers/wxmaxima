@@ -48,7 +48,6 @@ wxString Cell::GetToolTip(const wxPoint &point)
 Cell::Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers) :
    m_currentPoint_Last(wxPoint(-1,-1)),
    m_group(group),
-   m_parent(group),
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
@@ -187,11 +186,8 @@ void Cell::ClearCacheList()
 
 void Cell::SetGroupList(GroupCell *group)
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-  {
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->SetGroup(group);
-    tmp->SetParent(this);
-  }
 }
 
 int Cell::CellsInListRecursive() const
@@ -1292,7 +1288,7 @@ wxAccStatus Cell::GetParent (wxAccessible **parent)
     return wxACC_FAIL;
 
   if (*parent != this)
-    return (*parent = m_parent), wxACC_OK;
+    return (*parent = m_group), wxACC_OK;
 
   if ((*m_configuration)->GetWorkSheet())
     *parent = (*m_configuration)->GetWorkSheet()->GetAccessible();

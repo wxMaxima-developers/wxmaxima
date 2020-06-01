@@ -928,19 +928,6 @@ class Cell
   virtual bool IsActive() const
   { return false; }
 
-  /*! Define which GroupCell is the parent of this cell.
-    
-    By definition every math cell is part of a group cell.
-    So this function has to be called on every math cell. Also if a
-    derived class defines a cell type that does include sub-cells 
-    (One example would be the argument of a sqrt() cell) the derived
-    class has to take care that the subCell's SetGroup is called when
-    the cell's SetGroup is called.
-   */
-  
-  virtual void SetParent(Cell *parent)
-    { m_parent = parent; }
-
   /*! Define which Cell is the GroupCell this list of cells belongs to
 
     Also automatically sets this cell as the "parent" of all cells of the list.
@@ -1028,9 +1015,6 @@ protected:
     every math cell has a GroupCell it belongs to.
   */
   GroupCell *m_group;
-
-  //! The cell that contains the current cell
-  Cell *m_parent;
 
   //! Does this cell begin with a forced page break?
   bool m_breakPage;
