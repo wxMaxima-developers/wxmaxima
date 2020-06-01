@@ -526,7 +526,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           // If we evaluated a cell that produces no output we still want the
           // cell to be unselected after evaluating it.
           if (m_worksheet->FollowEvaluation())
-            m_worksheet->SetSelection(NULL);
+            m_worksheet->ClearSelection();
 
           m_MenuBar->EnableItem(menu_remove_output, true);
           RightStatusText(_("Ready for user input"));

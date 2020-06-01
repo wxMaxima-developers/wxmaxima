@@ -97,7 +97,7 @@ void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
   GroupCell *cell = gr->GetHiddenTree();
   while (cell)
   {
-    AddToQueue(dynamic_cast<GroupCell *>(cell));
+    AddToQueue(cell);
     AddHiddenTreeToQueue(cell);
     cell = cell->GetNext();
   }

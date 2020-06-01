@@ -2598,7 +2598,7 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) const
 
 void EditorCell::DeactivateCursor()
 {
-  auto *editor = dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell);
+  auto *editor = m_cellPointers->m_activeCell;
   if (editor)
   {
     editor->ClearSelection();

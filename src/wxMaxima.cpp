@@ -1317,8 +1317,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
   else
   {
-    TextCell *incompleteTextCell =
-      dynamic_cast<TextCell *>(m_worksheet->GetCurrentTextCell());
+    TextCell *incompleteTextCell = m_worksheet->GetCurrentTextCell();
 
     if(incompleteTextCell != NULL)
     {
@@ -9112,7 +9111,7 @@ void wxMaxima::TriggerEvaluation()
     return;
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = dynamic_cast<GroupCell *>(m_worksheet->m_evaluationQueue.GetCell());
+  GroupCell *tmp = m_worksheet->m_evaluationQueue.GetCell();
   if (!tmp)
   {
     // Maxima is no more busy.

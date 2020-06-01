@@ -112,8 +112,7 @@ public:
   void AutoAnswer(bool autoAnswer){m_autoAnswer = autoAnswer;}
 
   //! Which cell the blinking cursor is in?
-  EditorCell *GetActiveCell() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell); }
+  EditorCell *GetActiveCell() const { return m_cellPointers->m_activeCell; }
 
   /*! Tells where the mouse selection has started.
 
@@ -121,7 +120,7 @@ public:
     remove this pointer.
    */
   EditorCell *MouseSelectionStart() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn); }
+  { return m_cellPointers->m_cellMouseSelectionStartedIn; }
 
   /*! Tells where the keyboard selection has started.
 
@@ -129,7 +128,7 @@ public:
     remove this pointer.
    */
   EditorCell *KeyboardSelectionStart() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn); }
+  { return m_cellPointers->m_cellKeyboardSelectionStartedIn; }
 
   /*! Tells where the search has started.
 
@@ -137,7 +136,7 @@ public:
     remove this pointer.
    */
   EditorCell *SearchStart() const
-  { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn); }
+  { return m_cellPointers->m_cellSearchStartedIn; }
 
   /*! At which character inside its cell has the search started?
 

@@ -28,6 +28,7 @@
 
 #include "Cell.h"
 #include "GroupCell.h"
+#include "TextCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
@@ -269,7 +270,7 @@ void Cell::AppendCell(Cell *p_next)
 
 GroupCell *Cell::GetGroup() const
 {
-  auto *group = dynamic_cast<GroupCell*>(m_group);
+  auto *group = m_group;
   wxASSERT_MSG(group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return group;
 }

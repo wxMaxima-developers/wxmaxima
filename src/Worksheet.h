@@ -654,18 +654,17 @@ public:
   AutoComplete m_autocomplete;
 
   //! Get the currently active EditorCell
-  EditorCell *GetActiveCell()
-  { return dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell); }
+  EditorCell *GetActiveCell() { return m_cellPointers.m_activeCell; }
 
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart()
-  { return dynamic_cast<EditorCell *>(m_cellPointers.m_cellKeyboardSelectionStartedIn); }
+  { return m_cellPointers.m_cellKeyboardSelectionStartedIn; }
 
   EditorCell *MouseSelectionStart()
-  { return dynamic_cast<EditorCell *>(m_cellPointers.m_cellMouseSelectionStartedIn); }
+  { return m_cellPointers.m_cellMouseSelectionStartedIn; }
 
   EditorCell *SearchStart()
-  { return dynamic_cast<EditorCell *>(m_cellPointers.m_cellSearchStartedIn); }
+  { return m_cellPointers.m_cellSearchStartedIn; }
 
   int IndexSearchStartedAt()
   { return m_cellPointers.m_indexSearchStartedAt; }
@@ -673,8 +672,8 @@ public:
   Cell::CellPointers &GetCellPointers() { return m_cellPointers; }
 
   Cell::CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
-  Cell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
-  void SetCurrentTextCell(Cell *cell) { m_cellPointers.m_currentTextCell = cell; }
+  TextCell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
+  void SetCurrentTextCell(TextCell *cell) { m_cellPointers.m_currentTextCell = cell; }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
   Cell *GetSelectionStart() const { return m_cellPointers.m_selectionStart; }
 
@@ -948,7 +947,7 @@ public:
   {
     return m_cellPointers.m_selectionStart ||
            (fromActive && m_cellPointers.m_activeCell &&
-            dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy());
+            m_cellPointers.m_activeCell->CanCopy());
   }
 
   bool CanPaste()
@@ -956,8 +955,7 @@ public:
 
   bool CanCut()
   {
-    return (m_cellPointers.m_activeCell &&
-            dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy()) ||
+    return (m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->CanCopy()) ||
            (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
 
@@ -1090,7 +1088,7 @@ public:
 
   wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, int scale = 1);
 
-  void CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::vector<int> &cellMap);
+  void CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, std::vector<int> &cellMap);
 
   //! Export the file to an html document
   bool ExportToHTML(const wxString &file);

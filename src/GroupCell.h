@@ -124,7 +124,7 @@ public:
     this pointer.
    */
   GroupCell *GetLastWorkingGroup() const
-  { return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup); }
+  { return m_cellPointers->m_lastWorkingGroup; }
 
   /*! Marks the cell that is under the mouse pointer.
 
@@ -207,7 +207,10 @@ public:
 
   void AppendInput(Cell *cell);
 
-  //! Get the next cell in the list.
+  //! Get the previous GroupCell in the list
+  GroupCell *GetPrevious() const { return dynamic_cast<GroupCell*>(m_previous); }
+
+  //! Get the next GroupCell in the list.
   GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(m_next); }
 
   static wxString TexEscapeOutputCell(wxString Input);
