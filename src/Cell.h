@@ -38,6 +38,7 @@
 #include "Configuration.h"
 #include "TextStyle.h"
 #include <algorithm>
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -143,13 +144,13 @@ class Cell
       m_workingGroup = group;
     }
     
-    void WXMXResetCounter()
-      { m_wxmxImgCounter = 0; }
+    void WXMXResetCounter() { m_wxmxImgCounter = 0; }
     
     wxString WXMXGetNewFileName();
     
-    int WXMXImageCount() const
-      { return m_wxmxImgCounter; }
+    int WXMXImageCount() const { return m_wxmxImgCounter; }
+
+    bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
     //! A list of editor cells containing error messages.
     class ErrorList
@@ -209,18 +210,18 @@ class Cell
 
     //! Forget where the search was started
     void ResetSearchStart()
-      {
-        m_cellSearchStartedIn = NULL;
-        m_indexSearchStartedAt = -1;
-      }
+    {
+      m_cellSearchStartedIn = {};
+      m_indexSearchStartedAt = -1;
+    }
 
     //! Forget where the mouse selection was started
     void ResetMouseSelectionStart()
-      { m_cellMouseSelectionStartedIn = NULL; }
+    { m_cellMouseSelectionStartedIn = {}; }
 
     //! Forget where the keyboard selection was started
     void ResetKeyboardSelectionStart()
-      { m_cellKeyboardSelectionStartedIn = NULL; }
+    { m_cellKeyboardSelectionStartedIn = {}; }
   
     /*! The first cell of the currently selected range of Cells.
     
@@ -252,10 +253,9 @@ class Cell
       See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
     */
     Cell *m_selectionEnd;
-    WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
-    SlideShowTimersList m_slideShowTimers;
+    std::map<Cell *, int> m_slideShowTimers;
 
-    wxScrolledCanvas *GetWorksheet(){return m_worksheet;}
+    wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
     //! Is scrolling to a cell scheduled?
     bool m_scrollToCell = false;

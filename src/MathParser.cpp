@@ -247,7 +247,7 @@ Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
 
 Cell *MathParser::ParseImageTag(wxXmlNode *node)
 {
-  Cell *imageCell = {};
+  ImgCell *imageCell = {};
   wxString filename(node->GetChildren()->GetContent());
 
   if (m_fileSystem) // loading from zip
@@ -260,7 +260,7 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = new ImgCell(NULL, m_configuration, filename, noFS, true);
       else
-        imageCell = new SlideShow(NULL, m_configuration, filename, true);
+        return new SlideShow(NULL, m_configuration, filename, true);
     }
     else
     {
@@ -275,32 +275,29 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
       if (wxImage::GetImageCount(filename) < 2)
         imageCell = new ImgCell(NULL, m_configuration, filename, noFS, false);
       else
-        imageCell = new SlideShow(NULL, m_configuration, filename, false);
+        return new SlideShow(NULL, m_configuration, filename, false);
     }
   }
   wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
   wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
-  if (imageCell->GetType() == MC_TYPE_IMAGE)
+
+  if (!gnuplotSource.empty())
+    imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+
+  if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
+    imageCell->DrawRectangle(false);
+  wxString sizeString;
+  if ((sizeString = node->GetAttribute(wxT("maxWidth"), wxT("-1"))) != wxT("-1"))
   {
-    if (!gnuplotSource.empty())
-    {
-      dynamic_cast<ImgCell *>(imageCell)->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
-    }
-    if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
-      dynamic_cast<ImgCell *>(imageCell)->DrawRectangle(false);
-    wxString sizeString;
-    if ((sizeString = node->GetAttribute(wxT("maxWidth"), wxT("-1"))) != wxT("-1"))
-    {
-      double width;
-      if(sizeString.ToDouble(&width))
-        dynamic_cast<ImgCell *>(imageCell)->SetMaxWidth(width);
-    }
-    if ((sizeString = node->GetAttribute(wxT("maxHeight"), wxT("-1"))) != wxT("-1"))
-    {
-      double height;
-      if(sizeString.ToDouble(&height))
-        dynamic_cast<ImgCell *>(imageCell)->SetMaxHeight(height);
-    }
+    double width;
+    if (sizeString.ToDouble(&width))
+      imageCell->SetMaxWidth(width);
+  }
+  if ((sizeString = node->GetAttribute(wxT("maxHeight"), wxT("-1"))) != wxT("-1"))
+  {
+    double height;
+    if (sizeString.ToDouble(&height))
+      imageCell->SetMaxHeight(height);
   }
   return imageCell;
 }

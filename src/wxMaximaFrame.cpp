@@ -522,7 +522,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           break;
         case waiting:
           m_bytesFromMaxima_last = 0;
-          m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+          m_worksheet->SetWorkingGroup(NULL);
           // If we evaluated a cell that produces no output we still want the
           // cell to be unselected after evaluating it.
           if (m_worksheet->FollowEvaluation())
@@ -1914,7 +1914,7 @@ void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
   popupMenu->Check(menu_showLatinGreekLookalikes, m_configuration->GreekSidebar_ShowLatinLookalikes());
   popupMenu->AppendCheckItem(menu_showGreekMu, _(wxT("Show lookalike for unit prefix µ")));
   popupMenu->Check(menu_showGreekMu, m_configuration->GreekSidebar_Show_mu());
-  PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
+  PopupMenu(&*popupMenu);
 }
 
 
@@ -2033,7 +2033,7 @@ void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
   popupMenu->Append(menu_additionalSymbols, _("Add more symbols"), wxEmptyString, wxITEM_NORMAL);
   popupMenu->Append(enable_unicodePane, _("Show all unicode symbols"), wxEmptyString, wxITEM_NORMAL);
-  PopupMenu(dynamic_cast<wxMenu *>(&(*popupMenu)));
+  PopupMenu(&*popupMenu);
 }
 
 void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()

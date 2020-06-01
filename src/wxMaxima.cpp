@@ -1252,7 +1252,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
 
     if(tmp != NULL)
     {
-      m_worksheet->m_cellPointers.m_errorList.Add(tmp);
+      m_worksheet->GetErrorList().Add(tmp);
       tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
     }
   }
@@ -1317,9 +1317,8 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
   else
   {
-
     TextCell *incompleteTextCell =
-      dynamic_cast<TextCell *>(m_worksheet->m_cellPointers.m_currentTextCell);
+      dynamic_cast<TextCell *>(m_worksheet->GetCurrentTextCell());
 
     if(incompleteTextCell != NULL)
     {
@@ -1539,7 +1538,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
     DoRawConsoleAppend(
       _("Refusing to send cell to maxima: ") +
       parenthesisError + wxT("\n"),              MC_TYPE_ERROR);
-    m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+    m_worksheet->SetWorkingGroup(nullptr);
     m_worksheet->m_evaluationQueue.Clear();
   }
   if(!m_maximaStdoutPollTimer.IsRunning())
@@ -1857,7 +1856,7 @@ bool wxMaxima::StartMaxima(bool force)
       wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the config dialogue."));
       return false;
     }
-    m_worksheet->m_cellPointers.m_errorList.Clear();
+    m_worksheet->GetErrorList().Clear();
     
 // Initialize the performance counter.
     GetMaximaCPUPercentage();
@@ -2027,7 +2026,7 @@ void wxMaxima::KillMaxima(bool logMessage)
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
 
-  m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+  m_worksheet->SetWorkingGroup(nullptr);
   m_worksheet->m_evaluationQueue.Clear();
   EvaluationQueueLength(0);
 
@@ -2308,8 +2307,8 @@ void wxMaxima::ReadMiscText(wxString &data)
   int miscTextLen = GetMiscTextEnd(data);
   if(miscTextLen <= 0)
   {
-    if(data != wxEmptyString)
-      m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+    if (!data.empty())
+      m_worksheet->SetCurrentTextCell(nullptr);
     return;
   }
 
@@ -2325,7 +2324,7 @@ void wxMaxima::ReadMiscText(wxString &data)
   miscText.Replace("\r","\n");
 
   if(miscText.StartsWith("\n"))
-    m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+    m_worksheet->SetCurrentTextCell(nullptr);
 
   // A version of the text where each line begins with non-whitespace and whitespace
   // characters are merged.
@@ -2389,29 +2388,29 @@ void wxMaxima::ReadMiscText(wxString &data)
     trimmedLine.Trim(true);
     trimmedLine.Trim(false);
 
-    if((textline != wxEmptyString)&&(textline != wxT("\n")))
+    if (!textline.empty() && textline != wxT("\n"))
     {
-      if(error)
+      if (error)
       {
-        m_worksheet->m_cellPointers.m_currentTextCell = ConsoleAppend(textline, MC_TYPE_ERROR);
+        m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_ERROR));
         AbortOnError();
       }
       else
       {
-        if(warning)
-          m_worksheet->m_cellPointers.m_currentTextCell = ConsoleAppend(textline, MC_TYPE_WARNING);
+        if (warning)
+          m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_WARNING));
         else
-          m_worksheet->m_cellPointers.m_currentTextCell = ConsoleAppend(textline, MC_TYPE_TEXT);
+          m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_TEXT));
       }
     }
-    if(lines.HasMoreTokens())
-      m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+    if (lines.HasMoreTokens())
+      m_worksheet->SetCurrentTextCell(nullptr);
   }
-  if(miscText.EndsWith("\n"))
-    m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  if (miscText.EndsWith("\n"))
+    m_worksheet->SetCurrentTextCell(nullptr);
 
-  if(data != wxEmptyString)
-    m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  if (!data.empty())
+    m_worksheet->SetCurrentTextCell(nullptr);
 }
 
 int wxMaxima::FindTagEnd(const wxString &data, const wxString &tag)
@@ -2427,7 +2426,7 @@ void wxMaxima::ReadStatusBar(wxString &data)
   if (!data.StartsWith(m_statusbarPrefix))
     return;
 
-  m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  m_worksheet->SetCurrentTextCell(nullptr);
 
   int end;
   if ((end = FindTagEnd(data,m_statusbarSuffix)) != wxNOT_FOUND)
@@ -2456,7 +2455,7 @@ void wxMaxima::ReadMath(wxString &data)
   if ((!data.StartsWith(m_mathPrefix1)) && (!data.StartsWith(m_mathPrefix2)))
     return;
 
-  m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  m_worksheet->SetCurrentTextCell(nullptr);
 
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
@@ -2505,7 +2504,7 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   if (!data.StartsWith(m_symbolsPrefix))
     return;
 
-  m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  m_worksheet->SetCurrentTextCell(nullptr);
 
   int end = FindTagEnd(data, m_symbolsSuffix);
 
@@ -2724,7 +2723,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   if (!data.StartsWith(m_promptPrefix))
     return;
 
-  m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  m_worksheet->SetCurrentTextCell(nullptr);
 
   // Assume we don't have a question prompt
   m_worksheet->m_questionPrompt = false;
@@ -2790,7 +2789,7 @@ void wxMaxima::ReadPrompt(wxString &data)
       {
         if (m_worksheet->GetActiveCell())
           m_worksheet->GetActiveCell()->SelectNone();
-        m_worksheet->SetSelection(NULL, NULL);
+        m_worksheet->ClearSelection();
       }
       m_worksheet->FollowEvaluation(false);
       if (m_exitAfterEval)
@@ -2800,7 +2799,7 @@ void wxMaxima::ReadPrompt(wxString &data)
       }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
-      m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+      m_worksheet->SetWorkingGroup(nullptr);
       m_worksheet->m_evaluationQueue.RemoveFirst();
       m_worksheet->RequestRedraw();
       // Now that maxima is idle we can ask for the contents of its variables
@@ -2810,7 +2809,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     { // we don't have an empty queue
       m_ready = false;
       m_worksheet->RequestRedraw();
-      m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+      m_worksheet->SetWorkingGroup(nullptr);
       StatusMaximaBusy(sending);
       TriggerEvaluation();
     }
@@ -4119,8 +4118,8 @@ bool wxMaxima::InterpretDataFromMaxima()
 
       // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
       // was for
-      if(newActiveCell != oldActiveCell)
-        m_worksheet->m_cellPointers.SetWorkingGroup(oldActiveCell);
+      if (newActiveCell != oldActiveCell)
+        m_worksheet->SetWorkingGroup(oldActiveCell);
       // Handle the <mth> tag that contains math output and sometimes text.
       ReadMath(m_currentOutput);
 
@@ -4150,8 +4149,8 @@ bool wxMaxima::InterpretDataFromMaxima()
       ReadFirstPrompt(m_currentOutput);
 
     // Switch to the WorkingGroup the next bunch of data is for.
-    if(newActiveCell != oldActiveCell)
-      m_worksheet->m_cellPointers.SetWorkingGroup(newActiveCell);
+    if (newActiveCell != oldActiveCell)
+      m_worksheet->SetWorkingGroup(newActiveCell);
   }
   return true;
 }
@@ -4484,21 +4483,18 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   m_MenuBar->EnableItem(wxID_REDO, m_worksheet->CanRedo());
   m_MenuBar->EnableItem(menu_interrupt_id, m_pid > 0);
   m_MenuBar->EnableItem(Worksheet::popid_comment_selection,
-                  (m_worksheet->GetActiveCell() != NULL) && (m_worksheet->GetActiveCell()->SelectionActive()));
-  m_MenuBar->EnableItem(menu_evaluate, (
-                    (m_worksheet->GetActiveCell() != NULL) ||
-                          (m_worksheet->CellsSelected())
-                    )
-    );
+                        m_worksheet->GetActiveCell() && m_worksheet->GetActiveCell()->SelectionActive());
+  m_MenuBar->EnableItem(menu_evaluate,
+                        m_worksheet->GetActiveCell() || m_worksheet->HasCellsSelected());
 
-  m_MenuBar->EnableItem(menu_evaluate_all_visible, m_worksheet->GetTree() != NULL);
+  m_MenuBar->EnableItem(menu_evaluate_all_visible, m_worksheet->GetTree());
   m_MenuBar->EnableItem(ToolBar::tb_evaltillhere,
-                  (m_worksheet->GetTree() != NULL) &&
-                  (m_worksheet->CanPaste()) &&
-                  (m_worksheet->GetHCaret() != NULL)
-  );
+                        m_worksheet->GetTree() &&
+                          m_worksheet->CanPaste() &&
+                          m_worksheet->GetHCaret()
+                        );
 
-  m_MenuBar->EnableItem(menu_jumptoerror, !m_worksheet->m_cellPointers.m_errorList.Empty());
+  m_MenuBar->EnableItem(menu_jumptoerror, !m_worksheet->GetErrorList().Empty());
   m_MenuBar->EnableItem(wxID_SAVE, (!m_fileSaved));
 
   for (int id = menu_pane_math; id <= menu_pane_stats; id++)
@@ -4508,9 +4504,9 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   bool hidecode = !(m_worksheet->m_configuration->ShowCodeCells());
   m_MenuBar->Check(ToolBar::tb_hideCode, hidecode);
 
-  if (m_worksheet->GetTree() != NULL)
+  if (m_worksheet->GetTree())
   {
-    m_MenuBar->EnableItem(Worksheet::popid_divide_cell, m_worksheet->GetActiveCell() != NULL);
+    m_MenuBar->EnableItem(Worksheet::popid_divide_cell, m_worksheet->GetActiveCell());
     m_MenuBar->EnableItem(Worksheet::popid_merge_cells, m_worksheet->CanMergeSelection());
     m_MenuBar->EnableItem(wxID_PRINT, true);
   }
@@ -5016,7 +5012,7 @@ void wxMaxima::ReadStdErr()
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
       AbortOnError();
       TriggerEvaluation();
-      m_worksheet->m_cellPointers.m_errorList.Add(m_worksheet->GetWorkingGroup(true));
+      m_worksheet->GetErrorList().Add(m_worksheet->GetWorkingGroup(true));
       
       if(m_pipeToStdout)
         std::cout << o;
@@ -5592,11 +5588,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   case Worksheet::popid_popup_gnuplot:
   {
-    if (!m_worksheet->m_cellPointers.m_selectionStart)
+    if (!m_worksheet->GetSelectionStart())
       return;
 
     wxString gnuplotSource =
-      m_worksheet->m_cellPointers.m_selectionStart->GnuplotSource();
+      m_worksheet->GetSelectionStart()->GnuplotSource();
     if(gnuplotSource.IsEmpty())
       return;
 
@@ -5948,15 +5944,15 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_jumptoerror:
-      if(m_worksheet->m_cellPointers.m_errorList.FirstError())
+      if (m_worksheet->GetErrorList().FirstError())
       {
-        m_worksheet->SetActiveCell(dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_errorList.FirstError())->GetEditable());
-        dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_errorList.FirstError())->GetEditable()->CaretToEnd();
+        m_worksheet->SetActiveCell(dynamic_cast<GroupCell *>(m_worksheet->GetErrorList().FirstError())->GetEditable());
+        dynamic_cast<GroupCell *>(m_worksheet->GetErrorList().FirstError())->GetEditable()->CaretToEnd();
       }
       break;
     case ToolBar::menu_restart_id:
       m_closing = true;
-      m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+      m_worksheet->SetWorkingGroup(nullptr);
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->ResetInputPrompts();
       m_unsuccessfulConnectionAttempts = 0;
@@ -8382,9 +8378,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     break;
   }
   case Worksheet::popid_maxsizechooser:
-    if(m_worksheet->m_cellPointers.m_selectionStart != NULL)
+    if (m_worksheet->GetSelectionStart())
     {
-      Cell *output = m_worksheet->m_cellPointers.m_selectionStart->GetGroup()->GetLabel();
+      Cell *output = m_worksheet->GetSelectionStart()->GetGroup()->GetLabel();
       if (output == NULL)
         return;
       if(output->GetType() != MC_TYPE_IMAGE)
@@ -8506,8 +8502,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_worksheet->GetHCaret())
       {
         group = m_worksheet->GetHCaret();
-/*        if(group->m_next)
-          group = dynamic_cast<GroupCell*>(group->m_next);*/
+        if ((false))
+          if (group->GetNext())
+            group = group->GetNext();
       }
       else
         group = m_worksheet->GetTree();
@@ -8982,7 +8979,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
     }
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
-      m_worksheet->m_cellPointers.m_errorList.Remove(cell);
+      m_worksheet->GetErrorList().Remove(cell);
       m_worksheet->AddCellToEvaluationQueue(cell);
     }
   }
@@ -9116,7 +9113,7 @@ void wxMaxima::TriggerEvaluation()
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
   GroupCell *tmp = dynamic_cast<GroupCell *>(m_worksheet->m_evaluationQueue.GetCell());
-  if (tmp == NULL)
+  if (!tmp)
   {
     // Maxima is no more busy.
     StatusMaximaBusy(waiting);
@@ -9169,12 +9166,12 @@ void wxMaxima::TriggerEvaluation()
     if (m_worksheet->GetSelectionStart())
     {
       if (m_worksheet->GetSelectionStart()->GetGroup() == tmp)
-        m_worksheet->SetSelection(NULL, NULL);
+        m_worksheet->ClearSelection();
     }
     if (m_worksheet->GetSelectionEnd())
     {
       if (m_worksheet->GetSelectionEnd()->GetGroup() == tmp)
-        m_worksheet->SetSelection(NULL, NULL);
+        m_worksheet->ClearSelection();
     }
     tmp->RemoveOutput();
     m_worksheet->RequestRedraw();
@@ -9197,7 +9194,7 @@ void wxMaxima::TriggerEvaluation()
         }
       }
 
-      m_worksheet->m_cellPointers.SetWorkingGroup(tmp);
+      m_worksheet->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
 
       SendMaxima(m_configCommands);
@@ -9224,7 +9221,7 @@ void wxMaxima::TriggerEvaluation()
     else
     {
       // Manually mark the current cell as the one that has caused an error.
-      m_worksheet->m_cellPointers.m_errorList.Add(tmp);
+      m_worksheet->GetErrorList().Add(tmp);
       tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
@@ -9234,14 +9231,14 @@ void wxMaxima::TriggerEvaluation()
       cell->SetType(MC_TYPE_ERROR);
       tmp->SetOutput(cell);
       m_worksheet->m_evaluationQueue.Clear();
-      m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+      m_worksheet->SetWorkingGroup(nullptr);
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
 
       if (m_worksheet->FollowEvaluation())
         m_worksheet->SetSelection(NULL);
 
-      m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+      m_worksheet->SetWorkingGroup(nullptr);
       m_worksheet->RequestRedraw();
       if(!AbortOnError())
       {

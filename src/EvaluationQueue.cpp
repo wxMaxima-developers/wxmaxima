@@ -91,11 +91,11 @@ void EvaluationQueue::AddToQueue(GroupCell *gr)
  */
 void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
 {
-  if (gr == NULL)
+  if (!gr)
     return; // caller should check, but just in case
 
   GroupCell *cell = gr->GetHiddenTree();
-  while (cell != NULL)
+  while (cell)
   {
     AddToQueue(dynamic_cast<GroupCell *>(cell));
     AddHiddenTreeToQueue(cell);

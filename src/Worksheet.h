@@ -84,6 +84,8 @@ class Worksheet : public wxScrolled<wxWindow>
 public:
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
 private:
+  //! The pointers to cells that can be deleted by these cells on deletion of the cells.
+  Cell::CellPointers m_cellPointers;
   // The x position to scroll to
   int m_newxPosition;
   // The y position to scroll to
@@ -668,8 +670,13 @@ public:
   int IndexSearchStartedAt()
   { return m_cellPointers.m_indexSearchStartedAt; }
 
-  //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  Cell::CellPointers m_cellPointers;
+  Cell::CellPointers &GetCellPointers() { return m_cellPointers; }
+
+  Cell::CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
+  Cell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
+  void SetCurrentTextCell(Cell *cell) { m_cellPointers.m_currentTextCell = cell; }
+  void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
+  Cell *GetSelectionStart() const { return m_cellPointers.m_selectionStart; }
 
   //! The reference to a pointer that observes this object's lifetime
   Worksheet* &m_observer;
@@ -679,10 +686,7 @@ public:
     This function actually only schedules the update of the table-of-contents-tab.
     The actual update is done when wxMaxima is idle.
    */
-  void UpdateTableOfContents()
-  {
-    m_scheduleUpdateToc = true;
-  }
+  void UpdateTableOfContents() { m_scheduleUpdateToc = true; }
 
   /*! Handle redrawing the worksheet or of parts of it
 
@@ -745,14 +749,13 @@ public:
 
   //! Is a Redraw requested?
   bool RedrawRequested()
-    { return (m_redrawRequested || m_mouseMotionWas || (m_rectToRefresh.GetLeft() != -1)); }
+  { return m_redrawRequested || m_mouseMotionWas || m_rectToRefresh.GetLeft() != -1; }
 
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
 
   //! Re-read the configuration
-  void UpdateConfig()
-  { m_configuration->ReadConfig(); }
+  void UpdateConfig() { m_configuration->ReadConfig(); }
 
   //! The name of the currently-opened file
   wxString m_currentFile;
@@ -764,8 +767,7 @@ public:
   wxString UnicodeToMaxima(wxString s);
 
   //! Scroll to the start of the worksheet.
-  void ScrollToStart()
-  { Scroll(0, 0); }
+  void ScrollToStart() { Scroll(0, 0); }
 
   //! Unfold the cell that produced the error, if necessary and, if requested, scroll to it
   void ScrollToError();
@@ -780,8 +782,7 @@ public:
   bool m_scheduleUpdateToc;
 
   //! Is the vertically-drawn cursor active?
-  bool HCaretActive()
-  { return m_hCaretActive; }
+  bool HCaretActive() { return m_hCaretActive; }
 
   /*! Can we merge the selected cells into one?
 
@@ -790,11 +791,9 @@ public:
    */
   bool CanMergeSelection();
 
-  bool CanUndo()
-  { return CanTreeUndo() || CanUndoInsideCell(); }
+  bool CanUndo() { return CanTreeUndo() || CanUndoInsideCell(); }
 
-  bool CanRedo()
-  { return CanTreeRedo() || CanRedoInsideCell(); }
+  bool CanRedo() { return CanTreeRedo() || CanRedoInsideCell(); }
 
   void Undo();
 
@@ -884,7 +883,8 @@ public:
   };
 
   //! The constructor
-  Worksheet(wxWindow *parent, int id, Worksheet *&observer, wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
+  Worksheet(wxWindow *parent, int id, Worksheet *&observer,
+            wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
 
   //! The destructor
   ~Worksheet();
@@ -909,10 +909,7 @@ public:
             - treeRedoActions for deletions while executing an undo or
             - NULL for: Don't keep any copy of the cells.
    */
-  GroupCell *InsertGroupCells(GroupCell *cells,
-                              GroupCell *where,
-                              UndoActions *undoBuffer
-  );
+  GroupCell *InsertGroupCells(GroupCell *cells, GroupCell *where, UndoActions *undoBuffer);
 
   /*! Insert group cells into the worksheet
 
@@ -934,14 +931,10 @@ public:
   //! Schedule a recalculation of the worksheet starting with the cell start.
   void Recalculate(Cell *start, bool force = false);
 
-  void Recalculate(bool force = false)
-    { Recalculate(GetTree(), force); }
+  void Recalculate(bool force = false) { Recalculate(GetTree(), force); }
 
   //! Schedule a full recalculation of the worksheet
-  void RecalculateForce()
-  {
-    Recalculate(true);
-  }
+  void RecalculateForce() { Recalculate(true); }
 
   /*! Empties the current document
 
@@ -959,9 +952,7 @@ public:
   }
 
   bool CanPaste()
-  {
-    return m_cellPointers.m_activeCell || m_hCaretActive;
-  }
+  { return m_cellPointers.m_activeCell || m_hCaretActive; }
 
   bool CanCut()
   {
@@ -974,10 +965,7 @@ public:
   void SelectAll();
 
   //! Is at least one entire cell selected?
-  bool CellsSelected()
-  {
-    return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionEnd;
-  }
+  bool HasCellsSelected() const { return m_cellPointers.HasCellsSelected(); }
 
   /*! Delete a range of cells
 
@@ -1157,9 +1145,11 @@ public:
   Cell *GetSelectionEnd()
   { return m_cellPointers.m_selectionEnd; }
 
+  //! Clear the selection - make it empty, i.e. no selection
+  void ClearSelection() { SetSelection(nullptr, nullptr); }
+
   //! Select the cell sel
-  void SetSelection(Cell *sel)
-  { SetSelection(sel, sel); }
+  void SetSelection(Cell *sel) { SetSelection(sel, sel); }
 
   //! Select the cell range start-end
   void SetSelection(Cell *start, Cell *end);
@@ -1457,7 +1447,7 @@ public:
   @{
   */
   //! Remember the answer to the LastQuestion().
-  void SetAnswer(wxString answer);
+  void SetAnswer(const wxString &answer);
   //! Mark the current question from maxima as "answered"..
   void QuestionAnswered();
 
@@ -1483,7 +1473,7 @@ public:
 
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
    */
-  void OpenQuestionCaret(wxString txt = wxT(""));
+  void OpenQuestionCaret(const wxString &txt = {});
   //! Execute all collected scroll events in one go.
   void UpdateScrollPos();
 
