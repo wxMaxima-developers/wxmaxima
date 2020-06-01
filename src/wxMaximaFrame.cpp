@@ -57,6 +57,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_recentPackages(wxT("packages"))
 {
   m_bytesFromMaxima = 0;
+  m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
