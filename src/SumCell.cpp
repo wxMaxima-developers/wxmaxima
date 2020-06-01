@@ -32,7 +32,7 @@
 #include "TextCell.h"
 #include "FontCache.h"
 
-SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+SumCell::SumCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_under(new TextCell(parent, config, cellPointers)),
     m_over(new TextCell(parent, config, cellPointers)),

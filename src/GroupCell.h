@@ -146,7 +146,7 @@ public:
 
   void SetCellStyle(int style);
 
-  void SetGroup(Cell *parent) override; // setting parent for all mathcells in GC
+  void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
   void SelectInner(const wxRect &rect, Cell **first, Cell **last) override;

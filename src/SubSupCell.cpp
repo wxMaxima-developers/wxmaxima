@@ -34,7 +34,7 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) :
+SubSupCell::SubSupCell(GroupCell *parent, Configuration **config,CellPointers *cellPointers) :
     Cell(parent, config, cellPointers)
 {
 }

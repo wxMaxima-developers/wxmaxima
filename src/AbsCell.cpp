@@ -30,7 +30,7 @@
 
 #include "AbsCell.h"
 
-AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+AbsCell::AbsCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_open(new TextCell(parent, config, cellPointers, wxT("abs("))),
   m_close(new TextCell(parent, config, cellPointers, wxT(")")))

@@ -27,6 +27,7 @@
 */
 
 #include "Cell.h"
+#include "GroupCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
@@ -44,7 +45,7 @@ wxString Cell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers) :
+Cell::Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers) :
    m_currentPoint_Last(wxPoint(-1,-1)),
    m_group(group),
    m_parent(group),
@@ -184,7 +185,7 @@ void Cell::ClearCacheList()
     tmp->ClearCache();
 }
 
-void Cell::SetGroupList(Cell *group)
+void Cell::SetGroupList(GroupCell *group)
 {
   for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
@@ -212,7 +213,7 @@ int Cell::CellsInListRecursive() const
   return cells;
 }
 
-void Cell::SetGroup(Cell *group)
+void Cell::SetGroup(GroupCell *group)
 {
   m_group = group;
   if (group)
@@ -268,10 +269,11 @@ void Cell::AppendCell(Cell *p_next)
   LastToDraw->SetNextToDraw(p_next);
 }
 
-Cell *Cell::GetGroup()
+GroupCell *Cell::GetGroup() const
 {
-  wxASSERT_MSG(m_group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
-  return m_group;
+  auto *group = dynamic_cast<GroupCell*>(m_group);
+  wxASSERT_MSG(group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
+  return group;
 }
 
 /***

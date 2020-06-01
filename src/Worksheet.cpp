@@ -857,7 +857,7 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast)
   if (tmp == NULL)
   {
     if (GetActiveCell())
-      tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+      tmp = GetActiveCell()->GetGroup();
   }
 
   // If there is no such cell, neither, we append the line to the end of the
@@ -879,7 +879,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   if (tmp == NULL)
   {
     if (GetActiveCell())
-      tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+      tmp = GetActiveCell()->GetGroup();
   }
 
 
@@ -1017,7 +1017,7 @@ void Worksheet::Recalculate(Cell *start, bool force)
 {
   GroupCell *group = GetTree();
   if (start)
-    group = dynamic_cast<GroupCell *>(start->GetGroup());
+    group = start->GetGroup();
 
   if(force)
     m_configuration->RecalculationForce(force);
@@ -1414,7 +1414,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       }
       else
       {
-        if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup())->GetGroupType() == GC_TYPE_IMAGE)
+        if (m_cellPointers.m_selectionStart->GetGroup()->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
@@ -1653,8 +1653,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     popupMenu.Append(wxID_PASTE, _("Paste"), wxEmptyString, wxITEM_NORMAL);
     popupMenu.AppendSeparator();
     popupMenu.Append(wxID_SELECTALL, _("Select All"), wxEmptyString, wxITEM_NORMAL);
-    if (clickInSelection &&
-        dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())->GetGroupType() == GC_TYPE_CODE)
+
+    if (clickInSelection && GetActiveCell()->GetGroup()->GetGroupType() == GC_TYPE_CODE)
       popupMenu.Append(popid_comment_selection, _("Comment Selection"), wxEmptyString, wxITEM_NORMAL);
     wxString selectionString = GetActiveCell()->GetSelectionString();
     if(selectionString.IsEmpty())
@@ -1674,7 +1674,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     if (GetActiveCell() != NULL)
     {
       wxASSERT(GetActiveCell()->GetGroup());
-      group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+      group = GetActiveCell()->GetGroup();
     }
     if (m_cellPointers.m_selectionStart)
     {
@@ -2712,8 +2712,8 @@ bool Worksheet::CopyCells()
     wxString wxm;
     wxString str;
     wxString rtf = RTFStart();
-    GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
-    GroupCell *end = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetGroup());
+    GroupCell *tmp = m_cellPointers.m_selectionStart->GetGroup();
+    GroupCell *end = m_cellPointers.m_selectionEnd->GetGroup();
 
     bool firstcell = true;
     while (tmp != NULL)
@@ -2787,17 +2787,17 @@ bool Worksheet::CanDeleteSelection()
     return false;
 
   return CanDeleteRegion(
-          dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()),
-          dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetGroup())
-  );
+    m_cellPointers.m_selectionStart->GetGroup(),
+    m_cellPointers.m_selectionEnd->GetGroup()
+    );
 }
 
 void Worksheet::DeleteSelection()
 {
   DeleteRegion(
-          dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()),
-          dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetGroup())
-  );
+    m_cellPointers.m_selectionStart->GetGroup(),
+    m_cellPointers.m_selectionEnd->GetGroup()
+    );
   TreeUndo_ClearRedoActionList();
   m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = NULL;
   UpdateTableOfContents();
@@ -2810,7 +2810,7 @@ void Worksheet::DeleteCurrentCell()
   if (m_hCaretActive)
     cellToDelete = m_hCaretPosition;
   else
-    cellToDelete = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    cellToDelete = GetActiveCell()->GetGroup();
 
   if (cellToDelete)
     DeleteRegion(cellToDelete, cellToDelete);
@@ -2894,7 +2894,7 @@ void Worksheet::TreeUndo_CellLeft()
   if (GetActiveCell() == NULL)
     return;
     
-  GroupCell *activeCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+  GroupCell *activeCell = GetActiveCell()->GetGroup();
   if (TreeUndo_ActiveCell != NULL)
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
 
@@ -2920,7 +2920,7 @@ void Worksheet::TreeUndo_CellEntered()
   {
     if (!GetActiveCell()->GetGroup())
       return;
-    TreeUndo_ActiveCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    TreeUndo_ActiveCell = GetActiveCell()->GetGroup();
     m_treeUndo_ActiveCellOldText = GetActiveCell()->GetValue();
   }
 }
@@ -3150,10 +3150,10 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
   // set m_hCaretPosition to a sensible value
   if (GetActiveCell())
   {
-    SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+    SetHCaret(GetActiveCell()->GetGroup());
   }
   else if (m_cellPointers.m_selectionStart)
-    SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()));
+    SetHCaret(m_cellPointers.m_selectionStart->GetGroup());
 
   if (!m_hCaretActive)
   {
@@ -3446,7 +3446,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
 
     if (event.ShiftDown())
     {
-      SetSelection(previous, dynamic_cast<GroupCell *>((GetActiveCell()->GetGroup())));
+      SetSelection(previous, GetActiveCell()->GetGroup());
       m_hCaretPosition = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
       m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
       m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd);
@@ -3491,7 +3491,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
       ) && GetActiveCell()->CaretAtEnd())
   {
     // Get the first next cell that isn't hidden
-    GroupCell *start = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    GroupCell *start = GetActiveCell()->GetGroup();
     while (start && start->m_next && start->m_next->GetMaxDrop() == 0)
       start = start->GetNext();
 
@@ -3538,7 +3538,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_NUMPAD_DELETE) &&
       GetActiveCell()->GetValue() == wxEmptyString)
   {
-    SetSelection(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+    SetSelection(GetActiveCell()->GetGroup());
     DeleteSelection();
     return;
   }
@@ -3570,7 +3570,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   case WXK_RIGHT:
     if(GetActiveCell()->CaretAtEnd())
     {
-      GroupCell *newGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+      GroupCell *newGroup = GetActiveCell()->GetGroup();
       while (newGroup && newGroup->m_next && newGroup->m_next->GetMaxDrop() == 0)
         newGroup = newGroup->GetNext();
       SetHCaret(newGroup);
@@ -3582,7 +3582,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   default:
   {
     GetActiveCell()->ProcessEvent(event);
-    GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
+    GroupCell *parent = GetActiveCell()->GetGroup();
     parent->InputHeightChanged();
     RequestRedraw();
   }
@@ -3621,7 +3621,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   /// If we need to recalculate then refresh the window
   if (needRecalculate)
   {
-    GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    GroupCell *group = GetActiveCell()->GetGroup();
     group->ResetData();
     if (GetActiveCell()->CheckChanges() &&
         (group->GetGroupType() == GC_TYPE_CODE) &&
@@ -3634,7 +3634,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   {
     if (GetActiveCell()->m_selectionChanged)
     {
-      RequestRedraw(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+      RequestRedraw(GetActiveCell()->GetGroup());
     }
       /// Otherwise refresh only the active cell
     else
@@ -3642,7 +3642,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
       wxRect rect;
       if (GetActiveCell()->CheckChanges())
       {
-        GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+        GroupCell *group = GetActiveCell()->GetGroup();
         if ((group->GetGroupType() == GC_TYPE_CODE) &&
             (GetActiveCell() == group->GetEditable()))
           group->ResetInputLabel();
@@ -3661,7 +3661,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
 
   if (GetActiveCell())
   {
-    if (IsLesserGCType(GC_TYPE_TEXT, dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())->GetGroupType()))
+    if (IsLesserGCType(GC_TYPE_TEXT, GetActiveCell()->GetGroup()->GetGroupType()))
       UpdateTableOfContents();
   }
 }
@@ -3787,7 +3787,7 @@ void Worksheet::SelectEditable(EditorCell *editor, bool up)
       editor->CaretToEnd();
 
     if (editor->GetWidth() == -1)
-      Recalculate(dynamic_cast<GroupCell *>(editor->GetGroup()));
+      Recalculate(editor->GetGroup());
 
     ScrollToCaret();
   }
@@ -4148,7 +4148,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
 
       }
       else if (m_cellPointers.m_selectionEnd)
-        SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetGroup()));
+        SetHCaret(m_cellPointers.m_selectionEnd->GetGroup());
       else if (!ActivateNextInput())
         event.Skip();
       break;
@@ -4652,8 +4652,8 @@ bool Worksheet::CopyRTF()
   wxDataObjectComposite *data = new wxDataObjectComposite;
 
   wxString rtf = RTFStart();
-  GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
-  GroupCell *end = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd->GetGroup());
+  GroupCell *tmp = m_cellPointers.m_selectionStart->GetGroup();
+  GroupCell *end = m_cellPointers.m_selectionEnd->GetGroup();
 
   while (tmp != NULL)
   {
@@ -5804,7 +5804,7 @@ void Worksheet::CodeCellVisibilityChanged()
       (GetActiveCell()->GetType() == MC_TYPE_INPUT) &&
       (!m_configuration->ShowCodeCells())
           )
-    SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+    SetHCaret(GetActiveCell()->GetGroup());
   RecalculateForce();
   ScrollToCaret();
 }
@@ -6260,7 +6260,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
         else
         {
           if (GetActiveCell())
-            cursorCell = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+            cursorCell = GetActiveCell()->GetGroup();
         }
 
         if (cursorCell == NULL)
@@ -6524,7 +6524,7 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
     GetActiveCell()->SelectWordUnderCaret();
   else if (m_cellPointers.m_selectionStart)
   {
-    GroupCell *parent = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
+    GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
     Cell *selectionStart = m_cellPointers.m_selectionStart;
     Cell *selectionEnd = m_cellPointers.m_selectionEnd;
     parent->SelectOutput(&selectionStart, &selectionEnd);
@@ -6542,10 +6542,10 @@ bool Worksheet::ActivatePrevInput()
 
   GroupCell *tmp;
   if (m_cellPointers.m_selectionStart)
-    tmp = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
+    tmp = m_cellPointers.m_selectionStart->GetGroup();
   else
   {
-    tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    tmp = GetActiveCell()->GetGroup();
     SetActiveCell(NULL);
   }
 
@@ -6585,10 +6585,10 @@ bool Worksheet::ActivateNextInput(bool input)
 
   GroupCell *tmp;
   if (m_cellPointers.m_selectionStart)
-    tmp = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
+    tmp = m_cellPointers.m_selectionStart->GetGroup();
   else
   {
-    tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    tmp = GetActiveCell()->GetGroup();
     SetActiveCell(NULL);
   }
 
@@ -6687,7 +6687,7 @@ void Worksheet::AddRestToEvaluationQueue()
   GroupCell *start = NULL;
   if(CellsSelected())
   {
-    start = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
+    start = m_cellPointers.m_selectionStart->GetGroup();
   }
 
   if(GetActiveCell() != NULL)
@@ -6740,7 +6740,7 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue()
   {
     if(GetActiveCell() == NULL)
       return;
-    stop = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    stop = GetActiveCell()->GetGroup();
     if (stop->m_previous)
       stop = dynamic_cast<GroupCell *>(stop->m_previous);
   }
@@ -7127,7 +7127,7 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
       m_mainToolBar -> UnsetCellStyle();
     }
     else
-      m_mainToolBar -> SetCellStyle(dynamic_cast<GroupCell *>(cell->GetGroup())->GetGroupType());
+      m_mainToolBar -> SetCellStyle(cell->GetGroup()->GetGroupType());
   }
 
   bool scrollneeded = GetActiveCell() && GetActiveCell() != cell;
@@ -7377,7 +7377,7 @@ void Worksheet::PasteFromClipboard()
             InsertGroupCells(contents,GetHCaret());
           }
           else
-            InsertGroupCells(contents, dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+            InsertGroupCells(contents, GetActiveCell()->GetGroup());
         }
         NumberSections();
         Recalculate();
@@ -7390,7 +7390,7 @@ void Worksheet::PasteFromClipboard()
   else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
   {
     OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
-    GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    GroupCell *group = GetActiveCell()->GetGroup();
 
     if (group != NULL)
     {
@@ -7409,7 +7409,7 @@ void Worksheet::PasteFromClipboard()
       GetActiveCell()->PasteFromClipboard();
       GetActiveCell()->ResetSize();
       GetActiveCell()->GetGroup()->ResetSize();
-      Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+      Recalculate(GetActiveCell()->GetGroup());
       RequestRedraw();
     }
     else
@@ -7466,7 +7466,7 @@ void Worksheet::DivideCell()
   if (GetActiveCell() == NULL)
     return;
 
-  GroupCell *parent = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+  GroupCell *parent = GetActiveCell()->GetGroup();
   if (parent->GetEditable() != GetActiveCell())
     return;
 
@@ -7477,7 +7477,7 @@ void Worksheet::DivideCell()
   if (GetActiveCell()->CaretAtStart() || GetActiveCell()->CaretAtEnd())
     return;
 
-  dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())->RemoveOutput();
+  GetActiveCell()->GetGroup()->RemoveOutput();
 
   wxString newcellstring = GetActiveCell()->DivideAtCaret();
 
@@ -7618,13 +7618,13 @@ GroupCell *Worksheet::GetHCaret()
     return m_hCaretPosition;
 
   if (GetActiveCell())
-    return dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    return GetActiveCell()->GetGroup();
 
   if (m_cellPointers.m_selectionStart)
-    return dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
+    return m_cellPointers.m_selectionStart->GetGroup();
 
   if (MouseSelectionStart() != NULL)
-    return dynamic_cast<GroupCell *>(MouseSelectionStart()->GetGroup());
+    return MouseSelectionStart()->GetGroup();
 
   // A fallback value that is returned if nothing else seems to work
   return m_last;
@@ -7804,7 +7804,7 @@ void Worksheet::CommentSelection()
     active->CommentSelection();
     active->ResetSize();
     active->GetGroup()->ResetSize();
-    Recalculate(dynamic_cast<GroupCell *>(active->GetGroup()));
+    Recalculate(active->GetGroup());
   }
 }
 
@@ -7932,7 +7932,7 @@ bool Worksheet::FindNext(const wxString &str, bool down, bool ignoreCase, bool w
 
   // If a cursor is active we start the search there instead
   if (GetActiveCell())
-    pos = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    pos = GetActiveCell()->GetGroup();
   else if (m_hCaretActive)
   {
     if (down)
@@ -8085,7 +8085,7 @@ void Worksheet::Replace(const wxString &oldString, const wxString &newString, bo
     if (GetActiveCell()->ReplaceSelection(oldString, newString, false, ignoreCase))
     {
       SetSaved(false);
-      GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+      GroupCell *group = GetActiveCell()->GetGroup();
       group->ResetInputLabel();
       group->ResetSize();
       GetActiveCell()->ResetSize();
@@ -8306,7 +8306,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
 
     editor->ResetSize();
     editor->GetGroup()->ResetSize();
-    Recalculate(dynamic_cast<GroupCell *>(editor->GetGroup()));
+    Recalculate(editor->GetGroup());
 
     RequestRedraw();
   }
@@ -8379,7 +8379,7 @@ void Worksheet::OnComplete(wxCommandEvent &event)
 
   editor->ResetSize();
   editor->GetGroup()->ResetSize();
-  Recalculate(dynamic_cast<GroupCell *>(editor->GetGroup()));
+  Recalculate(editor->GetGroup());
 
   RequestRedraw();
 }
@@ -8390,7 +8390,7 @@ void Worksheet::SetActiveCellText(const wxString &text)
   EditorCell *active = dynamic_cast<EditorCell *>(GetActiveCell());
   if (active != NULL)
   {
-    GroupCell *parent = dynamic_cast<GroupCell *>(active->GetGroup());
+    GroupCell *parent = active->GetGroup();
     if (parent->GetGroupType() == GC_TYPE_CODE &&
         parent->IsMainInput(active))
     {
@@ -8415,7 +8415,7 @@ bool Worksheet::InsertText(const wxString &text)
 
   if (GetActiveCell())
   {
-    if (GCContainsCurrentQuestion(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())))
+    if (GCContainsCurrentQuestion(GetActiveCell()->GetGroup()))
     {
       m_followEvaluation = true;
       OpenQuestionCaret(text);
@@ -8423,8 +8423,8 @@ bool Worksheet::InsertText(const wxString &text)
     else
     {
       GetActiveCell()->InsertText(text);
-      Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
-      RequestRedraw(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+      Recalculate(GetActiveCell()->GetGroup());
+      RequestRedraw(GetActiveCell()->GetGroup());
     }
   }
   else

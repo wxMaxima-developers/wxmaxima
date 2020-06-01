@@ -29,7 +29,7 @@
 #include "FunCell.h"
 #include "TextCell.h"
 
-FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+FunCell::FunCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_nameCell(new TextCell(parent, config, cellPointers)),
   m_argCell(new TextCell(parent, config, cellPointers))

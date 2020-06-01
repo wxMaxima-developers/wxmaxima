@@ -30,7 +30,7 @@
 #include "ParenCell.h"
 #include "FontCache.h"
 
-ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+ParenCell::ParenCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_innerCell(new TextCell(parent, config, cellPointers)),
     m_open(new TextCell(parent, config, cellPointers, wxT("("))),

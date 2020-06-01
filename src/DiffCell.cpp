@@ -27,10 +27,11 @@
  */
 
 #include "DiffCell.h"
+#include "GroupCell.h"
 #include "TextCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+DiffCell::DiffCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_baseCell(new TextCell(parent, config, cellPointers)),
   m_diffCell(new TextCell(parent, config, cellPointers))

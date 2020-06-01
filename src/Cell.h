@@ -41,6 +41,8 @@
 #include <memory>
 #include <vector>
 
+class GroupCell;
+
 /*! The supported types of math cells
  */
 enum CellType
@@ -129,16 +131,16 @@ class Cell
       \param resortToLast true = if we already have set the cell maxima works on to NULL
       use the last cell maxima was known to work on.
     */
-    Cell *GetWorkingGroup(bool resortToLast = false)
+    GroupCell *GetWorkingGroup(bool resortToLast = false) const
     { return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
 
     //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-    void SetWorkingGroup(Cell *group)
-      {
-        if(group != NULL)
-          m_lastWorkingGroup = group;
-        m_workingGroup = group;
-      }
+    void SetWorkingGroup(GroupCell *group)
+    {
+      if (group)
+        m_lastWorkingGroup = group;
+      m_workingGroup = group;
+    }
     
     void WXMXResetCounter()
       { m_wxmxImgCounter = 0; }
@@ -185,18 +187,18 @@ class Cell
     //! Which cell the blinking cursor is in?
     Cell *m_activeCell;
     //! The GroupCell that is under the mouse pointer 
-    Cell *m_groupCellUnderPointer;
+    GroupCell *m_groupCellUnderPointer;
     //! The EditorCell that contains the currently active question from maxima 
     Cell *m_answerCell;
     //! The last group cell maxima was working on.
-    Cell *m_lastWorkingGroup;
+    GroupCell *m_lastWorkingGroup;
     //! The textcell the text maxima is sending us was ending in.
     Cell *m_currentTextCell;
     /*! The group cell maxima is currently working on.
 
       NULL means that maxima isn't currently evaluating a cell.
     */
-    Cell *m_workingGroup;
+    GroupCell *m_workingGroup;
     /*! The currently selected string. 
 
       Since this string is defined here it is available in every editor cell
@@ -266,7 +268,7 @@ class Cell
   };
 
 
-  Cell(Cell *group, Configuration **config, CellPointers *cellPointers);
+  Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers);
 
   /*! Create a copy of this cell
 
@@ -681,7 +683,7 @@ class Cell
   { return false; }
 
   //! Returns the group cell this cell belongs to
-  Cell *GetGroup();
+  GroupCell *GetGroup() const;
 
   //! For the bitmap export we sometimes want to know how big the result will be...
   struct SizeInMillimeters
@@ -943,10 +945,10 @@ class Cell
 
     Also automatically sets this cell as the "parent" of all cells of the list.
    */
-  void SetGroupList(Cell *group);
+  void SetGroupList(GroupCell *group);
 
   //! Define which Sell is the GroupCell this list of cells belongs to
-  virtual void SetGroup(Cell *group);
+  virtual void SetGroup(GroupCell *group);
   //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
   {
@@ -1025,7 +1027,7 @@ protected:
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
-  Cell *m_group;
+  GroupCell *m_group;
 
   //! The cell that contains the current cell
   Cell *m_parent;

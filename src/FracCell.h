@@ -43,7 +43,7 @@
 class FracCell final : public Cell
 {
 public:
-  FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  FracCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   FracCell(const FracCell &cell);
   Cell *Copy() override { return new FracCell(*this); }
   ~FracCell();

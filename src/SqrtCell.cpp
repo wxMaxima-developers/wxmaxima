@@ -31,7 +31,7 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+SqrtCell::SqrtCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_innerCell(new TextCell(parent, config, cellPointers)),
     m_open(new TextCell(parent, config, cellPointers, "sqrt(")),

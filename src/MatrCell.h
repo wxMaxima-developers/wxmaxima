@@ -30,7 +30,7 @@
 class MatrCell final : public Cell
 {
 public:
-  MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  MatrCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   MatrCell(const MatrCell &cell);
   Cell *Copy() override { return new MatrCell(*this); }
   ~MatrCell();

@@ -252,7 +252,7 @@ void GroupCell::SetCellStyle(int style)
 /*! Set the parent of this group cell
 
 */
-void GroupCell::SetGroup(Cell *parent)
+void GroupCell::SetGroup(GroupCell *parent)
 {  
   //m_group = parent;
   if (m_inputLabel != NULL)

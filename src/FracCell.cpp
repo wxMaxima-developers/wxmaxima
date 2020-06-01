@@ -30,7 +30,7 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+FracCell::FracCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_numParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
     m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
@@ -113,12 +113,12 @@ void FracCell::RecalculateWidths(int fontsize)
       // We want half a space's widh of blank space to separate us from the
       // next minus.
       
-      if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
+      if (m_previous && m_previous->ToString().EndsWith(wxT("-")))
         m_horizontalGapLeft = m_protrusion;
       else
         m_horizontalGapLeft = 0;
       
-      if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
+      if (m_next && m_next->ToString().StartsWith(wxT("-")))
         m_horizontalGapRight = m_protrusion;
       else
         m_horizontalGapRight = 0;

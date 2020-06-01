@@ -31,7 +31,7 @@
 #include "FontCache.h"
 #include "wx/config.h"
 
-TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
+TextCell::TextCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers,
                    const wxString &text, TextStyle style) : Cell(parent, config, cellPointers)
 {
   switch(m_textStyle = style)

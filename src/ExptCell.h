@@ -48,7 +48,7 @@
 class ExptCell final : public Cell
 {
 public:
-  ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  ExptCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   ExptCell(const ExptCell &cell);
   Cell *Copy() override { return new ExptCell(*this); }
   ~ExptCell();

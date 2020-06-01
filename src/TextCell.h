@@ -38,7 +38,7 @@ private:
   bool m_dontEscapeOpeningParenthesis;
 
 public:
-  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxString &text = {}, TextStyle style = TS_FUNCTION);
+  TextCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
   Cell *Copy() override { return new TextCell(*this); }  
   ~TextCell();  

@@ -37,7 +37,7 @@
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
-EditorCell::EditorCell(Cell *parent, Configuration **config,
+EditorCell::EditorCell(GroupCell *parent, Configuration **config,
                        CellPointers *cellPointers, const wxString &text) :
     Cell(parent, config, cellPointers),
     m_text(text),
@@ -2623,7 +2623,7 @@ void EditorCell::ActivateCursor()
 
   // upon activation unhide the parent groupcell
   m_firstLineOnly = false;
-  dynamic_cast<GroupCell *>(GetGroup())->Hide(false);
+  GetGroup()->Hide(false);
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 }

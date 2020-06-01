@@ -29,7 +29,7 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+MatrCell::MatrCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers)
 {
   m_matWidth = 0;

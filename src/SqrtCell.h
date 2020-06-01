@@ -48,7 +48,7 @@
 class SqrtCell final : public Cell
 {
 public:
-  SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  SqrtCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   SqrtCell(const SqrtCell &cell);
   Cell *Copy() override { return new SqrtCell(*this); }
   ~SqrtCell();

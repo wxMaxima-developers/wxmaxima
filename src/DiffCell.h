@@ -28,7 +28,7 @@
 class DiffCell final : public Cell
 {
 public:
-  DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  DiffCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   DiffCell(const DiffCell &cell);
   Cell *Copy() override { return new DiffCell(*this); }
   ~DiffCell();
