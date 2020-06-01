@@ -4163,7 +4163,165 @@ bool wxMaxima::InterpretDataFromMaxima()
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
 {
-  // If wxMaxima has to open a file on startup we wait for that until we have
+  // Update the info what maxima is currently doing
+  UpdateStatusMaximaBusy();
+
+  // Update the info how long the evaluation queue is
+  if(m_updateEvaluationQueueLengthDisplay)
+  {
+    m_updateEvaluationQueueLengthDisplay = false;
+    if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1))
+    {
+      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"),
+                                             m_EvaluationQueueLength);
+      if (m_commandsLeftInCurrentCell > 1)
+        statusLine += wxString::Format(_("; %i commands left in the current cell"),
+                                       m_commandsLeftInCurrentCell - 1);
+      LeftStatusText(statusLine,false);
+    }
+    else
+    {
+      if (m_first)
+      {
+        if(!m_openInitialFileError)
+          LeftStatusText(_("Welcome to wxMaxima"));
+      }
+      else
+      {
+        if(  m_worksheet->m_configuration->InLispMode())
+          LeftStatusText(_("Lisp mode."));
+        else
+          LeftStatusText(_("Maxima is ready for input."));
+      }
+      m_openInitialFileError = false;
+    }
+    
+    event.RequestMore();
+    return;
+  }
+
+  // On MS Windows sometimes we don't get a wxSOCKET_INPUT event on input.
+  // Let's trigger interpretation of new input if we don't have anything
+  // else to do just to make sure that wxMaxima will eventually restart
+  // receiving data.
+  TryToReadDataFromMaxima();
+
+  if(m_worksheet != NULL)
+  {
+    bool requestMore = m_worksheet->RecalculateIfNeeded();
+    m_worksheet->ScrollToCellIfNeeded();
+    if(requestMore)
+    {
+      event.RequestMore();
+      return;
+    }
+  }
+
+  if(m_worksheet != NULL)
+    m_worksheet->UpdateScrollPos();
+
+  // Incremental search is done from the idle task. This means that we don't forcefully
+  // need to do a new search on every character that is entered into the search box.
+  if (m_worksheet->m_findDialog != NULL)
+  {
+    if (
+      (m_oldFindString != m_worksheet->m_findDialog->GetData()->GetFindString()) ||
+      (m_oldFindFlags != m_worksheet->m_findDialog->GetData()->GetFlags())
+      )
+    {
+      m_oldFindFlags = m_worksheet->m_findDialog->GetData()->GetFlags();
+      m_oldFindString = m_worksheet->m_findDialog->GetData()->GetFindString();
+
+      bool incrementalSearch = true;
+      wxConfig::Get()->Read("incrementalSearch", &incrementalSearch);
+      if ((incrementalSearch) && (m_worksheet->m_findDialog != NULL))
+      {
+        m_worksheet->FindIncremental(m_findData.GetFindString(),
+                                     m_findData.GetFlags() & wxFR_DOWN,
+                                     !(m_findData.GetFlags() & wxFR_MATCHCASE));
+      }
+      
+      m_worksheet->RequestRedraw();
+      event.RequestMore();
+      return;
+    }
+  }
+
+  if(m_worksheet->RedrawIfRequested())
+  {
+    m_updateControls = true;
+    event.RequestMore();
+    return;
+  }
+
+  // If nothing which is visible has changed nothing that would cause us to need
+  // update the menus and toolbars has.
+  if (m_updateControls)
+  {
+    m_updateControls = false;
+    wxUpdateUIEvent dummy;
+    UpdateMenus(dummy);
+    UpdateToolBar(dummy);
+    UpdateSlider(dummy);
+    ResetTitle(m_worksheet->IsSaved());
+
+    event.RequestMore();
+    return;
+  }
+
+  if((m_newLeftStatusText) || (m_newRightStatusText))
+  {
+    if(m_newRightStatusText)
+      SetStatusText(m_rightStatusText, 1);
+
+    if(m_newLeftStatusText)
+      SetStatusText(m_leftStatusText,0);
+
+    m_newRightStatusText = false;
+    m_newLeftStatusText = false;
+
+    event.RequestMore();
+    return;
+  }
+
+  // If we have set the flag that tells us we should update the table of
+  // contents sooner or later we should do so now that wxMaxima is idle.
+  if (m_worksheet->m_scheduleUpdateToc)
+  {
+    m_worksheet->m_scheduleUpdateToc = false;
+    if (m_worksheet->m_tableOfContents)
+    {
+      GroupCell *cursorPos;
+      cursorPos = m_worksheet->GetHCaret();
+      if ((!m_worksheet->HCaretActive()) && (cursorPos == m_worksheet->GetLastCell()))
+      {
+        if (m_worksheet->GetActiveCell() != NULL)
+          cursorPos = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+        else
+          cursorPos = m_worksheet->FirstVisibleGC();
+      }
+      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), cursorPos);
+    }
+    m_worksheet->m_scheduleUpdateToc = false;
+
+    event.RequestMore();
+    return;
+  }
+
+  if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
+  {
+    m_xmlInspector->Update();
+    event.RequestMore();
+    return;
+  }
+
+  if(UpdateDrawPane())
+  {
+    event.RequestMore();
+    return;
+  }
+
+    // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
   //
   // The draw context is created on displaying the worksheet for the 1st time
@@ -4171,7 +4329,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // event when we wait for it here.
   if ((m_worksheet != NULL) && (m_worksheet->m_configuration->GetDC() != NULL))
   {
-    if(m_openFile != wxEmptyString)
+    if(!m_openFile.IsEmpty())
     {
       wxString file = m_openFile;
       m_openFile = wxEmptyString;
@@ -4198,208 +4356,25 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       m_worksheet->UpdateMLast();
       m_worksheet->SetSaved(true);
       m_initialWorkSheetContents = wxEmptyString;
-    }
-  }
-  // Update the info what maxima is currently doing
-  UpdateStatusMaximaBusy();
-
-  // Update the info how long the evaluation queue is
-  if(m_updateEvaluationQueueLengthDisplay)
-  {
-    if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1))
-    {
-      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"),
-                                             m_EvaluationQueueLength);
-      if (m_commandsLeftInCurrentCell > 1)
-        statusLine += wxString::Format(_("; %i commands left in the current cell"),
-                                       m_commandsLeftInCurrentCell - 1);
-      LeftStatusText(statusLine,false);
-    }
-    else
-    {
-      if (m_first)
-      {
-        if(!m_openInitialFileError)
-          LeftStatusText(_("Welcome to wxMaxima"));
-      }
-      else
-      {
-        if(  m_worksheet->m_configuration->InLispMode())
-          LeftStatusText(_("Lisp mode."));
-        else
-          LeftStatusText(_("Maxima is ready for input."));
-      }
-      m_openInitialFileError = false;
-    }
-    m_updateEvaluationQueueLengthDisplay = false;
-
-    // We have shown that we are still alive => If maxima already offers new data
-    // we process this data first and then continue with the idle task.
-    if(
-      (m_worksheet->m_scheduleUpdateToc) || (m_updateControls) || (m_worksheet->RedrawRequested()) ||
-      (
-         (m_worksheet->m_findDialog != NULL) &&
-         (
-           (m_oldFindString != m_worksheet->m_findDialog->GetData()->GetFindString()) ||
-           (m_oldFindFlags != m_worksheet->m_findDialog->GetData()->GetFlags())
-           )
-        ) ||
-      ((m_newLeftStatusText) || (m_newRightStatusText)) ||
-      ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
-      )
-    {
-      m_updateEvaluationQueueLengthDisplay = false;
-      event.RequestMore();
-      return;
-    }
-    m_updateEvaluationQueueLengthDisplay = false;
-  }
-
-  if(m_worksheet != NULL)
-  {
-    bool requestMore = m_worksheet->RecalculateIfNeeded();
-    m_worksheet->ScrollToCellIfNeeded();
-    if(requestMore)
-    {
       event.RequestMore();
       return;
     }
   }
 
-  if(m_worksheet != NULL)
-    m_worksheet->UpdateScrollPos();
-
-  // Incremental search is done from the idle task. This means that we don't forcefully
-  // need to do a new search on every character that is entered into the search box.
-  if (m_worksheet->m_findDialog != NULL)
-  {
-    if (
-      (m_oldFindString != m_worksheet->m_findDialog->GetData()->GetFindString()) ||
-      (m_oldFindFlags != m_worksheet->m_findDialog->GetData()->GetFlags())
-      )
-    {
-
-      m_oldFindFlags = m_worksheet->m_findDialog->GetData()->GetFlags();
-      m_oldFindString = m_worksheet->m_findDialog->GetData()->GetFindString();
-
-      bool incrementalSearch = true;
-        wxConfig::Get()->Read("incrementalSearch", &incrementalSearch);
-        if ((incrementalSearch) && (m_worksheet->m_findDialog != NULL))
-        {
-          m_worksheet->FindIncremental(m_findData.GetFindString(),
-                                     m_findData.GetFlags() & wxFR_DOWN,
-                                     !(m_findData.GetFlags() & wxFR_MATCHCASE));
-        }
-
-        m_oldFindString = m_worksheet->m_findDialog->GetData()->GetFindString();
-        m_oldFindFlags = m_worksheet->m_findDialog->GetData()->GetFlags();
-        m_worksheet->RequestRedraw();
-        event.RequestMore();
-        return;
-    }
-  }
-
-  if(m_worksheet->RedrawIfRequested())
-  {
-    m_updateControls = true;
-    event.RequestMore();
-    return;
-  }
-
-  // If nothing which is visible has changed nothing that would cause us to need
-  // update the menus and toolbars has.
-  if (m_updateControls)
-  {
-    m_updateControls = false;
-    wxUpdateUIEvent dummy;
-    UpdateMenus(dummy);
-    UpdateToolBar(dummy);
-    UpdateSlider(dummy);
-    ResetTitle(m_worksheet->IsSaved());
-
-    // This was a half-way lengthy task => Return from the idle task so we can give
-    // maxima a chance to deliver new data.
-    if((m_worksheet->m_scheduleUpdateToc) ||
-       ((m_newLeftStatusText) || (m_newRightStatusText)) ||
-       ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded())))
-    {
-      event.RequestMore();
-      return;
-    }
-  }
-
-  if((m_newLeftStatusText) || (m_newRightStatusText))
-  {
-    if(m_newRightStatusText)
-    {
-      SetStatusText(m_rightStatusText, 1);
-      m_newRightStatusText = false;
-    }
-    if(m_newLeftStatusText)
-    {
-      SetStatusText(m_leftStatusText,0);
-      m_newLeftStatusText = false;
-    }
-
-    if((m_worksheet->m_scheduleUpdateToc) ||
-       ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
-      )
-    {
-      event.RequestMore();
-      return;
-    }
-  }
-
-  // If we have set the flag that tells us we should update the table of
-  // contents sooner or later we should do so now that wxMaxima is idle.
-  if (m_worksheet->m_scheduleUpdateToc)
-  {
-    m_worksheet->m_scheduleUpdateToc = false;
-    if (m_worksheet->m_tableOfContents)
-    {
-      GroupCell *cursorPos;
-      cursorPos = m_worksheet->GetHCaret();
-      if ((!m_worksheet->HCaretActive()) && (cursorPos == m_worksheet->GetLastCell()))
-      {
-        if (m_worksheet->GetActiveCell() != NULL)
-          cursorPos = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
-        else
-          cursorPos = m_worksheet->FirstVisibleGC();
-      }
-      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), cursorPos);
-    }
-    m_worksheet->m_scheduleUpdateToc = false;
-
-    if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
-    {
-      event.RequestMore();
-      return;
-    }
-  }
-  if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
-    m_xmlInspector->Update();
-
-  UpdateDrawPane();
-
-  // On MS Windows sometimes we don't get a wxSOCKET_INPUT event on input.
-  // Let's trigger interpretation of new input if we don't have anything
-  // else to do just to make sure that wxMaxima will eventually restart
-  // receiving data.
-  TryToReadDataFromMaxima();
-
-  // Tell wxWidgets it can process its own idle commands, as well.
+  // If we reach this point wxMaxima truly is idle
+  // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
 
-void wxMaxima::UpdateDrawPane()
+bool wxMaxima::UpdateDrawPane()
 {
+  int dimensions = 0;
   if(m_drawPane)
   {
     EditorCell *editor = m_worksheet->GetActiveCell();
     if(editor)
     {
       wxString command = m_worksheet->GetActiveCell()->GetFullCommandUnderCursor();
-      int dimensions = 0;
       if(command.Contains(wxT("gr2d")))
         dimensions = 2;
       if(command.Contains(wxT("with_slider_draw")))
@@ -4410,15 +4385,18 @@ void wxMaxima::UpdateDrawPane()
         dimensions = 2;
       if(command.Contains(wxT("draw3d")))
         dimensions = 3;
-      m_drawPane->SetDimensions(dimensions);
     }
     else
-      m_drawPane->SetDimensions(0);
+      dimensions = 0;
   }
-  else
+
+  if(m_drawDimensions_last != dimensions)
   {
-    m_drawPane->SetDimensions(0);
+    m_drawPane->SetDimensions(dimensions);
+    m_drawDimensions_last = dimensions;
+    return true;
   }
+  return false;
 }
 
 ///--------------------------------------------------------------------------------

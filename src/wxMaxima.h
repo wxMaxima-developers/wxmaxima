@@ -476,7 +476,7 @@ protected:
 
   void TryUpdateInspector();
 
-  void UpdateDrawPane();
+  bool UpdateDrawPane();
   
   wxString ExtractFirstExpression(const wxString &entry);
 

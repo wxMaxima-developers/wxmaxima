@@ -681,6 +681,8 @@ public:
   void RightStatusText(const wxString &text, bool saveInLog = true)
     {m_newRightStatusText = true; m_rightStatusText = text; if(saveInLog)wxLogMessage(text);}
 protected:
+  //! Are we inside a 2d or 3d draw command?
+  long m_drawDimensions_last;
   //! Do we have new text to output in the Right half of the Status Bar?
   bool m_newRightStatusText;
   //! Do we have new text to output in the Left half of the Status Bar?
