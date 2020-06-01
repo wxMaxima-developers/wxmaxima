@@ -756,6 +756,9 @@ public:
   }
   
   constexpr T& value() const {
+    // We define our own ternary commands here and cppcheck believes that it is 
+    // broken because it doesn't know them.
+    // cppcheck-suppress internalAstError
     return ref ? *ref : (throw bad_optional_access("bad optional access"), *ref);
   }
   
