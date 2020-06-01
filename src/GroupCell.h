@@ -484,6 +484,10 @@ public:
   */
   GroupCell *UpdateYPosition();
 
+  bool GetSuppressTooltipMarker()
+    {return m_suppressTooltipMarker;}
+  void SetSuppressTooltipMarker(bool suppress)
+    {m_suppressTooltipMarker = suppress;}
 protected:
   int m_labelWidth_cached;
   bool NeedsRecalculation(int fontSize) override;

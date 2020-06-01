@@ -1834,6 +1834,16 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       }
     }
   }
+
+  if(m_cellPointers.m_selectionStart != NULL)
+  {
+    if(popupMenu.GetMenuItemCount() > 0)
+      popupMenu.AppendSeparator();
+    popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker"),
+                            _("Don't mark cells that contain tooltips in yellow"));
+    GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
+    popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
+  }
   // create menu if we have any items
   if (popupMenu.GetMenuItemCount() > 0)
     PopupMenu(&popupMenu);
@@ -7752,6 +7762,7 @@ void Worksheet::RemoveAllOutput()
   SetActiveCell(NULL);
 
   RemoveAllOutput(GetTree());
+  OutputChanged();
 
   Recalculate();
   RequestRedraw();

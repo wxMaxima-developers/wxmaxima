@@ -446,12 +446,15 @@ GroupCell *MathParser::GroupCellFromSubsectionTag(wxXmlNode *node)
     group = new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
   if (group == NULL)
     group = new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
+  ParseCommonGroupCellAttrs(node, group);
   return group;
 }
 
 GroupCell *MathParser::GroupCellFromImageTag(wxXmlNode *node)
 {
-  return new GroupCell(m_configuration, GC_TYPE_IMAGE, m_cellPointers);
+  GroupCell *group = new GroupCell(m_configuration, GC_TYPE_IMAGE, m_cellPointers);
+  ParseCommonGroupCellAttrs(node, group);
+  return group;
 }
 
 GroupCell *MathParser::GroupCellFromCodeTag(wxXmlNode *node)
@@ -471,6 +474,7 @@ GroupCell *MathParser::GroupCellFromCodeTag(wxXmlNode *node)
       group->SetAnswer(wxString::Format(wxT("Question #%i"),i),answer);
     i++;
   }
+  ParseCommonGroupCellAttrs(node, group);
   return group;
 }
 
@@ -792,6 +796,17 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
     cell->SetToolTip(val);
   if(node->GetAttribute(wxT("altCopy"), &val))
     cell->SetAltCopyText(val);
+}
+
+void MathParser::ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group)
+{
+  if(group == NULL)
+    return;
+  if(node == NULL)
+    return;
+
+  if(node->GetAttribute(wxT("hideToolTip")) == wxT("true"))
+    group->SetSuppressTooltipMarker(true);
 }
 
 Cell *MathParser::ParseCharCode(wxXmlNode *node)

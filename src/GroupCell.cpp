@@ -1624,6 +1624,9 @@ wxString GroupCell::ToXML()
       break;
   }
 
+  if(GetSuppressTooltipMarker())
+    str += wxT(" hideToolTip=\"true\"");
+
   // write hidden status
   if (m_isHidden)
     str += wxT(" hide=\"true\"");

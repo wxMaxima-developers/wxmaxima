@@ -112,6 +112,8 @@ private:
   static GroupCellFunctionHash m_groupTags;
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
+  //! Parses attributes that apply to nearly all types of cells
+  static void ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group);
   //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
   Cell *HandleNullPointer(Cell *cell);
 

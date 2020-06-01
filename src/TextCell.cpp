@@ -28,6 +28,7 @@
  */
 
 #include "TextCell.h"
+#include "GroupCell.h"
 #include "FontCache.h"
 #include "wx/config.h"
 

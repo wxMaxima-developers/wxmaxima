@@ -982,6 +982,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxIdleEventHandler(wxMaxima::OnIdle), NULL, this);
   Connect(menu_remove_output, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(Worksheet::popid_hide_tooltipMarker, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_recent_document_0, menu_recent_document_29, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
   Connect(menu_recent_package_0, menu_recent_package_29, wxEVT_MENU,
@@ -5859,7 +5861,26 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if (command != wxEmptyString)
         m_worksheet->SetActiveCellText(command);
     }
+    break;
+    case Worksheet::popid_hide_tooltipMarker:
+    {
+      if(m_worksheet->GetSelectionStart() == NULL)
+        return;
+      GroupCell *cell = m_worksheet->GetSelectionStart()->GetGroup();
+      GroupCell *end = NULL;
+      if(m_worksheet->GetSelectionEnd() != NULL)
+        end = m_worksheet->GetSelectionEnd()->GetGroup();
+      bool marked = !cell->GetSuppressTooltipMarker();
+      while(cell != NULL)
+        {
+          cell->SetSuppressTooltipMarker(marked);
+          if(cell == end)
+            break;
+          cell = dynamic_cast<GroupCell *>(cell->m_next);
+        }
+      m_worksheet->OutputChanged();
       break;
+    }
   }
   m_worksheet->RequestRedraw();
 }

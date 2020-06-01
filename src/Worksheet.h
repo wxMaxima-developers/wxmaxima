@@ -880,6 +880,7 @@ public:
     popid_suggestion8,
     popid_suggestion9,
     popid_suggestion10,
+    popid_hide_tooltipMarker
   };
 
   //! The constructor

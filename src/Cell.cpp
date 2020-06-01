@@ -51,6 +51,8 @@ Cell::Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers)
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
+  m_containsToolTip = false;
+  m_suppressTooltipMarker = false;
   m_isBrokenIntoLines_old = false;
   m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
@@ -396,7 +398,7 @@ void Cell::Draw(wxPoint point)
 
   // Mark all cells that contain tooltips
   if (!m_toolTip.empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
-      configuration->ClipToDrawRegion() && !configuration->GetPrinting())
+      configuration->ClipToDrawRegion() && !configuration->GetPrinting() &&(!m_group->m_suppressTooltipMarker))
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (Cell::InUpdateRegion(rect))
@@ -418,11 +420,21 @@ void Cell::Draw(wxPoint point)
 #endif
 }
 
+void Cell::SetToolTip(const wxString &tooltip)
+{
+  m_toolTip = tooltip;
+  m_containsToolTip = (!tooltip.IsEmpty());
+  if(m_group != NULL)
+    m_group->m_containsToolTip = m_containsToolTip;
+}
+
 void Cell::AddToolTip(const wxString &tip)
 {
   if((!m_toolTip.IsEmpty()) && (!m_toolTip.EndsWith("\n")))
     m_toolTip += "\n";
   m_toolTip += tip;
+  m_containsToolTip = true;
+  m_group->m_containsToolTip = true;
 }
 void Cell::DrawList(wxPoint point)
 {

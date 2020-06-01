@@ -970,7 +970,7 @@ class Cell
   //! Remove this cell's tooltip
   void ClearToolTip(){m_toolTip = wxEmptyString;}
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
-  void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
+  void SetToolTip(const wxString &tooltip);
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
@@ -985,8 +985,10 @@ class Cell
   }
   //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
-  
+
 protected:
+  //! GroupCells only: Suppress the yellow ToolTips marker
+  bool m_suppressTooltipMarker;
   //! To be called if the font has changed.
   virtual void FontsChanged()
     {
@@ -1078,8 +1080,12 @@ protected:
   virtual InnerCellIterator InnerBegin() const;
   //! Iterator to the end of the inner cell range
   virtual InnerCellIterator InnerEnd() const;
-
+  bool ContainsToolTip()
+    {
+      return m_containsToolTip;
+    }
 protected:
+  bool m_containsToolTip;
   //! The height of this cell.
   int m_height;
   /*! The width of this cell.
