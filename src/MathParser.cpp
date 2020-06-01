@@ -152,8 +152,7 @@ MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wx
 }
 
 MathParser::~MathParser()
-{
-}
+{}
 
 Cell *MathParser::ParseHiddenOperatorTag(wxXmlNode *node)
 {

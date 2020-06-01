@@ -1520,7 +1520,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                    _("Automatically fill in answers known from the last run"));
         popupMenu.Check(popid_auto_answer,dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->AutoAnswer());
-        if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
+        if (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
@@ -2943,7 +2943,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
   GroupCell *prev = dynamic_cast<GroupCell *>(group->m_previous);
   DeleteRegion(group,group);
   TreeUndo_AppendAction();
-  InsertGroupCells(newGroupCell,prev);
+  InsertGroupCells(newGroupCell, prev);
   SetActiveCell(newGroupCell->GetEditable(), false);
   SetSaved(false);
   Recalculate(true);
@@ -6712,7 +6712,8 @@ void Worksheet::AddRestToEvaluationQueue()
 
 void Worksheet::AddSelectionToEvaluationQueue()
 {
-  AddSelectionToEvaluationQueue(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart), dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
+  AddSelectionToEvaluationQueue(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart),
+                                dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
 }
 
 void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
@@ -7380,7 +7381,7 @@ void Worksheet::PasteFromClipboard()
             InsertGroupCells(contents,GetHCaret());
           }
           else
-            InsertGroupCells(contents,dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+            InsertGroupCells(contents, dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
         }
         NumberSections();
         Recalculate();

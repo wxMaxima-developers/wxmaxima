@@ -20,7 +20,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-/*!\file
+/*! \file
   
   The definition of the base class of all cells the worksheet consists of.
  */
@@ -112,7 +112,7 @@ class Cell
 
   public:
 
-    /*! The storage for pointers to cells.
+  /*! The storage for pointers to cells.
     
     If a cell is deleted it is necessary to remove all pointers that might
     allow to access the now-defunct cell. These pointers are kept in this 
@@ -279,7 +279,7 @@ class Cell
     its own Copy() method.
    */
   virtual Cell *Copy() = 0;
-  
+
   /*! Scale font sizes and line widths according to the zoom factor.
 
     Is used for displaying/printing/exporting of text/maths

@@ -48,7 +48,7 @@ inside a wxmx file
 class MathParser
 {
 public:
-  /* The constructor
+  /*! The constructor
 
      \todo I guess we could increase the performance further by putting the 
      most-frequently-used tags to the front of the list.

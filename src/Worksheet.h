@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+ // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -650,6 +650,7 @@ public:
   Configuration *m_configuration;
   //! The storage for the autocompletion feature
   AutoComplete m_autocomplete;
+
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()
   {
@@ -685,9 +686,7 @@ public:
   }
 
   int IndexSearchStartedAt()
-  {
-    return m_cellPointers.m_indexSearchStartedAt;
-  }
+  { return m_cellPointers.m_indexSearchStartedAt; }
 
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
   Cell::CellPointers m_cellPointers;

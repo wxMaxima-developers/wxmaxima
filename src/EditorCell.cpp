@@ -39,10 +39,10 @@
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) :
-  Cell(parent, config, cellPointers),
-  m_text(text),
-  m_fontStyle(wxFONTSTYLE_NORMAL),
-  m_fontWeight(wxFONTWEIGHT_NORMAL)
+    Cell(parent, config, cellPointers),
+    m_text(text),
+    m_fontStyle(wxFONTSTYLE_NORMAL),
+    m_fontWeight(wxFONTWEIGHT_NORMAL)
 {
   m_nextToDraw = NULL;
   m_text.Replace(wxT("\u2028"), "\n");

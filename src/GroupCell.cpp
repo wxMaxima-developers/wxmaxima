@@ -432,7 +432,6 @@ void GroupCell::AppendOutput(Cell *cell)
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
   }
-
   else
   {
     Cell *tmp = m_lastInOutput;

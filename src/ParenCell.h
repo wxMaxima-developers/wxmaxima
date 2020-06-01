@@ -90,8 +90,7 @@ public:
 private:
   Cell *m_nextToDraw = {};
 
-  /*! How to create a big parenthesis sign?
-   */
+  //! How to create a big parenthesis sign?
   Configuration::drawMode m_bigParenType;
   void SetFont(int fontsize);
   // The pointers below point to inner cells and must be kept contiguous.

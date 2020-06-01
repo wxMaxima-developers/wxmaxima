@@ -347,10 +347,10 @@ void TextCell::SetValue(const wxString &text)
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
 TextCell::TextCell(const TextCell &cell):
-  Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
-  m_text(cell.m_text),
-  m_userDefinedLabel(cell.m_userDefinedLabel),
-  m_displayedText(cell.m_displayedText)
+    Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
+    m_text(cell.m_text),
+    m_userDefinedLabel(cell.m_userDefinedLabel),
+    m_displayedText(cell.m_displayedText)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
