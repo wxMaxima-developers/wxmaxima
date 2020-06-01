@@ -1179,7 +1179,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers, wxEmptyString));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers));
 
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
@@ -1299,7 +1299,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers, wxEmptyString));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers));
 
   if (s.IsEmpty())
     return NULL;
@@ -4295,7 +4295,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       cursorPos = m_worksheet->GetHCaret();
       if ((!m_worksheet->HCaretActive()) && (cursorPos == m_worksheet->GetLastCell()))
       {
-        if (m_worksheet->GetActiveCell() != NULL)
+        if (m_worksheet->GetActiveCell())
           cursorPos = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
         else
           cursorPos = m_worksheet->FirstVisibleGC();
@@ -4619,7 +4619,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
   if(editor == NULL)
   {
     GroupCell *group = NULL;
-    if(m_worksheet->GetSelectionStart() != NULL)
+    if(m_worksheet->GetSelectionStart())
       group = dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart()->GetGroup());
 
     if(group != NULL)
@@ -5593,7 +5593,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   case Worksheet::popid_popup_gnuplot:
   {
-    if(m_worksheet->m_cellPointers.m_selectionStart == NULL)
+    if (!m_worksheet->m_cellPointers.m_selectionStart)
       return;
 
     wxString gnuplotSource =
@@ -9265,7 +9265,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case Worksheet::popid_auto_answer:
-      if((m_worksheet->GetActiveCell() != NULL) &&
+      if (m_worksheet->GetActiveCell() &&
          (dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->GetGroupType() == GC_TYPE_CODE))
         dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->AutoAnswer(event.IsChecked());
       else if((m_worksheet->GetSelectionStart() != NULL)&&

@@ -38,13 +38,12 @@
 #include <wx/tokenzr.h>
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
-                       CellPointers *cellPointers, wxString text) :
+                       CellPointers *cellPointers, const wxString &text) :
     Cell(parent, config, cellPointers),
     m_text(text),
     m_fontStyle(wxFONTSTYLE_NORMAL),
     m_fontWeight(wxFONTWEIGHT_NORMAL)
 {
-  m_nextToDraw = NULL;
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 
@@ -2600,18 +2599,18 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) const
 
 void EditorCell::DeactivateCursor()
 {
-  if (m_cellPointers->m_activeCell != NULL)
+  auto *editor = dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell);
+  if (editor)
   {
-    dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->ClearSelection();
-    dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->m_paren1 =
-      dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->m_paren2 = -1;
+    editor->ClearSelection();
+    editor->m_paren1 = editor->m_paren2 = -1;
   }
-  m_cellPointers->m_activeCell = NULL;
+  m_cellPointers->m_activeCell = nullptr;
 }
 
 void EditorCell::ActivateCursor()
 {
-  if (m_cellPointers->m_activeCell != NULL)
+  if (!m_cellPointers->m_activeCell)
     DeactivateCursor();
 
   SaveValue();
@@ -3888,7 +3887,7 @@ void EditorCell::SetValue(const wxString &text)
 
   // Style the text.
   StyleText();
-  if (m_group != NULL)
+  if (m_group)
     m_group->ResetSize();
   ResetData();
 }

@@ -77,13 +77,13 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
     ReloadTimer();
 }
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString WXUNUSED(type)):
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
     SlideShow(parent, config, cellPointers)
 {
   LoadImages(image);
 }
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove):
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, bool remove):
     SlideShow(parent, config, cellPointers)
 {
   LoadImages(image);

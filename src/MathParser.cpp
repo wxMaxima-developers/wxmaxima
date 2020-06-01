@@ -79,7 +79,7 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
   return SkipWhitespaceNode(node);
 }
 
-MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile)
+MathParser::MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, const wxString &zipfile)
 {
   m_configuration = cfg;
   m_cellPointers = cellPointers;
@@ -308,7 +308,7 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
 
 Cell *MathParser::ParseOutputLabelTag(wxXmlNode *node)
 {
-  Cell *tmp;
+  Cell *tmp = {};
   wxString user_lbl = node->GetAttribute(wxT("userdefinedlabel"), m_userDefinedLabel);
   wxString userdefined = node->GetAttribute(wxT("userdefined"), wxT("no"));
   

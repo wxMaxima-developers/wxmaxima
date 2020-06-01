@@ -507,8 +507,8 @@ bool ParenCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell.get());
-    wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
-    if (m_last1 != NULL)
+    wxASSERT_MSG(m_last1, _("Bug: No last cell inside a parenthesis!"));
+    if (m_last1)
       m_last1->SetNextToDraw(m_close.get());
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open.get();

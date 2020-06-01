@@ -61,8 +61,8 @@ public:
   SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
   SlideShow(const SlideShow &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &type);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, bool remove);
 
   Cell *Copy() override { return new SlideShow(*this); }
   ~SlideShow();

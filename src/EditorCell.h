@@ -95,7 +95,7 @@ private:
 public:
   //! The constructor
   EditorCell(Cell *parent, Configuration **config,
-             CellPointers *cellPointers, wxString text = wxEmptyString);
+             CellPointers *cellPointers, const wxString &text = {});
   EditorCell(const EditorCell &cell);
   Cell *Copy() override {return new EditorCell(*this);}
   ~EditorCell();

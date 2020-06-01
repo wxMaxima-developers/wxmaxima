@@ -52,8 +52,8 @@ MatrCell::MatrCell(const MatrCell &cell):
   m_matWidth = cell.m_matWidth;
   m_matHeight = cell.m_matHeight;
   for (unsigned int i = 0; i < cell.m_matWidth * cell.m_matHeight; i++)
-    if(i < cell.m_cells.size())
-      (m_cells).emplace_back(cell.m_cells[i]->CopyList());
+    if (i < cell.m_cells.size())
+      m_cells.emplace_back(cell.m_cells[i]->CopyList());
 }
 
 MatrCell::~MatrCell()

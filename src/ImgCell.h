@@ -34,8 +34,8 @@ class ImgCell final : public Cell
 {
 public:
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
-  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &type);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);

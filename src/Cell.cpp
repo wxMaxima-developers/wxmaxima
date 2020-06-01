@@ -44,12 +44,7 @@ wxString Cell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
-#if wxUSE_ACCESSIBILITY
-  :wxAccessible(),
-#else
-   :
-#endif
+Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers) :
    m_currentPoint_Last(wxPoint(-1,-1)),
    m_group(group),
    m_parent(group),
@@ -153,7 +148,7 @@ void Cell::SetType(CellType type)
       break;
   }
   ResetSize();
-  if(m_group != NULL)
+  if (m_group)
     GetGroup()->ResetSize();
 }
 
@@ -275,7 +270,7 @@ void Cell::AppendCell(Cell *p_next)
 
 Cell *Cell::GetGroup()
 {
-  wxASSERT_MSG(m_group != NULL, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
+  wxASSERT_MSG(m_group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return m_group;
 }
 
@@ -397,16 +392,17 @@ int Cell::GetLineWidth()
  */
 void Cell::Draw(wxPoint point)
 {
+  Configuration *configuration = *m_configuration;
   if((m_height > 0) && (point.y > 0))
     SetCurrentPoint(point);
 
   // Mark all cells that contain tooltips
-  if(!m_toolTip.IsEmpty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
-     (*m_configuration)->ClipToDrawRegion() && !(*m_configuration)->GetPrinting())
+  if (!m_toolTip.empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
+      configuration->ClipToDrawRegion() && !configuration->GetPrinting())
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (Cell::InUpdateRegion(rect))
-    {    Configuration *configuration = (*m_configuration);
+    {
       if((rect.GetWidth() > 0) && rect.GetHeight() > 0)
       {
         wxDC *dc = configuration->GetDC();
@@ -419,8 +415,8 @@ void Cell::Draw(wxPoint point)
   
   // Tell the screen reader that this cell's contents might have changed.
 #if wxUSE_ACCESSIBILITY
-  if((*m_configuration)->GetWorkSheet() != NULL)
-    NotifyEvent(0, (*m_configuration)->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
+  if (configuration->GetWorkSheet())
+    NotifyEvent(0, configuration->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
 }
 

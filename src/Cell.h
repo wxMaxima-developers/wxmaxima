@@ -121,8 +121,8 @@ class Cell
   class CellPointers
   {
   public:
-    void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
-    Cell *CellToScrollTo(){return m_cellToScrollTo;}
+    void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
+    Cell *CellToScrollTo() { return m_cellToScrollTo; }
     explicit CellPointers(wxScrolledCanvas *worksheet);
     /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
       
@@ -130,12 +130,7 @@ class Cell
       use the last cell maxima was known to work on.
     */
     Cell *GetWorkingGroup(bool resortToLast = false)
-      {
-        if ((m_workingGroup != NULL) || (!resortToLast))
-          return m_workingGroup;
-        else
-          return m_lastWorkingGroup;
-      }
+    { return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
 
     //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
     void SetWorkingGroup(Cell *group)
@@ -167,9 +162,9 @@ class Cell
       //! Mark this GroupCell as containing errors
       void Add(Cell * cell){m_errors.push_back(cell);}
       //! The first GroupCell with error that is still in the list
-      Cell *FirstError() const {return m_errors.empty() ? NULL : m_errors.front();}
+      Cell *FirstError() const {return m_errors.empty() ? nullptr : m_errors.front();}
       //! The last GroupCell with errors in the list
-      Cell *LastError() const {return m_errors.empty() ? NULL : m_errors.back();}
+      Cell *LastError() const {return m_errors.empty() ? nullptr : m_errors.back();}
       //! Empty the list of GroupCells with errors
       void Clear(){m_errors.clear();}
     private:
@@ -186,7 +181,7 @@ class Cell
     //! The EditorCell the search was started in
     Cell *m_cellSearchStartedIn;
     //! Which cursor position incremental search has started at?
-    int m_indexSearchStartedAt;
+    int m_indexSearchStartedAt = -1;
     //! Which cell the blinking cursor is in?
     Cell *m_activeCell;
     //! The GroupCell that is under the mouse pointer 
@@ -260,7 +255,7 @@ class Cell
     wxScrolledCanvas *GetWorksheet(){return m_worksheet;}
 
     //! Is scrolling to a cell scheduled?
-    bool m_scrollToCell;
+    bool m_scrollToCell = false;
   private:
     //! If m_scrollToCell = true: Which cell do we need to scroll to?
     Cell *m_cellToScrollTo;
@@ -1027,7 +1022,6 @@ protected:
   wxPoint m_currentPoint_Last;
 
   /*! The GroupCell this list of cells belongs to.
-    
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */

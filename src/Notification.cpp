@@ -88,7 +88,7 @@ bool Notification::Close()
 
 void Notification::OnClick(wxCommandEvent &WXUNUSED(event))
 {
-  if(GetGroup() != NULL)
+  if (GetGroup())
   {
     GetGroup()->Raise();
     GetGroup()->Show();
