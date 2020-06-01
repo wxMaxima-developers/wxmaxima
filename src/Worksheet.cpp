@@ -599,24 +599,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   //
   // Draw the selection marks
   //
-  if (CellsSelected())
+  if (CellsSelected() && m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
   {
-    Cell *tmp = m_cellPointers.m_selectionStart;
     m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
     m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
     
     // Draw the marker that tells us which output cells are selected -
     // if output cells are selected, that is.
-    if (m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
-    {  // We have a selection of output
-      while (tmp != NULL)
-      {
-        if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && GetActiveCell() != tmp)
-          tmp->DrawBoundingBox(dc, false);
-        if (tmp == m_cellPointers.m_selectionEnd)
-          break;
-        tmp = tmp->GetNextToDraw();
-      } // end while (1)
+    for (Cell *tmp = m_cellPointers.m_selectionStart; tmp; tmp = tmp->GetNextToDraw())
+    {
+      if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && tmp != GetActiveCell())
+        tmp->DrawBoundingBox(dc, false);
+      if (tmp == m_cellPointers.m_selectionEnd)
+        break;
     }
   }
   
