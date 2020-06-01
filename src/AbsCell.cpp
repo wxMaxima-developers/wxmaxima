@@ -30,10 +30,10 @@
 
 #include "AbsCell.h"
 
-AbsCell::AbsCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_open(new TextCell(parent, config, cellPointers, wxT("abs("))),
-  m_close(new TextCell(parent, config, cellPointers, wxT(")")))
+AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_open(new TextCell(parent, config, wxT("abs("))),
+    m_close(new TextCell(parent, config, wxT(")")))
 {
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
@@ -43,7 +43,7 @@ AbsCell::AbsCell(GroupCell *parent, Configuration **config, CellPointers *cellPo
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
 AbsCell::AbsCell(const AbsCell &cell):
-  AbsCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+  AbsCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_innerCell)

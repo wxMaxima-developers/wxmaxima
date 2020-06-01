@@ -30,13 +30,13 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers)
+SubCell::SubCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config)
 {
 }
 
 SubCell::SubCell(const SubCell &cell):
-    SubCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SubCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_baseCell)

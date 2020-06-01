@@ -30,14 +30,14 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_numParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
-    m_denomParenthesis(new ParenCell(m_group, m_configuration, m_cellPointers)),
-    m_divideOwner(new TextCell(parent, config, cellPointers, "/"))
+FracCell::FracCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_numParenthesis(new ParenCell(m_group, m_configuration)),
+    m_denomParenthesis(new ParenCell(m_group, m_configuration)),
+    m_divideOwner(new TextCell(parent, config, "/"))
 {
-  SetNum(new TextCell(parent, config, cellPointers));
-  SetDenom(new TextCell(parent, config, cellPointers));
+  SetNum(new TextCell(parent, config));
+  SetDenom(new TextCell(parent, config));
   m_divide->SetStyle(TS_VARIABLE);
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
@@ -47,7 +47,7 @@ FracCell::FracCell(GroupCell *parent, Configuration **config, CellPointers *cell
 }
 
 FracCell::FracCell(const FracCell &cell):
-    FracCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    FracCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if (cell.Num())

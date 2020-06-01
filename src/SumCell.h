@@ -43,7 +43,7 @@ enum
 class SumCell final : public Cell
 {
 public:
-  SumCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  SumCell(GroupCell *parent, Configuration **config);
   SumCell(const SumCell &cell);
   Cell *Copy() override { return new SumCell(*this); }
   ~SumCell();

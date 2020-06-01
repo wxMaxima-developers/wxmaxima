@@ -31,15 +31,15 @@
 #include "TextCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_baseCell(new TextCell(parent, config, cellPointers)),
-  m_diffCell(new TextCell(parent, config, cellPointers))
+DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_baseCell(new TextCell(parent, config)),
+    m_diffCell(new TextCell(parent, config))
 {
 }
 
 DiffCell::DiffCell(const DiffCell &cell):
- DiffCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+ DiffCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_diffCell)

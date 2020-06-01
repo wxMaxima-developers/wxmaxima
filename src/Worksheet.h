@@ -1570,4 +1570,10 @@ protected:
   bool m_mouseMotionWas;
 };
 
+inline Worksheet *Cell::GetWorksheet() const
+{ return static_cast<Worksheet*>((*m_configuration)->GetWorkSheet()); }
+
+inline void Configuration::SetWorkSheet(wxWindow *workSheet)
+{ m_workSheet = dynamic_cast<Worksheet*>(workSheet); }
+
 #endif // WORKSHEET_H

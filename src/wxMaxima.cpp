@@ -190,7 +190,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
                 MyApp::m_topLevelWindows.empty()),
   m_openFile(filename),
   m_gnuplotcommand("gnuplot"),
-  m_parser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers)
+  m_parser(&m_worksheet->m_configuration)
 {
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_helpFileAnchorsLock);
@@ -1181,7 +1181,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE));
 
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
@@ -1301,7 +1301,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE));
 
   if (s.IsEmpty())
     return NULL;
@@ -1310,7 +1310,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
   if (type == MC_TYPE_MAIN_PROMPT)
   {
-    cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration), &m_worksheet->m_cellPointers, s);
+    cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration), s);
     cell->SetType(type);
     m_worksheet->InsertLine(cell, true);
   }
@@ -1361,7 +1361,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       else
       {
         cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
-                            &m_worksheet->m_cellPointers,
                             token);
 
         cell->SetType(type);
@@ -2949,9 +2948,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document, bool clear
   if (clearDocument)
     document->ClearDocument();
 
-  auto tree = Format::ParseMACFile(inputFile, xMaximaFile,
-                                   &(document->m_configuration),
-                                   &(document->m_cellPointers));
+  auto tree = Format::ParseMACFile(inputFile, xMaximaFile, &document->m_configuration);
 
   document->InsertGroupCells(tree, nullptr);
 
@@ -3011,7 +3008,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
   }
 
   GroupCell *tree = Format::ParseWXMFile(inputFile,
-                                         &m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
+                                         &m_worksheet->m_configuration);
   inputFile.Close();
 
   // from here on code is identical for wxm and wxmx
@@ -3351,7 +3348,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &
   // action).
   wxBusyCursor crs;
 
-  MathParser mp(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers, wxmxfilename);
+  MathParser mp(&m_worksheet->m_configuration, wxmxfilename);
   GroupCell *tree = NULL;
   GroupCell *last = NULL;
 
@@ -4352,7 +4349,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       while ( tokenizer.HasMoreTokens() )
         lines.Add(tokenizer.GetNextToken());
       m_worksheet->InsertGroupCells(
-        Format::TreeFromWXM(lines, &m_worksheet->m_configuration, &m_worksheet->m_cellPointers));
+        Format::TreeFromWXM(lines, &m_worksheet->m_configuration));
       m_worksheet->Recalculate();
       m_worksheet->RecalculateIfNeeded();
       m_worksheet->UpdateMLast();
@@ -9232,7 +9229,6 @@ void wxMaxima::TriggerEvaluation()
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
       TextCell *cell = new TextCell(tmp, &(m_worksheet->m_configuration),
-                                    &m_worksheet->m_cellPointers,
                                     _("Refusing to send cell to maxima: ") +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
@@ -9459,8 +9455,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_add_pagebreak:
     case menu_format_pagebreak:
       m_worksheet->InsertGroupCells(
-              new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_PAGEBREAK,
-                            &m_worksheet->m_cellPointers),
+              new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_PAGEBREAK),
               m_worksheet->GetHCaret());
       m_worksheet->Recalculate();
       m_worksheet->SetFocus();

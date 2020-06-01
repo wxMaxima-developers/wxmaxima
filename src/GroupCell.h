@@ -67,7 +67,7 @@ Items where a list of groupcells can be folded include
 class GroupCell final : public Cell
 {
 public:
-  GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString = {});
+  GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
   Cell *Copy() override { return new GroupCell(*this); }
   ~GroupCell();

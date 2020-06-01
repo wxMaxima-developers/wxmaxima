@@ -31,14 +31,14 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_base(new TextCell(parent, config, cellPointers)),
-    m_under(new TextCell(parent, config, cellPointers)),
-    m_name(new TextCell(parent, config, cellPointers)),
-    m_open(new TextCell(parent, config, cellPointers, "(")),
-    m_comma(new TextCell(parent, config, cellPointers, ",")),
-    m_close(new TextCell(parent, config, cellPointers, ")"))
+LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_base(new TextCell(parent, config)),
+    m_under(new TextCell(parent, config)),
+    m_name(new TextCell(parent, config)),
+    m_open(new TextCell(parent, config, "(")),
+    m_comma(new TextCell(parent, config, ",")),
+    m_close(new TextCell(parent, config, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
@@ -51,8 +51,8 @@ LimitCell::LimitCell(GroupCell *parent, Configuration **config, CellPointers *ce
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
-LimitCell::LimitCell(const LimitCell &cell):
-    LimitCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+LimitCell::LimitCell(const LimitCell &cell) :
+    LimitCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_base)

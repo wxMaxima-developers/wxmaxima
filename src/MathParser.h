@@ -53,7 +53,7 @@ public:
      \todo I guess we could increase the performance further by putting the 
      most-frequently-used tags to the front of the list.
    */
-  MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, const wxString &zipfile = {});
+  MathParser(Configuration **cfg, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator
@@ -157,39 +157,39 @@ private:
   //! Convert a title XML tag to a GroupCell
   GroupCell *GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_TITLE, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_TITLE);
     }
   //! Convert a title XML tag to a GroupCell
   GroupCell *GroupCellFromSectionTag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_SECTION, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_SECTION);
     }
   //! Convert a pagebreak XML tag to a GroupCell
   GroupCell *GroupCellFromPagebreakTag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_PAGEBREAK, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_PAGEBREAK);
     }
   //! Convert a subsection XML tag to a GroupCell
   GroupCell *GroupCellFromSubsectionTag(wxXmlNode *node);
   //! Convert a subsubsection XML tag to a GroupCell
   GroupCell *GroupCellFromSubsubsectionTag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION);
     }
   //! Convert a heading5 XML tag to a GroupCell
   GroupCell *GroupCellHeading5Tag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_HEADING5);
     }
   //! Convert a heading6 XML tag to a GroupCell
   GroupCell *GroupCellHeading6Tag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_HEADING6);
     }
   //! Convert a text cell XML tag to a GroupCell
   GroupCell *GroupCellFromTextTag(wxXmlNode *WXUNUSED(node))
     {
-      return new GroupCell(m_configuration, GC_TYPE_TEXT, m_cellPointers);
+      return new GroupCell(m_configuration, GC_TYPE_TEXT);
     }
   /* @} */
   
@@ -219,7 +219,7 @@ private:
   //! Parse a function name tag to a Cell. 
   Cell *ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
   //! Parse a space tag to a Cell.
-  Cell *ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));}
+  Cell *ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return new TextCell(NULL, m_configuration, wxT(" "));}
   /*! Parse a math-in-maths tag to a Cell. 
 
     \todo Does such a thing actually exist?
@@ -277,7 +277,6 @@ private:
 
   CellType m_ParserStyle;
   int m_FracStyle;
-  Cell::CellPointers *m_cellPointers;
   Configuration **m_configuration;
   bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>

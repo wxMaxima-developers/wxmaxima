@@ -45,11 +45,11 @@ wxString Cell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-Cell::Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers) :
-   m_currentPoint_Last(wxPoint(-1,-1)),
-   m_group(group),
-   m_configuration(config),
-   m_cellPointers(cellPointers)
+Cell::Cell(GroupCell *group, Configuration **config) :
+    m_currentPoint_Last(wxPoint(-1,-1)),
+    m_group(group),
+    m_configuration(config),
+    m_cellPointers(GetCellPointers())
 {
   m_containsToolTip = false;
   m_suppressTooltipMarker = false;

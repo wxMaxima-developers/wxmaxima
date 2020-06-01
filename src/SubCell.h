@@ -28,7 +28,7 @@
 class SubCell final : public Cell
 {
 public:
-  SubCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  SubCell(GroupCell *parent, Configuration **config);
   SubCell(const SubCell &cell);
   Cell *Copy() override { return new SubCell(*this); }
   ~SubCell();

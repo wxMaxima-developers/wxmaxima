@@ -34,13 +34,12 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(GroupCell *parent, Configuration **config,CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers)
-{
-}
+SubSupCell::SubSupCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config)
+{}
 
 SubSupCell::SubSupCell(const SubSupCell &cell):
-    SubSupCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SubSupCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_baseCell)

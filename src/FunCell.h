@@ -52,7 +52,7 @@
 class FunCell final : public Cell
 {
 public:
-  FunCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  FunCell(GroupCell *parent, Configuration **config);
   FunCell(const FunCell &cell);
   Cell *Copy() override { return new FunCell(*this); }
   ~FunCell();

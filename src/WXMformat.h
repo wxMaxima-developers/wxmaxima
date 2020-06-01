@@ -65,31 +65,27 @@ namespace Format
 wxString TreeToWXM(GroupCell *cell, bool wxm = true);
 
 //! Converts a wxm description into individual cells
-GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
-                       Configuration **config, Cell::CellPointers *cellPointers);
+GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config);
 
 /*! Parses the contents of a .wxm file into individual cells.
  * Invokes TreeFromWXM on pre-processed data,
  * concatenates the results.
  * \returns the tree, or nullptr on failure.
  */
-GroupCell *ParseWXMFile(wxTextBuffer &buf,
-                        Configuration **config, Cell::CellPointers *cellPointers);
+GroupCell *ParseWXMFile(wxTextBuffer &buf, Configuration **config);
 
 /*! Parses the contents of a preloaded .mac file into individual cells.
  *
  * Invokes TreeFromWXM on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-GroupCell *ParseMACContents(const wxString &macContents,
-                            Configuration **config, Cell::CellPointers *cellPointers);
+GroupCell *ParseMACContents(const wxString &macContents, Configuration **config);
 
 /*! Parses the contents of a .mac or a .out file into individual cells.
  * Invokes ParseMACContents on pre-processed data.
  * \returns the cell tree, or nullptr on failure.
  */
-GroupCell *ParseMACFile(wxTextBuffer &buf, bool xMaximaFile,
-                        Configuration **config, Cell::CellPointers *cellPointers);
+GroupCell *ParseMACFile(wxTextBuffer &buf, bool xMaximaFile, Configuration **config);
 
 //! First line of the WXM files - used by both loading and saving code.
 extern const wxString WXMFirstLine;

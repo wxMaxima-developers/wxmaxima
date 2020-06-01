@@ -54,15 +54,13 @@ public:
     \param filesystem The filesystem the contents of this slideshow can be found in.
                       NULL = the operating system's filesystem
     \param parent     The parent GroupCell this cell belongs to.
-    \param cellPointers All pointers that might point to this cell and that need to
-                        be set to NULL if this cell is deleted.
    */
-  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
-  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
+  SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  SlideShow(GroupCell *parent, Configuration **config, int framerate = -1);
   SlideShow(const SlideShow &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &type);
-  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, bool remove);
+  SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
+  SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove);
 
   Cell *Copy() override { return new SlideShow(*this); }
   ~SlideShow();

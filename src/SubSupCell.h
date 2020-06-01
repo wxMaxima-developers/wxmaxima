@@ -29,7 +29,7 @@
 class SubSupCell final : public Cell
 {
 public:
-  SubSupCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  SubSupCell(GroupCell *parent, Configuration **config);
   SubSupCell(const SubSupCell &cell);
   Cell *Copy() override { return new SubSupCell(*this); }
   ~SubSupCell();

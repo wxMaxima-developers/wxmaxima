@@ -35,7 +35,7 @@
 class LimitCell final : public Cell
 {
 public:
-  LimitCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  LimitCell(GroupCell *parent, Configuration **config);
   LimitCell(const LimitCell &cell);
   Cell *Copy() override { return new LimitCell(*this); }
   ~LimitCell();

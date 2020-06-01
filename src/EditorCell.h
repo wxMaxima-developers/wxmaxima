@@ -94,8 +94,7 @@ private:
   long m_oldSelectionEnd;
 public:
   //! The constructor
-  EditorCell(GroupCell *parent, Configuration **config,
-             CellPointers *cellPointers, const wxString &text = {});
+  EditorCell(GroupCell *parent, Configuration **config, const wxString &text = {});
   EditorCell(const EditorCell &cell);
   Cell *Copy() override {return new EditorCell(*this);}
   ~EditorCell();

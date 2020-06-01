@@ -37,12 +37,12 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_base(new TextCell(parent, config, cellPointers)),
-    m_under(new TextCell(parent, config, cellPointers)),
-    m_over(new TextCell(parent, config, cellPointers)),
-    m_var(new TextCell(parent, config, cellPointers))
+IntCell::IntCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_base(new TextCell(parent, config)),
+    m_under(new TextCell(parent, config)),
+    m_over(new TextCell(parent, config)),
+    m_var(new TextCell(parent, config))
 {
   m_signHeight = 35;
   m_signWidth = 18;
@@ -59,7 +59,7 @@ IntCell::IntCell(GroupCell *parent, Configuration **config, CellPointers *cellPo
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
 IntCell::IntCell(const IntCell &cell):
-    IntCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    IntCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_base)

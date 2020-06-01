@@ -2943,8 +2943,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
   wxString cellContents;
   if(group->GetInput())
     cellContents = group->GetInput()->GetValue();
-  GroupCell *newGroupCell = new GroupCell(&m_configuration, style,
-                                          &m_cellPointers);
+  GroupCell *newGroupCell = new GroupCell(&m_configuration, style);
   newGroupCell->GetInput()->SetValue(cellContents);
   GroupCell *prev = dynamic_cast<GroupCell *>(group->m_previous);
   DeleteRegion(group,group);
@@ -3097,10 +3096,7 @@ void Worksheet::OpenQuestionCaret(wxString txt)
   // If we still haven't a cell to put the answer in we now create one.
   if (!m_cellPointers.m_answerCell)
   {
-    auto *answerCell = new EditorCell(
-      group,
-      &m_configuration,
-      &m_cellPointers);
+    auto *answerCell = new EditorCell(group, &m_configuration);
     m_cellPointers.m_answerCell = answerCell;
     answerCell->SetType(MC_TYPE_INPUT);
     bool autoEvaluate = false;
@@ -3173,7 +3169,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
   }
 
   // insert a new group cell
-  GroupCell *group = new GroupCell(&m_configuration, type, &m_cellPointers, txt);
+  GroupCell *group = new GroupCell(&m_configuration, type, txt);
   // check how much to unfold for this type
   if (m_hCaretPosition != NULL)
   {
@@ -7355,7 +7351,7 @@ void Worksheet::PasteFromClipboard()
         lines_array.Add(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
-      GroupCell *contents = Format::TreeFromWXM(lines_array, &m_configuration, &m_cellPointers);
+      GroupCell *contents = Format::TreeFromWXM(lines_array, &m_configuration);
 
       // Add the result of the last operation to the worksheet.
       if (contents)
@@ -7406,7 +7402,7 @@ void Worksheet::PasteFromClipboard()
     {
       wxBitmapDataObject bitmap;
       wxTheClipboard->GetData(bitmap);
-      ImgCell *ic = new ImgCell(group, &m_configuration, &m_cellPointers, bitmap.GetBitmap());
+      ImgCell *ic = new ImgCell(group, &m_configuration, bitmap.GetBitmap());
       group->AppendOutput(ic);
     }
   }
@@ -8827,3 +8823,6 @@ wxDataFormat Worksheet::m_mathmlFormat2;
 wxDataFormat Worksheet::m_rtfFormat;
 wxDataFormat Worksheet::m_rtfFormat2;
 wxDataFormat Worksheet::m_wxmFormat;
+
+Cell::CellPointers *Cell::GetCellPointers() const
+{ return &GetWorksheet()->m_cellPointers; }

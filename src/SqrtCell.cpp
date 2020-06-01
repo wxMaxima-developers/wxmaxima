@@ -31,11 +31,11 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_innerCell(new TextCell(parent, config, cellPointers)),
-    m_open(new TextCell(parent, config, cellPointers, "sqrt(")),
-    m_close(new TextCell(parent, config, cellPointers, ")"))
+SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_innerCell(new TextCell(parent, config)),
+    m_open(new TextCell(parent, config, "sqrt(")),
+    m_close(new TextCell(parent, config, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_signSize = 50;
@@ -55,7 +55,7 @@ SqrtCell::SqrtCell(GroupCell *parent, Configuration **config, CellPointers *cell
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(const SqrtCell &cell):
-    SqrtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SqrtCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_innerCell)

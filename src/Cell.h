@@ -41,6 +41,7 @@
 #include <memory>
 #include <vector>
 
+class Worksheet;
 class GroupCell;
 
 /*! The supported types of math cells
@@ -268,7 +269,7 @@ class Cell
   };
 
 
-  Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers);
+  Cell(GroupCell *group, Configuration **config);
 
   /*! Create a copy of this cell
 
@@ -1080,10 +1081,11 @@ protected:
   virtual InnerCellIterator InnerBegin() const;
   //! Iterator to the end of the inner cell range
   virtual InnerCellIterator InnerEnd() const;
-  bool ContainsToolTip()
-    {
-      return m_containsToolTip;
-    }
+
+  bool ContainsToolTip() const { return m_containsToolTip; }
+
+  inline Worksheet *GetWorksheet() const;
+
 protected:
   bool m_containsToolTip;
   //! The height of this cell.
@@ -1122,6 +1124,8 @@ protected:
 private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old;
+
+  CellPointers *GetCellPointers() const;
 };
 
 #endif // MATHCELL_H

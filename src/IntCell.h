@@ -39,7 +39,7 @@
 class IntCell final : public Cell
 {
 public:
-  IntCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  IntCell(GroupCell *parent, Configuration **config);
   IntCell(const IntCell &cell);
   Cell *Copy() override { return new IntCell(*this); }
   ~IntCell();
