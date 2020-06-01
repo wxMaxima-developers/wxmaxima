@@ -1418,7 +1418,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     const std::string saved_lc_numeric{setlocale(LC_NUMERIC, NULL)}; // get current LC_NUMERIC locale
     setlocale(LC_NUMERIC, "C");
     str += wxString::Format(
-      "\n\n\\noindent\n%%%%%%%%%%%%%%%\n%%% INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
+      "\n\n\\noindent\n%%%%%%%%%%%%%%%%\n%%%% INPUT:\n\\begin{minipage}[t]{%fem}\\color{red}\\bfseries\n",
       (double)configuration->GetLabelWidth()/14
       ) + m_inputLabel->ToTeX() +
       wxString("\n\\end{minipage}");
@@ -1435,7 +1435,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 
   if (m_output != NULL)
   {
-    str += wxT("\n%%% OUTPUT:\n");
+    str += wxT("\n%%%% OUTPUT:\n");
     // Need to define labelcolor if this is Copy as LaTeX!
     if (imgCounter == NULL)
       str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
@@ -1496,7 +1496,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     {
       // Some invisible dummy content that keeps TeX happy if there really is
       // no output to display.
-      str += wxT("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%");
+      str += wxT("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%%");
     }
   }
   else
