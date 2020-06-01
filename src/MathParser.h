@@ -48,12 +48,12 @@ inside a wxmx file
 class MathParser
 {
 public:
-  /* The constructor
+  /*! The constructor
 
      \todo I guess we could increase the performance further by putting the 
      most-frequently-used tags to the front of the list.
    */
-  MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
+  MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator

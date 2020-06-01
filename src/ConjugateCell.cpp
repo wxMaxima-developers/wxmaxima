@@ -28,7 +28,7 @@
 
 #include "ConjugateCell.h"
 
-ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_innerCell(new TextCell(parent, config, cellPointers, wxString{})),
     m_open(new TextCell(parent, config, cellPointers, "conjugate(")),

@@ -48,7 +48,7 @@
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(parent, config, cellPointers),
     m_fileSystem(filesystem)
 {
@@ -63,7 +63,7 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_width = m_height = -1;
 }
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
     Cell(parent, config, cellPointers)
 {
   m_width = m_height = -1;
@@ -77,13 +77,13 @@ SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPoi
     ReloadTimer();
 }
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString WXUNUSED(type)):
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
     SlideShow(parent, config, cellPointers)
 {
   LoadImages(image);
 }
 
-SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove):
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, bool remove):
     SlideShow(parent, config, cellPointers)
 {
   LoadImages(image);

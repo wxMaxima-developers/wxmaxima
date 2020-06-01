@@ -29,7 +29,7 @@
 #include "AtCell.h"
 #include "TextCell.h"
 
-AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+AtCell::AtCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
   Cell(parent, config, cellPointers),
   m_baseCell (new TextCell(parent, config, cellPointers)),
   m_indexCell(new TextCell(parent, config, cellPointers))

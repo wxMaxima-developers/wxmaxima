@@ -30,7 +30,7 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+SubCell::SubCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers)
 {
 }

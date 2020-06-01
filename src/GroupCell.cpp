@@ -252,7 +252,7 @@ void GroupCell::SetCellStyle(int style)
 /*! Set the parent of this group cell
 
 */
-void GroupCell::SetGroup(Cell *parent)
+void GroupCell::SetGroup(GroupCell *parent)
 {  
   //m_group = parent;
   if (m_inputLabel != NULL)
@@ -432,7 +432,6 @@ void GroupCell::AppendOutput(Cell *cell)
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
   }
-
   else
   {
     Cell *tmp = m_lastInOutput;
@@ -1009,13 +1008,13 @@ void GroupCell::DrawBracket()
   wxDC *adc = configuration->GetAntialiassingDC();
 
   int selectionStart_px = -1;
-  if((m_cellPointers->m_selectionStart != NULL) &&
-     (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
+  if (m_cellPointers->m_selectionStart &&
+      (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
     selectionStart_px = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart)->m_currentPoint.y;
 
   int selectionEnd_px = -1;
-  if((m_cellPointers->m_selectionEnd != NULL) &&
-     (m_cellPointers->m_selectionEnd->GetType() == MC_TYPE_GROUP))
+  if (m_cellPointers->m_selectionEnd &&
+      (m_cellPointers->m_selectionEnd->GetType() == MC_TYPE_GROUP))
     selectionEnd_px = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd)->m_currentPoint.y;
   
   // Mark this GroupCell as selected if it is selected. Else clear the space we
@@ -1289,7 +1288,7 @@ wxString GroupCell::ToRTF()
         )
             )
     {
-      if (m_previous != NULL)
+      if (m_previous)
         retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
       else
         retval += wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
@@ -1298,7 +1297,7 @@ wxString GroupCell::ToRTF()
     }
     else
     {
-      if (m_previous != NULL)
+      if (m_previous)
         retval = wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       else
         retval = wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
@@ -1696,8 +1695,7 @@ void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wx
 {
   Configuration *configuration = (*m_configuration);
 
-  *first = NULL;
-  *last = NULL;
+  *first = *last = nullptr;
 
 
   if ((m_inputLabel) &&
@@ -1711,7 +1709,7 @@ void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wx
   else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);
 
-  if (*first == NULL || *last == NULL)
+  if (!*first || !*last)
   {
     *first = this;
     *last = this;
@@ -1720,15 +1718,14 @@ void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wx
 
 void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
-  *first = NULL;
-  *last = NULL;
+  *first = *last = nullptr;
 
   if (m_inputLabel->ContainsRect(rect))
     m_inputLabel->SelectRect(rect, first, last);
   else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
     m_output->SelectRect(rect, first, last);
 
-  if (*first == NULL || *last == NULL)
+  if (!*first || !*last)
   {
     *first = this;
     *last = this;
@@ -1737,8 +1734,7 @@ void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 
 void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
 {
-  *first = NULL;
-  *last = NULL;
+  *first = *last = nullptr;
 
   wxRect rect(point.x, point.y, 1, 1);
 
@@ -1752,7 +1748,6 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
   if (m_isHidden)
     return;
 
-  Cell *tmp;
   wxPoint start, end;
 
   if (one.y < two.y || (one.y == two.y && one.x < two.x))
@@ -1767,7 +1762,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
   }
 
   // Lets select a rectangle
-  tmp = m_output.get();
+  Cell *tmp = m_output.get();
   *first = *last = NULL;
 
   while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
@@ -1781,7 +1776,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
     tmp = tmp->GetNextToDraw();
   }
 
-  if (*first != NULL && *last != NULL)
+  if (*first && *last)
   {
 
     // If selection is on multiple lines, we need to correct it
@@ -1801,7 +1796,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
       while (1)
       {
         curr = curr->GetNextToDraw();
-        if (curr == NULL)
+        if (!curr)
           break;
         if (curr->GetCurrentX() <= end.x &&
             curr->GetCurrentY() - curr->GetCenterList() <= end.y)
@@ -1935,20 +1930,20 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
 
   *start = m_output.get();
 
-  while (*start != NULL && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
+  while (*start && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
     *start = (*start)->GetNextToDraw();
 
 
-  if (*start != NULL)
+  if (*start)
     *start = (*start)->GetNextToDraw();
 
   *end = *start;
 
-  while (*end != NULL &&
-         (*end)->GetNextToDraw() != NULL)
+  while (*end &&
+         (*end)->GetNextToDraw())
     *end = (*end)->GetNextToDraw();
 
-  if (*end == NULL || *start == NULL)
+  if (!*end || !*start)
     *end = *start = NULL;
 }
 
@@ -2440,7 +2435,7 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
     
     // If we are the 1st groupcell of the worksheet we handle the hcaret above this
     // cell, too.
-    if(m_previous == NULL)
+    if (!m_previous)
       rect.SetTop(rect.GetTop()-(*m_configuration)->GetGroupSkip());
     
     if(rect.GetTop() < 0)

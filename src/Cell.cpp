@@ -27,6 +27,7 @@
 */
 
 #include "Cell.h"
+#include "GroupCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
@@ -44,15 +45,9 @@ wxString Cell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-Cell::Cell(Cell *group, Configuration **config, CellPointers *cellPointers)
-#if wxUSE_ACCESSIBILITY
-  :wxAccessible(),
-#else
-   :
-#endif
+Cell::Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers) :
    m_currentPoint_Last(wxPoint(-1,-1)),
    m_group(group),
-   m_parent(group),
    m_configuration(config),
    m_cellPointers(cellPointers)
 {
@@ -153,7 +148,7 @@ void Cell::SetType(CellType type)
       break;
   }
   ResetSize();
-  if(m_group != NULL)
+  if (m_group)
     GetGroup()->ResetSize();
 }
 
@@ -189,13 +184,10 @@ void Cell::ClearCacheList()
     tmp->ClearCache();
 }
 
-void Cell::SetGroupList(Cell *group)
+void Cell::SetGroupList(GroupCell *group)
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-  {
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->SetGroup(group);
-    tmp->SetParent(this);
-  }
 }
 
 int Cell::CellsInListRecursive() const
@@ -217,7 +209,7 @@ int Cell::CellsInListRecursive() const
   return cells;
 }
 
-void Cell::SetGroup(Cell *group)
+void Cell::SetGroup(GroupCell *group)
 {
   m_group = group;
   if (group)
@@ -273,10 +265,11 @@ void Cell::AppendCell(Cell *p_next)
   LastToDraw->SetNextToDraw(p_next);
 }
 
-Cell *Cell::GetGroup()
+GroupCell *Cell::GetGroup() const
 {
-  wxASSERT_MSG(m_group != NULL, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
-  return m_group;
+  auto *group = dynamic_cast<GroupCell*>(m_group);
+  wxASSERT_MSG(group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
+  return group;
 }
 
 /***
@@ -397,16 +390,17 @@ int Cell::GetLineWidth()
  */
 void Cell::Draw(wxPoint point)
 {
+  Configuration *configuration = *m_configuration;
   if((m_height > 0) && (point.y > 0))
     SetCurrentPoint(point);
 
   // Mark all cells that contain tooltips
-  if(!m_toolTip.IsEmpty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
-     (*m_configuration)->ClipToDrawRegion() && !(*m_configuration)->GetPrinting())
+  if (!m_toolTip.empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
+      configuration->ClipToDrawRegion() && !configuration->GetPrinting())
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (Cell::InUpdateRegion(rect))
-    {    Configuration *configuration = (*m_configuration);
+    {
       if((rect.GetWidth() > 0) && rect.GetHeight() > 0)
       {
         wxDC *dc = configuration->GetDC();
@@ -419,8 +413,8 @@ void Cell::Draw(wxPoint point)
   
   // Tell the screen reader that this cell's contents might have changed.
 #if wxUSE_ACCESSIBILITY
-  if((*m_configuration)->GetWorkSheet() != NULL)
-    NotifyEvent(0, (*m_configuration)->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
+  if (configuration->GetWorkSheet())
+    NotifyEvent(0, configuration->GetWorkSheet(), wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
 }
 
@@ -1294,7 +1288,7 @@ wxAccStatus Cell::GetParent (wxAccessible **parent)
     return wxACC_FAIL;
 
   if (*parent != this)
-    return (*parent = m_parent), wxACC_OK;
+    return (*parent = m_group), wxACC_OK;
 
   if ((*m_configuration)->GetWorkSheet())
     *parent = (*m_configuration)->GetWorkSheet()->GetAccessible();

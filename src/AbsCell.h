@@ -55,7 +55,7 @@
 class AbsCell final : public Cell
 {
 public:
-  AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  AbsCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   AbsCell(const AbsCell &cell);
   Cell *Copy() override { return new AbsCell(*this); }
   ~AbsCell();

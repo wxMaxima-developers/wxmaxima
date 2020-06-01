@@ -31,7 +31,7 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+LimitCell::LimitCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_base(new TextCell(parent, config, cellPointers)),
     m_under(new TextCell(parent, config, cellPointers)),

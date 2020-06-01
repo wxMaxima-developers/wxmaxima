@@ -146,7 +146,7 @@ public:
 
   void SetCellStyle(int style);
 
-  void SetGroup(Cell *parent) override; // setting parent for all mathcells in GC
+  void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
   void SelectInner(const wxRect &rect, Cell **first, Cell **last) override;
@@ -336,7 +336,8 @@ public:
   /*! Unfold this cell
 
     \return the last cell that was unfolded.
-  */  GroupCell *Unfold();
+  */
+  GroupCell *Unfold();
 
   /*! Fold all cells
 
@@ -363,7 +364,7 @@ public:
   //!  Return this cell's section- or image number.
   void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
 
-  /* Draw this GroupCell
+  /*! Draw this GroupCell
 
      Also assigns all output cells contained in this GroupCell a y coordinate.
 

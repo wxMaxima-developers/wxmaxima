@@ -30,7 +30,7 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+ExptCell::ExptCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_baseCell(new TextCell(parent, config, cellPointers)),
     m_exptCell(new TextCell(parent, config, cellPointers)),

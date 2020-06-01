@@ -1179,7 +1179,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers, wxEmptyString));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers));
 
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
@@ -1245,7 +1245,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
     if (tmp == NULL)
     {
       if (m_worksheet->GetActiveCell())
-        tmp = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+        tmp = m_worksheet->GetActiveCell()->GetGroup();
     }
 
     if(tmp != NULL)
@@ -1299,7 +1299,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers, wxEmptyString));
+      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE, &m_worksheet->m_cellPointers));
 
   if (s.IsEmpty())
     return NULL;
@@ -1337,8 +1337,8 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       incompleteTextCell->SetValue(newVal);
       if(s.IsEmpty())
       {
-        dynamic_cast<GroupCell *>(incompleteTextCell->GetGroup())->ResetSize();
-        dynamic_cast<GroupCell *>(incompleteTextCell->GetGroup())->Recalculate();
+        incompleteTextCell->GetGroup()->ResetSize();
+        incompleteTextCell->GetGroup()->Recalculate();
         return incompleteTextCell;
       }
     }
@@ -4295,8 +4295,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       cursorPos = m_worksheet->GetHCaret();
       if ((!m_worksheet->HCaretActive()) && (cursorPos == m_worksheet->GetLastCell()))
       {
-        if (m_worksheet->GetActiveCell() != NULL)
-          cursorPos = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+        if (m_worksheet->GetActiveCell())
+          cursorPos = m_worksheet->GetActiveCell()->GetGroup();
         else
           cursorPos = m_worksheet->FirstVisibleGC();
       }
@@ -4407,7 +4407,7 @@ void wxMaxima::MenuCommand(const wxString &cmd)
 {
   m_worksheet->SetFocus();
   m_worksheet->OpenHCaret(cmd);
-  m_worksheet->AddCellToEvaluationQueue(dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup()));
+  m_worksheet->AddCellToEvaluationQueue(m_worksheet->GetActiveCell()->GetGroup());
   TriggerEvaluation();
   m_worksheet->RequestRedraw();
 }
@@ -4619,8 +4619,8 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
   if(editor == NULL)
   {
     GroupCell *group = NULL;
-    if(m_worksheet->GetSelectionStart() != NULL)
-      group = dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart()->GetGroup());
+    if(m_worksheet->GetSelectionStart())
+      group = m_worksheet->GetSelectionStart()->GetGroup();
 
     if(group != NULL)
       editor = group->GetEditable();
@@ -5593,7 +5593,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   case Worksheet::popid_popup_gnuplot:
   {
-    if(m_worksheet->m_cellPointers.m_selectionStart == NULL)
+    if (!m_worksheet->m_cellPointers.m_selectionStart)
       return;
 
     wxString gnuplotSource =
@@ -8354,7 +8354,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     if (m_worksheet->GetActiveCell())
     {
       // This "if" is pure paranoia. But - since the costs of an "if" are low...
-      GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+      GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();
       if (group->IsFoldable())
         group->Fold();
       else
@@ -8366,7 +8366,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   case Worksheet::popid_maxsizechooser:
     if(m_worksheet->m_cellPointers.m_selectionStart != NULL)
     {
-      Cell *output = dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
+      Cell *output = m_worksheet->m_cellPointers.m_selectionStart->GetGroup()->GetLabel();
       if (output == NULL)
         return;
       if(output->GetType() != MC_TYPE_IMAGE)
@@ -8393,7 +8393,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     break;
   case Worksheet::popid_unfold:
   {
-    GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+    GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();
     if (group->IsFoldable())
       group->Unfold();
     else
@@ -8481,7 +8481,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       // This "if" is pure paranoia. But - since the costs of an "if" are low...
       if (m_worksheet->GetActiveCell()->GetGroup())
-        group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+        group = m_worksheet->GetActiveCell()->GetGroup();
     }
     else if (m_worksheet->HCaretActive())
     {
@@ -8950,7 +8950,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
       editor->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering 1a question. Manually send answer to Maxima.
-    GroupCell *cell = dynamic_cast<GroupCell *>(editor->GetGroup());
+    GroupCell *cell = editor->GetGroup();
     if (m_worksheet->GCContainsCurrentQuestion(cell))
     {
       wxString answer = editor->ToString(true);
@@ -9265,9 +9265,9 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case Worksheet::popid_auto_answer:
-      if((m_worksheet->GetActiveCell() != NULL) &&
-         (dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->GetGroupType() == GC_TYPE_CODE))
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->AutoAnswer(event.IsChecked());
+      if (m_worksheet->GetActiveCell() &&
+          m_worksheet->GetActiveCell()->GetGroup()->GetGroupType() == GC_TYPE_CODE)
+        m_worksheet->GetActiveCell()->GetGroup()->AutoAnswer(event.IsChecked());
       else if((m_worksheet->GetSelectionStart() != NULL)&&
               (m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
       {
@@ -9338,7 +9338,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_code:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_CODE);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9346,7 +9346,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_comment:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_TEXT);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9360,7 +9360,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_title:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_TITLE);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9373,7 +9373,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_section:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_SECTION);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9386,7 +9386,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_subsection:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_SUBSECTION);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SUBSECTION);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9399,7 +9399,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_subsubsection:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_SUBSUBSECTION);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SUBSUBSECTION);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9407,7 +9407,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_heading5:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_HEADING5);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9415,7 +9415,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_heading6:
       if (m_worksheet->GetActiveCell())
       {
-        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_HEADING6);
+        m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -9641,7 +9641,7 @@ void wxMaxima::HistoryDClick(wxCommandEvent &event)
 
 void wxMaxima::TableOfContentsSelection(wxListEvent &event)
 {
-  GroupCell *selection = dynamic_cast<GroupCell *>(m_worksheet->m_tableOfContents->GetCell(event.GetIndex())->GetGroup());
+  GroupCell *selection = m_worksheet->m_tableOfContents->GetCell(event.GetIndex())->GetGroup();
 
   // We only update the table of contents when there is time => no guarantee that the
   // cell that was clicked at actually still is part of the tree.
@@ -9838,7 +9838,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
 
   if(m_worksheet->GetActiveCell())
   {
-    GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
+    GroupCell *group = m_worksheet->GetActiveCell()->GetGroup();
     switch(group->GetGroupType())
     {
     case GC_TYPE_CODE:

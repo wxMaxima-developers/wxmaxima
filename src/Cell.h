@@ -20,7 +20,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-/*!\file
+/*! \file
   
   The definition of the base class of all cells the worksheet consists of.
  */
@@ -40,6 +40,8 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+
+class GroupCell;
 
 /*! The supported types of math cells
  */
@@ -112,7 +114,7 @@ class Cell
 
   public:
 
-    /*! The storage for pointers to cells.
+  /*! The storage for pointers to cells.
     
     If a cell is deleted it is necessary to remove all pointers that might
     allow to access the now-defunct cell. These pointers are kept in this 
@@ -121,29 +123,24 @@ class Cell
   class CellPointers
   {
   public:
-    void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
-    Cell *CellToScrollTo(){return m_cellToScrollTo;}
+    void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
+    Cell *CellToScrollTo() { return m_cellToScrollTo; }
     explicit CellPointers(wxScrolledCanvas *worksheet);
     /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
       
       \param resortToLast true = if we already have set the cell maxima works on to NULL
       use the last cell maxima was known to work on.
     */
-    Cell *GetWorkingGroup(bool resortToLast = false)
-      {
-        if ((m_workingGroup != NULL) || (!resortToLast))
-          return m_workingGroup;
-        else
-          return m_lastWorkingGroup;
-      }
+    GroupCell *GetWorkingGroup(bool resortToLast = false) const
+    { return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
 
     //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-    void SetWorkingGroup(Cell *group)
-      {
-        if(group != NULL)
-          m_lastWorkingGroup = group;
-        m_workingGroup = group;
-      }
+    void SetWorkingGroup(GroupCell *group)
+    {
+      if (group)
+        m_lastWorkingGroup = group;
+      m_workingGroup = group;
+    }
     
     void WXMXResetCounter()
       { m_wxmxImgCounter = 0; }
@@ -167,9 +164,9 @@ class Cell
       //! Mark this GroupCell as containing errors
       void Add(Cell * cell){m_errors.push_back(cell);}
       //! The first GroupCell with error that is still in the list
-      Cell *FirstError() const {return m_errors.empty() ? NULL : m_errors.front();}
+      Cell *FirstError() const {return m_errors.empty() ? nullptr : m_errors.front();}
       //! The last GroupCell with errors in the list
-      Cell *LastError() const {return m_errors.empty() ? NULL : m_errors.back();}
+      Cell *LastError() const {return m_errors.empty() ? nullptr : m_errors.back();}
       //! Empty the list of GroupCells with errors
       void Clear(){m_errors.clear();}
     private:
@@ -186,22 +183,22 @@ class Cell
     //! The EditorCell the search was started in
     Cell *m_cellSearchStartedIn;
     //! Which cursor position incremental search has started at?
-    int m_indexSearchStartedAt;
+    int m_indexSearchStartedAt = -1;
     //! Which cell the blinking cursor is in?
     Cell *m_activeCell;
     //! The GroupCell that is under the mouse pointer 
-    Cell *m_groupCellUnderPointer;
+    GroupCell *m_groupCellUnderPointer;
     //! The EditorCell that contains the currently active question from maxima 
     Cell *m_answerCell;
     //! The last group cell maxima was working on.
-    Cell *m_lastWorkingGroup;
+    GroupCell *m_lastWorkingGroup;
     //! The textcell the text maxima is sending us was ending in.
     Cell *m_currentTextCell;
     /*! The group cell maxima is currently working on.
 
       NULL means that maxima isn't currently evaluating a cell.
     */
-    Cell *m_workingGroup;
+    GroupCell *m_workingGroup;
     /*! The currently selected string. 
 
       Since this string is defined here it is available in every editor cell
@@ -260,7 +257,7 @@ class Cell
     wxScrolledCanvas *GetWorksheet(){return m_worksheet;}
 
     //! Is scrolling to a cell scheduled?
-    bool m_scrollToCell;
+    bool m_scrollToCell = false;
   private:
     //! If m_scrollToCell = true: Which cell do we need to scroll to?
     Cell *m_cellToScrollTo;
@@ -271,7 +268,7 @@ class Cell
   };
 
 
-  Cell(Cell *group, Configuration **config, CellPointers *cellPointers);
+  Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers);
 
   /*! Create a copy of this cell
 
@@ -279,7 +276,7 @@ class Cell
     its own Copy() method.
    */
   virtual Cell *Copy() = 0;
-  
+
   /*! Scale font sizes and line widths according to the zoom factor.
 
     Is used for displaying/printing/exporting of text/maths
@@ -686,7 +683,7 @@ class Cell
   { return false; }
 
   //! Returns the group cell this cell belongs to
-  Cell *GetGroup();
+  GroupCell *GetGroup() const;
 
   //! For the bitmap export we sometimes want to know how big the result will be...
   struct SizeInMillimeters
@@ -931,27 +928,14 @@ class Cell
   virtual bool IsActive() const
   { return false; }
 
-  /*! Define which GroupCell is the parent of this cell.
-    
-    By definition every math cell is part of a group cell.
-    So this function has to be called on every math cell. Also if a
-    derived class defines a cell type that does include sub-cells 
-    (One example would be the argument of a sqrt() cell) the derived
-    class has to take care that the subCell's SetGroup is called when
-    the cell's SetGroup is called.
-   */
-  
-  virtual void SetParent(Cell *parent)
-    { m_parent = parent; }
-
   /*! Define which Cell is the GroupCell this list of cells belongs to
 
     Also automatically sets this cell as the "parent" of all cells of the list.
    */
-  void SetGroupList(Cell *group);
+  void SetGroupList(GroupCell *group);
 
   //! Define which Sell is the GroupCell this list of cells belongs to
-  virtual void SetGroup(Cell *group);
+  virtual void SetGroup(GroupCell *group);
   //! Sets the TextStyle of this cell
   virtual void SetStyle(TextStyle style)
   {
@@ -1027,14 +1011,10 @@ protected:
   wxPoint m_currentPoint_Last;
 
   /*! The GroupCell this list of cells belongs to.
-    
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
-  Cell *m_group;
-
-  //! The cell that contains the current cell
-  Cell *m_parent;
+  GroupCell *m_group;
 
   //! Does this cell begin with a forced page break?
   bool m_breakPage;

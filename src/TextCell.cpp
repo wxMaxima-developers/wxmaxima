@@ -31,10 +31,9 @@
 #include "FontCache.h"
 #include "wx/config.h"
 
-TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
-                   wxString text, TextStyle style) : Cell(parent, config, cellPointers)
+TextCell::TextCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers,
+                   const wxString &text, TextStyle style) : Cell(parent, config, cellPointers)
 {
-  m_nextToDraw = NULL;
   switch(m_textStyle = style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
@@ -347,12 +346,11 @@ void TextCell::SetValue(const wxString &text)
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
 TextCell::TextCell(const TextCell &cell):
-  Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
-  m_text(cell.m_text),
-  m_userDefinedLabel(cell.m_userDefinedLabel),
-  m_displayedText(cell.m_displayedText)
+    Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
+    m_text(cell.m_text),
+    m_userDefinedLabel(cell.m_userDefinedLabel),
+    m_displayedText(cell.m_displayedText)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
   m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
@@ -1121,7 +1119,7 @@ wxString TextCell::ToTeX()
       // We have a hidden multiplication sign
       if (
         // This multiplication sign is between 2 cells
-              ((m_previous != NULL) && (m_next != NULL)) &&
+              (m_previous && m_next) &&
               // These cells are two variable names
               ((m_previous->GetStyle() == TS_VARIABLE) && (m_next->GetStyle() == TS_VARIABLE)) &&
               // The variable name prior to this cell has no subscript
@@ -1443,7 +1441,7 @@ wxString TextCell::ToOMML()
 {
   //Text-only lines are better handled in RTF.
   if (
-          ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->HardLineBreak())) &&
+          (m_previous && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->HardLineBreak())) &&
           (HardLineBreak())
           )
     return wxEmptyString;

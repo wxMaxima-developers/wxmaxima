@@ -37,7 +37,7 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+IntCell::IntCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_base(new TextCell(parent, config, cellPointers)),
     m_under(new TextCell(parent, config, cellPointers)),

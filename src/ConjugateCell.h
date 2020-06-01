@@ -48,7 +48,7 @@
 class ConjugateCell final : public Cell
 {
 public:
-  ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
+  ConjugateCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
   ConjugateCell(const ConjugateCell &cell);
   Cell *Copy() override { return new ConjugateCell(*this); }
   ~ConjugateCell();

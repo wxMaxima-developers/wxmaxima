@@ -650,44 +650,23 @@ public:
   Configuration *m_configuration;
   //! The storage for the autocompletion feature
   AutoComplete m_autocomplete;
+
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()
-  {
-    if (m_cellPointers.m_activeCell != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell);
-    else
-      return NULL;
-  }
+  { return dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell); }
 
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart()
-  {
-    if (m_cellPointers.m_cellKeyboardSelectionStartedIn != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers.m_cellKeyboardSelectionStartedIn);
-    else
-      return NULL;
-  }
+  { return dynamic_cast<EditorCell *>(m_cellPointers.m_cellKeyboardSelectionStartedIn); }
 
   EditorCell *MouseSelectionStart()
-  {
-    if (m_cellPointers.m_cellMouseSelectionStartedIn != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers.m_cellMouseSelectionStartedIn);
-    else
-      return NULL;
-  }
+  { return dynamic_cast<EditorCell *>(m_cellPointers.m_cellMouseSelectionStartedIn); }
 
   EditorCell *SearchStart()
-  {
-    if (m_cellPointers.m_cellSearchStartedIn != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers.m_cellSearchStartedIn);
-    else
-      return NULL;
-  }
+  { return dynamic_cast<EditorCell *>(m_cellPointers.m_cellSearchStartedIn); }
 
   int IndexSearchStartedAt()
-  {
-    return m_cellPointers.m_indexSearchStartedAt;
-  }
+  { return m_cellPointers.m_indexSearchStartedAt; }
 
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
   Cell::CellPointers m_cellPointers;
@@ -973,21 +952,21 @@ public:
 
   bool CanCopy(bool fromActive = false)
   {
-    return (m_cellPointers.m_selectionStart != NULL) ||
-           (fromActive && (m_cellPointers.m_activeCell != NULL) &&
+    return m_cellPointers.m_selectionStart ||
+           (fromActive && m_cellPointers.m_activeCell &&
             dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy());
   }
 
   bool CanPaste()
   {
-    return (m_cellPointers.m_activeCell != NULL) || (m_hCaretActive);
+    return m_cellPointers.m_activeCell || m_hCaretActive;
   }
 
   bool CanCut()
   {
-    return (m_cellPointers.m_activeCell != NULL &&
+    return (m_cellPointers.m_activeCell &&
             dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy()) ||
-           (m_cellPointers.m_selectionStart != NULL && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
+           (m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
 
   //! Select the whole document
@@ -996,7 +975,7 @@ public:
   //! Is at least one entire cell selected?
   bool CellsSelected()
   {
-    return ((m_cellPointers.m_selectionStart != NULL) && (m_cellPointers.m_selectionEnd != NULL));
+    return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionEnd;
   }
 
   /*! Delete a range of cells
@@ -1048,7 +1027,7 @@ public:
   //! Does it make sense to enable the "Play" button and the slider now?
   bool CanAnimate()
   {
-    return m_cellPointers.m_selectionStart != NULL && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
+    return m_cellPointers.m_selectionStart && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
            m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
   }
 
@@ -1250,7 +1229,7 @@ public:
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast()
-  { return m_cellPointers.m_activeCell != NULL && m_cellPointers.m_activeCell->GetGroup() == m_last; }
+  { return m_cellPointers.m_activeCell && m_cellPointers.m_activeCell->GetGroup() == m_last; }
 
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()

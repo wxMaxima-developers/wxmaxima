@@ -57,12 +57,12 @@ public:
     \param cellPointers All pointers that might point to this cell and that need to
                         be set to NULL if this cell is deleted.
    */
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
+  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr<wxFileSystem> filesystem, int framerate = -1);
+  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, int framerate = -1);
   SlideShow(const SlideShow &cell);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
-  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove);
+  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &type);
+  SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, bool remove);
 
   Cell *Copy() override { return new SlideShow(*this); }
   ~SlideShow();

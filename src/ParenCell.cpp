@@ -30,7 +30,7 @@
 #include "ParenCell.h"
 #include "FontCache.h"
 
-ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) :
+ParenCell::ParenCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
     Cell(parent, config, cellPointers),
     m_innerCell(new TextCell(parent, config, cellPointers)),
     m_open(new TextCell(parent, config, cellPointers, wxT("("))),
@@ -507,8 +507,8 @@ bool ParenCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell.get());
-    wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
-    if (m_last1 != NULL)
+    wxASSERT_MSG(m_last1, _("Bug: No last cell inside a parenthesis!"));
+    if (m_last1)
       m_last1->SetNextToDraw(m_close.get());
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open.get();
