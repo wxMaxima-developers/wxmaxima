@@ -31,6 +31,7 @@
 #include "TextCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
+#include <wx/xml/xml.h>
 
 wxString Cell::GetToolTip(const wxPoint &point)
 {

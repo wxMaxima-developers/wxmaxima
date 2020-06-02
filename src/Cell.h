@@ -29,24 +29,22 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
-#include <wx/wx.h>
-#include <wx/xml/xml.h>
-#if wxUSE_ACCESSIBILITY
-#include "wx/access.h"
-#include <wx/hashmap.h>
-#include <wx/scrolwin.h>
-#endif // wxUSE_ACCESSIBILITY
 #include "Configuration.h"
 #include "TextStyle.h"
+#include <wx/defs.h>
+#if wxUSE_ACCESSIBILITY
+#include "wx/access.h"
+#endif // wxUSE_ACCESSIBILITY
 #include <algorithm>
 #include <map>
 #include <memory>
 #include <vector>
 
-class Worksheet;
 class EditorCell;
 class GroupCell;
 class TextCell;
+class Worksheet;
+class wxXmlNode;
 
 /*! The supported types of math cells
  */
