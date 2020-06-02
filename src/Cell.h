@@ -1067,7 +1067,7 @@ protected:
       {
         if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr&>(m_ptr);
         else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr&>(m_ptr);
-        else;
+        else wxASSERT(false && "Internal error in InnerCellIterator");
       }
       return *this;
     }
