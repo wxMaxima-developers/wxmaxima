@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -38,10 +39,14 @@
 #include "Configuration.h"
 #include "TextStyle.h"
 #include <algorithm>
+#include <map>
 #include <memory>
 #include <vector>
 
+class Worksheet;
+class EditorCell;
 class GroupCell;
+class TextCell;
 
 /*! The supported types of math cells
  */
@@ -142,13 +147,13 @@ class Cell
       m_workingGroup = group;
     }
     
-    void WXMXResetCounter()
-      { m_wxmxImgCounter = 0; }
+    void WXMXResetCounter() { m_wxmxImgCounter = 0; }
     
     wxString WXMXGetNewFileName();
     
-    int WXMXImageCount() const
-      { return m_wxmxImgCounter; }
+    int WXMXImageCount() const { return m_wxmxImgCounter; }
+
+    bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
 
     //! A list of editor cells containing error messages.
     class ErrorList
@@ -158,42 +163,42 @@ class Cell
       //! Is the list of errors empty?
       bool Empty() const {return m_errors.empty();}
       //! Remove one specific GroupCell from the list of errors
-      void Remove(Cell * cell){m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());}
+      void Remove(GroupCell * cell){m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());}
       //! Does the list of GroupCell with errors contain cell?
-      bool Contains(Cell * cell) const {return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();}
+      bool Contains(GroupCell * cell) const {return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();}
       //! Mark this GroupCell as containing errors
-      void Add(Cell * cell){m_errors.push_back(cell);}
+      void Add(GroupCell * cell){m_errors.push_back(cell);}
       //! The first GroupCell with error that is still in the list
-      Cell *FirstError() const {return m_errors.empty() ? nullptr : m_errors.front();}
+      GroupCell *FirstError() const {return m_errors.empty() ? nullptr : m_errors.front();}
       //! The last GroupCell with errors in the list
-      Cell *LastError() const {return m_errors.empty() ? nullptr : m_errors.back();}
+      GroupCell *LastError() const {return m_errors.empty() ? nullptr : m_errors.back();}
       //! Empty the list of GroupCells with errors
       void Clear(){m_errors.clear();}
     private:
       //! A list of GroupCells that contain errors
-      std::vector<Cell *> m_errors;
+      std::vector<GroupCell *> m_errors;
     };
 
     //! The list of cells maxima has complained about errors in
     ErrorList m_errorList;
     //! The EditorCell the mouse selection has started in
-    Cell *m_cellMouseSelectionStartedIn;
+    EditorCell *m_cellMouseSelectionStartedIn;
     //! The EditorCell the keyboard selection has started in
-    Cell *m_cellKeyboardSelectionStartedIn;
+    EditorCell *m_cellKeyboardSelectionStartedIn;
     //! The EditorCell the search was started in
-    Cell *m_cellSearchStartedIn;
+    EditorCell *m_cellSearchStartedIn;
     //! Which cursor position incremental search has started at?
     int m_indexSearchStartedAt = -1;
-    //! Which cell the blinking cursor is in?
-    Cell *m_activeCell;
+    //! Which EditCell the blinking cursor is in?
+    EditorCell *m_activeCell;
     //! The GroupCell that is under the mouse pointer 
     GroupCell *m_groupCellUnderPointer;
     //! The EditorCell that contains the currently active question from maxima 
-    Cell *m_answerCell;
+    EditorCell *m_answerCell;
     //! The last group cell maxima was working on.
     GroupCell *m_lastWorkingGroup;
     //! The textcell the text maxima is sending us was ending in.
-    Cell *m_currentTextCell;
+    TextCell *m_currentTextCell;
     /*! The group cell maxima is currently working on.
 
       NULL means that maxima isn't currently evaluating a cell.
@@ -208,18 +213,18 @@ class Cell
 
     //! Forget where the search was started
     void ResetSearchStart()
-      {
-        m_cellSearchStartedIn = NULL;
-        m_indexSearchStartedAt = -1;
-      }
+    {
+      m_cellSearchStartedIn = {};
+      m_indexSearchStartedAt = -1;
+    }
 
     //! Forget where the mouse selection was started
     void ResetMouseSelectionStart()
-      { m_cellMouseSelectionStartedIn = NULL; }
+    { m_cellMouseSelectionStartedIn = {}; }
 
     //! Forget where the keyboard selection was started
     void ResetKeyboardSelectionStart()
-      { m_cellKeyboardSelectionStartedIn = NULL; }
+    { m_cellKeyboardSelectionStartedIn = {}; }
   
     /*! The first cell of the currently selected range of Cells.
     
@@ -251,10 +256,9 @@ class Cell
       See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
     */
     Cell *m_selectionEnd;
-    WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
-    SlideShowTimersList m_slideShowTimers;
+    std::map<Cell *, int> m_slideShowTimers;
 
-    wxScrolledCanvas *GetWorksheet(){return m_worksheet;}
+    wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
     //! Is scrolling to a cell scheduled?
     bool m_scrollToCell = false;
@@ -268,7 +272,7 @@ class Cell
   };
 
 
-  Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers);
+  Cell(GroupCell *group, Configuration **config);
 
   /*! Create a copy of this cell
 
@@ -1080,10 +1084,11 @@ protected:
   virtual InnerCellIterator InnerBegin() const;
   //! Iterator to the end of the inner cell range
   virtual InnerCellIterator InnerEnd() const;
-  bool ContainsToolTip()
-    {
-      return m_containsToolTip;
-    }
+
+  bool ContainsToolTip() const { return m_containsToolTip; }
+
+  inline Worksheet *GetWorksheet() const;
+
 protected:
   bool m_containsToolTip;
   //! The height of this cell.
@@ -1122,6 +1127,8 @@ protected:
 private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old;
+
+  CellPointers *GetCellPointers() const;
 };
 
 #endif // MATHCELL_H

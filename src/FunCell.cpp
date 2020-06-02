@@ -29,10 +29,10 @@
 #include "FunCell.h"
 #include "TextCell.h"
 
-FunCell::FunCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_nameCell(new TextCell(parent, config, cellPointers)),
-  m_argCell(new TextCell(parent, config, cellPointers))
+FunCell::FunCell(GroupCell *parent, Configuration **config) :
+  Cell(parent, config),
+  m_nameCell(new TextCell(parent, config)),
+  m_argCell(new TextCell(parent, config))
 {
   m_nameCell_Last = m_nameCell.get();
   if(m_nameCell_Last)
@@ -46,7 +46,7 @@ FunCell::FunCell(GroupCell *parent, Configuration **config, CellPointers *cellPo
 }
 
 FunCell::FunCell(const FunCell &cell):
- FunCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+ FunCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_nameCell)

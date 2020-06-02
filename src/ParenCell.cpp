@@ -30,11 +30,11 @@
 #include "ParenCell.h"
 #include "FontCache.h"
 
-ParenCell::ParenCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_innerCell(new TextCell(parent, config, cellPointers)),
-    m_open(new TextCell(parent, config, cellPointers, wxT("("))),
-    m_close(new TextCell(parent, config, cellPointers, wxT(")")))
+ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_innerCell(new TextCell(parent, config)),
+    m_open(new TextCell(parent, config, wxT("("))),
+    m_close(new TextCell(parent, config, wxT(")")))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
@@ -68,7 +68,7 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config, CellPointers *ce
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
 ParenCell::ParenCell(const ParenCell &cell):
-    ParenCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    ParenCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if (cell.m_innerCell)

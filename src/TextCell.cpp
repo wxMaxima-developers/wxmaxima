@@ -32,8 +32,8 @@
 #include "FontCache.h"
 #include "wx/config.h"
 
-TextCell::TextCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers,
-                   const wxString &text, TextStyle style) : Cell(parent, config, cellPointers)
+TextCell::TextCell(GroupCell *parent, Configuration **config,
+                   const wxString &text, TextStyle style) : Cell(parent, config)
 {
   switch(m_textStyle = style)
   {
@@ -347,7 +347,7 @@ void TextCell::SetValue(const wxString &text)
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
 TextCell::TextCell(const TextCell &cell):
-    Cell(cell.m_group, cell.m_configuration, cell.m_cellPointers),
+    Cell(cell.m_group, cell.m_configuration),
     m_text(cell.m_text),
     m_userDefinedLabel(cell.m_userDefinedLabel),
     m_displayedText(cell.m_displayedText)

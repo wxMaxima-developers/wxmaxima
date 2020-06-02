@@ -29,8 +29,8 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers)
+MatrCell::MatrCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config)
 {
   m_matWidth = 0;
   m_matHeight = 0;
@@ -41,7 +41,7 @@ MatrCell::MatrCell(GroupCell *parent, Configuration **config, CellPointers *cell
 }
 
 MatrCell::MatrCell(const MatrCell &cell):
-    MatrCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    MatrCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;

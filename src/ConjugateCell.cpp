@@ -28,11 +28,11 @@
 
 #include "ConjugateCell.h"
 
-ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_innerCell(new TextCell(parent, config, cellPointers, wxString{})),
-    m_open(new TextCell(parent, config, cellPointers, "conjugate(")),
-    m_close(new TextCell(parent, config, cellPointers, ")"))
+ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_innerCell(new TextCell(parent, config, wxString{})),
+    m_open(new TextCell(parent, config, "conjugate(")),
+    m_close(new TextCell(parent, config, ")"))
 {
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
@@ -41,7 +41,7 @@ ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config, CellPoin
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
 ConjugateCell::ConjugateCell(const ConjugateCell &cell):
- ConjugateCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+ ConjugateCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if (cell.m_innerCell)

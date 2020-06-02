@@ -32,11 +32,11 @@
 #include "TextCell.h"
 #include "FontCache.h"
 
-SumCell::SumCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_under(new TextCell(parent, config, cellPointers)),
-    m_over(new TextCell(parent, config, cellPointers)),
-    m_paren(new ParenCell(parent, config, cellPointers))
+SumCell::SumCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_under(new TextCell(parent, config)),
+    m_over(new TextCell(parent, config)),
+    m_paren(new ParenCell(parent, config))
 {
   wxASSERT(Base()); // m_paren constructs its inner cell by default
   m_signHeight = 50;
@@ -50,7 +50,7 @@ SumCell::SumCell(GroupCell *parent, Configuration **config, CellPointers *cellPo
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWCenter
 SumCell::SumCell(const SumCell &cell) :
-    SumCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    SumCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if (cell.Base())
@@ -104,7 +104,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_signWCenter = m_signWidth / 2.0;
   m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (!m_over)
-    m_over.reset(new TextCell(m_group, m_configuration, m_cellPointers));
+    m_over.reset(new TextCell(m_group, m_configuration));
   m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (false)

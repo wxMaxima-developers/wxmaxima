@@ -30,13 +30,13 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-    Cell(parent, config, cellPointers),
-    m_baseCell(new TextCell(parent, config, cellPointers)),
-    m_exptCell(new TextCell(parent, config, cellPointers)),
-    m_exp(new TextCell(parent, config, cellPointers, "^")),
-    m_open(new TextCell(parent, config, cellPointers, "(")),
-    m_close(new TextCell(parent, config, cellPointers, ")"))
+ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_baseCell(new TextCell(parent, config)),
+    m_exptCell(new TextCell(parent, config)),
+    m_exp(new TextCell(parent, config, "^")),
+    m_open(new TextCell(parent, config, "(")),
+    m_close(new TextCell(parent, config, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
@@ -49,7 +49,7 @@ ExptCell::ExptCell(GroupCell *parent, Configuration **config, CellPointers *cell
 }
 
 ExptCell::ExptCell(const ExptCell &cell):
-    ExptCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    ExptCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_baseCell)

@@ -37,9 +37,8 @@
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
-EditorCell::EditorCell(GroupCell *parent, Configuration **config,
-                       CellPointers *cellPointers, const wxString &text) :
-    Cell(parent, config, cellPointers),
+EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString &text) :
+    Cell(parent, config),
     m_text(text),
     m_fontStyle(wxFONTSTYLE_NORMAL),
     m_fontWeight(wxFONTWEIGHT_NORMAL)
@@ -271,7 +270,7 @@ wxString EditorCell::PrependNBSP(wxString input)
 // cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_fontName
 // cppcheck-suppress uninitMemberVar symbolName=EditorCell::m_tokens
 EditorCell::EditorCell(const EditorCell &cell):
-  EditorCell(cell.m_group, cell.m_configuration, cell.m_cellPointers, cell.m_text)
+  EditorCell(cell.m_group, cell.m_configuration, cell.m_text)
 {
   m_nextToDraw = NULL;
   CopyCommonData(cell);
@@ -2599,7 +2598,7 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) const
 
 void EditorCell::DeactivateCursor()
 {
-  auto *editor = dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell);
+  auto *editor = m_cellPointers->m_activeCell;
   if (editor)
   {
     editor->ClearSelection();

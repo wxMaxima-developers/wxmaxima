@@ -48,8 +48,8 @@
 // filesystem cannot be passed by const reference as we want to keep the
 // pointer to the file system alive in a background task
 // cppcheck-suppress performance symbolName=filesystem
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
-    Cell(parent, config, cellPointers),
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
+    Cell(parent, config),
     m_fileSystem(filesystem)
 {
   m_animationRunning = true;
@@ -63,8 +63,8 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *ce
   m_width = m_height = -1;
 }
 
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, int framerate) :
-    Cell(parent, config, cellPointers)
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
+    Cell(parent, config)
 {
   m_width = m_height = -1;
   m_animationRunning = true;
@@ -77,14 +77,14 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *ce
     ReloadTimer();
 }
 
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
-    SlideShow(parent, config, cellPointers)
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
+    SlideShow(parent, config)
 {
   LoadImages(image);
 }
 
-SlideShow::SlideShow(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, bool remove):
-    SlideShow(parent, config, cellPointers)
+SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove):
+    SlideShow(parent, config)
 {
   LoadImages(image);
   if (remove)
@@ -222,7 +222,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 }
 
 SlideShow::SlideShow(const SlideShow &cell):
-  SlideShow(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+  SlideShow(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   AnimationRunning(false);

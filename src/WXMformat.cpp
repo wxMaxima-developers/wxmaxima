@@ -214,8 +214,7 @@ wxString TreeToWXM(GroupCell *cell, bool wxm)
   return retval;
 }
 
-GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
-                       Configuration **config, Cell::CellPointers *cellPointers)
+GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
 {
   auto wxmLine = wxmLines.begin();
   auto const end = wxmLines.end();
@@ -278,14 +277,14 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
     case WXM_COMMENT:
     case WXM_INPUT:
       line = getLinesUntil(Headers.GetEnd(headerId));
-      cell = new GroupCell(config, GroupType(headerId), cellPointers, line);
+      cell = new GroupCell(config, GroupType(headerId), line);
       hideCell(cell);
       break;
 
       // Read an image caption
     case WXM_CAPTION:
       line = getLinesUntil(Headers.GetEnd(headerId));
-      cell = new GroupCell(config, GroupType(headerId), cellPointers);
+      cell = new GroupCell(config, GroupType(headerId));
       cell->GetEditable()->SetValue(line);
       hideCell(cell);
       break;
@@ -298,7 +297,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
         auto ln = getLinesUntil(Headers.GetEnd(headerId));
         if (last && last->GetGroupType() == GC_TYPE_IMAGE)
         last->SetOutput(
-            new ImgCell(NULL, config, cellPointers, wxBase64Decode(ln), imgtype));
+            new ImgCell(NULL, config, wxBase64Decode(ln), imgtype));
       }
       break;
 
@@ -323,7 +322,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
 
       // Read a page break tag
     case WXM_PAGEBREAK:
-      cell = new GroupCell(config, GC_TYPE_PAGEBREAK, cellPointers);
+      cell = new GroupCell(config, GC_TYPE_PAGEBREAK);
       break;
 
       // Read a folded tree and build it
@@ -334,7 +333,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
       while (wxmLine != end && *wxmLine != endHeader)
         hiddenTree.Add(*wxmLine ++);
 
-      last->HideTree(TreeFromWXM(hiddenTree, config, cellPointers));
+      last->HideTree(TreeFromWXM(hiddenTree, config));
     }
     break;
 
@@ -362,8 +361,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines,
   return tree;
 }
 
-GroupCell *ParseWXMFile(wxTextBuffer &text,
-                        Configuration **config, Cell::CellPointers *cellPointers)
+GroupCell *ParseWXMFile(wxTextBuffer &text, Configuration **config)
 {
   wxArrayString wxmLines;
   for (auto line = text.GetFirstLine(); ; line = text.GetNextLine())
@@ -373,12 +371,11 @@ GroupCell *ParseWXMFile(wxTextBuffer &text,
       break;
   }
 
-  GroupCell *tree = Format::TreeFromWXM(wxmLines, config, cellPointers);
+  GroupCell *tree = Format::TreeFromWXM(wxmLines, config);
   return tree;
 }
 
-GroupCell *ParseMACContents(const wxString &macContents,
-                            Configuration **config, Cell::CellPointers *cellPointers)
+GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
 {
   GroupCell *tree = {}, *last = {};
   auto const appendCell = [&last, &tree](GroupCell *cell)
@@ -475,7 +472,7 @@ GroupCell *ParseMACContents(const wxString &macContents,
 
           // Interpret this array of lines as wxm code.
           GroupCell *cell;
-          appendCell((cell = TreeFromWXM(commentLines, config, cellPointers)));
+          appendCell((cell = TreeFromWXM(commentLines, config)));
         }
         else
         {
@@ -490,7 +487,7 @@ GroupCell *ParseMACContents(const wxString &macContents,
             line.erase(0, 2);
 
           GroupCell *cell;
-          appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, cellPointers, line)));
+          appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, line)));
         }
         line.clear();
       }
@@ -518,7 +515,7 @@ GroupCell *ParseMACContents(const wxString &macContents,
         line.Trim(true);
         line.Trim(false);
         GroupCell *cell;
-        appendCell((cell = new GroupCell(config, GC_TYPE_CODE, cellPointers, line)));
+        appendCell((cell = new GroupCell(config, GC_TYPE_CODE, line)));
         line.clear();
       }
       s.lastChar = c;
@@ -530,15 +527,14 @@ GroupCell *ParseMACContents(const wxString &macContents,
   if (!line.empty())
   {
     GroupCell *cell;
-    appendCell((cell = new GroupCell(config, GC_TYPE_CODE, cellPointers, line)));
+    appendCell((cell = new GroupCell(config, GC_TYPE_CODE, line)));
     appendCell(last);
   }
 
   return tree;
 }
 
-GroupCell *ParseMACFile(wxTextBuffer &text, bool xMaximaFile,
-                        Configuration **config, Cell::CellPointers *cellPointers)
+GroupCell *ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration **config)
 {
   bool input = true;
   wxString macContents;
@@ -569,7 +565,7 @@ GroupCell *ParseMACFile(wxTextBuffer &text, bool xMaximaFile,
       break;
   }
 
-  GroupCell *tree = Format::ParseMACContents(macContents, config, cellPointers);
+  GroupCell *tree = Format::ParseMACContents(macContents, config);
   return tree;
 }
 

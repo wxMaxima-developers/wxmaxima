@@ -40,7 +40,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellpointers) : Cell(parent, config, cellpointers)
+ImgCell::ImgCell(GroupCell *parent, Configuration **config) : Cell(parent, config)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -48,8 +48,8 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellpo
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxMemoryBuffer &image, const wxString &type) :
-    Cell(parent, config, cellPointers),
+ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
+    Cell(parent, config),
     m_image(new Image(m_configuration, image, type))
 {
   m_type = MC_TYPE_IMAGE;
@@ -58,8 +58,8 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellPo
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap) :
-    Cell(parent, config, cellPointers),
+ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap) :
+    Cell(parent, config),
     m_image(new Image(m_configuration, bitmap))
 {
   m_type = MC_TYPE_IMAGE;
@@ -71,8 +71,8 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellPo
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
-  : Cell(parent, config, cellPointers)
+ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
+  : Cell(parent, config)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -95,7 +95,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 }
 
 ImgCell::ImgCell(const ImgCell &cell):
-    ImgCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+    ImgCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;

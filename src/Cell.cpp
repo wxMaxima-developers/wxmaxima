@@ -28,6 +28,7 @@
 
 #include "Cell.h"
 #include "GroupCell.h"
+#include "TextCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
@@ -45,11 +46,11 @@ wxString Cell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-Cell::Cell(GroupCell *group, Configuration **config, CellPointers *cellPointers) :
-   m_currentPoint_Last(wxPoint(-1,-1)),
-   m_group(group),
-   m_configuration(config),
-   m_cellPointers(cellPointers)
+Cell::Cell(GroupCell *group, Configuration **config) :
+    m_currentPoint_Last(wxPoint(-1,-1)),
+    m_group(group),
+    m_configuration(config),
+    m_cellPointers(GetCellPointers())
 {
   m_containsToolTip = false;
   m_suppressTooltipMarker = false;
@@ -269,7 +270,7 @@ void Cell::AppendCell(Cell *p_next)
 
 GroupCell *Cell::GetGroup() const
 {
-  auto *group = dynamic_cast<GroupCell*>(m_group);
+  auto *group = m_group;
   wxASSERT_MSG(group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return group;
 }

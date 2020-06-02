@@ -814,7 +814,7 @@ public:
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
-  void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
+  inline void SetWorkSheet(wxWindow *workSheet);
 
   long DefaultPort() const {return m_defaultPort;}
   void DefaultPort(long port){wxConfig::Get()->Write("defaultPort",m_defaultPort = port);}

@@ -67,7 +67,7 @@ Items where a list of groupcells can be folded include
 class GroupCell final : public Cell
 {
 public:
-  GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString = {});
+  GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
   Cell *Copy() override { return new GroupCell(*this); }
   ~GroupCell();
@@ -124,7 +124,7 @@ public:
     this pointer.
    */
   GroupCell *GetLastWorkingGroup() const
-  { return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup); }
+  { return m_cellPointers->m_lastWorkingGroup; }
 
   /*! Marks the cell that is under the mouse pointer.
 
@@ -207,7 +207,10 @@ public:
 
   void AppendInput(Cell *cell);
 
-  //! Get the next cell in the list.
+  //! Get the previous GroupCell in the list
+  GroupCell *GetPrevious() const { return dynamic_cast<GroupCell*>(m_previous); }
+
+  //! Get the next GroupCell in the list.
   GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(m_next); }
 
   static wxString TexEscapeOutputCell(wxString Input);

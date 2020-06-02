@@ -28,7 +28,7 @@
 class AtCell final : public Cell
 {
 public:
-  AtCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers);
+  AtCell(GroupCell *parent, Configuration **config);
   AtCell(const AtCell &cell);
   Cell *Copy() override { return new AtCell(*this); }
   ~AtCell();

@@ -39,8 +39,8 @@
 #include "BitmapOut.h"
 #include "list"
 
-GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, const wxString &initString) :
-    Cell(this, config, cellPointers)
+GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &initString) :
+    Cell(this, config)
 {
   m_numberedAnswersCount = 0;
   m_autoAnswer = false;
@@ -65,9 +65,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel.reset(new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL));
+      m_inputLabel.reset(new TextCell(this, m_configuration, EMPTY_INPUT_LABEL));
     else
-      m_inputLabel.reset(new TextCell(this, m_configuration, m_cellPointers, wxT("")));
+      m_inputLabel.reset(new TextCell(this, m_configuration, wxT("")));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -77,55 +77,55 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   switch (groupType)
   {
     case GC_TYPE_CODE:
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_INPUT);
       AppendInput(editor);
       break;
     case GC_TYPE_TEXT:
       m_inputLabel->SetType(MC_TYPE_TEXT);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_TEXT);
       AppendInput(editor);
       break;
     case GC_TYPE_TITLE:
       m_inputLabel->SetType(MC_TYPE_TITLE);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_TITLE);
       AppendInput(editor);
       break;
     case GC_TYPE_SECTION:
       m_inputLabel->SetType(MC_TYPE_SECTION);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_SECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSECTION:
       m_inputLabel->SetType(MC_TYPE_SUBSECTION);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_SUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSUBSECTION:
       m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_SUBSUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_HEADING5:
       m_inputLabel->SetType(MC_TYPE_HEADING5);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_HEADING5);
       AppendInput(editor);
       break;
     case GC_TYPE_HEADING6:
       m_inputLabel->SetType(MC_TYPE_HEADING6);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_HEADING6);
       AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
       m_inputLabel->SetType(MC_TYPE_TEXT);
-      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor = new EditorCell(this, m_configuration);
       editor->SetType(MC_TYPE_TEXT);
       AppendInput(editor);
       break;
@@ -143,9 +143,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
     std::shared_ptr <wxFileSystem> noFS;
     Cell *ic;
     if (wxImage::GetImageCount(initString) < 2)
-      ic = new ImgCell(this, m_configuration, m_cellPointers, initString, noFS, false);
+      ic = new ImgCell(this, m_configuration, initString, noFS, false);
     else
-      ic = new SlideShow(this, m_configuration, m_cellPointers, initString, false);
+      ic = new SlideShow(this, m_configuration, initString, false);
     GroupCell::AppendOutput(ic);
   }
 
@@ -154,7 +154,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 }
 
 GroupCell::GroupCell(const GroupCell &cell):
-    GroupCell(cell.m_configuration, cell.m_groupType, cell.m_cellPointers)
+    GroupCell(cell.m_configuration, cell.m_groupType)
 {
   CopyCommonData(cell);
   if (cell.m_inputLabel)
@@ -674,10 +674,10 @@ void GroupCell::RecalculateHeightInput()
   }
   else
   {
-    if(dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y > 0)
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
-        (*m_configuration)->GetGroupSkip();
+    if (GetPrevious()->m_currentPoint.y > 0)
+      m_currentPoint.y = GetPrevious()->m_currentPoint.y +
+                         GetPrevious()->GetMaxDrop() + GetCenterList() +
+                         (*m_configuration)->GetGroupSkip();
   }
   
   m_outputRect.x = m_currentPoint.x;
@@ -828,12 +828,12 @@ GroupCell *GroupCell::UpdateYPosition()
   {
     m_currentPoint.x = configuration->GetIndent();
     wxASSERT(m_previous->GetCurrentPoint().y > 0);
-    if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->GetCurrentPoint().y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetCenterList() +
-        configuration->GetGroupSkip();
+    if (GetPrevious()->m_height > 0)
+      m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
+                         GetPrevious()->GetMaxDrop() + GetCenterList() +
+                         configuration->GetGroupSkip();
     else
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y;
+      m_currentPoint.y = GetPrevious()->m_currentPoint.y;
   }
   return GetNext();
 }
@@ -2137,12 +2137,12 @@ GroupCell *GroupCell::Fold()
     return NULL;
   if (m_next == NULL)
     return NULL;
-  int nextgct = dynamic_cast<GroupCell *>(m_next)->GetGroupType(); // groupType of the next cell
+  int nextgct = GetNext()->GetGroupType(); // groupType of the next cell
   if ((m_groupType == nextgct) || IsLesserGCType(nextgct))
     return NULL; // if the next gc shouldn't be folded, exit
 
   // now there is at least one cell to fold (at least m_next)
-  GroupCell *end = dynamic_cast<GroupCell *>(m_next);
+  GroupCell *end = GetNext();
   GroupCell *start = end; // first to fold
 
   while (end != NULL)
@@ -2189,15 +2189,15 @@ GroupCell *GroupCell::Unfold()
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
-  Cell *next = m_next;
+  GroupCell *next = GetNext();
 
   // sew together this cell with m_hiddenTree
   m_next = m_nextToDraw = m_hiddenTree;
   m_hiddenTree->m_previous = this;
 
-  Cell *tmp = m_hiddenTree;
-  while (tmp->m_next)
-    tmp = tmp->m_next;
+  GroupCell *tmp = m_hiddenTree;
+  while (tmp->GetNext())
+    tmp = tmp->GetNext();
   // tmp holds the last element of m_hiddenTree
   tmp->m_next = next;
   tmp->SetNextToDraw(next);
@@ -2206,7 +2206,7 @@ GroupCell *GroupCell::Unfold()
 
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
   m_hiddenTree = NULL;
-  return dynamic_cast<GroupCell *>(tmp);
+  return tmp;
 }
 
 GroupCell *GroupCell::FoldAll()

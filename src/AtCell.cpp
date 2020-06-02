@@ -29,15 +29,15 @@
 #include "AtCell.h"
 #include "TextCell.h"
 
-AtCell::AtCell(GroupCell *parent, Configuration **config, CellPointers *cellPointers) :
-  Cell(parent, config, cellPointers),
-  m_baseCell (new TextCell(parent, config, cellPointers)),
-  m_indexCell(new TextCell(parent, config, cellPointers))
+AtCell::AtCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_baseCell (new TextCell(parent, config)),
+    m_indexCell(new TextCell(parent, config))
 {
 }
 
 AtCell::AtCell(const AtCell &cell):
- AtCell(cell.m_group, cell.m_configuration, cell.m_cellPointers)
+ AtCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
   if(cell.m_baseCell)

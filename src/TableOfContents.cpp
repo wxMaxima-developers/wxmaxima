@@ -74,7 +74,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
   long selection = m_lastSelection;
   if (IsShown())
   {
-    GroupCell *cell = dynamic_cast<GroupCell *>(tree);
+    GroupCell *cell = tree;
     m_structure.clear();
 
     // Get the current list of tokens that should be in the Table Of Contents.
@@ -147,7 +147,7 @@ void TableOfContents::UpdateDisplay()
       curr.Trim(false);
     }
     else
-      switch (dynamic_cast<GroupCell *>(m_structure[i])->GetGroupType())
+      switch (m_structure[i]->GetGroupType())
       {
       case GC_TYPE_TITLE:
         break;
@@ -229,7 +229,7 @@ GroupCell *TableOfContents::GetCell(int index)
       curr.Trim(false);
     }
     else
-      switch (dynamic_cast<GroupCell *>(m_structure[i])->GetGroupType())
+      switch (m_structure[i]->GetGroupType())
       {
       case GC_TYPE_TITLE:
         break;
