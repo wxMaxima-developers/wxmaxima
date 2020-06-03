@@ -38,7 +38,6 @@ public:
   LimitCell(GroupCell *parent, Configuration **config);
   LimitCell(const LimitCell &cell);
   Cell *Copy() override { return new LimitCell(*this); }
-  ~LimitCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -73,7 +72,7 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_base;
@@ -82,9 +81,9 @@ private:
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_comma;
   std::unique_ptr<Cell> m_close;
-  Cell *m_name_last = {};
-  Cell *m_base_last = {};
-  Cell *m_under_last = {};
+  CellPtr<Cell> m_name_last;
+  CellPtr<Cell> m_base_last;
+  CellPtr<Cell> m_under_last;
 };
 
 #endif // LIMITCELL_H

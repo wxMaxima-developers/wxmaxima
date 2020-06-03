@@ -48,11 +48,6 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-ConjugateCell::~ConjugateCell()
-{
-  MarkAsDeleted();
-}
-
 void ConjugateCell::SetInner(Cell *inner)
 {
   if (!inner)

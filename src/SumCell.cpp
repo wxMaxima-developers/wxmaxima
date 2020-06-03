@@ -62,11 +62,6 @@ SumCell::SumCell(const SumCell &cell) :
   m_sumStyle = cell.m_sumStyle;
 }
 
-SumCell::~SumCell()
-{
-  MarkAsDeleted();
-}
-
 void SumCell::SetOver(Cell *over)
 {
   if (!over)

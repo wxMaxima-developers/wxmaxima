@@ -48,11 +48,6 @@ DiffCell::DiffCell(const DiffCell &cell):
     SetBase(cell.m_baseCell->CopyList());
 }
 
-DiffCell::~DiffCell()
-{
-  MarkAsDeleted();
-}
-
 void DiffCell::SetDiff(Cell *diff)
 {
   if (!diff)

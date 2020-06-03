@@ -50,11 +50,6 @@ AbsCell::AbsCell(const AbsCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-AbsCell::~AbsCell()
-{
-  MarkAsDeleted();
-}
-
 void AbsCell::SetInner(Cell *inner)
 {
   if (!inner)

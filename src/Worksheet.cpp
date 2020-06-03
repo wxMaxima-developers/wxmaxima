@@ -1417,9 +1417,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         // Add a "evaluate this <sectioning unit>" context menu entry.
         GroupCell *group;
         if (m_cellPointers.m_selectionEnd)
-          group = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd);
+          group = m_cellPointers.m_selectionEnd.CastAs<GroupCell*>();
         else
-          group = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
+          group = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
         if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE)
         {
           popupMenu.AppendSeparator();
@@ -1457,8 +1457,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         }
         popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                    _("Automatically fill in answers known from the last run"));
-        popupMenu.Check(popid_auto_answer, dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->AutoAnswer());
-        if (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
+        popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
+        if (m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
@@ -1620,7 +1620,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     {
       if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP)
       {
-        group = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
+        group = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
       }
     }
     if (group)
@@ -2086,7 +2086,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event)
   //! Step the slide show.
   int rot = event.GetWheelRotation();
 
-  SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+  SlideShow *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow *>();
   tmp->AnimationRunning(false);
 
   if (rot > 0)
@@ -2171,7 +2171,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
   {
     if (m_cellPointers.m_selectionEnd == m_cellPointers.m_selectionStart->m_previous)
     {
-      SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
+      SetHCaret(m_cellPointers.m_selectionEnd.CastAs<GroupCell*>());
     }
     else
     {
@@ -2187,13 +2187,13 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
 
   if (down.y > up.y)
   {
-    m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
-    m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd);
+    m_hCaretPositionStart = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
+    m_hCaretPositionEnd = m_cellPointers.m_selectionEnd.CastAs<GroupCell*>();
   }
   else
   {
-    m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd);
-    m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
+    m_hCaretPositionStart = m_cellPointers.m_selectionEnd.CastAs<GroupCell*>();
+    m_hCaretPositionEnd = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
   }
   SetSelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd);
 }
@@ -2873,9 +2873,6 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, UndoActions *undo
     if (tmp->GetOutput())
       tmp->GetOutput()->ClearCacheList();
 
-    // Tell the cells we don't want to keep pointers to them active
-    tmp->MarkAsDeleted();
-
     if (tmp == end)
       break;
   }
@@ -3304,14 +3301,14 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     // Get the first previous cell that isn't hidden
     GroupCell *previous = GetActiveCell()->GetGroup()->GetPrevious();
     while (previous && (previous->GetMaxDrop() == 0))
-      previous = dynamic_cast<GroupCell *>(previous->m_previous);
+      previous = previous->m_previous.CastAs<GroupCell*>();
 
     if (event.ShiftDown())
     {
       SetSelection(previous, GetActiveCell()->GetGroup());
-      m_hCaretPosition = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
-      m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
-      m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd);
+      m_hCaretPosition = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
+      m_hCaretPositionEnd = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
+      m_hCaretPositionStart = m_cellPointers.m_selectionEnd.CastAs<GroupCell*>();
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
@@ -3686,8 +3683,8 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE)
   {
-    dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart)->AnimationRunning(
-      !dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart)->AnimationRunning());
+    m_cellPointers.m_selectionStart.CastAs<SlideShow*>()->AnimationRunning(
+      !m_cellPointers.m_selectionStart.CastAs<SlideShow*>()->AnimationRunning());
     return;
   }
 
@@ -3862,7 +3859,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
         {
           if (event.CmdDown())
           {
-            GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
+            GroupCell *tmp = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
             if (tmp->m_previous)
             {
               do tmp = tmp->GetPrevious();
@@ -3939,7 +3936,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
         {
           if (event.CmdDown())
           {
-            GroupCell *tmp = dynamic_cast<GroupCell*>(m_cellPointers.m_selectionEnd);
+            GroupCell *tmp = m_cellPointers.m_selectionEnd.CastAs<GroupCell*>();
             if (tmp->m_next)
             {
               do tmp = tmp->GetNext();
@@ -3961,7 +3958,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
             }
           }
           else
-            SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
+            SetHCaret(m_cellPointers.m_selectionEnd.CastAs<GroupCell*>());
 
         }
         else if (m_hCaretPosition && m_hCaretPosition->m_next)
@@ -4268,7 +4265,7 @@ void Worksheet::StepAnimation(int change)
   if (GetSelectionStart() && GetSelectionStart() == GetSelectionEnd() &&
       GetSelectionStart()->GetType() == MC_TYPE_SLIDE)
   {
-    SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+    SlideShow *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow*>();
     int pos = tmp->GetDisplayedIndex() + change;
 
     if (change != 0)
@@ -4528,9 +4525,9 @@ wxSize Worksheet::CopyToFile(const wxString &file)
        m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE))
   {
     if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE)
-      return dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->ToImageFile(file);
+      return m_cellPointers.m_selectionStart.CastAs<ImgCell*>()->ToImageFile(file);
     else
-      return dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart)->ToImageFile(file);
+      return m_cellPointers.m_selectionStart.CastAs<SlideShow*>()->ToImageFile(file);
   }
   else
   {
@@ -6529,8 +6526,8 @@ void Worksheet::AddRestToEvaluationQueue()
 
 void Worksheet::AddSelectionToEvaluationQueue()
 {
-  AddSelectionToEvaluationQueue(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart),
-                                dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
+  AddSelectionToEvaluationQueue(m_cellPointers.m_selectionStart.CastAs<GroupCell*>(),
+                                m_cellPointers.m_selectionEnd.CastAs<GroupCell*>());
 }
 
 void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
@@ -7315,7 +7312,7 @@ void Worksheet::MergeCells()
       break;
   }
 
-  GroupCell *selStart = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
+  GroupCell *selStart = m_cellPointers.m_selectionStart.CastAs<GroupCell*>();
   EditorCell *editor = selStart->GetEditable();
   editor->SetValue(newcell);
 
@@ -7608,7 +7605,7 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
   if (CanAnimate())
    {
      //! Step the slide show.
-     auto *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+     auto *tmp = m_cellPointers.m_selectionStart.CastAs<SlideShow*>();
      tmp->AnimationRunning(false);
   
      if (ev.GetEventType() == wxEVT_SCROLLWIN_LINEUP)

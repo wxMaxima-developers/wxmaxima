@@ -55,11 +55,6 @@ FunCell::FunCell(const FunCell &cell):
     SetArg(cell.m_argCell->CopyList());
 }
 
-FunCell::~FunCell()
-{
-  MarkAsDeleted();
-}
-
 void FunCell::SetName(Cell *name)
 {
   if (!name)

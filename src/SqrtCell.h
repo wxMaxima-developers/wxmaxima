@@ -51,7 +51,6 @@ public:
   SqrtCell(GroupCell *parent, Configuration **config);
   SqrtCell(const SqrtCell &cell);
   Cell *Copy() override { return new SqrtCell(*this); }
-  ~SqrtCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -83,13 +82,13 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  Cell *m_last = {};
+  CellPtr<Cell> m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;

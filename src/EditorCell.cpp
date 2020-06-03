@@ -272,7 +272,6 @@ wxString EditorCell::PrependNBSP(wxString input)
 EditorCell::EditorCell(const EditorCell &cell):
   EditorCell(cell.m_group, cell.m_configuration, cell.m_text)
 {
-  m_nextToDraw = NULL;
   CopyCommonData(cell);
 }
 
@@ -384,28 +383,6 @@ wxString EditorCell::ToRTF()
     break;
   }
   return retval;
-}
-
-EditorCell::~EditorCell()
-{
-  EditorCell::MarkAsDeleted();
-}
-
-void EditorCell::MarkAsDeleted()  
-{
-  if (m_cellPointers->m_cellMouseSelectionStartedIn == this)
-    m_cellPointers->m_cellMouseSelectionStartedIn = NULL;
-  if (m_cellPointers->m_cellKeyboardSelectionStartedIn == this)
-    m_cellPointers->m_cellKeyboardSelectionStartedIn = NULL;
-  if (m_cellPointers->m_cellSearchStartedIn == this)
-  {
-    m_cellPointers->m_cellSearchStartedIn = NULL;
-    m_cellPointers->m_indexSearchStartedAt = -1;
-  }
-  if (m_cellPointers->m_activeCell == this)
-    m_cellPointers->m_activeCell = NULL;
-
-  Cell::MarkAsDeleted();
 }
 
 wxString EditorCell::ToTeX()

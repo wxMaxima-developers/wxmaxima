@@ -77,11 +77,6 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   m_fontsize_old = -1;
 }
 
-TextCell::~TextCell()
-{
-  MarkAsDeleted();
-}
-
 void TextCell::SetStyle(TextStyle style)
 {
   m_widths.clear();

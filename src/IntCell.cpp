@@ -73,11 +73,6 @@ IntCell::IntCell(const IntCell &cell):
   m_intStyle = cell.m_intStyle;
 }
 
-IntCell::~IntCell()
-{
-  MarkAsDeleted();
-}
-
 void IntCell::SetOver(Cell *name)
 {
   if (!name)

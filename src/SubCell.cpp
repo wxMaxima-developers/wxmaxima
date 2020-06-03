@@ -45,11 +45,6 @@ SubCell::SubCell(const SubCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-SubCell::~SubCell()
-{
-  MarkAsDeleted();
-}
-
 void SubCell::SetIndex(Cell *index)
 {
   if (!index)

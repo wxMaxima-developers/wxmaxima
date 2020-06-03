@@ -29,6 +29,7 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
+#include "CellPtr.h"
 #include "Configuration.h"
 #include "TextStyle.h"
 #include <wx/defs.h>
@@ -106,9 +107,9 @@ enum CellType
 
  */
 #if wxUSE_ACCESSIBILITY
-class Cell: public wxAccessible
+class Cell: public Observed, public wxAccessible
 #else
-class Cell
+class Cell: public Observed
 #endif
 {
   // This class can be derived from wxAccessible which has no copy constructor
@@ -134,16 +135,10 @@ class Cell
       \param resortToLast true = if we already have set the cell maxima works on to NULL
       use the last cell maxima was known to work on.
     */
-    GroupCell *GetWorkingGroup(bool resortToLast = false) const
-    { return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
+    GroupCell *GetWorkingGroup(bool resortToLast = false) const;
 
     //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-    void SetWorkingGroup(GroupCell *group)
-    {
-      if (group)
-        m_lastWorkingGroup = group;
-      m_workingGroup = group;
-    }
+    void SetWorkingGroup(GroupCell *group);
     
     void WXMXResetCounter() { m_wxmxImgCounter = 0; }
     
@@ -159,49 +154,49 @@ class Cell
     public:
       ErrorList() = default;
       //! Is the list of errors empty?
-      bool Empty() const {return m_errors.empty();}
+      bool Empty() const { return m_errors.empty(); }
       //! Remove one specific GroupCell from the list of errors
-      void Remove(GroupCell * cell){m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());}
+      void Remove(GroupCell * cell);
       //! Does the list of GroupCell with errors contain cell?
-      bool Contains(GroupCell * cell) const {return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();}
+      bool Contains(GroupCell * cell) const;
       //! Mark this GroupCell as containing errors
-      void Add(GroupCell * cell){m_errors.push_back(cell);}
+      void Add(GroupCell * cell);
       //! The first GroupCell with error that is still in the list
-      GroupCell *FirstError() const {return m_errors.empty() ? nullptr : m_errors.front();}
+      GroupCell *FirstError() const;
       //! The last GroupCell with errors in the list
-      GroupCell *LastError() const {return m_errors.empty() ? nullptr : m_errors.back();}
+      GroupCell *LastError() const;
       //! Empty the list of GroupCells with errors
-      void Clear(){m_errors.clear();}
+      void Clear() { m_errors.clear(); }
     private:
       //! A list of GroupCells that contain errors
-      std::vector<GroupCell *> m_errors;
+      std::vector<CellPtr<GroupCell>> m_errors;
     };
 
     //! The list of cells maxima has complained about errors in
     ErrorList m_errorList;
     //! The EditorCell the mouse selection has started in
-    EditorCell *m_cellMouseSelectionStartedIn;
+    CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
     //! The EditorCell the keyboard selection has started in
-    EditorCell *m_cellKeyboardSelectionStartedIn;
+    CellPtr<EditorCell> m_cellKeyboardSelectionStartedIn;
     //! The EditorCell the search was started in
-    EditorCell *m_cellSearchStartedIn;
+    CellPtr<EditorCell> m_cellSearchStartedIn;
     //! Which cursor position incremental search has started at?
     int m_indexSearchStartedAt = -1;
     //! Which EditCell the blinking cursor is in?
-    EditorCell *m_activeCell;
-    //! The GroupCell that is under the mouse pointer 
-    GroupCell *m_groupCellUnderPointer;
-    //! The EditorCell that contains the currently active question from maxima 
-    EditorCell *m_answerCell;
+    CellPtr<EditorCell> m_activeCell;
+    //! The GroupCell that is under the mouse pointer
+    CellPtr<GroupCell> m_groupCellUnderPointer;
+    //! The EditorCell that contains the currently active question from maxima
+    CellPtr<EditorCell> m_answerCell;
     //! The last group cell maxima was working on.
-    GroupCell *m_lastWorkingGroup;
+    CellPtr<GroupCell> m_lastWorkingGroup;
     //! The textcell the text maxima is sending us was ending in.
-    TextCell *m_currentTextCell;
+    CellPtr<TextCell> m_currentTextCell;
     /*! The group cell maxima is currently working on.
 
       NULL means that maxima isn't currently evaluating a cell.
     */
-    GroupCell *m_workingGroup;
+    CellPtr<GroupCell> m_workingGroup;
     /*! The currently selected string. 
 
       Since this string is defined here it is available in every editor cell
@@ -232,7 +227,7 @@ class Cell
     
       See also m_hCaretPositionStart and m_selectionEnd
     */
-    Cell *m_selectionStart;
+    CellPtr<Cell> m_selectionStart;
     /*! The last cell of the currently selected range of groupCells.
     
       NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
@@ -243,7 +238,7 @@ class Cell
     */
 
     //! The cell currently under the mouse pointer
-    Cell *m_cellUnderPointer;
+    CellPtr<Cell> m_cellUnderPointer;
   
     /*! The last cell of the currently selected range of Cells.
     
@@ -253,8 +248,8 @@ class Cell
     
       See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
     */
-    Cell *m_selectionEnd;
-    std::map<Cell *, int> m_slideShowTimers;
+    CellPtr<Cell> m_selectionEnd;
+    std::map<Cell*, int> m_slideShowTimers;
 
     wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
@@ -262,7 +257,7 @@ class Cell
     bool m_scrollToCell = false;
   private:
     //! If m_scrollToCell = true: Which cell do we need to scroll to?
-    Cell *m_cellToScrollTo;
+    CellPtr<Cell> m_cellToScrollTo;
     //! The object of the function to call if an animation has to be stepped.
     wxScrolledCanvas *const m_worksheet;
     //! The image counter for saving .wxmx files
@@ -323,15 +318,6 @@ class Cell
 
   //! How many cells does this cell contain?
   int CellsInListRecursive() const;
-
-  /*! If the cell is moved to the undo buffer this function drops pointers to it
-  
-    Examples are the pointer to the start or the end of the selection.
-
-    \attention If this method is overridden the overiding function needs to call
-    this function.
-  */
-  virtual void MarkAsDeleted();
   
   //! The part of the rectangle rect that is in the region that is currently drawn
   wxRect CropToUpdateRegion(wxRect rect)
@@ -656,25 +642,25 @@ class Cell
     \param first Returns the first cell of the rectangle
     \param last Returns the last cell of the rectangle
    */
-  void SelectRect(const wxRect &rect, Cell **first, Cell **last);
+  void SelectRect(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   /*! The top left of the rectangle the mouse has selected
 
     \param rect The rectangle the mouse selected
     \param first Returns the first cell of the rectangle
    */
-  void SelectFirst(const wxRect &rect, Cell **first);
+  void SelectFirst(const wxRect &rect, CellPtr<Cell> *first);
 
   /*! The bottom right of the rectangle the mouse has selected
 
     \param rect The rectangle the mouse selected
     \param last Returns the last cell of the rectangle
    */
-  void SelectLast(const wxRect &rect, Cell **last);
+  void SelectLast(const wxRect &rect, CellPtr<Cell> *last);
 
   /*! Select the cells inside this cell described by the rectangle rect.
   */
-  virtual void SelectInner(const wxRect &rect, Cell **first, Cell **last);
+  virtual void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   //! Is this cell an operator?
   virtual bool IsOperator() const;
@@ -812,7 +798,7 @@ class Cell
     Reads NULL, if this is the first cell of the list. See also 
     m_nextToDraw and m_next
    */
-  Cell *m_previous;
+  CellPtr<Cell> m_previous;
   /*! Tells this cell which one should be the next cell to be drawn
 
     If the cell is displayed as 2d object this sets the pointer to the next cell.
@@ -821,6 +807,12 @@ class Cell
     list of cells this cell is displayed as.
    */
   virtual void SetNextToDraw(Cell *next) = 0;
+  template <typename T, typename Del,
+            typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
+  void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
+  template <typename T, typename
+                       std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
+  void SetNextToDraw(const CellPtr<T> &ptr) { SetNextToDraw(ptr.get()); }
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     
@@ -1018,7 +1010,7 @@ protected:
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
-  GroupCell *m_group;
+  CellPtr<GroupCell> m_group;
 
   //! Does this cell begin with a forced page break?
   bool m_breakPage;

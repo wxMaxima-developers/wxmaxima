@@ -297,19 +297,7 @@ void GroupCell::ResetInputLabelList()
 
 GroupCell::~GroupCell()
 {
-  GroupCell::MarkAsDeleted();
   wxDELETE(m_hiddenTree);
-}
-
-void GroupCell::MarkAsDeleted()
-{
-  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
-    m_cellPointers->m_answerCell = NULL;
-  m_cellPointers->m_errorList.Remove(this);
-  if (this == m_cellPointers->m_groupCellUnderPointer)
-    m_cellPointers->m_groupCellUnderPointer = NULL;
-
-  Cell::MarkAsDeleted();
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
@@ -1009,12 +997,12 @@ void GroupCell::DrawBracket()
   int selectionStart_px = -1;
   if (m_cellPointers->m_selectionStart &&
       (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
-    selectionStart_px = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart)->m_currentPoint.y;
+    selectionStart_px = m_cellPointers->m_selectionStart.CastAs<GroupCell *>()->m_currentPoint.y;
 
   int selectionEnd_px = -1;
   if (m_cellPointers->m_selectionEnd &&
       (m_cellPointers->m_selectionEnd->GetType() == MC_TYPE_GROUP))
-    selectionEnd_px = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd)->m_currentPoint.y;
+    selectionEnd_px = m_cellPointers->m_selectionEnd.CastAs<GroupCell *>()->m_currentPoint.y;
   
   // Mark this GroupCell as selected if it is selected. Else clear the space we
   // will add brackets in
@@ -1693,12 +1681,11 @@ wxString GroupCell::ToXML()
 }
 
 void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two,
-                                Cell **first, Cell **last)
+                                CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   Configuration *configuration = (*m_configuration);
 
   *first = *last = nullptr;
-
 
   if ((m_inputLabel) &&
       (
@@ -1718,7 +1705,7 @@ void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint &one, const wx
   }
 }
 
-void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
+void GroupCell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   *first = *last = nullptr;
 
@@ -1734,7 +1721,7 @@ void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   }
 }
 
-void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
+void GroupCell::SelectPoint(const wxPoint &point, CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   *first = *last = nullptr;
 
@@ -1745,7 +1732,7 @@ void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
 }
 
 void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two,
-                                   Cell **first, Cell **last)
+                                   CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   if (m_isHidden)
     return;
@@ -1925,7 +1912,7 @@ void GroupCell::BreakLines(Cell *cell)
   }
 }
 
-void GroupCell::SelectOutput(Cell **start, Cell **end)
+void GroupCell::SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end)
 {
   if (m_isHidden)
     return;
@@ -2531,3 +2518,8 @@ wxString GroupCell:: m_lookalikeChars(
     wxT("ü")		wxT("\u03cb")
     wxT("\u0460")	wxT("\u03c9")
     wxT("\u0472")	wxT("\u0398"));
+
+// This is an explicit instantiation of this method. It's useful when GroupCell
+// is not a fully defined class, but someone wants to use the methods of
+// CellPtr<GroupCell>.
+template CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;

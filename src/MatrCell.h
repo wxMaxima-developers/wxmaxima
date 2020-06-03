@@ -33,7 +33,6 @@ public:
   MatrCell(GroupCell *parent, Configuration **config);
   MatrCell(const MatrCell &cell);
   Cell *Copy() override { return new MatrCell(*this); }
-  ~MatrCell();
 
   InnerCellIterator InnerBegin() const override
   { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }
@@ -79,7 +78,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   unsigned int m_matWidth;
   bool m_roundedParens;

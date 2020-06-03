@@ -105,13 +105,7 @@ ImgCell::ImgCell(const ImgCell &cell):
 
 ImgCell::~ImgCell()
 {
-  ImgCell::MarkAsDeleted();
-}
-
-void ImgCell::MarkAsDeleted()
-{
   ClearCache();
-  Cell::MarkAsDeleted();
 }
 
 wxString ImgCell::GetToolTip(const wxPoint &point)

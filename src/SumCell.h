@@ -46,7 +46,6 @@ public:
   SumCell(GroupCell *parent, Configuration **config);
   SumCell(const SumCell &cell);
   Cell *Copy() override { return new SumCell(*this); }
-  ~SumCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_under); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_paren); }
@@ -80,7 +79,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
   
   ParenCell *Paren() const { return static_cast<ParenCell*>(m_paren.get()); }
   // The base cell is owned by the paren
@@ -90,7 +89,8 @@ private:
   std::unique_ptr<Cell> m_over;
   std::unique_ptr<Cell> m_paren;
   // The pointers above point to inner cells and must be kept contiguous.
-  Cell *m_displayedBase = {};
+  CellPtr<Cell> m_displayedBase;
+
   int m_signHeight;
   double m_signWidth;
   int m_sumStyle;

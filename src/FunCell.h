@@ -55,7 +55,6 @@ public:
   FunCell(GroupCell *parent, Configuration **config);
   FunCell(const FunCell &cell);
   Cell *Copy() override { return new FunCell(*this); }
-  ~FunCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_argCell); }
@@ -88,13 +87,13 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_nameCell;
   std::unique_ptr<Cell> m_argCell;
-  Cell *m_nameCell_Last = {};
-  Cell *m_argCell_Last = {};
+  CellPtr<Cell> m_nameCell_Last;
+  CellPtr<Cell> m_argCell_Last;
 };
 
 

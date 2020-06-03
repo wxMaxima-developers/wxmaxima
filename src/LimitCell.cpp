@@ -63,11 +63,6 @@ LimitCell::LimitCell(const LimitCell &cell) :
     SetName(cell.m_name->CopyList());
 }
 
-LimitCell::~LimitCell()
-{
-  MarkAsDeleted();
-}
-
 void LimitCell::SetName(Cell *name)
 {
   if (!name)

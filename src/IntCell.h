@@ -42,7 +42,6 @@ public:
   IntCell(GroupCell *parent, Configuration **config);
   IntCell(const IntCell &cell);
   Cell *Copy() override { return new IntCell(*this); }
-  ~IntCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_var); }
@@ -89,7 +88,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   //! The part of the formula that is to be integrated.

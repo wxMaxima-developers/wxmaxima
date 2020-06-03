@@ -46,7 +46,6 @@ public:
   FracCell(GroupCell *parent, Configuration **config);
   FracCell(const FracCell &cell);
   Cell *Copy() override { return new FracCell(*this); }
-  ~FracCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }
@@ -99,7 +98,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   //! The numerator
   Cell *Num() const { return m_numParenthesis->GetInner(); }
@@ -113,9 +112,9 @@ private:
   //! The owner of the "/" sign
   const std::unique_ptr<Cell> m_divideOwner;
   //! The last element of the numerator
-  Cell *m_num_Last = {};
+  CellPtr<Cell> m_num_Last;
   //! The last element of the denominator
-  Cell *m_denom_Last = {};
+  CellPtr<Cell> m_denom_Last;
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
 

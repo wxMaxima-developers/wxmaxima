@@ -53,7 +53,6 @@ public:
   ParenCell(GroupCell *parent, Configuration **config);
   ParenCell(const ParenCell &cell);
   Cell *Copy() override { return new ParenCell(*this); }
-  ~ParenCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -88,7 +87,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   //! How to create a big parenthesis sign?
   Configuration::drawMode m_bigParenType;
@@ -97,7 +96,7 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  Cell *m_last1 = {};
+  CellPtr<Cell> m_last1;
   bool m_print;
   int m_numberOfExtensions;
   int m_charWidth, m_charHeight;

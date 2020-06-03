@@ -238,15 +238,8 @@ SlideShow::SlideShow(const SlideShow &cell):
 
 SlideShow::~SlideShow()
 {
-  SlideShow::MarkAsDeleted();
-}
-
-void SlideShow::MarkAsDeleted()
-{
-  // Stop and unregister the timer.
   StopTimer();
   ClearCache();
-  Cell::MarkAsDeleted();
 }
 
 void SlideShow::SetDisplayedIndex(int ind)

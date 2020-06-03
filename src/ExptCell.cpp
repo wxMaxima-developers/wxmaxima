@@ -58,11 +58,6 @@ ExptCell::ExptCell(const ExptCell &cell):
     SetPower(cell.m_exptCell->CopyList());
 }
 
-ExptCell::~ExptCell()
-{
-  MarkAsDeleted();
-}
-
 void ExptCell::Draw(wxPoint point)
 {
   Cell::Draw(point);

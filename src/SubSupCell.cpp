@@ -54,12 +54,7 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
     SetPreSup(cell.m_preSupCell->CopyList());
 }
 
-SubSupCell::~SubSupCell()
-{
-  MarkAsDeleted();
-}
-
-static void RemoveCell(std::vector<Cell*> &cells, std::unique_ptr<Cell> const &cell)
+static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
 {
   cells.erase(
     std::remove(cells.begin(), cells.end(), cell.get()), cells.end());

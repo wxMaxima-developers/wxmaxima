@@ -51,7 +51,6 @@ public:
   ExptCell(GroupCell *parent, Configuration **config);
   ExptCell(const ExptCell &cell);
   Cell *Copy() override { return new ExptCell(*this); }
-  ~ExptCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -93,7 +92,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_baseCell;
@@ -101,8 +100,8 @@ private:
   std::unique_ptr<Cell> m_exp;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  Cell *m_expt_last = {};
-  Cell *m_base_last = {};
+  CellPtr<Cell> m_expt_last;
+  CellPtr<Cell> m_base_last;
   bool m_isMatrix;
   int m_expt_yoffset;
 };

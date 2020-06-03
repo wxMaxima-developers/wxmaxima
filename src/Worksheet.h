@@ -43,6 +43,7 @@
 #include "Cell.h"
 #include "EditorCell.h"
 #include "GroupCell.h"
+#include "TextCell.h"
 #include "EvaluationQueue.h"
 #include "FindReplaceDialog.h"
 #include "Autocomplete.h"

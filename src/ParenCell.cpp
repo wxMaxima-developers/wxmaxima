@@ -76,11 +76,6 @@ ParenCell::ParenCell(const ParenCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-ParenCell::~ParenCell()
-{
-  MarkAsDeleted();
-}
-
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner)
