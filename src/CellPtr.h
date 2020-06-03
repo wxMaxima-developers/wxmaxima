@@ -106,7 +106,7 @@ public:
   // Observers
   //
   explicit operator bool() const { return m_cb->m_object; }
-  inline pointer get() const;
+  pointer get() const;
   inline reference operator*() const { return *get(); }
   inline pointer operator->() const { return get(); };
 
@@ -151,8 +151,9 @@ public:
       m_cb = Ref(obj);
     } else {
       // If the observed objects are the same, the control block must be the same as well.
-      wxASSERT((!obj && m_cb == &ControlBlock::empty)
-               || (obj && m_cb == static_cast<const Observed*>(obj)->m_cb));
+      pointer pObj = obj; // needed because !nullptr is invalid on gcc <8.
+      wxASSERT((!pObj && m_cb == &ControlBlock::empty)
+               || (pObj && m_cb == static_cast<const Observed*>(obj)->m_cb));
     }
   }
 
@@ -220,14 +221,13 @@ public:
 
 //
 
-// Note: This function must remain out of line, otherwise the extern template declaration
-// will have no effect. This is masked by msvc, but show up on gcc etc.
 template <typename T> typename
 CellPtr<T>::pointer CellPtr<T>::get() const { return static_cast<pointer>(m_cb->m_object); }
 
-//! Declaration of an external template instantiation within GroupCell.cpp. This allows
+//! Declaration of a specialization within GroupCell.cpp. This allows
 //! use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
-extern template CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
+template <>
+CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
 
 //
 
