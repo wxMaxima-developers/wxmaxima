@@ -1104,7 +1104,7 @@ void Cell::SelectRect(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *l
       (*first)->SelectInner(rect, first, last);
   }
   else
-    last = nullptr;
+    *last = nullptr;
 }
 
 /***
@@ -1117,7 +1117,7 @@ void Cell::SelectFirst(const wxRect &rect, CellPtr<Cell> *first)
   else if (GetNextToDraw())
     GetNextToDraw()->SelectFirst(rect, first);
   else
-    first = nullptr;
+    *first = nullptr;
 }
 
 /***
