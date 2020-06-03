@@ -1,7 +1,8 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +34,37 @@
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 
+Observed::ControlBlock Observed::ControlBlock::empty{nullptr};
+
+void Cell::CellPointers::ErrorList::Remove(GroupCell * cell)
+{
+  m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());
+}
+
+bool Cell::CellPointers::ErrorList::Contains(GroupCell * cell) const
+{
+  return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
+}
+
+void Cell::CellPointers::ErrorList::Add(GroupCell * cell)
+{ m_errors.emplace_back(cell); }
+
+void Cell::CellPointers::SetWorkingGroup(GroupCell *group)
+{
+  if (group)
+    m_lastWorkingGroup = group;
+  m_workingGroup = group;
+}
+
+GroupCell *Cell::CellPointers::GetWorkingGroup(bool resortToLast) const
+{ return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
+
+GroupCell *Cell::CellPointers::ErrorList::FirstError() const
+{ return m_errors.empty() ? nullptr : m_errors.front(); }
+
+GroupCell *Cell::CellPointers::ErrorList::LastError() const
+{ return m_errors.empty() ? nullptr : m_errors.back(); }
+
 wxString Cell::GetToolTip(const wxPoint &point)
 {
   if (!ContainsPoint(point))
@@ -60,7 +92,6 @@ Cell::Cell(GroupCell *group, Configuration **config) :
   m_lastZoomFactor = -1;
   m_fontsize_old = m_clientWidth_old = -1;
   m_next = NULL;
-  m_previous = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
@@ -86,9 +117,6 @@ Cell::Cell(GroupCell *group, Configuration **config) :
 
 Cell::~Cell()
 {
-  // Remove stale pointers that point to this cell.
-  // Derived classes need to call their own MarkAsDeleted()
-  Cell::MarkAsDeleted();
   // Delete this list of cells without using a recursive function call that can
   // run us out of stack space
   Cell *next = m_next;
@@ -271,7 +299,7 @@ void Cell::AppendCell(Cell *p_next)
 
 GroupCell *Cell::GetGroup() const
 {
-  auto *group = m_group;
+  GroupCell *group = m_group;
   wxASSERT_MSG(group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return group;
 }
@@ -426,7 +454,7 @@ void Cell::SetToolTip(const wxString &tooltip)
 {
   m_toolTip = tooltip;
   m_containsToolTip = (!tooltip.IsEmpty());
-  if(m_group != NULL)
+  if (m_group)
     m_group->m_containsToolTip = m_containsToolTip;
 }
 
@@ -1065,10 +1093,10 @@ wxString Cell::GetDiffPart()
 /***
  * Find the first and last cell in rectangle rect in this line.
  */
-void Cell::SelectRect(const wxRect &rect, Cell **first, Cell **last)
+void Cell::SelectRect(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   SelectFirst(rect, first);
-  if (*first != NULL)
+  if (*first)
   {
     *last = *first;
     (*first)->SelectLast(rect, last);
@@ -1076,37 +1104,37 @@ void Cell::SelectRect(const wxRect &rect, Cell **first, Cell **last)
       (*first)->SelectInner(rect, first, last);
   }
   else
-    *last = NULL;
+    last = nullptr;
 }
 
 /***
  * Find the first cell in rectangle rect in this line.
  */
-void Cell::SelectFirst(const wxRect &rect, Cell **first)
+void Cell::SelectFirst(const wxRect &rect, CellPtr<Cell> *first)
 {
   if (rect.Intersects(GetRect(false)))
     *first = this;
-  else if (GetNextToDraw() != NULL)
+  else if (GetNextToDraw())
     GetNextToDraw()->SelectFirst(rect, first);
   else
-    *first = NULL;
+    first = nullptr;
 }
 
 /***
  * Find the last cell in rectangle rect in this line.
  */
-void Cell::SelectLast(const wxRect &rect, Cell **last)
+void Cell::SelectLast(const wxRect &rect, CellPtr<Cell> *last)
 {
   if (rect.Intersects(GetRect(false)))
     *last = this;
-  if (GetNextToDraw() != NULL)
+  if (GetNextToDraw())
     GetNextToDraw()->SelectLast(rect, last);
 }
 
 /***
  * Select rectangle in deeper cell
  */
-void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
+void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   *first = nullptr;
   *last = nullptr;
@@ -1434,24 +1462,7 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role)
 
 Cell::CellPointers::CellPointers(wxScrolledCanvas *worksheet) :
   m_worksheet(worksheet)
-{
-  m_scrollToCell = false;
-  m_cellToScrollTo = NULL;
-  m_wxmxImgCounter = 0;
-  m_cellMouseSelectionStartedIn = NULL;
-  m_cellKeyboardSelectionStartedIn = NULL;
-  m_cellUnderPointer = NULL;
-  m_cellSearchStartedIn = NULL;
-  m_answerCell = NULL;
-  m_indexSearchStartedAt = -1;
-  m_activeCell = NULL;
-  m_groupCellUnderPointer = NULL;
-  m_lastWorkingGroup = NULL;
-  m_workingGroup = NULL;
-  m_selectionStart = NULL;
-  m_selectionEnd = NULL;
-  m_currentTextCell = NULL;
-}
+{}
 
 wxString Cell::CellPointers::WXMXGetNewFileName()
 {
@@ -1462,30 +1473,3 @@ wxString Cell::CellPointers::WXMXGetNewFileName()
 
 Cell::InnerCellIterator Cell::InnerBegin() const { return {}; }
 Cell::InnerCellIterator Cell::InnerEnd() const { return {}; }
-
-void Cell::MarkAsDeleted()
-{
-  // Delete all pointers to this cell
-  if(this == m_cellPointers->CellToScrollTo())
-  {
-      m_cellPointers->m_scrollToCell = false;
-  }
-  if(this == m_cellPointers->m_workingGroup)
-    m_cellPointers->m_workingGroup = NULL;
-  if(this == m_cellPointers->m_lastWorkingGroup)
-    m_cellPointers->m_lastWorkingGroup = NULL;
-  if(this == m_cellPointers->m_activeCell)
-    m_cellPointers->m_activeCell = NULL;
-  if(this == m_cellPointers->m_currentTextCell)
-    m_cellPointers->m_currentTextCell = NULL;
-
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
-  
-  // Delete all pointers to the cells this cell contains
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
-      tmp->MarkAsDeleted();
-}

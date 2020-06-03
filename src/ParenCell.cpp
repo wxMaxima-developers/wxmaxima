@@ -76,11 +76,6 @@ ParenCell::ParenCell(const ParenCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-ParenCell::~ParenCell()
-{
-  MarkAsDeleted();
-}
-
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner)
@@ -506,12 +501,12 @@ bool ParenCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell.get());
+    m_open->SetNextToDraw(m_innerCell);
     wxASSERT_MSG(m_last1, _("Bug: No last cell inside a parenthesis!"));
     if (m_last1)
-      m_last1->SetNextToDraw(m_close.get());
+      m_last1->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open.get();
+    m_nextToDraw = m_open;
 
     ResetData();
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());

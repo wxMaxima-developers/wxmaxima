@@ -89,8 +89,6 @@ public:
   
   wxString GetToolTip(const wxPoint &point) override;
 
-  void MarkAsDeleted()  override;
-
   /*! Remove all cached scaled images from memory
 
     To be called when the slideshow is outside of the displayed portion 
@@ -173,7 +171,7 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   wxTimer m_timer{m_cellPointers->GetWorksheet(), wxNewId()};
   /*! The framerate of this cell.

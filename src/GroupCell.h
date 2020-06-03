@@ -103,16 +103,6 @@ public:
     if (answer != wxEmptyString)
       m_knownAnswers[question] = answer;
   }
-  /*! Tell this cell to remove it from all gui actions.
-
-    Normally the gui keeps various pointers to a cell: The cell below the cursor,
-    the cell the selection was started at, the cell that was the last cell maxima
-    appended output to...
-
-    Running this command tells the cell to remove these pointers as the cell is
-    no more displayed currently.
-   */
-  void MarkAsDeleted() override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_inputLabel); }
   InnerCellIterator InnerEnd() const override
@@ -149,17 +139,17 @@ public:
   void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
-  void SelectInner(const wxRect &rect, Cell **first, Cell **last) override;
+  void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last) override;
 
-  void SelectPoint(const wxPoint &point, Cell **first, Cell **last);
-
-  // cppcheck-suppress functionConst
-  void SelectOutput(Cell **start, Cell **end);
+  void SelectPoint(const wxPoint &point, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   // cppcheck-suppress functionConst
-  void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
+  void SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end);
 
-  void SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two, Cell **first, Cell **last);
+  // cppcheck-suppress functionConst
+  void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, CellPtr<Cell> *first, CellPtr<Cell> *last);
+
+  void SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   // methods for manipulating GroupCell
   // cppcheck-suppress functionConst
@@ -208,7 +198,7 @@ public:
   void AppendInput(Cell *cell);
 
   //! Get the previous GroupCell in the list
-  GroupCell *GetPrevious() const { return dynamic_cast<GroupCell*>(m_previous); }
+  GroupCell *GetPrevious() const { return m_previous.CastAs<GroupCell*>(); }
 
   //! Get the next GroupCell in the list.
   GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(m_next); }
@@ -508,10 +498,10 @@ protected:
   std::unique_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
-  Cell *m_lastInOutput = {};
+  CellPtr<Cell> m_lastInOutput;
   static wxString m_lookalikeChars;
 
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;
   wxRect m_outputRect;
@@ -528,4 +518,5 @@ protected:
       m_cellsInGroup = 2;
   }
 };
+
 #endif /* GROUPCELL_H */

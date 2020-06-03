@@ -48,20 +48,15 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-ConjugateCell::~ConjugateCell()
-{
-  MarkAsDeleted();
-}
-
 void ConjugateCell::SetInner(Cell *inner)
 {
   if (!inner)
     return;
   m_innerCell.reset(inner);
 
-  m_last = m_innerCell.get();
-  if (m_last != NULL)
-    while (m_last->m_next != NULL)
+  m_last = m_innerCell;
+  if (m_last)
+    while (m_last->m_next)
       m_last = m_last->m_next;
 }
 
@@ -179,12 +174,12 @@ bool ConjugateCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell.get());
-    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in a conjugateCell!"));
-    if (m_last != NULL)
-      m_last->SetNextToDraw(m_close.get());
+    m_open->SetNextToDraw(m_innerCell);
+    wxASSERT_MSG(m_last, _("Bug: No last cell in a conjugateCell!"));
+    if (m_last)
+      m_last->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open.get();
+    m_nextToDraw = m_open;
     ResetData();        
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());

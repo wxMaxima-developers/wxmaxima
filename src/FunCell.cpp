@@ -34,12 +34,12 @@ FunCell::FunCell(GroupCell *parent, Configuration **config) :
   m_nameCell(new TextCell(parent, config)),
   m_argCell(new TextCell(parent, config))
 {
-  m_nameCell_Last = m_nameCell.get();
+  m_nameCell_Last = m_nameCell;
   if(m_nameCell_Last)
     while(m_nameCell_Last->m_next)
       m_nameCell_Last = m_nameCell_Last->m_next;
 
-  m_argCell_Last = m_argCell.get(); 
+  m_argCell_Last = m_argCell;
   if(m_argCell_Last)
     while(m_argCell_Last->m_next)
       m_argCell_Last = m_argCell_Last->m_next;
@@ -53,11 +53,6 @@ FunCell::FunCell(const FunCell &cell):
     SetName(cell.m_nameCell->CopyList());
   if(cell.m_argCell)
     SetArg(cell.m_argCell->CopyList());
-}
-
-FunCell::~FunCell()
-{
-  MarkAsDeleted();
 }
 
 void FunCell::SetName(Cell *name)
@@ -202,9 +197,9 @@ bool FunCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_nameCell_Last->SetNextToDraw(m_argCell.get());
+    m_nameCell_Last->SetNextToDraw(m_argCell);
     m_argCell_Last->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_nameCell.get();
+    m_nextToDraw = m_nameCell;
     m_width = 0;
     ResetData();    
     return true;

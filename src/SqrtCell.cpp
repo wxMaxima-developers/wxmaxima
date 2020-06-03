@@ -41,7 +41,6 @@ SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
   m_signSize = 50;
   m_signWidth = 18;
   m_signTop = m_signSize / 2;
-  m_last = NULL;
   m_signType = 0;
   m_signFontScale = 0;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
@@ -63,11 +62,6 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-SqrtCell::~SqrtCell()
-{
-  MarkAsDeleted();
-}
-
 void SqrtCell::SetInner(Cell *inner)
 {
   if (!inner)
@@ -75,8 +69,8 @@ void SqrtCell::SetInner(Cell *inner)
   m_innerCell.reset(inner);
 
   m_last = inner;
-  if (m_last != NULL)
-    while (m_last->m_next != NULL)
+  if (m_last)
+    while (m_last->m_next)
       m_last = m_last->m_next;
 }
 
@@ -345,12 +339,12 @@ bool SqrtCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell.get());
+    m_open->SetNextToDraw(m_innerCell);
     wxASSERT_MSG(m_last, _("Bug: No last cell inside a square root!"));
     if (m_last)
-      m_last->SetNextToDraw(m_close.get());
+      m_last->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open.get();
+    m_nextToDraw = m_open;
 
     ResetData();
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());

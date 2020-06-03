@@ -57,8 +57,6 @@ public:
   wxString GnuplotData() const override
   { return m_image ? m_image->GnuplotData() : wxString{}; }
 
-  void MarkAsDeleted() override;
-
   void LoadImage(wxString image, bool remove = true);
 
   //! Can this image be exported in SVG format?
@@ -135,7 +133,7 @@ private:
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
   { m_drawBoundingBox = true; }
 
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
   bool m_drawBoundingBox;
 };
 

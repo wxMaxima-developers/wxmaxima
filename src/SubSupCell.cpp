@@ -54,58 +54,53 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
     SetPreSup(cell.m_preSupCell->CopyList());
 }
 
-SubSupCell::~SubSupCell()
-{
-  MarkAsDeleted();
-}
-
-static void RemoveCell(std::vector<Cell*> &cells, Cell *const cell)
+static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
 {
   cells.erase(
-    std::remove(cells.begin(), cells.end(), cell), cells.end());
+    std::remove(cells.begin(), cells.end(), cell.get()), cells.end());
 }
 
 void SubSupCell::SetPreSup(Cell *index)
 {
   if (!index)
     return;
-  RemoveCell(m_scriptCells, m_preSupCell.get());
+  RemoveCell(m_scriptCells, m_preSupCell);
   m_preSupCell.reset(index);
-  m_scriptCells.push_back(index);
+  m_scriptCells.emplace_back(index);
 }
 
 void SubSupCell::SetPreSub(Cell *index)
 {
   if (!index)
     return;
-  RemoveCell(m_scriptCells, m_preSubCell.get());
+  RemoveCell(m_scriptCells, m_preSubCell);
   m_preSubCell.reset(index);
-  m_scriptCells.push_back(index);
+  m_scriptCells.emplace_back(index);
 }
 
 void SubSupCell::SetPostSup(Cell *index)
 {
   if (!index)
     return;
-  RemoveCell(m_scriptCells, m_postSupCell.get());
+  RemoveCell(m_scriptCells, m_postSupCell);
   m_postSupCell.reset(index);
-  m_scriptCells.push_back(index);
+  m_scriptCells.emplace_back(index);
 }
 
 void SubSupCell::SetPostSub(Cell *index)
 {
   if (!index)
     return;
- RemoveCell(m_scriptCells, m_postSubCell.get());
+ RemoveCell(m_scriptCells, m_postSubCell);
   m_postSubCell.reset(index);
-  m_scriptCells.push_back(index);
+  m_scriptCells.emplace_back(index);
 }
 
 void SubSupCell::SetIndex(Cell *index)
 {
   if (!index)
     return;
-  RemoveCell(m_scriptCells, m_postSubCell.get());
+  RemoveCell(m_scriptCells, m_postSubCell);
   m_postSubCell.reset(index);
 }
 
@@ -120,7 +115,7 @@ void SubSupCell::SetExponent(Cell *expt)
 {
   if (!expt)
     return;
-  RemoveCell(m_scriptCells, m_postSupCell.get());
+  RemoveCell(m_scriptCells, m_postSupCell);
   m_postSupCell.reset(expt);
 }
 

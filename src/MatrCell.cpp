@@ -56,11 +56,6 @@ MatrCell::MatrCell(const MatrCell &cell):
       m_cells.emplace_back(cell.m_cells[i]->CopyList());
 }
 
-MatrCell::~MatrCell()
-{
-  MarkAsDeleted();
-}
-
 void MatrCell::RecalculateWidths(int fontsize)
 {
   if(!NeedsRecalculation(fontsize))

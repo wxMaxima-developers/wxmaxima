@@ -58,7 +58,6 @@ public:
   AbsCell(GroupCell *parent, Configuration **config);
   AbsCell(const AbsCell &cell);
   Cell *Copy() override { return new AbsCell(*this); }
-  ~AbsCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -89,7 +88,7 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   //! The contents of the abs() command
@@ -99,7 +98,7 @@ private:
   //! The cell containing the closing parenthesis
   std::unique_ptr<Cell> m_close;
   //! The last element of m_innerCell
-  Cell *m_last = {};
+  CellPtr<Cell> m_last;
 };
 
 #endif // ABSCELL_H

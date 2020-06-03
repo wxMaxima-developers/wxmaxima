@@ -41,7 +41,6 @@ public:
   TextCell(GroupCell *parent, Configuration **config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
   Cell *Copy() override { return new TextCell(*this); }  
-  ~TextCell();  
 
   double GetScaledTextSize() const;
   
@@ -140,8 +139,7 @@ private:
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
-
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
   class SizeHash_internals
   {
   public:

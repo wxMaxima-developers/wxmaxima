@@ -51,7 +51,6 @@ public:
   ConjugateCell(GroupCell *parent, Configuration **config);
   ConjugateCell(const ConjugateCell &cell);
   Cell *Copy() override { return new ConjugateCell(*this); }
-  ~ConjugateCell();
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -64,13 +63,13 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  Cell *m_last = {};
+  CellPtr<Cell> m_last;
 
   void RecalculateHeight(int fontsize) override;
 

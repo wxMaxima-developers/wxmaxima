@@ -25,10 +25,9 @@
 #define EDITORCELL_H
 
 #include "Cell.h"
-
+#include "MaximaTokenizer.h"
 #include <vector>
 #include <list>
-#include "MaximaTokenizer.h"
 
 /*! \file
 
@@ -97,7 +96,6 @@ public:
   EditorCell(GroupCell *parent, Configuration **config, const wxString &text = {});
   EditorCell(const EditorCell &cell);
   Cell *Copy() override {return new EditorCell(*this);}
-  ~EditorCell();
 
   //! Insert the symbol that corresponds to the ESC command txt
   void InsertEscCommand(wxString txt){InsertText(InterpretEscapeString(txt));}
@@ -185,17 +183,6 @@ public:
 
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged;
-
-  /*! Tell this cell to remove it from all gui actions.
-
-    Normally the gui keeps various pointers to a cell: The cell below the cursor,
-    the cell the selection was started at, the cell that was the last cell maxima
-    appended output to...
-
-    Running this command tells the cell to remove these pointers as the cell is 
-    no more displayed currently.
-   */
-  void MarkAsDeleted() override;
 
   /*! Expand all tabulators.
 
@@ -573,7 +560,7 @@ protected:
       m_widths.clear();
     }
 private:
-  Cell *m_nextToDraw = {};
+  CellPtr<Cell> m_nextToDraw;
   //! Determines the size of a text snippet
   wxSize GetTextSize(wxString const &text);
   //! Mark this cell as "Automatically answer questions".

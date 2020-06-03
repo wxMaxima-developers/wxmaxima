@@ -46,11 +46,6 @@ AtCell::AtCell(const AtCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-AtCell::~AtCell()
-{
-  MarkAsDeleted();
-}
-
 void AtCell::SetIndex(Cell *index)
 {
   if (!index)

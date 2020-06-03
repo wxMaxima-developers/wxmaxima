@@ -27,6 +27,7 @@
 */
 
 #include "FracCell.h"
+#include "ParenCell.h"
 
 #define FRAC_DEC 1
 
@@ -57,11 +58,6 @@ FracCell::FracCell(const FracCell &cell):
   m_fracStyle = cell.m_fracStyle;
   m_exponent = cell.m_exponent;
   SetupBreakUps();
-}
-
-FracCell::~FracCell()
-{
-  MarkAsDeleted();
 }
 
 void FracCell::SetNum(Cell *num)
