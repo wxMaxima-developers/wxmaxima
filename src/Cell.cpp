@@ -271,7 +271,7 @@ void Cell::AppendCell(Cell *p_next)
 
 GroupCell *Cell::GetGroup() const
 {
-  auto *group = m_group;
+  GroupCell *group = m_group;
   wxASSERT_MSG(group, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return group;
 }
@@ -426,7 +426,7 @@ void Cell::SetToolTip(const wxString &tooltip)
 {
   m_toolTip = tooltip;
   m_containsToolTip = (!tooltip.IsEmpty());
-  if(m_group != NULL)
+  if (m_group)
     m_group->m_containsToolTip = m_containsToolTip;
 }
 
@@ -1068,7 +1068,7 @@ wxString Cell::GetDiffPart()
 void Cell::SelectRect(const wxRect &rect, Cell **first, Cell **last)
 {
   SelectFirst(rect, first);
-  if (*first != NULL)
+  if (*first)
   {
     *last = *first;
     (*first)->SelectLast(rect, last);
@@ -1076,7 +1076,7 @@ void Cell::SelectRect(const wxRect &rect, Cell **first, Cell **last)
       (*first)->SelectInner(rect, first, last);
   }
   else
-    *last = NULL;
+    last = nullptr;
 }
 
 /***
@@ -1086,10 +1086,10 @@ void Cell::SelectFirst(const wxRect &rect, Cell **first)
 {
   if (rect.Intersects(GetRect(false)))
     *first = this;
-  else if (GetNextToDraw() != NULL)
+  else if (GetNextToDraw())
     GetNextToDraw()->SelectFirst(rect, first);
   else
-    *first = NULL;
+    first = nullptr;
 }
 
 /***
@@ -1099,7 +1099,7 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
 {
   if (rect.Intersects(GetRect(false)))
     *last = this;
-  if (GetNextToDraw() != NULL)
+  if (GetNextToDraw())
     GetNextToDraw()->SelectLast(rect, last);
 }
 
@@ -1434,24 +1434,7 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role)
 
 Cell::CellPointers::CellPointers(wxScrolledCanvas *worksheet) :
   m_worksheet(worksheet)
-{
-  m_scrollToCell = false;
-  m_cellToScrollTo = NULL;
-  m_wxmxImgCounter = 0;
-  m_cellMouseSelectionStartedIn = NULL;
-  m_cellKeyboardSelectionStartedIn = NULL;
-  m_cellUnderPointer = NULL;
-  m_cellSearchStartedIn = NULL;
-  m_answerCell = NULL;
-  m_indexSearchStartedAt = -1;
-  m_activeCell = NULL;
-  m_groupCellUnderPointer = NULL;
-  m_lastWorkingGroup = NULL;
-  m_workingGroup = NULL;
-  m_selectionStart = NULL;
-  m_selectionEnd = NULL;
-  m_currentTextCell = NULL;
-}
+{}
 
 wxString Cell::CellPointers::WXMXGetNewFileName()
 {

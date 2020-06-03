@@ -25,10 +25,9 @@
 #define EDITORCELL_H
 
 #include "Cell.h"
-
+#include "MaximaTokenizer.h"
 #include <vector>
 #include <list>
-#include "MaximaTokenizer.h"
 
 /*! \file
 

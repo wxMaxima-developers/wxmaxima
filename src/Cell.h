@@ -266,7 +266,7 @@ class Cell
     //! The object of the function to call if an animation has to be stepped.
     wxScrolledCanvas *const m_worksheet;
     //! The image counter for saving .wxmx files
-    int m_wxmxImgCounter;
+    int m_wxmxImgCounter = 0;
   };
 
 
@@ -859,7 +859,7 @@ class Cell
   bool IsEditable(bool input = false) const
   {
     return (m_type == MC_TYPE_INPUT &&
-            m_previous != NULL && m_previous->m_type == MC_TYPE_MAIN_PROMPT)
+            m_previous && m_previous->m_type == MC_TYPE_MAIN_PROMPT)
            || (!input && IsComment());
   }
 
@@ -1130,5 +1130,3 @@ private:
 };
 
 #endif // MATHCELL_H
-
-

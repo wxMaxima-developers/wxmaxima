@@ -295,7 +295,7 @@ bool Worksheet::RedrawIfRequested()
     {
       if (m_cellPointers.m_groupCellUnderPointer->GetOutputRect().Contains(wxPoint(m_pointer_x, m_pointer_y)))
       {
-        m_cellPointers.m_cellUnderPointer = NULL;
+        m_cellPointers.m_cellUnderPointer = nullptr;
         wxString toolTip = m_cellPointers.m_groupCellUnderPointer->GetToolTip(wxPoint(m_pointer_x, m_pointer_y));
 
         if (!toolTip.empty())
@@ -324,7 +324,7 @@ bool Worksheet::RedrawIfRequested()
       if (m_cellPointers.m_cellUnderPointer)
       {
         UnsetToolTip();
-        m_cellPointers.m_cellUnderPointer = NULL;
+        m_cellPointers.m_cellUnderPointer = nullptr;
       }
     }
     m_mouseMotionWas = false;
@@ -1457,7 +1457,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         }
         popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                    _("Automatically fill in answers known from the last run"));
-        popupMenu.Check(popid_auto_answer,dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->AutoAnswer());
+        popupMenu.Check(popid_auto_answer, dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->AutoAnswer());
         if (dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu.AppendSeparator();
@@ -1775,7 +1775,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     }
   }
 
-  if(m_cellPointers.m_selectionStart != NULL)
+  if (m_cellPointers.m_selectionStart)
   {
     if(popupMenu.GetMenuItemCount() > 0)
       popupMenu.AppendSeparator();
@@ -2139,7 +2139,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
   // Calculate the rectangle that has been selected
   int ytop = wxMin(down.y, up.y);
   int ybottom = wxMax(down.y, up.y);
-  m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = NULL;
+  m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = nullptr;
 
   wxRect rect;
 
@@ -2701,7 +2701,7 @@ void Worksheet::DeleteSelection()
     m_cellPointers.m_selectionEnd->GetGroup()
     );
   TreeUndo_ClearRedoActionList();
-  m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = NULL;
+  m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = nullptr;
   UpdateTableOfContents();
   RequestRedraw();
 }
@@ -3218,7 +3218,7 @@ void Worksheet::QuestionAnswered()
       ScrollToCaret();
     }
   }
-  m_cellPointers.m_answerCell = NULL;
+  m_cellPointers.m_answerCell = nullptr;
   m_questionPrompt = false;
 }
 
@@ -6360,8 +6360,8 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
   else if (m_cellPointers.m_selectionStart)
   {
     GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
-    Cell *selectionStart = m_cellPointers.m_selectionStart;
-    Cell *selectionEnd = m_cellPointers.m_selectionEnd;
+    auto selectionStart = m_cellPointers.m_selectionStart;
+    auto selectionEnd = m_cellPointers.m_selectionEnd;
     parent->SelectOutput(&selectionStart, &selectionEnd);
   }
 
@@ -6948,8 +6948,8 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
 
   if (cell)
   {
-    m_cellPointers.m_selectionStart = NULL;
-    m_cellPointers.m_selectionEnd = NULL;
+    m_cellPointers.m_selectionStart = nullptr;
+    m_cellPointers.m_selectionEnd = nullptr;
     cell->ActivateCursor();
     if (!m_redrawRequested) m_caretTimer.Stop();
   }
@@ -7608,7 +7608,7 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
   if (CanAnimate())
    {
      //! Step the slide show.
-     SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+     auto *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
      tmp->AnimationRunning(false);
   
      if (ev.GetEventType() == wxEVT_SCROLLWIN_LINEUP)
@@ -7647,8 +7647,8 @@ wxString Worksheet::GetOutputAboveCaret()
   if (!m_hCaretActive || !m_hCaretPosition)
     return {};
 
-  Cell *selectionStart = m_cellPointers.m_selectionStart;
-  Cell *selectionEnd = m_cellPointers.m_selectionEnd;
+  auto selectionStart = m_cellPointers.m_selectionStart;
+  auto selectionEnd = m_cellPointers.m_selectionEnd;
   m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
 
   wxString output = GetString();

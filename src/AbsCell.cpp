@@ -62,8 +62,8 @@ void AbsCell::SetInner(Cell *inner)
   m_innerCell.reset(inner);
 
   m_last = m_innerCell.get();
-  if (m_last != NULL)
-    while (m_last->m_next != NULL)
+  if (m_last)
+    while (m_last->m_next)
       m_last = m_last->m_next;
 }
 
@@ -186,8 +186,8 @@ bool AbsCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell.get());
-    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an absCell!"));
-    if (m_last != NULL)
+    wxASSERT_MSG(m_last, _("Bug: No last cell in an absCell!"));
+    if (m_last)
       m_last->SetNextToDraw(m_close.get());
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open.get();

@@ -528,4 +528,5 @@ protected:
       m_cellsInGroup = 2;
   }
 };
+
 #endif /* GROUPCELL_H */

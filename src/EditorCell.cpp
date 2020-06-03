@@ -186,7 +186,7 @@ void EditorCell::AddDrawParameter(wxString param)
   m_text += textAfterParameter;
   StyleText();
   ResetSize();
-  if (m_group != NULL)
+  if (m_group)
     m_group->ResetSize();
 }
 
@@ -2598,7 +2598,7 @@ wxString EditorCell::InterpretEscapeString(const wxString &txt) const
 
 void EditorCell::DeactivateCursor()
 {
-  auto *editor = m_cellPointers->m_activeCell;
+  EditorCell *editor = m_cellPointers->m_activeCell;
   if (editor)
   {
     editor->ClearSelection();

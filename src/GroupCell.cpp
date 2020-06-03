@@ -37,7 +37,6 @@
 #include "TextCell.h"
 #include "ImgCell.h"
 #include "BitmapOut.h"
-#include "list"
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &initString) :
     Cell(this, config)
@@ -357,7 +356,7 @@ void GroupCell::AppendInput(Cell *cell)
 void GroupCell::SetOutput(Cell *output)
 {
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
-    m_cellPointers->m_answerCell = NULL;
+    m_cellPointers->m_answerCell = nullptr;
   
   m_output.reset(output);
 
@@ -386,7 +385,7 @@ void GroupCell::RemoveOutput()
   // If there is nothing to do we can skip the rest of this action.
 
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
-    m_cellPointers->m_answerCell = NULL;
+    m_cellPointers->m_answerCell = nullptr;
 
   if (GetGroupType() != GC_TYPE_IMAGE)
     m_output.reset();
@@ -443,7 +442,7 @@ void GroupCell::AppendOutput(Cell *cell)
 
     tmp->AppendCell(cell);
 
-    if(m_lastInOutput != NULL)
+    if (m_lastInOutput)
       while (m_lastInOutput->m_next != NULL)
         m_lastInOutput = m_lastInOutput->m_next;
   }
@@ -668,7 +667,7 @@ void GroupCell::RecalculateHeightInput()
   }
   
   m_currentPoint.x = configuration->GetIndent();
-  if (m_previous == NULL)
+  if (!m_previous)
   {
     m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetCenterList();
   }
@@ -763,7 +762,7 @@ void GroupCell::RecalculateHeightOutput()
       m_outputRect.width = m_width;
       m_outputRect.height += height_Delta;
       
-      if (tmp->m_previous != NULL &&
+      if (tmp->m_previous &&
           ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
       {
         m_height            += configuration->GetInterEquationSkip();
@@ -817,7 +816,7 @@ GroupCell *GroupCell::UpdateYPosition()
 {
   Configuration *configuration = (*m_configuration);
   
-  if (m_previous == NULL)
+  if (!m_previous)
   {
     m_currentPoint.x = configuration->GetIndent();
     if(m_center < 0)
@@ -1766,7 +1765,7 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint &one, const
 
   // Lets select a rectangle
   Cell *tmp = m_output.get();
-  *first = *last = NULL;
+  *first = *last = nullptr;
 
   while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
     tmp = tmp->GetNextToDraw();
@@ -1942,12 +1941,11 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
 
   *end = *start;
 
-  while (*end &&
-         (*end)->GetNextToDraw())
+  while (*end && (*end)->GetNextToDraw())
     *end = (*end)->GetNextToDraw();
 
   if (!*end || !*start)
-    *end = *start = NULL;
+    *end = *start = nullptr;
 }
 
 bool GroupCell::BreakUpCells(Cell *cell)
@@ -2169,14 +2167,14 @@ GroupCell *GroupCell::Fold()
       end->m_next->m_previous = this;
     }
     else
-      m_next = m_nextToDraw = NULL;
+      m_next = m_nextToDraw = nullptr;
     {
       end->m_next = NULL;
       end->SetNextToDraw(NULL);
     }
   }
   
-  start->m_previous = NULL;
+  start->m_previous = nullptr;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
@@ -2365,7 +2363,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
 
 bool GroupCell::IsMainInput(Cell *active) const
 {
-  return m_inputLabel->m_next != NULL && active == m_inputLabel->m_next;
+  return m_inputLabel->m_next && active == m_inputLabel->m_next;
 }
 
 bool GroupCell::Contains(GroupCell *cell)

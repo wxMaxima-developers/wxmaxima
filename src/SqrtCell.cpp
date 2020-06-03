@@ -75,8 +75,8 @@ void SqrtCell::SetInner(Cell *inner)
   m_innerCell.reset(inner);
 
   m_last = inner;
-  if (m_last != NULL)
-    while (m_last->m_next != NULL)
+  if (m_last)
+    while (m_last->m_next)
       m_last = m_last->m_next;
 }
 
