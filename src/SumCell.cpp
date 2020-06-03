@@ -75,7 +75,7 @@ void SumCell::SetBase(Cell *base)
     return;
   Paren()->SetInner(base);
   wxASSERT(Base() == base);
-  m_displayedBase = m_paren.get();
+  m_displayedBase = m_paren;
 }
 
 void SumCell::SetUnder(Cell *under)

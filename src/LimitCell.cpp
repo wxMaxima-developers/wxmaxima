@@ -43,9 +43,9 @@ LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_comma->SetStyle(TS_FUNCTION);
-  m_base_last = m_base.get();
-  m_under_last = m_under.get();
-  m_name_last = m_name.get();
+  m_base_last = m_base;
+  m_under_last = m_under;
+  m_name_last = m_name;
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
@@ -281,13 +281,13 @@ bool LimitCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_name_last->SetNextToDraw(m_open.get());
-    m_open->SetNextToDraw(m_base.get());
-    m_base_last->SetNextToDraw(m_comma.get());
-    m_comma->SetNextToDraw(m_under.get());
-    m_under_last->SetNextToDraw(m_close.get());
+    m_name_last->SetNextToDraw(m_open);
+    m_open->SetNextToDraw(m_base);
+    m_base_last->SetNextToDraw(m_comma);
+    m_comma->SetNextToDraw(m_under);
+    m_under_last->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_name.get();
+    m_nextToDraw = m_name;
     ResetData();    
     return true;
   }

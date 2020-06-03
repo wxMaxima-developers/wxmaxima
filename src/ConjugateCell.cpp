@@ -54,7 +54,7 @@ void ConjugateCell::SetInner(Cell *inner)
     return;
   m_innerCell.reset(inner);
 
-  m_last = m_innerCell.get();
+  m_last = m_innerCell;
   if (m_last)
     while (m_last->m_next)
       m_last = m_last->m_next;
@@ -174,12 +174,12 @@ bool ConjugateCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell.get());
+    m_open->SetNextToDraw(m_innerCell);
     wxASSERT_MSG(m_last, _("Bug: No last cell in a conjugateCell!"));
     if (m_last)
-      m_last->SetNextToDraw(m_close.get());
+      m_last->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open.get();
+    m_nextToDraw = m_open;
     ResetData();        
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());

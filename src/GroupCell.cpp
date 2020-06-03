@@ -348,7 +348,7 @@ void GroupCell::SetOutput(Cell *output)
   
   m_output.reset(output);
 
-  m_lastInOutput = m_output.get();
+  m_lastInOutput = m_output;
 
   m_outputHeight = -1;
   if(m_output != NULL)
@@ -414,7 +414,7 @@ void GroupCell::AppendOutput(Cell *cell)
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
 
-    m_lastInOutput = m_output.get();
+    m_lastInOutput = m_output;
 
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
@@ -1917,7 +1917,7 @@ void GroupCell::SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end)
   if (m_isHidden)
     return;
 
-  *start = m_output.get();
+  *start = m_output;
 
   while (*start && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
     *start = (*start)->GetNextToDraw();

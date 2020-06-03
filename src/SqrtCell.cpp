@@ -339,12 +339,12 @@ bool SqrtCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell.get());
+    m_open->SetNextToDraw(m_innerCell);
     wxASSERT_MSG(m_last, _("Bug: No last cell inside a square root!"));
     if (m_last)
-      m_last->SetNextToDraw(m_close.get());
+      m_last->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open.get();
+    m_nextToDraw = m_open;
 
     ResetData();
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());

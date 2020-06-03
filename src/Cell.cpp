@@ -57,13 +57,13 @@ void Cell::CellPointers::SetWorkingGroup(GroupCell *group)
 }
 
 GroupCell *Cell::CellPointers::GetWorkingGroup(bool resortToLast) const
-{ return (m_workingGroup || !resortToLast) ? m_workingGroup.get() : m_lastWorkingGroup.get(); }
+{ return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
 
 GroupCell *Cell::CellPointers::ErrorList::FirstError() const
-{ return m_errors.empty() ? nullptr : m_errors.front().get(); }
+{ return m_errors.empty() ? nullptr : m_errors.front(); }
 
 GroupCell *Cell::CellPointers::ErrorList::LastError() const
-{ return m_errors.empty() ? nullptr : m_errors.back().get(); }
+{ return m_errors.empty() ? nullptr : m_errors.back(); }
 
 wxString Cell::GetToolTip(const wxPoint &point)
 {
