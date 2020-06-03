@@ -2,7 +2,7 @@
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2020 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -3124,6 +3124,10 @@ bool EditorCell::CopyToClipboard()
   if(end > m_text.Length())
     end = m_text.Length();
   wxString s = m_text.SubString(start, end);
+  // Copying non-breakable spaces in code to external applications is likely to cause
+  // problems
+  if(GetType() == MC_TYPE_INPUT)
+    s.Replace(wxT("\u00a0"), wxT(" "));
   if (!s.IsEmpty() && (wxTheClipboard->Open()))
   {
     if(!wxTheClipboard->SetData(new wxTextDataObject(s)))
