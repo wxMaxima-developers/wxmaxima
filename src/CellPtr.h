@@ -52,6 +52,9 @@
  */
 class Observed
 {
+  friend class CellPtrBase;
+  template <typename T> friend class CellPtr;
+
   static size_t m_instanceCount;
 
   struct ControlBlock
@@ -63,7 +66,7 @@ class Observed
     //! Number of observers for this object
     unsigned int m_refCount = 0;
 
-    ControlBlock *Ref(const void *cellptr) {
+    ControlBlock *Ref(const CellPtrBase *cellptr) {
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p CB::Ref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount+1, this, m_object);
       else
@@ -73,7 +76,7 @@ class Observed
     }
     //! Dereferences the control block and returns nullptr is the block should be retained,
     //! or non-nullptr if the block should be deleted.
-    ControlBlock *Deref(const void *cellptr) {
+    ControlBlock *Deref(const CellPtrBase *cellptr) {
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p CB::Deref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount-1, this, m_object);
       else
@@ -100,8 +103,6 @@ protected:
     delete m_cb->Deref(nullptr);
     -- m_instanceCount;
   }
-  friend class CellPtrBase;
-  template <typename T> friend class CellPtr;
 
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
