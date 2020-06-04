@@ -64,6 +64,8 @@ int CommonMain()
   wxConfigBase *config = wxConfig::Get();
   config->Flush();
   delete config;
+  wxLogDebug("CellPtr: %zu live instances leaked", CellPtrBase::GetLiveInstanceCount());
+  wxLogDebug("Cell:    %zu live instances leaked", Observed::GetLiveInstanceCount());
   return 0;
 }
 
