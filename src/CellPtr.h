@@ -46,6 +46,8 @@
 //! Set to 1 to enable CellPtr lifetime logging
 #define CELLPTR_LOG_INSTANCES 0
 
+class CellPtrBase;
+
 /*! Objects deriving from this class can be observed by the CellPtr.
  *
  * This class is not copyable.
@@ -57,16 +59,32 @@ class Observed
 
   static size_t m_instanceCount;
 
-  struct ControlBlock
+  class ControlBlock final
   {
-    static ControlBlock empty;
-
     //! Pointer to the object
-    Observed *const m_object = {};
+    Observed *m_object = {};
     //! Number of observers for this object
-    unsigned int m_refCount = 0;
+    mutable unsigned int m_refCount = 0;
 
+  public:
+    static const ControlBlock empty;    
+
+    explicit ControlBlock(Observed *object) : m_object(object) {}
+    explicit ControlBlock(decltype(nullptr)) : m_refCount(1) {}
+    ControlBlock(const ControlBlock &) = delete;
+    void operator=(const ControlBlock &) = delete;
+
+    void Clear() { m_object = nullptr; }
+
+    inline Observed *Get() const { return m_object; }
+
+    //! References the control block.
     ControlBlock *Ref(const CellPtrBase *cellptr) {
+      const_cast<const ControlBlock *>(this)->Ref(cellptr);
+      return this;
+    }
+    //! References the control block.
+    const ControlBlock *Ref(const CellPtrBase *cellptr) const {
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p CB::Ref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount+1, this, m_object);
       else
@@ -74,22 +92,31 @@ class Observed
       ++m_refCount;
       return this;
     }
+    //! Dereferences the control block and deletes it if necessary.
+    static nullptr_t Deref(const ControlBlock * cb, const CellPtrBase *cellptr)
+    {
+      // Note: Deref only returns non-null value once - when its reference count reaches zero.
+      delete cb->Deref(cellptr);
+      return nullptr;
+    }
+
+  private:
     //! Dereferences the control block and returns nullptr is the block should be retained,
-    //! or non-nullptr if the block should be deleted.
-    ControlBlock *Deref(const CellPtrBase *cellptr) {
+    //! or its address if the block should be deleted.
+    const ControlBlock *Deref(const CellPtrBase *cellptr) const
+    {
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p CB::Deref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount-1, this, m_object);
       else
         wxUnusedVar(cellptr);
       wxASSERT(m_refCount > 1 || (m_refCount == 1 && this != &empty));
       if (!--m_refCount)
+      {
+        wxASSERT(!m_object);
         return this;
+      }
       return nullptr;
     }
-    explicit ControlBlock(Observed *object) : m_object(object) {}
-    explicit ControlBlock(decltype(nullptr)) : m_refCount(1) {}
-    ControlBlock(const ControlBlock &) = delete;
-    void operator=(const ControlBlock &) = delete;
   };
 
   ControlBlock *const m_cb = (new ControlBlock(this))->Ref(nullptr);
@@ -100,7 +127,7 @@ protected:
   Observed() { ++ m_instanceCount; }
   virtual ~Observed()
   {
-    delete m_cb->Deref(nullptr);
+    ControlBlock::Deref(m_cb, nullptr);
     -- m_instanceCount;
   }
 
@@ -117,9 +144,9 @@ private:
   using ControlBlock = Observed::ControlBlock;
   static size_t m_instanceCount;
 
-  ControlBlock *m_cb = nullptr;
+  const ControlBlock *m_cb = nullptr;
 
-  ControlBlock *Ref(Observed *obj) const {
+  const ControlBlock *Ref(Observed *obj) const {
     return (obj ? obj->Observed::m_cb : &ControlBlock::empty)->Ref(this); }
 
 protected:
@@ -144,13 +171,12 @@ protected:
   {
     --m_instanceCount;
     if (CELLPTR_LOG_INSTANCES)
-      wxLogDebug("%p->~CellPtr() cb=%p obj=%p", this, m_cb, m_cb->m_object);
+      wxLogDebug("%p->~CellPtr() cb=%p obj=%p", this, m_cb, m_cb->Get());
     wxASSERT(m_cb);
-    if (m_cb) delete m_cb->Deref(this);
-    m_cb = nullptr;
+    m_cb = ControlBlock::Deref(m_cb, this);
   }
 
-  Observed *base_get() const { return m_cb->m_object; }
+  Observed *base_get() const { return m_cb->Get(); }
 
   CellPtrBase &operator=(const CellPtrBase &o)
   {
@@ -169,11 +195,11 @@ protected:
 
   void base_reset(Observed *obj = nullptr)
   {
-    if (obj != m_cb->m_object) {
+    if (obj != m_cb->Get()) {
       wxASSERT(!obj || m_cb != obj->m_cb);
       if (CELLPTR_LOG_REFS)
-        wxLogDebug("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->m_object, obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
-      delete m_cb->Deref(this);
+        wxLogDebug("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->Get(), obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
+      m_cb = ControlBlock::Deref(m_cb, this);
       m_cb = Ref(obj);
     } else {
       // If the observed objects are the same, the control block must be the same as well.
@@ -189,7 +215,7 @@ public:
            || (std::is_pointer<U>::value && std::is_convertible<U, Observed*>::value);
   }
 
-  explicit operator bool() const { return m_cb->m_object; }
+  explicit operator bool() const { return m_cb->Get(); }
 
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
 };
