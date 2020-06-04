@@ -236,6 +236,7 @@ public:
 
   // Operations with nullptr_t
   //
+  void reset() { base_reset(); }
   explicit CellPtr(decltype(nullptr)) {}
   CellPtr &operator=(decltype(nullptr)) { base_reset(); return *this; }
   bool operator==(decltype(nullptr)) const { return !bool(this); }
@@ -254,7 +255,7 @@ public:
   }
 
   template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
-  void reset(U obj = nullptr)
+  void reset(U obj)
   { base_reset(obj); }
   // Operations with compatible CellPtrs
   //
