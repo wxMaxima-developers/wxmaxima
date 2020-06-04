@@ -58,10 +58,10 @@ GroupCell *Cell::CellPointers::GetWorkingGroup(bool resortToLast) const
 { return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
 
 GroupCell *Cell::CellPointers::ErrorList::FirstError() const
-{ return m_errors.empty() ? nullptr : m_errors.front(); }
+{ return m_errors.empty() ? nullptr : m_errors.front().get(); }
 
 GroupCell *Cell::CellPointers::ErrorList::LastError() const
-{ return m_errors.empty() ? nullptr : m_errors.back(); }
+{ return m_errors.empty() ? nullptr : m_errors.back().get(); }
 
 wxString Cell::GetToolTip(const wxPoint &point)
 {
