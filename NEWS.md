@@ -1,4 +1,4 @@
-#Current
+#20.06.0
  * Many spell corrections and bugfixes
  * Updated Russian translation by OlesyaGerasimenko
  * Updated Ukrainian translation by Yuri Chornoivan
@@ -6,10 +6,12 @@
  * The history sidebar now works again
  * TextCells with copy-alt-text caused an crash
  * A few additional small bugfixes
+ * Many (really many!) big stability improvements
  * in sqrt(conjugate(f(x))) the horizontal lines coincided
  * Strings were searched for comment starts when adding line endings
  * Faster start-up by avoiding unneeded redraw events
  * A big number of performance improvements
+ * Unfortunately one last temporary fix reduces performance again
  * Corrected a bug that sometimes caused parts of equations not to be displayed
  * As this allows to improve performance and stability C++14 is now used
  * Speed boost The list of anchors from the manual is now cached on disk

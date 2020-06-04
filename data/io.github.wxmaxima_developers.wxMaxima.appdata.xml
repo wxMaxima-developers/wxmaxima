@@ -51,6 +51,33 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="20.06.0" date="2020-06-04">
+      <description>
+	<p>
+	  A release that allows to include the current state of improvements
+	  to the maxima windows installer.
+	</p>
+        <ul>
+	  <li> Many spell corrections and bugfixes </li>
+	  <li> Updated Russian translation by OlesyaGerasimenko </li>
+	  <li> Updated Ukrainian translation by Yuri Chornoivan </li>
+	  <li> Many corrections to the german translation </li>
+	  <li> The history sidebar now works again </li>
+	  <li> TextCells with copy-alt-text caused an crash </li>
+	  <li> A few additional small bugfixes </li>
+	  <li> Many (really many!) big stability improvements </li>
+	  <li> in sqrt(conjugate(f(x))) the horizontal lines coincided </li>
+	  <li> Strings were searched for comment starts when adding line endings </li>
+	  <li> Faster start-up by avoiding unneeded redraw events </li>
+	  <li> A big number of performance improvements </li>
+	  <li> Unfortunately one last temporary fix reduces performance again </li>
+	  <li> Corrected a bug that sometimes caused parts of equations not to be displayed </li>
+	  <li> As this allows to improve performance and stability C++14 is now used </li>
+	  <li> Speed boost The list of anchors from the manual is now cached on disk </li>
+        </ul>
+      </description>
+    </release>
+
     <release version="20.04.0" date="2020-04-18">
       <description>
 	<p>
