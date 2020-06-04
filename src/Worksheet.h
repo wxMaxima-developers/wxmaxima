@@ -270,12 +270,12 @@ private:
 
     /*! Cells that were deleted in this action.
 
-      This field will have to contain the cells themself, not a copy of them because
+      This field will have to contain the cells themselves, not a copy of them because
       the latter might break consecutive undos.
 
       If this field's value is NULL no cells have to be added to undo this action.
     */
-    GroupCell *const m_oldCells = nullptr;
+    std::unique_ptr<GroupCell> m_oldCells;
   };
 
   //! The type of the list of tree actions that can be undone
