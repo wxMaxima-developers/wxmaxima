@@ -22,7 +22,7 @@
 #include "CellPtr.h"
 #include "GroupCell.h"
 
-Observed::ControlBlock Observed::ControlBlock::empty{nullptr};
+const Observed::ControlBlock Observed::ControlBlock::empty{nullptr};
 
 size_t Observed::m_instanceCount;
 size_t CellPtrBase::m_instanceCount;

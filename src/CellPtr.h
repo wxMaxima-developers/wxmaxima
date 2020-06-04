@@ -46,24 +46,44 @@
 //! Set to 1 to enable CellPtr lifetime logging
 #define CELLPTR_LOG_INSTANCES 0
 
+class CellPtrBase;
+
 /*! Objects deriving from this class can be observed by the CellPtr.
  *
  * This class is not copyable.
  */
 class Observed
 {
+  friend class CellPtrBase;
+
   static size_t m_instanceCount;
 
-  struct ControlBlock
+  class ControlBlock final
   {
-    static ControlBlock empty;
-
     //! Pointer to the object
-    Observed *const m_object = {};
+    Observed *m_object = {};
     //! Number of observers for this object
-    unsigned int m_refCount = 0;
+    mutable unsigned int m_refCount = 0;
 
-    ControlBlock *Ref(const void *cellptr) {
+  public:
+    static const ControlBlock empty;    
+
+    explicit ControlBlock(Observed *object) : m_object(object) {}
+    explicit ControlBlock(decltype(nullptr)) : m_refCount(1) {}
+    ControlBlock(const ControlBlock &) = delete;
+    void operator=(const ControlBlock &) = delete;
+
+    void Clear() { m_object = nullptr; }
+
+    inline Observed *Get() const { return m_object; }
+
+    //! References the control block.
+    ControlBlock *Ref(const CellPtrBase *cellptr) {
+      const_cast<const ControlBlock *>(this)->Ref(cellptr);
+      return this;
+    }
+    //! References the control block.
+    const ControlBlock *Ref(const CellPtrBase *cellptr) const {
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p CB::Ref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount+1, this, m_object);
       else
@@ -71,22 +91,31 @@ class Observed
       ++m_refCount;
       return this;
     }
+    //! Dereferences the control block and deletes it if necessary.
+    static nullptr_t Deref(const ControlBlock * cb, const CellPtrBase *cellptr)
+    {
+      // Note: Deref only returns non-null value once - when its reference count reaches zero.
+      delete cb->Deref(cellptr);
+      return nullptr;
+    }
+
+  private:
     //! Dereferences the control block and returns nullptr is the block should be retained,
-    //! or non-nullptr if the block should be deleted.
-    ControlBlock *Deref(const void *cellptr) {
+    //! or its address if the block should be deleted.
+    const ControlBlock *Deref(const CellPtrBase *cellptr) const
+    {
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p CB::Deref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount-1, this, m_object);
       else
         wxUnusedVar(cellptr);
       wxASSERT(m_refCount > 1 || (m_refCount == 1 && this != &empty));
       if (!--m_refCount)
+      {
+        wxASSERT(!m_object);
         return this;
+      }
       return nullptr;
     }
-    explicit ControlBlock(Observed *object) : m_object(object) {}
-    explicit ControlBlock(decltype(nullptr)) : m_refCount(1) {}
-    ControlBlock(const ControlBlock &) = delete;
-    void operator=(const ControlBlock &) = delete;
   };
 
   ControlBlock *const m_cb = (new ControlBlock(this))->Ref(nullptr);
@@ -97,11 +126,10 @@ protected:
   Observed() { ++ m_instanceCount; }
   virtual ~Observed()
   {
-    delete m_cb->Deref(nullptr);
+    m_cb->Clear();
+    ControlBlock::Deref(m_cb, nullptr);
     -- m_instanceCount;
   }
-  friend class CellPtrBase;
-  template <typename T> friend class CellPtr;
 
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
@@ -116,9 +144,9 @@ private:
   using ControlBlock = Observed::ControlBlock;
   static size_t m_instanceCount;
 
-  ControlBlock *m_cb = nullptr;
+  const ControlBlock *m_cb = nullptr;
 
-  ControlBlock *Ref(Observed *obj) const {
+  const ControlBlock *Ref(Observed *obj) const {
     return (obj ? obj->Observed::m_cb : &ControlBlock::empty)->Ref(this); }
 
 protected:
@@ -143,13 +171,12 @@ protected:
   {
     --m_instanceCount;
     if (CELLPTR_LOG_INSTANCES)
-      wxLogDebug("%p->~CellPtr() cb=%p obj=%p", this, m_cb, m_cb->m_object);
+      wxLogDebug("%p->~CellPtr() cb=%p obj=%p", this, m_cb, m_cb->Get());
     wxASSERT(m_cb);
-    if (m_cb) delete m_cb->Deref(this);
-    m_cb = nullptr;
+    m_cb = ControlBlock::Deref(m_cb, this);
   }
 
-  Observed *base_get() const { return m_cb->m_object; }
+  Observed *base_get() const { return m_cb->Get(); }
 
   CellPtrBase &operator=(const CellPtrBase &o)
   {
@@ -168,11 +195,11 @@ protected:
 
   void base_reset(Observed *obj = nullptr)
   {
-    if (obj != m_cb->m_object) {
+    if (obj != m_cb->Get()) {
       wxASSERT(!obj || m_cb != obj->m_cb);
       if (CELLPTR_LOG_REFS)
-        wxLogDebug("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->m_object, obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
-      delete m_cb->Deref(this);
+        wxLogDebug("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->Get(), obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
+      m_cb = ControlBlock::Deref(m_cb, this);
       m_cb = Ref(obj);
     } else {
       // If the observed objects are the same, the control block must be the same as well.
@@ -188,7 +215,16 @@ public:
            || (std::is_pointer<U>::value && std::is_convertible<U, Observed*>::value);
   }
 
-  explicit operator bool() const { return m_cb->m_object; }
+  explicit operator bool() const { return m_cb->Get(); }
+
+  //! This is exactly like the spaceship operator in C++20
+  auto cmpControlBlocks(const CellPtrBase &o) const { return m_cb - o.m_cb; }
+
+  //! This is the spaceship operator acting on pointed-to objects
+  auto cmpObjects(const CellPtrBase &o) const { return m_cb->Get() - o.m_cb->Get(); }
+
+  //! This is the spaceship operator acting on pointed-to objects
+  auto cmpObjects(const Observed *o) const { return m_cb->Get() - o; }
 
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
 };
@@ -235,6 +271,7 @@ public:
 
   // Operations with nullptr_t
   //
+  void reset() { base_reset(); }
   explicit CellPtr(decltype(nullptr)) {}
   CellPtr &operator=(decltype(nullptr)) { base_reset(); return *this; }
   bool operator==(decltype(nullptr)) const { return !bool(this); }
@@ -253,9 +290,8 @@ public:
   }
 
   template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
-  void reset(U obj = nullptr)
+  void reset(U obj)
   { base_reset(obj); }
-\
   // Operations with compatible CellPtrs
   //
   CellPtr(CellPtr &o) : CellPtrBase(o) {}
@@ -291,13 +327,13 @@ public:
 #if !CELLPTR_CAST_TO_PTR
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator==(const CellPtr<U> &ptr) const { return m_cb == ptr.m_cb; }
+  bool operator==(const CellPtr<U> &ptr) const { return cmpControlBlocks(ptr) == 0; }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator!=(const CellPtr<U> &ptr) const { return m_cb != ptr.m_cb; }
+  bool operator!=(const CellPtr<U> &ptr) const { return cmpControlBlocks(ptr) != 0; }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator<(const CellPtr<U> &ptr) const { return m_cb->m_object < ptr.m_cb->m_object; }
+  bool operator<(const CellPtr<U> &ptr) const { return cmpObjects(ptr) < 0; }
 #endif
 
   // Operations with compatible unique_ptr
@@ -331,29 +367,42 @@ CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
 //
 
 template <typename T, typename U>
-bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) { return left.get() == right.get(); }
+bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpControlBlocks(right) == 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator==(U obj, const CellPtr<T> &cellPtr) { return cellPtr.get() == obj; }
+bool operator==(U left, const CellPtr<T> &right) { return right.cmpObjects(left) == 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator==(const CellPtr<T> &cellPtr, U obj) { return cellPtr.get() == obj; }
+bool operator==(const CellPtr<T> &left, U right) { return left.cmpObjects(right) == 0; }
 
 template <typename T, typename U>
-bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) { return left.get() != right.get(); }
+bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpControlBlocks(right) != 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator!=(U obj, const CellPtr<T> &cellPtr) { return cellPtr.get() != obj; }
+bool operator!=(U left, const CellPtr<T> &right) { return right.cmpObjects(left) != 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator!=(const CellPtr<T> &cellPtr, U obj) { return cellPtr.get() != obj; }
+bool operator!=(const CellPtr<T> &left, U right) { return left.cmpObjects(right) != 0; }
+
+template <typename T, typename U>
+bool operator<(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpObjects(right) < 0; }
+
+#if !CELLPTR_CAST_TO_PTR
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+bool operator<(U left, const CellPtr<T> &right) { return right.cmpObjects(left) > 0; }
+#endif
+
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+bool operator<(const CellPtr<T> &left, U right) { return left.cmpObjects(right) < 0; }
 
 #endif // CELLPTR_H
