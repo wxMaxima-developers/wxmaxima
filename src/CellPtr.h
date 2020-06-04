@@ -256,7 +256,6 @@ public:
   template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
   void reset(U obj = nullptr)
   { base_reset(obj); }
-\
   // Operations with compatible CellPtrs
   //
   CellPtr(CellPtr &o) : CellPtrBase(o) {}
