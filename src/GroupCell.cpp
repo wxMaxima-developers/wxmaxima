@@ -2230,7 +2230,7 @@ GroupCell *GroupCell::UnfoldAll()
       result = tmp;
     }
     if (tmp->m_hiddenTree != NULL)
-      m_hiddenTree->UnfoldAll();
+      tmp->m_hiddenTree->UnfoldAll();
     tmp = tmp->GetNext();
   }
   return result;
