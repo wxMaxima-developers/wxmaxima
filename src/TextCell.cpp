@@ -687,6 +687,10 @@ void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
   wxFont font = (*m_configuration)->GetFont(m_textStyle, GetScaledTextSize());
   font.SetPointSize(GetScaledTextSize());
+  if((*m_configuration)->m_styles[m_textStyle].Bold())
+    font.SetWeight(wxFONTWEIGHT_BOLD);
+  else
+    font.SetWeight(wxFONTWEIGHT_NORMAL);
   dc->SetFont(font);
 }
 
@@ -764,6 +768,10 @@ void TextCell::SetFont(int fontsize)
 
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+  if((*m_configuration)->m_styles[m_textStyle].Bold())
+    font.SetWeight(wxFONTWEIGHT_BOLD);
+  else
+    font.SetWeight(wxFONTWEIGHT_NORMAL);
   dc->SetFont(font);
   
   // A fallback if we have been completely unable to set a working font
