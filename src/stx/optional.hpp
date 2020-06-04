@@ -461,6 +461,7 @@ public:
 
   // 20.5.5.1, constructors
   constexpr optional() noexcept : OptionalBase<T>()  {};
+  // cppcheck-suppress noExplicitConstructor
   constexpr optional(nullopt_t) noexcept : OptionalBase<T>() {};
 
   optional(const optional& rhs)
@@ -481,8 +482,10 @@ public:
     }
   }
 
+  // cppcheck-suppress noExplicitConstructor
   constexpr optional(const T& v) : OptionalBase<T>(v) {}
 
+  // cppcheck-suppress noExplicitConstructor
   constexpr optional(T&& v) : OptionalBase<T>(constexpr_move(v)) {}
 
   template <class... Args>
@@ -616,6 +619,7 @@ public:
   }
   
   constexpr T const& value() const {
+    // cppcheck-suppress internalAstError
     return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
   }
   
@@ -678,8 +682,10 @@ public:
   // 20.5.5.1, construction/destruction
   constexpr optional() noexcept : ref(nullptr) {}
   
+  // cppcheck-suppress noExplicitConstructor
   constexpr optional(nullopt_t) noexcept : ref(nullptr) {}
-   
+
+  // cppcheck-suppress noExplicitConstructor
   constexpr optional(T& v) noexcept : ref(detail_::static_addressof(v)) {}
   
   optional(T&&) = delete;

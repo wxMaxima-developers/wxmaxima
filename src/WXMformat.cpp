@@ -528,7 +528,6 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
   {
     GroupCell *cell;
     appendCell((cell = new GroupCell(config, GC_TYPE_CODE, line)));
-    appendCell(last);
   }
 
   return tree;
