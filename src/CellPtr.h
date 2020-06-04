@@ -168,7 +168,7 @@ public:
 
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  CellPtr(const CxellPtr<U> &o) : m_cb(o.m_cb->Ref()) {}
+  CellPtr(const CellPtr<U> &o) : m_cb(o.m_cb->Ref()) {}
 
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
