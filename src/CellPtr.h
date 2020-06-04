@@ -55,7 +55,6 @@ class CellPtrBase;
 class Observed
 {
   friend class CellPtrBase;
-  template <typename T> friend class CellPtr;
 
   static size_t m_instanceCount;
 
@@ -218,6 +217,15 @@ public:
 
   explicit operator bool() const { return m_cb->Get(); }
 
+  //! This is exactly like the spaceship operator in C++20
+  auto cmpControlBlocks(const CellPtrBase &o) const { return m_cb - o.m_cb; }
+
+  //! This is the spaceship operator acting on pointed-to objects
+  auto cmpObjects(const CellPtrBase &o) const { return m_cb->Get() - o.m_cb->Get(); }
+
+  //! This is the spaceship operator acting on pointed-to objects
+  auto cmpObjects(const Observed *o) const { return m_cb->Get() - o; }
+
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
 };
 
@@ -319,13 +327,13 @@ public:
 #if !CELLPTR_CAST_TO_PTR
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator==(const CellPtr<U> &ptr) const { return m_cb == ptr.m_cb; }
+  bool operator==(const CellPtr<U> &ptr) const { return cmpControlBlocks(ptr) == 0; }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator!=(const CellPtr<U> &ptr) const { return m_cb != ptr.m_cb; }
+  bool operator!=(const CellPtr<U> &ptr) const { return cmpControlBlocks(ptr) != 0; }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator<(const CellPtr<U> &ptr) const { return m_cb->m_object < ptr.m_cb->m_object; }
+  bool operator<(const CellPtr<U> &ptr) const { return cmpObjects(ptr) < 0; }
 #endif
 
   // Operations with compatible unique_ptr
@@ -359,29 +367,42 @@ CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
 //
 
 template <typename T, typename U>
-bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) { return left.get() == right.get(); }
+bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpControlBlocks(right) == 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator==(U obj, const CellPtr<T> &cellPtr) { return cellPtr.get() == obj; }
+bool operator==(U left, const CellPtr<T> &right) { return right.cmpObjects(left) == 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator==(const CellPtr<T> &cellPtr, U obj) { return cellPtr.get() == obj; }
+bool operator==(const CellPtr<T> &left, U right) { return left.cmpObjects(right) == 0; }
 
 template <typename T, typename U>
-bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) { return left.get() != right.get(); }
+bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpControlBlocks(right) != 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator!=(U obj, const CellPtr<T> &cellPtr) { return cellPtr.get() != obj; }
+bool operator!=(U left, const CellPtr<T> &right) { return right.cmpObjects(left) != 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator!=(const CellPtr<T> &cellPtr, U obj) { return cellPtr.get() != obj; }
+bool operator!=(const CellPtr<T> &left, U right) { return left.cmpObjects(right) != 0; }
+
+template <typename T, typename U>
+bool operator<(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpObjects(right) < 0; }
+
+#if !CELLPTR_CAST_TO_PTR
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+bool operator<(U left, const CellPtr<T> &right) { return right.cmpObjects(left) > 0; }
+#endif
+
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
+bool operator<(const CellPtr<T> &left, U right) { return left.cmpObjects(right) < 0; }
 
 #endif // CELLPTR_H
