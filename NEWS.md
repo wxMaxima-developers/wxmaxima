@@ -1,3 +1,9 @@
+#Now
+ * Updated Turkish translation by Tufan Şirin
+
+#20.06.1
+ * A bugfix that resolves a crash on selection
+
 #20.06.0
  * Many spell corrections and bugfixes
  * Updated Russian translation by OlesyaGerasimenko
