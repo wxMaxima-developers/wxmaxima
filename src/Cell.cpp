@@ -34,8 +34,6 @@
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 
-Observed::ControlBlock Observed::ControlBlock::empty{nullptr};
-
 void Cell::CellPointers::ErrorList::Remove(GroupCell * cell)
 {
   m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());
@@ -60,10 +58,10 @@ GroupCell *Cell::CellPointers::GetWorkingGroup(bool resortToLast) const
 { return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
 
 GroupCell *Cell::CellPointers::ErrorList::FirstError() const
-{ return m_errors.empty() ? nullptr : m_errors.front(); }
+{ return m_errors.empty() ? nullptr : m_errors.front().get(); }
 
 GroupCell *Cell::CellPointers::ErrorList::LastError() const
-{ return m_errors.empty() ? nullptr : m_errors.back(); }
+{ return m_errors.empty() ? nullptr : m_errors.back().get(); }
 
 wxString Cell::GetToolTip(const wxPoint &point)
 {

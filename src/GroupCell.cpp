@@ -2230,7 +2230,7 @@ GroupCell *GroupCell::UnfoldAll()
       result = tmp;
     }
     if (tmp->m_hiddenTree != NULL)
-      m_hiddenTree->UnfoldAll();
+      tmp->m_hiddenTree->UnfoldAll();
     tmp = tmp->GetNext();
   }
   return result;
@@ -2518,10 +2518,3 @@ wxString GroupCell:: m_lookalikeChars(
     wxT("ü")		wxT("\u03cb")
     wxT("\u0460")	wxT("\u03c9")
     wxT("\u0472")	wxT("\u0398"));
-
-// This is a specialization of this method. It's useful when GroupCell
-// is not a fully defined class, but someone wants to use the methods of
-// CellPtr<GroupCell>.
-template <>
-CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const
-{ return static_cast<pointer>(m_cb->m_object); }

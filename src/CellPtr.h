@@ -33,8 +33,12 @@
 #define CELLPTR_H
 
 #include <wx/debug.h>
+#include <wx/defs.h>
 #include <memory>
 #include <type_traits>
+
+//! Set to 1 to enable casting from CellPtr<U> to U*
+#define CELLPTR_CAST_TO_PTR 1
 
 /*! Objects deriving from this class can be observed by the CellPtr.
  *
@@ -51,11 +55,19 @@ class Observed
     //! Number of observers for this object
     unsigned int m_refCount = 0;
 
-    ControlBlock *Ref() { ++m_refCount; return this; }
-    void Deref() {
-      wxASSERT(m_refCount);
+    ControlBlock *Ref(const void *cellptr) {
+      wxUnusedVar(cellptr);
+      ++m_refCount;
+      return this;
+    }
+    //! Dereferences the control block and returns nullptr is the block should be retained,
+    //! or non-nullptr if the block should be deleted.
+    ControlBlock *Deref(const void *cellptr) {
+      wxASSERT(m_refCount > 1 || (m_refCount == 1 && this != &empty));
+      wxUnusedVar(cellptr);
       if (!--m_refCount)
-        delete this;
+        return this;
+      return nullptr;
     }
     explicit ControlBlock(Observed *object) : m_object(object) {}
     explicit ControlBlock(decltype(nullptr)) : m_refCount(1) {}
@@ -63,7 +75,7 @@ class Observed
     void operator=(const ControlBlock &) = delete;
   };
 
-  ControlBlock *const m_cb = (new ControlBlock(this))->Ref();
+  ControlBlock *const m_cb = (new ControlBlock(this))->Ref(nullptr);
   Observed(const Observed &) = delete;
   void operator=(const Observed &) = delete;
 
@@ -71,15 +83,81 @@ protected:
   Observed() = default;
   virtual ~Observed()
   {
-    m_cb->Deref();
+    delete m_cb->Deref(nullptr);
   }
+  friend class CellPtrBase;
   template <typename T> friend class CellPtr;
 };
 
 class Cell;
 class GroupCell;
 
-#define CELLPTR_CAST_TO_PTR 1
+class CellPtrBase
+{
+private:
+  using ControlBlock = Observed::ControlBlock;
+
+  ControlBlock *m_cb = nullptr;
+
+  ControlBlock *Ref(Observed *obj) const {
+    return (obj ? obj->Observed::m_cb : &ControlBlock::empty)->Ref(this); }
+
+protected:
+  CellPtrBase(Observed *obj = nullptr) : m_cb(Ref(obj))
+  {}
+
+  CellPtrBase(const CellPtrBase &o) : CellPtrBase(o.base_get()) {}
+
+  CellPtrBase(CellPtrBase &&o)
+  {
+    using namespace std;
+    swap(m_cb, o.m_cb);
+  }
+
+  ~CellPtrBase()
+  {
+    wxASSERT(m_cb);
+    if (m_cb) delete m_cb->Deref(this);
+    m_cb = nullptr;
+  }
+
+  Observed *base_get() const { return m_cb->m_object; }
+
+  CellPtrBase &operator=(const CellPtrBase &o)
+  {
+    base_reset(o.base_get());
+    return *this;
+  }
+
+  CellPtrBase &operator=(CellPtrBase &&o)
+  {
+    using namespace std;
+    swap(m_cb, o.m_cb);
+    return *this;
+  }
+
+  void base_reset(Observed *obj = nullptr)
+  {
+    if (obj != m_cb->m_object) {
+      wxASSERT(!obj || m_cb != obj->m_cb);
+      delete m_cb->Deref(this);
+      m_cb = Ref(obj);
+    } else {
+      // If the observed objects are the same, the control block must be the same as well.
+      wxASSERT((!obj && m_cb == &ControlBlock::empty)
+               || (obj && m_cb == static_cast<const Observed*>(obj)->m_cb));
+    }
+  }
+
+public:
+  template <typename U>
+  static bool constexpr is_pointer() {
+    return std::is_same<U, decltype(nullptr)>::value
+           || (std::is_pointer<U>::value && std::is_convertible<U, Observed*>::value);
+  }
+
+  explicit operator bool() const { return m_cb->m_object; }
+};
 
 /*! A weak non-owning pointer that becomes null whenever the observed object is
  * destroyed.
@@ -88,11 +166,13 @@ class GroupCell;
  * of instantiation. The pointer's instance can be declared with forward-defined classes.
  */
 template <typename T>
-class CellPtr
+class CellPtr final : public CellPtrBase
 {
-  using ControlBlock = Observed::ControlBlock;
-  ControlBlock *m_cb = Ref(nullptr);
-  ControlBlock *Ref(Observed *obj) { return (obj ? obj->Observed::m_cb : &ControlBlock::empty)->Ref(); }
+  template <typename U>
+  static bool constexpr is_pointer() {
+    return std::is_same<U, decltype(nullptr)>::value
+           || (std::is_pointer<U>::value && std::is_convertible<U, pointer>::value);
+  }
 public:
   using value_type = T;
   using pointer = T*;
@@ -100,12 +180,9 @@ public:
   using reference = T&;
 
   CellPtr() = default;
-  ~CellPtr() { m_cb->Deref(); }
-  void reset() { reset(nullptr); }
 
   // Observers
   //
-  explicit operator bool() const { return m_cb->m_object; }
   pointer get() const;
   inline reference operator*() const { return *get(); }
   inline pointer operator->() const { return get(); };
@@ -114,75 +191,64 @@ public:
   operator pointer() const { return get(); }
 #endif
 
-  template <typename PtrT>
-  PtrT CastAs() const { return dynamic_cast<PtrT>(m_cb->m_object); }
+  template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type = true>
+  PtrT CastAs() const { return dynamic_cast<PtrT>(base_get()); }
 
   // Operations with NULL and integers in general
   //
-  CellPtr(int) = delete;
-  CellPtr(void *) = delete;
+  explicit CellPtr(int) = delete;
+  explicit CellPtr(void *) = delete;
 
   // Operations with nullptr_t
   //
-  CellPtr(decltype(nullptr)) {}
+  explicit CellPtr(decltype(nullptr)) {}
+  CellPtr &operator=(decltype(nullptr)) { base_reset(); return *this; }
   bool operator==(decltype(nullptr)) const { return !bool(this); }
   bool operator!=(decltype(nullptr)) const { return bool(this); }
 
   // Operations with convertible-to-pointer types
   //
-  template <typename U,
-           typename std::enable_if<std::is_convertible<U, pointer>::value, bool>::type = true>
-  explicit CellPtr(U obj) : m_cb(Ref(obj)) {}
+  template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
+  explicit CellPtr(U obj) : CellPtrBase(obj) {}
 
-  template <typename U,
-           typename std::enable_if<std::is_convertible<U, pointer>::value, bool>::type = true>
+  template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
   CellPtr &operator=(U obj)
   {
-    reset(obj);
+    base_reset(obj);
     return *this;
   }
 
-  template <typename U,
-           typename std::enable_if<std::is_convertible<U, pointer>::value, bool>::type = true>
-  void reset(U obj)
-  {
-    if (obj != m_cb->m_object) {
-      m_cb->Deref();
-      m_cb = Ref(obj);
-    } else {
-      // If the observed objects are the same, the control block must be the same as well.
-      pointer pObj = obj; // needed because !nullptr is invalid on gcc <8.
-      wxASSERT((!pObj && m_cb == &ControlBlock::empty)
-               || (pObj && m_cb == static_cast<const Observed*>(obj)->m_cb));
-    }
-  }
-
+  template <typename U, typename std::enable_if<is_pointer<U>(), bool>::type = true>
+  void reset(U obj = nullptr)
+  { base_reset(obj); }
+\
   // Operations with compatible CellPtrs
   //
-  template <typename U,
-           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  CellPtr(CellPtr<U> &&o) {
-    using namespace std;
-    swap(m_cb, o.m_cb);
-  }
+  CellPtr(CellPtr &o) : CellPtrBase(o) {}
+  CellPtr(CellPtr &&o) : CellPtrBase(std::move(o)) {}
+  CellPtr &operator=(const CellPtr &o) { CellPtrBase::operator=(o); return *this; }
+  CellPtr &operator=(CellPtr &&o) { CellPtrBase::operator=(std::move(o)); return *this; }
 
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  CellPtr(const CellPtr<U> &o) : m_cb(o.m_cb->Ref()) {}
+  CellPtr(CellPtr<U> &&o) : CellPtrBase(o) {}
+
+  template <typename U,
+           typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+  CellPtr(const CellPtr<U> &o) : CellPtrBase(o.get()) {}
 
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(CellPtr<U> &&o)
   {
-    using namespace std;
-    swap(m_cb, o.m_cb);
+    CellPtrBase::operator=(o);
     return *this;
   }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(const CellPtr<U> &o)
   {
-    reset(o.get());
+    CellPtrBase::operator=(o);
     return *this;
   }
 
@@ -201,59 +267,57 @@ public:
   // Operations with compatible unique_ptr
   //
   template <typename U, typename Del>
-  explicit CellPtr(std::unique_ptr<U> &&) = delete;
+  explicit CellPtr(std::unique_ptr<U, Del> &&) = delete;
 
   template <typename U, typename Del,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  explicit CellPtr(const std::unique_ptr<U> &ptr) : CellPtr(ptr.get()) {}
+  explicit CellPtr(const std::unique_ptr<U, Del> &ptr) : CellPtrBase(ptr.get()) {}
 
   template <typename U, typename Del>
-  CellPtr &operator=(std::unique_ptr<U, Del> &&o) = delete;
+  CellPtr &operator=(std::unique_ptr<U, Del> &&) = delete;
 
   template <typename U, typename Del,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
   CellPtr &operator=(const std::unique_ptr<U, Del> &o)
-  {
-    reset(o.get());
-    return *this;
-  }
+  { return *this = o.get(); }
 };
 
 //
 
 template <typename T> typename
-CellPtr<T>::pointer CellPtr<T>::get() const { return static_cast<pointer>(m_cb->m_object); }
+CellPtr<T>::pointer CellPtr<T>::get() const { return static_cast<pointer>(base_get()); }
 
-//! Declaration of a specialization within GroupCell.cpp. This allows
+//! Declaration of a specialization for GroupCell. This allows
 //! use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
 template <>
 CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
 
 //
 
+template <typename T, typename U>
+bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) { return left.get() == right.get(); }
+
 #if !CELLPTR_CAST_TO_PTR
-template <typename T,
-         typename U, typename
-         std::enable_if<std::is_convertible<U, const Observed*>::value, bool>::type = true>
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator==(U obj, const CellPtr<T> &cellPtr) { return cellPtr.get() == obj; }
 #endif
 
-template <typename T,
-         typename U, typename
-         std::enable_if<std::is_convertible<U, const Observed*>::value, bool>::type = true>
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator==(const CellPtr<T> &cellPtr, U obj) { return cellPtr.get() == obj; }
 
+template <typename T, typename U>
+bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) { return left.get() != right.get(); }
+
 #if !CELLPTR_CAST_TO_PTR
-template <typename T,
-         typename U, typename
-         std::enable_if<std::is_convertible<U, const Observed*>::value, bool>::type = true>
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator!=(U obj, const CellPtr<T> &cellPtr) { return cellPtr.get() != obj; }
 #endif
 
-template <typename T,
-         typename U, typename
-         std::enable_if<std::is_convertible<U, const Observed*>::value, bool>::type = true>
+template <typename T, typename U,
+         typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator!=(const CellPtr<T> &cellPtr, U obj) { return cellPtr.get() != obj; }
-
 
 #endif // CELLPTR_H
