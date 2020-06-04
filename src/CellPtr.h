@@ -46,6 +46,8 @@
  */
 class Observed
 {
+  static size_t m_instanceCount;
+
   struct ControlBlock
   {
     static ControlBlock empty;
@@ -80,13 +82,17 @@ class Observed
   void operator=(const Observed &) = delete;
 
 protected:
-  Observed() = default;
+  Observed() { ++ m_instanceCount; }
   virtual ~Observed()
   {
     delete m_cb->Deref(nullptr);
+    -- m_instanceCount;
   }
   friend class CellPtrBase;
   template <typename T> friend class CellPtr;
+
+public:
+  static size_t GetLiveInstanceCount() { return m_instanceCount; }
 };
 
 class Cell;
@@ -96,6 +102,7 @@ class CellPtrBase
 {
 private:
   using ControlBlock = Observed::ControlBlock;
+  static size_t m_instanceCount;
 
   ControlBlock *m_cb = nullptr;
 
@@ -104,18 +111,22 @@ private:
 
 protected:
   explicit CellPtrBase(Observed *obj = nullptr) : m_cb(Ref(obj))
-  {}
+  {
+    ++m_instanceCount;
+  }
 
   CellPtrBase(const CellPtrBase &o) : CellPtrBase(o.base_get()) {}
 
   CellPtrBase(CellPtrBase &&o)
   {
+    ++m_instanceCount;
     using namespace std;
     swap(m_cb, o.m_cb);
   }
 
   ~CellPtrBase()
   {
+    --m_instanceCount;
     wxASSERT(m_cb);
     if (m_cb) delete m_cb->Deref(this);
     m_cb = nullptr;
@@ -157,6 +168,8 @@ public:
   }
 
   explicit operator bool() const { return m_cb->m_object; }
+
+  static size_t GetLiveInstanceCount() { return m_instanceCount; }
 };
 
 /*! A weak non-owning pointer that becomes null whenever the observed object is
