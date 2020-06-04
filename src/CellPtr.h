@@ -103,7 +103,7 @@ private:
     return (obj ? obj->Observed::m_cb : &ControlBlock::empty)->Ref(this); }
 
 protected:
-  CellPtrBase(Observed *obj = nullptr) : m_cb(Ref(obj))
+  explicit CellPtrBase(Observed *obj = nullptr) : m_cb(Ref(obj))
   {}
 
   CellPtrBase(const CellPtrBase &o) : CellPtrBase(o.base_get()) {}
@@ -231,10 +231,12 @@ public:
 
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+  // cppcheck-suppress noExplicitConstructor
   CellPtr(CellPtr<U> &&o) : CellPtrBase(o) {}
 
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
+  // cppcheck-suppress noExplicitConstructor
   CellPtr(const CellPtr<U> &o) : CellPtrBase(o.get()) {}
 
   template <typename U,
