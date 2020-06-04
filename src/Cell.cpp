@@ -34,8 +34,6 @@
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 
-Observed::ControlBlock Observed::ControlBlock::empty{nullptr};
-
 void Cell::CellPointers::ErrorList::Remove(GroupCell * cell)
 {
   m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());
