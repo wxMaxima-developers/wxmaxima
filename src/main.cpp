@@ -55,10 +55,8 @@ FORCE_LINK(gnome_print)
 IMPLEMENT_APP_NO_MAIN(MyApp);
 IMPLEMENT_WX_THEME_SUPPORT;
 
-#ifndef __WXMSW__
-int main(int argc, char *argv[])
+int CommonMain()
 {
-  wxEntryStart( argc, argv );
   wxTheApp->CallOnInit();
   #pragma omp parallel
   #pragma omp master
@@ -66,21 +64,22 @@ int main(int argc, char *argv[])
   wxConfigBase *config = wxConfig::Get();
   config->Flush();
   delete config;
-
+  wxLogDebug("CellPtr: %zu live instances leaked", CellPtrBase::GetLiveInstanceCount());
+  wxLogDebug("Cell:    %zu live instances leaked", Observed::GetLiveInstanceCount());
   return 0;
+}
+
+#ifndef __WXMSW__
+int main(int argc, char *argv[])
+{
+  wxEntryStart( argc, argv );
+  return CommonMain();
 }
 #else
 int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdShow )
 {
   wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow);
-  wxTheApp->CallOnInit();
-  #pragma omp parallel
-  #pragma omp master
-  wxTheApp->OnRun();
-  wxConfigBase *config = wxConfig::Get();
-  config->Flush();
-  delete config;
-  return 0;
+  return CommonMain();
 }
 #endif
 

@@ -24,6 +24,9 @@
 
 Observed::ControlBlock Observed::ControlBlock::empty{nullptr};
 
+size_t Observed::m_instanceCount;
+size_t CellPtrBase::m_instanceCount;
+
 // This is a specialization of this method. It's useful when GroupCell
 // is not a fully defined class, but someone wants to use the methods of
 // CellPtr<GroupCell>.
