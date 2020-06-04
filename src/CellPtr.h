@@ -127,6 +127,7 @@ protected:
   Observed() { ++ m_instanceCount; }
   virtual ~Observed()
   {
+    m_cb->Clear();
     ControlBlock::Deref(m_cb, nullptr);
     -- m_instanceCount;
   }
