@@ -1,4 +1,4 @@
-#Now
+#20.06.2
  * Updated Turkish translation by Tufan Şirin
  * Fixed a major cell leak in the undo action system.
 

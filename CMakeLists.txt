@@ -14,7 +14,7 @@ else()
 endif()
 
 project(wxmaxima LANGUAGES CXX)
-set(VERSION 20.06.1-DevelopmentSnapshot)
+set(VERSION 20.06.2)
 set(GITVERSION ${VERSION})
 set(PACKAGE wxmaxima)
 set(APP_NAME wxmaxima)
