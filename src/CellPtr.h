@@ -202,9 +202,11 @@ protected:
       m_cb = ControlBlock::Deref(m_cb, this);
       m_cb = Ref(obj);
     } else {
-      // If the observed objects are the same, the control block must be the same as well.
-      wxASSERT((!obj && m_cb == &ControlBlock::empty)
-               || (obj && m_cb == static_cast<const Observed*>(obj)->m_cb));
+      // The objects are the same - their control blocks must be the same as well,
+      // unless the objects are null. If they are null, then the control blocks
+      // may be different - both blocks had originated in different objects that both
+      // got freed.
+      wxASSERT(!obj || (m_cb == static_cast<const Observed*>(obj)->m_cb));
     }
   }
 
