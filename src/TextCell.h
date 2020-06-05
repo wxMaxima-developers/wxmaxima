@@ -40,7 +40,7 @@ private:
 public:
   TextCell(GroupCell *parent, Configuration **config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
-  Cell *Copy() override { return new TextCell(*this); }  
+  Cell *Copy() const override { return new TextCell(*this); }  
 
   double GetScaledTextSize() const;
   

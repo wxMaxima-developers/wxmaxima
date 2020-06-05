@@ -31,7 +31,7 @@ class SubSupCell final : public Cell
 public:
   SubSupCell(GroupCell *parent, Configuration **config);
   SubSupCell(const SubSupCell &cell);
-  Cell *Copy() override { return new SubSupCell(*this); }
+  Cell *Copy() const override { return new SubSupCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_preSupCell); }

@@ -52,7 +52,7 @@ class ParenCell final : public Cell
 public:
   ParenCell(GroupCell *parent, Configuration **config);
   ParenCell(const ParenCell &cell);
-  Cell *Copy() override { return new ParenCell(*this); }
+  Cell *Copy() const override { return new ParenCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

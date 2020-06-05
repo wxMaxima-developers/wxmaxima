@@ -57,7 +57,7 @@ class AbsCell final : public Cell
 public:
   AbsCell(GroupCell *parent, Configuration **config);
   AbsCell(const AbsCell &cell);
-  Cell *Copy() override { return new AbsCell(*this); }
+  Cell *Copy() const override { return new AbsCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

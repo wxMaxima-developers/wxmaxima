@@ -95,7 +95,7 @@ public:
   //! The constructor
   EditorCell(GroupCell *parent, Configuration **config, const wxString &text = {});
   EditorCell(const EditorCell &cell);
-  Cell *Copy() override {return new EditorCell(*this);}
+  Cell *Copy() const override {return new EditorCell(*this);}
 
   //! Insert the symbol that corresponds to the ESC command txt
   void InsertEscCommand(wxString txt){InsertText(InterpretEscapeString(txt));}

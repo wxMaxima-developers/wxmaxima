@@ -62,7 +62,7 @@ public:
   SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
   SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove);
 
-  Cell *Copy() override { return new SlideShow(*this); }
+  Cell *Copy() const override { return new SlideShow(*this); }
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);

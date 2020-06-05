@@ -272,7 +272,7 @@ class Cell: public Observed
     This method is purely virtual, which means every child class has to define
     its own Copy() method.
    */
-  virtual Cell *Copy() = 0;
+  virtual Cell *Copy() const = 0;
 
   /*! Scale font sizes and line widths according to the zoom factor.
 

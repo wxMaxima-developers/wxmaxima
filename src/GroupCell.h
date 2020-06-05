@@ -69,7 +69,7 @@ class GroupCell final : public Cell
 public:
   GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
-  Cell *Copy() override { return new GroupCell(*this); }
+  Cell *Copy() const override { return new GroupCell(*this); }
   ~GroupCell();
 
   wxString GetAnswer(int answer)

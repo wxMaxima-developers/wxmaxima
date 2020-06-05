@@ -30,7 +30,7 @@ class DiffCell final : public Cell
 public:
   DiffCell(GroupCell *parent, Configuration **config);
   DiffCell(const DiffCell &cell);
-  Cell *Copy() override { return new DiffCell(*this); }
+  Cell *Copy() const override { return new DiffCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
