@@ -6789,12 +6789,12 @@ bool Worksheet::CanMergeSelection()
 
 bool Worksheet::TreeUndoCellDeletion(UndoActions *sourcelist, UndoActions *undoForThisOperation)
 {
-  const TreeUndoAction &action = sourcelist->front();
-  GroupCell *newCursorPos = action.m_oldCells;
+  TreeUndoAction &action = sourcelist->front();
+  GroupCell *newCursorPos = action.m_oldCells.get();
   if (newCursorPos)
     while (newCursorPos->m_next)
       newCursorPos = newCursorPos->GetNext();
-  InsertGroupCells(action.m_oldCells, action.m_start, undoForThisOperation);
+  InsertGroupCells(action.m_oldCells.release(), action.m_start, undoForThisOperation);
   SetHCaret(newCursorPos);
   return true;
 }

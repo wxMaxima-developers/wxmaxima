@@ -1,5 +1,6 @@
 #Now
  * Updated Turkish translation by Tufan Şirin
+ * Fixed a major cell leak in the undo action system.
 
 #20.06.1
  * A bugfix that resolves a crash on selection
