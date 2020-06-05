@@ -82,7 +82,7 @@ public:
 
   wxString ToMathML() override;
 
-  wxString GetDiffPart() override;
+  wxString GetDiffPart() const override;
 
   void IsMatrix(bool isMatrix) { m_isMatrix = isMatrix; }
 

@@ -119,7 +119,7 @@ public:
 
   wxString ToXML() override;
 
-  bool CanPopOut() override { return !m_image->GnuplotSource().empty(); }
+  bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }

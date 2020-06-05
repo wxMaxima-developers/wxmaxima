@@ -545,9 +545,9 @@ class Cell: public Observed
   virtual wxRect GetRect(bool all = false);
 
   //! True, if something that affects the cell size has changed.
-  virtual bool NeedsRecalculation(int fontSize);
+  virtual bool NeedsRecalculation(int fontSize) const;
   
-  virtual wxString GetDiffPart();
+  virtual wxString GetDiffPart() const;
 
   /*! Recalculate the height of the cell and the difference between top and center
 
@@ -631,10 +631,10 @@ class Cell: public Observed
   { return wxEmptyString; }
 
   //! Get the first cell in this list of cells
-  Cell *first();
+  Cell *first() const;
 
   //! Get the last cell in this list of cells
-  Cell *last();
+  Cell *last() const;
 
   /*! Select a rectangle using the mouse
 
@@ -665,10 +665,9 @@ class Cell: public Observed
   //! Is this cell an operator?
   virtual bool IsOperator() const;
 
-  bool IsCompound();
+  bool IsCompound() const;
 
-  virtual bool IsShortNum()
-  { return false; }
+  virtual bool IsShortNum() const { return false; }
 
   //! Returns the group cell this cell belongs to
   GroupCell *GetGroup() const;
@@ -856,10 +855,7 @@ class Cell: public Observed
   }
 
   //! Can this cell be popped out interactively in gnuplot?
-  virtual bool CanPopOut()
-    {
-      return false;
-    }
+  virtual bool CanPopOut() const { return false; }
   
   /*! Retrieve the gnuplot source data for this image 
 
@@ -947,9 +943,9 @@ class Cell: public Observed
 
   /*! Attach a copy of the list of cells that follows this one to a cell
     
-    Used by Cell::Copy() when the parameter <code>all</code> is true.
+    Used by Cell::Copy().
   */
-  Cell *CopyList();
+  Cell *CopyList() const;
 
   /*! Do we want to begin this cell with a center dot if it is part of a product?
 

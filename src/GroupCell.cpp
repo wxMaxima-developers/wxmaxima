@@ -774,7 +774,7 @@ void GroupCell::RecalculateHeightOutput()
   (*m_configuration)->AdjustWorksheetSize(true);
 }
 
-bool GroupCell::NeedsRecalculation(int fontSize)
+bool GroupCell::NeedsRecalculation(int fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
     ((GetInput() != NULL) &&
@@ -2352,9 +2352,9 @@ bool GroupCell::IsMainInput(Cell *active) const
   return m_inputLabel->m_next && active == m_inputLabel->m_next;
 }
 
-bool GroupCell::Contains(GroupCell *cell)
+bool GroupCell::Contains(GroupCell *cell) const
 {
-  GroupCell *tmp = this;
+  const GroupCell *tmp = this;
 
   // Iterate through all cells
   while (tmp != NULL)

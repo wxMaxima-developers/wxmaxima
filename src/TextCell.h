@@ -78,7 +78,7 @@ public:
 
   wxString ToXML() override;
 
-  wxString GetDiffPart() override;
+  wxString GetDiffPart() const override;
 
   bool IsOperator() const override;
 
@@ -92,7 +92,7 @@ public:
 
   wxString GetSymbolUnicode(bool keepPercent) const;
 
-  bool IsShortNum() override;
+  bool IsShortNum() const override;
 
   void SetType(CellType type) override;
 
@@ -110,7 +110,7 @@ private:
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
-  bool NeedsRecalculation(int fontSize) override;
+  bool NeedsRecalculation(int fontSize) const override;
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;

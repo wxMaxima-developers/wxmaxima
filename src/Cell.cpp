@@ -193,7 +193,7 @@ void Cell::CopyCommonData(const Cell & cell)
   m_isHidableMultSign = cell.m_isHidableMultSign;
 }
 
-Cell *Cell::CopyList()
+Cell *Cell::CopyList() const
 {
   Cell *dest = Copy();
   Cell *ret = dest;
@@ -323,7 +323,7 @@ int Cell::GetCenterList()
   return m_maxCenter;
 }
 
-bool Cell::NeedsRecalculation(int fontSize)
+bool Cell::NeedsRecalculation(int fontSize) const
 {
   bool result = (m_width < 0) || (m_height < 0) || (m_center < 0) ||
     (fontSize != m_fontsize_old) ||
@@ -615,7 +615,7 @@ void Cell::DrawBoundingBox(wxDC &dc, bool all)
 /***
  * Do we have an operator in this line - draw () in frac...
  */
-bool Cell::IsCompound()
+bool Cell::IsCompound() const
 {
   if (IsOperator())
     return true;
@@ -1083,7 +1083,7 @@ wxString Cell::ListToXML()
 /***
  * Get the part for diff tag support - only ExpTag overvrides this.
  */
-wxString Cell::GetDiffPart()
+wxString Cell::GetDiffPart() const
 {
   return wxEmptyString;
 }
@@ -1184,22 +1184,22 @@ void Cell::ResetData()
       tmp->ResetData();
 }
 
-Cell *Cell::first()
+Cell *Cell::first() const
 {
-  Cell *tmp = this;
+  const Cell *tmp = this;
   while (tmp->m_previous)
     tmp = tmp->m_previous;
 
-  return tmp;
+  return const_cast<Cell*>(tmp);
 }
 
-Cell *Cell::last()
+Cell *Cell::last() const
 {
-  Cell *tmp = this;
+  const Cell *tmp = this;
   while (tmp->m_next)
     tmp = tmp->m_next;
 
-  return tmp;
+  return const_cast<Cell*>(tmp);
 }
 
 void Cell::Unbreak()
