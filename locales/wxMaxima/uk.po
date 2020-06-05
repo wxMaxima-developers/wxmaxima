@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-05 16:30+0200\n"
-"PO-Revision-Date: 2020-05-21 09:52+0300\n"
+"PO-Revision-Date: 2020-06-05 21:07+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:186
@@ -935,7 +935,7 @@ msgstr "Стала інтегрування."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3974
 msgid "Anchors file has no top node."
-msgstr ""
+msgstr "Файл прив'язок не містить вузла верхнього рівня."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1276
 msgid "Animation framerate..."
@@ -2560,7 +2560,7 @@ msgstr "Не переводити автоматично у нижній інд�
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1783
 msgid "Don't mark cells that contain tooltips in yellow"
-msgstr ""
+msgstr "Не позначати комірки, які містять підказки, жовтим"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9823
 msgid "Don't save"
@@ -3033,9 +3033,8 @@ msgstr ""
 "у засобі перегляду її реалізовано)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:669
-#, fuzzy
 msgid "Export document to a HTML or LaTeX file"
-msgstr "Експортувати документ до файла HTML або pdfLaTeX"
+msgstr "Експортувати документ до файла HTML або файла LaTeX"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:744
 msgid "Export equations to HTML as:"
@@ -3758,13 +3757,12 @@ msgid "Grid:"
 msgstr "Сітка:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5372
-#, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|"
 "*.tex"
 msgstr ""
-"файл HTML (*.html)|*.html|пакетний файл maxima (*.mac)|*.mac|файл pdfLaTeX "
-"(*.tex)|*.tex"
+"файл HTML (*.html)|*.html|пакетний файл maxima (*.mac)|*.mac|файл LaTeX"
+" (*.tex)|*.tex"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:265
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2082
@@ -3874,7 +3872,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1782
 msgid "Hide yellow tooltip marker"
-msgstr ""
+msgstr "Приховати жовту позначку підказок"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:283
 msgid "Highlight (dpart)"
@@ -4869,7 +4867,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5873,12 +5871,14 @@ msgstr "Наприкінці команди немає символу долар
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3985
 msgid "No entries in the caches for the subjects the manual contains."
-msgstr ""
+msgstr "У кеші немає записів для тем, які містяться у підручнику."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3953
 msgid ""
 "No file with the subjects the manual contained in the last wxMaxima run."
 msgstr ""
+"Немає файла з темами, які містяться у підручнику, з останнього запуску"
+" wxMaxima."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:584
 msgid "No gnuplot data!"
@@ -6678,9 +6678,9 @@ msgid "Read Matrix..."
 msgstr "Прочитати матрицю…"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4011
-#, fuzzy, c-format
+#, c-format
 msgid "Read the entries the maxima manual offers from %s"
-msgstr "Компілюємо список прив'язок, які надаються підручником з Maxima"
+msgstr "Прочитати записи підручника з maxima щодо %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:545
 msgid "Reading Maxima output"
@@ -8192,17 +8192,17 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3959
 msgid "The cache for the subjects the manual contains cannot be read."
-msgstr ""
+msgstr "Кеш тем, які містяться у підручнику, є непридатним до читання."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3966
 msgid "The cache for the subjects the manual contains has no head node."
-msgstr ""
+msgstr "Кеш тем, які містяться у підручнику, не містить вузла заголовка."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3979
 msgid ""
 "The cache for the subjects the manual contains is from a different Maxima "
 "version."
-msgstr ""
+msgstr "Кеш тем, які містяться у підручнику, належить до іншої версії Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2198
 msgid "The color of the next line to draw"
@@ -8629,6 +8629,10 @@ msgid ""
 "It caches the list of subjects maxima's manual offers and is automatically\n"
 "overwritten if maxima's version changes or the file cannot be read"
 msgstr ""
+"Цей файл було створено за допомогою wxMaxima.\n"
+"У ньому зберігається кеш тем, які містяться у підручнику з maxima. Його буде"
+" автоматично\n"
+"перезаписано, якщо версію maxima буде змінено або файл не вдасться прочитати"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:672
 msgid ""
@@ -8875,10 +8879,11 @@ msgstr ""
 "зменшує чіткість)."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3937
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
-msgstr "Спроба відкрити файл %s, якого не існує"
+msgstr ""
+"Намагаємося створити кеш списку тем, які містяться у файлі підручника %s."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:139
 #: /home/gunter/src/wxmaxima/src/Image.cpp:143
@@ -9071,9 +9076,8 @@ msgid "Unhide contents"
 msgstr "Скасувати приховування змісту"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:467
-#, fuzzy
 msgid "Unicode characters"
-msgstr "Скасувати приховування змісту"
+msgstr "Символи Unicode"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:752
 msgid "Unicode chars\tAlt+Shift+U"
@@ -9336,7 +9340,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
@@ -9705,13 +9709,12 @@ msgstr ""
 "виконує пошук розв'язку між двома заданими точками.\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:264
-#, fuzzy
 msgid ""
 "find_root only works if the function the solution is searched for crosses "
 "the solution exactly once in the given range."
 msgstr ""
-"find_root працює, навіть якщо функція у рівнянні не є дифереційованою, і "
-"виконує пошук розв'язку між двома заданими точками.\n"
+"find_root працює, навіть якщо функція у рівнянні не є диференційованою, і "
+"виконує пошук розв'язку між двома заданими точками."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:436
 msgid "for\n"
