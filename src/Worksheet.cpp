@@ -822,7 +822,7 @@ void Worksheet::ScrollToError()
     SetHCaret(errorCell);
 }
 
-GroupCell *Worksheet::GetWorkingGroup(bool resortToLast)
+GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const
 {
   GroupCell *tmp = m_cellPointers.GetWorkingGroup(resortToLast);
 
@@ -2683,7 +2683,7 @@ bool Worksheet::CopyCells()
   return false;
 }
 
-bool Worksheet::CanDeleteSelection()
+bool Worksheet::CanDeleteSelection() const
 {
   if (!m_cellPointers.HasCellsSelected())
     return false;
@@ -2714,7 +2714,7 @@ void Worksheet::DeleteCurrentCell()
     DeleteRegion(cellToDelete, cellToDelete);
 }
 
-bool Worksheet::CanDeleteRegion(GroupCell *start, GroupCell *end)
+bool Worksheet::CanDeleteRegion(GroupCell *start, GroupCell *end) const
 {
   if (!start || !end)
     return false;
@@ -4419,10 +4419,7 @@ void Worksheet::DestroyTree()
   m_last = NULL;
 }
 
-/***
- * Copy tree
- */
-GroupCell *Worksheet::CopyTree()
+GroupCell *Worksheet::CopyTree() const
 {
   auto *tree = GetTree() ? dynamic_cast<GroupCell*>(GetTree()->CopyList()) : nullptr;
   return tree;
@@ -4558,12 +4555,12 @@ wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
 /***
  * Copy selection
  */
-Cell *Worksheet::CopySelection(bool asData)
+Cell *Worksheet::CopySelection(bool asData) const
 {
   return CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, asData);
 }
 
-Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData)
+Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
 {
   Cell *tmp, *out = NULL, *outEnd = NULL;
   tmp = start;
@@ -6721,7 +6718,7 @@ void Worksheet::TreeUndo_LimitUndoBuffer()
     TreeUndo_DiscardAction(&treeUndoActions);
 }
 
-bool Worksheet::CanTreeUndo()
+bool Worksheet::CanTreeUndo() const
 {
   if (treeUndoActions.empty())
     return false;
@@ -6738,7 +6735,7 @@ bool Worksheet::CanTreeUndo()
   }
 }
 
-bool Worksheet::CanTreeRedo()
+bool Worksheet::CanTreeRedo() const
 {
   if (treeRedoActions.empty())
   {
@@ -6773,7 +6770,7 @@ void Worksheet::Redo()
   }
 }
 
-bool Worksheet::CanMergeSelection()
+bool Worksheet::CanMergeSelection() const
 {
   // We cannot merge cells if not at least two cells are selected
   if (GetSelectionStart() == GetSelectionEnd())
@@ -7474,7 +7471,7 @@ void Worksheet::ShowHCaret()
   m_hCaretActive = true;
 }
 
-bool Worksheet::CanUndoInsideCell()
+bool Worksheet::CanUndoInsideCell() const
 {
   return GetActiveCell() && GetActiveCell()->CanUndo();
 }
@@ -7491,7 +7488,7 @@ void Worksheet::UndoInsideCell()
   }
 }
 
-bool Worksheet::CanRedoInsideCell()
+bool Worksheet::CanRedoInsideCell() const
 {
   return GetActiveCell() && GetActiveCell()->CanRedo();
 }
