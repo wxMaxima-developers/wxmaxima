@@ -36,6 +36,7 @@
 #include <wx/log.h>
 #include <memory>
 #include <type_traits>
+#include <cstddef>
 
 //! Set to 1 to enable casting from CellPtr<U> to U*
 #define CELLPTR_CAST_TO_PTR 1
