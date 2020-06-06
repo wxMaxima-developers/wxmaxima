@@ -448,15 +448,14 @@ void GroupCell::UpdateConfusableCharWarnings()
 {
   ClearToolTip();
 
-  wxString code;
-  if(GetInput())
-    code += GetInput()->ListToString() + " ";
+  wxString output;
   if(GetOutput())
-    code += GetOutput()->VariablesAndFunctionsList();
+    output += GetOutput()->VariablesAndFunctionsList();
   // Extract all variable and command names from the cell including input and output
   CmdsAndVariables cmdsAndVariables;
 
-  for (auto const &tok : MaximaTokenizer(code, *m_configuration).PopTokens())
+  for (auto const &tok : MaximaTokenizer(
+         output, *m_configuration, GetInput()->GetTokens()).PopTokens())
     if((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
       cmdsAndVariables[tok.GetText()] = 1;
   

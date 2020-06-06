@@ -31,6 +31,7 @@
 #include <wx/string.h>
 #include <vector>
 
+
 MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
 {  
   // ----------------------------------------------------------------
@@ -395,6 +396,13 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       continue;
     }
   }
+}
+
+MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration,
+                                 const TokenList &initialTokens) :
+  MaximaTokenizer(commands, configuration)
+{
+  m_tokens = initialTokens;
 }
 
 bool MaximaTokenizer::IsAlpha(wxChar ch)

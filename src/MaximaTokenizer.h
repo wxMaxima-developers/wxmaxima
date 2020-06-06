@@ -74,7 +74,11 @@ public:
 
   using TokenList = std::vector<Token>;
   TokenList PopTokens() && { return std::move(m_tokens); }
-  
+
+  //! A constructor that adds additional words to the token list
+  MaximaTokenizer(wxString commands, Configuration *configuration,
+                  const TokenList &initialTokens);
+
 protected:
   //! The tokens the string is divided into
   TokenList m_tokens;
