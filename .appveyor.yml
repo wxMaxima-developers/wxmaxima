@@ -87,10 +87,11 @@ after_test:
       popd
 
 on_failure:
-  - cmd: pushd build
-  - cmd: 7z a FailureDump.zip *
-  - cmd: appveyor PushArtifact FailureDump.zip
-  - cmd: popd
+  - ps: |
+      pushd build
+      7z a FailureDump.zip *
+      Push-AppveyorArtifact FailureDump.zip
+      popd
 
 artifacts:
   - path: 'build\wxmaxima-*.exe'
