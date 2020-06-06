@@ -2616,7 +2616,7 @@ bool EditorCell::AddEnding()
   
   bool endingNeeded = true;
   
-  for (auto const &tok : MaximaTokenizer(m_text, *m_configuration).PopTokens())
+  for (auto const &tok : m_tokens)
   {
     TextStyle itemStyle = tok.GetStyle();
     if ((itemStyle == TS_CODE_ENDOFLINE) || (itemStyle == TS_CODE_LISP))
