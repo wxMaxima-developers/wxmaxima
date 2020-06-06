@@ -5239,6 +5239,7 @@ bool wxMaxima::AutoSave()
   
   bool savedWas = m_worksheet->IsSaved();
   wxString oldTempFile = m_tempfileName;
+  wxString oldFilename = m_worksheet->m_currentFile;
   m_tempfileName = wxStandardPaths::Get().GetTempDir()+
     wxString::Format("/untitled_%li_%li.wxmx",
                      wxGetProcessId(),m_pid);
@@ -5275,6 +5276,7 @@ bool wxMaxima::AutoSave()
   ResetTitle(savedWas, true);
 
   oldTempFile = m_tempfileName;
+  m_worksheet->m_currentFile = oldFilename;
   return savedWas;
 }
 
