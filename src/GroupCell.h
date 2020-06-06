@@ -69,7 +69,7 @@ class GroupCell final : public Cell
 public:
   GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
-  Cell *Copy() override { return new GroupCell(*this); }
+  Cell *Copy() const override { return new GroupCell(*this); }
   ~GroupCell();
 
   wxString GetAnswer(int answer)
@@ -219,7 +219,7 @@ public:
 
     See also GetOutput();
   */
-  Cell *GetLabel() { return m_output.get(); }
+  Cell *GetLabel() const { return m_output.get(); }
 
   /*! Returns the list of cells the output consists of, starting after the label.
 
@@ -297,7 +297,7 @@ public:
   }
 
   //! Get the tree of cells that got hidden by folding this cell
-  GroupCell *GetHiddenTree() { return m_hiddenTree; }
+  GroupCell *GetHiddenTree() const { return m_hiddenTree; }
 
   /*! Fold the current cell
 
@@ -385,7 +385,7 @@ public:
   bool Empty();
 
   //! Does this tree contain the cell "cell"?
-  bool Contains(GroupCell *cell);
+  bool Contains(GroupCell *cell) const;
 
   //! A textual representation of this cell
   wxString ToString() override;
@@ -483,7 +483,7 @@ public:
     {m_suppressTooltipMarker = suppress;}
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation(int fontSize) override;
+  bool NeedsRecalculation(int fontSize) const override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
 

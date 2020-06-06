@@ -388,7 +388,7 @@ wxSize TextCell::GetTextSize(wxString const &text)
   return sz;
 }
 
-bool TextCell::NeedsRecalculation(int fontSize)
+bool TextCell::NeedsRecalculation(int fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
     (
@@ -1599,12 +1599,12 @@ wxString TextCell::ToXML()
   return wxT("<") + tag + flags + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
 }
 
-wxString TextCell::GetDiffPart()
+wxString TextCell::GetDiffPart() const
 {
   return wxT(",") + m_text + wxT(",1");
 }
 
-bool TextCell::IsShortNum()
+bool TextCell::IsShortNum() const
 {
   if (m_next != NULL)
     return false;

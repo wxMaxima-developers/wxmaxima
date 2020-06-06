@@ -347,10 +347,10 @@ private:
   { return TreeUndo(&treeRedoActions, &treeUndoActions); }
 
   //! Can we undo a tree operation?
-  bool CanTreeUndo();
+  bool CanTreeUndo() const;
 
   //! Can we redo a tree operation?
-  bool CanTreeRedo();
+  bool CanTreeRedo() const;
 
   /*! The cursor has entered one cell => save the value to see if it has changed.
   */
@@ -413,7 +413,7 @@ private:
   void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
-  Cell *CopySelection(bool asData = false);
+  Cell *CopySelection(bool asData = false) const;
 
   /*! Copy the currently given list of cells
 
@@ -429,7 +429,7 @@ private:
                This is accurately copied if asdata=false. But m_next and m_previous are
                treated as mere aliases of m_nextToDraw in this case.
   */
-  Cell *CopySelection(Cell *start, Cell *end, bool asData = false);
+  Cell *CopySelection(Cell *start, Cell *end, bool asData = false) const;
 
   //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
@@ -601,11 +601,8 @@ private:
 
 public:
   //! Is this worksheet empty?
-  bool IsEmpty()
-    {
-      return ( (m_tree == NULL) ||
-               ((m_tree->m_next == NULL) && m_tree->GetEditable()->GetValue().Length()<=1));
-    }
+  bool IsEmpty() const
+  { return !m_tree || (!m_tree->m_next && m_tree->GetEditable()->GetValue().Length()<=1); }
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {
@@ -655,16 +652,16 @@ public:
   AutoComplete m_autocomplete;
 
   //! Get the currently active EditorCell
-  EditorCell *GetActiveCell() { return m_cellPointers.m_activeCell; }
+  EditorCell *GetActiveCell() const { return m_cellPointers.m_activeCell; }
 
   //! Tells us which cell the keyboard selection has started in
-  EditorCell *KeyboardSelectionStart()
+  EditorCell *KeyboardSelectionStart() const
   { return m_cellPointers.m_cellKeyboardSelectionStartedIn; }
 
-  EditorCell *MouseSelectionStart()
+  EditorCell *MouseSelectionStart() const
   { return m_cellPointers.m_cellMouseSelectionStartedIn; }
 
-  EditorCell *SearchStart()
+  EditorCell *SearchStart() const
   { return m_cellPointers.m_cellSearchStartedIn; }
 
   int IndexSearchStartedAt()
@@ -676,7 +673,6 @@ public:
   TextCell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
   void SetCurrentTextCell(TextCell *cell) { m_cellPointers.m_currentTextCell = cell; }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
-  Cell *GetSelectionStart() const { return m_cellPointers.m_selectionStart; }
 
   //! The reference to a pointer that observes this object's lifetime
   Worksheet* &m_observer;
@@ -748,7 +744,7 @@ public:
   }
 
   //! Is a Redraw requested?
-  bool RedrawRequested()
+  bool RedrawRequested() const
   { return m_redrawRequested || m_mouseMotionWas || m_rectToRefresh.GetLeft() != -1; }
 
   //! To be called after enabling or disabling the visibility of code cells
@@ -782,18 +778,18 @@ public:
   bool m_scheduleUpdateToc;
 
   //! Is the vertically-drawn cursor active?
-  bool HCaretActive() { return m_hCaretActive; }
+  bool HCaretActive() const { return m_hCaretActive; }
 
   /*! Can we merge the selected cells into one?
 
     \todo Does it make sense to make to allow the text of sections and image cells
     with math cells?
    */
-  bool CanMergeSelection();
+  bool CanMergeSelection() const;
 
-  bool CanUndo() { return CanTreeUndo() || CanUndoInsideCell(); }
+  bool CanUndo() const { return CanTreeUndo() || CanUndoInsideCell(); }
 
-  bool CanRedo() { return CanTreeRedo() || CanRedoInsideCell(); }
+  bool CanRedo() const { return CanTreeRedo() || CanRedoInsideCell(); }
 
   void Undo();
 
@@ -896,7 +892,7 @@ public:
   void DestroyTree();
 
   //! Copies the worksheet's entire contents
-  GroupCell *CopyTree();
+  GroupCell *CopyTree() const;
 
   /*! Insert group cells into the worksheet
 
@@ -1001,10 +997,10 @@ public:
   void DeleteSelection();
 
   //! Is it possible to delete the cells between start and end?
-  bool CanDeleteRegion(GroupCell *start, GroupCell *end);
+  bool CanDeleteRegion(GroupCell *start, GroupCell *end) const;
 
   //! Is it possible to delete the currently selected cells?
-  bool CanDeleteSelection();
+  bool CanDeleteSelection() const;
 
   /*! Delete the currently active cell - or the cell above this one.
 
@@ -1134,14 +1130,14 @@ public:
 
     NULL means: No cell is selected.
   */
-  Cell *GetSelectionStart()
+  Cell *GetSelectionStart() const
   { return m_cellPointers.m_selectionStart; }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
-  Cell *GetSelectionEnd()
+  Cell *GetSelectionEnd() const
   { return m_cellPointers.m_selectionEnd; }
 
   //! Clear the selection - make it empty, i.e. no selection
@@ -1264,7 +1260,7 @@ public:
 
     \return false if no cell is selected or there is no further undo information
    */
-  bool CanUndoInsideCell();
+  bool CanUndoInsideCell() const;
 
   void UndoInsideCell();
 
@@ -1272,7 +1268,7 @@ public:
 
     \return false if no cell is selected or no redo can be executed.
    */
-  bool CanRedoInsideCell();
+  bool CanRedoInsideCell() const;
 
   void RedoInsideCell();
 
@@ -1288,7 +1284,7 @@ public:
   void FollowEvaluation(bool followEvaluation);
 
   //! Query if we want to automatically scroll to the cell that is currently evaluated
-  bool FollowEvaluation()
+  bool FollowEvaluation() const
   { return m_followEvaluation; }
 
   /*! Set or get the "Scrolled away from evaluation" status
@@ -1481,7 +1477,7 @@ public:
     \param resortToLast true = if we already have set the cell maxima works on to NULL
     use the last cell maxima was known to work on.
   */
-  GroupCell *GetWorkingGroup(bool resortToLast = false);
+  GroupCell *GetWorkingGroup(bool resortToLast = false) const;
 
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane;

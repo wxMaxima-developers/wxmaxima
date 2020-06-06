@@ -206,7 +206,7 @@ wxString ExptCell::ToTeX()
   return s;
 }
 
-wxString ExptCell::GetDiffPart()
+wxString ExptCell::GetDiffPart() const
 {
   wxString s(wxT(","));
   if (m_baseCell != NULL)

@@ -39,7 +39,7 @@ public:
 
   ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
-  Cell *Copy() override { return new ImgCell(*this); }
+  Cell *Copy() const override { return new ImgCell(*this); }
   ~ImgCell() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor
@@ -119,7 +119,7 @@ public:
 
   wxString ToXML() override;
 
-  bool CanPopOut() override { return !m_image->GnuplotSource().empty(); }
+  bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }

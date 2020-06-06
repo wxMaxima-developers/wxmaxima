@@ -54,7 +54,7 @@ class FunCell final : public Cell
 public:
   FunCell(GroupCell *parent, Configuration **config);
   FunCell(const FunCell &cell);
-  Cell *Copy() override { return new FunCell(*this); }
+  Cell *Copy() const override { return new FunCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_argCell); }

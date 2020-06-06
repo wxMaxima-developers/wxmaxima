@@ -37,7 +37,7 @@ class LimitCell final : public Cell
 public:
   LimitCell(GroupCell *parent, Configuration **config);
   LimitCell(const LimitCell &cell);
-  Cell *Copy() override { return new LimitCell(*this); }
+  Cell *Copy() const override { return new LimitCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

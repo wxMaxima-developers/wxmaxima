@@ -45,7 +45,7 @@ class SumCell final : public Cell
 public:
   SumCell(GroupCell *parent, Configuration **config);
   SumCell(const SumCell &cell);
-  Cell *Copy() override { return new SumCell(*this); }
+  Cell *Copy() const override { return new SumCell(*this); }
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_under); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_paren); }
