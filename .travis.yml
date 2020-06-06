@@ -53,14 +53,33 @@ notifications:
 git:
   depth: 1
 script:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
-  else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
-- mkdir build
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
+  else
+    export CXXFLAGS="-Wall -Wextra -ansi -std=c++11";
+  fi
 #- cp .travis/CTestCustom.cmake build
-- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug .. && cmake --build .
+- cd build
+- cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug ..
+- cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a make test; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]
+  then
+    CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a make test
+  fi
 - cd ..
-- if test a$encrypted_f94fa95f949a_key != a; then openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d; chmod 0600 id_rsa; eval `ssh-agent -s`; ssh-add id_rsa; cat .travis/known_hosts >>~/.ssh/known_hosts; if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" && a$encrypted_f94fa95f949a_key != a ]]
+  then
+    openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d
+    chmod 0600 id_rsa
+    eval `ssh-agent -s`
+    ssh-add id_rsa
+    cat .travis/known_hosts >>~/.ssh/known_hosts
+    cp build/*.dmg wxMaxima.dmg
+    echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
+  fi
 - ccache -s
