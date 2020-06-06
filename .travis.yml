@@ -33,6 +33,7 @@ addons:
     - cmake
     - maxima
     - maxima-share
+    - ninja-build
     - netcat-openbsd
     - xvfb
     - appstream-util
@@ -44,7 +45,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";
-  brew install ccache; brew link ccache;fi
+  brew install ccache ninja; brew link ccache;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin;
   brew install gettext wxwidgets pandoc libomp; fi
 notifications:
