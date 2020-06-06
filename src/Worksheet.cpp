@@ -1775,12 +1775,12 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     }
   }
 
-  if (m_cellPointers.m_selectionStart)
+  if ((m_cellPointers.m_selectionStart) && (m_cellPointers.m_selectionStart->ContainsToolTip()))
   {
     if(popupMenu.GetMenuItemCount() > 0)
       popupMenu.AppendSeparator();
     popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker"),
-                            _("Don't mark cells that contain tooltips in yellow"));
+                              _("Don't mark cells that contain tooltips in yellow"));
     GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
     popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
   }

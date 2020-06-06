@@ -979,6 +979,7 @@ class Cell: public Observed
   }
   //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
+  bool ContainsToolTip() const { return m_containsToolTip; }
 
 protected:
   //! GroupCells only: Suppress the yellow ToolTips marker
@@ -1074,8 +1075,6 @@ protected:
   virtual InnerCellIterator InnerBegin() const;
   //! Iterator to the end of the inner cell range
   virtual InnerCellIterator InnerEnd() const;
-
-  bool ContainsToolTip() const { return m_containsToolTip; }
 
   inline Worksheet *GetWorksheet() const;
 
