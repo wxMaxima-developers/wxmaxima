@@ -64,16 +64,27 @@ before_build:
   - cmd: popd
 
 build_script:
-  - cmd: pushd build
-  - cmd: cmake --build . --config Release
-#  - cmd: ctest -C Release
-  - cmd: popd
+  - ps: |
+      echo '- Building wxMaxima'
+      .\vcvars.ps1
+      refreshenv
+      pushd build
+      cmake --build . --config Release
+      popd
 
-after_build:
-  - cmd: pushd build
-  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cpack -G NSIS
-  - cmd: popd
+test_script:
+  - ps: |
+      pushd build
+      #ctest -C Release
+      popd
+
+after_test:
+  - ps: |
+      echo '* Packing the installer'
+      .\vcvars.ps1
+      pushd build
+      cpack -G NSIS
+      popd
 
 on_failure:
   - cmd: pushd build
