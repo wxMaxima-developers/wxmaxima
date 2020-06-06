@@ -3102,56 +3102,74 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
   #pragma omp critical (OpenFSFile)
   #endif
   fsfile.reset(fs.OpenFile(filename));
-  if (!fsfile)
+  if (fsfile)
   {
-    if(m_worksheet)
-    {
-      m_worksheet->RecalculateForce();
-      m_worksheet->RecalculateIfNeeded();
-    }
-    LoggingMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
-                 wxT(", URI=") + filename, _("Error"),
-                 wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
-    return false;
+    xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
   }
-  else
+  if(!xmldoc.IsOk())
   {
-    // Let's see if we can load the XML contained in this file.
-    if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
+    // If we cannot read the file a typical error in old wxMaxima versions was to include
+    // a letter of ascii code 27 in content.xml. Let's filter this char out.
+    
+    // Re-open the file.
+    std::shared_ptr<wxFSFile> fsfile2;
+    #ifdef HAVE_OPENMP_TASKS
+    #pragma omp critical (OpenFSFile)
+    #endif
+    fsfile2.reset(fs.OpenFile(filename));
+    wxString s;
+    if (fsfile2)
     {
-      // If we cannot read the file a typical error in old wxMaxima versions was to include
-      // a letter of ascii code 27 in content.xml. Let's filter this char out.
-      
-      // Re-open the file.
-      std::shared_ptr<wxFSFile> fsfile2;
-      #ifdef HAVE_OPENMP_TASKS
-      #pragma omp critical (OpenFSFile)
-      #endif
-      fsfile2.reset(fs.OpenFile(filename));
-      if (fsfile2)
+      // Read the file into a string
+      wxTextInputStream istream1(*fsfile2->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      while (!fsfile2->GetStream()->Eof())
+        s += istream1.ReadLine() + wxT("\n");
+    }
+    else
+    {
+      wxLogMessage(_("Trying to recover a broken .wxmx file."));
+      // Let's try to recover the uncompressed text from a truncated .zip file
+      wxFileInputStream input(file);
+      if(input.IsOk())
       {
-        // Read the file into a string
-        wxString s;
-        wxTextInputStream istream1(*fsfile2->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-        while (!fsfile2->GetStream()->Eof())
-          s += istream1.ReadLine() + wxT("\n");
-        
-        // Remove the illegal character
-        s.Replace(wxT('\u001b'), wxT("\u238B"));
-        
+        wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+        while(input.IsOk() && !input.Eof())
         {
-          // Write the string into a memory buffer
-          wxMemoryOutputStream ostream;
-          wxTextOutputStream txtstrm(ostream);
-          txtstrm.WriteString(s);
-          wxMemoryInputStream istream(ostream);
-          
-          // Try to load the file from the memory buffer.
-          xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+          s = text.ReadLine();
+          if(s.StartsWith(wxT("<wxMaximaDocument")))
+          {
+            s+= wxT("\n");
+            break;
+          }
         }
-      }
+        while(input.IsOk() && !input.Eof())
+        {
+          wxString line = text.ReadLine();
+          if((!input.Eof()) || (line != wxEmptyString))
+          {
+            if(line.StartsWith(wxT("</wxMaximaDocument>")))
+            {
+              s += wxT("</wxMaximaDocument>\n");
+              break;
+            }
+            else
+              s += line + wxT("\n");
+          }
+        }
+      }    
+    }
+    // Remove the illegal character
+    s.Replace(wxT('\u001b'), wxT("\u238B"));
+    
+    {
+      // Write the string into a memory buffer
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(s);
+      wxMemoryInputStream istream(ostream);
+      
+      // Try to load the file from the memory buffer.
+      xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
     }
   }
 

@@ -1,3 +1,7 @@
+#20.06.4
+ * wxMaxima now automatically recovers truncated .wxmx files
+ * Resolved an compile error with the croscompiled windows build
+
 #20.06.3
  * An over-zealous assert
 
