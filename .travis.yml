@@ -51,7 +51,7 @@ notifications:
     on_success: change
     on_failure: change
 git:
-  depth: 15
+  depth: 1
 script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi

@@ -6,7 +6,8 @@ image:
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
-
+# Do not clone the entire git repository - only the latest commit in the current branch
+clone_depth: 1
 
 # cache the build results in order to speed up the build
 cache:
