@@ -76,12 +76,12 @@ before_build:
           cmake --build . --config Release --target install
           popd
       }
-  - cmd: refreshenv
-  - cmd: echo Running cmake...
-  - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
-  - cmd: pushd build
-  - cmd: cmake -G "$env:CMAKEGEN" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
-  - cmd: popd
+      
+      echo '- Configuring wxMaxima'
+      mkdir build | Out-Null
+      pushd build
+      cmake -G "$env:CMAKEGEN" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR="$INSTALL_DIR" -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+      popd
 
 build_script:
   - ps: |

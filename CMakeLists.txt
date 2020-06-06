@@ -13,6 +13,14 @@ else()
   message(STATUS "Not found a ccache that speeds up incremental compilation.")
 endif()
 
+if(NOT APPVEYOR_BUILD)
+  set(NONCRIT_WARNING WARNING)
+else()
+  # Warnings cause trouble when running under PowerShell, since they are output to
+  # stderr and are interpreted as if they were hard failures.
+  set(NONCRIT_WARNING STATUS)
+endif()
+
 project(wxmaxima LANGUAGES CXX)
 set(VERSION 20.06.4)
 set(GITVERSION ${VERSION})
