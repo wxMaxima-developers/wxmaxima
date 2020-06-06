@@ -806,16 +806,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="відкриття-декількох-креслень-у-вікнах-одночасно"><span class="header-section-number">2.3.7</span> Відкриття декількох креслень у вікнах одночасно</h3>
 <p>Хоча <em>wxMaxima</em> не надає доступу до цієї можливості, ця функція <em>Maxima</em> (у конфігураціях, де передбачено її підтримку) іноді є дуже зручною. Наведений нижче приклад походить із допису Маріо Родрігеса (Mario Rodriguez) у списку листування <em>Maxima</em>:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1"></a>
-<a class="sourceLine" id="cb15-2" title="2">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb15-3" title="3">    </a>
-<a class="sourceLine" id="cb15-4" title="4">    <span class="co">/* Parabola in window #1 */</span></a>
-<a class="sourceLine" id="cb15-5" title="5">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb15-6" title="6">    </a>
-<a class="sourceLine" id="cb15-7" title="7">    <span class="co">/* Parabola in window #2 */</span></a>
-<a class="sourceLine" id="cb15-8" title="8">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb15-9" title="9">    </a>
-<a class="sourceLine" id="cb15-10" title="10">    <span class="co">/* Paraboloid in window #3 */</span></a>
-<a class="sourceLine" id="cb15-11" title="11">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
+<a class="sourceLine" id="cb15-2" title="2"><span class="fu">load</span>(<span class="fu">draw</span>);</a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">/* Парабола у вікні 1 */</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">/* Парабола у вікні 2 */</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">/* Параболоїд у вікні 3 */</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
 <h3 id="бічна-панель-накреслити-за-допомогою-draw"><span class="header-section-number">2.3.8</span> Бічна панель «Накреслити за допомогою Draw»</h3>
 <p>Бічна панель «Накреслити за допомогою Draw» приховує простий генератор коду, який уможливлює створення сцен, які використовують певну гнучкість пакунка <em>draw</em>, з яким постачається <em>maxima</em>.</p>
 <h4 id="двовимірний"><span class="header-section-number">2.3.8.1</span> Двовимірний</h4>
@@ -836,7 +836,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="вісь"><span class="header-section-number">2.3.8.8</span> Вісь</h4>
 <p>Налаштовує вісі.</p>
 <h4 id="контур"><span class="header-section-number">2.3.8.9</span> Контур</h4>
-<p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
+<p>(Лише для просторових креслень) Додає контурні лінії, подібні до тих, які можна знайти на карті висот, до команд креслення, які йдуть за нею у поточній команді «draw()» і/або до площини основи діаграми. Крім того, цей майстер надає змогу повністю пропустити малювання кривих і показати лише контурне креслення.</p>
 <h4 id="назва-графіка"><span class="header-section-number">2.3.8.10</span> Назва графіка</h4>
 <p>Додає запис умовних позначень із назвою наступного креслення на панель умовних позначень діаграми. Порожнє значення назви вимикає створення записів умовних позначень для наступних креслень.</p>
 <h4 id="колір-лінії"><span class="header-section-number">2.3.8.11</span> Колір лінії</h4>
@@ -854,10 +854,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="файли-запуску"><span class="header-section-number">2.5</span> Файли запуску</h2>
 <p>У діалоговому вікні налаштовування <em>wxMaxima</em> передбачено можливість редагування двох файлів із командами, які виконуються під час запуску програми:</p>
 <ul>
-<li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>maxima-init.mac</code></li>
-<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
+<li>Файла, у якому містяться команди, які виконуються під час запуску <em>Maxima</em>: <code>maxima-init.mac</code></li>
+<li>одного файла із додатковими командами, які виконуються, якщо <em>wxMaxima</em> запускає <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
 </ul>
-<p>These files are in the Maxima user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
+<p>Ці файли зберігаються у каталозі користувача Maxima (зазвичай, каталозі <code>maxima</code> у Windows, <code>.maxima/</code> у інших системах) у домашній теці користувача. Розташування файлів можна визначити за допомогою такої команди: <code>maxima_userdir;</code></p>
 <h2 id="спеціальні-змінні-wx"><span class="header-section-number">2.6</span> Спеціальні змінні wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> вказує <em>Maxima</em>, чи слід перетворювати назви змінних, які містять символ підкреслювання (<code>R_150</code> або подібні змінні) на змінні із нижніми індексами. Див. <code>wxdeclare_subscript</code>, щоб дізнатися більше про те, які саме назви змінних буде перетворено автоматично.</li>
