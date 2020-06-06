@@ -219,6 +219,8 @@ public:
 
   explicit operator bool() const { return m_cb->Get(); }
 
+  inline void reset() { base_reset(); }
+
   //! This is exactly like the spaceship operator in C++20
   auto cmpControlBlocks(const CellPtrBase &o) const { return m_cb - o.m_cb; }
 
@@ -276,8 +278,8 @@ public:
   void reset() { base_reset(); }
   explicit CellPtr(decltype(nullptr)) {}
   CellPtr &operator=(decltype(nullptr)) { base_reset(); return *this; }
-  bool operator==(decltype(nullptr)) const { return !bool(this); }
-  bool operator!=(decltype(nullptr)) const { return bool(this); }
+  bool operator==(decltype(nullptr)) const { return !bool(*this); }
+  bool operator!=(decltype(nullptr)) const { return bool(*this); }
 
   // Operations with convertible-to-pointer types
   //
