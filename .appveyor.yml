@@ -40,29 +40,35 @@ before_build:
   - cmd: echo "compiling wxwidgets from source"
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% 7z x wxWidgets-%WXVERSION%.7z -oC:\wxwidgets-source_%WXVERSION%
   - cmd: if not exist C:\wxwidgets-build_%WXVERSION% mkdir C:\wxwidgets-build_%WXVERSION%
-  - cmd: cd C:\wxwidgets-build_%WXVERSION%
+  - cmd: pushd C:\wxwidgets-build_%WXVERSION%
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install_%WXVERSION% ../wxwidgets-source_%WXVERSION% -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release --target install
+  - cmd: popd
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
-  - cmd: cd c:\projects\wxMaxima\build
+  - cmd: pushd build
   - cmd: cmake -G "$env:CMAKEGEN" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+  - cmd: popd
 
 build_script:
-  - cmd: cd c:\projects\wxMaxima\build
+  - cmd: pushd build
   - cmd: cmake --build . --config Release
 #  - cmd: ctest -C Release
+  - cmd: popd
 
 after_build:
-  - cmd: cd c:\projects\wxMaxima\build
+  - cmd: pushd build
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cpack -G NSIS
+  - cmd: popd
 
 on_failure:
+  - cmd: pushd build
   - cmd: 7z a FailureDump.zip *
   - cmd: appveyor PushArtifact FailureDump.zip
+  - cmd: popd
 
 artifacts:
   - path: 'build\wxmaxima-*.exe'
