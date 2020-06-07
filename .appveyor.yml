@@ -16,11 +16,10 @@ environment:
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.1.3_1
+  WXBUILDVER: 3.1.3_2
   CMAKEGEN: "Visual Studio 16 2019"
 
 cache:
-  - 'C:\wxwidgets-source_%WXVERSION%'
   - 'C:\wxwidgets-install_%WXBUILDVER%'
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
