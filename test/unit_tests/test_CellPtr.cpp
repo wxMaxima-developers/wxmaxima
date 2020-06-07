@@ -328,6 +328,9 @@ SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
   }
 }
 
+// If we don't provide our own main when compiling on MinGW
+// we currently get an error message that WinMain@16 is missing
+// (https://github.com/catchorg/Catch2/issues/1287)
 int main(int argc, const char* argv[])
 {
     return Catch::Session().run(argc, argv);
