@@ -1,3 +1,6 @@
+#20.06.6
+ * Fixed an error 20.06.5 has introduce
+
 #20.06.5
  * wxMaxima now ships around a pecularity in MinGW 
  * wxMaxima now ships around a MinGW-specific bug in catch2
