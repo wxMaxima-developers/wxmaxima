@@ -1,3 +1,41 @@
+#Why is wxMaxima able to open truncated wxmx files?
+
+.wxmx Files are technically .zip files like .pptx- files,
+.docx- files and .xlsx-files. If you ever want to extract an image
+in the original format (or remove a nasty write protection) you can
+always rename the document to an .zip file and look at its internal 
+structure.
+
+Since .zip files, when broken, can be hard to handle wxMaxima invests
+a big effort in making sure that saving succeeds:
+
+ * First the file is saved to a .wxmx~-file. If anything goes wrong in
+   this step the original .wxmx-file is still there and unharmed.
+ * After saving the file wxMaxima tests if the .wxmx~-file is a valid
+   . zip file that can still be opened.
+ * It also tests if the content.xml (which contains everything except
+   the images) inside the .zip archive can be read and is valid xml.
+ * Only then it moves the file to the final location - which doesn't 
+   physically move the data, but just changes the directory entry to
+   point from the correct name to the correct file.
+ * And since on one operating system virus scanners can prevent this
+   last step while they still are scanning the file wxMaxima tests if
+   the move has been successful and re-tries the move, if necessary.
+
+In theory nothing can go wrong here, except if the storage device is
+faulty, cosmic rays have altered a write cache before the data was 
+actually written or the file has been altered by an external program.
+Even in that case not everything is lost, though:
+
+ * The text part of the .wxmx file isn't compressed, so it can be 
+   viewed when opening the .wxmx file using a text editor.
+ * Also the text part of the .wxmx file is always to be found near 
+   the very beginning of the .wxmx file.
+ 
+This means that even if there should be a bad block somewhere in the 
+middle of the file chances that wxMaxima will be able to restore at 
+least the text and code part automatically are relatively high.
+ 
 #20.06.6
  * Fixed an error 20.06.5 has introduce
 
