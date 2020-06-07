@@ -37,7 +37,7 @@ middle of the file chances that wxMaxima will be able to restore at
 least the text and code part automatically are relatively high.
  
 # 20.06.6
- * Fixed an error 20.06.5 has introduce
+ * Fixed an error 20.06.5 has introduced
 
 # 20.06.5
  * wxMaxima now ships around a pecularity in MinGW 
