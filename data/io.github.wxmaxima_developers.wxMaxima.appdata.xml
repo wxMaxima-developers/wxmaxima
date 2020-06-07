@@ -51,10 +51,23 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+
     <!-- prefer to use date with approximate UTC time - this way the verifier won't trip due
          to time zone variations 
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
+    <release version="20.06.5" date="2020-06-07T10:07:00Z">
+      <description>
+	<p>
+	  This release fixes only MinGW-specific problems.
+	</p>
+        <ul>
+	  <li> wxMaxima now ships around a pecularity in MinGW  </li>
+	  <li> wxMaxima now ships around a MinGW-specific bug in catch2 </li>
+	</ul>
+      </description>
+    </release>
+
     <release version="20.06.4" date="2020-06-06T10:30:00Z">
       <description>
 	<p>

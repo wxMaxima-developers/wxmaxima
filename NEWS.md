@@ -1,3 +1,7 @@
+#20.06.5
+ * wxMaxima now ships around a pecularity in MinGW 
+ * wxMaxima now ships around a MinGW-specific bug in catch2
+
 #20.06.4
  * wxMaxima now automatically recovers truncated .wxmx files
  * Resolved an compile error with the crosscompiled Windows build
