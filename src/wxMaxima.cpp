@@ -3171,6 +3171,19 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
       // Try to load the file from the memory buffer.
       xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
     }
+
+    // If that doesn't work we can try even harder by entirely discarding
+    // maxima's output
+    if (!xmldoc.IsOk())
+    {
+      wxString output_new;
+      wxStringTokenizer lines(s, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+      while(lines.HasMoreTokens())
+      {
+        ProcessNewline(false);
+        wxString line = lines.GetNextToken();
+      }
+    }
   }
 
   if (!xmldoc.IsOk())

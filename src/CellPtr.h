@@ -93,7 +93,7 @@ class Observed
       return this;
     }
     //! Dereferences the control block and deletes it if necessary.
-    static nullptr_t Deref(const ControlBlock * cb, const CellPtrBase *cellptr)
+    static std::nullptr_t Deref(const ControlBlock * cb, const CellPtrBase *cellptr)
     {
       // Note: Deref only returns non-null value once - when its reference count reaches zero.
       delete cb->Deref(cellptr);

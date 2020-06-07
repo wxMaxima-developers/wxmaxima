@@ -19,7 +19,7 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_RUNNER
 #include "CellPtr.h"
 #include <catch2/catch.hpp>
 #include <stx/optional.hpp>
@@ -326,4 +326,9 @@ SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
       }
     }
   }
+}
+
+int main(int argc, const char* argv[])
+{
+    return Catch::Session().run(argc, argv);
 }
