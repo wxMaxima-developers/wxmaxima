@@ -6,19 +6,25 @@ image:
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
+# Do not clone the entire git repository - only the latest commit in the current branch
+clone_depth: 1
 
+environment:
+  # The wxWidgets version as referred to in the source package
+  WXVERSION: 3.1.3
+  # The wxWidgets version as referred to in the build folder
+  # Typically it'd be the wxWidgets version with an optional suffix
+  # to indicate build "epoch". The epoch changes are used to invalidate
+  # a cached wxWidgets build and force a rebuild.
+  WXBUILDVER: 3.1.3_1
+  CMAKEGEN: "Visual Studio 16 2019"
 
-# cache the build results in order to speed up the build
 cache:
-  - C:\wxwidgets-install_3.1.3
-# Caching the following dirs seems not to help
-#  - c:\projects\wxMaxima\build\src\Release
-#  - c:\projects\wxMaxima\build\src\CMakeFiles
-#  - c:\projects\wxMaxima\build\CMakeFiles
-#  - c:\projects\wxMaxima\build\CMakeCache.txt
-# We currently don't use chocolatey
-#  - C:\ProgramData\chocolatey\bin
-#  - C:\ProgramData\chocolatey\lib
+  - 'C:\wxwidgets-source_%WXVERSION%'
+  - 'C:\wxwidgets-install_%WXBUILDVER%'
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  # Do not cache the build itself - we only care about the install!
 
 # branches to build
 branches:
@@ -27,40 +33,83 @@ branches:
   - DebianPackaging
   - DebianPackaging_NightlyBuild
 
-# scripts to run before build
+install:
+  - ps: |
+      # We write out a script that pulls in Visual Studio variables
+      echo @'
+      echo '- Setting environment variables for Visual Studio'
+      cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
+      Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
+        if ($_ -match "^(.*?)=(.*)$") {
+          Set-Content "env:\$($matches[1])" $matches[2]
+        }
+      }
+      '@>> vcvars.ps1
+      
+      echo '- Installing pandoc...'
+      choco install -y --no-progress pandoc
+
 before_build:
-  - cmd: echo Installing pandoc...
-  - ps: choco install -y --no-progress pandoc
-  - cmd: refreshenv
-  - cmd: echo Downloading and unpacking wxWidgets...
-  - cmd: set WXVERSION=3.1.3
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.3/wxWidgets-3.1.3.7z'
-  - cmd: echo "compiling wxwidgets from source"
-  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% 7z x wxWidgets-%WXVERSION%.7z -oC:\wxwidgets-source_%WXVERSION%
-  - cmd: if not exist C:\wxwidgets-build_%WXVERSION% mkdir C:\wxwidgets-build_%WXVERSION%
-  - cmd: cd C:\wxwidgets-build_%WXVERSION%
-  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake -G "Visual Studio 16 2019" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install_%WXVERSION% ../wxwidgets-source_%WXVERSION% -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
-  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release
-  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release --target install
-  - cmd: echo Running cmake...
-  - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
-  - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake -G "Visual Studio 16 2019" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+  - ps: |
+      .\vcvars.ps1
+      refreshenv
+      $SRC_ARCHIVE="wxWidgets-${env:WXVERSION}.7z"
+      $BUILD_DIR="C:\wxwidgets-build_${env:WXBUILDVER}"
+      $INSTALL_DIR="C:\wxwidgets-install_${env:WXBUILDVER}"
+      $SOURCE_DIR="C:\wxwidgets-source_${env:WXVERSION}"
+      
+      # If there's no installation of wxWidgets available, we have to build it
+      if (!(Test-Path $INSTALL_DIR)) {
+          echo '- No wxWidgets installation $INSTALL_DIR was found'
+          
+          echo '* Downloading wxWidgets sources'
+          Start-FileDownload "https://github.com/wxWidgets/wxWidgets/releases/download/v${env:WXVERSION}/$SRC_ARCHIVE"
+          
+          echo '* Unpacking wxWidgets sources'
+          7z x "$SRC_ARCHIVE" "-o$SOURCE_DIR"
+          
+          echo '* Building wxWidgets from sources'
+          mkdir $BUILD_DIR | Out-Null
+          pushd $BUILD_DIR
+          cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO --config Release "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" "$SOURCE_DIR" -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
+          cmake --build . --config Release
+          cmake --build . --config Release --target install
+          popd
+      }
+      
+      echo '- Configuring wxMaxima'
+      mkdir build | Out-Null
+      pushd build
+      cmake -G "$env:CMAKEGEN" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR="$INSTALL_DIR" -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+      popd
 
 build_script:
-  - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake --build . --config Release
-#  - cmd: ctest -C Release
+  - ps: |
+      echo '- Building wxMaxima'
+      .\vcvars.ps1
+      pushd build
+      cmake --build . --config Release
+      popd
 
-after_build:
-  - cmd: cd c:\projects\wxMaxima\build
-  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cpack -G NSIS
+test_script:
+  - ps: |
+      pushd build
+      #ctest -C Release
+      popd
+
+after_test:
+  - ps: |
+      echo '* Packing the installer'
+      pushd build
+      cpack -G NSIS
+      popd
 
 on_failure:
-  - cmd: 7z a FailureDump.zip *
-  - cmd: appveyor PushArtifact FailureDump.zip
+  - ps: |
+      pushd build
+      7z a FailureDump.zip *
+      Push-AppveyorArtifact FailureDump.zip
+      popd
 
 artifacts:
   - path: 'build\wxmaxima-*.exe'

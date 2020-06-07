@@ -11,6 +11,7 @@ dist: bionic
 env:
   global:
   - LANG=en_US.UTF-8
+  - CMAKEGEN="Unix Makefiles"
   - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
 cache:
   ccache: true
@@ -32,6 +33,7 @@ addons:
     - cmake
     - maxima
     - maxima-share
+    - ninja-build
     - netcat-openbsd
     - xvfb
     - appstream-util
@@ -43,7 +45,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";
-  brew install ccache; brew link ccache;fi
+  brew install ccache ninja; brew link ccache;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin;
   brew install gettext wxwidgets pandoc libomp; fi
 notifications:
@@ -51,16 +53,38 @@ notifications:
     on_success: change
     on_failure: change
 git:
-  depth: 15
+  depth: 1
 script:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
-  else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
+  else
+    export CXXFLAGS="-Wall -Wextra -ansi -std=c++11";
+  fi
 - mkdir build
 #- cp .travis/CTestCustom.cmake build
-- cd build && cmake  -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug .. && cmake --build .
-- cmake --build . -- install DESTDIR=$(pwd)/installtest
+- cd build
+- cmake -G "$CMAKEGEN" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug ..
+- cmake --build .
+- >
+  DESTDIR=$(pwd)/installtest
+  cmake --build . -- install
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a make test; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]
+  then
+    CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a ctest
+  fi
 - cd ..
-- if test a$encrypted_f94fa95f949a_key != a; then openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d; chmod 0600 id_rsa; eval `ssh-agent -s`; ssh-add id_rsa; cat .travis/known_hosts >>~/.ssh/known_hosts; if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" && a$encrypted_f94fa95f949a_key != a ]]
+  then
+    openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d
+    chmod 0600 id_rsa
+    eval `ssh-agent -s`
+    ssh-add id_rsa
+    cat .travis/known_hosts >>~/.ssh/known_hosts
+    cp build/*.dmg wxMaxima.dmg
+    echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
+  fi
 - ccache -s
