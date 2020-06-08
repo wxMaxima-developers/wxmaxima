@@ -274,6 +274,13 @@ private:
   wxMemoryBuffer m_uncompletedChars;
 
 protected:
+  //! Reads a potentially unclosed XML tag and closes it
+  wxString ReadPotentiallyUnclosedTag(wxStringTokenizer &lines, wxString firstLine);
+
+  //! Finds the name of an opening tag
+  static wxRegEx m_xmlOpeningTagName;
+  //! Looks if this opening tag is actually complete.
+  static wxRegEx m_xmlOpeningTag;
   //! Collect all keyword anchors in the help file
   void CompileHelpFileAnchors();
   //! Load the result from the last CompileHelpFileAnchors from the disk cache

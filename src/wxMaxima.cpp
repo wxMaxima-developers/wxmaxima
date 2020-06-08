@@ -3041,6 +3041,48 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
   return true;
 }
 
+wxString wxMaxima::ReadPotentiallyUnclosedTag(wxStringTokenizer &lines, wxString firstLine)
+{
+  wxString result = firstLine + wxT("\n");
+  wxString closingTag = firstLine;
+  m_xmlOpeningTagName.Replace(&closingTag, wxT("</\\1>"));
+  
+  while(lines.HasMoreTokens())
+  {
+    wxString line = lines.GetNextToken();
+    if(
+      (line.Contains(wxT("<line"))) ||
+      (line.Contains(wxT("</line"))) ||
+      (!line.Contains(wxT("<"))))
+    {
+      // TODO: Handle broken line tags and line tags that are split into lines.
+      result += line + wxT("\n");
+    }
+    else
+    {
+      if(line.Contains(wxT("</")))
+        break;
+      else
+      {
+        if(line.Contains(wxT("<")))
+          result += ReadPotentiallyUnclosedTag(lines, line);
+        else
+          result += line + wxT("\n"); 
+      }
+    }
+  }
+  if(!m_xmlOpeningTag.Matches(firstLine))
+    return wxEmptyString;
+  else
+  {
+    result += closingTag + wxT("\n");
+    return result;
+  }
+}
+
+wxRegEx wxMaxima::m_xmlOpeningTagName(wxT(".*<([a-zA-Z0-9_]*)[ >].*"));
+wxRegEx wxMaxima::m_xmlOpeningTag(wxT("<[^/].*>"));
+
 bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument)
 {
   wxLogMessage(_("Opening a wxmx file"));
@@ -3117,13 +3159,13 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
     #pragma omp critical (OpenFSFile)
     #endif
     fsfile2.reset(fs.OpenFile(filename));
-    wxString s;
+    wxString contents;
     if (fsfile2)
     {
       // Read the file into a string
       wxTextInputStream istream1(*fsfile2->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       while (!fsfile2->GetStream()->Eof())
-        s += istream1.ReadLine() + wxT("\n");
+        contents += istream1.ReadLine() + wxT("\n");
     }
     else
     {
@@ -3132,13 +3174,14 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
       wxFileInputStream input(file);
       if(input.IsOk())
       {
+        wxLogMessage(_("Trying to extract contents.xml out of a broken .zip file."));
         wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
         while(input.IsOk() && !input.Eof())
         {
-          s = text.ReadLine();
-          if(s.StartsWith(wxT("<wxMaximaDocument")))
+          contents = text.ReadLine();
+          if(contents.StartsWith(wxT("<wxMaximaDocument")))
           {
-            s+= wxT("\n");
+            contents+= wxT("\n");
             break;
           }
         }
@@ -3149,30 +3192,97 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
           {
             if(line.StartsWith(wxT("</wxMaximaDocument>")))
             {
-              s += wxT("</wxMaximaDocument>\n");
+              contents += wxT("</wxMaximaDocument>\n");
               break;
             }
             else
-              s += line + wxT("\n");
+              contents += line + wxT("\n");
           }
         }
       }    
     }
     // Remove the illegal character
-    s.Replace(wxT('\u001b'), wxT("\u238B"));
+    contents.Replace(wxT('\u001b'), wxT("\u238B"));
     
     {
       // Write the string into a memory buffer
       wxMemoryOutputStream ostream;
       wxTextOutputStream txtstrm(ostream);
-      txtstrm.WriteString(s);
+      txtstrm.WriteString(contents);
       wxMemoryInputStream istream(ostream);
       
       // Try to load the file from the memory buffer.
       xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
     }
-  }
 
+    // If the xml document still cannot be loaded let's extract only the input cells.
+    if (!xmldoc.IsOk())
+    {
+      wxLogMessage(_("Trying to discard all output."));
+      contents.Replace(wxT("><"), wxT(">\n<"));
+      wxStringTokenizer lines(contents, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+      wxString contents_inputOnly;
+      while(lines.HasMoreTokens())
+      {
+        wxString line = lines.GetNextToken();
+        if(line.Contains(wxT("<output")))
+        {
+          while(lines.HasMoreTokens() && (!line.Contains(wxT("</output>"))))
+            line = lines.GetNextToken();
+        }
+        else
+        {
+          contents_inputOnly += line + wxT("\n");
+        }
+      }
+      contents = contents_inputOnly;
+      
+      {
+        // Write the string into a memory buffer
+        wxMemoryOutputStream ostream;
+        wxTextOutputStream txtstrm(ostream);
+        txtstrm.WriteString(contents);
+        wxMemoryInputStream istream(ostream);
+        
+        // Try to load the file from the memory buffer.
+        xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+      }
+    }
+
+    // If even that cannot be loaded let's try to reconstruct the closing markers.
+    if (!xmldoc.IsOk())
+    {
+      wxLogMessage(_("Trying to reconstruct the xml closing markers."));
+      wxStringTokenizer lines(contents, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+      wxString contents_reconstructed;
+      wxString line;
+      while(lines.HasMoreTokens() && (!line.Contains(wxT("<wxMaximaDocument"))))
+      {        
+        line = lines.GetNextToken();
+        contents_reconstructed += line;
+      }
+      while(lines.HasMoreTokens())
+      {
+        line = lines.GetNextToken();
+        if(line.Contains(wxT("<cell")))
+          contents_reconstructed += 
+            ReadPotentiallyUnclosedTag(lines, line);
+      }
+      contents_reconstructed += wxT("</wxMaximaDocument>\n");
+      contents = contents_reconstructed;
+      std::cerr<<contents;      
+      {
+        // Write the string into a memory buffer
+        wxMemoryOutputStream ostream;
+        wxTextOutputStream txtstrm(ostream);
+        txtstrm.WriteString(contents);
+        wxMemoryInputStream istream(ostream);
+        
+        // Try to load the file from the memory buffer.
+        xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+      }
+    }
+}
   if (!xmldoc.IsOk())
   {
     LoggingMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
