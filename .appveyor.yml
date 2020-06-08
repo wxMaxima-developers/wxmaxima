@@ -81,7 +81,9 @@ before_build:
           cmake --build . --config Release
           cmake --build . --config Release --target install
           # Remove all files other than .pdb files - we do need those so that the build is quiet
-          Get-ChildItem -Recurse -File | Where {($_.Extension -ne ".pdb")} | Remove-Item 
+          Get-ChildItem -Recurse -File | Where {($_.Extension -ne ".pdb")} | Remove-Item
+          # List the PDB files for diagnostic purposes
+          Get-ChildItem -Recurse -File | Select-Object FullName
           popd
       }
       
