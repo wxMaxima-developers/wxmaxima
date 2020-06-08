@@ -43,9 +43,12 @@ addons:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ninja;fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin;
-  brew install gettext wxwidgets pandoc libomp; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]
+  then
+    export PATH=$PATH:/usr/local/opt/gettext/bin
+    brew install ninja gettext wxwidgets pandoc libomp
+  fi
 notifications:
   email:
     on_success: change
