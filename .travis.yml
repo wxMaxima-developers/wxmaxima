@@ -18,7 +18,6 @@ cache:
   directories:
   - "$HOME/Library/Caches/Homebrew"
   - "/usr/local/Homebrew"
-  - "/usr/local/Cellar/ccache"
 addons:
   apt:
     packages:
@@ -44,8 +43,7 @@ addons:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";
-  brew install ccache ninja; brew link ccache;fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ninja;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin;
   brew install gettext wxwidgets pandoc libomp; fi
 notifications:
@@ -87,4 +85,4 @@ script:
     cp build/*.dmg wxMaxima.dmg
     echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
   fi
-- ccache -s
+- ccache -s || true
