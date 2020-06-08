@@ -1,4 +1,4 @@
-# This file is based on
+# This file is based on:
 # https://github.com/Ifsttar/I-Simpa/blob/master/appveyor.yml
 
 image:
@@ -18,11 +18,13 @@ environment:
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.1.3_6
+  WXBUILDVER: 3.1.3_7
   CMAKEGEN: "Ninja"
 
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
+  - 'C:\wxwidgets-build_%WXBUILDVER%'
+  # The build directory is only cached for the .pdb files. Other files are removed.
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
   # Do not cache the build itself - we only care about the install!
@@ -75,9 +77,13 @@ before_build:
           # Note: wxWidgets unity builds fail at least for version 3.1.3. This is a fixable problem but would
           # require patching the CMakeLists there. So for now it's disabled, since we don'y rebuild wxWidgets
           # often.
-          cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO -DwxUSE_STC=NO --config Release "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" -DCMAKE_STATIC_LINKER_FLAGS="/DEBUG" -DCMAKE_MODULE_LINKER_FLAGS="/DEBUG" "$SOURCE_DIR"
+          cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO -DwxUSE_STC=NO --config Release "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" "$SOURCE_DIR"
           cmake --build . --config Release
           cmake --build . --config Release --target install
+          # Remove all files other than .pdb files - we do need those so that the build is quiet
+          Get-ChildItem -Recurse -File | Where {($_.Extension -ne ".pdb")} | Remove-Item
+          # List the PDB files for diagnostic purposes
+          Get-ChildItem -Recurse -File | Select-Object FullName
           popd
       }
       
