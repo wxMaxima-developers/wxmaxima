@@ -65,7 +65,7 @@ before_build:
           Start-FileDownload "https://github.com/wxWidgets/wxWidgets/releases/download/v${env:WXVERSION}/$SRC_ARCHIVE"
           
           echo '* Unpacking wxWidgets sources'
-          7z x "$SRC_ARCHIVE" "-o$SOURCE_DIR"
+          7z x "$SRC_ARCHIVE" "-o$SOURCE_DIR" -y
           
           echo '* Building wxWidgets from sources'
           mkdir $BUILD_DIR | Out-Null
@@ -88,12 +88,14 @@ build_script:
       .\vcvars.ps1
       pushd build
       cmake --build . --config Release
+      if (! $?) { throw "CMake failed with exit code $LastExitCode" }
       popd
 
 test_script:
   - ps: |
       pushd build
       #ctest -C Release
+      if (! $?) { throw "CTest failed with exit code $LastExitCode" }
       popd
 
 after_test:
@@ -101,6 +103,7 @@ after_test:
       echo '* Packing the installer'
       pushd build
       cpack -G NSIS
+      if (! $?) { throw "CPack failed with exit code $LastExitCode" }
       popd
 
 on_failure:
