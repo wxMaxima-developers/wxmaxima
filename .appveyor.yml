@@ -65,7 +65,7 @@ before_build:
           Start-FileDownload "https://github.com/wxWidgets/wxWidgets/releases/download/v${env:WXVERSION}/$SRC_ARCHIVE"
           
           echo '* Unpacking wxWidgets sources'
-          7z x "$SRC_ARCHIVE" "-o$SOURCE_DIR"
+          7z x "$SRC_ARCHIVE" "-o$SOURCE_DIR" -y
           
           echo '* Building wxWidgets from sources'
           mkdir $BUILD_DIR | Out-Null
