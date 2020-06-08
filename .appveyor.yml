@@ -72,6 +72,9 @@ before_build:
           echo '* Building wxWidgets from sources'
           mkdir $BUILD_DIR | Out-Null
           pushd $BUILD_DIR
+          # Note: wxWidgets unity builds fail at least for version 3.1.3. This is a fixable problem but would
+          # require patching the CMakeLists there. So for now it's disabled, since we don'y rebuild wxWidgets
+          # often.
           cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO -DwxUSE_STC=NO --config Release "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" -DCMAKE_STATIC_LINKER_FLAGS="/Z7" -DCMAKE_MODULE_LINKER_FLAGS="/Z7" "$SOURCE_DIR"
           cmake --build . --config Release
           cmake --build . --config Release --target install
@@ -81,7 +84,7 @@ before_build:
       echo '- Configuring wxMaxima'
       mkdir build | Out-Null
       pushd build
-      cmake -G "$env:CMAKEGEN" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR="$INSTALL_DIR" -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+      cmake -G "$env:CMAKEGEN" -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES --config Release -DwxWidgets_ROOT_DIR="$INSTALL_DIR" -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
       popd
 
 build_script:
