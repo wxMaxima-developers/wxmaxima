@@ -64,7 +64,7 @@ script:
 - mkdir build
 #- cp .travis/CTestCustom.cmake build
 - cd build
-- cmake -G "$CMAKEGEN" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_BUILD_TYPE=debug ..
+- cmake -G "$CMAKEGEN" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug ..
 - cmake --build .
 - >
   DESTDIR=$(pwd)/installtest
