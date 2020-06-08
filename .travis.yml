@@ -13,6 +13,11 @@ env:
   - LANG=en_US.UTF-8
   - CMAKEGEN="Ninja"
   - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
+before_cache:
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
+  # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
+  # Cache only .git files under "/usr/local/Homebrew" so "brew update" does not take 5min every build
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
 cache:
   ccache: true
   directories:
