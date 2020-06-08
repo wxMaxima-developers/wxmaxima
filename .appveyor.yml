@@ -4,6 +4,8 @@
 image:
  - Visual Studio 2019
 
+version: '20.06.6_unofficial_{build}'
+
 # clone directory
 clone_folder: c:\projects\wxMaxima
 # Do not clone the entire git repository - only the latest commit in the current branch
@@ -70,7 +72,7 @@ before_build:
           echo '* Building wxWidgets from sources'
           mkdir $BUILD_DIR | Out-Null
           pushd $BUILD_DIR
-          cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO --config Release "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" "$SOURCE_DIR" -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
+          cmake -G "$env:CMAKEGEN" -DwxBUILD_SHARED=NO --config Release "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR" -DCMAKE_STATIC_LINKER_FLAGS="/Z7" -DCMAKE_MODULE_LINKER_FLAGS="/Z7" "$SOURCE_DIR"
           cmake --build . --config Release
           cmake --build . --config Release --target install
           popd
