@@ -8,8 +8,8 @@ version: '20.06.6_unofficial_{build}'
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
-# Do not clone the entire git repository - only the latest commit in the current branch
-clone_depth: 1
+# Do not clone the entire git repository
+clone_depth: 15
 
 environment:
   # The wxWidgets version as referred to in the source package

@@ -53,7 +53,7 @@ notifications:
     on_success: change
     on_failure: change
 git:
-  depth: 1
+  depth: 15
 script:
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
