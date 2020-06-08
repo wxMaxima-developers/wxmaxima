@@ -52,7 +52,12 @@ install:
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]
   then
     export PATH=$PATH:/usr/local/opt/gettext/bin
-    brew install ninja gettext wxwidgets pandoc libomp
+    set -e
+    brew remove postgis || true
+    brew upgrade cmake
+    brew install gettext libomp ninja pandoc wxwidgets
+    brew link cmake
+    set +e
   fi
 notifications:
   email:
