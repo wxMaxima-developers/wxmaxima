@@ -1,6 +1,10 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 cmake_minimum_required(VERSION 3.7)
+# Ignore the CMAKE_UNITY_BUILD variable if it's not used due to cmake version
+# older than 3.16.
+set(ignoreMe "${CMAKE_UNITY_BUILD}")
+
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
   # Support Unix Makefiles and Ninja
