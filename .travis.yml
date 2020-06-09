@@ -22,7 +22,6 @@ cache:
   directories:
   - "$HOME/Library/Caches/Homebrew"
   - "/usr/local/Homebrew"
-#  ccache: true
 addons:
   apt:
     packages:
@@ -75,7 +74,7 @@ script:
 - mkdir build
 #- cp .travis/CTestCustom.cmake build
 - cd build
-- cmake -G "$CMAKEGEN" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug ..
+- cmake -G "$CMAKEGEN" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD=YES ..
 - cmake --build .
 - >
   DESTDIR=$(pwd)/installtest
@@ -98,4 +97,3 @@ script:
     cp build/*.dmg wxMaxima.dmg
     echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
   fi
-- ccache -s || true
