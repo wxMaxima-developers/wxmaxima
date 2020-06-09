@@ -44,6 +44,9 @@ addons:
     - pandoc
     - cppcheck
 before_install:
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -q update; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - |
