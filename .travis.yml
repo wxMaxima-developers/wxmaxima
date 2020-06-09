@@ -19,10 +19,10 @@ before_cache:
   # Cache only .git files under "/usr/local/Homebrew" so "brew update" does not take 5min every build
   - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
 cache:
-  ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
   - "/usr/local/Homebrew"
+#  ccache: true
 addons:
   apt:
     packages:
