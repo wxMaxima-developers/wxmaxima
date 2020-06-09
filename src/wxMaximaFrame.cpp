@@ -400,6 +400,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.GetPane("symbols") = m_manager.GetPane("symbols").
     Show(true).Gripper(false).CloseButton(true);
+  m_manager.GetPane("greek") = m_manager.GetPane("greek").
+    Show(true).Gripper(false).CloseButton(true);
 
   m_manager.GetPane("draw") = m_manager.GetPane("draw").
     Show(true).CloseButton(true).Gripper(false);
