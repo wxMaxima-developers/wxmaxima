@@ -38,7 +38,7 @@
 #include <type_traits>
 #include <cstddef>
 
-//! Set to 1 to enable casting from CellPtr<U> to U*
+//! Set to 1 to enable casting from CellPtr\<U\> to U*
 #define CELLPTR_CAST_TO_PTR 1
 
 //! Set to 1 to enable CellPtr control block reference count logs
@@ -364,8 +364,10 @@ public:
 template <typename T> typename
 CellPtr<T>::pointer CellPtr<T>::get() const { return static_cast<pointer>(base_get()); }
 
-//! Declaration of a specialization for GroupCell. This allows
-//! use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
+/*! Declaration of a specialization for GroupCell. 
+
+This allows use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
+*/
 template <>
 CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
 

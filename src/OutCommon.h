@@ -62,6 +62,9 @@ public:
    *
    * \param fullWidth multiplied by scale is only used as maximum width during line
    *        breaking.
+   * \param configuration The configuration to build upon
+   * \param filename The name of the output file
+   * \param scale The scaling factor of the output document
    */
   explicit OutCommon(Configuration **configuration, const wxString &filename,
                      int fullWidth, double scale);

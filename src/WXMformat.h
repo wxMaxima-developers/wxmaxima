@@ -58,9 +58,10 @@ namespace Format
 {
 
 /*! Convert a given cell to its wxm representation.
- * \param wxm:
+ * \param wxm
  * - true: We mean to export to a .wxm file.
  * - false: We generate a.mac file instead that doesn't look nice with a dedicated comment per input line.
+ * \param cell The starting cell of the tree of cells that is to be converted
  */
 wxString TreeToWXM(GroupCell *cell, bool wxm = true);
 
