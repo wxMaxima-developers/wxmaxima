@@ -108,6 +108,5 @@ script:
     cp build/*.dmg wxMaxima.dmg
     echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
   fi
-- ccache -s
-- ccache -c -M 100M
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]] then ccache -s; ccache -c -M 100M; fi
 
