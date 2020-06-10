@@ -23,6 +23,7 @@ cache:
   directories:
   - "$HOME/Library/Caches/Homebrew"
   - "/usr/local/Homebrew"
+  - "/usr/local/Cellar/ccache"
 addons:
   apt:
     packages:
@@ -107,3 +108,6 @@ script:
     cp build/*.dmg wxMaxima.dmg
     echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
   fi
+- ccache -s
+- ccache -c -M 100M
+
