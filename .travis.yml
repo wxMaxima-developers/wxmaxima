@@ -73,15 +73,17 @@ git:
 script:
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
-    export CMAKE=cmake;
+    export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"
+    export CMAKE=cmake
+    export UNITY_BUILD_BATCH_SIZE=8
   else
-    export CXXFLAGS="-Wall -Wextra -ansi -std=c++11";
-    export CMAKE=/usr/bin/cmake;
+    export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
+    export CMAKE=/usr/bin/cmake
+    export UNITY_BUILD_BATCH_SIZE=4
   fi
 - mkdir build
 - cd build
-- ${CMAKE} -G "${CMAKEGEN}" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug ..
+- ${CMAKE} -G "${CMAKEGEN}" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} ..
 - ${CMAKE} --build .
 - >
   DESTDIR=$(pwd)/installtest
