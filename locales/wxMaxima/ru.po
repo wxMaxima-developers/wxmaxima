@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-05 16:30+0200\n"
-"PO-Revision-Date: 2020-04-20 18:26+0300\n"
+"PO-Revision-Date: 2020-06-10 11:05+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -674,9 +674,8 @@ msgid "A symbol from the configuration dialogue"
 msgstr "Символ из диалога настройки"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:968
-#, fuzzy
 msgid "A third fitting algorithm\n"
-msgstr "Использование другого алгоритма аппроксимации\n"
+msgstr "Третий алгоритм аппроксимации\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:183
 msgid ""
@@ -825,14 +824,14 @@ msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Дополнительные символы для боковой панели символов:"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1298
-#, fuzzy
 msgid ""
 "Additionally haven given nearly all equations names allows us to reference "
 "the equations whenever we need them. For example we can print them out "
 "again:\n"
 msgstr ""
 "Дополнительно приведены почти все имена уравнений, которые позволяют "
-"ссылаться на них при необходимости. Например, можно снова вывести их:\n"
+"ссылаться на эти уравнения при необходимости. Например, можно снова вывести"
+" их:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:861
 msgid ""
@@ -849,7 +848,6 @@ msgid ""
 msgstr "Также нас интересует только первый элемент списка результатов:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1335
-#, fuzzy
 msgid ""
 "Additionally, the left hand side and the right hand side can be extracted "
 "using the command lhs() and rhs(), which allows to use the part left or "
@@ -947,7 +945,7 @@ msgstr "Константа интегрирования."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3974
 msgid "Anchors file has no top node."
-msgstr ""
+msgstr "Файл привязок не имеет узла верхнего уровня."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1276
 msgid "Animation framerate..."
@@ -1461,7 +1459,6 @@ msgstr ""
 "довольно быстро:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1278
-#, fuzzy
 msgid ""
 "By choosing [a,b] as the list of solution variables, maxima is automatically "
 "told to eliminate these two variables on the right side of the equations, if "
@@ -1876,9 +1873,8 @@ msgid "Compiling the list of anchors the maxima manual provides"
 msgstr "Компиляция списка ключевых слов из руководства пользователя Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:851
-#, fuzzy
 msgid "Complete Word\tCtrl+Space"
-msgstr "Завершить слово\tCtrl+K"
+msgstr "Завершить слово\tCtrl+Пробел"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:852
 msgid "Complete word"
@@ -2073,7 +2069,6 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr "Преобразовать тригонометрические функции в экспоненциальную форму"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:718
-#, fuzzy
 msgid "Converting the data to a continuous curve\n"
 msgstr "Преобразование данных в непрерывную кривую\n"
 
@@ -2576,7 +2571,7 @@ msgstr "Не выполнять автоперевод в нижний инде�
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1783
 msgid "Don't mark cells that contain tooltips in yellow"
-msgstr ""
+msgstr "Не отмечать поля, содержащие подсказки, жёлтым цветом"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9823
 msgid "Don't save"
@@ -3051,9 +3046,8 @@ msgstr ""
 "если средство просмотра PDF поддерживает такую возможность)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:669
-#, fuzzy
 msgid "Export document to a HTML or LaTeX file"
-msgstr "Экспортировать содержимое документа в файл HTML или pdfLaTeX"
+msgstr "Экспортировать документ в файл HTML или LaTeX"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:744
 msgid "Export equations to HTML as:"
@@ -3518,14 +3512,14 @@ msgid "Found %i anchors."
 msgstr "Найдено ключевых слов: %i."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:316
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i demo files."
-msgstr "Найдено демонстрационных файлов: %li."
+msgstr "Найдено демонстрационных файлов: %i."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:292
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i loadable files."
-msgstr "Найдено доступных для загрузки файлов: %li."
+msgstr "Найдено доступных для загрузки файлов: %i."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:122
 #, c-format
@@ -3617,14 +3611,14 @@ msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF (*.gif)|*.gif"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:101
-#, fuzzy
 msgid ""
 "GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and "
 "hotkeys to be broken, see for example https://trac.wxwidgets.org/"
 "ticket/18462."
 msgstr ""
-"Для GTK_IM_MODULE установлено значение «xim», и используется GTK3. Окно "
-"программы будет сильно мерцать, см. https://trac.wxwidgets.org/ticket/18462."
+"Для GTK_IM_MODULE установлено значение «xim». Окно "
+"программы будет сильно мерцать, комбинации клавиш не будут работать, см."
+" https://trac.wxwidgets.org/ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:162
 msgid "Galician"
@@ -3777,12 +3771,11 @@ msgid "Grid:"
 msgstr "Сетка:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5372
-#, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|"
 "*.tex"
 msgstr ""
-"файл HTML (*.html)|*.html|пакетный файл Maxima (*.mac)|*.mac|файл pdfLaTeX "
+"файл HTML (*.html)|*.html|пакетный файл Maxima (*.mac)|*.mac|файл LaTeX "
 "(*.tex)|*.tex"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:265
@@ -3894,7 +3887,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1782
 msgid "Hide yellow tooltip marker"
-msgstr ""
+msgstr "Скрыть жёлтый маркер подсказок"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:283
 msgid "Highlight (dpart)"
@@ -3997,7 +3990,6 @@ msgid "Identical to"
 msgstr "Идентично"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1360
-#, fuzzy
 msgid ""
 "If in mathematics two things cancel each other out, they do so exactly. The "
 "same isn't true with IEEE floating-point numbers like the ones the computer "
@@ -4231,7 +4223,6 @@ msgstr ""
 "Если требуется узнать только стандартное значение, можно сделать следующее:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1210
-#, fuzzy
 msgid ""
 "If you are studying mathematics the good news is that solving equations is "
 "an art, a computer can help with in many special cases, but that often "
@@ -5116,7 +5107,6 @@ msgstr ""
 "Самая распространенная форма этой команды такова:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1373
-#, fuzzy
 msgid ""
 "Many computer programs are configured to show small numbers as \"0\" or only "
 "to show the first few digits after the decimal point hoping that the rest is "
@@ -5219,7 +5209,6 @@ msgid "Mathematical description\n"
 msgstr "Математическое описание\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1205
-#, fuzzy
 msgid ""
 "Mathematics can be seen as a language consisting only of a rather small set "
 "of words and only a handful of grammatical rules. Both sets are carefully "
@@ -5344,6 +5333,8 @@ msgid ""
 "Maxima even offers a third fitting algorithm that is even able to understand "
 "constraints:\n"
 msgstr ""
+"В Maxima также доступен третий алгоритм аппроксимации, отличительная"
+" особенность которого заключается в поддержке работы с ограничениями:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9128
 msgid "Maxima has finished calculating."
@@ -5891,12 +5882,14 @@ msgstr "Без знака доллара ($) или точки с запятой
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3985
 msgid "No entries in the caches for the subjects the manual contains."
-msgstr ""
+msgstr "В кэше нет записей для тем, которые содержатся в руководстве."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3953
 msgid ""
 "No file with the subjects the manual contained in the last wxMaxima run."
 msgstr ""
+"Нет файла с темами, которые содержатся в руководстве, с последнего запуска"
+" wxMaxima."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:584
 msgid "No gnuplot data!"
@@ -6696,9 +6689,9 @@ msgid "Read Matrix..."
 msgstr "Прочитать матрицу..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4011
-#, fuzzy, c-format
+#, c-format
 msgid "Read the entries the maxima manual offers from %s"
-msgstr "Компиляция списка ключевых слов из руководства пользователя Maxima"
+msgstr "Прочитать записи руководства пользователя Maxima из %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:545
 msgid "Reading Maxima output"
@@ -7447,9 +7440,8 @@ msgid "Show Maxima help"
 msgstr "Показать справку по Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:853
-#, fuzzy
 msgid "Show Template\tCtrl+Shift+Space"
-msgstr "Показать шаблон\tCtrl+Shift+K"
+msgstr "Показать шаблон\tCtrl+Shift+Пробел"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1331
 msgid "Show a tip"
@@ -7622,14 +7614,13 @@ msgid "Simplify trigonometric expression"
 msgstr "Упростить тригонометрическое выражение"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1383
-#, fuzzy
 msgid ""
 "Since it is the general case that allows to learn about the fundamental "
 "mechanisms often a good approach is to solve everything symbolically and to "
 "keep the actual numerical input values in a separate list like the following "
 "one:\n"
 msgstr ""
-"Так как общий случай часто позволяет изучить фундаментальные механизмы, "
+"Так как общий случай позволяет изучить фундаментальные механизмы, "
 "рекомендуется решать всё символически и держать фактические числовые входные "
 "значения в отдельном списке. Пример такого списка:\n"
 
@@ -7712,7 +7703,6 @@ msgid "Solve algebraic system of equations"
 msgstr "Решить систему алгебраических уравнений"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1261
-#, fuzzy
 msgid ""
 "Solve also accepts lists as its arguments. In this case it will only find "
 "solutions, if the following conditions are all met:\n"
@@ -7724,7 +7714,7 @@ msgstr ""
 "Функция решения также принимает списки в качестве аргументов. Решения будут "
 "предоставлены только при соблюдении всех следующих условий:\n"
 " * Количество линейно-независимых уравнений соответствует количеству "
-"переменных, для которых выполняется решение;\n"
+"переменных, которые следует определить;\n"
 " * Решение не меняет свою форму полностью в зависимости от диапазона, в "
 "котором находится переменная.\n"
 
@@ -8194,17 +8184,20 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3959
 msgid "The cache for the subjects the manual contains cannot be read."
-msgstr ""
+msgstr "Не удалось прочесть кэш с темами, которые содержатся в руководстве."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3966
 msgid "The cache for the subjects the manual contains has no head node."
 msgstr ""
+"У кэша с темами, которые содержатся в руководстве, отсутствует головной узел."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3979
 msgid ""
 "The cache for the subjects the manual contains is from a different Maxima "
 "version."
 msgstr ""
+"Кэш с темами, которые содержатся в руководстве, относится к другой версии"
+" Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2198
 msgid "The color of the next line to draw"
@@ -8639,6 +8632,10 @@ msgid ""
 "It caches the list of subjects maxima's manual offers and is automatically\n"
 "overwritten if maxima's version changes or the file cannot be read"
 msgstr ""
+"Этот файл генерируется wxMaxima\n"
+"В нём хранится кэш тем руководства пользователя Maxima. Он автоматически\n"
+"перезаписывается в случае изменения версии Maxima или невозможности прочитать"
+" файл"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:672
 msgid ""
@@ -8699,7 +8696,6 @@ msgstr ""
 "наборов значений и нашёл соответствующие наилучший и наихудший случаи:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1250
-#, fuzzy
 msgid ""
 "This time, the type of solutions we can get depends on the value of a, which "
 "is why maxima asked about it. One can avoid asking questions by telling the "
@@ -8882,10 +8878,10 @@ msgstr ""
 "снижает их чёткость)."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3937
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
-msgstr "Попытка открыть несуществующий файл %s"
+msgstr "Попытка сохранить кэш тем руководства пользователя в файле %s."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:139
 #: /home/gunter/src/wxmaxima/src/Image.cpp:143
@@ -9005,7 +9001,6 @@ msgid "Unfold all folded sections"
 msgstr "Развернуть все свёрнутые разделы"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:823
-#, fuzzy
 msgid ""
 "Unfortunately it is hard to fit to experimental data to this approach in "
 "many ways, for example:\n"
@@ -9031,7 +9026,7 @@ msgstr ""
 "определения параметров кривой, так как средство аппроксимации пытается "
 "смоделировать также и шум, а шум в нелинейных системах обычно не удаётся "
 "полностью усреднить.\n"
-" * Другая часть кривой содержит довольно высокие значения и чувствительна "
+" * Другая часть кривой содержит очень высокие значения и чувствительна "
 "даже к небольшим изменениям k. Так как средство аппроксимации пытается "
 "сохранить общую погрешность на низком уровне, оно будет непропорционально "
 "учитывать эту часть, придавая больший вес части кривой с низкими "
@@ -9078,9 +9073,8 @@ msgid "Unhide contents"
 msgstr "Показать содержимое"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:467
-#, fuzzy
 msgid "Unicode characters"
-msgstr "Поддержка Юникода"
+msgstr "Символы Юникода"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:752
 msgid "Unicode chars\tAlt+Shift+U"
@@ -9706,13 +9700,12 @@ msgstr ""
 "дифференцируемым, и выполняет поиск решения между двумя точками.\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:264
-#, fuzzy
 msgid ""
 "find_root only works if the function the solution is searched for crosses "
 "the solution exactly once in the given range."
 msgstr ""
-"find_root работает даже в том случае, если уравнение не является "
-"дифференцируемым, и выполняет поиск решения между двумя точками.\n"
+"find_root работает только в том случае, если функция, для которой выполняется"
+" поиск решения, пересекает решение только один раз в заданном диапазоне."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:436
 msgid "for\n"
