@@ -45,10 +45,12 @@ addons:
     - pandoc
     - cppcheck
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cat .travis/kitware.key | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-add-repository 'https://apt.kitware.com/ubuntu/'; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -q update; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -q install cmake; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    cat .travis/kitware.key | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null;
+    sudo apt-add-repository 'https://apt.kitware.com/ubuntu/';
+    sudo apt-get -q update;
+    sudo apt-get -q install cmake;
+    fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - |
@@ -72,17 +74,19 @@ script:
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
+    export CMAKE=cmake;
   else
     export CXXFLAGS="-Wall -Wextra -ansi -std=c++11";
+    export CMAKE=/usr/bin/cmake;
   fi
 - mkdir build
 - cd build
-- cmake -G "${CMAKEGEN}" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug ..
-- cmake --build .
+- ${CMAKE} -G "${CMAKEGEN}" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug ..
+- ${CMAKE} --build .
 - >
   DESTDIR=$(pwd)/installtest
-  cmake --build . -- install
-- cmake --build . -- package
+  ${CMAKE} --build . -- install
+- ${CMAKE} --build . -- package
 - |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]
   then
