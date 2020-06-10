@@ -84,6 +84,7 @@ script:
     export UNITY_BUILD_BATCH_SIZE=4
   fi
 - mkdir build
+- touch build build/build.ninja
 - cd build
 - ${CMAKE} -G "${CMAKEGEN}" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} ..
 - ${CMAKE} --build .
