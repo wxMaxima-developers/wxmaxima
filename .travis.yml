@@ -44,6 +44,7 @@ addons:
     - po4a
     - pandoc
     - cppcheck
+    - ccache
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     cat .travis/kitware.key | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null;
