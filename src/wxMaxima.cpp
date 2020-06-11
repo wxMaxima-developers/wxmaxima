@@ -248,7 +248,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_closing = false;
   m_fileSaved = true;
 
-  m_chmhelpFile = wxEmptyString;
 
   wxFileSystem::AddHandler(new wxMemoryFSHandler); // for saving wxmx
 
@@ -3788,43 +3787,6 @@ wxString wxMaxima::GetMaximaHelpFile2()
   return wxEmptyString;
 }
 
-void wxMaxima::ShowHTMLHelp(const wxString &helpfile, const wxString &keyword)
-{
-  wxString maximaHelpFile = GetMaximaHelpFile();
-#ifdef __WINDOWS__
-  // replace \ with / als directory separator
-  maximaHelpFile.Replace("\\", "/", true);
-#endif
-
-  if(maximaHelpFile.EndsWith("hhp"))
-    m_htmlhelpCtrl.AddBook(maximaHelpFile);
-  else
-    m_htmlhelpCtrl.AddBook(helpfile);
-
-  if ((keyword == wxT("%")) ||
-      (keyword == wxT(" << Graphics >> ")) ||
-      (keyword.IsEmpty()))
-    m_htmlhelpCtrl.DisplayContents();
-  else
-    m_htmlhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
-}
-
-#if defined (__WXMSW__)
-void wxMaxima::ShowCHMHelp(const wxString &helpfile, const wxString &keyword)
-{
-  if (m_chmhelpFile != helpfile)
-    m_chmhelpCtrl.LoadFile(helpfile);
-
-  if ((keyword == wxT("%")) ||
-      (keyword == wxT(" << Graphics >> ")) ||
-      (keyword.IsEmpty())
-    )
-    m_chmhelpCtrl.DisplayContents();
-  else
-    m_chmhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
-}
-#endif
-
 wxString wxMaxima::SearchwxMaximaHelp()
 {
   wxString failmsg = _("No helpfile found at %s.");
@@ -4154,45 +4116,38 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   MaximaHelpFile.Replace("\\", "/", true);
 #endif
   
-  if((!(MaximaHelpFile.Lower().EndsWith(wxT(".html")))) && (!MaximaHelpFile.IsEmpty()))
+  wxBusyCursor crs;
+  CompileHelpFileAnchors();
+  keyword = m_worksheet->m_helpFileAnchors[keyword];
+  if(keyword.IsEmpty())
+    keyword = "Function-and-Variable-Index";
+  if(!MaximaHelpFile.IsEmpty())
   {
-    ShowHTMLHelp(MaximaHelpFile,keyword);
+    // A Unix absolute path starts with a "/", so a valid file URI
+    // file:///path/to/helpfile (3 slashes!!) is constructed.
+    // On Windows the path starts e.g. with C:/path/to/helpfile
+    // so a third "/" must be inserted.
+    // Otherwise "C" might be considered as hostname.
+    wxString maximaHelpfileURI = wxString("file://")+
+#ifdef __WINDOWS__
+      wxString("/") +
+#endif
+      MaximaHelpFile;
+    if(!keyword.IsEmpty()) {
+      maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
+    }
+    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
+    {
+      wxMimeTypesManager manager;
+      wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+      wxString command = filetype->GetOpenCommand(maximaHelpfileURI);
+      wxExecute(command);
+    }
   }
   else
   {
-    wxBusyCursor crs;
-    CompileHelpFileAnchors();
-    keyword = m_worksheet->m_helpFileAnchors[keyword];
-    if(keyword.IsEmpty())
-      keyword = "Function-and-Variable-Index";
-    if(!MaximaHelpFile.IsEmpty())
-    {
-      // A Unix absolute path starts with a "/", so a valid file URI
-      // file:///path/to/helpfile (3 slashes!!) is constructed.
-      // On Windows the path starts e.g. with C:/path/to/helpfile
-      // so a third "/" must be inserted.
-      // Otherwise "C" might be considered as hostname.
-      wxString maximaHelpfileURI = wxString("file://")+
-#ifdef __WINDOWS__
-                                   wxString("/") +
-#endif
-                                   MaximaHelpFile;
-      if(!keyword.IsEmpty()) {
-        maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
-      }
-      wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
-      {
-        wxMimeTypesManager manager;
-        wxFileType * filetype = manager.GetFileTypeFromExtension("html");
-        wxString command = filetype->GetOpenCommand(maximaHelpfileURI);
-        wxExecute(command);
-      }
-    }
-    else
-    {
-      wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the maxima homepage")));
-      wxLaunchDefaultBrowser("http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#"+keyword);
-    }
+    wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the maxima homepage")));
+    wxLaunchDefaultBrowser("http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#"+keyword);
   }
 }
 

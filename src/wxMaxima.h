@@ -50,13 +50,6 @@
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
-
-#if defined (__WXMSW__)
-#include <wx/msw/helpchm.h>
-#endif
-
-#include <wx/html/helpctrl.h>
-
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
   
@@ -313,19 +306,9 @@ protected:
 
   //! Show the help for wxMaxima
   void ShowWxMaximaHelp();
-  
-  //! Show the maxima help in MSW's proprietary help format
-  void ShowCHMHelp(const wxString &helpfile, const wxString &keyword);
-  
+    
   //! Try to determine if help is needed for maxima or wxMaxima and show this help
   void ShowHelp(const wxString &keyword);
-
-  /*! Launches the HTML help browser
-
-    \param helpfile The name of the file the help browser has to be launched with
-    \param keyword The keyword to show help for
-  */
-  void ShowHTMLHelp(const wxString &helpfile, const wxString &keyword = {});
 
   void CheckForUpdates(bool reportUpToDate = false);
 
@@ -759,7 +742,6 @@ protected:
   //! The directory with maxima's documentation
   wxString m_maximaDocDir;
   bool m_fileSaved;
-  wxString m_chmhelpFile;
   wxString m_maximaVersion;
   wxString m_maximaArch;
   wxString m_lispVersion;
@@ -769,10 +751,6 @@ protected:
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
   int m_commandIndex;
-#if defined (__WXMSW__)
-  wxCHMHelpController m_chmhelpCtrl;
-#endif
-  wxHtmlHelpController m_htmlhelpCtrl;
   wxFindReplaceData m_findData;
   static wxRegEx m_funRegEx;
   static wxRegEx m_varRegEx;
