@@ -1196,13 +1196,17 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
   {
     // If we already have output more lines than we are allowed to we a inform the user
     // about this and return.
-    if (m_outputCellsFromCurrentCommand++ >= m_maxOutputCellsPerCommand)
+    if (m_outputCellsFromCurrentCommand > m_maxOutputCellsPerCommand)
     {
       DoRawConsoleAppend(
         _("... [suppressed additional lines since the output is longer than allowed in the configuration] "),
         MC_TYPE_ERROR);
       return NULL;
-    };
+    }
+    else
+    {
+      m_outputCellsFromCurrentCommand++;
+    }
 
 
     // If we already have output more lines than we are allowed to and we already
