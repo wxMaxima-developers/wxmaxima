@@ -71,7 +71,6 @@ protected:
   wxButton *button_2;
   wxCheckBox *checkbox_1;
   wxCheckBox *checkbox_2;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // SUMWIZ_H
