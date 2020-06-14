@@ -595,7 +595,21 @@ class Cell: public Observed
 
   //! Mark the cached height information as "to be calculated".
   void ResetSize()
-  { m_width = m_height = m_center = m_maxCenter = m_maxDrop = m_fullWidth = m_lineWidth = -1; }
+    { 
+       m_recalculateWidths = true; 
+       m_recalculate_maxCenter = true;
+       m_recalculate_maxDrop = true;
+       m_recalculate_maxWidth = true;
+       m_recalculate_lineWidth = true;
+    }
+
+  void ResetCellListSizes()
+    { 
+      m_recalculate_maxCenter = true;
+      m_recalculate_maxDrop = true;
+      m_recalculate_maxWidth = true;
+      m_recalculate_lineWidth = true;
+    }
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
@@ -978,6 +992,12 @@ class Cell: public Observed
   bool ContainsToolTip() const { return m_containsToolTip; }
 
 protected:
+  //! true, if this cell clearly needs recalculation
+  bool m_recalculateWidths; 
+  bool m_recalculate_maxCenter;
+  bool m_recalculate_maxDrop;
+  bool m_recalculate_maxWidth;
+  bool m_recalculate_lineWidth;
   //! GroupCells only: Suppress the yellow ToolTips marker
   bool m_suppressTooltipMarker;
   //! To be called if the font has changed.

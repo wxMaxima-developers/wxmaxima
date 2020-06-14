@@ -709,6 +709,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
 GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
                                        UndoActions *undoBuffer)
 {
+  GroupCell *cell = cells;
   bool worksheetSizeHasChanged = true;
   if (where && where->m_next)
     worksheetSizeHasChanged = false;
@@ -727,9 +728,10 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
     renumbersections = true;
   while (lastOfCellsToInsert->m_next)
   {
-    lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
     if (lastOfCellsToInsert->IsFoldable() || (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
       renumbersections = true;
+//    lastOfCellsToInsert->ResetData();
+    lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
   }
 
   if (!GetTree())
@@ -3050,7 +3052,6 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
   }
 
   InsertGroupCells(group, m_hCaretPosition);
-  // Recalculate(group, false);
 
   // activate editor
   SetActiveCell(group->GetEditable(), false);

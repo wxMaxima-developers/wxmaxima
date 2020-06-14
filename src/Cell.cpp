@@ -83,6 +83,11 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_configuration(config),
     m_cellPointers(GetCellPointers())
 {
+  m_recalculate_maxDrop = true;
+  m_recalculateWidths = true;
+  m_recalculate_maxCenter = true;
+  m_recalculate_maxWidth = true;
+  m_recalculate_lineWidth = true;
   m_containsToolTip = false;
   m_suppressTooltipMarker = false;
   m_isBrokenIntoLines_old = false;
@@ -269,8 +274,8 @@ void Cell::AppendCell(Cell *p_next)
 {
   if (p_next == NULL)
     return;
-  m_maxDrop = -1;
-  m_maxCenter = -1;
+  if(m_group)
+    GetGroup()->ResetData();
 
   // Search the last cell in the list
   Cell *LastInList = this;
@@ -307,8 +312,9 @@ GroupCell *Cell::GetGroup() const
  */
 int Cell::GetCenterList()
 {
-  if ((m_maxCenter < 0) || ((*m_configuration)->RecalculationForce()))
+  if (m_recalculate_maxCenter || ((*m_configuration)->RecalculationForce()))
   {
+    m_recalculate_maxCenter = false;
     Cell *tmp = this;
     m_maxCenter  = 0;
     while (tmp != NULL)
@@ -325,10 +331,9 @@ int Cell::GetCenterList()
 
 bool Cell::NeedsRecalculation(int fontSize) const
 {
-  bool result = (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+  bool result = (m_recalculateWidths) ||
     (fontSize != m_fontsize_old) ||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
-    (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
     ((*m_configuration)->RecalculationForce()) ||
@@ -341,8 +346,9 @@ bool Cell::NeedsRecalculation(int fontSize) const
  */
 int Cell::GetMaxDrop()
 {
-//  if ((m_maxDrop < 0) || ((*m_configuration)->RecalculationForce()))
+  if (m_recalculate_maxDrop || ((*m_configuration)->RecalculationForce()))
   {
+    m_recalculate_maxDrop = false;
     m_maxDrop = 0;
     Cell *tmp = this;
     while (tmp != NULL)
@@ -368,8 +374,9 @@ int Cell::GetHeightList()
 int Cell::GetFullWidth()
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
-  if ((m_fullWidth < 0) || ((*m_configuration)->RecalculationForce()))
+  if (m_recalculate_maxWidth || ((*m_configuration)->RecalculationForce()))
   {
+    m_recalculate_maxWidth = false;
     Cell *tmp = this;
 
     // We begin this calculation with a negative offset since the full width of only a single
@@ -389,8 +396,9 @@ int Cell::GetFullWidth()
  */
 int Cell::GetLineWidth()
 {
-  if (m_lineWidth < 0)
+  if (m_recalculate_lineWidth)
   {
+    m_recalculate_lineWidth = false;
     m_lineWidth = 0;
     int width = m_width;
 
@@ -421,13 +429,8 @@ int Cell::GetLineWidth()
 void Cell::Draw(wxPoint point)
 {
   Configuration *configuration = *m_configuration;
-  if((m_width >= 0) && (m_height >= 0) && (point.x >= 0) && (point.y >= 0))
+  if((!m_recalculateWidths) && (point.x >= 0) && (point.y >= 0))
     SetCurrentPoint(point);
-  else
-  {
-    if((m_height < 0) || (m_width < 0))
-      GetGroup()->ResetSize();
-  }
   
   // Mark all cells that contain tooltips
   if (!m_toolTip.empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
@@ -535,13 +538,12 @@ void Cell::RecalculateWidths(int WXUNUSED(fontsize))
 
 void Cell::RecalculateHeight(int fontsize)
 {
-  if(NeedsRecalculation(fontsize))
-    ResetData();
   m_fontSize = fontsize;
   m_fontsize_old = fontsize;
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
+  m_recalculateWidths = false;
 }
 
 /*! Is this cell currently visible in the window?.
@@ -1170,20 +1172,15 @@ bool Cell::ContainsRect(const wxRect &sm, bool all)
   return false;
 }
 
-/*!
- Resets remembered data.
+/*! Resets remembered size and position info for this cell and all cells inside it
 
  Resets cached data like width and the height of the current cell
- as well as the vertical position of the center. Temporarily unbreaks all
- lines until the widths are recalculated if there aren't any hard line
- breaks.
+ as well as the vertical position of the center. Then repeats this
+ with
  */
 void Cell::ResetData()
 {
-  m_fullWidth = -1;
-  m_lineWidth = -1;
-  m_maxCenter = -1;
-  m_maxDrop   = -1;
+  ResetSize();
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
     for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
       tmp->ResetData();

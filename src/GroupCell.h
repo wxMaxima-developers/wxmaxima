@@ -265,13 +265,10 @@ public:
   bool BreakUpCells(Cell *cell);
 
   //! Undo a BreakUpCells
-  void UnBreakUpCells(Cell *cell);
+  bool UnBreakUpCells(Cell *cell);
 
   //! Break this cell into lines
   void BreakLines();
-
-  //! Break this cell into lines
-  void BreakLines(Cell *cell);
 
   /*! Reset the input label of the current cell.
 
@@ -476,6 +473,8 @@ public:
     \return The next GroupCell or NULL if there isn't any.
   */
   GroupCell *UpdateYPosition();
+
+  void UpdateYPositionList();
 
   bool GetSuppressTooltipMarker()
     {return m_suppressTooltipMarker;}
