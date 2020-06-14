@@ -421,9 +421,14 @@ int Cell::GetLineWidth()
 void Cell::Draw(wxPoint point)
 {
   Configuration *configuration = *m_configuration;
-  if((m_height > 0) && (point.y > 0))
+  if((m_width >= 0) && (m_height >= 0) && (point.x >= 0) && (point.y >= 0))
     SetCurrentPoint(point);
-
+  else
+  {
+    if((m_height < 0) || (m_width < 0))
+      GetGroup()->ResetSize();
+  }
+  
   // Mark all cells that contain tooltips
   if (!m_toolTip.empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
       configuration->ClipToDrawRegion() && !configuration->GetPrinting() &&(!m_group->m_suppressTooltipMarker))
