@@ -32,6 +32,11 @@
 #include "Cell.h"
 #include "TextCell.h"
 
+/* ! The cell type that represents a <code>limit</code> command
+
+   \todo If the limit text is very short we should add more space
+   between the "lim" and the following text.
+ */
 class LimitCell final : public Cell
 {
 public:

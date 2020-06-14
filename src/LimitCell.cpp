@@ -168,6 +168,7 @@ void LimitCell::Draw(wxPoint point)
     under.x = point.x + wxMax(m_name->GetFullWidth(),
                             m_under->GetFullWidth()) / 2 -
               m_under->GetFullWidth() / 2;
+      
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetCenterList();
     m_under->DrawList(under);
 
