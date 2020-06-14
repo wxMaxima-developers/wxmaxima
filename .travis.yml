@@ -81,7 +81,7 @@ script:
   else
     export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
     export CMAKE=/usr/bin/cmake
-    export UNITY_BUILD_BATCH_SIZE=4
+    export UNITY_BUILD_BATCH_SIZE=8
   fi
 - mkdir build
 - touch build build/build.ninja
