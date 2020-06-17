@@ -763,7 +763,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
 
   if (renumbersections)
     NumberSections();
-  Recalculate(where->GetNext());
+  Recalculate(where);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
