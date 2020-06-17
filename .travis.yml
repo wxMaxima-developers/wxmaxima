@@ -43,6 +43,7 @@ addons:
     - gnuplot
     - gnuplot-x11
     - libomp-dev
+    - libwxgtk3.0-gtk3-dev
     - rpm
     - maxima
     - maxima-share
@@ -66,8 +67,6 @@ before_install:
     sudo apt-get install --only-upgrade cppcheck
   fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-- if [[ "$TRAVIS_DIST" == "bionic" ]]; then sudo apt-get -y install libwxgtk3.0-dev; fi
-- if [[ "$TRAVIS_DIST" == "focal" ]];  then sudo apt-get -y install libwxgtk3.0-gtk3-dev; fi
 install:
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]
