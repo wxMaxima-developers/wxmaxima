@@ -110,7 +110,7 @@ script:
 - |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]
   then
-    CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a ctest
+    CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a ctest -j 3
   fi
 - cd ..
 - |
