@@ -238,6 +238,21 @@ wxSize ImgCell::ToImageFile(wxString filename)
   return m_image->ToImageFile(filename);
 }
 
+static void writeHex(void *data, size_t length, wxStringCharType *out)
+{
+  using char_t = wxStringCharType;
+  char *const end = static_cast<char*>(data) + length;
+  for (char *in = static_cast<char*>(data); in != end; in++)
+  {
+    char c = *in;
+    unsigned char const h = (c >> 4) & 0xF, l = c & 0xF;
+    if (h > 9) *out++ = char_t('a' + h - 0xA);
+    else       *out++ = char_t('0' + h - 0);
+    if (l > 9) *out++ = char_t('a' + l - 0xA);
+    else       *out++ = char_t('0' + l - 0);
+  }
+}
+
 wxString ImgCell::ToRTF()
 {
   // Lines that are common to all types of images
@@ -277,10 +292,14 @@ wxString ImgCell::ToRTF()
   );
 
   // Convert the data into a hexadecimal string
-  for (size_t i = 0; i < imgdata.GetDataLen(); i++)
-    image += wxString::Format("%02x", ((unsigned char *) imgdata.GetData())[i]);
+  wxString hexString;
+  writeHex(imgdata.GetData(), imgdata.GetDataLen(),
+           wxStringBuffer(hexString, 2*imgdata.GetDataLen()));
 
-  return header + image + footer;
+  wxString result;
+  result.reserve(header.size() + image.size() + hexString.size() + footer.size() + 10);
+  result << header << image << hexString << footer;
+  return result;
 }
 
 wxString ImgCell::ToXML()
