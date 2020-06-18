@@ -5,8 +5,6 @@ include(FindPerl)
 # "make pdf" creates the manual in PDF form. The other targets that now
 # follow do the same for other formats
 add_custom_target(pdf)
-add_custom_target(docx)
-add_custom_target(odt)
 add_custom_target(epub)
 add_custom_target(html ALL)
 
@@ -110,8 +108,6 @@ if(PANDOC AND PO4A_TRANSLATE)
         endif()
 
         generate_wxmaxima_documentation(html "")
-        generate_wxmaxima_documentation(odt "")
-        generate_wxmaxima_documentation(docx "")
         generate_wxmaxima_documentation(epub "")
         if(LATEX)
             generate_wxmaxima_documentation(pdf "${PANDOC_TEXSELECT_OPTION}")
