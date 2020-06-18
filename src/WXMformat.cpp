@@ -519,6 +519,7 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
         line.clear();
       }
       s.lastChar = c;
+      ++s.ch;
     }
   }
 
