@@ -9,6 +9,9 @@ jobs:
       dist: bionic
     - os: linux
       dist: focal
+    - os: linux
+      dist: focal
+      env: CPPCHECK_ONLY=YES
     - os: osx
 #  allow_failures:
 #    - os: linux
@@ -20,8 +23,10 @@ branches:
   - DebianPackaging_NightlyBuild
 env:
   global:
-  - LANG=en_US.UTF-8
+  - CMAKE=cmake
   - CMAKEGEN="Ninja"
+  - CPPCHECK_ONLY=NO
+  - LANG=en_US.UTF-8
   - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
 before_cache:
   - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
@@ -58,13 +63,13 @@ addons:
     - ccache
 before_install:
 - |
-  if [[ "$TRAVIS_OS_NAME" == "linux" ]]
+  if [[ "$TRAVIS_OS_NAME" == "linux" && "$CPPCHECK_ONLY" == "NO" ]]
   then
     cat .travis/kitware.key | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
     sudo apt-add-repository 'https://apt.kitware.com/ubuntu/'
     sudo apt-get -q update
     sudo apt-get -q install cmake
-    sudo apt-get install --only-upgrade cppcheck
+    export CMAKE=/usr/bin/cmake
   fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
@@ -90,26 +95,29 @@ script:
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]
   then
     export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"
-    export CMAKE=cmake
     export UNITY_BUILD_BATCH_SIZE=8
   else
     export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
-    export CMAKE=/usr/bin/cmake
     export UNITY_BUILD_BATCH_SIZE=8
   fi
 - mkdir build
 - touch build build/build.ninja
 - cd build
-- ${CMAKE} -G "${CMAKEGEN}" -DUSE_CPPCHECK=YES -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} ..
+- ${CMAKE} -G "${CMAKEGEN}" -DUSE_CPPCHECK=${CPPCHECK_ONLY} -DUSE_OPENMP=YES -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} ..
 - ${CMAKE} --build .
 - >
+  if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
   DESTDIR=$(pwd)/installtest
-  ${CMAKE} --build . -- install
-- ${CMAKE} --build . -- package
-- |
-  if [[ "$TRAVIS_OS_NAME" == "linux" ]]
-  then
-    CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so) xvfb-run -a ctest -j 3
+  ${CMAKE} --build . -- install;
+  fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
+  ${CMAKE} --build . -- package;
+  fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" && "$TRAVIS_OS_NAME" == "linux" ]]; then
+  CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
+  xvfb-run -a ctest -j 3;
   fi
 - cd ..
 - |
