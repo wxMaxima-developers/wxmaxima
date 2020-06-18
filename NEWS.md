@@ -1,3 +1,6 @@
+# Current
+ * A new translation of the Turkish manual by Tufan Şirin
+
 # Why is wxMaxima able to open truncated wxmx files?
 
 .wxmx Files are technically .zip files like .pptx- files,
