@@ -3793,6 +3793,9 @@ wxString wxMaxima::GetMaximaHelpFile2()
 
 wxString wxMaxima::SearchwxMaximaHelp()
 {
+  if(!m_wxMaximaHelpFile.IsEmpty())
+    return m_wxMaximaHelpFile;
+
   wxString failmsg = _("No helpfile found at %s.");
   wxString helpfile;
   wxString lang_long = m_locale->GetCanonicalName();
@@ -3805,7 +3808,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
-    return helpfile;
+    return (m_wxMaximaHelpFile = helpfile);
   wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
     
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".html";
@@ -3813,7 +3816,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
-    return helpfile;
+    return (m_wxMaximaHelpFile = helpfile);
   wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
 
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
@@ -3821,7 +3824,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
-    return helpfile;
+    return (m_wxMaximaHelpFile = helpfile);
   wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
     
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
@@ -3829,7 +3832,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
-    return helpfile;
+    return (m_wxMaximaHelpFile = helpfile);
   wxLogMessage(wxString::Format(failmsg, helpfile.utf8_str()));
   
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");

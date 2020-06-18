@@ -685,6 +685,8 @@ protected:
     creating this string worthwile.
    */
   wxString m_currentOutputEnd;
+  //! Caches the name of wxMaxima's help file.
+  wxString m_wxMaximaHelpFile;
   //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
   //! A marker for the start of maths
