@@ -95,11 +95,12 @@ if(Git_FOUND)
     endif()
 endif()
 
-
-add_subdirectory(locales)
-add_subdirectory(Doxygen)
-add_subdirectory(data)
-add_subdirectory(info)
+if(NOT BUILD_SOURCE_ONLY)
+   add_subdirectory(locales)
+   add_subdirectory(Doxygen)
+   add_subdirectory(data)
+   add_subdirectory(info)
+endif()
 add_subdirectory(src)
 
 install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
