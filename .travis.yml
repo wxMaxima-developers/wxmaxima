@@ -76,7 +76,7 @@ before_install:
   then
     set -e
     brew pin gdal postgis
-    brew update
+    #brew update
     set +e
   fi
 install:
