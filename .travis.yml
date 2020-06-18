@@ -71,14 +71,20 @@ before_install:
     sudo apt-get -q install cmake
     export CMAKE=/usr/bin/cmake
   fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]
+  then
+    set -e
+    brew pin gdal postgis
+    brew update
+    set +e
+  fi
 install:
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]
   then
     export PATH=$PATH:/usr/local/opt/gettext/bin
     set -e
-    brew remove postgis || true
     brew upgrade cmake
     brew install gettext libomp ninja pandoc wxwidgets
     brew link cmake
