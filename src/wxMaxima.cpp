@@ -3273,7 +3273,6 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
       }
       contents_reconstructed += wxT("</wxMaximaDocument>\n");
       contents = contents_reconstructed;
-      std::cerr<<contents;      
       {
         // Write the string into a memory buffer
         wxMemoryOutputStream ostream;
