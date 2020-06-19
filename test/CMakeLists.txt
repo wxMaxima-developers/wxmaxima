@@ -509,6 +509,12 @@ add_test(
 set_tests_properties(openMacFiles PROPERTIES TIMEOUT 240)
 
 add_test(
+    NAME openMacFiles2
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch testbench_simple2.mac)
+set_tests_properties(openMacFiles2 PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME comment_begin
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch commentBegin.wxm)
