@@ -167,8 +167,8 @@ void SqrtCell::RecalculateHeight(int fontsize)
     m_innerCell->RecalculateHeightList(fontsize);
     m_open->RecalculateHeightList(fontsize);
     m_close->RecalculateHeightList(fontsize);
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList() + Scale_Px(3));
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList() + Scale_Px(3));
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList()) + Scale_Px(3);
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList()) + Scale_Px(3);
   }
   Cell::RecalculateHeight(fontsize);
 }
