@@ -119,5 +119,40 @@ add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 add_custom_target(checksums
     ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
+option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
+
+if(USE_OPENMP)
+    find_package(OpenMP)
+    include(CheckIncludeFileCXX)
+    check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
+endif()
+if(USE_OPENMP AND OpenMP_CXX_FOUND)
+	# For CMake < 3.9, we need to make the target ourselves
+	if(NOT TARGET OpenMP::OpenMP_CXX)
+	    find_package(Threads REQUIRED)
+	    add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
+	    set_property(TARGET OpenMP::OpenMP_CXX
+	        PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
+	    # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
+	    set_property(TARGET OpenMP::OpenMP_CXX
+	        PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
+	endif()
+	set(CMAKE_INSTALL_OPENMP_LIBRARIES TRUE) # Include OpenMP libraries in the required system libraries
+endif()
+
+if(USE_OPENMP AND OpenMP_CXX_FOUND)
+    if(OpenMP_CXX_SPEC_DATE LESS 201107)
+        message(STATUS "OpenMP too old to be used for multiprocessing in wxMaxima (" ${OpenMP_CXX_SPEC_DATE} ").")
+    else()
+        if(HAVE_OMP_HEADER)
+            message(STATUS "Using OpenMP for multiprocessing.")
+        else()
+            message(STATUS "Using OpenMP, but omp.h missing => Can use multiprocessing only in a few cases.")
+        endif()
+    endif()
+else()
+    message(STATUS "No OpenMP found => Not using multiprocessing.")
+endif()
+
 enable_testing()
 add_subdirectory(test)

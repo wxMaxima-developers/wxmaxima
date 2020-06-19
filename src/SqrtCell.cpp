@@ -165,12 +165,10 @@ void SqrtCell::RecalculateHeight(int fontsize)
   if(!m_isBrokenIntoLines)
   {
     m_innerCell->RecalculateHeightList(fontsize);
-    m_height = m_innerCell->GetHeightList() + Scale_Px(3);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(3);
     m_open->RecalculateHeightList(fontsize);
     m_close->RecalculateHeightList(fontsize);
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList() + Scale_Px(3));
+    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList() + Scale_Px(3));
   }
   Cell::RecalculateHeight(fontsize);
 }
@@ -347,8 +345,8 @@ bool SqrtCell::BreakUp()
     m_nextToDraw = m_open;
 
     ResetData();
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

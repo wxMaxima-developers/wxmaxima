@@ -13,5 +13,11 @@ target_link_libraries(test_CellPtr PRIVATE ${wxWidgets_LIBRARIES})
 add_test(CellPtr test_CellPtr)
 
 add_executable(test_ImgCell test_ImgCell.cpp)
-target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
+
+if(USE_OPENMP AND OpenMP_CXX_FOUND)
+    target_link_libraries(test_ImgCell PRIVATE OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
+else()
+    target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
+endif()
+
 add_test(ImgCell test_ImgCell)
