@@ -585,7 +585,7 @@ void GroupCell::RecalculateHeightInput()
     wxPoint in = GetCurrentPoint();
     
     in.x += GetInputIndent();
-    GetEditable()->SetCurrentPoint(GetCurrentPoint());
+    GetEditable()->SetCurrentPoint(in);
   }
   
   // special case
@@ -660,13 +660,13 @@ void GroupCell::RecalculateHeightInput()
     m_height = 0;
     m_width = 0;
   }
-  
   m_inputHeight = m_height;
   m_inputWidth = m_width;
 }
 
 void GroupCell::RecalculateHeightOutput()
 {
+  m_height = m_inputHeight;
   if(m_isHidden)
     return;
 
@@ -789,12 +789,9 @@ GroupCell *GroupCell::UpdateYPosition()
   {    
     m_currentPoint.x = configuration->GetIndent();
     wxASSERT(m_previous->GetCurrentPoint().y > 0);
-    if (GetPrevious()->m_height > 0)
-      m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
-                         GetPrevious()->GetMaxDrop() + GetCenterList() +
-                         configuration->GetGroupSkip();
-    else
-      m_currentPoint.y = GetPrevious()->m_currentPoint.y;
+    m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
+      GetPrevious()->GetMaxDrop() + GetCenterList() +
+      configuration->GetGroupSkip();
   }
   return GetNext();
 }

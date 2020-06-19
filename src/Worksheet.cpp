@@ -627,20 +627,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
   m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
   
-  bool recalculateNecessaryWas = false;
   for (GroupCell *tmp = GetTree(); tmp; )
   {
-    if(
-      (tmp->GetCurrentPoint().x < 0) ||
-      (tmp->GetCurrentPoint().y < 0) ||
-      (tmp->GetRect().GetWidth() < 0) ||
-      (tmp->GetRect().GetHeight() < 0)
-      )
-    {
-      tmp->Recalculate();
-      recalculateNecessaryWas = true;
-    }
-    
     wxRect cellRect = tmp->GetRect();
     
     int width;
@@ -680,10 +668,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       point = tmp->GetCurrentPoint();
     }
   }
-  
-  if (recalculateNecessaryWas)
-    wxLogMessage(_("Cell wasn't recalculated on draw!"));
-  
+    
   #ifndef WORKING_AUTO_BUFFER
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
@@ -709,13 +694,12 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
 GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
                                        UndoActions *undoBuffer)
 {
+  if (!cells)
+    return NULL; // nothing to insert
   GroupCell *cell = cells;
   bool worksheetSizeHasChanged = true;
   if (where && where->m_next)
     worksheetSizeHasChanged = false;
-
-  if (!cells)
-    return NULL; // nothing to insert
 
   m_configuration->AdjustWorksheetSize(true);
   bool renumbersections = false; // only renumber when true
@@ -730,7 +714,6 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
   {
     if (lastOfCellsToInsert->IsFoldable() || (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
       renumbersections = true;
-//    lastOfCellsToInsert->ResetData();
     lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
   }
 
@@ -763,7 +746,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
 
   if (renumbersections)
     NumberSections();
-  Recalculate(where);
+  Recalculate(where, true);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
