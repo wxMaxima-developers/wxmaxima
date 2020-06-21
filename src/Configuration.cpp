@@ -29,6 +29,7 @@
 #include "ErrorRedirector.h"
 #include "FontCache.h"
 #include <wx/wx.h>
+#include <wx/mimetype.h>
 #include <wx/string.h>
 #include <wx/font.h>
 #include <wx/config.h>
@@ -46,6 +47,14 @@ Configuration::Configuration(wxDC *dc) :
   SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
+  #ifdef __WXGTK__
+  m_helpBrowserUserLocation = wxT("xdg-open");
+  #else
+  wxMimeTypesManager manager;
+  wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+  wxString m_helpBrowserUserLocation = filetype->GetOpenCommand();
+  #endif;
+
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;

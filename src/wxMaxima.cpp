@@ -3843,6 +3843,27 @@ wxString wxMaxima::SearchwxMaximaHelp()
   return helpfile;
 }
 
+void wxMaxima::LaunchHelpBrowser(wxString uri)
+{
+  if(m_worksheet->m_configuration->AutodetectHelpBrowser())
+  {
+    if(!wxLaunchDefaultBrowser(uri))
+    {
+      wxMimeTypesManager manager;
+      wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+      wxString command = filetype->GetOpenCommand(uri);
+      wxLogMessage(wxString::Format(_("Launching the system's default help browser failed. Trying to execute %s instead."), command.utf8_str()));
+      wxExecute(command);
+    }
+  }
+  else
+  {
+    wxString command;
+    command = m_worksheet->m_configuration->HelpBrowserUserLocation() + wxT(" ") + uri;
+    wxExecute(command);
+  }
+}
+
 void wxMaxima::ShowWxMaximaHelp()
 {
   wxString helpfile = SearchwxMaximaHelp();
@@ -3868,25 +3889,12 @@ void wxMaxima::ShowWxMaximaHelp()
     // (No application is registered as handling this file) and returns true.
     // Let's work around this by finding the default browser the Hard Way.
     // if(!wxLaunchDefaultBrowser(URI))
-    {
-      wxString command;
-      if(m_worksheet->m_configuration->AutodetectHelpBrowser())
-      {
-        wxMimeTypesManager manager;
-        wxFileType * filetype = manager.GetFileTypeFromExtension("html");
-        command = filetype->GetOpenCommand(URI);
-      }
-      else
-      {
-        command = m_worksheet->m_configuration->HelpBrowserUserLocation() + wxT(" ") + URI;
-      }
-      wxExecute(command);
-    }
+    LaunchHelpBrowser(URI);
   }
   else
   {
     wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the wxMaxima homepage")));
-    wxLaunchDefaultBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
+    LaunchHelpBrowser("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/master/info/wxmaxima.html");
   }
 }
 
@@ -4151,25 +4159,12 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
     }
     wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
-    {
-      wxString command;
-      if(m_worksheet->m_configuration->AutodetectHelpBrowser())
-      {
-        wxMimeTypesManager manager;
-        wxFileType * filetype = manager.GetFileTypeFromExtension("html");
-        command = filetype->GetOpenCommand(maximaHelpfileURI);
-      }
-      else
-      {
-        command = m_worksheet->m_configuration->HelpBrowserUserLocation() + wxT(" ") + maximaHelpfileURI;
-      }
-      wxExecute(command);
-    }
+    LaunchHelpBrowser(maximaHelpfileURI);
   }
   else
   {
     wxLogMessage(_(wxT("No offline manual found ⇒ Redirecting to the maxima homepage")));
-    wxLaunchDefaultBrowser("http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#"+keyword);
+    LaunchHelpBrowser("http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#"+keyword);
   }
 }
 

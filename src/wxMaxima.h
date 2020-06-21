@@ -167,6 +167,9 @@ public:
   
   void StripLispComments(wxString &s);
 
+  //! Launches the help browser on the uri passed as an argument.
+  void LaunchHelpBrowser(wxString uri);
+  
   void SendMaxima(wxString s, bool addToHistory = false);
 
   //! Open a file
