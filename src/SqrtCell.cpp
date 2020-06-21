@@ -104,7 +104,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
-    m_width = m_innerCell->GetFullWidth() + m_signWidth;
+    // The Scale_Px(2) leaves space for the serif at the root.
+    m_width = m_innerCell->GetFullWidth() + m_signWidth + Scale_Px(2);
     
     int size = m_innerCell->GetHeightList();
 
