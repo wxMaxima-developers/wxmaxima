@@ -698,10 +698,29 @@ public:
   //! Returns the location of the maxima binary the user has selected.
   wxString MaximaUserLocation() const {return m_maximaUserLocation;}
 
+  void OnMpBrowse(wxCommandEvent& event);
+  
   //! Sets the location of the maxima binary.
   void MaximaUserLocation(wxString maxima)
   {
     wxConfig::Get()->Write(wxT("maxima"), m_maximaUserLocation = maxima);
+  }
+
+  //! Autodetect maxima's location? (If false the user-specified location is used)
+  bool AutodetectHelpBrowser() const {return m_autodetectHelpBrowser;}
+  //! Autodetect maxima's location?
+  void AutodetectHelpBrowser(bool autodetect){wxConfig::Get()->Write(
+      wxT("autodetectHelpBrowser"),
+      m_autodetectHelpBrowser = autodetect);
+  }
+
+  //! Returns the location of the help browser the user has selected.
+  wxString HelpBrowserUserLocation() const {return m_helpBrowserUserLocation;}
+
+  //! Sets the location of the maxima binary.
+  void HelpBrowserUserLocation(wxString helpBrowser)
+  {
+    wxConfig::Get()->Write(wxT("helpBrowser"), m_helpBrowserUserLocation = helpBrowser);
   }
 
   /*! Could a maxima binary be found in the path we expect it to be in?
@@ -888,6 +907,8 @@ private:
   long m_language;
   //! Autodetect maxima's location?
   bool m_autodetectMaxima;
+  //! Autodetect the help browser?
+  bool m_autodetectHelpBrowser;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Has the font changed?
@@ -913,6 +934,7 @@ private:
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
 
+  wxString m_helpBrowserUserLocation;
   wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;

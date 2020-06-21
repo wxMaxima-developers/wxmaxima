@@ -3869,9 +3869,17 @@ void wxMaxima::ShowWxMaximaHelp()
     // Let's work around this by finding the default browser the Hard Way.
     // if(!wxLaunchDefaultBrowser(URI))
     {
-      wxMimeTypesManager manager;
-      wxFileType * filetype = manager.GetFileTypeFromExtension("html");
-      wxString command = filetype->GetOpenCommand(URI);
+      wxString command;
+      if(m_worksheet->m_configuration->AutodetectHelpBrowser())
+      {
+        wxMimeTypesManager manager;
+        wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+        command = filetype->GetOpenCommand(URI);
+      }
+      else
+      {
+        command = m_worksheet->m_configuration->HelpBrowserUserLocation() + wxT(" ") + URI;
+      }
       wxExecute(command);
     }
   }
@@ -4144,9 +4152,17 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     }
     wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
     {
-      wxMimeTypesManager manager;
-      wxFileType * filetype = manager.GetFileTypeFromExtension("html");
-      wxString command = filetype->GetOpenCommand(maximaHelpfileURI);
+      wxString command;
+      if(m_worksheet->m_configuration->AutodetectHelpBrowser())
+      {
+        wxMimeTypesManager manager;
+        wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+        command = filetype->GetOpenCommand(maximaHelpfileURI);
+      }
+      else
+      {
+        command = m_worksheet->m_configuration->HelpBrowserUserLocation() + wxT(" ") + maximaHelpfileURI;
+      }
       wxExecute(command);
     }
   }

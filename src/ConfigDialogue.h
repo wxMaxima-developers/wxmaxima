@@ -240,6 +240,8 @@ protected:
   wxRadioButton *m_autodetectMaxima;
   //! The radio button that is set if m_autodetectMaxima is unset
   wxRadioButton *m_noAutodetectMaxima;
+  wxRadioButton *m_autodetectHelpBrowser;
+  wxRadioButton *m_noAutodetectHelpBrowser;
   //! Autodetect the mathJaX location?
   wxRadioButton *m_autodetectMathJaX;
   //! The radio button that is set if m_autodetectMathJaX is unset
@@ -256,6 +258,7 @@ protected:
   //! A textbox containing wxMaxima's startup commands
   wxTextCtrl *m_wxStartupCommands;
   wxTextCtrl *m_maximaUserLocation;
+  wxTextCtrl *m_helpBrowserUserLocation;
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_documentclassOptions;
   wxTextCtrl *m_texPreamble;
@@ -342,6 +345,8 @@ protected:
 
   //! Starts the file chooser that allows selecting where the maxima binary lies
   void OnMpBrowse(wxCommandEvent &event);
+
+  void OnHelpBrowserBrowse(wxCommandEvent&  event);
 
   void OnIdle(wxIdleEvent &event);
 

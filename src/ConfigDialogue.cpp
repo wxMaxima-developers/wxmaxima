@@ -243,7 +243,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   SetProperties();
 
   Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),NULL, this);
-  Connect(wxID_OPEN, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMpBrowse), NULL, this);
   Connect(button_mathFont, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMathBrowse), NULL, this);
   Connect(font_family, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnChangeFontFamily), NULL, this);
   Connect(listbox_styleFor, wxEVT_LISTBOX, wxCommandEventHandler(ConfigDialogue::OnChangeStyle), NULL, this);
@@ -919,9 +918,11 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(9, 1, 0, 0);
 
-  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(2, 3, 0, 0);
-  m_mp = new wxStaticText(panel, -1, _("Maxima program:"));
-  vsizer->Add(m_mp, wxSizerFlags().Expand().Border(wxALL, 0));
+  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(6, 3, 0, 0);
+  nameSizer->Add(new wxStaticText(panel, -1, _("Maxima program:")),
+                 wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(10, 10);
+  nameSizer->Add(10, 10);
   m_autodetectMaxima = new wxRadioButton(panel, -1, _("Autodetect"), wxDefaultPosition,
                                          wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_autodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
@@ -936,12 +937,38 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
   m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
+  m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMpBrowse), NULL, this);
+
   nameSizer->Add(m_maximaUserLocation, wxSizerFlags().Expand().Border(wxALL, 0));
   nameSizer->Add(m_mpBrowse, wxSizerFlags().Expand().Border(wxALL, 0));
   m_maximaUserLocation->Connect(wxEVT_COMMAND_TEXT_UPDATED,
                            wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
                            NULL, this);
+
+  nameSizer->Add(new wxStaticText(panel, -1, _("Help browser:")),
+                 wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(10, 10);
+  nameSizer->Add(10, 10);
+  m_autodetectHelpBrowser = new wxRadioButton(panel, -1, _("Autodetect"), wxDefaultPosition,
+                                              wxDefaultSize, wxRB_GROUP);
+  nameSizer->Add(m_autodetectHelpBrowser, wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(10, 10);
+  nameSizer->Add(10, 10);
+  
+  m_noAutodetectHelpBrowser= new wxRadioButton(panel, -1, _("User specified"));
+  m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
+  m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
+  nameSizer->Add(m_noAutodetectHelpBrowser, wxSizerFlags().Expand().Border(wxALL, 0));
+  m_helpBrowserUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
+  m_helpBrowserUserLocation->SetValue(m_configuration->HelpBrowserUserLocation());
+  wxButton *mpBrowse2 = new wxButton(panel, wxID_OPEN, _("Open"));
+  mpBrowse2->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnHelpBrowserBrowse), NULL, this);
+
+  nameSizer->Add(m_helpBrowserUserLocation, wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(mpBrowse2, wxSizerFlags().Expand().Border(wxALL, 0));
+
   vsizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxALL, 0));
+
   m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
                                  65534, m_configuration->DefaultPort());
   wxStaticText *dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
@@ -1155,6 +1182,8 @@ void ConfigDialogue::WriteSettings()
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
+  configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
+  configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
   config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
@@ -1289,6 +1318,23 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
     else
       m_maximaUserLocation->SetValue(file);
   }
+}
+
+void ConfigDialogue::OnHelpBrowserBrowse(wxCommandEvent&  WXUNUSED(event))
+{
+  wxString dd = m_configuration->HelpBrowserUserLocation();
+  wxString file = wxFileSelector(_("Select help browser"),
+                                 wxPathOnly(dd), wxFileNameFromPath(dd),
+                                 wxEmptyString,
+#if defined __WXMSW__
+                                 _("Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"),
+#else
+                                 _("All|*"),
+#endif
+                                 wxFD_OPEN);
+
+  if (file.Length())
+    m_helpBrowserUserLocation->SetValue(file);
 }
 
 void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))

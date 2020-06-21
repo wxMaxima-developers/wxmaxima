@@ -45,6 +45,7 @@ Configuration::Configuration(wxDC *dc) :
 {
   SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
+  m_autodetectHelpBrowser = true;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
@@ -410,7 +411,8 @@ void Configuration::ReadConfig()
   config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
   config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
   config->Read("parameters", &m_maximaParameters);
-  
+  config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
+  config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);
