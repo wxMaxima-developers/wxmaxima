@@ -53,7 +53,7 @@ Configuration::Configuration(wxDC *dc) :
   wxMimeTypesManager manager;
   wxFileType * filetype = manager.GetFileTypeFromExtension("html");
   wxString m_helpBrowserUserLocation = filetype->GetOpenCommand();
-  #endif;
+  #endif
 
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
