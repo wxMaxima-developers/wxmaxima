@@ -429,7 +429,7 @@ int Cell::GetLineWidth()
 void Cell::Draw(wxPoint point)
 {
   Configuration *configuration = *m_configuration;
-  if((!m_recalculateWidths) && (point.x >= 0) && (point.y >= 0))
+  if((point.x >= 0) && (point.y >= 0))
     SetCurrentPoint(point);
   
   // Mark all cells that contain tooltips
@@ -543,6 +543,7 @@ void Cell::RecalculateHeight(int fontsize)
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
+  ResetCellListSizes();
   m_recalculateWidths = false;
 }
 

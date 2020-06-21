@@ -309,16 +309,15 @@ wxString GroupCell::TexEscapeOutputCell(wxString Input)
 
 void GroupCell::SetInput(Cell *input)
 {
-  ResetData();
   if (!input)
     return;
   m_inputLabel.reset(input);
   m_inputLabel->SetGroup(this);
+  ResetData();
 }
 
 void GroupCell::AppendInput(Cell *cell)
 {
-  ResetData();
   if (!m_inputLabel)
   {
     m_inputLabel.reset(cell);
@@ -340,6 +339,7 @@ void GroupCell::AppendInput(Cell *cell)
       m_isHidden = false;
     }
   }
+  ResetData();
 }
 
 
@@ -354,7 +354,6 @@ void GroupCell::SetOutput(Cell *output)
 
 void GroupCell::RemoveOutput()
 {
-  ResetSize();
   m_numberedAnswersCount = 0;
   if (m_output == NULL)
     return;
@@ -381,12 +380,13 @@ void GroupCell::RemoveOutput()
   
   // Move all cells that follow the current one up by the amount this cell has shrinked.
   UpdateCellsInGroup();
+
+  ResetData();
   UpdateConfusableCharWarnings();
 }
 
 void GroupCell::AppendOutput(Cell *cell)
 {
-  ResetData();
   wxASSERT_MSG(cell != NULL, _("Bug: Trying to append NULL to a group cell."));
   if (cell == NULL) return;
   cell->SetGroupList(this);
@@ -419,6 +419,7 @@ void GroupCell::AppendOutput(Cell *cell)
   }
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();
+  ResetData();
   Recalculate();
 }
 
