@@ -88,7 +88,7 @@ We can propose another set of values: Two resistors that are only 10% ones, but 
 /* [wxMaxima: input   start ] */
 vals2:[
     R_1=100*(1+.1*tol[1]),
-    R_2=1000*(1+.1*tol[1])
+    R_2=1000*(1+.1*tol[2])
 ];
 wc_inputvalueranges(%);
 /* [wxMaxima: input   end   ] */
@@ -166,7 +166,7 @@ lhs(uout)=wc_mintypmax(subst(vals2,rhs(uout)));
 
 
 /* [wxMaxima: comment start ]
-As we have guessed the 2nd voltage divider was the better one.
+As we have guessed the 1st voltage divider was the better one.
    [wxMaxima: comment end   ] */
 
 
