@@ -4,7 +4,14 @@ The manual
 This folder contains wxMaxima's manual (wxmaxima.md) and all files that are needed
 in order to generate translated HTML files from it.
 
-The Translation of the manual
+The HMTL files (wxmaxima.html and language specific files like wxmaxima.de.html)
+are technically not necessary, they can be generated during the build process.
+But if the required tools (pandoc and po4a-translate) are not available, these
+files are installed, so that the documentation is available (maybe not the latest
+version).
+
+
+The translation of the manual
 =============================
 
 ### Translating the manual to a new language
@@ -24,9 +31,9 @@ Any help is always welcome.
 that contain the formatting hints for the markdown parser, too. If you remove 
 them or exchange them by something completely different the formatting will change, too.
 
-### Why not to translate the manual file directly
+### Why not to translate the manual file directly?
 
-Translating a text file is more convenient than translating a .po file.
+Translating a complete file is more convenient than translating parts with a .po file.
 But manually keeping the translation of a text file in sync with the original 
 if the original changes is a complicated task.
 
