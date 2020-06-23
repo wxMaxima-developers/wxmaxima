@@ -550,24 +550,24 @@ add_test(
     COMMAND wxmaxima --gibberish --batch unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
-find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
-if(DESKTOP_FILE_VALIDATE_FOUND)
+find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
+if(DESKTOP_FILE_VALIDATE)
     add_test(
 	NAME check_desktop_file
-	COMMAND desktop-file-validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.desktop)
+	COMMAND ${DESKTOP_FILE_VALIDATE} ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.desktop)
   set_tests_properties(check_desktop_file PROPERTIES TIMEOUT 60)
 else()
-  message(STATUS "desktop-file-validate not found => Skipping verifikation of the .desktop file")
+  message(STATUS "desktop-file-validate not found => Skipping verification of the .desktop file")
 endif()
 
-find_program(APPSTREAM_UTIL_FOUND appstream-util)
-if(APPSTREAM_UTIL_FOUND)
+find_program(APPSTREAM_UTIL appstream-util)
+if(APPSTREAM_UTIL)
     add_test(
 	NAME check_appstream_file
-	COMMAND appstream-util validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
+	COMMAND ${APPSTREAM_UTIL} validate ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
   set_tests_properties(check_appstream_file PROPERTIES TIMEOUT 600)
 else()
-  message(STATUS "appstream-util not found => Skipping verifikation of the appdata file")
+  message(STATUS "appstream-util not found => Skipping verification of the appdata file")
 endif()
 
 
