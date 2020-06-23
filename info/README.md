@@ -2,7 +2,10 @@ The manual
 ==========
 
 This folder contains wxMaxima's manual (wxmaxima.md) and all files that are needed
-in order to generate translated HTML files from it.
+in order to generate translated HTML files from it. If you want to help us to
+improve the wxMaxima manual please send patches and improvements for the
+[Markdown](https://en.wikipedia.org/wiki/Markdown) file - a lightweight markup
+language with plain-text-formatting syntax - not for the HTML files.
 
 The HMTL files (wxmaxima.html and language specific files like wxmaxima.de.html)
 are technically not necessary, they can be generated during the build process.
