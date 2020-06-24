@@ -7,7 +7,7 @@ improve the wxMaxima manual please send patches and improvements for the
 [Markdown](https://en.wikipedia.org/wiki/Markdown) file - a lightweight markup
 language with plain-text-formatting syntax - not for the HTML files.
 
-The HMTL files (wxmaxima.html and language specific files like wxmaxima.de.html)
+The HTML files (wxmaxima.html and language specific files like wxmaxima.de.html)
 are technically not necessary, they can be generated during the build process.
 But if the required tools (pandoc and po4a-translate) are not available, these
 files are installed, so that the documentation is available (maybe not the latest
