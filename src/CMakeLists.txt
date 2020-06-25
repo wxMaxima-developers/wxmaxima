@@ -109,6 +109,24 @@ endif()
 
 
 
+target_precompile_headers(wxmaxima PUBLIC
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/wx.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/window.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/button.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/string.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/grid.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/regex.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/filename.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/artprov.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/mstream.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/zipstream.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/wfstream.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/txtstrm.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/persist/toplevel.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/persist.h$<ANGLE-R>>"
+    "$<$<COMPILE_LANGUAGE:CPP>:<wx/image.h$<ANGLE-R>>"
+    )
+
 if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
 else()

@@ -39,7 +39,6 @@
 #include <wx/config.h>
 #include <wx/process.h>
 #include <wx/regex.h>
-#include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
