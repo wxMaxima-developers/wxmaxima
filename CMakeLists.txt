@@ -43,6 +43,11 @@ if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
 endif()
 
+# link time optimization seems to need that
+if(POLICY CMP0069)
+    cmake_policy(SET CMP0069 NEW)
+endif()
+
 # Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
