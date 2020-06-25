@@ -8,6 +8,12 @@ else()
     file(GLOB SOURCE_FILES *.cpp *.h */*.h */*.cpp)
 endif()
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.9.4")
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT lposupported)
+endif()
+
+
 option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND USE_CPPCHECK)
