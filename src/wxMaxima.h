@@ -70,22 +70,6 @@
 //! How many miliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
 
-#ifndef __WXGTK__
-
-class MyAboutDialog : public wxDialog
-{
-public:
-  MyAboutDialog(wxWindow *parent, int id, const wxString &title, const wxString &description);
-
-  ~MyAboutDialog()
-  {};
-
-  void OnLinkClicked(wxHtmlLinkEvent &event);
-
-};
-
-#endif
-
 /* The top-level window and the main application logic
 
  */
