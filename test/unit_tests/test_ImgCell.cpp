@@ -20,13 +20,12 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #define CATCH_CONFIG_RUNNER
-#include <catch2/catch.hpp>
-
 #include "test_ImgCell.h"
 #include "Cell.cpp"
+#include "CellPtr.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
-#include "CellPtr.cpp"
+#include <catch2/catch.hpp>
 
 Cell::CellPointers pointers(nullptr);
 
