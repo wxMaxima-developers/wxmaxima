@@ -85,6 +85,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_definitions(-Wno-c++11-narrowing)
 endif()
 
+##
+# Environment Check
+#
+
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(STATUS "Setting build type to 'Debug' as none was specified.")
@@ -93,7 +97,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     # Set the possible values of build type for cmake-gui
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
-
 
 # Set the install configuration the same as the build type (for cpack)
 if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
