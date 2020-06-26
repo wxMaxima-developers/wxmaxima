@@ -55,7 +55,15 @@ else()
   set(NONCRIT_WARNING STATUS)
 endif()
 
+##
+# Project
+#
+
 project(wxmaxima LANGUAGES CXX)
+
+##
+# CMake Policies
+#
 
 # Avoid a warning by deciding which version of this policy we prefer.
 if(POLICY CMP0066)
