@@ -39,9 +39,13 @@ if(DEFINED USE_OPENMP)
     message(WARNING "USE_OPENMP is deprecated. Use WXM_USE_OPENMP instead")
 endif()
 
-# Ignore the CMAKE_UNITY_BUILD variable if it's not used due to cmake version
-# older than 3.16.
-set(ignoreMe "${CMAKE_UNITY_BUILD}")
+##
+# Internal Options
+#
+
+if(CMAKE_VERSION VERSION_LESS "3.16")
+    unset(CMAKE_UNITY_BUILD)
+endif()
 
 if(NOT APPVEYOR_BUILD)
   set(NONCRIT_WARNING WARNING)
