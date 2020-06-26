@@ -13,6 +13,12 @@ option(WXM_USE_CPPCHECK
 option(WXM_USE_OPENMP
     "Use OpenMP for parallelizing code." ON)
 
+if (DEFINED MACOSX_VERSION_MIN)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
+    unset(MACOSX_VERSION_MIN)
+    unset(MACOSX_VERSION_MIN CACHE)
+    message(WARNING "MACOSX_VERSION_MIN is deprecated. Use CMAKE_OSX_DEPLOYMENT_TARGET instead")
+endif()
 if(DEFINED USE_CPPCHECK)
     set(WXM_USE_CPPCHECK ${USE_CPPCHECK} FORCE)
     unset(USE_CPPCHECK)
@@ -99,15 +105,6 @@ endif()
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
     message(STATUS "Cmake discourages in-source builds making them the less tested option. It is therefore advisable to do an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
-endif()
-
-# MacOSX version-min compiler settings
-if(MACOSX_VERSION_MIN)
-    message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_LINKER_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
 endif()
 
 # Get the git version, if available.
