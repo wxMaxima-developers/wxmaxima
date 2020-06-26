@@ -2,18 +2,18 @@
 
 # The result of the following command on Cmake < 3.11.0 is only re-generated on
 # CMakeLists.txt changes. Latter versions support CONFIGURE_DEPENDS
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.11.0")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.11.0")
     file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp *.h)
 else()
     file(GLOB SOURCE_FILES *.cpp *.h */*.h */*.cpp)
 endif()
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.9.4")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
     include(CheckIPOSupported)
     check_ipo_supported(RESULT lposupported)
 endif()
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
         message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
@@ -125,7 +125,7 @@ if (WXM_ENABLE_PRECOMPILED_HEADERS
         )
 endif()
 
-if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
+if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
 else()
     set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")

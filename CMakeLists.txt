@@ -107,7 +107,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     set(CMAKE_INSTALL_CONFIG_NAME "${CMAKE_BUILD_TYPE}")
 endif()
 
-if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
     message(WARNING
         "Cmake discourages in-source builds making them the less tested option. "
         "It is therefore advisable to do an out-of-source-build instead: Create a "
