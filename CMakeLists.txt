@@ -8,9 +8,17 @@ cmake_minimum_required(VERSION 3.7)
 
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
+option(WXM_USE_CPPCHECK
+    "Perform CPPCHECK during compilation." OFF)
 option(WXM_USE_OPENMP
     "Use OpenMP for parallelizing code." ON)
 
+if(DEFINED USE_CPPCHECK)
+    set(WXM_USE_CPPCHECK ${USE_CPPCHECK} FORCE)
+    unset(USE_CPPCHECK)
+    unset(USE_CPPCHECK CACHE)
+    message(WARNING "USE_CPPCHECK is deprecated. Use WXM_USE_CPPCHECK instead")
+endif()
 if(DEFINED USE_OPENMP)
     set(WXM_USE_OPENMP ${USE_OPENMP} FORCE)
     unset(USE_OPENMP)

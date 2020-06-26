@@ -13,10 +13,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.9.4")
     check_ipo_supported(RESULT lposupported)
 endif()
 
-
-option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
-
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND USE_CPPCHECK)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
         message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
