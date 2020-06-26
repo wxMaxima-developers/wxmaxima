@@ -43,18 +43,6 @@ endif()
 # older than 3.16.
 set(ignoreMe "${CMAKE_UNITY_BUILD}")
 
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-  # Support Unix Makefiles and Ninja
-  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-  if(UNIX)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CCACHE_PROGRAM}")
-  endif()
-  message(STATUS "Found CCache ${CCACHE_PROGRAM}")
-else()
-  message(STATUS "Not found a ccache that speeds up incremental compilation.")
-endif()
-
 if(NOT APPVEYOR_BUILD)
   set(NONCRIT_WARNING WARNING)
 else()
@@ -64,11 +52,6 @@ else()
 endif()
 
 project(wxmaxima LANGUAGES CXX)
-
-include(GNUInstallDirs)
-
-find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
-include(${wxWidgets_USE_FILE})
 
 # Avoid a warning by deciding which version of this policy we prefer.
 if(POLICY CMP0066)
@@ -108,6 +91,27 @@ endif()
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
     message(STATUS "Cmake discourages in-source builds making them the less tested option. It is therefore advisable to do an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
+endif()
+
+##
+# Dependencies/Packages
+#
+
+include(GNUInstallDirs)
+
+find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
+include(${wxWidgets_USE_FILE})
+
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+  # Support Unix Makefiles and Ninja
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+  if(UNIX)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CCACHE_PROGRAM}")
+  endif()
+  message(STATUS "Found CCache ${CCACHE_PROGRAM}")
+else()
+  message(STATUS "Not found a ccache that speeds up incremental compilation.")
 endif()
 
 # Get the git version, if available.
