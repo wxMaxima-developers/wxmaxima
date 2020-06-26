@@ -21,10 +21,10 @@ If you want to install into a special prefix (not `/usr/local`), use
 
 in the cmake call above. By default, wxMaxima tries to use OpenMP for
 parallelization, if the compiler supports that. You can remove OpenMP
-support with the option -DUSE_OPENMP=NO in the cmake call.
+support with the option -DWXM_USE_OPENMP=NO in the cmake call.
 
 If installed, wxMaxima can use cppcheck to check the source for bugs
-during compilation. You can enable that with: -DUSE_CPPCHECK=YES
+during compilation. You can enable that with: -DWXM_USE_CPPCHECK=YES
 
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM, on MacOs
 also .dmg), the following command will create them:

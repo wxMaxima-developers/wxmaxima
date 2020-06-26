@@ -2,21 +2,18 @@
 
 # The result of the following command on Cmake < 3.11.0 is only re-generated on
 # CMakeLists.txt changes. Latter versions support CONFIGURE_DEPENDS
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.11.0")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.11.0")
     file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp *.h)
 else()
     file(GLOB SOURCE_FILES *.cpp *.h */*.h */*.cpp)
 endif()
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.9.4")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
     include(CheckIPOSupported)
     check_ipo_supported(RESULT lposupported)
 endif()
 
-
-option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
-
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND USE_CPPCHECK)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
         message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
@@ -107,28 +104,28 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
-
-if(${CMAKE_VERSION} VERSION_GREATER "3.16.0")
-	target_precompile_headers(wxmaxima PUBLIC
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/wx.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/window.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/button.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/string.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/grid.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/regex.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/filename.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/artprov.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/mstream.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/zipstream.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/wfstream.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/txtstrm.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/persist/toplevel.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/persist.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/image.h$<ANGLE-R>>"
-		)
+if (WXM_ENABLE_PRECOMPILED_HEADERS
+        AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    target_precompile_headers(wxmaxima PUBLIC
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/wx.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/window.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/button.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/string.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/grid.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/regex.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/filename.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/artprov.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/mstream.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/zipstream.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/wfstream.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/txtstrm.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/persist/toplevel.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/persist.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/image.h$<ANGLE-R>>"
+        )
 endif()
 
-if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
+if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
 else()
     set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
@@ -145,14 +142,7 @@ else()
     configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 endif()
 
-option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
-
-if(USE_OPENMP)
-    find_package(OpenMP)
-    include(CheckIncludeFileCXX)
-    check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
-endif()
-if(USE_OPENMP AND OpenMP_CXX_FOUND)
+if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
     target_link_libraries(wxmaxima OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
 else()
     target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})

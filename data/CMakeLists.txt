@@ -22,7 +22,7 @@ else()
     string(TIMESTAMP CURRENTDATE "%Y-%m-%d")
     # the config file is ~/.wxMaxima if wxWidgets < 3.1.1
     #                    ~/.config/wxMaxima.conf if wxWidgets >= 3.1.1 (XDG Specification)
-    if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.1")
+    if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.1")
         set(WXMAXIMA_CONFIGFILE_PATH "~/.config/wxMaxima.conf")
     else()
         set(WXMAXIMA_CONFIGFILE_PATH "~/.wxMaxima")
