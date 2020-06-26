@@ -75,6 +75,10 @@ if(POLICY CMP0069)
     cmake_policy(SET CMP0069 NEW)
 endif()
 
+##
+# Compiler-Specific Tweaks
+#
+
 # Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
