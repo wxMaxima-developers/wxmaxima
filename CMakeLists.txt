@@ -28,8 +28,6 @@ endif()
 project(wxmaxima LANGUAGES CXX)
 set(VERSION 20.06.6-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
-set(PACKAGE wxmaxima)
-set(APP_NAME wxmaxima)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
