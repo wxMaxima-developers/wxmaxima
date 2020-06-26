@@ -122,30 +122,6 @@ if(Git_FOUND)
     endif()
 endif()
 
-if(NOT WXM_BUILD_SOURCE_ONLY)
-   add_subdirectory(locales)
-   add_subdirectory(Doxygen)
-   add_subdirectory(data)
-   add_subdirectory(info)
-endif()
-add_subdirectory(src)
-
-install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
-
-# include wxWidgets DLLs on Windows on appveyor
-if(WIN32 AND APPVEYOR_BUILD)
-    file(GLOB wxwidgets_dlls "${wxWidgets_LIB_DIR}/*.dll")
-    install(FILES ${wxwidgets_dlls} DESTINATION bin/)
-    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
-	DESTINATION programs
-	COMPONENT applications)
-endif()
-
-add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-
-add_custom_target(checksums
-    ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
-
 if(WXM_USE_OPENMP)
     find_package(OpenMP)
     include(CheckIncludeFileCXX)
@@ -180,5 +156,36 @@ else()
     message(STATUS "No OpenMP found => Not using multiprocessing.")
 endif()
 
+##
+# Build Items
+#
+
+if(NOT WXM_BUILD_SOURCE_ONLY)
+    add_subdirectory(locales)
+    add_subdirectory(Doxygen)
+    add_subdirectory(data)
+    add_subdirectory(info)
+endif()
+
+add_subdirectory(src)
+
 enable_testing()
 add_subdirectory(test)
+
+if(NOT WXM_BUILD_SOURCE_ONLY)
+    add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+    add_custom_target(checksums
+        ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
+
+    install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
+
+    # include wxWidgets DLLs on Windows on appveyor
+    if(WIN32 AND APPVEYOR_BUILD)
+        file(GLOB wxwidgets_dlls "${wxWidgets_LIB_DIR}/*.dll")
+        install(FILES ${wxwidgets_dlls} DESTINATION bin/)
+        install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+            DESTINATION programs
+            COMPONENT applications)
+    endif()
+endif()
