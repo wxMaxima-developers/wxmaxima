@@ -6,6 +6,8 @@ cmake_minimum_required(VERSION 3.7)
 # Options
 #
 
+option(WXM_BUILD_SOURCE_ONLY
+    "Only build the source code. Don't generate documentation, translations, etc." OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
@@ -120,7 +122,7 @@ if(Git_FOUND)
     endif()
 endif()
 
-if(NOT BUILD_SOURCE_ONLY)
+if(NOT WXM_BUILD_SOURCE_ONLY)
    add_subdirectory(locales)
    add_subdirectory(Doxygen)
    add_subdirectory(data)
