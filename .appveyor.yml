@@ -21,6 +21,8 @@ environment:
   WXBUILDVER: 3.1.3_7
   CMAKEGEN: "Ninja"
 
+  TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
+
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
   - 'C:\wxwidgets-build_%WXBUILDVER%'
@@ -38,23 +40,12 @@ branches:
 
 install:
   - ps: |
-      # We write out a script that pulls in Visual Studio variables
-      echo @'
-      echo '- Setting environment variables for Visual Studio'
-      cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
-      Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
-        if ($_ -match "^(.*?)=(.*)$") {
-          Set-Content "env:\$($matches[1])" $matches[2]
-        }
-      }
-      '@>> vcvars.ps1
-      
       echo '- Installing pandoc...'
       choco install -y --no-progress pandoc
 
 before_build:
   - ps: |
-      .\vcvars.ps1
+      iex $env:TOOLKIT_INIT
       refreshenv
       $SRC_ARCHIVE="wxWidgets-${env:WXVERSION}.7z"
       $BUILD_DIR="C:\wxwidgets-build_${env:WXBUILDVER}"
@@ -96,7 +87,7 @@ before_build:
 build_script:
   - ps: |
       echo '- Building wxMaxima'
-      .\vcvars.ps1
+      iex $env:TOOLKIT_INIT
       pushd build
       cmake --build . --config Release
       if (! $?) { throw "CMake failed with exit code $LastExitCode" }
