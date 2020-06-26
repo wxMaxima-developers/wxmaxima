@@ -107,25 +107,25 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
-
-if(${CMAKE_VERSION} VERSION_GREATER "3.16.0")
-	target_precompile_headers(wxmaxima PUBLIC
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/wx.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/window.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/button.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/string.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/grid.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/regex.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/filename.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/artprov.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/mstream.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/zipstream.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/wfstream.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/txtstrm.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/persist/toplevel.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/persist.h$<ANGLE-R>>"
-		"$<$<COMPILE_LANGUAGE:CPP>:<wx/image.h$<ANGLE-R>>"
-		)
+if (WXM_ENABLE_PRECOMPILED_HEADERS
+        AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    target_precompile_headers(wxmaxima PUBLIC
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/wx.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/window.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/button.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/string.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/grid.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/regex.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/filename.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/artprov.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/mstream.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/zipstream.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/wfstream.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/txtstrm.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/persist/toplevel.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/persist.h$<ANGLE-R>>"
+        "$<$<COMPILE_LANGUAGE:CPP>:<wx/image.h$<ANGLE-R>>"
+        )
 endif()
 
 if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")

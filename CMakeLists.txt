@@ -1,6 +1,14 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 cmake_minimum_required(VERSION 3.7)
+
+##
+# Options
+#
+
+option(WXM_ENABLE_PRECOMPILED_HEADERS
+    "Enable precompiled headers to potentially speed up compilation." OFF)
+
 # Ignore the CMAKE_UNITY_BUILD variable if it's not used due to cmake version
 # older than 3.16.
 set(ignoreMe "${CMAKE_UNITY_BUILD}")
