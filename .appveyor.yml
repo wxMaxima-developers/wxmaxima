@@ -1,10 +1,10 @@
 # This file is based on:
 # https://github.com/Ifsttar/I-Simpa/blob/master/appveyor.yml
 
-image:
- - Visual Studio 2019
-
 version: '20.06.6_unofficial_{build}'
+
+image:
+ - Visual Studio 2019 # For MSVC 2019 builds only
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
@@ -21,7 +21,9 @@ environment:
   WXBUILDVER: 3.1.3_7
   CMAKEGEN: "Ninja"
 
-  TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
+  matrix:
+  - TOOLKIT: MSVC
+    TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
 
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
