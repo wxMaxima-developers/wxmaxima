@@ -148,6 +148,10 @@ else()
     target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 endif()
 
+if(MINGW)
+    target_link_libraries(wxmaxima -lWs2_32)
+endif()
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
 
 if(APPLE)

@@ -5,6 +5,7 @@ version: '20.06.6_unofficial_{build}'
 
 image:
  - Visual Studio 2019 # For MSVC 2019 builds only
+ - Visual Studio 2015 # For MinGW 8.1.0 builds
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
@@ -18,7 +19,7 @@ environment:
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.1.3_9
+  WXBUILDVER: 3.1.3_10
   CMAKEGEN: "Ninja"
 
   matrix:
@@ -26,6 +27,19 @@ environment:
     TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
     TOOLKIT_CMAKE_ARGS: "-DCMAKE_CXX_FLAGS=\"/EHsc /D_UNICODE=1\""
     WXW_LIB: vc_x64_lib
+
+  - TOOLKIT: MinGW
+    TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
+    TOOLKIT_CMAKE_ARGS: "-DCMAKE_CXX_FLAGS=\"-Wa,-mbig-obj\""
+    WXW_LIB: gcc_x64_lib
+
+matrix:
+  exclude:
+    - image: Visual Studio 2019
+      TOOLKIT: MinGW
+
+    - image: Visual Studio 2015
+      TOOLKIT: MSVC
 
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
@@ -99,6 +113,7 @@ before_build:
       pushd build
       # WX_ROOT_DIR is a workaround for a nasty bug in FindwxWidgets. Without it, the value
       # of wxWidgets_LIB_DIR gets cleared (!) in FindwxWidgets.cmake(495)
+      # cmake issue report: https://gitlab.kitware.com/cmake/cmake/-/issues/19176
       cmake -G "$env:CMAKEGEN" --config Release  `
         -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES  `
         -DWX_ROOT_DIR="$INSTALL_DIR"  `
