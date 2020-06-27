@@ -122,7 +122,18 @@ endif()
 
 include(GNUInstallDirs)
 
-find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
+message(DEBUG "Looking for wxWidgets in           ${wxWidgets_ROOT_DIR}")
+message(DEBUG "Looking for wxWidgets libraries in ${wxWidgets_LIB_DIR}")
+
+# The package order below matters.
+###
+###  Incorrect order WILL BREAK Unix and MinGW STATIC BUILDS.
+###
+# The correct order is a topological sort based on the dependency graph
+# here: https://docs.wxwidgets.org/3.0/page_libs.html#page_libs_wxrichtext
+# The root dependency (base) must come last.
+#
+find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
 include(${wxWidgets_USE_FILE})
 
 find_program(CCACHE_PROGRAM ccache)
