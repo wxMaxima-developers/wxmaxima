@@ -119,7 +119,7 @@ after_test:
 
 on_failure:
   - ps: |
-      pushd build
+      pushd c:\projects\wxMaxima\build
       7z a FailureDump.zip *
       Push-AppveyorArtifact FailureDump.zip
       popd
