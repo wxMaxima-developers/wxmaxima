@@ -122,6 +122,9 @@ endif()
 
 include(GNUInstallDirs)
 
+message(DEBUG "Looking for wxWidgets in           ${wxWidgets_ROOT_DIR}")
+message(DEBUG "Looking for wxWidgets libraries in ${wxWidgets_LIB_DIR}")
+
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
 
