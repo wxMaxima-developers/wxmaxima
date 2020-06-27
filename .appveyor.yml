@@ -73,6 +73,7 @@ before_build:
           cmake -G "$env:CMAKEGEN" --config Release  `
             -DwxBUILD_SHARED=NO  `
             -DwxUSE_STC=NO  `
+            -DwxUSE_RIBBON=NO  `
             "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR"  `
             "$SOURCE_DIR"
           cmake --build . --config Release
