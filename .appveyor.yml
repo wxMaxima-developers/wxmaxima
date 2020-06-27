@@ -18,12 +18,14 @@ environment:
   # Typically it'd be the wxWidgets version with an optional suffix
   # to indicate build "epoch". The epoch changes are used to invalidate
   # a cached wxWidgets build and force a rebuild.
-  WXBUILDVER: 3.1.3_7
+  WXBUILDVER: 3.1.3_9
   CMAKEGEN: "Ninja"
 
   matrix:
   - TOOLKIT: MSVC
     TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
+    TOOLKIT_CMAKE_ARGS: "-DCMAKE_CXX_FLAGS=\"/EHsc /D_UNICODE=1\""
+    WXW_LIB: vc_x64_lib
 
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
@@ -52,6 +54,7 @@ before_build:
       $SRC_ARCHIVE="wxWidgets-${env:WXVERSION}.7z"
       $BUILD_DIR="C:\wxwidgets-build_${env:WXBUILDVER}"
       $INSTALL_DIR="C:\wxwidgets-install_${env:WXBUILDVER}"
+      $INSTALL_LIB_DIR="$INSTALL_DIR\lib\${env:WXW_LIB}"
       $SOURCE_DIR="C:\wxwidgets-source_${env:WXVERSION}"
       
       # If there's no installation of wxWidgets available, we have to build it
@@ -84,16 +87,25 @@ before_build:
           Get-ChildItem -Recurse -File | Select-Object FullName
           popd
       }
-      
+      $env:INSTALL_DIR = $INSTALL_DIR
+      $env:INSTALL_LIB_DIR = $INSTALL_LIB_DIR
+
+  - ps: |
+      $INSTALL_DIR = $env:INSTALL_DIR -replace '\\', '/'
+      $INSTALL_LIB_DIR = $env:INSTALL_LIB_DIR -replace '\\', '/'
+
       echo '- Configuring wxMaxima'
       mkdir build | Out-Null
       pushd build
+      # WX_ROOT_DIR is a workaround for a nasty bug in FindwxWidgets. Without it, the value
+      # of wxWidgets_LIB_DIR gets cleared (!) in FindwxWidgets.cmake(495)
       cmake -G "$env:CMAKEGEN" --config Release  `
         -DAPPVEYOR_BUILD=1 -DCMAKE_UNITY_BUILD=YES  `
+        -DWX_ROOT_DIR="$INSTALL_DIR"  `
         -DwxWidgets_ROOT_DIR="$INSTALL_DIR"  `
-        -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1"  `
+        -DwxWidgets_LIB_DIR="$INSTALL_LIB_DIR"  `
         -DwxWidgets_CONFIGURATION=mswu  `
-        ..
+        $env:TOOLKIT_CMAKE_ARGS ..
       popd
 
 build_script:
