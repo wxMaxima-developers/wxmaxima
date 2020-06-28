@@ -696,7 +696,6 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
 {
   if (!cells)
     return NULL; // nothing to insert
-  GroupCell *cell = cells;
   bool worksheetSizeHasChanged = true;
   if (where && where->m_next)
     worksheetSizeHasChanged = false;
