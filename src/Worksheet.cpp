@@ -4346,8 +4346,8 @@ void Worksheet::OnTimer(wxTimerEvent &event)
       // Determine if the timer that has expired belongs to a slide show cell.
       for (auto const &cellTimer : m_cellPointers.m_slideShowTimers)
       {
-        if (cellTimer.second == event.GetId())
-        {
+        // cppcheck-suppress useStlAlgorithm
+        if (cellTimer.second == event.GetId()) {
           slideshow = dynamic_cast<SlideShow *>(cellTimer.first);
           break;
         }
