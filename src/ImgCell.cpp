@@ -105,7 +105,7 @@ ImgCell::ImgCell(const ImgCell &cell):
 
 ImgCell::~ImgCell()
 {
-  ClearCache();
+  ImgCell::ClearCache();
 }
 
 wxString ImgCell::GetToolTip(const wxPoint &point)

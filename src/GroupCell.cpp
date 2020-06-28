@@ -1871,7 +1871,6 @@ void GroupCell::BreakLines()
     if (cell->BreakLineHere() || (currentWidth + cellWidth >= fullWidth))
     {
       cell->SoftLineBreak(true);
-      Cell *nextCell = cell;
       cell = cell->GetNextToDraw();
       if(cell)
         currentWidth = GetLineIndent(cell) + cellWidth;

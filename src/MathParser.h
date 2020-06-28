@@ -54,7 +54,7 @@ public:
      \todo I guess we could increase the performance further by putting the 
      most-frequently-used tags to the front of the list.
    */
-  MathParser(Configuration **cfg, const wxString &zipfile = {});
+  explicit MathParser(Configuration **cfg, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator

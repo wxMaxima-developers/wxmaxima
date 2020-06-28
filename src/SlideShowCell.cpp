@@ -239,7 +239,7 @@ SlideShow::SlideShow(const SlideShow &cell):
 SlideShow::~SlideShow()
 {
   StopTimer();
-  ClearCache();
+  SlideShow::ClearCache();
 }
 
 void SlideShow::SetDisplayedIndex(int ind)

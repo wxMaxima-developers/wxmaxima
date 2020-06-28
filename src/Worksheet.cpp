@@ -696,7 +696,6 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
 {
   if (!cells)
     return NULL; // nothing to insert
-  GroupCell *cell = cells;
   bool worksheetSizeHasChanged = true;
   if (where && where->m_next)
     worksheetSizeHasChanged = false;
@@ -4347,8 +4346,8 @@ void Worksheet::OnTimer(wxTimerEvent &event)
       // Determine if the timer that has expired belongs to a slide show cell.
       for (auto const &cellTimer : m_cellPointers.m_slideShowTimers)
       {
-        if (cellTimer.second == event.GetId())
-        {
+        // cppcheck-suppress useStlAlgorithm
+        if (cellTimer.second == event.GetId()) {
           slideshow = dynamic_cast<SlideShow *>(cellTimer.first);
           break;
         }
@@ -6529,11 +6528,8 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
 void Worksheet::AddDocumentTillHereToEvaluationQueue()
 {
   FollowEvaluation(true);
-  GroupCell *stop = {};
-  if (m_hCaretActive)
-    stop = m_hCaretPosition;
-  else
-  {
+  GroupCell *stop = m_hCaretActive ? m_hCaretPosition : nullptr;
+  if (!stop) {
     if (!GetActiveCell())
       return;
     stop = GetActiveCell()->GetGroup();

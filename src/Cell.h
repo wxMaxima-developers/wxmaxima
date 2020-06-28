@@ -1047,15 +1047,15 @@ protected:
   class InnerCellIterator
   {
     enum class Uses { SmartPtr, RawPtr};
-    using SmartPtr = const std::unique_ptr<Cell> *;
-    using RawPtr = Cell* const*;
+    using SmartPtr_ = const std::unique_ptr<Cell> *;
+    using RawPtr_ = Cell* const*;
     void const* m_ptr = {};
     Uses m_uses = Uses::SmartPtr;
     Cell *GetInner() const
     {
       if (!m_ptr) return {};
-      if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr>(m_ptr)->get();
-      else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr>(m_ptr);
+      if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr_>(m_ptr)->get();
+      else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr_>(m_ptr);
       else return {};
     }
   public:
@@ -1073,8 +1073,8 @@ protected:
     {
       if (m_ptr)
       {
-        if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr&>(m_ptr);
-        else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr&>(m_ptr);
+        if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr_&>(m_ptr);
+        else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr_&>(m_ptr);
         else wxASSERT(false && "Internal error in InnerCellIterator");
       }
       return *this;
