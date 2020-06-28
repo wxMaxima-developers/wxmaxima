@@ -221,8 +221,6 @@ if(NOT WXM_BUILD_SOURCE_ONLY)
 
     # include wxWidgets DLLs on Windows on appveyor
     if(WIN32 AND APPVEYOR_BUILD)
-        file(GLOB wxwidgets_dlls "${wxWidgets_LIB_DIR}/*.dll")
-        install(FILES ${wxwidgets_dlls} DESTINATION bin/)
         install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
             DESTINATION programs
             COMPONENT applications)

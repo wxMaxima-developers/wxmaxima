@@ -1,12 +1,98 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-# The result of the following command on Cmake < 3.11.0 is only re-generated on
-# CMakeLists.txt changes. Latter versions support CONFIGURE_DEPENDS
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.11.0")
-    file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp *.h)
-else()
-    file(GLOB SOURCE_FILES *.cpp *.h */*.h */*.cpp)
-endif()
+set(SOURCE_FILES
+    AbsCell.cpp
+    ActualValuesStorageWiz.cpp
+    AtCell.cpp
+    Autocomplete.cpp
+    AutocompletePopup.cpp
+    Autocomplete_Builtins.cpp
+    BC2Wiz.cpp
+    BTextCtrl.cpp
+    BitmapOut.cpp
+    Cell.cpp
+    CellPtr.cpp
+    CharButton.cpp
+    CompositeDataObject.cpp
+    ConfigDialogue.cpp
+    Configuration.cpp
+    ConjugateCell.cpp
+    DiffCell.cpp
+    Dirstructure.cpp
+    DrawWiz.cpp
+    EMFout.cpp
+    EditorCell.cpp
+    ErrorRedirector.cpp
+    EvaluationQueue.cpp
+    ExptCell.cpp
+    FindReplaceDialog.cpp
+    FindReplacePane.cpp
+    FontCache.cpp
+    FracCell.cpp
+    FunCell.cpp
+    Gen1Wiz.cpp
+    Gen2Wiz.cpp
+    Gen3Wiz.cpp
+    Gen4Wiz.cpp
+    Gen5Wiz.cpp
+    GroupCell.cpp
+    History.cpp
+    Image.cpp
+    ImgCell.cpp
+    IntCell.cpp
+    IntegrateWiz.cpp
+    LicenseDialog.cpp
+    LimitCell.cpp
+    LimitWiz.cpp
+    ListSortWiz.cpp
+    LogPane.cpp
+    LoggingMessageDialog.cpp
+    MainMenuBar.cpp
+    MarkDown.cpp
+    MatWiz.cpp
+    MathParser.cpp
+    MatrCell.cpp
+    MaxSizeChooser.cpp
+    MaximaTokenizer.cpp
+    Notification.cpp
+    OutCommon.cpp
+    ParenCell.cpp
+    Plot2dWiz.cpp
+    Plot3dWiz.cpp
+    PlotFormatWiz.cpp
+    Printout.cpp
+    RecentDocuments.cpp
+    SVGout.cpp
+    SeriesWiz.cpp
+    SlideShowCell.cpp
+    SqrtCell.cpp
+    StatusBar.cpp
+    SubCell.cpp
+    SubSupCell.cpp
+    SubstituteWiz.cpp
+    SumCell.cpp
+    SumWiz.cpp
+    SvgBitmap.cpp
+    SvgPanel.cpp
+    SystemWiz.cpp
+    TableOfContents.cpp
+    TextCell.cpp
+    TextStyle.cpp
+    TipOfTheDay.cpp
+    ToolBar.cpp
+    UnicodeSidebar.cpp
+    VariablesPane.cpp
+    WXMformat.cpp
+    Worksheet.cpp
+    XmlInspector.cpp
+    levenshtein/levenshtein.cpp
+    main.cpp
+    wxImagePanel.cpp
+    wxMathml.cpp
+    wxMaxima.cpp
+    wxMaximaFrame.cpp
+    wxMaximaIcon.cpp
+)
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
     include(CheckIPOSupported)
