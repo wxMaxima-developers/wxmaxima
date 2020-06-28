@@ -29,6 +29,7 @@
 #ifndef ERRORREDIRECTOR_H
 #define ERRORREDIRECTOR_H
 
+#include "precomp.h"
 #include <wx/log.h>
 #include <memory>
 

@@ -37,6 +37,7 @@
 #ifndef AUTOCOMPLETEPOPUP_H
 #define AUTOCOMPLETEPOPUP_H
 
+#include "precomp.h"
 #include "Autocomplete.h"
 #include "EditorCell.h"
 #include <wx/combo.h>

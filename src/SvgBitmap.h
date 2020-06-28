@@ -30,6 +30,7 @@
 
 #include "Cell.h"
 
+#include "precomp.h"
 #include <wx/bitmap.h>
 #include "nanoSVG/nanosvg.h"
 #include "nanoSVG/nanosvgrast.h"

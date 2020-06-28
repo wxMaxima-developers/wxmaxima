@@ -23,6 +23,7 @@
 #ifndef MAXIMATOKENIZER_H
 #define MAXIMATOKENIZER_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/arrstr.h>

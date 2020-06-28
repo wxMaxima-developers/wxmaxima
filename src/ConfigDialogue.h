@@ -29,6 +29,7 @@ dialog. The preferences themself will be read directly using
 <code> config->Read </code>, instead, where needed or from Configuration.
 */
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/hashmap.h>

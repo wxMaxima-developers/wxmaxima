@@ -27,6 +27,7 @@
 #ifndef WXMATHML_H
 #define WXMATHML_H
 
+#include "precomp.h"
 #include <wx/string.h>
 #include <wx/tokenzr.h>
 

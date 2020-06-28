@@ -28,6 +28,7 @@ shown on the work sheet.
 #ifndef TEXTSTYLE_H
 #define TEXTSTYLE_H
 
+#include "precomp.h"
 #include <wx/colour.h>
 #include <wx/font.h>
 #include <wx/config.h>

@@ -25,6 +25,7 @@
   This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
  */
+#include "precomp.h"
 #include "Configuration.h"
 #include <wx/wx.h>
 #include <wx/listctrl.h>

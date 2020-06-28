@@ -22,6 +22,7 @@
 #ifndef PLOT3DWIZ_H
 #define PLOT3DWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>

@@ -30,6 +30,7 @@
 #ifndef AUTOCOMPLETE_H
 #define AUTOCOMPLETE_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/dir.h>
 #include <wx/arrstr.h>

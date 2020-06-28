@@ -25,6 +25,7 @@
 #define OUTCOMMON_H
 
 #include "Configuration.h"
+#include "precomp.h"
 #include <wx/dataobj.h>
 #include <memory>
 

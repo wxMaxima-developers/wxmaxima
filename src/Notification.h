@@ -32,6 +32,7 @@
 #define NOTIFICATION_H
 
 #include "GroupCell.h"
+#include "precomp.h"
 #include <wx/notifmsg.h>
 #include <wx/wx.h>
 

@@ -23,6 +23,7 @@
 #ifndef SUBSUPCELL_H
 #define SUBSUPCELL_H
 
+#include "precomp.h"
 #include <memory>
 #include "Cell.h"
 

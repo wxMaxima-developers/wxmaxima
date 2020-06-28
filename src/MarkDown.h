@@ -28,6 +28,7 @@
 #ifndef MARKDOWN_H
 #define MARKDOWN_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/config.h>

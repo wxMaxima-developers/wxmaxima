@@ -25,10 +25,12 @@
   This file contains the definition of the class History that handles the recently 
   issued commands for the history pane.
  */
-#include <wx/wx.h>
 
 #ifndef HISTORY_H
 #define HISTORY_H
+
+#include "precomp.h"
+#include <wx/wx.h>
 
 enum
 {

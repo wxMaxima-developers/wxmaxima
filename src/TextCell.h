@@ -23,7 +23,8 @@
 #ifndef TEXTCELL_H
 #define TEXTCELL_H
 
-#include "wx/regex.h"
+#include "precomp.h"
+#include <wx/regex.h>
 #include "Cell.h"
 
 /*! A Text cell

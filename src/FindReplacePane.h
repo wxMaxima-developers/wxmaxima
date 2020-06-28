@@ -30,6 +30,7 @@
 #ifndef FINDREPLACEPANE_H
 #define FINDREPLACEPANE_H
 
+#include "precomp.h"
 #include <wx/fdrepdlg.h>
 #include <wx/event.h>
 #include <wx/panel.h>

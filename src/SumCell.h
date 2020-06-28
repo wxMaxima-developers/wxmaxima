@@ -31,6 +31,7 @@
 #ifndef SUMCELL_H
 #define SUMCELL_H
 
+#include "precomp.h"
 #include "Cell.h"
 #include "ParenCell.h"
 

@@ -26,6 +26,7 @@
   This file declares the class ToolBar that represents wxMaxima's main tool bar.
  */
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/choice.h>

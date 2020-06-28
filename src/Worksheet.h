@@ -31,6 +31,7 @@
 #define WORKSHEET_H
 
 #include "stx/optional.hpp"
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>

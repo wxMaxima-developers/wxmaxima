@@ -24,6 +24,7 @@
 #define SVGOUT_H
 
 #include "OutCommon.h"
+#include "precomp.h"
 #include <wx/dcsvg.h>
 #include <memory>
 

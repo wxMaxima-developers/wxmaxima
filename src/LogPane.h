@@ -22,6 +22,7 @@
 #ifndef LOGPANE_H
 #define LOGPANE_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>

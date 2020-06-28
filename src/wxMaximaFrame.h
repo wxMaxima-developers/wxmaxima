@@ -30,6 +30,7 @@ surrounding the worksheet.
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 
 #include <wx/dirctrl.h>

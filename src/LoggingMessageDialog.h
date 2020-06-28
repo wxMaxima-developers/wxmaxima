@@ -27,6 +27,7 @@
 #define LOGGINGMESSAGEDIALOG_H
 
 
+#include "precomp.h"
 #include <wx/msgdlg.h>
 #include <wx/log.h>
 

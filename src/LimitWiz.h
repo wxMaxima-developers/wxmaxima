@@ -22,6 +22,7 @@
 #ifndef LIMITWIZ_H
 #define LIMITWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 

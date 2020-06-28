@@ -29,6 +29,7 @@
 #ifndef MATHPRINTOUT_H
 #define MATHPRINTOUT_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/print.h>
 

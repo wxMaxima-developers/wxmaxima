@@ -22,6 +22,7 @@
 #ifndef FONTCACHE_H
 #define FONTCACHE_H
 
+#include "precomp.h"
 #include <wx/font.h>
 #include <functional>
 #include <unordered_map>

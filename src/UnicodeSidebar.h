@@ -25,6 +25,7 @@
   This file contains the definition of the class Unicodesidebar that allows to 
   select arbitrary unicode symbols.
  */
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/grid.h>
 

@@ -22,6 +22,7 @@
 #ifndef LISTSORTWIZ_H
 #define LISTSORTWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/grid.h>
 #include <wx/statline.h>

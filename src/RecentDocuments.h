@@ -30,6 +30,7 @@
 #define RECENTDOCUMENTS_H
 
 #include <list>
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/config.h>
 #include <wx/tokenzr.h>

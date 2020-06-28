@@ -24,6 +24,7 @@
   This file contains the definition of the class XmlInspector that handles the 
   table of contents pane.
  */
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include <vector>

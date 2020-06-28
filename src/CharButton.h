@@ -28,6 +28,7 @@
   This file contains the definition of the class Charbutton that allows to 
   select arbitrary unicode symbols.
  */
+#include "precomp.h"
 #include <wx/panel.h>
 
 /*! This class generates a pane containing the last commands that were issued.

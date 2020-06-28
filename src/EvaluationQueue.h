@@ -32,6 +32,7 @@ that still have to be sent to maxima.
 #ifndef EVALUATIONQUEUE_H
 #define EVALUATIONQUEUE_H
 
+#include "precomp.h"
 #include "GroupCell.h"
 #include "wx/arrstr.h"
 #include <vector>
