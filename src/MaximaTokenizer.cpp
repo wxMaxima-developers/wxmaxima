@@ -398,10 +398,12 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
   }
 }
 
-MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration,
-                                 const TokenList &initialTokens) :
-  MaximaTokenizer(commands, configuration)
+MaximaTokenizer::MaximaTokenizer(wxString commands,
+                                 Configuration *configuration,
+                                 const TokenList &initialTokens)
+  : MaximaTokenizer(commands, configuration)
 {
+  // cppcheck-suppress useInitializationList
   m_tokens = initialTokens;
 }
 
