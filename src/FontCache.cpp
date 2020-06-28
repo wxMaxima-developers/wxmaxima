@@ -21,8 +21,10 @@
 
 #include "FontCache.h"
 #include <wx/log.h>
+#include <cmath>
 #include <functional>
 #include <string>
+#include <type_traits>
 
 FontCache::~FontCache()
 {
@@ -69,6 +71,20 @@ void FontCache::Clear()
 
 template <typename T>
 static wxFontInfo &SetSize(wxFontInfo &info, T size)
+{
+#if wxCHECK_VERSION(3, 1, 2)
+  wxFontInfo newInfo{size};
+#else
+  if (!std::is_integral<T>())
+    size = round(size);
+  wxFontInfo newInfo{int(size)};
+#endif
+  FontInfo::CopyWithoutSize(info, newInfo);
+  return (info = newInfo);
+}
+
+template<>
+wxFontInfo &SetSize(wxFontInfo &info, wxSize size)
 {
   wxFontInfo newInfo{size};
   FontInfo::CopyWithoutSize(info, newInfo);
