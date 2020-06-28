@@ -6528,11 +6528,8 @@ void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
 void Worksheet::AddDocumentTillHereToEvaluationQueue()
 {
   FollowEvaluation(true);
-  GroupCell *stop = {};
-  if (m_hCaretActive)
-    stop = m_hCaretPosition;
-  else
-  {
+  GroupCell *stop = m_hCaretActive ? m_hCaretPosition : nullptr;
+  if (!stop) {
     if (!GetActiveCell())
       return;
     stop = GetActiveCell()->GetGroup();
