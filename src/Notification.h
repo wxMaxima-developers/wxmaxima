@@ -63,9 +63,9 @@ public:
   //! Makes the notification appear.
   virtual bool Show(int duration = Timeout_Auto) NOTIFI_OVERRIDE;
   //! Informs the notification which the main window is it notified for.
-  virtual void SetGroup(wxWindow *parent);
+  void SetGroup(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
-  virtual wxWindow *GetGroup(){return m_parent;}
+  wxWindow *GetGroup() { return m_parent; }
   //! Tell the operating system that the notification may be closed.
   virtual bool Close() NOTIFI_OVERRIDE;
   //! Might produce false positives, but at least tries to determine if the notification is active.
