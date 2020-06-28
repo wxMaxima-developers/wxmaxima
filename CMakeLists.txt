@@ -122,8 +122,8 @@ endif()
 
 include(GNUInstallDirs)
 
-message(DEBUG "Looking for wxWidgets in           ${wxWidgets_ROOT_DIR}")
-message(DEBUG "Looking for wxWidgets libraries in ${wxWidgets_LIB_DIR}")
+message(STATUS "Looking for wxWidgets in:           ${wxWidgets_ROOT_DIR}")
+message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
 
 # The package order below matters.
 ###
