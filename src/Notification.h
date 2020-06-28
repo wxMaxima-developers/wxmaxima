@@ -53,7 +53,7 @@ public:
                         wxWindow *parent=NULL,
                         int flags=wxICON_INFORMATION);
   //! A destructor that also closes the notification
-  ~Notification() override {Close();}
+  ~Notification() override { Notification::Close(); }
   //! Makes the notification appear.
   virtual bool Show(int duration = Timeout_Auto);
   //! Informs the notification which the main window is it notified for.
