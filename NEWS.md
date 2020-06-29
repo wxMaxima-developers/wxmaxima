@@ -1,5 +1,8 @@
 # Current
  * A new translation of the Turkish manual by Tufan Şirin
+ * Better display of sqrt() cells
+ * Made sure we read in the whole .mac file when opening .mac files
+ * As always many small additional bug fixes
 
 # Why is wxMaxima able to open truncated wxmx files?
 
