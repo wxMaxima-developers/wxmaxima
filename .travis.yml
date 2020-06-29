@@ -1,18 +1,18 @@
 language: cpp
 os:
   - linux
-  - osx
-dist: bionic
+#  - osx
+dist: focal
 jobs:
-  include:
-    - os: linux
-      dist: bionic
-    - os: linux
-      dist: focal
-    - os: linux
-      dist: focal
-      env: CPPCHECK_ONLY=YES
-    - os: osx
+#  include:
+#    - os: linux
+#      dist: bionic
+#    - os: linux
+#      dist: focal
+#    - os: linux
+#      dist: focal
+#      env: CPPCHECK_ONLY=YES
+#    - os: osx
 #  allow_failures:
 #    - os: linux
 #      dist: focal
@@ -25,7 +25,7 @@ env:
   global:
   - CMAKE=cmake
   - CMAKEGEN="Ninja"
-  - CPPCHECK_ONLY=NO
+  - CPPCHECK_ONLY=YES
   - LANG=en_US.UTF-8
   - UNITY_BUILD_BATCH_SIZE=8
   - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
@@ -109,8 +109,14 @@ script:
 - mkdir build
 - touch build build/build.ninja
 - cd build
-- ${CMAKE} -G "${CMAKEGEN}" -DWXM_USE_CPPCHECK=${CPPCHECK_ONLY} -DWXM_BUILD_SOURCE_ONLY=${CPPCHECK_ONLY} -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} ..
-- ${CMAKE} --build .
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
+  ${CMAKE} -G "${CMAKEGEN}" -DWXM_USE_CPPCHECK=${CPPCHECK_ONLY} -DWXM_BUILD_SOURCE_ONLY=${CPPCHECK_ONLY} -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} ..
+  ; fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
+  ${CMAKE} --build .
+  ; fi
 - >
   if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
   DESTDIR=$(pwd)/installtest
@@ -124,6 +130,25 @@ script:
   if [[ "$CPPCHECK_ONLY" == "NO" && "$TRAVIS_OS_NAME" == "linux" ]]; then
   CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
   xvfb-run -a ctest -j 3;
+  fi
+- |
+  if [[ "$CPPCHECK_ONLY" == "YES" ]]
+  then
+    set -e
+    ${CMAKE} -G "${CMAKEGEN}" -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DCMAKE_BUILD_TYPE=debug  ..
+    /usr/bin/cppcheck --project=compile_commands.json \
+      --enable=warning,style,performance,portability \
+      --std=c++14 \
+      --inline-suppr \
+      --language=c++ \
+      --template=gcc \
+      --suppressions-list=../src/CppCheckSuppressions.txt \
+      -i ../src/nanoSVG/ \
+      -i ../test \
+      -U__OBJC__ -UWXMAXIMA_GIT_VERSION \
+      -U__WXMAC__ -U__WXMOTIF__ -U__WXOSX__ \
+      -UwxUSE_ACCESSIBILITY
+    set +e
   fi
 - cd ..
 - |
