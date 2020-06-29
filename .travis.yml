@@ -131,25 +131,22 @@ script:
   CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
   xvfb-run -a ctest -j 3;
   fi
-- |
-  if [[ "$CPPCHECK_ONLY" == "YES" ]]
-  then
-    set -e
-    ${CMAKE} -G "${CMAKEGEN}" -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DCMAKE_BUILD_TYPE=debug  ..
-    /usr/bin/cppcheck --project=compile_commands.json \
-      --enable=warning,style,performance,portability \
-      --std=c++14 \
-      --inline-suppr \
-      --language=c++ \
-      --template=gcc \
-      --suppressions-list=../src/CppCheckSuppressions.txt \
-      -i ../src/nanoSVG/ \
-      -i ../test \
-      -U__OBJC__ -UWXMAXIMA_GIT_VERSION \
-      -U__WXMAC__ -U__WXMOTIF__ -U__WXOSX__ \
-      -UwxUSE_ACCESSIBILITY
-    set +e
-  fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "YES" ]]; then
+  ${CMAKE} -G "${CMAKEGEN}" -DCMAKE_EXPORT_COMPILE_COMMANDS=YES -DCMAKE_BUILD_TYPE=debug  ..
+  ; fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "YES" ]]; then
+    /usr/bin/cppcheck --project=compile_commands.json
+    --enable=warning,style,performance,portability
+    --std=c++14
+    --inline-suppr
+    --language=c++
+    --template=gcc
+    --suppressions-list=../src/CppCheckSuppressions.txt
+    -i ../src/nanoSVG/
+    -i ../test/
+  ; fi
 - cd ..
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" && a$encrypted_f94fa95f949a_key != a ]]
