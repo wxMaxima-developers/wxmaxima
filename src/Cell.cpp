@@ -277,19 +277,11 @@ void Cell::AppendCell(Cell *p_next)
   if(m_group)
     GetGroup()->ResetData();
 
-  // Search the last cell in the list
-  Cell *LastInList = this;
-  while (LastInList->m_next != NULL)
-    LastInList = LastInList->m_next;
+  Cell *LastInList = last();
 
   // Append this p_next to the list
   LastInList->m_next = p_next;
   LastInList->m_next->m_previous = LastInList;
-
-  wxASSERT(LastInList != NULL);
-  
-  if(LastInList == NULL)
-    return;
   
   // Search the last cell in the list that is sorted by the drawing order
   Cell *LastToDraw = LastInList;
@@ -1193,6 +1185,7 @@ Cell *Cell::first() const
   while (tmp->m_previous)
     tmp = tmp->m_previous;
 
+  wxASSERT(tmp);
   return const_cast<Cell*>(tmp);
 }
 
@@ -1202,6 +1195,7 @@ Cell *Cell::last() const
   while (tmp->m_next)
     tmp = tmp->m_next;
 
+  wxASSERT(tmp);
   return const_cast<Cell*>(tmp);
 }
 

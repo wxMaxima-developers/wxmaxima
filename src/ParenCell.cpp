@@ -91,12 +91,6 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
   m_type = type;
   // Tell the first of our inner cells not to begin with a multiplication dot.
   m_innerCell->m_SuppressMultiplicationDot = true;
-
-  // Search for the last of the inner cells
-  Cell *last1 = m_innerCell.get();
-  while (last1->m_next != NULL)
-    last1 = last1->m_next;
-  m_last1 = last1;
   ResetSize();
 }
 
@@ -502,9 +496,7 @@ bool ParenCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
-    wxASSERT_MSG(m_last1, _("Bug: No last cell inside a parenthesis!"));
-    if (m_last1)
-      m_last1->SetNextToDraw(m_close);
+    m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
 

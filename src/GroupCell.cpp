@@ -396,26 +396,10 @@ void GroupCell::AppendOutput(Cell *cell)
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
-
-    m_lastInOutput = m_output;
-
-    while (m_lastInOutput->m_next != NULL)
-      m_lastInOutput = m_lastInOutput->m_next;
   }
   else
   {
-    Cell *tmp = m_lastInOutput;
-    if (tmp == NULL)
-      tmp = m_output.get();
-
-    while (tmp->m_next != NULL)
-      tmp = tmp->m_next;
-
-    tmp->AppendCell(cell);
-
-    if (m_lastInOutput)
-      while (m_lastInOutput->m_next != NULL)
-        m_lastInOutput = m_lastInOutput->m_next;
+    m_output->AppendCell(cell);
   }
   UpdateCellsInGroup();
   UpdateConfusableCharWarnings();

@@ -88,7 +88,6 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;

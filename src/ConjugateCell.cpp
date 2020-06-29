@@ -53,11 +53,6 @@ void ConjugateCell::SetInner(Cell *inner)
   if (!inner)
     return;
   m_innerCell.reset(inner);
-
-  m_last = m_innerCell;
-  if (m_last)
-    while (m_last->m_next)
-      m_last = m_last->m_next;
 }
 
 void ConjugateCell::RecalculateWidths(int fontsize)
@@ -175,9 +170,7 @@ bool ConjugateCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
-    wxASSERT_MSG(m_last, _("Bug: No last cell in a conjugateCell!"));
-    if (m_last)
-      m_last->SetNextToDraw(m_close);
+    m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
     ResetData();        

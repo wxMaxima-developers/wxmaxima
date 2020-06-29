@@ -69,7 +69,6 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_last;
 
   void RecalculateHeight(int fontsize) override;
 

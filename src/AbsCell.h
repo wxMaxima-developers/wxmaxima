@@ -97,8 +97,6 @@ private:
   std::unique_ptr<Cell> m_open;
   //! The cell containing the closing parenthesis
   std::unique_ptr<Cell> m_close;
-  //! The last element of m_innerCell
-  CellPtr<Cell> m_last;
 };
 
 #endif // ABSCELL_H

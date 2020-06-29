@@ -34,15 +34,6 @@ FunCell::FunCell(GroupCell *parent, Configuration **config) :
   m_nameCell(new TextCell(parent, config)),
   m_argCell(new TextCell(parent, config))
 {
-  m_nameCell_Last = m_nameCell;
-  if(m_nameCell_Last)
-    while(m_nameCell_Last->m_next)
-      m_nameCell_Last = m_nameCell_Last->m_next;
-
-  m_argCell_Last = m_argCell;
-  if(m_argCell_Last)
-    while(m_argCell_Last->m_next)
-      m_argCell_Last = m_argCell_Last->m_next;
 }
 
 FunCell::FunCell(const FunCell &cell):
@@ -60,10 +51,6 @@ void FunCell::SetName(Cell *name)
   if (!name)
     return;
   m_nameCell.reset(name);
-  
-  m_nameCell_Last = name;
-  while(m_nameCell_Last->m_next)
-    m_nameCell_Last = m_nameCell_Last->m_next;
   name->SetStyle(TS_FUNCTION);
 }
 
@@ -72,10 +59,6 @@ void FunCell::SetArg(Cell *arg)
   if (!arg)
     return;
   m_argCell.reset(arg);
-
-  m_argCell_Last = arg;
-  while(m_argCell_Last->m_next)
-    m_argCell_Last = m_argCell_Last->m_next;
 }
 
 void FunCell::RecalculateWidths(int fontsize)
@@ -197,8 +180,8 @@ bool FunCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_nameCell_Last->SetNextToDraw(m_argCell);
-    m_argCell_Last->SetNextToDraw(m_nextToDraw);
+    m_nameCell->last()->SetNextToDraw(m_argCell);
+    m_argCell->last()->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_nameCell;
     m_width = 0;
     ResetData();    
@@ -210,7 +193,7 @@ bool FunCell::BreakUp()
 void FunCell::SetNextToDraw(Cell *next)
 {
   if(m_isBrokenIntoLines)
-    m_argCell_Last->SetNextToDraw(next);
+    m_argCell->last()->SetNextToDraw(next);
   else
     m_nextToDraw = next;
 }

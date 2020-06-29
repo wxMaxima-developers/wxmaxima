@@ -111,10 +111,6 @@ private:
   std::unique_ptr<ParenCell> const m_denomParenthesis;
   //! The owner of the "/" sign
   const std::unique_ptr<Cell> m_divideOwner;
-  //! The last element of the numerator
-  CellPtr<Cell> m_num_Last;
-  //! The last element of the denominator
-  CellPtr<Cell> m_denom_Last;
   //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
 

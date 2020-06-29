@@ -92,8 +92,6 @@ private:
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_nameCell;
   std::unique_ptr<Cell> m_argCell;
-  CellPtr<Cell> m_nameCell_Last;
-  CellPtr<Cell> m_argCell_Last;
 };
 
 

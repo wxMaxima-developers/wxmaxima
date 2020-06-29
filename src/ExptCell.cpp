@@ -42,8 +42,6 @@ ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
   m_close->SetStyle(TS_FUNCTION);
   m_exp->SetStyle(TS_FUNCTION);
   m_expt_yoffset = 0;
-  m_base_last = m_baseCell;
-  m_expt_last = m_exptCell;
   m_isMatrix = false;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
@@ -85,11 +83,6 @@ void ExptCell::SetPower(Cell *power)
     m_open->m_isHidden = true;
     m_close->m_isHidden = true;
   }
-
-  m_expt_last = power;
-  if (m_expt_last)
-    while (m_expt_last->m_next)
-      m_expt_last = m_expt_last->m_next;
 }
 
 void ExptCell::SetBase(Cell *base)
@@ -97,11 +90,6 @@ void ExptCell::SetBase(Cell *base)
   if (!base)
     return;
   m_baseCell.reset(base);
-
-  m_base_last = base;
-  if (m_base_last)
-    while (m_base_last->m_next)
-      m_base_last = m_base_last->m_next;
 }
 
 void ExptCell::RecalculateWidths(int fontsize)
@@ -249,14 +237,10 @@ bool ExptCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    wxASSERT_MSG(m_base_last, _("Bug: No last cell in the base of an exptCell!"));
-    if (m_base_last)
-      m_base_last->SetNextToDraw(m_exp);
+    m_baseCell->last()->SetNextToDraw(m_exp);
     m_exp->SetNextToDraw(m_open);
     m_open->SetNextToDraw(m_exptCell);
-    wxASSERT_MSG(m_expt_last, _("Bug: No last cell in an exponent of an exptCell!"));
-    if (m_expt_last)
-      m_expt_last->SetNextToDraw(m_close);
+    m_exptCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_baseCell;
     m_height = 1;
