@@ -705,6 +705,11 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
   GroupCell *next; // next gc to insertion point
   GroupCell *prev;
 
+  // TODO What we have here is an iteration through all the cells to see if they
+  // fulfill some criterion, and additionally we find the last() cell.
+  // When cell list management is refactored, the foldable status should be kept
+  // always up-to-date.
+
   // Find the last cell in the tree that is to be inserted
   GroupCell *lastOfCellsToInsert = cells;
   if (lastOfCellsToInsert->IsFoldable() || (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
@@ -766,9 +771,7 @@ GroupCell *Worksheet::UpdateMLast()
 {
   m_last = GetTree();
   if (m_last)
-    while (m_last->m_next)
-      m_last = m_last->GetNext();
-
+    m_last = dynamic_cast<GroupCell*>(m_last->last());
   if (m_last)
     m_configuration->AdjustWorksheetSize(true);
   return m_last;

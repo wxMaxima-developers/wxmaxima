@@ -67,11 +67,6 @@ void SqrtCell::SetInner(Cell *inner)
   if (!inner)
     return;
   m_innerCell.reset(inner);
-
-  m_last = inner;
-  if (m_last)
-    while (m_last->m_next)
-      m_last = m_last->m_next;
 }
 
 void SqrtCell::RecalculateWidths(int fontsize)
@@ -339,9 +334,7 @@ bool SqrtCell::BreakUp()
   {
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
-    wxASSERT_MSG(m_last, _("Bug: No last cell inside a square root!"));
-    if (m_last)
-      m_last->SetNextToDraw(m_close);
+    m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
 

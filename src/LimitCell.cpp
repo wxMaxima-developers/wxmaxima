@@ -43,9 +43,6 @@ LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_comma->SetStyle(TS_FUNCTION);
-  m_base_last = m_base;
-  m_under_last = m_under;
-  m_name_last = m_name;
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
@@ -68,9 +65,6 @@ void LimitCell::SetName(Cell *name)
   if (!name)
     return;
   m_name.reset(name);
-  m_name_last = name;
-  while(m_name_last->m_next != NULL)
-    m_name_last = m_name_last->m_next;
 }
 
 void LimitCell::SetBase(Cell *base)
@@ -78,9 +72,6 @@ void LimitCell::SetBase(Cell *base)
   if (!base)
     return;
   m_base.reset(base);
-  m_base_last = base;
-  while(m_base_last->m_next != NULL)
-    m_base_last = m_base_last->m_next;
 }
 
 void LimitCell::SetUnder(Cell *under)
@@ -88,9 +79,6 @@ void LimitCell::SetUnder(Cell *under)
   if (!under)
     return;
   m_under.reset(under);
-  m_under_last = under;
-  while(m_under_last->m_next != NULL)
-    m_under_last = m_under_last->m_next;
 }
 
 void LimitCell::RecalculateWidths(int fontsize)
@@ -282,11 +270,11 @@ bool LimitCell::BreakUp()
   if (!m_isBrokenIntoLines)
   {
     m_isBrokenIntoLines = true;
-    m_name_last->SetNextToDraw(m_open);
+    m_name->last()->SetNextToDraw(m_open);
     m_open->SetNextToDraw(m_base);
-    m_base_last->SetNextToDraw(m_comma);
+    m_base->last()->SetNextToDraw(m_comma);
     m_comma->SetNextToDraw(m_under);
-    m_under_last->SetNextToDraw(m_close);
+    m_under->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_name;
     ResetData();    

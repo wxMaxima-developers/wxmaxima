@@ -96,7 +96,6 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_last1;
   bool m_print;
   int m_numberOfExtensions;
   int m_charWidth, m_charHeight;

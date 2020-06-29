@@ -65,7 +65,6 @@ void FracCell::SetNum(Cell *num)
   if (!num)
     return;
   m_numParenthesis->SetInner(num);
-  m_num_Last = num;
   SetupBreakUps();
 }
 
@@ -368,18 +367,6 @@ void FracCell::SetupBreakUps()
     m_displayedNum = Num();
     m_displayedDenom = Denom();
   }
-  m_num_Last = m_displayedNum;
-  if (m_num_Last)
-  {
-    while (m_num_Last->m_next != NULL)
-      m_num_Last = m_num_Last->m_next;
-  }
-  m_denom_Last = m_displayedDenom;
-  if (m_denom_Last)
-  {
-    while (m_denom_Last->m_next != NULL)
-      m_denom_Last = m_denom_Last->m_next;
-  }
 }
 
 bool FracCell::BreakUp()
@@ -394,12 +381,10 @@ bool FracCell::BreakUp()
       m_displayedNum = m_numParenthesis.get();
     if(Denom() && Denom()->m_next)
       m_displayedDenom = m_denomParenthesis.get();
-    wxASSERT_MSG(m_num_Last, _("Bug: No last cell in a numerator!"));
-    if (m_num_Last)
-      m_displayedNum->SetNextToDraw(m_divide);
+    // Note: Yes, we don't want m_displayedNum->last() here.
+    m_displayedNum->SetNextToDraw(m_divide);
     m_divide->SetNextToDraw(m_displayedDenom);
     m_displayedDenom->SetNextToDraw(m_nextToDraw);
-    wxASSERT_MSG(m_denom_Last, _("Bug: No last cell in a denominator!"));
     m_nextToDraw = m_displayedNum;
     ResetData();    
     return true;

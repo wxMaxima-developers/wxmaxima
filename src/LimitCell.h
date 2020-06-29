@@ -86,9 +86,6 @@ private:
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_comma;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_name_last;
-  CellPtr<Cell> m_base_last;
-  CellPtr<Cell> m_under_last;
 };
 
 #endif // LIMITCELL_H

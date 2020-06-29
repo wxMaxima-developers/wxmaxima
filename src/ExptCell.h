@@ -100,8 +100,6 @@ private:
   std::unique_ptr<Cell> m_exp;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_expt_last;
-  CellPtr<Cell> m_base_last;
   bool m_isMatrix;
   int m_expt_yoffset;
 };

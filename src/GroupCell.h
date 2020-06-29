@@ -497,7 +497,6 @@ protected:
   std::unique_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
   int m_mathFontSize;
-  CellPtr<Cell> m_lastInOutput;
   static wxString m_lookalikeChars;
 
   CellPtr<Cell> m_nextToDraw;
