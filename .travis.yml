@@ -145,8 +145,8 @@ script:
     --template=gcc
     --suppressions-list=../src/CppCheckSuppressions.txt
     -i ../src/nanoSVG/
-    -i ../test/
-  ; fi
+    -i ../test/;
+  fi
 - cd ..
 - |
   if [[ "$TRAVIS_OS_NAME" == "osx" && a$encrypted_f94fa95f949a_key != a ]]
