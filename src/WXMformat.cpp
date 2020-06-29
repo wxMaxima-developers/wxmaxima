@@ -275,6 +275,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
     case WXM_COMMENT:
     case WXM_INPUT:
       line = getLinesUntil(Headers.GetEnd(headerId));
+      std::cerr<<"Input"<<line<<"\n";
       cell = new GroupCell(config, GroupType(headerId), line);
       hideCell(cell);
       break;
@@ -302,12 +303,14 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
       // Read an answer
     case WXM_ANSWER:
       line = getLinesUntil(Headers.GetEnd(headerId));
+      std::cerr<<"answer"<<line<<"\n";
       if (last && !question.empty())
         last->SetAnswer(question, line);
       break;
 
       // Read a question
     case WXM_QUESTION:
+      std::cerr<<"question"<<line<<"\n";
       line = getLinesUntil(Headers.GetEnd(headerId));
       question = line;
       break;
@@ -375,9 +378,11 @@ GroupCell *ParseWXMFile(wxTextBuffer &text, Configuration **config)
 
 GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
 {
+  wxString wxmLines;
   GroupCell *tree = {}, *last = {};
   auto const appendCell = [&last, &tree](GroupCell *cell)
   {
+    wxASSERT(cell != NULL);
     if (last)
       last->AppendCell(cell);
     else
@@ -402,6 +407,7 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
   };
 
   wxString line;
+  wxString wxmBlock;
   for (State s{' ', macContents.begin()}; s.ch != macContents.end(); )
   {
     wxChar c = *s.ch;
@@ -462,18 +468,27 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
             }
           }
 
-          //  Convert the comment block to an array of lines
-          wxStringTokenizer tokenizer(line, "\n");
-          wxArrayString commentLines;
-          while (tokenizer.HasMoreTokens())
-            commentLines.Add(tokenizer.GetNextToken());
-
-          // Interpret this array of lines as wxm code.
-          GroupCell *cell;
-          appendCell((cell = TreeFromWXM(commentLines, config)));
+          // Add this array of lines to the block of wxm code we will interpret.
+          wxmLines += line;
         }
         else
         {
+          if(!wxmLines.IsEmpty())
+          {
+            // Convert the comment block to an array of lines
+            wxStringTokenizer tokenizer(wxmLines, "\n");
+            wxArrayString commentLines;
+            while (tokenizer.HasMoreTokens())
+              commentLines.Add(tokenizer.GetNextToken());
+
+            // Interpret the comment block 
+            GroupCell *cell = TreeFromWXM(commentLines, config);
+            if(cell != NULL)
+              appendCell(cell );
+            else
+              appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, wxmLines)));
+            wxmLines = wxEmptyString;
+          }
           if ((line.EndsWith(" */")) || (line.EndsWith("\n*/")))
             line.Truncate(line.length() - 3);
           else
@@ -520,7 +535,23 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
       ++s.ch;
     }
   }
-
+  if(!wxmLines.IsEmpty())
+  {
+    // Convert the comment block to an array of lines
+    wxStringTokenizer tokenizer(wxmLines, "\n");
+    wxArrayString commentLines;
+    while (tokenizer.HasMoreTokens())
+      commentLines.Add(tokenizer.GetNextToken());
+    
+    // Interpret the comment block 
+    GroupCell *cell = TreeFromWXM(commentLines, config);
+    if(cell != NULL)
+      appendCell(cell );
+    else
+      appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, wxmLines)));
+    wxmLines = wxEmptyString;
+  }
+  
   line.Trim(true);
   line.Trim(false);
   if (!line.empty())

@@ -693,38 +693,6 @@ re
 Three arrows pointing to an O:
    [wxMaxima: comment end   ] */
 
-
-/* [wxMaxima: input   start ] */
-for i in unique(sort(map('rest,lst))) do
-(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
-    print (arraymake (O, makelist(o[2],o,i))))$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: comment start ]
-Two arrows pointing to an O:
-   [wxMaxima: comment end   ] */
-
-
-/* [wxMaxima: input   start ] */
-for i in unique(sort(map('rest,map('rest,lst)))) do
-(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
-    print (arraymake (O, makelist(o[2],o,i))))$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: comment start ]
-One arrow pointing to an O:
-   [wxMaxima: comment end   ] */
-
-
-/* [wxMaxima: input   start ] */
-for i in unique(sort(map('rest,map('rest,map('rest,lst))))) do
-(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
-    print (arraymake (O, makelist(o[2],o,i))))$
-/* [wxMaxima: input   end   ] */
-
-
 /* [wxMaxima: subsect start ]
 SumCells
    [wxMaxima: subsect end   ] */
