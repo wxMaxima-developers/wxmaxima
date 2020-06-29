@@ -19,6 +19,8 @@ option(WXM_USE_CPPCHECK
     "Perform CPPCHECK during compilation." OFF)
 option(WXM_USE_OPENMP
     "Use OpenMP for parallelizing code." ON)
+option(WXM_UNIT_TESTS
+    "Compile unit tests and enable the tests." OFF)
 
 if (DEFINED MACOSX_VERSION_MIN)
     set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)

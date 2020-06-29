@@ -1,6 +1,8 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-add_subdirectory(unit_tests)
+if(WXM_UNIT_TESTS)
+    add_subdirectory(unit_tests)
+endif()
 
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
 
