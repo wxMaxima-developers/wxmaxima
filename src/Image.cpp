@@ -945,7 +945,6 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
   {
     if((m_extension == "svg") || (m_extension == "svgz"))
     {
-      m_isOk = false;
       wxString svgContents_string;
 
       // Read the svg file's data into the system's memory
