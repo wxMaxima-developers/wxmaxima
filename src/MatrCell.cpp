@@ -168,7 +168,7 @@ void MatrCell::Draw(wxPoint point)
     }
     else
     {
-
+      wxDC &adc = *configuration->GetAntialiassingDC();
       if(m_roundedParens)
       {
         SetPen(1);
@@ -176,68 +176,69 @@ void MatrCell::Draw(wxPoint point)
         if (m_height <= signWidth / 3)
           signWidth = m_height / 3;
         
-        wxPoint pointList[5];
         // Left bracket
-        pointList[0] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                               point.y - m_center);
-        pointList[1] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                               point.y - m_center + signWidth / 2);
-        pointList[2] = wxPoint(point.x + Scale_Px(1),
-                               point.y);
-        pointList[3] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
-                               point.y + m_center - signWidth / 2);
-        pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
-                               point.y + m_center);
-        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
-        pointList[2] = wxPoint(point.x + Scale_Px(1.5),
-                               point.y);
-        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+        wxPoint pointsL[5] = {
+          {point.x + Scale_Px(1) + signWidth,
+           point.y - m_center},
+          {point.x + Scale_Px(1) + signWidth / 2,
+           point.y - m_center + signWidth / 2},
+          {point.x + Scale_Px(1),
+           point.y},
+          {point.x + Scale_Px(1) + signWidth / 2,
+           point.y + m_center - signWidth / 2},
+          {point.x + Scale_Px(1) + signWidth,
+           point.y + m_center}
+        };
+        adc.DrawSpline(5, pointsL);
+        pointsL[2] = {point.x + Scale_Px(1.5),
+                      point.y};
+        adc.DrawSpline(5, pointsL);
 
         // Right bracket
-        pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                               point.y - m_center);
-        pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                               point.y - m_center + signWidth / 2);
-        pointList[2] = wxPoint(point.x + m_width - Scale_Px(1.5),
-                               point.y);
-        pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                               point.y + m_center - signWidth / 2);
-        pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                               point.y + m_center);
-        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
-        pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
-                               point.y);
-        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+        wxPoint pointsR[5] = {
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y - m_center},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y - m_center + signWidth / 2},
+          {point.x + m_width - Scale_Px(1.5),
+           point.y},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y + m_center - signWidth / 2},
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y + m_center}
+        };
+        adc.DrawSpline(5, pointsR);
+        pointsR[2] = {point.x + m_width - Scale_Px(1),
+                      point.y};
+        adc.DrawSpline(5, pointsR);
       }
       else
       {
         // left bracket
-        wxDC *adc = configuration->GetAntialiassingDC();
-        adc->DrawLine(point.x + Scale_Px(5),
-                      point.y - m_center + Scale_Px(2),
-                      point.x + Scale_Px(1),
-                      point.y - m_center + Scale_Px(2));
-        adc->DrawLine(point.x + Scale_Px(1),
-                      point.y - m_center + Scale_Px(2),
-                      point.x + Scale_Px(1),
-                      point.y + m_center - Scale_Px(2));
-        adc->DrawLine(point.x + Scale_Px(1),
-                      point.y + m_center - Scale_Px(2),
-                      point.x + Scale_Px(5),
-                      point.y + m_center - Scale_Px(2));
+        const wxPoint pointsL[4] = {
+          {Scale_Px(5),
+           -m_center + Scale_Px(2)},
+          {Scale_Px(1),
+           -m_center + Scale_Px(2)},
+          {Scale_Px(1),
+           m_center - Scale_Px(2)},
+          {Scale_Px(5),
+           m_center - Scale_Px(2)}
+        };
+        adc.DrawLines(4, pointsL, point.x, point.y);
+
         // right bracket
-        adc->DrawLine(point.x + m_width - Scale_Px(5) - 1,
-                      point.y - m_center + Scale_Px(2),
-                      point.x + m_width - Scale_Px(1) - 1,
-                      point.y - m_center + Scale_Px(2));
-        adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
-                      point.y - m_center + Scale_Px(2),
-                      point.x + m_width - Scale_Px(1) - 1,
-                      point.y + m_center - Scale_Px(2));
-        adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
-                      point.y + m_center - Scale_Px(2),
-                      point.x + m_width - Scale_Px(5) - 1,
-                      point.y + m_center - Scale_Px(2));
+        const wxPoint pointsR[4] = {
+          {-Scale_Px(5),
+           -m_center + Scale_Px(2)},
+          {-Scale_Px(1),
+           -m_center + Scale_Px(2)},
+          {-Scale_Px(1),
+           m_center - Scale_Px(2)},
+          {-Scale_Px(5),
+           m_center - Scale_Px(2)}
+        };
+        adc.DrawLines(4, pointsR, point.x + m_width - 1, point.y);
       }
     }
     UnsetPen();

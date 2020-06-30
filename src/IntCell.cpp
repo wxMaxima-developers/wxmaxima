@@ -307,42 +307,44 @@ void IntCell::Draw(wxPoint point)
       SetPen(1.5);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
-      wxPoint pointList[10];
-      pointList[0] = wxPoint(sign.x + m_signWCenter + 2 * (m_signWidth / 4),
-                             sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4);
-      pointList[1] = wxPoint(sign.x + m_signWCenter + m_signWidth / 4,
-                             sign.y - (m_signHeight - Scale_Px(1)) / 2);
-      pointList[2] = wxPoint(sign.x + m_signWCenter,
-                             sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
-                             + Scale_Px(.35));
+      wxPoint points[7] =
+        {
+          {sign.x + m_signWCenter + 2 * (m_signWidth / 4),
+           sign.y - (m_signHeight - Scale_Px(1)) / 2 + m_signWidth / 4},
+          {sign.x + m_signWCenter + m_signWidth / 4,
+           sign.y - (m_signHeight - Scale_Px(1)) / 2},
+          {sign.x + m_signWCenter,
+           sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
+             + Scale_Px(.35)},
 
-      // The line
-      pointList[3] = wxPoint(sign.x + m_signWCenter + Scale_Px(.5),
-                               sign.y);
-      
-      // Bottom Decoration
-      pointList[4] = wxPoint(sign.x + m_signWCenter,
-                             sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
-                             + Scale_Px(.35));
-      pointList[5] = wxPoint(sign.x + m_signWCenter - m_signWidth / 4,
-                             sign.y + (m_signHeight - Scale_Px(1)) / 2);
-      pointList[6] = wxPoint(sign.x + m_signWCenter - 2 * (m_signWidth / 4),
-                             sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4);
+          // The line
+          {sign.x + m_signWCenter + Scale_Px(.5),
+           sign.y},
 
-      configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
-      pointList[1] = wxPoint(sign.x + m_signWCenter + m_signWidth / 4,
-                             sign.y - (m_signHeight - Scale_Px(1.25)) / 2);
-      pointList[2] = wxPoint(sign.x + m_signWCenter,
-                             sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
-                             - Scale_Px(.35));
-      pointList[3] = wxPoint(sign.x + m_signWCenter - Scale_Px(.5),
-                               sign.y);
-      pointList[4] = wxPoint(sign.x + m_signWCenter,
-                             sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
-                             + Scale_Px(.35));
-      pointList[5] = wxPoint(sign.x + m_signWCenter - m_signWidth / 4,
-                             sign.y + (m_signHeight - Scale_Px(1.25)) / 2);
-      configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
+          // Bottom Decoration
+          {sign.x + m_signWCenter,
+           sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
+             + Scale_Px(.35)},
+          {sign.x + m_signWCenter - m_signWidth / 4,
+           sign.y + (m_signHeight - Scale_Px(1)) / 2},
+          {sign.x + m_signWCenter - 2 * (m_signWidth / 4),
+           sign.y + (m_signHeight - Scale_Px(1)) / 2 - m_signWidth / 4}
+          };
+
+      configuration->GetAntialiassingDC()->DrawSpline(7, points);
+      points[1] = {sign.x + m_signWCenter + m_signWidth / 4,
+                   sign.y - (m_signHeight - Scale_Px(1.25)) / 2};
+      points[2] = {sign.x + m_signWCenter,
+                   sign.y - (m_signHeight - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
+                     - Scale_Px(.35)};
+      points[3] = {sign.x + m_signWCenter - Scale_Px(.5),
+                   sign.y};
+      points[4] = {sign.x + m_signWCenter,
+                   sign.y + (m_signHeight - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
+                     + Scale_Px(.35)};
+      points[5] = {sign.x + m_signWCenter - m_signWidth / 4,
+                   sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
+      configuration->GetAntialiassingDC()->DrawSpline(7, points);
       // line
       UnsetPen();
 #endif
