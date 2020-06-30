@@ -25,7 +25,6 @@ environment:
   matrix:
   - TOOLKIT: MSVC
     TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
-    TOOLKIT_CMAKE_ARGS: "-DCMAKE_CXX_FLAGS=\"/D_UNICODE=1\""
     WXW_LIB: vc_x64_lib
 
   - TOOLKIT: MinGW
