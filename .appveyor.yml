@@ -23,6 +23,11 @@ environment:
   CMAKEGEN: "Ninja"
 
   matrix:
+    # TOOLKIT_CMAKE_ARGS env var can be added to the matrix to provide flags
+    # that are specific for CI builds for given toolkit. If the flag
+    # is of use outside of CI, then it should be added to CMakeLists.txt
+    # instead - see the Compiler-Specific Tweaks section there.
+
   - TOOLKIT: MSVC
     TOOLKIT_INIT: ".appveyor\\MSVC_2019_x64.ps1"
     WXW_LIB: vc_x64_lib
