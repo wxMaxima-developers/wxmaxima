@@ -58,8 +58,7 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr 
   m_framerate = framerate;
   m_imageBorderWidth = Scale_Px(1);
   m_drawBoundingBox = false;
-  if (m_animationRunning)
-    ReloadTimer();
+  ReloadTimer();
   m_width = m_height = -1;
 }
 
@@ -73,8 +72,7 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
   m_framerate = framerate;
   m_imageBorderWidth = Scale_Px(1);
   m_drawBoundingBox = false;
-  if (m_animationRunning)
-    ReloadTimer();
+  ReloadTimer();
 }
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):

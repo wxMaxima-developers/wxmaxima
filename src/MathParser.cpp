@@ -229,24 +229,23 @@ Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
       numImgs++;
     }
   }
-  if (slideShow)
+
+  slideShow->LoadImages(images, del);
+  wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
+  wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
+  for(int i=0; i<numImgs; i++)
   {
-    slideShow->LoadImages(images, del);
-    wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
-    wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
-    for(int i=0; i<numImgs; i++)
+    if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
     {
-      if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
-      {
-        slideShow->GnuplotSource(
-          i,
-          gnuplotFiles.GetNextToken(),
-          dataFiles.GetNextToken(),
-          m_fileSystem
-          );
-      }
+      slideShow->GnuplotSource(
+        i,
+        gnuplotFiles.GetNextToken(),
+        dataFiles.GetNextToken(),
+        m_fileSystem
+        );
     }
   }
+
   return slideShow;
 }
 

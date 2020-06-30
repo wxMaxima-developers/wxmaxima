@@ -1733,8 +1733,6 @@ bool wxMaxima::StartServer()
     wxLogMessage(wxString::Format(_("Cannot set the communication port to %i."), m_port));
 
   m_server = new wxSocketServer(addr);
-  if(!m_server)
-    return false;
   if (!m_server->IsOk())
   {
     m_server->Destroy();
