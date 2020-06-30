@@ -82,14 +82,15 @@ endif()
 # Compiler-Specific Tweaks
 #
 
-# Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
+    # Turn off many warnings wxWidgets triggers on MSVC
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    # Safely handle exceptions everywhere
+    add_compile_options(/EHsc)
 endif()
 
-# Clang requires that flag (that should fix the error on travis too)
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_definitions(-Wno-c++11-narrowing)
+if(MSYS OR MINGW)
+    add_compile_options(-Wa,-mbig-obj)
 endif()
 
 ##
