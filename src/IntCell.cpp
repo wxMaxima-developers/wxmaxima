@@ -96,7 +96,7 @@ void IntCell::SetUnder(Cell *under)
 
 void IntCell::SetVar(Cell *var)
 {
-  if (var)
+  if (!var)
     return;
   m_var.reset(var);
 }
