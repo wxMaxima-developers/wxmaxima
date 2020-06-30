@@ -245,36 +245,26 @@ void SqrtCell::Draw(wxPoint point)
       wxDC *adc = configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
       SetPen(1.2);
-      wxPointList points;
-      // The "serif" at the start of the sign
-      points.Append(new wxPoint(point));
-      points.Append(new wxPoint(point.x + Scale_Px(3),
-                                point.y - Scale_Px(1)));
-      //  A wider line
-      points.Append(new wxPoint(point.x + Scale_Px(3),
-                                point.y - Scale_Px(1)));
-      points.Append(new wxPoint(point.x + Scale_Px(7),
-                                point.y + m_height - m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(7.5),
-                                point.y + m_height - m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(3.5),
-                                point.y - Scale_Px(1)));
-      points.Append(new wxPoint(point.x + Scale_Px(3.5),
-                                point.y - Scale_Px(1)));
-      points.Append(new wxPoint(point.x + Scale_Px(3),
-                                point.y - Scale_Px(1)));
-      points.Append(new wxPoint(point.x + Scale_Px(8),
-                                point.y + m_height - m_center - Scale_Px(4)));
-      // The upwards line
-      points.Append(new wxPoint(point.x + Scale_Px(10),
-                                point.y - m_center + Scale_Px(2)));
-      // The horizontal line
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
-                                point.y - m_center + Scale_Px(2)));
-      // The serif at the end of the root
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
-                                point.y - m_center + Scale_Px(6)));
-      adc->DrawLines(&points);
+
+      const wxPoint points[12] = {
+        {0, 0},
+        {Scale_Px(3),           -Scale_Px(1)},
+        //  A wider line
+        {Scale_Px(3),           -Scale_Px(1)},
+        {Scale_Px(7),            m_height - m_center - Scale_Px(4)},
+        {Scale_Px(7.5),          m_height - m_center - Scale_Px(4)},
+        {Scale_Px(3.5),         -Scale_Px(1)},
+        {Scale_Px(3.5),         -Scale_Px(1)},
+        {Scale_Px(3),           -Scale_Px(1)},
+        {Scale_Px(8),            m_height - m_center - Scale_Px(4)},
+        // The upwards line
+        {Scale_Px(10),          -m_center + Scale_Px(2)},
+        // The horizontal line
+        {m_width - Scale_Px(1), -m_center + Scale_Px(2)},
+        // The serif at the end of the root
+        {m_width - Scale_Px(1), -m_center + Scale_Px(6)}
+      };
+      adc->DrawLines(12, points, point.x, point.y);
       UnsetPen();
     }
 

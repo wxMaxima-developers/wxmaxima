@@ -340,56 +340,58 @@ void ParenCell::Draw(wxPoint point)
       int signWidth = m_signWidth - Scale_Px(2);
       innerCellPos.x = point.x + m_signWidth;
 
-      wxPointList points;
       // Left bracket
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1),
-                                point.y));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      // Appending the last point twice should allow for an abrupt 180° turn
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)));
-      // The middle point of the 2nd run of the parenthesis is at a different place
-      // making the parenthesis wider here
-      points.Append(new wxPoint(point.x + Scale_Px(2),
-                                point.y));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center + Scale_Px(4)));
-      adc->DrawSpline(&points);
+      const wxPoint pointsL[10] = {
+        {point.x + Scale_Px(1) + signWidth,
+         point.y - m_center + Scale_Px(4)},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
+        {point.x + Scale_Px(1),
+         point.y},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
+        {point.x + Scale_Px(1) + signWidth,
+         point.y + m_center - Scale_Px(4)},
+        // Appending the last point twice should allow for an abrupt 180° turn
+        {point.x + Scale_Px(1) + signWidth,
+         point.y + m_center - Scale_Px(4)},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
+        // The middle point of the 2nd run of the parenthesis is at a different place
+        // making the parenthesis wider here
+        {point.x + Scale_Px(2),
+         point.y},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
+        {point.x + Scale_Px(1) + signWidth,
+         point.y - m_center + Scale_Px(4)}
+      };
+      adc->DrawSpline(10, pointsL);
 
-      points.Clear();
       // Right bracket
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y - m_center + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
-                                point.y));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(2),
-                                point.y));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y - m_center + Scale_Px(4)));
-      adc->DrawSpline(&points);
+      const wxPoint pointsR[10] = {
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y - m_center + Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y - m_center + signWidth / 2 + Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1),
+         point.y},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y + m_center - signWidth / 2 - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y + m_center - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y + m_center - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y + m_center - signWidth / 2 - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(2),
+         point.y},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y - m_center + signWidth / 2 + Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y - m_center + Scale_Px(4)}
+      };
+      adc->DrawSpline(10, pointsR);
     }
       break;
     }

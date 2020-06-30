@@ -211,28 +211,19 @@ void SumCell::Draw(wxPoint point)
         wxDC *adc = configuration->GetAntialiassingDC();
         //DRAW SUM SIGN
         // Upper part
-        wxPointList points;
-        points.Append(new wxPoint(
-                        point.x + m_signWCenter + m_signWidth / 2,
-                        point.y - (m_signHeight / 2)
-                        ));
-        points.Append(new wxPoint(
-                        point.x + m_signWCenter - m_signWidth / 2,
-                        point.y - (m_signHeight / 2)
-                        ));
-        points.Append(new wxPoint(
-                        point.x + m_signWCenter + m_signWidth / 5,
-                        point.y
-                        ));
-        points.Append(new wxPoint(
-                        point.x + m_signWCenter - m_signWidth / 2,
-                        point.y + (m_signHeight / 2)
-                        ));
-        points.Append(new wxPoint(
-                        point.x + m_signWCenter + m_signWidth / 2,
-                        point.y + (m_signHeight / 2)
-                        ));
-        adc->DrawLines(&points);
+        const wxPoint points[5] = {
+          {m_signWCenter + int(m_signWidth / 2),
+           -(m_signHeight / 2)},
+          {m_signWCenter - int(m_signWidth / 2),
+           -(m_signHeight / 2)},
+          {m_signWCenter + int(m_signWidth / 5),
+           0},
+          {m_signWCenter - int(m_signWidth / 2),
+           (m_signHeight / 2)},
+          {m_signWCenter + int(m_signWidth / 2),
+           (m_signHeight / 2)}
+        };
+        adc->DrawLines(5, points, point.x, point.y);
       }
       else
       {
