@@ -3849,8 +3849,9 @@ void wxMaxima::LaunchHelpBrowser(wxString uri)
   {
     if(!wxLaunchDefaultBrowser(uri))
     {
-      wxMimeTypesManager manager;
-      wxFileType * filetype = manager.GetFileTypeFromExtension("html");
+      // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
+      auto *manager = wxTheMimeTypesManager;
+      wxFileType *filetype = manager->GetFileTypeFromExtension("html");
       wxString command = filetype->GetOpenCommand(uri);
       wxLogMessage(wxString::Format(_("Launching the system's default help browser failed. Trying to execute %s instead."), command.utf8_str()));
       wxExecute(command);

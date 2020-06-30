@@ -50,9 +50,10 @@ Configuration::Configuration(wxDC *dc) :
   #ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
   #else
-  wxMimeTypesManager manager;
-  wxFileType * filetype = manager.GetFileTypeFromExtension("html");
-  wxString m_helpBrowserUserLocation = filetype->GetOpenCommand(wxEmptyString);
+  // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
+  auto *manager = wxTheMimeTypesManager;
+  wxFileType *filetype = manager->GetFileTypeFromExtension("html");
+  m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
   m_autoSaveAsTempFile = false;
