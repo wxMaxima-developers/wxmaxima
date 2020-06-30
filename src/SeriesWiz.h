@@ -70,7 +70,7 @@ protected:
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
-DECLARE_EVENT_TABLE()
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // SERIESWIZ_H

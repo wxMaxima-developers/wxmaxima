@@ -150,7 +150,7 @@ void SeriesWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event))
   spin_ctrl_1->Enable(!checkbox_1->GetValue());
 }
 
-BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
+wxBEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
                 EVT_BUTTON(special_id, SeriesWiz::OnButton)
                 EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()

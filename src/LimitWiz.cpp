@@ -167,7 +167,7 @@ void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev))
   }
 }
 
-BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
+wxBEGIN_EVENT_TABLE(LimitWiz, wxDialog)
                 EVT_BUTTON(special, LimitWiz::OnButton)
                 EVT_IDLE(LimitWiz::OnIdle)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()

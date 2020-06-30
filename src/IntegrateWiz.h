@@ -82,7 +82,7 @@ protected:
   wxCheckBox *checkbox_2;
   wxStaticText *label_6;
   wxChoice *choice_1;
-DECLARE_EVENT_TABLE()
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // INTEGRATEWIZ_H
