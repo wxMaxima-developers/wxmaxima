@@ -261,9 +261,8 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
   {
     if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
     {
-      std::shared_ptr <wxFileSystem> noFS;
       if (wxImage::GetImageCount(filename) < 2)
-        imageCell = new ImgCell(NULL, m_configuration, filename, noFS, true);
+        imageCell = new ImgCell(NULL, m_configuration, filename, {}/*system fs*/, true);
       else
         return new SlideShow(NULL, m_configuration, filename, true);
     }
@@ -276,9 +275,8 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
         (wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + filename))
         )
         filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
-      std::shared_ptr <wxFileSystem> noFS;
       if (wxImage::GetImageCount(filename) < 2)
-        imageCell = new ImgCell(NULL, m_configuration, filename, noFS, false);
+        imageCell = new ImgCell(NULL, m_configuration, filename, {}/* system fs */, false);
       else
         return new SlideShow(NULL, m_configuration, filename, false);
     }

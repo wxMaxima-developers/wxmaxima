@@ -141,10 +141,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
-    std::shared_ptr <wxFileSystem> noFS;
     Cell *ic;
     if (wxImage::GetImageCount(initString) < 2)
-      ic = new ImgCell(this, m_configuration, initString, noFS, false);
+      ic = new ImgCell(this, m_configuration, initString, {} /* system fs */, false);
     else
       ic = new SlideShow(this, m_configuration, initString, false);
     GroupCell::AppendOutput(ic);
