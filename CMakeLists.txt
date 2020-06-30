@@ -82,9 +82,11 @@ endif()
 # Compiler-Specific Tweaks
 #
 
-# Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
+    # Turn off many warnings wxWidgets triggers on MSVC
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    # Safely handle exceptions everywhere
+    add_compile_options(/EHsc)
 endif()
 
 # Clang requires that flag (that should fix the error on travis too)
