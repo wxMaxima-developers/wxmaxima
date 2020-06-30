@@ -1129,7 +1129,7 @@ wxString TextCell::ToTeX()
               // The variable name prior to this cell has no subscript
               (!(m_previous->ToString().Contains(wxT('_')))) &&
               // we will be using \mathit{} for the TeX outout.
-              ((m_next->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
+              ((m_previous->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
               )
         text = wxT("\\, ");
       else
