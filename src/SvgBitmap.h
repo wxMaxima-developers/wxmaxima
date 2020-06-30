@@ -44,6 +44,7 @@ public:
   SvgBitmap(const unsigned char *data, size_t len, int width = 640, int height = 480);
   SvgBitmap(const unsigned char *data, size_t len, wxSize siz);
   ~SvgBitmap() override;
+  SvgBitmap(SvgBitmap &&) = delete;
   SvgBitmap &operator=(SvgBitmap &&o);
 
   //! Converts rgba data to a wxBitmap
