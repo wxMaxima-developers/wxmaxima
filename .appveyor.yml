@@ -30,7 +30,6 @@ environment:
 
   - TOOLKIT: MinGW
     TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
-    TOOLKIT_CMAKE_ARGS: "-DCMAKE_CXX_FLAGS=\"-Wa,-mbig-obj\""
     WXW_LIB: gcc_x64_lib
 
 matrix:

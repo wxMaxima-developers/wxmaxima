@@ -92,6 +92,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_definitions(-Wno-c++11-narrowing)
 endif()
 
+if(MSYS OR MINGW)
+    add_compile_options(-Wa,-mbig-obj)
+endif()
+
 ##
 # Environment Check
 #
