@@ -1162,12 +1162,7 @@ wxString GroupCell::ToRTF()
   wxString retval;
   if (m_groupType == GC_TYPE_CODE)
   {
-    if (m_inputLabel != NULL &&
-        (
-                (configuration->ShowCodeCells()) ||
-                (m_groupType != GC_TYPE_CODE)
-        )
-            )
+    if (m_inputLabel && configuration->ShowCodeCells())
     {
       if (m_previous)
         retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");

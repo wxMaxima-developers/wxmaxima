@@ -3165,8 +3165,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
         bool enterEvaluates = false;
         bool controlOrShift = event.ControlDown() || event.ShiftDown();
         wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if ((!enterEvaluates && controlOrShift) ||
-            (enterEvaluates && !controlOrShift))
+        if (enterEvaluates != controlOrShift)
         { // shift-enter pressed === menu_evaluate event
           Evaluate();
         }
@@ -3890,7 +3889,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
           }
           else
           {
-            if (m_hCaretPosition && m_hCaretPosition->GetEditable())
+            if (m_hCaretPosition->GetEditable())
               SelectEditable(m_hCaretPosition->GetEditable(), false);
           }
         }
