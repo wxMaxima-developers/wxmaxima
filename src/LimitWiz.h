@@ -74,7 +74,7 @@ protected:
   wxStaticLine *static_line_1;
   wxButton *button_2;
   wxButton *button_3;
-DECLARE_EVENT_TABLE()
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // LIMITWIZ_H

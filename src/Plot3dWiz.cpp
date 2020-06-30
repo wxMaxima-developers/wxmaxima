@@ -454,7 +454,7 @@ void Plot3DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event))
     text_ctrl_10->SetValue(file);
 }
 
-BEGIN_EVENT_TABLE(Plot3DWiz, wxDialog)
+wxBEGIN_EVENT_TABLE(Plot3DWiz, wxDialog)
                 EVT_COMBOBOX(combobox, Plot3DWiz::OnCombobox)
                 EVT_BUTTON(file_browse_3d, Plot3DWiz::OnFileBrowse)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()

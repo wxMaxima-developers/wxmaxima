@@ -509,14 +509,13 @@ void Plot2DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event))
     text_ctrl_9->SetValue(file);
 }
 
-// cppcheck-suppress unknownMacro
-BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
+wxBEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
                 EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
                 EVT_BUTTON(special, Plot2DWiz::OnButton)
                 EVT_BUTTON(file_browse_2d, Plot2DWiz::OnFileBrowse)
                 EVT_MENU(parametric_plot, Plot2DWiz::OnPopupMenu)
                 EVT_MENU(discrete_plot, Plot2DWiz::OnPopupMenu)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 ///////////////////////
 //
