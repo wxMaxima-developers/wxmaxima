@@ -61,13 +61,13 @@ public:
   //! A destructor that also closes the notification
   ~Notification() override { Notification::Close(); }
   //! Makes the notification appear.
-  virtual bool Show(int duration = Timeout_Auto) NOTIFI_OVERRIDE;
+  bool Show(int duration = Timeout_Auto) NOTIFI_OVERRIDE;
   //! Informs the notification which the main window is it notified for.
   void SetGroup(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
   wxWindow *GetGroup() { return m_parent; }
   //! Tell the operating system that the notification may be closed.
-  virtual bool Close() NOTIFI_OVERRIDE;
+  bool Close() NOTIFI_OVERRIDE;
   //! Might produce false positives, but at least tries to determine if the notification is active.
   bool IsShown(){return m_shown;}
   //! The cell we signal an error for
