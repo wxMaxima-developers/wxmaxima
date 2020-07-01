@@ -916,12 +916,8 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 
 bool Worksheet::RecalculateIfNeeded()
 {
-  bool recalculate = true;
   UpdateConfigurationClientSize();
   if (!m_recalculateStart || !GetTree())
-    recalculate = false;
-
-  if (!recalculate)
   {
     m_recalculateStart = {};
     if(m_configuration->AdjustWorksheetSize())
@@ -1638,7 +1634,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
           break;
-      default:{}
+        default:
+          break;
       }
       switch (group->GetGroupType())
       {
@@ -2776,7 +2773,7 @@ void Worksheet::TreeUndo_CellLeft()
     return;
 
   GroupCell *activeCell = GetActiveCell()->GetGroup();
-  if (TreeUndo_ActiveCell)
+  if (TreeUndo_ActiveCell) //-V1051
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
 
   if (!activeCell->GetEditable())
@@ -3165,8 +3162,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
         bool enterEvaluates = false;
         bool controlOrShift = event.ControlDown() || event.ShiftDown();
         wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-        if ((!enterEvaluates && controlOrShift) ||
-            (enterEvaluates && !controlOrShift))
+        if (enterEvaluates != controlOrShift)
         { // shift-enter pressed === menu_evaluate event
           Evaluate();
         }
@@ -3379,6 +3375,10 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
 
   m_cellPointers.ResetKeyboardSelectionStart();
 
+  // CTRL+"s deactivates on MAC
+  if (!GetActiveCell())
+    return;
+
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_NUMPAD_DELETE) &&
       GetActiveCell()->GetValue() == wxEmptyString)
@@ -3387,10 +3387,6 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     DeleteSelection();
     return;
   }
-
-  // CTRL+"s deactivates on MAC
-  if (!GetActiveCell())
-    return;
 
   ///
   /// send event to active cell
@@ -3890,7 +3886,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
           }
           else
           {
-            if (m_hCaretPosition && m_hCaretPosition->GetEditable())
+            if (m_hCaretPosition->GetEditable())
               SelectEditable(m_hCaretPosition->GetEditable(), false);
           }
         }
@@ -5536,7 +5532,9 @@ bool Worksheet::ExportToHTML(const wxString &file)
           count++;
         }
           break;
-      case GC_TYPE_CODE:{}
+        case GC_TYPE_CODE:
+        case GC_TYPE_INVALID:
+          break;
       }
     }
   }
@@ -6950,9 +6948,8 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
   if (callRefresh) // = true default
     RequestRedraw();
 
-  if ((cell != NULL) && (!m_configuration->ShowCodeCells()) &&
-      (GetActiveCell()->GetType() == MC_TYPE_INPUT)
-          )
+  if (cell && !m_configuration->ShowCodeCells() && GetActiveCell()
+      && GetActiveCell()->GetType() == MC_TYPE_INPUT)
   {
     m_configuration->ShowCodeCells(true);
     CodeCellVisibilityChanged();
@@ -7424,10 +7421,10 @@ void Worksheet::SetHCaret(GroupCell *where)
       where->GetType() == MC_TYPE_GROUP,
       _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
 
+  m_hCaretActive = true;
   if (m_hCaretPosition != where)
   {
     m_hCaretPosition = where;
-    m_hCaretActive = true;
 
     RequestRedraw();
     if (where)
@@ -7442,8 +7439,6 @@ void Worksheet::SetHCaret(GroupCell *where)
       blinktime = 200;
     m_caretTimer.Start(blinktime);
   }
-  m_hCaretPosition = where;
-  m_hCaretActive = true;
 }
 
 void Worksheet::ShowHCaret()

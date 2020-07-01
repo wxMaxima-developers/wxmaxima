@@ -38,6 +38,8 @@
 #include "ImgCell.h"
 #include "BitmapOut.h"
 
+#define EMPTY_INPUT_LABEL wxT(" -->  ")
+
 GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &initString) :
     Cell(this, config)
 {
@@ -141,10 +143,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
-    std::shared_ptr <wxFileSystem> noFS;
     Cell *ic;
     if (wxImage::GetImageCount(initString) < 2)
-      ic = new ImgCell(this, m_configuration, initString, noFS, false);
+      ic = new ImgCell(this, m_configuration, initString, {} /* system fs */, false);
     else
       ic = new SlideShow(this, m_configuration, initString, false);
     GroupCell::AppendOutput(ic);
@@ -166,88 +167,73 @@ GroupCell::GroupCell(const GroupCell &cell):
   AutoAnswer(cell.m_autoAnswer);
 }
 
-void GroupCell::SetCellStyle(int style)
+void GroupCell::SetCellStyle(GroupType style)
 {
   if (!GetEditable())
     return;
-  
-  switch (style)
-  {
+  wxASSERT(m_inputLabel); // GetEditable() implies that - it's the next cell
+                          // after m_inputLabel
+  switch (style) {
   case GC_TYPE_CODE:
     m_groupType = GC_TYPE_CODE;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_INPUT);
-    m_inputLabel -> SetValue(EMPTY_INPUT_LABEL);
+    m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
+    GetEditable()->SetType(MC_TYPE_INPUT);
+    m_inputLabel->SetValue(EMPTY_INPUT_LABEL);
     break;
-
   case GC_TYPE_TEXT:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_TEXT;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_TEXT);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_TEXT);
+    m_inputLabel->SetType(MC_TYPE_TEXT);
+    GetEditable()->SetType(MC_TYPE_TEXT);
     RemoveOutput();
-   break;
+    break;
   case GC_TYPE_TITLE:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_TITLE;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_TITLE);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_TITLE);
+    m_inputLabel->SetType(MC_TYPE_TITLE);
+    GetEditable()->SetType(MC_TYPE_TITLE);
     RemoveOutput();
     break;
   case GC_TYPE_SECTION:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_SECTION;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_SECTION);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_SECTION);
+    m_inputLabel->SetType(MC_TYPE_SECTION);
+    GetEditable()->SetType(MC_TYPE_SECTION);
     RemoveOutput();
     break;
   case GC_TYPE_SUBSECTION:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_SUBSECTION;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_SUBSECTION);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_SUBSECTION);
+    m_inputLabel->SetType(MC_TYPE_SUBSECTION);
+    GetEditable()->SetType(MC_TYPE_SUBSECTION);
     RemoveOutput();
     break;
   case GC_TYPE_SUBSUBSECTION:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_SUBSUBSECTION;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_SUBSUBSECTION);
+    m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
+    GetEditable()->SetType(MC_TYPE_SUBSUBSECTION);
     RemoveOutput();
     break;
   case GC_TYPE_HEADING5:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_HEADING5;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_HEADING5);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_HEADING5);
+    m_inputLabel->SetType(MC_TYPE_HEADING5);
+    GetEditable()->SetType(MC_TYPE_HEADING5);
     RemoveOutput();
     break;
   case GC_TYPE_HEADING6:
-    m_inputLabel -> SetValue(wxEmptyString);
+    m_inputLabel->SetValue(wxEmptyString);
     m_groupType = GC_TYPE_HEADING6;
-    if(m_inputLabel != NULL)
-      m_inputLabel->SetType(MC_TYPE_HEADING6);
-    if(GetEditable() != NULL)
-      GetEditable()->SetType(MC_TYPE_HEADING6);
+    m_inputLabel->SetType(MC_TYPE_HEADING6);
+    GetEditable()->SetType(MC_TYPE_HEADING6);
     RemoveOutput();
     break;
+  default:
+    break;
   }
-  if(GetEditable() != NULL)
-    GetEditable()->StyleText();
+
+  GetEditable()->StyleText();
 }
 
 /*! Set the parent of this group cell
@@ -674,7 +660,7 @@ void GroupCell::RecalculateHeightOutput()
   m_output->HardLineBreak();
 
   Cell *tmp = m_output.get();
-  m_mathFontSize = configuration->GetMathFontSize();
+  m_mathFontSize = configuration->GetMathFontSize(); //-V519
   
   // Recalculate widths of cells
   while (tmp != NULL)
@@ -1163,12 +1149,7 @@ wxString GroupCell::ToRTF()
   wxString retval;
   if (m_groupType == GC_TYPE_CODE)
   {
-    if (m_inputLabel != NULL &&
-        (
-                (configuration->ShowCodeCells()) ||
-                (m_groupType != GC_TYPE_CODE)
-        )
-            )
+    if (m_inputLabel && configuration->ShowCodeCells())
     {
       if (m_previous)
         retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");

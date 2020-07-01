@@ -108,9 +108,7 @@ public:
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
     {
-      // Create an empty filesystem pointer (which means: Use the system's filesystem)
-      std::shared_ptr<wxFileSystem> filesystem;
-      GnuplotSource(gnuplotFilename, dataFilename, filesystem);
+      GnuplotSource(gnuplotFilename, dataFilename, {} /* system fs */);
     }
 
 /*! Returns the gnuplot source file name of this image

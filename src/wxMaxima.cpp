@@ -1733,8 +1733,6 @@ bool wxMaxima::StartServer()
     wxLogMessage(wxString::Format(_("Cannot set the communication port to %i."), m_port));
 
   m_server = new wxSocketServer(addr);
-  if(!m_server)
-    return false;
   if (!m_server->IsOk())
   {
     m_server->Destroy();
@@ -4667,13 +4665,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
       break;
     case waiting:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      if (m_worksheet->GetWorkingGroup() == NULL)
-      {
-        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
-      }
-      break;
     case sending:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       if (m_worksheet->GetWorkingGroup() == NULL)
@@ -4683,15 +4674,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       }
       break;
     case calculating:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
-      break;
     case transferring:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
-      break;
     case parsing:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
@@ -4699,10 +4682,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       break;
     case wait_for_start:
     case disconnected:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
-      break;
     case process_wont_start:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
@@ -4903,7 +4882,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
   RemoveTempAutosavefile();
   m_autoSaveTimer.StartOnce(180000);
 
-  if (m_worksheet)m_worksheet->TreeUndo_ClearBuffers();
+  m_worksheet->TreeUndo_ClearBuffers();
   if (m_worksheet->m_currentFile != wxEmptyString)
   {
     wxString filename(m_worksheet->m_currentFile);
@@ -5396,9 +5375,10 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-  case wxID_CLOSE:
-    Close();
-    break;
+    case wxID_EXIT:
+    case wxID_CLOSE:
+      Close();
+      break;
 
     case wxID_OPEN:
     {
@@ -5589,10 +5569,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       if(file != wxEmptyString)
         OpenFile(file, wxT("batch"));
     }
-      break;
-
-    case wxID_EXIT:
-      Close();
       break;
 
     case ToolBar::tb_animation_startStop:
@@ -5928,15 +5904,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell() != NULL)
       {
         // Start incremental search and highlighting of search results again.
-        if (m_worksheet->m_findDialog != NULL)
-          m_oldFindString = wxEmptyString;
+        m_oldFindString = wxEmptyString;
 
         wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
         if (selected.Length() > 0)
-        {
-          if (m_worksheet->m_findDialog != NULL)
-            m_worksheet->m_findDialog->SetFindString(selected);
-        }
+          m_worksheet->m_findDialog->SetFindString(selected);
       }
 
       m_worksheet->m_findDialog->Show(true);
@@ -6536,7 +6508,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
         {
           LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
                        wxOK | wxICON_ERROR);
-          return;
+          return; //-V773
         }
         if (w != h)
           type = MatWiz::MATRIX_GENERAL;
@@ -8456,8 +8428,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString selection = m_worksheet->GetString();
   switch (event.GetId())
@@ -8991,9 +8962,7 @@ bool wxMaxima::SaveNecessary()
 
 void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
-
+  m_worksheet->CloseAutoCompletePopup();
   if (!m_worksheet->CanEdit())
     return;
 
@@ -9217,7 +9186,7 @@ void wxMaxima::TriggerEvaluation()
     return;
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = m_worksheet->m_evaluationQueue.GetCell();
+  GroupCell *const tmp = m_worksheet->m_evaluationQueue.GetCell();
   if (!tmp)
   {
     // Maxima is no more busy.
@@ -9350,7 +9319,7 @@ void wxMaxima::TriggerEvaluation()
         m_outputCellsFromCurrentCommand = 0;
         TriggerEvaluation();
       }
-      if((tmp)&&(tmp->GetEditable()))
+      if(tmp->GetEditable())
         m_worksheet->SetActiveCell(tmp->GetEditable());
     }
   }
@@ -9750,9 +9719,7 @@ void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event))
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event)
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
-
+  m_worksheet->CloseAutoCompletePopup();
   m_worksheet->OpenHCaret(event.GetString(), GC_TYPE_CODE);
   m_worksheet->SetFocus();
 }
@@ -9773,9 +9740,7 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &event)
 
 void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event))
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
-
+  m_worksheet->CloseAutoCompletePopup();
   m_worksheet->OnFollow();
 }
 
@@ -9788,9 +9753,9 @@ wxMaxima::VersionNumber::VersionNumber(const wxString &version) :
 
   if(tokens.HasMoreTokens())
     tokens.GetNextToken().ToLong(&m_major);
-  if(tokens.HasMoreTokens())
+  if(tokens.HasMoreTokens()) //-V581
     tokens.GetNextToken().ToLong(&m_minor);
-  if(tokens.HasMoreTokens())
+  if(tokens.HasMoreTokens()) //-V581
     tokens.GetNextToken().ToLong(&m_patchlevel);
 }
 
@@ -9970,7 +9935,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
       m_worksheet->SetCellStyle(group, m_worksheet->m_mainToolBar->GetCellType());
       break;
     default:
-    {}
+      break;
     }
     m_worksheet->NumberSections();
     m_worksheet->SetFocus();

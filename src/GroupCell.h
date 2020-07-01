@@ -33,13 +33,12 @@
 #include "Cell.h"
 #include "EditorCell.h"
 
-#define EMPTY_INPUT_LABEL wxT(" -->  ")
-
 //! All types a GroupCell can be of
 // This enum's elements must be synchronized with (WXMFormat.h) WXMHeaderId.
 enum GroupType
 {
-  GC_TYPE_CODE,
+  GC_TYPE_INVALID = -1,
+  GC_TYPE_CODE = 0,
   GC_TYPE_TITLE,
   GC_TYPE_SECTION,
   GC_TYPE_SUBSECTION,
@@ -134,7 +133,7 @@ public:
 
   void SetGroupType(GroupType type) { m_groupType = type; }
 
-  void SetCellStyle(int style);
+  void SetCellStyle(GroupType style);
 
   void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 

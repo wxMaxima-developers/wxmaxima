@@ -460,7 +460,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
           text_ctrl_1->AppendText(wxT(", "));
         text_ctrl_1->AppendText(wiz->GetValue());
       }
-    }
+    } //-V773
       break;
     case discrete_plot:
     {
@@ -474,7 +474,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
           text_ctrl_1->AppendText(wxT(", "));
         text_ctrl_1->AppendText(wiz->GetValue());
       }
-    }
+    } //-V773
       break;
   }
 }

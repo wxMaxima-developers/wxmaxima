@@ -2447,12 +2447,11 @@ bool EditorCell::FindMatchingQuotes()
     }
   }
 
+  decltype(m_text)::char_type prevCh = {};
   int count = 0;
-  for (int i = 0; i < (int) m_text.Length(); ++i)
-  {
-    if (m_text.GetChar(i) == '"' &&
-        ((i == 0) ||
-         (i >= 1 && m_text.GetChar(i - 1) != '\\')))
+  int i = 0;
+  for (auto ch : m_text) {
+    if (ch == '"' && prevCh != '\\')
     {
       ++count;
       if (count & 1)
@@ -2469,6 +2468,8 @@ bool EditorCell::FindMatchingQuotes()
         }
       }
     }
+    ++i;
+    prevCh = ch;
   }
 
   // didn't find matching quotes; do not highlight quotes

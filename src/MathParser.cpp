@@ -229,24 +229,23 @@ Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
       numImgs++;
     }
   }
-  if (slideShow)
+
+  slideShow->LoadImages(images, del);
+  wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
+  wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
+  for(int i=0; i<numImgs; i++)
   {
-    slideShow->LoadImages(images, del);
-    wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
-    wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
-    for(int i=0; i<numImgs; i++)
+    if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
     {
-      if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
-      {
-        slideShow->GnuplotSource(
-          i,
-          gnuplotFiles.GetNextToken(),
-          dataFiles.GetNextToken(),
-          m_fileSystem
-          );
-      }
+      slideShow->GnuplotSource(
+        i,
+        gnuplotFiles.GetNextToken(),
+        dataFiles.GetNextToken(),
+        m_fileSystem
+        );
     }
   }
+
   return slideShow;
 }
 
@@ -261,9 +260,8 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
   {
     if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
     {
-      std::shared_ptr <wxFileSystem> noFS;
       if (wxImage::GetImageCount(filename) < 2)
-        imageCell = new ImgCell(NULL, m_configuration, filename, noFS, true);
+        imageCell = new ImgCell(NULL, m_configuration, filename, {}/*system fs*/, true);
       else
         return new SlideShow(NULL, m_configuration, filename, true);
     }
@@ -276,9 +274,8 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
         (wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + filename))
         )
         filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
-      std::shared_ptr <wxFileSystem> noFS;
       if (wxImage::GetImageCount(filename) < 2)
-        imageCell = new ImgCell(NULL, m_configuration, filename, noFS, false);
+        imageCell = new ImgCell(NULL, m_configuration, filename, {}/* system fs */, false);
       else
         return new SlideShow(NULL, m_configuration, filename, false);
     }
@@ -425,7 +422,7 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     children = GetNextTag(children);
   }
 
-  group->SetGroup(group);
+  group->SetGroup(group); //-V678
   group->Hide(hide);
   return group;
 }
@@ -442,9 +439,9 @@ GroupCell *MathParser::GroupCellFromSubsectionTag(wxXmlNode *node)
   if ((sectioning_level == wxT("0")) || (sectioning_level == wxT("3")))
     group = new GroupCell(m_configuration, GC_TYPE_SUBSECTION);
   if (sectioning_level == wxT("4"))
-    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION);
+    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION); //-V773
   if (sectioning_level == wxT("5"))
-    group = new GroupCell(m_configuration, GC_TYPE_HEADING5);
+    group = new GroupCell(m_configuration, GC_TYPE_HEADING5); //-V773
   if (group == NULL)
     group = new GroupCell(m_configuration, GC_TYPE_HEADING6);
   ParseCommonGroupCellAttrs(node, group);
@@ -750,9 +747,6 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
         break;
 
       case TS_LABEL:
-        cell->SetType(MC_TYPE_LABEL);
-        break;
-
       case TS_USERLABEL:
         cell->SetType(MC_TYPE_LABEL);
         break;
