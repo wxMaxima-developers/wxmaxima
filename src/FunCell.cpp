@@ -137,7 +137,7 @@ wxString FunCell::ToTeX()
     (m_nameCell->ToString() == wxT("sin")) ||
     (m_nameCell->ToString() == wxT("cos")) ||
     (m_nameCell->ToString() == wxT("cosh")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
+    (m_nameCell->ToString() == wxT("sinh")) ||
     (m_nameCell->ToString() == wxT("log")) ||
     (m_nameCell->ToString() == wxT("cot")) ||
     (m_nameCell->ToString() == wxT("sec")) ||
