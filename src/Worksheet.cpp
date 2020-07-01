@@ -3374,6 +3374,10 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
 
   m_cellPointers.ResetKeyboardSelectionStart();
 
+  // CTRL+"s deactivates on MAC
+  if (!GetActiveCell())
+    return;
+
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_NUMPAD_DELETE) &&
       GetActiveCell()->GetValue() == wxEmptyString)
@@ -3382,10 +3386,6 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     DeleteSelection();
     return;
   }
-
-  // CTRL+"s deactivates on MAC
-  if (!GetActiveCell())
-    return;
 
   ///
   /// send event to active cell
@@ -6945,9 +6945,8 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
   if (callRefresh) // = true default
     RequestRedraw();
 
-  if ((cell != NULL) && (!m_configuration->ShowCodeCells()) &&
-      (GetActiveCell()->GetType() == MC_TYPE_INPUT)
-          )
+  if (cell && !m_configuration->ShowCodeCells() && GetActiveCell()
+      && GetActiveCell()->GetType() == MC_TYPE_INPUT)
   {
     m_configuration->ShowCodeCells(true);
     CodeCellVisibilityChanged();
