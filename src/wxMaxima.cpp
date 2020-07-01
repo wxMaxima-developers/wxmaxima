@@ -6536,7 +6536,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
         {
           LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
                        wxOK | wxICON_ERROR);
-          return;
+          return; //-V773
         }
         if (w != h)
           type = MatWiz::MATRIX_GENERAL;
@@ -9788,9 +9788,9 @@ wxMaxima::VersionNumber::VersionNumber(const wxString &version) :
 
   if(tokens.HasMoreTokens())
     tokens.GetNextToken().ToLong(&m_major);
-  if(tokens.HasMoreTokens())
+  if(tokens.HasMoreTokens()) //-V581
     tokens.GetNextToken().ToLong(&m_minor);
-  if(tokens.HasMoreTokens())
+  if(tokens.HasMoreTokens()) //-V581
     tokens.GetNextToken().ToLong(&m_patchlevel);
 }
 

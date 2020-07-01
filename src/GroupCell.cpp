@@ -674,7 +674,7 @@ void GroupCell::RecalculateHeightOutput()
   m_output->HardLineBreak();
 
   Cell *tmp = m_output.get();
-  m_mathFontSize = configuration->GetMathFontSize();
+  m_mathFontSize = configuration->GetMathFontSize(); //-V519
   
   // Recalculate widths of cells
   while (tmp != NULL)

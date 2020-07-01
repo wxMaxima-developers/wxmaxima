@@ -201,7 +201,7 @@ protected:
       if (CELLPTR_LOG_REFS)
         wxLogDebug("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->Get(), obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
       m_cb = ControlBlock::Deref(m_cb, this);
-      m_cb = Ref(obj);
+      m_cb = Ref(obj); //-V519
     } else {
       // The objects are the same - their control blocks must be the same as well,
       // unless the objects are null. If they are null, then the control blocks

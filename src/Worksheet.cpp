@@ -2776,7 +2776,7 @@ void Worksheet::TreeUndo_CellLeft()
     return;
 
   GroupCell *activeCell = GetActiveCell()->GetGroup();
-  if (TreeUndo_ActiveCell)
+  if (TreeUndo_ActiveCell) //-V1051
     wxASSERT_MSG(TreeUndo_ActiveCell == activeCell, _("Bug: Cell left but not entered."));
 
   if (!activeCell->GetEditable())

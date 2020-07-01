@@ -425,7 +425,7 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     children = GetNextTag(children);
   }
 
-  group->SetGroup(group);
+  group->SetGroup(group); //-V678
   group->Hide(hide);
   return group;
 }
@@ -442,9 +442,9 @@ GroupCell *MathParser::GroupCellFromSubsectionTag(wxXmlNode *node)
   if ((sectioning_level == wxT("0")) || (sectioning_level == wxT("3")))
     group = new GroupCell(m_configuration, GC_TYPE_SUBSECTION);
   if (sectioning_level == wxT("4"))
-    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION);
+    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION); //-V773
   if (sectioning_level == wxT("5"))
-    group = new GroupCell(m_configuration, GC_TYPE_HEADING5);
+    group = new GroupCell(m_configuration, GC_TYPE_HEADING5); //-V773
   if (group == NULL)
     group = new GroupCell(m_configuration, GC_TYPE_HEADING6);
   ParseCommonGroupCellAttrs(node, group);
