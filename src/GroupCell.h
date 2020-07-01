@@ -33,8 +33,6 @@
 #include "Cell.h"
 #include "EditorCell.h"
 
-#define EMPTY_INPUT_LABEL wxT(" -->  ")
-
 //! All types a GroupCell can be of
 // This enum's elements must be synchronized with (WXMFormat.h) WXMHeaderId.
 enum GroupType

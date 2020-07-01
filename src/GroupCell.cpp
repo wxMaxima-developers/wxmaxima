@@ -38,6 +38,8 @@
 #include "ImgCell.h"
 #include "BitmapOut.h"
 
+#define EMPTY_INPUT_LABEL wxT(" -->  ")
+
 GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &initString) :
     Cell(this, config)
 {
