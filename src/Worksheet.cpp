@@ -7421,10 +7421,10 @@ void Worksheet::SetHCaret(GroupCell *where)
       where->GetType() == MC_TYPE_GROUP,
       _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
 
+  m_hCaretActive = true;
   if (m_hCaretPosition != where)
   {
     m_hCaretPosition = where;
-    m_hCaretActive = true;
 
     RequestRedraw();
     if (where)
@@ -7439,8 +7439,6 @@ void Worksheet::SetHCaret(GroupCell *where)
       blinktime = 200;
     m_caretTimer.Start(blinktime);
   }
-  m_hCaretPosition = where;
-  m_hCaretActive = true;
 }
 
 void Worksheet::ShowHCaret()
