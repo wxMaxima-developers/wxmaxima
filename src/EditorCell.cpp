@@ -1969,14 +1969,14 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 
       int lastpos = m_positionOfCaret;
       // Delete characters until the end of the current word or number
-      while ((wxIsalnum(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+      while (m_positionOfCaret > 0 && wxIsalnum(m_text[m_positionOfCaret - 1]))
       {
         m_positionOfCaret--;
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +
           m_text.SubString(m_positionOfCaret + 1, m_text.Length());
       }
       // Delete Spaces, Tabs and Newlines until the next printable character
-      while ((wxIsspace(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+      while (m_positionOfCaret > 0 && wxIsspace(m_text[m_positionOfCaret - 1]))
       {
         m_positionOfCaret--;
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +
@@ -2054,14 +2054,14 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 
         int lastpos = m_positionOfCaret;
         // Delete characters until the end of the current word or number
-        while ((wxIsalnum(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+        while (m_positionOfCaret > 0 && wxIsalnum(m_text[m_positionOfCaret - 1]))
         {
           m_positionOfCaret--;
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
             m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
         // Delete Spaces, Tabs and Newlines until the next printable character
-        while ((wxIsspace(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+        while (m_positionOfCaret > 0 && wxIsspace(m_text[m_positionOfCaret - 1]))
         {
           m_positionOfCaret--;
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
