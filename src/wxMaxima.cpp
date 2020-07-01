@@ -4882,7 +4882,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
   RemoveTempAutosavefile();
   m_autoSaveTimer.StartOnce(180000);
 
-  if (m_worksheet)m_worksheet->TreeUndo_ClearBuffers();
+  m_worksheet->TreeUndo_ClearBuffers();
   if (m_worksheet->m_currentFile != wxEmptyString)
   {
     wxString filename(m_worksheet->m_currentFile);
@@ -5904,15 +5904,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell() != NULL)
       {
         // Start incremental search and highlighting of search results again.
-        if (m_worksheet->m_findDialog != NULL)
-          m_oldFindString = wxEmptyString;
+        m_oldFindString = wxEmptyString;
 
         wxString selected = m_worksheet->GetActiveCell()->GetSelectionString();
         if (selected.Length() > 0)
-        {
-          if (m_worksheet->m_findDialog != NULL)
-            m_worksheet->m_findDialog->SetFindString(selected);
-        }
+          m_worksheet->m_findDialog->SetFindString(selected);
       }
 
       m_worksheet->m_findDialog->Show(true);
@@ -8432,8 +8428,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  m_worksheet->CloseAutoCompletePopup();
 
   wxString selection = m_worksheet->GetString();
   switch (event.GetId())
@@ -8967,9 +8962,7 @@ bool wxMaxima::SaveNecessary()
 
 void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
-
+  m_worksheet->CloseAutoCompletePopup();
   if (!m_worksheet->CanEdit())
     return;
 
@@ -9193,7 +9186,7 @@ void wxMaxima::TriggerEvaluation()
     return;
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = m_worksheet->m_evaluationQueue.GetCell();
+  GroupCell *const tmp = m_worksheet->m_evaluationQueue.GetCell();
   if (!tmp)
   {
     // Maxima is no more busy.
@@ -9326,7 +9319,7 @@ void wxMaxima::TriggerEvaluation()
         m_outputCellsFromCurrentCommand = 0;
         TriggerEvaluation();
       }
-      if((tmp)&&(tmp->GetEditable()))
+      if(tmp->GetEditable())
         m_worksheet->SetActiveCell(tmp->GetEditable());
     }
   }
@@ -9726,9 +9719,7 @@ void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event))
 
 void wxMaxima::HistoryDClick(wxCommandEvent &event)
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
-
+  m_worksheet->CloseAutoCompletePopup();
   m_worksheet->OpenHCaret(event.GetString(), GC_TYPE_CODE);
   m_worksheet->SetFocus();
 }
@@ -9749,9 +9740,7 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &event)
 
 void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event))
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
-
+  m_worksheet->CloseAutoCompletePopup();
   m_worksheet->OnFollow();
 }
 
