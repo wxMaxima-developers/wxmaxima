@@ -612,23 +612,11 @@ void Cell::DrawBoundingBox(wxDC &dc, bool all)
   }
 }
 
-/***
- * Do we have an operator in this line - draw () in frac...
- */
 bool Cell::IsCompound() const
 {
-  if (IsOperator())
-    return true;
-  if (m_next == NULL)
-    return false;
-  return m_next->IsCompound();
-}
-
-/***
- * Is operator - draw () in frac...
- */
-bool Cell::IsOperator() const
-{
+  for (const Cell *tmp = this; tmp; tmp = tmp->GetNext())
+    if (tmp->IsOperator())
+      return true;
   return false;
 }
 
