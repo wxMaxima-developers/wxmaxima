@@ -750,9 +750,6 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
         break;
 
       case TS_LABEL:
-        cell->SetType(MC_TYPE_LABEL);
-        break;
-
       case TS_USERLABEL:
         cell->SetType(MC_TYPE_LABEL);
         break;

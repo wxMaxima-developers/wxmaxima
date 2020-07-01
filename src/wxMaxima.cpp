@@ -4667,13 +4667,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
       break;
     case waiting:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      if (m_worksheet->GetWorkingGroup() == NULL)
-      {
-        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
-      }
-      break;
     case sending:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       if (m_worksheet->GetWorkingGroup() == NULL)
@@ -4683,15 +4676,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       }
       break;
     case calculating:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
-      break;
     case transferring:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, follow);
-      break;
     case parsing:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
@@ -4699,10 +4684,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       break;
     case wait_for_start:
     case disconnected:
-      m_worksheet->m_mainToolBar->ShowFollowBitmap();
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-      m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
-      break;
     case process_wont_start:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
@@ -5396,9 +5377,10 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-  case wxID_CLOSE:
-    Close();
-    break;
+    case wxID_EXIT:
+    case wxID_CLOSE:
+      Close();
+      break;
 
     case wxID_OPEN:
     {
@@ -5589,10 +5571,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       if(file != wxEmptyString)
         OpenFile(file, wxT("batch"));
     }
-      break;
-
-    case wxID_EXIT:
-      Close();
       break;
 
     case ToolBar::tb_animation_startStop:
