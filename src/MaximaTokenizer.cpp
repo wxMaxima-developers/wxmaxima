@@ -358,7 +358,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
             token == wxT("and") ||
             token == wxT("or") ||
             token == wxT("not") ||
-            token == wxT("not") ||
+            // FIXME perhaps a condition is missng here
             token == wxT("true") ||
             token == wxT("false"))
           m_tokens.emplace_back(token, TS_CODE_FUNCTION);

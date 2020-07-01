@@ -3454,6 +3454,7 @@ void EditorCell::StyleTextCode()
       }
       else
       {
+        // FIXME m_styledText is **never** empty!
         lastSpace = NULL;
         lastSpacePos = 0;
       }      
