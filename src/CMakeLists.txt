@@ -136,7 +136,7 @@ endif()
 # Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  list(PREPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
+  list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
 endif()
 
 # Version.h is generated in the binary dir
