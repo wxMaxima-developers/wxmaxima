@@ -130,10 +130,10 @@ For most countries the codepage of 256 characters that has been chosen does not 
 
 _Maxima_ allows Unicode, if it was compiled using a Lisp compiler that either supports Unicode or that doesn't care about the font encoding. As at least one of this pair of conditions is likely to be true. _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
-* A Green letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the Green character's name.
-* Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the Green letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:
+* A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then starting to type the Greek character's name.
+* Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the following letters are supported:
 
-| key | Green letter | key | Green letter | key | Green letter |
+| key | Greek letter | key | Greek letter | key | Greek letter |
 |:---:|:------------:|:---:|:------------:|:---:|:------------:|
 |  a  |     alpha    |  i  |     iota     |  r  |      rho     |
 |  b  |     beta     |  k  |     kappa    |  s  |     sigma    |
