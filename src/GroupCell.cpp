@@ -167,7 +167,7 @@ GroupCell::GroupCell(const GroupCell &cell):
   AutoAnswer(cell.m_autoAnswer);
 }
 
-void GroupCell::SetCellStyle(int style)
+void GroupCell::SetCellStyle(GroupType style)
 {
   if (!GetEditable())
     return;
@@ -245,6 +245,8 @@ void GroupCell::SetCellStyle(int style)
     if(GetEditable() != NULL)
       GetEditable()->SetType(MC_TYPE_HEADING6);
     RemoveOutput();
+    break;
+  default:
     break;
   }
   if(GetEditable() != NULL)

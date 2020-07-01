@@ -1634,7 +1634,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
           break;
-      default:{}
+        default:
+          break;
       }
       switch (group->GetGroupType())
       {
@@ -5531,7 +5532,9 @@ bool Worksheet::ExportToHTML(const wxString &file)
           count++;
         }
           break;
-      case GC_TYPE_CODE:{}
+        case GC_TYPE_CODE:
+        case GC_TYPE_INVALID:
+          break;
       }
     }
   }

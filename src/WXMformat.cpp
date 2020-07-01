@@ -183,6 +183,8 @@ static wxString &TreeToWXM(wxString &retval, GroupCell *cell, bool wxm)
   case GC_TYPE_PAGEBREAK:
     retval << Headers.GetStart(WXM_PAGEBREAK);
     break;
+  default:
+    break;
   }
 
   // Export eventual hidden trees.

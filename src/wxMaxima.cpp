@@ -9946,7 +9946,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
       m_worksheet->SetCellStyle(group, m_worksheet->m_mainToolBar->GetCellType());
       break;
     default:
-    {}
+      break;
     }
     m_worksheet->NumberSections();
     m_worksheet->SetFocus();

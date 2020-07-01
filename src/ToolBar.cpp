@@ -517,7 +517,7 @@ GroupType ToolBar::GetCellType()
   }
 }
 
-void ToolBar::SetCellStyle(int style)
+void ToolBar::SetCellStyle(GroupType style)
 {
 
   switch(style)
@@ -560,6 +560,8 @@ void ToolBar::SetCellStyle(int style)
     break;
   case GC_TYPE_HEADING6:
     m_textStyle->SetSelection(7);
+    break;
+  default:
     break;
   }
 }
