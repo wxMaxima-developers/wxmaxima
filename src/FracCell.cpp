@@ -28,6 +28,7 @@
 
 #include "FracCell.h"
 #include "ParenCell.h"
+#include "VisiblyInvalidCell.h"
 
 #define FRAC_DEC 1
 
@@ -37,8 +38,8 @@ FracCell::FracCell(GroupCell *parent, Configuration **config) :
     m_denomParenthesis(new ParenCell(m_group, m_configuration)),
     m_divideOwner(new TextCell(parent, config, "/"))
 {
-  SetNum(new TextCell(parent, config));
-  SetDenom(new TextCell(parent, config));
+  SetNum(new VisiblyInvalidCell(parent,config));
+  SetDenom(new VisiblyInvalidCell(parent,config));
   m_divide->SetStyle(TS_VARIABLE);
   m_fracStyle = FC_NORMAL;
   m_exponent = false;

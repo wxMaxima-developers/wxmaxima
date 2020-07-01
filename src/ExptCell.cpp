@@ -27,13 +27,14 @@
  */
 
 #include "ExptCell.h"
+#include "VisiblyInvalidCell.h"
 
 #define EXPT_DEC 2
 
 ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell(new TextCell(parent, config)),
-    m_exptCell(new TextCell(parent, config)),
+    m_baseCell(new VisiblyInvalidCell(parent,config)),
+    m_exptCell(new VisiblyInvalidCell(parent,config)),
     m_exp(new TextCell(parent, config, "^")),
     m_open(new TextCell(parent, config, "(")),
     m_close(new TextCell(parent, config, ")"))

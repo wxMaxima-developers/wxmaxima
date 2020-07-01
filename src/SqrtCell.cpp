@@ -28,12 +28,13 @@
 
 #include "SqrtCell.h"
 #include "FontCache.h"
+#include "VisiblyInvalidCell.h"
 
 #define SIGN_FONT_SCALE 2.0
 
 SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config)),
+    m_innerCell(new VisiblyInvalidCell(parent,config)),
     m_open(new TextCell(parent, config, "sqrt(")),
     m_close(new TextCell(parent, config, ")"))
 {

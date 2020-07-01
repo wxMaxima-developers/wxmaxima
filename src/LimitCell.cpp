@@ -27,15 +27,16 @@
 */
 
 #include "LimitCell.h"
+#include "VisiblyInvalidCell.h"
 
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
 LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_base(new TextCell(parent, config)),
-    m_under(new TextCell(parent, config)),
-    m_name(new TextCell(parent, config)),
+    m_base(new VisiblyInvalidCell(parent,config)),
+    m_under(new VisiblyInvalidCell(parent,config)),
+    m_name(new VisiblyInvalidCell(parent,config)),
     m_open(new TextCell(parent, config, "(")),
     m_comma(new TextCell(parent, config, ",")),
     m_close(new TextCell(parent, config, ")"))

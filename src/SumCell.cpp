@@ -31,6 +31,7 @@
 #include "SumCell.h"
 #include "TextCell.h"
 #include "FontCache.h"
+#include "VisiblyInvalidCell.h"
 
 SumCell::SumCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),

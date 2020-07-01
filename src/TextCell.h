@@ -32,7 +32,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-class TextCell final : public Cell
+class TextCell : public Cell
 {
 private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?

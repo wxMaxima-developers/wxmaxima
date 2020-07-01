@@ -281,6 +281,7 @@ private:
   Configuration **m_configuration;
   bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
+  static wxString m_unknownXMLTagToolTip;
 };
 
 #endif // MATHPARSER_H

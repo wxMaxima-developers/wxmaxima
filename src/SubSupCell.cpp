@@ -31,11 +31,13 @@
 #include "TextCell.h"
 #include <wx/config.h>
 #include "wx/config.h"
+#include "VisiblyInvalidCell.h"
 
 #define SUBSUP_DEC 3
 
 SubSupCell::SubSupCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config)
+  Cell(parent, config),
+  m_baseCell(new VisiblyInvalidCell(parent,config))
 {}
 
 SubSupCell::SubSupCell(const SubSupCell &cell):

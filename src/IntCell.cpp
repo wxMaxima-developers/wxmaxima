@@ -29,6 +29,7 @@
 #include "IntCell.h"
 #include "FontCache.h"
 #include "TextCell.h"
+#include "VisiblyInvalidCell.h"
 
 #if defined __WXMSW__
 #define INTEGRAL_TOP "\xF3"
@@ -39,10 +40,10 @@
 
 IntCell::IntCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_base(new TextCell(parent, config)),
+    m_base(new VisiblyInvalidCell(parent,config)),
     m_under(new TextCell(parent, config)),
     m_over(new TextCell(parent, config)),
-    m_var(new TextCell(parent, config))
+    m_var(new VisiblyInvalidCell(parent,config))
 {
   m_signHeight = 35;
   m_signWidth = 18;

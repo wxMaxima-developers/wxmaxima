@@ -30,11 +30,13 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "wx/config.h"
+#include "VisiblyInvalidCell.h"
+
 
 DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell(new TextCell(parent, config)),
-    m_diffCell(new TextCell(parent, config))
+    m_baseCell(new VisiblyInvalidCell(parent,config)),
+    m_diffCell(new VisiblyInvalidCell(parent,config))
 {
 }
 

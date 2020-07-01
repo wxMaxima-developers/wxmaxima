@@ -47,6 +47,7 @@
 #include "FunCell.h"
 #include "ImgCell.h"
 #include "SubSupCell.h"
+#include "VisiblyInvalidCell.h"
 #include "SlideShowCell.h"
 
 /*! Calls a member function from a function pointer
@@ -81,6 +82,10 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
 
 MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
 {
+  // We cannot do this at the startup of the program as we first need to wait
+  // for the language selection to take place
+  if(m_unknownXMLTagToolTip.IsEmpty())
+    m_unknownXMLTagToolTip = _("Encountered an unknown XML tag");
   m_configuration = cfg;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;
@@ -479,7 +484,7 @@ Cell *MathParser::HandleNullPointer(Cell *cell)
 {
   if (cell == NULL)
   {
-    cell = new TextCell(NULL, m_configuration, _("Bug: Missing contents"));
+    cell = new VisiblyInvalidCell(NULL, m_configuration);
     cell->SetToolTip(_("The xml data from maxima or from the .wxmx file was missing data here.\n"
                        "If you find a way how to reproduce this problem please file a bug "
                        "report against wxMaxima."));
@@ -1011,19 +1016,18 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       Cell * (MathParser::* function)(wxXmlNode *node) = m_innerTags[tagName];
       if (function != NULL)
           tmp =  CALL_MEMBER_FN(*this, function)(node);
-
+      
       if ((tmp == NULL) && (node->GetChildren()))
         tmp = ParseTag(node->GetChildren());
 
-      // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
-      if (tmp != NULL)
-      {
-        ParseCommonAttrs(node, tmp);
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
-      }
+      if(tmp == NULL)
+        tmp = new VisiblyInvalidCell(NULL, m_configuration, m_unknownXMLTagToolTip);
+
+      ParseCommonAttrs(node, tmp);
+      if (cell == NULL)
+        cell = tmp;
+      else
+        cell->AppendCell(tmp);
     }
     else
     {
@@ -1126,4 +1130,4 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
 wxRegEx MathParser::m_graphRegex(wxT("[[:cntrl:]]"));
 MathParser::MathCellFunctionHash MathParser::m_innerTags;
 MathParser::GroupCellFunctionHash MathParser::m_groupTags;
-
+wxString MathParser::m_unknownXMLTagToolTip;

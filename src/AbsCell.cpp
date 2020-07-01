@@ -29,9 +29,11 @@
 
 
 #include "AbsCell.h"
+#include "VisiblyInvalidCell.h"
 
 AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
+    m_innerCell(new VisiblyInvalidCell(parent,config)),
     m_open(new TextCell(parent, config, wxT("abs("))),
     m_close(new TextCell(parent, config, wxT(")")))
 {

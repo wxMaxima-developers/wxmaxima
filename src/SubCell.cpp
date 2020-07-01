@@ -27,11 +27,14 @@
  */
 
 #include "SubCell.h"
+#include "VisiblyInvalidCell.h"
 
 #define SUB_DEC 2
 
 SubCell::SubCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config)
+  Cell(parent, config),
+  m_baseCell(new VisiblyInvalidCell(parent,config)),
+  m_indexCell(new VisiblyInvalidCell(parent,config))
 {
 }
 

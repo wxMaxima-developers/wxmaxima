@@ -27,10 +27,11 @@
  */
 
 #include "ConjugateCell.h"
+#include "VisiblyInvalidCell.h"
 
 ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config, wxString{})),
+    m_innerCell(new VisiblyInvalidCell(parent,config)),
     m_open(new TextCell(parent, config, "conjugate(")),
     m_close(new TextCell(parent, config, ")"))
 {

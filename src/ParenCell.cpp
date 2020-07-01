@@ -29,10 +29,11 @@
 
 #include "ParenCell.h"
 #include "FontCache.h"
+#include "VisiblyInvalidCell.h"
 
 ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config)),
+    m_innerCell(new VisiblyInvalidCell(parent,config)),
     m_open(new TextCell(parent, config, wxT("("))),
     m_close(new TextCell(parent, config, wxT(")")))
 {

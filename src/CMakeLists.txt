@@ -82,6 +82,7 @@ set(SOURCE_FILES
     ToolBar.cpp
     UnicodeSidebar.cpp
     VariablesPane.cpp
+    VisiblyInvalidCell.cpp
     WXMformat.cpp
     Worksheet.cpp
     XmlInspector.cpp
