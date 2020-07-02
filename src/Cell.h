@@ -678,8 +678,9 @@ class Cell: public Observed
   virtual void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   //! Is this cell an operator?
-  virtual bool IsOperator() const;
+  virtual bool IsOperator() const { return false; }
 
+  //! Do we have an operator in this line - draw () in frac...
   bool IsCompound() const;
 
   virtual bool IsShortNum() const { return false; }
