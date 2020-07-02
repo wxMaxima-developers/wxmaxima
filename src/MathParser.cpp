@@ -85,7 +85,7 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place
   if(m_unknownXMLTagToolTip.IsEmpty())
-    m_unknownXMLTagToolTip = _("Encountered an unknown XML tag");
+    m_unknownXMLTagToolTip = _("Encountered an unknown XML tag: <%s>");
   m_configuration = cfg;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;
@@ -133,6 +133,8 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
     m_innerTags[wxT("editor")] = &MathParser::ParseEditorTag;
     m_innerTags[wxT("cell")] = &MathParser::ParseCellTag;
     m_innerTags[wxT("ascii")] = &MathParser::ParseCharCode;
+    m_innerTags[wxT("output")] = &MathParser::ParseOutputTag;
+    m_innerTags[wxT("mtd")] = &MathParser::ParseMthTag;
   }
   if(m_groupTags.empty())
   {
@@ -162,6 +164,24 @@ Cell *MathParser::ParseHiddenOperatorTag(wxXmlNode *node)
 {
   Cell *retval = ParseText(node->GetChildren());
   retval->m_isHidableMultSign = true;
+  return retval;
+}
+
+Cell *MathParser::ParseOutputTag(wxXmlNode *node)
+{
+  Cell *retval = NULL;
+  wxXmlNode *children = node->GetChildren();
+  if(children)
+    retval = ParseTag(children);
+  return retval;
+}
+
+Cell *MathParser::ParseMtdTag(wxXmlNode *node)
+{
+  Cell *retval = NULL;
+  wxXmlNode *children = node->GetChildren();
+  if(children)
+    retval = ParseTag(children);
   return retval;
 }
 
@@ -1011,11 +1031,12 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       if (function != NULL)
           tmp =  CALL_MEMBER_FN(*this, function)(node);
       
-      if ((tmp == NULL) && (node->GetChildren()))
-        tmp = ParseTag(node->GetChildren());
+//      if ((tmp == NULL) && (node->GetChildren()))
+//        tmp = ParseTag(node->GetChildren());
 
       if(tmp == NULL)
-        tmp = new VisiblyInvalidCell(NULL, m_configuration, m_unknownXMLTagToolTip);
+        tmp = new VisiblyInvalidCell(NULL, m_configuration,
+                                     wxString::Format(m_unknownXMLTagToolTip, tagName.utf8_str()));
 
       ParseCommonAttrs(node, tmp);
       if (cell == NULL)

@@ -270,6 +270,10 @@ private:
   Cell *ParseSubSupTag(wxXmlNode *node);
   //! Parse a pre-and-post-super-and-subscript cell tag to a Cell. 
   Cell *ParseMmultiscriptsTag(wxXmlNode *node);
+  //! Parse an Output tag telling that the math is from maxima. 
+  Cell *ParseOutputTag(wxXmlNode *node);
+  //! Parse an Matrix cell tag. 
+  Cell *ParseMtdTag(wxXmlNode *node);
   // @}
   //! The last user defined label
   wxString m_userDefinedLabel;
