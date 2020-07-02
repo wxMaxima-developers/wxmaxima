@@ -108,10 +108,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#configuration-options"><span class="toc-section-number">1.4</span> Configuration options</a><ul>
 <li><a href="#default-animation-framerate"><span class="toc-section-number">1.4.1</span> Default animation framerate</a></li>
 <li><a href="#default-plot-size-for-new-maxima-sessions"><span class="toc-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</a></li>
-<li><a href="#use-jsmath-fonts"><span class="toc-section-number">1.4.3</span> Use jsMath fonts</a></li>
-<li><a href="#match-parenthesis-in-text-controls"><span class="toc-section-number">1.4.4</span> Match parenthesis in text controls</a></li>
-<li><a href="#dont-save-the-worksheet-automatically"><span class="toc-section-number">1.4.5</span> Don’t save the worksheet automatically</a></li>
-<li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.4.6</span> Where is the configuration saved?</a></li>
+<li><a href="#match-parenthesis-in-text-controls"><span class="toc-section-number">1.4.3</span> Match parenthesis in text controls</a></li>
+<li><a href="#dont-save-the-worksheet-automatically"><span class="toc-section-number">1.4.4</span> Don’t save the worksheet automatically</a></li>
+<li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.4.5</span> Where is the configuration saved?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
@@ -673,26 +672,20 @@ Ordinary text</code></pre>
 <a class="sourceLine" id="cb5-5" title="5">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
 <a class="sourceLine" id="cb5-6" title="6">   )</a>
 <a class="sourceLine" id="cb5-7" title="7">), <span class="cn">wxplot_size</span>=[<span class="dv">480</span>,<span class="dv">480</span>]$</a></code></pre></div>
-<h3 id="use-jsmath-fonts"><span class="header-section-number">1.4.3</span> Use jsMath fonts</h3>
-<p>Stil menüsü, çalışırken dizüstü bilgisayarınızın görünümü ile ilgili özelleştirmeye izin verir.</p>
-<figure>
-<img src="./wxMaxima_configuration_002.png" alt="wxMaxima configuration 2" id="img_wxMaxima_configuration_002" /><figcaption>wxMaxima configuration 2</figcaption>
-</figure>
-<p>It also contains the option to use jsMath fonts. It is a good idea to install these fonts since they were especially designed for mathematics and tend to resolve issues that can be caused by broken fonts. If they are not installed on your computer, the option to activate them will not be highlighted. The jsMath fonts can be found on <a href="https://www.mpim-bonn.mpg.de/node/258">this site</a>. The site describes jsMath fonts and provides installation instructions.</p>
-<h3 id="match-parenthesis-in-text-controls"><span class="header-section-number">1.4.4</span> Match parenthesis in text controls</h3>
+<h3 id="match-parenthesis-in-text-controls"><span class="header-section-number">1.4.3</span> Match parenthesis in text controls</h3>
 <p>Bu seçenek iki şeyi etkinleştirir:</p>
 <ul>
 <li>Bir açılış parantezi, parantez veya çift tırnak girilirse <em>wxMaxima</em>, arkasından bir kapanış ekler.</li>
 <li>Bu tuşlardan herhangi birine basıldığında metin seçilirse, seçilen metin eşleşen işaretlerin arasına yerleştirilir.</li>
 </ul>
-<h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.5</span> Don’t save the worksheet automatically</h3>
+<h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.4</span> Don’t save the worksheet automatically</h3>
 <p>Bu seçenek ayarlanırsa, çalışma sayfasının bulunduğu dosya yalnızca kullanıcının isteği üzerine yazılır. Bir çökme / güç kaybı / … durumunda, geçici dizinde yakın zamanda yedek bir kopya bulunmaya devam eder.</p>
 <p>If this option isn’t set <em>wxMaxima</em> behaves more like a modern cellphone app:</p>
 <ul>
 <li>Dosyalar çıkışta otomatik olarak kaydedilir</li>
 <li>Ve dosya her 3 dakikada bir otomatik olarak kaydedilecektir.</li>
 </ul>
-<h3 id="where-is-the-configuration-saved"><span class="header-section-number">1.4.6</span> Where is the configuration saved?</h3>
+<h3 id="where-is-the-configuration-saved"><span class="header-section-number">1.4.5</span> Where is the configuration saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em>wxMaxima</em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.wxMaxima</code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em>wxMaxima</em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />

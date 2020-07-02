@@ -215,7 +215,7 @@ void SqrtCell::Draw(wxPoint point)
         int dy = m_signSize / 10;
         wxASSERT_MSG((yTop != 0) || (yBottom != 0), _("Font issue? The contents of a sqrt() has the size 0."));
         wxASSERT_MSG(dy > 0,
-                     _("Font issue: The sqrt() sign has the size 0! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
+                     _("Font issue: The sqrt() sign has the size 0!"));
         if (dy <= 0)
           dy = 1;
         dc->DrawText(wxT("t"),

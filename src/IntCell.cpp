@@ -289,7 +289,7 @@ void IntCell::Draw(wxPoint point)
       bottom = sign.y + (m_signHeight + 1) / 2 - (3 * m_charHeight) / 2;
       if (top <= bottom)
       {
-        wxASSERT_MSG(m_charHeight>=2,_("Font issue: The char height is too small! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
+        wxASSERT_MSG(m_charHeight>=2,_("Font issue: The char height is too small!"));
         if(m_charHeight <= 2)
           m_charHeight = 2;
 

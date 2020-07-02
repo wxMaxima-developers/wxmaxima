@@ -108,10 +108,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#auto-vervollständigung-1"><span class="toc-section-number">1.4</span> Auto-Vervollständigung</a><ul>
 <li><a href="#die-standard-bildwiederholrate-bei-animationen"><span class="toc-section-number">1.4.1</span> Die Standard-Bildwiederholrate bei Animationen</a></li>
 <li><a href="#die-standardgröße-der-diagramme-bei-neuen-maxima-sitzungen"><span class="toc-section-number">1.4.2</span> Die Standardgröße der Diagramme bei neuen Maxima Sitzungen</a></li>
-<li><a href="#verwende-jsmath-zeichensätze"><span class="toc-section-number">1.4.3</span> Verwende jsMath-Zeichensätze</a></li>
-<li><a href="#automatisches-schließen-von-klammern"><span class="toc-section-number">1.4.4</span> Automatisches Schließen von Klammern</a></li>
-<li><a href="#arbeitsblatt-nicht-automatisch-speichern"><span class="toc-section-number">1.4.5</span> Arbeitsblatt nicht automatisch speichern</a></li>
-<li><a href="#wo-wird-die-konfiguration-gespeichert"><span class="toc-section-number">1.4.6</span> Wo wird die Konfiguration gespeichert?</a></li>
+<li><a href="#automatisches-schließen-von-klammern"><span class="toc-section-number">1.4.3</span> Automatisches Schließen von Klammern</a></li>
+<li><a href="#arbeitsblatt-nicht-automatisch-speichern"><span class="toc-section-number">1.4.4</span> Arbeitsblatt nicht automatisch speichern</a></li>
+<li><a href="#wo-wird-die-konfiguration-gespeichert"><span class="toc-section-number">1.4.5</span> Wo wird die Konfiguration gespeichert?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
@@ -665,26 +664,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb5-5" title="5">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
 <a class="sourceLine" id="cb5-6" title="6">   )</a>
 <a class="sourceLine" id="cb5-7" title="7">), <span class="cn">wxplot_size</span>=[<span class="dv">480</span>,<span class="dv">480</span>]$</a></code></pre></div>
-<h3 id="verwende-jsmath-zeichensätze"><span class="header-section-number">1.4.3</span> Verwende jsMath-Zeichensätze</h3>
-<p>Im “Stil”-Menü können Einstellungen vorgenommen werden, die das Aussehen des Arbeitsblattes beeinflussen.</p>
-<figure>
-<img src="./wxMaxima_configuration_002.png" alt="wxMaxima Konfiguration 2" id="img_wxMaxima_configuration_002" /><figcaption>wxMaxima Konfiguration 2</figcaption>
-</figure>
-<p>It also contains the option to use jsMath fonts. It is a good idea to install these fonts since they were especially designed for mathematics and tend to resolve issues that can be caused by broken fonts. If they are not installed on your computer, the option to activate them will not be highlighted. The jsMath fonts can be found on <a href="https://www.mpim-bonn.mpg.de/node/258">this site</a>. The site describes jsMath fonts and provides installation instructions.</p>
-<h3 id="automatisches-schließen-von-klammern"><span class="header-section-number">1.4.4</span> Automatisches Schließen von Klammern</h3>
+<h3 id="automatisches-schließen-von-klammern"><span class="header-section-number">1.4.3</span> Automatisches Schließen von Klammern</h3>
 <p>Diese Option schaltet zwei Funktionen ein:</p>
 <ul>
 <li>Wenn eine öffnende Klammer eingegeben wird, fügt <em>wxMaxima</em> automatisch eine schließende Klammer ein.</li>
 <li>Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt.</li>
 </ul>
-<h3 id="arbeitsblatt-nicht-automatisch-speichern"><span class="header-section-number">1.4.5</span> Arbeitsblatt nicht automatisch speichern</h3>
+<h3 id="arbeitsblatt-nicht-automatisch-speichern"><span class="header-section-number">1.4.4</span> Arbeitsblatt nicht automatisch speichern</h3>
 <p>Wenn diese Option gewählt ist, wird das Arbeitsblatt nur überschrieben, wenn der Benutzer es speichert. Ein aktuelles Backup wird in diesem Fall im temp-Verzeichnis abgelegt.</p>
 <p>If this option isn’t set <em>wxMaxima</em> behaves more like a modern cellphone app:</p>
 <ul>
 <li>Dateien werden beim Schließen automatisch gespeichert</li>
 <li>und sie werden alle n Minuten zwischengespeichert.</li>
 </ul>
-<h3 id="wo-wird-die-konfiguration-gespeichert"><span class="header-section-number">1.4.6</span> Wo wird die Konfiguration gespeichert?</h3>
+<h3 id="wo-wird-die-konfiguration-gespeichert"><span class="header-section-number">1.4.5</span> Wo wird die Konfiguration gespeichert?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em>wxMaxima</em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.wxMaxima</code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em>wxMaxima</em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />

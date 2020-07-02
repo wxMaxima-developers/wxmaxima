@@ -98,8 +98,11 @@ public:
   void SetType(CellType type) override;
 
 private:
+  //! The text we actually display depends on many factors, unfortunately
+  void UpdateDisplayedText();
+  //! Update the tooltip for this cell
+  void UpdateToolTip();
   wxSize GetTextSize(wxString const &text);
-  void SetAltText();
 
   void FontsChanged() override
     {
@@ -124,7 +127,6 @@ private:
   wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
-  wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 
   int m_realCenter;
@@ -136,7 +138,6 @@ private:
    */
   double m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
-  double m_fontSizeLabel;
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
@@ -183,6 +184,8 @@ private:
   wxString m_initialToolTip;
   //! The number of digits we did display the last time we displayed a number.
   int m_displayedDigits_old;
+
+  Configuration::showLabels m_labelChoice_Last;
 };
 
 #endif // TEXTCELL_H

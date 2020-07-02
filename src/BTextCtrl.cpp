@@ -50,7 +50,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
     font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #endif
     wxASSERT_MSG(font.IsOk(),
-                 _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+                 _("Seems like something is broken with a font."));
     if(font.IsOk())
       SetFont(font);
   }

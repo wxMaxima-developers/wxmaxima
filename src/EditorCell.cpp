@@ -1059,7 +1059,7 @@ void EditorCell::SetFont()
   }
 
   wxASSERT_MSG(font.IsOk(),
-               _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+               _("Seems like something is broken with a font."));
   dc->SetFont(font);
 }
 

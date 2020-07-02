@@ -329,15 +329,6 @@ wxdraw2d(
 
 ~~~
 
-### Use jsMath fonts
-
-The style menu allows customization that pertains to the appearance of your notebook as you work.
-
-![wxMaxima configuration 2](./wxMaxima_configuration_002.png){ id=img_wxMaxima_configuration_002 }
-
-It also contains the option to use jsMath fonts. It is a good idea to install these fonts since they were especially designed for mathematics and tend to resolve issues that can be caused by broken fonts. If they are not installed on your computer, the option to activate them will not be highlighted. The jsMath fonts can be found on [this site](https://www.mpim-bonn.mpg.de/node/258). The site describes jsMath fonts and provides installation instructions.
-
-
 ### Match parenthesis in text controls
 
 This option enables two things:

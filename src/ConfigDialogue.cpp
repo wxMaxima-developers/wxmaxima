@@ -307,7 +307,6 @@ void ConfigDialogue::SetProperties()
                                                " (e.g. -l clisp)."));
   m_mathJaxURL->SetToolTip(_("The URL MathJaX.js should be downloaded from by our HTML export."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
-  m_useJSMath->SetToolTip(_("Use nice js math symbols in order to get nice integral, sum, product and sqrt signs\nWill only work if the corresponding js math fonts can be found by wxMaxima."));
   m_useUnicodeMaths->SetToolTip(_("If the font provides big parenthesis symbols: Use them when big parenthesis are needed for maths display."));
   m_autoSave->SetToolTip(
           _("If this checkbox is checked wxMaxima automatically saves the file closing and every few minutes giving wxMaxima a more cellphone-app-like feel as the file is virtually always saved. If this checkbox is unchecked from time to time a backup is made in the temp folder instead."));
@@ -377,7 +376,7 @@ void ConfigDialogue::SetProperties()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool savePanes = true;
-  bool fixedFontTC = true, usejsmath = true, keepPercent = true;
+  bool fixedFontTC = true, keepPercent = true;
   bool saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
@@ -420,7 +419,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("recentItems"), &recentItems);
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
-  config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
   
   m_documentclass->SetValue(configuration->Documentclass());
@@ -475,7 +473,6 @@ void ConfigDialogue::SetProperties()
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
-  m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_abortOnError->SetValue(configuration->GetAbortOnError());
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
@@ -489,13 +486,6 @@ void ConfigDialogue::SetProperties()
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);
-
-  if (!wxFontEnumerator::IsValidFacename(CMEX10) ||
-      !wxFontEnumerator::IsValidFacename(CMSY10) ||
-      !wxFontEnumerator::IsValidFacename(CMR10)  ||
-      !wxFontEnumerator::IsValidFacename(CMMI10) ||
-      !wxFontEnumerator::IsValidFacename(CMTI10))
-    m_useJSMath->Enable(false);
 }
 
 wxPanel *ConfigDialogue::CreateWorksheetPanel()
@@ -1088,7 +1078,6 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   if (!m_configuration->MathFontName().IsEmpty())
     m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
 
-  m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   wxArrayString m_styleFor_choices;
   for(int i = 0; i < NUMBEROFSTYLES; i++)
     m_styleFor_choices.Add(m_configuration->m_styles[i].Name());
@@ -1113,7 +1102,6 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   grid_sizer_1->Add(m_mathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(10, 10);
-  grid_sizer_1->Add(m_useJSMath, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   m_useUnicodeMaths = new wxCheckBox(panel, -1, _("Use unicode Math Symbols, if available"));
   m_useUnicodeMaths->SetValue(configuration->UseUnicodeMaths());
   grid_sizer_1->Add(10, 10);
@@ -1229,7 +1217,6 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
   configuration->HTMLequationFormat((Configuration::htmlExportFormat) m_exportWithMathJAX->GetSelection());
-  config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());

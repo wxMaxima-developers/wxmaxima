@@ -108,10 +108,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#параметри-налаштування"><span class="toc-section-number">1.4</span> Параметри налаштування</a><ul>
 <li><a href="#типова-частота-кадрів-анімації"><span class="toc-section-number">1.4.1</span> Типова частота кадрів анімації</a></li>
 <li><a href="#типовий-розмір-креслення-для-нових-сеансів-maxima"><span class="toc-section-number">1.4.2</span> Типовий розмір креслення для нових сеансів <em>maxima</em></a></li>
-<li><a href="#використовувати-шрифти-jsmath"><span class="toc-section-number">1.4.3</span> Використовувати шрифти jsMath</a></li>
-<li><a href="#перевіряти-баланс-дужок-у-тексті"><span class="toc-section-number">1.4.4</span> Перевіряти баланс дужок у тексті</a></li>
-<li><a href="#не-зберігати-робочий-аркуш-автоматично"><span class="toc-section-number">1.4.5</span> Не зберігати робочий аркуш автоматично</a></li>
-<li><a href="#де-зберігаються-налаштування"><span class="toc-section-number">1.4.6</span> Де зберігаються налаштування?</a></li>
+<li><a href="#перевіряти-баланс-дужок-у-тексті"><span class="toc-section-number">1.4.3</span> Перевіряти баланс дужок у тексті</a></li>
+<li><a href="#не-зберігати-робочий-аркуш-автоматично"><span class="toc-section-number">1.4.4</span> Не зберігати робочий аркуш автоматично</a></li>
+<li><a href="#де-зберігаються-налаштування"><span class="toc-section-number">1.4.5</span> Де зберігаються налаштування?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#розширення-maxima"><span class="toc-section-number">2</span> Розширення <em>Maxima</em></a><ul>
@@ -673,26 +672,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb5-5" title="5">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
 <a class="sourceLine" id="cb5-6" title="6">   )</a>
 <a class="sourceLine" id="cb5-7" title="7">), <span class="cn">wxplot_size</span>=[<span class="dv">480</span>,<span class="dv">480</span>]$</a></code></pre></div>
-<h3 id="використовувати-шрифти-jsmath"><span class="header-section-number">1.4.3</span> Використовувати шрифти jsMath</h3>
-<p>У меню стилів передбачено пункти налаштовування вигляду вашого нотатника.</p>
-<figure>
-<img src="./wxMaxima_configuration_002.png" alt="Налаштування wxMaxima 2" id="img_wxMaxima_configuration_002" /><figcaption>Налаштування wxMaxima 2</figcaption>
-</figure>
-<p>It also contains the option to use jsMath fonts. It is a good idea to install these fonts since they were especially designed for mathematics and tend to resolve issues that can be caused by broken fonts. If they are not installed on your computer, the option to activate them will not be highlighted. The jsMath fonts can be found on <a href="https://www.mpim-bonn.mpg.de/node/258">this site</a>. The site describes jsMath fonts and provides installation instructions.</p>
-<h3 id="перевіряти-баланс-дужок-у-тексті"><span class="header-section-number">1.4.4</span> Перевіряти баланс дужок у тексті</h3>
+<h3 id="перевіряти-баланс-дужок-у-тексті"><span class="header-section-number">1.4.3</span> Перевіряти баланс дужок у тексті</h3>
 <p>За допомогою цього пункту можна увімкнути дві речі:</p>
 <ul>
 <li>Якщо ви введете у <em>wxMaxima</em> початкову круглу або квадратну дужку або подвійні лапки, програма автоматично вставить завершальну дужку або лапки за нею.</li>
 <li>Якщо при натисканні якоїсь із цих комбінацій клавіш було позначено фрагмент тексту, цей текст буде вставлено між відповідними символами.</li>
 </ul>
-<h3 id="не-зберігати-робочий-аркуш-автоматично"><span class="header-section-number">1.4.5</span> Не зберігати робочий аркуш автоматично</h3>
+<h3 id="не-зберігати-робочий-аркуш-автоматично"><span class="header-section-number">1.4.4</span> Не зберігати робочий аркуш автоматично</h3>
 <p>Якщо позначено цей пункт, файл, у якому зберігається робочий аркуш, буде перезаписано лише за запит користувача. Втім, у випадку аварії, втрати живлення тощо, у каталозі тимчасових даних завжди лишатиметься резервна копія.</p>
 <p>If this option isn’t set <em>wxMaxima</em> behaves more like a modern cellphone app:</p>
 <ul>
 <li>Файли автоматично зберігаються під час виходу з програми</li>
 <li>І файл буде автоматично збережено кожні 3 хвилини.</li>
 </ul>
-<h3 id="де-зберігаються-налаштування"><span class="header-section-number">1.4.6</span> Де зберігаються налаштування?</h3>
+<h3 id="де-зберігаються-налаштування"><span class="header-section-number">1.4.5</span> Де зберігаються налаштування?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em>wxMaxima</em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.wxMaxima</code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em>wxMaxima</em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
