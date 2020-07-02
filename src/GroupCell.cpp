@@ -125,11 +125,9 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
       AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
-      // TODO Shouldn't this be MC_TYPE_IMAGE? If not, then
-      // then this case should be merged with GC_TYPE_TEXT
-      m_inputLabel->SetType(MC_TYPE_TEXT); // -V1037
+      m_inputLabel->SetType(MC_TYPE_IMAGE);
       editor = new EditorCell(this, m_configuration);
-      editor->SetType(MC_TYPE_TEXT);
+      editor->SetType(MC_TYPE_IMAGE);
       AppendInput(editor);
       break;
     default:
