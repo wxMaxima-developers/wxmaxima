@@ -458,6 +458,8 @@ void Cell::SetToolTip(const wxString &tooltip)
 
 void Cell::AddToolTip(const wxString &tip)
 {
+  if(tip.IsEmpty())
+    return;
   if((!m_toolTip.IsEmpty()) && (!m_toolTip.EndsWith("\n")))
     m_toolTip += "\n";
   m_toolTip += tip;
