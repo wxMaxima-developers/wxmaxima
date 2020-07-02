@@ -135,6 +135,7 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
     m_innerTags[wxT("ascii")] = &MathParser::ParseCharCode;
     m_innerTags[wxT("output")] = &MathParser::ParseOutputTag;
     m_innerTags[wxT("mtd")] = &MathParser::ParseMthTag;
+    m_innerTags[wxT("math")] = &MathParser::ParseMthTag;
   }
   if(m_groupTags.empty())
   {
