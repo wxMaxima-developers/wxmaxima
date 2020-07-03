@@ -196,7 +196,6 @@ static const Configuration::EscCodeContainer &EscCodes()
     {wxT("nor"), wxT("\u22BD")},
     {wxT("implies"), wxT("\u21D2")},
     {wxT("=>"), wxT("\u21D2")},
-    {wxT("equiv"), wxT("\u21D4")}, // FIXME See same key on line 228 below
     {wxT("<=>"), wxT("\u21D4")},
     {wxT("not"), wxT("\u00AC")},
     {wxT("union"), wxT("\u22C3")},
@@ -225,7 +224,7 @@ static const Configuration::EscCodeContainer &EscCodes()
     {wxT("gg"), wxT("\u226B")},
     {wxT(">>"), wxT("\u226B")},
     {wxT("qed"), wxT("\u220E")},
-    {wxT("equiv"), wxT("\u2263")}, // FIXME See same key on line 199 above
+    {wxT("equiv"), wxT("\u2263")},
     {wxT("sum"), wxT("\u2211")},
     {wxT("prod"), wxT("\u220F")},
     {wxT("product"), wxT("\u220F")},
