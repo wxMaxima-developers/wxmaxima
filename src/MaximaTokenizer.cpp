@@ -33,7 +33,29 @@
 
 
 MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
-{  
+{
+  if(m_hardcodedFunctions.empty())
+  {
+    m_hardcodedFunctions["for"] = 1;
+    m_hardcodedFunctions["in"] = 1;
+    m_hardcodedFunctions["then"] = 1;
+    m_hardcodedFunctions["while"] = 1;
+    m_hardcodedFunctions["do"] = 1;
+    m_hardcodedFunctions["thru"] = 1;
+    m_hardcodedFunctions["next"] = 1;
+    m_hardcodedFunctions["step"] = 1;
+    m_hardcodedFunctions["unless"] = 1;
+    m_hardcodedFunctions["from"] = 1;
+    m_hardcodedFunctions["if"] = 1;
+    m_hardcodedFunctions["else"] = 1;
+    m_hardcodedFunctions["elseif"] = 1;
+    m_hardcodedFunctions["and"] = 1;
+    m_hardcodedFunctions["or"] = 1;
+    m_hardcodedFunctions["not"] = 1;
+    m_hardcodedFunctions["true"] = 1;
+    m_hardcodedFunctions["false"] = 1;
+  }
+  
   // ----------------------------------------------------------------
   // --------------------- Step one:                -----------------
   // --------------------- Break a line into tokens -----------------
@@ -342,25 +364,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
       else
       {
-        if (token == wxT("for") ||
-            token == wxT("in") ||
-            token == wxT("then") ||
-            token == wxT("while") ||
-            token == wxT("do") ||
-            token == wxT("thru") ||
-            token == wxT("next") ||
-            token == wxT("step") ||
-            token == wxT("unless") ||
-            token == wxT("from") ||
-            token == wxT("if") ||
-            token == wxT("else") ||
-            token == wxT("elif") ||
-            token == wxT("and") ||
-            token == wxT("or") ||
-            token == wxT("not") ||
-            // FIXME perhaps a condition is missng here
-            token == wxT("true") ||
-            token == wxT("false"))
+        if(m_hardcodedFunctions.find(token) != m_hardcodedFunctions.end())
           m_tokens.emplace_back(token, TS_CODE_FUNCTION);
         else
         {
@@ -491,3 +495,5 @@ const wxString MaximaTokenizer::m_unicodeNumbers =
 
 const wxString MaximaTokenizer::m_operators =
   wxT("\u221A\u22C0\u22C1\u22BB\u22BC\u22BD\u00AC\u222b\u2264\u2265\u2211\u2260+-*/^:=#'!()[]{}");
+
+MaximaTokenizer::StringHash MaximaTokenizer::m_hardcodedFunctions;

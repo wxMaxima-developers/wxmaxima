@@ -99,6 +99,16 @@ protected:
   static const wxString m_unicodeNumbers;
   //! Operators
   static const wxString m_operators;
+  
+  WX_DECLARE_STRING_HASH_MAP(int, StringHash);
+  /*! Names of functions that don't require parenthesis
+
+    The maxima parser automatically parses everything that is followed by
+    an opening parenthesis as a function. But a few things like "then"
+    are very similar to functions except that they don't require an
+    argument. These fake functions are kept in this hash.
+   */
+  static StringHash m_hardcodedFunctions;
 };
 
 #endif // MAXIMATOKENIZER_H
