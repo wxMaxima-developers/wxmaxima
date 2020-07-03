@@ -1354,7 +1354,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       if (IsSelected(MC_TYPE_DEFAULT))
       {
         wxString wordUnderCursor = GetSelectionStart()->ToString();
-        if(m_helpFileAnchorsUsable &&(!m_helpFileAnchors[wordUnderCursor].IsEmpty()))
+        if(m_helpFileAnchorsUsable && (m_helpFileAnchors.find(wordUnderCursor) != m_helpFileAnchors.end()))
         {          
           popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""), wordUnderCursor));
           popupMenu.AppendSeparator();
@@ -1647,7 +1647,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             wxArrayString sameBeginning;
             if(m_helpFileAnchorsUsable)
             {
-              if(!m_helpFileAnchors[wordUnderCursor].IsEmpty())
+              if((m_helpFileAnchors.find(wordUnderCursor) != m_helpFileAnchors.end()))
                 popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                               wordUnderCursor));
               
