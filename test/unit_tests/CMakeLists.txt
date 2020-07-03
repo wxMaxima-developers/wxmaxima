@@ -12,7 +12,11 @@ add_executable(test_CellPtr test_CellPtr.cpp)
 target_link_libraries(test_CellPtr PRIVATE ${wxWidgets_LIBRARIES})
 add_test(CellPtr test_CellPtr)
 
-add_executable(test_ImgCell test_ImgCell.cpp)
+add_executable(test_ImgCell
+  test_ImgCell.cpp
+  ../../src/VisiblyInvalidCell.cpp
+  ../../src/TextCell.cpp
+)
 
 if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
     target_link_libraries(test_ImgCell PRIVATE OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})

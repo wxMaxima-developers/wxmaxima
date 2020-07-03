@@ -23,6 +23,7 @@
 #include "test_ImgCell.h"
 #include "Cell.cpp"
 #include "CellPtr.cpp"
+#include "FontCache.h"
 #include "Image.cpp"
 #include "ImgCell.cpp"
 #include <catch2/catch.hpp>
@@ -37,6 +38,13 @@ int ErrorRedirector::m_messages_logPaneOnly;
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) {}
 Configuration::~Configuration() {}
+
+wxFontStyle Configuration::IsItalic(long st) const { return {}; }
+wxFont Configuration::GetFont(TextStyle, long) const { return {}; }
+wxFontInfo FontInfo::GetFor(const wxFont &) { return {}; }
+void FontInfo::SetPointSize(wxFontInfo &, int) {}
+FontCache::~FontCache() {}
+wxFont FontCache::GetFont(const wxFontInfo &) { return {}; }
 
 template <typename C>
 wxString HexEncoding(C &&bits)
