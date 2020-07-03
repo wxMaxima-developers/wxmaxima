@@ -277,7 +277,6 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
     case WXM_COMMENT:
     case WXM_INPUT:
       line = getLinesUntil(Headers.GetEnd(headerId));
-      std::cerr<<"Input"<<line<<"\n";
       cell = new GroupCell(config, GroupType(headerId), line);
       hideCell(cell);
       break;
@@ -305,14 +304,12 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
       // Read an answer
     case WXM_ANSWER:
       line = getLinesUntil(Headers.GetEnd(headerId));
-      std::cerr<<"answer"<<line<<"\n";
       if (last && !question.empty())
         last->SetAnswer(question, line);
       break;
 
       // Read a question
     case WXM_QUESTION:
-      std::cerr<<"question"<<line<<"\n";
       line = getLinesUntil(Headers.GetEnd(headerId));
       question = line;
       break;
