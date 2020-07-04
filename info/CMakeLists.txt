@@ -12,7 +12,7 @@ if(PANDOC)
 	add_custom_target(epub)
 	add_custom_target(html ALL)
 
-	function(generate_wxmaxima_documentation FILEEXTENSION PANDOC_TEXSELECT_OPTION)
+	function(generate_wxmaxima_documentation FILEBASENAME FILEEXTENSION PANDOC_TEXSELECT_OPTION)
 		set(FORMAT "${FILEEXTENSION}")
 		# Set the format to "html5" to generate html with pandoc.
 		if(FILEEXTENSION STREQUAL "html")
@@ -23,13 +23,13 @@ if(PANDOC)
 			set(FORMAT "latex")
 		endif()
 		add_custom_command(
-			OUTPUT ${BASENAME}.${FILEEXTENSION}
-			DEPENDS ${BASENAME}.md
-			COMMAND ${PANDOC} ${BASENAME}.md -t ${FORMAT} -o ${BASENAME}.${FILEEXTENSION} ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}
-			COMMENT "Generating ${BASENAME}.${FILEEXTENSION}")
-		add_custom_target(build_${BASENAME}.${FILEEXTENSION} DEPENDS ${BASENAME}.${FILEEXTENSION})
-		add_dependencies(${FILEEXTENSION} build_${BASENAME}.${FILEEXTENSION})
-		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.${FILEEXTENSION} DESTINATION share/doc/wxmaxima OPTIONAL)
+			OUTPUT ${FILEBASENAME}.${FILEEXTENSION}
+			DEPENDS ${FILEBASENAME}.md
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -o ${FILEBASENAME}.${FILEEXTENSION} ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}
+			COMMENT "Generating ${FILEBASENAME}.${FILEEXTENSION}")
+		add_custom_target(build_${FILEBASENAME}.${FILEEXTENSION} DEPENDS ${FILEBASENAME}.${FILEEXTENSION})
+		add_dependencies(${FILEEXTENSION} build_${FILEBASENAME}.${FILEEXTENSION})
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${FILEBASENAME}.${FILEEXTENSION}" DESTINATION share/doc/wxmaxima OPTIONAL)
 	endfunction()
 
 
@@ -38,7 +38,7 @@ if(PANDOC)
 	# The "list(TRANSFORM" type of commands only is available in very new cmake
 	# versions and therefore (in 2019) of only limited use so we'll have to do
 	# this by hand.
-	set(BASENAMES "wxmaxima")
+	set(BASENAMES "")
 	file(GLOB POFILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
 	foreach(POFILE ${POFILES})
 		string(REGEX REPLACE ".*/(.*).po$" "wxmaxima.\\1" BASENAME ${POFILE})
@@ -70,7 +70,14 @@ if(PANDOC)
 		endif()
 	endif()
 
-	if(PO4A_TRANSLATE)
+	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png ${CMAKE_CURRENT_SOURCE_DIR}/*.jpg)
+	file(COPY ${IMAGEFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+	set(PANDOC_ARGS --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima")
+
+	generate_wxmaxima_documentation("wxmaxima" "html" "")
+	generate_wxmaxima_documentation("wxmaxima" "epub" "")
+	if(LATEX)
 		execute_process(
 			COMMAND ${PANDOC} --version
 			OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
@@ -83,31 +90,24 @@ if(PANDOC)
 			message(STATUS "pandoc version >= 2 found - using option --pdf-engine=${LATEX}")
 			set(PANDOC_TEXSELECT_OPTION "--pdf-engine=${LATEX}")
 		endif()
-		set(PANDOC_ARGS --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima")
-		if(NOT LATEX)
-			message(STATUS "lualatex or xelatex required for building the pdf manual.")
-		endif()
-		file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
-		file(COPY ${IMAGEFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-		file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+		generate_wxmaxima_documentation("wxmaxima" "pdf" "${PANDOC_TEXSELECT_OPTION}")
+    endif()
+
+	if(PO4A_TRANSLATE)
 		foreach(BASENAME ${BASENAMES})
 			string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
 			string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
 
-			if(NOT BASENAME STREQUAL "wxmaxima")
-				add_custom_command(
-					OUTPUT ${BASENAME}.md
-					DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-					COMMAND ${PO4A_TRANSLATE} -k 0 -f text -o markdown -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
-			endif()
+			add_custom_command(
+				OUTPUT ${BASENAME}.md
+				DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+				COMMAND ${PO4A_TRANSLATE} -k 0 -f text -o markdown -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
 
-			generate_wxmaxima_documentation(html "")
-			generate_wxmaxima_documentation(epub "")
+			generate_wxmaxima_documentation("${BASENAME}" "html" "")
+			generate_wxmaxima_documentation("${BASENAME}" "epub" "")
 			if(LATEX)
-				generate_wxmaxima_documentation(pdf "${PANDOC_TEXSELECT_OPTION}")
+				generate_wxmaxima_documentation("${BASENAME}" "pdf" "${PANDOC_TEXSELECT_OPTION}")
 			endif()
-
-			install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
 		endforeach()
 	else()
 		foreach(BASENAME ${BASENAMES})
