@@ -221,7 +221,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
 
   //! Consumes and concatenates lines until a closing tag is reached,
   //! consumes the tag and returns the line.
-  const auto getLinesUntil = [&wxmLine, end](const wxChar *tag) -> wxString
+  const auto getLinesUntil = [&wxmLine, end](const wxString &tag) -> wxString
   {
     wxString line;
     while (wxmLine != end)
