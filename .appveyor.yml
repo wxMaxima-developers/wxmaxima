@@ -45,11 +45,11 @@ matrix:
       TOOLKIT: MSVC
 
 cache:
-  - 'C:\wxwidgets-install_%WXBUILDVER%'
-  - 'C:\wxwidgets-build_%WXBUILDVER%'
+  #- 'C:\wxwidgets-install_%WXBUILDVER%'
+  #- 'C:\wxwidgets-build_%WXBUILDVER%'
   # The build directory is only cached for the .pdb files. Other files are removed.
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  #- C:\ProgramData\chocolatey\bin -> appveyor.yml
+  #- C:\ProgramData\chocolatey\lib -> appveyor.yml
   # Do not cache the build itself - we only care about the install!
 
 # branches to build
