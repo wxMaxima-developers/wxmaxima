@@ -94,13 +94,11 @@ if(PANDOC)
 			string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
 			string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
 
-			if(PO4A_TRANSLATE)
-				if(NOT BASENAME STREQUAL "wxmaxima")
-					add_custom_command(
-						OUTPUT ${BASENAME}.md
-						DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-						COMMAND ${PO4A_TRANSLATE} -k 0 -f text -o markdown -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
-				endif()
+			if(NOT BASENAME STREQUAL "wxmaxima")
+				add_custom_command(
+					OUTPUT ${BASENAME}.md
+					DEPENDS ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+					COMMAND ${PO4A_TRANSLATE} -k 0 -f text -o markdown -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_SOURCE_DIR}/locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
 			endif()
 
 			generate_wxmaxima_documentation(html "")
