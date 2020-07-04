@@ -25,7 +25,7 @@ if(PANDOC)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.${FILEEXTENSION}
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -o ${FILEBASENAME}.${FILEEXTENSION} ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -o ${FILEBASENAME}.${FILEEXTENSION} --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
 			COMMENT "Generating ${FILEBASENAME}.${FILEEXTENSION}")
 		add_custom_target(build_${FILEBASENAME}.${FILEEXTENSION} DEPENDS ${FILEBASENAME}.${FILEEXTENSION})
 		add_dependencies(${FILEEXTENSION} build_${FILEBASENAME}.${FILEEXTENSION})
@@ -73,7 +73,6 @@ if(PANDOC)
 	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png ${CMAKE_CURRENT_SOURCE_DIR}/*.jpg)
 	file(COPY ${IMAGEFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-	set(PANDOC_ARGS --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima")
 
 	generate_wxmaxima_documentation("wxmaxima" "html" "")
 	generate_wxmaxima_documentation("wxmaxima" "epub" "")
