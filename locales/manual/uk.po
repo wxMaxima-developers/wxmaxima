@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-07-02 08:00+0200\n"
+"POT-Creation-Date: 2020-07-05 22:12+0200\n"
 "PO-Revision-Date: 2020-06-05 21:13+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -641,7 +641,7 @@ msgstr "Надсилання комірок для обчислення у Maxim
 #: ../../info/wxmaxima.md:116
 #, fuzzy, no-wrap
 #| msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed.\n"
-msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in reponse to <kbd>ENTER</kbd>.\n"
+msgid "The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The _wxMaxima_ default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but _wxMaxima_ can be configured to execute commands in response to <kbd>ENTER</kbd>.\n"
 msgstr "Команду у комірці буде виконано одразу після натискання комбінацій клавіш <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> або клавіші <kbd>ENTER</kbd> на клавіатурі.\n"
 
 #. type: Title ###
@@ -3126,12 +3126,12 @@ msgstr "Версії _Maxima_ на основі SBCL не вистачає оп�
 msgid ""
 "The Lisp compiler SBCL by default comes with a memory limit that allows it "
 "to run even on low-end computers. When compiling a big software package like "
-"lapack or dealing with extremely big lists or equations this limit might be "
+"Lapack or dealing with extremely big lists or equations this limit might be "
 "too low. In order to extend the limits SBCL can be provided with the command "
 "line parameter `--dynamic-space-size` that tells SBCL how many megabytes it "
 "should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-"
 "bit SBCL version running on Windows can be instructed to use more than the "
-"about 1280 Megabytes compiling lapack needs."
+"about 1280 Megabytes compiling Lapack needs."
 msgstr ""
 "Компілятор Lisp SBCL типово позначається із обмеженням на використання "
 "пам'яті, яке надає змогу запускати його на слабких комп'ютерах. При "
