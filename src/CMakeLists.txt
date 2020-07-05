@@ -191,11 +191,8 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
-if (WXM_ENABLE_PRECOMPILED_HEADERS
-        AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
-    target_precompile_headers(wxmaxima PUBLIC
-	"precomp.h"
-	)
+if(WXM_ENABLE_PRECOMPILED_HEADERS AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    target_precompile_headers(wxmaxima PUBLIC "precomp.h")
 else()
     set(USE_PRECOMP_HEADER "0")
 endif()
