@@ -1,17 +1,16 @@
-# SOME DESCRIPTIVE TITLE
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# The wxMaxima User Manual Translation
+# Copyright (C) 2020 Free Software Foundation, Inc.
+# Questo file viene distribuito nei termini della stessa licenza del pacchetto wxMaxima.
+# Marco Ciampa <ciampix@posteo.net>, 2020.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-07-05 22:12+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: 2020-07-02 08:00+0200\n"
+"PO-Revision-Date: 2020-07-03 08:11+0200\n"
+"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +19,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:2
 #, no-wrap
 msgid "The wxMaxima user manual {-}"
-msgstr ""
+msgstr "Il manuale utente di wxMaxima {-}"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:5
@@ -30,12 +29,12 @@ msgid ""
 "functions. In addition, it provides convenient wizards for accessing the "
 "most commonly used features. This manual describes some of the features that "
 "make wxMaxima one of the most popular GUIs for _Maxima_."
-msgstr ""
+msgstr "wxMaxima è un'interfaccia utente grafica (GUI) per il sistema di algebra computazionale (CAS) _Maxima_. wxMaxima consente di utilizzare tutte le funzioni di _Maxima_, inoltre, fornisce comode procedure guidate per accedere alle funzionalità più comunemente utilizzate. Questo manuale descrive alcune delle funzionalità che rendono wxMaxima una delle GUI più popolari per _Maxima_."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:7
 msgid "![wxMaxima logo](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
-msgstr ""
+msgstr "![logo wxMaxima](./wxMaximaLogo.png){ id=img_wxMaximaLogo }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:9
@@ -47,69 +46,69 @@ msgid ""
 "of contents. This extended table can be used to navigate more directly to "
 "specific parts of the manual. The Contents link appears at locations "
 "throughout the text for navigational purposes."
-msgstr ""
+msgstr "Prima di esaminare i contenuti della guida, è meglio evidenziare alcuni punti relativi alla sua consultazione. Immediatamente di seguito c'è un breve sommario. Facendo clic su uno degli elementi elencati si sposta il cursore nella parte superiore della sezione indicata del manuale. Facendo clic su [Sommario](#TOC) si sposta il cursore su un sommario esteso. Questa tabella estesa può essere usata per arrivare direttamente a parti specifiche del manuale. Il collegamento Contenuti viene visualizzato lungo il testo a scopo di orientamento nella navigazione."
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:11
 msgid "[Introduction](#introduction-to-wxmaxima \"Introduction to wxMaxima\"):"
-msgstr ""
+msgstr "[Introduzione](#introduzione-a-wxmaxima \"Introduzione a wxMaxima\"):"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:15
 msgid "wxMaxima basics"
-msgstr ""
+msgstr "Basi di wxMaxima"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:17
 msgid "[Extensions](#extensions-to-maxima \"Extensions\"):"
-msgstr ""
+msgstr "[Estensioni](#estensioni-a-maxima \"Estensioni\"):"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:21
 msgid "The commands wxMaxima adds to _Maxima_"
-msgstr ""
+msgstr "I comandi che wxMaxima aggiunge a _Maxima_"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:23
 msgid "[Troubleshooting](#troubleshooting \"Troubleshooting\"):"
-msgstr ""
+msgstr "[Risoluzione dei problemi](#risoluzione-dei-problemi \"Risoluzione dei problemi\"):"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:27
 msgid "What to do if wxMaxima does not work as expected"
-msgstr ""
+msgstr "Cosa fare se wxMaxima non si comporta come ci si aspetta"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:29
 msgid "[FAQ](#faq \"FAQ\"):"
-msgstr ""
+msgstr "[FAQ](#faq \"FAQ\"):"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:33
 msgid "Frequently asked questions"
-msgstr ""
+msgstr "Domande ricorrenti"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:35
 msgid "[CommandLine](#command-line-arguments \"_Maxima_ Command Line\"):"
-msgstr ""
+msgstr "[RigaDiComando](#argomenti-della-riga-di-comando \"La riga di comando di _Maxima_\"):"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:39
 msgid "The command-line arguments wxMaxima supports"
-msgstr ""
+msgstr "Gli argomenti a riga di comando che wxMaxima supporta"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:44
 #, no-wrap
 msgid "Introduction to wxMaxima"
-msgstr ""
+msgstr "Introduzione a wxMaxima"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:46
 #, no-wrap
 msgid "_Maxima_ and wxMaxima"
-msgstr ""
+msgstr "_Maxima_ e wxMaxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:49
@@ -127,7 +126,7 @@ msgid ""
 "writer for a DVD backup tool. Another advantage is that splitting one big "
 "task into smaller parts allows the developers to provide several user "
 "interfaces for the same program."
-msgstr ""
+msgstr "Nel dominio open source, i grandi sistemi sono normalmente suddivisi in progetti più piccoli che sono più facili da gestire per piccoli gruppi di sviluppatori. Ad esempio, un programma di masterizzazione di CD sarà costituito da uno strumento a riga di comando che effettivamente masterizza il CD e da un'interfaccia utente grafica che consente agli utenti di utilizzarlo senza dover conoscere tutte le opzioni della riga di comando, e di fatto senza utilizzare affatto la riga di comando. Un vantaggio di questo approccio è che il lavoro di sviluppo che è stato investito nel programma a riga di comando può essere condiviso da molti programmi: lo stesso programma a riga di comando del masterizzatore CD può essere utilizzato come plug-in \"invia-al-CD\" per un'applicazione di gestione file, per la funzione \"masterizza su CD\" di un lettore musicale e come masterizzatore di CD per uno strumento di backup su DVD. Un altro vantaggio è che suddividere una grande attività in parti più piccole consente agli sviluppatori di fornire diverse interfacce utente per lo stesso programma."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:51
@@ -139,13 +138,13 @@ msgid ""
 "it can be used directly as a free-standing system. _Maxima_ can be accessed "
 "via a command line. Often, however, an interface like _wxMaxima_ proves a "
 "more efficient way to access the software, especially for newcomers."
-msgstr ""
+msgstr "Un sistema di algebra computazionale (CAS) come _Maxima_ si inserisce in questo quadro. Un CAS può fornire la logica dietro un'applicazione di calcolatrice di precisione arbitraria o può fare trasformazioni automatiche di formule sullo sfondo di un sistema più grande (ad esempio, [Sage] (https://www.sagemath.org/)). In alternativa, può essere utilizzato direttamente come sistema indipendente. _Maxima_ è utilizzabile tramite riga di comando. Spesso, tuttavia, un'interfaccia come _wxMaxima_ si rivela un modo più efficiente per accedere al software, in particolare per i nuovi utenti."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:52
 #, no-wrap
 msgid "_Maxima_"
-msgstr ""
+msgstr "_Maxima_"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:55
@@ -158,14 +157,14 @@ msgid ""
 "also provide analytical solutions. Furthermore, it offers a range of "
 "numerical methods of analysis for equations or systems of equations that "
 "cannot be solved analytically."
-msgstr ""
+msgstr "_Maxima_ è un sistema di algebra computazionale (CAS) completo. Un CAS è un programma in grado di risolvere problemi matematici riorganizzando le formule e trovando una formula che risolve il problema invece di emettere semplicemente il valore numerico del risultato. In altre parole, _Maxima_ può fungere da calcolatrice che fornisce rappresentazioni numeriche di variabili e può anche fornire soluzioni analitiche. Inoltre, offre una gamma di metodi numerici di analisi per equazioni o sistemi di equazioni che non possono essere risolti analiticamente."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:57
 msgid ""
 "![Maxima screenshot, command line](./maxima_screenshot.png)"
 "{ id=img_maxima_screenshot }"
-msgstr ""
+msgstr "![schermata di Maxima, riga di comando](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
@@ -175,13 +174,13 @@ msgid ""
 "also available in wxMaxima’s help menu. Pressing the Help key (on most "
 "systems the F1 key) causes _wxMaxima_’s context-sensitive help feature to "
 "automatically jump to _Maxima_’s manual page for the command at the cursor."
-msgstr ""
+msgstr "Ampia documentazione per _Maxima_ è [disponibile su Internet] (http://maxima.sourceforge.net/documentation.html). Parte di questa documentazione è disponibile anche nel menu di aiuto di wxMaxima. Premendo il tasto Guida (sulla maggior parte dei sistemi il tasto F1), la funzione di guida sensibile al contesto di _wxMaxima_ passa automaticamente alla pagina di manuale di _Maxima_ per il comando sul cursore."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:60
 #, no-wrap
 msgid "wxMaxima"
-msgstr ""
+msgstr "wxMaxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:63
@@ -991,7 +990,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:360
 #, no-wrap
 msgid "Extensions to _Maxima_"
-msgstr ""
+msgstr "Estensioni a _Maxima_"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:363
@@ -1853,7 +1852,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:687
 #, no-wrap
 msgid "Troubleshooting"
-msgstr ""
+msgstr "Risoluzione dei problemi"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:689
@@ -2323,7 +2322,7 @@ msgstr ""
 #: ../../info/wxmaxima.md:862
 #, no-wrap
 msgid "Command-line arguments"
-msgstr ""
+msgstr "Argomenti della riga di comando"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:865
