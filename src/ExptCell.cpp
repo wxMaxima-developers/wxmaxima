@@ -237,6 +237,7 @@ bool ExptCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_baseCell->last()->SetNextToDraw(m_exp);
     m_exp->SetNextToDraw(m_open);
@@ -244,9 +245,9 @@ bool ExptCell::BreakUp()
     m_exptCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_baseCell;
-    m_height = 1;
-    m_center = 1;
-    ResetData();    
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

@@ -1189,6 +1189,22 @@ Cell *Cell::last() const
   return const_cast<Cell*>(tmp);
 }
 
+bool Cell::BreakUp()
+{
+  bool retval = false;
+  int clientWidth = .8*(*m_configuration)->GetClientWidth() - (*m_configuration)->GetIndent();
+  if(clientWidth < 50)
+    clientWidth = 50;
+  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+      if(tmp->GetWidth() > clientWidth)
+      {
+        tmp->BreakUp();
+        retval = true;
+    }
+  return retval;
+}
+
 void Cell::Unbreak()
 {
   if(m_isBrokenIntoLines)

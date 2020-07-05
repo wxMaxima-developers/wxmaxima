@@ -323,13 +323,14 @@ bool SqrtCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
     m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
 
-    ResetData();
+    ResetCellListSizes();
     m_height = 0;
     m_center = 0;
     return true;

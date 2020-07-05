@@ -180,12 +180,14 @@ bool FunCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_nameCell->last()->SetNextToDraw(m_argCell);
     m_argCell->last()->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_nameCell;
-    m_width = 0;
-    ResetData();    
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

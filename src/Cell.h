@@ -375,8 +375,7 @@ class Cell: public Observed
 
     \retval true = This cell was split into lines.
   */
-  virtual bool BreakUp()
-  { return false; }
+  virtual bool BreakUp();
 
   /*! Is a part of this cell inside a certain rectangle?
 

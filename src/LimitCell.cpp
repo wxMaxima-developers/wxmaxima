@@ -270,6 +270,7 @@ bool LimitCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_name->last()->SetNextToDraw(m_open);
     m_open->SetNextToDraw(m_base);
@@ -278,7 +279,9 @@ bool LimitCell::BreakUp()
     m_under->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_name;
-    ResetData();    
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

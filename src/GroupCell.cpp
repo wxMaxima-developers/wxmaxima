@@ -1848,25 +1848,8 @@ bool GroupCell::BreakUpCells(Cell *cell)
     }
     return lineHeightsChanged;
   }
-  else
-  {
-    int clientWidth = (*m_configuration)->GetClientWidth();
-    
-    while (cell != NULL && !m_isHidden)
-    {
-      if ((!cell->m_isBrokenIntoLines) &&
-          ((cell->GetWidth() +
-            (*m_configuration)->GetIndent() +
-            Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)))
-      {
-        if (cell->BreakUp())
-          lineHeightsChanged = true;
-      }
-      cell = cell->GetNextToDraw();
-    }
-    
-    return lineHeightsChanged;
-  }
+
+  return BreakUp();
 }
 
 bool GroupCell::UnBreakUpCells(Cell *cell)

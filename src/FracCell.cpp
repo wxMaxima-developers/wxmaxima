@@ -377,6 +377,7 @@ bool FracCell::BreakUp()
 
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     if(Num() && Num()->m_next)
       m_displayedNum = m_numParenthesis.get();
@@ -387,7 +388,9 @@ bool FracCell::BreakUp()
     m_divide->SetNextToDraw(m_displayedDenom);
     m_displayedDenom->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_displayedNum;
-    ResetData();    
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;
