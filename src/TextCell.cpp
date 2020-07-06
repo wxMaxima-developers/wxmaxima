@@ -612,7 +612,7 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (NeedsRecalculation(m_fontsize_old))
+    if (NeedsRecalculation(m_fontSize))
       RecalculateWidths(m_fontSize);
     
     if (InUpdateRegion())

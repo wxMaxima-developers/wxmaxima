@@ -241,7 +241,6 @@ void MatrCell::Draw(wxPoint point)
         adc.DrawLines(4, pointsR, point.x + m_width - 1, point.y);
       }
     }
-    UnsetPen();
   }
 }
 

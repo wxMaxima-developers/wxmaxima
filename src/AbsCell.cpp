@@ -120,7 +120,6 @@ void AbsCell::Draw(wxPoint point)
                 point.y - m_center + Scale_Px(2),
                 point.x + m_width - Scale_Px(2) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                 point.y - m_center + m_height - Scale_Px(2));
-    UnsetPen();
   }
 }
 

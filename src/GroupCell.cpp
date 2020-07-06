@@ -887,7 +887,6 @@ void GroupCell::Draw(wxPoint point)
       }
     }
     configuration->Outdated(false); 
-    UnsetPen();
   }
 }
 

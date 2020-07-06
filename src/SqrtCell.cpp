@@ -239,7 +239,6 @@ void SqrtCell::Draw(wxPoint point)
                   point.x + m_signWidth + m_innerCell->GetFullWidth(),
                   point.y - m_innerCell->GetCenterList());
 
-      UnsetPen();
     }
     else
     {
@@ -266,7 +265,6 @@ void SqrtCell::Draw(wxPoint point)
         {m_width - Scale_Px(1), -m_center + Scale_Px(6)}
       };
       adc->DrawLines(12, points, point.x, point.y);
-      UnsetPen();
     }
 
     m_innerCell->DrawList(in);

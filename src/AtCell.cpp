@@ -109,7 +109,6 @@ void AtCell::Draw(wxPoint point)
                 bs.y - m_baseCell->GetCenterList(),
                 in.x - Scale_Px(2),
                 in.y);
-    UnsetPen();
   }
 }
 

@@ -1266,18 +1266,6 @@ void Cell::SetPen(double lineWidth)
     configuration->GetAntialiassingDC()->SetPen(pen);
 }
 
-/***
- * Reset the pen in the device context.
- */
-void Cell::UnsetPen()
-{
-  Configuration *configuration = (*m_configuration);
-  wxDC *dc = configuration->GetDC();
-  if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
-    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                                              1, wxPENSTYLE_SOLID)));
-}
-
 void Cell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);

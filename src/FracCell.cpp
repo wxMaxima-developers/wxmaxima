@@ -207,7 +207,6 @@ void FracCell::Draw(wxPoint point)
                     point.x + m_width - m_horizontalGapRight - (*m_configuration)->GetDefaultLineWidth() / 2,
                     point.y + Scale_Px(2)
         );
-      UnsetPen();
     }
   }
 }

@@ -115,7 +115,6 @@ void ConjugateCell::Draw(wxPoint point)
                  point.y - m_center + Scale_Px(6)
       );
     //                point.y - m_center + m_height - Scale_Px(2));
-    UnsetPen();
   }
 }
 

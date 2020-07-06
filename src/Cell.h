@@ -770,7 +770,6 @@ class Cell: public Observed
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  void UnsetPen();
 
   /*! Undo breaking this cell into multiple lines
 

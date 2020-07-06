@@ -397,7 +397,6 @@ void ParenCell::Draw(wxPoint point)
       break;
     }
     
-    UnsetPen();
     if(!m_isBrokenIntoLines)
       m_innerCell->DrawList(innerCellPos);
   }

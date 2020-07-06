@@ -347,7 +347,6 @@ void IntCell::Draw(wxPoint point)
                    sign.y + (m_signHeight - Scale_Px(1.25)) / 2};
       configuration->GetAntialiassingDC()->DrawSpline(7, points);
       // line
-      UnsetPen();
 #endif
     }
 

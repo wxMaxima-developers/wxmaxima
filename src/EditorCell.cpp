@@ -988,8 +988,6 @@ void EditorCell::Draw(wxPoint point)
 #endif
     }
 
-    UnsetPen();
-
   }
 }
 

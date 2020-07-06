@@ -244,7 +244,6 @@ void SumCell::Draw(wxPoint point)
                     point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signHeight / 2);
       }
-      UnsetPen();
     }
     base.x += (2 * m_signWCenter + Scale_Px(4));
     m_displayedBase->DrawList(base);
