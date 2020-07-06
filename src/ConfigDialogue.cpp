@@ -1350,15 +1350,14 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     req = FontInfo::GetFor(*wxNORMAL_FONT);
 
   wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req));
-  FontCache::Get().AddFont(math);
+  if (!math.IsOk())
+    return;
 
-  if (math.Ok())
-  {
-    m_configuration->MathFontName(math.GetFaceName());
-    m_configuration->SetMathFontSize(math.GetPointSize());
-    math.SetPointSize(m_configuration->GetMathFontSize());
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
-  }
+  FontCache::Get().AddFont(math);
+  m_configuration->MathFontName(math.GetFaceName());
+  m_configuration->SetMathFontSize(math.GetPointSize());
+  math.SetPointSize(m_configuration->GetMathFontSize());
+  m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
 
   UpdateExample();
 }
@@ -1407,27 +1406,26 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   }
 
   font = wxGetFontFromUser(this, font);
+  if (!font.IsOk())
+    return;
+
   req = FontCache::AddAFont(font);
-  
-  if (font.IsOk())
+  if (event.GetId() == font_family)
   {
-    if (event.GetId() == font_family)
-    {
-      m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
-      m_configuration->FontName(font.GetFaceName());
-      m_configuration->SetDefaultFontSize(wxMax(
-                                            wxMin(
-                                              font.GetPointSize(), MC_MAX_SIZE),
-                                            MC_MIN_SIZE)
-        );
-      m_getFont->SetLabel(m_configuration->FontName() +
-                          wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
-    }
-    else
-    {
-      m_configuration->m_styles[st].FontName(font.GetFaceName());
-      m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE,font.GetPointSize()));
-    }
+    m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
+    m_configuration->FontName(font.GetFaceName());
+    m_configuration->SetDefaultFontSize(wxMax(
+                                          wxMin(
+                                            font.GetPointSize(), MC_MAX_SIZE),
+                                          MC_MIN_SIZE)
+      );
+    m_getFont->SetLabel(m_configuration->FontName() +
+                        wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+  }
+  else
+  {
+    m_configuration->m_styles[st].FontName(font.GetFaceName());
+    m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE,font.GetPointSize()));
   }
   UpdateExample();
 }
