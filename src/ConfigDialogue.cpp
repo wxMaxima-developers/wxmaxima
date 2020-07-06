@@ -212,6 +212,11 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
 
+#if defined(__WXMSW__)
+  // Must be called before pages are added, otherwise wxWidgets dumps a warning to the console:
+  // [...]\src\msw\window.cpp(594): 'SetFocus' failed with error 0x00000057 (The parameter is incorrect.).
+  CreateButtons(wxOK | wxCANCEL);
+#endif
   m_notebook = GetBookCtrl();
 
   m_notebook->SetImageList(m_imageList.get());
@@ -223,7 +228,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
-#ifndef __WXOSX__
+
+#if !defined(__WXMSW__) && !defined(__WXOSX__)
   CreateButtons(wxOK | wxCANCEL);
 #endif
 
