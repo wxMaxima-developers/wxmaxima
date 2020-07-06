@@ -499,7 +499,7 @@ void Cell::RecalculateList(int fontsize)
   {
     tmp->RecalculateWidths(fontsize);
     tmp->RecalculateHeight(fontsize);
-    tmp = tmp->GetNextToDraw();
+    tmp = tmp->m_next;
   }
 }
 
