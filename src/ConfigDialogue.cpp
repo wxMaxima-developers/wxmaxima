@@ -1455,7 +1455,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
     m_getStyleFont->Enable(false);
 
   // Colors only
-  if (st >= TS_TITLE)
+  if (st > TS_TITLE)
   {
     if (st > TS_OUTDATED)
     {
