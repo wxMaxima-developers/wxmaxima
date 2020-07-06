@@ -7776,8 +7776,11 @@ bool Worksheet::CaretVisibleIs()
   }
 }
 
-void Worksheet::ScrollToCaret()
+bool Worksheet::ScrollToCaretIfNeeded()
 {
+  if(!m_scrollToCaret)
+    return false;
+  
   RecalculateIfNeeded();
   if (m_hCaretActive)
   {
@@ -7804,6 +7807,7 @@ void Worksheet::ScrollToCaret()
           ShowPoint(point);
     }
   }
+  return true;
 }
 
 void Worksheet::Replace(const wxString &oldString, const wxString &newString, bool ignoreCase)

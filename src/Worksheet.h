@@ -86,6 +86,8 @@ class Worksheet : public wxScrolled<wxWindow>
 public:
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
 private:
+  //! Is a scroll to the cursor scheduled?
+  bool m_scrollToCaret;
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
   Cell::CellPointers m_cellPointers;
   // The x position to scroll to
@@ -1158,9 +1160,14 @@ public:
 
   bool ActivateNextInput(bool input = false);
 
-  /*! Scrolls to the cursor
+  /*! Request to scroll to the cursor as soon as wxMaxima is idle
   */
-  void ScrollToCaret();
+  void ScrollToCaret(){
+    m_cellPointers.m_scrollToCell = NULL;
+    m_scrollToCaret = true;}
+
+  //! Scrolls to the cursor, if requested.
+  bool ScrollToCaretIfNeeded();
 
   //! Scrolls to the cell given by ScheduleScrollToCell; Is called once we have time to do so.
   void ScrollToCellIfNeeded();
@@ -1170,6 +1177,8 @@ public:
     {
       m_cellPointers.ScrollToCell(cell);
       m_scrollToTopOfCell = scrollToTop;
+      m_scrollToCaret = false;
+
       m_cellPointers.m_scrollToCell = true;
     }
 

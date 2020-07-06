@@ -4306,6 +4306,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   {
     bool requestMore = m_worksheet->RecalculateIfNeeded();
     m_worksheet->ScrollToCellIfNeeded();
+    m_worksheet->ScrollToCaretIfNeeded();
     if(requestMore)
     {
       event.RequestMore();
