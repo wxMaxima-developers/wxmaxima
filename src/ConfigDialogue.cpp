@@ -212,6 +212,11 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
 
+#if defined(__WXMSW__)
+  // Must be called before pages are added, otherwise wxWidgets dumps a warning to the console:
+  // [...]\src\msw\window.cpp(594): 'SetFocus' failed with error 0x00000057 (The parameter is incorrect.).
+  CreateButtons(wxOK | wxCANCEL);
+#endif
   m_notebook = GetBookCtrl();
 
   m_notebook->SetImageList(m_imageList.get());
@@ -223,7 +228,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
-#ifndef __WXOSX__
+
+#if !defined(__WXMSW__) && !defined(__WXOSX__)
   CreateButtons(wxOK | wxCANCEL);
 #endif
 
@@ -1343,16 +1349,16 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
   if (!FontCache::GetAFont(req).IsOk())
     req = FontInfo::GetFor(*wxNORMAL_FONT);
 
-  wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req));
-  FontCache::Get().AddFont(math);
+  wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req),
+                                  _("Choose the Math Font"));
+  if (!math.IsOk())
+    return;
 
-  if (math.Ok())
-  {
-    m_configuration->MathFontName(math.GetFaceName());
-    m_configuration->SetMathFontSize(math.GetPointSize());
-    math.SetPointSize(m_configuration->GetMathFontSize());
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
-  }
+  FontCache::Get().AddFont(math);
+  m_configuration->MathFontName(math.GetFaceName());
+  m_configuration->SetMathFontSize(math.GetPointSize());
+  math.SetPointSize(m_configuration->GetMathFontSize());
+  m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
 
   UpdateExample();
 }
@@ -1400,28 +1406,30 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     font = FontCache::GetAFont(req);
   }
 
-  font = wxGetFontFromUser(this, font);
+  auto styleName = m_configuration->m_styles[st].Name();
+  font = wxGetFontFromUser(
+      this, font, wxString::Format(_("Choose the %s Font"), styleName));
+
+  if (!font.IsOk())
+    return;
+
   req = FontCache::AddAFont(font);
-  
-  if (font.IsOk())
+  if (event.GetId() == font_family)
   {
-    if (event.GetId() == font_family)
-    {
-      m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
-      m_configuration->FontName(font.GetFaceName());
-      m_configuration->SetDefaultFontSize(wxMax(
-                                            wxMin(
-                                              font.GetPointSize(), MC_MAX_SIZE),
-                                            MC_MIN_SIZE)
-        );
-      m_getFont->SetLabel(m_configuration->FontName() +
-                          wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
-    }
-    else
-    {
-      m_configuration->m_styles[st].FontName(font.GetFaceName());
-      m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE,font.GetPointSize()));
-    }
+    m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
+    m_configuration->FontName(font.GetFaceName());
+    m_configuration->SetDefaultFontSize(wxMax(
+                                          wxMin(
+                                            font.GetPointSize(), MC_MAX_SIZE),
+                                          MC_MIN_SIZE)
+      );
+    m_getFont->SetLabel(m_configuration->FontName() +
+                        wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+  }
+  else
+  {
+    m_configuration->m_styles[st].FontName(font.GetFaceName());
+    m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE,font.GetPointSize()));
   }
   UpdateExample();
 }
@@ -1447,7 +1455,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
     m_getStyleFont->Enable(false);
 
   // Colors only
-  if (st >= TS_TITLE)
+  if (st > TS_TITLE)
   {
     if (st > TS_OUTDATED)
     {
