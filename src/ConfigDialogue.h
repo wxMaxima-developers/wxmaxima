@@ -324,8 +324,14 @@ protected:
 
   void OnIdle(wxIdleEvent &event);
 
+  //! Starts the font selector dialog for the default font
+  void OnDefaultBrowse(wxCommandEvent &event);
+
   //! Starts the font selector dialog for the math font
   void OnMathBrowse(wxCommandEvent &event);
+
+  //! Called if the font family is changed for a style
+  void OnChangeFontFamily(wxCommandEvent &event);
 
   //! Called if a new item type that is to be styled is selected
   void OnChangeStyle(wxCommandEvent &event);
@@ -339,8 +345,7 @@ protected:
   //! Sets the style example's style on style changes.
   void UpdateExample();
 
-  //! Called if the font family is changed.
-  void OnChangeFontFamily(wxCommandEvent &event);
+
 
   //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent &event);

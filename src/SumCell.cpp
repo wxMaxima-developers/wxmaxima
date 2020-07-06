@@ -181,10 +181,7 @@ void SumCell::Draw(wxPoint point)
                      .FontName(configuration->GetTeXCMEX());
 
       if (!style.IsFontOk())
-      {
-        style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-        style.SetFontSize(fontsize1);
-      }
+        style = configuration->GetDefaultStyleAt(fontsize1);
 
       dc->SetFont(style.GetFont());
 #if 0

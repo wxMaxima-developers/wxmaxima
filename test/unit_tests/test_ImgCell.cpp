@@ -40,7 +40,8 @@ long Configuration::Scale_Px(double) const { return 1; }
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
-Style Configuration::GetStyle(TextStyle, AFontSize) const { return {}; }
+Style Configuration::GetDefaultStyleAt(AFontSize) const { return {}; }
+Style Configuration::GetStyle(TextStyle, GetStyleOpt, AFontSize) const { return {}; }
 Cell::CellPointers *Cell::GetCellPointers() const { return &pointers; }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &) { return {}; }

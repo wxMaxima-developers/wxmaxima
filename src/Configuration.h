@@ -67,13 +67,13 @@ static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 
   Caching the information here means we don't need to search for the configuration
   value's name every time we need the information: Reading configuration values from
-  the system's configuration storage can be quite time consuming, especially on a 
+  the system's configuration storage can be quite time consuming, especially on a
   MSW with a long registry.
 
-  In order to make all cells temporary listen to a different set of configuration 
-  than the default one all that has to be done is to create a new configuration 
-  object that contains hold the right settings for printing/export as bitmap or 
-  similar: Configuration::Get() will always return the last Configuration that was 
+  In order to make all cells temporary listen to a different set of configuration
+  than the default one all that has to be done is to create a new configuration
+  object that contains hold the right settings for printing/export as bitmap or
+  similar: Configuration::Get() will always return the last Configuration that was
   created and therefore as long as the new configuration object exist will return
   a pointer to this object if configuration is needed.
  */
@@ -117,7 +117,7 @@ public:
   void ReadConfig();
 
   /*! The constructor
-    
+
     \param dc The drawing context that is to be used for drawing objects
    */
   explicit Configuration(wxDC *dc = NULL);
@@ -165,12 +165,12 @@ public:
     which line begins a new equation and which line merely continues a multi-line
     equation.
    */
-  double GetInterEquationSkip() const 
+  double GetInterEquationSkip() const
   {
     if (ShowAutomaticLabels())
       return 0;
     else
-      return GetZoomFactor() * m_mathFontSize / 2;
+      return GetZoomFactor() * GetMathFontSize() / 2;
   }
 
   long GetCellBracketWidth() const
@@ -234,7 +234,7 @@ public:
       else
         return m_dc;
     }
-  
+
   AFontName GetFontName(long type = TS_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
@@ -254,7 +254,7 @@ public:
   }
 
   //! Force a full recalculation?
-  bool RecalculationForce() const 
+  bool RecalculationForce() const
   {
     return m_forceUpdate;
   }
@@ -278,7 +278,7 @@ public:
   // cppcheck-suppress functionConst
   //! Get the resolution of an arbitrary display
   wxSize GetPPI(wxWindow *win) const;
-  
+
   //! How much vertical space is to be left between two group cells?
   long GetCursorWidth() const
   {
@@ -294,7 +294,7 @@ public:
     else
       return ppi / 45;
   }
-  
+
   //! The y position the worksheet starts at
   long GetBaseIndent() const
   {
@@ -349,7 +349,7 @@ public:
         RecalculationForce(true);
       m_charsInFont.clear();
     }
-  
+
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(long height)
   { m_clientHeight = height; }
@@ -372,7 +372,7 @@ public:
   }
 
   //! The minimum sensible line width in withs of a letter.
-  long LineWidth_em() const 
+  long LineWidth_em() const
   {
     if(!m_printing)
       return m_lineWidth_em;
@@ -401,10 +401,10 @@ public:
   }
 
   AFontSize GetMathFontSize() const
-  { return m_mathFontSize; }
+  { return m_styles[TS_MATH].GetFontSize(); }
 
   void SetMathFontSize(AFontSize size)
-  { m_mathFontSize = size; }
+  { m_styles[TS_MATH].SetFontSize(size); }
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
@@ -416,7 +416,7 @@ public:
   { return false; }
 
   /*! Sets the auto wrap mode
-    \param autoWrap 
+    \param autoWrap
      - 0: No automatic line breaks
      - 1: Automatic line breaks only for text cells
      - 2: Automatic line breaks for text and code cells.
@@ -438,28 +438,48 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  AFontSize GetFontSize(TextStyle st) const
-  {
-    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].GetFontSize();
-    return {};
-  }
 
   const wxString &GetStyleName(TextStyle textStyle) const;
 
-  /*! Reads the style settings 
+  //! Gets the default style, as a fallback, at a given font size or default size.
+  Style GetDefaultStyleAt(AFontSize fontSize) const;
+
+  enum GetStyleOpt { UnscaledStyle };
+  /*! Retrieves a given style, ready for use. No further adjustments are necessary to
+   * the style. Optionally, the text size can be overridden. The font size returned
+   * is already scaled, unless desired otherwise.
+
+    \param textStyle The text style to resolve the style for.
+    \param fontSize Only relevant for math cells: Super- and subscripts can have different
+    font styles than the rest.
+   */
+  Style GetStyle(TextStyle textStyle, GetStyleOpt options, AFontSize fontSize) const;
+  Style GetStyle(TextStyle textStyle, GetStyleOpt options) const
+  { return GetStyle(textStyle, options, {}); }
+  Style GetStyle(TextStyle textStyle, AFontSize fontSize) const
+  { return GetStyle(textStyle, {}, fontSize); }
+  Style GetStyle(TextStyle textStyle) const
+  { return GetStyle(textStyle, {}, {}); }
+
+  //! Sets the given style after applying rules to it, such as propagation in the style
+  //! hierarchy, etc. If no newStyle is given, the style is refreshed based on its
+  //! dependencies.
+  void SetStyle(TextStyle st, const Style *newStyle);
+  void SetStyle(TextStyle st, const Style &newStyle) { SetStyle(st, &newStyle); }
+
+  /*! Reads the style settings
 
     If a file name is given the settings are read from a file.
   */
-  
-  void ReadStyles(wxString file = wxEmptyString);
-  
-  /*! Saves the style settings 
+
+  void ReadStyles(const wxString &file = {});
+
+  /*! Saves the style settings
 
     If a file name is given the settings are written to a file.
   */
-  void WriteStyles(wxString file = wxEmptyString);
-  
+  void WriteStyles(const wxString &file = {});
+
   void Outdated(bool outdated)
   { m_outdated = outdated; }
 
@@ -499,7 +519,7 @@ public:
     redrawn.
   */
   void SetPrinting(bool printing);
-  
+
   /*! Are we currently printing?
 
     This affects the bitmap scale as well as the fact if we want
@@ -511,16 +531,16 @@ public:
 
   //! Gets the color for a text style
   wxColour GetColor(TextStyle style);
-  
+
   //! Inverts a color: In 2020 wxColor still lacks this functionality
   wxColour InvertColour(wxColour col);
-  
+
   /*! Make this color differ from the background by a noticeable amount
-    
+
     Useful for black/white background theme changes
   */
   wxColor MakeColorDifferFromBackground(wxColor color);
-  
+
   bool GetMatchParens() const
     { return m_matchParens; }
   void SetMatchParens(bool matchParens)
@@ -528,12 +548,12 @@ public:
 
   bool GetChangeAsterisk() const
     { return m_changeAsterisk; }
-  
+
   void SetChangeAsterisk(bool changeAsterisk)
     {
       wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
     }
-  
+
   bool HidemultiplicationSign() const
     {
       return m_hidemultiplicationsign;
@@ -543,7 +563,7 @@ public:
     {
       wxConfig::Get()->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign = show);
     }
-  
+
   bool Latin2Greek() const
     {return m_latin2greek;}
 
@@ -570,7 +590,7 @@ public:
     {wxConfig::Get()->Write(wxT("symbolPaneAdditionalChars"),
                             m_symbolPaneAdditionalChars = symbols);}
 
-  
+
   //! Notify the user if maxima is idle?
   bool NotifyIfIdle() const
   { return m_notifyIfIdle; }
@@ -592,7 +612,7 @@ public:
     wxASSERT_MSG(displayedDigits >= 0, _("Bug: Maximum number of digits that is to be displayed is too low!"));
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
   }
-  
+
   wxRect GetUpdateRegion() const {return m_updateRegion;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
   bool GetInsertAns() const
@@ -646,7 +666,7 @@ public:
     {
     wxConfig::Get()->Write("invertBackground", m_invertBackground = invert);
     }
-  
+
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
   bool ShowAutomaticLabels() const
   { return (m_showLabelChoice < labels_useronly); }
@@ -654,7 +674,7 @@ public:
   //! Do we want at all to show labels?
   bool UseUserLabels() const
   { return m_showLabelChoice > labels_automatic; }
-  
+
   //! Do we want at all to show labels?
   bool ShowLabels() const
   { return m_showLabelChoice < labels_none; }
@@ -723,8 +743,8 @@ public:
 
   /*! Could a maxima binary be found in the path we expect it to be in?
 
-    \param location The location to search for maxima in. 
-    If location == wxEmptyString the default location from the configuration 
+    \param location The location to search for maxima in.
+    If location == wxEmptyString the default location from the configuration
     is taken.
    */
   static bool MaximaFound(wxString location = wxEmptyString);
@@ -762,7 +782,7 @@ public:
     {
       wxConfig::Get()->Write(wxT("copyBitmap"), m_copyBitmap = copyBitmap );
     }
-  
+
   bool CopyMathML() const {return m_copyMathML;}
   void CopyMathML(bool copyMathML)
     {
@@ -821,14 +841,6 @@ public:
 
   drawMode GetParenthesisDrawMode();
 
-  /*! Get the resolved text Style for a given text style identifier.
-
-    \param textStyle The text style to resolve the style for.
-    \param fontSize Only relevant for math cells: Super- and subscripts can have different
-    font styles than the rest.
-   */
-  Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
-
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
@@ -852,21 +864,29 @@ public:
   bool OfferKnownAnswers() const {return m_offerKnownAnswers;}
   void OfferKnownAnswers(bool offerKnownAnswers)
     {wxConfig::Get()->Write("offerKnownAnswers",m_offerKnownAnswers = offerKnownAnswers);}
-  
+
   wxString Documentclass() const {return m_documentclass;}
   void Documentclass(wxString clss){wxConfig::Get()->Write("documentclass",m_documentclass = clss);}
   wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void DocumentclassOptions(wxString classOptions){wxConfig::Get()->Write("documentclassoptions",m_documentclassOptions = classOptions);}
 
-  
+
   htmlExportFormat HTMLequationFormat() const {return m_htmlEquationFormat;}
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  AFontName FontName() const {return m_fontName;}
-  void FontName(AFontName name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",(m_fontName = name).GetAsString());}
-  void MathFontName(AFontName name){wxConfig::Get()->Write("Style/Math/fontname",(m_mathFontName = name).GetAsString());}
-  class AFontName MathFontName()const {return m_mathFontName;}
+  AFontName FontName() const {return m_styles[TS_DEFAULT].GetFontName();}
+  void FontName(AFontName name)
+  {
+    m_styles[TS_DEFAULT].SetFontName(name);
+    wxConfig::Get()->Write("Style/Default/Style/Text/fontname", name.GetAsString());
+  }
+  void MathFontName(AFontName name)
+  {
+    m_styles[TS_MATH].SetFontName(name);
+    wxConfig::Get()->Write("Style/Math/fontname", name.GetAsString());
+  }
+  class AFontName MathFontName()const {return m_styles[TS_MATH].GetFontName();}
 
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
@@ -894,10 +914,11 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
-  Style m_styles[NUMBEROFSTYLES];
   void StepWorksheetRedrawCounter(){m_worksheetRedrawCounter++;}
   int GetWorksheetRedrawCounter(){return m_worksheetRedrawCounter;}
 private:
+  Style m_styles[NUMBEROFSTYLES];
+
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -919,7 +940,7 @@ private:
     wxWidgets currently doesn't define such a function. But we can do the following:
       - Test if any of these characters has the width or height 0 (or even less)
         which clearly indicates that this char doesn't exist.
-      - Test if any two of the characters are equal when rendered as bitmaps: 
+      - Test if any two of the characters are equal when rendered as bitmaps:
         If they are we most probably didn't get render real characters but rather
         render placeholders for characters.
 
@@ -944,7 +965,7 @@ private:
   //! Prlong the cell brackets [displayed left to each group cell showing its extend]?
   bool m_printBrackets;
   /*! Replace a "*" by a centered dot?
-    
+
     Normally we ask the parser for this piece of information. But during recalculation
     of widths while selecting text we don't know our parser.
    */
@@ -971,9 +992,7 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  AFontName m_fontName;
-  AFontSize m_mathFontSize;
-  AFontName m_mathFontName;
+
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;

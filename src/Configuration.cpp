@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2016-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +26,7 @@
  */
 
 #include "Configuration.h"
+#include "Cell.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include <wx/wx.h>
@@ -34,14 +36,14 @@
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
-#include "Cell.h"
+#include <map>
 
 Configuration::Configuration(wxDC *dc) :
-  m_dc(dc),
-  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"),
-  m_documentclass("article"),
-  m_documentclassOptions("fleqn"),
-  m_symbolPaneAdditionalChars("Øü§")
+    m_dc(dc),
+    m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"),
+    m_documentclass("article"),
+    m_documentclassOptions("fleqn"),
+    m_symbolPaneAdditionalChars("Øü§")
 {
   SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
@@ -115,7 +117,7 @@ Configuration::Configuration(wxDC *dc) :
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_parenthesisDrawMode = unknown;
-  
+
   InitStyles();
 }
 
@@ -244,60 +246,60 @@ static const Configuration::EscCodeContainer &EscCodes()
 
 void Configuration::InitStyles()
 {
-  #ifdef __WXMSW__
-  Style style;
-  style.FontName(AFontName::Linux_Libertine_O());
+  auto &Default = m_styles[TS_DEFAULT];
+  SetStyle(TS_DEFAULT, Style::FactoryDefault().Bold().Italic());
+  SetStyle(TS_MATH, Style::FactoryMath());
 
-  if (style.IsFontOk())
-  {
-    m_fontName = style.GetFontName();
-    m_mathFontName = style.GetFontName();
-  }
-  else
-    m_mathFontName = {};
-  #endif
-  m_mathFontSize.Set(12.0f);
+  SetStyle(TS_TEXT, Style(Default).FontSize(12));
+  SetStyle(TS_CODE_VARIABLE, Style().Color(0,128,0).Italic());
+  SetStyle(TS_CODE_FUNCTION, Style().Color(128,0,0).Italic());
+  SetStyle(TS_CODE_COMMENT, Style().Color(64,64,64).Italic());
+  SetStyle(TS_CODE_NUMBER, Style().Color(128,64,0).Italic());
+  SetStyle(TS_CODE_STRING, Style().Color(0,0,128).Italic());
+  SetStyle(TS_CODE_OPERATOR, Style().Italic());
+  SetStyle(TS_CODE_LISP, Style().Color(255,0,128).Italic());
+  SetStyle(TS_CODE_ENDOFLINE, Style().Color(128,128,128).Italic());
+  SetStyle(TS_GREEK_CONSTANT, Style().Italic());
+  SetStyle(TS_HEADING6, Style(Default).Bold().FontSize(14));
+  SetStyle(TS_HEADING5, Style(Default).Bold().FontSize(15));
+  SetStyle(TS_SUBSUBSECTION, Style(Default).Bold().FontSize(16));
+  SetStyle(TS_SUBSECTION, Style(Default).Bold().FontSize(16));
+  SetStyle(TS_SECTION, Style(Default).Bold().Italic().FontSize(18));
+  SetStyle(TS_TITLE, Style(Default).Bold().Underlined().FontSize(24));
+  SetStyle(TS_WARNING, Style().Color(wxT("orange")).Bold().FontSize(12));
+  SetStyle(TS_ERROR, Style().Color(*wxRED).FontSize(12));
+  SetStyle(TS_MAIN_PROMPT, Style().Color(255,128,128));
+  SetStyle(TS_OTHER_PROMPT, Style().Color(*wxRED).Italic());
+  SetStyle(TS_LABEL, Style().Color(255,192,128));
+  SetStyle(TS_USERLABEL, Style().Color(255,64,0));
+  SetStyle(TS_SPECIAL_CONSTANT, Style());
+  SetStyle(TS_INPUT, Style().Color(*wxBLUE));
+  SetStyle(TS_NUMBER, Style());
+  SetStyle(TS_STRING, Style().Italic());
+  SetStyle(TS_GREEK_CONSTANT, Style());
+  SetStyle(TS_VARIABLE, Style().Italic());
+  SetStyle(TS_FUNCTION, Style());
+  SetStyle(TS_HIGHLIGHT, Style().Color(*wxRED));
+  SetStyle(TS_TEXT_BACKGROUND, Style().Color(*wxWHITE));
+  SetStyle(TS_DOCUMENT_BACKGROUND, Style().Color(*wxWHITE));
+  SetStyle(TS_CELL_BRACKET, Style());
+  SetStyle(TS_ACTIVE_CELL_BRACKET, Style().Color(*wxRED));
+  SetStyle(TS_CURSOR, Style());
+  SetStyle(TS_SELECTION, Style().Color(wxSYS_COLOUR_HIGHLIGHT));
+  SetStyle(TS_EQUALSSELECTION, Style().Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
+  SetStyle(TS_OUTDATED, Style().Color(153,153,153));
 
-  m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
-  m_styles[TS_TEXT].FontSize(12);
-  m_styles[TS_CODE_VARIABLE].Color(0,128,0).Italic();
-  m_styles[TS_CODE_FUNCTION].Color(128,0,0).Italic();
-  m_styles[TS_CODE_COMMENT].Color(64,64,64).Italic();
-  m_styles[TS_CODE_NUMBER].Color(128,64,0).Italic();
-  m_styles[TS_CODE_STRING].Color(0,0,128).Italic();
-  m_styles[TS_CODE_OPERATOR].Italic();
-  m_styles[TS_CODE_LISP].Color(255,0,128).Italic();
-  m_styles[TS_CODE_ENDOFLINE].Color(128,128,128).Italic();
-  m_styles[TS_GREEK_CONSTANT].Italic();
-  m_styles[TS_HEADING6].Bold().FontSize(14);
-  m_styles[TS_HEADING5].Bold().FontSize(15);
-  m_styles[TS_SUBSUBSECTION].Bold().FontSize(16);
-  m_styles[TS_SUBSECTION].Bold().FontSize(16);
-  m_styles[TS_SECTION].Bold().Italic().FontSize(18);
-  m_styles[TS_TITLE].Bold().Underlined().FontSize(24);
-  m_styles[TS_WARNING].Color(wxT("orange")).Bold().FontSize(12);
-  m_styles[TS_ERROR].Color(*wxRED).FontSize(12);
-  m_styles[TS_MAIN_PROMPT].Color(255,128,128);
-  m_styles[TS_OTHER_PROMPT].Color(*wxRED).Italic();
-  m_styles[TS_LABEL].Color(255,192,128);
-  m_styles[TS_USERLABEL].Color(255,64,0);
-  //m_styles[TS_SPECIAL_CONSTANT];
-  m_styles[TS_INPUT].Color(*wxBLUE);
-  //m_styles[TS_NUMBER];
-  m_styles[TS_STRING].Italic();
-  //m_styles[TS_GREEK_CONSTANT];
-  m_styles[TS_VARIABLE].Italic();
-  //m_styles[TS_FUNCTION];
-  m_styles[TS_HIGHLIGHT].Color(*wxRED);
-  m_styles[TS_TEXT_BACKGROUND].Color(*wxWHITE);
-  m_styles[TS_DOCUMENT_BACKGROUND].Color(*wxWHITE);
-  //m_styles[TS_CELL_BRACKET];
-  m_styles[TS_ACTIVE_CELL_BRACKET].Color(*wxRED);
-  //m_styles[TS_CURSOR];
-  m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
-  m_styles[TS_EQUALSSELECTION].Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
-  m_styles[TS_OUTDATED].Color(153,153,153);
+  wxLogDebug("** After Style Init");
+  auto i = 0;
+  for (auto &s : m_styles)
+    wxLogDebug("%s %s", GetStyleName(TextStyle(i++)), s.GetDump());
+
   ReadConfig();
+
+  wxLogDebug("** After Style Read");
+  i = 0;
+  for (auto &s : m_styles)
+    wxLogDebug("%s %s", GetStyleName(TextStyle(i++)), s.GetDump());
 }
 
 const wxString &Configuration::GetEscCode(const wxString &key)
@@ -319,11 +321,11 @@ wxSize Configuration::GetPPI(wxWindow *win) const
 {
   if(win == NULL)
     return wxSize(96,96);
-  
+
   wxSize ppi(-1,-1);
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
+
   int display_idx = wxDisplay::GetFromWindow(win);
   if (display_idx < 0)
     ppi = wxSize(72,72);
@@ -368,7 +370,7 @@ bool Configuration::MaximaFound(wxString location)
 {
   if(location == wxEmptyString)
     return false;
-  
+
   bool maximaFound = false;
   if (wxFileExists(location))
     maximaFound = true;
@@ -420,12 +422,13 @@ void Configuration::ReadConfig()
   config->Read("parameters", &m_maximaParameters);
   config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
+
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);
     m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
   }
-  
+
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
@@ -457,7 +460,7 @@ void Configuration::ReadConfig()
 
   int showLabelChoice;
   config->Read(wxT("showLabelChoice"), &showLabelChoice);
-  m_showLabelChoice = (showLabels) showLabelChoice; 
+  m_showLabelChoice = (showLabels) showLabelChoice;
 
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
@@ -481,7 +484,7 @@ void Configuration::ReadConfig()
 
   m_openHCaret = false;
   config->Read(wxT("openHCaret"), &m_openHCaret);
-  
+
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
@@ -504,50 +507,6 @@ void Configuration::ReadConfig()
   wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
 
   ReadStyles();
-}
-
-Style Configuration::GetStyle(TextStyle textStyle, AFontSize fontSize) const
-{
-  Style style = m_styles[textStyle];
-
-  if ((textStyle == TS_TITLE) ||
-      (textStyle == TS_SECTION) ||
-      (textStyle == TS_SUBSECTION) ||
-      (textStyle == TS_SUBSUBSECTION) ||
-      (textStyle == TS_HEADING5) ||
-      (textStyle == TS_HEADING6))
-  {
-    // While titles and section names may be underlined the section number
-    // isn't. Else the space between section number and section title
-    // would look weird.
-    style.SetUnderlined(false);
-
-    // Besides that these items have a fixed font size.
-  }
-  else
-    style.SetFontSize(fontSize);
-
-  fontSize = style.GetFontSize();
-
-  // The font size scales with the worksheet
-  fontSize = Scale_Px(fontSize);
-
-  style.SetFontName(GetFontName(textStyle));
-
-  if (!style.IsFontOk())
-    style.SetFontName({});
-
-  // cppcheck-suppress duplicateCondition
-  if (!style.IsFontOk())
-  {
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(fontSize);
-  }
-
-  wxASSERT_MSG(style.IsFontOk(),
-               _("Seems like something is broken with a font."));
-  
-  return style;
 }
 
 wxColor Configuration::DefaultBackgroundColor()
@@ -591,7 +550,7 @@ long Configuration::GetLineWidth() const
   // The default line width is the width of the viewport minus the indentation minus
   // roughly one char
   long lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
-                                           GetCellBracketWidth() + GetDefaultFontSize());
+                                            GetCellBracketWidth() + GetDefaultFontSize());
 
   // If that was suspiciously wide we reduce the default line width again.
   if((lineWidth >= Scale_Px(GetDefaultFontSize()) * LineWidth_em()) &&
@@ -687,7 +646,7 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
 
   if (!m_useUnicodeMaths)
     return cache(false);
-  
+
   struct Params {
     wxUniChar ch;
     wxSize size;
@@ -732,23 +691,6 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
   return cache(true);
 }
 
-AFontName Configuration::GetFontName(long type) const
-{
-  AFontName retval;
-
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
-      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
-    retval = m_styles[type].GetFontName();
-
-  if (retval.empty())
-    retval = m_fontName;
-  
-  if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
-    retval = m_mathFontName;
-  return retval;
-}
-
 wxString Configuration::MaximaLocation() const
 {
   if(m_autodetectMaxima)
@@ -758,142 +700,97 @@ wxString Configuration::MaximaLocation() const
 }
 
 wxString Configuration::MaximaDefaultLocation()
-{ 
+{
   return Dirstructure::Get()->MaximaDefaultLocation();
 }
 
-void Configuration::ReadStyles(wxString file)
+static const std::map<TextStyle, wxString> StylePaths =
+  {
+    { TS_TEXT, "Style/Text/" },
+    { TS_CODE_VARIABLE, "Style/CodeHighlighting/Variable/" },
+    { TS_CODE_FUNCTION, "Style/CodeHighlighting/Function/" },
+    { TS_CODE_COMMENT, "Style/CodeHighlighting/Comment/" },
+    { TS_CODE_NUMBER, "Style/CodeHighlighting/Number/" },
+    { TS_CODE_STRING, "Style/CodeHighlighting/String/" },
+    { TS_CODE_OPERATOR, "Style/CodeHighlighting/Operator/" },
+    { TS_CODE_LISP, "Style/CodeHighlighting/Lisp/" },
+    { TS_CODE_ENDOFLINE, "Style/CodeHighlighting/EndOfLine/" },
+    { TS_HEADING6, "Style/Heading6/" },
+    { TS_HEADING5, "Style/Heading5/" },
+    { TS_SUBSUBSECTION, "Style/Subsubsection/" },
+    { TS_SUBSECTION, "Style/Subsection/" },
+    { TS_SECTION, "Style/Section/" },
+    { TS_TITLE, "Style/Title/" },
+    { TS_WARNING, "Style/Warning/" },
+    { TS_MAIN_PROMPT, "Style/MainPrompt/" },
+    { TS_OTHER_PROMPT, "Style/OtherPrompt/" },
+    { TS_LABEL, "Style/Label/" },
+    { TS_USERLABEL, "Style/UserDefinedLabel/" },
+    { TS_SPECIAL_CONSTANT, "Style/Special/" },
+    { TS_GREEK_CONSTANT, "Style/Greek/" },
+    { TS_INPUT, "Style/Input/" },
+    { TS_NUMBER, "Style/Number/" },
+    { TS_STRING, "Style/String/" },
+    { TS_GREEK_CONSTANT, "Style/Greek/" },
+    { TS_VARIABLE, "Style/Variable/" },
+    { TS_FUNCTION, "Style/Function/" },
+    { TS_HIGHLIGHT, "Style/Highlight/" },
+    { TS_TEXT_BACKGROUND, "Style/Background/" },
+    { TS_DOCUMENT_BACKGROUND, "Style/DocumentBackground/" },
+    { TS_ERROR, "Style/Error/" },
+    { TS_CELL_BRACKET, "Style/CellBracket/" },
+    { TS_ACTIVE_CELL_BRACKET, "Style/ActiveCellBracket/" },
+    { TS_CURSOR, "Style/ActiveCellBracket/" },
+    { TS_SELECTION, "Style/Selection/" },
+    { TS_EQUALSSELECTION, "Style/EqualsSelection/" },
+    { TS_OUTDATED, "Style/Outdated/" },
+};
+
+void Configuration::ReadStyles(const wxString &file)
 {
-  wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
+  wxConfigBase *config = nullptr;
+  if (file.empty())
     config = wxConfig::Get();
   else
   {
     wxFileInputStream str(file);
     config = new wxFileConfig(str);
   }
-  
-  // Font
-  wxString fontName;
-  config->Read(wxT("Style/Default/Style/Text/fontname"), &fontName);
-#ifdef __WXOSX_MAC__
-  if (fontName.empty())
-  {
-    fontName = "Monaco";
-  }
-#endif
-  m_fontName = AFontName(fontName);
 
+  SetStyle(TS_DEFAULT, m_styles[TS_DEFAULT].Read(config, "Style/Default/"));
+
+  wxString mathFontName;
   long mathFontSize;
-  if (config->Read(wxT("mathfontsize"), &mathFontSize))
-    m_mathFontSize.Set(mathFontSize);
+  if (config->Read(wxT("Style/Math/fontname"), &mathFontName) && !mathFontName.empty())
+    m_styles[TS_MATH].SetFontName(AFontName(mathFontName));
+  if (config->Read(wxT("mathfontsize"), &mathFontSize) && mathFontSize > 0)
+    m_styles[TS_MATH].SetFontSize(AFontSize(mathFontSize));
+  SetStyle(TS_MATH, m_styles[TS_MATH].Read(config, "Style/Math/"));
 
-  config->Read(wxT("Style/Math/fontname"), &fontName);
-#ifdef __WXOSX_MAC__
-  if (fontName.empty())
-  {
-    fontName = "Monaco";
-  }
-#endif
-  m_mathFontName = AFontName(fontName);
+  for (auto &stylePath : StylePaths)
+    SetStyle(stylePath.first, m_styles[stylePath.first].Read(config, stylePath.second));
 
-  m_styles[TS_DEFAULT].Read(config, "Style/Default/");
-  m_styles[TS_TEXT].Read(config, "Style/Text/");
-  m_styles[TS_CODE_VARIABLE].Read(config, "Style/CodeHighlighting/Variable/");
-  m_styles[TS_CODE_FUNCTION].Read(config, "Style/CodeHighlighting/Function/");
-  m_styles[TS_CODE_COMMENT].Read(config, "Style/CodeHighlighting/Comment/");
-  m_styles[TS_CODE_NUMBER].Read(config, "Style/CodeHighlighting/Number/");
-  m_styles[TS_CODE_STRING].Read(config, "Style/CodeHighlighting/String/");
-  m_styles[TS_CODE_OPERATOR].Read(config, "Style/CodeHighlighting/Operator/");
-  m_styles[TS_CODE_LISP].Read(config, "Style/CodeHighlighting/Lisp/");
-  m_styles[TS_CODE_ENDOFLINE].Read(config, "Style/CodeHighlighting/EndOfLine/");
-  m_styles[TS_HEADING6].Read(config, "Style/Heading6/");
-  m_styles[TS_HEADING5].Read(config, "Style/Heading5/");
-  m_styles[TS_SUBSUBSECTION].Read(config, "Style/Subsubsection/");
-  m_styles[TS_SUBSECTION].Read(config, "Style/Subsection/");
-  m_styles[TS_SECTION].Read(config, "Style/Section/");
-  m_styles[TS_TITLE].Read(config, "Style/Title/");
-  m_styles[TS_WARNING].Read(config, "Style/Warning/");
-  m_styles[TS_MAIN_PROMPT].Read(config, "Style/MainPrompt/");
-  m_styles[TS_OTHER_PROMPT].Read(config, "Style/OtherPrompt/");
-  m_styles[TS_LABEL].Read(config, "Style/Label/");  
-  m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
-  m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
-  m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
-  m_styles[TS_INPUT].Read(config, "Style/Input/");
-  m_styles[TS_NUMBER].Read(config, "Style/Number/");
-  m_styles[TS_STRING].Read(config, "Style/String/");
-  m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
-  m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
-  m_styles[TS_FUNCTION].Read(config, "Style/Function/");
-  m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
-  m_styles[TS_TEXT_BACKGROUND].Read(config, "Style/Background/");    
-  m_styles[TS_DOCUMENT_BACKGROUND].Read(config, "Style/DocumentBackground/");
-  m_styles[TS_ERROR].Read(config, "Style/Error/");
-  m_styles[TS_CELL_BRACKET].Read(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Read(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Read(config,wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
-
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(wxString file)
+void Configuration::WriteStyles(const wxString &file)
 {
-  wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
+  wxConfigBase *config = nullptr;
+  if (file.empty())
     config = wxConfig::Get();
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   // Font
-  config->Write("Style/Default/Style/Text/fontname", m_fontName.GetAsString());
-  config->Write(wxT("mathfontsize"), m_mathFontSize.GetAsLong());
-  config->Write("Style/Math/fontname", m_mathFontName.GetAsString());
-  
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
-  m_styles[TS_TEXT].Write(config, "Style/Text/");
-  m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
-  m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
-  m_styles[TS_CODE_COMMENT].Write(config, "Style/CodeHighlighting/Comment/");
-  m_styles[TS_CODE_NUMBER].Write(config, "Style/CodeHighlighting/Number/");
-  m_styles[TS_CODE_STRING].Write(config, "Style/CodeHighlighting/String/");
-  m_styles[TS_CODE_OPERATOR].Write(config, "Style/CodeHighlighting/Operator/");
-  m_styles[TS_CODE_LISP].Write(config, "Style/CodeHighlighting/Lisp/");
-  m_styles[TS_CODE_ENDOFLINE].Write(config, "Style/CodeHighlighting/EndOfLine/");
-  m_styles[TS_HEADING6].Write(config, "Style/Heading6/");
-  m_styles[TS_HEADING5].Write(config, "Style/Heading5/");
-  m_styles[TS_SUBSUBSECTION].Write(config, "Style/Subsubsection/");
-  m_styles[TS_SUBSECTION].Write(config, "Style/Subsection/");
-  m_styles[TS_SECTION].Write(config, "Style/Section/");
-  m_styles[TS_TITLE].Write(config, "Style/Title/");
-  m_styles[TS_WARNING].Write(config, "Style/Warning/");
-  m_styles[TS_MAIN_PROMPT].Write(config, "Style/MainPrompt/");
-  m_styles[TS_OTHER_PROMPT].Write(config, "Style/OtherPrompt/");
-  m_styles[TS_LABEL].Write(config, "Style/Label/");  
-  m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
-  m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
-  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
-  m_styles[TS_INPUT].Write(config, "Style/Input/");
-  m_styles[TS_NUMBER].Write(config, "Style/Number/");
-  m_styles[TS_STRING].Write(config, "Style/String/");
-  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
-  m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
-  m_styles[TS_FUNCTION].Write(config, "Style/Function/");
-  m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
-  m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");    
-  m_styles[TS_DOCUMENT_BACKGROUND].Write(config, "Style/DocumentBackground/");
-  m_styles[TS_ERROR].Write(config, "Style/Error/");
-  m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
-  if(file != wxEmptyString)
+  config->Write(wxT("mathfontsize"), m_styles[TS_MATH].GetFontSize().GetAsLong());
+  config->Write("Style/Math/fontname", m_styles[TS_MATH].GetNameStr());
+
+  for (auto &stylePath : StylePaths)
+    m_styles[stylePath.first].Write(config, stylePath.second);
+
+  if (!file.empty())
   {
     config->Flush();
     delete config;
@@ -931,8 +828,8 @@ wxColour Configuration::GetColor(TextStyle style)
     col = m_styles[TS_OUTDATED].GetColor();
 
   if(InvertBackground() &&
-     (style != TS_TEXT_BACKGROUND) &&
-     (style != TS_DOCUMENT_BACKGROUND))
+      (style != TS_TEXT_BACKGROUND) &&
+      (style != TS_DOCUMENT_BACKGROUND))
     col = MakeColorDifferFromBackground(col);
   return col;
 }
@@ -1008,12 +905,166 @@ const wxString &Configuration::GetStyleName(TextStyle style) const
     &_("Code highlighting: Operators"),
     &_("Code highlighting: Lisp"),
     &_("Code highlighting: End of line"),
-  };
+    &_("Math Default")
+    };
   if (style >= 0 && style < NUMBEROFSTYLES)
     return *names[style];
   static wxString empty;
   return empty;
 }
+
+//! Styles that only carry colors
+static const TextStyle ColorOnlyStyles[] = {
+  TS_TEXT_BACKGROUND,
+  TS_DOCUMENT_BACKGROUND,
+  TS_CELL_BRACKET,
+  TS_ACTIVE_CELL_BRACKET,
+  TS_CURSOR,
+  TS_SELECTION,
+  TS_EQUALSSELECTION,
+  TS_OUTDATED,
+  TS_CODE_VARIABLE,
+  TS_CODE_FUNCTION,
+  TS_CODE_COMMENT,
+  TS_CODE_NUMBER,
+  TS_CODE_STRING,
+  TS_CODE_OPERATOR,
+  TS_CODE_LISP,
+  TS_CODE_ENDOFLINE
+};
+
+//! Styles with individual fonts - all other styles inherit the TS_DEFAULT or TS_MATH
+static const TextStyle CustomFontStyles[] = {
+  TS_DEFAULT, TS_MATH,
+  TS_TEXT, TS_HEADING5, TS_HEADING6, TS_SUBSECTION, TS_SUBSUBSECTION, TS_SECTION, TS_TITLE
+};
+
+  //! Styles rendered in math font
+  static const TextStyle MathFontStyles[] = {
+    TS_VARIABLE, TS_NUMBER, TS_FUNCTION, TS_SPECIAL_CONSTANT, TS_GREEK_CONSTANT,
+    TS_STRING,
+    TS_HIGHLIGHT,
+    };
+
+//! Styles rendered in default font size (but not default font)
+static const TextStyle DefaultSizeMathFontStyles[] = {
+  TS_MAIN_PROMPT, TS_OTHER_PROMPT,
+  TS_WARNING, TS_ERROR
+};
+
+  // NOTE: TS_LABEL, TS_USERLABEL, TS_INPUT were originally rejected by Cell::IsMath
+  // and they were sized using the default font size (if not font). Thus we leave those
+  // as not math styles - they'll use the default font.
+
+  //! Styles rendered in default font
+  static const TextStyle DefaultFontStyles[] = {
+    TS_INPUT,
+    TS_LABEL,
+    TS_USERLABEL,
+    };
+
+template <typename Array>
+static bool IsIn(TextStyle st, Array const &array)
+{
+  for (auto s : array)
+    if (s == st)
+      return true;
+  return false;
+};
+
+Style Configuration::GetDefaultStyleAt(AFontSize fontSize) const
+{
+  auto style = m_styles[TS_DEFAULT];
+  style.SetFontSize({ MC_MIN_SIZE, fontSize });
+  return style;
+}
+
+Style Configuration::GetStyle(TextStyle textStyle, GetStyleOpt options, AFontSize fontSize) const
+{
+  Style style = m_styles[textStyle];
+  if (fontSize.IsNull() || IsIn(textStyle, CustomFontStyles))
+    fontSize = style.GetFontSize();
+  if (!(options & UnscaledStyle))
+    fontSize = Scale_Px(fontSize);
+  style.SetFontSize({ MC_MIN_SIZE, fontSize });
+  return style;
+}
+
+void Configuration::SetStyle(TextStyle st, const Style *newStyle)
+{
+  Style style = newStyle ? *newStyle : m_styles[st];
+
+  // A sanity check is needed for all styles that have custom fonts
+  if (IsIn(st, CustomFontStyles))
+  {
+    if (style.GetFontSize() < MC_MIN_SIZE || style.GetFontSize() > MC_MAX_SIZE)
+    {
+      if (st != TS_DEFAULT && st != TS_MATH)
+        style.SetFontSize(m_styles[TS_DEFAULT].GetFontSize());
+      else
+        style.SetFontSize({ MC_MIN_SIZE, style.GetFontSize(), MC_MAX_SIZE });
+    }
+    // Font Fallbacks
+    if (!style.IsFontOk())
+    {
+      if (st == TS_DEFAULT)
+        style.SetFontFaceFrom(Style::FactoryDefault());
+      else if (st == TS_MATH)
+        style.SetFontFaceFrom(Style::FactoryMath());
+      else
+        style.SetFontFaceFrom(m_styles[TS_DEFAULT]);
+      if (!style.IsFontOk() && st != TS_DEFAULT)
+      {
+        auto size = style.GetFontSize();
+        style = m_styles[TS_DEFAULT];
+        style.SetFontSize(size);
+        if (!style.IsFontOk())
+          style = m_styles[TS_DEFAULT];
+      }
+    }
+  }
+
+  if (!IsIn(st, ColorOnlyStyles))
+    style.ResolveToFont(); // Resolve the style to reflect the attributes of a font
+
+  // Default Font propagation
+  if (st == TS_DEFAULT)
+  {
+    for (auto ps : DefaultFontStyles)
+      if (m_styles[ps].SetFontFaceAndSizeFrom(style)) m_styles[ps].ResolveToFont();
+    for (auto ps : DefaultSizeMathFontStyles)
+      m_styles[ps].SetFontSize(style.GetFontSize());
+  }
+  else
+    if (IsIn(st, DefaultFontStyles))
+    style.SetFontFaceAndSizeFrom(m_styles[TS_DEFAULT]);
+  // Default Font Size + Math Font Face Propagation
+  else
+    if (IsIn(st, DefaultSizeMathFontStyles))
+  {
+    style.SetFontFaceFrom(m_styles[TS_MATH]);
+    style.SetFontSize(m_styles[TS_DEFAULT].GetFontSize());
+  }
+  // Math Font Propagation
+  else
+    if (st == TS_MATH)
+  {
+    for (auto ps : MathFontStyles)
+      m_styles[ps].SetFontFaceAndSizeFrom(style);
+    for (auto ps : DefaultSizeMathFontStyles)
+      m_styles[ps].SetFontFaceFrom(style);
+  }
+  else
+    if (IsIn(st, MathFontStyles))
+    style.SetFontFaceAndSizeFrom(m_styles[TS_MATH]);
+  // Color-Only Styles
+  else
+    if (IsIn(st, ColorOnlyStyles))
+    style = Style().Color(style.GetColor());
+
+  m_styles[st] = style;
+}
+
 
 wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;

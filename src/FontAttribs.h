@@ -99,8 +99,12 @@ public:
 
   constexpr AFontSize() = default;
   constexpr explicit AFontSize(float size) : m_uSize(ToUSize(size)) {}
-  constexpr AFontSize(AFontSize minimum, double size) : m_uSize(std::max(minimum.m_uSize, ToUSize(float(size)))) {}
-  constexpr AFontSize(AFontSize minimum, AFontSize size) : m_uSize(std::max(minimum.m_uSize, size.m_uSize)) {}
+  constexpr AFontSize(AFontSize min, double size) : m_uSize(std::max(min.m_uSize, ToUSize(float(size)))) {}
+  constexpr AFontSize(AFontSize min, AFontSize size) : m_uSize(std::max(min.m_uSize, size.m_uSize)) {}
+  constexpr AFontSize(AFontSize min, double size, AFontSize max)
+      : m_uSize(stx::clamp(ToUSize(float(size)), min.m_uSize, max.m_uSize)) {}
+  constexpr AFontSize(AFontSize min, AFontSize size, AFontSize max)
+      : m_uSize(stx::clamp(size.m_uSize, min.m_uSize, max.m_uSize)) {}
   constexpr AFontSize(const AFontSize &o) = default;
 
   constexpr void Set(float size) { m_uSize = ToUSize(size); }
@@ -143,7 +147,7 @@ constexpr double operator+(double offset, AFontSize size)   { return offset + si
 constexpr double operator+(AFontSize size, double offset)   { return size.Get() + offset; }
 constexpr double operator-(double offset, AFontSize size)   { return offset - size.Get(); }
 constexpr double operator-(AFontSize size, double offset)   { return size.Get() - offset; }
-constexpr AFontSize operator-=(AFontSize &size, double factor) { return size.Set(float(size - factor)), size; }
+constexpr AFontSize operator-=(AFontSize &size, double offset) { return size.Set(float(size - offset)), size; }
 
 constexpr AFontSize::value_type AFontSize::ToUSize(float size)
 {

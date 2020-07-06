@@ -1007,43 +1007,26 @@ void EditorCell::SetFont()
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize.IsNull())
-    m_fontSize = configuration->GetDefaultFontSize();
+  auto style = configuration->GetStyle(m_textStyle);
 
-  m_fontSize = Scale_Px(m_fontSize);
+  m_fontSize = style.GetFontSize();
+  m_fontName = style.GetFontName();
 
-  m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
   // ordinary cells in order to make transparent that this cell is special.
-  if(!m_autoAnswer)
-    m_fontStyle = configuration->IsItalic(m_textStyle);
-  else
-  {
-    if(configuration->IsItalic(m_textStyle) != wxFONTSTYLE_ITALIC)
-      m_fontStyle = wxFONTSTYLE_ITALIC;
-    else
-      m_fontStyle = wxFONTSTYLE_NORMAL;
-  }
-  m_fontWeight = configuration->IsBold(m_textStyle);
+  if (m_autoAnswer)
+    style.SetItalic(!style.IsItalic());
+
+  m_fontStyle = style.GetFontStyle();
+  m_fontWeight = style.GetWeight();
   m_underlined = configuration->IsUnderlined(m_textStyle);
 
   wxASSERT(m_fontSize.IsValid());
 
-  auto style = Style(m_fontSize)
-                 .FontName(m_fontName)
-                 .FontStyle(m_fontStyle)
-                 .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                 .Underlined(m_underlined);
-
   if (!style.IsFontOk())
   {
     wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
-    style.SetFontName({});
-  }
-  if (!style.IsFontOk()) {
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(m_fontSize);
+    style = configuration->GetDefaultStyleAt(m_fontSize);
   }
 
   wxASSERT_MSG(style.IsFontOk(),
