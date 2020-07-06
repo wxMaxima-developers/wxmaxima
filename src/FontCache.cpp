@@ -21,6 +21,7 @@
 
 #include "FontCache.h"
 #include <wx/log.h>
+#include <wx/hashmap.h>
 #include <cmath>
 #include <functional>
 #include <string>
@@ -202,7 +203,11 @@ std::size_t hash<wxFontInfo>::operator()(const wxFontInfo &fi) const
   std::size_t h = 0;
   h = mixHash(h, fi.GetEncoding());
   h = mixHash(h, fi.GetFamily());
-  h = mixHash(h, std::string(fi.GetFaceName().mb_str()));
+#ifdef wxNEEDS_WX_HASH_MAP
+  h = mixHash(h, wxStringHash()(fi.GetFaceName()));
+#else
+  h = mixHash(h, fi.GetFaceName());
+#endif
   h = mixHash(h, fi.GetStyle());
 #if wxCHECK_VERSION(3, 1, 2)
   h = mixHash(h, fi.GetNumericWeight());
