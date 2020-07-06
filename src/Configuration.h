@@ -53,12 +53,6 @@
 #define MC_MIN_SIZE 6
 #define MC_MAX_SIZE 48
 
-#define CMEX10 "jsMath-cmex10"
-#define CMSY10 "jsMath-cmsy10"
-#define CMR10  "jsMath-cmr10"
-#define CMMI10 "jsMath-cmmi10"
-#define CMTI10 "jsMath-cmti10"
-
 #define LIBERTINE1 "LinLibertine_DRah.ttf"
 #define LIBERTINE2 "LinLibertine_I.ttf"
 #define LIBERTINE3 "LinLibertine_Mah.ttf"
@@ -240,17 +234,17 @@ public:
         return m_dc;
     }
   
-  wxString GetFontName(long type = TS_DEFAULT) const;
+  AFontName GetFontName(long type = TS_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  wxString GetSymbolFontName() const;
+  AFontName GetSymbolFontName() const;
 
   wxFontWeight IsBold(long st) const;
 
   wxFontStyle IsItalic(long st) const;
 
-  bool IsUnderlined(long st) const {return m_styles[st].Underlined();}
+  bool IsUnderlined(long st) const {return m_styles[st].IsUnderlined();}
 
   //! Force a full recalculation?
   void RecalculationForce(bool force)
@@ -398,7 +392,7 @@ public:
   long GetLineWidth() const;
 
   long GetDefaultFontSize() const
-  { return m_styles[TS_DEFAULT].FontSize(); }
+  { return m_styles[TS_DEFAULT].GetFontSize(); }
 
   void SetDefaultFontSize(long fontSize)
   {
@@ -446,7 +440,7 @@ public:
   long GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].FontSize();
+      return m_styles[st].GetFontSize();
     return 0;
   }
 
@@ -475,19 +469,19 @@ public:
   bool CheckKeepPercent() const
   { return m_keepPercent; }
 
-  wxString GetTeXCMRI() const
+  AFontName GetTeXCMRI() const
   { return m_fontCMRI; }
 
-  wxString GetTeXCMSY() const
+  AFontName GetTeXCMSY() const
   { return m_fontCMSY; }
 
-  wxString GetTeXCMEX() const
+  AFontName GetTeXCMEX() const
   { return m_fontCMEX; }
 
-  wxString GetTeXCMMI() const
+  AFontName GetTeXCMMI() const
   { return m_fontCMMI; }
 
-  wxString GetTeXCMTI() const
+  AFontName GetTeXCMTI() const
   { return m_fontCMTI; }
 
   bool ShowCodeCells() const
@@ -823,13 +817,14 @@ public:
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
   drawMode GetParenthesisDrawMode();
-  /*! Get the font for a given text style
 
-    \param textStyle The text style to get the font for
+  /*! Get the resolved text Style for a given text style identifier.
+
+    \param textStyle The text style to resolve the style for.
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
    */
-  wxFont GetFont(TextStyle textStyle, long fontSize) const;
+  Style GetStyle(TextStyle textStyle, long fontSize) const;
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -865,15 +860,11 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  wxString FontName()const {return m_fontName;}
-  void FontName(wxString name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
-  void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
-  wxString MathFontName()const {return m_mathFontName;}
+  AFontName FontName() const {return m_fontName;}
+  void FontName(AFontName name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",(m_fontName = name).GetAsString());}
+  void MathFontName(AFontName name){wxConfig::Get()->Write("Style/Math/fontname",(m_mathFontName = name).GetAsString());}
+  class AFontName MathFontName()const {return m_mathFontName;}
 
-  //! Update the list of fonts associated to the worksheet styles
-  void UpdateWorksheetFonts();
-  //! Get the font for the given worksheet style
-  wxFont GetWorksheetFont(TextStyle style) const;
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(long autosubscriptnum)
@@ -977,9 +968,9 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  wxString m_fontName;
+  AFontName m_fontName;
   long m_mathFontSize;
-  wxString m_mathFontName;
+  AFontName m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
@@ -989,7 +980,7 @@ private:
   bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
-  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
+  AFontName m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   long m_clientWidth;
   long m_clientHeight;
   bool m_printing;

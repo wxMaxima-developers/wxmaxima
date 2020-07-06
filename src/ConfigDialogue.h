@@ -118,31 +118,15 @@ private:
   public:
     //! The constructor
     ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
-      {
-#if defined (__WXOSX__)
-        m_size = 12;
-#else
-        m_size = 10;
-#endif
-        m_italic = false;
-        m_bold = false;
-        m_underlined = false;
-        Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint));
-      };
+    { Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint)); };
 
-    //! Sets all user-changable elements of style of the example at once.
-    void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
-      {
-        m_fgColor = fg_color;
-        m_italic = italic;
-        m_bold = bold;
-        m_underlined = underlined;
-        m_font = font;
-      }
-
-    //! Sets the font size of the example
-    void SetFontSize(int size)
-      { m_size = size; }
+    //! Sets the text style of the example
+    void SetStyle(const Style &style)
+    {
+      if (m_style.IsStyleEqualTo(style)) return;
+      m_style = style;
+      Refresh();
+    }
 
   private:
     /*! Actually updates the formatting example
@@ -151,18 +135,8 @@ private:
     */
     void OnPaint(wxPaintEvent &event);
 
-    //! The foreground color of the currently selected item type
-    wxColour m_fgColor;
-    //! Is the currently selected item type displayed in italic?
-    bool m_italic;
-    //! Is the currently selected item type displayed in bold?
-    bool m_bold;
-    //! Is the currently selected item type displayed underlined?
-    bool m_underlined;
-    //! The font the currently selected item type is displayed with
-    wxString m_font;
-    //! The size of the characters of the currently selected item type
-    int m_size;
+    //! The text style of this example
+    Style m_style;
   };
 
   /*! A rectangle showing the color of an item
