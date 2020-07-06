@@ -28,23 +28,24 @@
  */
 
 #include "VisiblyInvalidCell.h"
-#include "GroupCell.h"
-#include "FontCache.h"
-#include "wx/config.h"
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent, Configuration **config) : TextCell(parent, config, m_cellContents, TS_ERROR)
+static wxString cellContents(wxT("?"));
+
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
+                                       Configuration **config)
+    : TextCell(parent, config, cellContents, TS_ERROR)
 {
   // We cannot do this at the startup of the program as we first need to wait
-  // for the language selection to take place
-  if(m_defaultToolTip.IsEmpty())
-    m_defaultToolTip = _("Missing contents. Bug?");
-  SetToolTip(m_defaultToolTip);
+  // for the language selection to take place.
+  // NOTE: static variables are initialized exactly 0 or 1 times, so the below
+  // is not wasteful.
+  static wxString defaultToolTip = _("Missing contents. Bug?");
+  SetToolTip(defaultToolTip);
 }
 
-VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent, Configuration **config, wxString toolTip) : TextCell(parent, config, m_cellContents, TS_ERROR)
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
+                                       Configuration **config, wxString toolTip)
+    : TextCell(parent, config, cellContents, TS_ERROR)
 {
   SetToolTip(toolTip);
 }
-
-wxString VisiblyInvalidCell::m_cellContents("?");
-wxString VisiblyInvalidCell::m_defaultToolTip;
