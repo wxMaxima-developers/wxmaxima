@@ -155,7 +155,6 @@ public:
   double GetFontSize() const;
   uint32_t GetRGBColor() const;
   wxColor GetColor() const { return wxColor(GetRGBColor()); }
-  const wxString &GetName() const { return m.styleName; }
 
   using did_change = bool;
   did_change SetFamily(wxFontFamily family);
@@ -174,7 +173,6 @@ public:
   did_change SetRGBColor(uint32_t rgb);
   did_change SetColor(const wxColor &color);
   did_change SetColor(wxSystemColour sysColour);
-  did_change SetName(const wxString &styleName);
 
   Style& Family(wxFontFamily family) { return SetFamily(family), *this; }
   Style& Encoding(wxFontEncoding encoding) { return SetEncoding(encoding), *this; }
@@ -193,7 +191,6 @@ public:
   Style& Color(uint8_t r, uint8_t g, uint8_t b) { return SetColor({r, g, b}), *this; }
   Style& Color(wxSystemColour sysColour) { return SetColor(sysColour), *this; }
   Style& ChangeLightness(int alpha) { return SetColor(GetColor().ChangeLightness(alpha)), *this; }
-  Style& Name(const wxString &name) { return SetName(name), *this; }
 
   wxFontInfo GetAsFontInfo() const;
 
@@ -218,7 +215,7 @@ private:
   void SetFromFontNoCache(const wxFont &);
   static Style FromFontNoCache(const wxFont &);
 
-  struct Data // The POD part is 56 bytes on 64-bit platforms
+  struct Data // POD, 56 bytes on 64-bit platforms
   {
     // 8-byte members
     mutable double fontSize = Default_FontSize;
@@ -241,7 +238,6 @@ private:
     bool strikethrough : 1;
     bool isNotOK : 1;
 
-    wxString styleName; // TODO This is not POD and should be removed!
     Data() : underlined(false), strikethrough(false), isNotOK(false) {}
     static constexpr enum class NotOK_t {} NotOK = {};
     Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}

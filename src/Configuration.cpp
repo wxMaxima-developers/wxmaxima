@@ -257,45 +257,46 @@ void Configuration::InitStyles()
     m_mathFontName = {};
   #endif
   m_mathFontSize = 12;
-  m_styles[TS_DEFAULT].Name(_("Default")).Bold().Italic().FontSize(12);
-  m_styles[TS_TEXT].Name(_("Text cell")).FontSize(12);
-  m_styles[TS_CODE_VARIABLE].Name(_("Code highlighting: Variables")).Color(0,128,0).Italic();
-  m_styles[TS_CODE_FUNCTION].Name(_("Code highlighting: Functions")).Color(128,0,0).Italic();
-  m_styles[TS_CODE_COMMENT].Name(_("Code highlighting: Comments")).Color(64,64,64).Italic();
-  m_styles[TS_CODE_NUMBER].Name(_("Code highlighting: Numbers")).Color(128,64,0).Italic();
-  m_styles[TS_CODE_STRING].Name(_("Code highlighting: Strings")).Color(0,0,128).Italic();
-  m_styles[TS_CODE_OPERATOR].Name(_("Code highlighting: Operators")).Italic();
-  m_styles[TS_CODE_LISP].Name(_("Code highlighting: Lisp")).Color(255,0,128).Italic();
-  m_styles[TS_CODE_ENDOFLINE].Name(_("Code highlighting: End of line")).Color(128,128,128).Italic();
-  m_styles[TS_GREEK_CONSTANT].Name(_("Greek constants")).Italic();
-  m_styles[TS_HEADING6].Name(_("Heading 6")).Bold().FontSize(14);
-  m_styles[TS_HEADING5].Name(_("Heading 5")).Bold().FontSize(15);
-  m_styles[TS_SUBSUBSECTION].Name(_("Subsubsection cell (Heading 4)")) .Bold().FontSize(16);
-  m_styles[TS_SUBSECTION].Name(_("Subsection cell (Heading 3)")) .Bold().FontSize(16);
-  m_styles[TS_SECTION].Name(_("Section cell (Heading 2)")).Bold().Italic().FontSize(18);
-  m_styles[TS_TITLE].Name(_("Title cell (Heading 1)")).Bold().Underlined().FontSize(24);
-  m_styles[TS_WARNING].Name(_("Maxima warnings")).Color(wxT("orange")).Bold().FontSize(12);
-  m_styles[TS_ERROR].Name(_("Maxima errors")).Color(*wxRED).FontSize(12);
-  m_styles[TS_MAIN_PROMPT].Name(_("Input labels")).Color(255,128,128);
-  m_styles[TS_OTHER_PROMPT].Name(_("Maxima questions")).Color(*wxRED).Italic();
-  m_styles[TS_LABEL].Name(_("Output labels")).Color(255,192,128);
-  m_styles[TS_USERLABEL].Name(_("User-defined labels")).Color(255,64,0);
-  m_styles[TS_SPECIAL_CONSTANT].Name(_("Special constants"));
-  m_styles[TS_INPUT].Name(_("Maxima input")).Color(*wxBLUE);
-  m_styles[TS_NUMBER].Name(_("Numbers"));
-  m_styles[TS_STRING].Name(_("Strings")).Italic();
-  m_styles[TS_GREEK_CONSTANT].Name(_("Greek Constants"));
-  m_styles[TS_VARIABLE].Name(_("Variables")).Italic();
-  m_styles[TS_FUNCTION].Name(_("Function names"));
-  m_styles[TS_HIGHLIGHT].Name(_("Highlight (dpart)")).Color(*wxRED);
-  m_styles[TS_TEXT_BACKGROUND].Name(_("Text cell background")).Color(*wxWHITE);
-  m_styles[TS_DOCUMENT_BACKGROUND].Name(_("Document background")).Color(*wxWHITE);
-  m_styles[TS_CELL_BRACKET].Name(_("Cell bracket"));
-  m_styles[TS_ACTIVE_CELL_BRACKET].Name(_("Active cell bracket")).Color(*wxRED);
-  m_styles[TS_CURSOR].Name(_("Cursor"));
-  m_styles[TS_SELECTION].Name(_("Selection")).Color(wxSYS_COLOUR_HIGHLIGHT);
-  m_styles[TS_EQUALSSELECTION].Name(_("Text equal to selection")).Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
-  m_styles[TS_OUTDATED].Name(_("Outdated cells")).Color(153,153,153);
+
+  m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
+  m_styles[TS_TEXT].FontSize(12);
+  m_styles[TS_CODE_VARIABLE].Color(0,128,0).Italic();
+  m_styles[TS_CODE_FUNCTION].Color(128,0,0).Italic();
+  m_styles[TS_CODE_COMMENT].Color(64,64,64).Italic();
+  m_styles[TS_CODE_NUMBER].Color(128,64,0).Italic();
+  m_styles[TS_CODE_STRING].Color(0,0,128).Italic();
+  m_styles[TS_CODE_OPERATOR].Italic();
+  m_styles[TS_CODE_LISP].Color(255,0,128).Italic();
+  m_styles[TS_CODE_ENDOFLINE].Color(128,128,128).Italic();
+  m_styles[TS_GREEK_CONSTANT].Italic();
+  m_styles[TS_HEADING6].Bold().FontSize(14);
+  m_styles[TS_HEADING5].Bold().FontSize(15);
+  m_styles[TS_SUBSUBSECTION].Bold().FontSize(16);
+  m_styles[TS_SUBSECTION].Bold().FontSize(16);
+  m_styles[TS_SECTION].Bold().Italic().FontSize(18);
+  m_styles[TS_TITLE].Bold().Underlined().FontSize(24);
+  m_styles[TS_WARNING].Color(wxT("orange")).Bold().FontSize(12);
+  m_styles[TS_ERROR].Color(*wxRED).FontSize(12);
+  m_styles[TS_MAIN_PROMPT].Color(255,128,128);
+  m_styles[TS_OTHER_PROMPT].Color(*wxRED).Italic();
+  m_styles[TS_LABEL].Color(255,192,128);
+  m_styles[TS_USERLABEL].Color(255,64,0);
+  //m_styles[TS_SPECIAL_CONSTANT];
+  m_styles[TS_INPUT].Color(*wxBLUE);
+  //m_styles[TS_NUMBER];
+  m_styles[TS_STRING].Italic();
+  //m_styles[TS_GREEK_CONSTANT];
+  m_styles[TS_VARIABLE].Italic();
+  //m_styles[TS_FUNCTION];
+  m_styles[TS_HIGHLIGHT].Color(*wxRED);
+  m_styles[TS_TEXT_BACKGROUND].Color(*wxWHITE);
+  m_styles[TS_DOCUMENT_BACKGROUND].Color(*wxWHITE);
+  //m_styles[TS_CELL_BRACKET];
+  m_styles[TS_ACTIVE_CELL_BRACKET].Color(*wxRED);
+  //m_styles[TS_CURSOR];
+  m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
+  m_styles[TS_EQUALSSELECTION].Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
+  m_styles[TS_OUTDATED].Color(153,153,153);
   ReadConfig();
 }
 
@@ -960,6 +961,54 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
       newBrightness * color.Blue() / maxOldCol
       );
   }
+}
+
+const wxString &Configuration::GetStyleName(TextStyle style) const
+{
+  static const wxString *names[NUMBEROFSTYLES] = {
+    &_("Default"),
+    &_("Variables"),
+    &_("Numbers"),
+    &_("Function names"),
+    &_("Special constants"),
+    &_("Greek Constants"),
+    &_("Strings"),
+    &_("Maxima input"),
+    &_("Input labels"),
+    &_("Maxima questions"),
+    &_("Output labels"),
+    &_("User-defined labels"),
+    &_("Highlight (dpart)"),
+    &_("Maxima warnings"),
+    &_("Maxima errors"),
+    &_("Text cell"),
+    &_("Heading 6"),
+    &_("Heading 5"),
+    &_("Subsubsection cell (Heading 4)"),
+    &_("Subsection cell (Heading 3)"),
+    &_("Section cell (Heading 2)"),
+    &_("Title cell (Heading 1)"),
+    &_("Text cell background"),
+    &_("Document background"),
+    &_("Cell bracket"),
+    &_("Active cell bracket"),
+    &_("Cursor"),
+    &_("Selection"),
+    &_("Text equal to selection"),
+    &_("Outdated cells"),
+    &_("Code highlighting: Variables"),
+    &_("Code highlighting: Functions"),
+    &_("Code highlighting: Comments"),
+    &_("Code highlighting: Numbers"),
+    &_("Code highlighting: Strings"),
+    &_("Code highlighting: Operators"),
+    &_("Code highlighting: Lisp"),
+    &_("Code highlighting: End of line"),
+  };
+  if (style >= 0 && style < NUMBEROFSTYLES)
+    return *names[style];
+  static wxString empty;
+  return empty;
 }
 
 wxString Configuration::m_maximaLocation_override;

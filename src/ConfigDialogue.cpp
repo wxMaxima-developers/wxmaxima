@@ -1085,7 +1085,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   wxArrayString m_styleFor_choices;
   for(int i = 0; i < NUMBEROFSTYLES; i++)
-    m_styleFor_choices.Add(m_configuration->m_styles[i].GetName());
+    m_styleFor_choices.Add(m_configuration->GetStyleName(TextStyle(i)));
   m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), m_styleFor_choices,
                              wxLB_SINGLE);
   m_styleFor->Connect(wxEVT_LISTBOX,
@@ -1396,7 +1396,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 
   auto userFont = wxGetFontFromUser(
       this, style.GetFont(),
-      wxString::Format(_("Choose the %s Font"), style.GetName()));
+      wxString::Format(_("Choose the %s Font"), m_configuration->GetStyleName(st)));
   if (!userFont.IsOk())
     return;
 

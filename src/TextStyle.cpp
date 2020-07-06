@@ -316,13 +316,6 @@ did_change Style::SetColor(wxSystemColour sysColour)
   return SetColor(wxSystemSettings::GetColour(sysColour));
 }
 
-did_change Style::SetName(const wxString &styleName)
-{
-  if (styleName == m.styleName) return false;
-  m.styleName = styleName;
-  return true;
-}
-
 size_t Style::GetAttributeHash() const
 {
   size_t hash_ = m.attributeHash;
@@ -382,8 +375,7 @@ bool Style::IsStyleEqualTo(const Style &o) const
 {
   return
     this->IsFontEqualTo(o) &&
-    m.rgbColor == o.m.rgbColor &&
-    m.styleName == o.m.styleName;
+    m.rgbColor == o.m.rgbColor;
 }
 
 const wxFont& Style::LookupFont() const
@@ -530,10 +522,8 @@ void Style::Read(wxConfigBase *config, const wxString &where)
   bool tmpBool;
   long tmpLong;
 
-  // Unset all fields, but do not change the name of the style.
-  auto styleName = std::move(m.styleName);
+  // Unset all fields
   m = {};
-  m.styleName = std::move(styleName);
 
   if (config->Read(wxString::Format(k_color, where), &tmpStr))
   {
