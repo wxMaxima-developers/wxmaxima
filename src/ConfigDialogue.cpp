@@ -1349,7 +1349,8 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
   if (!FontCache::GetAFont(req).IsOk())
     req = FontInfo::GetFor(*wxNORMAL_FONT);
 
-  wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req));
+  wxFont math = wxGetFontFromUser(this, FontCache::GetAFont(req),
+                                  _("Choose the Math Font"));
   if (!math.IsOk())
     return;
 
@@ -1405,7 +1406,10 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     font = FontCache::GetAFont(req);
   }
 
-  font = wxGetFontFromUser(this, font);
+  auto styleName = m_configuration->m_styles[st].Name();
+  font = wxGetFontFromUser(
+      this, font, wxString::Format(_("Choose the %s Font"), styleName));
+
   if (!font.IsOk())
     return;
 
