@@ -82,15 +82,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
-<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
-<li><a href="#maxima-and-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> and wxMaxima</a><ul>
+<li><a href="#il-manuale-utente-di-wxmaxima">Il manuale utente di wxMaxima</a></li>
+<li><a href="#introduzione-a-wxmaxima"><span class="toc-section-number">1</span> Introduzione a wxMaxima</a><ul>
+<li><a href="#maxima-e-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> e wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
 </ul></li>
 <li><a href="#workbook-basics"><span class="toc-section-number">1.2</span> Workbook basics</a><ul>
 <li><a href="#the-workbook-approach"><span class="toc-section-number">1.2.1</span> The workbook approach</a></li>
-<li><a href="#cells"><span class="toc-section-number">1.2.2</span> Cells</a></li>
+<li><a href="#celle"><span class="toc-section-number">1.2.2</span> Celle</a></li>
 <li><a href="#horizontal-and-vertical-cursors"><span class="toc-section-number">1.2.3</span> Horizontal and vertical cursors</a></li>
 <li><a href="#sending-cells-to-maxima"><span class="toc-section-number">1.2.4</span> Sending cells to Maxima</a></li>
 <li><a href="#command-autocompletion"><span class="toc-section-number">1.2.5</span> Command autocompletion</a></li>
@@ -113,7 +113,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.4.5</span> Where is the configuration saved?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#estensioni-a-maxima"><span class="toc-section-number">2</span> Estensioni a <em>Maxima</em></a><ul>
 <li><a href="#subscripted-variables"><span class="toc-section-number">2.1</span> Subscripted variables</a></li>
 <li><a href="#user-feedback-in-the-status-bar"><span class="toc-section-number">2.2</span> User feedback in the status bar</a></li>
 <li><a href="#plotting"><span class="toc-section-number">2.3</span> Plotting</a><ul>
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#bug-reporting"><span class="toc-section-number">2.8</span> Bug reporting</a></li>
 <li><a href="#marking-output-being-drawn-in-red"><span class="toc-section-number">2.9</span> Marking output being drawn in red</a></li>
 </ul></li>
-<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#risoluzione-dei-problemi"><span class="toc-section-number">3</span> Risoluzione dei problemi</a><ul>
 <li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to <em>Maxima</em></a></li>
 <li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
 <li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</a></li>
@@ -155,46 +155,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#is-there-a-dark-mode"><span class="toc-section-number">4.2</span> Is there a dark mode?</a></li>
 <li><a href="#wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="toc-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</a></li>
 </ul></li>
-<li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
+<li><a href="#argomenti-della-riga-di-comando"><span class="toc-section-number">5</span> Argomenti della riga di comando</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
-<p>wxMaxima is a graphical user interface (GUI) for the <em>Maxima</em> computer algebra system (CAS). wxMaxima allows one to use all of <em>Maxima</em>’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for <em>Maxima</em>.</p>
+<h1 id="il-manuale-utente-di-wxmaxima" class="unnumbered">Il manuale utente di wxMaxima</h1>
+<p>wxMaxima è un’interfaccia utente grafica (GUI) per il sistema di algebra computazionale (CAS) <em>Maxima</em>. wxMaxima consente di utilizzare tutte le funzioni di <em>Maxima</em>, inoltre, fornisce comode procedure guidate per accedere alle funzionalità più comunemente utilizzate. Questo manuale descrive alcune delle funzionalità che rendono wxMaxima una delle GUI più popolari per <em>Maxima</em>.</p>
 <figure>
-<img src="./wxMaximaLogo.png" alt="wxMaxima logo" id="img_wxMaximaLogo" /><figcaption>wxMaxima logo</figcaption>
+<img src="./wxMaximaLogo.png" alt="logo wxMaxima" id="img_wxMaximaLogo" /><figcaption>logo wxMaxima</figcaption>
 </figure>
-<p>Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on <a href="#TOC">Contents</a> moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. The Contents link appears at locations throughout the text for navigational purposes.</p>
+<p>Prima di esaminare i contenuti della guida, è meglio evidenziare alcuni punti relativi alla sua consultazione. Immediatamente di seguito c’è un breve sommario. Facendo clic su uno degli elementi elencati si sposta il cursore nella parte superiore della sezione indicata del manuale. Facendo clic su <a href="#TOC">Sommario</a> si sposta il cursore su un sommario esteso. Questa tabella estesa può essere usata per arrivare direttamente a parti specifiche del manuale. Il collegamento Contenuti viene visualizzato lungo il testo a scopo di orientamento nella navigazione.</p>
 <ul>
-<li><a href="#introduction-to-wxmaxima" title="Introduction to wxMaxima">Introduction</a>:</li>
+<li><a href="#introduzione-a-wxmaxima" title="Introduzione a wxMaxima">Introduzione</a>:</li>
 </ul>
-<p>wxMaxima basics</p>
+<p>Basi di wxMaxima</p>
 <ul>
-<li><a href="#extensions-to-maxima" title="Extensions">Extensions</a>:</li>
+<li><a href="#estensioni-a-maxima" title="Estensioni">Estensioni</a>:</li>
 </ul>
-<p>The commands wxMaxima adds to <em>Maxima</em></p>
+<p>I comandi che wxMaxima aggiunge a <em>Maxima</em></p>
 <ul>
-<li><a href="#troubleshooting" title="Troubleshooting">Troubleshooting</a>:</li>
+<li><a href="#risoluzione-dei-problemi" title="Risoluzione dei problemi">Risoluzione dei problemi</a>:</li>
 </ul>
-<p>What to do if wxMaxima does not work as expected</p>
+<p>Cosa fare se wxMaxima non si comporta come ci si aspetta</p>
 <ul>
 <li><a href="#faq" title="FAQ">FAQ</a>:</li>
 </ul>
-<p>Frequently asked questions</p>
+<p>Domande ricorrenti</p>
 <ul>
-<li><a href="#command-line-arguments" title="_Maxima_ Command Line">CommandLine</a>:</li>
+<li><a href="#argomenti-della-riga-di-comando" title="La riga di comando di _Maxima_">RigaDiComando</a>:</li>
 </ul>
-<p>The command-line arguments wxMaxima supports</p>
+<p>Gli argomenti a riga di comando che wxMaxima supporta</p>
 <hr />
-<h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
-<h2 id="maxima-and-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> and wxMaxima</h2>
-<p>In the open-source domain, big systems are normally split into smaller projects that are easier to handle for small groups of developers. For example a CD burner program will consist of a command-line tool that actually burns the CD and a graphical user interface that allows users to implement it without having to learn about all the command line switches and in fact without using the command line at all. One advantage of this approach is that the developing work that was invested into the command-line program can be shared by many programs: The same CD-burner command-line program can be used as a “send-to-CD”-plug-in for a file manager application, for the “burn to CD” function of a music player and as the CD writer for a DVD backup tool. Another advantage is that splitting one big task into smaller parts allows the developers to provide several user interfaces for the same program.</p>
-<p>A computer algebra system (CAS) like <em>Maxima</em> fits into this framework. A CAS can provide the logic behind an arbitrary precision calculator application or it can do automatic transforms of formulas in the background of a bigger system (e.g., <a href="https://www.sagemath.org/">Sage</a>). Alternatively, it can be used directly as a free-standing system. <em>Maxima</em> can be accessed via a command line. Often, however, an interface like <em>wxMaxima</em> proves a more efficient way to access the software, especially for newcomers.</p>
+<h1 id="introduzione-a-wxmaxima"><span class="header-section-number">1</span> Introduzione a wxMaxima</h1>
+<h2 id="maxima-e-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> e wxMaxima</h2>
+<p>Nel dominio open source, i grandi sistemi sono normalmente suddivisi in progetti più piccoli che sono più facili da gestire per piccoli gruppi di sviluppatori. Ad esempio, un programma di masterizzazione di CD sarà costituito da uno strumento a riga di comando che effettivamente masterizza il CD e da un’interfaccia utente grafica che consente agli utenti di utilizzarlo senza dover conoscere tutte le opzioni della riga di comando, e di fatto senza utilizzare affatto la riga di comando. Un vantaggio di questo approccio è che il lavoro di sviluppo che è stato investito nel programma a riga di comando può essere condiviso da molti programmi: lo stesso programma a riga di comando del masterizzatore CD può essere utilizzato come plug-in “invia-al-CD” per un’applicazione di gestione file, per la funzione “masterizza su CD” di un lettore musicale e come masterizzatore di CD per uno strumento di backup su DVD. Un altro vantaggio è che suddividere una grande attività in parti più piccole consente agli sviluppatori di fornire diverse interfacce utente per lo stesso programma.</p>
+<p>Un sistema di algebra computazionale (CAS) come <em>Maxima</em> si inserisce in questo quadro. Un CAS può fornire la logica dietro un’applicazione di calcolatrice di precisione arbitraria o può fare trasformazioni automatiche di formule sullo sfondo di un sistema più grande (ad esempio, [Sage] (https://www.sagemath.org/)). In alternativa, può essere utilizzato direttamente come sistema indipendente. <em>Maxima</em> è utilizzabile tramite riga di comando. Spesso, tuttavia, un’interfaccia come <em>wxMaxima</em> si rivela un modo più efficiente per accedere al software, in particolare per i nuovi utenti.</p>
 <h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
-<p><em>Maxima</em> is a full-featured computer algebra system (CAS). A CAS is a program that can solve mathematical problems by rearranging formulas and finding a formula that solves the problem as opposed to just outputting the numeric value of the result. In other words, <em>Maxima</em> can serve as a calculator that gives numerical representations of variables, and it can also provide analytical solutions. Furthermore, it offers a range of numerical methods of analysis for equations or systems of equations that cannot be solved analytically.</p>
+<p><em>Maxima</em> è un sistema di algebra computazionale (CAS) completo. Un CAS è un programma in grado di risolvere problemi matematici riorganizzando le formule e trovando una formula che risolve il problema invece di emettere semplicemente il valore numerico del risultato. In altre parole, <em>Maxima</em> può fungere da calcolatrice che fornisce rappresentazioni numeriche di variabili e può anche fornire soluzioni analitiche. Inoltre, offre una gamma di metodi numerici di analisi per equazioni o sistemi di equazioni che non possono essere risolti analiticamente.</p>
 <figure>
-<img src="./maxima_screenshot.png" alt="Maxima screenshot, command line" id="img_maxima_screenshot" /><figcaption>Maxima screenshot, command line</figcaption>
+<img src="./maxima_screenshot.png" alt="schermata di Maxima, riga di comando" id="img_maxima_screenshot" /><figcaption>schermata di Maxima, riga di comando</figcaption>
 </figure>
-<p>Extensive documentation for <em>Maxima</em> is <a href="http://maxima.sourceforge.net/documentation.html">available in the internet</a>. Part of this documentation is also available in wxMaxima’s help menu. Pressing the Help key (on most systems the F1 key) causes <em>wxMaxima</em>’s context-sensitive help feature to automatically jump to <em>Maxima</em>’s manual page for the command at the cursor.</p>
+<p>Ampia documentazione per <em>Maxima</em> è [disponibile su Internet] (http://maxima.sourceforge.net/documentation.html). Parte di questa documentazione è disponibile anche nel menu di aiuto di wxMaxima. Premendo il tasto Guida (sulla maggior parte dei sistemi il tasto F1), la funzione di guida sensibile al contesto di <em>wxMaxima</em> passa automaticamente alla pagina di manuale di <em>Maxima</em> per il comando sul cursore.</p>
 <h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example <em>wxMaxima</em> allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the <em>wxMaxima</em> <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
@@ -213,16 +213,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Besides the input cells <em>wxMaxima</em> allows for text cells for documentation, image cells, title cells, chapter cells and section cells. Every cell has its own undo buffer so debugging by changing the values of several cells and then gradually reverting the unneeded changes is rather easy. Furthermore the worksheet itself has a global undo buffer that can undo cell edits, adds and deletes.</p>
 <p>The figure below shows different cell types (title cells, section cells, subsection cells, text cells, input/output cells and image cells).</p>
 <figure>
-<img src="./cell-example.png" alt="Example of different wxMaxima cells" id="img_cell-example" /><figcaption>Example of different wxMaxima cells</figcaption>
+<img src="./cell-example.png" alt="Esempio di celle wxMaxima diverse" id="img_cell-example" /><figcaption>Esempio di celle wxMaxima diverse</figcaption>
 </figure>
-<h3 id="cells"><span class="header-section-number">1.2.2</span> Cells</h3>
+<h3 id="celle"><span class="header-section-number">1.2.2</span> Celle</h3>
 <p>The worksheet is organized in cells. Each cell can contain other cells or the following types of content:</p>
 <ul>
 <li>one or more lines of <em>Maxima</em> input</li>
-<li>one or more image</li>
+<li>una o più immagini</li>
 <li>output of, or a question from, <em>Maxima</em></li>
 <li>a text block that can for example be used for documentation</li>
-<li>a title, section or a subsection.</li>
+<li>un titolo, sezione o subsezione.</li>
 </ul>
 <p>The default behavior of <em>wxMaxima</em> when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu, using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text.</p>
 <p>Additional commend text can be entered into a math cell if bracketed as follows: <code>/*This comment will not be sent to Maxima for evaluation*/</code>.</p>
@@ -689,7 +689,7 @@ Ordinary text</code></pre>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em>wxMaxima</em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.wxMaxima</code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em>wxMaxima</em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
-<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
+<h1 id="estensioni-a-maxima"><span class="header-section-number">2</span> Estensioni a <em>Maxima</em></h1>
 <p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session.</p>
 <h2 id="subscripted-variables"><span class="header-section-number">2.1</span> Subscripted variables</h2>
 <p>if <code>wxsubscripts</code> is set to true variable names of the format <code>x_y</code> are displayed using a subscript if</p>
@@ -893,7 +893,7 @@ Ordinary text</code></pre>
 <h2 id="marking-output-being-drawn-in-red"><span class="header-section-number">2.9</span> Marking output being drawn in red</h2>
 <p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red foreground.</p>
 <hr />
-<h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
+<h1 id="risoluzione-dei-problemi"><span class="header-section-number">3</span> Risoluzione dei problemi</h1>
 <h2 id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>On Un*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
@@ -996,7 +996,7 @@ Ordinary text</code></pre>
 <h2 id="wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="header-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</h2>
 <p><em>wxMaxima</em> delegates some big tasks like parsing <em>Maxima</em>’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that <em>wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
 <hr />
-<h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
+<h1 id="argomenti-della-riga-di-comando"><span class="header-section-number">5</span> Argomenti della riga di comando</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>
 <ul>
 <li><code>-v</code> or <code>--version</code>: Output the version information</li>
