@@ -1119,6 +1119,8 @@ protected:
   int m_center;
   int m_maxCenter;
   int m_maxDrop;
+  int m_worksheetRedrawCounter_old;
+  int m_RedrawCounter;
   CellType m_type;
   TextStyle m_textStyle;
   //! The font size is smaller in super- and subscripts.

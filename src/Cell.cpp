@@ -83,6 +83,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_configuration(config),
     m_cellPointers(GetCellPointers())
 {
+  m_RedrawCounter = 0;
   m_recalculate_maxDrop = true;
   m_recalculateWidths = true;
   m_recalculate_maxCenter = true;
@@ -420,7 +421,19 @@ int Cell::GetLineWidth()
  */
 void Cell::Draw(wxPoint point)
 {
+  m_RedrawCounter++;
   Configuration *configuration = *m_configuration;
+  if(configuration->GetWorksheetRedrawCounter() == m_worksheetRedrawCounter_old + 1)
+  {
+    if (m_RedrawCounter > 1)
+      wxLogMessage("Bug: %i subsequent redraws in one screen refresh for a cell reading \"%s\"",
+                   m_RedrawCounter, ToString().utf8_str());
+  }
+  if(configuration->GetWorksheetRedrawCounter() != m_worksheetRedrawCounter_old)
+  {
+    m_RedrawCounter = 0;
+    m_worksheetRedrawCounter_old = configuration->GetWorksheetRedrawCounter();
+  }
   if((point.x >= 0) && (point.y >= 0))
     SetCurrentPoint(point);
   

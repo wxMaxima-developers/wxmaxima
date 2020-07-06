@@ -438,7 +438,8 @@ Worksheet::~Worksheet()
 #define WORKING_AUTO_BUFFER 1
 
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
-{    
+{
+  m_configuration->StepWorksheetRedrawCounter();
   m_configuration->SetBackgroundBrush(
     *(wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor(),
                                         wxBRUSHSTYLE_SOLID)));

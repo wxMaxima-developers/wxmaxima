@@ -901,6 +901,8 @@ public:
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
   Style m_styles[NUMBEROFSTYLES];
+  void StepWorksheetRedrawCounter(){m_worksheetRedrawCounter++;}
+  int GetWorksheetRedrawCounter(){return m_worksheetRedrawCounter;}
 private:
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
@@ -1015,6 +1017,7 @@ private:
   bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
   long m_defaultPort;
+  int  m_worksheetRedrawCounter;
   long m_maxGnuplotMegabytes;
   wxString m_documentclass;
   wxString m_documentclassOptions;
