@@ -36,10 +36,6 @@ public:
   VisiblyInvalidCell(GroupCell *parent, Configuration **config);
   //! Constructor for a cell that shows that something is amiss using a custom tooltip
   VisiblyInvalidCell(GroupCell *parent, Configuration **config, wxString toolTip);
-  
-protected:
-  static wxString m_cellContents;
-  static wxString m_defaultToolTip;
 };
 
 #endif // VISIBLYINVALIDCELL_H
