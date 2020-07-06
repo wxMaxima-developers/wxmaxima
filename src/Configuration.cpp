@@ -56,6 +56,7 @@ Configuration::Configuration(wxDC *dc) :
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
+  m_worksheetRedrawCounter = 0;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
