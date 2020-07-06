@@ -152,13 +152,13 @@ void FracCell::RecalculateHeight(int fontsize)
     if (!m_exponent)
     {
       m_height = Num()->GetHeightList() + Denom()->GetHeightList() +
-        Scale_Px(4);
-      m_center = Num()->GetHeightList() + Scale_Px(2);
+        Scale_Px(6.5);
+      m_center = Num()->GetHeightList() + Scale_Px(3);
     }
     else
     {
-      m_height = wxMax(Num()->GetHeightList(), Denom()->GetHeightList());
-      m_center = wxMax(Num()->GetCenterList(), Denom()->GetCenterList());
+      m_height = wxMax(Num()->GetHeightList(), Denom()->GetHeightList()) + Scale_Px(6.5);
+      m_center = wxMax(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
     }
   }
   Cell::RecalculateHeight(fontsize);
@@ -193,20 +193,19 @@ void FracCell::Draw(wxPoint point)
     {
       num.x = point.x + m_horizontalGapLeft +
               (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedNum->GetFullWidth()) / 2;
-      num.y = point.y - m_displayedNum->GetHeightList() + m_displayedNum->GetCenterList() -
-              Scale_Px(2);
+      num.y = point.y - m_displayedNum->GetHeightList() + m_displayedNum->GetCenterList();
       m_displayedNum->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedDenom->GetFullWidth()) / 2;
-      denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(2);
+      denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
       m_displayedDenom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
-                    point.y,
+                     point.y + Scale_Px(2),
                     point.x + m_width - m_horizontalGapRight - (*m_configuration)->GetDefaultLineWidth() / 2,
-                    point.y
+                    point.y + Scale_Px(2)
         );
       UnsetPen();
     }
