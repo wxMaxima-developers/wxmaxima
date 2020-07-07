@@ -31,11 +31,11 @@
 Cell::CellPointers pointers(nullptr);
 
 Style &Style::operator=(const Style &) { return *this; }
-double Style::GetFontSize() const { return {}; }
+float Style::GetFontSize() const { return {}; }
 AFontName Style::Default_FontName() { return {}; }
 bool Style::SetItalic(bool) { return {}; }
 bool Style::SetFontName(AFontName) { return {}; }
-bool Style::SetFontSize(double) { return {}; }
+bool Style::SetFontSize(float) { return {}; }
 bool Style::IsFontOk() const { return {}; }
 Style const &Style::FromStockFont(wxStockGDI::Item)
 {

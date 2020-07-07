@@ -196,9 +196,9 @@ AFontName Style::GetFontName() const
 const wxString &Style::GetNameStr() const
 { return m.fontName.GetAsString(); }
 
-double Style::GetFontSize() const
+float Style::GetFontSize() const
 {
-  auto fontSize = m.fontSize;
+  auto fontSize = m.uFontSize * FontSize_Unit;
   wxASSERT(fontSize > 0);
   return fontSize;
 }
@@ -284,10 +284,16 @@ did_change Style::SetFontName(AFontName faceName)
   return true;
 }
 
-did_change Style::SetFontSize(double size)
+did_change Style::SetFontSize(float size)
 {
-  if (m.fontSize == size) return false;
-  m.fontSize = size;
+  auto const uSize = lround(size / FontSize_Unit);
+  return SetUFontSize(uSize);
+}
+
+did_change Style::SetUFontSize(int16_t uSize)
+{
+  if (m.uFontSize == uSize) return false;
+  m.uFontSize = uSize;
   m.fontHash = 0;
   return true;
 }
@@ -343,7 +349,7 @@ did_change Style::SetFontFaceFrom(const Style &o)
 
 did_change Style::SetFontFaceAndSizeFrom(const Style &o)
 {
-  return SetFontFaceFrom(o) | SetFontSize(o.GetFontSize());
+  return SetFontFaceFrom(o) | SetUFontSize(o.m.uFontSize);
 }
 
 size_t Style::GetFontHash() const
@@ -357,7 +363,7 @@ size_t Style::GetFontHash() const
     hash_ = MixHash(hash_, m.fontStyle);
     hash_ = MixHash(hash_, m.underlined << 1 | m.strikethrough << 3 | m.isNotOK << 5);
     hash_ = MixHash(hash_, m.fontName);
-    hash_ = MixHash(hash_, m.fontSize);
+    hash_ = MixHash(hash_, m.uFontSize);
     if (!hash_) hash_++;
     m.fontHash = hash_;
     m.font = 0;
@@ -371,7 +377,7 @@ bool Style::IsFontEqualTo(const Style &o_) const
   if (m.font && m.font == o.font) return true;
   return
     (!m.fontHash || !o.fontHash || m.fontHash == o.fontHash) &&
-    m.fontSize == o.fontSize &&
+    m.uFontSize == o.uFontSize &&
     m.family == o.family &&
     m.encoding == o.encoding &&
     m.weight == o.weight &&
@@ -403,9 +409,10 @@ bool Style::IsFontOk() const
   return m.isNotOK ? false : GetFont().IsOk();
 }
 
-const wxFont& Style::GetFontAt(double fontSize) const
+const wxFont& Style::GetFontAt(float fontSize) const
 {
-  if (fontSize == GetFontSize()) return GetFont();
+  auto const uFontSize = lround(fontSize / FontSize_Unit);
+  if (uFontSize == m.uFontSize) return GetFont();
   return Style(*this).FontSize(fontSize).GetFont();
 }
 
@@ -431,7 +438,7 @@ void Style::SetFromFontNoCache(const wxFont &font)
     m.weight = font.GetWeight();
 #endif
     m.fontName = AFontName(font.GetFaceName());
-    m.fontSize = GetFontSize(font);
+    m.uFontSize = lround(GetFontSize(font) / FontSize_Unit);
     GetFontHash();
   }
   else
@@ -443,7 +450,7 @@ bool Style::IsFractionalFontSizeSupported()
   return wxCHECK_VERSION(3,1,2);
 }
 
-double Style::GetFontSize(const wxFont &font)
+float Style::GetFontSize(const wxFont &font)
 {
 #if wxCHECK_VERSION(3,1,2)
   return font.GetFractionalPointSize();
@@ -451,7 +458,7 @@ double Style::GetFontSize(const wxFont &font)
   return font.GetPointSize();
 }
 
-void Style::SetFontSize(wxFont &font, double fontSize)
+void Style::SetFontSize(wxFont &font, float fontSize)
 {
 #if wxCHECK_VERSION(3,1,2)
   return font.SetFractionalPointSize(fontSize);

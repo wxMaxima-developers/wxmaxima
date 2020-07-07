@@ -34,6 +34,7 @@
 #include <wx/font.h>
 #include <wx/settings.h>
 #include <cstdint>
+#include <cmath>
 #include <functional>
 
 /*! An interned font face name, very quick to compare and hash.
@@ -116,7 +117,7 @@ class Style final
 public:
   Style() = default;
   Style(const Style &);
-  explicit Style(double fontSize) { m.fontSize = fontSize; }
+  explicit Style(float fontSize) { m.uFontSize = lround(fontSize / FontSize_Unit); }
 
   Style &operator=(const Style &);
   bool operator==(const Style &o) const = delete;
@@ -134,6 +135,8 @@ public:
   //! Gets a style that represents a stock font. The font is pre-cached.
   static const Style &FromStockFont(wxStockGDI::Item font);
 
+  constexpr static float FontSize_Unit = 0.05f;
+
   constexpr static wxFontFamily Default_Family = wxFONTFAMILY_DEFAULT;
   constexpr static wxFontEncoding Default_Encoding = wxFONTENCODING_DEFAULT;
   constexpr static wxFontWeight Default_Weight = wxFONTWEIGHT_NORMAL;
@@ -141,7 +144,7 @@ public:
   constexpr static bool Default_Underlined = false;
   constexpr static bool Default_Strikethrough = false;
   static AFontName Default_FontName();
-  constexpr static double Default_FontSize = 10.0;
+  constexpr static float Default_FontSize = 10.0f;
   static inline const wxColor &Default_Color() { return *wxBLACK; }
 
   wxFontFamily GetFamily() const;
@@ -156,7 +159,7 @@ public:
   bool IsStrikethrough() const;
   AFontName GetFontName() const;
   const wxString &GetNameStr() const;
-  double GetFontSize() const;
+  float GetFontSize() const;
   uint32_t GetRGBColor() const;
   wxColor GetColor() const { return wxColor(GetRGBColor()); }
 
@@ -172,7 +175,7 @@ public:
   did_change SetUnderlined(bool underlined = true);
   did_change SetStrikethrough(bool strikethrough = true);
   did_change SetFontName(AFontName fontName);
-  did_change SetFontSize(double size);
+  did_change SetFontSize(float size);
   did_change SetRGBColor(uint32_t rgb);
   did_change SetColor(const wxColor &color);
   did_change SetColor(wxSystemColour sysColour);
@@ -191,7 +194,7 @@ public:
   Style& Underlined(bool underlined = true) { return SetUnderlined(underlined), *this; }
   Style& Strikethrough(bool strikethrough = true) { return SetStrikethrough(strikethrough), *this; }
   Style& FontName(class AFontName fontName) { return SetFontName(fontName), *this; }
-  Style& FontSize(double size) { return SetFontSize(size), *this; }
+  Style& FontSize(float size) { return SetFontSize(size), *this; }
   Style& RGBColor(uint32_t rgb) { return SetRGBColor(rgb), *this; }
   Style& Color(const wxColor &color) { return SetColor(color), *this; }
   Style& Color(uint8_t r, uint8_t g, uint8_t b) { return SetColor({r, g, b}), *this; }
@@ -207,7 +210,7 @@ public:
   bool IsFontOk() const;
   bool HasFontCached() const { return m.fontHash && m.font; }
   const wxFont& GetFont() const { return HasFontCached() ? *m.font : LookupFont(); }
-  const wxFont& GetFontAt(double fontSize) const;
+  const wxFont& GetFontAt(float fontSize) const;
 
   //! Sets all font-related properties based on another font
   did_change SetFromFont(const wxFont&);
@@ -219,8 +222,8 @@ public:
   did_change SetFontFaceAndSizeFrom(const Style&);
 
   static bool IsFractionalFontSizeSupported();
-  static double GetFontSize(const wxFont &);
-  static void SetFontSize(wxFont &, double fontSize);
+  static float GetFontSize(const wxFont &);
+  static void SetFontSize(wxFont &, float fontSize);
 
   wxString GetDump() const;
 
@@ -230,10 +233,10 @@ private:
   Style &FromFontNoCache(const wxFont &);
   void SetFromFontNoCache(const wxFont &);
 
-  struct Data // POD, 48 bytes on 64-bit platforms
+  did_change SetUFontSize(int16_t uSize);
+
+  struct Data // POD, 40 bytes on 64-bit platforms
   {
-    // 8-byte members
-    double fontSize = Default_FontSize;
     // 8/4-byte members
     mutable const wxFont *font = nullptr;
     AFontName fontName = Default_FontName();
@@ -241,6 +244,7 @@ private:
     // 4-byte members
     uint32_t rgbColor = Default_Color().GetRGB();
     // 2-byte members
+    int16_t uFontSize = lround(Default_FontSize / FontSize_Unit);
     int16_t family = Default_Family;
     int16_t encoding = Default_Encoding;
     int16_t weight = Default_Weight;
@@ -254,6 +258,8 @@ private:
     static constexpr enum class NotOK_t {} NotOK = {};
     Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
   } m;
+  static_assert(sizeof(Data) <= 40,
+                "Style::Data is misaligned and grew too big.");
 
   size_t GetFontHash() const;
 
