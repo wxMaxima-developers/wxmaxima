@@ -7780,6 +7780,8 @@ bool Worksheet::ScrollToCaretIfNeeded()
 {
   if(!m_scrollToCaret)
     return false;
+
+  m_scrollToCaret = false;
   
   RecalculateIfNeeded();
   if (m_hCaretActive)
