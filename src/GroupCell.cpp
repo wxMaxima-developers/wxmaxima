@@ -562,8 +562,8 @@ void GroupCell::RecalculateHeightInput()
   // special case
   if (m_groupType == GC_TYPE_PAGEBREAK)
   {
-    m_width = configuration->GetCellBracketWidth();
-    m_height = 2;
+    m_inputWidth = m_width = configuration->GetCellBracketWidth();
+    m_inputHeight = m_height = 2;
     m_center = 0;
     Cell::RecalculateWidthsList((*m_configuration)->GetDefaultFontSize());
     return;
