@@ -230,6 +230,7 @@ void ParenCell::RecalculateHeight(int fontsize)
     m_charHeight1 = 2;
 
   m_open->RecalculateHeightList(fontsize);
+  m_innerCell->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
   if (m_isBrokenIntoLines)
