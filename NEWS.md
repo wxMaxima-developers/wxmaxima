@@ -1,7 +1,10 @@
 # Current
  * A new translation of the Turkish manual by Tufan Şirin
+ * Improved italian translation by Marco Ciampa
  * An Russian translation update by OlesyaGerasimenko
+ * A massive performance update
  * Better display of sqrt() cells
+ * Better display of fractions
  * Made sure we read in the whole .mac file when opening .mac files
  * As always many small additional bug fixes
 
