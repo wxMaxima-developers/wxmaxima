@@ -616,6 +616,75 @@ const Style &Style::FromStockFont(wxStockGDI::Item font)
   }
 }
 
+static bool TrySetFontName(Style &style, AFontName name)
+{
+  Style newStyle = style;
+  if (!wxFontEnumerator::IsValidFacename(name.GetAsString()))
+    return false;
+  newStyle.SetFontName(name);
+  if (!newStyle.IsFontOk())
+    return false;
+  style = newStyle;
+  return true;
+}
+
+Style Style::FactoryDefault()
+{
+  static Style style = []
+  {
+    auto const normal = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+    auto style = Style(AFontSize(12.0f));
+#ifdef __WXMSW__
+    if (TrySetFontName(style, AFontName::Arial()))
+      goto found;
+#endif
+#ifndef __WXMAC_
+    if (TrySetFontName(style, AFontName::Monaco()))
+      goto found;
+#endif
+    style.SetFontName(normal.GetFontName());
+    if (style.IsFontOk())
+      goto found;
+    style = {};
+  found:
+    style.ResolveToFont();
+    wxLogDebug("FactoryDefault Font: %s (%s)",
+               style.GetDump(),
+               style.GetFont().GetNativeFontInfoDesc());
+    return style;
+  }();
+  return style;
+}
+
+Style Style::FactoryMath()
+{
+  static Style style = []
+  {
+    auto style = Style(AFontSize(12.0f));
+#ifdef __WXMSW__
+    if (TrySetFontName(style, AFontName::Linux_Libertine_O()))
+      goto found;
+    if (TrySetFontName(style, AFontName::Linux_Libertine()))
+      goto found;
+#endif
+#ifdef __WXMAC_
+    if (TrySetFontName(style, AFontName::Monaco()))
+      goto found;
+#endif
+    style.SetFamily(wxFONTFAMILY_MODERN);
+    if (style.IsFontOk())
+      goto found;
+    style = {};
+  found:
+    style.ResolveToFont();
+    wxLogDebug("FactoryMath Font: %s (%s)",
+               style.GetDump(),
+               style.GetFont().GetNativeFontInfoDesc());
+    return style;
+  }();
+  return style;
+}
+
 wxString Style::GetDump() const
 {
   return wxString::Format("%5.2fpt %c%c%c%c%c \"%s\" fam:%d enc:%d",

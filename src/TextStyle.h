@@ -141,6 +141,10 @@ public:
   static const Style &FromFont(const wxFont &font);
   //! Gets a style that represents a stock font. The font is pre-cached.
   static const Style &FromStockFont(wxStockGDI::Item font);
+  //! Gets a "factory" default text style for TS_DEFAULT
+  static Style FactoryDefault();
+  //! Gets a "factory" default math style (for Configuration::GetMathFont and GetMathFontSize)
+  static Style FactoryMath();
 
   constexpr static wxFontFamily Default_Family{wxFONTFAMILY_DEFAULT};
   constexpr static wxFontEncoding Default_Encoding{wxFONTENCODING_DEFAULT};
@@ -336,6 +340,7 @@ enum TextStyle
   TS_CODE_OPERATOR       = 35,
   TS_CODE_LISP           = 36,
   TS_CODE_ENDOFLINE      = 37,
+  TS_MATH                = 38,
   NUMBEROFSTYLES //!< This is not a style, but its value tells us how many styles are defined
 };
 
