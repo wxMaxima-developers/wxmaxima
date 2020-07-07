@@ -30,7 +30,6 @@
 
 #include "SumCell.h"
 #include "TextCell.h"
-#include "FontCache.h"
 #include "VisiblyInvalidCell.h"
 
 SumCell::SumCell(GroupCell *parent, Configuration **config) :
@@ -111,18 +110,13 @@ void SumCell::RecalculateWidths(int fontsize)
       wxDC *dc = configuration->GetDC();
       double fontsize1 = Scale_Px(configuration->GetMathFontSize());
 
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Italic(false)
-                              .Bold(false)
-                              .Underlined(false)
-                              .FaceName(configuration->GetTeXCMEX()));
+      auto style = Style(fontsize1)
+                     .FontName(configuration->GetTeXCMEX());
 
-      if (!font.IsOk())
+      if (!style.IsFontOk())
         configuration->CheckTeXFonts(false);
 
-      dc->SetFont(font);
+      dc->SetFont(style.GetFont());
 #if 0
       dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signHeight);
       m_signWCenter = m_signWidth / 2;
@@ -183,21 +177,16 @@ void SumCell::Draw(wxPoint point)
       double fontsize1 = Scale_Px(configuration->GetMathFontSize());
       wxASSERT(fontsize1 > 0);
 
-      auto req = wxFontInfo(fontsize1)
-                   .Family(wxFONTFAMILY_MODERN)
-                   .Italic(false)
-                   .Bold(false)
-                   .Underlined(false)
-                   .FaceName(configuration->GetTeXCMEX());
+      auto style = Style(fontsize1)
+                     .FontName(configuration->GetTeXCMEX());
 
-      wxFont font = FontCache::GetAFont(req);
-
-      if (!font.IsOk()) {
-        FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-        font = FontCache::GetAFont(req);
+      if (!style.IsFontOk())
+      {
+        style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+        style.SetFontSize(fontsize1);
       }
 
-      dc->SetFont(font);
+      dc->SetFont(style.GetFont());
 #if 0
       dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
                    sign.x + m_signWCenter - m_signWidth / 2,

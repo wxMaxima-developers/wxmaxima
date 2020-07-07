@@ -28,7 +28,6 @@
  */
 
 #include "ParenCell.h"
-#include "FontCache.h"
 #include "VisiblyInvalidCell.h"
 
 ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
@@ -102,14 +101,13 @@ void ParenCell::SetFont(int fontsize)
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  wxFontInfo req;
-  wxFont font;
-  if(m_bigParenType == Configuration::ascii)
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, fontsize));
+  Style style;
+  if (m_bigParenType == Configuration::ascii)
+    style = configuration->GetStyle(TS_FUNCTION, fontsize);
   else
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize()));
+    style = configuration->GetStyle(TS_FUNCTION, configuration->GetMathFontSize());
 
-  wxASSERT(req.GetPointSize() > 0);
+  wxASSERT(style.GetFontSize() > 0);
 
   switch(m_bigParenType)
   {
@@ -118,37 +116,34 @@ void ParenCell::SetFont(int fontsize)
     break;
 
   case Configuration::assembled_unicode_fallbackfont:
-    req.FaceName(wxT("Linux Libertine"));
+    style.SetFontName(AFontName::Linux_Libertine());
     break;
 
   case Configuration::assembled_unicode_fallbackfont2:
-    req.FaceName(wxT("Linux Libertine O"));
+    style.SetFontName(AFontName::Linux_Libertine_O());
     break;
 
   default:
     break;
   }
 
-  req.Italic(false).Underlined(false);
-  font = FontCache::GetAFont(req);
-  if (!font.IsOk())
+  style.Italic(false).Underlined(false);
+
+  if (!style.IsFontOk())
   {
-    req.Family(wxFONTFAMILY_MODERN)
-      .Italic(false)
-      .FaceName(wxEmptyString)
-      .Underlined(false);
-    font = FontCache::GetAFont(req);
+    style.SetFamily(wxFONTFAMILY_MODERN);
+    style.SetFontName({});
   }
 
-  if (!font.IsOk())
-    font = FontCache::GetAFont(*wxNORMAL_FONT);
+  if (!style.IsFontOk())
+    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
 
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())
     m_bigParenType = Configuration::handdrawn;
 
   if(m_bigParenType != Configuration::handdrawn)
-    dc->SetFont(font);
+    dc->SetFont(style.GetFont());
 
   SetForeground();
 }

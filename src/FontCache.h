@@ -23,65 +23,38 @@
 #define FONTCACHE_H
 
 #include "precomp.h"
+#include "TextStyle.h"
 #include <wx/font.h>
 #include <functional>
+#include <list>
 #include <unordered_map>
 
 /*! \file
  * This file implements the wxFont cache system.
  */
 
-namespace std {
-
-template <>
-struct hash<wxSize> {
-  std::size_t operator()(wxSize size) const;
-};
-
-template <>
-struct hash<wxFontInfo> {
-  std::size_t operator()(const wxFontInfo &fi) const;
-};
-
-template <>
-struct equal_to<wxFontInfo> {
-  bool operator()(const wxFontInfo &l, const wxFontInfo &r) const;
-};
-
-} // namespace std
-
-/*! Provides extension methods for the wxFontInfo class.
- */
-namespace FontInfo
-{
-  wxFontInfo GetFor(const wxFont &font);
-  void CopyWithoutSize(const wxFontInfo &src, wxFontInfo &dst);
-  void CopyWithoutSize(const wxFont *font, wxFontInfo &dst);
-
-  void SetPointSize(wxFontInfo &info, int p);
-  void SetPointSize(wxFontInfo &info, float p);
-  void SetPointSize(wxFontInfo &info, double p);
-  void SetPixelSize(wxFontInfo &info, wxSize size);
-}
-
 class FontCache final
 {
+  static constexpr size_t tempFontCount = 8;
+  using TempFonts = std::list<std::pair<const Style, wxFont>>;
   FontCache(const FontCache &) = delete;
   FontCache &operator=(const FontCache &) = delete;
-  std::unordered_map<wxFontInfo, wxFont> m_cache;
-  bool m_enabled = true;
+  std::unordered_map<Style, wxFont, StyleFontHasher, StyleFontEquals> m_cache;
+  //! Used to store the last few font instances when the cache is disabled
+  TempFonts m_temporaryFonts;
   int m_hits = 0;
   int m_misses = 0;
+  const bool m_enabled = true;
+  const std::pair<const Style, wxFont> &GetStyleFont(const Style &style, const wxFont &withFont = {});
+  const std::pair<const Style, wxFont> &GetStyleFontUncached(const Style &style, const wxFont &withFont = {});
 public:
-  FontCache() = default;
+  FontCache();
   ~FontCache();
-  wxFont GetFont(const wxFontInfo &request);
-  wxFontInfo AddFont(wxFontInfo info, const wxFont &font);
-  wxFontInfo AddFont(const wxFont &font);
-  bool IsOk(const wxFontInfo &request);
+  const wxFont &GetFont(const Style &style);
+  const Style &AddFont(const wxFont &font);
+  bool IsEnabled() const { return m_enabled; }
   int GetHits() const { return m_hits; }
   int GetMisses() const { return m_misses; }
-  void SetEnabled(bool enabled = true) { m_enabled = enabled; }
   void Clear();
   static FontCache &Get()
   {
@@ -94,23 +67,10 @@ public:
 #endif // _WIN32
     return globalCache;
   }
-  static wxFont GetAFont(const wxFontInfo &request)
-  {
-    return Get().GetFont(request);
-  }
-  static wxFont GetAFont(const wxFont &font)
-  {
-    Get().AddFont(font);
-    return font;
-  }
-  static wxFontInfo AddAFont(const wxFont &font)
-  {
-    return Get().AddFont(font);
-  }
-  static wxFontInfo AddAFont(const wxFontInfo &info, const wxFont &font)
-  {
-    return Get().AddFont(info, font);
-  }
+  static const std::pair<const Style, wxFont> &GetAStyleFont(const Style &style)
+  { return Get().GetStyleFont(style); }
+  static const wxFont &GetAFont(const Style &style) { return Get().GetFont(style); }
+  static const Style &AddAFont(const wxFont &font) { return Get().AddFont(font); }
 };
 
 #endif  // FONTCACHE_H

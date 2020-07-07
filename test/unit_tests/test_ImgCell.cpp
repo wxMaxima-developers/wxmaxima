@@ -30,21 +30,35 @@
 
 Cell::CellPointers pointers(nullptr);
 
-long Configuration::Scale_Px(double) const { return 1; }
-wxColour Configuration::GetColor(TextStyle) { return {}; }
-Cell::CellPointers *Cell::GetCellPointers() const { return &pointers; }
-wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &) { return {}; }
-int ErrorRedirector::m_messages_logPaneOnly;
+Style &Style::operator=(const Style &) { return *this; }
+float Style::GetFontSize() const { return {}; }
+AFontName Style::Default_FontName() { return {}; }
+bool Style::SetItalic(bool) { return {}; }
+bool Style::SetFontName(AFontName) { return {}; }
+bool Style::SetFontSize(float) { return {}; }
+bool Style::IsFontOk() const { return {}; }
+Style const &Style::FromStockFont(wxStockGDI::Item)
+{
+  static const Style s;
+  return s;
+}
+wxFont const &Style::LookupFont() const
+{
+  static const wxFont font;
+  return font;
+}
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) {}
 Configuration::~Configuration() {}
+long Configuration::Scale_Px(double) const { return 1; }
+wxFontStyle Configuration::IsItalic(long) const { return {}; }
+wxColour Configuration::GetColor(TextStyle) { return {}; }
+Style Configuration::GetStyle(TextStyle, long) const { return {}; }
+Cell::CellPointers *Cell::GetCellPointers() const { return &pointers; }
 
-wxFontStyle Configuration::IsItalic(long st) const { return {}; }
-wxFont Configuration::GetFont(TextStyle, long) const { return {}; }
-wxFontInfo FontInfo::GetFor(const wxFont &) { return {}; }
-void FontInfo::SetPointSize(wxFontInfo &, int) {}
-FontCache::~FontCache() {}
-wxFont FontCache::GetFont(const wxFontInfo &) { return {}; }
+wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &) { return {}; }
+
+int ErrorRedirector::m_messages_logPaneOnly;
 
 template <typename C>
 wxString HexEncoding(C &&bits)

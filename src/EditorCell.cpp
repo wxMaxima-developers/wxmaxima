@@ -31,7 +31,6 @@
 #include <wx/regex.h>
 
 #include "EditorCell.h"
-#include "FontCache.h"
 #include "wxMaxima.h"
 #include "MarkDown.h"
 #include "wxMaximaFrame.h"
@@ -1033,32 +1032,25 @@ void EditorCell::SetFont()
   if(m_fontSize < 4)
     m_fontSize = 4;
 
-  wxFont font =
-    FontCache::GetAFont(wxFontInfo(m_fontSize)
-                          .Family(wxFONTFAMILY_MODERN)
-                          .FaceName(m_fontName)
-                          .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
-                          .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                          .Underlined(m_underlined));
-  if (!font.IsOk())
+  auto style = Style(m_fontSize)
+                 .FontName(m_fontName)
+                 .FontStyle(m_fontStyle)
+                 .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
+                 .Underlined(m_underlined);
+
+  if (!style.IsFontOk())
   {
     wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
-    font =
-      FontCache::GetAFont(wxFontInfo(m_fontSize)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
-                            .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                            .Underlined(m_underlined));
+    style.SetFontName({});
   }
-  if (!font.IsOk()) {
-    auto req = wxFontInfo(m_fontSize);
-    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-    font = FontCache::GetAFont(req);
+  if (!style.IsFontOk()) {
+    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+    style.SetFontSize(m_fontSize);
   }
 
-  wxASSERT_MSG(font.IsOk(),
+  wxASSERT_MSG(style.IsFontOk(),
                _("Seems like something is broken with a font."));
-  dc->SetFont(font);
+  dc->SetFont(style.GetFont());
 }
 
 wxSize EditorCell::GetTextSize(wxString const &text)

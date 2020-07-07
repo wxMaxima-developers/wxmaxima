@@ -27,7 +27,6 @@
 */
 
 #include "IntCell.h"
-#include "FontCache.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 
@@ -126,21 +125,15 @@ void IntCell::RecalculateWidths(int fontsize)
     double fontsize1 = Scale_Px(fontsize * 1.5);
     wxASSERT(fontsize1 > 0);
 
-    wxFont font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(false)
-                            .Bold(false)
-                            .Underlined(false)
-                            .FaceName(configuration->GetTeXCMEX()));
-    if (!font.IsOk())
+    Style style = Style(fontsize1)
+                    .FontName(configuration->GetTeXCMEX());
+    if (!style.IsFontOk())
     {
-      auto req = wxFontInfo(fontsize1);
-      FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-      font = FontCache::GetAFont(req);
+      style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+      style.SetFontSize(fontsize1);
     }
 
-    dc->SetFont(font);
+    dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("\u005A"), &m_signWidth, &m_signHeight);
 
 #if defined __WXMSW__
@@ -162,22 +155,16 @@ void IntCell::RecalculateWidths(int fontsize)
     double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
     wxASSERT(fontsize1 > 0);
 
-    wxFont font =
-      FontCache::GetAFont(wxFontInfo(fontsize1)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Style(wxFONTSTYLE_NORMAL)
-                            .Weight(wxFONTWEIGHT_NORMAL)
-                            .Underlined(false)
-                            .FaceName(configuration->GetSymbolFontName()));
+    Style style = Style(fontsize1)
+      .FontName(configuration->GetSymbolFontName());
 
-    if(!font.IsOk())
+    if (!style.IsFontOk())
     {
-      auto req = wxFontInfo(fontsize1);
-      FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-      font = FontCache::GetAFont(req);
+      style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+      style.SetFontSize(fontsize1);
     }
 
-    dc->SetFont(font);
+    dc->SetFont(style.GetFont());
     dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
 
     m_width = m_signWidth +
@@ -244,18 +231,13 @@ void IntCell::Draw(wxPoint point)
       double fontsize1 = Scale_Px(m_fontSize * 1.5);
       wxASSERT(fontsize1 > 0);
 
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Italic(false)
-                              .Bold(false)
-                              .Underlined(false)
-                              .FaceName(configuration->GetTeXCMEX()));
+      Style style = Style(fontsize1)
+        .FontName(configuration->GetTeXCMEX());
 
-      if (!font.IsOk())
+      if (!style.IsFontOk())
         configuration->CheckTeXFonts(false);
 
-      dc->SetFont(font);
+      dc->SetFont(style.GetFont());
       dc->DrawText(wxT("\u005A"),
                   sign.x,
                   sign.y - m_signTop);
@@ -268,15 +250,10 @@ void IntCell::Draw(wxPoint point)
       int m_signWCenter = m_signWidth / 2;
       wxASSERT(fontsize1 > 0);
 
-      wxFont font =
-        FontCache::GetAFont(wxFontInfo(fontsize1)
-                              .Family(wxFONTFAMILY_MODERN)
-                              .Style(wxFONTSTYLE_NORMAL)
-                              .Weight(wxFONTWEIGHT_NORMAL)
-                              .Underlined(false)
-                              .FaceName(configuration->GetSymbolFontName()));
+      Style style = Style(fontsize1)
+                      .FontName(configuration->GetSymbolFontName());
 
-      dc->SetFont(font);
+      dc->SetFont(style.GetFont());
       dc->DrawText(INTEGRAL_TOP,
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y - (m_signHeight + 1) / 2);

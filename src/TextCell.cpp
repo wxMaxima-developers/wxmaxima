@@ -28,8 +28,6 @@
  */
 
 #include "TextCell.h"
-#include "GroupCell.h"
-#include "FontCache.h"
 #include "wx/config.h"
 
 TextCell::TextCell(GroupCell *parent, Configuration **config,
@@ -203,6 +201,7 @@ void TextCell::UpdateToolTip()
   }
   else
   {
+    // FIXME This is a hot path
     if((m_text.Contains(wxT("LINE SEARCH FAILED. SEE")))||
        (m_text.Contains(wxT("DOCUMENTATION OF ROUTINE MCSRCH"))) ||
        (m_text.Contains(wxT("ERROR RETURN OF LINE SEARCH:"))) ||
@@ -555,26 +554,24 @@ void TextCell::RecalculateWidths(int fontsize)
         text = wxT("(") + m_userDefinedLabel + wxT(")");
         m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
       }
-      
-      
-      wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
+
+      Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
       
       m_width = Scale_Px(configuration->GetLabelWidth());
       wxSize labelSize = GetTextSize(text);
       wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                    _("Seems like something is broken with the maths font."));
-      
+
       while ((labelSize.GetWidth() >= m_width) && (m_fontSize > 2))
       {
 #if wxCHECK_VERSION(3, 1, 2)
         m_fontSize -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-        font.SetFractionalPointSize(Scale_Px(m_fontSize));
 #else
         m_fontSize -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-        font.SetPointSize(Scale_Px(m_fontSize));
 #endif
-        dc->SetFont(font);
-          labelSize = GetTextSize(text);
+        style.SetFontSize(Scale_Px(m_fontSize));
+        dc->SetFont(style.GetFont());
+        labelSize = GetTextSize(text);
       } 
       m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
       m_height = labelSize.GetHeight();
@@ -694,13 +691,8 @@ void TextCell::Draw(wxPoint point)
 
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
-  wxFont font = (*m_configuration)->GetFont(m_textStyle, GetScaledTextSize());
-  font.SetPointSize(GetScaledTextSize());
-  if((*m_configuration)->m_styles[m_textStyle].Bold())
-    font.SetWeight(wxFONTWEIGHT_BOLD);
-  else
-    font.SetWeight(wxFONTWEIGHT_NORMAL);
-  dc->SetFont(font);
+  auto style = (*m_configuration)->GetStyle(m_textStyle, GetScaledTextSize());
+  dc->SetFont(style.GetFont());
 }
 
 void TextCell::SetFont(int fontsize)
@@ -731,22 +723,15 @@ void TextCell::SetFont(int fontsize)
       m_fontSize = fontsize;
   }
 
-  wxFont font = configuration->GetFont(m_textStyle, fontsize);
-  auto req = FontInfo::GetFor(font);
-  
-  if (!font.IsOk())
-  {
-    req.Family(wxFONTFAMILY_MODERN).FaceName(wxEmptyString);
-    font = FontCache::GetAFont(req);
-  }
-  
-  if (!font.IsOk())
-  {
-    font = *wxNORMAL_FONT;
-    req = FontInfo::GetFor(font);
-  }
+  auto style = configuration->GetStyle(m_textStyle, fontsize);
 
-  if(m_fontSize < 4)
+  if (!style.IsFontOk())
+    style.SetFontName({});
+  
+  if (!style.IsFontOk())
+    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+
+  if (m_fontSize < 4)
     m_fontSize = 4;
   
   // Mark special variables that are printed as ordinary letters as being special.
@@ -754,35 +739,23 @@ void TextCell::SetFont(int fontsize)
       ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
   {
     if((*m_configuration)->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
-    {
-      req.Italic(false);
-    }
+      style.SetItalic(false);
     else
-    {
-      req.Italic(true);
-    }
+      style.SetItalic(true);
   }
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
-  FontInfo::SetPointSize(req, Scale_Px(m_fontSize));
-  font = FontCache::GetAFont(req);
-  font.SetPointSize(Scale_Px(m_fontSize));
+  style.SetFontSize(Scale_Px(m_fontSize));
 
-  wxASSERT_MSG(font.IsOk(),
+  wxASSERT_MSG(style.IsFontOk(),
                _("Seems like something is broken with a font."));
-  if((*m_configuration)->m_styles[m_textStyle].Bold())
-    font.SetWeight(wxFONTWEIGHT_BOLD);
-  else
-    font.SetWeight(wxFONTWEIGHT_NORMAL);
-  dc->SetFont(font);
+  dc->SetFont(style.GetFont());
   
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())
   {
-    req = wxFontInfo(10);
-    font = FontCache::GetAFont(req);
-    font.SetPointSize(Scale_Px(m_fontSize));
-    dc->SetFont(font);
+    style = Style(Scale_Px(m_fontSize));
+    dc->SetFont(style.GetFont());
   }
 }
 
