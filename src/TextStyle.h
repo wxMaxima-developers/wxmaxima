@@ -104,6 +104,9 @@ template <> struct std::hash<AFontName> final
   }
 };
 
+static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
+{ return (0xFF & r) | ((0xFF & g) << 8) | ((0xFF & b) << 16); }
+
 /*! A class that carries text styling information.
  *
  * It covers the characteristics of the font as well as other aspects of the style,
@@ -143,9 +146,10 @@ public:
   constexpr static wxFontStyle Default_FontStyle = wxFONTSTYLE_NORMAL;
   constexpr static bool Default_Underlined = false;
   constexpr static bool Default_Strikethrough = false;
-  static AFontName Default_FontName();
   constexpr static float Default_FontSize = 10.0f;
-  static inline const wxColor &Default_Color() { return *wxBLACK; }
+  constexpr static uint32_t Default_ColorRGB = MAKE_RGB(0, 0, 0);
+  static AFontName Default_FontName();
+  static const wxColor &Default_Color();
 
   wxFontFamily GetFamily() const;
   wxFontEncoding GetEncoding() const;
@@ -238,13 +242,13 @@ private:
   struct Data // POD, 40 bytes on 64-bit platforms
   {
     // 8/4-byte members
-    mutable const wxFont *font = nullptr;
     AFontName fontName = Default_FontName();
+    mutable const wxFont *font = nullptr;
     mutable size_t fontHash = 0;
     // 4-byte members
-    uint32_t rgbColor = Default_Color().GetRGB();
+    uint32_t rgbColor = Default_ColorRGB;
     // 2-byte members
-    int16_t uFontSize = lround(Default_FontSize / FontSize_Unit);
+    int16_t uFontSize = int16_t(Default_FontSize / FontSize_Unit + 0.5f);
     int16_t family = Default_Family;
     int16_t encoding = Default_Encoding;
     int16_t weight = Default_Weight;

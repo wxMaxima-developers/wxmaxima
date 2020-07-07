@@ -506,6 +506,13 @@ AFontName Style::Default_FontName()
   return fontName;
 }
 
+const wxColor &Style::Default_Color()
+{
+  using colorULong = unsigned long;
+  static const wxColor color{colorULong(Default_ColorRGB)};
+  return color;
+}
+
 static const wxString k_color = wxT("%s/color");
 static const wxString k_bold = wxT("%s/bold");
 static const wxString k_light = wxT("%s/light");
