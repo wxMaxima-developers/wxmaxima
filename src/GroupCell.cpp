@@ -356,7 +356,6 @@ void GroupCell::RemoveOutput()
 
   m_isHidden = false;
 
-  m_outputHeight = 0;
   m_height = m_inputHeight;
   if(m_inputLabel)
     m_width = m_inputLabel->GetFullWidth();

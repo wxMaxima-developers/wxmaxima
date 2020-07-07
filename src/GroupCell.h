@@ -504,7 +504,7 @@ protected:
   wxRect m_outputRect;
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;
-  int m_inputWidth, m_inputHeight, m_outputWidth, m_outputHeight;
+  int m_inputWidth, m_inputHeight;
   //! The number of cells the current group contains (-1, if no GroupCell)
   int m_cellsInGroup;
   int m_numberedAnswersCount;
