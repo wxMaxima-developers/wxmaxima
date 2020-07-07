@@ -84,6 +84,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_cellPointers(GetCellPointers())
 {
   m_RedrawCounter = 0;
+  m_worksheetRedrawCounter_old = 0;
   m_recalculate_maxDrop = true;
   m_recalculateWidths = true;
   m_recalculate_maxCenter = true;
