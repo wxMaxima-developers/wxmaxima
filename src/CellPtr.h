@@ -86,7 +86,7 @@ class Observed
     //! References the control block.
     const ControlBlock *Ref(const CellPtrBase *cellptr) const {
       if (CELLPTR_LOG_REFS)
-        wxLogDebug("%p CB::Ref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount+1, this, m_object);
+        wxLogMessage("%p CB::Ref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount+1, this, m_object);
       else
         wxUnusedVar(cellptr);
       ++m_refCount;
@@ -106,7 +106,7 @@ class Observed
     const ControlBlock *Deref(const CellPtrBase *cellptr) const
     {
       if (CELLPTR_LOG_REFS)
-        wxLogDebug("%p CB::Deref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount-1, this, m_object);
+        wxLogMessage("%p CB::Deref (%d->%d) cb=%p obj=%p", cellptr, m_refCount, m_refCount-1, this, m_object);
       else
         wxUnusedVar(cellptr);
       wxASSERT(m_refCount > 1 || (m_refCount == 1 && this != &empty));
@@ -154,7 +154,7 @@ protected:
   explicit CellPtrBase(Observed *obj = nullptr) : m_cb(Ref(obj))
   {
     ++m_instanceCount;
-    if (CELLPTR_LOG_INSTANCES) wxLogDebug("%p->CellPtr(%p) cb=%p", this, obj, m_cb);
+    if (CELLPTR_LOG_INSTANCES) wxLogMessage("%p->CellPtr(%p) cb=%p", this, obj, m_cb);
   }
 
   CellPtrBase(const CellPtrBase &o) : CellPtrBase(o.base_get()) {}
@@ -163,7 +163,7 @@ protected:
   {
     ++m_instanceCount;
     if (CELLPTR_LOG_INSTANCES)
-      wxLogDebug("%p->Cellptr(&&%p) cb=%p<->%p", this, &o, m_cb, o.m_cb);
+      wxLogMessage("%p->Cellptr(&&%p) cb=%p<->%p", this, &o, m_cb, o.m_cb);
     using namespace std;
     swap(m_cb, o.m_cb);
   }
@@ -172,7 +172,7 @@ protected:
   {
     --m_instanceCount;
     if (CELLPTR_LOG_INSTANCES)
-      wxLogDebug("%p->~CellPtr() cb=%p obj=%p", this, m_cb, m_cb->Get());
+      wxLogMessage("%p->~CellPtr() cb=%p obj=%p", this, m_cb, m_cb->Get());
     wxASSERT(m_cb);
     m_cb = ControlBlock::Deref(m_cb, this);
   }
@@ -188,7 +188,7 @@ protected:
   CellPtrBase &operator=(CellPtrBase &&o)
   {
     if (CELLPTR_LOG_INSTANCES)
-      wxLogDebug("%p->CellPtr::operator=(&&%p) cb=%p<->%p", this, &o, m_cb, o.m_cb);
+      wxLogMessage("%p->CellPtr::operator=(&&%p) cb=%p<->%p", this, &o, m_cb, o.m_cb);
     using namespace std;
     swap(m_cb, o.m_cb);
     return *this;
@@ -199,7 +199,7 @@ protected:
     if (obj != m_cb->Get()) {
       wxASSERT(!obj || m_cb != obj->m_cb);
       if (CELLPTR_LOG_REFS)
-        wxLogDebug("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->Get(), obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
+        wxLogMessage("%p->CellPtr::reset(%p->%p) cb=%p->%p", this, m_cb->Get(), obj, m_cb, obj ? obj->m_cb : &ControlBlock::empty);
       m_cb = ControlBlock::Deref(m_cb, this);
       m_cb = Ref(obj); //-V519
     } else {
