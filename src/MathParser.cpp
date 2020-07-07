@@ -36,6 +36,7 @@
 #include "SubCell.h"
 #include "SqrtCell.h"
 #include "LimitCell.h"
+#include "ListCell.h"
 #include "MatrCell.h"
 #include "ParenCell.h"
 #include "AbsCell.h"
@@ -119,8 +120,8 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
     m_innerTags[wxT("ie")] = &MathParser::ParseSubSupTag;
     m_innerTags[wxT("mmultiscripts")] = &MathParser::ParseMmultiscriptsTag;
     m_innerTags[wxT("lm")] = &MathParser::ParseLimitTag;
-    m_innerTags[wxT("r")] = &MathParser::ParseTagContents;
-    m_innerTags[wxT("mrow")] = &MathParser::ParseTagContents;
+    m_innerTags[wxT("r")] = &MathParser::ParseRowTag;
+    m_innerTags[wxT("mrow")] = &MathParser::ParseRowTag;
     m_innerTags[wxT("tb")] = &MathParser::ParseTableTag;
     m_innerTags[wxT("mth")] = &MathParser::ParseMthTag;
     m_innerTags[wxT("line")] = &MathParser::ParseMthTag;
@@ -186,12 +187,27 @@ Cell *MathParser::ParseMtdTag(wxXmlNode *node)
   return retval;
 }
 
-Cell *MathParser::ParseTagContents(wxXmlNode *node)
+Cell *MathParser::ParseRowTag(wxXmlNode *node)
 {
-  Cell *tmp = NULL;
-  if((node != NULL) && (node->GetChildren() != NULL))
-    tmp = ParseTag(node->GetChildren(), true);
-  return tmp;
+  if (node->GetAttribute(wxT("list")) == wxT("true"))
+  {
+    wxXmlNode *child = node->GetChildren();
+    child = SkipWhitespaceNode(child);
+    ListCell *cell = new ListCell(NULL, m_configuration);
+    // No special Handling for NULL args here: They are completely legal in this case.
+    cell->SetInner(ParseTag(child, true), m_ParserStyle);
+    cell->SetHighlight(m_highlight);
+    cell->SetStyle(TS_VARIABLE);
+    ParseCommonAttrs(node, cell);
+    return cell;
+  }
+  else
+  {
+    Cell *tmp = NULL;
+    if((node != NULL) && (node->GetChildren() != NULL))
+      tmp = ParseTag(node->GetChildren(), true);
+    return tmp;
+  }
 }
 
 Cell *MathParser::ParseHighlightTag(wxXmlNode *node)
@@ -206,12 +222,17 @@ Cell *MathParser::ParseHighlightTag(wxXmlNode *node)
 
 Cell *MathParser::ParseMiscTextTag(wxXmlNode *node)
 {
-  TextStyle style = TS_DEFAULT;
-  if (node->GetAttribute(wxT("type")) == wxT("error"))
-    style = TS_ERROR;
-  if (node->GetAttribute(wxT("type")) == wxT("warning"))
-    style = TS_WARNING;
-  return ParseText(node->GetChildren(), style);
+  if (node->GetAttribute(wxT("listdelim")) == wxT("true"))
+    return NULL;
+  else
+  {
+    TextStyle style = TS_DEFAULT;
+    if (node->GetAttribute(wxT("type")) == wxT("error"))
+      style = TS_ERROR;
+    if (node->GetAttribute(wxT("type")) == wxT("warning"))
+      style = TS_WARNING;
+    return ParseText(node->GetChildren(), style);
+  }
 }
 
 Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
@@ -1030,20 +1051,22 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
 
       Cell * (MathParser::* function)(wxXmlNode *node) = m_innerTags[tagName];
       if (function != NULL)
-          tmp =  CALL_MEMBER_FN(*this, function)(node);
-      
+        tmp =  CALL_MEMBER_FN(*this, function)(node);
 //      if ((tmp == NULL) && (node->GetChildren()))
 //        tmp = ParseTag(node->GetChildren());
 
-      if(tmp == NULL)
+      if((tmp == NULL) && ((node->GetAttribute(wxT("listdelim")) != wxT("true"))))
         tmp = new VisiblyInvalidCell(NULL, m_configuration,
                                      wxString::Format(m_unknownXMLTagToolTip, tagName.utf8_str()));
 
-      ParseCommonAttrs(node, tmp);
-      if (cell == NULL)
-        cell = tmp;
-      else
-        cell->AppendCell(tmp);
+      if(tmp != NULL)
+      {
+        ParseCommonAttrs(node, tmp);
+        if (cell == NULL)
+          cell = tmp;
+        else
+          cell->AppendCell(tmp);
+      }
     }
     else
     {

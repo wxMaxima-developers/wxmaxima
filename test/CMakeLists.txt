@@ -307,6 +307,24 @@ add_test(
 set_tests_properties(parenthesisCells PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME listCells_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch parenthesisCells.wxm)
+set_tests_properties(parenthesisCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME listCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch listCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(listCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME listCells
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --batch listCells.wxm)
+set_tests_properties(listCells PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME sqrtCells_cmdline
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND maxima --batch sqrtCells.wxm)

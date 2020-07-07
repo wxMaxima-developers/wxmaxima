@@ -72,7 +72,7 @@ public:
    */
   
   Cell *ParseTag(wxXmlNode *node, bool all = true);
-  Cell *ParseTagContents(wxXmlNode *node);
+  Cell *ParseRowTag(wxXmlNode *node);
 
 private:
   //! A storage for a tag and the function to call if one encounters it

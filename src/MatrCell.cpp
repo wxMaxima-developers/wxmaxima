@@ -214,6 +214,7 @@ void MatrCell::Draw(wxPoint point)
       }
       else
       {
+        SetPen(1.5);
         // left bracket
         const wxPoint pointsL[4] = {
           {Scale_Px(5),

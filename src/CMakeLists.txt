@@ -57,6 +57,7 @@ set(SOURCE_FILES
     Notification.cpp
     OutCommon.cpp
     ParenCell.cpp
+    ListCell.cpp
     Plot2dWiz.cpp
     Plot3dWiz.cpp
     PlotFormatWiz.cpp
