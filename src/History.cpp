@@ -29,7 +29,6 @@
 #include "History.h"
 
 #include <wx/sizer.h>
-#include <wx/tokenzr.h>
 #include <wx/regex.h>
 
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
@@ -55,23 +54,36 @@ History::~History()
 }
 
 void History::AddToHistory(const wxString &cmd)
-{
-  wxString lineends = wxT(";$");
-  if (cmd.StartsWith(wxT(":lisp")))
-    lineends = wxT(";");
-
-  wxStringTokenizer cmds(cmd, lineends);
-
-  while (cmds.HasMoreTokens())
-  {
-    wxString curr = cmds.GetNextToken().Trim(false).Trim(true);
-
-    if (curr != wxEmptyString)
-      commands.Insert(curr, 0);
-  }
-
+{  
+  if (cmd.IsEmpty())
+    return;
+    
+  commands.Insert(cmd, 0);
   m_current = commands.GetCount();
 
+  wxString regex = m_regex->GetValue();
+  wxArrayString display;
+  wxRegEx matcher;
+  
+  if (regex != wxEmptyString)
+    matcher.Compile(regex);
+  
+  if (regex.Length() > 0 && matcher.IsValid())
+  {
+    if (matcher.Matches(cmd))
+    {
+      int pos = m_history->GetCount() - 1;
+      m_history->Insert(cmd, pos);
+      m_history->SetSelection(pos);
+    }
+  }
+  else
+  {
+    int pos = m_history->GetCount() - 1;
+    m_history->Insert(cmd, m_current - 1);
+    m_history->SetSelection(pos);          
+  }
+ 
   UpdateDisplay();
 }
 
