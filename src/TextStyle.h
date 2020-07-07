@@ -117,20 +117,24 @@ public:
   Style() = default;
   Style(const Style &);
   explicit Style(double fontSize) { m.fontSize = fontSize; }
-  explicit Style(const wxString &fontName) { m.fontName = AFontName(fontName); }
 
   Style &operator=(const Style &);
   bool operator==(const Style &o) const = delete;
 
-  //! Read this style from a config source
-  void Read(wxConfigBase *config, const wxString &where);
+  /*! Read this style from a config source.
+   * Only touches the attributes that were successfully read. Remaining attributes
+   * are unchanged.
+   */
+  Style &Read(wxConfigBase *config, const wxString &where);
   //! Write this style to a config source
   void Write(wxConfigBase *config, const wxString &where) const;
 
+  //! Gets a style that represents a given font. The font gets cached.
+  static const Style &FromFont(const wxFont &font);
   //! Gets a style that represents a stock font. The font is pre-cached.
   static const Style &FromStockFont(wxStockGDI::Item font);
 
-  constexpr static wxFontFamily Default_Family = wxFONTFAMILY_MODERN;
+  constexpr static wxFontFamily Default_Family = wxFONTFAMILY_DEFAULT;
   constexpr static wxFontEncoding Default_Encoding = wxFONTENCODING_DEFAULT;
   constexpr static wxFontWeight Default_Weight = wxFONTWEIGHT_NORMAL;
   constexpr static wxFontStyle Default_FontStyle = wxFONTSTYLE_NORMAL;
@@ -168,11 +172,13 @@ public:
   did_change SetUnderlined(bool underlined = true);
   did_change SetStrikethrough(bool strikethrough = true);
   did_change SetFontName(AFontName fontName);
-  did_change SetFontNameFromFont();
   did_change SetFontSize(double size);
   did_change SetRGBColor(uint32_t rgb);
   did_change SetColor(const wxColor &color);
   did_change SetColor(wxSystemColour sysColour);
+
+  //! Resolves the style to the parameters of the font it represents
+  did_change ResolveToFont();
 
   Style& Family(wxFontFamily family) { return SetFamily(family), *this; }
   Style& Encoding(wxFontEncoding encoding) { return SetEncoding(encoding), *this; }
@@ -199,9 +205,18 @@ public:
   bool IsStyleEqualTo(const Style &o) const;
 
   bool IsFontOk() const;
-  const wxFont& GetFont() const { return (m.fontHash && m.font) ? *m.font : LookupFont(); }
+  bool HasFontCached() const { return m.fontHash && m.font; }
+  const wxFont& GetFont() const { return HasFontCached() ? *m.font : LookupFont(); }
   const wxFont& GetFontAt(double fontSize) const;
-  void SetFromFont(const wxFont&);
+
+  //! Sets all font-related properties based on another font
+  did_change SetFromFont(const wxFont&);
+  //! Sets all font-related properties based on another style, including size, font style and weight
+  did_change SetFontFrom(const Style&);
+  //! Sets font-face-only properties based on another style
+  did_change SetFontFaceFrom(const Style&);
+  //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
+  did_change SetFontFaceAndSizeFrom(const Style&);
 
   static bool IsFractionalFontSizeSupported();
   static double GetFontSize(const wxFont &);
@@ -212,19 +227,16 @@ public:
 private:
   friend struct StyleFontHasher;
   friend class FontCache;
+  Style &FromFontNoCache(const wxFont &);
   void SetFromFontNoCache(const wxFont &);
-  static Style FromFontNoCache(const wxFont &);
 
-  struct Data // POD, 56 bytes on 64-bit platforms
+  struct Data // POD, 48 bytes on 64-bit platforms
   {
     // 8-byte members
-    mutable double fontSize = Default_FontSize;
+    double fontSize = Default_FontSize;
     // 8/4-byte members
     mutable const wxFont *font = nullptr;
     AFontName fontName = Default_FontName();
-    //! Hash of the font family, encoding, weight, style, and name.
-    mutable size_t attributeHash = 0;
-    //! Hash of the m_attributeHash and font size
     mutable size_t fontHash = 0;
     // 4-byte members
     uint32_t rgbColor = Default_Color().GetRGB();
@@ -243,8 +255,6 @@ private:
     Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
   } m;
 
-  size_t GetAttributeHash() const;
-  size_t GetSizeHash() const;
   size_t GetFontHash() const;
 
   const wxFont& LookupFont() const;

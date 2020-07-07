@@ -31,59 +31,93 @@ FontCache::~FontCache()
 FontCache::FontCache()
 {}
 
-#ifdef _MSC_VER
-#pragma warning( push )
-#pragma warning( disable: 4172 )
-#endif
-const std::pair<const Style, wxFont> &FontCache::GetFont2(const Style &style)
+const std::pair<const Style, wxFont> &FontCache::GetStyleFontUncached(const Style &style, const wxFont &withFont)
+{
+  wxASSERT(!m_enabled);
+  if (m_temporaryFonts.size() >= tempFontCount)
+    m_temporaryFonts.pop_front();
+
+  wxFont font = withFont.IsOk() ? withFont : style.GetAsFontInfo();
+  m_temporaryFonts.emplace_back(
+    font.IsOk() ? Style().FromFontNoCache(font) : style, font);
+  auto &entry = m_temporaryFonts.back();
+  ++ m_misses;
+  entry.first.GetFontHash();
+  entry.first.m.font = &entry.second;
+  return entry;
+}
+
+const std::pair<const Style, wxFont> &FontCache::GetStyleFont(const Style &style, const wxFont &withFont)
 {
   if (style.m.isNotOK)
   {
     static const std::pair<const Style, wxFont> badStyle{Style::Data::NotOK, {}};
     return badStyle;
   }
-  const std::pair<const Style, wxFont> *cacheEntry = {};
-  if (m_enabled)
+  if (!m_enabled)
+    return GetStyleFontUncached(style, withFont);
+
+  auto it = m_cache.find(style);
+  if (it != m_cache.end())
   {
-    auto it = m_cache.find(style);
-    if (it != m_cache.end())
+    ++ m_hits;
+    return *it;
+  }
+
+  ++ m_misses;
+  wxFont font = withFont.IsOk() ? withFont : style.GetAsFontInfo();
+
+  // Cache the font under the style that yielded it
+  auto styleFont = m_cache.emplace(style, font); // Key with raw font request
+  wxASSERT(styleFont.second);
+  wxASSERT(styleFont.first->first.m.fontHash);
+  styleFont.first->first.m.font = &styleFont.first->second;
+  wxLogDebug("FontCache Raw Miss: %s", styleFont.first->first.GetDump());
+  if (!font.IsOk())
+    return *styleFont.first;
+
+  // Cache it also under the style that was read back from the resolved font, if needed
+  auto updatedStyle = style;
+  updatedStyle.SetFromFontNoCache(font);
+  if (!updatedStyle.IsFontEqualTo(style))
+  {
+    it = m_cache.find(updatedStyle);
+    if (it == m_cache.end())
     {
-      ++ m_hits;
-      return *it;
+      // Cache the font also under the resolved style
+      styleFont = m_cache.emplace(updatedStyle, std::move(font));
+      wxASSERT(styleFont.second);
+      wxASSERT(styleFont.first->first.m.fontHash);
+      styleFont.first->first.m.font = &styleFont.first->second;
+      wxLogDebug("FontCache Resolved: %s", updatedStyle.GetDump());
     }
-    auto font = m_cache.emplace(style, style.GetAsFontInfo());
-    wxASSERT(font.first != m_cache.end());
-    wxASSERT(font.second);
-    cacheEntry = &*font.first;
-    wxLogDebug("FontCache Miss: %s", style.GetDump());
-    ++ m_misses;
+    else
+    {
+      // We've already cached this font - we now have two instances.
+      // Let's replace the instance keyed with raw font request with the one already
+      // present, and drop the instance we've just constructed
+      auto rawStyleFont = m_cache.emplace(style, it->second);
+      wxASSERT(!rawStyleFont.second);
+      wxASSERT(rawStyleFont.first->first.m.fontHash);
+      rawStyleFont.first->first.m.font = &rawStyleFont.first->second;
+      wxLogDebug("FontCache Rekeyed:  %s", updatedStyle.GetDump());
+      styleFont.first = it;
+    }
   }
-  else
-  {
-    wxFontInfo request = style.GetAsFontInfo();
-    if (m_temporaryFonts.size() >= tempFontCount)
-      m_temporaryFonts.pop_front();
-    m_temporaryFonts.emplace_back(style, request);
-    cacheEntry = &m_temporaryFonts.back();
-    ++ m_misses;
-  }
-  cacheEntry->first.GetFontHash();
-  cacheEntry->first.m.font = &cacheEntry->second;
-  return *cacheEntry;
+
+  wxASSERT(styleFont.first != m_cache.end());
+  return *styleFont.first;
 }
-#ifdef _MSC_VER
-#pragma warning( pop )
-#endif
 
 const wxFont &FontCache::GetFont(const Style &style)
 {
-  return GetFont2(style).second;
+  return GetStyleFont(style).second;
 }
 
 const Style &FontCache::AddFont(const wxFont &font)
 {
-  auto style = Style::FromFontNoCache(font);
-  return GetFont2(style).first;
+  auto style = Style().FromFontNoCache(font);
+  return GetStyleFont(style, font).first;
 }
 
 void FontCache::Clear()

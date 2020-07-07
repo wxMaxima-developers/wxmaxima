@@ -28,8 +28,7 @@
 #define wxNO_UNSAFE_WXSTRING_CONV
 #include "TextStyle.h"
 #include "FontCache.h"
-#include <wx/colour.h>
-#include <wx/hashmap.h>
+#include <wx/fontenum.h>
 #include <wx/log.h>
 #include <wx/thread.h>
 #include <wx/translation.h>
@@ -213,7 +212,7 @@ did_change Style::SetFamily(wxFontFamily family)
 {
   if (m.family == family) return false;
   m.family = family;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -221,7 +220,7 @@ did_change Style::SetEncoding(wxFontEncoding encoding)
 {
   if (m.encoding == encoding) return false;
   m.encoding = encoding;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -229,7 +228,7 @@ did_change Style::SetFontStyle(wxFontStyle fontStyle)
 {
   if (m.fontStyle == fontStyle) return false;
   m.fontStyle = fontStyle;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -237,7 +236,7 @@ did_change Style::SetWeight(int weight)
 {
   if (m.weight == weight) return false;
   m.weight = weight;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -265,7 +264,7 @@ did_change Style::SetUnderlined(bool underlined)
 {
   if (m.underlined == underlined) return false;
   m.underlined = underlined;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -273,7 +272,7 @@ did_change Style::SetStrikethrough(bool strikethrough)
 {
   if (m.strikethrough == strikethrough) return false;
   m.strikethrough = strikethrough;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -281,21 +280,15 @@ did_change Style::SetFontName(AFontName faceName)
 {
   if (m.fontName == faceName) return false;
   m.fontName = faceName;
-  m.attributeHash = 0;
+  m.fontHash = 0;
   return true;
-}
-
-// cppcheck-suppress unusedFunction
-did_change Style::SetFontNameFromFont()
-{
-  return SetFontName(AFontName(GetFont().GetFaceName()));
 }
 
 did_change Style::SetFontSize(double size)
 {
   if (m.fontSize == size) return false;
   m.fontSize = size;
-  m.attributeHash = m.fontHash = 0;
+  m.fontHash = 0;
   return true;
 }
 
@@ -316,9 +309,46 @@ did_change Style::SetColor(wxSystemColour sysColour)
   return SetColor(wxSystemSettings::GetColour(sysColour));
 }
 
-size_t Style::GetAttributeHash() const
+did_change Style::ResolveToFont()
 {
-  size_t hash_ = m.attributeHash;
+  Style fromFont = HasFontCached()
+                     ? Style().FromFontNoCache(*m.font)
+                     : FontCache::GetAStyleFont(*this).first;
+  return SetFontFrom(fromFont);
+}
+
+did_change Style::SetFromFont(const wxFont &font)
+{ return SetFontFrom(Style::FromFont(font)); }
+
+did_change Style::SetFontFrom(const Style &o)
+{
+  bool changed =
+    SetFontFaceAndSizeFrom(o) |
+    SetFontStyle(o.GetFontStyle()) |
+    SetWeight(o.GetWeight()) |
+    SetUnderlined(o.IsUnderlined()) |
+    SetStrikethrough(o.IsStrikethrough());
+  if (GetFontHash() == o.GetFontHash())
+    m.font = o.m.font;
+  return changed;
+}
+
+did_change Style::SetFontFaceFrom(const Style &o)
+{
+  return
+    SetFontName(o.GetFontName()) |
+    SetEncoding(o.GetEncoding()) |
+    SetFamily(o.GetFamily());
+}
+
+did_change Style::SetFontFaceAndSizeFrom(const Style &o)
+{
+  return SetFontFaceFrom(o) | SetFontSize(o.GetFontSize());
+}
+
+size_t Style::GetFontHash() const
+{
+  size_t hash_ = m.fontHash;
   if (!hash_)
   {
     hash_ = MixHash(hash_, m.family);
@@ -327,28 +357,10 @@ size_t Style::GetAttributeHash() const
     hash_ = MixHash(hash_, m.fontStyle);
     hash_ = MixHash(hash_, m.underlined << 1 | m.strikethrough << 3 | m.isNotOK << 5);
     hash_ = MixHash(hash_, m.fontName);
-    if (!hash_) hash_++;
-    m.attributeHash = hash_;
-  }
-  return hash_;
-}
-
-size_t Style::GetSizeHash() const
-{
-  size_t hash_ = 0;
-  hash_ = MixHash(hash_, m.fontSize);
-  if (!hash_) hash_++;
-  return hash_;
-}
-
-size_t Style::GetFontHash() const
-{
-  size_t hash_ = m.fontHash;
-  if (!hash_)
-  {
-    hash_ = MixHash(GetAttributeHash(), GetSizeHash());
+    hash_ = MixHash(hash_, m.fontSize);
     if (!hash_) hash_++;
     m.fontHash = hash_;
+    m.font = 0;
   }
   return hash_;
 }
@@ -359,7 +371,6 @@ bool Style::IsFontEqualTo(const Style &o_) const
   if (m.font && m.font == o.font) return true;
   return
     (!m.fontHash || !o.fontHash || m.fontHash == o.fontHash) &&
-    (!m.attributeHash || !o.attributeHash || m.attributeHash == o.attributeHash) &&
     m.fontSize == o.fontSize &&
     m.family == o.family &&
     m.encoding == o.encoding &&
@@ -381,9 +392,9 @@ bool Style::IsStyleEqualTo(const Style &o) const
 const wxFont& Style::LookupFont() const
 {
   GetFontHash();
-  m.font = &FontCache::GetAFont(*this);
+  auto &styleFont = FontCache::GetAStyleFont(*this);
+  m.font = &styleFont.second;
   wxASSERT(m.font);
-  wxASSERT(!GetFontName().empty());
   return *m.font;
 }
 
@@ -395,39 +406,20 @@ bool Style::IsFontOk() const
 const wxFont& Style::GetFontAt(double fontSize) const
 {
   if (fontSize == GetFontSize()) return GetFont();
-  auto prevFontHash = m.fontHash;
-  double prevFontSize = m.fontSize;
-  m.fontHash = 0;
-  m.fontSize = fontSize;
-  auto &font = LookupFont();
-  m.fontHash = prevFontHash;
-  m.fontSize = prevFontSize;
-  return font;
+  return Style(*this).FontSize(fontSize).GetFont();
 }
 
-void Style::SetFromFont(const wxFont &font)
+Style &Style::FromFontNoCache(const wxFont &font)
 {
-  wxASSERT_MSG(
-    &font != wxITALIC_FONT
-      && &font != wxNORMAL_FONT
-      && &font != wxSMALL_FONT
-      && &font != wxSWISS_FONT, "Use Style::FromStockFont to get stock fonts!");
-
-  *this = FontCache::AddAFont(font);
-}
-
-Style Style::FromFontNoCache(const wxFont &font)
-{
-  Style style;
-  style.SetFromFontNoCache(font);
-  return style;
+  this->SetFromFontNoCache(font);
+  return *this;
 }
 
 void Style::SetFromFontNoCache(const wxFont &font)
 {
+  m.fontHash = 0;
   if (font.IsOk())
   {
-    m.attributeHash = m.fontHash = 0;
     m.encoding = font.GetEncoding();
     m.family = font.GetFamily();
     m.fontStyle = font.GetStyle();
@@ -440,9 +432,10 @@ void Style::SetFromFontNoCache(const wxFont &font)
 #endif
     m.fontName = AFontName(font.GetFaceName());
     m.fontSize = GetFontSize(font);
+    GetFontHash();
   }
   else
-    m = Data::NotOK;
+    m.isNotOK = true;
 }
 
 bool Style::IsFractionalFontSizeSupported()
@@ -516,14 +509,11 @@ static const wxString k_strikethrough = wxT("%s/strikethrough");
 static const wxString k_fontsize = wxT("%s/Style/Text/fontsize");
 static const wxString k_fontname = wxT("%s/Style/Text/fontname");
 
-void Style::Read(wxConfigBase *config, const wxString &where)
+Style &Style::Read(wxConfigBase *config, const wxString &where)
 {
   wxString tmpStr;
   bool tmpBool;
   long tmpLong;
-
-  // Unset all fields
-  m = {};
 
   if (config->Read(wxString::Format(k_color, where), &tmpStr))
   {
@@ -538,10 +528,11 @@ void Style::Read(wxConfigBase *config, const wxString &where)
   if (config->Read(wxString::Format(k_strikethrough, where), &tmpBool)) SetStrikethrough(tmpBool);
   if (config->Read(wxString::Format(k_fontsize, where), &tmpLong))
     SetFontSize(tmpLong);
-  if (config->Read(wxString::Format(k_fontname, where), &tmpStr))
+  if (config->Read(wxString::Format(k_fontname, where), &tmpStr) && !tmpStr.empty())
     SetFontName(AFontName(tmpStr));
 
   // Validation is deferred to the point of first use, etc.
+  return *this;
 }
 
 void Style::Write(wxConfigBase *config, const wxString &where) const
@@ -551,7 +542,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const
   config->Write(wxString::Format(k_italic, where), IsItalic());
   config->Write(wxString::Format(k_underlined, where), IsUnderlined());
   config->Write(wxString::Format(k_fontsize, where), long(GetFontSize()));
-  config->Write(wxString::Format(k_fontname, where), GetFontName().GetAsString());
+  config->Write(wxString::Format(k_fontname, where), GetNameStr());
 
   // We don't write the slant, light nor strikethrough attributes so as not to grow the
   // configuration compared to the previous releases. The slant and strikethrough are only
@@ -570,10 +561,21 @@ void Style::Write(wxConfigBase *config, const wxString &where) const
   optWrite(config, k_strikethrough, where, IsStrikethrough());
 }
 
+const Style &Style::FromFont(const wxFont &font)
+{
+  wxASSERT_MSG(
+    &font != wxITALIC_FONT
+      && &font != wxNORMAL_FONT
+      && &font != wxSMALL_FONT
+      && &font != wxSWISS_FONT, "Use Style::FromStockFont to get stock fonts!");
+
+  return FontCache::AddAFont(font);
+}
+
 const Style &Style::FromStockFont(wxStockGDI::Item font)
 {
   static const auto getStyleFor = [](const wxFont *font){
-    auto style = Style::FromFontNoCache(*font);
+    auto style = FontCache::AddAFont(*font);
     style.GetFontHash();
     style.m.font = font; // Pre-cache the stock font in the style itself
     return style;
@@ -607,6 +609,18 @@ const Style &Style::FromStockFont(wxStockGDI::Item font)
     return defaultStyle;
   }
   }
+}
+
+static bool TrySetFontName(Style &style, AFontName name)
+{
+  Style newStyle = style;
+  if (!wxFontEnumerator::IsValidFacename(name.GetAsString()))
+    return false;
+  newStyle.SetFontName(name);
+  if (!newStyle.IsFontOk())
+    return false;
+  style = newStyle;
+  return true;
 }
 
 wxString Style::GetDump() const
