@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-07 13:07+0200\n"
-"PO-Revision-Date: 2020-07-07 12:52+0200\n"
+"PO-Revision-Date: 2020-07-07 16:20+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -1184,9 +1184,8 @@ msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "File bat (*.bat)|*.bat|Tutti|*"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1322
-#, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
-msgstr "File bat (*.bat)|*.bat|Tutti|*"
+msgstr "File bat (*.bat)|*.bat|File exe (*.exe)||Tutti|*"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5566
 msgid "Batch File"
@@ -1726,14 +1725,13 @@ msgid "Choose new plot format:"
 msgstr "Scegliere un nuovo formato per il grafico:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1399
-#, fuzzy, c-format
+#, c-format
 msgid "Choose the %s Font"
-msgstr "Scegli font"
+msgstr "Scegli il font %s"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1347
-#, fuzzy
 msgid "Choose the Math Font"
-msgstr "Scegli font"
+msgstr "Scegli il font matematico"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
 msgid "Choose the parenthesis type for Matrices"
@@ -2664,9 +2662,9 @@ msgid "Enable:"
 msgstr "Abilita:"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:88
-#, fuzzy, c-format
+#, c-format
 msgid "Encountered an unknown XML tag: <%s>"
-msgstr "Incontrato un evento socket sconosciuto."
+msgstr "Incontrato un marcatore XML sconosciuto: <%s>"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1666
 msgid "Encountered an unknown socket event."
@@ -3393,12 +3391,11 @@ msgstr "I grafici seguenti usano l'asse y secondario"
 
 #: /home/gunter/src/wxmaxima/src/IntCell.cpp:269
 msgid "Font issue: The char height is too small!"
-msgstr ""
+msgstr "Problema di font: l'altezza del carattere è troppo bassa!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:202
-#, fuzzy
 msgid "Font issue: The sqrt() sign has the size 0!"
-msgstr "Problema di font? I contenuti di una sqrt() hanno dimensione 0."
+msgstr "Problema di font: Il segno di sqrt() ha dimensione 0!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:200
 msgid "Font issue? The contents of a sqrt() has the size 0."
@@ -3424,7 +3421,7 @@ msgstr "Per tutti i fan di xkcd:\n"
 msgid ""
 "For does do nearly the same as makelist except that it doesn't return a "
 "list.:\n"
-msgstr ""
+msgstr "For fa quasi la stessa cosa di makelist eccetto il fatto che non restituisce una lista:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:341
 msgid ""
@@ -3473,7 +3470,7 @@ msgid ""
 "For the sake of generating a self-contained example we generate this data "
 "synthetically. For the first example a parabola with a bit of measurement "
 "noise might be a good start:\n"
-msgstr ""
+msgstr "Per generare un esempio autonomo, produciamo questi dati sintetizzandoli. Per il primo esempio, una parabola con un po' di rumore di misurazione potrebbe essere un buon inizio:\n"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:62
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:61
@@ -3535,11 +3532,11 @@ msgstr "Da:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:806
 msgid "Full Screen\tAlt-Enter"
-msgstr ""
+msgstr "Pieno schermo\tAlt-Enter"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:803
 msgid "Full Screen\tF11"
-msgstr ""
+msgstr "Pieno schermo\tF11"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6075
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7116
@@ -3590,7 +3587,7 @@ msgid ""
 "GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and "
 "hotkeys to be broken, see for example https://trac.wxwidgets.org/"
 "ticket/18462."
-msgstr ""
+msgstr "GTK_IM_MODULE è impostato a \"xim\". Aspettarsi che il programma emetta un flickering odioso e che i tasti acceleratori non funzionino, vedere per esempio https://trac.wxwidgets.org/ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:161
 msgid "Galician"
@@ -3772,7 +3769,7 @@ msgstr "Aiuto"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:943
 msgid "Help browser:"
-msgstr ""
+msgstr "Browser dell'aiuto:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:641
 msgid "Help button"
@@ -3977,7 +3974,7 @@ msgid ""
 "If it is necessary to append two lists of values with tolerances to each "
 "other without risking a collision of tol[n] that happen to have the same n "
 "in the two lists the following function can be used:\n"
-msgstr ""
+msgstr "Se bisogna accodare due elenchi di valori con tolleranze reciproche senza rischiare una collisione di tol[n] che risulta avere lo stesso n nelle due liste, è possibile utilizzare la seguente funzione:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:306
 msgid ""
@@ -3992,10 +3989,11 @@ msgid "If not extremely long"
 msgstr "Se non estremamente lunga"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:267
+#, fuzzy
 msgid ""
 "If not the shape, but the absolute heights are important maxima offers "
 "contour lines.\n"
-msgstr ""
+msgstr "If not the shape, but the absolute heights are important maxima offers contour lines.\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:528
 msgid "If not very long"
@@ -5577,9 +5575,8 @@ msgid "Mismatched parenthesis"
 msgstr "Parentesi sbilanciate"
 
 #: /home/gunter/src/wxmaxima/src/VisiblyInvalidCell.cpp:42
-#, fuzzy
 msgid "Missing contents. Bug?"
-msgstr "Bug: contenuti mancanti"
+msgstr "Contenuti mancanti. Bug?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7406
 msgid "Modulus"
@@ -9996,87 +9993,3 @@ msgstr "campo z (automatico se incompleto)"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1845
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid "Bug: No last cell in a conjugateCell!"
-#~ msgstr "Bug: nessuna ultima cella in un conjugateCell!"
-
-#~ msgid "Bug: No last cell in a denominator!"
-#~ msgstr "Bug: nessuna ultima cella in un denominatore!"
-
-#~ msgid "Bug: No last cell in a numerator!"
-#~ msgstr "Bug: nessuna ultima cella in un numeratore!"
-
-#~ msgid "Bug: No last cell in an absCell!"
-#~ msgstr "Bug: nessuna ultima cella in absCell!"
-
-#~ msgid "Bug: No last cell in an exponent of an exptCell!"
-#~ msgstr "Bug: nessuna ultima cella in un esponente di un exptCell!"
-
-#~ msgid "Bug: No last cell in the base of an exptCell!"
-#~ msgstr "Bug: nessuna ultima cella nella base di una exptCell!"
-
-#~ msgid "Bug: No last cell inside a parenthesis!"
-#~ msgstr "Bug: nessuna ultima cella dentro una parentesi!"
-
-#~ msgid "Bug: No last cell inside a square root!"
-#~ msgstr "Bug: nessuna ultima cella dentro una radice quadrata!"
-
-#~ msgid "Cell wasn't recalculated on draw!"
-#~ msgstr "La cella non è stata ricalcolata sul disegno!"
-
-#~ msgid ""
-#~ "Font issue: The char height is too small! Installing http://www.math."
-#~ "union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
-#~ "JSmath fonts\" in the configuration dialogue should be a workaround."
-#~ msgstr ""
-#~ "Problema font: l'altezza carattere è troppo piccola! L'installazione di "
-#~ "http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html "
-#~ "impostando \"Usa font JSmath\" nella finestra di configurazione dovrebbe "
-#~ "risolvere il problema."
-
-#~ msgid ""
-#~ "Font issue: The sqrt() sign has the size 0! Installing http://www.math."
-#~ "union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
-#~ "JSmath fonts\" in the configuration dialogue should be a workaround."
-#~ msgstr ""
-#~ "Problema font: il segno di sqrt() ha dimensione 0! L'installazione di "
-#~ "http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html "
-#~ "impostando \"Usa font JSmath\" nella finestra di configurazione dovrebbe "
-#~ "risolvere il problema."
-
-#~ msgid "Greek constants"
-#~ msgstr "Costanti greche"
-
-#~ msgid ""
-#~ "Seems like something is broken with a font. Installing http://www.math."
-#~ "union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
-#~ "JSmath fonts\" in the configuration dialogue should fix it."
-#~ msgstr ""
-#~ "Sembra che ci sia qualcosa di malfunzionante con un font. L'installazione "
-#~ "di http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html "
-#~ "impostando \"Usa font JSmath\" nella finestra di dialogo di "
-#~ "configurazione dovrebbe risolvere il problema."
-
-#~ msgid ""
-#~ "Seems like something is broken with the maths font. Installing http://www."
-#~ "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
-#~ "JSmath fonts\" in the configuration dialogue should fix it."
-#~ msgstr ""
-#~ "Sembra ci sia qualcosa di malfunzionante con i font delle formule. "
-#~ "L'installazione di http://www.math.union.edu/~dpvc/jsmath/download/jsMath-"
-#~ "fonts.html impostando \"Usa font JSmath\" nella finestra di "
-#~ "configurazione dovrebbe risolvere il problema."
-
-#~ msgid ""
-#~ "Use nice js math symbols in order to get nice integral, sum, product and "
-#~ "sqrt signs\n"
-#~ "Will only work if the corresponding js math fonts can be found by "
-#~ "wxMaxima."
-#~ msgstr ""
-#~ "Usa i gradevoli simboli js math in modo da ottenere graziosi simboli di "
-#~ "integrali, somme, prodotti e radici quadrate.\n"
-#~ "Funzionerà solo se i font js math corrispondenti vengono trovati da "
-#~ "wxMaxima."
-
-#~ msgid "wxMaxima cannot open content.xml in the .wxmx zip archive "
-#~ msgstr "wxMaxima non può aprire content.xml nell'archivio zip .wxmx "
