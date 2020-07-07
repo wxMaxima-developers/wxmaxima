@@ -614,8 +614,6 @@ void TextCell::Draw(wxPoint point)
     
     if (InUpdateRegion())
     {
-      SetFont(m_fontSize);
-      // Sets the foreground color
       SetForeground();
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
@@ -645,6 +643,8 @@ void TextCell::Draw(wxPoint point)
       }
       else if (!m_numStart.IsEmpty())
       {
+        SetFont(m_fontSize);
+        // Sets the foreground color
         dc->DrawText(m_numStart,
                      point.x + MC_TEXT_PADDING,
                      point.y - m_realCenter + MC_TEXT_PADDING);
@@ -668,6 +668,8 @@ void TextCell::Draw(wxPoint point)
       /// This is the default.
       else
       {
+        SetFont(m_fontSize);
+        // Sets the foreground color
         switch (GetType())
         {
           case MC_TYPE_TEXT:
@@ -725,12 +727,6 @@ void TextCell::SetFont(int fontsize)
 
   auto style = configuration->GetStyle(m_textStyle, fontsize);
 
-  if (!style.IsFontOk())
-    style.SetFontName({});
-  
-  if (!style.IsFontOk())
-    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-
   if (m_fontSize < 4)
     m_fontSize = 4;
   
@@ -747,16 +743,7 @@ void TextCell::SetFont(int fontsize)
   wxASSERT(Scale_Px(m_fontSize) > 0);
   style.SetFontSize(Scale_Px(m_fontSize));
 
-  wxASSERT_MSG(style.IsFontOk(),
-               _("Seems like something is broken with a font."));
   dc->SetFont(style.GetFont());
-  
-  // A fallback if we have been completely unable to set a working font
-  if (!dc->GetFont().IsOk())
-  {
-    style = Style(Scale_Px(m_fontSize));
-    dc->SetFont(style.GetFont());
-  }
 }
 
 bool TextCell::IsOperator() const

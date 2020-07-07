@@ -549,6 +549,9 @@ Style Configuration::GetStyle(TextStyle textStyle, long fontSize) const
     style.SetFontSize(fontSize1);
   }
 
+  wxASSERT_MSG(style.IsFontOk(),
+               _("Seems like something is broken with a font."));
+  
   return style;
 }
 

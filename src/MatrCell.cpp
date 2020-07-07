@@ -61,10 +61,10 @@ void MatrCell::RecalculateWidths(int fontsize)
   if(!NeedsRecalculation(fontsize))
     return;
 
+  int fontsize_entry = wxMax(MC_MIN_SIZE, fontsize - 2);
   for (unsigned int i = 0; i < m_cells.size(); i++)
-  {
-    m_cells[i]->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 2));
-  }
+    m_cells[i]->RecalculateWidthsList(fontsize_entry);
+
   m_widths.clear();
   for (unsigned int i = 0; i < m_matWidth; i++)
   {
@@ -90,10 +90,10 @@ void MatrCell::RecalculateHeight(int fontsize)
   if(!NeedsRecalculation(fontsize))
     return;
 
+  int fontsize_entry = wxMax(MC_MIN_SIZE, fontsize - 2);
   for (unsigned int i = 0; i < m_cells.size(); i++)
-  {
-    m_cells[i]->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 2));
-  }
+    m_cells[i]->RecalculateHeightList(fontsize_entry);
+
   m_centers.clear();
   m_drops.clear();
   for (unsigned int i = 0; i < m_matHeight; i++)
