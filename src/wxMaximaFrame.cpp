@@ -382,29 +382,29 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     Layout();
   }
   
-  m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector").Show(false);
-  m_manager.GetPane("stats") = m_manager.GetPane("stats").Show(false);
-  m_manager.GetPane("greek") = m_manager.GetPane("greek").Show(false);
-  m_manager.GetPane("variables") = m_manager.GetPane("variables").Show(false);
-  m_manager.GetPane("math") = m_manager.GetPane("math").Show(false);
-  m_manager.GetPane("format") = m_manager.GetPane("format").Show(false);
-  m_manager.GetPane("log") = m_manager.GetPane("log").Show(false);
+  m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector").Show(false).Movable(true);
+  m_manager.GetPane("stats") = m_manager.GetPane("stats").Show(false).Movable(true);
+  m_manager.GetPane("greek") = m_manager.GetPane("greek").Show(false).Movable(true);
+  m_manager.GetPane("variables") = m_manager.GetPane("variables").Show(false).Movable(true);
+  m_manager.GetPane("math") = m_manager.GetPane("math").Show(false).Movable(true);
+  m_manager.GetPane("format") = m_manager.GetPane("format").Show(false).Movable(true);
+  m_manager.GetPane("log") = m_manager.GetPane("log").Show(false).Movable(true);
 
   m_manager.GetPane("unicode") = m_manager.GetPane("unicode").
-    Show(false).Gripper(false).CloseButton(true).PinButton(true);
+    Show(false).Gripper(false).CloseButton(true).PinButton(true).Movable(true);
 
   m_manager.GetPane("variables") = m_manager.GetPane("variables").
     Gripper(false).CloseButton(true).PinButton(true);
   m_manager.GetPane("log") = m_manager.GetPane("log").
-    Gripper(false).CloseButton(true).PinButton(true);
+    Gripper(false).CloseButton(true).PinButton(true).Movable(true);
 
   m_manager.GetPane("symbols") = m_manager.GetPane("symbols").
-    Show(true).Gripper(false).CloseButton(true);
+    Show(true).Gripper(false).CloseButton(true).Movable(true);
   m_manager.GetPane("greek") = m_manager.GetPane("greek").
-    Show(true).Gripper(false).CloseButton(true);
+    Show(true).Gripper(false).CloseButton(true).Movable(true);
 
   m_manager.GetPane("draw") = m_manager.GetPane("draw").
-    Show(true).CloseButton(true).Gripper(false);
+    Show(true).CloseButton(true).Gripper(false).Movable(true);
 
 
   // Read the perspektive (the sidebar state and positions).
