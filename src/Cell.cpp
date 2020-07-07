@@ -1152,11 +1152,6 @@ void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *
   }
 }
 
-bool Cell::BreakLineHere() const
-{
-  return (((!m_isBrokenIntoLines) && m_breakLine) || m_forceBreakLine);
-}
-
 bool Cell::ContainsRect(const wxRect &sm, bool all)
 {
   wxRect big = GetRect(all);

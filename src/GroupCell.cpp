@@ -787,13 +787,6 @@ int GroupCell::GetInputIndent()
 
 void GroupCell::Draw(wxPoint point)
 {
-  if ((m_width < 1 || m_height < 1) ||
-      ((GetEditable() != NULL) &&
-     (
-       ((GetEditable()->GetHeight() < 1) ||
-        (GetEditable()->GetWidth() < 1)
-         ))))
-    Recalculate();
   Cell::Draw(point);
 
   Configuration *configuration = (*m_configuration);

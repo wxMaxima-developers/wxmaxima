@@ -361,7 +361,10 @@ class Cell: public Observed
   { m_breakPage = breakPage; }
 
   //! Are we allowed to break a line here?
-  bool BreakLineHere() const;
+  bool BreakLineHere() const
+    {
+      return m_breakLine || m_forceBreakLine;
+    }
 
   //! Does this cell begin with a manual linebreak?
   bool HardLineBreak() const
