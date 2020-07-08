@@ -1434,40 +1434,30 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
   m_styleColor->SetColor(m_configuration->m_styles[st].GetColor());
-  // MAGIC NUMBERS:
-  // the positions of TEXT and TITLE style in the list.
-  if (st >= TS_TEXT&& st <= TS_TITLE)
-    m_getStyleFont->Enable(true);
-  else
-    m_getStyleFont->Enable(false);
 
-  // Background color only
-  if (st > TS_TITLE)
+  // MAGIC NUMBERS:
+  // the positions of TEXT and TITLE style in the list.  
+  m_getStyleFont->Enable(st >= TS_TEXT && st <= TS_TITLE);
+
+  if (st <= TS_TITLE)
   {
+    // Text styles with adjustable bold/italic/underline
+    m_boldCB->Enable(true);
+    m_italicCB->Enable(true);
+    m_underlinedCB->Enable(true);
+    m_boldCB->SetValue(m_configuration->m_styles[st].IsBold());
+    m_italicCB->SetValue(m_configuration->m_styles[st].IsItalic());
+    m_underlinedCB->SetValue(m_configuration->m_styles[st].IsUnderlined());
+  }
+  else
+  {
+    // Background color only
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
     m_underlinedCB->Enable(false);
     m_boldCB->SetValue(false);
     m_italicCB->SetValue(false);
     m_underlinedCB->SetValue(false);
-  }
-  else
-  {
-    if (st > TS_OUTDATED)
-    {
-      m_boldCB->Enable(false);
-      m_italicCB->Enable(false);
-      m_underlinedCB->Enable(false);
-    }
-    else
-    {
-      m_boldCB->Enable(true);
-      m_italicCB->Enable(true);
-      m_underlinedCB->Enable(true);
-      m_boldCB->SetValue(m_configuration->m_styles[st].IsBold());
-      m_italicCB->SetValue(m_configuration->m_styles[st].IsItalic());
-      m_underlinedCB->SetValue(m_configuration->m_styles[st].IsUnderlined());
-    }
   }
 
   UpdateExample();
