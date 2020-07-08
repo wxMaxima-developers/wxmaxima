@@ -122,7 +122,7 @@ void TextCell::UpdateToolTip()
       SetToolTip( _("The result was undefined."));
 
     if (m_text == wxT("ind"))
-      SetToolTip( _("The result was indefinite."));
+      SetToolTip( _("The result was indefinite, which might be infinity, both plus or minus infinity or something additionally potentially involving a complex infinity."));
 
     if (m_text == wxT("zeroa"))
       SetToolTip( _("Infinitesimal above zero."));
