@@ -361,7 +361,7 @@ size_t Style::GetFontHash() const
     hash_ = MixHash(hash_, m.encoding);
     hash_ = MixHash(hash_, m.weight);
     hash_ = MixHash(hash_, m.fontStyle);
-    hash_ = MixHash(hash_, m.underlined << 1 | m.strikethrough << 3 | m.isNotOK << 5);
+    hash_ = MixHash(hash_, (m.underlined << 1) | (m.strikethrough << 3) | (m.isNotOK << 5));
     hash_ = MixHash(hash_, m.fontName);
     hash_ = MixHash(hash_, m.uFontSize);
     if (!hash_) hash_++;
@@ -616,18 +616,6 @@ const Style &Style::FromStockFont(wxStockGDI::Item font)
     return defaultStyle;
   }
   }
-}
-
-static bool TrySetFontName(Style &style, AFontName name)
-{
-  Style newStyle = style;
-  if (!wxFontEnumerator::IsValidFacename(name.GetAsString()))
-    return false;
-  newStyle.SetFontName(name);
-  if (!newStyle.IsFontOk())
-    return false;
-  style = newStyle;
-  return true;
 }
 
 wxString Style::GetDump() const

@@ -256,6 +256,7 @@ private:
 
     Data() : underlined(false), strikethrough(false), isNotOK(false) {}
     static constexpr enum class NotOK_t {} NotOK = {};
+    // cppcheck-suppress noExplicitConstructor
     Data(NotOK_t) : underlined(false), strikethrough(false), isNotOK(true) {}
   } m;
   static_assert(sizeof(Data) <= 40,
@@ -264,6 +265,7 @@ private:
   size_t GetFontHash() const;
 
   const wxFont& LookupFont() const;
+  // cppcheck-suppress noExplicitConstructor
   Style(Data::NotOK_t) : m(Data::NotOK) {}
 };
 

@@ -1801,8 +1801,6 @@ void GroupCell::SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end)
 
 bool GroupCell::BreakUpCells(Cell *cell)
 {
-  bool lineHeightsChanged = false;
-
   if(cell == NULL)
     return false;
 
@@ -1828,6 +1826,7 @@ bool GroupCell::BreakUpCells(Cell *cell)
   // Reduce the number of steps involved in layouting big equations
   if(m_cellsInGroup > showLength)
   {
+    bool lineHeightsChanged = false;
     wxLogMessage(_("Resolving to 1D layout for one cell in order to save time"));
     while (cell != NULL && !m_isHidden)
     {

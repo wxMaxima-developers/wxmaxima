@@ -92,7 +92,7 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  int m_signWidth, m_signHeight;
+  int m_signWidth = -1, m_signHeight = -1;
 };
 
 #endif // LISTCELL_H

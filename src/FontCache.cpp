@@ -54,6 +54,7 @@ const std::pair<const Style, wxFont> &FontCache::GetStyleFont(const Style &style
     static const std::pair<const Style, wxFont> badStyle{Style::Data::NotOK, {}};
     return badStyle;
   }
+  // cppcheck-suppress knownConditionTrueFalse
   if (!m_enabled)
     return GetStyleFontUncached(style, withFont);
 
