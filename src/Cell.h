@@ -1130,7 +1130,7 @@ protected:
   AFontSize m_fontSize;
 
 protected:
-  CellPointers *m_cellPointers;
+  CellPointers *const m_cellPointers;
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor;
   AFontSize m_fontsize_old;
