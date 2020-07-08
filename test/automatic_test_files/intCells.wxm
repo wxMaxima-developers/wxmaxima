@@ -18,6 +18,13 @@ integrate(f(100),t,0,T);
 
 
 /* [wxMaxima: input   start ] */
+integrate(f(1),t);
+integrate(f(10),t);
+integrate(f(100),t);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
 'integrate(sin(x),x,1,a(x)/b(x));
 /* [wxMaxima: input   end   ] */
 

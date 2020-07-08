@@ -42,6 +42,11 @@ IntCell::IntCell(GroupCell *parent, Configuration **config) :
     m_base(new VisiblyInvalidCell(parent,config)),
     m_under(new TextCell(parent, config)),
     m_over(new TextCell(parent, config)),
+    m_open(new TextCell(parent, config, "integrate(")),
+    m_close(new TextCell(parent, config, ")")),
+    m_comma1(new TextCell(parent, config, ",")),
+    m_comma2(new TextCell(parent, config, ",")),
+    m_comma3(new TextCell(parent, config, ",")),
     m_var(new VisiblyInvalidCell(parent,config))
 {
   m_signHeight = 35;
@@ -108,45 +113,56 @@ void IntCell::RecalculateWidths(int fontsize)
 
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
-
+  
   m_signHeight = Scale_Px(35 * configuration->GetZoomFactor());
   m_signWidth = Scale_Px(18 * configuration->GetZoomFactor());
   if(m_signWidth < 4)
     m_signWidth = 4;
-
+  
+  m_open->RecalculateWidthsList(fontsize);
   m_base->RecalculateWidthsList(fontsize);
+  m_comma1->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
-  m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
-
+  m_comma2->RecalculateWidthsList(fontsize);
+  if(m_isBrokenIntoLines)
+    m_under->RecalculateWidthsList(fontsize);
+  else
+    m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_comma3->RecalculateWidthsList(fontsize);
+  if(m_isBrokenIntoLines)
+    m_over->RecalculateWidthsList(fontsize);
+  else
+    m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_close->RecalculateWidthsList(fontsize);
+  
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
     double fontsize1 = Scale_Px(fontsize * 1.5);
     wxASSERT(fontsize1 > 0);
-
+    
     Style style = Style(fontsize1)
-                    .FontName(configuration->GetTeXCMEX());
+      .FontName(configuration->GetTeXCMEX());
     if (!style.IsFontOk())
     {
       style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
       style.SetFontSize(fontsize1);
     }
-
+    
     dc->SetFont(style.GetFont());
     dc->GetTextExtent(wxT("\u005A"), &m_signWidth, &m_signHeight);
-
+    
 #if defined __WXMSW__
     m_signWidth = m_signWidth / 2;
 #endif
     m_signTop = m_signHeight / 2;
     m_signHeight = (85 * m_signHeight) / 100;
-
+    
     m_width = m_signWidth +
-              wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
-              m_base->GetFullWidth() +
-              m_var->GetFullWidth() +
-              Scale_Px(4);
+      wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
+      m_base->GetFullWidth() +
+      m_var->GetFullWidth() +
+      Scale_Px(4);
   }
   else
   {
@@ -154,35 +170,37 @@ void IntCell::RecalculateWidths(int fontsize)
     wxDC *dc = configuration->GetDC();
     double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
     wxASSERT(fontsize1 > 0);
-
+    
     Style style = Style(fontsize1)
       .FontName(configuration->GetSymbolFontName());
-
+    
     if (!style.IsFontOk())
     {
       style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
       style.SetFontSize(fontsize1);
     }
-
+    
     dc->SetFont(style.GetFont());
     dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
-
+    
     m_width = m_signWidth +
-              m_base->GetFullWidth() +
-              wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
-              m_var->GetFullWidth() +
-              Scale_Px(4);
+      m_base->GetFullWidth() +
+      wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+      m_var->GetFullWidth() +
+      Scale_Px(4);
 #else
     m_width = m_signWidth +
-              m_base->GetFullWidth() +
-              wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
-              m_var->GetFullWidth() +
-              Scale_Px(4);
+      m_base->GetFullWidth() +
+      wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+      m_var->GetFullWidth() +
+      Scale_Px(4);
     if(m_signHeight < Scale_Px(35))
       m_signHeight = Scale_Px(35);
 #endif
   }
   Cell::RecalculateWidths(fontsize);
+  if(m_isBrokenIntoLines)
+    m_width = 0;
 }
 
 void IntCell::RecalculateHeight(int fontsize)
@@ -193,24 +211,41 @@ void IntCell::RecalculateHeight(int fontsize)
 
   Cell::RecalculateHeight(fontsize);
 
-  m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
-  m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_open->RecalculateHeightList(fontsize);
   m_base->RecalculateHeightList(fontsize);
+  m_comma1->RecalculateHeightList(fontsize);
   m_var->RecalculateHeightList(fontsize);
-
+  m_comma2->RecalculateHeightList(fontsize);
+  if(m_isBrokenIntoLines)
+    m_under->RecalculateHeightList(fontsize);
+  else
+    m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_comma3->RecalculateHeightList(fontsize);
+  if(m_isBrokenIntoLines)
+    m_over->RecalculateHeightList(fontsize);
+  else
+    m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_close->RecalculateHeightList(fontsize);
+  
   if (m_intStyle == INT_DEF)
   {
     m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
-                   m_base->GetCenterList());
+                     m_base->GetCenterList());
     m_height = m_center +
       wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
-          m_base->GetMaxDrop());
+            m_base->GetMaxDrop());
   }
   else
   {
     m_center = wxMax(m_signHeight / 2, m_base->GetCenterList());
     m_height = m_center +
-               wxMax(m_signHeight / 2, m_base->GetMaxDrop());
+      wxMax(m_signHeight / 2, m_base->GetMaxDrop());
+  }
+
+  if(m_isBrokenIntoLines)
+  {
+    m_center = 0;
+    m_height = 0;
   }
 }
 
@@ -518,4 +553,45 @@ wxString IntCell::ToXML()
     flags += wxT(" def=\"false\">");
   
   return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
+}
+
+bool IntCell::BreakUp()
+{
+  if (!m_isBrokenIntoLines)
+  {
+    Cell::BreakUp();
+    m_isBrokenIntoLines = true;
+
+    m_close->SetNextToDraw(m_nextToDraw);
+    m_nextToDraw = m_open;
+    m_open->last()->SetNextToDraw(m_base);
+    m_base->last()->SetNextToDraw(m_comma1);
+    // The first cell of m_var should normally be a "d"
+    if(m_var->GetNext() != NULL)
+      m_comma1->last()->SetNextToDraw(m_var->GetNext());
+    else
+      m_comma1->last()->SetNextToDraw(m_var);
+    if (m_intStyle != INT_DEF)
+      m_var->last()->SetNextToDraw(m_close);
+    else{
+      m_var->last()->SetNextToDraw(m_comma2);
+      m_comma2->last()->SetNextToDraw(m_under);
+      m_under->last()->SetNextToDraw(m_comma3);
+      m_comma3->last()->SetNextToDraw(m_over);
+      m_over->last()->SetNextToDraw(m_close);
+    }
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    return true;
+  }
+  return false;
+}
+
+void IntCell::SetNextToDraw(Cell *next)
+{
+  if (m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

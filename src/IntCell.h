@@ -84,7 +84,9 @@ public:
 
   wxString ToXML() override;
 
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  bool BreakUp() override;
+  void SetNextToDraw(Cell *next) override;
+
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
@@ -97,6 +99,13 @@ private:
   std::unique_ptr<Cell> m_under;
   //! The upper limit of the integral
   std::unique_ptr<Cell> m_over;
+  //! A text cell reading "integrate("
+  std::unique_ptr<Cell> m_open;
+  //! A text cell reading ")"
+  std::unique_ptr<Cell> m_close;
+  std::unique_ptr<Cell> m_comma1;
+  std::unique_ptr<Cell> m_comma2;
+  std::unique_ptr<Cell> m_comma3;
   //! The integration variable
   std::unique_ptr<Cell> m_var;
   //! The height of the integral sign
