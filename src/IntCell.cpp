@@ -542,7 +542,13 @@ wxString IntCell::ToXML()
 
   wxString var;
   if (m_var != NULL)
-    var = m_var->ListToXML();
+  {
+    var = m_var->ToXML();
+  }
+  if (m_var->GetNext() != NULL)
+  {
+    var = m_var->GetNext()->ListToXML();
+  }
   var = wxT("<r>") + var + wxT("</r>");
 
   wxString flags;
@@ -550,9 +556,12 @@ wxString IntCell::ToXML()
     flags += wxT(" breakline=\"true\"");
 
   if (m_intStyle != INT_DEF)
+  {
     flags += wxT(" def=\"false\">");
-  
-  return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
+    return wxT("<in") + flags + wxT(">") + base + var + wxT("</in>");
+  }
+  else
+    return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
 }
 
 bool IntCell::BreakUp()
