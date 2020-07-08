@@ -618,18 +618,6 @@ const Style &Style::FromStockFont(wxStockGDI::Item font)
   }
 }
 
-static bool TrySetFontName(Style &style, AFontName name)
-{
-  Style newStyle = style;
-  if (!wxFontEnumerator::IsValidFacename(name.GetAsString()))
-    return false;
-  newStyle.SetFontName(name);
-  if (!newStyle.IsFontOk())
-    return false;
-  style = newStyle;
-  return true;
-}
-
 wxString Style::GetDump() const
 {
   return wxString::Format("%5.2fpt %c%c%c%c%c \"%s\" fam:%d enc:%d",

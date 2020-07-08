@@ -87,16 +87,12 @@ void ListCell::RecalculateWidths(int fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
-
-  Configuration *configuration = (*m_configuration);
   
   m_innerCell->RecalculateWidthsList(fontsize);
   m_innerCell->RecalculateHeightList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   
-  wxDC *dc = configuration->GetDC();
-  int size = m_innerCell->GetHeightList();
   m_signWidth  = m_open->GetWidth();
 
   // If our font provides all the unicode chars we need we don't need
@@ -123,11 +119,8 @@ void ListCell::RecalculateHeight(int fontsize)
   if(!NeedsRecalculation(fontsize))
     return;
 
-  Configuration *configuration = (*m_configuration);
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
-
-  wxDC *dc = configuration->GetDC();
 
   m_open->RecalculateHeightList(fontsize);
   m_innerCell->RecalculateHeightList(fontsize);
@@ -157,7 +150,6 @@ void ListCell::Draw(wxPoint point)
   if (DrawThisCell(point))
   { 
     Configuration *configuration = (*m_configuration);
-    wxDC *dc = configuration->GetDC();
     wxPoint innerCellPos(point);
     
     if(m_drawAsAscii)
