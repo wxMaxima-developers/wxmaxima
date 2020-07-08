@@ -1653,6 +1653,7 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
   if (!style.IsFontOk())
     style.SetFontName({});
 
+  // cppcheck-suppress duplicateCondition
   if (!style.IsFontOk())
   {
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);

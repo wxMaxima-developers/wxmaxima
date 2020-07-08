@@ -543,6 +543,7 @@ Style Configuration::GetStyle(TextStyle textStyle, long fontSize) const
   if (!style.IsFontOk())
     style.SetFontName({});
 
+  // cppcheck-suppress duplicateCondition
   if (!style.IsFontOk())
   {
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
