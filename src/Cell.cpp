@@ -78,12 +78,12 @@ wxString Cell::GetToolTip(const wxPoint &point)
 }
 
 Cell::Cell(GroupCell *group, Configuration **config) :
+    m_toolTip((*config)->GetDefaultCellToolTip()),
     m_group(group),
     m_configuration(config),
-    m_cellPointers(GetCellPointers())
+    m_cellPointers(GetCellPointers()),
+    m_fontSize((*config)->GetMathFontSize())
 {
-  m_toolTip = (*m_configuration)->GetDefaultCellToolTip();
-  m_fontSize = (*m_configuration)->GetMathFontSize();
 }
 
 Cell::~Cell()

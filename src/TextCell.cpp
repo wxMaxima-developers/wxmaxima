@@ -1105,7 +1105,7 @@ wxString TextCell::ToTeX()
       parenthesis does contain a product.
     */
 
-    if (m_SuppressMultiplicationDot)
+    if (m_suppressMultiplicationDot)
     {
       text.Replace(wxT("*"), wxT("\\, "));
       text.Replace(wxT("\u00B7"), wxT("\\, "));

@@ -56,7 +56,7 @@ void DiffCell::SetDiff(Cell *diff)
     return;
   m_diffCell.reset(diff);
 
-  m_diffCell->m_SuppressMultiplicationDot = true;
+  m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
 void DiffCell::SetBase(Cell *base)

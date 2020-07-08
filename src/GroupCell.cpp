@@ -699,7 +699,7 @@ void GroupCell::RecalculateHeightOutput()
         m_outputRect.height += configuration->GetInterEquationSkip();
       }
 
-      if (tmp->m_bigSkip)
+      if (tmp->HasBigSkip())
       {
         m_height            += MC_LINE_SKIP;
         m_outputRect.height += MC_LINE_SKIP;
@@ -838,7 +838,7 @@ void GroupCell::Draw(wxPoint point)
           tmp->Draw(in);
           if ((tmp->GetNextToDraw() != NULL) && (tmp->GetNextToDraw()->BreakLineHere()))
             {
-              if (tmp->GetNextToDraw()->m_bigSkip)
+              if (tmp->GetNextToDraw()->HasBigSkip())
                 in.y += MC_LINE_SKIP;
  
               in.x = point.x + GetLineIndent(tmp->GetNextToDraw());              
@@ -1871,7 +1871,7 @@ bool GroupCell::UnBreakUpCells(Cell *cell)
  
   while (cell != NULL)
   {
-    if (cell->m_isBrokenIntoLines)
+    if (cell->IsBrokenIntoLines())
     {
       cell->Unbreak();
       retval = true;

@@ -829,6 +829,8 @@ public:
   bool IsHidden() const
     { return m_isHidden; }
 
+  virtual void Hide(bool hide = true) { m_isHidden = hide; }
+
   bool IsEditable(bool input = false) const
   {
     return (m_type == MC_TYPE_INPUT &&
@@ -917,6 +919,10 @@ public:
   //! Is this cell possibly output of maxima?
   bool IsMath() const;
 
+  bool HasBigSkip() const { return m_bigSkip; }
+
+  int GetImageBorderWidth() const { return m_imageBorderWidth; }
+
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
   //! What to put on the clipboard if this cell is to be copied as text
@@ -930,7 +936,7 @@ public:
   Cell *CopyList() const;
 
   //! Remove this cell's tooltip
-  void ClearToolTip(){m_toolTip = wxEmptyString;}
+  void ClearToolTip() { m_toolTip.Truncate(0); }
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip);
   //! Add another tooltip to this cell
@@ -952,6 +958,9 @@ public:
   bool ContainsToolTip() const { return m_containsToolTip; }
 
   bool IsBrokenIntoLines() const { return m_isBrokenIntoLines; }
+  bool GetSuppressMultiplicationDot() const { return m_suppressMultiplicationDot; }
+  void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
+  void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
 
 protected:
 
@@ -1017,11 +1026,9 @@ protected:
 //** 4-byte objects
 //**
 
-public:
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
   int m_imageBorderWidth = 0;
 
-protected:
   //! The height of this cell.
   int m_height = -1;
   /*! The width of this cell.
@@ -1061,7 +1068,6 @@ protected:
 
 //** 1-byte objects
 //**
-public:
   bool m_bigSkip = false;
 
   /*! true means:  This cell is broken into two or more lines.
@@ -1071,10 +1077,8 @@ public:
      end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
    */
   bool m_isBrokenIntoLines = false;
-protected:
   bool m_isBrokenIntoLines_old = false;
 
-public:
   /*! True means: This cell is not to be drawn.
 
      Currently the following items fall into this category:
@@ -1085,7 +1089,6 @@ public:
   bool m_isHidden = false;
 
   //! True means: This is a hidable multiplication sign
-  //! \todo This field should be at least protected
   bool m_isHidableMultSign = false;
 
   /*! Do we want to begin this cell with a center dot if it is part of a product?
@@ -1095,12 +1098,9 @@ public:
      code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
      many => we need parenthesis cells to set this flag for the first cell in
      their "inner cell" list.
-
-     \todo This field should be at least protected
    */
-  bool m_SuppressMultiplicationDot = false;
+  bool m_suppressMultiplicationDot = false;
 
-protected:
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths = true;
   bool m_recalculate_maxCenter = true;
