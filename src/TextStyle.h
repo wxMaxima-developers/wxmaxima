@@ -47,6 +47,9 @@
  * any system, and the size of the interned face name table will not grow without bounds.
  * The interning mechanism, however, does not have a fixed upper limit to the number of
  * interned strings.
+ *
+ * This class is thread-safe with respect to its access to the shared instance of the
+ * interner.
  */
 class AFontName final
 {
