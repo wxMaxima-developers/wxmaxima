@@ -88,6 +88,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
 {
   m_helpFileAnchorsUsable = false;
   m_dontSkipScrollEvent = false;
+  m_scrollToCaret = false;
   m_newxPosition = -1;
   m_newyPosition = -1;
   m_tree = NULL;
