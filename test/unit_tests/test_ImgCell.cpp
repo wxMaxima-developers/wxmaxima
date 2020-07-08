@@ -23,30 +23,15 @@
 #include "test_ImgCell.h"
 #include "Cell.cpp"
 #include "CellPtr.cpp"
-#include "FontCache.h"
+#include "FontCache.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
+#include "TextStyle.cpp"
+#include "TextCell.cpp"
+#include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
 
 Cell::CellPointers pointers(nullptr);
-
-Style &Style::operator=(const Style &) { return *this; }
-float Style::GetFontSize() const { return {}; }
-AFontName Style::Default_FontName() { return {}; }
-bool Style::SetItalic(bool) { return {}; }
-bool Style::SetFontName(AFontName) { return {}; }
-bool Style::SetFontSize(float) { return {}; }
-bool Style::IsFontOk() const { return {}; }
-Style const &Style::FromStockFont(wxStockGDI::Item)
-{
-  static const Style s;
-  return s;
-}
-wxFont const &Style::LookupFont() const
-{
-  static const wxFont font;
-  return font;
-}
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) {}
 Configuration::~Configuration() {}
