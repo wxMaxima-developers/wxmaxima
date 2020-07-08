@@ -469,12 +469,11 @@ void GroupCell::RecalculateWidths(int fontsize)
   
   if (NeedsRecalculation(fontsize))
   {
-    // special case of 'line cell'
+    // Recalculating pagebreaks is simple
     if (m_groupType == GC_TYPE_PAGEBREAK)
     {
       m_width = configuration->GetCellBracketWidth();
       m_height = 2;
-      ResetCellListSizes();
       return;
     }
     
@@ -496,18 +495,17 @@ void GroupCell::RecalculateWidths(int fontsize)
     }
     else
     {
+      m_output->RecalculateWidthsList((*m_configuration)->GetDefaultFontSize());
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        BreakLines();
         m_width = Scale_Px(100);
         if(GetInput() != NULL)
           m_width = GetInput()->GetFullWidth() + GetInputIndent();
         else
-        {
-            m_width = GetInputIndent();
-        }
+          m_width = GetInputIndent();
       }
+      m_width = wxMax(m_width, m_output->GetLineWidth());
     }
   }
   Cell::RecalculateWidths(fontsize);
