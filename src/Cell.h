@@ -117,7 +117,7 @@ class Cell: public Observed
   void operator=(const Cell&) = delete;
   Cell(const Cell&) = delete;
 
-  public:
+public:
 
   /*! The storage for pointers to cells.
     
@@ -307,7 +307,6 @@ class Cell: public Observed
   wxAccStatus GetRole (int childId, wxAccRole *role) override;
 #endif
   
-  wxString m_toolTip;
 
   /*! Returns the ToolTip this cell provides.
 
@@ -341,9 +340,6 @@ class Cell: public Observed
     \param p_next The cell that will be appended to the list.
    */
   void AppendCell(Cell *p_next);
-
-  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
-  int m_imageBorderWidth;
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)
@@ -793,13 +789,6 @@ class Cell: public Observed
   */
   virtual void UnbreakList();
 
-  /*! The next cell in the list of cells
-
-    Reads NULL, if this is the last cell of the list. See also m_nextToDraw and 
-    m_previous.
-   */
-  Cell *m_next;
-
   //! Get the next cell in the list.
   virtual Cell *GetNext() const {return m_next;}
   /*! Get the next cell that needs to be drawn
@@ -809,13 +798,7 @@ class Cell: public Observed
     the denominator are pointed to by GetNextToDraw() as single separate objects.
    */
   virtual Cell *GetNextToDraw() const = 0;
-  
-  /*! The previous cell in the list of cells
-    
-    Reads NULL, if this is the first cell of the list. See also 
-    m_nextToDraw and m_next
-   */
-  CellPtr<Cell> m_previous;
+
   /*! Tells this cell which one should be the next cell to be drawn
 
     If the cell is displayed as 2d object this sets the pointer to the next cell.
@@ -830,25 +813,6 @@ class Cell: public Observed
   template <typename T, typename
                        std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   void SetNextToDraw(const CellPtr<T> &ptr) { SetNextToDraw(ptr.get()); }
-  bool m_bigSkip;
-  /*! true means:  This cell is broken into two or more lines.
-    
-    Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
-    but will be displayed in their linear form (and therefore broken into lines) if they
-    end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
-   */
-  bool m_isBrokenIntoLines;
-  /*! True means: This cell is not to be drawn.
-
-    Currently the following items fall into this category:
-     - parenthesis around fractions or similar things that clearly can be recognized as atoms
-     - plus signs within numbers
-     - The output in folded GroupCells
-   */
-  bool m_isHidden;
-
-  //! True means: This is a hidable multiplication sign
-  bool m_isHidableMultSign;
 
   /*! Determine if this cell contains text that isn't code
 
@@ -965,16 +929,6 @@ class Cell: public Observed
   */
   Cell *CopyList() const;
 
-  /*! Do we want to begin this cell with a center dot if it is part of a product?
-
-    Maxima will represent a product like (a*b*c) by a list like the following:
-    [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
-    code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
-    many => we need parenthesis cells to set this flag for the first cell in 
-    their "inner cell" list.
-   */
-  bool m_SuppressMultiplicationDot;
-
   //! Remove this cell's tooltip
   void ClearToolTip(){m_toolTip = wxEmptyString;}
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
@@ -982,10 +936,12 @@ class Cell: public Observed
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
-  void SetCurrentPoint(wxPoint point){m_currentPoint = point;
+  void SetCurrentPoint(wxPoint point)
+  {
+    m_currentPoint = point;
     if((m_currentPoint.x >=0) &&
-       (m_currentPoint.y >=0))
-  m_currentPoint_Last = point;
+        (m_currentPoint.y >=0))
+      m_currentPoint_Last = point;
   }
   //! Tells this cell where it is placed on the worksheet
   void SetCurrentPoint(int x, int y){
@@ -995,24 +951,24 @@ class Cell: public Observed
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   bool ContainsToolTip() const { return m_containsToolTip; }
 
+  bool IsBrokenIntoLines() const { return m_isBrokenIntoLines; }
+
 protected:
-  //! true, if this cell clearly needs recalculation
-  bool m_recalculateWidths; 
-  bool m_recalculate_maxCenter;
-  bool m_recalculate_maxDrop;
-  bool m_recalculate_maxWidth;
-  bool m_recalculate_lineWidth;
-  //! GroupCells only: Suppress the yellow ToolTips marker
-  bool m_suppressTooltipMarker;
-  //! To be called if the font has changed.
-  virtual void FontsChanged()
-    {
-      ResetSize();
-      ResetData();
-    }
+
+//** Large objects
+//**
+  wxString m_toolTip;
+  /*! Text that should end up on the clipboard if this cell is copied as text.
+
+     \attention  m_altCopyText is not checked in all cell types!
+   */
+  wxString m_altCopyText;
+
+//** 8-byte objects
+//**
   /*! The point in the work sheet at which this cell begins.
 
-    The begin of a cell is defined as 
+    The begin of a cell is defined as
      - x=the left border of the cell
      - y=the vertical center of the cell. Which (per example in the case of a fraction)
        might not be the physical center but the vertical position of the horizontal line
@@ -1023,29 +979,145 @@ protected:
      - for EditorCells by it's GroupCell's RecalculateHeight and
      - for Cells when they are drawn.
   */
-  wxPoint m_currentPoint;
+  wxPoint m_currentPoint{-1, -1};
+  wxPoint m_currentPoint_Last{-1, -1};
 
-  wxPoint m_currentPoint_Last;
+  //! The zoom factor at the time of the last recalculation.
+  double m_lastZoomFactor = -1;
 
+//** 8/4-byte objects
+//**
+
+public:
+  // TODO WIP on making these fields private (2020-07-07). Do not refactor.
+  /*! The next cell in the list of cells
+
+    Reads NULL, if this is the last cell of the list. See also m_nextToDraw and
+    m_previous.
+   */
+  Cell *m_next = nullptr;
+
+  /*! The previous cell in the list of cells
+
+    Reads NULL, if this is the first cell of the list. See also
+    m_nextToDraw and m_next
+   */
+  CellPtr<Cell> m_previous;
+
+protected:
   /*! The GroupCell this list of cells belongs to.
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
   CellPtr<GroupCell> m_group;
 
-  //! Does this cell begin with a forced page break?
-  bool m_breakPage;
-  //! Are we allowed to add a line break before this cell?
-  bool m_breakLine;
-  //! true means we force this cell to begin with a line break.  
-  bool m_forceBreakLine;
-  bool m_highlight;
-  /* Text that should end up on the clipboard if this cell is copied as text.
-
-     \attention  m_altCopyText is not check in all cell types!
-  */
-  wxString m_altCopyText;
   Configuration **m_configuration;
+  CellPointers *const m_cellPointers;
+
+//** 4-byte objects
+//**
+
+public:
+  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
+  int m_imageBorderWidth = 0;
+
+protected:
+  //! The height of this cell.
+  int m_height = -1;
+  /*! The width of this cell.
+
+     Is recalculated by RecalculateHeight.
+   */
+  int m_width = -1;
+  /*! Caches the width of the list starting with this cell.
+
+     - Will contain -1, if it has not yet been calculated.
+     - Won't be recalculated on appending new cells to the list.
+   */
+  int m_fullWidth = -1;
+  /*! Caches the width of the rest of the line this cell is part of.
+
+     - Will contain -1, if it has not yet been calculated.
+     - Won't be recalculated on appending new cells to the list.
+   */
+  int m_lineWidth = -1;
+  int m_center = -1;
+  int m_maxCenter = -1;
+  int m_maxDrop = -1;
+private:
+  //! The client width at the time of the last recalculation.
+  int m_clientWidth_old = -1;
+protected:
+  int m_worksheetRedrawCounter_old = 0;
+  int m_RedrawCounter = 0;
+  CellType m_type = MC_TYPE_DEFAULT;
+  TextStyle m_textStyle = TS_DEFAULT;
+
+//** 2-byte objects
+//**
+  //! The font size is smaller in super- and subscripts.
+  AFontSize m_fontSize = {};
+  AFontSize m_fontsize_old = {};
+
+//** 1-byte objects
+//**
+public:
+  bool m_bigSkip = false;
+
+  /*! true means:  This cell is broken into two or more lines.
+
+     Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
+     but will be displayed in their linear form (and therefore broken into lines) if they
+     end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
+   */
+  bool m_isBrokenIntoLines = false;
+protected:
+  bool m_isBrokenIntoLines_old = false;
+
+public:
+  /*! True means: This cell is not to be drawn.
+
+     Currently the following items fall into this category:
+     - parenthesis around fractions or similar things that clearly can be recognized as atoms
+     - plus signs within numbers
+     - The output in folded GroupCells
+   */
+  bool m_isHidden = false;
+
+  //! True means: This is a hidable multiplication sign
+  //! \todo This field should be at least protected
+  bool m_isHidableMultSign = false;
+
+  /*! Do we want to begin this cell with a center dot if it is part of a product?
+
+     Maxima will represent a product like (a*b*c) by a list like the following:
+     [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
+     code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
+     many => we need parenthesis cells to set this flag for the first cell in
+     their "inner cell" list.
+
+     \todo This field should be at least protected
+   */
+  bool m_SuppressMultiplicationDot = false;
+
+protected:
+  //! true, if this cell clearly needs recalculation
+  bool m_recalculateWidths = true;
+  bool m_recalculate_maxCenter = true;
+  bool m_recalculate_maxDrop = true;
+  bool m_recalculate_maxWidth = true;
+  bool m_recalculate_lineWidth = true;
+  //! GroupCells only: Suppress the yellow ToolTips marker
+  bool m_suppressTooltipMarker = false;
+  bool m_containsToolTip = false;
+  //! Does this cell begin with a forced page break?
+  bool m_breakPage = false;
+  //! Are we allowed to add a line break before this cell?
+  bool m_breakLine = false;
+  //! true means we force this cell to begin with a line break.
+  bool m_forceBreakLine = false;
+  bool m_highlight = false;
+
 
   class InnerCellIterator
   {
@@ -1098,47 +1170,15 @@ protected:
 
   inline Worksheet *GetWorksheet() const;
 
-protected:
-  bool m_containsToolTip;
-  //! The height of this cell.
-  int m_height;
-  /*! The width of this cell.
+  //! To be called if the font has changed.
+  virtual void FontsChanged()
+  {
+    ResetSize();
+    ResetData();
+  }
 
-    Is recalculated by RecalculateHeight.
-   */
-  int m_width;
-  /*! Caches the width of the list starting with this cell.
-
-    - Will contain -1, if it has not yet been calculated.
-    - Won't be recalculated on appending new cells to the list.
-  */
-  int m_fullWidth;
-  /*! Caches the width of the rest of the line this cell is part of.
-
-    - Will contain -1, if it has not yet been calculated.
-    - Won't be recalculated on appending new cells to the list.
-  */
-  int m_lineWidth;
-  int m_center;
-  int m_maxCenter;
-  int m_maxDrop;
-  int m_worksheetRedrawCounter_old;
-  int m_RedrawCounter;
-  CellType m_type;
-  TextStyle m_textStyle;
-  //! The font size is smaller in super- and subscripts.
-  AFontSize m_fontSize;
-
-protected:
-  CellPointers *const m_cellPointers;
-  //! The zoom factor at the time of the last recalculation.
-  double m_lastZoomFactor;
-  AFontSize m_fontsize_old;
-  bool m_isBrokenIntoLines_old;
 private:
   void RecalcCenterListAndMaxDropCache();
-  //! The client width at the time of the last recalculation.
-  int m_clientWidth_old;
 
   CellPointers *GetCellPointers() const;
 };

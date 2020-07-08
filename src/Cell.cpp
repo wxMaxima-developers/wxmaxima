@@ -78,45 +78,10 @@ wxString Cell::GetToolTip(const wxPoint &point)
 }
 
 Cell::Cell(GroupCell *group, Configuration **config) :
-    m_currentPoint_Last(wxPoint(-1,-1)),
     m_group(group),
     m_configuration(config),
     m_cellPointers(GetCellPointers())
 {
-  m_RedrawCounter = 0;
-  m_worksheetRedrawCounter_old = 0;
-  m_recalculate_maxDrop = true;
-  m_recalculateWidths = true;
-  m_recalculate_maxCenter = true;
-  m_recalculate_maxWidth = true;
-  m_recalculate_lineWidth = true;
-  m_containsToolTip = false;
-  m_suppressTooltipMarker = false;
-  m_isBrokenIntoLines_old = false;
-  m_isHidableMultSign = false;
-  m_lastZoomFactor = -1;
-  m_fontsize_old = {};
-  m_clientWidth_old = -1;
-  m_next = NULL;
-  m_fullWidth = -1;
-  m_lineWidth = -1;
-  m_maxCenter = -1;
-  m_maxDrop = -1;
-  m_width = -1;
-  m_height = -1;
-  m_center = -1;
-  SoftLineBreak(false);
-  m_breakPage = false;
-  m_forceBreakLine = false;
-  m_bigSkip = false;
-  m_isHidden = false;
-  m_isBrokenIntoLines = false;
-  m_highlight = false;
-  m_type = MC_TYPE_DEFAULT;
-  m_textStyle = TS_DEFAULT;
-  m_SuppressMultiplicationDot = false;
-  m_imageBorderWidth = 0;
-  SetCurrentPoint(wxPoint(-1, -1));
   m_toolTip = (*m_configuration)->GetDefaultCellToolTip();
   m_fontSize = (*m_configuration)->GetMathFontSize();
 }
