@@ -483,8 +483,6 @@ private:
 
   void OnMouseMotion(wxMouseEvent &event);
 
-  void OnMouseWheel(wxMouseEvent &event);
-
   //! Is called on double click on a cell.
   void OnDoubleClick(wxMouseEvent &event);
 
@@ -1383,10 +1381,21 @@ public:
 
   void CommentSelection();
 
-  //! Called if the user is scrolling through the document.
+  /*! Called if the user is using the scrollbar for scrolling through the document
+
+    See also OnThumbtrack and OnMouseWheel
+   */
   void OnScrollChanged(wxScrollEvent &ev);
-  //! Called if the user uses the touchpad for scrolling
+  /*! Called if the user uses the touchpad for scrolling
+
+    See also OnMouseWheel and OnScrollChanged
+  */
   void OnThumbtrack(wxScrollWinEvent &ev);
+  /*! Called if the mouse wheel sents events
+
+    The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead.
+   */
+  void OnMouseWheel(wxMouseEvent &event);
 
   /*! Do an incremental search from the cursor or the point the last search started at
 
