@@ -1158,11 +1158,12 @@ public:
 
   bool ActivateNextInput(bool input = false);
 
-  /*! Request to scroll to the cursor as soon as wxMaxima is idle
-  */
-  void ScrollToCaret(){
-    m_cellPointers.m_scrollToCell = NULL;
-    m_scrollToCaret = true;}
+  //! Request to scroll to the cursor as soon as wxMaxima is idle
+  void ScrollToCaret()
+  {
+    m_cellPointers.m_scrollToCell = false;
+    m_scrollToCaret = true;
+  }
 
   //! Scrolls to the cursor, if requested.
   bool ScrollToCaretIfNeeded();
