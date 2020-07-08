@@ -62,7 +62,7 @@ void FunCell::SetArg(Cell *arg)
   m_argCell.reset(arg);
 }
 
-void FunCell::RecalculateWidths(int fontsize)
+void FunCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -76,7 +76,7 @@ void FunCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void FunCell::RecalculateHeight(int fontsize)
+void FunCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;

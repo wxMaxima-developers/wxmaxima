@@ -50,8 +50,8 @@
 #define MC_HCARET_WIDTH 25
 
 #define MC_EXP_INDENT 2
-#define MC_MIN_SIZE 6
-#define MC_MAX_SIZE 48
+static constexpr AFontSize MC_MIN_SIZE{ 6.0f };
+static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 
 #define LIBERTINE1 "LinLibertine_DRah.ttf"
 #define LIBERTINE2 "LinLibertine_I.ttf"
@@ -216,6 +216,7 @@ public:
     Is used for displaying/printing/exporting of text/maths.
    */
   long Scale_Px(double px) const;
+  AFontSize Scale_Px(AFontSize size) const;
 
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor() const
@@ -391,18 +392,18 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
-  long GetDefaultFontSize() const
+  AFontSize GetDefaultFontSize() const
   { return m_styles[TS_DEFAULT].GetFontSize(); }
 
-  void SetDefaultFontSize(long fontSize)
+  void SetDefaultFontSize(AFontSize fontSize)
   {
-    m_styles[TS_DEFAULT].FontSize(fontSize);
+    m_styles[TS_DEFAULT].SetFontSize(fontSize);
   }
 
-  long GetMathFontSize() const
+  AFontSize GetMathFontSize() const
   { return m_mathFontSize; }
 
-  void SetMathFontSize(double size)
+  void SetMathFontSize(AFontSize size)
   { m_mathFontSize = size; }
 
   //! Do we want to have automatic line breaks for text cells?
@@ -437,11 +438,11 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  long GetFontSize(TextStyle st) const
+  AFontSize GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return m_styles[st].GetFontSize();
-    return 0;
+    return {};
   }
 
   const wxString &GetStyleName(TextStyle textStyle) const;
@@ -826,7 +827,7 @@ public:
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
    */
-  Style GetStyle(TextStyle textStyle, long fontSize) const;
+  Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -971,7 +972,7 @@ private:
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
   AFontName m_fontName;
-  long m_mathFontSize;
+  AFontSize m_mathFontSize;
   AFontName m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;

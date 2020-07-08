@@ -37,7 +37,7 @@ ListCell::ListCell(GroupCell *parent, Configuration **config) :
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
-  m_fontSize = 10;
+  m_fontSize = AFontSize(10.0f);
   m_signWidth = 12;
   m_drawAsAscii = true;
 }
@@ -83,7 +83,7 @@ void ListCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
   ResetSize();
 }
 
-void ListCell::RecalculateWidths(int fontsize)
+void ListCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -114,7 +114,7 @@ void ListCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void ListCell::RecalculateHeight(int fontsize)
+void ListCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;

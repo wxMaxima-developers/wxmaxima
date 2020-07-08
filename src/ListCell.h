@@ -60,9 +60,8 @@ public:
   void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
   void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

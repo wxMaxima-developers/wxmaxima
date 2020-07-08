@@ -70,9 +70,8 @@ private:
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

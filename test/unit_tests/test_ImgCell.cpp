@@ -23,11 +23,12 @@
 #include "test_ImgCell.h"
 #include "Cell.cpp"
 #include "CellPtr.cpp"
+#include "FontAttribs.cpp"
 #include "FontCache.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
-#include "TextStyle.cpp"
 #include "TextCell.cpp"
+#include "TextStyle.cpp"
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
 
@@ -36,9 +37,10 @@ Cell::CellPointers pointers(nullptr);
 Configuration::Configuration(wxDC *dc) : m_dc(dc) {}
 Configuration::~Configuration() {}
 long Configuration::Scale_Px(double) const { return 1; }
+AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
-Style Configuration::GetStyle(TextStyle, long) const { return {}; }
+Style Configuration::GetStyle(TextStyle, AFontSize) const { return {}; }
 Cell::CellPointers *Cell::GetCellPointers() const { return &pointers; }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &) { return {}; }

@@ -34,7 +34,7 @@
 #define INTEGRAL_TOP "\xF3"
 #define INTEGRAL_BOTTOM "\xF5"
 #define INTEGRAL_EXTEND "\xF4"
-#define INTEGRAL_FONT_SIZE 12
+static constexpr AFontSize INTEGRAL_FONT_SIZE{ 12.0f };
 #endif
 
 IntCell::IntCell(GroupCell *parent, Configuration **config) :
@@ -106,12 +106,12 @@ void IntCell::SetVar(Cell *var)
   m_var.reset(var);
 }
 
-void IntCell::RecalculateWidths(int fontsize)
+void IntCell::RecalculateWidths(AFontSize fontsize)
 {
   if (!NeedsRecalculation(fontsize))
     return;
 
-  wxASSERT(fontsize >= 1);
+  wxASSERT(fontsize.IsValid());
   Configuration *configuration = (*m_configuration);
   
   m_signHeight = Scale_Px(35 * configuration->GetZoomFactor());
@@ -127,19 +127,19 @@ void IntCell::RecalculateWidths(int fontsize)
   if(m_isBrokenIntoLines)
     m_under->RecalculateWidthsList(fontsize);
   else
-    m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
+    m_under->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - 5 });
   m_comma3->RecalculateWidthsList(fontsize);
   if(m_isBrokenIntoLines)
     m_over->RecalculateWidthsList(fontsize);
   else
-    m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
+    m_over->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - 5 });
   m_close->RecalculateWidthsList(fontsize);
   
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    double fontsize1 = Scale_Px(fontsize * 1.5);
-    wxASSERT(fontsize1 > 0);
+    auto fontsize1 = AFontSize(Scale_Px(fontsize * 1.5));
+    wxASSERT(fontsize1.IsValid());
     
     Style style = Style(fontsize1)
       .FontName(configuration->GetTeXCMEX());
@@ -168,9 +168,9 @@ void IntCell::RecalculateWidths(int fontsize)
   {
 #if defined __WXMSW__
     wxDC *dc = configuration->GetDC();
-    double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
-    wxASSERT(fontsize1 > 0);
-    
+    auto fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
+    wxASSERT(fontsize1.IsValid());
+
     Style style = Style(fontsize1)
       .FontName(configuration->GetSymbolFontName());
     
@@ -203,7 +203,7 @@ void IntCell::RecalculateWidths(int fontsize)
     m_width = 0;
 }
 
-void IntCell::RecalculateHeight(int fontsize)
+void IntCell::RecalculateHeight(AFontSize fontsize)
 {
 
   if(!NeedsRecalculation(fontsize))
@@ -219,12 +219,12 @@ void IntCell::RecalculateHeight(int fontsize)
   if(m_isBrokenIntoLines)
     m_under->RecalculateHeightList(fontsize);
   else
-    m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
+    m_under->RecalculateHeightList({ MC_MIN_SIZE, fontsize - 5 });
   m_comma3->RecalculateHeightList(fontsize);
   if(m_isBrokenIntoLines)
     m_over->RecalculateHeightList(fontsize);
   else
-    m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
+    m_over->RecalculateHeightList({ MC_MIN_SIZE, fontsize - 5 });
   m_close->RecalculateHeightList(fontsize);
   
   if (m_intStyle == INT_DEF)
@@ -263,8 +263,8 @@ void IntCell::Draw(wxPoint point)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      double fontsize1 = Scale_Px(m_fontSize * 1.5);
-      wxASSERT(fontsize1 > 0);
+      auto fontsize1 = AFontSize(Scale_Px(m_fontSize * 1.5));
+      wxASSERT(fontsize1.IsValid());
 
       Style style = Style(fontsize1)
         .FontName(configuration->GetTeXCMEX());
@@ -281,9 +281,9 @@ void IntCell::Draw(wxPoint point)
     {
 #if defined __WXMSW__
       SetForeground();
-      double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
+      auto fontsize1 = AFontSize(Scale_Px(INTEGRAL_FONT_SIZE));
       int m_signWCenter = m_signWidth / 2;
-      wxASSERT(fontsize1 > 0);
+      wxASSERT(fontsize1.IsValid());
 
       Style style = Style(fontsize1)
                       .FontName(configuration->GetSymbolFontName());

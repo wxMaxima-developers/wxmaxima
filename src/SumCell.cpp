@@ -85,7 +85,7 @@ void SumCell::SetUnder(Cell *under)
   m_under.reset(under);
 }
 
-void SumCell::RecalculateWidths(int fontsize)
+void SumCell::RecalculateWidths(AFontSize fontsize)
 {
   if (!NeedsRecalculation(fontsize))
     return;
@@ -97,10 +97,10 @@ void SumCell::RecalculateWidths(int fontsize)
   else
     m_signWidth = 4.0 * m_signHeight / 5.0;
   m_signWCenter = m_signWidth / 2.0;
-  m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_under->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
   if (!m_over)
     m_over.reset(new TextCell(m_group, m_configuration));
-  m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
 
   if (false)
   {
@@ -108,7 +108,7 @@ void SumCell::RecalculateWidths(int fontsize)
     if (configuration->CheckTeXFonts())
     {
       wxDC *dc = configuration->GetDC();
-      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
+      auto fontsize1 = Scale_Px(configuration->GetMathFontSize());
 
       auto style = Style(fontsize1)
                      .FontName(configuration->GetTeXCMEX());
@@ -134,13 +134,13 @@ void SumCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void SumCell::RecalculateHeight(int fontsize)
+void SumCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_under->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+  m_over->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
   m_displayedBase->RecalculateHeightList(fontsize);
 
   m_center = wxMax(m_over->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
@@ -174,8 +174,8 @@ void SumCell::Draw(wxPoint point)
     {
       /*this code is disabled*/
       SetForeground();
-      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
-      wxASSERT(fontsize1 > 0);
+      auto fontsize1 = Scale_Px(configuration->GetMathFontSize());
+      wxASSERT(fontsize1.IsValid());
 
       auto style = Style(fontsize1)
                      .FontName(configuration->GetTeXCMEX());

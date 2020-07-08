@@ -66,14 +66,14 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   m_displayedDigits_old = -1;
   m_height = -1;
   m_realCenter = m_center = -1;
-  m_lastCalculationFontSize = -1;
-  m_fontSize = 10;
+  m_lastCalculationFontSize = {};
+  m_fontSize.Set(10.0f);
   m_lastZoomFactor = -1;
   TextCell::SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
   m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
-  m_fontsize_old = -1;
+  m_fontsize_old = {};
 }
 
 void TextCell::SetStyle(TextStyle style)
@@ -320,15 +320,15 @@ TextCell::TextCell(const TextCell &cell):
   m_bigSkip = cell.m_bigSkip;
   m_lastZoomFactor = -1;
   m_displayedDigits_old = -1;
-  m_lastCalculationFontSize = -1;
+  m_lastCalculationFontSize = {};
   m_realCenter = -1;
-  m_fontsize_old = -1;
+  m_fontsize_old = {};
   m_textStyle = cell.m_textStyle;
   m_highlight = cell.m_highlight;
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
-double TextCell::GetScaledTextSize() const
+AFontSize TextCell::GetScaledTextSize() const
 {
     return Scale_Px(m_fontSize);
 }
@@ -336,7 +336,7 @@ double TextCell::GetScaledTextSize() const
 wxSize TextCell::GetTextSize(wxString const &text)
 {
   wxDC *dc = (*m_configuration)->GetDC();
-  double fontSize = GetScaledTextSize();
+  auto fontSize = GetScaledTextSize();
  
   SizeHash::const_iterator it = m_widths.find(fontSize);
 
@@ -351,7 +351,7 @@ wxSize TextCell::GetTextSize(wxString const &text)
   return sz;
 }
 
-bool TextCell::NeedsRecalculation(int fontSize) const
+bool TextCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
     (
@@ -457,11 +457,8 @@ void TextCell::UpdateDisplayedText()
   }
 }
 
-void TextCell::RecalculateWidths(int fontsize)
+void TextCell::RecalculateWidths(AFontSize fontsize)
 {
-  if(fontsize < 4)
-    fontsize = 4;
-  
   Configuration *configuration = (*m_configuration);
   if(NeedsRecalculation(fontsize))
   {      
@@ -501,7 +498,7 @@ void TextCell::RecalculateWidths(int fontsize)
   
     if((m_textStyle == TS_NUMBER) && (m_numStart != wxEmptyString))
     {      
-      double fontSize = GetScaledTextSize();
+      auto fontSize = GetScaledTextSize();
       {
         SizeHash::const_iterator it = m_numstartWidths.find(fontSize);    
         if(it != m_numstartWidths.end())
@@ -562,7 +559,7 @@ void TextCell::RecalculateWidths(int fontsize)
       wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                    _("Seems like something is broken with the maths font."));
 
-      while ((labelSize.GetWidth() >= m_width) && (m_fontSize > 2))
+      while ((labelSize.GetWidth() >= m_width) && (!m_fontSize.IsMinimal()))
       {
 #if wxCHECK_VERSION(3, 1, 2)
         m_fontSize -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
@@ -697,7 +694,7 @@ void TextCell::SetFontSizeForLabel(wxDC *dc)
   dc->SetFont(style.GetFont());
 }
 
-void TextCell::SetFont(int fontsize)
+void TextCell::SetFont(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
@@ -726,9 +723,6 @@ void TextCell::SetFont(int fontsize)
   }
 
   auto style = configuration->GetStyle(m_textStyle, fontsize);
-
-  if (m_fontSize < 4)
-    m_fontSize = 4;
   
   // Mark special variables that are printed as ordinary letters as being special.
   if ((!(*m_configuration)->CheckKeepPercent()) &&
@@ -740,7 +734,7 @@ void TextCell::SetFont(int fontsize)
       style.SetItalic(true);
   }
 
-  wxASSERT(Scale_Px(m_fontSize) > 0);
+  wxASSERT(m_fontSize.IsValid());
   style.SetFontSize(Scale_Px(m_fontSize));
 
   dc->SetFont(style.GetFont());

@@ -63,9 +63,8 @@ public:
 
   void SetPrint(bool print) { m_print = print; }
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
@@ -91,7 +90,7 @@ private:
 
   //! How to create a big parenthesis sign?
   Configuration::drawMode m_bigParenType;
-  void SetFont(int fontsize);
+  void SetFont(AFontSize fontsize);
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;

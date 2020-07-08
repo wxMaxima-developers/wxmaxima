@@ -66,7 +66,7 @@ void DiffCell::SetBase(Cell *base)
   m_baseCell.reset(base);
 }
 
-void DiffCell::RecalculateWidths(int fontsize)
+void DiffCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -81,7 +81,7 @@ void DiffCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void DiffCell::RecalculateHeight(int fontsize)
+void DiffCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;

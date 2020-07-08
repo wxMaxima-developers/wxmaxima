@@ -54,8 +54,8 @@ EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString
   m_oldSelectionEnd = -1;
   m_lastSelectionStart = -1;
   m_displayCaret = false;
-  m_fontSize = -1;
-  m_fontSize_Last = -1;
+  m_fontSize = {};
+  m_fontSize_Last = {};
   m_positionOfCaret = 0;
   m_caretColumn = -1; // used when moving up/down between lines
   m_selectionStart = -1;
@@ -597,7 +597,7 @@ void EditorCell::ConvertNumToUNicodeChar()
   m_positionOfCaret+= newChar.Length();
 }
 
-void EditorCell::RecalculateWidths(int fontsize)
+void EditorCell::RecalculateWidths(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if (configuration->GetZoomFactor() != m_lastZoomFactor)
@@ -716,7 +716,7 @@ wxString EditorCell::ToHTML()
   return retval;
 }
 
-void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsize)
+void EditorCell::MarkSelection(long start, long end, TextStyle style, AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if ((start < 0) || (end < 0)) return;
@@ -1008,7 +1008,7 @@ void EditorCell::SetFont()
   wxDC *dc = configuration->GetDC();
 
   m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize < 4)
+  if (m_fontSize.IsNull())
     m_fontSize = configuration->GetDefaultFontSize();
 
   m_fontSize = Scale_Px(m_fontSize);
@@ -1028,9 +1028,7 @@ void EditorCell::SetFont()
   m_fontWeight = configuration->IsBold(m_textStyle);
   m_underlined = configuration->IsUnderlined(m_textStyle);
 
-  wxASSERT(m_fontSize >= 0);
-  if(m_fontSize < 4)
-    m_fontSize = 4;
+  wxASSERT(m_fontSize.IsValid());
 
   auto style = Style(m_fontSize)
                  .FontName(m_fontName)
@@ -2691,7 +2689,7 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
+wxPoint EditorCell::PositionToPoint(AFontSize WXUNUSED(fontsize), int pos)
 {
   SetFont();
 

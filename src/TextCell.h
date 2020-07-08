@@ -43,7 +43,7 @@ public:
   TextCell(const TextCell &cell);
   Cell *Copy() const override { return new TextCell(*this); }  
 
-  double GetScaledTextSize() const;
+  AFontSize GetScaledTextSize() const;
   
   void SetStyle(TextStyle style) override;
   
@@ -53,11 +53,11 @@ public:
   //! Set the automatic label maxima has assigned the current equation
   void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
 
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  void SetFont(int fontsize);
+  void SetFont(AFontSize fontsize);
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
@@ -114,7 +114,7 @@ private:
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
-  bool NeedsRecalculation(int fontSize) const override;
+  bool NeedsRecalculation(AFontSize fontSize) const override;
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
@@ -136,35 +136,15 @@ private:
     \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
     size has changed and we need to re-calculate the text width.
    */
-  double m_lastCalculationFontSize;
+  AFontSize m_lastCalculationFontSize;
   //! The actual font size for labels (that have a fixed width)
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
   CellPtr<Cell> m_nextToDraw;
-  class SizeHash_internals
-  {
-  public:
-    SizeHash_internals() { }
-    unsigned long operator()( const double& k ) const
-      {
-        return k * 1000000;
-      }
-    SizeHash_internals& operator=(const SizeHash_internals&) { return *this; }
-  };
-  // comparison operator
-  class DoubleEqual
-  {
-  public:
-    DoubleEqual() { }
-    bool operator()( const double& a, const double& b ) const
-      {
-        return fabs(a-b) < .001;
-      }
-    DoubleEqual& operator=(const DoubleEqual&) { return *this; }
-  };
+
   WX_DECLARE_HASH_MAP(
-    double, wxSize, SizeHash_internals, DoubleEqual, SizeHash);
+    AFontSize, wxSize, std::hash<AFontSize>, AFontSize::Equals, SizeHash);
   //! Remembers all widths of the full text we already have configured
   SizeHash m_widths;
   //! The size of the first few digits

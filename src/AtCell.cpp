@@ -61,25 +61,25 @@ void AtCell::SetBase(Cell *base)
   m_baseCell.reset(base);
 }
 
-void AtCell::RecalculateWidths(int fontsize)
+void AtCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   m_baseCell->RecalculateWidthsList(fontsize);
-  m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 3));
+  m_indexCell->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - 3 });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
             Scale_Px(4);
   Cell::RecalculateWidths(fontsize);
 }
 
-void AtCell::RecalculateHeight(int fontsize)
+void AtCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   m_baseCell->RecalculateHeightList(fontsize);
-  m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 3));
+  m_indexCell->RecalculateHeightList({ MC_MIN_SIZE, fontsize - 3 });
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(7);
   m_center = m_baseCell->GetCenter();

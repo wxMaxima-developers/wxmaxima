@@ -186,9 +186,8 @@ private:
   std::shared_ptr<wxFileSystem> m_fileSystem;
   std::vector<std::shared_ptr<Image>> m_images;
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
