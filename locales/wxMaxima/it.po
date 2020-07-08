@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-07 13:07+0200\n"
-"PO-Revision-Date: 2020-07-07 18:56+0200\n"
+"PO-Revision-Date: 2020-07-08 23:44+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -4141,13 +4141,13 @@ msgid ""
 "If too low or to high a number of digits is displayed here when right-"
 "clicking on such a number opens up a menu that allows to customize this "
 "behavior.\n"
-msgstr ""
+msgstr "Se viene visualizzato un numero di cifre troppo basso o troppo alto quando si fa clic con il pulsante destro del mouse su tale numero, si apre un menu che consente di personalizzare questo comportamento.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:83
 msgid ""
 "If we did everything right maxima now can determine the equation that "
 "defines the general shape of all possible loading curves:\n"
-msgstr ""
+msgstr "Se abbiamo fatto tutto nel modo giusto, i massimi ora possono determinare l'equazione che definisce la forma generale di tutte le possibili curve di carico:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1602
 msgid "If we just want to know the typical value we can do the following:\n"
@@ -4205,7 +4205,7 @@ msgid ""
 "In many cases the actual curve actually isn't important while the height "
 "values are. In this case it is possible to generate a top view without "
 "drawing the actual surface:\n"
-msgstr ""
+msgstr "In molti casi la curva effettiva in realtà non è importante mentre lo sono i valori di altezza. In questo caso è possibile generare una vista dall'alto senza disegnare la superficie effettiva:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:340
 msgid "In order to allow to read values more easily\n"
@@ -4220,7 +4220,7 @@ msgid ""
 "In order to view this picture just click on it and move the mouse wheel. The "
 "fact that y needs to substituted into the equation to plot manually is a "
 "long-standing bug in maxima's makelist() command.\n"
-msgstr ""
+msgstr "Per visualizzare questa immagine basta fare clic su di essa e spostare la rotellina del mouse. Il fatto che y debba essere sostituito nell'equazione per graficare manualmente è un bug di vecchia data nel comando makelist() di maxima.\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:144
 msgid ""
@@ -4288,14 +4288,14 @@ msgid ""
 "equations we get are very generic, though, still, as maxima knows the "
 "general set of shapes the function might have, but in order to draw actual "
 "curves lacks I_Cable(0) and U_In(0):\n"
-msgstr ""
+msgstr "In questo caso la risposta alla domanda che desolve() pone, in realtà non influenza la forma del risultato, ma il modo in cui il risultato viene espresso. Le equazioni che otteniamo sono molto generiche, tuttavia, poiché Maxima conosce l'insieme generale di forme che la funzione potrebbe avere, ma per disegnare le curve effettive manca I_Cable(0) e U_In(0):\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:639
 msgid ""
 "In this example the \"initial=\" wasn't really necessary. But sometimes "
 "using the wrong starting point means that lsquares heads for the wrong local "
 "optimum of the problem.\n"
-msgstr ""
+msgstr "In questo esempio \"initial=\" non era veramente necessario. Ma a volte, usare il punto di partenza sbagliato significa che lsquares si dirige verso l'ottimale locale sbagliato del problema.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8295
 msgid "Include columns:"
@@ -5039,14 +5039,14 @@ msgid ""
 "example where this happens quickly). Maxima's solve instead tries to replace "
 "floating-point numbers by the exact fraction it most likely means and warns "
 "about doing so:\n"
-msgstr ""
+msgstr "Molti programmi per computer sono configurati per mostrare i numeri molto piccoli come \"0\" o solo per mostrare le prime cifre dopo il punto decimale sperando che il resto sia un errore di arrotondamento che non si somma (vedere il polinomio di Wilkinson per un esempio in cui ciò accade rapidamente ). La funzione \"solve\" di Maxima cerca invece di sostituire i numeri in virgola mobile con la frazione esatta che molto probabilmente rappresenta il risultato, e nel farlo avverte dell'operazione effettuata:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1184
 msgid ""
 "Many hard-to-find errors can be avoided by using exact numbers. It is "
 "therefore wise to use exact numbers wherever possible and only to convert "
 "the results to floats using float() or bfloat():\n"
-msgstr ""
+msgstr "Molti errori difficili da scovare possono essere evitati utilizzando numeri esatti. È quindi saggio usare numeri esatti ove possibile e usare float() o bfloat() solo per convertire i risultati in virgola mobile:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6591
 msgid "Map"
@@ -5089,6 +5089,9 @@ msgid ""
 "have problems aligning and scaling with the rest of the text and might use "
 "fonts that don't match the rest of the document."
 msgstr ""
+"MathJAX crea rappresentazioni scalabili di alta qualità di formule matematiche 2D che possono essere usate tramite trascinamento della selezione e fornisce opzioni di accessibilità. Lo svantaggio di MathJAX è che richiede JavaScript e un po' di tempo per comporre le equazioni.\n"
+"MathML è molto più veloce di MathJaX, se supportato dal browser. Ma molte implementazioni del MathML tendono a mancare di alcune funzionalità essenziali.\n"
+"Le bitmap hanno bisogno di una larghezza di banda maggiore rispetto alle altre due opzioni. Mancano il supporto per funzionalità avanzate come il trascinamento della selezione o l'accessibilità. Inoltre, hanno problemi di allineamento e ridimensionamento con il resto del testo e potrebbero utilizzare caratteri che non corrispondono al resto del documento."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:742
 msgid "MathML + MathJaX as Fill-In"
@@ -5116,7 +5119,7 @@ msgid ""
 "of words and only a handful of grammatical rules. Both sets are carefully "
 "chosen, though, allowing simply reformulating the question in many cases the "
 "answer can be found.\n"
-msgstr ""
+msgstr "La matematica si può vedere come una lingua composta solo da un insieme piuttosto piccolo di parole e poche regole grammaticali. Entrambi gli insiemi, scelti con cura, tuttavia, semplicemente di riformulando la domanda, in molti casi consentono di trovare una risposta.\n"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:240
 msgid "Maths"
@@ -5164,7 +5167,7 @@ msgid ""
 "provided with any precision. Numbers can be converted to bigfloats using the "
 "bfloat() command or by entering a \"b\" instead of an \"e\" when declaring "
 "the exponent:\n"
-msgstr ""
+msgstr "Maxima fornisce in alternativa la propria implementazione di numeri in virgola mobile che sono lenti (devono essere elaborati nel software), ma possono essere forniti con qualsiasi precisione. I numeri possono essere convertiti in bigfloat usando il comando bfloat() o inserendo una \"b\" invece di una \"e\" quando si dichiara l'esponente:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2592
 #, c-format
@@ -5305,7 +5308,7 @@ msgid ""
 "but is a bit more complicated to use. For example it requires us to manually "
 "compile a list of the errors we want to minimize. Let's do that for data2_i "
 "and approach1:\n"
-msgstr ""
+msgstr "Maxima fornisce un secondo algoritmo che spesso produce risultati ancora migliori, ma è un po' più complicato da usare. Ad esempio, richiede di compilare manualmente un elenco degli errori che si vuole minimizzare. Proviamo per data2_i e approach1:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:309
 msgid ""
@@ -5426,7 +5429,7 @@ msgid ""
 "In order to get a feeling for the shape of the curve it might help to right-"
 "click on it and press on the \"Popout interactively\" button which opens a "
 "window the curve can be rotated in:\n"
-msgstr ""
+msgstr "Il modo predefinito di Maxima di visualizzare le superfici 3D è ottimizzato per la visualizzazione veloce. Per avere un'idea della forma della curva, può essere utile fare clic con il pulsante destro del mouse su di essa e premere il pulsante \"Popout interattivamente\" che apre una finestra in cui è possibile ruotare la curva:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2597
 #, c-format
@@ -5458,6 +5461,15 @@ msgid ""
 "    at(result,Values);\n"
 "    float(%);"
 msgstr ""
+"I punti di forza di Maxima sono la manipolazione di equazioni e calcoli simbolici. Ha quindi senso usare le funzioni (al contrario delle equazioni con le etichette) con parsimonia e mantenere i valori effettivi delle variabili in un elenco, invece di assegnarli direttamente. Una sessione di esempio che lo fa sarebbe:\n"
+"\n"
+"/* Si mantengno i valori effettivi in un elenco in modo da poterli utilizzare in seguito */\n"
+"     Values:[a=10,c=100];\n"
+"     Pyth:a^2+b^2=c^2;\n"
+"     solve(%,b);\n"
+"     result:%[2];\n"
+"     at(result,Values);\n"
+"     float(%);"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:49
 msgid ""
@@ -5653,7 +5665,7 @@ msgid ""
 "If that isn't possible the \"Automatically answer questions\" button makes "
 "wxMaxima automatically fill in all answers it still remembers from a "
 "previous run."
-msgstr ""
+msgstr "La maggior parte delle domande può essere evitata usando i comandi assume() e declare(). Se ciò non è possibile, il pulsante \"Rispondi automaticamente alle domande\" fa sì che wxMaxima compili automaticamente tutte le risposte che ricorda ancora da un'esecuzione precedente."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:306
 msgid "Moving pictures\n"
@@ -5792,7 +5804,7 @@ msgstr "Necessario chiudere senza salvare."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2018
 msgid "Non-builtin symbols"
-msgstr ""
+msgstr "Nessun simbolo incorporato"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1730
 msgid "Normality Test..."
@@ -6783,7 +6795,7 @@ msgid ""
 "where this adds up to catastrophic errors quickly and it is surprising how "
 "often one encounters similar in real live including a big fraction of the "
 "glitches one can find in computer games.\n"
-msgstr ""
+msgstr "Rump e Wilkinson hanno fornito esempi di avvertimento di semplici polinomi in cui questo cumula rapidamente errori con effetti catastrofici ed è sorprendente quanto spesso ci si imbatte in eventi simili nella vita reale, compresa una grande parte dei difetti che si possono trovare nei giochi per computer.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5711
 msgid "Running gnuplot as: "
@@ -6990,7 +7002,7 @@ msgstr "Sezione"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:989
 msgid "Section cell (Heading 2)"
-msgstr ""
+msgstr "Cella sezione (Intestazione 2)"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:142
 msgid "See also the speed <-> accuracy button."
@@ -7444,13 +7456,13 @@ msgid ""
 "mechanisms often a good approach is to solve everything symbolically and to "
 "keep the actual numerical input values in a separate list like the following "
 "one:\n"
-msgstr ""
+msgstr "Poiché è il caso generale che consente di comprendere i meccanismi fondamentali, spesso un buon approccio è quello di risolvere tutto simbolicamente e mantenere i valori numerici effettivi in ingresso in un elenco separato come il seguente:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:695
 msgid ""
 "Since the biggest error occurs where we have the highest density of data the "
 "result of fitting the curve to this data directly will be suboptimal:\n"
-msgstr ""
+msgstr "Poiché l'errore più grande si verifica quando abbiamo la più alta densità di dati, il risultato del fit diretto della curva a questi dati non sarà ottimale:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:117
 msgid ""
@@ -7468,7 +7480,7 @@ msgstr ""
 msgid ""
 "Slower to draw, but easier to understand the curve is if the surface isn't "
 "transparent:\n"
-msgstr ""
+msgstr "È più lento da disegnare, ma più facile la comprensione della curva, se la superficie non è trasparente:\n"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:29
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6282
@@ -7529,6 +7541,9 @@ msgid ""
 " * The solution doesn't completely change its form depending on the range "
 "one variable is in.\n"
 msgstr ""
+"Solve accetta anche liste come argomenti. In questo caso troverà soluzioni solo se sono soddisfatte tutte le seguenti condizioni:\n"
+"  * Il numero di equazioni linearmente indipendenti corrisponde al numero di variabili da risolvere.\n"
+"  * La soluzione non cambia completamente forma a seconda dell'intervallo in cui si trova una variabile.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:987
 msgid "Solve boundary value problem for second degree ODE"
@@ -8125,7 +8140,7 @@ msgstr "La combinazione di tasti Maiusc+Spazio crea uno spazio non divisibile."
 msgid ""
 "The list of time-dependent variables to solve to doesn't match the time-"
 "dependent variables the list of dgls contains."
-msgstr ""
+msgstr "La lista delle variabili dipendenti dal tempo da risolvere, non corrisponde alle variabili dipendenti dal tempo contenute nella lista di dgls."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7136
 msgid ""
@@ -8159,7 +8174,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:813
 msgid "The natural approach to fitting data to exponential curves would be:\n"
-msgstr ""
+msgstr "L'approccio naturale al fit di dati su curve esponenziali sarebbe:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2196
 msgid "The next plot's title"
@@ -8178,11 +8193,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1324
 msgid "The offline manual of Maxima"
-msgstr ""
+msgstr "Il manuale locale di Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1321
 msgid "The offline manual of wxMaxima"
-msgstr ""
+msgstr "Il manuale locale di wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:358
 msgid ""
@@ -8208,31 +8223,31 @@ msgid ""
 "The places with a higher density of samples have more weight when fitting "
 "data to the curves. So let's add an error to the place with the highest data "
 "density and see if we can cope with it.\n"
-msgstr ""
+msgstr "I luoghi con una maggiore densità di campioni hanno più peso quando si fa il fit dei dati alle curve. Quindi aggiungiamo un errore nel luogo con la più alta densità di dati e vediamo se possiamo farcela.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1508
 msgid "The problem\n"
-msgstr ""
+msgstr "Il problema\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:848
 msgid ""
 "The problem with noise causing finding erroneous parameters is still valid, "
 "though, in this case.  It can be partially eliminated by introducing a "
 "c_noise, as proposed by Guo.\n"
-msgstr ""
+msgstr "Il problema del rumore che causa la rilevazione di parametri errati è comunque valido, in questo caso. Può essere parzialmente eliminato introducendo un c_noise, come proposto da Guo.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:902
 msgid "The result is a list of error values, each in the following format:\n"
-msgstr ""
+msgstr "Il risultato è una lista di valori di errore, ognuno nel seguente formato:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:772
 msgid ""
 "The result is a still noisy and distorted, but more evenly-spaced curve:\n"
-msgstr ""
+msgstr "Il risultato è ancora una curva rumorosa e distorta, ma più uniformemente distanziata:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:952
 msgid "The result isn't too bad, this time, neither:\n"
-msgstr ""
+msgstr "Il risultato non è neppure troppo male, questa volta:\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:125
 msgid "The result was indefinite."
