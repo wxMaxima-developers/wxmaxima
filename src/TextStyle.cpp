@@ -162,6 +162,15 @@ const wxString *AFontName::GetInternedEmpty()
  * Style
  */
 
+constexpr wxFontFamily Style::Default_Family;
+constexpr wxFontEncoding Style::Default_Encoding;
+constexpr wxFontWeight Style::Default_Weight;
+constexpr wxFontStyle Style::Default_FontStyle;
+constexpr bool Style::Default_Underlined;
+constexpr bool Style::Default_Strikethrough;
+constexpr AFontSize Style::Default_FontSize;
+constexpr uint32_t Style::Default_ColorRGB;
+
 Style::Style(const Style &o) : m(o.m) {}
 
 Style &Style::operator=(const Style &o)
