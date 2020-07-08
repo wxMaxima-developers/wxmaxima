@@ -361,7 +361,7 @@ size_t Style::GetFontHash() const
     hash_ = MixHash(hash_, m.encoding);
     hash_ = MixHash(hash_, m.weight);
     hash_ = MixHash(hash_, m.fontStyle);
-    hash_ = MixHash(hash_, m.underlined << 1 | m.strikethrough << 3 | m.isNotOK << 5);
+    hash_ = MixHash(hash_, (m.underlined << 1) | (m.strikethrough << 3) | (m.isNotOK << 5));
     hash_ = MixHash(hash_, m.fontName);
     hash_ = MixHash(hash_, m.uFontSize);
     if (!hash_) hash_++;
