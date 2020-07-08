@@ -7602,7 +7602,10 @@ void Worksheet::OnThumbtrack(wxScrollWinEvent &ev)
       m_newyPosition = ev.GetPosition();
 
     if (m_dontSkipScrollEvent)
+    {
+      RequestRedraw();
       ev.Skip();
+    }
   }
 }
 
