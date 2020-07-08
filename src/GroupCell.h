@@ -236,7 +236,7 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
-  void RecalculateHeight(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
   wxRect GetRect(bool all = false) override;
@@ -249,7 +249,7 @@ public:
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
    */
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   /*! Recalculate the size of this GroupCell.
 
@@ -481,7 +481,7 @@ public:
     {m_suppressTooltipMarker = suppress;}
 protected:
   int m_labelWidth_cached;
-  bool NeedsRecalculation(int fontSize) const override;
+  bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
 
@@ -495,7 +495,7 @@ protected:
   //! The maxima output this cell contains
   std::unique_ptr<Cell> m_output;
   //! Is this cell folded (which hides its contents)?
-  int m_mathFontSize;
+  AFontSize m_mathFontSize;
   static wxString m_lookalikeChars;
 
   CellPtr<Cell> m_nextToDraw;

@@ -24,6 +24,7 @@
 #define TEXTSTYLE_H
 
 #include "precomp.h"
+
 /*! \file
  * This file declares everything needed for the text style system used
  * to style all the elements on the work sheet.
@@ -34,8 +35,8 @@
 #include <wx/font.h>
 #include <wx/settings.h>
 #include <cstdint>
-#include <cmath>
 #include <functional>
+#include "FontAttribs.h"
 
 /*! An interned font face name, very quick to compare and hash.
  *
@@ -104,20 +105,26 @@ template <> struct std::hash<AFontName> final
   }
 };
 
-/*! A class that carries text styling information.
+//! Returns a r,g,b components packed into a 32-bit 00bbggrr triple.
+static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
+{ return (0xFF & r) | ((0xFF & g) << 8) | ((0xFF & b) << 16); }
+
+/*! Text Style Definition
  *
- * It covers the characteristics of the font as well as other aspects of the style,
- * e.g. its descriptive name and color of the text.
+ * It is a well-performing replacement for wxFontInfo, with additional
+ * color attribute.
  *
- * The text styles are also used as keys into the FontCache. They are designed to be quick
- * to compare for equality and order (less-than).
+ * The text styles are also used as keys into the FontCache. They are
+ * designed to be small, quick to compare for equality and order (less-than),
+ * and quick to copy.
+ *
  */
 class Style final
 {
 public:
   Style() = default;
   Style(const Style &);
-  explicit Style(float fontSize) { m.uFontSize = lround(fontSize / FontSize_Unit); }
+  explicit Style(AFontSize fontSize) { m.fontSize = fontSize; }
 
   Style &operator=(const Style &);
   bool operator==(const Style &o) const = delete;
@@ -135,17 +142,16 @@ public:
   //! Gets a style that represents a stock font. The font is pre-cached.
   static const Style &FromStockFont(wxStockGDI::Item font);
 
-  constexpr static float FontSize_Unit = 0.05f;
-
-  constexpr static wxFontFamily Default_Family = wxFONTFAMILY_DEFAULT;
-  constexpr static wxFontEncoding Default_Encoding = wxFONTENCODING_DEFAULT;
-  constexpr static wxFontWeight Default_Weight = wxFONTWEIGHT_NORMAL;
-  constexpr static wxFontStyle Default_FontStyle = wxFONTSTYLE_NORMAL;
-  constexpr static bool Default_Underlined = false;
-  constexpr static bool Default_Strikethrough = false;
+  constexpr static wxFontFamily Default_Family{wxFONTFAMILY_DEFAULT};
+  constexpr static wxFontEncoding Default_Encoding{wxFONTENCODING_DEFAULT};
+  constexpr static wxFontWeight Default_Weight{wxFONTWEIGHT_NORMAL};
+  constexpr static wxFontStyle Default_FontStyle{wxFONTSTYLE_NORMAL};
+  constexpr static bool Default_Underlined{false};
+  constexpr static bool Default_Strikethrough{false};
+  constexpr static AFontSize Default_FontSize{10.0f};
+  constexpr static uint32_t Default_ColorRGB{MAKE_RGB(0, 0, 0)};
   static AFontName Default_FontName();
-  constexpr static float Default_FontSize = 10.0f;
-  static inline const wxColor &Default_Color() { return *wxBLACK; }
+  static const wxColor &Default_Color();
 
   wxFontFamily GetFamily() const;
   wxFontEncoding GetEncoding() const;
@@ -159,7 +165,7 @@ public:
   bool IsStrikethrough() const;
   AFontName GetFontName() const;
   const wxString &GetNameStr() const;
-  float GetFontSize() const;
+  AFontSize GetFontSize() const;
   uint32_t GetRGBColor() const;
   wxColor GetColor() const { return wxColor(GetRGBColor()); }
 
@@ -175,7 +181,7 @@ public:
   did_change SetUnderlined(bool underlined = true);
   did_change SetStrikethrough(bool strikethrough = true);
   did_change SetFontName(AFontName fontName);
-  did_change SetFontSize(float size);
+  did_change SetFontSize(AFontSize fontSize);
   did_change SetRGBColor(uint32_t rgb);
   did_change SetColor(const wxColor &color);
   did_change SetColor(wxSystemColour sysColour);
@@ -194,7 +200,8 @@ public:
   Style& Underlined(bool underlined = true) { return SetUnderlined(underlined), *this; }
   Style& Strikethrough(bool strikethrough = true) { return SetStrikethrough(strikethrough), *this; }
   Style& FontName(class AFontName fontName) { return SetFontName(fontName), *this; }
-  Style& FontSize(float size) { return SetFontSize(size), *this; }
+  Style& FontSize(float size) { return SetFontSize(AFontSize(size)), *this; }
+  Style& FontSize(AFontSize fontSize) { return SetFontSize(fontSize), *this; }
   Style& RGBColor(uint32_t rgb) { return SetRGBColor(rgb), *this; }
   Style& Color(const wxColor &color) { return SetColor(color), *this; }
   Style& Color(uint8_t r, uint8_t g, uint8_t b) { return SetColor({r, g, b}), *this; }
@@ -210,7 +217,6 @@ public:
   bool IsFontOk() const;
   bool HasFontCached() const { return m.fontHash && m.font; }
   const wxFont& GetFont() const { return HasFontCached() ? *m.font : LookupFont(); }
-  const wxFont& GetFontAt(float fontSize) const;
 
   //! Sets all font-related properties based on another font
   did_change SetFromFont(const wxFont&);
@@ -221,9 +227,9 @@ public:
   //! Sets font-face and size only properties based on another style (not attributes like bold, etc.)
   did_change SetFontFaceAndSizeFrom(const Style&);
 
-  static bool IsFractionalFontSizeSupported();
-  static float GetFontSize(const wxFont &);
-  static void SetFontSize(wxFont &, float fontSize);
+  constexpr static bool IsFractionalFontSizeSupported() { return wxCHECK_VERSION(3,1,2); }
+  static AFontSize GetFontSize(const wxFont &);
+  static void SetFontSize(wxFont &, AFontSize fontSize);
 
   wxString GetDump() const;
 
@@ -233,18 +239,16 @@ private:
   Style &FromFontNoCache(const wxFont &);
   void SetFromFontNoCache(const wxFont &);
 
-  did_change SetUFontSize(int16_t uSize);
-
   struct Data // POD, 40 bytes on 64-bit platforms
   {
     // 8/4-byte members
-    mutable const wxFont *font = nullptr;
     AFontName fontName = Default_FontName();
+    mutable const wxFont *font = nullptr;
     mutable size_t fontHash = 0;
     // 4-byte members
-    uint32_t rgbColor = Default_Color().GetRGB();
+    uint32_t rgbColor = Default_ColorRGB;
     // 2-byte members
-    int16_t uFontSize = lround(Default_FontSize / FontSize_Unit);
+    AFontSize fontSize = Default_FontSize;
     int16_t family = Default_Family;
     int16_t encoding = Default_Encoding;
     int16_t weight = Default_Weight;

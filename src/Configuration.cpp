@@ -256,7 +256,7 @@ void Configuration::InitStyles()
   else
     m_mathFontName = {};
   #endif
-  m_mathFontSize = 12;
+  m_mathFontSize.Set(12.0f);
 
   m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_TEXT].FontSize(12);
@@ -506,7 +506,7 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
-Style Configuration::GetStyle(TextStyle textStyle, long fontSize) const
+Style Configuration::GetStyle(TextStyle textStyle, AFontSize fontSize) const
 {
   Style style = m_styles[textStyle];
 
@@ -528,15 +528,9 @@ Style Configuration::GetStyle(TextStyle textStyle, long fontSize) const
     style.SetFontSize(fontSize);
 
   fontSize = style.GetFontSize();
-  if (fontSize < 4)
-    fontSize = 4;
 
   // The font size scales with the worksheet
-  long fontSize1 = Scale_Px(fontSize);
-
-  // Ensure a sane minimum font size
-  if (fontSize1 < 4)
-    fontSize1 = 4;
+  fontSize = Scale_Px(fontSize);
 
   style.SetFontName(GetFontName(textStyle));
 
@@ -547,7 +541,7 @@ Style Configuration::GetStyle(TextStyle textStyle, long fontSize) const
   if (!style.IsFontOk())
   {
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(fontSize1);
+    style.SetFontSize(fontSize);
   }
 
   wxASSERT_MSG(style.IsFontOk(),
@@ -600,9 +594,9 @@ long Configuration::GetLineWidth() const
                                            GetCellBracketWidth() + GetDefaultFontSize());
 
   // If that was suspiciously wide we reduce the default line width again.
-  if((lineWidth >= Scale_Px(double(GetDefaultFontSize())) * LineWidth_em()) &&
+  if((lineWidth >= Scale_Px(GetDefaultFontSize()) * LineWidth_em()) &&
      (!m_printing))
-    lineWidth = Scale_Px(double(GetDefaultFontSize())) * LineWidth_em();
+    lineWidth = Scale_Px(GetDefaultFontSize()) * LineWidth_em();
   return lineWidth;
 }
 
@@ -616,7 +610,7 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
            wxT(PAREN_OPEN_BOTTOM_UNICODE))};
 
     m_parenthesisDrawMode = handdrawn;
-    auto style = GetStyle(TS_FUNCTION, 20);
+    auto style = GetStyle(TS_FUNCTION, AFontSize(20.0f));
 
     if (CharsExistInFont(style.GetFont(), parens))
     {
@@ -790,7 +784,9 @@ void Configuration::ReadStyles(wxString file)
 #endif
   m_fontName = AFontName(fontName);
 
-  config->Read(wxT("mathfontsize"), &m_mathFontSize);
+  long mathFontSize;
+  if (config->Read(wxT("mathfontsize"), &mathFontSize))
+    m_mathFontSize.Set(mathFontSize);
 
   config->Read(wxT("Style/Math/fontname"), &fontName);
 #ifdef __WXOSX_MAC__
@@ -855,7 +851,7 @@ void Configuration::WriteStyles(wxString file)
 
   // Font
   config->Write("Style/Default/Style/Text/fontname", m_fontName.GetAsString());
-  config->Write(wxT("mathfontsize"), m_mathFontSize);
+  config->Write(wxT("mathfontsize"), m_mathFontSize.GetAsLong());
   config->Write("Style/Math/fontname", m_mathFontName.GetAsString());
   
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
@@ -943,10 +939,14 @@ wxColour Configuration::GetColor(TextStyle style)
 
 long Configuration::Scale_Px(double px) const
 {
-  long retval = round(px * GetZoomFactor());
-  if (retval < 1)
-    retval = 1;
-  return retval;
+  long retval = lround(px * GetZoomFactor());
+  return std::max(retval, 1l);
+}
+
+AFontSize Configuration::Scale_Px(AFontSize size) const
+{
+  auto retval = size.Get() * GetZoomFactor();
+  return AFontSize(retval);
 }
 
 wxColor Configuration::MakeColorDifferFromBackground(wxColor color)

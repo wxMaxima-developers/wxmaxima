@@ -44,7 +44,7 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
   m_charWidth1 = 12;
   m_charHeight = 12;
   m_charHeight1 = 12;
-  m_fontSize = 10;
+  m_fontSize = AFontSize(10.0f);
   m_signTopHeight = 12;
   m_signHeight = 50;
   m_signBotHeight = 12;
@@ -94,9 +94,9 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
   ResetSize();
 }
 
-void ParenCell::SetFont(int fontsize)
+void ParenCell::SetFont(AFontSize fontsize)
 {
-  wxASSERT(fontsize >= 1);
+  wxASSERT(fontsize.IsValid());
 
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
@@ -107,7 +107,7 @@ void ParenCell::SetFont(int fontsize)
   else
     style = configuration->GetStyle(TS_FUNCTION, configuration->GetMathFontSize());
 
-  wxASSERT(style.GetFontSize() > 0);
+  wxASSERT(style.GetFontSize().IsValid());
 
   switch(m_bigParenType)
   {
@@ -148,7 +148,7 @@ void ParenCell::SetFont(int fontsize)
   SetForeground();
 }
 
-void ParenCell::RecalculateWidths(int fontsize)
+void ParenCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -162,8 +162,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetHeightList();
-  if (fontsize < 4) fontsize = 4;
-  int fontsize1 = Scale_Px(fontsize);
+  auto fontsize1 = Scale_Px(fontsize);
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
@@ -214,7 +213,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void ParenCell::RecalculateHeight(int fontsize)
+void ParenCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;

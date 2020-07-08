@@ -56,7 +56,7 @@ void ConjugateCell::SetInner(Cell *inner)
   m_innerCell.reset(inner);
 }
 
-void ConjugateCell::RecalculateWidths(int fontsize)
+void ConjugateCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -71,7 +71,7 @@ void ConjugateCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void ConjugateCell::RecalculateHeight(int fontsize)
+void ConjugateCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;

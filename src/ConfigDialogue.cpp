@@ -1076,12 +1076,12 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
   if (m_configuration->FontName() != wxEmptyString)
-    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetDefaultFontSize().Get()));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   if (!m_configuration->MathFontName().empty())
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), (double)m_configuration->GetMathFontSize()));
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetMathFontSize().Get()));
 
   wxArrayString m_styleFor_choices;
   for(int i = 0; i < NUMBEROFSTYLES; i++)
@@ -1178,8 +1178,8 @@ void ConfigDialogue::WriteSettings()
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
   configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
-  config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
-  config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
+  config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize().GetAsLong());
+  config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize().GetAsLong());
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
@@ -1349,17 +1349,16 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     return;
 
   m_configuration->MathFontName(AFontName(math.GetFaceName()));
-  m_configuration->SetMathFontSize(math.GetPointSize());
-  math.SetPointSize(m_configuration->GetMathFontSize());
+  m_configuration->SetMathFontSize(Style::GetFontSize(math));
   m_getMathFont->SetLabel(wxString::Format(wxT("%s (%g)"),
                                            m_configuration->MathFontName().GetAsString(),
-                                           (double)m_configuration->GetMathFontSize()));
+                                           m_configuration->GetMathFontSize().Get()));
   UpdateExample();
 }
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 {
-  int fontsize = m_configuration->GetDefaultFontSize();
+  auto fontsize = m_configuration->GetDefaultFontSize();
   AFontName fontName;
   
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
@@ -1374,7 +1373,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     (st == TS_SUBSECTION)    ||
     (st == TS_SECTION))
   {
-    if (m_configuration->m_styles[st].GetFontSize() != 0)
+    if (m_configuration->m_styles[st].GetFontSize().IsValid())
       fontsize = m_configuration->m_styles[st].GetFontSize();
     fontName = m_configuration->m_styles[st].GetFontName();
   }
@@ -1411,7 +1410,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
                                           MC_MIN_SIZE)
       );
     m_getFont->SetLabel(m_configuration->FontName() +
-                        wxString::Format(wxT(" (%g)"), (double)m_configuration->GetDefaultFontSize()));
+                        wxString::Format(wxT(" (%g)"), m_configuration->GetDefaultFontSize().Get()));
   }
   else
   {
@@ -1491,13 +1490,13 @@ void ConfigDialogue::UpdateExample()
   if (st == TS_TEXT_BACKGROUND)
     color = m_configuration->m_styles[st].GetColor();
 
-  int fontsize = m_configuration->GetDefaultFontSize();
+  auto fontsize = m_configuration->GetDefaultFontSize();
   if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 ||
       st == TS_SUBSUBSECTION || st == TS_SUBSECTION ||
       st == TS_SECTION || st == TS_TITLE)
   {
     fontsize = m_configuration->m_styles[st].GetFontSize();
-    if (fontsize <= 0)
+    if (fontsize.IsNull())
       fontsize = m_configuration->GetDefaultFontSize();
   }
   else if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||

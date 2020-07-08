@@ -19,3 +19,7 @@ else()
     target_link_libraries(test_ImgCell PRIVATE ${wxWidgets_LIBRARIES})
 endif()
 add_test(ImgCell test_ImgCell)
+
+add_executable(test_AFontSize test_AFontSize.cpp)
+target_link_libraries(test_AFontSize PRIVATE ${wxWidgets_LIBRARIES})
+add_test(AFontSize test_AFontSize)

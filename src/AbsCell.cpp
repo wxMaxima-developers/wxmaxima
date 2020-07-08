@@ -59,7 +59,7 @@ void AbsCell::SetInner(Cell *inner)
   m_innerCell.reset(inner);
 }
 
-void AbsCell::RecalculateWidths(int fontsize)
+void AbsCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -79,7 +79,7 @@ void AbsCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void AbsCell::RecalculateHeight(int fontsize)
+void AbsCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;

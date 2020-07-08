@@ -162,6 +162,15 @@ const wxString *AFontName::GetInternedEmpty()
  * Style
  */
 
+constexpr wxFontFamily Style::Default_Family;
+constexpr wxFontEncoding Style::Default_Encoding;
+constexpr wxFontWeight Style::Default_Weight;
+constexpr wxFontStyle Style::Default_FontStyle;
+constexpr bool Style::Default_Underlined;
+constexpr bool Style::Default_Strikethrough;
+constexpr AFontSize Style::Default_FontSize;
+constexpr uint32_t Style::Default_ColorRGB;
+
 Style::Style(const Style &o) : m(o.m) {}
 
 Style &Style::operator=(const Style &o)
@@ -196,11 +205,11 @@ AFontName Style::GetFontName() const
 const wxString &Style::GetNameStr() const
 { return m.fontName.GetAsString(); }
 
-float Style::GetFontSize() const
+//! The size of this style's font, asserted to be valid.
+AFontSize Style::GetFontSize() const
 {
-  auto fontSize = m.uFontSize * FontSize_Unit;
-  wxASSERT(fontSize > 0);
-  return fontSize;
+  wxASSERT(m.fontSize.IsValid());
+  return m.fontSize;
 }
 
 uint32_t Style::GetRGBColor() const
@@ -284,16 +293,10 @@ did_change Style::SetFontName(AFontName faceName)
   return true;
 }
 
-did_change Style::SetFontSize(float size)
+did_change Style::SetFontSize(AFontSize fontSize)
 {
-  auto const uSize = lround(size / FontSize_Unit);
-  return SetUFontSize(uSize);
-}
-
-did_change Style::SetUFontSize(int16_t uSize)
-{
-  if (m.uFontSize == uSize) return false;
-  m.uFontSize = uSize;
+  if (m.fontSize == fontSize) return false;
+  m.fontSize = fontSize;
   m.fontHash = 0;
   return true;
 }
@@ -349,7 +352,7 @@ did_change Style::SetFontFaceFrom(const Style &o)
 
 did_change Style::SetFontFaceAndSizeFrom(const Style &o)
 {
-  return SetFontFaceFrom(o) | SetUFontSize(o.m.uFontSize);
+  return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize);
 }
 
 size_t Style::GetFontHash() const
@@ -363,7 +366,7 @@ size_t Style::GetFontHash() const
     hash_ = MixHash(hash_, m.fontStyle);
     hash_ = MixHash(hash_, (m.underlined << 1) | (m.strikethrough << 3) | (m.isNotOK << 5));
     hash_ = MixHash(hash_, m.fontName);
-    hash_ = MixHash(hash_, m.uFontSize);
+    hash_ = MixHash(hash_, m.fontSize);
     if (!hash_) hash_++;
     m.fontHash = hash_;
     m.font = 0;
@@ -377,7 +380,7 @@ bool Style::IsFontEqualTo(const Style &o_) const
   if (m.font && m.font == o.font) return true;
   return
     (!m.fontHash || !o.fontHash || m.fontHash == o.fontHash) &&
-    m.uFontSize == o.uFontSize &&
+    m.fontSize == o.fontSize &&
     m.family == o.family &&
     m.encoding == o.encoding &&
     m.weight == o.weight &&
@@ -409,13 +412,6 @@ bool Style::IsFontOk() const
   return m.isNotOK ? false : GetFont().IsOk();
 }
 
-const wxFont& Style::GetFontAt(float fontSize) const
-{
-  auto const uFontSize = lround(fontSize / FontSize_Unit);
-  if (uFontSize == m.uFontSize) return GetFont();
-  return Style(*this).FontSize(fontSize).GetFont();
-}
-
 Style &Style::FromFontNoCache(const wxFont &font)
 {
   this->SetFromFontNoCache(font);
@@ -438,37 +434,32 @@ void Style::SetFromFontNoCache(const wxFont &font)
     m.weight = font.GetWeight();
 #endif
     m.fontName = AFontName(font.GetFaceName());
-    m.uFontSize = lround(GetFontSize(font) / FontSize_Unit);
+    m.fontSize = GetFontSize(font);
     GetFontHash();
   }
   else
     m.isNotOK = true;
 }
 
-bool Style::IsFractionalFontSizeSupported()
-{
-  return wxCHECK_VERSION(3,1,2);
-}
-
-float Style::GetFontSize(const wxFont &font)
+AFontSize Style::GetFontSize(const wxFont &font)
 {
 #if wxCHECK_VERSION(3,1,2)
-  return font.GetFractionalPointSize();
+  return AFontSize(font.GetFractionalPointSize());
 #endif
-  return font.GetPointSize();
+  return AFontSize(font.GetPointSize());
 }
 
-void Style::SetFontSize(wxFont &font, float fontSize)
+void Style::SetFontSize(wxFont &font, AFontSize fontSize)
 {
 #if wxCHECK_VERSION(3,1,2)
-  return font.SetFractionalPointSize(fontSize);
+  return font.SetFractionalPointSize(fontSize.Get());
 #endif
-  return font.SetPointSize(fontSize);
+  return font.SetPointSize(fontSize.GetAsLong());
 }
 
 wxFontInfo Style::GetAsFontInfo() const
 {
-  wxFontInfo result(GetFontSize());
+  wxFontInfo result(GetFontSize().GetForWX());
 
   result
     .Family(GetFamily())
@@ -506,6 +497,13 @@ AFontName Style::Default_FontName()
   return fontName;
 }
 
+const wxColor &Style::Default_Color()
+{
+  using colorULong = unsigned long;
+  static const wxColor color{colorULong(Default_ColorRGB)};
+  return color;
+}
+
 static const wxString k_color = wxT("%s/color");
 static const wxString k_bold = wxT("%s/bold");
 static const wxString k_light = wxT("%s/light");
@@ -534,7 +532,7 @@ Style &Style::Read(wxConfigBase *config, const wxString &where)
   if (config->Read(wxString::Format(k_underlined, where), &tmpBool)) SetUnderlined(tmpBool);
   if (config->Read(wxString::Format(k_strikethrough, where), &tmpBool)) SetStrikethrough(tmpBool);
   if (config->Read(wxString::Format(k_fontsize, where), &tmpLong))
-    SetFontSize(tmpLong);
+    SetFontSize(AFontSize(tmpLong));
   if (config->Read(wxString::Format(k_fontname, where), &tmpStr) && !tmpStr.empty())
     SetFontName(AFontName(tmpStr));
 
@@ -548,7 +546,7 @@ void Style::Write(wxConfigBase *config, const wxString &where) const
   config->Write(wxString::Format(k_bold, where), IsBold());
   config->Write(wxString::Format(k_italic, where), IsItalic());
   config->Write(wxString::Format(k_underlined, where), IsUnderlined());
-  config->Write(wxString::Format(k_fontsize, where), long(GetFontSize()));
+  config->Write(wxString::Format(k_fontsize, where), GetFontSize().GetAsLong());
   config->Write(wxString::Format(k_fontname, where), GetNameStr());
 
   // We don't write the slant, light nor strikethrough attributes so as not to grow the
@@ -621,7 +619,7 @@ const Style &Style::FromStockFont(wxStockGDI::Item font)
 wxString Style::GetDump() const
 {
   return wxString::Format("%5.2fpt %c%c%c%c%c \"%s\" fam:%d enc:%d",
-             GetFontSize(),
+             GetFontSize().Get(),
              m.isNotOK ? '!' : ' ',
              IsBold() ? 'B' : IsLight() ? 'L' : '-',
              IsItalic() ? 'I' : IsSlant() ? 'S' : '-',

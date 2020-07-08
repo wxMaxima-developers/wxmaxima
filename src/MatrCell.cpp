@@ -56,12 +56,12 @@ MatrCell::MatrCell(const MatrCell &cell):
       m_cells.emplace_back(cell.m_cells[i]->CopyList());
 }
 
-void MatrCell::RecalculateWidths(int fontsize)
+void MatrCell::RecalculateWidths(AFontSize const fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  int fontsize_entry = wxMax(MC_MIN_SIZE, fontsize - 2);
+  AFontSize const fontsize_entry{ MC_MIN_SIZE, fontsize - 2 };
   for (unsigned int i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateWidthsList(fontsize_entry);
 
@@ -85,12 +85,12 @@ void MatrCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void MatrCell::RecalculateHeight(int fontsize)
+void MatrCell::RecalculateHeight(AFontSize const fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  int fontsize_entry = wxMax(MC_MIN_SIZE, fontsize - 2);
+  AFontSize const fontsize_entry{ MC_MIN_SIZE, fontsize - 2 };
   for (unsigned int i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateHeightList(fontsize_entry);
 

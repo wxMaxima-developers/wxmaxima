@@ -39,9 +39,8 @@ public:
   InnerCellIterator InnerEnd() const override
   { return m_cells.empty() ? InnerCellIterator{} : ++InnerCellIterator(&m_cells.back()); }
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

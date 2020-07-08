@@ -51,9 +51,8 @@ public:
 
   void SetPostSup(Cell *index);
   
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void RecalculateHeight(AFontSize fontsize) override;
+  void RecalculateWidths(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

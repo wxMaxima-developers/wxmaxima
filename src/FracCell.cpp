@@ -77,7 +77,7 @@ void FracCell::SetDenom(Cell *denom)
   SetupBreakUps();
 }
 
-void FracCell::RecalculateWidths(int fontsize)
+void FracCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -88,8 +88,8 @@ void FracCell::RecalculateWidths(int fontsize)
   }
   else
   {
-    m_displayedNum->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_displayedDenom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
+    m_displayedDenom->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
   }
   m_divide->RecalculateWidths(fontsize);
   
@@ -126,7 +126,7 @@ void FracCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void FracCell::RecalculateHeight(int fontsize)
+void FracCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -137,8 +137,8 @@ void FracCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    m_displayedNum->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_displayedDenom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateHeightList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
+    m_displayedDenom->RecalculateHeightList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
   }
   m_divide->RecalculateHeight(fontsize);
 

@@ -121,39 +121,41 @@ void SubSupCell::SetExponent(Cell *expt)
   m_postSupCell.reset(expt);
 }
 
-void SubSupCell::RecalculateWidths(int fontsize)
+void SubSupCell::RecalculateWidths(AFontSize const fontsize)
 {
+  AFontSize const smallerFontSize{ MC_MIN_SIZE, fontsize - SUBSUP_DEC };
+
   m_baseCell->RecalculateWidthsList(fontsize);
   if(m_postSubCell)    
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateWidthsList(smallerFontSize);
   if(m_postSupCell)    
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateWidthsList(smallerFontSize);
   if(m_preSubCell)    
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateWidthsList(smallerFontSize);
   if(m_preSupCell)    
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateWidthsList(smallerFontSize);
 
   int preWidth = 0;
   int postWidth = 0;
 
   if(m_postSubCell)
   {
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateWidthsList(smallerFontSize);
     postWidth = m_postSubCell->GetFullWidth();
   }
   if(m_postSupCell)
   {
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateWidthsList(smallerFontSize);
     postWidth = wxMax(postWidth, m_postSupCell->GetFullWidth());
   }
   if(m_preSubCell)
   {
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateWidthsList(smallerFontSize);
     preWidth = m_preSubCell->GetFullWidth();
   }
   if(m_preSupCell)
   {
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateWidthsList(smallerFontSize);
     preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
   }
 
@@ -161,34 +163,36 @@ void SubSupCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void SubSupCell::RecalculateHeight(int fontsize)
+void SubSupCell::RecalculateHeight(AFontSize const fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
+
+  AFontSize const smallerFontSize{ MC_MIN_SIZE, fontsize - SUBSUP_DEC };
 
   m_baseCell->RecalculateHeightList(fontsize);
 
   int subHeight = 0;
   if(m_preSubCell)
   {
-    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateHeightList(smallerFontSize);
     subHeight = m_preSubCell->GetHeightList();
   }
   if(m_postSubCell)
   {
-    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateHeightList(smallerFontSize);
     subHeight = wxMax(subHeight, m_postSubCell->GetHeightList());
   }
   
   int supHeight = 0;
   if(m_preSupCell)
   {
-    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateHeightList(smallerFontSize);
     supHeight = m_preSupCell->GetHeightList();
   }
   if(m_postSupCell)
   {
-    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateHeightList(smallerFontSize);
     supHeight = wxMax(supHeight, m_postSupCell->GetHeightList());
   }
   

@@ -280,6 +280,7 @@ class Cell: public Observed
     Is used for displaying/printing/exporting of text/maths
    */
   int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
+  AFontSize Scale_Px(AFontSize size) const { return (*m_configuration)->Scale_Px(size); }
 
 #if wxUSE_ACCESSIBILITY
   // The methods marked final indicate that their implementation within Cell
@@ -548,7 +549,7 @@ class Cell: public Observed
   virtual wxRect GetRect(bool all = false);
 
   //! True, if something that affects the cell size has changed.
-  virtual bool NeedsRecalculation(int fontSize) const;
+  virtual bool NeedsRecalculation(AFontSize fontSize) const;
   
   virtual wxString GetDiffPart() const;
 
@@ -559,14 +560,14 @@ class Cell: public Observed
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize);
+  virtual void RecalculateHeight(AFontSize fontsize);
 
   /*! Recalculate the height of this list of cells
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
-  void RecalculateHeightList(int fontsize);
+  void RecalculateHeightList(AFontSize fontsize);
 
   /*! Recalculate the width of this cell.
 
@@ -575,20 +576,20 @@ class Cell: public Observed
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
-  virtual void RecalculateWidths(int fontsize);
+  virtual void RecalculateWidths(AFontSize fontsize);
 
   /*! Recalculates all widths of this list of cells.
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
-  void RecalculateWidthsList(const int &fontsize);
+  void RecalculateWidthsList(AFontSize fontsize);
 
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
    */
-  void RecalculateList(int fontsize);
+  void RecalculateList(AFontSize fontsize);
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
@@ -917,7 +918,7 @@ class Cell: public Observed
   virtual void SetMatchParens(bool WXUNUSED(match))
   {}
 
-  virtual wxPoint PositionToPoint(int WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
+  virtual wxPoint PositionToPoint(AFontSize WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
   { return wxPoint(-1, -1); }
 
   virtual bool IsDirty() const
@@ -1126,13 +1127,13 @@ protected:
   CellType m_type;
   TextStyle m_textStyle;
   //! The font size is smaller in super- and subscripts.
-  double m_fontSize;
+  AFontSize m_fontSize;
 
 protected:
   CellPointers *m_cellPointers;
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor;
-  int m_fontsize_old;
+  AFontSize m_fontsize_old;
   bool m_isBrokenIntoLines_old;
 private:
   void RecalcCenterListAndMaxDropCache();

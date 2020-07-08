@@ -95,7 +95,8 @@ Cell::Cell(GroupCell *group, Configuration **config) :
   m_isBrokenIntoLines_old = false;
   m_isHidableMultSign = false;
   m_lastZoomFactor = -1;
-  m_fontsize_old = m_clientWidth_old = -1;
+  m_fontsize_old = {};
+  m_clientWidth_old = -1;
   m_next = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
@@ -323,7 +324,7 @@ int Cell::GetCenterList()
   return m_maxCenter;
 }
 
-bool Cell::NeedsRecalculation(int fontSize) const
+bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   bool result = (m_recalculateWidths) ||
     (fontSize != m_fontsize_old) ||
@@ -492,7 +493,7 @@ void Cell::DrawList(wxPoint point)
   }
 }
 
-void Cell::RecalculateList(int fontsize)
+void Cell::RecalculateList(AFontSize fontsize)
 {
   Cell *tmp = this;
 
@@ -511,7 +512,7 @@ void Cell::ResetSizeList()
 }
 
 
-void Cell::RecalculateHeightList(int fontsize)
+void Cell::RecalculateHeightList(AFontSize fontsize)
 {
   Cell *tmp = this;
 
@@ -529,7 +530,7 @@ void Cell::RecalculateHeightList(int fontsize)
 
   Should set: set m_width.
 */
-void Cell::RecalculateWidthsList(const int &fontsize)
+void Cell::RecalculateWidthsList(AFontSize fontsize)
 {
   Cell *tmp = this;
 
@@ -540,11 +541,11 @@ void Cell::RecalculateWidthsList(const int &fontsize)
   }
 }
 
-void Cell::RecalculateWidths(int WXUNUSED(fontsize))
+void Cell::RecalculateWidths(AFontSize WXUNUSED(fontsize))
 {
 }
 
-void Cell::RecalculateHeight(int fontsize)
+void Cell::RecalculateHeight(AFontSize fontsize)
 {
   m_fontSize = fontsize;
   m_fontsize_old = fontsize;

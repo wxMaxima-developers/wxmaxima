@@ -93,7 +93,7 @@ void ExptCell::SetBase(Cell *base)
   m_baseCell.reset(base);
 }
 
-void ExptCell::RecalculateWidths(int fontsize)
+void ExptCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -102,7 +102,7 @@ void ExptCell::RecalculateWidths(int fontsize)
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateWidthsList(fontsize);
   else
-    m_exptCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
+    m_exptCell->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
   m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
             MC_TEXT_PADDING;
   m_exp->RecalculateWidthsList(fontsize);
@@ -113,7 +113,7 @@ void ExptCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void ExptCell::RecalculateHeight(int fontsize)
+void ExptCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -122,7 +122,7 @@ void ExptCell::RecalculateHeight(int fontsize)
   if (m_isBrokenIntoLines)
     m_exptCell->RecalculateHeightList(fontsize);
   else
-    m_exptCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
+    m_exptCell->RecalculateHeightList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
 
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);

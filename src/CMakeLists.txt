@@ -27,6 +27,7 @@ set(SOURCE_FILES
     ExptCell.cpp
     FindReplaceDialog.cpp
     FindReplacePane.cpp
+    FontAttribs.cpp
     FontCache.cpp
     FracCell.cpp
     FunCell.cpp

@@ -463,7 +463,7 @@ void GroupCell::Recalculate()
     UpdateYPositionList();
 }
 
-void GroupCell::RecalculateWidths(int fontsize)
+void GroupCell::RecalculateWidths(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   
@@ -712,13 +712,13 @@ void GroupCell::RecalculateHeightOutput()
   (*m_configuration)->AdjustWorksheetSize(true);
 }
 
-bool GroupCell::NeedsRecalculation(int fontSize) const
+bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
     ((GetInput() != NULL) && (GetInput()->NeedsRecalculation(fontSize)));
 }
 
-void GroupCell::RecalculateHeight(int fontsize)
+void GroupCell::RecalculateHeight(AFontSize fontsize)
 {
   if(NeedsRecalculation(fontsize))
   {

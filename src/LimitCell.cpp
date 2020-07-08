@@ -29,8 +29,8 @@
 #include "LimitCell.h"
 #include "VisiblyInvalidCell.h"
 
-#define MIN_LIMIT_FONT_SIZE 8
-#define LIMIT_FONT_SIZE_DECREASE 1
+static constexpr AFontSize MIN_LIMIT_FONT_SIZE{ 8.0f };
+static constexpr float LIMIT_FONT_SIZE_DECREASE{ 1.0f };
 
 LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
@@ -82,7 +82,7 @@ void LimitCell::SetUnder(Cell *under)
   m_under.reset(under);
 }
 
-void LimitCell::RecalculateWidths(int fontsize)
+void LimitCell::RecalculateWidths(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
@@ -90,7 +90,7 @@ void LimitCell::RecalculateWidths(int fontsize)
   if(m_base)
     m_base->RecalculateWidthsList(fontsize);
   if(m_under)
-    m_under->RecalculateWidthsList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    m_under->RecalculateWidthsList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
   if(m_name)
     m_name->RecalculateWidthsList(fontsize);
   if(m_open)
@@ -110,13 +110,13 @@ void LimitCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-void LimitCell::RecalculateHeight(int fontsize)
+void LimitCell::RecalculateHeight(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   if(m_under)
-    m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    m_under->RecalculateHeightList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
   if(m_name)
     m_name->RecalculateHeightList(fontsize);
   if(m_base)
