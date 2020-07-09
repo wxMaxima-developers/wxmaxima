@@ -89,21 +89,23 @@ private:
   Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
 
   CellPtr<Cell> m_nextToDraw;
+  CellPtr<Cell> m_displayedBase;
+  CellPtr<Cell> m_baseWithoutParen;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_start;
   std::unique_ptr<Cell> m_var;
   std::unique_ptr<Cell> m_end;
-  std::unique_ptr<TextCell> m_comma1;
-  std::unique_ptr<TextCell> m_comma2;
-  std::unique_ptr<TextCell> m_comma3;
-  std::unique_ptr<TextCell> m_open;
-  std::unique_ptr<TextCell> m_close;
+  std::unique_ptr<Cell> m_comma1;
+  std::unique_ptr<Cell> m_comma2;
+  std::unique_ptr<Cell> m_comma3;
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_close;
   std::unique_ptr<Cell> m_paren;
   // The pointers above point to inner cells and must be kept contiguous.
-  CellPtr<Cell> m_displayedBase;
-  CellPtr<Cell> m_baseWithoutParen;
 
   double m_signWidth = 30;
   int m_signHeight = 50;
