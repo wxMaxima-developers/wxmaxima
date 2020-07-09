@@ -2719,7 +2719,7 @@ wxPoint EditorCell::PositionToPoint(AFontSize WXUNUSED(fontsize), int pos)
   return wxPoint(x, y);
 }
 
-void EditorCell::SelectPointText(const wxPoint &point)
+void EditorCell::SelectPointText(const wxPoint point)
 {
   wxString s;
   SetFont();
@@ -2837,7 +2837,7 @@ void EditorCell::SelectPointText(const wxPoint &point)
   }
 }
 
-void EditorCell::SelectRectText(const wxPoint &one, const wxPoint &two)
+void EditorCell::SelectRectText(const wxPoint one, const wxPoint two)
 {
   SelectPointText(one);
   long start = m_positionOfCaret;

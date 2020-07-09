@@ -108,7 +108,7 @@ ImgCell::~ImgCell()
   ImgCell::ClearCache();
 }
 
-wxString ImgCell::GetToolTip(const wxPoint &point)
+wxString ImgCell::GetToolTip(const wxPoint point)
 {
   if(ContainsPoint(point))
   {

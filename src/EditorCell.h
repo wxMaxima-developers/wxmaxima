@@ -295,10 +295,10 @@ public:
   wxPoint PositionToPoint(AFontSize fontsize, int pos = -1) override;
 
   //! Sets the cursor to the screen coordinate point
-  void SelectPointText(const wxPoint &point) override;
+  void SelectPointText(wxPoint point) override;
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(const wxPoint &one, const wxPoint &two) override;
+  void SelectRectText(wxPoint one, wxPoint two) override;
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,

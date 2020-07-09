@@ -87,7 +87,7 @@ public:
 
   bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  wxString GetToolTip(const wxPoint &point) override;
+  wxString GetToolTip(wxPoint point) override;
 
   /*! Remove all cached scaled images from memory
 

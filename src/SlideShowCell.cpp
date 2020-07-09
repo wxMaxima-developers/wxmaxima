@@ -493,7 +493,7 @@ wxString SlideShow::ToRTF()
 }
 
 
-wxString SlideShow::GetToolTip(const wxPoint &point)
+wxString SlideShow::GetToolTip(const wxPoint point)
 {
   if(ContainsPoint(point))
   {

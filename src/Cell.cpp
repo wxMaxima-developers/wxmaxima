@@ -63,7 +63,7 @@ GroupCell *Cell::CellPointers::ErrorList::FirstError() const
 GroupCell *Cell::CellPointers::ErrorList::LastError() const
 { return m_errors.empty() ? nullptr : m_errors.back().get(); }
 
-wxString Cell::GetToolTip(const wxPoint &point)
+wxString Cell::GetToolTip(const wxPoint point)
 {
   if (!ContainsPoint(point))
     return {};
@@ -1011,9 +1011,9 @@ wxString Cell::ListToRTF(bool startofline)
   return retval;
 }
 
-void Cell::SelectPointText(const wxPoint &WXUNUSED(point)){}
+void Cell::SelectPointText(wxPoint WXUNUSED(point)) {}
 
-void Cell::SelectRectText(const wxPoint &WXUNUSED(one), const wxPoint &WXUNUSED(two)){}
+void Cell::SelectRectText(wxPoint WXUNUSED(one), wxPoint WXUNUSED(two)) {}
 
 void Cell::PasteFromClipboard(const bool &WXUNUSED(primary)){}
 
