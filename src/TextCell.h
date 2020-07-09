@@ -34,10 +34,6 @@
  */
 class TextCell : public Cell
 {
-private:
-  //! Is an ending "(" of a function name the opening parenthesis of the function?
-  bool m_dontEscapeOpeningParenthesis;
-
 public:
   TextCell(GroupCell *parent, Configuration **config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
@@ -119,6 +115,7 @@ private:
   void SetFontSizeForLabel(wxDC *dc);
 
   bool NeedsRecalculation(AFontSize fontSize) const override;
+
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
@@ -131,18 +128,13 @@ private:
   wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
-  class AFontName m_fontname, m_texFontname;
 
-  int m_realCenter;
-  /*! The font size we had the last time we were recalculating this cell
+  wxString m_numStart;
+  wxString m_ellipsis;
+  wxString m_numEnd;
 
-    If a fraction or similar is broken into two lines this changes \f$ \frac{a}{b}\f$ to 
-    \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
-    size has changed and we need to re-calculate the text width.
-   */
-  AFontSize m_lastCalculationFontSize;
-
-  CellPtr<Cell> m_nextToDraw;
+  //! Produces a text sample that determines the label width
+  wxString m_initialToolTip;
 
   WX_DECLARE_HASH_MAP(
     AFontSize, wxSize, std::hash<AFontSize>, AFontSize::Equals, SizeHash);
@@ -150,23 +142,37 @@ private:
   SizeHash m_widths;
   //! The size of the first few digits
   SizeHash m_numstartWidths;
-  wxSize m_numStartWidth;
-  wxString m_numStart;
   //! The size of the "not all digits displayed" message.
   SizeHash m_ellipsisWidths;
-  wxString m_ellipsis;
-  wxSize m_ellipsisWidth;
   //! The size of the last few digits
   SizeHash m_numEndWidths;
-  wxString m_numEnd;
+
+  CellPtr<Cell> m_nextToDraw;
+  
+  AFontName m_fontname;
+  AFontName m_texFontname;
+
+  wxSize m_numStartWidth;
+  wxSize m_ellipsisWidth;
   wxSize m_numEndWidth;
 
-  //! Produces a text sample that determines the label width
-  wxString m_initialToolTip;
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old;
+  int m_realCenter = -1;
 
-  Configuration::showLabels m_labelChoice_Last;
+  //! The number of digits we did display the last time we displayed a number.
+  int m_displayedDigits_old = -1;
+
+  Configuration::showLabels m_labelChoice_Last = {};
+
+  /*! The font size we had the last time we were recalculating this cell
+
+    If a fraction or similar is broken into two lines this changes \f$ \frac{a}{b}\f$ to
+    \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font
+    size has changed and we need to re-calculate the text width.
+   */
+  AFontSize m_lastCalculationFontSize = {};
+
+  //! Is an ending "(" of a function name the opening parenthesis of the function?
+  bool m_dontEscapeOpeningParenthesis = false;
 };
 
 #endif // TEXTCELL_H
