@@ -3168,7 +3168,7 @@ void EditorCell::InsertText(wxString text)
   StyleText();
 }
 
-void EditorCell::PasteFromClipboard(const bool &primary)
+void EditorCell::PasteFromClipboard(const bool primary)
 {
   wxTheClipboard->UsePrimarySelection(primary);
   wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));

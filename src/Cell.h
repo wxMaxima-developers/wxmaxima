@@ -861,7 +861,7 @@ public:
       
   virtual void SelectRectText(wxPoint one, wxPoint two);
   
-  virtual void PasteFromClipboard(const bool &primary = false);
+  virtual void PasteFromClipboard(bool primary = false);
   
   virtual bool CopyToClipboard()
   { return false; }

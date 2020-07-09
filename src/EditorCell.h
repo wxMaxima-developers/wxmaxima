@@ -311,7 +311,7 @@ public:
 
   bool CutToClipboard() override;
 
-  void PasteFromClipboard(const bool &primary = false) override;
+  void PasteFromClipboard(bool primary = false) override;
 
   //! Get the character position the selection has been started with
   int GetSelectionStart() const

@@ -1015,7 +1015,7 @@ void Cell::SelectPointText(wxPoint WXUNUSED(point)) {}
 
 void Cell::SelectRectText(wxPoint WXUNUSED(one), wxPoint WXUNUSED(two)) {}
 
-void Cell::PasteFromClipboard(const bool &WXUNUSED(primary)){}
+void Cell::PasteFromClipboard(bool WXUNUSED(primary)) {}
 
 wxString Cell::ListToXML()
 {
