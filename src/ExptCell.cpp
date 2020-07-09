@@ -81,8 +81,8 @@ void ExptCell::SetPower(Cell *power)
 
   if (!m_exptCell->IsCompound())
   {
-    m_open->m_isHidden = true;
-    m_close->m_isHidden = true;
+    m_open->Hide();
+    m_close->Hide();
   }
 }
 

@@ -611,7 +611,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     // if output cells are selected, that is.
     for (Cell *tmp = m_cellPointers.m_selectionStart; tmp; tmp = tmp->GetNextToDraw())
     {
-      if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && tmp != GetActiveCell())
+      if (!tmp->IsBrokenIntoLines() && !tmp->IsHidden() && tmp != GetActiveCell())
         tmp->DrawBoundingBox(dc, false);
       if (tmp == m_cellPointers.m_selectionEnd)
         break;
@@ -5389,7 +5389,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
                                 NULL, true, bitmapScale);
               int borderwidth = 0;
               wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
-              borderwidth = chunk->m_imageBorderWidth;
+              borderwidth = chunk->GetImageBorderWidth();
 
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
@@ -5418,7 +5418,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
               imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
             wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
-            borderwidth = chunk->m_imageBorderWidth;
+            borderwidth = chunk->GetImageBorderWidth();
 
             wxString line = wxT("  <img src=\"") +
               filename_encoded + wxT("_htmlimg/") + filename_encoded +

@@ -90,7 +90,7 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
 
   m_type = type;
   // Tell the first of our inner cells not to begin with a multiplication dot.
-  m_innerCell->m_SuppressMultiplicationDot = true;
+  m_innerCell->SetSuppressMultiplicationDot(true);
   ResetSize();
 }
 

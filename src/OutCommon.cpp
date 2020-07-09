@@ -138,7 +138,7 @@ void OutCommon::BreakLines(Cell *tree) const
 
   for (Cell *tmp = tree; tmp; tmp = tmp->GetNextToDraw())
   {
-    if (tmp->m_isBrokenIntoLines)
+    if (tmp->IsBrokenIntoLines())
       continue;
 
     if (tmp->SoftLineBreak(false))
@@ -168,7 +168,7 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
 
   for (Cell *tmp = tree; tmp; tmp = tmp->GetNextToDraw())
   {
-    if (tmp->m_isBrokenIntoLines)
+    if (tmp->IsBrokenIntoLines())
       continue;
 
     if (tmp->BreakLineHere() || firstCell)
@@ -187,7 +187,7 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
       currentWidth += (tmp->GetWidth());
       *width = wxMax(currentWidth, *width);
     }
-    bigSkip = tmp->m_bigSkip;
+    bigSkip = tmp->HasBigSkip();
   }
 }
 
@@ -201,14 +201,14 @@ void OutCommon::Draw(Cell *tree)
 
   for (; tmp; tmp = tmp->GetNextToDraw())
   {
-    if (!tmp->m_isBrokenIntoLines)
+    if (!tmp->IsBrokenIntoLines())
     {
       tmp->Draw(point);
       if (tmp->m_next && tmp->m_next->BreakLineHere())
       {
         point.x = 0;
         point.y += drop + tmp->m_next->GetCenterList();
-        if (tmp->m_bigSkip)
+        if (tmp->HasBigSkip())
           // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
           point.y += MC_LINE_SKIP;
         drop = tmp->m_next->GetMaxDrop();
@@ -222,7 +222,7 @@ void OutCommon::Draw(Cell *tree)
       {
         point.x = 0;
         point.y += drop + tmp->m_next->GetCenterList();
-        if (tmp->m_bigSkip)
+        if (tmp->HasBigSkip())
           // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
           point.y += MC_LINE_SKIP;
         drop = tmp->m_next->GetMaxDrop();

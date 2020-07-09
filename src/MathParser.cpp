@@ -165,7 +165,7 @@ MathParser::~MathParser()
 Cell *MathParser::ParseHiddenOperatorTag(wxXmlNode *node)
 {
   Cell *retval = ParseText(node->GetChildren());
-  retval->m_isHidableMultSign = true;
+  retval->SetHidableMultSign(true);
   return retval;
 }
 

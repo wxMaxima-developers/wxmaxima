@@ -183,7 +183,7 @@ public:
 
   wxString ToXML() override;
 
-  void Hide(bool hide);
+  void Hide(bool hide) override;
 
   void SwitchHide();
 
