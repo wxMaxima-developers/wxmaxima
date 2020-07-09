@@ -55,7 +55,17 @@
 
   \todo Replace this by a C++17 construct when we switch to C++17
  */
-#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))         
+#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
+
+template <typename Cell>
+void ParseAltCopyAttr(const wxXmlNode *node, Cell *cell)
+{
+  if (!node || !cell)
+    return;
+  wxString val;
+  if(node->GetAttribute(wxT("altCopy"), &val))
+    cell->SetAltCopyText(val);
+}
 
 wxXmlNode *MathParser::SkipWhitespaceNode(wxXmlNode *node)
 {
@@ -632,6 +642,7 @@ Cell *MathParser::ParseSupTag(wxXmlNode *node)
   expt->SetStyle(TS_VARIABLE);
 
   ParseCommonAttrs(node, expt);
+  ParseAltCopyAttr(node, expt);
   if(node->GetAttribute(wxT("mat"), wxT("false")) == wxT("true"))
     expt->SetAltCopyText(baseCell->ToString()+wxT("^^")+power->ToString());
 
@@ -676,6 +687,7 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
     subsup->SetType(m_ParserStyle);
     subsup->SetStyle(TS_VARIABLE);
     ParseCommonAttrs(node, subsup);
+    ParseAltCopyAttr(node, subsup);
   }
   return subsup;
 }
@@ -730,6 +742,7 @@ Cell *MathParser::ParseSubTag(wxXmlNode *node)
   sub->SetType(m_ParserStyle);
   sub->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, sub);
+  ParseAltCopyAttr(node, sub);
   return sub;
 }
 
@@ -761,6 +774,7 @@ Cell *MathParser::ParseFunTag(wxXmlNode *node)
   fun->SetStyle(TS_FUNCTION);
   fun->SetArg(HandleNullPointer(ParseTag(child, false)));
   ParseCommonAttrs(node, fun);
+  ParseAltCopyAttr(node, fun);
   if (fun->ToString().Contains(")("))
     fun->SetToolTip(_("If this isn't a function returning a lambda() expression a multiplication sign (*) between closing and opening parenthesis is missing here."));
   return fun;
@@ -814,6 +828,7 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
     retval = new TextCell(NULL, m_configuration);
 
   ParseCommonAttrs(node, retval);
+  ParseAltCopyAttr(node, retval);
   return retval;
 }
 
@@ -831,8 +846,6 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
   
   if(node->GetAttribute(wxT("tooltip"), &val))
     cell->SetToolTip(val);
-  if(node->GetAttribute(wxT("altCopy"), &val))
-    cell->SetAltCopyText(val);
 }
 
 void MathParser::ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group)
@@ -955,6 +968,7 @@ Cell *MathParser::ParseSumTag(wxXmlNode *node)
   sum->SetType(m_ParserStyle);
   sum->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, sum);
+  ParseAltCopyAttr(node, sum);
   return sum;
 }
 
@@ -1035,7 +1049,6 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
   Cell *retval = NULL;
   Cell *cell = NULL;
   bool warning = all;
-  wxString altCopy;
 
   node = SkipWhitespaceNode(node);
 
