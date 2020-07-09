@@ -397,7 +397,7 @@ bool FracCell::BreakUp()
 void FracCell::SetNextToDraw(Cell *next)
 {
   if (m_isBrokenIntoLines)
-    m_denomParenthesis->SetNextToDraw(next);
+    m_displayedDenom->SetNextToDraw(next);
   else
     m_nextToDraw = next;
 }
