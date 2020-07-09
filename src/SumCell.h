@@ -34,8 +34,9 @@
 #include "precomp.h"
 #include "Cell.h"
 #include "ParenCell.h"
+#include "TextCell.h"
 
-enum
+enum sumStyle
 {
   SM_SUM,
   SM_PROD
@@ -44,7 +45,7 @@ enum
 class SumCell final : public Cell
 {
 public:
-  SumCell(GroupCell *parent, Configuration **config);
+  SumCell(GroupCell *group, Configuration **config);
   SumCell(const SumCell &cell);
   Cell *Copy() const override { return new SumCell(*this); }
 
@@ -62,7 +63,7 @@ public:
 
   void SetOver(Cell *over);
 
-  void SetSumStyle(int style) { m_sumStyle = style; }
+  void SetSumStyle(sumStyle style);
 
   wxString ToString() override;
 
@@ -76,8 +77,10 @@ public:
 
   wxString ToOMML() override;
 
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+  bool BreakUp() override;
+  void SetNextToDraw(Cell *next) override;
+  void Unbreak() override final;
 
 private:
   CellPtr<Cell> m_nextToDraw;
@@ -87,14 +90,21 @@ private:
   Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_under;
-  std::unique_ptr<Cell> m_over;
+  std::unique_ptr<Cell> m_start;
+  std::unique_ptr<Cell> m_var;
+  std::unique_ptr<Cell> m_end;
+  std::unique_ptr<TextCell> m_comma1;
+  std::unique_ptr<TextCell> m_comma2;
+  std::unique_ptr<TextCell> m_comma3;
+  std::unique_ptr<TextCell> m_open;
+  std::unique_ptr<TextCell> m_close;
   std::unique_ptr<Cell> m_paren;
   // The pointers above point to inner cells and must be kept contiguous.
   CellPtr<Cell> m_displayedBase;
-
+  CellPtr<Cell> m_baseWithoutParen;
   int m_signHeight;
   double m_signWidth;
-  int m_sumStyle;
+  sumStyle m_sumStyle;
   int m_signWCenter;
   int m_signTop;
 };

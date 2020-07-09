@@ -97,6 +97,10 @@ public:
 
   void SetType(CellType type) override;
 
+  //! The actual font size for labels (that have a fixed width)
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
 private:
   //! The text we actually display depends on many factors, unfortunately
   void UpdateDisplayedText();
@@ -137,9 +141,6 @@ private:
     size has changed and we need to re-calculate the text width.
    */
   AFontSize m_lastCalculationFontSize;
-  //! The actual font size for labels (that have a fixed width)
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
   CellPtr<Cell> m_nextToDraw;
 

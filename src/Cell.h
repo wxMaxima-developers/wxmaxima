@@ -772,7 +772,7 @@ public:
 
     This function tries to return a cell to the single-line form.
    */
-  void Unbreak();
+  virtual void Unbreak();
 
   /*! Unbreak this line
 

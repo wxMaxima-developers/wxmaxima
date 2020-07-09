@@ -32,11 +32,18 @@
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 
-SumCell::SumCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
-    m_under(new TextCell(parent, config)),
-    m_over(new TextCell(parent, config)),
-    m_paren(new ParenCell(parent, config))
+SumCell::SumCell(GroupCell *group, Configuration **config) :
+    Cell(group, config),
+    m_under(new TextCell(group, config)),
+    m_var(new TextCell(group, config)),
+    m_start(new TextCell(group, config)),
+    m_end(new TextCell(group, config)),
+    m_comma1(new TextCell(group, config, wxT(","))),
+    m_comma2(new TextCell(group, config, wxT(","))),
+    m_comma3(new TextCell(group, config, wxT(","))),
+    m_open(new TextCell(group, config, wxT("lsum("))),
+    m_close(new TextCell(group, config, wxT(")"))),
+    m_paren(new ParenCell(group, config))
 {
   wxASSERT(Base()); // m_paren constructs its inner cell by default
   m_signHeight = 50;
@@ -57,22 +64,31 @@ SumCell::SumCell(const SumCell &cell) :
     SetBase(cell.Base()->CopyList());
   if (cell.m_under)
   SetUnder(cell.m_under->CopyList());
-  if (cell.m_over)
-    SetOver(cell.m_over->CopyList());
-  m_sumStyle = cell.m_sumStyle;
+  if (cell.m_end)
+    SetOver(cell.m_end->CopyList());
+  SetSumStyle(cell.m_sumStyle);
 }
 
 void SumCell::SetOver(Cell *over)
 {
   if (!over)
     return;
-  m_over.reset(over);
+  m_end.reset(over);
+  if(m_sumStyle == SM_SUM)
+  {
+    if(!m_end->ToString().IsEmpty())
+      m_open.reset(new TextCell(m_group, m_configuration, wxT("sum(")));
+  }
+  else
+    m_open.reset(new TextCell(m_group, m_configuration, wxT("prod(")));
+  ResetSize();
 }
 
 void SumCell::SetBase(Cell *base)
 {
   if (!base)
     return;
+  m_baseWithoutParen = base;
   Paren()->SetInner(base);
   wxASSERT(Base() == base);
   m_displayedBase = m_paren;
@@ -83,6 +99,22 @@ void SumCell::SetUnder(Cell *under)
   if (!under)
     return;
   m_under.reset(under);
+  
+  // m_under consists of a list of cells:
+  //  The variable name, that can be more than one cell if there is a subscript.
+  //  1 cell containing the text "in" or "=" (TODO: That's heuristics. Is there a better, but
+  //                                          backwards-compatible way for this?)
+  //  And the rest contains the lower limit.
+  m_var.reset(m_under->Copy());
+  Cell *start = m_under.get();
+  while (start != NULL &&
+         ((start->GetValue() != wxT("in")) && (start->GetValue() != wxT("="))))
+    start = start->GetNext();
+  if(start != NULL)  
+    start = start->GetNext();
+  if(start != NULL)  
+    m_start.reset(start->CopyList());
+  ResetSize();
 }
 
 void SumCell::RecalculateWidths(AFontSize fontsize)
@@ -91,18 +123,34 @@ void SumCell::RecalculateWidths(AFontSize fontsize)
     return;
 
   m_displayedBase->RecalculateWidthsList(fontsize);
+
+  m_comma1->RecalculateWidthsList(fontsize);
+  m_comma2->RecalculateWidthsList(fontsize);
+  m_comma3->RecalculateWidthsList(fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_start->RecalculateWidthsList(fontsize);
+  m_var->RecalculateWidthsList(fontsize);
+  m_open->RecalculateWidthsList(fontsize);
+  m_close->RecalculateWidthsList(fontsize);
+
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
   else
     m_signWidth = 4.0 * m_signHeight / 5.0;
   m_signWCenter = m_signWidth / 2.0;
-  m_under->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  if (!m_over)
-    m_over.reset(new TextCell(m_group, m_configuration));
-  m_over->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+  if(m_isBrokenIntoLines)
+    m_under->RecalculateWidthsList(fontsize);
+  else
+    m_under->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+  if (!m_end)
+    m_end.reset(new TextCell(m_group, m_configuration));
+  if(m_isBrokenIntoLines)
+    m_end->RecalculateWidthsList(fontsize);
+  else
+    m_end->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
 
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
-  m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
+  m_signWCenter = wxMax(m_signWCenter, m_end->GetFullWidth() / 2);
   m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
   ResetCellListSizes();
   Cell::RecalculateWidths(fontsize);
@@ -113,11 +161,19 @@ void SumCell::RecalculateHeight(AFontSize fontsize)
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_under->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  m_over->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+  if(m_isBrokenIntoLines)
+    m_under->RecalculateHeightList(fontsize);
+  else
+    m_under->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+  if(m_isBrokenIntoLines)
+    m_end->RecalculateHeightList(fontsize);
+  else
+    m_end->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+  m_start->RecalculateHeightList(fontsize);
+  m_var->RecalculateHeightList(fontsize);
   m_displayedBase->RecalculateHeightList(fontsize);
 
-  m_center = wxMax(m_over->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
+  m_center = wxMax(m_end->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
                  m_displayedBase->GetCenterList());
   m_height = m_center +
              wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
@@ -141,9 +197,9 @@ void SumCell::Draw(wxPoint point)
     under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
     m_under->DrawList(under);
 
-    over.x += m_signWCenter - m_over->GetFullWidth() / 2;
-    over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2);
-    m_over->DrawList(over);
+    over.x += m_signWCenter - m_end->GetFullWidth() / 2;
+    over.y = point.y - m_signHeight / 2 - m_end->GetMaxDrop() - Scale_Px(2);
+    m_end->DrawList(over);
 
     SetPen(1.5);
     if (m_sumStyle == SM_SUM)
@@ -210,7 +266,7 @@ wxString SumCell::ToString()
     if (tmp != NULL)
       from = tmp->ListToString();
   }
-  wxString to = m_over->ListToString();
+  wxString to = m_end->ListToString();
   s += wxT(",") + var + wxT(",") + from;
   if (to != wxEmptyString)
     s += wxT(",") + to + wxT(")");
@@ -238,7 +294,7 @@ wxString SumCell::ToMatlab()
 	if (tmp != NULL)
 	  from = tmp->ListToMatlab();
   }
-  wxString to = m_over->ListToMatlab();
+  wxString to = m_end->ListToMatlab();
   s += wxT(",") + var + wxT(",") + from;
   if (to != wxEmptyString)
 	s += wxT(",") + to + wxT(")");
@@ -257,7 +313,7 @@ wxString SumCell::ToTeX()
 
 
   s += wxT("_{") + m_under->ListToTeX() + wxT("}");
-  wxString to = m_over->ListToTeX();
+  wxString to = m_end->ListToTeX();
   if (to.Length())
     s += wxT("^{") + to + wxT("}");
 
@@ -272,7 +328,7 @@ wxString SumCell::ToOMML()
 {
   wxString base = Base()->ListToOMML();
   wxString from = m_under ? m_under->ListToOMML() : wxString{};
-  wxString to = m_over ? m_over->ListToOMML() : wxString{};
+  wxString to = m_end ? m_end->ListToOMML() : wxString{};
 
   wxString retval;
 
@@ -299,7 +355,7 @@ wxString SumCell::ToXML()
 
   if (m_sumStyle == SM_PROD)
     type = wxT("prod");
-  else if (m_over->ListToString() == wxEmptyString)
+  else if (m_end->ListToString() == wxEmptyString)
     type = wxT("lsum");
 
 
@@ -308,7 +364,7 @@ wxString SumCell::ToXML()
     flags += wxT(" breakline=\"true\"");
     
   return wxT("<sm type=\"") + flags + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
-         m_over->ListToXML() + _T("</r><r>") +
+         m_end->ListToXML() + _T("</r><r>") +
          Base()->ListToXML() + _T("</r></sm>");
 }
 
@@ -320,18 +376,12 @@ wxString SumCell::ToMathML()
   if (m_under) from = m_under->ListToMathML();
 
   wxString to;
-  if (m_over) to = m_over->ListToMathML();
+  if (m_end) to = m_end->ListToMathML();
 
   wxString retval;
 
   if (m_sumStyle == SM_SUM)
   {
-//    retval = wxT("<apply><sum/>");
-//    if(!from.IsEmpty())
-//      retval += wxT("<lowlimit>") + m_under->ListToMathML() + wxT("</lowlimit>");
-//    if(!to.IsEmpty())
-//      retval += wxT("<uplimit>") + m_over->ListToMathML() + wxT("</uplimit>");
-//    retval += m_base->ListToMathML() + wxT("</apply>");
     if (from.IsEmpty() && to.IsEmpty())
       retval = wxT("<mo>&#x2211;</mo>") + base;
     if (from.IsEmpty() && !to.IsEmpty())
@@ -354,4 +404,67 @@ wxString SumCell::ToMathML()
       retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>") + base;
   }
   return (wxT("<mrow>") + retval + wxT("</mrow>"));
+}
+
+void SumCell::SetSumStyle(sumStyle style)
+{
+  m_sumStyle = style;
+  if(style == SM_PROD)
+  {
+    m_open.reset(new TextCell(m_group, m_configuration, wxT("prod(")));
+  }
+  else
+  {
+    if(!m_end->ToString().IsEmpty())
+      m_open.reset(new TextCell(m_group, m_configuration, wxT("sum(")));
+    else
+      m_open.reset(new TextCell(m_group, m_configuration, wxT("lsum(")));
+  }
+}
+
+
+void SumCell::Unbreak()
+{
+  m_displayedBase = m_paren;
+  Cell::Unbreak();
+}
+
+bool SumCell::BreakUp()
+{
+  if (!m_isBrokenIntoLines)
+  {
+    Cell::BreakUp();
+    m_displayedBase = m_baseWithoutParen;
+    m_isBrokenIntoLines = true;
+
+    m_close->SetNextToDraw(m_nextToDraw);
+    m_nextToDraw = m_open;
+    m_open->last()->SetNextToDraw(m_displayedBase);
+    m_displayedBase->last()->SetNextToDraw(m_comma1);
+    m_comma1->last()->SetNextToDraw(m_var);
+    m_var->last()->SetNextToDraw(m_comma2);
+    m_comma2->last()->SetNextToDraw(m_start);
+    // The first cell of m_var should normally be a "d"
+    if(m_end->ToString().IsEmpty())
+      m_start->last()->SetNextToDraw(m_close);
+    else
+    {
+      m_start->last()->SetNextToDraw(m_comma3);
+      m_comma3->last()->SetNextToDraw(m_end);
+      m_end->last()->SetNextToDraw(m_close);
+    }
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    return true;
+  }
+  return false;
+}
+
+void SumCell::SetNextToDraw(Cell *next)
+{
+  if (m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }
