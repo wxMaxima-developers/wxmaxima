@@ -63,7 +63,7 @@ GroupCell *Cell::CellPointers::ErrorList::FirstError() const
 GroupCell *Cell::CellPointers::ErrorList::LastError() const
 { return m_errors.empty() ? nullptr : m_errors.back().get(); }
 
-wxString Cell::GetToolTip(const wxPoint &point)
+wxString Cell::GetToolTip(const wxPoint point)
 {
   if (!ContainsPoint(point))
     return {};
@@ -1011,11 +1011,11 @@ wxString Cell::ListToRTF(bool startofline)
   return retval;
 }
 
-void Cell::SelectPointText(const wxPoint &WXUNUSED(point)){}
+void Cell::SelectPointText(wxPoint WXUNUSED(point)) {}
 
-void Cell::SelectRectText(const wxPoint &WXUNUSED(one), const wxPoint &WXUNUSED(two)){}
+void Cell::SelectRectText(wxPoint WXUNUSED(one), wxPoint WXUNUSED(two)) {}
 
-void Cell::PasteFromClipboard(const bool &WXUNUSED(primary)){}
+void Cell::PasteFromClipboard(bool WXUNUSED(primary)) {}
 
 wxString Cell::ListToXML()
 {
@@ -1226,6 +1226,12 @@ void Cell::SetPen(double lineWidth)
   dc->SetPen(pen);
   if(configuration->GetAntialiassingDC() != dc)
     configuration->GetAntialiassingDC()->SetPen(pen);
+}
+
+const wxString &Cell::GetValue() const
+{
+  static const wxString empty;
+  return empty;
 }
 
 void Cell::SetForeground()

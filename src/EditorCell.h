@@ -246,10 +246,7 @@ public:
 
     Naturally all soft line breaks are converted back to spaces beforehand.
    */
-  wxString GetValue() const override
-  {
-    return m_text;
-  }
+  const wxString &GetValue() const override { return m_text; }
 
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 
@@ -298,10 +295,10 @@ public:
   wxPoint PositionToPoint(AFontSize fontsize, int pos = -1) override;
 
   //! Sets the cursor to the screen coordinate point
-  void SelectPointText(const wxPoint &point) override;
+  void SelectPointText(wxPoint point) override;
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(const wxPoint &one, const wxPoint &two) override;
+  void SelectRectText(wxPoint one, wxPoint two) override;
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,
@@ -314,7 +311,7 @@ public:
 
   bool CutToClipboard() override;
 
-  void PasteFromClipboard(const bool &primary = false) override;
+  void PasteFromClipboard(bool primary = false) override;
 
   //! Get the character position the selection has been started with
   int GetSelectionStart() const

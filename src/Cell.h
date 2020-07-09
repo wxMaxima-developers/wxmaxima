@@ -312,7 +312,7 @@ public:
 
     wxEmptyString means: No ToolTip
    */
-  virtual wxString GetToolTip(const wxPoint &point);
+  virtual wxString GetToolTip(wxPoint point);
 
   //! Delete this list of cells.
   virtual ~Cell();
@@ -390,10 +390,7 @@ public:
 
     \param point The point to test for collision with this cell
    */
-  bool ContainsPoint(const wxPoint &point)
-  {
-    return GetRect().Contains(point);
-  }
+  bool ContainsPoint(wxPoint point) { return GetRect().Contains(point); }
 
   /*! Clears memory from cached items automatically regenerated when the cell is drawn
     
@@ -638,11 +635,8 @@ public:
   virtual void SetExponentFlag()
   {}
 
-  virtual void SetValue(const wxString &WXUNUSED(text))
-  {}
-
-  virtual wxString GetValue() const
-  { return wxEmptyString; }
+  virtual void SetValue(const wxString &WXUNUSED(text)) {}
+  virtual const wxString &GetValue() const;
 
   //! Get the first cell in this list of cells
   Cell *first() const;
@@ -863,11 +857,11 @@ public:
   virtual bool AddEnding()
   { return false; }
 
-  virtual void SelectPointText(const wxPoint &point);
+  virtual void SelectPointText(wxPoint point);
       
-  virtual void SelectRectText(const wxPoint &one, const wxPoint &two);
+  virtual void SelectRectText(wxPoint one, wxPoint two);
   
-  virtual void PasteFromClipboard(const bool &primary = false);
+  virtual void PasteFromClipboard(bool primary = false);
   
   virtual bool CopyToClipboard()
   { return false; }
