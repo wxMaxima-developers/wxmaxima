@@ -66,9 +66,12 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
+  // The pointers above point to inner cells and must be kept contiguous.
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

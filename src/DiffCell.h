@@ -63,8 +63,11 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_diffCell;
+  // The pointers above point to inner cells and must be kept contiguous.
 };
 
 #endif // DIFFCELL_H

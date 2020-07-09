@@ -90,12 +90,15 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The contents of the abs() command
   std::unique_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
   std::unique_ptr<Cell> m_open;
   //! The cell containing the closing parenthesis
   std::unique_ptr<Cell> m_close;
+  // The pointers above point to inner cells and must be kept contiguous.
 };
 
 #endif // ABSCELL_H

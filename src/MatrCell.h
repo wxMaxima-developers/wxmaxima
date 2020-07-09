@@ -77,8 +77,9 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  //! Collections of pointers to inner cells.
+  //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
+
   std::vector<int> m_widths;
   std::vector<int> m_drops;
   std::vector<int> m_centers;

@@ -112,6 +112,8 @@ private:
   const std::unique_ptr<Cell> m_divideOwner;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * [const] or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The "/" sign
   Cell* const m_divide = m_divideOwner.get();
   //! The displayed version of the numerator, if needed with parenthesis

@@ -493,10 +493,13 @@ protected:
   GroupCell *m_hiddenTreeParent = {}; //!< store linkage to the parent of the fold
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The input label of this cell. Is followed by the input of the cell.
   std::unique_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
   std::unique_ptr<Cell> m_output;
+  // The pointers above point to inner cells and must be kept contiguous.
 
   //! Which type this cell is of?
   GroupType m_groupType = {};

@@ -92,6 +92,8 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The part of the formula that is to be integrated.
   std::unique_ptr<Cell> m_base;
   //! The lower limit of the integral
@@ -107,6 +109,8 @@ private:
   std::unique_ptr<Cell> m_comma3;
   //! The integration variable
   std::unique_ptr<Cell> m_var;
+  // The pointers above point to inner cells and must be kept contiguous.
+
   //! Is this integral definitive?
   IntegralType m_intStyle= INT_IDEF;
   //! The height of the integral sign
