@@ -107,15 +107,16 @@ private:
   std::unique_ptr<Cell> m_comma3;
   //! The integration variable
   std::unique_ptr<Cell> m_var;
-  //! The height of the integral sign
-  int m_signHeight;
-  //! The width of the integral sign
-  int m_signWidth;
   //! Is this integral definitive?
-  IntegralType m_intStyle;
+  IntegralType m_intStyle= INT_IDEF;
+  //! The height of the integral sign
+  int m_signHeight = 35;
+  //! The width of the integral sign
+  int m_signWidth = 18;
   //! How far is the integral sign's center from the top of this cell?
-  int m_signTop;
-  int m_charHeight, m_charWidth;
+  int m_signTop = m_signHeight / 2;
+  int m_charHeight = 12;
+  int m_charWidth = 12;
 };
 
 #endif  // INTCELL_H

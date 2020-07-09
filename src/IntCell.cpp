@@ -49,12 +49,6 @@ IntCell::IntCell(GroupCell *parent, Configuration **config) :
     m_comma3(new TextCell(parent, config, ",")),
     m_var(new VisiblyInvalidCell(parent,config))
 {
-  m_signHeight = 35;
-  m_signWidth = 18;
-  m_signTop = m_signHeight / 2;
-  m_intStyle = INT_IDEF;
-  m_charWidth = 12;
-  m_charHeight = 12;
 }
 
 // Old cppcheck bugs:
