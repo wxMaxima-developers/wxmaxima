@@ -34,7 +34,8 @@
 #include "precomp.h"
 #include "Cell.h"
 #include "ParenCell.h"
-#include "TextCell.h"
+
+class TextCell;
 
 enum sumStyle
 {
@@ -83,11 +84,12 @@ public:
   void Unbreak() override final;
 
 private:
-  CellPtr<Cell> m_nextToDraw;
-  
   ParenCell *Paren() const { return static_cast<ParenCell*>(m_paren.get()); }
   // The base cell is owned by the paren
   Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
+
+  CellPtr<Cell> m_nextToDraw;
+
   // The pointers below point to inner cells and must be kept contiguous.
   std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_start;
@@ -102,11 +104,12 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
   CellPtr<Cell> m_displayedBase;
   CellPtr<Cell> m_baseWithoutParen;
-  int m_signHeight;
-  double m_signWidth;
-  sumStyle m_sumStyle;
-  int m_signWCenter;
-  int m_signTop;
+
+  double m_signWidth = 30;
+  int m_signHeight = 50;
+  int m_signWCenter = 15;
+  int m_signTop = (2 * m_signHeight) / 5;
+  sumStyle m_sumStyle = SM_SUM;
 };
 
 #endif // SUMCELL_H

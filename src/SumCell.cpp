@@ -30,13 +30,12 @@
 
 #include "SumCell.h"
 #include "TextCell.h"
-#include "VisiblyInvalidCell.h"
 
 SumCell::SumCell(GroupCell *group, Configuration **config) :
     Cell(group, config),
     m_under(new TextCell(group, config)),
-    m_var(new TextCell(group, config)),
     m_start(new TextCell(group, config)),
+    m_var(new TextCell(group, config)),
     m_end(new TextCell(group, config)),
     m_comma1(new TextCell(group, config, wxT(","))),
     m_comma2(new TextCell(group, config, wxT(","))),
@@ -46,11 +45,6 @@ SumCell::SumCell(GroupCell *group, Configuration **config) :
     m_paren(new ParenCell(group, config))
 {
   wxASSERT(Base()); // m_paren constructs its inner cell by default
-  m_signHeight = 50;
-  m_signTop = (2 * m_signHeight) / 5;
-  m_signWidth = 30;
-  m_signWCenter = 15;
-  m_sumStyle = SM_SUM;
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signHeight

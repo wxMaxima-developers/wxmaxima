@@ -31,14 +31,7 @@
 
 MatrCell::MatrCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config)
-{
-  m_matWidth = 0;
-  m_matHeight = 0;
-  m_specialMatrix = false;
-  m_roundedParens = false;
-  m_inferenceMatrix = false;
-  m_rowNames = m_colNames = false;
-}
+{}
 
 MatrCell::MatrCell(const MatrCell &cell):
     MatrCell(cell.m_group, cell.m_configuration)

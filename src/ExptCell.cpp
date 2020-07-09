@@ -42,8 +42,6 @@ ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_exp->SetStyle(TS_FUNCTION);
-  m_expt_yoffset = 0;
-  m_isMatrix = false;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 

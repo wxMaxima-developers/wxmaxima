@@ -50,28 +50,20 @@
 // cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(parent, config),
-    m_fileSystem(filesystem)
+    m_fileSystem(filesystem),
+    m_framerate(framerate)
 {
-  m_animationRunning = true;
-  m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
-  m_framerate = framerate;
   m_imageBorderWidth = Scale_Px(1);
-  m_drawBoundingBox = false;
   ReloadTimer();
-  m_width = m_height = -1;
 }
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
-    Cell(parent, config)
+    Cell(parent, config),
+    m_framerate(framerate)
 {
-  m_width = m_height = -1;
-  m_animationRunning = true;
-  m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
-  m_framerate = framerate;
   m_imageBorderWidth = Scale_Px(1);
-  m_drawBoundingBox = false;
   ReloadTimer();
 }
 

@@ -99,8 +99,9 @@ private:
   std::unique_ptr<Cell> m_exp;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  bool m_isMatrix;
-  int m_expt_yoffset;
+
+  int m_expt_yoffset = 0;
+  bool m_isMatrix = false;
 };
 
 

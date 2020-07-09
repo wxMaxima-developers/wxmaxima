@@ -77,17 +77,18 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  CellPtr<Cell> m_nextToDraw;
-
-  unsigned int m_matWidth;
-  bool m_roundedParens;
-  unsigned int m_matHeight;
-  bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
   //! Collections of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
   std::vector<int> m_widths;
   std::vector<int> m_drops;
   std::vector<int> m_centers;
+  CellPtr<Cell> m_nextToDraw;
+
+  unsigned int m_matWidth = 0;
+  unsigned int m_matHeight = 0;
+  bool m_roundedParens = false;
+  bool m_specialMatrix = false, m_inferenceMatrix = false;
+  bool m_rowNames = false, m_colNames = false;
 };
 
 #endif // MATRCELL_H

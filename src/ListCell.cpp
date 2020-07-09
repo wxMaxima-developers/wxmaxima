@@ -38,8 +38,6 @@ ListCell::ListCell(GroupCell *parent, Configuration **config) :
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_fontSize = AFontSize(10.0f);
-  m_signWidth = 12;
-  m_drawAsAscii = true;
 }
 
 // These false-positive warnings only appear in old versions of cppcheck

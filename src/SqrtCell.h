@@ -87,9 +87,12 @@ private:
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  int m_signWidth, m_signSize, m_signTop;
-  int m_signType;
-  double m_signFontScale;
+
+  double m_signFontScale = 0;
+  int m_signWidth = 18;
+  int m_signSize = 50;
+  int m_signTop = m_signSize / 2;
+  int m_signType = 0;
 };
 
 #endif // SQRTCELL_H

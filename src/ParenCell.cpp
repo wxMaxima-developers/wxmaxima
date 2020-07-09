@@ -38,19 +38,7 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
 {
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
-  m_numberOfExtensions = 0;
-  m_extendHeight = 12;
-  m_charWidth = 12;
-  m_charWidth1 = 12;
-  m_charHeight = 12;
-  m_charHeight1 = 12;
   m_fontSize = AFontSize(10.0f);
-  m_signTopHeight = 12;
-  m_signHeight = 50;
-  m_signBotHeight = 12;
-  m_signWidth = 12;
-  m_bigParenType = Configuration::ascii;
-  m_print = true;
 }
 
 // These false-positive warnings only appear in old versions of cppcheck
