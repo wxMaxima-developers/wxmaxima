@@ -38,37 +38,11 @@
 
 EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString &text) :
     Cell(parent, config),
-    m_text(text),
-    m_fontStyle(wxFONTSTYLE_NORMAL),
-    m_fontWeight(wxFONTWEIGHT_NORMAL)
+    m_text(text)
 {
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 
-  m_errorIndex = -1;
-  m_autoAnswer = false;
-  m_numberOfLines = 1;
-  m_charHeight = 12;
-  m_selectionChanged = false;
-  m_oldSelectionStart = -1;
-  m_oldSelectionEnd = -1;
-  m_lastSelectionStart = -1;
-  m_displayCaret = false;
-  m_fontSize = {};
-  m_fontSize_Last = {};
-  m_positionOfCaret = 0;
-  m_caretColumn = -1; // used when moving up/down between lines
-  m_selectionStart = -1;
-  m_selectionEnd = -1;
-  m_paren1 = m_paren2 = -1;
-  m_isDirty = false;
-  m_hasFocus = false;
-  m_underlined = false;
-  m_saveValue = false;
-  m_containsChanges = false;
-  m_containsChangesCheck = false;
-  m_firstLineOnly = false;
-  m_historyPosition = -1;
   SetValue(TabExpand(text, 0));
   ResetSize();  
 }
@@ -359,7 +333,7 @@ wxString EditorCell::ToRTF()
 
       wxString text = RTFescape(textSnippet->GetText());
 
-      if (textSnippet->StyleSet())
+      if (textSnippet->IsStyleSet())
       {
         retval += wxString::Format(wxT("\\cf%i "), (int) textSnippet->GetStyle());
         retval += RTFescape(textSnippet->GetText());
@@ -677,7 +651,7 @@ wxString EditorCell::ToHTML()
 /*      wxString tmp = EscapeHTMLChars(textSnippet->GetText());
         wxString text = tmp);*/
 
-      if (textSnippet->StyleSet())
+      if (textSnippet->IsStyleSet())
       {
         switch (textSnippet->GetStyle())
         {
@@ -892,7 +866,7 @@ void EditorCell::Draw(wxPoint point)
     for (std::vector<StyledText>::iterator textSnippet = m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet)
     {
-      wxString TextToDraw = textSnippet->GetText();
+      auto &TextToDraw = textSnippet->GetText();
       int width, height;
 
       // A newline is a separate token.
@@ -912,7 +886,7 @@ void EditorCell::Draw(wxPoint point)
         // We need to draw some text.
 
         // Grab a pen of the right color.
-        if (textSnippet->StyleSet())
+        if (textSnippet->IsStyleSet())
         {
           if (lastStyle != textSnippet->GetStyle())
           {
@@ -1148,11 +1122,13 @@ wxString EditorCell::GetCurrentCommand()
   return command;
 }
 
-wxString EditorCell::TabExpand(wxString input, long posInLine)
+wxString EditorCell::TabExpand(const wxString &input_, long posInLine)
 {
   if (posInLine < 0) posInLine = 0;
   wxString retval;
+
   // Convert the text to our line endings.
+  wxString input = input_; // TODO the state machine below can be changed instead
   input.Replace(wxT("\r\n"), wxT("\n"));
 
   wxString::const_iterator ch = input.begin();
@@ -2228,8 +2204,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
 
   if (m_historyPosition != -1)
   {
-    int len = m_textHistory.GetCount() - m_historyPosition;
-    m_textHistory.RemoveAt(m_historyPosition + 1, len - 1);
+    m_textHistory.erase(m_textHistory.begin() + m_historyPosition + 1, m_textHistory.end());
     m_startHistory.erase(m_startHistory.begin() + m_historyPosition + 1, m_startHistory.end());
     m_endHistory.erase(m_endHistory.begin() + m_historyPosition + 1, m_endHistory.end());
     m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition + 1, m_positionHistory.end());
@@ -3247,15 +3222,15 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
 
 bool EditorCell::CanUndo()
 {
-  return m_textHistory.GetCount() > 0 && m_historyPosition != 0;
+  return !m_textHistory.empty() && m_historyPosition != 0;
 }
 
 void EditorCell::Undo()
 {
   if (m_historyPosition == -1)
   {
-    m_historyPosition = m_textHistory.GetCount() - 1;
-    m_textHistory.Add(m_text);
+    m_historyPosition = m_textHistory.size() - 1;
+    m_textHistory.emplace_back(m_text);
     m_startHistory.push_back(m_selectionStart);
     m_endHistory.push_back(m_selectionEnd);
     m_positionHistory.push_back(m_positionOfCaret);
@@ -3267,7 +3242,7 @@ void EditorCell::Undo()
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_textHistory.Item(m_historyPosition);
+  m_text = m_textHistory.at(m_historyPosition);
   StyleText();
 
   m_positionOfCaret = m_positionHistory[m_historyPosition];
@@ -3281,9 +3256,9 @@ void EditorCell::Undo()
 
 bool EditorCell::CanRedo()
 {
-  return m_textHistory.GetCount() > 0 &&
+  return !m_textHistory.empty() &&
          m_historyPosition >= 0 &&
-         m_historyPosition < ((long) m_textHistory.GetCount()) - 1;
+         m_historyPosition < ((long) m_textHistory.size()) - 1;
 }
 
 void EditorCell::Redo()
@@ -3293,11 +3268,11 @@ void EditorCell::Redo()
 
   m_historyPosition++;
 
-  if (m_historyPosition >= (long) m_textHistory.GetCount())
+  if (m_historyPosition >= (long) m_textHistory.size())
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_textHistory.Item(m_historyPosition);
+  m_text = m_textHistory.at(m_historyPosition);
   StyleText();
 
   m_positionOfCaret = m_positionHistory[m_historyPosition];
@@ -3311,22 +3286,18 @@ void EditorCell::Redo()
 
 void EditorCell::SaveValue()
 {
-  if (m_textHistory.GetCount() > 0)
-  {
-    if (m_textHistory.Last() == m_text)
-      return;
-  }
+  if (!m_textHistory.empty() && m_textHistory.back() == m_text)
+    return;
 
   if (m_historyPosition != -1)
   {
-    int len = m_textHistory.GetCount() - m_historyPosition;
-    m_textHistory.RemoveAt(m_historyPosition, len);
+    m_textHistory.erase(m_textHistory.begin() + m_historyPosition, m_textHistory.end());
     m_startHistory.erase(m_startHistory.begin() + m_historyPosition, m_startHistory.end());
     m_endHistory.erase(m_endHistory.begin() + m_historyPosition, m_endHistory.end());
     m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition, m_positionHistory.end());
   }
 
-  m_textHistory.Add(m_text);
+  m_textHistory.emplace_back(m_text);
   m_startHistory.push_back(m_selectionStart);
   m_endHistory.push_back(m_selectionEnd);
   m_positionHistory.push_back(m_positionOfCaret);
@@ -3335,7 +3306,7 @@ void EditorCell::SaveValue()
 
 void EditorCell::ClearUndo()
 {
-  m_textHistory.Clear();
+  m_textHistory.clear();
   m_startHistory.clear();
   m_endHistory.clear();
   m_positionHistory.clear();
@@ -3471,11 +3442,11 @@ void EditorCell::StyleTextCode()
                               indentationPixels);
     if ((token.GetStyle() == TS_CODE_VARIABLE) || (token.GetStyle() == TS_CODE_FUNCTION))
     {
-      m_wordList.Add(token);
+      m_wordList.push_back(token);
       continue;
     }
   }
-  m_wordList.Sort();
+  std::sort(m_wordList.begin(), m_wordList.end());
 }
 
 void EditorCell::StyleTextTexts()
@@ -3771,7 +3742,7 @@ void EditorCell::StyleText()
   SetFont();
 
 
-  m_wordList.Clear();
+  m_wordList.clear();
   m_styledText.clear();
 
   if(m_text == wxEmptyString)
@@ -3873,7 +3844,7 @@ bool EditorCell::CheckChanges()
   return false;
 }
 
-int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
+int EditorCell::ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase)
 {
   if (oldString == wxEmptyString)
     return 0;
@@ -3967,7 +3938,9 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   return false;
 }
 
-bool EditorCell::ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected, bool ignoreCase, bool replaceMaximaString)
+bool EditorCell::ReplaceSelection(const wxString &oldStr, const wxString &newString,
+                                  bool keepSelected, bool ignoreCase,
+                                  bool replaceMaximaString)
 {
   wxString text(m_text);
   text.Replace(wxT("\r"), wxT(" "));
