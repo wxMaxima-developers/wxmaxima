@@ -53,10 +53,9 @@
 
   \todo Draw only tokens that are in the redraw region.
  */
-class EditorCell : public Cell
+class EditorCell final : public Cell
 {
 private:
-
   #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description) override;
   wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
@@ -65,32 +64,6 @@ private:
   wxAccStatus GetRole (int childId, wxAccRole *role) override;
   #endif
 
-  int m_errorIndex;
-
-  //! A list of all potential autoComplete targets within this cell
-  wxArrayString m_wordList;
-
-  //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, TextStyle style, AFontSize fontsize);
-
-  /*! The start of the current selection.
-
-     - >0: the position of the cursors in characters from start
-     - -1: Currently no selection is active
-
-     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-   */
-  long m_selectionStart;
-  /*! The end of the current selection.
-
-     - >0: the position of the cursors in characters from start
-     - -1: Currently no selection is active
-
-     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
-   */
-  long m_selectionEnd;
-  long m_oldSelectionStart;
-  long m_oldSelectionEnd;
 public:
   //! The constructor
   EditorCell(GroupCell *parent, Configuration **config, const wxString &text = {});
@@ -98,7 +71,9 @@ public:
   Cell *Copy() const override {return new EditorCell(*this);}
 
   //! Insert the symbol that corresponds to the ESC command txt
-  void InsertEscCommand(wxString txt){InsertText(InterpretEscapeString(txt));}
+  void InsertEscCommand(const wxString &txt) {
+    InsertText(InterpretEscapeString(txt));
+  }
 
   //! Get the whole maxima command that is currently under the cursor (including all arguments)
   wxString GetFullCommandUnderCursor();
@@ -153,14 +128,12 @@ public:
     m_cellPointers->m_cellSearchStartedIn = this;
     m_cellPointers->m_indexSearchStartedAt = index;
   }
-
   //! Remember that this is the cell the search was started in.
   void SearchStartedHere()
   {
     m_cellPointers->m_cellSearchStartedIn = this;
     m_cellPointers->m_indexSearchStartedAt = m_positionOfCaret;
   }
-
   //! Remember that this is the cell the mouse selection was started in.
   void MouseSelectionStartedHere()
   { m_cellPointers->m_cellMouseSelectionStartedIn = this; }
@@ -178,11 +151,7 @@ public:
   { m_cellPointers->m_selectionString = string; }
 
   //! A list of words that might be applicable to the autocomplete function.
-  wxArrayString GetWordList() const
-  { return m_wordList; }
-
-  //! Has the selection changed since the last draw event?
-  bool m_selectionChanged;
+  const wxArrayString &GetWordList() const { return m_wordList; }
 
   /*! Expand all tabulators.
 
@@ -190,7 +159,7 @@ public:
     \param posInLine The number of characters that come before the input in the same line
     \todo Implement the actual TAB expansion
   */
-  static wxString TabExpand(wxString input, long posInLine);
+  static wxString TabExpand(const wxString &input, long posInLine);
 
   //! Escape all chars that cannot be used in HTML otherwise
   static wxString EscapeHTMLChars(wxString input);
@@ -444,7 +413,7 @@ public:
 
   /*! Replaces all occurrences of a given string
    */
-  int ReplaceAll(wxString oldString, wxString newString, bool ignoreCase);
+  int ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase);
 
   /*! Finds the next occurrences of a string
 
@@ -457,6 +426,8 @@ public:
      - false: Case-sensitive search
    */
   bool FindNext(wxString str, bool down, bool ignoreCase);
+
+  bool IsSelectionChanged() const { return m_selectionChanged; }
 
   void SetSelection(int start, int end);
 
@@ -478,7 +449,9 @@ public:
     \param ignoreCase true = ignore the case of the string to replace
     \param replaceMaximaString true = replace strings including the double quotes.
    */
-  bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
+  bool ReplaceSelection(const wxString &oldStr, const wxString &newString,
+                        bool keepSelected = false, bool ignoreCase = false,
+                        bool replaceMaximaString = false);
 
   //! Convert the current selection to a string
   wxString GetSelectionString() const;
@@ -542,36 +515,14 @@ public:
     SetSelection(m_lastSelectionStart, m_text.Length());
   }
 
-  //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
+  //! Get the list of commands, parenthesis, strings and whitespaces in a code cell
   const MaximaTokenizer::TokenList &GetTokens() const {return m_tokens;}
 
   void SetNextToDraw(Cell *next) override;
 
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
-protected:
-  void FontsChanged() override
-    {
-      ResetSize();
-      ResetData();
-      m_widths.clear();
-    }
 private:
-  CellPtr<Cell> m_nextToDraw;
-  //! Determines the size of a text snippet
-  wxSize GetTextSize(wxString const &text);
-  //! Mark this cell as "Automatically answer questions".
-  bool m_autoAnswer;
-#if defined __WXOSX__
-
-  bool HandleCtrlCommand(wxKeyEvent &ev);
-
-#endif
-
-  bool HandleSpecialKey(wxKeyEvent &event);
-
-  bool HandleOrdinaryKey(wxKeyEvent &event);
-
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be
@@ -585,91 +536,64 @@ private:
   class StyledText
   {
   private:
-    //! The color of this text portion
-    TextStyle m_style;
     //! The text of this text portion
     wxString m_text;
-    //! Do we really want to style this text portion different than the default?
-    bool m_styleThisText;
-    //! By How many pixels we want to indent this line?
-    int m_indentPixels;
     //! Chars that mark continued indentation
     wxString m_indentChar;
+    //! The color of this text portion
+    TextStyle m_style = TS_DEFAULT;
     //! The cached width of this piece of text
-    int m_width;
+    int m_width = -1;
+    //! By How many pixels we want to indent this line?
+    int m_indentPixels = 0;
+    //! Do we really want to style this text portion different than the default?
+    bool m_styleThisText = false;
   public:
     //! Defines a piece of styled text
-    StyledText(TextStyle style, wxString text) :
-      m_style(style),
-      m_text(text)
-    {
-      m_styleThisText = true;
-      m_indentPixels = 0;
-      m_width = -1;
-    }
+    StyledText(TextStyle style, const wxString &text)
+        : m_text(text), m_style(style), m_styleThisText(true) {}
 
-    /*! Defines a piece of text with the default style that possibly is indented
-     */
-    explicit StyledText(wxString text, int indentPixels = 0, wxString indentChar = wxEmptyString):
-      m_text(text),
-      m_indentPixels(indentPixels),
-      m_indentChar(indentChar)
-    {
-      m_style = TS_DEFAULT;
-      m_styleThisText = false;
-      m_width = -1;
-    }
+    //! Defines a piece of text with the default style that possibly is indented
+    explicit StyledText(const wxString &text, int indentPixels = 0,
+                        const wxString &indentChar = {})
+        : m_text(text), m_indentChar(indentChar), m_indentPixels(indentPixels)  {}
 
     void SetWidth(int width){m_width = width;}
     void ResetSize(){SetWidth(-1);}
     int GetWidth() const {return m_width;}
     bool SizeKnown() const {return GetWidth() >= 0;}
     //! Returns the piece of text
-    wxString GetText() const
-    {
-      return m_text;
-    }
-
-
-  
+    const wxString &GetText() const { return m_text; }
     //! Changes the piece of text kept in this token
-    void SetText(wxString text)
-    {
-      m_text = text;
-    }
-    
+    void SetText(const wxString &text) { m_text = text; }
     //! Changes the indentation level of this token
-    void SetIndentation(int indentPixels, wxString indentString = wxEmptyString)
+    void SetIndentation(int indentPixels, const wxString &indentString = {})
     {
       m_indentPixels = indentPixels;
       m_indentChar = indentString;
     }
-
     //! By how many pixels do we need to indent this line due to a bullet list or similar?
-    int GetIndentPixels() const
-    {
-      return m_indentPixels;
-    }
-
-    wxString GetIndentChar() const
-    {
-      return m_indentChar;
-    }
-
-//! If StyleSet() is true this function returns the color of this text portion
-    TextStyle GetStyle() const
-    {
-      return m_style;
-    }
-
+    int GetIndentPixels() const { return m_indentPixels; }
+    const wxString &GetIndentChar() const { return m_indentChar; }
+    //! If IsStyleSet() is true this function returns the style of this text
+    //! portion
+    TextStyle GetStyle() const { return m_style; }
     // Has a individual text style been set for this text portion?
-    bool StyleSet() const
-    {
-      return m_styleThisText;
-    }
+    bool IsStyleSet() const { return m_styleThisText; }
   };
 
-  std::vector<StyledText> m_styledText;
+#if defined __WXOSX__
+  bool HandleCtrlCommand(wxKeyEvent &ev);
+#endif
+  bool HandleSpecialKey(wxKeyEvent &event);
+  bool HandleOrdinaryKey(wxKeyEvent &event);
+
+  void FontsChanged() override
+  {
+    ResetSize();
+    ResetData();
+    m_widths.clear();
+  }
 
   /*! Adds soft line breaks to code cells, if needed.
 
@@ -695,45 +619,101 @@ private:
    */
   wxString InterpretEscapeString(const wxString &txt) const;
 
+  //! Draw a box that marks the current selection
+  void MarkSelection(long start, long end, TextStyle style, AFontSize fontsize);
+
+  //! Determines the size of a text snippet
+  wxSize GetTextSize(const wxString &text);
+
+//** Large fields
+//**
+  WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
+  //! Cached widths of text snippets, one width per style
+  StringHash m_widths;
+
+  //! A list of all potential autoComplete targets within this cell
+  wxArrayString m_wordList;
+
+  //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
+  MaximaTokenizer::TokenList m_tokens;
+
   wxString m_text;
-  wxArrayString m_textHistory;
+  std::vector<StyledText> m_styledText;
+
+  std::vector<wxString> m_textHistory;
   std::vector<int> m_positionHistory;
   std::vector<int> m_startHistory;
   std::vector<int> m_endHistory;
+
+//** 8/4 bytes
+//**
+  AFontName m_fontName;
+  CellPtr<Cell> m_nextToDraw;
   //! Where in the undo history are we?
-  ptrdiff_t m_historyPosition;
+  ptrdiff_t m_historyPosition = -1;
+
+//** 4 bytes
+//**
+  int m_errorIndex = 1;
+  unsigned int m_numberOfLines = 1;
+
+  /*! The start of the current selection.
+
+     - >0: the position of the cursors in characters from start
+     - -1: Currently no selection is active
+
+     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
+   */
+  long m_selectionStart = -1;
+  /*! The end of the current selection.
+
+     - >0: the position of the cursors in characters from start
+     - -1: Currently no selection is active
+
+     If the selection has been done from right to left m_selectionStart>m_selectionEnd.
+   */
+  long m_selectionEnd = -1;
+  long m_oldSelectionStart = -1;
+  long m_oldSelectionEnd = -1;
+  long m_lastSelectionStart = -1;
+
+  int m_charHeight = 12;
+  int m_paren1 = -1, m_paren2 = -1;
+
   //! Where inside this cell is the cursor?
-  int m_positionOfCaret;
+  int m_positionOfCaret = 0;
   //! Which column the cursor would be if the current line were long enough?
-  int m_caretColumn;
-  long m_lastSelectionStart;
-//  long m_oldStart, m_oldEnd;
-  unsigned int m_numberOfLines;
+  //! Used when moving up/down between lines
+  int m_caretColumn = -1;
+
+  wxFontStyle m_fontStyle = wxFONTSTYLE_NORMAL;
+  wxFontWeight m_fontWeight = wxFONTWEIGHT_NORMAL;
+
+//** 2 bytes
+//**
   /*! The font size we were called with  the last time
 
     We need to know this in order to be able to detect we need a full recalculation.
    */
   AFontSize m_fontSize_Last;
-  WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
-  //! Cached widths of text snippets, one width per style
-  StringHash m_widths;
-  int m_charHeight;
-  int m_paren1, m_paren2;
-  //! Does this cell's size have to be recalculated?
-  bool m_isDirty;
-  bool m_displayCaret;
-  bool m_hasFocus;
-  wxFontStyle m_fontStyle;
-  wxFontWeight m_fontWeight;
-  bool m_underlined;
-  class AFontName m_fontName;
-  bool m_saveValue;
+
+//** 1 byte
+//**
+
+  //! Mark this cell as "Automatically answer questions".
+  bool m_autoAnswer = false;
   //! true, if this function has changed since the last evaluation by maxima
-  bool m_containsChanges;
-  bool m_containsChangesCheck;
-  bool m_firstLineOnly;
-  //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
-  MaximaTokenizer::TokenList m_tokens;
+  bool m_containsChanges = false;
+  bool m_containsChangesCheck = false;
+  bool m_displayCaret = false;
+  bool m_firstLineOnly = false;
+  bool m_hasFocus = false;
+  bool m_isDirty = false;
+  bool m_saveValue = false;
+  //! Has the selection changed since the last draw event?
+  bool m_selectionChanged = false;
+  //! Does this cell's size have to be recalculated?
+  bool m_underlined = false;
 };
 
 #endif // EDITORCELL_H

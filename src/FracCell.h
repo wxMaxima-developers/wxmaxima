@@ -97,12 +97,12 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  CellPtr<Cell> m_nextToDraw;
-
   //! The numerator
   Cell *Num() const { return m_numParenthesis->GetInner(); }
   //! The denominator
   Cell *Denom() const { return m_denomParenthesis->GetInner(); }
+
+  CellPtr<Cell> m_nextToDraw;
 
   //! A parenthesis around the numerator, owns the numerator
   std::unique_ptr<ParenCell> const m_numParenthesis;
@@ -110,11 +110,10 @@ private:
   std::unique_ptr<ParenCell> const m_denomParenthesis;
   //! The owner of the "/" sign
   const std::unique_ptr<Cell> m_divideOwner;
-  //! Fractions in exponents are shown in their linear form.
-  bool m_exponent;
-
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * [const] or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The "/" sign
   Cell* const m_divide = m_divideOwner.get();
   //! The displayed version of the numerator, if needed with parenthesis
@@ -124,23 +123,26 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   //! The way the fraction should be displayed
-  int m_fracStyle;
+  int m_fracStyle = FC_NORMAL;
   //! How much wider should the horizontal line be on both ends than num or denom?
-  int m_protrusion;
+  int m_protrusion = 0;
   /*! The horizontal gap between this frac and any minus before it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapLeft;
+  int m_horizontalGapLeft = 0;
   /*! The horizontal gap between this frac and any minus that follows it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapRight;
+  int m_horizontalGapRight = 0;
+
+  //! Fractions in exponents are shown in their linear form.
+  bool m_exponent = false;
 };
 
 #endif // FRACCELL_H

@@ -43,9 +43,7 @@
 ImgCell::ImgCell(GroupCell *parent, Configuration **config) : Cell(parent, config)
 {
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
   m_imageBorderWidth = 1;
-  m_drawBoundingBox = false;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
@@ -53,9 +51,7 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer
     m_image(new Image(m_configuration, image, type))
 {
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
   m_imageBorderWidth = 1;
-  m_drawBoundingBox = false;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap) :
@@ -63,9 +59,7 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitm
     m_image(new Image(m_configuration, bitmap))
 {
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
   m_imageBorderWidth = 1;
-  m_drawBoundingBox = false;
 }
 
 int ImgCell::s_counter = 0;
@@ -75,7 +69,6 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &imag
   : Cell(parent, config)
 {
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
   if (image != wxEmptyString)
     m_image = std::make_shared<Image>(m_configuration, image, filesystem, remove);
   else

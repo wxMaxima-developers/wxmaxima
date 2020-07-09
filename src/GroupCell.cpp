@@ -41,26 +41,15 @@
 #define EMPTY_INPUT_LABEL wxT(" -->  ")
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &initString) :
-    Cell(this, config)
+    Cell(this, config),
+    m_groupType(groupType)
 {
-  m_numberedAnswersCount = 0;
-  m_autoAnswer = false;
-  m_cellsInGroup = 1;
-  m_inEvaluationQueue = false;
-  m_lastInEvaluationQueue = false;
-  m_labelWidth_cached = 0;
-  m_outputRect.x = -1;
-  m_outputRect.y = -1;
-  m_outputRect.width = 0;
-  m_outputRect.height = 0;
   m_group = this;
   m_fontSize = (*m_configuration)->GetDefaultFontSize();
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
   m_forceBreakLine = true;
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
-  m_isHidden = false;
-  m_groupType = groupType;
 
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK)
@@ -902,6 +891,14 @@ int GroupCell::GetLineIndent(Cell *cell)
       indent += Scale_Px((*m_configuration)->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
   }
   return indent;
+}
+
+void GroupCell::UpdateCellsInGroup()
+{
+  if(m_output != NULL)
+    m_cellsInGroup = 2 + m_output->CellsInListRecursive();
+  else
+    m_cellsInGroup = 2;
 }
 
 void GroupCell::CellUnderPointer(GroupCell *cell)

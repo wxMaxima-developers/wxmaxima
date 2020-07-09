@@ -72,17 +72,20 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
+  //! nor SetExponent.
+  std::vector<CellPtr<Cell>> m_scriptCells;
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_postSubCell;
   std::unique_ptr<Cell> m_postSupCell;
   std::unique_ptr<Cell> m_preSubCell;
   std::unique_ptr<Cell> m_preSupCell;
-  //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
-  //! nor SetExponent.
-  std::vector<CellPtr<Cell>> m_scriptCells;
+  // The pointers above point to inner cells and must be kept contiguous.
 };
 
 #endif // SUBSUPCELL_H

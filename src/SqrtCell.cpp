@@ -38,11 +38,6 @@ SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
     m_close(new TextCell(parent, config, ")"))
 {
   m_open->SetStyle(TS_FUNCTION);
-  m_signSize = 50;
-  m_signWidth = 18;
-  m_signTop = m_signSize / 2;
-  m_signType = 0;
-  m_signFontScale = 0;
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 

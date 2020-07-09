@@ -34,7 +34,8 @@
 #include "precomp.h"
 #include "Cell.h"
 #include "ParenCell.h"
-#include "TextCell.h"
+
+class TextCell;
 
 enum sumStyle
 {
@@ -83,30 +84,34 @@ public:
   void Unbreak() override final;
 
 private:
-  CellPtr<Cell> m_nextToDraw;
-  
   ParenCell *Paren() const { return static_cast<ParenCell*>(m_paren.get()); }
   // The base cell is owned by the paren
   Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
+
+  CellPtr<Cell> m_nextToDraw;
+  CellPtr<Cell> m_displayedBase;
+  CellPtr<Cell> m_baseWithoutParen;
+
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_start;
   std::unique_ptr<Cell> m_var;
   std::unique_ptr<Cell> m_end;
-  std::unique_ptr<TextCell> m_comma1;
-  std::unique_ptr<TextCell> m_comma2;
-  std::unique_ptr<TextCell> m_comma3;
-  std::unique_ptr<TextCell> m_open;
-  std::unique_ptr<TextCell> m_close;
+  std::unique_ptr<Cell> m_comma1;
+  std::unique_ptr<Cell> m_comma2;
+  std::unique_ptr<Cell> m_comma3;
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_close;
   std::unique_ptr<Cell> m_paren;
   // The pointers above point to inner cells and must be kept contiguous.
-  CellPtr<Cell> m_displayedBase;
-  CellPtr<Cell> m_baseWithoutParen;
-  int m_signHeight;
-  double m_signWidth;
-  sumStyle m_sumStyle;
-  int m_signWCenter;
-  int m_signTop;
+
+  double m_signWidth = 30;
+  int m_signHeight = 50;
+  int m_signWCenter = 15;
+  int m_signTop = (2 * m_signHeight) / 5;
+  sumStyle m_sumStyle = SM_SUM;
 };
 
 #endif // SUMCELL_H

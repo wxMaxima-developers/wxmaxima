@@ -84,12 +84,18 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  int m_signWidth, m_signSize, m_signTop;
-  int m_signType;
-  double m_signFontScale;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+  double m_signFontScale = 0;
+  int m_signWidth = 18;
+  int m_signSize = 50;
+  int m_signTop = m_signSize / 2;
+  int m_signType = 0;
 };
 
 #endif // SQRTCELL_H

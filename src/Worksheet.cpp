@@ -3477,7 +3477,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   }
   else
   {
-    if (GetActiveCell()->m_selectionChanged)
+    if (GetActiveCell()->IsSelectionChanged())
     {
       RequestRedraw(GetActiveCell()->GetGroup());
     }
@@ -7994,7 +7994,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
       {
         if ((tmp->GetGroupType() == GC_TYPE_CODE) && tmp->GetEditable())
         {
-          wxArrayString wordList = tmp->GetEditable()->GetWordList();
+          auto wordList = tmp->GetEditable()->GetWordList();
 
           // The current unfinished word is no valid autocompletion, if there is
           // such a thing.

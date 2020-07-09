@@ -63,17 +63,9 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
     wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"),style));
     m_type = MC_TYPE_DEFAULT;
   }
-  m_displayedDigits_old = -1;
-  m_height = -1;
-  m_realCenter = m_center = -1;
-  m_lastCalculationFontSize = {};
   m_fontSize.Set(10.0f);
-  m_lastZoomFactor = -1;
   TextCell::SetValue(text);
-  m_highlight = false;
-  m_dontEscapeOpeningParenthesis = false;
   m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
-  m_fontsize_old = {};
 }
 
 void TextCell::SetStyle(TextStyle style)
@@ -316,14 +308,7 @@ TextCell::TextCell(const TextCell &cell):
     m_labelChoice_Last((*cell.m_configuration)->GetLabelChoice())
 {
   CopyCommonData(cell);
-  m_forceBreakLine = cell.m_forceBreakLine;
   m_bigSkip = cell.m_bigSkip;
-  m_lastZoomFactor = -1;
-  m_displayedDigits_old = -1;
-  m_lastCalculationFontSize = {};
-  m_realCenter = -1;
-  m_fontsize_old = {};
-  m_textStyle = cell.m_textStyle;
   m_highlight = cell.m_highlight;
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }

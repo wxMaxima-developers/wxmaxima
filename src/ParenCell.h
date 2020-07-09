@@ -86,20 +86,26 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  void SetFont(AFontSize fontsize);
+
   CellPtr<Cell> m_nextToDraw;
 
-  //! How to create a big parenthesis sign?
-  Configuration::drawMode m_bigParenType;
-  void SetFont(AFontSize fontsize);
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  bool m_print;
-  int m_numberOfExtensions;
-  int m_charWidth, m_charHeight;
-  int m_charWidth1, m_charHeight1;
-  int m_signWidth, m_signHeight, m_signTopHeight, m_signBotHeight, m_extendHeight;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+  //! How to create a big parenthesis sign?
+  Configuration::drawMode m_bigParenType = Configuration::ascii;
+  int m_numberOfExtensions = 0;
+  int m_charWidth = 12, m_charHeight = 12;
+  int m_charWidth1 = 12, m_charHeight1 = 12;
+  int m_signWidth = 12, m_signHeight = 50;
+  int  m_signTopHeight = 12, m_signBotHeight = 12, m_extendHeight = 12;
+  bool m_print = true;
 };
 
 #endif // PARENCELL_H

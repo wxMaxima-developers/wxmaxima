@@ -124,16 +124,16 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  std::shared_ptr<Image> m_image;
-  
-  static int s_counter;
-  bool m_drawRectangle;
-
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
   { m_drawBoundingBox = true; }
 
+  std::shared_ptr<Image> m_image;
+
   CellPtr<Cell> m_nextToDraw;
-  bool m_drawBoundingBox;
+  bool m_drawRectangle = true;
+  bool m_drawBoundingBox = false;
+
+  static int s_counter;
 };
 
 #endif // IMGCELL_H

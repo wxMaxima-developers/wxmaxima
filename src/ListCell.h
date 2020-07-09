@@ -85,13 +85,17 @@ public:
 private:
   CellPtr<Cell> m_nextToDraw;
 
-  //! How to create a big parenthesis sign?
-  bool m_drawAsAscii;
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  int m_signWidth = -1, m_signHeight = -1;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+  int m_signWidth = 12, m_signHeight = -1;
+  //! How to create a big parenthesis sign?
+  bool m_drawAsAscii = true;
 };
 
 #endif // LISTCELL_H

@@ -171,20 +171,21 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
+  wxTimer m_timer{ m_cellPointers->GetWorksheet(), wxNewId() };
+  std::vector<std::shared_ptr<Image>> m_images;
+  std::shared_ptr<wxFileSystem> m_fileSystem;
   CellPtr<Cell> m_nextToDraw;
 
-  wxTimer m_timer{m_cellPointers->GetWorksheet(), wxNewId()};
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
   */
-  int m_framerate;
+  int m_framerate = -1;
+  int m_size = 0;
+  int m_displayed = 0;
 
-  bool m_animationRunning;
-  int m_size;
-  int m_displayed;
-  std::shared_ptr<wxFileSystem> m_fileSystem;
-  std::vector<std::shared_ptr<Image>> m_images;
+  bool m_animationRunning = true;
+  bool m_drawBoundingBox = false;
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;
@@ -203,8 +204,6 @@ private:
 
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   { m_drawBoundingBox = true; }
-
-  bool m_drawBoundingBox;
 };
 
 #endif // SLIDESHOWCELL_H
