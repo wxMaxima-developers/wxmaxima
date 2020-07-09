@@ -1049,8 +1049,6 @@ private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old = -1;
 protected:
-  int m_worksheetRedrawCounter_old = 0;
-  int m_RedrawCounter = 0;
   CellType m_type = MC_TYPE_DEFAULT;
   TextStyle m_textStyle = TS_DEFAULT;
 

@@ -55,7 +55,6 @@ Configuration::Configuration(wxDC *dc) :
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
-  m_worksheetRedrawCounter = 0;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
@@ -564,6 +563,48 @@ wxColor Configuration::EditorBackgroundColor()
     return InvertColour(m_styles[TS_TEXT_BACKGROUND].GetColor());
   else
     return m_styles[TS_TEXT_BACKGROUND].GetColor();
+}
+
+void Configuration::NotifyOfCellRedraw(Cell *cell)
+{
+  if (!m_cellRedrawTrace || !cell)
+    return;
+  // This operation is fast and doesn't allocate after the configuration
+  // was used for a few screen redraws.
+  m_cellRedrawTrace->push_back(cell);
+}
+
+void Configuration::ClearAndEnableRedrawTracing()
+{
+  if (!m_cellRedrawTrace)
+    m_cellRedrawTrace.reset(new CellRedrawTrace);
+  else
+    m_cellRedrawTrace->clear();
+}
+
+void Configuration::ReportMultipleRedraws()
+{
+  if (!m_cellRedrawTrace)
+    return;
+
+  // This sort is over two orders of magnitude faster,
+  // per-cell, than having counters in a map or hash.
+  std::sort(m_cellRedrawTrace->begin(), m_cellRedrawTrace->end());
+  int counter = 0;
+  Cell *prev = {};
+  for (auto *cell : *m_cellRedrawTrace)
+  {
+    if (prev != cell)
+    {
+      if (counter > 1)
+        wxLogMessage("Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
+                     counter, prev->ToString());
+      prev = cell;
+      counter = 1;
+    }
+    else
+      ++counter;
+  }
 }
 
 void Configuration::SetPrinting(bool printing)
