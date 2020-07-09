@@ -246,10 +246,7 @@ public:
 
     Naturally all soft line breaks are converted back to spaces beforehand.
    */
-  wxString GetValue() const override
-  {
-    return m_text;
-  }
+  const wxString &GetValue() const override { return m_text; }
 
   /*! Converts m_text to a list of styled text snippets that will later be displayed by draw().
 

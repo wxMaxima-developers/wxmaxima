@@ -83,7 +83,7 @@ public:
 
   bool IsOperator() const override;
 
-  wxString GetValue() const override { return m_text; }
+  const wxString &GetValue() const override { return m_text; }
 
   wxString GetGreekStringTeX() const;
 

@@ -638,11 +638,8 @@ public:
   virtual void SetExponentFlag()
   {}
 
-  virtual void SetValue(const wxString &WXUNUSED(text))
-  {}
-
-  virtual wxString GetValue() const
-  { return wxEmptyString; }
+  virtual void SetValue(const wxString &WXUNUSED(text)) {}
+  virtual const wxString &GetValue() const;
 
   //! Get the first cell in this list of cells
   Cell *first() const;

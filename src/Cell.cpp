@@ -1228,6 +1228,12 @@ void Cell::SetPen(double lineWidth)
     configuration->GetAntialiassingDC()->SetPen(pen);
 }
 
+const wxString &Cell::GetValue() const
+{
+  static const wxString empty;
+  return empty;
+}
+
 void Cell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);
