@@ -440,7 +440,7 @@ Worksheet::~Worksheet()
 
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
-  m_configuration->StepWorksheetRedrawCounter();
+  m_configuration->ClearAndEnableRedrawTracing();
   m_configuration->SetBackgroundBrush(
     *(wxTheBrushList->FindOrCreateBrush(m_configuration->DefaultBackgroundColor(),
                                         wxBRUSHSTYLE_SOLID)));
@@ -682,6 +682,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   m_configuration->UnsetAntialiassingDC();
   m_lastTop = top;
   m_lastBottom = bottom;
+
+  m_configuration->ReportMultipleRedraws();
 }
 
 GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)

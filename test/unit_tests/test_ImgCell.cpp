@@ -42,6 +42,7 @@ wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 Style Configuration::GetStyle(TextStyle, AFontSize) const { return {}; }
 Cell::CellPointers *Cell::GetCellPointers() const { return &pointers; }
+void Configuration::NotifyOfCellRedraw(Cell *) {}
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &) { return {}; }
 

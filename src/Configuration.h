@@ -30,6 +30,7 @@
 #include <wx/hashmap.h>
 #include "LoggingMessageDialog.h"
 #include "TextStyle.h"
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -62,6 +63,8 @@ static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 #define LIBERTINE7 "LinLibertine_RIah.ttf"
 #define LIBERTINE8 "LinLibertine_RZah.ttf"
 #define LIBERTINE9 "LinLibertine_RZIah.ttf"
+
+class Cell;
 
 /*! The configuration storage for the current worksheet.
 
@@ -894,10 +897,13 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
+  void NotifyOfCellRedraw(Cell *cell);
+  void ClearAndEnableRedrawTracing();
+  void ReportMultipleRedraws();
   Style m_styles[NUMBEROFSTYLES];
-  void StepWorksheetRedrawCounter(){m_worksheetRedrawCounter++;}
-  int GetWorksheetRedrawCounter(){return m_worksheetRedrawCounter;}
 private:
+  using CellRedrawTrace = std::vector<Cell*>;
+
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -1011,8 +1017,8 @@ private:
   bool m_hidemultiplicationsign;
   bool m_offerKnownAnswers;
   long m_defaultPort;
-  int  m_worksheetRedrawCounter;
   long m_maxGnuplotMegabytes;
+  std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;
