@@ -51,6 +51,10 @@ static size_t MixHash(size_t seed, const T &value)
 //! Comparator for wxString*
 static bool operator<(const wxString *l, const wxString &r) { return *l < r; }
 
+/*
+ * Interner (internal)
+ */
+
 /*! \brief An implementation of string interning arena.
  */
 template <typename T>
@@ -115,31 +119,27 @@ public:
   }
 };
 
-/*! \brief Synchronizes access to the font face string interner.
+/*! \brief Holds the instance of the font name interner, and
+ * synchronizes access to it.
  *
- * This is only active on Windows. The class is empty on non-windows systems, where
- * access to the font objects is only allowed from the main thread.
+ * Use an an object of this class to gain exclusive access to
+ * the interner. This is needed for thread safety.
  */
-struct InternerLock
+class InternerUser
 {
-#ifdef __WINDOWS__
-  // Windows allows font access from multiple threads, as long as each font
-  // is built separately. We must thus synchronize the access to the interner.
   static wxMutex mutex;
-  InternerLock() { mutex.Lock(); }
-  ~InternerLock() { mutex.Unlock(); }
-  InternerLock(const InternerLock &) = delete;
-  void operator=(const InternerLock &) = delete;
-#endif
+public:
+  InternerUser() { mutex.Lock(); }
+  ~InternerUser() { mutex.Unlock(); }
+public:
+  Interner<wxString> &Get() const;
+  InternerUser(const InternerUser &) = delete;
+  void operator=(const InternerUser &) = delete;
 };
 
-#ifdef __WINDOWS__
-//! The mutex is only for Windows, where fonts can be accessed from multiple threads.
-//! On other systems, this is not allowed.
-wxMutex InternerLock::mutex;
-#endif
+wxMutex InternerUser::mutex;
 
-static Interner<wxString>& GetFontNameInterner()
+Interner<wxString>& InternerUser::Get() const
 {
   static Interner<wxString> interner;
   return interner;
@@ -147,9 +147,8 @@ static Interner<wxString>& GetFontNameInterner()
 
 const wxString *AFontName::Intern(const wxString &str)
 {
-  // cppcheck-suppress unusedVariable
-  InternerLock lock;
-  return GetFontNameInterner().Intern(str);
+  InternerUser user;
+  return user.Get().Intern(str);
 }
 
 const wxString *AFontName::GetInternedEmpty()
