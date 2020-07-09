@@ -346,7 +346,7 @@ int Cell::GetFullWidth()
     while (tmp != NULL)
     {
       m_fullWidth += tmp->m_width;
-      tmp = tmp->m_next;
+      tmp = tmp->GetNextToDraw();
     }
   }
   return m_fullWidth;

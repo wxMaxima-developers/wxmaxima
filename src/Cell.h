@@ -512,7 +512,7 @@ public:
    */
   int GetHeightList();
 
-  //! How many pixels is this list of cells wide?
+  //! How many pixels is this list of cells wide, if we don't break it into lines?
   int GetFullWidth();
 
   /*! How many pixels is the current line of this list of cells wide?
