@@ -84,7 +84,6 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_cellPointers(GetCellPointers()),
     m_fontSize((*config)->GetMathFontSize())
 {
-  m_isBrokenIntoLines = false;
 }
 
 Cell::~Cell()
