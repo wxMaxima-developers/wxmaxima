@@ -919,9 +919,6 @@ public:
 
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
-  //! What to put on the clipboard if this cell is to be copied as text
-  void SetAltCopyText(wxString text)
-  { m_altCopyText = text; }
 
   /*! Attach a copy of the list of cells that follows this one to a cell
     
@@ -961,11 +958,6 @@ protected:
 //** Large objects
 //**
   wxString m_toolTip;
-  /*! Text that should end up on the clipboard if this cell is copied as text.
-
-     \attention  m_altCopyText is not checked in all cell types!
-   */
-  wxString m_altCopyText;
 
 //** 8-byte objects
 //**

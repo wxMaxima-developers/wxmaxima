@@ -54,6 +54,7 @@ SumCell::SumCell(const SumCell &cell) :
     SumCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
   if (cell.Base())
     SetBase(cell.Base()->CopyList());
   if (cell.m_under)
