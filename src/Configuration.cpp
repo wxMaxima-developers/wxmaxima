@@ -36,7 +36,7 @@
 #include <wx/fileconf.h>
 #include "Cell.h"
 
-Configuration::Configuration(wxDC *dc) :
+Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc),
   m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"),
   m_documentclass("article"),
@@ -92,10 +92,13 @@ Configuration::Configuration(wxDC *dc) :
   m_clientWidth = 1024;
   m_clientHeight = 768;
   m_indentMaths=true;
-  if(m_maximaLocation_override != wxEmptyString)
-    m_maximaUserLocation = m_maximaLocation_override;
-  else
-    m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+  if (!(options & InitOpt::temporary))
+  {
+    if(m_maximaLocation_override != wxEmptyString)
+      m_maximaUserLocation = m_maximaLocation_override;
+    else
+      m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+  }
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
