@@ -23,10 +23,13 @@ cat >UnicodeData.h <<END
 /* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA         */
 
 /* The license of UnicodeData.txt can be found at: https://www.unicode.org/license.html */
+/* and is included in here as unicode-license.html                                      */
+/* UnicodeData.txt was downloaded from:                                                 */
+/* https://www.unicode.org/Public/13.0.0/ucd/UnicodeData.txt                            */
 
 END
 
-echo "Converting UnicodeData.txt to embeddable C code"
+echo "Converting UnicodeData.txt to embeddable C code UnicodeData.h"
 cut -d ";" -f 1-2 <UnicodeData.txt | gzip -c -n >UnicodeData.txt.gz
 xxd -i "UnicodeData.txt.gz" >>UnicodeData.h
 rm -f UnicodeData.txt.gz
