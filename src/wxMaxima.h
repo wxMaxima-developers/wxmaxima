@@ -748,6 +748,9 @@ protected:
   bool m_maximaBusy;
   wxMemoryBuffer m_rawDataToSend;
   unsigned long int m_rawBytesSent;
+private:
+  //! A list of commands we want to add to the history sidebar, once we have time to
+  std::list<wxString> m_deferredHistoryCommands;
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;

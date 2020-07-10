@@ -1442,9 +1442,10 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 
     m_dispReadOut = false;
 
-    /// Add this command to History
+    // Schedule this command to be added to the History Sidebar:
+    // Adding it right now requires time and slows down things a bit.
     if (addToHistory)
-      AddToHistory(s);
+      m_deferredHistoryCommands.push_front(s);
 
     StripLispComments(s);
 
@@ -4456,6 +4457,19 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     }
   }
 
+  // Add all items we still have to add to the command history to the command
+  // history
+  if(!m_deferredHistoryCommands.empty())
+  {
+    wxEventBlocker deferRedraw(m_history);
+    while(m_deferredHistoryCommands.empty())
+    {
+      AddToHistory(m_deferredHistoryCommands.back());
+      m_deferredHistoryCommands.pop_back();
+    }
+    event.RequestMore();
+    return;
+  }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
