@@ -7,6 +7,7 @@
  * Better display of fractions
  * Nicer display of lists
  * Made sure we read in the whole .mac file when opening .mac files
+ * Allow building wxMaxima, if pandoc or po4translate are not installed
  * As always many small additional bug fixes
 
 # Why is wxMaxima able to open truncated wxmx files?
