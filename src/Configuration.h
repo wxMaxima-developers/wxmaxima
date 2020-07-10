@@ -110,6 +110,12 @@ public:
     unknown
   };
 
+  enum InitOpt
+  {
+    none,
+    temporary,          //!< This configuration is temporary and shouldn't redetect Maxima etc.
+  };
+
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
@@ -123,7 +129,7 @@ public:
     
     \param dc The drawing context that is to be used for drawing objects
    */
-  explicit Configuration(wxDC *dc = NULL);
+  explicit Configuration(wxDC *dc = {}, InitOpt options = {});
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)

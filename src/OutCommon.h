@@ -121,7 +121,7 @@ private:
   wxString m_filename;
   Configuration **m_configuration;
   Configuration *m_oldconfig = *m_configuration;
-  Configuration m_thisconfig;
+  Configuration m_thisconfig{ {}, Configuration::temporary };
   //! How many times the natural resolution do we want this output to be?
   double m_scale = 1.0;
   //! The size of the current output
