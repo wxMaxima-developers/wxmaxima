@@ -30,12 +30,16 @@
 #define HISTORY_H
 
 #include "precomp.h"
+#include "LoggingMessageDialog.h"
 #include <wx/wx.h>
 
 enum
 {
   history_ctrl_id = 1,
-  history_regex_id
+  history_regex_id,
+  export_all,
+  export_session,
+  export_selected
 };
 
 /*! This class generates a pane containing the last commands that were issued.
@@ -60,7 +64,14 @@ public:
 
   wxString GetCommand(bool next);
 
+  void MaximaSessionStart();
+  
+protected:
+  //! Called on right-clicks on the history panel
+  void OnMouseRightDown(wxMouseEvent &event);
+  void OnMenu(wxCommandEvent &event);
 private:
+  int m_sessionCommands = 0;
   wxListBox *m_history;
   wxTextCtrl *m_regex;
   wxArrayString commands;

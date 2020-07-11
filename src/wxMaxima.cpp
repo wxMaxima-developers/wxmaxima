@@ -2019,7 +2019,12 @@ void wxMaxima::KillMaxima(bool logMessage)
   #pragma omp taskwait
   #endif
   if(logMessage && (m_closing || (m_process == NULL) || (m_pid > 0)))
+  {
     wxLogMessage(_("Killing Maxima."));
+    UpdateDeferredHistory();
+    if(m_history)
+      m_history->MaximaSessionStart();
+  }
   m_closing = true;
   m_worksheet->m_variablesPane->ResetValues();
   m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
@@ -4459,14 +4464,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   // Add all items we still have to add to the command history to the command
   // history
-  if(!m_deferredHistoryCommands.empty())
+  if(UpdateDeferredHistory())
   {
-    wxEventBlocker deferRedraw(m_history);
-    while(m_deferredHistoryCommands.empty())
-    {
-      AddToHistory(m_deferredHistoryCommands.back());
-      m_deferredHistoryCommands.pop_back();
-    }
     event.RequestMore();
     return;
   }
@@ -4475,6 +4474,20 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   event.Skip();
 }
 
+bool wxMaxima::UpdateDeferredHistory()
+{
+  if(!m_deferredHistoryCommands.empty())
+  {
+    wxEventBlocker deferRedraw(m_history);
+    while(!m_deferredHistoryCommands.empty())
+    {
+      AddToHistory(m_deferredHistoryCommands.back());
+      m_deferredHistoryCommands.pop_back();
+    }
+    return true;
+  }
+  return false;
+}
 bool wxMaxima::UpdateDrawPane()
 {
   int dimensions = 0;
@@ -5715,7 +5728,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       textOut<<"if(GPVAL_VERSION >= 5.0) bind \"Close\" \"exit gnuplot\"\n";
       textOut<<"if(GPVAL_VERSION >= 5.0) pause mouse close; else pause 600\n";
       textOut<<"quit\n";
-   textOut.Flush();
+      textOut.Flush();
     }
       
     // Execute gnuplot

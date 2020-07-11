@@ -29,11 +29,16 @@
 #include "History.h"
 
 #include <wx/sizer.h>
+#include <wx/menu.h>
 #include <wx/regex.h>
+#include <wx/filedlg.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
+#include <memory>
 
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
-  m_history = new wxListBox(this, history_ctrl_id);
+  m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE);
   m_regex = new wxTextCtrl(this, history_regex_id);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
@@ -46,17 +51,115 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   box->Fit(this);
   box->SetSizeHints(this);
   m_current = 0;
-  Connect(history_regex_id, wxEVT_TEXT, wxCommandEventHandler(History::OnRegExEvent), NULL, this);
+  Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
+  m_history->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
+  Connect(wxEVT_MENU,
+          wxCommandEventHandler(History::OnMenu), NULL, this);
 }
+
+void History::OnMouseRightDown(wxMouseEvent &event)
+{
+  if(m_history->GetCount() == 0)
+  {
+    event.Skip();
+    return;
+  }
+  wxString number;
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  popupMenu->Append(export_all, _("Export all history to a .mac file"));
+   popupMenu->Append(export_session, _("Export commands from the current maxima session to a .mac file"));
+  wxArrayInt selections;
+  if(m_history->GetSelections(selections) > 0)
+    popupMenu->Append(export_selected, _("Export selected commands to a .mac file"));
+  PopupMenu(&*popupMenu);
+}
+
+void History::MaximaSessionStart()
+{
+  if(m_history->GetCount() != 0)
+    AddToHistory(wxT("quit();"));
+  m_sessionCommands = -1;
+}
+
+void History::OnMenu(wxCommandEvent &event)
+{
+  int start = m_history->GetCount() - 1;
+  switch (event.GetId())
+  {
+  case export_selected:
+  {
+    wxArrayInt selections;
+    if(m_history->GetSelections(selections) > 0)
+    {
+      wxFileDialog fileDialog(this,
+                              _("Export As"), wxEmptyString,
+                              wxEmptyString,
+                              _("Maxima session (*.mac)|*.mac"),
+                              wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+      if (fileDialog.ShowModal() == wxID_OK)
+      {
+        wxString file = fileDialog.GetPath();
+        wxFileOutputStream output(file);
+        if(output.IsOk())
+        {
+          wxTextOutputStream text(output);
+          while(!selections.IsEmpty())
+          {
+            text << m_history->GetString(selections.Last()) << "\n";
+            selections.RemoveAt(selections.GetCount() - 1);
+          }
+          text.Flush();
+        }
+        if(!output.IsOk() || !output.Close())
+          LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"),
+                            wxOK);
+        
+      }
+    }
+    break;
+  }
+  case export_session:
+    start = m_sessionCommands;
+    //fallthrough
+    
+  case export_all:
+  {
+    wxFileDialog fileDialog(this,
+                            _("Export As"), wxEmptyString,
+                            wxEmptyString,
+                            _("Maxima session (*.mac)|*.mac"),
+                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if (fileDialog.ShowModal() == wxID_OK)
+    {
+      wxString file = fileDialog.GetPath();
+      wxFileOutputStream output(file);
+      if(output.IsOk())
+      {
+        wxTextOutputStream text(output);
+        for(int i = start; i >= 0; --i)
+          text << m_history->GetString(i) << "\n";
+        text.Flush();
+      }
+      if(!output.IsOk() || !output.Close())
+        LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"),
+                          wxOK);
+      
+    }
+  break;
+  }
+  }
+}
+
 
 History::~History()
 {
 }
 
 void History::AddToHistory(const wxString &cmd)
-{  
+{
   if (cmd.IsEmpty())
     return;
+  m_sessionCommands ++;
     
   commands.Insert(cmd, 0);
   m_current = commands.GetCount();
