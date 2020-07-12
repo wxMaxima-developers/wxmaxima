@@ -34,7 +34,7 @@
 
 Cell::CellPointers pointers(nullptr);
 
-Configuration::Configuration(wxDC *dc) : m_dc(dc) {}
+Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
 Configuration::~Configuration() {}
 long Configuration::Scale_Px(double) const { return 1; }
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }

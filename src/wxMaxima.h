@@ -453,7 +453,9 @@ protected:
   void TryUpdateInspector();
 
   bool UpdateDrawPane();
-  
+  //! Update the history sidebar
+  bool UpdateDeferredHistory();
+
   wxString ExtractFirstExpression(const wxString &entry);
 
   wxString GetDefaultEntry();

@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-07 13:07+0200\n"
-"PO-Revision-Date: 2020-06-05 21:07+0300\n"
+"PO-Revision-Date: 2020-07-11 16:42+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:186
@@ -1175,9 +1175,8 @@ msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Пакетні файли (*.bat)|*.bat|Всі|*"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1322
-#, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
-msgstr "Пакетні файли (*.bat)|*.bat|Всі|*"
+msgstr "пакетні файли (*.bat)|*.bat|виконувані файли (*.exe)||усі|*"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5566
 msgid "Batch File"
@@ -1713,14 +1712,13 @@ msgid "Choose new plot format:"
 msgstr "Вкажіть новий формат графіків:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1399
-#, fuzzy, c-format
+#, c-format
 msgid "Choose the %s Font"
-msgstr "Вибрати шрифт"
+msgstr "Виберіть шрифт %s"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1347
-#, fuzzy
 msgid "Choose the Math Font"
-msgstr "Вибрати шрифт"
+msgstr "Виберіть математичний шрифт"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
 msgid "Choose the parenthesis type for Matrices"
@@ -2646,9 +2644,9 @@ msgid "Enable:"
 msgstr "Увімкнути:"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:88
-#, fuzzy, c-format
+#, c-format
 msgid "Encountered an unknown XML tag: <%s>"
-msgstr "Сталася невідома подія із сокетом."
+msgstr "Виявлено невідомий теґ XML: <%s>"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1666
 msgid "Encountered an unknown socket event."
@@ -3371,12 +3369,11 @@ msgstr "Наступні графіки використовують втори�
 
 #: /home/gunter/src/wxmaxima/src/IntCell.cpp:269
 msgid "Font issue: The char height is too small!"
-msgstr ""
+msgstr "Проблеми із шрифтами: висота символу є надто малою!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:202
-#, fuzzy
 msgid "Font issue: The sqrt() sign has the size 0!"
-msgstr "Проблеми зі шрифтом? Вміст sqrt() має розмір 0."
+msgstr "Проблема із шрифтами: знак sqrt() має розмір 0!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:200
 msgid "Font issue? The contents of a sqrt() has the size 0."
@@ -3754,7 +3751,7 @@ msgstr "Довідка"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:943
 msgid "Help browser:"
-msgstr ""
+msgstr "Перегляд довідки:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:641
 msgid "Help button"
@@ -4818,6 +4815,8 @@ msgid ""
 "Launching the system's default help browser failed. Trying to execute %s "
 "instead."
 msgstr ""
+"Не вдалося запустити типову програму для перегляду довідки у системі."
+" Спробуйте запусти замість неї %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1975
 msgid "Leads to"
@@ -4844,7 +4843,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5682,9 +5681,8 @@ msgid "Mismatched parenthesis"
 msgstr "Незбалансована дужка"
 
 #: /home/gunter/src/wxmaxima/src/VisiblyInvalidCell.cpp:42
-#, fuzzy
 msgid "Missing contents. Bug?"
-msgstr "Вада: немає вмісту"
+msgstr "Немає вмісту. Вада?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7406
 msgid "Modulus"
@@ -7142,11 +7140,11 @@ msgstr "Див. також кнопку «швидкість <-> точніст�
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:1052
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:751
 msgid "Seems like something is broken with a font."
-msgstr ""
+msgstr "Здається, маємо якісь проблеми із шрифтом."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:563
 msgid "Seems like something is broken with the maths font."
-msgstr ""
+msgstr "Здається, маємо якісь проблеми із математичним шрифтом."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:266
 msgid "Seems like the package with the maxima share files isn't installed."
@@ -7191,9 +7189,8 @@ msgid "Select all"
 msgstr "Позначити все"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1318
-#, fuzzy
 msgid "Select help browser"
-msgstr "Кнопка «Позначити все»"
+msgstr "Виберіть програму для перегляду довідки"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6052
 msgid "Select math display algorithm"
@@ -8868,11 +8865,11 @@ msgstr "Намагаємося вилучити файл gnuplot %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3222
 msgid "Trying to discard all output."
-msgstr ""
+msgstr "Намагаємося відкинути усі виведені дані."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3178
 msgid "Trying to extract contents.xml out of a broken .zip file."
-msgstr ""
+msgstr "Намагаємося видобути contents.xml із пошкодженого файла .zip."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:193
 #, c-format
@@ -8891,14 +8888,12 @@ msgid "Trying to open the non-existing file %s"
 msgstr "Спроба відкрити файл %s, якого не існує"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3256
-#, fuzzy
 msgid "Trying to reconstruct the xml closing markers."
-msgstr "Намагаємося перезапустити maxima."
+msgstr "Намагаємося відтворити завершальні позначки xml."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3173
-#, fuzzy
 msgid "Trying to recover a broken .wxmx file."
-msgstr "Намагаємося вилучити застарілий тимчасовий файл %s"
+msgstr "Намагаємося відновити пошкоджений файл .wxmx."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5342
 #, c-format
@@ -9319,7 +9314,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "

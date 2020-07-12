@@ -1584,6 +1584,8 @@ protected:
   int m_pointer_y;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas;
+  //! Is there an active popup menu?
+  bool m_inPopupMenu = false;
 };
 
 inline Worksheet *Cell::GetWorksheet() const

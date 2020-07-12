@@ -56,10 +56,15 @@ public:
 
   wxString ToXML() override;
 
+  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
   
 private:
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.

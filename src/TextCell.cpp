@@ -308,6 +308,7 @@ TextCell::TextCell(const TextCell &cell):
     m_labelChoice_Last((*cell.m_configuration)->GetLabelChoice())
 {
   CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
   m_bigSkip = cell.m_bigSkip;
   m_highlight = cell.m_highlight;
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;

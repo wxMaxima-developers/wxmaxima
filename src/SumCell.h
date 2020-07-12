@@ -78,6 +78,8 @@ public:
 
   wxString ToOMML() override;
 
+  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
@@ -87,6 +89,9 @@ private:
   ParenCell *Paren() const { return static_cast<ParenCell*>(m_paren.get()); }
   // The base cell is owned by the paren
   Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
+
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
 
   CellPtr<Cell> m_nextToDraw;
   CellPtr<Cell> m_displayedBase;

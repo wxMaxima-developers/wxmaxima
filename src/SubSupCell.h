@@ -68,10 +68,15 @@ public:
 
   wxString ToMathML() override;
 
+  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
+
   //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
   //! nor SetExponent.
   std::vector<CellPtr<Cell>> m_scriptCells;

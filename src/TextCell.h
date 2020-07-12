@@ -93,6 +93,8 @@ public:
 
   void SetType(CellType type) override;
 
+  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+
   //! The actual font size for labels (that have a fixed width)
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
@@ -122,6 +124,8 @@ private:
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
   //! The text we keep inside this cell
   wxString m_text;
   //! The text we keep inside this cell
@@ -133,7 +137,6 @@ private:
   wxString m_ellipsis;
   wxString m_numEnd;
 
-  //! Produces a text sample that determines the label width
   wxString m_initialToolTip;
 
   WX_DECLARE_HASH_MAP(

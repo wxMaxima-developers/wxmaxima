@@ -42,6 +42,7 @@ SubCell::SubCell(const SubCell &cell):
     SubCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
   if(cell.m_indexCell)
