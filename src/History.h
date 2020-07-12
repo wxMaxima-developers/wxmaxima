@@ -32,6 +32,7 @@
 #include "precomp.h"
 #include "LoggingMessageDialog.h"
 #include <wx/wx.h>
+#include <wx/regex.h>
 
 enum
 {
@@ -39,6 +40,7 @@ enum
   history_regex_id,
   export_all,
   export_session,
+  export_visible,
   export_selected
 };
 
@@ -74,9 +76,16 @@ private:
   int m_sessionCommands = 0;
   wxListBox *m_history;
   wxTextCtrl *m_regex;
-  wxArrayString commands;
+  wxArrayString m_commands;
   //! The currently selected item. -1=none.
   long m_current;
+  //! The tooltip that is displayed if the regex cannot be interpreted
+  static wxString m_regexTooltip_error;
+  //! The tooltip that is displayed if the regex is empty or can be interpreted
+  static wxString m_regexTooltip_norm;
+  //! The regex entries need to be matched to in order to be displayed
+  wxRegEx m_matcher;
+
 };
 
 #endif // HISTORY_H
