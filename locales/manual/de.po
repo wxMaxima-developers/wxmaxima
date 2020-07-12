@@ -17,9 +17,8 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
-#, fuzzy, no-wrap
-#| msgid "The wxMaxima user manual {-}\n"
-msgid "The wxMaxima user manual {-}"
+#, no-wrap
+msgid "The wxMaxima user manual {-}\n"
 msgstr "Das Handbuch von wxMaxima {-}\n"
 
 #. type: Plain text
@@ -134,21 +133,6 @@ msgstr "_Maxima_ und wxMaxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:49
-#, fuzzy
-#| msgid ""
-#| "In the open-source domain big systems are normally split into smaller "
-#| "projects that are easier to handle for small groups of developers. For "
-#| "example a CD burner program will consist of a command-line tool that "
-#| "actually burns the CD and a graphical user interface that allows users to "
-#| "implement it without having to learn about all the command line switches "
-#| "and in fact without using the command line at all. One advantage of this "
-#| "approach is that the developing work that was invested into the command-"
-#| "line program can be shared by many programs: The same CD-burner command-"
-#| "line program can be used as a “send-to-CD”-plug-in for a file manager "
-#| "application, for the “burn to CD” function of a music player and as the "
-#| "CD writer for a DVD backup tool. Another advantage is that splitting one "
-#| "big task into smaller parts allows the developers to provide several user "
-#| "interfaces for the same program."
 msgid ""
 "In the open-source domain, big systems are normally split into smaller "
 "projects that are easier to handle for small groups of developers. For "
@@ -169,24 +153,13 @@ msgstr ""
 "Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-"
 "Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs "
 "brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein "
-"Vorteil dieses Ansatzes ist es, dass dasselbe Kommandozeilenprogramm von "
+"Vorteil dieses Ansatzes ist es, daß dasselbe Kommandozeilenprogramm von "
 "vielen Stellen aus genutzt werden: Das Brennprogramm, ein \"Sende an die CD"
 "\"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, "
 "dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces "
 "angeboten werden können."
 
 #. type: Plain text
-#: ../../info/wxmaxima.md:51
-#, fuzzy
-#| msgid ""
-#| "A computer algebra system (CAS) like _Maxima_ fits into this framework. A "
-#| "CAS can provide the logic behind an arbitrary precision calculator "
-#| "application or it can do automatic transforms of formulas in the "
-#| "background of a bigger system (e.g., [Sage](https://www.sagemath.org/)). "
-#| "Alternatively, it can be used directly as a free-standing system. "
-#| "_Maxima_ can be accessed via a command line. Often, however, an interface "
-#| "like wxMaxima proves a more efficient way to access the software, "
-#| "especially for newcomers."
 msgid ""
 "A computer algebra system (CAS) like _Maxima_ fits into this framework. A "
 "CAS can provide the logic behind an arbitrary precision calculator "
@@ -196,7 +169,7 @@ msgid ""
 "via a command line. Often, however, an interface like _wxMaxima_ proves a "
 "more efficient way to access the software, especially for newcomers."
 msgstr ""
-"Ein Computer-Algebrasystem (CAS) wie Maxima ist hervorragend für diesen "
+"Ein Computer-Algebrasystem (CAS) wie _Maxima_ ist hervorragend für diesen "
 "Ansatz geeignet: Es kann die Logik hinter einem Taschenrecher liefern, der "
 "mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, "
 "z.B. [Sage](http://www.sagemath.org/) umstellen. Alternativ kann es direkt "
@@ -229,25 +202,14 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:57
-#, fuzzy
-#| msgid ""
-#| "![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 msgid ""
 "![Maxima screenshot, command line](./maxima_screenshot.png)"
 "{ id=img_maxima_screenshot }"
 msgstr ""
-"![Maxima screenshot](./maxima_screenshot.png){ id=img_maxima_screenshot }"
+"![Maxima Screenshot, Kommandozeile](./maxima_screenshot.png){ id=img_maxima_screenshot }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:59
-#, fuzzy
-#| msgid ""
-#| "Extensive documentation for _Maxima_ is [available in the internet]"
-#| "(http://maxima.sourceforge.net/documentation.html). Part of this "
-#| "documentation is also available in wxMaxima’s help menu. Pressing the "
-#| "Help key (on most systems that would be the F1 key) causes wxMaxima’s "
-#| "context-sensitive help feature will automatically jump to _Maxima_’s "
-#| "manual page for the command at the cursor."
 msgid ""
 "Extensive documentation for _Maxima_ is [available in the internet](http://"
 "maxima.sourceforge.net/documentation.html). Part of this documentation is "
@@ -258,8 +220,8 @@ msgstr ""
 "Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](http://"
 "maxima.sourceforge.net/documentation.html). Teile davon sind auch im Hilfe-"
 "Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten "
-"Systemen ist dies die F1-Taste) startet eine Suche nach einem geeigneten "
-"Thema darin."
+"Systemen ist dies die F1-Taste) springt automatisch zur Stelle im "
+"_Maxima_-Handbuch, wo das Kommando unter dem Cursor erklärt wird."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:60
@@ -269,18 +231,6 @@ msgstr "wxMaxima"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:63
-#, fuzzy
-#| msgid ""
-#| "wxMaxima is a graphical user interface that provides the full "
-#| "functionality and flexibility of _Maxima_. wxMaxima offers users a "
-#| "graphical display and many features that make working with _Maxima_ "
-#| "easier. For example wxMaxima allows one to export any cell’s contents "
-#| "(or, if that is needed, any part of a formula, as well) as text, as LaTeX "
-#| "or as MathML specification at a simple right-click. Indeed, an entire "
-#| "workbook can be exported, either as a HTML file or as a LaTeX file. "
-#| "Documentation for _wxMaxima_, including workbooks to illustrate aspects "
-#| "of its use, is online at the wxMaxima [help site](https://wxMaxima-"
-#| "developers.github.io/wxmaxima/help.html), as well as via the help menu."
 msgid ""
 "_wxMaxima_ is a graphical user interface that provides the full "
 "functionality and flexibility of _Maxima_. wxMaxima offers users a graphical "
@@ -293,10 +243,10 @@ msgid ""
 "at the _wxMaxima_ [help site](https://wxMaxima-developers.github.io/wxmaxima/"
 "help.html), as well as via the help menu."
 msgstr ""
-"wxMaxima ist ein graphisches Benutzer-Interface, das die komplette "
+"_wxMaxima_ ist ein graphisches Benutzer-Interface, das die komplette "
 "Funktionalität und Flexibilität von Maxima zu nutzen erlaubt. Zudem bietet "
-"es viele Funktionalitäten an, die die Verwendung von Maxima einfacher "
-"gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblates, einer "
+"es viele Funktionalitäten an, die die Verwendung von _Maxima_ einfacher "
+"gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblattes, einer "
 "Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder "
 "in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für "
 "wxMaxima kann [im Internet](https://wxMaxima-developers.github.io/wxmaxima/"
@@ -305,7 +255,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:65
 msgid "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
-msgstr "![wxMaxima window](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
+msgstr "![wxMaxima Fenster](./wxMaximaWindow.png){ id=img_wxMaximaWindow }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:67
@@ -313,8 +263,8 @@ msgid ""
 "The calculations that are entered in _wxMaxima_ are performed by the "
 "_Maxima_ command-line tool in the background."
 msgstr ""
-"wxMaxima lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-"
-"Werkzeug Maxima durchführen."
+"_wxMaxima_ lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-"
+"Werkzeug _Maxima_ durchführen."
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:69
@@ -393,13 +343,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:78
-#, fuzzy
-#| msgid ""
-#| "If text is typed into _wxMaxima_ it automatically creates a new worksheet "
-#| "cell. The type of this cell can be selected in the toolbar. If a code "
-#| "cell is created the cell can be sent to _maxima_, which causes the result "
-#| "of the calculation to be displayed below the code. A pair of such "
-#| "commands is shown below."
 msgid ""
 "If text is typed into _wxMaxima_ it automatically creates a new worksheet "
 "cell. The type of this cell can be selected in the toolbar. If a code cell "
@@ -415,7 +358,7 @@ msgstr ""
 #. type: Plain text
 #: ../../info/wxmaxima.md:80
 msgid "![Input/output cell](./InputCell.png){ id=img_InputCell }"
-msgstr "![Input/output Zelle](./InputCell.png){ id=img_InputCell }"
+msgstr "![Eingabe/Ausgabe Zelle](./InputCell.png){ id=img_InputCell }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:82
@@ -437,14 +380,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:84
-#, fuzzy
-#| msgid ""
-#| "Besides the input cells wxMaxima allows for text cells for documentation, "
-#| "image cells, title cells, chapter cells and section cells. Every cell has "
-#| "its own undo buffer so debugging by changing the values of several cells "
-#| "and then gradually reverting the unneeded changes is rather easy. "
-#| "Furthermore the worksheet itself has a global undo buffer that can undo "
-#| "cell edits, adds and deletes."
 msgid ""
 "Besides the input cells _wxMaxima_ allows for text cells for documentation, "
 "image cells, title cells, chapter cells and section cells. Every cell has "
@@ -461,14 +396,11 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:86
-#, fuzzy
-#| msgid ""
-#| "The figure below shows different cell types (Title cells, section cells, "
-#| "subsection cells, text cells, input/output cells and an image cell."
 msgid ""
 "The figure below shows different cell types (title cells, section cells, "
 "subsection cells, text cells, input/output cells and image cells)."
-msgstr "Die nun folgende Abbildung zeigt verschiedene Zelltypen."
+msgstr "Die nun folgende Abbildung zeigt verschiedene Zelltypen "
+"(Titelzellen, Untertitelzellen, Textzellen, Eingabe/Ausgabezellen und eine Grafikzelle)."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:88
@@ -519,12 +451,6 @@ msgstr "Eine Überschrift"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:101
-#, fuzzy
-#| msgid ""
-#| "The default behavior of _wxMaxima_ when text is entered is to "
-#| "automatically create a math cell. Cells of other types can be created "
-#| "using the Cell menu, using the hot keys shown in the menu or using the "
-#| "drop-down list in the toolbar."
 msgid ""
 "The default behavior of _wxMaxima_ when text is entered is to automatically "
 "create a math cell. Cells of other types can be created using the Cell menu, "
@@ -535,14 +461,17 @@ msgstr ""
 "Wenn Text eingegeben ist, erzeugt _wxMaxima_ normalerweise gleich eine Code-"
 "Zelle. Andere Zelltypen können über das \"Zellen\"-Menü, die dort "
 "dokumentierten Tastenkombinationen oder über die Werkzeugleiste erzeugt "
-"werden."
+"werden. Wenn eine nicht-mathematische Zelle (Überschrift, Text, etc.) erzeugt wurde, "
+"wird alles was eingetippt wird, als Text interpretiert."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:103
 msgid ""
-"Additional commend text can be entered into a math cell if bracketed as "
+"Additional comment text can be entered into a math cell if bracketed as "
 "follows: `/*This comment will not be sent to Maxima for evaluation*/`."
 msgstr ""
+"Zusätzlicher Text kann in einer mathematischen Zelle als Kommentar zwischen `/*` und `*/` (wie z.B. in der Programmiersprache C) eingegeben werden: "
+"`/* Dieser Kommentar wird von Maxima nicht beachtet */`."
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:104
