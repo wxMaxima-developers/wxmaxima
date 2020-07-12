@@ -365,7 +365,7 @@ wxString EditorCell::ToTeX()
   {
     text.Replace(wxT("\u00a0"), wxT("~"));
     text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
-    text.Replace(wxT("\r"), wxEmptyString);
+    text.Replace(wxT("\r"), wxT(" "));
     text.Replace(wxT("^"), wxT("\\^{}"));
     text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
