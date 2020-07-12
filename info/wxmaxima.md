@@ -99,7 +99,7 @@ The worksheet is organized in cells. Each cell can contain other cells or the fo
 
 The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu,  using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text.
 
-Additional commend text can be entered into a math cell if bracketed as follows: `/*This comment will not be sent to Maxima for evaluation*/`.
+Additional comment text can be entered into a math cell if bracketed as follows: `/*This comment will not be sent to Maxima for evaluation*/`.
 
 ### Horizontal and vertical cursors
 
