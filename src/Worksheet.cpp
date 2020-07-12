@@ -1774,7 +1774,11 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   }
   // create menu if we have any items
   if (popupMenu.GetMenuItemCount() > 0)
+  {
+    m_inPopupMenu = true;
     PopupMenu(&popupMenu);
+    m_inPopupMenu = false;
+  }
 }
 
 
@@ -7536,6 +7540,11 @@ void Worksheet::RemoveAllOutput(GroupCell *cell)
 
 void Worksheet::OnMouseMiddleUp(wxMouseEvent &event)
 {
+  if (m_inPopupMenu)
+    // Pasting with an active popup menu makes no sense,
+    // and additionally the ReleaseMouse() will fail an assertion if the
+    // PopupMenu event loop is active.
+    return;
   m_cellPointers.ResetSearchStart();
 
   wxTheClipboard->UsePrimarySelection(true);
