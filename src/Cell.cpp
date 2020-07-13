@@ -1227,7 +1227,7 @@ bool Cell::IsMath() const
 
 CellAccessible *Cell::GetAccessible()
 {
-  if (!m_accessible) m_accessible.reset(new CellAccessible(this));
+  if (!m_accessible) m_accessible = std::make_unique<CellAccessible>(this);
   return m_accessible.get();
 }
 
