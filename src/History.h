@@ -51,6 +51,7 @@ enum
  */
 class History final : public wxPanel
 {
+  class ListCtrl;
 public:
   History(wxWindow *parent, int id);
 
@@ -81,11 +82,11 @@ private:
   RegexInputState GetNewRegexInputState() const;
 
   int m_sessionCommands = 0;
-  wxListBox *m_history;
+  ListCtrl *m_history;
   wxTextCtrl *m_regex;
   wxArrayString m_commands;
-  //! Commands we want to add to the history sidebar, once we have time to
-  wxArrayString m_deferredCommands;
+  //! Number of deferred commands
+  int m_deferredCommands = 0;
   //! The currently selected item. -1=none.
   long m_current = 0;
   //! The regex the entries need to be matched to in order to be displayed.

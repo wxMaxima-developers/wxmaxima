@@ -32,6 +32,7 @@
 #include <wx/sizer.h>
 #include <wx/menu.h>
 #include <wx/filedlg.h>
+#include <wx/listctrl.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <algorithm>
@@ -45,6 +46,25 @@ static wxString RegexTooltip_error;
 //! The tooltip that is displayed if the regex is empty or can be interpreted
 static wxString RegexTooltip_norm;
 
+class History::ListCtrl final : public wxListCtrl
+{
+public:
+  wxArrayString m_items;
+  ListCtrl(wxWindow *parent, wxWindowID id) :
+      wxListCtrl(parent, id, {}, {}, wxLC_REPORT | wxLC_VIRTUAL | wxLC_NO_HEADER)
+  {
+    InsertColumn(0, wxEmptyString);
+  }
+  wxString OnGetItemText(long item, long column) const override
+  {
+    if (column == 0)
+      return m_items[m_items.Count() - 1 - item];
+    return {};
+  }
+  void RefreshAllItems() { RefreshItems(0, m_items.size() - 1); }
+  void SetItemCount() { wxListCtrl::SetItemCount(m_items.size()); }
+};
+
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
 #ifdef __WXX11__
@@ -55,9 +75,7 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   if (RegexTooltip_error.IsEmpty())
     RegexTooltip_error = _("Invalid RegEx!");
   
-  // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on Windows
-  m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
-                            wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
+  m_history = new ListCtrl(this, history_ctrl_id);
   m_regex = new wxTextCtrl(this, history_regex_id);
   m_regex->SetToolTip(RegexTooltip_norm);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
@@ -85,20 +103,17 @@ void History::OnMouseRightDown(wxMouseEvent &event)
     event.Skip();
     return;
   }
-  wxArrayInt selections;
-  bool const hasSelections = (m_history->GetSelections(selections) > 0);
-  wxString number;
+  bool const hasSelections = (m_history->GetSelectedItemCount() > 0);
 
   wxMenu popupMenu;
   popupMenu.Append(export_all, _("Export all history to a .mac file"));
   popupMenu.Append(export_session, _("Export commands from the current maxima session to a .mac file"));
   if (hasSelections)
     popupMenu.Append(export_selected, _("Export selected commands to a .mac file"));
-  if(m_history->GetCount() > 0)
+  if(m_history->GetItemCount() > 0)
     popupMenu.Append(export_visible, _("Export visible commands to a .mac file"));
   if (hasSelections)
     popupMenu.Append(clear_selection, _("Clear the selection"));
-  
   PopupMenu(&popupMenu);
 }
 
@@ -111,14 +126,12 @@ void History::MaximaSessionStart()
 
 void History::OnInternalIdle()
 {
-  if (!m_deferredCommands.empty())
+  if (m_deferredCommands)
   {
-    std::reverse(m_deferredCommands.begin(), m_deferredCommands.end());
-    m_history->Insert(m_deferredCommands, 0);
-    m_current += m_deferredCommands.size();
-    m_deferredCommands.clear();
-    SetCurrent(0);
+    m_history->SetItemCount();
+    m_history->RefreshAllItems();
   }
+  m_deferredCommands = 0;
 }
 
 void History::UnselectAll() const
@@ -149,8 +162,7 @@ void History::OnMenu(wxCommandEvent &event)
   {
   case export_selected:
   {
-    wxArrayInt selections;
-    if (m_history->GetSelections(selections) > 0)
+    if (m_history->GetSelectedItemCount() > 0)
     {
       auto file = AskForFileName(this);
       if (!file.empty())
@@ -159,8 +171,17 @@ void History::OnMenu(wxCommandEvent &event)
         if(output.IsOk())
         {
           wxTextOutputStream text(output);
-          for (auto sel = selections.rbegin(); sel != selections.rend(); ++sel)
-            text << m_history->GetString(*sel) << "\n";
+          wxArrayString sel;
+          sel.reserve(m_history->GetSelectedItemCount());
+          for (long i = 0;;)
+          {
+            i = m_history->GetNextItem(i, wxLIST_NEXT_BELOW, wxLIST_STATE_SELECTED);
+            if (i < 0) break;
+            sel.Add(m_history->GetItemText(i));
+          }
+          std::reverse(sel.begin(), sel.end());
+          for (auto &cmd : sel)
+            text << cmd << '\n';
         }
         indicateError = !output.IsOk() || !output.Close();
       }
@@ -196,15 +217,22 @@ void History::OnMenu(wxCommandEvent &event)
       if(output.IsOk())
       {
         wxTextOutputStream text(output);
-        for(int i = m_history->GetCount()-1; i >= 0; --i)
-          text << m_history->GetString(i) << "\n";
+        for (auto &cmd : m_history->m_items)
+          text << cmd << "\n";
       }
       indicateError = !output.IsOk() || !output.Close();
     }
   break;
   }
   case clear_selection:
-    m_history->DeselectAll();
+    for (long i = 0; i >= 0;)
+    {
+      i = m_history->GetNextItem(i, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+      wxListItem info;
+      info.SetId(i);
+      if (i >= 0)
+        m_history->SetItem(info);
+    }
     break;
   }
   if (indicateError)
@@ -226,15 +254,17 @@ void History::AddToHistory(const wxString &cmd)
 
   if (m_matcherExpr.empty() || m_matcher.Matches(cmd))
   {
+    m_history->m_items.Add(cmd);
     if (m_realtimeUpdate)
     {
-      m_history->Insert(cmd, 0);
+      m_history->SetItemCount();
+      m_history->RefreshAllItems();
       ++ m_current; // adjust because the items have moved down
       SetCurrent(0);
     }
     else
     {
-      m_deferredCommands.Add(cmd);
+      ++ m_deferredCommands;
     }
   }
 }
@@ -242,15 +272,16 @@ void History::AddToHistory(const wxString &cmd)
 void History::RebuildDisplay()
 {
   wxWindowUpdateLocker speedUp(this);
-  wxArrayString display;
+  auto &display = m_history->m_items;
   if (m_matcherExpr.empty())
   {
     display = m_commands;
-    std::reverse(display.begin(), display.end());
   }
   else
   {
+
     wxASSERT(m_matcher.IsValid());
+    display.clear();
     display.reserve(m_commands.size());
     for (auto cmd = m_commands.rbegin(); cmd != m_commands.rend(); ++cmd)
     {
@@ -258,7 +289,8 @@ void History::RebuildDisplay()
         display.Add(*cmd);
     }
   }
-  m_history->Set(display);
+  m_history->SetItemCount();
+  m_history->RefreshAllItems();
   m_current = -1;
   SetCurrent(0);
 }
@@ -323,12 +355,12 @@ wxString History::GetCommand(bool next)
 
   auto current = m_current + (next ? +1 : -1);
   SetCurrent(current);
-  return m_history->GetString(m_current);
+  return m_history->GetItemText(m_current);
 }
 
 void History::SetCurrent(long current)
 {
-  auto const count = long(m_history->GetCount());
+  auto const count = long(m_history->GetItemCount());
   if (current < 0) current = count-1;
   else if (current >= count) current = 0;
   if (count < 1) current = -1;
