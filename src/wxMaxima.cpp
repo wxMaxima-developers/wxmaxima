@@ -1442,10 +1442,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 
     m_dispReadOut = false;
 
-    // Schedule this command to be added to the History Sidebar:
-    // Adding it right now requires time and slows down things a bit.
     if (addToHistory)
-      m_deferredHistoryCommands.push_front(s);
+      AddToHistory(s);
 
     StripLispComments(s);
 
@@ -2021,7 +2019,6 @@ void wxMaxima::KillMaxima(bool logMessage)
   if(logMessage && (m_closing || (m_process == NULL) || (m_pid > 0)))
   {
     wxLogMessage(_("Killing Maxima."));
-    UpdateDeferredHistory();
     if(m_history)
       m_history->MaximaSessionStart();
   }
@@ -4462,32 +4459,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     }
   }
 
-  // Add all items we still have to add to the command history to the command
-  // history
-  if(UpdateDeferredHistory())
-  {
-    event.RequestMore();
-    return;
-  }
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
 
-bool wxMaxima::UpdateDeferredHistory()
-{
-  if(!m_deferredHistoryCommands.empty())
-  {
-    wxEventBlocker deferRedraw(m_history);
-    while(!m_deferredHistoryCommands.empty())
-    {
-      AddToHistory(m_deferredHistoryCommands.back());
-      m_deferredHistoryCommands.pop_back();
-    }
-    return true;
-  }
-  return false;
-}
 bool wxMaxima::UpdateDrawPane()
 {
   int dimensions = 0;

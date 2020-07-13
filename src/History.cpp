@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,19 +34,29 @@
 #include <wx/filedlg.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
+#include <algorithm>
 #include <memory>
+
 #include "ErrorRedirector.h"
+
+//! The tooltip that is displayed if the regex cannot be interpreted
+static wxString RegexTooltip_error;
+//! The tooltip that is displayed if the regex is empty or can be interpreted
+static wxString RegexTooltip_norm;
 
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
-  if(m_regexTooltip_norm.IsEmpty())
-    m_regexTooltip_norm = _("Input a RegEx here to filter the results");
-  if(m_regexTooltip_error.IsEmpty())
-    m_regexTooltip_error = _("Invalid RegEx!");
+#ifdef __WXX11__
+  m_realtimeUpdate = false;
+#endif
+  if (RegexTooltip_norm.IsEmpty())
+    RegexTooltip_norm = _("Input a RegEx here to filter the results");
+  if (RegexTooltip_error.IsEmpty())
+    RegexTooltip_error = _("Invalid RegEx!");
   
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE);
   m_regex = new wxTextCtrl(this, history_regex_id);
-  m_regex->SetToolTip(m_regexTooltip_norm);
+  m_regex->SetToolTip(RegexTooltip_norm);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
@@ -56,7 +67,6 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
-  m_current = 0;
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
   m_history->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
   Connect(wxEVT_MENU,
@@ -72,17 +82,21 @@ void History::OnMouseRightDown(wxMouseEvent &event)
     event.Skip();
     return;
   }
-  wxString number;
-  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
-  popupMenu->Append(export_all, _("Export all history to a .mac file"));
-   popupMenu->Append(export_session, _("Export commands from the current maxima session to a .mac file"));
   wxArrayInt selections;
-  if(m_history->GetSelections(selections) > 0)
-    popupMenu->Append(export_selected, _("Export selected commands to a .mac file"));
+  bool const hasSelections = (m_history->GetSelections(selections) > 0);
+  wxString number;
+
+  wxMenu popupMenu;
+  popupMenu.Append(export_all, _("Export all history to a .mac file"));
+  popupMenu.Append(export_session, _("Export commands from the current maxima session to a .mac file"));
+  if (hasSelections)
+    popupMenu.Append(export_selected, _("Export selected commands to a .mac file"));
   if(m_history->GetCount() > 0)
-    popupMenu->Append(export_visible, _("Export visible commands to a .mac file"));
+    popupMenu.Append(export_visible, _("Export visible commands to a .mac file"));
+  if (hasSelections)
+    popupMenu.Append(clear_selection, _("Clear the selection"));
   
-  PopupMenu(&*popupMenu);
+  PopupMenu(&popupMenu);
 }
 
 void History::MaximaSessionStart()
@@ -92,99 +106,100 @@ void History::MaximaSessionStart()
   m_sessionCommands = -1;
 }
 
+void History::OnInternalIdle()
+{
+  if (!m_deferredCommands.empty())
+  {
+    std::reverse(m_deferredCommands.begin(), m_deferredCommands.end());
+    m_history->Insert(m_deferredCommands, 0);
+    m_current += m_deferredCommands.size();
+    m_deferredCommands.clear();
+    SetCurrent(0);
+  }
+}
+
+static wxString AskForFileName(wxPanel *parent)
+{
+  wxFileDialog fileDialog(parent,
+                          _("Export As"), wxEmptyString,
+                          wxEmptyString,
+                          _("Maxima session (*.mac)|*.mac"),
+                          wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+  if (fileDialog.ShowModal() == wxID_OK)
+    return fileDialog.GetPath();
+  return {};
+}
+
 void History::OnMenu(wxCommandEvent &event)
 {
-  int start = m_commands.GetCount() - 1;
+  bool indicateError = false;
+  int start = 0;
+  int const size = m_commands.size();
+
   switch (event.GetId())
   {
   case export_selected:
   {
     wxArrayInt selections;
-    if(m_history->GetSelections(selections) > 0)
+    if (m_history->GetSelections(selections) > 0)
     {
-      wxFileDialog fileDialog(this,
-                              _("Export As"), wxEmptyString,
-                              wxEmptyString,
-                              _("Maxima session (*.mac)|*.mac"),
-                              wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-      if (fileDialog.ShowModal() == wxID_OK)
+      auto file = AskForFileName(this);
+      if (!file.empty())
       {
-        wxString file = fileDialog.GetPath();
         wxFileOutputStream output(file);
         if(output.IsOk())
         {
           wxTextOutputStream text(output);
-          while(!selections.IsEmpty())
-          {
-            text << m_history->GetString(selections.Last()) << "\n";
-            selections.RemoveAt(selections.GetCount() - 1);
-          }
-          text.Flush();
+          for (auto sel = selections.rbegin(); sel != selections.rend(); ++sel)
+            text << m_history->GetString(*sel) << "\n";
         }
-        if(!output.IsOk() || !output.Close())
-          LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"),
-                            wxOK);
-        
+        indicateError = !output.IsOk() || !output.Close();
       }
     }
     break;
   }
   case export_session:
-    start = m_sessionCommands;
+    start = size - m_sessionCommands - 1;
     //fallthrough
     
   case export_all:
   {
-    wxFileDialog fileDialog(this,
-                            _("Export As"), wxEmptyString,
-                            wxEmptyString,
-                            _("Maxima session (*.mac)|*.mac"),
-                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-    if (fileDialog.ShowModal() == wxID_OK)
+    auto file = AskForFileName(this);
+    if (!file.empty())
     {
-      wxString file = fileDialog.GetPath();
       wxFileOutputStream output(file);
       if(output.IsOk())
       {
         wxTextOutputStream text(output);
-        for(int i = start; i >= 0; --i)
+        for(int i = start; i < size; ++i)
           text << m_commands[i] << "\n";
-        text.Flush();
       }
-      if(!output.IsOk() || !output.Close())
-        LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"),
-                          wxOK);
-      
+      indicateError = !output.IsOk() || !output.Close();
     }
   break;
   }
   case export_visible:
   {
-    wxFileDialog fileDialog(this,
-                            _("Export As"), wxEmptyString,
-                            wxEmptyString,
-                            _("Maxima session (*.mac)|*.mac"),
-                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-    if (fileDialog.ShowModal() == wxID_OK)
+    auto file = AskForFileName(this);
+    if (!file.empty())
     {
-      start = m_history->GetCount()-1;
-      wxString file = fileDialog.GetPath();
       wxFileOutputStream output(file);
       if(output.IsOk())
       {
         wxTextOutputStream text(output);
-        for(int i = start; i >= 0; --i)
+        for(int i = m_history->GetCount()-1; i >= 0; --i)
           text << m_history->GetString(i) << "\n";
-        text.Flush();
       }
-      if(!output.IsOk() || !output.Close())
-        LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"),
-                          wxOK);
-      
+      indicateError = !output.IsOk() || !output.Close();
     }
   break;
   }
+  case clear_selection:
+    m_history->DeselectAll();
+    break;
   }
+  if (indicateError)
+    LoggingMessageBox(_("Exporting to .mac file failed!"), _("Error!"), wxOK);
 }
 
 
@@ -198,55 +213,52 @@ void History::AddToHistory(const wxString &cmd)
     return;
   m_sessionCommands ++;
     
-  m_commands.Insert(cmd, 0);
-  m_current = m_commands.GetCount();
+  m_commands.Add(cmd);
 
-  wxString regex = m_regex->GetValue();
-  wxArrayString display;
-    
-  if (!regex.IsEmpty() && m_matcher.IsValid())
+  if (!m_useMatcher || m_matcher.Matches(cmd))
   {
-    if (m_matcher.Matches(cmd))
+    if (m_realtimeUpdate)
     {
-      int pos = m_history->GetCount() - 1;
-      m_history->Insert(cmd, pos);
-      m_history->SetSelection(pos);
+      m_history->Insert(cmd, 0);
+      ++ m_current; // adjust because the items have moved down
+      SetCurrent(0);
     }
-  }
-  else
-  {
-    int pos = m_history->GetCount() - 1;
-    if(pos < 0)
-      pos = 0;
-    m_history->Insert(cmd, pos);
-    m_history->SetSelection(pos);          
+    else
+    {
+      m_deferredCommands.Add(cmd);
+    }
   }
 }
 
-void History::UpdateDisplay()
+void History::RebuildDisplay()
 {
-  wxString regex = m_regex->GetValue();
   wxArrayString display;
-
-  for (unsigned int i = 0; i < m_commands.Count(); i++)
+  if (!m_useMatcher)
   {
-    wxString curr = m_commands.Item(i);
-
-    if (!regex.IsEmpty() && m_matcher.IsValid())
-    {
-      if (m_matcher.Matches(curr))
-        display.Add(curr);
-    }
-    else
-      display.Add(curr);
+    display = m_commands;
+    std::reverse(display.begin(), display.end());
   }
-
+  else
+  {
+    display.reserve(m_commands.size());
+    for (auto cmd = m_commands.rbegin(); cmd != m_commands.rend(); ++cmd)
+    {
+      if (!m_matcher.Matches(*cmd))
+        display.Add(*cmd);
+    }
+  }
   m_history->Set(display);
+  m_current = -1;
+  SetCurrent(0);
 }
 
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
   wxString regex = m_regex->GetValue();
+  if (regex == m_matcherExpr)
+    return;
+
+  m_matcherExpr = regex;
   if (regex != wxEmptyString)
   {
     SuppressErrorDialogs blocker;
@@ -255,38 +267,36 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
   if(m_matcher.IsValid())
   {
     m_regex->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
-    m_regex->SetToolTip(m_regexTooltip_norm);
+    m_regex->SetToolTip(RegexTooltip_norm);
   }
   else
   {
     m_regex->SetBackgroundColour(wxColor(255,192,192));
-    m_regex->SetToolTip(m_regexTooltip_error);
+    m_regex->SetToolTip(RegexTooltip_error);
   }
-  UpdateDisplay();
+  m_useMatcher = m_matcher.IsValid() && !m_matcherExpr.empty();
+  RebuildDisplay();
 }
 
 wxString History::GetCommand(bool next)
 {
   if (m_commands.GetCount() == 0)
-    return wxEmptyString;
+    return {};
 
-  else if (next)
-  {
-    --m_current;
-    if (m_current < 0)
-      m_current = m_history->GetCount() - 1;
-    m_history->SetSelection(m_current);
-    return m_history->GetString(m_current);
-  }
-  else
-  {
-    ++m_current;
-    if (m_current >= (long) m_history->GetCount())
-      m_current = 0;
-    m_history->SetSelection(m_current);
-    return m_history->GetString(m_current);
-  }
+  auto current = m_current + (next ? +1 : -1);
+  SetCurrent(current);
+  return m_history->GetString(m_current);
 }
 
-wxString History::m_regexTooltip_error;
-wxString History::m_regexTooltip_norm;
+void History::SetCurrent(long current)
+{
+  auto const count = long(m_history->GetCount());
+  if (current < 0) current = count-1;
+  else if (current >= count) current = 0;
+
+  if (current == m_current)
+    return;
+
+  m_current = current;
+  m_history->EnsureVisible(m_current);
+}
