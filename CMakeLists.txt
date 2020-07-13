@@ -62,8 +62,11 @@ endif()
 # Project
 #
 
-project(wxmaxima LANGUAGES CXX)
-
+if(WIN32)
+    project(wxmaxima LANGUAGES CXX)
+else()
+    project(wxmaxima LANGUAGES CXX RC)
+endif()    
 ##
 # CMake Policies
 #

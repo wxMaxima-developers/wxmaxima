@@ -95,6 +95,7 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
+    Resources.rc
 )
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
