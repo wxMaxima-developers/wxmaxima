@@ -163,10 +163,15 @@ artifacts:
   - path: 'build\src\*.exe'
     name: wxMaxima
 
-deploy:
-  - provider: Environment
-    name: GithubReleases
-    draft: false
-    prerelease: false
-    on:
-      APPVEYOR_REPO_TAG: true
+for:
+  -
+    matrix:
+      only:
+        - TOOLKIT: MinGW
+    deploy:
+      - provider: Environment
+        name: GithubReleases
+        draft: false
+        prerelease: false
+        on:
+          APPVEYOR_REPO_TAG: true
