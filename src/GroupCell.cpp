@@ -386,15 +386,16 @@ void GroupCell::UpdateConfusableCharWarnings()
   ClearToolTip();
 
   wxString output;
-  if(GetOutput())
+  if (GetOutput())
     output += GetOutput()->VariablesAndFunctionsList();
   // Extract all variable and command names from the cell including input and output
   CmdsAndVariables cmdsAndVariables;
 
-  for (auto const &tok : MaximaTokenizer(
-         output, *m_configuration, GetInput()->GetTokens()).PopTokens())
-    if((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
-      cmdsAndVariables[tok.GetText()] = 1;
+  if (GetInput())
+    for (auto const &tok : MaximaTokenizer(
+           output, *m_configuration, GetInput()->GetTokens()).PopTokens())
+      if((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
+        cmdsAndVariables[tok.GetText()] = 1;
   
   // Now we step through all the words we found
   while(!cmdsAndVariables.empty())
