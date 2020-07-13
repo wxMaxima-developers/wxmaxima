@@ -160,6 +160,8 @@ on_failure:
 artifacts:
   - path: 'build\*.exe'
     name: wxMaxima_Installer
+  - path: 'build\src\*.exe'
+    name: wxMaxima
 
 deploy:
   - provider: Environment
