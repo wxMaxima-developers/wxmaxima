@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,20 +42,18 @@ enum
   export_all,
   export_session,
   export_visible,
-  export_selected
+  export_selected,
+  clear_selection
 };
 
 /*! This class generates a pane containing the last commands that were issued.
 
  */
-class History : public wxPanel
+class History final : public wxPanel
 {
 public:
   History(wxWindow *parent, int id);
 
-  /* The destructor
-
-   */
   ~History();
 
   //! Add a file to the recently opened files list.
@@ -62,30 +61,36 @@ public:
 
   void OnRegExEvent(wxCommandEvent &ev);
 
-  void UpdateDisplay();
+  void RebuildDisplay();
 
   wxString GetCommand(bool next);
 
   void MaximaSessionStart();
+
+  void OnInternalIdle() override;
   
-protected:
+private:
   //! Called on right-clicks on the history panel
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
-private:
+  void SetCurrent(long);
+
   int m_sessionCommands = 0;
   wxListBox *m_history;
   wxTextCtrl *m_regex;
   wxArrayString m_commands;
+  //! Commands we want to add to the history sidebar, once we have time to
+  wxArrayString m_deferredCommands;
   //! The currently selected item. -1=none.
-  long m_current;
-  //! The tooltip that is displayed if the regex cannot be interpreted
-  static wxString m_regexTooltip_error;
-  //! The tooltip that is displayed if the regex is empty or can be interpreted
-  static wxString m_regexTooltip_norm;
+  long m_current = 0;
   //! The regex entries need to be matched to in order to be displayed
   wxRegEx m_matcher;
-
+  //! The text of the m_matcher regex
+  wxString m_matcherExpr;
+  //! Whether the matcher is ready for user
+  bool m_useMatcher = false;
+  //! Whether the history should be updated now or later
+  bool m_realtimeUpdate = true;
 };
 
 #endif // HISTORY_H
