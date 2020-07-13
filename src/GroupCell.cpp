@@ -288,6 +288,7 @@ void GroupCell::SetInput(Cell *input)
     return;
   m_inputLabel.reset(input);
   m_inputLabel->SetGroup(this);
+  m_updateConfusableCharWarnings = true;
   ResetData();
 }
 
@@ -314,6 +315,7 @@ void GroupCell::AppendInput(Cell *cell)
       m_isHidden = false;
     }
   }
+  m_updateConfusableCharWarnings = true;
   ResetData();
 }
 
@@ -355,8 +357,8 @@ void GroupCell::RemoveOutput()
   // Move all cells that follow the current one up by the amount this cell has shrinked.
   UpdateCellsInGroup();
 
+  m_updateConfusableCharWarnings = true;
   ResetData();
-  UpdateConfusableCharWarnings();
 }
 
 void GroupCell::AppendOutput(Cell *cell)
@@ -376,7 +378,7 @@ void GroupCell::AppendOutput(Cell *cell)
     m_output->AppendCell(cell);
   }
   UpdateCellsInGroup();
-  UpdateConfusableCharWarnings();
+  m_updateConfusableCharWarnings = true;
   ResetData();
   Recalculate();
 }
@@ -439,6 +441,7 @@ void GroupCell::UpdateConfusableCharWarnings()
       ++cmp;
     }
   }
+  m_updateConfusableCharWarnings = false;
 }
 
 void GroupCell::Recalculate()
@@ -784,6 +787,9 @@ void GroupCell::Draw(wxPoint point)
 
   if (DrawThisCell(point))
   {
+    if (m_updateConfusableCharWarnings)
+      UpdateConfusableCharWarnings();
+
     wxDC *dc = configuration->GetDC();
     // draw a thick line for 'page break'
     // and return
