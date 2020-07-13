@@ -2326,6 +2326,8 @@ bool Worksheet::Copy(bool astext)
     wxString s = GetString(true);
     data->Add(new wxmDataObject(s));
 
+    std::unique_ptr<Cell> tmp(CopySelection());
+
     if(m_configuration->CopyMathML())
     {
       // Add a mathML representation of the data to the clipboard
@@ -2349,23 +2351,18 @@ bool Worksheet::Copy(bool astext)
       }
     }
 
-    std::unique_ptr<Cell> tmp(CopySelection());
     if(m_configuration->CopyRTF())
     {
       // Add a RTF representation of the currently selected text
       // to the clipboard: For some reason libreoffice likes RTF more than
       // it likes the MathML - which is standartized.
-      if (tmp != NULL)
-      {
-        wxString rtf;
-        rtf = RTFStart() + tmp->ListToRTF() + wxT("\\par\n") + RTFEnd();
-        data->Add(new RtfDataObject(rtf));
-        data->Add(new RtfDataObject2(rtf), true);
-      }
+      wxString rtf;
+      rtf = RTFStart() + tmp->ListToRTF() + wxT("\\par\n") + RTFEnd();
+      data->Add(new RtfDataObject(rtf));
+      data->Add(new RtfDataObject2(rtf), true);
     }
 
     // Add a string representation of the selected output to the clipboard
-    tmp = std::unique_ptr<Cell>(CopySelection());
     s = tmp->ListToString();
     data->Add(new wxTextDataObject(s));
 
@@ -2379,9 +2376,9 @@ bool Worksheet::Copy(bool astext)
         int bitmapScale = 3;
         wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
         BitmapOut bmp_scaled(&m_configuration, bitmapScale);
-        Cell *tmp2 = CopySelection();
-        if (bmp_scaled.SetData(tmp2, 4000000))
+        if (bmp_scaled.SetData(tmp.get(), 4000000))
         {
+          tmp.release();
           bmp = bmp_scaled.GetBitmap();
           data->Add(new wxBitmapDataObject(bmp));
         }
