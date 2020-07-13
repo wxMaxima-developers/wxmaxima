@@ -516,6 +516,7 @@ protected:
   bool m_autoAnswer = false;
   bool m_inEvaluationQueue = false;
   bool m_lastInEvaluationQueue = false;
+  bool m_updateConfusableCharWarnings = true;
 
   static wxString m_lookalikeChars;
 };
