@@ -6177,6 +6177,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
                 data->Add(new wxTextDataObject(xmlText));
                 wxTheClipboard->SetData(data);
                 wxLogMessage(_("Produced invalid XML. The erroneous XML data has therefore not been saved but has been put on the clipboard in order to allow to debug it."));
+                wxTheClipboard->Close();
               }
 
               // Remove all files from our internal filesystem
