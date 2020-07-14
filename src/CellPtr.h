@@ -125,7 +125,7 @@ class Observed
 
 protected:
   Observed() { ++ m_instanceCount; }
-  virtual ~Observed()
+  ~Observed()
   {
     m_cb->Clear();
     ControlBlock::Deref(m_cb, nullptr);
@@ -267,7 +267,7 @@ public:
 #endif
 
   template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type = true>
-  PtrT CastAs() const { return dynamic_cast<PtrT>(base_get()); }
+  PtrT CastAs() const;
 
   // Operations with NULL and integers in general
   //
