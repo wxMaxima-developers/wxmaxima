@@ -853,6 +853,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_EvalTocChapter, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
+  Connect(Worksheet::popid_evaluate_section, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(TableOfContents::popid_ToggleTOCshowsSectionNumbers, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::PopupMenu), NULL, this);
   Connect(Worksheet::popid_fold, wxEVT_MENU,
@@ -8547,11 +8549,13 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     break;
   case TableOfContents::popid_EvalTocChapter:
   {
+    std::cerr<<"TocChapter\n";
     GroupCell *SelectionStart = m_worksheet->m_tableOfContents->RightClickedOn();
     // We only update the table of contents when there is time => no guarantee that the
     // cell that was clicked at actually still is part of the tree.
     if ((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
     {
+      std::cerr<<"TocChapter2\n";
       m_worksheet->AddSectionToEvaluationQueue(m_worksheet->m_tableOfContents->RightClickedOn());
       TriggerEvaluation();
     }
