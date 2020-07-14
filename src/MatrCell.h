@@ -82,9 +82,23 @@ private:
 
   unsigned int m_matWidth = 0;
   unsigned int m_matHeight = 0;
-  bool m_roundedParens = false;
-  bool m_specialMatrix = false, m_inferenceMatrix = false;
-  bool m_rowNames = false, m_colNames = false;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_roundedParens = false;
+    m_specialMatrix = false;
+    m_inferenceMatrix = false;
+    m_rowNames = false;
+    m_colNames = false;
+  }
+  bool m_roundedParens : 1 /* InitBitFields */;
+  bool m_specialMatrix : 1 /* InitBitFields */;
+  bool m_inferenceMatrix : 1 /* InitBitFields */;
+  bool m_rowNames : 1 /* InitBitFields */;
+  bool m_colNames : 1 /* InitBitFields */;
 };
 
 #endif // MATRCELL_H

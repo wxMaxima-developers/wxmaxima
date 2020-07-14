@@ -35,6 +35,7 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
                                        Configuration **config)
     : TextCell(parent, config, cellContents, TS_ERROR)
 {
+  InitBitFields();
   // We cannot do this at the startup of the program as we first need to wait
   // for the language selection to take place.
   // NOTE: static variables are initialized exactly 0 or 1 times, so the below
@@ -47,5 +48,6 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
                                        Configuration **config, wxString toolTip)
     : TextCell(parent, config, cellContents, TS_ERROR)
 {
+  InitBitFields();
   SetToolTip(toolTip);
 }

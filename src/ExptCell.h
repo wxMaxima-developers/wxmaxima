@@ -104,7 +104,15 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   int m_expt_yoffset = 0;
-  bool m_isMatrix = false;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_isMatrix = false;
+  }
+  bool m_isMatrix : 1 /* InitBitFields */;
 };
 
 

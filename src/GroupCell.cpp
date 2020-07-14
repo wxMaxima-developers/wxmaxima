@@ -44,6 +44,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
     Cell(this, config),
     m_groupType(groupType)
 {
+  InitBitFields();
   m_group = this;
   m_fontSize = (*m_configuration)->GetDefaultFontSize();
   m_mathFontSize = (*m_configuration)->GetMathFontSize();

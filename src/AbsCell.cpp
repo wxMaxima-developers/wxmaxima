@@ -37,6 +37,7 @@ AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
     m_open(new TextCell(parent, config, wxT("abs("))),
     m_close(new TextCell(parent, config, wxT(")")))
 {
+  InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
 }

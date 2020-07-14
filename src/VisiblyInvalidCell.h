@@ -36,6 +36,14 @@ public:
   VisiblyInvalidCell(GroupCell *parent, Configuration **config);
   //! Constructor for a cell that shows that something is amiss using a custom tooltip
   VisiblyInvalidCell(GroupCell *parent, Configuration **config, wxString toolTip);
+
+private:
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // VISIBLYINVALIDCELL_H

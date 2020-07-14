@@ -38,6 +38,7 @@ DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
     m_baseCell(new VisiblyInvalidCell(parent,config)),
     m_diffCell(new VisiblyInvalidCell(parent,config))
 {
+  InitBitFields();
 }
 
 DiffCell::DiffCell(const DiffCell &cell):

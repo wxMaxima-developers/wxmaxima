@@ -482,8 +482,12 @@ protected:
   int GetLineIndent(Cell *cell);
   void UpdateCellsInGroup();
 
+//** 8-byte objects (8 bytes)
+//**
   wxRect m_outputRect{-1, -1, 0, 0};
 
+//** 8/4 byte objects (40 bytes)
+//**
   CellPtr<Cell> m_nextToDraw;
 
   GroupCell *m_hiddenTree = {}; //!< here hidden (folded) tree of GCs is stored
@@ -498,21 +502,40 @@ protected:
   std::unique_ptr<Cell> m_output;
   // The pointers above point to inner cells and must be kept contiguous.
 
+//** 4-byte objects (12 bytes)
+//**
   int m_labelWidth_cached = 0;
   int m_inputWidth, m_inputHeight;
+
+//** 2-byte objects (6 bytes)
+//**
   //! The number of cells the current group contains (-1, if no GroupCell)
-  int m_cellsInGroup = 1;
-  int m_numberedAnswersCount = 0;
+  int16_t m_cellsInGroup = 1;
+  int16_t m_numberedAnswersCount = 0;
 
   AFontSize m_mathFontSize;
 
+//** 1-byte objects (1 byte)
+//**
   //! Which type this cell is of?
   GroupType m_groupType = {};
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_autoAnswer = false;
+    m_inEvaluationQueue = false;
+    m_lastInEvaluationQueue = false;
+    m_updateConfusableCharWarnings = true;
+  }
+
   //! Does this GroupCell automatically fill in the answer to questions?
-  bool m_autoAnswer = false;
-  bool m_inEvaluationQueue = false;
-  bool m_lastInEvaluationQueue = false;
-  bool m_updateConfusableCharWarnings = true;
+  bool m_autoAnswer : 1 /* InitBitFields */;
+  bool m_inEvaluationQueue : 1 /* InitBitFields */;
+  bool m_lastInEvaluationQueue : 1 /* InitBitFields */;
+  bool m_updateConfusableCharWarnings : 1 /* InitBitFields */;
 
   static wxString m_lookalikeChars;
 };

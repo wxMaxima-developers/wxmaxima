@@ -119,6 +119,13 @@ private:
 
   //! Is this integral definitive?
   IntegralType m_intStyle = INT_IDEF;
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif  // INTCELL_H

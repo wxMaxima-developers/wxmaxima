@@ -35,6 +35,7 @@ ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
     m_open(new TextCell(parent, config, "conjugate(")),
     m_close(new TextCell(parent, config, ")"))
 {
+  InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 

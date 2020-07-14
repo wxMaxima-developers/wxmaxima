@@ -89,8 +89,16 @@ private:
   // The pointers above point to inner cells and must be kept contiguous.
 
   int m_signWidth = 12, m_signHeight = -1;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_drawAsAscii = true;
+  }
   //! How to create a big parenthesis sign?
-  bool m_drawAsAscii = true;
+  bool m_drawAsAscii : 1 /* InitBitFields */;
 };
 
 #endif // LISTCELL_H

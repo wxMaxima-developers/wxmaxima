@@ -44,6 +44,7 @@ SumCell::SumCell(GroupCell *group, Configuration **config) :
     m_close(new TextCell(group, config, wxT(")"))),
     m_paren(new ParenCell(group, config))
 {
+  InitBitFields();
   wxASSERT(Base()); // m_paren constructs its inner cell by default
 }
 

@@ -42,6 +42,7 @@
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config) : Cell(parent, config)
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
   m_imageBorderWidth = 1;
 }
@@ -50,6 +51,7 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer
     Cell(parent, config),
     m_image(new Image(m_configuration, image, type))
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
   m_imageBorderWidth = 1;
 }
@@ -58,6 +60,7 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitm
     Cell(parent, config),
     m_image(new Image(m_configuration, bitmap))
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
   m_imageBorderWidth = 1;
 }
@@ -68,6 +71,7 @@ int ImgCell::s_counter = 0;
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : Cell(parent, config)
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
   if (image != wxEmptyString)
     m_image = std::make_shared<Image>(m_configuration, image, filesystem, remove);
@@ -90,6 +94,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 ImgCell::ImgCell(const ImgCell &cell):
     ImgCell(cell.m_group, cell.m_configuration)
 {
+  InitBitFields();
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;

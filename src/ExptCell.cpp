@@ -39,6 +39,7 @@ ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
     m_open(new TextCell(parent, config, "(")),
     m_close(new TextCell(parent, config, ")"))
 {
+  InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_exp->SetStyle(TS_FUNCTION);

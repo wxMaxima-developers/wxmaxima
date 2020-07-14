@@ -31,7 +31,9 @@
 
 MatrCell::MatrCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config)
-{}
+{
+  InitBitFields();
+}
 
 MatrCell::MatrCell(const MatrCell &cell):
     MatrCell(cell.m_group, cell.m_configuration)
