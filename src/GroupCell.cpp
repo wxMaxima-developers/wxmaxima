@@ -237,7 +237,7 @@ void GroupCell::SetGroup(GroupCell *parent)
     tmp->SetGroupList(parent);
 }
 
-bool GroupCell::Empty()
+bool GroupCell::Empty() const
 {
   return (
           // No next cell
@@ -2123,11 +2123,9 @@ bool GroupCell::IsLesserGCType(int comparedTo) const
   }
 }
 
-void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image)
+void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const
 {
-  GroupCell *tmp = this;
-
-  while (tmp != NULL)
+  for (const auto *tmp = this; tmp; tmp = tmp->GetNext())
   {
     switch (tmp->m_groupType)
     {
@@ -2198,8 +2196,6 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
 
     if (IsFoldable() && tmp->m_hiddenTree)
       tmp->m_hiddenTree->Number(section, subsection, subsubsection, heading5, heading6, image);
-
-    tmp = tmp->GetNext();
   }
 }
 

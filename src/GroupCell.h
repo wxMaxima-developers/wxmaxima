@@ -204,7 +204,7 @@ public:
 
   static wxString TexEscapeOutputCell(wxString Input);
 
-  Cell *GetPrompt() { return m_inputLabel.get(); }
+  Cell *GetPrompt() const { return m_inputLabel.get(); }
 
   EditorCell *GetInput() const
     {
@@ -351,7 +351,7 @@ public:
   bool IsMainInput(Cell *active) const;
 
   //!  Return this cell's section- or image number.
-  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
+  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const;
 
   /*! Draw this GroupCell
 
@@ -378,7 +378,7 @@ public:
   void DrawBracket();
 
   //! Is this list of cells empty?
-  bool Empty();
+  bool Empty() const;
 
   //! Does this tree contain the cell "cell"?
   bool Contains(GroupCell *cell) const;

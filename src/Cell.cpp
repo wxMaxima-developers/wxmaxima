@@ -1176,7 +1176,7 @@ void Cell::UnbreakList()
 // cppcheck-suppress functionStatic
 // cppcheck-suppress functionConst
 // Set the pen in device context according to the style of the cell.
-void Cell::SetPen(double lineWidth)
+void Cell::SetPen(double lineWidth) const
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();

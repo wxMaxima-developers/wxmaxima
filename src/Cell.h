@@ -622,7 +622,7 @@ public:
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  void SetPen(double lineWidth = 1.0);
+  void SetPen(double lineWidth = 1.0) const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight)
