@@ -37,7 +37,7 @@
 
 class TextCell;
 
-enum sumStyle
+enum sumStyle : int8_t
 {
   SM_SUM,
   SM_PROD
