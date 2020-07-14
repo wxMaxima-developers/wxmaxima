@@ -54,7 +54,8 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   if (RegexTooltip_error.IsEmpty())
     RegexTooltip_error = _("Invalid RegEx!");
   
-  m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE);
+  m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
+                            wxLB_MULTIPLE | wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
   m_regex = new wxTextCtrl(this, history_regex_id);
   m_regex->SetToolTip(RegexTooltip_norm);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
@@ -254,6 +255,8 @@ void History::RebuildDisplay()
 
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
+  // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
+  m_history->SetSelection(-1, false);
   wxString regex = m_regex->GetValue();
   if (regex == m_matcherExpr)
     return;
@@ -303,4 +306,7 @@ void History::SetCurrent(long current)
 
   m_current = current;
   m_history->EnsureVisible(m_current);
+  // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
+  m_history->SetSelection(-1, false);
+  m_history->SetSelection(m_current);
 }
