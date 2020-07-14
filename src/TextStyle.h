@@ -175,7 +175,7 @@ public:
   using did_change = bool;
   did_change SetFamily(wxFontFamily family);
   did_change SetEncoding(wxFontEncoding encoding);
-  did_change SetWeight(int weight);
+  did_change SetWeight(wxFontWeight weight);
   did_change SetBold(bool bold = true);
   did_change SetLight(bool light = true);
   did_change SetFontStyle(wxFontStyle style);
@@ -194,7 +194,7 @@ public:
 
   Style& Family(wxFontFamily family) { return SetFamily(family), *this; }
   Style& Encoding(wxFontEncoding encoding) { return SetEncoding(encoding), *this; }
-  Style& Weight(int weight) { return SetWeight(weight), *this; }
+  Style& Weight(wxFontWeight weight) { return SetWeight(weight), *this; }
   Style& FontStyle(wxFontStyle style) { return SetFontStyle(style), *this; }
   Style& Bold(bool bold = true) { return SetBold(bold), *this; }
   Style& Light(bool light = true) { return SetLight(light), *this; }
@@ -252,10 +252,10 @@ private:
     uint32_t rgbColor = Default_ColorRGB;
     // 2-byte members
     AFontSize fontSize = Default_FontSize;
-    int16_t family = Default_Family;
-    int16_t encoding = Default_Encoding;
-    int16_t weight = Default_Weight;
-    int16_t fontStyle = Default_FontStyle;
+    AFontFamily family = Default_Family;
+    AFontEncoding encoding = Default_Encoding;
+    AFontWeight weight = Default_Weight;
+    AFontStyle fontStyle = Default_FontStyle;
     // 1-byte members
     bool underlined : 1;
     bool strikethrough : 1;

@@ -181,16 +181,16 @@ Style &Style::operator=(const Style &o)
 }
 
 wxFontFamily Style::GetFamily() const
-{ return wxFontFamily(m.family); }
+{ return m.family; }
 
 wxFontEncoding Style::GetEncoding() const
-{ return wxFontEncoding(m.encoding); }
+{ return m.encoding; }
 
 wxFontWeight Style::GetWeight() const
-{ return wxFontWeight(m.weight); }
+{ return m.weight; }
 
 wxFontStyle Style::GetFontStyle() const
-{ return wxFontStyle(m.fontStyle); }
+{ return m.fontStyle; }
 
 bool Style::IsUnderlined() const
 { return m.underlined; }
@@ -240,7 +240,7 @@ did_change Style::SetFontStyle(wxFontStyle fontStyle)
   return true;
 }
 
-did_change Style::SetWeight(int weight)
+did_change Style::SetWeight(wxFontWeight weight)
 {
   if (m.weight == weight) return false;
   m.weight = weight;
@@ -427,11 +427,7 @@ void Style::SetFromFontNoCache(const wxFont &font)
     m.fontStyle = font.GetStyle();
     m.underlined = font.GetUnderlined();
     m.strikethrough = font.GetStrikethrough();
-#if wxCHECK_VERSION(3,1,2)
-    m.weight = font.GetNumericWeight();
-#else
     m.weight = font.GetWeight();
-#endif
     m.fontName = AFontName(font.GetFaceName());
     m.fontSize = GetFontSize(font);
     GetFontHash();

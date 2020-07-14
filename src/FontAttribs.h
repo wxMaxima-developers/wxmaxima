@@ -53,12 +53,19 @@
 #ifndef WXMAXIMA_FONTATTRIBS_H
 #define WXMAXIMA_FONTATTRIBS_H
 
+#include "EnumWrapper.h"
 #include "stx/clamp.hpp"
+#include <wx/font.h>
 #include <wx/version.h>
 #include <algorithm>
 #include <cstdint>
 #include <functional>
 #include <limits>
+
+using AFontEncoding = EnumWrapper<wxFontEncoding, int16_t, wxFONTENCODING_DEFAULT>;
+using AFontFamily = EnumWrapper<wxFontFamily, int16_t, wxFONTFAMILY_DEFAULT>;
+using AFontStyle = EnumWrapper<wxFontStyle, int16_t, wxFONTSTYLE_NORMAL>;
+using AFontWeight = EnumWrapper<wxFontWeight, int16_t, wxFONTWEIGHT_NORMAL>;
 
 /*! A Type-Safe Fixed-Point Font Size
  *
