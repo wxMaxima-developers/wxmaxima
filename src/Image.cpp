@@ -242,7 +242,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::
 {
   m_fs_keepalive_gnuplotdata = filesystem;
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting background task that loads the gnuplot data for a plot."));
+  wxLogMessage(_("Scheduling background task that loads the gnuplot data for a plot."));
   #pragma omp task
   #endif
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
@@ -876,7 +876,7 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, 
   // Loading images is of rather high priority as they are needed during the
   // recalculation that follows
   #ifdef HAVE_OMP_HEADER
-  wxLogMessage(_("Starting background thread that loads an image"));
+  wxLogMessage(_("Scheduling background task that loads an image"));
   #if HAVE_OPENMP_TASKS
   #pragma omp task
   #endif

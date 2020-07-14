@@ -62,7 +62,7 @@ void AutoComplete::ClearDemofileList()
 void AutoComplete::AddSymbols(wxString xml)
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that compiles a new list of autocompletible maxima commands."));
+  wxLogMessage(_("Scheduling a background task that compiles a new list of autocompletible maxima commands."));
   #pragma omp task
   #endif
   AddSymbols_Backgroundtask(xml);
@@ -152,12 +152,12 @@ AutoComplete::~AutoComplete()
 void AutoComplete::LoadSymbols()
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that setups the autocomplete builtins list."));
+  wxLogMessage(_("Scheduling a background task that setups the autocomplete builtins list."));
   #pragma omp task
   #endif
   BuiltinSymbols_BackgroundTask();
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that setups the autocompletable files list."));
+  wxLogMessage(_("Scheduling a background task that setups the autocompletable files list."));
   #pragma omp task
   #endif
   LoadSymbols_BackgroundTask();
@@ -409,7 +409,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
 void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that scans for autocompletible file names."));
+  wxLogMessage(_("Scheduling a background task that scans for autocompletible file names."));
   #pragma omp critical (AutocompleteFiles)
   #endif
   {
