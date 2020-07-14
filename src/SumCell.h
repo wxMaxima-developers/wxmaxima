@@ -110,7 +110,6 @@ private:
   double m_signWidth = 30;
   int m_signHeight = 50;
   int m_signWCenter = 15;
-  int m_signTop = (2 * m_signHeight) / 5;
   sumStyle m_sumStyle = SM_SUM;
 };
 

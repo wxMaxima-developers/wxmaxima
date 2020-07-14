@@ -133,8 +133,6 @@ public:
 
   void SetGroupType(GroupType type) { m_groupType = type; }
 
-  void SetCellStyle(GroupType style);
-
   void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods

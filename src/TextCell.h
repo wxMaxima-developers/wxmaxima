@@ -145,9 +145,6 @@ private:
   SizeHash m_numEndWidths;
 
   CellPtr<Cell> m_nextToDraw;
-  
-  AFontName m_fontname;
-  AFontName m_texFontname;
 
   wxSize m_numStartWidth;
   wxSize m_ellipsisWidth;
@@ -159,14 +156,6 @@ private:
   int m_displayedDigits_old = -1;
 
   Configuration::showLabels m_labelChoice_Last = {};
-
-  /*! The font size we had the last time we were recalculating this cell
-
-    If a fraction or similar is broken into two lines this changes \f$ \frac{a}{b}\f$ to
-    \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font
-    size has changed and we need to re-calculate the text width.
-   */
-  AFontSize m_lastCalculationFontSize = {};
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis = false;
