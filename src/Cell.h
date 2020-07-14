@@ -855,7 +855,7 @@ public:
   
   virtual void PasteFromClipboard(bool primary = false);
   
-  virtual bool CopyToClipboard()
+  virtual bool CopyToClipboard() const
   { return false; }
 
   virtual bool CutToClipboard()

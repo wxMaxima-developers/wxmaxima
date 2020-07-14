@@ -113,7 +113,7 @@ public:
   //! Exports the whole animation as animated gif
   wxSize ToGif(wxString file);
 
-  bool CopyToClipboard() override;
+  bool CopyToClipboard() const override;
   
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();

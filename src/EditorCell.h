@@ -269,7 +269,7 @@ public:
   //! Is the point point inside the currently selected text?
   bool IsPointInSelection(wxPoint point);
 
-  bool CopyToClipboard() override;
+  bool CopyToClipboard() const override;
 
   bool CutToClipboard() override;
 

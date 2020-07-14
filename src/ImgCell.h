@@ -87,7 +87,7 @@ public:
   void SetBitmap(const wxBitmap &bitmap);
 
   //! Copies the cell to the system's clipboard
-  bool CopyToClipboard() override;
+  bool CopyToClipboard() const override;
 
   void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 

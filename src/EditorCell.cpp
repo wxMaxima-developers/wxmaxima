@@ -3053,7 +3053,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
   
 }
 
-bool EditorCell::CopyToClipboard()
+bool EditorCell::CopyToClipboard() const
 {
   if ((m_selectionStart < 0) && (m_selectionEnd < 0))
     return false;

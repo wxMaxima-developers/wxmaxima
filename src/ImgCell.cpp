@@ -369,7 +369,7 @@ wxString ImgCell::ToXML() const
           basename + m_image->GetExtension() + wxT("</img>"));
 }
 
-bool ImgCell::CopyToClipboard()
+bool ImgCell::CopyToClipboard() const
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())

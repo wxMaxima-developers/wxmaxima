@@ -549,7 +549,7 @@ SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCus
           str.GetOutputStreamBuffer()->GetBufferStart());
 }
 
-bool SlideShow::CopyToClipboard()
+bool SlideShow::CopyToClipboard() const
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
