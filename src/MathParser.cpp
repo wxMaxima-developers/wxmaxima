@@ -608,7 +608,7 @@ Cell *MathParser::ParseDiffTag(wxXmlNode *node)
   child = SkipWhitespaceNode(child);
   if (child)
   {
-    int fc = m_FracStyle;
+    auto fc = m_FracStyle;
     m_FracStyle = FracCell::FC_DIFF;
 
     diff->SetDiff(HandleNullPointer(ParseTag(child, false)));

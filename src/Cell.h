@@ -50,7 +50,7 @@ class wxXmlNode;
 
 /*! The supported types of math cells
  */
-enum CellType
+enum CellType : int8_t
 {
   MC_TYPE_DEFAULT,
   MC_TYPE_MAIN_PROMPT, //!< Input labels
@@ -1033,9 +1033,6 @@ private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old = -1;
 protected:
-  CellType m_type = MC_TYPE_DEFAULT;
-  TextStyle m_textStyle = TS_DEFAULT;
-
 //** 2-byte objects
 //**
   //! The font size is smaller in super- and subscripts.
@@ -1044,6 +1041,9 @@ protected:
 
 //** 1-byte objects
 //**
+  CellType m_type = MC_TYPE_DEFAULT;
+  TextStyle m_textStyle = TS_DEFAULT;
+
   bool m_bigSkip = false;
 
   /*! true means:  This cell is broken into two or more lines.

@@ -299,7 +299,7 @@ struct StyleFontEquals final
  * \attention If this list is changed, the config dialogue
  * sometimes needs additional tweaking after that.
  */
-enum TextStyle
+enum TextStyle : int8_t
 {
   TS_DEFAULT             = 0,
   TS_VARIABLE            = 1,

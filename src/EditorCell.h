@@ -490,12 +490,12 @@ private:
     wxString m_text;
     //! Chars that mark continued indentation
     wxString m_indentChar;
-    //! The color of this text portion
-    TextStyle m_style = TS_DEFAULT;
     //! The cached width of this piece of text
     int m_width = -1;
     //! By How many pixels we want to indent this line?
     int m_indentPixels = 0;
+    //! The color of this text portion
+    TextStyle m_style = TS_DEFAULT;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText = false;
   public:

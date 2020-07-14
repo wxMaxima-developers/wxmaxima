@@ -35,7 +35,7 @@
 
 //! All types a GroupCell can be of
 // This enum's elements must be synchronized with (WXMFormat.h) WXMHeaderId.
-enum GroupType
+enum GroupType : int8_t
 {
   GC_TYPE_INVALID = -1,
   GC_TYPE_CODE = 0,
@@ -498,9 +498,6 @@ protected:
   std::unique_ptr<Cell> m_output;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  //! Which type this cell is of?
-  GroupType m_groupType = {};
-
   int m_labelWidth_cached = 0;
   int m_inputWidth, m_inputHeight;
   //! The number of cells the current group contains (-1, if no GroupCell)
@@ -509,6 +506,8 @@ protected:
 
   AFontSize m_mathFontSize;
 
+  //! Which type this cell is of?
+  GroupType m_groupType = {};
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer = false;
   bool m_inEvaluationQueue = false;
