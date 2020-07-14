@@ -168,20 +168,20 @@ public:
   //! GroupCells warn if they contain both greek and latin lookalike chars.
   void UpdateConfusableCharWarnings();
   
-  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter) const;
 
-  wxString ToRTF() override;
+  wxString ToRTF() const override;
 
-  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter) const;
 
   static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeX() override;
+  wxString ToTeX() const override;
 
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
 
-  wxString ToXML() override;
+  wxString ToXML() const override;
 
   void Hide(bool hide) override;
 
@@ -204,7 +204,7 @@ public:
 
   static wxString TexEscapeOutputCell(wxString Input);
 
-  Cell *GetPrompt() { return m_inputLabel.get(); }
+  Cell *GetPrompt() const { return m_inputLabel.get(); }
 
   EditorCell *GetInput() const
     {
@@ -351,7 +351,7 @@ public:
   bool IsMainInput(Cell *active) const;
 
   //!  Return this cell's section- or image number.
-  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
+  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const;
 
   /*! Draw this GroupCell
 
@@ -378,13 +378,13 @@ public:
   void DrawBracket();
 
   //! Is this list of cells empty?
-  bool Empty();
+  bool Empty() const;
 
   //! Does this tree contain the cell "cell"?
   bool Contains(GroupCell *cell) const;
 
   //! A textual representation of this cell
-  wxString ToString() override;
+  wxString ToString() const override;
 
   //! Is this cell part of the evaluation Queue?
   void InEvaluationQueue(bool inQueue) { m_inEvaluationQueue = inQueue; }
@@ -475,8 +475,7 @@ public:
 
   void UpdateYPositionList();
 
-  bool GetSuppressTooltipMarker()
-    {return m_suppressTooltipMarker;}
+  bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress)
     {m_suppressTooltipMarker = suppress;}
 protected:

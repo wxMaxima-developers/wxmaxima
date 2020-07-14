@@ -591,10 +591,7 @@ bool Cell::IsCompound() const
   return false;
 }
 
-/***
- * Return the string representation of cell.
- */
-wxString Cell::ToString()
+wxString Cell::ToString() const
 {
   return wxEmptyString;
 }
@@ -617,13 +614,12 @@ wxString Cell::VariablesAndFunctionsList()
   return retval;
 }
 
-wxString Cell::ListToString()
+wxString Cell::ListToString() const
 {
   wxString retval;
-  Cell *tmp = this;
   bool firstline = true;
 
-  while (tmp != NULL)
+  for (const Cell *tmp = this; tmp; tmp = tmp->GetNextToDraw())
   {
     if ((!firstline) && (tmp->m_forceBreakLine))
     {
@@ -647,79 +643,72 @@ wxString Cell::ListToString()
     retval += tmp->ToString();
 
     firstline = false;
-    tmp = tmp->GetNextToDraw();
   }
   return retval;
 }
 
-wxString Cell::ToMatlab()
+wxString Cell::ToMatlab() const
 {
   return wxEmptyString;
 }
 
-wxString Cell::ListToMatlab()
-{
-	wxString retval;
-	Cell *tmp = this;
-	bool firstline = true;
-
-	while (tmp != NULL)
-	{
-	  if ((!firstline) && (tmp->m_forceBreakLine))
-	  {
-		if(!retval.EndsWith(wxT('\n')))
-		  retval += wxT("\n");
-		// if(
-		//    (tmp->GetStyle() != TS_LABEL) &&
-		//    (tmp->GetStyle() != TS_USERLABEL) &&
-		//    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-		//    (tmp->GetStyle() != TS_OTHER_PROMPT))
-		//   retval += wxT("\t");
-	  }
-	  // if(firstline)
-	  // {
-	  //   if((tmp->GetStyle() != TS_LABEL) &&
-	  //      (tmp->GetStyle() != TS_USERLABEL) &&
-	  //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-	  //      (tmp->GetStyle() != TS_OTHER_PROMPT))
-	  //     retval += wxT("\t");
-	  // }
-	  retval += tmp->ToMatlab();
-
-	  firstline = false;
-	  tmp = tmp->GetNextToDraw();
-	}
-
-	return retval;
-}
-
-wxString Cell::ToTeX()
-{
-  return wxEmptyString;
-}
-
-wxString Cell::ListToTeX()
+wxString Cell::ListToMatlab() const
 {
   wxString retval;
-  Cell *tmp = this;
+  bool firstline = true;
 
-  while (tmp != NULL)
+  for (const Cell *tmp = this; tmp; tmp = tmp->GetNextToDraw())
+  {
+    if ((!firstline) && (tmp->m_forceBreakLine)) {
+      if (!retval.EndsWith(wxT('\n')))
+        retval += wxT("\n");
+      // if(
+      //    (tmp->GetStyle() != TS_LABEL) &&
+      //    (tmp->GetStyle() != TS_USERLABEL) &&
+      //    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+      //    (tmp->GetStyle() != TS_OTHER_PROMPT))
+      //   retval += wxT("\t");
+    }
+    // if(firstline)
+    // {
+    //   if((tmp->GetStyle() != TS_LABEL) &&
+    //      (tmp->GetStyle() != TS_USERLABEL) &&
+    //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+    //      (tmp->GetStyle() != TS_OTHER_PROMPT))
+    //     retval += wxT("\t");
+    // }
+    retval += tmp->ToMatlab();
+
+    firstline = false;
+  }
+
+  return retval;
+}
+
+wxString Cell::ToTeX() const
+{
+  return wxEmptyString;
+}
+
+wxString Cell::ListToTeX() const
+{
+  wxString retval;
+  for (const Cell *tmp = this; tmp; tmp = tmp->GetNext())
   {
     if ((tmp->m_textStyle == TS_LABEL && retval != wxEmptyString) ||
         (tmp->m_breakLine && retval != wxEmptyString))
       retval += wxT("\\]\\[");
     retval += tmp->ToTeX();
-    tmp = tmp->m_next;
   }
   return retval;
 }
 
-wxString Cell::ToXML()
+wxString Cell::ToXML() const
 {
   return wxEmptyString;
 }
 
-wxString Cell::ToMathML()
+wxString Cell::ToMathML() const
 {
   return wxEmptyString;
 }
@@ -904,7 +893,9 @@ wxString Cell::RTFescape(wxString input, bool MarkDown)
   return (output);
 }
 
-wxString Cell::ListToOMML(bool WXUNUSED(startofline))
+wxString Cell::ToOMML() const { return {}; }
+
+wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
 {
   bool multiCell = (m_next != NULL);
 
@@ -913,8 +904,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline))
   // If the region to export contains linebreaks or labels we put it into a table.
   // Export all cells
 
-  Cell *tmp = this;
-  while (tmp != NULL)
+  for (const Cell *tmp = this; tmp; tmp = tmp->m_next)
   {
     wxString token = tmp->ToOMML();
 
@@ -927,8 +917,6 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline))
     // Hard linebreaks aren't supported by OMML and therefore need a new equation object
     if (tmp->HardLineBreak())
       break;
-
-    tmp = tmp->m_next;
   }
 
   if ((multiCell) && (retval != wxEmptyString))
@@ -937,12 +925,11 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline))
     return retval;
 }
 
-wxString Cell::ListToRTF(bool startofline)
+wxString Cell::ListToRTF(bool startofline) const
 {
   wxString retval;
-  Cell *tmp = this;
 
-  while (tmp != NULL)
+  for (const Cell *tmp = this; tmp; )
   {
     wxString rtf = tmp->ToRTF();
     if (rtf != wxEmptyString)
@@ -1006,14 +993,12 @@ void Cell::SelectRectText(wxPoint WXUNUSED(one), wxPoint WXUNUSED(two)) {}
 
 void Cell::PasteFromClipboard(bool WXUNUSED(primary)) {}
 
-wxString Cell::ListToXML()
+wxString Cell::ListToXML() const
 {
   bool highlight = false;
-
   wxString retval;
-  Cell *tmp = this;
 
-  while (tmp != NULL)
+  for (const Cell *tmp = this; tmp; tmp = tmp->GetNext())
   {
     if ((tmp->GetHighlight()) && (!highlight))
     {
@@ -1028,7 +1013,6 @@ wxString Cell::ListToXML()
     }
 
     retval += tmp->ToXML();
-    tmp = tmp->m_next;
   }
 
   if (highlight)
@@ -1192,7 +1176,7 @@ void Cell::UnbreakList()
 // cppcheck-suppress functionStatic
 // cppcheck-suppress functionConst
 // Set the pen in device context according to the style of the cell.
-void Cell::SetPen(double lineWidth)
+void Cell::SetPen(double lineWidth) const
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();

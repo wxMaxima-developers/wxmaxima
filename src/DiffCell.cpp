@@ -114,7 +114,7 @@ void DiffCell::Draw(wxPoint point)
   }
 }
 
-wxString DiffCell::ToString()
+wxString DiffCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -127,7 +127,7 @@ wxString DiffCell::ToString()
   return s;
 }
 
-wxString DiffCell::ToMatlab()
+wxString DiffCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -140,7 +140,7 @@ wxString DiffCell::ToMatlab()
   return s;
 }
 
-wxString DiffCell::ToTeX()
+wxString DiffCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -156,7 +156,7 @@ wxString DiffCell::ToTeX()
   return s;
 }
 
-wxString DiffCell::ToMathML()
+wxString DiffCell::ToMathML() const
 {
   wxString retval;
 
@@ -171,7 +171,7 @@ wxString DiffCell::ToMathML()
   return retval;
 }
 
-wxString DiffCell::ToOMML()
+wxString DiffCell::ToOMML() const
 {
   wxString retval;
 
@@ -182,7 +182,7 @@ wxString DiffCell::ToOMML()
   return retval;
 }
 
-wxString DiffCell::ToXML()
+wxString DiffCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

@@ -87,7 +87,7 @@ public:
   void SetBitmap(const wxBitmap &bitmap);
 
   //! Copies the cell to the system's clipboard
-  bool CopyToClipboard() override;
+  bool CopyToClipboard() const override;
 
   void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 
@@ -108,15 +108,11 @@ public:
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToRTF() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
+  wxString ToMatlab() const override;
+  wxString ToRTF() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 

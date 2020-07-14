@@ -338,22 +338,22 @@ void SlideShow::Draw(wxPoint point)
   m_drawBoundingBox = false;
 }
 
-wxString SlideShow::ToString()
+wxString SlideShow::ToString() const
 {
   return wxT(" << Animation >> ");
 }
 
-wxString SlideShow::ToMatlab()
+wxString SlideShow::ToMatlab() const
 {
   return wxT(" << Animation >> ");
 }
 
-wxString SlideShow::ToTeX()
+wxString SlideShow::ToTeX() const
 {
   return wxT(" << Graphics >> ");
 }
 
-wxString SlideShow::ToXML()
+wxString SlideShow::ToXML() const
 {
   wxString images;
   wxString gnuplotSourceFiles;
@@ -436,7 +436,7 @@ wxSize SlideShow::ToImageFile(wxString file)
   return m_images[m_displayed]->ToImageFile(file);
 }
 
-wxString SlideShow::ToRTF()
+wxString SlideShow::ToRTF() const
 {
   // Animations aren't supported by RTF so we just export the currently shown
   // image.
@@ -549,7 +549,7 @@ SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCus
           str.GetOutputStreamBuffer()->GetBufferStart());
 }
 
-bool SlideShow::CopyToClipboard()
+bool SlideShow::CopyToClipboard() const
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())

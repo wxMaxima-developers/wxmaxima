@@ -167,7 +167,7 @@ void LimitCell::Draw(wxPoint point)
   }
 }
 
-wxString LimitCell::ToString()
+wxString LimitCell::ToString() const
 {
   wxString s(wxT("limit"));
   wxString under = m_under->ListToString();
@@ -184,7 +184,7 @@ wxString LimitCell::ToString()
   return s;
 }
 
-wxString LimitCell::ToMatlab()
+wxString LimitCell::ToMatlab() const
 {
   wxString s(wxT("limit"));
   wxString under = m_under->ListToMatlab();
@@ -201,7 +201,7 @@ wxString LimitCell::ToMatlab()
   return s;
 }
 
-wxString LimitCell::ToTeX()
+wxString LimitCell::ToTeX() const
 {
   wxString under = m_under->ListToTeX();
   wxString base = m_base->ListToTeX();
@@ -229,7 +229,7 @@ wxString LimitCell::ToTeX()
   return s;
 }
 
-wxString LimitCell::ToMathML()
+wxString LimitCell::ToMathML() const
 {
   wxString base = m_base->ListToMathML();
 
@@ -244,7 +244,7 @@ wxString LimitCell::ToMathML()
   return (retval);
 }
 
-wxString LimitCell::ToXML()
+wxString LimitCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)
@@ -255,7 +255,7 @@ wxString LimitCell::ToXML()
          m_base->ListToXML() + _T("</r></lm>");
 }
 
-wxString LimitCell::ToOMML()
+wxString LimitCell::ToOMML() const
 {
   wxString under = m_under->ListToOMML();
   under.Replace(wxT("->"), wxT("\u2192"));

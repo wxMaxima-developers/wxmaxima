@@ -118,7 +118,7 @@ void ConjugateCell::Draw(wxPoint point)
   }
 }
 
-wxString ConjugateCell::ToString()
+wxString ConjugateCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -126,7 +126,7 @@ wxString ConjugateCell::ToString()
     return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString ConjugateCell::ToMatlab()
+wxString ConjugateCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -134,7 +134,7 @@ wxString ConjugateCell::ToMatlab()
 	return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
 }
 
-wxString ConjugateCell::ToTeX()
+wxString ConjugateCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -142,20 +142,20 @@ wxString ConjugateCell::ToTeX()
     return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString ConjugateCell::ToMathML()
+wxString ConjugateCell::ToMathML() const
 {
 //  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
   return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
          wxT("<mo>&#xaf;</mo></mover>\n");
 }
 
-wxString ConjugateCell::ToOMML()
+wxString ConjugateCell::ToOMML() const
 {
   return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
 }
 
-wxString ConjugateCell::ToXML()
+wxString ConjugateCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

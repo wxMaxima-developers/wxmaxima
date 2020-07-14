@@ -197,7 +197,7 @@ void ListCell::Draw(wxPoint point)
   }
 }
 
-wxString ListCell::ToString()
+wxString ListCell::ToString() const
 {
   wxString s;
   if(!m_innerCell)
@@ -208,7 +208,7 @@ wxString ListCell::ToString()
   return s;
 }
 
-wxString ListCell::ToMatlab()
+wxString ListCell::ToMatlab() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -216,7 +216,7 @@ wxString ListCell::ToMatlab()
   return s;
 }
 
-wxString ListCell::ToTeX()
+wxString ListCell::ToTeX() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -241,14 +241,14 @@ wxString ListCell::ToTeX()
   return s;
 }
 
-wxString ListCell::ToOMML()
+wxString ListCell::ToOMML() const
 {
   return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) + wxT("\" m:endChr=\"") +
          XMLescape(m_close->ToString()) + wxT("\" m:grow=\"1\"></m:dPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
-wxString ListCell::ToMathML()
+wxString ListCell::ToMathML() const
 {
   wxString open = m_open->ToString();
   wxString close = m_close->ToString();
@@ -259,7 +259,7 @@ wxString ListCell::ToMathML()
   );
 }
 
-wxString ListCell::ToXML()
+wxString ListCell::ToXML() const
 {
   wxString s = m_innerCell->ListToXML();
   wxString flags;

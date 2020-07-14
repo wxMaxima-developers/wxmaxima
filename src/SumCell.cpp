@@ -239,7 +239,7 @@ void SumCell::Draw(wxPoint point)
   }
 }
 
-wxString SumCell::ToString()
+wxString SumCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -270,7 +270,7 @@ wxString SumCell::ToString()
   return s;
 }
 
-wxString SumCell::ToMatlab()
+wxString SumCell::ToMatlab() const
 {
   wxString s;
   if (m_sumStyle == SM_SUM)
@@ -298,7 +298,7 @@ wxString SumCell::ToMatlab()
   return s;
 }
 
-wxString SumCell::ToTeX()
+wxString SumCell::ToTeX() const
 {
   wxString s;
   if (m_sumStyle == SM_SUM)
@@ -319,7 +319,7 @@ wxString SumCell::ToTeX()
   return s;
 }
 
-wxString SumCell::ToOMML()
+wxString SumCell::ToOMML() const
 {
   wxString base = Base()->ListToOMML();
   wxString from = m_under ? m_under->ListToOMML() : wxString{};
@@ -344,7 +344,7 @@ wxString SumCell::ToOMML()
 }
 
 
-wxString SumCell::ToXML()
+wxString SumCell::ToXML() const
 {
   wxString type(wxT("sum"));
 
@@ -363,7 +363,7 @@ wxString SumCell::ToXML()
          Base()->ListToXML() + _T("</r></sm>");
 }
 
-wxString SumCell::ToMathML()
+wxString SumCell::ToMathML() const
 {
   wxString base = Base()->ListToMathML();
 

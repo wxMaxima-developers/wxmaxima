@@ -903,12 +903,12 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
-  void NotifyOfCellRedraw(Cell *cell);
+  void NotifyOfCellRedraw(const Cell *cell);
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
   Style m_styles[NUMBEROFSTYLES];
 private:
-  using CellRedrawTrace = std::vector<Cell*>;
+  using CellRedrawTrace = std::vector<const Cell*>;
 
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;

@@ -735,7 +735,7 @@ bool TextCell::IsOperator() const
   return false;
 }
 
-wxString TextCell::ToString()
+wxString TextCell::ToString() const
 {
   wxString text;
   if (m_altCopyText != wxEmptyString)
@@ -811,7 +811,7 @@ wxString TextCell::ToString()
   return text;
 }
 
-wxString TextCell::ToMatlab()
+wxString TextCell::ToMatlab() const
 {
 	wxString text;
 	if (m_altCopyText != wxEmptyString)
@@ -891,7 +891,7 @@ wxString TextCell::ToMatlab()
 	return text;
 }
 
-wxString TextCell::ToTeX()
+wxString TextCell::ToTeX() const
 {
   wxString text = m_displayedText;
 
@@ -1303,7 +1303,7 @@ wxString TextCell::ToTeX()
   return text;
 }
 
-wxString TextCell::ToMathML()
+wxString TextCell::ToMathML() const
 {
   if(m_displayedText == wxEmptyString)
     return wxEmptyString;
@@ -1383,7 +1383,7 @@ wxString TextCell::ToMathML()
   return wxT("<mo>") + text + wxT("</mo>\n");
 }
 
-wxString TextCell::ToOMML()
+wxString TextCell::ToOMML() const
 {
   //Text-only lines are better handled in RTF.
   if (
@@ -1457,7 +1457,7 @@ wxString TextCell::ToOMML()
   return text;
 }
 
-wxString TextCell::ToRTF()
+wxString TextCell::ToRTF() const
 {
   wxString retval;
   wxString text = m_displayedText;
@@ -1480,7 +1480,7 @@ wxString TextCell::ToRTF()
   return retval;
 }
 
-wxString TextCell::ToXML()
+wxString TextCell::ToXML() const
 {
   wxString tag;
   wxString flags;

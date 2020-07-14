@@ -237,7 +237,7 @@ void GroupCell::SetGroup(GroupCell *parent)
     tmp->SetGroupList(parent);
 }
 
-bool GroupCell::Empty()
+bool GroupCell::Empty() const
 {
   return (
           // No next cell
@@ -1091,7 +1091,7 @@ wxRect GroupCell::HideRect()
   );
 }
 
-wxString GroupCell::ToString()
+wxString GroupCell::ToString() const
 {
   wxString str;
   Configuration *configuration = (*m_configuration);
@@ -1126,12 +1126,12 @@ wxString GroupCell::ToString()
   return str;
 }
 
-wxString GroupCell::ToTeX()
+wxString GroupCell::ToTeX() const
 {
   return ToTeX(wxEmptyString, wxEmptyString, NULL);
 }
 
-wxString GroupCell::ToRTF()
+wxString GroupCell::ToRTF() const
 {
   Configuration *configuration = (*m_configuration);
   if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -1171,7 +1171,7 @@ wxString GroupCell::ToRTF()
   return retval;
 }
 
-wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
+wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter) const
 {
   wxASSERT_MSG((imgCounter != NULL), _(wxT("Bug: No image counter to write to!")));
   if (imgCounter == NULL) return wxEmptyString;
@@ -1259,7 +1259,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   return str;
 }
 
-wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter)
+wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter) const
 {
   wxString str;
   Configuration *configuration = (*m_configuration);
@@ -1409,7 +1409,7 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
   return str;
 }
 
-wxString GroupCell::ToXML()
+wxString GroupCell::ToXML() const
 {
   wxString str;
   str = wxT("\n<cell"); // start opening tag
@@ -2123,11 +2123,9 @@ bool GroupCell::IsLesserGCType(int comparedTo) const
   }
 }
 
-void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image)
+void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const
 {
-  GroupCell *tmp = this;
-
-  while (tmp != NULL)
+  for (const auto *tmp = this; tmp; tmp = tmp->GetNext())
   {
     switch (tmp->m_groupType)
     {
@@ -2198,8 +2196,6 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
 
     if (IsFoldable() && tmp->m_hiddenTree)
       tmp->m_hiddenTree->Number(section, subsection, subsubsection, heading5, heading6, image);
-
-    tmp = tmp->GetNext();
   }
 }
 

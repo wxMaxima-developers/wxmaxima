@@ -71,17 +71,12 @@ public:
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }

@@ -622,7 +622,7 @@ public:
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  void SetPen(double lineWidth = 1.0);
+  void SetPen(double lineWidth = 1.0) const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight)
@@ -689,48 +689,45 @@ public:
   };
 
   //! Returns the list's representation as a string.
-  virtual wxString ListToString();
+  virtual wxString ListToString() const;
 
   /*! Returns all variable and function names used inside this list of cells.
   
     Used for detecting lookalike chars in function and variable names.
    */
   virtual wxString VariablesAndFunctionsList();
-
   //! Convert this list to its LaTeX representation
-  virtual wxString ListToMatlab();
-
+  virtual wxString ListToMatlab() const;
   //! Convert this list to its LaTeX representation
-  virtual wxString ListToTeX();
-
+  virtual wxString ListToTeX() const;
   //! Convert this list to a representation fit for saving in a .wxmx file
-  virtual wxString ListToXML();
+  virtual wxString ListToXML() const;
 
   //! Convert this list to a MathML representation
   virtual wxString ListToMathML(bool startofline = false);
 
   //! Convert this list to an OMML representation
-  virtual wxString ListToOMML(bool startofline = false);
+  virtual wxString ListToOMML(bool startofline = false) const;
 
   //! Convert this list to an RTF representation
-  virtual wxString ListToRTF(bool startofline = false);
+  virtual wxString ListToRTF(bool startofline = false) const;
 
   //! Returns the cell's representation as a string.
-  virtual wxString ToString();
+  virtual wxString ToString() const;
 
   /*! Returns the cell's representation as RTF.
 
     If this method returns wxEmptyString this might mean that this cell is 
     better handled in OMML.
    */
-  virtual wxString ToRTF()
+  virtual wxString ToRTF() const
   { return wxEmptyString; }
 
   //! Converts an OMML tag to the corresponding RTF snippet
-  wxString OMML2RTF(wxXmlNode *node);
+  static wxString OMML2RTF(wxXmlNode *node);
 
   //! Converts OMML math to RTF math
-  wxString OMML2RTF(wxString ommltext);
+  static wxString OMML2RTF(wxString ommltext);
 
   /*! Returns the cell's representation as OMML
 
@@ -741,20 +738,15 @@ public:
     Don't know why OMML was implemented in a world that already knows MathML,
     though.
    */
-  virtual wxString ToOMML()
-  { return wxEmptyString; }
-
+  virtual wxString ToOMML() const;
   //! Convert this cell to its Matlab representation
-  virtual wxString ToMatlab();
-
+  virtual wxString ToMatlab() const;
   //! Convert this cell to its LaTeX representation
-  virtual wxString ToTeX();
-
+  virtual wxString ToTeX() const;
   //! Convert this cell to a representation fit for saving in a .wxmx file
-  virtual wxString ToXML();
-
+  virtual wxString ToXML() const;
   //! Convert this cell to a representation fit for saving in a .wxmx file
-  virtual wxString ToMathML();
+  virtual wxString ToMathML() const;
 
   //! Escape a string for RTF
   static wxString RTFescape(wxString, bool MarkDown = false);
@@ -863,7 +855,7 @@ public:
   
   virtual void PasteFromClipboard(bool primary = false);
   
-  virtual bool CopyToClipboard()
+  virtual bool CopyToClipboard() const
   { return false; }
 
   virtual bool CutToClipboard()

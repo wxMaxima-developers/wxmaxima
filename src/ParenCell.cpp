@@ -385,7 +385,7 @@ void ParenCell::Draw(wxPoint point)
   }
 }
 
-wxString ParenCell::ToString()
+wxString ParenCell::ToString() const
 {
   wxString s;
   if(!m_innerCell)
@@ -401,7 +401,7 @@ wxString ParenCell::ToString()
   return s;
 }
 
-wxString ParenCell::ToMatlab()
+wxString ParenCell::ToMatlab() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -414,7 +414,7 @@ wxString ParenCell::ToMatlab()
   return s;
 }
 
-wxString ParenCell::ToTeX()
+wxString ParenCell::ToTeX() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -444,14 +444,14 @@ wxString ParenCell::ToTeX()
   return s;
 }
 
-wxString ParenCell::ToOMML()
+wxString ParenCell::ToOMML() const
 {
   return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) + wxT("\" m:endChr=\"") +
          XMLescape(m_close->ToString()) + wxT("\" m:grow=\"1\"></m:dPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
-wxString ParenCell::ToMathML()
+wxString ParenCell::ToMathML() const
 {
   if (!m_print) return m_innerCell->ListToMathML();
 
@@ -464,7 +464,7 @@ wxString ParenCell::ToMathML()
   );
 }
 
-wxString ParenCell::ToXML()
+wxString ParenCell::ToXML() const
 {
 //  if( m_isBrokenIntoLines )
 //    return wxEmptyString;

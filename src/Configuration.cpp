@@ -568,7 +568,7 @@ wxColor Configuration::EditorBackgroundColor()
     return m_styles[TS_TEXT_BACKGROUND].GetColor();
 }
 
-void Configuration::NotifyOfCellRedraw(Cell *cell)
+void Configuration::NotifyOfCellRedraw(const Cell *cell)
 {
   if (!m_cellRedrawTrace || !cell)
     return;
@@ -594,7 +594,7 @@ void Configuration::ReportMultipleRedraws()
   // per-cell, than having counters in a map or hash.
   std::sort(m_cellRedrawTrace->begin(), m_cellRedrawTrace->end());
   int counter = 0;
-  Cell *prev = {};
+  const Cell *prev = {};
   for (auto *cell : *m_cellRedrawTrace)
   {
     if (prev != cell)

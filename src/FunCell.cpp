@@ -108,7 +108,7 @@ void FunCell::Draw(wxPoint point)
   }
 }
 
-wxString FunCell::ToString()
+wxString FunCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -117,7 +117,7 @@ wxString FunCell::ToString()
   return m_nameCell->ListToString() + m_argCell->ListToString();
 }
 
-wxString FunCell::ToMatlab()
+wxString FunCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -127,7 +127,7 @@ wxString FunCell::ToMatlab()
   return s;
 }
 
-wxString FunCell::ToTeX()
+wxString FunCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -152,7 +152,7 @@ wxString FunCell::ToTeX()
   return s;
 }
 
-wxString FunCell::ToXML()
+wxString FunCell::ToXML() const
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
@@ -163,7 +163,7 @@ wxString FunCell::ToXML()
          m_argCell->ListToXML() + wxT("</fn>");
 }
 
-wxString FunCell::ToMathML()
+wxString FunCell::ToMathML() const
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
@@ -171,7 +171,7 @@ wxString FunCell::ToMathML()
          wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
 }
 
-wxString FunCell::ToOMML()
+wxString FunCell::ToOMML() const
 {
   return m_nameCell->ListToOMML() +
          m_argCell->ListToOMML();
