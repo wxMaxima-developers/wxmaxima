@@ -406,63 +406,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description) override;
+  wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
-
-  // TODO This class is not used anyhere.
-  class HCaretCell: public wxAccessible
-  {
-  public:
-    explicit HCaretCell(GroupCell* group) : wxAccessible(), m_group(group) {}
-
-    //! Describe the current cell to a Screen Reader
-    wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description) override
-    {
-      if (description)
-        return (*description = _("A space between GroupCells")), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    //! Inform the Screen Reader which cell is the parent of this one
-    wxAccStatus GetParent (wxAccessible ** parent) override
-    {
-      if (parent)
-        return (*parent = m_group), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    //! How many childs of this cell GetChild() can retrieve?
-    wxAccStatus GetChildCount (int *childCount) override
-    {
-      if (childCount)
-        return (*childCount = 0), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    //! Retrieve a child cell. childId=0 is the current cell
-    wxAccStatus GetChild (int childId, wxAccessible **child) override
-    {
-      if (childId == 0 && child)
-        return (*child = this), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    // //! Does this or a child cell currently own the focus?
-    // wxAccStatus GetFocus (int *childId, wxAccessible **child)
-    //   {
-    //   }
-    // //! Where is this cell to be found?
-    // wxAccStatus GetLocation (wxRect &rect, int elementId)
-    //   {
-    //   }
-    // //! Is pt inside this cell or a child cell?
-    // wxAccStatus HitTest (const wxPoint &pt,
-    //                      int *childId, wxAccessible **childObject);
-    wxAccStatus GetRole (int childId, wxAccRole *role) override;
-
-  private:
-	GroupCell *m_group;
-  };
 #endif
 
   /*! Recalculate the cell's y position using the position and height of the last one.

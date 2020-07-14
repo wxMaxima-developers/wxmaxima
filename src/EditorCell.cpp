@@ -4109,7 +4109,7 @@ void EditorCell::CaretToPosition(int pos)
 
 
 #if wxUSE_ACCESSIBILITY
-wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
+wxAccStatus EditorCell::GetDescription(int childId, wxString *description) const
 {
   if (childId != 0)
     return wxACC_FAIL;
@@ -4150,7 +4150,7 @@ wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
   return wxACC_OK;
 }
 
-wxAccStatus EditorCell::GetDefaultAction (int WXUNUSED(childId), wxString *actionName)
+wxAccStatus EditorCell::GetDefaultAction (int WXUNUSED(childId), wxString *actionName) const
 {
   if(actionName != NULL)
   {
@@ -4160,7 +4160,7 @@ wxAccStatus EditorCell::GetDefaultAction (int WXUNUSED(childId), wxString *actio
   return wxACC_FAIL;
 }
 
-wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue)
+wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue) const
 {
   wxString retval = ToString();
 
@@ -4181,12 +4181,12 @@ wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue)
   return wxACC_OK;
 }
 
-wxAccStatus EditorCell::GetFocus (int *childId, wxAccessible **child)
+wxAccStatus EditorCell::GetFocus (int *childId, Cell **child) const
 {
   if(IsActive())
   {
     if(child != NULL)
-      *child   = this;
+      *child   = const_cast<EditorCell *>(this);
     if(childId != NULL)
       *childId = 0;
     return wxACC_OK;
@@ -4201,7 +4201,7 @@ wxAccStatus EditorCell::GetFocus (int *childId, wxAccessible **child)
   }
 }
 
-wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role)
+wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role) const
 {
   if((childId == 0) && (role != NULL))
   {

@@ -57,11 +57,11 @@ class EditorCell final : public Cell
 {
 private:
   #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description) override;
-  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
-  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
-  wxAccStatus GetValue (int childId, wxString *strValue) override;
-  wxAccStatus GetRole (int childId, wxAccRole *role) override;
+  wxAccStatus GetDescription(int childId, wxString *description) const override;
+  wxAccStatus GetFocus (int *childId, Cell **child) const override;
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) const override;
+  wxAccStatus GetValue (int childId, wxString *strValue) const override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) const override;
   #endif
 
 public:

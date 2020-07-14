@@ -8377,7 +8377,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetChild (int childId, wxAccessible **
     cell = cell->GetNext();
   }
 
-  *child = cell;
+  *child = cell->GetAccessible();
   return cell ? wxACC_OK : wxACC_FAIL;
 }
 
@@ -8474,12 +8474,13 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest(const wxPoint &pt,
   {
     id ++;
     cell = cell->GetNext();
-    if (cell && cell->HitTest(pt, childId, childObject) == wxACC_OK)
+    Cell *childCell = nullptr;
+    if (cell && cell->HitTest(pt, childId, &childCell) == wxACC_OK)
     {
       if (childId)
         *childId = id;
       if (childObject)
-        *childObject = cell;
+        *childObject = cell->GetAccessible();
       return wxACC_OK;
     }
   }

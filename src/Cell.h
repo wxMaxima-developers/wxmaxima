@@ -71,6 +71,10 @@ enum CellType : int8_t
   MC_TYPE_GROUP        //!< A group cells that bundles several individual cells together
 };
 
+#if wxUSE_ACCESSIBILITY
+class CellAccessible;
+#endif
+
 /*!
   The base class all cell types the worksheet can consist of are derived from
 
@@ -107,12 +111,12 @@ enum CellType : int8_t
   eventual screen reader.
 
  */
-#if wxUSE_ACCESSIBILITY
-class Cell: public Observed, public wxAccessible
-#else
+
 class Cell: public Observed
-#endif
 {
+#if wxUSE_ACCESSIBILITY
+  friend class CellAccessible;
+#endif
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
   Cell(const Cell&) = delete;
@@ -283,28 +287,27 @@ public:
   AFontSize Scale_Px(AFontSize size) const { return (*m_configuration)->Scale_Px(size); }
 
 #if wxUSE_ACCESSIBILITY
-  // The methods marked final indicate that their implementation within Cell
-  // should be sufficient. If that's not the case, the final qualification can be
-  // removed with due caution.
+  // The methods whose implementation within Cell should be sufficient are
+  // not virtual. Should that prove not to be the case eventually, they can be
+  // made virtual with due caution.
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (wxAccessible ** parent) override final;
-  //! Accessibility: How many childs of this cell GetChild() can retrieve?
-  wxAccStatus GetChildCount (int *childCount) override final;
+  wxAccStatus GetParent (Cell ** parent) const;
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
-  wxAccStatus GetChild (int childId, wxAccessible **child) override final;
+  wxAccStatus GetChild(int childId, Cell **child) const;
   //! Accessibility: Is pt inside this cell or a child cell?
-  wxAccStatus HitTest (const wxPoint &pt,
-                      int *childId, wxAccessible **childObject) override final;
+  wxAccStatus HitTest (const wxPoint &pt, int *childId, Cell **child);
 
   //! Accessibility: Describe the current cell to a Screen Reader
-  wxAccStatus GetDescription(int childId, wxString *description) override;
+  virtual wxAccStatus GetDescription(int childId, wxString *description) const;
   //! Accessibility: Does this or a child cell currently own the focus?
-  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
+  virtual wxAccStatus GetFocus (int *childId, Cell **child) const;
+  //! Accessibility: Describe the action this Cell performs, if any
+  virtual wxAccStatus GetDefaultAction(int childId, wxString *actionName) const;
   //! Accessibility: Where is this cell to be found?
-  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
+  virtual wxAccStatus GetLocation (wxRect &rect, int elementId);
   //! Accessibility: What is the contents of this cell?
-  wxAccStatus GetValue (int childId, wxString *strValue) override;
-  wxAccStatus GetRole (int childId, wxAccRole *role) override;
+  virtual wxAccStatus GetValue (int childId, wxString *strValue) const;
+  virtual wxAccStatus GetRole (int childId, wxAccRole *role) const;
 #endif
   
 
@@ -945,12 +948,15 @@ public:
   void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
 
+#if wxUSE_ACCESSIBILITY
+  CellAccessible *GetAccessible();
+#endif
+
 protected:
-//** Bases and internal members (64 bytes)
+//** Bases and internal members (16 bytes)
 //**
 // VTable  *__vtable;
 // Observed __observed;
-// wxAccessible __accessible;
 
 //** Large objects (48 bytes)
 //**
@@ -977,7 +983,7 @@ protected:
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor = -1;
 
-//** 8/4-byte objects (40 bytes)
+//** 8/4-byte objects (40 + 8* bytes)
 //**
 
 public:
@@ -995,6 +1001,11 @@ public:
     m_nextToDraw and m_next
    */
   CellPtr<Cell> m_previous;
+
+private:
+#if wxUSE_ACCESSIBILITY
+  std::unique_ptr<CellAccessible> m_accessible;
+#endif
 
 protected:
   /*! The GroupCell this list of cells belongs to.
@@ -1197,5 +1208,36 @@ private:
 template <typename T>
 template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type>
 inline PtrT CellPtr<T>::CastAs() const { return dynamic_cast<PtrT>(static_cast<Cell*>(base_get())); }
+
+#if wxUSE_ACCESSIBILITY
+class CellAccessible final : public wxAccessible
+{
+public:
+  explicit CellAccessible(Cell *const forCell) : m_cell(forCell) {}
+
+  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
+  wxAccStatus GetParent (wxAccessible **parent) override;
+  //! Accessibility: How many childs of this cell GetChild() can retrieve?
+  wxAccStatus GetChildCount (int *childCount) override;
+  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
+  wxAccStatus GetChild (int childId, wxAccessible **child) override;
+  //! Accessibility: Is pt inside this cell or a child cell?
+  wxAccStatus HitTest (const wxPoint &pt,
+                      int *childId, wxAccessible **childObject) override;
+  //! Accessibility: Describe the current cell to a Screen Reader
+  wxAccStatus GetDescription(int childId, wxString *description) override;
+  //! Accessibility: Describe the action this Cell performs, if any
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
+  //! Accessibility: Does this or a child cell currently own the focus?
+  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
+  //! Accessibility: Where is this cell to be found?
+  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
+  //! Accessibility: What is the contents of this cell?
+  wxAccStatus GetValue (int childId, wxString *strValue) override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) override;
+private:
+  Cell *const m_cell;
+};
+#endif
 
 #endif // MATHCELL_H
