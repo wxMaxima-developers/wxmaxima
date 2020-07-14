@@ -261,7 +261,7 @@ void SubSupCell::Draw(wxPoint point)
   }
 }
 
-wxString SubSupCell::ToString()
+wxString SubSupCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -289,7 +289,7 @@ wxString SubSupCell::ToString()
   return s;
 }
 
-wxString SubSupCell::ToMatlab()
+wxString SubSupCell::ToMatlab() const
 {
   wxString s;
   if (m_baseCell->IsCompound())
@@ -323,7 +323,7 @@ wxString SubSupCell::ToMatlab()
   return s;
 }
 
-wxString SubSupCell::ToTeX()
+wxString SubSupCell::ToTeX() const
 {
   wxConfigBase *config = wxConfig::Get();
 
@@ -374,7 +374,7 @@ wxString SubSupCell::ToTeX()
   return s;
 }
 
-wxString SubSupCell::ToMathML()
+wxString SubSupCell::ToMathML() const
 {
   wxString retval;
   if (m_scriptCells.empty())
@@ -421,7 +421,7 @@ wxString SubSupCell::ToMathML()
   }
   return retval;
 }
-wxString SubSupCell::ToOMML()
+wxString SubSupCell::ToOMML() const
 {
   wxString retval;
   if(m_preSupCell || m_preSubCell)
@@ -452,7 +452,7 @@ wxString SubSupCell::ToOMML()
   return retval;
 }
 
-wxString SubSupCell::ToXML()
+wxString SubSupCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

@@ -107,7 +107,7 @@ void SubCell::Draw(wxPoint point)
   }
 }
 
-wxString SubCell::ToString()
+wxString SubCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -121,7 +121,7 @@ wxString SubCell::ToString()
   return s;
 }
 
-wxString SubCell::ToMatlab()
+wxString SubCell::ToMatlab() const
 {
   if (m_altCopyText != wxEmptyString)
   {
@@ -137,7 +137,7 @@ wxString SubCell::ToMatlab()
   return s;
 }
 
-wxString SubCell::ToTeX()
+wxString SubCell::ToTeX() const
 {
   wxString s;
   wxString base = m_baseCell->ListToTeX();
@@ -153,7 +153,7 @@ wxString SubCell::ToTeX()
   return s;
 }
 
-wxString SubCell::ToMathML()
+wxString SubCell::ToMathML() const
 {
   return wxT("<msub>") +
          m_baseCell->ListToMathML() +
@@ -161,13 +161,13 @@ wxString SubCell::ToMathML()
          wxT("</msub>\n");
 }
 
-wxString SubCell::ToOMML()
+wxString SubCell::ToOMML() const
 {
   return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
          m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
-wxString SubCell::ToXML()
+wxString SubCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

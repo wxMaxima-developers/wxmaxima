@@ -74,17 +74,12 @@ public:
   //! Answers the question if this is an operator by returning "true".
   bool IsOperator() const override { return true; }
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   //! Fractions in exponents are shown in their linear form.
   void SetExponentFlag() override;

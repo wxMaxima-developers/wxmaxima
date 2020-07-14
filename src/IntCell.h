@@ -71,17 +71,12 @@ public:
   //! Choose between definite and indefinite integrals
   void SetIntStyle(IntegralType style) { m_intStyle = style; }
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;

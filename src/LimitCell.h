@@ -58,17 +58,12 @@ public:
 
   void SetName(Cell *name);
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToMathML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   bool BreakUp() override;
 

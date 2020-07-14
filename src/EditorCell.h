@@ -172,32 +172,25 @@ public:
 
   virtual void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
+  //! Convert the current cell to HTML code.
+  wxString ToHTML() const;
+  wxString ToMatlab() const override;
   /*! Convert the current cell to a string
   
     \param dontLimitToSelection
     - false: If text is selected return only the selected text
     - true:  Always return all text in this text cell
   */
-  wxString ToString(bool dontLimitToSelection);
-
   //! Convert the current cell to Matlab code
-  wxString ToMatlab(bool dontLimitToSelection);
-
-  //! Convert the current cell to LaTeX code
-  wxString ToTeX() override;
-
-  //! Convert the current cell to XML code for inclusion in a .wxmx file.
-  wxString ToXML() override;
-
-  //! Convert the current cell to HTML code.
-  wxString ToHTML();
-
+  wxString ToMatlab(bool dontLimitToSelection) const;
   //! Convert the current cell to RTF code
-  wxString ToRTF() override;
+  wxString ToRTF() const override;
+  wxString ToString() const override;
+  wxString ToString(bool dontLimitToSelection) const;
+  //! Convert the current cell to LaTeX code
+  wxString ToTeX() const override;
+  //! Convert the current cell to XML code for inclusion in a .wxmx file.
+  wxString ToXML() const override;
 
   //! Set the currently used font to the one that matches this cell's formatting
   void SetFont();

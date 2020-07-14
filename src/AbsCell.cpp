@@ -123,7 +123,7 @@ void AbsCell::Draw(wxPoint point)
   }
 }
 
-wxString AbsCell::ToString()
+wxString AbsCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -132,7 +132,7 @@ wxString AbsCell::ToString()
   return s;
 }
 
-wxString AbsCell::ToMatlab()
+wxString AbsCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -141,14 +141,14 @@ wxString AbsCell::ToMatlab()
   return s;
 }
 
-wxString AbsCell::ToTeX()
+wxString AbsCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
 }
 
-wxString AbsCell::ToMathML()
+wxString AbsCell::ToMathML() const
 {
   return wxT("<row><mo>|</mo>") +
          m_innerCell->ListToMathML() +
@@ -156,13 +156,13 @@ wxString AbsCell::ToMathML()
 //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
 }
 
-wxString AbsCell::ToOMML()
+wxString AbsCell::ToOMML() const
 {
   return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
-wxString AbsCell::ToXML()
+wxString AbsCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

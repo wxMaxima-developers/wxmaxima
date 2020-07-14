@@ -248,12 +248,12 @@ EditorCell::EditorCell(const EditorCell &cell):
   CopyCommonData(cell);
 }
 
-wxString EditorCell::ToString()
+wxString EditorCell::ToString() const
 {
   return ToString(false);
 }
 
-wxString EditorCell::ToString(bool dontLimitToSelection)
+wxString EditorCell::ToString(bool dontLimitToSelection) const
 {
   wxString text = m_text;
   // Remove all soft line breaks
@@ -272,12 +272,12 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   return text;
 }
 
-wxString EditorCell::ToMatlab()
+wxString EditorCell::ToMatlab() const
 {
   return ToMatlab(false);
 }
 
-wxString EditorCell::ToMatlab(bool dontLimitToSelection)
+wxString EditorCell::ToMatlab(bool dontLimitToSelection) const
 {
   wxString text = m_text;
   // Remove all soft line breaks
@@ -296,7 +296,7 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection)
   return text;
 }
 
-wxString EditorCell::ToRTF()
+wxString EditorCell::ToRTF() const
 {
   wxString retval;
 
@@ -358,7 +358,7 @@ wxString EditorCell::ToRTF()
   return retval;
 }
 
-wxString EditorCell::ToTeX()
+wxString EditorCell::ToTeX() const
 {
   wxString text = m_text;
   if (!text.StartsWith(wxT("TeX:")))
@@ -488,7 +488,7 @@ wxString EditorCell::ToTeX()
   return text;
 }
 
-wxString EditorCell::ToXML()
+wxString EditorCell::ToXML() const
 {
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
@@ -637,12 +637,11 @@ void EditorCell::RecalculateWidths(AFontSize fontsize)
   Cell::RecalculateWidths(fontsize);
 }
 
-wxString EditorCell::ToHTML()
+wxString EditorCell::ToHTML() const
 {
-  EditorCell *tmp = this;
   wxString retval;
 
-  while (tmp != NULL)
+  for (const EditorCell *tmp = this; tmp; tmp = dynamic_cast<EditorCell *>(tmp->GetNext()))
   {
     for (std::vector<StyledText>::const_iterator textSnippet = m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet)
@@ -685,7 +684,6 @@ wxString EditorCell::ToHTML()
       else
         retval += text;
     }
-    tmp = dynamic_cast<EditorCell *>(tmp->m_next);
   }
   return retval;
 }

@@ -394,7 +394,7 @@ void IntCell::Draw(wxPoint point)
   }
 }
 
-wxString IntCell::ToString()
+wxString IntCell::ToString() const
 {
   wxString s = wxT("integrate(");
 
@@ -419,7 +419,7 @@ wxString IntCell::ToString()
   return s;
 }
 
-wxString IntCell::ToMatlab()
+wxString IntCell::ToMatlab() const
 {
   wxString s = wxT("integrate(");
 
@@ -444,7 +444,7 @@ wxString IntCell::ToMatlab()
   return s;
 }
 
-wxString IntCell::ToTeX()
+wxString IntCell::ToTeX() const
 {
   wxString s = wxT("\\int");
 
@@ -464,7 +464,7 @@ wxString IntCell::ToTeX()
   return s;
 }
 
-wxString IntCell::ToMathML()
+wxString IntCell::ToMathML() const
 {
   wxString base = m_base->ListToMathML();
 
@@ -492,7 +492,7 @@ wxString IntCell::ToMathML()
   return (wxT("<mrow>") + retval + wxT("</mrow>"));
 }
 
-wxString IntCell::ToOMML()
+wxString IntCell::ToOMML() const
 {
   wxString base = m_base->ListToOMML();
 
@@ -517,7 +517,7 @@ wxString IntCell::ToOMML()
   return retval;
 }
 
-wxString IntCell::ToXML()
+wxString IntCell::ToXML() const
 {
   wxString from;
   if (m_under != NULL)

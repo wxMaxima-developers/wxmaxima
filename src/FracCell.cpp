@@ -206,7 +206,7 @@ void FracCell::Draw(wxPoint point)
   }
 }
 
-wxString FracCell::ToString()
+wxString FracCell::ToString() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -249,7 +249,7 @@ wxString FracCell::ToString()
   return s;
 }
 
-wxString FracCell::ToMatlab()
+wxString FracCell::ToMatlab() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -290,7 +290,7 @@ wxString FracCell::ToMatlab()
   return s;
 }
 
-wxString FracCell::ToTeX()
+wxString FracCell::ToTeX() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -309,7 +309,7 @@ wxString FracCell::ToTeX()
   return s;
 }
 
-wxString FracCell::ToMathML()
+wxString FracCell::ToMathML() const
 {
   return wxT("<mfrac>") +
          Num()->ListToMathML() +
@@ -317,14 +317,14 @@ wxString FracCell::ToMathML()
 }
 
 
-wxString FracCell::ToOMML()
+wxString FracCell::ToOMML() const
 {
   return wxT("<m:f><m:num>") +
          Num()->ListToOMML() + wxT("</m:num><m:den>") +
          Denom()->ListToOMML() + wxT("</m:den></m:f>\n");
 }
 
-wxString FracCell::ToXML()
+wxString FracCell::ToXML() const
 {
   wxString s = (m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF) ?
                _T("f") : _T("f line = \"no\"");

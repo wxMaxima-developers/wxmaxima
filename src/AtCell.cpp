@@ -112,7 +112,7 @@ void AtCell::Draw(wxPoint point)
   }
 }
 
-wxString AtCell::ToString()
+wxString AtCell::ToString() const
 {
   wxString s = wxT("at(");
   s += m_baseCell->ListToString();
@@ -120,7 +120,7 @@ wxString AtCell::ToString()
   return s;
 }
 
-wxString AtCell::ToMatlab()
+wxString AtCell::ToMatlab() const
 {
   wxString s = wxT("at(");
   s += m_baseCell->ListToMatlab();
@@ -128,7 +128,7 @@ wxString AtCell::ToMatlab()
   return s;
 }
 
-wxString AtCell::ToTeX()
+wxString AtCell::ToTeX() const
 {
   wxString s = wxT("\\left. ");
   s += m_baseCell->ListToTeX();
@@ -136,20 +136,20 @@ wxString AtCell::ToTeX()
   return s;
 }
 
-wxString AtCell::ToMathML()
+wxString AtCell::ToMathML() const
 {
   return wxT("<msub>") + m_baseCell->ListToMathML() +
          m_indexCell->ListToMathML() + wxT("</msub>\n");
 }
 
-wxString AtCell::ToOMML()
+wxString AtCell::ToOMML() const
 {
   return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
          m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
 
-wxString AtCell::ToXML()
+wxString AtCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

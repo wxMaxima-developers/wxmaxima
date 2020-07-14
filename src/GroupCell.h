@@ -168,20 +168,20 @@ public:
   //! GroupCells warn if they contain both greek and latin lookalike chars.
   void UpdateConfusableCharWarnings();
   
-  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter) const;
 
-  wxString ToRTF() override;
+  wxString ToRTF() const override;
 
-  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter) const;
 
   static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeX() override;
+  wxString ToTeX() const override;
 
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
 
-  wxString ToXML() override;
+  wxString ToXML() const override;
 
   void Hide(bool hide) override;
 
@@ -384,7 +384,7 @@ public:
   bool Contains(GroupCell *cell) const;
 
   //! A textual representation of this cell
-  wxString ToString() override;
+  wxString ToString() const override;
 
   //! Is this cell part of the evaluation Queue?
   void InEvaluationQueue(bool inQueue) { m_inEvaluationQueue = inQueue; }
@@ -475,8 +475,7 @@ public:
 
   void UpdateYPositionList();
 
-  bool GetSuppressTooltipMarker()
-    {return m_suppressTooltipMarker;}
+  bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress)
     {m_suppressTooltipMarker = suppress;}
 protected:

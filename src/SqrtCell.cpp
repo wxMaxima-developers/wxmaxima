@@ -250,7 +250,7 @@ void SqrtCell::Draw(wxPoint point)
   }
 }
 
-wxString SqrtCell::ToString()
+wxString SqrtCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -258,7 +258,7 @@ wxString SqrtCell::ToString()
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString SqrtCell::ToMatlab()
+wxString SqrtCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -266,7 +266,7 @@ wxString SqrtCell::ToMatlab()
 	return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
 }
 
-wxString SqrtCell::ToTeX()
+wxString SqrtCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -274,18 +274,18 @@ wxString SqrtCell::ToTeX()
     return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString SqrtCell::ToMathML()
+wxString SqrtCell::ToMathML() const
 {
   return wxT("<msqrt>") + m_innerCell->ListToMathML() + wxT("</msqrt>\n");
 }
 
-wxString SqrtCell::ToOMML()
+wxString SqrtCell::ToOMML() const
 {
   return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") + m_innerCell->ListToOMML() +
          wxT("</m:e></m:rad>\n");
 }
 
-wxString SqrtCell::ToXML()
+wxString SqrtCell::ToXML() const
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;

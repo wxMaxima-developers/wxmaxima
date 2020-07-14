@@ -153,7 +153,7 @@ void ExptCell::RecalculateHeight(AFontSize fontsize)
   Cell::RecalculateHeight(fontsize);
 }
 
-wxString ExptCell::ToString()
+wxString ExptCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -169,7 +169,7 @@ wxString ExptCell::ToString()
   return s;
 }
 
-wxString ExptCell::ToMatlab()
+wxString ExptCell::ToMatlab() const
 {
   if (m_altCopyText != wxEmptyString)
 	return m_altCopyText;
@@ -185,7 +185,7 @@ wxString ExptCell::ToMatlab()
   return s;
 }
 
-wxString ExptCell::ToTeX()
+wxString ExptCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -205,7 +205,7 @@ wxString ExptCell::GetDiffPart() const
   return s;
 }
 
-wxString ExptCell::ToMathML()
+wxString ExptCell::ToMathML() const
 {
   return wxT("<msup>") +
          m_baseCell->ListToMathML() +
@@ -214,13 +214,13 @@ wxString ExptCell::ToMathML()
 //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_exptCell->ListToMathML() + wxT("</apply>");
 }
 
-wxString ExptCell::ToOMML()
+wxString ExptCell::ToOMML() const
 {
   return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
          m_exptCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
 }
 
-wxString ExptCell::ToXML()
+wxString ExptCell::ToXML() const
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;

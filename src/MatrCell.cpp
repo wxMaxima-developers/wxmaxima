@@ -238,7 +238,7 @@ void MatrCell::Draw(wxPoint point)
   }
 }
 
-wxString MatrCell::ToString()
+wxString MatrCell::ToString() const
 {
   wxString s = wxT("matrix(\n");
   for (unsigned int i = 0; i < m_matHeight; i++)
@@ -259,7 +259,7 @@ wxString MatrCell::ToString()
   return s;
 }
 
-wxString MatrCell::ToMatlab()
+wxString MatrCell::ToMatlab() const
 {
 	//ToDo: We ignore colNames and rowNames here. Are they currently in use?
 	wxString s;
@@ -282,7 +282,7 @@ wxString MatrCell::ToMatlab()
 	return s;
 }
 
-wxString MatrCell::ToTeX()
+wxString MatrCell::ToTeX() const
 {
   //ToDo: We ignore colNames and rowNames here. Are they currently in use?
   wxString s;
@@ -324,7 +324,7 @@ wxString MatrCell::ToTeX()
   return s;
 }
 
-wxString MatrCell::ToMathML()
+wxString MatrCell::ToMathML() const
 {
   wxString retval;
   if (!m_specialMatrix)
@@ -344,7 +344,7 @@ wxString MatrCell::ToMathML()
   return retval;
 }
 
-wxString MatrCell::ToOMML()
+wxString MatrCell::ToOMML() const
 {
   wxString retval;
 
@@ -371,7 +371,7 @@ wxString MatrCell::ToOMML()
   return retval;
 }
 
-wxString MatrCell::ToXML()
+wxString MatrCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

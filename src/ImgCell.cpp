@@ -211,17 +211,17 @@ void ImgCell::Draw(wxPoint point)
   m_drawBoundingBox = false;
 }
 
-wxString ImgCell::ToString()
+wxString ImgCell::ToString() const
 {
   return _(" (Graphics) ");
 }
 
-wxString ImgCell::ToMatlab()
+wxString ImgCell::ToMatlab() const
 {
   return _(" (Graphics) ");
 }
 
-wxString ImgCell::ToTeX()
+wxString ImgCell::ToTeX() const
 {
   return _(" (Graphics) ");
 }
@@ -246,7 +246,7 @@ static void writeHex(void *data, size_t length, wxStringCharType *out)
   }
 }
 
-wxString ImgCell::ToRTF()
+wxString ImgCell::ToRTF() const
 {
   // Lines that are common to all types of images
   wxString header = wxT("{\\pict");
@@ -295,7 +295,7 @@ wxString ImgCell::ToRTF()
   return result;
 }
 
-wxString ImgCell::ToXML()
+wxString ImgCell::ToXML() const
 {
   wxString basename = m_cellPointers->WXMXGetNewFileName();
 

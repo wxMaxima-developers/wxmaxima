@@ -61,19 +61,13 @@ public:
    */
   void DontEscapeOpeningParenthesis() { m_dontEscapeOpeningParenthesis = true; }
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToRTF() override;
-
-  wxString ToXML() override;
+  wxString ToMatlab() const override;
+  wxString ToMathML() const override;
+  wxString ToOMML() const override;
+  wxString ToRTF() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   wxString GetDiffPart() const override;
 

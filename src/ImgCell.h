@@ -108,15 +108,11 @@ public:
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToRTF() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
+  wxString ToMatlab() const override;
+  wxString ToRTF() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 
