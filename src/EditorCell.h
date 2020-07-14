@@ -84,41 +84,6 @@ public:
   //! May this Editor Cell contain the answer to a question?
   void AutoAnswer(bool autoAnswer){m_autoAnswer = autoAnswer;}
 
-  //! Which cell the blinking cursor is in?
-  EditorCell *GetActiveCell() const { return m_cellPointers->m_activeCell; }
-
-  /*! Tells where the mouse selection has started.
-
-    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
-    remove this pointer.
-   */
-  EditorCell *MouseSelectionStart() const
-  { return m_cellPointers->m_cellMouseSelectionStartedIn; }
-
-  /*! Tells where the keyboard selection has started.
-
-    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
-    remove this pointer.
-   */
-  EditorCell *KeyboardSelectionStart() const
-  { return m_cellPointers->m_cellKeyboardSelectionStartedIn; }
-
-  /*! Tells where the search has started.
-
-    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
-    remove this pointer.
-   */
-  EditorCell *SearchStart() const
-  { return m_cellPointers->m_cellSearchStartedIn; }
-
-  /*! At which character inside its cell has the search started?
-
-    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
-    remove this pointer.
-   */
-  int IndexSearchStartedAt() const
-  { return m_cellPointers->m_indexSearchStartedAt; }
-
   /*! Remember that this is the cell the search was started in.
 
     \param index The index of the character the search was started at.
@@ -141,14 +106,6 @@ public:
   //! Remember that this is the cell the keyboard selection was started in.
   void KeyboardSelectionStartedHere()
   { m_cellPointers->m_cellKeyboardSelectionStartedIn = this; }
-
-  //! Remember that this is the cell the keyboard selection was started in.
-  void IndexSearchStartedAt(int index)
-  { m_cellPointers->m_indexSearchStartedAt = index; }
-
-  //! Set the string that is to be highlighted as "identical to the current selection"
-  void SetSelectionString(wxString string)
-  { m_cellPointers->m_selectionString = string; }
 
   //! A list of words that might be applicable to the autocomplete function.
   const wxArrayString &GetWordList() const { return m_wordList; }
