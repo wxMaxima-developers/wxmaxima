@@ -87,6 +87,7 @@ class EnumWrapper {
 public:
   constexpr EnumWrapper() = default;
   constexpr EnumWrapper(Storage) = delete;
+  // cppcheck-suppress noExplicitConstructor
   constexpr EnumWrapper(Enum value) noexcept : value(value) {}
   constexpr operator Enum() const noexcept { return Enum(value); }
   constexpr operator Storage() const = delete;

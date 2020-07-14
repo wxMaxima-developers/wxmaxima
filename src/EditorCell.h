@@ -109,7 +109,7 @@ public:
   { m_cellPointers->m_cellKeyboardSelectionStartedIn = this; }
 
   //! A list of words that might be applicable to the autocomplete function.
-  const wxArrayString &GetWordList() const { return m_wordList; }
+  const auto &GetWordList() const { return m_wordList; }
 
   /*! Expand all tabulators.
 
@@ -598,7 +598,7 @@ private:
   StringHash m_widths;
 
   //! A list of all potential autoComplete targets within this cell
-  wxArrayString m_wordList;
+  std::vector<wxString> m_wordList;
 
   //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
   MaximaTokenizer::TokenList m_tokens;
