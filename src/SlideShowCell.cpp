@@ -30,6 +30,7 @@
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
 #include "SlideShowCell.h"
+#include "CellPointers.h"
 #include "ImgCell.h"
 
 #include <wx/quantize.h>
@@ -50,6 +51,7 @@
 // cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(parent, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
     m_framerate(framerate)
 {
@@ -60,6 +62,7 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr 
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
     Cell(parent, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_framerate(framerate)
 {
   m_type = MC_TYPE_SLIDE;

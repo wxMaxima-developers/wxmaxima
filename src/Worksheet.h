@@ -39,6 +39,7 @@
 #include <wx/dc.h>
 #include <list>
 
+#include "CellPointers.h"
 #include "VariablesPane.h"
 #include "Notification.h"
 #include "Cell.h"
@@ -89,7 +90,7 @@ private:
   //! Is a scroll to the cursor scheduled?
   bool m_scrollToCaret;
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  Cell::CellPointers m_cellPointers;
+  CellPointers m_cellPointers;
   // The x position to scroll to
   int m_newxPosition;
   // The y position to scroll to
@@ -668,9 +669,9 @@ public:
   int IndexSearchStartedAt()
   { return m_cellPointers.m_indexSearchStartedAt; }
 
-  Cell::CellPointers &GetCellPointers() { return m_cellPointers; }
+  CellPointers &GetCellPointers() { return m_cellPointers; }
 
-  Cell::CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
+  CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
   TextCell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
   void SetCurrentTextCell(TextCell *cell) { m_cellPointers.m_currentTextCell = cell; }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }

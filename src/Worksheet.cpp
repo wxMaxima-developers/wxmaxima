@@ -8524,5 +8524,5 @@ wxDataFormat Worksheet::m_rtfFormat;
 wxDataFormat Worksheet::m_rtfFormat2;
 wxDataFormat Worksheet::m_wxmFormat;
 
-Cell::CellPointers *Cell::GetCellPointers() const
+CellPointers *Cell::GetCellPointers() const
 { return &GetWorksheet()->GetCellPointers(); }

@@ -11,6 +11,7 @@ set(SOURCE_FILES
     BTextCtrl.cpp
     BitmapOut.cpp
     Cell.cpp
+    CellPointers.cpp
     CellPtr.cpp
     CharButton.cpp
     CompositeDataObject.cpp

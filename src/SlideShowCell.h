@@ -171,7 +171,7 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
-  wxTimer m_timer{ m_cellPointers->GetWorksheet(), wxNewId() };
+  wxTimer m_timer;
   std::vector<std::shared_ptr<Image>> m_images;
   std::shared_ptr<wxFileSystem> m_fileSystem;
   CellPtr<Cell> m_nextToDraw;
