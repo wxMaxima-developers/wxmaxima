@@ -761,7 +761,8 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML Monitor"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_dockAll, _("Dock all Sidebars"));
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->Append(menu_pane_dockAll, _("Dock all Sidebars"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
@@ -1599,6 +1600,7 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent & WXUNUSED(ev))
   m_manager.GetPane(wxT("symbols")).Dock();
   m_manager.GetPane(wxT("format")).Dock();
   m_manager.GetPane(wxT("draw")).Dock();
+  m_manager.Update();
 }
 
 void wxMaximaFrame::ShowPane(Event id, bool show)
