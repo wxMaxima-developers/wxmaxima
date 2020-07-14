@@ -264,15 +264,19 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
     SuppressErrorDialogs blocker;
     m_matcher.Compile(regex);
   }
-  if(m_matcher.IsValid())
+  if(m_matcher.IsValid() && !m_matcherValid_Last)
   {
+    m_matcherValid_Last = true;
     m_regex->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
     m_regex->SetToolTip(RegexTooltip_norm);
+    m_regex->Refresh();
   }
-  else
+  if(!m_matcher.IsValid() && m_matcherValid_Last)
   {
+    m_matcherValid_Last = false;
     m_regex->SetBackgroundColour(wxColor(255,192,192));
     m_regex->SetToolTip(RegexTooltip_error);
+    m_regex->Refresh();
   }
   m_useMatcher = m_matcher.IsValid() && !m_matcherExpr.empty();
   RebuildDisplay();

@@ -91,6 +91,7 @@ private:
   bool m_useMatcher = false;
   //! Whether the history should be updated now or later
   bool m_realtimeUpdate = true;
+  bool m_matcherValid_Last = true;
 };
 
 #endif // HISTORY_H
