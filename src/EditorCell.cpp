@@ -2203,10 +2203,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
 
   if (m_historyPosition != -1)
   {
-    m_textHistory.erase(m_textHistory.begin() + m_historyPosition + 1, m_textHistory.end());
-    m_startHistory.erase(m_startHistory.begin() + m_historyPosition + 1, m_startHistory.end());
-    m_endHistory.erase(m_endHistory.begin() + m_historyPosition + 1, m_endHistory.end());
-    m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition + 1, m_positionHistory.end());
+    m_history.erase(m_history.begin() + m_historyPosition + 1, m_history.end());
     m_historyPosition = -1;
   }
 
@@ -3218,21 +3215,30 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
   return width;
 }
 
-
-bool EditorCell::CanUndo()
+void EditorCell::SetState(const HistoryEntry &state)
 {
-  return !m_textHistory.empty() && m_historyPosition != 0;
+  m_text = state.text;
+  StyleText();
+  m_positionOfCaret = state.caretPosition;
+  SetSelection(state.selStart, state.selEnd);
+}
+
+void EditorCell::AppendStateToHistory()
+{
+  m_history.emplace_back(m_text, m_positionOfCaret, m_selectionStart, m_selectionEnd);
+}
+
+bool EditorCell::CanUndo() const
+{
+  return !m_history.empty() && m_historyPosition != 0;
 }
 
 void EditorCell::Undo()
 {
   if (m_historyPosition == -1)
   {
-    m_historyPosition = m_textHistory.size() - 1;
-    m_textHistory.emplace_back(m_text);
-    m_startHistory.push_back(m_selectionStart);
-    m_endHistory.push_back(m_selectionEnd);
-    m_positionHistory.push_back(m_positionOfCaret);
+    m_historyPosition = m_history.size() - 1;
+    AppendStateToHistory();
   }
   else
     m_historyPosition--;
@@ -3241,11 +3247,7 @@ void EditorCell::Undo()
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_textHistory.at(m_historyPosition);
-  StyleText();
-
-  m_positionOfCaret = m_positionHistory[m_historyPosition];
-  SetSelection(m_startHistory[m_historyPosition], m_endHistory[m_historyPosition]);
+  SetState(m_history[m_historyPosition]);
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -3253,11 +3255,11 @@ void EditorCell::Undo()
 }
 
 
-bool EditorCell::CanRedo()
+bool EditorCell::CanRedo() const
 {
-  return !m_textHistory.empty() &&
+  return !m_history.empty() &&
          m_historyPosition >= 0 &&
-         m_historyPosition < ((long) m_textHistory.size()) - 1;
+         m_historyPosition < ((long) m_history.size()) - 1;
 }
 
 void EditorCell::Redo()
@@ -3267,15 +3269,11 @@ void EditorCell::Redo()
 
   m_historyPosition++;
 
-  if (m_historyPosition >= (long) m_textHistory.size())
+  if (m_historyPosition >= (long) m_history.size())
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_textHistory.at(m_historyPosition);
-  StyleText();
-
-  m_positionOfCaret = m_positionHistory[m_historyPosition];
-  SetSelection(m_startHistory[m_historyPosition], m_endHistory[m_historyPosition]);
+  SetState(m_history[m_historyPosition]);
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -3285,30 +3283,21 @@ void EditorCell::Redo()
 
 void EditorCell::SaveValue()
 {
-  if (!m_textHistory.empty() && m_textHistory.back() == m_text)
+  if (!m_history.empty() && m_history.back().text == m_text)
     return;
 
   if (m_historyPosition != -1)
   {
-    m_textHistory.erase(m_textHistory.begin() + m_historyPosition, m_textHistory.end());
-    m_startHistory.erase(m_startHistory.begin() + m_historyPosition, m_startHistory.end());
-    m_endHistory.erase(m_endHistory.begin() + m_historyPosition, m_endHistory.end());
-    m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition, m_positionHistory.end());
+    m_history.erase(m_history.begin() + m_historyPosition, m_history.end());
   }
 
-  m_textHistory.emplace_back(m_text);
-  m_startHistory.push_back(m_selectionStart);
-  m_endHistory.push_back(m_selectionEnd);
-  m_positionHistory.push_back(m_positionOfCaret);
+  AppendStateToHistory();
   m_historyPosition = -1;
 }
 
 void EditorCell::ClearUndo()
 {
-  m_textHistory.clear();
-  m_startHistory.clear();
-  m_endHistory.clear();
-  m_positionHistory.clear();
+  m_history.clear();
   m_historyPosition = -1;
 }
 

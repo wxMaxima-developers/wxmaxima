@@ -326,13 +326,13 @@ public:
   void CaretToPosition(int pos);
 
   //! True, if there is undo information for this cell
-  bool CanUndo(); 
+  bool CanUndo() const;
 
   //! Issue an undo command
   void Undo();
 
   //! True, if a redo can be done for this cell.
-  bool CanRedo();
+  bool CanRedo() const;
 
   //! Issu a redo command
   void Redo();
@@ -576,6 +576,21 @@ private:
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text);
 
+  struct HistoryEntry // 64 bytes
+  {
+    wxString text;
+    int caretPosition = -1;
+    int selStart = -1;
+    int selEnd = -1;
+    HistoryEntry() = default;
+    HistoryEntry(const wxString &text, int caretPosition, int selStart, int selEnd) :
+      text(text), caretPosition(caretPosition), selStart(selStart), selEnd(selEnd) {}
+  };
+  //! Set the editor's state from a history entry
+  void SetState(const HistoryEntry &state);
+  //! Append the editor's state to the history
+  void AppendStateToHistory();
+
 //** Large fields
 //**
   WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
@@ -591,10 +606,7 @@ private:
   wxString m_text;
   std::vector<StyledText> m_styledText;
 
-  std::vector<wxString> m_textHistory;
-  std::vector<int> m_positionHistory;
-  std::vector<int> m_startHistory;
-  std::vector<int> m_endHistory;
+  std::vector<HistoryEntry> m_history;
 
 //** 8/4 bytes
 //**
