@@ -473,6 +473,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
     .CloseButton(true).Resizable().PaneBorder(true).Movable(true);
   m_manager.Update();
+  Connect(menu_pane_dockAll, wxEVT_MENU,
+          wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
   Layout();
 }
 
@@ -759,6 +761,8 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML Monitor"));
+  m_Maxima_Panes_Sub->AppendSeparator();
+  m_Maxima_Panes_Sub->Append(menu_pane_dockAll, _("Dock all Sidebars"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
@@ -1580,6 +1584,23 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
   }
 
   return displayed;
+}
+
+void wxMaximaFrame::DockAllSidebars(wxCommandEvent & WXUNUSED(ev))
+{
+  m_manager.GetPane(wxT("math")).Dock();
+  m_manager.GetPane(wxT("history")).Dock();
+  m_manager.GetPane(wxT("structure")).Dock();
+  m_manager.GetPane(wxT("XmlInspector")).Dock();
+  m_manager.GetPane(wxT("stats")).Dock();
+  m_manager.GetPane(wxT("greek")).Dock();
+  m_manager.GetPane(wxT("log")).Dock();
+  m_manager.GetPane(wxT("unicode")).Dock();
+  m_manager.GetPane(wxT("variables")).Dock();
+  m_manager.GetPane(wxT("symbols")).Dock();
+  m_manager.GetPane(wxT("format")).Dock();
+  m_manager.GetPane(wxT("draw")).Dock();
+  m_manager.Update();
 }
 
 void wxMaximaFrame::ShowPane(Event id, bool show)
