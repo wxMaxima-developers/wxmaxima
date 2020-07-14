@@ -25,6 +25,7 @@
 #define EDITORCELL_H
 
 #include "Cell.h"
+#include "FontAttribs.h"
 #include "MaximaTokenizer.h"
 #include <vector>
 #include <list>
@@ -599,13 +600,13 @@ private:
 //**
   AFontName m_fontName;
   CellPtr<Cell> m_nextToDraw;
-  //! Where in the undo history are we?
-  ptrdiff_t m_historyPosition = -1;
 
 //** 4 bytes
 //**
   int m_errorIndex = 1;
   unsigned int m_numberOfLines = 1;
+  //! Where in the undo history are we?
+  int m_historyPosition = -1;
 
   /*! The start of the current selection.
 
@@ -636,9 +637,6 @@ private:
   //! Used when moving up/down between lines
   int m_caretColumn = -1;
 
-  wxFontStyle m_fontStyle = wxFONTSTYLE_NORMAL;
-  wxFontWeight m_fontWeight = wxFONTWEIGHT_NORMAL;
-
 //** 2 bytes
 //**
   /*! The font size we were called with  the last time
@@ -646,6 +644,8 @@ private:
     We need to know this in order to be able to detect we need a full recalculation.
    */
   AFontSize m_fontSize_Last;
+  AFontStyle m_fontStyle;
+  AFontWeight m_fontWeight;
 
 //** Bitfield objects (2 bytes)
 //**
