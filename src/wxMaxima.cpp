@@ -3850,7 +3850,12 @@ void wxMaxima::LaunchHelpBrowser(wxString uri)
 {
   if(m_worksheet->m_configuration->AutodetectHelpBrowser())
   {
-    if(!wxLaunchDefaultBrowser(uri))
+    bool helpBrowserLaunched;
+    {
+      SuppressErrorDialogs suppressor;
+      helpBrowserLaunched = wxLaunchDefaultBrowser(uri);
+    }
+    if(!helpBrowserLaunched)
     {
       // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
       auto *manager = wxTheMimeTypesManager;
