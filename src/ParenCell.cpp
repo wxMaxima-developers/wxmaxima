@@ -46,8 +46,6 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_last1
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_print
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_numberOfExtensions
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth1
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight1
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signWidth

@@ -114,8 +114,10 @@ private:
   int m_signWidth = 18;
   //! How far is the integral sign's center from the top of this cell?
   int m_signTop = m_signHeight / 2;
+#if defined __WXMSW__
   int m_charHeight = 12;
   int m_charWidth = 12;
+#endif
 };
 
 #endif  // INTCELL_H

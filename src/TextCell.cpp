@@ -295,8 +295,6 @@ void TextCell::SetValue(const wxString &text)
   ResetSize();
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_fontname
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_texFontname
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
@@ -479,8 +477,6 @@ void TextCell::RecalculateWidths(AFontSize fontsize)
       (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
         )
       UpdateDisplayedText();
-    
-    m_lastCalculationFontSize = fontsize;
   
     if((m_textStyle == TS_NUMBER) && (m_numStart != wxEmptyString))
     {      
