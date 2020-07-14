@@ -149,6 +149,9 @@ after_test:
       cpack -G NSIS
       if (! $?) { throw "CPack failed with exit code $LastExitCode" }
       popd
+      echo '* Compressing the executable'
+      7z a wxMaxima.exe.zip build/src/*.exe
+
 
 on_failure:
   - ps: |
@@ -160,7 +163,7 @@ on_failure:
 artifacts:
   - path: 'build\*.exe'
     name: wxMaxima_Installer
-  - path: 'build\src\*.exe'
+  - path: 'wxMaxima.exe.zip'
     name: wxMaxima
 
 for:
