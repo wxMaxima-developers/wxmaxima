@@ -381,6 +381,9 @@ wxSize TextCell::GetTextSizeFor(wxDC *const dc, TextCell::TextIndex const index)
     if (entry.index == index && entry.fontSize == fontSize)
       return entry.textSize;
 
+  if (!dc)
+    return {};
+
   const wxString &text = GetTextFor(index);
   if (text.empty())
     return {};
@@ -515,14 +518,14 @@ void TextCell::RecalculateWidths(AFontSize fontsize)
   
     if((m_textStyle == TS_NUMBER) && (m_numStart != wxEmptyString))
     {
-      m_numStartWidth = GetTextSizeFor(dc, numStart);
-      m_numEndWidth = GetTextSizeFor(dc, numEnd);
-      m_ellipsisWidth = GetTextSizeFor(dc, ellipsis);
-      m_width = m_numStartWidth.GetWidth() + m_numEndWidth.GetWidth() +
-        m_ellipsisWidth.GetWidth();
+      auto numStartSize = GetTextSizeFor(dc, numStart);
+      auto numEndSize = GetTextSizeFor(dc, numEnd);
+      auto ellipsisSize = GetTextSizeFor(dc, ellipsis);
+      m_width = numStartSize.GetWidth() + numEndSize.GetWidth() +
+        ellipsisSize.GetWidth();
       m_height = wxMax(
-        wxMax(m_numStartWidth.GetHeight(), m_numEndWidth.GetHeight()),
-        m_ellipsisWidth.GetHeight());
+        wxMax(numStartSize.GetHeight(), numEndSize.GetHeight()),
+        ellipsisSize.GetHeight());
     }
     else if ((m_textStyle == TS_LABEL) ||
              (m_textStyle == TS_USERLABEL) ||
@@ -616,13 +619,15 @@ void TextCell::Draw(wxPoint point)
       else if (!m_numStart.IsEmpty())
       {
         SetFont(m_fontSize);
+        auto const numStartSize = GetTextSizeFor(nullptr, numStart);
+        auto const ellipsisSize = GetTextSizeFor(nullptr, ellipsis);
         // Sets the foreground color
         dc->DrawText(m_numStart,
                      point.x + MC_TEXT_PADDING,
                      point.y - m_realCenter + MC_TEXT_PADDING);
         dc->DrawText(m_numEnd,
-                     point.x + MC_TEXT_PADDING + m_numStartWidth.GetWidth() +
-                     m_ellipsisWidth.GetWidth(),
+                     point.x + MC_TEXT_PADDING + numStartSize.GetWidth() +
+                     ellipsisSize.GetWidth(),
                      point.y - m_realCenter + MC_TEXT_PADDING);
         wxColor textColor = dc->GetTextForeground();
         wxColor backgroundColor = dc->GetTextBackground();
@@ -634,7 +639,7 @@ void TextCell::Draw(wxPoint point)
             )
           );
         dc->DrawText(m_ellipsis,
-                     point.x + MC_TEXT_PADDING + m_numStartWidth.GetWidth(),
+                     point.x + MC_TEXT_PADDING + numStartSize.GetWidth(),
                      point.y - m_realCenter + MC_TEXT_PADDING);
       }
       /// This is the default.

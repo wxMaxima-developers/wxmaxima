@@ -33,7 +33,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 592 bytes <- 744 bytes
+// 568 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -163,10 +163,6 @@ private:
   std::vector<SizeEntry> m_sizeCache;
 
   CellPtr<Cell> m_nextToDraw;
-
-  wxSize m_numStartWidth;
-  wxSize m_ellipsisWidth;
-  wxSize m_numEndWidth;
 
   int m_realCenter = -1;
 
