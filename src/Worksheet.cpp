@@ -8260,7 +8260,7 @@ Worksheet::RtfDataObject2::RtfDataObject2(wxString data) : wxCustomDataObject(m_
   SetData(m_databuf.length(), m_databuf.data());
 }
 
-wxString Worksheet::RTFStart()
+wxString Worksheet::RTFStart() const
 {
   // The beginning of the RTF document
   wxString document = wxT("{\\rtf1\\ansi\\deff0\n\n");
@@ -8304,7 +8304,7 @@ wxString Worksheet::RTFStart()
   return document;
 }
 
-wxString Worksheet::RTFEnd()
+wxString Worksheet::RTFEnd() const
 {
   // Close the document
 

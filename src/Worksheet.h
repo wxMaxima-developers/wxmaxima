@@ -1110,10 +1110,10 @@ public:
   bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
   //! The start of a RTF document
-  wxString RTFStart();
+  wxString RTFStart() const;
 
   //! The end of a RTF document
-  wxString RTFEnd();
+  wxString RTFEnd() const;
 
   //! export to a LaTeX file
   bool ExportToTeX(const wxString &file);
