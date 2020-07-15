@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,6 +33,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
+// 568 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -47,7 +49,7 @@ public:
   void SetValue(const wxString &text) override;
 
   //! Set the automatic label maxima has assigned the current equation
-  void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
+  void SetUserDefinedLabel(const wxString &userDefinedLabel) { m_userDefinedLabel() = userDefinedLabel; }
 
   void RecalculateWidths(AFontSize fontsize) override;
 
@@ -98,19 +100,38 @@ private:
   void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
-  wxSize GetTextSize(wxString const &text);
 
   void FontsChanged() override
-    {
-      ResetSize();
-      ResetData();
-      m_widths.clear();
-    }
-
-  //! Resets the font size to label size
-  void SetFontSizeForLabel(wxDC *dc);
+  {
+    ResetSize();
+    ResetData();
+    m_sizeCache.clear();
+  }
 
   bool NeedsRecalculation(AFontSize fontSize) const override;
+
+  enum TextIndex : int8_t
+  {
+    noText,
+    displayedText,
+    userLabelText,
+    numStart,
+    ellipsis,
+    numEnd
+  };
+
+  struct SizeEntry {
+    wxSize textSize;
+    AFontSize fontSize;
+    TextIndex index;
+    SizeEntry(wxSize textSize, AFontSize fontSize, TextIndex index) :
+      textSize(textSize), fontSize(fontSize), index(index) {}
+    SizeEntry() = default;
+  };
+
+  TextIndex GetLabelIndex() const;
+  wxString GetTextFor(TextIndex text) const;
+  wxSize GetTextSizeFor(wxDC *dc, TextIndex index);
 
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
@@ -118,37 +139,30 @@ private:
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
+  //! The user-defined label for this label cell. Reuses m_numEnd since
+  //! otherwise it'd be unused for labels.
+  wxString &m_userDefinedLabel() { return m_numEnd; }
+  const wxString &m_userDefinedLabel() const { return m_numEnd; }
+
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
   //! The text we keep inside this cell
   wxString m_text;
-  //! The text we keep inside this cell
-  wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
 
+  //! The first few digits
   wxString m_numStart;
+  //! The "not all digits displayed" message.
   wxString m_ellipsis;
+  //! Last few digits (also used for user defined label)
   wxString m_numEnd;
 
   wxString m_initialToolTip;
 
-  WX_DECLARE_HASH_MAP(
-    AFontSize, wxSize, std::hash<AFontSize>, AFontSize::Equals, SizeHash);
-  //! Remembers all widths of the full text we already have configured
-  SizeHash m_widths;
-  //! The size of the first few digits
-  SizeHash m_numstartWidths;
-  //! The size of the "not all digits displayed" message.
-  SizeHash m_ellipsisWidths;
-  //! The size of the last few digits
-  SizeHash m_numEndWidths;
+  std::vector<SizeEntry> m_sizeCache;
 
   CellPtr<Cell> m_nextToDraw;
-
-  wxSize m_numStartWidth;
-  wxSize m_ellipsisWidth;
-  wxSize m_numEndWidth;
 
   int m_realCenter = -1;
 

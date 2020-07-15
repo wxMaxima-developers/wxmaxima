@@ -72,12 +72,19 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  struct DropCenter
+  {
+    int drop = {}, center = {};
+    constexpr int Sum() const { return drop + center; }
+    constexpr DropCenter() = default;
+    constexpr DropCenter(int drop, int center) : drop(drop), center(center) {}
+  };
+
   //! Collection of pointers to inner cells.
   std::vector<std::unique_ptr<Cell>> m_cells;
 
   std::vector<int> m_widths;
-  std::vector<int> m_drops;
-  std::vector<int> m_centers;
+  std::vector<DropCenter> m_dropCenters;
   CellPtr<Cell> m_nextToDraw;
 
   unsigned int m_matWidth = 0;
