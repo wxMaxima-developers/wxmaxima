@@ -27,13 +27,14 @@
   EditorCell is the Cell type that represents the field that contains user input.
 */
 
+#include "EditorCell.h"
+
+#include "CellPointers.h"
+#include "MarkDown.h"
+#include "wxMaxima.h"
+#include "wxMaximaFrame.h"
 #include <wx/clipbrd.h>
 #include <wx/regex.h>
-
-#include "EditorCell.h"
-#include "wxMaxima.h"
-#include "MarkDown.h"
-#include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
 EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString &text) :
@@ -162,6 +163,30 @@ void EditorCell::AddDrawParameter(wxString param)
   ResetSize();
   if (m_group)
     m_group->ResetSize();
+}
+
+void EditorCell::SearchStartedHere(int index) const
+{
+  m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell*>(this);;
+  m_cellPointers->m_indexSearchStartedAt = index;
+}
+
+void EditorCell::SearchStartedHere() const
+{
+  m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell*>(this);
+  m_cellPointers->m_indexSearchStartedAt = m_positionOfCaret;
+}
+
+void EditorCell::MouseSelectionStartedHere() const
+{
+  m_cellPointers->m_cellMouseSelectionStartedIn =
+      const_cast<EditorCell *>(this);
+}
+
+void EditorCell::KeyboardSelectionStartedHere() const
+{
+  m_cellPointers->m_cellKeyboardSelectionStartedIn =
+      const_cast<EditorCell *>(this);
 }
 
 wxString EditorCell::GetFullCommandUnderCursor()
@@ -3227,6 +3252,9 @@ void EditorCell::AppendStateToHistory()
 {
   m_history.emplace_back(m_text, m_positionOfCaret, m_selectionStart, m_selectionEnd);
 }
+
+bool EditorCell::IsActive() const
+{ return this == m_cellPointers->m_activeCell; }
 
 bool EditorCell::CanUndo() const
 {

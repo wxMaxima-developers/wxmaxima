@@ -29,14 +29,16 @@
   output from maxima that belongs to it.
 */
 
-#include <wx/config.h>
-#include <wx/clipbrd.h>
-#include "MarkDown.h"
 #include "GroupCell.h"
+
+#include "BitmapOut.h"
+#include "CellPointers.h"
+#include "ImgCell.h"
+#include "MarkDown.h"
 #include "SlideShowCell.h"
 #include "TextCell.h"
-#include "ImgCell.h"
-#include "BitmapOut.h"
+#include <wx/config.h>
+#include <wx/clipbrd.h>
 
 #if wxUSE_ACCESSIBILITY
   // TODO This class is not used anywhere.
@@ -264,6 +266,9 @@ GroupCell::~GroupCell()
 {
   wxDELETE(m_hiddenTree);
 }
+
+GroupCell *GroupCell::GetLastWorkingGroup() const
+{ return m_cellPointers->m_lastWorkingGroup; }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
 {

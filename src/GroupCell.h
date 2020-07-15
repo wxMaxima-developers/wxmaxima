@@ -112,8 +112,7 @@ public:
     Must be kept in GroupCell as on deletion a GroupCell will unlink itself from
     this pointer.
    */
-  GroupCell *GetLastWorkingGroup() const
-  { return m_cellPointers->m_lastWorkingGroup; }
+  GroupCell *GetLastWorkingGroup() const;
 
   /*! Marks the cell that is under the mouse pointer.
 

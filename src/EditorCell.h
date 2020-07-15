@@ -89,24 +89,13 @@ public:
 
     \param index The index of the character the search was started at.
   */
-  void SearchStartedHere(int index)
-  {
-    m_cellPointers->m_cellSearchStartedIn = this;
-    m_cellPointers->m_indexSearchStartedAt = index;
-  }
+  void SearchStartedHere(int index) const;
   //! Remember that this is the cell the search was started in.
-  void SearchStartedHere()
-  {
-    m_cellPointers->m_cellSearchStartedIn = this;
-    m_cellPointers->m_indexSearchStartedAt = m_positionOfCaret;
-  }
+  void SearchStartedHere() const;
   //! Remember that this is the cell the mouse selection was started in.
-  void MouseSelectionStartedHere()
-  { m_cellPointers->m_cellMouseSelectionStartedIn = this; }
-
+  void MouseSelectionStartedHere() const;
   //! Remember that this is the cell the keyboard selection was started in.
-  void KeyboardSelectionStartedHere()
-  { m_cellPointers->m_cellKeyboardSelectionStartedIn = this; }
+  void KeyboardSelectionStartedHere() const;
 
   //! A list of words that might be applicable to the autocomplete function.
   const auto &GetWordList() const { return m_wordList; }
@@ -305,8 +294,7 @@ public:
     StyleText();
   }
 
-  bool IsActive() const override
-  { return this == m_cellPointers->m_activeCell; }
+  bool IsActive() const override;
 
   //! Is the cursor at the start of this cell?
   bool CaretAtStart() const

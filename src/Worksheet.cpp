@@ -4345,17 +4345,9 @@ void Worksheet::OnTimer(wxTimerEvent &event)
     break;
   default:
   {
-      SlideShow *slideshow = NULL;
-
       // Determine if the timer that has expired belongs to a slide show cell.
-      for (auto const &cellTimer : m_cellPointers.m_slideShowTimers)
-      {
-        // cppcheck-suppress useStlAlgorithm
-        if (cellTimer.second == event.GetId()) {
-          slideshow = dynamic_cast<SlideShow *>(cellTimer.first);
-          break;
-        }
-      }
+      Cell *const cell = m_cellPointers.GetCellForTimerId(event.GetId());
+      SlideShow *const slideshow = dynamic_cast<SlideShow*>(cell);
       if (slideshow)
       {
         int pos = slideshow->GetDisplayedIndex() + 1;
@@ -8524,5 +8516,5 @@ wxDataFormat Worksheet::m_rtfFormat;
 wxDataFormat Worksheet::m_rtfFormat2;
 wxDataFormat Worksheet::m_wxmFormat;
 
-Cell::CellPointers *Cell::GetCellPointers() const
+CellPointers *Cell::GetCellPointers() const
 { return &GetWorksheet()->GetCellPointers(); }

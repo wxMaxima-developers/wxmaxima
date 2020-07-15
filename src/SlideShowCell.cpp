@@ -30,6 +30,7 @@
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
 #include "SlideShowCell.h"
+#include "CellPointers.h"
 #include "ImgCell.h"
 
 #include <wx/quantize.h>
@@ -50,6 +51,7 @@
 // cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(parent, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
     m_framerate(framerate)
 {
@@ -60,6 +62,7 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr 
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
     Cell(parent, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_framerate(framerate)
 {
   m_type = MC_TYPE_SLIDE;
@@ -106,7 +109,7 @@ void SlideShow::ReloadTimer()
   if (!m_timer.IsRunning())
   {
     // Tell MathCtrl about our timer.
-    m_cellPointers->m_slideShowTimers[this] = m_timer.GetId();
+    m_cellPointers->SetTimerIdForCell(this, m_timer.GetId());
     m_timer.StartOnce(1000 / GetFrameRate());
   }
 }
@@ -114,7 +117,7 @@ void SlideShow::ReloadTimer()
 void SlideShow::StopTimer()
 {
   m_timer.Stop();
-  m_cellPointers->m_slideShowTimers.erase(this);
+  m_cellPointers->RemoveTimerIdForCell(this);
 }
 
 void SlideShow::AnimationRunning(bool run)

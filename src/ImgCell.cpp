@@ -32,7 +32,7 @@
 #define SELECTION_BORDER_WDTH Scale_Px(3)
 
 #include "ImgCell.h"
-
+#include "CellPointers.h"
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/filesys.h>

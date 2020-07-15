@@ -34,35 +34,6 @@
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 
-void Cell::CellPointers::ErrorList::Remove(GroupCell * cell)
-{
-  m_errors.erase(std::remove(m_errors.begin(), m_errors.end(), cell), m_errors.end());
-}
-
-bool Cell::CellPointers::ErrorList::Contains(GroupCell * cell) const
-{
-  return std::find(m_errors.begin(), m_errors.end(), cell) != m_errors.end();
-}
-
-void Cell::CellPointers::ErrorList::Add(GroupCell * cell)
-{ m_errors.emplace_back(cell); }
-
-void Cell::CellPointers::SetWorkingGroup(GroupCell *group)
-{
-  if (group)
-    m_lastWorkingGroup = group;
-  m_workingGroup = group;
-}
-
-GroupCell *Cell::CellPointers::GetWorkingGroup(bool resortToLast) const
-{ return (m_workingGroup || !resortToLast) ? m_workingGroup : m_lastWorkingGroup; }
-
-GroupCell *Cell::CellPointers::ErrorList::FirstError() const
-{ return m_errors.empty() ? nullptr : m_errors.front().get(); }
-
-GroupCell *Cell::CellPointers::ErrorList::LastError() const
-{ return m_errors.empty() ? nullptr : m_errors.back().get(); }
-
 wxString Cell::GetToolTip(const wxPoint point)
 {
   if (!ContainsPoint(point))
@@ -1491,17 +1462,6 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role) const
 }
 
 #endif
-
-Cell::CellPointers::CellPointers(wxScrolledCanvas *worksheet) :
-  m_worksheet(worksheet)
-{}
-
-wxString Cell::CellPointers::WXMXGetNewFileName()
-{
-  wxString file(wxT("image"));
-  file << (++m_wxmxImgCounter) << wxT(".");
-  return file;
-}
 
 Cell::InnerCellIterator Cell::InnerBegin() const { return {}; }
 Cell::InnerCellIterator Cell::InnerEnd() const { return {}; }
