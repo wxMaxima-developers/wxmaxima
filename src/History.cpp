@@ -54,8 +54,9 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   if (RegexTooltip_error.IsEmpty())
     RegexTooltip_error = _("Invalid RegEx!");
   
+  // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on Windows
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
-                            wxLB_MULTIPLE | wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
+                            wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
   m_regex = new wxTextCtrl(this, history_regex_id);
   m_regex->SetToolTip(RegexTooltip_norm);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
