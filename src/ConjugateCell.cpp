@@ -31,9 +31,9 @@
 
 ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, "conjugate(")),
-    m_close(new TextCell(parent, config, ")"))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, "conjugate(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
@@ -50,11 +50,16 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-void ConjugateCell::SetInner(Cell *inner)
+std::unique_ptr<Cell> ConjugateCell::Copy() const
+{
+  return std::make_unique<ConjugateCell>(*this);
+}
+
+void ConjugateCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
+  m_innerCell = std::move(inner);
 }
 
 void ConjugateCell::RecalculateWidths(AFontSize fontsize)

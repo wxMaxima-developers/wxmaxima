@@ -31,9 +31,9 @@
 
 ListCell::ListCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config, wxEmptyString)),
-    m_open(new TextCell(parent, config, wxT("["))),
-    m_close(new TextCell(parent, config, wxT("]")))
+    m_innerCell(std::make_unique<TextCell>(parent, config, wxEmptyString)),
+    m_open(std::make_unique<TextCell>(parent, config, wxT("["))),
+    m_close(std::make_unique<TextCell>(parent, config, wxT("]")))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
@@ -62,6 +62,11 @@ ListCell::ListCell(const ListCell &cell):
   if (cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList(), cell.m_type);
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
+}
+
+std::unique_ptr<Cell> ListCell::Copy() const
+{
+  return std::make_unique<ListCell>(*this);
 }
 
 void ListCell::SetInner(Cell *inner, CellType type)

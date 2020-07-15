@@ -41,7 +41,7 @@ class IntCell final : public Cell
 public:
   IntCell(GroupCell *parent, Configuration **config);
   IntCell(const IntCell &cell);
-  Cell *Copy() const override { return new IntCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_var); }
@@ -51,16 +51,13 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void SetBase(Cell *base);
-
+  void SetBase(std::unique_ptr<Cell> &&base);
   //! Set the lower limit of the integral
-  void SetUnder(Cell *under);
-
+  void SetUnder(std::unique_ptr<Cell> &&under);
   //! Set the higher limit of the integral
-  void SetOver(Cell *name);
-
+  void SetOver(std::unique_ptr<Cell> &&name);
   //! Set the integration variable
-  void SetVar(Cell *var);
+  void SetVar(std::unique_ptr<Cell> &&var);
 
   enum IntegralType : int8_t
   {

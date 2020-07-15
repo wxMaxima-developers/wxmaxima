@@ -50,16 +50,15 @@ class ExptCell final : public Cell
 public:
   ExptCell(GroupCell *parent, Configuration **config);
   ExptCell(const ExptCell &cell);
-  Cell *Copy() const override { return new ExptCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
   //! Set the mantissa
-  void SetBase(Cell *base);
-
+  void SetBase(std::unique_ptr<Cell> &&base);
   //! Set the exponent
-  void SetPower(Cell *power);
+  void SetPower(std::unique_ptr<Cell> &&power);
 
   //! By how much do we want to rise the power?
   double PowRise() const {return Scale_Px(.3 * m_fontSize);}

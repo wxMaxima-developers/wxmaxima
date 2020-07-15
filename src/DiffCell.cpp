@@ -35,8 +35,8 @@
 
 DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell(new VisiblyInvalidCell(parent,config)),
-    m_diffCell(new VisiblyInvalidCell(parent,config))
+    m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }
@@ -51,20 +51,24 @@ DiffCell::DiffCell(const DiffCell &cell):
     SetBase(cell.m_baseCell->CopyList());
 }
 
-void DiffCell::SetDiff(Cell *diff)
+std::unique_ptr<Cell> DiffCell::Copy() const
+{
+  return std::make_unique<DiffCell>(*this);
+}
+
+void DiffCell::SetDiff(std::unique_ptr<Cell> &&diff)
 {
   if (!diff)
     return;
-  m_diffCell.reset(diff);
-
+  m_diffCell = std::move(diff);
   m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
-void DiffCell::SetBase(Cell *base)
+void DiffCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
 void DiffCell::RecalculateWidths(AFontSize fontsize)

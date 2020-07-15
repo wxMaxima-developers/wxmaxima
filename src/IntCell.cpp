@@ -39,15 +39,15 @@ static constexpr AFontSize INTEGRAL_FONT_SIZE{ 12.0f };
 
 IntCell::IntCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_base(new VisiblyInvalidCell(parent,config)),
-    m_under(new TextCell(parent, config)),
-    m_over(new TextCell(parent, config)),
-    m_open(new TextCell(parent, config, "integrate(")),
-    m_close(new TextCell(parent, config, ")")),
-    m_comma1(new TextCell(parent, config, ",")),
-    m_comma2(new TextCell(parent, config, ",")),
-    m_comma3(new TextCell(parent, config, ",")),
-    m_var(new VisiblyInvalidCell(parent,config))
+    m_base(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_under(std::make_unique<TextCell>(parent, config)),
+    m_over(std::make_unique<TextCell>(parent, config)),
+    m_open(std::make_unique<TextCell>(parent, config, "integrate(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")")),
+    m_comma1(std::make_unique<TextCell>(parent, config, ",")),
+    m_comma2(std::make_unique<TextCell>(parent, config, ",")),
+    m_comma3(std::make_unique<TextCell>(parent, config, ",")),
+    m_var(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }
@@ -73,32 +73,37 @@ IntCell::IntCell(const IntCell &cell):
   m_intStyle = cell.m_intStyle;
 }
 
-void IntCell::SetOver(Cell *name)
+std::unique_ptr<Cell> IntCell::Copy() const
+{
+  return std::make_unique<IntCell>(*this);
+}
+
+void IntCell::SetOver(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_over.reset(name);
+  m_over = std::move(name);
 }
 
-void IntCell::SetBase(Cell *base)
+void IntCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_base.reset(base);
+  m_base = std::move(base);
 }
 
-void IntCell::SetUnder(Cell *under)
+void IntCell::SetUnder(std::unique_ptr<Cell> &&under)
 {
   if (!under)
     return;
-  m_under.reset(under);
+  m_under = std::move(under);
 }
 
-void IntCell::SetVar(Cell *var)
+void IntCell::SetVar(std::unique_ptr<Cell> &&var)
 {
   if (!var)
     return;
-  m_var.reset(var);
+  m_var = std::move(var);
 }
 
 void IntCell::RecalculateWidths(AFontSize fontsize)

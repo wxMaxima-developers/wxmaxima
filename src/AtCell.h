@@ -30,13 +30,13 @@ class AtCell final : public Cell
 public:
   AtCell(GroupCell *parent, Configuration **config);
   AtCell(const AtCell &cell);
-  Cell *Copy() const override { return new AtCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_indexCell); }
   
-  void SetBase(Cell *base);
-  void SetIndex(Cell *index);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetIndex(std::unique_ptr<Cell> &&index);
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

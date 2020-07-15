@@ -84,6 +84,10 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxString &
     wxRemoveFile(image);
 }
 
+std::unique_ptr<Cell> SlideShow::Copy() const
+{
+  return std::make_unique<SlideShow>(*this);
+}
 
 int SlideShow::GetFrameRate() const
 {

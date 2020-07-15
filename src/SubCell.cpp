@@ -33,8 +33,8 @@
 
 SubCell::SubCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
-  m_baseCell(new VisiblyInvalidCell(parent,config)),
-  m_indexCell(new VisiblyInvalidCell(parent,config))
+  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_indexCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }
@@ -50,18 +50,23 @@ SubCell::SubCell(const SubCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-void SubCell::SetIndex(Cell *index)
+std::unique_ptr<Cell> SubCell::Copy() const
+{
+  return std::make_unique<SubCell>(*this);
+}
+
+void SubCell::SetIndex(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
-  m_indexCell.reset(index);
+  m_indexCell = std::move(index);
 }
 
-void SubCell::SetBase(Cell *base)
+void SubCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
 void SubCell::RecalculateWidths(AFontSize fontsize)

@@ -37,7 +37,7 @@
 
 SubSupCell::SubSupCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
-  m_baseCell(new VisiblyInvalidCell(parent,config))
+  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }
@@ -59,69 +59,74 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
     SetPreSup(cell.m_preSupCell->CopyList());
 }
 
+std::unique_ptr<Cell> SubSupCell::Copy() const
+{
+  return std::make_unique<SubSupCell>(*this);
+}
+
 static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
 {
   cells.erase(
     std::remove(cells.begin(), cells.end(), cell.get()), cells.end());
 }
 
-void SubSupCell::SetPreSup(Cell *index)
+void SubSupCell::SetPreSup(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_preSupCell);
-  m_preSupCell.reset(index);
-  m_scriptCells.emplace_back(index);
+  m_preSupCell = std::move(index);
+  m_scriptCells.emplace_back(m_preSupCell);
 }
 
-void SubSupCell::SetPreSub(Cell *index)
+void SubSupCell::SetPreSub(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_preSubCell);
-  m_preSubCell.reset(index);
-  m_scriptCells.emplace_back(index);
+  m_preSubCell = std::move(index);
+  m_scriptCells.emplace_back(m_preSubCell);
 }
 
-void SubSupCell::SetPostSup(Cell *index)
+void SubSupCell::SetPostSup(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
-  m_postSupCell.reset(index);
-  m_scriptCells.emplace_back(index);
+  m_postSupCell = std::move(index);
+  m_scriptCells.emplace_back(m_postSupCell);
 }
 
-void SubSupCell::SetPostSub(Cell *index)
-{
-  if (!index)
-    return;
- RemoveCell(m_scriptCells, m_postSubCell);
-  m_postSubCell.reset(index);
-  m_scriptCells.emplace_back(index);
-}
-
-void SubSupCell::SetIndex(Cell *index)
+void SubSupCell::SetPostSub(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_postSubCell);
-  m_postSubCell.reset(index);
+  m_postSubCell = std::move(index);
+  m_scriptCells.emplace_back(m_postSubCell);
 }
 
-void SubSupCell::SetBase(Cell *base)
+void SubSupCell::SetIndex(std::unique_ptr<Cell> &&index)
+{
+  if (!index)
+    return;
+  RemoveCell(m_scriptCells, m_postSubCell);
+  m_postSubCell = std::move(index);
+}
+
+void SubSupCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
-void SubSupCell::SetExponent(Cell *expt)
+void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt)
 {
   if (!expt)
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
-  m_postSupCell.reset(expt);
+  m_postSupCell = std::move(expt);
 }
 
 void SubSupCell::RecalculateWidths(AFontSize const fontsize)

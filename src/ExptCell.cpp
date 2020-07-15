@@ -33,11 +33,11 @@
 
 ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell(new VisiblyInvalidCell(parent,config)),
-    m_exptCell(new VisiblyInvalidCell(parent,config)),
-    m_exp(new TextCell(parent, config, "^")),
-    m_open(new TextCell(parent, config, "(")),
-    m_close(new TextCell(parent, config, ")"))
+    m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_exptCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_exp(std::make_unique<TextCell>(parent, config, "^")),
+    m_open(std::make_unique<TextCell>(parent, config, "(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
@@ -57,6 +57,11 @@ ExptCell::ExptCell(const ExptCell &cell):
     SetPower(cell.m_exptCell->CopyList());
 }
 
+std::unique_ptr<Cell> ExptCell::Copy() const
+{
+  return std::make_unique<ExptCell>(*this);
+}
+
 void ExptCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
@@ -73,11 +78,11 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-void ExptCell::SetPower(Cell *power)
+void ExptCell::SetPower(std::unique_ptr<Cell> &&power)
 {
   if (!power)
     return;
-  m_exptCell.reset(power);
+  m_exptCell = std::move(power);
 
   if (!m_exptCell->IsCompound())
   {
@@ -86,11 +91,11 @@ void ExptCell::SetPower(Cell *power)
   }
 }
 
-void ExptCell::SetBase(Cell *base)
+void ExptCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
 void ExptCell::RecalculateWidths(AFontSize fontsize)

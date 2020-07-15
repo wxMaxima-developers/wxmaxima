@@ -131,7 +131,7 @@ public:
     This method is purely virtual, which means every child class has to define
     its own Copy() method.
    */
-  virtual Cell *Copy() const = 0;
+  virtual std::unique_ptr<Cell> Copy() const = 0;
 
   /*! Scale font sizes and line widths according to the zoom factor.
 
@@ -197,6 +197,7 @@ public:
     \param p_next The cell that will be appended to the list.
    */
   void AppendCell(Cell *p_next);
+  void AppendCell(std::unique_ptr<Cell> &&p_next);
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)
@@ -773,7 +774,7 @@ public:
     
     Used by Cell::Copy().
   */
-  Cell *CopyList() const;
+  std::unique_ptr<Cell> CopyList() const;
 
   //! Remove this cell's tooltip
   void ClearToolTip() { m_toolTip.Truncate(0); }

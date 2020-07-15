@@ -33,9 +33,9 @@
 
 AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, wxT("abs("))),
-    m_close(new TextCell(parent, config, wxT(")")))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, wxT("abs("))),
+    m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
 {
   InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
@@ -53,11 +53,16 @@ AbsCell::AbsCell(const AbsCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-void AbsCell::SetInner(Cell *inner)
+std::unique_ptr<Cell> AbsCell::Copy() const
+{
+  return std::make_unique<AbsCell>(*this);
+}
+
+void AbsCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
+  m_innerCell = std::move(inner);
 }
 
 void AbsCell::RecalculateWidths(AFontSize fontsize)

@@ -32,9 +32,9 @@
 
 ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, wxT("("))),
-    m_close(new TextCell(parent, config, wxT(")")))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, wxT("("))),
+    m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
@@ -61,6 +61,11 @@ ParenCell::ParenCell(const ParenCell &cell):
   if (cell.m_innerCell)
     SetInner(cell.m_innerCell->CopyList(), cell.m_type);
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
+}
+
+std::unique_ptr<Cell> ParenCell::Copy() const
+{
+  return std::make_unique<ParenCell>(*this);
 }
 
 void ParenCell::SetInner(Cell *inner, CellType type)

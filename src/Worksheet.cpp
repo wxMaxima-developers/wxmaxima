@@ -836,7 +836,7 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const
   return tmp;
 }
 
-void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
+void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
 {
   if (!newCell)
     return;
@@ -853,7 +853,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   newCell->ForceBreakLine(forceNewLine);
   newCell->SetGroupList(tmp);
   
-  tmp->AppendOutput(newCell);
+  tmp->AppendOutput(std::move(newCell));
   
   UpdateConfigurationClientSize();
   if (!tmp->m_next)
@@ -2376,9 +2376,8 @@ bool Worksheet::Copy(bool astext)
         int bitmapScale = 3;
         wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
         BitmapOut bmp_scaled(&m_configuration, bitmapScale);
-        if (bmp_scaled.SetData(tmp.get(), 4000000))
+        if (bmp_scaled.SetData(std::move(tmp), 4000000))
         {
-          tmp.release();
           bmp = bmp_scaled.GetBitmap();
           data->Add(new wxBitmapDataObject(bmp));
         }
@@ -2638,28 +2637,28 @@ bool Worksheet::CopyCells()
 
     if (m_configuration->CopyBitmap())
     {
-      Cell *tmp = CopySelection();
+      auto tmp = CopySelection();
       int bitmapScale = 3;
       wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
       BitmapOut bmp(&m_configuration, bitmapScale);
-      if (bmp.SetData(tmp, 4000000))
+      if (bmp.SetData(std::move(tmp), 4000000))
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
 
 #if wxUSE_ENH_METAFILE
     if (m_configuration->CopyEMF())
     {
-      Cell *tmp = CopySelection();
+      auto tmp = CopySelection();
       Emfout emf(&m_configuration);
-      emf.SetData(tmp);
+      emf.SetData(std::move(tmp));
       data->Add(emf.GetDataObject());
     }
 #endif
     if (m_configuration->CopySVG())
     {
-      Cell *tmp = CopySelection();
+      auto tmp = CopySelection();
       Svgout svg(&m_configuration);
-      svg.SetData(tmp);
+      svg.SetData(std::move(tmp));
       data->Add(svg.GetDataObject());
     }
 
@@ -2954,7 +2953,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
   // If we still haven't a cell to put the answer in we now create one.
   if (!m_cellPointers.m_answerCell)
   {
-    auto *answerCell = new EditorCell(group, &m_configuration);
+    auto answerCell = std::make_unique<EditorCell>(group, &m_configuration);
     m_cellPointers.m_answerCell = answerCell;
     answerCell->SetType(MC_TYPE_INPUT);
     bool autoEvaluate = false;
@@ -2970,7 +2969,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
     }
     answerCell->CaretToEnd();
 
-    group->AppendOutput(answerCell);
+    group->AppendOutput(std::move(answerCell));
 
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
@@ -4398,28 +4397,22 @@ void Worksheet::DestroyTree()
   m_last = NULL;
 }
 
-GroupCell *Worksheet::CopyTree() const
+std::unique_ptr<GroupCell> Worksheet::CopyTree() const
 {
-  auto *tree = GetTree() ? dynamic_cast<GroupCell*>(GetTree()->CopyList()) : nullptr;
-  return tree;
+  return GetTree() ? GetTree()->CopyList() : nullptr;
 }
 
-/***
- * Copy selection as bitmap
- */
 bool Worksheet::CopyBitmap()
 {
-  Cell *tmp = CopySelection();
-
   int bitmapScale = 3;
   wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
 
+  auto tmp = CopySelection();
   BitmapOut bmp(&m_configuration, bitmapScale);
-  bmp.SetData(tmp);
+  bmp.SetData(std::move(tmp));
 
   bool retval = bmp.ToClipboard();
   Recalculate();
-
   return retval;
 }
 
@@ -4434,10 +4427,9 @@ bool Worksheet::CopyAnimation()
 
 bool Worksheet::CopySVG()
 {
-  Cell *tmp = CopySelection();
-
+  auto tmp = CopySelection();
   Svgout svg(&m_configuration);
-  svg.SetData(tmp);
+  svg.SetData(std::move(tmp));
 
   bool retval = svg.ToClipboard();
   Recalculate();
@@ -4448,14 +4440,12 @@ bool Worksheet::CopySVG()
 #if wxUSE_ENH_METAFILE
 bool Worksheet::CopyEMF()
 {
-  Cell *tmp = CopySelection();
-
+  auto tmp = CopySelection();
   Emfout emf(&m_configuration);
-  emf.SetData(tmp);
+  emf.SetData(std::move(tmp));
 
   bool retval = emf.ToClipboard();
   Recalculate();
-
   return retval;
 }
 #endif
@@ -4507,13 +4497,11 @@ wxSize Worksheet::CopyToFile(const wxString &file)
   }
   else
   {
-    Cell *tmp = CopySelection();
-
+    auto tmp = CopySelection();
     BitmapOut bmp(&m_configuration);
-    bmp.SetData(tmp);
+    bmp.SetData(std::move(tmp));
 
     wxSize retval = bmp.ToFile(file);
-
     return retval;
   }
 }
@@ -4521,27 +4509,23 @@ wxSize Worksheet::CopyToFile(const wxString &file)
 wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
                             bool asData, int scale)
 {
-  Cell *tmp = CopySelection(start, end, asData);
-
+  auto tmp = CopySelection(start, end, asData);
   BitmapOut bmp(&m_configuration, scale);
-  bmp.SetData(tmp);
+  bmp.SetData(std::move(tmp));
 
   wxSize retval = bmp.ToFile(file);
-
   return retval;
 }
 
-/***
- * Copy selection
- */
-Cell *Worksheet::CopySelection(bool asData) const
+std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const
 {
   return CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, asData);
 }
 
-Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
+std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
 {
-  Cell *tmp, *out = NULL, *outEnd = NULL;
+  std::unique_ptr<Cell> out;
+  Cell *tmp, *outEnd = NULL;
   tmp = start;
 
   while (tmp != NULL)
@@ -4549,7 +4533,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
     if (out == NULL)
     {
       out = tmp->Copy();
-      outEnd = out;
+      outEnd = out.get();
     }
     else
     {
@@ -5318,7 +5302,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
             }
 
           // Create a list containing only our chunk.
-          std::unique_ptr<Cell> chunk(CopySelection(chunkStart, chunkEnd));
+          auto chunk = CopySelection(chunkStart, chunkEnd);
 
           // Export the chunk.
 
@@ -5361,7 +5345,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
               wxString alttext;
               alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
-              wxSize size = svgout.SetData(&(*chunk));
+              wxSize size = svgout.SetData(std::move(chunk));
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\"" ),
@@ -7178,8 +7162,8 @@ void Worksheet::PasteFromClipboard()
     {
       wxBitmapDataObject bitmap;
       wxTheClipboard->GetData(bitmap);
-      ImgCell *ic = new ImgCell(group, &m_configuration, bitmap.GetBitmap());
-      group->AppendOutput(ic);
+      auto ic = std::make_unique<ImgCell>(group, &m_configuration, bitmap.GetBitmap());
+      group->AppendOutput(std::move(ic));
     }
   }
 
@@ -8276,7 +8260,7 @@ Worksheet::RtfDataObject2::RtfDataObject2(wxString data) : wxCustomDataObject(m_
   SetData(m_databuf.length(), m_databuf.data());
 }
 
-wxString Worksheet::RTFStart()
+wxString Worksheet::RTFStart() const
 {
   // The beginning of the RTF document
   wxString document = wxT("{\\rtf1\\ansi\\deff0\n\n");
@@ -8320,7 +8304,7 @@ wxString Worksheet::RTFStart()
   return document;
 }
 
-wxString Worksheet::RTFEnd()
+wxString Worksheet::RTFEnd() const
 {
   // Close the document
 

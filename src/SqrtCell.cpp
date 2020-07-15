@@ -33,9 +33,9 @@
 
 SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, "sqrt(")),
-    m_close(new TextCell(parent, config, ")"))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, "sqrt(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
@@ -58,11 +58,16 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-void SqrtCell::SetInner(Cell *inner)
+std::unique_ptr<Cell> SqrtCell::Copy() const
+{
+  return std::make_unique<SqrtCell>(*this);
+}
+
+void SqrtCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
+  m_innerCell = std::move(inner);
 }
 
 void SqrtCell::RecalculateWidths(AFontSize fontsize)

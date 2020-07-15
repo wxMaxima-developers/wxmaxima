@@ -417,7 +417,7 @@ private:
   void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
-  Cell *CopySelection(bool asData = false) const;
+  std::unique_ptr<Cell> CopySelection(bool asData = false) const;
 
   /*! Copy the currently given list of cells
 
@@ -433,7 +433,7 @@ private:
                This is accurately copied if asdata=false. But m_next and m_previous are
                treated as mere aliases of m_nextToDraw in this case.
   */
-  Cell *CopySelection(Cell *start, Cell *end, bool asData = false) const;
+  std::unique_ptr<Cell> CopySelection(Cell *start, Cell *end, bool asData = false) const;
 
   //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
@@ -894,7 +894,7 @@ public:
   void DestroyTree();
 
   //! Copies the worksheet's entire contents
-  GroupCell *CopyTree() const;
+  std::unique_ptr<GroupCell> CopyTree() const;
 
   /*! Insert group cells into the worksheet
 
@@ -921,7 +921,7 @@ public:
     If maxima isn't currently evaluating and therefore there is no working group
     the line is appended to m_last, instead.
   */
-  void InsertLine(Cell *newCell, bool forceNewLine = false);
+  void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
 
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
@@ -1110,10 +1110,10 @@ public:
   bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
   //! The start of a RTF document
-  wxString RTFStart();
+  wxString RTFStart() const;
 
   //! The end of a RTF document
-  wxString RTFEnd();
+  wxString RTFEnd() const;
 
   //! export to a LaTeX file
   bool ExportToTeX(const wxString &file);

@@ -34,12 +34,12 @@ static constexpr float LIMIT_FONT_SIZE_DECREASE{ 1.0f };
 
 LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_base(new VisiblyInvalidCell(parent,config)),
-    m_under(new VisiblyInvalidCell(parent,config)),
-    m_name(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, "(")),
-    m_comma(new TextCell(parent, config, ",")),
-    m_close(new TextCell(parent, config, ")"))
+    m_base(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_under(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_name(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, "(")),
+    m_comma(std::make_unique<TextCell>(parent, config, ",")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
@@ -62,25 +62,30 @@ LimitCell::LimitCell(const LimitCell &cell) :
     SetName(cell.m_name->CopyList());
 }
 
-void LimitCell::SetName(Cell *name)
+std::unique_ptr<Cell> LimitCell::Copy() const
+{
+  return std::make_unique<LimitCell>(*this);
+}
+
+void LimitCell::SetName(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_name.reset(name);
+  m_name = std::move(name);
 }
 
-void LimitCell::SetBase(Cell *base)
+void LimitCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_base.reset(base);
+  m_base = std::move(base);
 }
 
-void LimitCell::SetUnder(Cell *under)
+void LimitCell::SetUnder(std::unique_ptr<Cell> &&under)
 {
   if (!under)
     return;
-  m_under.reset(under);
+  m_under = std::move(under);
 }
 
 void LimitCell::RecalculateWidths(AFontSize fontsize)

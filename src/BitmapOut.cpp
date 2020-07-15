@@ -50,9 +50,9 @@ BitmapOut::BitmapOut(Configuration **configuration, int scale) :
 BitmapOut::~BitmapOut()
 {}
 
-bool BitmapOut::SetData(Cell *tree, long int maxSize)
+bool BitmapOut::SetData(std::unique_ptr<Cell> &&tree, long int maxSize)
 {
-  m_tree.reset(tree);
+  m_tree = std::move(tree);
   return m_tree && Layout(maxSize);
 }
 

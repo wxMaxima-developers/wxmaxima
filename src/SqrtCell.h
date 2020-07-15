@@ -50,12 +50,12 @@ class SqrtCell final : public Cell
 public:
   SqrtCell(GroupCell *parent, Configuration **config);
   SqrtCell(const SqrtCell &cell);
-  Cell *Copy() const override { return new SqrtCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
-  void SetInner(Cell *inner);
+  void SetInner(std::unique_ptr<Cell> &&inner);
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

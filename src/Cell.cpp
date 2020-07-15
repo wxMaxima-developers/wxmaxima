@@ -30,6 +30,7 @@
 #include "Cell.h"
 #include "GroupCell.h"
 #include "TextCell.h"
+#include "stx/unique_cast.hpp"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
@@ -137,10 +138,10 @@ void Cell::CopyCommonData(const Cell & cell)
   m_isHidableMultSign = cell.m_isHidableMultSign;
 }
 
-Cell *Cell::CopyList() const
+std::unique_ptr<Cell> Cell::CopyList() const
 {
-  Cell *dest = Copy();
-  Cell *ret = dest;
+  auto ret = Copy();
+  Cell *dest = ret.get();
   Cell *src = m_next;
 
   while (src != NULL)
@@ -205,10 +206,11 @@ void Cell::FontsChangedList()
   }
 }
 
+void Cell::AppendCell(std::unique_ptr<Cell> &&p_next)
+{
+  AppendCell(p_next.release());
+}
 
-/***
- * Append new cell to the end of this list.
- */
 void Cell::AppendCell(Cell *p_next)
 {
   if (p_next == NULL)
@@ -1227,7 +1229,7 @@ bool Cell::IsMath() const
 
 CellAccessible *Cell::GetAccessible()
 {
-  if (!m_accessible) m_accessible.reset(new CellAccessible(this));
+  if (!m_accessible) m_accessible = std::make_unique<CellAccessible>(this);
   return m_accessible.get();
 }
 

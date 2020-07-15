@@ -37,6 +37,7 @@
 #include "MarkDown.h"
 #include "SlideShowCell.h"
 #include "TextCell.h"
+#include "stx/unique_cast.hpp"
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
@@ -116,69 +117,59 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel.reset(new TextCell(this, m_configuration, EMPTY_INPUT_LABEL));
+      m_inputLabel = std::make_unique<TextCell>(this, m_configuration, EMPTY_INPUT_LABEL);
     else
-      m_inputLabel.reset(new TextCell(this, m_configuration, wxT("")));
+      m_inputLabel = std::make_unique<TextCell>(this, m_configuration, wxT(""));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  EditorCell *editor = {};
-
+  std::unique_ptr<EditorCell> editor;
   switch (groupType)
   {
     case GC_TYPE_CODE:
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_INPUT);
-      AppendInput(editor);
       break;
     case GC_TYPE_TEXT:
       m_inputLabel->SetType(MC_TYPE_TEXT);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_TEXT);
-      AppendInput(editor);
       break;
     case GC_TYPE_TITLE:
       m_inputLabel->SetType(MC_TYPE_TITLE);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_TITLE);
-      AppendInput(editor);
       break;
     case GC_TYPE_SECTION:
       m_inputLabel->SetType(MC_TYPE_SECTION);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_SECTION);
-      AppendInput(editor);
       break;
     case GC_TYPE_SUBSECTION:
       m_inputLabel->SetType(MC_TYPE_SUBSECTION);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_SUBSECTION);
-      AppendInput(editor);
       break;
     case GC_TYPE_SUBSUBSECTION:
       m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_SUBSUBSECTION);
-      AppendInput(editor);
       break;
     case GC_TYPE_HEADING5:
       m_inputLabel->SetType(MC_TYPE_HEADING5);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_HEADING5);
-      AppendInput(editor);
       break;
     case GC_TYPE_HEADING6:
       m_inputLabel->SetType(MC_TYPE_HEADING6);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_HEADING6);
-      AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
       m_inputLabel->SetType(MC_TYPE_IMAGE);
-      editor = new EditorCell(this, m_configuration);
+      editor = std::make_unique<EditorCell>(this, m_configuration);
       editor->SetType(MC_TYPE_IMAGE);
-      AppendInput(editor);
       break;
     default:
       break;
@@ -186,17 +177,19 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
 
   if (editor && !initString.empty())
     editor->SetValue(initString);
+  if (editor)
+    AppendInput(std::move(editor));
 
   // when creating an image cell, if a string is provided
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
-    Cell *ic;
+    std::unique_ptr<Cell> ic;
     if (wxImage::GetImageCount(initString) < 2)
-      ic = new ImgCell(this, m_configuration, initString, {} /* system fs */, false);
+      ic = std::make_unique<ImgCell>(this, m_configuration, initString, std::shared_ptr<wxFileSystem>{} /* system fs */, false);
     else
-      ic = new SlideShow(this, m_configuration, initString, false);
-    GroupCell::AppendOutput(ic);
+      ic = std::make_unique<SlideShow>(this, m_configuration, initString, false);
+    GroupCell::AppendOutput(std::move(ic));
   }
 
   // The GroupCell this cell belongs to is this GroupCell.
@@ -213,6 +206,17 @@ GroupCell::GroupCell(const GroupCell &cell):
     SetOutput(cell.m_output->CopyList());
   Hide(cell.m_isHidden);
   AutoAnswer(cell.m_autoAnswer);
+}
+
+std::unique_ptr<Cell> GroupCell::Copy() const
+{
+  return std::make_unique<GroupCell>(*this);
+}
+
+std::unique_ptr<GroupCell> GroupCell::CopyList() const
+{
+  auto copy = Cell::CopyList();
+  return stx::static_unique_ptr_cast<GroupCell>(std::move(copy));
 }
 
 /*! Set the parent of this group cell
@@ -277,36 +281,36 @@ wxString GroupCell::TexEscapeOutputCell(wxString Input)
   return (Input);
 }
 
-void GroupCell::SetInput(Cell *input)
+void GroupCell::SetInput(std::unique_ptr<Cell> &&input)
 {
   if (!input)
     return;
-  m_inputLabel.reset(input);
+  m_inputLabel = std::move(input);
   m_inputLabel->SetGroup(this);
   m_updateConfusableCharWarnings = true;
   ResetData();
 }
 
-void GroupCell::AppendInput(Cell *cell)
+void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell)
 {
   if (!m_inputLabel)
   {
-    m_inputLabel.reset(cell);
+    m_inputLabel = std::move(cell);
   }
   else
   {
     if (m_inputLabel->m_next == NULL)
-      m_inputLabel->AppendCell(cell);
+      m_inputLabel->AppendCell(std::move(cell));
     else if (m_inputLabel->m_next->GetValue().Length() == 0)
     {
       wxDELETE(m_inputLabel->m_next);
       m_inputLabel->m_next = NULL;
       m_inputLabel->SetNextToDraw(NULL);
-      m_inputLabel->AppendCell(cell);
+      m_inputLabel->AppendCell(std::move(cell));
     }
     else
     {
-      AppendOutput(cell);
+      AppendOutput(std::move(cell));
       m_isHidden = false;
     }
   }
@@ -315,13 +319,13 @@ void GroupCell::AppendInput(Cell *cell)
 }
 
 
-void GroupCell::SetOutput(Cell *output)
+void GroupCell::SetOutput(std::unique_ptr<Cell> &&output)
 {
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = nullptr;
   
   m_output.reset();
-  AppendOutput(output);
+  AppendOutput(std::move(output));
 }
 
 void GroupCell::RemoveOutput()
@@ -356,21 +360,21 @@ void GroupCell::RemoveOutput()
   ResetData();
 }
 
-void GroupCell::AppendOutput(Cell *cell)
+void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
 {
-  wxASSERT_MSG(cell != NULL, _("Bug: Trying to append NULL to a group cell."));
-  if (cell == NULL) return;
+  wxASSERT_MSG(cell, _("Bug: Trying to append NULL to a group cell."));
+  if (!cell) return;
   cell->SetGroupList(this);
   if (!m_output)
   {
-    m_output.reset(cell);
+    m_output = std::move(cell);
 
     if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
       (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
   }
   else
   {
-    m_output->AppendCell(cell);
+    m_output->AppendCell(std::move(cell));
   }
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
@@ -1182,15 +1186,16 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter) c
     case GC_TYPE_IMAGE:
       if (imgDir != wxEmptyString)
       {
-        Cell *copy = m_output->Copy();
+        auto const copy = m_output->Copy();
+        auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
         (*imgCounter)++;
         wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
-        wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell *>(copy)->GetExtension();
+        wxString file = imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
 
         if (!wxDirExists(imgDir))
           wxMkdir(imgDir);
 
-        if (dynamic_cast<ImgCell *>(copy)->ToImageFile(file).x >= 0)
+        if (imgCopy->ToImageFile(file).x >= 0)
         {
           str << wxT("\\begin{figure}[htb]\n")
               << wxT("  \\centering\n")
@@ -1365,7 +1370,8 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
 
   if (imgDir != wxEmptyString)
   {
-    Cell *copy = tmp->Copy();
+    auto const copy = tmp->Copy();
+    auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
     if (!wxDirExists(imgDir))
@@ -1394,8 +1400,8 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
     }
     else
     {
-      wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell *>(copy)->GetExtension();
-      if (dynamic_cast<ImgCell *>(copy)->ToImageFile(file).x >= 0)
+      wxString file = imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+      if (imgCopy->ToImageFile(file).x >= 0)
         str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
                filename + wxT("_img/") + image + wxT("}");
       else

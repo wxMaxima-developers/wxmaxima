@@ -32,8 +32,8 @@
 
 FunCell::FunCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
-  m_nameCell(new VisiblyInvalidCell(parent,config)),
-  m_argCell(new VisiblyInvalidCell(parent,config))
+  m_nameCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_argCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }
@@ -49,19 +49,24 @@ FunCell::FunCell(const FunCell &cell):
     SetArg(cell.m_argCell->CopyList());
 }
 
-void FunCell::SetName(Cell *name)
+std::unique_ptr<Cell> FunCell::Copy() const
+{
+  return std::make_unique<FunCell>(*this);
+}
+
+void FunCell::SetName(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_nameCell.reset(name);
-  name->SetStyle(TS_FUNCTION);
+  m_nameCell = std::move(name);
+  m_nameCell->SetStyle(TS_FUNCTION);
 }
 
-void FunCell::SetArg(Cell *arg)
+void FunCell::SetArg(std::unique_ptr<Cell> &&arg)
 {  
   if (!arg)
     return;
-  m_argCell.reset(arg);
+  m_argCell = std::move(arg);
 }
 
 void FunCell::RecalculateWidths(AFontSize fontsize)

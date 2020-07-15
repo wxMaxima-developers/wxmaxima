@@ -57,12 +57,12 @@ class AbsCell final : public Cell
 public:
   AbsCell(GroupCell *parent, Configuration **config);
   AbsCell(const AbsCell &cell);
-  Cell *Copy() const override { return new AbsCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
-  void SetInner(Cell *inner);
+  void SetInner(std::unique_ptr<Cell> &&inner);
 
   bool BreakUp() override;
 
