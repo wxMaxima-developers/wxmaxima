@@ -32,8 +32,8 @@
 
 AtCell::AtCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell (new VisiblyInvalidCell(parent,config)),
-    m_indexCell(new VisiblyInvalidCell(parent,config))
+    m_baseCell (std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_indexCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }

@@ -31,9 +31,9 @@
 
 ListCell::ListCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config, wxEmptyString)),
-    m_open(new TextCell(parent, config, wxT("["))),
-    m_close(new TextCell(parent, config, wxT("]")))
+    m_innerCell(std::make_unique<TextCell>(parent, config, wxEmptyString)),
+    m_open(std::make_unique<TextCell>(parent, config, wxT("["))),
+    m_close(std::make_unique<TextCell>(parent, config, wxT("]")))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);

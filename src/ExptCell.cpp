@@ -33,11 +33,11 @@
 
 ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell(new VisiblyInvalidCell(parent,config)),
-    m_exptCell(new VisiblyInvalidCell(parent,config)),
-    m_exp(new TextCell(parent, config, "^")),
-    m_open(new TextCell(parent, config, "(")),
-    m_close(new TextCell(parent, config, ")"))
+    m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_exptCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_exp(std::make_unique<TextCell>(parent, config, "^")),
+    m_open(std::make_unique<TextCell>(parent, config, "(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);

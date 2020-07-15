@@ -34,9 +34,9 @@
 
 FracCell::FracCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_numParenthesis(new ParenCell(m_group, m_configuration)),
-    m_denomParenthesis(new ParenCell(m_group, m_configuration)),
-    m_divideOwner(new TextCell(parent, config, "/"))
+    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
+    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
+    m_divideOwner(std::make_unique<TextCell>(parent, config, "/"))
 {
   InitBitFields();
   SetNum(new VisiblyInvalidCell(parent,config));

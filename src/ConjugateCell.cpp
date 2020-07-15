@@ -31,9 +31,9 @@
 
 ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, "conjugate(")),
-    m_close(new TextCell(parent, config, ")"))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, "conjugate(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();

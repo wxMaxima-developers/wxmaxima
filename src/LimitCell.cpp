@@ -34,12 +34,12 @@ static constexpr float LIMIT_FONT_SIZE_DECREASE{ 1.0f };
 
 LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_base(new VisiblyInvalidCell(parent,config)),
-    m_under(new VisiblyInvalidCell(parent,config)),
-    m_name(new VisiblyInvalidCell(parent,config)),
-    m_open(new TextCell(parent, config, "(")),
-    m_comma(new TextCell(parent, config, ",")),
-    m_close(new TextCell(parent, config, ")"))
+    m_base(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_under(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_name(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, "(")),
+    m_comma(std::make_unique<TextCell>(parent, config, ",")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
   InitBitFields();
   m_open->SetStyle(TS_FUNCTION);

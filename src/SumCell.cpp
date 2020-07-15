@@ -33,16 +33,16 @@
 
 SumCell::SumCell(GroupCell *group, Configuration **config) :
     Cell(group, config),
-    m_under(new TextCell(group, config)),
-    m_start(new TextCell(group, config)),
-    m_var(new TextCell(group, config)),
-    m_end(new TextCell(group, config)),
-    m_comma1(new TextCell(group, config, wxT(","))),
-    m_comma2(new TextCell(group, config, wxT(","))),
-    m_comma3(new TextCell(group, config, wxT(","))),
-    m_open(new TextCell(group, config, wxT("lsum("))),
-    m_close(new TextCell(group, config, wxT(")"))),
-    m_paren(new ParenCell(group, config))
+    m_under(std::make_unique<TextCell>(group, config)),
+    m_start(std::make_unique<TextCell>(group, config)),
+    m_var(std::make_unique<TextCell>(group, config)),
+    m_end(std::make_unique<TextCell>(group, config)),
+    m_comma1(std::make_unique<TextCell>(group, config, wxT(","))),
+    m_comma2(std::make_unique<TextCell>(group, config, wxT(","))),
+    m_comma3(std::make_unique<TextCell>(group, config, wxT(","))),
+    m_open(std::make_unique<TextCell>(group, config, wxT("lsum("))),
+    m_close(std::make_unique<TextCell>(group, config, wxT(")"))),
+    m_paren(std::make_unique<ParenCell>(group, config))
 {
   InitBitFields();
   wxASSERT(Base()); // m_paren constructs its inner cell by default

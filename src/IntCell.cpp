@@ -39,15 +39,15 @@ static constexpr AFontSize INTEGRAL_FONT_SIZE{ 12.0f };
 
 IntCell::IntCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_base(new VisiblyInvalidCell(parent,config)),
-    m_under(new TextCell(parent, config)),
-    m_over(new TextCell(parent, config)),
-    m_open(new TextCell(parent, config, "integrate(")),
-    m_close(new TextCell(parent, config, ")")),
-    m_comma1(new TextCell(parent, config, ",")),
-    m_comma2(new TextCell(parent, config, ",")),
-    m_comma3(new TextCell(parent, config, ",")),
-    m_var(new VisiblyInvalidCell(parent,config))
+    m_base(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_under(std::make_unique<TextCell>(parent, config)),
+    m_over(std::make_unique<TextCell>(parent, config)),
+    m_open(std::make_unique<TextCell>(parent, config, "integrate(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")")),
+    m_comma1(std::make_unique<TextCell>(parent, config, ",")),
+    m_comma2(std::make_unique<TextCell>(parent, config, ",")),
+    m_comma3(std::make_unique<TextCell>(parent, config, ",")),
+    m_var(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }

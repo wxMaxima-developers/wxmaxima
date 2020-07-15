@@ -32,8 +32,8 @@
 
 FunCell::FunCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
-  m_nameCell(new VisiblyInvalidCell(parent,config)),
-  m_argCell(new VisiblyInvalidCell(parent,config))
+  m_nameCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_argCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
   InitBitFields();
 }
