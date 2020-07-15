@@ -300,6 +300,7 @@ void History::SetCurrent(long current)
   auto const count = long(m_history->GetCount());
   if (current < 0) current = count-1;
   else if (current >= count) current = 0;
+  if (count < 1) current = -1;
 
   if (current == m_current)
     return;
