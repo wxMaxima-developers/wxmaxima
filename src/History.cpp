@@ -121,6 +121,12 @@ void History::OnInternalIdle()
   }
 }
 
+void History::UnselectAll() const
+{
+  // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
+  m_history->SetSelection(-1, false);
+}
+
 static wxString AskForFileName(wxPanel *parent)
 {
   wxFileDialog fileDialog(parent,
@@ -214,11 +220,11 @@ void History::AddToHistory(const wxString &cmd)
 {
   if (cmd.IsEmpty())
     return;
+
   m_sessionCommands ++;
-    
   m_commands.Add(cmd);
 
-  if (m_matcherState == MatcherState::empty || m_matcher.Matches(cmd))
+  if (m_matcherExpr.empty() || m_matcher.Matches(cmd))
   {
     if (m_realtimeUpdate)
     {
@@ -235,20 +241,16 @@ void History::AddToHistory(const wxString &cmd)
 
 void History::RebuildDisplay()
 {
-  // No need to rebuild the display if the matcher is not valid
-  if (m_matcherState == MatcherState::invalid)
-    return;
-
   wxWindowUpdateLocker speedUp(this);
   wxArrayString display;
-  if (m_matcherState == MatcherState::empty)
+  if (m_matcherExpr.empty())
   {
     display = m_commands;
     std::reverse(display.begin(), display.end());
   }
   else
   {
-    wxASSERT(m_matcherState == MatcherState::valid);
+    wxASSERT(m_matcher.IsValid());
     display.reserve(m_commands.size());
     for (auto cmd = m_commands.rbegin(); cmd != m_commands.rend(); ++cmd)
     {
@@ -261,31 +263,31 @@ void History::RebuildDisplay()
   SetCurrent(0);
 }
 
-History::MatcherState History::GetNewMatcherState() const
+History::RegexInputState History::GetNewRegexInputState() const
 {
-  if (m_matcherExpr.empty()) return MatcherState::empty;
-  if (m_matcher.IsValid())  return MatcherState::valid;
-  return MatcherState::invalid;
+  if (m_matcherExpr.empty()) return RegexInputState::empty;
+  if (m_matcher.IsValid())  return RegexInputState::valid;
+  return RegexInputState::invalid;
 }
 
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
-  // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
-  m_history->SetSelection(-1, false);
-  wxString regex = m_regex->GetValue();
-  if (regex == m_matcherExpr)
-    return;
+  auto const oldRegex = m_matcherExpr; // save so that we can restore valid matcher
+  wxString const regex = m_regex->GetValue();
+  bool regexChanged = regex != m_matcherExpr;
 
   m_matcherExpr = regex;
-  if (!regex.empty())
+  if (!regex.empty() && regexChanged)
   {
     SuppressErrorDialogs blocker;
     m_matcher.Compile(regex);
   }
-  auto const newMatcherState = GetNewMatcherState();
-  if (m_matcherState != newMatcherState)
+
+  // Update UI feedback if the state of the regex input control has changed
+  auto const newInputState = GetNewRegexInputState();
+  if (m_regexInputState != newInputState)
   {
-    m_matcherState = newMatcherState;
+    m_regexInputState = newInputState;
     const wxColor colors[3] = {
       /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
       /* invalid */ {255,192,192},
@@ -294,11 +296,24 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
     const wxString tooltips[3] = {
       /* empty */ RegexTooltip_norm, /* invalid */ RegexTooltip_error, /* valid */ RegexTooltip_norm
     };
-    m_regex->SetBackgroundColour(colors[int(m_matcherState)]);
-    m_regex->SetToolTip(tooltips[int(m_matcherState)]);
+    m_regex->SetBackgroundColour(colors[int(m_regexInputState)]);
+    m_regex->SetToolTip(tooltips[int(m_regexInputState)]);
     m_regex->Refresh();
   }
-  RebuildDisplay();
+
+  // Enforce the non-invalid matcher invariant - restore the regex if needed
+  if (!m_matcherExpr.empty() && !m_matcher.IsValid())
+  {
+    m_matcherExpr = oldRegex;
+    if (!oldRegex.IsEmpty())
+      m_matcher.Compile(oldRegex);
+    regexChanged = false;
+  }
+  if (regexChanged)
+  {
+    UnselectAll();
+    RebuildDisplay();
+  }
 }
 
 wxString History::GetCommand(bool next)
@@ -323,7 +338,6 @@ void History::SetCurrent(long current)
 
   m_current = current;
   m_history->EnsureVisible(m_current);
-  // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
-  m_history->SetSelection(-1, false);
+  UnselectAll();
   m_history->SetSelection(m_current);
 }

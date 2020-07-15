@@ -67,16 +67,18 @@ public:
 
   void MaximaSessionStart();
 
-  void OnInternalIdle() override;
   
 private:
-  enum class MatcherState : int8_t { empty, invalid, valid };
+  enum class RegexInputState : int8_t { empty, invalid, valid };
 
   //! Called on right-clicks on the history panel
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
+  void OnInternalIdle() override;
+
+  void UnselectAll() const;
   void SetCurrent(long);
-  MatcherState GetNewMatcherState() const;
+  RegexInputState GetNewRegexInputState() const;
 
   int m_sessionCommands = 0;
   wxListBox *m_history;
@@ -86,12 +88,13 @@ private:
   wxArrayString m_deferredCommands;
   //! The currently selected item. -1=none.
   long m_current = 0;
-  //! The regex entries need to be matched to in order to be displayed
+  //! The regex the entries need to be matched to in order to be displayed.
+  //! This regex is never invalid, but may be empty.
   wxRegEx m_matcher;
-  //! The text of the m_matcher regex
+  //! The text of the m_matcher regex. It is never invalid but may be empty.
   wxString m_matcherExpr;
-  //! Whether the matcher is ready for user
-  MatcherState m_matcherState = MatcherState::empty;
+  //! The state of the regex in the regex entry control
+  RegexInputState m_regexInputState = RegexInputState::empty;
   //! Whether the history should be updated now or later
   bool m_realtimeUpdate = true;
 };
