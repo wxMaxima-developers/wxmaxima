@@ -35,6 +35,7 @@ FunCell::FunCell(GroupCell *parent, Configuration **config) :
   m_nameCell(new VisiblyInvalidCell(parent,config)),
   m_argCell(new VisiblyInvalidCell(parent,config))
 {
+  InitBitFields();
 }
 
 FunCell::FunCell(const FunCell &cell):

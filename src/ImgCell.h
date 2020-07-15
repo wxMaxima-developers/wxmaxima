@@ -126,8 +126,17 @@ private:
   std::shared_ptr<Image> m_image;
 
   CellPtr<Cell> m_nextToDraw;
-  bool m_drawRectangle = true;
-  bool m_drawBoundingBox = false;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_drawRectangle = true;
+    m_drawBoundingBox = false;
+  }
+  bool m_drawRectangle : 1 /* InitBitFields */;
+  bool m_drawBoundingBox : 1 /* InitBitFields */;
 
   static int s_counter;
 };

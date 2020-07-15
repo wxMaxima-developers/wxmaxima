@@ -36,6 +36,7 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
     m_open(new TextCell(parent, config, wxT("("))),
     m_close(new TextCell(parent, config, wxT(")")))
 {
+  InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_fontSize = AFontSize(10.0f);

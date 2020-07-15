@@ -281,7 +281,7 @@ private:
   static wxRegEx m_graphRegex;
 
   CellType m_ParserStyle;
-  int m_FracStyle;
+  FracCell::FracType m_FracStyle;
   Configuration **m_configuration;
   bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>

@@ -40,6 +40,7 @@ EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString
     Cell(parent, config),
     m_text(text)
 {
+  InitBitFields();
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 

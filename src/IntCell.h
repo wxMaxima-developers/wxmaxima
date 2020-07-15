@@ -62,7 +62,7 @@ public:
   //! Set the integration variable
   void SetVar(Cell *var);
 
-  enum IntegralType
+  enum IntegralType : int8_t
   {
     INT_DEF, //!< A definite integral, meaning an integral with limits.
     INT_IDEF //!> An indefinite integral, meaning an integral without limits
@@ -106,8 +106,6 @@ private:
   std::unique_ptr<Cell> m_var;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  //! Is this integral definitive?
-  IntegralType m_intStyle= INT_IDEF;
   //! The height of the integral sign
   int m_signHeight = 35;
   //! The width of the integral sign
@@ -118,6 +116,16 @@ private:
   int m_charHeight = 12;
   int m_charWidth = 12;
 #endif
+
+  //! Is this integral definitive?
+  IntegralType m_intStyle = INT_IDEF;
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif  // INTCELL_H

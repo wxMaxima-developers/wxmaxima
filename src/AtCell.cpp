@@ -35,6 +35,7 @@ AtCell::AtCell(GroupCell *parent, Configuration **config) :
     m_baseCell (new VisiblyInvalidCell(parent,config)),
     m_indexCell(new VisiblyInvalidCell(parent,config))
 {
+  InitBitFields();
 }
 
 AtCell::AtCell(const AtCell &cell):

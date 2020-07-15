@@ -38,7 +38,9 @@
 SubSupCell::SubSupCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
   m_baseCell(new VisiblyInvalidCell(parent,config))
-{}
+{
+  InitBitFields();
+}
 
 SubSupCell::SubSupCell(const SubSupCell &cell):
     SubSupCell(cell.m_group, cell.m_configuration)

@@ -41,6 +41,7 @@ LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
     m_comma(new TextCell(parent, config, ",")),
     m_close(new TextCell(parent, config, ")"))
 {
+  InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_comma->SetStyle(TS_FUNCTION);

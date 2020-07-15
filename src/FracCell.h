@@ -51,7 +51,7 @@ public:
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }
 
   //! All types of fractions we support
-  enum FracType
+  enum FracType : int8_t
   {
     FC_NORMAL,
     FC_CHOOSE,
@@ -63,7 +63,7 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void SetFracStyle(int style) { m_fracStyle = style; }
+  void SetFracStyle(FracType style) { m_fracStyle = style; }
 
   //! Set the numerator for the fraction
   void SetNum(Cell *num);
@@ -117,8 +117,6 @@ private:
   Cell* m_displayedDenom = {};
   // The pointers above point to inner cells and must be kept contiguous.
 
-  //! The way the fraction should be displayed
-  int m_fracStyle = FC_NORMAL;
   //! How much wider should the horizontal line be on both ends than num or denom?
   int m_protrusion = 0;
   /*! The horizontal gap between this frac and any minus before it
@@ -136,8 +134,18 @@ private:
   */
   int m_horizontalGapRight = 0;
 
+  //! The way the fraction should be displayed
+  FracType m_fracStyle = FC_NORMAL;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_exponent = false;
+  }
   //! Fractions in exponents are shown in their linear form.
-  bool m_exponent = false;
+  bool m_exponent : 1 /* InitBitFields */;
 };
 
 #endif // FRACCELL_H

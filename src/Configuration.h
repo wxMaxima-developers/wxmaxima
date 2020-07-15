@@ -92,7 +92,7 @@ public:
     svg = 3
   };
 
-  enum showLabels
+  enum showLabels : int8_t
   {
     labels_automatic = 0,
     labels_prefer_user = 1,

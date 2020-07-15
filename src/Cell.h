@@ -50,7 +50,7 @@ class wxXmlNode;
 
 /*! The supported types of math cells
  */
-enum CellType
+enum CellType : int8_t
 {
   MC_TYPE_DEFAULT,
   MC_TYPE_MAIN_PROMPT, //!< Input labels
@@ -946,12 +946,17 @@ public:
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
 
 protected:
+//** Bases and internal members (64 bytes)
+//**
+// VTable  *__vtable;
+// Observed __observed;
+// wxAccessible __accessible;
 
-//** Large objects
+//** Large objects (48 bytes)
 //**
   wxString m_toolTip;
 
-//** 8-byte objects
+//** 8-byte objects (24 bytes)
 //**
   /*! The point in the work sheet at which this cell begins.
 
@@ -972,7 +977,7 @@ protected:
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor = -1;
 
-//** 8/4-byte objects
+//** 8/4-byte objects (40 bytes)
 //**
 
 public:
@@ -1001,7 +1006,7 @@ protected:
   Configuration **m_configuration;
   CellPointers *const m_cellPointers;
 
-//** 4-byte objects
+//** 4-byte objects (36 bytes)
 //**
 
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
@@ -1033,18 +1038,47 @@ private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old = -1;
 protected:
-  CellType m_type = MC_TYPE_DEFAULT;
-  TextStyle m_textStyle = TS_DEFAULT;
-
-//** 2-byte objects
+//** 2-byte objects (4 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
   AFontSize m_fontSize = {};
   AFontSize m_fontsize_old = {};
 
-//** 1-byte objects
+//** 1-byte objects (2 bytes)
 //**
-  bool m_bigSkip = false;
+  CellType m_type = MC_TYPE_DEFAULT;
+  TextStyle m_textStyle = TS_DEFAULT;
+
+//** Bitfield objects (3 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_bigSkip = false;
+    m_isBrokenIntoLines = false;
+    m_isBrokenIntoLines_old = false;
+    m_isHidden = false;
+    m_isHidableMultSign = false;
+    m_suppressMultiplicationDot = false;
+    m_recalculateWidths = true;
+    m_recalculate_maxCenter = true;
+    m_recalculate_maxDrop = true;
+    m_recalculate_maxWidth = true;
+    m_recalculate_lineWidth = true;
+    m_suppressTooltipMarker = false;
+    m_containsToolTip = false;
+    m_breakPage = false;
+    m_breakLine = false;
+    m_forceBreakLine = false;
+    m_highlight = false;
+  }
+
+  // In the boolean bit fields below, InitBitFields is an indication that
+  // the InitBitFields() method initializes a given field. It should be
+  // only added once such initialization is in place. It makes it easier
+  // to verify that all bit fields are initialized.
+
+  bool m_bigSkip : 1 /* InitBitFields */;
 
   /*! true means:  This cell is broken into two or more lines.
 
@@ -1052,8 +1086,8 @@ protected:
      but will be displayed in their linear form (and therefore broken into lines) if they
      end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
    */
-  bool m_isBrokenIntoLines = false;
-  bool m_isBrokenIntoLines_old = false;
+  bool m_isBrokenIntoLines : 1 /* InitBitFields */;
+  bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
 
   /*! True means: This cell is not to be drawn.
 
@@ -1062,10 +1096,10 @@ protected:
      - plus signs within numbers
      - The output in folded GroupCells
    */
-  bool m_isHidden = false;
+  bool m_isHidden : 1 /* InitBitFields */;
 
   //! True means: This is a hidable multiplication sign
-  bool m_isHidableMultSign = false;
+  bool m_isHidableMultSign : 1 /* InitBitFields */;
 
   /*! Do we want to begin this cell with a center dot if it is part of a product?
 
@@ -1075,24 +1109,24 @@ protected:
      many => we need parenthesis cells to set this flag for the first cell in
      their "inner cell" list.
    */
-  bool m_suppressMultiplicationDot = false;
+  bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
 
   //! true, if this cell clearly needs recalculation
-  bool m_recalculateWidths = true;
-  bool m_recalculate_maxCenter = true;
-  bool m_recalculate_maxDrop = true;
-  bool m_recalculate_maxWidth = true;
-  bool m_recalculate_lineWidth = true;
+  bool m_recalculateWidths : 1 /* InitBitFields */;
+  bool m_recalculate_maxCenter : 1 /* InitBitFields */;
+  bool m_recalculate_maxDrop : 1 /* InitBitFields */;
+  bool m_recalculate_maxWidth : 1 /* InitBitFields */;
+  bool m_recalculate_lineWidth : 1 /* InitBitFields */;
   //! GroupCells only: Suppress the yellow ToolTips marker
-  bool m_suppressTooltipMarker = false;
-  bool m_containsToolTip = false;
+  bool m_suppressTooltipMarker : 1 /* InitBitFields */;
+  bool m_containsToolTip : 1 /* InitBitFields */;
   //! Does this cell begin with a forced page break?
-  bool m_breakPage = false;
+  bool m_breakPage : 1 /* InitBitFields */;
   //! Are we allowed to add a line break before this cell?
-  bool m_breakLine = false;
+  bool m_breakLine : 1 /* InitBitFields */;
   //! true means we force this cell to begin with a line break.
-  bool m_forceBreakLine = false;
-  bool m_highlight = false;
+  bool m_forceBreakLine : 1 /* InitBitFields */;
+  bool m_highlight : 1 /* InitBitFields */;
 
 
   class InnerCellIterator
@@ -1158,5 +1192,10 @@ private:
 
   CellPointers *GetCellPointers() const;
 };
+
+// The static cast here requires Cell to be defined
+template <typename T>
+template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type>
+inline PtrT CellPtr<T>::CastAs() const { return dynamic_cast<PtrT>(static_cast<Cell*>(base_get())); }
 
 #endif // MATHCELL_H

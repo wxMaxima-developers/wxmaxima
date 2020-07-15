@@ -37,7 +37,7 @@
 
 class TextCell;
 
-enum sumStyle
+enum sumStyle : int8_t
 {
   SM_SUM,
   SM_PROD
@@ -111,6 +111,13 @@ private:
   int m_signHeight = 50;
   int m_signWCenter = 15;
   sumStyle m_sumStyle = SM_SUM;
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // SUMCELL_H

@@ -157,8 +157,16 @@ private:
 
   Configuration::showLabels m_labelChoice_Last = {};
 
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_dontEscapeOpeningParenthesis = false;
+  }
+
   //! Is an ending "(" of a function name the opening parenthesis of the function?
-  bool m_dontEscapeOpeningParenthesis = false;
+  bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
 };
 
 #endif // TEXTCELL_H

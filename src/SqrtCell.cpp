@@ -37,6 +37,7 @@ SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
     m_open(new TextCell(parent, config, "sqrt(")),
     m_close(new TextCell(parent, config, ")"))
 {
+  InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }

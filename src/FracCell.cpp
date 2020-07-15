@@ -38,6 +38,7 @@ FracCell::FracCell(GroupCell *parent, Configuration **config) :
     m_denomParenthesis(new ParenCell(m_group, m_configuration)),
     m_divideOwner(new TextCell(parent, config, "/"))
 {
+  InitBitFields();
   SetNum(new VisiblyInvalidCell(parent,config));
   SetDenom(new VisiblyInvalidCell(parent,config));
   m_divide->SetStyle(TS_VARIABLE);

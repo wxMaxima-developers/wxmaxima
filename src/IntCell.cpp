@@ -49,6 +49,7 @@ IntCell::IntCell(GroupCell *parent, Configuration **config) :
     m_comma3(new TextCell(parent, config, ",")),
     m_var(new VisiblyInvalidCell(parent,config))
 {
+  InitBitFields();
 }
 
 // Old cppcheck bugs:

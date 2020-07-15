@@ -35,6 +35,7 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   Cell(parent, config),
   m_labelChoice_Last((*config)->GetLabelChoice())
 {
+  InitBitFields();
   switch(m_textStyle = style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
@@ -305,6 +306,7 @@ TextCell::TextCell(const TextCell &cell):
     m_displayedText(cell.m_displayedText),
     m_labelChoice_Last((*cell.m_configuration)->GetLabelChoice())
 {
+  InitBitFields();
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
   m_bigSkip = cell.m_bigSkip;

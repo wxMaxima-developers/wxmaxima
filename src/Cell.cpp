@@ -84,6 +84,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_cellPointers(GetCellPointers()),
     m_fontSize((*config)->GetMathFontSize())
 {
+  InitBitFields();
 }
 
 Cell::~Cell()

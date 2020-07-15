@@ -490,12 +490,12 @@ private:
     wxString m_text;
     //! Chars that mark continued indentation
     wxString m_indentChar;
-    //! The color of this text portion
-    TextStyle m_style = TS_DEFAULT;
     //! The cached width of this piece of text
     int m_width = -1;
     //! By How many pixels we want to indent this line?
     int m_indentPixels = 0;
+    //! The color of this text portion
+    TextStyle m_style = TS_DEFAULT;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText = false;
   public:
@@ -647,23 +647,37 @@ private:
    */
   AFontSize m_fontSize_Last;
 
-//** 1 byte
+//** Bitfield objects (2 bytes)
 //**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_autoAnswer = false;
+    m_containsChanges = false;
+    m_containsChangesCheck = false;
+    m_displayCaret = false;
+    m_firstLineOnly = false;
+    m_hasFocus = false;
+    m_isDirty = false;
+    m_saveValue = false;
+    m_selectionChanged = false;
+    m_underlined = false;
+  }
 
   //! Mark this cell as "Automatically answer questions".
-  bool m_autoAnswer = false;
+  bool m_autoAnswer : 1 /* InitBitFields */;
   //! true, if this function has changed since the last evaluation by maxima
-  bool m_containsChanges = false;
-  bool m_containsChangesCheck = false;
-  bool m_displayCaret = false;
-  bool m_firstLineOnly = false;
-  bool m_hasFocus = false;
-  bool m_isDirty = false;
-  bool m_saveValue = false;
+  bool m_containsChanges : 1 /* InitBitFields */;
+  bool m_containsChangesCheck : 1 /* InitBitFields */;
+  bool m_displayCaret : 1 /* InitBitFields */;
+  bool m_firstLineOnly : 1 /* InitBitFields */;
+  bool m_hasFocus : 1 /* InitBitFields */;
+  bool m_isDirty : 1 /* InitBitFields */;
+  bool m_saveValue :1 /* InitBitFields */;
   //! Has the selection changed since the last draw event?
-  bool m_selectionChanged = false;
+  bool m_selectionChanged : 1 /* InitBitFields */;
   //! Does this cell's size have to be recalculated?
-  bool m_underlined = false;
+  bool m_underlined : 1 /* InitBitFields */;
 };
 
 #endif // EDITORCELL_H
