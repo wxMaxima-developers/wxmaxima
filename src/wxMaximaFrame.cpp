@@ -500,11 +500,14 @@ void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
 
 void wxMaximaFrame::UpdateStatusMaximaBusy()
 {
-  wxWindowUpdateLocker drawBlocker(this);
+  // Do not block the events here, before we even know that the update is needed.
+  // It causes a request for an idle event and causes constant idle processing cpu
+  // use when wxMaxima is sitting idle.
   if ((m_StatusMaximaBusy != m_StatusMaximaBusy_next) || (m_forceStatusbarUpdate) ||
       (!m_bytesReadDisplayTimer.IsRunning() && (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
        (m_StatusMaximaBusy_next == transferring)))
   {
+    wxWindowUpdateLocker drawBlocker(this);
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     if (!m_StatusSaving)
     {
