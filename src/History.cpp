@@ -247,7 +247,7 @@ void History::RebuildDisplay()
     display.reserve(m_commands.size());
     for (auto cmd = m_commands.rbegin(); cmd != m_commands.rend(); ++cmd)
     {
-      if (!m_matcher.Matches(*cmd))
+      if (m_matcher.Matches(*cmd))
         display.Add(*cmd);
     }
   }
