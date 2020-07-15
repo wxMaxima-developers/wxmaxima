@@ -59,6 +59,11 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
     SetPreSup(cell.m_preSupCell->CopyList());
 }
 
+std::unique_ptr<Cell> SubSupCell::Copy() const
+{
+  return std::make_unique<SubSupCell>(*this);
+}
+
 static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
 {
   cells.erase(

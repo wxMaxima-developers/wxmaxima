@@ -73,6 +73,11 @@ IntCell::IntCell(const IntCell &cell):
   m_intStyle = cell.m_intStyle;
 }
 
+std::unique_ptr<Cell> IntCell::Copy() const
+{
+  return std::make_unique<IntCell>(*this);
+}
+
 void IntCell::SetOver(Cell *name)
 {
   if (!name)

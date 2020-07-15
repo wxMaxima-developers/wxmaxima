@@ -32,7 +32,7 @@ class MatrCell final : public Cell
 public:
   MatrCell(GroupCell *parent, Configuration **config);
   MatrCell(const MatrCell &cell);
-  Cell *Copy() const override { return new MatrCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override
   { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }

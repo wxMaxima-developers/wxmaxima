@@ -64,6 +64,11 @@ ListCell::ListCell(const ListCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
+std::unique_ptr<Cell> ListCell::Copy() const
+{
+  return std::make_unique<ListCell>(*this);
+}
+
 void ListCell::SetInner(Cell *inner, CellType type)
 {
   if (inner)

@@ -65,6 +65,11 @@ SumCell::SumCell(const SumCell &cell) :
   SetSumStyle(cell.m_sumStyle);
 }
 
+std::unique_ptr<Cell> SumCell::Copy() const
+{
+  return std::make_unique<SumCell>(*this);
+}
+
 void SumCell::SetOver(Cell *over)
 {
   if (!over)
@@ -101,7 +106,7 @@ void SumCell::SetUnder(Cell *under)
   //  1 cell containing the text "in" or "=" (TODO: That's heuristics. Is there a better, but
   //                                          backwards-compatible way for this?)
   //  And the rest contains the lower limit.
-  m_var.reset(m_under->Copy());
+  m_var = m_under->Copy();
   Cell *start = m_under.get();
   while (start != NULL &&
          ((start->GetValue() != wxT("in")) && (start->GetValue() != wxT("="))))

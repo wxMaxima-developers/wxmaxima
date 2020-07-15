@@ -50,7 +50,7 @@ class ExptCell final : public Cell
 public:
   ExptCell(GroupCell *parent, Configuration **config);
   ExptCell(const ExptCell &cell);
-  Cell *Copy() const override { return new ExptCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

@@ -215,6 +215,11 @@ GroupCell::GroupCell(const GroupCell &cell):
   AutoAnswer(cell.m_autoAnswer);
 }
 
+std::unique_ptr<Cell> GroupCell::Copy() const
+{
+  return std::make_unique<GroupCell>(*this);
+}
+
 /*! Set the parent of this group cell
 
 */
@@ -1182,15 +1187,16 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter) c
     case GC_TYPE_IMAGE:
       if (imgDir != wxEmptyString)
       {
-        Cell *copy = m_output->Copy();
+        auto const copy = m_output->Copy();
+        auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
         (*imgCounter)++;
         wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
-        wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell *>(copy)->GetExtension();
+        wxString file = imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
 
         if (!wxDirExists(imgDir))
           wxMkdir(imgDir);
 
-        if (dynamic_cast<ImgCell *>(copy)->ToImageFile(file).x >= 0)
+        if (imgCopy->ToImageFile(file).x >= 0)
         {
           str << wxT("\\begin{figure}[htb]\n")
               << wxT("  \\centering\n")
@@ -1365,7 +1371,8 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
 
   if (imgDir != wxEmptyString)
   {
-    Cell *copy = tmp->Copy();
+    auto const copy = tmp->Copy();
+    auto *const imgCopy = dynamic_cast<ImgCell *>(copy.get());
     (*imgCounter)++;
     wxString image = filename + wxString::Format(wxT("_%d"), *imgCounter);
     if (!wxDirExists(imgDir))
@@ -1394,8 +1401,8 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
     }
     else
     {
-      wxString file = imgDir + wxT("/") + image + wxT(".") + dynamic_cast<ImgCell *>(copy)->GetExtension();
-      if (dynamic_cast<ImgCell *>(copy)->ToImageFile(file).x >= 0)
+      wxString file = imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+      if (imgCopy->ToImageFile(file).x >= 0)
         str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
                filename + wxT("_img/") + image + wxT("}");
       else

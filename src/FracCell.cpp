@@ -57,6 +57,11 @@ FracCell::FracCell(const FracCell &cell):
   SetupBreakUps();
 }
 
+std::unique_ptr<Cell> FracCell::Copy() const
+{
+  return std::make_unique<FracCell>(*this);
+}
+
 void FracCell::SetNum(Cell *num)
 {
   if (!num)

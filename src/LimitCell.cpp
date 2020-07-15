@@ -62,6 +62,11 @@ LimitCell::LimitCell(const LimitCell &cell) :
     SetName(cell.m_name->CopyList());
 }
 
+std::unique_ptr<Cell> LimitCell::Copy() const
+{
+  return std::make_unique<LimitCell>(*this);
+}
+
 void LimitCell::SetName(Cell *name)
 {
   if (!name)

@@ -50,6 +50,11 @@ SubCell::SubCell(const SubCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
+std::unique_ptr<Cell> SubCell::Copy() const
+{
+  return std::make_unique<SubCell>(*this);
+}
+
 void SubCell::SetIndex(Cell *index)
 {
   if (!index)

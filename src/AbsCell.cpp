@@ -53,6 +53,11 @@ AbsCell::AbsCell(const AbsCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
+std::unique_ptr<Cell> AbsCell::Copy() const
+{
+  return std::make_unique<AbsCell>(*this);
+}
+
 void AbsCell::SetInner(Cell *inner)
 {
   if (!inner)

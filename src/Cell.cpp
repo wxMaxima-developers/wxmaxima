@@ -140,8 +140,8 @@ void Cell::CopyCommonData(const Cell & cell)
 
 Cell *Cell::CopyList() const
 {
-  Cell *dest = Copy();
-  Cell *ret = dest;
+  auto ret = Copy();
+  Cell *dest = ret.get();
   Cell *src = m_next;
 
   while (src != NULL)
@@ -150,7 +150,7 @@ Cell *Cell::CopyList() const
     src = src->m_next;
     dest = dest->m_next;
   }
-  return ret;
+  return ret.release();
 }
 
 void Cell::ClearCacheList()
@@ -206,10 +206,11 @@ void Cell::FontsChangedList()
   }
 }
 
+void Cell::AppendCell(std::unique_ptr<Cell> &&p_next)
+{
+  AppendCell(p_next.release());
+}
 
-/***
- * Append new cell to the end of this list.
- */
 void Cell::AppendCell(Cell *p_next)
 {
   if (p_next == NULL)

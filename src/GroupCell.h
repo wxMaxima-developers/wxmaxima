@@ -68,7 +68,7 @@ class GroupCell final : public Cell
 public:
   GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
-  Cell *Copy() const override { return new GroupCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
   ~GroupCell();
 
   wxString GetAnswer(int answer)

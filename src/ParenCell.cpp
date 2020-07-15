@@ -63,6 +63,11 @@ ParenCell::ParenCell(const ParenCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
+std::unique_ptr<Cell> ParenCell::Copy() const
+{
+  return std::make_unique<ParenCell>(*this);
+}
+
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner)

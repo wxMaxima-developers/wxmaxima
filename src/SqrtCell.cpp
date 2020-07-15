@@ -58,6 +58,11 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
+std::unique_ptr<Cell> SqrtCell::Copy() const
+{
+  return std::make_unique<SqrtCell>(*this);
+}
+
 void SqrtCell::SetInner(Cell *inner)
 {
   if (!inner)

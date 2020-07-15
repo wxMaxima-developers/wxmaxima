@@ -30,7 +30,7 @@ class AtCell final : public Cell
 public:
   AtCell(GroupCell *parent, Configuration **config);
   AtCell(const AtCell &cell);
-  Cell *Copy() const override { return new AtCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_indexCell); }

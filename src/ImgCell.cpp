@@ -80,6 +80,11 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &imag
   m_drawBoundingBox = false;
 }
 
+std::unique_ptr<Cell> ImgCell::Copy() const
+{
+  return std::make_unique<ImgCell>(*this);
+}
+
 void ImgCell::LoadImage(wxString image, bool remove)
 {
   m_image = std::make_shared<Image>(m_configuration, remove, image);

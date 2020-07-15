@@ -39,7 +39,7 @@ public:
 
   ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
-  Cell *Copy() const override { return new ImgCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
   ~ImgCell() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor

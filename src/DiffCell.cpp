@@ -51,6 +51,11 @@ DiffCell::DiffCell(const DiffCell &cell):
     SetBase(cell.m_baseCell->CopyList());
 }
 
+std::unique_ptr<Cell> DiffCell::Copy() const
+{
+  return std::make_unique<DiffCell>(*this);
+}
+
 void DiffCell::SetDiff(Cell *diff)
 {
   if (!diff)

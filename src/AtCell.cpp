@@ -48,6 +48,11 @@ AtCell::AtCell(const AtCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
+std::unique_ptr<Cell> AtCell::Copy() const
+{
+  return std::make_unique<AtCell>(*this);
+}
+
 void AtCell::SetIndex(Cell *index)
 {
   if (!index)

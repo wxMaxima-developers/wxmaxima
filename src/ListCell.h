@@ -51,7 +51,7 @@ class ListCell final : public Cell
 public:
   ListCell(GroupCell *parent, Configuration **config);
   ListCell(const ListCell &cell);
-  Cell *Copy() const override { return new ListCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

@@ -57,6 +57,11 @@ ExptCell::ExptCell(const ExptCell &cell):
     SetPower(cell.m_exptCell->CopyList());
 }
 
+std::unique_ptr<Cell> ExptCell::Copy() const
+{
+  return std::make_unique<ExptCell>(*this);
+}
+
 void ExptCell::Draw(wxPoint point)
 {
   Cell::Draw(point);

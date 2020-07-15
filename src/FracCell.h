@@ -45,7 +45,7 @@ class FracCell final : public Cell
 public:
   FracCell(GroupCell *parent, Configuration **config);
   FracCell(const FracCell &cell);
-  Cell *Copy() const override { return new FracCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }

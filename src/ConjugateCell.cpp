@@ -50,6 +50,11 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
+std::unique_ptr<Cell> ConjugateCell::Copy() const
+{
+  return std::make_unique<ConjugateCell>(*this);
+}
+
 void ConjugateCell::SetInner(Cell *inner)
 {
   if (!inner)

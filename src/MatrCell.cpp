@@ -51,6 +51,11 @@ MatrCell::MatrCell(const MatrCell &cell):
       m_cells.emplace_back(cell.m_cells[i]->CopyList());
 }
 
+std::unique_ptr<Cell> MatrCell::Copy() const
+{
+  return std::make_unique<MatrCell>(*this);
+}
+
 void MatrCell::RecalculateWidths(AFontSize const fontsize)
 {
   if(!NeedsRecalculation(fontsize))

@@ -70,6 +70,11 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
 }
 
+std::unique_ptr<Cell> TextCell::Copy() const
+{
+  return std::make_unique<TextCell>(*this);
+}
+
 void TextCell::SetStyle(TextStyle style)
 {
   m_sizeCache.clear();

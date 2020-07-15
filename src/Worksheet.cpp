@@ -4541,7 +4541,8 @@ Cell *Worksheet::CopySelection(bool asData) const
 
 Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
 {
-  Cell *tmp, *out = NULL, *outEnd = NULL;
+  std::unique_ptr<Cell> out;
+  Cell *tmp, *outEnd = NULL;
   tmp = start;
 
   while (tmp != NULL)
@@ -4549,7 +4550,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
     if (out == NULL)
     {
       out = tmp->Copy();
-      outEnd = out;
+      outEnd = out.get();
     }
     else
     {
@@ -4564,7 +4565,7 @@ Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
       tmp = tmp->GetNextToDraw();
   }
 
-  return out;
+  return out.release();
 }
 
 void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s)

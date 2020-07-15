@@ -48,7 +48,7 @@ class SumCell final : public Cell
 public:
   SumCell(GroupCell *group, Configuration **config);
   SumCell(const SumCell &cell);
-  Cell *Copy() const override { return new SumCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_under); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_paren); }

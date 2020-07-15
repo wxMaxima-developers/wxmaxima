@@ -49,6 +49,11 @@ FunCell::FunCell(const FunCell &cell):
     SetArg(cell.m_argCell->CopyList());
 }
 
+std::unique_ptr<Cell> FunCell::Copy() const
+{
+  return std::make_unique<FunCell>(*this);
+}
+
 void FunCell::SetName(Cell *name)
 {
   if (!name)
