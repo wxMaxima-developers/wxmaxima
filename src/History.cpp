@@ -36,6 +36,7 @@
 #include <wx/txtstrm.h>
 #include <algorithm>
 #include <memory>
+#include <wx/wupdlock.h>
 
 #include "ErrorRedirector.h"
 
@@ -234,6 +235,7 @@ void History::AddToHistory(const wxString &cmd)
 
 void History::RebuildDisplay()
 {
+  wxWindowUpdateLocker speedUp(this);
   wxArrayString display;
   if (m_matcherState == MatcherState::empty)
   {

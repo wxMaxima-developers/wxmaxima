@@ -91,8 +91,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   m_logPane = new LogPane(this, -1, becomeLogTarget);
-  wxEventBlocker logBlocker(m_logPane);
-  
+  wxWindowUpdateLocker logBlocker(m_logPane);
+
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
   #ifdef __WXMSW__
   if(wxSystemOptions::IsFalse("msw.display.directdraw"))
@@ -167,15 +167,15 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   
   // console
   new Worksheet(this, -1, m_worksheet);
-  wxEventBlocker worksheetBlocker(m_worksheet);
+  wxWindowUpdateLocker worksheetBlocker(m_worksheet);
 
   // The table of contents
   m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
 
   m_xmlInspector = new XmlInspector(this, -1);
-  wxEventBlocker xmlInspectorBlocker(m_xmlInspector);
+  wxWindowUpdateLocker xmlInspectorBlocker(m_xmlInspector);
   m_statusBar = new StatusBar(this, -1);
-  wxEventBlocker statusbarBlocker(m_statusBar);
+  wxWindowUpdateLocker statusbarBlocker(m_statusBar);
   SetStatusBar(m_statusBar);
   m_StatusSaving = false;
   // If we need to set the status manually for the first time using StatusMaximaBusy
@@ -241,10 +241,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             RightDockable(true).
                             PaneBorder(true).
                             Left());
-  wxEventBlocker statBlocker(statPane);
+  wxWindowUpdateLocker statBlocker(statPane);
 
   wxPanel *greekPane = new GreekPane(this, m_worksheet->m_configuration, m_worksheet);
-  wxEventBlocker greekBlocker(greekPane);
+  wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                             CloseButton(true).PinButton(true).
@@ -259,7 +259,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Left());
 
   wxPanel *unicodePane = new UnicodeSidebar(this, m_worksheet);
-  wxEventBlocker unicodeBlocker(unicodePane);
+  wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo().Name(wxT("unicode")).
                             CloseButton(true).PinButton(true).
@@ -288,7 +288,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     Left());
 
   wxPanel *variables = new wxPanel(this,wxID_ANY);
-  wxEventBlocker variablesBlocker(variables);
+  wxWindowUpdateLocker variablesBlocker(variables);
   m_worksheet->m_variablesPane = new Variablespane(variables,wxID_ANY);
   wxSizer *variablesSizer = new wxBoxSizer(wxVERTICAL);
   variablesSizer->Add(m_worksheet->m_variablesPane,wxSizerFlags().Expand());
@@ -307,7 +307,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Bottom());
 
   m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration, m_worksheet);
-  wxEventBlocker symbolsBlocker(m_symbolsPane);
+  wxWindowUpdateLocker symbolsBlocker(m_symbolsPane);
   m_manager.AddPane(m_symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).             
                             DockFixed(false).CloseButton(true).
@@ -348,7 +348,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     RightDockable(true).
                     PaneBorder(true).
                     Left());
-  wxEventBlocker drawBlocker(m_drawPane);
+  wxWindowUpdateLocker drawBlocker(m_drawPane);
   
   m_worksheet->m_mainToolBar = new ToolBar(this);
   
@@ -500,6 +500,7 @@ void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
 
 void wxMaximaFrame::UpdateStatusMaximaBusy()
 {
+  wxWindowUpdateLocker drawBlocker(this);
   if ((m_StatusMaximaBusy != m_StatusMaximaBusy_next) || (m_forceStatusbarUpdate) ||
       (!m_bytesReadDisplayTimer.IsRunning() && (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
        (m_StatusMaximaBusy_next == transferring)))
@@ -1845,6 +1846,7 @@ void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event)
 
 void wxMaximaFrame::GreekPane::UpdateSymbols()
 {
+  wxWindowUpdateLocker drawBlocker(this);
   enum class Cond { None, Show_mu, ShowLatinLookalikes };
   struct EnabledDefinition : CharButton::Definition
   {
@@ -2062,6 +2064,7 @@ void wxMaximaFrame::SymbolsPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
 {
   wxLogNull blocker;
+  wxWindowUpdateLocker drawBlocker(this);
   while (!m_userSymbolButtons.empty())
   {
     m_userSymbolButtons.front()->Destroy();
