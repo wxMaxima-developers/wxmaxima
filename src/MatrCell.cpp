@@ -60,20 +60,18 @@ void MatrCell::RecalculateWidths(AFontSize const fontsize)
   for (unsigned int i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateWidthsList(fontsize_entry);
 
+  m_width = 0;
   m_widths.clear();
   for (unsigned int i = 0; i < m_matWidth; i++)
   {
-    m_widths.push_back(0);
+    int width = 0;
     for (unsigned int j = 0; j < m_matHeight; j++)
     {
       if((m_matWidth * j + i)<m_cells.size())
-        m_widths[i] = wxMax(m_widths[i], m_cells[m_matWidth * j + i]->GetFullWidth());
+        width = wxMax(width, m_cells[m_matWidth * j + i]->GetFullWidth());
     }
-  }
-  m_width = 0;
-  for (unsigned int i = 0; i < m_matWidth; i++)
-  {
-    m_width += (m_widths[i] + Scale_Px(10));
+    m_widths.emplace_back(width);
+    m_width += (width + Scale_Px(10));
   }
   if (m_width < Scale_Px(14))
     m_width = Scale_Px(14);
@@ -89,23 +87,19 @@ void MatrCell::RecalculateHeight(AFontSize const fontsize)
   for (unsigned int i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateHeightList(fontsize_entry);
 
-  m_centers.clear();
-  m_drops.clear();
+  m_height = 0;
+  m_dropCenters.clear();
   for (unsigned int i = 0; i < m_matHeight; i++)
   {
-    m_centers.push_back(0);
-    m_drops.push_back(0);
+    int center = 0, drop = 0;
     for (unsigned int j = 0; j < m_matWidth; j++)
       if(m_matWidth * i + j < m_cells.size())
       {
-        m_centers[i] = wxMax(m_centers[i], m_cells[m_matWidth * i + j]->GetCenterList());
-        m_drops[i] = wxMax(m_drops[i], m_cells[m_matWidth * i + j]->GetMaxDrop());
+        center = wxMax(center, m_cells[m_matWidth * i + j]->GetCenterList());
+        drop = wxMax(drop, m_cells[m_matWidth * i + j]->GetMaxDrop());
       }
-  }
-  m_height = 0;
-  for (unsigned int i = 0; i < m_matHeight; i++)
-  {
-    m_height += (m_centers[i] + m_drops[i] + Scale_Px(10));
+    m_dropCenters.emplace_back(drop, center);
+    m_height += (center + drop + Scale_Px(10));
   }
   if (m_height == 0)
     m_height = fontsize + Scale_Px(10);
@@ -130,11 +124,11 @@ void MatrCell::Draw(wxPoint point)
       {
         if((j * m_matWidth + i) < m_cells.size())
           {
-            mp.y += m_centers[j];
+            mp.y += m_dropCenters[j].center;
             wxPoint mp1(mp);
             mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
             m_cells[j * m_matWidth + i]->DrawList(mp1);
-            mp.y += (m_drops[j] + Scale_Px(10));
+            mp.y += (m_dropCenters[j].drop + Scale_Px(10));
           }
       }
       mp.x += (m_widths[i] + Scale_Px(10));
@@ -156,9 +150,9 @@ void MatrCell::Draw(wxPoint point)
                       point.y + m_center - Scale_Px(2));
         if (m_colNames)
           dc->DrawLine(point.x + Scale_Px(1),
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5),
+                      point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5),
                       point.x + Scale_Px(1) + m_width,
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5));
+                      point.y - m_center + m_dropCenters[0].Sum() + 2 * Scale_Px(5));
       }
     }
     else
