@@ -40,7 +40,7 @@ wxString CellPointers::WXMXGetNewFileName()
 void CellPointers::SetTimerIdForCell(Cell *const cell, int const timerId)
 {
   auto match = std::find_if(m_timerIds.begin(), m_timerIds.end(),
-                            [cell](auto &ctid) { return ctid.cell == cell; });
+                            [cell](auto const &ctid) { return ctid.cell == cell; });
   if (match != m_timerIds.end())
   {
     match->timerId = timerId;
@@ -53,7 +53,7 @@ void CellPointers::SetTimerIdForCell(Cell *const cell, int const timerId)
 int CellPointers::GetTimerIdForCell(Cell *const cell) const
 {
   auto match = std::find_if(m_timerIds.begin(), m_timerIds.end(),
-                            [cell](auto &ctid) { return ctid.cell == cell; });
+                            [cell](auto const &ctid) { return ctid.cell == cell; });
   if (match != m_timerIds.end())
     return match->timerId;
   return -1;
@@ -62,7 +62,7 @@ int CellPointers::GetTimerIdForCell(Cell *const cell) const
 Cell *CellPointers::GetCellForTimerId(int const timerId) const
 {
   auto match = std::find_if(m_timerIds.begin(), m_timerIds.end(),
-                            [timerId](auto &ctid) { return ctid.timerId == timerId; });
+                            [timerId](auto const &ctid) { return ctid.timerId == timerId; });
   if (match != m_timerIds.end())
     return match->cell;
   return nullptr;
