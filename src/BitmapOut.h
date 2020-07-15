@@ -51,7 +51,7 @@ public:
 
     \return true, if the bitmap could be created.
    */
-  bool SetData(Cell *tree, long int maxSize = -1);
+  bool SetData(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
 
   /*! Exports this bitmap to a file
 

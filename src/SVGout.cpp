@@ -60,9 +60,9 @@ Svgout::~Svgout()
   wxSetWorkingDirectory(m_CWD);
 }
 
-wxSize Svgout::SetData(Cell *tree)
+wxSize Svgout::SetData(std::unique_ptr<Cell> &&tree)
 {
-  m_tree.reset(tree);
+  m_tree = std::move(tree);
   if (m_tree && Layout())
     return m_cmn.GetScaledSize();
 

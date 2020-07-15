@@ -46,7 +46,7 @@ public:
     \param tree The list of cells that is to be rendered
     \return true, if the svgout could be created.
    */
-  wxSize SetData(Cell *tree);
+  wxSize SetData(std::unique_ptr<Cell> &&tree);
   
   //! Copies the svg representation of the list of cells that was passed to SetData()
   bool ToClipboard();

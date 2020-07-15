@@ -417,7 +417,7 @@ private:
   void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
-  Cell *CopySelection(bool asData = false) const;
+  std::unique_ptr<Cell> CopySelection(bool asData = false) const;
 
   /*! Copy the currently given list of cells
 
@@ -433,7 +433,7 @@ private:
                This is accurately copied if asdata=false. But m_next and m_previous are
                treated as mere aliases of m_nextToDraw in this case.
   */
-  Cell *CopySelection(Cell *start, Cell *end, bool asData = false) const;
+  std::unique_ptr<Cell> CopySelection(Cell *start, Cell *end, bool asData = false) const;
 
   //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);

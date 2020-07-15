@@ -43,9 +43,9 @@ Emfout::Emfout(Configuration **configuration, const wxString &filename) :
 Emfout::~Emfout()
 {}
 
-wxSize Emfout::SetData(Cell *tree)
+wxSize Emfout::SetData(std::unique_ptr<Cell> &&tree)
 {
-  m_tree.reset(tree);
+  m_tree = std::move(tree);
   if (m_tree && Layout())
       return m_cmn.GetSize();
 
