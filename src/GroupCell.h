@@ -395,7 +395,6 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
-  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);  
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   //! A list of answers provided by the user
   StringHash m_knownAnswers;

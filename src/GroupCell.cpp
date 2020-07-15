@@ -378,6 +378,8 @@ void GroupCell::AppendOutput(Cell *cell)
   Recalculate();
 }
 
+WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
+
 void GroupCell::UpdateConfusableCharWarnings()
 {
   ClearToolTip();
