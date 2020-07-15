@@ -33,7 +33,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 640 bytes <- 744 bytes
+// 592 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -49,7 +49,7 @@ public:
   void SetValue(const wxString &text) override;
 
   //! Set the automatic label maxima has assigned the current equation
-  void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
+  void SetUserDefinedLabel(const wxString &userDefinedLabel) { m_userDefinedLabel() = userDefinedLabel; }
 
   void RecalculateWidths(AFontSize fontsize) override;
 
@@ -139,12 +139,15 @@ private:
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
+  //! The user-defined label for this label cell. Reuses m_numEnd since
+  //! otherwise it'd be unused for labels.
+  wxString &m_userDefinedLabel() { return m_numEnd; }
+  const wxString &m_userDefinedLabel() const { return m_numEnd; }
+
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
   //! The text we keep inside this cell
   wxString m_text;
-  //! The text we keep inside this cell
-  wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
 
@@ -152,7 +155,7 @@ private:
   wxString m_numStart;
   //! The "not all digits displayed" message.
   wxString m_ellipsis;
-  //! Last few digits
+  //! Last few digits (also used for user defined label)
   wxString m_numEnd;
 
   wxString m_initialToolTip;

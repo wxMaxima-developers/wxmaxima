@@ -303,12 +303,12 @@ void TextCell::SetValue(const wxString &text)
 TextCell::TextCell(const TextCell &cell):
     Cell(cell.m_group, cell.m_configuration),
     m_text(cell.m_text),
-    m_userDefinedLabel(cell.m_userDefinedLabel),
     m_displayedText(cell.m_displayedText),
     m_labelChoice_Last((*cell.m_configuration)->GetLabelChoice())
 {
   InitBitFields();
   CopyCommonData(cell);
+  m_userDefinedLabel() = cell.m_userDefinedLabel();
   m_altCopyText = cell.m_altCopyText;
   m_bigSkip = cell.m_bigSkip;
   m_highlight = cell.m_highlight;
@@ -330,7 +330,7 @@ bool TextCell::NeedsRecalculation(AFontSize fontSize) const
     (
       (m_textStyle == TS_LABEL) &&
       ((*m_configuration)->UseUserLabels()) &&
-    (m_userDefinedLabel != wxEmptyString)
+    (!m_userDefinedLabel().empty())
       ) ||
     (
       (m_textStyle == TS_NUMBER) &&
@@ -360,7 +360,7 @@ wxString TextCell::GetTextFor(TextCell::TextIndex const index) const
     return m_displayedText;
   case userLabelText:
   {
-    auto text = wxT("(") + m_userDefinedLabel + wxT(")");
+    auto text = wxT("(") + m_userDefinedLabel() + wxT(")");
     m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
     return text;
   }
@@ -403,7 +403,7 @@ void TextCell::UpdateDisplayedText()
     {
       if(configuration->UseUserLabels())
       {
-        if(m_userDefinedLabel.IsEmpty())
+        if(m_userDefinedLabel().empty())
         {
           if(configuration->ShowAutomaticLabels())
             m_displayedText = m_text;
@@ -411,7 +411,7 @@ void TextCell::UpdateDisplayedText()
             m_displayedText = wxEmptyString;
         }
         else
-          m_displayedText = m_userDefinedLabel;
+          m_displayedText = m_userDefinedLabel();
       }
     }
   }
@@ -495,7 +495,7 @@ void TextCell::RecalculateWidths(AFontSize fontsize)
     if(
       (m_textStyle == TS_LABEL) &&
       (configuration->UseUserLabels()) &&
-      (m_userDefinedLabel != wxEmptyString)
+      (!m_userDefinedLabel().empty())
       )
       m_textStyle = TS_USERLABEL;
 
@@ -607,7 +607,7 @@ void TextCell::Draw(wxPoint point)
         auto const index = GetLabelIndex();
         if (index != noText)
         {
-          SetToolTip(m_userDefinedLabel);
+          SetToolTip(m_userDefinedLabel());
           dc->DrawText(GetTextFor(index),
                        point.x + MC_TEXT_PADDING,
                        point.y - m_realCenter + MC_TEXT_PADDING);
@@ -726,8 +726,8 @@ wxString TextCell::ToString() const
   else
   {
     text = m_text;
-    if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-      text = wxT("(") + m_userDefinedLabel + wxT(")");
+    if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
+      text = wxT("(") + m_userDefinedLabel() + wxT(")");
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\u2794"), wxT("-->"));
     text.Replace(wxT("\u2192"), wxT("->"));
@@ -802,8 +802,8 @@ wxString TextCell::ToMatlab() const
 	else
 	{
 	  text = m_text;
-	  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-		text = wxT("(") + m_userDefinedLabel + wxT(")");
+	  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
+		text = wxT("(") + m_userDefinedLabel() + wxT(")");
 	  text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
 	  text.Replace(wxT("\u2794"), wxT("-->"));
 	  text.Replace(wxT("\u2192"), wxT("->"));
@@ -878,8 +878,8 @@ wxString TextCell::ToTeX() const
 {
   wxString text = m_displayedText;
 
-  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
+    text = wxT("(") + m_userDefinedLabel() + wxT(")");
 
   if (!(*m_configuration)->CheckKeepPercent())
   {
@@ -1292,8 +1292,8 @@ wxString TextCell::ToMathML() const
     return wxEmptyString;
   wxString text = XMLescape(m_displayedText);
 
-  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = XMLescape(wxT("(") + m_userDefinedLabel + wxT(")"));
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
+    text = XMLescape(wxT("(") + m_userDefinedLabel() + wxT(")"));
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
@@ -1448,8 +1448,8 @@ wxString TextCell::ToRTF() const
   if (m_displayedText == wxEmptyString)
     return(wxT(" "));
   
-  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
+    text = wxT("(") + m_userDefinedLabel() + wxT(")");
   
   text.Replace(wxT("-->"), wxT("\u2192"));
   // Needed for the output of let(a/b,a+1);
@@ -1512,8 +1512,8 @@ wxString TextCell::ToXML() const
   
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
-  if(m_userDefinedLabel != wxEmptyString)
-    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
+  if (!m_userDefinedLabel().empty())
+    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel()) + wxT("\"");
 
   if(m_altCopyText != wxEmptyString)
     flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
