@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -71,7 +72,7 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
 
 void TextCell::SetStyle(TextStyle style)
 {
-  m_widths.clear();
+  m_sizeCache.clear();
   Cell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\u0393");
@@ -85,7 +86,7 @@ void TextCell::SetStyle(TextStyle style)
 
 void TextCell::SetType(CellType type)
 {
-  m_widths.clear();
+  m_sizeCache.clear();
   ResetSize();
   ResetData();
   Cell::SetType(type);
@@ -288,7 +289,7 @@ void TextCell::UpdateToolTip()
 
 void TextCell::SetValue(const wxString &text)
 {
-  m_widths.clear();
+  m_sizeCache.clear();
   m_text = text;
   ResetSize();
   UpdateDisplayedText();
@@ -319,24 +320,6 @@ AFontSize TextCell::GetScaledTextSize() const
     return Scale_Px(m_fontSize);
 }
 
-wxSize TextCell::GetTextSize(wxString const &text)
-{
-  wxDC *dc = (*m_configuration)->GetDC();
-  auto fontSize = GetScaledTextSize();
- 
-  SizeHash::const_iterator it = m_widths.find(fontSize);
-
-  // If we already know this text piece's size we return the cached value
-  if(it != m_widths.end())
-    return it->second;
-
-  // Ask wxWidgets to return this text piece's size (slow, but the only way if
-  // there is no cached size).
-  wxSize sz = dc->GetTextExtent(text);
-  m_widths[fontSize] = sz;
-  return sz;
-}
-
 bool TextCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
@@ -352,7 +335,59 @@ bool TextCell::NeedsRecalculation(AFontSize fontSize) const
     (
       (m_textStyle == TS_NUMBER) &&
       (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-      );
+        );
+}
+
+TextCell::TextIndex TextCell::GetLabelIndex() const
+{
+  auto *const configuration = *m_configuration;
+  if (m_textStyle == TS_LABEL || m_textStyle == TS_USERLABEL || m_textStyle == TS_MAIN_PROMPT)
+  {
+    if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) && configuration->ShowLabels())
+    {
+      return (m_textStyle == TS_USERLABEL) ? userLabelText : displayedText;
+    }
+  }
+  return noText;
+}
+
+wxString TextCell::GetTextFor(TextCell::TextIndex const index) const
+{
+  switch (index) {
+  case noText:
+    return {};
+  case displayedText:
+    return m_displayedText;
+  case userLabelText:
+  {
+    auto text = wxT("(") + m_userDefinedLabel + wxT(")");
+    m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
+    return text;
+  }
+  case numStart:
+    return m_numStart;
+  case ellipsis:
+    return m_ellipsis;
+  case numEnd:
+    return m_numEnd;
+  }
+  return {};
+}
+
+wxSize TextCell::GetTextSizeFor(wxDC *const dc, TextCell::TextIndex const index)
+{
+  AFontSize const fontSize = GetScaledTextSize();
+  for (auto const &entry : m_sizeCache)
+    if (entry.index == index && entry.fontSize == fontSize)
+      return entry.textSize;
+
+  const wxString &text = GetTextFor(index);
+  if (text.empty())
+    return {};
+
+  auto const size = dc->GetTextExtent(text);
+  m_sizeCache.emplace_back(size, fontSize, index);
+  return size;
 }
 
 void TextCell::UpdateDisplayedText()
@@ -402,9 +437,7 @@ void TextCell::UpdateDisplayedText()
 
   if(m_textStyle == TS_NUMBER)
   {
-    m_numstartWidths.clear();
-    m_ellipsisWidths.clear();
-    m_numEndWidths.clear();
+    m_sizeCache.clear();
     unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();
     if (m_displayedText.Length() > displayedDigits)
     {
@@ -481,41 +514,10 @@ void TextCell::RecalculateWidths(AFontSize fontsize)
       UpdateDisplayedText();
   
     if((m_textStyle == TS_NUMBER) && (m_numStart != wxEmptyString))
-    {      
-      auto fontSize = GetScaledTextSize();
-      {
-        SizeHash::const_iterator it = m_numstartWidths.find(fontSize);    
-        if(it != m_numstartWidths.end())
-          m_numStartWidth = it->second;
-        else
-        {
-          wxSize sz = dc->GetTextExtent(m_numStart);
-          m_numstartWidths[fontSize] = sz;
-          m_numStartWidth = sz;
-        }
-      }
-      {
-        SizeHash::const_iterator it = m_numEndWidths.find(fontSize);    
-        if(it != m_numEndWidths.end())
-          m_numEndWidth = it->second;
-        else
-        {
-          wxSize sz = dc->GetTextExtent(m_numEnd);
-          m_numEndWidths[fontSize] = sz;
-          m_numEndWidth = sz;
-        }
-      }
-      {
-        SizeHash::const_iterator it = m_ellipsisWidths.find(fontSize);    
-        if(it != m_ellipsisWidths.end())
-          m_ellipsisWidth = it->second;
-        else
-        {
-          wxSize sz = dc->GetTextExtent(m_ellipsis);
-          m_ellipsisWidths[fontSize] = sz;
-          m_ellipsisWidth = sz;
-        }
-      }
+    {
+      m_numStartWidth = GetTextSizeFor(dc, numStart);
+      m_numEndWidth = GetTextSizeFor(dc, numEnd);
+      m_ellipsisWidth = GetTextSizeFor(dc, ellipsis);
       m_width = m_numStartWidth.GetWidth() + m_numEndWidth.GetWidth() +
         m_ellipsisWidth.GetWidth();
       m_height = wxMax(
@@ -528,40 +530,40 @@ void TextCell::RecalculateWidths(AFontSize fontsize)
     {
       // Labels and prompts are fixed width - adjust font size so that
       // they fit in
-      wxString text = m_text;
-      
-      if(m_textStyle == TS_USERLABEL)
-      {
-        text = wxT("(") + m_userDefinedLabel + wxT(")");
-        m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-      }
-
-      Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
-      
+      auto const index = GetLabelIndex();
       m_width = Scale_Px(configuration->GetLabelWidth());
-      wxSize labelSize = GetTextSize(text);
-      wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
-                   _("Seems like something is broken with the maths font."));
-
-      while ((labelSize.GetWidth() >= m_width) && (!m_fontSize.IsMinimal()))
+      if (index != noText)
       {
-#if wxCHECK_VERSION(3, 1, 2)
-        m_fontSize -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-#else
-        m_fontSize -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-#endif
-        style.SetFontSize(Scale_Px(m_fontSize));
-        dc->SetFont(style.GetFont());
-        labelSize = GetTextSize(text);
-      } 
+        Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
+      
+        wxSize labelSize = GetTextSizeFor(configuration->GetDC(), index);
+        wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
+                     _("Seems like something is broken with the maths font."));
+
+        while ((labelSize.GetWidth() >= m_width) && (!m_fontSize.IsMinimal()))
+        {
+  #if wxCHECK_VERSION(3, 1, 2)
+          m_fontSize -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+  #else
+          m_fontSize -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+  #endif
+          style.SetFontSize(Scale_Px(m_fontSize));
+          dc->SetFont(style.GetFont());
+          labelSize = GetTextSizeFor(configuration->GetDC(), index);
+        }
+        m_height = labelSize.GetHeight();
+        m_center = m_height / 2;
+      }
+      else
+      {
+        m_height = m_center = 0;
+      }
       m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
-      m_height = labelSize.GetHeight();
-      m_center = m_height / 2;
     }
     /// For all other cell types we determine the length of the displayed text.
     else
     {
-      wxSize sz = GetTextSize(m_displayedText);
+      wxSize sz = GetTextSizeFor((*m_configuration)->GetDC(), displayedText);
       m_width = sz.GetWidth();
       m_height = sz.GetHeight();
     }
@@ -598,28 +600,17 @@ void TextCell::Draw(wxPoint point)
       SetForeground();
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-      {
-        SetFontSizeForLabel(dc);
-        if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
-            configuration->ShowLabels())
+      {      
+        auto const style = (*m_configuration)->GetStyle(m_textStyle, GetScaledTextSize());
+        dc->SetFont(style.GetFont());
+
+        auto const index = GetLabelIndex();
+        if (index != noText)
         {
-          // Draw the label
-          if(m_textStyle == TS_USERLABEL)
-          {
-            wxString text = m_userDefinedLabel;
-            SetToolTip(m_text);
-            m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-            dc->DrawText(wxT("(") + text + wxT(")"),
-                         point.x + MC_TEXT_PADDING,
-                         point.y - m_realCenter + MC_TEXT_PADDING);
-          }
-          else
-          {
-            SetToolTip(m_userDefinedLabel);
-            dc->DrawText(m_displayedText,
-                         point.x + MC_TEXT_PADDING,
-                         point.y - m_realCenter + MC_TEXT_PADDING);
-          }
+          SetToolTip(m_userDefinedLabel);
+          dc->DrawText(GetTextFor(index),
+                       point.x + MC_TEXT_PADDING,
+                       point.y - m_realCenter + MC_TEXT_PADDING);
         }
       }
       else if (!m_numStart.IsEmpty())
@@ -670,12 +661,6 @@ void TextCell::Draw(wxPoint point)
       }
     }
   }
-}
-
-void TextCell::SetFontSizeForLabel(wxDC *dc)
-{
-  auto style = (*m_configuration)->GetStyle(m_textStyle, GetScaledTextSize());
-  dc->SetFont(style.GetFont());
 }
 
 void TextCell::SetFont(AFontSize fontsize)
