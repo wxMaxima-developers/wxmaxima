@@ -109,7 +109,7 @@ void SlideShow::ReloadTimer()
   if (!m_timer.IsRunning())
   {
     // Tell MathCtrl about our timer.
-    m_cellPointers->m_slideShowTimers[this] = m_timer.GetId();
+    m_cellPointers->SetTimerIdForCell(this, m_timer.GetId());
     m_timer.StartOnce(1000 / GetFrameRate());
   }
 }
@@ -117,7 +117,7 @@ void SlideShow::ReloadTimer()
 void SlideShow::StopTimer()
 {
   m_timer.Stop();
-  m_cellPointers->m_slideShowTimers.erase(this);
+  m_cellPointers->RemoveTimerIdForCell(this);
 }
 
 void SlideShow::AnimationRunning(bool run)

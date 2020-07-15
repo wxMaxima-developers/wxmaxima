@@ -22,7 +22,9 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "CellPointers.h"
+#include "GroupCell.h"
 #include <algorithm>
+#include <iterator>
 
 CellPointers::CellPointers(wxScrolledCanvas *worksheet) :
   m_worksheet(worksheet)
@@ -33,6 +35,46 @@ wxString CellPointers::WXMXGetNewFileName()
   wxString file(wxT("image"));
   file << (++m_wxmxImgCounter) << wxT(".");
   return file;
+}
+
+void CellPointers::SetTimerIdForCell(Cell *const cell, int const timerId)
+{
+  auto match = std::find_if(m_timerIds.begin(), m_timerIds.end(),
+                            [cell](auto &ctid) { return ctid.cell == cell; });
+  if (match != m_timerIds.end())
+  {
+    match->timerId = timerId;
+    return;
+  }
+
+  m_timerIds.emplace_back(cell, timerId);
+}
+
+int CellPointers::GetTimerIdForCell(Cell *const cell) const
+{
+  auto match = std::find_if(m_timerIds.begin(), m_timerIds.end(),
+                            [cell](auto &ctid) { return ctid.cell == cell; });
+  if (match != m_timerIds.end())
+    return match->timerId;
+  return -1;
+}
+
+Cell *CellPointers::GetCellForTimerId(int const timerId) const
+{
+  auto match = std::find_if(m_timerIds.begin(), m_timerIds.end(),
+                            [timerId](auto &ctid) { return ctid.timerId == timerId; });
+  if (match != m_timerIds.end())
+    return match->cell;
+  return nullptr;
+}
+
+void CellPointers::RemoveTimerIdForCell(Cell *const cell)
+{
+  auto it = m_timerIds.begin();
+  while (it != m_timerIds.end() && it->cell != cell)
+    std::advance(it, 1);
+  if (it != m_timerIds.end())
+    m_timerIds.erase(it);
 }
 
 void CellPointers::ErrorList::Remove(GroupCell * cell)

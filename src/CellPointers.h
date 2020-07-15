@@ -24,8 +24,8 @@
 #ifndef WXMAXIMA_CELLPOINTERS_H
 #define WXMAXIMA_CELLPOINTERS_H
 
-#include "CellPtr.h"
-#include <map>
+#include "Cell.h"
+#include <wx/string.h>
 #include <vector>
 
 class wxWindow;
@@ -166,19 +166,32 @@ public:
     See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
   */
   CellPtr<Cell> m_selectionEnd;
-  std::map<Cell*, int> m_slideShowTimers;
+
+  void SetTimerIdForCell(Cell *cell, int timerId);
+  int GetTimerIdForCell(Cell *cell) const;
+  Cell *GetCellForTimerId(int timerId) const;
+  void RemoveTimerIdForCell(Cell *cell);
 
   wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
 
-  //! Is scrolling to a cell scheduled?
-  bool m_scrollToCell = false;
 private:
+  struct CellTimerId {
+    Cell *cell;
+    int timerId;
+    CellTimerId() = default;
+    CellTimerId(Cell *cell, int timerId) : cell(cell), timerId(timerId) {}
+  };
+  //! Timer ids for slideshow cells
+  std::vector<CellTimerId> m_timerIds;
   //! If m_scrollToCell = true: Which cell do we need to scroll to?
   CellPtr<Cell> m_cellToScrollTo;
   //! The object of the function to call if an animation has to be stepped.
   wxScrolledCanvas *const m_worksheet;
   //! The image counter for saving .wxmx files
   int m_wxmxImgCounter = 0;
+public:
+  //! Is scrolling to a cell scheduled?
+  bool m_scrollToCell = false;
 };
 
 #endif
