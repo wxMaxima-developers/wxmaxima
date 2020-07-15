@@ -427,7 +427,7 @@ protected:
   int GetLineIndent(Cell *cell);
   void UpdateCellsInGroup();
 
-//** 8-byte objects (8 bytes)
+//** 16-byte objects (16 bytes)
 //**
   wxRect m_outputRect{-1, -1, 0, 0};
 
