@@ -235,6 +235,10 @@ void History::AddToHistory(const wxString &cmd)
 
 void History::RebuildDisplay()
 {
+  // No need to rebuild the display if the matcher is not valid
+  if (m_matcherState == MatcherState::invalid)
+    return;
+
   wxWindowUpdateLocker speedUp(this);
   wxArrayString display;
   if (m_matcherState == MatcherState::empty)
@@ -244,6 +248,7 @@ void History::RebuildDisplay()
   }
   else
   {
+    wxASSERT(m_matcherState == MatcherState::valid);
     display.reserve(m_commands.size());
     for (auto cmd = m_commands.rbegin(); cmd != m_commands.rend(); ++cmd)
     {
