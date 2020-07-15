@@ -70,10 +70,13 @@ public:
   void OnInternalIdle() override;
   
 private:
+  enum class MatcherState : int8_t { empty, invalid, valid };
+
   //! Called on right-clicks on the history panel
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
   void SetCurrent(long);
+  MatcherState GetNewMatcherState() const;
 
   int m_sessionCommands = 0;
   wxListBox *m_history;
@@ -88,10 +91,9 @@ private:
   //! The text of the m_matcher regex
   wxString m_matcherExpr;
   //! Whether the matcher is ready for user
-  bool m_useMatcher = false;
+  MatcherState m_matcherState = MatcherState::empty;
   //! Whether the history should be updated now or later
   bool m_realtimeUpdate = true;
-  bool m_matcherValid_Last = true;
 };
 
 #endif // HISTORY_H

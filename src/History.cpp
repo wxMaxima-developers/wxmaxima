@@ -217,7 +217,7 @@ void History::AddToHistory(const wxString &cmd)
     
   m_commands.Add(cmd);
 
-  if (!m_useMatcher || m_matcher.Matches(cmd))
+  if (m_matcherState == MatcherState::empty || m_matcher.Matches(cmd))
   {
     if (m_realtimeUpdate)
     {
@@ -235,7 +235,7 @@ void History::AddToHistory(const wxString &cmd)
 void History::RebuildDisplay()
 {
   wxArrayString display;
-  if (!m_useMatcher)
+  if (m_matcherState == MatcherState::empty)
   {
     display = m_commands;
     std::reverse(display.begin(), display.end());
@@ -254,6 +254,13 @@ void History::RebuildDisplay()
   SetCurrent(0);
 }
 
+History::MatcherState History::GetNewMatcherState() const
+{
+  if (m_matcherExpr.empty()) return MatcherState::empty;
+  if (m_matcher.IsValid())  return MatcherState::valid;
+  return MatcherState::invalid;
+}
+
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
   // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
@@ -263,26 +270,27 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
     return;
 
   m_matcherExpr = regex;
-  if (regex != wxEmptyString)
+  if (!regex.empty())
   {
     SuppressErrorDialogs blocker;
     m_matcher.Compile(regex);
   }
-  if(m_matcher.IsValid() && !m_matcherValid_Last)
+  auto const newMatcherState = GetNewMatcherState();
+  if (m_matcherState != newMatcherState)
   {
-    m_matcherValid_Last = true;
-    m_regex->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
-    m_regex->SetToolTip(RegexTooltip_norm);
+    m_matcherState = newMatcherState;
+    const wxColor colors[3] = {
+      /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
+      /* invalid */ {255,192,192},
+      /* valid   */ wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT)
+    };
+    const wxString tooltips[3] = {
+      /* empty */ RegexTooltip_norm, /* invalid */ RegexTooltip_error, /* valid */ RegexTooltip_norm
+    };
+    m_regex->SetBackgroundColour(colors[int(m_matcherState)]);
+    m_regex->SetToolTip(tooltips[int(m_matcherState)]);
     m_regex->Refresh();
   }
-  if(!m_matcher.IsValid() && m_matcherValid_Last)
-  {
-    m_matcherValid_Last = false;
-    m_regex->SetBackgroundColour(wxColor(255,192,192));
-    m_regex->SetToolTip(RegexTooltip_error);
-    m_regex->Refresh();
-  }
-  m_useMatcher = m_matcher.IsValid() && !m_matcherExpr.empty();
   RebuildDisplay();
 }
 
