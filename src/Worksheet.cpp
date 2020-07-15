@@ -5311,8 +5311,10 @@ bool Worksheet::ExportToHTML(const wxString &file)
 
             case Configuration::svg:
             {
-              wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
-              Svgout svgout(&m_configuration, std::move(chunk), imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
+              auto const alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
+              auto const filepath = wxString::Format(wxT("%s/%s_%d.svg"), imgDir, filename, count);
+              Svgout svgout(&m_configuration, std::move(chunk), filepath);
+
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\"" ),
