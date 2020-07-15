@@ -4567,6 +4567,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
 
 void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
 {
+  wxWindowUpdateLocker speedUp(this);
   if (!m_worksheet)
     return;
   wxASSERT_MSG((!m_worksheet->HCaretActive()) || (m_worksheet->GetActiveCell() == NULL),
