@@ -54,8 +54,9 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   if (RegexTooltip_error.IsEmpty())
     RegexTooltip_error = _("Invalid RegEx!");
   
+  // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on Windows
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
-                            wxLB_MULTIPLE | wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
+                            wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
   m_regex = new wxTextCtrl(this, history_regex_id);
   m_regex->SetToolTip(RegexTooltip_norm);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
@@ -216,7 +217,7 @@ void History::AddToHistory(const wxString &cmd)
     
   m_commands.Add(cmd);
 
-  if (!m_useMatcher || m_matcher.Matches(cmd))
+  if (m_matcherState == MatcherState::empty || m_matcher.Matches(cmd))
   {
     if (m_realtimeUpdate)
     {
@@ -234,7 +235,7 @@ void History::AddToHistory(const wxString &cmd)
 void History::RebuildDisplay()
 {
   wxArrayString display;
-  if (!m_useMatcher)
+  if (m_matcherState == MatcherState::empty)
   {
     display = m_commands;
     std::reverse(display.begin(), display.end());
@@ -253,6 +254,13 @@ void History::RebuildDisplay()
   SetCurrent(0);
 }
 
+History::MatcherState History::GetNewMatcherState() const
+{
+  if (m_matcherExpr.empty()) return MatcherState::empty;
+  if (m_matcher.IsValid())  return MatcherState::valid;
+  return MatcherState::invalid;
+}
+
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
   // Unselect all, See: https://forums.wxwidgets.org/viewtopic.php?t=29463
@@ -262,26 +270,27 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
     return;
 
   m_matcherExpr = regex;
-  if (regex != wxEmptyString)
+  if (!regex.empty())
   {
     SuppressErrorDialogs blocker;
     m_matcher.Compile(regex);
   }
-  if(m_matcher.IsValid() && !m_matcherValid_Last)
+  auto const newMatcherState = GetNewMatcherState();
+  if (m_matcherState != newMatcherState)
   {
-    m_matcherValid_Last = true;
-    m_regex->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
-    m_regex->SetToolTip(RegexTooltip_norm);
+    m_matcherState = newMatcherState;
+    const wxColor colors[3] = {
+      /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
+      /* invalid */ {255,192,192},
+      /* valid   */ wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT)
+    };
+    const wxString tooltips[3] = {
+      /* empty */ RegexTooltip_norm, /* invalid */ RegexTooltip_error, /* valid */ RegexTooltip_norm
+    };
+    m_regex->SetBackgroundColour(colors[int(m_matcherState)]);
+    m_regex->SetToolTip(tooltips[int(m_matcherState)]);
     m_regex->Refresh();
   }
-  if(!m_matcher.IsValid() && m_matcherValid_Last)
-  {
-    m_matcherValid_Last = false;
-    m_regex->SetBackgroundColour(wxColor(255,192,192));
-    m_regex->SetToolTip(RegexTooltip_error);
-    m_regex->Refresh();
-  }
-  m_useMatcher = m_matcher.IsValid() && !m_matcherExpr.empty();
   RebuildDisplay();
 }
 
@@ -300,6 +309,7 @@ void History::SetCurrent(long current)
   auto const count = long(m_history->GetCount());
   if (current < 0) current = count-1;
   else if (current >= count) current = 0;
+  if (count < 1) current = -1;
 
   if (current == m_current)
     return;
