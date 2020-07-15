@@ -30,6 +30,7 @@
 #include "Cell.h"
 #include "GroupCell.h"
 #include "TextCell.h"
+#include "stx/unique_cast.hpp"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
