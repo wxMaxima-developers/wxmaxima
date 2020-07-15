@@ -836,7 +836,7 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast) const
   return tmp;
 }
 
-void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
+void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
 {
   if (!newCell)
     return;
@@ -853,7 +853,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   newCell->ForceBreakLine(forceNewLine);
   newCell->SetGroupList(tmp);
   
-  tmp->AppendOutput(newCell);
+  tmp->AppendOutput(std::move(newCell));
   
   UpdateConfigurationClientSize();
   if (!tmp->m_next)
@@ -2954,7 +2954,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
   // If we still haven't a cell to put the answer in we now create one.
   if (!m_cellPointers.m_answerCell)
   {
-    auto *answerCell = new EditorCell(group, &m_configuration);
+    auto answerCell = std::make_unique<EditorCell>(group, &m_configuration);
     m_cellPointers.m_answerCell = answerCell;
     answerCell->SetType(MC_TYPE_INPUT);
     bool autoEvaluate = false;
@@ -2970,7 +2970,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
     }
     answerCell->CaretToEnd();
 
-    group->AppendOutput(answerCell);
+    group->AppendOutput(std::move(answerCell));
 
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
@@ -4398,10 +4398,9 @@ void Worksheet::DestroyTree()
   m_last = NULL;
 }
 
-GroupCell *Worksheet::CopyTree() const
+std::unique_ptr<GroupCell> Worksheet::CopyTree() const
 {
-  auto *tree = GetTree() ? dynamic_cast<GroupCell*>(GetTree()->CopyList()) : nullptr;
-  return tree;
+  return GetTree() ? GetTree()->CopyList() : nullptr;
 }
 
 /***
@@ -7179,8 +7178,8 @@ void Worksheet::PasteFromClipboard()
     {
       wxBitmapDataObject bitmap;
       wxTheClipboard->GetData(bitmap);
-      ImgCell *ic = new ImgCell(group, &m_configuration, bitmap.GetBitmap());
-      group->AppendOutput(ic);
+      auto ic = std::make_unique<ImgCell>(group, &m_configuration, bitmap.GetBitmap());
+      group->AppendOutput(std::move(ic));
     }
   }
 

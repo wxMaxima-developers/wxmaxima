@@ -55,11 +55,11 @@ std::unique_ptr<Cell> ConjugateCell::Copy() const
   return std::make_unique<ConjugateCell>(*this);
 }
 
-void ConjugateCell::SetInner(Cell *inner)
+void ConjugateCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
+  m_innerCell = std::move(inner);
 }
 
 void ConjugateCell::RecalculateWidths(AFontSize fontsize)

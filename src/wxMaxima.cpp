@@ -1278,30 +1278,26 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
 void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
                                bool bigSkip, const wxString &userLabel)
 {
-  Cell *cell;
-
   if (s.IsEmpty())
     return;
 
   s.Replace(wxT("\n"), wxT(" "), true);
 
   m_parser.SetUserLabel(userLabel);
-  cell = m_parser.ParseLine(s, type);
+  std::unique_ptr<Cell> cell(m_parser.ParseLine(s, type));
 
-  wxASSERT_MSG(cell != NULL, _("There was an error in generated XML!\n\n"
-                               "Please report this as a bug."));
-  if (cell == NULL)
-  {
+  wxASSERT_MSG(cell, _("There was an error in generated XML!\n\n"
+                       "Please report this as a bug."));
+  if (!cell)
     return;
-  }
 
   cell->SetSkip(bigSkip);
-  m_worksheet->InsertLine(cell, newLine || cell->BreakLineHere());
+  m_worksheet->InsertLine(std::move(cell), newLine || cell->BreakLineHere());
 }
 
 TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 {
-  TextCell *cell = NULL;
+  TextCell *cell = nullptr;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
@@ -1315,9 +1311,10 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
   if (type == MC_TYPE_MAIN_PROMPT)
   {
-    cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration), s);
-    cell->SetType(type);
-    m_worksheet->InsertLine(cell, true);
+    auto owned = std::make_unique<TextCell>(m_worksheet->GetTree(), &(m_worksheet->m_configuration), s);
+    cell = owned.get();
+    owned->SetType(type);
+    m_worksheet->InsertLine(std::move(owned), true);
   }
 
   else
@@ -1350,7 +1347,8 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
     wxStringTokenizer tokens(s, wxT("\n"));
     int count = 0;
-    Cell *tmp = NULL, *lst = NULL;
+    std::unique_ptr<Cell> head;
+    Cell *last = nullptr;
     while (tokens.HasMoreTokens())
     {
       wxString token = tokens.GetNextToken();
@@ -1363,26 +1361,29 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       }
       else
       {
-        cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
-                            token);
-
+        auto owned = std::make_unique<TextCell>(
+            m_worksheet->GetTree(), &(m_worksheet->m_configuration), token);
+        cell = owned.get();
         cell->SetType(type);
 
         if (tokens.HasMoreTokens())
           cell->SetSkip(false);
 
-        if (lst == NULL)
-          tmp = lst = cell;
+        if (!last)
+        {
+          head = std::move(owned);
+          last = head.get();
+        }
         else
         {
-          lst->AppendCell(cell);
+          last->AppendCell(std::move(owned));
           cell->ForceBreakLine(true);
-          lst = cell;
+          last = cell;
         }
       }
       count++;
     }
-    m_worksheet->InsertLine(tmp, true);
+    m_worksheet->InsertLine(std::move(head), true);
   }
 
   if(cell)
@@ -3493,7 +3494,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &
     if (xmlcells->GetType() != wxXML_TEXT_NODE)
     {
       Cell *mc;
-      mc = mp.ParseTag(xmlcells, false);
+      mc = mp.ParseTag_(xmlcells, false);
       if (mc != NULL)
       {
         GroupCell *cell = dynamic_cast<GroupCell *>(mc);
@@ -4549,8 +4550,8 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         wxWindowUpdateLocker noUpdates(m_worksheet);
         wxEventBlocker blocker(m_worksheet);
         Printout printout(title, &m_worksheet->m_configuration, GetContentScaleFactor());
-        GroupCell *copy = m_worksheet->CopyTree();
-        printout.SetData(copy);
+        auto copy = m_worksheet->CopyTree();
+        printout.SetData(std::move(copy));
         wxBusyCursor crs;
         if (printer.Print(this, &printout, true))
         {
@@ -9311,11 +9312,11 @@ void wxMaxima::TriggerEvaluation()
       tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
-      TextCell *cell = new TextCell(tmp, &(m_worksheet->m_configuration),
-                                    _("Refusing to send cell to maxima: ") +
-                                    parenthesisError + wxT("\n"));
+      auto cell = std::make_unique<TextCell>(tmp, &(m_worksheet->m_configuration),
+                                            _("Refusing to send cell to maxima: ") +
+                                             parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
-      tmp->SetOutput(cell);
+      tmp->SetOutput(std::move(cell));
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->SetWorkingGroup(nullptr);
       tmp->GetInput()->SetCaretPosition(index);

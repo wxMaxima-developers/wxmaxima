@@ -297,7 +297,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
         auto ln = getLinesUntil(Headers.GetEnd(headerId));
         if (last && last->GetGroupType() == GC_TYPE_IMAGE)
         last->SetOutput(
-            new ImgCell(NULL, config, wxBase64Decode(ln), imgtype));
+            std::make_unique<ImgCell>(nullptr, config, wxBase64Decode(ln), imgtype));
       }
       break;
 

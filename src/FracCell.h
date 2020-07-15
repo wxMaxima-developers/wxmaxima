@@ -66,10 +66,9 @@ public:
   void SetFracStyle(FracType style) { m_fracStyle = style; }
 
   //! Set the numerator for the fraction
-  void SetNum(Cell *num);
-
+  void SetNum(std::unique_ptr<Cell> &&num);
   //! Set the denominator of the fraction
-  void SetDenom(Cell *denom);
+  void SetDenom(std::unique_ptr<Cell> &&denom);
 
   //! Answers the question if this is an operator by returning "true".
   bool IsOperator() const override { return true; }

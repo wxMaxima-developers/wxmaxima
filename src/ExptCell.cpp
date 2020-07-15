@@ -78,11 +78,11 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-void ExptCell::SetPower(Cell *power)
+void ExptCell::SetPower(std::unique_ptr<Cell> &&power)
 {
   if (!power)
     return;
-  m_exptCell.reset(power);
+  m_exptCell = std::move(power);
 
   if (!m_exptCell->IsCompound())
   {
@@ -91,11 +91,11 @@ void ExptCell::SetPower(Cell *power)
   }
 }
 
-void ExptCell::SetBase(Cell *base)
+void ExptCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
 void ExptCell::RecalculateWidths(AFontSize fontsize)

@@ -59,9 +59,8 @@ public:
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_argCell); }
 
-  void SetName(Cell *name);
-
-  void SetArg(Cell *arg);
+  void SetName(std::unique_ptr<Cell> &&name);
+  void SetArg(std::unique_ptr<Cell> &&arg);
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

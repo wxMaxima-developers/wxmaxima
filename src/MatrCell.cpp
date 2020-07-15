@@ -239,6 +239,11 @@ void MatrCell::Draw(wxPoint point)
   }
 }
 
+void MatrCell::AddNewCell(std::unique_ptr<Cell> &&cell)
+{
+  m_cells.emplace_back(std::move(cell));
+}
+
 wxString MatrCell::ToString() const
 {
   wxString s = wxT("matrix(\n");

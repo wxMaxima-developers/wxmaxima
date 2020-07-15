@@ -69,6 +69,7 @@ public:
   GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  std::unique_ptr<GroupCell> CopyList() const;
   ~GroupCell();
 
   wxString GetAnswer(int answer)
@@ -152,7 +153,8 @@ public:
   bool SetEditableContent(wxString text);
 
   EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
-  void AppendOutput(Cell *cell);
+
+  void AppendOutput(std::unique_ptr<Cell> &&cell);
 
   /*! Remove all output cells attached to this one
 
@@ -187,11 +189,11 @@ public:
   wxRect HideRect();
 
   // raw manipulation of GC (should be protected)
-  void SetInput(Cell *input);
+  void SetInput(std::unique_ptr<Cell> &&input);
 
-  void SetOutput(Cell *output);
+  void SetOutput(std::unique_ptr<Cell> &&output);
 
-  void AppendInput(Cell *cell);
+  void AppendInput(std::unique_ptr<Cell> &&cell);
 
   //! Get the previous GroupCell in the list
   GroupCell *GetPrevious() const { return m_previous.CastAs<GroupCell*>(); }

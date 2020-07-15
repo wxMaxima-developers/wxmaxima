@@ -37,19 +37,13 @@ public:
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_preSupCell); }
 
-  void SetBase(Cell *base);
-
-  void SetIndex(Cell *index);
-
-  void SetExponent(Cell *expt);
-
-  void SetPreSub(Cell *index);
-
-  void SetPreSup(Cell *index);
-
-  void SetPostSub(Cell *index);
-
-  void SetPostSup(Cell *index);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetIndex(std::unique_ptr<Cell> &&index);
+  void SetExponent(std::unique_ptr<Cell> &&expt);
+  void SetPreSub(std::unique_ptr<Cell> &&index);
+  void SetPreSup(std::unique_ptr<Cell> &&index);
+  void SetPostSub(std::unique_ptr<Cell> &&index);
+  void SetPostSup(std::unique_ptr<Cell> &&index);
   
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

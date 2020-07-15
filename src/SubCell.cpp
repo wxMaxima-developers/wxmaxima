@@ -55,18 +55,18 @@ std::unique_ptr<Cell> SubCell::Copy() const
   return std::make_unique<SubCell>(*this);
 }
 
-void SubCell::SetIndex(Cell *index)
+void SubCell::SetIndex(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
-  m_indexCell.reset(index);
+  m_indexCell = std::move(index);
 }
 
-void SubCell::SetBase(Cell *base)
+void SubCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
 void SubCell::RecalculateWidths(AFontSize fontsize)

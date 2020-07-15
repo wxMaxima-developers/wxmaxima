@@ -56,9 +56,9 @@ Printout::~Printout()
   (*m_configuration)->RecalculationForce(true);  
 }
 
-void Printout::SetData(GroupCell *tree)
+void Printout::SetData(std::unique_ptr<GroupCell> &&tree)
 {
-  m_tree = std::unique_ptr<GroupCell>(tree);
+  m_tree = std::move(tree);
   if (m_tree != NULL)
     m_tree->BreakPage(true);
 }

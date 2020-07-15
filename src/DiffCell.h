@@ -35,9 +35,8 @@ public:
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
 
-  void SetBase(Cell *base);
-
-  void SetDiff(Cell *diff);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetDiff(std::unique_ptr<Cell> &&diff);
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

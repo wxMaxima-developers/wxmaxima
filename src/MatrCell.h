@@ -44,7 +44,7 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void AddNewCell(Cell *cell) { m_cells.emplace_back(cell); }
+  void AddNewCell(std::unique_ptr<Cell> &&cell);
 
   void NewRow() { m_matHeight++; }
   void NewColumn() { m_matWidth++; }

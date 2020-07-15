@@ -67,25 +67,25 @@ std::unique_ptr<Cell> LimitCell::Copy() const
   return std::make_unique<LimitCell>(*this);
 }
 
-void LimitCell::SetName(Cell *name)
+void LimitCell::SetName(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_name.reset(name);
+  m_name = std::move(name);
 }
 
-void LimitCell::SetBase(Cell *base)
+void LimitCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_base.reset(base);
+  m_base = std::move(base);
 }
 
-void LimitCell::SetUnder(Cell *under)
+void LimitCell::SetUnder(std::unique_ptr<Cell> &&under)
 {
   if (!under)
     return;
-  m_under.reset(under);
+  m_under = std::move(under);
 }
 
 void LimitCell::RecalculateWidths(AFontSize fontsize)

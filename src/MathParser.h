@@ -71,7 +71,8 @@ public:
    * Parse the node and return the corresponding tag.
    */
   
-  Cell *ParseTag(wxXmlNode *node, bool all = true);
+  Cell *ParseTag_(wxXmlNode *node, bool all = true);
+  std::unique_ptr<Cell> ParseTag(wxXmlNode *node, bool all = true);
   Cell *ParseRowTag(wxXmlNode *node);
 
 private:
@@ -116,7 +117,7 @@ private:
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group);
   //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
-  Cell *HandleNullPointer(Cell *cell);
+  std::unique_ptr<Cell> HandleNullPointer(std::unique_ptr<Cell> &&cell);
 
   /*! Get the next xml tag
 

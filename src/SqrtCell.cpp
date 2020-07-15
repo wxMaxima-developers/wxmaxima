@@ -63,11 +63,11 @@ std::unique_ptr<Cell> SqrtCell::Copy() const
   return std::make_unique<SqrtCell>(*this);
 }
 
-void SqrtCell::SetInner(Cell *inner)
+void SqrtCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
+  m_innerCell = std::move(inner);
 }
 
 void SqrtCell::RecalculateWidths(AFontSize fontsize)

@@ -56,20 +56,19 @@ std::unique_ptr<Cell> DiffCell::Copy() const
   return std::make_unique<DiffCell>(*this);
 }
 
-void DiffCell::SetDiff(Cell *diff)
+void DiffCell::SetDiff(std::unique_ptr<Cell> &&diff)
 {
   if (!diff)
     return;
-  m_diffCell.reset(diff);
-
+  m_diffCell = std::move(diff);
   m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
-void DiffCell::SetBase(Cell *base)
+void DiffCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
 void DiffCell::RecalculateWidths(AFontSize fontsize)

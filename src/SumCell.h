@@ -58,11 +58,9 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void SetBase(Cell *base);
-
-  void SetUnder(Cell *under);
-
-  void SetOver(Cell *over);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetUnder(std::unique_ptr<Cell> &&under);
+  void SetOver(std::unique_ptr<Cell> &&over);
 
   void SetSumStyle(sumStyle style);
 

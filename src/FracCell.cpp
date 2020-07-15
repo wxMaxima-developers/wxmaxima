@@ -39,8 +39,8 @@ FracCell::FracCell(GroupCell *parent, Configuration **config) :
     m_divideOwner(std::make_unique<TextCell>(parent, config, "/"))
 {
   InitBitFields();
-  SetNum(new VisiblyInvalidCell(parent,config));
-  SetDenom(new VisiblyInvalidCell(parent,config));
+  SetNum(std::make_unique<VisiblyInvalidCell>(parent,config));
+  SetDenom(std::make_unique<VisiblyInvalidCell>(parent,config));
   m_divide->SetStyle(TS_VARIABLE);
 }
 
@@ -62,19 +62,19 @@ std::unique_ptr<Cell> FracCell::Copy() const
   return std::make_unique<FracCell>(*this);
 }
 
-void FracCell::SetNum(Cell *num)
+void FracCell::SetNum(std::unique_ptr<Cell> &&num)
 {
   if (!num)
     return;
-  m_numParenthesis->SetInner(num);
+  m_numParenthesis->SetInner(std::move(num));
   SetupBreakUps();
 }
 
-void FracCell::SetDenom(Cell *denom)
+void FracCell::SetDenom(std::unique_ptr<Cell> &&denom)
 {
   if (!denom)
     return;
-  m_denomParenthesis->SetInner(denom);
+  m_denomParenthesis->SetInner(std::move(denom));
   SetupBreakUps();
 }
 

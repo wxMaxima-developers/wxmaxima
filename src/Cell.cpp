@@ -138,7 +138,7 @@ void Cell::CopyCommonData(const Cell & cell)
   m_isHidableMultSign = cell.m_isHidableMultSign;
 }
 
-Cell *Cell::CopyList() const
+std::unique_ptr<Cell> Cell::CopyList() const
 {
   auto ret = Copy();
   Cell *dest = ret.get();
@@ -150,7 +150,7 @@ Cell *Cell::CopyList() const
     src = src->m_next;
     dest = dest->m_next;
   }
-  return ret.release();
+  return ret;
 }
 
 void Cell::ClearCacheList()

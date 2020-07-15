@@ -70,36 +70,36 @@ std::unique_ptr<Cell> SumCell::Copy() const
   return std::make_unique<SumCell>(*this);
 }
 
-void SumCell::SetOver(Cell *over)
+void SumCell::SetOver(std::unique_ptr<Cell> &&over)
 {
   if (!over)
     return;
-  m_end.reset(over);
+  m_end = std::move(over);
   if(m_sumStyle == SM_SUM)
   {
     if(!m_end->ToString().IsEmpty())
-      m_open.reset(new TextCell(m_group, m_configuration, wxT("sum(")));
+      m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("sum("));
   }
   else
-    m_open.reset(new TextCell(m_group, m_configuration, wxT("prod(")));
+    m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("prod("));
   ResetSize();
 }
 
-void SumCell::SetBase(Cell *base)
+void SumCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
   m_baseWithoutParen = base;
-  Paren()->SetInner(base);
-  wxASSERT(Base() == base);
+  Paren()->SetInner(std::move(base));
+  wxASSERT(Base() == m_baseWithoutParen);
   m_displayedBase = m_paren;
 }
 
-void SumCell::SetUnder(Cell *under)
+void SumCell::SetUnder(std::unique_ptr<Cell> &&under)
 {
   if (!under)
     return;
-  m_under.reset(under);
+  m_under = std::move(under);
   
   // m_under consists of a list of cells:
   //  The variable name, that can be more than one cell if there is a subscript.
@@ -114,7 +114,7 @@ void SumCell::SetUnder(Cell *under)
   if(start != NULL)  
     start = start->GetNext();
   if(start != NULL)  
-    m_start.reset(start->CopyList());
+    m_start = start->CopyList();
   ResetSize();
 }
 
@@ -144,7 +144,7 @@ void SumCell::RecalculateWidths(AFontSize fontsize)
   else
     m_under->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
   if (!m_end)
-    m_end.reset(new TextCell(m_group, m_configuration));
+    m_end = std::make_unique<TextCell>(m_group, m_configuration);
   if(m_isBrokenIntoLines)
     m_end->RecalculateWidthsList(fontsize);
   else
@@ -412,14 +412,14 @@ void SumCell::SetSumStyle(sumStyle style)
   m_sumStyle = style;
   if(style == SM_PROD)
   {
-    m_open.reset(new TextCell(m_group, m_configuration, wxT("prod(")));
+    m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("prod("));
   }
   else
   {
     if(!m_end->ToString().IsEmpty())
-      m_open.reset(new TextCell(m_group, m_configuration, wxT("sum(")));
+      m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("sum("));
     else
-      m_open.reset(new TextCell(m_group, m_configuration, wxT("lsum(")));
+      m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("lsum("));
   }
 }
 

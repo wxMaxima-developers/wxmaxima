@@ -52,11 +52,9 @@ public:
 
   void Draw(wxPoint point) override;
 
-  void SetBase(Cell *base);
-
-  void SetUnder(Cell *under);
-
-  void SetName(Cell *name);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetUnder(std::unique_ptr<Cell> &&under);
+  void SetName(std::unique_ptr<Cell> &&name);
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;

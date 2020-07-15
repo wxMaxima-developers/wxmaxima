@@ -774,7 +774,7 @@ public:
     
     Used by Cell::Copy().
   */
-  Cell *CopyList() const;
+  std::unique_ptr<Cell> CopyList() const;
 
   //! Remove this cell's tooltip
   void ClearToolTip() { m_toolTip.Truncate(0); }

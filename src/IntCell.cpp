@@ -78,32 +78,32 @@ std::unique_ptr<Cell> IntCell::Copy() const
   return std::make_unique<IntCell>(*this);
 }
 
-void IntCell::SetOver(Cell *name)
+void IntCell::SetOver(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_over.reset(name);
+  m_over = std::move(name);
 }
 
-void IntCell::SetBase(Cell *base)
+void IntCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_base.reset(base);
+  m_base = std::move(base);
 }
 
-void IntCell::SetUnder(Cell *under)
+void IntCell::SetUnder(std::unique_ptr<Cell> &&under)
 {
   if (!under)
     return;
-  m_under.reset(under);
+  m_under = std::move(under);
 }
 
-void IntCell::SetVar(Cell *var)
+void IntCell::SetVar(std::unique_ptr<Cell> &&var)
 {
   if (!var)
     return;
-  m_var.reset(var);
+  m_var = std::move(var);
 }
 
 void IntCell::RecalculateWidths(AFontSize fontsize)

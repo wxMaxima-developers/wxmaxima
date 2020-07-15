@@ -54,19 +54,19 @@ std::unique_ptr<Cell> FunCell::Copy() const
   return std::make_unique<FunCell>(*this);
 }
 
-void FunCell::SetName(Cell *name)
+void FunCell::SetName(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_nameCell.reset(name);
-  name->SetStyle(TS_FUNCTION);
+  m_nameCell = std::move(name);
+  m_nameCell->SetStyle(TS_FUNCTION);
 }
 
-void FunCell::SetArg(Cell *arg)
+void FunCell::SetArg(std::unique_ptr<Cell> &&arg)
 {  
   if (!arg)
     return;
-  m_argCell.reset(arg);
+  m_argCell = std::move(arg);
 }
 
 void FunCell::RecalculateWidths(AFontSize fontsize)

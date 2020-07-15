@@ -894,7 +894,7 @@ public:
   void DestroyTree();
 
   //! Copies the worksheet's entire contents
-  GroupCell *CopyTree() const;
+  std::unique_ptr<GroupCell> CopyTree() const;
 
   /*! Insert group cells into the worksheet
 
@@ -921,7 +921,7 @@ public:
     If maxima isn't currently evaluating and therefore there is no working group
     the line is appended to m_last, instead.
   */
-  void InsertLine(Cell *newCell, bool forceNewLine = false);
+  void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
 
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
