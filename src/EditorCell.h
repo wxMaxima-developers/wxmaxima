@@ -25,6 +25,7 @@
 #define EDITORCELL_H
 
 #include "Cell.h"
+#include "FontAttribs.h"
 #include "MaximaTokenizer.h"
 #include <vector>
 #include <list>
@@ -57,11 +58,11 @@ class EditorCell final : public Cell
 {
 private:
   #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description) override;
-  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
-  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
-  wxAccStatus GetValue (int childId, wxString *strValue) override;
-  wxAccStatus GetRole (int childId, wxAccRole *role) override;
+  wxAccStatus GetDescription(int childId, wxString *description) const override;
+  wxAccStatus GetFocus (int *childId, Cell **child) const override;
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) const override;
+  wxAccStatus GetValue (int childId, wxString *strValue) const override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) const override;
   #endif
 
 public:
@@ -108,7 +109,7 @@ public:
   { m_cellPointers->m_cellKeyboardSelectionStartedIn = this; }
 
   //! A list of words that might be applicable to the autocomplete function.
-  const wxArrayString &GetWordList() const { return m_wordList; }
+  const auto &GetWordList() const { return m_wordList; }
 
   /*! Expand all tabulators.
 
@@ -325,13 +326,13 @@ public:
   void CaretToPosition(int pos);
 
   //! True, if there is undo information for this cell
-  bool CanUndo(); 
+  bool CanUndo() const;
 
   //! Issue an undo command
   void Undo();
 
   //! True, if a redo can be done for this cell.
-  bool CanRedo();
+  bool CanRedo() const;
 
   //! Issu a redo command
   void Redo();
@@ -575,6 +576,21 @@ private:
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text);
 
+  struct HistoryEntry // 64 bytes
+  {
+    wxString text;
+    int caretPosition = -1;
+    int selStart = -1;
+    int selEnd = -1;
+    HistoryEntry() = default;
+    HistoryEntry(const wxString &text, int caretPosition, int selStart, int selEnd) :
+      text(text), caretPosition(caretPosition), selStart(selStart), selEnd(selEnd) {}
+  };
+  //! Set the editor's state from a history entry
+  void SetState(const HistoryEntry &state);
+  //! Append the editor's state to the history
+  void AppendStateToHistory();
+
 //** Large fields
 //**
   WX_DECLARE_STRING_HASH_MAP(wxSize, StringHash);
@@ -582,7 +598,7 @@ private:
   StringHash m_widths;
 
   //! A list of all potential autoComplete targets within this cell
-  wxArrayString m_wordList;
+  std::vector<wxString> m_wordList;
 
   //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
   MaximaTokenizer::TokenList m_tokens;
@@ -590,22 +606,19 @@ private:
   wxString m_text;
   std::vector<StyledText> m_styledText;
 
-  std::vector<wxString> m_textHistory;
-  std::vector<int> m_positionHistory;
-  std::vector<int> m_startHistory;
-  std::vector<int> m_endHistory;
+  std::vector<HistoryEntry> m_history;
 
 //** 8/4 bytes
 //**
   AFontName m_fontName;
   CellPtr<Cell> m_nextToDraw;
-  //! Where in the undo history are we?
-  ptrdiff_t m_historyPosition = -1;
 
 //** 4 bytes
 //**
   int m_errorIndex = 1;
   unsigned int m_numberOfLines = 1;
+  //! Where in the undo history are we?
+  int m_historyPosition = -1;
 
   /*! The start of the current selection.
 
@@ -636,9 +649,6 @@ private:
   //! Used when moving up/down between lines
   int m_caretColumn = -1;
 
-  wxFontStyle m_fontStyle = wxFONTSTYLE_NORMAL;
-  wxFontWeight m_fontWeight = wxFONTWEIGHT_NORMAL;
-
 //** 2 bytes
 //**
   /*! The font size we were called with  the last time
@@ -646,6 +656,8 @@ private:
     We need to know this in order to be able to detect we need a full recalculation.
    */
   AFontSize m_fontSize_Last;
+  AFontStyle m_fontStyle;
+  AFontWeight m_fontWeight;
 
 //** Bitfield objects (2 bytes)
 //**

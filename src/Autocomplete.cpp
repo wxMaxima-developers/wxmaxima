@@ -130,16 +130,21 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml)
     }
   }
 }
-void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
+
+void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin, WordList::const_iterator const end)
 {
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (AutocompleteBuiltins)
   #endif
   {
-    wxArrayString::const_iterator it;
-    for (it = wordlist.begin(); it != wordlist.end(); ++it)
-      m_worksheetWords[*it] = 1;
+    for (auto word = begin; word != end; std::advance(word, 1))
+      m_worksheetWords[*word] = 1;
   }
+}
+
+void AutoComplete::AddWorksheetWords(const WordList &words)
+{
+  AddWorksheetWords(words.begin(), words.end());
 }
 
 AutoComplete::~AutoComplete()

@@ -38,6 +38,64 @@
 #include "ImgCell.h"
 #include "BitmapOut.h"
 
+#if wxUSE_ACCESSIBILITY
+  // TODO This class is not used anywhere.
+  class HCaretCell: public wxAccessible
+  {
+  public:
+    explicit HCaretCell(GroupCell* group) : wxAccessible(), m_group(group) {}
+
+    //! Describe the current cell to a Screen Reader
+    wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description) override
+    {
+      if (description)
+        return (*description = _("A space between GroupCells")), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
+    //! Inform the Screen Reader which cell is the parent of this one
+    wxAccStatus GetParent (wxAccessible ** parent) override
+    {
+      if (parent)
+        return (*parent = m_group->GetAccessible()), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
+    //! How many childs of this cell GetChild() can retrieve?
+    wxAccStatus GetChildCount (int *childCount) override
+    {
+      if (childCount)
+        return (*childCount = 0), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
+    //! Retrieve a child cell. childId=0 is the current cell
+    wxAccStatus GetChild (int childId, wxAccessible **child) override
+    {
+      if (childId == 0 && child)
+        return (*child = this), wxACC_OK;
+
+      return wxACC_FAIL;
+    }
+    // //! Does this or a child cell currently own the focus?
+    // wxAccStatus GetFocus (int *childId, wxAccessible **child)
+    //   {
+    //   }
+    // //! Where is this cell to be found?
+    // wxAccStatus GetLocation (wxRect &rect, int elementId)
+    //   {
+    //   }
+    // //! Is pt inside this cell or a child cell?
+    // wxAccStatus HitTest (const wxPoint &pt,
+    //                      int *childId, wxAccessible **childObject);
+    wxAccStatus GetRole (int childId, wxAccRole *role) override;
+
+  private:
+	GroupCell *m_group;
+  };
+#endif
+
+
 #define EMPTY_INPUT_LABEL wxT(" -->  ")
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString &initString) :
@@ -2162,7 +2220,7 @@ bool GroupCell::Contains(GroupCell *cell) const
 }
 
 #if wxUSE_ACCESSIBILITY
-wxAccStatus GroupCell::GetDescription(int childId, wxString *description)
+wxAccStatus GroupCell::GetDescription(int childId, wxString *description) const
 {
   if (description == NULL)
     return wxACC_FAIL;
@@ -2182,10 +2240,10 @@ wxAccStatus GroupCell::GetDescription(int childId, wxString *description)
   }
   else
   {
-    wxAccessible *cell = NULL;
-    if (GetChild(childId, &cell) == wxACC_OK)
+    Cell *childCell = nullptr;
+    if (GetChild(childId, &childCell) == wxACC_OK)
     {
-      return cell->GetDescription(0, description);
+      return childCell->GetDescription(0, description);
     }
   }
   
@@ -2222,9 +2280,9 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
   }
   else
   {
-    wxAccessible *child = NULL;
-	if (GetChild(elementId, &child) == wxACC_OK)
-		return child->GetLocation(rect, 0);
+    Cell *childCell = nullptr;
+    if (GetChild(elementId, &childCell) == wxACC_OK)
+      return childCell->GetLocation(rect, 0);
   }
   return wxACC_FAIL;
 }
