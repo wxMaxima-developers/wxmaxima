@@ -1392,7 +1392,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
     m_worksheet->Recalculate(cell->GetGroup());
     if (scrollToCaret)
       m_worksheet->ScrollToCaret();
-    Refresh();
+    m_worksheet->RequestRedraw();
   }
   return cell;
 }
@@ -1714,7 +1714,6 @@ void wxMaxima::OnMaximaConnect()
     m_client->SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
     m_client->SetTimeout(30);
     SetupVariables();
-    Refresh();
   }
 }
 
@@ -2101,7 +2100,6 @@ void wxMaxima::KillMaxima(bool logMessage)
       wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
-  Refresh();
 }
 
 void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
@@ -5896,7 +5894,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         !m_worksheet->m_configuration->InvertBackground());
       m_Maxima_Panes_Sub->Check(menu_invertWorksheetBackground,
                         m_worksheet->m_configuration->InvertBackground());
-      m_worksheet->Refresh();
+      m_worksheet->RequestRedraw();
       break;
     case ToolBar::tb_hideCode:
       m_worksheet->m_configuration->ShowCodeCells(!m_worksheet->m_configuration->ShowCodeCells());
