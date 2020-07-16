@@ -7105,7 +7105,7 @@ void Worksheet::PasteFromClipboard()
     {
 
       // Convert the text from the clipboard into an array of lines
-      wxStringTokenizer lines(inputs, wxT("\n"));
+      wxStringTokenizer lines(inputs, wxT("\n"), wxTOKEN_RET_EMPTY);
       wxArrayString lines_array;
       while (lines.HasMoreTokens())
         lines_array.Add(lines.GetNextToken());
