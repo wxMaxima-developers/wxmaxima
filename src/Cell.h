@@ -547,7 +547,7 @@ public:
   
     Used for detecting lookalike chars in function and variable names.
    */
-  virtual wxString VariablesAndFunctionsList();
+  wxString VariablesAndFunctionsList() const;
   //! Convert this list to its LaTeX representation
   virtual wxString ListToMatlab() const;
   //! Convert this list to its LaTeX representation
@@ -556,7 +556,7 @@ public:
   virtual wxString ListToXML() const;
 
   //! Convert this list to a MathML representation
-  virtual wxString ListToMathML(bool startofline = false);
+  virtual wxString ListToMathML(bool startofline = false) const;
 
   //! Convert this list to an OMML representation
   virtual wxString ListToOMML(bool startofline = false) const;

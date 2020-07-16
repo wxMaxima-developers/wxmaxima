@@ -540,11 +540,12 @@ wxString Cell::ToString() const
   return wxEmptyString;
 }
 
-wxString Cell::VariablesAndFunctionsList()
+static const wxString space = wxT(" ");
+
+wxString Cell::VariablesAndFunctionsList() const
 {
   wxString retval;
-  Cell *tmp = this;
-  while (tmp != NULL)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
   {
     if(
       (tmp->GetStyle() == TS_LABEL) ||
@@ -552,8 +553,9 @@ wxString Cell::VariablesAndFunctionsList()
       (tmp->GetStyle() == TS_MAIN_PROMPT) ||
       (tmp->GetStyle() == TS_VARIABLE) ||
       (tmp->GetStyle() == TS_FUNCTION))
-      retval += tmp->ToString() + " ";      
-    tmp = tmp->GetNextToDraw();
+    {
+      retval << tmp->ToString() << space;
+    }
   }
   return retval;
 }
@@ -657,55 +659,48 @@ wxString Cell::ToMathML() const
   return wxEmptyString;
 }
 
-wxString Cell::ListToMathML(bool startofline)
+wxString Cell::ListToMathML(bool startofline) const
 {
   bool highlight = false;
-
   wxString retval;
 
   // If the region to export contains linebreaks or labels we put it into a table.
   bool needsTable = false;
-  Cell *temp = this;
-  while (temp)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
-    if (temp->HardLineBreak())
+    if (tmp->HardLineBreak() || tmp->GetType() == MC_TYPE_LABEL)
+    {
       needsTable = true;
-
-    if (temp->GetType() == MC_TYPE_LABEL)
-      needsTable = true;
-
-    temp = temp->m_next;
+      break;
+    }
   }
 
-  temp = this;
   // If the list contains multiple cells we wrap them in a <mrow> in order to
   // group them into a single object.
-  bool multiCell = (temp->m_next != NULL);
+  bool const multiCell = m_next;
 
   // Export all cells
-  while (temp != NULL)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     // Do we need to end a highlighting region?
-    if ((!temp->m_highlight) && (highlight))
+    if ((!tmp->m_highlight) && (highlight))
       retval += wxT("</mrow>");
 
     // Handle linebreaks
-    if ((temp != this) && (temp->HardLineBreak()))
+    if ((tmp != this) && (tmp->HardLineBreak()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if ((((temp->HardLineBreak()) || (startofline && (this == temp))) &&
-         ((temp->GetStyle() != TS_LABEL) && (temp->GetStyle() != TS_USERLABEL))) && (needsTable))
+    if ((((tmp->HardLineBreak()) || (startofline && (this == tmp))) &&
+         ((tmp->GetStyle() != TS_LABEL) && (tmp->GetStyle() != TS_USERLABEL))) && (needsTable))
       retval += wxT("<mtext></mtext></mtd><mtd>");
 
     // Do we need to start a highlighting region?
-    if ((temp->m_highlight) && (!highlight))
+    if ((tmp->m_highlight) && (!highlight))
       retval += wxT("<mrow mathcolor=\"red\">");
-    highlight = temp->m_highlight;
+    highlight = tmp->m_highlight;
 
-
-    retval += temp->ToMathML();
-    temp = temp->m_next;
+    retval += tmp->ToMathML();
   }
 
   // If the region we converted to MathML ended within a highlighted region
