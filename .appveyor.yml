@@ -161,11 +161,11 @@ on_failure:
       Push-AppveyorArtifact FailureDump.zip
       popd
 
-artifacts:
-  - path: 'build\*.exe'
-    name: wxMaxima_Installer
-  - path: 'wxMaxima.exe.zip'
-    name: wxMaxima
+#artifacts:
+#  - path: 'build\*.exe'
+#    name: wxMaxima_Installer
+#  - path: 'wxMaxima.exe.zip'
+#    name: wxMaxima
 
 for:
   -
