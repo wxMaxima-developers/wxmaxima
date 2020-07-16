@@ -55,6 +55,7 @@ set(SOURCE_FILES
     MathParser.cpp
     MatrCell.cpp
     MaxSizeChooser.cpp
+    MaximaIPC.cpp
     MaximaTokenizer.cpp
     Notification.cpp
     OutCommon.cpp
