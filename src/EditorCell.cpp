@@ -605,7 +605,7 @@ void EditorCell::ConvertNumToUNicodeChar()
 void EditorCell::RecalculateWidths(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  if (configuration->GetZoomFactor() != m_lastZoomFactor)
+  if (IsZoomFactorChanged())
     m_widths.clear();
 
   m_isDirty = false;

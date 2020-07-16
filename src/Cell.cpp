@@ -41,6 +41,13 @@ const wxString &Cell::GetLocalToolTip() const
   return *m_toolTip;
 }
 
+bool Cell::IsZoomFactorChanged() const
+{
+  double constexpr eps = 0.01;
+  double diff = (*m_configuration)->GetZoomFactor() - m_lastZoomFactor;
+  return diff < -eps || diff > eps;
+}
+
 const wxString &Cell::GetToolTip(const wxPoint point) const
 {
   if (!ContainsPoint(point))
@@ -275,7 +282,7 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
     (fontSize != m_fontsize_old) ||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
-    (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
+    IsZoomFactorChanged() ||
     ((*m_configuration)->RecalculationForce()) ||
     (*m_configuration)->FontChanged();
   return result;
@@ -501,6 +508,7 @@ void Cell::RecalculateHeight(AFontSize fontsize)
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
+  wxASSERT(!IsZoomFactorChanged());
   ResetCellListSizes();
   m_recalculateWidths = false;
 }

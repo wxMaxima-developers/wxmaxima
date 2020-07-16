@@ -814,7 +814,7 @@ protected:
 // VTable  *__vtable;
 // Observed __observed;
 
-//** 8-byte objects (24 bytes)
+//** 8-byte objects (16 bytes)
 //**
   /*! The point in the work sheet at which this cell begins.
 
@@ -832,12 +832,8 @@ protected:
   wxPoint m_currentPoint{-1, -1};
   wxPoint m_currentPoint_Last{-1, -1};
 
-  //! The zoom factor at the time of the last recalculation.
-  double m_lastZoomFactor = -1;
-
 //** 8/4-byte objects (48 + 8* bytes)
 //**
-
 public:
   // TODO WIP on making these fields private (2020-07-07). Do not refactor.
   /*! The next cell in the list of cells
@@ -873,9 +869,13 @@ protected:
   //! it points to a "static" string.
   const wxString *m_toolTip /* initialized in the constructor */;
 
-//** 4-byte objects (36 bytes)
+//** 4-byte objects (40 bytes)
 //**
+private:
+  //! The zoom factor at the time of the last recalculation.
+  float m_lastZoomFactor = -1.0f;
 
+protected:
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
   int m_imageBorderWidth = 0;
 
@@ -1059,6 +1059,7 @@ protected:
 
 protected:
   const wxString &GetLocalToolTip() const;
+  bool IsZoomFactorChanged() const;
 
 private:
   void RecalcCenterListAndMaxDropCache();
