@@ -5,11 +5,6 @@ foo;
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: input   start ] */
-bar;
-/* [wxMaxima: input   end   ] */
-
-
 /* [wxMaxima: comment start ]
 wxMaxima must be called with --enableipc for IPC to work!
    [wxMaxima: comment end   ] */
@@ -17,7 +12,8 @@ wxMaxima must be called with --enableipc for IPC to work!
 
 /* [wxMaxima: comment start ]
 The lisp code generates ipc event markup for SELECTALL, SELECTALL, COPY, PASTE.
-It crashes wxMaxima at the moment due to a logic bug in the Worksheet::PasteFromClipboard
+The events are delivered *immediately* - without queuing.
+It used to crashe wxMaxima due to a logic bug in the Worksheet::PasteFromClipboard.
    [wxMaxima: comment end   ] */
 
 
