@@ -2423,9 +2423,9 @@ bool EditorCell::FindMatchingQuotes()
     return false;
   }
 
-  if(pos >= (long)m_text.Length())
-    pos = m_text.Length()-1;
-  if ((pos >= (long) m_text.Length() - 1)||
+  if (pos > (long) m_text.Length())
+    pos = (long) m_text.Length();
+  if ((pos == (long) m_text.Length()) ||
       (wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1))
   {
     pos--;
