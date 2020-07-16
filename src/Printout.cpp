@@ -291,7 +291,7 @@ void Printout::PrintHeader(int pageNum, wxDC *dc)
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   dc->SetTextForeground(wxColour(wxT("grey")));
-  dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
+  dc->SetPen(wxPen(wxT("light grey"), (*m_configuration)->Scale_Px(1), wxPENSTYLE_SOLID));
 
   dc->SetFont(wxFont((*m_configuration)->Scale_Px(10), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &title_width, &title_height);
