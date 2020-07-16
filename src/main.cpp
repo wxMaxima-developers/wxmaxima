@@ -207,6 +207,8 @@ bool MyApp::OnInit()
                   {wxCMD_LINE_OPTION, "X", "extra-args",
                    "Allows to specify extra Maxima arguments",  wxCMD_LINE_VAL_STRING, 0},
                   { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the Maxima binary", wxCMD_LINE_VAL_STRING , 0},
+                  { wxCMD_LINE_SWITCH, "", "enableipc",
+                   "Lets Maxima control wxMaxima via interprocess communications. Use this option with care.", wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
             {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
@@ -245,6 +247,9 @@ bool MyApp::OnInit()
 
   if (cmdLineParser.Found(wxT("exit-on-error")))
     wxMaxima::ExitOnError();
+
+  if (cmdLineParser.Found(wxT("enableipc")))
+    wxMaxima::EnableIPC();
 
   wxString extraMaximaArgs;
   wxString arg;

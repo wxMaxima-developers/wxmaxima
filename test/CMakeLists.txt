@@ -570,6 +570,12 @@ add_test(
     COMMAND wxmaxima --gibberish --batch unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
+add_test(
+    NAME ipc_copypaste
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --enableipc --batch ipc_copypaste.wxm)
+set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60)
+
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 add_test(
     NAME check_desktop_file

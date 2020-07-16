@@ -4249,6 +4249,9 @@ bool wxMaxima::InterpretDataFromMaxima()
       // Handle the XML tag that contains Status bar updates
       ReadStatusBar(m_currentOutput);
 
+      // Handle the XML tag that contains the interprocess communication messages
+      m_ipc.ReadInputData(m_currentOutput);
+
       // Handle text that isn't XML output: Mostly Error messages or warnings.
       ReadMiscText(m_currentOutput);
     }

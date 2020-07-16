@@ -33,6 +33,7 @@
 
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
+#include "MaximaIPC.h"
 #include "Dirstructure.h"
 
 #include <wx/socket.h>
@@ -86,6 +87,7 @@ public:
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStdout = true;}
   static void ExitOnError(){m_exitOnError = true;}
+  static void EnableIPC(){ MaximaIPC::EnableIPC(); }
   static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
 
   //! An enum of individual IDs for all timers this class handles
@@ -189,6 +191,7 @@ private:
   #ifdef HAVE_OMP_HEADER
   omp_lock_t m_helpFileAnchorsLock;
   #endif
+  MaximaIPC m_ipc{this};
   //! wxm data the worksheet is populated from 
   wxString m_initialWorkSheetContents;
   static bool m_pipeToStdout;
@@ -754,6 +757,7 @@ private:
   friend class MyDropTarget;
 
 #endif
+  friend class MaximaIPC;
 };
 
 #if wxUSE_DRAG_AND_DROP

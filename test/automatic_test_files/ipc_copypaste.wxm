@@ -1,0 +1,31 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.06.6-DevelopmentSnapshot ] */
+/* [wxMaxima: input   start ] */
+foo;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+bar;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+wxMaxima must be called with --enableipc for IPC to work!
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+The lisp code generates ipc event markup for SELECTALL, SELECTALL, COPY, PASTE.
+It crashes wxMaxima at the moment due to a logic bug in the Worksheet::PasteFromClipboard
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+:lisp (format t "<ipc><event type=\"MENU\" id=\"SELECTALL\" /><event type=\"MENU\" id=\"SELECTALL\" /><event type=\"MENU\" id=\"COPY\" /><event type=\"MENU\" id=\"PASTE\" /></ipc>")
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.06.6-DevelopmentSnapshot"$

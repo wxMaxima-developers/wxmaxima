@@ -7133,9 +7133,10 @@ void Worksheet::PasteFromClipboard()
         }
         else
         {
-          if (m_hCaretActive)
+          bool hasHSelection = m_cellPointers.m_selectionStart && (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
+          if (m_hCaretActive || hasHSelection)
           {
-            if (m_cellPointers.m_selectionStart && (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP))
+            if (hasHSelection)
             {
               DeleteSelection();
               TreeUndo_AppendAction();
