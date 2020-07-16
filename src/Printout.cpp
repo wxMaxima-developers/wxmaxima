@@ -82,6 +82,7 @@ bool Printout::OnPrintPage(int num)
   int marginX, marginY;
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
+  (*m_configuration)->SetCanvasSize({pageWidth - marginX, pageHeight - marginY});
   
   // Make sure that during print nothing is outside the crop rectangle
 
