@@ -38,9 +38,16 @@ environment:
     TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
     WXW_LIB: gcc_x64_lib
 
+matrix:
+  exclude:
+    - image: Visual Studio 2019
+      TOOLKIT: MinGW
+
+    - image: Visual Studio 2015
+      TOOLKIT: MSVC
+
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
-  - 'C:\wxwidgets-build_%WXBUILDVER%'
   # The build directory is only cached for the .pdb files. Other files are removed.
   # - C:\ProgramData\chocolatey\bin -> appveyor.yml
   # - C:\ProgramData\chocolatey\lib -> appveyor.yml
