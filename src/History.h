@@ -43,7 +43,9 @@ enum
   export_session,
   export_visible,
   export_selected,
-  clear_selection
+  toggle_ShowCurrentSessionOnly,
+  clear_selection,
+  clear_history
 };
 
 /*! This class generates a pane containing the last commands that were issued.
@@ -67,7 +69,6 @@ public:
 
   void MaximaSessionStart();
 
-  
 private:
   enum class RegexInputState : int8_t { empty, invalid, valid };
 
@@ -97,6 +98,10 @@ private:
   RegexInputState m_regexInputState = RegexInputState::empty;
   //! Whether the history should be updated now or later
   bool m_realtimeUpdate = true;
+  //! Show only commands from the current session?
+  bool m_showCurrentSessionOnly;
+  //! The config key telling where to store m_showCurrentSessionOnly between sessions
+  static wxString m_showCurrentSessionOnlyKey;
 };
 
 #endif // HISTORY_H
