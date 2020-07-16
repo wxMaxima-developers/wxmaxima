@@ -38,12 +38,6 @@ environment:
     TOOLKIT_INIT: ".appveyor\\MINGW_8.1.0_x64.ps1"
     WXW_LIB: gcc_x64_lib
 
-matrix:
-  exclude:
-    - job_name: MinGW
-
-    - job_name: MSVC
-
 cache:
   - 'C:\wxwidgets-install_%WXBUILDVER%'
   - 'C:\wxwidgets-build_%WXBUILDVER%'
