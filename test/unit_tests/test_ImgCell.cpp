@@ -28,10 +28,13 @@
 #include "FontCache.cpp"
 #include "Image.cpp"
 #include "ImgCell.cpp"
+#include "StringUtils.h"
 #include "TextCell.cpp"
 #include "TextStyle.cpp"
 #include "VisiblyInvalidCell.cpp"
 #include <catch2/catch.hpp>
+
+const wxString wxm::emptyString;
 
 CellPointers pointers(nullptr);
 

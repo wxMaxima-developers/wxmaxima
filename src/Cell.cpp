@@ -29,6 +29,7 @@
 
 #include "Cell.h"
 #include "GroupCell.h"
+#include "StringUtils.h"
 #include "TextCell.h"
 #include "stx/unique_cast.hpp"
 #include <wx/regex.h>
@@ -1177,8 +1178,7 @@ void Cell::SetPen(double lineWidth) const
 
 const wxString &Cell::GetValue() const
 {
-  static const wxString empty;
-  return empty;
+  return wxm::emptyString;
 }
 
 void Cell::SetForeground()

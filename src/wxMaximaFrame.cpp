@@ -1857,7 +1857,7 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
     EnabledDefinition(wchar_t sym, const wxString &descr, Cond cond = Cond::None) :
         CharButton::Definition{sym, descr}, condition(cond) {}
     explicit EnabledDefinition(wchar_t sym):
-        EnabledDefinition(sym, empty)
+        EnabledDefinition(sym, wxm::emptyString)
       {}
   };
 

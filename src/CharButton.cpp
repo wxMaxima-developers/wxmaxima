@@ -60,5 +60,3 @@ CharButton::CharButton(wxPanel *parent, wxWindow *worksheet, const Definition &d
   SetSizerAndFit(vbox);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
 }
-
-const wxString CharButton::Definition::empty;
