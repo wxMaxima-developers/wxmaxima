@@ -1474,7 +1474,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
 
   // A fast way to get the next 5 characters
   wxString rightOfCursor;
-  for(int i=0; i<5; i++)
+  for(auto i=0; i<5; i++)
   {
     if (it >= m_text.end())
       break;

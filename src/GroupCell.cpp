@@ -1423,7 +1423,7 @@ wxString GroupCell::ToXML() const
     {
       str += wxT(" type=\"code\"");
       int i = 0;
-      for(StringHash::const_iterator it = m_knownAnswers.begin();
+      for(auto it = m_knownAnswers.begin();
           it != m_knownAnswers.end();
           ++it)
       {

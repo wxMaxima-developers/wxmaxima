@@ -1167,7 +1167,7 @@ void Cell::Unbreak()
 
 void Cell::UnbreakList()
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for(auto tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->Unbreak();
 }
 

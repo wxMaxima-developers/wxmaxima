@@ -108,7 +108,7 @@ wxString ActualValuesStorageWiz::GetValue()
 {
   bool firstline = true;
   wxString retval = wxT("[");
-  for(int i = 0;i < m_grid->GetNumberRows(); i++)
+  for(auto i = 0;i < m_grid->GetNumberRows(); i++)
   {
     if((m_grid->GetCellValue(i,0) != wxEmptyString) ||
        (m_grid->GetCellValue(i,1) != wxEmptyString))
