@@ -40,16 +40,21 @@ Emfout::Emfout(Configuration **configuration, const wxString &filename) :
   config.RecalculationForce(true);
 }
 
+Emfout::Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree, const wxString &filename) :
+    Emfout(configuration, filename)
+{
+  Render(std::move(tree));
+}
+
 Emfout::~Emfout()
 {}
 
-wxSize Emfout::SetData(std::unique_ptr<Cell> &&tree)
+wxSize Emfout::Render(std::unique_ptr<Cell> &&tree)
 {
   m_tree = std::move(tree);
-  if (m_tree && Layout())
-      return m_cmn.GetSize();
-
-  return wxDefaultSize;
+  m_isOk = m_tree && Layout();
+  m_size = m_isOk ? m_cmn.GetSize() : wxDefaultSize;
+  return m_size;
 }
 
 bool Emfout::Layout()
@@ -70,9 +75,9 @@ bool Emfout::Layout()
   return true;
 }
 
-wxEnhMetaFileDataObject *Emfout::GetDataObject()
+std::unique_ptr<wxEnhMetaFileDataObject> Emfout::GetDataObject() const
 {
-  return m_metaFile ? new wxEnhMetaFileDataObject(*m_metaFile) : nullptr;
+  return m_metaFile ? std::make_unique<wxEnhMetaFileDataObject>(*m_metaFile) : nullptr;
 }
 
 bool Emfout::ToClipboard()

@@ -35,6 +35,7 @@ class Emfout final
 {
 public:
   explicit Emfout(Configuration **configuration, const wxString &filename = {});
+  explicit Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree, const wxString &filename = {});
   ~Emfout();
 
   /*! Renders tree as emf
@@ -42,13 +43,16 @@ public:
     \param tree The list of cells that is to be rendered
     \return true, if the emfout could be created.
    */
-  wxSize SetData(std::unique_ptr<Cell> &&tree);
+  wxSize Render(std::unique_ptr<Cell> &&tree);
+
+  wxSize GetSize() const { return m_size; }
+  bool IsOk() const { return m_isOk; }
 
   //! Copies the emf representation of the list of cells that was passed to SetData()
   bool ToClipboard();
 
   //! Returns the emf representation in a format that can be placed on the clipBoard.
-  wxEnhMetaFileDataObject *GetDataObject();
+  std::unique_ptr<wxEnhMetaFileDataObject> GetDataObject() const;
 
 private:
   std::unique_ptr<Cell> m_tree;
@@ -57,6 +61,8 @@ private:
   wxEnhMetaFileDC m_recalculationDc;
   //! The most recently rendered metafile - used to paste to clipboard.
   std::unique_ptr<wxEnhMetaFile> m_metaFile;
+  wxSize m_size = wxDefaultSize;
+  bool m_isOk = false;
 
   bool Layout();
 };

@@ -89,6 +89,8 @@ wxSize OutCommon::GetInvScaledSize() const
 bool OutCommon::PrepareLayout(Cell *tree)
 {
   wxASSERT(m_recalculationDc);
+  if (!tree)
+    return false;
 
   tree->ResetSize();
   m_thisconfig.SetContext(*m_recalculationDc);

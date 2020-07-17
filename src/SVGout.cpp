@@ -55,18 +55,23 @@ Svgout::Svgout(Configuration **configuration, const wxString &filename, double s
   config.RecalculationForce(true);
 }
 
+Svgout::Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree, const wxString &filename, double scale) :
+    Svgout(configuration, filename, scale)
+{
+  Render(std::move(tree));
+}
+
 Svgout::~Svgout()
 {
   wxSetWorkingDirectory(m_CWD);
 }
 
-wxSize Svgout::SetData(std::unique_ptr<Cell> &&tree)
+wxSize Svgout::Render(std::unique_ptr<Cell> &&tree)
 {
   m_tree = std::move(tree);
-  if (m_tree && Layout())
-    return m_cmn.GetScaledSize();
-
-  return wxDefaultSize;
+  m_isOk = m_tree && Layout();
+  m_size = m_isOk ? m_cmn.GetScaledSize() : wxDefaultSize;
+  return m_size;
 }
 
 bool Svgout::Layout()
@@ -95,9 +100,9 @@ static wxDataFormat &Format()
   return format;
 }
 
-wxCustomDataObject *Svgout::GetDataObject()
+std::unique_ptr<wxCustomDataObject> Svgout::GetDataObject()
 {
-  return m_cmn.GetDataObject(Format()).release();
+  return m_cmn.GetDataObject(Format());
 }
 
 bool Svgout::ToClipboard()
