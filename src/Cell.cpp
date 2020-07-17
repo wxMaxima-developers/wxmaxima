@@ -68,7 +68,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_group(group),
     m_configuration(config),
     m_cellPointers(GetCellPointers()),
-    m_toolTip(&(*config)->GetDefaultCellToolTip()),
+    m_toolTip(&wxm::emptyString),
     m_fontSize((*config)->GetMathFontSize())
 {
   InitBitFields();

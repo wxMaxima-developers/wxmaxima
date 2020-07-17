@@ -413,14 +413,16 @@ protected:
     maths instead).
    */
   TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, CellType  type,
-                       bool newLine = true, bool bigSkip = true, const wxString &userLabel = {});
+
+  enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };
+  void DoConsoleAppend(wxString s, CellType type, AppendOpt opts = AppendOpt::DefaultOpt,
+                       const wxString &userLabel = {});
 
   /*!Append one or more lines of ordinary unicode text to the console
 
     \return A pointer to the last line that was appended or NULL, if there is no such line
    */
-  TextCell *DoRawConsoleAppend(wxString s, CellType  type); 
+  TextCell *DoRawConsoleAppend(wxString s, CellType  type, AppendOpt opts = {});
 
   /*! Spawn the "configure" menu.
 

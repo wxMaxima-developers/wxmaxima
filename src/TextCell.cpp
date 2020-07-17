@@ -68,7 +68,6 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   }
   m_fontSize.Set(10.0f);
   TextCell::SetValue(text);
-  m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
 }
 
 std::unique_ptr<Cell> TextCell::Copy() const
@@ -100,7 +99,12 @@ void TextCell::SetType(CellType type)
 
 void TextCell::UpdateToolTip()
 {
-  SetToolTip(&m_initialToolTip);
+  if (m_promptTooltip)
+    SetToolTip(
+          &T_("Most questions can be avoided using the assume() and the "
+            "declare() command. If that isn't possible the \"Automatically "
+            "answer questions\" button makes wxMaxima automatically fill in "
+            "all answers it still remembers from a previous run."));
 
   if (m_text.empty())
     return;

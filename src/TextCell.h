@@ -91,6 +91,8 @@ public:
 
   void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
 
+  void SetPromptTooltip(bool use) { m_promptTooltip = use; }
+
   //! The actual font size for labels (that have a fixed width)
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
@@ -158,8 +160,6 @@ private:
   //! Last few digits (also used for user defined label)
   wxString m_numEnd;
 
-  wxString m_initialToolTip;
-
   std::vector<SizeEntry> m_sizeCache;
 
   CellPtr<Cell> m_nextToDraw;
@@ -177,10 +177,13 @@ private:
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
     m_dontEscapeOpeningParenthesis = false;
+    m_promptTooltip = false;
   }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
+  //! Default to a special tooltip for prompts?
+  bool m_promptTooltip : 1 /* InitBitFields */;
 };
 
 #endif // TEXTCELL_H
