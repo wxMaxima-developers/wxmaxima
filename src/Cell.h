@@ -178,19 +178,13 @@ public:
   int CellsInListRecursive() const;
   
   //! The part of the rectangle rect that is in the region that is currently drawn
-  wxRect CropToUpdateRegion(wxRect rect)
-    {
-      if(!(*m_configuration)->ClipToDrawRegion())
-        return rect;
-      else
-        return rect.Intersect((*m_configuration)->GetUpdateRegion());
-    }
+  wxRect CropToUpdateRegion(wxRect rect) const;
 
   //! Is part of this rectangle in the region that is currently drawn?
-  bool InUpdateRegion(const wxRect &rect);
+  bool InUpdateRegion(const wxRect &rect) const;
 
   //! Is this cell inside the region that is currently drawn?
-  bool InUpdateRegion() {return InUpdateRegion(GetRect());}
+  bool InUpdateRegion() const { return InUpdateRegion(GetRect()); }
 
   /*! Add a cell to the end of the list this cell is part of
     
@@ -242,13 +236,13 @@ public:
      - true means test this cell and the ones that are following it in the list
      - false means test this cell only.
    */
-  bool ContainsRect(const wxRect &sm, bool all = true);
+  bool ContainsRect(const wxRect &sm, bool all = true) const;
 
   /*! Is a given point inside this cell?
 
     \param point The point to test for collision with this cell
    */
-  bool ContainsPoint(wxPoint point) { return GetRect().Contains(point); }
+  bool ContainsPoint(wxPoint point) const { return GetRect().Contains(point); }
 
   /*! Clears memory from cached items automatically regenerated when the cell is drawn
     
@@ -351,7 +345,7 @@ public:
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
    */
-  int GetMaxDrop();
+  int GetMaxDrop() const;
 
   /*! Returns the maximum distance between top and center of this line
 
@@ -359,23 +353,23 @@ public:
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
   */
-  int GetCenterList();
+  int GetCenterList() const;
 
   /*! Returns the total height of this line
 
     Returns GetCenterList()+GetMaxDrop()
    */
-  int GetHeightList();
+  int GetHeightList() const;
 
   //! How many pixels is this list of cells wide, if we don't break it into lines?
-  int GetFullWidth();
+  int GetFullWidth() const;
 
   /*! How many pixels is the current line of this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed. 
     See GetFullWidth().
    */
-  int GetLineWidth();
+  int GetLineWidth() const;
 
   /*! Get the x position of the top left of this cell
 
@@ -397,7 +391,7 @@ public:
       - true: Get the rectangle for this cell and the ones that follow it in the list of cells
       - false: Get the rectangle for this cell only.
    */
-  virtual wxRect GetRect(bool all = false);
+  virtual wxRect GetRect(bool all = false) const;
 
   //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation(AFontSize fontSize) const;
@@ -553,7 +547,7 @@ public:
   
     Used for detecting lookalike chars in function and variable names.
    */
-  virtual wxString VariablesAndFunctionsList();
+  wxString VariablesAndFunctionsList() const;
   //! Convert this list to its LaTeX representation
   virtual wxString ListToMatlab() const;
   //! Convert this list to its LaTeX representation
@@ -562,7 +556,7 @@ public:
   virtual wxString ListToXML() const;
 
   //! Convert this list to a MathML representation
-  virtual wxString ListToMathML(bool startofline = false);
+  virtual wxString ListToMathML(bool startofline = false) const;
 
   //! Convert this list to an OMML representation
   virtual wxString ListToOMML(bool startofline = false) const;
@@ -890,16 +884,16 @@ protected:
      - Will contain -1, if it has not yet been calculated.
      - Won't be recalculated on appending new cells to the list.
    */
-  int m_fullWidth = -1;
+  mutable int m_fullWidth = -1;
   /*! Caches the width of the rest of the line this cell is part of.
 
      - Will contain -1, if it has not yet been calculated.
      - Won't be recalculated on appending new cells to the list.
    */
-  int m_lineWidth = -1;
+  mutable int m_lineWidth = -1;
   int m_center = -1;
-  int m_maxCenter = -1;
-  int m_maxDrop = -1;
+  mutable int m_maxCenter = -1;
+  mutable int m_maxDrop = -1;
 private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old = -1;
@@ -979,10 +973,10 @@ protected:
 
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
-  bool m_recalculate_maxCenter : 1 /* InitBitFields */;
-  bool m_recalculate_maxDrop : 1 /* InitBitFields */;
-  bool m_recalculate_maxWidth : 1 /* InitBitFields */;
-  bool m_recalculate_lineWidth : 1 /* InitBitFields */;
+  mutable bool m_recalculate_maxCenter : 1 /* InitBitFields */;
+  mutable bool m_recalculate_maxDrop : 1 /* InitBitFields */;
+  mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
+  mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
   //! GroupCells only: Suppress the yellow ToolTips marker
   bool m_suppressTooltipMarker : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;

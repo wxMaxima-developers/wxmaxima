@@ -238,7 +238,7 @@ public:
   void RecalculateHeight(AFontSize fontsize) override;
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
-  wxRect GetRect(bool all = false) override;
+  wxRect GetRect(bool all = false) const override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and

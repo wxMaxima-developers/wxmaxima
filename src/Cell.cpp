@@ -29,6 +29,7 @@
 
 #include "Cell.h"
 #include "GroupCell.h"
+#include "StringUtils.h"
 #include "TextCell.h"
 #include "stx/unique_cast.hpp"
 #include <wx/regex.h>
@@ -42,7 +43,7 @@ wxString Cell::GetToolTip(const wxPoint point)
 
   wxString toolTip;
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
       if (!(toolTip = tmp->GetToolTip(point)).IsEmpty())
         return toolTip;
 
@@ -155,7 +156,7 @@ std::unique_ptr<Cell> Cell::CopyList() const
 
 void Cell::ClearCacheList()
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ClearCache();
 }
 
@@ -170,7 +171,7 @@ int Cell::CellsInListRecursive() const
   //! The number of cells the current group contains (-1, if no GroupCell)
   int cells = 0;
 
-  for (const Cell *tmp = this; tmp; tmp = tmp->m_next)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     ++ cells;
     for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
@@ -182,6 +183,14 @@ int Cell::CellsInListRecursive() const
     }
   }
   return cells;
+}
+
+wxRect Cell::CropToUpdateRegion(wxRect rect) const
+{
+  if (!(*m_configuration)->ClipToDrawRegion())
+    return rect;
+  else
+    return rect.Intersect((*m_configuration)->GetUpdateRegion());
 }
 
 void Cell::SetGroup(GroupCell *group)
@@ -197,7 +206,7 @@ void Cell::SetGroup(GroupCell *group)
 
 void Cell::FontsChangedList()
 {
-  for (Cell *tmp = this; tmp; tmp = tmp->m_next)
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->FontsChanged();
     for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
@@ -240,28 +249,6 @@ GroupCell *Cell::GetGroup() const
   return group;
 }
 
-/***
- * Get the maximum drop of the center.
- */
-int Cell::GetCenterList()
-{
-  if (m_recalculate_maxCenter || ((*m_configuration)->RecalculationForce()))
-  {
-    m_recalculate_maxCenter = false;
-    Cell *tmp = this;
-    m_maxCenter  = 0;
-    while (tmp != NULL)
-    {
-      if ((tmp != this) && (tmp->m_breakLine))
-        break;
-      if(!tmp->m_isBrokenIntoLines)
-        m_maxCenter = wxMax(m_maxCenter, tmp->m_center);
-      tmp = tmp->GetNextToDraw();
-    }
-  }
-  return m_maxCenter;
-}
-
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   bool result = (m_recalculateWidths) ||
@@ -274,82 +261,82 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
   return result;
 }
 
-/***
- * Get the maximum drop of cell.
- */
-int Cell::GetMaxDrop()
+int Cell::GetCenterList() const
+{
+  if (m_recalculate_maxCenter || ((*m_configuration)->RecalculationForce()))
+  {
+    m_recalculate_maxCenter = false;
+    int maxCenter = 0;
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+    {
+      if ((tmp != this) && (tmp->m_breakLine))
+        break;
+      if (!tmp->m_isBrokenIntoLines)
+        maxCenter = wxMax(maxCenter, tmp->m_center);
+    }
+    m_maxCenter = maxCenter;
+  }
+  return m_maxCenter;
+}
+
+int Cell::GetMaxDrop() const
 {
   if (m_recalculate_maxDrop || ((*m_configuration)->RecalculationForce()))
   {
     m_recalculate_maxDrop = false;
-    m_maxDrop = 0;
-    Cell *tmp = this;
-    while (tmp != NULL)
+    int maxDrop = 0;
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
     {
       if ((tmp != this) && (tmp->m_breakLine))
         break;
-      if(!tmp->m_isBrokenIntoLines)
-        m_maxDrop = wxMax(m_maxDrop, tmp->m_height - tmp->m_center);
-      tmp = tmp->GetNextToDraw();
+      if (!tmp->m_isBrokenIntoLines)
+        maxDrop = wxMax(maxDrop, tmp->m_height - tmp->m_center);
     }
+    m_maxDrop = maxDrop;
   }
   return m_maxDrop;
 }
 
-//!  Get the maximum hight of cells in line.
-int Cell::GetHeightList()
+int Cell::GetHeightList() const
 {
   return GetCenterList() + GetMaxDrop();
 }
 
-/*! Get full width of this group.
- */
-int Cell::GetFullWidth()
+int Cell::GetFullWidth() const
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
   if (m_recalculate_maxWidth || ((*m_configuration)->RecalculationForce()))
   {
     m_recalculate_maxWidth = false;
-    Cell *tmp = this;
 
     // We begin this calculation with a negative offset since the full width of only a single
     // cell doesn't contain the space that separates two cells - that is automatically added
     // to every cell in the next step.
-    m_fullWidth = 0;
-    while (tmp != NULL)
+    int fullWidth = 0;
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
     {
-      m_fullWidth += tmp->m_width;
-      tmp = tmp->GetNextToDraw();
+      fullWidth += tmp->m_width;
     }
+    m_fullWidth = fullWidth;
   }
   return m_fullWidth;
 }
 
-/*! Get the width of this line.
- */
-int Cell::GetLineWidth()
+int Cell::GetLineWidth() const
 {
   if (m_recalculate_lineWidth)
   {
     m_recalculate_lineWidth = false;
-    m_lineWidth = 0;
     int width = m_width;
-
-    Cell *tmp = this;
-    while(tmp != NULL)
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
     {
-      width += tmp->m_width;
-
-      if (width > m_lineWidth)
-        m_lineWidth = width;
-
-      tmp = tmp->GetNextToDraw();
-      if(tmp != NULL)
-      {
-        if(tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
+      if (tmp != this)
+        if (tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
           break;
-      }
+
+      width += tmp->m_width;
     }
+    m_lineWidth = width;
   }
   return m_lineWidth;
 }
@@ -411,62 +398,40 @@ void Cell::AddToolTip(const wxString &tip)
 }
 void Cell::DrawList(wxPoint point)
 {
-  Cell *tmp = this;
-  while (tmp != NULL)
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
   {
     tmp->Draw(point);
     point.x += tmp->m_width;
-    wxASSERT(tmp != tmp->GetNextToDraw());
-    tmp = tmp->GetNextToDraw();
+    wxASSERT(tmp != tmp->GetNextToDraw()); // ensure draw progress
   }
 }
 
 void Cell::RecalculateList(AFontSize fontsize)
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     tmp->RecalculateWidths(fontsize);
     tmp->RecalculateHeight(fontsize);
-    tmp = tmp->m_next;
   }
 }
 
 void Cell::ResetSizeList()
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ResetSize();
 }
 
 
 void Cell::RecalculateHeightList(AFontSize fontsize)
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->RecalculateHeight(fontsize);
-    tmp = tmp->m_next;
-  }
 }
 
-/*! Recalculate widths of cells.
-
-  (Used for changing font size since in this case all size information has to be
-  recalculated).
-
-  Should set: set m_width.
-*/
 void Cell::RecalculateWidthsList(AFontSize fontsize)
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->RecalculateWidths(fontsize);
-    tmp = tmp->m_next;
-  }
 }
 
 void Cell::RecalculateWidths(AFontSize WXUNUSED(fontsize))
@@ -506,7 +471,7 @@ bool Cell::DrawThisCell(wxPoint point)
   return(InUpdateRegion());
 }
 
-wxRect Cell::GetRect(bool wholeList)
+wxRect Cell::GetRect(bool wholeList) const
 {
   if (wholeList)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenterList(),
@@ -516,7 +481,7 @@ wxRect Cell::GetRect(bool wholeList)
                   m_width, m_height);
 }
 
-bool Cell::InUpdateRegion(const wxRect &rect)
+bool Cell::InUpdateRegion(const wxRect &rect) const
 {
   if (!(*m_configuration)->ClipToDrawRegion())
     return true;
@@ -559,7 +524,7 @@ void Cell::DrawBoundingBox(wxDC &dc, bool all)
 
 bool Cell::IsCompound() const
 {
-  for (const Cell *tmp = this; tmp; tmp = tmp->GetNext())
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
     if (tmp->IsOperator())
       return true;
   return false;
@@ -570,11 +535,12 @@ wxString Cell::ToString() const
   return wxEmptyString;
 }
 
-wxString Cell::VariablesAndFunctionsList()
+static const wxString space = wxT(" ");
+
+wxString Cell::VariablesAndFunctionsList() const
 {
   wxString retval;
-  Cell *tmp = this;
-  while (tmp != NULL)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
   {
     if(
       (tmp->GetStyle() == TS_LABEL) ||
@@ -582,8 +548,9 @@ wxString Cell::VariablesAndFunctionsList()
       (tmp->GetStyle() == TS_MAIN_PROMPT) ||
       (tmp->GetStyle() == TS_VARIABLE) ||
       (tmp->GetStyle() == TS_FUNCTION))
-      retval += tmp->ToString() + " ";      
-    tmp = tmp->GetNextToDraw();
+    {
+      retval << tmp->ToString() << space;
+    }
   }
   return retval;
 }
@@ -593,7 +560,7 @@ wxString Cell::ListToString() const
   wxString retval;
   bool firstline = true;
 
-  for (const Cell *tmp = this; tmp; tmp = tmp->GetNextToDraw())
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
   {
     if ((!firstline) && (tmp->m_forceBreakLine))
     {
@@ -631,7 +598,7 @@ wxString Cell::ListToMatlab() const
   wxString retval;
   bool firstline = true;
 
-  for (const Cell *tmp = this; tmp; tmp = tmp->GetNextToDraw())
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
   {
     if ((!firstline) && (tmp->m_forceBreakLine)) {
       if (!retval.EndsWith(wxT('\n')))
@@ -667,7 +634,7 @@ wxString Cell::ToTeX() const
 wxString Cell::ListToTeX() const
 {
   wxString retval;
-  for (const Cell *tmp = this; tmp; tmp = tmp->GetNext())
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     if ((tmp->m_textStyle == TS_LABEL && retval != wxEmptyString) ||
         (tmp->m_breakLine && retval != wxEmptyString))
@@ -687,55 +654,48 @@ wxString Cell::ToMathML() const
   return wxEmptyString;
 }
 
-wxString Cell::ListToMathML(bool startofline)
+wxString Cell::ListToMathML(bool startofline) const
 {
   bool highlight = false;
-
   wxString retval;
 
   // If the region to export contains linebreaks or labels we put it into a table.
   bool needsTable = false;
-  Cell *temp = this;
-  while (temp)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
-    if (temp->HardLineBreak())
+    if (tmp->HardLineBreak() || tmp->GetType() == MC_TYPE_LABEL)
+    {
       needsTable = true;
-
-    if (temp->GetType() == MC_TYPE_LABEL)
-      needsTable = true;
-
-    temp = temp->m_next;
+      break;
+    }
   }
 
-  temp = this;
   // If the list contains multiple cells we wrap them in a <mrow> in order to
   // group them into a single object.
-  bool multiCell = (temp->m_next != NULL);
+  bool const multiCell = m_next;
 
   // Export all cells
-  while (temp != NULL)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     // Do we need to end a highlighting region?
-    if ((!temp->m_highlight) && (highlight))
+    if ((!tmp->m_highlight) && (highlight))
       retval += wxT("</mrow>");
 
     // Handle linebreaks
-    if ((temp != this) && (temp->HardLineBreak()))
+    if ((tmp != this) && (tmp->HardLineBreak()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if ((((temp->HardLineBreak()) || (startofline && (this == temp))) &&
-         ((temp->GetStyle() != TS_LABEL) && (temp->GetStyle() != TS_USERLABEL))) && (needsTable))
+    if ((((tmp->HardLineBreak()) || (startofline && (this == tmp))) &&
+         ((tmp->GetStyle() != TS_LABEL) && (tmp->GetStyle() != TS_USERLABEL))) && (needsTable))
       retval += wxT("<mtext></mtext></mtd><mtd>");
 
     // Do we need to start a highlighting region?
-    if ((temp->m_highlight) && (!highlight))
+    if ((tmp->m_highlight) && (!highlight))
       retval += wxT("<mrow mathcolor=\"red\">");
-    highlight = temp->m_highlight;
+    highlight = tmp->m_highlight;
 
-
-    retval += temp->ToMathML();
-    temp = temp->m_next;
+    retval += tmp->ToMathML();
   }
 
   // If the region we converted to MathML ended within a highlighted region
@@ -878,7 +838,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
   // If the region to export contains linebreaks or labels we put it into a table.
   // Export all cells
 
-  for (const Cell *tmp = this; tmp; tmp = tmp->m_next)
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     wxString token = tmp->ToOMML();
 
@@ -903,7 +863,7 @@ wxString Cell::ListToRTF(bool startofline) const
 {
   wxString retval;
 
-  for (const Cell *tmp = this; tmp; )
+  for (const Cell *tmp = this; tmp != NULL; )
   {
     wxString rtf = tmp->ToRTF();
     if (rtf != wxEmptyString)
@@ -972,7 +932,7 @@ wxString Cell::ListToXML() const
   bool highlight = false;
   wxString retval;
 
-  for (const Cell *tmp = this; tmp; tmp = tmp->GetNext())
+  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
     if ((tmp->GetHighlight()) && (!highlight))
     {
@@ -1055,7 +1015,7 @@ void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *
   *last = nullptr;
 
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
       if (tmp->ContainsRect(rect))
         tmp->SelectRect(rect, first, last);
 
@@ -1066,7 +1026,7 @@ void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *
   }
 }
 
-bool Cell::ContainsRect(const wxRect &sm, bool all)
+bool Cell::ContainsRect(const wxRect &sm, bool all) const
 {
   wxRect big = GetRect(all);
   if (big.x <= sm.x &&
@@ -1087,7 +1047,7 @@ void Cell::ResetData()
 {
   ResetSize();
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
       tmp->ResetData();
 }
 
@@ -1118,7 +1078,7 @@ bool Cell::BreakUp()
   if(clientWidth < 50)
     clientWidth = 50;
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
       if(tmp->GetWidth() > clientWidth)
       {
         tmp->BreakUp();
@@ -1137,7 +1097,7 @@ void Cell::Unbreak()
 
   // Unbreak the inner cells, too
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp; tmp = tmp->m_next)
+    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
       tmp->Unbreak();
 }
 
@@ -1177,8 +1137,7 @@ void Cell::SetPen(double lineWidth) const
 
 const wxString &Cell::GetValue() const
 {
-  static const wxString empty;
-  return empty;
+  return wxm::emptyString;
 }
 
 void Cell::SetForeground()

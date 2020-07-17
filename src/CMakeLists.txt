@@ -71,6 +71,7 @@ set(SOURCE_FILES
     SlideShowCell.cpp
     SqrtCell.cpp
     StatusBar.cpp
+    StringUtils.cpp
     SubCell.cpp
     SubSupCell.cpp
     SubstituteWiz.cpp

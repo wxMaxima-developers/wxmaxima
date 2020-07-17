@@ -29,6 +29,7 @@
   select arbitrary unicode symbols.
  */
 #include "precomp.h"
+#include "StringUtils.h"
 #include <wx/panel.h>
 
 /*! This class generates a pane containing the last commands that were issued.
@@ -40,10 +41,9 @@ public:
   //! A definition of this button, used to construct it.
   struct Definition
   {
-    wchar_t symbol = {};                 ///< The unicode symbol
-    const wxString description = empty;  ///< The help text for the symbol
-    bool matchesMaximaCommand = false;   ///< Whether this symbol is automatically translated into a maxima command/operator
-    static const wxString empty;
+    wchar_t symbol = {};                            ///< The unicode symbol
+    const wxString description = wxm::emptyString;  ///< The help text for the symbol
+    bool matchesMaximaCommand = false;              ///< Whether this symbol is automatically translated into a maxima command/operator
   };
 
   /*! A flat, compact button for the greek and the symbols pane

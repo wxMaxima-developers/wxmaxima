@@ -25,8 +25,11 @@
  */
 
 #include "Configuration.h"
+
+#include "Cell.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
+#include "StringUtils.h"
 #include <wx/wx.h>
 #include <wx/mimetype.h>
 #include <wx/string.h>
@@ -34,7 +37,6 @@
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
-#include "Cell.h"
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc),
@@ -304,12 +306,11 @@ void Configuration::InitStyles()
 
 const wxString &Configuration::GetEscCode(const wxString &key)
 {
-  static wxString empty;
   auto &escCodes = EscCodes();
   auto it = escCodes.find(key);
   if (it != escCodes.end())
     return it->second;
-  return empty;
+  return wxm::emptyString;
 }
 
 Configuration::EscCodeIterator Configuration::EscCodesBegin()
@@ -1055,8 +1056,8 @@ const wxString &Configuration::GetStyleName(TextStyle style) const
   };
   if (style >= 0 && style < NUMBEROFSTYLES)
     return *names[style];
-  static wxString empty;
-  return empty;
+
+  return wxm::emptyString;
 }
 
 wxString Configuration::m_maximaLocation_override;
