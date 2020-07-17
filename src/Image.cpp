@@ -35,6 +35,7 @@
 #include <wx/stdpaths.h>
 #include "SvgBitmap.h"
 #include "ErrorRedirector.h"
+#include "StringUtils.h"
 
 Image::Image(Configuration **config)
 {
@@ -1102,4 +1103,15 @@ void Image::Recalculate(double scale)
   // unchanged then.
   if (!configuration->GetPrinting() && m_scaledBitmap.GetWidth() != m_width)
     ClearCache();
+}
+
+const wxString &Image::GetBadImageToolTip()
+{
+  // cppcheck-suppress returnTempReference
+  return T_(
+      "The image could not be displayed. It may be broken, in a wrong format or "
+      "be the result of gnuplot not being able to write the image or not being "
+      "able to understand what maxima wanted to plot.\n"
+      "One example of the latter would be: Gnuplot refuses to plot entirely "
+      "empty images");      
 }

@@ -36,25 +36,32 @@
 #include <wx/sstream.h>
 #include <wx/xml/xml.h>
 
-wxString Cell::GetToolTip(const wxPoint point)
+const wxString &Cell::GetLocalToolTip() const
+{
+  return *m_toolTip;
+}
+
+const wxString &Cell::GetToolTip(const wxPoint point) const
 {
   if (!ContainsPoint(point))
-    return {};
+    return wxm::emptyString;
 
-  wxString toolTip;
   for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
     for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
-      if (!(toolTip = tmp->GetToolTip(point)).IsEmpty())
+    {
+      auto &toolTip = tmp->GetToolTip(point);
+      if (!toolTip.empty())
         return toolTip;
+    }
 
-  return m_toolTip;
+  return *m_toolTip;
 }
 
 Cell::Cell(GroupCell *group, Configuration **config) :
-    m_toolTip((*config)->GetDefaultCellToolTip()),
     m_group(group),
     m_configuration(config),
     m_cellPointers(GetCellPointers()),
+    m_toolTip(&(*config)->GetDefaultCellToolTip()),
     m_fontSize((*config)->GetMathFontSize())
 {
   InitBitFields();
@@ -62,6 +69,10 @@ Cell::Cell(GroupCell *group, Configuration **config) :
 
 Cell::~Cell()
 {
+  if (m_ownsToolTip)
+    wxDELETE(m_toolTip);
+  m_ownsToolTip = false;
+
   // Delete this list of cells without using a recursive function call that can
   // run us out of stack space
   Cell *next = m_next;
@@ -131,7 +142,16 @@ void Cell::SetType(CellType type)
 
 void Cell::CopyCommonData(const Cell & cell)
 {
-  m_toolTip = cell.m_toolTip;
+  wxASSERT(m_toolTip && !m_ownsToolTip);
+  wxASSERT(cell.m_toolTip);
+  if (cell.m_ownsToolTip)
+  {
+    m_ownsToolTip = true;
+    m_toolTip = new wxString(*cell.m_toolTip);
+  }
+  else
+    m_toolTip = cell.m_toolTip;
+
   m_forceBreakLine = cell.m_forceBreakLine;
   m_type = cell.m_type;
   m_textStyle = cell.m_textStyle;
@@ -355,7 +375,7 @@ void Cell::Draw(wxPoint point)
     SetCurrentPoint(point);
   
   // Mark all cells that contain tooltips
-  if (!m_toolTip.empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
+  if (!m_toolTip->empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
       configuration->ClipToDrawRegion() && !configuration->GetPrinting() &&(!m_group->m_suppressTooltipMarker))
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
@@ -378,24 +398,61 @@ void Cell::Draw(wxPoint point)
 #endif
 }
 
-void Cell::SetToolTip(const wxString &tooltip)
+void Cell::ClearToolTip()
 {
-  m_toolTip = tooltip;
-  m_containsToolTip = (!tooltip.IsEmpty());
+  if (m_ownsToolTip)
+    const_cast<wxString*>(m_toolTip)->Truncate(0);
+  else
+    m_toolTip = &wxm::emptyString;
+}
+
+void Cell::SetToolTip(wxString &&tooltip)
+{
+  if (m_ownsToolTip)
+    const_cast<wxString&>(*m_toolTip) = std::move(tooltip);
+  else
+  {
+    m_toolTip = nullptr;
+    m_ownsToolTip = true;
+    m_toolTip = new wxString(std::move(tooltip));
+  }
+}
+
+void Cell::SetToolTip(const wxString *toolTip)
+{
+  if (!toolTip)
+    toolTip = &wxm::emptyString;
+  if (m_ownsToolTip)
+  {
+    m_ownsToolTip = false;
+    wxDELETE(m_toolTip);
+  }
+  m_toolTip = toolTip;
+
+  m_containsToolTip = (!m_toolTip->empty());
   if (m_group)
     m_group->m_containsToolTip = m_containsToolTip;
 }
 
 void Cell::AddToolTip(const wxString &tip)
 {
-  if(tip.IsEmpty())
+  if (tip.empty())
     return;
-  if((!m_toolTip.IsEmpty()) && (!m_toolTip.EndsWith("\n")))
-    m_toolTip += "\n";
-  m_toolTip += tip;
+  if (m_ownsToolTip)
+  {
+    auto &wrToolTip = const_cast<wxString&>(*m_toolTip);
+    if (!m_toolTip->empty() && !wxm::EndsWithChar(*m_toolTip, '\n'))
+      wrToolTip << '\n';
+    wrToolTip << tip;
+  }
+  else
+    SetToolTip(wxString(tip)); // this will move from the temporary copy
+
   m_containsToolTip = true;
-  m_group->m_containsToolTip = true;
+  if (m_group)
+    m_group->m_containsToolTip = true;
 }
+
 void Cell::DrawList(wxPoint point)
 {
   for (Cell *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
@@ -420,7 +477,6 @@ void Cell::ResetSizeList()
   for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->ResetSize();
 }
-
 
 void Cell::RecalculateHeightList(AFontSize fontsize)
 {

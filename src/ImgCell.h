@@ -81,7 +81,7 @@ public:
    */
   void ClearCache() override { if (m_image) m_image->ClearCache(); }
 
-  wxString GetToolTip(wxPoint point) override;
+  const wxString &GetToolTip(wxPoint point) const override;
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);

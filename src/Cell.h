@@ -165,11 +165,14 @@ public:
 #endif
   
 
-  /*! Returns the ToolTip this cell provides.
-
-    wxEmptyString means: No ToolTip
+  /*! Returns the ToolTip this cell provides at a given point.
+   *
+   * \param point The point in worksheet coordinates, must be inside the
+   *              cell or else an empty string is returned.
+   *
+   * \returns the tooltip text, or empty string if none.
    */
-  virtual wxString GetToolTip(wxPoint point);
+  virtual const wxString &GetToolTip(wxPoint point) const;
 
   //! Delete this list of cells.
   virtual ~Cell();
@@ -771,9 +774,13 @@ public:
   std::unique_ptr<Cell> CopyList() const;
 
   //! Remove this cell's tooltip
-  void ClearToolTip() { m_toolTip.Truncate(0); }
-  //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
-  void SetToolTip(const wxString &tooltip);
+  void ClearToolTip();
+  //! Set the tooltip to a given temporary string - the cell will move from it
+  void SetToolTip(wxString &&toolTip);
+  //! Set the tooltip of this math cell - it must be exist at least as long
+  //! as the cell does. Translation results behave that way. I.e. it must be
+  //! a static string!
+  void SetToolTip(const wxString *tooltip);
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
@@ -807,10 +814,6 @@ protected:
 // VTable  *__vtable;
 // Observed __observed;
 
-//** Large objects (48 bytes)
-//**
-  wxString m_toolTip;
-
 //** 8-byte objects (24 bytes)
 //**
   /*! The point in the work sheet at which this cell begins.
@@ -832,7 +835,7 @@ protected:
   //! The zoom factor at the time of the last recalculation.
   double m_lastZoomFactor = -1;
 
-//** 8/4-byte objects (40 + 8* bytes)
+//** 8/4-byte objects (48 + 8* bytes)
 //**
 
 public:
@@ -865,6 +868,10 @@ protected:
 
   Configuration **m_configuration;
   CellPointers *const m_cellPointers;
+
+  //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
+  //! it points to a "static" string.
+  const wxString *m_toolTip /* initialized in the constructor */;
 
 //** 4-byte objects (36 bytes)
 //**
@@ -914,6 +921,7 @@ protected:
   void InitBitFields()
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
+    m_ownsToolTip = false;
     m_bigSkip = false;
     m_isBrokenIntoLines = false;
     m_isBrokenIntoLines_old = false;
@@ -938,6 +946,8 @@ protected:
   // only added once such initialization is in place. It makes it easier
   // to verify that all bit fields are initialized.
 
+  //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
+  bool m_ownsToolTip : 1 /* InitBitFields */;
   bool m_bigSkip : 1 /* InitBitFields */;
 
   /*! true means:  This cell is broken into two or more lines.
@@ -1046,6 +1056,9 @@ protected:
     ResetSize();
     ResetData();
   }
+
+protected:
+  const wxString &GetLocalToolTip() const;
 
 private:
   void RecalcCenterListAndMaxDropCache();

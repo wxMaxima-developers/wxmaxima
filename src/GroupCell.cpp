@@ -1670,33 +1670,36 @@ void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint one, const 
   }
 }
 
-wxString GroupCell::GetToolTip(const wxPoint point)
+const wxString &GroupCell::GetToolTip(const wxPoint point) const
 {
-  if(ContainsPoint(point))
-  {
-    // Default assumption: will be overwritten by the next command,
-    // if there is a more accurate solution.
-    m_cellPointers->m_cellUnderPointer = this;
-  }
-  
-  wxString retval = m_toolTip;
+  // TODO: There's a question of whether we want to return
+  // the local tooltip, or empty string (latter would be in line
+  // with Cell's behavior.
+  if (!ContainsPoint(point))
+    return GetLocalToolTip();
+
+  // Default assumption: will be overwritten by the next command,
+  // if there is a more accurate solution.
+  m_cellPointers->m_cellUnderPointer = const_cast<GroupCell*>(this);
+
+  const wxString *retval = &GetLocalToolTip();
 
   if (m_isHidden)
-    return retval;
+    return *retval;
   
-  Cell *tmp = m_output.get();
-  while (tmp != NULL)
+  for (auto *tmp = m_output.get(); tmp; tmp = tmp->GetNext())
   {
-
-    // If a cell contains a cell containing a tooltip the tooltip of the
+    // If a cell contains a cell containing a tooltip, the tooltip of the
     // containing cell will be overridden.
-    if(tmp->GetToolTip(point) != wxEmptyString)
-      retval = tmp->GetToolTip(point);
+    // TODO: Why do we keep iterating? Is there a reason to return the
+    // tooltip of the last cell with a tooltip, instead of the first one?
 
-    tmp = tmp->m_next;
+    auto &toolTip = tmp->GetToolTip(point);
+    if (!toolTip.empty())
+      retval = &toolTip;
   }
 
-  return retval;
+  return *retval;
 }
 
 // cppcheck-suppress functionConst

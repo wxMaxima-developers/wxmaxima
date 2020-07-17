@@ -33,6 +33,7 @@
 
 #include "ImgCell.h"
 #include "CellPointers.h"
+#include "StringUtils.h"
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/filesys.h>
@@ -111,22 +112,16 @@ ImgCell::~ImgCell()
   ImgCell::ClearCache();
 }
 
-wxString ImgCell::GetToolTip(const wxPoint point)
+const wxString &ImgCell::GetToolTip(const wxPoint point) const
 {
-  if(ContainsPoint(point))
-  {
-    m_cellPointers->m_cellUnderPointer = this;
-    if(!m_image->IsOk())
-      return(_("The image could not be displayed. It may be broken, in a wrong format or "
-               "be the result of gnuplot not being able to write the image or not being "
-               "able to understand what maxima wanted to plot.\n"
-               "One example of the latter would be: Gnuplot refuses to plot entirely "
-               "empty images"));
-    else
-      return m_toolTip;
-  }
-  else
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return wxm::emptyString;
+
+  m_cellPointers->m_cellUnderPointer = const_cast<ImgCell*>(this);
+  if (!m_image->IsOk())
+    return Image::GetBadImageToolTip();
+
+  return GetLocalToolTip();
 }
 
 void ImgCell::RecalculateWidths(AFontSize fontsize)

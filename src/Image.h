@@ -215,6 +215,9 @@ public:
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const {return m_svgRast != nullptr;}
 
+  //! The tooltip to use wherever an image that's not Ok is shown.
+  static const wxString &GetBadImageToolTip();
+
 private:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
@@ -258,7 +261,6 @@ private:
   omp_lock_t m_gnuplotLock;
   omp_lock_t m_imageLoadLock;
   #endif
-  
 };
 
 #endif // IMAGE_H

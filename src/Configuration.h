@@ -809,9 +809,9 @@ public:
   long ShowLength() const {return m_showLength;}
 
   //! Sets the default toolTip for new cells
-  void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
+  void SetDefaultCellToolTip(const wxString &defaultToolTip) { m_defaultToolTip = defaultToolTip; }
   //! Gets the default toolTip for new cells
-  wxString GetDefaultCellToolTip() const {return m_defaultToolTip;}
+  const wxString &GetDefaultCellToolTip() const { return m_defaultToolTip; }
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
