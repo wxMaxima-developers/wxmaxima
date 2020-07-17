@@ -183,9 +183,22 @@ private:
   int m_framerate = -1;
   int m_size = 0;
   int m_displayed = 0;
+  int m_imageBorderWidth = 0;
 
-  bool m_animationRunning = true;
-  bool m_drawBoundingBox = false;
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_animationRunning = true;
+    m_drawBoundingBox = false;
+  }
+
+  bool m_animationRunning : 1 /* InitBitFields */;
+  bool m_drawBoundingBox : 1 /* InitBitFields */;
+
+
+  int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 
   void RecalculateHeight(AFontSize fontsize) override;
   void RecalculateWidths(AFontSize fontsize) override;

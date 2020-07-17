@@ -41,29 +41,30 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config) : Cell(parent, config)
+ImgCell::ImgCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_imageBorderWidth = 1;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
     Cell(parent, config),
-    m_image(new Image(m_configuration, image, type))
+    m_image(new Image(m_configuration, image, type)),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_imageBorderWidth = 1;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap) :
     Cell(parent, config),
-    m_image(new Image(m_configuration, bitmap))
+    m_image(new Image(m_configuration, bitmap)),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_imageBorderWidth = 1;
 }
 
 int ImgCell::s_counter = 0;
@@ -373,6 +374,9 @@ wxString ImgCell::ToXML() const
   return (wxT("<img") + flags + wxT(">") +
           basename + m_image->GetExtension() + wxT("</img>"));
 }
+
+void ImgCell::DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all))
+{ m_drawBoundingBox = true; }
 
 bool ImgCell::CopyToClipboard() const
 {

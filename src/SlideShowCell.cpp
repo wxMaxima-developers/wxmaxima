@@ -54,20 +54,22 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr 
     Cell(parent, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
-    m_framerate(framerate)
+    m_framerate(framerate),
+    m_imageBorderWidth(Scale_Px(1))
 {
+  InitBitFields();
   m_type = MC_TYPE_SLIDE;
-  m_imageBorderWidth = Scale_Px(1);
   ReloadTimer();
 }
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
     Cell(parent, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
-    m_framerate(framerate)
+    m_framerate(framerate),
+    m_imageBorderWidth(Scale_Px(1))
 {
+  InitBitFields();
   m_type = MC_TYPE_SLIDE;
-  m_imageBorderWidth = Scale_Px(1);
   ReloadTimer();
 }
 

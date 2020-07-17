@@ -762,7 +762,8 @@ public:
 
   bool HasBigSkip() const { return m_bigSkip; }
 
-  int GetImageBorderWidth() const { return m_imageBorderWidth; }
+  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
+  virtual int GetImageBorderWidth() const { return 0; }
 
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
@@ -869,22 +870,16 @@ protected:
   //! it points to a "static" string.
   const wxString *m_toolTip /* initialized in the constructor */;
 
-//** 4-byte objects (40 bytes)
+//** 4-byte objects (36 bytes)
 //**
 private:
   //! The zoom factor at the time of the last recalculation.
   float m_lastZoomFactor = -1.0f;
 
 protected:
-  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
-  int m_imageBorderWidth = 0;
-
   //! The height of this cell.
   int m_height = -1;
-  /*! The width of this cell.
-
-     Is recalculated by RecalculateHeight.
-   */
+  //! The width of this cell; is recalculated by RecalculateHeight.
   int m_width = -1;
   /*! Caches the width of the list starting with this cell.
 
