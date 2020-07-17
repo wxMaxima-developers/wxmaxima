@@ -48,7 +48,6 @@ static wxString RegexTooltip_norm;
 
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
-  m_showCurrentSessionOnly = true;
   wxConfig::Get()->Read(m_showCurrentSessionOnlyKey, &m_showCurrentSessionOnly);
 
 #ifdef __WXX11__
@@ -89,7 +88,7 @@ void History::OnMouseRightDown(wxMouseEvent &event)
   wxString number;
 
   wxMenu popupMenu;
-  if(m_commands.GetCount() > 0)
+  if(m_commands.size() > 0)
   {
     popupMenu.Append(export_all, _("Export all history to a .mac file"));
     popupMenu.Append(export_session, _("Export commands from the current maxima session to a .mac file"));
@@ -112,7 +111,7 @@ void History::OnMouseRightDown(wxMouseEvent &event)
 
 void History::MaximaSessionStart()
 {
-  if(m_commands.GetCount() != 0)
+  if(m_commands.size() != 0)
     AddToHistory(wxT("quit();"));
   m_sessionCommands = 0;
   if(m_showCurrentSessionOnly)
@@ -220,7 +219,7 @@ void History::OnMenu(wxCommandEvent &event)
   }
   case clear_history:
     m_history->Clear();
-    m_commands.Clear();
+    m_commands.clear();
     m_sessionCommands = 0;
     break;
   case clear_selection:
@@ -242,7 +241,7 @@ void History::AddToHistory(const wxString &cmd)
     return;
 
   m_sessionCommands ++;
-  m_commands.Add(cmd);
+  m_commands.push_back(cmd);
 
   if (m_matcherExpr.empty() || m_matcher.Matches(cmd))
   {
@@ -264,27 +263,23 @@ void History::RebuildDisplay()
   wxWindowUpdateLocker speedUp(this);
   wxArrayString display;
   wxString cmd;
-  wxArrayString::reverse_iterator sessionEnd;
+  std::vector<wxString>::reverse_iterator sessionEnd;
   if(m_showCurrentSessionOnly)
-  {
-    sessionEnd = m_commands.rbegin();
-    for(auto i = 0; i< m_sessionCommands; i++)
-      ++sessionEnd;
-  }
+    sessionEnd = m_commands.rbegin() + m_sessionCommands;
   else
-      sessionEnd = m_commands.rend();
+    sessionEnd = m_commands.rend();
   
   display.reserve(m_commands.size());
   if (m_matcherExpr.empty())
   {
-    for (wxArrayString::reverse_iterator cmd = m_commands.rbegin(); cmd != sessionEnd; ++cmd)
+    for (auto cmd = m_commands.crbegin(); cmd != sessionEnd; ++cmd)
       display.Add(*cmd);
   }
   else
   {
     wxASSERT(m_matcher.IsValid());
     display.reserve(m_commands.size());
-    for (wxArrayString::reverse_iterator cmd = m_commands.rbegin(); cmd != sessionEnd; ++cmd)
+    for (auto cmd = m_commands.rbegin(); cmd != sessionEnd; ++cmd)
     {
       if (m_matcher.Matches(*cmd))
         display.Add(*cmd);
@@ -350,7 +345,7 @@ void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 
 wxString History::GetCommand(bool next)
 {
-  if (m_commands.GetCount() == 0)
+  if (m_commands.size() == 0)
     return {};
 
   auto current = m_current + (next ? +1 : -1);

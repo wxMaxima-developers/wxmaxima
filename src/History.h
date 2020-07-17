@@ -34,7 +34,8 @@
 #include "LoggingMessageDialog.h"
 #include <wx/wx.h>
 #include <wx/regex.h>
-
+#include <vector>
+#include <wx/arrstr.h>
 enum
 {
   history_ctrl_id = 1,
@@ -84,7 +85,7 @@ private:
   int m_sessionCommands = 0;
   wxListBox *m_history;
   wxTextCtrl *m_regex;
-  wxArrayString m_commands;
+  std::vector<wxString> m_commands;
   //! Commands we want to add to the history sidebar, once we have time to
   wxArrayString m_deferredCommands;
   //! The currently selected item. -1=none.
@@ -99,7 +100,7 @@ private:
   //! Whether the history should be updated now or later
   bool m_realtimeUpdate = true;
   //! Show only commands from the current session?
-  bool m_showCurrentSessionOnly;
+  bool m_showCurrentSessionOnly = true;
   //! The config key telling where to store m_showCurrentSessionOnly between sessions
   static wxString m_showCurrentSessionOnlyKey;
 };
