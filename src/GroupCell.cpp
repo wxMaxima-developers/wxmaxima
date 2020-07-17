@@ -189,7 +189,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
       ic = std::make_unique<ImgCell>(this, m_configuration, initString, std::shared_ptr<wxFileSystem>{} /* system fs */, false);
     else
       ic = std::make_unique<SlideShow>(this, m_configuration, initString, false);
-    GroupCell::AppendOutput(std::move(ic));
+    AppendOutput(std::move(ic));
   }
 
   // The GroupCell this cell belongs to is this GroupCell.
