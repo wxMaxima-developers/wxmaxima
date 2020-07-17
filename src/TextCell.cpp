@@ -97,6 +97,25 @@ void TextCell::SetType(CellType type)
   Cell::SetType(type);
 }
 
+void TextCell::SetAltCopyText(const wxString &text)
+{
+  if (text.empty())
+  {
+    m_hasAltCopyText = false;
+    return;
+  }
+  if (m_textStyle == TS_NUMBER /*&& !m_ellipsis.empty()*/)
+  {
+    // This is a bug.
+    if (m_indicatedAltCopyTextBug)
+      return;
+    wxLogMessage(T_("Bug: Attempting to set AltCopyText \"%s\" on a numeric text cell."), text);
+    m_indicatedAltCopyTextBug = true;
+  }
+  m_hasAltCopyText = true;
+  m_altCopyText() = text;
+}
+
 void TextCell::UpdateToolTip()
 {
   if (m_promptTooltip)
@@ -282,6 +301,11 @@ void TextCell::UpdateToolTip()
   }
 }
 
+const wxString &TextCell::GetAltCopyText() const
+{
+  return m_hasAltCopyText ? m_altCopyText() : wxm::emptyString;
+}
+
 void TextCell::SetValue(const wxString &text)
 {
   m_sizeCache.clear();
@@ -304,7 +328,8 @@ TextCell::TextCell(const TextCell &cell):
   InitBitFields();
   CopyCommonData(cell);
   m_userDefinedLabel() = cell.m_userDefinedLabel();
-  m_altCopyText = cell.m_altCopyText;
+  if (!cell.GetAltCopyText().empty())
+    SetAltCopyText(cell.GetAltCopyText());
   m_bigSkip = cell.m_bigSkip;
   m_highlight = cell.m_highlight;
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
@@ -721,8 +746,8 @@ bool TextCell::IsOperator() const
 wxString TextCell::ToString() const
 {
   wxString text;
-  if (m_altCopyText != wxEmptyString)
-    text = m_altCopyText;
+  if (!GetAltCopyText().empty())
+    text = GetAltCopyText();
   else
   {
     text = m_text;
@@ -797,8 +822,8 @@ wxString TextCell::ToString() const
 wxString TextCell::ToMatlab() const
 {
 	wxString text;
-	if (m_altCopyText != wxEmptyString)
-	  text = m_altCopyText;
+	if (!GetAltCopyText().empty())
+	  text = GetAltCopyText();
 	else
 	{
 	  text = m_text;
@@ -1515,9 +1540,8 @@ wxString TextCell::ToXML() const
   if (!m_userDefinedLabel().empty())
     flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel()) + wxT("\"");
 
-  if(m_altCopyText != wxEmptyString)
-    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
-
+  if(!GetAltCopyText().empty())
+    flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");
 
   if (!GetLocalToolTip().empty())
     flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");

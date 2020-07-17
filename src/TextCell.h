@@ -33,7 +33,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 568 bytes <- 744 bytes
+// 424 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -89,7 +89,7 @@ public:
 
   void SetType(CellType type) override;
 
-  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+  void SetAltCopyText(const wxString &text);
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
@@ -102,6 +102,8 @@ private:
   void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
+  //! Get the AltCopyText - may be empty.
+  const wxString &GetAltCopyText() const;
 
   void FontsChanged() override
   {
@@ -147,7 +149,12 @@ private:
   const wxString &m_userDefinedLabel() const { return m_numEnd; }
 
   //! Text that should end up on the clipboard if this cell is copied as text.
-  wxString m_altCopyText;
+  //! Reuses m_ellipsis since otherwise it'd be unused.
+  wxString &m_altCopyText() { return m_ellipsis; }
+  const wxString &m_altCopyText() const { return m_ellipsis; }
+
+//** Large objects (264 bytes)
+//**
   //! The text we keep inside this cell
   wxString m_text;
   //! The text we display: m_text might be a number that is longer than we want to display
@@ -156,19 +163,25 @@ private:
   //! The first few digits
   wxString m_numStart;
   //! The "not all digits displayed" message.
-  wxString m_ellipsis;
+  wxString m_ellipsis;  // overlaid with m_altCopyText
   //! Last few digits (also used for user defined label)
-  wxString m_numEnd;
+  wxString m_numEnd;    // overlaid with m_userDefinedLabel
 
   std::vector<SizeEntry> m_sizeCache;
 
+//** 8/4-byte objects (8 bytes)
+//**
   CellPtr<Cell> m_nextToDraw;
 
+//** 4-byte objects (8 bytes)
+//**
   int m_realCenter = -1;
 
   //! The number of digits we did display the last time we displayed a number.
   int m_displayedDigits_old = -1;
 
+//** 1-byte objects (1 byte)
+//**
   Configuration::showLabels m_labelChoice_Last = {};
 
 //** Bitfield objects (1 bytes)
@@ -178,12 +191,23 @@ private:
     // of bit fields in this class!
     m_dontEscapeOpeningParenthesis = false;
     m_promptTooltip = false;
+    m_indicatedAltCopyTextBug = false;
+    m_hasAltCopyText = false;
   }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?
   bool m_promptTooltip : 1 /* InitBitFields */;
+  /*! Did we display a log message about an attempt to set a AltCopyText on
+   *  a numeric cell?
+   *
+   * That is considered an error condition. These texts are never used
+   * on numbers and I've not seen them used on anything else either.
+   */
+  bool m_indicatedAltCopyTextBug : 1 /* InitBitFields */;
+  //! Is m_altCopyText valid?
+  bool m_hasAltCopyText : 1 /* InitBitFields */;
 };
 
 #endif // TEXTCELL_H
