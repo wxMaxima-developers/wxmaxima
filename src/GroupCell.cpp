@@ -750,6 +750,8 @@ GroupCell *GroupCell::UpdateYPosition()
   else
   {    
     m_currentPoint.x = configuration->GetIndent();
+    if (m_previous->GetCurrentPoint().y <= 0)
+      return nullptr;
     wxASSERT(m_previous->GetCurrentPoint().y > 0);
     m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
       GetPrevious()->GetMaxDrop() + GetCenterList() +
