@@ -3332,7 +3332,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
   {
     m_worksheet->m_variablesPane->Clear();
 
-    for(long i=0; i<VariablesNumber; i++)
+    for(auto i=0; i<VariablesNumber; i++)
     {
       wxString variable = xmldoc.GetRoot()->GetAttribute(
         wxString::Format("variables_%li", i));
@@ -3981,7 +3981,7 @@ void wxMaxima::CompileHelpFileAnchors()
               token.Replace("-", " ");
               // Some other chars including the minus are represented by "_00xx"
               // where xx is being the ascii code of the char.
-              for(wxString::const_iterator it = escapeChars.begin(); it != escapeChars.end(); ++it)
+              for(auto it = escapeChars.begin(); it != escapeChars.end(); ++it)
                 token.Replace(wxString::Format("_00%x",(char)*it), *it);
               // What the g_t means I don't know. But we don't need it
               if(token.StartsWith("g_t"))
@@ -5175,7 +5175,7 @@ long long wxMaxima::GetTotalCpuTime()
       line = line.Right(line.Length() - 4);
       line.Trim(false);
       wxStringTokenizer tokens(line, wxT(" "));
-      for(int i = 0; i < 3; i++)
+      for(auto i = 0; i < 3; i++)
       {
         if(tokens.HasMoreTokens())
         {
@@ -5222,14 +5222,14 @@ long long wxMaxima::GetMaximaCpuTime()
       wxString line = text.ReadLine();
 
       wxStringTokenizer tokens(line, wxT(" "));
-      for(int i = 0; i < 13; i++)
+      for(auto i = 0; i < 13; i++)
       {
         if(tokens.HasMoreTokens())
           tokens.GetNextToken();
         else return -1;
       }
 
-      for(int i = 0; i < 4; i++)
+      for(auto i = 0; i < 4; i++)
       {
         {
           if(tokens.HasMoreTokens())

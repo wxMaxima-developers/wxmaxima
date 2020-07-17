@@ -286,7 +286,7 @@ Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
   slideShow->LoadImages(images, del);
   wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
   wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
-  for(int i=0; i<numImgs; i++)
+  for(auto i=0; i<numImgs; i++)
   {
     if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
     {

@@ -89,10 +89,10 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height)
   wxAlphaPixelData bmpdata(*this);
   wxAlphaPixelData::Iterator dst(bmpdata);
   const unsigned char* rgba = imgdata.data();
-  for( int y = 0; y < height; y++)
+  for(auto y = 0; y < height; y++)
   {
     dst.MoveTo(bmpdata, 0, y);
-    for(int x = 0; x < width; x++)
+    for(auto x = 0; x < width; x++)
     {
       unsigned char a = rgba[3];
       dst.Red() = rgba[0] * a / 255;
@@ -136,10 +136,10 @@ wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
   
   wxAlphaPixelData bmpdata(retval);
   wxAlphaPixelData::Iterator dst(bmpdata);
-  for( int y = 0; y < height; y++)
+  for(auto y = 0; y < height; y++)
   {
     dst.MoveTo(bmpdata, 0, y);
-    for(int x = 0; x < width; x++)
+    for(auto x = 0; x < width; x++)
     {
       unsigned char a = rgba[3];
       dst.Red() = rgba[0] * a / 255;

@@ -127,7 +127,7 @@ void UnicodeSidebar::UpdateDisplay()
   int rows = m_grid->GetNumberRows() - 1;
   wxRegEx regex;
   regex.Compile(m_regex->GetValue().Lower());
-  for(int i = 0; i<rows; i++)
+  for(auto i = 0; i<rows; i++)
   {
     wxString name = m_grid->GetCellValue(i,2).Lower();
     if((!regex.IsValid()) || regex.Matches(name))
