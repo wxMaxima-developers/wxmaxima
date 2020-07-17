@@ -1085,7 +1085,7 @@ public:
 
   wxSize CopyToFile(const wxString &file);
 
-  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, int scale = 1);
+  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1);
 
   void CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, std::vector<int> &cellMap);
 

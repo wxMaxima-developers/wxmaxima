@@ -39,6 +39,8 @@ public:
   /*! The constructor.
   */
   explicit Svgout(Configuration **configuration, const wxString &filename = {}, double scale = 1.0);
+  explicit Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree,
+                  const wxString &filename = {}, double scale = 1.0);
   ~Svgout();
   
   /*! Renders tree as svg
@@ -46,18 +48,23 @@ public:
     \param tree The list of cells that is to be rendered
     \return true, if the svgout could be created.
    */
-  wxSize SetData(std::unique_ptr<Cell> &&tree);
+  wxSize Render(std::unique_ptr<Cell> &&tree);
+
+  wxSize GetSize() const { return m_size; }
+  bool IsOk() const { return m_isOk; }
   
   //! Copies the svg representation of the list of cells that was passed to SetData()
   bool ToClipboard();
 
   //! Returns the svg representation in a format that can be placed on the clipBoard.
-  wxCustomDataObject *GetDataObject();
+  std::unique_ptr<wxCustomDataObject> GetDataObject();
 
 private:
   std::unique_ptr<Cell> m_tree;
   OutCommon m_cmn;
   wxSVGFileDC m_recalculationDc;
+  wxSize m_size = wxDefaultSize;
+  bool m_isOk = false;
 
   /*! The current working directory we were in when we started creating a svg file
 

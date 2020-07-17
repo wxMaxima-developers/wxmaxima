@@ -31,7 +31,6 @@
 
 #include "GroupCell.h"
 
-#include "BitmapOut.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
 #include "MarkDown.h"

@@ -33,6 +33,9 @@
 class BitmapOut final
 {
 public:
+  //! Typical size limit for the output destined for the clipboard.
+  static constexpr long MAX_CLIPBOARD_SIZE = 4000000;
+
   /*! The constructor.
 
     \param scale By which factor the resolution should be increased in respect
@@ -40,8 +43,13 @@ public:
     \param configuration A pointer to the pointer to this worksheet's configuration
            storage
   */
-  explicit BitmapOut(Configuration **configuration, int scale = 1);
+  explicit BitmapOut(Configuration **configuration, double scale = 1);
+  //! Constructs and renders the bitmap, setting the IsOK() status accordingly.
+  explicit BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale = 1, long maxSize = -1);
   ~BitmapOut();
+
+  //! Retrieves the `bitmapScale` from the configuration data.
+  static double GetConfigScale();
 
   /*! Renders tree as bitmap
     
@@ -51,25 +59,31 @@ public:
 
     \return true, if the bitmap could be created.
    */
-  bool SetData(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
+  bool Render(std::unique_ptr<Cell> &&tree, long int maxSize = -1);
+
+  //! Returns whether the tree rendering succeeded.
+  bool IsOk() const { return m_isOk; }
 
   /*! Exports this bitmap to a file
 
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
    */
-  wxSize ToFile(wxString file);
+  wxSize ToFile(const wxString &file);
 
   //! Returns the bitmap representation of the list of cells that was passed to SetData()
   wxBitmap GetBitmap() const { return m_bmp; }
 
+  std::unique_ptr<wxBitmapDataObject> GetDataObject() const;
+
   //! Copies the bitmap representation of the list of cells that was passed to SetData()
-  bool ToClipboard();
+  bool ToClipboard() const;
 
 private:
   std::unique_ptr<Cell> m_tree;
   OutCommon m_cmn;
   wxBitmap m_bmp;
   wxMemoryDC m_dc;
+  bool m_isOk = false;
 
   bool Layout(long int maxSize = -1);
   void Draw();

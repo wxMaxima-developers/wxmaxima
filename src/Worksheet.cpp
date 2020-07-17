@@ -2369,19 +2369,10 @@ bool Worksheet::Copy(bool astext)
     if(m_configuration->CopyBitmap())
     {
       // Try to fill bmp with a high-res version of the cells
-      {
-        // Add a bitmap representation of the selected output to the clipboard - if this
-        // bitmap isn't way too large for this to make sense:
-        wxBitmap bmp;
-        int bitmapScale = 3;
-        wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-        BitmapOut bmp_scaled(&m_configuration, bitmapScale);
-        if (bmp_scaled.SetData(std::move(tmp), 4000000))
-        {
-          bmp = bmp_scaled.GetBitmap();
-          data->Add(new wxBitmapDataObject(bmp));
-        }
-      }
+      BitmapOut output(&m_configuration, std::move(tmp),
+                       BitmapOut::GetConfigScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+      if (output.IsOk())
+        data->Add(output.GetDataObject().release());
     }
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
@@ -2637,29 +2628,25 @@ bool Worksheet::CopyCells()
 
     if (m_configuration->CopyBitmap())
     {
-      auto tmp = CopySelection();
-      int bitmapScale = 3;
-      wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-      BitmapOut bmp(&m_configuration, bitmapScale);
-      if (bmp.SetData(std::move(tmp), 4000000))
-        data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
+      BitmapOut output(&m_configuration, CopySelection(),
+                       BitmapOut::GetConfigScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+      if (output.IsOk())
+        data->Add(output.GetDataObject().release());
     }
 
 #if wxUSE_ENH_METAFILE
     if (m_configuration->CopyEMF())
     {
-      auto tmp = CopySelection();
-      Emfout emf(&m_configuration);
-      emf.SetData(std::move(tmp));
-      data->Add(emf.GetDataObject());
+      Emfout emf(&m_configuration, CopySelection());
+      if (emf.IsOk())
+        data->Add(emf.GetDataObject().release());
     }
 #endif
     if (m_configuration->CopySVG())
     {
-      auto tmp = CopySelection();
-      Svgout svg(&m_configuration);
-      svg.SetData(std::move(tmp));
-      data->Add(svg.GetDataObject());
+      Svgout svg(&m_configuration, CopySelection());
+      if (svg.IsOk())
+        data->Add(svg.GetDataObject().release());
     }
 
     wxTheClipboard->SetData(data);
@@ -4404,14 +4391,8 @@ std::unique_ptr<GroupCell> Worksheet::CopyTree() const
 
 bool Worksheet::CopyBitmap()
 {
-  int bitmapScale = 3;
-  wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-
-  auto tmp = CopySelection();
-  BitmapOut bmp(&m_configuration, bitmapScale);
-  bmp.SetData(std::move(tmp));
-
-  bool retval = bmp.ToClipboard();
+  BitmapOut bitmap(&m_configuration, CopySelection(), 1, BitmapOut::MAX_CLIPBOARD_SIZE);
+  bool retval = bitmap.ToClipboard();
   Recalculate();
   return retval;
 }
@@ -4427,23 +4408,16 @@ bool Worksheet::CopyAnimation()
 
 bool Worksheet::CopySVG()
 {
-  auto tmp = CopySelection();
-  Svgout svg(&m_configuration);
-  svg.SetData(std::move(tmp));
-
+  Svgout svg(&m_configuration, CopySelection());
   bool retval = svg.ToClipboard();
   Recalculate();
-
   return retval;
 }
 
 #if wxUSE_ENH_METAFILE
 bool Worksheet::CopyEMF()
 {
-  auto tmp = CopySelection();
-  Emfout emf(&m_configuration);
-  emf.SetData(std::move(tmp));
-
+  Emfout emf(&m_configuration, CopySelection());
   bool retval = emf.ToClipboard();
   Recalculate();
   return retval;
@@ -4497,23 +4471,18 @@ wxSize Worksheet::CopyToFile(const wxString &file)
   }
   else
   {
-    auto tmp = CopySelection();
-    BitmapOut bmp(&m_configuration);
-    bmp.SetData(std::move(tmp));
-
-    wxSize retval = bmp.ToFile(file);
+    BitmapOut output(&m_configuration, CopySelection());
+    wxSize retval = output.ToFile(file);
     return retval;
   }
 }
 
 wxSize Worksheet::CopyToFile(const wxString &file, Cell *start, Cell *end,
-                            bool asData, int scale)
+                            bool asData, double scale)
 {
   auto tmp = CopySelection(start, end, asData);
-  BitmapOut bmp(&m_configuration, scale);
-  bmp.SetData(std::move(tmp));
-
-  wxSize retval = bmp.ToFile(file);
+  BitmapOut output(&m_configuration, std::move(tmp), scale);
+  wxSize retval = output.ToFile(file);
   return retval;
 }
 
@@ -5342,14 +5311,14 @@ bool Worksheet::ExportToHTML(const wxString &file)
 
             case Configuration::svg:
             {
-              wxString alttext;
-              alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
-              Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
-              wxSize size = svgout.SetData(std::move(chunk));
+              auto const alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
+              auto const filepath = wxString::Format(wxT("%s/%s_%d.svg"), imgDir, filename, count);
+              Svgout svgout(&m_configuration, std::move(chunk), filepath);
+
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\"" ),
-                                 count, size.x) +
+                                 count, svgout.GetSize().x) +
                 alttext +
                 wxT("\" /><br/>\n");
 
