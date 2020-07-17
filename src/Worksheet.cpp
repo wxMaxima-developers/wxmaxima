@@ -7134,17 +7134,15 @@ void Worksheet::PasteFromClipboard()
         else
         {
           bool hasHSelection = m_cellPointers.m_selectionStart && (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
-          if (m_hCaretActive || hasHSelection)
+          auto *target = GetActiveCell() ? GetActiveCell()->GetGroup() : nullptr;
+          if (!target)
+            target = GetHCaret();
+          if (hasHSelection)
           {
-            if (hasHSelection)
-            {
-              DeleteSelection();
-              TreeUndo_AppendAction();
-            }
-            InsertGroupCells(contents,GetHCaret());
+            DeleteSelection();
+            TreeUndo_AppendAction();
           }
-          else
-            InsertGroupCells(contents, GetActiveCell()->GetGroup());
+          InsertGroupCells(contents, target);
         }
         NumberSections();
         Recalculate();
