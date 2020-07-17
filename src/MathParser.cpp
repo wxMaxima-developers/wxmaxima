@@ -48,6 +48,7 @@
 #include "FunCell.h"
 #include "ImgCell.h"
 #include "SubSupCell.h"
+#include "StringUtils.h"
 #include "VisiblyInvalidCell.h"
 #include "SlideShowCell.h"
 
@@ -534,9 +535,9 @@ std::unique_ptr<Cell> MathParser::HandleNullPointer(std::unique_ptr<Cell> &&cell
   if (!tmp)
   {
     tmp = std::make_unique<VisiblyInvalidCell>(nullptr, m_configuration);
-    tmp->SetToolTip(_("The xml data from maxima or from the .wxmx file was missing data here.\n"
-                      "If you find a way how to reproduce this problem please file a bug "
-                      "report against wxMaxima."));
+    tmp->SetToolTip(&T_("The xml data from maxima or from the .wxmx file was missing data here.\n"
+                        "If you find a way how to reproduce this problem please file a bug "
+                        "report against wxMaxima."));
     tmp->SetStyle(TS_ERROR);
   }
   return tmp;
@@ -778,7 +779,9 @@ Cell *MathParser::ParseFunTag(wxXmlNode *node)
   ParseCommonAttrs(node, fun);
   ParseAltCopyAttr(node, fun);
   if (fun->ToString().Contains(")("))
-    fun->SetToolTip(_("If this isn't a function returning a lambda() expression a multiplication sign (*) between closing and opening parenthesis is missing here."));
+    fun->SetToolTip(&T_("If this isn't a function returning a lambda() "
+                        "expression a multiplication sign (*) between closing "
+                        "and opening parenthesis is missing here."));
   return fun;
 }
 
@@ -845,9 +848,9 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
     cell->ForceBreakLine(true);
 
   wxString val;
-  
-  if(node->GetAttribute(wxT("tooltip"), &val))
-    cell->SetToolTip(val);
+  if (node->GetAttribute(wxT("tooltip"), &val))
+    if (!val.empty())
+      cell->SetToolTip(std::move(val));
 }
 
 void MathParser::ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group)
@@ -1176,11 +1179,9 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
   else
   {
     cell = new TextCell(NULL, m_configuration,
-                        _("(Expression longer than allowed by the configuration setting)"),
-      TS_WARNING);
-    cell->SetToolTip(_("The maximum size of the expressions wxMaxima is allowed to display "
-                       "can be changed in the configuration dialogue."
-                       ));
+                        T_("(Expression longer than allowed by the configuration setting)"), TS_WARNING);
+    cell->SetToolTip(&T_("The maximum size of the expressions wxMaxima is allowed to display "
+                         "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
   return cell;

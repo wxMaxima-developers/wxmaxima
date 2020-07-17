@@ -28,6 +28,7 @@
  */
 
 #include "VisiblyInvalidCell.h"
+#include "StringUtils.h"
 
 static wxString cellContents(wxT("?"));
 
@@ -40,12 +41,19 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
   // for the language selection to take place.
   // NOTE: static variables are initialized exactly 0 or 1 times, so the below
   // is not wasteful.
-  static wxString defaultToolTip = _("Missing contents. Bug?");
-  SetToolTip(defaultToolTip);
+  SetToolTip(&T_("Missing contents. Bug?"));
 }
 
 VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
-                                       Configuration **config, wxString toolTip)
+                                       Configuration **config, wxString &&toolTip)
+    : TextCell(parent, config, cellContents, TS_ERROR)
+{
+  InitBitFields();
+  SetToolTip(std::move(toolTip));
+}
+
+VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
+                                       Configuration **config, const wxString *toolTip)
     : TextCell(parent, config, cellContents, TS_ERROR)
 {
   InitBitFields();

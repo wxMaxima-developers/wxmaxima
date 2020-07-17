@@ -54,6 +54,7 @@
 #define WXMAXIMA_STRINGUTILS_H
 
 #include <wx/string.h>
+#include <wx/translation.h>
 
 namespace wxm {
 
@@ -66,6 +67,34 @@ namespace wxm {
  * behavior, as a temporary wxString instance is returned.
  */
 extern const wxString emptyString;
+
+/*! Provides a static instance of a string - it will only be constructed once.
+ *
+ * Usagee: S_("foo") - in place of wxT("foo")
+ */
+#define S_(string) ([]()->const wxString &{ static const wxString str(wxT(string)); return str; }())
+
+/*! Provides a static instance of a translated string - it will only be constructed once.
+ *
+ * Usagee: T_("foo") - in place of _(wxT("foo"))
+ */
+#define T_(string) ([]()->const wxString &{ static const wxString &str = _(wxT(string)); return str; }())
+
+// String Comparisons
+
+//! Whether a string begins with a given character
+bool StartsWithChar(const wxString &str, wxUniChar ch);
+//! Whether a string begins with a given character
+bool StartsWithChar(const wxString &str, wxStringCharType ch);
+//! Whether a string begins with a given character
+bool StartsWithChar(const wxString &str, char ch);
+
+//! Whether a string ends with a given character
+bool EndsWithChar(const wxString &str, wxUniChar ch);
+//! Whether a string begins with a given character
+bool EndsWithChar(const wxString &str, wxStringCharType ch);
+//! Whether a string begins with a given character
+bool EndsWithChar(const wxString &str, char ch);
 
 } // namespace wxm
 

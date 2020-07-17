@@ -52,8 +52,42 @@
 
 #include "StringUtils.h"
 
+#include <iterator>
+
 namespace wxm {
 
 const wxString emptyString;
+
+// String Comparisons
+
+bool StartsWithChar(const wxString &str, wxUniChar ch)
+{
+  return !str.empty() && *str.begin() == ch;
+}
+
+bool StartsWithChar(const wxString &str, wxStringCharType ch)
+{
+  return !str.empty() && *str.begin() == ch;
+}
+
+bool StartsWithChar(const wxString &str, char ch)
+{
+  return !str.empty() && *str.begin() == ch;
+}
+
+bool EndsWithChar(const wxString &str, wxUniChar ch)
+{
+  return !str.empty() && *std::next(str.end(), -1) == ch;
+}
+
+bool EndsWithChar(const wxString &str, wxStringCharType ch)
+{
+  return !str.empty() && *std::next(str.end(), -1) == ch;
+}
+
+bool EndsWithChar(const wxString &str, char ch)
+{
+  return !str.empty() && *std::next(str.end(), -1) == ch;
+}
 
 } // namespace wxm

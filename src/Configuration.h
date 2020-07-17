@@ -808,10 +808,6 @@ public:
     }
   long ShowLength() const {return m_showLength;}
 
-  //! Sets the default toolTip for new cells
-  void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
-  //! Gets the default toolTip for new cells
-  wxString GetDefaultCellToolTip() const {return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
@@ -991,7 +987,6 @@ private:
   bool m_clipToDrawRegion;
   bool m_outdated;
   wxString m_maximaParameters;
-  wxString m_defaultToolTip;
   bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;

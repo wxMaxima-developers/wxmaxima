@@ -33,6 +33,7 @@
 
 #include "ImgCell.h"
 #include "CellPointers.h"
+#include "StringUtils.h"
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/filesys.h>
@@ -40,29 +41,30 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config) : Cell(parent, config)
+ImgCell::ImgCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_imageBorderWidth = 1;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
     Cell(parent, config),
-    m_image(new Image(m_configuration, image, type))
+    m_image(new Image(m_configuration, image, type)),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_imageBorderWidth = 1;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap) :
     Cell(parent, config),
-    m_image(new Image(m_configuration, bitmap))
+    m_image(new Image(m_configuration, bitmap)),
+    m_imageBorderWidth(1)
 {
   InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_imageBorderWidth = 1;
 }
 
 int ImgCell::s_counter = 0;
@@ -111,22 +113,16 @@ ImgCell::~ImgCell()
   ImgCell::ClearCache();
 }
 
-wxString ImgCell::GetToolTip(const wxPoint point)
+const wxString &ImgCell::GetToolTip(const wxPoint point) const
 {
-  if(ContainsPoint(point))
-  {
-    m_cellPointers->m_cellUnderPointer = this;
-    if(!m_image->IsOk())
-      return(_("The image could not be displayed. It may be broken, in a wrong format or "
-               "be the result of gnuplot not being able to write the image or not being "
-               "able to understand what maxima wanted to plot.\n"
-               "One example of the latter would be: Gnuplot refuses to plot entirely "
-               "empty images"));
-    else
-      return m_toolTip;
-  }
-  else
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return wxm::emptyString;
+
+  m_cellPointers->m_cellUnderPointer = const_cast<ImgCell*>(this);
+  if (!m_image->IsOk())
+    return Image::GetBadImageToolTip();
+
+  return GetLocalToolTip();
 }
 
 void ImgCell::RecalculateWidths(AFontSize fontsize)
@@ -378,6 +374,9 @@ wxString ImgCell::ToXML() const
   return (wxT("<img") + flags + wxT(">") +
           basename + m_image->GetExtension() + wxT("</img>"));
 }
+
+void ImgCell::DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all))
+{ m_drawBoundingBox = true; }
 
 bool ImgCell::CopyToClipboard() const
 {

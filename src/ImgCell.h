@@ -81,7 +81,7 @@ public:
    */
   void ClearCache() override { if (m_image) m_image->ClearCache(); }
 
-  wxString GetToolTip(wxPoint point) override;
+  const wxString &GetToolTip(wxPoint point) const override;
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);
@@ -120,12 +120,14 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
-  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
-  { m_drawBoundingBox = true; }
+  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;
+  int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 
   std::shared_ptr<Image> m_image;
 
   CellPtr<Cell> m_nextToDraw;
+
+  int m_imageBorderWidth = 0;
 
 //** Bitfield objects (1 bytes)
 //**

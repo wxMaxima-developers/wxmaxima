@@ -32,6 +32,7 @@
 #include "SlideShowCell.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
+#include "StringUtils.h"
 
 #include <wx/quantize.h>
 #include <wx/imaggif.h>
@@ -53,20 +54,22 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr 
     Cell(parent, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
     m_fileSystem(filesystem),
-    m_framerate(framerate)
+    m_framerate(framerate),
+    m_imageBorderWidth(Scale_Px(1))
 {
+  InitBitFields();
   m_type = MC_TYPE_SLIDE;
-  m_imageBorderWidth = Scale_Px(1);
   ReloadTimer();
 }
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
     Cell(parent, config),
     m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
-    m_framerate(framerate)
+    m_framerate(framerate),
+    m_imageBorderWidth(Scale_Px(1))
 {
+  InitBitFields();
   m_type = MC_TYPE_SLIDE;
-  m_imageBorderWidth = Scale_Px(1);
   ReloadTimer();
 }
 
@@ -492,22 +495,16 @@ wxString SlideShow::ToRTF() const
 }
 
 
-wxString SlideShow::GetToolTip(const wxPoint point)
+const wxString &SlideShow::GetToolTip(const wxPoint point) const
 {
-  if(ContainsPoint(point))
-  {
-    m_cellPointers->m_cellUnderPointer = this;
-    if(!IsOk())
-      return(_("The image could not be displayed. It may be broken, in a wrong format or "
-               "be the result of gnuplot not being able to write the image or not being "
-               "able to understand what maxima wanted to plot.\n"
-               "One example of the latter would be: Gnuplot refuses to plot entirely "
-               "empty images"));
-    else
-      return m_toolTip;
-  }
-  else
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return wxm::emptyString;
+
+  m_cellPointers->m_cellUnderPointer = const_cast<SlideShow*>(this);
+  if (!IsOk())
+    return Image::GetBadImageToolTip();
+
+  return GetLocalToolTip();
 }
 
 wxSize SlideShow::ToGif(wxString file)

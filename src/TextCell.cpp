@@ -29,6 +29,7 @@
  */
 
 #include "TextCell.h"
+#include "StringUtils.h"
 #include "wx/config.h"
 
 TextCell::TextCell(GroupCell *parent, Configuration **config,
@@ -67,7 +68,6 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   }
   m_fontSize.Set(10.0f);
   TextCell::SetValue(text);
-  m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
 }
 
 std::unique_ptr<Cell> TextCell::Copy() const
@@ -97,199 +97,213 @@ void TextCell::SetType(CellType type)
   Cell::SetType(type);
 }
 
+void TextCell::SetAltCopyText(const wxString &text)
+{
+  if (text.empty())
+  {
+    m_hasAltCopyText = false;
+    return;
+  }
+  if (m_textStyle == TS_NUMBER /*&& !m_ellipsis.empty()*/)
+  {
+    // This is a bug.
+    if (m_indicatedAltCopyTextBug)
+      return;
+    wxLogMessage(T_("Bug: Attempting to set AltCopyText \"%s\" on a numeric text cell."), text);
+    m_indicatedAltCopyTextBug = true;
+  }
+  m_hasAltCopyText = true;
+  m_altCopyText() = text;
+}
+
 void TextCell::UpdateToolTip()
 {
-  SetToolTip(m_initialToolTip);
+  if (m_promptTooltip)
+    SetToolTip(
+          &T_("Most questions can be avoided using the assume() and the "
+            "declare() command. If that isn't possible the \"Automatically "
+            "answer questions\" button makes wxMaxima automatically fill in "
+            "all answers it still remembers from a previous run."));
+
+  if (m_text.empty())
+    return;
+
+  auto const &c_text = m_text;
+
   if (m_textStyle == TS_VARIABLE)
   {
     if (m_text == wxT("pnz"))
-      SetToolTip( _("Either positive, negative or zero.\n"
-                    "Normally the result of sign() if the sign cannot be determined."
-                    ));
+      SetToolTip(&T_(
+          "Either positive, negative or zero.\n"
+          "Normally the result of sign() if the sign cannot be determined."));
 
-    if (m_text == wxT("pz"))
-      SetToolTip(_("Either positive or zero.\n"
-                    "A possible result of sign()."
-                   ));
-  
-    if (m_text == wxT("nz"))
-      SetToolTip(_("Either negative or zero.\n"
-                   "A possible result of sign()."
-                   ));
+    else if (m_text == wxT("pz"))
+      SetToolTip(&T_("Either positive or zero.\n"
+                     "A possible result of sign()."));
 
-    if (m_text == wxT("und"))
-      SetToolTip( _("The result was undefined."));
+    else if (m_text == wxT("nz"))
+      SetToolTip(&T_("Either negative or zero.\n"
+                     "A possible result of sign()."));
 
-    if (m_text == wxT("ind"))
-      SetToolTip( _("The result was indefinite, which might be infinity, both plus or minus infinity or something additionally potentially involving a complex infinity."));
+    else if (m_text == wxT("und"))
+      SetToolTip(&T_("The result was undefined."));
 
-    if (m_text == wxT("zeroa"))
-      SetToolTip( _("Infinitesimal above zero."));
+    else if (m_text == wxT("ind"))
+      SetToolTip(&T_("The result was indefinite, which might be infinity, both "
+                     "plus or minus infinity or something additionally "
+                     "potentially involving a complex infinity."));
 
-    if (m_text == wxT("zerob"))
-      SetToolTip( _("Infinitesimal below zero."));
+    else if (m_text == wxT("zeroa"))
+      SetToolTip(&T_("Infinitesimal above zero."));
 
-    if (m_text == wxT("inf"))
-      SetToolTip( wxT("+∞."));
+    else if (m_text == wxT("zerob"))
+      SetToolTip(&T_("Infinitesimal below zero."));
 
-    if (m_text == wxT("infinity"))
-      SetToolTip( _("Complex infinity."));
+    else if (m_text == wxT("inf"))
+      SetToolTip(&S_("+∞."));
+
+    else if (m_text == wxT("infinity"))
+      SetToolTip(&T_("Complex infinity."));
         
-    if (m_text == wxT("inf"))
-      SetToolTip( wxT("-∞."));
+    else if (m_text == wxT("inf"))
+      SetToolTip(&S_("-∞."));
 
-    if(m_text.StartsWith("%r"))
+    else if (m_text.StartsWith(S_("%r")))
     {
-      wxString number;
-
-      number = m_text.Right(m_text.Length()-2);
-
-      bool isrnum = (number != wxEmptyString);
-     
-      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
-        if(!wxIsdigit(*it))
-        {
-          isrnum = false;
-          break;
-        }
-
-      if(isrnum)
-        SetToolTip( _("A variable that can be assigned a number to.\n"
-                      "Often used by solve() and algsys(), if there is an infinite number of results."));
+      if (std::all_of(std::next(c_text.begin(), 2), c_text.end(), wxIsdigit))
+        SetToolTip(&T_("A variable that can be assigned a number to.\n"
+                       "Often used by solve() and algsys(), if there is an "
+                       "infinite number of results."));
     }
-
-  
-    if(m_text.StartsWith("%i"))
+    else if (m_text.StartsWith(S_("%i")))
     {
-      wxString number;
-
-      number = m_text.Right(m_text.Length()-2);
-
-      bool isinum = (number != wxEmptyString);
-     
-      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
-        if(!wxIsdigit(*it))
-        {
-          isinum = false;
-          break;
-        }
-      
-      if(isinum)
-        SetToolTip( _("An integration constant."));
+      if (std::all_of(std::next(c_text.begin(), 2), c_text.end(), wxIsdigit))
+        SetToolTip(&T_("An integration constant."));
     }
   }
   
-  if (m_textStyle == TS_NUMBER)
+  else if (m_textStyle == TS_NUMBER)
   {
-    if(m_ellipsis.IsEmpty())
-    {
+    if (m_ellipsis.IsEmpty())
       if(
         (m_roundingErrorRegEx1.Matches(m_text)) ||
         (m_roundingErrorRegEx2.Matches(m_text)) ||
         (m_roundingErrorRegEx3.Matches(m_text)) ||
         (m_roundingErrorRegEx4.Matches(m_text))
         )
-        SetToolTip( _("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
-                      "hide what looks like being the small error using floating-point "
-                      "numbers introduces.\n"
-                      "If this seems to be the case here the error can be avoided by using "
-                      "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
-                      "It also can be hidden by setting fpprintprec to an appropriate value. "
-                      "But be aware in this case that even small errors can add up."));
-    }
+        SetToolTip(&T_("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
+                       "hide what looks like being the small error using floating-point "
+                       "numbers introduces.\n"
+                       "If this seems to be the case here the error can be avoided by using "
+                       "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
+                       "It also can be hidden by setting fpprintprec to an appropriate value. "
+                       "But be aware in this case that even small errors can add up."));
   }
+
   else
   {
-    // FIXME This is a hot path
-    if((m_text.Contains(wxT("LINE SEARCH FAILED. SEE")))||
-       (m_text.Contains(wxT("DOCUMENTATION OF ROUTINE MCSRCH"))) ||
-       (m_text.Contains(wxT("ERROR RETURN OF LINE SEARCH:"))) ||
-       m_text.Contains(wxT("POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
-      SetToolTip( _("This message can appear when trying to numerically find an optimum. "
-                    "In this case it might indicate that a starting point lies in a local "
-                    "optimum that fits the data best if one parameter is increased to "
-                    "infinity or decreased to -infinity. It also can indicate that an "
-                    "attempt was made to fit data to an equation that actually matches "
-                    "the data best if one parameter is set to +/- infinity."));
-    if(m_text.StartsWith(wxT("incorrect syntax")) && (m_text.Contains(wxT("is not an infix operator"))))
-      SetToolTip( _("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
-                    "Most probable cause: A missing comma between two list items."));
-    if(m_text.StartsWith(wxT("incorrect syntax")) && (m_text.Contains(wxT("Found LOGICAL expression where ALGEBRAIC expression expected"))))
-      SetToolTip( _("Most probable cause: A dot instead a comma between two list items containing assignments."));
-    if(m_text.StartsWith(wxT("incorrect syntax")) && (m_text.Contains(wxT("is not a prefix operator"))))
-      SetToolTip( _("Most probable cause: Two commas or similar separators in a row."));
-    if(m_text.Contains(wxT("Illegal use of delimiter")))
-      SetToolTip( _("Most probable cause: an operator was directly followed by a closing parenthesis."));
-    if(m_text.StartsWith(wxT("find_root: function has same sign at endpoints: ")))
-      SetToolTip( _("find_root only works if the function the solution is searched for crosses the solution exactly once in the given range."));
-    if(m_text.StartsWith(wxT("part: fell off the end.")))
-      SetToolTip( _("part() or the [] operator was used in order to extract the nth element "
-                    "of something that was less than n elements long."));
-    if(m_text.StartsWith(wxT("rest: fell off the end.")))
-      SetToolTip( _("rest() tried to drop more entries from a list than the list was long."));
-    if(m_text.StartsWith(wxT("assignment: cannot assign to")))
-      SetToolTip( _("The value of few special variables is assigned by Maxima and cannot be changed by the user. Also a few constructs aren't variable names and therefore cannot be written to."));
-    if(m_text.StartsWith(wxT("rat: replaced ")))
-      SetToolTip( _("Normally computers use floating-point numbers that can be handled "
-                    "incredibly fast while being accurate to dozens of digits. "
-                    "They will, though, introduce a small error into some common numbers. "
-                    "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
-                    "As mathematics is based on the fact that numbers that are exactly "
-                    "equal cancel each other out small errors can quickly add up to big errors "
-                    "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
-                    "commands therefore use rat() in order to automatically convert floats to "
-                    "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
-                    "add up.\n\n"
-                    "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
-                    "are used.\n"
-                    "The info that numbers have automatically been converted can be suppressed "
-                    "by setting ratprint to false."));
-    if(m_text.StartsWith("desolve: can't handle this case."))
-      SetToolTip( _("The list of time-dependent variables to solve to doesn't match the time-dependent variables the list of dgls contains."));      
-    if(m_text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
-      SetToolTip( _("Division by 0."));
-    if(m_text.StartsWith(wxT("incorrect syntax: parser: incomplete number; missing exponent?")))
-      SetToolTip( _("Might also indicate a missing multiplication sign (\"*\")."));
-    if(m_text.Contains(wxT("arithmetic error DIVISION-BY-ZERO signalled")))
-      SetToolTip( _("Besides a division by 0 the reason for this error message can be a "
-                    "calculation that returns +/-infinity."));
-    if(m_text.Contains(wxT("isn't in the domain of")))
-      SetToolTip( _("Most probable cause: A function was called with a parameter that causes "
-                    "it to return infinity and/or -infinity."));
-    if(m_text.StartsWith(wxT("Only symbols can be bound")))
-      SetToolTip( _("This error message is most probably caused by a try to assign "
-                    "a value to a number instead of a variable name.\n"
-                    "One probable cause is using a variable that already has a numeric "
-                    "value as a loop counter."));
-    if(m_text.StartsWith(wxT("append: operators of arguments must all be the same.")))
-      SetToolTip( _("Most probably it was attempted to append something to a list "
-                    "that isn't a list.\n"
-                    "Enclosing the new element for the list in brackets ([]) "
-                    "converts it to a list and makes it appendable."));
-    if(m_text.Contains(wxT(": invalid index")))
-      SetToolTip( _("The [] or the part() command tried to access a list or matrix "
-                    "element that doesn't exist."));
-    if(m_text.StartsWith(wxT("apply: subscript must be an integer; found:")))
-      SetToolTip( _("the [] operator tried to extract an element of a list, a matrix, "
-                    "an equation or an array. But instead of an integer number "
-                    "something was used whose numerical value is unknown or not an "
-                    "integer.\n"
-                    "Floating-point numbers are bound to contain small rounding errors "
-                    "and therefore in most cases don't work as an array index that"
-                    "needs to be an exact integer number."));
-    if(m_text.StartsWith(wxT(": improper argument: ")))
+    if (m_text.Contains(S_("LINE SEARCH FAILED. SEE")) ||
+        m_text.Contains(S_("DOCUMENTATION OF ROUTINE MCSRCH")) ||
+        m_text.Contains(S_("ERROR RETURN OF LINE SEARCH:")) ||
+        m_text.Contains(S_("POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
+      SetToolTip(&T_("This message can appear when trying to numerically find an optimum. "
+                     "In this case it might indicate that a starting point lies in a local "
+                     "optimum that fits the data best if one parameter is increased to "
+                     "infinity or decreased to -infinity. It also can indicate that an "
+                     "attempt was made to fit data to an equation that actually matches "
+                     "the data best if one parameter is set to +/- infinity."));
+
+    else if (m_text.StartsWith(S_("incorrect syntax")) &&
+             m_text.Contains(S_("is not an infix operator")))
+      SetToolTip(&T_("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
+                     "Most probable cause: A missing comma between two list items."));
+    else if (m_text.StartsWith(S_("incorrect syntax")) &&
+             m_text.Contains(S_("Found LOGICAL expression where ALGEBRAIC expression expected")))
+      SetToolTip(&T_("Most probable cause: A dot instead a comma between two list items containing assignments."));
+    else if (m_text.StartsWith(S_("incorrect syntax")) &&
+             m_text.Contains(S_("is not a prefix operator")))
+      SetToolTip(&T_("Most probable cause: Two commas or similar separators in a row."));
+    else if (m_text.Contains(S_("Illegal use of delimiter")))
+      SetToolTip(&T_("Most probable cause: an operator was directly followed by a closing parenthesis."));
+    else if (m_text.StartsWith(S_("find_root: function has same sign at endpoints: ")))
+      SetToolTip(&T_("find_root only works if the function the solution is searched for crosses the solution exactly once in the given range."));
+    else if (m_text.StartsWith(S_("part: fell off the end.")))
+      SetToolTip(&T_("part() or the [] operator was used in order to extract the nth element "
+                     "of something that was less than n elements long."));
+    else if (m_text.StartsWith(S_("rest: fell off the end.")))
+      SetToolTip(&T_("rest() tried to drop more entries from a list than the list was long."));
+    else if (m_text.StartsWith(S_("assignment: cannot assign to")))
+      SetToolTip(&T_("The value of few special variables is assigned by Maxima and "
+                     "cannot be changed by the user. Also a few constructs aren't "
+                     "variable names and therefore cannot be written to."));
+    else if (m_text.StartsWith(S_("rat: replaced ")))
+      SetToolTip(&T_("Normally computers use floating-point numbers that can be handled "
+                     "incredibly fast while being accurate to dozens of digits. "
+                     "They will, though, introduce a small error into some common numbers. "
+                     "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
+                     "As mathematics is based on the fact that numbers that are exactly "
+                     "equal cancel each other out small errors can quickly add up to big errors "
+                     "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
+                     "commands therefore use rat() in order to automatically convert floats to "
+                     "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
+                     "add up.\n\n"
+                     "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
+                     "are used.\n"
+                     "The info that numbers have automatically been converted can be suppressed "
+                     "by setting ratprint to false."));
+    else if (m_text.StartsWith(S_("desolve: can't handle this case.")))
+      SetToolTip(&T_("The list of time-dependent variables to solve to doesn't match "
+                     "the time-dependent variables the list of dgls contains."));
+    else if (m_text.StartsWith(S_("expt: undefined: 0 to a negative exponent.")))
+      SetToolTip(&T_("Division by 0."));
+    else if (m_text.StartsWith(S_("incorrect syntax: parser: incomplete number; missing exponent?")))
+      SetToolTip(&T_("Might also indicate a missing multiplication sign (\"*\")."));
+    else if (m_text.Contains(S_("arithmetic error DIVISION-BY-ZERO signalled")))
+      SetToolTip(&T_("Besides a division by 0 the reason for this error message can be a "
+                     "calculation that returns +/-infinity."));
+    else if (m_text.Contains(S_("isn't in the domain of")))
+      SetToolTip(&T_("Most probable cause: A function was called with a parameter that causes "
+                     "it to return infinity and/or -infinity."));
+    else if (m_text.StartsWith(S_("Only symbols can be bound")))
+      SetToolTip(&T_("This error message is most probably caused by a try to assign "
+                     "a value to a number instead of a variable name.\n"
+                     "One probable cause is using a variable that already has a numeric "
+                     "value as a loop counter."));
+    else if (m_text.StartsWith(S_("append: operators of arguments must all be the same.")))
+      SetToolTip(&T_("Most probably it was attempted to append something to a list "
+                     "that isn't a list.\n"
+                     "Enclosing the new element for the list in brackets ([]) "
+                     "converts it to a list and makes it appendable."));
+    else if (m_text.Contains(S_(": invalid index")))
+      SetToolTip(&T_("The [] or the part() command tried to access a list or matrix "
+                     "element that doesn't exist."));
+    else if (m_text.StartsWith(S_("apply: subscript must be an integer; found:")))
+      SetToolTip(&T_("the [] operator tried to extract an element of a list, a matrix, "
+                     "an equation or an array. But instead of an integer number "
+                     "something was used whose numerical value is unknown or not an "
+                     "integer.\n"
+                     "Floating-point numbers are bound to contain small rounding errors "
+                     "and therefore in most cases don't work as an array index that"
+                     "needs to be an exact integer number."));
+    else if (m_text.StartsWith(S_(": improper argument: ")))
     {
-      if((m_previous) && (m_previous->ToString() == wxT("at")))
-        SetToolTip( _("The second argument of at() isn't an equation or a list of "
-                      "equations. Most probably it was lacking an \"=\"."));
-      else if((m_previous) && (m_previous->ToString() == wxT("subst")))
-        SetToolTip( _("The first argument of subst() isn't an equation or a list of "
-                      "equations. Most probably it was lacking an \"=\"."));
+      auto const prevString = m_previous ? m_previous->ToString() : wxm::emptyString;
+      if (prevString == wxT("at"))
+        SetToolTip(&T_("The second argument of at() isn't an equation or a list of "
+                       "equations. Most probably it was lacking an \"=\"."));
+      else if (prevString == wxT("subst"))
+        SetToolTip(&T_("The first argument of subst() isn't an equation or a list of "
+                       "equations. Most probably it was lacking an \"=\"."));
       else
-        SetToolTip( _("The argument of a function was of the wrong type. Most probably "
-                      "an equation was expected but was lacking an \"=\"."));
+        SetToolTip(&T_("The argument of a function was of the wrong type. Most probably "
+                       "an equation was expected but was lacking an \"=\"."));
     }
   }
+}
+
+const wxString &TextCell::GetAltCopyText() const
+{
+  return m_hasAltCopyText ? m_altCopyText() : wxm::emptyString;
 }
 
 void TextCell::SetValue(const wxString &text)
@@ -314,7 +328,8 @@ TextCell::TextCell(const TextCell &cell):
   InitBitFields();
   CopyCommonData(cell);
   m_userDefinedLabel() = cell.m_userDefinedLabel();
-  m_altCopyText = cell.m_altCopyText;
+  if (!cell.GetAltCopyText().empty())
+    SetAltCopyText(cell.GetAltCopyText());
   m_bigSkip = cell.m_bigSkip;
   m_highlight = cell.m_highlight;
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
@@ -435,7 +450,7 @@ void TextCell::UpdateDisplayedText()
   if (m_textStyle == TS_FUNCTION)
   {
     if (m_text == wxT("ilt"))
-      SetToolTip(_("The inverse laplace transform."));
+      SetToolTip(&T_("The inverse laplace transform."));
     
     if (m_text == wxT("gamma"))
       m_displayedText = wxT("\u0393");
@@ -615,7 +630,7 @@ void TextCell::Draw(wxPoint point)
         auto const index = GetLabelIndex();
         if (index != noText)
         {
-          SetToolTip(m_userDefinedLabel());
+          SetToolTip(&m_userDefinedLabel());
           dc->DrawText(GetTextFor(index),
                        point.x + MC_TEXT_PADDING,
                        point.y - m_realCenter + MC_TEXT_PADDING);
@@ -731,8 +746,8 @@ bool TextCell::IsOperator() const
 wxString TextCell::ToString() const
 {
   wxString text;
-  if (m_altCopyText != wxEmptyString)
-    text = m_altCopyText;
+  if (!GetAltCopyText().empty())
+    text = GetAltCopyText();
   else
   {
     text = m_text;
@@ -807,8 +822,8 @@ wxString TextCell::ToString() const
 wxString TextCell::ToMatlab() const
 {
 	wxString text;
-	if (m_altCopyText != wxEmptyString)
-	  text = m_altCopyText;
+	if (!GetAltCopyText().empty())
+	  text = GetAltCopyText();
 	else
 	{
 	  text = m_text;
@@ -1525,11 +1540,11 @@ wxString TextCell::ToXML() const
   if (!m_userDefinedLabel().empty())
     flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel()) + wxT("\"");
 
-  if(m_altCopyText != wxEmptyString)
-    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
+  if(!GetAltCopyText().empty())
+    flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");
 
-  if(m_toolTip != wxEmptyString)
-    flags += wxT(" tooltip=\"") + XMLescape(m_toolTip) + wxT("\"");
+  if (!GetLocalToolTip().empty())
+    flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");
 
   return wxT("<") + tag + flags + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
 }

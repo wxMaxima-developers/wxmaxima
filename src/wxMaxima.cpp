@@ -1226,7 +1226,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
     wxBusyCursor crs;
 
     if (s.StartsWith(m_mathPrefix1) || s.StartsWith(m_mathPrefix2))
-      DoConsoleAppend("<span>" + s + "</span>", type, true, true, userLabel);
+      DoConsoleAppend("<span>" + s + "</span>", type, AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip), userLabel);
     else
       lastLine = DoRawConsoleAppend(s, type);
   }
@@ -1241,7 +1241,8 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
     else
       s = s + wxT(" ");
 
-    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, true, true, userLabel);
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type,
+                    AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip), userLabel);
   }
 
   else if (type == MC_TYPE_ERROR)
@@ -1270,13 +1271,12 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
     lastLine = DoRawConsoleAppend(s, MC_TYPE_TEXT);
   }
   else
-    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, AppendOpt::BigSkip);
 
   return lastLine;
 }
 
-void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
-                               bool bigSkip, const wxString &userLabel)
+void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts, const wxString &userLabel)
 {
   if (s.IsEmpty())
     return;
@@ -1291,11 +1291,14 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
   if (!cell)
     return;
 
-  cell->SetSkip(bigSkip);
-  m_worksheet->InsertLine(std::move(cell), newLine || cell->BreakLineHere());
+  cell->SetSkip(opts & AppendOpt::BigSkip);
+  auto *textCell = dynamic_cast<TextCell*>(cell.get());
+  if (textCell)
+    textCell->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
+  m_worksheet->InsertLine(std::move(cell), (opts & AppendOpt::NewLine) || cell->BreakLineHere());
 }
 
-TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
+TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts)
 {
   TextCell *cell = nullptr;
   // If we want to append an error message to the worksheet and there is no cell
@@ -1312,8 +1315,9 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
   if (type == MC_TYPE_MAIN_PROMPT)
   {
     auto owned = std::make_unique<TextCell>(m_worksheet->GetTree(), &(m_worksheet->m_configuration), s);
-    cell = owned.get();
     owned->SetType(type);
+    owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
+    cell = owned.get();
     m_worksheet->InsertLine(std::move(owned), true);
   }
 
@@ -1363,8 +1367,9 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       {
         auto owned = std::make_unique<TextCell>(
             m_worksheet->GetTree(), &(m_worksheet->m_configuration), token);
+        owned->SetType(type);
+        owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
         cell = owned.get();
-        cell->SetType(type);
 
         if (tokens.HasMoreTokens())
           cell->SetSkip(false);
@@ -2841,15 +2846,14 @@ void wxMaxima::ReadPrompt(wxString &data)
        m_worksheet->SetNotification(_("Maxima asks a question!"), wxICON_INFORMATION);
     if (!o.IsEmpty())
     {
-      if((!m_worksheet->GetWorkingGroup()) || (!m_worksheet->GetWorkingGroup()->AutoAnswer()))
-        m_worksheet->m_configuration->SetDefaultCellToolTip(
-          _("Most questions can be avoided using the assume() "
-            "and the declare() command. If that isn't possible the \"Automatically answer questions\" button makes wxMaxima automatically fill in all answers it still remembers from a previous run."));
+      int options = AppendOpt::NewLine | AppendOpt::BigSkip;
+      if ((!m_worksheet->GetWorkingGroup()) || (!m_worksheet->GetWorkingGroup()->AutoAnswer()))
+        options |= AppendOpt::PromptToolTip;
+
       if (wxMax(o.Find(m_mathPrefix1), o.Find(m_mathPrefix2)) >= 0)
-        DoConsoleAppend(o, MC_TYPE_PROMPT);
+        DoConsoleAppend(o, MC_TYPE_PROMPT, AppendOpt(options));
       else
-        DoRawConsoleAppend(o, MC_TYPE_PROMPT);
-      m_worksheet->m_configuration->SetDefaultCellToolTip(wxEmptyString);
+        DoRawConsoleAppend(o, MC_TYPE_PROMPT, AppendOpt(options));
   }
     if (m_worksheet->ScrolledAwayFromEvaluation())
     {

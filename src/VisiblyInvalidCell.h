@@ -35,7 +35,8 @@ public:
   //! The constructor for cell that, if displayed, means that something is amiss
   VisiblyInvalidCell(GroupCell *parent, Configuration **config);
   //! Constructor for a cell that shows that something is amiss using a custom tooltip
-  VisiblyInvalidCell(GroupCell *parent, Configuration **config, wxString toolTip);
+  VisiblyInvalidCell(GroupCell *parent, Configuration **config, wxString &&toolTip);
+  VisiblyInvalidCell(GroupCell *parent, Configuration **config, const wxString *toolTip);
 
 private:
 //** Bitfield objects (0 bytes)
