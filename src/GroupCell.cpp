@@ -189,7 +189,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
       ic = std::make_unique<ImgCell>(this, m_configuration, initString, std::shared_ptr<wxFileSystem>{} /* system fs */, false);
     else
       ic = std::make_unique<SlideShow>(this, m_configuration, initString, false);
-    GroupCell::AppendOutput(std::move(ic));
+    AppendOutput(std::move(ic));
   }
 
   // The GroupCell this cell belongs to is this GroupCell.
@@ -447,14 +447,12 @@ void GroupCell::UpdateConfusableCharWarnings()
 
 void GroupCell::Recalculate()
 {
-  int height = m_height;
   m_fontSize = (*m_configuration)->GetDefaultFontSize();
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
   GroupCell::RecalculateWidths((*m_configuration)->GetDefaultFontSize());
   GroupCell::RecalculateHeight((*m_configuration)->GetDefaultFontSize());
   m_recalculateWidths = false;
-  if(height != m_height)
-    UpdateYPositionList();
+  // Note: RecalculateHeight has updated the Y position list unconditionally already.
 }
 
 void GroupCell::RecalculateWidths(AFontSize fontsize)
@@ -714,6 +712,7 @@ bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 
 void GroupCell::RecalculateHeight(AFontSize fontsize)
 {
+  int height = m_height;
   if(NeedsRecalculation(fontsize))
   {
     m_outputRect.SetHeight(0);
@@ -726,7 +725,8 @@ void GroupCell::RecalculateHeight(AFontSize fontsize)
     Cell::RecalculateHeight(fontsize);
     m_recalculateWidths = false;
   }
-  UpdateYPositionList();
+  if (height != m_height)
+    UpdateYPositionList();
 }
 
 void GroupCell::UpdateYPositionList()
@@ -750,6 +750,8 @@ GroupCell *GroupCell::UpdateYPosition()
   else
   {    
     m_currentPoint.x = configuration->GetIndent();
+    if (m_previous->GetCurrentPoint().y <= 0)
+      return nullptr;
     wxASSERT(m_previous->GetCurrentPoint().y > 0);
     m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
       GetPrevious()->GetMaxDrop() + GetCenterList() +

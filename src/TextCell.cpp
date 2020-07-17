@@ -1567,8 +1567,8 @@ wxString TextCell::GetGreekStringUnicode() const
 {
   wxString txt(m_text);
 
-  if (txt[0] != '%')
-    txt = wxT("%") + txt;
+  if (!txt.empty() && txt[0] != '%')
+    txt.Prepend(wxT("%"));
 
   if (txt == wxT("%alpha"))
     return wxT("\u03B1");
