@@ -185,6 +185,14 @@ int Cell::CellsInListRecursive() const
   return cells;
 }
 
+wxRect Cell::CropToUpdateRegion(wxRect rect) const
+{
+  if (!(*m_configuration)->ClipToDrawRegion())
+    return rect;
+  else
+    return rect.Intersect((*m_configuration)->GetUpdateRegion());
+}
+
 void Cell::SetGroup(GroupCell *group)
 {
   m_group = group;
@@ -241,28 +249,6 @@ GroupCell *Cell::GetGroup() const
   return group;
 }
 
-/***
- * Get the maximum drop of the center.
- */
-int Cell::GetCenterList()
-{
-  if (m_recalculate_maxCenter || ((*m_configuration)->RecalculationForce()))
-  {
-    m_recalculate_maxCenter = false;
-    Cell *tmp = this;
-    m_maxCenter  = 0;
-    while (tmp != NULL)
-    {
-      if ((tmp != this) && (tmp->m_breakLine))
-        break;
-      if(!tmp->m_isBrokenIntoLines)
-        m_maxCenter = wxMax(m_maxCenter, tmp->m_center);
-      tmp = tmp->GetNextToDraw();
-    }
-  }
-  return m_maxCenter;
-}
-
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   bool result = (m_recalculateWidths) ||
@@ -275,82 +261,82 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
   return result;
 }
 
-/***
- * Get the maximum drop of cell.
- */
-int Cell::GetMaxDrop()
+int Cell::GetCenterList() const
+{
+  if (m_recalculate_maxCenter || ((*m_configuration)->RecalculationForce()))
+  {
+    m_recalculate_maxCenter = false;
+    int maxCenter = 0;
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+    {
+      if ((tmp != this) && (tmp->m_breakLine))
+        break;
+      if (!tmp->m_isBrokenIntoLines)
+        maxCenter = wxMax(maxCenter, tmp->m_center);
+    }
+    m_maxCenter = maxCenter;
+  }
+  return m_maxCenter;
+}
+
+int Cell::GetMaxDrop() const
 {
   if (m_recalculate_maxDrop || ((*m_configuration)->RecalculationForce()))
   {
     m_recalculate_maxDrop = false;
-    m_maxDrop = 0;
-    Cell *tmp = this;
-    while (tmp != NULL)
+    int maxDrop = 0;
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
     {
       if ((tmp != this) && (tmp->m_breakLine))
         break;
-      if(!tmp->m_isBrokenIntoLines)
-        m_maxDrop = wxMax(m_maxDrop, tmp->m_height - tmp->m_center);
-      tmp = tmp->GetNextToDraw();
+      if (!tmp->m_isBrokenIntoLines)
+        maxDrop = wxMax(maxDrop, tmp->m_height - tmp->m_center);
     }
+    m_maxDrop = maxDrop;
   }
   return m_maxDrop;
 }
 
-//!  Get the maximum hight of cells in line.
-int Cell::GetHeightList()
+int Cell::GetHeightList() const
 {
   return GetCenterList() + GetMaxDrop();
 }
 
-/*! Get full width of this group.
- */
-int Cell::GetFullWidth()
+int Cell::GetFullWidth() const
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
   if (m_recalculate_maxWidth || ((*m_configuration)->RecalculationForce()))
   {
     m_recalculate_maxWidth = false;
-    Cell *tmp = this;
 
     // We begin this calculation with a negative offset since the full width of only a single
     // cell doesn't contain the space that separates two cells - that is automatically added
     // to every cell in the next step.
-    m_fullWidth = 0;
-    while (tmp != NULL)
+    int fullWidth = 0;
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
     {
-      m_fullWidth += tmp->m_width;
-      tmp = tmp->GetNextToDraw();
+      fullWidth += tmp->m_width;
     }
+    m_fullWidth = fullWidth;
   }
   return m_fullWidth;
 }
 
-/*! Get the width of this line.
- */
-int Cell::GetLineWidth()
+int Cell::GetLineWidth() const
 {
   if (m_recalculate_lineWidth)
   {
     m_recalculate_lineWidth = false;
-    m_lineWidth = 0;
     int width = m_width;
-
-    Cell *tmp = this;
-    while(tmp != NULL)
+    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
     {
-      width += tmp->m_width;
-
-      if (width > m_lineWidth)
-        m_lineWidth = width;
-
-      tmp = tmp->GetNextToDraw();
-      if(tmp != NULL)
-      {
-        if(tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
+      if (tmp != this)
+        if (tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
           break;
-      }
+
+      width += tmp->m_width;
     }
+    m_lineWidth = width;
   }
   return m_lineWidth;
 }
@@ -443,31 +429,14 @@ void Cell::ResetSizeList()
 
 void Cell::RecalculateHeightList(AFontSize fontsize)
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->RecalculateHeight(fontsize);
-    tmp = tmp->m_next;
-  }
 }
 
-/*! Recalculate widths of cells.
-
-  (Used for changing font size since in this case all size information has to be
-  recalculated).
-
-  Should set: set m_width.
-*/
 void Cell::RecalculateWidthsList(AFontSize fontsize)
 {
-  Cell *tmp = this;
-
-  while (tmp != NULL)
-  {
+  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
     tmp->RecalculateWidths(fontsize);
-    tmp = tmp->m_next;
-  }
 }
 
 void Cell::RecalculateWidths(AFontSize WXUNUSED(fontsize))
@@ -507,7 +476,7 @@ bool Cell::DrawThisCell(wxPoint point)
   return(InUpdateRegion());
 }
 
-wxRect Cell::GetRect(bool wholeList)
+wxRect Cell::GetRect(bool wholeList) const
 {
   if (wholeList)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetCenterList(),
@@ -517,7 +486,7 @@ wxRect Cell::GetRect(bool wholeList)
                   m_width, m_height);
 }
 
-bool Cell::InUpdateRegion(const wxRect &rect)
+bool Cell::InUpdateRegion(const wxRect &rect) const
 {
   if (!(*m_configuration)->ClipToDrawRegion())
     return true;
@@ -1067,7 +1036,7 @@ void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *
   }
 }
 
-bool Cell::ContainsRect(const wxRect &sm, bool all)
+bool Cell::ContainsRect(const wxRect &sm, bool all) const
 {
   wxRect big = GetRect(all);
   if (big.x <= sm.x &&

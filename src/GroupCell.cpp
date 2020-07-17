@@ -877,7 +877,7 @@ void GroupCell::Draw(wxPoint point)
   }
 }
 
-wxRect GroupCell::GetRect(bool WXUNUSED(all))
+wxRect GroupCell::GetRect(bool WXUNUSED(all)) const
 {
   return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
                 m_width, m_height);
