@@ -86,7 +86,11 @@ class Worksheet : public wxScrolled<wxWindow>
 {
 public:
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
+  //! Is an update of the worksheet controls needed?
+  bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
 private:
+  //! The storage for UpdateControlsNeeded()
+  bool m_updateControls = true;
   //! Is a scroll to the cursor scheduled?
   bool m_scrollToCaret;
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.

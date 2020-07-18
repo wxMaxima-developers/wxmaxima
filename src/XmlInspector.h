@@ -53,7 +53,7 @@ public:
   //! Add some text we have received from maxima.
   void Add_FromMaxima(wxString text);
   //! Actually draw the updates
-  void Update();
+  void UpdateContents();
   //! Do we need to update the XmlInspector's display?
   bool UpdateNeeded(){return m_updateNeeded;}
 private:

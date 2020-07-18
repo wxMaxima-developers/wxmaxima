@@ -1263,6 +1263,7 @@ GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
  */
 void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 {
+  m_updateControls = true;
   RecalculateIfNeeded();
   ClearNotification();
   m_cellPointers.ResetSearchStart();
@@ -1893,6 +1894,7 @@ void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGC)
  */
 void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 {
+  m_updateControls = true;
   RecalculateIfNeeded();
   CloseAutoCompletePopup();
   m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
@@ -2115,6 +2117,8 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event)
   if (!GetTree() || !m_leftDown)
     return;
 
+  m_updateControls = true;
+  
   m_mouseDrag = true;
   m_up.x = m_pointer_x;
   m_up.y = m_pointer_y;
@@ -3050,6 +3054,7 @@ void Worksheet::Evaluate()
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
+  m_updateControls = true;
   ClearNotification();
 
   // Track the activity of the keyboard. Setting the keyboard
@@ -6279,7 +6284,7 @@ bool Worksheet::CanEdit()
 
 void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
 {
-
+  m_updateControls = true;
   // No more track the mouse when it is outside the worksheet
   if (HasCapture())
     ReleaseMouse();
