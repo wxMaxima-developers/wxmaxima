@@ -70,7 +70,7 @@ using AFontWeight = EnumWrapper<wxFontWeight, int16_t, wxFONTWEIGHT_NORMAL>;
 /*! A Type-Safe Fixed-Point Font Size
  *
  * The use of this type enforces type-safety: a font size isn't just any other
- * float. Additinally, the built-in comparison of floating point types does not
+ * float. Additionally, the built-in comparison of floating point types does not
  * behave as one would expect, whereas this type is comparable without any gotchas.
  *
  * The size default-constructs to a null value (AFontSize().IsNull() is true).
