@@ -504,9 +504,11 @@ void TextCell::Recalculate(AFontSize fontsize)
   Configuration *configuration = (*m_configuration);
   if(NeedsRecalculation(fontsize))
   {      
+    Cell::Recalculate(fontsize);
     m_fontSize = m_fontsize_old = fontsize;
     wxDC *dc = configuration->GetDC();
     SetFont(fontsize);
+
 
     // If the setting has changed and we want to show a user-defined label
     // instead of an automatic one or vice versa we decide that here.
@@ -603,7 +605,6 @@ void TextCell::Recalculate(AFontSize fontsize)
     if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
     m_realCenter = m_center = m_height / 2;
   }
-  Cell::Recalculate(fontsize);
 }
 
 void TextCell::Draw(wxPoint point)

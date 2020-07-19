@@ -166,7 +166,6 @@ private:
   wxString m_ellipsis;  // overlaid with m_altCopyText
   //! Last few digits (also used for user defined label)
   wxString m_numEnd;    // overlaid with m_userDefinedLabel
-
   std::vector<SizeEntry> m_sizeCache;
 
 //** 8/4-byte objects (8 bytes)
