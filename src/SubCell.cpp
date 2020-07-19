@@ -69,29 +69,19 @@ void SubCell::SetBase(std::unique_ptr<Cell> &&base)
   m_baseCell = std::move(base);
 }
 
-void SubCell::RecalculateWidths(AFontSize fontsize)
+void SubCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_baseCell->RecalculateWidthsList(fontsize);
-  m_indexCell->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUB_DEC });
+  m_baseCell->RecalculateList(fontsize);
+  m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - SUB_DEC });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
             Scale_Px(2);
-  Cell::RecalculateWidths(fontsize);
-}
-
-void SubCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_indexCell->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUB_DEC });
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void SubCell::Draw(wxPoint point)

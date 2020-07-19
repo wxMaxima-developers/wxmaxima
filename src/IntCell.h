@@ -46,8 +46,7 @@ public:
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_var); }
 
-  void RecalculateHeight(AFontSize fontsize) override;
-  void RecalculateWidths(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

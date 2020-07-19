@@ -87,15 +87,15 @@ void ListCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
   ResetSize();
 }
 
-void ListCell::RecalculateWidths(AFontSize fontsize)
+void ListCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
   
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateList(fontsize);
+  m_innerCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
   
   m_signWidth  = m_open->GetWidth();
 
@@ -112,31 +112,15 @@ void ListCell::RecalculateWidths(AFontSize fontsize)
     m_signHeight = m_innerCell->GetHeightList();
   }
   
-  m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
-  if(m_isBrokenIntoLines)
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void ListCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
-  m_center = m_height / 2;
-
-  m_open->RecalculateHeightList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
-
   if (m_isBrokenIntoLines)
   {
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    m_width = 0;
+    m_height = 0;
+    m_center = 0;
   }
   else
   {
+    m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
     if(m_drawAsAscii)
       m_signHeight = m_open->GetHeight();
     else
@@ -145,7 +129,7 @@ void ListCell::RecalculateHeight(AFontSize fontsize)
     m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(4);
     m_center = m_height / 2;   
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ListCell::Draw(wxPoint point)

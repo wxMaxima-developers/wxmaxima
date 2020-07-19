@@ -602,7 +602,7 @@ void EditorCell::ConvertNumToUNicodeChar()
   m_positionOfCaret+= newChar.Length();
 }
 
-void EditorCell::RecalculateWidths(AFontSize fontsize)
+void EditorCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if (IsZoomFactorChanged())
@@ -665,7 +665,7 @@ void EditorCell::RecalculateWidths(AFontSize fontsize)
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 wxString EditorCell::ToHTML() const

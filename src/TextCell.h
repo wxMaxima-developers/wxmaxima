@@ -51,7 +51,7 @@ public:
   //! Set the automatic label maxima has assigned the current equation
   void SetUserDefinedLabel(const wxString &userDefinedLabel) { m_userDefinedLabel() = userDefinedLabel; }
 
-  void RecalculateWidths(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

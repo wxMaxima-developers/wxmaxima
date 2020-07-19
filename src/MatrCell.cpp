@@ -56,14 +56,14 @@ std::unique_ptr<Cell> MatrCell::Copy() const
   return std::make_unique<MatrCell>(*this);
 }
 
-void MatrCell::RecalculateWidths(AFontSize const fontsize)
+void MatrCell::Recalculate(AFontSize const fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   AFontSize const fontsize_entry{ MC_MIN_SIZE, fontsize - 2 };
   for (unsigned int i = 0; i < m_cells.size(); i++)
-    m_cells[i]->RecalculateWidthsList(fontsize_entry);
+    m_cells[i]->RecalculateList(fontsize_entry);
 
   m_width = 0;
   m_widths.clear();
@@ -80,17 +80,6 @@ void MatrCell::RecalculateWidths(AFontSize const fontsize)
   }
   if (m_width < Scale_Px(14))
     m_width = Scale_Px(14);
-  Cell::RecalculateWidths(fontsize);
-}
-
-void MatrCell::RecalculateHeight(AFontSize const fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  AFontSize const fontsize_entry{ MC_MIN_SIZE, fontsize - 2 };
-  for (unsigned int i = 0; i < m_cells.size(); i++)
-    m_cells[i]->RecalculateHeightList(fontsize_entry);
 
   m_height = 0;
   m_dropCenters.clear();
@@ -109,7 +98,8 @@ void MatrCell::RecalculateHeight(AFontSize const fontsize)
   if (m_height == 0)
     m_height = fontsize + Scale_Px(10);
   m_center = m_height / 2;
-  Cell::RecalculateHeight(fontsize);
+
+  Cell::Recalculate(fontsize);
 }
 
 void MatrCell::Draw(wxPoint point)

@@ -62,8 +62,7 @@ public:
   void SetName(std::unique_ptr<Cell> &&name);
   void SetArg(std::unique_ptr<Cell> &&arg);
 
-  void RecalculateHeight(AFontSize fontsize) override;
-  void RecalculateWidths(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

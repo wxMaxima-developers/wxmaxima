@@ -70,20 +70,20 @@ void SqrtCell::SetInner(std::unique_ptr<Cell> &&inner)
   m_innerCell = std::move(inner);
 }
 
-void SqrtCell::RecalculateWidths(AFontSize fontsize)
+void SqrtCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   Configuration *configuration = (*m_configuration);
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidths(fontsize);
-  m_close->RecalculateWidths(fontsize);
+  m_innerCell->RecalculateList(fontsize);
+  m_open->Recalculate(fontsize);
+  m_close->Recalculate(fontsize);
 
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    m_innerCell->RecalculateHeightList(fontsize);
+    m_innerCell->RecalculateList(fontsize);
 
     m_signFontScale = 1.0;
     auto fontsize1 = AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));
@@ -139,25 +139,11 @@ void SqrtCell::RecalculateWidths(AFontSize fontsize)
   }
   else
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
+  m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList()) + Scale_Px(3);
+  m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList()) + Scale_Px(3);
   if(m_isBrokenIntoLines)
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void SqrtCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  if(!m_isBrokenIntoLines)
-  {
-    m_innerCell->RecalculateHeightList(fontsize);
-    m_open->RecalculateHeightList(fontsize);
-    m_close->RecalculateHeightList(fontsize);
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList()) + Scale_Px(3);
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList()) + Scale_Px(3);
-  }
-  Cell::RecalculateHeight(fontsize);
+    m_height = m_center = m_width = 0;
+  Cell::Recalculate(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point)

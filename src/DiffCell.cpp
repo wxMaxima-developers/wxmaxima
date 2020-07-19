@@ -71,36 +71,22 @@ void DiffCell::SetBase(std::unique_ptr<Cell> &&base)
   m_baseCell = std::move(base);
 }
 
-void DiffCell::RecalculateWidths(AFontSize fontsize)
+void DiffCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  Cell::RecalculateWidths(fontsize);
-    m_baseCell->RecalculateWidthsList(fontsize);
-    m_diffCell->RecalculateWidthsList(fontsize);
-  if(!m_isBrokenIntoLines)
-    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-  else
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void DiffCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_diffCell->RecalculateHeightList(fontsize);
+  m_baseCell->RecalculateList(fontsize);
+  m_diffCell->RecalculateList(fontsize);
   if(!m_isBrokenIntoLines)
   {
+    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
   else
-    m_center = m_height = 0;
-  Cell::RecalculateHeight(fontsize);
+    m_width = m_center = m_height = 0;
+  Cell::Recalculate(fontsize);
 }
 
 void DiffCell::Draw(wxPoint point)

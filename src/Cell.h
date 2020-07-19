@@ -304,14 +304,14 @@ public:
 
   /*! Get the height of this cell
 
-    This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
+    This value is recalculated by Recalculate()
   */
   int GetHeight() const
   { return m_height; }
 
   /*! Get the width of this cell
 
-    This value is recalculated by RecalculateWidth; -1 means: Needs to be recalculated.
+    This value is recalculated by Recalculate()
   */
   int GetWidth() const
   { return m_width; }
@@ -331,7 +331,7 @@ public:
     middle of an output cell even if the current object is --- by definition --- 
     center-aligned.
 
-    This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
+    This value is recalculated by Recalculate
    */
   int GetDrop() const
   { return m_height - m_center; }
@@ -401,37 +401,14 @@ public:
   
   virtual wxString GetDiffPart() const;
 
-  /*! Recalculate the height of the cell and the difference between top and center
+  /*! Recalculate the size of the cell and the difference between top and center
 
-    Must set: m_height, m_center.
+    Must set: m_height, m_width, m_center.
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(AFontSize fontsize);
-
-  /*! Recalculate the height of this list of cells
-
-    \param fontsize In exponents, super- and subscripts the font size is reduced.
-    This cell therefore needs to know which font size it has to be drawn at.
-   */
-  void RecalculateHeightList(AFontSize fontsize);
-
-  /*! Recalculate the width of this cell.
-
-    Must set: m_width.
-
-    \param fontsize In exponents, super- and subscripts the font size is reduced.
-    This cell therefore needs to know which font size it has to be drawn at.
-   */
-  virtual void RecalculateWidths(AFontSize fontsize);
-
-  /*! Recalculates all widths of this list of cells.
-
-    \param fontsize In exponents, super- and subscripts the font size is reduced.
-    This cell therefore needs to know which font size it has to be drawn at.
-   */
-  void RecalculateWidthsList(AFontSize fontsize);
+  virtual void Recalculate(AFontSize fontsize);
 
   /*! Recalculate both width and height of this list of cells.
 

@@ -63,8 +63,7 @@ public:
 
   void SetPrint(bool print) { m_print = print; }
 
-  void RecalculateHeight(AFontSize fontsize) override;
-  void RecalculateWidths(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

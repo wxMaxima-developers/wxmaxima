@@ -114,8 +114,7 @@ public:
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
 
-  //! Recalculate the widths of the current cell.
-  void RecalculateWidths(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   virtual void Draw(wxPoint point) override;
 

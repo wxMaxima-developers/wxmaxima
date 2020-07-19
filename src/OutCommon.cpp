@@ -97,10 +97,10 @@ bool OutCommon::PrepareLayout(Cell *tree)
 
   if (tree->GetType() != MC_TYPE_GROUP)
   {
-    RecalculateWidths(tree);
+    Recalculate(tree);
     BreakUpCells(tree);
     BreakLines(tree);
-    RecalculateHeight(tree);
+    Recalculate(tree);
   }
   else
   {
@@ -115,22 +115,13 @@ bool OutCommon::PrepareLayout(Cell *tree)
   return true;
 }
 
-void OutCommon::RecalculateHeight(Cell *tree) const
+void OutCommon::Recalculate(Cell *tree) const
 {
   auto fontsize = m_thisconfig.GetDefaultFontSize();
   auto mathFontsize = m_thisconfig.GetMathFontSize();
 
   for (Cell *tmp = tree; tmp; tmp = tmp->m_next)
-    tmp->RecalculateHeight(tmp->IsMath() ? mathFontsize : fontsize);
-}
-
-void OutCommon::RecalculateWidths(Cell *tree) const
-{
-  auto fontsize = m_thisconfig.GetDefaultFontSize();
-  auto mathFontsize = m_thisconfig.GetMathFontSize();
-
-  for (Cell *tmp = tree; tmp; tmp = tmp->m_next)
-    tmp->RecalculateWidths(tmp->IsMath() ? mathFontsize : fontsize);
+    tmp->Recalculate(tmp->IsMath() ? mathFontsize : fontsize);
 }
 
 void OutCommon::BreakLines(Cell *tree) const
@@ -247,10 +238,7 @@ void OutCommon::BreakUpCells(Cell *tree)
   for (Cell *tmp = tree; tmp; tmp = tmp->GetNextToDraw())
   {
     if (tmp->GetWidth() > fullWidth && tmp->BreakUp())
-    {
-      tmp->RecalculateWidths(tmp->IsMath() ? mathFontsize : fontsize);
-      tmp->RecalculateHeight(tmp->IsMath() ? mathFontsize : fontsize);
-    }
+      tmp->Recalculate(tmp->IsMath() ? mathFontsize : fontsize);
   }
 }
 

@@ -3446,8 +3446,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     //   int fontsize = m_configuration->GetDefaultFontSize();
     auto fontsize = m_configuration->GetDefaultFontSize();
 
-    GetActiveCell()->RecalculateWidths(wxMax(fontsize, MC_MIN_SIZE));
-    GetActiveCell()->RecalculateHeight(wxMax(fontsize, MC_MIN_SIZE));
+    GetActiveCell()->Recalculate(wxMax(fontsize, MC_MIN_SIZE));
 
     if (height != GetActiveCell()->GetHeight() ||
         GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=

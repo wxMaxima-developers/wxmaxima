@@ -473,10 +473,7 @@ void Cell::DrawList(wxPoint point)
 void Cell::RecalculateList(AFontSize fontsize)
 {
   for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-  {
-    tmp->RecalculateWidths(fontsize);
-    tmp->RecalculateHeight(fontsize);
-  }
+    tmp->Recalculate(fontsize);
 }
 
 void Cell::ResetSizeList()
@@ -485,23 +482,8 @@ void Cell::ResetSizeList()
     tmp->ResetSize();
 }
 
-void Cell::RecalculateHeightList(AFontSize fontsize)
-{
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->RecalculateHeight(fontsize);
-}
 
-void Cell::RecalculateWidthsList(AFontSize fontsize)
-{
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->RecalculateWidths(fontsize);
-}
-
-void Cell::RecalculateWidths(AFontSize WXUNUSED(fontsize))
-{
-}
-
-void Cell::RecalculateHeight(AFontSize fontsize)
+void Cell::Recalculate(AFontSize fontsize)
 {
   m_fontSize = fontsize;
   m_fontsize_old = fontsize;

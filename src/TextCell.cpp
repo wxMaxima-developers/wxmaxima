@@ -499,7 +499,7 @@ void TextCell::UpdateDisplayedText()
   }
 }
 
-void TextCell::RecalculateWidths(AFontSize fontsize)
+void TextCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if(NeedsRecalculation(fontsize))
@@ -603,7 +603,7 @@ void TextCell::RecalculateWidths(AFontSize fontsize)
     if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
     m_realCenter = m_center = m_height / 2;
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void TextCell::Draw(wxPoint point)
@@ -616,7 +616,7 @@ void TextCell::Draw(wxPoint point)
     wxDC *dc = configuration->GetDC();
     
     if (NeedsRecalculation(m_fontSize))
-      RecalculateWidths(m_fontSize);
+      Recalculate(m_fontSize);
     
     if (InUpdateRegion())
     {

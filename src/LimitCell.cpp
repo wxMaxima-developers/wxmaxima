@@ -88,64 +88,35 @@ void LimitCell::SetUnder(std::unique_ptr<Cell> &&under)
   m_under = std::move(under);
 }
 
-void LimitCell::RecalculateWidths(AFontSize fontsize)
+void LimitCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   if(m_base)
-    m_base->RecalculateWidthsList(fontsize);
+    m_base->RecalculateList(fontsize);
   if(m_under)
-    m_under->RecalculateWidthsList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
+    m_under->RecalculateList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
   if(m_name)
-    m_name->RecalculateWidthsList(fontsize);
+    m_name->RecalculateList(fontsize);
   if(m_open)
-    m_open->RecalculateWidthsList(fontsize);
+    m_open->RecalculateList(fontsize);
   if(m_comma)
-    m_comma->RecalculateWidthsList(fontsize);
+    m_comma->RecalculateList(fontsize);
   if(m_close)
-    m_close->RecalculateWidthsList(fontsize);
+    m_close->RecalculateList(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
       + m_base->GetFullWidth();
-  }
-  else
-    m_width = 0;
-  
-  Cell::RecalculateWidths(fontsize);
-}
-
-void LimitCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  if(m_under)
-    m_under->RecalculateHeightList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
-  if(m_name)
-    m_name->RecalculateHeightList(fontsize);
-  if(m_base)
-    m_base->RecalculateHeightList(fontsize);
-  if(m_open)
-    m_open->RecalculateHeightList(fontsize);
-  if(m_comma)
-    m_comma->RecalculateHeightList(fontsize);
-  if(m_close)
-    m_close->RecalculateHeightList(fontsize);
-  
-  if(!m_isBrokenIntoLines)
-  {
     m_center = wxMax(m_base->GetCenterList(), m_name->GetCenterList());
     m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetHeightList(),
                                 m_base->GetMaxDrop());
   }
   else
-  {
-    m_height = m_name->GetHeightList();
-    m_center = m_name->GetCenterList();
-  }
-  Cell::RecalculateHeight(fontsize);
+    m_width = m_height = m_center = 0;
+  
+  Cell::Recalculate(fontsize);
 }
 
 void LimitCell::Draw(wxPoint point)

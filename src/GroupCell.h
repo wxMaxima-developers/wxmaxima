@@ -229,13 +229,15 @@ public:
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
 
-  /*! Recalculates the height of this GroupCell and all cells inside it if needed.
+  /*! Recalculates the size of this GroupCell and all cells inside it if needed.
 
     This command will also assign the GroupCell a y coordinate it is plotted at.
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
-  void RecalculateHeight(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override {Recalculate();}
+  void Recalculate();
+
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
   wxRect GetRect(bool all = false) const override;
@@ -245,16 +247,6 @@ public:
     during RecalculateAppended.
    */
   void RecalculateHeightOutput();
-
-  /*! Recalculates the width of this GroupCell and all cells inside it if needed.
-   */
-  void RecalculateWidths(AFontSize fontsize) override;
-
-  /*! Recalculate the size of this GroupCell.
-
-    Calls RecalculateHeight() and RecalculateWidths()
-  */
-  void Recalculate();
 
   /*! Attempt to split math objects that are wider than the screen into multiple lines.
     

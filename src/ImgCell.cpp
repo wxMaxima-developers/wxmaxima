@@ -125,7 +125,7 @@ const wxString &ImgCell::GetToolTip(const wxPoint point) const
   return GetLocalToolTip();
 }
 
-void ImgCell::RecalculateWidths(AFontSize fontsize)
+void ImgCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if (m_image)
@@ -142,15 +142,6 @@ void ImgCell::RecalculateWidths(AFontSize fontsize)
     else
       m_image->Recalculate();
     m_width = m_image->m_width + 2 * m_imageBorderWidth;
-  }
-  Cell::RecalculateWidths(fontsize);
-}
-
-void ImgCell::RecalculateHeight(AFontSize fontsize)
-{
-  Configuration *configuration = (*m_configuration);
-  if (m_image)
-  {
     if (configuration->GetPrinting())
     {
       m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
@@ -161,7 +152,7 @@ void ImgCell::RecalculateHeight(AFontSize fontsize)
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point)

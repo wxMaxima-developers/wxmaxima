@@ -103,8 +103,7 @@ public:
   void SetMaxWidth(double width) const { if (m_image) m_image->SetMaxWidth(width); }
   void SetMaxHeight(double height) const { if (m_image) m_image->SetMaxHeight(height); }
 
-  void RecalculateHeight(AFontSize fontsize) override;
-  void RecalculateWidths(AFontSize fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

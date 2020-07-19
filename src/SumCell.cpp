@@ -118,21 +118,21 @@ void SumCell::SetUnder(std::unique_ptr<Cell> &&under)
   ResetSize();
 }
 
-void SumCell::RecalculateWidths(AFontSize fontsize)
+void SumCell::Recalculate(AFontSize fontsize)
 {
   if (!NeedsRecalculation(fontsize))
     return;
 
-  m_displayedBase->RecalculateWidthsList(fontsize);
+  m_displayedBase->RecalculateList(fontsize);
 
-  m_comma1->RecalculateWidthsList(fontsize);
-  m_comma2->RecalculateWidthsList(fontsize);
-  m_comma3->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_start->RecalculateWidthsList(fontsize);
-  m_var->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_comma1->RecalculateList(fontsize);
+  m_comma2->RecalculateList(fontsize);
+  m_comma3->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_start->RecalculateList(fontsize);
+  m_var->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
 
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
@@ -140,39 +140,19 @@ void SumCell::RecalculateWidths(AFontSize fontsize)
     m_signWidth = 4.0 * m_signHeight / 5.0;
   m_signWCenter = m_signWidth / 2.0;
   if(m_isBrokenIntoLines)
-    m_under->RecalculateWidthsList(fontsize);
+    m_under->RecalculateList(fontsize);
   else
-    m_under->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+    m_under->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
   if (!m_end)
     m_end = std::make_unique<TextCell>(m_group, m_configuration);
   if(m_isBrokenIntoLines)
-    m_end->RecalculateWidthsList(fontsize);
+    m_end->RecalculateList(fontsize);
   else
-    m_end->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+    m_end->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
 
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
   m_signWCenter = wxMax(m_signWCenter, m_end->GetFullWidth() / 2);
   m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
-  ResetCellListSizes();
-  Cell::RecalculateWidths(fontsize);
-}
-
-void SumCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  if(m_isBrokenIntoLines)
-    m_under->RecalculateHeightList(fontsize);
-  else
-    m_under->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  if(m_isBrokenIntoLines)
-    m_end->RecalculateHeightList(fontsize);
-  else
-    m_end->RecalculateHeightList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  m_start->RecalculateHeightList(fontsize);
-  m_var->RecalculateHeightList(fontsize);
-  m_displayedBase->RecalculateHeightList(fontsize);
 
   m_center = wxMax(m_end->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
                  m_displayedBase->GetCenterList());
@@ -180,7 +160,7 @@ void SumCell::RecalculateHeight(AFontSize fontsize)
              wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
                  m_displayedBase->GetMaxDrop());
   m_signHeight = m_displayedBase->GetHeightList();
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void SumCell::Draw(wxPoint point)

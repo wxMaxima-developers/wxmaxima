@@ -62,31 +62,18 @@ void ConjugateCell::SetInner(std::unique_ptr<Cell> &&inner)
   m_innerCell = std::move(inner);
 }
 
-void ConjugateCell::RecalculateWidths(AFontSize fontsize)
+void ConjugateCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
-  if(!m_isBrokenIntoLines)
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
-  else
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
+  m_innerCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
 
-void ConjugateCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
+    m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
     m_height = m_innerCell->GetHeightList() + Scale_Px(6);
     m_center = m_innerCell->GetCenterList() + Scale_Px(6);
   }
@@ -95,10 +82,11 @@ void ConjugateCell::RecalculateHeight(AFontSize fontsize)
     // The ConjugateCell itself isn't displayed if it is broken into lines.
     // insted m_open, m_innerCell and m_close are => We can set our size to 0
     // in this case.
+    m_width = 0;
     m_height = 0;
     m_center = 0;
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point)

@@ -140,17 +140,16 @@ void ParenCell::SetFont(AFontSize fontsize)
   SetForeground();
 }
 
-void ParenCell::RecalculateWidths(AFontSize fontsize)
+void ParenCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   Configuration *configuration = (*m_configuration);
   
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetHeightList();
@@ -202,27 +201,13 @@ void ParenCell::RecalculateWidths(AFontSize fontsize)
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
   if(m_isBrokenIntoLines)
     m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
 
-void ParenCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  Configuration *configuration = (*m_configuration);
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
 
-  SetFont(fontsize);
-  wxDC *dc = configuration->GetDC();
   dc->GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
   if(m_charHeight1 < 2)
     m_charHeight1 = 2;
-
-  m_open->RecalculateHeightList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
 
   if (m_isBrokenIntoLines)
   {
@@ -264,7 +249,7 @@ void ParenCell::RecalculateHeight(AFontSize fontsize)
       m_center = m_height / 2;   
     }
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point)

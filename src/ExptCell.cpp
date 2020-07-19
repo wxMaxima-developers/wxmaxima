@@ -98,53 +98,34 @@ void ExptCell::SetBase(std::unique_ptr<Cell> &&base)
   m_baseCell = std::move(base);
 }
 
-void ExptCell::RecalculateWidths(AFontSize fontsize)
+void ExptCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_baseCell->RecalculateWidthsList(fontsize);
+  m_baseCell->RecalculateList(fontsize);
   if (m_isBrokenIntoLines)
-    m_exptCell->RecalculateWidthsList(fontsize);
+    m_exptCell->RecalculateList(fontsize);
   else
-    m_exptCell->RecalculateWidthsList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
-  m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
-            MC_TEXT_PADDING;
-  m_exp->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
-  if(m_isBrokenIntoLines)
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void ExptCell::RecalculateHeight(AFontSize fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-  if (m_isBrokenIntoLines)
-    m_exptCell->RecalculateHeightList(fontsize);
-  else
-    m_exptCell->RecalculateHeightList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
-
-  m_exp->RecalculateHeightList(fontsize);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
+    m_exptCell->RecalculateList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
+  m_exp->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
+  
   
   if (m_isBrokenIntoLines)
   {
-    m_height = wxMax(m_baseCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_baseCell->GetCenterList(), m_open->GetCenterList());
+    m_height = m_width = m_center = 0;
   }
   else
   {
+    m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
+      MC_TEXT_PADDING;
     m_expt_yoffset = m_exptCell->GetMaxDrop() + PowRise();
-
+    
     m_height = m_baseCell->GetHeightList();
     m_center = m_baseCell->GetCenterList();
-
+    
     int baseHeight = m_baseCell->GetHeightList() - m_baseCell->GetMaxDrop();
     int exptHeight = m_exptCell->GetHeightList() - m_exptCell->GetMaxDrop() + m_expt_yoffset;
     
@@ -156,7 +137,7 @@ void ExptCell::RecalculateHeight(AFontSize fontsize)
     else
       m_expt_yoffset += baseHeight - exptHeight;
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 wxString ExptCell::ToString() const

@@ -107,8 +107,7 @@ public:
 
 private:
   void GetMaxPoint(Cell *tree, int *width, int *height) const;
-  void RecalculateWidths(Cell *tree) const;
-  void RecalculateHeight(Cell *tree) const;
+  void Recalculate(Cell *tree) const;
 
   void BreakLines(Cell *tree) const;
   void BreakUpCells(Cell *tree);
