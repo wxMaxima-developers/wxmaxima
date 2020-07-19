@@ -150,7 +150,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
 {
   m_rightClickRow = event.GetRow();
   m_vars.clear();
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
     m_vars[GetCellValue(i,0)] = 1;
   
   std::unique_ptr<wxMenu> popupMenu(new wxMenu);
@@ -239,7 +239,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
   if((GetNumberRows() == 0) || (GetCellValue(GetNumberRows()-1,0) != wxEmptyString))
     AppendRows();
   else
-    for(auto i = 0; i < GetNumberRows() - 1; i++)
+    for(int i = 0; i < GetNumberRows() - 1; i++)
       if(GetCellValue(i,0) == wxEmptyString)
         DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
@@ -247,7 +247,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
 
   // Avoid introducing a cell with the same name twice.
   m_vars.clear();
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
   {
     if(i!=event.GetRow())
       m_vars[GetCellValue(i,0)] = i+1;      
@@ -263,7 +263,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
 
 void Variablespane::VariableValue(wxString var, wxString val)
 {
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
     if(GetCellValue(i,0) == UnescapeVarname(var))
     {
       SetCellTextColour(i,1,*wxBLACK);
@@ -274,7 +274,7 @@ void Variablespane::VariableValue(wxString var, wxString val)
 
 void Variablespane::VariableUndefined(wxString var)
 {
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
     if(GetCellValue(i,0) == UnescapeVarname(var))
     {
       SetCellTextColour(i,1,*wxLIGHT_GREY);
@@ -286,7 +286,7 @@ void Variablespane::VariableUndefined(wxString var)
 wxArrayString Variablespane::GetEscapedVarnames()
 {
   wxArrayString retVal;
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
   {
     wxString var = GetCellValue(i,0);
     if(IsValidVariable(var))
@@ -298,7 +298,7 @@ wxArrayString Variablespane::GetEscapedVarnames()
 wxArrayString Variablespane::GetVarnames()
 {
   wxArrayString retVal;
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
   {
     wxString var = GetCellValue(i,0);
     retVal.Add(var);
@@ -415,7 +415,7 @@ bool Variablespane::IsValidVariable(wxString var)
 
 void Variablespane::ResetValues()
 {
-  for(auto i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < GetNumberRows(); i++)
   {
     if(GetCellValue(i,0) != wxEmptyString)
     {

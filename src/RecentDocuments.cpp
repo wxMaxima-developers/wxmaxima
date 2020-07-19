@@ -11,7 +11,7 @@ void RecentDocuments::Load()
   wxConfigBase *config = wxConfig::Get();
   wxString fileName;
 
-  for(auto i=0; i<30; i++)
+  for(int i=0; i<30; i++)
     {
       wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       wxString filename;
@@ -29,7 +29,7 @@ void RecentDocuments::Load()
 wxString RecentDocuments::Get(int num) const
 {
   std::list<wxString> listOfFiles = m_listOfFiles;
-  for(auto i = 0; i<num; i++)
+  for(int i = 0; i<num; i++)
     {
       if(listOfFiles.empty())
 	return wxEmptyString;
@@ -46,7 +46,7 @@ void RecentDocuments::Save()
 {
   wxConfigBase *config = wxConfig::Get();
   int i = 0;
-  for(auto it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
+  for(std::list<wxString>::const_iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
     {
       wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       i++;

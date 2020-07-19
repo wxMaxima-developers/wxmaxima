@@ -807,7 +807,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
 
   wxArrayString languages;
-  for(auto it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
   
   m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), languages);
@@ -817,7 +817,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   int lang = m_configuration->GetLanguage();
   unsigned int i = 0;
   // First set the language to "default".
-  for(auto it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == wxLANGUAGE_DEFAULT)
     {
@@ -829,7 +829,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 
   // Now try to set the language to the one from the config
   i = 0;
-  for(auto it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == lang)
     {
@@ -1084,7 +1084,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
     m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetMathFontSize().Get()));
 
   wxArrayString m_styleFor_choices;
-  for(auto i = 0; i < NUMBEROFSTYLES; i++)
+  for(int i = 0; i < NUMBEROFSTYLES; i++)
     m_styleFor_choices.Add(m_configuration->GetStyleName(TextStyle(i)));
   m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), m_styleFor_choices,
                              wxLB_SINGLE);
@@ -1233,7 +1233,7 @@ void ConfigDialogue::WriteSettings()
   {
     configuration->SetLanguage((int) wxLANGUAGE_DEFAULT);
     long i = 0;
-    for(auto it = m_languages.begin(); it != m_languages.end(); ++it )
+    for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     {
       if(i == m_language->GetSelection())
         configuration->SetLanguage(it->second);
@@ -1601,8 +1601,8 @@ void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
   int columns = (width+11)  / 12;
   int rows    = (height+11) / 12;
 
-  for(auto x=0;x<columns;x++)
-    for(auto y=0;y<rows;y++)
+  for(int x=0;x<columns;x++)
+    for(int  y=0;y<rows;y++)
     {
       if(((x+y)&1) == 1)
         dc.DrawRectangle(x*12,y*12,12,12);
@@ -1618,8 +1618,8 @@ void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(foregroundColor)));
   GetClientSize(&width, &height);
 
-  for(auto x=0;x<columns;x++)
-    for(auto y=0;y<rows;y++)
+  for(int x=0;x<columns;x++)
+    for(int  y=0;y<rows;y++)
     {
       if(((x+y)&1) == 0)
         dc.DrawRectangle(x*12,y*12,12,12);

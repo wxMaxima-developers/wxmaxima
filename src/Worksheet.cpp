@@ -1678,17 +1678,17 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
               m_replacementsForCurrentWord.Clear();
               if(sameBeginning.GetCount() <= 10)
                 m_replacementsForCurrentWord = sameBeginning;
-              for(auto o = 0; o<4; o++)
+              for(int o = 0; o<4; o++)
               {
                 if(m_replacementsForCurrentWord.GetCount() + dst[o].GetCount() <= 10)
                 {
-                  for(auto i = 0; i<dst[o].GetCount(); i++)
+                  for(unsigned int i = 0; i<dst[o].GetCount(); i++)
                     m_replacementsForCurrentWord.Add(dst[o][i]);
                 }
                 else
                   break;
               }
-              for(auto i = 0; i<m_replacementsForCurrentWord.GetCount(); i++)
+              for(unsigned int i = 0; i<m_replacementsForCurrentWord.GetCount(); i++)
                 popupMenu.Append(popid_suggestion1 + i, m_replacementsForCurrentWord[i]);
             }
           }
@@ -4831,7 +4831,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
 
   wxString versionString = "Created with wxMaxima version " + version;
   wxString versionPad;
-  for(auto i = 0; i<versionString.Length(); i++)
+  for(unsigned int i = 0; i<versionString.Length(); i++)
     versionPad += "*";
 
   css << wxT("\n");
@@ -6060,7 +6060,7 @@ bool Worksheet::ExportToWXMX(const wxString &file, bool markAsSaved)
         {
           long varcount = variables.GetCount() - 1;
           xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
-          for(auto i = 0; i<variables.GetCount(); i++)
+          for(unsigned long i = 0; i<variables.GetCount(); i++)
             xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]).utf8_str());
         }
   
