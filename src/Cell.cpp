@@ -143,7 +143,7 @@ void Cell::SetType(CellType type)
       break;
   }
   ResetSize();
-  if (m_group)
+  if ((m_group) && (m_group != this))
     GetGroup()->ResetSize();
 }
 
