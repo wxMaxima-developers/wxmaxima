@@ -1,8 +1,8 @@
 # Current
+ * A massive performance update
  * A new translation of the Turkish manual by Tufan Şirin
  * Improved italian translation by Marco Ciampa
  * An Russian translation update by OlesyaGerasimenko
- * A massive performance update
  * Better display of sqrt() cells
  * Better display of fractions
  * Nicer display of lists

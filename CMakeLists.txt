@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.7)
 
-set(VERSION 20.06.6-DevelopmentSnapshot)
+set(VERSION 20.07.0)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

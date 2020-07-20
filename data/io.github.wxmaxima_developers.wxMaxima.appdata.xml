@@ -56,6 +56,28 @@
          to time zone variations 
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
+
+    <release version="20.07.0" date="2020-07-20T08:50:00Z">
+      <description>
+	<p>
+	  A big performance update and many bug fixes.
+	</p>
+	<ul>
+	  <li> A massive performance update</li>
+	  <li> A new translation of the Turkish manual by Tufan Şirin</li>
+	  <li> Improved italian translation by Marco Ciampa</li>
+	  <li> An Russian translation update by OlesyaGerasimenko</li>
+	  <li> Better display of sqrt() cells</li>
+	  <li> Better display of fractions</li>
+	  <li> Nicer display of lists</li>
+	  <li> Made sure we read in the whole .mac file when opening .mac files</li>
+	  <li> Allow building wxMaxima, if pandoc or po4translate are not installed</li>
+	  <li> As always many small additional bug fixes</li>
+	</ul>
+      </description>
+    </release>
+
+
     <release version="20.06.6" date="2020-06-07T12:35:00Z">
       <description>
 	<p>
