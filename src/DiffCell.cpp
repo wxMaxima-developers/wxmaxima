@@ -34,9 +34,13 @@
 
 
 DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
-    m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+  Cell(parent, config),
+  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_open(std::make_unique<TextCell>(parent, config, "diff(")),
+  m_comma(std::make_unique<TextCell>(parent, config, ",")),
+  m_close(std::make_unique<TextCell>(parent, config, ")"))
+
 {
   InitBitFields();
 }
@@ -78,6 +82,9 @@ void DiffCell::Recalculate(AFontSize fontsize)
 
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_comma->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
@@ -180,4 +187,32 @@ wxString DiffCell::ToXML() const
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+}
+
+bool DiffCell::BreakUp()
+{
+  if (!m_isBrokenIntoLines)
+  {
+    Cell::BreakUp();
+    m_isBrokenIntoLines = true;
+    m_open->SetNextToDraw(m_baseCell);
+    m_baseCell->last()->SetNextToDraw(m_comma);
+    m_comma->SetNextToDraw(m_diffCell);
+    m_diffCell->last()->SetNextToDraw(m_close);
+    m_nextToDraw = m_open;
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    m_width = 0;
+    return true;
+  }
+  return false;
+}
+
+void DiffCell::SetNextToDraw(Cell *next)
+{
+  if (m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

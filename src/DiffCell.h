@@ -49,8 +49,10 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+  bool BreakUp() override;
 
 private:
   CellPtr<Cell> m_nextToDraw;
@@ -59,6 +61,9 @@ private:
   // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
   // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_comma;
+  std::unique_ptr<Cell> m_close;
   std::unique_ptr<Cell> m_diffCell;
   // The pointers above point to inner cells and must be kept contiguous.
 
