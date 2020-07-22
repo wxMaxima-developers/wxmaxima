@@ -104,16 +104,10 @@ void TextCell::SetAltCopyText(const wxString &text)
     m_hasAltCopyText = false;
     return;
   }
-  if (m_textStyle == TS_NUMBER /*&& !m_ellipsis.empty()*/)
-  {
-    // This is a bug.
-    if (m_indicatedAltCopyTextBug)
-      return;
-    wxLogMessage(T_("Bug: Attempting to set AltCopyText \"%s\" on a numeric text cell."), text);
-    m_indicatedAltCopyTextBug = true;
-  }
+  // Numbers with altCopyText are scary
+  wxASSERT(m_textStyle != TS_NUMBER);
   m_hasAltCopyText = true;
-  m_altCopyText() = text;
+  m_altCopyText = text;
 }
 
 void TextCell::UpdateToolTip()
@@ -184,20 +178,19 @@ void TextCell::UpdateToolTip()
   
   else if (m_textStyle == TS_NUMBER)
   {
-    if (m_ellipsis.IsEmpty())
-      if(
-        (m_roundingErrorRegEx1.Matches(m_text)) ||
-        (m_roundingErrorRegEx2.Matches(m_text)) ||
-        (m_roundingErrorRegEx3.Matches(m_text)) ||
-        (m_roundingErrorRegEx4.Matches(m_text))
-        )
-        SetToolTip(&T_("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
+    if(
+      (m_roundingErrorRegEx1.Matches(m_text)) ||
+      (m_roundingErrorRegEx2.Matches(m_text)) ||
+      (m_roundingErrorRegEx3.Matches(m_text)) ||
+      (m_roundingErrorRegEx4.Matches(m_text))
+      )
+      SetToolTip(&T_("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
                        "hide what looks like being the small error using floating-point "
-                       "numbers introduces.\n"
-                       "If this seems to be the case here the error can be avoided by using "
-                       "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
-                       "It also can be hidden by setting fpprintprec to an appropriate value. "
-                       "But be aware in this case that even small errors can add up."));
+                     "numbers introduces.\n"
+                     "If this seems to be the case here the error can be avoided by using "
+                     "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
+                     "It also can be hidden by setting fpprintprec to an appropriate value. "
+                     "But be aware in this case that even small errors can add up."));
   }
 
   else
@@ -303,7 +296,7 @@ void TextCell::UpdateToolTip()
 
 const wxString &TextCell::GetAltCopyText() const
 {
-  return m_hasAltCopyText ? m_altCopyText() : wxm::emptyString;
+  return m_hasAltCopyText ? m_altCopyText : wxm::emptyString;
 }
 
 void TextCell::SetValue(const wxString &text)
@@ -327,7 +320,6 @@ TextCell::TextCell(const TextCell &cell):
 {
   InitBitFields();
   CopyCommonData(cell);
-  m_userDefinedLabel() = cell.m_userDefinedLabel();
   if (!cell.GetAltCopyText().empty())
     SetAltCopyText(cell.GetAltCopyText());
   m_bigSkip = cell.m_bigSkip;
@@ -350,12 +342,8 @@ bool TextCell::NeedsRecalculation(AFontSize fontSize) const
     (
       (m_textStyle == TS_LABEL) &&
       ((*m_configuration)->UseUserLabels()) &&
-    (!m_userDefinedLabel().empty())
-      ) ||
-    (
-      (m_textStyle == TS_NUMBER) &&
-      (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-        );
+    (!m_userDefinedLabel.empty())
+      );
 }
 
 TextCell::TextIndex TextCell::GetLabelIndex() const
@@ -365,46 +353,15 @@ TextCell::TextIndex TextCell::GetLabelIndex() const
   {
     if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) && configuration->ShowLabels())
     {
-      return (m_textStyle == TS_USERLABEL) ? userLabelText : displayedText;
+      return (m_textStyle == TS_USERLABEL) ? userLabelText : cellText;
     }
   }
   return noText;
 }
 
-wxString TextCell::GetTextFor(TextCell::TextIndex const index) const
-{
-  switch (index) {
-  case noText:
-    return {};
-  case displayedText:
-    return m_displayedText;
-  case userLabelText:
-  {
-    auto text = wxT("(") + m_userDefinedLabel() + wxT(")");
-    m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
-    return text;
-  }
-  case numStart:
-    return m_numStart;
-  case ellipsis:
-    return m_ellipsis;
-  case numEnd:
-    return m_numEnd;
-  }
-  return {};
-}
-
-wxSize TextCell::GetTextSizeFor(wxDC *const dc, TextCell::TextIndex const index)
+wxSize TextCell::GetTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
 {
   AFontSize const fontSize = GetScaledTextSize();
-  for (auto const &entry : m_sizeCache)
-    if (entry.index == index && entry.fontSize == fontSize)
-      return entry.textSize;
-
-  if (!dc)
-    return {};
-
-  const wxString &text = GetTextFor(index);
   if (text.empty())
     return {};
 
@@ -426,7 +383,7 @@ void TextCell::UpdateDisplayedText()
     {
       if(configuration->UseUserLabels())
       {
-        if(m_userDefinedLabel().empty())
+        if(m_userDefinedLabel.empty())
         {
           if(configuration->ShowAutomaticLabels())
             m_displayedText = m_text;
@@ -434,7 +391,7 @@ void TextCell::UpdateDisplayedText()
             m_displayedText = wxEmptyString;
         }
         else
-          m_displayedText = m_userDefinedLabel();
+          m_displayedText = m_userDefinedLabel;
       }
     }
   }
@@ -457,27 +414,6 @@ void TextCell::UpdateDisplayedText()
     if (m_text == wxT("psi"))
       m_displayedText = wxT("\u03A8");
   }  
-
-  if(m_textStyle == TS_NUMBER)
-  {
-    m_sizeCache.clear();
-    unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();
-    if (m_displayedText.Length() > displayedDigits)
-    {
-      int left = displayedDigits / 3;
-      if (left > 30) left = 30;      
-      m_numStart = m_displayedText.Left(left);
-      m_ellipsis = wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left);
-      m_numEnd = m_displayedText.Right(left);
-    }
-    else
-    {
-      m_numStart.clear();
-      m_ellipsis.clear();
-      m_numEnd.clear();
-    }
-    m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
-  }
 
   if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
     return;
@@ -520,7 +456,7 @@ void TextCell::Recalculate(AFontSize fontsize)
     if(
       (m_textStyle == TS_LABEL) &&
       (configuration->UseUserLabels()) &&
-      (!m_userDefinedLabel().empty())
+      (!m_userDefinedLabel.empty())
       )
       m_textStyle = TS_USERLABEL;
 
@@ -529,29 +465,10 @@ void TextCell::Recalculate(AFontSize fontsize)
       m_labelChoice_Last = configuration->GetLabelChoice();
       UpdateDisplayedText();
     }
-
-    // If the config settings about how many digits to display has changed we
-    // need to regenerate the info which number to show.
-    if (
-      (m_textStyle == TS_NUMBER) &&
-      (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-        )
-      UpdateDisplayedText();
   
-    if((m_textStyle == TS_NUMBER) && (m_numStart != wxEmptyString))
-    {
-      auto numStartSize = GetTextSizeFor(dc, numStart);
-      auto numEndSize = GetTextSizeFor(dc, numEnd);
-      auto ellipsisSize = GetTextSizeFor(dc, ellipsis);
-      m_width = numStartSize.GetWidth() + numEndSize.GetWidth() +
-        ellipsisSize.GetWidth();
-      m_height = wxMax(
-        wxMax(numStartSize.GetHeight(), numEndSize.GetHeight()),
-        ellipsisSize.GetHeight());
-    }
-    else if ((m_textStyle == TS_LABEL) ||
-             (m_textStyle == TS_USERLABEL) ||
-             (m_textStyle == TS_MAIN_PROMPT))
+    if ((m_textStyle == TS_LABEL) ||
+        (m_textStyle == TS_USERLABEL) ||
+        (m_textStyle == TS_MAIN_PROMPT))
     {
       // Labels and prompts are fixed width - adjust font size so that
       // they fit in
@@ -561,7 +478,7 @@ void TextCell::Recalculate(AFontSize fontsize)
       {
         Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
       
-        wxSize labelSize = GetTextSizeFor(configuration->GetDC(), index);
+        wxSize labelSize = GetTextSize(configuration->GetDC(), m_displayedText, index);
         wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                      _("Seems like something is broken with the maths font."));
 
@@ -574,7 +491,7 @@ void TextCell::Recalculate(AFontSize fontsize)
   #endif
           style.SetFontSize(Scale_Px(m_fontSize));
           dc->SetFont(style.GetFont());
-          labelSize = GetTextSizeFor(configuration->GetDC(), index);
+          labelSize = GetTextSize((*m_configuration)->GetDC(), m_displayedText, index);
         }
         m_height = labelSize.GetHeight();
         m_center = m_height / 2;
@@ -588,7 +505,7 @@ void TextCell::Recalculate(AFontSize fontsize)
     /// For all other cell types we determine the length of the displayed text.
     else
     {
-      wxSize sz = GetTextSizeFor((*m_configuration)->GetDC(), displayedText);
+      wxSize sz = GetTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
       m_width = sz.GetWidth();
       m_height = sz.GetHeight();
     }
@@ -603,7 +520,7 @@ void TextCell::Recalculate(AFontSize fontsize)
       m_width = Scale_Px(fontsize) / 4;
     }
     if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
-    m_realCenter = m_center = m_height / 2;
+    m_center = m_height / 2;
   }
 }
 
@@ -631,37 +548,20 @@ void TextCell::Draw(wxPoint point)
         auto const index = GetLabelIndex();
         if (index != noText)
         {
-          SetToolTip(&m_userDefinedLabel());
-          dc->DrawText(GetTextFor(index),
-                       point.x + MC_TEXT_PADDING,
-                       point.y - m_realCenter + MC_TEXT_PADDING);
+          SetToolTip(&m_userDefinedLabel);
+          if(m_textStyle == TS_USERLABEL)
+          {
+            auto text = wxT("(") + m_userDefinedLabel + wxT(")");
+            m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
+            dc->DrawText(text,
+                         point.x + MC_TEXT_PADDING,
+                         point.y - m_center + MC_TEXT_PADDING);
+          }
+          else 
+            dc->DrawText(m_displayedText,
+                         point.x + MC_TEXT_PADDING,
+                         point.y - m_center + MC_TEXT_PADDING);
         }
-      }
-      else if (!m_numStart.IsEmpty())
-      {
-        SetFont(m_fontSize);
-        auto const numStartSize = GetTextSizeFor(nullptr, numStart);
-        auto const ellipsisSize = GetTextSizeFor(nullptr, ellipsis);
-        // Sets the foreground color
-        dc->DrawText(m_numStart,
-                     point.x + MC_TEXT_PADDING,
-                     point.y - m_realCenter + MC_TEXT_PADDING);
-        dc->DrawText(m_numEnd,
-                     point.x + MC_TEXT_PADDING + numStartSize.GetWidth() +
-                     ellipsisSize.GetWidth(),
-                     point.y - m_realCenter + MC_TEXT_PADDING);
-        wxColor textColor = dc->GetTextForeground();
-        wxColor backgroundColor = dc->GetTextBackground();
-        dc->SetTextForeground(
-          wxColor(
-            (textColor.Red() + backgroundColor.Red()) / 2,
-            (textColor.Green() + backgroundColor.Green()) / 2,
-            (textColor.Blue() + backgroundColor.Blue()) / 2
-            )
-          );
-        dc->DrawText(m_ellipsis,
-                     point.x + MC_TEXT_PADDING + numStartSize.GetWidth(),
-                     point.y - m_realCenter + MC_TEXT_PADDING);
       }
       /// This is the default.
       else
@@ -674,7 +574,7 @@ void TextCell::Draw(wxPoint point)
             // TODO: Add markdown formatting for bold, italic and underlined here.
             dc->DrawText(m_displayedText,
                         point.x + MC_TEXT_PADDING,
-                        point.y - m_realCenter + MC_TEXT_PADDING);
+                        point.y - m_center + MC_TEXT_PADDING);
             break;
           case MC_TYPE_INPUT:
             // This cell has already been drawn as an EditorCell => we don't repeat this action here.
@@ -682,7 +582,7 @@ void TextCell::Draw(wxPoint point)
           default:
             dc->DrawText(m_displayedText,
                         point.x + MC_TEXT_PADDING,
-                        point.y - m_realCenter + MC_TEXT_PADDING);
+                        point.y - m_center + MC_TEXT_PADDING);
         }
       }
     }
@@ -710,9 +610,7 @@ void TextCell::SetFont(AFontSize fontsize)
     // within fractions, subscripts or superscripts.
     if (
       (m_textStyle != TS_MAIN_PROMPT) &&
-      (m_textStyle != TS_OTHER_PROMPT) &&
-      (m_textStyle != TS_ERROR) &&
-      (m_textStyle != TS_WARNING)
+      (m_textStyle != TS_OTHER_PROMPT)
       )
       m_fontSize = fontsize;
   }
@@ -752,8 +650,8 @@ wxString TextCell::ToString() const
   else
   {
     text = m_text;
-    if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
-      text = wxT("(") + m_userDefinedLabel() + wxT(")");
+    if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+      text = wxT("(") + m_userDefinedLabel + wxT(")");
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\u2794"), wxT("-->"));
     text.Replace(wxT("\u2192"), wxT("->"));
@@ -828,8 +726,8 @@ wxString TextCell::ToMatlab() const
 	else
 	{
 	  text = m_text;
-	  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
-		text = wxT("(") + m_userDefinedLabel() + wxT(")");
+	  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+		text = wxT("(") + m_userDefinedLabel + wxT(")");
 	  text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
 	  text.Replace(wxT("\u2794"), wxT("-->"));
 	  text.Replace(wxT("\u2192"), wxT("->"));
@@ -904,8 +802,8 @@ wxString TextCell::ToTeX() const
 {
   wxString text = m_displayedText;
 
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
-    text = wxT("(") + m_userDefinedLabel() + wxT(")");
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
 
   if (!(*m_configuration)->CheckKeepPercent())
   {
@@ -1318,8 +1216,8 @@ wxString TextCell::ToMathML() const
     return wxEmptyString;
   wxString text = XMLescape(m_displayedText);
 
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
-    text = XMLescape(wxT("(") + m_userDefinedLabel() + wxT(")"));
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+    text = XMLescape(wxT("(") + m_userDefinedLabel + wxT(")"));
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
@@ -1474,8 +1372,8 @@ wxString TextCell::ToRTF() const
   if (m_displayedText == wxEmptyString)
     return(wxT(" "));
   
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel().empty())
-    text = wxT("(") + m_userDefinedLabel() + wxT(")");
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
   
   text.Replace(wxT("-->"), wxT("\u2192"));
   // Needed for the output of let(a/b,a+1);
@@ -1538,8 +1436,8 @@ wxString TextCell::ToXML() const
   
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
-  if (!m_userDefinedLabel().empty())
-    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel()) + wxT("\"");
+  if (!m_userDefinedLabel.empty())
+    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
   if(!GetAltCopyText().empty())
     flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");

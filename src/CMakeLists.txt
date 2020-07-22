@@ -47,6 +47,7 @@ set(SOURCE_FILES
     LimitCell.cpp
     LimitWiz.cpp
     ListSortWiz.cpp
+    LongNumberCell.cpp
     LogPane.cpp
     LoggingMessageDialog.cpp
     MainMenuBar.cpp

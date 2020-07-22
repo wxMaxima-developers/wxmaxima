@@ -47,6 +47,7 @@
 #include "IntCell.h"
 #include "FunCell.h"
 #include "ImgCell.h"
+#include "LongNumberCell.h"
 #include "SubSupCell.h"
 #include "StringUtils.h"
 #include "VisiblyInvalidCell.h"
@@ -796,7 +797,18 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
     wxStringTokenizer lines(str, wxT('\n'));
     while (lines.HasMoreTokens())
     {
-      TextCell *cell = new TextCell(NULL, m_configuration);
+      TextCell *cell;
+      wxString value = lines.GetNextToken();
+      if(style == TS_NUMBER)
+      {
+        if(value.Length() >= 20)
+          cell = new LongNumberCell(NULL, m_configuration, value);
+        else
+          cell = new TextCell(NULL, m_configuration, value);
+      }
+      else
+        cell = new TextCell(NULL, m_configuration, value);
+
       switch(style)
       {
       case TS_ERROR:
@@ -818,7 +830,6 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
       cell->SetStyle(style);
       
       cell->SetHighlight(m_highlight);
-      cell->SetValue(lines.GetNextToken());
       if (retval == NULL)
         retval = cell;
       else

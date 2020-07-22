@@ -49,11 +49,11 @@ public:
   void SetValue(const wxString &text) override;
 
   //! Set the automatic label maxima has assigned the current equation
-  void SetUserDefinedLabel(const wxString &userDefinedLabel) { m_userDefinedLabel() = userDefinedLabel; }
+  void SetUserDefinedLabel(const wxString &userDefinedLabel) { m_userDefinedLabel = userDefinedLabel; }
 
   void Recalculate(AFontSize fontsize) override;
 
-  void Draw(wxPoint point) override;
+  virtual void Draw(wxPoint point) override;
 
   void SetFont(AFontSize fontsize);
 
@@ -97,9 +97,9 @@ public:
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
-private:
+protected:
   //! The text we actually display depends on many factors, unfortunately
-  void UpdateDisplayedText();
+  virtual void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
   //! Get the AltCopyText - may be empty.
@@ -112,16 +112,16 @@ private:
     m_sizeCache.clear();
   }
 
-  bool NeedsRecalculation(AFontSize fontSize) const override;
+  virtual bool NeedsRecalculation(AFontSize fontSize) const override;
 
   enum TextIndex : int8_t
   {
     noText,
-    displayedText,
+    cellText,
     userLabelText,
-    numStart,
+    numberStart,
     ellipsis,
-    numEnd
+    numberEnd    
   };
 
   struct SizeEntry {
@@ -134,8 +134,7 @@ private:
   };
 
   TextIndex GetLabelIndex() const;
-  wxString GetTextFor(TextIndex text) const;
-  wxSize GetTextSizeFor(wxDC *dc, TextIndex index);
+  wxSize GetTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
 
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
@@ -145,39 +144,19 @@ private:
 
   //! The user-defined label for this label cell. Reuses m_numEnd since
   //! otherwise it'd be unused for labels.
-  wxString &m_userDefinedLabel() { return m_numEnd; }
-  const wxString &m_userDefinedLabel() const { return m_numEnd; }
-
-  //! Text that should end up on the clipboard if this cell is copied as text.
-  //! Reuses m_ellipsis since otherwise it'd be unused.
-  wxString &m_altCopyText() { return m_ellipsis; }
-  const wxString &m_altCopyText() const { return m_ellipsis; }
+  wxString m_userDefinedLabel;
 
 //** Large objects (264 bytes)
 //**
   //! The text we keep inside this cell
   wxString m_text;
-  //! The text we display: m_text might be a number that is longer than we want to display
+  //! The text we display: We might want to convert some characters or do similar things
   wxString m_displayedText;
-
-  //! The first few digits
-  wxString m_numStart;
-  //! The "not all digits displayed" message.
-  wxString m_ellipsis;  // overlaid with m_altCopyText
-  //! Last few digits (also used for user defined label)
-  wxString m_numEnd;    // overlaid with m_userDefinedLabel
   std::vector<SizeEntry> m_sizeCache;
 
 //** 8/4-byte objects (8 bytes)
 //**
   CellPtr<Cell> m_nextToDraw;
-
-//** 4-byte objects (8 bytes)
-//**
-  int m_realCenter = -1;
-
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old = -1;
 
 //** 1-byte objects (1 byte)
 //**
@@ -194,6 +173,7 @@ private:
     m_hasAltCopyText = false;
   }
 
+  wxString m_altCopyText;
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?
