@@ -805,15 +805,15 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
         if(value.Length() >= 20)
           cell = new LongNumberCell(NULL, m_configuration, value);
         else
-          cell = new TextCell(NULL, m_configuration, value);
+          cell = new TextCell(NULL, m_configuration, value, style);
       }
       else if((style == TS_LABEL) ||
               (style == TS_USERLABEL) ||
               (style == TS_MAIN_PROMPT) ||
               (style == TS_OTHER_PROMPT))
-        cell = new LabelCell(NULL, m_configuration, value);
+        cell = new LabelCell(NULL, m_configuration, value, style);
       else
-        cell = new TextCell(NULL, m_configuration, value);
+        cell = new TextCell(NULL, m_configuration, value, style);
 
       switch(style)
       {
@@ -833,7 +833,6 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
       default:
         cell->SetType(m_ParserStyle);
       }
-      cell->SetStyle(style);
       
       cell->SetHighlight(m_highlight);
       if (retval == NULL)
