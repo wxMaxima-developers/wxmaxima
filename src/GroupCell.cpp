@@ -450,7 +450,6 @@ void GroupCell::Recalculate()
 {
   m_fontSize = (*m_configuration)->GetDefaultFontSize();
 
-  double fontSize;
   if (NeedsRecalculation(m_fontSize))
   {
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
