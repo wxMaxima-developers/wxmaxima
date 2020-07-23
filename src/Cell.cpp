@@ -279,7 +279,7 @@ GroupCell *Cell::GetGroup() const
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   bool result = (m_recalculateWidths) ||
-    (fontSize != m_fontsize_old) ||
+    (fontSize != m_fontSize) ||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     IsZoomFactorChanged() ||
@@ -486,7 +486,6 @@ void Cell::ResetSizeList()
 void Cell::Recalculate(AFontSize fontsize)
 {
   m_fontSize = fontsize;
-  m_fontsize_old = fontsize;
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
   m_lastZoomFactor = (*m_configuration)->GetZoomFactor();

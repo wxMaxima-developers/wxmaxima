@@ -50,7 +50,7 @@ void LabelCell::Draw(wxPoint point)
     auto const index = GetLabelIndex();
     if (index != noText)
     {
-      auto const style = (*m_configuration)->GetStyle(m_textStyle, Scale_Px(m_fontSize));
+      auto const style = (*m_configuration)->GetStyle(m_textStyle, Scale_Px(m_fontSize_scaledToFit));
       dc->SetFont(style.GetFont());
       SetToolTip(&m_userDefinedLabel);
       if(m_textStyle == TS_USERLABEL)
@@ -172,6 +172,7 @@ wxString LabelCell::GetXMLFlags() const
 
 void LabelCell::Recalculate(AFontSize fontsize)
 {
+  m_fontSize_scaledToFit = fontsize;
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
   if(NeedsRecalculation(fontsize))
@@ -212,14 +213,14 @@ void LabelCell::Recalculate(AFontSize fontsize)
 
       wxDC *dc = configuration->GetDC();
       while ((labelSize.GetWidth() >= Scale_Px(configuration->GetLabelWidth())) &&
-             (!m_fontSize.IsMinimal()))
+             (!m_fontSize_scaledToFit.IsMinimal()))
       {
 #if wxCHECK_VERSION(3, 1, 2)
-        m_fontSize -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+        m_fontSize_scaledToFit -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
 #else
-        m_fontSize -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+        m_fontSize_scaledToFit -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
 #endif
-        style.SetFontSize(Scale_Px(m_fontSize));
+        style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
         dc->SetFont(style.GetFont());
         labelSize = GetTextSize((*m_configuration)->GetDC(), m_displayedText, index);
       }
