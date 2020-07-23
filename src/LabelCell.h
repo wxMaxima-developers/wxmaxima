@@ -53,6 +53,8 @@ private:
 
   TextIndex GetLabelIndex() const;
 
+  AFontSize m_fontSize_scaledToFit = {};
+
 //** 1-byte objects (1 byte)
 //**
   Configuration::showLabels m_labelChoice_Last = {};

@@ -881,7 +881,6 @@ protected:
 //**
   //! The font size is smaller in super- and subscripts.
   AFontSize m_fontSize = {};
-  AFontSize m_fontsize_old = {};
 
 //** 1-byte objects (2 bytes)
 //**

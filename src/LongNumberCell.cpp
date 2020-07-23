@@ -89,7 +89,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
     Cell::Recalculate(fontsize);
     if(m_numStart != wxEmptyString)
     {
-      m_fontsize_old = m_fontSize = fontsize;
+      m_fontSize = fontsize;
       SetFont(fontsize);
       Configuration *configuration = (*m_configuration);
       wxDC *dc = configuration->GetDC();
