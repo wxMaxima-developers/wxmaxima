@@ -34,8 +34,7 @@
 
 TextCell::TextCell(GroupCell *parent, Configuration **config,
                    const wxString &text, TextStyle style) :
-  Cell(parent, config),
-  m_labelChoice_Last((*config)->GetLabelChoice())
+  Cell(parent, config)
 {
   InitBitFields();
   switch(m_textStyle = style)
@@ -99,14 +98,8 @@ void TextCell::SetType(CellType type)
 
 void TextCell::SetAltCopyText(const wxString &text)
 {
-  if (text.empty())
-  {
-    m_hasAltCopyText = false;
-    return;
-  }
   // Numbers with altCopyText are scary
-  wxASSERT(m_textStyle != TS_NUMBER);
-  m_hasAltCopyText = true;
+  wxASSERT((m_textStyle != TS_NUMBER) || text.empty());
   m_altCopyText = text;
 }
 
@@ -294,11 +287,6 @@ void TextCell::UpdateToolTip()
   }
 }
 
-const wxString &TextCell::GetAltCopyText() const
-{
-  return m_hasAltCopyText ? m_altCopyText : wxm::emptyString;
-}
-
 void TextCell::SetValue(const wxString &text)
 {
   m_sizeCache.clear();
@@ -315,8 +303,7 @@ void TextCell::SetValue(const wxString &text)
 TextCell::TextCell(const TextCell &cell):
     Cell(cell.m_group, cell.m_configuration),
     m_text(cell.m_text),
-    m_displayedText(cell.m_displayedText),
-    m_labelChoice_Last((*cell.m_configuration)->GetLabelChoice())
+    m_displayedText(cell.m_displayedText)
 {
   InitBitFields();
   CopyCommonData(cell);
@@ -334,29 +321,7 @@ AFontSize TextCell::GetScaledTextSize() const
 
 bool TextCell::NeedsRecalculation(AFontSize fontSize) const
 {
-  return Cell::NeedsRecalculation(fontSize) ||
-    (
-      (m_textStyle == TS_USERLABEL) &&
-      (!(*m_configuration)->UseUserLabels())
-      ) ||
-    (
-      (m_textStyle == TS_LABEL) &&
-      ((*m_configuration)->UseUserLabels()) &&
-    (!m_userDefinedLabel.empty())
-      );
-}
-
-TextCell::TextIndex TextCell::GetLabelIndex() const
-{
-  auto *const configuration = *m_configuration;
-  if (m_textStyle == TS_LABEL || m_textStyle == TS_USERLABEL || m_textStyle == TS_MAIN_PROMPT)
-  {
-    if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) && configuration->ShowLabels())
-    {
-      return (m_textStyle == TS_USERLABEL) ? userLabelText : cellText;
-    }
-  }
-  return noText;
+  return Cell::NeedsRecalculation(fontSize);
 }
 
 wxSize TextCell::GetTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
@@ -375,26 +340,6 @@ void TextCell::UpdateDisplayedText()
   m_displayedText = m_text;
 
   Configuration *configuration = (*m_configuration);
-  if((m_textStyle == TS_USERLABEL) || (m_textStyle == TS_LABEL))
-  {
-    if(!configuration->ShowLabels())
-      m_displayedText = wxEmptyString;
-    else
-    {
-      if(configuration->UseUserLabels())
-      {
-        if(m_userDefinedLabel.empty())
-        {
-          if(configuration->ShowAutomaticLabels())
-            m_displayedText = m_text;
-          else
-            m_displayedText = wxEmptyString;
-        }
-        else
-          m_displayedText = m_userDefinedLabel;
-      }
-    }
-  }
   
   m_displayedText.Replace(wxT("\xDCB6"), wxT("\u00A0")); // A non-breakable space
   m_displayedText.Replace(wxT("\n"), wxEmptyString);
@@ -446,69 +391,9 @@ void TextCell::Recalculate(AFontSize fontsize)
     SetFont(fontsize);
 
 
-    // If the setting has changed and we want to show a user-defined label
-    // instead of an automatic one or vice versa we decide that here.
-    if(
-      (m_textStyle == TS_USERLABEL) &&
-      (!configuration->UseUserLabels())
-      )
-      m_textStyle = TS_LABEL;
-    if(
-      (m_textStyle == TS_LABEL) &&
-      (configuration->UseUserLabels()) &&
-      (!m_userDefinedLabel.empty())
-      )
-      m_textStyle = TS_USERLABEL;
-
-    if(configuration->GetLabelChoice() != m_labelChoice_Last)
-    {
-      m_labelChoice_Last = configuration->GetLabelChoice();
-      UpdateDisplayedText();
-    }
-  
-    if ((m_textStyle == TS_LABEL) ||
-        (m_textStyle == TS_USERLABEL) ||
-        (m_textStyle == TS_MAIN_PROMPT))
-    {
-      // Labels and prompts are fixed width - adjust font size so that
-      // they fit in
-      auto const index = GetLabelIndex();
-      m_width = Scale_Px(configuration->GetLabelWidth());
-      if (index != noText)
-      {
-        Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
-      
-        wxSize labelSize = GetTextSize(configuration->GetDC(), m_displayedText, index);
-        wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
-                     _("Seems like something is broken with the maths font."));
-
-        while ((labelSize.GetWidth() >= m_width) && (!m_fontSize.IsMinimal()))
-        {
-  #if wxCHECK_VERSION(3, 1, 2)
-          m_fontSize -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-  #else
-          m_fontSize -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-  #endif
-          style.SetFontSize(Scale_Px(m_fontSize));
-          dc->SetFont(style.GetFont());
-          labelSize = GetTextSize((*m_configuration)->GetDC(), m_displayedText, index);
-        }
-        m_height = labelSize.GetHeight();
-        m_center = m_height / 2;
-      }
-      else
-      {
-        m_height = m_center = 0;
-      }
-      m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
-    }
-    /// For all other cell types we determine the length of the displayed text.
-    else
-    {
-      wxSize sz = GetTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
-      m_width = sz.GetWidth();
-      m_height = sz.GetHeight();
-    }
+    wxSize sz = GetTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
+    m_width = sz.GetWidth();
+    m_height = sz.GetHeight();
     
     m_width += 2 * MC_TEXT_PADDING;
     m_height += 2 * MC_TEXT_PADDING;
@@ -539,52 +424,10 @@ void TextCell::Draw(wxPoint point)
     if (InUpdateRegion())
     {
       SetForeground();
-      /// Labels and prompts have special fontsize
-      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-      {      
-        auto const style = (*m_configuration)->GetStyle(m_textStyle, GetScaledTextSize());
-        dc->SetFont(style.GetFont());
-
-        auto const index = GetLabelIndex();
-        if (index != noText)
-        {
-          SetToolTip(&m_userDefinedLabel);
-          if(m_textStyle == TS_USERLABEL)
-          {
-            auto text = wxT("(") + m_userDefinedLabel + wxT(")");
-            m_unescapeRegEx.ReplaceAll(&text, wxT("\\1"));
-            dc->DrawText(text,
-                         point.x + MC_TEXT_PADDING,
-                         point.y - m_center + MC_TEXT_PADDING);
-          }
-          else 
-            dc->DrawText(m_displayedText,
-                         point.x + MC_TEXT_PADDING,
-                         point.y - m_center + MC_TEXT_PADDING);
-        }
-      }
-      /// This is the default.
-      else
-      {
-        SetFont(m_fontSize);
-        // Sets the foreground color
-        switch (GetType())
-        {
-          case MC_TYPE_TEXT:
-            // TODO: Add markdown formatting for bold, italic and underlined here.
-            dc->DrawText(m_displayedText,
-                        point.x + MC_TEXT_PADDING,
-                        point.y - m_center + MC_TEXT_PADDING);
-            break;
-          case MC_TYPE_INPUT:
-            // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-            break;
-          default:
-            dc->DrawText(m_displayedText,
-                        point.x + MC_TEXT_PADDING,
-                        point.y - m_center + MC_TEXT_PADDING);
-        }
-      }
+      SetFont(m_fontSize);
+      dc->DrawText(m_displayedText,
+                   point.x + MC_TEXT_PADDING,
+                   point.y - m_center + MC_TEXT_PADDING);
     }
   }
 }
@@ -650,8 +493,6 @@ wxString TextCell::ToString() const
   else
   {
     text = m_text;
-    if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
-      text = wxT("(") + m_userDefinedLabel + wxT(")");
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\u2794"), wxT("-->"));
     text.Replace(wxT("\u2192"), wxT("->"));
@@ -700,15 +541,6 @@ wxString TextCell::ToString() const
       // Labels sometimes end with a few spaces. But if they are long they don't do
       // that any more => Add a TAB to the end of any label replacing trailing
       // whitespace. But don't do this if we copy only the label.
-    case TS_LABEL:
-    case TS_USERLABEL:
-    case TS_MAIN_PROMPT:
-    case TS_OTHER_PROMPT:
-      {
-        text.Trim();
-        text += wxT("\t");
-        break;
-      }
   default:
   {}
   }
@@ -720,90 +552,75 @@ wxString TextCell::ToString() const
 
 wxString TextCell::ToMatlab() const
 {
-	wxString text;
-	if (!GetAltCopyText().empty())
-	  text = GetAltCopyText();
-	else
-	{
-	  text = m_text;
-	  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
-		text = wxT("(") + m_userDefinedLabel + wxT(")");
-	  text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
-	  text.Replace(wxT("\u2794"), wxT("-->"));
-	  text.Replace(wxT("\u2192"), wxT("->"));
+  wxString text = ToString();
+  if (text == wxT("%e"))
+    text = wxT("e");
+  else if (text == wxT("%i"))
+    text = wxT("i");
+  else if (text == wxT("%pi"))
+    text = wxString(wxT("pi"));
+  switch (m_textStyle)
+  {
+  case TS_VARIABLE:
+  case TS_FUNCTION:
+    // The only way for variable or function names to contain quotes and
+    // characters that clearly represent operators is that these chars
+    // are quoted by a backslash: They cannot be quoted by quotation
+    // marks since maxima would'nt allow strings here.
+  {
+    wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
+    bool isOperator = true;
+    for (size_t i = 0; i < m_text.Length(); i++)
+    {
+      if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+      {
+        isOperator = false;
+        break;
+      }
+    }
 
-	  if (text == wxT("%e"))
-		text = wxT("e");
-	  else if (text == wxT("%i"))
-		text = wxT("i");
-	  else if (text == wxT("%pi"))
-		text = wxString(wxT("pi"));
-	}
-	switch (m_textStyle)
-	{
-	  case TS_VARIABLE:
-	  case TS_FUNCTION:
-		// The only way for variable or function names to contain quotes and
-		// characters that clearly represent operators is that these chars
-		// are quoted by a backslash: They cannot be quoted by quotation
-		// marks since maxima would'nt allow strings here.
-	  {
-		wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
-		bool isOperator = true;
-		for (size_t i = 0; i < m_text.Length(); i++)
-		{
-		  if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
-		  {
-			isOperator = false;
-			break;
-		  }
-		}
+    if (!isOperator)
+    {
+      wxString lastChar;
+      if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
+      {
+        lastChar = text[text.Length() - 1];
+        text = text.Left(text.Length() - 1);
+      }
+      for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
+        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      text += lastChar;
+    }
+    break;
+  }
+  case TS_STRING:
+    text = wxT("\"") + text + wxT("\"");
+    break;
 
-		if (!isOperator)
-		{
-		  wxString lastChar;
-		  if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
-		  {
-			lastChar = text[text.Length() - 1];
-			text = text.Left(text.Length() - 1);
-		  }
-		  for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
-			text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
-		  text += lastChar;
-		}
-		break;
-	  }
-	  case TS_STRING:
-		text = wxT("\"") + text + wxT("\"");
-		break;
+    // Labels sometimes end with a few spaces. But if they are long they don't do
+    // that any more => Add a TAB to the end of any label replacing trailing
+    // whitespace. But don't do this if we copy only the label.
+  case TS_LABEL:
+  case TS_USERLABEL:
+  case TS_MAIN_PROMPT:
+  case TS_OTHER_PROMPT:
+  {
+    text.Trim();
+    text += wxT("\t");
+    break;
+  }
+  default:
+  {}
+  }
+  if((m_next != NULL) && (m_next->BreakLineHere()))
+    text += "\n";
 
-		// Labels sometimes end with a few spaces. But if they are long they don't do
-		// that any more => Add a TAB to the end of any label replacing trailing
-		// whitespace. But don't do this if we copy only the label.
-	  case TS_LABEL:
-	  case TS_USERLABEL:
-	  case TS_MAIN_PROMPT:
-	  case TS_OTHER_PROMPT:
-		{
-		  text.Trim();
-		  text += wxT("\t");
-		  break;
-		}
-	default:
-	{}
-	}
-	if((m_next != NULL) && (m_next->BreakLineHere()))
-	  text += "\n";
-
-	return text;
+  return text;
 }
 
 wxString TextCell::ToTeX() const
 {
-  wxString text = m_displayedText;
-
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
+  wxString text = ToString();
 
   if (!(*m_configuration)->CheckKeepPercent())
   {
@@ -1214,10 +1031,7 @@ wxString TextCell::ToMathML() const
 {
   if(m_displayedText == wxEmptyString)
     return wxEmptyString;
-  wxString text = XMLescape(m_displayedText);
-
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
-    text = XMLescape(wxT("(") + m_userDefinedLabel + wxT(")"));
+  wxString text = XMLescape(ToString());
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
@@ -1367,14 +1181,11 @@ wxString TextCell::ToOMML() const
 wxString TextCell::ToRTF() const
 {
   wxString retval;
-  wxString text = m_displayedText;
+  wxString text = ToString();
 
   if (m_displayedText == wxEmptyString)
     return(wxT(" "));
-  
-  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
-  
+    
   text.Replace(wxT("-->"), wxT("\u2192"));
   // Needed for the output of let(a/b,a+1);
   text.Replace(wxT(" --> "), wxT("\u2192"));
@@ -1387,10 +1198,33 @@ wxString TextCell::ToRTF() const
   return retval;
 }
 
+wxString TextCell::GetXMLFlags() const
+{
+  wxString flags;
+  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
+    flags += wxT(" breakline=\"true\"");
+
+  if (GetStyle() == TS_ERROR)
+    flags += wxT(" type=\"error\"");
+
+  if (GetStyle() == TS_WARNING)
+    flags += wxT(" type=\"warning\"");
+  
+  if(!GetAltCopyText().empty())
+    flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");
+
+  if (!GetLocalToolTip().empty())
+    flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");
+
+  if(GetStyle() == TS_USERLABEL)
+    flags += wxT(" userdefined=\"yes\"");
+
+  return flags;
+}
+
 wxString TextCell::ToXML() const
 {
   wxString tag;
-  wxString flags;
   if (m_isHidden || (m_isHidableMultSign))
     tag = _T("h");
   else
@@ -1419,33 +1253,15 @@ wxString TextCell::ToXML() const
         break;
       case TS_USERLABEL:
         tag = _T("lbl");
-        flags += wxT(" userdefined=\"yes\"");
         break;
       default:
         tag = _T("t");
     }
 
-  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
-    flags += wxT(" breakline=\"true\"");
-
-  if (GetStyle() == TS_ERROR)
-    flags += wxT(" type=\"error\"");
-
-  if (GetStyle() == TS_WARNING)
-    flags += wxT(" type=\"warning\"");
-  
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
-  if (!m_userDefinedLabel.empty())
-    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
-  if(!GetAltCopyText().empty())
-    flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");
-
-  if (!GetLocalToolTip().empty())
-    flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");
-
-  return wxT("<") + tag + flags + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
+  return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
 }
 
 wxString TextCell::GetDiffPart() const

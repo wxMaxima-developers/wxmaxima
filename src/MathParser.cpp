@@ -47,6 +47,7 @@
 #include "IntCell.h"
 #include "FunCell.h"
 #include "ImgCell.h"
+#include "LabelCell.h"
 #include "LongNumberCell.h"
 #include "SubSupCell.h"
 #include "StringUtils.h"
@@ -382,7 +383,7 @@ Cell *MathParser::ParseOutputLabelTag(wxXmlNode *node)
     }
   }
   
-  dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(user_lbl);
+  dynamic_cast<LabelCell *>(tmp)->SetUserDefinedLabel(user_lbl);
   tmp->ForceBreakLine(true);
   return tmp;
 }
@@ -806,6 +807,11 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
         else
           cell = new TextCell(NULL, m_configuration, value);
       }
+      else if((style == TS_LABEL) ||
+              (style == TS_USERLABEL) ||
+              (style == TS_MAIN_PROMPT) ||
+              (style == TS_OTHER_PROMPT))
+        cell = new LabelCell(NULL, m_configuration, value);
       else
         cell = new TextCell(NULL, m_configuration, value);
 

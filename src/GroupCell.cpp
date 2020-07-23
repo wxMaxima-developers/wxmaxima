@@ -36,6 +36,7 @@
 #include "MarkDown.h"
 #include "SlideShowCell.h"
 #include "TextCell.h"
+#include "LabelCell.h"
 #include "stx/unique_cast.hpp"
 #include <wx/config.h>
 #include <wx/clipbrd.h>
@@ -116,7 +117,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = std::make_unique<TextCell>(this, m_configuration, EMPTY_INPUT_LABEL);
+      m_inputLabel = std::make_unique<LabelCell>(this, m_configuration, EMPTY_INPUT_LABEL);
     else
       m_inputLabel = std::make_unique<TextCell>(this, m_configuration, wxT(""));
 

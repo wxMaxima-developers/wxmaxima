@@ -71,6 +71,7 @@
 #include "wxMaximaIcon.h"
 #include "WXMformat.h"
 #include "ErrorRedirector.h"
+#include "LabelCell.h"
 
 #include <wx/colordlg.h>
 #include <wx/clipbrd.h>
@@ -1313,16 +1314,23 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
 
   if (type == MC_TYPE_MAIN_PROMPT)
   {
-    auto owned = std::make_unique<TextCell>(m_worksheet->GetTree(), &(m_worksheet->m_configuration), s);
+    auto owned = std::make_unique<LabelCell>(m_worksheet->GetTree(), &(m_worksheet->m_configuration), s, TS_MAIN_PROMPT);
     owned->SetType(type);
     owned->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
     cell = owned.get();
     m_worksheet->InsertLine(std::move(owned), true);
   }
-
   else
   {
-    TextCell *incompleteTextCell = m_worksheet->GetCurrentTextCell();
+    TextCell *incompleteTextCell;
+    if (type == MC_TYPE_PROMPT)
+      incompleteTextCell = new LabelCell(
+        m_worksheet->GetTree(),
+        &(m_worksheet->m_configuration),
+        wxEmptyString,
+        TS_OTHER_PROMPT);
+    else
+      incompleteTextCell = m_worksheet->GetCurrentTextCell();
 
     if(incompleteTextCell != NULL)
     {
@@ -2779,8 +2787,6 @@ void wxMaxima::ReadPrompt(wxString &data)
     // And we can remove one command from the evaluation queue.
     m_worksheet->m_evaluationQueue.RemoveFirst();
 
-    //m_lastPrompt = o.Mid(1,o.Length()-1);
-    //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
     m_lastPrompt = o;
     // remove the event maxima has just processed from the evaluation queue
     // if we remove a command from the evaluation queue the next output line will be the
@@ -2852,7 +2858,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         DoConsoleAppend(o, MC_TYPE_PROMPT, AppendOpt(options));
       else
         DoRawConsoleAppend(o, MC_TYPE_PROMPT, AppendOpt(options));
-  }
+    }
     if (m_worksheet->ScrolledAwayFromEvaluation())
     {
       if (m_worksheet->m_mainToolBar)
@@ -8556,13 +8562,11 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     break;
   case TableOfContents::popid_EvalTocChapter:
   {
-    std::cerr<<"TocChapter\n";
     GroupCell *SelectionStart = m_worksheet->m_tableOfContents->RightClickedOn();
     // We only update the table of contents when there is time => no guarantee that the
     // cell that was clicked at actually still is part of the tree.
     if ((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
     {
-      std::cerr<<"TocChapter2\n";
       m_worksheet->AddSectionToEvaluationQueue(m_worksheet->m_tableOfContents->RightClickedOn());
       TriggerEvaluation();
     }

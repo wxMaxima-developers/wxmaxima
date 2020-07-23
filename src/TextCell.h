@@ -43,13 +43,10 @@ public:
 
   AFontSize GetScaledTextSize() const;
   
-  void SetStyle(TextStyle style) override;
+  virtual void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
-
-  //! Set the automatic label maxima has assigned the current equation
-  void SetUserDefinedLabel(const wxString &userDefinedLabel) { m_userDefinedLabel = userDefinedLabel; }
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -67,7 +64,7 @@ public:
   wxString ToMathML() const override;
   wxString ToOMML() const override;
   wxString ToRTF() const override;
-  wxString ToString() const override;
+  virtual wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
@@ -98,12 +95,14 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 protected:
+  //! Returns the XML flags this cell needs in wxMathML
+  virtual wxString GetXMLFlags() const;
   //! The text we actually display depends on many factors, unfortunately
   virtual void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
   //! Get the AltCopyText - may be empty.
-  const wxString &GetAltCopyText() const;
+  const wxString GetAltCopyText() const { return m_altCopyText; }
 
   void FontsChanged() override
   {
@@ -133,7 +132,6 @@ protected:
     SizeEntry() = default;
   };
 
-  TextIndex GetLabelIndex() const;
   wxSize GetTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
 
   static wxRegEx m_unescapeRegEx;
@@ -142,11 +140,7 @@ protected:
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
-  //! The user-defined label for this label cell. Reuses m_numEnd since
-  //! otherwise it'd be unused for labels.
-  wxString m_userDefinedLabel;
-
-//** Large objects (264 bytes)
+//** Large objects (??? bytes)
 //**
   //! The text we keep inside this cell
   wxString m_text;
@@ -158,9 +152,6 @@ protected:
 //**
   CellPtr<Cell> m_nextToDraw;
 
-//** 1-byte objects (1 byte)
-//**
-  Configuration::showLabels m_labelChoice_Last = {};
 
 //** Bitfield objects (1 bytes)
 //**
@@ -169,8 +160,6 @@ protected:
     // of bit fields in this class!
     m_dontEscapeOpeningParenthesis = false;
     m_promptTooltip = false;
-    m_indicatedAltCopyTextBug = false;
-    m_hasAltCopyText = false;
   }
 
   wxString m_altCopyText;
@@ -178,15 +167,6 @@ protected:
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?
   bool m_promptTooltip : 1 /* InitBitFields */;
-  /*! Did we display a log message about an attempt to set a AltCopyText on
-   *  a numeric cell?
-   *
-   * That is considered an error condition. These texts are never used
-   * on numbers and I've not seen them used on anything else either.
-   */
-  bool m_indicatedAltCopyTextBug : 1 /* InitBitFields */;
-  //! Is m_altCopyText valid?
-  bool m_hasAltCopyText : 1 /* InitBitFields */;
 };
 
 #endif // TEXTCELL_H

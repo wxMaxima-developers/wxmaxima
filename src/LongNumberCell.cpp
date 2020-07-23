@@ -70,18 +70,23 @@ bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const
     (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits());
 }
 
+void LongNumberCell::SetStyle(TextStyle style)
+{
+  wxASSERT (m_textStyle == TS_NUMBER);
+  
+  TextCell::SetStyle(style);
+}
+
 void LongNumberCell::Recalculate(AFontSize fontsize)
 {
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
-  if (
-    (m_textStyle == TS_NUMBER) &&
-    (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-    )
+  if ((m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits()))
     UpdateDisplayedText();
   
   if(NeedsRecalculation(fontsize))
   {      
+    Cell::Recalculate(fontsize);
     if(m_numStart != wxEmptyString)
     {
       m_fontsize_old = m_fontSize = fontsize;
@@ -103,35 +108,39 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
   }
 }
 
-
 void LongNumberCell::Draw(wxPoint point)
 {
-  if(m_numStart == wxEmptyString)
-    TextCell::Draw(point);
-  else
+  Cell::Draw(point);
+  if (InUpdateRegion())
   {
-    SetFont(m_fontSize);
-    Configuration *configuration = (*m_configuration);
-    wxDC *dc = configuration->GetDC();
-    // Sets the foreground color
-    dc->DrawText(m_numStart,
-                 point.x + MC_TEXT_PADDING,
-                 point.y - m_center + MC_TEXT_PADDING);
-    dc->DrawText(m_numEnd,
-                 point.x + MC_TEXT_PADDING + m_numStartWidth +
-                 m_ellipsisWidth,
-                     point.y - m_center + MC_TEXT_PADDING);
-    wxColor textColor = dc->GetTextForeground();
-        wxColor backgroundColor = dc->GetTextBackground();
-        dc->SetTextForeground(
-          wxColor(
-            (textColor.Red() + backgroundColor.Red()) / 2,
-            (textColor.Green() + backgroundColor.Green()) / 2,
-            (textColor.Blue() + backgroundColor.Blue()) / 2
-            )
-          );
-        dc->DrawText(m_ellipsis,
-                     point.x + MC_TEXT_PADDING + m_numStartWidth,
-                     point.y - m_center + MC_TEXT_PADDING);
+    SetForeground();
+    if(m_numStart == wxEmptyString)
+      TextCell::Draw(point);
+    else
+    {
+      SetFont(m_fontSize);
+      Configuration *configuration = (*m_configuration);
+      wxDC *dc = configuration->GetDC();
+      dc->DrawText(m_numStart,
+                   point.x + MC_TEXT_PADDING,
+                   point.y - m_center + MC_TEXT_PADDING);
+      dc->DrawText(m_numEnd,
+                   point.x + MC_TEXT_PADDING + m_numStartWidth +
+                   m_ellipsisWidth,
+                   point.y - m_center + MC_TEXT_PADDING);
+      wxColor textColor = dc->GetTextForeground();
+      wxColor backgroundColor = dc->GetTextBackground();
+      dc->SetTextForeground(
+        wxColor(
+          (textColor.Red() + backgroundColor.Red()) / 2,
+          (textColor.Green() + backgroundColor.Green()) / 2,
+          (textColor.Blue() + backgroundColor.Blue()) / 2
+          )
+        );
+      dc->DrawText(m_ellipsis,
+                   point.x + MC_TEXT_PADDING + m_numStartWidth,
+                   point.y - m_center + MC_TEXT_PADDING);
+    }
   }
 }
+

@@ -43,6 +43,7 @@ set(SOURCE_FILES
     ImgCell.cpp
     IntCell.cpp
     IntegrateWiz.cpp
+    LabelCell.cpp
     LicenseDialog.cpp
     LimitCell.cpp
     LimitWiz.cpp

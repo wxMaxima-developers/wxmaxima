@@ -20,49 +20,49 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#ifndef LONGNUMBERCELL_H
-#define LONGNUMBERCELL_H
+#ifndef LABELCELL_H
+#define LABELCELL_H
 
 #include "TextCell.h"
 
-/*! A cell containing a long number
+/*! A label cell
 
-  A specialised TextCell, that can display a long number, or shorten it using an ellipsis.
+  Labels are TextCells that scale down automatically if they need more space 
+  than we got.
  */
-class LongNumberCell final : public TextCell
+class LabelCell final : public TextCell
 {
 public:
   //! The constructor for cell that, if displayed, means that something is amiss
-  LongNumberCell(GroupCell *parent, Configuration **config, wxString number);
-
+  LabelCell(GroupCell *parent,
+            Configuration **config, wxString automaticLabel, TextStyle style = TS_MAIN_PROMPT);
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   void SetStyle(TextStyle style) override;
-
-protected:
-  virtual void UpdateDisplayedText();
+  wxString ToString() const override;
+  //! Set the automatic label maxima has assigned the current equation
+  void SetUserDefinedLabel(const wxString &userDefinedLabel);
+  //! Returns the XML flags this cell needs in wxMathML
+  wxString GetXMLFlags() const override;
+  void UpdateDisplayedText() override;
 
 private:
+  //! The user-defined label for this label cell.
+  wxString m_userDefinedLabel;
 
-  int m_numStartWidth;
-  int m_ellipsisWidth;
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old = -1;
+  TextIndex GetLabelIndex() const;
 
-  //! The first few digits
-  wxString m_numStart;
-  //! The "not all digits displayed" message.
-  wxString m_ellipsis;
-  //! Last few digits (also used for user defined label)
-  wxString m_numEnd;
+//** 1-byte objects (1 byte)
+//**
+  Configuration::showLabels m_labelChoice_Last = {};
 
-  //** Bitfield objects (0 bytes)
-  //**
+//** Bitfield objects (0 bytes)
+//**
   void InitBitFields()
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
   }
 };
 
-#endif // LONGNUMBERCELL_H
+#endif // LABELCELL_H
