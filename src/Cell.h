@@ -422,7 +422,7 @@ public:
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
-  //! Mark the cached height information as "to be calculated".
+  //! Mark the cached height and width information as "to be calculated".
   void ResetSize()
     { 
        m_recalculateWidths = true; 
