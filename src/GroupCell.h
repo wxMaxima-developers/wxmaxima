@@ -238,6 +238,7 @@ public:
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
+  void Recalculate(AFontSize fontsize) override {Recalculate();}
   void Recalculate();
 
   //! Recalculate the height of the input part of the cell
