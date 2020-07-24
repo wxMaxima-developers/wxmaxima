@@ -41,12 +41,12 @@ public:
   void SetStyle(TextStyle style) override;
 
 protected:
-  virtual void UpdateDisplayedText();
+  virtual void UpdateDisplayedText() override;
 
 private:
 
-  int m_numStartWidth;
-  int m_ellipsisWidth;
+  int m_numStartWidth = 0;
+  int m_ellipsisWidth = 0;
   //! The number of digits we did display the last time we displayed a number.
   int m_displayedDigits_old = -1;
 

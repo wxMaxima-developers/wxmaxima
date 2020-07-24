@@ -1111,7 +1111,7 @@ Cell *MathParser::ParseTag_(wxXmlNode *node, bool all)
       wxString name;
       name.Trim(true);
       name.Trim(false);
-      if (cell != NULL) name = cell->ToString();
+      name = cell->ToString();
       if (name.Length() != 0)
       {
         LoggingMessageBox(_("Parts of the document will not be loaded correctly:\nFound unknown XML Tag name " + name),
