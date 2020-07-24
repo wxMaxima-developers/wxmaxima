@@ -262,7 +262,6 @@ void History::RebuildDisplay()
 {
   wxWindowUpdateLocker speedUp(this);
   wxArrayString display;
-  wxString cmd;
   std::vector<wxString>::reverse_iterator sessionEnd;
   if(m_showCurrentSessionOnly)
     sessionEnd = m_commands.rbegin() + m_sessionCommands;
