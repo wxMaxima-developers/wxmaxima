@@ -81,7 +81,7 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
           wxCommandEventHandler(History::OnRegExEvent), NULL, this);
 }
 
-void History::OnMouseRightDown(wxMouseEvent &event)
+void History::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 {
   wxArrayInt selections;
   bool const hasSelections = (m_history->GetSelections(selections) > 0);
