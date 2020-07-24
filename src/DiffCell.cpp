@@ -36,10 +36,10 @@
 DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
   m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-  m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
   m_open(std::make_unique<TextCell>(parent, config, "diff(")),
   m_comma(std::make_unique<TextCell>(parent, config, ",")),
-  m_close(std::make_unique<TextCell>(parent, config, ")"))
+  m_close(std::make_unique<TextCell>(parent, config, ")")),
+  m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 
 {
   InitBitFields();

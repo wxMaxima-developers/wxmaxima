@@ -381,7 +381,6 @@ void TextCell::Recalculate(AFontSize fontsize)
   {      
     Cell::Recalculate(fontsize);
     m_fontSize = fontsize;
-    wxDC *dc = configuration->GetDC();
     SetFont(fontsize);
 
 
