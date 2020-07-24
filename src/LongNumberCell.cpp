@@ -57,6 +57,7 @@ void LongNumberCell::UpdateDisplayedText()
   }
   m_sizeCache.clear();
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
+  m_textStyle = TS_NUMBER;
 }
 
 bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const
@@ -67,9 +68,8 @@ bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const
 
 void LongNumberCell::SetStyle(TextStyle style)
 {
-  wxASSERT (m_textStyle == TS_NUMBER);
-  
-  TextCell::SetStyle(style);
+  wxASSERT (style == TS_NUMBER);
+  TextCell::SetStyle(TS_NUMBER);
 }
 
 void LongNumberCell::Recalculate(AFontSize fontsize)

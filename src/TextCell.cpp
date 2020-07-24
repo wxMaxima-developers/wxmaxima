@@ -37,7 +37,8 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   Cell(parent, config)
 {
   InitBitFields();
-  switch(m_textStyle = style)
+  m_textStyle = style;
+  switch(style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
   case TS_VARIABLE: m_type = MC_TYPE_DEFAULT; break;
@@ -62,7 +63,7 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   case TS_SECTION: m_type = MC_TYPE_SECTION; break;
   case TS_TITLE: m_type = MC_TYPE_TITLE; break;
   default:
-    wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"),style));
+    wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"), style));
     m_type = MC_TYPE_DEFAULT;
   }
   m_fontSize.Set(10.0f);
