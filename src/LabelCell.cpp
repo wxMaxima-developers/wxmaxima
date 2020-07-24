@@ -145,21 +145,7 @@ void LabelCell::SetStyle(TextStyle style)
 
 wxString LabelCell::ToString() const
 {
-  wxString text;
-  if (!GetAltCopyText().empty())
-    text = GetAltCopyText();
-  else
-  {
-    text = m_text;
-    if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
-      text = wxT("(") + m_userDefinedLabel + wxT(")");
-    text.Replace(wxT("\u2794"), wxT("-->"));
-    text.Replace(wxT("\u2192"), wxT("->"));
-  }
-  text.Trim();
-  text += wxT("\t");
-  
-  return text;
+  return GetAltCopyText();
 }
 
 wxString LabelCell::GetXMLFlags() const
@@ -234,4 +220,17 @@ void LabelCell::Recalculate(AFontSize fontsize)
     }
     m_width = wxMax(m_width, Scale_Px(configuration->GetLabelWidth())) + MC_TEXT_PADDING;
   }
+}
+
+const wxString LabelCell::GetAltCopyText() const
+{
+  wxString text = m_text;
+  if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
+  text.Replace(wxT("\u2794"), wxT("-->"));
+  text.Replace(wxT("\u2192"), wxT("->"));
+  text.Trim();
+  text += wxT("\t");
+  
+  return text;
 }

@@ -781,6 +781,23 @@ public:
   bool GetSuppressMultiplicationDot() const { return m_suppressMultiplicationDot; }
   void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
+  /*! What should end up if placing this cell on the clipboard?
+
+    AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both 
+    are lookalikes and the cell therefore needs to know what to put on the 
+    clipboard if this cell were copied. They also make sense in many other
+    places we may never have thought about. But since we seriously want to 
+    save memory space on the ubiuitous TextCells it might be scary to apply 
+    this principle to them, at least if you know that text you copy from the
+    internet to a terminal might contain additional commands with TextSize=0...
+  */
+  virtual void SetAltCopyText(const wxString &text)
+    {
+      {wxASSERT_MSG(text == wxEmptyString,
+                    _("Bug: AltCopyTexts not implemented for this cell"));}
+    }
+  //! Get the text set using SetAltCopyText - may be empty.
+  virtual const wxString GetAltCopyText() const { return wxEmptyString; }
 
 #if wxUSE_ACCESSIBILITY
   CellAccessible *GetAccessible();

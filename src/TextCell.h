@@ -86,7 +86,9 @@ public:
 
   void SetType(CellType type) override;
 
-  void SetAltCopyText(const wxString &text);
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for TextCells"));}
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
@@ -101,8 +103,7 @@ protected:
   virtual void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
-  //! Get the AltCopyText - may be empty.
-  const wxString GetAltCopyText() const { return m_altCopyText; }
+  virtual const wxString GetAltCopyText() const override { return wxEmptyString; }
 
   void FontsChanged() override
   {
@@ -162,7 +163,6 @@ protected:
     m_promptTooltip = false;
   }
 
-  wxString m_altCopyText;
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?

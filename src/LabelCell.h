@@ -46,6 +46,7 @@ public:
   //! Returns the XML flags this cell needs in wxMathML
   wxString GetXMLFlags() const override;
   void UpdateDisplayedText() override;
+  const wxString GetAltCopyText() const override;
 
 private:
   //! The user-defined label for this label cell.

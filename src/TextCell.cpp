@@ -96,13 +96,6 @@ void TextCell::SetType(CellType type)
   Cell::SetType(type);
 }
 
-void TextCell::SetAltCopyText(const wxString &text)
-{
-  // Numbers with altCopyText are scary
-  wxASSERT((m_textStyle != TS_NUMBER) || text.empty());
-  m_altCopyText = text;
-}
-
 void TextCell::UpdateToolTip()
 {
   if (m_promptTooltip)

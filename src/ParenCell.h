@@ -69,6 +69,10 @@ public:
 
   bool BreakUp() override;
 
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for ParenCells"));}
+  
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
   wxString ToOMML() const override;

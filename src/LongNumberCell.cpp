@@ -36,11 +36,6 @@ LongNumberCell::LongNumberCell(GroupCell *parent,
   : TextCell(parent, config, number, TS_NUMBER)
 {
   InitBitFields();
-  // We cannot do this at the startup of the program as we first need to wait
-  // for the language selection to take place.
-  // NOTE: static variables are initialized exactly 0 or 1 times, so the below
-  // is not wasteful.
-  SetToolTip(&T_("Missing contents. Bug?"));
 }
 
 void LongNumberCell::UpdateDisplayedText()

@@ -80,7 +80,8 @@ public:
 
   bool BreakUp() override;
 
-  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+  const wxString GetAltCopyText() const override { return m_altCopyText; }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }

@@ -73,7 +73,8 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  void SetAltCopyText(const wxString &text) { m_altCopyText = text; }
+  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+  const wxString GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() override;
 
