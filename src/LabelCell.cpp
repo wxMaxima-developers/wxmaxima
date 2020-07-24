@@ -38,6 +38,20 @@ LabelCell::LabelCell(GroupCell *parent,
   InitBitFields();
 }
 
+// cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_alt
+// cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_altJs
+// cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_initialToolTip
+LabelCell::LabelCell(const LabelCell &cell):
+    TextCell(cell.m_group, cell.m_configuration)
+{
+  m_userDefinedLabel = cell.m_userDefinedLabel;
+}
+
+std::unique_ptr<Cell> LabelCell::Copy() const
+{
+  return std::make_unique<LabelCell>(*this);
+}
+
 void LabelCell::Draw(wxPoint point)
 {
   Cell::Draw(point);

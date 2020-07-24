@@ -38,6 +38,19 @@ LongNumberCell::LongNumberCell(GroupCell *parent,
   InitBitFields();
 }
 
+// cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_alt
+// cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_altJs
+// cppcheck-suppress uninitMemberVar symbolName=LongNumberCell::m_initialToolTip
+LongNumberCell::LongNumberCell(const LongNumberCell &cell):
+    TextCell(cell.m_group, cell.m_configuration)
+{
+}
+
+std::unique_ptr<Cell> LongNumberCell::Copy() const
+{
+  return std::make_unique<LongNumberCell>(*this);
+}
+
 void LongNumberCell::UpdateDisplayedText()
 {
   unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();

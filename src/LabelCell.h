@@ -36,6 +36,8 @@ public:
   //! The constructor for cell that, if displayed, means that something is amiss
   LabelCell(GroupCell *parent,
             Configuration **config, wxString automaticLabel, TextStyle style = TS_MAIN_PROMPT);
+  LabelCell(const LabelCell &cell);
+  std::unique_ptr<Cell> Copy() const override;  
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;

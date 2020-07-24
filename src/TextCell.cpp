@@ -70,6 +70,21 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   TextCell::SetValue(text);
 }
 
+// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
+// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
+// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
+TextCell::TextCell(const TextCell &cell):
+    Cell(cell.m_group, cell.m_configuration),
+    m_text(cell.m_text),
+    m_displayedText(cell.m_displayedText)
+{
+  InitBitFields();
+  CopyCommonData(cell);
+  m_bigSkip = cell.m_bigSkip;
+  m_highlight = cell.m_highlight;
+  m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
+}
+
 std::unique_ptr<Cell> TextCell::Copy() const
 {
   return std::make_unique<TextCell>(*this);
@@ -289,21 +304,6 @@ void TextCell::SetValue(const wxString &text)
   UpdateDisplayedText();
   UpdateToolTip();
   ResetSize();
-}
-
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
-TextCell::TextCell(const TextCell &cell):
-    Cell(cell.m_group, cell.m_configuration),
-    m_text(cell.m_text),
-    m_displayedText(cell.m_displayedText)
-{
-  InitBitFields();
-  CopyCommonData(cell);
-  m_bigSkip = cell.m_bigSkip;
-  m_highlight = cell.m_highlight;
-  m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
 AFontSize TextCell::GetScaledTextSize() const
