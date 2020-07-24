@@ -485,7 +485,12 @@ void GroupCell::Recalculate()
 void GroupCell::InputHeightChanged()
 {
   ResetCellListSizes();
+  if(m_inputLabel)
+    m_inputLabel->ResetCellListSizes();
   EditorCell *editorCell = GetEditable();
+  if(editorCell == NULL)
+    return;
+//  editorCell -> ResetSize();
   RecalculateHeightInput();
   if(m_output != NULL)
   {
@@ -554,6 +559,7 @@ void GroupCell::RecalculateHeightInput()
     m_center = 0;
   m_height = m_inputHeight;
   m_width = m_inputWidth;
+  std::cerr<<m_height<<"\n";
 }
 
 void GroupCell::RecalculateHeightOutput()
