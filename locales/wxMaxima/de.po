@@ -3463,7 +3463,7 @@ msgid ""
 msgstr ""
 "wxMaxima kann die Höhe jeder Text- Kapitel- oder Codezelle durch eine Art "
 "Klammer darstellen, die an deren linkem Rand gezeichnet ist, und erlaubt, "
-"die Zelle und ihren inhalt zu verstecken. Dieses Häkchen sagt nun, ob diese "
+"die Zelle und ihren Inhalt zu verstecken. Dieses Häkchen sagt nun, ob diese "
 "Klammer auch mit ausgedruckt werden soll."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:253
@@ -3479,7 +3479,7 @@ msgid ""
 "   Ctrl+6: Heading5 cell\n"
 "   Ctrl+7: Heading6 cell\n"
 msgstr ""
-"Um die Erstellung von Zellen zu beschleunigen gibt es Testenkürzel:\n"
+"Um die Erstellung von Zellen zu beschleunigen gibt es Tastenkürzel:\n"
 "\n"
 "   Ctrl+0: Mathematik\n"
 "   Ctrl+1: Text\n"
@@ -3723,7 +3723,7 @@ msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:395
 msgid "Gnuplot Data File Name: "
-msgstr "Name der Datendatei für Gnuplot:"
+msgstr "Name der Datendatei für Gnuplot: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2607
 #, c-format
@@ -4304,7 +4304,7 @@ msgid ""
 "long-standing bug in maxima's makelist() command.\n"
 msgstr ""
 "Um dieses Bild anzusehen, reicht es, es anzuklicken und das Mausrad zu "
-"bewegen. Die tatsache, dass y in das Bild per subst() eingefügt werden muss, "
+"bewegen. Die Tatsache, dass y in das Bild per subst() eingefügt werden muss, "
 "ist ein Fehler in maxima's makelist()-Befehl.\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:144
@@ -4805,7 +4805,7 @@ msgid ""
 "notation:\n"
 msgstr ""
 "Ein einfaches Einfügen der toleranzbehafteten Werte ergibt eine Gleichung, "
-"in der die Toleranzen in der Notation von wrstcse <zu finden sind:\n"
+"in der die Toleranzen in der Notation von wrstcse zu finden sind:\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:168
 msgid "Kabyle"
@@ -4968,7 +4968,7 @@ msgstr "Linienfarbe"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1732
 msgid "Linear Regression..."
-msgstr "Lineare Regression"
+msgstr "Lineare Regression..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4298
 msgid "Lisp mode."
@@ -5591,7 +5591,7 @@ msgstr "Maxima's Handbuch liegt im Ordner %s"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:33
 msgid "Maxima's power lies in symbolic operations."
-msgstr "Die stärke von Maxima liegt im symbolischen Rechnen."
+msgstr "Die Stärke von Maxima liegt im symbolischen Rechnen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2613
 #, c-format
@@ -7214,7 +7214,7 @@ msgstr "Starte einen Hintergrundtask, der ein Bild lädt"
 #, fuzzy
 msgid "Scheduling background task that loads the gnuplot data for a plot."
 msgstr ""
-"Starte einen Hintergrundtaask, der die Gnuplotdaten für ein Diagramm lädt."
+"Starte einen Hintergrundtask, der die Gnuplotdaten für ein Diagramm lädt."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:638
 msgid "Search button"
@@ -8174,7 +8174,7 @@ msgid ""
 "Thanks to Robert Dodier it is now possible to equip variables with super-, "
 "and subscripts that are displayed left of the variable name, too:\n"
 msgstr ""
-"Dank Kobert Dodier können Variablen nun auch mit Super- und Subscripts auf "
+"Dank Robert Dodier können Variablen nun auch mit Super- und Subscripts auf "
 "der linken Seite versehen werden:\n"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:162
@@ -8272,7 +8272,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:366
 msgid "The default port used for communication between Maxima and wxMaxima."
-msgstr "Port für die Kommunikation zwischen Maxima und wxMaxima."
+msgstr "Standardport für die Kommunikation zwischen Maxima und wxMaxima."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:321
 msgid ""
@@ -8325,7 +8325,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6894
 msgid "The function call whose arguments to extract"
-msgstr "Die funktion, deren Argumente extrahiert werden sollen"
+msgstr "Die Funktion, deren Argumente extrahiert werden sollen"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:602
 msgid "The general approach\n"
@@ -8657,7 +8657,7 @@ msgid ""
 "This approach is much more good-natured for finding the parameters (that can "
 "then be substituted into approach2).\n"
 msgstr ""
-"Dieser Ansatz ist deutlich gutütiger und liefert Parameter, die in approach2 "
+"Dieser Ansatz ist deutlich gutartiger und liefert Parameter, die in approach2 "
 "eingesetzt werden können.\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:253
@@ -8726,7 +8726,7 @@ msgid ""
 "minimum and which is the maximum. But we can inform maxima about the "
 "necessary facts:\n"
 msgstr ""
-"Das Resultat ist immernoch schwer zu interpretieren, da Maxima, den Wert von "
+"Das Resultat ist immer noch schwer zu interpretieren, da Maxima, den Wert von "
 "U_In nicht kennend, nicht entscheiden konnte, welcher Wert da Maximum und "
 "welcher das Minimum ist. Wir können Maxima jedoch über die notwendigen "
 "Fakten informieren:\n"
@@ -8976,7 +8976,7 @@ msgstr "Versuche, die alte temporäre Datei zu löschen"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5350
 #, c-format
 msgid "Trying to remove the old temp file %s"
-msgstr "Versuche die alte Temporäre Datei %s zu löschen."
+msgstr "Versuche die alte temporäre Datei %s zu löschen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1700
 msgid "Trying to restart maxima."
