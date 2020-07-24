@@ -580,7 +580,7 @@ add_test(
     NAME ipc_copypaste1
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --enableipc --batch ipc_copypaste1.wxm)
-set_tests_properties(ipc_copypaste1 PROPERTIES TIMEOUT 60)
+set_tests_properties(ipc_copypaste1 PROPERTIES TIMEOUT 240)
 
 # This test times out in CI. There's some work to be done in IPC
 # code to make it do the right thing.
