@@ -5,74 +5,75 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>wxMaxima</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="wxmaxima.css" />
 </head>
@@ -80,15 +81,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <header id="title-block-header">
 <h1 class="title">wxMaxima</h1>
 </header>
-<nav id="TOC">
+<nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#il-manuale-utente-di-wxmaxima">Il manuale utente di wxMaxima</a></li>
-<li><a href="#introduzione-a-wxmaxima"><span class="toc-section-number">1</span> Introduzione a wxMaxima</a><ul>
-<li><a href="#maxima-e-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> e wxMaxima</a><ul>
+<li><a href="#introduzione-a-wxmaxima"><span class="toc-section-number">1</span> Introduzione a wxMaxima</a>
+<ul>
+<li><a href="#maxima-e-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> e wxMaxima</a>
+<ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
 </ul></li>
-<li><a href="#workbook-basics"><span class="toc-section-number">1.2</span> Workbook basics</a><ul>
+<li><a href="#workbook-basics"><span class="toc-section-number">1.2</span> Workbook basics</a>
+<ul>
 <li><a href="#the-workbook-approach"><span class="toc-section-number">1.2.1</span> The workbook approach</a></li>
 <li><a href="#celle"><span class="toc-section-number">1.2.2</span> Celle</a></li>
 <li><a href="#horizontal-and-vertical-cursors"><span class="toc-section-number">1.2.3</span> Horizontal and vertical cursors</a></li>
@@ -100,12 +104,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#hotkeys"><span class="toc-section-number">1.2.9</span> Hotkeys</a></li>
 <li><a href="#raw-tex-in-the-tex-export"><span class="toc-section-number">1.2.10</span> Raw TeX in the TeX export</a></li>
 </ul></li>
-<li><a href="#file-formats"><span class="toc-section-number">1.3</span> File Formats</a><ul>
+<li><a href="#file-formats"><span class="toc-section-number">1.3</span> File Formats</a>
+<ul>
 <li><a href="#mac"><span class="toc-section-number">1.3.1</span> .mac</a></li>
 <li><a href="#wxm"><span class="toc-section-number">1.3.2</span> .wxm</a></li>
 <li><a href="#wxmx"><span class="toc-section-number">1.3.3</span> .wxmx</a></li>
 </ul></li>
-<li><a href="#configuration-options"><span class="toc-section-number">1.4</span> Configuration options</a><ul>
+<li><a href="#configuration-options"><span class="toc-section-number">1.4</span> Configuration options</a>
+<ul>
 <li><a href="#default-animation-framerate"><span class="toc-section-number">1.4.1</span> Default animation framerate</a></li>
 <li><a href="#default-plot-size-for-new-maxima-sessions"><span class="toc-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</a></li>
 <li><a href="#match-parenthesis-in-text-controls"><span class="toc-section-number">1.4.3</span> Match parenthesis in text controls</a></li>
@@ -113,10 +119,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.4.5</span> Where is the configuration saved?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#estensioni-a-maxima"><span class="toc-section-number">2</span> Estensioni a <em>Maxima</em></a><ul>
+<li><a href="#estensioni-a-maxima"><span class="toc-section-number">2</span> Estensioni a <em>Maxima</em></a>
+<ul>
 <li><a href="#subscripted-variables"><span class="toc-section-number">2.1</span> Subscripted variables</a></li>
 <li><a href="#user-feedback-in-the-status-bar"><span class="toc-section-number">2.2</span> User feedback in the status bar</a></li>
-<li><a href="#plotting"><span class="toc-section-number">2.3</span> Plotting</a><ul>
+<li><a href="#plotting"><span class="toc-section-number">2.3</span> Plotting</a>
+<ul>
 <li><a href="#embedding-a-plot-into-the-work-sheet"><span class="toc-section-number">2.3.1</span> Embedding a plot into the work sheet</a></li>
 <li><a href="#making-embedded-plots-bigger-or-smaller"><span class="toc-section-number">2.3.2</span> Making embedded plots bigger or smaller</a></li>
 <li><a href="#better-quality-plots"><span class="toc-section-number">2.3.3</span> Better quality plots</a></li>
@@ -133,7 +141,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#bug-reporting"><span class="toc-section-number">2.8</span> Bug reporting</a></li>
 <li><a href="#marking-output-being-drawn-in-red"><span class="toc-section-number">2.9</span> Marking output being drawn in red</a></li>
 </ul></li>
-<li><a href="#risoluzione-dei-problemi"><span class="toc-section-number">3</span> Risoluzione dei problemi</a><ul>
+<li><a href="#risoluzione-dei-problemi"><span class="toc-section-number">3</span> Risoluzione dei problemi</a>
+<ul>
 <li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to <em>Maxima</em></a></li>
 <li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
 <li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</a></li>
@@ -145,12 +154,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</a></li>
 <li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
 <li><a href="#wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="toc-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</a></li>
-<li><a href="#plotting-1"><span class="toc-section-number">3.12</span> Plotting</a><ul>
+<li><a href="#plotting-1"><span class="toc-section-number">3.12</span> Plotting</a>
+<ul>
 <li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="toc-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</a></li>
 <li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
+<li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a>
+<ul>
 <li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
 <li><a href="#is-there-a-dark-mode"><span class="toc-section-number">4.2</span> Is there a dark mode?</a></li>
 <li><a href="#wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="toc-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</a></li>
@@ -158,10 +169,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#argomenti-della-riga-di-comando"><span class="toc-section-number">5</span> Argomenti della riga di comando</a></li>
 </ul>
 </nav>
-<h1 id="il-manuale-utente-di-wxmaxima" class="unnumbered">Il manuale utente di wxMaxima</h1>
+<h1 class="unnumbered" data-number="" id="il-manuale-utente-di-wxmaxima">Il manuale utente di wxMaxima</h1>
 <p>wxMaxima è un’interfaccia utente grafica (GUI) per il sistema di algebra computazionale (CAS) <em>Maxima</em>. wxMaxima consente di utilizzare tutte le funzioni di <em>Maxima</em>, inoltre, fornisce comode procedure guidate per accedere alle funzionalità più comunemente utilizzate. Questo manuale descrive alcune delle funzionalità che rendono wxMaxima una delle GUI più popolari per <em>Maxima</em>.</p>
 <figure>
-<img src="./wxMaximaLogo.png" alt="logo wxMaxima" id="img_wxMaximaLogo" /><figcaption>logo wxMaxima</figcaption>
+<img src="./wxMaximaLogo.png" id="img_wxMaximaLogo" alt="" /><figcaption>logo wxMaxima</figcaption>
 </figure>
 <p>Prima di esaminare i contenuti della guida, è meglio evidenziare alcuni punti relativi alla sua consultazione. Immediatamente di seguito c’è un breve sommario. Facendo clic su uno degli elementi elencati si sposta il cursore nella parte superiore della sezione indicata del manuale. Facendo clic su <a href="#TOC">Sommario</a> si sposta il cursore su un sommario esteso. Questa tabella estesa può essere usata per arrivare direttamente a parti specifiche del manuale. Il collegamento Contenuti viene visualizzato lungo il testo a scopo di orientamento nella navigazione.</p>
 <ul>
@@ -185,37 +196,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Gli argomenti a riga di comando che wxMaxima supporta</p>
 <hr />
-<h1 id="introduzione-a-wxmaxima"><span class="header-section-number">1</span> Introduzione a wxMaxima</h1>
-<h2 id="maxima-e-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> e wxMaxima</h2>
+<h1 data-number="1" id="introduzione-a-wxmaxima"><span class="header-section-number">1</span> Introduzione a wxMaxima</h1>
+<h2 data-number="1.1" id="maxima-e-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> e wxMaxima</h2>
 <p>Nel dominio open source, i grandi sistemi sono normalmente suddivisi in progetti più piccoli che sono più facili da gestire per piccoli gruppi di sviluppatori. Ad esempio, un programma di masterizzazione di CD sarà costituito da uno strumento a riga di comando che effettivamente masterizza il CD e da un’interfaccia utente grafica che consente agli utenti di utilizzarlo senza dover conoscere tutte le opzioni della riga di comando, e di fatto senza utilizzare affatto la riga di comando. Un vantaggio di questo approccio è che il lavoro di sviluppo che è stato investito nel programma a riga di comando può essere condiviso da molti programmi: lo stesso programma a riga di comando del masterizzatore CD può essere utilizzato come plug-in “invia-al-CD” per un’applicazione di gestione file, per la funzione “masterizza su CD” di un lettore musicale e come masterizzatore di CD per uno strumento di backup su DVD. Un altro vantaggio è che suddividere una grande attività in parti più piccole consente agli sviluppatori di fornire diverse interfacce utente per lo stesso programma.</p>
 <p>Un sistema di algebra computazionale (CAS) come <em>Maxima</em> si inserisce in questo quadro. Un CAS può fornire la logica dietro un’applicazione di calcolatrice di precisione arbitraria o può fare trasformazioni automatiche di formule sullo sfondo di un sistema più grande (ad esempio, [Sage] (https://www.sagemath.org/)). In alternativa, può essere utilizzato direttamente come sistema indipendente. <em>Maxima</em> è utilizzabile tramite riga di comando. Spesso, tuttavia, un’interfaccia come <em>wxMaxima</em> si rivela un modo più efficiente per accedere al software, in particolare per i nuovi utenti.</p>
-<h3 id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
+<h3 data-number="1.1.1" id="maxima"><span class="header-section-number">1.1.1</span> <em>Maxima</em></h3>
 <p><em>Maxima</em> è un sistema di algebra computazionale (CAS) completo. Un CAS è un programma in grado di risolvere problemi matematici riorganizzando le formule e trovando una formula che risolve il problema invece di emettere semplicemente il valore numerico del risultato. In altre parole, <em>Maxima</em> può fungere da calcolatrice che fornisce rappresentazioni numeriche di variabili e può anche fornire soluzioni analitiche. Inoltre, offre una gamma di metodi numerici di analisi per equazioni o sistemi di equazioni che non possono essere risolti analiticamente.</p>
 <figure>
-<img src="./maxima_screenshot.png" alt="schermata di Maxima, riga di comando" id="img_maxima_screenshot" /><figcaption>schermata di Maxima, riga di comando</figcaption>
+<img src="./maxima_screenshot.png" id="img_maxima_screenshot" alt="" /><figcaption>schermata di Maxima, riga di comando</figcaption>
 </figure>
 <p>Ampia documentazione per <em>Maxima</em> è [disponibile su Internet] (http://maxima.sourceforge.net/documentation.html). Parte di questa documentazione è disponibile anche nel menu di aiuto di wxMaxima. Premendo il tasto Guida (sulla maggior parte dei sistemi il tasto F1), la funzione di guida sensibile al contesto di <em>wxMaxima</em> passa automaticamente alla pagina di manuale di <em>Maxima</em> per il comando sul cursore.</p>
-<h3 id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
+<h3 data-number="1.1.2" id="wxmaxima"><span class="header-section-number">1.1.2</span> wxMaxima</h3>
 <p><em>wxMaxima</em> is a graphical user interface that provides the full functionality and flexibility of <em>Maxima</em>. wxMaxima offers users a graphical display and many features that make working with <em>Maxima</em> easier. For example <em>wxMaxima</em> allows one to export any cell’s contents (or, if that is needed, any part of a formula, as well) as text, as LaTeX or as MathML specification at a simple right-click. Indeed, an entire workbook can be exported, either as a HTML file or as a LaTeX file. Documentation for <em>wxMaxima</em>, including workbooks to illustrate aspects of its use, is online at the <em>wxMaxima</em> <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">help site</a>, as well as via the help menu.</p>
 <figure>
-<img src="./wxMaximaWindow.png" alt="wxMaxima window" id="img_wxMaximaWindow" /><figcaption>wxMaxima window</figcaption>
+<img src="./wxMaximaWindow.png" id="img_wxMaximaWindow" alt="" /><figcaption>wxMaxima window</figcaption>
 </figure>
 <p>The calculations that are entered in <em>wxMaxima</em> are performed by the <em>Maxima</em> command-line tool in the background.</p>
-<h2 id="workbook-basics"><span class="header-section-number">1.2</span> Workbook basics</h2>
+<h2 data-number="1.2" id="workbook-basics"><span class="header-section-number">1.2</span> Workbook basics</h2>
 <p>Much of <em>wxMaxima</em> is self-explaining, but some details require attention. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">This site</a> contains a number of workbooks that address various aspects of <em>wxMaxima</em>. Working through some of these (particularly the “10 minute <em>(wx)Maxima</em> tutorial”) will increase one’s familiarity with both the content of <em>Maxima</em> and the use of <em>wxMaxima</em> to interact with <em>Maxima</em>. This manual concentrates on describing aspects of <em>wxMaxima</em> that are not likely to be self-evident and that might not be covered in the online material.</p>
-<h3 id="the-workbook-approach"><span class="header-section-number">1.2.1</span> The workbook approach</h3>
+<h3 data-number="1.2.1" id="the-workbook-approach"><span class="header-section-number">1.2.1</span> The workbook approach</h3>
 <p>One of the very few things that are not standard in <em>wxMaxima</em> is that it organizes the data for <em>Maxima</em> into cells that are evaluated (which means: sent to <em>Maxima</em>) only when the user requests this. When a cell is evaluated, all commands in that cell, and only that cell, are evaluated as a batch. (The preceding statement is not quite accurate: One can select a set of adjacent cells and evaluate them together. Also, one can instruct <em>Maxima</em> to evaluate all cells in a workbook in one pass.) <em>wxMaxima</em>’s approach to submitting commands for execution might feel unfamiliar at the first sight. It does, however, drastically ease work with big documents (where the user does not want every change to automatically trigger a full re-evaluation of the whole document). Also, this approach is very handy for debugging.</p>
 <p>If text is typed into <em>wxMaxima</em> it automatically creates a new worksheet cell. The type of this cell can be selected in the toolbar. If a code cell is created the cell can be sent to <em>Maxima</em>, which causes the result of the calculation to be displayed below the code. A pair of such commands is shown below.</p>
 <figure>
-<img src="./InputCell.png" alt="Input/output cell" id="img_InputCell" /><figcaption>Input/output cell</figcaption>
+<img src="./InputCell.png" id="img_InputCell" alt="" /><figcaption>Input/output cell</figcaption>
 </figure>
 <p>On evaluation of an input cell’s contents the input cell <em>Maxima</em> assigns a label to the input (by default shown in red and recognizable by the <code>%i</code>) by which it can be referenced later in the <em>wxMaxima</em> session. The output that <em>Maxima</em> generates also gets a label that begins with <code>%o</code> and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The <code>%o</code>-style label <em>Maxima</em> auto-generates will also be accessible, though.</p>
 <p>Besides the input cells <em>wxMaxima</em> allows for text cells for documentation, image cells, title cells, chapter cells and section cells. Every cell has its own undo buffer so debugging by changing the values of several cells and then gradually reverting the unneeded changes is rather easy. Furthermore the worksheet itself has a global undo buffer that can undo cell edits, adds and deletes.</p>
 <p>The figure below shows different cell types (title cells, section cells, subsection cells, text cells, input/output cells and image cells).</p>
 <figure>
-<img src="./cell-example.png" alt="Esempio di celle wxMaxima diverse" id="img_cell-example" /><figcaption>Esempio di celle wxMaxima diverse</figcaption>
+<img src="./cell-example.png" id="img_cell-example" alt="" /><figcaption>Esempio di celle wxMaxima diverse</figcaption>
 </figure>
-<h3 id="celle"><span class="header-section-number">1.2.2</span> Celle</h3>
+<h3 data-number="1.2.2" id="celle"><span class="header-section-number">1.2.2</span> Celle</h3>
 <p>The worksheet is organized in cells. Each cell can contain other cells or the following types of content:</p>
 <ul>
 <li>one or more lines of <em>Maxima</em> input</li>
@@ -226,22 +237,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>The default behavior of <em>wxMaxima</em> when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu, using the hot keys shown in the menu or using the drop-down list in the toolbar. Once the non-math cell is created, whatever is typed into the file is interpreted as text.</p>
 <p>Additional comment text can be entered into a math cell if bracketed as follows: <code>/*This comment will not be sent to Maxima for evaluation*/</code>.</p>
-<h3 id="horizontal-and-vertical-cursors"><span class="header-section-number">1.2.3</span> Horizontal and vertical cursors</h3>
+<h3 data-number="1.2.3" id="horizontal-and-vertical-cursors"><span class="header-section-number">1.2.3</span> Horizontal and vertical cursors</h3>
 <p>If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise <em>wxMaxima</em> if more than one cell is selected will extend the selection to whole cells.</p>
 <p>What isn’t standard is that <em>wxMaxima</em> provides drag-and-drop flexibility by defining two types of cursors. <em>wxMaxima</em> will switch between them automatically when needed:</p>
 <ul>
 <li>The cursor is drawn horizontally if it is moved in the space between two cells or by clicking there.</li>
 <li>A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.</li>
 </ul>
-<h3 id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
+<h3 data-number="1.2.4" id="sending-cells-to-maxima"><span class="header-section-number">1.2.4</span> Sending cells to Maxima</h3>
 <p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The <em>wxMaxima</em> default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but <em>wxMaxima</em> can be configured to execute commands in response to <kbd>ENTER</kbd>.</p>
-<h3 id="command-autocompletion"><span class="header-section-number">1.2.5</span> Command autocompletion</h3>
+<h3 data-number="1.2.5" id="command-autocompletion"><span class="header-section-number">1.2.5</span> Command autocompletion</h3>
 <p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <kbd>CTRL</kbd>+<kbd>SPACE</kbd>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
-<img src="./ezUnits.png" alt="ezUnits" id="img_ezUnits" /><figcaption>ezUnits</figcaption>
+<img src="./ezUnits.png" id="img_ezUnits" alt="" /><figcaption>ezUnits</figcaption>
 </figure>
 <p>Besides completing a file name, a unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).</p>
-<h4 id="greek-characters"><span class="header-section-number">1.2.5.1</span> Greek characters</h4>
+<h4 data-number="1.2.5.1" id="greek-characters"><span class="header-section-number">1.2.5.1</span> Greek characters</h4>
 <p>Computers traditionally stored characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus <em>etc</em>.) of nearly any given language can fit within that limit.</p>
 <p>For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation <a href="https://home.unicode.org/">Unicode</a> has been invented: An encoding that makes English text work like normal, but to use much more than 256 characters.</p>
 <p><em>Maxima</em> allows Unicode, if it was compiled using a Lisp compiler that either supports Unicode or that doesn’t care about the font encoding. As at least one of this pair of conditions is likely to be true. <em>wxMaxima</em> provides a method of entering Greek characters using the keyboard:</p>
@@ -601,14 +612,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If a special symbol isn’t in the list it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.</p>
 <p><kbd>ESC</kbd> <kbd>61</kbd> <kbd>ESC</kbd> therefore results in an <code>a</code>.</p>
 <p>Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in <em>Maxima</em> and therefore will be interpreted as ordinary characters. If <em>Maxima</em> is compiled using a Lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.</p>
-<h3 id="side-panes"><span class="header-section-number">1.2.6</span> Side Panes</h3>
+<h3 data-number="1.2.6" id="side-panes"><span class="header-section-number">1.2.6</span> Side Panes</h3>
 <p>Shortcuts to the most important <em>Maxima</em> commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the “View” menu. They all can be moved to other locations inside or outside the <em>wxMaxima</em> window. Other useful panes is the one that allows to input Greek letters using the mouse.</p>
 <figure>
-<img src="./SidePanes.png" alt="Example of different side panes" id="img_SidePanes" /><figcaption>Example of different side panes</figcaption>
+<img src="./SidePanes.png" id="img_SidePanes" alt="" /><figcaption>Example of different side panes</figcaption>
 </figure>
-<h3 id="mathml-output"><span class="header-section-number">1.2.7</span> MathML output</h3>
+<h3 data-number="1.2.7" id="mathml-output"><span class="header-section-number">1.2.7</span> MathML output</h3>
 <p>Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. <em>wxMaxima</em> therefore offers several entries in the right-click menu.</p>
-<h3 id="markdown-support"><span class="header-section-number">1.2.8</span> Markdown support</h3>
+<h3 data-number="1.2.8" id="markdown-support"><span class="header-section-number">1.2.8</span> Markdown support</h3>
 <p><em>wxMaxima</em> offers a set of standard markdown conventions that don’t collide with mathematical notation. One of this elements is bullet lists.</p>
 <pre><code>Ordinary text
  * One item, indentation level 1
@@ -626,239 +637,239 @@ Ordinary text</code></pre>
 <p><em>wxMaxima</em>’s TeX and html output will also recognize <code>=&gt;</code> and replace it by the corresponding unicode sign:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
 <p>Other symbols the html and TeX export will recognize are <code>&lt;=</code> and <code>&gt;=</code> for comparisons, a double-pointed double arrow (<code>&lt;=&gt;</code>), single- headed arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are recognized.</p>
-<h3 id="hotkeys"><span class="header-section-number">1.2.9</span> Hotkeys</h3>
+<h3 data-number="1.2.9" id="hotkeys"><span class="header-section-number">1.2.9</span> Hotkeys</h3>
 <p>Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of <em>wxMaxima</em> to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:</p>
 <ul>
 <li><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>DELETE</kbd> deletes a complete cell.</li>
 <li><kbd>CTRL</kbd>+<kbd>TAB</kbd> or <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> triggers the auto-completion mechanism.</li>
 <li><kbd>SHIFT</kbd>+<kbd>SPACE</kbd> inserts a non-breaking space.</li>
 </ul>
-<h3 id="raw-tex-in-the-tex-export"><span class="header-section-number">1.2.10</span> Raw TeX in the TeX export</h3>
+<h3 data-number="1.2.10" id="raw-tex-in-the-tex-export"><span class="header-section-number">1.2.10</span> Raw TeX in the TeX export</h3>
 <p>If a text cell begins with <code>TeX:</code> the TeX export contains the literal text that follows the <code>TeX:</code> marker. Using this feature allows the entry of TeX markup within the <em>wxMaxima</em> workbook.</p>
-<h2 id="file-formats"><span class="header-section-number">1.3</span> File Formats</h2>
+<h2 data-number="1.3" id="file-formats"><span class="header-section-number">1.3</span> File Formats</h2>
 <p>The material that is developed in a <em>wxMaxima</em> session can be stored for later use in any of three ways:</p>
-<h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
+<h3 data-number="1.3.1" id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
 <p>.mac files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s read command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
 <p>One Example:</p>
 <p>A .mac file named Quadratic.mac was created. It consists of two commands: <code>f(x) := (x - 5)^2;</code> and <code>wxdraw2d( explicit(f(x),x,-5,15))</code>. The result of entering that batch file appears below. (Some directory path information is deleted.)</p>
 <figure>
-<img src="./BatchImage.png" alt="Batch image" id="img_BatchImage" /><figcaption>Batch image</figcaption>
+<img src="./BatchImage.png" id="img_BatchImage" alt="" /><figcaption>Batch image</figcaption>
 </figure>
-<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb4-1" title="1"></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="fu">read</span>(<span class="st">&quot;test.mac&quot;</span>);</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="fu">read</span>(<span class="st">&quot;test.mac&quot;</span>);</span></code></pre></div>
 <p>You can be use <code>.mac</code> files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em>wxMaxima</em> session.</p>
-<h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
+<h3 data-number="1.3.2" id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>.wxm files contain the worksheet except <em>Maxima</em>’s output. On Maxima versions &gt;5.38 they can be read using <em>Maxima</em>’s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
-<h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
+<h3 data-number="1.3.3" id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
 <p>This xml-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.</p>
-<h2 id="configuration-options"><span class="header-section-number">1.4</span> Configuration options</h2>
+<h2 data-number="1.4" id="configuration-options"><span class="header-section-number">1.4</span> Configuration options</h2>
 <p>For some common configuration variables <em>wxMaxima</em> offers two ways of configuring:</p>
 <ul>
 <li>The configuration dialog box below lets you change their default values for the current and subsequent sessions.</li>
 <li>Also, the values for most configuration variables can be changed for the current session only by overwriting their values from the worksheet, as shown below.</li>
 </ul>
 <figure>
-<img src="./wxMaxima_configuration_001.png" alt="wxMaxima configuration 1" id="img_wxMaxima_configuration_001" /><figcaption>wxMaxima configuration 1</figcaption>
+<img src="./wxMaxima_configuration_001.png" id="img_wxMaxima_configuration_001" alt="" /><figcaption>wxMaxima configuration 1</figcaption>
 </figure>
-<h3 id="default-animation-framerate"><span class="header-section-number">1.4.1</span> Default animation framerate</h3>
+<h3 data-number="1.4.1" id="default-animation-framerate"><span class="header-section-number">1.4.1</span> Default animation framerate</h3>
 <p>The animation framerate that is used for new animations is kept in the variable <code>wxanimate_framerate</code>. The initial value this variable will contain in a new worksheet can be changed using the configuration dialogue.</p>
-<h3 id="default-plot-size-for-new-maxima-sessions"><span class="header-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</h3>
+<h3 data-number="1.4.2" id="default-plot-size-for-new-maxima-sessions"><span class="header-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</h3>
 <p>After the next start plots embedded into the worksheet will be created with this size if the value of <code>wxplot_size</code> isn’t changed by <em>maxima</em>.</p>
 <p>In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb5-1" title="1"></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="cn">wxdraw2d</span>( </a>
-<a class="sourceLine" id="cb5-3" title="3">   <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb5-4" title="4">       <span class="cn">x</span>^<span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb5-5" title="5">       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></a>
-<a class="sourceLine" id="cb5-6" title="6">   )</a>
-<a class="sourceLine" id="cb5-7" title="7">), <span class="cn">wxplot_size</span>=[<span class="dv">480</span>,<span class="dv">480</span>]$</a></code></pre></div>
-<h3 id="match-parenthesis-in-text-controls"><span class="header-section-number">1.4.3</span> Match parenthesis in text controls</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="cn">wxdraw2d</span>( </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>   <span class="cn">explicit</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>       <span class="cn">x</span>^<span class="dv">2</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>       <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>   )</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>), <span class="cn">wxplot_size</span>=[<span class="dv">480</span>,<span class="dv">480</span>]$</span></code></pre></div>
+<h3 data-number="1.4.3" id="match-parenthesis-in-text-controls"><span class="header-section-number">1.4.3</span> Match parenthesis in text controls</h3>
 <p>This option enables two things:</p>
 <ul>
 <li>If an opening parenthesis, bracket or double quote is entered <em>wxMaxima</em> will insert a closing one after it.</li>
 <li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
 </ul>
-<h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.4</span> Don’t save the worksheet automatically</h3>
+<h3 data-number="1.4.4" id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.4</span> Don’t save the worksheet automatically</h3>
 <p>If this option is set the file the worksheet is in is overwritten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
 <p>If this option isn’t set <em>wxMaxima</em> behaves more like a modern cellphone app:</p>
 <ul>
 <li>Files are saved automatically on exit</li>
 <li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<h3 id="where-is-the-configuration-saved"><span class="header-section-number">1.4.5</span> Where is the configuration saved?</h3>
+<h3 data-number="1.4.5" id="where-is-the-configuration-saved"><span class="header-section-number">1.4.5</span> Where is the configuration saved?</h3>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em>wxMaxima</em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.wxMaxima</code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em>wxMaxima</em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
-<h1 id="estensioni-a-maxima"><span class="header-section-number">2</span> Estensioni a <em>Maxima</em></h1>
+<h1 data-number="2" id="estensioni-a-maxima"><span class="header-section-number">2</span> Estensioni a <em>Maxima</em></h1>
 <p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session.</p>
-<h2 id="subscripted-variables"><span class="header-section-number">2.1</span> Subscripted variables</h2>
+<h2 data-number="2.1" id="subscripted-variables"><span class="header-section-number">2.1</span> Subscripted variables</h2>
 <p>if <code>wxsubscripts</code> is set to true variable names of the format <code>x_y</code> are displayed using a subscript if</p>
 <ul>
 <li><code>y</code> is a single letter</li>
 <li><code>y</code> is an integer</li>
 </ul>
 <p>If the variable name doesn’t match these requirements it can still be declared as “to be subscripted” using the command <code>wxdeclare_subscript(variable_name);</code> or <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code> Declaring a variable as subscripted can be reverted using the following command: <code>wxdeclare_subscript(variable_name,false);</code></p>
-<h2 id="user-feedback-in-the-status-bar"><span class="header-section-number">2.2</span> User feedback in the status bar</h2>
+<h2 data-number="2.2" id="user-feedback-in-the-status-bar"><span class="header-section-number">2.2</span> User feedback in the status bar</h2>
 <p>Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to <em>Maxima</em> is finished. It is safe to use <code>wxstatusbar()</code> even in libraries that might be used with plain <em>Maxima</em> (as opposed to <em>wxMaxima</em>): If <em>wxMaxima</em> isn’t present the <code>wxstatusbar()</code> command will just be left unevaluated.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="co">/* Tell the user how far we got */</span></a>
-<a class="sourceLine" id="cb6-3" title="3">    <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),</a>
-<a class="sourceLine" id="cb6-4" title="4">    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></a>
-<a class="sourceLine" id="cb6-5" title="5">    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></a>
-<a class="sourceLine" id="cb6-6" title="6">    <span class="co">/* program execution (here: for 3 seconds) */</span></a>
-<a class="sourceLine" id="cb6-7" title="7">    ?<span class="cn">sleep</span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb6-8" title="8">)$</a></code></pre></div>
-<h2 id="plotting"><span class="header-section-number">2.3</span> Plotting</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="co">/* Tell the user how far we got */</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="co">/* program execution (here: for 3 seconds) */</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    ?<span class="cn">sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>)$</span></code></pre></div>
+<h2 data-number="2.3" id="plotting"><span class="header-section-number">2.3</span> Plotting</h2>
 <p>Plotting (having fundamentally to do with graphics) is a place where a graphical user interface will have to provide some extensions to the original program.</p>
-<h3 id="embedding-a-plot-into-the-work-sheet"><span class="header-section-number">2.3.1</span> Embedding a plot into the work sheet</h3>
+<h3 data-number="2.3.1" id="embedding-a-plot-into-the-work-sheet"><span class="header-section-number">2.3.1</span> Embedding a plot into the work sheet</h3>
 <p><em>Maxima</em> normally instructs the external program <em>gnuplot</em> to open a separate window for every diagram it creates. Since many times it is convenient to embed graphs into the work sheet instead <em>wxMaxima</em> provides its own set of plot functions that don’t differ from the corresponding <em>maxima</em> functions save in their name: They are all prefixed by a “wx”. For example <code>wxplot2d</code> corresponds to <code>plot2d</code>, <code>wxplot3d</code> corresponds to <code>plot3d</code>, <code>wxdraw</code> corresponds to <code>draw</code> and <code>wxhistogram</code> corresponds to <code>histogram</code>.</p>
-<h3 id="making-embedded-plots-bigger-or-smaller"><span class="header-section-number">2.3.2</span> Making embedded plots bigger or smaller</h3>
+<h3 data-number="2.3.2" id="making-embedded-plots-bigger-or-smaller"><span class="header-section-number">2.3.2</span> Making embedded plots bigger or smaller</h3>
 <p>As noted above, the configure dialog provides a way to change the default size plots are created with which sets the starting value of <code>wxplot_size</code>. The plotting routines of <em>wxMaxima</em> respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb7-1" title="1"><span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="cn">wxdraw2d</span>(</a>
-<a class="sourceLine" id="cb7-3" title="3">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb7-4" title="4">        <span class="fu">sin</span>(<span class="cn">x</span>),</a>
-<a class="sourceLine" id="cb7-5" title="5">        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></a>
-<a class="sourceLine" id="cb7-6" title="6">    )</a>
-<a class="sourceLine" id="cb7-7" title="7">)$</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="cn">wxplot_size</span>:[<span class="dv">1200</span>,<span class="dv">800</span>]$</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    )</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>)$</span></code></pre></div>
 <p>If the size of only one plot is to be changed <em>Maxima</em> provides a canonical way to change an attribute only for the current cell. In this usage the specification wxplot_size = [value1, value2] is appended to the wxdraw2d( ) command, and is not part of the wxdraw2d command.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb8-1" title="1"><span class="cn">wxdraw2d</span>(</a>
-<a class="sourceLine" id="cb8-2" title="2">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb8-3" title="3">        <span class="fu">sin</span>(<span class="cn">x</span>),</a>
-<a class="sourceLine" id="cb8-4" title="4">        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></a>
-<a class="sourceLine" id="cb8-5" title="5">    )</a>
-<a class="sourceLine" id="cb8-6" title="6">),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">800</span>]$</a></code></pre></div>
-<h3 id="better-quality-plots"><span class="header-section-number">2.3.3</span> Better quality plots</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>        <span class="fu">sin</span>(<span class="cn">x</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>        <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    )</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1600</span>,<span class="dv">800</span>]$</span></code></pre></div>
+<h3 data-number="2.3.3" id="better-quality-plots"><span class="header-section-number">2.3.3</span> Better quality plots</h3>
 <p><em>Gnuplot</em> doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output that the cairo library provides. On systems where <em>gnuplot</em> is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles. If <code>wxplot_pngcairo</code> is set without <em>gnuplot</em> supporting this the result will be error messages instead of graphics.</p>
-<h3 id="opening-embedded-plots-in-interactive-gnuplot-windows"><span class="header-section-number">2.3.4</span> Opening embedded plots in interactive <em>gnuplot</em> windows</h3>
+<h3 data-number="2.3.4" id="opening-embedded-plots-in-interactive-gnuplot-windows"><span class="header-section-number">2.3.4</span> Opening embedded plots in interactive <em>gnuplot</em> windows</h3>
 <p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot2d</code> and <code>wxplot3d</code> isn’t supported by this feature) and the file size of the underlying <em>gnuplot</em> project isn’t way too high <em>wxMaxima</em> offers a right-click menu that allows to open the plot in an interactive <em>gnuplot</em> window.</p>
-<h3 id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
+<h3 data-number="2.3.5" id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
 <p>On MS Windows, if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot”, <em>gnuplot</em> offers the possibility to open a console window, where <em>gnuplot</em> commands can be entered into. Unfortunately, enabling this feature causes <em>gnuplot</em> to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
-<h3 id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.6</span> Embedding animations into the spreadsheet</h3>
+<h3 data-number="2.3.6" id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.6</span> Embedding animations into the spreadsheet</h3>
 <p>3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. <em>wxMaxima</em> allows to export this animation as an animated gif.</p>
 <p>The first two arguments for <code>with_slider_draw</code> are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for <code>wxdraw2d</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb9-1" title="1"><span class="cn">with_slider_draw</span>(</a>
-<a class="sourceLine" id="cb9-2" title="2">    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">10</span>],</a>
-<a class="sourceLine" id="cb9-3" title="3">    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>,<span class="st">&quot;Hz&quot;</span>),</a>
-<a class="sourceLine" id="cb9-4" title="4">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb9-5" title="5">        <span class="fu">sin</span>(<span class="dv">2</span>*<span class="va">%pi</span>*<span class="cn">f</span>*<span class="cn">x</span>),</a>
-<a class="sourceLine" id="cb9-6" title="6">        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">1</span></a>
-<a class="sourceLine" id="cb9-7" title="7">    ),<span class="cn">grid</span>=<span class="kw">true</span></a>
-<a class="sourceLine" id="cb9-8" title="8">);</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    <span class="cn">f</span>,[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">10</span>],</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;f=&quot;</span>,<span class="cn">f</span>,<span class="st">&quot;Hz&quot;</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>        <span class="fu">sin</span>(<span class="dv">2</span>*<span class="va">%pi</span>*<span class="cn">f</span>*<span class="cn">x</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">1</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    ),<span class="cn">grid</span>=<span class="kw">true</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>);</span></code></pre></div>
 <p>The same functionality for 3D plots is accessible as <code>with_slider_draw3d</code>, which allows for rotating 3d plots:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb10-1" title="1"><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="cn">with_slider_draw3d</span>(</a>
-<a class="sourceLine" id="cb10-4" title="4">    α,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">360</span>,<span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb10-5" title="5">    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</a>
-<a class="sourceLine" id="cb10-6" title="6">    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</a>
-<a class="sourceLine" id="cb10-7" title="7">    <span class="cn">contour</span>=<span class="cn">both</span>,</a>
-<a class="sourceLine" id="cb10-8" title="8">    <span class="cn">view</span>=[<span class="dv">60</span>,α],</a>
-<a class="sourceLine" id="cb10-9" title="9">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb10-10" title="10">        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="fu">sin</span>(<span class="cn">y</span>),</a>
-<a class="sourceLine" id="cb10-11" title="11">        <span class="cn">x</span>,-π,π,</a>
-<a class="sourceLine" id="cb10-12" title="12">        <span class="cn">y</span>,-π,π</a>
-<a class="sourceLine" id="cb10-13" title="13">    )</a>
-<a class="sourceLine" id="cb10-14" title="14">)$</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="cn">with_slider_draw3d</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    α,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">360</span>,<span class="dv">3</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,α],</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="fu">sin</span>(<span class="cn">y</span>),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>        <span class="cn">x</span>,-π,π,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a>        <span class="cn">y</span>,-π,π</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a>    )</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a>)$</span></code></pre></div>
 <p>If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make its 3D nature available to the intuition:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb11-1" title="1"><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="cn">with_slider_draw3d</span>(</a>
-<a class="sourceLine" id="cb11-4" title="4">    <span class="cn">t</span>,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="fl">.05</span>*π),</a>
-<a class="sourceLine" id="cb11-5" title="5">    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</a>
-<a class="sourceLine" id="cb11-6" title="6">    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</a>
-<a class="sourceLine" id="cb11-7" title="7">    <span class="cn">contour</span>=<span class="cn">both</span>,</a>
-<a class="sourceLine" id="cb11-8" title="8">    <span class="cn">view</span>=[<span class="dv">60</span>,<span class="dv">30+5</span>*<span class="fu">sin</span>(<span class="cn">t</span>)],</a>
-<a class="sourceLine" id="cb11-9" title="9">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb11-10" title="10">        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="cn">y</span>^<span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb11-11" title="11">        <span class="cn">x</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π,</a>
-<a class="sourceLine" id="cb11-12" title="12">        <span class="cn">y</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π</a>
-<a class="sourceLine" id="cb11-13" title="13">    )</a>
-<a class="sourceLine" id="cb11-14" title="14">)$</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="cn">wxanimate_autoplay</span>:<span class="kw">true</span>;</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="cn">wxanimate_framerate</span>:<span class="dv">20</span>;</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="cn">with_slider_draw3d</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    <span class="cn">t</span>,<span class="fu">makelist</span>(<span class="cn">i</span>,<span class="cn">i</span>,<span class="dv">0</span>,<span class="dv">2</span>*π,<span class="fl">.05</span>*π),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="cn">title</span>=<span class="fu">sconcat</span>(<span class="st">&quot;α=&quot;</span>,α),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>    <span class="cn">surface_hide</span>=<span class="kw">true</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    <span class="cn">contour</span>=<span class="cn">both</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>    <span class="cn">view</span>=[<span class="dv">60</span>,<span class="dv">30+5</span>*<span class="fu">sin</span>(<span class="cn">t</span>)],</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>        <span class="fu">sin</span>(<span class="cn">x</span>)*<span class="cn">y</span>^<span class="dv">2</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>        <span class="cn">x</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>        <span class="cn">y</span>,<span class="dv">-2</span>*π,<span class="dv">2</span>*π</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    )</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a>)$</span></code></pre></div>
 <p>For those more familiar with <code>plot</code> than with <code>draw</code> there is a second set of functions:</p>
 <ul>
 <li><code>with_slider</code> and</li>
 <li><code>wxanimate</code>.</li>
 </ul>
 <p>Normally the animations are played back or exported with the frame rate chosen in the configuration of <em>wxMaxima</em>. To set the speed an individual animation is played back the variable <code>wxanimate_framerate</code> can be used:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb12-1" title="1"><span class="cn">wxanimate</span>(<span class="cn">a</span>, <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb12-2" title="2">    <span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>), [<span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>]), <span class="cn">wxanimate_framerate</span>=<span class="dv">6</span>$</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="cn">wxanimate</span>(<span class="cn">a</span>, <span class="dv">10</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>    <span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>), [<span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>]), <span class="cn">wxanimate_framerate</span>=<span class="dv">6</span>$</span></code></pre></div>
 <p>The animation functions use <em>Maxima</em>’s <code>makelist</code> command and therefore shares the pitfall that the slider variable’s value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb13-1" title="1"><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="cn">with_slider_draw</span>(</a>
-<a class="sourceLine" id="cb13-3" title="3">    <span class="cn">a</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb13-4" title="4">    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">a</span>)),</a>
-<a class="sourceLine" id="cb13-5" title="5">    <span class="cn">grid</span>=<span class="kw">true</span>,</a>
-<a class="sourceLine" id="cb13-6" title="6">    <span class="cn">explicit</span>(<span class="cn">f</span>,<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb13-7" title="7">)$</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    <span class="cn">a</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">a</span>)),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>    <span class="cn">explicit</span>(<span class="cn">f</span>,<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>)$</span></code></pre></div>
 <p>If <em>Maxima</em> is explicitly asked to substitute the slider’s value plotting works fine instead:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb14-1" title="1"><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="cn">with_slider_draw</span>(</a>
-<a class="sourceLine" id="cb14-3" title="3">    <span class="cn">b</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb14-4" title="4">    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">b</span>)),</a>
-<a class="sourceLine" id="cb14-5" title="5">    <span class="cn">grid</span>=<span class="kw">true</span>,</a>
-<a class="sourceLine" id="cb14-6" title="6">    <span class="cn">explicit</span>(</a>
-<a class="sourceLine" id="cb14-7" title="7">        <span class="fu">subst</span>(<span class="cn">a</span>=<span class="cn">b</span>,<span class="cn">f</span>),</a>
-<a class="sourceLine" id="cb14-8" title="8">        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></a>
-<a class="sourceLine" id="cb14-9" title="9">    )</a>
-<a class="sourceLine" id="cb14-10" title="10">)$</a></code></pre></div>
-<h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="cn">f</span>:<span class="fu">sin</span>(<span class="cn">a</span>*<span class="cn">x</span>);</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="cn">with_slider_draw</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    <span class="cn">b</span>,<span class="fu">makelist</span>(<span class="cn">i</span>/<span class="dv">2</span>,<span class="cn">i</span>,<span class="dv">1</span>,<span class="dv">10</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="cn">title</span>=<span class="fu">concat</span>(<span class="st">&quot;a=&quot;</span>,<span class="fu">float</span>(<span class="cn">b</span>)),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>    <span class="cn">grid</span>=<span class="kw">true</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    <span class="cn">explicit</span>(</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>        <span class="fu">subst</span>(<span class="cn">a</span>=<span class="cn">b</span>,<span class="cn">f</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a>        <span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">10</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>    )</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>)$</span></code></pre></div>
+<h3 data-number="2.3.7" id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</h3>
 <p>While not being a provided by <em>wxMaxima</em> this feature of <em>Maxima</em> (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the <em>Maxima</em> mailing list:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb15-1" title="1"></a>
-<a class="sourceLine" id="cb15-2" title="2">    <span class="fu">load</span>(<span class="fu">draw</span>);</a>
-<a class="sourceLine" id="cb15-3" title="3">    </a>
-<a class="sourceLine" id="cb15-4" title="4">    <span class="co">/* Parabola in window #1 */</span></a>
-<a class="sourceLine" id="cb15-5" title="5">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb15-6" title="6">    </a>
-<a class="sourceLine" id="cb15-7" title="7">    <span class="co">/* Parabola in window #2 */</span></a>
-<a class="sourceLine" id="cb15-8" title="8">    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a>
-<a class="sourceLine" id="cb15-9" title="9">    </a>
-<a class="sourceLine" id="cb15-10" title="10">    <span class="co">/* Paraboloid in window #3 */</span></a>
-<a class="sourceLine" id="cb15-11" title="11">    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>    <span class="fu">load</span>(<span class="fu">draw</span>);</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>    </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>    <span class="co">/* Parabola in window #1 */</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>    </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>    <span class="co">/* Parabola in window #2 */</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>    <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>    </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>    <span class="co">/* Paraboloid in window #3 */</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>    <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</span></code></pre></div>
 <p>Plotting multiple plots in the same window is possible, too: ~<del>maxima wxdraw( gr2d( key=“sin (x)”,grid=[2,2], explicit(sin(x),x,0,2<em>%pi)), gr2d( key=“cos (x)”,grid=[2,2], explicit(cos(x),x,0,2</em>%pi)) );</del>~</p>
-<h3 id="the-plot-using-draw-side-pane"><span class="header-section-number">2.3.8</span> The “Plot using draw” side pane</h3>
+<h3 data-number="2.3.8" id="the-plot-using-draw-side-pane"><span class="header-section-number">2.3.8</span> The “Plot using draw” side pane</h3>
 <p>The “Plot using draw” sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
-<h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
+<h4 data-number="2.3.8.1" id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
 <p>Generates the skeleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
 <p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em>) has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
-<h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
+<h4 data-number="2.3.8.2" id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
 <p>Generates the skeleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
-<h4 id="expression"><span class="header-section-number">2.3.8.3</span> Expression</h4>
+<h4 data-number="2.3.8.3" id="expression"><span class="header-section-number">2.3.8.3</span> Expression</h4>
 <p>Appends a standard plot of an expression like <code>sin(x)</code>, <code>x*sin(x)</code> or <code>x^2+2*x-4</code> to the <code>draw()</code> command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.</p>
-<h4 id="implicit-plot"><span class="header-section-number">2.3.8.4</span> Implicit plot</h4>
+<h4 data-number="2.3.8.4" id="implicit-plot"><span class="header-section-number">2.3.8.4</span> Implicit plot</h4>
 <p>Tries to find all points an expression like <code>y=sin(x)</code>, <code>y*sin(x)=3</code> or <code>x^2+y^2=4</code> is true at and plots the resulting curve in the <code>draw()</code> command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated.</p>
-<h4 id="parametric-plot"><span class="header-section-number">2.3.8.5</span> Parametric plot</h4>
+<h4 data-number="2.3.8.5" id="parametric-plot"><span class="header-section-number">2.3.8.5</span> Parametric plot</h4>
 <p>Steps a variable from a lower limit to an upper limit and uses two expressions like <code>t*sin(t)</code> and <code>t*cos(t)</code> for generating the x, y (and in 3D plots also z) coordinates of a curve that is put into the current draw command.</p>
-<h4 id="points"><span class="header-section-number">2.3.8.6</span> Points</h4>
+<h4 data-number="2.3.8.6" id="points"><span class="header-section-number">2.3.8.6</span> Points</h4>
 <p>Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, a 2D array or one list or array for each axis.</p>
-<h4 id="diagram-title"><span class="header-section-number">2.3.8.7</span> Diagram title</h4>
+<h4 data-number="2.3.8.7" id="diagram-title"><span class="header-section-number">2.3.8.7</span> Diagram title</h4>
 <p>Draws a title on the upper end of the diagram,</p>
-<h4 id="axis"><span class="header-section-number">2.3.8.8</span> Axis</h4>
+<h4 data-number="2.3.8.8" id="axis"><span class="header-section-number">2.3.8.8</span> Axis</h4>
 <p>Sets up the axis.</p>
-<h4 id="contour"><span class="header-section-number">2.3.8.9</span> Contour</h4>
+<h4 data-number="2.3.8.9" id="contour"><span class="header-section-number">2.3.8.9</span> Contour</h4>
 <p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
-<h4 id="plot-name"><span class="header-section-number">2.3.8.10</span> Plot name</h4>
+<h4 data-number="2.3.8.10" id="plot-name"><span class="header-section-number">2.3.8.10</span> Plot name</h4>
 <p>Adds a legend entry showing the next plot’s name to the legend of the diagram. An empty name disables generating legend entries for the following plots.</p>
-<h4 id="line-color"><span class="header-section-number">2.3.8.11</span> Line color</h4>
+<h4 data-number="2.3.8.11" id="line-color"><span class="header-section-number">2.3.8.11</span> Line color</h4>
 <p>Sets the line color for the following plots the current draw command contains.</p>
-<h4 id="fill-color"><span class="header-section-number">2.3.8.12</span> Fill color</h4>
+<h4 data-number="2.3.8.12" id="fill-color"><span class="header-section-number">2.3.8.12</span> Fill color</h4>
 <p>Sets the fill color for the following plots the current draw command contains.</p>
-<h4 id="grid"><span class="header-section-number">2.3.8.13</span> Grid</h4>
+<h4 data-number="2.3.8.13" id="grid"><span class="header-section-number">2.3.8.13</span> Grid</h4>
 <p>Pops up a wizard that allows to set up grid lines.</p>
-<h4 id="accuracy"><span class="header-section-number">2.3.8.14</span> Accuracy</h4>
+<h4 data-number="2.3.8.14" id="accuracy"><span class="header-section-number">2.3.8.14</span> Accuracy</h4>
 <p>Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.</p>
-<h2 id="embedding-graphics"><span class="header-section-number">2.4</span> Embedding graphics</h2>
+<h2 data-number="2.4" id="embedding-graphics"><span class="header-section-number">2.4</span> Embedding graphics</h2>
 <p>If the <code>.wxmx</code> file format is being used embedding files in a <em>wxMaxima</em> project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb16-1" title="1"></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</a></code></pre></div>
-<h2 id="startup-files"><span class="header-section-number">2.5</span> Startup files</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</span></code></pre></div>
+<h2 data-number="2.5" id="startup-files"><span class="header-section-number">2.5</span> Startup files</h2>
 <p>The config dialogue of <em>wxMaxima</em> offers to edit two files with commands that are executed on startup:</p>
 <ul>
 <li>A file that contains commands that are executed on starting up <em>Maxima</em>: <code>maxima-init.mac</code></li>
 <li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>: <code>wxmaxima-init.mac</code></li>
 </ul>
 <p>These files are in the Maxima user directory (usually <code>maxima</code> in Windows, <code>.maxima</code> otherwise) in the user’s home directory / user profile directory. The location can be found out with the command: <code>maxima_userdir;</code></p>
-<h2 id="special-variables-wx"><span class="header-section-number">2.6</span> Special variables wx…</h2>
+<h2 data-number="2.6" id="special-variables-wx"><span class="header-section-number">2.6</span> Special variables wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>
 <li><code>wxfilename</code>: This variable contains the name of the file currently opened in <em>wxMaxima</em>.</li>
@@ -868,50 +879,50 @@ Ordinary text</code></pre>
 <li><code>wxanimate_framerate</code>: The number of frames per second the following animations have to be played back with.</li>
 <li><code>wxanimate_autoplay</code>: Automatically play animations by default?</li>
 </ul>
-<h2 id="pretty-printing-2d-output"><span class="header-section-number">2.7</span> Pretty-printing 2D output</h2>
+<h2 data-number="2.7" id="pretty-printing-2d-output"><span class="header-section-number">2.7</span> Pretty-printing 2D output</h2>
 <p>The function <code>table_form()</code> displays a 2D list in a form that is more readable than the output from <em>Maxima</em>’s default output routine. The input is a list of one or more lists. Like the “print” command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a “done” statement.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb17-1" title="1"><span class="cn">table_form</span>(</a>
-<a class="sourceLine" id="cb17-2" title="2">    [</a>
-<a class="sourceLine" id="cb17-3" title="3">        [<span class="dv">1</span>,<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb17-4" title="4">        [<span class="dv">3</span>,<span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb17-5" title="5">    ]</a>
-<a class="sourceLine" id="cb17-6" title="6">)$</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="cn">table_form</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>    [</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>        [<span class="dv">1</span>,<span class="dv">2</span>],</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>        [<span class="dv">3</span>,<span class="dv">4</span>]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>    ]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>)$</span></code></pre></div>
 <p>As the next example shows, the lists that are assembled by the <code>table_form</code> command can be created before the command is executed.</p>
 <figure>
-<img src="./MatrixTableExample.png" alt="A third table example" id="img_MatrixTableExample" /><figcaption>A third table example</figcaption>
+<img src="./MatrixTableExample.png" id="img_MatrixTableExample" alt="" /><figcaption>A third table example</figcaption>
 </figure>
 <p>Also, because a matrix is a list of lists, matrices can be converted to tables in a similar fashion.</p>
 <figure>
-<img src="./SecondTableExample.png" alt="Another table_form example" id="img_SecondTableExample" /><figcaption>Another table_form example</figcaption>
+<img src="./SecondTableExample.png" id="img_SecondTableExample" alt="" /><figcaption>Another table_form example</figcaption>
 </figure>
-<h2 id="bug-reporting"><span class="header-section-number">2.8</span> Bug reporting</h2>
+<h2 data-number="2.8" id="bug-reporting"><span class="header-section-number">2.8</span> Bug reporting</h2>
 <p><em>wxMaxima</em> provides a few functions that gather bug reporting information about the current system:</p>
 <ul>
 <li><code>wxbuild_info()</code> gathers information about the currently running version of <em>wxMaxima</em></li>
 <li><code>wxbug_report()</code> tells how and where to file bugs</li>
 </ul>
-<h2 id="marking-output-being-drawn-in-red"><span class="header-section-number">2.9</span> Marking output being drawn in red</h2>
+<h2 data-number="2.9" id="marking-output-being-drawn-in-red"><span class="header-section-number">2.9</span> Marking output being drawn in red</h2>
 <p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red foreground.</p>
 <hr />
-<h1 id="risoluzione-dei-problemi"><span class="header-section-number">3</span> Risoluzione dei problemi</h1>
-<h2 id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
+<h1 data-number="3" id="risoluzione-dei-problemi"><span class="header-section-number">3</span> Risoluzione dei problemi</h1>
+<h2 data-number="3.1" id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>On Un*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
-<h2 id="how-to-save-data-from-a-broken-.wxmx-file"><span class="header-section-number">3.2</span> How to save data from a broken .wxmx file</h2>
+<h2 data-number="3.2" id="how-to-save-data-from-a-broken-.wxmx-file"><span class="header-section-number">3.2</span> How to save data from a broken .wxmx file</h2>
 <p>Internally most modern xml-based formats are ordinary zip-files. <em>wxMaxima</em> doesn’t turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
 <p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help.</p>
 <p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file’s contents (it starts with <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
 <p>If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in <code>.xml</code>, <em>wxMaxima</em> will know how to recover the text of the document from it.</p>
-<h2 id="i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="header-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</h2>
+<h2 data-number="3.3" id="i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="header-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</h2>
 <p>Normally <em>wxMaxima</em> waits for the whole 2D formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a <code>disp</code> command, though, that will provide debug output immediately and without waiting for the current <em>Maxima</em> command to finish:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</a>
-<a class="sourceLine" id="cb18-2" title="2">   <span class="fu">disp</span>(<span class="cn">i</span>),</a>
-<a class="sourceLine" id="cb18-3" title="3">   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></a>
-<a class="sourceLine" id="cb18-4" title="4">   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></a>
-<a class="sourceLine" id="cb18-5" title="5">   <span class="co">/* program execution (here: for 3 seconds) */</span></a>
-<a class="sourceLine" id="cb18-6" title="6">   ?<span class="cn">sleep</span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb18-7" title="7">)$</a></code></pre></div>
-<h2 id="plotting-only-shows-a-closed-empty-envelope-with-an-error-message"><span class="header-section-number">3.4</span> Plotting only shows a closed empty envelope with an error message</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>   <span class="fu">disp</span>(<span class="cn">i</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>   <span class="co">/* program execution (here: for 3 seconds) */</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>   ?<span class="cn">sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a>)$</span></code></pre></div>
+<h2 data-number="3.4" id="plotting-only-shows-a-closed-empty-envelope-with-an-error-message"><span class="header-section-number">3.4</span> Plotting only shows a closed empty envelope with an error message</h2>
 <p>This means that <em>wxMaxima</em> could not read the file <em>Maxima</em> that was supposed to instruct <em>gnuplot</em> to create.</p>
 <p>Possible reasons for this error are:</p>
 <ul>
@@ -920,9 +931,9 @@ Ordinary text</code></pre>
 <li>Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the “Use the cairo terminal for plot” checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em>Maxima</em>.</li>
 <li>Gnuplot didn’t output a valid .png file.</li>
 </ul>
-<h2 id="plotting-an-animation-results-in-error-undefined-variable"><span class="header-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</h2>
+<h2 data-number="3.5" id="plotting-an-animation-results-in-error-undefined-variable"><span class="header-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</h2>
 <p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a <code>subst</code> command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.</p>
-<h2 id="i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="header-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</h2>
+<h2 data-number="3.6" id="i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="header-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</h2>
 <p>There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:</p>
 <ul>
 <li><em>wxMaxima</em> actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.</li>
@@ -930,73 +941,73 @@ Ordinary text</code></pre>
 <li>If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all <em>Maxima</em> commands that have been issued recently.</li>
 <li>If nothing else helps <em>Maxima</em> contains a replay feature:</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb19-1" title="1"></a>
-<a class="sourceLine" id="cb19-2" title="2"><span class="fu">playback</span>();</a></code></pre></div>
-<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="fu">playback</span>();</span></code></pre></div>
+<h2 data-number="3.7" id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
 <p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
-<h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
+<h2 data-number="3.8" id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
 <p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
-<h2 id="my-sbcl-based-maxima-runs-out-of-memory"><span class="header-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</h2>
+<h2 data-number="3.9" id="my-sbcl-based-maxima-runs-out-of-memory"><span class="header-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</h2>
 <p>The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits SBCL can be provided with the command line parameter <code>--dynamic-space-size</code> that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs.</p>
 <p>One way to provide <em>Maxima</em> (and thus SBCL) with command line parameters is the “Additional parameters for Maxima” field of <em>wxMaxima</em>’s configuration dialogue.</p>
 <figure>
-<img src="./sbclMemory.png" alt="sbcl memory" id="img_sbclMemory" /><figcaption>sbcl memory</figcaption>
+<img src="./sbclMemory.png" id="img_sbclMemory" alt="" /><figcaption>sbcl memory</figcaption>
 </figure>
-<h2 id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
+<h2 data-number="3.10" id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
-<h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
+<h2 data-number="3.11" id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
 <p>If your <em>Maxima</em> is based on SBCL the following lines have to be added to your <code>.sbclrc</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode lisp"><code class="sourceCode commonlisp"><a class="sourceLine" id="cb20-1" title="1"></a>
-<a class="sourceLine" id="cb20-2" title="2">(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</span></code></pre></div>
 <p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
-<h2 id="plotting-1"><span class="header-section-number">3.12</span> Plotting</h2>
-<h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
+<h2 data-number="3.12" id="plotting-1"><span class="header-section-number">3.12</span> Plotting</h2>
+<h3 data-number="3.12.1" id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
 <p>The worksheet embeds .png files. <em>wxMaxima</em> allows the user to specify where they should be generated:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb22-1" title="1"><span class="cn">wxdraw2d</span>(</a>
-<a class="sourceLine" id="cb22-2" title="2">    <span class="cn">file_name</span>=<span class="st">&quot;test&quot;</span>,</a>
-<a class="sourceLine" id="cb22-3" title="3">    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb22-4" title="4">);</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    <span class="cn">file_name</span>=<span class="st">&quot;test&quot;</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>);</span></code></pre></div>
 <p>If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb23-1" title="1"><span class="fu">load</span>(<span class="st">&quot;draw&quot;</span>);</a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="cn">pngdraw</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</a>
-<a class="sourceLine" id="cb23-3" title="3">(</a>
-<a class="sourceLine" id="cb23-4" title="4">    <span class="fu">draw</span>(</a>
-<a class="sourceLine" id="cb23-5" title="5">        <span class="fu">append</span>(</a>
-<a class="sourceLine" id="cb23-6" title="6">            [</a>
-<a class="sourceLine" id="cb23-7" title="7">                <span class="cn">terminal</span>=<span class="cn">pngcairo</span>,</a>
-<a class="sourceLine" id="cb23-8" title="8">                <span class="cn">dimensions</span>=<span class="cn">wxplot_size</span>,</a>
-<a class="sourceLine" id="cb23-9" title="9">                <span class="cn">file_name</span>=<span class="cn">name</span></a>
-<a class="sourceLine" id="cb23-10" title="10">            ],</a>
-<a class="sourceLine" id="cb23-11" title="11">            <span class="cn">contents</span></a>
-<a class="sourceLine" id="cb23-12" title="12">        )</a>
-<a class="sourceLine" id="cb23-13" title="13">    ),</a>
-<a class="sourceLine" id="cb23-14" title="14">    <span class="cn">show_image</span>(<span class="fu">printf</span>(<span class="kw">false</span>,<span class="st">&quot;~a.png&quot;</span>,<span class="cn">name</span>))</a>
-<a class="sourceLine" id="cb23-15" title="15">);</a>
-<a class="sourceLine" id="cb23-16" title="16"><span class="cn">pngdraw2d</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</a>
-<a class="sourceLine" id="cb23-17" title="17">    <span class="cn">pngdraw</span>(<span class="cn">name</span>,<span class="cn">gr2d</span>(<span class="cn">contents</span>));</a>
-<a class="sourceLine" id="cb23-18" title="18"></a>
-<a class="sourceLine" id="cb23-19" title="19"><span class="cn">pngdraw2d</span>(<span class="st">&quot;Test&quot;</span>,</a>
-<a class="sourceLine" id="cb23-20" title="20">        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb23-21" title="21">);</a></code></pre></div>
-<h3 id="can-i-set-the-aspect-ratio-of-a-plot"><span class="header-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="fu">load</span>(<span class="st">&quot;draw&quot;</span>);</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a><span class="cn">pngdraw</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    <span class="fu">draw</span>(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>        <span class="fu">append</span>(</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>            [</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>                <span class="cn">terminal</span>=<span class="cn">pngcairo</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a>                <span class="cn">dimensions</span>=<span class="cn">wxplot_size</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a>                <span class="cn">file_name</span>=<span class="cn">name</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>            ],</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a>            <span class="cn">contents</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a>        )</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>    ),</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a>    <span class="cn">show_image</span>(<span class="fu">printf</span>(<span class="kw">false</span>,<span class="st">&quot;~a.png&quot;</span>,<span class="cn">name</span>))</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true"></a>);</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true"></a><span class="cn">pngdraw2d</span>(<span class="cn">name</span>,[<span class="cn">contents</span>]):=</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true"></a>    <span class="cn">pngdraw</span>(<span class="cn">name</span>,<span class="cn">gr2d</span>(<span class="cn">contents</span>));</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a><span class="cn">pngdraw2d</span>(<span class="st">&quot;Test&quot;</span>,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true"></a>        <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true"></a>);</span></code></pre></div>
+<h3 data-number="3.12.2" id="can-i-set-the-aspect-ratio-of-a-plot"><span class="header-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</h3>
 <p>Not directly using <em>Maxima</em>. But there are gnuplot commands for it:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode maxima"><code class="sourceCode maxima"><a class="sourceLine" id="cb24-1" title="1"><span class="cn">wxdraw2d</span>(</a>
-<a class="sourceLine" id="cb24-2" title="2">    <span class="cn">proportional_axis</span>=<span class="cn">xy</span>,</a>
-<a class="sourceLine" id="cb24-3" title="3">    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb24-4" title="4">),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="cn">wxdraw2d</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>    <span class="cn">proportional_axis</span>=<span class="cn">xy</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>    <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</span></code></pre></div>
 <hr />
-<h1 id="faq"><span class="header-section-number">4</span> FAQ</h1>
-<h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
+<h1 data-number="4" id="faq"><span class="header-section-number">4</span> FAQ</h1>
+<h2 data-number="4.1" id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
 <p>There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”):</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb25-1" title="1"></a>
-<a class="sourceLine" id="cb25-2" title="2"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</a></code></pre></div>
-<h2 id="is-there-a-dark-mode"><span class="header-section-number">4.2</span> Is there a dark mode?</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</span></code></pre></div>
+<h2 data-number="4.2" id="is-there-a-dark-mode"><span class="header-section-number">4.2</span> Is there a dark mode?</h2>
 <p>If wxWidgets is new enough <em>wxMaxima</em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
-<h2 id="wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="header-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</h2>
+<h2 data-number="4.3" id="wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="header-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</h2>
 <p><em>wxMaxima</em> delegates some big tasks like parsing <em>Maxima</em>’s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that <em>wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
 <hr />
-<h1 id="argomenti-della-riga-di-comando"><span class="header-section-number">5</span> Argomenti della riga di comando</h1>
+<h1 data-number="5" id="argomenti-della-riga-di-comando"><span class="header-section-number">5</span> Argomenti della riga di comando</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>
 <ul>
 <li><code>-v</code> or <code>--version</code>: Output the version information</li>
