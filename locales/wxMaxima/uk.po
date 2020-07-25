@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-14 08:32+0200\n"
-"PO-Revision-Date: 2020-07-11 16:42+0300\n"
+"PO-Revision-Date: 2020-07-25 10:55+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.07.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:186
@@ -1730,9 +1730,8 @@ msgid "Classes:"
 msgstr "Класи:"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:97
-#, fuzzy
 msgid "Clear the selection"
-msgstr "Вирізати позначене"
+msgstr "Зняти позначення"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
 msgid "Close\tCtrl+W"
@@ -3014,13 +3013,12 @@ msgid "Export"
 msgstr "Експорт"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:124
-#, fuzzy
 msgid "Export As"
-msgstr "Експорт"
+msgstr "Експортувати як"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:90
 msgid "Export all history to a .mac file"
-msgstr ""
+msgstr "Експортувати увесь журнал до файла .mac"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:776
 msgid ""
@@ -3031,7 +3029,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:91
 msgid "Export commands from the current maxima session to a .mac file"
-msgstr ""
+msgstr "Експортувати команди з поточного сеансу maxima до файла .mac"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:671
 msgid "Export document to a HTML or LaTeX file"
@@ -3047,7 +3045,7 @@ msgstr "Помилка під час експортування."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:93
 msgid "Export selected commands to a .mac file"
-msgstr ""
+msgstr "Експортувати позначені команди до файла .mac"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:605
 msgid "Export successful."
@@ -3055,12 +3053,11 @@ msgstr "Успішно експортовано."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:95
 msgid "Export visible commands to a .mac file"
-msgstr ""
+msgstr "Експортувати видимі команди до файла .mac"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:202
-#, fuzzy
 msgid "Exporting to .mac file failed!"
-msgstr "Не вдалося експортувати до файла пакетної обробки maxima!"
+msgstr "Не вдалося експортувати дані до файла .mac!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
 msgid "Exporting to HTML failed!"
@@ -4435,7 +4432,7 @@ msgstr "Задача Коші (&2)…"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:53
 msgid "Input a RegEx here to filter the results"
-msgstr ""
+msgstr "Введіть сюди формальний вираз для фільтрування результатів"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:1025
 msgid "Input labels"
@@ -4656,7 +4653,7 @@ msgstr "Вставити значення змінних, збережені у 
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:55
 msgid "Invalid RegEx!"
-msgstr ""
+msgstr "Некоректний формальний вираз!"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1307
 msgid ""
@@ -4883,13 +4880,13 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
 msgstr ""
-"Припустімо, що R_1 дорівнює 100 Ом із припуском у 10%. R_2 є резистором на "
-"1000 Ом із припуском 1%:\n"
+"Припустімо, що R_1 дорівнює 100 Ом із припуском у 10%. R_2 є резистором на"
+" 1000 Ом із припуском 1%:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:607
 msgid ""
@@ -5456,9 +5453,8 @@ msgid "Maxima sends us a new set of variables for the watch list."
 msgstr "Maxima надсилає новий набір змінних для списку спостереження."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:126
-#, fuzzy
 msgid "Maxima session (*.mac)|*.mac"
-msgstr "пакунок Maxima (*.mac)|*.mac"
+msgstr "сеанс Maxima (*.mac)|*.mac"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:566
 msgid "Maxima started. Waiting for connection..."
@@ -7160,46 +7156,40 @@ msgid "Scatterplot..."
 msgstr "Точкова діаграма…"
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:65
-#, fuzzy
 msgid ""
 "Scheduling a background task that compiles a new list of autocompletible "
 "maxima commands."
 msgstr ""
-"Запускаємо фонове завдання, яке збирає новий список автоматичного доповнення "
+"Плануємо фонове завдання, яке збирає новий список автоматичного доповнення "
 "для команд maxima."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:412
-#, fuzzy
 msgid "Scheduling a background task that scans for autocompletible file names."
 msgstr ""
-"Запускаємо фонове завдання сканування назв файлів для автоматичного "
+"Плануємо фонове завдання сканування назв файлів для автоматичного "
 "доповнення."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
-#, fuzzy
 msgid ""
 "Scheduling a background task that setups the autocompletable files list."
 msgstr ""
-"Запускаємо фонове завдання налаштовування списку файлів для автоматичного "
+"Плануємо фонове завдання налаштовування списку файлів для автоматичного "
 "доповнення."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
-#, fuzzy
 msgid ""
 "Scheduling a background task that setups the autocomplete builtins list."
 msgstr ""
-"Запускаємо фонове завдання налаштовування списку вбудованих даних для "
+"Плануємо фонове завдання налаштовування списку вбудованих даних для "
 "автоматичного доповнення."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:879
-#, fuzzy
 msgid "Scheduling background task that loads an image"
-msgstr "Запускаємо фоновий потік обробки, який завантажує зображення"
+msgstr "Плануємо фонове завдання, яке завантажуватиме зображення"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:245
-#, fuzzy
 msgid "Scheduling background task that loads the gnuplot data for a plot."
-msgstr "Запускаємо фонове завдання, яке завантажує дані gnuplot для креслення."
+msgstr "Плануємо фонове завдання, яке завантажує дані gnuplot для креслення."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:638
 msgid "Search button"
@@ -8480,6 +8470,8 @@ msgid ""
 "The result was indefinite, which might be infinity, both plus or minus "
 "infinity or something additionally potentially involving a complex infinity."
 msgstr ""
+"Результат є невизначеним — може бути нескінченність, плюс або мінус"
+" нескінченність або щось, що потенційно включає комплексну нескінченність."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:114
 msgid "The result was undefined."
@@ -9369,15 +9361,15 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
 "percentage.\n"
 msgstr ""
-"Можна запропонувати інший набір значень: два резистори із припустимим "
-"відхиленням лише у 10%, але гарантованим відхиленням у одному напрямку на "
-"однакове значення у відсотках.\n"
+"Можна запропонувати інший набір значень: два резистори із припустимим"
+" відхиленням лише у 10%, але гарантованим відхиленням у одному напрямку на"
+" однакове значення у відсотках.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1308
 msgid "We can use them as an input to solve:\n"
