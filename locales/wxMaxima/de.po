@@ -1188,7 +1188,7 @@ msgstr "Batch-Dateien (*.bat)|*.bat|Alle|*"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1322
 #, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
-msgstr "Batch-Dateien (*.bat)|*.bat|Alle|*"
+msgstr "Batch-Dateien (*.bat)|*.bat|Exe-Dateien (*.exe)||Alle|*"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5574
 msgid "Batch File"
@@ -1729,12 +1729,12 @@ msgstr "Neues Plot-Format eingeben:"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1398
 #, fuzzy, c-format
 msgid "Choose the %s Font"
-msgstr "Schriftart wählen"
+msgstr "Schriftart %s wählen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1347
 #, fuzzy
 msgid "Choose the Math Font"
-msgstr "Schriftart wählen"
+msgstr "Mathematische Schriftart wählen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
 msgid "Choose the parenthesis type for Matrices"
@@ -1748,7 +1748,7 @@ msgstr "Klassen:"
 #: /home/gunter/src/wxmaxima/src/History.cpp:97
 #, fuzzy
 msgid "Clear the selection"
-msgstr "Auswahl ausschneiden"
+msgstr "Auswahl löschen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
 msgid "Close\tCtrl+W"
@@ -1867,7 +1867,7 @@ msgstr "Stelle eine Liste der Stichwörter im Handbuch zusammen"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:853
 #, fuzzy
 msgid "Complete Word\tCtrl+Space"
-msgstr "Vervollständige Befehl\tCtrl+K"
+msgstr "Vervollständige Befehl\tCtrl+Space"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:854
 msgid "Complete word"
@@ -2668,7 +2668,7 @@ msgstr "Aktiviert:"
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:99
 #, fuzzy, c-format
 msgid "Encountered an unknown XML tag: <%s>"
-msgstr "Unbekanntes Netzwerk-Ereignis."
+msgstr "Unbekanntes XML-Element: <%s>"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1667
 msgid "Encountered an unknown socket event."
@@ -3034,7 +3034,7 @@ msgstr "Exportieren"
 #: /home/gunter/src/wxmaxima/src/History.cpp:124
 #, fuzzy
 msgid "Export As"
-msgstr "Exportieren"
+msgstr "Exportiere als"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:90
 msgid "Export all history to a .mac file"
@@ -3078,7 +3078,7 @@ msgstr "Exportiere sichtbare Befehle in ein .mac-File"
 #: /home/gunter/src/wxmaxima/src/History.cpp:202
 #, fuzzy
 msgid "Exporting to .mac file failed!"
-msgstr "Export als Maxima-Bibliothek ist fehlgeschlagen!"
+msgstr "Export als .mac-Datei ist fehlgeschlagen!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
 msgid "Exporting to HTML failed!"
@@ -3426,7 +3426,7 @@ msgstr "Zeichensatz fehlerhaft: Zeichengröße zu gering!"
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:197
 #, fuzzy
 msgid "Font issue: The sqrt() sign has the size 0!"
-msgstr "Zeichensatzproblem? Das Wurzelzeichen hat die Größe 0."
+msgstr "Zeichensatzproblem: Das Wurzelzeichen hat die Größe 0!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:195
 msgid "Font issue? The contents of a sqrt() has the size 0."
@@ -3626,7 +3626,7 @@ msgid ""
 msgstr ""
 "GTK_IM_MODULE ist auf \"xim\" gesetzt und GTK3 wird verwendet. Das Programm "
 "kann daher fürchterlich flackern, siehe https://trac.wxwidgets.org/"
-"ticket/18462"
+"ticket/18462."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:161
 msgid "Galician"
@@ -3807,7 +3807,7 @@ msgstr "Hilfe"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:943
 #, fuzzy
 msgid "Help browser:"
-msgstr "Hilfe über %s"
+msgstr "Hilfe Browser:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:641
 msgid "Help button"
@@ -5750,7 +5750,7 @@ msgstr "Nicht-zusammengehörige Klammern"
 #: /home/gunter/src/wxmaxima/src/VisiblyInvalidCell.cpp:42
 #, fuzzy
 msgid "Missing contents. Bug?"
-msgstr "Interner Fehler: Fehlender Inhalt"
+msgstr "Fehlender Inhalt. Interner Fehler?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7414
 msgid "Modulus"
@@ -5865,7 +5865,7 @@ msgstr "Neu\tCtrl+N"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:620
 msgid "New button"
-msgstr "Der \\\"Neu\"-Knopf"
+msgstr "Der \"Neu\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1676
 msgid "New connection attempt whilst already connected."
@@ -6723,7 +6723,7 @@ msgstr "Matrix laden ..."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4132
 #, fuzzy, c-format
 msgid "Read the entries the maxima manual offers from %s"
-msgstr "Stelle eine Liste der Stichwörter im Handbuch zusammen"
+msgstr "Stelle eine Liste der Stichwörter passend zu %s aus dem Handbuch zusammen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:547
 msgid "Reading Maxima output"
@@ -7293,7 +7293,7 @@ msgstr "Alles auswählen"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1318
 #, fuzzy
 msgid "Select help browser"
-msgstr "Der \"alles auswählen\"-Knopf"
+msgstr "Wähle den Hilfebrowser"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
 msgid "Select math display algorithm"
@@ -7514,7 +7514,7 @@ msgstr "Zeige die Hilfe von Maxima"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:855
 #, fuzzy
 msgid "Show Template\tCtrl+Shift+Space"
-msgstr "Zeige Muster\tCtrl+Shift+K"
+msgstr "Zeige Muster\tCtrl+Shift+Space"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1333
 msgid "Show a tip"
@@ -8930,7 +8930,7 @@ msgstr ""
 #, fuzzy, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
-msgstr "Versuch, die nicht-existierende Datei %s zu öffnen."
+msgstr "Versuche, die Liste der Themen, die das Handbuch in Datei %s enthält, zu cachen."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:139
 #: /home/gunter/src/wxmaxima/src/Image.cpp:143
@@ -8966,12 +8966,12 @@ msgstr "Versuch, die nicht-existierende Datei %s zu öffnen."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3261
 #, fuzzy
 msgid "Trying to reconstruct the xml closing markers."
-msgstr "Versuche, Maxima neuzustarten."
+msgstr "Versuche, schließende XML-Tags zu rekonstruieren."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3178
 #, fuzzy
 msgid "Trying to recover a broken .wxmx file."
-msgstr "Versuche, die alte temporäre Datei zu löschen"
+msgstr "Versuche, eine defekte .wxmx-Datei zu rekonstruieren."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5350
 #, c-format
@@ -9138,7 +9138,7 @@ msgstr "Zeige den Inhalt"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:469
 #, fuzzy
 msgid "Unicode characters"
-msgstr "Zeige den Inhalt"
+msgstr "Unicode Zeichen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:754
 msgid "Unicode chars\tAlt+Shift+U"
@@ -9758,8 +9758,8 @@ msgid ""
 "find_root only works if the function the solution is searched for crosses "
 "the solution exactly once in the given range."
 msgstr ""
-"find_root funktioniert auch dann, wenn die Gleichung nicht differenzierbar "
-"ist und sucht eine Lösung zwischen zwei Punkten.\n"
+"find_root funktioniert nur dann, wenn die Funktion, für die eine Lösung gesucht wird, "
+"die Lösung im Suchbereich genau einmal kreuzt."
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:436
 msgid "for\n"
