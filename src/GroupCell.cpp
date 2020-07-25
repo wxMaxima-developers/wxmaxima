@@ -559,7 +559,6 @@ void GroupCell::RecalculateHeightInput()
     m_center = 0;
   m_height = m_inputHeight;
   m_width = m_inputWidth;
-  std::cerr<<m_height<<"\n";
 }
 
 void GroupCell::RecalculateHeightOutput()
