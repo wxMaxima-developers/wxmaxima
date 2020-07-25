@@ -8024,7 +8024,8 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     int width;
     int height;
     GetClientSize(&width, &height);
-    m_autocompletePopup -> SetPosition(pos);
+    if((pos.x >= 0) && (pos.y >= 0)
+       m_autocompletePopup -> SetPosition(pos);
     m_autocompletePopup -> Create(this);
     m_autocompletePopup -> SetFocus();
     wxRect popupRect = m_autocompletePopup -> GetRect();
