@@ -17,9 +17,8 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
-#, fuzzy, no-wrap
-#| msgid "The wxMaxima user manual {-}\n"
-msgid "The wxMaxima user manual {-}"
+#, no-wrap
+msgid "The wxMaxima user manual {-}\n"
 msgstr "Das Handbuch von wxMaxima {-}\n"
 
 #. type: Plain text
@@ -121,9 +120,8 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:44
-#, fuzzy, no-wrap
-#| msgid "Introduction to wxMaxima\n"
-msgid "Introduction to wxMaxima"
+#, no-wrap
+msgid "Introduction to wxMaxima\n"
 msgstr "Einführung in wxMaxima\n"
 
 #. type: Title ##
@@ -1171,7 +1169,11 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
+"wxdraw2d( \n"
+"   explicit(\n"
+"       x^2\n"
+"\t   ,x,-5,5\n"
+"   )), wxplot_size=[480,480]$\n"
 "\n"
 
 #. type: Title ###
@@ -1257,7 +1259,8 @@ msgstr "Wo wird die Konfiguration gespeichert?"
 msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
-msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist; Da der Dateiname mit einem Punkt beginnt, betrachtet Linux sie als versteckte Datei.\n"
+msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
+"(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` eine versteckte Datei).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:354
@@ -1276,9 +1279,8 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:360
-#, fuzzy, no-wrap
-#| msgid "Extensions to _Maxima_\n"
-msgid "Extensions to _Maxima_"
+#, no-wrap
+msgid "Extensions to _Maxima_\n"
 msgstr "Erweiterungen für _Maxima_\n"
 
 #. type: Plain text
@@ -1339,22 +1341,12 @@ msgstr ""
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:373
-#, fuzzy, no-wrap
-#| msgid "User feedback in the statusbar"
+#, no-wrap
 msgid "User feedback in the status bar"
 msgstr "Meldungen in der Statusleiste"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:376
-#, fuzzy
-#| msgid ""
-#| "Long-running commands can provide user-feedback in the status bar. This "
-#| "user feedback is replaced by any new feedback that is placed there "
-#| "(allowing to use it as a progress indicator) and is deleted as soon as "
-#| "the current command sent to _maxima_ is finished. It is safe to use "
-#| "`wxstatusbar()` even in libraries that might be used with plain _Maxima_ "
-#| "(as opposed to _wxMaxima_): If _wxMaxima_ isn't present the "
-#| "`wxstatusbar()` command will just be left unevaluated."
 msgid ""
 "Long-running commands can provide user-feedback in the status bar. This user "
 "feedback is replaced by any new feedback that is placed there (allowing to "
@@ -1370,7 +1362,7 @@ msgstr ""
 "bekannt ist, ob sie mit _wxMaxima_ oder in einem _Maxima_ ohne Frontend "
 "verwendet werden: Wenn _wxMaxima_ diese Funktion nicht definiert hat, wird "
 "sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter "
-"bearbeitet. "
+"bearbeitet."
 
 #. type: Fenced code block (maxima)
 #: ../../info/wxmaxima.md:377
@@ -1419,16 +1411,6 @@ msgstr "Der Einbau von Diagrammen in das Arbeitsblatt"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:395
-#, fuzzy
-#| msgid ""
-#| "_Maxima_ normally instructs the external program gnuplot to open a "
-#| "separate window for every diagram it creates. Since many times it is "
-#| "convenient to embed graphs into the work sheet instead _wxMaxima_ "
-#| "provides its own set of plot functions that don’t differ from the "
-#| "corresponding _maxima_ functions save in their name: They are all "
-#| "prefixed by a “wx”. For example `wxplot2d` corresponds to `plot2d`, "
-#| "`wxplot3d` corresponds to `plot3d`, `wxdraw` corresponds to `draw` and "
-#| "`wxhistogram` corresponds to `histogram`."
 msgid ""
 "_Maxima_ normally instructs the external program _gnuplot_ to open a "
 "separate window for every diagram it creates. Since many times it is "
@@ -2006,8 +1988,7 @@ msgstr ""
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:558
-#, fuzzy, no-wrap
-#| msgid "The \"Plot using draw\" sidepane"
+#, no-wrap
 msgid "The \"Plot using draw\" side pane"
 msgstr "Die \"Plotte mittels Draw\"-Seitenleiste"
 
@@ -2320,17 +2301,12 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:638
-#, fuzzy
-#| msgid ""
-#| "These files are in the Maxima user directory, usually `.maxima/` in the "
-#| "user's home directory, the location can be found out with the command: "
-#| "`maxima_userdir;`"
 msgid ""
 "These files are in the Maxima user directory (usually `maxima` in Windows, `."
 "maxima` otherwise) in the user's home directory / user profile directory. "
 "The location can be found out with the command: `maxima_userdir;`"
 msgstr ""
-"Diese Dateien liegen im Benutzerverzeichnis von maxima, normalerweise im "
+"Diese Dateien liegen im Benutzerverzeichnis von Maxima, normalerweise im "
 "Ordner `.maxima` im Home-Verzeichnis. Der genaue Ort kann über das Kommando "
 "`maxima_userdir;` ermittelt werden."
 
@@ -2695,10 +2671,6 @@ msgstr "Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung dar
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:722
-#, fuzzy
-#| msgid ""
-#| "This means that _wxMaxima_ could not read the file _Maxima_ that was "
-#| "supposed to instruct gnuplot to create."
 msgid ""
 "This means that _wxMaxima_ could not read the file _Maxima_ that was "
 "supposed to instruct _gnuplot_ to create."
@@ -2997,15 +2969,11 @@ msgstr "Kann _wxMaxima_ das eingebettete Diagramm gleich noch als Datei ausgeben
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:789
-#, fuzzy
-#| msgid ""
-#| "The worksheet embeds .png files. wxMaxima allows the user to specify "
-#| "where they should be generated:"
 msgid ""
 "The worksheet embeds .png files. _wxMaxima_ allows the user to specify where "
 "they should be generated:"
 msgstr ""
-"Das Arbeitsblatt enthält png-Dateien. wxMaxima erlaubt dem User anzugeben, "
+"Das Arbeitsblatt enthält png-Dateien. _wxMaxima_ erlaubt dem User anzugeben, "
 "wo sie generiert werden sollen:"
 
 #. type: Fenced code block (maxima)
@@ -3210,9 +3178,8 @@ msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten
 
 #. type: Title =
 #: ../../info/wxmaxima.md:862
-#, fuzzy, no-wrap
-#| msgid "Command-line arguments\n"
-msgid "Command-line arguments"
+#, no-wrap
+msgid "Command-line arguments\n"
 msgstr "Kommandozeilen-Optionen\n"
 
 #. type: Plain text
