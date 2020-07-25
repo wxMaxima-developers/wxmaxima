@@ -1186,7 +1186,6 @@ msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Batch-Dateien (*.bat)|*.bat|Alle|*"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1322
-#, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
 msgstr "Batch-Dateien (*.bat)|*.bat|Exe-Dateien (*.exe)||Alle|*"
 
@@ -1727,12 +1726,11 @@ msgid "Choose new plot format:"
 msgstr "Neues Plot-Format eingeben:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1398
-#, fuzzy, c-format
+#, c-format
 msgid "Choose the %s Font"
 msgstr "Schriftart %s wählen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1347
-#, fuzzy
 msgid "Choose the Math Font"
 msgstr "Mathematische Schriftart wählen"
 
@@ -1746,7 +1744,6 @@ msgid "Classes:"
 msgstr "Klassen:"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:97
-#, fuzzy
 msgid "Clear the selection"
 msgstr "Auswahl löschen"
 
@@ -1865,7 +1862,6 @@ msgid "Compiling the list of anchors the maxima manual provides"
 msgstr "Stelle eine Liste der Stichwörter im Handbuch zusammen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:853
-#, fuzzy
 msgid "Complete Word\tCtrl+Space"
 msgstr "Vervollständige Befehl\tCtrl+Space"
 
@@ -2666,7 +2662,7 @@ msgid "Enable:"
 msgstr "Aktiviert:"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Encountered an unknown XML tag: <%s>"
 msgstr "Unbekanntes XML-Element: <%s>"
 
@@ -3032,7 +3028,6 @@ msgid "Export"
 msgstr "Exportieren"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:124
-#, fuzzy
 msgid "Export As"
 msgstr "Exportiere als"
 
@@ -3076,7 +3071,6 @@ msgid "Export visible commands to a .mac file"
 msgstr "Exportiere sichtbare Befehle in ein .mac-File"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:202
-#, fuzzy
 msgid "Exporting to .mac file failed!"
 msgstr "Export als .mac-Datei ist fehlgeschlagen!"
 
@@ -3424,7 +3418,6 @@ msgid "Font issue: The char height is too small!"
 msgstr "Zeichensatz fehlerhaft: Zeichengröße zu gering!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:197
-#, fuzzy
 msgid "Font issue: The sqrt() sign has the size 0!"
 msgstr "Zeichensatzproblem: Das Wurzelzeichen hat die Größe 0!"
 
@@ -3519,12 +3512,12 @@ msgid "Found %i anchors."
 msgstr "%i Stichwörter gefunden."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:316
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i demo files."
 msgstr "%i Demo-Dateien gefunden."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:292
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i loadable files."
 msgstr "%i ladbare Dateien gefunden."
 
@@ -3618,7 +3611,6 @@ msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF Bild (*.gif)|*.gif"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:102
-#, fuzzy
 msgid ""
 "GTK_IM_MODULE is set to \"xim\". Expect the program to hideously flicker and "
 "hotkeys to be broken, see for example https://trac.wxwidgets.org/"
@@ -3805,7 +3797,6 @@ msgid "Help"
 msgstr "Hilfe"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:943
-#, fuzzy
 msgid "Help browser:"
 msgstr "Hilfe Browser:"
 
@@ -3815,7 +3806,7 @@ msgstr "Der \"Hilfe\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1363
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1655
-#, fuzzy, c-format
+#, c-format
 msgid "Help on \"%s\""
 msgstr "Hilfe für \"%s\""
 
@@ -4912,7 +4903,7 @@ msgid "Length"
 msgstr "Länge"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5480,7 +5471,6 @@ msgid "Maxima sends us a new set of variables for the watch list."
 msgstr "Maxima sendet einen neuen Satz an Variablen für die Beobachtungsliste"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:126
-#, fuzzy
 msgid "Maxima session (*.mac)|*.mac"
 msgstr "Maxima Paket (*.mac)|*.mac"
 
@@ -5748,7 +5738,6 @@ msgid "Mismatched parenthesis"
 msgstr "Nicht-zusammengehörige Klammern"
 
 #: /home/gunter/src/wxmaxima/src/VisiblyInvalidCell.cpp:42
-#, fuzzy
 msgid "Missing contents. Bug?"
 msgstr "Fehlender Inhalt. Interner Fehler?"
 
@@ -6721,7 +6710,7 @@ msgid "Read Matrix..."
 msgstr "Matrix laden ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4132
-#, fuzzy, c-format
+#, c-format
 msgid "Read the entries the maxima manual offers from %s"
 msgstr "Stelle eine Liste der Stichwörter passend zu %s aus dem Handbuch zusammen"
 
@@ -7174,7 +7163,6 @@ msgid "Scatterplot..."
 msgstr "Streudiagramm ..."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:65
-#, fuzzy
 msgid ""
 "Scheduling a background task that compiles a new list of autocompletible "
 "maxima commands."
@@ -7183,14 +7171,12 @@ msgstr ""
 "Maxima-Befehle zusammenbaut."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:412
-#, fuzzy
 msgid "Scheduling a background task that scans for autocompletible file names."
 msgstr ""
 "Starte einen Hintergrundtask, der Dateinamen für das automatische "
 "Vervollständigen sucht."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
-#, fuzzy
 msgid ""
 "Scheduling a background task that setups the autocompletable files list."
 msgstr ""
@@ -7198,7 +7184,6 @@ msgstr ""
 "Autovervollständigen zusammenstellt."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
-#, fuzzy
 msgid ""
 "Scheduling a background task that setups the autocomplete builtins list."
 msgstr ""
@@ -7206,12 +7191,10 @@ msgstr ""
 "zusammenstellt."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:879
-#, fuzzy
 msgid "Scheduling background task that loads an image"
 msgstr "Starte einen Hintergrundtask, der ein Bild lädt"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:245
-#, fuzzy
 msgid "Scheduling background task that loads the gnuplot data for a plot."
 msgstr ""
 "Starte einen Hintergrundtask, der die Gnuplotdaten für ein Diagramm lädt."
@@ -7291,7 +7274,6 @@ msgid "Select all"
 msgstr "Alles auswählen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1318
-#, fuzzy
 msgid "Select help browser"
 msgstr "Wähle den Hilfebrowser"
 
@@ -7512,7 +7494,6 @@ msgid "Show Maxima help"
 msgstr "Zeige die Hilfe von Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:855
-#, fuzzy
 msgid "Show Template\tCtrl+Shift+Space"
 msgstr "Zeige Muster\tCtrl+Shift+Space"
 
@@ -8927,7 +8908,7 @@ msgstr ""
 "treffen, werden keine Pixeltreppen, sondern unscharf)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4058
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
 msgstr "Versuche, die Liste der Themen, die das Handbuch in Datei %s enthält, zu cachen."
@@ -8964,12 +8945,10 @@ msgid "Trying to open the non-existing file %s"
 msgstr "Versuch, die nicht-existierende Datei %s zu öffnen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3261
-#, fuzzy
 msgid "Trying to reconstruct the xml closing markers."
 msgstr "Versuche, schließende XML-Tags zu rekonstruieren."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3178
-#, fuzzy
 msgid "Trying to recover a broken .wxmx file."
 msgstr "Versuche, eine defekte .wxmx-Datei zu rekonstruieren."
 
@@ -9136,7 +9115,6 @@ msgid "Unhide contents"
 msgstr "Zeige den Inhalt"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:469
-#, fuzzy
 msgid "Unicode characters"
 msgstr "Unicode Zeichen"
 
@@ -9386,7 +9364,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Wir können sie in andere Gleichungen hineinsubstituieren:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
@@ -9753,7 +9731,6 @@ msgstr ""
 "ist und sucht eine Lösung zwischen zwei Punkten.\n"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:217
-#, fuzzy
 msgid ""
 "find_root only works if the function the solution is searched for crosses "
 "the solution exactly once in the given range."
