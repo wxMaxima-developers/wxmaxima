@@ -31,7 +31,7 @@
 #define HISTORY_H
 
 #include "precomp.h"
-#include "LoggingMessageDialog.h"
+#include "RegexCtrl.h"
 #include <wx/wx.h>
 #include <wx/regex.h>
 #include <vector>
@@ -71,8 +71,6 @@ public:
   void MaximaSessionStart();
 
 private:
-  enum class RegexInputState : int8_t { empty, invalid, valid };
-
   //! Called on right-clicks on the history panel
   void OnMouseRightDown(wxMouseEvent &event);
   void OnMenu(wxCommandEvent &event);
@@ -80,23 +78,16 @@ private:
 
   void UnselectAll() const;
   void SetCurrent(long);
-  RegexInputState GetNewRegexInputState() const;
 
   int m_sessionCommands = 0;
   wxListBox *m_history;
-  wxTextCtrl *m_regex;
+  RegexCtrl *m_regex;
   std::vector<wxString> m_commands;
   //! Commands we want to add to the history sidebar, once we have time to
   wxArrayString m_deferredCommands;
   //! The currently selected item. -1=none.
   long m_current = 0;
-  //! The regex the entries need to be matched to in order to be displayed.
-  //! This regex is never invalid, but may be empty.
-  wxRegEx m_matcher;
-  //! The text of the m_matcher regex. It is never invalid but may be empty.
-  wxString m_matcherExpr;
-  //! The state of the regex in the regex entry control
-  RegexInputState m_regexInputState = RegexInputState::empty;
+  wxString m_regex_Old;
   //! Whether the history should be updated now or later
   bool m_realtimeUpdate = true;
   //! Show only commands from the current session?

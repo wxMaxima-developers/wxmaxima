@@ -19,44 +19,43 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#ifndef BTEXTCTRL_H
-#define BTEXTCTRL_H
+#ifndef REGEXCTRL_H
+#define REGEXCTRL_H
 
 #include "precomp.h"
 #include <wx/wx.h>
+#include <wx/regex.h>
+#include <wx/textctrl.h>
 #include "Configuration.h"
 
-/*! A wxTextCtrl with parenthesis matching 
+/*! A wxTextCtrl that allows to input a regex
 
 */
-class BTextCtrl : public wxTextCtrl
+class RegexCtrl : public wxTextCtrl
 {
 public:
-  BTextCtrl(wxWindow *parent,
-            wxWindowID id,
-            Configuration *cfg,
-            const wxString &value = wxEmptyString,
-            const wxPoint &pos = wxDefaultPosition,
-            const wxSize &size = wxDefaultSize,
-            long style = 0);
+  RegexCtrl(wxWindow *parent,
+            wxWindowID id);
+  bool Matches(wxString text);
 
-  ~BTextCtrl();
+protected:
+  void OnTextChange(wxCommandEvent &ev);
 
-  void SetSkipTab(bool skip)
-  {
-    m_skipTab = skip;
-  }
+  ~RegexCtrl();
 
 private:
-  bool m_skipTab;
-
-  bool MatchParenthesis(int code);
-
-  void CloseParenthesis(wxString open, wxString close, bool fromOpen);
-
-  void OnChar(wxKeyEvent &event);
-
-  Configuration *m_config;
+  wxString m_oldRegex;
+  wxRegEx m_regex;
+  enum class RegexInputState : int8_t { empty, invalid, valid };
+  //! The state of the regex in the regex entry control
+  RegexInputState m_regexInputState = RegexInputState::empty;
+  RegexInputState GetNewRegexInputState() const;
+  //! The tooltip that is displayed if the regex cannot be interpreted
+  static wxString RegexTooltip_error;
+  //! The tooltip that is displayed if the regex is empty or can be interpreted
+  static wxString RegexTooltip_norm;
 };
 
-#endif // BTEXTCTRL_H
+wxDECLARE_EVENT(REGEX_EVENT, wxCommandEvent);
+
+#endif // REGEXCTRL_H

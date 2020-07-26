@@ -68,6 +68,7 @@ set(SOURCE_FILES
     PlotFormatWiz.cpp
     Printout.cpp
     RecentDocuments.cpp
+    RegexCtrl.cpp
     SVGout.cpp
     SeriesWiz.cpp
     SlideShowCell.cpp

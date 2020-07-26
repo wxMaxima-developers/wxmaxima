@@ -39,13 +39,6 @@
 #include <memory>
 #include <wx/wupdlock.h>
 
-#include "ErrorRedirector.h"
-
-//! The tooltip that is displayed if the regex cannot be interpreted
-static wxString RegexTooltip_error;
-//! The tooltip that is displayed if the regex is empty or can be interpreted
-static wxString RegexTooltip_norm;
-
 History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
   wxConfig::Get()->Read(m_showCurrentSessionOnlyKey, &m_showCurrentSessionOnly);
@@ -53,16 +46,11 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 #ifdef __WXX11__
   m_realtimeUpdate = false;
 #endif
-  if (RegexTooltip_norm.IsEmpty())
-    RegexTooltip_norm = _("Input a RegEx here to filter the results");
-  if (RegexTooltip_error.IsEmpty())
-    RegexTooltip_error = _("Invalid RegEx!");
   
   // wxLB_MULTIPLE and wxLB_EXTENDED are mutually exclusive and will assert on Windows
   m_history = new wxListBox(this, history_ctrl_id, wxDefaultPosition, wxDefaultSize, 0, NULL,
                             wxLB_EXTENDED | wxLB_HSCROLL | wxLB_NEEDED_SB);
-  m_regex = new wxTextCtrl(this, history_regex_id);
-  m_regex->SetToolTip(RegexTooltip_norm);
+  m_regex = new RegexCtrl(this, wxID_ANY);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
@@ -77,7 +65,7 @@ History::History(wxWindow *parent, int id) : wxPanel(parent, id)
   m_history->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(History::OnMouseRightDown), NULL, this);
   Connect(wxEVT_MENU,
           wxCommandEventHandler(History::OnMenu), NULL, this);
-  m_regex->Connect(wxEVT_TEXT,
+  m_regex->Connect(REGEX_EVENT,
           wxCommandEventHandler(History::OnRegExEvent), NULL, this);
 }
 
@@ -243,7 +231,7 @@ void History::AddToHistory(const wxString &cmd)
   m_sessionCommands ++;
   m_commands.push_back(cmd);
 
-  if (m_matcherExpr.empty() || m_matcher.Matches(cmd))
+  if (m_regex->Matches(cmd))
   {
     if (m_realtimeUpdate)
     {
@@ -269,77 +257,21 @@ void History::RebuildDisplay()
     sessionEnd = m_commands.rend();
   
   display.reserve(m_commands.size());
-  if (m_matcherExpr.empty())
+  display.reserve(m_commands.size());
+  for (auto cmd = m_commands.rbegin(); cmd != sessionEnd; ++cmd)
   {
-    for (auto cmd = m_commands.crbegin(); cmd != sessionEnd; ++cmd)
+    if (m_regex->Matches(*cmd))
       display.Add(*cmd);
-  }
-  else
-  {
-    wxASSERT(m_matcher.IsValid());
-    display.reserve(m_commands.size());
-    for (auto cmd = m_commands.rbegin(); cmd != sessionEnd; ++cmd)
-    {
-      if (m_matcher.Matches(*cmd))
-        display.Add(*cmd);
-    }
   }
   m_history->Set(display);
   m_current = -1;
   SetCurrent(0);
 }
 
-History::RegexInputState History::GetNewRegexInputState() const
-{
-  if (m_matcherExpr.empty()) return RegexInputState::empty;
-  if (m_matcher.IsValid())  return RegexInputState::valid;
-  return RegexInputState::invalid;
-}
-
 void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
-  auto const oldRegex = m_matcherExpr; // save so that we can restore valid matcher
-  wxString const regex = m_regex->GetValue();
-  bool regexChanged = regex != m_matcherExpr;
-
-  m_matcherExpr = regex;
-  if (!regex.empty() && regexChanged)
-  {
-    SuppressErrorDialogs blocker;
-    m_matcher.Compile(regex);
-  }
-
-  // Update UI feedback if the state of the regex input control has changed
-  auto const newInputState = GetNewRegexInputState();
-  if (m_regexInputState != newInputState)
-  {
-    m_regexInputState = newInputState;
-    const wxColor colors[3] = {
-      /* empty   */ wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
-      /* invalid */ {255,192,192},
-      /* valid   */ wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT)
-    };
-    const wxString tooltips[3] = {
-      /* empty */ RegexTooltip_norm, /* invalid */ RegexTooltip_error, /* valid */ RegexTooltip_norm
-    };
-    m_regex->SetBackgroundColour(colors[int(m_regexInputState)]);
-    m_regex->SetToolTip(tooltips[int(m_regexInputState)]);
-    m_regex->Refresh();
-  }
-
-  // Enforce the non-invalid matcher invariant - restore the regex if needed
-  if (!m_matcherExpr.empty() && !m_matcher.IsValid())
-  {
-    m_matcherExpr = oldRegex;
-    if (!oldRegex.IsEmpty())
-      m_matcher.Compile(oldRegex);
-    regexChanged = false;
-  }
-  if (regexChanged)
-  {
-    UnselectAll();
-    RebuildDisplay();
-  }
+  UnselectAll();
+  RebuildDisplay();
 }
 
 wxString History::GetCommand(bool next)
