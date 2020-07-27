@@ -21,6 +21,9 @@
 
 #include "RegexCtrl.h"
 #include "ErrorRedirector.h"
+#include <wx/txtstrm.h>
+#include <wx/sstream.h>
+#include <wx/log.h>
 
 RegexCtrl::RegexCtrl(wxWindow *parent,
                      wxWindowID id) :
@@ -59,8 +62,18 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
     {
       m_oldRegex = GetValue();
       wxRegEx regex;
-      SuppressErrorDialogs blocker;
-      m_regex.Compile(GetValue());
+      wxString errMsg;
+      {
+        wxLog *logOld = wxLog::GetActiveTarget();
+        wxLogBuffer errOut;        
+        wxLog::SetActiveTarget(&errOut);
+        m_regex.Compile(GetValue());
+        errMsg = errOut.GetBuffer();
+        int colonPos = errMsg.Find(": ");
+        if(colonPos > 2)
+          errMsg = errMsg.Right(errMsg.Length() - colonPos - 2);
+        wxLog::SetActiveTarget(logOld);
+      }
       // Update UI feedback if the state of the regex input control has changed
       auto const newInputState = GetNewRegexInputState();
       if (m_regexInputState != newInputState)
@@ -71,8 +84,10 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
           /* invalid */ {255,192,192},
           /* valid   */ wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT)
         };
+        if(errMsg.IsEmpty())
+          errMsg = RegexTooltip_error;
         const wxString tooltips[3] = {
-          /* empty */ RegexTooltip_norm, /* invalid */ RegexTooltip_error, /* valid */ RegexTooltip_norm
+          /* empty */ RegexTooltip_norm, /* invalid */ errMsg, /* valid */ RegexTooltip_norm
         };
         SetBackgroundColour(colors[int(m_regexInputState)]);
         SetToolTip(tooltips[int(m_regexInputState)]);
