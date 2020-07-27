@@ -1383,13 +1383,8 @@ void wxMaximaFrame::SetupMenu()
 
   m_MenuBar->Append(m_HelpMenu, _("&Help"));
 
-  #ifdef __WXMAC__
-  m_MenuBar->SetAutoWindowMenu(true);
-  #endif
   SetMenuBar(m_MenuBar);
-
 #undef APPEND_MENU_ITEM
-
 }
 
 bool wxMaximaFrame::ToolbarIsShown()

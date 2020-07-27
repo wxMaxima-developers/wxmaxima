@@ -304,15 +304,16 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
 
   wxApp::SetExitOnFrameDelete(false);
-  wxMenuBar::SetAutoWindowMenu(true);
+/*
   wxMenuBar *menuBar = new wxMenuBar;
   // Enables the window list on MacOs.
-  menuBar->SetAutoWindowMenu(true);
   wxMenu *fileMenu = new wxMenu;
   fileMenu->Append(wxID_NEW, _("&New\tCtrl+N"));
   fileMenu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
   menuBar->Append(fileMenu, _("File"));
+  menuBar->SetAutoWindowMenu(true);
   wxMenuBar::MacSetCommonMenuBar(menuBar);
+*/
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
