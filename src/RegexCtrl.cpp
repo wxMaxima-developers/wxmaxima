@@ -86,6 +86,8 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
         };
         if(errMsg.IsEmpty())
           errMsg = RegexTooltip_error;
+        else
+          wxLogMessage(errMsg);
         const wxString tooltips[3] = {
           /* empty */ RegexTooltip_norm, /* invalid */ errMsg, /* valid */ RegexTooltip_norm
         };
