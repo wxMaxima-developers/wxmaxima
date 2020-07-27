@@ -33,6 +33,13 @@
 */
 class RegexCtrl : public wxTextCtrl
 {
+  class wxLogBuffer_noStdErrFlush : public wxLogBuffer
+  {
+  public:
+    wxLogBuffer_noStdErrFlush(): wxLogBuffer() {};
+    virtual void Flush() override {}
+    ~wxLogBuffer_noStdErrFlush() override{};
+  };
 public:
   RegexCtrl(wxWindow *parent,
             wxWindowID id);

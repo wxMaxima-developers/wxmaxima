@@ -65,7 +65,7 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
       wxString errMsg;
       {
         wxLog *logOld = wxLog::GetActiveTarget();
-        wxLogBuffer errOut;        
+        wxLogBuffer_noStdErrFlush errOut;        
         wxLog::SetActiveTarget(&errOut);
         m_regex.Compile(GetValue());
         errMsg = errOut.GetBuffer();
