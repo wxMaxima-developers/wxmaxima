@@ -1086,7 +1086,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 
 wxMaxima::~wxMaxima()
 {
-  #ifdef HAVE_OPENMP_TASKS
+  if(m_server)
+  {
+    m_server->Destroy();
+    m_server = NULL;
+  }
+#ifdef HAVE_OPENMP_TASKS
   #pragma omp taskwait
   #endif
   KillMaxima(false);
