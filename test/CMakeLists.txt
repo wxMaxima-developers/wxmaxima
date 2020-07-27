@@ -250,7 +250,7 @@ add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch imageCells.wxm)
-set_tests_properties(imageCells PROPERTIES TIMEOUT 60)
+set_tests_properties(imageCells PROPERTIES TIMEOUT 120)
 
 add_test(
     NAME limitCells_cmdline

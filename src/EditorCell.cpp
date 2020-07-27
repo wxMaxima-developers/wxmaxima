@@ -3888,19 +3888,18 @@ int EditorCell::ReplaceAll(wxString oldString, const wxString &newString, bool i
     wxString src_LowerCase = src;
     src_LowerCase.MakeLower();
     oldString.MakeLower();
-    do{
+    pos = src_LowerCase.Find(oldString);
+    while (pos >= 0)
+    {
+      newText += src.Left(pos);
+      newText += newString;
+      int charsToCopy = src.Length() - pos - oldString.Length();
+      src_LowerCase = src_LowerCase.Right(charsToCopy);
+      src = src.Right(charsToCopy);
+      count ++;
       pos = src_LowerCase.Find(oldString);
-      if(pos == wxNOT_FOUND)
-        newText += src;
-      else
-      {
-        newText += src.Left(pos);
-        newText += newString;
-        src_LowerCase = src_LowerCase.Right(src_LowerCase.Length()-pos-newString.Length());
-        src = src.Right(src.Length()-pos-oldString.Length());
-        count ++;
-      }
-    } while((pos != wxNOT_FOUND) && (src != wxEmptyString));
+    }
+    newText += src;
   }
   if (count > 0)
   {

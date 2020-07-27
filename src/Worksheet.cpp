@@ -7804,6 +7804,7 @@ int Worksheet::ReplaceAll(const wxString &oldString, const wxString &newString, 
     EditorCell *editor = tmp->GetEditable();
     if (editor)
     {
+      SetActiveCell(editor);
       int replaced = editor->ReplaceAll(oldString, newString, ignoreCase);
       if (replaced > 0)
       {
