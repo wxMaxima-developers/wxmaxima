@@ -69,6 +69,7 @@ void RegexCtrl::OnTextChange(wxCommandEvent &WXUNUSED(ev))
         wxLog::SetActiveTarget(&errOut);
         m_regex.Compile(GetValue());
         errMsg = errOut.GetBuffer();
+        errMsg.Trim(true);
         int colonPos = errMsg.Find(": ");
         if(colonPos > 2)
           errMsg = errMsg.Right(errMsg.Length() - colonPos - 2);
