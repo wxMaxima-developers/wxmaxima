@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-25 20:35+0200\n"
+"POT-Creation-Date: 2020-07-12 10:16+0200\n"
 "PO-Revision-Date: 2020-05-08 07:53+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -17,9 +17,8 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:2
-#, fuzzy, no-wrap
-#| msgid "The wxMaxima user manual {-}\n"
-msgid "The wxMaxima user manual {-}"
+#, no-wrap
+msgid "The wxMaxima user manual {-}\n"
 msgstr "Das Handbuch von wxMaxima {-}\n"
 
 #. type: Plain text
@@ -121,9 +120,8 @@ msgstr "Die Kommandozeilenargumente von wxMaxima"
 
 #. type: Title =
 #: ../../info/wxmaxima.md:44
-#, fuzzy, no-wrap
-#| msgid "Introduction to wxMaxima\n"
-msgid "Introduction to wxMaxima"
+#, no-wrap
+msgid "Introduction to wxMaxima\n"
 msgstr "Einführung in wxMaxima\n"
 
 #. type: Title ##
@@ -1261,8 +1259,7 @@ msgstr "Wo wird die Konfiguration gespeichert?"
 msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
-msgstr ""
-"Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
+msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
 "(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` eine versteckte Datei).\n"
 
 #. type: Plain text
@@ -1282,9 +1279,8 @@ msgstr ""
 
 #. type: Title =
 #: ../../info/wxmaxima.md:360
-#, fuzzy, no-wrap
-#| msgid "Extensions to _Maxima_\n"
-msgid "Extensions to _Maxima_"
+#, no-wrap
+msgid "Extensions to _Maxima_\n"
 msgstr "Erweiterungen für _Maxima_\n"
 
 #. type: Plain text
@@ -3182,9 +3178,8 @@ msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten
 
 #. type: Title =
 #: ../../info/wxmaxima.md:862
-#, fuzzy, no-wrap
-#| msgid "Command-line arguments\n"
-msgid "Command-line arguments"
+#, no-wrap
+msgid "Command-line arguments\n"
 msgstr "Kommandozeilen-Optionen\n"
 
 #. type: Plain text
