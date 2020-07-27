@@ -931,6 +931,7 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
   m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
+  m_maximaUserLocation->AutoCompleteFileNames();
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
   m_mpBrowse->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMpBrowse), NULL, this);
 
@@ -955,6 +956,7 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
   nameSizer->Add(m_noAutodetectHelpBrowser, wxSizerFlags().Expand().Border(wxALL, 0));
   m_helpBrowserUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
+  m_helpBrowserUserLocation->AutoCompleteFileNames();
   m_helpBrowserUserLocation->SetValue(m_configuration->HelpBrowserUserLocation());
   wxButton *mpBrowse2 = new wxButton(panel, wxID_OPEN, _("Open"));
   mpBrowse2->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnHelpBrowserBrowse), NULL, this);
