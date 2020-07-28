@@ -49,6 +49,7 @@ public:
   wxString GetXMLFlags() const override;
   void UpdateDisplayedText() override;
   const wxString GetAltCopyText() const override;
+  void SetAltCopyText(const wxString &WXUNUSED(text)) override{}
 
 private:
   //! The user-defined label for this label cell.
