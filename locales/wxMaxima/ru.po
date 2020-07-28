@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-14 08:32+0200\n"
-"PO-Revision-Date: 2020-06-10 11:05+0300\n"
+"PO-Revision-Date: 2020-07-28 11:23+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru_RU\n"
@@ -1186,9 +1186,8 @@ msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Пакетные файлы (*.bat)|*.bat|Все|*"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1322
-#, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
-msgstr "Пакетные файлы (*.bat)|*.bat|Все|*"
+msgstr "Пакетные файлы (*.bat)|*.bat|Исполняемые файлы (*.exe)||Все файлы|*"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5574
 msgid "Batch File"
@@ -1721,14 +1720,13 @@ msgid "Choose new plot format:"
 msgstr "Выберите новый формат графиков:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1398
-#, fuzzy, c-format
+#, c-format
 msgid "Choose the %s Font"
-msgstr "Выбор шрифта"
+msgstr "Выберите шрифт %s"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1347
-#, fuzzy
 msgid "Choose the Math Font"
-msgstr "Выбор шрифта"
+msgstr "Выберите математический шрифт"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
 msgid "Choose the parenthesis type for Matrices"
@@ -1740,9 +1738,8 @@ msgid "Classes:"
 msgstr "Классы:"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:97
-#, fuzzy
 msgid "Clear the selection"
-msgstr "Удалить выделение"
+msgstr "Очистить выделение"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
 msgid "Close\tCtrl+W"
@@ -2663,9 +2660,9 @@ msgid "Enable:"
 msgstr "Включить:"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Encountered an unknown XML tag: <%s>"
-msgstr "Неизвестное событие сокета."
+msgstr "Неизвестный тег XML: <%s>"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1667
 msgid "Encountered an unknown socket event."
@@ -3029,13 +3026,12 @@ msgid "Export"
 msgstr "Экспорт"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:124
-#, fuzzy
 msgid "Export As"
-msgstr "Экспорт"
+msgstr "Экспортировать как"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:90
 msgid "Export all history to a .mac file"
-msgstr ""
+msgstr "Экспортировать весь журнал в файл .mac"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:776
 msgid ""
@@ -3046,7 +3042,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:91
 msgid "Export commands from the current maxima session to a .mac file"
-msgstr ""
+msgstr "Экспортировать команды из текущего сеанса Maxima в файл .mac"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:671
 msgid "Export document to a HTML or LaTeX file"
@@ -3062,7 +3058,7 @@ msgstr "Не удалось выполнить экспорт."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:93
 msgid "Export selected commands to a .mac file"
-msgstr ""
+msgstr "Экспортировать выбранные команды в файл .mac"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:605
 msgid "Export successful."
@@ -3070,12 +3066,11 @@ msgstr "Экспорт завершён успешно."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:95
 msgid "Export visible commands to a .mac file"
-msgstr ""
+msgstr "Экспортировать отображаемые команды в файл .mac"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:202
-#, fuzzy
 msgid "Exporting to .mac file failed!"
-msgstr "Не удалось выполнить экспорт в пакетный файл Maxima!"
+msgstr "Не удалось выполнить экспорт в файл .mac!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
 msgid "Exporting to HTML failed!"
@@ -3415,12 +3410,11 @@ msgstr "Следующие графики используют вторичну�
 
 #: /home/gunter/src/wxmaxima/src/IntCell.cpp:298
 msgid "Font issue: The char height is too small!"
-msgstr ""
+msgstr "Ошибка шрифта: слишком маленькая высота символов!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:197
-#, fuzzy
 msgid "Font issue: The sqrt() sign has the size 0!"
-msgstr "Ошибка шрифта: размер содержимого sqrt() равен нулю."
+msgstr "Ошибка шрифта: размер символа sqrt() равен нулю!"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:195
 msgid "Font issue? The contents of a sqrt() has the size 0."
@@ -3799,9 +3793,8 @@ msgid "Help"
 msgstr "Справка"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:943
-#, fuzzy
 msgid "Help browser:"
-msgstr "Настройки"
+msgstr "Браузер справки:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:641
 msgid "Help button"
@@ -4453,7 +4446,7 @@ msgstr "Задача с начальным условием (&2) ..."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:53
 msgid "Input a RegEx here to filter the results"
-msgstr ""
+msgstr "Введите здесь регулярное выражение для фильтрации результатов"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:1025
 msgid "Input labels"
@@ -4674,7 +4667,7 @@ msgstr "Вставить фактические значения перемен�
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:55
 msgid "Invalid RegEx!"
-msgstr ""
+msgstr "Недопустимое регулярное выражение!"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1307
 msgid ""
@@ -4877,6 +4870,8 @@ msgid ""
 "Launching the system's default help browser failed. Trying to execute %s "
 "instead."
 msgstr ""
+"Не удалось запустить системный браузер справки по умолчанию. Попытка"
+" выполнить запуск %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1975
 msgid "Leads to"
@@ -4903,7 +4898,7 @@ msgid "Length"
 msgstr "Длина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5473,9 +5468,8 @@ msgid "Maxima sends us a new set of variables for the watch list."
 msgstr "Maxima отправляет новый набор переменных для списка отслеживания."
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:126
-#, fuzzy
 msgid "Maxima session (*.mac)|*.mac"
-msgstr "Сессия Maxima (*.wxm)|*.wxm"
+msgstr "Сеанс Maxima (*.mac)|*.mac"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:566
 msgid "Maxima started. Waiting for connection..."
@@ -5738,9 +5732,8 @@ msgid "Mismatched parenthesis"
 msgstr "Непарная скобка"
 
 #: /home/gunter/src/wxmaxima/src/VisiblyInvalidCell.cpp:42
-#, fuzzy
 msgid "Missing contents. Bug?"
-msgstr "Ошибка: отсутствует содержимое."
+msgstr "Отсутствует содержимое. Ошибка?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7414
 msgid "Modulus"
@@ -7169,40 +7162,35 @@ msgid "Scatterplot..."
 msgstr "График рассеяния..."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:65
-#, fuzzy
 msgid ""
 "Scheduling a background task that compiles a new list of autocompletible "
 "maxima commands."
 msgstr ""
-"Запуск фоновой задачи по компиляции нового списка команд Maxima для "
-"автодополнения."
+"Планирование фоновой задачи по компиляции нового списка команд Maxima для"
+" автодополнения."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:412
-#, fuzzy
 msgid "Scheduling a background task that scans for autocompletible file names."
-msgstr "Запуск фоновой задачи по поиску файлов для автодополнения."
+msgstr "Планирование фоновой задачи по поиску файлов для автодополнения."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:160
-#, fuzzy
 msgid ""
 "Scheduling a background task that setups the autocompletable files list."
-msgstr "Запуск фоновой задачи по созданию списка файлов для автодополнения."
+msgstr ""
+"Планирование фоновой задачи по созданию списка файлов для автодополнения."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:155
-#, fuzzy
 msgid ""
 "Scheduling a background task that setups the autocomplete builtins list."
-msgstr "Запуск фоновой задачи по созданию списка встроенных команд."
+msgstr "Планирование фоновой задачи по созданию списка встроенных команд."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:879
-#, fuzzy
 msgid "Scheduling background task that loads an image"
-msgstr "Запуск фонового потока для загрузки изображения"
+msgstr "Планирование фоновой задачи по загрузке изображения."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:245
-#, fuzzy
 msgid "Scheduling background task that loads the gnuplot data for a plot."
-msgstr "Запуск фоновой задачи по загрузке данных Gnuplot для графика."
+msgstr "Планирование фоновой задачи по загрузке данных Gnuplot для графика."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:638
 msgid "Search button"
@@ -7230,11 +7218,11 @@ msgstr "См. также кнопку «скорость <-> точность."
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:550
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:1022
 msgid "Seems like something is broken with a font."
-msgstr ""
+msgstr "Вероятно, что-то не так со шрифтом."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:546
 msgid "Seems like something is broken with the maths font."
-msgstr ""
+msgstr "Вероятно, что-то не так с математическим шрифтом."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:266
 msgid "Seems like the package with the maxima share files isn't installed."
@@ -7278,9 +7266,8 @@ msgid "Select all"
 msgstr "Выделить все"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1318
-#, fuzzy
 msgid "Select help browser"
-msgstr "Кнопка «Выделить все»"
+msgstr "Выбрать браузер справки"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
 msgid "Select math display algorithm"
@@ -8486,6 +8473,8 @@ msgid ""
 "The result was indefinite, which might be infinity, both plus or minus "
 "infinity or something additionally potentially involving a complex infinity."
 msgstr ""
+"Результат неограничен, он может включать в себя как плюс так и минус"
+" бесконечность, а также комплексную бесконечность."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:114
 msgid "The result was undefined."
@@ -8923,11 +8912,11 @@ msgstr "Попытка удалить файл Gnuplot %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3227
 msgid "Trying to discard all output."
-msgstr ""
+msgstr "Попытка отбросить весь вывод."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3183
 msgid "Trying to extract contents.xml out of a broken .zip file."
-msgstr ""
+msgstr "Попытка извлечь файл contents.xml из повреждённого файла .zip."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:193
 #, c-format
@@ -8944,14 +8933,12 @@ msgid "Trying to open the non-existing file %s"
 msgstr "Попытка открыть несуществующий файл %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3261
-#, fuzzy
 msgid "Trying to reconstruct the xml closing markers."
-msgstr "Попытка перезапустить Maxima."
+msgstr "Попытка восстановить закрывающие теги XML."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3178
-#, fuzzy
 msgid "Trying to recover a broken .wxmx file."
-msgstr "Попытка удалить старый временный файл"
+msgstr "Попытка восстановить повреждённый файл .wxmx."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5350
 #, c-format
@@ -9373,7 +9360,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Можно вставить («подставить») их в другие уравнения:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
