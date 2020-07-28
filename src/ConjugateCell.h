@@ -50,12 +50,12 @@ class ConjugateCell final : public Cell
 public:
   ConjugateCell(GroupCell *parent, Configuration **config);
   ConjugateCell(const ConjugateCell &cell);
-  Cell *Copy() const override { return new ConjugateCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
-  void SetInner(Cell *inner);
+  void SetInner(std::unique_ptr<Cell> &&inner);
 
   bool BreakUp() override;
 
@@ -66,28 +66,30 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_last;
+  // The pointers above point to inner cells and must be kept contiguous.
 
-  void RecalculateHeight(int fontsize) override;
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 };
 
 #endif // CONJUGATECELL_H

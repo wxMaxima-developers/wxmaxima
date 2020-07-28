@@ -248,9 +248,9 @@ void IntegrateWiz::OnButton(wxCommandEvent &event)
   }
 }
 
-BEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
+wxBEGIN_EVENT_TABLE(IntegrateWiz, wxDialog)
                 EVT_BUTTON(special_from, IntegrateWiz::OnButton)
                 EVT_BUTTON(special_to, IntegrateWiz::OnButton)
                 EVT_CHECKBOX(definite_id, IntegrateWiz::OnCheckbox)
                 EVT_CHECKBOX(numeric_id, IntegrateWiz::OnCheckbox)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()

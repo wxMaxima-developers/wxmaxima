@@ -38,8 +38,6 @@ namespace Format
 
 const wxString WXMFirstLine = wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/");
 
-static constexpr GroupType NoGroup = GroupType(-1);
-
 struct WXMHeader
 {
   WXMHeaderId id;
@@ -185,6 +183,8 @@ static wxString &TreeToWXM(wxString &retval, GroupCell *cell, bool wxm)
   case GC_TYPE_PAGEBREAK:
     retval << Headers.GetStart(WXM_PAGEBREAK);
     break;
+  default:
+    break;
   }
 
   // Export eventual hidden trees.
@@ -221,7 +221,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
 
   //! Consumes and concatenates lines until a closing tag is reached,
   //! consumes the tag and returns the line.
-  const auto getLinesUntil = [&wxmLine, end](const wxChar *tag) -> wxString
+  const auto getLinesUntil = [&wxmLine, end](const wxString &tag) -> wxString
   {
     wxString line;
     while (wxmLine != end)
@@ -297,7 +297,7 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
         auto ln = getLinesUntil(Headers.GetEnd(headerId));
         if (last && last->GetGroupType() == GC_TYPE_IMAGE)
         last->SetOutput(
-            new ImgCell(NULL, config, wxBase64Decode(ln), imgtype));
+            std::make_unique<ImgCell>(nullptr, config, wxBase64Decode(ln), imgtype));
       }
       break;
 
@@ -377,9 +377,11 @@ GroupCell *ParseWXMFile(wxTextBuffer &text, Configuration **config)
 
 GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
 {
+  wxString wxmLines;
   GroupCell *tree = {}, *last = {};
   auto const appendCell = [&last, &tree](GroupCell *cell)
   {
+    wxASSERT(cell != NULL);
     if (last)
       last->AppendCell(cell);
     else
@@ -404,6 +406,7 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
   };
 
   wxString line;
+  wxString wxmBlock;
   for (State s{' ', macContents.begin()}; s.ch != macContents.end(); )
   {
     wxChar c = *s.ch;
@@ -464,18 +467,27 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
             }
           }
 
-          //  Convert the comment block to an array of lines
-          wxStringTokenizer tokenizer(line, "\n");
-          wxArrayString commentLines;
-          while (tokenizer.HasMoreTokens())
-            commentLines.Add(tokenizer.GetNextToken());
-
-          // Interpret this array of lines as wxm code.
-          GroupCell *cell;
-          appendCell((cell = TreeFromWXM(commentLines, config)));
+          // Add this array of lines to the block of wxm code we will interpret.
+          wxmLines += line;
         }
         else
         {
+          if(!wxmLines.IsEmpty())
+          {
+            // Convert the comment block to an array of lines
+            wxStringTokenizer tokenizer(wxmLines, "\n");
+            wxArrayString commentLines;
+            while (tokenizer.HasMoreTokens())
+              commentLines.Add(tokenizer.GetNextToken());
+
+            // Interpret the comment block 
+            GroupCell *cell = TreeFromWXM(commentLines, config);
+            if(cell != NULL)
+              appendCell(cell );
+            else
+              appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, wxmLines)));
+            wxmLines = wxEmptyString;
+          }
           if ((line.EndsWith(" */")) || (line.EndsWith("\n*/")))
             line.Truncate(line.length() - 3);
           else
@@ -519,9 +531,26 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
         line.clear();
       }
       s.lastChar = c;
+      ++s.ch;
     }
   }
-
+  if(!wxmLines.IsEmpty())
+  {
+    // Convert the comment block to an array of lines
+    wxStringTokenizer tokenizer(wxmLines, "\n");
+    wxArrayString commentLines;
+    while (tokenizer.HasMoreTokens())
+      commentLines.Add(tokenizer.GetNextToken());
+    
+    // Interpret the comment block 
+    GroupCell *cell = TreeFromWXM(commentLines, config);
+    if(cell != NULL)
+      appendCell(cell );
+    else
+      appendCell((cell = new GroupCell(config, GC_TYPE_TEXT, wxmLines)));
+    wxmLines = wxEmptyString;
+  }
+  
   line.Trim(true);
   line.Trim(false);
   if (!line.empty())

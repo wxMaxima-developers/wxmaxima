@@ -27,13 +27,15 @@
  */
 
 #include "ConjugateCell.h"
+#include "VisiblyInvalidCell.h"
 
 ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config, wxString{})),
-    m_open(new TextCell(parent, config, "conjugate(")),
-    m_close(new TextCell(parent, config, ")"))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, "conjugate(")),
+    m_close(std::make_unique<TextCell>(parent, config, ")"))
 {
+  InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
 }
 
@@ -48,43 +50,30 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-void ConjugateCell::SetInner(Cell *inner)
+std::unique_ptr<Cell> ConjugateCell::Copy() const
+{
+  return std::make_unique<ConjugateCell>(*this);
+}
+
+void ConjugateCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
-
-  m_last = m_innerCell;
-  if (m_last)
-    while (m_last->m_next)
-      m_last = m_last->m_next;
+  m_innerCell = std::move(inner);
 }
 
-void ConjugateCell::RecalculateWidths(int fontsize)
+void ConjugateCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
-  if(!m_isBrokenIntoLines)
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
-  else
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
+  m_innerCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
 
-void ConjugateCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
   if(!m_isBrokenIntoLines)
   {
+    m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
     m_height = m_innerCell->GetHeightList() + Scale_Px(6);
     m_center = m_innerCell->GetCenterList() + Scale_Px(6);
   }
@@ -93,10 +82,11 @@ void ConjugateCell::RecalculateHeight(int fontsize)
     // The ConjugateCell itself isn't displayed if it is broken into lines.
     // insted m_open, m_innerCell and m_close are => We can set our size to 0
     // in this case.
+    m_width = 0;
     m_height = 0;
     m_center = 0;
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point)
@@ -119,11 +109,10 @@ void ConjugateCell::Draw(wxPoint point)
                  point.y - m_center + Scale_Px(6)
       );
     //                point.y - m_center + m_height - Scale_Px(2));
-    UnsetPen();
   }
 }
 
-wxString ConjugateCell::ToString()
+wxString ConjugateCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -131,7 +120,7 @@ wxString ConjugateCell::ToString()
     return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
 }
 
-wxString ConjugateCell::ToMatlab()
+wxString ConjugateCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -139,7 +128,7 @@ wxString ConjugateCell::ToMatlab()
 	return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
 }
 
-wxString ConjugateCell::ToTeX()
+wxString ConjugateCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -147,20 +136,20 @@ wxString ConjugateCell::ToTeX()
     return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
 }
 
-wxString ConjugateCell::ToMathML()
+wxString ConjugateCell::ToMathML() const
 {
 //  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
   return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
          wxT("<mo>&#xaf;</mo></mover>\n");
 }
 
-wxString ConjugateCell::ToOMML()
+wxString ConjugateCell::ToOMML() const
 {
   return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
 }
 
-wxString ConjugateCell::ToXML()
+wxString ConjugateCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)
@@ -173,16 +162,15 @@ bool ConjugateCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
-    wxASSERT_MSG(m_last, _("Bug: No last cell in a conjugateCell!"));
-    if (m_last)
-      m_last->SetNextToDraw(m_close);
+    m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
-    ResetData();        
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

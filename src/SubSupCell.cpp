@@ -31,17 +31,22 @@
 #include "TextCell.h"
 #include <wx/config.h>
 #include "wx/config.h"
+#include "VisiblyInvalidCell.h"
 
 #define SUBSUP_DEC 3
 
 SubSupCell::SubSupCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config)
-{}
+  Cell(parent, config),
+  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+{
+  InitBitFields();
+}
 
 SubSupCell::SubSupCell(const SubSupCell &cell):
     SubSupCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
   if(cell.m_postSubCell)
@@ -54,141 +59,120 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
     SetPreSup(cell.m_preSupCell->CopyList());
 }
 
+std::unique_ptr<Cell> SubSupCell::Copy() const
+{
+  return std::make_unique<SubSupCell>(*this);
+}
+
 static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
 {
   cells.erase(
     std::remove(cells.begin(), cells.end(), cell.get()), cells.end());
 }
 
-void SubSupCell::SetPreSup(Cell *index)
+void SubSupCell::SetPreSup(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_preSupCell);
-  m_preSupCell.reset(index);
-  m_scriptCells.emplace_back(index);
+  m_preSupCell = std::move(index);
+  m_scriptCells.emplace_back(m_preSupCell);
 }
 
-void SubSupCell::SetPreSub(Cell *index)
+void SubSupCell::SetPreSub(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_preSubCell);
-  m_preSubCell.reset(index);
-  m_scriptCells.emplace_back(index);
+  m_preSubCell = std::move(index);
+  m_scriptCells.emplace_back(m_preSubCell);
 }
 
-void SubSupCell::SetPostSup(Cell *index)
+void SubSupCell::SetPostSup(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
-  m_postSupCell.reset(index);
-  m_scriptCells.emplace_back(index);
+  m_postSupCell = std::move(index);
+  m_scriptCells.emplace_back(m_postSupCell);
 }
 
-void SubSupCell::SetPostSub(Cell *index)
-{
-  if (!index)
-    return;
- RemoveCell(m_scriptCells, m_postSubCell);
-  m_postSubCell.reset(index);
-  m_scriptCells.emplace_back(index);
-}
-
-void SubSupCell::SetIndex(Cell *index)
+void SubSupCell::SetPostSub(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
   RemoveCell(m_scriptCells, m_postSubCell);
-  m_postSubCell.reset(index);
+  m_postSubCell = std::move(index);
+  m_scriptCells.emplace_back(m_postSubCell);
 }
 
-void SubSupCell::SetBase(Cell *base)
+void SubSupCell::SetIndex(std::unique_ptr<Cell> &&index)
+{
+  if (!index)
+    return;
+  RemoveCell(m_scriptCells, m_postSubCell);
+  m_postSubCell = std::move(index);
+}
+
+void SubSupCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
-void SubSupCell::SetExponent(Cell *expt)
+void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt)
 {
   if (!expt)
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
-  m_postSupCell.reset(expt);
+  m_postSupCell = std::move(expt);
 }
 
-void SubSupCell::RecalculateWidths(int fontsize)
+void SubSupCell::Recalculate(AFontSize const fontsize)
 {
-  m_baseCell->RecalculateWidthsList(fontsize);
+  AFontSize const smallerFontSize{ MC_MIN_SIZE, fontsize - SUBSUP_DEC };
+
+  m_baseCell->RecalculateList(fontsize);
   if(m_postSubCell)    
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateList(smallerFontSize);
   if(m_postSupCell)    
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateList(smallerFontSize);
   if(m_preSubCell)    
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateList(smallerFontSize);
   if(m_preSupCell)    
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateList(smallerFontSize);
 
   int preWidth = 0;
   int postWidth = 0;
-
+  int subHeight = 0;
+  int supHeight = 0;
   if(m_postSubCell)
   {
-    m_postSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSubCell->RecalculateList(smallerFontSize);
     postWidth = m_postSubCell->GetFullWidth();
+    subHeight = m_postSubCell->GetHeightList();
   }
   if(m_postSupCell)
   {
-    m_postSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_postSupCell->RecalculateList(smallerFontSize);
     postWidth = wxMax(postWidth, m_postSupCell->GetFullWidth());
+    supHeight = m_postSupCell->GetHeightList();
   }
   if(m_preSubCell)
   {
-    m_preSubCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSubCell->RecalculateList(smallerFontSize);
     preWidth = m_preSubCell->GetFullWidth();
+    subHeight = wxMax(subHeight, m_preSubCell->GetHeightList());
   }
   if(m_preSupCell)
   {
-    m_preSupCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+    m_preSupCell->RecalculateList(smallerFontSize);
     preWidth = wxMax(preWidth, m_preSupCell->GetFullWidth());
+    supHeight = wxMax(subHeight, m_preSupCell->GetHeightList());
   }
 
   m_width = preWidth + m_baseCell->GetFullWidth() + postWidth;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void SubSupCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-
-  int subHeight = 0;
-  if(m_preSubCell)
-  {
-    m_preSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-    subHeight = m_preSubCell->GetHeightList();
-  }
-  if(m_postSubCell)
-  {
-    m_postSubCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-    subHeight = wxMax(subHeight, m_postSubCell->GetHeightList());
-  }
-  
-  int supHeight = 0;
-  if(m_preSupCell)
-  {
-    m_preSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-    supHeight = m_preSupCell->GetHeightList();
-  }
-  if(m_postSupCell)
-  {
-    m_postSupCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-    supHeight = wxMax(supHeight, m_postSupCell->GetHeightList());
-  }
   
   m_height = m_baseCell->GetHeightList() + subHeight + supHeight -
              2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
@@ -196,7 +180,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
   m_center = supHeight +
     m_baseCell->GetCenterList() -
     Scale_Px(.8 * fontsize + MC_EXP_INDENT);
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void SubSupCell::Draw(wxPoint point)
@@ -254,7 +238,7 @@ void SubSupCell::Draw(wxPoint point)
   }
 }
 
-wxString SubSupCell::ToString()
+wxString SubSupCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -282,7 +266,7 @@ wxString SubSupCell::ToString()
   return s;
 }
 
-wxString SubSupCell::ToMatlab()
+wxString SubSupCell::ToMatlab() const
 {
   wxString s;
   if (m_baseCell->IsCompound())
@@ -316,7 +300,7 @@ wxString SubSupCell::ToMatlab()
   return s;
 }
 
-wxString SubSupCell::ToTeX()
+wxString SubSupCell::ToTeX() const
 {
   wxConfigBase *config = wxConfig::Get();
 
@@ -367,7 +351,7 @@ wxString SubSupCell::ToTeX()
   return s;
 }
 
-wxString SubSupCell::ToMathML()
+wxString SubSupCell::ToMathML() const
 {
   wxString retval;
   if (m_scriptCells.empty())
@@ -414,7 +398,7 @@ wxString SubSupCell::ToMathML()
   }
   return retval;
 }
-wxString SubSupCell::ToOMML()
+wxString SubSupCell::ToOMML() const
 {
   wxString retval;
   if(m_preSupCell || m_preSubCell)
@@ -445,7 +429,7 @@ wxString SubSupCell::ToOMML()
   return retval;
 }
 
-wxString SubSupCell::ToXML()
+wxString SubSupCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

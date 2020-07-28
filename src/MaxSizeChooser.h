@@ -23,6 +23,7 @@
 #ifndef MAXSIZECHOOSER_H
 #define MAXSIZECHOOSER_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/spinctrl.h>

@@ -22,6 +22,7 @@
 #ifndef PLOT3DWIZ_H
 #define PLOT3DWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
@@ -98,7 +99,7 @@ protected:
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
-DECLARE_EVENT_TABLE()
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // PLOT3DWIZ_H

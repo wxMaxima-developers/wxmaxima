@@ -22,6 +22,7 @@
 #ifndef SUMWIZ_H
 #define SUMWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 
@@ -71,7 +72,6 @@ protected:
   wxButton *button_2;
   wxCheckBox *checkbox_1;
   wxCheckBox *checkbox_2;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // SUMWIZ_H

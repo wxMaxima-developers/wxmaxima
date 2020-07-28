@@ -27,6 +27,7 @@
 #ifndef SVGPANEL_H
 #define SVGPANEL_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include "SvgBitmap.h"
 

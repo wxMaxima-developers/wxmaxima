@@ -30,12 +30,19 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "wx/config.h"
+#include "VisiblyInvalidCell.h"
+
 
 DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
-    m_baseCell(new TextCell(parent, config)),
-    m_diffCell(new TextCell(parent, config))
+  Cell(parent, config),
+  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_open(std::make_unique<TextCell>(parent, config, "diff(")),
+  m_comma(std::make_unique<TextCell>(parent, config, ",")),
+  m_close(std::make_unique<TextCell>(parent, config, ")")),
+  m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+
 {
+  InitBitFields();
 }
 
 DiffCell::DiffCell(const DiffCell &cell):
@@ -48,52 +55,45 @@ DiffCell::DiffCell(const DiffCell &cell):
     SetBase(cell.m_baseCell->CopyList());
 }
 
-void DiffCell::SetDiff(Cell *diff)
+std::unique_ptr<Cell> DiffCell::Copy() const
+{
+  return std::make_unique<DiffCell>(*this);
+}
+
+void DiffCell::SetDiff(std::unique_ptr<Cell> &&diff)
 {
   if (!diff)
     return;
-  m_diffCell.reset(diff);
-
-  m_diffCell->m_SuppressMultiplicationDot = true;
+  m_diffCell = std::move(diff);
+  m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
-void DiffCell::SetBase(Cell *base)
+void DiffCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
-void DiffCell::RecalculateWidths(int fontsize)
+void DiffCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  Cell::RecalculateWidths(fontsize);
-    m_baseCell->RecalculateWidthsList(fontsize);
-    m_diffCell->RecalculateWidthsList(fontsize);
-  if(!m_isBrokenIntoLines)
-    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-  else
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void DiffCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_diffCell->RecalculateHeightList(fontsize);
+  m_baseCell->RecalculateList(fontsize);
+  m_diffCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_comma->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
   if(!m_isBrokenIntoLines)
   {
+    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
   else
-    m_center = m_height = 0;
-  Cell::RecalculateHeight(fontsize);
+    m_width = m_center = m_height = 0;
+  Cell::Recalculate(fontsize);
 }
 
 void DiffCell::Draw(wxPoint point)
@@ -112,7 +112,7 @@ void DiffCell::Draw(wxPoint point)
   }
 }
 
-wxString DiffCell::ToString()
+wxString DiffCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -125,7 +125,7 @@ wxString DiffCell::ToString()
   return s;
 }
 
-wxString DiffCell::ToMatlab()
+wxString DiffCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -138,7 +138,7 @@ wxString DiffCell::ToMatlab()
   return s;
 }
 
-wxString DiffCell::ToTeX()
+wxString DiffCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -154,7 +154,7 @@ wxString DiffCell::ToTeX()
   return s;
 }
 
-wxString DiffCell::ToMathML()
+wxString DiffCell::ToMathML() const
 {
   wxString retval;
 
@@ -169,7 +169,7 @@ wxString DiffCell::ToMathML()
   return retval;
 }
 
-wxString DiffCell::ToOMML()
+wxString DiffCell::ToOMML() const
 {
   wxString retval;
 
@@ -180,11 +180,39 @@ wxString DiffCell::ToOMML()
   return retval;
 }
 
-wxString DiffCell::ToXML()
+wxString DiffCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+}
+
+bool DiffCell::BreakUp()
+{
+  if (!m_isBrokenIntoLines)
+  {
+    Cell::BreakUp();
+    m_isBrokenIntoLines = true;
+    m_open->SetNextToDraw(m_baseCell);
+    m_baseCell->last()->SetNextToDraw(m_comma);
+    m_comma->SetNextToDraw(m_diffCell);
+    m_diffCell->last()->SetNextToDraw(m_close);
+    m_nextToDraw = m_open;
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
+    m_width = 0;
+    return true;
+  }
+  return false;
+}
+
+void DiffCell::SetNextToDraw(Cell *next)
+{
+  if (m_isBrokenIntoLines)
+    m_close->SetNextToDraw(next);
+  else
+    m_nextToDraw = next;
 }

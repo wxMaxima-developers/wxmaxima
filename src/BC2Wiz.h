@@ -22,6 +22,7 @@
 #ifndef BC2WIZ_H
 #define BC2WIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 

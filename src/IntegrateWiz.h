@@ -22,6 +22,7 @@
 #ifndef INTEGRATEWIZ_H
 #define INTEGRATEWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 
@@ -81,7 +82,7 @@ protected:
   wxCheckBox *checkbox_2;
   wxStaticText *label_6;
   wxChoice *choice_1;
-DECLARE_EVENT_TABLE()
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // INTEGRATEWIZ_H

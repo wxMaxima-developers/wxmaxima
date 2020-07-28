@@ -27,61 +27,61 @@
  */
 
 #include "SubCell.h"
+#include "VisiblyInvalidCell.h"
 
 #define SUB_DEC 2
 
 SubCell::SubCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config)
+  Cell(parent, config),
+  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_indexCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
+  InitBitFields();
 }
 
 SubCell::SubCell(const SubCell &cell):
     SubCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
   if(cell.m_baseCell)
     SetBase(cell.m_baseCell->CopyList());
   if(cell.m_indexCell)
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-void SubCell::SetIndex(Cell *index)
+std::unique_ptr<Cell> SubCell::Copy() const
+{
+  return std::make_unique<SubCell>(*this);
+}
+
+void SubCell::SetIndex(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
-  m_indexCell.reset(index);
+  m_indexCell = std::move(index);
 }
 
-void SubCell::SetBase(Cell *base)
+void SubCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
-void SubCell::RecalculateWidths(int fontsize)
+void SubCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_baseCell->RecalculateWidthsList(fontsize);
-  m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
+  m_baseCell->RecalculateList(fontsize);
+  m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - SUB_DEC });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
             Scale_Px(2);
-  Cell::RecalculateWidths(fontsize);
-}
-
-void SubCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void SubCell::Draw(wxPoint point)
@@ -103,7 +103,7 @@ void SubCell::Draw(wxPoint point)
   }
 }
 
-wxString SubCell::ToString()
+wxString SubCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -117,7 +117,7 @@ wxString SubCell::ToString()
   return s;
 }
 
-wxString SubCell::ToMatlab()
+wxString SubCell::ToMatlab() const
 {
   if (m_altCopyText != wxEmptyString)
   {
@@ -133,7 +133,7 @@ wxString SubCell::ToMatlab()
   return s;
 }
 
-wxString SubCell::ToTeX()
+wxString SubCell::ToTeX() const
 {
   wxString s;
   wxString base = m_baseCell->ListToTeX();
@@ -149,7 +149,7 @@ wxString SubCell::ToTeX()
   return s;
 }
 
-wxString SubCell::ToMathML()
+wxString SubCell::ToMathML() const
 {
   return wxT("<msub>") +
          m_baseCell->ListToMathML() +
@@ -157,13 +157,13 @@ wxString SubCell::ToMathML()
          wxT("</msub>\n");
 }
 
-wxString SubCell::ToOMML()
+wxString SubCell::ToOMML() const
 {
   return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
          m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
-wxString SubCell::ToXML()
+wxString SubCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

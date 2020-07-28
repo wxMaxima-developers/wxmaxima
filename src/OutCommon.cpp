@@ -89,16 +89,18 @@ wxSize OutCommon::GetInvScaledSize() const
 bool OutCommon::PrepareLayout(Cell *tree)
 {
   wxASSERT(m_recalculationDc);
+  if (!tree)
+    return false;
 
   tree->ResetSize();
   m_thisconfig.SetContext(*m_recalculationDc);
 
   if (tree->GetType() != MC_TYPE_GROUP)
   {
-    RecalculateWidths(tree);
+    Recalculate(tree);
     BreakUpCells(tree);
     BreakLines(tree);
-    RecalculateHeight(tree);
+    Recalculate(tree);
   }
   else
   {
@@ -113,22 +115,13 @@ bool OutCommon::PrepareLayout(Cell *tree)
   return true;
 }
 
-void OutCommon::RecalculateHeight(Cell *tree) const
+void OutCommon::Recalculate(Cell *tree) const
 {
-  int fontsize = m_thisconfig.GetDefaultFontSize();
-  int mathFontsize = m_thisconfig.GetMathFontSize();
+  auto fontsize = m_thisconfig.GetDefaultFontSize();
+  auto mathFontsize = m_thisconfig.GetMathFontSize();
 
   for (Cell *tmp = tree; tmp; tmp = tmp->m_next)
-    tmp->RecalculateHeight(tmp->IsMath() ? mathFontsize : fontsize);
-}
-
-void OutCommon::RecalculateWidths(Cell *tree) const
-{
-  int fontsize = m_thisconfig.GetDefaultFontSize();
-  int mathFontsize = m_thisconfig.GetMathFontSize();
-
-  for (Cell *tmp = tree; tmp; tmp = tmp->m_next)
-    tmp->RecalculateWidths(tmp->IsMath() ? mathFontsize : fontsize);
+    tmp->Recalculate(tmp->IsMath() ? mathFontsize : fontsize);
 }
 
 void OutCommon::BreakLines(Cell *tree) const
@@ -138,7 +131,7 @@ void OutCommon::BreakLines(Cell *tree) const
 
   for (Cell *tmp = tree; tmp; tmp = tmp->GetNextToDraw())
   {
-    if (tmp->m_isBrokenIntoLines)
+    if (tmp->IsBrokenIntoLines())
       continue;
 
     if (tmp->SoftLineBreak(false))
@@ -168,7 +161,7 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
 
   for (Cell *tmp = tree; tmp; tmp = tmp->GetNextToDraw())
   {
-    if (tmp->m_isBrokenIntoLines)
+    if (tmp->IsBrokenIntoLines())
       continue;
 
     if (tmp->BreakLineHere() || firstCell)
@@ -187,7 +180,7 @@ void OutCommon::GetMaxPoint(Cell *tree, int *width, int *height) const
       currentWidth += (tmp->GetWidth());
       *width = wxMax(currentWidth, *width);
     }
-    bigSkip = tmp->m_bigSkip;
+    bigSkip = tmp->HasBigSkip();
   }
 }
 
@@ -201,14 +194,14 @@ void OutCommon::Draw(Cell *tree)
 
   for (; tmp; tmp = tmp->GetNextToDraw())
   {
-    if (!tmp->m_isBrokenIntoLines)
+    if (!tmp->IsBrokenIntoLines())
     {
       tmp->Draw(point);
       if (tmp->m_next && tmp->m_next->BreakLineHere())
       {
         point.x = 0;
         point.y += drop + tmp->m_next->GetCenterList();
-        if (tmp->m_bigSkip)
+        if (tmp->HasBigSkip())
           // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
           point.y += MC_LINE_SKIP;
         drop = tmp->m_next->GetMaxDrop();
@@ -222,7 +215,7 @@ void OutCommon::Draw(Cell *tree)
       {
         point.x = 0;
         point.y += drop + tmp->m_next->GetCenterList();
-        if (tmp->m_bigSkip)
+        if (tmp->HasBigSkip())
           // Note: This skip was observerd in EMFout and SVGout, but not BitmapOut.
           point.y += MC_LINE_SKIP;
         drop = tmp->m_next->GetMaxDrop();
@@ -239,16 +232,13 @@ void OutCommon::Draw(Cell *tree)
 void OutCommon::BreakUpCells(Cell *tree)
 {
   int fullWidth = m_fullWidth * m_scale;
-  int fontsize = m_thisconfig.GetDefaultFontSize();
-  int mathFontsize = m_thisconfig.GetMathFontSize();
+  auto fontsize = m_thisconfig.GetDefaultFontSize();
+  auto mathFontsize = m_thisconfig.GetMathFontSize();
 
   for (Cell *tmp = tree; tmp; tmp = tmp->GetNextToDraw())
   {
     if (tmp->GetWidth() > fullWidth && tmp->BreakUp())
-    {
-      tmp->RecalculateWidths(tmp->IsMath() ? mathFontsize : fontsize);
-      tmp->RecalculateHeight(tmp->IsMath() ? mathFontsize : fontsize);
-    }
+      tmp->Recalculate(tmp->IsMath() ? mathFontsize : fontsize);
   }
 }
 

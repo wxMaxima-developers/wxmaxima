@@ -21,212 +21,110 @@
 
 #include "FontCache.h"
 #include <wx/log.h>
-#include <functional>
-#include <string>
 
 FontCache::~FontCache()
 {
   wxLogMessage("~FontCache: hits=%d misses=%d h:m ratio=%.2f",
-             m_hits, m_misses, double(m_hits)/m_misses);
+               m_hits, m_misses, double(m_hits)/m_misses);
 }
 
-wxFont FontCache::GetFont(const wxFontInfo &request)
+FontCache::FontCache()
+{}
+
+const std::pair<const Style, wxFont> &FontCache::GetStyleFontUncached(const Style &style, const wxFont &withFont)
 {
-  if (!m_enabled)
+  wxASSERT(!m_enabled);
+  if (m_temporaryFonts.size() >= tempFontCount)
+    m_temporaryFonts.pop_front();
+
+  wxFont font = withFont.IsOk() ? withFont : style.GetAsFontInfo();
+  m_temporaryFonts.emplace_back(
+    font.IsOk() ? Style().FromFontNoCache(font) : style, font);
+  auto &entry = m_temporaryFonts.back();
+  ++ m_misses;
+  entry.first.GetFontHash();
+  entry.first.m.font = &entry.second;
+  return entry;
+}
+
+const std::pair<const Style, wxFont> &FontCache::GetStyleFont(const Style &style, const wxFont &withFont)
+{
+  if (style.m.isNotOK)
   {
-    m_misses ++;
-    return {request};
+    static const std::pair<const Style, wxFont> badStyle{Style::Data::NotOK, {}};
+    return badStyle;
   }
-  auto font = m_cache.emplace(request, request);
-  assert(font.first != m_cache.end());
-  m_misses += font.second ? 1 : 0;
-  m_hits += font.second ? 0 : 1;
-  return font.first->second;
+  // cppcheck-suppress knownConditionTrueFalse
+  if (!m_enabled)
+    return GetStyleFontUncached(style, withFont);
+
+  auto it = m_cache.find(style);
+  if (it != m_cache.end())
+  {
+    ++ m_hits;
+    return *it;
+  }
+
+  ++ m_misses;
+  wxFont font = withFont.IsOk() ? withFont : style.GetAsFontInfo();
+
+  // Cache the font under the style that yielded it
+  auto styleFont = m_cache.emplace(style, font); // Key with raw font request
+  wxASSERT(styleFont.second);
+  wxASSERT(styleFont.first->first.m.fontHash);
+  styleFont.first->first.m.font = &styleFont.first->second;
+  wxLogMessage("FontCache Raw Miss: %s", styleFont.first->first.GetDump());
+  if (!font.IsOk())
+    return *styleFont.first;
+
+  // Cache it also under the style that was read back from the resolved font, if needed
+  auto updatedStyle = style;
+  updatedStyle.SetFromFontNoCache(font);
+  if (!updatedStyle.IsFontEqualTo(style))
+  {
+    it = m_cache.find(updatedStyle);
+    if (it == m_cache.end())
+    {
+      // Cache the font also under the resolved style
+      styleFont = m_cache.emplace(updatedStyle, std::move(font));
+      wxASSERT(styleFont.second);
+      wxASSERT(styleFont.first->first.m.fontHash);
+      styleFont.first->first.m.font = &styleFont.first->second;
+      wxLogMessage("FontCache Resolved: %s", updatedStyle.GetDump());
+    }
+    else
+    {
+      // We've already cached this font - we now have two instances.
+      // Let's replace the instance keyed with raw font request with the one already
+      // present, and drop the instance we've just constructed
+      auto rawStyleFont = m_cache.emplace(style, it->second);
+      wxASSERT(!rawStyleFont.second);
+      wxASSERT(rawStyleFont.first->first.m.fontHash);
+      rawStyleFont.first->first.m.font = &rawStyleFont.first->second;
+      wxLogMessage("FontCache Rekeyed:  %s", updatedStyle.GetDump());
+      styleFont.first = it;
+    }
+  }
+
+  wxASSERT(styleFont.first != m_cache.end());
+  return *styleFont.first;
 }
 
-wxFontInfo FontCache::AddFont(wxFontInfo info, const wxFont &font)
+const wxFont &FontCache::GetFont(const Style &style)
 {
-  m_cache.emplace(info, font);
-  return info;
+  return GetStyleFont(style).second;
 }
 
-wxFontInfo FontCache::AddFont(const wxFont &font)
+const Style &FontCache::AddFont(const wxFont &font)
 {
-  return AddFont(FontInfo::GetFor(font), font);
-}
-
-bool FontCache::IsOk(const wxFontInfo &request)
-{
-  return GetFont(request).IsOk();
+  auto style = Style().FromFontNoCache(font);
+  return GetStyleFont(style, font).first;
 }
 
 void FontCache::Clear()
 {
+  m_temporaryFonts.clear();
   m_cache.clear();
   m_hits = 0;
   m_misses = 0;
 }
-
-template <typename T>
-static wxFontInfo &SetSize(wxFontInfo &info, T size)
-{
-  wxFontInfo newInfo{size};
-  FontInfo::CopyWithoutSize(info, newInfo);
-  return (info = newInfo);
-}
-
-namespace FontInfo
-{
-
-void CopyWithoutSize(const wxFontInfo &src, wxFontInfo &dst)
-{
-  dst
-    .Family(src.GetFamily())
-    .FaceName(src.GetFaceName())
-    .Underlined(src.IsUnderlined())
-    .Strikethrough(src.IsStrikethrough())
-    .Encoding(src.GetEncoding())
-#if wxCHECK_VERSION(3, 1, 2)
-    .Style(src.GetStyle())
-    .Weight(src.GetNumericWeight())
-#else
-    .Slant(src.GetStyle() == wxFONTSTYLE_SLANT)
-    .Italic(src.GetStyle() == wxFONTSTYLE_ITALIC)
-    .Bold(src.GetWeight() == wxFONTWEIGHT_BOLD)
-    .Light(src.GetWeight() == wxFONTWEIGHT_LIGHT)
-#endif
-    ;
-}
-
-void CopyWithoutSize(const wxFont *font, wxFontInfo &dst)
-{
-  auto req = GetFor(*font);
-  FontCache::AddAFont(req, *font);
-  CopyWithoutSize(req, dst);
-}
-
-wxFontInfo GetFor(const wxFont &font)
-{
-  wxFontInfo request;
-  if (font.IsUsingSizeInPixels())
-    request = wxFontInfo(font.GetPixelSize());
-  else
-#if wxCHECK_VERSION(3, 1, 2)
-    request = wxFontInfo(font.GetFractionalPointSize());
-#else
-    request = wxFontInfo(font.GetPointSize());
-#endif
-  return request
-#if wxCHECK_VERSION(3, 1, 2)
-    .Style(font.GetStyle())
-    .Weight(font.GetNumericWeight())
-#else
-    .Slant(font.GetStyle() == wxFONTSTYLE_SLANT)
-    .Italic(font.GetStyle() == wxFONTSTYLE_ITALIC)
-    .Bold(font.GetWeight() == wxFONTWEIGHT_BOLD)
-    .Light(font.GetWeight() == wxFONTWEIGHT_LIGHT)
-#endif
-    .Family(font.GetFamily())
-    .Encoding(font.GetEncoding())
-    .FaceName(font.GetFaceName())
-    .Underlined(font.GetUnderlined())
-    .Strikethrough(font.GetStrikethrough());
-}
-
-void SetPointSize(wxFontInfo &info, int p)
-{
-  if (info.GetPointSize() != p) SetSize(info, p);
-}
-
-void SetPointSize(wxFontInfo &info, float p)
-{
-#if wxCHECK_VERSION(3, 1, 2)
-  if (info.GetFractionalPointSize() != p) SetSize(info, p);
-#else
-  p = roundf(p);
-  if (info.GetPointSize() != p) SetSize(info, p);
-#endif // wx version > 3.1.2
-}
-
-void SetPointSize(wxFontInfo &info, double p)
-{
-#if wxCHECK_VERSION(3, 1, 2)
-  if (info.GetFractionalPointSize() != p) SetSize(info, p);
-#else
-  p = round(p);
-  if (info.GetPointSize() != p) SetSize(info, p);
-#endif // wx version > 3.1.2
-}
-
-void SetPixelSize(wxFontInfo &info, wxSize size)
-{
-  if (!info.IsUsingSizeInPixels() || info.GetPixelSize() != size)
-    SetSize(info, size);
-}
-
-} // namespace FontInfo
-
-template <typename T>
-static std::size_t mixHash(std::size_t seed, const T &value)
-{
-  std::hash<T> hsh;
-  seed ^= hsh(value) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-  return seed;
-}
-
-namespace std {
-
-std::size_t hash<wxSize>::operator()(wxSize size) const
-{
-  return mixHash(mixHash(0, size.x), size.y);
-}
-
-std::size_t hash<wxFontInfo>::operator()(const wxFontInfo &fi) const
-{
-  std::size_t h = 0;
-  h = mixHash(h, fi.GetEncoding());
-  h = mixHash(h, fi.GetFamily());
-  h = mixHash(h, std::string(fi.GetFaceName().mb_str()));
-  h = mixHash(h, fi.GetStyle());
-#if wxCHECK_VERSION(3, 1, 2)
-  h = mixHash(h, fi.GetNumericWeight());
-#else
-  h = mixHash(h, fi.GetWeight() == wxFONTWEIGHT_BOLD);
-  h = mixHash(h, fi.GetWeight() == wxFONTWEIGHT_LIGHT);
-#endif
-  h = mixHash(h, fi.IsUnderlined() ? wxFONTFLAG_UNDERLINED : 0);
-  h = mixHash(h, fi.IsStrikethrough() ? wxFONTFLAG_STRIKETHROUGH : 0);
-  if (fi.IsUsingSizeInPixels())
-    h = mixHash(h, fi.GetPixelSize());
-  else
-#if wxCHECK_VERSION(3, 1, 2)
-    h = mixHash(h, fi.GetFractionalPointSize());
-#else
-    h = mixHash(h, fi.GetPointSize());
-#endif
-  return h;
-}
-
-bool equal_to<wxFontInfo>::operator()(const wxFontInfo &l, const wxFontInfo &r) const
-{
-  return
-    l.IsUsingSizeInPixels() == r.IsUsingSizeInPixels() &&
-    ((l.IsUsingSizeInPixels() && l.GetPixelSize() == r.GetPixelSize()) ||
-     (!l.IsUsingSizeInPixels() &&
-
-#if wxCHECK_VERSION(3, 1, 2)
-      (l.GetFractionalPointSize() == r.GetFractionalPointSize())
-#else
-      (l.GetPointSize() == r.GetPointSize())
-#endif
-       )) &&
-    l.GetFamily() == r.GetFamily() &&
-    l.GetFaceName() == r.GetFaceName() &&
-    l.GetWeight() == r.GetWeight() &&
-    l.IsUnderlined() == r.IsUnderlined() &&
-    l.IsStrikethrough() == r.IsStrikethrough() &&
-    l.GetEncoding() == r.GetEncoding();
-}
-
-} // namespace std
-

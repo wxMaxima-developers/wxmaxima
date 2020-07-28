@@ -45,47 +45,39 @@ class FracCell final : public Cell
 public:
   FracCell(GroupCell *parent, Configuration **config);
   FracCell(const FracCell &cell);
-  Cell *Copy() const override { return new FracCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }
 
   //! All types of fractions we support
-  enum FracType
+  enum FracType : int8_t
   {
     FC_NORMAL,
     FC_CHOOSE,
     FC_DIFF
   };
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  void SetFracStyle(int style) { m_fracStyle = style; }
+  void SetFracStyle(FracType style) { m_fracStyle = style; }
 
   //! Set the numerator for the fraction
-  void SetNum(Cell *num);
-
+  void SetNum(std::unique_ptr<Cell> &&num);
   //! Set the denominator of the fraction
-  void SetDenom(Cell *denom);
+  void SetDenom(std::unique_ptr<Cell> &&denom);
 
   //! Answers the question if this is an operator by returning "true".
   bool IsOperator() const override { return true; }
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   //! Fractions in exponents are shown in their linear form.
   void SetExponentFlag() override;
@@ -96,14 +88,17 @@ public:
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for FracCells"));}
 
 private:
-  CellPtr<Cell> m_nextToDraw;
-
   //! The numerator
   Cell *Num() const { return m_numParenthesis->GetInner(); }
   //! The denominator
   Cell *Denom() const { return m_denomParenthesis->GetInner(); }
+
+  CellPtr<Cell> m_nextToDraw;
 
   //! A parenthesis around the numerator, owns the numerator
   std::unique_ptr<ParenCell> const m_numParenthesis;
@@ -111,15 +106,10 @@ private:
   std::unique_ptr<ParenCell> const m_denomParenthesis;
   //! The owner of the "/" sign
   const std::unique_ptr<Cell> m_divideOwner;
-  //! The last element of the numerator
-  CellPtr<Cell> m_num_Last;
-  //! The last element of the denominator
-  CellPtr<Cell> m_denom_Last;
-  //! Fractions in exponents are shown in their linear form.
-  bool m_exponent;
-
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * [const] or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The "/" sign
   Cell* const m_divide = m_divideOwner.get();
   //! The displayed version of the numerator, if needed with parenthesis
@@ -128,24 +118,35 @@ private:
   Cell* m_displayedDenom = {};
   // The pointers above point to inner cells and must be kept contiguous.
 
-  //! The way the fraction should be displayed
-  int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?
-  int m_protrusion;
+  int m_protrusion = 0;
   /*! The horizontal gap between this frac and any minus before it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapLeft;
+  int m_horizontalGapLeft = 0;
   /*! The horizontal gap between this frac and any minus that follows it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 
     nearly-uninterrupted horizontal line together with a minus. It is only introduced
     if there is an actual minus.
   */
-  int m_horizontalGapRight;
+  int m_horizontalGapRight = 0;
+
+  //! The way the fraction should be displayed
+  FracType m_fracStyle = FC_NORMAL;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_exponent = false;
+  }
+  //! Fractions in exponents are shown in their linear form.
+  bool m_exponent : 1 /* InitBitFields */;
 };
 
 #endif // FRACCELL_H

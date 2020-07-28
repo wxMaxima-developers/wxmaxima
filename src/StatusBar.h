@@ -25,6 +25,7 @@
   This file contains the definition of the class History that handles the recently 
   issued commands for the history pane.
  */
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>

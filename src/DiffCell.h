@@ -30,42 +30,49 @@ class DiffCell final : public Cell
 public:
   DiffCell(GroupCell *parent, Configuration **config);
   DiffCell(const DiffCell &cell);
-  Cell *Copy() const override { return new DiffCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
 
-  void SetBase(Cell *base);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetDiff(std::unique_ptr<Cell> &&diff);
 
-  void SetDiff(Cell *diff);
-
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
-
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+  bool BreakUp() override;
 
 private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
+  std::unique_ptr<Cell> m_open;
+  std::unique_ptr<Cell> m_comma;
+  std::unique_ptr<Cell> m_close;
   std::unique_ptr<Cell> m_diffCell;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // DIFFCELL_H

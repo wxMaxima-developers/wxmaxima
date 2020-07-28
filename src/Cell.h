@@ -29,6 +29,7 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
+#include "precomp.h"
 #include "CellPtr.h"
 #include "Configuration.h"
 #include "TextStyle.h"
@@ -41,6 +42,7 @@
 #include <memory>
 #include <vector>
 
+class CellPointers;
 class EditorCell;
 class GroupCell;
 class TextCell;
@@ -49,7 +51,7 @@ class wxXmlNode;
 
 /*! The supported types of math cells
  */
-enum CellType
+enum CellType : int8_t
 {
   MC_TYPE_DEFAULT,
   MC_TYPE_MAIN_PROMPT, //!< Input labels
@@ -69,6 +71,10 @@ enum CellType
   MC_TYPE_SLIDE,       //!< An animation created by the with_slider_* maxima commands
   MC_TYPE_GROUP        //!< A group cells that bundles several individual cells together
 };
+
+#if wxUSE_ACCESSIBILITY
+class CellAccessible;
+#endif
 
 /*!
   The base class all cell types the worksheet can consist of are derived from
@@ -106,164 +112,17 @@ enum CellType
   eventual screen reader.
 
  */
-#if wxUSE_ACCESSIBILITY
-class Cell: public Observed, public wxAccessible
-#else
+
 class Cell: public Observed
-#endif
 {
+#if wxUSE_ACCESSIBILITY
+  friend class CellAccessible;
+#endif
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
   Cell(const Cell&) = delete;
 
-  public:
-
-  /*! The storage for pointers to cells.
-    
-    If a cell is deleted it is necessary to remove all pointers that might
-    allow to access the now-defunct cell. These pointers are kept in this 
-    per-worksheet structure.
-  */
-  class CellPointers
-  {
-  public:
-    void ScrollToCell(Cell *cell) { m_cellToScrollTo = cell; }
-    Cell *CellToScrollTo() { return m_cellToScrollTo; }
-    explicit CellPointers(wxScrolledCanvas *worksheet);
-    /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
-      
-      \param resortToLast true = if we already have set the cell maxima works on to NULL
-      use the last cell maxima was known to work on.
-    */
-    GroupCell *GetWorkingGroup(bool resortToLast = false) const;
-
-    //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-    void SetWorkingGroup(GroupCell *group);
-    
-    void WXMXResetCounter() { m_wxmxImgCounter = 0; }
-    
-    wxString WXMXGetNewFileName();
-    
-    int WXMXImageCount() const { return m_wxmxImgCounter; }
-
-    bool HasCellsSelected() const { return m_selectionStart && m_selectionEnd; }
-
-    //! A list of editor cells containing error messages.
-    class ErrorList
-    {
-    public:
-      ErrorList() = default;
-      //! Is the list of errors empty?
-      bool Empty() const { return m_errors.empty(); }
-      //! Remove one specific GroupCell from the list of errors
-      void Remove(GroupCell * cell);
-      //! Does the list of GroupCell with errors contain cell?
-      bool Contains(GroupCell * cell) const;
-      //! Mark this GroupCell as containing errors
-      void Add(GroupCell * cell);
-      //! The first GroupCell with error that is still in the list
-      GroupCell *FirstError() const;
-      //! The last GroupCell with errors in the list
-      GroupCell *LastError() const;
-      //! Empty the list of GroupCells with errors
-      void Clear() { m_errors.clear(); }
-    private:
-      //! A list of GroupCells that contain errors
-      std::vector<CellPtr<GroupCell>> m_errors;
-    };
-
-    //! The list of cells maxima has complained about errors in
-    ErrorList m_errorList;
-    //! The EditorCell the mouse selection has started in
-    CellPtr<EditorCell> m_cellMouseSelectionStartedIn;
-    //! The EditorCell the keyboard selection has started in
-    CellPtr<EditorCell> m_cellKeyboardSelectionStartedIn;
-    //! The EditorCell the search was started in
-    CellPtr<EditorCell> m_cellSearchStartedIn;
-    //! Which cursor position incremental search has started at?
-    int m_indexSearchStartedAt = -1;
-    //! Which EditCell the blinking cursor is in?
-    CellPtr<EditorCell> m_activeCell;
-    //! The GroupCell that is under the mouse pointer
-    CellPtr<GroupCell> m_groupCellUnderPointer;
-    //! The EditorCell that contains the currently active question from maxima
-    CellPtr<EditorCell> m_answerCell;
-    //! The last group cell maxima was working on.
-    CellPtr<GroupCell> m_lastWorkingGroup;
-    //! The textcell the text maxima is sending us was ending in.
-    CellPtr<TextCell> m_currentTextCell;
-    /*! The group cell maxima is currently working on.
-
-      NULL means that maxima isn't currently evaluating a cell.
-    */
-    CellPtr<GroupCell> m_workingGroup;
-    /*! The currently selected string. 
-
-      Since this string is defined here it is available in every editor cell
-      for highlighting other instances of the selected string.
-    */
-    wxString m_selectionString;
-
-    //! Forget where the search was started
-    void ResetSearchStart()
-    {
-      m_cellSearchStartedIn = {};
-      m_indexSearchStartedAt = -1;
-    }
-
-    //! Forget where the mouse selection was started
-    void ResetMouseSelectionStart()
-    { m_cellMouseSelectionStartedIn = {}; }
-
-    //! Forget where the keyboard selection was started
-    void ResetKeyboardSelectionStart()
-    { m_cellKeyboardSelectionStartedIn = {}; }
-  
-    /*! The first cell of the currently selected range of Cells.
-    
-      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-      is selected and therefore the selection is handled by EditorCell; This cell is 
-      always above m_selectionEnd.
-    
-      See also m_hCaretPositionStart and m_selectionEnd
-    */
-    CellPtr<Cell> m_selectionStart;
-    /*! The last cell of the currently selected range of groupCells.
-    
-      NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
-      is selected and therefore the selection is handled by EditorCell; This cell is 
-      always below m_selectionStart.
-    
-      See also m_hCaretPositionEnd
-    */
-
-    //! The cell currently under the mouse pointer
-    CellPtr<Cell> m_cellUnderPointer;
-  
-    /*! The last cell of the currently selected range of Cells.
-    
-      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
-      is selected and therefore the selection is handled by EditorCell; This cell is 
-      always above m_selectionEnd.
-    
-      See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
-    */
-    CellPtr<Cell> m_selectionEnd;
-    std::map<Cell*, int> m_slideShowTimers;
-
-    wxScrolledCanvas *GetWorksheet() { return m_worksheet; }
-
-    //! Is scrolling to a cell scheduled?
-    bool m_scrollToCell = false;
-  private:
-    //! If m_scrollToCell = true: Which cell do we need to scroll to?
-    CellPtr<Cell> m_cellToScrollTo;
-    //! The object of the function to call if an animation has to be stepped.
-    wxScrolledCanvas *const m_worksheet;
-    //! The image counter for saving .wxmx files
-    int m_wxmxImgCounter = 0;
-  };
-
+public:
 
   Cell(GroupCell *group, Configuration **config);
 
@@ -272,46 +131,48 @@ class Cell: public Observed
     This method is purely virtual, which means every child class has to define
     its own Copy() method.
    */
-  virtual Cell *Copy() const = 0;
+  virtual std::unique_ptr<Cell> Copy() const = 0;
 
   /*! Scale font sizes and line widths according to the zoom factor.
 
     Is used for displaying/printing/exporting of text/maths
    */
   int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
+  AFontSize Scale_Px(AFontSize size) const { return (*m_configuration)->Scale_Px(size); }
 
 #if wxUSE_ACCESSIBILITY
-  // The methods marked final indicate that their implementation within Cell
-  // should be sufficient. If that's not the case, the final qualification can be
-  // removed with due caution.
+  // The methods whose implementation within Cell should be sufficient are
+  // not virtual. Should that prove not to be the case eventually, they can be
+  // made virtual with due caution.
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (wxAccessible ** parent) override final;
-  //! Accessibility: How many childs of this cell GetChild() can retrieve?
-  wxAccStatus GetChildCount (int *childCount) override final;
+  wxAccStatus GetParent (Cell ** parent) const;
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
-  wxAccStatus GetChild (int childId, wxAccessible **child) override final;
+  wxAccStatus GetChild(int childId, Cell **child) const;
   //! Accessibility: Is pt inside this cell or a child cell?
-  wxAccStatus HitTest (const wxPoint &pt,
-                      int *childId, wxAccessible **childObject) override final;
+  wxAccStatus HitTest (const wxPoint &pt, int *childId, Cell **child);
 
   //! Accessibility: Describe the current cell to a Screen Reader
-  wxAccStatus GetDescription(int childId, wxString *description) override;
+  virtual wxAccStatus GetDescription(int childId, wxString *description) const;
   //! Accessibility: Does this or a child cell currently own the focus?
-  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
+  virtual wxAccStatus GetFocus (int *childId, Cell **child) const;
+  //! Accessibility: Describe the action this Cell performs, if any
+  virtual wxAccStatus GetDefaultAction(int childId, wxString *actionName) const;
   //! Accessibility: Where is this cell to be found?
-  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
+  virtual wxAccStatus GetLocation (wxRect &rect, int elementId);
   //! Accessibility: What is the contents of this cell?
-  wxAccStatus GetValue (int childId, wxString *strValue) override;
-  wxAccStatus GetRole (int childId, wxAccRole *role) override;
+  virtual wxAccStatus GetValue (int childId, wxString *strValue) const;
+  virtual wxAccStatus GetRole (int childId, wxAccRole *role) const;
 #endif
   
-  wxString m_toolTip;
 
-  /*! Returns the ToolTip this cell provides.
-
-    wxEmptyString means: No ToolTip
+  /*! Returns the ToolTip this cell provides at a given point.
+   *
+   * \param point The point in worksheet coordinates, must be inside the
+   *              cell or else an empty string is returned.
+   *
+   * \returns the tooltip text, or empty string if none.
    */
-  virtual wxString GetToolTip(const wxPoint &point);
+  virtual const wxString &GetToolTip(wxPoint point) const;
 
   //! Delete this list of cells.
   virtual ~Cell();
@@ -320,28 +181,20 @@ class Cell: public Observed
   int CellsInListRecursive() const;
   
   //! The part of the rectangle rect that is in the region that is currently drawn
-  wxRect CropToUpdateRegion(wxRect rect)
-    {
-      if(!(*m_configuration)->ClipToDrawRegion())
-        return rect;
-      else
-        return rect.Intersect((*m_configuration)->GetUpdateRegion());
-    }
+  wxRect CropToUpdateRegion(wxRect rect) const;
 
   //! Is part of this rectangle in the region that is currently drawn?
-  bool InUpdateRegion(const wxRect &rect);
+  bool InUpdateRegion(const wxRect &rect) const;
 
   //! Is this cell inside the region that is currently drawn?
-  bool InUpdateRegion() {return InUpdateRegion(GetRect());}
+  bool InUpdateRegion() const { return InUpdateRegion(GetRect()); }
 
   /*! Add a cell to the end of the list this cell is part of
     
     \param p_next The cell that will be appended to the list.
    */
   void AppendCell(Cell *p_next);
-
-  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
-  int m_imageBorderWidth;
+  void AppendCell(std::unique_ptr<Cell> &&p_next);
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)
@@ -360,7 +213,10 @@ class Cell: public Observed
   { m_breakPage = breakPage; }
 
   //! Are we allowed to break a line here?
-  bool BreakLineHere() const;
+  bool BreakLineHere() const
+    {
+      return m_breakLine || m_forceBreakLine;
+    }
 
   //! Does this cell begin with a manual linebreak?
   bool HardLineBreak() const
@@ -374,8 +230,7 @@ class Cell: public Observed
 
     \retval true = This cell was split into lines.
   */
-  virtual bool BreakUp()
-  { return false; }
+  virtual bool BreakUp();
 
   /*! Is a part of this cell inside a certain rectangle?
 
@@ -384,16 +239,13 @@ class Cell: public Observed
      - true means test this cell and the ones that are following it in the list
      - false means test this cell only.
    */
-  bool ContainsRect(const wxRect &sm, bool all = true);
+  bool ContainsRect(const wxRect &sm, bool all = true) const;
 
   /*! Is a given point inside this cell?
 
     \param point The point to test for collision with this cell
    */
-  bool ContainsPoint(const wxPoint &point)
-  {
-    return GetRect().Contains(point);
-  }
+  bool ContainsPoint(wxPoint point) const { return GetRect().Contains(point); }
 
   /*! Clears memory from cached items automatically regenerated when the cell is drawn
     
@@ -452,14 +304,14 @@ class Cell: public Observed
 
   /*! Get the height of this cell
 
-    This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
+    This value is recalculated by Recalculate()
   */
   int GetHeight() const
   { return m_height; }
 
   /*! Get the width of this cell
 
-    This value is recalculated by RecalculateWidth; -1 means: Needs to be recalculated.
+    This value is recalculated by Recalculate()
   */
   int GetWidth() const
   { return m_width; }
@@ -479,7 +331,7 @@ class Cell: public Observed
     middle of an output cell even if the current object is --- by definition --- 
     center-aligned.
 
-    This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
+    This value is recalculated by Recalculate
    */
   int GetDrop() const
   { return m_height - m_center; }
@@ -496,7 +348,7 @@ class Cell: public Observed
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
    */
-  int GetMaxDrop();
+  int GetMaxDrop() const;
 
   /*! Returns the maximum distance between top and center of this line
 
@@ -504,23 +356,23 @@ class Cell: public Observed
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
   */
-  int GetCenterList();
+  int GetCenterList() const;
 
   /*! Returns the total height of this line
 
     Returns GetCenterList()+GetMaxDrop()
    */
-  int GetHeightList();
+  int GetHeightList() const;
 
-  //! How many pixels is this list of cells wide?
-  int GetFullWidth();
+  //! How many pixels is this list of cells wide, if we don't break it into lines?
+  int GetFullWidth() const;
 
   /*! How many pixels is the current line of this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed. 
     See GetFullWidth().
    */
-  int GetLineWidth();
+  int GetLineWidth() const;
 
   /*! Get the x position of the top left of this cell
 
@@ -542,50 +394,27 @@ class Cell: public Observed
       - true: Get the rectangle for this cell and the ones that follow it in the list of cells
       - false: Get the rectangle for this cell only.
    */
-  virtual wxRect GetRect(bool all = false);
+  virtual wxRect GetRect(bool all = false) const;
 
   //! True, if something that affects the cell size has changed.
-  virtual bool NeedsRecalculation(int fontSize) const;
+  virtual bool NeedsRecalculation(AFontSize fontSize) const;
   
   virtual wxString GetDiffPart() const;
 
-  /*! Recalculate the height of the cell and the difference between top and center
+  /*! Recalculate the size of the cell and the difference between top and center
 
-    Must set: m_height, m_center.
+    Must set: m_height, m_width, m_center.
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize);
-
-  /*! Recalculate the height of this list of cells
-
-    \param fontsize In exponents, super- and subscripts the font size is reduced.
-    This cell therefore needs to know which font size it has to be drawn at.
-   */
-  void RecalculateHeightList(int fontsize);
-
-  /*! Recalculate the width of this cell.
-
-    Must set: m_width.
-
-    \param fontsize In exponents, super- and subscripts the font size is reduced.
-    This cell therefore needs to know which font size it has to be drawn at.
-   */
-  virtual void RecalculateWidths(int fontsize);
-
-  /*! Recalculates all widths of this list of cells.
-
-    \param fontsize In exponents, super- and subscripts the font size is reduced.
-    This cell therefore needs to know which font size it has to be drawn at.
-   */
-  void RecalculateWidthsList(const int &fontsize);
+  virtual void Recalculate(AFontSize fontsize);
 
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
    */
-  void RecalculateList(int fontsize);
+  void RecalculateList(AFontSize fontsize);
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
@@ -593,9 +422,23 @@ class Cell: public Observed
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
-  //! Mark the cached height information as "to be calculated".
+  //! Mark the cached height and width information as "to be calculated".
   void ResetSize()
-  { m_width = m_height = m_center = m_maxCenter = m_maxDrop = m_fullWidth = m_lineWidth = -1; }
+    { 
+       m_recalculateWidths = true; 
+       m_recalculate_maxCenter = true;
+       m_recalculate_maxDrop = true;
+       m_recalculate_maxWidth = true;
+       m_recalculate_lineWidth = true;
+    }
+
+  void ResetCellListSizes()
+    { 
+      m_recalculate_maxCenter = true;
+      m_recalculate_maxDrop = true;
+      m_recalculate_maxWidth = true;
+      m_recalculate_lineWidth = true;
+    }
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
@@ -611,7 +454,7 @@ class Cell: public Observed
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  void SetPen(double lineWidth = 1.0);
+  void SetPen(double lineWidth = 1.0) const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight)
@@ -624,11 +467,8 @@ class Cell: public Observed
   virtual void SetExponentFlag()
   {}
 
-  virtual void SetValue(const wxString &WXUNUSED(text))
-  {}
-
-  virtual wxString GetValue() const
-  { return wxEmptyString; }
+  virtual void SetValue(const wxString &WXUNUSED(text)) {}
+  virtual const wxString &GetValue() const;
 
   //! Get the first cell in this list of cells
   Cell *first() const;
@@ -663,8 +503,9 @@ class Cell: public Observed
   virtual void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   //! Is this cell an operator?
-  virtual bool IsOperator() const;
+  virtual bool IsOperator() const { return false; }
 
+  //! Do we have an operator in this line - draw () in frac...
   bool IsCompound() const;
 
   virtual bool IsShortNum() const { return false; }
@@ -680,48 +521,45 @@ class Cell: public Observed
   };
 
   //! Returns the list's representation as a string.
-  virtual wxString ListToString();
+  virtual wxString ListToString() const;
 
   /*! Returns all variable and function names used inside this list of cells.
   
     Used for detecting lookalike chars in function and variable names.
    */
-  virtual wxString VariablesAndFunctionsList();
-
+  wxString VariablesAndFunctionsList() const;
   //! Convert this list to its LaTeX representation
-  virtual wxString ListToMatlab();
-
+  virtual wxString ListToMatlab() const;
   //! Convert this list to its LaTeX representation
-  virtual wxString ListToTeX();
-
+  virtual wxString ListToTeX() const;
   //! Convert this list to a representation fit for saving in a .wxmx file
-  virtual wxString ListToXML();
+  virtual wxString ListToXML() const;
 
   //! Convert this list to a MathML representation
-  virtual wxString ListToMathML(bool startofline = false);
+  virtual wxString ListToMathML(bool startofline = false) const;
 
   //! Convert this list to an OMML representation
-  virtual wxString ListToOMML(bool startofline = false);
+  virtual wxString ListToOMML(bool startofline = false) const;
 
   //! Convert this list to an RTF representation
-  virtual wxString ListToRTF(bool startofline = false);
+  virtual wxString ListToRTF(bool startofline = false) const;
 
   //! Returns the cell's representation as a string.
-  virtual wxString ToString();
+  virtual wxString ToString() const;
 
   /*! Returns the cell's representation as RTF.
 
     If this method returns wxEmptyString this might mean that this cell is 
     better handled in OMML.
    */
-  virtual wxString ToRTF()
+  virtual wxString ToRTF() const
   { return wxEmptyString; }
 
   //! Converts an OMML tag to the corresponding RTF snippet
-  wxString OMML2RTF(wxXmlNode *node);
+  static wxString OMML2RTF(wxXmlNode *node);
 
   //! Converts OMML math to RTF math
-  wxString OMML2RTF(wxString ommltext);
+  static wxString OMML2RTF(wxString ommltext);
 
   /*! Returns the cell's representation as OMML
 
@@ -732,20 +570,15 @@ class Cell: public Observed
     Don't know why OMML was implemented in a world that already knows MathML,
     though.
    */
-  virtual wxString ToOMML()
-  { return wxEmptyString; }
-
+  virtual wxString ToOMML() const;
   //! Convert this cell to its Matlab representation
-  virtual wxString ToMatlab();
-
+  virtual wxString ToMatlab() const;
   //! Convert this cell to its LaTeX representation
-  virtual wxString ToTeX();
-
+  virtual wxString ToTeX() const;
   //! Convert this cell to a representation fit for saving in a .wxmx file
-  virtual wxString ToXML();
-
+  virtual wxString ToXML() const;
   //! Convert this cell to a representation fit for saving in a .wxmx file
-  virtual wxString ToMathML();
+  virtual wxString ToMathML() const;
 
   //! Escape a string for RTF
   static wxString RTFescape(wxString, bool MarkDown = false);
@@ -755,7 +588,6 @@ class Cell: public Observed
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  void UnsetPen();
 
   /*! Undo breaking this cell into multiple lines
 
@@ -764,7 +596,7 @@ class Cell: public Observed
 
     This function tries to return a cell to the single-line form.
    */
-  void Unbreak();
+  virtual void Unbreak();
 
   /*! Unbreak this line
 
@@ -775,13 +607,6 @@ class Cell: public Observed
   */
   virtual void UnbreakList();
 
-  /*! The next cell in the list of cells
-
-    Reads NULL, if this is the last cell of the list. See also m_nextToDraw and 
-    m_previous.
-   */
-  Cell *m_next;
-
   //! Get the next cell in the list.
   virtual Cell *GetNext() const {return m_next;}
   /*! Get the next cell that needs to be drawn
@@ -791,13 +616,7 @@ class Cell: public Observed
     the denominator are pointed to by GetNextToDraw() as single separate objects.
    */
   virtual Cell *GetNextToDraw() const = 0;
-  
-  /*! The previous cell in the list of cells
-    
-    Reads NULL, if this is the first cell of the list. See also 
-    m_nextToDraw and m_next
-   */
-  CellPtr<Cell> m_previous;
+
   /*! Tells this cell which one should be the next cell to be drawn
 
     If the cell is displayed as 2d object this sets the pointer to the next cell.
@@ -812,25 +631,6 @@ class Cell: public Observed
   template <typename T, typename
                        std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   void SetNextToDraw(const CellPtr<T> &ptr) { SetNextToDraw(ptr.get()); }
-  bool m_bigSkip;
-  /*! true means:  This cell is broken into two or more lines.
-    
-    Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
-    but will be displayed in their linear form (and therefore broken into lines) if they
-    end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
-   */
-  bool m_isBrokenIntoLines;
-  /*! True means: This cell is not to be drawn.
-
-    Currently the following items fall into this category:
-     - parenthesis around fractions or similar things that clearly can be recognized as atoms
-     - plus signs within numbers
-     - The output in folded GroupCells
-   */
-  bool m_isHidden;
-
-  //! True means: This is a hidable multiplication sign
-  bool m_isHidableMultSign;
 
   /*! Determine if this cell contains text that isn't code
 
@@ -846,6 +646,8 @@ class Cell: public Observed
   //! Return the hide status
   bool IsHidden() const
     { return m_isHidden; }
+
+  virtual void Hide(bool hide = true) { m_isHidden = hide; }
 
   bool IsEditable(bool input = false) const
   {
@@ -879,13 +681,13 @@ class Cell: public Observed
   virtual bool AddEnding()
   { return false; }
 
-  virtual void SelectPointText(const wxPoint &point);
+  virtual void SelectPointText(wxPoint point);
       
-  virtual void SelectRectText(const wxPoint &one, const wxPoint &two);
+  virtual void SelectRectText(wxPoint one, wxPoint two);
   
-  virtual void PasteFromClipboard(const bool &primary = false);
+  virtual void PasteFromClipboard(bool primary = false);
   
-  virtual bool CopyToClipboard()
+  virtual bool CopyToClipboard() const
   { return false; }
 
   virtual bool CutToClipboard()
@@ -900,7 +702,7 @@ class Cell: public Observed
   virtual void SetMatchParens(bool WXUNUSED(match))
   {}
 
-  virtual wxPoint PositionToPoint(int WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
+  virtual wxPoint PositionToPoint(AFontSize WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
   { return wxPoint(-1, -1); }
 
   virtual bool IsDirty() const
@@ -935,39 +737,37 @@ class Cell: public Observed
   //! Is this cell possibly output of maxima?
   bool IsMath() const;
 
+  bool HasBigSkip() const { return m_bigSkip; }
+
+  //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
+  virtual int GetImageBorderWidth() const { return 0; }
+
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
-  //! What to put on the clipboard if this cell is to be copied as text
-  void SetAltCopyText(wxString text)
-  { m_altCopyText = text; }
 
   /*! Attach a copy of the list of cells that follows this one to a cell
     
     Used by Cell::Copy().
   */
-  Cell *CopyList() const;
-
-  /*! Do we want to begin this cell with a center dot if it is part of a product?
-
-    Maxima will represent a product like (a*b*c) by a list like the following:
-    [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
-    code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
-    many => we need parenthesis cells to set this flag for the first cell in 
-    their "inner cell" list.
-   */
-  bool m_SuppressMultiplicationDot;
+  std::unique_ptr<Cell> CopyList() const;
 
   //! Remove this cell's tooltip
-  void ClearToolTip(){m_toolTip = wxEmptyString;}
-  //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
-  void SetToolTip(const wxString &tooltip);
+  void ClearToolTip();
+  //! Set the tooltip to a given temporary string - the cell will move from it
+  void SetToolTip(wxString &&toolTip);
+  //! Set the tooltip of this math cell - it must be exist at least as long
+  //! as the cell does. Translation results behave that way. I.e. it must be
+  //! a static string!
+  void SetToolTip(const wxString *tooltip);
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
-  void SetCurrentPoint(wxPoint point){m_currentPoint = point;
+  void SetCurrentPoint(wxPoint point)
+  {
+    m_currentPoint = point;
     if((m_currentPoint.x >=0) &&
-       (m_currentPoint.y >=0))
-  m_currentPoint_Last = point;
+        (m_currentPoint.y >=0))
+      m_currentPoint_Last = point;
   }
   //! Tells this cell where it is placed on the worksheet
   void SetCurrentPoint(int x, int y){
@@ -977,18 +777,43 @@ class Cell: public Observed
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   bool ContainsToolTip() const { return m_containsToolTip; }
 
-protected:
-  //! GroupCells only: Suppress the yellow ToolTips marker
-  bool m_suppressTooltipMarker;
-  //! To be called if the font has changed.
-  virtual void FontsChanged()
+  bool IsBrokenIntoLines() const { return m_isBrokenIntoLines; }
+  bool GetSuppressMultiplicationDot() const { return m_suppressMultiplicationDot; }
+  void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
+  void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
+  /*! What should end up if placing this cell on the clipboard?
+
+    AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both 
+    are lookalikes and the cell therefore needs to know what to put on the 
+    clipboard if this cell were copied. They also make sense in many other
+    places we may never have thought about. But since we seriously want to 
+    save memory space on the ubiuitous TextCells it might be scary to apply 
+    this principle to them, at least if you know that text you copy from the
+    internet to a terminal might contain additional commands with TextSize=0...
+  */
+  virtual void SetAltCopyText(const wxString &text)
     {
-      ResetSize();
-      ResetData();
+      {wxASSERT_MSG(text == wxEmptyString,
+                    _("Bug: AltCopyTexts not implemented for this cell"));}
     }
+  //! Get the text set using SetAltCopyText - may be empty.
+  virtual const wxString GetAltCopyText() const { return wxEmptyString; }
+
+#if wxUSE_ACCESSIBILITY
+  CellAccessible *GetAccessible();
+#endif
+
+protected:
+//** Bases and internal members (16 bytes)
+//**
+// VTable  *__vtable;
+// Observed __observed;
+
+//** 8-byte objects (16 bytes)
+//**
   /*! The point in the work sheet at which this cell begins.
 
-    The begin of a cell is defined as 
+    The begin of a cell is defined as
      - x=the left border of the cell
      - y=the vertical center of the cell. Which (per example in the case of a fraction)
        might not be the physical center but the vertical position of the horizontal line
@@ -999,42 +824,181 @@ protected:
      - for EditorCells by it's GroupCell's RecalculateHeight and
      - for Cells when they are drawn.
   */
-  wxPoint m_currentPoint;
+  wxPoint m_currentPoint{-1, -1};
+  wxPoint m_currentPoint_Last{-1, -1};
 
-  wxPoint m_currentPoint_Last;
+//** 8/4-byte objects (48 + 8* bytes)
+//**
+public:
+  // TODO WIP on making these fields private (2020-07-07). Do not refactor.
+  /*! The next cell in the list of cells
 
+    Reads NULL, if this is the last cell of the list. See also m_nextToDraw and
+    m_previous.
+   */
+  Cell *m_next = nullptr;
+
+  /*! The previous cell in the list of cells
+
+    Reads NULL, if this is the first cell of the list. See also
+    m_nextToDraw and m_next
+   */
+  CellPtr<Cell> m_previous;
+
+private:
+#if wxUSE_ACCESSIBILITY
+  std::unique_ptr<CellAccessible> m_accessible;
+#endif
+
+protected:
   /*! The GroupCell this list of cells belongs to.
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
   CellPtr<GroupCell> m_group;
 
-  //! Does this cell begin with a forced page break?
-  bool m_breakPage;
-  //! Are we allowed to add a line break before this cell?
-  bool m_breakLine;
-  //! true means we force this cell to begin with a line break.  
-  bool m_forceBreakLine;
-  bool m_highlight;
-  /* Text that should end up on the clipboard if this cell is copied as text.
-
-     \attention  m_altCopyText is not check in all cell types!
-  */
-  wxString m_altCopyText;
   Configuration **m_configuration;
+  CellPointers *const m_cellPointers;
+
+  //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
+  //! it points to a "static" string.
+  const wxString *m_toolTip /* initialized in the constructor */;
+
+//** 4-byte objects (36 bytes)
+//**
+private:
+  //! The zoom factor at the time of the last recalculation.
+  float m_lastZoomFactor = -1.0f;
+
+protected:
+  //! The height of this cell.
+  int m_height = -1;
+  //! The width of this cell; is recalculated by RecalculateHeight.
+  int m_width = -1;
+  /*! Caches the width of the list starting with this cell.
+
+     - Will contain -1, if it has not yet been calculated.
+     - Won't be recalculated on appending new cells to the list.
+   */
+  mutable int m_fullWidth = -1;
+  /*! Caches the width of the rest of the line this cell is part of.
+
+     - Will contain -1, if it has not yet been calculated.
+     - Won't be recalculated on appending new cells to the list.
+   */
+  mutable int m_lineWidth = -1;
+  int m_center = -1;
+  mutable int m_maxCenter = -1;
+  mutable int m_maxDrop = -1;
+private:
+  //! The client width at the time of the last recalculation.
+  int m_clientWidth_old = -1;
+protected:
+//** 2-byte objects (4 bytes)
+//**
+  //! The font size is smaller in super- and subscripts.
+  AFontSize m_fontSize = {};
+
+//** 1-byte objects (2 bytes)
+//**
+  CellType m_type = MC_TYPE_DEFAULT;
+  TextStyle m_textStyle = TS_DEFAULT;
+
+//** Bitfield objects (3 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_ownsToolTip = false;
+    m_bigSkip = false;
+    m_isBrokenIntoLines = false;
+    m_isBrokenIntoLines_old = false;
+    m_isHidden = false;
+    m_isHidableMultSign = false;
+    m_suppressMultiplicationDot = false;
+    m_recalculateWidths = true;
+    m_recalculate_maxCenter = true;
+    m_recalculate_maxDrop = true;
+    m_recalculate_maxWidth = true;
+    m_recalculate_lineWidth = true;
+    m_suppressTooltipMarker = false;
+    m_containsToolTip = false;
+    m_breakPage = false;
+    m_breakLine = false;
+    m_forceBreakLine = false;
+    m_highlight = false;
+  }
+
+  // In the boolean bit fields below, InitBitFields is an indication that
+  // the InitBitFields() method initializes a given field. It should be
+  // only added once such initialization is in place. It makes it easier
+  // to verify that all bit fields are initialized.
+
+  //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
+  bool m_ownsToolTip : 1 /* InitBitFields */;
+  bool m_bigSkip : 1 /* InitBitFields */;
+
+  /*! true means:  This cell is broken into two or more lines.
+
+     Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
+     but will be displayed in their linear form (and therefore broken into lines) if they
+     end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
+   */
+  bool m_isBrokenIntoLines : 1 /* InitBitFields */;
+  bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
+
+  /*! True means: This cell is not to be drawn.
+
+     Currently the following items fall into this category:
+     - parenthesis around fractions or similar things that clearly can be recognized as atoms
+     - plus signs within numbers
+     - The output in folded GroupCells
+   */
+  bool m_isHidden : 1 /* InitBitFields */;
+
+  //! True means: This is a hidable multiplication sign
+  bool m_isHidableMultSign : 1 /* InitBitFields */;
+
+  /*! Do we want to begin this cell with a center dot if it is part of a product?
+
+     Maxima will represent a product like (a*b*c) by a list like the following:
+     [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
+     code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
+     many => we need parenthesis cells to set this flag for the first cell in
+     their "inner cell" list.
+   */
+  bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
+
+  //! true, if this cell clearly needs recalculation
+  bool m_recalculateWidths : 1 /* InitBitFields */;
+  mutable bool m_recalculate_maxCenter : 1 /* InitBitFields */;
+  mutable bool m_recalculate_maxDrop : 1 /* InitBitFields */;
+  mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
+  mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
+  //! GroupCells only: Suppress the yellow ToolTips marker
+  bool m_suppressTooltipMarker : 1 /* InitBitFields */;
+  bool m_containsToolTip : 1 /* InitBitFields */;
+  //! Does this cell begin with a forced page break?
+  bool m_breakPage : 1 /* InitBitFields */;
+  //! Are we allowed to add a line break before this cell?
+  bool m_breakLine : 1 /* InitBitFields */;
+  //! true means we force this cell to begin with a line break.
+  bool m_forceBreakLine : 1 /* InitBitFields */;
+  bool m_highlight : 1 /* InitBitFields */;
+
 
   class InnerCellIterator
   {
     enum class Uses { SmartPtr, RawPtr};
-    using SmartPtr = const std::unique_ptr<Cell> *;
-    using RawPtr = Cell* const*;
+    using SmartPtr_ = const std::unique_ptr<Cell> *;
+    using RawPtr_ = Cell* const*;
     void const* m_ptr = {};
     Uses m_uses = Uses::SmartPtr;
     Cell *GetInner() const
     {
       if (!m_ptr) return {};
-      if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr>(m_ptr)->get();
-      else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr>(m_ptr);
+      if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr_>(m_ptr)->get();
+      else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr_>(m_ptr);
       else return {};
     }
   public:
@@ -1052,8 +1016,8 @@ protected:
     {
       if (m_ptr)
       {
-        if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr&>(m_ptr);
-        else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr&>(m_ptr);
+        if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr_&>(m_ptr);
+        else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr_&>(m_ptr);
         else wxASSERT(false && "Internal error in InnerCellIterator");
       }
       return *this;
@@ -1074,46 +1038,57 @@ protected:
 
   inline Worksheet *GetWorksheet() const;
 
-protected:
-  bool m_containsToolTip;
-  //! The height of this cell.
-  int m_height;
-  /*! The width of this cell.
-
-    Is recalculated by RecalculateHeight.
-   */
-  int m_width;
-  /*! Caches the width of the list starting with this cell.
-
-    - Will contain -1, if it has not yet been calculated.
-    - Won't be recalculated on appending new cells to the list.
-  */
-  int m_fullWidth;
-  /*! Caches the width of the rest of the line this cell is part of.
-
-    - Will contain -1, if it has not yet been calculated.
-    - Won't be recalculated on appending new cells to the list.
-  */
-  int m_lineWidth;
-  int m_center;
-  int m_maxCenter;
-  int m_maxDrop;
-  CellType m_type;
-  TextStyle m_textStyle;
-  //! The font size is smaller in super- and subscripts.
-  double m_fontSize;
+  //! To be called if the font has changed.
+  virtual void FontsChanged()
+  {
+    ResetSize();
+    ResetData();
+  }
 
 protected:
-  CellPointers *m_cellPointers;
-  //! The zoom factor at the time of the last recalculation.
-  double m_lastZoomFactor;
-  int m_fontsize_old;
-  bool m_isBrokenIntoLines_old;
+  const wxString &GetLocalToolTip() const;
+  bool IsZoomFactorChanged() const;
+
 private:
-  //! The client width at the time of the last recalculation.
-  int m_clientWidth_old;
+  void RecalcCenterListAndMaxDropCache();
 
   CellPointers *GetCellPointers() const;
 };
+
+// The static cast here requires Cell to be defined
+template <typename T>
+template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type>
+inline PtrT CellPtr<T>::CastAs() const { return dynamic_cast<PtrT>(static_cast<Cell*>(base_get())); }
+
+#if wxUSE_ACCESSIBILITY
+class CellAccessible final : public wxAccessible
+{
+public:
+  explicit CellAccessible(Cell *const forCell) : m_cell(forCell) {}
+
+  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
+  wxAccStatus GetParent (wxAccessible **parent) override;
+  //! Accessibility: How many childs of this cell GetChild() can retrieve?
+  wxAccStatus GetChildCount (int *childCount) override;
+  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
+  wxAccStatus GetChild (int childId, wxAccessible **child) override;
+  //! Accessibility: Is pt inside this cell or a child cell?
+  wxAccStatus HitTest (const wxPoint &pt,
+                      int *childId, wxAccessible **childObject) override;
+  //! Accessibility: Describe the current cell to a Screen Reader
+  wxAccStatus GetDescription(int childId, wxString *description) override;
+  //! Accessibility: Describe the action this Cell performs, if any
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName) override;
+  //! Accessibility: Does this or a child cell currently own the focus?
+  wxAccStatus GetFocus (int *childId, wxAccessible **child) override;
+  //! Accessibility: Where is this cell to be found?
+  wxAccStatus GetLocation (wxRect &rect, int elementId) override;
+  //! Accessibility: What is the contents of this cell?
+  wxAccStatus GetValue (int childId, wxString *strValue) override;
+  wxAccStatus GetRole (int childId, wxAccRole *role) override;
+private:
+  Cell *const m_cell;
+};
+#endif
 
 #endif // MATHCELL_H

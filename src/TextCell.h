@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +24,8 @@
 #ifndef TEXTCELL_H
 #define TEXTCELL_H
 
-#include "wx/regex.h"
+#include "precomp.h"
+#include <wx/regex.h>
 #include "Cell.h"
 
 /*! A Text cell
@@ -31,32 +33,26 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-class TextCell final : public Cell
+// 424 bytes <- 744 bytes
+class TextCell : public Cell
 {
-private:
-  //! Is an ending "(" of a function name the opening parenthesis of the function?
-  bool m_dontEscapeOpeningParenthesis;
-
 public:
   TextCell(GroupCell *parent, Configuration **config, const wxString &text = {}, TextStyle style = TS_FUNCTION);
   TextCell(const TextCell &cell);
-  Cell *Copy() const override { return new TextCell(*this); }  
+  std::unique_ptr<Cell> Copy() const override;  
 
-  double GetScaledTextSize() const;
+  AFontSize GetScaledTextSize() const;
   
-  void SetStyle(TextStyle style) override;
+  virtual void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
 
-  //! Set the automatic label maxima has assigned the current equation
-  void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
+  void Recalculate(AFontSize fontsize) override;
 
-  void RecalculateWidths(int fontsize) override;
+  virtual void Draw(wxPoint point) override;
 
-  void Draw(wxPoint point) override;
-
-  void SetFont(int fontsize);
+  void SetFont(AFontSize fontsize);
 
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
@@ -64,25 +60,19 @@ public:
    */
   void DontEscapeOpeningParenthesis() { m_dontEscapeOpeningParenthesis = true; }
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToRTF() override;
-
-  wxString ToXML() override;
+  wxString ToMatlab() const override;
+  wxString ToMathML() const override;
+  wxString ToOMML() const override;
+  wxString ToRTF() const override;
+  virtual wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   wxString GetDiffPart() const override;
 
   bool IsOperator() const override;
 
-  wxString GetValue() const override { return m_text; }
+  const wxString &GetValue() const override { return m_text; }
 
   wxString GetGreekStringTeX() const;
 
@@ -96,92 +86,87 @@ public:
 
   void SetType(CellType type) override;
 
-private:
-  wxSize GetTextSize(wxString const &text);
-  void SetAltText();
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for TextCells"));}
+
+  void SetPromptTooltip(bool use) { m_promptTooltip = use; }
+
+  //! The actual font size for labels (that have a fixed width)
+  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
+  Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+protected:
+  //! Returns the XML flags this cell needs in wxMathML
+  virtual wxString GetXMLFlags() const;
+  //! The text we actually display depends on many factors, unfortunately
+  virtual void UpdateDisplayedText();
+  //! Update the tooltip for this cell
+  void UpdateToolTip();
+  virtual const wxString GetAltCopyText() const override { return wxEmptyString; }
 
   void FontsChanged() override
-    {
-      ResetSize();
-      ResetData();
-      m_widths.clear();
-    }
+  {
+    ResetSize();
+    ResetData();
+    m_sizeCache.clear();
+  }
 
-  //! Resets the font size to label size
-  void SetFontSizeForLabel(wxDC *dc);
+  virtual bool NeedsRecalculation(AFontSize fontSize) const override;
 
-  bool NeedsRecalculation(int fontSize) const override;
+  enum TextIndex : int8_t
+  {
+    noText,
+    cellText,
+    userLabelText,
+    numberStart,
+    ellipsis,
+    numberEnd    
+  };
+
+  struct SizeEntry {
+    wxSize textSize;
+    AFontSize fontSize;
+    TextIndex index;
+    SizeEntry(wxSize textSize, AFontSize fontSize, TextIndex index) :
+      textSize(textSize), fontSize(fontSize), index(index) {}
+    SizeEntry() = default;
+  };
+
+  wxSize GetTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
+
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
+//** Large objects (??? bytes)
+//**
   //! The text we keep inside this cell
   wxString m_text;
-  //! The text we keep inside this cell
-  wxString m_userDefinedLabel;
-  //! The text we display: m_text might be a number that is longer than we want to display
+  //! The text we display: We might want to convert some characters or do similar things
   wxString m_displayedText;
-  wxString m_altText, m_altJsText;
-  wxString m_fontname, m_texFontname;
+  std::vector<SizeEntry> m_sizeCache;
 
-  int m_realCenter;
-  /*! The font size we had the last time we were recalculating this cell
-
-    If a fraction or similar is broken into two lines this changes \f$ \frac{a}{b}\f$ to 
-    \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
-    size has changed and we need to re-calculate the text width.
-   */
-  double m_lastCalculationFontSize;
-  //! The actual font size for labels (that have a fixed width)
-  double m_fontSizeLabel;
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
+//** 8/4-byte objects (8 bytes)
+//**
   CellPtr<Cell> m_nextToDraw;
-  class SizeHash_internals
-  {
-  public:
-    SizeHash_internals() { }
-    unsigned long operator()( const double& k ) const
-      {
-        return k * 1000000;
-      }
-    SizeHash_internals& operator=(const SizeHash_internals&) { return *this; }
-  };
-  // comparison operator
-  class DoubleEqual
-  {
-  public:
-    DoubleEqual() { }
-    bool operator()( const double& a, const double& b ) const
-      {
-        return fabs(a-b) < .001;
-      }
-    DoubleEqual& operator=(const DoubleEqual&) { return *this; }
-  };
-  WX_DECLARE_HASH_MAP(
-    double, wxSize, SizeHash_internals, DoubleEqual, SizeHash);
-  //! Remembers all widths of the full text we already have configured
-  SizeHash m_widths;
-  //! The size of the first few digits
-  SizeHash m_numstartWidths;
-  wxSize m_numStartWidth;
-  wxString m_numStart;
-  //! The size of the "not all digits displayed" message.
-  SizeHash m_ellipsisWidths;
-  wxString m_ellipsis;
-  wxSize m_ellipsisWidth;
-  //! The size of the last few digits
-  SizeHash m_numEndWidths;
-  wxString m_numEnd;
-  wxSize m_numEndWidth;
 
-  //! Produces a text sample that determines the label width
-  wxString m_initialToolTip;
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_dontEscapeOpeningParenthesis = false;
+    m_promptTooltip = false;
+  }
+
+  //! Is an ending "(" of a function name the opening parenthesis of the function?
+  bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
+  //! Default to a special tooltip for prompts?
+  bool m_promptTooltip : 1 /* InitBitFields */;
 };
 
 #endif // TEXTCELL_H

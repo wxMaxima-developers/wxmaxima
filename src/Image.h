@@ -29,6 +29,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include "precomp.h"
 #include "Cell.h"
 #include "Version.h"
 #include <wx/image.h>
@@ -107,9 +108,7 @@ public:
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
     {
-      // Create an empty filesystem pointer (which means: Use the system's filesystem)
-      std::shared_ptr<wxFileSystem> filesystem;
-      GnuplotSource(gnuplotFilename, dataFilename, filesystem);
+      GnuplotSource(gnuplotFilename, dataFilename, {} /* system fs */);
     }
 
 /*! Returns the gnuplot source file name of this image
@@ -216,6 +215,9 @@ public:
   //! Can this image be exported in SVG format?
   bool CanExportSVG() const {return m_svgRast != nullptr;}
 
+  //! The tooltip to use wherever an image that's not Ok is shown.
+  static const wxString &GetBadImageToolTip();
+
 private:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
@@ -259,7 +261,6 @@ private:
   omp_lock_t m_gnuplotLock;
   omp_lock_t m_imageLoadLock;
   #endif
-  
 };
 
 #endif // IMAGE_H

@@ -32,8 +32,15 @@
 #define NOTIFICATION_H
 
 #include "GroupCell.h"
+#include "precomp.h"
 #include <wx/notifmsg.h>
 #include <wx/wx.h>
+
+#ifdef __WXOSX__
+#define NOTIFI_OVERRIDE override
+#else
+#define NOTIFI_OVERRIDE
+#endif
 
 /*! A user notification the operating system claims to be non-disturbing
 
@@ -52,15 +59,15 @@ public:
                         wxWindow *parent=NULL,
                         int flags=wxICON_INFORMATION);
   //! A destructor that also closes the notification
-  ~Notification() override {Close();}
+  ~Notification() override { Notification::Close(); }
   //! Makes the notification appear.
-  virtual bool Show(int duration = Timeout_Auto);
+  bool Show(int duration = Timeout_Auto) NOTIFI_OVERRIDE;
   //! Informs the notification which the main window is it notified for.
-  virtual void SetGroup(wxWindow *parent);
+  void SetGroup(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
-  virtual wxWindow *GetGroup(){return m_parent;}
+  wxWindow *GetGroup() { return m_parent; }
   //! Tell the operating system that the notification may be closed.
-  virtual bool Close();
+  bool Close() NOTIFI_OVERRIDE;
   //! Might produce false positives, but at least tries to determine if the notification is active.
   bool IsShown(){return m_shown;}
   //! The cell we signal an error for
@@ -76,5 +83,7 @@ protected:
   //! Called on closing the notification by the OS or user action, if supported.
   void OnDismissed(wxCommandEvent &event);
 };
+
+#undef NOTIFI_OVERRIDE
 
 #endif

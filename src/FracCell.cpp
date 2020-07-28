@@ -28,23 +28,20 @@
 
 #include "FracCell.h"
 #include "ParenCell.h"
+#include "VisiblyInvalidCell.h"
 
 #define FRAC_DEC 1
 
 FracCell::FracCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_numParenthesis(new ParenCell(m_group, m_configuration)),
-    m_denomParenthesis(new ParenCell(m_group, m_configuration)),
-    m_divideOwner(new TextCell(parent, config, "/"))
+    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
+    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
+    m_divideOwner(std::make_unique<TextCell>(parent, config, "/"))
 {
-  SetNum(new TextCell(parent, config));
-  SetDenom(new TextCell(parent, config));
+  InitBitFields();
+  SetNum(std::make_unique<VisiblyInvalidCell>(parent,config));
+  SetDenom(std::make_unique<VisiblyInvalidCell>(parent,config));
   m_divide->SetStyle(TS_VARIABLE);
-  m_fracStyle = FC_NORMAL;
-  m_exponent = false;
-  m_horizontalGapLeft = 0;
-  m_horizontalGapRight = 0;
-  m_protrusion = 0;
 }
 
 FracCell::FracCell(const FracCell &cell):
@@ -60,48 +57,58 @@ FracCell::FracCell(const FracCell &cell):
   SetupBreakUps();
 }
 
-void FracCell::SetNum(Cell *num)
+std::unique_ptr<Cell> FracCell::Copy() const
+{
+  return std::make_unique<FracCell>(*this);
+}
+
+void FracCell::SetNum(std::unique_ptr<Cell> &&num)
 {
   if (!num)
     return;
-  m_numParenthesis->SetInner(num);
-  m_num_Last = num;
+  m_numParenthesis->SetInner(std::move(num));
   SetupBreakUps();
 }
 
-void FracCell::SetDenom(Cell *denom)
+void FracCell::SetDenom(std::unique_ptr<Cell> &&denom)
 {
   if (!denom)
     return;
-  m_denomParenthesis->SetInner(denom);
+  m_denomParenthesis->SetInner(std::move(denom));
   SetupBreakUps();
 }
 
-void FracCell::RecalculateWidths(int fontsize)
+void FracCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
   if(m_exponent || m_isBrokenIntoLines)
   {
-    m_displayedNum->RecalculateWidthsList(fontsize);
-    m_displayedDenom->RecalculateWidthsList(fontsize);
+    m_displayedNum->RecalculateList(fontsize);
+    m_displayedDenom->RecalculateList(fontsize);
   }
   else
   {
-    m_displayedNum->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_displayedDenom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_displayedNum->RecalculateList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
+    m_displayedDenom->RecalculateList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
   }
-  m_divide->RecalculateWidths(fontsize);
+  m_divide->RecalculateList(fontsize);
   
-  if (m_exponent)
+  if(m_isBrokenIntoLines)
   {
-    m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
-    m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
+    m_height = 0;
+    m_center = 0;
+    m_width = 0;
   }
   else
   {
-    if(m_isBrokenIntoLines)
-      m_width = 0;
+    if (m_exponent)
+    {
+      m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
+      m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
+      m_height = wxMax(Num()->GetHeightList(), Denom()->GetHeightList()) + Scale_Px(6.5);
+      m_center = wxMax(Num()->GetCenterList(), Denom()->GetCenterList()) + Scale_Px(3);
+    }
     else
     {
       m_protrusion = Scale_Px((*m_configuration)->GetMathFontSize() / 2);
@@ -121,47 +128,13 @@ void FracCell::RecalculateWidths(int fontsize)
       
       m_width = wxMax(m_displayedNum->GetFullWidth(), m_displayedDenom->GetFullWidth()) +
         2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
-    }
-  }
-  Cell::RecalculateWidths(fontsize);
-}
-
-void FracCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-  if(m_exponent || m_isBrokenIntoLines)
-  {
-    m_displayedNum->RecalculateHeightList(fontsize);
-    m_displayedDenom->RecalculateHeightList(fontsize);
-  }
-  else
-  {
-    m_displayedNum->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_displayedDenom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-  }
-  m_divide->RecalculateHeight(fontsize);
-
-  if(m_isBrokenIntoLines)
-  {
-    m_height = 2;
-    m_center = 1;
-  }
-  else
-  {
-    if (!m_exponent)
-    {
       m_height = Num()->GetHeightList() + Denom()->GetHeightList() +
-        Scale_Px(4);
-      m_center = Num()->GetHeightList() + Scale_Px(2);
-    }
-    else
-    {
-      m_height = wxMax(Num()->GetHeightList(), Denom()->GetHeightList());
-      m_center = wxMax(Num()->GetCenterList(), Denom()->GetCenterList());
+        Scale_Px(6.5);
+      m_center = Num()->GetHeightList() + Scale_Px(3);
     }
   }
-  Cell::RecalculateHeight(fontsize);
+
+  Cell::Recalculate(fontsize);
 }
 
 void FracCell::Draw(wxPoint point)
@@ -193,27 +166,25 @@ void FracCell::Draw(wxPoint point)
     {
       num.x = point.x + m_horizontalGapLeft +
               (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedNum->GetFullWidth()) / 2;
-      num.y = point.y - m_displayedNum->GetHeightList() + m_displayedNum->GetCenterList() -
-              Scale_Px(2);
+      num.y = point.y - m_displayedNum->GetHeightList() + m_displayedNum->GetCenterList();
       m_displayedNum->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_displayedDenom->GetFullWidth()) / 2;
-      denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(2);
+      denom.y = point.y + m_displayedDenom->GetCenterList() + Scale_Px(4);
       m_displayedDenom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
-                    point.y,
+                     point.y + Scale_Px(2),
                     point.x + m_width - m_horizontalGapRight - (*m_configuration)->GetDefaultLineWidth() / 2,
-                    point.y
+                    point.y + Scale_Px(2)
         );
-      UnsetPen();
     }
   }
 }
 
-wxString FracCell::ToString()
+wxString FracCell::ToString() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -256,7 +227,7 @@ wxString FracCell::ToString()
   return s;
 }
 
-wxString FracCell::ToMatlab()
+wxString FracCell::ToMatlab() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -297,7 +268,7 @@ wxString FracCell::ToMatlab()
   return s;
 }
 
-wxString FracCell::ToTeX()
+wxString FracCell::ToTeX() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -316,7 +287,7 @@ wxString FracCell::ToTeX()
   return s;
 }
 
-wxString FracCell::ToMathML()
+wxString FracCell::ToMathML() const
 {
   return wxT("<mfrac>") +
          Num()->ListToMathML() +
@@ -324,14 +295,14 @@ wxString FracCell::ToMathML()
 }
 
 
-wxString FracCell::ToOMML()
+wxString FracCell::ToOMML() const
 {
   return wxT("<m:f><m:num>") +
          Num()->ListToOMML() + wxT("</m:num><m:den>") +
          Denom()->ListToOMML() + wxT("</m:den></m:f>\n");
 }
 
-wxString FracCell::ToXML()
+wxString FracCell::ToXML() const
 {
   wxString s = (m_fracStyle == FC_NORMAL || m_fracStyle == FC_DIFF) ?
                _T("f") : _T("f line = \"no\"");
@@ -368,18 +339,6 @@ void FracCell::SetupBreakUps()
     m_displayedNum = Num();
     m_displayedDenom = Denom();
   }
-  m_num_Last = m_displayedNum;
-  if (m_num_Last)
-  {
-    while (m_num_Last->m_next != NULL)
-      m_num_Last = m_num_Last->m_next;
-  }
-  m_denom_Last = m_displayedDenom;
-  if (m_denom_Last)
-  {
-    while (m_denom_Last->m_next != NULL)
-      m_denom_Last = m_denom_Last->m_next;
-  }
 }
 
 bool FracCell::BreakUp()
@@ -389,19 +348,20 @@ bool FracCell::BreakUp()
 
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     if(Num() && Num()->m_next)
       m_displayedNum = m_numParenthesis.get();
     if(Denom() && Denom()->m_next)
       m_displayedDenom = m_denomParenthesis.get();
-    wxASSERT_MSG(m_num_Last, _("Bug: No last cell in a numerator!"));
-    if (m_num_Last)
-      m_displayedNum->SetNextToDraw(m_divide);
+    // Note: Yes, we don't want m_displayedNum->last() here.
+    m_displayedNum->SetNextToDraw(m_divide);
     m_divide->SetNextToDraw(m_displayedDenom);
     m_displayedDenom->SetNextToDraw(m_nextToDraw);
-    wxASSERT_MSG(m_denom_Last, _("Bug: No last cell in a denominator!"));
     m_nextToDraw = m_displayedNum;
-    ResetData();    
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;
@@ -410,7 +370,7 @@ bool FracCell::BreakUp()
 void FracCell::SetNextToDraw(Cell *next)
 {
   if (m_isBrokenIntoLines)
-    m_denomParenthesis->SetNextToDraw(next);
+    m_displayedDenom->SetNextToDraw(next);
   else
     m_nextToDraw = next;
 }

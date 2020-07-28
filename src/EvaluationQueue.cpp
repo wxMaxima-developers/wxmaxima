@@ -176,39 +176,39 @@ GroupCell *EvaluationQueue::GetCell()
 
 wxString EvaluationQueue::GetCommand()
 {
-  wxString retval;
-  m_userLabel.Clear();
-  if (!m_commands.empty())
-  {
-    retval = m_commands.front().GetString();
+  if (m_commands.empty())
+    return {};
 
-    wxString userLabel;
-    int colonPos;
-    if ((colonPos = retval.find(wxT(":"))) != wxNOT_FOUND)
+  auto retval = m_commands.front().GetString();
+
+  m_userLabel.Clear();
+  wxString userLabel;
+
+  int colonPos = retval.find(wxT(":"));
+  if (colonPos != wxNOT_FOUND && !retval.StartsWith(wxT(":lisp")))
+  {
+    userLabel = retval.Left(colonPos);
+    userLabel.Trim(true);
+    userLabel.Trim(false);
+    if (!userLabel.empty() && (wxIsalpha(userLabel[0]) || (userLabel[0] == wxT('\\')) ||
+        (userLabel[0] >127) || (userLabel[0] == wxT('_'))))
     {
-      userLabel = retval.Left(colonPos);
-      userLabel.Trim(true);
-      userLabel.Trim(false);
-      if ((wxIsalpha(userLabel[0])) || (userLabel[0] == wxT('\\')) || (userLabel[0] >127) ||
-          (userLabel[0] == wxT('_')))
+      for (size_t i = 0; i < userLabel.Length(); i++)
       {
-        for (size_t i = 0; i < userLabel.Length(); i++)
+        if (userLabel[i] == wxT('\\'))
+          i++;
+        else
         {
-          if (userLabel[i] == wxT('\\'))
-            i++;
-          else
+          if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] < 128) && (userLabel[i] != '[') && (userLabel[i] != ']'))
           {
-            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] < 128) && (userLabel[i] != '[') && (userLabel[i] != ']'))
-            {
-              userLabel.Clear();
-              break;
-            }
+            userLabel.Clear();
+            break;
           }
         }
-        m_userLabel = userLabel;
       }
-    };
-  }
+      m_userLabel = userLabel;
+    }
+  };
   return retval;
 }
 

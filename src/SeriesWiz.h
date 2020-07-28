@@ -22,6 +22,7 @@
 #ifndef SERIESWIZ_H
 #define SERIESWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/spinctrl.h>
@@ -69,7 +70,7 @@ protected:
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
-DECLARE_EVENT_TABLE()
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // SERIESWIZ_H

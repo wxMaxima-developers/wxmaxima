@@ -26,6 +26,7 @@
 #ifndef MAINMENUBAR_H
 #define MAINMENUBAR_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/menu.h>
 

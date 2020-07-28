@@ -25,6 +25,7 @@
 #define OUTCOMMON_H
 
 #include "Configuration.h"
+#include "precomp.h"
 #include <wx/dataobj.h>
 #include <memory>
 
@@ -106,8 +107,7 @@ public:
 
 private:
   void GetMaxPoint(Cell *tree, int *width, int *height) const;
-  void RecalculateWidths(Cell *tree) const;
-  void RecalculateHeight(Cell *tree) const;
+  void Recalculate(Cell *tree) const;
 
   void BreakLines(Cell *tree) const;
   void BreakUpCells(Cell *tree);
@@ -120,7 +120,7 @@ private:
   wxString m_filename;
   Configuration **m_configuration;
   Configuration *m_oldconfig = *m_configuration;
-  Configuration m_thisconfig;
+  Configuration m_thisconfig{ {}, Configuration::temporary };
   //! How many times the natural resolution do we want this output to be?
   double m_scale = 1.0;
   //! The size of the current output

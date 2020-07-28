@@ -28,85 +28,66 @@
 
 #include "FunCell.h"
 #include "TextCell.h"
+#include "VisiblyInvalidCell.h"
 
 FunCell::FunCell(GroupCell *parent, Configuration **config) :
   Cell(parent, config),
-  m_nameCell(new TextCell(parent, config)),
-  m_argCell(new TextCell(parent, config))
+  m_nameCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+  m_argCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
-  m_nameCell_Last = m_nameCell;
-  if(m_nameCell_Last)
-    while(m_nameCell_Last->m_next)
-      m_nameCell_Last = m_nameCell_Last->m_next;
-
-  m_argCell_Last = m_argCell;
-  if(m_argCell_Last)
-    while(m_argCell_Last->m_next)
-      m_argCell_Last = m_argCell_Last->m_next;
+  InitBitFields();
 }
 
 FunCell::FunCell(const FunCell &cell):
  FunCell(cell.m_group, cell.m_configuration)
 {
   CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
   if(cell.m_nameCell)
     SetName(cell.m_nameCell->CopyList());
   if(cell.m_argCell)
     SetArg(cell.m_argCell->CopyList());
 }
 
-void FunCell::SetName(Cell *name)
+std::unique_ptr<Cell> FunCell::Copy() const
+{
+  return std::make_unique<FunCell>(*this);
+}
+
+void FunCell::SetName(std::unique_ptr<Cell> &&name)
 {
   if (!name)
     return;
-  m_nameCell.reset(name);
-  
-  m_nameCell_Last = name;
-  while(m_nameCell_Last->m_next)
-    m_nameCell_Last = m_nameCell_Last->m_next;
-  name->SetStyle(TS_FUNCTION);
+  m_nameCell = std::move(name);
+  m_nameCell->SetStyle(TS_FUNCTION);
 }
 
-void FunCell::SetArg(Cell *arg)
+void FunCell::SetArg(std::unique_ptr<Cell> &&arg)
 {  
   if (!arg)
     return;
-  m_argCell.reset(arg);
-
-  m_argCell_Last = arg;
-  while(m_argCell_Last->m_next)
-    m_argCell_Last = m_argCell_Last->m_next;
+  m_argCell = std::move(arg);
 }
 
-void FunCell::RecalculateWidths(int fontsize)
+void FunCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_argCell->RecalculateWidthsList(fontsize);
-  m_nameCell->RecalculateWidthsList(fontsize);
-  m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
+  m_argCell->RecalculateList(fontsize);
+  m_nameCell->RecalculateList(fontsize);
 
   if(m_isBrokenIntoLines)
-    m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void FunCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_nameCell->RecalculateHeightList(fontsize);
-  m_argCell->RecalculateHeightList(fontsize);
-  if(!m_isBrokenIntoLines)
   {
+    m_width = m_center = m_height = 0;
+  }
+  else
+  {
+    m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() - Scale_Px(1);
     m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
-  else
-    m_height = 0;
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void FunCell::Draw(wxPoint point)
@@ -123,7 +104,7 @@ void FunCell::Draw(wxPoint point)
   }
 }
 
-wxString FunCell::ToString()
+wxString FunCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -132,7 +113,7 @@ wxString FunCell::ToString()
   return m_nameCell->ListToString() + m_argCell->ListToString();
 }
 
-wxString FunCell::ToMatlab()
+wxString FunCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -142,7 +123,7 @@ wxString FunCell::ToMatlab()
   return s;
 }
 
-wxString FunCell::ToTeX()
+wxString FunCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -153,7 +134,7 @@ wxString FunCell::ToTeX()
     (m_nameCell->ToString() == wxT("sin")) ||
     (m_nameCell->ToString() == wxT("cos")) ||
     (m_nameCell->ToString() == wxT("cosh")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
+    (m_nameCell->ToString() == wxT("sinh")) ||
     (m_nameCell->ToString() == wxT("log")) ||
     (m_nameCell->ToString() == wxT("cot")) ||
     (m_nameCell->ToString() == wxT("sec")) ||
@@ -167,7 +148,7 @@ wxString FunCell::ToTeX()
   return s;
 }
 
-wxString FunCell::ToXML()
+wxString FunCell::ToXML() const
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
@@ -178,7 +159,7 @@ wxString FunCell::ToXML()
          m_argCell->ListToXML() + wxT("</fn>");
 }
 
-wxString FunCell::ToMathML()
+wxString FunCell::ToMathML() const
 {
 //  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
@@ -186,7 +167,7 @@ wxString FunCell::ToMathML()
          wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
 }
 
-wxString FunCell::ToOMML()
+wxString FunCell::ToOMML() const
 {
   return m_nameCell->ListToOMML() +
          m_argCell->ListToOMML();
@@ -196,12 +177,14 @@ bool FunCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
-    m_nameCell_Last->SetNextToDraw(m_argCell);
-    m_argCell_Last->SetNextToDraw(m_nextToDraw);
+    m_nameCell->last()->SetNextToDraw(m_argCell);
+    m_argCell->last()->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_nameCell;
-    m_width = 0;
-    ResetData();    
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;
@@ -210,7 +193,7 @@ bool FunCell::BreakUp()
 void FunCell::SetNextToDraw(Cell *next)
 {
   if(m_isBrokenIntoLines)
-    m_argCell_Last->SetNextToDraw(next);
+    m_argCell->last()->SetNextToDraw(next);
   else
     m_nextToDraw = next;
 }

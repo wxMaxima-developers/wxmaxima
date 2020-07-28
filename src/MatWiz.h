@@ -22,6 +22,7 @@
 #ifndef MATWIZ_H
 #define MATWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 

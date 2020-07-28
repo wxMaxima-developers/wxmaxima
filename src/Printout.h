@@ -29,6 +29,7 @@
 #ifndef MATHPRINTOUT_H
 #define MATHPRINTOUT_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/print.h>
 
@@ -47,7 +48,7 @@ public:
 
   void DestroyTree(GroupCell *tree);
 
-  void SetData(GroupCell *tree);
+  void SetData(std::unique_ptr<GroupCell> &&tree);
 
   void SetupData();
 

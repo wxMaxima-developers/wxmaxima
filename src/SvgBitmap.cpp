@@ -56,7 +56,7 @@ SvgBitmap::SvgBitmap(const unsigned char *data, size_t len, int width, int heigh
     m_svgRast = nsvgCreateRasterizer();
   if (!m_svgRast)
     wxBitmap::operator=(GetInvalidBitmap(width));
-  if (svgContents.size() < 1)
+  if (svgContents.size() < 2)
     wxBitmap::operator=(GetInvalidBitmap(width));
 
   m_svgImage.reset(nsvgParse(svgContents.data(), "px", 96));

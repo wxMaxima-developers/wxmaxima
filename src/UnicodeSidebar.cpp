@@ -30,7 +30,6 @@
 
 #include <wx/sizer.h>
 #include <wx/tokenzr.h>
-#include <wx/regex.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
@@ -51,9 +50,8 @@ UnicodeSidebar::UnicodeSidebar(wxWindow *parent, wxWindow *worksheet) :
   wxWindowUpdateLocker speedUp(this);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   m_initialized = false;
-  m_regex = new wxTextCtrl(this, wxID_ANY);
-  m_regex->SetToolTip(_("Please enter a regex here that searches for the required unicode character"));
-  m_regex->Connect(wxEVT_TEXT, wxCommandEventHandler(UnicodeSidebar::OnRegExEvent), NULL, this);
+  m_regex = new RegexCtrl(this, wxID_ANY);
+  m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(UnicodeSidebar::OnRegExEvent), NULL, this);
   m_grid = new wxGrid(this, wxID_ANY);
   m_grid->CreateGrid(0,3);
   m_grid->BeginBatch();
@@ -125,12 +123,10 @@ void UnicodeSidebar::UpdateDisplay()
   wxWindowUpdateLocker noUpdates(m_grid);
   wxGridUpdateLocker speedUp(m_grid);
   int rows = m_grid->GetNumberRows() - 1;
-  wxRegEx regex;
-  regex.Compile(m_regex->GetValue().Lower());
   for(int i = 0; i<rows; i++)
   {
     wxString name = m_grid->GetCellValue(i,2).Lower();
-    if((!regex.IsValid()) || regex.Matches(name))
+    if(m_regex->Matches(name))
       m_grid->ShowRow(i);
     else
       m_grid->HideRow(i);

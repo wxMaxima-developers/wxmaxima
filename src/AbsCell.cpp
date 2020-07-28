@@ -29,12 +29,15 @@
 
 
 #include "AbsCell.h"
+#include "VisiblyInvalidCell.h"
 
 AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_open(new TextCell(parent, config, wxT("abs("))),
-    m_close(new TextCell(parent, config, wxT(")")))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, wxT("abs("))),
+    m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
 {
+  InitBitFields();
   static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
   m_open->SetStyle(TS_FUNCTION);
 }
@@ -50,56 +53,41 @@ AbsCell::AbsCell(const AbsCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-void AbsCell::SetInner(Cell *inner)
+std::unique_ptr<Cell> AbsCell::Copy() const
+{
+  return std::make_unique<AbsCell>(*this);
+}
+
+void AbsCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
   if (!inner)
     return;
-  m_innerCell.reset(inner);
-
-  m_last = m_innerCell;
-  if (m_last)
-    while (m_last->m_next)
-      m_last = m_last->m_next;
+  m_innerCell = std::move(inner);
 }
 
-void AbsCell::RecalculateWidths(int fontsize)
+void AbsCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
   if(m_isBrokenIntoLines)
   {
     m_width = 0;
     m_height = 0;
+    m_center = 0;
   }
   else
   {
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8) + 2 * (*m_configuration)->GetDefaultLineWidth();
-  }
-  Cell::RecalculateWidths(fontsize);
-}
-
-void AbsCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
-  if (!m_isBrokenIntoLines)
-  {
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
     m_height = m_innerCell->GetHeightList() + Scale_Px(4);
     m_center = m_innerCell->GetCenterList() + Scale_Px(2);
-    m_open->RecalculateHeightList(fontsize);
-    m_close->RecalculateHeightList(fontsize);
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void AbsCell::Draw(wxPoint point)
@@ -123,11 +111,10 @@ void AbsCell::Draw(wxPoint point)
                 point.y - m_center + Scale_Px(2),
                 point.x + m_width - Scale_Px(2) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                 point.y - m_center + m_height - Scale_Px(2));
-    UnsetPen();
   }
 }
 
-wxString AbsCell::ToString()
+wxString AbsCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
@@ -136,7 +123,7 @@ wxString AbsCell::ToString()
   return s;
 }
 
-wxString AbsCell::ToMatlab()
+wxString AbsCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
@@ -145,14 +132,14 @@ wxString AbsCell::ToMatlab()
   return s;
 }
 
-wxString AbsCell::ToTeX()
+wxString AbsCell::ToTeX() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
 }
 
-wxString AbsCell::ToMathML()
+wxString AbsCell::ToMathML() const
 {
   return wxT("<row><mo>|</mo>") +
          m_innerCell->ListToMathML() +
@@ -160,13 +147,13 @@ wxString AbsCell::ToMathML()
 //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
 }
 
-wxString AbsCell::ToOMML()
+wxString AbsCell::ToOMML() const
 {
   return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
-wxString AbsCell::ToXML()
+wxString AbsCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)
@@ -179,17 +166,15 @@ bool AbsCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
-    wxASSERT_MSG(m_last, _("Bug: No last cell in an absCell!"));
-    if (m_last)
-      m_last->SetNextToDraw(m_close);
+    m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
-    ResetData();    
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
-
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

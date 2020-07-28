@@ -35,6 +35,7 @@
 #include <wx/stdpaths.h>
 #include "SvgBitmap.h"
 #include "ErrorRedirector.h"
+#include "StringUtils.h"
 
 Image::Image(Configuration **config)
 {
@@ -242,7 +243,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::
 {
   m_fs_keepalive_gnuplotdata = filesystem;
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting background task that loads the gnuplot data for a plot."));
+  wxLogMessage(_("Scheduling background task that loads the gnuplot data for a plot."));
   #pragma omp task
   #endif
   LoadGnuplotSource_Backgroundtask(gnuplotFilename, dataFilename, filesystem);
@@ -876,7 +877,7 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, 
   // Loading images is of rather high priority as they are needed during the
   // recalculation that follows
   #ifdef HAVE_OMP_HEADER
-  wxLogMessage(_("Starting background thread that loads an image"));
+  wxLogMessage(_("Scheduling background task that loads an image"));
   #if HAVE_OPENMP_TASKS
   #pragma omp task
   #endif
@@ -945,7 +946,6 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
   {
     if((m_extension == "svg") || (m_extension == "svgz"))
     {
-      m_isOk = false;
       wxString svgContents_string;
 
       // Read the svg file's data into the system's memory
@@ -1103,4 +1103,15 @@ void Image::Recalculate(double scale)
   // unchanged then.
   if (!configuration->GetPrinting() && m_scaledBitmap.GetWidth() != m_width)
     ClearCache();
+}
+
+const wxString &Image::GetBadImageToolTip()
+{
+  // cppcheck-suppress returnTempReference
+  return T_(
+      "The image could not be displayed. It may be broken, in a wrong format or "
+      "be the result of gnuplot not being able to write the image or not being "
+      "able to understand what maxima wanted to plot.\n"
+      "One example of the latter would be: Gnuplot refuses to plot entirely "
+      "empty images");      
 }

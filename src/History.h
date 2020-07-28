@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,28 +26,37 @@
   This file contains the definition of the class History that handles the recently 
   issued commands for the history pane.
  */
-#include <wx/wx.h>
 
 #ifndef HISTORY_H
 #define HISTORY_H
 
+#include "precomp.h"
+#include "RegexCtrl.h"
+#include <wx/wx.h>
+#include <wx/regex.h>
+#include <vector>
+#include <wx/arrstr.h>
 enum
 {
   history_ctrl_id = 1,
-  history_regex_id
+  history_regex_id,
+  export_all,
+  export_session,
+  export_visible,
+  export_selected,
+  toggle_ShowCurrentSessionOnly,
+  clear_selection,
+  clear_history
 };
 
 /*! This class generates a pane containing the last commands that were issued.
 
  */
-class History : public wxPanel
+class History final : public wxPanel
 {
 public:
   History(wxWindow *parent, int id);
 
-  /* The destructor
-
-   */
   ~History();
 
   //! Add a file to the recently opened files list.
@@ -54,16 +64,36 @@ public:
 
   void OnRegExEvent(wxCommandEvent &ev);
 
-  void UpdateDisplay();
+  void RebuildDisplay();
 
   wxString GetCommand(bool next);
 
+  void MaximaSessionStart();
+
 private:
+  //! Called on right-clicks on the history panel
+  void OnMouseRightDown(wxMouseEvent &event);
+  void OnMenu(wxCommandEvent &event);
+  void OnInternalIdle() override;
+
+  void UnselectAll() const;
+  void SetCurrent(long);
+
+  int m_sessionCommands = 0;
   wxListBox *m_history;
-  wxTextCtrl *m_regex;
-  wxArrayString commands;
+  RegexCtrl *m_regex;
+  std::vector<wxString> m_commands;
+  //! Commands we want to add to the history sidebar, once we have time to
+  wxArrayString m_deferredCommands;
   //! The currently selected item. -1=none.
-  long m_current;
+  long m_current = 0;
+  wxString m_regex_Old;
+  //! Whether the history should be updated now or later
+  bool m_realtimeUpdate = true;
+  //! Show only commands from the current session?
+  bool m_showCurrentSessionOnly = true;
+  //! The config key telling where to store m_showCurrentSessionOnly between sessions
+  static wxString m_showCurrentSessionOnlyKey;
 };
 
 #endif // HISTORY_H

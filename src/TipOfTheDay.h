@@ -22,6 +22,7 @@
 #ifndef TIPOFTHEDAY_H
 #define TIPOFTHEDAY_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
 #include <wx/arrstr.h>

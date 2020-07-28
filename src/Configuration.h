@@ -22,6 +22,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/config.h>
 #include <wx/display.h>
@@ -29,6 +30,7 @@
 #include <wx/hashmap.h>
 #include "LoggingMessageDialog.h"
 #include "TextStyle.h"
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -49,14 +51,8 @@
 #define MC_HCARET_WIDTH 25
 
 #define MC_EXP_INDENT 2
-#define MC_MIN_SIZE 6
-#define MC_MAX_SIZE 48
-
-#define CMEX10 "jsMath-cmex10"
-#define CMSY10 "jsMath-cmsy10"
-#define CMR10  "jsMath-cmr10"
-#define CMMI10 "jsMath-cmmi10"
-#define CMTI10 "jsMath-cmti10"
+static constexpr AFontSize MC_MIN_SIZE{ 6.0f };
+static constexpr AFontSize MC_MAX_SIZE{ 48.0f };
 
 #define LIBERTINE1 "LinLibertine_DRah.ttf"
 #define LIBERTINE2 "LinLibertine_I.ttf"
@@ -67,6 +63,8 @@
 #define LIBERTINE7 "LinLibertine_RIah.ttf"
 #define LIBERTINE8 "LinLibertine_RZah.ttf"
 #define LIBERTINE9 "LinLibertine_RZIah.ttf"
+
+class Cell;
 
 /*! The configuration storage for the current worksheet.
 
@@ -94,7 +92,7 @@ public:
     svg = 3
   };
 
-  enum showLabels
+  enum showLabels : int8_t
   {
     labels_automatic = 0,
     labels_prefer_user = 1,
@@ -112,6 +110,12 @@ public:
     unknown
   };
 
+  enum InitOpt
+  {
+    none,
+    temporary,          //!< This configuration is temporary and shouldn't redetect Maxima etc.
+  };
+
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
@@ -125,7 +129,7 @@ public:
     
     \param dc The drawing context that is to be used for drawing objects
    */
-  explicit Configuration(wxDC *dc = NULL);
+  explicit Configuration(wxDC *dc = {}, InitOpt options = {});
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)
@@ -221,6 +225,7 @@ public:
     Is used for displaying/printing/exporting of text/maths.
    */
   long Scale_Px(double px) const;
+  AFontSize Scale_Px(AFontSize size) const;
 
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor() const
@@ -239,17 +244,17 @@ public:
         return m_dc;
     }
   
-  wxString GetFontName(long type = TS_DEFAULT) const;
+  AFontName GetFontName(long type = TS_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
-  wxString GetSymbolFontName() const;
+  AFontName GetSymbolFontName() const;
 
   wxFontWeight IsBold(long st) const;
 
   wxFontStyle IsItalic(long st) const;
 
-  bool IsUnderlined(long st) const {return m_styles[st].Underlined();}
+  bool IsUnderlined(long st) const {return m_styles[st].IsUnderlined();}
 
   //! Force a full recalculation?
   void RecalculationForce(bool force)
@@ -396,18 +401,18 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
-  long GetDefaultFontSize() const
-  { return m_styles[TS_DEFAULT].FontSize(); }
+  AFontSize GetDefaultFontSize() const
+  { return m_styles[TS_DEFAULT].GetFontSize(); }
 
-  void SetDefaultFontSize(long fontSize)
+  void SetDefaultFontSize(AFontSize fontSize)
   {
-    m_styles[TS_DEFAULT].FontSize(fontSize);
+    m_styles[TS_DEFAULT].SetFontSize(fontSize);
   }
 
-  long GetMathFontSize() const
+  AFontSize GetMathFontSize() const
   { return m_mathFontSize; }
 
-  void SetMathFontSize(double size)
+  void SetMathFontSize(AFontSize size)
   { m_mathFontSize = size; }
 
   //! Do we want to have automatic line breaks for text cells?
@@ -442,12 +447,14 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  long GetFontSize(TextStyle st) const
+  AFontSize GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].FontSize();
-    return 0;
+      return m_styles[st].GetFontSize();
+    return {};
   }
+
+  const wxString &GetStyleName(TextStyle textStyle) const;
 
   /*! Reads the style settings 
 
@@ -474,19 +481,19 @@ public:
   bool CheckKeepPercent() const
   { return m_keepPercent; }
 
-  wxString GetTeXCMRI() const
+  AFontName GetTeXCMRI() const
   { return m_fontCMRI; }
 
-  wxString GetTeXCMSY() const
+  AFontName GetTeXCMSY() const
   { return m_fontCMSY; }
 
-  wxString GetTeXCMEX() const
+  AFontName GetTeXCMEX() const
   { return m_fontCMEX; }
 
-  wxString GetTeXCMMI() const
+  AFontName GetTeXCMMI() const
   { return m_fontCMMI; }
 
-  wxString GetTeXCMTI() const
+  AFontName GetTeXCMTI() const
   { return m_fontCMTI; }
 
   bool ShowCodeCells() const
@@ -698,10 +705,29 @@ public:
   //! Returns the location of the maxima binary the user has selected.
   wxString MaximaUserLocation() const {return m_maximaUserLocation;}
 
+  void OnMpBrowse(wxCommandEvent& event);
+  
   //! Sets the location of the maxima binary.
   void MaximaUserLocation(wxString maxima)
   {
     wxConfig::Get()->Write(wxT("maxima"), m_maximaUserLocation = maxima);
+  }
+
+  //! Autodetect maxima's location? (If false the user-specified location is used)
+  bool AutodetectHelpBrowser() const {return m_autodetectHelpBrowser;}
+  //! Autodetect maxima's location?
+  void AutodetectHelpBrowser(bool autodetect){wxConfig::Get()->Write(
+      wxT("autodetectHelpBrowser"),
+      m_autodetectHelpBrowser = autodetect);
+  }
+
+  //! Returns the location of the help browser the user has selected.
+  wxString HelpBrowserUserLocation() const {return m_helpBrowserUserLocation;}
+
+  //! Sets the location of the maxima binary.
+  void HelpBrowserUserLocation(wxString helpBrowser)
+  {
+    wxConfig::Get()->Write(wxT("helpBrowser"), m_helpBrowserUserLocation = helpBrowser);
   }
 
   /*! Could a maxima binary be found in the path we expect it to be in?
@@ -782,10 +808,6 @@ public:
     }
   long ShowLength() const {return m_showLength;}
 
-  //! Sets the default toolTip for new cells
-  void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
-  //! Gets the default toolTip for new cells
-  wxString GetDefaultCellToolTip() const {return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
@@ -803,13 +825,14 @@ public:
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
   drawMode GetParenthesisDrawMode();
-  /*! Get the font for a given text style
 
-    \param textStyle The text style to get the font for
+  /*! Get the resolved text Style for a given text style identifier.
+
+    \param textStyle The text style to resolve the style for.
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
    */
-  wxFont GetFont(TextStyle textStyle, long fontSize) const;
+  Style GetStyle(TextStyle textStyle, AFontSize fontSize) const;
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet() const {return m_workSheet;}
@@ -845,15 +868,11 @@ public:
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
-  wxString FontName()const {return m_fontName;}
-  void FontName(wxString name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",m_fontName = name);}
-  void MathFontName(wxString name){wxConfig::Get()->Write("Style/Math/fontname",m_mathFontName = name);}
-  wxString MathFontName()const {return m_mathFontName;}
+  AFontName FontName() const {return m_fontName;}
+  void FontName(AFontName name){wxConfig::Get()->Write("Style/Default/Style/Text/fontname",(m_fontName = name).GetAsString());}
+  void MathFontName(AFontName name){wxConfig::Get()->Write("Style/Math/fontname",(m_mathFontName = name).GetAsString());}
+  class AFontName MathFontName()const {return m_mathFontName;}
 
-  //! Update the list of fonts associated to the worksheet styles
-  void UpdateWorksheetFonts();
-  //! Get the font for the given worksheet style
-  wxFont GetWorksheetFont(TextStyle style) const;
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(long autosubscriptnum)
@@ -880,14 +899,21 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
+  void NotifyOfCellRedraw(const Cell *cell);
+  void ClearAndEnableRedrawTracing();
+  void ReportMultipleRedraws();
   Style m_styles[NUMBEROFSTYLES];
 private:
+  using CellRedrawTrace = std::vector<const Cell*>;
+
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
   long m_language;
   //! Autodetect maxima's location?
   bool m_autodetectMaxima;
+  //! Autodetect the help browser?
+  bool m_autodetectHelpBrowser;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Has the font changed?
@@ -913,6 +939,7 @@ private:
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
 
+  wxString m_helpBrowserUserLocation;
   wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;
@@ -952,19 +979,18 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  wxString m_fontName;
-  long m_mathFontSize;
-  wxString m_mathFontName;
+  AFontName m_fontName;
+  AFontSize m_mathFontSize;
+  AFontName m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
   bool m_outdated;
   wxString m_maximaParameters;
-  wxString m_defaultToolTip;
   bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
-  wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
+  AFontName m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   long m_clientWidth;
   long m_clientHeight;
   bool m_printing;
@@ -993,6 +1019,7 @@ private:
   bool m_offerKnownAnswers;
   long m_defaultPort;
   long m_maxGnuplotMegabytes;
+  std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;

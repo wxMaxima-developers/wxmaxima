@@ -62,7 +62,7 @@ void AutoComplete::ClearDemofileList()
 void AutoComplete::AddSymbols(wxString xml)
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that compiles a new list of autocompletible maxima commands."));
+  wxLogMessage(_("Scheduling a background task that compiles a new list of autocompletible maxima commands."));
   #pragma omp task
   #endif
   AddSymbols_Backgroundtask(xml);
@@ -130,16 +130,21 @@ void AutoComplete::AddSymbols_Backgroundtask(wxString xml)
     }
   }
 }
-void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
+
+void AutoComplete::AddWorksheetWords(WordList::const_iterator const begin, WordList::const_iterator const end)
 {
   #ifdef HAVE_OPENMP_TASKS
   #pragma omp critical (AutocompleteBuiltins)
   #endif
   {
-    wxArrayString::const_iterator it;
-    for (it = wordlist.begin(); it != wordlist.end(); ++it)
-      m_worksheetWords[*it] = 1;
+    for (auto word = begin; word != end; std::advance(word, 1))
+      m_worksheetWords[*word] = 1;
   }
+}
+
+void AutoComplete::AddWorksheetWords(const WordList &words)
+{
+  AddWorksheetWords(words.begin(), words.end());
 }
 
 AutoComplete::~AutoComplete()
@@ -152,12 +157,12 @@ AutoComplete::~AutoComplete()
 void AutoComplete::LoadSymbols()
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that setups the autocomplete builtins list."));
+  wxLogMessage(_("Scheduling a background task that setups the autocomplete builtins list."));
   #pragma omp task
   #endif
   BuiltinSymbols_BackgroundTask();
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that setups the autocompletable files list."));
+  wxLogMessage(_("Scheduling a background task that setups the autocompletable files list."));
   #pragma omp task
   #endif
   LoadSymbols_BackgroundTask();
@@ -409,7 +414,7 @@ void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
 void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
 {
   #ifdef HAVE_OPENMP_TASKS
-  wxLogMessage(_("Starting a background task that scans for autocompletible file names."));
+  wxLogMessage(_("Scheduling a background task that scans for autocompletible file names."));
   #pragma omp critical (AutocompleteFiles)
   #endif
   {

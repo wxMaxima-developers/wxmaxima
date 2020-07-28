@@ -30,6 +30,7 @@ surrounding the worksheet.
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 
 #include <wx/dirctrl.h>
@@ -113,7 +114,7 @@ public:
       that this entry stays that of the last pane in this enum.
     */
     menu_pane_stats,
-
+    menu_pane_dockAll,
     input_line_id,
     refresh_id,
     menu_batch_id,
@@ -624,6 +625,13 @@ protected:
   void ReReadConfig();  
   //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
+  /*! An instant single-window mode
+
+    A last resort if https://trac.wxwidgets.org/ticket/18815 hinders one from 
+    re-docking windows.
+   */
+  void DockAllSidebars(wxCommandEvent &ev);
+
 private:
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;

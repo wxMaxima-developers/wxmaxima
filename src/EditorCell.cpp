@@ -27,49 +27,24 @@
   EditorCell is the Cell type that represents the field that contains user input.
 */
 
+#include "EditorCell.h"
+
+#include "CellPointers.h"
+#include "MarkDown.h"
+#include "wxMaxima.h"
+#include "wxMaximaFrame.h"
 #include <wx/clipbrd.h>
 #include <wx/regex.h>
-
-#include "EditorCell.h"
-#include "FontCache.h"
-#include "wxMaxima.h"
-#include "MarkDown.h"
-#include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
 EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString &text) :
     Cell(parent, config),
-    m_text(text),
-    m_fontStyle(wxFONTSTYLE_NORMAL),
-    m_fontWeight(wxFONTWEIGHT_NORMAL)
+    m_text(text)
 {
+  InitBitFields();
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 
-  m_errorIndex = -1;
-  m_autoAnswer = false;
-  m_numberOfLines = 1;
-  m_charHeight = 12;
-  m_selectionChanged = false;
-  m_oldSelectionStart = -1;
-  m_oldSelectionEnd = -1;
-  m_lastSelectionStart = -1;
-  m_displayCaret = false;
-  m_fontSize = -1;
-  m_fontSize_Last = -1;
-  m_positionOfCaret = 0;
-  m_caretColumn = -1; // used when moving up/down between lines
-  m_selectionStart = -1;
-  m_selectionEnd = -1;
-  m_paren1 = m_paren2 = -1;
-  m_isDirty = false;
-  m_hasFocus = false;
-  m_underlined = false;
-  m_saveValue = false;
-  m_containsChanges = false;
-  m_containsChangesCheck = false;
-  m_firstLineOnly = false;
-  m_historyPosition = -1;
   SetValue(TabExpand(text, 0));
   ResetSize();  
 }
@@ -83,6 +58,11 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   input.Replace(wxT("\n"), wxT("<br/>\n"));
   input.Replace(wxT("\r"), wxT(" "));
   return input;
+}
+
+std::unique_ptr<Cell> EditorCell::Copy() const
+{
+  return std::make_unique<EditorCell>(*this);
 }
 
 void EditorCell::AddDrawParameter(wxString param)
@@ -190,6 +170,30 @@ void EditorCell::AddDrawParameter(wxString param)
     m_group->ResetSize();
 }
 
+void EditorCell::SearchStartedHere(int index) const
+{
+  m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell*>(this);;
+  m_cellPointers->m_indexSearchStartedAt = index;
+}
+
+void EditorCell::SearchStartedHere() const
+{
+  m_cellPointers->m_cellSearchStartedIn = const_cast<EditorCell*>(this);
+  m_cellPointers->m_indexSearchStartedAt = m_positionOfCaret;
+}
+
+void EditorCell::MouseSelectionStartedHere() const
+{
+  m_cellPointers->m_cellMouseSelectionStartedIn =
+      const_cast<EditorCell *>(this);
+}
+
+void EditorCell::KeyboardSelectionStartedHere() const
+{
+  m_cellPointers->m_cellKeyboardSelectionStartedIn =
+      const_cast<EditorCell *>(this);
+}
+
 wxString EditorCell::GetFullCommandUnderCursor()
 {
   if(!IsActive())
@@ -275,12 +279,12 @@ EditorCell::EditorCell(const EditorCell &cell):
   CopyCommonData(cell);
 }
 
-wxString EditorCell::ToString()
+wxString EditorCell::ToString() const
 {
   return ToString(false);
 }
 
-wxString EditorCell::ToString(bool dontLimitToSelection)
+wxString EditorCell::ToString(bool dontLimitToSelection) const
 {
   wxString text = m_text;
   // Remove all soft line breaks
@@ -299,12 +303,12 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   return text;
 }
 
-wxString EditorCell::ToMatlab()
+wxString EditorCell::ToMatlab() const
 {
   return ToMatlab(false);
 }
 
-wxString EditorCell::ToMatlab(bool dontLimitToSelection)
+wxString EditorCell::ToMatlab(bool dontLimitToSelection) const
 {
   wxString text = m_text;
   // Remove all soft line breaks
@@ -323,7 +327,7 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection)
   return text;
 }
 
-wxString EditorCell::ToRTF()
+wxString EditorCell::ToRTF() const
 {
   wxString retval;
 
@@ -360,7 +364,7 @@ wxString EditorCell::ToRTF()
 
       wxString text = RTFescape(textSnippet->GetText());
 
-      if (textSnippet->StyleSet())
+      if (textSnippet->IsStyleSet())
       {
         retval += wxString::Format(wxT("\\cf%i "), (int) textSnippet->GetStyle());
         retval += RTFescape(textSnippet->GetText());
@@ -385,14 +389,14 @@ wxString EditorCell::ToRTF()
   return retval;
 }
 
-wxString EditorCell::ToTeX()
+wxString EditorCell::ToTeX() const
 {
   wxString text = m_text;
   if (!text.StartsWith(wxT("TeX:")))
   {
     text.Replace(wxT("\u00a0"), wxT("~"));
     text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
-    text.Replace(wxT("\r"), wxEmptyString);
+    text.Replace(wxT("\r"), wxT(" "));
     text.Replace(wxT("^"), wxT("\\^{}"));
     text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
@@ -515,7 +519,7 @@ wxString EditorCell::ToTeX()
   return text;
 }
 
-wxString EditorCell::ToXML()
+wxString EditorCell::ToXML() const
 {
   wxString xmlstring = m_text;
   // convert it, so that the XML parser doesn't fail
@@ -598,10 +602,10 @@ void EditorCell::ConvertNumToUNicodeChar()
   m_positionOfCaret+= newChar.Length();
 }
 
-void EditorCell::RecalculateWidths(int fontsize)
+void EditorCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  if (configuration->GetZoomFactor() != m_lastZoomFactor)
+  if (IsZoomFactorChanged())
     m_widths.clear();
 
   m_isDirty = false;
@@ -661,15 +665,14 @@ void EditorCell::RecalculateWidths(int fontsize)
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
-  Cell::RecalculateWidths(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
-wxString EditorCell::ToHTML()
+wxString EditorCell::ToHTML() const
 {
-  EditorCell *tmp = this;
   wxString retval;
 
-  while (tmp != NULL)
+  for (const EditorCell *tmp = this; tmp; tmp = dynamic_cast<EditorCell *>(tmp->GetNext()))
   {
     for (std::vector<StyledText>::const_iterator textSnippet = m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet)
@@ -678,7 +681,7 @@ wxString EditorCell::ToHTML()
 /*      wxString tmp = EscapeHTMLChars(textSnippet->GetText());
         wxString text = tmp);*/
 
-      if (textSnippet->StyleSet())
+      if (textSnippet->IsStyleSet())
       {
         switch (textSnippet->GetStyle())
         {
@@ -712,12 +715,11 @@ wxString EditorCell::ToHTML()
       else
         retval += text;
     }
-    tmp = dynamic_cast<EditorCell *>(tmp->m_next);
   }
   return retval;
 }
 
-void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsize)
+void EditorCell::MarkSelection(long start, long end, TextStyle style, AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if ((start < 0) || (end < 0)) return;
@@ -809,7 +811,8 @@ void EditorCell::Draw(wxPoint point)
       }
       dc->SetBrush(*br);
       dc->SetPen(*pen);
-      rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
+      auto width = (*m_configuration)->GetCanvasSize().GetWidth() - rect.x;
+      rect.SetWidth(width);
       if (InUpdateRegion(rect) && (br->GetColour() != configuration->DefaultBackgroundColor()))
         dc->DrawRectangle(CropToUpdateRegion(rect));
     }
@@ -893,7 +896,7 @@ void EditorCell::Draw(wxPoint point)
     for (std::vector<StyledText>::iterator textSnippet = m_styledText.begin();
          textSnippet != m_styledText.end(); ++textSnippet)
     {
-      wxString TextToDraw = textSnippet->GetText();
+      auto &TextToDraw = textSnippet->GetText();
       int width, height;
 
       // A newline is a separate token.
@@ -913,7 +916,7 @@ void EditorCell::Draw(wxPoint point)
         // We need to draw some text.
 
         // Grab a pen of the right color.
-        if (textSnippet->StyleSet())
+        if (textSnippet->IsStyleSet())
         {
           if (lastStyle != textSnippet->GetStyle())
           {
@@ -988,8 +991,6 @@ void EditorCell::Draw(wxPoint point)
 #endif
     }
 
-    UnsetPen();
-
   }
 }
 
@@ -1011,7 +1012,7 @@ void EditorCell::SetFont()
   wxDC *dc = configuration->GetDC();
 
   m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize < 4)
+  if (m_fontSize.IsNull())
     m_fontSize = configuration->GetDefaultFontSize();
 
   m_fontSize = Scale_Px(m_fontSize);
@@ -1031,36 +1032,27 @@ void EditorCell::SetFont()
   m_fontWeight = configuration->IsBold(m_textStyle);
   m_underlined = configuration->IsUnderlined(m_textStyle);
 
-  wxASSERT(m_fontSize >= 0);
-  if(m_fontSize < 4)
-    m_fontSize = 4;
+  wxASSERT(m_fontSize.IsValid());
 
-  wxFont font =
-    FontCache::GetAFont(wxFontInfo(m_fontSize)
-                          .Family(wxFONTFAMILY_MODERN)
-                          .FaceName(m_fontName)
-                          .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
-                          .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                          .Underlined(m_underlined));
-  if (!font.IsOk())
+  auto style = Style(m_fontSize)
+                 .FontName(m_fontName)
+                 .FontStyle(m_fontStyle)
+                 .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
+                 .Underlined(m_underlined);
+
+  if (!style.IsFontOk())
   {
     wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
-    font =
-      FontCache::GetAFont(wxFontInfo(m_fontSize)
-                            .Family(wxFONTFAMILY_MODERN)
-                            .Italic(m_fontStyle == wxFONTSTYLE_ITALIC)
-                            .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
-                            .Underlined(m_underlined));
+    style.SetFontName({});
   }
-  if (!font.IsOk()) {
-    auto req = wxFontInfo(m_fontSize);
-    FontInfo::CopyWithoutSize(wxNORMAL_FONT, req);
-    font = FontCache::GetAFont(req);
+  if (!style.IsFontOk()) {
+    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+    style.SetFontSize(m_fontSize);
   }
 
-  wxASSERT_MSG(font.IsOk(),
-               _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-  dc->SetFont(font);
+  wxASSERT_MSG(style.IsFontOk(),
+               _("Seems like something is broken with a font."));
+  dc->SetFont(style.GetFont());
 }
 
 wxSize EditorCell::GetTextSize(wxString const &text)
@@ -1160,11 +1152,13 @@ wxString EditorCell::GetCurrentCommand()
   return command;
 }
 
-wxString EditorCell::TabExpand(wxString input, long posInLine)
+wxString EditorCell::TabExpand(const wxString &input_, long posInLine)
 {
   if (posInLine < 0) posInLine = 0;
   wxString retval;
+
   // Convert the text to our line endings.
+  wxString input = input_; // TODO the state machine below can be changed instead
   input.Replace(wxT("\r\n"), wxT("\n"));
 
   wxString::const_iterator ch = input.begin();
@@ -1969,14 +1963,14 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 
       int lastpos = m_positionOfCaret;
       // Delete characters until the end of the current word or number
-      while ((wxIsalnum(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+      while (m_positionOfCaret > 0 && wxIsalnum(m_text[m_positionOfCaret - 1]))
       {
         m_positionOfCaret--;
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +
           m_text.SubString(m_positionOfCaret + 1, m_text.Length());
       }
       // Delete Spaces, Tabs and Newlines until the next printable character
-      while ((wxIsspace(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+      while (m_positionOfCaret > 0 && wxIsspace(m_text[m_positionOfCaret - 1]))
       {
         m_positionOfCaret--;
         m_text = m_text.SubString(0, m_positionOfCaret - 1) +
@@ -2054,14 +2048,14 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 
         int lastpos = m_positionOfCaret;
         // Delete characters until the end of the current word or number
-        while ((wxIsalnum(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+        while (m_positionOfCaret > 0 && wxIsalnum(m_text[m_positionOfCaret - 1]))
         {
           m_positionOfCaret--;
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
             m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
         // Delete Spaces, Tabs and Newlines until the next printable character
-        while ((wxIsspace(m_text[m_positionOfCaret - 1])) && (m_positionOfCaret > 0))
+        while (m_positionOfCaret > 0 && wxIsspace(m_text[m_positionOfCaret - 1]))
         {
           m_positionOfCaret--;
           m_text = m_text.SubString(0, m_positionOfCaret - 1) +
@@ -2240,11 +2234,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
 
   if (m_historyPosition != -1)
   {
-    int len = m_textHistory.GetCount() - m_historyPosition;
-    m_textHistory.RemoveAt(m_historyPosition + 1, len - 1);
-    m_startHistory.erase(m_startHistory.begin() + m_historyPosition + 1, m_startHistory.end());
-    m_endHistory.erase(m_endHistory.begin() + m_historyPosition + 1, m_endHistory.end());
-    m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition + 1, m_positionHistory.end());
+    m_history.erase(m_history.begin() + m_historyPosition + 1, m_history.end());
     m_historyPosition = -1;
   }
 
@@ -2433,9 +2423,9 @@ bool EditorCell::FindMatchingQuotes()
     return false;
   }
 
-  if(pos >= (long)m_text.Length())
-    pos = m_text.Length()-1;
-  if ((pos >= (long) m_text.Length() - 1)||
+  if (pos > (long) m_text.Length())
+    pos = (long) m_text.Length();
+  if ((pos == (long) m_text.Length()) ||
       (wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1))
   {
     pos--;
@@ -2447,12 +2437,11 @@ bool EditorCell::FindMatchingQuotes()
     }
   }
 
+  decltype(m_text)::char_type prevCh = {};
   int count = 0;
-  for (int i = 0; i < (int) m_text.Length(); ++i)
-  {
-    if (m_text.GetChar(i) == '"' &&
-        ((i == 0) ||
-         (i >= 1 && m_text.GetChar(i - 1) != '\\')))
+  int i = 0;
+  for (auto ch : m_text) {
+    if (ch == '"' && prevCh != '\\')
     {
       ++count;
       if (count & 1)
@@ -2469,6 +2458,8 @@ bool EditorCell::FindMatchingQuotes()
         }
       }
     }
+    ++i;
+    prevCh = ch;
   }
 
   // didn't find matching quotes; do not highlight quotes
@@ -2700,7 +2691,7 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
+wxPoint EditorCell::PositionToPoint(AFontSize WXUNUSED(fontsize), int pos)
 {
   SetFont();
 
@@ -2730,7 +2721,7 @@ wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
   return wxPoint(x, y);
 }
 
-void EditorCell::SelectPointText(const wxPoint &point)
+void EditorCell::SelectPointText(const wxPoint point)
 {
   wxString s;
   SetFont();
@@ -2848,7 +2839,7 @@ void EditorCell::SelectPointText(const wxPoint &point)
   }
 }
 
-void EditorCell::SelectRectText(const wxPoint &one, const wxPoint &two)
+void EditorCell::SelectRectText(const wxPoint one, const wxPoint two)
 {
   SelectPointText(one);
   long start = m_positionOfCaret;
@@ -3091,7 +3082,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
   
 }
 
-bool EditorCell::CopyToClipboard()
+bool EditorCell::CopyToClipboard() const
 {
   if ((m_selectionStart < 0) && (m_selectionEnd < 0))
     return false;
@@ -3179,7 +3170,7 @@ void EditorCell::InsertText(wxString text)
   StyleText();
 }
 
-void EditorCell::PasteFromClipboard(const bool &primary)
+void EditorCell::PasteFromClipboard(const bool primary)
 {
   wxTheClipboard->UsePrimarySelection(primary);
   wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));
@@ -3255,21 +3246,33 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
   return width;
 }
 
-
-bool EditorCell::CanUndo()
+void EditorCell::SetState(const HistoryEntry &state)
 {
-  return m_textHistory.GetCount() > 0 && m_historyPosition != 0;
+  m_text = state.text;
+  StyleText();
+  m_positionOfCaret = state.caretPosition;
+  SetSelection(state.selStart, state.selEnd);
+}
+
+void EditorCell::AppendStateToHistory()
+{
+  m_history.emplace_back(m_text, m_positionOfCaret, m_selectionStart, m_selectionEnd);
+}
+
+bool EditorCell::IsActive() const
+{ return this == m_cellPointers->m_activeCell; }
+
+bool EditorCell::CanUndo() const
+{
+  return !m_history.empty() && m_historyPosition != 0;
 }
 
 void EditorCell::Undo()
 {
   if (m_historyPosition == -1)
   {
-    m_historyPosition = m_textHistory.GetCount() - 1;
-    m_textHistory.Add(m_text);
-    m_startHistory.push_back(m_selectionStart);
-    m_endHistory.push_back(m_selectionEnd);
-    m_positionHistory.push_back(m_positionOfCaret);
+    m_historyPosition = m_history.size() - 1;
+    AppendStateToHistory();
   }
   else
     m_historyPosition--;
@@ -3278,11 +3281,7 @@ void EditorCell::Undo()
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_textHistory.Item(m_historyPosition);
-  StyleText();
-
-  m_positionOfCaret = m_positionHistory[m_historyPosition];
-  SetSelection(m_startHistory[m_historyPosition], m_endHistory[m_historyPosition]);
+  SetState(m_history[m_historyPosition]);
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -3290,11 +3289,11 @@ void EditorCell::Undo()
 }
 
 
-bool EditorCell::CanRedo()
+bool EditorCell::CanRedo() const
 {
-  return m_textHistory.GetCount() > 0 &&
+  return !m_history.empty() &&
          m_historyPosition >= 0 &&
-         m_historyPosition < ((long) m_textHistory.GetCount()) - 1;
+         m_historyPosition < ((long) m_history.size()) - 1;
 }
 
 void EditorCell::Redo()
@@ -3304,15 +3303,11 @@ void EditorCell::Redo()
 
   m_historyPosition++;
 
-  if (m_historyPosition >= (long) m_textHistory.GetCount())
+  if (m_historyPosition >= (long) m_history.size())
     return;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-  m_text = m_textHistory.Item(m_historyPosition);
-  StyleText();
-
-  m_positionOfCaret = m_positionHistory[m_historyPosition];
-  SetSelection(m_startHistory[m_historyPosition], m_endHistory[m_historyPosition]);
+  SetState(m_history[m_historyPosition]);
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
@@ -3322,34 +3317,21 @@ void EditorCell::Redo()
 
 void EditorCell::SaveValue()
 {
-  if (m_textHistory.GetCount() > 0)
-  {
-    if (m_textHistory.Last() == m_text)
-      return;
-  }
+  if (!m_history.empty() && m_history.back().text == m_text)
+    return;
 
   if (m_historyPosition != -1)
   {
-    int len = m_textHistory.GetCount() - m_historyPosition;
-    m_textHistory.RemoveAt(m_historyPosition, len);
-    m_startHistory.erase(m_startHistory.begin() + m_historyPosition, m_startHistory.end());
-    m_endHistory.erase(m_endHistory.begin() + m_historyPosition, m_endHistory.end());
-    m_positionHistory.erase(m_positionHistory.begin() + m_historyPosition, m_positionHistory.end());
+    m_history.erase(m_history.begin() + m_historyPosition, m_history.end());
   }
 
-  m_textHistory.Add(m_text);
-  m_startHistory.push_back(m_selectionStart);
-  m_endHistory.push_back(m_selectionEnd);
-  m_positionHistory.push_back(m_positionOfCaret);
+  AppendStateToHistory();
   m_historyPosition = -1;
 }
 
 void EditorCell::ClearUndo()
 {
-  m_textHistory.Clear();
-  m_startHistory.clear();
-  m_endHistory.clear();
-  m_positionHistory.clear();
+  m_history.clear();
   m_historyPosition = -1;
 }
 
@@ -3454,6 +3436,7 @@ void EditorCell::StyleTextCode()
       }
       else
       {
+        // FIXME m_styledText is **never** empty!
         lastSpace = NULL;
         lastSpacePos = 0;
       }      
@@ -3481,11 +3464,11 @@ void EditorCell::StyleTextCode()
                               indentationPixels);
     if ((token.GetStyle() == TS_CODE_VARIABLE) || (token.GetStyle() == TS_CODE_FUNCTION))
     {
-      m_wordList.Add(token);
+      m_wordList.push_back(token);
       continue;
     }
   }
-  m_wordList.Sort();
+  std::sort(m_wordList.begin(), m_wordList.end());
 }
 
 void EditorCell::StyleTextTexts()
@@ -3781,7 +3764,7 @@ void EditorCell::StyleText()
   SetFont();
 
 
-  m_wordList.Clear();
+  m_wordList.clear();
   m_styledText.clear();
 
   if(m_text == wxEmptyString)
@@ -3883,7 +3866,7 @@ bool EditorCell::CheckChanges()
   return false;
 }
 
-int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
+int EditorCell::ReplaceAll(wxString oldString, const wxString &newString, bool ignoreCase)
 {
   if (oldString == wxEmptyString)
     return 0;
@@ -3905,19 +3888,18 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool ignoreCa
     wxString src_LowerCase = src;
     src_LowerCase.MakeLower();
     oldString.MakeLower();
-    do{
+    pos = src_LowerCase.Find(oldString);
+    while (pos >= 0)
+    {
+      newText += src.Left(pos);
+      newText += newString;
+      int charsToCopy = src.Length() - pos - oldString.Length();
+      src_LowerCase = src_LowerCase.Right(charsToCopy);
+      src = src.Right(charsToCopy);
+      count ++;
       pos = src_LowerCase.Find(oldString);
-      if(pos == wxNOT_FOUND)
-        newText += src;
-      else
-      {
-        newText += src.Left(pos);
-        newText += newString;
-        src_LowerCase = src_LowerCase.Right(src_LowerCase.Length()-pos-newString.Length());
-        src = src.Right(src.Length()-pos-oldString.Length());
-        count ++;
-      }
-    } while((pos != wxNOT_FOUND) && (src != wxEmptyString));
+    }
+    newText += src;
   }
   if (count > 0)
   {
@@ -3977,7 +3959,9 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   return false;
 }
 
-bool EditorCell::ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected, bool ignoreCase, bool replaceMaximaString)
+bool EditorCell::ReplaceSelection(const wxString &oldStr, const wxString &newString,
+                                  bool keepSelected, bool ignoreCase,
+                                  bool replaceMaximaString)
 {
   wxString text(m_text);
   text.Replace(wxT("\r"), wxT(" "));
@@ -4147,7 +4131,7 @@ void EditorCell::CaretToPosition(int pos)
 
 
 #if wxUSE_ACCESSIBILITY
-wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
+wxAccStatus EditorCell::GetDescription(int childId, wxString *description) const
 {
   if (childId != 0)
     return wxACC_FAIL;
@@ -4188,7 +4172,7 @@ wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
   return wxACC_OK;
 }
 
-wxAccStatus EditorCell::GetDefaultAction (int WXUNUSED(childId), wxString *actionName)
+wxAccStatus EditorCell::GetDefaultAction (int WXUNUSED(childId), wxString *actionName) const
 {
   if(actionName != NULL)
   {
@@ -4198,7 +4182,7 @@ wxAccStatus EditorCell::GetDefaultAction (int WXUNUSED(childId), wxString *actio
   return wxACC_FAIL;
 }
 
-wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue)
+wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue) const
 {
   wxString retval = ToString();
 
@@ -4219,12 +4203,12 @@ wxAccStatus EditorCell::GetValue (int WXUNUSED(childId), wxString *strValue)
   return wxACC_OK;
 }
 
-wxAccStatus EditorCell::GetFocus (int *childId, wxAccessible **child)
+wxAccStatus EditorCell::GetFocus (int *childId, Cell **child) const
 {
   if(IsActive())
   {
     if(child != NULL)
-      *child   = this;
+      *child   = const_cast<EditorCell *>(this);
     if(childId != NULL)
       *childId = 0;
     return wxACC_OK;
@@ -4239,7 +4223,7 @@ wxAccStatus EditorCell::GetFocus (int *childId, wxAccessible **child)
   }
 }
 
-wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role)
+wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role) const
 {
   if((childId == 0) && (role != NULL))
   {

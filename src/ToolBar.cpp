@@ -517,7 +517,7 @@ GroupType ToolBar::GetCellType()
   }
 }
 
-void ToolBar::SetCellStyle(int style)
+void ToolBar::SetCellStyle(GroupType style)
 {
 
   switch(style)
@@ -561,6 +561,8 @@ void ToolBar::SetCellStyle(int style)
   case GC_TYPE_HEADING6:
     m_textStyle->SetSelection(7);
     break;
+  default:
+    break;
   }
 }
 
@@ -601,9 +603,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
         break;
     }
     m_AnimationStartStopState = state;
+    Realize();
   }
-  //  Realize() flickers on GTK3
- Refresh();
 }
 
 void ToolBar::OnSize(wxSizeEvent &event)

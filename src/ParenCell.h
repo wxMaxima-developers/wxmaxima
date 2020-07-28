@@ -52,7 +52,7 @@ class ParenCell final : public Cell
 public:
   ParenCell(GroupCell *parent, Configuration **config);
   ParenCell(const ParenCell &cell);
-  Cell *Copy() const override { return new ParenCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
@@ -63,45 +63,54 @@ public:
 
   void SetPrint(bool print) { m_print = print; }
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
   bool BreakUp() override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for ParenCells"));}
+  
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  void SetFont(AFontSize fontsize);
+
   CellPtr<Cell> m_nextToDraw;
 
-  //! How to create a big parenthesis sign?
-  Configuration::drawMode m_bigParenType;
-  void SetFont(int fontsize);
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_last1;
-  bool m_print;
-  int m_numberOfExtensions;
-  int m_charWidth, m_charHeight;
-  int m_charWidth1, m_charHeight1;
-  int m_signWidth, m_signHeight, m_signTopHeight, m_signBotHeight, m_extendHeight;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+  //! How to create a big parenthesis sign?
+  Configuration::drawMode m_bigParenType = Configuration::ascii;
+  int m_numberOfExtensions = 0;
+  int m_charWidth1 = 12, m_charHeight1 = 12;
+  int m_signWidth = 12, m_signHeight = 50;
+  int  m_signTopHeight = 12, m_signBotHeight = 12, m_extendHeight = 12;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_print = true;
+  }
+  bool m_print : 1 /* InitBitFields */;
 };
 
 #endif // PARENCELL_H

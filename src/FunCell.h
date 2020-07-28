@@ -54,32 +54,27 @@ class FunCell final : public Cell
 public:
   FunCell(GroupCell *parent, Configuration **config);
   FunCell(const FunCell &cell);
-  Cell *Copy() const override { return new FunCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_nameCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_argCell); }
 
-  void SetName(Cell *name);
+  void SetName(std::unique_ptr<Cell> &&name);
+  void SetArg(std::unique_ptr<Cell> &&arg);
 
-  void SetArg(Cell *arg);
-
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
+  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+  const wxString GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() override;
 
@@ -87,14 +82,24 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_nameCell;
   std::unique_ptr<Cell> m_argCell;
-  CellPtr<Cell> m_nameCell_Last;
-  CellPtr<Cell> m_argCell_Last;
-};
+  // The pointers above point to inner cells and must be kept contiguous.
 
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
+};
 
 #endif // FUNCELL_H

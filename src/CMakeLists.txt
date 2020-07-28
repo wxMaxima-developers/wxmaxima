@@ -1,16 +1,115 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-# The result of the following command on Cmake < 3.11.0 is only re-generated on
-# CMakeLists.txt changes. Latter versions support CONFIGURE_DEPENDS
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.11.0")
-    file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp *.h)
-else()
-    file(GLOB SOURCE_FILES *.cpp *.h */*.h */*.cpp)
+set(SOURCE_FILES
+    AbsCell.cpp
+    ActualValuesStorageWiz.cpp
+    AtCell.cpp
+    Autocomplete.cpp
+    AutocompletePopup.cpp
+    Autocomplete_Builtins.cpp
+    BC2Wiz.cpp
+    BTextCtrl.cpp
+    BitmapOut.cpp
+    Cell.cpp
+    CellPointers.cpp
+    CellPtr.cpp
+    CharButton.cpp
+    CompositeDataObject.cpp
+    ConfigDialogue.cpp
+    Configuration.cpp
+    ConjugateCell.cpp
+    DiffCell.cpp
+    Dirstructure.cpp
+    DrawWiz.cpp
+    EMFout.cpp
+    EditorCell.cpp
+    ErrorRedirector.cpp
+    EvaluationQueue.cpp
+    ExptCell.cpp
+    FindReplaceDialog.cpp
+    FindReplacePane.cpp
+    FontAttribs.cpp
+    FontCache.cpp
+    FracCell.cpp
+    FunCell.cpp
+    Gen1Wiz.cpp
+    Gen2Wiz.cpp
+    Gen3Wiz.cpp
+    Gen4Wiz.cpp
+    Gen5Wiz.cpp
+    GroupCell.cpp
+    History.cpp
+    Image.cpp
+    ImgCell.cpp
+    IntCell.cpp
+    IntegrateWiz.cpp
+    LabelCell.cpp
+    LicenseDialog.cpp
+    LimitCell.cpp
+    LimitWiz.cpp
+    ListSortWiz.cpp
+    LongNumberCell.cpp
+    LogPane.cpp
+    LoggingMessageDialog.cpp
+    MainMenuBar.cpp
+    MarkDown.cpp
+    MatWiz.cpp
+    MathParser.cpp
+    MatrCell.cpp
+    MaxSizeChooser.cpp
+    MaximaIPC.cpp
+    MaximaTokenizer.cpp
+    Notification.cpp
+    OutCommon.cpp
+    ParenCell.cpp
+    ListCell.cpp
+    Plot2dWiz.cpp
+    Plot3dWiz.cpp
+    PlotFormatWiz.cpp
+    Printout.cpp
+    RecentDocuments.cpp
+    RegexCtrl.cpp
+    SVGout.cpp
+    SeriesWiz.cpp
+    SlideShowCell.cpp
+    SqrtCell.cpp
+    StatusBar.cpp
+    StringUtils.cpp
+    SubCell.cpp
+    SubSupCell.cpp
+    SubstituteWiz.cpp
+    SumCell.cpp
+    SumWiz.cpp
+    SvgBitmap.cpp
+    SvgPanel.cpp
+    SystemWiz.cpp
+    TableOfContents.cpp
+    TextCell.cpp
+    TextStyle.cpp
+    TipOfTheDay.cpp
+    ToolBar.cpp
+    UnicodeSidebar.cpp
+    VariablesPane.cpp
+    VisiblyInvalidCell.cpp
+    WXMformat.cpp
+    Worksheet.cpp
+    XmlInspector.cpp
+    levenshtein/levenshtein.cpp
+    main.cpp
+    wxImagePanel.cpp
+    wxMathml.cpp
+    wxMaxima.cpp
+    wxMaximaFrame.cpp
+    wxMaximaIcon.cpp
+    Resources.rc
+)
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT lposupported)
 endif()
 
-option(USE_CPPCHECK "Use cppcheck to check the sourcecode during compiling." NO)
-
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0" AND USE_CPPCHECK)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
     find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
     if(CMAKE_CXX_CPPCHECK)
         message(STATUS "cppcheck found at ${CMAKE_CXX_CPPCHECK}. Enable cppcheck tests.")
@@ -46,7 +145,7 @@ endif()
 # Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  set(SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc ${SOURCE_FILES})
+  list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
 endif()
 
 # Version.h is generated in the binary dir
@@ -101,9 +200,13 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
+if(WXM_ENABLE_PRECOMPILED_HEADERS AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    target_precompile_headers(wxmaxima PUBLIC "precomp.h")
+else()
+    set(USE_PRECOMP_HEADER "0")
+endif()
 
-
-if(${wxWidgets_VERSION_STRING} VERSION_GREATER_EQUAL "3.1.3")
+if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
 else()
     set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
@@ -120,42 +223,14 @@ else()
     configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 endif()
 
-option(USE_OPENMP "Use OpenMP for parallelizing code." YES)
-
-if(USE_OPENMP)
-    find_package(OpenMP)
-    include(CheckIncludeFileCXX)
-    check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
-endif()
-if(USE_OPENMP AND OpenMP_CXX_FOUND)
-	# For CMake < 3.9, we need to make the target ourselves
-	if(NOT TARGET OpenMP::OpenMP_CXX)
-	    find_package(Threads REQUIRED)
-	    add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
-	    set_property(TARGET OpenMP::OpenMP_CXX
-	        PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
-	    # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
-	    set_property(TARGET OpenMP::OpenMP_CXX
-	        PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
-	endif()
-	target_link_libraries(wxmaxima OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
-	set(CMAKE_INSTALL_OPENMP_LIBRARIES TRUE) # Include OpenMP libraries in the required system libraries
+if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
+    target_link_libraries(wxmaxima OpenMP::OpenMP_CXX ${wxWidgets_LIBRARIES})
 else()
     target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 endif()
 
-if(USE_OPENMP AND OpenMP_CXX_FOUND)
-    if(OpenMP_CXX_SPEC_DATE LESS 201107)
-        message(STATUS "OpenMP too old to be used for multiprocessing in wxMaxima (" ${OpenMP_CXX_SPEC_DATE} ").")
-    else()
-        if(HAVE_OMP_HEADER)
-            message(STATUS "Using OpenMP for multiprocessing.")
-        else()
-            message(STATUS "Using OpenMP, but omp.h missing => Can use multiprocessing only in a few cases.")
-        endif()
-    endif()
-else()
-    message(STATUS "No OpenMP found => Not using multiprocessing.")
+if(MINGW)
+    target_link_libraries(wxmaxima -lws2_32)
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
@@ -206,9 +281,6 @@ endif()
 set(CPACK_PACKAGE_VERSION "${VERSION}")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc")
-set(CPACK_DEBIAN_PACKAGE_SUGGESTS "jsmath-fonts")
-
-set(CPACK_RPM_PACKAGE_SUGGESTS "jsmath-fonts")
 
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES

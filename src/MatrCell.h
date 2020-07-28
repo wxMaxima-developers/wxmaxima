@@ -32,37 +32,30 @@ class MatrCell final : public Cell
 public:
   MatrCell(GroupCell *parent, Configuration **config);
   MatrCell(const MatrCell &cell);
-  Cell *Copy() const override { return new MatrCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override
   { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }
   InnerCellIterator InnerEnd() const override
   { return m_cells.empty() ? InnerCellIterator{} : ++InnerCellIterator(&m_cells.back()); }
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  void AddNewCell(Cell *cell) { m_cells.emplace_back(cell); }
+  void AddNewCell(std::unique_ptr<Cell> &&cell);
 
   void NewRow() { m_matHeight++; }
   void NewColumn() { m_matWidth++; }
 
   void SetDimension();
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   void SetSpecialFlag(bool special) { m_specialMatrix = special; }
 
@@ -77,18 +70,45 @@ public:
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for MatrCells"));}
+
 private:
+  struct DropCenter
+  {
+    int drop = {}, center = {};
+    constexpr int Sum() const { return drop + center; }
+    constexpr DropCenter() = default;
+    constexpr DropCenter(int drop, int center) : drop(drop), center(center) {}
+  };
+
+  //! Collection of pointers to inner cells.
+  std::vector<std::unique_ptr<Cell>> m_cells;
+
+  std::vector<int> m_widths;
+  std::vector<DropCenter> m_dropCenters;
   CellPtr<Cell> m_nextToDraw;
 
-  unsigned int m_matWidth;
-  bool m_roundedParens;
-  unsigned int m_matHeight;
-  bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
-  //! Collections of pointers to inner cells.
-  std::vector<std::unique_ptr<Cell>> m_cells;
-  std::vector<int> m_widths;
-  std::vector<int> m_drops;
-  std::vector<int> m_centers;
+  unsigned int m_matWidth = 0;
+  unsigned int m_matHeight = 0;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_roundedParens = false;
+    m_specialMatrix = false;
+    m_inferenceMatrix = false;
+    m_rowNames = false;
+    m_colNames = false;
+  }
+  bool m_roundedParens : 1 /* InitBitFields */;
+  bool m_specialMatrix : 1 /* InitBitFields */;
+  bool m_inferenceMatrix : 1 /* InitBitFields */;
+  bool m_rowNames : 1 /* InitBitFields */;
+  bool m_colNames : 1 /* InitBitFields */;
 };
 
 #endif // MATRCELL_H

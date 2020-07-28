@@ -30,6 +30,7 @@
 #ifndef FINDREPLACEDIALOG_H
 #define FINDREPLACEDIALOG_H
 
+#include "precomp.h"
 #include <wx/dialog.h>
 #include <wx/event.h>
 #include "FindReplacePane.h"

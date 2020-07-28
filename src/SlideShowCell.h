@@ -62,7 +62,7 @@ public:
   SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type);
   SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove);
 
-  Cell *Copy() const override { return new SlideShow(*this); }
+  std::unique_ptr<Cell> Copy() const override;
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);
@@ -87,7 +87,7 @@ public:
 
   bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  wxString GetToolTip(const wxPoint &point) override;
+  const wxString &GetToolTip(wxPoint point) const override;
 
   /*! Remove all cached scaled images from memory
 
@@ -113,7 +113,7 @@ public:
   //! Exports the whole animation as animated gif
   wxSize ToGif(wxString file);
 
-  bool CopyToClipboard() override;
+  bool CopyToClipboard() const override;
   
   //! Put the animation on the clipboard.
   bool CopyAnimationToClipboard();
@@ -167,45 +167,55 @@ public:
       return m_images[m_displayed]->GnuplotData();
   }
 
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for SlideshowCells"));}
+
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
+  wxTimer m_timer;
+  std::vector<std::shared_ptr<Image>> m_images;
+  std::shared_ptr<wxFileSystem> m_fileSystem;
   CellPtr<Cell> m_nextToDraw;
 
-  wxTimer m_timer{m_cellPointers->GetWorksheet(), wxNewId()};
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
   */
-  int m_framerate;
+  int m_framerate = -1;
+  int m_size = 0;
+  int m_displayed = 0;
+  int m_imageBorderWidth = 0;
 
-  bool m_animationRunning;
-  int m_size;
-  int m_displayed;
-  std::shared_ptr<wxFileSystem> m_fileSystem;
-  std::vector<std::shared_ptr<Image>> m_images;
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_animationRunning = true;
+    m_drawBoundingBox = false;
+  }
 
-  void RecalculateHeight(int fontsize) override;
+  bool m_animationRunning : 1 /* InitBitFields */;
+  bool m_drawBoundingBox : 1 /* InitBitFields */;
 
-  void RecalculateWidths(int fontsize) override;
+
+  int GetImageBorderWidth() const override { return m_imageBorderWidth; }
+
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToRTF() override;
-
-  wxString ToXML() override;
+  wxString ToMatlab() const override;
+  wxString ToRTF() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)  override
   { m_drawBoundingBox = true; }
-
-  bool m_drawBoundingBox;
 };
 
 #endif // SLIDESHOWCELL_H

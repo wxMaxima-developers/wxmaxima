@@ -24,6 +24,7 @@
   This file contains the definition of the class XmlInspector that handles the 
   table of contents pane.
  */
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include <vector>
@@ -52,7 +53,7 @@ public:
   //! Add some text we have received from maxima.
   void Add_FromMaxima(wxString text);
   //! Actually draw the updates
-  void Update();
+  void UpdateContents();
   //! Do we need to update the XmlInspector's display?
   bool UpdateNeeded(){return m_updateNeeded;}
 private:

@@ -33,13 +33,13 @@
 
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
+#include "MaximaIPC.h"
 #include "Dirstructure.h"
 
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/process.h>
 #include <wx/regex.h>
-#include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
@@ -50,13 +50,6 @@
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
-
-#if defined (__WXMSW__)
-#include <wx/msw/helpchm.h>
-#endif
-
-#include <wx/html/helpctrl.h>
-
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
   
@@ -78,22 +71,6 @@
 //! How many miliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
 
-#ifndef __WXGTK__
-
-class MyAboutDialog : public wxDialog
-{
-public:
-  MyAboutDialog(wxWindow *parent, int id, const wxString &title, const wxString &description);
-
-  ~MyAboutDialog()
-  {};
-
-  void OnLinkClicked(wxHtmlLinkEvent &event);
-
-};
-
-#endif
-
 /* The top-level window and the main application logic
 
  */
@@ -110,6 +87,7 @@ public:
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStdout = true;}
   static void ExitOnError(){m_exitOnError = true;}
+  static void EnableIPC(){ MaximaIPC::EnableIPC(); }
   static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
 
   //! An enum of individual IDs for all timers this class handles
@@ -174,6 +152,9 @@ public:
   
   void StripLispComments(wxString &s);
 
+  //! Launches the help browser on the uri passed as an argument.
+  void LaunchHelpBrowser(wxString uri);
+  
   void SendMaxima(wxString s, bool addToHistory = false);
 
   //! Open a file
@@ -210,6 +191,7 @@ private:
   #ifdef HAVE_OMP_HEADER
   omp_lock_t m_helpFileAnchorsLock;
   #endif
+  MaximaIPC m_ipc{this};
   //! wxm data the worksheet is populated from 
   wxString m_initialWorkSheetContents;
   static bool m_pipeToStdout;
@@ -230,7 +212,6 @@ private:
   //! The number of Jiffies the CPU had made the last time
   long long m_cpuTotalJiffies_old;
   //! Do we need to update the menus + toolbars?
-  bool m_updateControls;
   //! All configuration commands we still have to send to maxima
   wxString m_configCommands;
   //! A RegEx that matches gnuplot errors.
@@ -313,19 +294,9 @@ protected:
 
   //! Show the help for wxMaxima
   void ShowWxMaximaHelp();
-  
-  //! Show the maxima help in MSW's proprietary help format
-  void ShowCHMHelp(const wxString &helpfile, const wxString &keyword);
-  
+    
   //! Try to determine if help is needed for maxima or wxMaxima and show this help
   void ShowHelp(const wxString &keyword);
-
-  /*! Launches the HTML help browser
-
-    \param helpfile The name of the file the help browser has to be launched with
-    \param keyword The keyword to show help for
-  */
-  void ShowHTMLHelp(const wxString &helpfile, const wxString &keyword = {});
 
   void CheckForUpdates(bool reportUpToDate = false);
 
@@ -382,9 +353,9 @@ protected:
   void ReplaceSuggestion(wxCommandEvent &event);   //!< Processes clicks on suggestions
   void Interrupt(wxCommandEvent &event);           //!< Interrupt button and hotkey presses
   //! Make the menu item, toolbars and panes visible that should be visible right now.
-  void UpdateMenus(wxUpdateUIEvent &event);     //!< Enables and disables the Right menu buttons
-  void UpdateToolBar(wxUpdateUIEvent &event);      //!< Enables and disables the Right toolbar buttons
-  void UpdateSlider(wxUpdateUIEvent &event);       //!< Updates the slider to show the right frame
+  void UpdateMenus();        //!< Enables and disables the Right menu buttons
+  void UpdateToolBar();      //!< Enables and disables the Right toolbar buttons
+  void UpdateSlider();       //!< Updates the slider to show the right frame
   /*! Toggle the visibility of a pane
     \param event The event that triggered calling this function.
    */
@@ -441,14 +412,16 @@ protected:
     maths instead).
    */
   TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, CellType  type,
-                       bool newLine = true, bool bigSkip = true, const wxString &userLabel = {});
+
+  enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };
+  void DoConsoleAppend(wxString s, CellType type, AppendOpt opts = AppendOpt::DefaultOpt,
+                       const wxString &userLabel = {});
 
   /*!Append one or more lines of ordinary unicode text to the console
 
     \return A pointer to the last line that was appended or NULL, if there is no such line
    */
-  TextCell *DoRawConsoleAppend(wxString s, CellType  type); 
+  TextCell *DoRawConsoleAppend(wxString s, CellType  type, AppendOpt opts = {});
 
   /*! Spawn the "configure" menu.
 
@@ -484,7 +457,7 @@ protected:
   void TryUpdateInspector();
 
   bool UpdateDrawPane();
-  
+
   wxString ExtractFirstExpression(const wxString &entry);
 
   wxString GetDefaultEntry();
@@ -702,6 +675,8 @@ protected:
     creating this string worthwile.
    */
   wxString m_currentOutputEnd;
+  //! Caches the name of wxMaxima's help file.
+  wxString m_wxMaximaHelpFile;
   //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
   //! A marker for the start of maths
@@ -759,7 +734,6 @@ protected:
   //! The directory with maxima's documentation
   wxString m_maximaDocDir;
   bool m_fileSaved;
-  wxString m_chmhelpFile;
   wxString m_maximaVersion;
   wxString m_maximaArch;
   wxString m_lispVersion;
@@ -769,10 +743,6 @@ protected:
   wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
   int m_commandIndex;
-#if defined (__WXMSW__)
-  wxCHMHelpController m_chmhelpCtrl;
-#endif
-  wxHtmlHelpController m_htmlhelpCtrl;
   wxFindReplaceData m_findData;
   static wxRegEx m_funRegEx;
   static wxRegEx m_varRegEx;
@@ -782,11 +752,13 @@ protected:
   bool m_maximaBusy;
   wxMemoryBuffer m_rawDataToSend;
   unsigned long int m_rawBytesSent;
+private:
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;
 
 #endif
+  friend class MaximaIPC;
 };
 
 #if wxUSE_DRAG_AND_DROP

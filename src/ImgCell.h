@@ -39,7 +39,7 @@ public:
 
   ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap);
   ImgCell(const ImgCell &cell);
-  Cell *Copy() const override { return new ImgCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
   ~ImgCell() override;
 
   //! This class can be derived from wxAccessible which has no copy constructor
@@ -81,13 +81,13 @@ public:
    */
   void ClearCache() override { if (m_image) m_image->ClearCache(); }
 
-  wxString GetToolTip(const wxPoint &point) override;
+  const wxString &GetToolTip(wxPoint point) const override;
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);
 
   //! Copies the cell to the system's clipboard
-  bool CopyToClipboard() override;
+  bool CopyToClipboard() const override;
 
   void DrawRectangle(bool draw) { m_drawRectangle = draw; }
 
@@ -103,38 +103,46 @@ public:
   void SetMaxWidth(double width) const { if (m_image) m_image->SetMaxWidth(width); }
   void SetMaxHeight(double height) const { if (m_image) m_image->SetMaxHeight(height); }
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToRTF() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
+  wxString ToMatlab() const override;
+  wxString ToRTF() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   bool CanPopOut() const override { return !m_image->GnuplotSource().empty(); }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for ImgCells"));}
 
 private:
-  std::shared_ptr<Image> m_image;
-  
-  static int s_counter;
-  bool m_drawRectangle;
+  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;
+  int GetImageBorderWidth() const override { return m_imageBorderWidth; }
 
-  void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override
-  { m_drawBoundingBox = true; }
+  std::shared_ptr<Image> m_image;
 
   CellPtr<Cell> m_nextToDraw;
-  bool m_drawBoundingBox;
+
+  int m_imageBorderWidth = 0;
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_drawRectangle = true;
+    m_drawBoundingBox = false;
+  }
+  bool m_drawRectangle : 1 /* InitBitFields */;
+  bool m_drawBoundingBox : 1 /* InitBitFields */;
+
+  static int s_counter;
 };
 
 #endif // IMGCELL_H

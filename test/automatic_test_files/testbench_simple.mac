@@ -1,0 +1,1698 @@
+/* [wxMaxima: title   start ]
+A simple manual testbench
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: comment start ]
+This testbench allows to test writing and reading of files, to test if rendering works, if the communication with maxima works (Cell/Evaluate all cells) and if the export commands work right.
+
+Limitations:
+ * We need more test cases.
+ * This test isn't automatic.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+Completely manual tests
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+There are a few tests that cannot be run automatically by this test bench:
+ * If no text is selected the F1 key should start up the help system with help on wxMaxima
+ * If a maxima command is selected F1 should start up the help system with help on Maxima instead.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+All cell types
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Subsection cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Sub-sub-section cells
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: heading5 start ]
+Sub-sub-sub-section cells
+   [wxMaxima: heading5 end   ] */
+
+
+/* [wxMaxima: heading6 start ]
+Sub-sub-sub-sub-section cells
+   [wxMaxima: heading6 end   ] */
+
+
+/* [wxMaxima: subsect start ]
+A text cell
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+This is a text cell.
+It spans over two lines.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+rem
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+reme
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two extremely long words: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+TEst
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two subsequent spaces between words: abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  abcdef  
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+ A space in front of a long line: abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef  
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+A text cell that begins and ends with a newline.
+
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Letters with spaces inbetween:
+
+a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 3 4 5 6 7 8 9 10
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Letters with non-breakable spaces inbetween:
+a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 3 4 5 6 7 8 9 10
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+A subsubsection cell
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Simple input and output cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Simple input cells without output cell
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x(n):=sum(x[i],i,1,n)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+y(n):=sum(y[i],i,1,n)$
+z(n):=sum(z[i],i,1,n)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A input cell with output cell
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A simple input cell containing a line break
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x+
+y;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+What happens if the output is multiple lines long?
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x(1)=1;x(10)=1;x(100)=1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+All ways to express a multiplication in TeX
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Variable letters that are longer than one character are distinguished by multiplications of single-letter variable names by using \mathit{}.
+This means that in this case wxMaxima will have to do the spacing shown in the following output cell by hand.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a*b;
+aa*b;
+a*bb;
+a_1*b;
+a_1*bb;
+a*b_1;
+aa*b_1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+abs
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+abs(x(1));
+abs(x(10));
+abs(x(100));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+abs(a/b);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+diff
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'diff(x(1),t);
+'diff(x(10),t);
+'diff(x(100),t);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+at
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x(1)@10;
+x(10)@a;
+x(100)@t33;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+A conjugate cell
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+declare(
+    [
+ c00,c01,c02,c03,c04,c05,c06,c07,c08,c09,
+        c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,
+        c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,
+        c30,c31,c32,c33,c34,c35,c36,c37,c38,c39,
+        c40,c41,c42,c43,c44,c45,c46,c47,c48,c49,
+        c50,c51,c52,c53,c54,c55,c56,c57,c58,c59,
+        c60,c61,c62,c63,c64,c65,c66,c67,c68,c69,
+        c70,c71,c72,c73,c74,c75,c76,c77,c78,c79,
+        c80,c81,c82,c83,c84,c85,c86,c87,c88,c89,
+        c90,c91,c92,c93,c94,c95,c96,c97,c98,c99,
+        c100
+    ], complex)$
+depends(
+    [
+        c00,c01,c02,c03,c04,c05,c06,c07,c08,c09,
+        c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,
+    c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,
+        c30,c31,c32,c33,c34,c35,c36,c37,c38,c39,
+        c40,c41,c42,c43,c44,c45,c46,c47,c48,c49,
+c50,c51,c52,c53,c54,c55,c56,c57,c58,c59,
+        c60,c61,c62,c63,c64,c65,c66,c67,c68,c69,
+        c70,c71,c72,c73,c74,c75,c76,c77,c78,c79,
+        c80,c81,c82,c83,c84,c85,c86,c87,c88,c89,
+        c90,c91,c92,c93,c94,c95,c96,c97,c98,c99,
+        c100
+    ], t)$
+c_1:  c00$
+c_10: c00+c01+c02+c03+c04+c05+c06+c07+c08+c09$
+c_100:c00+c01+c02+c03+c04+c05+c06+c07+c08+c09+
+      c10+c11+c12+c13+c14+c15+c16+c17+c18+c19+
+      c20+c21+c22+c23+c24+c25+c26+c27+c28+c29+
+      c30+c31+c32+c33+c34+c35+c36+c37+c38+c39+
+      c40+c41+c42+c43+c44+c45+c46+c47+c48+c49+
+      c50+c51+c52+c53+c54+c55+c56+c57+c58+c59+
+      c60+c61+c62+c63+c64+c65+c66+c67+c68+c69+
+      c70+c71+c72+c73+c74+c75+c76+c77+c78+c79+
+ c80+c81+c82+c83+c84+c85+c86+c87+c88+c89+
+      c90+c91+c92+c93+c94+c95+c96+c97+c98+c99+
+      c100$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+conjugate(c_1);
+conjugate(c_10);
+conjugate(c_100);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+ExptCells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Automatic line breaks
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+exp(sum(x[i],i,1,1));
+exp(sum(x[i],i,1,3));
+exp(sum(x[i],i,1,100));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Vertical alignment
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+exp(a/b);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+exp(sin(a^2/b));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(1+exp(1/sin(a^2/b)))^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Frac cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Here we test 
+ * if a minus in front of and following the fraction is displayed right,
+ * If fractions still work if the denominator is bigger than the numerator
+   or vice versa
+ * if extremely long fractions are broken into a separate lines
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x(1)/y(1);
+x(1)/y(10);
+x(1)/y(100);x(10)/y(1);x(100)/y(1);
+x(100)/y(100);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(a_1+1/(1+(a_2+1/(a_3+1/a_4))))/(b_1+1/(1+(b_2+1/(b_3+1/b_4))))=5;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a:1/b$
+for i:1 thru 75 do a:subst(b=1/b+1,a)$
+a;
+kill(a)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Function cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x):=3;
+f12345689(x):=3;
+f12345689012345689012345689012345689012345689012345689012345689012345689012345689012345689(x):=3;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Image cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+A small plot
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxplot_size:[300,200]$
+wxdraw2d(
+    color=red,line_type=solid,key="solid red",explicit(x,x,-10,10),
+    color=black,line_type=dots,key="dotted black",explicit(x+5,x,-10,10)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A huge plot indicating if scaling down plots that are bigger than the screen works.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxplot_size:[2000,1500]$
+wxdraw2d(
+    color=red,line_type=solid,line_width=10,key="solid red",explicit(sin(x),x,-10,10)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A reasonably-sized plot
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxplot_size:[600,400]$
+wxdraw2d(
+    color=red,line_type=solid,key="solid red",explicit(x,x,-10,10),
+    color=black,line_type=dots,key="dotted black",explicit(x+5,x,-10,10)
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+An image cell in the middle of the output:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+x=1;
+wxdraw2d(
+    color=red,line_type=solid,key="solid red",explicit(x,x,-10,10),
+    color=black,line_type=dots,key="dotted black",explicit(x+5,x,-10,10)
+);
+x=2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following plot contains all linestyles the system might support if the configuration option to use cairo was selected.
+Support for linestyles greatly depends on the gnuplot used, though.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    color=black,
+    line_type=solid,key="solid",explicit(-x,x,0,10),
+    line_type=dashes,key="dashes",explicit(-x+1,x,0,10),
+    line_type=short_dashes,key="short dashes",explicit(-x+2,x,0,10),
+    line_type=short_long_dashes,key="short long dashes",explicit(-x+3,x,0,10),
+    line_type=short_short_long_dashes,key="short short long dashes",explicit(-x+4,x,0,10),
+    line_type=short_long_dashes,key="short long dashes",explicit(-x+5,x,0,10),
+    line_type=dot_dash,key="dot dash",explicit(-x+6,x,0,10),
+    line_type=dots,key="dots",explicit(-x+7,x,0,10)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Integral cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(n):=sum(f[i](t),i,1,n)$
+g(n):=sum(g[i](t),i,1,n)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+integrate(f(1),t,0,T);
+integrate(f(10),t,0,T);
+integrate(f(100),t,0,T);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'integrate(sin(x),x,1,a(x)/b(x));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'integrate(sin(x),x,a(x)/b(x),1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Limit cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'limit(f(  1),t,0);
+'limit(f(  1),t,inf);
+'limit(f(  1),t,-inf);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'limit(f( 10),t,0);
+'limit(f( 10),t,inf);
+'limit(f( 10),t,-inf);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'limit(f(100),t,0);
+'limit(f(100),t,inf);
+'limit(f(100),t,-inf);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Matrix cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Rounded parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:"("$rmxchar:")"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Square parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:"["$rmxchar:"]"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Parenthesis cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+There are three types of parenthesis in wxMaxima:
+ * Ordinary Parenthesis
+ * Big parenthesis created using a special letter
+ * And parenthesis that are assembled of an upper half, an lower half and vertical lines inbetween
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(x(1  )/10+1)*2;
+(x(10 )/10+1)*2;
+(x(100)/10+1)*2;
+max(1/10,sin((((a/b+1)/c+1)/d+1)/e));
+sin(a/(b+sin(c+1/(1+d/(1+e/(1+f/(1+g/h)))))));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Test the vertical alignment
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sin(x/a+sin(x/a+sin(x/a+sin(x/a+sin(x/a+sin(x/a+sin(x/a+sin(x/a+sin(x/a+sin(x/a))))))))));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Test if the vertical size is correct if big parenthesis are broken into lines.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sl
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Slide show cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+A clock with autoplay
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sli
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A clock without autoplay
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxanimate_autoplay:false$
+with_slider_draw(
+    t,makelist(f,f,0,59),
+    title=sconcat(t," s"),
+    proportional_axes=xy,xrange=[-1,1],yrange=[-1,1],
+    parametric(r*sin(2*%pi/60*t),r*cos(2*%pi/60*t),r,0,1),
+    grid=true
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+sqrt cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(x(1));
+sqrt(x(10));
+sqrt(x(100));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Sub cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[x(1)];
+x[x(10)];
+x[x(100)];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[x[x[x[1]]]];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+SubSupcells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[x(1)]^x(1)+1;
+x[x(1)]^x(10)+1;
+x[x(10)]^x(1)+1;
+
+x[x(100)]^x(100)+1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[x[x[x[1]]]]^y^z^a^b;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Four arrows pointing to an O:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+re
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Three arrows pointing to an O:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: subsect start ]
+SumCells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(3);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'sum(f(1),t,1,1);
+'sum(f(10),t,1,1);
+'sum(f(100),t,1,1);
+'prod(f(1),t,1,1);
+'prod(f(10),t,1,1);
+'prod(f(100),t,1,1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'sum(f(1)/g(1),t,1,1);
+'sum(f(10)/g(10),t,1,1);
+'sum(f(100)/g(100),t,1,1);
+'prod(f(1)/g(1),t,1,1);
+'prod(f(10)/g(10),t,1,1);
+'prod(f(100)/g(100),t,1,1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'sum(a/sin((a+b/2)),a,1,10);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Pagebreak Cells
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: page break    ] */
+
+/* [wxMaxima: section start ]
+Other features
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Was GnuPlot packaged with a charset that supports greek characters?
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(title="Greek characters: {/Symbol awWl}",
+    explicit(sin(x),x,1,10),
+    xtics=false,ytics=false
+),wxplot_size=[300,150]$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Highlighting and Boxes
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+1+box(x(1))+z;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+1+box(x(10))+z;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+1+box(x(100))+z;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Item lists
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+ * Level 1
+   Level 1 (continued)
+Level 1 (continued again)
+ * Level 1
+   * Level 2 
+     Level 2 (continued)
+     Level 2 (continued again)
+     * Level 3
+ * Level 1
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Ordinary text 
+  * Bullet list item #1
+  * Bullet list item #2 is long enough that it is broken into at least two lines. The second line is still indented: Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test 
+    After this line break we continue the second item with a long piece of text: Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test
+Ordinary text
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Block quotes
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Ordinary text
+> quote quote quote quote quote quote quote quote quote quote quote quote quote quote quote quote 
+> quote quote quote quote quote quote quote quote quote quote quote quote quote quote quote quote
+> quote quote quote quote quote quote quote quote quote quote quote quote quote quote quote quote
+Ordinary text
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+This is ordinary text
+ > This is a block quoote. It is long enough that it should be broken into at least two lines. Still every line begins with a quotation marker: Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Special symbols the export functions recognize
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+ * A double right arrow (=>)
+ * A double dual-headed arrow (<=>)
+ * A single right arrow (->)
+ * A long right arrow -->
+ * A single left arrow (<-)
+ * A single double-headed arrow (<->)
+ * A equal or less than sign (<=)
+ * A equal or greater than sign (>=)
+ * A plus/minus-sign (+/-)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Many unicode characters:
+αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ½²³√ⅈⅇℏ∈∃∄⇒∞∅▶▸⋀⋁⊻⊼⊽⇔±¬⋃⋂⊆⊂⊄ħĦ∂∫≅∝≠≤≥≪≫≣∑∏∥⟂↝→⟶∎
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+How does the lisp maxima is working with handle special characters?
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+There once has been a case where maxima interpreted special characters like
+an µ correctly - but output them in a way that resulted in a broken xml file
+on saving as .wxmx. If after executing the following line the .wxmx file can
+be saved and opened again this bug is not present in the currently running
+maxima/lisp combination.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(title="Test of the µ character",
+    explicit(sin(x),x,1,10),
+    xtics=false,ytics=false
+),wxplot_size=[300,150];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("µ")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Uncode characters in general
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+wrΩαβwf
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+ö=3;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+wxbuild_info()
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxbuild_info();
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+ans
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Test with lines ending in a $
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+printf(true,"Ordinary text")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    disp("XML Text"),
+    printf(true,"Text enclosed by equations"),
+    disp("XML Text")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+printf(true,"Text followed by equations")$
+x=2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    printf(true,"Text followed by equations"),
+    disp("XML Text")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    disp("XML Text"),
+    printf(true,"Text following equations")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Test with lines ending in a ;
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+printf(true,"Ordinary text");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    disp("XML Text"),
+    printf(true,"Text enclosed by equations")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    printf(true,"Text enclosed by equations"),
+    disp("XML Text")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+printf(true,"Text followed by equations")$
+x=2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    printf(true,"Text followed by equations"),
+    disp("XML Text")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    disp("XML Text"),
+    printf(true,"Text following equations")
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Transfer of partial lines
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Can we continue a line we have started to output?
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i:0 thru 1000 do printf(true,"t");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Can we output two lines in one command?
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+printf(true,"line1~%line2~%")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Can we output two lines in two commands?
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+printf(true,"line3~%")$
+printf(true,"line4~%")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Lisp code
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+In-line lisp code
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+testval:1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+:lisp (defvar $testval2 $testval)
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if testval2 # testval then error("The execution of lisp code wasn't successful.")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Lisp ode spread across multiple cells
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+to_lisp();
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(format nil "test");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(to-maxima)
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Miscellaneous things that did get wrong at least once
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Maxima's integrated help browser
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+? declare_index_properties;
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+Enter space-separated numbers, `all' or `none':
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+1;
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: autoanswer    ] */
+
+/* [wxMaxima: subsect start ]
+Cell height calculations
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The cell height is calculated by GroupCell::Draw, GroupCell::RecalculateAppended and by GroupCell::RecalculateHeight. Once upon a time these functions were not in sync.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/b))))))))))))))))))));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i:1 thru 20 do printf(true,"test~%");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Labels that contain escaped characters
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+A label that begins with a number
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+\1:2;
+if \1≠2 then error("Label \1 doesn't hold the right value!")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+A label that contains a comma
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a\,1:test;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Leading spaces in front of characters that in XML need to be quoted
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+One of the following signs should be indented.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print(" <=>")$
+print("<=>")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The contents of this list should still be indented after a load/save cycle.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+[
+    "test",
+    "test2"
+]$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+The graphics system
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima's INSTALL.win32 does request to test the following commands:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+    wxplot2d(sin(x),[x,0,10])$
+    wxplot2d(sin(x),[x,0,10],[plot_format,xmaxima])$
+    wxplot3d(x*y,[x,-1,1],[y,-1,1])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+    wxdraw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
+          parametric_surface(cos(phi) * sin(theta),
+             sin(phi) * sin(theta),
+              cos(theta),
+                       theta, 0, %pi, phi, 0, 2 * %pi))$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Former crashes
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following cells at least once crashed wxMaxima on windows and are therefore
+included into the testbench:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a: (x+y)^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+α=1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+α:1;
+kill(α);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Bauteilwerte:[
+    α=1
+];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Constructs that don't make sense but still can be displayed
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(makelist(c01,i,1,2)+c01);
+%(1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+{0,1}(1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+A weird windows parenthesis issue
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following equation had a weird parenthesis issue on windows once while it worked fine
+on linux.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x,y):=x^2*(1-exp((y-sqrt(3*G)*x)^2*(L^2/x^2-0.5)*((R+y)/(R(R-K+y)))/G) )/(R+y)^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Mouseover ToolTips
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+A long number that (hopefully) is shortened by wxMaxima and that therefore will be equipped with a Mouseover tooltip:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+longnum:100^ 1000;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's see if tooltips are provided for the insides of all cell types:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+abs(longnum+a);
+'diff(longnum*x,x+longnum);
+'test@longnum;
+conjungate(longnum+a);
+(a+longnum)^(b+longnum);
+(a+longnum)/(b+longnum);
+'integrate(a+''longnum,a,-longnum,longnum);
+'limit(a+longnum,a,longnum);
+matrix([longnum]);
+sqrt(a+longnum);
+a[longnum];
+'(a[''longnum]^''longnum);
+'sum(a+''longnum,a,-longnum,longnum);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Special cases for the TeX export
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Function names should be exported as upright text:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+function(x):=10;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+For equations LaTeX uses a font that uses spacing that makes clear that ab means "a*b". We therefore
+need to make sure that a variable named "ab" isn't displayed in this way.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+ab≠a*b;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+What makes this more complicated is that the auto-subscript mechanism adds more corner cases here:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a_b*c;
+a*b_c;
+a_b*c;
+aa*b_c;
+a*bb_c;
+aa*bb_c;
+aa_c*b;
+a_c*bb;
+aa_c*bb;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+A thing that is easy to break.
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(
+    disp("An equation"),
+    disp("Another equation issued by the same command")
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+"A new command";
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Weird variable names for the variables watchlist
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a\,1:3;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a\ 1:4;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a\ \#:5;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Warnings about chars that are easily confused
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Latin only (firing way too often)
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+I*l;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Cyrillic+Latin
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Firing way too often
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+І*l;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+І*I;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Identical
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ѕ*S;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ј*J;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+А*A;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+В*B;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Е*E;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+К*K;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+М*M;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Н*H;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+О*O;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Р*P;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+С*C;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Т*T;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Х*X;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+а*a;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+е*e;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+о*o;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+р*p;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+с*c;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+у*y;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+х*x;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+ѕ*s;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Discernable (at least in my font)
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+У*Y;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Greek+Latin
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Complete lookalikes
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Α*A;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Β*B;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ε*E;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ζ*Z;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Η*H;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Κ*K;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M*Μ;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ν*N;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ο*O;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+P*Ρ;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+T*Τ;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Y*Υ;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+ο*o;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Potential lookalikes that look different to each other in my font
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+τ*t;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+χ*x;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+υ*u;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Greek+cyrillic
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Identical
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+ѡ*ω;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Ѳ*Θ;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Differs in my font
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+θ*ѳ;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Two similar chars in one cell
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Y*Υ;
+ο*o;
+/* [wxMaxima: input   end   ] */
+
+
+

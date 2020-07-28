@@ -30,11 +30,13 @@
 #ifndef AUTOCOMPLETE_H
 #define AUTOCOMPLETE_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/dir.h>
 #include <wx/arrstr.h>
 #include <wx/regex.h>
 #include <wx/filename.h>
+#include <vector>
 #include "Configuration.h"
 
 /* The autocompletion logic
@@ -51,6 +53,8 @@ class AutoComplete
   WX_DECLARE_STRING_HASH_MAP(int, WorksheetWords);
 
 public:
+  using WordList = std::vector<wxString>;
+
   //! All types of things we can autocomplete
   enum autoCompletionType
   {
@@ -93,7 +97,8 @@ public:
   void UpdateGeneralFiles(wxString partial, wxString maximaDir);
   
   //! Add words to the list of words that appear in the workSheet's code cells
-  void AddWorksheetWords(wxArrayString wordlist);
+  void AddWorksheetWords(const WordList &words);
+  void AddWorksheetWords(WordList::const_iterator begin, WordList::const_iterator end);
 
   //! Clear the list of words that appear in the workSheet's code cells
   void ClearWorksheetWords();

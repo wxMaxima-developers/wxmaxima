@@ -30,31 +30,24 @@ class AtCell final : public Cell
 public:
   AtCell(GroupCell *parent, Configuration **config);
   AtCell(const AtCell &cell);
-  Cell *Copy() const override { return new AtCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_indexCell); }
   
-  void SetBase(Cell *base);
-  void SetIndex(Cell *index);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetIndex(std::unique_ptr<Cell> &&index);
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToMathML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
@@ -63,8 +56,18 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_indexCell;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // ATCELL_H

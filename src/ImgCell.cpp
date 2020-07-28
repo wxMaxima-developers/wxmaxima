@@ -32,7 +32,8 @@
 #define SELECTION_BORDER_WDTH Scale_Px(3)
 
 #include "ImgCell.h"
-
+#include "CellPointers.h"
+#include "StringUtils.h"
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/filesys.h>
@@ -40,32 +41,30 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(GroupCell *parent, Configuration **config) : Cell(parent, config)
+ImgCell::ImgCell(GroupCell *parent, Configuration **config) :
+    Cell(parent, config),
+    m_imageBorderWidth(1)
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
-  m_imageBorderWidth = 1;
-  m_drawBoundingBox = false;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &type) :
     Cell(parent, config),
-    m_image(new Image(m_configuration, image, type))
+    m_image(new Image(m_configuration, image, type)),
+    m_imageBorderWidth(1)
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
-  m_imageBorderWidth = 1;
-  m_drawBoundingBox = false;
 }
 
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxBitmap &bitmap) :
     Cell(parent, config),
-    m_image(new Image(m_configuration, bitmap))
+    m_image(new Image(m_configuration, bitmap)),
+    m_imageBorderWidth(1)
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
-  m_imageBorderWidth = 1;
-  m_drawBoundingBox = false;
 }
 
 int ImgCell::s_counter = 0;
@@ -74,13 +73,18 @@ int ImgCell::s_counter = 0;
 ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &image, std::shared_ptr<wxFileSystem> filesystem, bool remove)
   : Cell(parent, config)
 {
+  InitBitFields();
   m_type = MC_TYPE_IMAGE;
-  m_drawRectangle = true;
   if (image != wxEmptyString)
     m_image = std::make_shared<Image>(m_configuration, image, filesystem, remove);
   else
     m_image = std::make_shared<Image>(m_configuration);
   m_drawBoundingBox = false;
+}
+
+std::unique_ptr<Cell> ImgCell::Copy() const
+{
+  return std::make_unique<ImgCell>(*this);
 }
 
 void ImgCell::LoadImage(wxString image, bool remove)
@@ -97,6 +101,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 ImgCell::ImgCell(const ImgCell &cell):
     ImgCell(cell.m_group, cell.m_configuration)
 {
+  InitBitFields();
   CopyCommonData(cell);
   m_drawRectangle = cell.m_drawRectangle;
   m_drawBoundingBox = false;
@@ -105,28 +110,22 @@ ImgCell::ImgCell(const ImgCell &cell):
 
 ImgCell::~ImgCell()
 {
-  ClearCache();
+  ImgCell::ClearCache();
 }
 
-wxString ImgCell::GetToolTip(const wxPoint &point)
+const wxString &ImgCell::GetToolTip(const wxPoint point) const
 {
-  if(ContainsPoint(point))
-  {
-    m_cellPointers->m_cellUnderPointer = this;
-    if(!m_image->IsOk())
-      return(_("The image could not be displayed. It may be broken, in a wrong format or "
-               "be the result of gnuplot not being able to write the image or not being "
-               "able to understand what maxima wanted to plot.\n"
-               "One example of the latter would be: Gnuplot refuses to plot entirely "
-               "empty images"));
-    else
-      return m_toolTip;
-  }
-  else
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return wxm::emptyString;
+
+  m_cellPointers->m_cellUnderPointer = const_cast<ImgCell*>(this);
+  if (!m_image->IsOk())
+    return Image::GetBadImageToolTip();
+
+  return GetLocalToolTip();
 }
 
-void ImgCell::RecalculateWidths(int fontsize)
+void ImgCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if (m_image)
@@ -143,15 +142,6 @@ void ImgCell::RecalculateWidths(int fontsize)
     else
       m_image->Recalculate();
     m_width = m_image->m_width + 2 * m_imageBorderWidth;
-  }
-  Cell::RecalculateWidths(fontsize);
-}
-
-void ImgCell::RecalculateHeight(int fontsize)
-{
-  Configuration *configuration = (*m_configuration);
-  if (m_image)
-  {
     if (configuration->GetPrinting())
     {
       m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
@@ -162,7 +152,7 @@ void ImgCell::RecalculateHeight(int fontsize)
     m_height = m_image->m_height + 2 * m_imageBorderWidth;
     m_center = m_height / 2;
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point)
@@ -218,17 +208,17 @@ void ImgCell::Draw(wxPoint point)
   m_drawBoundingBox = false;
 }
 
-wxString ImgCell::ToString()
+wxString ImgCell::ToString() const
 {
   return _(" (Graphics) ");
 }
 
-wxString ImgCell::ToMatlab()
+wxString ImgCell::ToMatlab() const
 {
   return _(" (Graphics) ");
 }
 
-wxString ImgCell::ToTeX()
+wxString ImgCell::ToTeX() const
 {
   return _(" (Graphics) ");
 }
@@ -238,7 +228,22 @@ wxSize ImgCell::ToImageFile(wxString filename)
   return m_image->ToImageFile(filename);
 }
 
-wxString ImgCell::ToRTF()
+static void writeHex(void *data, size_t length, wxStringCharType *out)
+{
+  using char_t = wxStringCharType;
+  char *const end = static_cast<char*>(data) + length;
+  for (char *in = static_cast<char*>(data); in != end; in++)
+  {
+    char c = *in;
+    unsigned char const h = (c >> 4) & 0xF, l = c & 0xF;
+    if (h > 9) *out++ = char_t('a' + h - 0xA);
+    else       *out++ = char_t('0' + h - 0);
+    if (l > 9) *out++ = char_t('a' + l - 0xA);
+    else       *out++ = char_t('0' + l - 0);
+  }
+}
+
+wxString ImgCell::ToRTF() const
 {
   // Lines that are common to all types of images
   wxString header = wxT("{\\pict");
@@ -277,13 +282,17 @@ wxString ImgCell::ToRTF()
   );
 
   // Convert the data into a hexadecimal string
-  for (size_t i = 0; i <= imgdata.GetDataLen(); i++)
-    image += wxString::Format("%02x", ((unsigned char *) imgdata.GetData())[i]);
+  wxString hexString;
+  writeHex(imgdata.GetData(), imgdata.GetDataLen(),
+           wxStringBuffer(hexString, 2*imgdata.GetDataLen()));
 
-  return header + image + footer;
+  wxString result;
+  result.reserve(header.size() + image.size() + hexString.size() + footer.size() + 10);
+  result << header << image << hexString << footer;
+  return result;
 }
 
-wxString ImgCell::ToXML()
+wxString ImgCell::ToXML() const
 {
   wxString basename = m_cellPointers->WXMXGetNewFileName();
 
@@ -357,7 +366,10 @@ wxString ImgCell::ToXML()
           basename + m_image->GetExtension() + wxT("</img>"));
 }
 
-bool ImgCell::CopyToClipboard()
+void ImgCell::DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all))
+{ m_drawBoundingBox = true; }
+
+bool ImgCell::CopyToClipboard() const
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())

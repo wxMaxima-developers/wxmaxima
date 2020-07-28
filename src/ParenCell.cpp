@@ -28,29 +28,18 @@
  */
 
 #include "ParenCell.h"
-#include "FontCache.h"
+#include "VisiblyInvalidCell.h"
 
 ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_innerCell(new TextCell(parent, config)),
-    m_open(new TextCell(parent, config, wxT("("))),
-    m_close(new TextCell(parent, config, wxT(")")))
+    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_open(std::make_unique<TextCell>(parent, config, wxT("("))),
+    m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
 {
+  InitBitFields();
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
-  m_numberOfExtensions = 0;
-  m_extendHeight = 12;
-  m_charWidth = 12;
-  m_charWidth1 = 12;
-  m_charHeight = 12;
-  m_charHeight1 = 12;
-  m_fontSize = 10;
-  m_signTopHeight = 12;
-  m_signHeight = 50;
-  m_signBotHeight = 12;
-  m_signWidth = 12;
-  m_bigParenType = Configuration::ascii;
-  m_print = true;
+  m_fontSize = AFontSize(10.0f);
 }
 
 // These false-positive warnings only appear in old versions of cppcheck
@@ -58,8 +47,6 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_last1
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_print
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_numberOfExtensions
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth
-// cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charWidth1
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_charHeight1
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signWidth
@@ -76,6 +63,11 @@ ParenCell::ParenCell(const ParenCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
+std::unique_ptr<Cell> ParenCell::Copy() const
+{
+  return std::make_unique<ParenCell>(*this);
+}
+
 void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner)
@@ -90,31 +82,24 @@ void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
 
   m_type = type;
   // Tell the first of our inner cells not to begin with a multiplication dot.
-  m_innerCell->m_SuppressMultiplicationDot = true;
-
-  // Search for the last of the inner cells
-  Cell *last1 = m_innerCell.get();
-  while (last1->m_next != NULL)
-    last1 = last1->m_next;
-  m_last1 = last1;
+  m_innerCell->SetSuppressMultiplicationDot(true);
   ResetSize();
 }
 
-void ParenCell::SetFont(int fontsize)
+void ParenCell::SetFont(AFontSize fontsize)
 {
-  wxASSERT(fontsize >= 1);
+  wxASSERT(fontsize.IsValid());
 
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  wxFontInfo req;
-  wxFont font;
-  if(m_bigParenType == Configuration::ascii)
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, fontsize));
+  Style style;
+  if (m_bigParenType == Configuration::ascii)
+    style = configuration->GetStyle(TS_FUNCTION, fontsize);
   else
-    req = FontInfo::GetFor(configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize()));
+    style = configuration->GetStyle(TS_FUNCTION, configuration->GetMathFontSize());
 
-  wxASSERT(req.GetPointSize() > 0);
+  wxASSERT(style.GetFontSize().IsValid());
 
   switch(m_bigParenType)
   {
@@ -123,57 +108,52 @@ void ParenCell::SetFont(int fontsize)
     break;
 
   case Configuration::assembled_unicode_fallbackfont:
-    req.FaceName(wxT("Linux Libertine"));
+    style.SetFontName(AFontName::Linux_Libertine());
     break;
 
   case Configuration::assembled_unicode_fallbackfont2:
-    req.FaceName(wxT("Linux Libertine O"));
+    style.SetFontName(AFontName::Linux_Libertine_O());
     break;
 
   default:
     break;
   }
 
-  req.Italic(false).Underlined(false);
-  font = FontCache::GetAFont(req);
-  if (!font.IsOk())
+  style.Italic(false).Underlined(false);
+
+  if (!style.IsFontOk())
   {
-    req.Family(wxFONTFAMILY_MODERN)
-      .Italic(false)
-      .FaceName(wxEmptyString)
-      .Underlined(false);
-    font = FontCache::GetAFont(req);
+    style.SetFamily(wxFONTFAMILY_MODERN);
+    style.SetFontName({});
   }
 
-  if (!font.IsOk())
-    font = FontCache::GetAFont(*wxNORMAL_FONT);
+  if (!style.IsFontOk())
+    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
 
   // A fallback if we have been completely unable to set a working font
   if (!dc->GetFont().IsOk())
     m_bigParenType = Configuration::handdrawn;
 
   if(m_bigParenType != Configuration::handdrawn)
-    dc->SetFont(font);
+    dc->SetFont(style.GetFont());
 
   SetForeground();
 }
 
-void ParenCell::RecalculateWidths(int fontsize)
+void ParenCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
   Configuration *configuration = (*m_configuration);
   
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
+  m_innerCell->RecalculateList(fontsize);
+  m_open->RecalculateList(fontsize);
+  m_close->RecalculateList(fontsize);
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetHeightList();
-  if (fontsize < 4) fontsize = 4;
-  int fontsize1 = Scale_Px(fontsize);
+  auto fontsize1 = Scale_Px(fontsize);
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
@@ -221,26 +201,13 @@ void ParenCell::RecalculateWidths(int fontsize)
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
   if(m_isBrokenIntoLines)
     m_width = 0;
-  Cell::RecalculateWidths(fontsize);
-}
 
-void ParenCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  Configuration *configuration = (*m_configuration);
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
   m_center = m_height / 2;
 
-  SetFont(fontsize);
-  wxDC *dc = configuration->GetDC();
   dc->GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
   if(m_charHeight1 < 2)
     m_charHeight1 = 2;
-
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
 
   if (m_isBrokenIntoLines)
   {
@@ -282,7 +249,7 @@ void ParenCell::RecalculateHeight(int fontsize)
       m_center = m_height / 2;   
     }
   }
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point)
@@ -346,67 +313,68 @@ void ParenCell::Draw(wxPoint point)
       int signWidth = m_signWidth - Scale_Px(2);
       innerCellPos.x = point.x + m_signWidth;
 
-      wxPointList points;
       // Left bracket
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1),
-                                point.y));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      // Appending the last point twice should allow for an abrupt 180° turn
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)));
-      // The middle point of the 2nd run of the parenthesis is at a different place
-      // making the parenthesis wider here
-      points.Append(new wxPoint(point.x + Scale_Px(2),
-                                point.y));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + 3 * signWidth / 4,
-                                point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + Scale_Px(1) + signWidth,
-                             point.y - m_center + Scale_Px(4)));
-      adc->DrawSpline(&points);
+      const wxPoint pointsL[10] = {
+        {point.x + Scale_Px(1) + signWidth,
+         point.y - m_center + Scale_Px(4)},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
+        {point.x + Scale_Px(1),
+         point.y},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
+        {point.x + Scale_Px(1) + signWidth,
+         point.y + m_center - Scale_Px(4)},
+        // Appending the last point twice should allow for an abrupt 180° turn
+        {point.x + Scale_Px(1) + signWidth,
+         point.y + m_center - Scale_Px(4)},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y + m_center - 3 * signWidth / 4 - Scale_Px(4)},
+        // The middle point of the 2nd run of the parenthesis is at a different place
+        // making the parenthesis wider here
+        {point.x + Scale_Px(2),
+         point.y},
+        {point.x + Scale_Px(1) + 3 * signWidth / 4,
+         point.y - m_center + 3 * signWidth / 4 + Scale_Px(4)},
+        {point.x + Scale_Px(1) + signWidth,
+         point.y - m_center + Scale_Px(4)}
+      };
+      adc->DrawSpline(10, pointsL);
 
-      points.Clear();
       // Right bracket
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y - m_center + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1),
-                                point.y));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y + m_center - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y + m_center - signWidth / 2 - Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(2),
-                                point.y));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
-                                point.y - m_center + signWidth / 2 + Scale_Px(4)));
-      points.Append(new wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
-                                point.y - m_center + Scale_Px(4)));
-      adc->DrawSpline(&points);
+      const wxPoint pointsR[10] = {
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y - m_center + Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y - m_center + signWidth / 2 + Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1),
+         point.y},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y + m_center - signWidth / 2 - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y + m_center - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y + m_center - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y + m_center - signWidth / 2 - Scale_Px(4)},
+        {point.x + m_width - Scale_Px(2),
+         point.y},
+        {point.x + m_width - Scale_Px(1) - signWidth / 2,
+         point.y - m_center + signWidth / 2 + Scale_Px(4)},
+        {point.x + m_width - Scale_Px(1) - signWidth,
+         point.y - m_center + Scale_Px(4)}
+      };
+      adc->DrawSpline(10, pointsR);
     }
       break;
     }
     
-    UnsetPen();
     if(!m_isBrokenIntoLines)
       m_innerCell->DrawList(innerCellPos);
   }
 }
 
-wxString ParenCell::ToString()
+wxString ParenCell::ToString() const
 {
   wxString s;
   if(!m_innerCell)
@@ -422,7 +390,7 @@ wxString ParenCell::ToString()
   return s;
 }
 
-wxString ParenCell::ToMatlab()
+wxString ParenCell::ToMatlab() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -435,7 +403,7 @@ wxString ParenCell::ToMatlab()
   return s;
 }
 
-wxString ParenCell::ToTeX()
+wxString ParenCell::ToTeX() const
 {
   wxString s;
   if (!m_isBrokenIntoLines)
@@ -465,14 +433,14 @@ wxString ParenCell::ToTeX()
   return s;
 }
 
-wxString ParenCell::ToOMML()
+wxString ParenCell::ToOMML() const
 {
   return wxT("<m:d><m:dPr m:begChr=\"") + XMLescape(m_open->ToString()) + wxT("\" m:endChr=\"") +
          XMLescape(m_close->ToString()) + wxT("\" m:grow=\"1\"></m:dPr><m:e>") +
          m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
-wxString ParenCell::ToMathML()
+wxString ParenCell::ToMathML() const
 {
   if (!m_print) return m_innerCell->ListToMathML();
 
@@ -485,7 +453,7 @@ wxString ParenCell::ToMathML()
   );
 }
 
-wxString ParenCell::ToXML()
+wxString ParenCell::ToXML() const
 {
 //  if( m_isBrokenIntoLines )
 //    return wxEmptyString;
@@ -500,17 +468,16 @@ bool ParenCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
-    wxASSERT_MSG(m_last1, _("Bug: No last cell inside a parenthesis!"));
-    if (m_last1)
-      m_last1->SetNextToDraw(m_close);
+    m_innerCell->last()->SetNextToDraw(m_close);
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
 
-    ResetData();
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
+    ResetCellListSizes();
+    m_height = 0;
+    m_center = 0;
     return true;
   }
   return false;

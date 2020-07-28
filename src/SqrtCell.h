@@ -50,32 +50,29 @@ class SqrtCell final : public Cell
 public:
   SqrtCell(GroupCell *parent, Configuration **config);
   SqrtCell(const SqrtCell &cell);
-  Cell *Copy() const override { return new SqrtCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
-  void SetInner(Cell *inner);
+  void SetInner(std::unique_ptr<Cell> &&inner);
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
   bool BreakUp() override;
 
-  wxString ToString() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToXML() override;
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for SqrtCells"));}
 
   void SetNextToDraw(Cell *next) override;
 
@@ -85,13 +82,25 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_innerCell;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_last;
-  int m_signWidth, m_signSize, m_signTop;
-  int m_signType;
-  double m_signFontScale;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+  double m_signFontScale = 0;
+  int m_signWidth = 18;
+  int m_signSize = 50;
+  int m_signTop = m_signSize / 2;
+  int m_signType = 0;
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // SQRTCELL_H

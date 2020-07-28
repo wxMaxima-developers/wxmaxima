@@ -1,6 +1,8 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-add_subdirectory(unit_tests)
+if(WXM_UNIT_TESTS)
+    add_subdirectory(unit_tests)
+endif()
 
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
 
@@ -248,7 +250,7 @@ add_test(
     NAME imageCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch imageCells.wxm)
-set_tests_properties(imageCells PROPERTIES TIMEOUT 60)
+set_tests_properties(imageCells PROPERTIES TIMEOUT 120)
 
 add_test(
     NAME limitCells_cmdline
@@ -303,6 +305,24 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch parenthesisCells.wxm)
 set_tests_properties(parenthesisCells PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME listCells_cmdline
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch parenthesisCells.wxm)
+set_tests_properties(parenthesisCells_cmdline PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME listCells_cmdline_wxmathml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND maxima --batch listCells.wxm -p ${CMAKE_SOURCE_DIR}/data/wxMathML.lisp)
+set_tests_properties(listCells_cmdline_wxmathml PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME listCells
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --batch listCells.wxm)
+set_tests_properties(listCells PROPERTIES TIMEOUT 60)
 
 add_test(
     NAME sqrtCells_cmdline
@@ -503,6 +523,24 @@ add_test(
 set_tests_properties(unicode_specialchars PROPERTIES TIMEOUT 60)
 
 add_test(
+    NAME openMacFiles
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch testbench_simple.mac)
+set_tests_properties(openMacFiles PROPERTIES TIMEOUT 240)
+
+add_test(
+    NAME openMacFiles2
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe -f autosave.cfg --batch testbench_simple2.mac)
+set_tests_properties(openMacFiles2 PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME tutorial_10Minutes
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe  --batch 10MinuteTutorial.wxm)
+set_tests_properties(openMacFiles2 PROPERTIES TIMEOUT 60)
+
+add_test(
     NAME comment_begin
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch commentBegin.wxm)
@@ -538,24 +576,35 @@ add_test(
     COMMAND wxmaxima --gibberish --batch unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60 WILL_FAIL true)
 
-find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
-if(DESKTOP_FILE_VALIDATE_FOUND)
-    add_test(
-	NAME check_desktop_file
-	COMMAND desktop-file-validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.desktop)
-  set_tests_properties(check_desktop_file PROPERTIES TIMEOUT 60)
-else()
-  message(STATUS "desktop-file-validate not found => Skipping verifikation of the .desktop file")
+add_test(
+    NAME ipc_copypaste1
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --enableipc --batch ipc_copypaste1.wxm)
+set_tests_properties(ipc_copypaste1 PROPERTIES TIMEOUT 240)
+
+# This test times out in CI. There's some work to be done in IPC
+# code to make it do the right thing.
+add_test(
+    NAME ipc_copypaste2
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --enableipc --batch ipc_copypaste2.wxm)
+set_tests_properties(ipc_copypaste2 PROPERTIES TIMEOUT 60 DISABLED YES)
+
+find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
+add_test(
+    NAME check_desktop_file
+    COMMAND ${DESKTOP_FILE_VALIDATE} ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.desktop)
+set_tests_properties(check_desktop_file PROPERTIES TIMEOUT 60)
+if(NOT DESKTOP_FILE_VALIDATE)
+    set_tests_properties(check_desktop_file PROPERTIES DISABLED YES)
 endif()
 
-find_program(APPSTREAM_UTIL_FOUND appstream-util)
-if(APPSTREAM_UTIL_FOUND)
-    add_test(
-	NAME check_appstream_file
-	COMMAND appstream-util validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
-  set_tests_properties(check_appstream_file PROPERTIES TIMEOUT 600)
-else()
-  message(STATUS "appstream-util not found => Skipping verifikation of the appdata file")
+find_program(APPSTREAM_UTIL appstream-util)
+add_test(
+    NAME check_appstream_file
+    COMMAND ${APPSTREAM_UTIL} validate ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
+set_tests_properties(check_appstream_file PROPERTIES TIMEOUT 600)
+if(NOT APPSTREAM_UTIL)
+    set_tests_properties(check_appstream_file PROPERTIES DISABLED YES)
 endif()
-
 

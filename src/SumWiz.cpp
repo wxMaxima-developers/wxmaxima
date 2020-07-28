@@ -25,6 +25,9 @@ SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &tit
                const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, style)
 {
+  Connect(use_nusum_id, wxEVT_CHECKBOX,
+          wxCommandEventHandler(SumWiz::OnCheckbox), NULL, this);
+
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
@@ -128,7 +131,3 @@ void SumWiz::OnCheckbox(wxCommandEvent& WXUNUSED(event))
 {
   checkbox_1->Enable(!checkbox_2->GetValue());
 }
-
-BEGIN_EVENT_TABLE(SumWiz, wxDialog)
-                EVT_CHECKBOX(use_nusum_id, SumWiz::OnCheckbox)
-END_EVENT_TABLE()

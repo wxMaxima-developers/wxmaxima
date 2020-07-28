@@ -26,6 +26,7 @@
   This file declares the class ToolBar that represents wxMaxima's main tool bar.
  */
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
@@ -191,11 +192,11 @@ public:
   //! Get the cell style for new cells
   GroupType GetCellType();
   //! Set the cell style to show for the current cell
-  void SetCellStyle(int style);
+  void SetCellStyle(GroupType style);
   //! Called if there is no cell to show the style for
-  void UnsetCellStyle(){SetCellStyle(-1);}
+  void UnsetCellStyle(){SetCellStyle(GC_TYPE_INVALID);}
   //! Set the default cell style for new cells
-  void SetDefaultCellStyle(int style) { m_defaultCellStyle = style; }
+  void SetDefaultCellStyle(GroupType style) { m_defaultCellStyle = style; }
   //! The current style is the new style for new cells
   void SetDefaultCellStyle();
   //! Update the bitmaps on ppi changes.
@@ -260,7 +261,7 @@ private:
   //! The ppi rate.
   wxSize m_ppi;
   //! The default style for new cells.
-  int m_defaultCellStyle;
+  GroupType m_defaultCellStyle;
   //! The drop-down-box for text styles
   wxChoice *m_textStyle;
   //! The position in the current slideshow at the last call of UpdateSlider()

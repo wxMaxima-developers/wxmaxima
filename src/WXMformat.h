@@ -33,7 +33,7 @@ class wxTextBuffer;
 //! An identifier for each of the headers in a WXM file
 // This enum's elements must be synchronized with (GroupCell.h) GroupType
 enum WXMHeaderId {
-  WXM_INVALID = -1,
+  WXM_INVALID = GC_TYPE_INVALID,
   WXM_INPUT = GC_TYPE_CODE,
   WXM_TITLE = GC_TYPE_TITLE,
   WXM_SECTION = GC_TYPE_SECTION,

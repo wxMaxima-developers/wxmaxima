@@ -1,3 +1,15 @@
+# Current
+ * A massive performance update
+ * A new translation of the Turkish manual by Tufan Şirin
+ * Improved italian translation by Marco Ciampa
+ * An Russian translation update by OlesyaGerasimenko
+ * Better display of sqrt() cells
+ * Better display of fractions
+ * Nicer display of lists
+ * Made sure we read in the whole .mac file when opening .mac files
+ * Allow building wxMaxima, if pandoc or po4translate are not installed
+ * As always many small additional bug fixes
+
 # Why is wxMaxima able to open truncated wxmx files?
 
 .wxmx Files are technically .zip files like .pptx- files,

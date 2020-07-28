@@ -1,25 +1,94 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.06.5 ] */
+/* [ Created with wxMaxima version 20.07.0 ] */
 /* [wxMaxima: input   start ] */
-f(n):=sum(f[i](t),i,1,n)$
+f(n):=sum(f[i](f_i),i,1,n)$
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-f(3);
+'sum(f(1),f_i,f_1,f_2);
+'sum(f(10),f_i,f_1,f_2);
+'sum(f(100),f_i,f_1,f_2);
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-'sum(f(1),t,1,1);
-'sum(f(10),t,1,1);
-'sum(f(100),t,1,1);
-'prod(f(1),t,1,1);
-'prod(f(10),t,1,1);
-'prod(f(100),t,1,1);
+'lsum(f(1),f_i,y_i);
+'lsum(f(10),f_i,y_i);
+'lsum(f(100),f_i,y_i);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'prod(f(1),f_i,f_1,f_2);
+'prod(f(10),f_i,f_1,f_2);
+'prod(f(100),f_i,f_1,f_2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'sum(f(1)/g(1),t,1,1);
+'sum(f(10)/g(10),t,1,1);
+'sum(f(100)/g(100),t,1,1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'lsum(f(1)/g(1),t,yi);
+'lsum(f(10)/g(10),t,yi);
+'lsum(f(100)/g(100),t,yi);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'prod(f(1)/g(1),t_1,1,1);
+'prod(f(10)/g(10),t_1,1,1);
+'prod(f(100)/g(100),t_1,1,1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'sum(f(1),t_i,t_1,t_2);
+'sum(f(10),t_i,t_1,t_2);
+'sum(f(100),t_i,t_1,t_2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'lsum(f(1),t_1,yi);
+'lsum(f(10),t_1,yi);
+'lsum(f(100),t_1,yi);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'prod(f(1),f_i,1,1);
+'prod(f(10),f_i,1,1);
+'prod(f(100),f_i,1,1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'sum(f(1)/g(1),t,t_1,t_2);
+'sum(f(10)/g(10),t,t_1,t_2);
+'sum(f(100)/g(100),t,t_1,t_2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'lsum(f(1)/g(1),t_1,y_i);
+'lsum(f(10)/g(10),t_1,y_i);
+'lsum(f(100)/g(100),t_1,y_i);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'prod(f(1)/g(1),f_i,x_a,x_i);
+'prod(f(10)/g(10),f_i,x_a,x_i);
+'prod(f(100)/g(100),f_i,x_a,x_i);
 /* [wxMaxima: input   end   ] */
 
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.06.5"$
+"Created with wxMaxima 20.07.0"$

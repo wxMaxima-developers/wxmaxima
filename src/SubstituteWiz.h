@@ -22,6 +22,7 @@
 #ifndef SUBSTITUTEWIZ_H
 #define SUBSTITUTEWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 

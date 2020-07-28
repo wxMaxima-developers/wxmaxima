@@ -31,6 +31,7 @@
 #define WORKSHEET_H
 
 #include "stx/optional.hpp"
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>
@@ -38,6 +39,7 @@
 #include <wx/dc.h>
 #include <list>
 
+#include "CellPointers.h"
 #include "VariablesPane.h"
 #include "Notification.h"
 #include "Cell.h"
@@ -84,9 +86,15 @@ class Worksheet : public wxScrolled<wxWindow>
 {
 public:
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
+  //! Is an update of the worksheet controls needed?
+  bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
 private:
+  //! The storage for UpdateControlsNeeded()
+  bool m_updateControls = true;
+  //! Is a scroll to the cursor scheduled?
+  bool m_scrollToCaret;
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  Cell::CellPointers m_cellPointers;
+  CellPointers m_cellPointers;
   // The x position to scroll to
   int m_newxPosition;
   // The y position to scroll to
@@ -413,7 +421,7 @@ private:
   void AddLineToFile(wxTextFile &output, const wxString &s);
 
   //! Copy the currently selected cells
-  Cell *CopySelection(bool asData = false) const;
+  std::unique_ptr<Cell> CopySelection(bool asData = false) const;
 
   /*! Copy the currently given list of cells
 
@@ -429,7 +437,7 @@ private:
                This is accurately copied if asdata=false. But m_next and m_previous are
                treated as mere aliases of m_nextToDraw in this case.
   */
-  Cell *CopySelection(Cell *start, Cell *end, bool asData = false) const;
+  std::unique_ptr<Cell> CopySelection(Cell *start, Cell *end, bool asData = false) const;
 
   //! Get the coordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
@@ -479,8 +487,6 @@ private:
   void OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGC);
 
   void OnMouseMotion(wxMouseEvent &event);
-
-  void OnMouseWheel(wxMouseEvent &event);
 
   //! Is called on double click on a cell.
   void OnDoubleClick(wxMouseEvent &event);
@@ -667,9 +673,9 @@ public:
   int IndexSearchStartedAt()
   { return m_cellPointers.m_indexSearchStartedAt; }
 
-  Cell::CellPointers &GetCellPointers() { return m_cellPointers; }
+  CellPointers &GetCellPointers() { return m_cellPointers; }
 
-  Cell::CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
+  CellPointers::ErrorList &GetErrorList() { return m_cellPointers.m_errorList; }
   TextCell *GetCurrentTextCell() const { return m_cellPointers.m_currentTextCell; }
   void SetCurrentTextCell(TextCell *cell) { m_cellPointers.m_currentTextCell = cell; }
   void SetWorkingGroup(GroupCell *group) { m_cellPointers.SetWorkingGroup(group); }
@@ -892,7 +898,7 @@ public:
   void DestroyTree();
 
   //! Copies the worksheet's entire contents
-  GroupCell *CopyTree() const;
+  std::unique_ptr<GroupCell> CopyTree() const;
 
   /*! Insert group cells into the worksheet
 
@@ -919,7 +925,7 @@ public:
     If maxima isn't currently evaluating and therefore there is no working group
     the line is appended to m_last, instead.
   */
-  void InsertLine(Cell *newCell, bool forceNewLine = false);
+  void InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine = false);
 
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
@@ -1083,7 +1089,7 @@ public:
 
   wxSize CopyToFile(const wxString &file);
 
-  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, int scale = 1);
+  wxSize CopyToFile(const wxString &file, Cell *start, Cell *end, bool asData = false, double scale = 1);
 
   void CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, std::vector<int> &cellMap);
 
@@ -1108,10 +1114,10 @@ public:
   bool ExportToWXMX(const wxString &file, bool markAsSaved = true);
 
   //! The start of a RTF document
-  wxString RTFStart();
+  wxString RTFStart() const;
 
   //! The end of a RTF document
-  wxString RTFEnd();
+  wxString RTFEnd() const;
 
   //! export to a LaTeX file
   bool ExportToTeX(const wxString &file);
@@ -1157,9 +1163,15 @@ public:
 
   bool ActivateNextInput(bool input = false);
 
-  /*! Scrolls to the cursor
-  */
-  void ScrollToCaret();
+  //! Request to scroll to the cursor as soon as wxMaxima is idle
+  void ScrollToCaret()
+  {
+    m_cellPointers.m_scrollToCell = false;
+    m_scrollToCaret = true;
+  }
+
+  //! Scrolls to the cursor, if requested.
+  bool ScrollToCaretIfNeeded();
 
   //! Scrolls to the cell given by ScheduleScrollToCell; Is called once we have time to do so.
   void ScrollToCellIfNeeded();
@@ -1169,6 +1181,8 @@ public:
     {
       m_cellPointers.ScrollToCell(cell);
       m_scrollToTopOfCell = scrollToTop;
+      m_scrollToCaret = false;
+
       m_cellPointers.m_scrollToCell = true;
     }
 
@@ -1373,10 +1387,32 @@ public:
 
   void CommentSelection();
 
-  //! Called if the user is scrolling through the document.
+  /*! Called if the user is using the scrollbar for scrolling through the document
+
+    See also OnThumbtrack and OnMouseWheel
+   */
   void OnScrollChanged(wxScrollEvent &ev);
-  //! Called if the user uses the touchpad for scrolling
+  /*! Called if the user uses the touchpad for scrolling
+
+    Why we need to override this signal is that on Linux and at least on
+    wxGTK and wxWidgets 3.0+3.1 each single scroll step generates its own
+    thumbtrack event that forces an immediate scroll of the worksheet 
+    including an immediate redraw. It therefore is possible for an user 
+    to queue hundreds of thumbtrack events per seconds while wxMaxima's 
+    framerate (and event processing speed) might be considerably lower 
+    than that.
+
+    OnThumbtrack is a try to merge all scroll events until the idle task
+    redraws the worksheet.
+
+    See also OnMouseWheel and OnScrollChanged
+  */
   void OnThumbtrack(wxScrollWinEvent &ev);
+  /*! Called if the mouse wheel sents events
+
+    The virtual mouse wheel touchpads provide are handled by OnThumbtrack instead.
+   */
+  void OnMouseWheel(wxMouseEvent &event);
 
   /*! Do an incremental search from the cursor or the point the last search started at
 
@@ -1553,6 +1589,8 @@ protected:
   int m_pointer_y;
   //! Was there a mouse motion we didn't react to until now?
   bool m_mouseMotionWas;
+  //! Is there an active popup menu?
+  bool m_inPopupMenu = false;
 };
 
 inline Worksheet *Cell::GetWorksheet() const

@@ -1,0 +1,251 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
+/* [wxMaxima: title   start ]
+10 minute (wx)Maxima tutorial
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Welcome to wxMaxima! In this introductory tutorial you will
+learn the basics of wxMaxima and Maxima. Maxima is a CAS
+(Computer Algebra System) similar to systems like Mathematica,
+Maple and others. Maxima, however, is a commandline application,
+which makes it a bit harder to use than its younger cousins.
+Here is where wxMaxima comes in - it's a GUI (Graphical User
+Interface) for Maxima, made to make using Maxima simpler and
+more enjoyable.
+
+Let's start with some simple calculation examples! Below is 
+an input cell with a simple addition. Place the cursor in it
+and press SHIFT-ENTER to evaluate it.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+1 + 1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If you didn't get any errors, your Maxima is configured properly.
+If you did get an error, you should check wxMaxima configuration or
+visit wxMaxima website (http://wxmaxima.sourceforge.net/) for
+instructions on how to setup wxMaxima and Maxima properly!
+
+Assuming you've delt with your problems, let's do some more
+calculations (again - place the cursor in the input cell below
+and press SHIFT-ENTER to evaluate the code)!
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+5!;
+% * 10;
+%o1 * 100;
+1 / 3;
+1.0 / 3.0;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+In the input cell above, we've sent 5 "lines" to Maxima. Each line
+must end with a ";" or a "$". In case the line ends with a ";", Maxima
+will show the result of the line, while results of lines ending
+with "$" will be supressed. The "$" comes in handy when doing longer
+calculations. Note also that the result of "1/3" and "1.0/3.0" differ.
+That's because Maxima, unlike numerical matrix packages (Matlab etc.),
+tries to keep calculations precise - it does not evaluate 
+expressions like 1/3 or sqrt(2) unless asked to. In "1.0/3.0" we used
+floating point numbers, so Maxima didn't leave expression unevaluated.
+
+We can, however, tell Maxima we want a floating point aproximation
+of an expression. Evaluate the cell below and observe results.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(2 * %pi);
+float(%);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+In line "float(%);" we used the "%" symbol. This symbol always holds
+the result of the last evaluated line. Numbered symbols "%o1", "%o2"
+... hold the results as they appear when input cells are evaluated.
+We can also store, not only numbers, but whole expressions, in variables.
+Use "variable_name: value;" form to store value into "variable_name".
+Evaluate the cell below and observe.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+radius: 10 $
+height: 100 $
+area: %pi * radius^2;
+volume: area * height;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's evaluate the last result numerically:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+float(%);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+So far we've only used Maxima as a simple calculator. Now let's try
+some things not possible with a calculator. Indefinite and definite
+integrals:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+integrate( sin(x), x);
+integrate( sin(x), x, 0, %pi);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's define a function, evaluate it and integrate it!
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x) := x^2 + a$
+f(5);
+f(5), a = -5;
+integrate( f(var), var );
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Sometimes Maxima needs additional information to evaluate an expression
+and asks us a question. A cursor should appear automatically, indicating
+you need to answer a question. If it doesn't, write an answer below the
+cell and send it to Maxima with SHIFT-ENTER. Note: instead of answering
+with "positive;", you can only type "p". Below is an integral with
+a question:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+integrate( 1 / (x^2 + a), x);
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+<math><st>Is </st><mi>a</mi><st> positive or negative?</st></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+p;
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: autoanswer    ] */
+
+/* [wxMaxima: comment start ]
+We can also inform Maxima beforehand using the function "assume". To
+revert an assumption, use "forget".
+(Note: to get help on any function, just click on the function name
+and press F1. Try it.)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+assume(a > 0)$
+integrate( 1 / (x^2 + a), x);
+forget(a > 0)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Now that you've learned the basics, it's time for some general
+mathematical examples! Remember: if you want to know more about
+a specific function, click on it and press F1.
+
+Solving equations using solve:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve(a*x^2 + b*x + c = 0, x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Linear algebra. Use "matrix" to create matrices. Matrices can contain
+non-number expressions. Use "invert" to calculate an inverse and "."
+for matrix multiplication.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A: matrix([1,-1],
+          [1,sin(c)]);
+B: invert(A);
+
+A.B;
+ratsimp(A.B);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+In the last line we used "ratsimp" to simplify the result of "A.B".
+Maxima has a lot of different simplification functions, depending on
+what kind of simplification you want. Simplification is a complex
+topic and if you don't know anything about it, using "ratsimp" may
+be your best shot.
+
+Let's do a 2D and a 3D plot!
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxplot2d([sin(x), cos(x)], [x,0, 2*%pi]);
+wxplot3d( exp(-x^2 - y^2), [x,-2,2],[y,-2,2]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's try differenciation using "diff" function.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x) := x^2 $
+diff(f(x), x);
+g(y) := sin(y)$
+g(f(x));
+diff( g(f(x)) , x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Yes, Maxima knows about the chain rule!
+
+And for the end, let's solve an ODE of second order:
+y''(t) + omega^2 * y(t) = 0
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+assume(omega > 0);
+ode2( 'diff(y, t, 2) + omega^2 * y = 0, y, t );
+
+ic2(%, t = 0, y = amp, 'diff(y,t) = 0 );
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+You should now start exploring (wx)Maxima on your own. Remember 
+to press F1 often, if you want Maxima to help you solve your 
+mathematical problems!
+
+Enjoy using Maxima and wxMaxima!
+   [wxMaxima: comment end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.07.0-DevelopmentSnapshot"$

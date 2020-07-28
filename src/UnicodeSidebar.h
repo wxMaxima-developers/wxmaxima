@@ -25,6 +25,8 @@
   This file contains the definition of the class Unicodesidebar that allows to 
   select arbitrary unicode symbols.
  */
+#include "precomp.h"
+#include "RegexCtrl.h"
 #include <wx/wx.h>
 #include <wx/grid.h>
 
@@ -75,7 +77,7 @@ private:
   long m_charRightClickedOn;
   wxWindow *m_worksheet;
   wxGrid *m_grid;
-  wxTextCtrl *m_regex;
+  RegexCtrl *m_regex;
 };
 
 //! An event that simulates a keypress and can be issued by UnicodeSidebar

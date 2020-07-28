@@ -28,6 +28,7 @@ The header file for the xml cell parser
 #ifndef MATHPARSER_H
 #define MATHPARSER_H
 
+#include "precomp.h"
 #include <wx/xml/xml.h>
 
 #include <wx/filesys.h>
@@ -53,7 +54,7 @@ public:
      \todo I guess we could increase the performance further by putting the 
      most-frequently-used tags to the front of the list.
    */
-  MathParser(Configuration **cfg, const wxString &zipfile = {});
+  explicit MathParser(Configuration **cfg, const wxString &zipfile = {});
   //! This class doesn't have a copy constructor
   MathParser(const MathParser&) = delete;
   //! This class doesn't have a = operator
@@ -70,8 +71,9 @@ public:
    * Parse the node and return the corresponding tag.
    */
   
-  Cell *ParseTag(wxXmlNode *node, bool all = true);
-  Cell *ParseTagContents(wxXmlNode *node);
+  Cell *ParseTag_(wxXmlNode *node, bool all = true);
+  std::unique_ptr<Cell> ParseTag(wxXmlNode *node, bool all = true);
+  Cell *ParseRowTag(wxXmlNode *node);
 
 private:
   //! A storage for a tag and the function to call if one encounters it
@@ -115,7 +117,7 @@ private:
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group);
   //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
-  Cell *HandleNullPointer(Cell *cell);
+  std::unique_ptr<Cell> HandleNullPointer(std::unique_ptr<Cell> &&cell);
 
   /*! Get the next xml tag
 
@@ -269,6 +271,10 @@ private:
   Cell *ParseSubSupTag(wxXmlNode *node);
   //! Parse a pre-and-post-super-and-subscript cell tag to a Cell. 
   Cell *ParseMmultiscriptsTag(wxXmlNode *node);
+  //! Parse an Output tag telling that the math is from maxima. 
+  Cell *ParseOutputTag(wxXmlNode *node);
+  //! Parse an Matrix cell tag. 
+  Cell *ParseMtdTag(wxXmlNode *node);
   // @}
   //! The last user defined label
   wxString m_userDefinedLabel;
@@ -276,10 +282,11 @@ private:
   static wxRegEx m_graphRegex;
 
   CellType m_ParserStyle;
-  int m_FracStyle;
+  FracCell::FracType m_FracStyle;
   Configuration **m_configuration;
   bool m_highlight;
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
+  static wxString m_unknownXMLTagToolTip;
 };
 
 #endif // MATHPARSER_H

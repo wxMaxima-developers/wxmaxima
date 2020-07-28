@@ -23,6 +23,7 @@
 #ifndef PLOTFORMATWIZ_H
 #define PLOTFORMATWIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include "Configuration.h"

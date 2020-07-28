@@ -30,7 +30,9 @@
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
 #include "SlideShowCell.h"
+#include "CellPointers.h"
 #include "ImgCell.h"
+#include "StringUtils.h"
 
 #include <wx/quantize.h>
 #include <wx/imaggif.h>
@@ -50,31 +52,25 @@
 // cppcheck-suppress performance symbolName=filesystem
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, std::shared_ptr <wxFileSystem> filesystem, int framerate) :
     Cell(parent, config),
-    m_fileSystem(filesystem)
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_fileSystem(filesystem),
+    m_framerate(framerate),
+    m_imageBorderWidth(Scale_Px(1))
 {
-  m_animationRunning = true;
-  m_size = m_displayed = 0;
+  InitBitFields();
   m_type = MC_TYPE_SLIDE;
-  m_framerate = framerate;
-  m_imageBorderWidth = Scale_Px(1);
-  m_drawBoundingBox = false;
-  if (m_animationRunning)
-    ReloadTimer();
-  m_width = m_height = -1;
+  ReloadTimer();
 }
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, int framerate) :
-    Cell(parent, config)
+    Cell(parent, config),
+    m_timer(m_cellPointers->GetWorksheet(), wxNewId()),
+    m_framerate(framerate),
+    m_imageBorderWidth(Scale_Px(1))
 {
-  m_width = m_height = -1;
-  m_animationRunning = true;
-  m_size = m_displayed = 0;
+  InitBitFields();
   m_type = MC_TYPE_SLIDE;
-  m_framerate = framerate;
-  m_imageBorderWidth = Scale_Px(1);
-  m_drawBoundingBox = false;
-  if (m_animationRunning)
-    ReloadTimer();
+  ReloadTimer();
 }
 
 SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxMemoryBuffer &image, const wxString &WXUNUSED(type)):
@@ -91,6 +87,10 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxString &
     wxRemoveFile(image);
 }
 
+std::unique_ptr<Cell> SlideShow::Copy() const
+{
+  return std::make_unique<SlideShow>(*this);
+}
 
 int SlideShow::GetFrameRate() const
 {
@@ -116,7 +116,7 @@ void SlideShow::ReloadTimer()
   if (!m_timer.IsRunning())
   {
     // Tell MathCtrl about our timer.
-    m_cellPointers->m_slideShowTimers[this] = m_timer.GetId();
+    m_cellPointers->SetTimerIdForCell(this, m_timer.GetId());
     m_timer.StartOnce(1000 / GetFrameRate());
   }
 }
@@ -124,7 +124,7 @@ void SlideShow::ReloadTimer()
 void SlideShow::StopTimer()
 {
   m_timer.Stop();
-  m_cellPointers->m_slideShowTimers.erase(this);
+  m_cellPointers->RemoveTimerIdForCell(this);
 }
 
 void SlideShow::AnimationRunning(bool run)
@@ -239,7 +239,7 @@ SlideShow::SlideShow(const SlideShow &cell):
 SlideShow::~SlideShow()
 {
   StopTimer();
-  ClearCache();
+  SlideShow::ClearCache();
 }
 
 void SlideShow::SetDisplayedIndex(int ind)
@@ -250,7 +250,7 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(int fontsize)
+void SlideShow::Recalculate(AFontSize fontsize)
 {
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
@@ -279,13 +279,7 @@ void SlideShow::RecalculateWidths(int fontsize)
     }
   }       
   m_center = m_height / 2;
-  Cell::RecalculateWidths(fontsize);
-}
-
-void SlideShow::RecalculateHeight(int fontsize)
-{
-  Cell::RecalculateHeight(fontsize);
-  // The rest is already done on recalculating the width.
+  Cell::Recalculate(fontsize);
 }
 
 void SlideShow::Draw(wxPoint point)
@@ -348,22 +342,22 @@ void SlideShow::Draw(wxPoint point)
   m_drawBoundingBox = false;
 }
 
-wxString SlideShow::ToString()
+wxString SlideShow::ToString() const
 {
   return wxT(" << Animation >> ");
 }
 
-wxString SlideShow::ToMatlab()
+wxString SlideShow::ToMatlab() const
 {
   return wxT(" << Animation >> ");
 }
 
-wxString SlideShow::ToTeX()
+wxString SlideShow::ToTeX() const
 {
   return wxT(" << Graphics >> ");
 }
 
-wxString SlideShow::ToXML()
+wxString SlideShow::ToXML() const
 {
   wxString images;
   wxString gnuplotSourceFiles;
@@ -446,7 +440,7 @@ wxSize SlideShow::ToImageFile(wxString file)
   return m_images[m_displayed]->ToImageFile(file);
 }
 
-wxString SlideShow::ToRTF()
+wxString SlideShow::ToRTF() const
 {
   // Animations aren't supported by RTF so we just export the currently shown
   // image.
@@ -495,22 +489,16 @@ wxString SlideShow::ToRTF()
 }
 
 
-wxString SlideShow::GetToolTip(const wxPoint &point)
+const wxString &SlideShow::GetToolTip(const wxPoint point) const
 {
-  if(ContainsPoint(point))
-  {
-    m_cellPointers->m_cellUnderPointer = this;
-    if(!IsOk())
-      return(_("The image could not be displayed. It may be broken, in a wrong format or "
-               "be the result of gnuplot not being able to write the image or not being "
-               "able to understand what maxima wanted to plot.\n"
-               "One example of the latter would be: Gnuplot refuses to plot entirely "
-               "empty images"));
-    else
-      return m_toolTip;
-  }
-  else
-    return wxEmptyString;
+  if (!ContainsPoint(point))
+    return wxm::emptyString;
+
+  m_cellPointers->m_cellUnderPointer = const_cast<SlideShow*>(this);
+  if (!IsOk())
+    return Image::GetBadImageToolTip();
+
+  return GetLocalToolTip();
 }
 
 wxSize SlideShow::ToGif(wxString file)
@@ -559,7 +547,7 @@ SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCus
           str.GetOutputStreamBuffer()->GetBufferStart());
 }
 
-bool SlideShow::CopyToClipboard()
+bool SlideShow::CopyToClipboard() const
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())

@@ -27,6 +27,7 @@
 #ifndef LICENSEDIALOG_H
 #define LICENSEDIALOG_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/button.h>
 #include <wx/dialog.h>

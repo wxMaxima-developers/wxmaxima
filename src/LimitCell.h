@@ -32,58 +32,64 @@
 #include "Cell.h"
 #include "TextCell.h"
 
+/* ! The cell type that represents a <code>limit</code> command
+
+   \todo If the limit text is very short we should add more space
+   between the "lim" and the following text.
+ */
 class LimitCell final : public Cell
 {
 public:
   LimitCell(GroupCell *parent, Configuration **config);
   LimitCell(const LimitCell &cell);
-  Cell *Copy() const override { return new LimitCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  void SetBase(Cell *base);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetUnder(std::unique_ptr<Cell> &&under);
+  void SetName(std::unique_ptr<Cell> &&name);
 
-  void SetUnder(Cell *under);
-
-  void SetName(Cell *name);
-
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToMathML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for LimitCells"));}
 
 private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_base;
   std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_name;
   std::unique_ptr<Cell> m_open;
   std::unique_ptr<Cell> m_comma;
   std::unique_ptr<Cell> m_close;
-  CellPtr<Cell> m_name_last;
-  CellPtr<Cell> m_base_last;
-  CellPtr<Cell> m_under_last;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // LIMITCELL_H

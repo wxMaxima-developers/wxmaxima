@@ -57,32 +57,25 @@ class AbsCell final : public Cell
 public:
   AbsCell(GroupCell *parent, Configuration **config);
   AbsCell(const AbsCell &cell);
-  Cell *Copy() const override { return new AbsCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }
 
-  void SetInner(Cell *inner);
+  void SetInner(std::unique_ptr<Cell> &&inner);
 
   bool BreakUp() override;
 
-  void RecalculateHeight(int fontsize) override;
-  
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
-
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToMathML() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
@@ -91,14 +84,22 @@ private:
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The contents of the abs() command
   std::unique_ptr<Cell> m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
   std::unique_ptr<Cell> m_open;
   //! The cell containing the closing parenthesis
   std::unique_ptr<Cell> m_close;
-  //! The last element of m_innerCell
-  CellPtr<Cell> m_last;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // ABSCELL_H

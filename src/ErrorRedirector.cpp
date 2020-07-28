@@ -63,7 +63,7 @@ void ErrorRedirector::SetLogThis()
 {
   m_logOwned.reset();
   m_logNew = this;
-  assert(!m_logNew || m_logOwned.get() == m_logNew || (!m_logOwned && m_logNew == this));
+  assert(!m_logNew || m_logOwned.get() == m_logNew || (!m_logOwned && m_logNew == this)); //-V614
 }
 
 void ErrorRedirector::DoLogRecord(wxLogLevel level,

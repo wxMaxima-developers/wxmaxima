@@ -23,6 +23,7 @@
 #ifndef SUBSUPCELL_H
 #define SUBSUPCELL_H
 
+#include "precomp.h"
 #include <memory>
 #include "Cell.h"
 
@@ -31,58 +32,61 @@ class SubSupCell final : public Cell
 public:
   SubSupCell(GroupCell *parent, Configuration **config);
   SubSupCell(const SubSupCell &cell);
-  Cell *Copy() const override { return new SubSupCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_preSupCell); }
 
-  void SetBase(Cell *base);
-
-  void SetIndex(Cell *index);
-
-  void SetExponent(Cell *expt);
-
-  void SetPreSub(Cell *index);
-
-  void SetPreSup(Cell *index);
-
-  void SetPostSub(Cell *index);
-
-  void SetPostSup(Cell *index);
+  void SetBase(std::unique_ptr<Cell> &&base);
+  void SetIndex(std::unique_ptr<Cell> &&index);
+  void SetExponent(std::unique_ptr<Cell> &&expt);
+  void SetPreSub(std::unique_ptr<Cell> &&index);
+  void SetPreSup(std::unique_ptr<Cell> &&index);
+  void SetPostSub(std::unique_ptr<Cell> &&index);
+  void SetPostSup(std::unique_ptr<Cell> &&index);
   
-  void RecalculateHeight(int fontsize) override;
-
-  void RecalculateWidths(int fontsize) override;
+  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
-  wxString ToString() override;
+  wxString ToMathML() const override;
+  wxString ToMatlab() const override;
+  wxString ToOMML() const override;
+  wxString ToString() const override;
+  wxString ToTeX() const override;
+  wxString ToXML() const override;
 
-  wxString ToMatlab() override;
-
-  wxString ToTeX() override;
-
-  wxString ToXML() override;
-
-  wxString ToOMML() override;
-
-  wxString ToMathML() override;
+  void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
+  const wxString GetAltCopyText() const override { return m_altCopyText; }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  //! Text that should end up on the clipboard if this cell is copied as text.
+  wxString m_altCopyText;
+
+  //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
+  //! nor SetExponent.
+  std::vector<CellPtr<Cell>> m_scriptCells;
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   std::unique_ptr<Cell> m_baseCell;
   std::unique_ptr<Cell> m_postSubCell;
   std::unique_ptr<Cell> m_postSupCell;
   std::unique_ptr<Cell> m_preSubCell;
   std::unique_ptr<Cell> m_preSupCell;
-  //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
-  //! nor SetExponent.
-  std::vector<CellPtr<Cell>> m_scriptCells;
+  // The pointers above point to inner cells and must be kept contiguous.
+
+//** Bitfield objects (0 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+  }
 };
 
 #endif // SUBSUPCELL_H

@@ -29,7 +29,6 @@
 #include "TableOfContents.h"
 
 #include <wx/sizer.h>
-#include <wx/regex.h>
 
 TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **config) : wxPanel(parent, id)
 {
@@ -40,7 +39,7 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
           wxLC_SINGLE_SEL | wxLC_ALIGN_LEFT | wxLC_REPORT | wxLC_NO_HEADER
   );
   m_displayedItems->AppendColumn(wxEmptyString);
-  m_regex = new wxTextCtrl(this, structure_regex_id);
+  m_regex = new RegexCtrl(this, structure_regex_id);
 
   // A box whose 1st row is growable 
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
@@ -54,7 +53,7 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
-  Connect(structure_regex_id, wxEVT_TEXT, wxCommandEventHandler(TableOfContents::OnRegExEvent));
+  m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(TableOfContents::OnRegExEvent), NULL, this);
   Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));
   Connect(wxEVT_LIST_ITEM_RIGHT_CLICK, wxListEventHandler(TableOfContents::OnMouseRightDown));
 }
@@ -124,12 +123,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
 
 void TableOfContents::UpdateDisplay()
 {
-  wxString regex = m_regex->GetValue();
   wxArrayString items;
-  wxRegEx matcher;
-
-  if (regex != wxEmptyString)
-    matcher.Compile(regex);
 
   // Create a wxArrayString containing all section/chapter/... titles we want
   // to display
@@ -175,15 +169,10 @@ void TableOfContents::UpdateDisplay()
     // Respecting linebreaks doesn't make much sense here.
     curr.Replace(wxT("\n"), wxT(" "));
 
-    if (regex.Length() > 0 && matcher.IsValid())
-    {
-      if (matcher.Matches(curr))
-        items.Add(curr);
-    }
-    else
+    if (m_regex->Matches(curr))
       items.Add(curr);
   }
-
+  
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
   if ((items != m_items_old) || (items.GetCount() == 0))
   {
@@ -211,12 +200,7 @@ void TableOfContents::UpdateDisplay()
 
 GroupCell *TableOfContents::GetCell(int index)
 {
-  wxRegEx matcher;
   int currentIndex = -1;
-  wxString regex = m_regex->GetValue();
-
-  if (regex != wxEmptyString)
-    matcher.Compile(regex);
 
   for (unsigned int i = 0; i < m_structure.size(); i++)
   {
@@ -257,15 +241,9 @@ GroupCell *TableOfContents::GetCell(int index)
     // Respecting linebreaks doesn't make much sense here.
     curr.Replace(wxT("\n"), wxT(" "));
 
-    if (regex.Length() > 0)
-    {
-      if ((matcher.IsValid()) && ((matcher.Matches(curr))))
-        currentIndex++;
-    }
-
-    else
+    if (m_regex->Matches(curr))
       currentIndex++;
-
+    
     if (currentIndex == index)
     {
       return m_structure[i];

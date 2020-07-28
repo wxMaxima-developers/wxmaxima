@@ -60,7 +60,7 @@ void XmlInspector::Clear()
   m_updateNeeded = true;
 }
 
-void XmlInspector::Update()
+void XmlInspector::UpdateContents()
 {
   if(!m_updateNeeded)
     return;

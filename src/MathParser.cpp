@@ -36,6 +36,7 @@
 #include "SubCell.h"
 #include "SqrtCell.h"
 #include "LimitCell.h"
+#include "ListCell.h"
 #include "MatrCell.h"
 #include "ParenCell.h"
 #include "AbsCell.h"
@@ -46,14 +47,18 @@
 #include "IntCell.h"
 #include "FunCell.h"
 #include "ImgCell.h"
+#include "LabelCell.h"
+#include "LongNumberCell.h"
 #include "SubSupCell.h"
+#include "StringUtils.h"
+#include "VisiblyInvalidCell.h"
 #include "SlideShowCell.h"
 
 /*! Calls a member function from a function pointer
 
   \todo Replace this by a C++17 construct when we switch to C++17
  */
-#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))         
+#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
 
 wxXmlNode *MathParser::SkipWhitespaceNode(wxXmlNode *node)
 {
@@ -81,6 +86,10 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
 
 MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
 {
+  // We cannot do this at the startup of the program as we first need to wait
+  // for the language selection to take place
+  if(m_unknownXMLTagToolTip.IsEmpty())
+    m_unknownXMLTagToolTip = _("Encountered an unknown XML tag: <%s>");
   m_configuration = cfg;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;
@@ -114,8 +123,8 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
     m_innerTags[wxT("ie")] = &MathParser::ParseSubSupTag;
     m_innerTags[wxT("mmultiscripts")] = &MathParser::ParseMmultiscriptsTag;
     m_innerTags[wxT("lm")] = &MathParser::ParseLimitTag;
-    m_innerTags[wxT("r")] = &MathParser::ParseTagContents;
-    m_innerTags[wxT("mrow")] = &MathParser::ParseTagContents;
+    m_innerTags[wxT("r")] = &MathParser::ParseRowTag;
+    m_innerTags[wxT("mrow")] = &MathParser::ParseRowTag;
     m_innerTags[wxT("tb")] = &MathParser::ParseTableTag;
     m_innerTags[wxT("mth")] = &MathParser::ParseMthTag;
     m_innerTags[wxT("line")] = &MathParser::ParseMthTag;
@@ -128,6 +137,9 @@ MathParser::MathParser(Configuration **cfg, const wxString &zipfile)
     m_innerTags[wxT("editor")] = &MathParser::ParseEditorTag;
     m_innerTags[wxT("cell")] = &MathParser::ParseCellTag;
     m_innerTags[wxT("ascii")] = &MathParser::ParseCharCode;
+    m_innerTags[wxT("output")] = &MathParser::ParseOutputTag;
+    m_innerTags[wxT("mtd")] = &MathParser::ParseMtdTag;
+    m_innerTags[wxT("math")] = &MathParser::ParseMthTag;
   }
   if(m_groupTags.empty())
   {
@@ -156,16 +168,49 @@ MathParser::~MathParser()
 Cell *MathParser::ParseHiddenOperatorTag(wxXmlNode *node)
 {
   Cell *retval = ParseText(node->GetChildren());
-  retval->m_isHidableMultSign = true;
+  retval->SetHidableMultSign(true);
   return retval;
 }
 
-Cell *MathParser::ParseTagContents(wxXmlNode *node)
+Cell *MathParser::ParseOutputTag(wxXmlNode *node)
 {
-  Cell *tmp = NULL;
-  if((node != NULL) && (node->GetChildren() != NULL))
-    tmp = ParseTag(node->GetChildren(), true);
-  return tmp;
+  Cell *retval = NULL;
+  wxXmlNode *children = node->GetChildren();
+  if(children)
+    retval = ParseTag_(children);
+  return retval;
+}
+
+Cell *MathParser::ParseMtdTag(wxXmlNode *node)
+{
+  Cell *retval = NULL;
+  wxXmlNode *children = node->GetChildren();
+  if(children)
+    retval = ParseTag_(children);
+  return retval;
+}
+
+Cell *MathParser::ParseRowTag(wxXmlNode *node)
+{
+  if (node->GetAttribute(wxT("list")) == wxT("true"))
+  {
+    wxXmlNode *child = node->GetChildren();
+    child = SkipWhitespaceNode(child);
+    ListCell *cell = new ListCell(NULL, m_configuration);
+    // No special Handling for NULL args here: They are completely legal in this case.
+    cell->SetInner(ParseTag(child, true), m_ParserStyle);
+    cell->SetHighlight(m_highlight);
+    cell->SetStyle(TS_VARIABLE);
+    ParseCommonAttrs(node, cell);
+    return cell;
+  }
+  else
+  {
+    Cell *tmp = NULL;
+    if((node != NULL) && (node->GetChildren() != NULL))
+      tmp = ParseTag_(node->GetChildren(), true);
+    return tmp;
+  }
 }
 
 Cell *MathParser::ParseHighlightTag(wxXmlNode *node)
@@ -173,19 +218,24 @@ Cell *MathParser::ParseHighlightTag(wxXmlNode *node)
   Cell *tmp;
   bool highlight = m_highlight;
   m_highlight = true;
-  tmp = ParseTag(node->GetChildren());
+  tmp = ParseTag_(node->GetChildren());
   m_highlight = highlight;
   return tmp;
 }
 
 Cell *MathParser::ParseMiscTextTag(wxXmlNode *node)
 {
-  TextStyle style = TS_DEFAULT;
-  if (node->GetAttribute(wxT("type")) == wxT("error"))
-    style = TS_ERROR;
-  if (node->GetAttribute(wxT("type")) == wxT("warning"))
-    style = TS_WARNING;
-  return ParseText(node->GetChildren(), style);
+  if (node->GetAttribute(wxT("listdelim")) == wxT("true"))
+    return NULL;
+  else
+  {
+    TextStyle style = TS_DEFAULT;
+    if (node->GetAttribute(wxT("type")) == wxT("error"))
+      style = TS_ERROR;
+    if (node->GetAttribute(wxT("type")) == wxT("warning"))
+      style = TS_WARNING;
+    return ParseText(node->GetChildren(), style);
+  }
 }
 
 Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
@@ -224,24 +274,23 @@ Cell *MathParser::ParseSlideshowTag(wxXmlNode *node)
       numImgs++;
     }
   }
-  if (slideShow)
+
+  slideShow->LoadImages(images, del);
+  wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
+  wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
+  for(int i=0; i<numImgs; i++)
   {
-    slideShow->LoadImages(images, del);
-    wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
-    wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
-    for(int i=0; i<numImgs; i++)
+    if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
     {
-      if((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens()))
-      {
-        slideShow->GnuplotSource(
-          i,
-          gnuplotFiles.GetNextToken(),
-          dataFiles.GetNextToken(),
-          m_fileSystem
-          );
-      }
+      slideShow->GnuplotSource(
+        i,
+        gnuplotFiles.GetNextToken(),
+        dataFiles.GetNextToken(),
+        m_fileSystem
+        );
     }
   }
+
   return slideShow;
 }
 
@@ -256,9 +305,8 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
   {
     if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
     {
-      std::shared_ptr <wxFileSystem> noFS;
       if (wxImage::GetImageCount(filename) < 2)
-        imageCell = new ImgCell(NULL, m_configuration, filename, noFS, true);
+        imageCell = new ImgCell(NULL, m_configuration, filename, {}/*system fs*/, true);
       else
         return new SlideShow(NULL, m_configuration, filename, true);
     }
@@ -271,9 +319,8 @@ Cell *MathParser::ParseImageTag(wxXmlNode *node)
         (wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + filename))
         )
         filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
-      std::shared_ptr <wxFileSystem> noFS;
       if (wxImage::GetImageCount(filename) < 2)
-        imageCell = new ImgCell(NULL, m_configuration, filename, noFS, false);
+        imageCell = new ImgCell(NULL, m_configuration, filename, {}/* system fs */, false);
       else
         return new SlideShow(NULL, m_configuration, filename, false);
     }
@@ -326,7 +373,7 @@ Cell *MathParser::ParseOutputLabelTag(wxXmlNode *node)
     }
   }
   
-  dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(user_lbl);
+  dynamic_cast<LabelCell *>(tmp)->SetUserDefinedLabel(user_lbl);
   tmp->ForceBreakLine(true);
   return tmp;
 }
@@ -335,7 +382,7 @@ Cell *MathParser::ParseOutputLabelTag(wxXmlNode *node)
 Cell *MathParser::ParseMthTag(wxXmlNode *node)
 {
   Cell *retval;
-  retval = ParseTag(node->GetChildren());
+  retval = ParseTag_(node->GetChildren());
   if (retval != NULL)
     retval->ForceBreakLine(true);
   else
@@ -382,7 +429,7 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
       Cell *last = NULL;
       while (xmlcells)
       {
-        Cell *cell = ParseTag(xmlcells, false);
+        Cell *cell = ParseTag_(xmlcells, false);
         
         if (cell == NULL)
           continue;
@@ -420,7 +467,7 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     children = GetNextTag(children);
   }
 
-  group->SetGroup(group);
+  group->SetGroup(group); //-V678
   group->Hide(hide);
   return group;
 }
@@ -437,9 +484,9 @@ GroupCell *MathParser::GroupCellFromSubsectionTag(wxXmlNode *node)
   if ((sectioning_level == wxT("0")) || (sectioning_level == wxT("3")))
     group = new GroupCell(m_configuration, GC_TYPE_SUBSECTION);
   if (sectioning_level == wxT("4"))
-    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION);
+    group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION); //-V773
   if (sectioning_level == wxT("5"))
-    group = new GroupCell(m_configuration, GC_TYPE_HEADING5);
+    group = new GroupCell(m_configuration, GC_TYPE_HEADING5); //-V773
   if (group == NULL)
     group = new GroupCell(m_configuration, GC_TYPE_HEADING6);
   ParseCommonGroupCellAttrs(node, group);
@@ -474,18 +521,18 @@ GroupCell *MathParser::GroupCellFromCodeTag(wxXmlNode *node)
   return group;
 }
 
-
-Cell *MathParser::HandleNullPointer(Cell *cell)
+std::unique_ptr<Cell> MathParser::HandleNullPointer(std::unique_ptr<Cell> &&cell)
 {
-  if (cell == NULL)
+  auto tmp = std::move(cell);
+  if (!tmp)
   {
-    cell = new TextCell(NULL, m_configuration, _("Bug: Missing contents"));
-    cell->SetToolTip(_("The xml data from maxima or from the .wxmx file was missing data here.\n"
-                       "If you find a way how to reproduce this problem please file a bug "
-                       "report against wxMaxima."));
-    cell->SetStyle(TS_ERROR);
+    tmp = std::make_unique<VisiblyInvalidCell>(nullptr, m_configuration);
+    tmp->SetToolTip(&T_("The xml data from maxima or from the .wxmx file was missing data here.\n"
+                        "If you find a way how to reproduce this problem please file a bug "
+                        "report against wxMaxima."));
+    tmp->SetStyle(TS_ERROR);
   }
-  return (cell);
+  return tmp;
 }
 
 Cell *MathParser::ParseEditorTag(wxXmlNode *node)
@@ -554,7 +601,7 @@ Cell *MathParser::ParseDiffTag(wxXmlNode *node)
   child = SkipWhitespaceNode(child);
   if (child)
   {
-    int fc = m_FracStyle;
+    auto fc = m_FracStyle;
     m_FracStyle = FracCell::FC_DIFF;
 
     diff->SetDiff(HandleNullPointer(ParseTag(child, false)));
@@ -577,19 +624,21 @@ Cell *MathParser::ParseSupTag(wxXmlNode *node)
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
-  Cell *baseCell;
-    expt->SetBase(baseCell = HandleNullPointer(ParseTag(child, false)));
+  auto base = HandleNullPointer(ParseTag(child, false));
+  auto baseText = base->ToString();
+  expt->SetBase(std::move(base));
   child = GetNextTag(child);
 
-  Cell *power = HandleNullPointer(ParseTag(child, false));
+  auto power = HandleNullPointer(ParseTag(child, false));
   power->SetExponentFlag();
-  expt->SetPower(power);
+  auto powerText = power->ToString();
+  expt->SetPower(std::move(power));
   expt->SetType(m_ParserStyle);
   expt->SetStyle(TS_VARIABLE);
 
   ParseCommonAttrs(node, expt);
   if(node->GetAttribute(wxT("mat"), wxT("false")) == wxT("true"))
-    expt->SetAltCopyText(baseCell->ToString()+wxT("^^")+power->ToString());
+    expt->SetAltCopyText(baseText + wxT("^^") + powerText);
 
   return expt;
 }
@@ -606,29 +655,29 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
   {
     while(child != NULL)
     {
-      Cell *cell = HandleNullPointer(ParseTag(child, false));
+      auto cell = HandleNullPointer(ParseTag(child, false));
       pos = child->GetAttribute("pos", wxEmptyString);
       if(pos == "presub")
-        subsup->SetPreSub(cell);
+        subsup->SetPreSub(std::move(cell));
       if(pos == "presup")
-        subsup->SetPreSup(cell);
+        subsup->SetPreSup(std::move(cell));
       if(pos == "postsup")
-        subsup->SetPostSup(cell);
+        subsup->SetPostSup(std::move(cell));
       if(pos == "postsub")
-        subsup->SetPostSub(cell);
+        subsup->SetPostSub(std::move(cell));
       child = SkipWhitespaceNode(child);
       child = GetNextTag(child);
     }
   }
   else
   {
-    Cell *index = HandleNullPointer(ParseTag(child, false));
+    auto index = HandleNullPointer(ParseTag(child, false));
     index->SetExponentFlag();
-    subsup->SetIndex(index);
+    subsup->SetIndex(std::move(index));
     child = GetNextTag(child);
-    Cell *power = HandleNullPointer(ParseTag(child, false));
+    auto power = HandleNullPointer(ParseTag(child, false));
     power->SetExponentFlag();
-    subsup->SetExponent(power);
+    subsup->SetExponent(std::move(power));
     subsup->SetType(m_ParserStyle);
     subsup->SetStyle(TS_VARIABLE);
     ParseCommonAttrs(node, subsup);
@@ -680,9 +729,9 @@ Cell *MathParser::ParseSubTag(wxXmlNode *node)
   child = SkipWhitespaceNode(child);
   sub->SetBase(HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
-  Cell *index = HandleNullPointer(ParseTag(child, false));
-  sub->SetIndex(index);
+  auto index = HandleNullPointer(ParseTag(child, false));
   index->SetExponentFlag();
+  sub->SetIndex(std::move(index));
   sub->SetType(m_ParserStyle);
   sub->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, sub);
@@ -718,7 +767,9 @@ Cell *MathParser::ParseFunTag(wxXmlNode *node)
   fun->SetArg(HandleNullPointer(ParseTag(child, false)));
   ParseCommonAttrs(node, fun);
   if (fun->ToString().Contains(")("))
-    fun->SetToolTip(_("If this isn't a function returning a lambda() expression a multiplication sign (*) between closing and opening parenthesis is missing here."));
+    fun->SetToolTip(&T_("If this isn't a function returning a lambda() "
+                        "expression a multiplication sign (*) between closing "
+                        "and opening parenthesis is missing here."));
   return fun;
 }
 
@@ -733,7 +784,23 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
     wxStringTokenizer lines(str, wxT('\n'));
     while (lines.HasMoreTokens())
     {
-      TextCell *cell = new TextCell(NULL, m_configuration);
+      TextCell *cell;
+      wxString value = lines.GetNextToken();
+      if(style == TS_NUMBER)
+      {
+        if(value.Length() >= 20)
+          cell = new LongNumberCell(NULL, m_configuration, value);
+        else
+          cell = new TextCell(NULL, m_configuration, value, style);
+      }
+      else if((style == TS_LABEL) ||
+              (style == TS_USERLABEL) ||
+              (style == TS_MAIN_PROMPT) ||
+              (style == TS_OTHER_PROMPT))
+        cell = new LabelCell(NULL, m_configuration, value, style);
+      else
+        cell = new TextCell(NULL, m_configuration, value, style);
+
       switch(style)
       {
       case TS_ERROR:
@@ -745,9 +812,6 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
         break;
 
       case TS_LABEL:
-        cell->SetType(MC_TYPE_LABEL);
-        break;
-
       case TS_USERLABEL:
         cell->SetType(MC_TYPE_LABEL);
         break;
@@ -755,10 +819,8 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
       default:
         cell->SetType(m_ParserStyle);
       }
-      cell->SetStyle(style);
       
       cell->SetHighlight(m_highlight);
-      cell->SetValue(lines.GetNextToken());
       if (retval == NULL)
         retval = cell;
       else
@@ -787,9 +849,9 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
     cell->ForceBreakLine(true);
 
   wxString val;
-  
-  if(node->GetAttribute(wxT("tooltip"), &val))
-    cell->SetToolTip(val);
+  if (node->GetAttribute(wxT("tooltip"), &val))
+    if (!val.empty())
+      cell->SetToolTip(std::move(val));
   if(node->GetAttribute(wxT("altCopy"), &val))
     cell->SetAltCopyText(val);
 }
@@ -989,12 +1051,11 @@ Cell *MathParser::ParseTableTag(wxXmlNode *node)
   return matrix;
 }
 
-Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
+Cell *MathParser::ParseTag_(wxXmlNode *node, bool all)
 {
   Cell *retval = NULL;
   Cell *cell = NULL;
   bool warning = all;
-  wxString altCopy;
 
   node = SkipWhitespaceNode(node);
 
@@ -1010,13 +1071,15 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
 
       Cell * (MathParser::* function)(wxXmlNode *node) = m_innerTags[tagName];
       if (function != NULL)
-          tmp =  CALL_MEMBER_FN(*this, function)(node);
+        tmp =  CALL_MEMBER_FN(*this, function)(node);
+//      if ((tmp == NULL) && (node->GetChildren()))
+//        tmp = ParseTag(node->GetChildren());
 
-      if ((tmp == NULL) && (node->GetChildren()))
-        tmp = ParseTag(node->GetChildren());
+      if((tmp == NULL) && ((node->GetAttribute(wxT("listdelim")) != wxT("true"))))
+        tmp = new VisiblyInvalidCell(NULL, m_configuration,
+                                     wxString::Format(m_unknownXMLTagToolTip, tagName.utf8_str()));
 
-      // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
-      if (tmp != NULL)
+      if(tmp != NULL)
       {
         ParseCommonAttrs(node, tmp);
         if (cell == NULL)
@@ -1048,7 +1111,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       wxString name;
       name.Trim(true);
       name.Trim(false);
-      if (cell != NULL) name = cell->ToString();
+      name = cell->ToString();
       if (name.Length() != 0)
       {
         LoggingMessageBox(_("Parts of the document will not be loaded correctly:\nFound unknown XML Tag name " + name),
@@ -1065,6 +1128,11 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
   }
 
   return retval;
+}
+
+std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)
+{
+  return std::unique_ptr<Cell>(ParseTag_(node, all));
 }
 
 Cell *MathParser::ParseLine(wxString s, CellType style)
@@ -1108,16 +1176,14 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
     wxXmlNode *doc = xml.GetRoot();
 
     if (doc != NULL)
-      cell = ParseTag(doc->GetChildren());
+      cell = ParseTag_(doc->GetChildren());
   }
   else
   {
     cell = new TextCell(NULL, m_configuration,
-                        _("(Expression longer than allowed by the configuration setting)"),
-      TS_WARNING);
-    cell->SetToolTip(_("The maximum size of the expressions wxMaxima is allowed to display "
-                       "can be changed in the configuration dialogue."
-                       ));
+                        T_("(Expression longer than allowed by the configuration setting)"), TS_WARNING);
+    cell->SetToolTip(&T_("The maximum size of the expressions wxMaxima is allowed to display "
+                         "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
   return cell;
@@ -1126,4 +1192,4 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
 wxRegEx MathParser::m_graphRegex(wxT("[[:cntrl:]]"));
 MathParser::MathCellFunctionHash MathParser::m_innerTags;
 MathParser::GroupCellFunctionHash MathParser::m_groupTags;
-
+wxString MathParser::m_unknownXMLTagToolTip;

@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,14 +29,16 @@
  */
 
 #include "TextCell.h"
-#include "GroupCell.h"
-#include "FontCache.h"
+#include "StringUtils.h"
 #include "wx/config.h"
 
 TextCell::TextCell(GroupCell *parent, Configuration **config,
-                   const wxString &text, TextStyle style) : Cell(parent, config)
+                   const wxString &text, TextStyle style) :
+  Cell(parent, config)
 {
-  switch(m_textStyle = style)
+  InitBitFields();
+  m_textStyle = style;
+  switch(style)
   {
   case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
   case TS_VARIABLE: m_type = MC_TYPE_DEFAULT; break;
@@ -60,26 +63,36 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   case TS_SECTION: m_type = MC_TYPE_SECTION; break;
   case TS_TITLE: m_type = MC_TYPE_TITLE; break;
   default:
-    wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"),style));
+    wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"), style));
     m_type = MC_TYPE_DEFAULT;
   }
-  m_displayedDigits_old = -1;
-  m_height = -1;
-  m_realCenter = m_center = -1;
-  m_lastCalculationFontSize = -1;
-  m_fontSize = 10;
-  m_fontSizeLabel = 10;
-  m_lastZoomFactor = -1;
+  m_fontSize.Set(10.0f);
   TextCell::SetValue(text);
-  m_highlight = false;
-  m_dontEscapeOpeningParenthesis = false;
-  m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
-  m_fontsize_old = -1;
+}
+
+// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
+// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
+// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
+TextCell::TextCell(const TextCell &cell):
+    Cell(cell.m_group, cell.m_configuration),
+    m_text(cell.m_text),
+    m_displayedText(cell.m_displayedText)
+{
+  InitBitFields();
+  CopyCommonData(cell);
+  m_bigSkip = cell.m_bigSkip;
+  m_highlight = cell.m_highlight;
+  m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
+}
+
+std::unique_ptr<Cell> TextCell::Copy() const
+{
+  return std::make_unique<TextCell>(*this);
 }
 
 void TextCell::SetStyle(TextStyle style)
 {
-  m_widths.clear();
+  m_sizeCache.clear();
   Cell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\u0393");
@@ -93,483 +106,298 @@ void TextCell::SetStyle(TextStyle style)
 
 void TextCell::SetType(CellType type)
 {
-  m_widths.clear();
+  m_sizeCache.clear();
   ResetSize();
   ResetData();
   Cell::SetType(type);
 }
 
+void TextCell::UpdateToolTip()
+{
+  if (m_promptTooltip)
+    SetToolTip(
+          &T_("Most questions can be avoided using the assume() and the "
+            "declare() command. If that isn't possible the \"Automatically "
+            "answer questions\" button makes wxMaxima automatically fill in "
+            "all answers it still remembers from a previous run."));
+
+  if (m_text.empty())
+    return;
+
+  auto const &c_text = m_text;
+
+  if (m_textStyle == TS_VARIABLE)
+  {
+    if (m_text == wxT("pnz"))
+      SetToolTip(&T_(
+          "Either positive, negative or zero.\n"
+          "Normally the result of sign() if the sign cannot be determined."));
+
+    else if (m_text == wxT("pz"))
+      SetToolTip(&T_("Either positive or zero.\n"
+                     "A possible result of sign()."));
+
+    else if (m_text == wxT("nz"))
+      SetToolTip(&T_("Either negative or zero.\n"
+                     "A possible result of sign()."));
+
+    else if (m_text == wxT("und"))
+      SetToolTip(&T_("The result was undefined."));
+
+    else if (m_text == wxT("ind"))
+      SetToolTip(&T_("The result was indefinite, which might be infinity, both "
+                     "plus or minus infinity or something additionally "
+                     "potentially involving a complex infinity."));
+
+    else if (m_text == wxT("zeroa"))
+      SetToolTip(&T_("Infinitesimal above zero."));
+
+    else if (m_text == wxT("zerob"))
+      SetToolTip(&T_("Infinitesimal below zero."));
+
+    else if (m_text == wxT("inf"))
+      SetToolTip(&S_("+∞."));
+
+    else if (m_text == wxT("infinity"))
+      SetToolTip(&T_("Complex infinity."));
+        
+    else if (m_text == wxT("inf"))
+      SetToolTip(&S_("-∞."));
+
+    else if (m_text.StartsWith(S_("%r")))
+    {
+      if (std::all_of(std::next(c_text.begin(), 2), c_text.end(), wxIsdigit))
+        SetToolTip(&T_("A variable that can be assigned a number to.\n"
+                       "Often used by solve() and algsys(), if there is an "
+                       "infinite number of results."));
+    }
+    else if (m_text.StartsWith(S_("%i")))
+    {
+      if (std::all_of(std::next(c_text.begin(), 2), c_text.end(), wxIsdigit))
+        SetToolTip(&T_("An integration constant."));
+    }
+  }
+  
+  else if (m_textStyle == TS_NUMBER)
+  {
+    if(
+      (m_roundingErrorRegEx1.Matches(m_text)) ||
+      (m_roundingErrorRegEx2.Matches(m_text)) ||
+      (m_roundingErrorRegEx3.Matches(m_text)) ||
+      (m_roundingErrorRegEx4.Matches(m_text))
+      )
+      SetToolTip(&T_("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
+                       "hide what looks like being the small error using floating-point "
+                     "numbers introduces.\n"
+                     "If this seems to be the case here the error can be avoided by using "
+                     "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
+                     "It also can be hidden by setting fpprintprec to an appropriate value. "
+                     "But be aware in this case that even small errors can add up."));
+  }
+
+  else
+  {
+    if (m_text.Contains(S_("LINE SEARCH FAILED. SEE")) ||
+        m_text.Contains(S_("DOCUMENTATION OF ROUTINE MCSRCH")) ||
+        m_text.Contains(S_("ERROR RETURN OF LINE SEARCH:")) ||
+        m_text.Contains(S_("POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
+      SetToolTip(&T_("This message can appear when trying to numerically find an optimum. "
+                     "In this case it might indicate that a starting point lies in a local "
+                     "optimum that fits the data best if one parameter is increased to "
+                     "infinity or decreased to -infinity. It also can indicate that an "
+                     "attempt was made to fit data to an equation that actually matches "
+                     "the data best if one parameter is set to +/- infinity."));
+
+    else if (m_text.StartsWith(S_("incorrect syntax")) &&
+             m_text.Contains(S_("is not an infix operator")))
+      SetToolTip(&T_("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
+                     "Most probable cause: A missing comma between two list items."));
+    else if (m_text.StartsWith(S_("incorrect syntax")) &&
+             m_text.Contains(S_("Found LOGICAL expression where ALGEBRAIC expression expected")))
+      SetToolTip(&T_("Most probable cause: A dot instead a comma between two list items containing assignments."));
+    else if (m_text.StartsWith(S_("incorrect syntax")) &&
+             m_text.Contains(S_("is not a prefix operator")))
+      SetToolTip(&T_("Most probable cause: Two commas or similar separators in a row."));
+    else if (m_text.Contains(S_("Illegal use of delimiter")))
+      SetToolTip(&T_("Most probable cause: an operator was directly followed by a closing parenthesis."));
+    else if (m_text.StartsWith(S_("find_root: function has same sign at endpoints: ")))
+      SetToolTip(&T_("find_root only works if the function the solution is searched for crosses the solution exactly once in the given range."));
+    else if (m_text.StartsWith(S_("part: fell off the end.")))
+      SetToolTip(&T_("part() or the [] operator was used in order to extract the nth element "
+                     "of something that was less than n elements long."));
+    else if (m_text.StartsWith(S_("rest: fell off the end.")))
+      SetToolTip(&T_("rest() tried to drop more entries from a list than the list was long."));
+    else if (m_text.StartsWith(S_("assignment: cannot assign to")))
+      SetToolTip(&T_("The value of few special variables is assigned by Maxima and "
+                     "cannot be changed by the user. Also a few constructs aren't "
+                     "variable names and therefore cannot be written to."));
+    else if (m_text.StartsWith(S_("rat: replaced ")))
+      SetToolTip(&T_("Normally computers use floating-point numbers that can be handled "
+                     "incredibly fast while being accurate to dozens of digits. "
+                     "They will, though, introduce a small error into some common numbers. "
+                     "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
+                     "As mathematics is based on the fact that numbers that are exactly "
+                     "equal cancel each other out small errors can quickly add up to big errors "
+                     "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
+                     "commands therefore use rat() in order to automatically convert floats to "
+                     "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
+                     "add up.\n\n"
+                     "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
+                     "are used.\n"
+                     "The info that numbers have automatically been converted can be suppressed "
+                     "by setting ratprint to false."));
+    else if (m_text.StartsWith(S_("desolve: can't handle this case.")))
+      SetToolTip(&T_("The list of time-dependent variables to solve to doesn't match "
+                     "the time-dependent variables the list of dgls contains."));
+    else if (m_text.StartsWith(S_("expt: undefined: 0 to a negative exponent.")))
+      SetToolTip(&T_("Division by 0."));
+    else if (m_text.StartsWith(S_("incorrect syntax: parser: incomplete number; missing exponent?")))
+      SetToolTip(&T_("Might also indicate a missing multiplication sign (\"*\")."));
+    else if (m_text.Contains(S_("arithmetic error DIVISION-BY-ZERO signalled")))
+      SetToolTip(&T_("Besides a division by 0 the reason for this error message can be a "
+                     "calculation that returns +/-infinity."));
+    else if (m_text.Contains(S_("isn't in the domain of")))
+      SetToolTip(&T_("Most probable cause: A function was called with a parameter that causes "
+                     "it to return infinity and/or -infinity."));
+    else if (m_text.StartsWith(S_("Only symbols can be bound")))
+      SetToolTip(&T_("This error message is most probably caused by a try to assign "
+                     "a value to a number instead of a variable name.\n"
+                     "One probable cause is using a variable that already has a numeric "
+                     "value as a loop counter."));
+    else if (m_text.StartsWith(S_("append: operators of arguments must all be the same.")))
+      SetToolTip(&T_("Most probably it was attempted to append something to a list "
+                     "that isn't a list.\n"
+                     "Enclosing the new element for the list in brackets ([]) "
+                     "converts it to a list and makes it appendable."));
+    else if (m_text.Contains(S_(": invalid index")))
+      SetToolTip(&T_("The [] or the part() command tried to access a list or matrix "
+                     "element that doesn't exist."));
+    else if (m_text.StartsWith(S_("apply: subscript must be an integer; found:")))
+      SetToolTip(&T_("the [] operator tried to extract an element of a list, a matrix, "
+                     "an equation or an array. But instead of an integer number "
+                     "something was used whose numerical value is unknown or not an "
+                     "integer.\n"
+                     "Floating-point numbers are bound to contain small rounding errors "
+                     "and therefore in most cases don't work as an array index that"
+                     "needs to be an exact integer number."));
+    else if (m_text.StartsWith(S_(": improper argument: ")))
+    {
+      auto const prevString = m_previous ? m_previous->ToString() : wxm::emptyString;
+      if (prevString == wxT("at"))
+        SetToolTip(&T_("The second argument of at() isn't an equation or a list of "
+                       "equations. Most probably it was lacking an \"=\"."));
+      else if (prevString == wxT("subst"))
+        SetToolTip(&T_("The first argument of subst() isn't an equation or a list of "
+                       "equations. Most probably it was lacking an \"=\"."));
+      else
+        SetToolTip(&T_("The argument of a function was of the wrong type. Most probably "
+                       "an equation was expected but was lacking an \"=\"."));
+    }
+  }
+}
+
 void TextCell::SetValue(const wxString &text)
 {
-  m_widths.clear();
-  SetToolTip(m_initialToolTip);
-  m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
+  m_sizeCache.clear();
   m_text = text;
   ResetSize();
-  m_text.Replace(wxT("\xDCB6"), wxT("\u00A0")); // A non-breakable space
-  m_text.Replace(wxT("\n"), wxEmptyString);
-  m_text.Replace(wxT("-->"), wxT("\u2794"));
-  m_text.Replace(wxT(" -->"), wxT("\u2794"));
-  m_text.Replace(wxT(" \u2212\u2192 "), wxT("\u2794"));
-  m_text.Replace(wxT("->"), wxT("\u2192"));
-  m_text.Replace(wxT("\u2212>"), wxT("\u2192"));
+  UpdateDisplayedText();
+  UpdateToolTip();
+  ResetSize();
+}
 
+AFontSize TextCell::GetScaledTextSize() const
+{
+    return Scale_Px(m_fontSize);
+}
+
+bool TextCell::NeedsRecalculation(AFontSize fontSize) const
+{
+  return Cell::NeedsRecalculation(fontSize);
+}
+
+wxSize TextCell::GetTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
+{
+  AFontSize const fontSize = GetScaledTextSize();
+  if (text.empty())
+    return {};
+
+  auto const size = dc->GetTextExtent(text);
+  m_sizeCache.emplace_back(size, fontSize, index);
+  return size;
+}
+
+void TextCell::UpdateDisplayedText()
+{
   m_displayedText = m_text;
+
+  Configuration *configuration = (*m_configuration);
+  
+  m_displayedText.Replace(wxT("\xDCB6"), wxT("\u00A0")); // A non-breakable space
+  m_displayedText.Replace(wxT("\n"), wxEmptyString);
+  m_displayedText.Replace(wxT("-->"), wxT("\u2794"));
+  m_displayedText.Replace(wxT(" -->"), wxT("\u2794"));
+  m_displayedText.Replace(wxT(" \u2212\u2192 "), wxT("\u2794"));
+  m_displayedText.Replace(wxT("->"), wxT("\u2192"));
+  m_displayedText.Replace(wxT("\u2212>"), wxT("\u2192"));
+  
   if (m_textStyle == TS_FUNCTION)
   {
     if (m_text == wxT("ilt"))
-      SetToolTip(_("The inverse laplace transform."));
+      SetToolTip(&T_("The inverse laplace transform."));
     
     if (m_text == wxT("gamma"))
       m_displayedText = wxT("\u0393");
     if (m_text == wxT("psi"))
       m_displayedText = wxT("\u03A8");
-  }      
+  }  
 
-  if (m_textStyle == TS_VARIABLE)
-  {
-    if (m_text == wxT("pnz"))
-      SetToolTip( _("Either positive, negative or zero.\n"
-                    "Normally the result of sign() if the sign cannot be determined."
-                    ));
-
-    if (m_text == wxT("pz"))
-      SetToolTip(_("Either positive or zero.\n"
-                    "A possible result of sign()."
-                   ));
+  if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
+    return;
   
-    if (m_text == wxT("nz"))
-      SetToolTip(_("Either negative or zero.\n"
-                   "A possible result of sign()."
-                   ));
+  if ((GetStyle() == TS_GREEK_CONSTANT) && (*m_configuration)->Latin2Greek())
+    m_displayedText = GetGreekStringUnicode();
 
-    if (m_text == wxT("und"))
-      SetToolTip( _("The result was undefined."));
+  wxString unicodeSym = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
+  if(!unicodeSym.IsEmpty())
+    m_displayedText = unicodeSym;
 
-    if (m_text == wxT("ind"))
-      SetToolTip( _("The result was indefinite."));
-
-    if (m_text == wxT("zeroa"))
-      SetToolTip( _("Infinitesimal above zero."));
-
-    if (m_text == wxT("zerob"))
-      SetToolTip( _("Infinitesimal below zero."));
-
-    if (m_text == wxT("inf"))
-      SetToolTip( wxT("+∞."));
-
-    if (m_text == wxT("infinity"))
-      SetToolTip( _("Complex infinity."));
-        
-    if (m_text == wxT("inf"))
-      SetToolTip( wxT("-∞."));
-
-    if(m_text.StartsWith("%r"))
-    {
-      wxString number;
-
-      number = m_text.Right(m_text.Length()-2);
-
-      bool isrnum = (number != wxEmptyString);
-     
-      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
-        if(!wxIsdigit(*it))
-        {
-          isrnum = false;
-          break;
-        }
-
-      if(isrnum)
-        SetToolTip( _("A variable that can be assigned a number to.\n"
-                      "Often used by solve() and algsys(), if there is an infinite number of results."));
-    }
-
-  
-    if(m_text.StartsWith("%i"))
-    {
-      wxString number;
-
-      number = m_text.Right(m_text.Length()-2);
-
-      bool isinum = (number != wxEmptyString);
-     
-      for (wxString::const_iterator it = number.begin(); it != number.end(); ++it)
-        if(!wxIsdigit(*it))
-        {
-          isinum = false;
-          break;
-        }
-      
-      if(isinum)
-        SetToolTip( _("An integration constant."));
-    }
-  }
-  
-  if (m_textStyle == TS_NUMBER)
+  /// Change asterisk to a multiplication dot, if applicable
+  if (configuration->GetChangeAsterisk())
   {
-    m_numStart = wxEmptyString;
-    m_numEnd = wxEmptyString;
-    m_ellipsis = wxEmptyString;
-    unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();
-    if (m_displayedText.Length() > displayedDigits)
-    {
-      int left = displayedDigits / 3;
-      if (left > 30) left = 30;      
-      m_numStart = m_displayedText.Left(left);
-      m_ellipsis = wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left);
-      m_numEnd = m_displayedText.Right(left);
-    }
-    else
-    {
-      m_numStart = wxEmptyString;
-      m_numEnd = wxEmptyString;
-      m_ellipsis = wxEmptyString;
-      if(
-        (m_roundingErrorRegEx1.Matches(m_displayedText)) ||
-        (m_roundingErrorRegEx2.Matches(m_displayedText)) ||
-        (m_roundingErrorRegEx3.Matches(m_displayedText)) ||
-        (m_roundingErrorRegEx4.Matches(m_displayedText))
-        )
-        SetToolTip( _("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
-                      "hide what looks like being the small error using floating-point "
-                      "numbers introduces.\n"
-                      "If this seems to be the case here the error can be avoided by using "
-                      "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
-                      "It also can be hidden by setting fpprintprec to an appropriate value. "
-                      "But be aware in this case that even small errors can add up."));
-    }
+    if(m_displayedText == wxT("*"))
+      m_displayedText = wxT("\u00B7");
+    if (m_displayedText == wxT("#"))
+      m_displayedText = wxT("\u2260");
   }
-  else
-  {
-    if((text.Contains(wxT("LINE SEARCH FAILED. SEE")))||
-       (text.Contains(wxT("DOCUMENTATION OF ROUTINE MCSRCH"))) ||
-       (text.Contains(wxT("ERROR RETURN OF LINE SEARCH:"))) ||
-       text.Contains(wxT("POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
-      SetToolTip( _("This message can appear when trying to numerically find an optimum. "
-                    "In this case it might indicate that a starting point lies in a local "
-                    "optimum that fits the data best if one parameter is increased to "
-                    "infinity or decreased to -infinity. It also can indicate that an "
-                    "attempt was made to fit data to an equation that actually matches "
-                    "the data best if one parameter is set to +/- infinity."));
-    if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not an infix operator"))))
-      SetToolTip( _("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
-                    "Most probable cause: A missing comma between two list items."));
-    if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("Found LOGICAL expression where ALGEBRAIC expression expected"))))
-      SetToolTip( _("Most probable cause: A dot instead a comma between two list items containing assignments."));
-    if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not a prefix operator"))))
-      SetToolTip( _("Most probable cause: Two commas or similar separators in a row."));
-    if(text.Contains(wxT("Illegal use of delimiter")))
-      SetToolTip( _("Most probable cause: an operator was directly followed by a closing parenthesis."));
-    if(text.StartsWith(wxT("find_root: function has same sign at endpoints: ")))
-      SetToolTip( _("find_root only works if the function the solution is searched for crosses the solution exactly once in the given range."));
-    if(text.StartsWith(wxT("part: fell off the end.")))
-      SetToolTip( _("part() or the [] operator was used in order to extract the nth element "
-                    "of something that was less than n elements long."));
-    if(text.StartsWith(wxT("rest: fell off the end.")))
-      SetToolTip( _("rest() tried to drop more entries from a list than the list was long."));
-    if(text.StartsWith(wxT("assignment: cannot assign to")))
-      SetToolTip( _("The value of few special variables is assigned by Maxima and cannot be changed by the user. Also a few constructs aren't variable names and therefore cannot be written to."));
-    if(text.StartsWith(wxT("rat: replaced ")))
-      SetToolTip( _("Normally computers use floating-point numbers that can be handled "
-                    "incredibly fast while being accurate to dozens of digits. "
-                    "They will, though, introduce a small error into some common numbers. "
-                    "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
-                    "As mathematics is based on the fact that numbers that are exactly "
-                    "equal cancel each other out small errors can quickly add up to big errors "
-                    "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
-                    "commands therefore use rat() in order to automatically convert floats to "
-                    "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
-                    "add up.\n\n"
-                    "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
-                    "are used.\n"
-                    "The info that numbers have automatically been converted can be suppressed "
-                    "by setting ratprint to false."));
-    if(text.StartsWith("desolve: can't handle this case."))
-      SetToolTip( _("The list of time-dependent variables to solve to doesn't match the time-dependent variables the list of dgls contains."));      
-    if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
-      SetToolTip( _("Division by 0."));
-    if(text.StartsWith(wxT("incorrect syntax: parser: incomplete number; missing exponent?")))
-      SetToolTip( _("Might also indicate a missing multiplication sign (\"*\")."));
-    if(text.Contains(wxT("arithmetic error DIVISION-BY-ZERO signalled")))
-      SetToolTip( _("Besides a division by 0 the reason for this error message can be a "
-                    "calculation that returns +/-infinity."));
-    if(text.Contains(wxT("isn't in the domain of")))
-      SetToolTip( _("Most probable cause: A function was called with a parameter that causes "
-                    "it to return infinity and/or -infinity."));
-    if(text.StartsWith(wxT("Only symbols can be bound")))
-      SetToolTip( _("This error message is most probably caused by a try to assign "
-                    "a value to a number instead of a variable name.\n"
-                    "One probable cause is using a variable that already has a numeric "
-                    "value as a loop counter."));
-    if(text.StartsWith(wxT("append: operators of arguments must all be the same.")))
-      SetToolTip( _("Most probably it was attempted to append something to a list "
-                    "that isn't a list.\n"
-                    "Enclosing the new element for the list in brackets ([]) "
-                    "converts it to a list and makes it appendable."));
-    if(text.Contains(wxT(": invalid index")))
-      SetToolTip( _("The [] or the part() command tried to access a list or matrix "
-                    "element that doesn't exist."));
-    if(text.StartsWith(wxT("apply: subscript must be an integer; found:")))
-      SetToolTip( _("the [] operator tried to extract an element of a list, a matrix, "
-                    "an equation or an array. But instead of an integer number "
-                    "something was used whose numerical value is unknown or not an "
-                    "integer.\n"
-                    "Floating-point numbers are bound to contain small rounding errors "
-                    "and therefore in most cases don't work as an array index that"
-                    "needs to be an exact integer number."));
-    if(text.StartsWith(wxT(": improper argument: ")))
-    {
-      if((m_previous) && (m_previous->ToString() == wxT("at")))
-        SetToolTip( _("The second argument of at() isn't an equation or a list of "
-                      "equations. Most probably it was lacking an \"=\"."));
-      else if((m_previous) && (m_previous->ToString() == wxT("subst")))
-        SetToolTip( _("The first argument of subst() isn't an equation or a list of "
-                      "equations. Most probably it was lacking an \"=\"."));
-      else
-        SetToolTip( _("The argument of a function was of the wrong type. Most probably "
-                      "an equation was expected but was lacking an \"=\"."));
-    }
-  }
-  SetAltText();
-  ResetSize();
 }
 
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altText
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJsText
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_fontname
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_texFontname
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_alt
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_altJs
-// cppcheck-suppress uninitMemberVar symbolName=TextCell::m_initialToolTip
-TextCell::TextCell(const TextCell &cell):
-    Cell(cell.m_group, cell.m_configuration),
-    m_text(cell.m_text),
-    m_userDefinedLabel(cell.m_userDefinedLabel),
-    m_displayedText(cell.m_displayedText)
+void TextCell::Recalculate(AFontSize fontsize)
 {
-  CopyCommonData(cell);
-  m_forceBreakLine = cell.m_forceBreakLine;
-  m_bigSkip = cell.m_bigSkip;
-  m_lastZoomFactor = -1;
-  m_fontSizeLabel = -1;
-  m_displayedDigits_old = -1;
-  m_lastCalculationFontSize = -1;
-  m_realCenter = -1;
-  m_fontsize_old = -1;
-  m_textStyle = cell.m_textStyle;
-  m_highlight = cell.m_highlight;
-  m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
-}
-
-double TextCell::GetScaledTextSize() const
-{
-  if((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-    return Scale_Px(m_fontSizeLabel);
-  else
-    return Scale_Px(m_fontSize);
-
-}
-
-wxSize TextCell::GetTextSize(wxString const &text)
-{
-  wxDC *dc = (*m_configuration)->GetDC();
-  double fontSize = GetScaledTextSize();
- 
-  SizeHash::const_iterator it = m_widths.find(fontSize);
-
-  // If we already know this text piece's size we return the cached value
-  if(it != m_widths.end())
-    return it->second;
-
-  // Ask wxWidgets to return this text piece's size (slow, but the only way if
-  // there is no cached size).
-  wxSize sz = dc->GetTextExtent(text);
-  m_widths[fontSize] = sz;
-  return sz;
-}
-
-bool TextCell::NeedsRecalculation(int fontSize) const
-{
-  return Cell::NeedsRecalculation(fontSize) ||
-    (
-      (m_textStyle == TS_USERLABEL) &&
-      (!(*m_configuration)->UseUserLabels())
-      ) ||
-    (
-      (m_textStyle == TS_LABEL) &&
-      ((*m_configuration)->UseUserLabels()) &&
-    (m_userDefinedLabel != wxEmptyString)
-      ) ||
-    (
-      (m_textStyle == TS_NUMBER) &&
-      (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-      );
-}
-
-void TextCell::RecalculateWidths(int fontsize)
-{
-  if(fontsize < 1)
-    fontsize = m_fontSize;
   Configuration *configuration = (*m_configuration);
-  
   if(NeedsRecalculation(fontsize))
   {      
-    m_fontSize = m_fontsize_old = fontsize;
-    wxDC *dc = configuration->GetDC();
+    Cell::Recalculate(fontsize);
+    m_fontSize = fontsize;
     SetFont(fontsize);
 
-    // If the setting has changed and we want to show a user-defined label
-    // instead of an automatic one or vice versa we decide that here.
-    if(
-      (m_textStyle == TS_USERLABEL) &&
-      (!configuration->UseUserLabels())
-      )
-      m_textStyle = TS_LABEL;
-    if(
-      (m_textStyle == TS_LABEL) &&
-      (configuration->UseUserLabels()) &&
-      (m_userDefinedLabel != wxEmptyString)
-      )
-      m_textStyle = TS_USERLABEL;
-        
-    // If the config settings about how many digits to display has changed we
-    // need to regenerate the info which number to show.
-    if (
-      (m_textStyle == TS_NUMBER) &&
-      (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-        )
+
+    wxSize sz = GetTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
+    m_width = sz.GetWidth();
+    m_height = sz.GetHeight();
+    
+    m_width += 2 * MC_TEXT_PADDING;
+    m_height += 2 * MC_TEXT_PADDING;
+    
+    /// Hidden cells (multiplication * is not displayed)
+    if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
     {
-      SetValue(m_text);
-      m_numstartWidths.clear();
-      m_ellipsisWidths.clear();
-      m_numEndWidths.clear();
-    }
-    
-    m_lastCalculationFontSize = fontsize;
-
-    if(m_numStart != wxEmptyString)
-    {      
-      double fontSize = GetScaledTextSize();
-      {
-        SizeHash::const_iterator it = m_numstartWidths.find(fontSize);    
-        if(it != m_numstartWidths.end())
-          m_numStartWidth = it->second;
-        else
-        {
-          wxSize sz = dc->GetTextExtent(m_numStart);
-          m_numstartWidths[fontSize] = sz;
-          m_numStartWidth = sz;
-        }
-      }
-      {
-        SizeHash::const_iterator it = m_numEndWidths.find(fontSize);    
-        if(it != m_numEndWidths.end())
-          m_numEndWidth = it->second;
-        else
-        {
-          wxSize sz = dc->GetTextExtent(m_numEnd);
-          m_numEndWidths[fontSize] = sz;
-          m_numEndWidth = sz;
-        }
-      }
-      {
-        SizeHash::const_iterator it = m_ellipsisWidths.find(fontSize);    
-        if(it != m_ellipsisWidths.end())
-          m_ellipsisWidth = it->second;
-        else
-        {
-          wxSize sz = dc->GetTextExtent(m_ellipsis);
-          m_ellipsisWidths[fontSize] = sz;
-          m_ellipsisWidth = sz;
-        }
-      }
-      m_width = m_numStartWidth.GetWidth() + m_numEndWidth.GetWidth() +
-        m_ellipsisWidth.GetWidth();
-      m_height = wxMax(
-        wxMax(m_numStartWidth.GetHeight(), m_numEndWidth.GetHeight()),
-        m_ellipsisWidth.GetHeight());
-    }
-    else
-    {    
-      // Labels and prompts are fixed width - adjust font size so that
-      // they fit in
-      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-      {
-        wxString text = m_text;
-        if(!m_altText.IsEmpty())
-          text = m_altText;
-
-        if(m_textStyle == TS_USERLABEL)
-        {
-          text = wxT("(") + m_userDefinedLabel + wxT(")");
-          m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-        }
-
-
-        wxFont font = configuration->GetFont(m_textStyle, configuration->GetDefaultFontSize());
-      
-        m_width = Scale_Px(configuration->GetLabelWidth());
-        // We will decrease it before use
-        m_fontSizeLabel = m_fontSize + 1;
-        wxSize labelSize = GetTextSize(text);
-        wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText == wxEmptyString),
-                     _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-
-        while ((labelSize.GetWidth() >= m_width) && (m_fontSizeLabel > 2))
-        {
-#if wxCHECK_VERSION(3, 1, 2)
-          m_fontSizeLabel -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
-#else
-          m_fontSizeLabel -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-          font.SetPointSize(Scale_Px(m_fontSizeLabel));
-#endif
-          dc->SetFont(font);
-          labelSize = GetTextSize(text);
-        } 
-        m_width = wxMax(m_width + MC_TEXT_PADDING, Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING);
-        m_height = labelSize.GetHeight();
-        m_center = m_height / 2;
-      }
-      // Check if we are using jsMath and have jsMath character
-      else if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
-      {      
-        wxSize sz = GetTextSize(m_altJsText);
-        m_width = sz.GetWidth();
-        m_height = sz.GetHeight();
-        if (m_texFontname == wxT("jsMath-cmsy10"))
-          m_height = m_height / 2;
-      }
-
-      /// We are using a special symbol
-      else if (!m_altText.IsEmpty())
-      {
-        wxSize sz = GetTextSize(m_altText);
-        m_width = sz.GetWidth();
-        m_height = sz.GetHeight();
-      }
-      /// This is the default.
-      else
-      {
-        wxSize sz = GetTextSize(m_displayedText);
-        m_width = sz.GetWidth();
-        m_height = sz.GetHeight();
-      }
-    
-      m_width += 2 * MC_TEXT_PADDING;
-      m_height += 2 * MC_TEXT_PADDING;
-
-      /// Hidden cells (multiplication * is not displayed)
-      if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
-      {
-        m_height = 0;
-        m_width = Scale_Px(fontsize) / 4;
-      }
+      m_height = 0;
+      m_width = Scale_Px(fontsize) / 4;
     }
     if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
-    m_realCenter = m_center = m_height / 2;
+    m_center = m_height / 2;
   }
-  Cell::RecalculateWidths(fontsize);
 }
 
 void TextCell::Draw(wxPoint point)
@@ -581,120 +409,21 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (NeedsRecalculation(m_fontsize_old))
-      RecalculateWidths(m_fontSize);
+    if (NeedsRecalculation(m_fontSize))
+      Recalculate(m_fontSize);
     
     if (InUpdateRegion())
     {
-      SetFont(m_fontSize);
-      // Sets the foreground color
       SetForeground();
-      /// Labels and prompts have special fontsize
-      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-      {
-        SetFontSizeForLabel(dc);
-        if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
-            configuration->ShowLabels())
-        {
-          // Draw the label
-          if(m_textStyle == TS_USERLABEL)
-          {
-            wxString text = m_userDefinedLabel;
-            SetToolTip(m_text);
-            m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-            dc->DrawText(wxT("(") + text + wxT(")"),
-                         point.x + MC_TEXT_PADDING,
-                         point.y - m_realCenter + MC_TEXT_PADDING);
-          }
-          else
-          {
-            SetToolTip(m_userDefinedLabel);
-            dc->DrawText(m_displayedText,
-                         point.x + MC_TEXT_PADDING,
-                         point.y - m_realCenter + MC_TEXT_PADDING);
-          }
-        }
-      }
-      else if (!m_numStart.IsEmpty())
-      {
-        dc->DrawText(m_numStart,
-                     point.x + MC_TEXT_PADDING,
-                     point.y - m_realCenter + MC_TEXT_PADDING);
-        dc->DrawText(m_numEnd,
-                     point.x + MC_TEXT_PADDING + m_numStartWidth.GetWidth() +
-                     m_ellipsisWidth.GetWidth(),
-                     point.y - m_realCenter + MC_TEXT_PADDING);
-        wxColor textColor = dc->GetTextForeground();
-        wxColor backgroundColor = dc->GetTextBackground();
-        dc->SetTextForeground(
-          wxColor(
-            (textColor.Red() + backgroundColor.Red()) / 2,
-            (textColor.Green() + backgroundColor.Green()) / 2,
-            (textColor.Blue() + backgroundColor.Blue()) / 2
-            )
-          );
-        dc->DrawText(m_ellipsis,
-                     point.x + MC_TEXT_PADDING + m_numStartWidth.GetWidth(),
-                     point.y - m_realCenter + MC_TEXT_PADDING);
-      }
-        /// Check if we are using jsMath and have jsMath character
-      else if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
-        dc->DrawText(m_altJsText,
-                    point.x + MC_TEXT_PADDING,
-                    point.y - m_realCenter + MC_TEXT_PADDING);
-
-        /// We are using a special symbol
-      else if (!m_altText.IsEmpty())
-        dc->DrawText(m_altText,
-                    point.x + MC_TEXT_PADDING,
-                    point.y - m_realCenter + MC_TEXT_PADDING);
-
-        /// Change asterisk
-      else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
-        dc->DrawText(wxT("\u00B7"),
-                    point.x + MC_TEXT_PADDING,
-                    point.y - m_realCenter + MC_TEXT_PADDING);
-
-      else if (m_displayedText == wxT("#"))
-        dc->DrawText(wxT("\u2260"),
-                    point.x + MC_TEXT_PADDING,
-                    point.y - m_realCenter + MC_TEXT_PADDING);
-        /// This is the default.
-      else
-      {
-        switch (GetType())
-        {
-          case MC_TYPE_TEXT:
-            // TODO: Add markdown formatting for bold, italic and underlined here.
-            dc->DrawText(m_displayedText,
-                        point.x + MC_TEXT_PADDING,
-                        point.y - m_realCenter + MC_TEXT_PADDING);
-            break;
-          case MC_TYPE_INPUT:
-            // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-            break;
-          default:
-            dc->DrawText(m_displayedText,
-                        point.x + MC_TEXT_PADDING,
-                        point.y - m_realCenter + MC_TEXT_PADDING);
-        }
-      }
+      SetFont(m_fontSize);
+      dc->DrawText(m_displayedText,
+                   point.x + MC_TEXT_PADDING,
+                   point.y - m_center + MC_TEXT_PADDING);
     }
   }
 }
 
-void TextCell::SetFontSizeForLabel(wxDC *dc)
-{
-  wxFont font = (*m_configuration)->GetFont(m_textStyle, GetScaledTextSize());
-  font.SetPointSize(GetScaledTextSize());
-  if((*m_configuration)->m_styles[m_textStyle].Bold())
-    font.SetWeight(wxFONTWEIGHT_BOLD);
-  else
-    font.SetWeight(wxFONTWEIGHT_NORMAL);
-  dc->SetFont(font);
-}
-
-void TextCell::SetFont(int fontsize)
+void TextCell::SetFont(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
@@ -715,73 +444,27 @@ void TextCell::SetFont(int fontsize)
     // within fractions, subscripts or superscripts.
     if (
       (m_textStyle != TS_MAIN_PROMPT) &&
-      (m_textStyle != TS_OTHER_PROMPT) &&
-      (m_textStyle != TS_ERROR) &&
-      (m_textStyle != TS_WARNING)
+      (m_textStyle != TS_OTHER_PROMPT)
       )
       m_fontSize = fontsize;
   }
 
-  wxFont font = configuration->GetFont(m_textStyle, fontsize);
-  auto req = FontInfo::GetFor(font);
-
-  // Use jsMath
-  if ((!m_altJsText.IsEmpty()) && configuration->CheckTeXFonts())
-  {
-    req.FaceName(m_texFontname);
-    font = FontCache::GetAFont(req);
-  }
-  
-  if (!font.IsOk())
-  {
-    req.Family(wxFONTFAMILY_MODERN).FaceName(wxEmptyString);
-    font = FontCache::GetAFont(req);
-  }
-  
-  if (!font.IsOk())
-  {
-    font = *wxNORMAL_FONT;
-    req = FontInfo::GetFor(font);
-  }
-
-  if(m_fontSize < 4)
-    m_fontSize = 4;
+  auto style = configuration->GetStyle(m_textStyle, fontsize);
   
   // Mark special variables that are printed as ordinary letters as being special.
   if ((!(*m_configuration)->CheckKeepPercent()) &&
       ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
   {
     if((*m_configuration)->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
-    {
-      req.Italic(false);
-    }
+      style.SetItalic(false);
     else
-    {
-      req.Italic(true);
-    }
+      style.SetItalic(true);
   }
 
-  wxASSERT(Scale_Px(m_fontSize) > 0);
-  FontInfo::SetPointSize(req, Scale_Px(m_fontSize));
-  font = FontCache::GetAFont(req);
-  font.SetPointSize(Scale_Px(m_fontSize));
+  wxASSERT(m_fontSize.IsValid());
+  style.SetFontSize(Scale_Px(m_fontSize));
 
-  wxASSERT_MSG(font.IsOk(),
-               _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-  if((*m_configuration)->m_styles[m_textStyle].Bold())
-    font.SetWeight(wxFONTWEIGHT_BOLD);
-  else
-    font.SetWeight(wxFONTWEIGHT_NORMAL);
-  dc->SetFont(font);
-  
-  // A fallback if we have been completely unable to set a working font
-  if (!dc->GetFont().IsOk())
-  {
-    req = wxFontInfo(10);
-    font = FontCache::GetAFont(req);
-    font.SetPointSize(Scale_Px(m_fontSize));
-    dc->SetFont(font);
-  }
+  dc->SetFont(style.GetFont());
 }
 
 bool TextCell::IsOperator() const
@@ -793,16 +476,14 @@ bool TextCell::IsOperator() const
   return false;
 }
 
-wxString TextCell::ToString()
+wxString TextCell::ToString() const
 {
   wxString text;
-  if (m_altCopyText != wxEmptyString)
-    text = m_altCopyText;
+  if (!GetAltCopyText().empty())
+    text = GetAltCopyText();
   else
   {
     text = m_text;
-    if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-      text = wxT("(") + m_userDefinedLabel + wxT(")");
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\u2794"), wxT("-->"));
     text.Replace(wxT("\u2192"), wxT("->"));
@@ -851,15 +532,6 @@ wxString TextCell::ToString()
       // Labels sometimes end with a few spaces. But if they are long they don't do
       // that any more => Add a TAB to the end of any label replacing trailing
       // whitespace. But don't do this if we copy only the label.
-    case TS_LABEL:
-    case TS_USERLABEL:
-    case TS_MAIN_PROMPT:
-    case TS_OTHER_PROMPT:
-      {
-        text.Trim();
-        text += wxT("\t");
-        break;
-      }
   default:
   {}
   }
@@ -869,92 +541,77 @@ wxString TextCell::ToString()
   return text;
 }
 
-wxString TextCell::ToMatlab()
+wxString TextCell::ToMatlab() const
 {
-	wxString text;
-	if (m_altCopyText != wxEmptyString)
-	  text = m_altCopyText;
-	else
-	{
-	  text = m_text;
-	  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-		text = wxT("(") + m_userDefinedLabel + wxT(")");
-	  text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
-	  text.Replace(wxT("\u2794"), wxT("-->"));
-	  text.Replace(wxT("\u2192"), wxT("->"));
+  wxString text = ToString();
+  if (text == wxT("%e"))
+    text = wxT("e");
+  else if (text == wxT("%i"))
+    text = wxT("i");
+  else if (text == wxT("%pi"))
+    text = wxString(wxT("pi"));
+  switch (m_textStyle)
+  {
+  case TS_VARIABLE:
+  case TS_FUNCTION:
+    // The only way for variable or function names to contain quotes and
+    // characters that clearly represent operators is that these chars
+    // are quoted by a backslash: They cannot be quoted by quotation
+    // marks since maxima would'nt allow strings here.
+  {
+    wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
+    bool isOperator = true;
+    for (size_t i = 0; i < m_text.Length(); i++)
+    {
+      if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+      {
+        isOperator = false;
+        break;
+      }
+    }
 
-	  if (text == wxT("%e"))
-		text = wxT("e");
-	  else if (text == wxT("%i"))
-		text = wxT("i");
-	  else if (text == wxT("%pi"))
-		text = wxString(wxT("pi"));
-	}
-	switch (m_textStyle)
-	{
-	  case TS_VARIABLE:
-	  case TS_FUNCTION:
-		// The only way for variable or function names to contain quotes and
-		// characters that clearly represent operators is that these chars
-		// are quoted by a backslash: They cannot be quoted by quotation
-		// marks since maxima would'nt allow strings here.
-	  {
-		wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
-		bool isOperator = true;
-		for (size_t i = 0; i < m_text.Length(); i++)
-		{
-		  if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
-		  {
-			isOperator = false;
-			break;
-		  }
-		}
+    if (!isOperator)
+    {
+      wxString lastChar;
+      if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
+      {
+        lastChar = text[text.Length() - 1];
+        text = text.Left(text.Length() - 1);
+      }
+      for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
+        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+      text += lastChar;
+    }
+    break;
+  }
+  case TS_STRING:
+    text = wxT("\"") + text + wxT("\"");
+    break;
 
-		if (!isOperator)
-		{
-		  wxString lastChar;
-		  if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
-		  {
-			lastChar = text[text.Length() - 1];
-			text = text.Left(text.Length() - 1);
-		  }
-		  for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
-			text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
-		  text += lastChar;
-		}
-		break;
-	  }
-	  case TS_STRING:
-		text = wxT("\"") + text + wxT("\"");
-		break;
+    // Labels sometimes end with a few spaces. But if they are long they don't do
+    // that any more => Add a TAB to the end of any label replacing trailing
+    // whitespace. But don't do this if we copy only the label.
+  case TS_LABEL:
+  case TS_USERLABEL:
+  case TS_MAIN_PROMPT:
+  case TS_OTHER_PROMPT:
+  {
+    text.Trim();
+    text += wxT("\t");
+    break;
+  }
+  default:
+  {}
+  }
+  if((m_next != NULL) && (m_next->BreakLineHere()))
+    text += "\n";
 
-		// Labels sometimes end with a few spaces. But if they are long they don't do
-		// that any more => Add a TAB to the end of any label replacing trailing
-		// whitespace. But don't do this if we copy only the label.
-	  case TS_LABEL:
-	  case TS_USERLABEL:
-	  case TS_MAIN_PROMPT:
-	  case TS_OTHER_PROMPT:
-		{
-		  text.Trim();
-		  text += wxT("\t");
-		  break;
-		}
-	default:
-	{}
-	}
-	if((m_next != NULL) && (m_next->BreakLineHere()))
-	  text += "\n";
-
-	return text;
+  return text;
 }
 
-wxString TextCell::ToTeX()
+wxString TextCell::ToTeX() const
 {
-  wxString text = m_displayedText;
-
-  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
+  wxString text = ToString();
 
   if (!(*m_configuration)->CheckKeepPercent())
   {
@@ -1129,7 +786,7 @@ wxString TextCell::ToTeX()
               // The variable name prior to this cell has no subscript
               (!(m_previous->ToString().Contains(wxT('_')))) &&
               // we will be using \mathit{} for the TeX outout.
-              ((m_next->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
+              ((ToString().Length() > 1) || ((m_next == NULL) || (m_next->ToString().Length() > 1)))
               )
         text = wxT("\\, ");
       else
@@ -1149,7 +806,7 @@ wxString TextCell::ToTeX()
       parenthesis does contain a product.
     */
 
-    if (m_SuppressMultiplicationDot)
+    if (m_suppressMultiplicationDot)
     {
       text.Replace(wxT("*"), wxT("\\, "));
       text.Replace(wxT("\u00B7"), wxT("\\, "));
@@ -1361,14 +1018,11 @@ wxString TextCell::ToTeX()
   return text;
 }
 
-wxString TextCell::ToMathML()
+wxString TextCell::ToMathML() const
 {
   if(m_displayedText == wxEmptyString)
     return wxEmptyString;
-  wxString text = XMLescape(m_displayedText);
-
-  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = XMLescape(wxT("(") + m_userDefinedLabel + wxT(")"));
+  wxString text = XMLescape(ToString());
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
@@ -1441,7 +1095,7 @@ wxString TextCell::ToMathML()
   return wxT("<mo>") + text + wxT("</mo>\n");
 }
 
-wxString TextCell::ToOMML()
+wxString TextCell::ToOMML() const
 {
   //Text-only lines are better handled in RTF.
   if (
@@ -1515,17 +1169,14 @@ wxString TextCell::ToOMML()
   return text;
 }
 
-wxString TextCell::ToRTF()
+wxString TextCell::ToRTF() const
 {
   wxString retval;
-  wxString text = m_displayedText;
+  wxString text = ToString();
 
   if (m_displayedText == wxEmptyString)
     return(wxT(" "));
-  
-  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = wxT("(") + m_userDefinedLabel + wxT(")");
-  
+    
   text.Replace(wxT("-->"), wxT("\u2192"));
   // Needed for the output of let(a/b,a+1);
   text.Replace(wxT(" --> "), wxT("\u2192"));
@@ -1538,10 +1189,33 @@ wxString TextCell::ToRTF()
   return retval;
 }
 
-wxString TextCell::ToXML()
+wxString TextCell::GetXMLFlags() const
+{
+  wxString flags;
+  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
+    flags += wxT(" breakline=\"true\"");
+
+  if (GetStyle() == TS_ERROR)
+    flags += wxT(" type=\"error\"");
+
+  if (GetStyle() == TS_WARNING)
+    flags += wxT(" type=\"warning\"");
+  
+  if(!GetAltCopyText().empty())
+    flags += wxT(" altCopy=\"") + XMLescape(GetAltCopyText()) + wxT("\"");
+
+  if (!GetLocalToolTip().empty())
+    flags += wxT(" tooltip=\"") + XMLescape(GetLocalToolTip()) + wxT("\"");
+
+  if(GetStyle() == TS_USERLABEL)
+    flags += wxT(" userdefined=\"yes\"");
+
+  return flags;
+}
+
+wxString TextCell::ToXML() const
 {
   wxString tag;
-  wxString flags;
   if (m_isHidden || (m_isHidableMultSign))
     tag = _T("h");
   else
@@ -1570,33 +1244,15 @@ wxString TextCell::ToXML()
         break;
       case TS_USERLABEL:
         tag = _T("lbl");
-        flags += wxT(" userdefined=\"yes\"");
         break;
       default:
         tag = _T("t");
     }
 
-  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
-    flags += wxT(" breakline=\"true\"");
-
-  if (GetStyle() == TS_ERROR)
-    flags += wxT(" type=\"error\"");
-
-  if (GetStyle() == TS_WARNING)
-    flags += wxT(" type=\"warning\"");
-  
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
-  if(m_userDefinedLabel != wxEmptyString)
-    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
-  if(m_altCopyText != wxEmptyString)
-    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
-
-  if(m_toolTip != wxEmptyString)
-    flags += wxT(" tooltip=\"") + XMLescape(m_toolTip) + wxT("\"");
-
-  return wxT("<") + tag + flags + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
+  return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
 }
 
 wxString TextCell::GetDiffPart() const
@@ -1613,53 +1269,12 @@ bool TextCell::IsShortNum() const
   return false;
 }
 
-void TextCell::SetAltText()
-{
-  if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
-    return;
-
-  /// Greek characters are defined in jsMath, Windows and Unicode
-  if (GetStyle() == TS_GREEK_CONSTANT)
-  {
-    if((*m_configuration)->Latin2Greek())
-    {
-      m_altJsText = GetGreekStringTeX();
-      m_texFontname = CMMI10;      
-      m_altText = GetGreekStringUnicode();
-    }
-  }
-
-    /// Check for other symbols
-  else
-  {
-    m_altJsText = GetSymbolTeX();
-    if (m_altJsText != wxEmptyString)
-    {
-      if (m_text == wxT("+") || m_text == wxT("="))
-        m_texFontname = CMR10;
-      else if (m_text == wxT("%pi"))
-        m_texFontname = CMMI10;
-      else
-        m_texFontname = CMSY10;
-    }
-    m_altText = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
-// #if defined __WXMSW__
-//     m_altText = GetSymbolSymbol(configuration->CheckKeepPercent());
-//     if (m_altText != wxEmptyString)
-//     {
-//       m_alt = true;
-//       m_fontname = wxT("Symbol");
-//     }
-// #endif
-  }
-}
-
 wxString TextCell::GetGreekStringUnicode() const
 {
   wxString txt(m_text);
 
-  if (txt[0] != '%')
-    txt = wxT("%") + txt;
+  if (!txt.empty() && txt[0] != '%')
+    txt.Prepend(wxT("%"));
 
   if (txt == wxT("%alpha"))
     return wxT("\u03B1");

@@ -23,6 +23,7 @@
 #ifndef GEN2WIZ_H
 #define GEN2WIZ_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
 

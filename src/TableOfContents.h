@@ -25,7 +25,9 @@
   This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
  */
+#include "precomp.h"
 #include "Configuration.h"
+#include "RegexCtrl.h"
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <vector>
@@ -97,7 +99,7 @@ private:
   void UpdateDisplay();
 
   wxListCtrl *m_displayedItems;
-  wxTextCtrl *m_regex;
+  RegexCtrl *m_regex;
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;
   Configuration **m_configuration;

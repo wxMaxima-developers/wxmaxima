@@ -30,7 +30,9 @@
 
 #define BM_FULL_WIDTH 1000
 
-BitmapOut::BitmapOut(Configuration **configuration, int scale) :
+constexpr long BitmapOut::MAX_CLIPBOARD_SIZE;
+
+BitmapOut::BitmapOut(Configuration **configuration, double scale) :
     m_cmn(configuration, BM_FULL_WIDTH, scale)
 {
   m_cmn.SetSize({10, 10});
@@ -47,13 +49,27 @@ BitmapOut::BitmapOut(Configuration **configuration, int scale) :
   config.RecalculationForce(true);
 }
 
+BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale, long maxSize) :
+    BitmapOut(configuration, scale)
+{
+  Render(std::move(tree), maxSize);
+}
+
 BitmapOut::~BitmapOut()
 {}
 
-bool BitmapOut::SetData(Cell *tree, long int maxSize)
+double BitmapOut::GetConfigScale()
 {
-  m_tree.reset(tree);
-  return m_tree && Layout(maxSize);
+  int bitmapScale = 3;
+  wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+  return bitmapScale;
+}
+
+bool BitmapOut::Render(std::unique_ptr<Cell> &&tree, long int maxSize)
+{
+  m_tree = std::move(tree);
+  m_isOk = m_tree && Layout(maxSize);
+  return m_isOk;
 }
 
 bool BitmapOut::Layout(long int maxSize)
@@ -101,14 +117,14 @@ void BitmapOut::Draw()
   auto &config = m_cmn.GetConfiguration();
   config.ClipToDrawRegion(false);
 
-  auto bgColor = config.m_styles[TS_TEXT_BACKGROUND].Color();
+  auto bgColor = config.m_styles[TS_TEXT_BACKGROUND].GetColor();
   m_dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColor, wxBRUSHSTYLE_SOLID)));
   m_dc.Clear();
 
   m_cmn.Draw(m_tree.get());
 }
 
-wxSize BitmapOut::ToFile(wxString file)
+wxSize BitmapOut::ToFile(const wxString &file)
 {
   // Assign a resolution to the bitmap.
   wxImage img = m_bmp.ConvertToImage();
@@ -138,12 +154,19 @@ wxSize BitmapOut::ToFile(wxString file)
     return wxDefaultSize;
 }
 
-bool BitmapOut::ToClipboard()
+std::unique_ptr<wxBitmapDataObject> BitmapOut::GetDataObject() const
 {
+  return m_isOk ? std::make_unique<wxBitmapDataObject>(GetBitmap()) : nullptr;
+}
+
+bool BitmapOut::ToClipboard() const
+{
+  if (!m_isOk)
+    return false;
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-    bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
+    bool res = wxTheClipboard->SetData(GetDataObject().release());
     wxTheClipboard->Close();
     return res;
   }

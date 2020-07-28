@@ -28,12 +28,14 @@
 
 #include "AtCell.h"
 #include "TextCell.h"
+#include "VisiblyInvalidCell.h"
 
 AtCell::AtCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config),
-    m_baseCell (new TextCell(parent, config)),
-    m_indexCell(new TextCell(parent, config))
+    m_baseCell (std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_indexCell(std::make_unique<VisiblyInvalidCell>(parent,config))
 {
+  InitBitFields();
 }
 
 AtCell::AtCell(const AtCell &cell):
@@ -46,43 +48,38 @@ AtCell::AtCell(const AtCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-void AtCell::SetIndex(Cell *index)
+std::unique_ptr<Cell> AtCell::Copy() const
+{
+  return std::make_unique<AtCell>(*this);
+}
+
+void AtCell::SetIndex(std::unique_ptr<Cell> &&index)
 {
   if (!index)
     return;
-  m_indexCell.reset(index);
+  m_indexCell = std::move(index);
 }
 
-void AtCell::SetBase(Cell *base)
+void AtCell::SetBase(std::unique_ptr<Cell> &&base)
 {
   if (!base)
     return;
-  m_baseCell.reset(base);
+  m_baseCell = std::move(base);
 }
 
-void AtCell::RecalculateWidths(int fontsize)
+void AtCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  m_baseCell->RecalculateWidthsList(fontsize);
-  m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 3));
+  m_baseCell->RecalculateList(fontsize);
+  m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - 3 });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
             Scale_Px(4);
-  Cell::RecalculateWidths(fontsize);
-}
-
-void AtCell::RecalculateHeight(int fontsize)
-{
-  if(!NeedsRecalculation(fontsize))
-    return;
-
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(7);
   m_center = m_baseCell->GetCenter();
-  Cell::RecalculateHeight(fontsize);
+  Cell::Recalculate(fontsize);
 }
 
 void AtCell::Draw(wxPoint point)
@@ -108,11 +105,10 @@ void AtCell::Draw(wxPoint point)
                 bs.y - m_baseCell->GetCenterList(),
                 in.x - Scale_Px(2),
                 in.y);
-    UnsetPen();
   }
 }
 
-wxString AtCell::ToString()
+wxString AtCell::ToString() const
 {
   wxString s = wxT("at(");
   s += m_baseCell->ListToString();
@@ -120,7 +116,7 @@ wxString AtCell::ToString()
   return s;
 }
 
-wxString AtCell::ToMatlab()
+wxString AtCell::ToMatlab() const
 {
   wxString s = wxT("at(");
   s += m_baseCell->ListToMatlab();
@@ -128,7 +124,7 @@ wxString AtCell::ToMatlab()
   return s;
 }
 
-wxString AtCell::ToTeX()
+wxString AtCell::ToTeX() const
 {
   wxString s = wxT("\\left. ");
   s += m_baseCell->ListToTeX();
@@ -136,20 +132,20 @@ wxString AtCell::ToTeX()
   return s;
 }
 
-wxString AtCell::ToMathML()
+wxString AtCell::ToMathML() const
 {
   return wxT("<msub>") + m_baseCell->ListToMathML() +
          m_indexCell->ListToMathML() + wxT("</msub>\n");
 }
 
-wxString AtCell::ToOMML()
+wxString AtCell::ToOMML() const
 {
   return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
          m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
 
-wxString AtCell::ToXML()
+wxString AtCell::ToXML() const
 {
   wxString flags;
   if (m_forceBreakLine)

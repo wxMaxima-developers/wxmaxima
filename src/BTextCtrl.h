@@ -22,6 +22,7 @@
 #ifndef BTEXTCTRL_H
 #define BTEXTCTRL_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include "Configuration.h"
 
@@ -34,7 +35,7 @@ public:
   BTextCtrl(wxWindow *parent,
             wxWindowID id,
             Configuration *cfg,
-            const wxString &value,
+            const wxString &value = wxEmptyString,
             const wxPoint &pos = wxDefaultPosition,
             const wxSize &size = wxDefaultSize,
             long style = 0);

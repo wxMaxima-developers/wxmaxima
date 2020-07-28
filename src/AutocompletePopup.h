@@ -37,6 +37,7 @@
 #ifndef AUTOCOMPLETEPOPUP_H
 #define AUTOCOMPLETEPOPUP_H
 
+#include "precomp.h"
 #include "Autocomplete.h"
 #include "EditorCell.h"
 #include <wx/combo.h>
@@ -70,7 +71,6 @@ private:
   const DonePtr m_doneptr;
   wxArrayString m_completions;
   AutoComplete *m_autocomplete = {};
-  size_t m_length = 0;
   EditorCell *m_editor = {};
   AutoComplete::autoCompletionType m_type;
 

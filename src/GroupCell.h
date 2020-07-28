@@ -33,13 +33,12 @@
 #include "Cell.h"
 #include "EditorCell.h"
 
-#define EMPTY_INPUT_LABEL wxT(" -->  ")
-
 //! All types a GroupCell can be of
 // This enum's elements must be synchronized with (WXMFormat.h) WXMHeaderId.
-enum GroupType
+enum GroupType : int8_t
 {
-  GC_TYPE_CODE,
+  GC_TYPE_INVALID = -1,
+  GC_TYPE_CODE = 0,
   GC_TYPE_TITLE,
   GC_TYPE_SECTION,
   GC_TYPE_SUBSECTION,
@@ -69,7 +68,8 @@ class GroupCell final : public Cell
 public:
   GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
-  Cell *Copy() const override { return new GroupCell(*this); }
+  std::unique_ptr<Cell> Copy() const override;
+  std::unique_ptr<GroupCell> CopyList() const;
   ~GroupCell();
 
   wxString GetAnswer(int answer)
@@ -113,8 +113,7 @@ public:
     Must be kept in GroupCell as on deletion a GroupCell will unlink itself from
     this pointer.
    */
-  GroupCell *GetLastWorkingGroup() const
-  { return m_cellPointers->m_lastWorkingGroup; }
+  GroupCell *GetLastWorkingGroup() const;
 
   /*! Marks the cell that is under the mouse pointer.
 
@@ -127,36 +126,35 @@ public:
 
     wxEmptyString means: No toolTip.
    */
-  wxString GetToolTip(const wxPoint &point)  override;
+  const wxString &GetToolTip(wxPoint point) const override;
 
   // general methods
   GroupType GetGroupType() const { return m_groupType; }
 
   void SetGroupType(GroupType type) { m_groupType = type; }
 
-  void SetCellStyle(int style);
-
   void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
   void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last) override;
 
-  void SelectPoint(const wxPoint &point, CellPtr<Cell> *first, CellPtr<Cell> *last);
+  void SelectPoint(wxPoint point, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   // cppcheck-suppress functionConst
   void SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end);
 
   // cppcheck-suppress functionConst
-  void SelectRectInOutput(const wxRect &rect, const wxPoint &one, const wxPoint &two, CellPtr<Cell> *first, CellPtr<Cell> *last);
+  void SelectRectInOutput(const wxRect &rect, wxPoint one, wxPoint two, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
-  void SelectRectGroup(const wxRect &rect, const wxPoint &one, const wxPoint &two, CellPtr<Cell> *first, CellPtr<Cell> *last);
+  void SelectRectGroup(const wxRect &rect, wxPoint one, wxPoint two, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   // methods for manipulating GroupCell
   // cppcheck-suppress functionConst
   bool SetEditableContent(wxString text);
 
   EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
-  void AppendOutput(Cell *cell);
+
+  void AppendOutput(std::unique_ptr<Cell> &&cell);
 
   /*! Remove all output cells attached to this one
 
@@ -169,33 +167,33 @@ public:
   //! GroupCells warn if they contain both greek and latin lookalike chars.
   void UpdateConfusableCharWarnings();
   
-  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter) const;
 
-  wxString ToRTF() override;
+  wxString ToRTF() const override;
 
-  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter) const;
 
   static wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeX() override;
+  wxString ToTeX() const override;
 
   //! Add Markdown to the TeX representation of input cells.
   wxString TeXMarkdown(wxString str);
 
-  wxString ToXML() override;
+  wxString ToXML() const override;
 
-  void Hide(bool hide);
+  void Hide(bool hide) override;
 
   void SwitchHide();
 
   wxRect HideRect();
 
   // raw manipulation of GC (should be protected)
-  void SetInput(Cell *input);
+  void SetInput(std::unique_ptr<Cell> &&input);
 
-  void SetOutput(Cell *output);
+  void SetOutput(std::unique_ptr<Cell> &&output);
 
-  void AppendInput(Cell *cell);
+  void AppendInput(std::unique_ptr<Cell> &&cell);
 
   //! Get the previous GroupCell in the list
   GroupCell *GetPrevious() const { return m_previous.CastAs<GroupCell*>(); }
@@ -205,7 +203,10 @@ public:
 
   static wxString TexEscapeOutputCell(wxString Input);
 
-  Cell *GetPrompt() { return m_inputLabel.get(); }
+  Cell *GetPrompt() const { return m_inputLabel.get(); }
+  virtual void SetAltCopyText(const wxString &text) override
+    {wxASSERT_MSG(text == wxEmptyString,
+                  _("Bug: AltCopyTexts not implemented for GroupCells"));}
 
   EditorCell *GetInput() const
     {
@@ -231,32 +232,24 @@ public:
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
 
-  /*! Recalculates the height of this GroupCell and all cells inside it if needed.
+  /*! Recalculates the size of this GroupCell and all cells inside it if needed.
 
     This command will also assign the GroupCell a y coordinate it is plotted at.
     The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
-  void RecalculateHeight(int fontsize) override;
+  void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
+  void Recalculate();
+
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
-  wxRect GetRect(bool all = false) override;
+  wxRect GetRect(bool all = false) const override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
     during RecalculateAppended.
    */
   void RecalculateHeightOutput();
-
-  /*! Recalculates the width of this GroupCell and all cells inside it if needed.
-   */
-  void RecalculateWidths(int fontsize) override;
-
-  /*! Recalculate the size of this GroupCell.
-
-    Calls RecalculateHeight() and RecalculateWidths()
-  */
-  void Recalculate();
 
   /*! Attempt to split math objects that are wider than the screen into multiple lines.
     
@@ -265,13 +258,10 @@ public:
   bool BreakUpCells(Cell *cell);
 
   //! Undo a BreakUpCells
-  void UnBreakUpCells(Cell *cell);
+  bool UnBreakUpCells(Cell *cell);
 
   //! Break this cell into lines
   void BreakLines();
-
-  //! Break this cell into lines
-  void BreakLines(Cell *cell);
 
   /*! Reset the input label of the current cell.
 
@@ -355,7 +345,7 @@ public:
   bool IsMainInput(Cell *active) const;
 
   //!  Return this cell's section- or image number.
-  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
+  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const;
 
   /*! Draw this GroupCell
 
@@ -382,13 +372,13 @@ public:
   void DrawBracket();
 
   //! Is this list of cells empty?
-  bool Empty();
+  bool Empty() const;
 
   //! Does this tree contain the cell "cell"?
   bool Contains(GroupCell *cell) const;
 
   //! A textual representation of this cell
-  wxString ToString() override;
+  wxString ToString() const override;
 
   //! Is this cell part of the evaluation Queue?
   void InEvaluationQueue(bool inQueue) { m_inEvaluationQueue = inQueue; }
@@ -402,7 +392,6 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
-  WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);  
   WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   //! A list of answers provided by the user
   StringHash m_knownAnswers;
@@ -412,63 +401,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 #if wxUSE_ACCESSIBILITY
-  wxAccStatus GetDescription(int childId, wxString *description) override;
+  wxAccStatus GetDescription(int childId, wxString *description) const override;
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
-
-  // TODO This class is not used anyhere.
-  class HCaretCell: public wxAccessible
-  {
-  public:
-    explicit HCaretCell(GroupCell* group) : wxAccessible(), m_group(group) {}
-
-    //! Describe the current cell to a Screen Reader
-    wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description) override
-    {
-      if (description)
-        return (*description = _("A space between GroupCells")), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    //! Inform the Screen Reader which cell is the parent of this one
-    wxAccStatus GetParent (wxAccessible ** parent) override
-    {
-      if (parent)
-        return (*parent = m_group), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    //! How many childs of this cell GetChild() can retrieve?
-    wxAccStatus GetChildCount (int *childCount) override
-    {
-      if (childCount)
-        return (*childCount = 0), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    //! Retrieve a child cell. childId=0 is the current cell
-    wxAccStatus GetChild (int childId, wxAccessible **child) override
-    {
-      if (childId == 0 && child)
-        return (*child = this), wxACC_OK;
-
-      return wxACC_FAIL;
-    }
-    // //! Does this or a child cell currently own the focus?
-    // wxAccStatus GetFocus (int *childId, wxAccessible **child)
-    //   {
-    //   }
-    // //! Where is this cell to be found?
-    // wxAccStatus GetLocation (wxRect &rect, int elementId)
-    //   {
-    //   }
-    // //! Is pt inside this cell or a child cell?
-    // wxAccStatus HitTest (const wxPoint &pt,
-    //                      int *childId, wxAccessible **childObject);
-    wxAccStatus GetRole (int childId, wxAccRole *role) override;
-
-  private:
-	GroupCell *m_group;
-  };
 #endif
 
   /*! Recalculate the cell's y position using the position and height of the last one.
@@ -477,46 +411,73 @@ public:
   */
   GroupCell *UpdateYPosition();
 
-  bool GetSuppressTooltipMarker()
-    {return m_suppressTooltipMarker;}
+  void UpdateYPositionList();
+
+  bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress)
     {m_suppressTooltipMarker = suppress;}
 protected:
-  int m_labelWidth_cached;
-  bool NeedsRecalculation(int fontSize) const override;
+  bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();
   int GetLineIndent(Cell *cell);
+  void UpdateCellsInGroup();
+
+//** 16-byte objects (16 bytes)
+//**
+  wxRect m_outputRect{-1, -1, 0, 0};
+
+//** 8/4 byte objects (40 bytes)
+//**
+  CellPtr<Cell> m_nextToDraw;
 
   GroupCell *m_hiddenTree = {}; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent = {}; //!< store linkage to the parent of the fold
-  //! Which type this cell is of?
-  GroupType m_groupType;
+
   // The pointers below point to inner cells and must be kept contiguous.
+  // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
+  // ** NO OTHER TYPES are allowed.
   //! The input label of this cell. Is followed by the input of the cell.
   std::unique_ptr<Cell> m_inputLabel;
   //! The maxima output this cell contains
   std::unique_ptr<Cell> m_output;
-  //! Is this cell folded (which hides its contents)?
-  int m_mathFontSize;
-  CellPtr<Cell> m_lastInOutput;
-  static wxString m_lookalikeChars;
+  // The pointers above point to inner cells and must be kept contiguous.
 
-  CellPtr<Cell> m_nextToDraw;
-  //! Does this GroupCell automatically fill in the answer to questions?
-  bool m_autoAnswer;
-  wxRect m_outputRect;
-  bool m_inEvaluationQueue;
-  bool m_lastInEvaluationQueue;
-  int m_inputWidth, m_inputHeight, m_outputWidth, m_outputHeight;
+//** 4-byte objects (12 bytes)
+//**
+  int m_labelWidth_cached = 0;
+  int m_inputWidth, m_inputHeight;
+
+//** 2-byte objects (6 bytes)
+//**
   //! The number of cells the current group contains (-1, if no GroupCell)
-  int m_cellsInGroup;
-  int m_numberedAnswersCount;
-  void UpdateCellsInGroup(){
-    if(m_output != NULL)
-      m_cellsInGroup = 2 + m_output->CellsInListRecursive();
-    else
-      m_cellsInGroup = 2;
+  int16_t m_cellsInGroup = 1;
+  int16_t m_numberedAnswersCount = 0;
+
+  AFontSize m_mathFontSize;
+
+//** 1-byte objects (1 byte)
+//**
+  //! Which type this cell is of?
+  GroupType m_groupType = {};
+
+//** Bitfield objects (1 bytes)
+//**
+  void InitBitFields()
+  { // Keep the initailization order below same as the order
+    // of bit fields in this class!
+    m_autoAnswer = false;
+    m_inEvaluationQueue = false;
+    m_lastInEvaluationQueue = false;
+    m_updateConfusableCharWarnings = true;
   }
+
+  //! Does this GroupCell automatically fill in the answer to questions?
+  bool m_autoAnswer : 1 /* InitBitFields */;
+  bool m_inEvaluationQueue : 1 /* InitBitFields */;
+  bool m_lastInEvaluationQueue : 1 /* InitBitFields */;
+  bool m_updateConfusableCharWarnings : 1 /* InitBitFields */;
+
+  static wxString m_lookalikeChars;
 };
 
 #endif /* GROUPCELL_H */

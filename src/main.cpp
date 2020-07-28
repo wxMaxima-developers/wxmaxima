@@ -64,8 +64,10 @@ int CommonMain()
   wxConfigBase *config = wxConfig::Get();
   config->Flush();
   delete config;
-  wxLogDebug("CellPtr: %zu live instances leaked", CellPtrBase::GetLiveInstanceCount());
-  wxLogDebug("Cell:    %zu live instances leaked", Observed::GetLiveInstanceCount());
+  if(CellPtrBase::GetLiveInstanceCount() != 0)
+    wxLogDebug("CellPtr: %zu live instances leaked", CellPtrBase::GetLiveInstanceCount());
+  if(Observed::GetLiveInstanceCount() != 0)
+    wxLogDebug("Cell:    %zu live instances leaked", Observed::GetLiveInstanceCount());
   return 0;
 }
 
@@ -205,6 +207,8 @@ bool MyApp::OnInit()
                   {wxCMD_LINE_OPTION, "X", "extra-args",
                    "Allows to specify extra Maxima arguments",  wxCMD_LINE_VAL_STRING, 0},
                   { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the Maxima binary", wxCMD_LINE_VAL_STRING , 0},
+                  { wxCMD_LINE_SWITCH, "", "enableipc",
+                   "Lets Maxima control wxMaxima via interprocess communications. Use this option with care.", wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
             {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
@@ -244,6 +248,9 @@ bool MyApp::OnInit()
   if (cmdLineParser.Found(wxT("exit-on-error")))
     wxMaxima::ExitOnError();
 
+  if (cmdLineParser.Found(wxT("enableipc")))
+    wxMaxima::EnableIPC();
+
   wxString extraMaximaArgs;
   wxString arg;
   if (cmdLineParser.Found(wxT("l"), &arg))
@@ -272,14 +279,8 @@ bool MyApp::OnInit()
     if(dir != wxEmptyString)
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-  /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
   wxString fontPrefix = m_dirstruct.FontDir() + wxT("/");  
-  if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  wxFont::AddPrivateFont(fontPrefix + wxT(CMR10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMMI10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMMI10) + wxT(".ttf"));
-  if (wxFileExists(fontPrefix + wxT(CMTI10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMTI10) + wxT(".ttf"));
 
   /* Add private Libertine fonts, if they exist */
   if (wxFileExists(fontPrefix + wxT(LIBERTINE1))) 
@@ -303,15 +304,16 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
 
   wxApp::SetExitOnFrameDelete(false);
-  wxMenuBar::SetAutoWindowMenu(true);
+/*
   wxMenuBar *menuBar = new wxMenuBar;
   // Enables the window list on MacOs.
-  menuBar->SetAutoWindowMenu(true);
   wxMenu *fileMenu = new wxMenu;
   fileMenu->Append(wxID_NEW, _("&New\tCtrl+N"));
   fileMenu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
   menuBar->Append(fileMenu, _("File"));
+  menuBar->SetAutoWindowMenu(true);
   wxMenuBar::MacSetCommonMenuBar(menuBar);
+*/
   Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
