@@ -397,7 +397,7 @@ wxString EditorCell::ToTeX() const
     text.Replace(wxT("\u00a0"), wxT("~"));
     text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
     text.Replace(wxT("\r"), wxT(" "));
-    text.Replace(wxT("^"), wxT("\\^{}"));
+    text.Replace(wxT("^"), wxT("\\^ "));
     text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
     text.Replace(wxT("\u2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\u2052"), wxT("-")); // commercial minus sign
@@ -510,7 +510,13 @@ wxString EditorCell::ToTeX() const
     text.Replace(wxT("\u27F6"), wxT("\\ensuremath{\\longrightarrow}"));
     // Now we might want to introduce some markdown:
     MarkDownTeX MarkDown(*m_configuration);
-    text = MarkDown.MarkDown(text);
+    if(m_type != MC_TYPE_INPUT)
+      text = MarkDown.MarkDown(text);
+    else
+    {
+      text.Replace(wxT("\n"), wxT("\\\\\n"));
+      text.Replace(wxT(" "), wxT("\\ "));
+    }
   }
   else
   {

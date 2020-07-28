@@ -963,7 +963,10 @@ wxString TextCell::ToTeX() const
     if (GetStyle() == TS_FUNCTION)
     {
       if (text != wxEmptyString)
+      {
+        text.Replace(wxT("^"), wxT("\\hat{} "));
         text = wxT("\\operatorname{") + text + wxT("}");
+      }
     }
     else if (GetStyle() == TS_VARIABLE)
     {
