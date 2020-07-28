@@ -1,4 +1,15 @@
 # Current
+ * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
+ * An italian translation update from Marco Ciampa
+ * Repaired the non-case-sensitive "Replace All" functionality
+ * More efficient and accurate calculation of worksheet object sizes
+ * Reduced the UI flicker on MS Windows
+ * diff cells can now be broken into lines
+ * A try to replace manual MacOs desktop integration with wxWidgets one
+ * More performance updates
+ * Reduced the memory footprint of text cells
+
+# 20.07.0
  * A massive performance update
  * A new translation of the Turkish manual by Tufan Şirin
  * Improved italian translation by Marco Ciampa
