@@ -3,6 +3,7 @@
  * An italian translation update from Marco Ciampa
  * Repaired the non-case-sensitive "Replace All" functionality
  * More efficient and accurate calculation of worksheet object sizes
+ * (Hopefully) reduced the last visual glitches
  * Reduced the UI flicker on MS Windows
  * diff cells can now be broken into lines
  * A try to replace manual MacOs desktop integration with wxWidgets one
