@@ -467,6 +467,16 @@ void TextCell::SetFont(AFontSize fontsize)
   dc->SetFont(style.GetFont());
 }
 
+void TextCell::SetAltCopyText(const wxString &text)
+{
+  wxASSERT_MSG(text == wxEmptyString,
+               _("Bug: AltCopyTexts not implemented for TextCells") +
+               wxString::Format("\nCell contents=%s,\nAltText=%s",
+                                m_text.utf8_str(),
+                                text.utf8_str()
+                 ));
+}
+
 bool TextCell::IsOperator() const
 {
   if (wxString(wxT("+*/-")).Find(m_text) >= 0)

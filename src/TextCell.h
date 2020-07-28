@@ -86,9 +86,7 @@ public:
 
   void SetType(CellType type) override;
 
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for TextCells"));}
+  virtual void SetAltCopyText(const wxString &text) override;
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
