@@ -819,7 +819,7 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
       default:
         cell->SetType(m_ParserStyle);
       }
-      
+      cell->SetStyle(style);
       cell->SetHighlight(m_highlight);
       if (retval == NULL)
         retval = cell;

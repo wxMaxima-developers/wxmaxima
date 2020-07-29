@@ -681,8 +681,8 @@ wxString Cell::ListToTeX() const
   wxString retval;
   for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
   {
-    if ((tmp->m_textStyle == TS_LABEL && retval != wxEmptyString) ||
-        (tmp->m_breakLine && retval != wxEmptyString))
+    if ((!retval.IsEmpty()) && (tmp->m_textStyle == TS_LABEL)  ||
+        (tmp->BreakLineHere()))
       retval += wxT("\\]\\[");
     retval += tmp->ToTeX();
   }

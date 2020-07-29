@@ -274,7 +274,7 @@
 			(format nil "<mi>~a</mi>" sub-var))
 		    (if sub-int
 			;; sub-symb discarded leading zeros from subscripts
-			(format nil "<mn>~a</mn>" sub) 
+			(format nil "<mi>~a</mi>" sub) 
                       (format nil "<mi>~a</mi>" sub))))))))
 
   (defun wxxmlnumformat (atom)
