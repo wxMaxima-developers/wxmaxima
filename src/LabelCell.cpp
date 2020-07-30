@@ -212,7 +212,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
                    _("Seems like something is broken with the maths font."));
 
       wxDC *dc = configuration->GetDC();
-      while ((labelSize.GetWidth() >= Scale_Px(configuration->GetLabelWidth())) &&
+      while ((labelSize.GetWidth() + Scale_Px(2) >= Scale_Px(configuration->GetLabelWidth())) &&
              (!m_fontSize_scaledToFit.IsMinimal()))
       {
 #if wxCHECK_VERSION(3, 1, 2)
@@ -225,7 +225,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
         labelSize = GetTextSize((*m_configuration)->GetDC(), m_displayedText, index);
       }
       m_height = labelSize.GetHeight();
-      m_width = labelSize.GetWidth();
+      m_width = labelSize.GetWidth() + Scale_Px(2);
       m_center = m_height / 2;
     }
     else
