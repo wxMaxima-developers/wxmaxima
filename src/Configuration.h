@@ -797,6 +797,8 @@ void MathFontName(AFontName name){m_mathFontName = name;}
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
   Style m_styles[NUMBEROFSTYLES];
+  //! Initialize the text styles on construction.
+  void InitStyles();
 private:
   using CellRedrawTrace = std::vector<const Cell*>;
 
@@ -932,9 +934,6 @@ private:
   wxString m_symbolPaneAdditionalChars;
   bool m_invertBackground;
   wxFont m_worksheetFonts[NUMBEROFSTYLES];
-
-  //! Initialize the text styles on construction.
-  void InitStyles();
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

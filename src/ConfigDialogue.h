@@ -211,6 +211,7 @@ private:
   
 protected:
   void OnResetAllToDefaults(wxCommandEvent& event);
+  void OnResetStyles(wxCommandEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.

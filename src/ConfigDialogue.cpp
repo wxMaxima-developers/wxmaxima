@@ -676,6 +676,15 @@ wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5).
     Expand()
     );
+  wxButton *resetStylesButton = new wxButton(panel, -1, _("Reset the Style settings"));
+  resetStylesButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnResetStyles),
+                          NULL, this);
+  vsizer->Add(
+    resetStylesButton,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
   WrappingStaticText *helpText2 = new WrappingStaticText(
     panel, -1,
     _("While wxMaxima is controlled by the settings here "
@@ -1518,6 +1527,16 @@ void ConfigDialogue::OnResetAllToDefaults(wxCommandEvent&  WXUNUSED(event))
 {
   wxLogMessage(_("Resetting all configuration settings"));
   m_configuration->ResetAllToDefaults();
+  m_configuration->InitStyles();
+  SetCheckboxValues();
+  wxCommandEvent dummy;
+  OnChangeStyle(dummy);
+}
+
+void ConfigDialogue::OnResetStyles(wxCommandEvent&  WXUNUSED(event))
+{
+  wxLogMessage(_("Resetting all configuration settings"));
+  m_configuration->InitStyles();
   SetCheckboxValues();
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
