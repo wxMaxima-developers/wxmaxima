@@ -33,6 +33,7 @@
 #include "BTextCtrl.h"
 #include "Cell.h"
 #include "Dirstructure.h"
+#include "WrappingStaticText.h"
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/fileconf.h>
@@ -207,6 +208,9 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_imageList->Add(GetImage(wxT("media-playback-start"),
                             media_playback_start_confdialogue_svg_gz,media_playback_start_confdialogue_svg_gz_len
                      ));
+  m_imageList->Add(GetImage(wxT("edit-undo"),
+                            view_refresh_svg_gz, view_refresh_svg_gz_len
+                     ));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
@@ -227,6 +231,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
+  m_notebook->AddPage(CreateRevertToDefaultsPanel(), _("Revert all to defaults"), false, 7);
 
 #if !defined(__WXMSW__) && !defined(__WXOSX__)
   CreateButtons(wxOK | wxCANCEL);
@@ -245,7 +250,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   LayoutDialog();
 
-  SetProperties();
+  SetCheckboxValues();
 
   Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ConfigDialogue::OnClose),NULL, this);
   Connect(button_mathFont, wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnMathBrowse), NULL, this);
@@ -295,7 +300,7 @@ void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& WXUNUSED(unused))
     m_noAutodetectMaxima->SetForegroundColour(*wxRED);
 }
 
-void ConfigDialogue::SetProperties()
+void ConfigDialogue::SetCheckboxValues()
 {
   Configuration *configuration = m_configuration;
   SetTitle(_("wxMaxima configuration"));
@@ -373,7 +378,8 @@ void ConfigDialogue::SetProperties()
   m_hideBrackets->SetToolTip(
           _("Hide the brackets that mark the extend of the worksheet cells at the worksheet's right side and that contain the \"hide\" button of the cell if the cells aren't active."));
   m_indentMaths->SetToolTip(
-          _("Indent maths so all lines are in par with the first line that starts after the label."));
+          _("Indent maths so all lines are in par with the first line that starts after the label.")
+    );
 
   wxConfigBase *config = wxConfig::Get();
   wxString mp, mc, ib, mf;
@@ -491,11 +497,44 @@ void ConfigDialogue::SetProperties()
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);
+  m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
+  int lang = m_configuration->GetLanguage();
+  unsigned int i = 0;
+  // First set the language to "default".
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  {
+    if(it->second == wxLANGUAGE_DEFAULT)
+    {
+      m_language->SetSelection(i);
+      break;
+    }
+    ++i;
+  }
+  m_autoMathJaxURL->SetValue(m_configuration->MathJaXURL_Auto());
+  m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
+  m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
+  m_maximaUserLocation->SetValue(m_configuration->MaximaUserLocation());
+  m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
+  m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
+  m_helpBrowserUserLocation->SetValue(m_configuration->HelpBrowserUserLocation());
+  m_defaultPort->SetValue(m_configuration->DefaultPort());
+  m_copyBitmap->SetValue(m_configuration->CopyBitmap());
+  m_copyMathML->SetValue(m_configuration->CopyMathML());
+  m_copyMathMLHTML->SetValue(m_configuration->CopyMathMLHTML());
+  m_copyRTF->SetValue(m_configuration->CopyRTF());
+  m_copySVG->SetValue(m_configuration->CopySVG());
+  #if wxUSE_ENH_METAFILE
+  m_copyEMF->SetValue(m_configuration->CopyEMF());
+  #endif
+  if (m_configuration->FontName() != wxEmptyString)
+    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetDefaultFontSize().Get()));
+  if (!m_configuration->MathFontName().empty())
+    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetMathFontSize().Get()));
+  m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
 
 wxPanel *ConfigDialogue::CreateWorksheetPanel()
 {
-  Configuration *configuration = m_configuration;
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
@@ -562,7 +601,6 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   labelchoices.Add(_("Only user-defined labels"));
   labelchoices.Add(_("Never"));
   m_showUserDefinedLabels = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, labelchoices);
-  m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
 
   grid_sizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
@@ -617,6 +655,44 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   return panel;
 }
 
+wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
+{
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+  WrappingStaticText *helpText1 = new WrappingStaticText(
+    panel, -1,
+    _("The buttons in this category reset wxMaxima's settings "
+      "immediately, once they are pressed."));
+  vsizer->Add(helpText1,
+              wxSizerFlags().Border(wxALL,5).
+              Expand()
+    );
+  wxButton *resetAllButton = new wxButton(panel, -1, _("Reset all GUI settings"));
+  resetAllButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnResetAllToDefaults),
+                          NULL, this);
+  vsizer->Add(
+    resetAllButton,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
+  WrappingStaticText *helpText2 = new WrappingStaticText(
+    panel, -1,
+    _("While wxMaxima is controlled by the settings here "
+      "Maxima as a command-line program isn't controlled by "
+      "settings, except of the few wxMaxima settings that set "
+      "the value of variables within Maxima: Instead Maxima "
+      "is configured using environment variables, the Startup "
+      "File and command-line switches."));
+  vsizer->Add(
+    helpText2,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
+  panel->SetSizerAndFit(vsizer);
+  return panel;
+}
+
 wxPanel *ConfigDialogue::CreateStartupPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
@@ -626,7 +702,6 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxPanel *panel_wxMaximaStartup = new wxPanel(panel, -1);
   wxBoxSizer *vsizer_maximaStartup = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
-
 
   m_startupFileName = Dirstructure::Get()->UserConfDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
@@ -751,8 +826,8 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_autodetectMathJaX = new wxRadioButton(panel, -1, _("Automatic"), wxDefaultPosition,
                                           wxDefaultSize, wxRB_GROUP);
   grid_sizer->Add(m_autodetectMathJaX, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxTextCtrl *autoMathJaxURL = new wxTextCtrl(panel, -1, m_configuration->MathJaXURL_Auto(), wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
-  grid_sizer->Add(autoMathJaxURL, 0, wxALL, 5);
+  m_autoMathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
+  grid_sizer->Add(m_autoMathJaxURL, 0, wxALL, 5);
 
   m_noAutodetectMathJaX = new wxRadioButton(panel, -1, _("User specified"));
   grid_sizer->Add(m_noAutodetectMathJaX, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -814,21 +889,10 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(
     new wxStaticText(panel, -1, _("Language:")), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  int lang = m_configuration->GetLanguage();
-  unsigned int i = 0;
-  // First set the language to "default".
-  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
-  {
-    if(it->second == wxLANGUAGE_DEFAULT)
-    {
-      m_language->SetSelection(i);
-      break;
-    }
-    ++i;
-  }
 
   // Now try to set the language to the one from the config
-  i = 0;
+  int lang = m_configuration->GetLanguage();
+  unsigned int i = 0;
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == lang)
@@ -927,8 +991,6 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   nameSizer->Add(10, 10);
   
   m_noAutodetectMaxima = new wxRadioButton(panel, -1, _("User specified"));
-  m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
-  m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
   m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_maximaUserLocation->AutoCompleteFileNames();
@@ -952,12 +1014,9 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   nameSizer->Add(10, 10);
   
   m_noAutodetectHelpBrowser= new wxRadioButton(panel, -1, _("User specified"));
-  m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
-  m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
   nameSizer->Add(m_noAutodetectHelpBrowser, wxSizerFlags().Expand().Border(wxALL, 0));
   m_helpBrowserUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_helpBrowserUserLocation->AutoCompleteFileNames();
-  m_helpBrowserUserLocation->SetValue(m_configuration->HelpBrowserUserLocation());
   wxButton *mpBrowse2 = new wxButton(panel, wxID_OPEN, _("Open"));
   mpBrowse2->Connect(wxEVT_BUTTON, wxCommandEventHandler(ConfigDialogue::OnHelpBrowserBrowse), NULL, this);
 
@@ -967,7 +1026,8 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxALL, 0));
 
   m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
-                                 65534, m_configuration->DefaultPort());
+                                 65534);
+  
   wxStaticText *dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
   sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -1025,30 +1085,23 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
 
   wxStaticText *descr = new wxStaticText(panel, -1, _("Additional clipboard formats to put on the clipboard on ordinary copy:"));
   vbox->Add(descr, 0, wxALL);
-
   m_copyBitmap = new wxCheckBox(panel, -1, _("Bitmap"));
-  m_copyBitmap->SetValue(configuration->CopyBitmap());
   vbox->Add(m_copyBitmap, 0, wxALL, 5);
 
   m_copyMathML = new wxCheckBox(panel, -1, _("MathML description"));
-  m_copyMathML->SetValue(configuration->CopyMathML());
   vbox->Add(m_copyMathML, 0, wxALL, 5);
 
   m_copyMathMLHTML = new wxCheckBox(panel, -1, _("MathML as HTML"));
-  m_copyMathMLHTML->SetValue(configuration->CopyMathMLHTML());
   vbox->Add(m_copyMathMLHTML, 0, wxALL, 5);
 
   m_copyRTF = new wxCheckBox(panel, -1, _("RTF with OMML maths"));
-  m_copyRTF->SetValue(configuration->CopyRTF());
   vbox->Add(m_copyRTF, 0, wxALL, 5);
 
   m_copySVG = new wxCheckBox(panel, -1, _("Scalable Vector Graphics (svg)"));
-  m_copySVG->SetValue(configuration->CopySVG());
   vbox->Add(m_copySVG, 0, wxALL, 5);
 
   #if wxUSE_ENH_METAFILE
   m_copyEMF = new wxCheckBox(panel, -1, _("Enhanced meta file (emf)"));
-  m_copyEMF->SetValue(configuration->CopyEMF());
   vbox->Add(m_copyEMF, 0, wxALL, 5);
   #endif
 
@@ -1077,13 +1130,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxStaticText *df = new wxStaticText(panel, -1, _("Documentation+Code font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
-  if (m_configuration->FontName() != wxEmptyString)
-    m_getFont->SetLabel(m_configuration->FontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetDefaultFontSize().Get()));
-
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
-  if (!m_configuration->MathFontName().empty())
-    m_getMathFont->SetLabel(m_configuration->MathFontName() + wxString::Format(wxT(" (%g)"), m_configuration->GetMathFontSize().Get()));
 
   wxArrayString m_styleFor_choices;
   for(int i = 0; i < NUMBEROFSTYLES; i++)
@@ -1110,7 +1158,6 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(10, 10);
   m_useUnicodeMaths = new wxCheckBox(panel, -1, _("Use unicode Math Symbols, if available"));
-  m_useUnicodeMaths->SetValue(configuration->UseUnicodeMaths());
   grid_sizer_1->Add(10, 10);
   grid_sizer_1->Add(m_useUnicodeMaths, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -1159,6 +1206,8 @@ void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event)
 void ConfigDialogue::OnClose(wxCloseEvent &event)
 {
   wxConfigBase *config = wxConfig::Get();
+  if(event.GetId() == wxID_OK)
+    std::cerr<<"test\n";
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 #if defined __WXOSX__
   EndModal(wxID_OK);
@@ -1462,6 +1511,16 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
   }
 
   UpdateExample();
+}
+
+
+void ConfigDialogue::OnResetAllToDefaults(wxCommandEvent&  WXUNUSED(event))
+{
+  wxLogMessage(_("Resetting all configuration settings"));
+  m_configuration->ResetAllToDefaults();
+  SetCheckboxValues();
+  wxCommandEvent dummy;
+  OnChangeStyle(dummy);
 }
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))

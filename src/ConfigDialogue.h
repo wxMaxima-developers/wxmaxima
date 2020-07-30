@@ -29,6 +29,9 @@ dialog. The preferences themself will be read directly using
 <code> config->Read </code>, instead, where needed or from Configuration.
 */
 
+extern unsigned int view_refresh_svg_gz_len;
+extern unsigned char view_refresh_svg_gz[];
+
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/image.h>
@@ -168,7 +171,7 @@ private:
 
     This method sets the window title, the tool tips etc.
    */
-  void SetProperties();
+  void SetCheckboxValues();
 
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
@@ -179,6 +182,9 @@ private:
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();
+
+  //! The panel that allows to choose which formats to put on the clipboard
+  wxPanel *CreateRevertToDefaultsPanel();
 
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
   #if wxUSE_ENH_METAFILE
@@ -204,6 +210,7 @@ private:
   wxPanel *CreateStartupPanel();
   
 protected:
+  void OnResetAllToDefaults(wxCommandEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.
@@ -307,7 +314,7 @@ protected:
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
   wxSpinCtrl *m_maxGnuplotMegabytes;
-
+  wxTextCtrl *m_autoMathJaxURL;
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
 
