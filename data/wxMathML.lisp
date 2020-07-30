@@ -499,7 +499,7 @@
   (defprop mprogn (("<mrow><p>") "</p></mrow>") wxxmlsym)
 
   (defprop mlist wxxml-matchfix wxxml)
-  (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t >]</t></mrow>") wxxmlsym)
+  (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t listdelim=\"true\">]</t></mrow>") wxxmlsym)
 
   (defprop $set wxxml-matchfix wxxml)
   (defprop $set (("<mrow><t>{</t>")"<t>}</t></mrow>") wxxmlsym)
