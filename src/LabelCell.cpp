@@ -55,10 +55,12 @@ std::unique_ptr<Cell> LabelCell::Copy() const
 void LabelCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
+  Configuration *configuration = (*m_configuration);
+  if(!configuration->ShowLabels())
+    return;
   if (InUpdateRegion())
   {
     SetForeground();
-    Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
     
     auto const index = GetLabelIndex();
