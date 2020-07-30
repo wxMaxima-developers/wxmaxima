@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-30 19:56+0200\n"
-"PO-Revision-Date: 2020-07-28 06:20+0200\n"
+"PO-Revision-Date: 2020-07-30 20:03+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1227,55 +1227,55 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.h:464
 msgid "Bug: AltCopyTexts not implemented for EditorCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für EditorCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/FracCell.h:93
 msgid "Bug: AltCopyTexts not implemented for FracCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für FracCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.h:209
 msgid "Bug: AltCopyTexts not implemented for GroupCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für GroupCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/ImgCell.h:122
 msgid "Bug: AltCopyTexts not implemented for ImgCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für ImgCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/IntCell.h:81
 msgid "Bug: AltCopyTexts not implemented for IntCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für IntCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/LimitCell.h:71
 msgid "Bug: AltCopyTexts not implemented for LimitCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für LimitCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/ListCell.h:80
 msgid "Bug: AltCopyTexts not implemented for ListCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für ListCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/MatrCell.h:75
 msgid "Bug: AltCopyTexts not implemented for MatrCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für MatrCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/ParenCell.h:74
 msgid "Bug: AltCopyTexts not implemented for ParenCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für ParenCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.h:172
 msgid "Bug: AltCopyTexts not implemented for SlideshowCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für SlideshowCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/SqrtCell.h:75
 msgid "Bug: AltCopyTexts not implemented for SqrtCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für SqrtCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:473
 msgid "Bug: AltCopyTexts not implemented for TextCells"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für TextCells nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/Cell.h:797
 msgid "Bug: AltCopyTexts not implemented for this cell"
-msgstr ""
+msgstr "Interner Fehler: AltCopyText ist für diese Zelle nicht implementiert"
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:475
 msgid "Bug: Autocompletion requested for unknown type of item."
@@ -2508,7 +2508,7 @@ msgstr "Wollen Sie Änderungen im Dokument \"%s\" speichern?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:769
 msgid "Dock all Sidebars"
-msgstr ""
+msgstr "Andocken aller Seitenleisten"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:1102
 msgid "Document background"
@@ -6679,7 +6679,7 @@ msgstr "Einen Maxima-Fehler berichten"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:670
 msgid "Reset all GUI settings"
-msgstr ""
+msgstr "Rücksetzen aller GUI-Einstellungen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1519
 #, fuzzy
@@ -6775,7 +6775,7 @@ msgstr "Kehre die Reihenfolge der Listenelemente um."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:234
 msgid "Revert all to defaults"
-msgstr ""
+msgstr "Setze alles zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1905
 msgid "Rho"
@@ -8069,7 +8069,7 @@ msgstr ""
 msgid ""
 "The buttons in this category reset wxMaxima's settings immediately, once "
 "they are pressed."
-msgstr ""
+msgstr "Die Knöpfe hier setzen wxMaxima's Einstellungen sofort zurück, sobald sie gedrückt werden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4092
 msgid "The cache for the subjects the manual contains cannot be read."
@@ -9179,7 +9179,7 @@ msgid ""
 "program isn't controlled by settings, except of the few wxMaxima settings "
 "that set the value of variables within Maxima: Instead Maxima is configured "
 "using environment variables, the Startup File and command-line switches."
-msgstr ""
+msgstr "wxMaxima wird von den Einstellungen in diesem Dialog gesteuert. Das Kommandozeilentool Maxima hingegen wird mit wenigen Ausnahmefällen, in denen wxMaxima Variablen in Maxima setzt, mittels Umgebungsvariablen, dem Startup File und Kommandozeilenparametern konfiguriert."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4970
 msgid ""
