@@ -72,7 +72,7 @@
 #include "WXMformat.h"
 #include "ErrorRedirector.h"
 #include "LabelCell.h"
-
+#include "../data/manual_anchors.xml.gz.h"
 #include <wx/colordlg.h>
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -2631,7 +2631,12 @@ void wxMaxima::ReadVariables(wxString &data)
               if(m_worksheet->m_helpFileAnchors.empty())
               {
                 if(!LoadManualAnchorsFromCache())
-                  m_compileHelpAnchorsTimer.StartOnce(4000);
+                {
+                  if(wxFileExists(GetMaximaHelpFile()))
+                    m_compileHelpAnchorsTimer.StartOnce(4000);
+                  else
+                    LoadBuiltInManualAnchors();
+                  }
               }
             }
             if(name == "*lisp-name*")
@@ -3687,7 +3692,8 @@ wxString wxMaxima::GetMaximaHelpFile()
 {
   // Some operating systems don't like "//" or similar in paths.
   wxFileName helpFile(GetMaximaHelpFile2());
-  helpFile.MakeAbsolute();
+  if(!helpFile.GetFullPath().IsEmpty())
+    helpFile.MakeAbsolute();
   return helpFile.GetFullPath();
 }
 
@@ -3717,11 +3723,6 @@ wxString wxMaxima::GetMaximaHelpFile2()
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaDocDir + wxT("/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-  
   headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
@@ -3746,62 +3747,7 @@ wxString wxMaxima::GetMaximaHelpFile2()
   wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
-
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  // Gentoo needs this one
-  headerFile = wxString::Format("/usr/share/doc/maxima-%s/html/maxima.hhp",m_maximaVersion.utf8_str());
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/../html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_maximaDocDir + wxT("/../html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
-  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
-  if(wxFileExists(headerFile))
-    return headerFile;
-
+  
   return wxEmptyString;
 }
 
@@ -3932,6 +3878,7 @@ void wxMaxima::CompileHelpFileAnchors()
   SuppressErrorDialogs suppressor;
   
   wxString MaximaHelpFile = GetMaximaHelpFile();
+
   #ifdef HAVE_OMP_HEADER
   omp_set_lock(&m_helpFileAnchorsLock);
   #else
@@ -4010,89 +3957,81 @@ void wxMaxima::CompileHelpFileAnchors()
       m_worksheet->m_helpFileAnchors["%solve"] = m_worksheet->m_helpFileAnchors["to_poly_solve"];
     
     wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
-    wxXmlAttribute *maximaVersion = new wxXmlAttribute(
-      wxT("maxima_version"),
-      m_maximaVersion);
-    wxXmlNode *topNode = new wxXmlNode(
-      NULL,
-      wxXML_DOCUMENT_NODE, wxEmptyString,
-      wxEmptyString
-      );
-    wxXmlNode *headNode = new wxXmlNode(
-      topNode,
-      wxXML_ELEMENT_NODE, wxT("maxima_toc"),
-      wxEmptyString,
-      maximaVersion
-      );
-    
-    wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
-
-    Worksheet::HelpFileAnchors::const_iterator it;
-    for (it = m_worksheet->m_helpFileAnchors.begin(); it != m_worksheet->m_helpFileAnchors.end(); ++it)
-    {
-      wxXmlNode *manualEntry =
-        new wxXmlNode(
-          headNode,
-          wxXML_ELEMENT_NODE,
-          "entry");
-      wxXmlNode *anchorNode = new wxXmlNode(
-        manualEntry,
-        wxXML_ELEMENT_NODE,
-        "anchor");
-      new wxXmlNode(
-        anchorNode,
-        wxXML_TEXT_NODE,
-        wxEmptyString,
-        it->second);
-      wxXmlNode *keyNode = new wxXmlNode(
-        manualEntry,
-        wxXML_ELEMENT_NODE,
-        "key");
-      new wxXmlNode(
-        keyNode,
-        wxXML_TEXT_NODE,
-        wxEmptyString,
-        it->first);
-    }
-    wxXmlDocument xmlDoc;
-    xmlDoc.SetDocumentNode(topNode);
-    wxXmlNode *commentNode = new wxXmlNode(
-        NULL,
-        wxXML_COMMENT_NODE,
-        wxEmptyString,
-        _("This file is generated by wxMaxima\n"
-          "It caches the list of subjects maxima's manual offers and is automatically\n"
-          "overwritten if maxima's version changes or the file cannot be read"));
-
-    xmlDoc.AppendToProlog(commentNode);
-
-    wxString saveName = Dirstructure::AnchorsCacheFile();
-    wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the manual contains in the file %s."),
-                                  saveName.utf8_str()));
-    xmlDoc.Save(saveName);
+    if(foundAnchors > 50)
+      SaveManualAnchorsToCache();
+    else
+      LoadBuiltInManualAnchors();
   }
+
   #ifdef HAVE_OMP_HEADER
   omp_unset_lock(&m_helpFileAnchorsLock);
   #endif
 }
 
-
-bool wxMaxima::LoadManualAnchorsFromCache()
+void wxMaxima::SaveManualAnchorsToCache()
 {
-  SuppressErrorDialogs suppressor;
-  wxString anchorsFile = Dirstructure::Get()->AnchorsCacheFile();
-  if(!wxFileExists(anchorsFile))
+  wxXmlAttribute *maximaVersion = new wxXmlAttribute(
+    wxT("maxima_version"),
+    m_maximaVersion);
+  wxXmlNode *topNode = new wxXmlNode(
+    NULL,
+    wxXML_DOCUMENT_NODE, wxEmptyString,
+    wxEmptyString
+    );
+  wxXmlNode *headNode = new wxXmlNode(
+    topNode,
+    wxXML_ELEMENT_NODE, wxT("maxima_toc"),
+    wxEmptyString,
+    maximaVersion
+    );
+  
+  Worksheet::HelpFileAnchors::const_iterator it;
+  for (it = m_worksheet->m_helpFileAnchors.begin(); it != m_worksheet->m_helpFileAnchors.end(); ++it)
   {
-    wxLogMessage(_("No file with the subjects the manual contained in the last wxMaxima run."));
-    return false;
+    wxXmlNode *manualEntry =
+      new wxXmlNode(
+        headNode,
+          wxXML_ELEMENT_NODE,
+        "entry");
+    wxXmlNode *anchorNode = new wxXmlNode(
+      manualEntry,
+      wxXML_ELEMENT_NODE,
+      "anchor");
+    new wxXmlNode(
+      anchorNode,
+      wxXML_TEXT_NODE,
+      wxEmptyString,
+      it->second);
+    wxXmlNode *keyNode = new wxXmlNode(
+      manualEntry,
+      wxXML_ELEMENT_NODE,
+        "key");
+    new wxXmlNode(
+        keyNode,
+        wxXML_TEXT_NODE,
+        wxEmptyString,
+        it->first);
   }
-  wxXmlDocument xmlDocument(anchorsFile);
-  if(!xmlDocument.IsOk())
-  {
-    wxLogMessage(_("The cache for the subjects the manual contains cannot be read."));
-    wxRemoveFile(anchorsFile);
-    return false;
-  }
+  wxXmlDocument xmlDoc;
+  xmlDoc.SetDocumentNode(topNode);
+  wxXmlNode *commentNode = new wxXmlNode(
+    NULL,
+    wxXML_COMMENT_NODE,
+    wxEmptyString,
+    _("This file is generated by wxMaxima\n"
+      "It caches the list of subjects maxima's manual offers and is automatically\n"
+      "overwritten if maxima's version changes or the file cannot be read"));
+  
+  xmlDoc.AppendToProlog(commentNode);
+  
+  wxString saveName = Dirstructure::AnchorsCacheFile();
+  wxLogMessage(wxString::Format(_("Trying to cache the list of subjects the manual contains in the file %s."),
+                                saveName.utf8_str()));
+  xmlDoc.Save(saveName);
+}
+
+bool wxMaxima::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion)
+{
   wxXmlNode *headNode = xmlDocument.GetDocumentNode();
   if(!headNode)
   {
@@ -4107,7 +4046,7 @@ bool wxMaxima::LoadManualAnchorsFromCache()
     wxLogMessage(_("Anchors file has no top node."));
     return false;
   }
-  if(headNode->GetAttribute(wxT("maxima_version")) != m_maximaVersion)
+  if(checkManualVersion && ((headNode->GetAttribute(wxT("maxima_version")) != m_maximaVersion)))
   {
     wxLogMessage(_("The cache for the subjects the manual contains is from a different Maxima version."));
     return false;
@@ -4118,8 +4057,10 @@ bool wxMaxima::LoadManualAnchorsFromCache()
     wxLogMessage(_("No entries in the caches for the subjects the manual contains."));
     return false;
   }
+  std::cerr<<"test2\n";
   while(entry)
   {
+    std::cerr<<"test\n";
     if(entry->GetName() == wxT("entry"))
     {
       wxString key;
@@ -4138,13 +4079,46 @@ bool wxMaxima::LoadManualAnchorsFromCache()
     }
     entry = entry->GetNext();
   }
-  bool done = !m_worksheet->m_helpFileAnchors.empty();
-  if(done)
+  return !m_worksheet->m_helpFileAnchors.empty();
+}
+
+bool wxMaxima::LoadBuiltInManualAnchors()
+{
+  wxLogMessage(_("Using the built-in list of manual anchors."));
+  wxMemoryInputStream istream(manual_anchors_xml_gz, manual_anchors_xml_gz_len);
+  wxZlibInputStream zstream(istream);
+  wxXmlDocument xmlDoc;
+  xmlDoc.Load(zstream, wxT("UTF-8"));
+  if(!LoadManualAnchorsFromXML(xmlDoc, false))
+    return false;
+  m_worksheet->m_helpFileAnchorsUsable = true;
+  return true;
+}
+
+bool wxMaxima::LoadManualAnchorsFromCache()
+{
+  SuppressErrorDialogs suppressor;
+  wxString anchorsFile = Dirstructure::Get()->AnchorsCacheFile();
+  if(!wxFileExists(anchorsFile))
+  {
+    wxLogMessage(_("No file with the subjects the manual contained in the last wxMaxima run."));
+    return false;
+  }
+  wxXmlDocument xmlDocument(anchorsFile);
+  if(!xmlDocument.IsOk())
+  {
+    wxLogMessage(_("The cache for the subjects the manual contains cannot be read."));
+    wxRemoveFile(anchorsFile);
+    return false;
+  }
+  
+  if(LoadManualAnchorsFromXML(xmlDocument))
   {
     wxLogMessage(wxString::Format(_("Read the entries the maxima manual offers from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
     m_worksheet->m_helpFileAnchorsUsable = true;
+    return true;
   }
-  return done;
+  return !m_worksheet->m_helpFileAnchors.empty();
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)

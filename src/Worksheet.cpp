@@ -1827,6 +1827,15 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
   }
 
   // The user clicked at a ordinary cell
+  if ((clickedInGC->GetPrompt()) && (clickedInGC->GetPrompt()->GetRect()).Contains(m_down))
+  {
+    m_cellPointers.m_selectionStart = m_cellPointers.m_selectionStart = clickedInGC->GetPrompt();
+    m_clickType = CLICK_TYPE_INPUT_LABEL_SELECTION;
+  }
+
+  // Let's see if the user clicked at the cell's input label
+
+  // Let's see if the user clicked at the cell's input
   EditorCell *editor = clickedInGC->GetEditable();
   if (editor)
   {
