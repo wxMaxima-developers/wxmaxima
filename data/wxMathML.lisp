@@ -1090,7 +1090,8 @@
 		     (t ords)))
 	 (vars (odds difflist 1))
 	 (fun (wxxml (cadr x) nil nil 'mparen 'mparen)))
-      (append '("<munder d=\"1\"><mrow>") fun '("</mrow>")
+      (append '("<munder d=\"1\" altCopy=\"diff(")
+	      (mstring (cadr x))'(",") (mstring (car vars)) '(",") ords '(")\"><mrow>") fun '("</mrow>")
 	      '("<mrow>") (wxxml-d-abbrev-subscript vars ords) '("</mrow></munder>"))))
 
   (defun wxxml-d (x)
