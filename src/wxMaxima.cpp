@@ -4057,10 +4057,8 @@ bool wxMaxima::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkMan
     wxLogMessage(_("No entries in the caches for the subjects the manual contains."));
     return false;
   }
-  std::cerr<<"test2\n";
   while(entry)
   {
-    std::cerr<<"test\n";
     if(entry->GetName() == wxT("entry"))
     {
       wxString key;

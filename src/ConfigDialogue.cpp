@@ -1215,8 +1215,6 @@ void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event)
 void ConfigDialogue::OnClose(wxCloseEvent &event)
 {
   wxConfigBase *config = wxConfig::Get();
-  if(event.GetId() == wxID_OK)
-    std::cerr<<"test\n";
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 #if defined __WXOSX__
   EndModal(wxID_OK);
