@@ -86,7 +86,7 @@ public:
 
   void SetType(CellType type) override;
 
-  virtual void SetAltCopyText(const wxString &text) override;
+  virtual void SetAltCopyText(const wxString &text) {m_altCopyText = text;}
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
@@ -95,13 +95,14 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 protected:
+  wxString m_altCopyText;
   //! Returns the XML flags this cell needs in wxMathML
   virtual wxString GetXMLFlags() const;
   //! The text we actually display depends on many factors, unfortunately
   virtual void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
-  virtual const wxString GetAltCopyText() const override { return wxEmptyString; }
+  virtual const wxString GetAltCopyText() const override { return m_altCopyText; }
 
   void FontsChanged() override
   {
