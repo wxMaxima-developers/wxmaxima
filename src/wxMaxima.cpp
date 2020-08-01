@@ -3970,6 +3970,15 @@ void wxMaxima::CompileHelpFileAnchors()
 
 void wxMaxima::SaveManualAnchorsToCache()
 {
+  long num = m_worksheet->m_helpFileAnchors.size();
+  if(num <= 50)
+  {
+    wxLogMessage(
+      wxString::Format(
+        _("Found only %li keywords in maxima's manual. Not caching them to disc."),
+        num));
+    return;
+  }
   wxXmlAttribute *maximaVersion = new wxXmlAttribute(
     wxT("maxima_version"),
     m_maximaVersion);
@@ -3986,7 +3995,9 @@ void wxMaxima::SaveManualAnchorsToCache()
     );
   
   Worksheet::HelpFileAnchors::const_iterator it;
-  for (it = m_worksheet->m_helpFileAnchors.begin(); it != m_worksheet->m_helpFileAnchors.end(); ++it)
+  for (it = m_worksheet->m_helpFileAnchors.begin();
+       it != m_worksheet->m_helpFileAnchors.end();
+       ++it)
   {
     wxXmlNode *manualEntry =
       new wxXmlNode(
