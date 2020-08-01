@@ -9,6 +9,11 @@
  * A try to replace manual MacOs desktop integration with wxWidgets one
  * More performance updates
  * Reduced the memory footprint of text cells
+ * Subscripts created by derivabbrev are now correctly copied as "diff" command
+ * If Maxima comes without suitable manual we now use the online one instead
+ * Added buttons that reset the configuration
+ * wxMaxima forgot to release the communication port it used for talking to maxima
+ * Many additional bug fixes
 
 # 20.07.0
  * A massive performance update
