@@ -645,7 +645,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
   vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
 
-  m_offerKnownAnswers = new wxCheckBox(panel, -1, _("Offer known answers"));
+  m_offerKnownAnswers = new wxCheckBox(panel, -1, _("Offer answers for questions known from previous runs"));
   vsizer->Add(m_offerKnownAnswers, 0, wxALL, 5);
   
   vsizer->AddGrowableRow(10);

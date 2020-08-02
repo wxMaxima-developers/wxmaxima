@@ -1443,8 +1443,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
         }
-        popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
-                                   _("Automatically fill in answers known from the last run"));
+        popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send answers to known questions to maxima"),
+                                   _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
         popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
         if (m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->GetGroupType() == GC_TYPE_IMAGE)
         {
