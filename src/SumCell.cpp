@@ -235,6 +235,15 @@ wxString SumCell::ToString() const
     s = wxT("sum(");
   else
     s = wxT("product(");
+  
+  if (m_end->ListToString() == wxEmptyString)
+  {
+    if(m_sumStyle == SM_PROD)
+      s = wxT("lprod(");
+    else
+      s = wxT("lsum(");
+  }
+  
   s += Base()->ListToString();
 
   Cell *tmp = m_under.get();
@@ -336,9 +345,13 @@ wxString SumCell::ToXML() const
 
   if (m_sumStyle == SM_PROD)
     type = wxT("prod");
-  else if (m_end->ListToString() == wxEmptyString)
-    type = wxT("lsum");
-
+  if (m_end->ListToString() == wxEmptyString)
+  {
+    if(m_sumStyle == SM_PROD)
+      type = wxT("lprod");
+    else
+      type = wxT("lsum");
+  }
 
   wxString flags;
   if (m_forceBreakLine)
