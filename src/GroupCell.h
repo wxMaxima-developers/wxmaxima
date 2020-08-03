@@ -79,6 +79,8 @@ public:
       
       return m_knownAnswers[wxString::Format(wxT("Question #%i"),answer)];
     }
+  //! Does this GroupCell know the answer to any of maxima's questions?
+  bool ContainsSavedAnswers(){return m_knownAnswers.size() > 0;}
   wxString GetAnswer(wxString question)
     {
       if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))

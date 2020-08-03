@@ -868,6 +868,7 @@ public:
     popid_insert_heading5,
     popid_insert_heading6,
     popid_auto_answer,
+    popid_never_autoanswer,
     popid_popup_gnuplot,
     popid_fold,
     popid_unfold,

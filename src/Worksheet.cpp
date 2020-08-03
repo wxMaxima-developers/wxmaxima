@@ -1443,9 +1443,17 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
         }
-        popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send answers to known questions to maxima"),
-                                   _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
-        popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
+        if((m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->ContainsSavedAnswers())
+           || (GCContainsCurrentQuestion(m_cellPointers.m_selectionStart.CastAs<GroupCell*>())))
+        {
+          popupMenu.AppendSeparator();          
+          popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
+                                    _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
+          popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
+          popupMenu.AppendCheckItem(popid_never_autoanswer, _("Never offer known answers"),
+                                    _("wxMaxma remembers answers from the last run and is able to offer them as the default answer"));
+          popupMenu.Check(popid_never_autoanswer, !m_configuration->OfferKnownAnswers());
+        }
         if (m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu.AppendSeparator();
@@ -1693,11 +1701,19 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             }
           }
           popupMenu.AppendSeparator();
-          popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
-                                     _("Automatically fill in answers known from the last run"));
-          popupMenu.Check(popid_auto_answer,group->AutoAnswer());
+          if((group->ContainsSavedAnswers())
+             || (GCContainsCurrentQuestion(group)))
+          {
+            popupMenu.AppendSeparator();          
+            popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
+                                      _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
+            popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
+            popupMenu.AppendCheckItem(popid_never_autoanswer, _("Never offer known answers"),
+                                      _("wxMaxma remembers answers from the last run and is able to offer them as the default answer"));
+            popupMenu.Check(popid_never_autoanswer, !m_configuration->OfferKnownAnswers());
+          }
           break;
-        case GC_TYPE_TITLE:
+      case GC_TYPE_TITLE:
           if (group->GetHiddenTree() != NULL)
             popupMenu.Append(popid_unfold,
                               _("Unhide Part"), wxEmptyString, wxITEM_NORMAL);

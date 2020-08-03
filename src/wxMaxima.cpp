@@ -999,6 +999,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_auto_answer, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
+  Connect(Worksheet::Worksheet::popid_never_autoanswer, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::InsertMenu), NULL, this);
   Connect(history_ctrl_id, wxEVT_LISTBOX_DCLICK,
           wxCommandEventHandler(wxMaxima::HistoryDClick), NULL, this);
   Connect(structure_ctrl_id, wxEVT_LIST_ITEM_ACTIVATED,
@@ -9357,6 +9359,10 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   bool output = false;
   switch (event.GetId())
   {
+    case Worksheet::popid_never_autoanswer:
+      m_worksheet->m_configuration->OfferKnownAnswers(
+        !m_worksheet->m_configuration->OfferKnownAnswers());
+      break;
     case Worksheet::popid_auto_answer:
       if (m_worksheet->GetActiveCell() &&
           m_worksheet->GetActiveCell()->GetGroup()->GetGroupType() == GC_TYPE_CODE)
