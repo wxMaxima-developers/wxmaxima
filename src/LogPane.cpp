@@ -26,7 +26,7 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPane
 
   m_textCtrl = new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
 					wxDefaultSize,
-					wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
+					wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL| wxVSCROLL);
 
   m_textCtrl->SetMinSize(wxSize(wxSystemSettings::GetMetric( wxSYS_SCREEN_X )/10,
                                 wxSystemSettings::GetMetric( wxSYS_SCREEN_Y )/10));
