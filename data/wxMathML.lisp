@@ -833,12 +833,25 @@
 
   (defprop %sum wxxml-sum wxxml)
   (defprop %lsum wxxml-lsum wxxml)
+  (defprop %lprod wxxml-lprod wxxml)
   (defprop %product wxxml-sum wxxml)
   (defprop $sum wxxml-sum wxxml)
   (defprop $lsum wxxml-lsum wxxml)
+  (defprop $lprod wxxml-lprod wxxml)
   (defprop $product wxxml-sum wxxml)
 
   ;; easily extended to union, intersect, otherops
+
+  (defun wxxml-lprod(x l r)
+    (let ((op "<sm type=\"lprod\"><mrow>")
+	  ;; gotta be one of those above
+	  (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
+	  (index ;; "index = lowerlimit"
+	   (wxxml `((min simp) , (caddr x), (cadddr x))
+		  nil nil 'mparen 'mparen)))
+      (append l `(,op ,@index
+		      "</mrow><mrow><mn/></mrow><mrow>"
+		      ,@s1 "</mrow></sm>") r)))
 
   (defun wxxml-lsum(x l r)
     (let ((op "<sm type=\"lsum\"><mrow>")

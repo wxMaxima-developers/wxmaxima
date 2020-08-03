@@ -964,12 +964,12 @@ Cell *MathParser::ParseSumTag(wxXmlNode *node)
   child = SkipWhitespaceNode(child);
   wxString type = node->GetAttribute(wxT("type"), wxT("sum"));
 
-  if (type == wxT("prod"))
+  if ((type == wxT("prod")) || (type == wxT("lprod")))
     sum->SetSumStyle(SM_PROD);
   sum->SetHighlight(m_highlight);
   sum->SetUnder(HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
-  if (type != wxT("lsum"))
+  if ((type != wxT("lsum")) && (type != wxT("lprod")))
     sum->SetOver(HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
   sum->SetBase(HandleNullPointer(ParseTag(child, false)));
