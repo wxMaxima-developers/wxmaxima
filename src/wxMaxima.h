@@ -506,6 +506,7 @@ protected:
     function determines where the miscellaneous text ends.
    */
   int GetMiscTextEnd(const wxString &data);
+  void ParseNextChunkFromMaxima(wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
   int FindTagEnd(const wxString &data, const wxString &tag);
@@ -759,6 +760,12 @@ protected:
   wxMemoryBuffer m_rawDataToSend;
   unsigned long int m_rawBytesSent;
 private:
+  //! A pointer to a method that handles a text chunk
+  typedef void (wxMaxima::*ParseFunction)(wxString &s);
+  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
+  //! A list of XML tags we know and what we want to do if we encounter them
+  static ParseFunctionHash m_knownXMLTags;
+
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;
@@ -822,11 +829,6 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
-  //! A pointer to a method that handles a text chunk
-  typedef Cell *(wxMaxima::*ParseFunction)(wxString &s);
-  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
-  //! A list of XML tags we know and what we want to do if we encounter them
-  ParseFunctionHash m_knownXMLTags;
 };
 
 // cppcheck-suppress unknownMacro

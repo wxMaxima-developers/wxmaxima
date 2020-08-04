@@ -105,6 +105,12 @@
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
+/*! Calls a member function from a function pointer
+
+  \todo Replace this by a C++17 construct when we switch to C++17
+ */
+#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
+
 wxDECLARE_APP (MyApp);
 
 void MyApp::DelistTopLevelWindow(wxMaxima *window)
@@ -195,14 +201,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 {
   if(m_knownXMLTags.empty())
   {
-    m_knownXMLTags("PROMPT") = &ReadPrompt;
-    m_knownXMLTags("suppressOutput") = &ReadSuppressedOutput;
-    m_knownXMLTags("wxxml-symbols") = &ReadLoadSymbols;
-    m_knownXMLTags("variables") = &ReadVariables;
-    m_knownXMLTags("watch_variables_add") = ReadAddVariables;
-    m_knownXMLTags("statusbar") = ReadStatusBar;
-    m_knownXMLTags("mth") = ReadMath;
-    m_knownXMLTags("math") = ReadMath;
+    m_knownXMLTags[wxT("PROMPT")] = &wxMaxima::ReadPrompt;
+    m_knownXMLTags[wxT("suppressOutput")] = &wxMaxima::ReadSuppressedOutput;
+    m_knownXMLTags[wxT("wxxml-symbols")] = &wxMaxima::ReadLoadSymbols;
+    m_knownXMLTags[wxT("variables")] = &wxMaxima::ReadVariables;
+    m_knownXMLTags[wxT("watch_variables_add")] = &wxMaxima::ReadAddVariables;
+    m_knownXMLTags[wxT("statusbar")] = &wxMaxima::ReadStatusBar;
+    m_knownXMLTags[wxT("mth")] = &wxMaxima::ReadMath;
+    m_knownXMLTags[wxT("math")] = &wxMaxima::ReadMath;
   }
 
   #ifdef HAVE_OMP_HEADER
@@ -2281,18 +2287,16 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     TriggerEvaluation();
 }
 
-wxString wxMaxima::GetMiscTextEnd(wxString &data)
+void wxMaxima::ParseNextChunkFromMaxima(wxString &data)
 {
   wxString miscText;
-  miscText.Reserve(data.Length());
+  miscText.reserve(data.Length());
   wxString tag;
-  miscText.Reserve(64);
+  miscText.reserve(64);
+  auto tagIndex = m_knownXMLTags.end();
+  bool tagFound = false;
   wxString::const_iterator it;
-  for (
-    it = data.begin();
-    it != data.end();
-    ++it
-    )
+  for (it = data.begin(); (it != data.end()) && !tagFound; ++it)
   {
     if(*it == '<')
     {
@@ -2300,35 +2304,21 @@ wxString wxMaxima::GetMiscTextEnd(wxString &data)
       wxString::const_iterator it2 = it;
       ++it2;
       for (;
-           (it2 != data.end()),
-             ++it2
+           (it2 != data.end());
+           ++it2
         )
       {
         if(*it2 == '>')
         {
           auto tagIndex = m_knownXMLTags.find(tag);
-          if (tagIndex != m_knownXMLTags.end())
-          {
-            if(miscText != wxEmptyString)
-              ReadMiscText(miscText);
-            wxString rest;
-            for (;
-                 (it2 != data.end()),
-                   ++it2
-              )
-              rest += *it2;
-            
-          }
-          else
+          tagFound = tagIndex != m_knownXMLTags.end();
+          if (tagFound)
           {
             miscText += wxT("<") + tag + wxT(">");
             tag = wxEmptyString;
             it = it2;
           }
-          if(m_knownXMLTags.find(tag) == 
-               if(!miscText.IsEmpty())
-                 ReadMiscText(miscText);
-               break;
+          break;
         }
         if (((*it2 >= wxT('a')) &&
              (*it2 <= wxT('z'))) ||
@@ -2350,6 +2340,21 @@ wxString wxMaxima::GetMiscTextEnd(wxString &data)
     else
       miscText += *it;
   }
+  if(!miscText.IsEmpty())
+  {
+    ReadMiscText(miscText);
+    wxString rest;
+    rest.reserve(data.Length());
+    for (it; (it != data.end()) && !tagFound; ++it)
+      rest += *it;
+    data = rest;
+  }
+  if(tagFound)
+    CALL_MEMBER_FN(*this, tagIndex->second)(data);
+}
+
+int wxMaxima::GetMiscTextEnd(const wxString &data)
+{
   // These tests are redundant with later tests. But they are faster.
   if(data.StartsWith(m_mathPrefix1) || (data.StartsWith(m_mathPrefix2)))
     return 0;
