@@ -498,7 +498,6 @@ void ConfigDialogue::SetCheckboxValues()
   else
     m_getStyleFont->Enable(false);
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
-  int lang = m_configuration->GetLanguage();
   unsigned int i = 0;
   // First set the language to "default".
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
@@ -510,6 +509,18 @@ void ConfigDialogue::SetCheckboxValues()
     }
     ++i;
   }
+  // Now try to set the language to the one from the config
+  int lang = m_configuration->GetLanguage();
+  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  {
+    if(it->second == lang)
+    {
+      m_language->SetSelection(i);
+      break;
+    }
+    ++i;
+  }
+
   m_autoMathJaxURL->SetValue(m_configuration->MathJaXURL_Auto());
   m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
   m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
@@ -899,19 +910,6 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
     new wxStaticText(panel, -1, _("Language:")), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  // Now try to set the language to the one from the config
-  int lang = m_configuration->GetLanguage();
-  unsigned int i = 0;
-  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
-  {
-    if(it->second == lang)
-    {
-      m_language->SetSelection(i);
-      break;
-    }
-    ++i;
-  }
-
   wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Additional symbols for the \"symbols\" sidebar:"));
   m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
   grid_sizer->Add(additionalSymbols, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -1090,7 +1088,6 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  Configuration *configuration = m_configuration;
 
   wxStaticText *descr = new wxStaticText(panel, -1, _("Additional clipboard formats to put on the clipboard on ordinary copy:"));
   vbox->Add(descr, 0, wxALL);
@@ -1121,7 +1118,6 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
 
 wxPanel *ConfigDialogue::CreateStylePanel()
 {
-  Configuration *configuration = m_configuration;
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
