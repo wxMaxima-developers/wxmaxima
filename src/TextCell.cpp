@@ -314,7 +314,7 @@ bool TextCell::NeedsRecalculation(AFontSize fontSize) const
   return Cell::NeedsRecalculation(fontSize);
 }
 
-wxSize TextCell::GetTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
+wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
 {
   AFontSize const fontSize = GetScaledTextSize();
   if (text.empty())
@@ -380,7 +380,7 @@ void TextCell::Recalculate(AFontSize fontsize)
     SetFont(fontsize);
 
 
-    wxSize sz = GetTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
+    wxSize sz = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
     m_width = sz.GetWidth();
     m_height = sz.GetHeight();
     

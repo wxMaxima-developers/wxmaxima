@@ -133,7 +133,7 @@ protected:
     SizeEntry() = default;
   };
 
-  wxSize GetTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
+  wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
 
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;

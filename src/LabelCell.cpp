@@ -207,7 +207,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
     {
       Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
       
-      wxSize labelSize = GetTextSize(configuration->GetDC(), m_displayedText, index);
+      wxSize labelSize = CalculateTextSize(configuration->GetDC(), m_displayedText, index);
       wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
                    _("Seems like something is broken with the maths font."));
 
@@ -222,7 +222,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
 #endif
         style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
         dc->SetFont(style.GetFont());
-        labelSize = GetTextSize((*m_configuration)->GetDC(), m_displayedText, index);
+        labelSize = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, index);
       }
       m_height = labelSize.GetHeight();
       m_width = labelSize.GetWidth() + Scale_Px(2);

@@ -99,9 +99,9 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
       SetFont(fontsize);
       Configuration *configuration = (*m_configuration);
       wxDC *dc = configuration->GetDC();
-      auto numStartSize = GetTextSize(dc, m_numStart, numberStart);
-      auto ellipsisSize = GetTextSize(dc, m_ellipsis, ellipsis);
-      auto numEndSize   = GetTextSize(dc, m_numEnd,   numberEnd);
+      auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
+      auto ellipsisSize = CalculateTextSize(dc, m_ellipsis, ellipsis);
+      auto numEndSize   = CalculateTextSize(dc, m_numEnd,   numberEnd);
       m_numStartWidth = numStartSize.GetWidth();
       m_ellipsisWidth = ellipsisSize.GetWidth();
       m_width = m_numStartWidth + m_ellipsisWidth + numEndSize.GetWidth();
