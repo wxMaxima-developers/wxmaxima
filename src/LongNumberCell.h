@@ -47,18 +47,21 @@ protected:
   virtual void UpdateDisplayedText() override;
 
 private:
-
-  int m_numStartWidth = 0;
-  int m_ellipsisWidth = 0;
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old = -1;
-
+  //** Large objects (144 bytes)
+  //**
   //! The first few digits
   wxString m_numStart;
   //! The "not all digits displayed" message.
   wxString m_ellipsis;
   //! Last few digits (also used for user defined label)
   wxString m_numEnd;
+
+  //** 4-byte objects (12 bytes)
+  //**
+  int m_numStartWidth = 0;
+  int m_ellipsisWidth = 0;
+  //! The number of digits we did display the last time we displayed a number.
+  int m_displayedDigits_old = -1;
 
   //** Bitfield objects (0 bytes)
   //**
