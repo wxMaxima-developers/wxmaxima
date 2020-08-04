@@ -42,6 +42,7 @@ public:
   IntCell(GroupCell *parent, Configuration **config);
   IntCell(const IntCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_var); }

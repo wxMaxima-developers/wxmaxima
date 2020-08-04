@@ -58,6 +58,7 @@ public:
   AbsCell(GroupCell *parent, Configuration **config);
   AbsCell(const AbsCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_innerCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_close); }

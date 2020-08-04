@@ -28,6 +28,7 @@
  */
 
 #include "VisiblyInvalidCell.h"
+#include "CellImpl.h"
 #include "StringUtils.h"
 
 static wxString cellContents(wxT("?"));
@@ -59,3 +60,5 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
   InitBitFields();
   SetToolTip(toolTip);
 }
+
+DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)

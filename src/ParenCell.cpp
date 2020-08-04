@@ -28,6 +28,7 @@
  */
 
 #include "ParenCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
@@ -63,10 +64,7 @@ ParenCell::ParenCell(const ParenCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-std::unique_ptr<Cell> ParenCell::Copy() const
-{
-  return std::make_unique<ParenCell>(*this);
-}
+DEFINE_CELL(ParenCell)
 
 void ParenCell::SetInner(Cell *inner, CellType type)
 {

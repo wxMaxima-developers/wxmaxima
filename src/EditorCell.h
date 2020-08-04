@@ -70,6 +70,7 @@ public:
   EditorCell(GroupCell *parent, Configuration **config, const wxString &text = {});
   EditorCell(const EditorCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
 
   //! Insert the symbol that corresponds to the ESC command txt
   void InsertEscCommand(const wxString &txt) {

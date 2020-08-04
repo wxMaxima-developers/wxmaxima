@@ -76,6 +76,18 @@ enum CellType : int8_t
 class CellAccessible;
 #endif
 
+//! A class that carries information about the type of a cell.
+class CellTypeInfo
+{
+public:
+  /** The name of the cell type, e.g. "FooCell"
+   *
+   * Use DEFINE_CELL(FooCell) to define this class,
+   * and the Cell::GetInfo() member.
+   */
+  virtual const wxString &GetName() const = 0;
+};
+
 /*!
   The base class all cell types the worksheet can consist of are derived from
 
@@ -132,6 +144,9 @@ public:
     its own Copy() method.
    */
   virtual std::unique_ptr<Cell> Copy() const = 0;
+
+  //! Returns the information about this cell's type.
+  virtual const CellTypeInfo &GetInfo() = 0;
 
   /*! Scale font sizes and line widths according to the zoom factor.
 

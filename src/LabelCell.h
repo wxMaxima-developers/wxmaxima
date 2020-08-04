@@ -37,7 +37,9 @@ public:
   LabelCell(GroupCell *parent,
             Configuration **config, wxString automaticLabel, TextStyle style = TS_MAIN_PROMPT);
   LabelCell(const LabelCell &cell);
-  std::unique_ptr<Cell> Copy() const override;  
+  std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
+
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;

@@ -31,6 +31,7 @@
 
 #include "GroupCell.h"
 
+#include "CellImpl.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
@@ -209,10 +210,7 @@ GroupCell::GroupCell(const GroupCell &cell):
   UpdateYPosition();
 }
 
-std::unique_ptr<Cell> GroupCell::Copy() const
-{
-  return std::make_unique<GroupCell>(*this);
-}
+DEFINE_CELL(GroupCell)
 
 std::unique_ptr<GroupCell> GroupCell::CopyList() const
 {

@@ -27,6 +27,7 @@
 */
 
 #include "AtCell.h"
+#include "CellImpl.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 
@@ -48,10 +49,7 @@ AtCell::AtCell(const AtCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-std::unique_ptr<Cell> AtCell::Copy() const
-{
-  return std::make_unique<AtCell>(*this);
-}
+DEFINE_CELL(AtCell)
 
 void AtCell::SetIndex(std::unique_ptr<Cell> &&index)
 {

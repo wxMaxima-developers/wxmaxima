@@ -28,6 +28,7 @@
 */
 
 #include "MatrCell.h"
+#include "CellImpl.h"
 
 MatrCell::MatrCell(GroupCell *parent, Configuration **config) :
     Cell(parent, config)
@@ -51,10 +52,7 @@ MatrCell::MatrCell(const MatrCell &cell):
       m_cells.emplace_back(cell.m_cells[i]->CopyList());
 }
 
-std::unique_ptr<Cell> MatrCell::Copy() const
-{
-  return std::make_unique<MatrCell>(*this);
-}
+DEFINE_CELL(MatrCell)
 
 void MatrCell::Recalculate(AFontSize const fontsize)
 {

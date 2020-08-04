@@ -27,6 +27,7 @@
  */
 
 #include "FunCell.h"
+#include "CellImpl.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 
@@ -49,10 +50,7 @@ FunCell::FunCell(const FunCell &cell):
     SetArg(cell.m_argCell->CopyList());
 }
 
-std::unique_ptr<Cell> FunCell::Copy() const
-{
-  return std::make_unique<FunCell>(*this);
-}
+DEFINE_CELL(FunCell)
 
 void FunCell::SetName(std::unique_ptr<Cell> &&name)
 {

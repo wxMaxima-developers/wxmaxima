@@ -29,6 +29,7 @@
 
 #include "EditorCell.h"
 
+#include "CellImpl.h"
 #include "CellPointers.h"
 #include "MarkDown.h"
 #include "wxMaxima.h"
@@ -60,10 +61,7 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   return input;
 }
 
-std::unique_ptr<Cell> EditorCell::Copy() const
-{
-  return std::make_unique<EditorCell>(*this);
-}
+DEFINE_CELL(EditorCell)
 
 void EditorCell::AddDrawParameter(wxString param)
 {

@@ -63,6 +63,7 @@ public:
   SlideShow(GroupCell *parent, Configuration **config, const wxString &image, bool remove);
 
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
   ~SlideShow();
   void LoadImages(wxMemoryBuffer imageData);
   void LoadImages(wxString imageFile);

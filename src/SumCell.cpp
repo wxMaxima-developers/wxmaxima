@@ -29,6 +29,7 @@
 */
 
 #include "SumCell.h"
+#include "CellImpl.h"
 #include "TextCell.h"
 
 SumCell::SumCell(GroupCell *group, Configuration **config) :
@@ -65,10 +66,7 @@ SumCell::SumCell(const SumCell &cell) :
   SetSumStyle(cell.m_sumStyle);
 }
 
-std::unique_ptr<Cell> SumCell::Copy() const
-{
-  return std::make_unique<SumCell>(*this);
-}
+DEFINE_CELL(SumCell)
 
 void SumCell::SetOver(std::unique_ptr<Cell> &&over)
 {

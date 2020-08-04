@@ -27,6 +27,7 @@
  */
 
 #include "ConjugateCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
@@ -50,10 +51,7 @@ ConjugateCell::ConjugateCell(const ConjugateCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-std::unique_ptr<Cell> ConjugateCell::Copy() const
-{
-  return std::make_unique<ConjugateCell>(*this);
-}
+DEFINE_CELL(ConjugateCell)
 
 void ConjugateCell::SetInner(std::unique_ptr<Cell> &&inner)
 {

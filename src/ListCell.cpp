@@ -27,6 +27,7 @@
  */
 
 #include "ListCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 ListCell::ListCell(GroupCell *parent, Configuration **config) :
@@ -64,10 +65,7 @@ ListCell::ListCell(const ListCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-std::unique_ptr<Cell> ListCell::Copy() const
-{
-  return std::make_unique<ListCell>(*this);
-}
+DEFINE_CELL(ListCell)
 
 void ListCell::SetInner(Cell *inner, CellType type)
 {

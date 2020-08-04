@@ -37,6 +37,7 @@ public:
   //! Constructor for a cell that shows that something is amiss using a custom tooltip
   VisiblyInvalidCell(GroupCell *parent, Configuration **config, wxString &&toolTip);
   VisiblyInvalidCell(GroupCell *parent, Configuration **config, const wxString *toolTip);
+  const CellTypeInfo &GetInfo() override;
 
 private:
 //** Bitfield objects (0 bytes)

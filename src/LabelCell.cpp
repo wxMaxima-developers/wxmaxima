@@ -28,6 +28,7 @@
  */
 
 #include "LabelCell.h"
+#include "CellImpl.h"
 #include "StringUtils.h"
 
 LabelCell::LabelCell(GroupCell *parent,
@@ -47,10 +48,7 @@ LabelCell::LabelCell(const LabelCell &cell):
   m_userDefinedLabel = cell.m_userDefinedLabel;
 }
 
-std::unique_ptr<Cell> LabelCell::Copy() const
-{
-  return std::make_unique<LabelCell>(*this);
-}
+DEFINE_CELL(LabelCell)
 
 void LabelCell::Draw(wxPoint point)
 {

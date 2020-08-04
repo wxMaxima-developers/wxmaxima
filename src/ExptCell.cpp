@@ -27,6 +27,7 @@
  */
 
 #include "ExptCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 #define EXPT_DEC 2
@@ -57,10 +58,7 @@ ExptCell::ExptCell(const ExptCell &cell):
     SetPower(cell.m_exptCell->CopyList());
 }
 
-std::unique_ptr<Cell> ExptCell::Copy() const
-{
-  return std::make_unique<ExptCell>(*this);
-}
+DEFINE_CELL(ExptCell)
 
 void ExptCell::Draw(wxPoint point)
 {
