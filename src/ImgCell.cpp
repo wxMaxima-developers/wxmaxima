@@ -32,6 +32,7 @@
 #define SELECTION_BORDER_WDTH Scale_Px(3)
 
 #include "ImgCell.h"
+#include "CellImpl.h"
 #include "CellPointers.h"
 #include "StringUtils.h"
 #include <wx/file.h>
@@ -82,10 +83,7 @@ ImgCell::ImgCell(GroupCell *parent, Configuration **config, const wxString &imag
   m_drawBoundingBox = false;
 }
 
-std::unique_ptr<Cell> ImgCell::Copy() const
-{
-  return std::make_unique<ImgCell>(*this);
-}
+DEFINE_CELL(ImgCell)
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {

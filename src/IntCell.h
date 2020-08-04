@@ -42,6 +42,7 @@ public:
   IntCell(GroupCell *parent, Configuration **config);
   IntCell(const IntCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_base); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_var); }
@@ -76,9 +77,6 @@ public:
 
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for IntCells"));}
 
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 

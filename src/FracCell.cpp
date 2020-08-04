@@ -27,6 +27,7 @@
 */
 
 #include "FracCell.h"
+#include "CellImpl.h"
 #include "ParenCell.h"
 #include "VisiblyInvalidCell.h"
 
@@ -57,10 +58,7 @@ FracCell::FracCell(const FracCell &cell):
   SetupBreakUps();
 }
 
-std::unique_ptr<Cell> FracCell::Copy() const
-{
-  return std::make_unique<FracCell>(*this);
-}
+DEFINE_CELL(FracCell)
 
 void FracCell::SetNum(std::unique_ptr<Cell> &&num)
 {

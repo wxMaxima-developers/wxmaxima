@@ -28,6 +28,7 @@
  */
 
 #include "SubSupCell.h"
+#include "CellImpl.h"
 #include "TextCell.h"
 #include <wx/config.h>
 #include "wx/config.h"
@@ -59,10 +60,7 @@ SubSupCell::SubSupCell(const SubSupCell &cell):
     SetPreSup(cell.m_preSupCell->CopyList());
 }
 
-std::unique_ptr<Cell> SubSupCell::Copy() const
-{
-  return std::make_unique<SubSupCell>(*this);
-}
+DEFINE_CELL(SubSupCell)
 
 static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
 {

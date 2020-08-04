@@ -27,6 +27,7 @@
  */
 
 #include "SqrtCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 #define SIGN_FONT_SCALE 2.0
@@ -58,10 +59,7 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
-std::unique_ptr<Cell> SqrtCell::Copy() const
-{
-  return std::make_unique<SqrtCell>(*this);
-}
+DEFINE_CELL(SqrtCell)
 
 void SqrtCell::SetInner(std::unique_ptr<Cell> &&inner)
 {

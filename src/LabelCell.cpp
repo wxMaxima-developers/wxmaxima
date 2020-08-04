@@ -28,6 +28,7 @@
  */
 
 #include "LabelCell.h"
+#include "CellImpl.h"
 #include "StringUtils.h"
 
 LabelCell::LabelCell(GroupCell *parent,
@@ -47,10 +48,7 @@ LabelCell::LabelCell(const LabelCell &cell):
   m_userDefinedLabel = cell.m_userDefinedLabel;
 }
 
-std::unique_ptr<Cell> LabelCell::Copy() const
-{
-  return std::make_unique<LabelCell>(*this);
-}
+DEFINE_CELL(LabelCell)
 
 void LabelCell::Draw(wxPoint point)
 {
@@ -249,4 +247,10 @@ const wxString LabelCell::GetAltCopyText() const
   text += wxT("\t");
   
   return text;
+}
+
+void LabelCell::SetAltCopyText(const wxString &WXUNUSED(text))
+{
+  // LabelCell generates its own AltCopyText, so there's no need to set it.
+  // It's a hack of sorts, but it works.
 }

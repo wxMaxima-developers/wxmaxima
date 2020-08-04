@@ -27,6 +27,7 @@
 */
 
 #include "LimitCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 static constexpr AFontSize MIN_LIMIT_FONT_SIZE{ 8.0f };
@@ -62,10 +63,7 @@ LimitCell::LimitCell(const LimitCell &cell) :
     SetName(cell.m_name->CopyList());
 }
 
-std::unique_ptr<Cell> LimitCell::Copy() const
-{
-  return std::make_unique<LimitCell>(*this);
-}
+DEFINE_CELL(LimitCell)
 
 void LimitCell::SetName(std::unique_ptr<Cell> &&name)
 {

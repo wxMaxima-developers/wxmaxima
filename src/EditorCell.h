@@ -70,6 +70,7 @@ public:
   EditorCell(GroupCell *parent, Configuration **config, const wxString &text = {});
   EditorCell(const EditorCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
 
   //! Insert the symbol that corresponds to the ESC command txt
   void InsertEscCommand(const wxString &txt) {
@@ -459,9 +460,6 @@ public:
   void SetNextToDraw(Cell *next) override;
 
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for EditorCells"));}
 
 private:
   /*! A piece of styled text for syntax highlighting

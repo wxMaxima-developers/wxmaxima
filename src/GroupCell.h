@@ -69,6 +69,7 @@ public:
   GroupCell(Configuration **config, GroupType groupType, const wxString &initString = {});
   GroupCell(const GroupCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
   std::unique_ptr<GroupCell> CopyList() const;
   ~GroupCell();
 
@@ -206,9 +207,6 @@ public:
   static wxString TexEscapeOutputCell(wxString Input);
 
   Cell *GetPrompt() const { return m_inputLabel.get(); }
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for GroupCells"));}
 
   EditorCell *GetInput() const
     {

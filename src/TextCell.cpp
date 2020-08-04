@@ -29,6 +29,7 @@
  */
 
 #include "TextCell.h"
+#include "CellImpl.h"
 #include "StringUtils.h"
 #include "wx/config.h"
 
@@ -85,10 +86,7 @@ TextCell::TextCell(const TextCell &cell):
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
-std::unique_ptr<Cell> TextCell::Copy() const
-{
-  return std::make_unique<TextCell>(*this);
-}
+DEFINE_CELL(TextCell)
 
 void TextCell::SetStyle(TextStyle style)
 {

@@ -27,6 +27,7 @@
 */
 
 #include "IntCell.h"
+#include "CellImpl.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 
@@ -73,10 +74,7 @@ IntCell::IntCell(const IntCell &cell):
   m_intStyle = cell.m_intStyle;
 }
 
-std::unique_ptr<Cell> IntCell::Copy() const
-{
-  return std::make_unique<IntCell>(*this);
-}
+DEFINE_CELL(IntCell)
 
 void IntCell::SetOver(std::unique_ptr<Cell> &&name)
 {

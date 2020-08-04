@@ -37,7 +37,9 @@ public:
   LabelCell(GroupCell *parent,
             Configuration **config, wxString automaticLabel, TextStyle style = TS_MAIN_PROMPT);
   LabelCell(const LabelCell &cell);
-  std::unique_ptr<Cell> Copy() const override;  
+  std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
+
   void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
@@ -49,7 +51,7 @@ public:
   wxString GetXMLFlags() const override;
   void UpdateDisplayedText() override;
   const wxString GetAltCopyText() const override;
-  void SetAltCopyText(const wxString &WXUNUSED(text)) override{}
+  void SetAltCopyText(const wxString &WXUNUSED(text)) override;
 
 private:
   //! The user-defined label for this label cell.

@@ -33,6 +33,7 @@ public:
   SubSupCell(GroupCell *parent, Configuration **config);
   SubSupCell(const SubSupCell &cell);
   std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
   InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_preSupCell); }

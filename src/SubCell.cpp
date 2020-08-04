@@ -27,6 +27,7 @@
  */
 
 #include "SubCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 #define SUB_DEC 2
@@ -50,10 +51,7 @@ SubCell::SubCell(const SubCell &cell):
     SetIndex(cell.m_indexCell->CopyList());
 }
 
-std::unique_ptr<Cell> SubCell::Copy() const
-{
-  return std::make_unique<SubCell>(*this);
-}
+DEFINE_CELL(SubCell)
 
 void SubCell::SetIndex(std::unique_ptr<Cell> &&index)
 {

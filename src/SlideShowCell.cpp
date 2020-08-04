@@ -30,6 +30,7 @@
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
 
 #include "SlideShowCell.h"
+#include "CellImpl.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
 #include "StringUtils.h"
@@ -87,10 +88,7 @@ SlideShow::SlideShow(GroupCell *parent, Configuration **config, const wxString &
     wxRemoveFile(image);
 }
 
-std::unique_ptr<Cell> SlideShow::Copy() const
-{
-  return std::make_unique<SlideShow>(*this);
-}
+DEFINE_CELL(SlideShow)
 
 int SlideShow::GetFrameRate() const
 {

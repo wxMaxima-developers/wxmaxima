@@ -28,6 +28,7 @@
  */
 
 #include "LongNumberCell.h"
+#include "CellImpl.h"
 #include "StringUtils.h"
 
 LongNumberCell::LongNumberCell(GroupCell *parent,
@@ -46,10 +47,7 @@ LongNumberCell::LongNumberCell(const LongNumberCell &cell):
 {
 }
 
-std::unique_ptr<Cell> LongNumberCell::Copy() const
-{
-  return std::make_unique<LongNumberCell>(*this);
-}
+DEFINE_CELL(LongNumberCell)
 
 void LongNumberCell::UpdateDisplayedText()
 {

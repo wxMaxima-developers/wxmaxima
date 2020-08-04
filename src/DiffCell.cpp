@@ -27,6 +27,7 @@
  */
 
 #include "DiffCell.h"
+#include "CellImpl.h"
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "wx/config.h"
@@ -55,10 +56,7 @@ DiffCell::DiffCell(const DiffCell &cell):
     SetBase(cell.m_baseCell->CopyList());
 }
 
-std::unique_ptr<Cell> DiffCell::Copy() const
-{
-  return std::make_unique<DiffCell>(*this);
-}
+DEFINE_CELL(DiffCell)
 
 void DiffCell::SetDiff(std::unique_ptr<Cell> &&diff)
 {

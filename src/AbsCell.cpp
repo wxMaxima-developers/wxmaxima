@@ -29,6 +29,7 @@
 
 
 #include "AbsCell.h"
+#include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
 AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
@@ -53,10 +54,7 @@ AbsCell::AbsCell(const AbsCell &cell):
     SetInner(cell.m_innerCell->CopyList());
 }
 
-std::unique_ptr<Cell> AbsCell::Copy() const
-{
-  return std::make_unique<AbsCell>(*this);
-}
+DEFINE_CELL(AbsCell)
 
 void AbsCell::SetInner(std::unique_ptr<Cell> &&inner)
 {
