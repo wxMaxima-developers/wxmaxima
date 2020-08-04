@@ -58,7 +58,7 @@ public:
   wxString ToXML() const override;
 
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
-  const wxString GetAltCopyText() const override { return m_altCopyText; }
+  const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }

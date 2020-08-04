@@ -75,7 +75,7 @@ public:
   wxString ToXML() const override;
 
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
-  const wxString GetAltCopyText() const override { return m_altCopyText; }
+  const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   bool BreakUp() override;
 

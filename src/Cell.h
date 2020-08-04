@@ -32,6 +32,7 @@
 #include "precomp.h"
 #include "CellPtr.h"
 #include "Configuration.h"
+#include "StringUtils.h"
 #include "TextStyle.h"
 #include <wx/defs.h>
 #if wxUSE_ACCESSIBILITY
@@ -808,7 +809,7 @@ public:
   */
   virtual void SetAltCopyText(const wxString &text);
   //! Get the text set using SetAltCopyText - may be empty.
-  virtual const wxString GetAltCopyText() const { return wxEmptyString; }
+  virtual const wxString &GetAltCopyText() const { return wxm::emptyString; }
 
 #if wxUSE_ACCESSIBILITY
   CellAccessible *GetAccessible();

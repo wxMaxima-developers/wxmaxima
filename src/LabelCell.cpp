@@ -236,9 +236,10 @@ void LabelCell::Recalculate(AFontSize fontsize)
   }
 }
 
-const wxString LabelCell::GetAltCopyText() const
+const wxString &LabelCell::GetAltCopyText() const
 {
-  wxString text = m_text;
+  auto &text = m_altCopyText;
+  text = m_text;
   if ((*m_configuration)->UseUserLabels() && !m_userDefinedLabel.empty())
     text = wxT("(") + m_userDefinedLabel + wxT(")");
   text.Replace(wxT("\u2794"), wxT("-->"));

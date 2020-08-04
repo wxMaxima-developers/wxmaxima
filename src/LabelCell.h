@@ -50,7 +50,7 @@ public:
   //! Returns the XML flags this cell needs in wxMathML
   wxString GetXMLFlags() const override;
   void UpdateDisplayedText() override;
-  const wxString GetAltCopyText() const override;
+  const wxString &GetAltCopyText() const override;
   void SetAltCopyText(const wxString &WXUNUSED(text)) override;
 
 private:
