@@ -43,9 +43,9 @@ LabelCell::LabelCell(GroupCell *parent,
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_altJs
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_initialToolTip
 LabelCell::LabelCell(const LabelCell &cell):
-    TextCell(cell.m_group, cell.m_configuration)
+  TextCell(cell.m_group, cell.m_configuration),
+  m_userDefinedLabel(cell.m_userDefinedLabel)
 {
-  m_userDefinedLabel = cell.m_userDefinedLabel;
 }
 
 DEFINE_CELL(LabelCell)
