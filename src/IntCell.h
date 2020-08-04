@@ -77,9 +77,6 @@ public:
 
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for IntCells"));}
 
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 

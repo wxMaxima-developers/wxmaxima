@@ -71,10 +71,6 @@ public:
   wxString ToTeX() const override;
   wxString ToXML() const override;
 
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for SqrtCells"));}
-
   void SetNextToDraw(Cell *next) override;
 
   Cell *GetNextToDraw() const override { return m_nextToDraw; }

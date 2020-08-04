@@ -248,3 +248,9 @@ const wxString LabelCell::GetAltCopyText() const
   
   return text;
 }
+
+void LabelCell::SetAltCopyText(const wxString &WXUNUSED(text))
+{
+  // LabelCell generates its own AltCopyText, so there's no need to set it.
+  // It's a hack of sorts, but it works.
+}

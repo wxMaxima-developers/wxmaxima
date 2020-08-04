@@ -207,9 +207,6 @@ public:
   static wxString TexEscapeOutputCell(wxString Input);
 
   Cell *GetPrompt() const { return m_inputLabel.get(); }
-  virtual void SetAltCopyText(const wxString &text) override
-    {wxASSERT_MSG(text == wxEmptyString,
-                  _("Bug: AltCopyTexts not implemented for GroupCells"));}
 
   EditorCell *GetInput() const
     {

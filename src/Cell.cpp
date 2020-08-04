@@ -460,6 +460,12 @@ void Cell::AddToolTip(const wxString &tip)
     m_group->m_containsToolTip = true;
 }
 
+void Cell::SetAltCopyText(const wxString &text)
+{
+  wxASSERT_MSG(text == wxEmptyString,
+               wxString::Format(_("Bug: AltCopyTexts not implemented for %s cell"), GetInfo().GetName()));
+}
+
 void Cell::DrawList(wxPoint point)
 {
   for (Cell *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())

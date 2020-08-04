@@ -806,11 +806,7 @@ public:
     this principle to them, at least if you know that text you copy from the
     internet to a terminal might contain additional commands with TextSize=0...
   */
-  virtual void SetAltCopyText(const wxString &text)
-    {
-      {wxASSERT_MSG(text == wxEmptyString,
-                    _("Bug: AltCopyTexts not implemented for this cell"));}
-    }
+  virtual void SetAltCopyText(const wxString &text);
   //! Get the text set using SetAltCopyText - may be empty.
   virtual const wxString GetAltCopyText() const { return wxEmptyString; }
 
