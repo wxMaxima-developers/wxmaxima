@@ -33,7 +33,7 @@
 
 LongNumberCell::LongNumberCell(GroupCell *parent,
                                Configuration **config,
-                               wxString number)
+                               const wxString &number)
   : TextCell(parent, config, number, TS_NUMBER)
 {
   InitBitFields();

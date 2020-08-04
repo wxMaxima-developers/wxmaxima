@@ -33,7 +33,7 @@ class LongNumberCell final : public TextCell
 {
 public:
   //! The constructor for cell that, if displayed, means that something is amiss
-  LongNumberCell(GroupCell *parent, Configuration **config, wxString number);
+  LongNumberCell(GroupCell *parent, Configuration **config, const wxString &number);
   LongNumberCell(const LongNumberCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
