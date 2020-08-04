@@ -126,6 +126,7 @@ public:
 
  */
 
+// 136 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -906,7 +907,7 @@ private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old = -1;
 protected:
-//** 2-byte objects (4 bytes)
+//** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
   AFontSize m_fontSize = {};

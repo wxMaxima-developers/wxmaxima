@@ -33,7 +33,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 424 bytes <- 744 bytes
+// 320 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -141,7 +141,7 @@ protected:
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
-//** Large objects (??? bytes)
+//** Large objects (120 bytes)
 //**
   //! The text we keep inside this cell
   wxString m_text;
@@ -152,7 +152,6 @@ protected:
 //** 8/4-byte objects (8 bytes)
 //**
   CellPtr<Cell> m_nextToDraw;
-
 
 //** Bitfield objects (1 bytes)
 //**

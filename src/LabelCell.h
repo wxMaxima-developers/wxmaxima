@@ -54,11 +54,13 @@ public:
   void SetAltCopyText(const wxString &WXUNUSED(text)) override;
 
 private:
+//** Large objects (48 bytes)
+//**
   //! The user-defined label for this label cell.
   wxString m_userDefinedLabel;
 
-  TextIndex GetLabelIndex() const;
-
+//** 2-byte objects (2 bytes)
+//**
   AFontSize m_fontSize_scaledToFit = {};
 
 //** 1-byte objects (1 byte)
@@ -71,6 +73,8 @@ private:
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
   }
+
+  TextIndex GetLabelIndex() const;
 };
 
 #endif // LABELCELL_H
