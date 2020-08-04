@@ -51,7 +51,7 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetFont(AFontSize fontsize);
 
@@ -87,7 +87,7 @@ public:
 
   void SetType(CellType type) override;
 
-  virtual void SetAltCopyText(const wxString &text) {m_altCopyText = text;}
+  void SetAltCopyText(const wxString &text) override {m_altCopyText = text;}
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
