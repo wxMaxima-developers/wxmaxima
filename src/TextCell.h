@@ -33,7 +33,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 424 bytes <- 744 bytes
+// 320 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -51,7 +51,7 @@ public:
 
   void Recalculate(AFontSize fontsize) override;
 
-  virtual void Draw(wxPoint point) override;
+  void Draw(wxPoint point) override;
 
   void SetFont(AFontSize fontsize);
 
@@ -87,7 +87,7 @@ public:
 
   void SetType(CellType type) override;
 
-  virtual void SetAltCopyText(const wxString &text) {m_altCopyText = text;}
+  void SetAltCopyText(const wxString &text) override {m_altCopyText = text;}
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
@@ -96,14 +96,14 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 protected:
-  wxString m_altCopyText;
+  mutable wxString m_altCopyText;
   //! Returns the XML flags this cell needs in wxMathML
   virtual wxString GetXMLFlags() const;
   //! The text we actually display depends on many factors, unfortunately
   virtual void UpdateDisplayedText();
   //! Update the tooltip for this cell
   void UpdateToolTip();
-  virtual const wxString GetAltCopyText() const override { return m_altCopyText; }
+  const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
   void FontsChanged() override
   {
@@ -133,7 +133,7 @@ protected:
     SizeEntry() = default;
   };
 
-  wxSize GetTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
+  wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
 
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
@@ -141,7 +141,7 @@ protected:
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
-//** Large objects (??? bytes)
+//** Large objects (120 bytes)
 //**
   //! The text we keep inside this cell
   wxString m_text;
@@ -152,7 +152,6 @@ protected:
 //** 8/4-byte objects (8 bytes)
 //**
   CellPtr<Cell> m_nextToDraw;
-
 
 //** Bitfield objects (1 bytes)
 //**

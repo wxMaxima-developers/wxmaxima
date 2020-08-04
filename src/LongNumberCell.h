@@ -33,7 +33,7 @@ class LongNumberCell final : public TextCell
 {
 public:
   //! The constructor for cell that, if displayed, means that something is amiss
-  LongNumberCell(GroupCell *parent, Configuration **config, wxString number);
+  LongNumberCell(GroupCell *parent, Configuration **config, const wxString &number);
   LongNumberCell(const LongNumberCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -47,18 +47,21 @@ protected:
   virtual void UpdateDisplayedText() override;
 
 private:
-
-  int m_numStartWidth = 0;
-  int m_ellipsisWidth = 0;
-  //! The number of digits we did display the last time we displayed a number.
-  int m_displayedDigits_old = -1;
-
+  //** Large objects (144 bytes)
+  //**
   //! The first few digits
   wxString m_numStart;
   //! The "not all digits displayed" message.
   wxString m_ellipsis;
   //! Last few digits (also used for user defined label)
   wxString m_numEnd;
+
+  //** 4-byte objects (12 bytes)
+  //**
+  int m_numStartWidth = 0;
+  int m_ellipsisWidth = 0;
+  //! The number of digits we did display the last time we displayed a number.
+  int m_displayedDigits_old = -1;
 
   //** Bitfield objects (0 bytes)
   //**

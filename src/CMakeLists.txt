@@ -47,10 +47,11 @@ set(SOURCE_FILES
     LicenseDialog.cpp
     LimitCell.cpp
     LimitWiz.cpp
+    ListCell.cpp
     ListSortWiz.cpp
-    LongNumberCell.cpp
     LogPane.cpp
     LoggingMessageDialog.cpp
+    LongNumberCell.cpp
     MainMenuBar.cpp
     MarkDown.cpp
     MatWiz.cpp
@@ -62,7 +63,6 @@ set(SOURCE_FILES
     Notification.cpp
     OutCommon.cpp
     ParenCell.cpp
-    ListCell.cpp
     Plot2dWiz.cpp
     Plot3dWiz.cpp
     PlotFormatWiz.cpp

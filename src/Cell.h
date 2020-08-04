@@ -32,6 +32,7 @@
 #include "precomp.h"
 #include "CellPtr.h"
 #include "Configuration.h"
+#include "StringUtils.h"
 #include "TextStyle.h"
 #include <wx/defs.h>
 #if wxUSE_ACCESSIBILITY
@@ -125,6 +126,7 @@ public:
 
  */
 
+// 136 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -808,7 +810,7 @@ public:
   */
   virtual void SetAltCopyText(const wxString &text);
   //! Get the text set using SetAltCopyText - may be empty.
-  virtual const wxString GetAltCopyText() const { return wxEmptyString; }
+  virtual const wxString &GetAltCopyText() const { return wxm::emptyString; }
 
 #if wxUSE_ACCESSIBILITY
   CellAccessible *GetAccessible();
@@ -905,7 +907,7 @@ private:
   //! The client width at the time of the last recalculation.
   int m_clientWidth_old = -1;
 protected:
-//** 2-byte objects (4 bytes)
+//** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
   AFontSize m_fontSize = {};
