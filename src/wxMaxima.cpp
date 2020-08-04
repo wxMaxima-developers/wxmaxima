@@ -209,6 +209,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_knownXMLTags[wxT("statusbar")] = &wxMaxima::ReadStatusBar;
     m_knownXMLTags[wxT("mth")] = &wxMaxima::ReadMath;
     m_knownXMLTags[wxT("math")] = &wxMaxima::ReadMath;
+    m_knownXMLTags[wxT("ipc")] = &wxMaxima::ReadMaximaIPC;
   }
 
   #ifdef HAVE_OMP_HEADER
@@ -1631,6 +1632,13 @@ void wxMaxima::TryToReadDataFromMaxima()
     }
   }
 
+  // Stupid DOS and MAC line endings. The first of these commands won't work
+  // if the "\r" is the last char of a packet containing a part of a very long
+  // string. But running a search-and-replace
+  m_newCharsFromMaxima.Replace("\r\n","\n");
+  m_newCharsFromMaxima.Replace("\r","\n");
+
+  
   if(m_pipeToStdout)
     std::cout << m_newCharsFromMaxima;
   m_bytesFromMaxima += m_newCharsFromMaxima.Length();
@@ -2287,20 +2295,20 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     TriggerEvaluation();
 }
 
-void wxMaxima::ParseNextChunkFromMaxima(wxString &data)
+bool wxMaxima::ParseNextChunkFromMaxima(wxString &data)
 {
   wxString miscText;
   miscText.reserve(data.Length());
-  wxString tag;
+  wxString tagName;
   miscText.reserve(64);
   auto tagIndex = m_knownXMLTags.end();
   bool tagFound = false;
   wxString::const_iterator it;
   for (it = data.begin(); (it != data.end()) && !tagFound; ++it)
   {
-    if(*it == '<')
+    if(*it == wxT('<'))
     {
-      tag = wxEmptyString;
+      tagName = wxEmptyString;
       wxString::const_iterator it2 = it;
       ++it2;
       for (;
@@ -2308,135 +2316,84 @@ void wxMaxima::ParseNextChunkFromMaxima(wxString &data)
            ++it2
         )
       {
-        if(*it2 == '>')
-        {
-          auto tagIndex = m_knownXMLTags.find(tag);
-          tagFound = tagIndex != m_knownXMLTags.end();
-          if (tagFound)
-          {
-            miscText += wxT("<") + tag + wxT(">");
-            tag = wxEmptyString;
-            it = it2;
-          }
-          break;
-        }
         if (((*it2 >= wxT('a')) &&
              (*it2 <= wxT('z'))) ||
-            ((*it2 >= wxT('a')) &&
-             (*it2 <= wxT('z'))))
-          tag += *it;
+            ((*it2 >= wxT('A')) &&
+             (*it2 <= wxT('Z'))) ||
+            (*it2 == wxT('_')) ||
+            (*it2 == wxT('-'))
+          )
+          tagName += *it2;
         else
         {
-          miscText += wxT("<") + tag;
-          tag = wxEmptyString;
-          
-          it = it2;
-          break;
+          if(*it2 == wxT('>'))
+          {
+            tagIndex = m_knownXMLTags.find(tagName);
+            tagFound = tagIndex != m_knownXMLTags.end();
+            if (!tagFound)
+            {
+              miscText += wxT("<") + tagName + wxT(">");
+              tagName = wxEmptyString;
+              it = it2;
+            }
+            break;
+          }
+          else
+          {
+            miscText += wxT("<") + tagName;
+            tagName = wxEmptyString;
+            
+            it = it2;
+            break;
+          }
         }
       }
       it = it2;
-      miscText += tag;
+      if(!tagFound)
+        miscText += wxT("<") + tagName;
     }
     else
       miscText += *it;
   }
+  bool retval = false;
   if(!miscText.IsEmpty())
   {
+    retval = true;
     ReadMiscText(miscText);
+
+    // Remove the miscellaneous text we just have processed
     wxString rest;
     rest.reserve(data.Length());
-    for (it; (it != data.end()) && !tagFound; ++it)
+    if(tagFound)
+      rest = wxT("<") + tagName + wxT(">");
+    for (; (it != data.end()); ++it)
       rest += *it;
     data = rest;
   }
   if(tagFound)
+  {
+    retval = true;
     CALL_MEMBER_FN(*this, tagIndex->second)(data);
+  }
+  return retval;
 }
 
-int wxMaxima::GetMiscTextEnd(const wxString &data)
-{
-  // These tests are redundant with later tests. But they are faster.
-  if(data.StartsWith(m_mathPrefix1) || (data.StartsWith(m_mathPrefix2)))
-    return 0;
-//  if(data.StartsWith(m_outputPromptPrefix))
-//    return 0;
-  if(data.StartsWith(m_statusbarPrefix))
-    return 0;
-  if(data.StartsWith(m_promptPrefix))
-    return 0;
-  if(data.StartsWith(m_symbolsPrefix))
-    return 0;
-  if(data.StartsWith(m_variablesPrefix))
-    return 0;
-  if(data.StartsWith(m_addVariablesPrefix))
-    return 0;
-  if(data.StartsWith(m_suppressOutputPrefix))
-    return 0;
-
-  int mthpos = wxMax(data.Find(m_mathPrefix1), data.Find(m_mathPrefix2));
-//  int lblpos = data.Find(m_outputPromptPrefix);
-  int statpos = data.Find(m_statusbarPrefix);
-  int prmptpos = data.Find(m_promptPrefix);
-  int symbolspos = data.Find(m_symbolsPrefix);
-  int suppressOutputPos = data.Find(m_suppressOutputPrefix);
-  int variablespos = data.Find(m_variablesPrefix);
-  int addvariablespos = data.Find(m_addVariablesPrefix);
-
-  int tagPos = data.Length();
-  if ((mthpos != wxNOT_FOUND) && (mthpos < tagPos))
-    tagPos = mthpos;
-//  if ((tagPos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND) && (lblpos < tagPos)))
-//    tagPos = lblpos;
-  if ((tagPos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND) && (statpos < tagPos)))
-    tagPos = statpos;
-  if ((tagPos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND) && (prmptpos < tagPos)))
-    tagPos = prmptpos;
-  if ((tagPos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND) && (prmptpos < tagPos)))
-    tagPos = prmptpos;
-  if ((tagPos == wxNOT_FOUND) || ((symbolspos != wxNOT_FOUND) && (symbolspos < tagPos)))
-    tagPos = symbolspos;
-  if ((tagPos == wxNOT_FOUND) || ((variablespos != wxNOT_FOUND) && (variablespos < tagPos)))
-    tagPos = variablespos;
-  if ((tagPos == wxNOT_FOUND) || ((addvariablespos != wxNOT_FOUND) && (addvariablespos < tagPos)))
-    tagPos = addvariablespos;
-  if ((tagPos == wxNOT_FOUND) || ((suppressOutputPos != wxNOT_FOUND) && (suppressOutputPos < tagPos)))
-    tagPos = suppressOutputPos;
-  return tagPos;
-}
-
-void wxMaxima::ReadMiscText(wxString &data)
+void wxMaxima::ReadMiscText(const wxString &data)
 {
   if (data.IsEmpty())
     return;
 
-  // Extract all text that isn't a xml tag known to us.
-  int miscTextLen = GetMiscTextEnd(data);
-  if(miscTextLen <= 0)
-  {
-    if (!data.empty())
-      m_worksheet->SetCurrentTextCell(nullptr);
+  if(data == "\r")
     return;
-  }
 
-  wxString miscText = data.Left(miscTextLen);
-  data = data.Right(data.Length() - miscTextLen);
-
-  if(miscText == "\r")
-    return;
-  // Stupid DOS and MAC line endings. The first of these commands won't work
-  // if the "\r" is the last char of a packet containing a part of a very long
-  // string. But running a search-and-replace
-  miscText.Replace("\r\n","\n");
-  miscText.Replace("\r","\n");
-
-  if(miscText.StartsWith("\n"))
+  if(data.StartsWith("\n"))
     m_worksheet->SetCurrentTextCell(nullptr);
 
   // A version of the text where each line begins with non-whitespace and whitespace
   // characters are merged.
   wxString mergedWhitespace = wxT("\n");
   bool whitespace = true;
-  for ( wxString::const_iterator it = miscText.begin(); it!=miscText.end(); ++it)
+  for ( wxString::const_iterator it = data.begin(); it!=data.end(); ++it)
   {
     if((*it == wxT(' ')) || (*it == wxT('\t')))
     {
@@ -2484,7 +2441,7 @@ void wxMaxima::ReadMiscText(wxString &data)
   }
 
   // Add all text lines to the console
-  wxStringTokenizer lines(miscText, wxT("\n"));
+  wxStringTokenizer lines(data, wxT("\n"));
   while (lines.HasMoreTokens())
   {
     // extract a string from the Data lines
@@ -2512,7 +2469,7 @@ void wxMaxima::ReadMiscText(wxString &data)
     if (lines.HasMoreTokens())
       m_worksheet->SetCurrentTextCell(nullptr);
   }
-  if (miscText.EndsWith("\n"))
+  if (data.EndsWith("\n"))
     m_worksheet->SetCurrentTextCell(nullptr);
 
   if (!data.empty())
@@ -4309,34 +4266,11 @@ bool wxMaxima::InterpretDataFromMaxima()
       // was for
       if (newActiveCell != oldActiveCell)
         m_worksheet->SetWorkingGroup(oldActiveCell);
-      // Handle the <mth> tag that contains math output and sometimes text.
-      ReadMath(m_currentOutput);
 
-      // The following function calls each extract and remove one type of XML tag
-      // information from the beginning of the data string we got - but only do so
-      // after the closing tag has been transferred, as well.
-      ReadLoadSymbols(m_currentOutput);
-
-      // Discard startup warnings
-      ReadSuppressedOutput(m_currentOutput);
-
-      // Let's see if maxima informs us about the values of variables
-      ReadVariables(m_currentOutput);
-
-      // Let's see if maxima tells us to add new symbols to the watchlist
-      ReadAddVariables(m_currentOutput);
-
-      // Handle the XML tag that contains Status bar updates
-      ReadStatusBar(m_currentOutput);
-
-      // Handle the XML tag that contains the interprocess communication messages
-      m_ipc.ReadInputData(m_currentOutput);
-
-      // Handle text that isn't XML output: Mostly Error messages or warnings.
-      ReadMiscText(m_currentOutput);
+      ParseNextChunkFromMaxima(m_currentOutput);
     }
     else
-      // This function determines the port maxima is running on from  the text
+      // This function determines the port maxima is running on from the text
       // maxima outputs at startup. This piece of text is afterwards discarded.
       ReadFirstPrompt(m_currentOutput);
 
@@ -10045,13 +9979,13 @@ bool wxMaxima::m_exitOnError = false;
 wxString wxMaxima::m_extraMaximaArgs;
 int wxMaxima::m_exitCode = 0;
 //wxRegEx  wxMaxima::m_outputPromptRegEx(wxT("<lbl>.*</lbl>"));
-wxString wxMaxima::m_promptPrefix(wxT("<PROMPT>"));
-wxString wxMaxima::m_promptSuffix(wxT("</PROMPT>"));
 wxRegEx  wxMaxima::m_funRegEx(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
 wxRegEx  wxMaxima::m_varRegEx(wxT("^ *([[:alnum:]%_]+) *:"));
 wxRegEx  wxMaxima::m_blankStatementRegEx(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
 wxRegEx  wxMaxima::m_sbclCompilationRegEx(wxT("; compiling (.* \\.*)"));
 wxRegEx  wxMaxima::m_gnuplotErrorRegex(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: "));
+wxString wxMaxima::m_promptPrefix(wxT("<PROMPT>"));
+wxString wxMaxima::m_promptSuffix(wxT("</PROMPT>"));
 wxString wxMaxima::m_suppressOutputPrefix(wxT("<suppressOutput>"));
 wxString wxMaxima::m_suppressOutputSuffix(wxT("</suppressOutput>"));
 wxString wxMaxima::m_symbolsPrefix(wxT("<wxxml-symbols>"));
@@ -10062,12 +9996,12 @@ wxString wxMaxima::m_addVariablesPrefix(wxT("<watch_variables_add>"));
 wxString wxMaxima::m_addVariablesSuffix(wxT("</watch_variables_add>"));
 wxString wxMaxima::m_statusbarPrefix(wxT("<statusbar>"));
 wxString wxMaxima::m_statusbarSuffix(wxT("</statusbar>\n"));
-wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 wxString wxMaxima::m_mathPrefix1(wxT("<mth>"));
 wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
 wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));
 wxString wxMaxima::m_mathSuffix2(wxT("</math>"));
 wxString wxMaxima::m_emptywxxmlSymbols(wxT("<wxxml-symbols></wxxml-symbols>"));
+wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 //wxString wxMaxima::m_outputPromptPrefix(wxT("<lbl>"));
 //wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;

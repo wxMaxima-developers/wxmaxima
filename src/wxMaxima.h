@@ -499,14 +499,13 @@ protected:
    */
   void ReadFirstPrompt(wxString &data);
 
-  /*! Determine where the text for ReadMiscText ends
+  /*! Reads an XML tag or a piece of status text from maxima's output
 
-    Every error message or other line maxima outputs should end in a newline character. 
-    But sometimes it doesn't and a <code>\<mth\></code> tag comes first \f$ =>\f$ This 
-    function determines where the miscellaneous text ends.
+    \todo Is there any way to handle the (perhaps, thanks to the flush commands in maxima)
+    theoretical case that maxima might stop sending data in the middle of an XML tag
+    and then resume sending data with the next XML packet?
    */
-  int GetMiscTextEnd(const wxString &data);
-  void ParseNextChunkFromMaxima(wxString &data);
+  bool ParseNextChunkFromMaxima(wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
   int FindTagEnd(const wxString &data, const wxString &tag);
@@ -518,7 +517,7 @@ protected:
 
      After processing the lines not enclosed in xml tags they are removed from data.
    */
-  void ReadMiscText(wxString &data);
+  void ReadMiscText(const wxString &data);
 
   /*! Reads the input prompt from Maxima.
 
@@ -547,6 +546,8 @@ protected:
 
     After processing the templates they are removed from data.
    */
+
+  void ReadMaximaIPC(wxString &data){m_ipc.ReadInputData(data);}
   void ReadLoadSymbols(wxString &data);
 
   //! Read (and discard) suppressed output
