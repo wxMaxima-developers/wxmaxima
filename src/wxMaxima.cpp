@@ -193,6 +193,18 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration)
 {
+  if(m_knownXMLTags.empty())
+  {
+    m_knownXMLTags("PROMPT") = &ReadPrompt;
+    m_knownXMLTags("suppressOutput") = &ReadSuppressedOutput;
+    m_knownXMLTags("wxxml-symbols") = &ReadLoadSymbols;
+    m_knownXMLTags("variables") = &ReadVariables;
+    m_knownXMLTags("watch_variables_add") = ReadAddVariables;
+    m_knownXMLTags("statusbar") = ReadStatusBar;
+    m_knownXMLTags("mth") = ReadMath;
+    m_knownXMLTags("math") = ReadMath;
+  }
+
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_helpFileAnchorsLock);
   #endif
@@ -2269,8 +2281,75 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     TriggerEvaluation();
 }
 
-int wxMaxima::GetMiscTextEnd(const wxString &data)
+wxString wxMaxima::GetMiscTextEnd(wxString &data)
 {
+  wxString miscText;
+  miscText.Reserve(data.Length());
+  wxString tag;
+  miscText.Reserve(64);
+  wxString::const_iterator it;
+  for (
+    it = data.begin();
+    it != data.end();
+    ++it
+    )
+  {
+    if(*it == '<')
+    {
+      tag = wxEmptyString;
+      wxString::const_iterator it2 = it;
+      ++it2;
+      for (;
+           (it2 != data.end()),
+             ++it2
+        )
+      {
+        if(*it2 == '>')
+        {
+          auto tagIndex = m_knownXMLTags.find(tag);
+          if (tagIndex != m_knownXMLTags.end())
+          {
+            if(miscText != wxEmptyString)
+              ReadMiscText(miscText);
+            wxString rest;
+            for (;
+                 (it2 != data.end()),
+                   ++it2
+              )
+              rest += *it2;
+            
+          }
+          else
+          {
+            miscText += wxT("<") + tag + wxT(">");
+            tag = wxEmptyString;
+            it = it2;
+          }
+          if(m_knownXMLTags.find(tag) == 
+               if(!miscText.IsEmpty())
+                 ReadMiscText(miscText);
+               break;
+        }
+        if (((*it2 >= wxT('a')) &&
+             (*it2 <= wxT('z'))) ||
+            ((*it2 >= wxT('a')) &&
+             (*it2 <= wxT('z'))))
+          tag += *it;
+        else
+        {
+          miscText += wxT("<") + tag;
+          tag = wxEmptyString;
+          
+          it = it2;
+          break;
+        }
+      }
+      it = it2;
+      miscText += tag;
+    }
+    else
+      miscText += *it;
+  }
   // These tests are redundant with later tests. But they are faster.
   if(data.StartsWith(m_mathPrefix1) || (data.StartsWith(m_mathPrefix2)))
     return 0;
@@ -9986,3 +10065,4 @@ wxString wxMaxima::m_mathSuffix2(wxT("</math>"));
 wxString wxMaxima::m_emptywxxmlSymbols(wxT("<wxxml-symbols></wxxml-symbols>"));
 //wxString wxMaxima::m_outputPromptPrefix(wxT("<lbl>"));
 //wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
+wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;

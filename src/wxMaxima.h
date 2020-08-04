@@ -822,6 +822,11 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
+  //! A pointer to a method that handles a text chunk
+  typedef Cell *(wxMaxima::*ParseFunction)(wxString &s);
+  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
+  //! A list of XML tags we know and what we want to do if we encounter them
+  ParseFunctionHash m_knownXMLTags;
 };
 
 // cppcheck-suppress unknownMacro
