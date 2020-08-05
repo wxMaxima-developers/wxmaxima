@@ -179,19 +179,21 @@ if(WIN32)
   list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
 endif()
 
-file(GLOB RESOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png
-    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg
-    ${CMAKE_SOURCE_DIR}/art/wxmac.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
-    ${CMAKE_SOURCE_DIR}/info/*.html
-    ${CMAKE_SOURCE_DIR}/info/*.jpg
-    ${CMAKE_SOURCE_DIR}/info/*.png
-    ${CMAKE_SOURCE_DIR}/data/PkgInfo
-    ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
-    ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
+if(APPLE)
+  file(GLOB RESOURCE_FILES
+      ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png
+      ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg
+      ${CMAKE_SOURCE_DIR}/art/wxmac.icns
+      ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
+      ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
+      ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
+      ${CMAKE_SOURCE_DIR}/info/*.html
+      ${CMAKE_SOURCE_DIR}/info/*.jpg
+      ${CMAKE_SOURCE_DIR}/info/*.png
+      ${CMAKE_SOURCE_DIR}/data/PkgInfo
+      ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
+      ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
+endif()
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
@@ -200,32 +202,29 @@ elseif(APPLE)
     set(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
     list(APPEND SOURCE_FILES ${RESOURCE_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
-    set_target_properties(wxmaxima PROPERTIES RESOURCE "${RESOURCE_FILES}")
-    if(APPLE)
-        set_target_properties(wxmaxima PROPERTIES
-            MACOSX_BUNDLE TRUE
-            RESOURCE "${RESOURCE_FILES}"
-        )
-
-        install(
-            # The bundle utilities need to be run in a
-            # separate step, meaning from within a string.
-            # they provide the fixup command that makes the
-            # .dylibs run from within the app bundle.
-            CODE "include(BundleUtilities)
-            # the separate step doesn't know about
-            # the values our variables had in the
-            # cmakefile so we need to set them again.
-            set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-            fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")"
-            COMPONENT Runtime)
-    else()
-        set_target_properties(wxmaxima PROPERTIES
-            RESOURCE "${RESOURCE_FILES}"
+    set_target_properties(wxmaxima PROPERTIES
+        MACOSX_BUNDLE TRUE
+        RESOURCE "${RESOURCE_FILES}"
     )
-    endif()
+
+    install(
+        # The bundle utilities need to be run in a
+        # separate step, meaning from within a string.
+        # they provide the fixup command that makes the
+        # .dylibs run from within the app bundle.
+        CODE "include(BundleUtilities)
+        # the separate step doesn't know about
+        # the values our variables had in the
+        # cmakefile so we need to set them again.
+        set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+        fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")"
+        COMPONENT Runtime)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
+    # These don't seem to be used, and they were disabled, but perhaps they really
+    # belong on Unix platforms other than Apple
+    ##set_target_properties(wxmaxima PROPERTIES
+    ##    RESOURCE "${RESOURCE_FILES}"
 endif()
 
 if(WXM_ENABLE_PRECOMPILED_HEADERS AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
