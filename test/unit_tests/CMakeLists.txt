@@ -5,6 +5,7 @@ set(CMAKE_CXX_CPPCHECK "")
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/cells
     ${CMAKE_SOURCE_DIR}/test
     ${CMAKE_SOURCE_DIR}/test/unit_tests)
 
