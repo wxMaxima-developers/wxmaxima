@@ -1,99 +1,111 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-set(SOURCE_FILES
+set(CELL_SOURCE_FILES
     AbsCell.cpp
-    ActualValuesStorageWiz.cpp
     AtCell.cpp
-    Autocomplete.cpp
-    AutocompletePopup.cpp
-    Autocomplete_Builtins.cpp
-    BC2Wiz.cpp
-    BTextCtrl.cpp
-    BitmapOut.cpp
     Cell.cpp
-    CellPointers.cpp
     CellPtr.cpp
-    CharButton.cpp
-    CompositeDataObject.cpp
-    ConfigDialogue.cpp
-    Configuration.cpp
     ConjugateCell.cpp
     DiffCell.cpp
-    Dirstructure.cpp
-    DrawWiz.cpp
-    EMFout.cpp
     EditorCell.cpp
-    ErrorRedirector.cpp
-    EvaluationQueue.cpp
     ExptCell.cpp
-    FindReplaceDialog.cpp
-    FindReplacePane.cpp
-    FontAttribs.cpp
-    FontCache.cpp
     FracCell.cpp
     FunCell.cpp
+    GroupCell.cpp
+    ImgCell.cpp
+    IntCell.cpp
+    LabelCell.cpp
+    LimitCell.cpp
+    ListCell.cpp
+    LongNumberCell.cpp
+    MatrCell.cpp
+    ParenCell.cpp
+    SlideShowCell.cpp
+    SqrtCell.cpp
+    SubCell.cpp
+    SubSupCell.cpp
+    SumCell.cpp
+    TextCell.cpp
+    VisiblyInvalidCell.cpp
+)
+list_transform_prepend(CELL_SOURCE_FILES cells/)
+
+set(WIZARD_SOURCE_FILES
+    ActualValuesStorageWiz.cpp
+    BC2Wiz.cpp
+    DrawWiz.cpp
     Gen1Wiz.cpp
     Gen2Wiz.cpp
     Gen3Wiz.cpp
     Gen4Wiz.cpp
     Gen5Wiz.cpp
-    GroupCell.cpp
-    History.cpp
-    Image.cpp
-    ImgCell.cpp
-    IntCell.cpp
     IntegrateWiz.cpp
-    LabelCell.cpp
-    LicenseDialog.cpp
-    LimitCell.cpp
     LimitWiz.cpp
-    ListCell.cpp
     ListSortWiz.cpp
-    LogPane.cpp
-    LoggingMessageDialog.cpp
-    LongNumberCell.cpp
-    MainMenuBar.cpp
-    MarkDown.cpp
     MatWiz.cpp
-    MathParser.cpp
-    MatrCell.cpp
-    MaxSizeChooser.cpp
-    MaximaIPC.cpp
-    MaximaTokenizer.cpp
-    Notification.cpp
-    OutCommon.cpp
-    ParenCell.cpp
     Plot2dWiz.cpp
     Plot3dWiz.cpp
     PlotFormatWiz.cpp
+    SeriesWiz.cpp
+    SubstituteWiz.cpp
+    SumWiz.cpp
+    SystemWiz.cpp
+)
+list_transform_prepend(WIZARD_SOURCE_FILES wizards/)
+
+set(GRAPHICAL_IO_SOURCE_FILES
+    BitmapOut.cpp
+    EMFout.cpp
+    OutCommon.cpp
     Printout.cpp
+    SVGout.cpp
+)
+list_transform_prepend(GRAPHICAL_IO_SOURCE_FILES graphical_io/)
+
+set(SOURCE_FILES
+    Autocomplete.cpp
+    AutocompletePopup.cpp
+    Autocomplete_Builtins.cpp
+    BTextCtrl.cpp
+    CellPointers.cpp
+    CharButton.cpp
+    CompositeDataObject.cpp
+    ConfigDialogue.cpp
+    Configuration.cpp
+    Dirstructure.cpp
+    ErrorRedirector.cpp
+    EvaluationQueue.cpp
+    FindReplaceDialog.cpp
+    FindReplacePane.cpp
+    FontAttribs.cpp
+    FontCache.cpp
+    History.cpp
+    Image.cpp
+    LicenseDialog.cpp
+    LogPane.cpp
+    LoggingMessageDialog.cpp
+    MainMenuBar.cpp
+    MarkDown.cpp
+    MathParser.cpp
+    MaximaIPC.cpp
+    MaximaTokenizer.cpp
+    MaxSizeChooser.cpp
+    Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
-    SVGout.cpp
-    SeriesWiz.cpp
-    SlideShowCell.cpp
-    SqrtCell.cpp
     StatusBar.cpp
     StringUtils.cpp
-    SubCell.cpp
-    SubSupCell.cpp
-    SubstituteWiz.cpp
-    SumCell.cpp
-    SumWiz.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
-    SystemWiz.cpp
     TableOfContents.cpp
-    TextCell.cpp
     TextStyle.cpp
     TipOfTheDay.cpp
     ToolBar.cpp
     UnicodeSidebar.cpp
     VariablesPane.cpp
-    VisiblyInvalidCell.cpp
+    Worksheet.cpp
     WrappingStaticText.cpp
     WXMformat.cpp
-    Worksheet.cpp
     XmlInspector.cpp
     levenshtein/levenshtein.cpp
     main.cpp
@@ -103,6 +115,21 @@ set(SOURCE_FILES
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
     Resources.rc
+)
+
+list(APPEND SOURCE_FILES
+  ${CELL_SOURCE_FILES}
+  ${GRAPHICAL_IO_SOURCE_FILES}
+  ${WIZARD_SOURCE_FILES}
+)
+
+include_directories(
+  "${CMAKE_SOURCE_DIR}/src"
+  "${CMAKE_SOURCE_DIR}/src/cells"
+  "${CMAKE_SOURCE_DIR}/src/graphical_io"
+  "${CMAKE_SOURCE_DIR}/src/wizards"
+  # Version.h is generated in the binary dir
+  "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
@@ -124,7 +151,10 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
 	    "--language=c++"
 	    "--template=gcc"
 	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/cells/"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/graphical_io/"
 	    "-i${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/wizards/"
 	)
     else()
 	message(STATUS "cppcheck not found.")
@@ -148,9 +178,6 @@ if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
   list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
 endif()
-
-# Version.h is generated in the binary dir
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 file(GLOB RESOURCE_FILES
     ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png

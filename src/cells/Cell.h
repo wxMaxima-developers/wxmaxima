@@ -29,7 +29,7 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
-#include "precomp.h"
+#include "../precomp.h"
 #include "CellPtr.h"
 #include "Configuration.h"
 #include "StringUtils.h"
