@@ -510,6 +510,7 @@ void ConfigDialogue::SetCheckboxValues()
     ++i;
   }
   // Now try to set the language to the one from the config
+  i = 0;
   int lang = m_configuration->GetLanguage();
   for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
