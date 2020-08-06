@@ -1349,12 +1349,18 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
   else
   {
     TextCell *incompleteTextCell;
+    bool appendToWorksheet = false;
+
     if (type == MC_TYPE_PROMPT)
+    {
+      appendToWorksheet = true;
       incompleteTextCell = new LabelCell(
         m_worksheet->GetTree(),
         &(m_worksheet->m_configuration),
         wxEmptyString,
         TS_OTHER_PROMPT);
+      incompleteTextCell->ForceBreakLine(true);
+    }
     else
       incompleteTextCell = m_worksheet->GetCurrentTextCell();
 
@@ -1374,6 +1380,8 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
       }
 
       incompleteTextCell->SetValue(newVal);
+      if(appendToWorksheet)
+        m_worksheet->InsertLine(std::unique_ptr<TextCell>(incompleteTextCell));
       if(s.IsEmpty())
       {
         incompleteTextCell->GetGroup()->ResetSize();
