@@ -500,9 +500,9 @@ void ConfigDialogue::SetCheckboxValues()
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
   unsigned int i = 0;
   // First set the language to "default".
-  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(auto it : m_languages)
   {
-    if(it->second == wxLANGUAGE_DEFAULT)
+    if(it.second == wxLANGUAGE_DEFAULT)
     {
       m_language->SetSelection(i);
       break;
@@ -512,9 +512,9 @@ void ConfigDialogue::SetCheckboxValues()
   // Now try to set the language to the one from the config
   i = 0;
   int lang = m_configuration->GetLanguage();
-  for(Languages::const_iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  for(auto it : m_languages)
   {
-    if(it->second == lang)
+    if(it.second == lang)
     {
       m_language->SetSelection(i);
       break;

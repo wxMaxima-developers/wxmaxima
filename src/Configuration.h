@@ -741,8 +741,8 @@ public:
   bool GetAbortOnError() const {return m_abortOnError;}
   void SetAbortOnError(bool abortOnError) {m_abortOnError = abortOnError;}
   
-  int GetLanguage() const {return m_language;}
-  void SetLanguage(int language) {m_language = language;}
+  long GetLanguage() const {return m_language;}
+  void SetLanguage(long language) {m_language = language;}
   
   //! The maximum number of Megabytes of gnuplot sources we should store
   long MaxGnuplotMegabytes() const {return m_maxGnuplotMegabytes;}

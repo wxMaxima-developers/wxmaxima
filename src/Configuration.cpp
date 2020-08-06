@@ -42,6 +42,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc)
 {
   ResetAllToDefaults(options);
+  ReadConfig();
 }
 
 void Configuration::ResetAllToDefaults(InitOpt options)
@@ -89,7 +90,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
-  m_language = wxLANGUAGE_DEFAULT;
+  SetLanguage(wxLANGUAGE_DEFAULT);
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = labels_prefer_user;
@@ -316,7 +317,6 @@ void Configuration::InitStyles()
   m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
   m_styles[TS_EQUALSSELECTION].Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
   m_styles[TS_OUTDATED].Color(153,153,153);
-  ReadConfig();
 }
 
 const wxString &Configuration::GetEscCode(const wxString &key)

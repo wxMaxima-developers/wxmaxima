@@ -110,7 +110,7 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   
-  WX_DECLARE_STRING_HASH_MAP(int, Languages);
+  WX_DECLARE_STRING_HASH_MAP(long, Languages);
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
 
