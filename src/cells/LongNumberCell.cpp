@@ -92,9 +92,11 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
   
   if(NeedsRecalculation(fontsize))
   {      
-    Cell::Recalculate(fontsize);
-    if(m_numStart != wxEmptyString)
+    if(m_numStart.IsEmpty())
+      TextCell::Recalculate(fontsize);
+    else
     {
+      Cell::Recalculate(fontsize);
       m_fontSize = fontsize;
       SetFont(fontsize);
       Configuration *configuration = (*m_configuration);
@@ -109,21 +111,21 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
         wxMax(numStartSize.GetHeight(), ellipsisSize.GetHeight()), numEndSize.GetHeight());
       m_center = m_height / 2;
     }
-    else
-      TextCell::Recalculate(fontsize);
   }
 }
 
 void LongNumberCell::Draw(wxPoint point)
 {
-  Cell::Draw(point);
+  if((point.x >= 0) && (point.y >= 0))
+    SetCurrentPoint(point);
   if (InUpdateRegion())
   {
-    SetForeground();
     if(m_numStart == wxEmptyString)
       TextCell::Draw(point);
     else
     {
+      Cell::Draw(point);
+      SetForeground();
       SetFont(m_fontSize);
       Configuration *configuration = (*m_configuration);
       wxDC *dc = configuration->GetDC();
