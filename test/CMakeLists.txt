@@ -546,11 +546,11 @@ add_test(
     COMMAND wxmaxima --logtostdout --pipe --batch commentBegin.wxm)
 set_tests_properties(comment_begin PROPERTIES TIMEOUT 60)
 
-# add_test(
-#     NAME threadtest
-#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#     COMMAND wxmaxima --logtostdout --pipe --batch threadtest.wxm)
-# set_tests_properties(threadtest PROPERTIES TIMEOUT 160)
+add_test(
+    NAME threadtest
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --batch threadtest.wxm)
+set_tests_properties(threadtest PROPERTIES TIMEOUT 160 DISABLED YES)
 
 add_test(
     NAME autosave
@@ -575,6 +575,24 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --gibberish --batch unicode.wxm)
 set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
+add_test(
+    NAME multiple_batch_files
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --gibberish --batch unicode.wxm boxes.wxm)
+set_tests_properties(multiple_batch_files PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
+add_test(
+    NAME multiple_batch_files2
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --gibberish --batch --single_process unicode.wxm boxes.wxm)
+set_tests_properties(multiple_batch_files2 PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
+add_test(
+    NAME multithreadtest
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+set_tests_properties(multithreadtest PROPERTIES TIMEOUT 160 DISABLED YES)
 
 add_test(
     NAME ipc_copypaste1
@@ -602,7 +620,7 @@ endif()
 find_program(APPSTREAM_UTIL appstream-util)
 add_test(
     NAME check_appstream_file
-    COMMAND ${APPSTREAM_UTIL} validate ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
+    COMMAND ${APPSTREAM_UTIL} --nonet validate ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
 set_tests_properties(check_appstream_file PROPERTIES TIMEOUT 600)
 if(NOT APPSTREAM_UTIL)
     set_tests_properties(check_appstream_file PROPERTIES DISABLED YES)

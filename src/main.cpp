@@ -39,6 +39,7 @@
 
 #include "../examples/examples.h"
 #include "wxMaxima.h"
+#include "ConfigDialogue.h"
 #include "Version.h"
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
@@ -95,11 +96,6 @@ bool MyApp::OnInit()
   // is a window that can display it on the GUI instead.
   wxLogBuffer noStdErr;
   {
-    
-    Connect(wxID_NEW, wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-    Connect(wxMaximaFrame::menu_help_tutorials_start, wxMaximaFrame::menu_help_tutorials_end,
-            wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);
-    
     // If supported: Generate symbolic backtraces on crashes.
     #if wxUSE_ON_FATAL_EXCEPTION
     wxHandleFatalExceptions(true);
@@ -191,6 +187,8 @@ bool MyApp::OnInit()
       {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
       {wxCMD_LINE_SWITCH, "e", "eval",
        "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
+      {wxCMD_LINE_SWITCH, "", "single_process",
+       "Open all files from within the same process.", wxCMD_LINE_VAL_NONE , 0},
       {wxCMD_LINE_SWITCH, "b", "batch",
        "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "logtostdout",
@@ -215,6 +213,9 @@ bool MyApp::OnInit()
        
   cmdLineParser.SetDesc(cmdLineDesc);
   int cmdLineError = cmdLineParser.Parse();
+
+  if (cmdLineParser.Found(wxT("single_process")))
+    m_allWindowsInOneProcess = true;
 
   if (cmdLineParser.Found(wxT("h")))
   {
@@ -298,23 +299,29 @@ bool MyApp::OnInit()
 
 #endif
 
+  Connect(wxEVT_MENU, wxCommandEventHandler(MyApp::OnFileMenu), NULL, this);    
+
 #if defined __WXOSX__
   wxString path;
   wxGetEnv(wxT("PATH"), &path);
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
 
+  //! The macintosh global menu
+  wxMenuBar *menubar = new wxMenuBar;
+  wxMenu* menu = new wxMenu;
+  menu->Append(wxID_NEW, _("&New\tCtrl+N"));
+  menu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
+  menu->Append(wxID_PREFERENCES, _("Preferences"));
+  menu->Append(wxID_EXIT, _("Exit"));
+  menubar->Append(menu, _("File"));
+  // add open, new, etc options to your menubar.
+  wxMenuBar::MacSetCommonMenuBar(menubar);
+  
+  menubar->Connect(wxEVT_COMMAND_MENU_SELECTED,
+                   wxCommandEventHandler(MyApp::OnFileMenu),NULL, this);
+  Connect(wxEVT_COMMAND_MENU_SELECTED,
+          wxCommandEventHandler(MyApp::OnFileMenu),NULL, this);
   wxApp::SetExitOnFrameDelete(false);
-/*
-  wxMenuBar *menuBar = new wxMenuBar;
-  // Enables the window list on MacOs.
-  wxMenu *fileMenu = new wxMenu;
-  fileMenu->Append(wxID_NEW, _("&New\tCtrl+N"));
-  fileMenu->Append(wxID_OPEN, _("&Open\tCtrl+O"));
-  menuBar->Append(fileMenu, _("File"));
-  menuBar->SetAutoWindowMenu(true);
-  wxMenuBar::MacSetCommonMenuBar(menuBar);
-*/
-  Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MyApp::OnFileMenu));
 #endif
 
   if (cmdLineParser.Found(wxT("v")))
@@ -420,9 +427,9 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup, bool exitAfterEv
     frame->SetWXMdata(initialContents);
   }
   
-  frame->ExitAfterEval(exitAfterEval);
   frame->EvalOnStartup(evalOnStartup);
   m_topLevelWindows.push_back(frame);
+  frame->ExitAfterEval(exitAfterEval);
 
   SetTopWindow(frame);
   frame->Show(true);
@@ -468,24 +475,58 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     NewWindow(wxEmptyString, false, false,
               toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);
     break;
+  case wxID_OPEN:
+  {
+    wxString lastPath;
+    wxConfig::Get()->Read(wxT("lastPath"), &lastPath);
+    wxString file = wxFileSelector(_("Open"), wxEmptyString,
+                                   wxEmptyString, wxEmptyString,
+                                   _("All openable types (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|"
+                                     "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
+                                     "Maxima session (*.mac)|*.mac|"
+                                     "Xmaxima session (*.out)|*.out|"
+                                     "xml from broken .wxmx (*.xml)|*.xml"),
+                                   wxFD_OPEN);
+    
+    if (!file.empty())
+    {
+      // On the mac the "File/New" menu item by default opens a new window instead od
+      // reusing the old one.
+      NewWindow(file);
+    }
+    
+    break;
+    }
     case wxID_NEW:
     {
       // Mac computers insist that all instances of a new application need to share
       // the same process. On all other OSes we create a separate process for each
       // window: This way if one instance of wxMaxima crashes all the other instances
       // are still alive.
-#if defined __WXOSX__
-      NewWindow();
-#else
-//      NewWindow();
-      wxString args;
-      if(Configuration::m_configfileLocation_override != wxEmptyString)
-        args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
-      if(Configuration::m_maximaLocation_override != wxEmptyString)
-        args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
-
-      wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() + wxT("\"") + args);
-#endif
+      if(m_allWindowsInOneProcess)
+        NewWindow();
+      else
+      {
+        wxString args;
+        if(Configuration::m_configfileLocation_override != wxEmptyString)
+          args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
+        if(Configuration::m_maximaLocation_override != wxEmptyString)
+          args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
+        
+        wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() + wxT("\"") + args);
+      }
+      break;
+    }
+    case wxID_PREFERENCES:
+    {
+      Configuration config;
+      ConfigDialogue *configW = new ConfigDialogue(NULL, &config);
+      configW->Centre(wxBOTH);
+      if (configW->ShowModal() == wxID_OK)
+        configW->WriteSettings();
+      
+      configW->Destroy();
+      wxConfig::Get()->Flush();
       break;
     }
     case wxID_EXIT:
@@ -498,6 +539,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
         event->SetLoggingOff(false);
         win->GetEventHandler()->QueueEvent(event);
       }
+      if(m_topLevelWindows.empty())
+        wxExit();
     }
     break;
   }

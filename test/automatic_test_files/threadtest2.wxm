@@ -1,12 +1,31 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
 /* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
 /* [wxMaxima: input   start ] */
-print("µ")$
+wxdraw2d(
+    nticks=100000,
+    explicit(sin(x),x,1,10)
+);
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-print("φ")$
+wxdraw2d(
+    nticks=100000,
+    explicit(sin(x),x,1,10)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxdraw2d(
+    nticks=100000,
+    explicit(sin(x),x,1,10)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+build_info();
 /* [wxMaxima: input   end   ] */
 
 

@@ -830,6 +830,11 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
+  #if defined __WXOSX__
+  bool m_allWindowsInOneProcess = true;
+  #else
+  bool m_allWindowsInOneProcess = false;
+  #endif
 };
 
 // cppcheck-suppress unknownMacro
