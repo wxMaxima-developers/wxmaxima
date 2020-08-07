@@ -31,6 +31,7 @@
 
 #include "../precomp.h"
 #include "CellPtr.h"
+#include "CellIterators.h"
 #include "Configuration.h"
 #include "StringUtils.h"
 #include "TextStyle.h"
@@ -1007,14 +1008,14 @@ protected:
     using RawPtr_ = Cell* const*;
     void const* m_ptr = {};
     Uses m_uses = Uses::SmartPtr;
-    Cell *GetInner() const
+  public:
+    Cell *get() const
     {
       if (!m_ptr) return {};
       if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr_>(m_ptr)->get();
       else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr_>(m_ptr);
       else return {};
     }
-  public:
     InnerCellIterator() = default;
     explicit InnerCellIterator(const std::unique_ptr<Cell> *p) : m_ptr(p), m_uses(Uses::SmartPtr) {}
     explicit InnerCellIterator(Cell* const *p) : m_ptr(p), m_uses(Uses::RawPtr) {}
@@ -1039,9 +1040,9 @@ protected:
     { return m_uses == o.m_uses && m_ptr == o.m_ptr; }
     bool operator!=(const InnerCellIterator &o) const
     { return m_uses != o.m_uses || m_ptr != o.m_ptr; }
-    operator bool() const { return GetInner(); }
-    operator Cell*() const { return GetInner(); }
-    Cell *operator->() const { return GetInner(); }
+    operator bool() const { return get(); }
+    operator Cell*() const { return get(); }
+    Cell *operator->() const { return get(); }
   };
 
   //! Iterator to the beginning of the inner cell range
@@ -1103,5 +1104,17 @@ private:
   Cell *const m_cell;
 };
 #endif
+
+//! Returns an iterable the goes over the cell list, starting with given, possibly null, cell.
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
+inline auto OnList(const C *cell) { return CellListAdapter<const C>(cell); }
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
+inline auto OnList(C *cell)       { return CellListAdapter<C>(cell); }
+
+//! Returns an iterable that goes over the cell draw list, starting with given, possibly null, cell.
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
+inline auto OnDrawList(const C *cell) { return CellDrawListAdapter<const C>(cell); }
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
+inline auto OnDrawList(C *cell)       { return CellDrawListAdapter<C>(cell); }
 
 #endif // MATHCELL_H
