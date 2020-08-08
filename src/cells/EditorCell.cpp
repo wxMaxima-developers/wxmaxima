@@ -678,16 +678,13 @@ wxString EditorCell::ToHTML() const
 
   for (const EditorCell *tmp = this; tmp; tmp = dynamic_cast<EditorCell *>(tmp->GetNext()))
   {
-    for (std::vector<StyledText>::const_iterator textSnippet = m_styledText.begin();
-         textSnippet != m_styledText.end(); ++textSnippet)
+    for (const auto &textSnippet : tmp->m_styledText)
     {
-      wxString text = PrependNBSP(EscapeHTMLChars(textSnippet->GetText()));
-/*      wxString tmp = EscapeHTMLChars(textSnippet->GetText());
-        wxString text = tmp);*/
+      wxString text = PrependNBSP(EscapeHTMLChars(textSnippet.GetText()));
 
-      if (textSnippet->IsStyleSet())
+      if (textSnippet.IsStyleSet())
       {
-        switch (textSnippet->GetStyle())
+        switch (textSnippet.GetStyle())
         {
         case TS_CODE_COMMENT:
           retval += wxT("<span class=\"code_comment\">") + text + wxT("</span>");
