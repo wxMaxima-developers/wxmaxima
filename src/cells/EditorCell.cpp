@@ -894,35 +894,34 @@ void EditorCell::Draw(wxPoint point)
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     int lastIndent = 0;
-    for (std::vector<StyledText>::iterator textSnippet = m_styledText.begin();
-         textSnippet != m_styledText.end(); ++textSnippet)
+    for (StyledText &textSnippet : m_styledText)
     {
-      auto &TextToDraw = textSnippet->GetText();
+      auto &TextToDraw = textSnippet.GetText();
       int width, height;
 
       // A newline is a separate token.
       if ((TextToDraw == wxT("\n")) || (TextToDraw == wxT("\r")))
       {
         if ((TextToDraw == wxT("\n")))
-          lastIndent = textSnippet->GetIndentPixels();
+          lastIndent = textSnippet.GetIndentPixels();
 
         // A newline =>
         // set the point to the beginning of the next line.
         TextCurrentPoint.x = TextStartingpoint.x;
         TextCurrentPoint.y += m_charHeight;
-        TextCurrentPoint.x += textSnippet->GetIndentPixels();
+        TextCurrentPoint.x += textSnippet.GetIndentPixels();
       }
       else
       {
         // We need to draw some text.
 
         // Grab a pen of the right color.
-        if (textSnippet->IsStyleSet())
+        if (textSnippet.IsStyleSet())
         {
-          if (lastStyle != textSnippet->GetStyle())
+          if (lastStyle != textSnippet.GetStyle())
           {
-            dc->SetTextForeground(configuration->GetColor(textSnippet->GetStyle()));
-            lastStyle = textSnippet->GetStyle();
+            dc->SetTextForeground(configuration->GetColor(textSnippet.GetStyle()));
+            lastStyle = textSnippet.GetStyle();
           }
         }
         else
@@ -932,19 +931,19 @@ void EditorCell::Draw(wxPoint point)
         }
         
         // Draw a char that shows we continue an indentation - if this is needed.
-        if (textSnippet->GetIndentChar() != wxEmptyString)
-          dc->DrawText(textSnippet->GetIndentChar(),
+        if (textSnippet.GetIndentChar() != wxEmptyString)
+          dc->DrawText(textSnippet.GetIndentChar(),
                        TextStartingpoint.x + lastIndent,
                        TextCurrentPoint.y - m_center);
 
         // Determine the box the will be is in.
-        if(!textSnippet->SizeKnown())
+        if(!textSnippet.SizeKnown())
         {
           dc->GetTextExtent(TextToDraw, &width, &height);
-          textSnippet->SetWidth(width);
+          textSnippet.SetWidth(width);
         }
         else
-          width = textSnippet->GetWidth();
+          width = textSnippet.GetWidth();
         wxRect textRect(TextCurrentPoint.x,
                         TextCurrentPoint.y - m_center,
                         TextCurrentPoint.x + width,
@@ -2881,17 +2880,17 @@ bool EditorCell::IsPointInSelection(wxPoint point)
   // the indentation needed.
   unsigned int currentLine = 1;
   int indentPixels = 0;
-  std::vector<StyledText>::const_iterator textSnippet;
-  for (textSnippet = m_styledText.begin();
-       ((textSnippet < m_styledText.end()) && (currentLine < lin)); ++textSnippet)
+
+  for (const auto &textSnippet : m_styledText)
   {
-    if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
+    if (currentLine >= lin)
+      break;
+    if ((textSnippet.GetText() == '\n') || (textSnippet.GetText() == '\r'))
     {
-      indentPixels = textSnippet->GetIndentPixels();
+      indentPixels = textSnippet.GetIndentPixels();
       currentLine++;
     }
   }
-
 
   // Handle indentation
   posInCell.x -= indentPixels;
@@ -3193,13 +3192,14 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
   // the indentation needed.
   unsigned int currentLine = 1;
   int indentPixels = 0;
-  std::vector<StyledText>::const_iterator textSnippet;
-  for (textSnippet = m_styledText.begin();
-       ((textSnippet < m_styledText.end()) && (currentLine <= line)); ++textSnippet)
+
+  for (const auto &textSnippet : m_styledText)
   {
-    if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
+    if (currentLine > line)
+      break;
+    if ((textSnippet.GetText() == '\n') || (textSnippet.GetText() == '\r'))
     {
-      indentPixels = textSnippet->GetIndentPixels();
+      indentPixels = textSnippet.GetIndentPixels();
       currentLine++;
     }
   }
@@ -3211,6 +3211,7 @@ int EditorCell::GetLineWidth(unsigned int line, int pos)
 
   unsigned int i = 0;
 
+  std::vector<StyledText>::const_iterator textSnippet;
   for (textSnippet = m_styledText.begin(); (textSnippet < m_styledText.end()) && (i < line); ++textSnippet)
   {
     wxString text = textSnippet->GetText();
