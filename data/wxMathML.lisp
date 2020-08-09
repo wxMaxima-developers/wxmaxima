@@ -83,10 +83,10 @@
   ;; Allow the user to communicate what to display in the statusbar whilst
   ;; the current program is running
   (defun $wxstatusbar (&rest status)
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string
 					     (apply '$sconcat status)))
-    #+clisp (finish-output)
+    (finish-output)
     )
 
 
@@ -1239,12 +1239,12 @@
   (defprop spaceout wxxml-spaceout wxxml)
 
   (defun mydispla (x)
-    #+clisp (finish-output)
+    (finish-output)
     (let ((*print-circle* nil)
 	  (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
       (mapc #'princ
 	    (wxxml x '("<math>") '("</math>") 'mparen 'mparen)))
-    #+clisp (finish-output)
+    (finish-output)
     )
 
   (setf *alt-display2d* 'mydispla)
@@ -1945,7 +1945,7 @@
 
   ;; A function that determines all symbols for autocompletion
   (defun wxPrint_autocompletesymbols ()
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<wxxml-symbols>")
     ;; Function names and rules
     (format t "~{~a~^$~}"
@@ -1966,7 +1966,7 @@
     	 (format t "~{~a~^$~}"
     		 (mapcar #'print_unit (cdr ($known_units))))))
     (format t "</wxxml-symbols>")
-    #+clisp (finish-output)
+    (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1990,7 +1990,7 @@
       (format t "</variable>~%</variables>~%"))
 
   (defun wx-print-variables ()
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<variables>")
     (wx-print-variable '$maxima_userdir)
     (wx-print-variable '$maxima_tempdir)
@@ -2009,7 +2009,18 @@
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	    #-sbcl (lisp-implementation-version))
     (format t "</variables>~%")
-    #+clisp (finish-output)
+    (finish-output)
+    )
+  
+  (defun wx-print-gui-variables ()
+    (finish-output)
+    (format t "<variables>")
+    (wx-print-variable '$wxsubscripts)
+    (wx-print-variable '$lmxchar)
+    (wx-print-variable '$display2d)
+    (wx-print-variable '*alt-display2d*)
+    (format t "</variables>~%")
+    (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -94,9 +94,11 @@ public:
   void VariableValue(wxString var, wxString val);
   //! Sets the variable var to "undefined"
   void VariableUndefined(wxString var);
+  void UpdateSize();
   //! The destructor
   ~Variablespane();
 private:
+  bool m_updateSizeNeeded = false;
   wxString InvertCase(wxString var);
   WX_DECLARE_STRING_HASH_MAP(int, IntHash);
   //! A list of all symbols that can be entered using Esc-Codes

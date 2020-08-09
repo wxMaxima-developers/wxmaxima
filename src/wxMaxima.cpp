@@ -225,6 +225,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("*lisp-name*")] = &wxMaxima::VariableActionLispName;
     m_variableReadActions[wxT("*lisp-version*")] = &wxMaxima::VariableActionLispVersion;
     m_variableReadActions[wxT("*wx-load-file-name*")] = &wxMaxima::VariableActionWxLoadFileName;
+    m_variableReadActions[wxT("wxsubscripts")] = &wxMaxima::VariableActionWxSubscripts;
+    m_variableReadActions[wxT("lmxchar")] = &wxMaxima::VariableActionLmxChar;
+    m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
+    m_variableReadActions[wxT("*alt-display2d*")] = &wxMaxima::VariableActionAltDisplay2D;
   }
   
   #ifdef HAVE_OMP_HEADER
@@ -2758,6 +2762,63 @@ void wxMaxima::VariableActionWxLoadFileName(const wxString &value)
   wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value.utf8_str()));
 }
 
+void wxMaxima::VariableActionWxSubscripts(const wxString &value)
+{
+  if(m_maximaVariable_wxSubscripts != value)
+  {
+    m_maximaVariable_wxSubscripts = value;
+    if(value == wxT("false"))
+      m_autoSubscriptMenu->Check(menu_noAutosubscript, true);
+    else if(value == wxT("true"))
+      m_autoSubscriptMenu->Check(menu_defaultAutosubscript, true);
+    else if(value == wxT("all"))
+      m_autoSubscriptMenu->Check(menu_alwaysAutosubscript, true);
+  }
+}
+void wxMaxima::VariableActionLmxChar(const wxString &value)
+{
+  if(m_maximaVariable_lmxchar != value)
+  {
+    m_maximaVariable_lmxchar = value;
+    if(m_maximaVariable_lmxchar.EndsWith("("))
+      m_roundedMatrixParensMenu->Check(menu_roundedMatrixParensYes, true);
+    else
+      m_roundedMatrixParensMenu->Check(menu_roundedMatrixParensNo, true);
+  }
+}
+void wxMaxima::VariableActionDisplay2D(const wxString &value)
+{
+  if(m_maximaVariable_display2d != value)
+  {
+    m_maximaVariable_display2d = value;
+    if(m_maximaVariable_display2d == wxT("false"))
+      m_equationTypeMenuMenu->Check(menu_math_as_1D_ASCII, true);
+    else
+    {
+      if(m_maximaVariable_altdisplay2d == wxT("false"))
+        m_equationTypeMenuMenu->Check(menu_math_as_2D_ASCII, true);
+      else
+        m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
+    }
+  }
+}
+void wxMaxima::VariableActionAltDisplay2D(const wxString &value)
+{
+  if(m_maximaVariable_altdisplay2d != value)
+  {
+    m_maximaVariable_altdisplay2d = value;
+    if(m_maximaVariable_display2d == wxT("false"))
+      m_equationTypeMenuMenu->Check(menu_math_as_1D_ASCII, true);
+    else
+    {
+      if(m_maximaVariable_altdisplay2d == wxT("false"))
+        m_equationTypeMenuMenu->Check(menu_math_as_2D_ASCII, true);
+      else
+        m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
+    }
+  }
+}
+
 void wxMaxima::ReadAddVariables(wxString &data)
 {
   if (!data.StartsWith(m_addVariablesPrefix))
@@ -2814,8 +2875,14 @@ bool wxMaxima::QueryVariableValue()
   }
   else
   {
-    m_worksheet->m_variablesPane->AutoSize();
-    m_worksheet->m_variablesPane->GetParent()->Layout();
+    if(m_readMaximaVariables)
+    {
+      SendMaxima(wxT(":lisp-quiet (wx-print-gui-variables)\n"));
+      m_readMaximaVariables = false;
+    }
+    if(!m_worksheet->m_variablesPane->GetEscapedVarnames().IsEmpty())
+      m_worksheet->m_variablesPane->UpdateSize();
+    
     return false;
   }
 }
@@ -9339,6 +9406,8 @@ void wxMaxima::TriggerEvaluation()
       m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values anew
       m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
+      // And the gui is interested in a few variable names
+      m_readMaximaVariables = true;
       m_configCommands = wxEmptyString;
 
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),

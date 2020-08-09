@@ -770,6 +770,9 @@ protected:
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
   wxMenu *m_recentPackagesMenu;
+  wxMenu *m_autoSubscriptMenu;
+  wxMenu *m_equationTypeMenuMenu;
+  wxMenu *m_roundedMatrixParensMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

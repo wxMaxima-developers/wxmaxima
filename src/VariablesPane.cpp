@@ -267,7 +267,11 @@ void Variablespane::VariableValue(wxString var, wxString val)
     if(GetCellValue(i,0) == UnescapeVarname(var))
     {
       SetCellTextColour(i,1,*wxBLACK);
-      SetCellValue(i,1,val);
+      if(GetCellValue(i,1) != val)
+      {
+        m_updateSizeNeeded = true;        
+        SetCellValue(i,1,val);
+      }
       RefreshAttr(i, 1);
     }
 }
@@ -327,6 +331,7 @@ wxString Variablespane::InvertCase(wxString var)
 
 void Variablespane::AddWatchCode(wxString code)
 {
+  m_updateSizeNeeded = true;
   wxString unescapedCode;
   for (wxString::const_iterator it = code.begin(); it != code.end(); ++it)
   {
@@ -344,6 +349,7 @@ void Variablespane::AddWatchCode(wxString code)
 
 void Variablespane::AddWatch(wxString watch)
 {
+  m_updateSizeNeeded = true;
   BeginBatch();
   SetCellValue(GetNumberRows()-1,0,watch);
   wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
@@ -413,6 +419,16 @@ bool Variablespane::IsValidVariable(wxString var)
   return true;
 }
 
+void Variablespane::UpdateSize()
+{
+  if(m_updateSizeNeeded)
+  {
+    m_updateSizeNeeded = false;
+    AutoSize();
+    GetParent()->Layout();
+  }
+}
+
 void Variablespane::ResetValues()
 {
   for(int i = 0; i < GetNumberRows(); i++)
@@ -430,6 +446,7 @@ void Variablespane::ResetValues()
 
 void Variablespane::Clear()
 {
+  m_updateSizeNeeded = true;
   while(GetNumberRows() > 1)
     DeleteRows(0);    
 }

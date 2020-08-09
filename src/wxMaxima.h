@@ -200,8 +200,9 @@ private:
   //! Search for the wxMaxima help file
   wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
-  //! The variable names to query for the variables pane
+  //! The variable names to query for the variables pane and for internal reasons
   wxArrayString m_varNamesToQuery;
+
   bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.
   bool m_openInitialFileError;
@@ -570,7 +571,16 @@ protected:
   void VariableActionLispName(const wxString &value);
   void VariableActionLispVersion(const wxString &value);
   void VariableActionWxLoadFileName(const wxString &value);
+  void VariableActionWxSubscripts(const wxString &value);
+  void VariableActionLmxChar(const wxString &value);
+  void VariableActionDisplay2D(const wxString &value);
+  void VariableActionAltDisplay2D(const wxString &value);
 
+  wxString m_maximaVariable_wxSubscripts;
+  wxString m_maximaVariable_lmxchar;
+  wxString m_maximaVariable_display2d;
+  wxString m_maximaVariable_altdisplay2d;
+  bool m_readMaximaVariables = false;
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.

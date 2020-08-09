@@ -773,25 +773,30 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   m_Maxima_Panes_Sub->AppendSeparator();
   // equation display type submenu
-  wxMenu *equationType = new wxMenu;
-  equationType->Append(menu_math_as_1D_ASCII, _("as 1D ASCII"), _("Show equations in their linear form"), wxITEM_NORMAL);
-  equationType->Append(menu_math_as_2D_ASCII, _("as ASCII Art"), _("2D equations using ASCII Art"), wxITEM_NORMAL);
-  equationType->Append(menu_math_as_graphics, _("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
+  m_equationTypeMenuMenu = new wxMenu;
+  m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_1D_ASCII, _("as 1D ASCII"), _("Show equations in their linear form"));
+  m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_2D_ASCII, _("as ASCII Art"), _("2D equations using ASCII Art"));
+  m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_graphics, _("in 2D"), _("Nice Graphical Equations"));
+  m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
 
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), equationType, _("How to display new equations"));
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), m_equationTypeMenuMenu, _("How to display new equations"));
 
-  wxMenu *autoSubscript = new wxMenu;
-  autoSubscript->Append(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
-  autoSubscript->Append(menu_defaultAutosubscript, _("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
-  autoSubscript->Append(menu_alwaysAutosubscript, _("Always"), _("Always autosubscript after an underscore"), wxITEM_NORMAL);
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), autoSubscript, _("Autosubscript chars after an underscore"));
+  m_autoSubscriptMenu = new wxMenu;
+  m_autoSubscriptMenu->AppendRadioItem(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"));
+  m_autoSubscriptMenu->AppendRadioItem(menu_defaultAutosubscript,
+                                       _("Integers and single letters"),
+                                       _("Autosubscript numbers and text following single letters"));
+  m_autoSubscriptMenu->AppendRadioItem(menu_alwaysAutosubscript, _("Always"),
+                                       _("Always autosubscript after an underscore"));
+  m_autoSubscriptMenu->Check(menu_defaultAutosubscript, true);
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
+                             _("Autosubscript chars after an underscore"));
 
-  wxMenu *roundedMatrixParens = new wxMenu;
-  roundedMatrixParens->Append(menu_roundedMatrixParensYes, _("Rounded"), _("Use rounded parenthesis for matrices"), wxITEM_NORMAL);
-  roundedMatrixParens->Append(menu_roundedMatrixParensNo, _("Square"), _("Use square parenthesis for matrices"), wxITEM_NORMAL);
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), roundedMatrixParens, _("Choose the parenthesis type for Matrices"));
-
-
+  m_roundedMatrixParensMenu = new wxMenu;
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParensYes, _("Rounded"), _("Use rounded parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParensNo, _("Square"), _("Use square parenthesis for matrices"));
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), m_roundedMatrixParensMenu, _("Choose the parenthesis type for Matrices"));
+  
   m_Maxima_Panes_Sub->AppendSeparator();
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
