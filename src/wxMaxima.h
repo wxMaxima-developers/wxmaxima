@@ -561,13 +561,6 @@ protected:
    */
   void ReadAddVariables(wxString &data);
 
-#ifndef __WXMSW__
-
-  //! reads the output the maxima command sends to stdout
-  void ReadProcessOutput();
-
-#endif
-
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
