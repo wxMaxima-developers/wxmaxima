@@ -212,6 +212,21 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_knownXMLTags[wxT("ipc")] = &wxMaxima::ReadMaximaIPC;
   }
 
+  if(m_variableReadActions.empty())
+  {
+    
+    m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
+    m_variableReadActions[wxT("maxima_tempdir")] = &wxMaxima::VariableActionTempDir;
+    m_variableReadActions[wxT("*autoconf-version*")] = &wxMaxima::VariableActionAutoconfVersion;
+    m_variableReadActions[wxT("*autoconf-host*")] = &wxMaxima::VariableActionAutoconfHost;
+    m_variableReadActions[wxT("*maxima-infodir*")] = &wxMaxima::VariableActionMaximaInfodir;
+    m_variableReadActions[wxT("gnuplot_command")] = &wxMaxima::VariableActionGnuplotCommand;
+    m_variableReadActions[wxT("*maxima-sharedir*")] = &wxMaxima::VariableActionMaximaSharedir;
+    m_variableReadActions[wxT("*lisp-name*")] = &wxMaxima::VariableActionLispName;
+    m_variableReadActions[wxT("*lisp-version*")] = &wxMaxima::VariableActionLispVersion;
+    m_variableReadActions[wxT("*wx-load-file-name*")] = &wxMaxima::VariableActionWxLoadFileName;
+  }
+  
   #ifdef HAVE_OMP_HEADER
   omp_init_lock(&m_helpFileAnchorsLock);
   #endif
@@ -2640,75 +2655,10 @@ void wxMaxima::ReadVariables(wxString &data)
 
           if(bound)
           {
-            if(name == "maxima_userdir")
-            {
-              Dirstructure::Get()->UserConfDir(value);
-              wxLogMessage(wxString::Format(_("Maxima user configuration lies in directory %s"),value.utf8_str()));
-            }
-            if(name == "maxima_tempdir")
-            {
-              m_maximaTempDir = value;
-              wxLogMessage(wxString::Format(_("Maxima uses temp directory %s"),value.utf8_str()));
-              {
-                // Sometimes people delete their temp dir
-                // and gnuplot won't create a new one for them.
-                wxLogNull logNull;
-                wxMkDir(value, wxS_DIR_DEFAULT);
-              }
-            }
-            if(name == "*autoconf-version*")
-            {
-              m_maximaVersion = value;
-              wxLogMessage(wxString::Format(_("Maxima version: %s"),value.utf8_str()));
-            }
-            if(name == "*autoconf-host*")
-            {
-              m_maximaArch = value;
-              wxLogMessage(wxString::Format(_("Maxima architecture: %s"),value.utf8_str()));
-            }
-            if(name == "*maxima-infodir*")
-            {
-              m_maximaDocDir = value;
-              wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
-            }
-            if(name == "gnuplot_command")
-            {
-              m_gnuplotcommand = value;
-              wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
-            }
-            if(name == "*maxima-sharedir*")
-            {
-              value.Trim(true);
-              m_worksheet->m_configuration->MaximaShareDir(value);
-              wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),value.utf8_str()));
-              /// READ FUNCTIONS FOR AUTOCOMPLETION
-              m_worksheet->LoadSymbols();
-              if(m_worksheet->m_helpFileAnchors.empty())
-              {
-                if(!LoadManualAnchorsFromCache())
-                {
-                  if(wxFileExists(GetMaximaHelpFile()))
-                    m_compileHelpAnchorsTimer.StartOnce(4000);
-                  else
-                    LoadBuiltInManualAnchors();
-                  }
-              }
-            }
-            if(name == "*lisp-name*")
-            {
-              m_lispType = value;
-              wxLogMessage(wxString::Format(_("Maxima was compiled using %s"),value.utf8_str()));
-            }
-            if(name == "*lisp-version*")
-            {
-              m_lispVersion = value;
-              wxLogMessage(wxString::Format(_("Lisp version: %s"),value.utf8_str()));
-            }
-            if(name == "*wx-load-file-name*")
-            {
-              m_recentPackages.AddDocument(value);
-              wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value.utf8_str()));
-            }
+            auto varFunc = m_variableReadActions.end();
+            varFunc = m_variableReadActions.find(name);
+            if(varFunc != m_variableReadActions.end())
+              CALL_MEMBER_FN(*this, varFunc->second)(value);
             m_worksheet->m_variablesPane->VariableValue(name, value);
           }
           else
@@ -2730,6 +2680,82 @@ void wxMaxima::ReadVariables(wxString &data)
     TriggerEvaluation();
     QueryVariableValue();
   }
+}
+
+void wxMaxima::VariableActionUserDir(const wxString &value)
+{
+  Dirstructure::Get()->UserConfDir(value);
+  wxLogMessage(wxString::Format(
+                 _("Maxima user configuration lies in directory %s"),value.utf8_str()));
+}
+
+void wxMaxima::VariableActionTempDir(const wxString &value)
+{
+  m_maximaTempDir = value;
+  wxLogMessage(wxString::Format(_("Maxima uses temp directory %s"),value.utf8_str()));
+  {
+    // Sometimes people delete their temp dir
+    // and gnuplot won't create a new one for them.
+    wxLogNull logNull;
+    wxMkDir(value, wxS_DIR_DEFAULT);
+  }
+}
+
+void wxMaxima::VariableActionAutoconfVersion(const wxString &value)
+{
+  m_maximaVersion = value;
+  wxLogMessage(wxString::Format(_("Maxima version: %s"),value.utf8_str()));
+}
+void wxMaxima::VariableActionAutoconfHost(const wxString &value)
+{
+  m_maximaArch = value;
+  wxLogMessage(wxString::Format(_("Maxima architecture: %s"),value.utf8_str()));
+}
+void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
+{
+              m_maximaDocDir = value;
+              wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
+}
+void wxMaxima::VariableActionGnuplotCommand(const wxString &value)
+{
+  m_gnuplotcommand = value;
+  wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
+}
+
+void wxMaxima::VariableActionMaximaSharedir(const wxString &value)
+{
+  wxString dir = value;
+  dir.Trim(true);
+  m_worksheet->m_configuration->MaximaShareDir(dir);
+  wxLogMessage(wxString::Format(_("Maxima's share files lie in directory %s"),dir.utf8_str()));
+  /// READ FUNCTIONS FOR AUTOCOMPLETION
+  m_worksheet->LoadSymbols();
+  if(m_worksheet->m_helpFileAnchors.empty())
+  {
+    if(!LoadManualAnchorsFromCache())
+    {
+      if(wxFileExists(GetMaximaHelpFile()))
+        m_compileHelpAnchorsTimer.StartOnce(4000);
+      else
+        LoadBuiltInManualAnchors();
+    }
+  }
+}
+
+void wxMaxima::VariableActionLispName(const wxString &value)
+{
+  m_lispType = value;
+  wxLogMessage(wxString::Format(_("Maxima was compiled using %s"),value.utf8_str()));
+}
+void wxMaxima::VariableActionLispVersion(const wxString &value)
+{
+  m_lispVersion = value;
+  wxLogMessage(wxString::Format(_("Lisp version: %s"),value.utf8_str()));
+}
+void wxMaxima::VariableActionWxLoadFileName(const wxString &value)
+{
+  m_recentPackages.AddDocument(value);
+  wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value.utf8_str()));
 }
 
 void wxMaxima::ReadAddVariables(wxString &data)
@@ -10017,3 +10043,4 @@ wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 //wxString wxMaxima::m_outputPromptPrefix(wxT("<lbl>"));
 //wxString wxMaxima::m_outputPromptSuffix(wxT("</lbl"));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
+wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
