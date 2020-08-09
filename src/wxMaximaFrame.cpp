@@ -1294,8 +1294,8 @@ void wxMaximaFrame::SetupMenu()
 
   // Numeric menu
   m_NumericMenu = new wxMenu;
-  m_NumericMenu->Append(menu_num_out, _("Toggle &Numeric Output"),
-                        _("Toggle numeric output"), wxITEM_NORMAL);
+  m_NumericMenu->AppendCheckItem(menu_num_out, _("&Numeric Output"),
+                                 _("Numeric output"));
   m_NumericMenu->Append(menu_to_float, _("To &Float"),
                         _("Calculate float value of the last result"),
                         wxITEM_NORMAL);

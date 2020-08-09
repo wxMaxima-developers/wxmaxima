@@ -227,6 +227,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("*wx-load-file-name*")] = &wxMaxima::VariableActionWxLoadFileName;
     m_variableReadActions[wxT("wxsubscripts")] = &wxMaxima::VariableActionWxSubscripts;
     m_variableReadActions[wxT("lmxchar")] = &wxMaxima::VariableActionLmxChar;
+    m_variableReadActions[wxT("numer")] = &wxMaxima::VariableActionNumer;
     m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
     m_variableReadActions[wxT("*alt-display2d*")] = &wxMaxima::VariableActionAltDisplay2D;
   }
@@ -2784,6 +2785,17 @@ void wxMaxima::VariableActionLmxChar(const wxString &value)
       m_roundedMatrixParensMenu->Check(menu_roundedMatrixParensYes, true);
     else
       m_roundedMatrixParensMenu->Check(menu_roundedMatrixParensNo, true);
+  }
+}
+void wxMaxima::VariableActionNumer(const wxString &value)
+{
+  if(m_maximaVariable_numer != value)
+  {
+    m_maximaVariable_numer = value;
+    if(value == wxT("true"))
+      m_NumericMenu->Check(menu_num_out, true);
+    else
+      m_NumericMenu->Check(menu_num_out, false);
   }
 }
 void wxMaxima::VariableActionDisplay2D(const wxString &value)
@@ -7938,7 +7950,10 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_num_out:
-      cmd = wxT("if numer#false then numer:false else numer:true;");
+      if(m_NumericMenu->IsChecked(menu_num_out))
+        cmd = wxT("numer:false$");
+      else
+        cmd = wxT("numer:true$");
       MenuCommand(cmd);
       break;
     case menu_set_precision:

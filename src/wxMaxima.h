@@ -575,11 +575,13 @@ protected:
   void VariableActionLmxChar(const wxString &value);
   void VariableActionDisplay2D(const wxString &value);
   void VariableActionAltDisplay2D(const wxString &value);
+  void VariableActionNumer(const wxString &value);
 
   wxString m_maximaVariable_wxSubscripts;
   wxString m_maximaVariable_lmxchar;
   wxString m_maximaVariable_display2d;
   wxString m_maximaVariable_altdisplay2d;
+  wxString m_maximaVariable_numer;
   bool m_readMaximaVariables = false;
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 

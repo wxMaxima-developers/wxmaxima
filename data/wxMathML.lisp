@@ -2024,6 +2024,7 @@
     (format t "<variables>")
     (wx-print-variable '$wxsubscripts)
     (wx-print-variable '$lmxchar)
+    (wx-print-variable '$numer)
     (wx-print-display2d)
     (wx-print-variable '*alt-display2d*)
     (format t "</variables>~%")
