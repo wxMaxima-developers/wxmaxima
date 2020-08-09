@@ -73,6 +73,9 @@ public:
   std::unique_ptr<GroupCell> CopyList() const;
   ~GroupCell();
 
+  GroupCell *first() const { return dynamic_cast<GroupCell*>(Cell::first()); }
+  GroupCell *last() const { return dynamic_cast<GroupCell*>(Cell::last()); }
+
   wxString GetAnswer(int answer)
     {
       if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
