@@ -1981,6 +1981,13 @@
       (let (($display2d nil))
 	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
+  
+  (defun wx-print-display2d ()
+    (format t "<variable><name>display2d</name><value>")
+    (if (eq $display2d nil)
+	(format t "false")
+      (format t "true"))
+    (format t "</value></variable>~%"))
 
   (defun wx-query-variable (var)
     (format t "<variables>~%<variable>~%<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
@@ -2017,7 +2024,7 @@
     (format t "<variables>")
     (wx-print-variable '$wxsubscripts)
     (wx-print-variable '$lmxchar)
-    (wx-print-variable '$display2d)
+    (wx-print-display2d)
     (wx-print-variable '*alt-display2d*)
     (format t "</variables>~%")
     (finish-output)
@@ -2055,7 +2062,8 @@
 	  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl) (format t
            "Info: wxMathml.cpp: Changing the working dir during a maxima session isn't implemented for this lisp.")
   	  (namestring dir)
-	  (wx-print-variables)))
+	  (wx-print-variables)
+	  (wx-print-gui-variables)))
       (error (c)        (format t "Warning: Can set maxima's working directory but cannot change it during the maxima session :~%~&~%")
           (values 0 c))))
 
@@ -2218,6 +2226,7 @@
   ;; autocompletion feature.
   (wxPrint_autocompletesymbols)
   (wx-print-variables)
+  (wx-print-gui-variables)
   (format t "~%")
   (finish-output)
 )
