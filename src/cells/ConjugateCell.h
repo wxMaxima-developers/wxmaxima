@@ -48,7 +48,7 @@
 class ConjugateCell final : public Cell
 {
 public:
-  ConjugateCell(GroupCell *parent, Configuration **config);
+  ConjugateCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
   ConjugateCell(const ConjugateCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -63,6 +63,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  void MakeBreakupCells();
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
