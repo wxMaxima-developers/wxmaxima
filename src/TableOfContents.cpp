@@ -73,13 +73,12 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
   long selection = m_lastSelection;
   if (IsShown())
   {
-    GroupCell *cell = tree;
     m_structure.clear();
 
     // Get the current list of tokens that should be in the Table Of Contents.
-    while (cell != NULL)
+    for (auto &cell : OnList(tree))
     {
-      int groupType = cell->GetGroupType();
+      int groupType = cell.GetGroupType();
       if (
               (groupType == GC_TYPE_TITLE) ||
               (groupType == GC_TYPE_SECTION) ||
@@ -88,16 +87,14 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *pos)
               (groupType == GC_TYPE_HEADING5) ||
               (groupType == GC_TYPE_HEADING6)
               )
-        m_structure.push_back(cell);
+        m_structure.push_back(&cell);
 
       // Select the cell with the cursor
-      if (cell == pos)
+      if (&cell == pos)
       {
         if (!m_structure.empty())
           selection = m_structure.size() - 1;
       }
-
-      cell = cell->GetNext();
     }
 
     long item = m_displayedItems->GetNextItem(-1,

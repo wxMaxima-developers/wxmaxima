@@ -676,9 +676,9 @@ wxString EditorCell::ToHTML() const
 {
   wxString retval;
 
-  for (const EditorCell *tmp = this; tmp; tmp = dynamic_cast<EditorCell *>(tmp->GetNext()))
+  for (const auto &tmp : OnList(this))
   {
-    for (const auto &textSnippet : tmp->m_styledText)
+    for (const auto &textSnippet : tmp.m_styledText)
     {
       wxString text = PrependNBSP(EscapeHTMLChars(textSnippet.GetText()));
 

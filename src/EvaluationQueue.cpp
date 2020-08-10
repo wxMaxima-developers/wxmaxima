@@ -94,12 +94,10 @@ void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
   if (!gr)
     return; // caller should check, but just in case
 
-  GroupCell *cell = gr->GetHiddenTree();
-  while (cell)
+  for (auto &cell : OnList(gr->GetHiddenTree()))
   {
-    AddToQueue(cell);
-    AddHiddenTreeToQueue(cell);
-    cell = cell->GetNext();
+    AddToQueue(&cell);
+    AddHiddenTreeToQueue(&cell);
   }
 }
 
