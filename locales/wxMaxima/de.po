@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-10 09:34+0200\n"
-"PO-Revision-Date: 2020-08-10 09:39+0200\n"
+"PO-Revision-Date: 2020-08-10 09:43+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -380,9 +380,8 @@ msgid "&Solve..."
 msgstr "Gleichung lö&sen ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:947
-#, fuzzy
 msgid "&Time Display"
-msgstr "&Zeitanzeige ein/aus"
+msgstr "&Zeitanzeige"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1043
 msgid "&Transpose Matrix"
@@ -795,7 +794,6 @@ msgid "Anchors file has no top node."
 msgstr "Die Datei mit den Handbuch-Ankern hat keinen obersten XML-Knoten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1288
-#, fuzzy
 msgid "Animation autoplay"
 msgstr "Automatisches Abspielen von Animationen"
 
@@ -973,9 +971,8 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1450
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1708
-#, fuzzy
 msgid "Automatically send known answers"
-msgstr "Automatisches Antworten auf Fragen"
+msgstr "Automatisches Senden bekannter Antworten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5536
 #, c-format
@@ -1456,7 +1453,6 @@ msgid "Classes:"
 msgstr "Klassen:"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:91
-#, fuzzy
 msgid "Clear all history"
 msgstr "&Speicher löschen"
 
@@ -4385,7 +4381,7 @@ msgid "Length"
 msgstr "Länge"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1559
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5239,9 +5235,8 @@ msgstr "Nie"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1453
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1711
-#, fuzzy
 msgid "Never offer known answers"
-msgstr "Biete bekannte Antworten an"
+msgstr "Biete keine bekannten Antworten an"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:162
 msgid "New"
@@ -5427,9 +5422,8 @@ msgid "Numbers"
 msgstr "Zahlen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1297
-#, fuzzy
 msgid "Numeric output"
-msgstr "Numerische Ausgabe ein/aus"
+msgstr "Numerische Ausgabe"
 
 #: /home/gunter/src/wxmaxima/src/LicenseDialog.cpp:73
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:43
@@ -5843,9 +5837,8 @@ msgid "Prefer user labels"
 msgstr "Ziehe benutzerdefinierte Marken vor"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:314
-#, fuzzy
 msgid "Preferences"
-msgstr "Der \"Einstellungen\"-Knopf"
+msgstr "\"Einstellungen\""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:631
 msgid "Preferences button"
@@ -5886,7 +5879,6 @@ msgid "Print document"
 msgstr "Dokument drucken"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1319
-#, fuzzy
 msgid "Print floating-point numbers with exponents dividable by 3"
 msgstr "Gebe Fließkommazahlen mit durch 3 teilbaren Exponenten aus"
 
@@ -6034,24 +6026,20 @@ msgid "Refusing to send cell to maxima: "
 msgstr "Weigere mich, die Zelle an Maxima zu senden: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:700
-#, fuzzy
 msgid "Reload all GUI settings from disc"
-msgstr "Rücksetzen aller GUI-Einstellungen"
+msgstr "Neuladen aller GUI-Einstellungen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:709
-#, fuzzy
 msgid "Reload the style settings from disc"
-msgstr "Rücksetzen aller GUI-Einstellungen"
+msgstr "Neuladen aller GUI-Einstellungen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1560
-#, fuzzy
 msgid "Reloading the configuration from disc"
-msgstr "Lade die Konfiguration von %s."
+msgstr "Lade die Konfiguration von der Festplatte."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1569
-#, fuzzy
 msgid "Reloading the styles from disc"
-msgstr "Lade die Konfiguration von %s."
+msgstr "Lade die Konfiguration von der Festplatte."
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:191
 msgid "Remove"
@@ -6107,15 +6095,13 @@ msgid "Reset all GUI settings"
 msgstr "Rücksetzen aller GUI-Einstellungen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:691
-#, fuzzy
 msgid "Reset the Style settings"
-msgstr "Rücksetzen aller GUI-Einstellungen"
+msgstr "Rücksetzen aller Stil-Einstellungen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1541
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1551
-#, fuzzy
 msgid "Resetting all configuration settings"
-msgstr "(Ausdruck länger als im Konfigurations-Dialog erlaubt)"
+msgstr "Setze alle Konfigurations-Einstellungen zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:924
 msgid "Restart Maxima"
@@ -6746,9 +6732,8 @@ msgid "Show an example of usage"
 msgstr "Zeige ein Anwendungsbeispiel"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:95
-#, fuzzy
 msgid "Show commands from current session only"
-msgstr "Exportiere die Befehle der aktuellen Maxima-Session als .mac-File"
+msgstr "Zeige nur Befehle aus dem aktuellen Durchlauf"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1344
 msgid "Show commands similar to"
@@ -8351,7 +8336,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Wir können sie in andere Gleichungen hineinsubstituieren:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1573
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
