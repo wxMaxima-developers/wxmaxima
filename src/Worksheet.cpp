@@ -775,7 +775,7 @@ GroupCell *Worksheet::UpdateMLast()
 {
   m_last = GetTree();
   if (m_last)
-    m_last = dynamic_cast<GroupCell*>(m_last->last());
+    m_last = m_last->last();
   if (m_last)
     m_configuration->AdjustWorksheetSize(true);
   return m_last;
@@ -7118,9 +7118,7 @@ void Worksheet::PasteFromClipboard()
         cells = true;
 
         // Search for the last cell we want to paste
-        GroupCell *end = contents;
-        while (end->m_next)
-          end = end->GetNext();
+        GroupCell *end = contents->last();
 
         // Now paste the cells
         if (!GetTree())
