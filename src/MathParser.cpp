@@ -574,24 +574,26 @@ Cell *MathParser::ParseEditorTag(wxXmlNode *node)
 
 Cell *MathParser::ParseFracTag(wxXmlNode *node)
 {
-  FracCell *frac = new FracCell(NULL, m_configuration);
-  frac->SetFracStyle(m_FracStyle);
-  frac->SetHighlight(m_highlight);
+  auto fracStyle = m_FracStyle;
+  auto highlight = m_highlight;
+
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  frac->SetNum(HandleNullPointer(ParseTag(child, false)));
+  auto num = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
-  frac->SetDenom(HandleNullPointer(ParseTag(child, false)));
+  auto denom = HandleNullPointer(ParseTag(child, false));
   
+  auto frac = std::make_unique<FracCell>(nullptr, m_configuration, std::move(num), std::move(denom));
+  frac->SetFracStyle(fracStyle);
+  frac->SetHighlight(highlight);
   if (node->GetAttribute(wxT("line")) == wxT("no"))
     frac->SetFracStyle(FracCell::FC_CHOOSE);
   if (node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
     frac->SetFracStyle(FracCell::FC_DIFF);
   frac->SetType(m_ParserStyle);
-  frac->SetStyle(TS_VARIABLE);
   frac->SetupBreakUps();
   ParseCommonAttrs(node, frac);
-  return frac;
+  return frac.release();
 }
 
 Cell *MathParser::ParseDiffTag(wxXmlNode *node)

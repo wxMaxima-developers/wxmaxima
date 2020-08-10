@@ -43,7 +43,8 @@
 class FracCell final : public Cell
 {
 public:
-  FracCell(GroupCell *parent, Configuration **config);
+  FracCell(GroupCell *parent, Configuration **config,
+           std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom);
   FracCell(const FracCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -63,11 +64,6 @@ public:
   void Draw(wxPoint point) override;
 
   void SetFracStyle(FracType style) { m_fracStyle = style; }
-
-  //! Set the numerator for the fraction
-  void SetNum(std::unique_ptr<Cell> &&num);
-  //! Set the denominator of the fraction
-  void SetDenom(std::unique_ptr<Cell> &&denom);
 
   //! Answers the question if this is an operator by returning "true".
   bool IsOperator() const override { return true; }
@@ -90,6 +86,10 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  //! Makes the division sign cell, used in linear form - whether when broken
+  //! into lines, or when the exponent flag is set.
+  void MakeDivideCell();
+
   //! The numerator
   Cell *Num() const { return m_numParenthesis->GetInner(); }
   //! The denominator
@@ -102,13 +102,13 @@ private:
   //! A parenthesis around the denominator, owns the denominaotr
   std::unique_ptr<ParenCell> const m_denomParenthesis;
   //! The owner of the "/" sign
-  const std::unique_ptr<Cell> m_divideOwner;
+  std::unique_ptr<TextCell> m_divideOwner;
 
   // The pointers below point to inner cells and must be kept contiguous.
   // ** All pointers must be the same: either Cell * [const] or std::unique_ptr<Cell>.
   // ** NO OTHER TYPES are allowed.
   //! The "/" sign
-  Cell* const m_divide = m_divideOwner.get();
+  Cell* m_divide = {};
   //! The displayed version of the numerator, if needed with parenthesis
   Cell* m_displayedNum = {};
   //! The displayed version of the denominator, if needed with parenthesis
@@ -140,10 +140,10 @@ private:
   void InitBitFields()
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
-    m_exponent = false;
+    m_inExponent = false;
   }
   //! Fractions in exponents are shown in their linear form.
-  bool m_exponent : 1 /* InitBitFields */;
+  bool m_inExponent : 1 /* InitBitFields */;
 };
 
 #endif // FRACCELL_H
