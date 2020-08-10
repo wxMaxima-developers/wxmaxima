@@ -624,29 +624,27 @@ Cell *MathParser::ParseDiffTag(wxXmlNode *node)
 
 Cell *MathParser::ParseSupTag(wxXmlNode *node)
 {
-  ExptCell *expt = new ExptCell(NULL, m_configuration);
-  if (node->GetAttributes() != NULL)
-    expt->IsMatrix(true);
+  bool matrix = (node->GetAttributes() != NULL);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
   auto base = HandleNullPointer(ParseTag(child, false));
   auto baseText = base->ToString();
-  expt->SetBase(std::move(base));
   child = GetNextTag(child);
 
   auto power = HandleNullPointer(ParseTag(child, false));
   power->SetExponentFlag();
   auto powerText = power->ToString();
-  expt->SetPower(std::move(power));
+
+  auto expt = std::make_unique<ExptCell>(nullptr, m_configuration, std::move(base), std::move(power));
+  expt->IsMatrix(matrix);
   expt->SetType(m_ParserStyle);
-  expt->SetStyle(TS_VARIABLE);
 
   ParseCommonAttrs(node, expt);
   if(node->GetAttribute(wxT("mat"), wxT("false")) == wxT("true"))
     expt->SetAltCopyText(baseText + wxT("^^") + powerText);
 
-  return expt;
+  return expt.release();
 }
 
 Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
