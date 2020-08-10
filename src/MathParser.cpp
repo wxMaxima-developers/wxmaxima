@@ -904,13 +904,13 @@ Cell *MathParser::ParseAbsTag(wxXmlNode *node)
 {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  AbsCell *cell = new AbsCell(NULL, m_configuration);
-  cell->SetInner(HandleNullPointer(ParseTag(child, true)));
+  auto inner = HandleNullPointer(ParseTag(child, true));
+
+  auto cell = std::make_unique<AbsCell>(nullptr, m_configuration, std::move(inner));
   cell->SetType(m_ParserStyle);
-  cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
   ParseCommonAttrs(node, cell);
-  return cell;
+  return cell.release();
 }
 
 Cell *MathParser::ParseConjugateTag(wxXmlNode *node)

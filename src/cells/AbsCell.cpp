@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,40 +28,36 @@
   <code>abs()</code> and <code>cabs()</code> commands.
 */
 
-
 #include "AbsCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
+#include "TextCell.h"
 
-AbsCell::AbsCell(GroupCell *parent, Configuration **config) :
+AbsCell::AbsCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
     Cell(parent, config),
-    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_open(std::make_unique<TextCell>(parent, config, wxT("abs("))),
-    m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
+    m_innerCell(std::move(inner))
 {
   InitBitFields();
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
-  m_open->SetStyle(TS_FUNCTION);
+  SetStyle(TS_VARIABLE);
 }
 
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=AbsCell::m_close
-AbsCell::AbsCell(const AbsCell &cell):
-  AbsCell(cell.m_group, cell.m_configuration)
+AbsCell::AbsCell(const AbsCell &cell) :
+  AbsCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  if(cell.m_innerCell)
-    SetInner(cell.m_innerCell->CopyList());
 }
 
 DEFINE_CELL(AbsCell)
 
-void AbsCell::SetInner(std::unique_ptr<Cell> &&inner)
+void AbsCell::MakeBreakupCells()
 {
-  if (!inner)
-    return;
-  m_innerCell = std::move(inner);
+  if (m_open) return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("abs("));
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  m_open->SetStyle(TS_FUNCTION);
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
 }
 
 void AbsCell::Recalculate(AFontSize fontsize)
@@ -69,19 +66,17 @@ void AbsCell::Recalculate(AFontSize fontsize)
     return;
 
   m_innerCell->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
-  if(m_isBrokenIntoLines)
+  if (m_isBrokenIntoLines)
   {
     m_width = 0;
     m_height = 0;
     m_center = 0;
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
   }
   else
   {
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8) + 2 * (*m_configuration)->GetDefaultLineWidth();
-    m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
-    m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
     m_height = m_innerCell->GetHeightList() + Scale_Px(4);
     m_center = m_innerCell->GetCenterList() + Scale_Px(2);
   }
@@ -164,6 +159,7 @@ bool AbsCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakupCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
