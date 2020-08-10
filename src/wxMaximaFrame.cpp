@@ -944,9 +944,8 @@ void wxMaximaFrame::SetupMenu()
                        _("Delete a variable"), wxITEM_NORMAL);
 
   m_MaximaMenu->AppendSeparator();
-  m_MaximaMenu->Append(menu_time, _("Toggle &Time Display"),
-                       _("Display time used for evaluation"),
-                       wxITEM_NORMAL);
+  m_MaximaMenu->AppendCheckItem(menu_time, _("&Time Display"),
+                       _("Display time used for evaluation"));
   m_MaximaMenu->Append(menu_display, _("Change &2d Display"),
                        _("Change the 2d display algorithm used to display math output"),
                        wxITEM_NORMAL);
@@ -1286,8 +1285,8 @@ void wxMaximaFrame::SetupMenu()
   m_PlotMenu->Append(menu_plot_format, _("Plot &Format..."),
                      _("Set plot format"), wxITEM_NORMAL);
   m_PlotMenu->AppendSeparator();
-  m_PlotMenu->Append(menu_animationautostart, _("Toggle animation autoplay"),
-                     _("Defines if an animation is automatically started or only by clicking on it."), wxITEM_NORMAL);
+  m_PlotMenu->AppendCheckItem(menu_animationautostart, _("Animation autoplay"),
+                     _("Defines if an animation is automatically started or only by clicking on it."));
   m_PlotMenu->Append(menu_animationframerate, _("Animation framerate..."),
                      _("Set the frame rate for animations."));
   m_MenuBar->Append(m_PlotMenu, _("&Plot"));
@@ -1296,6 +1295,9 @@ void wxMaximaFrame::SetupMenu()
   m_NumericMenu = new wxMenu;
   m_NumericMenu->AppendCheckItem(menu_num_out, _("&Numeric Output"),
                                  _("Numeric output"));
+  m_NumericMenu->AppendCheckItem(menu_num_domain, _("Expect numbers harder to be complex"),
+                                 _("Expect variables to contain complex numbers"));
+  m_NumericMenu->Check(menu_num_domain, false);
   m_NumericMenu->Append(menu_to_float, _("To &Float"),
                         _("Calculate float value of the last result"),
                         wxITEM_NORMAL);
@@ -1313,9 +1315,8 @@ void wxMaximaFrame::SetupMenu()
                         _("Shows how many digits of a numbers are displayed"),
                         wxITEM_NORMAL);
   m_NumericMenu->AppendSeparator();
-  m_NumericMenu->Append(menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
-                        _("Print floating-point numbers with exponents dividable by 2"),
-                        wxITEM_NORMAL);
+  m_NumericMenu->AppendCheckItem(menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
+                        _("Print floating-point numbers with exponents dividable by 3"));
   m_NumericMenu->Append(menu_engineeringFormatSetup, _("Setup the engineering format..."),
                         _("Fine-tune the display of engineering-format numbers"),
                         wxITEM_NORMAL);

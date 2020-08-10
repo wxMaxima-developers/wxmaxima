@@ -228,6 +228,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("wxsubscripts")] = &wxMaxima::VariableActionWxSubscripts;
     m_variableReadActions[wxT("lmxchar")] = &wxMaxima::VariableActionLmxChar;
     m_variableReadActions[wxT("numer")] = &wxMaxima::VariableActionNumer;
+    m_variableReadActions[wxT("domain")] = &wxMaxima::VariableActionDomain;
+    m_variableReadActions[wxT("wxanimate_autoplay")] = &wxMaxima::VariableActionAutoplay;
+    m_variableReadActions[wxT("showtime")] = &wxMaxima::VariableActionShowtime;
+    m_variableReadActions[wxT("engineering_format_floats")] = &wxMaxima::VariableActionEngineeringFormat;
     m_variableReadActions[wxT("display2d")] = &wxMaxima::VariableActionDisplay2D;
     m_variableReadActions[wxT("*alt-display2d*")] = &wxMaxima::VariableActionAltDisplay2D;
   }
@@ -521,6 +525,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_demoivre, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_num_out, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(menu_num_domain, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_to_float, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
@@ -2789,13 +2795,68 @@ void wxMaxima::VariableActionLmxChar(const wxString &value)
 }
 void wxMaxima::VariableActionNumer(const wxString &value)
 {
-  if(m_maximaVariable_numer != value)
+  if(value == wxT("true"))
   {
-    m_maximaVariable_numer = value;
-    if(value == wxT("true"))
+    if(!m_NumericMenu->IsChecked(menu_num_out))
       m_NumericMenu->Check(menu_num_out, true);
-    else
+  }
+  else
+  {
+    if(m_NumericMenu->IsChecked(menu_num_out))
       m_NumericMenu->Check(menu_num_out, false);
+  }
+}
+void wxMaxima::VariableActionShowtime(const wxString &value)
+{
+  if(value == wxT("false"))
+  {
+    if(m_MaximaMenu->IsChecked(menu_time))
+      m_MaximaMenu->Check(menu_time, false);
+  }
+  else
+  {
+    if(!m_MaximaMenu->IsChecked(menu_time))
+      m_MaximaMenu->Check(menu_time, true);
+  }
+}
+void wxMaxima::VariableActionEngineeringFormat(const wxString &value)
+{
+  m_maximaVariable_engineeringFormat = value;
+  if(value == wxT("true"))
+  {
+    if(!m_NumericMenu->IsChecked(menu_engineeringFormat))
+      m_NumericMenu->Check(menu_engineeringFormat, true);
+  }
+  else
+  {
+    if(m_NumericMenu->IsChecked(menu_engineeringFormat))
+      m_NumericMenu->Check(menu_engineeringFormat, false);
+  }
+}
+void wxMaxima::VariableActionAutoplay(const wxString &value)
+{
+  if(value == wxT("true"))
+  {
+    if(!m_PlotMenu->IsChecked(menu_animationautostart))
+      m_PlotMenu->Check(menu_animationautostart, true);
+  }
+  else
+  {
+    if(m_PlotMenu->IsChecked(menu_animationautostart))
+      m_PlotMenu->Check(menu_animationautostart, false);
+  }
+}
+void wxMaxima::VariableActionDomain(const wxString &value)
+{
+  if(value == wxT("complex"))
+  {
+    if(!m_NumericMenu->IsChecked(menu_num_domain))
+      m_NumericMenu->Check(menu_num_domain, true);
+  }
+  else
+  {
+    if(m_NumericMenu->IsChecked(menu_num_domain))
+      m_NumericMenu->Check(menu_num_domain, false);
   }
 }
 void wxMaxima::VariableActionDisplay2D(const wxString &value)
@@ -6208,7 +6269,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_time:
-      cmd = wxT("if showtime#false then showtime:false else showtime:all$");
+      if(m_MaximaMenu->IsChecked(menu_time))
+        cmd = wxT("showtime:all$");
+      else
+        cmd = wxT("showtime:false$");
       MenuCommand(cmd);
       break;
     case menu_fun_def:
@@ -7874,7 +7938,10 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
     }
       break;
     case menu_animationautostart:
-      MenuCommand(wxT("if wxanimate_autoplay#false then wxanimate_autoplay:false else wxanimate_autoplay:true;"));
+      if(m_PlotMenu->IsChecked(menu_animationautostart))
+        MenuCommand(wxT("wxanimate_autoplay:true$"));
+      else
+        MenuCommand(wxT("wxanimate_autoplay:false$"));
       break;
     case menu_animationframerate:
     {
@@ -7937,6 +8004,13 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   wxString cmd;
   switch (event.GetId())
   {
+    case menu_num_domain:
+      if(m_NumericMenu->IsChecked(menu_num_domain))
+        cmd = wxT("domain:'complex$");
+      else
+        cmd = wxT("domain:'real$");
+      MenuCommand(cmd);
+      break;
     case menu_to_float:
       cmd = wxT("float(") + expr + wxT("), numer;");
       MenuCommand(cmd);
@@ -7950,7 +8024,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_num_out:
-      if(m_NumericMenu->IsChecked(menu_num_out))
+      if(!m_NumericMenu->IsChecked(menu_num_out))
         cmd = wxT("numer:false$");
       else
         cmd = wxT("numer:true$");
@@ -7977,7 +8051,13 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       }
       break;
   case menu_engineeringFormat:
-    MenuCommand(wxT("load(\"engineering-format\")$"));
+    if((m_maximaVariable_engineeringFormat != wxT("true")) &&
+       (m_maximaVariable_engineeringFormat != wxT("false")))
+      MenuCommand(wxT("load(\"engineering-format\")$"));
+    if (m_maximaVariable_engineeringFormat == wxT("true"))
+      MenuCommand(wxT("engineering_format_floats:false$"));
+    if (m_maximaVariable_engineeringFormat == wxT("false"))
+      MenuCommand(wxT("engineering_format_floats:true$"));
     break;
   case menu_engineeringFormatSetup:
   {
