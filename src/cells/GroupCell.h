@@ -205,9 +205,8 @@ public:
 
   //! Get the previous GroupCell in the list
   GroupCell *GetPrevious() const { return m_previous.CastAs<GroupCell*>(); }
-
   //! Get the next GroupCell in the list.
-  GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(Cell::GetNext()); }
+  GroupCell *GetNext() const { return dynamic_cast<GroupCell *>(Cell::GetNext()); }
 
   static wxString TexEscapeOutputCell(wxString Input);
 

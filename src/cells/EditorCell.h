@@ -72,7 +72,10 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  EditorCell *GetNext() const override { return dynamic_cast<EditorCell*>(Cell::GetNext()); }
+  //! Get the previous EditorCell in the list
+  EditorCell *GetPrevious() const { return m_previous.CastAs<EditorCell*>(); }
+  //! Get the next EditorCell in the list.
+  EditorCell *GetNext() const { return dynamic_cast<EditorCell*>(Cell::GetNext()); }
 
   //! Insert the symbol that corresponds to the ESC command txt
   void InsertEscCommand(const wxString &txt) {
