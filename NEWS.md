@@ -12,6 +12,7 @@
  * Subscripts created by derivabbrev are now correctly copied as "diff" command
  * If Maxima comes without suitable manual we now use the online one instead
  * Added buttons that reset the configuration
+ * A few menu items now are checkboxes set and cleared by maxima
  * wxMaxima forgot to release the communication port it used for talking to maxima
  * Many additional bug fixes
 
