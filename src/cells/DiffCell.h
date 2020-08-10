@@ -33,8 +33,7 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_baseCell); }
-  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_diffCell); }
+  InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_diffCell}; }
 
   void SetBase(std::unique_ptr<Cell> &&base);
   void SetDiff(std::unique_ptr<Cell> &&diff);

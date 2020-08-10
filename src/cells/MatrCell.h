@@ -36,9 +36,10 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override
-  { return m_cells.empty() ? InnerCellIterator{} : InnerCellIterator(&m_cells.front()); }
-  InnerCellIterator InnerEnd() const override
-  { return m_cells.empty() ? InnerCellIterator{} : ++InnerCellIterator(&m_cells.back()); }
+  {
+    if (m_cells.empty()) return {};
+    return {&m_cells.front(), &m_cells.back()};
+  }
 
   void Recalculate(AFontSize fontsize) override;
 

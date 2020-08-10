@@ -253,15 +253,12 @@ void GroupCell::ResetInputLabel()
 
 void GroupCell::ResetInputLabelList()
 {
-  GroupCell *tmp = this;
-  while (tmp)
+  for (auto &tmp : OnList(this))
   {
-    tmp->ResetInputLabel();
+    tmp.ResetInputLabel();
     // also reset input labels in the folded cells
-    if (tmp->IsFoldable() && (tmp->m_hiddenTree))
-      tmp->m_hiddenTree->ResetInputLabelList();
-
-    tmp = tmp->GetNext();
+    if (tmp.IsFoldable() && (tmp.m_hiddenTree))
+      tmp.m_hiddenTree->ResetInputLabelList();
   }
 }
 
@@ -581,51 +578,45 @@ void GroupCell::RecalculateHeightOutput()
   }
   m_output->HardLineBreak();
 
-  Cell *tmp = m_output.get();
   m_mathFontSize = configuration->GetMathFontSize(); //-V519
   
   // Recalculate widths of cells
-  while (tmp != NULL)
+  for (Cell &tmp : OnList(m_output.get()))
   {
-    tmp->Recalculate(tmp->IsMath() ?
-                           (*m_configuration)->GetMathFontSize() :
-                           (*m_configuration)->GetDefaultFontSize());
-    tmp = tmp->m_next;
+    tmp.Recalculate(tmp.IsMath() ?
+                        (*m_configuration)->GetMathFontSize() :
+                        (*m_configuration)->GetDefaultFontSize());
   }
   
   // Breakup cells and break lines
   BreakLines();
   
   // Recalculate size of cells
-  // tmp = m_output.get();
-  // while (tmp != NULL)
+  // for (Cell &tmp : OnList(m_output.get()))
   // {
-  //   tmp->RecalculateHeight(tmp->IsMath() ?
-  //                          (*m_configuration)->GetMathFontSize() :
-  //                          (*m_configuration)->GetDefaultFontSize());
-  //   tmp = tmp->m_next;
+  //   tmp.RecalculateHeight(tmp.IsMath() ?
+  //                             (*m_configuration)->GetMathFontSize() :
+  //                             (*m_configuration)->GetDefaultFontSize());
   // }
 
   // Update heights
-  tmp = m_output.get();
-  tmp->ForceBreakLine(true);
-  while (tmp != NULL)
+  m_output->ForceBreakLine(true);
+  for (Cell &tmp : OnDrawList(m_output.get()))
   {
-    if (tmp->BreakLineHere())
+    if (tmp.BreakLineHere())
     {
-      int height_Delta = tmp->GetHeightList();
-      m_width = wxMax(m_width, tmp->GetLineWidth());
+      int height_Delta = tmp.GetHeightList();
+      m_width = wxMax(m_width, tmp.GetLineWidth());
       m_outputRect.width = wxMax(m_outputRect.width, m_width);
       m_outputRect.height += height_Delta;
       
-      if (tmp->m_previous &&
-          ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
+      if (tmp.m_previous &&
+          ((tmp.GetStyle() == TS_LABEL) || (tmp.GetStyle() == TS_USERLABEL)))
         m_outputRect.height += configuration->GetInterEquationSkip();
 
-      if (tmp->HasBigSkip())
+      if (tmp.HasBigSkip())
         m_outputRect.height += MC_LINE_SKIP;
     }
-    tmp = tmp->GetNextToDraw();
   }
 
   m_height = m_outputRect.GetHeight() + m_inputHeight;
@@ -1448,12 +1439,10 @@ wxString GroupCell::ToXML() const
       break;
     default:
     {
-      Cell *tmp = output;
-      while (tmp != NULL)
-      {
-        str += tmp->ListToXML();
-        tmp = tmp->m_next;
-      }
+      for (const Cell &tmp : OnList(output))
+        // cppcheck-suppress useStlAlgorithm
+        str += tmp.ListToXML();
+
       break;
     }
   }
@@ -1599,14 +1588,14 @@ const wxString &GroupCell::GetToolTip(const wxPoint point) const
   if (m_isHidden)
     return *retval;
   
-  for (auto *tmp = m_output.get(); tmp; tmp = tmp->GetNext())
+  for (auto &tmp : OnList(m_output.get()))
   {
     // If a cell contains a cell containing a tooltip, the tooltip of the
     // containing cell will be overridden.
     // TODO: Why do we keep iterating? Is there a reason to return the
     // tooltip of the last cell with a tooltip, instead of the first one?
 
-    auto &toolTip = tmp->GetToolTip(point);
+    auto &toolTip = tmp.GetToolTip(point);
     if (!toolTip.empty())
       retval = &toolTip;
   }
@@ -1841,12 +1830,10 @@ bool GroupCell::HideTree(GroupCell *tree)
   m_hiddenTree->SetHiddenTreeParent(this);
 
   // Clear cached images from cells that are hidden
-  GroupCell *tmp = m_hiddenTree;
-  while (tmp)
+  for (auto &tmp : OnList(m_hiddenTree))
   {
-    if (tmp->GetLabel())
-      tmp->GetLabel()->ClearCacheList();
-    tmp = tmp->GetNext();
+    if (tmp.GetLabel())
+      tmp.GetLabel()->ClearCacheList();
   }
 
   return true;
@@ -1881,12 +1868,8 @@ bool GroupCell::RevealHidden()
  */
 void GroupCell::SetHiddenTreeParent(GroupCell *parent)
 {
-  GroupCell *cell = this;
-  while (cell)
-  {
-    cell->m_hiddenTreeParent = parent;
-    cell = cell->GetNext();
-  }
+  for (auto &cell : OnList(this))
+    cell.m_hiddenTreeParent = parent;
 }
 
 GroupCell *GroupCell::Fold()
@@ -1970,19 +1953,15 @@ GroupCell *GroupCell::Unfold()
 GroupCell *GroupCell::FoldAll()
 {
   GroupCell *result = NULL;
-
-  GroupCell *tmp = this;
-
-  while (tmp != NULL)
+  for (auto &tmp : OnList(this))
   {
-    if (tmp->IsFoldable() && !tmp->m_hiddenTree)
+    if (tmp.IsFoldable() && !tmp.m_hiddenTree)
     {
-      tmp->Fold();
-      result = tmp;
+      tmp.Fold();
+      result = &tmp;
     }
-    if (tmp->m_hiddenTree != NULL)
-      tmp->m_hiddenTree->FoldAll();
-    tmp = tmp->GetNext();
+    if (tmp.m_hiddenTree != NULL)
+      tmp.m_hiddenTree->FoldAll();
   }
   return result;
 }
@@ -1992,19 +1971,15 @@ GroupCell *GroupCell::FoldAll()
 GroupCell *GroupCell::UnfoldAll()
 {
   GroupCell *result = NULL;
-
-  GroupCell *tmp = this;
-
-  while (tmp != NULL)
+  for (auto &tmp : OnList(this))
   {
-    if (tmp->IsFoldable() && (tmp->m_hiddenTree != NULL))
+    if (tmp.IsFoldable() && (tmp.m_hiddenTree != NULL))
     {
-      tmp->Unfold();
-      result = tmp;
+      tmp.Unfold();
+      result = &tmp;
     }
-    if (tmp->m_hiddenTree != NULL)
-      tmp->m_hiddenTree->UnfoldAll();
-    tmp = tmp->GetNext();
+    if (tmp.m_hiddenTree != NULL)
+      tmp.m_hiddenTree->UnfoldAll();
   }
   return result;
 }
@@ -2043,9 +2018,9 @@ bool GroupCell::IsLesserGCType(int comparedTo) const
 
 void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image) const
 {
-  for (const auto *tmp = this; tmp; tmp = tmp->GetNext())
+  for (auto const &tmp : OnList(this))
   {
-    switch (tmp->m_groupType)
+    switch (tmp.m_groupType)
     {
       case GC_TYPE_TITLE:
         section = subsection = subsubsection = heading5 = heading6 = 0;
@@ -2056,8 +2031,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
         {
           wxString num = wxT("  ");
           num << section << wxT(" ");
-          tmp->m_inputLabel->SetValue(num);
-          tmp->m_inputLabel->SetStyle(TS_SECTION);
+          tmp.m_inputLabel->SetValue(num);
+          tmp.m_inputLabel->SetStyle(TS_SECTION);
         }
         break;
       case GC_TYPE_SUBSECTION:
@@ -2066,8 +2041,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
         {
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(" ");
-          tmp->m_inputLabel->SetValue(num);
-          tmp->m_inputLabel->SetStyle(TS_SUBSECTION);
+          tmp.m_inputLabel->SetValue(num);
+          tmp.m_inputLabel->SetStyle(TS_SUBSECTION);
         }
         break;
       case GC_TYPE_SUBSUBSECTION:
@@ -2076,8 +2051,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
         {
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
-          tmp->m_inputLabel->SetValue(num);
-          tmp->m_inputLabel->SetStyle(TS_SUBSUBSECTION);
+          tmp.m_inputLabel->SetValue(num);
+          tmp.m_inputLabel->SetStyle(TS_SUBSUBSECTION);
         }
         break;
       case GC_TYPE_HEADING5:
@@ -2087,8 +2062,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(".")
               << heading5 << wxT(" ");
-          tmp->m_inputLabel->SetValue(num);
-          tmp->m_inputLabel->SetStyle(TS_HEADING5);
+          tmp.m_inputLabel->SetValue(num);
+          tmp.m_inputLabel->SetStyle(TS_HEADING5);
         }
         break;
       case GC_TYPE_HEADING6:
@@ -2097,23 +2072,23 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(".")
               << heading5 << wxT(".") << heading6 << wxT(" ");
-          tmp->m_inputLabel->SetValue(num);
-          tmp->m_inputLabel->SetStyle(TS_HEADING6);
+          tmp.m_inputLabel->SetValue(num);
+          tmp.m_inputLabel->SetStyle(TS_HEADING6);
         }
         break;
       case GC_TYPE_IMAGE:
         image++;
         {
           wxString num = wxString::Format(_("Figure %d:"), image);
-          tmp->m_inputLabel->SetValue(num);
+          tmp.m_inputLabel->SetValue(num);
         }
         break;
       default:
         break;
     }
 
-    if (IsFoldable() && tmp->m_hiddenTree)
-      tmp->m_hiddenTree->Number(section, subsection, subsubsection, heading5, heading6, image);
+    if (IsFoldable() && tmp.m_hiddenTree)
+      tmp.m_hiddenTree->Number(section, subsection, subsubsection, heading5, heading6, image);
   }
 }
 
@@ -2124,24 +2099,18 @@ bool GroupCell::IsMainInput(Cell *active) const
 
 bool GroupCell::Contains(GroupCell *cell) const
 {
-  const GroupCell *tmp = this;
-
-  // Iterate through all cells
-  while (tmp != NULL)
+  for (auto const &tmp : OnList(this))
   {
     // If this is the cell we search for we can end the search.
-    if (tmp == cell)
+    if (&tmp == cell)
       return true;
 
     // If this cell contains a hidden tree we have to search that at well.
-    if ((tmp->IsFoldable()) && (tmp->GetHiddenTree()) != NULL)
+    if ((tmp.IsFoldable()) && (tmp.GetHiddenTree()) != NULL)
     {
-      if (tmp->GetHiddenTree()->Contains(cell))
+      if (tmp.GetHiddenTree()->Contains(cell))
         return true;
     }
-
-    // Step to the next cell.
-    tmp = tmp->GetNext();
   }
 
   return false;

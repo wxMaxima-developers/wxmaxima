@@ -6141,13 +6141,13 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if(m_worksheet->GetSelectionEnd() != NULL)
         end = m_worksheet->GetSelectionEnd()->GetGroup();
       bool marked = !cell->GetSuppressTooltipMarker();
-      while(cell != NULL)
-        {
-          cell->SetSuppressTooltipMarker(marked);
-          if(cell == end)
-            break;
-          cell = dynamic_cast<GroupCell *>(cell->m_next);
-        }
+
+      for (auto &tmp : OnList(cell))
+      {
+        tmp.SetSuppressTooltipMarker(marked);
+        if(&tmp == end)
+          break;
+      }
       m_worksheet->OutputChanged();
       break;
     }

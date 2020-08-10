@@ -188,16 +188,13 @@ static wxString &TreeToWXM(wxString &retval, GroupCell *cell, bool wxm)
   }
 
   // Export eventual hidden trees.
-  GroupCell *tmp = cell->GetHiddenTree();
-  if (tmp)
+  GroupCell *tree = cell->GetHiddenTree();
+  if (tree)
   {
     if (wxm)
       retval << Headers.GetStart(WXM_FOLD) << '\n';
-    while (tmp)
-    {
-      retval << TreeToWXM(retval, tmp, wxm);
-      tmp = tmp->GetNext();
-    }
+    for (auto &tmp : OnList(tree))
+      retval << TreeToWXM(retval, &tmp, wxm);
     if (wxm)
       retval << Headers.GetEnd(WXM_FOLD) << '\n';
   }

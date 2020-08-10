@@ -105,14 +105,19 @@ void SumCell::SetUnder(std::unique_ptr<Cell> &&under)
   //                                          backwards-compatible way for this?)
   //  And the rest contains the lower limit.
   m_var = m_under->Copy();
-  Cell *start = m_under.get();
-  while (start != NULL &&
-         ((start->GetValue() != wxT("in")) && (start->GetValue() != wxT("="))))
-    start = start->GetNext();
-  if(start != NULL)  
-    start = start->GetNext();
-  if(start != NULL)  
-    m_start = start->CopyList();
+
+  bool prevFound = false;
+  for (auto &start : OnList(m_under.get()))
+  {
+    auto const &value = start.GetValue();
+    if (prevFound)
+    {
+      m_start = start.CopyList();
+      break;
+    }
+    prevFound = (value == wxT("in")) || (value == wxT("="));
+  }
+
   ResetSize();
 }
 

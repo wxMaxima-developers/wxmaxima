@@ -53,10 +53,10 @@ const wxString &Cell::GetToolTip(const wxPoint point) const
   if (!ContainsPoint(point))
     return wxm::emptyString;
 
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &cell : OnInner(this))
+    for (const Cell &tmp : OnList(&cell))
     {
-      auto &toolTip = tmp->GetToolTip(point);
+      auto &toolTip = tmp.GetToolTip(point);
       if (!toolTip.empty())
         return toolTip;
     }
@@ -170,12 +170,10 @@ std::unique_ptr<Cell> Cell::CopyList() const
 {
   auto ret = Copy();
   Cell *dest = ret.get();
-  Cell *src = m_next;
 
-  while (src != NULL)
+  for (const Cell &src : OnList(m_next))
   {
-    dest->AppendCell(src->Copy());
-    src = src->m_next;
+    dest->AppendCell(src.Copy());
     dest = dest->m_next;
   }
   return ret;
@@ -183,14 +181,14 @@ std::unique_ptr<Cell> Cell::CopyList() const
 
 void Cell::ClearCacheList()
 {
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->ClearCache();
+  for (Cell &tmp : OnList(this))
+    tmp.ClearCache();
 }
 
 void Cell::SetGroupList(GroupCell *group)
 {
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->SetGroup(group);
+  for (Cell &tmp : OnList(this))
+    tmp.SetGroup(group);
 }
 
 int Cell::CellsInListRecursive() const
@@ -198,16 +196,11 @@ int Cell::CellsInListRecursive() const
   //! The number of cells the current group contains (-1, if no GroupCell)
   int cells = 0;
 
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &tmp : OnList(this))
   {
     ++ cells;
-    for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
-    {
-      if (cell)
-        // I believe with the if(cell) we cannot use std::accumulate here.
-        // cppcheck-suppress useStlAlgorithm
-        cells += cell->CellsInListRecursive();
-    }
+    for (const Cell &cell : OnInner(&tmp))
+      cells += cell.CellsInListRecursive();
   }
   return cells;
 }
@@ -226,19 +219,17 @@ void Cell::SetGroup(GroupCell *group)
   if (group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
   
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    if (cell)
-      cell->SetGroupList(group);
+  for (Cell &cell : OnInner(this))
+    cell.SetGroupList(group);
 }
 
 void Cell::FontsChangedList()
 {
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (Cell &tmp : OnList(this))
   {
-    tmp->FontsChanged();
-    for (auto cell = tmp->InnerBegin(); cell != tmp->InnerEnd(); ++ cell)
-      if (cell)
-        cell->FontsChangedList();
+    tmp.FontsChanged();
+    for (Cell &cell : OnInner(&tmp))
+      cell.FontsChangedList();
   }
 }
 
@@ -294,12 +285,12 @@ int Cell::GetCenterList() const
   {
     m_recalculate_maxCenter = false;
     int maxCenter = 0;
-    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+    for (const Cell &tmp : OnDrawList(this))
     {
-      if ((tmp != this) && (tmp->m_breakLine))
+      if ((&tmp != this) && (tmp.m_breakLine))
         break;
-      if (!tmp->m_isBrokenIntoLines)
-        maxCenter = wxMax(maxCenter, tmp->m_center);
+      if (!tmp.m_isBrokenIntoLines)
+        maxCenter = wxMax(maxCenter, tmp.m_center);
     }
     m_maxCenter = maxCenter;
   }
@@ -312,12 +303,12 @@ int Cell::GetMaxDrop() const
   {
     m_recalculate_maxDrop = false;
     int maxDrop = 0;
-    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+    for (const Cell &tmp : OnDrawList(this))
     {
-      if ((tmp != this) && (tmp->m_breakLine))
+      if ((&tmp != this) && (tmp.m_breakLine))
         break;
-      if (!tmp->m_isBrokenIntoLines)
-        maxDrop = wxMax(maxDrop, tmp->m_height - tmp->m_center);
+      if (!tmp.m_isBrokenIntoLines)
+        maxDrop = wxMax(maxDrop, tmp.m_height - tmp.m_center);
     }
     m_maxDrop = maxDrop;
   }
@@ -340,9 +331,9 @@ int Cell::GetFullWidth() const
     // cell doesn't contain the space that separates two cells - that is automatically added
     // to every cell in the next step.
     int fullWidth = 0;
-    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+    for (const Cell &tmp : OnDrawList(this))
     {
-      fullWidth += tmp->m_width;
+      fullWidth += tmp.m_width;
     }
     m_fullWidth = fullWidth;
   }
@@ -355,13 +346,13 @@ int Cell::GetLineWidth() const
   {
     m_recalculate_lineWidth = false;
     int width = m_width;
-    for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+    for (const Cell &tmp : OnDrawList(this))
     {
-      if (tmp != this)
-        if (tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
+      if (&tmp != this)
+        if (tmp.m_isBrokenIntoLines || tmp.m_breakLine || (tmp.m_type == MC_TYPE_MAIN_PROMPT))
           break;
 
-      width += tmp->m_width;
+      width += tmp.m_width;
     }
     m_lineWidth = width;
   }
@@ -468,26 +459,25 @@ void Cell::SetAltCopyText(const wxString &text)
 
 void Cell::DrawList(wxPoint point)
 {
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+  for (Cell &tmp : OnDrawList(this))
   {
-    tmp->Draw(point);
-    point.x += tmp->m_width;
-    wxASSERT(tmp != tmp->GetNextToDraw()); // ensure draw progress
+    tmp.Draw(point);
+    point.x += tmp.m_width;
+    wxASSERT(&tmp != tmp.GetNextToDraw()); // ensure draw progress
   }
 }
 
 void Cell::RecalculateList(AFontSize fontsize)
 {
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->Recalculate(fontsize);
+  for (Cell &tmp : OnList(this))
+    tmp.Recalculate(fontsize);
 }
 
 void Cell::ResetSizeList()
 {
-  for (Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->ResetSize();
+  for (Cell &tmp : OnList(this))
+    tmp.ResetSize();
 }
-
 
 void Cell::Recalculate(AFontSize fontsize)
 {
@@ -575,8 +565,8 @@ void Cell::DrawBoundingBox(wxDC &dc, bool all)
 
 bool Cell::IsCompound() const
 {
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    if (tmp->IsOperator())
+  for (const Cell &tmp : OnList(this))
+    if (tmp.IsOperator())
       return true;
   return false;
 }
@@ -591,16 +581,16 @@ static const wxString space = wxT(" ");
 wxString Cell::VariablesAndFunctionsList() const
 {
   wxString retval;
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+  for (const Cell &tmp : OnDrawList(this))
   {
     if(
-      (tmp->GetStyle() == TS_LABEL) ||
-      (tmp->GetStyle() == TS_USERLABEL) ||
-      (tmp->GetStyle() == TS_MAIN_PROMPT) ||
-      (tmp->GetStyle() == TS_VARIABLE) ||
-      (tmp->GetStyle() == TS_FUNCTION))
+      (tmp.GetStyle() == TS_LABEL) ||
+      (tmp.GetStyle() == TS_USERLABEL) ||
+      (tmp.GetStyle() == TS_MAIN_PROMPT) ||
+      (tmp.GetStyle() == TS_VARIABLE) ||
+      (tmp.GetStyle() == TS_FUNCTION))
     {
-      retval << tmp->ToString() << space;
+      retval << tmp.ToString() << space;
     }
   }
   return retval;
@@ -611,28 +601,28 @@ wxString Cell::ListToString() const
   wxString retval;
   bool firstline = true;
 
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+  for (const Cell &tmp : OnDrawList(this))
   {
-    if ((!firstline) && (tmp->m_forceBreakLine))
+    if ((!firstline) && (tmp.m_forceBreakLine))
     {
       if(!retval.EndsWith(wxT('\n')))
         retval += wxT("\n");
       // if(
-      //    (tmp->GetStyle() != TS_LABEL) &&
-      //    (tmp->GetStyle() != TS_USERLABEL) &&
-      //    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-      //    (tmp->GetStyle() != TS_OTHER_PROMPT))
+      //    (tmp.GetStyle() != TS_LABEL) &&
+      //    (tmp.GetStyle() != TS_USERLABEL) &&
+      //    (tmp.GetStyle() != TS_MAIN_PROMPT) &&
+      //    (tmp.GetStyle() != TS_OTHER_PROMPT))
       //   retval += wxT("\t");
     }
     // if(firstline)
     // {
-    //   if((tmp->GetStyle() != TS_LABEL) &&
-    //      (tmp->GetStyle() != TS_USERLABEL) &&
-    //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-    //      (tmp->GetStyle() != TS_OTHER_PROMPT))
+    //   if((tmp.GetStyle() != TS_LABEL) &&
+    //      (tmp.GetStyle() != TS_USERLABEL) &&
+    //      (tmp.GetStyle() != TS_MAIN_PROMPT) &&
+    //      (tmp.GetStyle() != TS_OTHER_PROMPT))
     //     retval += wxT("\t");
     // }
-    retval += tmp->ToString();
+    retval += tmp.ToString();
 
     firstline = false;
   }
@@ -649,27 +639,27 @@ wxString Cell::ListToMatlab() const
   wxString retval;
   bool firstline = true;
 
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->GetNextToDraw())
+  for (const Cell &tmp : OnDrawList(this))
   {
-    if ((!firstline) && (tmp->m_forceBreakLine)) {
+    if ((!firstline) && (tmp.m_forceBreakLine)) {
       if (!retval.EndsWith(wxT('\n')))
         retval += wxT("\n");
       // if(
-      //    (tmp->GetStyle() != TS_LABEL) &&
-      //    (tmp->GetStyle() != TS_USERLABEL) &&
-      //    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-      //    (tmp->GetStyle() != TS_OTHER_PROMPT))
+      //    (tmp.GetStyle() != TS_LABEL) &&
+      //    (tmp.GetStyle() != TS_USERLABEL) &&
+      //    (tmp.GetStyle() != TS_MAIN_PROMPT) &&
+      //    (tmp.GetStyle() != TS_OTHER_PROMPT))
       //   retval += wxT("\t");
     }
     // if(firstline)
     // {
-    //   if((tmp->GetStyle() != TS_LABEL) &&
-    //      (tmp->GetStyle() != TS_USERLABEL) &&
-    //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-    //      (tmp->GetStyle() != TS_OTHER_PROMPT))
+    //   if((tmp.GetStyle() != TS_LABEL) &&
+    //      (tmp.GetStyle() != TS_USERLABEL) &&
+    //      (tmp.GetStyle() != TS_MAIN_PROMPT) &&
+    //      (tmp.GetStyle() != TS_OTHER_PROMPT))
     //     retval += wxT("\t");
     // }
-    retval += tmp->ToMatlab();
+    retval += tmp.ToMatlab();
 
     firstline = false;
   }
@@ -685,12 +675,12 @@ wxString Cell::ToTeX() const
 wxString Cell::ListToTeX() const
 {
   wxString retval;
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &tmp : OnList(this))
   {
-    if (((!retval.IsEmpty()) && (tmp->m_textStyle == TS_LABEL)) ||
-        (tmp->BreakLineHere()))
+    if (((!retval.IsEmpty()) && (tmp.m_textStyle == TS_LABEL)) ||
+        (tmp.BreakLineHere()))
       retval += wxT("\\]\\[");
-    retval += tmp->ToTeX();
+    retval += tmp.ToTeX();
   }
   return retval;
 }
@@ -712,9 +702,9 @@ wxString Cell::ListToMathML(bool startofline) const
 
   // If the region to export contains linebreaks or labels we put it into a table.
   bool needsTable = false;
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &tmp : OnList(this))
   {
-    if (tmp->HardLineBreak() || tmp->GetType() == MC_TYPE_LABEL)
+    if (tmp.HardLineBreak() || tmp.GetType() == MC_TYPE_LABEL)
     {
       needsTable = true;
       break;
@@ -726,27 +716,27 @@ wxString Cell::ListToMathML(bool startofline) const
   bool const multiCell = m_next;
 
   // Export all cells
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &tmp : OnList(this))
   {
     // Do we need to end a highlighting region?
-    if ((!tmp->m_highlight) && (highlight))
+    if ((!tmp.m_highlight) && (highlight))
       retval += wxT("</mrow>");
 
     // Handle linebreaks
-    if ((tmp != this) && (tmp->HardLineBreak()))
+    if ((&tmp != this) && (tmp.HardLineBreak()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if ((((tmp->HardLineBreak()) || (startofline && (this == tmp))) &&
-         ((tmp->GetStyle() != TS_LABEL) && (tmp->GetStyle() != TS_USERLABEL))) && (needsTable))
+    if ((((tmp.HardLineBreak()) || (startofline && (this == &tmp))) &&
+         ((tmp.GetStyle() != TS_LABEL) && (tmp.GetStyle() != TS_USERLABEL))) && (needsTable))
       retval += wxT("<mtext></mtext></mtd><mtd>");
 
     // Do we need to start a highlighting region?
-    if ((tmp->m_highlight) && (!highlight))
+    if ((tmp.m_highlight) && (!highlight))
       retval += wxT("<mrow mathcolor=\"red\">");
-    highlight = tmp->m_highlight;
+    highlight = tmp.m_highlight;
 
-    retval += tmp->ToMathML();
+    retval += tmp.ToMathML();
   }
 
   // If the region we converted to MathML ended within a highlighted region
@@ -889,9 +879,9 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
   // If the region to export contains linebreaks or labels we put it into a table.
   // Export all cells
 
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &tmp : OnList(this))
   {
-    wxString token = tmp->ToOMML();
+    wxString token = tmp.ToOMML();
 
     // End exporting the equation if we reached the end of the equation.
     if (token == wxEmptyString)
@@ -900,7 +890,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
     retval += token;
 
     // Hard linebreaks aren't supported by OMML and therefore need a new equation object
-    if (tmp->HardLineBreak())
+    if (tmp.HardLineBreak())
       break;
   }
 
@@ -983,21 +973,21 @@ wxString Cell::ListToXML() const
   bool highlight = false;
   wxString retval;
 
-  for (auto *tmp = this; tmp != NULL; tmp = tmp->m_next)
+  for (const Cell &tmp : OnList(this))
   {
-    if ((tmp->GetHighlight()) && (!highlight))
+    if ((tmp.GetHighlight()) && (!highlight))
     {
       retval += wxT("<hl>\n");
       highlight = true;
     }
 
-    if ((!tmp->GetHighlight()) && (highlight))
+    if ((!tmp.GetHighlight()) && (highlight))
     {
       retval += wxT("</hl>\n");
       highlight = false;
     }
 
-    retval += tmp->ToXML();
+    retval += tmp.ToXML();
   }
 
   if (highlight)
@@ -1065,10 +1055,10 @@ void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *
   *first = nullptr;
   *last = nullptr;
 
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
-      if (tmp->ContainsRect(rect))
-        tmp->SelectRect(rect, first, last);
+  for (Cell &cell : OnInner(this))
+    for (Cell &tmp : OnList(&cell))
+      if (tmp.ContainsRect(rect))
+        tmp.SelectRect(rect, first, last);
 
   if (!*first || !*last)
   {
@@ -1097,9 +1087,9 @@ bool Cell::ContainsRect(const wxRect &sm, bool all) const
 void Cell::ResetData()
 {
   ResetSize();
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
-      tmp->ResetData();
+  for (Cell &cell : OnInner(this))
+    for (Cell &tmp : OnList(&cell))
+      tmp.ResetData();
 }
 
 Cell *Cell::first() const
@@ -1128,11 +1118,11 @@ bool Cell::BreakUp()
   int clientWidth = .8*(*m_configuration)->GetClientWidth() - (*m_configuration)->GetIndent();
   if(clientWidth < 50)
     clientWidth = 50;
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
-      if(tmp->GetWidth() > clientWidth)
+  for (Cell &cell : OnInner(this))
+    for (Cell &tmp : OnList(&cell))
+      if(tmp.GetWidth() > clientWidth)
       {
-        tmp->BreakUp();
+        tmp.BreakUp();
         retval = true;
     }
   return retval;
@@ -1147,15 +1137,15 @@ void Cell::Unbreak()
   SetNextToDraw(m_next);
 
   // Unbreak the inner cells, too
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-    for (Cell *tmp = cell; tmp != NULL; tmp = tmp->m_next)
-      tmp->Unbreak();
+  for (Cell &cell : OnInner(this))
+    for (Cell &tmp : OnList(&cell))
+      tmp.Unbreak();
 }
 
 void Cell::UnbreakList()
 {
-  for(Cell *tmp = this; tmp != NULL; tmp = tmp->m_next)
-    tmp->Unbreak();
+  for (Cell &tmp : OnList(this))
+    tmp.Unbreak();
 }
 
 // cppcheck-suppress functionStatic
@@ -1313,8 +1303,8 @@ wxAccStatus CellAccessible::GetChildCount(int *childCount)
     return wxACC_FAIL;
 
   int count = 0;
-  for (auto cell = m_cell->InnerBegin(); cell != m_cell->InnerEnd(); ++ cell)
-    count += (cell ? 1 : 0);
+  for (Cell &cell : OnInner(m_cell))
+    ++count;
 
   return (*childCount = count), wxACC_OK;
 }
@@ -1343,17 +1333,17 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child)
            wxACC_FAIL;
 
   int id = 0; // Child #0 is this very cell
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
+  for (Cell &cell : OnInner(this))
   {
     // GetChildCount(), GetChild(), and this loop all skip null children - thus
     // the child identifiers present the same via the accessibility API.
-    if (!cell)
-      continue;
+    // This is facilitated by the inner cell iterators not ever returning a null
+    // cell :)
     ++ id; // The first valid inner cell will have id #1, and so on.
 
-    cell->GetLocation(rect, 0);
+    cell.GetLocation(rect, 0);
     if (rect.Contains(pt))
-      return (childId && (*childId = id)), (child && (*child = cell)),
+      return (childId && (*childId = id)), (child && (*child = &cell)),
              wxACC_OK;
   }
   return (childId && (*childId = 0)), (child && (*child = this)), //-V560
@@ -1376,9 +1366,9 @@ wxAccStatus Cell::GetChild(int childId, Cell **child) const
     return (*child = const_cast<Cell*>(this)), wxACC_OK;
 
   if (childId > 0)
-    for (auto cell = InnerBegin(); cell != InnerEnd(); ++ cell)
-      if (cell && (--childId == 0))
-        return (*child = cell), wxACC_OK;
+    for (Cell &cell : OnInner(this))
+      if (--childId == 0)
+        return (*child = &cell), wxACC_OK;
 
   return wxACC_FAIL;
 }
@@ -1393,15 +1383,13 @@ wxAccStatus CellAccessible::GetFocus(int *childId, wxAccessible **child)
 wxAccStatus Cell::GetFocus(int *childId, Cell **child) const
 {
   int id = 0;
-  for (auto cell = InnerBegin(); cell != InnerEnd(); ++cell)
+  for (Cell &cell : OnInner(this))
   {
-    if (!cell)
-      continue;
     ++ id;
 
     int dummy;
-    if (cell->GetFocus(&dummy, child) == wxACC_OK)
-      return (childId && (*childId = id)), (child && (*child = cell)),
+    if (cell.GetFocus(&dummy, child) == wxACC_OK)
+      return (childId && (*childId = id)), (child && (*child = &cell)),
              wxACC_OK;
   }
 
@@ -1475,5 +1463,4 @@ wxAccStatus Cell::GetRole(int WXUNUSED(childId), wxAccRole *role) const
 
 #endif
 
-Cell::InnerCellIterator Cell::InnerBegin() const { return {}; }
-Cell::InnerCellIterator Cell::InnerEnd() const { return {}; }
+InnerCellIterator Cell::InnerBegin() const { return {}; }

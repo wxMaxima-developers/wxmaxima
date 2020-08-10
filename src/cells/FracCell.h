@@ -48,8 +48,7 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_divide); }
-  InnerCellIterator InnerEnd() const override { return ++InnerCellIterator(&m_displayedDenom); }
+  InnerCellIterator InnerBegin() const override { return {&m_divide, &m_displayedDenom}; }
 
   //! All types of fractions we support
   enum FracType : int8_t
