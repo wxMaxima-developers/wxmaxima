@@ -29,7 +29,6 @@
 #include "IntCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
-#include "VisiblyInvalidCell.h"
 
 #if defined __WXMSW__
 #define INTEGRAL_TOP "\xF3"
@@ -38,20 +37,25 @@
 static constexpr AFontSize INTEGRAL_FONT_SIZE{ 12.0f };
 #endif
 
-IntCell::IntCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
-    m_base(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_under(std::make_unique<TextCell>(parent, config)),
-    m_over(std::make_unique<TextCell>(parent, config)),
-    m_open(std::make_unique<TextCell>(parent, config, "integrate(")),
-    m_close(std::make_unique<TextCell>(parent, config, ")")),
-    m_comma1(std::make_unique<TextCell>(parent, config, ",")),
-    m_comma2(std::make_unique<TextCell>(parent, config, ",")),
-    m_comma3(std::make_unique<TextCell>(parent, config, ",")),
-    m_var(std::make_unique<VisiblyInvalidCell>(parent,config))
+IntCell::IntCell(GroupCell *parent, Configuration **config,
+                 std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
+                 std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var)
+    : Cell(parent, config),
+    m_base(std::move(base)),
+    m_under(std::move(under)),
+    m_over(std::move(over)),
+    m_var(std::move(var))
 {
   InitBitFields();
+  SetStyle(TS_VARIABLE);
 }
+
+IntCell::IntCell(GroupCell *parent, Configuration **config,
+                 std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var)
+    : IntCell(parent, config, std::move(base),
+              std::make_unique<TextCell>(parent, config),
+              std::make_unique<TextCell>(parent, config), std::move(var))
+{}
 
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signHeight
@@ -59,49 +63,25 @@ IntCell::IntCell(GroupCell *parent, Configuration **config) :
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_signTop
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charHeight
 // cppcheck-suppress uninitMemberVar symbolName=IntCell::m_charWidth
-IntCell::IntCell(const IntCell &cell):
-    IntCell(cell.m_group, cell.m_configuration)
+IntCell::IntCell(const IntCell &cell)
+    : IntCell(cell.m_group, cell.m_configuration, CopyList(cell.m_base.get()),
+              CopyList(cell.m_under.get()), CopyList(cell.m_over.get()),
+              CopyList(cell.m_var.get()))
 {
   CopyCommonData(cell);
-  if(cell.m_base)
-    SetBase(cell.m_base->CopyList());
-  if(cell.m_under)
-    SetUnder(cell.m_under->CopyList());
-  if(cell.m_over)
-    SetOver(cell.m_over->CopyList());
-  if(cell.m_var)
-    SetVar(cell.m_var->CopyList());
   m_intStyle = cell.m_intStyle;
 }
 
 DEFINE_CELL(IntCell)
 
-void IntCell::SetOver(std::unique_ptr<Cell> &&name)
+void IntCell::MakeBreakUpCells()
 {
-  if (!name)
-    return;
-  m_over = std::move(name);
-}
-
-void IntCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_base = std::move(base);
-}
-
-void IntCell::SetUnder(std::unique_ptr<Cell> &&under)
-{
-  if (!under)
-    return;
-  m_under = std::move(under);
-}
-
-void IntCell::SetVar(std::unique_ptr<Cell> &&var)
-{
-  if (!var)
-    return;
-  m_var = std::move(var);
+  if (m_open) return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, "integrate(");
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
+  m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, ",");
+  m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, ",");
+  m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, ",");
 }
 
 void IntCell::Recalculate(AFontSize fontsize)
@@ -117,21 +97,25 @@ void IntCell::Recalculate(AFontSize fontsize)
   if(m_signWidth < 4)
     m_signWidth = 4;
   
-  m_open->RecalculateList(fontsize);
-  m_base->RecalculateList(fontsize);
-  m_comma1->RecalculateList(fontsize);
-  m_var->RecalculateList(fontsize);
-  m_comma2->RecalculateList(fontsize);
-  if(m_isBrokenIntoLines)
+  if (m_isBrokenIntoLines)
+  {
+    m_base->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_comma1->RecalculateList(fontsize);
+    m_var->RecalculateList(fontsize);
+    m_comma2->RecalculateList(fontsize);
     m_under->RecalculateList(fontsize);
-  else
-    m_under->RecalculateList({ MC_MIN_SIZE, fontsize - 5 });
-  m_comma3->RecalculateList(fontsize);
-  if(m_isBrokenIntoLines)
+    m_comma3->RecalculateList(fontsize);
     m_over->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+  }
   else
+  {
+    m_base->RecalculateList(fontsize);
+    m_var->RecalculateList(fontsize);
+    m_under->RecalculateList({ MC_MIN_SIZE, fontsize - 5 });
     m_over->RecalculateList({ MC_MIN_SIZE, fontsize - 5 });
-  m_close->RecalculateList(fontsize);
+  }
 
   if(m_isBrokenIntoLines)
   {
@@ -540,6 +524,7 @@ bool IntCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakUpCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
 

@@ -988,35 +988,40 @@ Cell *MathParser::ParseSumTag(wxXmlNode *node)
 
 Cell *MathParser::ParseIntTag(wxXmlNode *node)
 {
-  IntCell *in = new IntCell(NULL, m_configuration);
+  std::unique_ptr<IntCell> in;
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  in->SetHighlight(m_highlight);
+  auto highlight = m_highlight;
+
   wxString definiteAtt = node->GetAttribute(wxT("def"), wxT("true"));
   if (definiteAtt != wxT("true"))
   {
-    in->SetBase(HandleNullPointer(ParseTag(child, false)));
+    // An Indefinite Integral
+    auto base = HandleNullPointer(ParseTag(child, false));
     child = GetNextTag(child);
-    in->SetVar(HandleNullPointer(ParseTag(child, true)));
-    in->SetType(m_ParserStyle);
-    in->SetStyle(TS_VARIABLE);
+    auto var = HandleNullPointer(ParseTag(child, true));
+    in = std::make_unique<IntCell>(nullptr, m_configuration, std::move(base), std::move(var));
   }
   else
   {
-    // A Definite integral
+    // A Definite Integral
+    auto under = HandleNullPointer(ParseTag(child, false));
+    child = GetNextTag(child);
+    auto over = HandleNullPointer(ParseTag(child, false));
+    child = GetNextTag(child);
+    auto base = HandleNullPointer(ParseTag(child, false));
+    child = GetNextTag(child);
+    auto var = HandleNullPointer(ParseTag(child, true));
+
+    in = std::make_unique<IntCell>(nullptr, m_configuration, std::move(base),
+                                   std::move(under), std::move(over),
+                                   std::move(var));
     in->SetIntStyle(IntCell::INT_DEF);
-    in->SetUnder(HandleNullPointer(ParseTag(child, false)));
-    child = GetNextTag(child);
-    in->SetOver(HandleNullPointer(ParseTag(child, false)));
-    child = GetNextTag(child);
-    in->SetBase(HandleNullPointer(ParseTag(child, false)));
-    child = GetNextTag(child);
-    in->SetVar(HandleNullPointer(ParseTag(child, true)));
-    in->SetType(m_ParserStyle);
-    in->SetStyle(TS_VARIABLE);
   }
+  in->SetType(m_ParserStyle);
+  in->SetHighlight(highlight);
   ParseCommonAttrs(node, in);
-  return in;
+  return in.release();
 }
 
 Cell *MathParser::ParseTableTag(wxXmlNode *node)
