@@ -114,7 +114,7 @@ wxString DiffCell::ToString() const
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
-  Cell *tmp = m_baseCell->m_next;
+  Cell *tmp = m_baseCell->GetNext();
   wxString s = wxT("'diff(");
   if (tmp != NULL)
     s += tmp->ListToString();
@@ -127,7 +127,7 @@ wxString DiffCell::ToMatlab() const
 {
   if (m_isBrokenIntoLines)
 	return wxEmptyString;
-  Cell *tmp = m_baseCell->m_next;
+  Cell *tmp = m_baseCell->GetNext();
   wxString s = wxT("'diff(");
   if (tmp != NULL)
 	s += tmp->ListToMatlab();

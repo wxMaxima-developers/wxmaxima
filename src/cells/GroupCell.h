@@ -205,21 +205,15 @@ public:
 
   //! Get the previous GroupCell in the list
   GroupCell *GetPrevious() const { return m_previous.CastAs<GroupCell*>(); }
-
   //! Get the next GroupCell in the list.
-  GroupCell *GetNext() const override { return dynamic_cast<GroupCell *>(m_next); }
+  GroupCell *GetNext() const { return dynamic_cast<GroupCell *>(Cell::GetNext()); }
 
   static wxString TexEscapeOutputCell(wxString Input);
 
   Cell *GetPrompt() const { return m_inputLabel.get(); }
 
   EditorCell *GetInput() const
-    {
-      if (m_inputLabel != NULL)
-        return dynamic_cast<EditorCell *>(m_inputLabel.get()->m_next);
-      else
-        return NULL;
-    }
+  { return m_inputLabel ? dynamic_cast<EditorCell *>(m_inputLabel->GetNext()) : nullptr; }
 
   /*! Returns the list of cells the output consists of, starting with the label.
 
@@ -232,7 +226,7 @@ public:
     See also GetLabel()
   */
   Cell *GetOutput() const
-  { if (m_output == NULL) return NULL; else return m_output->m_next; }
+  { return m_output ? m_output->GetNext() : nullptr; }
 
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }

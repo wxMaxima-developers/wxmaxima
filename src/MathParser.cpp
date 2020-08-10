@@ -1103,7 +1103,7 @@ Cell *MathParser::ParseTag_(wxXmlNode *node, bool all)
       if (retval == NULL)
         retval = cell;
       else
-        cell = cell->m_next;
+        cell = cell->GetNext();
     }
     else if ((warning) && (!all))
     {

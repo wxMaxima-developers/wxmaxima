@@ -252,10 +252,10 @@ wxString SumCell::ToString() const
   Cell *tmp = m_under.get();
   wxString var = tmp->ToString();
   wxString from;
-  tmp = tmp->m_next;
+  tmp = tmp->GetNext();
   if (tmp != NULL)
   {
-    tmp = tmp->m_next;
+    tmp = tmp->GetNext();
     if (tmp != NULL)
       from = tmp->ListToString();
   }
@@ -280,10 +280,10 @@ wxString SumCell::ToMatlab() const
   Cell *tmp = m_under.get();
   wxString var = tmp->ToMatlab();
   wxString from;
-  tmp = tmp->m_next;
+  tmp = tmp->GetNext();
   if (tmp != NULL)
   {
-	tmp = tmp->m_next;
+	tmp = tmp->GetNext();
 	if (tmp != NULL)
 	  from = tmp->ListToMatlab();
   }

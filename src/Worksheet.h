@@ -609,7 +609,7 @@ private:
 public:
   //! Is this worksheet empty?
   bool IsEmpty() const
-  { return !m_tree || (!m_tree->m_next && m_tree->GetEditable()->GetValue().Length()<=1); }
+  { return !m_tree || (!m_tree->GetNext() && m_tree->GetEditable()->GetValue().Length()<=1); }
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {
