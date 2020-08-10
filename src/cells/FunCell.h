@@ -29,7 +29,7 @@
   This file declares the class FunCell() that represents a maxima function.
  */
 
-/*! FunCell represents a maxiam function no special visual representation exists for 
+/*! FunCell represents a maxima function no special visual representation exists for
 
   Examples of functions with special visual representation would be:
    - SqrtCell
@@ -52,15 +52,13 @@
 class FunCell final : public Cell
 {
 public:
-  FunCell(GroupCell *parent, Configuration **config);
+  FunCell(GroupCell *parent, Configuration **config,
+          std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg);
   FunCell(const FunCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_nameCell, &m_argCell}; }
-
-  void SetName(std::unique_ptr<Cell> &&name);
-  void SetArg(std::unique_ptr<Cell> &&arg);
 
   void Recalculate(AFontSize fontsize) override;
 

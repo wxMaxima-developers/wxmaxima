@@ -762,21 +762,22 @@ Cell *MathParser::ParseAtTag(wxXmlNode *node)
 
 Cell *MathParser::ParseFunTag(wxXmlNode *node)
 {
-  FunCell *fun = new FunCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
-  fun->SetName(HandleNullPointer(ParseTag(child, false)));
+  auto name = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
+  auto arg = HandleNullPointer(ParseTag(child, false));
+
+  auto fun = std::make_unique<FunCell>(nullptr, m_configuration, std::move(name), std::move(arg));
   fun->SetType(m_ParserStyle);
-  fun->SetStyle(TS_FUNCTION);
-  fun->SetArg(HandleNullPointer(ParseTag(child, false)));
+
   ParseCommonAttrs(node, fun);
   if (fun->ToString().Contains(")("))
     fun->SetToolTip(&T_("If this isn't a function returning a lambda() "
                         "expression a multiplication sign (*) between closing "
                         "and opening parenthesis is missing here."));
-  return fun;
+  return fun.release();
 }
 
 Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
