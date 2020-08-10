@@ -51,6 +51,12 @@ class TextCell;
 class Worksheet;
 class wxXmlNode;
 
+// Forward declarations
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
+inline auto OnInner(const C *cell);
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
+inline auto OnInner(C *cell);
+
 /*! The supported types of math cells
  */
 enum CellType : int8_t
@@ -136,6 +142,11 @@ class Cell: public Observed
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
   Cell(const Cell&) = delete;
+
+  template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
+  friend inline auto OnInner(const C *cell);
+  template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
+  friend inline auto OnInner(C *cell);
 
 public:
 
@@ -1001,54 +1012,8 @@ protected:
   bool m_highlight : 1 /* InitBitFields */;
 
 
-  class InnerCellIterator
-  {
-    enum class Uses { SmartPtr, RawPtr};
-    using SmartPtr_ = const std::unique_ptr<Cell> *;
-    using RawPtr_ = Cell* const*;
-    void const* m_ptr = {};
-    Uses m_uses = Uses::SmartPtr;
-  public:
-    Cell *get() const
-    {
-      if (!m_ptr) return {};
-      if (m_uses == Uses::SmartPtr) return static_cast<SmartPtr_>(m_ptr)->get();
-      else if (m_uses == Uses::RawPtr) return *static_cast<RawPtr_>(m_ptr);
-      else return {};
-    }
-    InnerCellIterator() = default;
-    explicit InnerCellIterator(const std::unique_ptr<Cell> *p) : m_ptr(p), m_uses(Uses::SmartPtr) {}
-    explicit InnerCellIterator(Cell* const *p) : m_ptr(p), m_uses(Uses::RawPtr) {}
-    InnerCellIterator(const InnerCellIterator &o) = default;
-    InnerCellIterator &operator=(const InnerCellIterator &o) = default;
-    InnerCellIterator operator++(int)
-    {
-      auto ret = *this;
-      return operator++(), ret;
-    }
-    InnerCellIterator &operator++()
-    {
-      if (m_ptr)
-      {
-        if (m_uses == Uses::SmartPtr) ++reinterpret_cast<SmartPtr_&>(m_ptr);
-        else if (m_uses == Uses::RawPtr) ++reinterpret_cast<RawPtr_&>(m_ptr);
-        else wxASSERT(false && "Internal error in InnerCellIterator");
-      }
-      return *this;
-    }
-    bool operator==(const InnerCellIterator &o) const
-    { return m_uses == o.m_uses && m_ptr == o.m_ptr; }
-    bool operator!=(const InnerCellIterator &o) const
-    { return m_uses != o.m_uses || m_ptr != o.m_ptr; }
-    operator bool() const { return get(); }
-    operator Cell*() const { return get(); }
-    Cell *operator->() const { return get(); }
-  };
-
-  //! Iterator to the beginning of the inner cell range
-  virtual InnerCellIterator InnerBegin() const;
-  //! Iterator to the end of the inner cell range
-  virtual InnerCellIterator InnerEnd() const;
+  //! Iterator to the beginning of the inner cell range. The end iterator is default-constructed.
+ virtual InnerCellIterator InnerBegin() const;
 
   inline Worksheet *GetWorksheet() const;
 
@@ -1116,5 +1081,11 @@ template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, b
 inline auto OnDrawList(const C *cell) { return CellDrawListAdapter<const C>(cell); }
 template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type = true>
 inline auto OnDrawList(C *cell)       { return CellDrawListAdapter<C>(cell); }
+
+//! Returns an iterable that goes over the inner cells of this cell.
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
+inline auto OnInner(const C *cell) { return InnerCellAdapter(cell->InnerBegin()); }
+template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
+inline auto OnInner(C *cell) { return InnerCellAdapter(cell->InnerBegin()); }
 
 #endif // MATHCELL_H

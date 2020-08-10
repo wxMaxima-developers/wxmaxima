@@ -110,9 +110,11 @@ public:
       m_knownAnswers[question] = answer;
   }
 
-  InnerCellIterator InnerBegin() const override { return InnerCellIterator(&m_inputLabel); }
-  InnerCellIterator InnerEnd() const override
-  { return (m_groupType == GC_TYPE_PAGEBREAK) ? InnerCellIterator(InnerBegin()) : ++InnerCellIterator(&m_output); }
+  InnerCellIterator InnerBegin() const override
+  {
+    if (m_groupType == GC_TYPE_PAGEBREAK) return {};
+    return {&m_inputLabel, &m_output};
+  }
 
   /*! Which GroupCell was the last maxima was working on?
 
