@@ -73,7 +73,6 @@ bool Printout::HasPage(int num)
 bool Printout::OnPrintPage(int num)
 {
 //  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
-  GroupCell *tmp;
   wxDC *dc = GetDC();
   dc->SetBackground(*wxWHITE_BRUSH);
   dc->Clear();
@@ -88,50 +87,49 @@ bool Printout::OnPrintPage(int num)
 
   marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
 
-  // Go to current page
-  tmp = m_pages[num - 1];
-
-  // Print page
-  if (tmp != NULL)
-  {
-    if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
-      tmp = tmp->GetNext();
-    if (tmp == NULL)
-      return true;
-
-    wxPoint point;
-    point.x = marginX;
-    point.y = marginY + tmp->GetCenterList() + GetHeaderHeight();
-    wxConfigBase *config = wxConfig::Get();
-    int fontsize = 12;
-    int drop = tmp->GetMaxDrop();
-
-    config->Read(wxT("fontsize"), &fontsize);
-
-    PrintHeader(num, dc);
-  
-    while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
-    {
-      // The following line seems to misteriously fix the "subsequent text
-      // cells aren't printed" problem on linux.
-      // No Idea why, though.
-      dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
-      tmp->Draw(point);
-      if (tmp->m_next != NULL)
-      {
-        point.x = marginX;
-        point.y += drop + tmp->m_next->GetCenterList();
-        point.y += (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip());
-        drop = tmp->m_next->GetMaxDrop();
-      }
-
-      tmp = tmp->GetNext();
-      if (tmp == NULL || tmp->BreakPageHere())
-        break;
-    }
+  // Print current page
+  GroupCell *tmp = m_pages[num - 1];
+  if (!tmp)
+    return false;
+  if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
+    tmp = tmp->GetNext();
+  if (!tmp)
     return true;
+
+  wxPoint point;
+  point.x = marginX;
+  point.y = marginY + tmp->GetCenterList() + GetHeaderHeight();
+  wxConfigBase *config = wxConfig::Get();
+  int fontsize = 12;
+  int drop = tmp->GetMaxDrop();
+
+  config->Read(wxT("fontsize"), &fontsize);
+
+  PrintHeader(num, dc);
+
+  while (tmp && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
+  {
+    auto *const next = tmp->GetNext();
+
+    // The following line seems to misteriously fix the "subsequent text
+    // cells aren't printed" problem on linux.
+    // No Idea why, though.
+    dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
+
+    tmp->Draw(point);
+    if (next)
+    {
+      point.x = marginX;
+      point.y += drop + next->GetCenterList();
+      point.y += (*m_configuration)->Scale_Px((*m_configuration)->GetGroupSkip());
+      drop = next->GetMaxDrop();
+    }
+
+    tmp = tmp->GetNext();
+    if (!tmp || tmp->BreakPageHere())
+      break;
   }
-  return false;
+  return true;
 }
 
 bool Printout::OnBeginDocument(int startPage, int endPage)

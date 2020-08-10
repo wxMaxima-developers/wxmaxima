@@ -114,12 +114,12 @@ void FracCell::Recalculate(AFontSize fontsize)
       // We want half a space's widh of blank space to separate us from the
       // next minus.
       
-      if (m_previous && m_previous->ToString().EndsWith(wxT("-")))
+      if (GetPrevious() && GetPrevious()->ToString().EndsWith(wxT("-")))
         m_horizontalGapLeft = m_protrusion;
       else
         m_horizontalGapLeft = 0;
       
-      if (m_next && m_next->ToString().StartsWith(wxT("-")))
+      if (GetNext() && GetNext()->ToString().StartsWith(wxT("-")))
         m_horizontalGapRight = m_protrusion;
       else
         m_horizontalGapRight = 0;
@@ -208,17 +208,17 @@ wxString FracCell::ToString() const
       Cell *tmp = Denom();
       while (tmp != NULL)
       {
-        tmp = tmp->m_next;   // Skip the d
+        tmp = tmp->GetNext();   // Skip the d
         if (tmp == NULL)
           break;
-        tmp = tmp->m_next;   // Skip the *
+        tmp = tmp->GetNext();   // Skip the *
         if (tmp == NULL)
           break;
         s += tmp->GetDiffPart();
-        tmp = tmp->m_next;   // Skip the *
+        tmp = tmp->GetNext();   // Skip the *
         if (tmp == NULL)
           break;
-        tmp = tmp->m_next;
+        tmp = tmp->GetNext();
       }
     }
   }
@@ -248,20 +248,20 @@ wxString FracCell::ToMatlab() const
 	}
 	else
     {
-      for (Cell *tmp = Denom(); tmp; tmp = tmp->m_next)
-	  {
-		tmp = tmp->m_next;   // Skip the d
+      for (Cell *tmp = Denom(); tmp; tmp = tmp->GetNext())
+      {
+        tmp = tmp->GetNext();   // Skip the d
         if (!tmp)
-		  break;
-		tmp = tmp->m_next;   // Skip the *
+          break;
+        tmp = tmp->GetNext();   // Skip the *
         if (!tmp)
-		  break;
-		s += tmp->GetDiffPart();
-		tmp = tmp->m_next;   // Skip the *
+          break;
+        s += tmp->GetDiffPart();
+        tmp = tmp->GetNext();   // Skip the *
         if (!tmp)
-		  break;
-	  }
-	}
+          break;
+      }
+    }
   }
   return s;
 }
@@ -348,9 +348,9 @@ bool FracCell::BreakUp()
   {
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
-    if(Num() && Num()->m_next)
+    if(Num() && Num()->GetNext())
       m_displayedNum = m_numParenthesis.get();
-    if(Denom() && Denom()->m_next)
+    if(Denom() && Denom()->GetNext())
       m_displayedDenom = m_denomParenthesis.get();
     // Note: Yes, we don't want m_displayedNum->last() here.
     m_displayedNum->SetNextToDraw(m_divide);

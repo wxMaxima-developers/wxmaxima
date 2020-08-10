@@ -236,7 +236,7 @@ bool GroupCell::Empty() const
 {
   return (
           // No next cell
-          (m_next == NULL) &&
+          (!GetNext()) &&
           // This cell at maximum contains a prompt.
           (ToString().Length() < 6)
   );
@@ -295,12 +295,11 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell)
   }
   else
   {
-    if (m_inputLabel->m_next == NULL)
+    if (m_inputLabel->GetNext() == NULL)
       m_inputLabel->AppendCell(std::move(cell));
-    else if (m_inputLabel->m_next->GetValue().Length() == 0)
+    else if (m_inputLabel->GetNext()->GetValue().Length() == 0)
     {
       wxDELETE(m_inputLabel->m_next);
-      m_inputLabel->m_next = NULL;
       m_inputLabel->SetNextToDraw(NULL);
       m_inputLabel->AppendCell(std::move(cell));
     }
@@ -365,8 +364,9 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   {
     m_output = std::move(cell);
 
-    if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
-      (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
+    auto *input = GetInput();
+    if (m_groupType == GC_TYPE_CODE && input)
+      input->ContainsChanges(false);
   }
   else
   {
@@ -610,7 +610,7 @@ void GroupCell::RecalculateHeightOutput()
       m_outputRect.width = wxMax(m_outputRect.width, m_width);
       m_outputRect.height += height_Delta;
       
-      if (tmp.m_previous &&
+      if (tmp.GetPrevious() &&
           ((tmp.GetStyle() == TS_LABEL) || (tmp.GetStyle() == TS_USERLABEL)))
         m_outputRect.height += configuration->GetInterEquationSkip();
 
@@ -641,7 +641,7 @@ GroupCell *GroupCell::UpdateYPosition()
 {
   Configuration *configuration = (*m_configuration);
   
-  if (!m_previous)
+  if (!GetPrevious())
   {
     m_currentPoint.x = configuration->GetIndent();
     m_currentPoint.y = configuration->GetBaseIndent() + GetCenter();
@@ -651,9 +651,9 @@ GroupCell *GroupCell::UpdateYPosition()
   else
   {    
     m_currentPoint.x = configuration->GetIndent();
-    if (m_previous->GetCurrentPoint().y <= 0)
+    if (GetPrevious()->GetCurrentPoint().y <= 0)
       return nullptr;
-    wxASSERT(m_previous->GetCurrentPoint().y > 0);
+    wxASSERT(GetPrevious()->GetCurrentPoint().y > 0);
     m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
       GetPrevious()->GetMaxDrop() + GetCenterList() +
       configuration->GetGroupSkip();
@@ -771,9 +771,9 @@ void GroupCell::Draw(wxPoint point)
         
         if(GetPrompt() != NULL)
           GetPrompt()->Draw(point);
-        
-        if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
-          configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
+
+        if (m_groupType == GC_TYPE_CODE && input)
+          configuration->Outdated(input->ContainsChanges());
       }
     }
     configuration->Outdated(false); 
@@ -1046,7 +1046,7 @@ wxString GroupCell::ToRTF() const
   {
     if (m_inputLabel && configuration->ShowCodeCells())
     {
-      if (m_previous)
+      if (GetPrevious())
         retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
       else
         retval += wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
@@ -1055,7 +1055,7 @@ wxString GroupCell::ToRTF() const
     }
     else
     {
-      if (m_previous)
+      if (GetPrevious())
         retval = wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
       else
         retval = wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
@@ -1104,7 +1104,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter) c
               << wxT("  \\centering\n")
               << wxT("    \\includeimage{")
               << filename << wxT("_img/") << image << wxT("}\n")
-              << wxT("  \\caption{") << m_inputLabel->m_next->ToTeX().Trim() << wxT("}\n")
+              << wxT("  \\caption{") << m_inputLabel->GetNext()->ToTeX().Trim() << wxT("}\n")
               << wxT("\\end{figure}\n");
         }
       }
@@ -1183,12 +1183,11 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
       wxString("\n\\end{minipage}");
     setlocale(LC_NUMERIC, saved_lc_numeric.c_str());
 
-    if (m_inputLabel->m_next)
+    if (m_inputLabel->GetNext())
     {
 
-      wxString input = m_inputLabel->m_next->ToTeX();
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
-             input + "\n\\end{minipage}";
+             m_inputLabel->GetNext()->ToTeX() + "\n\\end{minipage}";
     }
   }
 
@@ -1876,7 +1875,7 @@ GroupCell *GroupCell::Fold()
 {
   if (!IsFoldable() || m_hiddenTree) // already folded?? shouldn't happen
     return NULL;
-  if (m_next == NULL)
+  if (GetNext() == NULL)
     return NULL;
   int nextgct = GetNext()->GetGroupType(); // groupType of the next cell
   if ((m_groupType == nextgct) || IsLesserGCType(nextgct))
@@ -2094,7 +2093,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
 
 bool GroupCell::IsMainInput(Cell *active) const
 {
-  return m_inputLabel->m_next && active == m_inputLabel->m_next;
+  return active && m_inputLabel->GetNext();
 }
 
 bool GroupCell::Contains(GroupCell *cell) const
@@ -2161,7 +2160,7 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
     
     // If we are the 1st groupcell of the worksheet we handle the hcaret above this
     // cell, too.
-    if (!m_previous)
+    if (!GetPrevious())
       rect.SetTop(rect.GetTop()-(*m_configuration)->GetGroupSkip());
     
     if(rect.GetTop() < 0)

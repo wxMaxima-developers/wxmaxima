@@ -636,8 +636,10 @@ public:
   */
   virtual void UnbreakList();
 
+  Cell *GetPrevious() const { return m_previous; }
+
   //! Get the next cell in the list.
-  virtual Cell *GetNext() const {return m_next;}
+  virtual Cell *GetNext() const { return m_next; }
   /*! Get the next cell that needs to be drawn
 
     In case of potential 2d objects like fractions either the fraction needs to be
