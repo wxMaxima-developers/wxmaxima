@@ -31,46 +31,34 @@
 #include "GroupCell.h"
 #include "TextCell.h"
 #include "wx/config.h"
-#include "VisiblyInvalidCell.h"
 
-
-DiffCell::DiffCell(GroupCell *parent, Configuration **config) :
+DiffCell::DiffCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&diff) :
   Cell(parent, config),
-  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-  m_open(std::make_unique<TextCell>(parent, config, "diff(")),
-  m_comma(std::make_unique<TextCell>(parent, config, ",")),
-  m_close(std::make_unique<TextCell>(parent, config, ")")),
-  m_diffCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+  m_baseCell(std::move(base)),
+  m_diffCell(std::move(diff))
 
 {
   InitBitFields();
+  SetStyle(TS_VARIABLE);
+  m_diffCell->SetSuppressMultiplicationDot(true);
 }
 
-DiffCell::DiffCell(const DiffCell &cell):
- DiffCell(cell.m_group, cell.m_configuration)
+DiffCell::DiffCell(const DiffCell &cell)
+    : DiffCell(cell.m_group, cell.m_configuration,
+               CopyList(cell.m_baseCell.get()),
+               CopyList(cell.m_diffCell.get()))
 {
   CopyCommonData(cell);
-  if(cell.m_diffCell)
-    SetDiff(cell.m_diffCell->CopyList());
-  if(cell.m_baseCell)
-    SetBase(cell.m_baseCell->CopyList());
 }
 
 DEFINE_CELL(DiffCell)
 
-void DiffCell::SetDiff(std::unique_ptr<Cell> &&diff)
+void DiffCell::MakeBreakupCells()
 {
-  if (!diff)
-    return;
-  m_diffCell = std::move(diff);
-  m_diffCell->SetSuppressMultiplicationDot(true);
-}
-
-void DiffCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_baseCell = std::move(base);
+  if (m_open) return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, "diff(");
+  m_comma = std::make_unique<TextCell>(m_group, m_configuration, ",");
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
 void DiffCell::Recalculate(AFontSize fontsize)
@@ -80,9 +68,6 @@ void DiffCell::Recalculate(AFontSize fontsize)
 
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_comma->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
@@ -90,7 +75,12 @@ void DiffCell::Recalculate(AFontSize fontsize)
     m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
   }
   else
+  {
     m_width = m_center = m_height = 0;
+    m_open->RecalculateList(fontsize);
+    m_comma->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+  }
   Cell::Recalculate(fontsize);
 }
 
@@ -191,6 +181,7 @@ bool DiffCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakupCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_baseCell);

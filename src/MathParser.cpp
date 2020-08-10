@@ -596,24 +596,30 @@ Cell *MathParser::ParseFracTag(wxXmlNode *node)
 
 Cell *MathParser::ParseDiffTag(wxXmlNode *node)
 {
-  DiffCell *diff = new DiffCell(NULL, m_configuration);
+  std::unique_ptr<DiffCell> diff;
+
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   if (child)
   {
     auto fc = m_FracStyle;
     m_FracStyle = FracCell::FC_DIFF;
-
-    diff->SetDiff(HandleNullPointer(ParseTag(child, false)));
+    auto diffInner = HandleNullPointer(ParseTag(child, false));
     m_FracStyle = fc;
     child = GetNextTag(child);
+    auto base = HandleNullPointer(ParseTag(child, true));
 
-    diff->SetBase(HandleNullPointer(ParseTag(child, true)));
+    diff = std::make_unique<DiffCell>(nullptr, m_configuration, std::move(base), std::move(diffInner));
     diff->SetType(m_ParserStyle);
-    diff->SetStyle(TS_VARIABLE);
+  }
+  else
+  {
+    diff = std::make_unique<DiffCell>(nullptr, m_configuration,
+      Cell::MakeVisiblyInvalidCell(m_configuration),
+      Cell::MakeVisiblyInvalidCell(m_configuration));
   }
   ParseCommonAttrs(node, diff);
-  return diff;
+  return diff.release();
 }
 
 Cell *MathParser::ParseSupTag(wxXmlNode *node)
