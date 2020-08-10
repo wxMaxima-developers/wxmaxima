@@ -179,6 +179,11 @@ std::unique_ptr<Cell> Cell::CopyList() const
   return ret;
 }
 
+std::unique_ptr<Cell> Cell::CopyList(const Cell *cell)
+{
+  return cell ? cell->CopyList() : nullptr;
+}
+
 void Cell::ClearCacheList()
 {
   for (Cell &tmp : OnList(this))
