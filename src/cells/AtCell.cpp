@@ -28,42 +28,25 @@
 
 #include "AtCell.h"
 #include "CellImpl.h"
-#include "TextCell.h"
-#include "VisiblyInvalidCell.h"
 
-AtCell::AtCell(GroupCell *parent, Configuration **config) :
+AtCell::AtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index) :
     Cell(parent, config),
-    m_baseCell (std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_indexCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+    m_baseCell(std::move(base)),
+    m_indexCell(std::move(index))
 {
   InitBitFields();
+  SetStyle(TS_VARIABLE);
 }
 
-AtCell::AtCell(const AtCell &cell):
- AtCell(cell.m_group, cell.m_configuration)
+AtCell::AtCell(const AtCell &cell)
+    : AtCell(cell.m_group, cell.m_configuration,
+             CopyList(cell.m_baseCell.get()),
+             CopyList(cell.m_indexCell.get()))
 {
   CopyCommonData(cell);
-  if(cell.m_baseCell)
-    SetBase(cell.m_baseCell->CopyList());
-  if(cell.m_indexCell)
-    SetIndex(cell.m_indexCell->CopyList());
 }
 
 DEFINE_CELL(AtCell)
-
-void AtCell::SetIndex(std::unique_ptr<Cell> &&index)
-{
-  if (!index)
-    return;
-  m_indexCell = std::move(index);
-}
-
-void AtCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_baseCell = std::move(base);
-}
 
 void AtCell::Recalculate(AFontSize fontsize)
 {
@@ -152,4 +135,3 @@ wxString AtCell::ToXML() const
   return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
          m_indexCell->ListToXML() + wxT("</r></at>");
 }
-

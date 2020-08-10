@@ -740,18 +740,18 @@ Cell *MathParser::ParseSubTag(wxXmlNode *node)
 
 Cell *MathParser::ParseAtTag(wxXmlNode *node)
 {
-  AtCell *at = new AtCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-
-  at->SetBase(HandleNullPointer(ParseTag(child, false)));
-  at->SetHighlight(m_highlight);
+  auto base = HandleNullPointer(ParseTag(child, false));
+  auto highlight = m_highlight;
   child = GetNextTag(child);
-  at->SetIndex(HandleNullPointer(ParseTag(child, false)));
+  auto index = HandleNullPointer(ParseTag(child, false));
+
+  auto at = std::make_unique<AtCell>(nullptr, m_configuration, std::move(base), std::move(index));
+  at->SetHighlight(highlight);
   at->SetType(m_ParserStyle);
-  at->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, at);
-  return at;
+  return at.release();
 }
 
 Cell *MathParser::ParseFunTag(wxXmlNode *node)
