@@ -8755,7 +8755,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         {
           GroupCell *SelectionEnd = SelectionStart;
           while (
-            (SelectionEnd->m_next != NULL)
+            (SelectionEnd->GetNext() != NULL)
             && (SelectionEnd->GetNext()->IsLesserGCType(SelectionStart->GetGroupType()))
             )
             SelectionEnd = SelectionEnd->GetNext();
