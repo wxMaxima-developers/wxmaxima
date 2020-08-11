@@ -32,6 +32,7 @@
 #include "MathParser.h"
 
 #include "Version.h"
+#include "CellList.h"
 #include "ExptCell.h"
 #include "SubCell.h"
 #include "SqrtCell.h"
@@ -423,32 +424,14 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     }
     else if (children->GetName() == wxT("fold"))
     { // This GroupCell contains folded groupcells
+      CellListBuilder<GroupCell> tree;
       wxXmlNode *xmlcells = children->GetChildren();
       xmlcells = SkipWhitespaceNode(xmlcells);
-      Cell *tree = NULL;
-      Cell *last = NULL;
-      while (xmlcells)
-      {
-        Cell *cell = ParseTag_(xmlcells, false);
-        
-        if (cell == NULL)
-          continue;
-        
-        if (tree == NULL) tree = cell;
-        
-        if (last == NULL) last = cell;
-        else
-        {
-          last->m_next = cell;
-          last->SetNextToDraw(cell);
-          last->m_next->m_previous = last;
-          
-          last = last->m_next;
-        }
-        xmlcells = GetNextTag(xmlcells);
-      }
+      for (; xmlcells; xmlcells = GetNextTag(xmlcells))
+        tree.DynamicAppend(ParseTag_(xmlcells, false));
+
       if (tree)
-        group->HideTree(dynamic_cast<GroupCell *>(tree));
+        group->HideTree(tree.ReleaseHead());
     }
     else if (children->GetName() == wxT("input"))
     {
@@ -784,7 +767,7 @@ Cell *MathParser::ParseFunTag(wxXmlNode *node)
 Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
 {
   wxString str;
-  TextCell *retval = NULL;
+  CellListBuilder<TextCell> tree;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString))
   {
     str.Replace(wxT("-"), wxT("\u2212")); // unicode minus sign
@@ -792,22 +775,22 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
     wxStringTokenizer lines(str, wxT('\n'));
     while (lines.HasMoreTokens())
     {
-      TextCell *cell;
+      std::unique_ptr<TextCell> cell;
       wxString value = lines.GetNextToken();
       if(style == TS_NUMBER)
       {
         if(value.Length() >= 20)
-          cell = new LongNumberCell(NULL, m_configuration, value);
+          cell = std::make_unique<LongNumberCell>(nullptr, m_configuration, value);
         else
-          cell = new TextCell(NULL, m_configuration, value, style);
+          cell = std::make_unique<TextCell>(nullptr, m_configuration, value, style);
       }
       else if((style == TS_LABEL) ||
               (style == TS_USERLABEL) ||
               (style == TS_MAIN_PROMPT) ||
               (style == TS_OTHER_PROMPT))
-        cell = new LabelCell(NULL, m_configuration, value, style);
+        cell = std::make_unique<LabelCell>(nullptr, m_configuration, value, style);
       else
-        cell = new TextCell(NULL, m_configuration, value, style);
+        cell = std::make_unique<TextCell>(nullptr, m_configuration, value, style);
 
       switch(style)
       {
@@ -829,21 +812,18 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
       }
       cell->SetStyle(style);
       cell->SetHighlight(m_highlight);
-      if (retval == NULL)
-        retval = cell;
-      else
-      {
+      if (tree)
         cell->ForceBreakLine(true);
-        retval->AppendCell(cell);
-      };
+      tree.Append(std::move(cell));
     }
   }
 
-  if (retval == NULL)
-    retval = new TextCell(NULL, m_configuration);
+  if (!tree)
+    tree.Append(std::make_unique<TextCell>(nullptr, m_configuration));
 
-  ParseCommonAttrs(node, retval);
-  return retval;
+  auto head = tree.TakeHead();
+  ParseCommonAttrs(node, head);
+  return head.release();
 }
 
 void MathParser::ParseCommonAttrs(wxXmlNode *node, Cell *cell)
@@ -1067,81 +1047,65 @@ Cell *MathParser::ParseTableTag(wxXmlNode *node)
 
 Cell *MathParser::ParseTag_(wxXmlNode *node, bool all)
 {
-  Cell *retval = NULL;
-  Cell *cell = NULL;
-  bool warning = all;
+  CellListBuilder<> tree;
+  bool gotInvalid = false;
 
   node = SkipWhitespaceNode(node);
-
-  while (node)
+  for (; node; node = GetNextTag(node))
   {
+    auto &tagName = node->GetName();
+    tree.ClearLastAppended();
     if (node->GetType() == wxXML_ELEMENT_NODE)
     {
       // Parse XML tags. The only other type of element we recognize are text
       // nodes.
-      wxString tagName(node->GetName());
 
-      Cell *tmp = NULL;
+      auto function = m_innerTags[tagName];
+      if (function)
+        tree.Append(CALL_MEMBER_FN(*this, function)(node));
 
-      Cell * (MathParser::* function)(wxXmlNode *node) = m_innerTags[tagName];
-      if (function != NULL)
-        tmp =  CALL_MEMBER_FN(*this, function)(node);
-//      if ((tmp == NULL) && (node->GetChildren()))
-//        tmp = ParseTag(node->GetChildren());
+      if (false)
+        if (!tree.GetLastAppended() && node->GetChildren())
+          tree.Append(ParseTag(node->GetChildren()));
 
-      if((tmp == NULL) && ((node->GetAttribute(wxT("listdelim")) != wxT("true"))))
-        tmp = new VisiblyInvalidCell(NULL, m_configuration,
-                                     wxString::Format(m_unknownXMLTagToolTip, tagName.utf8_str()));
-
-      if(tmp != NULL)
+      if (!tree.GetLastAppended() && (node->GetAttribute(wxT("listdelim")) != wxT("true")))
       {
-        ParseCommonAttrs(node, tmp);
-        if (cell == NULL)
-          cell = tmp;
-        else
-          cell->AppendCell(tmp);
+        auto tmp = std::make_unique<VisiblyInvalidCell>(
+            nullptr, m_configuration,
+            wxString::Format(m_unknownXMLTagToolTip, tagName));
+        tree.Append(std::move(tmp));
+        gotInvalid = true;
       }
+
+      if (tree.GetLastAppended())
+        ParseCommonAttrs(node, tree.GetLastAppended());
     }
     else
     {
       // We didn't get a tag but got a text cell => Parse the text.
-      if (cell == NULL)
-        cell = ParseText(node);
-      else
-        cell->AppendCell(ParseText(node));
+      tree.Append(ParseText(node));
     }
 
-    if (cell != NULL)
-    {
-      // Append the new cell to the return value
-      if (retval == NULL)
-        retval = cell;
-      else
-        cell = cell->GetNext();
-    }
-    else if ((warning) && (!all))
+    if (gotInvalid && !all)
     {
       // Tell the user we ran into problems.
-      wxString name;
-      name.Trim(true);
-      name.Trim(false);
-      name = cell->ToString();
-      if (name.Length() != 0)
+      wxString msg;
+      if (gotInvalid)
+        msg = tree.GetLastAppended()->ToString();
+      else if (!tree.GetLastAppended() && !tagName.empty())
+        msg = wxString::Format(m_unknownXMLTagToolTip, tagName);
+      if (!msg.empty())
       {
-        LoggingMessageBox(_("Parts of the document will not be loaded correctly:\nFound unknown XML Tag name " + name),
-                     _("Warning"),
-                     wxOK | wxICON_WARNING);
-        warning = false;
+        LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
+        gotInvalid = false;
       }
     }
-
-    node = GetNextTag(node);
     
     if (!all)
       break;
   }
 
-  return retval;
+  return tree.ReleaseHead();
 }
 
 std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)

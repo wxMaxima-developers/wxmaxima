@@ -31,6 +31,7 @@
 
 
 #include "wxMaxima.h"
+#include "CellList.h"
 #include "CompositeDataObject.h"
 #include "ErrorRedirector.h"
 #include "MaxSizeChooser.h"
@@ -4518,26 +4519,24 @@ std::unique_ptr<Cell> Worksheet::CopySelection(bool asData) const
 
 std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end, bool asData) const
 {
-  std::unique_ptr<Cell> out;
-  Cell *outEnd = NULL;
+  CellListBuilder<> copy;
 
-  for (const Cell * tmp = start; tmp; tmp = asData ? tmp->GetNext() : tmp->GetNextToDraw())
-  {
-    if (out == NULL)
+  if (asData)
+    for (const Cell &tmp : OnList(start))
     {
-      out = tmp->Copy();
-      outEnd = out.get();
+      copy.Append(tmp.Copy());
+      if (&tmp == end)
+        break;
     }
-    else
+  else
+    for (const Cell &tmp : OnDrawList(start))
     {
-      outEnd->AppendCell(tmp->Copy());
-      outEnd = outEnd->GetNext();
+      copy.Append(tmp.Copy());
+      if (&tmp == end)
+        break;
     }
-    if (tmp == end)
-      break;
-  }
 
-  return out;
+  return copy.TakeHead();
 }
 
 void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s)

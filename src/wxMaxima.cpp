@@ -40,6 +40,7 @@
 #include "wxMaxima.h"
 #include <wx/wupdlock.h>
 #include "wxMathml.h"
+#include "CellList.h"
 #include "ImgCell.h"
 #include "DrawWiz.h"
 #include "LicenseDialog.h"
@@ -1418,8 +1419,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
 
     wxStringTokenizer tokens(s, wxT("\n"));
     int count = 0;
-    std::unique_ptr<Cell> head;
-    Cell *last = nullptr;
+    CellListBuilder<Cell> tree;
     while (tokens.HasMoreTokens())
     {
       wxString token = tokens.GetNextToken();
@@ -1441,21 +1441,14 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
         if (tokens.HasMoreTokens())
           cell->SetSkip(false);
 
-        if (!last)
-        {
-          head = std::move(owned);
-          last = head.get();
-        }
-        else
-        {
-          last->AppendCell(std::move(owned));
-          cell->ForceBreakLine(true);
-          last = cell;
-        }
+        auto breakLine = bool(tree);
+        tree.Append(std::move(owned));
+        if (breakLine)
+          tree.GetLastAppended()->ForceBreakLine(true);
       }
       count++;
     }
-    m_worksheet->InsertLine(std::move(head), true);
+    m_worksheet->InsertLine(tree.TakeHead(), true);
   }
 
   if(cell)
@@ -3718,49 +3711,27 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &
   wxBusyCursor crs;
 
   MathParser mp(&m_worksheet->m_configuration, wxmxfilename);
-  GroupCell *tree = NULL;
-  GroupCell *last = NULL;
+  CellListBuilder<GroupCell> tree;
 
   bool warning = true;
 
   if (xmlcells)
     xmlcells = xmlcells->GetChildren();
 
-  while (xmlcells != NULL)
+  for (; xmlcells; xmlcells = xmlcells->GetNext())
   {
     if (xmlcells->GetType() != wxXML_TEXT_NODE)
     {
-      Cell *mc;
-      mc = mp.ParseTag_(xmlcells, false);
-      if (mc != NULL)
-      {
-        GroupCell *cell = dynamic_cast<GroupCell *>(mc);
-
-        if (last == NULL)
-        {
-          // first cell
-          last = tree = cell;
-        }
-        else
-        {
-          // The rest of the cells
-          last->m_next = cell;
-          last->SetNextToDraw(cell);
-          last->m_next->m_previous = last;
-
-          last = last->GetNext();
-        }
-      }
-      else if (warning)
+      bool ok = tree.DynamicAppend(mp.ParseTag(xmlcells, false));
+      if (!ok && warning)
       {
         LoggingMessageBox(_("Parts of the document will not be loaded correctly!"), _("Warning"),
                      wxOK | wxICON_WARNING);
         warning = false;
       }
     }
-    xmlcells = xmlcells->GetNext();
   }
-  return tree;
+  return tree.ReleaseHead();
 }
 
 wxString wxMaxima::EscapeForLisp(wxString str)

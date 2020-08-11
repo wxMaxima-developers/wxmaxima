@@ -412,4 +412,28 @@ template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
 bool operator<(const CellPtr<T> &left, U right) { return left.cmpObjects(right) < 0; }
 
+//
+
+//! A cast for unique pointers, used to downcast to a derived type iff we're certain
+//! the cell is indeed of a derived type
+template<typename Derived, typename Base>
+std::unique_ptr<Derived> static_unique_ptr_cast(std::unique_ptr<Base>&& p)
+{
+  auto d = static_cast<Derived *>(p.release());
+  return std::unique_ptr<Derived>(d);
+  // Note: We don't move the deleter, since it's not special.
+}
+
+//! A cast for unique pointers, used to downcast to a derived type in a type-safe
+//! manner.
+template<typename Derived, typename Base>
+std::unique_ptr<Derived> dynamic_unique_ptr_cast(std::unique_ptr<Base>&& p)
+{
+  auto d = dynamic_cast<Derived *>(p.get());
+  if (d)
+    p.release();
+  return std::unique_ptr<Derived>(d);
+  // Note: We don't move the deleter, since it's not special.
+}
+
 #endif // CELLPTR_H
