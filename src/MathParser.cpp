@@ -730,18 +730,17 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
 
 Cell *MathParser::ParseSubTag(wxXmlNode *node)
 {
-  SubCell *sub = new SubCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  sub->SetBase(HandleNullPointer(ParseTag(child, false)));
+  auto base = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
   auto index = HandleNullPointer(ParseTag(child, false));
   index->SetExponentFlag();
-  sub->SetIndex(std::move(index));
+
+  auto sub = std::make_unique<SubCell>(nullptr, m_configuration, std::move(base), std::move(index));
   sub->SetType(m_ParserStyle);
-  sub->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, sub);
-  return sub;
+  return sub.release();
 }
 
 Cell *MathParser::ParseAtTag(wxXmlNode *node)

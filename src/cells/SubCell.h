@@ -28,15 +28,13 @@
 class SubCell final : public Cell
 {
 public:
-  SubCell(GroupCell *parent, Configuration **config);
+  SubCell(GroupCell *parent, Configuration **config,
+          std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index);
   SubCell(const SubCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_indexCell}; }
-
-  void SetBase(std::unique_ptr<Cell> &&base);
-  void SetIndex(std::unique_ptr<Cell> &&index);
 
   void Recalculate(AFontSize fontsize) override;
 
