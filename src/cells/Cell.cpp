@@ -31,6 +31,7 @@
 #include "GroupCell.h"
 #include "StringUtils.h"
 #include "TextCell.h"
+#include "VisiblyInvalidCell.h"
 #include "stx/unique_cast.hpp"
 #include <wx/regex.h>
 #include <wx/sstream.h>
@@ -1228,6 +1229,21 @@ bool Cell::IsMath() const
   return !(m_textStyle == TS_LABEL ||
            m_textStyle == TS_USERLABEL ||
            m_textStyle == TS_INPUT);
+}
+
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
+{
+  return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
+}
+
+std::unique_ptr<Cell> Cell::InvalidCellOr(std::unique_ptr<Cell> &&cell) const
+{
+  return cell ? std::move(cell) : MakeVisiblyInvalidCell();
+}
+
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(Configuration **config)
+{
+  return std::make_unique<VisiblyInvalidCell>(nullptr, config);
 }
 
 #if wxUSE_ACCESSIBILITY
