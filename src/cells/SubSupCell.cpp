@@ -31,33 +31,26 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 #include <wx/config.h>
-#include "wx/config.h"
-#include "VisiblyInvalidCell.h"
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(GroupCell *parent, Configuration **config) :
+SubSupCell::SubSupCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base) :
   Cell(parent, config),
-  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+  m_baseCell(std::move(base))
 {
   InitBitFields();
 }
 
-SubSupCell::SubSupCell(const SubSupCell &cell):
-    SubSupCell(cell.m_group, cell.m_configuration)
+SubSupCell::SubSupCell(const SubSupCell &cell)
+    : SubSupCell(cell.m_group, cell.m_configuration,
+                 CopyList(cell.m_baseCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
-  if(cell.m_baseCell)
-    SetBase(cell.m_baseCell->CopyList());
-  if(cell.m_postSubCell)
-    SetIndex(cell.m_postSubCell->CopyList());
-  if(cell.m_postSupCell)
-    SetExponent(cell.m_postSupCell->CopyList());
-  if(cell.m_preSubCell)
-    SetPreSub(cell.m_preSubCell->CopyList());
-  if(cell.m_preSupCell)
-    SetPreSup(cell.m_preSupCell->CopyList());
+  SetIndex(CopyList(cell.m_postSubCell.get()));
+  SetExponent(CopyList(cell.m_postSupCell.get()));
+  SetPreSub(CopyList(cell.m_preSubCell.get()));
+  SetPreSup(CopyList(cell.m_preSupCell.get()));
 }
 
 DEFINE_CELL(SubSupCell)
@@ -110,13 +103,6 @@ void SubSupCell::SetIndex(std::unique_ptr<Cell> &&index)
     return;
   RemoveCell(m_scriptCells, m_postSubCell);
   m_postSubCell = std::move(index);
-}
-
-void SubSupCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_baseCell = std::move(base);
 }
 
 void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt)

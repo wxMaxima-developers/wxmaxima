@@ -651,11 +651,12 @@ Cell *MathParser::ParseSupTag(wxXmlNode *node)
 
 Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
 {
-  SubSupCell *subsup = new SubSupCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
+  auto base = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
+
+  auto subsup = std::make_unique<SubSupCell>(nullptr, m_configuration, std::move(base));
   wxString pos;
   if((child != NULL) && (child->GetAttribute("pos", wxEmptyString) != wxEmptyString))
   {
@@ -688,18 +689,19 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
     subsup->SetStyle(TS_VARIABLE);
     ParseCommonAttrs(node, subsup);
   }
-  return subsup;
+  return subsup.release();
 }
 
 Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
 {
   bool pre = false;
   bool subscript = true;
-  SubSupCell *subsup = new SubSupCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
+  auto base = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
+
+  auto subsup = std::make_unique<SubSupCell>(nullptr, m_configuration, std::move(base));
   while(child != NULL)
   {
     if(child->GetName() == "mprescripts")
@@ -725,7 +727,7 @@ Cell *MathParser::ParseMmultiscriptsTag(wxXmlNode *node)
     child = SkipWhitespaceNode(child);
     child = GetNextTag(child);
   }
-  return subsup;
+  return subsup.release();
 }
 
 Cell *MathParser::ParseSubTag(wxXmlNode *node)
