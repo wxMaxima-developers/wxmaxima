@@ -58,7 +58,6 @@ public:
   InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
 
   Cell *GetInner() const { return m_innerCell.get(); }
-  void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
   void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
   void SetPrint(bool print) { m_print = print; }

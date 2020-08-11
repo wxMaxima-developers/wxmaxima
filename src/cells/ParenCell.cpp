@@ -66,12 +66,6 @@ ParenCell::ParenCell(const ParenCell &cell):
 
 DEFINE_CELL(ParenCell)
 
-void ParenCell::SetInner(Cell *inner, CellType type)
-{
-  if (inner)
-    SetInner(std::unique_ptr<Cell>(inner), type);
-}
-
 void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
 {
   if (!inner)
