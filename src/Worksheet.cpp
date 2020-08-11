@@ -2531,40 +2531,27 @@ bool Worksheet::CopyTeX()
   if (!m_cellPointers.m_selectionStart)
     return false;
 
-  Cell *tmp = m_cellPointers.m_selectionStart;
-
-  bool inMath = false;
-  wxString label;
-
   wxConfigBase *config = wxConfig::Get();
   bool wrapLatexMath = true;
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
 
+  Cell *const start = m_cellPointers.m_selectionStart;
+  bool inMath = false;
   wxString s;
-  if (tmp->GetType() != MC_TYPE_GROUP)
-  {
-    inMath = true;
-    if (wrapLatexMath)
-      s = wxT("\\[");
-    for (; tmp; tmp = tmp->m_next)
-    {
-      s += tmp->ToTeX();
-      if (tmp == m_cellPointers.m_selectionEnd)
-        break;
-    }
-  }
-  else
-  {
-    for (auto &gc : OnList(dynamic_cast<GroupCell *>(tmp)))
-    {
-      int imgCtr;
-      s += gc.ToTeX(wxEmptyString, wxEmptyString, &imgCtr);
-      if (&gc == m_cellPointers.m_selectionEnd)
-        break;
-    }
-  }
 
-  if (inMath && wrapLatexMath)
+  if (start->GetType() != MC_TYPE_GROUP)
+  {
+    inMath = wrapLatexMath;
+    if (inMath)
+      s = wxT("\\[");
+  }
+  for (const Cell &tmp : OnList(start))
+  {
+    s += tmp.ToTeX();
+    if (&tmp == m_cellPointers.m_selectionEnd)
+      break;
+  }
+  if (inMath)
     s += wxT("\\]");
 
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
