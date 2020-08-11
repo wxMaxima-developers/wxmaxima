@@ -28,19 +28,15 @@
 
 #include "SqrtCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
+SqrtCell::SqrtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
     Cell(parent, config),
-    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_open(std::make_unique<TextCell>(parent, config, "sqrt(")),
-    m_close(std::make_unique<TextCell>(parent, config, ")"))
+    m_innerCell(std::move(inner))
 {
   InitBitFields();
-  m_open->SetStyle(TS_FUNCTION);
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  SetStyle(TS_VARIABLE);
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_open
@@ -51,21 +47,21 @@ SqrtCell::SqrtCell(GroupCell *parent, Configuration **config) :
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signType
 // cppcheck-suppress uninitMemberVar symbolName=SqrtCell::m_signFontScale
 SqrtCell::SqrtCell(const SqrtCell &cell):
-    SqrtCell(cell.m_group, cell.m_configuration)
+    SqrtCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  if(cell.m_innerCell)
-    SetInner(cell.m_innerCell->CopyList());
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 DEFINE_CELL(SqrtCell)
 
-void SqrtCell::SetInner(std::unique_ptr<Cell> &&inner)
+void SqrtCell::MakeBreakUpCells()
 {
-  if (!inner)
-    return;
-  m_innerCell = std::move(inner);
+  if (m_open) return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, "sqrt(");
+  m_open->SetStyle(TS_FUNCTION);
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
 void SqrtCell::Recalculate(AFontSize fontsize)
@@ -75,8 +71,6 @@ void SqrtCell::Recalculate(AFontSize fontsize)
 
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateList(fontsize);
-  m_open->Recalculate(fontsize);
-  m_close->Recalculate(fontsize);
 
   if (configuration->CheckTeXFonts())
   {
@@ -137,10 +131,19 @@ void SqrtCell::Recalculate(AFontSize fontsize)
   }
   else
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-  m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList()) + Scale_Px(3);
-  m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList()) + Scale_Px(3);
-  if(m_isBrokenIntoLines)
+  if (!m_isBrokenIntoLines)
+  {
+    auto openHeight = 0; // m_open->GetHeightList();
+    auto openCenter = 0; // m_open->GetCenterList();
+    m_height = wxMax(m_innerCell->GetHeightList(), openHeight) + Scale_Px(3);
+    m_center = wxMax(m_innerCell->GetCenterList(), openCenter) + Scale_Px(3);
+  }
+  else
+  {
     m_height = m_center = m_width = 0;
+    m_open->Recalculate(fontsize);
+    m_close->Recalculate(fontsize);
+  }
   Cell::Recalculate(fontsize);
 }
 
@@ -290,6 +293,7 @@ bool SqrtCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakUpCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);
