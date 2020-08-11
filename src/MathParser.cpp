@@ -966,24 +966,26 @@ Cell *MathParser::ParseLimitTag(wxXmlNode *node)
 
 Cell *MathParser::ParseSumTag(wxXmlNode *node)
 {
-  SumCell *sum = new SumCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   wxString type = node->GetAttribute(wxT("type"), wxT("sum"));
+  sumStyle style = ((type == wxT("prod")) || (type == wxT("lprod"))) ? SM_PROD : SM_SUM;
+  auto highlight = m_highlight;
 
-  if ((type == wxT("prod")) || (type == wxT("lprod")))
-    sum->SetSumStyle(SM_PROD);
-  sum->SetHighlight(m_highlight);
-  sum->SetUnder(HandleNullPointer(ParseTag(child, false)));
+  auto under = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
+  std::unique_ptr<Cell> over;
   if ((type != wxT("lsum")) && (type != wxT("lprod")))
-    sum->SetOver(HandleNullPointer(ParseTag(child, false)));
+    over = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
-  sum->SetBase(HandleNullPointer(ParseTag(child, false)));
+  auto base = HandleNullPointer(ParseTag(child, false));
+
+  auto sum = std::make_unique<SumCell>(nullptr, m_configuration, style, std::move(under), std::move(over), std::move(base));
+  sum->SetHighlight(highlight);
   sum->SetType(m_ParserStyle);
   sum->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, sum);
-  return sum;
+  return sum.release();
 }
 
 Cell *MathParser::ParseIntTag(wxXmlNode *node)

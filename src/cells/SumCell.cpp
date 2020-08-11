@@ -32,93 +32,88 @@
 #include "CellImpl.h"
 #include "TextCell.h"
 
-SumCell::SumCell(GroupCell *group, Configuration **config) :
-    Cell(group, config),
-    m_under(std::make_unique<TextCell>(group, config)),
-    m_start(std::make_unique<TextCell>(group, config)),
-    m_var(std::make_unique<TextCell>(group, config)),
-    m_end(std::make_unique<TextCell>(group, config)),
-    m_comma1(std::make_unique<TextCell>(group, config, wxT(","))),
-    m_comma2(std::make_unique<TextCell>(group, config, wxT(","))),
-    m_comma3(std::make_unique<TextCell>(group, config, wxT(","))),
-    m_open(std::make_unique<TextCell>(group, config, wxT("lsum("))),
-    m_close(std::make_unique<TextCell>(group, config, wxT(")"))),
-    m_paren(std::make_unique<ParenCell>(group, config, nullptr))
+SumCell::SumCell(GroupCell *group, Configuration **config, sumStyle style,
+                 std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
+                 std::unique_ptr<Cell> &&base)
+    : Cell(group, config),
+      m_under(std::move(under)),
+      m_start(MakeStart(m_under.get())),
+      m_var(m_under->Copy()),
+      m_over(std::move(over)),
+      m_paren(std::make_unique<ParenCell>(group, config, std::move(base))),
+      m_sumStyle(style)
 {
   InitBitFields();
-  wxASSERT(Base()); // m_paren constructs its inner cell by default
+  if (!m_over)
+    m_over = std::make_unique<TextCell>(group, config);
+  wxASSERT(Base());
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signHeight
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWidth
 // cppcheck-suppress uninitMemberVar symbolName=SumCell::m_signWCenter
-SumCell::SumCell(const SumCell &cell) :
-    SumCell(cell.m_group, cell.m_configuration)
+SumCell::SumCell(const SumCell &cell)
+    : SumCell(cell.m_group, cell.m_configuration, cell.m_sumStyle,
+              CopyList(cell.m_under.get()), CopyList(cell.m_over.get()),
+              CopyList(cell.Base()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
-  if (cell.Base())
-    SetBase(cell.Base()->CopyList());
-  if (cell.m_under)
-  SetUnder(cell.m_under->CopyList());
-  if (cell.m_end)
-    SetOver(cell.m_end->CopyList());
-  SetSumStyle(cell.m_sumStyle);
 }
 
 DEFINE_CELL(SumCell)
 
-void SumCell::SetOver(std::unique_ptr<Cell> &&over)
+void SumCell::MakeBreakUpCells()
 {
-  if (!over)
-    return;
-  m_end = std::move(over);
-  if(m_sumStyle == SM_SUM)
-  {
-    if(!m_end->ToString().IsEmpty())
-      m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("sum("));
-  }
-  else
-    m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("prod("));
-  ResetSize();
+  if (m_open) return;
+
+  bool overStringEmpty = m_over->ToString().empty();
+  const wxString &openText =
+    (m_sumStyle == SM_SUM &&  overStringEmpty) ? S_("lsum(") :
+    (m_sumStyle == SM_SUM && !overStringEmpty) ? S_("sum(") :
+    /* (m_sumstyle == SM_PROD) */                S_("prod(");
+
+  m_comma1 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
+  m_comma2 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
+  m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, wxT(","));
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, openText);
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
 }
 
-void SumCell::SetBase(std::unique_ptr<Cell> &&base)
+ParenCell *SumCell::Paren() const
 {
-  if (!base)
-    return;
-  m_baseWithoutParen = base;
-  Paren()->SetInner(std::move(base));
-  wxASSERT(Base() == m_baseWithoutParen);
-  m_displayedBase = m_paren;
+  return static_cast<ParenCell *>(m_paren.get());
 }
 
-void SumCell::SetUnder(std::unique_ptr<Cell> &&under)
+Cell *SumCell::Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
+
+Cell *SumCell::DisplayedBase() const
 {
-  if (!under)
-    return;
-  m_under = std::move(under);
-  
+  return m_displayParen ? m_paren.get() : Paren()->GetInner();
+}
+
+std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const
+{
+  std::unique_ptr<Cell> newStart;
   // m_under consists of a list of cells:
   //  The variable name, that can be more than one cell if there is a subscript.
   //  1 cell containing the text "in" or "=" (TODO: That's heuristics. Is there a better, but
   //                                          backwards-compatible way for this?)
   //  And the rest contains the lower limit.
-  m_var = m_under->Copy();
 
   bool prevFound = false;
-  for (auto &start : OnList(m_under.get()))
+  for (auto &start : OnList(under))
   {
     auto const &value = start.GetValue();
     if (prevFound)
     {
-      m_start = start.CopyList();
+      newStart = start.CopyList();
       break;
     }
     prevFound = (value == wxT("in")) || (value == wxT("="));
   }
 
-  ResetSize();
+  return newStart ? std::move(newStart) : std::make_unique<TextCell>(m_group, m_configuration);
 }
 
 void SumCell::Recalculate(AFontSize fontsize)
@@ -126,16 +121,18 @@ void SumCell::Recalculate(AFontSize fontsize)
   if (!NeedsRecalculation(fontsize))
     return;
 
-  m_displayedBase->RecalculateList(fontsize);
+  DisplayedBase()->RecalculateList(fontsize);
 
-  m_comma1->RecalculateList(fontsize);
-  m_comma2->RecalculateList(fontsize);
-  m_comma3->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
+  if (m_isBrokenIntoLines)
+  {
+    m_comma1->RecalculateList(fontsize);
+    m_comma2->RecalculateList(fontsize);
+    m_comma3->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+  }
   m_start->RecalculateList(fontsize);
   m_var->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
 
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
@@ -146,23 +143,21 @@ void SumCell::Recalculate(AFontSize fontsize)
     m_under->RecalculateList(fontsize);
   else
     m_under->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  if (!m_end)
-    m_end = std::make_unique<TextCell>(m_group, m_configuration);
   if(m_isBrokenIntoLines)
-    m_end->RecalculateList(fontsize);
+    m_over->RecalculateList(fontsize);
   else
-    m_end->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
+    m_over->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
 
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
-  m_signWCenter = wxMax(m_signWCenter, m_end->GetFullWidth() / 2);
-  m_width = 2 * m_signWCenter + m_displayedBase->GetFullWidth() + Scale_Px(4);
+  m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
+  m_width = 2 * m_signWCenter + DisplayedBase()->GetFullWidth() + Scale_Px(4);
 
-  m_center = wxMax(m_end->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
-                 m_displayedBase->GetCenterList());
+  m_center = wxMax(m_over->GetHeightList() + Scale_Px(2) + m_signHeight / 2,
+                 DisplayedBase()->GetCenterList());
   m_height = m_center +
              wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
-                 m_displayedBase->GetMaxDrop());
-  m_signHeight = m_displayedBase->GetHeightList();
+                 DisplayedBase()->GetMaxDrop());
+  m_signHeight = DisplayedBase()->GetHeightList();
   Cell::Recalculate(fontsize);
 }
 
@@ -181,9 +176,9 @@ void SumCell::Draw(wxPoint point)
     under.y = point.y + m_signHeight / 2 + m_under->GetCenterList() + Scale_Px(2);
     m_under->DrawList(under);
 
-    over.x += m_signWCenter - m_end->GetFullWidth() / 2;
-    over.y = point.y - m_signHeight / 2 - m_end->GetMaxDrop() - Scale_Px(2);
-    m_end->DrawList(over);
+    over.x += m_signWCenter - m_over->GetFullWidth() / 2;
+    over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2);
+    m_over->DrawList(over);
 
     SetPen(1.5);
     if (m_sumStyle == SM_SUM)
@@ -224,7 +219,7 @@ void SumCell::Draw(wxPoint point)
                    point.y - m_signHeight / 2);
     }
     base.x += (2 * m_signWCenter + Scale_Px(4));
-    m_displayedBase->DrawList(base);
+    DisplayedBase()->DrawList(base);
   }
 }
 
@@ -239,7 +234,7 @@ wxString SumCell::ToString() const
   else
     s = wxT("product(");
   
-  if (m_end->ListToString() == wxEmptyString)
+  if (m_over->ListToString() == wxEmptyString)
   {
     if(m_sumStyle == SM_PROD)
       s = wxT("lprod(");
@@ -259,7 +254,7 @@ wxString SumCell::ToString() const
     if (tmp != NULL)
       from = tmp->ListToString();
   }
-  wxString to = m_end->ListToString();
+  wxString to = m_over->ListToString();
   s += wxT(",") + var + wxT(",") + from;
   if (to != wxEmptyString)
     s += wxT(",") + to + wxT(")");
@@ -287,7 +282,7 @@ wxString SumCell::ToMatlab() const
 	if (tmp != NULL)
 	  from = tmp->ListToMatlab();
   }
-  wxString to = m_end->ListToMatlab();
+  wxString to = m_over->ListToMatlab();
   s += wxT(",") + var + wxT(",") + from;
   if (to != wxEmptyString)
 	s += wxT(",") + to + wxT(")");
@@ -306,7 +301,7 @@ wxString SumCell::ToTeX() const
 
 
   s += wxT("_{") + m_under->ListToTeX() + wxT("}");
-  wxString to = m_end->ListToTeX();
+  wxString to = m_over->ListToTeX();
   if (to.Length())
     s += wxT("^{") + to + wxT("}");
 
@@ -321,7 +316,7 @@ wxString SumCell::ToOMML() const
 {
   wxString base = Base()->ListToOMML();
   wxString from = m_under ? m_under->ListToOMML() : wxString{};
-  wxString to = m_end ? m_end->ListToOMML() : wxString{};
+  wxString to = m_over ? m_over->ListToOMML() : wxString{};
 
   wxString retval;
 
@@ -348,7 +343,7 @@ wxString SumCell::ToXML() const
 
   if (m_sumStyle == SM_PROD)
     type = wxT("prod");
-  if (m_end->ListToString() == wxEmptyString)
+  if (m_over->ListToString() == wxEmptyString)
   {
     if(m_sumStyle == SM_PROD)
       type = wxT("lprod");
@@ -361,7 +356,7 @@ wxString SumCell::ToXML() const
     flags += wxT(" breakline=\"true\"");
     
   return wxT("<sm type=\"") + flags + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
-         m_end->ListToXML() + _T("</r><r>") +
+         m_over->ListToXML() + _T("</r><r>") +
          Base()->ListToXML() + _T("</r></sm>");
 }
 
@@ -373,7 +368,7 @@ wxString SumCell::ToMathML() const
   if (m_under) from = m_under->ListToMathML();
 
   wxString to;
-  if (m_end) to = m_end->ListToMathML();
+  if (m_over) to = m_over->ListToMathML();
 
   wxString retval;
 
@@ -403,26 +398,9 @@ wxString SumCell::ToMathML() const
   return (wxT("<mrow>") + retval + wxT("</mrow>"));
 }
 
-void SumCell::SetSumStyle(sumStyle style)
-{
-  m_sumStyle = style;
-  if(style == SM_PROD)
-  {
-    m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("prod("));
-  }
-  else
-  {
-    if(!m_end->ToString().IsEmpty())
-      m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("sum("));
-    else
-      m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("lsum("));
-  }
-}
-
-
 void SumCell::Unbreak()
 {
-  m_displayedBase = m_paren;
+  m_displayParen = true;
   Cell::Unbreak();
 }
 
@@ -430,25 +408,26 @@ bool SumCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakUpCells();
     Cell::BreakUp();
-    m_displayedBase = m_baseWithoutParen;
+    m_displayParen = false;
     m_isBrokenIntoLines = true;
 
     m_close->SetNextToDraw(m_nextToDraw);
     m_nextToDraw = m_open;
-    m_open->last()->SetNextToDraw(m_displayedBase);
-    m_displayedBase->last()->SetNextToDraw(m_comma1);
+    m_open->last()->SetNextToDraw(DisplayedBase());
+    DisplayedBase()->last()->SetNextToDraw(m_comma1);
     m_comma1->last()->SetNextToDraw(m_var);
     m_var->last()->SetNextToDraw(m_comma2);
     m_comma2->last()->SetNextToDraw(m_start);
     // The first cell of m_var should normally be a "d"
-    if(m_end->ToString().IsEmpty())
+    if(m_over->ToString().IsEmpty())
       m_start->last()->SetNextToDraw(m_close);
     else
     {
       m_start->last()->SetNextToDraw(m_comma3);
-      m_comma3->last()->SetNextToDraw(m_end);
-      m_end->last()->SetNextToDraw(m_close);
+      m_comma3->last()->SetNextToDraw(m_over);
+      m_over->last()->SetNextToDraw(m_close);
     }
     ResetCellListSizes();
     m_height = 0;
