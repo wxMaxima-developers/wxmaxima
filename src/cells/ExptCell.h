@@ -48,17 +48,12 @@
 class ExptCell final : public Cell
 {
 public:
-  ExptCell(GroupCell *parent, Configuration **config);
+  ExptCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt);
   ExptCell(const ExptCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_close}; }
-
-  //! Set the mantissa
-  void SetBase(std::unique_ptr<Cell> &&base);
-  //! Set the exponent
-  void SetPower(std::unique_ptr<Cell> &&power);
 
   //! By how much do we want to rise the power?
   double PowRise() const {return Scale_Px(.3 * m_fontSize);}
@@ -87,6 +82,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  void MakeBreakupCells();
+
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
 

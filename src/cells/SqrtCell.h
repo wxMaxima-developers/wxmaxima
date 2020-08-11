@@ -48,14 +48,12 @@
 class SqrtCell final : public Cell
 {
 public:
-  SqrtCell(GroupCell *parent, Configuration **config);
+  SqrtCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
   SqrtCell(const SqrtCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
-
-  void SetInner(std::unique_ptr<Cell> &&inner);
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -75,6 +73,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  void MakeBreakUpCells();
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.

@@ -29,68 +29,53 @@
 #include "FracCell.h"
 #include "CellImpl.h"
 #include "ParenCell.h"
-#include "VisiblyInvalidCell.h"
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(GroupCell *parent, Configuration **config) :
+FracCell::FracCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom) :
     Cell(parent, config),
-    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
-    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
-    m_divideOwner(std::make_unique<TextCell>(parent, config, "/"))
+    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(num))),
+    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(denom)))
 {
   InitBitFields();
-  SetNum(std::make_unique<VisiblyInvalidCell>(parent,config));
-  SetDenom(std::make_unique<VisiblyInvalidCell>(parent,config));
-  m_divide->SetStyle(TS_VARIABLE);
+  SetStyle(TS_VARIABLE);
+  SetupBreakUps();
 }
 
-FracCell::FracCell(const FracCell &cell):
-    FracCell(cell.m_group, cell.m_configuration)
+FracCell::FracCell(const FracCell &cell) :
+    FracCell(cell.m_group, cell.m_configuration, CopyList(cell.Num()), CopyList(cell.Denom()))
 {
   CopyCommonData(cell);
-  if (cell.Num())
-    SetNum(cell.Num()->CopyList());
-  if (cell.Denom())
-    SetDenom(cell.Denom()->CopyList());
   m_fracStyle = cell.m_fracStyle;
-  m_exponent = cell.m_exponent;
+  m_inExponent = cell.m_inExponent;
   SetupBreakUps();
 }
 
 DEFINE_CELL(FracCell)
 
-void FracCell::SetNum(std::unique_ptr<Cell> &&num)
+void FracCell::MakeDivideCell()
 {
-  if (!num)
-    return;
-  m_numParenthesis->SetInner(std::move(num));
-  SetupBreakUps();
-}
-
-void FracCell::SetDenom(std::unique_ptr<Cell> &&denom)
-{
-  if (!denom)
-    return;
-  m_denomParenthesis->SetInner(std::move(denom));
-  SetupBreakUps();
+  if (m_divideOwner) return;
+  m_divideOwner = std::make_unique<TextCell>(m_group, m_configuration, "/");
+  m_divideOwner->SetStyle(TS_VARIABLE);
+  m_divide = m_divideOwner.get();
 }
 
 void FracCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
-  if(m_exponent || m_isBrokenIntoLines)
+  if(m_inExponent || m_isBrokenIntoLines)
   {
     m_displayedNum->RecalculateList(fontsize);
     m_displayedDenom->RecalculateList(fontsize);
+    m_divide->RecalculateList(fontsize);
   }
   else
   {
     m_displayedNum->RecalculateList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
     m_displayedDenom->RecalculateList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
   }
-  m_divide->RecalculateList(fontsize);
   
   if(m_isBrokenIntoLines)
   {
@@ -100,7 +85,7 @@ void FracCell::Recalculate(AFontSize fontsize)
   }
   else
   {
-    if (m_exponent)
+    if (m_inExponent)
     {
       m_protrusion = m_horizontalGapLeft = m_horizontalGapRight = 0;
       m_width = Num()->GetWidth() + Denom()->GetWidth() + m_divide->GetWidth();
@@ -148,7 +133,7 @@ void FracCell::Draw(wxPoint point)
     if(m_isBrokenIntoLines)
       return;
     
-    if (m_exponent)
+    if (m_inExponent)
     {
       num = point;
       wxPoint divide(point);
@@ -318,7 +303,10 @@ wxString FracCell::ToXML() const
 void FracCell::SetExponentFlag()
 {
   if (Num()->IsShortNum() && Denom()->IsShortNum())
-    m_exponent = true;
+  {
+    m_inExponent = true;
+    MakeDivideCell();
+  }
 }
 
 void FracCell::SetupBreakUps()
@@ -346,6 +334,7 @@ bool FracCell::BreakUp()
 
   if (!m_isBrokenIntoLines)
   {
+    MakeDivideCell();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     if(Num() && Num()->GetNext())

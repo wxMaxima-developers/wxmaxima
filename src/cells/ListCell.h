@@ -49,16 +49,12 @@
 class ListCell final : public Cell
 {
 public:
-  ListCell(GroupCell *parent, Configuration **config);
+  ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
   ListCell(const ListCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
-
-  Cell *GetInner() const { return m_innerCell.get(); }
-  void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
-  void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
   void Recalculate(AFontSize fontsize) override;
 

@@ -30,14 +30,13 @@
 class SubSupCell final : public Cell
 {
 public:
-  SubSupCell(GroupCell *parent, Configuration **config);
+  SubSupCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base);
   SubSupCell(const SubSupCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_preSupCell}; }
 
-  void SetBase(std::unique_ptr<Cell> &&base);
   void SetIndex(std::unique_ptr<Cell> &&index);
   void SetExponent(std::unique_ptr<Cell> &&expt);
   void SetPreSub(std::unique_ptr<Cell> &&index);

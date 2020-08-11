@@ -31,13 +31,16 @@
 #include "CellImpl.h"
 #include "VisiblyInvalidCell.h"
 
-ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
+ParenCell::ParenCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
     Cell(parent, config),
-    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
+    m_innerCell(std::move(inner)),
     m_open(std::make_unique<TextCell>(parent, config, wxT("("))),
     m_close(std::make_unique<TextCell>(parent, config, wxT(")")))
 {
   InitBitFields();
+  if (!m_innerCell)
+    m_innerCell = std::make_unique<VisiblyInvalidCell>(parent,config);
+  m_innerCell->SetSuppressMultiplicationDot(true);
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_fontSize = AFontSize(10.0f);
@@ -56,21 +59,13 @@ ParenCell::ParenCell(GroupCell *parent, Configuration **config) :
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ParenCell::m_extendHeight
 ParenCell::ParenCell(const ParenCell &cell):
-    ParenCell(cell.m_group, cell.m_configuration)
+    ParenCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  if (cell.m_innerCell)
-    SetInner(cell.m_innerCell->CopyList(), cell.m_type);
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 DEFINE_CELL(ParenCell)
-
-void ParenCell::SetInner(Cell *inner, CellType type)
-{
-  if (inner)
-    SetInner(std::unique_ptr<Cell>(inner), type);
-}
 
 void ParenCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
 {

@@ -28,15 +28,13 @@
 class DiffCell final : public Cell
 {
 public:
-  DiffCell(GroupCell *parent, Configuration **config);
+  DiffCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&base,
+           std::unique_ptr<Cell> &&diff);
   DiffCell(const DiffCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
   InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_diffCell}; }
-
-  void SetBase(std::unique_ptr<Cell> &&base);
-  void SetDiff(std::unique_ptr<Cell> &&diff);
 
   void Recalculate(AFontSize fontsize) override;
 
@@ -55,6 +53,8 @@ public:
   bool BreakUp() override;
 
 private:
+  void MakeBreakupCells();
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.

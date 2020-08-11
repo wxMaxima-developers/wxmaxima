@@ -50,7 +50,7 @@
 class ParenCell final : public Cell
 {
 public:
-  ParenCell(GroupCell *parent, Configuration **config);
+  ParenCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
   ParenCell(const ParenCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -58,7 +58,6 @@ public:
   InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
 
   Cell *GetInner() const { return m_innerCell.get(); }
-  void SetInner(Cell *inner, CellType type = MC_TYPE_DEFAULT);
   void SetInner(std::unique_ptr<Cell> inner, CellType type = MC_TYPE_DEFAULT);
 
   void SetPrint(bool print) { m_print = print; }

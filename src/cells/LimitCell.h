@@ -40,7 +40,9 @@
 class LimitCell final : public Cell
 {
 public:
-  LimitCell(GroupCell *parent, Configuration **config);
+  LimitCell(GroupCell *parent, Configuration **config,
+            std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
+            std::unique_ptr<Cell> &&name);
   LimitCell(const LimitCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -50,10 +52,6 @@ public:
   void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
-
-  void SetBase(std::unique_ptr<Cell> &&base);
-  void SetUnder(std::unique_ptr<Cell> &&under);
-  void SetName(std::unique_ptr<Cell> &&name);
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
@@ -68,6 +66,8 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
+  void MakeBreakUpCells();
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.

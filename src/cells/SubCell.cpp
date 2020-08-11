@@ -28,44 +28,28 @@
 
 #include "SubCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
 
 #define SUB_DEC 2
 
-SubCell::SubCell(GroupCell *parent, Configuration **config) :
-  Cell(parent, config),
-  m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-  m_indexCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+SubCell::SubCell(GroupCell *parent, Configuration **config,
+                 std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&index)
+    : Cell(parent, config), m_baseCell(std::move(base)),
+      m_indexCell(std::move(index))
 {
   InitBitFields();
+  SetStyle(TS_VARIABLE);
 }
 
-SubCell::SubCell(const SubCell &cell):
-    SubCell(cell.m_group, cell.m_configuration)
+SubCell::SubCell(const SubCell &cell)
+    : SubCell(cell.m_group, cell.m_configuration,
+              CopyList(cell.m_baseCell.get()),
+              CopyList(cell.m_indexCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
-  if(cell.m_baseCell)
-    SetBase(cell.m_baseCell->CopyList());
-  if(cell.m_indexCell)
-    SetIndex(cell.m_indexCell->CopyList());
 }
 
 DEFINE_CELL(SubCell)
-
-void SubCell::SetIndex(std::unique_ptr<Cell> &&index)
-{
-  if (!index)
-    return;
-  m_indexCell = std::move(index);
-}
-
-void SubCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_baseCell = std::move(base);
-}
 
 void SubCell::Recalculate(AFontSize fontsize)
 {

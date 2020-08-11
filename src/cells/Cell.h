@@ -776,11 +776,11 @@ public:
   //! Copy common data (used when copying a cell)
   void CopyCommonData(const Cell & cell);
 
-  /*! Attach a copy of the list of cells that follows this one to a cell
-    
-    Used by Cell::Copy().
-  */
+  //! Return a copy of the list of cells beginning with this one.
   std::unique_ptr<Cell> CopyList() const;
+
+  //! Return a copy of the given list of cells.
+  static std::unique_ptr<Cell> CopyList(const Cell *cell);
 
   //! Remove this cell's tooltip
   void ClearToolTip();
@@ -829,6 +829,12 @@ public:
 #if wxUSE_ACCESSIBILITY
   CellAccessible *GetAccessible();
 #endif
+
+protected:
+  std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
+  std::unique_ptr<Cell> InvalidCellOr(std::unique_ptr<Cell> &&cell) const;
+public:
+  static std::unique_ptr<Cell> MakeVisiblyInvalidCell(Configuration **config);
 
 protected:
 //** Bases and internal members (16 bytes)

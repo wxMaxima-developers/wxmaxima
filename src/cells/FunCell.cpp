@@ -29,43 +29,27 @@
 #include "FunCell.h"
 #include "CellImpl.h"
 #include "TextCell.h"
-#include "VisiblyInvalidCell.h"
 
-FunCell::FunCell(GroupCell *parent, Configuration **config) :
-  Cell(parent, config),
-  m_nameCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-  m_argCell(std::make_unique<VisiblyInvalidCell>(parent,config))
+FunCell::FunCell(GroupCell *parent, Configuration **config,
+                 std::unique_ptr<Cell> &&name, std::unique_ptr<Cell> &&arg)
+    : Cell(parent, config),
+      m_nameCell(std::move(name)),
+      m_argCell(std::move(arg))
 {
   InitBitFields();
-}
-
-FunCell::FunCell(const FunCell &cell):
- FunCell(cell.m_group, cell.m_configuration)
-{
-  CopyCommonData(cell);
-  m_altCopyText = cell.m_altCopyText;
-  if(cell.m_nameCell)
-    SetName(cell.m_nameCell->CopyList());
-  if(cell.m_argCell)
-    SetArg(cell.m_argCell->CopyList());
-}
-
-DEFINE_CELL(FunCell)
-
-void FunCell::SetName(std::unique_ptr<Cell> &&name)
-{
-  if (!name)
-    return;
-  m_nameCell = std::move(name);
+  SetStyle(TS_FUNCTION);
   m_nameCell->SetStyle(TS_FUNCTION);
 }
 
-void FunCell::SetArg(std::unique_ptr<Cell> &&arg)
-{  
-  if (!arg)
-    return;
-  m_argCell = std::move(arg);
+FunCell::FunCell(const FunCell &cell)
+    : FunCell(cell.m_group, cell.m_configuration,
+              CopyList(cell.m_nameCell.get()), CopyList(cell.m_argCell.get()))
+{
+  CopyCommonData(cell);
+  m_altCopyText = cell.m_altCopyText;
 }
+
+DEFINE_CELL(FunCell)
 
 void FunCell::Recalculate(AFontSize fontsize)
 {

@@ -28,36 +28,33 @@
 
 #include "ConjugateCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
 
-ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config) :
+ConjugateCell::ConjugateCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
     Cell(parent, config),
-    m_innerCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_open(std::make_unique<TextCell>(parent, config, "conjugate(")),
-    m_close(std::make_unique<TextCell>(parent, config, ")"))
+    m_innerCell(std::move(inner))
 {
   InitBitFields();
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  SetStyle(TS_VARIABLE);
 }
 
 // Old cppcheck bugs:
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=ConjugateCell::m_close
-ConjugateCell::ConjugateCell(const ConjugateCell &cell):
- ConjugateCell(cell.m_group, cell.m_configuration)
+ConjugateCell::ConjugateCell(const ConjugateCell &cell) :
+  ConjugateCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  if (cell.m_innerCell)
-    SetInner(cell.m_innerCell->CopyList());
 }
 
 DEFINE_CELL(ConjugateCell)
 
-void ConjugateCell::SetInner(std::unique_ptr<Cell> &&inner)
+void ConjugateCell::MakeBreakupCells()
 {
-  if (!inner)
-    return;
-  m_innerCell = std::move(inner);
+  if (m_open) return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, wxT("conjugate("));
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  m_open->SetStyle(TS_FUNCTION);
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
 }
 
 void ConjugateCell::Recalculate(AFontSize fontsize)
@@ -66,8 +63,6 @@ void ConjugateCell::Recalculate(AFontSize fontsize)
     return;
 
   m_innerCell->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
 
   if(!m_isBrokenIntoLines)
   {
@@ -83,6 +78,8 @@ void ConjugateCell::Recalculate(AFontSize fontsize)
     m_width = 0;
     m_height = 0;
     m_center = 0;
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
   }
   Cell::Recalculate(fontsize);
 }
@@ -160,6 +157,7 @@ bool ConjugateCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakupCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_open->SetNextToDraw(m_innerCell);

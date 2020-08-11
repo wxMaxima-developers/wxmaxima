@@ -39,7 +39,11 @@
 class IntCell final : public Cell
 {
 public:
-  IntCell(GroupCell *parent, Configuration **config);
+  IntCell(GroupCell *parent, Configuration **config,
+          std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&under,
+          std::unique_ptr<Cell> &&over, std::unique_ptr<Cell> &&var);
+  IntCell(GroupCell *parent, Configuration **config,
+        std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&var);
   IntCell(const IntCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -49,14 +53,6 @@ public:
   void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
-
-  void SetBase(std::unique_ptr<Cell> &&base);
-  //! Set the lower limit of the integral
-  void SetUnder(std::unique_ptr<Cell> &&under);
-  //! Set the higher limit of the integral
-  void SetOver(std::unique_ptr<Cell> &&name);
-  //! Set the integration variable
-  void SetVar(std::unique_ptr<Cell> &&var);
 
   enum IntegralType : int8_t
   {
@@ -80,6 +76,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 private:
+  void MakeBreakUpCells();
+
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.

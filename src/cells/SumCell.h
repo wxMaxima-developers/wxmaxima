@@ -46,7 +46,9 @@ enum sumStyle : int8_t
 class SumCell final : public Cell
 {
 public:
-  SumCell(GroupCell *group, Configuration **config);
+  SumCell(GroupCell *group, Configuration **config, sumStyle style,
+          std::unique_ptr<Cell> &&under, std::unique_ptr<Cell> &&over,
+          std::unique_ptr<Cell> &&base);
   SumCell(const SumCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
@@ -56,12 +58,6 @@ public:
   void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
-
-  void SetBase(std::unique_ptr<Cell> &&base);
-  void SetUnder(std::unique_ptr<Cell> &&under);
-  void SetOver(std::unique_ptr<Cell> &&over);
-
-  void SetSumStyle(sumStyle style);
 
   wxString ToMathML() const override;
   wxString ToMatlab() const override;
@@ -79,16 +75,19 @@ public:
   void Unbreak() override final;
 
 private:
-  ParenCell *Paren() const { return static_cast<ParenCell*>(m_paren.get()); }
-  // The base cell is owned by the paren
-  Cell *Base() const { return Paren() ? Paren()->GetInner() : nullptr; }
+  std::unique_ptr<Cell> MakeStart(Cell *under) const;
+  void MakeBreakUpCells();
+
+  ParenCell *Paren() const;
+  //! The base cell owned by the paren (it's without the paren)
+  Cell *Base() const;
+  //! The displayed base
+  Cell *DisplayedBase() const;
 
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
 
   CellPtr<Cell> m_nextToDraw;
-  CellPtr<Cell> m_displayedBase;
-  CellPtr<Cell> m_baseWithoutParen;
 
   // The pointers below point to inner cells and must be kept contiguous.
   // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
@@ -96,7 +95,7 @@ private:
   std::unique_ptr<Cell> m_under;
   std::unique_ptr<Cell> m_start;
   std::unique_ptr<Cell> m_var;
-  std::unique_ptr<Cell> m_end;
+  std::unique_ptr<Cell> m_over;
   std::unique_ptr<Cell> m_comma1;
   std::unique_ptr<Cell> m_comma2;
   std::unique_ptr<Cell> m_comma3;
@@ -105,17 +104,21 @@ private:
   std::unique_ptr<Cell> m_paren;
   // The pointers above point to inner cells and must be kept contiguous.
 
-  double m_signWidth = 30;
+  float m_signWidth = 30.0f;
   int m_signHeight = 50;
   int m_signWCenter = 15;
   sumStyle m_sumStyle = SM_SUM;
 
-//** Bitfield objects (0 bytes)
+//** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
+    m_displayParen = true;
   }
+
+  //! Display m_paren if true, or Base() if false
+  bool m_displayParen : 1 /* InitBitFields */;
 };
 
 #endif // SUMCELL_H

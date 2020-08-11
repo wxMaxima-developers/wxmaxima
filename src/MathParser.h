@@ -114,6 +114,9 @@ private:
   static GroupCellFunctionHash m_groupTags;
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
+  template <typename T>
+  static void ParseCommonAttrs(wxXmlNode *node, const std::unique_ptr<T> &cell);
+
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group);
   //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
@@ -288,5 +291,9 @@ private:
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
   static wxString m_unknownXMLTagToolTip;
 };
+
+template <typename T>
+void MathParser::ParseCommonAttrs(wxXmlNode *node, const std::unique_ptr<T> &cell)
+{ ParseCommonAttrs(node, cell.get()); }
 
 #endif // MATHPARSER_H

@@ -28,37 +28,46 @@
 
 #include "ExptCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
-    m_baseCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_exptCell(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_exp(std::make_unique<TextCell>(parent, config, "^")),
-    m_open(std::make_unique<TextCell>(parent, config, "(")),
-    m_close(std::make_unique<TextCell>(parent, config, ")"))
+ExptCell::ExptCell(GroupCell *parent, Configuration **config,
+                   std::unique_ptr<Cell> &&base, std::unique_ptr<Cell> &&expt)
+    : Cell(parent, config), m_baseCell(std::move(base)),
+      m_exptCell(std::move(expt))
 {
   InitBitFields();
-  m_open->SetStyle(TS_FUNCTION);
-  m_close->SetStyle(TS_FUNCTION);
-  m_exp->SetStyle(TS_FUNCTION);
-  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  SetStyle(TS_VARIABLE);
 }
 
-ExptCell::ExptCell(const ExptCell &cell):
-    ExptCell(cell.m_group, cell.m_configuration)
+ExptCell::ExptCell(const ExptCell &cell)
+    : ExptCell(cell.m_group, cell.m_configuration,
+               CopyList(cell.m_baseCell.get()),
+               CopyList(cell.m_exptCell.get()))
 {
   CopyCommonData(cell);
   m_altCopyText = cell.m_altCopyText;
-  if(cell.m_baseCell)
-    SetBase(cell.m_baseCell->CopyList());
-  if(cell.m_exptCell)
-    SetPower(cell.m_exptCell->CopyList());
 }
 
 DEFINE_CELL(ExptCell)
+
+void ExptCell::MakeBreakupCells()
+{
+  if (m_open) return;
+  m_exp = std::make_unique<TextCell>(m_group, m_configuration, "^");
+  m_exp->SetStyle(TS_FUNCTION);
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, "(");
+  m_open->SetStyle(TS_FUNCTION);
+  static_cast<TextCell&>(*m_open).DontEscapeOpeningParenthesis();
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
+  m_close->SetStyle(TS_FUNCTION);
+
+  if (!m_exptCell->IsCompound())
+  {
+    m_open->Hide();
+    m_close->Hide();
+  }
+}
 
 void ExptCell::Draw(wxPoint point)
 {
@@ -76,26 +85,6 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-void ExptCell::SetPower(std::unique_ptr<Cell> &&power)
-{
-  if (!power)
-    return;
-  m_exptCell = std::move(power);
-
-  if (!m_exptCell->IsCompound())
-  {
-    m_open->Hide();
-    m_close->Hide();
-  }
-}
-
-void ExptCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_baseCell = std::move(base);
-}
-
 void ExptCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
@@ -106,14 +95,13 @@ void ExptCell::Recalculate(AFontSize fontsize)
     m_exptCell->RecalculateList(fontsize);
   else
     m_exptCell->RecalculateList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
-  m_exp->RecalculateList(fontsize);
-  m_open->RecalculateList(fontsize);
-  m_close->RecalculateList(fontsize);
-  
   
   if (m_isBrokenIntoLines)
   {
     m_height = m_width = m_center = 0;
+    m_exp->RecalculateList(fontsize);
+    m_open->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
   }
   else
   {
@@ -221,6 +209,7 @@ bool ExptCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakupCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_baseCell->last()->SetNextToDraw(m_exp);

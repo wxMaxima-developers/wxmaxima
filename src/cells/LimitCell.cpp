@@ -28,81 +28,53 @@
 
 #include "LimitCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
 
 static constexpr AFontSize MIN_LIMIT_FONT_SIZE{ 8.0f };
 static constexpr float LIMIT_FONT_SIZE_DECREASE{ 1.0f };
 
-LimitCell::LimitCell(GroupCell *parent, Configuration **config) :
-    Cell(parent, config),
-    m_base(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_under(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_name(std::make_unique<VisiblyInvalidCell>(parent,config)),
-    m_open(std::make_unique<TextCell>(parent, config, "(")),
-    m_comma(std::make_unique<TextCell>(parent, config, ",")),
-    m_close(std::make_unique<TextCell>(parent, config, ")"))
+LimitCell::LimitCell(GroupCell *parent, Configuration **config,
+                     std::unique_ptr<Cell> &&base,
+                     std::unique_ptr<Cell> &&under,
+                     std::unique_ptr<Cell> &&name)
+    : Cell(parent, config), m_base(std::move(base)), m_under(std::move(under)),
+      m_name(std::move(name))
 {
   InitBitFields();
-  m_open->SetStyle(TS_FUNCTION);
-  m_close->SetStyle(TS_FUNCTION);
-  m_comma->SetStyle(TS_FUNCTION);
+  SetStyle(TS_VARIABLE);
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_open
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_comma
 // cppcheck-suppress uninitMemberVar symbolName=LimitCell::m_close
-LimitCell::LimitCell(const LimitCell &cell) :
-    LimitCell(cell.m_group, cell.m_configuration)
+LimitCell::LimitCell(const LimitCell &cell)
+    : LimitCell(cell.m_group, cell.m_configuration, CopyList(cell.m_base.get()),
+                CopyList(cell.m_under.get()), CopyList(cell.m_name.get()))
 {
   CopyCommonData(cell);
-  if(cell.m_base)
-    SetBase(cell.m_base->CopyList());
-  if(cell.m_under)
-    SetUnder(cell.m_under->CopyList());
-  if(cell.m_name)
-    SetName(cell.m_name->CopyList());
 }
 
 DEFINE_CELL(LimitCell)
 
-void LimitCell::SetName(std::unique_ptr<Cell> &&name)
+void LimitCell::MakeBreakUpCells()
 {
-  if (!name)
-    return;
-  m_name = std::move(name);
+  if (m_open) return;
+  m_open = std::make_unique<TextCell>(m_group, m_configuration, "(");
+  m_open->SetStyle(TS_FUNCTION);
+  m_comma = std::make_unique<TextCell>(m_group, m_configuration, ",");
+  m_comma->SetStyle(TS_FUNCTION);
+  m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
+  m_close->SetStyle(TS_FUNCTION);
 }
 
-void LimitCell::SetBase(std::unique_ptr<Cell> &&base)
-{
-  if (!base)
-    return;
-  m_base = std::move(base);
-}
-
-void LimitCell::SetUnder(std::unique_ptr<Cell> &&under)
-{
-  if (!under)
-    return;
-  m_under = std::move(under);
-}
 
 void LimitCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
 
-  if(m_base)
-    m_base->RecalculateList(fontsize);
-  if(m_under)
-    m_under->RecalculateList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
-  if(m_name)
-    m_name->RecalculateList(fontsize);
-  if(m_open)
-    m_open->RecalculateList(fontsize);
-  if(m_comma)
-    m_comma->RecalculateList(fontsize);
-  if(m_close)
-    m_close->RecalculateList(fontsize);
+  m_base->RecalculateList(fontsize);
+  m_under->RecalculateList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
+  m_name->RecalculateList(fontsize);
   if(!m_isBrokenIntoLines)
   {
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
@@ -112,7 +84,12 @@ void LimitCell::Recalculate(AFontSize fontsize)
                                 m_base->GetMaxDrop());
   }
   else
+  {
     m_width = m_height = m_center = 0;
+    m_open->RecalculateList(fontsize);
+    m_comma->RecalculateList(fontsize);
+    m_close->RecalculateList(fontsize);
+  }
   
   Cell::Recalculate(fontsize);
 }
@@ -245,6 +222,7 @@ bool LimitCell::BreakUp()
 {
   if (!m_isBrokenIntoLines)
   {
+    MakeBreakUpCells();
     Cell::BreakUp();
     m_isBrokenIntoLines = true;
     m_name->last()->SetNextToDraw(m_open);
