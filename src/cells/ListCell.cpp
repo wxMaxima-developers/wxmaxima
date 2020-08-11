@@ -28,15 +28,22 @@
 
 #include "ListCell.h"
 #include "CellImpl.h"
-#include "VisiblyInvalidCell.h"
 
-ListCell::ListCell(GroupCell *parent, Configuration **config) :
+ListCell::ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner) :
     Cell(parent, config),
-    m_innerCell(std::make_unique<TextCell>(parent, config, wxEmptyString)),
+    m_innerCell(std::move(inner)),
     m_open(std::make_unique<TextCell>(parent, config, wxT("["))),
     m_close(std::make_unique<TextCell>(parent, config, wxT("]")))
 {
   InitBitFields();
+  SetStyle(TS_VARIABLE);
+
+  // It is valid to construct this cell this with a null inner cell
+  if (!m_innerCell)
+    m_innerCell = std::make_unique<TextCell>(parent, config);
+  // Tell the first of our inner cells not to begin with a multiplication dot.
+  m_innerCell->SetSuppressMultiplicationDot(true);
+
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
   m_fontSize = AFontSize(10.0f);
@@ -57,33 +64,13 @@ ListCell::ListCell(GroupCell *parent, Configuration **config) :
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_signBotHeight
 // cppcheck-suppress uninitMemberVar symbolName=ListCell::m_extendHeight
 ListCell::ListCell(const ListCell &cell):
-    ListCell(cell.m_group, cell.m_configuration)
+    ListCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  if (cell.m_innerCell)
-    SetInner(cell.m_innerCell->CopyList(), cell.m_type);
   m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 DEFINE_CELL(ListCell)
-
-void ListCell::SetInner(Cell *inner, CellType type)
-{
-  if (inner)
-    SetInner(std::unique_ptr<Cell>(inner), type);
-}
-
-void ListCell::SetInner(std::unique_ptr<Cell> inner, CellType type)
-{
-  if (!inner)
-    return;
-  m_innerCell = std::move(inner);
-
-  m_type = type;
-  // Tell the first of our inner cells not to begin with a multiplication dot.
-  m_innerCell->SetSuppressMultiplicationDot(true);
-  ResetSize();
-}
 
 void ListCell::Recalculate(AFontSize fontsize)
 {

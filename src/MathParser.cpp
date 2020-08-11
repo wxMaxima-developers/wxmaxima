@@ -196,13 +196,13 @@ Cell *MathParser::ParseRowTag(wxXmlNode *node)
   {
     wxXmlNode *child = node->GetChildren();
     child = SkipWhitespaceNode(child);
-    ListCell *cell = new ListCell(NULL, m_configuration);
     // No special Handling for NULL args here: They are completely legal in this case.
-    cell->SetInner(ParseTag(child, true), m_ParserStyle);
+    auto inner = ParseTag(child, true);
+    auto cell = std::make_unique<ListCell>(nullptr, m_configuration, std::move(inner));
+    cell->SetType(m_ParserStyle);
     cell->SetHighlight(m_highlight);
-    cell->SetStyle(TS_VARIABLE);
     ParseCommonAttrs(node, cell);
-    return cell;
+    return cell.release();
   }
   else
   {
