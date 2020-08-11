@@ -139,6 +139,8 @@ class Cell: public Observed
 #if wxUSE_ACCESSIBILITY
   friend class CellAccessible;
 #endif
+  friend class CellList;
+
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
   Cell(const Cell&) = delete;
@@ -217,13 +219,6 @@ public:
 
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion() const { return InUpdateRegion(GetRect()); }
-
-  /*! Add a cell to the end of the list this cell is part of
-    
-    \param p_next The cell that will be appended to the list.
-   */
-  void AppendCell(Cell *p_next);
-  void AppendCell(std::unique_ptr<Cell> &&p_next);
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)

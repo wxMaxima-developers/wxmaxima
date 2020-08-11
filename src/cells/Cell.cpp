@@ -235,33 +235,6 @@ void Cell::FontsChangedList()
   }
 }
 
-void Cell::AppendCell(Cell *next)
-{
-  AppendCell(std::unique_ptr<Cell>(next));
-}
-
-void Cell::AppendCell(std::unique_ptr<Cell> &&next)
-{
-  if (!next)
-    return;
-  if (m_group)
-    GetGroup()->ResetData();
-
-
-  // Append this p_next to the list
-  Cell *lastInList = last();
-  lastInList->m_next = next.release();
-  lastInList->m_next->m_previous = lastInList;
-  
-  // Search the last cell in the list that is sorted by the drawing order
-  Cell *lastToDraw = lastInList;
-  while (lastToDraw->GetNextToDraw())
-    lastToDraw = lastToDraw->GetNextToDraw();
-
-  // Append next to this list.
-  lastToDraw->SetNextToDraw(lastInList->m_next);
-}
-
 GroupCell *Cell::GetGroup() const
 {
   GroupCell *group = m_group;

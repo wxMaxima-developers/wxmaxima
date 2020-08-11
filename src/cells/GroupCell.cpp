@@ -32,6 +32,7 @@
 #include "GroupCell.h"
 
 #include "CellImpl.h"
+#include "CellList.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
@@ -296,12 +297,12 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell)
   else
   {
     if (m_inputLabel->GetNext() == NULL)
-      m_inputLabel->AppendCell(std::move(cell));
+      CellList::AppendCell(m_inputLabel, std::move(cell));
     else if (m_inputLabel->GetNext()->GetValue().Length() == 0)
     {
       wxDELETE(m_inputLabel->m_next);
       m_inputLabel->SetNextToDraw(NULL);
-      m_inputLabel->AppendCell(std::move(cell));
+      CellList::AppendCell(m_inputLabel, std::move(cell));
     }
     else
     {
@@ -370,7 +371,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   }
   else
   {
-    m_output->AppendCell(std::move(cell));
+    CellList::AppendCell(m_output, std::move(cell));
   }
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
@@ -2188,6 +2189,16 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
 void GroupCell::SetNextToDraw(Cell *next)
 {
   m_nextToDraw = next;
+}
+
+void CellList::Check(const GroupCell *c)
+{
+  if (!c) return;
+  wxASSERT_MSG(!c->m_next || dynamic_cast<GroupCell*>(c->m_next),
+               _("Bug: The successor to a GroupCell is not a GroupCell."));
+  wxASSERT_MSG(!c->m_previous || dynamic_cast<GroupCell*>(c->m_previous.get()),
+               _("Bug: The predecessor to a GroupCell is not a GroupCell."));
+  CellList::Check(static_cast<const Cell *>(c));
 }
 
 wxString GroupCell:: m_lookalikeChars(
