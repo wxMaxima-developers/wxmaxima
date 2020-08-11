@@ -950,18 +950,18 @@ Cell *MathParser::ParseParenTag(wxXmlNode *node)
 
 Cell *MathParser::ParseLimitTag(wxXmlNode *node)
 {
-  LimitCell *limit = new LimitCell(NULL, m_configuration);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  limit->SetName(HandleNullPointer(ParseTag(child, false)));
+  auto name = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
-  limit->SetUnder(HandleNullPointer(ParseTag(child, false)));
+  auto under = HandleNullPointer(ParseTag(child, false));
   child = GetNextTag(child);
-  limit->SetBase(HandleNullPointer(ParseTag(child, false)));
+  auto base = HandleNullPointer(ParseTag(child, false));
+
+  auto limit = std::make_unique<LimitCell>(nullptr, m_configuration, std::move(base), std::move(under), std::move(name));
   limit->SetType(m_ParserStyle);
-  limit->SetStyle(TS_VARIABLE);
   ParseCommonAttrs(node, limit);
-  return limit;
+  return limit.release();
 }
 
 Cell *MathParser::ParseSumTag(wxXmlNode *node)
