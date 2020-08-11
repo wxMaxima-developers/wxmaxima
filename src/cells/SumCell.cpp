@@ -43,7 +43,7 @@ SumCell::SumCell(GroupCell *group, Configuration **config) :
     m_comma3(std::make_unique<TextCell>(group, config, wxT(","))),
     m_open(std::make_unique<TextCell>(group, config, wxT("lsum("))),
     m_close(std::make_unique<TextCell>(group, config, wxT(")"))),
-    m_paren(std::make_unique<ParenCell>(group, config))
+    m_paren(std::make_unique<ParenCell>(group, config, nullptr))
 {
   InitBitFields();
   wxASSERT(Base()); // m_paren constructs its inner cell by default

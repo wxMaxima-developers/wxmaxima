@@ -34,13 +34,11 @@
 
 FracCell::FracCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&num, std::unique_ptr<Cell> &&denom) :
     Cell(parent, config),
-    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration)),
-    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration))
+    m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(num))),
+    m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(denom)))
 {
   InitBitFields();
   SetStyle(TS_VARIABLE);
-  m_numParenthesis->SetInner(std::move(num));
-  m_denomParenthesis->SetInner(std::move(denom));
   SetupBreakUps();
 }
 

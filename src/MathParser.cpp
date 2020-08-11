@@ -937,15 +937,16 @@ Cell *MathParser::ParseParenTag(wxXmlNode *node)
 {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  ParenCell *cell = new ParenCell(NULL, m_configuration);
   // No special Handling for NULL args here: They are completely legal in this case.
-  cell->SetInner(ParseTag(child, true), m_ParserStyle);
+  auto inner = ParseTag(child, true);
+  auto cell = std::make_unique<ParenCell>(nullptr, m_configuration, std::move(inner));
+  cell->SetType(m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
   if (node->GetAttributes() != NULL)
     cell->SetPrint(false);
   ParseCommonAttrs(node, cell);
-  return cell;
+  return cell.release();
 }
 
 Cell *MathParser::ParseLimitTag(wxXmlNode *node)

@@ -50,7 +50,7 @@
 class ParenCell final : public Cell
 {
 public:
-  ParenCell(GroupCell *parent, Configuration **config);
+  ParenCell(GroupCell *parent, Configuration **config, std::unique_ptr<Cell> &&inner);
   ParenCell(const ParenCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
