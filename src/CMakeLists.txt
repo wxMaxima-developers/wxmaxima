@@ -4,6 +4,7 @@ set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
     Cell.cpp
+    CellList.cpp
     CellPtr.cpp
     ConjugateCell.cpp
     DiffCell.cpp

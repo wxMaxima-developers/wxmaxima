@@ -73,7 +73,7 @@ public:
   const CellTypeInfo &GetInfo() override;
 
   //! Get the previous EditorCell in the list
-  EditorCell *GetPrevious() const { return m_previous.CastAs<EditorCell*>(); }
+  EditorCell *GetPrevious() const { return dynamic_cast<EditorCell*>(Cell::GetPrevious()); }
   //! Get the next EditorCell in the list.
   EditorCell *GetNext() const { return dynamic_cast<EditorCell*>(Cell::GetNext()); }
 

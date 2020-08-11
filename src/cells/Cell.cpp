@@ -28,6 +28,7 @@
 */
 
 #include "Cell.h"
+#include "CellList.h"
 #include "GroupCell.h"
 #include "StringUtils.h"
 #include "TextCell.h"
@@ -169,15 +170,10 @@ void Cell::CopyCommonData(const Cell & cell)
 
 std::unique_ptr<Cell> Cell::CopyList() const
 {
-  auto ret = Copy();
-  Cell *dest = ret.get();
-
-  for (const Cell &src : OnList(m_next))
-  {
-    dest->AppendCell(src.Copy());
-    dest = dest->m_next;
-  }
-  return ret;
+  CellListBuilder<> list;
+  for (auto &src : OnList(this))
+    list.Append(src.Copy());
+  return list.TakeHead();
 }
 
 std::unique_ptr<Cell> Cell::CopyList(const Cell *cell)
@@ -239,31 +235,31 @@ void Cell::FontsChangedList()
   }
 }
 
-void Cell::AppendCell(std::unique_ptr<Cell> &&p_next)
+void Cell::AppendCell(Cell *next)
 {
-  AppendCell(p_next.release());
+  AppendCell(std::unique_ptr<Cell>(next));
 }
 
-void Cell::AppendCell(Cell *p_next)
+void Cell::AppendCell(std::unique_ptr<Cell> &&next)
 {
-  if (p_next == NULL)
+  if (!next)
     return;
-  if(m_group)
+  if (m_group)
     GetGroup()->ResetData();
 
-  Cell *LastInList = last();
 
   // Append this p_next to the list
-  LastInList->m_next = p_next;
-  LastInList->m_next->m_previous = LastInList;
+  Cell *lastInList = last();
+  lastInList->m_next = next.release();
+  lastInList->m_next->m_previous = lastInList;
   
   // Search the last cell in the list that is sorted by the drawing order
-  Cell *LastToDraw = LastInList;
-  while (LastToDraw->GetNextToDraw() != NULL)
-    LastToDraw = LastToDraw->GetNextToDraw();
+  Cell *lastToDraw = lastInList;
+  while (lastToDraw->GetNextToDraw())
+    lastToDraw = lastToDraw->GetNextToDraw();
 
-  // Append p_next to this list.
-  LastToDraw->SetNextToDraw(p_next);
+  // Append next to this list.
+  lastToDraw->SetNextToDraw(lastInList->m_next);
 }
 
 GroupCell *Cell::GetGroup() const

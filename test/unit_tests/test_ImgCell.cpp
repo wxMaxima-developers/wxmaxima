@@ -22,6 +22,7 @@
 #define CATCH_CONFIG_RUNNER
 #include "test_ImgCell.h"
 #include "Cell.cpp"
+#include "CellList.cpp"
 #include "CellPointers.cpp"
 #include "CellPtr.cpp"
 #include "FontAttribs.cpp"
