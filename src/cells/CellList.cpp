@@ -61,30 +61,26 @@ void CellList::Check(const Cell *c)
 
 std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
 {
+  using std::swap;
   if (next)
     Check(next.get());
 
-  // Detach old successor from this list
-#if 0
-  auto oldNext = std::move(c->m_next);
-#else
-  std::unique_ptr<Cell> oldNext{c->m_next};
-#endif
-  if (oldNext)
-    oldNext->m_previous = nullptr;
+  // Used only until Cell::m_next becomes a unique_ptr.
+  std::unique_ptr<Cell> cm_next{c->m_next};
+  c->m_next = nullptr;
 
-  // Add next as a successor
-#if 0
-  c->m_next = std::move(next);
-#else
-  c->m_next = next.release();
-#endif
-  if (c->m_next)
-    c->m_next->m_previous = c;
-  c->SetNextToDraw(c->m_next);
+  swap(cm_next, next);
+  if (next)
+    next->m_previous = nullptr;
+  if (cm_next)
+    cm_next->m_previous = c;
+  c->SetNextToDraw(cm_next);
 
   Check(c);
-  return oldNext;
+  Check(next.get());
+
+  c->m_next = cm_next.release();
+  return std::move(next);
 }
 
 void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head)
@@ -167,35 +163,22 @@ CellList::TornOut CellList::TearOut(Cell *first, Cell *last)
   auto *const previous = first->m_previous.get();
   if (previous)
   {
-#if 0
-    retval.cellOwner = std::move(previous->m_next);
-#else
-    auto *previousNext = previous->m_next;
-    previous->m_next = nullptr;
-    retval.cellOwner = std::unique_ptr<Cell>(previousNext);
-#endif
-    if ((previous->m_next = std::move(last->m_next)))
-      previous->m_next->m_previous = previous;
-    previous->SetNextToDraw(previous->m_next);
+    retval.cellOwner = SetNext(previous, SetNext(last, nullptr));
     Check(previous);
   }
   else
   {
-#if 0
-    if ((retval.tailOwner = std::move(last->m_next)))
-#else
-    auto *lastNext = last->m_next;
-    last->m_next = nullptr;
-    retval.tailOwner = std::unique_ptr<Cell>(lastNext);
-#endif
-    {
-      retval.tailOwner->m_previous = nullptr;
-      Check(retval.tailOwner.get());
-    }
+    retval.tailOwner = SetNext(last, nullptr);
+    Check(retval.tailOwner.get());
   }
 
+#if 1
+  wxASSERT(!last->GetNextToDraw());
+  wxASSERT(!first->m_previous);
+#else
   last->SetNextToDraw(nullptr);
   first->m_previous = nullptr;
+#endif
   Check(first);
   Check(last);
 
