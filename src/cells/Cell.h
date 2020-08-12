@@ -827,7 +827,6 @@ public:
 
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
-  std::unique_ptr<Cell> InvalidCellOr(std::unique_ptr<Cell> &&cell) const;
 public:
   static std::unique_ptr<Cell> MakeVisiblyInvalidCell(Configuration **config);
 

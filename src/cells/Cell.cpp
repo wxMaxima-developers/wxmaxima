@@ -1199,11 +1199,6 @@ std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
   return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
 }
 
-std::unique_ptr<Cell> Cell::InvalidCellOr(std::unique_ptr<Cell> &&cell) const
-{
-  return cell ? std::move(cell) : MakeVisiblyInvalidCell();
-}
-
 std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(Configuration **config)
 {
   return std::make_unique<VisiblyInvalidCell>(nullptr, config);
