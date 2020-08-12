@@ -2,6 +2,7 @@
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2004-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2020      Kuba Ober <kuba@bertec.com>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -66,58 +67,37 @@ public:
    * Parse the string s, which is (correct) xml fragment.
    * Put the result in line.
    */
-  Cell *ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
+  std::unique_ptr<Cell> ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
   /***
    * Parse the node and return the corresponding tag.
    */
   
   std::unique_ptr<Cell> ParseTag(wxXmlNode *node, bool all = true);
-  Cell *ParseRowTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseRowTag(wxXmlNode *node);
 
 private:
-  //! A storage for a tag and the function to call if one encounters it
-  class TagFunction
-  {
-  public:
-    TagFunction(wxString tag, Cell * (MathParser::* function)(wxXmlNode *node)):
-      m_tag(tag),
-      m_function(function)
-      {}
-    wxString m_tag;
-    Cell * (MathParser::* m_function)(wxXmlNode *node);
-  };
-
-    //! A storage for a GroupCell tag and the function to call if one encounters it
-  class GroupCellTagFunction
-  {
-  public:
-    GroupCellTagFunction(wxString tag, GroupCell * (MathParser::* function)(wxXmlNode *node)):
-      m_tag(tag),
-      m_function(function)
-      {}
-    wxString m_tag;
-    GroupCell * (MathParser::* m_function)(wxXmlNode *node);
-  };
-
   //! A pointer to a method that handles an XML tag for a type of Cell
-  typedef Cell *(MathParser::*MathCellFunc)(wxXmlNode *node);
+  using MathCellFunc = std::unique_ptr<Cell> (MathParser::*)(wxXmlNode *node);
   WX_DECLARE_STRING_HASH_MAP(MathCellFunc, MathCellFunctionHash);
+
   //! A pointer to a method that handles an XML tag for a type of GroupCell
-  typedef GroupCell *(MathParser::*GroupCellFunc)(wxXmlNode *node);
+  using GroupCellFunc = std::unique_ptr<GroupCell> (MathParser::*)(wxXmlNode *node);
   WX_DECLARE_STRING_HASH_MAP(GroupCellFunc, GroupCellFunctionHash);
 
-  /*! Who you gonna call if you encounter any of these math cell tags?
-   */
+  //! Who you gonna call if you encounter any of these math cell tags?
   static MathCellFunctionHash m_innerTags;
   //! A list of functions to call on encountering all types of GroupCell tags
   static GroupCellFunctionHash m_groupTags;
+
   //! Parses attributes that apply to nearly all types of cells
   static void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
   template <typename T>
-  static void ParseCommonAttrs(wxXmlNode *node, const std::unique_ptr<T> &cell);
+  static void ParseCommonAttrs(wxXmlNode *node, const std::unique_ptr<T> &cell)
+  { ParseCommonAttrs(node, cell.get()); }
 
   //! Parses attributes that apply to nearly all types of cells
-  static void ParseCommonGroupCellAttrs(wxXmlNode *node, GroupCell *group);
+  static void ParseCommonGroupCellAttrs(wxXmlNode *node, const std::unique_ptr<GroupCell> &group);
+
   //! Returns cell or, if cell==NULL, an empty text cell as a fallback.
   std::unique_ptr<Cell> HandleNullPointer(std::unique_ptr<Cell> &&cell);
 
@@ -153,130 +133,111 @@ private:
     \attention Any changes in GroupCell structure or methods
     has to be reflected here in order to ensure proper loading of WXMX files.
   */
-  Cell *ParseCellTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseCellTag(wxXmlNode *node);
   //! Convert a code cell XML tag to a GroupCell
-  GroupCell *GroupCellFromCodeTag(wxXmlNode *node);
+  std::unique_ptr<GroupCell> GroupCellFromCodeTag(wxXmlNode *node);
   //! Convert a image XML tag to a GroupCell
-  GroupCell *GroupCellFromImageTag(wxXmlNode *node);
+  std::unique_ptr<GroupCell> GroupCellFromImageTag(wxXmlNode *node);
   //! Convert a title XML tag to a GroupCell
-  GroupCell *GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_TITLE);
-    }
+  std::unique_ptr<GroupCell> GroupCellFromTitleTag(wxXmlNode *WXUNUSED(node));
   //! Convert a title XML tag to a GroupCell
-  GroupCell *GroupCellFromSectionTag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_SECTION);
-    }
+  std::unique_ptr<GroupCell> GroupCellFromSectionTag(wxXmlNode *WXUNUSED(node));
   //! Convert a pagebreak XML tag to a GroupCell
-  GroupCell *GroupCellFromPagebreakTag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_PAGEBREAK);
-    }
+  std::unique_ptr<GroupCell> GroupCellFromPagebreakTag(wxXmlNode *WXUNUSED(node));
   //! Convert a subsection XML tag to a GroupCell
-  GroupCell *GroupCellFromSubsectionTag(wxXmlNode *node);
+  std::unique_ptr<GroupCell> GroupCellFromSubsectionTag(wxXmlNode *node);
   //! Convert a subsubsection XML tag to a GroupCell
-  GroupCell *GroupCellFromSubsubsectionTag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION);
-    }
+  std::unique_ptr<GroupCell> GroupCellFromSubsubsectionTag(wxXmlNode *WXUNUSED(node));
   //! Convert a heading5 XML tag to a GroupCell
-  GroupCell *GroupCellHeading5Tag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_HEADING5);
-    }
+  std::unique_ptr<GroupCell> GroupCellHeading5Tag(wxXmlNode *WXUNUSED(node));
   //! Convert a heading6 XML tag to a GroupCell
-  GroupCell *GroupCellHeading6Tag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_HEADING6);
-    }
+  std::unique_ptr<GroupCell> GroupCellHeading6Tag(wxXmlNode *WXUNUSED(node));
   //! Convert a text cell XML tag to a GroupCell
-  GroupCell *GroupCellFromTextTag(wxXmlNode *WXUNUSED(node))
-    {
-      return new GroupCell(m_configuration, GC_TYPE_TEXT);
-    }
+  std::unique_ptr<GroupCell> GroupCellFromTextTag(wxXmlNode *WXUNUSED(node));
   /* @} */
   
   /*! \defgroup MathCellParsing Methods that generate Cell objects from XML
     @{
   */
-  //! Parse an editor XML tag to a Cell. 
-  Cell *ParseEditorTag(wxXmlNode *node);
+  //! Parse an editor XML tag to a Cell.
+  std::unique_ptr<Cell> ParseEditorTag(wxXmlNode *node);
   //! Parse an frac XML tag to a Cell. 
-  Cell *ParseFracTag(wxXmlNode *node);
-  //! Parse a text XML tag to a Cell. 
-  Cell *ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
-  //! Parse a Variable name tag to a Cell. 
-  Cell *ParseVariableNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_VARIABLE);}
+  std::unique_ptr<Cell> ParseFracTag(wxXmlNode *node);
+  //! Parse a text XML tag to a Cell.
+  std::unique_ptr<Cell> ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
+  //! Parse a Variable name tag t a Cell.
+  std::unique_ptr<Cell> ParseVariableNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_VARIABLE);}
   //! Parse an Operator name tag to a Cell. 
-  Cell *ParseOperatorNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
+  std::unique_ptr<Cell> ParseOperatorNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
   //! Parse a miscellaneous text tag to a Cell. 
-  Cell *ParseMiscTextTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseMiscTextTag(wxXmlNode *node);
   //! Parse a number tag to a Cell. 
-  Cell *ParseNumberTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_NUMBER);}
+  std::unique_ptr<Cell> ParseNumberTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_NUMBER);}
   //! Parse a hidden operator tag to a Cell. 
-  Cell *ParseHiddenOperatorTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseHiddenOperatorTag(wxXmlNode *node);
   //! Parse an hidden operator tag to a Cell. 
-  Cell *ParseGreekTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_GREEK_CONSTANT);}
+  std::unique_ptr<Cell> ParseGreekTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_GREEK_CONSTANT);}
   //! Parse a special constant tag to a Cell. 
-  Cell *ParseSpecialConstantTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_SPECIAL_CONSTANT);}
+  std::unique_ptr<Cell> ParseSpecialConstantTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_SPECIAL_CONSTANT);}
   //! Parse a function name tag to a Cell. 
-  Cell *ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
+  std::unique_ptr<Cell> ParseFunctionNameTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_FUNCTION);}
   //! Parse a space tag to a Cell.
-  Cell *ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return new TextCell(NULL, m_configuration, wxT(" "));}
+  std::unique_ptr<Cell> ParseSpaceTag(wxXmlNode *WXUNUSED(node)){return std::make_unique<TextCell>(nullptr, m_configuration, wxT(" "));}
   /*! Parse a math-in-maths tag to a Cell. 
 
     \todo Does such a thing actually exist?
    */
-  Cell *ParseMthTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseMthTag(wxXmlNode *node);
   //! Parse an output label tag to a Cell. 
-  Cell *ParseOutputLabelTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseOutputLabelTag(wxXmlNode *node);
   //! Parse a string tag to a Cell. 
-  Cell *ParseStringTag(wxXmlNode *node){return ParseText(node->GetChildren(), TS_STRING);}
+  std::unique_ptr<Cell> ParseStringTag(wxXmlNode *node);
   //! Parse a highlight tag to a Cell. 
-  Cell *ParseHighlightTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseHighlightTag(wxXmlNode *node);
   //! Parse a image tag to a Cell. 
-  Cell *ParseImageTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseImageTag(wxXmlNode *node);
   //! Parse a animation tag to a Cell. 
-  Cell *ParseSlideshowTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseSlideshowTag(wxXmlNode *node);
   //! Parse a charcode tag to a Cell. 
-  Cell *ParseCharCode(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseCharCode(wxXmlNode *node);
   //! Parse a superscript tag to a Cell. 
-  Cell *ParseSupTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseSupTag(wxXmlNode *node);
   //! Parse a subscript tag to a Cell. 
-  Cell *ParseSubTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseSubTag(wxXmlNode *node);
   //! Parse a abs tag to a Cell. 
-  Cell *ParseAbsTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseAbsTag(wxXmlNode *node);
   //! Parse a conjugate cell tag to a Cell. 
-  Cell *ParseConjugateTag(wxXmlNode *node);
-  //! Parse an index tag to a Cell. 
-  Cell *ParseUnderTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseConjugateTag(wxXmlNode *node);
+#if 0
+  //! Parse an index tag to a Cell. FIXME this is unused, without implementation.
+  std::unique_ptr<Cell> ParseUnderTag(wxXmlNode *node);
+#endif
   //! Parse an table tag to a Cell. 
-  Cell *ParseTableTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseTableTag(wxXmlNode *node);
   //! Parse an atcell tag to a Cell. 
-  Cell *ParseAtTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseAtTag(wxXmlNode *node);
   //! Parse a diff tag to a Cell. 
-  Cell *ParseDiffTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseDiffTag(wxXmlNode *node);
   //! Parse a sum tag to a Cell. 
-  Cell *ParseSumTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseSumTag(wxXmlNode *node);
   //! Parse a integral tag to a Cell. 
-  Cell *ParseIntTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseIntTag(wxXmlNode *node);
   //! Parse a function tag to a Cell. 
-  Cell *ParseFunTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseFunTag(wxXmlNode *node);
   //! Parse a square root tag to a Cell. 
-  Cell *ParseSqrtTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseSqrtTag(wxXmlNode *node);
   //! Parse a lim() tag to a Cell. 
-  Cell *ParseLimitTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseLimitTag(wxXmlNode *node);
   //! Parse a parenthesis() tag to a Cell. 
-  Cell *ParseParenTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseParenTag(wxXmlNode *node);
   //! Parse a super-and-subscript cell tag to a Cell. 
-  Cell *ParseSubSupTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseSubSupTag(wxXmlNode *node);
   //! Parse a pre-and-post-super-and-subscript cell tag to a Cell. 
-  Cell *ParseMmultiscriptsTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseMmultiscriptsTag(wxXmlNode *node);
   //! Parse an Output tag telling that the math is from maxima. 
-  Cell *ParseOutputTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseOutputTag(wxXmlNode *node);
   //! Parse an Matrix cell tag. 
-  Cell *ParseMtdTag(wxXmlNode *node);
+  std::unique_ptr<Cell> ParseMtdTag(wxXmlNode *node);
   // @}
   //! The last user defined label
   wxString m_userDefinedLabel;
@@ -290,9 +251,5 @@ private:
   std::shared_ptr<wxFileSystem> m_fileSystem; // used for loading pictures in <img> and <slide>
   static wxString m_unknownXMLTagToolTip;
 };
-
-template <typename T>
-void MathParser::ParseCommonAttrs(wxXmlNode *node, const std::unique_ptr<T> &cell)
-{ ParseCommonAttrs(node, cell.get()); }
 
 #endif // MATHPARSER_H
