@@ -139,6 +139,8 @@ class Cell: public Observed
 #if wxUSE_ACCESSIBILITY
   friend class CellAccessible;
 #endif
+  friend class CellList;
+
   // This class can be derived from wxAccessible which has no copy constructor
   void operator=(const Cell&) = delete;
   Cell(const Cell&) = delete;
@@ -217,13 +219,6 @@ public:
 
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion() const { return InUpdateRegion(GetRect()); }
-
-  /*! Add a cell to the end of the list this cell is part of
-    
-    \param p_next The cell that will be appended to the list.
-   */
-  void AppendCell(Cell *p_next);
-  void AppendCell(std::unique_ptr<Cell> &&p_next);
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)
@@ -639,7 +634,7 @@ public:
   Cell *GetPrevious() const { return m_previous; }
 
   //! Get the next cell in the list.
-  Cell *GetNext() const { return m_next; }
+  Cell *GetNext() const { return m_next.get(); }
   /*! Get the next cell that needs to be drawn
 
     In case of potential 2d objects like fractions either the fraction needs to be
@@ -832,7 +827,6 @@ public:
 
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
-  std::unique_ptr<Cell> InvalidCellOr(std::unique_ptr<Cell> &&cell) const;
 public:
   static std::unique_ptr<Cell> MakeVisiblyInvalidCell(Configuration **config);
 
@@ -862,14 +856,13 @@ protected:
 
 //** 8/4-byte objects (48 + 8* bytes)
 //**
-public:
-  // TODO WIP on making these fields private (2020-07-07). Do not refactor.
+private:
   /*! The next cell in the list of cells
 
     Reads NULL, if this is the last cell of the list. See also m_nextToDraw and
     m_previous.
    */
-  Cell *m_next = nullptr;
+  std::unique_ptr<Cell> m_next;
 
   /*! The previous cell in the list of cells
 
@@ -878,7 +871,6 @@ public:
    */
   CellPtr<Cell> m_previous;
 
-private:
 #if wxUSE_ACCESSIBILITY
   std::unique_ptr<CellAccessible> m_accessible;
 #endif

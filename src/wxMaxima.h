@@ -654,7 +654,7 @@ protected:
   bool OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Loads a wxmx description
-  GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
+  std::unique_ptr<GroupCell> CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
 
   /*! Saves the current file
 

@@ -92,7 +92,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, wxPoint pos
   m_scrollToCaret = false;
   m_newxPosition = -1;
   m_newyPosition = -1;
-  m_tree = NULL;
   m_autocompletePopup = NULL;
   #ifdef __WXGTK__
   wxString gtk_input_method;
@@ -401,8 +400,6 @@ Worksheet::~Worksheet()
 
   ClearDocument();
   m_configuration = NULL;
-  wxDELETE(m_tree);
-  m_tree =NULL;
   m_observer = nullptr;
 }
 
@@ -686,16 +683,16 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   m_configuration->ReportMultipleRedraws();
 }
 
-GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
+GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where)
 {
-  return InsertGroupCells(cells, where, &treeUndoActions);
+  return InsertGroupCells(std::move(cells), where, &treeUndoActions);
 }
 
 // InsertGroupCells
 // inserts groupcells after position "where" (NULL = top of the document)
-// Multiple groupcells can be inserted when tree->m_next != NULL
+// Multiple groupcells can be inserted when cells->m_next != NULL
 // Returns the pointer to the last inserted group cell to have fun with
-GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
+GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
                                        UndoActions *undoBuffer)
 {
   if (!cells)
@@ -706,16 +703,15 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
 
   m_configuration->AdjustWorksheetSize(true);
   bool renumbersections = false; // only renumber when true
-  GroupCell *next; // next gc to insertion point
-  GroupCell *prev;
 
   // TODO What we have here is an iteration through all the cells to see if they
   // fulfill some criterion, and additionally we find the last() cell.
   // When cell list management is refactored, the foldable status should be kept
   // always up-to-date.
 
+  GroupCell *firstOfCellsToInsert = cells.get();
   // Find the last cell in the tree that is to be inserted
-  GroupCell *lastOfCellsToInsert = cells;
+  GroupCell *lastOfCellsToInsert = cells.get();
   if (lastOfCellsToInsert->IsFoldable() || (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
     renumbersections = true;
   while (lastOfCellsToInsert->GetNext())
@@ -725,32 +721,24 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
     lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
   }
 
-  if (!GetTree())
-    where = {};
-
-  if (where)
-    next = where->GetNext();
+  if (!m_tree)
+  {
+    m_tree = std::move(cells);
+    m_last = lastOfCellsToInsert;
+  }
   else
   {
-    next = GetTree(); // where == NULL
-    m_tree = cells;
-  }
-  prev = where;
+    if (!where)
+      where = m_tree.get();
+    auto *whereNext = where->GetNext();
 
-  cells->m_previous = where;
-  lastOfCellsToInsert->m_next = next;
-  lastOfCellsToInsert->SetNextToDraw(next);
-
-  if (prev)
-  {
-    prev->m_next = cells;
-    prev->SetNextToDraw(cells);
+    CellList::SpliceIn(where, std::move(cells), lastOfCellsToInsert);
+    // make sure m_last still points to the last cell of the worksheet!!
+    if (!whereNext)
+      m_last = lastOfCellsToInsert;
+    else
+      wxASSERT_MSG(m_last, "The pointer to last cell in the document is invalid");
   }
-  if (next)
-    next->m_previous = lastOfCellsToInsert;
-  // make sure m_last still points to the last cell of the worksheet!!
-  if (!next) // if there were no further cells
-    m_last = lastOfCellsToInsert;
 
   if (renumbersections)
     NumberSections();
@@ -758,7 +746,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
-    TreeUndo_MarkCellsAsAdded(cells, lastOfCellsToInsert, undoBuffer);
+    TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert, undoBuffer);
 
   if(worksheetSizeHasChanged)
     UpdateMLast();
@@ -1227,33 +1215,6 @@ void Worksheet::UnfoldAll()
     GetTree()->UnfoldAll();
     FoldOccurred();
   }
-}
-
-// Returns the tree from start to end and connects the pointers the right way
-// so that GetTree() stays 'correct' - also works in hidden trees
-GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
-{
-  if (!start || !end)
-    return {};
-  GroupCell *prev = start->GetPrevious();
-  GroupCell *next = end->GetNext();
-
-  end->m_next = NULL;
-  end->SetNextToDraw(NULL);
-  start->m_previous = {};
-
-  if (prev)
-  {
-    prev->m_next = next;
-    prev->SetNextToDraw(next);
-  }
-  if (next)
-    next->m_previous = prev;
-  // fix m_last if we tore it
-  if (end == m_last)
-    m_last = prev;
-
-  return start;
 }
 
 /***
@@ -2531,40 +2492,27 @@ bool Worksheet::CopyTeX()
   if (!m_cellPointers.m_selectionStart)
     return false;
 
-  Cell *tmp = m_cellPointers.m_selectionStart;
-
-  bool inMath = false;
-  wxString label;
-
   wxConfigBase *config = wxConfig::Get();
   bool wrapLatexMath = true;
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
 
+  Cell *const start = m_cellPointers.m_selectionStart;
+  bool inMath = false;
   wxString s;
-  if (tmp->GetType() != MC_TYPE_GROUP)
-  {
-    inMath = true;
-    if (wrapLatexMath)
-      s = wxT("\\[");
-    for (; tmp; tmp = tmp->m_next)
-    {
-      s += tmp->ToTeX();
-      if (tmp == m_cellPointers.m_selectionEnd)
-        break;
-    }
-  }
-  else
-  {
-    for (auto &gc : OnList(dynamic_cast<GroupCell *>(tmp)))
-    {
-      int imgCtr;
-      s += gc.ToTeX(wxEmptyString, wxEmptyString, &imgCtr);
-      if (&gc == m_cellPointers.m_selectionEnd)
-        break;
-    }
-  }
 
-  if (inMath && wrapLatexMath)
+  if (start->GetType() != MC_TYPE_GROUP)
+  {
+    inMath = wrapLatexMath;
+    if (inMath)
+      s = wxT("\\[");
+  }
+  for (const Cell &tmp : OnList(start))
+  {
+    s += tmp.ToTeX();
+    if (&tmp == m_cellPointers.m_selectionEnd)
+      break;
+  }
+  if (inMath)
     s += wxT("\\]");
 
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
@@ -2825,15 +2773,16 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
     return;
 
   wxString cellContents;
-  if(group->GetInput())
+  if (group->GetInput())
     cellContents = group->GetInput()->GetValue();
-  GroupCell *newGroupCell = new GroupCell(&m_configuration, style);
+  auto newGroupCell = std::make_unique<GroupCell>(&m_configuration, style);
   newGroupCell->GetInput()->SetValue(cellContents);
   GroupCell *prev = group->GetPrevious();
   DeleteRegion(group,group);
   TreeUndo_AppendAction();
-  InsertGroupCells(newGroupCell, prev);
-  SetActiveCell(newGroupCell->GetEditable(), false);
+  auto *editable = newGroupCell->GetEditable();
+  InsertGroupCells(std::move(newGroupCell), prev);
+  SetActiveCell(editable, false);
   SetSaved(false);
   Recalculate(true);
   RequestRedraw();
@@ -2886,42 +2835,21 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, UndoActions *undo
   if (end == m_last)
     m_last = cellBeforeStart;
 
-  // Unlink the to-be-deleted cells from the worksheet.
-  if (!start->m_previous)
-    m_tree = end->GetNext();
-  else
+  auto tornOut = CellList::TearOut(start, end);
+  if (!tornOut.cellOwner)
   {
-    start->m_previous->m_next = end->m_next;
-    start->m_previous->SetNextToDraw(end->m_next);
+    wxASSERT(m_tree.get() == tornOut.cell);
+    tornOut.cellOwner = std::move(m_tree);
+    m_tree = dynamic_unique_ptr_cast<GroupCell>(std::move(tornOut.tailOwner));
   }
-
-  if (end->m_next)
-    end->m_next->m_previous = start->m_previous;
-  else
-  {
-    if (start->m_previous)
-    {
-      start->m_previous->m_next = NULL;
-      start->m_previous->SetNextToDraw(NULL);
-    }
-  }
-
-  // Add an "end of tree" marker to both ends of the list of deleted cells
-  end->m_next = NULL;
-  end->SetNextToDraw(NULL);
-  start->m_previous = {};
 
   // Do we have an undo buffer for this action?
   if (undoBuffer)
   {
     // We have an undo buffer => add the deleted cells there
-    undoBuffer->emplace_front(cellBeforeStart, nullptr, start);
+    auto cells = static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
+    undoBuffer->emplace_front(cellBeforeStart, nullptr, cells.release());
     TreeUndo_LimitUndoBuffer();
-  }
-  else
-  {
-    // We don't habe an undo buffer => really delete the cells
-    wxDELETE(start);
   }
 
   if (renumber)
@@ -3033,7 +2961,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
   }
 
   // insert a new group cell
-  GroupCell *group = new GroupCell(&m_configuration, type, txt);
+  auto group = std::make_unique<GroupCell>(&m_configuration, type, txt);
   // check how much to unfold for this type
   if (m_hCaretPosition)
   {
@@ -3051,10 +2979,11 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
     CodeCellVisibilityChanged();
   }
 
-  InsertGroupCells(group, m_hCaretPosition);
+  auto *editable = group->GetEditable();
+  InsertGroupCells(std::move(group), m_hCaretPosition);
 
   // activate editor
-  SetActiveCell(group->GetEditable(), false);
+  SetActiveCell(editable, false);
   if (GetActiveCell())
     GetActiveCell()->ClearUndo();
   // If we just have started typing inside a new cell we don't want the screen
@@ -4406,8 +4335,7 @@ void Worksheet::DestroyTree()
   SetHCaret(NULL);
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
-  wxDELETE(m_tree);
-  m_tree = NULL;
+  m_tree.reset();
   m_last = NULL;
 }
 
@@ -4536,7 +4464,7 @@ std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end, bool asDa
         break;
     }
 
-  return copy.TakeHead();
+  return std::move(copy);
 }
 
 void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s)
@@ -6743,9 +6671,9 @@ bool Worksheet::TreeUndoCellDeletion(UndoActions *sourcelist, UndoActions *undoF
   TreeUndoAction &action = sourcelist->front();
   GroupCell *newCursorPos = action.m_oldCells.get();
   if (newCursorPos)
-    while (newCursorPos->GetNext())
-      newCursorPos = newCursorPos->GetNext();
-  InsertGroupCells(action.m_oldCells.release(), action.m_start, undoForThisOperation);
+    newCursorPos = newCursorPos->last();
+
+  InsertGroupCells(std::move(action.m_oldCells), action.m_start, undoForThisOperation);
   SetHCaret(newCursorPos);
   return true;
 }
@@ -7102,7 +7030,7 @@ void Worksheet::PasteFromClipboard()
         lines_array.Add(lines.GetNextToken());
 
       // Load the array like we would do with a .wxm file
-      GroupCell *contents = Format::TreeFromWXM(lines_array, &m_configuration);
+      auto contents = Format::TreeFromWXM(lines_array, &m_configuration);
 
       // Add the result of the last operation to the worksheet.
       if (contents)
@@ -7117,7 +7045,7 @@ void Worksheet::PasteFromClipboard()
         if (!GetTree())
         {
           // Empty work sheet => We paste cells as the new cells
-          m_tree = contents;
+          m_tree = std::move(contents);
           m_last = end;
         }
         else
@@ -7131,7 +7059,7 @@ void Worksheet::PasteFromClipboard()
             DeleteSelection();
             TreeUndo_AppendAction();
           }
-          InsertGroupCells(contents, target);
+          InsertGroupCells(std::move(contents), target);
         }
         NumberSections();
         Recalculate();

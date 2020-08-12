@@ -84,14 +84,8 @@ Cell::~Cell()
 
   // Delete this list of cells without using a recursive function call that can
   // run us out of stack space
-  Cell *next = m_next;
-  while (next != NULL)
-  {
-    Cell *cell = next;
-    next = next->m_next;
-    cell->m_next = NULL;
-    wxDELETE(cell);
-  }
+  while (m_next)
+    m_next = std::move(m_next->m_next);
 }
 
 void Cell::SetType(CellType type)
@@ -170,10 +164,10 @@ void Cell::CopyCommonData(const Cell & cell)
 
 std::unique_ptr<Cell> Cell::CopyList() const
 {
-  CellListBuilder<> list;
+  CellListBuilder<> copy;
   for (auto &src : OnList(this))
-    list.Append(src.Copy());
-  return list.TakeHead();
+    copy.Append(src.Copy());
+  return std::move(copy);
 }
 
 std::unique_ptr<Cell> Cell::CopyList(const Cell *cell)
@@ -233,33 +227,6 @@ void Cell::FontsChangedList()
     for (Cell &cell : OnInner(&tmp))
       cell.FontsChangedList();
   }
-}
-
-void Cell::AppendCell(Cell *next)
-{
-  AppendCell(std::unique_ptr<Cell>(next));
-}
-
-void Cell::AppendCell(std::unique_ptr<Cell> &&next)
-{
-  if (!next)
-    return;
-  if (m_group)
-    GetGroup()->ResetData();
-
-
-  // Append this p_next to the list
-  Cell *lastInList = last();
-  lastInList->m_next = next.release();
-  lastInList->m_next->m_previous = lastInList;
-  
-  // Search the last cell in the list that is sorted by the drawing order
-  Cell *lastToDraw = lastInList;
-  while (lastToDraw->GetNextToDraw())
-    lastToDraw = lastToDraw->GetNextToDraw();
-
-  // Append next to this list.
-  lastToDraw->SetNextToDraw(lastInList->m_next);
 }
 
 GroupCell *Cell::GetGroup() const
@@ -715,7 +682,7 @@ wxString Cell::ListToMathML(bool startofline) const
 
   // If the list contains multiple cells we wrap them in a <mrow> in order to
   // group them into a single object.
-  bool const multiCell = m_next;
+  bool const multiCell = m_next.get();
 
   // Export all cells
   for (const Cell &tmp : OnList(this))
@@ -922,7 +889,7 @@ wxString Cell::ListToRTF(bool startofline) const
           retval += wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ") + rtf + wxT("\\n");
         startofline = true;
       }
-      tmp = tmp->m_next;
+      tmp = tmp->GetNext();
     }
     else
     {
@@ -948,16 +915,16 @@ wxString Cell::ListToRTF(bool startofline) const
           // A newline starts a new equation
           if (tmp->HardLineBreak())
           {
-            tmp = tmp->m_next;
+            tmp = tmp->GetNext();
             break;
           }
 
-          tmp = tmp->m_next;
+          tmp = tmp->GetNext();
         }
       }
       else
       {
-        tmp = tmp->m_next;
+        tmp = tmp->GetNext();
       }
     }
   }
@@ -1108,7 +1075,7 @@ Cell *Cell::last() const
 {
   const Cell *tmp = this;
   while (tmp->m_next)
-    tmp = tmp->m_next;
+    tmp = tmp->GetNext();
 
   wxASSERT(tmp);
   return const_cast<Cell*>(tmp);
@@ -1230,11 +1197,6 @@ bool Cell::IsMath() const
 std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
 {
   return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
-}
-
-std::unique_ptr<Cell> Cell::InvalidCellOr(std::unique_ptr<Cell> &&cell) const
-{
-  return cell ? std::move(cell) : MakeVisiblyInvalidCell();
 }
 
 std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(Configuration **config)

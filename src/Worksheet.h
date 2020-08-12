@@ -588,7 +588,7 @@ private:
   bool m_mouseDrag;
   bool m_mouseOutside;
   //! The list of tree that contains the document itself
-  GroupCell *m_tree;
+  std::unique_ptr<GroupCell> m_tree;
   GroupCell *m_last;
   int m_clickType;
   GroupCell *m_clickInGC;
@@ -913,14 +913,15 @@ public:
             - treeRedoActions for deletions while executing an undo or
             - NULL for: Don't keep any copy of the cells.
    */
-  GroupCell *InsertGroupCells(GroupCell *cells, GroupCell *where, UndoActions *undoBuffer);
+  GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where,
+                              UndoActions *undoBuffer);
 
   /*! Insert group cells into the worksheet
 
     \param cells The list of cells that has to be inserted
     \param where The cell the cells have to be inserted after
   */
-  GroupCell *InsertGroupCells(GroupCell *cells, GroupCell *where = NULL);
+  GroupCell *InsertGroupCells(std::unique_ptr<GroupCell> &&cells, GroupCell *where = NULL);
 
   /*! Add a new line to the output cell of the working group.
 
@@ -1131,8 +1132,7 @@ public:
    */
   wxString GetString(bool lb = false);
 
-  GroupCell *GetTree() const
-    { return m_tree; }
+  GroupCell *GetTree() const { return m_tree.get(); }
 
   /*! Return the first of the currently selected cells.
 
@@ -1381,8 +1381,6 @@ public:
   void FoldAll();
 
   void UnfoldAll();
-
-  GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
 
   // methods for zooming the document in and out
   void SetZoomFactor(double newzoom, bool recalc = true);

@@ -32,6 +32,7 @@
 #include "GroupCell.h"
 
 #include "CellImpl.h"
+#include "CellList.h"
 #include "CellPointers.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
@@ -263,9 +264,7 @@ void GroupCell::ResetInputLabelList()
 }
 
 GroupCell::~GroupCell()
-{
-  wxDELETE(m_hiddenTree);
-}
+{}
 
 GroupCell *GroupCell::GetLastWorkingGroup() const
 { return m_cellPointers->m_lastWorkingGroup; }
@@ -296,12 +295,15 @@ void GroupCell::AppendInput(std::unique_ptr<Cell> &&cell)
   else
   {
     if (m_inputLabel->GetNext() == NULL)
-      m_inputLabel->AppendCell(std::move(cell));
+      CellList::AppendCell(m_inputLabel, std::move(cell));
     else if (m_inputLabel->GetNext()->GetValue().Length() == 0)
     {
-      wxDELETE(m_inputLabel->m_next);
-      m_inputLabel->SetNextToDraw(NULL);
-      m_inputLabel->AppendCell(std::move(cell));
+      // AppendCell is needed due to its side effect of doing
+      // m_group->ResetData. Perhaps we can decide that SetNext alone could do
+      // something like that, as long as it wouldn't cause quadratic behavior.
+      CellList::SetNext(m_inputLabel.get(), nullptr);
+      wxASSERT(!m_inputLabel->GetNextToDraw());
+      CellList::AppendCell(m_inputLabel, std::move(cell));
     }
     else
     {
@@ -370,7 +372,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   }
   else
   {
-    m_output->AppendCell(std::move(cell));
+    CellList::AppendCell(m_output, std::move(cell));
   }
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
@@ -1821,15 +1823,15 @@ void GroupCell::SwitchHide()
 //
 // support for folding/unfolding sections
 //
-bool GroupCell::HideTree(GroupCell *tree)
+bool GroupCell::HideTree(std::unique_ptr<GroupCell> &&tree)
 {
   if (m_hiddenTree)
     return false;
-  m_hiddenTree = tree;
+  m_hiddenTree = std::move(tree);
   m_hiddenTree->SetHiddenTreeParent(this);
 
   // Clear cached images from cells that are hidden
-  for (auto &tmp : OnList(m_hiddenTree))
+  for (auto &tmp : OnList(m_hiddenTree.get()))
   {
     if (tmp.GetLabel())
       tmp.GetLabel()->ClearCacheList();
@@ -1838,12 +1840,10 @@ bool GroupCell::HideTree(GroupCell *tree)
   return true;
 }
 
-GroupCell *GroupCell::UnhideTree()
+std::unique_ptr<GroupCell> GroupCell::UnhideTree()
 {
-  GroupCell *tree = m_hiddenTree;
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
-  m_hiddenTree = NULL;
-  return tree;
+  return std::move(m_hiddenTree);
 }
 
 /**
@@ -1883,7 +1883,6 @@ GroupCell *GroupCell::Fold()
 
   // now there is at least one cell to fold (at least m_next)
   GroupCell *end = GetNext();
-  GroupCell *start = end; // first to fold
 
   while (end != NULL)
   {
@@ -1897,27 +1896,11 @@ GroupCell *GroupCell::Fold()
       break; // the next one of the end is not suitable for folding, break
     end = tmp;
   }
+  wxASSERT(end);
 
-  // cell(s) to fold are between start and end (including these two)
-
-  if(end != NULL)
-  {
-    if(end->m_next != NULL)
-    {
-      m_next = end->m_next;
-      SetNextToDraw(end->m_next);
-      end->m_next->m_previous = this;
-    }
-    else
-      m_next = m_nextToDraw = nullptr;
-    {
-      end->m_next = NULL;
-      end->SetNextToDraw(NULL);
-    }
-  }
-  
-  start->m_previous = nullptr;
-  m_hiddenTree = start; // save the torn out tree into m_hiddenTree
+  auto tornOut = CellList::TearOut(GetNext(), end);
+  wxASSERT(tornOut.cellOwner);
+  m_hiddenTree = static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
 }
@@ -1929,24 +1912,9 @@ GroupCell *GroupCell::Unfold()
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
-  GroupCell *next = GetNext();
-
-  // sew together this cell with m_hiddenTree
-  m_next = m_nextToDraw = m_hiddenTree;
-  m_hiddenTree->m_previous = this;
-
-  GroupCell *tmp = m_hiddenTree;
-  while (tmp->GetNext())
-    tmp = tmp->GetNext();
-  // tmp holds the last element of m_hiddenTree
-  tmp->m_next = next;
-  tmp->SetNextToDraw(next);
-  if (next)
-    next->m_previous = tmp;
-
-  m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
-  m_hiddenTree = NULL;
-  return tmp;
+  auto splicedIn = CellList::SpliceIn(this, std::move(m_hiddenTree));
+  GetNext()->SetHiddenTreeParent(m_hiddenTreeParent);
+  return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
 }
 
 GroupCell *GroupCell::FoldAll()
@@ -2188,6 +2156,16 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
 void GroupCell::SetNextToDraw(Cell *next)
 {
   m_nextToDraw = next;
+}
+
+void CellList::Check(const GroupCell *c)
+{
+  if (!c) return;
+  wxASSERT_MSG(!c->m_next || dynamic_cast<GroupCell*>(c->m_next.get()),
+               _("Bug: The successor to a GroupCell is not a GroupCell."));
+  wxASSERT_MSG(!c->m_previous || dynamic_cast<GroupCell*>(c->m_previous.get()),
+               _("Bug: The predecessor to a GroupCell is not a GroupCell."));
+  CellList::Check(static_cast<const Cell *>(c));
 }
 
 wxString GroupCell:: m_lookalikeChars(

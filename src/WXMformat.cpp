@@ -212,7 +212,7 @@ wxString TreeToWXM(GroupCell *cell, bool wxm)
   return retval;
 }
 
-GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
+std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
 {
   auto wxmLine = wxmLines.begin();
   auto const end = wxmLines.end();
@@ -343,10 +343,10 @@ GroupCell *TreeFromWXM(const wxArrayString &wxmLines, Configuration **config)
 
     tree.Append(std::move(cell));
   }
-  return tree.ReleaseHead();
+  return std::move(tree);
 }
 
-GroupCell *ParseWXMFile(wxTextBuffer &text, Configuration **config)
+std::unique_ptr<GroupCell> ParseWXMFile(wxTextBuffer &text, Configuration **config)
 {
   wxArrayString wxmLines;
   for (auto line = text.GetFirstLine(); ; line = text.GetNextLine())
@@ -356,11 +356,10 @@ GroupCell *ParseWXMFile(wxTextBuffer &text, Configuration **config)
       break;
   }
 
-  GroupCell *tree = Format::TreeFromWXM(wxmLines, config);
-  return tree;
+  return Format::TreeFromWXM(wxmLines, config);
 }
 
-GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
+std::unique_ptr<GroupCell> ParseMACContents(const wxString &macContents, Configuration **config)
 {
   wxString wxmLines;
   CellListBuilder<GroupCell> tree;
@@ -524,10 +523,10 @@ GroupCell *ParseMACContents(const wxString &macContents, Configuration **config)
   if (!line.empty())
     tree.Append(std::make_unique<GroupCell>(config, GC_TYPE_CODE, line));
 
-  return tree.ReleaseHead();
+  return std::move(tree);
 }
 
-GroupCell *ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration **config)
+std::unique_ptr<GroupCell> ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration **config)
 {
   bool input = true;
   wxString macContents;
@@ -558,8 +557,7 @@ GroupCell *ParseMACFile(wxTextBuffer &text, bool xMaximaFile, Configuration **co
       break;
   }
 
-  GroupCell *tree = Format::ParseMACContents(macContents, config);
-  return tree;
+  return Format::ParseMACContents(macContents, config);
 }
 
 } // namespace Format
