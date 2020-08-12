@@ -31,5 +31,5 @@ size_t CellPtrBase::m_instanceCount;
 // is not a fully defined class, but someone wants to use the methods of
 // CellPtr<GroupCell>.
 template <>
-CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const
+CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const noexcept
 { return static_cast<pointer>(base_get()); }
