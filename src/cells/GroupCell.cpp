@@ -1916,24 +1916,10 @@ GroupCell *GroupCell::Unfold()
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
-  GroupCell *next = GetNext();
-
-  // sew together this cell with m_hiddenTree
-  m_next = m_nextToDraw = m_hiddenTree;
-  m_hiddenTree->m_previous = this;
-
-  GroupCell *tmp = m_hiddenTree;
-  while (tmp->GetNext())
-    tmp = tmp->GetNext();
-  // tmp holds the last element of m_hiddenTree
-  tmp->m_next = next;
-  tmp->SetNextToDraw(next);
-  if (next)
-    next->m_previous = tmp;
-
-  m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
-  m_hiddenTree = NULL;
-  return tmp;
+  auto splicedIn = CellList::SpliceIn(this, std::unique_ptr<GroupCell>(m_hiddenTree));
+  m_hiddenTree = nullptr;
+  GetNext()->SetHiddenTreeParent(m_hiddenTreeParent);
+  return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
 }
 
 GroupCell *GroupCell::FoldAll()

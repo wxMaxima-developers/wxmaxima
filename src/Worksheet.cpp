@@ -693,7 +693,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
 
 // InsertGroupCells
 // inserts groupcells after position "where" (NULL = top of the document)
-// Multiple groupcells can be inserted when tree->m_next != NULL
+// Multiple groupcells can be inserted when cells->m_next != NULL
 // Returns the pointer to the last inserted group cell to have fun with
 GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
                                        UndoActions *undoBuffer)
@@ -706,14 +706,13 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
 
   m_configuration->AdjustWorksheetSize(true);
   bool renumbersections = false; // only renumber when true
-  GroupCell *next; // next gc to insertion point
-  GroupCell *prev;
 
   // TODO What we have here is an iteration through all the cells to see if they
   // fulfill some criterion, and additionally we find the last() cell.
   // When cell list management is refactored, the foldable status should be kept
   // always up-to-date.
 
+  GroupCell *firstOfCellsToInsert = cells;
   // Find the last cell in the tree that is to be inserted
   GroupCell *lastOfCellsToInsert = cells;
   if (lastOfCellsToInsert->IsFoldable() || (lastOfCellsToInsert->GetGroupType() == GC_TYPE_IMAGE))
@@ -725,32 +724,24 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
     lastOfCellsToInsert = lastOfCellsToInsert->GetNext();
   }
 
-  if (!GetTree())
-    where = {};
-
-  if (where)
-    next = where->GetNext();
+  if (!m_tree)
+  {
+    m_tree = cells;
+    m_last = lastOfCellsToInsert;
+  }
   else
   {
-    next = GetTree(); // where == NULL
-    m_tree = cells;
-  }
-  prev = where;
+    if (!where)
+      where = m_tree;
+    auto *whereNext = where->GetNext();
 
-  cells->m_previous = where;
-  lastOfCellsToInsert->m_next = next;
-  lastOfCellsToInsert->SetNextToDraw(next);
-
-  if (prev)
-  {
-    prev->m_next = cells;
-    prev->SetNextToDraw(cells);
+    CellList::SpliceIn(where, std::unique_ptr<GroupCell>(cells), lastOfCellsToInsert);
+    // make sure m_last still points to the last cell of the worksheet!!
+    if (!whereNext)
+      m_last = lastOfCellsToInsert;
+    else
+      wxASSERT_MSG(m_last, "The pointer to last cell in the document is invalid");
   }
-  if (next)
-    next->m_previous = lastOfCellsToInsert;
-  // make sure m_last still points to the last cell of the worksheet!!
-  if (!next) // if there were no further cells
-    m_last = lastOfCellsToInsert;
 
   if (renumbersections)
     NumberSections();
@@ -758,7 +749,7 @@ GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where,
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
-    TreeUndo_MarkCellsAsAdded(cells, lastOfCellsToInsert, undoBuffer);
+    TreeUndo_MarkCellsAsAdded(firstOfCellsToInsert, lastOfCellsToInsert, undoBuffer);
 
   if(worksheetSizeHasChanged)
     UpdateMLast();
