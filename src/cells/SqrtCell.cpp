@@ -50,7 +50,8 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
     SqrtCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
+  if (cell.m_isBrokenIntoLines)
+    BreakUp();
 }
 
 DEFINE_CELL(SqrtCell)
