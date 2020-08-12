@@ -115,7 +115,7 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
-    Resources.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
 )
 
 list(APPEND SOURCE_FILES
