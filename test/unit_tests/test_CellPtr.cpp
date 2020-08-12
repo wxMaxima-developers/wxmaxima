@@ -328,6 +328,63 @@ SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
   }
 }
 
+SCENARIO("A CellPtr can be returned") {
+  GIVEN("a function returning a null CellPtr") {
+    auto const returner = []{ return CellPtr<Cell>(); };
+    WHEN("the function is invoked") THEN("it doesn't crash and returns null")
+      REQUIRE(!returner());
+  }
+  GIVEN("a function returning a non-null CellPtr") {
+    static Cell cell;
+    auto const returner = []{ return CellPtr<Cell>(&cell); };
+    WHEN("the function is invoked")
+      THEN("it doesn't crash and the returned pointer points to the expected cell")
+        REQUIRE(returner() == &cell);
+  }
+}
+
+
+SCENARIO("A CellPtr in a structure") {
+  struct Carrier {
+    CellPtr<Cell> ptr;
+  };
+  GIVEN("a default-constructed instance of the structure") {
+    Carrier carrier;
+    THEN("it is copyable")
+    {
+      Carrier copy = carrier;
+      REQUIRE(!copy.ptr);
+    }
+    THEN("it is moveable")
+    {
+      Carrier moved = std::move(carrier);
+      REQUIRE(!moved.ptr);
+    }
+  }
+  GIVEN("a structure instance pointing to a cell") {
+    Cell cell;
+    Carrier carrier{ CellPtr<Cell>(&cell) };
+    THEN("it is copyable and the copy points into the same cell")
+    {
+      Carrier copy = carrier;
+      REQUIRE(copy.ptr == &cell);
+    }
+    THEN("it is moveable and the move points into the same cell")
+    {
+      Carrier moved = std::move(carrier);
+      REQUIRE(moved.ptr == &cell);
+    }
+  }
+  GIVEN("a function returning a CellPtr in a structure") {
+    auto const returner = []{
+      Carrier carrier;
+      return carrier;
+    };
+    WHEN("the function is invoked") THEN("it doesn't crash and returns null")
+      REQUIRE(!returner().ptr);
+  }
+}
+
 // If we don't provide our own main when compiling on MinGW
 // we currently get an error message that WinMain@16 is missing
 // (https://github.com/catchorg/Catch2/issues/1287)

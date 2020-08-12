@@ -159,7 +159,7 @@ protected:
 
   CellPtrBase(const CellPtrBase &o) : CellPtrBase(o.base_get()) {}
 
-  CellPtrBase(CellPtrBase &&o)
+  CellPtrBase(CellPtrBase &&o) : m_cb(ControlBlock::empty.Ref(this))
   {
     ++m_instanceCount;
     if (CELLPTR_LOG_INSTANCES)
