@@ -149,7 +149,7 @@ CellList::TornOut CellList::TearOut(Cell *first, Cell *last)
   TornOut retval;
   retval.cell = first;
 
-  auto *const previous = first->m_previous.get();
+  auto *const previous = first->m_previous;
   if (previous)
   {
     retval.cellOwner = SetNext(previous, SetNext(last, nullptr));
@@ -161,13 +161,8 @@ CellList::TornOut CellList::TearOut(Cell *first, Cell *last)
     Check(retval.tailOwner.get());
   }
 
-#if 1
   wxASSERT(!last->GetNextToDraw());
   wxASSERT(!first->m_previous);
-#else
-  last->SetNextToDraw(nullptr);
-  first->m_previous = nullptr;
-#endif
   Check(first);
   Check(last);
 
