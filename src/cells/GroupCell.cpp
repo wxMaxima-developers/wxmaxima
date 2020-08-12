@@ -1887,7 +1887,6 @@ GroupCell *GroupCell::Fold()
 
   // now there is at least one cell to fold (at least m_next)
   GroupCell *end = GetNext();
-  GroupCell *start = end; // first to fold
 
   while (end != NULL)
   {
@@ -1901,27 +1900,11 @@ GroupCell *GroupCell::Fold()
       break; // the next one of the end is not suitable for folding, break
     end = tmp;
   }
+  wxASSERT(end);
 
-  // cell(s) to fold are between start and end (including these two)
-
-  if(end != NULL)
-  {
-    if(end->m_next != NULL)
-    {
-      m_next = end->m_next;
-      SetNextToDraw(end->m_next);
-      end->m_next->m_previous = this;
-    }
-    else
-      m_next = m_nextToDraw = nullptr;
-    {
-      end->m_next = NULL;
-      end->SetNextToDraw(NULL);
-    }
-  }
-  
-  start->m_previous = nullptr;
-  m_hiddenTree = start; // save the torn out tree into m_hiddenTree
+  auto tornOut = CellList::TearOut(GetNext(), end);
+  wxASSERT(tornOut.cellOwner);
+  m_hiddenTree = static_cast<GroupCell *>(tornOut.cellOwner.release()); // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
 }

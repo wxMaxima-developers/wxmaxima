@@ -1229,33 +1229,6 @@ void Worksheet::UnfoldAll()
   }
 }
 
-// Returns the tree from start to end and connects the pointers the right way
-// so that GetTree() stays 'correct' - also works in hidden trees
-GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
-{
-  if (!start || !end)
-    return {};
-  GroupCell *prev = start->GetPrevious();
-  GroupCell *next = end->GetNext();
-
-  end->m_next = NULL;
-  end->SetNextToDraw(NULL);
-  start->m_previous = {};
-
-  if (prev)
-  {
-    prev->m_next = next;
-    prev->SetNextToDraw(next);
-  }
-  if (next)
-    next->m_previous = prev;
-  // fix m_last if we tore it
-  if (end == m_last)
-    m_last = prev;
-
-  return start;
-}
-
 /***
  * Right mouse - popup-menu
  */
@@ -2873,42 +2846,23 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, UndoActions *undo
   if (end == m_last)
     m_last = cellBeforeStart;
 
-  // Unlink the to-be-deleted cells from the worksheet.
-  if (!start->m_previous)
-    m_tree = end->GetNext();
-  else
+  auto tornOut = CellList::TearOut(start, end);
+  if (!tornOut.cellOwner)
   {
-    start->m_previous->m_next = end->m_next;
-    start->m_previous->SetNextToDraw(end->m_next);
+    wxASSERT(m_tree == tornOut.cell);
+    tornOut.cellOwner = std::unique_ptr<GroupCell>(m_tree);
+    m_tree = nullptr;
+    if (tornOut.tailOwner)
+      m_tree = static_cast<GroupCell *>(tornOut.tailOwner.release());
   }
-
-  if (end->m_next)
-    end->m_next->m_previous = start->m_previous;
-  else
-  {
-    if (start->m_previous)
-    {
-      start->m_previous->m_next = NULL;
-      start->m_previous->SetNextToDraw(NULL);
-    }
-  }
-
-  // Add an "end of tree" marker to both ends of the list of deleted cells
-  end->m_next = NULL;
-  end->SetNextToDraw(NULL);
-  start->m_previous = {};
 
   // Do we have an undo buffer for this action?
   if (undoBuffer)
   {
     // We have an undo buffer => add the deleted cells there
-    undoBuffer->emplace_front(cellBeforeStart, nullptr, start);
+    auto cells = static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
+    undoBuffer->emplace_front(cellBeforeStart, nullptr, cells.release());
     TreeUndo_LimitUndoBuffer();
-  }
-  else
-  {
-    // We don't habe an undo buffer => really delete the cells
-    wxDELETE(start);
   }
 
   if (renumber)

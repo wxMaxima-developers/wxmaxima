@@ -1382,8 +1382,6 @@ public:
 
   void UnfoldAll();
 
-  GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
-
   // methods for zooming the document in and out
   void SetZoomFactor(double newzoom, bool recalc = true);
 
