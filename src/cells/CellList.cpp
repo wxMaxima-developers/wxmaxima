@@ -56,7 +56,7 @@ void CellList::Check(const Cell *c)
 {
   if (!c) return;
   wxASSERT_MSG(!c->m_next || c->m_next->m_previous == c, "Bug: The successor cell's predecessor is invalid.");
-  wxASSERT_MSG(!c->m_previous || c->m_previous->m_next == c, "Bug: The predecessor cell's successor is invalid.");
+  wxASSERT_MSG(!c->m_previous || c->m_previous->m_next.get() == c, "Bug: The predecessor cell's successor is invalid.");
 }
 
 std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
@@ -65,21 +65,16 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
   if (next)
     Check(next.get());
 
-  // Used only until Cell::m_next becomes a unique_ptr.
-  std::unique_ptr<Cell> cm_next{c->m_next};
-  c->m_next = nullptr;
-
-  swap(cm_next, next);
+  swap(c->m_next, next);
   if (next)
     next->m_previous = nullptr;
-  if (cm_next)
-    cm_next->m_previous = c;
-  c->SetNextToDraw(cm_next);
+  if (c->m_next)
+    c->m_next->m_previous = c;
+  c->SetNextToDraw(c->m_next);
 
   Check(c);
   Check(next.get());
 
-  c->m_next = cm_next.release();
   return std::move(next);
 }
 
@@ -133,13 +128,7 @@ CellList::SplicedIn CellList::SpliceIn(Cell *where, std::unique_ptr<Cell> &&head
   auto *const nextToDraw = where->GetNextToDraw();
 
   // Insert the cells into the cell list
-#if 0
   SetNext(last, std::move(where->m_next));
-#else
-  std::unique_ptr<Cell> wherem_next{where->m_next};
-  where->m_next = nullptr;
-  SetNext(last, std::move(wherem_next));
-#endif
   last->SetNextToDraw(nextToDraw);
   SetNext(where, std::move(head));
 

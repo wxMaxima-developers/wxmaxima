@@ -2166,7 +2166,7 @@ void GroupCell::SetNextToDraw(Cell *next)
 void CellList::Check(const GroupCell *c)
 {
   if (!c) return;
-  wxASSERT_MSG(!c->m_next || dynamic_cast<GroupCell*>(c->m_next),
+  wxASSERT_MSG(!c->m_next || dynamic_cast<GroupCell*>(c->m_next.get()),
                _("Bug: The successor to a GroupCell is not a GroupCell."));
   wxASSERT_MSG(!c->m_previous || dynamic_cast<GroupCell*>(c->m_previous.get()),
                _("Bug: The predecessor to a GroupCell is not a GroupCell."));

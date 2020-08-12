@@ -634,7 +634,7 @@ public:
   Cell *GetPrevious() const { return m_previous; }
 
   //! Get the next cell in the list.
-  Cell *GetNext() const { return m_next; }
+  Cell *GetNext() const { return m_next.get(); }
   /*! Get the next cell that needs to be drawn
 
     In case of potential 2d objects like fractions either the fraction needs to be
@@ -863,7 +863,7 @@ private:
     Reads NULL, if this is the last cell of the list. See also m_nextToDraw and
     m_previous.
    */
-  Cell *m_next = nullptr;
+  std::unique_ptr<Cell> m_next;
 
   /*! The previous cell in the list of cells
 

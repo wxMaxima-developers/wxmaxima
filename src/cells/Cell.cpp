@@ -84,14 +84,8 @@ Cell::~Cell()
 
   // Delete this list of cells without using a recursive function call that can
   // run us out of stack space
-  Cell *next = m_next;
-  while (next != NULL)
-  {
-    Cell *cell = next;
-    next = next->m_next;
-    cell->m_next = NULL;
-    wxDELETE(cell);
-  }
+  while (m_next)
+    m_next = std::move(m_next->m_next);
 }
 
 void Cell::SetType(CellType type)
@@ -688,7 +682,7 @@ wxString Cell::ListToMathML(bool startofline) const
 
   // If the list contains multiple cells we wrap them in a <mrow> in order to
   // group them into a single object.
-  bool const multiCell = m_next;
+  bool const multiCell = m_next.get();
 
   // Export all cells
   for (const Cell &tmp : OnList(this))
