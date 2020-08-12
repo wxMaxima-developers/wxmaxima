@@ -115,7 +115,7 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
+#    ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
 )
 
 list(APPEND SOURCE_FILES
@@ -177,7 +177,6 @@ endif()
 # Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
 endif()
 
 if(APPLE)
