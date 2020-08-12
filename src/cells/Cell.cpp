@@ -922,7 +922,7 @@ wxString Cell::ListToRTF(bool startofline) const
           retval += wxT("\\par}\n{\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ") + rtf + wxT("\\n");
         startofline = true;
       }
-      tmp = tmp->m_next;
+      tmp = tmp->GetNext();
     }
     else
     {
@@ -948,16 +948,16 @@ wxString Cell::ListToRTF(bool startofline) const
           // A newline starts a new equation
           if (tmp->HardLineBreak())
           {
-            tmp = tmp->m_next;
+            tmp = tmp->GetNext();
             break;
           }
 
-          tmp = tmp->m_next;
+          tmp = tmp->GetNext();
         }
       }
       else
       {
-        tmp = tmp->m_next;
+        tmp = tmp->GetNext();
       }
     }
   }
@@ -1108,7 +1108,7 @@ Cell *Cell::last() const
 {
   const Cell *tmp = this;
   while (tmp->m_next)
-    tmp = tmp->m_next;
+    tmp = tmp->GetNext();
 
   wxASSERT(tmp);
   return const_cast<Cell*>(tmp);
