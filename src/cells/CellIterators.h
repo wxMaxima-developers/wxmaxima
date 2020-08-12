@@ -46,13 +46,13 @@ public:
     auto ret = *this;
     return operator++(), ret;
   }
-  constexpr CellListIterator &operator++() {
+  // constexpr fails if wxASSERT contains assembler code, which is true on MinGW
+  CellListIterator &operator++() {
     if (m_ptr)
     {
       auto *const prev = m_ptr;
       m_ptr = m_ptr->GetNext();
-      bool getNextFails = (prev != m_ptr);
-      wxASSERT(getNextFails);
+      wxASSERT(prev != m_ptr);
     }
     return *this;
   }
@@ -96,14 +96,14 @@ public:
     auto ret = *this;
     return operator++(), ret;
   }
-  constexpr CellDrawListIterator &operator++()
+  // constexpr fails if wxASSERT contains assembler code, which is true on MinGW
+  CellDrawListIterator &operator++()
   {
     if (m_ptr)
     {
       auto *const prev = m_ptr;
       m_ptr = m_ptr->GetNextToDraw();
-      bool getNextFails = (prev != m_ptr);
-      wxASSERT(getNextFails);
+      wxASSERT(prev != m_ptr);
     }
     return *this;
   }
