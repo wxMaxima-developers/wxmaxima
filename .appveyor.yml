@@ -71,6 +71,7 @@ before_build:
       $INSTALL_LIB_DIR="$INSTALL_DIR\lib\${env:WXW_LIB}"
       $SOURCE_DIR="C:\wxwidgets-source_${env:WXVERSION}"
       dir C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/
+      copy C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/windres.exe C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/x86_64-w64-mingw32-windres.exe
       # If there's no installation of wxWidgets available, we have to build it
       if (!(Test-Path $INSTALL_DIR)) {
           echo '- No wxWidgets installation $INSTALL_DIR was found'
