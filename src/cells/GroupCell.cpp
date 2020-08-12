@@ -264,9 +264,7 @@ void GroupCell::ResetInputLabelList()
 }
 
 GroupCell::~GroupCell()
-{
-  wxDELETE(m_hiddenTree);
-}
+{}
 
 GroupCell *GroupCell::GetLastWorkingGroup() const
 { return m_cellPointers->m_lastWorkingGroup; }
@@ -1825,15 +1823,15 @@ void GroupCell::SwitchHide()
 //
 // support for folding/unfolding sections
 //
-bool GroupCell::HideTree(GroupCell *tree)
+bool GroupCell::HideTree(std::unique_ptr<GroupCell> &&tree)
 {
   if (m_hiddenTree)
     return false;
-  m_hiddenTree = tree;
+  m_hiddenTree = std::move(tree);
   m_hiddenTree->SetHiddenTreeParent(this);
 
   // Clear cached images from cells that are hidden
-  for (auto &tmp : OnList(m_hiddenTree))
+  for (auto &tmp : OnList(m_hiddenTree.get()))
   {
     if (tmp.GetLabel())
       tmp.GetLabel()->ClearCacheList();
@@ -1842,12 +1840,10 @@ bool GroupCell::HideTree(GroupCell *tree)
   return true;
 }
 
-GroupCell *GroupCell::UnhideTree()
+std::unique_ptr<GroupCell> GroupCell::UnhideTree()
 {
-  GroupCell *tree = m_hiddenTree;
   m_hiddenTree->SetHiddenTreeParent(m_hiddenTreeParent);
-  m_hiddenTree = NULL;
-  return tree;
+  return std::move(m_hiddenTree);
 }
 
 /**
@@ -1904,7 +1900,7 @@ GroupCell *GroupCell::Fold()
 
   auto tornOut = CellList::TearOut(GetNext(), end);
   wxASSERT(tornOut.cellOwner);
-  m_hiddenTree = static_cast<GroupCell *>(tornOut.cellOwner.release()); // save the torn out tree into m_hiddenTree
+  m_hiddenTree = static_unique_ptr_cast<GroupCell>(std::move(tornOut.cellOwner));
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;
 }
@@ -1916,8 +1912,7 @@ GroupCell *GroupCell::Unfold()
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
-  auto splicedIn = CellList::SpliceIn(this, std::unique_ptr<GroupCell>(m_hiddenTree));
-  m_hiddenTree = nullptr;
+  auto splicedIn = CellList::SpliceIn(this, std::move(m_hiddenTree));
   GetNext()->SetHiddenTreeParent(m_hiddenTreeParent);
   return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
 }

@@ -286,7 +286,7 @@ public:
   }
 
   //! Get the tree of cells that got hidden by folding this cell
-  GroupCell *GetHiddenTree() const { return m_hiddenTree; }
+  GroupCell *GetHiddenTree() const { return m_hiddenTree.get(); }
 
   /*! Fold the current cell
 
@@ -294,10 +294,10 @@ public:
     - false, if the cell already was folded when this function was called
     - true, if the cell was folded by this function call.
   */
-  bool HideTree(GroupCell *tree);
+  bool HideTree(std::unique_ptr<GroupCell> &&tree);
 
   //! Unfold the current cell
-  GroupCell *UnhideTree();
+  std::unique_ptr<GroupCell> UnhideTree();
 
   /*! Unfold all that is needed to make the current cell seen
 
@@ -429,7 +429,7 @@ protected:
 //**
   CellPtr<Cell> m_nextToDraw;
 
-  GroupCell *m_hiddenTree = {}; //!< here hidden (folded) tree of GCs is stored
+  std::unique_ptr<GroupCell> m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent = {}; //!< store linkage to the parent of the fold
 
   // The pointers below point to inner cells and must be kept contiguous.

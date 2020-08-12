@@ -428,7 +428,7 @@ std::unique_ptr<Cell> MathParser::ParseCellTag(wxXmlNode *node)
         tree.DynamicAppend(ParseTag(xmlcells, false));
 
       if (tree)
-        group->HideTree(tree.ReleaseHead());
+        group->HideTree(std::move(tree));
     }
     else if (children->GetName() == wxT("input"))
     {

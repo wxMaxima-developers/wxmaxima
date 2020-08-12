@@ -1235,7 +1235,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE));
+      std::make_unique<GroupCell>(&(m_worksheet->m_configuration), GC_TYPE_CODE));
 
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
@@ -1358,7 +1358,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
   // that can contain it we need to create such a cell.
   if (m_worksheet->GetTree() == NULL)
     m_worksheet->InsertGroupCells(
-      new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_CODE));
+      std::make_unique<GroupCell>(&(m_worksheet->m_configuration), GC_TYPE_CODE));
 
   if (s.IsEmpty())
     return NULL;
@@ -3185,7 +3185,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document, bool clear
 
   auto tree = Format::ParseMACFile(inputFile, xMaximaFile, &document->m_configuration);
 
-  document->InsertGroupCells(tree, nullptr);
+  document->InsertGroupCells(std::move(tree), nullptr);
 
   if (clearDocument)
   {
@@ -3242,8 +3242,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
     return false;
   }
 
-  GroupCell *tree = Format::ParseWXMFile(inputFile,
-                                         &m_worksheet->m_configuration);
+  auto tree = Format::ParseWXMFile(inputFile, &m_worksheet->m_configuration);
   inputFile.Close();
 
   // from here on code is identical for wxm and wxmx
@@ -3253,7 +3252,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document, bool clear
     StartMaxima();
   }
 
-  document->InsertGroupCells(tree); // this also requests a recalculate
+  document->InsertGroupCells(std::move(tree)); // this also requests a recalculate
 
   if (clearDocument)
   {
@@ -3573,7 +3572,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
 
   // Read the worksheet's contents.
   wxXmlNode *xmlcells = xmldoc.GetRoot();
-  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, wxmxURI);
+  auto tree = CreateTreeFromXMLNode(xmlcells, wxmxURI);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
@@ -3586,7 +3585,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document, bool clea
     document->SetZoomFactor(double(zoom) / 100.0, false); // Set zoom if opening, don't recalculate
   }
 
-  document->InsertGroupCells(tree); // this also requests a recalculate
+  document->InsertGroupCells(std::move(tree)); // this also requests a recalculate
   if (clearDocument)
   {
     m_worksheet->m_currentFile = file;
@@ -3688,11 +3687,11 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document)
 
   // Read the worksheet's contents.
   wxXmlNode *xmlcells = xmldoc.GetRoot();
-  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
+  auto tree = CreateTreeFromXMLNode(xmlcells, file);
 
   document->ClearDocument();
   StartMaxima();
-  document->InsertGroupCells(tree); // this also requests a recalculate
+  document->InsertGroupCells(std::move(tree)); // this also requests a recalculate
   m_worksheet->m_currentFile = file;
   ResetTitle(true, true);
   document->RequestRedraw();
@@ -3704,7 +3703,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document)
   return true;
 }
 
-GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename)
+std::unique_ptr<GroupCell> wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename)
 {
   // Show a busy cursor as long as we export a .gif file (which might be a lengthy
   // action).
@@ -3731,7 +3730,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &
       }
     }
   }
-  return tree.ReleaseHead();
+  return std::move(tree);
 }
 
 wxString wxMaxima::EscapeForLisp(wxString str)
@@ -9728,7 +9727,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_add_pagebreak:
     case menu_format_pagebreak:
       m_worksheet->InsertGroupCells(
-              new GroupCell(&(m_worksheet->m_configuration), GC_TYPE_PAGEBREAK),
+              std::make_unique<GroupCell>(&(m_worksheet->m_configuration), GC_TYPE_PAGEBREAK),
               m_worksheet->GetHCaret());
       m_worksheet->Recalculate();
       m_worksheet->SetFocus();
