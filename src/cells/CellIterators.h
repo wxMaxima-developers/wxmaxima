@@ -51,7 +51,8 @@ public:
     {
       auto *const prev = m_ptr;
       m_ptr = m_ptr->GetNext();
-      wxASSERT(prev != m_ptr);
+      bool getNextFails = (prev != m_ptr);
+      wxASSERT(getNextFails);
     }
     return *this;
   }
@@ -101,7 +102,8 @@ public:
     {
       auto *const prev = m_ptr;
       m_ptr = m_ptr->GetNextToDraw();
-      wxASSERT(prev != m_ptr);
+      bool getNextFails = (prev != m_ptr);
+      wxASSERT(getNextFails);
     }
     return *this;
   }
