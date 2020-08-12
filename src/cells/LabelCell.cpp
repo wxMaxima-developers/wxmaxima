@@ -177,6 +177,11 @@ void LabelCell::Recalculate(AFontSize fontsize)
   // need to regenerate the info which number to show.
   if(NeedsRecalculation(fontsize))
   {
+    if(GetPrevious())
+    {
+      ForceBreakLine(true);
+      SetSkip(true);
+    }
     Configuration *configuration = (*m_configuration);
     if(configuration->GetLabelChoice() != m_labelChoice_Last)
     {
