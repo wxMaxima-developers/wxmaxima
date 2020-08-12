@@ -857,8 +857,7 @@ protected:
 
 //** 8/4-byte objects (48 + 8* bytes)
 //**
-public:
-  // TODO WIP on making these fields private (2020-07-07). Do not refactor.
+private:
   /*! The next cell in the list of cells
 
     Reads NULL, if this is the last cell of the list. See also m_nextToDraw and
@@ -873,7 +872,6 @@ public:
    */
   CellPtr<Cell> m_previous;
 
-private:
 #if wxUSE_ACCESSIBILITY
   std::unique_ptr<CellAccessible> m_accessible;
 #endif
