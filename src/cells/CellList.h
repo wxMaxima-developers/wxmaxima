@@ -64,6 +64,9 @@ public:
   //! Returns true if the tree is non-empty
   explicit operator bool() const { return bool(m_head); }
 
+  //! Passes on the ownership of the list head
+  operator std::unique_ptr<T>() && { return TakeHead(); }
+
   /*! Releases the ownership of the list head of the list to the caller.
    *
    * \todo

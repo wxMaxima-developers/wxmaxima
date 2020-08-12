@@ -821,7 +821,7 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
   if (!tree)
     tree.Append(std::make_unique<TextCell>(nullptr, m_configuration));
 
-  auto head = tree.TakeHead();
+  std::unique_ptr<TextCell> head = std::move(tree);
   ParseCommonAttrs(node, head);
   return head.release();
 }

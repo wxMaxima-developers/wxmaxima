@@ -164,10 +164,10 @@ void Cell::CopyCommonData(const Cell & cell)
 
 std::unique_ptr<Cell> Cell::CopyList() const
 {
-  CellListBuilder<> list;
+  CellListBuilder<> copy;
   for (auto &src : OnList(this))
-    list.Append(src.Copy());
-  return list.TakeHead();
+    copy.Append(src.Copy());
+  return std::move(copy);
 }
 
 std::unique_ptr<Cell> Cell::CopyList(const Cell *cell)

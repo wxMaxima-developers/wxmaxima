@@ -1448,7 +1448,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
       }
       count++;
     }
-    m_worksheet->InsertLine(tree.TakeHead(), true);
+    m_worksheet->InsertLine(std::move(tree), true);
   }
 
   if(cell)

@@ -4468,7 +4468,7 @@ std::unique_ptr<Cell> Worksheet::CopySelection(Cell *start, Cell *end, bool asDa
         break;
     }
 
-  return copy.TakeHead();
+  return std::move(copy);
 }
 
 void Worksheet::AddLineToFile(wxTextFile &output, const wxString &s)
