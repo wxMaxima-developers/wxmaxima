@@ -2659,8 +2659,7 @@ void wxMaxima::ReadVariables(wxString &data)
 
           if(bound)
           {
-            auto varFunc = m_variableReadActions.end();
-            varFunc = m_variableReadActions.find(name);
+            auto varFunc = m_variableReadActions.find(name);
             if(varFunc != m_variableReadActions.end())
               CALL_MEMBER_FN(*this, varFunc->second)(value);
             m_worksheet->m_variablesPane->VariableValue(name, value);
