@@ -71,7 +71,6 @@ public:
    * Parse the node and return the corresponding tag.
    */
   
-  Cell *ParseTag_(wxXmlNode *node, bool all = true);
   std::unique_ptr<Cell> ParseTag(wxXmlNode *node, bool all = true);
   Cell *ParseRowTag(wxXmlNode *node);
 

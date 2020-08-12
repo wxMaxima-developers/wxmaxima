@@ -175,20 +175,14 @@ Cell *MathParser::ParseHiddenOperatorTag(wxXmlNode *node)
 
 Cell *MathParser::ParseOutputTag(wxXmlNode *node)
 {
-  Cell *retval = NULL;
   wxXmlNode *children = node->GetChildren();
-  if(children)
-    retval = ParseTag_(children);
-  return retval;
+  return children ? ParseTag(children).release() : nullptr;
 }
 
 Cell *MathParser::ParseMtdTag(wxXmlNode *node)
 {
-  Cell *retval = NULL;
   wxXmlNode *children = node->GetChildren();
-  if(children)
-    retval = ParseTag_(children);
-  return retval;
+  return children ? ParseTag(children).release() : nullptr;
 }
 
 Cell *MathParser::ParseRowTag(wxXmlNode *node)
@@ -207,21 +201,19 @@ Cell *MathParser::ParseRowTag(wxXmlNode *node)
   }
   else
   {
-    Cell *tmp = NULL;
-    if((node != NULL) && (node->GetChildren() != NULL))
-      tmp = ParseTag_(node->GetChildren(), true);
-    return tmp;
+    if (node && node->GetChildren())
+      return ParseTag(node->GetChildren(), true).release();
+    return nullptr;
   }
 }
 
 Cell *MathParser::ParseHighlightTag(wxXmlNode *node)
 {
-  Cell *tmp;
   bool highlight = m_highlight;
   m_highlight = true;
-  tmp = ParseTag_(node->GetChildren());
+  auto tmp = ParseTag(node->GetChildren());
   m_highlight = highlight;
-  return tmp;
+  return tmp.release();
 }
 
 Cell *MathParser::ParseMiscTextTag(wxXmlNode *node)
@@ -382,13 +374,12 @@ Cell *MathParser::ParseOutputLabelTag(wxXmlNode *node)
 
 Cell *MathParser::ParseMthTag(wxXmlNode *node)
 {
-  Cell *retval;
-  retval = ParseTag_(node->GetChildren());
-  if (retval != NULL)
+  auto retval = ParseTag(node->GetChildren());
+  if (retval)
     retval->ForceBreakLine(true);
   else
-    retval = new TextCell(NULL, m_configuration, wxT(" "));
-  return retval;
+    retval = std::make_unique<TextCell>(nullptr, m_configuration, S_(" "));
+  return retval.release();
 }
 
 // ParseCellTag
@@ -428,7 +419,7 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
       wxXmlNode *xmlcells = children->GetChildren();
       xmlcells = SkipWhitespaceNode(xmlcells);
       for (; xmlcells; xmlcells = GetNextTag(xmlcells))
-        tree.DynamicAppend(ParseTag_(xmlcells, false));
+        tree.DynamicAppend(ParseTag(xmlcells, false));
 
       if (tree)
         group->HideTree(tree.ReleaseHead());
@@ -1045,7 +1036,7 @@ Cell *MathParser::ParseTableTag(wxXmlNode *node)
   return matrix;
 }
 
-Cell *MathParser::ParseTag_(wxXmlNode *node, bool all)
+std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)
 {
   CellListBuilder<> tree;
   bool gotInvalid = false;
@@ -1105,12 +1096,7 @@ Cell *MathParser::ParseTag_(wxXmlNode *node, bool all)
       break;
   }
 
-  return tree.ReleaseHead();
-}
-
-std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)
-{
-  return std::unique_ptr<Cell>(ParseTag_(node, all));
+  return std::move(tree);
 }
 
 Cell *MathParser::ParseLine(wxString s, CellType style)
@@ -1118,7 +1104,7 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
   m_ParserStyle = style;
   m_FracStyle = FracCell::FC_NORMAL;
   m_highlight = false;
-  Cell *cell = NULL;
+  std::unique_ptr<Cell> cell;
 
   int showLength;
 
@@ -1154,17 +1140,17 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
     wxXmlNode *doc = xml.GetRoot();
 
     if (doc != NULL)
-      cell = ParseTag_(doc->GetChildren());
+      cell = ParseTag(doc->GetChildren());
   }
   else
   {
-    cell = new TextCell(NULL, m_configuration,
+    cell = std::make_unique<TextCell>(nullptr, m_configuration,
                         T_("(Expression longer than allowed by the configuration setting)"), TS_WARNING);
     cell->SetToolTip(&T_("The maximum size of the expressions wxMaxima is allowed to display "
                          "can be changed in the configuration dialogue."));
     cell->ForceBreakLine(true);
   }
-  return cell;
+  return cell.release();
 }
 
 wxRegEx MathParser::m_graphRegex(wxT("[[:cntrl:]]"));
