@@ -6239,7 +6239,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_time:
-      if(m_MaximaMenu->IsChecked(menu_time))
+      if(event.IsChecked())
         cmd = wxT("showtime:all$");
       else
         cmd = wxT("showtime:false$");
@@ -7908,7 +7908,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
     }
       break;
     case menu_animationautostart:
-      if(m_PlotMenu->IsChecked(menu_animationautostart))
+      if(event.IsChecked())
         MenuCommand(wxT("wxanimate_autoplay:true$"));
       else
         MenuCommand(wxT("wxanimate_autoplay:false$"));
@@ -7975,7 +7975,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_num_domain:
-      if(m_NumericMenu->IsChecked(menu_num_domain))
+      if(event.IsChecked())
         cmd = wxT("domain:'complex$");
       else
         cmd = wxT("domain:'real$");
@@ -7994,7 +7994,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_num_out:
-      if(!m_NumericMenu->IsChecked(menu_num_out))
+      if(!event.IsChecked())
         cmd = wxT("numer:false$");
       else
         cmd = wxT("numer:true$");
