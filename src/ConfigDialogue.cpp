@@ -385,10 +385,6 @@ void ConfigDialogue::SetCheckboxValues()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-<<<<<<< HEAD
-  bool savePanes = true;
-=======
->>>>>>> feature/KoenGu/noSavePanes
   bool fixedFontTC = true;
   bool saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
