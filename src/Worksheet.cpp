@@ -2981,6 +2981,7 @@ void Worksheet::OpenHCaret(const wxString &txt, GroupType type)
 
   auto *editable = group->GetEditable();
   InsertGroupCells(std::move(group), m_hCaretPosition);
+  RequestRedraw();
 
   // activate editor
   SetActiveCell(editable, false);
@@ -3939,6 +3940,9 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       // ESCAPE is handled by the new cell
     case WXK_ESCAPE:
       OpenHCaret(wxEmptyString);
+      Recalculate();
+      RecalculateIfNeeded();
+      RedrawIfRequested();
       if (GetActiveCell())
         Autocomplete(AutoComplete::esccommand);
       break;
