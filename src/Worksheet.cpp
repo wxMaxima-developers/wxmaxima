@@ -1666,7 +1666,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             popupMenu.AppendSeparator();          
             popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
                                       _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
-            popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
+            popupMenu.Check(popid_auto_answer, group->AutoAnswer());
             popupMenu.AppendCheckItem(popid_never_autoanswer, _("Never offer known answers"),
                                       _("wxMaxma remembers answers from the last run and is able to offer them as the default answer"));
             popupMenu.Check(popid_never_autoanswer, !m_configuration->OfferKnownAnswers());
