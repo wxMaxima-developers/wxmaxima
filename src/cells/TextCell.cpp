@@ -41,19 +41,19 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   m_textStyle = style;
   switch(style)
   {
-  case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
-  case TS_VARIABLE: m_type = MC_TYPE_DEFAULT; break;
-  case TS_NUMBER: m_type = MC_TYPE_DEFAULT; break;
-  case TS_FUNCTION: m_type = MC_TYPE_DEFAULT; break;
-  case TS_SPECIAL_CONSTANT: m_type = MC_TYPE_DEFAULT; break;
-  case TS_GREEK_CONSTANT: m_type = MC_TYPE_DEFAULT; break;
-  case TS_STRING: m_type = MC_TYPE_DEFAULT; break;
+  case TS_DEFAULT: m_type = MC_TYPE_TEXT; break;
+  case TS_VARIABLE: m_type = MC_TYPE_TEXT; break;
+  case TS_NUMBER: m_type = MC_TYPE_TEXT; break;
+  case TS_FUNCTION: m_type = MC_TYPE_TEXT; break;
+  case TS_SPECIAL_CONSTANT: m_type = MC_TYPE_TEXT; break;
+  case TS_GREEK_CONSTANT: m_type = MC_TYPE_TEXT; break;
+  case TS_STRING: m_type = MC_TYPE_TEXT; break;
   case TS_INPUT: m_type = MC_TYPE_INPUT; break;
   case TS_MAIN_PROMPT: m_type = MC_TYPE_MAIN_PROMPT; break;
   case TS_OTHER_PROMPT: m_type = MC_TYPE_PROMPT; break;
   case TS_LABEL: m_type = MC_TYPE_LABEL; break;
   case TS_USERLABEL: m_type = MC_TYPE_LABEL; break;
-  case TS_HIGHLIGHT: m_type = MC_TYPE_DEFAULT; break;
+  case TS_HIGHLIGHT: m_type = MC_TYPE_TEXT; break;
   case TS_WARNING: m_type = MC_TYPE_WARNING; break;
   case TS_ERROR: m_type = MC_TYPE_ERROR; break;
   case TS_TEXT: m_type = MC_TYPE_TEXT; break;
@@ -65,7 +65,7 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   case TS_TITLE: m_type = MC_TYPE_TITLE; break;
   default:
     wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"), style));
-    m_type = MC_TYPE_DEFAULT;
+    m_type = MC_TYPE_TITLE;
   }
   m_fontSize.Set(10.0f);
   TextCell::SetValue(text);
@@ -104,6 +104,8 @@ void TextCell::SetStyle(TextStyle style)
 
 void TextCell::SetType(CellType type)
 {
+  if(type == MC_TYPE_DEFAULT)
+    return;
   m_sizeCache.clear();
   ResetSize();
   ResetData();

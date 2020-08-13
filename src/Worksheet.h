@@ -825,6 +825,7 @@ public:
     popid_copy_rtf,
     popid_add_watch,
     popid_add_watch_label,
+    popid_special_constant_percent,
     popid_delete,
     popid_simplify,
     popid_expand,

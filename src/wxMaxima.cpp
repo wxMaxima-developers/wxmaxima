@@ -535,6 +535,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_to_numer, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(Worksheet::popid_special_constant_percent, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_exponentialize, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_invert_mat, wxEVT_MENU,
@@ -7973,6 +7975,13 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   wxString cmd;
   switch (event.GetId())
   {
+    case Worksheet::popid_special_constant_percent:
+    {
+      m_worksheet->m_configuration->SetKeepPercent(event.IsChecked());
+      m_worksheet->RequestRedraw();
+      m_worksheet->Refresh();
+      break;
+    }
     case menu_num_domain:
       if(event.IsChecked())
         cmd = wxT("domain:'complex$");

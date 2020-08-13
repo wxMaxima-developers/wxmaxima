@@ -898,6 +898,8 @@ void Configuration::WriteStyles(wxString file)
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
+  config->Write(wxT("keepPercent"), m_keepPercent);
+
   // Font
   config->Write("Style/Default/Style/Text/fontname", m_fontName.GetAsString());
   config->Write(wxT("mathfontsize"), m_mathFontSize.GetAsLong());

@@ -387,7 +387,7 @@ void ConfigDialogue::SetCheckboxValues()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool savePanes = true;
-  bool fixedFontTC = true, keepPercent = true;
+  bool fixedFontTC = true;
   bool saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
@@ -430,7 +430,6 @@ void ConfigDialogue::SetCheckboxValues()
   config->Read(wxT("recentItems"), &recentItems);
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
-  config->Read(wxT("keepPercent"), &keepPercent);
   
   m_documentclass->SetValue(configuration->Documentclass());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
@@ -484,7 +483,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
-  m_keepPercentWithSpecials->SetValue(keepPercent);
+  m_keepPercentWithSpecials->SetValue(configuration->CheckKeepPercent());
   m_abortOnError->SetValue(configuration->GetAbortOnError());
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(defaultFramerate);
@@ -1296,7 +1295,7 @@ void ConfigDialogue::WriteSettings()
   configuration->PrintBrackets(m_printBrackets->GetValue());
   configuration->HTMLequationFormat((Configuration::htmlExportFormat) m_exportWithMathJAX->GetSelection());
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
-  config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
+  configuration->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
   configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());

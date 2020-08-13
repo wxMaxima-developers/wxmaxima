@@ -472,6 +472,9 @@ public:
   bool CheckKeepPercent() const
   { return m_keepPercent; }
 
+  void SetKeepPercent(bool keepPercent)
+    { m_keepPercent = keepPercent; }
+
   AFontName GetTeXCMRI() const
   { return m_fontCMRI; }
 

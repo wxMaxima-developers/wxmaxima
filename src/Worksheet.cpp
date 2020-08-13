@@ -1460,6 +1460,20 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_add_watch_label, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
         }
 
+        if(
+          (GetSelectionStart() != NULL) &&
+          (GetSelectionStart()->GetType() == MC_TYPE_TEXT) &&
+          (dynamic_cast<TextCell *>(GetSelectionStart())->GetStyle() == TS_SPECIAL_CONSTANT)
+          )
+        {
+          if(popupMenu.GetMenuItemCount()>0)
+            popupMenu.AppendSeparator();
+          popupMenu.AppendCheckItem(
+            popid_special_constant_percent, _("Show \"%\" in special constants"),
+            wxEmptyString);
+          popupMenu.Check(popid_special_constant_percent,
+                          m_configuration->CheckKeepPercent());
+        }
         if (
           (GetSelectionStart() != NULL) &&
           (GetSelectionStart() == GetSelectionEnd()) &&
