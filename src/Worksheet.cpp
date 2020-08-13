@@ -1402,18 +1402,18 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
         }
-        if((m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->ContainsSavedAnswers())
-           || (GCContainsCurrentQuestion(m_cellPointers.m_selectionStart.CastAs<GroupCell*>())))
+        if((group->ContainsSavedAnswers())
+           || (GCContainsCurrentQuestion(group)))
         {
           popupMenu.AppendSeparator();          
           popupMenu.AppendCheckItem(popid_auto_answer, _("Automatically send known answers"),
                                     _("wxMaxma remembers answers from the last run and is able to automatically send them to maxima, if requested"));
-          popupMenu.Check(popid_auto_answer, m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->AutoAnswer());
+          popupMenu.Check(popid_auto_answer, group->AutoAnswer());
           popupMenu.AppendCheckItem(popid_never_autoanswer, _("Never offer known answers"),
                                     _("wxMaxma remembers answers from the last run and is able to offer them as the default answer"));
           popupMenu.Check(popid_never_autoanswer, !m_configuration->OfferKnownAnswers());
         }
-        if (m_cellPointers.m_selectionStart.CastAs<GroupCell*>()->GetGroupType() == GC_TYPE_IMAGE)
+        if (group->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu.AppendSeparator();
           popupMenu.Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
@@ -1433,7 +1433,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           popupMenu.Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString,
-                            wxITEM_NORMAL);
+                           wxITEM_NORMAL);
 
           popupMenu.Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
