@@ -159,12 +159,16 @@ protected:
     // of bit fields in this class!
     m_dontEscapeOpeningParenthesis = false;
     m_promptTooltip = false;
+    m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
   }
 
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis : 1 /* InitBitFields */;
   //! Default to a special tooltip for prompts?
   bool m_promptTooltip : 1 /* InitBitFields */;
+  //! The last known vallue of CheckKeepPercent
+  bool m_keepPercent_last : 1;
+
 };
 
 #endif // TEXTCELL_H

@@ -313,7 +313,8 @@ AFontSize TextCell::GetScaledTextSize() const
 
 bool TextCell::NeedsRecalculation(AFontSize fontSize) const
 {
-  return Cell::NeedsRecalculation(fontSize);
+  return Cell::NeedsRecalculation(fontSize) ||
+    (m_keepPercent_last != (*m_configuration)->CheckKeepPercent());
 }
 
 wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
@@ -375,9 +376,12 @@ void TextCell::UpdateDisplayedText()
 void TextCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
+  if(m_keepPercent_last != (*m_configuration)->CheckKeepPercent())
+    UpdateDisplayedText();
   if(NeedsRecalculation(fontsize))
   {      
     Cell::Recalculate(fontsize);
+    m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
     m_fontSize = fontsize;
     SetFont(fontsize);
 
