@@ -1119,10 +1119,7 @@ std::unique_ptr<Cell> MathParser::ParseTag(wxXmlNode *node, bool all)
     {
       // Tell the user we ran into problems.
       wxString msg;
-      if (gotInvalid)
-        msg = tree.GetLastAppended()->ToString();
-      else if (!tree.GetLastAppended() && !tagName.empty())
-        msg = wxString::Format(m_unknownXMLTagToolTip, tagName);
+      msg = tree.GetLastAppended()->ToString();
       if (!msg.empty())
       {
         LoggingMessageBox(msg, _("Warning"), wxOK | wxICON_WARNING);
