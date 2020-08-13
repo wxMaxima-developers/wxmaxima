@@ -1224,6 +1224,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 {
   m_updateControls = true;
   RecalculateIfNeeded();
+  RedrawIfRequested();
   ClearNotification();
   m_cellPointers.ResetSearchStart();
 
@@ -1880,6 +1881,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 {
   m_updateControls = true;
   RecalculateIfNeeded();
+  RedrawIfRequested();
   CloseAutoCompletePopup();
   m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
   ClearNotification();
