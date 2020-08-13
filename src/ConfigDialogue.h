@@ -257,7 +257,6 @@ protected:
   wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
-  wxCheckBox *m_savePanes;
   wxCheckBox *m_usesvg;
   wxCheckBox *m_antialiasLines;
   wxSpinCtrl *m_defaultFramerate;

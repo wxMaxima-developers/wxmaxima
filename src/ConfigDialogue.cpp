@@ -346,7 +346,6 @@ void ConfigDialogue::SetCheckboxValues()
           _("For each Text-, Sectioning or code cell wxMaxima can display a bracket showing the extend of the cell and allowing to fold it. This setting now tells if this bracket is to be printed, as well."));
   m_exportWithMathJAX->SetToolTip(
           _("MathJAX creates scalable High-Quality representations of 2D Maths that can be used for Drag-And-Drop and provides accessibility options. The disadvantage of MathJAX is that it needs JavaScript and a little bit of time in order to typeset equations.\nMathML is much faster than MathJaX, if it is supported by the browser. But many MathML implementations tend to lack necessary features.\nBitmaps tend to need more band width than the other two options. They lack support for advanced features like drag-and-drop or accessibility. Also they have problems aligning and scaling with the rest of the text and might use fonts that don't match the rest of the document."));
-  m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usesvg->SetToolTip(
           _("PNG images can be read by old wxMaxima versions - but aren't really scalable."));
   m_antialiasLines->SetToolTip(
@@ -386,7 +385,10 @@ void ConfigDialogue::SetCheckboxValues()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
+<<<<<<< HEAD
   bool savePanes = true;
+=======
+>>>>>>> feature/KoenGu/noSavePanes
   bool fixedFontTC = true;
   bool saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
@@ -407,7 +409,6 @@ void ConfigDialogue::SetCheckboxValues()
   int panelSize = 1;
   config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
-  config->Read(wxT("AUI/savePanes"), &savePanes);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
   int defaultPlotWidth = 600;
 
@@ -444,7 +445,6 @@ void ConfigDialogue::SetCheckboxValues()
   MaximaLocationChanged(dummy);
 
   m_additionalParameters->SetValue(configuration->MaximaParameters());
-  m_savePanes->SetValue(savePanes);
   m_usesvg->SetValue(configuration->UseSVG());
   m_antialiasLines->SetValue(configuration->AntiAliasLines());
 
@@ -958,9 +958,6 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
   
-  m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
-  vsizer->Add(m_savePanes, 0, wxALL, 5);
-
   m_autoSave = new wxCheckBox(panel, -1, _("Save the worksheet automatically"));
   vsizer->Add(m_autoSave, 0, wxALL, 5);
 
@@ -1279,7 +1276,6 @@ void ConfigDialogue::WriteSettings()
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
   configuration->SetLabelChoice((Configuration::showLabels) m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());
-  config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   configuration->UseSVG(m_usesvg->GetValue());
   configuration->AntiAliasLines(m_antialiasLines->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
