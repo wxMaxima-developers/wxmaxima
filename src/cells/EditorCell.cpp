@@ -1541,9 +1541,12 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
       for (int i = 0; i < indentChars; i++)
         indentString += wxT(" ");
 
+    wxString newLines = m_text.SubString(m_positionOfCaret, m_text.Length());
+    if(autoIndent)
+      newLines.Trim(false);
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
       wxT("\n") + indentString +
-      m_text.SubString(m_positionOfCaret, m_text.Length());
+      newLines;
     m_positionOfCaret++;
     if ((indentChars > 0) && (autoIndent))
     {
