@@ -71,6 +71,8 @@
 //! How many miliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
 
+class Maxima; // The Maxima process interface
+
 /* The top-level window and the main application logic
 
  */
@@ -681,10 +683,9 @@ protected:
     return m_CWD;
   }
 
-  std::unique_ptr<wxSocketBase> m_client;
-  std::unique_ptr<wxSocketInputStream> m_clientStream;
-  std::unique_ptr<wxTextInputStream> m_clientTextStream;
+  std::unique_ptr<Maxima> m_client;
   wxSocketServer *m_server;
+
   wxProcess *m_process;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
