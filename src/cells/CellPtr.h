@@ -76,7 +76,7 @@ class Observed
 
     void Clear() { m_object = nullptr; }
 
-    inline Observed *Get() const { return m_object; }
+    inline Observed *Get() const noexcept { return m_object; }
 
     //! References the control block.
     ControlBlock *Ref(const CellPtrBase *cellptr) {
@@ -177,7 +177,7 @@ protected:
     m_cb = ControlBlock::Deref(m_cb, this);
   }
 
-  Observed *base_get() const { return m_cb->Get(); }
+  Observed *base_get() const noexcept { return m_cb->Get(); }
 
   CellPtrBase &operator=(const CellPtrBase &o)
   {
@@ -218,18 +218,18 @@ public:
            || (std::is_pointer<U>::value && std::is_convertible<U, Observed*>::value);
   }
 
-  explicit operator bool() const { return m_cb->Get(); }
+  explicit operator bool() const noexcept { return m_cb->Get(); }
 
   inline void reset() { base_reset(); }
 
   //! This is exactly like the spaceship operator in C++20
-  auto cmpControlBlocks(const CellPtrBase &o) const { return m_cb - o.m_cb; }
+  auto cmpControlBlocks(const CellPtrBase &o) const noexcept { return m_cb - o.m_cb; }
 
   //! This is the spaceship operator acting on pointed-to objects
-  auto cmpObjects(const CellPtrBase &o) const { return m_cb->Get() - o.m_cb->Get(); }
+  auto cmpObjects(const CellPtrBase &o) const noexcept { return m_cb->Get() - o.m_cb->Get(); }
 
   //! This is the spaceship operator acting on pointed-to objects
-  auto cmpObjects(const Observed *o) const { return m_cb->Get() - o; }
+  auto cmpObjects(const Observed *o) const noexcept { return m_cb->Get() - o; }
 
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
 };
@@ -258,16 +258,16 @@ public:
 
   // Observers
   //
-  pointer get() const;
-  inline reference operator*() const { return *get(); }
-  inline pointer operator->() const { return get(); };
+  pointer get() const noexcept;
+  inline reference operator*() const noexcept { return *get(); }
+  inline pointer operator->() const noexcept { return get(); };
 
 #if CELLPTR_CAST_TO_PTR
-  operator pointer() const { return get(); }
+  operator pointer() const noexcept { return get(); }
 #endif
 
   template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type = true>
-  PtrT CastAs() const;
+  PtrT CastAs() const noexcept;
 
   // Operations with NULL and integers in general
   //
@@ -279,8 +279,8 @@ public:
   void reset() { base_reset(); }
   explicit CellPtr(decltype(nullptr)) {}
   CellPtr &operator=(decltype(nullptr)) { base_reset(); return *this; }
-  bool operator==(decltype(nullptr)) const { return !bool(*this); }
-  bool operator!=(decltype(nullptr)) const { return bool(*this); }
+  bool operator==(decltype(nullptr)) const noexcept { return !bool(*this); }
+  bool operator!=(decltype(nullptr)) const noexcept { return bool(*this); }
 
   // Operations with convertible-to-pointer types
   //
@@ -332,13 +332,13 @@ public:
 #if !CELLPTR_CAST_TO_PTR
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator==(const CellPtr<U> &ptr) const { return cmpControlBlocks(ptr) == 0; }
+  bool operator==(const CellPtr<U> &ptr) const noexcept { return cmpControlBlocks(ptr) == 0; }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator!=(const CellPtr<U> &ptr) const { return cmpControlBlocks(ptr) != 0; }
+  bool operator!=(const CellPtr<U> &ptr) const noexcept { return cmpControlBlocks(ptr) != 0; }
   template <typename U,
            typename std::enable_if<std::is_convertible<typename std::add_pointer<U>::type, pointer>::value, bool>::type = true>
-  bool operator<(const CellPtr<U> &ptr) const { return cmpObjects(ptr) < 0; }
+  bool operator<(const CellPtr<U> &ptr) const noexcept { return cmpObjects(ptr) < 0; }
 #endif
 
   // Operations with compatible unique_ptr
@@ -362,62 +362,62 @@ public:
 //
 
 template <typename T> typename
-CellPtr<T>::pointer CellPtr<T>::get() const { return static_cast<pointer>(base_get()); }
+CellPtr<T>::pointer CellPtr<T>::get() const noexcept { return static_cast<pointer>(base_get()); }
 
 /*! Declaration of a specialization for GroupCell. 
 
 This allows use of CellPtr<GroupCell> when the GroupCell class is not fully defined yet.
 */
 template <>
-CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const;
+CellPtr<GroupCell>::pointer CellPtr<GroupCell>::get() const noexcept;
 
 //
 
 template <typename T, typename U>
-bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpControlBlocks(right) == 0; }
+bool operator==(const CellPtr<T> &left, const CellPtr<U> &right) noexcept { return left.cmpControlBlocks(right) == 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator==(U left, const CellPtr<T> &right) { return right.cmpObjects(left) == 0; }
+bool operator==(U left, const CellPtr<T> &right) noexcept { return right.cmpObjects(left) == 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator==(const CellPtr<T> &left, U right) { return left.cmpObjects(right) == 0; }
+bool operator==(const CellPtr<T> &left, U right) noexcept { return left.cmpObjects(right) == 0; }
 
 template <typename T, typename U>
-bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpControlBlocks(right) != 0; }
+bool operator!=(const CellPtr<T> &left, const CellPtr<U> &right) noexcept { return left.cmpControlBlocks(right) != 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator!=(U left, const CellPtr<T> &right) { return right.cmpObjects(left) != 0; }
+bool operator!=(U left, const CellPtr<T> &right) noexcept { return right.cmpObjects(left) != 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator!=(const CellPtr<T> &left, U right) { return left.cmpObjects(right) != 0; }
+bool operator!=(const CellPtr<T> &left, U right) noexcept { return left.cmpObjects(right) != 0; }
 
 template <typename T, typename U>
-bool operator<(const CellPtr<T> &left, const CellPtr<U> &right) { return left.cmpObjects(right) < 0; }
+bool operator<(const CellPtr<T> &left, const CellPtr<U> &right) noexcept { return left.cmpObjects(right) < 0; }
 
 #if !CELLPTR_CAST_TO_PTR
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator<(U left, const CellPtr<T> &right) { return right.cmpObjects(left) > 0; }
+bool operator<(U left, const CellPtr<T> &right) noexcept { return right.cmpObjects(left) > 0; }
 #endif
 
 template <typename T, typename U,
          typename std::enable_if<CellPtrBase::is_pointer<U>(), bool>::type = true>
-bool operator<(const CellPtr<T> &left, U right) { return left.cmpObjects(right) < 0; }
+bool operator<(const CellPtr<T> &left, U right) noexcept { return left.cmpObjects(right) < 0; }
 
 //
 
 //! A cast for unique pointers, used to downcast to a derived type iff we're certain
 //! the cell is indeed of a derived type
 template<typename Derived, typename Base>
-std::unique_ptr<Derived> static_unique_ptr_cast(std::unique_ptr<Base>&& p)
+std::unique_ptr<Derived> static_unique_ptr_cast(std::unique_ptr<Base>&& p) noexcept
 {
   auto d = static_cast<Derived *>(p.release());
   return std::unique_ptr<Derived>(d);

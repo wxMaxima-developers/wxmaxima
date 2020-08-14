@@ -857,19 +857,11 @@ protected:
 //** 8/4-byte objects (48 + 8* bytes)
 //**
 private:
-  /*! The next cell in the list of cells
-
-    Reads NULL, if this is the last cell of the list. See also m_nextToDraw and
-    m_previous.
-   */
+  //! The next cell in the list of cells, or null if it's the last cell.
   std::unique_ptr<Cell> m_next;
 
-  /*! The previous cell in the list of cells
-
-    Reads NULL, if this is the first cell of the list. See also
-    m_nextToDraw and m_next
-   */
-  CellPtr<Cell> m_previous;
+  //! The previous cell in the list of cells, or null if it's the list head.
+  Cell *m_previous = {};
 
 #if wxUSE_ACCESSIBILITY
   std::unique_ptr<CellAccessible> m_accessible;
@@ -1037,7 +1029,7 @@ private:
 // The static cast here requires Cell to be defined
 template <typename T>
 template <typename PtrT, typename std::enable_if<std::is_pointer<PtrT>::value, bool>::type>
-inline PtrT CellPtr<T>::CastAs() const { return dynamic_cast<PtrT>(static_cast<Cell*>(base_get())); }
+inline PtrT CellPtr<T>::CastAs() const noexcept { return dynamic_cast<PtrT>(static_cast<Cell*>(base_get())); }
 
 #if wxUSE_ACCESSIBILITY
 class CellAccessible final : public wxAccessible
