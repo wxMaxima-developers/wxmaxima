@@ -7,8 +7,9 @@
  * Reduced the UI flicker on MS Windows
  * diff cells can now be broken into lines
  * A try to replace manual MacOs desktop integration with wxWidgets one
- * More performance improvements in cells
+ * Another massive performance update
  * Reduced the memory footprint of text cells
+ * If it is configurable it now might have a right-click menu
  * Reduced the memory footprint of cells used only when line breaking is performed
  * Subscripts created by derivabbrev are now correctly copied as "diff" command
  * If Maxima comes without suitable manual we now use the online one instead
