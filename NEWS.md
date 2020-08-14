@@ -7,13 +7,16 @@
  * Reduced the UI flicker on MS Windows
  * diff cells can now be broken into lines
  * A try to replace manual MacOs desktop integration with wxWidgets one
- * More performance updates
+ * More performance improvements in cells
  * Reduced the memory footprint of text cells
+ * Reduced the memory footprint of cells used only when line breaking is performed
  * Subscripts created by derivabbrev are now correctly copied as "diff" command
  * If Maxima comes without suitable manual we now use the online one instead
  * Added buttons that reset the configuration
  * A few menu items now are checkboxes set and cleared by maxima
  * wxMaxima forgot to release the communication port it used for talking to maxima
+ * Improved performance of receiving data from maxima (over the network socket)
+ * The font sizes are stored in configuration with full precision, without rounding to integer
  * Many additional bug fixes
 
 # 20.07.0
