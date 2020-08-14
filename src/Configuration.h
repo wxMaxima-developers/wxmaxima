@@ -965,7 +965,6 @@ private:
   bool m_invertBackground;
   long m_undoLimit;
   long m_recentItems;
-  wxFont m_worksheetFonts[NUMBEROFSTYLES];
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
