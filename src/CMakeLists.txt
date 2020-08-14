@@ -95,6 +95,7 @@ set(SOURCE_FILES
     RecentDocuments.cpp
     RegexCtrl.cpp
     StatusBar.cpp
+    StreamUtils.cpp
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
