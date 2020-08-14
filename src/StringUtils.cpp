@@ -90,4 +90,36 @@ bool EndsWithChar(const wxString &str, char ch)
   return !str.empty() && *std::next(str.end(), -1) == ch;
 }
 
+// String normalization
+
+void NormalizeEOLsRemoveNULs(wxString &str)
+{
+  using std::swap;
+  wxString normalized;
+  normalized.reserve(str.size());
+
+  // Clean up the output from zeroes, and normalize the line endings
+  wxStringCharType prevCh = {};
+  for (auto const ch : str)
+  {
+    if (ch == '\0')
+    { /* "\0" -> "" */ }
+    else if (prevCh == '\r' && ch != '\n')
+    { /* "\r[^\n]" -> "\n" */
+      normalized += '\n';
+    }
+    else if (ch != '\r')
+    {
+      normalized += ch;
+    }
+    prevCh = ch;
+  }
+  if (prevCh == '\r')
+  { /* "\r$" -> "\n" */
+    normalized += '\n';
+  }
+
+  swap(str, normalized);
+}
+
 } // namespace wxm

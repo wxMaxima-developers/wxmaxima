@@ -69,6 +69,7 @@
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
+#include "StringUtils.h"
 #include "wxMaximaIcon.h"
 #include "WXMformat.h"
 #include "ErrorRedirector.h"
@@ -1651,8 +1652,7 @@ void wxMaxima::TryToReadDataFromMaxima()
     chr = m_clientTextStream->GetChar();
     if(chr == wxEOT)
       break;
-    if(chr != '\0')
-      m_newCharsFromMaxima += chr;
+    m_newCharsFromMaxima += chr;
     // Trigger the gui every few kilobytes so it stays responsible during
     // big data transfers
     if(newBytes++>100000)
@@ -1663,12 +1663,7 @@ void wxMaxima::TryToReadDataFromMaxima()
     }
   }
 
-  // Stupid DOS and MAC line endings. The first of these commands won't work
-  // if the "\r" is the last char of a packet containing a part of a very long
-  // string. But running a search-and-replace
-  m_newCharsFromMaxima.Replace("\r\n","\n");
-  m_newCharsFromMaxima.Replace("\r","\n");
-
+  wxm::NormalizeEOLsRemoveNULs(m_newCharsFromMaxima);
   
   if(m_pipeToStdout)
     std::cout << m_newCharsFromMaxima;
