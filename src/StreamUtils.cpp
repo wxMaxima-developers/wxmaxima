@@ -50,57 +50,84 @@
 //
 //  SPDX-License-Identifier: wxWindows
 
-#ifndef WXMAXIMA_STRINGUTILS_H
-#define WXMAXIMA_STRINGUTILS_H
+#include "StreamUtils.h"
+#include <wx/stream.h>
+#include <algorithm>
+#include <cstring>
 
-#include <wx/string.h>
-#include <wx/translation.h>
-
-namespace wxm {
-
-/*! An empty instance of the wxString object.
- *
- * This instance can be returned by const reference where an empty string is
- * desired.
- * This is different from wxEmptyString, the latter being of a different type.
- * The code `const wxString &fun() { return wxEmptyString; }` is undefined
- * behavior, as a temporary wxString instance is returned.
- */
-extern const wxString emptyString;
-
-/*! Provides a static instance of a string - it will only be constructed once.
- *
- * Usagee: S_("foo") - in place of wxT("foo")
- */
-#define S_(string) ([]()->const wxString &{ static const wxString str(wxT(string)); return str; }())
-
-/*! Provides a static instance of a translated string - it will only be constructed once.
- *
- * Usagee: T_("foo") - in place of _(wxT("foo"))
- */
-#define T_(string) ([]()->const wxString &{ static const wxString &str = _(wxT(string)); return str; }())
-
-// String Comparisons
-
-//! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, wxUniChar ch);
-//! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, wxStringCharType ch);
-//! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, char ch);
-
-//! Whether a string ends with a given character
-bool EndsWithChar(const wxString &str, wxUniChar ch);
-//! Whether a string begins with a given character
-bool EndsWithChar(const wxString &str, wxStringCharType ch);
-//! Whether a string begins with a given character
-bool EndsWithChar(const wxString &str, char ch);
-
-// String normalization
-
-//! Removes all NULs from the string, converts \r\n to \n, and lone \r to \n.
-void NormalizeEOLsRemoveNULs(wxString &str);
-
-} // namespace wxm
-
+UTF8Decoder::UTF8Decoder()
+#if !(defined(__WINDOWS__) && wxUSE_UNICODE)
+    // This works on newer Windows 10, but fails on older Windows,
+    // thus we fall back to the deprecated utf8 codec.
+    : m_locale("en_US.UTF8"),
+      m_codec(std::use_facet<std::remove_reference<decltype(m_codec)>::type>(m_locale))
 #endif
+{
+}
+
+UTF8Decoder::DecodeResult UTF8Decoder::Decode(UTF8Decoder::State &state,
+                                              wxInputStream &in, size_t maxRead,
+                                              size_t maxWrite)
+{
+  return state.Decode(m_codec, in, maxRead, maxWrite);
+}
+
+UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(const Codec &codec,
+                                                     wxInputStream &in,
+                                                     size_t maxRead,
+                                                     size_t maxWrite)
+{
+  if (!maxRead || !maxWrite)
+    return {};
+
+  // Append input data to the buffer
+  if (m_inBuf.size() < maxRead)
+    m_inBuf.resize(maxRead);
+
+  if (maxRead > m_inBufCount)
+  {
+    in.Read(m_inBuf.data() + m_inBufCount, maxRead - m_inBufCount);
+    m_inBufCount += in.LastRead();
+  }
+
+  // Prepare the output buffer
+  if (m_outBuf.size() < maxWrite)
+    m_outBuf.resize(maxWrite);
+
+  // Decode
+  auto const *inPtr = m_inBuf.data();
+  auto *outPtr = m_outBuf.data();
+
+  auto const dr = codec.in(m_codecState, inPtr, inPtr + m_inBufCount, inPtr,
+                           outPtr, outPtr + m_outBuf.size(), outPtr);
+
+  // Fallback for noconv
+  if (dr == std::codecvt_base::noconv)
+  {
+    wxASSERT(inPtr == m_inBuf.data() && outPtr == m_outBuf.data());
+    auto toCopy = std::min(m_inBufCount, m_outBuf.size());
+    std::copy(inPtr, inPtr+toCopy, outPtr);
+    inPtr += toCopy;
+    outPtr += toCopy;
+  }
+  else if (dr == std::codecvt_base::error)
+  {
+    m_hadError = true;
+  }
+
+  auto const outBufCount = outPtr - m_outBuf.data();
+
+  // Shove leftover input data to the beginning of the buffer
+  auto const inBufPos = inPtr - m_inBuf.data();
+  auto const inLeftCount = m_inBufCount - inBufPos;
+  memmove(m_inBuf.data(), inPtr, inLeftCount);
+  m_inBufCount = inLeftCount;
+
+  DecodeResult result;
+  result.bytesRead = in.LastRead();
+  result.outputSize = outBufCount;
+  result.output = m_outBuf.data();
+  result.outputEnd = m_outBuf.data() + outBufCount;
+  result.ok = (dr != std::codecvt_base::error);
+  return result;
+}

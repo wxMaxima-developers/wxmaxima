@@ -88,6 +88,7 @@ set(SOURCE_FILES
     MainMenuBar.cpp
     MarkDown.cpp
     MathParser.cpp
+    Maxima.cpp
     MaximaIPC.cpp
     MaximaTokenizer.cpp
     MaxSizeChooser.cpp
@@ -95,6 +96,7 @@ set(SOURCE_FILES
     RecentDocuments.cpp
     RegexCtrl.cpp
     StatusBar.cpp
+    StreamUtils.cpp
     StringUtils.cpp
     SvgBitmap.cpp
     SvgPanel.cpp

@@ -69,6 +69,8 @@
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
+#include "StringUtils.h"
+#include "Maxima.h"
 #include "wxMaximaIcon.h"
 #include "WXMformat.h"
 #include "ErrorRedirector.h"
@@ -1574,7 +1576,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 #ifdef __WXMSW__
       // On MS Windows we don't get a signal that tells us if a write has
       // finishes. But it seems a write always succeeds
-      if(m_client) m_client->Write(data_raw.data(), data_raw.length());
+      m_client->Write(data_raw.data(), data_raw.length());
 #else
       // On Linux (and most probably all other non MS-Windows systems) we get a
       // signal that tells us a write command has finished - and tells us how many
@@ -1595,10 +1597,10 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         // Now we have done this we attempt to send the data. If our try falls
         // short we'll find that out in the client event of the type wxSOCKET_OUTPUT
         // that will follow the write.
-        if(m_client) m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
+        m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
 #endif
-      if ((!m_client) || m_client->Error()) {
+      if (m_client->Error()) {
         wxLogMessage(_("Error writing to Maxima"));
         return;
       }
@@ -1630,45 +1632,30 @@ void wxMaxima::TryToReadDataFromMaxima()
   // data and before we had been able to process it.
   if(m_client == NULL)
     return;
-  if(m_clientStream == NULL)
-    return;
   if(!m_client->IsConnected())
     return;
   if(!m_client->IsData())
     return;
-  if(m_clientTextStream == NULL)
-    return;
   m_statusBar->NetworkStatus(StatusBar::receive);
   
-  // Read up tp 100000 bytes of text from maxima in one go.
-  wxChar chr;
-  m_newCharsFromMaxima.reserve(m_newCharsFromMaxima.Length() + 100000);
-    
-  int newBytes = 0;
-  while((m_client->IsConnected()) && (m_client->IsData()) && (m_clientStream != NULL) &&
-        (!m_clientStream->Eof()))
+
+  // Read up to 64k of data in one go
+  constexpr auto readChunkSize = 65536;
+  if (!m_client->Eof())
   {
-    chr = m_clientTextStream->GetChar();
-    if(chr == wxEOT)
-      break;
-    if(chr != '\0')
-      m_newCharsFromMaxima += chr;
-    // Trigger the gui every few kilobytes so it stays responsible during
-    // big data transfers
-    if(newBytes++>100000)
+    auto const decoded = m_client->DecodeFromSocket(readChunkSize);
+    m_newCharsFromMaxima.append(decoded.output, decoded.outputSize);
+    if (decoded.bytesRead == readChunkSize)
     {
-      // Make sure that the idle loop is triggered that causes more data to be read
-      CallAfter(&wxWakeUpIdle);
-      return;
+      // Note: wxWidgets automatically triggers the wxSOCKET_INPUT event if not everything was
+      // read, so the below was likely redundant
+      if (true)
+        CallAfter(&wxWakeUpIdle);
+      return; // we don't want to process partial data
     }
   }
 
-  // Stupid DOS and MAC line endings. The first of these commands won't work
-  // if the "\r" is the last char of a packet containing a part of a very long
-  // string. But running a search-and-replace
-  m_newCharsFromMaxima.Replace("\r\n","\n");
-  m_newCharsFromMaxima.Replace("\r","\n");
-
+  wxm::NormalizeEOLsRemoveNULs(m_newCharsFromMaxima);
   
   if(m_pipeToStdout)
     std::cout << m_newCharsFromMaxima;
@@ -1709,7 +1696,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_rawDataToSend.Clear();
       return;
     }
-    long int bytesWritten = m_client->LastWriteCount();
+    long int bytesWritten = m_client->Socket()->LastWriteCount();
     m_rawBytesSent  += bytesWritten;
     if(m_rawDataToSend.GetDataLen() > m_rawBytesSent)
     {
@@ -1767,8 +1754,8 @@ void wxMaxima::OnMaximaConnect()
   m_statusBar->NetworkStatus(StatusBar::idle);
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
-    
-  m_client.reset(m_server->Accept(false));
+
+  m_client = std::make_unique<Maxima>(m_server->Accept(false));
   if(!m_client)
 
   {
@@ -1784,13 +1771,12 @@ void wxMaxima::OnMaximaConnect()
   else
   {
     wxLogMessage(_("Connected."));
-    m_clientStream.reset(new wxSocketInputStream(*m_client));
-    m_clientTextStream.reset(new wxTextInputStream(*m_clientStream, wxT('\t'), wxConvUTF8));
-    m_client->SetEventHandler(*GetEventHandler());
-    m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
-    m_client->Notify(true);
-    m_client->SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
-    m_client->SetTimeout(30);
+    auto *const socket = m_client->Socket();
+    socket->SetEventHandler(*GetEventHandler());
+    socket->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
+    socket->Notify(true);
+    socket->SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
+    socket->SetTimeout(30);
     SetupVariables();
   }
 }
@@ -2126,13 +2112,10 @@ void wxMaxima::KillMaxima(bool logMessage)
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  m_clientTextStream = NULL;
-  m_clientStream = NULL;
-
   if(m_client && (m_client->IsConnected()))
   {
     // Make wxWidgets close the connection only after we have sent the close command.
-    m_client->SetFlags(wxSOCKET_WAITALL);
+    m_client->Socket()->SetFlags(wxSOCKET_WAITALL);
     // Try to gracefully close maxima.
     if (m_worksheet->m_configuration->InLispMode())
       SendMaxima(wxT("($quit)"));
@@ -2140,8 +2123,7 @@ void wxMaxima::KillMaxima(bool logMessage)
       SendMaxima(wxT("quit();"));
 
     // The following command should close maxima, as well.
-    m_client->Close();
-    m_client = NULL;
+    m_client = nullptr;
   }
 
   // Just to be absolutely sure: Additionally try to kill maxima

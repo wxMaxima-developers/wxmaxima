@@ -1,4 +1,5 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode:
+// nil -*-
 //
 //  Copyright (C) 2020 Kuba Ober <kuba@mareimbrium.org>
 //
@@ -50,57 +51,57 @@
 //
 //  SPDX-License-Identifier: wxWindows
 
-#ifndef WXMAXIMA_STRINGUTILS_H
-#define WXMAXIMA_STRINGUTILS_H
+#ifndef WXMAXIMA_STREAMUTILS_H
+#define WXMAXIMA_STREAMUTILS_H
 
+/*! \file
+ * Various utilities that implement stream functionality missing in wxWidgets
+ * and/or otherwise needed by wxMaxima.
+ */
+
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+#include <wx/stream.h>
 #include <wx/string.h>
-#include <wx/translation.h>
+#include <codecvt>
+#include <vector>
 
-namespace wxm {
+//! A stateful decoder that can feed itself from an input stream and
+//! append its output to a string. Useful in any situation where the
+//! exact amount of data read and written must be controlled.
+class UTF8Decoder {
+#if defined(__WINDOWS__) && wxUSE_UNICODE
+  using Codec = std::codecvt_utf8<wxStringCharType>;
+  Codec m_codec;
+#else
+  std::locale m_locale;
+  using Codec = std::codecvt<wxStringCharType, char, std::mbstate_t>;
+  const Codec &m_codec;
+#endif
 
-/*! An empty instance of the wxString object.
- *
- * This instance can be returned by const reference where an empty string is
- * desired.
- * This is different from wxEmptyString, the latter being of a different type.
- * The code `const wxString &fun() { return wxEmptyString; }` is undefined
- * behavior, as a temporary wxString instance is returned.
- */
-extern const wxString emptyString;
+public:
+  struct DecodeResult
+  {
+    size_t bytesRead = {};
+    size_t outputSize = {};
+    const wxStringCharType *output = {};
+    const wxStringCharType *outputEnd = {};
+    bool ok = false;
+  };
 
-/*! Provides a static instance of a string - it will only be constructed once.
- *
- * Usagee: S_("foo") - in place of wxT("foo")
- */
-#define S_(string) ([]()->const wxString &{ static const wxString str(wxT(string)); return str; }())
+  class State
+  {
+    std::mbstate_t m_codecState = {};
+    std::vector<char> m_inBuf;
+    size_t m_inBufCount = {};
+    std::vector<wxStringCharType> m_outBuf;
+    bool m_hadError = false;
+  public:
+    DecodeResult Decode(const Codec &, wxInputStream &in, size_t maxRead, size_t maxWrite);
+    bool hadError() const { return m_hadError; }
+  };
 
-/*! Provides a static instance of a translated string - it will only be constructed once.
- *
- * Usagee: T_("foo") - in place of _(wxT("foo"))
- */
-#define T_(string) ([]()->const wxString &{ static const wxString &str = _(wxT(string)); return str; }())
-
-// String Comparisons
-
-//! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, wxUniChar ch);
-//! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, wxStringCharType ch);
-//! Whether a string begins with a given character
-bool StartsWithChar(const wxString &str, char ch);
-
-//! Whether a string ends with a given character
-bool EndsWithChar(const wxString &str, wxUniChar ch);
-//! Whether a string begins with a given character
-bool EndsWithChar(const wxString &str, wxStringCharType ch);
-//! Whether a string begins with a given character
-bool EndsWithChar(const wxString &str, char ch);
-
-// String normalization
-
-//! Removes all NULs from the string, converts \r\n to \n, and lone \r to \n.
-void NormalizeEOLsRemoveNULs(wxString &str);
-
-} // namespace wxm
+  UTF8Decoder();
+  DecodeResult Decode(State &state, wxInputStream &in, size_t maxRead, size_t maxWrite);
+};
 
 #endif
