@@ -745,6 +745,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_zoom_300, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(Worksheet::popid_labelwidth3, Worksheet::popid_labelwidth10, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_digits_all, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_digits_20, wxEVT_MENU,
@@ -5762,6 +5764,18 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
+  case Worksheet::popid_labelwidth3:
+  case Worksheet::popid_labelwidth4:
+  case Worksheet::popid_labelwidth5:
+  case Worksheet::popid_labelwidth6:
+  case Worksheet::popid_labelwidth7:
+  case Worksheet::popid_labelwidth8:
+  case Worksheet::popid_labelwidth9:
+  case Worksheet::popid_labelwidth10:
+    m_worksheet->m_configuration->LabelWidth(event.GetId() - Worksheet::popid_labelwidth3 + 3);
+    m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
+    break;
   case Worksheet::popid_digits_20:
   {
     m_worksheet->m_configuration->SetDisplayedDigits(20);

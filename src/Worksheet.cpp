@@ -1534,6 +1534,17 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
                          m_configuration->GetLabelChoice() == Configuration::labels_useronly);
         popupMenu.Check(popid_labels_disable,
                          m_configuration->GetLabelChoice() == Configuration::labels_none);
+        wxMenu *labelWidthMenu = new wxMenu();
+        labelWidthMenu->AppendRadioItem(popid_labelwidth3, wxT("3 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth4, wxT("4 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth5, wxT("5 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth6, wxT("6 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth7, wxT("7 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth8, wxT("8 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth9, wxT("9 em"));
+        labelWidthMenu->AppendRadioItem(popid_labelwidth10, wxT("10 em"));
+        labelWidthMenu->Check(popid_labelwidth3 + m_configuration->LabelWidth() - 3, true);
+        popupMenu.Append(popid_labelwidth, _("Label width"), labelWidthMenu);
       }
     }
 
