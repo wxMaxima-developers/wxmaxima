@@ -1555,10 +1555,8 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
     }
     m_isDirty = true;
     m_containsChanges = true;
-    bool cursorJump = true;
-    wxConfig::Get()->Read(wxT("cursorJump"), &cursorJump);
 
-    if ((!cursorJump) || ((cursorAtStartOfLine) && (!autoIndent)))
+    if ((!(*m_configuration)->CursorJump()) || ((cursorAtStartOfLine) && (!autoIndent)))
       m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
   }
 }

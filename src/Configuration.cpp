@@ -50,6 +50,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
+  m_incrementalSearch = true;
   m_symbolPaneAdditionalChars = wxT("Øü§");
   SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
@@ -63,6 +64,8 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
+  m_saveUntitled = true;
+  m_cursorJump = true;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
@@ -72,6 +75,8 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_invertBackground = false;
+  m_undoLimit = 0;
+  m_recentItems = 10;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -419,10 +424,13 @@ void Configuration::ReadConfig()
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
   config->Read("language", &m_language);
+  config->Read("incrementalSearch", &m_incrementalSearch);
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
 
   config->Read("invertBackground", &m_invertBackground);
+  config->Read("undoLimit", &m_undoLimit);
+  config->Read("recentItems", &m_recentItems);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
@@ -508,7 +516,9 @@ void Configuration::ReadConfig()
     config->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
-  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
+  config->Read(wxT("keepPercent"), &m_keepPercent);
+  config->Read(wxT("saveUntitled"), &m_saveUntitled);
+  config->Read(wxT("cursorJump"), &m_cursorJump);
 
   ReadStyles();
 }
@@ -836,6 +846,26 @@ void Configuration::ReadStyles(wxString file)
   long mathFontSize;
   if (config->Read(wxT("mathfontsize"), &mathFontSize))
     m_mathFontSize.Set(mathFontSize);
+  if (config->Read(wxT("Style/Math/fontsize"), &mathFontSize))
+    m_mathFontSize.Set(mathFontSize);
+
+  double mathFontSize_float;
+  if (config->Read(wxT("Style/Math/fontsize_float"), &mathFontSize_float))
+    m_mathFontSize.Set(mathFontSize_float);
+
+  AFontSize defaultSiz;
+  long fontSize;
+  if (config->Read(wxT("Style/Default/fontsize"), &mathFontSize))
+  {
+    defaultSiz.Set(fontSize);
+    m_styles[TS_DEFAULT].SetFontSize(defaultSiz);
+  }
+  double fontSize_float;
+  if (config->Read(wxT("Style/Default/fontsize_float"), &mathFontSize_float))
+  {
+    defaultSiz.Set(fontSize_float);
+    m_styles[TS_DEFAULT].SetFontSize(defaultSiz);
+  }
 
   config->Read(wxT("Style/Math/fontname"), &fontName);
 #ifdef __WXOSX_MAC__
@@ -899,12 +929,16 @@ void Configuration::WriteStyles(wxString file)
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
   config->Write(wxT("keepPercent"), m_keepPercent);
+  config->Write(wxT("labelWidth"), m_labelWidth);
+  config->Write(wxT("saveUntitled"), m_saveUntitled);
+  config->Write(wxT("cursorJump"), m_cursorJump);
 
   // Font
   config->Write("Style/Default/Style/Text/fontname", m_fontName.GetAsString());
-  config->Write(wxT("mathfontsize"), m_mathFontSize.GetAsLong());
+  config->Write(wxT("fontSize"), m_styles[TS_DEFAULT].GetFontSize().Get());
+  config->Write(wxT("Style/Math/fontsize_float"), m_mathFontSize.Get());
   config->Write("Style/Math/fontname", m_mathFontName.GetAsString());
-  
+
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
@@ -1021,6 +1055,7 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxT("hideBrackets"), m_hideBrackets);
   config->Write(wxT("printScale"), m_printScale);
   config->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
@@ -1040,6 +1075,8 @@ void Configuration::WriteSettings()
   config->Write(wxT("openHCaret"), m_openHCaret);
   config->Write(wxT("restartOnReEvaluation"), m_restartOnReEvaluation);
   config->Write(wxT("invertBackground"), m_invertBackground);
+  config->Write("recentItems", m_recentItems);
+  config->Write(wxT("undoLimit"), m_undoLimit);
   config->Write(wxT("showLabelChoice"), (int) (m_showLabelChoice));
   config->Write(wxT("printBrackets"), m_printBrackets);
   config->Write(wxT("autodetectMaxima"), m_autodetectMaxima);

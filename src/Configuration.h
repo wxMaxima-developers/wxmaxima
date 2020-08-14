@@ -267,6 +267,11 @@ public:
   long GetLabelWidth() const
   { return m_labelWidth * 14; }
 
+  long LabelWidth() const
+    { return m_labelWidth; }
+  void LabelWidth(long labelWidth)
+    { m_labelWidth = labelWidth; }
+  
   //! Get the indentation of GroupCells.
   long GetIndent() const
   {
@@ -339,6 +344,12 @@ public:
   //! Has a font changed?
   bool FontChanged() const {return m_fontChanged;}
 
+
+  bool IncrementalSearch() const {return m_incrementalSearch;}
+
+
+  void IncrementalSearch(bool incrementalSearch) { m_incrementalSearch = incrementalSearch; }
+
   struct CharsExist {
     wxString chars;
     bool exist;
@@ -401,15 +412,21 @@ public:
   { return m_styles[TS_DEFAULT].GetFontSize(); }
 
   void SetDefaultFontSize(AFontSize fontSize)
-  {
-    m_styles[TS_DEFAULT].SetFontSize(fontSize);
-  }
-
+    {
+      m_styles[TS_DEFAULT].SetFontSize(fontSize);
+    }
+  
   AFontSize GetMathFontSize() const
   { return m_mathFontSize; }
 
   void SetMathFontSize(AFontSize size)
   { m_mathFontSize = size; }
+
+  bool SaveUntitled(){ return m_saveUntitled;}
+  void SaveUntitled(bool save){m_saveUntitled = save;}
+
+  bool CursorJump(){ return m_cursorJump;}
+  void CursorJump(bool save){m_cursorJump = save;}
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
@@ -610,7 +627,13 @@ public:
 
   bool InvertBackground(){return m_invertBackground;}
   void InvertBackground(bool invert){ m_invertBackground = invert; }
-  
+
+  long UndoLimit(){return wxMax(m_undoLimit, 0);}
+  void UndoLimit(long limit){ m_undoLimit = limit; }
+
+  long RecentItems(){return wxMax(m_recentItems, 0);}
+  void RecentItems(long items){ m_recentItems = items; }
+
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
   bool ShowAutomaticLabels() const
     { return (m_showLabelChoice < labels_useronly); }
@@ -817,6 +840,8 @@ private:
   wxRect m_updateRegion;
   //! Has the font changed?
   bool m_fontChanged;
+  //! Do we want to use incremental search?
+  bool m_incrementalSearch;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   long m_autoSubscript;
   //! The worksheet this configuration storage is valid for
@@ -918,6 +943,8 @@ private:
   bool m_offerKnownAnswers;
   long m_defaultPort;
   long m_maxGnuplotMegabytes;
+  bool m_saveUntitled;
+  bool m_cursorJump;
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;
@@ -936,6 +963,8 @@ private:
   bool m_greekSidebar_Show_mu;
   wxString m_symbolPaneAdditionalChars;
   bool m_invertBackground;
+  long m_undoLimit;
+  long m_recentItems;
   wxFont m_worksheetFonts[NUMBEROFSTYLES];
 };
 

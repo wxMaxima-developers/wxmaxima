@@ -6605,13 +6605,7 @@ void Worksheet::Undo()
 
 void Worksheet::TreeUndo_LimitUndoBuffer()
 {
-
-  wxConfigBase *config = wxConfig::Get();
-  long undoLimit = 0;
-  config->Read(wxT("undoLimit"), &undoLimit);
-
-  if (undoLimit < 0)
-    undoLimit = 0;
+  long undoLimit = m_configuration->UndoLimit();
 
   if (undoLimit == 0)
     return;

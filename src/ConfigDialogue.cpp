@@ -386,24 +386,17 @@ void ConfigDialogue::SetCheckboxValues()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool fixedFontTC = true;
-  bool saveUntitled = true,
-          AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
+  bool AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
           wrapLatexMath = true,
           exportContainsWXMX = false;
   int exportWithMathJAX = 0;
-  bool cursorJump = true;
 
-  int labelWidth = 4;
-  int undoLimit = 0;
-  int recentItems = 10;
   int bitmapScale = 3;
-  bool incrementalSearch = true;
   int defaultFramerate = 2;
   wxString texPreamble = wxEmptyString;
 
   int panelSize = 1;
-  config->Read(wxT("maxima"), &mp);
   config->Read(wxT("parameters"), &mc);
   config->Read(wxT("DefaultFramerate"), &defaultFramerate);
   int defaultPlotWidth = 600;
@@ -420,13 +413,7 @@ void ConfigDialogue::SetCheckboxValues()
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
-  config->Read(wxT("saveUntitled"), &saveUntitled);
-  config->Read(wxT("cursorJump"), &cursorJump);
-  config->Read(wxT("labelWidth"), &labelWidth);
-  config->Read(wxT("undoLimit"), &undoLimit);
-  config->Read(wxT("recentItems"), &recentItems);
   config->Read(wxT("bitmapScale"), &bitmapScale);
-  config->Read(wxT("incrementalSearch"), &incrementalSearch);
   
   m_documentclass->SetValue(configuration->Documentclass());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
@@ -458,24 +445,24 @@ void ConfigDialogue::SetCheckboxValues()
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
   m_latin2Greek->SetValue(configuration->Latin2Greek());
   m_enterEvaluates->SetValue(configuration->EnterEvaluates());
-  m_saveUntitled->SetValue(saveUntitled);
+  m_saveUntitled->SetValue(configuration->SaveUntitled());
   m_openHCaret->SetValue(configuration->GetOpenHCaret());
   m_insertAns->SetValue(configuration->GetInsertAns());
   m_autoIndent->SetValue(configuration->GetAutoIndent());
-  m_cursorJump->SetValue(cursorJump);
+  m_cursorJump->SetValue(configuration->CursorJump());
   m_hideBrackets->SetValue(configuration->HideBrackets());
   m_indentMaths->SetValue(configuration->IndentMaths());
   int val = 0;
   if (configuration->GetAutoWrap()) val = 1;
 //  if(configuration->GetAutoWrapCode()) val = 2;
+  m_recentItems->SetValue(configuration->RecentItems());
   m_autoWrap->SetSelection(val);
-  m_labelWidth->SetValue(labelWidth);
-  m_undoLimit->SetValue(undoLimit);
-  m_recentItems->SetValue(recentItems);
+  m_labelWidth->SetValue(configuration->LabelWidth());
+  m_undoLimit->SetValue(configuration->UndoLimit());
   m_bitmapScale->SetValue(bitmapScale);
   m_printScale->SetValue(configuration->PrintScale());
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
-  m_incrementalSearch->SetValue(incrementalSearch);
+  m_incrementalSearch->SetValue(configuration->IncrementalSearch());
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
@@ -1243,8 +1230,6 @@ void ConfigDialogue::WriteSettings()
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
   configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
   configuration->MaximaParameters(m_additionalParameters->GetValue());
-  config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize().GetAsLong());
-  config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize().GetAsLong());
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
@@ -1254,21 +1239,21 @@ void ConfigDialogue::WriteSettings()
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
   configuration->EnterEvaluates(m_enterEvaluates->GetValue());
-  config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
+  configuration->SaveUntitled(m_saveUntitled->GetValue());
   configuration->SetOpenHCaret(m_openHCaret->GetValue());
   configuration->SetInsertAns(m_insertAns->GetValue());
   configuration->SetAutoIndent(m_autoIndent->GetValue());
-  config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
+  configuration->CursorJump(m_cursorJump->GetValue());
   configuration->HideBrackets(m_hideBrackets->GetValue());
   configuration->IndentMaths(m_indentMaths->GetValue());
   configuration->SetAutoWrap(m_autoWrap->GetSelection());
-  config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
-  config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
-  config->Write(wxT("recentItems"), m_recentItems->GetValue());
+  configuration->LabelWidth(m_labelWidth->GetValue());
+  configuration->UndoLimit(m_undoLimit->GetValue());
+  configuration->RecentItems(m_recentItems->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   configuration->PrintScale(m_printScale->GetValue());
   configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
-  config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
+  configuration->IncrementalSearch(m_incrementalSearch->GetValue());
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
   configuration->SetLabelChoice((Configuration::showLabels) m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());

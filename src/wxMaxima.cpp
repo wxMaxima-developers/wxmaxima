@@ -4506,9 +4506,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       m_oldFindFlags = m_worksheet->m_findDialog->GetData()->GetFlags();
       m_oldFindString = m_worksheet->m_findDialog->GetData()->GetFindString();
 
-      bool incrementalSearch = true;
-      wxConfig::Get()->Read("incrementalSearch", &incrementalSearch);
-      if ((incrementalSearch) && (m_worksheet->m_findDialog != NULL))
+      if ((m_worksheet->m_configuration->IncrementalSearch()) && (m_worksheet->m_findDialog != NULL))
       {
         m_worksheet->FindIncremental(m_findData.GetFindString(),
                                      m_findData.GetFlags() & wxFR_DOWN,
@@ -10072,8 +10070,7 @@ int wxMaxima::SaveDocumentP()
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;
-    wxConfig::Get()->Read(wxT("saveUntitled"), &save);
-    if (!save)
+    if (!m_worksheet->m_configuration->SaveUntitled())
       return wxID_NO;
 
 #if defined __WXOSX__
