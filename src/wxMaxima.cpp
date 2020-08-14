@@ -261,7 +261,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   wxWindowUpdateLocker noUpdates(this);
-  m_rawBytesSent = 0;
   m_maximaBusy = true;
   m_evalOnStartup = false;
   m_dataFromMaximaIs = false;
@@ -309,7 +308,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_worksheet->SetFocus();
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
-  m_waitForStringEndTimer.SetOwner(this, WAITFORSTRING_ID);
   m_compileHelpAnchorsTimer.SetOwner(this, COMPILEHELPANCHORS_ID);
   
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
@@ -1575,37 +1573,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         StatusMaximaBusy(waiting);
 
       wxScopedCharBuffer const data_raw = s.utf8_str();
-#ifdef __WXMSW__
-      // On MS Windows we don't get a signal that tells us if a write has
-      // finishes. But it seems a write always succeeds
       m_client->Write(data_raw.data(), data_raw.length());
-#else
-      // On Linux (and most probably all other non MS-Windows systems) we get a
-      // signal that tells us a write command has finished - and tells us how many
-      // bytes were sent. Which (at least on BSD) might be lower than we wanted.
-      if(m_rawDataToSend.GetDataLen() > 0)
-      {
-        // We are already sending, or at least haven't yet received the
-        // "data has been sent" signal => append everything except the trailing NULL
-        // char to the end of the string to the buffer containing the data we want
-        // to send.
-        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
-      }
-      else
-      {
-        // Put everything except the NULL char at the end of the string into the
-        // buffer containing the data we want to send
-        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
-        // Now we have done this we attempt to send the data. If our try falls
-        // short we'll find that out in the client event of the type wxSOCKET_OUTPUT
-        // that will follow the write.
-        m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
-      }
-#endif
-      if (m_client->Error()) {
-        wxLogMessage(_("Error writing to Maxima"));
-        return;
-      }
       m_statusBar->NetworkStatus(StatusBar::transmit);
     }
   }
@@ -1622,103 +1590,40 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 }
 
-
-void wxMaxima::TryToReadDataFromMaxima()
-{
-  // Read out stderr: We will do that in the background on a regular basis, anyway.
-  // But if we do it manually now, too, the probability that things are presented
-  // to the user in chronological order increases a bit.
-  ReadStdErr();
-
-  // It is theoretically possible that the client has exited after sending us
-  // data and before we had been able to process it.
-  if(m_client == NULL)
-    return;
-  if(!m_client->IsConnected())
-    return;
-  if(!m_client->IsData())
-    return;
-  m_statusBar->NetworkStatus(StatusBar::receive);
-  
-
-  // Read up to 64k of data in one go
-  constexpr auto readChunkSize = 65536;
-  if (!m_client->Eof())
-  {
-    auto const decoded = m_client->DecodeFromSocket(readChunkSize);
-    m_newCharsFromMaxima.append(decoded.output, decoded.outputSize);
-    if (decoded.bytesRead == readChunkSize)
-    {
-      // Note: wxWidgets automatically triggers the wxSOCKET_INPUT event if not everything was
-      // read, so the below was likely redundant
-      if (true)
-        CallAfter(&wxWakeUpIdle);
-      return; // we don't want to process partial data
-    }
-  }
-
-  wxm::NormalizeEOLsRemoveNULs(m_newCharsFromMaxima);
-  
-  if(m_pipeToStdout)
-    std::cout << m_newCharsFromMaxima;
-  m_bytesFromMaxima += m_newCharsFromMaxima.Length();
-
-  if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix) || (m_first))
-  {
-    m_waitForStringEndTimer.Stop();
-    InterpretDataFromMaxima();
-  }
-  else
-    m_waitForStringEndTimer.StartOnce(5000);
-}
-
-
 ///--------------------------------------------------------------------------------
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
-/*!
- * ServerEvent is triggered when maxima connects to the socket server.
- */
-void wxMaxima::ServerEvent(wxSocketEvent &event)
+void wxMaxima::MaximaEvent(::MaximaEvent &event)
 {
-  switch (event.GetSocketEvent())
+  using std::swap;
+  switch (event.GetCause())
   {
-  case wxSOCKET_INPUT:
-    TryToReadDataFromMaxima();
+  case MaximaEvent::READ_DATA:
+    // Read out stderr: We will do that in the background on a regular basis, anyway.
+    // But if we do it manually now, too, the probability that things are presented
+    // to the user in chronological order increases a bit.
+    ReadStdErr();
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    InterpretDataFromMaxima(event.GetData());
     break;
-  case wxSOCKET_OUTPUT:
-  {
-    // The last write command has finished, either with sending all the bytes
-    // we instructed it, or after sending a lower number, which is known to happen
-    // on FreeBSD.
-    if((!m_client) || (!m_client->IsConnected()))
-    {
-      m_rawBytesSent = 0;
-      m_rawDataToSend.Clear();
-      return;
-    }
-    long int bytesWritten = m_client->Socket()->LastWriteCount();
-    m_rawBytesSent  += bytesWritten;
-    if(m_rawDataToSend.GetDataLen() > m_rawBytesSent)
-    {
-      m_client->Write(
-        (void *)((char *)m_rawDataToSend.GetData() + m_rawBytesSent),
-        m_rawDataToSend.GetDataLen() - m_rawBytesSent);
-      if (m_client->Error()) {
-        DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
-        return;
-      }
-      m_statusBar->NetworkStatus(StatusBar::transmit);
-    }
-    else
-    {
-      m_rawBytesSent = 0;
-      m_rawDataToSend.Clear();
-    }
+  case MaximaEvent::READ_PENDING:
+    ReadStdErr();
+    m_statusBar->NetworkStatus(StatusBar::receive);
     break;
-  }
-  case wxSOCKET_LOST:
+  case MaximaEvent::READ_TIMEOUT:
+    ReadStdErr();
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    if (InterpretDataFromMaxima(event.GetData()))
+      wxLogMessage(_("String from maxima apparently didn't end in a newline"));
+    break;
+  case MaximaEvent::WRITE_PENDING:
+    m_statusBar->NetworkStatus(StatusBar::transmit);
+    break;
+  case MaximaEvent::WRITE_ERROR:
+    DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
+    break;
+  case MaximaEvent::DISCONNECTED:
   {
     wxLogMessage(_("Connection to Maxima lost."));
     //  KillMaxima();
@@ -1727,6 +1632,16 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     #endif
     break;
   }
+  }
+}
+
+/*!
+ * ServerEvent is triggered when maxima connects to the socket server.
+ */
+void wxMaxima::ServerEvent(wxSocketEvent &event)
+{
+  switch (event.GetSocketEvent())
+  {
   case wxSOCKET_CONNECTION :
     OnMaximaConnect();
     break;
@@ -1750,16 +1665,18 @@ void wxMaxima::OnMaximaConnect()
     return;
   }
     
-  m_rawDataToSend.Clear();
-  m_rawBytesSent = 0;
-    
   m_statusBar->NetworkStatus(StatusBar::idle);
   m_worksheet->QuestionAnswered();
   m_currentOutput = wxEmptyString;
 
   m_client = std::make_unique<Maxima>(m_server->Accept(false));
-  if(!m_client)
-
+  if (m_client)
+  {
+    m_client->Bind(EVT_MAXIMA, &wxMaxima::MaximaEvent, this);
+    m_client->SetPipeToStdOut(m_pipeToStdout);
+    SetupVariables();
+  }
+  else
   {
     wxLogMessage(_("Connection attempt, but connection failed."));
     m_unsuccessfulConnectionAttempts++;
@@ -1769,17 +1686,6 @@ void wxMaxima::OnMaximaConnect()
       StartMaxima(true);
       return;
     }
-  }
-  else
-  {
-    wxLogMessage(_("Connected."));
-    auto *const socket = m_client->Socket();
-    socket->SetEventHandler(*GetEventHandler());
-    socket->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG|wxSOCKET_CONNECTION_FLAG);
-    socket->Notify(true);
-    socket->SetFlags(wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR);
-    socket->SetTimeout(30);
-    SetupVariables();
   }
 }
 
@@ -2203,8 +2109,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
     if(!o.IsEmpty())
       wxLogMessage(_("Last message from maxima's stderr: %s"), o.utf8_str());
   }
-  m_rawDataToSend.Clear();
-  m_rawBytesSent = 0;
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
@@ -2272,6 +2176,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   if (m_pid > 0)
     m_MenuBar->EnableItem(menu_interrupt_id, true);
 
+  m_client->ClearFirstPrompt();
   m_first = false;
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
@@ -4348,22 +4253,21 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 }
 
-bool wxMaxima::InterpretDataFromMaxima()
+bool wxMaxima::InterpretDataFromMaxima(const wxString &newData)
 {
-  if(m_newCharsFromMaxima.IsEmpty())
+  if (newData.empty())
     return false;
 
   if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-    m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
+    m_xmlInspector->Add_FromMaxima(newData);
   // This way we can avoid searching the whole string for a
   // ending tag if we have received only a few bytes of the
   // data between 2 tags
-  m_currentOutputEnd = m_currentOutput.Right(30) + m_newCharsFromMaxima;
+  m_currentOutputEnd = m_currentOutput.Right(30) + newData;
 
-  m_currentOutput += m_newCharsFromMaxima;
-  m_newCharsFromMaxima = wxEmptyString;
+  m_currentOutput += newData;
   if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-    m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
+    m_xmlInspector->Add_FromMaxima(wxm::emptyString);
 
   if (!m_dispReadOut &&
       (m_currentOutput != wxT("\n")) &&
@@ -4456,12 +4360,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     event.RequestMore();
     return;
   }
-
-  // On MS Windows sometimes we don't get a wxSOCKET_INPUT event on input.
-  // Let's trigger interpretation of new input if we don't have anything
-  // else to do just to make sure that wxMaxima will eventually restart
-  // receiving data.
-  TryToReadDataFromMaxima();
 
   if(m_worksheet != NULL)
   {
@@ -5429,10 +5327,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
       #pragma omp task
       CompileHelpFileAnchors();
       #endif
-      break;
-    case WAITFORSTRING_ID:
-      if(InterpretDataFromMaxima())
-        wxLogMessage(_("String from maxima apparently didn't end in a newline"));
       break;
     case MAXIMA_STDOUT_POLL_ID:
       ReadStdErr();
@@ -10158,7 +10052,7 @@ wxRegEx  wxMaxima::m_blankStatementRegEx(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:
 wxRegEx  wxMaxima::m_sbclCompilationRegEx(wxT("; compiling (.* \\.*)"));
 wxRegEx  wxMaxima::m_gnuplotErrorRegex(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: "));
 wxString wxMaxima::m_promptPrefix(wxT("<PROMPT>"));
-wxString wxMaxima::m_promptSuffix(wxT("</PROMPT>"));
+const wxString wxMaxima::m_promptSuffix(wxT("</PROMPT>"));
 wxString wxMaxima::m_suppressOutputPrefix(wxT("<suppressOutput>"));
 wxString wxMaxima::m_suppressOutputSuffix(wxT("</suppressOutput>"));
 wxString wxMaxima::m_symbolsPrefix(wxT("<wxxml-symbols>"));

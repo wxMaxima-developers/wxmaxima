@@ -72,6 +72,7 @@
 #define MAXIMAPOLLMSECS 2000
 
 class Maxima; // The Maxima process interface
+class MaximaEvent;
 
 /* The top-level window and the main application logic
 
@@ -101,8 +102,6 @@ public:
             AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID,
-            //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID,
             /*! We have given Maxima enough time to do the important 
 
               now it is time to compile the list of helpfile anchors */
@@ -120,9 +119,6 @@ public:
     it between two expirys. 
    */
   wxTimer m_autoSaveTimer;
-
-  //! A timer that tells us to wait until maxima ends its data.
-  wxTimer m_waitForStringEndTimer;
 
   //! A timer that ells us that we now can do the low-prio compilation of help anchors
   wxTimer m_compileHelpAnchorsTimer;
@@ -343,7 +339,7 @@ protected:
       - true, if there was new data
       - false, if there wasn't any new data.
    */
-  bool InterpretDataFromMaxima();
+  bool InterpretDataFromMaxima(const wxString &newData);
   bool m_dataFromMaximaIs;
   
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
@@ -392,19 +388,11 @@ protected:
   //! Is called if maxima connects to wxMaxima.
   void OnMaximaConnect();
   
-  //! server event: Maxima sends or receives data, connects or disconnects
+  //! Maxima sends or receives data, or disconnects
+  void MaximaEvent(::MaximaEvent &event);
+
+  //! Server event: Maxima connects
   void ServerEvent(wxSocketEvent &event);
-
-  /* Tries to read the new data from maxima
-
-     Is called by ClientEvent() if wxWidgets reckons there is data. But as this sometimes
-     doesn't happen even if there is data (only on MSW) it is called from the idle loop,
-     as well.
-  */
-  void TryToReadDataFromMaxima();
-    
-  //! Triggered when we get new chars from maxima.
-  void OnNewChars();
 
   /*! Add a parameter to a draw command
 
@@ -692,8 +680,6 @@ protected:
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr;
   int m_port;
-  //! All chars from maxima that still aren't part of m_currentOutput
-  wxString m_newCharsFromMaxima;
   /*! The end of maxima's current uninterpreted output, see m_currentOutput.
    
     If we just want to look if maxima's current output contains an ending tag
@@ -717,8 +703,10 @@ protected:
   static wxString m_mathSuffix2;
   //! The marker for the start of a input prompt
   static wxString m_promptPrefix;
+public:
   //! The marker for the end of a input prompt
-  static wxString m_promptSuffix;
+  const static wxString m_promptSuffix;
+protected:
   //! The marker for the start of a variables section
   static wxString m_variablesPrefix;
   //! The marker for the end of a variables section
@@ -778,8 +766,6 @@ protected:
   static wxRegEx m_sbclCompilationRegEx;
   MathParser m_parser;
   bool m_maximaBusy;
-  wxMemoryBuffer m_rawDataToSend;
-  unsigned long int m_rawBytesSent;
 private:
   //! A pointer to a method that handles a text chunk
   typedef void (wxMaxima::*ParseFunction)(wxString &s);
