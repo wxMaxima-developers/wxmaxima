@@ -485,7 +485,7 @@ AFontName Style::Default_FontName()
 #if defined(__WXOSX_MAC__)
   static auto fontName = AFontName::Monaco();
 #elif defined(__WINDOWS__)
-  static auto fontName = AFontName::Linux_Libertine_O();
+  static auto fontName = AFontName::Linux_Libertine();
 #else
   static auto fontName = AFontName::Arial();
 #endif

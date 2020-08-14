@@ -82,9 +82,12 @@ public:
   // All constant font names should be collected here, to avoid needless duplication and
   // lookups.
   static AFontName Linux_Libertine_O() { static auto n = AFN(wxT("Linux Libertine O")); return n; }
+  static AFontName Linux_Libertine_G() { static auto n = AFN(wxT("Linux Libertine G")); return n; }
   static AFontName Linux_Libertine()  { static auto n = AFN(wxT("Linux Libertine")); return n; }
+  static AFontName Times_New_Roman()  { static auto n = AFN(wxT("Times New Roman")); return n; }
   static AFontName Monaco()          { static auto n = AFN(wxT("Monaco")); return n; }
   static AFontName Arial()           { static auto n = AFN(wxT("Arial")); return n; }
+  static AFontName Symbol()          { static auto n = AFN(wxT("Symbol")); return n; }
   static AFontName CMEX10()          { static auto n = AFN(wxT("jsMath-cmex10")); return n; }
   static AFontName CMSY10()          { static auto n = AFN(wxT("jsMath-cmsy10")); return n; }
   static AFontName CMR10()           { static auto n = AFN(wxT("jsMath-cmr10")); return n; }
@@ -339,6 +342,7 @@ enum TextStyle : int8_t
   TS_CODE_OPERATOR       = 35,
   TS_CODE_LISP           = 36,
   TS_CODE_ENDOFLINE      = 37,
+  TS_MATH                = 38,  // custom font = math font
   NUMBEROFSTYLES //!< This is not a style, but its value tells us how many styles are defined
 };
 
