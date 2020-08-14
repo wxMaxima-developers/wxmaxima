@@ -83,6 +83,15 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
   return std::move(next);
 }
 
+void CellList::DeleteList(Cell *afterMe)
+{
+  for (auto next = std::move(afterMe->m_next); next; next = std::move(next->m_next))
+  {
+    next->m_previous = nullptr;
+    // next's destructor will run next, and it will see correct, null m_previous
+  }
+}
+
 void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head)
 {
   Check(c);

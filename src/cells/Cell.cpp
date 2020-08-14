@@ -82,15 +82,7 @@ Cell::~Cell()
     wxDELETE(m_toolTip);
   m_ownsToolTip = false;
 
-  // Delete this list of cells without using a recursive function call that can
-  // run us out of stack space
-  while (m_next)
-  {
-    m_next->m_previous = nullptr;
-    if (m_next->m_next)
-      m_next->m_next->m_previous = this;
-    m_next = std::move(m_next->m_next);
-  }
+  CellList::DeleteList(this);
 }
 
 void Cell::SetType(CellType type)

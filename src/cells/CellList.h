@@ -156,6 +156,12 @@ public:
    */
   static std::unique_ptr<Cell> SetNext(Cell *cell, std::unique_ptr<Cell> &&next);
 
+  /*! Deletes the list of cells anchored at the given cell.
+   *
+   * \param afterMe is the cell whose m_next will become null.
+   */
+  static void DeleteList(Cell *afterMe);
+
   /*! Appends a cell to the end of the cell list that starts with a given cell.
    *
    * \param cell is the cell list to append to.
