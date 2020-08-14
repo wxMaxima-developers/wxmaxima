@@ -65,9 +65,14 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
   if (next)
     Check(next.get());
 
-  swap(c->m_next, next);
+  // Reset the previous pointers so they have no chance of dangling
+  if (c->m_next)
+    c->m_next->m_previous = nullptr;
   if (next)
     next->m_previous = nullptr;
+  // Set the next pointers
+  swap(c->m_next, next);
+  // Set the previous pointer for our successor
   if (c->m_next)
     c->m_next->m_previous = c;
   c->SetNextToDraw(c->m_next);
@@ -76,6 +81,15 @@ std::unique_ptr<Cell> CellList::SetNext(Cell *c, std::unique_ptr<Cell> &&next)
   Check(next.get());
 
   return std::move(next);
+}
+
+void CellList::DeleteList(Cell *afterMe)
+{
+  for (auto next = std::move(afterMe->m_next); next; next = std::move(next->m_next))
+  {
+    next->m_previous = nullptr;
+    // next's destructor will run next, and it will see correct, null m_previous
+  }
 }
 
 void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head)
