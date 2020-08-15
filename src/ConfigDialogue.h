@@ -59,8 +59,8 @@ enum
   checkbox_bold,
   checkbox_italic,
   checkbox_underlined,
+  button_defaultFont,
   button_mathFont,
-  font_family,
   style_font_family,
   language_id,
   save_id,
@@ -294,7 +294,8 @@ protected:
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
   wxChoice *m_showUserDefinedLabels;
-  wxButton *m_getFont;
+  wxButton *m_getDefaultFont;
+  wxButton *m_getMathFont;
   wxButton *m_getStyleFont;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
@@ -310,8 +311,6 @@ protected:
   wxCheckBox *m_useUnicodeMaths;
   wxCheckBox *m_keepPercentWithSpecials;
   wxBookCtrlBase *m_notebook;
-  wxStaticText *m_mathFont;
-  wxButton *m_getMathFont;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
@@ -333,8 +332,8 @@ protected:
 
   void OnIdle(wxIdleEvent &event);
 
-  //! Starts the font selector dialog for the math font
-  void OnMathBrowse(wxCommandEvent &event);
+  //! Starts the font selector dialog triggered by the math or default font buttons
+  void OnFontButton(wxCommandEvent &event);
 
   //! Called if a new item type that is to be styled is selected
   void OnChangeStyle(wxCommandEvent &event);
@@ -353,6 +352,16 @@ protected:
 
   //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent &event);
+
+  //! Map the style list index to a style
+  static TextStyle StyleForListIndex(int index);
+  //! Map the style to the style list index
+  static int StyleListIndexForStyle(TextStyle style);
+  //! Get the style currently selected in the m_styleFor control
+  TextStyle GetSelectedStyle() const;
+
+  //! Sets the label for the font setting button given by the style (either TS_DEFAULT or TS_MATH)
+  void UpdateButton(TextStyle style);
 
   //! The size of the text font
   int m_fontSize;

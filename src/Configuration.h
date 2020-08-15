@@ -181,7 +181,7 @@ public:
     if (ShowAutomaticLabels())
       return 0;
     else
-      return GetZoomFactor() * m_mathFontSize / 2;
+      return GetZoomFactor() * m_styles[TS_MATH].GetFontSize() / 2;
   }
 
   long GetCellBracketWidth() const
@@ -240,7 +240,7 @@ public:
         return m_dc;
     }
   
-  AFontName GetFontName(long type = TS_DEFAULT) const;
+  AFontName GetFontName(TextStyle ts = TS_DEFAULT) const;
 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
@@ -408,20 +408,6 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   long GetLineWidth() const;
 
-  AFontSize GetDefaultFontSize() const
-  { return m_styles[TS_DEFAULT].GetFontSize(); }
-
-  void SetDefaultFontSize(AFontSize fontSize)
-    {
-      m_styles[TS_DEFAULT].SetFontSize(fontSize);
-    }
-  
-  AFontSize GetMathFontSize() const
-  { return m_mathFontSize; }
-
-  void SetMathFontSize(AFontSize size)
-  { m_mathFontSize = size; }
-
   bool SaveUntitled(){ return m_saveUntitled;}
   void SaveUntitled(bool save){m_saveUntitled = save;}
 
@@ -468,13 +454,13 @@ public:
     If a file name is given the settings are read from a file.
   */
   
-  void ReadStyles(wxString file = wxEmptyString);
+  void ReadStyles(const wxString &file = {});
   
   /*! Saves the style settings 
 
     If a file name is given the settings are written to a file.
   */
-  void WriteStyles(wxString file = wxEmptyString);
+  void WriteStyles(const wxString &file = {});
   void WriteSettings();
   
   void Outdated(bool outdated)
@@ -789,10 +775,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {m_htmlEquationFormat = HTMLequationFormat;}
 
-  AFontName FontName() const {return m_fontName;}
-  void FontName(AFontName name){m_fontName = name;}
-void MathFontName(AFontName name){m_mathFontName = name;}
-  class AFontName MathFontName()const {return m_mathFontName;}
+  AFontSize GetDefaultFontSize() const        { return m_styles[TS_DEFAULT].GetFontSize(); }
+  AFontSize GetMathFontSize() const           { return m_styles[TS_MATH].GetFontSize(); }
 
   //! Get the worksheet this configuration storage is valid for
   long GetAutosubscript_Num() const {return m_autoSubscript;}
@@ -903,9 +887,6 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  AFontName m_fontName;
-  AFontSize m_mathFontSize;
-  AFontName m_mathFontName;
   wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
@@ -965,7 +946,6 @@ private:
   bool m_invertBackground;
   long m_undoLimit;
   long m_recentItems;
-  wxFont m_worksheetFonts[NUMBEROFSTYLES];
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
