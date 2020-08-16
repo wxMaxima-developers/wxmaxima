@@ -377,12 +377,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
   ResetSize();
-
-  // IMPORTANT! Do not Recalculate() here, as it is quadratic behavior
-  // and it makes interactive performance go down the drain. If there are
-  // visual glitches that a recalculation here would "fix", they must be
-  // fixed at their source. Doing it by recalculating here will only patch
-  // around the problem and make wxMaxima perform like molasses. IMPORTANT!
+  Recalculate();
 }
 
 WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
