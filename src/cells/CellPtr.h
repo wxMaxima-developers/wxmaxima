@@ -359,14 +359,28 @@ public:
 /*! A weak non-owning pointer that becomes null whenever the observed object is
  * destroyed.
  *
+ * **The use of this pointer type has performance implications. It is not a "free"
+ * abstraction!**
+ *
+ * **Warning:** To maintain performance, most cells should have at most one CellPtr
+ * pointing at them. Currently, this is the m_nextToDraw - it uses up our "CellPtr
+ * budget". The remaining CellPtrs are in CellPointers, and there is very few cells
+ * at any given time that are pointed-to by those pointers, and thus the performance
+ * impact is minimal.
+ *
  * In the common case of being null, or of being the only CellPtr to a given cell,
- * it has the performance similar to a raw pointer: it stores the cell pointer directly.
+ * the performance is similar to a raw pointer: it stores the cell pointer directly.
  * The pointed-to cell points back to this sole pointer, so that it can reset it to null
  * when it gets destroyed. A CellPtr is exactly the size of an `Observed *`.
  *
  * When the second CellPtr is made to point to a cell, a shared control block is allocated
  * on behalf of the cell, and both the CellPtr and the cell point to it. The control block is
- * greedily dereferenced whenever the CellPtr notices that the cell it pointed to has vanished.
+ * greedily dereferenced whenever the CellPtr notices that the cell it pointed to has
+ * vanished. But, once a cell has a ControlBlock, it doesn't get rid of it until no pointers
+ * point to it. So, if there are two+ pointers pointing to a cell, then only one is left,
+ * there still is a control block, and the pointers still "pointer chase" through that
+ * control block. Getting rid of the control block in this case is a low-priority TODO at the
+ * moment, since there's no performance impact seen from this.
  *
  * The observed type must be derived from Observed, and this fact is checked at the point
  * of instantiation. The pointer's instance can be declared with forward-defined classes.

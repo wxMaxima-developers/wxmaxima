@@ -24,14 +24,14 @@
 
 void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&cells)
 {
-  m_lastAppended = cells;
+  m_lastAppended = cells.get();
   if (!cells)
     return;
 
   if (!m_head)
   {
     m_head = std::move(cells);
-    m_tail = m_head;
+    m_tail = m_head.get();
   }
   else
     CellList::AppendCell(m_tail, std::move(cells));
