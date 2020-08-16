@@ -55,7 +55,7 @@ SubSupCell::SubSupCell(const SubSupCell &cell)
 
 DEFINE_CELL(SubSupCell)
 
-static void RemoveCell(std::vector<CellPtr<Cell>> &cells, std::unique_ptr<Cell> const &cell)
+static void RemoveCell(std::vector<Cell *> &cells, std::unique_ptr<Cell> const &cell)
 {
   cells.erase(
     std::remove(cells.begin(), cells.end(), cell.get()), cells.end());
@@ -67,7 +67,7 @@ void SubSupCell::SetPreSup(std::unique_ptr<Cell> &&index)
     return;
   RemoveCell(m_scriptCells, m_preSupCell);
   m_preSupCell = std::move(index);
-  m_scriptCells.emplace_back(m_preSupCell);
+  m_scriptCells.emplace_back(m_preSupCell.get());
 }
 
 void SubSupCell::SetPreSub(std::unique_ptr<Cell> &&index)
@@ -76,7 +76,7 @@ void SubSupCell::SetPreSub(std::unique_ptr<Cell> &&index)
     return;
   RemoveCell(m_scriptCells, m_preSubCell);
   m_preSubCell = std::move(index);
-  m_scriptCells.emplace_back(m_preSubCell);
+  m_scriptCells.emplace_back(m_preSubCell.get());
 }
 
 void SubSupCell::SetPostSup(std::unique_ptr<Cell> &&index)
@@ -85,7 +85,7 @@ void SubSupCell::SetPostSup(std::unique_ptr<Cell> &&index)
     return;
   RemoveCell(m_scriptCells, m_postSupCell);
   m_postSupCell = std::move(index);
-  m_scriptCells.emplace_back(m_postSupCell);
+  m_scriptCells.emplace_back(m_postSupCell.get());
 }
 
 void SubSupCell::SetPostSub(std::unique_ptr<Cell> &&index)
@@ -94,7 +94,7 @@ void SubSupCell::SetPostSub(std::unique_ptr<Cell> &&index)
     return;
   RemoveCell(m_scriptCells, m_postSubCell);
   m_postSubCell = std::move(index);
-  m_scriptCells.emplace_back(m_postSubCell);
+  m_scriptCells.emplace_back(m_postSubCell.get());
 }
 
 void SubSupCell::SetIndex(std::unique_ptr<Cell> &&index)
