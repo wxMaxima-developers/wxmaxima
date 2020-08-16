@@ -2,6 +2,7 @@
  * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
  * An italian translation update from Marco Ciampa
  * Repaired the non-case-sensitive "Replace All" functionality
+ * Updated Ukrainian translation by Yuri Chornoivan
  * More efficient and accurate calculation of worksheet object sizes
  * (Hopefully) reduced the last visual glitches
  * Reduced the UI flicker on MS Windows
