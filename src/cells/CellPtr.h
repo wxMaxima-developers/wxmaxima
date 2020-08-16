@@ -66,6 +66,8 @@ class Observed
     Observed *m_object = {};
     //! Number of observers for this object
     unsigned int m_refCount = 0;
+    //! The global number of instances of ControlBlock
+    static size_t m_instanceCount;
 
   #if CELLPTR_LOG_REFS
     void LogConstruct(const Observed *) const;
@@ -82,10 +84,14 @@ class Observed
   public:
     explicit ControlBlock(Observed *object) : m_object(object)
     {
+      ++ m_instanceCount;
       LogConstruct(object);
       wxASSERT(object);
     }
-    ~ControlBlock() { LogDestruct(); }
+    ~ControlBlock() {
+      -- m_instanceCount;
+      LogDestruct();
+    }
     ControlBlock(const ControlBlock &) = delete;
     void operator=(const ControlBlock &) = delete;
 
@@ -108,6 +114,8 @@ class Observed
       wxASSERT(m_refCount >= 1);
       return --m_refCount;
     }
+
+    static size_t GetLiveInstanceCount() { return m_instanceCount; }
   };
 
   /*! A tagged pointer that can carry one of the following types:
@@ -198,6 +206,7 @@ protected:
 
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
+  static size_t GetLiveControlBlockInstanceCount() { return ControlBlock::GetLiveInstanceCount(); }
   constexpr bool IsNull() const { return !m_ptr.GetImpl(); }
   constexpr bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
   constexpr bool HasOneCellPtr() const { return m_ptr.GetCellPtrBase(); }

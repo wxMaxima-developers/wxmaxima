@@ -25,6 +25,7 @@
 #define CELL_PRIXPTR "010" PRIXPTR
 
 size_t Observed::m_instanceCount;
+size_t Observed::ControlBlock::m_instanceCount;
 size_t CellPtrBase::m_instanceCount;
 
 void Observed::OnEndOfLife() noexcept
