@@ -20,40 +20,36 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #define CATCH_CONFIG_RUNNER
-#include "CellPtr.h"
+#include "CellPtr.cpp"
 #include <catch2/catch.hpp>
 #include <stx/optional.hpp>
 #include <array>
 
-size_t Observed::m_instanceCount;
-size_t CellPtrBase::m_instanceCount;
-Observed::ControlBlock const Observed::ControlBlock::empty{nullptr};
-
-class Cell : public Observed {};
+class TestCell : public Observed {};
 
 SCENARIO("Observed lifetimes are tracked") {
   GIVEN("no Observed objects") {
     REQUIRE(Observed::GetLiveInstanceCount() == 0);
     WHEN("one Observed added") {
-      Cell obs1;
+      TestCell obs1;
       THEN("its presence is recorded")
       REQUIRE(Observed::GetLiveInstanceCount() == 1);
 
       AND_WHEN("second Observed is added") {
-        Cell obs2;
+        TestCell obs2;
         THEN("its presence is recorded")
         REQUIRE(Observed::GetLiveInstanceCount() == 2);
       }
 
       AND_WHEN("second Observed has been added and removed") {
-        { Cell obs2; }
+        { TestCell obs2; }
         THEN("its absence is recorded")
         REQUIRE(Observed::GetLiveInstanceCount() == 1);
       }
     }
 
     WHEN("two Observeds have been added and removed") {
-      { Cell obs1, obs2; }
+      { TestCell obs1, obs2; }
       THEN("their absence is recorded")
       REQUIRE(Observed::GetLiveInstanceCount() == 0);
     }
@@ -64,18 +60,18 @@ SCENARIO("CellPtr lifetimes are tracked") {
   GIVEN("no CellPtr objects") {
     REQUIRE(CellPtrBase::GetLiveInstanceCount() == 0);
     WHEN("one CellPtr is added") {
-      CellPtr<Cell> ptr1;
+      CellPtr<TestCell> ptr1;
       THEN("its presence is recorded")
       REQUIRE(CellPtrBase::GetLiveInstanceCount() == 1);
 
       WHEN("second CellPtr is added") {
-        CellPtr<Cell> ptr2;
+        CellPtr<TestCell> ptr2;
         THEN("its presence is recorded")
         REQUIRE(CellPtrBase::GetLiveInstanceCount() == 2);
       }
 
       WHEN("second CellPtr has been added and removed") {
-        { CellPtr<Cell> ptr2; }
+        { CellPtr<TestCell> ptr2; }
         THEN("its absence is recorded")
         REQUIRE(CellPtrBase::GetLiveInstanceCount() == 1);
       }
@@ -132,19 +128,19 @@ SCENARIO("CellPtr lifetimes are tracked") {
 
 SCENARIO("One CellPtr tracks Observed") {
   GIVEN("A CellPtr<Cell>") {
-    CellPtr<Cell> ptr;
+    CellPtr<TestCell> ptr;
 
     WHEN("CellPtr is default-constructed") {
       THEN("it points to no object") REQUIRE(ptr.get() == nullptr);
       AND_THEN("it is false in bool context") REQUIRE(bool(ptr) == false);
       AND_THEN("it compares equal to a nullptr") REQUIRE_COMM_OP_EQ(ptr, nullptr);
       AND_THEN("it compares equal to CellPtr<Cell>()") {
-        REQUIRE_COMM_OP_EQ(ptr, CellPtr<Cell>());
-        CellPtr<Cell> other;
+        REQUIRE_COMM_OP_EQ(ptr, CellPtr<TestCell>());
+        CellPtr<TestCell> other;
         REQUIRE_COMM_OP_EQ(ptr, other);
       }
       AND_THEN("it compares equal to a null Cell pointer") {
-        REQUIRE_COMM_OP_EQ(ptr, static_cast<Cell*>(0));
+        REQUIRE_COMM_OP_EQ(ptr, static_cast<TestCell*>(0));
       }
       AND_THEN("it compares equal to a null Observed pointer") {
         REQUIRE_COMM_OP_EQ(ptr, static_cast<Observed*>(0));
@@ -152,40 +148,40 @@ SCENARIO("One CellPtr tracks Observed") {
     }
 
     WHEN("CellPtr is assigned an object") {
-      stx::optional<Cell> obs1;
+      stx::optional<TestCell> obs1;
       obs1.emplace();
       ptr = &*obs1;
 
       THEN("it is true in bool context") REQUIRE(bool(ptr) == true);
       AND_THEN("get() points to that object") REQUIRE(ptr.get() == &*obs1);
       AND_THEN("it compares equal to a Cell* to that object") {
-        REQUIRE_COMM_OP_EQ(ptr, static_cast<Cell*>(&*obs1));
+        REQUIRE_COMM_OP_EQ(ptr, static_cast<TestCell*>(&*obs1));
       }
       AND_THEN("it compares equal to an Observed* to that object") {
         REQUIRE_COMM_OP_EQ(ptr, static_cast<Observed*>(&*obs1));
       }
       AND_THEN("it compares equal to CellPtr<Cell>(of that object)") {
-        REQUIRE_COMM_OP_EQ(ptr, CellPtr<Cell>(&*obs1));
-        CellPtr<Cell> other(&*obs1);
+        REQUIRE_COMM_OP_EQ(ptr, CellPtr<TestCell>(&*obs1));
+        CellPtr<TestCell> other(&*obs1);
         REQUIRE_COMM_OP_EQ(ptr, other);
       }
       AND_THEN("it compares unequal to a nullptr") {
         REQUIRE_COMM_OP_NEQ(ptr, nullptr);
       }
       AND_THEN("it compares unequal to CellPtr<Cell>()") {
-        REQUIRE_COMM_OP_NEQ(ptr, CellPtr<Cell>());
+        REQUIRE_COMM_OP_NEQ(ptr, CellPtr<TestCell>());
         CellPtr<Cell> other;
         REQUIRE_COMM_OP_NEQ(ptr, other);
       }
       AND_THEN("it compares unequal to a null Cell pointer") {
-        REQUIRE_COMM_OP_NEQ(ptr, static_cast<Cell*>(0));
+        REQUIRE_COMM_OP_NEQ(ptr, static_cast<TestCell*>(0));
       }
       AND_THEN("it compares unequal to a null Observed pointer") {
         REQUIRE_COMM_OP_NEQ(ptr, static_cast<Observed*>(0));
       }
 
       AND_WHEN("CellPtr is assigned another object") {
-        stx::optional<Cell> obs2;
+        stx::optional<TestCell> obs2;
         obs2.emplace();
         ptr = &*obs2;
         THEN("it points to that object") REQUIRE(ptr.get() == &*obs2);
@@ -215,8 +211,8 @@ SCENARIO("One CellPtr tracks Observed") {
 
 SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
   GIVEN("A pair of CellPtr<Cell>s and a pair of Cells") {
-    std::array<CellPtr<Cell>, 2> ptr;
-    std::array<stx::optional<Cell>, 2> obs;
+    std::array<CellPtr<TestCell>, 2> ptr;
+    std::array<stx::optional<TestCell>, 2> obs;
 
     obs[0].emplace();
     obs[1].emplace();
@@ -237,8 +233,8 @@ SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
       }
 
       THEN("one pointer compares less accordingly to the Cell* of the other object") {
-        REQUIRE_NONCOMM_OP_T(ptr[0], <, static_cast<Cell*>(&*obs[1]));
-        REQUIRE_NONCOMM_OP_F(ptr[1], <, static_cast<Cell*>(&*obs[0]));
+        REQUIRE_NONCOMM_OP_T(ptr[0], <, static_cast<TestCell*>(&*obs[1]));
+        REQUIRE_NONCOMM_OP_F(ptr[1], <, static_cast<TestCell*>(&*obs[0]));
       }
 
       WHEN("we check again") {
@@ -265,8 +261,8 @@ SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
           }
 
           THEN("the null pointer compares less than the Cell* non-null one") {
-            REQUIRE_NONCOMM_OP_T(ptr[0], <, static_cast<Cell*>(ptr[1].get()));
-            REQUIRE_NONCOMM_OP_F(ptr[1], <, static_cast<Cell*>(ptr[0].get()));
+            REQUIRE_NONCOMM_OP_T(ptr[0], <, static_cast<TestCell*>(ptr[1].get()));
+            REQUIRE_NONCOMM_OP_F(ptr[1], <, static_cast<TestCell*>(ptr[0].get()));
           }
 
           WHEN("the other object dies") {
@@ -312,8 +308,8 @@ SCENARIO("A pair of CellPtrs track a pair of Observeds without interference") {
       }
 
       THEN("one pointer is never less when compared to to the Cell* of the other") {
-        REQUIRE_COMM_OP_F(ptr[0], <, static_cast<Cell*>(ptr[1].get()));
-        REQUIRE_COMM_OP_F(ptr[1], <, static_cast<Cell*>(ptr[0].get()));
+        REQUIRE_COMM_OP_F(ptr[0], <, static_cast<TestCell*>(ptr[1].get()));
+        REQUIRE_COMM_OP_F(ptr[1], <, static_cast<TestCell*>(ptr[0].get()));
       }
 
       AND_WHEN("they are assigned to another object") {
@@ -335,18 +331,17 @@ SCENARIO("A CellPtr can be returned") {
       REQUIRE(!returner());
   }
   GIVEN("a function returning a non-null CellPtr") {
-    static Cell cell;
-    auto const returner = []{ return CellPtr<Cell>(&cell); };
+    static TestCell cell;
+    auto const returner = []{ return CellPtr<TestCell>(&cell); };
     WHEN("the function is invoked")
       THEN("it doesn't crash and the returned pointer points to the expected cell")
         REQUIRE(returner() == &cell);
   }
 }
 
-
 SCENARIO("A CellPtr in a structure") {
   struct Carrier {
-    CellPtr<Cell> ptr;
+    CellPtr<TestCell> ptr;
   };
   GIVEN("a default-constructed instance of the structure") {
     Carrier carrier;
@@ -362,8 +357,8 @@ SCENARIO("A CellPtr in a structure") {
     }
   }
   GIVEN("a structure instance pointing to a cell") {
-    Cell cell;
-    Carrier carrier{ CellPtr<Cell>(&cell) };
+    TestCell cell;
+    Carrier carrier{ CellPtr<TestCell>(&cell) };
     THEN("it is copyable and the copy points into the same cell")
     {
       Carrier copy = carrier;
@@ -382,6 +377,83 @@ SCENARIO("A CellPtr in a structure") {
     };
     WHEN("the function is invoked") THEN("it doesn't crash and returns null")
       REQUIRE(!returner().ptr);
+  }
+}
+
+SCENARIO("A CellPtr drops the reference to Observed's control block as soon as it can")
+{
+  GIVEN("a CellPtr and a cell")
+  {
+    stx::optional<TestCell> cell;
+    CellPtr<TestCell> ptr1;
+    CellPtr<TestCell> ptr2;
+
+    WHEN("they are default-constructed") {
+      cell.emplace();
+      THEN("the cell has no control block") REQUIRE(!cell->HasControlBlock());
+      AND_THEN("the pointer has no control block") REQUIRE(!ptr1.HasControlBlock());
+    }
+
+    WHEN("the a single pointer points to the cell") {
+      cell.emplace();
+      ptr1 = &cell.value();
+      THEN("no control blocks are used") {
+        REQUIRE(!cell->HasControlBlock());
+        REQUIRE(!ptr1.HasControlBlock());
+      }
+      AND_THEN("the cell and the pointer reference each other directly"){
+        REQUIRE(cell->HasOneCellPtr());
+        REQUIRE(ptr1.HasOneObserved());
+      }
+      AND_WHEN("the cell is destroyed") {
+        cell.reset();
+        THEN("the pointer points to no cell")
+          REQUIRE(!ptr1);
+        AND_THEN("the pointer does not use a control block")
+          REQUIRE(!ptr1.HasControlBlock());
+      }
+    }
+
+    WHEN("two pointers point to the cell") {
+      cell.emplace();
+      ptr1 = &cell.value();
+      ptr2 = &cell.value();
+      THEN("a control block is used") {
+        REQUIRE(cell->HasControlBlock());
+        REQUIRE(ptr1.HasControlBlock());
+        REQUIRE(ptr2.HasControlBlock());
+      }
+      AND_WHEN("one pointer is nulled out") {
+        ptr1 = nullptr;
+        THEN("a control block is still used") {
+          REQUIRE(cell->HasControlBlock());
+          REQUIRE(ptr2.HasControlBlock());
+        }
+        AND_WHEN("the other pointer is nulled out") {
+          ptr2 = nullptr;
+          THEN("the control block is dropped") {
+            REQUIRE(!cell->HasControlBlock());
+          }
+        }
+      }
+      AND_WHEN("the object is destroyed") {
+        cell.reset();
+        THEN("the control blocks are still used") {
+          REQUIRE(ptr1.HasControlBlock());
+          REQUIRE(ptr2.HasControlBlock());
+        }
+        AND_THEN("when one of the pointers is accessed") {
+          REQUIRE(!ptr1);
+          THEN("the control blocks are still used")
+            REQUIRE(ptr2.HasControlBlock());
+          AND_THEN("when the other pointer is accessed") {
+            REQUIRE(!ptr2);
+            THEN("there is no more control block")
+              REQUIRE(!ptr2.HasControlBlock());
+          }
+        }
+      }
+    }
   }
 }
 
