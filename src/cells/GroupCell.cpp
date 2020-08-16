@@ -376,7 +376,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   }
   UpdateCellsInGroup();
   m_updateConfusableCharWarnings = true;
-  ResetData();
+  ResetSize();
 
   // IMPORTANT! Do not Recalculate() here, as it is quadratic behavior
   // and it makes interactive performance go down the drain. If there are
