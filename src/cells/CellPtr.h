@@ -138,13 +138,13 @@ class Observed
   public:
     constexpr CellPtrImplPointer() noexcept {}
     constexpr CellPtrImplPointer(const CellPtrImplPointer &) noexcept = default;
-    constexpr CellPtrImplPointer(nullptr_t) noexcept {}
+    constexpr CellPtrImplPointer(decltype(nullptr)) noexcept {}
 
     CellPtrImplPointer(Observed *ptr) noexcept    : m_ptr(ReprFor(ptr)) {}
     CellPtrImplPointer(ControlBlock *ptr) noexcept : m_ptr(ReprFor(ptr)) {}
     CellPtrImplPointer(CellPtrBase *ptr) noexcept  : m_ptr(ReprFor(ptr)) {}
 
-    constexpr CellPtrImplPointer &operator=(nullptr_t)  noexcept           { m_ptr = {};           return *this; }
+    constexpr CellPtrImplPointer &operator=(decltype(nullptr)) noexcept    { m_ptr = {};           return *this; }
     constexpr CellPtrImplPointer &operator=(CellPtrImplPointer o) noexcept { m_ptr = o.m_ptr;      return *this; }
     CellPtrImplPointer &operator=(Observed *ptr) noexcept                  { m_ptr = ReprFor(ptr); return *this; }
     CellPtrImplPointer &operator=(ControlBlock *ptr) noexcept              { m_ptr = ReprFor(ptr); return *this; }
