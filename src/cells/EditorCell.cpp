@@ -2692,6 +2692,13 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
+void EditorCell::SetCurrentPoint(wxPoint point)
+{
+  m_currentPoint = point;
+  if ((m_currentPoint.x >= 0) && (m_currentPoint.y >= 0))
+    m_currentPoint_Last = point;
+}
+
 wxPoint EditorCell::PositionToPoint(AFontSize WXUNUSED(fontsize), int pos)
 {
   SetFont();

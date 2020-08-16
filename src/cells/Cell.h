@@ -133,7 +133,7 @@ public:
 
  */
 
-// 128 bytes
+// 120 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -788,17 +788,9 @@ public:
   //! Add another tooltip to this cell
   void AddToolTip(const wxString &tip);
   //! Tells this cell where it is placed on the worksheet
-  void SetCurrentPoint(wxPoint point)
-  {
-    m_currentPoint = point;
-    if((m_currentPoint.x >=0) &&
-        (m_currentPoint.y >=0))
-      m_currentPoint_Last = point;
-  }
+  virtual void SetCurrentPoint(wxPoint point) { m_currentPoint = point; }
   //! Tells this cell where it is placed on the worksheet
-  void SetCurrentPoint(int x, int y){
-    SetCurrentPoint(wxPoint(x,y));
-  }
+  void SetCurrentPoint(int x, int y) { m_currentPoint = {x, y}; }
   //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   bool ContainsToolTip() const { return m_containsToolTip; }
@@ -836,7 +828,7 @@ protected:
 // VTable  *__vtable;
 // Observed __observed;
 
-//** 8-byte objects (16 bytes)
+//** 8-byte objects (8 bytes)
 //**
   /*! The point in the work sheet at which this cell begins.
 
@@ -852,7 +844,6 @@ protected:
      - for Cells when they are drawn.
   */
   wxPoint m_currentPoint{-1, -1};
-  wxPoint m_currentPoint_Last{-1, -1};
 
 //** 8/4-byte objects (36 + 8* bytes)
 //**
