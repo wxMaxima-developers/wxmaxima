@@ -53,6 +53,7 @@
 #include "Version.h"
 #include "Plot3dWiz.h"
 #include "ConfigDialogue.h"
+#include "CsvWiz.h"
 #include "Gen1Wiz.h"
 #include "Gen2Wiz.h"
 #include "Gen3Wiz.h"
@@ -460,7 +461,19 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(button_plot3, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::PlotMenu), NULL, this);
   Connect(button_map, wxEVT_BUTTON,
-          wxCommandEventHandler( wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_row, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_col, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_row_list, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_matrix_col_list, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_csv2mat, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_submatrix, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(button_rectform, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::SimplifyMenu), NULL, this);
   Connect(button_trigrat, wxEVT_BUTTON,
@@ -540,17 +553,17 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_exponentialize, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_invert_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_determinant, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_eigen, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_eigvect, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_adjoint_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_transpose, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_set_precision, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_set_displayprecision, wxEVT_MENU,
@@ -580,11 +593,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_solve_ode, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_map_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_enter_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_cpoly, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_solve_lin, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EquationsMenu), NULL, this);
   Connect(menu_solve_algsys, wxEVT_MENU,
@@ -632,11 +645,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_lbfgs, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_gen_mat, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_gen_mat_lambda, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_map, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_sum, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_maximahelp, wxEVT_MENU,
@@ -666,9 +679,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_change_var, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::CalculusMenu), NULL, this);
   Connect(menu_make_list, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_apply, wxEVT_MENU,
-          wxCommandEventHandler(wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler(wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_time, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::MaximaMenu), NULL, this);
   Connect(menu_factsimp, wxEVT_MENU,
@@ -1086,7 +1099,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_stats_readm, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::StatsMenu), NULL, this);
   Connect(menu_stats_enterm, wxEVT_BUTTON,
-          wxCommandEventHandler( wxMaxima::AlgebraMenu), NULL, this);
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_stats_subsample, wxEVT_BUTTON,
           wxCommandEventHandler( wxMaxima::StatsMenu), NULL, this);
   Connect(menu_format_title, wxEVT_BUTTON,
@@ -6502,7 +6515,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
   }
 }
 
-void wxMaxima::AlgebraMenu(wxCommandEvent &event)
+void wxMaxima::MatrixMenu(wxCommandEvent &event)
 {
   if(m_worksheet != NULL)
     m_worksheet->CloseAutoCompletePopup();
@@ -6511,6 +6524,100 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
   wxString cmd;
   switch (event.GetId())
   {
+    case menu_csv2mat:
+    {
+      CsvImportWiz *wiz = new CsvImportWiz(this, m_worksheet->m_configuration);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("read_matrix(\"") + wiz->GetFilename() +
+          wxT("\", ") +
+          wiz->GetSeparator() +
+          wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();      
+      break;
+    }
+    case menu_matrix_row:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
+                                 expr, wxT("%"),
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Extract a matrix row"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("row(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
+          wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+      break;
+    }
+    case menu_matrix_col:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
+                                 expr, wxT("%"),
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Extract a matrix row"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("col(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
+          wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+      break;
+    }
+    case menu_matrix_row_list:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
+                                 expr, wxT("%"),
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Extract a matrix row"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wiz->GetValue1() + wxT("[") + wiz->GetValue2() +
+          wxT("];");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+      break;
+    }
+    case menu_matrix_col_list:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
+                                 expr, wxT("%"),
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Extract a matrix row"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("transpose(") + wiz->GetValue1() + wxT(")[") + wiz->GetValue2() +
+          wxT("];");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+      break;
+    }
+    case menu_submatrix:
+    {
+      Gen3Wiz *wiz = new Gen3Wiz(_("Matrix:"), _("comma-separated row numbers:"), _("comma-separated column numbers:"),
+                                 expr, wxEmptyString, wxEmptyString,
+                                 m_worksheet->m_configuration,
+                                 this, -1, _("Extract a matrix row"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("submatrix(");
+        if(!wiz->GetValue2().IsEmpty())
+          cmd += wiz->GetValue2() + wxT(",");
+        cmd += wiz->GetValue1();
+        if(!wiz->GetValue3().IsEmpty())
+          cmd += wxT(",") + wiz->GetValue3();
+        cmd += wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+      break;
+    }
     case menu_invert_mat:
       cmd = wxT("invert(") + expr + wxT(");");
       MenuCommand(cmd);

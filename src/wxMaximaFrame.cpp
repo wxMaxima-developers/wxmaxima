@@ -1022,6 +1022,11 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                          _("Enter a matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested List to Matrix"),
+                         _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_csv2mat, _("Matrix from csv file"),
+                         _("Load a matrix from a csv file"), wxITEM_NORMAL);
+  m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_invert_mat, _("&Invert Matrix"),
                          _("Compute the inverse of a matrix"),
                          wxITEM_NORMAL);
@@ -1041,6 +1046,19 @@ void wxMaximaFrame::SetupMenu()
   m_Algebra_Menu->Append(menu_transpose, _("&Transpose Matrix"),
                          _("Transpose a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();
+  m_Algebra_Menu->Append(menu_matrix_row, _("Extract Row"),
+                         _("Extract a row from the matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_col, _("Extract Column"),
+                         _("Extract a column from the matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_submatrix, _("Remove Rows or Columns"),
+                         _("Remove rows and/or columns from the matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_row_list, _("Convert Row to list"),
+                         _("Extract a row from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_col_list, _("Convert Column to list"),
+                         _("Extract a column from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_make_list, _("Make &List..."),
                          _("Make list from expression"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_apply, _("&Apply to List..."),
@@ -1048,8 +1066,8 @@ void wxMaximaFrame::SetupMenu()
   m_Algebra_Menu->Append(menu_map, _("&Map to List(s)..."),
                          _("Map function to a list"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_map_mat, _("Ma&p to Matrix..."),
-                         _("Map function to a matrix"), wxITEM_NORMAL);
-  m_MenuBar->Append(m_Algebra_Menu, _("&Algebra"));
+                         _("Map function to a matrix"), wxITEM_NORMAL);  
+  m_MenuBar->Append(m_Algebra_Menu, _("M&atrix"));
 
   // Calculus menu
   m_CalculusMenu = new wxMenu;

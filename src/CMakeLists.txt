@@ -34,6 +34,7 @@ list_transform_prepend(CELL_SOURCE_FILES cells/)
 set(WIZARD_SOURCE_FILES
     ActualValuesStorageWiz.cpp
     BC2Wiz.cpp
+    CsvWiz.cpp
     DrawWiz.cpp
     Gen1Wiz.cpp
     Gen2Wiz.cpp

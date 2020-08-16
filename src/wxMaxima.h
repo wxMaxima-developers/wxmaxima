@@ -345,7 +345,7 @@ protected:
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
-  void AlgebraMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
+  void MatrixMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
   void EquationsMenu(wxCommandEvent &event);       //!< Processes "equations menu" clicks
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
