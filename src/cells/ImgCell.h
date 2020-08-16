@@ -126,6 +126,7 @@ private:
   std::shared_ptr<Image> m_image;
 
   CellPtr<Cell> m_nextToDraw;
+  CellPointers *const m_cellPointers = GetCellPointers();
 
   int m_imageBorderWidth = 0;
 

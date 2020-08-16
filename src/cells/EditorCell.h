@@ -205,6 +205,8 @@ public:
   //! Determines which index the char at the position "x chars left, y chars down" is at.
   int XYToPosition(int x, int y);
 
+  void SetCurrentPoint(wxPoint point) override;
+
   //! The screen coordinates of the cursor
   wxPoint PositionToPoint(AFontSize fontsize, int pos = -1) override;
 
@@ -601,10 +603,15 @@ private:
 
   std::vector<HistoryEntry> m_history;
 
+//** 8 bytes
+//**
+  wxPoint m_currentPoint_Last{-1, -1};
+
 //** 8/4 bytes
 //**
   AFontName m_fontName;
   CellPtr<Cell> m_nextToDraw;
+  CellPointers *const m_cellPointers = GetCellPointers();
 
 //** 4 bytes
 //**

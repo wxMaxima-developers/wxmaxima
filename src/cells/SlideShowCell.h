@@ -172,6 +172,7 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
+  CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
   wxTimer m_timer;
   std::vector<std::shared_ptr<Image>> m_images;
   std::shared_ptr<wxFileSystem> m_fileSystem;
