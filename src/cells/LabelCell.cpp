@@ -37,6 +37,7 @@ LabelCell::LabelCell(GroupCell *parent,
     m_labelChoice_Last((*config)->GetLabelChoice())
 {
   InitBitFields();
+  m_width = Scale_Px((*m_configuration)->GetLabelWidth());
 }
 
 // cppcheck-suppress uninitMemberVar symbolName=LabelCell::m_alt
