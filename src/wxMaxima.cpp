@@ -2878,7 +2878,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   m_maximaBusy = false;
   m_bytesFromMaxima = 0;
 
-  wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
+  wxString label = data.SubString(m_promptPrefix.Length(), end - 1);
   // Remove the prompt we will process from the string.
   data = data.Right(data.Length()-end-m_promptSuffix.Length());
   if(data == wxT(" "))
@@ -2887,26 +2887,26 @@ void wxMaxima::ReadPrompt(wxString &data)
   // If we got a prompt our connection to maxima was successful.
   if(m_unsuccessfulConnectionAttempts > 0)
     m_unsuccessfulConnectionAttempts--;
-  o.Trim(true);
-  o.Trim(false);
+  label.Trim(true);
+  label.Trim(false);
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // Depending on ibase the digits of the number might lie between 'A' and 'Z',
   // too. Input prompts also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
   if (
     (
-      (o.Length() > 2) &&
-      o.StartsWith("(%") &&
-      o.EndsWith(")") &&
-      (((o[o.Length()-2] >= (wxT('0'))) &&
-        (o[o.Length()-2] <= (wxT('9')))) ||
-       ((o[o.Length()-2] >= (wxT('A'))) &&
-        (o[o.Length()-2] <= (wxT('Z'))))
+      (label.Length() > 2) &&
+      label.StartsWith("(%") &&
+      label.EndsWith(")") &&
+      (((label[label.Length()-2] >= (wxT('0'))) &&
+        (label[label.Length()-2] <= (wxT('9')))) ||
+       ((label[label.Length()-2] >= (wxT('A'))) &&
+        (label[label.Length()-2] <= (wxT('Z'))))
         )
       ) ||
       m_worksheet->m_configuration->InLispMode() ||
-    (o.StartsWith(wxT("MAXIMA>"))) ||
-    (o.StartsWith(wxT("\nMAXIMA>")))
+    (label.StartsWith(wxT("MAXIMA>"))) ||
+    (label.StartsWith(wxT("\nMAXIMA>")))
     )
   {
     // Maxima displayed a new main prompt => We don't have a question
@@ -2914,7 +2914,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     // And we can remove one command from the evaluation queue.
     m_worksheet->m_evaluationQueue.RemoveFirst();
 
-    m_lastPrompt = o;
+    m_lastPrompt = label;
     // remove the event maxima has just processed from the evaluation queue
     // if we remove a command from the evaluation queue the next output line will be the
     // first from the next command.
@@ -2965,7 +2965,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   }
   else
   {  // We have a question
-    m_worksheet->SetLastQuestion(o);
+    m_worksheet->SetLastQuestion(label);
     m_worksheet->QuestionAnswered();
     m_worksheet->QuestionPending(true);
     // If the user answers a question additional output might be required even
@@ -2975,16 +2975,16 @@ void wxMaxima::ReadPrompt(wxString &data)
        ((m_worksheet->GetWorkingGroup()->m_knownAnswers.empty()) &&
         m_worksheet->GetWorkingGroup()->AutoAnswer()))
        m_worksheet->SetNotification(_("Maxima asks a question!"), wxICON_INFORMATION);
-    if (!o.IsEmpty())
+    if (!label.IsEmpty())
     {
       int options = AppendOpt::NewLine | AppendOpt::BigSkip;
       if ((!m_worksheet->GetWorkingGroup()) || (!m_worksheet->GetWorkingGroup()->AutoAnswer()))
         options |= AppendOpt::PromptToolTip;
 
-      if (wxMax(o.Find(m_mathPrefix1), o.Find(m_mathPrefix2)) >= 0)
-        DoConsoleAppend(o, MC_TYPE_PROMPT, AppendOpt(options));
+      if (wxMax(label.Find(m_mathPrefix1), label.Find(m_mathPrefix2)) >= 0)
+        DoConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
       else
-        DoRawConsoleAppend(o, MC_TYPE_PROMPT, AppendOpt(options));
+        DoRawConsoleAppend(label, MC_TYPE_PROMPT, AppendOpt(options));
     }
     if (m_worksheet->ScrolledAwayFromEvaluation())
     {
@@ -2997,8 +2997,8 @@ void wxMaxima::ReadPrompt(wxString &data)
     }
     StatusMaximaBusy(userinput);
   }
-  o.Trim(false);
-  if (o.StartsWith(wxT("MAXIMA>")))
+  label.Trim(false);
+  if (label.StartsWith(wxT("MAXIMA>")))
   {
     if(!m_worksheet->m_configuration->InLispMode())
       wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
@@ -9468,6 +9468,7 @@ void wxMaxima::TriggerEvaluation()
 
       m_worksheet->SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
+      tmp->ResetSize();
 
       SendMaxima(m_configCommands);
       SendMaxima(text, true);

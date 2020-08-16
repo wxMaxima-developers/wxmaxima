@@ -303,7 +303,6 @@ void TextCell::SetValue(const wxString &text)
   ResetSize();
   UpdateDisplayedText();
   UpdateToolTip();
-  ResetSize();
 }
 
 AFontSize TextCell::GetScaledTextSize() const
