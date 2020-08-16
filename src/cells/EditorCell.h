@@ -605,6 +605,7 @@ private:
 //**
   AFontName m_fontName;
   CellPtr<Cell> m_nextToDraw;
+  CellPointers *const m_cellPointers = GetCellPointers();
 
 //** 4 bytes
 //**

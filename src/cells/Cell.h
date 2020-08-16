@@ -133,7 +133,7 @@ public:
 
  */
 
-// 136 bytes
+// 128 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -854,7 +854,7 @@ protected:
   wxPoint m_currentPoint{-1, -1};
   wxPoint m_currentPoint_Last{-1, -1};
 
-//** 8/4-byte objects (48 + 8* bytes)
+//** 8/4-byte objects (36 + 8* bytes)
 //**
 private:
   //! The next cell in the list of cells, or null if it's the last cell.
@@ -875,7 +875,6 @@ protected:
   CellPtr<GroupCell> m_group;
 
   Configuration **m_configuration;
-  CellPointers *const m_cellPointers;
 
   //! This tooltip is owned by us when m_ownsToolTip is true. Otherwise,
   //! it points to a "static" string.
@@ -1020,10 +1019,10 @@ protected:
   const wxString &GetLocalToolTip() const;
   bool IsZoomFactorChanged() const;
 
+  CellPointers *GetCellPointers() const;
+
 private:
   void RecalcCenterListAndMaxDropCache();
-
-  CellPointers *GetCellPointers() const;
 };
 
 // The static cast here requires Cell to be defined

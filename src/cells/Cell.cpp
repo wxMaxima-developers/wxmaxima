@@ -69,7 +69,6 @@ const wxString &Cell::GetToolTip(const wxPoint point) const
 Cell::Cell(GroupCell *group, Configuration **config) :
     m_group(group),
     m_configuration(config),
-    m_cellPointers(GetCellPointers()),
     m_toolTip(&wxm::emptyString),
     m_fontSize((*config)->GetMathFontSize())
 {
