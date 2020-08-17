@@ -34,6 +34,19 @@ add_test(
     COMMAND wxmaxima --logtostdout --pipe --batch empty_file.wxm)
 set_tests_properties(wxmaxima_batch_emptyFile PROPERTIES TIMEOUT 60)
 
+set(wxmaxima_performance_TIMEOUT 120)
+if (ENV{TRAVIS_DIST} EQUAL bionic)
+  set(wxmaxima_performance_TIMEOUT 20)
+elseif (ENV{TRAVIS_DIST} EQUAL focal)
+  set(wxmaxima_performance_TIMEOUT 30)
+endif()
+
+add_test(
+    NAME wxmaxima_performance
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostdout --pipe --batch performance.wxm)
+set_tests_properties(wxmaxima_performance PROPERTIES TIMEOUT ${wxmaxima_performance_TIMEOUT})
+
 add_test(
     NAME wxmaxima_batch_textcell
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
