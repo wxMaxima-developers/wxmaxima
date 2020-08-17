@@ -43,6 +43,12 @@
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
+#ifdef __WINDOWS__
+constexpr bool TEMPORARY_WINDOWS_PERFORMANCE_HACK = true;
+#else
+constexpr bool TEMPORARY_WINDOWS_PERFORMANCE_HACK = false;
+#endif
+
 #if wxUSE_ACCESSIBILITY
   // TODO This class is not used anywhere.
   class HCaretCell: public wxAccessible
@@ -383,6 +389,8 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   // visual glitches that a recalculation here would "fix", they must be
   // fixed at their source. Doing it by recalculating here will only patch
   // around the problem and make wxMaxima perform like molasses. IMPORTANT!
+  if (TEMPORARY_WINDOWS_PERFORMANCE_HACK)
+    Recalculate(); // FIXME this has to go away eventually
 }
 
 WX_DECLARE_STRING_HASH_MAP(int, CmdsAndVariables);
@@ -698,8 +706,11 @@ void GroupCell::Draw(wxPoint point)
 
   if (DrawThisCell(point))
   {
-    if (NeedsRecalculation(m_fontSize))
-      Recalculate();
+    if (!TEMPORARY_WINDOWS_PERFORMANCE_HACK)
+    {
+      if (NeedsRecalculation(m_fontSize))
+        Recalculate();
+    }
     if (m_updateConfusableCharWarnings)
       UpdateConfusableCharWarnings();
 
