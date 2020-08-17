@@ -43,14 +43,25 @@
 //! Set to 1 to enable casting from CellPtr\<U\> to U*
 #define CELLPTR_CAST_TO_PTR 1
 
+//! Set to 1 to count CellPtr, Observed (Cell) and Observed::ControlBlock instances
+#ifndef CELLPTR_COUNT_INSTANCES
+#define CELLPTR_COUNT_INSTANCES 0
+#endif
+
 //! Set to 1 to enable CellPtr control block reference count logs
+#ifndef CELLPTR_LOG_REFS
 #define CELLPTR_LOG_REFS 0
+#endif
 
 //! Set to 1 to enable CellPtr lifetime logging
+#ifndef CELLPTR_LOG_INSTANCES
 #define CELLPTR_LOG_INSTANCES 0
+#endif
 
 //! Set to the type of logging you wish for CellPtr (can be e.g. wxLogDebug or wxLogMessage)
+#ifndef CELLPTR_LOG_METHOD
 #define CELLPTR_LOG_METHOD wxLogDebug
+#endif
 
 class CellPtrBase;
 
@@ -84,12 +95,16 @@ class Observed
   public:
     explicit ControlBlock(Observed *object) : m_object(object)
     {
+    #if CELLPTR_COUNT_INSTANCES
       ++ m_instanceCount;
+    #endif
       LogConstruct(object);
       wxASSERT(object);
     }
     ~ControlBlock() {
+    #if CELLPTR_COUNT_INSTANCES
       -- m_instanceCount;
+    #endif
       LogDestruct();
     }
     ControlBlock(const ControlBlock &) = delete;
@@ -197,11 +212,18 @@ class Observed
 #endif
 
 protected:
-  Observed() noexcept { ++ m_instanceCount; }
+  Observed() noexcept
+#if CELLPTR_COUNT_INSTANCES
+  { ++ m_instanceCount; }
+#else
+  = default;
+#endif
   ~Observed()
   {
     if (m_ptr) OnEndOfLife();
+  #if CELLPTR_COUNT_INSTANCES
     -- m_instanceCount;
+  #endif
   }
 
 public:
@@ -268,7 +290,9 @@ class CellPtrBase
 protected:
   explicit CellPtrBase(Observed *obj = nullptr) noexcept
   {
+  #if CELLPTR_COUNT_INSTANCES
     ++m_instanceCount;
+  #endif
     if (obj) Ref(obj);
     LogConstruction(obj);
   }
@@ -277,7 +301,9 @@ protected:
 
   CellPtrBase(CellPtrBase &&o) noexcept
   {
+  #if CELLPTR_COUNT_INSTANCES
     ++m_instanceCount;
+  #endif
     LogMove(o);
     using namespace std;
 
@@ -304,7 +330,9 @@ protected:
 
   ~CellPtrBase() noexcept
   {
+  #if CELLPTR_COUNT_INSTANCES
     --m_instanceCount;
+  #endif
     LogDestruction();
     Deref();
   }
