@@ -100,7 +100,7 @@ void NormalizeEOLsRemoveNULs(wxString &str)
 
   // Clean up the output from zeroes, and normalize the line endings
   wxStringCharType prevCh = {};
-  for (auto const ch : str)
+  for (auto const ch : const_cast<const wxString &>(str))
   {
     if (ch == '\0')
     { /* "\0" -> "" */ }
