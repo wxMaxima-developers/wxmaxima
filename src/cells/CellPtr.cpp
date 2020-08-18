@@ -30,6 +30,10 @@ size_t CellPtrBase::m_instanceCount;
 
 void Observed::OnEndOfLife() noexcept
 {
+  // TODO Both cases are equivalent: we're resetting
+  // a back-pointer pointed to by our pointer. In binary terms,
+  // both operations are identical.
+
   auto *cellPtr = m_ptr.GetCellPtrBase();
   if (cellPtr)
   { // Reset the single CellPtr pointing to this cell

@@ -27,6 +27,20 @@
  * boilerplate needed to use the `weak_ptr`. But - above all - wxMaxima's data model does
  * not use shared ownership. All cells are have a single owner - either a cell list rooted
  * in a unique_ptr, or are owned by internal cell pointers.
+ *
+ * Author's Note: I'm not particularly happy with this code, since it could be factored much
+ * better. Observe that all three classes that implement this system are the same: they are
+ * a pointer. An `Observed` is a pointer, a `CellPtrBase` is a pointer, an an
+ * `Observed::ControlBlock` is a pointer. The currently "dumb" `CellPtrImplPointer` class
+ * could be at the heart of all three without any special-casing, and could better handle
+ * the reference counting in one spot. But observe the potential performance impact of subtle
+ * mistakes in any such refactoring: it takes lots of time to get it right. At the moment,
+ * we're at a point where small improvements can gain about 0.5% time reduction in the hs(17)
+ * benchmark, listed below. 0.5% time reduction is observed as 1s+ speed-up over runtime of
+ * about 180s.
+ *
+ *     hs(n):=ratsimp(ratexpand(product(x-a[i],i,1,n)));
+ *     hs(17);
  */
 
 #ifndef CELLPTR_H
@@ -133,37 +147,37 @@ class Observed
     static size_t GetLiveInstanceCount() { return m_instanceCount; }
   };
 
+  static_assert(alignof(ControlBlock) >= 4, "Observed::ControlBlock doesn't have minimum viable alignment");
+
   /*! A tagged pointer that can carry one of the following types:
    *
-   * 1. nullptr_t
-   * 2. Observed*
-   * 3. Observed::ControlBlock*
-   * 4. CellPtrBase
+   * 1. Observed*                 (can be null)
+   * 2. Observed::ControlBlock*   (never null)
+   * 3. CellPtrBase*              (never null)
    */
   class CellPtrImplPointer final
   {
     friend void swap(CellPtrImplPointer &a, CellPtrImplPointer &b) noexcept;
     uintptr_t m_ptr = {};
     enum Tag : uintptr_t {
-      to_nullptr_t = 0,
-      to_Observed = 1,
-      to_ControlBlock = 2,
-      to_CellPtrBase = 3,
+      to_Observed = 0,
+      to_ControlBlock = 1,
+      to_CellPtrBase = 2,
       to_MASK = 3,
       to_MASK_OUT = uintptr_t(-intptr_t(to_MASK + 1)),
     };
   static uintptr_t ReprFor(Observed *ptr) noexcept
-    { return (reinterpret_cast<uintptr_t>(ptr) & to_MASK_OUT) | to_Observed; }
+    { return reinterpret_cast<uintptr_t>(ptr) | to_Observed; }
   static uintptr_t ReprFor(ControlBlock *ptr) noexcept
-    { return (reinterpret_cast<uintptr_t>(ptr) & to_MASK_OUT) | to_ControlBlock; }
+    { return reinterpret_cast<uintptr_t>(ptr) | to_ControlBlock; }
   static uintptr_t ReprFor(CellPtrBase *ptr) noexcept
-    { return (reinterpret_cast<uintptr_t>(ptr) & to_MASK_OUT) | to_CellPtrBase; }
+    { return reinterpret_cast<uintptr_t>(ptr) | to_CellPtrBase; }
   public:
     constexpr CellPtrImplPointer() noexcept {}
     constexpr CellPtrImplPointer(const CellPtrImplPointer &) noexcept = default;
     constexpr CellPtrImplPointer(decltype(nullptr)) noexcept {}
 
-    CellPtrImplPointer(Observed *ptr) noexcept    : m_ptr(ReprFor(ptr)) {}
+    CellPtrImplPointer(Observed *ptr) noexcept     : m_ptr(ReprFor(ptr)) {}
     CellPtrImplPointer(ControlBlock *ptr) noexcept : m_ptr(ReprFor(ptr)) {}
     CellPtrImplPointer(CellPtrBase *ptr) noexcept  : m_ptr(ReprFor(ptr)) {}
 
@@ -177,11 +191,14 @@ class Observed
     constexpr inline bool HasObserved() const noexcept     { return (m_ptr & to_MASK) == to_Observed; }
     constexpr inline bool HasControlBlock() const noexcept { return (m_ptr & to_MASK) == to_ControlBlock; }
     constexpr inline bool HasCellPtrBase() const noexcept  { return (m_ptr & to_MASK) == to_CellPtrBase; }
-    constexpr inline auto GetObserved() const noexcept     { return HasObserved()     ? reinterpret_cast<Observed *>    (m_ptr & to_MASK_OUT) : nullptr; }
+    constexpr inline auto GetObserved() const noexcept     { static_assert((to_Observed & to_MASK_OUT) == 0, "");
+                                                             return HasObserved()     ? reinterpret_cast<Observed *>    (m_ptr) : nullptr;               }
     constexpr inline auto GetControlBlock() const noexcept { return HasControlBlock() ? reinterpret_cast<ControlBlock *>(m_ptr & to_MASK_OUT) : nullptr; }
     constexpr inline auto GetCellPtrBase() const noexcept  { return HasCellPtrBase()  ? reinterpret_cast<CellPtrBase *> (m_ptr & to_MASK_OUT) : nullptr; }
 
-    constexpr auto GetImpl() const noexcept { return m_ptr; }
+    constexpr inline auto GetImpl() const noexcept { return m_ptr; }
+    inline auto CastAsObserved() const noexcept     { return reinterpret_cast<Observed *>(m_ptr); }
+    inline auto CastAsControlBlock() const noexcept { return reinterpret_cast<ControlBlock *>(m_ptr & to_MASK_OUT); }
   };
 
   friend void swap(CellPtrImplPointer &a, CellPtrImplPointer &b) noexcept;
@@ -353,13 +370,11 @@ protected:
 
   inline Observed *base_get() const noexcept
   {
-    auto *const observed1 = m_ptr.GetObserved();
-    if (!m_ptr || observed1)
-      return observed1;
-    auto *const cb = m_ptr.GetControlBlock();
-    auto *const observed2 = cb->Get();
-    if (observed2)
-      return observed2;
+    if (m_ptr.HasObserved())
+      return m_ptr.CastAsObserved();
+    auto *const observed = m_ptr.CastAsControlBlock()->Get();
+    if (observed)
+      return observed;
     DerefControlBlock();
     return nullptr;
   }
@@ -392,6 +407,9 @@ public:
   constexpr bool HasOneObserved() const { return m_ptr.GetObserved(); }
   constexpr bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
 };
+
+static_assert(alignof(Observed) >= 4, "Observed doesn't have minimum viable alignment");
+static_assert(alignof(CellPtrBase) >= 4, "CellPtrBase doesn't have minimum viable alignment");
 
 /*! A weak non-owning pointer that becomes null whenever the observed object is
  * destroyed.
