@@ -477,6 +477,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     NewWindow(wxEmptyString, false, false,
               toleranceCalculations_wxm_gz, toleranceCalculations_wxm_gz_len);
     break;
+  case wxMaxima::menu_help_memoizing:
+    NewWindow(wxEmptyString, false, false,
+              memoizing_wxm_gz, memoizing_wxm_gz_len);
+    break;
   case wxID_OPEN:
   {
     wxString lastPath;

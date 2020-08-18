@@ -1,0 +1,215 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
+/* [wxMaxima: title   start ]
+Memoizing
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+s
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima is greatly based on lists, so for beginners it is always surprising that trying to construct a list on-the-fly creates an alltogether different kind of object:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[1]:5;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+One hint to that is the label that tells we only declared x[1]. Another hint is that maxima tells us that x isn't a list:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+listp(x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+It still remembers what x contains, though.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[1];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+We also can add a second element to x:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[5]:10;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+sh
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+arrayinfo(x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x[gnu]:30;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Hash maps work fine. The only thing that one can stumble about is that if we redefine "gnu" x[gnu] will read the redefined value:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+gnu:5;
+x[gnu];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The tick (') operator can forbid maxima to do so:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+x['gnu];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Hash maps have many uses. One is to implement memoizing:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+Memoizing using hash maps
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Memoizing provides big speed-ups if one wants to calculate something that is hard to calculate and of which only relatively few items ever need to be calculated.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+As an example let's construct a hash array primes[n] where each entry n contains the nth prime number, at least within the bounds of accuracy of primep():
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+? primep;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+primes[1]:1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+primes[n]:=block([i], /* block([i],...) makes i a local variable */
+    i:primes[n-1]+1,
+    while not primep(i) do
+        i:i+1,
+    return(i)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If we now calculate the 1000th prime maxima will store the info about the first 1000 primes in a hash map:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+primes[100];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+arrayinfo(primes);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Calculating primes[10000] in one go requires to calculate primes[9999], which in turn requires to calculate primes[9998], which (as this effectively is a recursive function call) eventually exceeds the lisp's stack limit. Calculating primes[10000] in several steps is possible, instead:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+primes[1000];
+primes[2000];
+primes[3000];
+primes[4000];
+primes[5000];
+primes[6000];
+primes[7000];
+primes[8000];
+primes[9000];
+primes[10000];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Memoizing should speed up accessing already-known values. Let's test if that is the case:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+showtime:true$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+primes[11000];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+primes[11000];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+showtime:false$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Memoizing functions
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima additionally allows to define memoizing functions: Functions that calculate the output value that corresponds to an input value only once and then remember them for the future.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's create a function that generates and remembers fibunacci numbers for us:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+fib[n]:=if n < 3 then 1 else fib[n-1] + fib[n-2];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+fib[10];
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.07.0-DevelopmentSnapshot"$
