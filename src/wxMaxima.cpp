@@ -232,6 +232,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("wxsubscripts")] = &wxMaxima::VariableActionWxSubscripts;
     m_variableReadActions[wxT("lmxchar")] = &wxMaxima::VariableActionLmxChar;
     m_variableReadActions[wxT("numer")] = &wxMaxima::VariableActionNumer;
+    m_variableReadActions[wxT("algebraic")] = &wxMaxima::VariableActionAlgebraic;
     m_variableReadActions[wxT("domain")] = &wxMaxima::VariableActionDomain;
     m_variableReadActions[wxT("wxanimate_autoplay")] = &wxMaxima::VariableActionAutoplay;
     m_variableReadActions[wxT("showtime")] = &wxMaxima::VariableActionShowtime;
@@ -2702,6 +2703,19 @@ void wxMaxima::VariableActionNumer(const wxString &value)
   {
     if(m_NumericMenu->IsChecked(menu_num_out))
       m_NumericMenu->Check(menu_num_out, false);
+  }
+}
+void wxMaxima::VariableActionAlgebraic(const wxString &value)
+{
+  if(value == wxT("true"))
+  {
+    if(!m_SimplifyMenu->IsChecked(menu_talg))
+      m_SimplifyMenu->Check(menu_talg, true);
+  }
+  else
+  {
+    if(m_SimplifyMenu->IsChecked(menu_talg))
+      m_SimplifyMenu->Check(menu_talg, false);
   }
 }
 void wxMaxima::VariableActionShowtime(const wxString &value)
@@ -7608,7 +7622,10 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
       MenuCommand(cmd);
       break;
     case menu_talg:
-      cmd = wxT("algebraic : not(algebraic);");
+      if(event.IsChecked())
+        cmd = wxT("algebraic:true$");
+      else
+        cmd = wxT("algebraic:false$");
       MenuCommand(cmd);
       break;
     case menu_tellrat:

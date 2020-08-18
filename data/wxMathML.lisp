@@ -2027,6 +2027,7 @@
     (wx-print-variable '$numer)
     (wx-print-variable '$domain)
     (wx-print-variable '$showtime)
+    (wx-print-variable '$algebraic)
     (wx-print-variable '$engineering_format_floats)
     (wx-print-variable '$wxanimate_autoplay)
     (wx-print-display2d)
