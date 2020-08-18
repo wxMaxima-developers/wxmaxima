@@ -70,7 +70,10 @@
 //! exact amount of data read and written must be controlled.
 class UTF8Decoder {
 #if defined(__WINDOWS__) && wxUSE_UNICODE
-  using Codec = std::codecvt_utf8<wxStringCharType>;
+  // Note: The explicit little_endian mode is needed on MinGW builds, otherwise the output is
+  // big-endian and the subsequent decoding and use of it fails. MSVC builds are OK with this
+  // mode explicitly set, or without it.
+  using Codec = std::codecvt_utf8<wxStringCharType, 0x10ffff, std::codecvt_mode::little_endian>;
   Codec m_codec;
 #else
   std::locale m_locale;
