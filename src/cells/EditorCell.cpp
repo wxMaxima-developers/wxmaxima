@@ -1543,7 +1543,20 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
 
     wxString newLines = m_text.SubString(m_positionOfCaret, m_text.Length());
     if(autoIndent)
-      newLines.Trim(false);
+    {
+      // Remove leading spaces from the text that follows the cursor
+      wxString newLines_noleadingSpaces;
+      newLines_noleadingSpaces.reserve(newLines.Length());
+      wxString::const_iterator it = newLines.begin();
+      for (; (it != newLines.end()) && (*it == ' ');
+           ++it)
+      {        
+      }
+
+      for (; it != newLines.end(); ++it)
+        newLines_noleadingSpaces += *it;
+      newLines = newLines_noleadingSpaces;
+    }
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
       wxT("\n") + indentString +
       newLines;
