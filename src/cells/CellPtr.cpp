@@ -25,10 +25,15 @@
 #define CELL_PRIXPTR "010" PRIXPTR
 
 size_t Observed::m_instanceCount;
+size_t Observed::ControlBlock::m_instanceCount;
 size_t CellPtrBase::m_instanceCount;
 
 void Observed::OnEndOfLife() noexcept
 {
+  // TODO Both cases are equivalent: we're resetting
+  // a back-pointer pointed to by our pointer. In binary terms,
+  // both operations are identical.
+
   auto *cellPtr = m_ptr.GetCellPtrBase();
   if (cellPtr)
   { // Reset the single CellPtr pointing to this cell
@@ -111,7 +116,7 @@ void CellPtrBase::Deref() noexcept
   DerefControlBlock();
 }
 
-void CellPtrBase::DerefControlBlock() const noexcept
+decltype(nullptr) CellPtrBase::DerefControlBlock() const noexcept
 {
   // The object has multiple pointers pointing to it
   auto *const cb = m_ptr.GetControlBlock();
@@ -125,6 +130,7 @@ void CellPtrBase::DerefControlBlock() const noexcept
     delete cb;
   }
   m_ptr = nullptr;
+  return nullptr;
 }
 
 #if CELLPTR_LOG_INSTANCES

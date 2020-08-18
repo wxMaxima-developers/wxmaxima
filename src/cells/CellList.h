@@ -37,8 +37,8 @@ class CellListBuilderBase
 {
 protected:
   std::unique_ptr<Cell> m_head;
-  CellPtr<Cell> m_tail;
-  CellPtr<Cell> m_lastAppended;
+  Cell *m_tail = {};
+  Cell *m_lastAppended = {};
 
   //! Appends one or more cells
   void base_Append(std::unique_ptr<Cell> &&cells);
@@ -79,8 +79,8 @@ public:
     T *ptr = dynamic_cast<T *>(m_head.get());
     if (ptr) {
       m_head.release();
-      m_tail.reset();
-      m_lastAppended.reset();
+      m_tail = {};
+      m_lastAppended = {};
     } else
       m_head.reset();
 
@@ -91,8 +91,8 @@ public:
   //! Passes on the ownership of the list head.
   std::unique_ptr<T> TakeHead()
   {
-    m_tail.reset();
-    m_lastAppended.reset();
+    m_tail = {};
+    m_lastAppended = {};
     auto retval = dynamic_unique_ptr_cast<T>(std::move(m_head));
 
     wxASSERT(!m_head && !m_tail && !m_lastAppended);
@@ -100,10 +100,10 @@ public:
   }
 
   //! Provides the last cell in the list (if any).
-  T *GetTail() const { return m_tail.CastAs<T *>(); }
+  T *GetTail() const { return dynamic_cast<T*>(m_tail); }
 
   //! Provides the most cell passed to the most recent `Append` call.
-  T *GetLastAppended() const { return m_lastAppended.CastAs<T *>(); }
+  T *GetLastAppended() const { return dynamic_cast<T*>(m_lastAppended); }
 
   //! Appends one or more cells
   // cppcheck-suppress deallocret

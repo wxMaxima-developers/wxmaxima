@@ -27,6 +27,20 @@
  * boilerplate needed to use the `weak_ptr`. But - above all - wxMaxima's data model does
  * not use shared ownership. All cells are have a single owner - either a cell list rooted
  * in a unique_ptr, or are owned by internal cell pointers.
+ *
+ * Author's Note: I'm not particularly happy with this code, since it could be factored much
+ * better. Observe that all three classes that implement this system are the same: they are
+ * a pointer. An `Observed` is a pointer, a `CellPtrBase` is a pointer, an an
+ * `Observed::ControlBlock` is a pointer. The currently "dumb" `CellPtrImplPointer` class
+ * could be at the heart of all three without any special-casing, and could better handle
+ * the reference counting in one spot. But observe the potential performance impact of subtle
+ * mistakes in any such refactoring: it takes lots of time to get it right. At the moment,
+ * we're at a point where small improvements can gain about 0.5% time reduction in the hs(17)
+ * benchmark, listed below. 0.5% time reduction is observed as 1s+ speed-up over runtime of
+ * about 180s.
+ *
+ *     hs(n):=ratsimp(ratexpand(product(x-a[i],i,1,n)));
+ *     hs(17);
  */
 
 #ifndef CELLPTR_H
@@ -43,14 +57,25 @@
 //! Set to 1 to enable casting from CellPtr\<U\> to U*
 #define CELLPTR_CAST_TO_PTR 1
 
+//! Set to 1 to count CellPtr, Observed (Cell) and Observed::ControlBlock instances
+#ifndef CELLPTR_COUNT_INSTANCES
+#define CELLPTR_COUNT_INSTANCES 0
+#endif
+
 //! Set to 1 to enable CellPtr control block reference count logs
+#ifndef CELLPTR_LOG_REFS
 #define CELLPTR_LOG_REFS 0
+#endif
 
 //! Set to 1 to enable CellPtr lifetime logging
+#ifndef CELLPTR_LOG_INSTANCES
 #define CELLPTR_LOG_INSTANCES 0
+#endif
 
 //! Set to the type of logging you wish for CellPtr (can be e.g. wxLogDebug or wxLogMessage)
+#ifndef CELLPTR_LOG_METHOD
 #define CELLPTR_LOG_METHOD wxLogDebug
+#endif
 
 class CellPtrBase;
 
@@ -66,6 +91,8 @@ class Observed
     Observed *m_object = {};
     //! Number of observers for this object
     unsigned int m_refCount = 0;
+    //! The global number of instances of ControlBlock
+    static size_t m_instanceCount;
 
   #if CELLPTR_LOG_REFS
     void LogConstruct(const Observed *) const;
@@ -82,10 +109,18 @@ class Observed
   public:
     explicit ControlBlock(Observed *object) : m_object(object)
     {
+    #if CELLPTR_COUNT_INSTANCES
+      ++ m_instanceCount;
+    #endif
       LogConstruct(object);
       wxASSERT(object);
     }
-    ~ControlBlock() { LogDestruct(); }
+    ~ControlBlock() {
+    #if CELLPTR_COUNT_INSTANCES
+      -- m_instanceCount;
+    #endif
+      LogDestruct();
+    }
     ControlBlock(const ControlBlock &) = delete;
     void operator=(const ControlBlock &) = delete;
 
@@ -108,39 +143,41 @@ class Observed
       wxASSERT(m_refCount >= 1);
       return --m_refCount;
     }
+
+    static size_t GetLiveInstanceCount() { return m_instanceCount; }
   };
+
+  static_assert(alignof(ControlBlock) >= 4, "Observed::ControlBlock doesn't have minimum viable alignment");
 
   /*! A tagged pointer that can carry one of the following types:
    *
-   * 1. nullptr_t
-   * 2. Observed*
-   * 3. Observed::ControlBlock*
-   * 4. CellPtrBase
+   * 1. Observed*                 (can be null)
+   * 2. Observed::ControlBlock*   (never null)
+   * 3. CellPtrBase*              (never null)
    */
   class CellPtrImplPointer final
   {
     friend void swap(CellPtrImplPointer &a, CellPtrImplPointer &b) noexcept;
     uintptr_t m_ptr = {};
     enum Tag : uintptr_t {
-      to_nullptr_t = 0,
-      to_Observed = 1,
-      to_ControlBlock = 2,
-      to_CellPtrBase = 3,
+      to_Observed = 0,
+      to_ControlBlock = 1,
+      to_CellPtrBase = 2,
       to_MASK = 3,
       to_MASK_OUT = uintptr_t(-intptr_t(to_MASK + 1)),
     };
   static uintptr_t ReprFor(Observed *ptr) noexcept
-    { return (reinterpret_cast<uintptr_t>(ptr) & to_MASK_OUT) | to_Observed; }
+    { return reinterpret_cast<uintptr_t>(ptr) | to_Observed; }
   static uintptr_t ReprFor(ControlBlock *ptr) noexcept
-    { return (reinterpret_cast<uintptr_t>(ptr) & to_MASK_OUT) | to_ControlBlock; }
+    { return reinterpret_cast<uintptr_t>(ptr) | to_ControlBlock; }
   static uintptr_t ReprFor(CellPtrBase *ptr) noexcept
-    { return (reinterpret_cast<uintptr_t>(ptr) & to_MASK_OUT) | to_CellPtrBase; }
+    { return reinterpret_cast<uintptr_t>(ptr) | to_CellPtrBase; }
   public:
     constexpr CellPtrImplPointer() noexcept {}
     constexpr CellPtrImplPointer(const CellPtrImplPointer &) noexcept = default;
     constexpr CellPtrImplPointer(decltype(nullptr)) noexcept {}
 
-    CellPtrImplPointer(Observed *ptr) noexcept    : m_ptr(ReprFor(ptr)) {}
+    CellPtrImplPointer(Observed *ptr) noexcept     : m_ptr(ReprFor(ptr)) {}
     CellPtrImplPointer(ControlBlock *ptr) noexcept : m_ptr(ReprFor(ptr)) {}
     CellPtrImplPointer(CellPtrBase *ptr) noexcept  : m_ptr(ReprFor(ptr)) {}
 
@@ -154,11 +191,14 @@ class Observed
     constexpr inline bool HasObserved() const noexcept     { return (m_ptr & to_MASK) == to_Observed; }
     constexpr inline bool HasControlBlock() const noexcept { return (m_ptr & to_MASK) == to_ControlBlock; }
     constexpr inline bool HasCellPtrBase() const noexcept  { return (m_ptr & to_MASK) == to_CellPtrBase; }
-    constexpr inline auto GetObserved() const noexcept     { return HasObserved()     ? reinterpret_cast<Observed *>    (m_ptr & to_MASK_OUT) : nullptr; }
+    constexpr inline auto GetObserved() const noexcept     { static_assert((to_Observed & to_MASK_OUT) == 0, "");
+                                                             return HasObserved()     ? reinterpret_cast<Observed *>    (m_ptr) : nullptr;               }
     constexpr inline auto GetControlBlock() const noexcept { return HasControlBlock() ? reinterpret_cast<ControlBlock *>(m_ptr & to_MASK_OUT) : nullptr; }
     constexpr inline auto GetCellPtrBase() const noexcept  { return HasCellPtrBase()  ? reinterpret_cast<CellPtrBase *> (m_ptr & to_MASK_OUT) : nullptr; }
 
-    constexpr auto GetImpl() const noexcept { return m_ptr; }
+    constexpr inline auto GetImpl() const noexcept { return m_ptr; }
+    inline auto CastAsObserved() const noexcept     { return reinterpret_cast<Observed *>(m_ptr); }
+    inline auto CastAsControlBlock() const noexcept { return reinterpret_cast<ControlBlock *>(m_ptr & to_MASK_OUT); }
   };
 
   friend void swap(CellPtrImplPointer &a, CellPtrImplPointer &b) noexcept;
@@ -189,15 +229,23 @@ class Observed
 #endif
 
 protected:
-  Observed() noexcept { ++ m_instanceCount; }
+  Observed() noexcept
+#if CELLPTR_COUNT_INSTANCES
+  { ++ m_instanceCount; }
+#else
+  = default;
+#endif
   ~Observed()
   {
     if (m_ptr) OnEndOfLife();
+  #if CELLPTR_COUNT_INSTANCES
     -- m_instanceCount;
+  #endif
   }
 
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
+  static size_t GetLiveControlBlockInstanceCount() { return ControlBlock::GetLiveInstanceCount(); }
   constexpr bool IsNull() const { return !m_ptr.GetImpl(); }
   constexpr bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
   constexpr bool HasOneCellPtr() const { return m_ptr.GetCellPtrBase(); }
@@ -242,7 +290,7 @@ class CellPtrBase
 
   //! Removes a reference from this pointer to an object's control block. This
   //! is a special case, invoked by Deref().
-  void DerefControlBlock() const noexcept;
+  decltype(nullptr) DerefControlBlock() const noexcept;
 
 #if CELLPTR_LOG_INSTANCES
   void LogConstruction(Observed *obj) const;
@@ -259,7 +307,9 @@ class CellPtrBase
 protected:
   explicit CellPtrBase(Observed *obj = nullptr) noexcept
   {
+  #if CELLPTR_COUNT_INSTANCES
     ++m_instanceCount;
+  #endif
     if (obj) Ref(obj);
     LogConstruction(obj);
   }
@@ -268,7 +318,9 @@ protected:
 
   CellPtrBase(CellPtrBase &&o) noexcept
   {
+  #if CELLPTR_COUNT_INSTANCES
     ++m_instanceCount;
+  #endif
     LogMove(o);
     using namespace std;
 
@@ -295,7 +347,9 @@ protected:
 
   ~CellPtrBase() noexcept
   {
+  #if CELLPTR_COUNT_INSTANCES
     --m_instanceCount;
+  #endif
     LogDestruction();
     Deref();
   }
@@ -316,15 +370,41 @@ protected:
 
   inline Observed *base_get() const noexcept
   {
-    auto *const observed1 = m_ptr.GetObserved();
-    if (!m_ptr || observed1)
-      return observed1;
-    auto *const cb = m_ptr.GetControlBlock();
-    auto *const observed2 = cb->Get();
-    if (observed2)
-      return observed2;
-    DerefControlBlock();
-    return nullptr;
+    // Warning: This function is CRITICAL to the performance of wxMaxima
+    // as a whole!
+    //
+    // The common hot path that iterates cells via the m_nextToDraw uses
+    // this function and is intimately tied to its performance. Small
+    // changes here can cause performance regressions - or small performance
+    // improvements.
+    //
+    // If you change anything, do before- and after- measurements to verify
+    // that whatever improvement you sought is in fact achieved. Changes that
+    // don't measurably improve performance are discouraged.
+
+    // The common path, meant to be hot: if we point directly at the observed object,
+    // just return that. This is also where null is returned if the pointer is null.
+    // `HasObserved()` is a simple bitmask test, and `CastAsObserved` is a binary
+    // NO-OP.
+
+    if (m_ptr.HasObserved())
+      return m_ptr.CastAsObserved();
+
+    // Otherwise, we must be pointing to a control block: get the pointed-to
+    // observed from the control block. Since such use case is meant to be
+    // rare, the overhead of pointer chasing (one extra layer of indirection)
+    // is acceptable.
+
+    auto *const observed = m_ptr.CastAsControlBlock()->Get();
+    if (observed)
+      return observed;
+
+    // We have a control block, but the observed object is gone: we dereference
+    // the zombie control block, to deallocate it as soon as possible, and we
+    // reset ourselves to null. This happens only once per observed object, and
+    // subsequent calls will go via the common path.
+
+    return DerefControlBlock(); // returns null - allows a tail call optimization
   }
 
   void base_reset(Observed *obj = nullptr) noexcept;
@@ -356,17 +436,34 @@ public:
   constexpr bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
 };
 
+static_assert(alignof(Observed) >= 4, "Observed doesn't have minimum viable alignment");
+static_assert(alignof(CellPtrBase) >= 4, "CellPtrBase doesn't have minimum viable alignment");
+
 /*! A weak non-owning pointer that becomes null whenever the observed object is
  * destroyed.
  *
+ * **The use of this pointer type has performance implications. It is not a "free"
+ * abstraction!**
+ *
+ * **Warning:** To maintain performance, most cells should have at most one CellPtr
+ * pointing at them. Currently, this is the m_nextToDraw - it uses up our "CellPtr
+ * budget". The remaining CellPtrs are in CellPointers, and there is very few cells
+ * at any given time that are pointed-to by those pointers, and thus the performance
+ * impact is minimal.
+ *
  * In the common case of being null, or of being the only CellPtr to a given cell,
- * it has the performance similar to a raw pointer: it stores the cell pointer directly.
+ * the performance is similar to a raw pointer: it stores the cell pointer directly.
  * The pointed-to cell points back to this sole pointer, so that it can reset it to null
  * when it gets destroyed. A CellPtr is exactly the size of an `Observed *`.
  *
  * When the second CellPtr is made to point to a cell, a shared control block is allocated
  * on behalf of the cell, and both the CellPtr and the cell point to it. The control block is
- * greedily dereferenced whenever the CellPtr notices that the cell it pointed to has vanished.
+ * greedily dereferenced whenever the CellPtr notices that the cell it pointed to has
+ * vanished. But, once a cell has a ControlBlock, it doesn't get rid of it until no pointers
+ * point to it. So, if there are two+ pointers pointing to a cell, then only one is left,
+ * there still is a control block, and the pointers still "pointer chase" through that
+ * control block. Getting rid of the control block in this case is a low-priority TODO at the
+ * moment, since there's no performance impact seen from this.
  *
  * The observed type must be derived from Observed, and this fact is checked at the point
  * of instantiation. The pointer's instance can be declared with forward-defined classes.

@@ -67,7 +67,7 @@ private:
 
   //! The inner cells set via SetPre* or SetPost*, but not SetBase nor SetIndex
   //! nor SetExponent.
-  std::vector<CellPtr<Cell>> m_scriptCells;
+  std::vector<Cell *> m_scriptCells;
   CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.

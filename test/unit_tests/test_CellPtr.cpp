@@ -20,6 +20,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #define CATCH_CONFIG_RUNNER
+#define CELLPTR_COUNT_INSTANCES 1
 #include "CellPtr.cpp"
 #include <catch2/catch.hpp>
 #include <stx/optional.hpp>

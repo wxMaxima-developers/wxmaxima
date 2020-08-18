@@ -69,6 +69,8 @@ int CommonMain()
     wxLogDebug("CellPtr: %zu live instances leaked", CellPtrBase::GetLiveInstanceCount());
   if(Observed::GetLiveInstanceCount() != 0)
     wxLogDebug("Cell:    %zu live instances leaked", Observed::GetLiveInstanceCount());
+  if(Observed::GetLiveControlBlockInstanceCount() != 0)
+    wxLogDebug("ControlBlock: %zu live instances leaked", Observed::GetLiveControlBlockInstanceCount());
   return 0;
 }
 
