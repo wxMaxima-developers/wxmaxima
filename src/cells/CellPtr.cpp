@@ -116,7 +116,7 @@ void CellPtrBase::Deref() noexcept
   DerefControlBlock();
 }
 
-void CellPtrBase::DerefControlBlock() const noexcept
+decltype(nullptr) CellPtrBase::DerefControlBlock() const noexcept
 {
   // The object has multiple pointers pointing to it
   auto *const cb = m_ptr.GetControlBlock();
@@ -130,6 +130,7 @@ void CellPtrBase::DerefControlBlock() const noexcept
     delete cb;
   }
   m_ptr = nullptr;
+  return nullptr;
 }
 
 #if CELLPTR_LOG_INSTANCES

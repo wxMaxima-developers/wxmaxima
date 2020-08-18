@@ -290,7 +290,7 @@ class CellPtrBase
 
   //! Removes a reference from this pointer to an object's control block. This
   //! is a special case, invoked by Deref().
-  void DerefControlBlock() const noexcept;
+  decltype(nullptr) DerefControlBlock() const noexcept;
 
 #if CELLPTR_LOG_INSTANCES
   void LogConstruction(Observed *obj) const;
@@ -370,13 +370,41 @@ protected:
 
   inline Observed *base_get() const noexcept
   {
+    // Warning: This function is CRITICAL to the performance of wxMaxima
+    // as a whole!
+    //
+    // The common hot path that iterates cells via the m_nextToDraw uses
+    // this function and is intimately tied to its performance. Small
+    // changes here can cause performance regressions - or small performance
+    // improvements.
+    //
+    // If you change anything, do before- and after- measurements to verify
+    // that whatever improvement you sought is in fact achieved. Changes that
+    // don't measurably improve performance are discouraged.
+
+    // The common path, meant to be hot: if we point directly at the observed object,
+    // just return that. This is also where null is returned if the pointer is null.
+    // `HasObserved()` is a simple bitmask test, and `CastAsObserved` is a binary
+    // NO-OP.
+
     if (m_ptr.HasObserved())
       return m_ptr.CastAsObserved();
+
+    // Otherwise, we must be pointing to a control block: get the pointed-to
+    // observed from the control block. Since such use case is meant to be
+    // rare, the overhead of pointer chasing (one extra layer of indirection)
+    // is acceptable.
+
     auto *const observed = m_ptr.CastAsControlBlock()->Get();
     if (observed)
       return observed;
-    DerefControlBlock();
-    return nullptr;
+
+    // We have a control block, but the observed object is gone: we dereference
+    // the zombie control block, to deallocate it as soon as possible, and we
+    // reset ourselves to null. This happens only once per observed object, and
+    // subsequent calls will go via the common path.
+
+    return DerefControlBlock(); // returns null - allows a tail call optimization
   }
 
   void base_reset(Observed *obj = nullptr) noexcept;
