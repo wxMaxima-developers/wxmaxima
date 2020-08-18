@@ -1026,6 +1026,8 @@ void wxMaximaFrame::SetupMenu()
                          _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_csv2mat, _("Matrix from csv file"),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_mat2csv, _("Matrix to csv file"),
+                         _("Export a matrix to a csv file"), wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_invert_mat, _("&Invert Matrix"),
                          _("Compute the inverse of a matrix"),
@@ -1227,6 +1229,8 @@ void wxMaximaFrame::SetupMenu()
   listcreateSub->Append(menu_list_create_from_list, _("from a list"),
                         _("Generate a new list using a lists' elements"),
                         wxITEM_NORMAL);
+  listcreateSub->Append(menu_csv2list, _("Read List from csv file"),
+                         _("Load a list from a csv file"), wxITEM_NORMAL);
   listcreateSub->Append(menu_list_actual_values_storage, _("as storage for actual values for variables"),
                         _("Generate a storage for variable values that can be introduced into equations at any time"),
                         wxITEM_NORMAL);
@@ -1249,6 +1253,8 @@ void wxMaximaFrame::SetupMenu()
   listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
                         _("Execute a command for each element of the list"),
                         wxITEM_NORMAL);
+  listuseSub->Append(menu_list2csv, _("Export List to csv file"),
+                         _("Export a list to a csv file"), wxITEM_NORMAL);
 
   m_listMenu->Append(wxNewId(), _("Use list"),
                      listuseSub,

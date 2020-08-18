@@ -472,6 +472,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_csv2mat, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
+  Connect(menu_mat2csv, wxEVT_MENU,
+          wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(menu_submatrix, wxEVT_MENU,
           wxCommandEventHandler( wxMaxima::MatrixMenu), NULL, this);
   Connect(button_rectform, wxEVT_BUTTON,
@@ -6538,6 +6540,23 @@ void wxMaxima::MatrixMenu(wxCommandEvent &event)
       wiz->Destroy();      
       break;
     }
+    case menu_mat2csv:
+    {
+      CsvExportWiz *wiz = new CsvExportWiz(this, m_worksheet->m_configuration, _("Matrix"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("write_data(") +
+          wiz->GetMatrix() +
+          wxT(", \"") +
+          wiz->GetFilename() +
+          wxT("\", ") +
+          wiz->GetSeparator() +
+          wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();      
+      break;
+    }
     case menu_matrix_row:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Row number:"),
@@ -7049,6 +7068,37 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   wxString cmd;
   switch (event.GetId())
   {
+    case menu_csv2list:
+    {
+      CsvImportWiz *wiz = new CsvImportWiz(this, m_worksheet->m_configuration);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("read_nested_list(\"") + wiz->GetFilename() +
+          wxT("\", ") +
+          wiz->GetSeparator() +
+          wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();      
+      break;
+    }
+    case menu_list2csv:
+    {
+      CsvExportWiz *wiz = new CsvExportWiz(this, m_worksheet->m_configuration, _("List"));
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("write_data(") +
+          wiz->GetMatrix() +
+          wxT(", \"") +
+          wiz->GetFilename() +
+          wxT("\", ") +
+          wiz->GetSeparator() +
+          wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();      
+      break;
+    }
   case menu_list_create_from_args:
   {
     wxString arg;

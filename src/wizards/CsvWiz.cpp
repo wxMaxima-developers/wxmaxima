@@ -101,3 +101,79 @@ CsvImportWiz::~CsvImportWiz()
 {
   wxConfig::Get()->Write(wxT("csvSeparator"), m_separator->GetSelection());
 }
+
+CsvExportWiz::CsvExportWiz(wxWindow *parent, Configuration *config, wxString objectType) :
+  wxDialog(parent, -1, _("CSV export"), wxDefaultPosition, wxDefaultSize, wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
+{
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(new wxStaticText(this,-1, _("Field Separator")), wxSizerFlags());
+  wxArrayString choices;
+  choices.Add(_("Semicolon"));
+  choices.Add(_("Comma"));
+  choices.Add(_("Tab"));
+  m_separator = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, choices);
+  long choice = 0;
+  wxConfig::Get()->Read(wxT("csvSeparator"), choice);
+  if(choice < 0) choice = 0;
+  if(choice > 2) choice = 2;
+  m_separator->SetSelection(choice);
+  vbox->Add(m_separator, wxSizerFlags().Expand());
+  vbox->Add(new wxStaticText(this,-1, objectType), wxSizerFlags());
+  m_matrix = new BTextCtrl(this,-1, config, wxEmptyString);
+  vbox->Add(m_matrix, wxSizerFlags().Expand());
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  vbox->Add(new wxStaticText(this,-1, _("Filename")), wxSizerFlags());
+  m_filename = new BTextCtrl(this,-1, config, wxEmptyString);
+  hbox->Add(m_filename, wxSizerFlags(20));
+  m_browseButton = new wxButton(this, -1, _("Browse"));
+  m_browseButton->Connect(wxEVT_BUTTON, wxCommandEventHandler(CsvExportWiz::OnBrowse), NULL, this);
+  hbox->Add(m_browseButton,wxSizerFlags());
+  vbox->Add(hbox, wxSizerFlags(20).Expand());
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  #if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+  SetSizerAndFit(vbox);
+}
+
+wxString CsvExportWiz::GetSeparator()
+{
+  switch(m_separator->GetSelection())
+  {
+  case 0:
+    return "'semicolon";
+  case 1:
+    return "'comma";
+  default:
+    return "'tab";
+  }
+}
+
+void CsvExportWiz::OnBrowse(wxCommandEvent&  WXUNUSED(event))
+{
+  wxConfigBase *config = wxConfig::Get();
+  wxString file = wxFileSelector(_("Select csv file to read"),
+                                 wxEmptyString, wxEmptyString,
+                                 wxEmptyString,
+                                 _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"),
+                                 wxFD_SAVE);
+
+  if (file.Length())
+    m_filename->SetValue(file);
+}
+
+CsvExportWiz::~CsvExportWiz()
+{
+  wxConfig::Get()->Write(wxT("csvSeparator"), m_separator->GetSelection());
+}
