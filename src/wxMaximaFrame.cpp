@@ -1208,7 +1208,7 @@ void wxMaximaFrame::SetupMenu()
   m_SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
                          _("Evaluate all noun forms in expression"),
                          wxITEM_NORMAL);
-  m_SimplifyMenu->AppendCheckItem(menu_talg, _("&Algebraic Flag"),
+  m_SimplifyMenu->AppendCheckItem(menu_talg, _("&Algebraic Mode"),
                          _("Set the \"algebraic\" flag"));
   m_SimplifyMenu->Append(menu_tellrat, _("Add Algebraic E&quality..."),
                          _("Add equality to the rational simplifier"),
