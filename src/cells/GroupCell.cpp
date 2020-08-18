@@ -1930,7 +1930,7 @@ GroupCell *GroupCell::Unfold()
   if (!IsFoldable() || !m_hiddenTree)
     return NULL;
 
-  auto splicedIn = CellList::SpliceIn(this, std::move(m_hiddenTree));
+  auto splicedIn = CellList::SpliceInAfter(this, std::move(m_hiddenTree));
   GetNext()->SetHiddenTreeParent(m_hiddenTreeParent);
   return dynamic_cast<GroupCell *>(splicedIn.lastSpliced);
 }

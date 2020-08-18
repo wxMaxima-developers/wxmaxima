@@ -188,7 +188,7 @@ public:
    * \param last is the optional hint for the last cell in the spliced-in list.
    * It's computed if not provided.
    */
-  static SplicedIn SpliceIn(Cell *where, std::unique_ptr<Cell> &&head, Cell *last = nullptr);
+  static SplicedIn SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last = nullptr);
 
   struct TornOut {
     //! The first in the torn-out list of cells, or null if the tearing out had failed.
