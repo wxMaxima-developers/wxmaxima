@@ -121,7 +121,7 @@ void CellList::AppendCell(Cell *c, std::unique_ptr<Cell> &&head)
     lastToDraw->SetNextToDraw(next);
 }
 
-CellList::SplicedIn CellList::SpliceIn(Cell *where, std::unique_ptr<Cell> &&head, Cell *last)
+CellList::SplicedIn CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &&head, Cell *last)
 {
   if (!where)
     return {};
