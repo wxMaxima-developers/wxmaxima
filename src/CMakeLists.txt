@@ -239,7 +239,7 @@ endif()
 if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
 else()
-    set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
+    set(MANIFEST_FILE "${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest")
 endif()
 
 file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
