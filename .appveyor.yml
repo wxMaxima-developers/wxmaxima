@@ -163,14 +163,10 @@ for:
   -
     matrix:
       only:
-        - job_name: MinGW
+        - WXW_LIB: gcc_x64_lib
     artifacts:
     - path: 'wxMaxima.exe.7z'
       name: wxMaxima.exe.7z
-  -
-    matrix:
-      only:
-        - job_name: MinGW
     deploy:
       - provider: Environment
         name: GithubReleases
