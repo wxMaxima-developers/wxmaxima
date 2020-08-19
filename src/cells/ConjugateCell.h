@@ -55,8 +55,6 @@ public:
 
   InnerCellIterator InnerBegin() const override { return {&m_innerCell, &m_close}; }
 
-  void SetInner(std::unique_ptr<Cell> &&inner);
-
   bool BreakUp() override;
 
   void SetNextToDraw(Cell *next) override;
