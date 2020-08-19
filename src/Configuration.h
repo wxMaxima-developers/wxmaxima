@@ -721,6 +721,8 @@ public:
   void UseSVG(bool useSVG) { m_useSVG = useSVG ;}
   void ShowLength(long length) { m_showLength = length; }
   long ShowLength() const {return m_showLength;}
+  void LispType(wxString type) { m_lispType = type; }
+  wxString LispType() const {return m_lispType;}
   
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
@@ -946,6 +948,7 @@ private:
   bool m_invertBackground;
   long m_undoLimit;
   long m_recentItems;
+  wxString m_lispType;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

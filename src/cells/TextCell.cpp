@@ -273,6 +273,9 @@ void TextCell::UpdateToolTip()
       SetToolTip(&T_("Might be caused by reading an csv file with an empty last line:\n"
                      "Technically that line can be described as having the length 0 "
                      "which differs from the other lines of this file."));
+    else if (m_text.Contains(S_("Control stack exhausted")))
+      SetToolTip(&T_("Often caused by recursive function calls. Some lisps allow to increase "
+                   "the control stack size using command-line arguments."));
     else if (m_text.Contains(S_(": invalid index")))
       SetToolTip(&T_("The [] or the part() command tried to access a list or matrix "
                      "element that doesn't exist."));

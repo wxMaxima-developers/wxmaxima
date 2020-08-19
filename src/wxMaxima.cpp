@@ -2654,7 +2654,7 @@ void wxMaxima::VariableActionMaximaSharedir(const wxString &value)
 
 void wxMaxima::VariableActionLispName(const wxString &value)
 {
-  m_lispType = value;
+  m_worksheet->m_configuration->LispType(value);
   wxLogMessage(wxString::Format(_("Maxima was compiled using %s"),value.utf8_str()));
 }
 void wxMaxima::VariableActionLispVersion(const wxString &value)
@@ -8166,7 +8166,8 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       else
         description += _("\nNot connected.");
       if (m_lispVersion != wxEmptyString)
-        description += _("\nMaxima compiled using: ") + m_lispType + " " + m_lispVersion;
+        description += _("\nMaxima compiled using: ") + m_worksheet->m_configuration->LispType() +
+          " " + m_lispVersion;
 
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);

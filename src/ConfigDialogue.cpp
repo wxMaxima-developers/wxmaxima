@@ -1050,16 +1050,26 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
               wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer2->Add(new wxStaticText(panel, -1, _("choose between installed maxima versions")),
               0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxString sbclMemoryParameter;
+  if(m_configuration->LispType().Lower().Contains(wxT("sbcl")))
+  {
+    wxString sbclMemoryParameter1;
+    wxString sbclMemoryParameter2;
 #ifdef __WXMSW__
-  sbclMemoryParameter = _("      -X \"--dynamic-space-size <int>\"");
+    sbclMemoryParameter1 = _("      -X \"--dynamic-space-size <int>\"");
+    sbclMemoryParameter2 = _("      -X \"--control-stack-size <int>\"");
 #else
-  sbclMemoryParameter = _("      -X '--dynamic-space-size <int>'");
+    sbclMemoryParameter1 = _("      -X '--dynamic-space-size <int>'");
+    sbclMemoryParameter2 = _("      -X '--control-stack-size <int>'");
 #endif
-  sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter), 0,
-              wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer2->Add(new wxStaticText(panel, -1, _("tell sbcl to use <int>Mbytes of heap")),
-              0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+    sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter1), 0,
+                wxALL | wxALIGN_CENTER_VERTICAL, 5);
+    sizer2->Add(new wxStaticText(panel, -1, _("sbcl: use <int>Mbytes of heap")),
+                0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+    sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter2), 0,
+                wxALL | wxALIGN_CENTER_VERTICAL, 5);
+    sizer2->Add(new wxStaticText(panel, -1, _("sbcl: use <int>Mbytes of stack for function calls")),
+                0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  }
   vsizer->Add(sizer2);
   m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600*GetContentScaleFactor(), -1), wxTE_RICH);
   vsizer->Add(m_additionalParameters, 0, wxALL, 0);
