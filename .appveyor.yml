@@ -133,6 +133,8 @@ before_build:
 build_script:
   - ps: |
       echo '- Building wxMaxima'
+      echo '    Job:   ' $env:APPVEYOR_JOB_NAME
+      echo '    Branch:' $env:APPVEYOR_REPO_BRANCH
       iex $env:TOOLKIT_INIT
       pushd build
       cmake --build . --config Release
