@@ -1030,7 +1030,7 @@ L"s\n"
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"Maxima is greatly based on lists, so for beginners it is always surprising that trying to construct a list on-the-fly creates an alltogether different kind of object:\n" 
+L"Maxima is greatly based on lists, so for beginners it is always surprising that trying to construct a list on-the-fly creates an altogether different kind of object:\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
@@ -1215,7 +1215,7 @@ L"Maxima additionally allows to define memoizing functions: Functions that calcu
 L"\n" 
 L"\n" 
 L"/* [wxMaxima: comment start ]\n"  + _(
-L"Let's create a function that generates and remembers fibunacci numbers for us:\n" 
+L"Let's create a function that generates and remembers Fibonacci numbers for us:\n" 
 ) + L"   [wxMaxima: comment end   ] */\n"  
 L"\n" 
 L"\n" 
