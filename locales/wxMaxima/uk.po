@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-20 07:04+0200\n"
-"PO-Revision-Date: 2020-08-16 17:50+0300\n"
+"PO-Revision-Date: 2020-08-21 19:19+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.11.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:186
@@ -102,18 +102,16 @@ msgstr ""
 "З використанням оптимальних блокувань OpenMP"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1059
-#, fuzzy
 msgid "      -X \"--control-stack-size <int>\""
-msgstr "      -X \"--dynamic-space-size <ціле число>\""
+msgstr "      -X \"--control-stack-size <ціле число>\""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1058
 msgid "      -X \"--dynamic-space-size <int>\""
 msgstr "      -X \"--dynamic-space-size <ціле число>\""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1062
-#, fuzzy
 msgid "      -X '--control-stack-size <int>'"
-msgstr "      -X '--dynamic-space-size <ціле число>'"
+msgstr "      -X '--control-stack-size <ціле число>'"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1061
 msgid "      -X '--dynamic-space-size <int>'"
@@ -167,9 +165,8 @@ msgid "%i cells in evaluation queue"
 msgstr "%i комірок у черзі обчислення"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1211
-#, fuzzy
 msgid "&Algebraic Mode"
-msgstr "&Алгебра"
+msgstr "&Алгебраїчний режим"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1066
 msgid "&Apply to List..."
@@ -887,6 +884,8 @@ msgid ""
 "contains the nth prime number, at least within the bounds of accuracy of "
 "primep():\n"
 msgstr ""
+"Для прикладу, ми побудуємо хеш-масив primes[n], де комірка із номером n"
+" міститиме n-е просте число, принаймні у межах точності primep():\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:316
 msgid ""
@@ -1316,6 +1315,11 @@ msgid ""
 "is a recursive function call) eventually exceeds the lisp's stack limit. "
 "Calculating primes[10000] in several steps is possible, instead:\n"
 msgstr ""
+"Обчислення primes[10000] у один хід потребує обчислення значення"
+" primes[9999], для обчислення якого слід обчислити primes[9998], що (оскільки"
+" це фактично рекурсивний виклик функції), зрештою, призведе до вичерпання"
+" обмеження на розмір стека Lisp. Втім, primes[10000] можна обчислити у"
+" декілька кроків:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10077
 msgid "Can not connect to the web server."
@@ -1667,19 +1671,16 @@ msgid "Contract Logarithms"
 msgstr "Об'єднати логарифми"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1060
-#, fuzzy
 msgid "Convert Column to list"
-msgstr "Перетворити у &факторіали"
+msgstr "Перетворити стовпчик у список"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1057
-#, fuzzy
 msgid "Convert Row to list"
-msgstr "Перетворити у &факторіали"
+msgstr "Перетворити рядок у список"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1026
-#, fuzzy
 msgid "Convert a list of lists to a matrix"
-msgstr "Перетворює вкладений список, наприклад [[1,2],[3,4]], у матрицю"
+msgstr "Перетворити список списків у матрицю"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1150
 msgid "Convert binomials, beta and gamma function to factorials"
@@ -2637,19 +2638,16 @@ msgid "Export As"
 msgstr "Експортувати як"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1256
-#, fuzzy
 msgid "Export List to csv file"
-msgstr "Експортувати увесь журнал до файла .mac"
+msgstr "Експортувати список до файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1257
-#, fuzzy
 msgid "Export a list to a csv file"
-msgstr "Експортувати увесь журнал до файла .mac"
+msgstr "Експортувати список до файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1030
-#, fuzzy
 msgid "Export a matrix to a csv file"
-msgstr "Завантажити файл пакунка Maxima"
+msgstr "Експортувати матрицю до файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:81
 msgid "Export all history to a .mac file"
@@ -2728,9 +2726,8 @@ msgid "Expression:"
 msgstr "Вираз:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1053
-#, fuzzy
 msgid "Extract Column"
-msgstr "Видобути елементи"
+msgstr "Видобути стовпчик"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1272
 msgid "Extract Elements"
@@ -2738,35 +2735,31 @@ msgstr "Видобути елементи"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1051
 msgid "Extract Row"
-msgstr ""
+msgstr "Видобути рядок"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1054
-#, fuzzy
 msgid "Extract a column from the matrix"
-msgstr "Видобути справжнє значення змінної"
+msgstr "Видобути стовпчик з матриці"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1061
-#, fuzzy
 msgid "Extract a column from the matrix and convert it to a list"
-msgstr "Видобути значення для однієї змінної на основі списку"
+msgstr "Видобути стовпчик з матриці і перетворити його у список"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6579
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6594
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6609
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6624
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
-#, fuzzy
 msgid "Extract a matrix row"
-msgstr "Введення матриці"
+msgstr "Видобути рядок з матриці"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1052
 msgid "Extract a row from the matrix"
-msgstr ""
+msgstr "Видобути рядок з матриці"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1058
-#, fuzzy
 msgid "Extract a row from the matrix and convert it to a list"
-msgstr "Видобути останні n елементів зі списку"
+msgstr "Видобути рядок з матриці і перетворити його у список"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7389
 msgid "Extract a variable's value from a list of variable values"
@@ -3352,13 +3345,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1109
 msgid "Hash maps have many uses. One is to implement memoizing:\n"
-msgstr ""
+msgstr "У хеш-відображень багато застосувань. Одним із них є мемоізація:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1088
 msgid ""
 "Hash maps work fine. The only thing that one can stumble about is that if we "
 "redefine \"gnu\" x[gnu] will read the redefined value:\n"
 msgstr ""
+"Хеш-відображення працюють як слід. Єдиною проблемою може бути те, що якщо ми"
+" перевизначимо «gnu», x[gnu] прочитає перевизначене значення:\n"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:1094
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2136
@@ -3801,6 +3796,8 @@ msgid ""
 "If we now calculate the 1000th prime maxima will store the info about the "
 "first 1000 primes in a hash map:\n"
 msgstr ""
+"Якщо тепер обчислити 1000-е просте число, maxima збереже дані щодо перших"
+" 1000 простих чисел у хеш-відображенні:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1425
 msgid ""
@@ -4307,7 +4304,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1053
 msgid "It still remembers what x contains, though.\n"
-msgstr ""
+msgstr "Втім, там усе ще зберігається вміст x.\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:166
 msgid "Italian"
@@ -4382,9 +4379,8 @@ msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr "LaTeX: використовувати символ частинної похідної для diff()"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1549
-#, fuzzy
 msgid "Label width"
-msgstr "Ширина мітки:"
+msgstr "Ширина мітки"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:581
 msgid "Label width:"
@@ -4462,7 +4458,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1774
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -4480,7 +4476,7 @@ msgstr "Припустімо, що крива є подібною до пара�
 msgid ""
 "Let's create a function that generates and remembers Fibonacci numbers for "
 "us:\n"
-msgstr ""
+msgstr "Створімо функцію, яка створює і запам'ятовує числа Фібоначчі:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:2239
 msgid ""
@@ -4636,14 +4632,12 @@ msgid "Load a Maxima package file"
 msgstr "Завантажити файл пакунка Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1233
-#, fuzzy
 msgid "Load a list from a csv file"
-msgstr "Завантажити файл пакунка Maxima"
+msgstr "Завантажити список з файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1028
-#, fuzzy
 msgid "Load a matrix from a csv file"
-msgstr "Завантажити файл пакунка Maxima"
+msgstr "Завантажити матрицю з файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1602
 msgid "Load style from file"
@@ -4659,9 +4653,8 @@ msgid "Lower bound:"
 msgstr "Нижня межа:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1072
-#, fuzzy
 msgid "M&atrix"
-msgstr "Матриця"
+msgstr "М&атриця"
 
 #: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:118
 msgid "MAXIMA RESPONSE:"
@@ -4749,9 +4742,8 @@ msgid "Match parenthesis in text controls"
 msgstr "Перевіряти баланс дужок у тексті"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:1115
-#, fuzzy
 msgid "Math Default"
-msgstr "Типовий"
+msgstr "Типовий математичний"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1179
 msgid "Math font:"
@@ -4827,9 +4819,8 @@ msgid "Matrix"
 msgstr "Матриця"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1027
-#, fuzzy
 msgid "Matrix from csv file"
-msgstr "Завантажити стиль з файла"
+msgstr "Матриця з файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6683
 msgid "Matrix map"
@@ -4844,9 +4835,8 @@ msgid "Matrix parenthesis"
 msgstr "Дужки матриці"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1029
-#, fuzzy
 msgid "Matrix to csv file"
-msgstr "Завантажити стиль з файла"
+msgstr "Матриця до файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1299
 msgid "Matrix to nested List"
@@ -4872,6 +4862,9 @@ msgid ""
 "calculate the output value that corresponds to an input value only once and "
 "then remember them for the future.\n"
 msgstr ""
+"Крім того, Maxima уможливлює визначення функцій мемоізації: функцій, які"
+" обчислюють значення-результат, яке відповідає вхідному значенню, лише раз, а"
+" потім запам'ятовують значення для наступного використання.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1308
 msgid ""
@@ -4984,6 +4977,9 @@ msgid ""
 "that trying to construct a list on-the-fly creates an altogether different "
 "kind of object:\n"
 msgstr ""
+"Maxima значним чином засновано на обробці списків, тому для новачків завжди є"
+" сюрпризом те, що спроба побудувати список у динамічному режимі створює"
+" зовсім інший тип об'єктів:\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4384
 msgid "Maxima is ready for input."
@@ -5311,16 +5307,15 @@ msgstr "Медіана…"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1387
 msgid "Memoizing"
-msgstr ""
+msgstr "Мемоізація"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1023
 msgid "Memoizing\n"
-msgstr ""
+msgstr "Мемоізація\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1208
-#, fuzzy
 msgid "Memoizing functions\n"
-msgstr "Розв'язування рівнянь\n"
+msgstr "Функції мемоізації\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1119
 msgid ""
@@ -5328,16 +5323,21 @@ msgid ""
 "hard to calculate and of which only relatively few items ever need to be "
 "calculated.\n"
 msgstr ""
+"Мемоізація забезпечує значне пришвидшення обчислень, якщо потрібно обчислити"
+" щось, що важко обчислити, при потребі у визначені відносно невеликої"
+" кількості значень.\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1183
 msgid ""
 "Memoizing should speed up accessing already-known values. Let's test if that "
 "is the case:\n"
 msgstr ""
+"Мемоізація може пришвидшити доступ до вже відомих значень. Перевіримо, чи так"
+" це:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1114
 msgid "Memoizing using hash maps\n"
-msgstr ""
+msgstr "Мемоізація за допомогою хеш-відображень\n"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1365
 msgid "Merge Cells"
@@ -5400,7 +5400,6 @@ msgid "Name:"
 msgstr "Назва:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1025
-#, fuzzy
 msgid "Nested List to Matrix"
 msgstr "Вкладений список у матрицю"
 
@@ -5663,6 +5662,8 @@ msgid ""
 "One hint to that is the label that tells we only declared x[1]. Another hint "
 "is that maxima tells us that x isn't a list:\n"
 msgstr ""
+"Однією із підказок є мітка, яка повідомляє нам про те, що ми оголосили лише"
+" x[1]. Іншою підказкою є те, що maxima повідомляє нам, що x не є списком:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:563
 msgid ""
@@ -6136,9 +6137,8 @@ msgid "Re-using the solutions\n"
 msgstr "Повторно використовуємо розв'язки\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1232
-#, fuzzy
 msgid "Read List from csv file"
-msgstr "Завантажити стиль з файла"
+msgstr "Прочитати список з файла CSV"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1802
 msgid "Read Matrix..."
@@ -6239,7 +6239,7 @@ msgstr "Вилучити всі результати"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1055
 msgid "Remove Rows or Columns"
-msgstr ""
+msgstr "Вилучити рядки або стовпчики"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:197
 msgid "Remove all"
@@ -6267,7 +6267,7 @@ msgstr "Вилучити всі виведені дані з комірок дл
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1056
 msgid "Remove rows and/or columns from the matrix"
-msgstr ""
+msgstr "Вилучити рядки і/або стовпчики з матриці"
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:104
 msgid "Replace All"
@@ -6413,7 +6413,7 @@ msgstr "Круглі"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6606
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6621
 msgid "Row number:"
-msgstr ""
+msgstr "Номер рядка:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6751
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6771
@@ -6426,7 +6426,6 @@ msgid "Rule:"
 msgstr "Правило:"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1303
-#, fuzzy
 msgid ""
 "Rump and Wilkinson have provided warning examples of simple polynomials "
 "where this adds up to catastrophic errors quickly and it is surprising how "
@@ -6439,7 +6438,11 @@ msgstr ""
 "Рампом і Вілкінсоном наведено приклади простих поліномів, обчислення яких "
 "призводить до катастрофічно швидкого накопичення похибки. Дивовижно, але на "
 "практиці такі проблеми виникають дуже часто, спричиняючи, зокрема частину "
-"помилок, які ви можете спостерігати у комп'ютерних іграх.\n"
+"помилок, які ви можете спостерігати у комп'ютерних іграх, у вигляді чорних"
+" рамок на панорамних фотографіях і у алгоритмах обчислення гучності, які не"
+" здатні обробляти довгі файли звукових даних. Як математична програма, яку"
+" було створено для роботи із точними числовими даними, maxima час від часу"
+" має стикатися із цією проблемою, якщо використано числа із рухомою крапкою.\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5801
 msgid "Running gnuplot as: "
@@ -6803,9 +6806,8 @@ msgid "Set plot format"
 msgstr "Встановити формат графіка"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1212
-#, fuzzy
 msgid "Set the \"algebraic\" flag"
-msgstr "Перемкнути прапорець algebraic"
+msgstr "Встановити «алгебраїчний» прапорець"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6957
 msgid "Set the diagram title"
@@ -6890,9 +6892,8 @@ msgid "Setup the engineering format..."
 msgstr "Налаштувати науковий формат…"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1474
-#, fuzzy
 msgid "Show \"%\" in special constants"
-msgstr "Додаткові сталі"
+msgstr "Показувати «%» у спеціальних сталих"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:934
 msgid "Show &Definition..."
@@ -7847,7 +7848,7 @@ msgstr "Стандартна команда креслення: накресли
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1099
 msgid "The tick (') operator can forbid maxima to do so:\n"
-msgstr ""
+msgstr "Оператор одинарних лапок (') може заборонити maxima робити це:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1769
 msgid ""
@@ -8537,14 +8538,14 @@ msgstr "Попередження"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1063
 msgid "We also can add a second element to x:\n"
-msgstr ""
+msgstr "Ви також можемо додати другий елемент до x:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1539
 msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1788
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
@@ -8821,14 +8822,12 @@ msgid "choose between installed maxima versions"
 msgstr "виберіть одну зі встановлених версій maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6636
-#, fuzzy
 msgid "comma-separated column numbers:"
-msgstr "Елементи, відокремлені комами"
+msgstr "відокремлені комами номери стовпчиків:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6636
-#, fuzzy
 msgid "comma-separated row numbers:"
-msgstr "Змінні, відокремлені комами"
+msgstr "відокремлені комами номери рядків:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1894
 msgid "delta"
@@ -9071,20 +9070,19 @@ msgstr "ρ"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1028
 msgid "s\n"
-msgstr ""
+msgstr "s\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1066
-#, fuzzy
 msgid "sbcl: use <int>Mbytes of heap"
-msgstr "повідомити sbcl, що для буфера слід використовувати <число> мегабайтів"
+msgstr "sbcl: використання <int>МБ купи"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1070
 msgid "sbcl: use <int>Mbytes of stack for function calls"
-msgstr ""
+msgstr "sbcl: використання <int>Мб стека для викликів функцій"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1073
 msgid "sh\n"
-msgstr ""
+msgstr "sh\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1908
 msgid "sigma"
@@ -9410,25 +9408,3 @@ msgstr "так"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1896
 msgid "zeta"
 msgstr "ζ"
-
-#~ msgid "Toggle &Algebraic Flag"
-#~ msgstr "Пере&мкнути прапорець algebraic"
-
-#~ msgid "Choose the Math Font"
-#~ msgstr "Виберіть математичний шрифт"
-
-#~ msgid "Connected."
-#~ msgstr "З'єднано."
-
-#~ msgid ""
-#~ "Parts of the document will not be loaded correctly:\n"
-#~ "Found unknown XML Tag name "
-#~ msgstr ""
-#~ "Частину документа не вдалося завантажити:\n"
-#~ "Виявлено невідомий теґ XML із назвою "
-
-#~ msgid "Save panes layout"
-#~ msgstr "Зберігати компонування панелей"
-
-#~ msgid "Save panes layout between sessions."
-#~ msgstr "Запам'ятовувати розташування панелей."
