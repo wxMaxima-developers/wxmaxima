@@ -37,6 +37,8 @@ FracCell::FracCell(GroupCell *parent, Configuration **config, std::unique_ptr<Ce
     m_numParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(num))),
     m_denomParenthesis(std::make_unique<ParenCell>(m_group, m_configuration, std::move(denom)))
 {
+//  wxASSERT(num);
+//  wxASSERT(denom);
   InitBitFields();
   SetStyle(TS_VARIABLE);
   SetupBreakUps();
@@ -47,8 +49,9 @@ FracCell::FracCell(const FracCell &cell) :
 {
   CopyCommonData(cell);
   m_fracStyle = cell.m_fracStyle;
-  m_inExponent = cell.m_inExponent;
   SetupBreakUps();
+  if(cell.m_inExponent)
+    SetExponentFlag();
 }
 
 DEFINE_CELL(FracCell)
