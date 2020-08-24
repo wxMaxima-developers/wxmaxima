@@ -44,7 +44,6 @@ static wxString const ipcPrefix = "<ipc>";
 static wxString const ipcSuffix = "</ipc>";
 static wxString const tag_ipc = "ipc";
 static wxString const tag_event = "event";
-static wxString const tag_qevent = "qevent";
 static wxString const attr_target = "tgt";    // target object for the event
 static wxString const attr_type = "type";     // wxEvent::EventType
 static wxString const attr_id = "id";         // wxEvent::Id
@@ -109,11 +108,10 @@ void MaximaIPC::ReadInputData(wxString &data)
   {
     if (node->GetType() != wxXML_ELEMENT_NODE)
       continue;
-    if (node->GetName() == tag_event || node->GetName() == tag_qevent)
+    if (node->GetName() == tag_event)
     {
       wxEvtHandler *target = m_wxMaxima;
       std::unique_ptr<wxEvent> baseEvent = {};
-      bool const queue = (node->GetName() == tag_qevent);
       wxEventType type = wxEVT_NULL;
       int id = {};
       long lval;
@@ -158,14 +156,27 @@ void MaximaIPC::ReadInputData(wxString &data)
         }
         baseEvent = std::move(event);
       }
+
       if (baseEvent)
-      {
-        if (queue)
-          wxQueueEvent(target, baseEvent.release());
-        else
-          target->ProcessEvent(*baseEvent);
-          //wxPostEvent(m_wxMaxima, *event);
-      }
+        m_queue.emplace_back(target, std::move(baseEvent));
     }
   }
+}
+
+bool MaximaIPC::DrainQueue()
+{
+  bool drained = false;
+  if (m_queueTail < m_queue.size())
+  {
+    auto &entry = m_queue[m_queueTail++];
+    entry.target->ProcessEvent(*entry.event);
+    entry.event.reset();
+    drained = true;
+  }
+  if (m_queueTail >= m_queue.size())
+  {
+    m_queueTail = 0;
+    m_queue.clear();
+  }
+  return drained;
 }
