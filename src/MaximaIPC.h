@@ -24,9 +24,12 @@
 
 #include <wx/hashmap.h>
 #include <wx/string.h>
+#include <memory>
 #include <unordered_map>
+#include <vector>
 
 class wxMaxima;
+class wxEvent;
 class wxEvtHandler;
 
 /*! Handles the <ipc> tag from Maxima
@@ -46,9 +49,31 @@ public:
   void ReadInputData(wxString &data);
   static void EnableIPC() { m_enabled = true; }
 
+  /*! Drains the event queue and dispatches a queued IPC event to its target.
+   *
+   * Only one event is drained at a time. This method should be invoked from
+   * the idle loop, on the condition that the idle loop was about to sleep, i.e.
+   * there was no more work for it to do.
+   *
+   * \returns true if there was an event in the queue. This value is meant to
+   * re-schedule another idle event, so that the consequences of the event
+   * could be handled by the idle handler, and so that any potential other
+   * events could be subsequently drained.
+   */
+  bool DrainQueue();
+
 private:
   wxMaxima *m_wxMaxima = nullptr;
   std::unordered_map<wxString, wxEvtHandler*, wxStringHash> m_eventTargets;
+
+  struct QueuedEvent {
+    wxEvtHandler *target;
+    std::unique_ptr<wxEvent> event;
+    QueuedEvent(wxEvtHandler *target, std::unique_ptr<wxEvent> &&event)
+        : target(target), event(std::move(event)) {}
+  };
+  size_t m_queueTail = 0;
+  std::vector<QueuedEvent> m_queue;
 
   static bool m_enabled;
 };

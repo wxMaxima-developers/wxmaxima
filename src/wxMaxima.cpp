@@ -4544,6 +4544,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   UpdateSlider();
   
+  if (m_ipc.DrainQueue())
+  {
+    event.RequestMore();
+    return;
+  }
+
   // If we reach this point wxMaxima truly is idle
   // => Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
