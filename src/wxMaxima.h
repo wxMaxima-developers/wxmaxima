@@ -108,18 +108,6 @@ public:
             COMPILEHELPANCHORS_ID
   };
 
-  /*! A timer that determines when to do the next autosave;
-
-    The actual autosave is triggered if both this timer is expired and the keyboard
-    has been inactive for >10s so the autosave won't cause the application to shortly
-    stop responding due to saving the file while the user is typing a word.
-
-    This timer is used in one-shot mode so in the unlikely case that saving needs more
-    time than this timer to expire the user still got a chance to do something against
-    it between two expirys. 
-   */
-  wxTimer m_autoSaveTimer;
-
   //! A timer that ells us that we now can do the low-prio compilation of help anchors
   wxTimer m_compileHelpAnchorsTimer;
   
@@ -784,6 +772,24 @@ private:
 
 #endif
   friend class MaximaIPC;
+
+  /*! A timer that determines when to do the next autosave;
+
+    The actual autosave is triggered if both this timer is expired and the keyboard
+    has been inactive for >10s so the autosave won't cause the application to shortly
+    stop responding due to saving the file while the user is typing a word.
+
+    This timer is used in one-shot mode so in the unlikely case that saving needs more
+    time than this timer to expire the user still got a chance to do something against
+    it between two expirys. 
+   */
+  wxTimer m_autoSaveTimer;
+
+  //! Starts a single-shot of m_autoSaveTimer.
+  void StartAutoSaveTimer();
+
+
+
 };
 
 #if wxUSE_DRAG_AND_DROP
@@ -847,6 +853,8 @@ private:
   bool m_allWindowsInOneProcess = false;
   #endif
 };
+
+
 
 // cppcheck-suppress unknownMacro
 DECLARE_APP(MyApp)
