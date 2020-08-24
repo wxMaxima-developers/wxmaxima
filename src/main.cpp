@@ -139,6 +139,15 @@ bool MyApp::OnInit()
     }
     #endif
     #endif
+
+    // Create the temporary directory if it doesn't exist
+    // On some platforms, the temporary directory has an application-specific
+    // path element prepended doesn't exist by default in the temporary directory.
+    // We must create it, otherwise all uses  of the temporary directory will fail.
+    // This happens e.g. on Windows 10.
+    auto const tempDir = wxStandardPaths::Get().GetTempDir();
+    if (!wxDirExists(tempDir))
+        wxMkDir(tempDir, 0x700);
     
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir());
     m_locale.AddCatalogLookupPathPrefix(m_dirstruct.LocaleDir() + wxT("/wxwin"));

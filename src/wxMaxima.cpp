@@ -1149,6 +1149,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(Worksheet::popid_suggestion1,Worksheet::popid_suggestion10, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
   m_worksheet->SetFocus();
+  StartAutoSaveTimer();
+}
+
+void wxMaxima::StartAutoSaveTimer()
+{
   m_autoSaveTimer.StartOnce(180000);
 }
 
@@ -4964,7 +4969,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command)
 
   UpdateRecentDocuments();
   RemoveTempAutosavefile();
-  m_autoSaveTimer.StartOnce(180000);
+  StartAutoSaveTimer();
 
   m_worksheet->TreeUndo_ClearBuffers();
   if (m_worksheet->m_currentFile != wxEmptyString)
@@ -5048,7 +5053,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     }
     else
     {
-      m_autoSaveTimer.StartOnce(180000);
+      StartAutoSaveTimer();
       return false;
     }
   }
@@ -5082,7 +5087,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (!m_worksheet->ExportToMAC(file))
       {
         StatusSaveFailed();
-        m_autoSaveTimer.StartOnce(180000);
+        StartAutoSaveTimer();
         return false;
       }
       else
@@ -5097,7 +5102,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (!m_worksheet->ExportToWXMX(file))
       {
         StatusSaveFailed();
-        m_autoSaveTimer.StartOnce(180000);
+        StartAutoSaveTimer();
         return false;
       }
       else
@@ -5115,7 +5120,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     UpdateRecentDocuments();
   }
 
-  m_autoSaveTimer.StartOnce(180000);
+  StartAutoSaveTimer();
 
   return true;
 }
@@ -5385,7 +5390,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
       if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
       {
         AutoSave();
-        m_autoSaveTimer.StartOnce(180000);
+        StartAutoSaveTimer();
       }
       break;
   }
@@ -5619,7 +5624,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             else
               StatusExportFinished();
           }
-          m_autoSaveTimer.StartOnce(180000);
+          StartAutoSaveTimer();
 
           wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
         }
