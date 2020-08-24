@@ -16,14 +16,13 @@ wxMaxima must be called with --enableipc for IPC to work!
 
 
 /* [wxMaxima: comment start ]
-The lisp code generates ipc event markup for SELECTALL, SELECTALL, COPY, PASTE.
-The events are delivered *immediately* - without queuing.
-It used to crashe wxMaxima due to a logic bug in the Worksheet::PasteFromClipboard.
+The lisp code generates ipc event markup for SELECTALL, COPY, PASTE.
+It used to crash wxMaxima due to a logic bug in the Worksheet::PasteFromClipboard.
    [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-:lisp (format t "<ipc><event type=\"MENU\" id=\"SELECTALL\" /><event type=\"MENU\" id=\"SELECTALL\" /><event type=\"MENU\" id=\"COPY\" /><event type=\"MENU\" id=\"PASTE\" /></ipc>")
+:lisp (format t "<ipc><event type=\"MENU\" id=\"SELECTALL\" /><event type=\"MENU\" id=\"COPY\" /><event type=\"MENU\" id=\"PASTE\" /></ipc>")
 /* [wxMaxima: input   end   ] */
 
 
@@ -34,8 +33,7 @@ wxMaxima must be called with --enableipc for IPC to work!
 
 /* [wxMaxima: comment start ]
 The lisp code generates ipc event markup for SELECTALL, SELECTALL, COPY, PASTE.
-The events are delivered *immediately* - without queuing.
-It used to crashe wxMaxima due to a logic bug in the Worksheet::PasteFromClipboard.
+It used to crash wxMaxima due to a logic bug in the Worksheet::PasteFromClipboard.
    [wxMaxima: comment end   ] */
 
 
