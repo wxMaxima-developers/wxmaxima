@@ -58,6 +58,10 @@ branches:
 
 install:
   - ps: |
+      echo '- Starting the build'
+      echo "    Job:    $env:APPVEYOR_JOB_NAME"
+      echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
+      echo ''
       echo '- Installing pandoc...'
       choco install -y --no-progress pandoc
 
@@ -114,8 +118,9 @@ before_build:
       $INSTALL_DIR = $env:INSTALL_DIR -replace '\\', '/'
       $INSTALL_LIB_DIR = $env:INSTALL_LIB_DIR -replace '\\', '/'
 
-      echo APPVEYOR_JOB_NAME: $env:APPVEYOR_JOB_NAME
       echo '- Configuring wxMaxima'
+      echo "    Job:    $env:APPVEYOR_JOB_NAME"
+      echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
       mkdir build | Out-Null
       pushd build
       # WX_ROOT_DIR is a workaround for a nasty bug in FindwxWidgets. Without it, the value
@@ -133,8 +138,8 @@ before_build:
 build_script:
   - ps: |
       echo '- Building wxMaxima'
-      echo '    Job:   ' $env:APPVEYOR_JOB_NAME
-      echo '    Branch:' $env:APPVEYOR_REPO_BRANCH
+      echo "    Job:    $env:APPVEYOR_JOB_NAME"
+      echo "    Branch: $env:APPVEYOR_REPO_BRANCH"
       iex $env:TOOLKIT_INIT
       pushd build
       cmake --build . --config Release
