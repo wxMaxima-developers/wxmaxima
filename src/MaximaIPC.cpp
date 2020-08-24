@@ -165,6 +165,8 @@ void MaximaIPC::ReadInputData(wxString &data)
 
 bool MaximaIPC::DrainQueue()
 {
+  if (!m_enabled)
+    return false;
   bool drained = false;
   if (m_queueTail < m_queue.size())
   {
