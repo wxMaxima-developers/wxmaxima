@@ -613,6 +613,12 @@ add_test(
     COMMAND wxmaxima --enableipc --batch ipc_copypaste1.wxm)
 set_tests_properties(ipc_copypaste1 PROPERTIES TIMEOUT 60)
 
+add_test(
+    NAME ipc_copypaste_all-celltypes
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --enableipc --batch ipc_copypaste_all-celltypes.wxm)
+set_tests_properties(ipc_copypaste_all-celltypes PROPERTIES TIMEOUT 60)
+
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 add_test(
     NAME check_desktop_file
