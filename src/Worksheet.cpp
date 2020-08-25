@@ -7044,7 +7044,7 @@ void Worksheet::PasteFromClipboard()
       {
         wxmDataObject data;
         wxTheClipboard->GetData(data);
-        inputs = data.GetData();
+        inputs = wxString::FromUTF8((char *) data.GetData(), data.GetDataSize());
       }
       else
       {
@@ -8168,7 +8168,6 @@ Worksheet::wxmDataObject::wxmDataObject() : wxCustomDataObject(m_wxmFormat)
 
 Worksheet::wxmDataObject::wxmDataObject(wxString data) : wxCustomDataObject(m_wxmFormat)
 {
-  data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
