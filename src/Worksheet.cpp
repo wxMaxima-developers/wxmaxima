@@ -7034,17 +7034,24 @@ void Worksheet::PasteFromClipboard()
   if ((wxTheClipboard->IsSupported(wxDF_TEXT)) || (wxTheClipboard->IsSupported(m_wxmFormat)))
   {
     wxString inputs;
-    if (wxTheClipboard->IsSupported(m_wxmFormat))
+
     {
-      wxmDataObject data;
-      wxTheClipboard->GetData(data);
-      inputs = wxString::FromUTF8((char *) data.GetData()) + wxT("\0");
-    }
-    else
-    {
-      wxTextDataObject data;
-      wxTheClipboard->GetData(data);
-      inputs = data.GetText();
+      // Opening assert dialogues in this context might cause gtk to end up in
+      // a endless wait before the dialogue's buttons can be displayed.
+      SuppressErrorDialogs suppressor;
+
+      if (wxTheClipboard->IsSupported(m_wxmFormat))
+      {
+        wxmDataObject data;
+        wxTheClipboard->GetData(data);
+        inputs = data.GetData();
+      }
+      else
+      {
+        wxTextDataObject data;
+        wxTheClipboard->GetData(data);
+        inputs = data.GetText();
+      }
     }
 
     if (inputs.StartsWith(wxT("/* [wxMaxima: ")))
