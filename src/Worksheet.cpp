@@ -7045,6 +7045,10 @@ void Worksheet::PasteFromClipboard()
         wxmDataObject data;
         wxTheClipboard->GetData(data);
         inputs = wxString::FromUTF8((char *) data.GetData(), data.GetDataSize());
+        if(!inputs.StartsWith(wxT("/* [wxMaxima: ")))
+          wxLogMessage(_(".wxm clipboard data with unusual header"));
+        else
+          wxLogMessage(_("Read .wxm data from clipboard"));          
       }
       else
       {
