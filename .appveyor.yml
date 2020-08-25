@@ -160,8 +160,8 @@ after_test:
       cpack -G NSIS
       if (! $?) { throw "CPack failed with exit code $LastExitCode" }
       popd
-      echo '* Compressing the executable'
-      7z a wxMaxima.exe.7z build/src/*.exe
+#      echo '* Compressing the executable'
+#      7z a wxMaxima.exe.7z build/src/*.exe
 
 
 for:
