@@ -785,7 +785,9 @@ public:
   bool IsBrokenIntoLines() const { return m_isBrokenIntoLines; }
   bool GetSuppressMultiplicationDot() const { return m_suppressMultiplicationDot; }
   void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
+  bool GetHidableMultSign() const { return m_isHidableMultSign; }
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
+
   /*! What should end up if placing this cell on the clipboard?
 
     AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both 
@@ -950,7 +952,6 @@ private:
    */
   bool m_isHidden : 1 /* InitBitFields */;
 
-protected:
   //! True means: This is a hidable multiplication sign
   bool m_isHidableMultSign : 1 /* InitBitFields */;
 
@@ -964,6 +965,7 @@ protected:
    */
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
 
+protected:
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
   mutable bool m_recalculate_maxCenter : 1 /* InitBitFields */;

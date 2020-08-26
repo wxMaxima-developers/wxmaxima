@@ -400,7 +400,7 @@ void TextCell::Recalculate(AFontSize fontsize)
     m_height += 2 * MC_TEXT_PADDING;
     
     /// Hidden cells (multiplication * is not displayed)
-    if (IsHidden() || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
+    if (IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign()))
     {
       m_height = 0;
       m_width = Scale_Px(fontsize) / 4;
@@ -415,7 +415,7 @@ void TextCell::Draw(wxPoint point)
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
   if (DrawThisCell(point) &&
-      !(IsHidden() || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign)))
+      !(IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign())))
   {
     wxDC *dc = configuration->GetDC();
     
@@ -787,7 +787,7 @@ wxString TextCell::ToTeX() const
   text.Replace(wxT("\u2794"), mathModeStart + wxT("\\longrightarrow") + mathModeEnd);
 
   // IsHidden() is set for parenthesis that don't need to be shown
-  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
+  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && GetHidableMultSign()))
   {
     // Normally in TeX the spacing between variable names following each other directly
     // is chosen to show that this is a multiplication.
@@ -824,7 +824,7 @@ wxString TextCell::ToTeX() const
       parenthesis does contain a product.
     */
 
-    if (m_suppressMultiplicationDot)
+    if (GetSuppressMultiplicationDot())
     {
       text.Replace(wxT("*"), wxT("\\, "));
       text.Replace(wxT("\u00B7"), wxT("\\, "));
@@ -1047,7 +1047,7 @@ wxString TextCell::ToMathML() const
   wxString text = XMLescape(ToString());
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
-  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
+  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && GetHidableMultSign()))
   {
     text.Replace(wxT("*"), wxT("&#8290;"));
     text.Replace(wxT("\u00B7"), wxT("&#8290;"));
@@ -1133,7 +1133,7 @@ wxString TextCell::ToOMML() const
   wxString text = XMLescape(m_displayedText);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
-  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
+  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && GetHidableMultSign()))
   {
     text.Replace(wxT("*"), wxT("&#8290;"));
     text.Replace(wxT("\u00B7"), wxT("&#8290;"));
@@ -1238,7 +1238,7 @@ wxString TextCell::GetXMLFlags() const
 wxString TextCell::ToXML() const
 {
   wxString tag;
-  if (IsHidden() || (m_isHidableMultSign))
+  if (IsHidden() || GetHidableMultSign())
     tag = _T("h");
   else
     switch (GetStyle())
