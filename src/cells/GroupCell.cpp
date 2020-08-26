@@ -1470,31 +1470,6 @@ wxString GroupCell::ToXML() const
   return str;
 }
 
-void GroupCell::SelectRectGroup(const wxRect &rect, const wxPoint one, const wxPoint two,
-                                CellPtr<Cell> *first, CellPtr<Cell> *last)
-{
-  Configuration *configuration = (*m_configuration);
-
-  *first = *last = nullptr;
-
-  if ((m_inputLabel) &&
-      (
-              (configuration->ShowCodeCells()) ||
-              (m_groupType != GC_TYPE_CODE)
-      ) &&
-      (m_inputLabel->ContainsRect(rect))
-          )
-    m_inputLabel->SelectRect(rect, first, last);
-  else if (m_output != NULL && !m_isHidden && m_outputRect.Contains(rect))
-    SelectRectInOutput(rect, one, two, first, last);
-
-  if (!*first || !*last)
-  {
-    *first = this;
-    *last = this;
-  }
-}
-
 void GroupCell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
 {
   *first = *last = nullptr;
@@ -1509,16 +1484,6 @@ void GroupCell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Ce
     *first = this;
     *last = this;
   }
-}
-
-void GroupCell::SelectPoint(const wxPoint point, CellPtr<Cell> *first, CellPtr<Cell> *last)
-{
-  *first = *last = nullptr;
-
-  wxRect rect(point.x, point.y, 1, 1);
-
-  if (m_inputLabel->ContainsRect(rect))
-    m_inputLabel->SelectInner(rect, first, last);
 }
 
 void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint one, const wxPoint two,
