@@ -54,10 +54,6 @@ public:
   wxString GnuplotSource() const override
   { return m_image ? m_image->GnuplotSource() : wxString(); }
 
-  //! The name of the file with gnuplot data needed for creating this file
-  wxString GnuplotData() const override
-  { return m_image ? m_image->GnuplotData() : wxString{}; }
-
   void LoadImage(wxString image, bool remove = true);
 
   //! Can this image be exported in SVG format?

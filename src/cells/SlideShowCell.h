@@ -160,13 +160,6 @@ public:
     else
       return m_images[m_displayed]->GnuplotSource();
   }
-  wxString GnuplotData() const override
-  {
-    if (!m_images[m_displayed])
-      return wxEmptyString;
-    else
-      return m_images[m_displayed]->GnuplotData();
-  }
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
