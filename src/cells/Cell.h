@@ -916,7 +916,6 @@ protected:
     m_recalculate_maxDrop = true;
     m_recalculate_maxWidth = true;
     m_recalculate_lineWidth = true;
-    m_suppressTooltipMarker = false;
     m_containsToolTip = false;
     m_breakPage = false;
     m_breakLine = false;
@@ -970,8 +969,6 @@ protected:
   mutable bool m_recalculate_maxDrop : 1 /* InitBitFields */;
   mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
   mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
-  //! GroupCells only: Suppress the yellow ToolTips marker
-  bool m_suppressTooltipMarker : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;
   //! Does this cell begin with a forced page break?
   bool m_breakPage : 1 /* InitBitFields */;
