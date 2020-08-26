@@ -154,7 +154,7 @@ void Cell::CopyCommonData(const Cell & cell)
   m_forceBreakLine = cell.m_forceBreakLine;
   m_type = cell.m_type;
   m_textStyle = cell.m_textStyle;
-  m_isHidden = cell.m_isHidden;
+  Hide(cell.m_isHidden);
   m_isHidableMultSign = cell.m_isHidableMultSign;
 }
 

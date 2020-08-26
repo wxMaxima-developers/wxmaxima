@@ -666,8 +666,7 @@ public:
   }
 
   //! Return the hide status
-  bool IsHidden() const
-    { return m_isHidden; }
+  bool IsHidden() const { return m_isHidden; }
 
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
 
@@ -941,6 +940,7 @@ protected:
   bool m_isBrokenIntoLines : 1 /* InitBitFields */;
   bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
 
+private:
   /*! True means: This cell is not to be drawn.
 
      Currently the following items fall into this category:
@@ -950,6 +950,7 @@ protected:
    */
   bool m_isHidden : 1 /* InitBitFields */;
 
+protected:
   //! True means: This is a hidable multiplication sign
   bool m_isHidableMultSign : 1 /* InitBitFields */;
 
@@ -980,7 +981,7 @@ protected:
 
 
   //! Iterator to the beginning of the inner cell range. The end iterator is default-constructed.
- virtual InnerCellIterator InnerBegin() const;
+  virtual InnerCellIterator InnerBegin() const;
 
   inline Worksheet *GetWorksheet() const;
 
@@ -991,7 +992,6 @@ protected:
     ResetData();
   }
 
-protected:
   const wxString &GetLocalToolTip() const;
   bool IsZoomFactorChanged() const;
 
