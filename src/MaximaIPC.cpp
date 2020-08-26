@@ -152,7 +152,7 @@ void MaximaIPC::ReadInputData(wxString &data)
           if (val.ToLong(&lval))
             event->m_keyCode = lval;
           else
-            LookupName(type, val, KEY_NAMES);
+            LookupName(event->m_keyCode, val, KEY_NAMES);
         }
         baseEvent = std::move(event);
       }
