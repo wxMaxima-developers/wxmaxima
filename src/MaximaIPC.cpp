@@ -152,7 +152,7 @@ void MaximaIPC::ReadInputData(wxString &data)
           if (val.ToLong(&lval))
             event->m_keyCode = lval;
           else
-            LookupName(type, val, KEY_NAMES);
+            LookupName(event->m_keyCode, val, KEY_NAMES);
         }
         baseEvent = std::move(event);
       }
@@ -165,7 +165,7 @@ void MaximaIPC::ReadInputData(wxString &data)
 
 bool MaximaIPC::DrainQueue()
 {
-  if (!m_enabled)
+  if (!m_enabled || m_queue.empty())
     return false;
   bool drained = false;
   if (m_queueTail < m_queue.size())
