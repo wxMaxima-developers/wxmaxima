@@ -439,6 +439,9 @@ public:
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
 
+  bool NeedsToRecalculateWidths() const { return m_recalculateWidths; }
+  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
+
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
@@ -463,8 +466,8 @@ public:
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
-  void SetSkip(bool skip)
-  { m_bigSkip = skip; }
+  void SetBigSkip(bool skip) { m_bigSkip = skip; }
+  bool HasBigSkip() const { return m_bigSkip; }
 
   //! Sets the text style according to the type
   virtual void SetType(CellType type);
@@ -477,12 +480,9 @@ public:
   void SetPen(double lineWidth = 1.0) const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
-  void SetHighlight(bool highlight)
-  { m_highlight = highlight; }
-
+  void SetHighlight(bool highlight) { m_highlight = highlight; }
   //! Is this cell highlighted (e.G. inside a maxima box)
-  bool GetHighlight() const
-  { return m_highlight; }
+  bool GetHighlight() const { return m_highlight; }
 
   virtual void SetExponentFlag()
   {}
@@ -750,8 +750,6 @@ public:
   //! Is this cell possibly output of maxima?
   bool IsMath() const;
 
-  bool HasBigSkip() const { return m_bigSkip; }
-
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
   virtual int GetImageBorderWidth() const { return 0; }
 
@@ -900,6 +898,7 @@ protected:
   CellType m_type = MC_TYPE_DEFAULT;
   TextStyle m_textStyle = TS_DEFAULT;
 
+private:
 //** Bitfield objects (3 bytes)
 //**
   void InitBitFields()
@@ -933,7 +932,6 @@ protected:
   bool m_ownsToolTip : 1 /* InitBitFields */;
   bool m_bigSkip : 1 /* InitBitFields */;
 
-private:
   /*! true means:  This cell is broken into two or more lines.
 
      Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
@@ -965,7 +963,6 @@ private:
    */
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
 
-protected:
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
   mutable bool m_recalculate_maxCenter : 1 /* InitBitFields */;
@@ -975,15 +972,13 @@ protected:
   bool m_containsToolTip : 1 /* InitBitFields */;
   //! Does this cell begin with a forced page break?
   bool m_breakPage : 1 /* InitBitFields */;
-private:
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
   //! true means we force this cell to begin with a line break.
   bool m_forceBreakLine : 1 /* InitBitFields */;
-protected:
   bool m_highlight : 1 /* InitBitFields */;
 
-
+protected:
   //! Iterator to the beginning of the inner cell range. The end iterator is default-constructed.
   virtual InnerCellIterator InnerBegin() const;
 

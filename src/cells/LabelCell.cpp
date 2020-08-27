@@ -181,7 +181,7 @@ void LabelCell::Recalculate(AFontSize fontsize)
     if(GetPrevious())
     {
       ForceBreakLine(true);
-      SetSkip(true);
+      SetBigSkip(true);
     }
     Configuration *configuration = (*m_configuration);
     if(configuration->GetLabelChoice() != m_labelChoice_Last)

@@ -81,8 +81,8 @@ TextCell::TextCell(const TextCell &cell):
 {
   InitBitFields();
   CopyCommonData(cell);
-  m_bigSkip = cell.m_bigSkip;
-  m_highlight = cell.m_highlight;
+  SetBigSkip(cell.HasBigSkip());
+  SetHighlight(cell.GetHighlight());
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 

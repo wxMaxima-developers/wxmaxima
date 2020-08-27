@@ -1371,7 +1371,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, AppendOpt opts, const 
   if (!cell)
     return;
 
-  cell->SetSkip(opts & AppendOpt::BigSkip);
+  cell->SetBigSkip(opts & AppendOpt::BigSkip);
   auto *textCell = dynamic_cast<TextCell*>(cell.get());
   if (textCell)
     textCell->SetPromptTooltip(opts & AppendOpt::PromptToolTip);
@@ -1466,7 +1466,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
         cell = owned.get();
 
         if (tokens.HasMoreTokens())
-          cell->SetSkip(false);
+          cell->SetBigSkip(false);
 
         auto breakLine = bool(tree);
         tree.Append(std::move(owned));

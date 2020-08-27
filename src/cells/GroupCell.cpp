@@ -462,7 +462,8 @@ void GroupCell::Recalculate()
   {
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
     Configuration *configuration = (*m_configuration);
-    m_recalculateWidths = false;
+    ClearNeedsToRecalculateWidths();
+
     // Recalculating pagebreaks is simple
     if (m_groupType == GC_TYPE_PAGEBREAK)
     {
@@ -506,7 +507,7 @@ void GroupCell::InputHeightChanged()
     m_outputRect.y = m_currentPoint.y + m_center;
     m_width = wxMax(m_width, m_output->GetLineWidth());
   }
-  m_recalculateWidths = false;
+  ClearNeedsToRecalculateWidths();
   UpdateYPositionList();
 }
 
@@ -581,13 +582,13 @@ void GroupCell::RecalculateHeightOutput()
   
   Configuration *configuration = (*m_configuration);
     
-  if(m_recalculateWidths)
+  if (NeedsToRecalculateWidths())
   {
     m_fontSize = configuration->GetDefaultFontSize();
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
     
     //RecalculateHeightInput();
-    m_recalculateWidths = false;
+    ClearNeedsToRecalculateWidths();
   }
   // FIXME - this code did nothing, but the intent was maybe to break the line?
   // m_output->HardLineBreak();
