@@ -1402,23 +1402,21 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
   }
   else
   {
-    TextCell *incompleteTextCell;
-    bool appendToWorksheet = false;
+    std::unique_ptr<LabelCell> ownedCell;
+    TextCell *incompleteTextCell = {};
 
     if (type == MC_TYPE_PROMPT)
     {
-      appendToWorksheet = true;
-      incompleteTextCell = new LabelCell(
-        m_worksheet->GetTree(),
-        &(m_worksheet->m_configuration),
-        wxEmptyString,
-        TS_OTHER_PROMPT);
+      ownedCell = std::make_unique<LabelCell>(m_worksheet->GetTree(),
+                                              &(m_worksheet->m_configuration),
+                                              wxEmptyString, TS_OTHER_PROMPT);
+      incompleteTextCell = ownedCell.get();
       incompleteTextCell->ForceBreakLine(true);
     }
     else
       incompleteTextCell = m_worksheet->GetCurrentTextCell();
 
-    if(incompleteTextCell != NULL)
+    if (incompleteTextCell)
     {
       int pos = s.Find("\n");
       wxString newVal = incompleteTextCell->GetValue();
@@ -1434,8 +1432,8 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type, AppendOpt opts
       }
 
       incompleteTextCell->SetValue(newVal);
-      if(appendToWorksheet)
-        m_worksheet->InsertLine(std::unique_ptr<TextCell>(incompleteTextCell));
+      if (ownedCell)
+        m_worksheet->InsertLine(std::move(ownedCell));
       if(s.IsEmpty())
       {
         incompleteTextCell->GetGroup()->ResetSize();
@@ -10153,7 +10151,6 @@ int wxMaxima::SaveDocumentP()
   if (m_worksheet->m_currentFile.IsEmpty())
   {
     // Check if we want to save modified untitled documents on exit
-    bool save = true;
     if (!m_worksheet->m_configuration->SaveUntitled())
       return wxID_NO;
 

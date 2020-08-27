@@ -154,7 +154,7 @@ public:
 
   // methods for manipulating GroupCell
   // cppcheck-suppress functionConst
-  bool SetEditableContent(wxString text);
+  bool SetEditableContent(const wxString &text);
 
   EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
 

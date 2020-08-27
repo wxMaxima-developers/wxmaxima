@@ -1588,7 +1588,7 @@ const wxString &GroupCell::GetToolTip(const wxPoint point) const
 }
 
 // cppcheck-suppress functionConst
-bool GroupCell::SetEditableContent(wxString text)
+bool GroupCell::SetEditableContent(const wxString &text)
 {
   if (GetEditable())
   {
