@@ -233,18 +233,13 @@ public:
   { m_breakPage = breakPage; }
 
   //! Are we allowed to break a line here?
-  bool BreakLineHere() const
-    {
-      return m_breakLine || m_forceBreakLine;
-    }
+  bool BreakLineHere() const { return m_breakLine || m_forceBreakLine; }
 
   //! Does this cell begin with a manual linebreak?
-  bool HardLineBreak() const
-  { return m_forceBreakLine; }
+  bool HasHardLineBreak() const { return m_forceBreakLine; }
 
-  //! Does this cell begin with a manual page break?
-  bool BreakPageHere() const
-  { return m_breakPage; }
+  //! Does this cell begin with a forced (manually set) page break?
+  bool BreakPageHere() const { return m_breakPage; }
 
   /*! Try to split this command into lines to make it fit on the screen
 
@@ -252,6 +247,11 @@ public:
   */
   virtual bool BreakUp();
 
+protected:
+  //! Break up the internal cells of this cell, and mark it as broken up.
+  void BreakUpAndMark();
+
+public:
   /*! Is a part of this cell inside a certain rectangle?
 
     \param sm The rectangle to test for collision with this cell
@@ -319,8 +319,7 @@ public:
      - true: Insert a forced linebreak
      - false: Remove the forced linebreak
    */
-  void ForceBreakLine(bool force = true)
-  { m_forceBreakLine = m_breakLine = force; }
+  void ForceBreakLine(bool force = true) { m_forceBreakLine = m_breakLine = force; }
 
   /*! Get the height of this cell
 
@@ -439,6 +438,9 @@ public:
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
 
+  bool NeedsToRecalculateWidths() const { return m_recalculateWidths; }
+  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
+
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
@@ -463,8 +465,8 @@ public:
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
-  void SetSkip(bool skip)
-  { m_bigSkip = skip; }
+  void SetBigSkip(bool skip) { m_bigSkip = skip; }
+  bool HasBigSkip() const { return m_bigSkip; }
 
   //! Sets the text style according to the type
   virtual void SetType(CellType type);
@@ -477,12 +479,9 @@ public:
   void SetPen(double lineWidth = 1.0) const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
-  void SetHighlight(bool highlight)
-  { m_highlight = highlight; }
-
+  void SetHighlight(bool highlight) { m_highlight = highlight; }
   //! Is this cell highlighted (e.G. inside a maxima box)
-  bool GetHighlight() const
-  { return m_highlight; }
+  bool GetHighlight() const { return m_highlight; }
 
   virtual void SetExponentFlag()
   {}
@@ -665,9 +664,14 @@ public:
            m_type == MC_TYPE_HEADING5 || m_type == MC_TYPE_HEADING6 || m_type == MC_TYPE_TITLE;
   }
 
-  //! Return the hide status
-  bool IsHidden() const
-    { return m_isHidden; }
+  /*! Whether this cell is not to be drawn.
+   *
+   * Currently the following items fall into this category:
+   * - parenthesis around fractions or similar things that clearly can be recognized as atoms
+   * - plus signs within numbers
+   * - The output in folded GroupCells
+   */
+  bool IsHidden() const { return m_isHidden; }
 
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
 
@@ -751,8 +755,6 @@ public:
   //! Is this cell possibly output of maxima?
   bool IsMath() const;
 
-  bool HasBigSkip() const { return m_bigSkip; }
-
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
   virtual int GetImageBorderWidth() const { return 0; }
 
@@ -783,10 +785,28 @@ public:
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   bool ContainsToolTip() const { return m_containsToolTip; }
 
+  /*! Whether this cell is broken into two or more lines.
+   *
+   * Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
+   * but will be displayed in their linear form (and therefore broken into lines) if they
+   * end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
+   */
   bool IsBrokenIntoLines() const { return m_isBrokenIntoLines; }
+
+  /*! Do we want to begin this cell with a center dot if it is part of a product?
+   *
+   * Maxima will represent a product like (a*b*c) by a list like the following:
+   * [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
+   * code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
+   * many => we need parenthesis cells to set this flag for the first cell in
+   * their "inner cell" list.
+   */
   bool GetSuppressMultiplicationDot() const { return m_suppressMultiplicationDot; }
   void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
+  //! Whether this is a hidable multiplication sign
+  bool GetHidableMultSign() const { return m_isHidableMultSign; }
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
+
   /*! What should end up if placing this cell on the clipboard?
 
     AltCopyTexts for example make sense for subCells: a_n looks like a[n], even if both 
@@ -899,6 +919,7 @@ protected:
   CellType m_type = MC_TYPE_DEFAULT;
   TextStyle m_textStyle = TS_DEFAULT;
 
+private:
 //** Bitfield objects (3 bytes)
 //**
   void InitBitFields()
@@ -931,36 +952,10 @@ protected:
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
   bool m_ownsToolTip : 1 /* InitBitFields */;
   bool m_bigSkip : 1 /* InitBitFields */;
-
-  /*! true means:  This cell is broken into two or more lines.
-
-     Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
-     but will be displayed in their linear form (and therefore broken into lines) if they
-     end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
-   */
   bool m_isBrokenIntoLines : 1 /* InitBitFields */;
   bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
-
-  /*! True means: This cell is not to be drawn.
-
-     Currently the following items fall into this category:
-     - parenthesis around fractions or similar things that clearly can be recognized as atoms
-     - plus signs within numbers
-     - The output in folded GroupCells
-   */
   bool m_isHidden : 1 /* InitBitFields */;
-
-  //! True means: This is a hidable multiplication sign
   bool m_isHidableMultSign : 1 /* InitBitFields */;
-
-  /*! Do we want to begin this cell with a center dot if it is part of a product?
-
-     Maxima will represent a product like (a*b*c) by a list like the following:
-     [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
-     code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
-     many => we need parenthesis cells to set this flag for the first cell in
-     their "inner cell" list.
-   */
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
 
   //! true, if this cell clearly needs recalculation
@@ -970,17 +965,15 @@ protected:
   mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
   mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;
-  //! Does this cell begin with a forced page break?
   bool m_breakPage : 1 /* InitBitFields */;
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
-  //! true means we force this cell to begin with a line break.
   bool m_forceBreakLine : 1 /* InitBitFields */;
   bool m_highlight : 1 /* InitBitFields */;
 
-
+protected:
   //! Iterator to the beginning of the inner cell range. The end iterator is default-constructed.
- virtual InnerCellIterator InnerBegin() const;
+  virtual InnerCellIterator InnerBegin() const;
 
   inline Worksheet *GetWorksheet() const;
 
@@ -991,7 +984,6 @@ protected:
     ResetData();
   }
 
-protected:
   const wxString &GetLocalToolTip() const;
   bool IsZoomFactorChanged() const;
 

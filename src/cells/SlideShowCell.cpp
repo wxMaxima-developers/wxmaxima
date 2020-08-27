@@ -420,7 +420,7 @@ wxString SlideShow::ToXML() const
   wxString flags;
   flags = " gnuplotSources=\"" + gnuplotSourceFiles + "\"";
   flags += " gnuplotData=\"" + gnuplotDataFiles + "\"";
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   if (m_animationRunning)
     flags += wxT(" running=\"true\"");

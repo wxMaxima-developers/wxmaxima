@@ -2495,7 +2495,7 @@ bool Worksheet::CopyMatlab()
   bool firstcell = true;
   for (const Cell &tmp : OnList(m_cellPointers.m_selectionStart.get()))
   {
-    if (tmp.HardLineBreak() && !firstcell)
+    if (tmp.HasHardLineBreak() && !firstcell)
 	  result += wxT("\n");
 	result += tmp.ToMatlab();
 	if (&tmp == m_cellPointers.m_selectionEnd)
@@ -2567,7 +2567,7 @@ bool Worksheet::CopyText()
   bool firstcell = true;
   for (const Cell &tmp : OnList(m_cellPointers.m_selectionStart.get()))
   {
-    if (tmp.HardLineBreak() && !firstcell)
+    if (tmp.HasHardLineBreak() && !firstcell)
       result += wxT("\n");
     result += tmp.ToString();
     if (&tmp == m_cellPointers.m_selectionEnd)

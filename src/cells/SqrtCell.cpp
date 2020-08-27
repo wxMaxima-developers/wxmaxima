@@ -50,8 +50,6 @@ SqrtCell::SqrtCell(const SqrtCell &cell):
     SqrtCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  if (cell.m_isBrokenIntoLines)
-    BreakUp();
 }
 
 DEFINE_CELL(SqrtCell)
@@ -132,7 +130,7 @@ void SqrtCell::Recalculate(AFontSize fontsize)
   }
   else
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
     auto openHeight = 0; // m_open->GetHeightList();
     auto openCenter = 0; // m_open->GetCenterList();
@@ -246,7 +244,7 @@ void SqrtCell::Draw(wxPoint point)
 
 wxString SqrtCell::ToString() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
@@ -254,7 +252,7 @@ wxString SqrtCell::ToString() const
 
 wxString SqrtCell::ToMatlab() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
 	return wxEmptyString;
   else
 	return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
@@ -262,7 +260,7 @@ wxString SqrtCell::ToMatlab() const
 
 wxString SqrtCell::ToTeX() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
@@ -281,10 +279,10 @@ wxString SqrtCell::ToOMML() const
 
 wxString SqrtCell::ToXML() const
 {
-//  if (m_isBrokenIntoLines)
+//  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");
@@ -292,27 +290,25 @@ wxString SqrtCell::ToXML() const
 
 bool SqrtCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakUpCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell);
-    m_innerCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
+  if (IsBrokenIntoLines())
+    return false;
 
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  MakeBreakUpCells();
+  Cell::BreakUpAndMark();
+  m_open->SetNextToDraw(m_innerCell);
+  m_innerCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void SqrtCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

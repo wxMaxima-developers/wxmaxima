@@ -148,7 +148,7 @@ wxString SubCell::ToOMML() const
 wxString SubCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   if (m_altCopyText != wxEmptyString)

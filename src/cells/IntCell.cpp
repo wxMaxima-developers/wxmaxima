@@ -97,7 +97,7 @@ void IntCell::Recalculate(AFontSize fontsize)
   if(m_signWidth < 4)
     m_signWidth = 4;
   
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
   {
     m_base->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
@@ -117,7 +117,7 @@ void IntCell::Recalculate(AFontSize fontsize)
     m_over->RecalculateList({ MC_MIN_SIZE, fontsize - 5 });
   }
 
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
   {
     m_center = 0;
     m_height = 0;
@@ -508,7 +508,7 @@ wxString IntCell::ToXML() const
   var = wxT("<r>") + var + wxT("</r>");
 
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   if (m_intStyle != INT_DEF)
@@ -522,41 +522,38 @@ wxString IntCell::ToXML() const
 
 bool IntCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakUpCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
+  if (IsBrokenIntoLines())
+    return false;
 
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
-    m_open->last()->SetNextToDraw(m_base);
-    m_base->last()->SetNextToDraw(m_comma1);
-    // The first cell of m_var should normally be a "d"
-    if(m_var->GetNext() != NULL)
-      m_comma1->last()->SetNextToDraw(m_var->GetNext());
-    else
-      m_comma1->last()->SetNextToDraw(m_var);
-    if (m_intStyle != INT_DEF)
-      m_var->last()->SetNextToDraw(m_close);
-    else{
-      m_var->last()->SetNextToDraw(m_comma2);
-      m_comma2->last()->SetNextToDraw(m_under);
-      m_under->last()->SetNextToDraw(m_comma3);
-      m_comma3->last()->SetNextToDraw(m_over);
-      m_over->last()->SetNextToDraw(m_close);
-    }
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
+  MakeBreakUpCells();
+  Cell::BreakUpAndMark();
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+  m_open->last()->SetNextToDraw(m_base);
+  m_base->last()->SetNextToDraw(m_comma1);
+  // The first cell of m_var should normally be a "d"
+  if(m_var->GetNext() != NULL)
+    m_comma1->last()->SetNextToDraw(m_var->GetNext());
+  else
+    m_comma1->last()->SetNextToDraw(m_var);
+  if (m_intStyle != INT_DEF)
+    m_var->last()->SetNextToDraw(m_close);
+  else{
+    m_var->last()->SetNextToDraw(m_comma2);
+    m_comma2->last()->SetNextToDraw(m_under);
+    m_under->last()->SetNextToDraw(m_comma3);
+    m_comma3->last()->SetNextToDraw(m_over);
+    m_over->last()->SetNextToDraw(m_close);
   }
-  return false;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void IntCell::SetNextToDraw(Cell *next)
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

@@ -779,7 +779,7 @@ void EditorCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
   
-  if ((!m_isHidden) && (DrawThisCell()))
+  if (!IsHidden() && (DrawThisCell()))
   {
     wxRect rect = GetRect();
     int y = rect.GetY();

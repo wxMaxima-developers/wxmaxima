@@ -81,8 +81,8 @@ TextCell::TextCell(const TextCell &cell):
 {
   InitBitFields();
   CopyCommonData(cell);
-  m_bigSkip = cell.m_bigSkip;
-  m_highlight = cell.m_highlight;
+  SetBigSkip(cell.HasBigSkip());
+  SetHighlight(cell.GetHighlight());
   m_dontEscapeOpeningParenthesis = cell.m_dontEscapeOpeningParenthesis;
 }
 
@@ -98,7 +98,7 @@ void TextCell::SetStyle(TextStyle style)
     m_displayedText = wxT("\u03A8");
   if((style == TS_LABEL) || (style == TS_USERLABEL)||
      (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
-    HardLineBreak();
+    HasHardLineBreak();
   ResetSize();
 }
 
@@ -400,7 +400,7 @@ void TextCell::Recalculate(AFontSize fontsize)
     m_height += 2 * MC_TEXT_PADDING;
     
     /// Hidden cells (multiplication * is not displayed)
-    if ((m_isHidden) || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign))
+    if (IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign()))
     {
       m_height = 0;
       m_width = Scale_Px(fontsize) / 4;
@@ -415,7 +415,7 @@ void TextCell::Draw(wxPoint point)
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
   if (DrawThisCell(point) &&
-      !(m_isHidden || ((configuration->HidemultiplicationSign()) && m_isHidableMultSign)))
+      !(IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign())))
   {
     wxDC *dc = configuration->GetDC();
     
@@ -786,8 +786,8 @@ wxString TextCell::ToTeX() const
   text.Replace(wxT("\u2192"), mathModeStart + wxT("\\rightarrow") + mathModeEnd);
   text.Replace(wxT("\u2794"), mathModeStart + wxT("\\longrightarrow") + mathModeEnd);
 
-  // m_IsHidden is set for parenthesis that don't need to be shown
-  if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
+  // IsHidden() is set for parenthesis that don't need to be shown
+  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && GetHidableMultSign()))
   {
     // Normally in TeX the spacing between variable names following each other directly
     // is chosen to show that this is a multiplication.
@@ -824,7 +824,7 @@ wxString TextCell::ToTeX() const
       parenthesis does contain a product.
     */
 
-    if (m_suppressMultiplicationDot)
+    if (GetSuppressMultiplicationDot())
     {
       text.Replace(wxT("*"), wxT("\\, "));
       text.Replace(wxT("\u00B7"), wxT("\\, "));
@@ -1026,7 +1026,7 @@ wxString TextCell::ToTeX() const
   {
     if (text.Length() > 1)
     {
-      if (((m_forceBreakLine) || (m_breakLine)))
+      if (BreakLineHere())
         //text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\") + text;
 /*      if(GetStyle() != TS_DEFAULT)
@@ -1047,7 +1047,7 @@ wxString TextCell::ToMathML() const
   wxString text = XMLescape(ToString());
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
-  if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
+  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && GetHidableMultSign()))
   {
     text.Replace(wxT("*"), wxT("&#8290;"));
     text.Replace(wxT("\u00B7"), wxT("&#8290;"));
@@ -1121,8 +1121,8 @@ wxString TextCell::ToOMML() const
 {
   //Text-only lines are better handled in RTF.
   if (
-          (GetPrevious() && (GetPrevious()->GetStyle() != TS_LABEL) && (!GetPrevious()->HardLineBreak())) &&
-          (HardLineBreak())
+          (GetPrevious() && (GetPrevious()->GetStyle() != TS_LABEL) && (!GetPrevious()->HasHardLineBreak())) &&
+          (HasHardLineBreak())
           )
     return wxEmptyString;
 
@@ -1133,7 +1133,7 @@ wxString TextCell::ToOMML() const
   wxString text = XMLescape(m_displayedText);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
-  if (m_isHidden || (((*m_configuration)->HidemultiplicationSign()) && m_isHidableMultSign))
+  if (IsHidden() || (((*m_configuration)->HidemultiplicationSign()) && GetHidableMultSign()))
   {
     text.Replace(wxT("*"), wxT("&#8290;"));
     text.Replace(wxT("\u00B7"), wxT("&#8290;"));
@@ -1214,7 +1214,7 @@ wxString TextCell::ToRTF() const
 wxString TextCell::GetXMLFlags() const
 {
   wxString flags;
-  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
+  if (HasHardLineBreak() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
 
   if (GetStyle() == TS_ERROR)
@@ -1238,7 +1238,7 @@ wxString TextCell::GetXMLFlags() const
 wxString TextCell::ToXML() const
 {
   wxString tag;
-  if (m_isHidden || (m_isHidableMultSign))
+  if (IsHidden() || GetHidableMultSign())
     tag = _T("h");
   else
     switch (GetStyle())

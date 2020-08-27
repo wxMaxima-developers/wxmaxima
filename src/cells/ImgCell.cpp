@@ -305,7 +305,7 @@ wxString ImgCell::ToXML() const
   }
 
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   if(!m_drawRectangle)

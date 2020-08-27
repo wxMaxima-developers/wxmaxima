@@ -68,7 +68,7 @@ void DiffCell::Recalculate(AFontSize fontsize)
 
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
-  if(!m_isBrokenIntoLines)
+  if(!IsBrokenIntoLines())
   {
     m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
     m_center = wxMax(m_diffCell->GetCenterList(), m_baseCell->GetCenterList());
@@ -102,7 +102,7 @@ void DiffCell::Draw(wxPoint point)
 
 wxString DiffCell::ToString() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   Cell *tmp = m_baseCell->GetNext();
   wxString s = wxT("'diff(");
@@ -115,7 +115,7 @@ wxString DiffCell::ToString() const
 
 wxString DiffCell::ToMatlab() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
 	return wxEmptyString;
   Cell *tmp = m_baseCell->GetNext();
   wxString s = wxT("'diff(");
@@ -128,7 +128,7 @@ wxString DiffCell::ToMatlab() const
 
 wxString DiffCell::ToTeX() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString diff = m_diffCell->ListToTeX();
   wxString function = m_baseCell->ListToTeX();
@@ -171,7 +171,7 @@ wxString DiffCell::ToOMML() const
 wxString DiffCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
@@ -179,29 +179,27 @@ wxString DiffCell::ToXML() const
 
 bool DiffCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakupCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_baseCell);
-    m_baseCell->last()->SetNextToDraw(m_comma);
-    m_comma->SetNextToDraw(m_diffCell);
-    m_diffCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    m_width = 0;
-    return true;
-  }
-  return false;
+  if (IsBrokenIntoLines())
+    return false;
+
+  MakeBreakupCells();
+  Cell::BreakUpAndMark();
+  m_open->SetNextToDraw(m_baseCell);
+  m_baseCell->last()->SetNextToDraw(m_comma);
+  m_comma->SetNextToDraw(m_diffCell);
+  m_diffCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  m_width = 0;
+  return true;
 }
 
 void DiffCell::SetNextToDraw(Cell *next)
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

@@ -75,7 +75,7 @@ void LimitCell::Recalculate(AFontSize fontsize)
   m_base->RecalculateList(fontsize);
   m_under->RecalculateList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
   m_name->RecalculateList(fontsize);
-  if(!m_isBrokenIntoLines)
+  if(!IsBrokenIntoLines())
   {
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
       + m_base->GetFullWidth();
@@ -199,7 +199,7 @@ wxString LimitCell::ToMathML() const
 wxString LimitCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return _T("<lm") + flags + wxT("><r>") + m_name->ListToXML() + _T("</r><r>") +
@@ -220,29 +220,27 @@ wxString LimitCell::ToOMML() const
 
 bool LimitCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakUpCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_name->last()->SetNextToDraw(m_open);
-    m_open->SetNextToDraw(m_base);
-    m_base->last()->SetNextToDraw(m_comma);
-    m_comma->SetNextToDraw(m_under);
-    m_under->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_name;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  if (IsBrokenIntoLines())
+    return false;
+
+  MakeBreakUpCells();
+  Cell::BreakUpAndMark();
+  m_name->last()->SetNextToDraw(m_open);
+  m_open->SetNextToDraw(m_base);
+  m_base->last()->SetNextToDraw(m_comma);
+  m_comma->SetNextToDraw(m_under);
+  m_under->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_name;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void LimitCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

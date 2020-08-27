@@ -64,7 +64,7 @@ void ConjugateCell::Recalculate(AFontSize fontsize)
 
   m_innerCell->RecalculateList(fontsize);
 
-  if(!m_isBrokenIntoLines)
+  if(!IsBrokenIntoLines())
   {
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
     m_height = m_innerCell->GetHeightList() + Scale_Px(6);
@@ -109,7 +109,7 @@ void ConjugateCell::Draw(wxPoint point)
 
 wxString ConjugateCell::ToString() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
@@ -117,7 +117,7 @@ wxString ConjugateCell::ToString() const
 
 wxString ConjugateCell::ToMatlab() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
 	return wxEmptyString;
   else
 	return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
@@ -125,7 +125,7 @@ wxString ConjugateCell::ToMatlab() const
 
 wxString ConjugateCell::ToTeX() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   else
     return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
@@ -147,7 +147,7 @@ wxString ConjugateCell::ToOMML() const
 wxString ConjugateCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</cj>");
@@ -155,26 +155,24 @@ wxString ConjugateCell::ToXML() const
 
 bool ConjugateCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakupCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell);
-    m_innerCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  if (IsBrokenIntoLines())
+    return false;
+
+  MakeBreakupCells();
+  Cell::BreakUpAndMark();
+  m_open->SetNextToDraw(m_innerCell);
+  m_innerCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void ConjugateCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

@@ -59,7 +59,7 @@ void FunCell::Recalculate(AFontSize fontsize)
   m_argCell->RecalculateList(fontsize);
   m_nameCell->RecalculateList(fontsize);
 
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
   {
     m_width = m_center = m_height = 0;
   }
@@ -88,7 +88,7 @@ void FunCell::Draw(wxPoint point)
 
 wxString FunCell::ToString() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
@@ -97,7 +97,7 @@ wxString FunCell::ToString() const
 
 wxString FunCell::ToMatlab() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
 	return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
 	return m_altCopyText + Cell::ListToMatlab();
@@ -107,7 +107,7 @@ wxString FunCell::ToMatlab() const
 
 wxString FunCell::ToTeX() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
 
   wxString s;
@@ -132,10 +132,10 @@ wxString FunCell::ToTeX() const
 
 wxString FunCell::ToXML() const
 {
-//  if (m_isBrokenIntoLines)
+//  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() + wxT("</r>") +
          m_argCell->ListToXML() + wxT("</fn>");
@@ -143,7 +143,7 @@ wxString FunCell::ToXML() const
 
 wxString FunCell::ToMathML() const
 {
-//  if (m_isBrokenIntoLines)
+//  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   return wxT("<mrow>") + m_nameCell->ListToMathML() +
          wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
@@ -157,24 +157,22 @@ wxString FunCell::ToOMML() const
 
 bool FunCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_nameCell->last()->SetNextToDraw(m_argCell);
-    m_argCell->last()->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_nameCell;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  if (IsBrokenIntoLines())
+    return false;
+
+  Cell::BreakUpAndMark();
+  m_nameCell->last()->SetNextToDraw(m_argCell);
+  m_argCell->last()->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_nameCell;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void FunCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_argCell->last()->SetNextToDraw(next);
   else
     m_nextToDraw = next;

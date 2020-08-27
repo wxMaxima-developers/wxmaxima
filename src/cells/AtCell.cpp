@@ -129,7 +129,7 @@ wxString AtCell::ToOMML() const
 wxString AtCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   
   return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +

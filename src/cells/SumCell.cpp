@@ -123,7 +123,7 @@ void SumCell::Recalculate(AFontSize fontsize)
 
   DisplayedBase()->RecalculateList(fontsize);
 
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
   {
     m_comma1->RecalculateList(fontsize);
     m_comma2->RecalculateList(fontsize);
@@ -139,11 +139,11 @@ void SumCell::Recalculate(AFontSize fontsize)
   else
     m_signWidth = 4.0 * m_signHeight / 5.0;
   m_signWCenter = m_signWidth / 2.0;
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_under->RecalculateList(fontsize);
   else
     m_under->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_over->RecalculateList(fontsize);
   else
     m_over->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
@@ -352,7 +352,7 @@ wxString SumCell::ToXML() const
   }
 
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
     
   return wxT("<sm type=\"") + flags + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
@@ -406,40 +406,38 @@ void SumCell::Unbreak()
 
 bool SumCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakUpCells();
-    Cell::BreakUp();
-    m_displayParen = false;
-    m_isBrokenIntoLines = true;
+  if (IsBrokenIntoLines())
+    return false;
 
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
-    m_open->last()->SetNextToDraw(DisplayedBase());
-    DisplayedBase()->last()->SetNextToDraw(m_comma1);
-    m_comma1->last()->SetNextToDraw(m_var);
-    m_var->last()->SetNextToDraw(m_comma2);
-    m_comma2->last()->SetNextToDraw(m_start);
-    // The first cell of m_var should normally be a "d"
-    if(m_over->ToString().IsEmpty())
-      m_start->last()->SetNextToDraw(m_close);
-    else
-    {
-      m_start->last()->SetNextToDraw(m_comma3);
-      m_comma3->last()->SetNextToDraw(m_over);
-      m_over->last()->SetNextToDraw(m_close);
-    }
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
+  MakeBreakUpCells();
+  Cell::BreakUpAndMark();
+  m_displayParen = false;
+
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+  m_open->last()->SetNextToDraw(DisplayedBase());
+  DisplayedBase()->last()->SetNextToDraw(m_comma1);
+  m_comma1->last()->SetNextToDraw(m_var);
+  m_var->last()->SetNextToDraw(m_comma2);
+  m_comma2->last()->SetNextToDraw(m_start);
+  // The first cell of m_var should normally be a "d"
+  if(m_over->ToString().IsEmpty())
+    m_start->last()->SetNextToDraw(m_close);
+  else
+  {
+    m_start->last()->SetNextToDraw(m_comma3);
+    m_comma3->last()->SetNextToDraw(m_over);
+    m_over->last()->SetNextToDraw(m_close);
   }
-  return false;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void SumCell::SetNextToDraw(Cell *next)
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

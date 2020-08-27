@@ -62,7 +62,6 @@ ParenCell::ParenCell(const ParenCell &cell):
     ParenCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
 }
 
 DEFINE_CELL(ParenCell)
@@ -192,7 +191,7 @@ void ParenCell::Recalculate(AFontSize fontsize)
     }
   }
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_width = 0;
 
   m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(2);
@@ -202,7 +201,7 @@ void ParenCell::Recalculate(AFontSize fontsize)
   if(m_charHeight1 < 2)
     m_charHeight1 = 2;
 
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
   {
     m_height = wxMax(m_innerCell->GetHeightList(), m_open->GetHeightList());
     m_center = wxMax(m_innerCell->GetCenterList(), m_open->GetCenterList());
@@ -362,7 +361,7 @@ void ParenCell::Draw(wxPoint point)
       break;
     }
     
-    if(!m_isBrokenIntoLines)
+    if(!IsBrokenIntoLines())
       m_innerCell->DrawList(innerCellPos);
   }
 }
@@ -373,7 +372,7 @@ wxString ParenCell::ToString() const
   if(!m_innerCell)
     return "()";
   
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
     if (m_print)
       s = wxT("(") + m_innerCell->ListToString() + wxT(")");
@@ -386,7 +385,7 @@ wxString ParenCell::ToString() const
 wxString ParenCell::ToMatlab() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
 	if (m_print)
 	  s = wxT("(") + m_innerCell->ListToMatlab() + wxT(")");
@@ -399,7 +398,7 @@ wxString ParenCell::ToMatlab() const
 wxString ParenCell::ToTeX() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
     wxString innerCell = m_innerCell->ListToTeX();
 
@@ -448,37 +447,35 @@ wxString ParenCell::ToMathML() const
 
 wxString ParenCell::ToXML() const
 {
-//  if( m_isBrokenIntoLines )
+//  if(IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString s = m_innerCell->ListToXML();
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   return ((m_print) ? _T("<r><p") + flags + wxT(">") + s + _T("</p></r>") : s);
 }
 
 bool ParenCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell);
-    m_innerCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
+  if (IsBrokenIntoLines())
+    return false;
 
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  Cell::BreakUpAndMark();
+  m_open->SetNextToDraw(m_innerCell);
+  m_innerCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void ParenCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;
