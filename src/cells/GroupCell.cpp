@@ -695,7 +695,7 @@ int GroupCell::GetInputIndent()
   return labelWidth;
 }
 
-void GroupCell::Draw(wxPoint point)
+void GroupCell::Draw(wxPoint const point)
 {
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
@@ -738,58 +738,43 @@ void GroupCell::Draw(wxPoint point)
     // Draw input and output
     //
     SetPen();
-    wxPoint in(point);
 
-    if ((m_output != NULL) && !IsHidden())
+    if (m_output && !IsHidden())
     {
-      Cell *tmp = m_output.get();
-      int drop = tmp->GetMaxDrop();
-      if ((configuration->ShowCodeCells()) ||
-          (m_groupType != GC_TYPE_CODE))
+      wxPoint in = point;
+      if (configuration->ShowCodeCells() || (m_groupType != GC_TYPE_CODE))
         in.y += m_inputLabel->GetMaxDrop();
 
-      in.y += m_output->GetCenterList();
-      m_outputRect.y = in.y - m_output->GetCenterList();
-      m_outputRect.x = in.x;
+      m_outputRect.SetPosition(in);
 
-      in.x += GetLineIndent(tmp);
-      while (tmp != NULL)
+      bool first = true;
+      int drop = 0;
+      for (Cell &tmp : OnDrawList(m_output.get()))
       {
-        tmp->Draw(in);
-        if ((tmp->GetNextToDraw() != NULL) && (tmp->GetNextToDraw()->BreakLineHere()))
-          {
-            if (tmp->GetNextToDraw()->HasBigSkip())
-              in.y += MC_LINE_SKIP;
+        if (first || tmp.BreakLineHere())
+        {
+          if (!first && tmp.HasBigSkip())
+            in.y += MC_LINE_SKIP;
 
-            in.x = point.x + GetLineIndent(tmp->GetNextToDraw());
+          in.x = point.x + GetLineIndent(&tmp);
+          in.y += drop + tmp.GetCenterList();
+          drop = tmp.GetMaxDrop();
+        }
 
-            in.y += drop + tmp->GetNextToDraw()->GetCenterList();
-            drop = tmp->GetNextToDraw()->GetMaxDrop();
-          }
-        else
-          in.x += tmp->GetWidth();
-
-        tmp = tmp->GetNextToDraw();
+        tmp.Draw(in);
+        in.x += tmp.GetWidth();
+        first = false;
       }
     }
-    if ((configuration->ShowCodeCells()) ||
-        (m_groupType != GC_TYPE_CODE))
+    if ((configuration->ShowCodeCells()) || (m_groupType != GC_TYPE_CODE))
     {
       configuration->Outdated(false);
 
       EditorCell *input = GetInput();
-      if(input)
-      {
-        in = point;
-        input->Draw(
-          wxPoint(
-            in.x + GetInputIndent(),
-            in.y
-            )
-          );
-      }
+      if (input)
+        input->Draw({point.x + GetInputIndent(), point.y});
 
-      if(GetPrompt() != NULL)
+      if (GetPrompt())
         GetPrompt()->Draw(point);
 
       if (m_groupType == GC_TYPE_CODE && input)
@@ -807,20 +792,14 @@ wxRect GroupCell::GetRect(bool WXUNUSED(all)) const
 
 int GroupCell::GetLineIndent(Cell *cell)
 {
-  int indent = 0;
-
-  if(cell != NULL)
-  {
-    if(
+  if (cell &&
       (cell->GetStyle() != TS_LABEL) &&
       (cell->GetStyle() != TS_USERLABEL) &&
       (cell->GetStyle() != TS_MAIN_PROMPT) &&
       (cell->GetStyle() != TS_OTHER_PROMPT) &&
-      (*m_configuration)->IndentMaths()
-      )
-      indent += Scale_Px((*m_configuration)->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
-  }
-  return indent;
+      (*m_configuration)->IndentMaths())
+    return Scale_Px((*m_configuration)->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
+  return 0;
 }
 
 void GroupCell::UpdateCellsInGroup()
