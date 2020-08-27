@@ -282,7 +282,7 @@ wxString SqrtCell::ToXML() const
 //  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");

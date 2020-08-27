@@ -451,7 +451,7 @@ wxString ParenCell::ToXML() const
 //    return wxEmptyString;
   wxString s = m_innerCell->ListToXML();
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   return ((m_print) ? _T("<r><p") + flags + wxT(">") + s + _T("</p></r>") : s);
 }

@@ -237,7 +237,7 @@ wxString ListCell::ToXML() const
 {
   wxString s = m_innerCell->ListToXML();
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   return (wxT("<r list=\"true\"") + flags + wxT("><t listdelim=\"true\">[</t>") + s + wxT("<t listdelim=\"true\">]</t></r>"));
 }

@@ -98,7 +98,8 @@ void Cell::SetType(CellType type)
       break;
     case MC_TYPE_LABEL:
       m_textStyle = TS_LABEL;
-      HardLineBreak();
+      // FIXME - this code probably intended to line-break here
+      // HardLineBreak();
       break;
     case MC_TYPE_INPUT:
       m_textStyle = TS_INPUT;
@@ -671,7 +672,7 @@ wxString Cell::ListToMathML(bool startofline) const
   bool needsTable = false;
   for (const Cell &tmp : OnList(this))
   {
-    if (tmp.HardLineBreak() || tmp.GetType() == MC_TYPE_LABEL)
+    if (tmp.HasHardLineBreak() || tmp.GetType() == MC_TYPE_LABEL)
     {
       needsTable = true;
       break;
@@ -690,11 +691,11 @@ wxString Cell::ListToMathML(bool startofline) const
       retval += wxT("</mrow>");
 
     // Handle linebreaks
-    if ((&tmp != this) && (tmp.HardLineBreak()))
+    if ((&tmp != this) && (tmp.HasHardLineBreak()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if ((((tmp.HardLineBreak()) || (startofline && (this == &tmp))) &&
+    if ((((tmp.HasHardLineBreak()) || (startofline && (this == &tmp))) &&
          ((tmp.GetStyle() != TS_LABEL) && (tmp.GetStyle() != TS_USERLABEL))) && (needsTable))
       retval += wxT("<mtext></mtext></mtd><mtd>");
 
@@ -857,7 +858,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
     retval += token;
 
     // Hard linebreaks aren't supported by OMML and therefore need a new equation object
-    if (tmp.HardLineBreak())
+    if (tmp.HasHardLineBreak())
       break;
   }
 
@@ -911,7 +912,7 @@ wxString Cell::ListToRTF(bool startofline) const
             break;
 
           // A newline starts a new equation
-          if (tmp->HardLineBreak())
+          if (tmp->HasHardLineBreak())
           {
             tmp = tmp->GetNext();
             break;

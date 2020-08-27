@@ -198,7 +198,7 @@ wxString ExptCell::ToXML() const
 //  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() + _T("</r><r>") +

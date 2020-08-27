@@ -117,8 +117,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
   m_group = this;
   m_fontSize = (*m_configuration)->GetDefaultFontSize();
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
-  m_forceBreakLine = true;
-  m_breakLine = true;
+  ForceBreakLine();
   m_type = MC_TYPE_GROUP;
 
   // set up cell depending on groupType, so we have a working cell
@@ -590,7 +589,8 @@ void GroupCell::RecalculateHeightOutput()
     //RecalculateHeightInput();
     m_recalculateWidths = false;
   }
-  m_output->HardLineBreak();
+  // FIXME - this code did nothing, but the intent was maybe to break the line?
+  // m_output->HardLineBreak();
 
   m_mathFontSize = configuration->GetMathFontSize(); //-V519
   
@@ -1039,7 +1039,7 @@ wxString GroupCell::ToString() const
     bool firstCell = true;
     while (tmp != NULL)
     {
-      if (firstCell || (tmp->HardLineBreak() && str.Length() > 0))
+      if (firstCell || (tmp->HasHardLineBreak() && str.Length() > 0))
           str += wxT("\n");
       str += tmp->ToString();
       firstCell = false;

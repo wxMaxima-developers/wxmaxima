@@ -135,7 +135,7 @@ wxString FunCell::ToXML() const
 //  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   return wxT("<fn") + flags + wxT("><r>") + m_nameCell->ListToXML() + wxT("</r>") +
          m_argCell->ListToXML() + wxT("</fn>");

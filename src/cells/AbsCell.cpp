@@ -149,7 +149,7 @@ wxString AbsCell::ToOMML() const
 wxString AbsCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   
   return wxT("<a") +flags + wxT(">") + m_innerCell->ListToXML() + wxT("</a>");

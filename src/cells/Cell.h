@@ -233,14 +233,10 @@ public:
   { m_breakPage = breakPage; }
 
   //! Are we allowed to break a line here?
-  bool BreakLineHere() const
-    {
-      return m_breakLine || m_forceBreakLine;
-    }
+  bool BreakLineHere() const { return m_breakLine || m_forceBreakLine; }
 
   //! Does this cell begin with a manual linebreak?
-  bool HardLineBreak() const
-  { return m_forceBreakLine; }
+  bool HasHardLineBreak() const { return m_forceBreakLine; }
 
   //! Does this cell begin with a manual page break?
   bool BreakPageHere() const
@@ -324,8 +320,7 @@ public:
      - true: Insert a forced linebreak
      - false: Remove the forced linebreak
    */
-  void ForceBreakLine(bool force = true)
-  { m_forceBreakLine = m_breakLine = force; }
+  void ForceBreakLine(bool force = true) { m_forceBreakLine = m_breakLine = force; }
 
   /*! Get the height of this cell
 
@@ -980,10 +975,12 @@ protected:
   bool m_containsToolTip : 1 /* InitBitFields */;
   //! Does this cell begin with a forced page break?
   bool m_breakPage : 1 /* InitBitFields */;
+private:
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
   //! true means we force this cell to begin with a line break.
   bool m_forceBreakLine : 1 /* InitBitFields */;
+protected:
   bool m_highlight : 1 /* InitBitFields */;
 
 

@@ -293,7 +293,7 @@ wxString FracCell::ToXML() const
   wxString diffStyle;
   if (m_fracStyle == FC_DIFF)
     diffStyle = wxT(" diffstyle=\"yes\"");
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     diffStyle += wxT(" breakline=\"true\"");
 
   return _T("<") + s + diffStyle + _T("><r>") +

@@ -508,7 +508,7 @@ wxString IntCell::ToXML() const
   var = wxT("<r>") + var + wxT("</r>");
 
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   if (m_intStyle != INT_DEF)

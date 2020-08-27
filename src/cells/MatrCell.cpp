@@ -368,7 +368,7 @@ wxString MatrCell::ToOMML() const
 wxString MatrCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
   if (m_roundedParens)
     flags += wxT(" roundedParens=\"true\"");

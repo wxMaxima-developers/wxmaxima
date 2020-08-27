@@ -199,7 +199,7 @@ wxString LimitCell::ToMathML() const
 wxString LimitCell::ToXML() const
 {
   wxString flags;
-  if (m_forceBreakLine)
+  if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
 
   return _T("<lm") + flags + wxT("><r>") + m_name->ListToXML() + _T("</r><r>") +

@@ -98,7 +98,7 @@ void TextCell::SetStyle(TextStyle style)
     m_displayedText = wxT("\u03A8");
   if((style == TS_LABEL) || (style == TS_USERLABEL)||
      (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
-    HardLineBreak();
+    HasHardLineBreak();
   ResetSize();
 }
 
@@ -1026,7 +1026,7 @@ wxString TextCell::ToTeX() const
   {
     if (text.Length() > 1)
     {
-      if (((m_forceBreakLine) || (m_breakLine)))
+      if (BreakLineHere())
         //text=wxT("\\ifhmode\\\\fi\n")+text;
         text = wxT("\\mbox{}\\\\") + text;
 /*      if(GetStyle() != TS_DEFAULT)
@@ -1121,8 +1121,8 @@ wxString TextCell::ToOMML() const
 {
   //Text-only lines are better handled in RTF.
   if (
-          (GetPrevious() && (GetPrevious()->GetStyle() != TS_LABEL) && (!GetPrevious()->HardLineBreak())) &&
-          (HardLineBreak())
+          (GetPrevious() && (GetPrevious()->GetStyle() != TS_LABEL) && (!GetPrevious()->HasHardLineBreak())) &&
+          (HasHardLineBreak())
           )
     return wxEmptyString;
 
@@ -1214,7 +1214,7 @@ wxString TextCell::ToRTF() const
 wxString TextCell::GetXMLFlags() const
 {
   wxString flags;
-  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
+  if (HasHardLineBreak() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
 
   if (GetStyle() == TS_ERROR)
