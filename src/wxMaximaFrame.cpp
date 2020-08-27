@@ -791,8 +791,9 @@ void wxMaximaFrame::SetupMenu()
                              _("Autosubscript chars after an underscore"));
 
   m_roundedMatrixParensMenu = new wxMenu;
-  m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParensYes, _("Rounded"), _("Use rounded parenthesis for matrices"));
-  m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParensNo, _("Square"), _("Use square parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParens, _("Rounded"), _("Use rounded parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_squareMatrixParens, _("Square"), _("Use square parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), m_roundedMatrixParensMenu, _("Choose the parenthesis type for Matrices"));
   
   m_Maxima_Panes_Sub->AppendSeparator();

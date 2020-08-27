@@ -815,6 +815,8 @@
 				     (if (find 'colnames (car x)) "true" "false"))))
 		      ((string= $lmxchar #\()
 		       (list "<tb roundedParens=\"true\">"))
+		      ((string= $lmxchar " ")
+		       (list "<tb special=\"true\">"))
 		      (t
 		       (list "<tb>")))
 		   (mapcan #'(lambda (y)

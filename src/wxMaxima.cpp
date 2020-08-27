@@ -789,9 +789,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_alwaysAutosubscript, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_roundedMatrixParensNo, wxEVT_MENU,
+  Connect(menu_roundedMatrixParens, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
-  Connect(menu_roundedMatrixParensYes, wxEVT_MENU,
+  Connect(menu_squareMatrixParens, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_noMatrixParens, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_fullscreen, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
@@ -2692,9 +2694,11 @@ void wxMaxima::VariableActionLmxChar(const wxString &value)
   {
     m_maximaVariable_lmxchar = value;
     if(m_maximaVariable_lmxchar.EndsWith("("))
-      m_roundedMatrixParensMenu->Check(menu_roundedMatrixParensYes, true);
-    else
-      m_roundedMatrixParensMenu->Check(menu_roundedMatrixParensNo, true);
+      m_roundedMatrixParensMenu->Check(menu_roundedMatrixParens, true);
+    if(m_maximaVariable_lmxchar.EndsWith("["))
+      m_roundedMatrixParensMenu->Check(menu_squareMatrixParens, true);
+    if(m_maximaVariable_lmxchar.EndsWith(" "))
+      m_roundedMatrixParensMenu->Check(menu_noMatrixParens, true);
   }
 }
 void wxMaxima::VariableActionNumer(const wxString &value)
@@ -5970,11 +5974,14 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_alwaysAutosubscript:
       MenuCommand(wxT("wxsubscripts: 'all$"));
       break;
-    case menu_roundedMatrixParensYes:
+    case menu_roundedMatrixParens:
       MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
       break;
-    case menu_roundedMatrixParensNo:
+    case menu_squareMatrixParens:
       MenuCommand(wxT("lmxchar:\"[\"$rmxchar:\"]\"$"));
+      break;
+    case menu_noMatrixParens:
+      MenuCommand(wxT("lmxchar:\" \"$rmxchar:\" \"$"));
       break;
     case menu_fullscreen:
       ShowFullScreen(!IsFullScreen());
