@@ -238,9 +238,8 @@ public:
   //! Does this cell begin with a manual linebreak?
   bool HasHardLineBreak() const { return m_forceBreakLine; }
 
-  //! Does this cell begin with a manual page break?
-  bool BreakPageHere() const
-  { return m_breakPage; }
+  //! Does this cell begin with a forced (manually set) page break?
+  bool BreakPageHere() const { return m_breakPage; }
 
   /*! Try to split this command into lines to make it fit on the screen
 
@@ -665,7 +664,13 @@ public:
            m_type == MC_TYPE_HEADING5 || m_type == MC_TYPE_HEADING6 || m_type == MC_TYPE_TITLE;
   }
 
-  //! Return the hide status
+  /*! Whether this cell is not to be drawn.
+   *
+   * Currently the following items fall into this category:
+   * - parenthesis around fractions or similar things that clearly can be recognized as atoms
+   * - plus signs within numbers
+   * - The output in folded GroupCells
+   */
   bool IsHidden() const { return m_isHidden; }
 
   virtual void Hide(bool hide = true) { m_isHidden = hide; }
@@ -780,9 +785,25 @@ public:
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
   bool ContainsToolTip() const { return m_containsToolTip; }
 
+  /*! Whether this cell is broken into two or more lines.
+   *
+   * Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
+   * but will be displayed in their linear form (and therefore broken into lines) if they
+   * end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
+   */
   bool IsBrokenIntoLines() const { return m_isBrokenIntoLines; }
+
+  /*! Do we want to begin this cell with a center dot if it is part of a product?
+   *
+   * Maxima will represent a product like (a*b*c) by a list like the following:
+   * [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
+   * code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
+   * many => we need parenthesis cells to set this flag for the first cell in
+   * their "inner cell" list.
+   */
   bool GetSuppressMultiplicationDot() const { return m_suppressMultiplicationDot; }
   void SetSuppressMultiplicationDot(bool val) { m_suppressMultiplicationDot = val; }
+  //! Whether this is a hidable multiplication sign
   bool GetHidableMultSign() const { return m_isHidableMultSign; }
   void SetHidableMultSign(bool val) { m_isHidableMultSign = val; }
 
@@ -931,36 +952,10 @@ private:
   //! Whether the cell owns its m_tooltip - otherwise it points to a static string.
   bool m_ownsToolTip : 1 /* InitBitFields */;
   bool m_bigSkip : 1 /* InitBitFields */;
-
-  /*! true means:  This cell is broken into two or more lines.
-
-     Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
-     but will be displayed in their linear form (and therefore broken into lines) if they
-     end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
-   */
   bool m_isBrokenIntoLines : 1 /* InitBitFields */;
   bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
-
-  /*! True means: This cell is not to be drawn.
-
-     Currently the following items fall into this category:
-     - parenthesis around fractions or similar things that clearly can be recognized as atoms
-     - plus signs within numbers
-     - The output in folded GroupCells
-   */
   bool m_isHidden : 1 /* InitBitFields */;
-
-  //! True means: This is a hidable multiplication sign
   bool m_isHidableMultSign : 1 /* InitBitFields */;
-
-  /*! Do we want to begin this cell with a center dot if it is part of a product?
-
-     Maxima will represent a product like (a*b*c) by a list like the following:
-     [*,a,b,c]. This would result us in converting (a*b*c) to the following LaTeX
-     code: \\left(\\cdot a ß\\cdot b \\cdot c\\right) which obviously is one \\cdot too
-     many => we need parenthesis cells to set this flag for the first cell in
-     their "inner cell" list.
-   */
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
 
   //! true, if this cell clearly needs recalculation
@@ -970,11 +965,9 @@ private:
   mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
   mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;
-  //! Does this cell begin with a forced page break?
   bool m_breakPage : 1 /* InitBitFields */;
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
-  //! true means we force this cell to begin with a line break.
   bool m_forceBreakLine : 1 /* InitBitFields */;
   bool m_highlight : 1 /* InitBitFields */;
 
