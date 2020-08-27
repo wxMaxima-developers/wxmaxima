@@ -156,6 +156,8 @@ void Cell::CopyCommonData(const Cell & cell)
   m_textStyle = cell.m_textStyle;
   Hide(cell.m_isHidden);
   m_isHidableMultSign = cell.m_isHidableMultSign;
+  if (cell.IsBrokenIntoLines())
+    BreakUp();
 }
 
 std::unique_ptr<Cell> Cell::CopyList() const

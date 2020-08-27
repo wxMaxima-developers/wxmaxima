@@ -938,6 +938,7 @@ protected:
   bool m_ownsToolTip : 1 /* InitBitFields */;
   bool m_bigSkip : 1 /* InitBitFields */;
 
+private:
   /*! true means:  This cell is broken into two or more lines.
 
      Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
@@ -947,7 +948,6 @@ protected:
   bool m_isBrokenIntoLines : 1 /* InitBitFields */;
   bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
 
-private:
   /*! True means: This cell is not to be drawn.
 
      Currently the following items fall into this category:

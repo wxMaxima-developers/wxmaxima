@@ -62,7 +62,6 @@ ParenCell::ParenCell(const ParenCell &cell):
     ParenCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  m_isBrokenIntoLines = cell.IsBrokenIntoLines();
 }
 
 DEFINE_CELL(ParenCell)
