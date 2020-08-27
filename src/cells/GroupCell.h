@@ -146,15 +146,11 @@ public:
   // selection methods
   void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last) override;
 
-  void SelectPoint(wxPoint point, CellPtr<Cell> *first, CellPtr<Cell> *last);
-
   // cppcheck-suppress functionConst
   void SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end);
 
   // cppcheck-suppress functionConst
   void SelectRectInOutput(const wxRect &rect, wxPoint one, wxPoint two, CellPtr<Cell> *first, CellPtr<Cell> *last);
-
-  void SelectRectGroup(const wxRect &rect, wxPoint one, wxPoint two, CellPtr<Cell> *first, CellPtr<Cell> *last);
 
   // methods for manipulating GroupCell
   // cppcheck-suppress functionConst

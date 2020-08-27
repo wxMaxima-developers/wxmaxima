@@ -993,12 +993,13 @@ void Cell::SelectRect(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *l
  */
 void Cell::SelectFirst(const wxRect &rect, CellPtr<Cell> *first)
 {
-  if (rect.Intersects(GetRect(false)))
-    *first = this;
-  else if (GetNextToDraw())
-    GetNextToDraw()->SelectFirst(rect, first);
-  else
-    *first = nullptr;
+  for (Cell const &tmp : OnDrawList(this))
+    if (rect.Intersects(tmp.GetRect(false)))
+    {
+      *first = const_cast<Cell *>(&tmp);
+      return;
+    }
+  *first = nullptr;
 }
 
 /***
@@ -1006,10 +1007,9 @@ void Cell::SelectFirst(const wxRect &rect, CellPtr<Cell> *first)
  */
 void Cell::SelectLast(const wxRect &rect, CellPtr<Cell> *last)
 {
-  if (rect.Intersects(GetRect(false)))
-    *last = this;
-  if (GetNextToDraw())
-    GetNextToDraw()->SelectLast(rect, last);
+  for (Cell const &tmp : OnDrawList(this))
+    if (rect.Intersects(tmp.GetRect(false)))
+      *last = const_cast<Cell *>(&tmp);
 }
 
 /***
