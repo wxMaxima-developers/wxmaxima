@@ -6277,9 +6277,11 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
     GetActiveCell()->SelectWordUnderCaret();
   else if (m_cellPointers.m_selectionStart)
   {
+    // FIXME This code path can never get activated, because
+    // OnMouseLeftDown clears the selection.
     GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
-    auto selectionStart = m_cellPointers.m_selectionStart;
-    auto selectionEnd = m_cellPointers.m_selectionEnd;
+    auto &selectionStart = m_cellPointers.m_selectionStart;
+    auto &selectionEnd = m_cellPointers.m_selectionEnd;
     parent->SelectOutput(&selectionStart, &selectionEnd);
   }
 
@@ -7558,8 +7560,8 @@ wxString Worksheet::GetOutputAboveCaret()
   if (!m_hCaretActive || !m_hCaretPosition)
     return {};
 
-  auto selectionStart = m_cellPointers.m_selectionStart;
-  auto selectionEnd = m_cellPointers.m_selectionEnd;
+  auto &selectionStart = m_cellPointers.m_selectionStart;
+  auto &selectionEnd = m_cellPointers.m_selectionEnd;
   m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
 
   wxString output = GetString();
