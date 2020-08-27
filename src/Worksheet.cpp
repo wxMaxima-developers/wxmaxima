@@ -4314,8 +4314,13 @@ void Worksheet::OnTimer(wxTimerEvent &event)
 
       // We only blink the cursor if we have the focus => If we loose the focus
       // we can save batteries by not waking up the CPU unnecessarily.
-      if (!m_hasFocus)
-        m_caretTimer.Stop();
+      if (m_hasFocus)
+      {
+        int blinktime = wxCaret::GetBlinkTime();
+        if (blinktime < 200)
+          blinktime = 200;
+        m_caretTimer.StartOnce(blinktime);
+      }
     }
     break;
   default:
@@ -6868,7 +6873,7 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
     int blinktime = wxCaret::GetBlinkTime();
     if (blinktime < 200)
       blinktime = 200;
-    m_caretTimer.Start(blinktime);
+    m_caretTimer.StartOnce(blinktime);
     m_hCaretActive = false; // we have activated a cell .. disable caret
     m_hCaretPosition = NULL;
   }
@@ -7238,19 +7243,11 @@ void Worksheet::MergeCells()
 void Worksheet::OnSetFocus(wxFocusEvent &event)
 {
   m_hasFocus = true;
-  // We want the cursor to blink in this case
-  int blinktime = wxCaret::GetBlinkTime();
-  if (blinktime < 200)
-    blinktime = 200;
-  m_caretTimer.Start(blinktime);
+  // We want the cursor to blink and to start doing so soon
+  m_caretTimer.StartOnce(1);
   if (GetActiveCell())
     GetActiveCell()->SetFocus(true);
 
-  // And we want the cursor start in its visible phase.
-
-  wxTimerEvent dummy(m_timer);
-  dummy.SetId(CARET_TIMER_ID);
-  OnTimer(dummy);
   event.Skip();
 }
 
