@@ -698,106 +698,105 @@ int GroupCell::GetInputIndent()
 void GroupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-
   Configuration *configuration = (*m_configuration);
 
   if (configuration->ShowBrackets())
     DrawBracket();
 
-  if (DrawThisCell(point))
+  if (!DrawThisCell(point))
+    return;
+
+  if (!TEMPORARY_WINDOWS_PERFORMANCE_HACK)
   {
-    if (!TEMPORARY_WINDOWS_PERFORMANCE_HACK)
-    {
-      if (NeedsRecalculation(m_fontSize))
-        Recalculate();
-    }
-    if (m_updateConfusableCharWarnings)
-      UpdateConfusableCharWarnings();
+    if (NeedsRecalculation(m_fontSize))
+      Recalculate();
+  }
+  if (m_updateConfusableCharWarnings)
+    UpdateConfusableCharWarnings();
 
-    wxDC *dc = configuration->GetDC();
-    // draw a thick line for 'page break'
-    // and return
-    if (m_groupType == GC_TYPE_PAGEBREAK)
-    {
-      wxRect rect = GetRect(false);
-      int y = rect.GetY();
-      wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
-      dc->SetPen(pen);
-      dc->DrawLine(0, y, (*m_configuration)->GetCanvasSize().GetWidth(), y);
-      return;
-    }
-    
+  wxDC *dc = configuration->GetDC();
+  // draw a thick line for 'page break'
+  // and return
+  if (m_groupType == GC_TYPE_PAGEBREAK)
+  {
     wxRect rect = GetRect(false);
-    
-    if(configuration->GetIndent() < rect.GetRight())
+    int y = rect.GetY();
+    wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
+    dc->SetPen(pen);
+    dc->DrawLine(0, y, (*m_configuration)->GetCanvasSize().GetWidth(), y);
+    return;
+  }
+
+  wxRect rect = GetRect(false);
+
+  if(configuration->GetIndent() < rect.GetRight())
+  {
+    if(rect.GetLeft() <= configuration->GetCellBracketWidth())
+      rect.SetLeft(configuration->GetIndent());
+
+    //
+    // Draw input and output
+    //
+    SetPen();
+    wxPoint in(point);
+
+    if ((m_output != NULL) && !IsHidden())
     {
-      if(rect.GetLeft() <= configuration->GetCellBracketWidth())
-        rect.SetLeft(configuration->GetIndent());
-      
-      //
-      // Draw input and output
-      //
-      SetPen();
-      wxPoint in(point);
-
-      if ((m_output != NULL) && !IsHidden())
-      {
-        Cell *tmp = m_output.get();
-        int drop = tmp->GetMaxDrop();
-        if ((configuration->ShowCodeCells()) ||
-            (m_groupType != GC_TYPE_CODE))
-          in.y += m_inputLabel->GetMaxDrop();
-
-        in.y += m_output->GetCenterList();
-        m_outputRect.y = in.y - m_output->GetCenterList();
-        m_outputRect.x = in.x;
-
-        in.x += GetLineIndent(tmp);
-        while (tmp != NULL)
-        {         
-          tmp->Draw(in);
-          if ((tmp->GetNextToDraw() != NULL) && (tmp->GetNextToDraw()->BreakLineHere()))
-            {
-              if (tmp->GetNextToDraw()->HasBigSkip())
-                in.y += MC_LINE_SKIP;
- 
-              in.x = point.x + GetLineIndent(tmp->GetNextToDraw());              
-
-              in.y += drop + tmp->GetNextToDraw()->GetCenterList();
-              drop = tmp->GetNextToDraw()->GetMaxDrop();
-            }
-          else
-            in.x += tmp->GetWidth();
-
-          tmp = tmp->GetNextToDraw();
-        }
-      }
+      Cell *tmp = m_output.get();
+      int drop = tmp->GetMaxDrop();
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
+        in.y += m_inputLabel->GetMaxDrop();
+
+      in.y += m_output->GetCenterList();
+      m_outputRect.y = in.y - m_output->GetCenterList();
+      m_outputRect.x = in.x;
+
+      in.x += GetLineIndent(tmp);
+      while (tmp != NULL)
       {
-        configuration->Outdated(false);
+        tmp->Draw(in);
+        if ((tmp->GetNextToDraw() != NULL) && (tmp->GetNextToDraw()->BreakLineHere()))
+          {
+            if (tmp->GetNextToDraw()->HasBigSkip())
+              in.y += MC_LINE_SKIP;
 
-        EditorCell *input = GetInput();
-        if(input)
-        {
-          in = point;
-          input->Draw(
-            wxPoint(
-              in.x + GetInputIndent(),
-              in.y
-              )
-            );
-        }
-        
-        if(GetPrompt() != NULL)
-          GetPrompt()->Draw(point);
+            in.x = point.x + GetLineIndent(tmp->GetNextToDraw());
 
-        if (m_groupType == GC_TYPE_CODE && input)
-          configuration->Outdated(input->ContainsChanges());
+            in.y += drop + tmp->GetNextToDraw()->GetCenterList();
+            drop = tmp->GetNextToDraw()->GetMaxDrop();
+          }
+        else
+          in.x += tmp->GetWidth();
+
+        tmp = tmp->GetNextToDraw();
       }
     }
-    configuration->Outdated(false); 
+    if ((configuration->ShowCodeCells()) ||
+        (m_groupType != GC_TYPE_CODE))
+    {
+      configuration->Outdated(false);
+
+      EditorCell *input = GetInput();
+      if(input)
+      {
+        in = point;
+        input->Draw(
+          wxPoint(
+            in.x + GetInputIndent(),
+            in.y
+            )
+          );
+      }
+
+      if(GetPrompt() != NULL)
+        GetPrompt()->Draw(point);
+
+      if (m_groupType == GC_TYPE_CODE && input)
+        configuration->Outdated(input->ContainsChanges());
+    }
   }
+  configuration->Outdated(false);
 }
 
 wxRect GroupCell::GetRect(bool WXUNUSED(all)) const
