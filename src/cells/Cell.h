@@ -495,31 +495,22 @@ public:
   //! Get the last cell in this list of cells
   Cell *last() const;
 
-  /*! Select a rectangle using the mouse
+  struct Range {
+    Cell *first, *last;
+  };
 
-    \param rect The rectangle to select
-    \param first Returns the first cell of the rectangle
-    \param last Returns the last cell of the rectangle
+  /*! Returns the first and last cells within the given rectangle, recursing
+   * into the inner cells.
    */
-  void SelectRect(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last);
+  Range GetCellsInRect(const wxRect &rect) const;
 
-  /*! The top left of the rectangle the mouse has selected
-
-    \param rect The rectangle the mouse selected
-    \param first Returns the first cell of the rectangle
+  /*! Returns the first and last cells within the given rectangle, without recursing
+   * into the inner cells.
    */
-  void SelectFirst(const wxRect &rect, CellPtr<Cell> *first);
+  Range GetListCellsInRect(const wxRect &rect) const;
 
-  /*! The bottom right of the rectangle the mouse has selected
-
-    \param rect The rectangle the mouse selected
-    \param last Returns the last cell of the rectangle
-   */
-  void SelectLast(const wxRect &rect, CellPtr<Cell> *last);
-
-  /*! Select the cells inside this cell described by the rectangle rect.
-  */
-  virtual void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last);
+  //! Select the cells inside this cell described by the rectangle rect.
+  virtual Range GetInnerCellsInRect(const wxRect &rect) const;
 
   //! Is this cell an operator?
   virtual bool IsOperator() const { return false; }

@@ -1448,89 +1448,61 @@ wxString GroupCell::ToXML() const
   return str;
 }
 
-void GroupCell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
+Cell::Range GroupCell::GetInnerCellsInRect(const wxRect &rect) const
 {
-  *first = *last = nullptr;
-
   if (m_inputLabel->ContainsRect(rect))
-    m_inputLabel->SelectRect(rect, first, last);
-  else if (m_output != NULL && !IsHidden() && m_outputRect.Contains(rect))
-    m_output->SelectRect(rect, first, last);
-
-  if (!*first || !*last)
-  {
-    *first = this;
-    *last = this;
-  }
+    return m_inputLabel->GetCellsInRect(rect);
+  if (m_output && !IsHidden() && m_outputRect.Contains(rect))
+    return m_output->GetCellsInRect(rect);
+  return {const_cast<GroupCell*>(this), const_cast<GroupCell*>(this)};
 }
 
-void GroupCell::SelectRectInOutput(const wxRect &rect, const wxPoint one, const wxPoint two,
-                                   CellPtr<Cell> *first, CellPtr<Cell> *last)
+Cell::Range GroupCell::GetCellsInOutputRect(const wxRect &rect, const wxPoint one, const wxPoint two) const
 {
   if (IsHidden())
-    return;
+    return {};
 
-  wxPoint start, end;
-
+  wxPoint start = two, end = one;
   if (one.y < two.y || (one.y == two.y && one.x < two.x))
   {
     start = one;
     end = two;
   }
-  else
-  {
-    start = two;
-    end = one;
-  }
 
   // Lets select a rectangle
-  Cell *tmp = m_output.get();
-  *first = *last = nullptr;
+  Range r = m_output->GetListCellsInRect(rect);
 
-  while (tmp != NULL && !rect.Intersects(tmp->GetRect()))
-    tmp = tmp->GetNextToDraw();
-  *first = tmp;
-  *last = tmp;
-  while (tmp != NULL)
+  if (!r.first)
+    return {};
+
+  wxASSERT(r.last);
+
+  // If selection is on multiple lines, we need to correct it
+  if (r.first->GetCurrentY() != r.last->GetCurrentY())
   {
-    if (rect.Intersects(tmp->GetRect()))
-      *last = tmp;
-    tmp = tmp->GetNextToDraw();
-  }
+    Cell *const tmp = r.last;
 
-  if (*first && *last)
-  {
+    // Find the first cell in selection
+    while (r.first != tmp &&
+           ((r.first)->GetCurrentX() + (r.first)->GetWidth() < start.x
+            || (r.first)->GetCurrentY() + (r.first)->GetDrop() < start.y))
+      r.first = (r.first)->GetNextToDraw();
 
-    // If selection is on multiple lines, we need to correct it
-    if ((*first)->GetCurrentY() != (*last)->GetCurrentY())
+    // Find the last cell in selection
+    r.last = r.first;
+    for (Cell &curr : OnDrawList(r.first->GetNext()))
     {
-      tmp = *last;
-      Cell *curr;
-
-      // Find the first cell in selection
-      while (*first != tmp &&
-             ((*first)->GetCurrentX() + (*first)->GetWidth() < start.x
-              || (*first)->GetCurrentY() + (*first)->GetDrop() < start.y))
-        *first = (*first)->GetNextToDraw();
-
-      // Find the last cell in selection
-      curr = *last = *first;
-      while (1)
-      {
-        curr = curr->GetNextToDraw();
-        if (!curr)
-          break;
-        if (curr->GetCurrentX() <= end.x &&
-            curr->GetCurrentY() - curr->GetCenterList() <= end.y)
-          *last = curr;
-        if (curr == tmp)
-          break;
-      }
+      if (curr.GetCurrentX() <= end.x &&
+          curr.GetCurrentY() - curr.GetCenterList() <= end.y)
+        r.last = &curr;
+      if (&curr == tmp)
+        break;
     }
-
-    if (*first == *last)
-      (*first)->SelectInner(rect, first, last);
   }
+
+  if (r.first == r.last)
+    r = r.first->GetInnerCellsInRect(rect);
+  return r;
 }
 
 const wxString &GroupCell::GetToolTip(const wxPoint point) const
@@ -1649,27 +1621,24 @@ void GroupCell::BreakLines()
   ResetCellListSizes();
 }
 
-void GroupCell::SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end)
+Cell::Range GroupCell::GetCellsInOutput() const
 {
   if (IsHidden())
-    return;
+    return {};
 
-  *start = m_output;
+  Range r = {};
 
-  while (*start && ((*start)->GetStyle() != TS_LABEL) && ((*start)->GetStyle() != TS_USERLABEL))
-    *start = (*start)->GetNextToDraw();
+  for (Cell &tmp : OnDrawList(m_output.get()))
+  {
+    r.first = &tmp;
+    if (tmp.GetStyle() == TS_LABEL || tmp.GetStyle() == TS_USERLABEL)
+      break;
+  }
 
+  for (Cell &tmp : OnDrawList(r.first))
+    r.last = &tmp;
 
-  if (*start)
-    *start = (*start)->GetNextToDraw();
-
-  *end = *start;
-
-  while (*end && (*end)->GetNextToDraw())
-    *end = (*end)->GetNextToDraw();
-
-  if (!*end || !*start)
-    *end = *start = nullptr;
+  return r;
 }
 
 bool GroupCell::BreakUpCells(Cell *cell)
