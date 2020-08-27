@@ -287,13 +287,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     FloatingSize(m_logPane->GetEffectiveMinSize()).
                     Left());
 
-  wxPanel *variables = new wxPanel(this,wxID_ANY);
-  wxWindowUpdateLocker variablesBlocker(variables);
-  m_worksheet->m_variablesPane = new Variablespane(variables,wxID_ANY);
-  wxSizer *variablesSizer = new wxBoxSizer(wxVERTICAL);
-  variablesSizer->Add(m_worksheet->m_variablesPane,wxSizerFlags().Expand());
-  variables->SetSizerAndFit(variablesSizer);
-  m_manager.AddPane(variables,
+  m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
+  wxWindowUpdateLocker variablesBlocker(m_worksheet->m_variablesPane);
+  m_manager.AddPane(m_worksheet->m_variablesPane,
                     wxAuiPaneInfo().Name(wxT("variables")).
                             CloseButton(true).
                             DockFixed(false).
@@ -303,7 +299,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             LeftDockable(true).
                             RightDockable(true).
                             PaneBorder(true).
-                            FloatingSize(variables->GetEffectiveMinSize()).
+                            FloatingSize(m_worksheet->m_variablesPane->GetEffectiveMinSize()).
                             Bottom());
 
   m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration, m_worksheet);
