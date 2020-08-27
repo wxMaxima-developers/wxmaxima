@@ -177,18 +177,6 @@ askinteger(n);
 kill(y)$kill(n)$
 /* [wxMaxima: input   end   ] */
 /* [wxMaxima: question  start ] */
-<math><st>Is </st><mi>n</mi><st> an </st><mi>integer</mi><st>?</st></math>
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-n;
-/* [wxMaxima: answer  end   ] */
-/* [wxMaxima: question  start ] */
-Question #2
-/* [wxMaxima: question  end   ] */
-/* [wxMaxima: answer  start ] */
-n;
-/* [wxMaxima: answer  end   ] */
-/* [wxMaxima: question  start ] */
 <math><st>Is </st><mi>y</mi><st> an </st><mi>integer</mi><st>?</st></math>
 /* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
@@ -199,6 +187,18 @@ Question #1
 /* [wxMaxima: question  end   ] */
 /* [wxMaxima: answer  start ] */
 y;
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: question  start ] */
+Question #2
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+n;
+/* [wxMaxima: answer  end   ] */
+/* [wxMaxima: question  start ] */
+<math><st>Is </st><mi>n</mi><st> an </st><mi>integer</mi><st>?</st></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+n;
 /* [wxMaxima: answer  end   ] */
 /* [wxMaxima: autoanswer    ] */
 
@@ -469,6 +469,32 @@ Square parenthesis
 
 /* [wxMaxima: input   start ] */
 lmxchar:"["$rmxchar:"]"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+No parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:" "$rmxchar:" "$
 /* [wxMaxima: input   end   ] */
 
 
