@@ -409,8 +409,8 @@ public:
   void UpdateYPositionList();
 
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
-  void SetSuppressTooltipMarker(bool suppress)
-    {m_suppressTooltipMarker = suppress;}
+  void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
+
 protected:
   bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();
@@ -465,6 +465,7 @@ protected:
     m_inEvaluationQueue = false;
     m_lastInEvaluationQueue = false;
     m_updateConfusableCharWarnings = true;
+    m_suppressTooltipMarker = false;
   }
 
   //! Does this GroupCell automatically fill in the answer to questions?
@@ -472,6 +473,8 @@ protected:
   bool m_inEvaluationQueue : 1 /* InitBitFields */;
   bool m_lastInEvaluationQueue : 1 /* InitBitFields */;
   bool m_updateConfusableCharWarnings : 1 /* InitBitFields */;
+  //! Suppress the yellow ToolTip marker?
+  bool m_suppressTooltipMarker : 1 /* InitBitFields */;
 
   static wxString m_lookalikeChars;
 };
