@@ -10151,7 +10151,6 @@ int wxMaxima::SaveDocumentP()
   if (m_worksheet->m_currentFile.IsEmpty())
   {
     // Check if we want to save modified untitled documents on exit
-    bool save = true;
     if (!m_worksheet->m_configuration->SaveUntitled())
       return wxID_NO;
 

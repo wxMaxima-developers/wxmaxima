@@ -86,14 +86,11 @@ wxString CsvImportWiz::GetSeparator()
 
 void CsvImportWiz::OnBrowse(wxCommandEvent&  WXUNUSED(event))
 {
-  wxConfigBase *config = wxConfig::Get();
-  wxString file = wxFileSelector(_("Select csv file to read"),
-                                 wxEmptyString, wxEmptyString,
-                                 wxEmptyString,
-                                 _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"),
-                                 wxFD_OPEN);
+  auto file = wxFileSelector(
+      _("Select csv file to read"), {}, {}, {},
+      _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"), wxFD_OPEN);
 
-  if (file.Length())
+  if (!file.empty())
     m_filename->SetValue(file);
 }
 
@@ -162,14 +159,11 @@ wxString CsvExportWiz::GetSeparator()
 
 void CsvExportWiz::OnBrowse(wxCommandEvent&  WXUNUSED(event))
 {
-  wxConfigBase *config = wxConfig::Get();
-  wxString file = wxFileSelector(_("Select csv file to read"),
-                                 wxEmptyString, wxEmptyString,
-                                 wxEmptyString,
-                                 _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"),
-                                 wxFD_SAVE);
+  auto file = wxFileSelector(
+      _("Select csv file to read"), {}, {}, {},
+      _("Csv files (*.csv)|*.csv|Text files (*.txt)|*.txt|All|*"), wxFD_SAVE);
 
-  if (file.Length())
+  if (!file.empty())
     m_filename->SetValue(file);
 }
 
