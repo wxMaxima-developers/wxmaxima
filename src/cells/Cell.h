@@ -252,6 +252,11 @@ public:
   */
   virtual bool BreakUp();
 
+protected:
+  //! Break up the internal cells of this cell, and mark it as broken up.
+  void BreakUpAndMark();
+
+public:
   /*! Is a part of this cell inside a certain rectangle?
 
     \param sm The rectangle to test for collision with this cell

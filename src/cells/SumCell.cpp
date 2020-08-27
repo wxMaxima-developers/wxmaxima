@@ -410,9 +410,8 @@ bool SumCell::BreakUp()
     return false;
 
   MakeBreakUpCells();
-  Cell::BreakUp();
+  Cell::BreakUpAndMark();
   m_displayParen = false;
-  m_isBrokenIntoLines = true;
 
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;

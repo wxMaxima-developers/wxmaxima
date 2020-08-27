@@ -224,8 +224,7 @@ bool LimitCell::BreakUp()
     return false;
 
   MakeBreakUpCells();
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
+  Cell::BreakUpAndMark();
   m_name->last()->SetNextToDraw(m_open);
   m_open->SetNextToDraw(m_base);
   m_base->last()->SetNextToDraw(m_comma);

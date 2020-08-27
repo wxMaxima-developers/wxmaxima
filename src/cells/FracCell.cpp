@@ -334,8 +334,7 @@ bool FracCell::BreakUp()
     return false;
 
   MakeDivideCell();
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
+  Cell::BreakUpAndMark();
   if(Num() && Num()->GetNext())
     m_displayedNum = m_numParenthesis.get();
   if(Denom() && Denom()->GetNext())

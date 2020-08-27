@@ -526,9 +526,7 @@ bool IntCell::BreakUp()
     return false;
 
   MakeBreakUpCells();
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
-
+  Cell::BreakUpAndMark();
   m_close->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_open;
   m_open->last()->SetNextToDraw(m_base);

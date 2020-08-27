@@ -462,8 +462,7 @@ bool ParenCell::BreakUp()
   if (IsBrokenIntoLines())
     return false;
 
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
+  Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_close);
   m_close->SetNextToDraw(m_nextToDraw);

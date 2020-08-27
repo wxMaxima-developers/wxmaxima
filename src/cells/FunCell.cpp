@@ -160,8 +160,7 @@ bool FunCell::BreakUp()
   if (IsBrokenIntoLines())
     return false;
 
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
+  Cell::BreakUpAndMark();
   m_nameCell->last()->SetNextToDraw(m_argCell);
   m_argCell->last()->SetNextToDraw(m_nextToDraw);
   m_nextToDraw = m_nameCell;

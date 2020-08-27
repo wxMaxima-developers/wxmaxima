@@ -1093,6 +1093,12 @@ bool Cell::BreakUp()
   return retval;
 }
 
+void Cell::BreakUpAndMark()
+{
+  Cell::BreakUp();
+  m_isBrokenIntoLines = true;
+}
+
 void Cell::Unbreak()
 {
   if(m_isBrokenIntoLines)

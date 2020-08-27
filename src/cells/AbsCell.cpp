@@ -161,8 +161,7 @@ bool AbsCell::BreakUp()
     return false;
 
   MakeBreakupCells();
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
+  Cell::BreakUpAndMark();
   m_open->SetNextToDraw(m_innerCell);
   m_innerCell->last()->SetNextToDraw(m_close);
   m_close->SetNextToDraw(m_nextToDraw);

@@ -211,8 +211,7 @@ bool ExptCell::BreakUp()
     return false;
 
   MakeBreakupCells();
-  Cell::BreakUp();
-  m_isBrokenIntoLines = true;
+  Cell::BreakUpAndMark();
   m_baseCell->last()->SetNextToDraw(m_exp);
   m_exp->SetNextToDraw(m_open);
   m_open->SetNextToDraw(m_exptCell);
