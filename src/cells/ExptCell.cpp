@@ -91,12 +91,12 @@ void ExptCell::Recalculate(AFontSize fontsize)
     return;
 
   m_baseCell->RecalculateList(fontsize);
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     m_exptCell->RecalculateList(fontsize);
   else
     m_exptCell->RecalculateList({ MC_MIN_SIZE, fontsize - EXPT_DEC });
   
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
   {
     m_height = m_width = m_center = 0;
     m_exp->RecalculateList(fontsize);
@@ -130,7 +130,7 @@ wxString ExptCell::ToString() const
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
@@ -146,7 +146,7 @@ wxString ExptCell::ToMatlab() const
 {
   if (m_altCopyText != wxEmptyString)
 	return m_altCopyText;
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
 	return wxEmptyString;
   wxString s = m_baseCell->ListToMatlab() + wxT("^");
   if (m_isMatrix)
@@ -160,7 +160,7 @@ wxString ExptCell::ToMatlab() const
 
 wxString ExptCell::ToTeX() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
                m_exptCell->ListToTeX() + wxT("}}");
@@ -195,7 +195,7 @@ wxString ExptCell::ToOMML() const
 
 wxString ExptCell::ToXML() const
 {
-//  if (m_isBrokenIntoLines)
+//  if (IsBrokenIntoLines())
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
@@ -207,21 +207,20 @@ wxString ExptCell::ToXML() const
 
 bool ExptCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakupCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_baseCell->last()->SetNextToDraw(m_exp);
-    m_exp->SetNextToDraw(m_open);
-    m_open->SetNextToDraw(m_exptCell);
-    m_exptCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_baseCell;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  if (IsBrokenIntoLines())
+    return false;
+
+  MakeBreakupCells();
+  Cell::BreakUp();
+  m_isBrokenIntoLines = true;
+  m_baseCell->last()->SetNextToDraw(m_exp);
+  m_exp->SetNextToDraw(m_open);
+  m_open->SetNextToDraw(m_exptCell);
+  m_exptCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_baseCell;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }

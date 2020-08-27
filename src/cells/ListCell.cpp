@@ -67,7 +67,7 @@ ListCell::ListCell(const ListCell &cell):
     ListCell(cell.m_group, cell.m_configuration, CopyList(cell.m_innerCell.get()))
 {
   CopyCommonData(cell);
-  m_isBrokenIntoLines = cell.m_isBrokenIntoLines;
+  m_isBrokenIntoLines = cell.IsBrokenIntoLines();
 }
 
 DEFINE_CELL(ListCell)
@@ -97,7 +97,7 @@ void ListCell::Recalculate(AFontSize fontsize)
     m_signHeight = m_innerCell->GetHeightList();
   }
   
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
   {
     m_width = 0;
     m_height = 0;
@@ -167,7 +167,7 @@ void ListCell::Draw(wxPoint point)
       adc->DrawLines(4, pointsR);
     }
     
-    if(!m_isBrokenIntoLines)
+    if(!IsBrokenIntoLines())
       m_innerCell->DrawList(innerCellPos);
   }
 }
@@ -178,7 +178,7 @@ wxString ListCell::ToString() const
   if(!m_innerCell)
     return "[]";
   
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
       s = wxT("[") + m_innerCell->ListToString() + wxT("]");
   return s;
 }
@@ -186,7 +186,7 @@ wxString ListCell::ToString() const
 wxString ListCell::ToMatlab() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
 	  s = wxT("[") + m_innerCell->ListToMatlab() + wxT("]");
   return s;
 }
@@ -194,7 +194,7 @@ wxString ListCell::ToMatlab() const
 wxString ListCell::ToTeX() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
     wxString innerCell = m_innerCell->ListToTeX();
 
@@ -245,26 +245,25 @@ wxString ListCell::ToXML() const
 
 bool ListCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell);
-    m_innerCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
+  if (IsBrokenIntoLines())
+    return false;
 
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  Cell::BreakUp();
+  m_isBrokenIntoLines = true;
+  m_open->SetNextToDraw(m_innerCell);
+  m_innerCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void ListCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;

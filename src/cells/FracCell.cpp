@@ -66,7 +66,7 @@ void FracCell::Recalculate(AFontSize fontsize)
 {
   if(!NeedsRecalculation(fontsize))
     return;
-  if(m_inExponent || m_isBrokenIntoLines)
+  if(m_inExponent || IsBrokenIntoLines())
   {
     m_displayedNum->RecalculateList(fontsize);
     m_displayedDenom->RecalculateList(fontsize);
@@ -78,7 +78,7 @@ void FracCell::Recalculate(AFontSize fontsize)
     m_displayedDenom->RecalculateList({ MC_MIN_SIZE, fontsize - FRAC_DEC });
   }
   
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
   {
     m_height = 0;
     m_center = 0;
@@ -131,7 +131,7 @@ void FracCell::Draw(wxPoint point)
     wxDC *dc = configuration->GetDC();
     wxPoint num, denom;
 
-    if(m_isBrokenIntoLines)
+    if(IsBrokenIntoLines())
       return;
     
     if (m_inExponent)
@@ -171,7 +171,7 @@ void FracCell::Draw(wxPoint point)
 wxString FracCell::ToString() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
     if (m_fracStyle == FC_NORMAL)
     {
@@ -214,7 +214,7 @@ wxString FracCell::ToString() const
 wxString FracCell::ToMatlab() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
 	if (m_fracStyle == FC_NORMAL)
 	{
@@ -255,7 +255,7 @@ wxString FracCell::ToMatlab() const
 wxString FracCell::ToTeX() const
 {
   wxString s;
-  if (!m_isBrokenIntoLines)
+  if (!IsBrokenIntoLines())
   {
     if (m_fracStyle == FC_CHOOSE)
     {
@@ -330,34 +330,30 @@ void FracCell::SetupBreakUps()
 
 bool FracCell::BreakUp()
 {
-  if (m_fracStyle == FC_DIFF)
+  if (m_fracStyle == FC_DIFF || IsBrokenIntoLines())
     return false;
 
-  if (!m_isBrokenIntoLines)
-  {
-    MakeDivideCell();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    if(Num() && Num()->GetNext())
-      m_displayedNum = m_numParenthesis.get();
-    if(Denom() && Denom()->GetNext())
-      m_displayedDenom = m_denomParenthesis.get();
-    // Note: Yes, we don't want m_displayedNum->last() here.
-    m_displayedNum->SetNextToDraw(m_divide);
-    m_divide->SetNextToDraw(m_displayedDenom);
-    m_displayedDenom->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_displayedNum;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  MakeDivideCell();
+  Cell::BreakUp();
+  m_isBrokenIntoLines = true;
+  if(Num() && Num()->GetNext())
+    m_displayedNum = m_numParenthesis.get();
+  if(Denom() && Denom()->GetNext())
+    m_displayedDenom = m_denomParenthesis.get();
+  // Note: Yes, we don't want m_displayedNum->last() here.
+  m_displayedNum->SetNextToDraw(m_divide);
+  m_divide->SetNextToDraw(m_displayedDenom);
+  m_displayedDenom->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_displayedNum;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void FracCell::SetNextToDraw(Cell *next)
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     m_displayedDenom->SetNextToDraw(next);
   else
     m_nextToDraw = next;

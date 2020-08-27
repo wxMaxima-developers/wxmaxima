@@ -66,7 +66,7 @@ void AbsCell::Recalculate(AFontSize fontsize)
     return;
 
   m_innerCell->RecalculateList(fontsize);
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
   {
     m_width = 0;
     m_height = 0;
@@ -109,7 +109,7 @@ void AbsCell::Draw(wxPoint point)
 
 wxString AbsCell::ToString() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   wxString s;
   s = wxT("abs(") + m_innerCell->ListToString() + wxT(")");
@@ -118,7 +118,7 @@ wxString AbsCell::ToString() const
 
 wxString AbsCell::ToMatlab() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
 	return wxEmptyString;
   wxString s;
   s = wxT("abs(") + m_innerCell->ListToMatlab() + wxT(")");
@@ -127,7 +127,7 @@ wxString AbsCell::ToMatlab() const
 
 wxString AbsCell::ToTeX() const
 {
-  if (m_isBrokenIntoLines)
+  if (IsBrokenIntoLines())
     return wxEmptyString;
   return wxT("\\left| ") + m_innerCell->ListToTeX() + wxT("\\right| ");
 }
@@ -157,26 +157,25 @@ wxString AbsCell::ToXML() const
 
 bool AbsCell::BreakUp()
 {
-  if (!m_isBrokenIntoLines)
-  {
-    MakeBreakupCells();
-    Cell::BreakUp();
-    m_isBrokenIntoLines = true;
-    m_open->SetNextToDraw(m_innerCell);
-    m_innerCell->last()->SetNextToDraw(m_close);
-    m_close->SetNextToDraw(m_nextToDraw);
-    m_nextToDraw = m_open;
-    ResetCellListSizes();
-    m_height = 0;
-    m_center = 0;
-    return true;
-  }
-  return false;
+  if (IsBrokenIntoLines())
+    return false;
+
+  MakeBreakupCells();
+  Cell::BreakUp();
+  m_isBrokenIntoLines = true;
+  m_open->SetNextToDraw(m_innerCell);
+  m_innerCell->last()->SetNextToDraw(m_close);
+  m_close->SetNextToDraw(m_nextToDraw);
+  m_nextToDraw = m_open;
+  ResetCellListSizes();
+  m_height = 0;
+  m_center = 0;
+  return true;
 }
 
 void AbsCell::SetNextToDraw(Cell *next)
 {
-  if(m_isBrokenIntoLines)
+  if(IsBrokenIntoLines())
     m_close->SetNextToDraw(next);
   else
     m_nextToDraw = next;
