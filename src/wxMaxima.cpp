@@ -4294,6 +4294,9 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData)
   if (newData.empty())
     return false;
 
+  // Speed up things if we want to output more than one line of data in this step
+  wxWindowUpdateLocker logBlocker(m_logPane);
+
   if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
     m_xmlInspector->Add_FromMaxima(newData);
   // This way we can avoid searching the whole string for a
@@ -4653,12 +4656,10 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
 
 void wxMaxima::UpdateMenus()
 {
-  wxWindowUpdateLocker speedUp(this);
   if (!m_worksheet)
     return;
   wxASSERT_MSG((!m_worksheet->HCaretActive()) || (m_worksheet->GetActiveCell() == NULL),
                _("Both horizontal and vertical cursor active at the same time"));
-
   m_MenuBar->EnableItem(wxID_COPY, m_worksheet->CanCopy(true));
   m_MenuBar->EnableItem(wxID_CUT, m_worksheet->CanCut());
   m_MenuBar->EnableItem(menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
@@ -8057,7 +8058,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     {
       m_worksheet->m_configuration->SetKeepPercent(event.IsChecked());
       m_worksheet->RequestRedraw();
-      m_worksheet->Refresh();
       break;
     }
     case menu_num_domain:

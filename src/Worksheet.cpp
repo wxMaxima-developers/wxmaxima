@@ -239,7 +239,6 @@ wxSize Worksheet::DoGetBestClientSize() const
 bool Worksheet::RedrawIfRequested()
 {
   bool redrawIssued = false;
-
   RecalculateIfNeeded();
 
   if(m_mouseMotionWas)
@@ -3036,9 +3035,9 @@ void Worksheet::Evaluate()
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
+  RequestRedraw();
   m_updateControls = true;
   ClearNotification();
-
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
   m_keyboardInactiveTimer.StartOnce(10000);
@@ -4061,6 +4060,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
 #if defined __WXMSW__
   if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
     event.Skip();
+    return;
   }
 #endif
 
@@ -4121,6 +4121,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
   }
   else
     OnCharNoActive(event);
+  RequestRedraw();
 }
 
 /***
@@ -7242,6 +7243,7 @@ void Worksheet::MergeCells()
 
 void Worksheet::OnSetFocus(wxFocusEvent &event)
 {
+  return;
   m_hasFocus = true;
   // We want the cursor to blink and to start doing so soon
   m_caretTimer.StartOnce(1);
@@ -7253,6 +7255,7 @@ void Worksheet::OnSetFocus(wxFocusEvent &event)
 
 void Worksheet::OnKillFocus(wxFocusEvent &event)
 {
+  return;
   m_hasFocus = false;
   if (GetActiveCell())
     GetActiveCell()->SetFocus(false);
@@ -7760,7 +7763,7 @@ void Worksheet::Replace(const wxString &oldString, const wxString &newString, bo
     group->ResetSize();
     GetActiveCell()->ResetSize();
     Recalculate();
-    Refresh();
+    RequestRedraw();
   }
   GetActiveCell()->SearchStartedHere();
 }

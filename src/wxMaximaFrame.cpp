@@ -501,7 +501,6 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
       (!m_bytesReadDisplayTimer.IsRunning() && (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
        (m_StatusMaximaBusy_next == transferring)))
   {
-    wxWindowUpdateLocker drawBlocker(this);
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     if (!m_StatusSaving)
     {
