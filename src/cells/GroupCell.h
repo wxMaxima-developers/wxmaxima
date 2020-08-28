@@ -144,13 +144,11 @@ public:
   void SetGroup(GroupCell *parent) override; // setting parent for all mathcells in GC
 
   // selection methods
-  void SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last) override;
+  Range GetInnerCellsInRect(const wxRect &rect) const override;
 
-  // cppcheck-suppress functionConst
-  void SelectOutput(CellPtr<Cell> *start, CellPtr<Cell> *end);
+  Range GetCellsInOutput() const;
 
-  // cppcheck-suppress functionConst
-  void SelectRectInOutput(const wxRect &rect, wxPoint one, wxPoint two, CellPtr<Cell> *first, CellPtr<Cell> *last);
+  Range GetCellsInOutputRect(const wxRect &rect, wxPoint one, wxPoint two) const;
 
   // methods for manipulating GroupCell
   // cppcheck-suppress functionConst

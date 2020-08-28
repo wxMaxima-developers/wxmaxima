@@ -1868,8 +1868,9 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
   {
     wxRect rect2(m_down.x, m_down.y, 1, 1);
     wxPoint mmm(m_down.x + 1, m_down.y + 1);
-    clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
-                                    &m_cellPointers.m_selectionStart, &m_cellPointers.m_selectionEnd);
+    auto const sel = clickedInGC->GetCellsInOutputRect(rect2, m_down, mmm);
+    m_cellPointers.m_selectionStart = sel.first;
+    m_cellPointers.m_selectionEnd = sel.last;
     if (m_cellPointers.m_selectionStart)
     {
       m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
@@ -2276,7 +2277,11 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
       rect.height = wxMax(abs(down.y - up.y), 1);
 
       if (m_clickInGC)
-        m_clickInGC->SelectRectInOutput(rect, down, up, &m_cellPointers.m_selectionStart, &m_cellPointers.m_selectionEnd);
+      {
+        auto const sel = m_clickInGC->GetCellsInOutputRect(rect, down, up);
+        m_cellPointers.m_selectionStart = sel.first;
+        m_cellPointers.m_selectionEnd = sel.last;
+      }
       break;
 
     default:
@@ -6277,10 +6282,12 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
     GetActiveCell()->SelectWordUnderCaret();
   else if (m_cellPointers.m_selectionStart)
   {
+    // FIXME This code path can never get activated, because
+    // OnMouseLeftDown clears the selection.
     GroupCell *parent = m_cellPointers.m_selectionStart->GetGroup();
-    auto selectionStart = m_cellPointers.m_selectionStart;
-    auto selectionEnd = m_cellPointers.m_selectionEnd;
-    parent->SelectOutput(&selectionStart, &selectionEnd);
+    auto sel = parent->GetCellsInOutput();
+    m_cellPointers.m_selectionStart = sel.first;
+    m_cellPointers.m_selectionEnd = sel.last;
   }
 
   RequestRedraw();
@@ -7558,9 +7565,9 @@ wxString Worksheet::GetOutputAboveCaret()
   if (!m_hCaretActive || !m_hCaretPosition)
     return {};
 
-  auto selectionStart = m_cellPointers.m_selectionStart;
-  auto selectionEnd = m_cellPointers.m_selectionEnd;
-  m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
+  auto const sel = m_hCaretPosition->GetCellsInOutput();
+  m_cellPointers.m_selectionStart = sel.first;
+  m_cellPointers.m_selectionEnd = sel.last;
 
   wxString output = GetString();
 

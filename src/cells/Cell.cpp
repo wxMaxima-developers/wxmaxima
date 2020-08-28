@@ -974,65 +974,40 @@ wxString Cell::GetDiffPart() const
   return wxEmptyString;
 }
 
-/***
- * Find the first and last cell in rectangle rect in this line.
- */
-void Cell::SelectRect(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
+Cell::Range Cell::GetCellsInRect(const wxRect &rect) const
 {
-  SelectFirst(rect, first);
-  if (*first)
-  {
-    *last = *first;
-    (*first)->SelectLast(rect, last);
-    if (*last == *first)
-      (*first)->SelectInner(rect, first, last);
-  }
-  else
-    *last = nullptr;
+  Range r = GetListCellsInRect(rect);
+  if (r.first && r.last == r.first)
+      return r.first->GetInnerCellsInRect(rect);
+  return r;
 }
 
-/***
- * Find the first cell in rectangle rect in this line.
- */
-void Cell::SelectFirst(const wxRect &rect, CellPtr<Cell> *first)
+Cell::Range Cell::GetListCellsInRect(const wxRect &rect) const
 {
+  Range r = {};
   for (Cell const &tmp : OnDrawList(this))
     if (rect.Intersects(tmp.GetRect(false)))
     {
-      *first = const_cast<Cell *>(&tmp);
-      return;
+      auto *const cell = const_cast<Cell *>(&tmp);
+      if (!r.first)
+        r.first = cell;
+      r.last = cell;
     }
-  *first = nullptr;
+  return r;
 }
 
-/***
- * Find the last cell in rectangle rect in this line.
- */
-void Cell::SelectLast(const wxRect &rect, CellPtr<Cell> *last)
+Cell::Range Cell::GetInnerCellsInRect(const wxRect &rect) const
 {
-  for (Cell const &tmp : OnDrawList(this))
-    if (rect.Intersects(tmp.GetRect(false)))
-      *last = const_cast<Cell *>(&tmp);
-}
-
-/***
- * Select rectangle in deeper cell
- */
-void Cell::SelectInner(const wxRect &rect, CellPtr<Cell> *first, CellPtr<Cell> *last)
-{
-  *first = nullptr;
-  *last = nullptr;
-
-  for (Cell &cell : OnInner(this))
-    for (Cell &tmp : OnList(&cell))
+  Range r = {const_cast<Cell*>(this), const_cast<Cell*>(this)};
+  for (Cell const &cell : OnInner(this))
+    for (Cell const &tmp : OnList(&cell))
       if (tmp.ContainsRect(rect))
-        tmp.SelectRect(rect, first, last);
+      {
+        r = GetCellsInRect(rect);
+        wxASSERT(r.first);
+      }
 
-  if (!*first || !*last)
-  {
-    *first = this;
-    *last = this;
-  }
+  return r;
 }
 
 bool Cell::ContainsRect(const wxRect &sm, bool all) const
