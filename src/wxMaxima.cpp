@@ -4295,7 +4295,6 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData)
     return false;
 
   // Speed up things if we want to output more than one line of data in this step
-  wxWindowUpdateLocker logBlocker(m_logPane);
 
   if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
     m_xmlInspector->Add_FromMaxima(newData);
