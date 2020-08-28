@@ -640,9 +640,6 @@ public:
   template <typename T, typename Del,
             typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
-  template <typename T, typename
-                       std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
-  void SetNextToDraw(const CellPtr<T> &ptr) { SetNextToDraw(ptr.get()); }
 
   /*! Determine if this cell contains text that isn't code
 
