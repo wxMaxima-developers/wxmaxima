@@ -3035,7 +3035,6 @@ void Worksheet::Evaluate()
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
-  RequestRedraw();
   m_updateControls = true;
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
@@ -4121,7 +4120,6 @@ void Worksheet::OnChar(wxKeyEvent &event)
   }
   else
     OnCharNoActive(event);
-  RequestRedraw();
 }
 
 /***
