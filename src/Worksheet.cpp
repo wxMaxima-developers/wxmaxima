@@ -3406,7 +3406,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     GetActiveCell()->ProcessEvent(event);
     GroupCell *parent = GetActiveCell()->GetGroup();
     parent->InputHeightChanged();
-    RequestRedraw();
+    RequestRedraw(parent);
   }
   }
 
