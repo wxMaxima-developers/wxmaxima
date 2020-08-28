@@ -2178,7 +2178,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
 
   if (m_cellPointers.m_selectionStart)
   {
-    if (m_cellPointers.m_selectionStart->GetNext() == m_cellPointers.m_selectionEnd)
+    if (m_cellPointers.m_selectionEnd->GetNext() == m_cellPointers.m_selectionStart)
     {
       SetHCaret(m_cellPointers.m_selectionEnd.CastAs<GroupCell*>());
     }
