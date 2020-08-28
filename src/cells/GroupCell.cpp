@@ -2022,7 +2022,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &h
 
 bool GroupCell::IsMainInput(Cell *active) const
 {
-  return active && m_inputLabel->GetNext();
+  return active && active == m_inputLabel->GetNext();
 }
 
 bool GroupCell::Contains(GroupCell *cell) const
