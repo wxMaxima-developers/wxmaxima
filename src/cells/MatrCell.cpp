@@ -42,7 +42,7 @@ MatrCell::MatrCell(const MatrCell &cell):
   CopyCommonData(cell);
   m_specialMatrix = cell.m_specialMatrix;
   m_inferenceMatrix = cell.m_inferenceMatrix;
-  m_roundedParens = cell.m_roundedParens;
+  m_parenType = cell.m_parenType;
   m_rowNames = cell.m_rowNames;
   m_colNames = cell.m_colNames;
   m_matWidth = cell.m_matWidth;
@@ -151,7 +151,9 @@ void MatrCell::Draw(wxPoint point)
     else
     {
       wxDC &adc = *configuration->GetAntialiassingDC();
-      if(m_roundedParens)
+      switch(m_parenType)
+      {
+      case paren_rounded:
       {
         SetPen(1);
         int signWidth = Scale_Px(4);
@@ -175,7 +177,7 @@ void MatrCell::Draw(wxPoint point)
         pointsL[2] = {point.x + Scale_Px(1.5),
                       point.y};
         adc.DrawSpline(5, pointsL);
-
+        
         // Right bracket
         wxPoint pointsR[5] = {
           {point.x + m_width - Scale_Px(1) - signWidth,
@@ -193,8 +195,65 @@ void MatrCell::Draw(wxPoint point)
         pointsR[2] = {point.x + m_width - Scale_Px(1),
                       point.y};
         adc.DrawSpline(5, pointsR);
+        break;
       }
-      else
+      case paren_angled:
+      {
+        SetPen(1);
+        int signWidth = Scale_Px(4);
+        if (m_height <= signWidth / 3)
+          signWidth = m_height / 3;
+        
+        // Left bracket
+        wxPoint pointsL[3] = {
+          {point.x + Scale_Px(1) + signWidth,
+           point.y - m_center},
+          {point.x + Scale_Px(1),
+           point.y},
+          {point.x + Scale_Px(1) + signWidth,
+           point.y + m_center}
+        };
+        adc.DrawLines(3, pointsL);
+        
+        // Right bracket
+        wxPoint pointsR[3] = {
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y - m_center},
+          {point.x + m_width - Scale_Px(1.5),
+           point.y},
+          {point.x + m_width - Scale_Px(1) - signWidth,
+           point.y + m_center}
+        };
+        adc.DrawLines(3, pointsR);
+        break;
+      }
+      case paren_straight:
+      {
+        SetPen(1);
+        int signWidth = Scale_Px(4);
+        if (m_height <= signWidth / 3)
+          signWidth = m_height / 3;
+        
+        // Left bracket
+        wxPoint pointsL[2] = {
+          {point.x + Scale_Px(1) + signWidth / 2,
+           point.y - m_center},
+          {point.x + Scale_Px(1) + signWidth / 2,
+           point.y + m_center}
+        };
+        adc.DrawLines(2, pointsL);
+        
+        // Right bracket
+        wxPoint pointsR[2] = {
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y - m_center},
+          {point.x + m_width - Scale_Px(1) - signWidth / 2,
+           point.y + m_center}
+        };
+        adc.DrawLines(2, pointsR);
+        break;
+      }
+      case paren_brackets:
       {
         SetPen(1.5);
         // left bracket
@@ -222,6 +281,8 @@ void MatrCell::Draw(wxPoint point)
            m_center - Scale_Px(2)}
         };
         adc.DrawLines(4, pointsR, point.x + m_width - 1, point.y);
+        break;
+      }
       }
     }
   }
@@ -283,10 +344,17 @@ wxString MatrCell::ToTeX() const
 
   if (!m_specialMatrix)
   {
-    if(m_roundedParens)
+    switch(m_parenType)
+    {
+    case paren_rounded:
       s = wxT("\\begin{pmatrix}");
-    else
+      break;
+    case   paren_brackets:
+    case paren_angled:
+    case paren_straight:
       s = wxT("\\begin{bmatrix}");
+      break;
+    }
   }
   else
   {
@@ -308,10 +376,17 @@ wxString MatrCell::ToTeX() const
   }
   if (!m_specialMatrix)
   {
-    if(m_roundedParens)
+    switch(m_parenType)
+    {
+    case paren_rounded:
       s += wxT("\\end{pmatrix}");
-    else
+      break;
+    case   paren_brackets:
+    case paren_angled:
+    case paren_straight:
       s += wxT("\\end{bmatrix}");
+      break;
+    }
   }
   else
     s += wxT("\\end{array}");
@@ -345,10 +420,21 @@ wxString MatrCell::ToOMML() const
   retval = wxT("<m:d>");
   if (!m_specialMatrix)
   {
-    if(m_roundedParens)
+        switch(m_parenType)
+    {
+    case paren_rounded:
       retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
-    else
+      break;
+    case   paren_brackets:
       retval += wxT("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+      break;
+    case paren_angled:
+      retval += wxT("<m:dPr><m:begChr><</m:begChr><m:endChr>></m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+      break;
+    case paren_straight:
+      retval += wxT("<m:dPr><m:begChr>|</m:begChr><m:endChr>|</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+      break;
+    }     
   }
   
   retval += wxT("<m:e><m:m>");
@@ -370,8 +456,22 @@ wxString MatrCell::ToXML() const
   wxString flags;
   if (HasHardLineBreak())
     flags += wxT(" breakline=\"true\"");
-  if (m_roundedParens)
+  switch(m_parenType)
+  {
+  case paren_rounded:
     flags += wxT(" roundedParens=\"true\"");
+    break;
+  case   paren_brackets:
+    flags += wxT(" roundedParens=\"false\"");
+    flags += wxT(" bracketParens=\"true\"");
+    break;
+  case paren_angled:
+    flags += wxT(" angledParens=\"true\"");
+    break;
+  case paren_straight:
+    flags += wxT(" straightParens=\"true\"");
+    break;
+  }
 
   wxString s = wxEmptyString;
   if (m_specialMatrix)

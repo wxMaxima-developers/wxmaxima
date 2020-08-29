@@ -226,6 +226,8 @@ public:
     menu_alwaysAutosubscript,
     menu_roundedMatrixParens,
     menu_squareMatrixParens,
+    menu_straightMatrixParens,
+    menu_angledMatrixParens,
     menu_noMatrixParens,
     menu_draw_2d,
     menu_draw_3d,

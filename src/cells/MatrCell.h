@@ -67,7 +67,10 @@ public:
 
   void ColNames(bool cn) { m_colNames = cn; }
 
-  void RoundedParens(bool rounded) { m_roundedParens = rounded;}
+  void RoundedParens()  { m_parenType = paren_rounded;}
+  void BracketParens()  { m_parenType = paren_brackets;}
+  void StraightParens() { m_parenType = paren_straight;}
+  void AngledParens()   { m_parenType = paren_angled;}
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
@@ -91,18 +94,25 @@ private:
   unsigned int m_matWidth = 0;
   unsigned int m_matHeight = 0;
 
+  enum parenType : int8_t
+  {
+    paren_rounded = 0,
+    paren_brackets = 1,
+    paren_angled = 2,
+    paren_straight = 3
+  };
 //** Bitfield objects (1 bytes)
 //**
   void InitBitFields()
   { // Keep the initailization order below same as the order
     // of bit fields in this class!
-    m_roundedParens = false;
+    m_parenType = paren_rounded;
     m_specialMatrix = false;
     m_inferenceMatrix = false;
     m_rowNames = false;
     m_colNames = false;
   }
-  bool m_roundedParens : 1 /* InitBitFields */;
+  uint8_t m_parenType : 2 /* InitBitFields */;
   bool m_specialMatrix : 1 /* InitBitFields */;
   bool m_inferenceMatrix : 1 /* InitBitFields */;
   bool m_rowNames : 1 /* InitBitFields */;

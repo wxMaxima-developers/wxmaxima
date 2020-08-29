@@ -1051,8 +1051,16 @@ std::unique_ptr<Cell> MathParser::ParseTableTag(wxXmlNode *node)
     matrix->ColNames(true);
   if (node->GetAttribute(wxT("rownames"), wxT("false")) == wxT("true"))
     matrix->RowNames(true);
-  if (node->GetAttribute(wxT("roundedParens"), wxT("false")) == wxT("true"))
-    matrix->RoundedParens(true);
+  if (node->GetAttribute(wxT("roundedParens")) == wxT("false"))
+    matrix->BracketParens();
+  if (node->GetAttribute(wxT("roundedParens")) == wxT("true"))
+    matrix->RoundedParens();
+  if (node->GetAttribute(wxT("bracketParens")) == wxT("true"))
+    matrix->BracketParens();
+  if (node->GetAttribute(wxT("angledParens")) == wxT("true"))
+    matrix->AngledParens();
+  if (node->GetAttribute(wxT("straightParens")) == wxT("true"))
+    matrix->StraightParens();
 
   wxXmlNode *rows = SkipWhitespaceNode(node->GetChildren());
   while (rows)

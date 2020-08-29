@@ -813,8 +813,14 @@
 		       (list (format nil "<tb special=\"true\" rownames=~s colnames=~s>"
 				     (if (find 'rownames (car x)) "true" "false")
 				     (if (find 'colnames (car x)) "true" "false"))))
-		      ((string= $lmxchar #\()
+		      ((string= $lmxchar "(")
 		       (list "<tb roundedParens=\"true\">"))
+		      ((string= $lmxchar "[")
+		       (list "<tb bracketParens=\"true\">"))
+		      ((string= $lmxchar "<")
+		       (list "<tb angledParens=\"true\">"))
+		      ((string= $lmxchar "|")
+		       (list "<tb straightParens=\"true\">"))
 		      ((string= $lmxchar " ")
 		       (list "<tb special=\"true\">"))
 		      (t

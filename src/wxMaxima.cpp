@@ -791,6 +791,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_roundedMatrixParens, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_straightMatrixParens, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_angledMatrixParens, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_squareMatrixParens, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_noMatrixParens, wxEVT_MENU,
@@ -2693,6 +2697,10 @@ void wxMaxima::VariableActionLmxChar(const wxString &value)
     m_maximaVariable_lmxchar = value;
     if(m_maximaVariable_lmxchar.EndsWith("("))
       m_roundedMatrixParensMenu->Check(menu_roundedMatrixParens, true);
+    if(m_maximaVariable_lmxchar.EndsWith("<"))
+      m_roundedMatrixParensMenu->Check(menu_angledMatrixParens, true);
+    if(m_maximaVariable_lmxchar.EndsWith("|"))
+      m_roundedMatrixParensMenu->Check(menu_straightMatrixParens, true);
     if(m_maximaVariable_lmxchar.EndsWith("["))
       m_roundedMatrixParensMenu->Check(menu_squareMatrixParens, true);
     if(m_maximaVariable_lmxchar.EndsWith(" "))
@@ -5974,6 +5982,12 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       break;
     case menu_roundedMatrixParens:
       MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
+      break;
+    case menu_straightMatrixParens:
+      MenuCommand(wxT("lmxchar:\"|\"$rmxchar:\"|\"$"));
+      break;
+    case menu_angledMatrixParens:
+      MenuCommand(wxT("lmxchar:\"<\"$rmxchar:\">\"$"));
       break;
     case menu_squareMatrixParens:
       MenuCommand(wxT("lmxchar:\"[\"$rmxchar:\"]\"$"));
