@@ -429,7 +429,7 @@ wxString MatrCell::ToOMML() const
       retval += wxT("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
       break;
     case paren_angled:
-      retval += wxT("<m:dPr><m:begChr><</m:begChr><m:endChr>></m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+      retval += wxT("<m:dPr><m:begChr>&lt;</m:begChr><m:endChr>&gt;</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
       break;
     case paren_straight:
       retval += wxT("<m:dPr><m:begChr>|</m:begChr><m:endChr>|</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
