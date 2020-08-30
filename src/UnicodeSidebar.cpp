@@ -120,7 +120,6 @@ void UnicodeSidebar::OnChangeAttempt(wxGridEvent &event)
 
 void UnicodeSidebar::UpdateDisplay()
 {
-  wxWindowUpdateLocker noUpdates(m_grid);
   wxGridUpdateLocker speedUp(m_grid);
   int rows = m_grid->GetNumberRows() - 1;
   for(int i = 0; i<rows; i++)

@@ -4734,8 +4734,7 @@ void wxMaxima::UpdateToolBar()
 {
   if (!m_worksheet->m_mainToolBar)
     return;
-  wxWindowUpdateLocker speedUp(m_worksheet->m_mainToolBar);
-
+  
   m_worksheet->m_mainToolBar->CanCopy(m_worksheet->CanCopy(true));
   m_worksheet->m_mainToolBar->CanCut(m_worksheet->CanCut());
   m_worksheet->m_mainToolBar->CanSave((!m_fileSaved));
