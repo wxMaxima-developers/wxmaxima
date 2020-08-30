@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-29 12:13+0200\n"
-"PO-Revision-Date: 2020-08-25 09:06+0200\n"
+"PO-Revision-Date: 2020-08-30 19:01+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.11.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:186
@@ -442,7 +442,7 @@ msgstr "...і над цим списком ми можемо ефективно 
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7060
 msgid ".wxm clipboard data with unusual header"
-msgstr ""
+msgstr "Дані буфера обміну .wxm із несподіваним заголовком"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1978
 msgid "1/2"
@@ -800,7 +800,7 @@ msgstr "Файл прив'язок не містить вузла верхньо
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:791
 msgid "Angles"
-msgstr ""
+msgstr "Кути"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1308
 msgid "Animation autoplay"
@@ -2241,9 +2241,8 @@ msgid "Don't show labels"
 msgstr "Не показувати мітки"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:793
-#, fuzzy
 msgid "Don't use parenthesis for matrices"
-msgstr "Використовувати квадратні дужки для матриць"
+msgstr "Не використовувати дужки для матриць"
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:86
 msgid "Down"
@@ -4471,7 +4470,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1774
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -5526,7 +5525,7 @@ msgstr "Невбудовані символи"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:793
 msgid "None"
-msgstr ""
+msgstr "Немає"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1778
 msgid "Normality Test..."
@@ -6062,7 +6061,6 @@ msgstr ""
 "у поточному файлі."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:893
-#, fuzzy
 msgid "Previous Command\tAlt+Up"
 msgstr "Попередня команда\tAlt+Up"
 
@@ -6155,9 +6153,8 @@ msgid "Re-using the solutions\n"
 msgstr "Повторно використовуємо розв'язки\n"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7062
-#, fuzzy
 msgid "Read .wxm data from clipboard"
-msgstr "Вставити текст із буфера обміну даними"
+msgstr "Прочитати дані .wxm з буфера обміну даними"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1230
 msgid "Read List from csv file"
@@ -7417,9 +7414,8 @@ msgid "Statistics\tAlt+Shift+S"
 msgstr "Статистика\tAlt+Shift+S"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:792
-#, fuzzy
 msgid "Straight lines"
-msgstr "Згладжування ліній."
+msgstr "Прямі лінії"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1643
 msgid "String from maxima apparently didn't end in a newline"
@@ -8415,9 +8411,8 @@ msgid "Upsilon"
 msgstr "Υ"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:791
-#, fuzzy
 msgid "Use \"<\" and \">\" as parenthesis for matrices"
-msgstr "Використовувати круглі дужки для матриць"
+msgstr "Використовувати кутові дужки для матриць"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1259
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1285
@@ -8465,9 +8460,8 @@ msgid "Use unicode Math Symbols, if available"
 msgstr "Використовувати математичні символи unicode, якщо доступні"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:792
-#, fuzzy
 msgid "Use vertical lines instead of parenthesis for matrices"
-msgstr "Використовувати круглі дужки для матриць"
+msgstr "Використовувати вертикальні лінії замість дужок для матриць"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1528
 msgid "User labels only"
@@ -8583,7 +8577,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: /home/gunter/src/wxmaxima/examples/examples_gettext.h:1788
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
