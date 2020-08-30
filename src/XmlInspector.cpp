@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //            (C) 2015-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -44,7 +44,8 @@ XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id
   m_state = clear;
   m_indentLevel = 0;
   BeginSuppressUndo();
-  Clear();
+  XmlInspector::Clear();
+  wxRichTextCtrl::Clear();
 }
 
 XmlInspector::~XmlInspector()
@@ -59,7 +60,7 @@ void XmlInspector::Clear()
   m_updateNeeded = true;
 }
 
-void XmlInspector::Update()
+void XmlInspector::UpdateContents()
 {
   if(!m_updateNeeded)
     return;
@@ -124,7 +125,7 @@ void XmlInspector::Update()
     // Indent the XML
     wxString textWithIndention;
     long length = 0;
-    for ( wxString::iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
+    for (wxString::const_iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
     {
       length++;
       // Assume that all tags add indentation
@@ -171,9 +172,9 @@ void XmlInspector::Add_ToMaxima(wxString text)
 {
   if(m_toMaxima != wxEmptyString)
   {
-    m_toMaxima += wxT("\n\x2015\n");
+    m_toMaxima += wxT("\n\u2015\n");
     if(m_fromMaxima != wxEmptyString)
-      m_fromMaxima += wxT("\n\x2015\n");
+      m_fromMaxima += wxT("\n\u2015\n");
   }
   m_toMaxima += text;
   m_updateNeeded = true;

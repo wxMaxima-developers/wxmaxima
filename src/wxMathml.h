@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -27,6 +27,7 @@
 #ifndef WXMATHML_H
 #define WXMATHML_H
 
+#include "precomp.h"
 #include <wx/string.h>
 #include <wx/tokenzr.h>
 
@@ -37,6 +38,7 @@ class wxMathML
   wxString GetCmd();
  private:
   wxString m_wxMathML;
+  static wxString m_maximaCMD;
 };
 
 #endif

@@ -1,0 +1,14 @@
+/* We provide our own manifest.
+#define wxMANIFEST_ID 1
+wxMANIFEST_ID 24 "@MANIFEST_FILE@"
+
+/* Tell wxWidgets not to add its own manifest to the program:
+   In wxWidgets 3.0 and 3.1 this manifest tells Windows to render
+   the application in low-res mode and upscale it in case the system
+   uses a high-dpi screen. */
+#define wxUSE_NO_MANIFEST 1
+#include "wx/msw/wx.rc"
+
+icon0 ICON "@WINDOWS_ICON_DIR@/maximaicon.ico"
+icon1 ICON "@WINDOWS_ICON_DIR@/wxmac-doc.ico"
+

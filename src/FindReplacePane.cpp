@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C)      2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -124,6 +124,8 @@ FindReplacePane::FindReplacePane(wxWindow *parent, wxFindReplaceData *data) :
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
   this->SetSizerAndFit(grid_sizer);
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplacePane::OnActivate),NULL, this);
+  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplacePane::OnKeyDown),NULL, this);
 }
 
 void FindReplacePane::SetFindString(wxString string)
@@ -161,7 +163,7 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event))
 void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event))
 {
   m_findReplaceData->SetFlags(
-          !((m_findReplaceData->GetFlags() & (!wxFR_DOWN)) | (m_forward->GetValue() * wxFR_DOWN)));
+          !((m_findReplaceData->GetFlags() & (~wxFR_DOWN)) | (m_forward->GetValue() * wxFR_DOWN)));
   wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
 }
 
@@ -217,8 +219,3 @@ void FindReplacePane::OnKeyDown(wxKeyEvent &event)
   else
     event.Skip();
 }
-
-BEGIN_EVENT_TABLE(FindReplacePane, wxPanel)
-                EVT_CHAR_HOOK(FindReplacePane::OnKeyDown)
-                EVT_ACTIVATE(FindReplacePane::OnActivate)
-END_EVENT_TABLE()

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -29,18 +29,26 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include "precomp.h"
 #include "Cell.h"
+#include "Version.h"
 #include <wx/image.h>
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 #include <wx/buffer.h>
+#include "nanoSVG/nanosvg.h"
+#include "nanoSVG/nanosvgrast.h"
+
+#ifdef HAVE_OMP_HEADER
+#include <omp.h>
+#endif
 
 /*! Manages an auto-scaling image
 
   This class keeps two versions of an image:
     - The image in its original compressed format. This way the image can losslessly
-      be exported lateron
+      be exported later on
     - A bitmap version of the image that is scaled down to a size that makes sense 
       with the current viewport.
 
@@ -59,11 +67,11 @@
     - One could even delete the cached scaled images for all cells that currently 
       are off-screen in order to save memory.
  */
-class Image
+class Image final
 {
 public:
   //! A constructor that generates an empty image. See LoadImage()
-  Image(Configuration **config);
+  explicit Image(Configuration **config);
 
   //! A constructor that loads the compressed file from a wxMemoryBuffer
   Image(Configuration **config, wxMemoryBuffer image, wxString type);
@@ -82,9 +90,12 @@ public:
     \param filesystem The filesystem to load it from
     \param remove true = Delete the file after loading it
    */
-  Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  Image(Configuration **config, wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
 
   ~Image();
+
+  //! Creates a bitmap showing an error message
+  void InvalidBitmap();
 
   /*! Sets the name of the gnuplot source and data file of this image
 
@@ -92,8 +103,15 @@ public:
     are text-only they profit from being compressed and are stored in the 
     memory in their compressed form.
    */
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem = NULL);
-  /*! Returns the gnuplot source file name of this image
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+
+  //! Load the gnuplot source file from the system's filesystem
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
+    {
+      GnuplotSource(gnuplotFilename, dataFilename, {} /* system fs */);
+    }
+
+/*! Returns the gnuplot source file name of this image
 
     If maxima has deleted the temporary file in the meantime or if it comes from 
     a .wxmx file and has never been created from maxima the file is created by this 
@@ -124,22 +142,17 @@ public:
     Will recreate the scaled image as soon as needed.
    */
   void ClearCache()
-  { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
-
-  //! Reads the compressed image into a memory buffer
-  wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
-
+    {
+      if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))
+        m_scaledBitmap.Create(1, 1);
+    }
+  
   //! Returns the file name extension of the current image
-  wxString GetExtension()
-  { return m_extension; };
-
-  //! Loads an image from a file
-  void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
-
+  wxString GetExtension();
   //! The maximum width this image shall be displayed with
-  double GetMaxWidth(){return m_maxWidth;}
+  double GetMaxWidth() const {return m_maxWidth;}
   //! The maximum height this image shall be displayed with
-  double GetMaxHeight(){return m_maxHeight;}
+  double GetHeightList() const {return m_maxHeight;}
   //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){m_maxWidth = width;}
   //! Set the maximum height this image shall be displayed with
@@ -155,7 +168,7 @@ public:
   wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
-  bool IsOk() {return m_isOk;}
+  bool IsOk();
   
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
@@ -169,21 +182,43 @@ public:
   long m_height;
 
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage()
-  { return m_compressedImage; }
+  wxMemoryBuffer GetCompressedImage();
 
   //! Returns the original width
-  size_t GetOriginalWidth()
-  { return m_originalWidth; }
+  size_t GetOriginalWidth();
 
   //! Returns the original height
-  size_t GetOriginalHeight()
-  { return m_originalHeight; }
+  size_t GetOriginalHeight();
 
+  //! Wait until the image is loaded
+  #ifdef HAVE_OMP_HEADER
+  class WaitForLoad
+  {
+  public:
+    explicit WaitForLoad(omp_lock_t *imageLoadLock):
+      m_imageLoadLock(imageLoadLock)
+      {
+        omp_set_lock(imageLoadLock);
+      }
+      ~WaitForLoad()
+      {
+        omp_unset_lock(m_imageLoadLock);
+      }
+  private:
+    omp_lock_t *m_imageLoadLock;
+  };
+  #endif
+  
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
 
-protected:
+  //! Can this image be exported in SVG format?
+  bool CanExportSVG() const {return m_svgRast != nullptr;}
+
+  //! The tooltip to use wherever an image that's not Ok is shown.
+  static const wxString &GetBadImageToolTip();
+
+private:
   //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
   //! A zipped version of the gnuplot data needed in order to create this image.
@@ -202,7 +237,13 @@ protected:
   wxString m_gnuplotSource;
   //! The gnuplot data file for this image, if any.
   wxString m_gnuplotData;
-private:
+  void LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove);
+  void LoadGnuplotSource_Backgroundtask(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+
+  //! Loads an image from a file
+  void LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, bool remove = true);
+  //! Reads the compressed image into a memory buffer
+  static wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
   Configuration **m_configuration;
   //! The upper width limit for displaying this image
   double m_maxWidth;
@@ -210,6 +251,16 @@ private:
   double m_maxHeight;
   //! The name of the image, if known.
   wxString m_imageName;
+  
+  NSVGimage* m_svgImage = {};
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+
+  std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
+  std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;
+  #ifdef HAVE_OMP_HEADER
+  omp_lock_t m_gnuplotLock;
+  omp_lock_t m_imageLoadLock;
+  #endif
 };
 
 #endif // IMAGE_H

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -15,17 +15,19 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
 #ifndef LOGPANE_H
 #define LOGPANE_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include "ErrorRedirector.h"
+#include "stx/optional.hpp"
 
 /*! A "debug messages" sidepane
 
@@ -33,19 +35,26 @@
 class LogPane : public wxPanel
 {
 public:
-  LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
+  explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
   void BecomeLogTarget();
-  void SetBatchMode(){m_errorRedirector->SetBatchMode();}
+  void SetBatchMode() {
+      if (m_errorRedirector)
+        m_errorRedirector->SetBatchMode();
+  }
   void DropLogTarget();
+  bool IsLogTarget() {return m_logPanelTarget.has_value();}
   ~LogPane();
 
 private:
   //! The textctrl all log messages appear on
   wxTextCtrl *m_textCtrl;
-  //! Redirects all error messages to gui dialogues
-  ErrorRedirector *m_errorRedirector;
-  wxLog *m_logPanelTarget;
-  bool m_isLogTarget;
+  //! Shows all error messages on gui dialogues
+  stx::optional<wxLogTextCtrl> m_logPanelTarget;
+  //! Redirects error messages - here to a wxLog
+  stx::optional<ErrorRedirector> m_errorRedirector;
+  #ifdef wxUSE_STD_IOSTREAM
+  stx::optional<wxStreamToTextRedirector> m_textRedirector;
+  #endif
 };
 
 #endif // LOGPANE_H

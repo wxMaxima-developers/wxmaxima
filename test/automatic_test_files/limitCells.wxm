@@ -1,0 +1,31 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.07.0 ] */
+/* [wxMaxima: input   start ] */
+f(n):=sum(f[i](t),i,1,n);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'limit(f(  1),t,0);
+'limit(f(  1),t,inf);
+'limit(f(  1),t,-inf);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'limit(f( 10),t,0);
+'limit(f( 10),t,inf);
+'limit(f( 10),t,-inf);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+'limit(f(100),t,0);
+'limit(f(100),t,inf);
+'limit(f(100),t,-inf);
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.07.0"$

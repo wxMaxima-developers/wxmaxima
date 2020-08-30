@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -29,6 +29,7 @@
 #ifndef DIRSTRUCTURE_H
 #define DIRSTRUCTURE_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/stdpaths.h>
@@ -51,69 +52,60 @@ public:
   
 private:
   //! The directory all data is stored relative to.
-  wxString ResourcesDir();
+  wxString ResourcesDir() const;
 
 public:
   //! The directory the user stores its data in.
-  wxString UserConfDir(){return m_userConfDir;}
+  static wxString UserConfDir() {return m_userConfDir;}
   //! Set the directory the user stores its data in.
-  void UserConfDir(wxString userConfDir){m_userConfDir = userConfDir + wxT("/");}
+  static void UserConfDir(wxString userConfDir) {m_userConfDir = userConfDir + wxT("/");}
 
   //! The directory general data is stored in
-  wxString DataDir();
+  wxString DataDir() const;
 
     //! The directory our private fonts are stored in
-  wxString FontDir(){return DataDir()+wxT("/../fonts");}
+  wxString FontDir() const {return DataDir()+wxT("/../fonts");}
 
   //! The directory the help file is stored in
-  wxString HelpDir(){return m_helpDir;}
+  wxString HelpDir() const {return m_helpDir;}
   //! Set the directory the help file is stored in
   void HelpDir(wxString helpDir){m_helpDir = helpDir;}
 
-  /*! The file private accellerator key information is stored in
+  /*! The file private accelerator key information is stored in
 
-    \todo Document this file in the texinfo manual
    */
-#if defined __WXMSW__
-  wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
-#else
-
-  wxString UserAutocompleteFile()
-  { return UserConfDir() + wxT(".wxmaxima.ac"); }
-
-#endif
+  wxString UserAutocompleteFile();
 
   //! The path to wxMaxima's own AutoComplete file
-  wxString AutocompleteFile()
+  wxString AutocompleteFile() const
   { return DataDir() + wxT("/autocomplete.txt"); }
-
-  //! The directory art is stored relative to
-  wxString ArtDir();
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
    */
-  wxString LocaleDir()
+  wxString LocaleDir() const
   { return ResourcesDir() + wxT("/locale"); }
 
-  //! The path we pass to the operating system if we want it to locate maxima instead
+  //! The executable file path to the maxima executable (or .bat on Windows)
   static wxString MaximaDefaultLocation();
 
-  /*! The contents of the PREFIX macro as a wxString
+  //! The executable file path to the gnuplot executable
+  static wxString GnuplotDefaultLocation(wxString pathguess);
 
-    wxWidgets 3.0.2 refuses to directly concatenate two wxT-generated strings.
-    To avoid triggering this bug we store the prefix here.
-  */
-  wxString Prefix();
-
+  static wxString
+    AnchorsCacheFile()
+    {
+      return UserConfDir() + "/manual_anchors.xml";
+    }
+  
   static Dirstructure *Get()
     {
       return m_dirStructure;
     }
 private:
   wxString m_helpDir;
-  wxString m_userConfDir;
+  static wxString m_userConfDir;
   static Dirstructure *m_dirStructure;
 };
 

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -15,13 +15,14 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
 #ifndef BTEXTCTRL_H
 #define BTEXTCTRL_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include "Configuration.h"
 
@@ -34,7 +35,7 @@ public:
   BTextCtrl(wxWindow *parent,
             wxWindowID id,
             Configuration *cfg,
-            const wxString &value,
+            const wxString &value = wxEmptyString,
             const wxPoint &pos = wxDefaultPosition,
             const wxSize &size = wxDefaultSize,
             long style = 0);
@@ -56,7 +57,6 @@ private:
   void OnChar(wxKeyEvent &event);
 
   Configuration *m_config;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // BTEXTCTRL_H

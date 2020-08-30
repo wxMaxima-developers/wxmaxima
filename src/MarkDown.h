@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2015-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -28,12 +28,14 @@
 #ifndef MARKDOWN_H
 #define MARKDOWN_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/string.h>
 #include <wx/config.h>
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 #include <list>
+#include <memory>
 #include "Configuration.h"
 
 /*! A generic markdown Parser.
@@ -49,37 +51,33 @@ protected:
   class RegexReplacer : public wxRegEx
   {
   public:
-    RegexReplacer(wxString From, wxString To) : wxRegEx(From)
-    {
-      replaceBy = To;
-    }
+    RegexReplacer(wxString from, const wxString &to) :
+      wxRegEx(from),
+      replaceBy(to)
+    {}
 
-    void DoReplace(wxString *line)
-    {
-      Replace(line, replaceBy);
-    }
+    void DoReplace(wxString &line) const
+    { Replace(&line, replaceBy); }
 
   private:
     wxString replaceBy; //!< The thing we replace it with
   };
 
-  typedef std::list<RegexReplacer *> replaceList;
+  typedef std::list<RegexReplacer> replaceList;
   replaceList regexReplaceList;
 public:
-  MarkDownParser(Configuration *cfg);
-
-  virtual ~MarkDownParser();
+  explicit MarkDownParser(Configuration *cfg);
 
   wxString MarkDown(wxString str);
 
   //! A list of things we want to replace.
-  std::list<RegexReplacer *> RegexReplaceList()
-  { return regexReplaceList; }
+  const replaceList &RegexReplaceList() const
+    { return regexReplaceList; }
 
 private:
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
   virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
-  virtual wxString quoteChar()=0;         //!< The marker for an quote
+  virtual wxString quoteChar()=0;         //!< The marker for a quote
   virtual wxString quoteBegin()=0;        //!< The marker that says we want to start quote
   virtual wxString quoteEnd()=0;        //!< The marker that says we want to end quote
   virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
@@ -91,31 +89,31 @@ private:
 class MarkDownTeX : public MarkDownParser
 {
 public:
-  MarkDownTeX(Configuration *cfg);
+  explicit MarkDownTeX(Configuration *cfg);
 
 private:
-  virtual wxString quoteBegin()
+  virtual wxString quoteBegin() override
   { return wxT("\\begin{quote}\n"); }
 
-  virtual wxString quoteEnd()
+  virtual wxString quoteEnd() override
   { return wxT("\\end{quote}\n"); }
 
-  virtual wxString quoteChar()
+  virtual wxString quoteChar() override
   { return wxT("\\ensuremath{>}"); }
 
-  virtual wxString itemizeBegin()
+  virtual wxString itemizeBegin() override
   { return wxT("\\begin{itemize}\n"); }
 
-  virtual wxString itemizeEnd()
+  virtual wxString itemizeEnd() override
   { return wxT("\\end{itemize}\n"); }
 
-  virtual wxString itemizeItem()
+  virtual wxString itemizeItem() override
   { return wxT("\\item "); }
 
-  virtual wxString itemizeEndItem()
+  virtual wxString itemizeEndItem() override
   { return wxEmptyString; }
 
-  virtual wxString NewLine()
+  virtual wxString NewLine() override
   { return wxT("\n\n"); }
 
 };
@@ -124,31 +122,31 @@ private:
 class MarkDownHTML : public MarkDownParser
 {
 public:
-  MarkDownHTML(Configuration *cfg);
+  explicit MarkDownHTML(Configuration *cfg);
 
 private:
-  virtual wxString quoteChar()
+  virtual wxString quoteChar() override
   { return wxT("&gt;"); }
 
-  virtual wxString quoteBegin()
+  virtual wxString quoteBegin() override
   { return wxT("<blockquote>\n"); }
 
-  virtual wxString quoteEnd()
+  virtual wxString quoteEnd() override
   { return wxT("</blockquote>\n"); }
 
-  virtual wxString itemizeBegin()
+  virtual wxString itemizeBegin() override
   { return wxT("<ul>\n"); }
 
-  virtual wxString itemizeEnd()
+  virtual wxString itemizeEnd() override
   { return wxT("</ul>\n"); }
 
-  virtual wxString itemizeItem()
+  virtual wxString itemizeItem() override
   { return wxT("<li>"); }
 
-  virtual wxString itemizeEndItem()
+  virtual wxString itemizeEndItem() override
   { return wxT("</li>\n"); }
 
-  virtual wxString NewLine()
+  virtual wxString NewLine() override
   { return wxT("<br/>"); }
 };
 

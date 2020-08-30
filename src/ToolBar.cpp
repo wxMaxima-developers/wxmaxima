@@ -3,7 +3,7 @@
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2015-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -30,11 +30,13 @@
 #include "../art/toolbar/images.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include "GroupCell.h"
 #include <wx/display.h>
 #include <wx/artprov.h>
 #include <wx/filename.h>
-#include "invalidImage.h"
+#include "SvgBitmap.h"
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include "Image.h"
 
 #if wxCHECK_VERSION(3, 1, 0)
 #define TOOLBAR_ICON_SCALE (0.25)
@@ -44,75 +46,52 @@
 
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
 
-wxBitmap ToolBar::GetImage(wxString name,
-                          unsigned char *data_128, size_t len_128,
-                          unsigned char *data_192, size_t len_192)
+wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSize siz)
 {
+  if(siz.x <= 0)
+  {
 #if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-  
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    m_ppi = wxSize(72,72);
-  else
-    m_ppi = wxDisplay(display_idx).GetPPI();
-#else
-  m_ppi = wxGetDisplayPPI();
-#endif
-  if((m_ppi.x <= 10) || (m_ppi.y <= 10))
-    m_ppi = wxGetDisplayPPI();
-
-  if((m_ppi.x <= 10) || (m_ppi.y <= 10))
-    m_ppi = wxSize(72,72);
-
-  double targetSize = wxMax(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
-  int prescale;
-
-  int sizeA = 128 << 4;
-  while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
-    sizeA >>= 1;
-  };
-
-  int sizeB = 192 << 4;
-  while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
-    sizeB >>= 1;
-  }
-
-  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
-    targetSize = sizeA;
-    prescale = 128;
-  } else {
-    targetSize = sizeB;
-    prescale = 192;
-  }
-
-  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetSize, targetSize));
-  wxImage img;
-
-  if(bmp.IsOk()) {
-    img = bmp.ConvertToImage();
-  }
-  if(!img.IsOk()) {
-    void *data;
-    size_t len;
-    if(prescale == 128)
-    {
-      data = (void *)data_128;
-      len  = len_128;
-    }
+    wxDisplay display;    
+    int display_idx = wxDisplay::GetFromWindow(GetParent());
+    if (display_idx < 0)
+      m_ppi = wxSize(72,72);
     else
-    {
-      data = (void *)data_192;
-      len  = len_192;
+      m_ppi = wxDisplay(display_idx).GetPPI();
+#else
+    m_ppi = wxGetDisplayPPI();
+#endif
+    if((m_ppi.x <= 10) || (m_ppi.y <= 10))
+      m_ppi = wxGetDisplayPPI();
+    
+    if((m_ppi.x <= 10) || (m_ppi.y <= 10))
+      m_ppi = wxSize(72,72);
+    
+    int targetSize = wxMax(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+    
+    int sizeA = 128 << 4;
+    while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+      sizeA >>= 1;
+    };
+    
+    int sizeB = 192 << 4;
+    while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+      sizeB >>= 1;
     }
-    wxMemoryInputStream istream(data,len);
-    img.LoadFile(istream);
+    
+    if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB))
+      targetSize = sizeA;
+    else
+      targetSize = sizeB;
+    siz = wxSize(targetSize, targetSize);
   }
-  if(!img.IsOk()) {
-    img = wxImage(invalidImage_xpm);
-  }
-
-  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, siz);
+  wxImage img;
+  if(bmp.IsOk())
+    img = bmp.ConvertToImage();
+  if(!img.IsOk())
+    return SvgBitmap(data, len, siz);
+  
+  img.Rescale(siz.x, siz.y, wxIMAGE_QUALITY_HIGH);
 #if defined __WXOSX__
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
 #else
@@ -149,139 +128,111 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                                                   wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
                                                   wxAUI_TB_HORIZONTAL)
 {
-  m_ppi = wxSize(-1,-1);
   m_defaultCellStyle = GC_TYPE_CODE;
+  m_canEvalThisCell_old = true;
+  m_worksheetEmpty_old = false;
   m_canCopy_old = true;
   m_canCut_old = true;
   m_canSave_old = true;
   m_canPrint_old = true;
   m_canEvalTillHere_old = true;
+  m_svgRast.reset(nsvgCreateRasterizer());
 
   m_needsInformation = false;
   m_AnimationStartStopState = Inactive;
 
   SetToolBitmapSize(wxSize(24, 24));
   SetGripperVisible(false);
-  
-  AddTool(tb_new, _("New"),
-                     GetImage(wxT("gtk-new"),
-                              gtk_new_128_png,gtk_new_128_png_len,
-                              gtk_new_192_png,gtk_new_192_png_len
-                       ),
-                     _("New document"));
-  AddTool(tb_open, _("Open"),
-                     GetImage(wxT("gtk-open"),
-                              gtk_open_128_png,gtk_open_128_png_len,
-                              gtk_open_192_png,gtk_open_192_png_len
-                       ),
-                     _("Open document"));
-  AddTool(tb_save, _("Save"),
-                     GetImage(wxT("gtk-save"),
-                              gtk_save_128_png,gtk_save_128_png_len,
-                              gtk_save_192_png,gtk_save_192_png_len
-                       ),
-                     _("Save document"));
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
-  AddTool(tb_print, _("Print"),
-                     GetImage(wxT("gtk-print"),
-                              gtk_print_128_png,gtk_print_128_png_len,
-                              gtk_print_192_png,gtk_print_192_png_len
-                       ),
-                     _("Print document"));
-  AddTool(tb_pref, _("Options"),
-                     GetImage(wxT("gtk-preferences"),
-                              gtk_preferences_128_png,gtk_preferences_128_png_len,
-                              gtk_preferences_192_png,gtk_preferences_192_png_len
-                       ),
-                     _("Configure wxMaxima"));
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
-  AddTool(tb_cut, _("Cut"),
-                     GetImage(wxT("gtk-cut"),
-                              gtk_cut_128_png,gtk_cut_128_png_len,
-                              gtk_cut_192_png,gtk_cut_192_png_len
-                       ),
-                     _("Cut selection"));
-  AddTool(tb_copy, _("Copy"),
-                     GetImage(wxT("gtk-copy"),
-                              gtk_copy_128_png,gtk_copy_128_png_len,
-                              gtk_copy_192_png,gtk_copy_192_png_len
-                       ),
-                     _("Copy selection"));
-  AddTool(tb_paste, _("Paste"),
-                     GetImage(wxT("gtk-paste"),
-                              gtk_paste_128_png,gtk_paste_128_png_len,
-                              gtk_paste_192_png,gtk_paste_192_png_len
-                       ),
-                     _("Paste from clipboard"));
-  AddTool(tb_select_all, _("Select all"),
-                     GetImage(wxT("gtk-select-all"),
-                              gtk_select_all_128_png,gtk_select_all_128_png_len,
-                              gtk_select_all_192_png,gtk_select_all_192_png_len
-                       ),
-                     _("Select all"));
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
-  AddTool(tb_find, _("Find"),
-                     GetImage(wxT("gtk-find"),
-                              gtk_find_128_png,gtk_find_128_png_len,
-                              gtk_find_192_png,gtk_find_192_png_len
-                       ),
-                     _("Find and replace"));
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
-  AddTool(menu_restart_id, _("Restart maxima"),
-                     GetImage(wxT("view-refresh"),
-                              view_refresh_128_png,view_refresh_128_png_len,
-                              view_refresh_192_png,view_refresh_192_png_len
-                       ),
-                     _("Completely stop maxima and restart it"));
-  AddTool(tb_interrupt, _("Interrupt"),
-                     GetImage(wxT("gtk-stop"),
-                              gtk_stop_128_png,gtk_stop_128_png_len,
-                              gtk_stop_192_png,gtk_stop_192_png_len
-                       ),
-                     _("Interrupt current computation. To completely restart maxima press the button left to this one."));
-  m_followIcon = GetImage(wxT("weather-clear"),
-                              weather_clear_128_png,weather_clear_128_png_len,
-                              weather_clear_192_png,weather_clear_192_png_len
-    );
-  m_needsInformationIcon = GetImage(wxT("software-update-urgent"),
-                              software_update_urgent_128_png,software_update_urgent_128_png_len,
-                              software_update_urgent_192_png,software_update_urgent_192_png_len
-    );
-  AddTool(tb_follow, _("Follow"), m_followIcon,
-                     _("Return to the cell that is currently being evaluated"));
-  EnableTool(tb_follow, false);
+  m_plotSlider = NULL;
+  m_textStyle = NULL;
+  AddTools();
 
-  AddTool(tb_evaltillhere, _("Evaluate to point"),
-                     GetImage(wxT("go-bottom"),
-                              go_bottom_128_png,go_bottom_128_png_len,
-                              go_bottom_192_png,go_bottom_192_png_len
-                       ),
-                     _("Evaluate the file from its beginning to the cell above the cursor"));
+  // For some reason overflow and re-sizing don't play together in some cases if we don't
+  // do the following:
+  Realize();
+  SetInitialSize(wxSize(100000,GetBestSize().y));
+  Realize();  
+}
 
-    AddTool(tb_evaluate_rest, _("Evaluate the rest"),
-                     GetImage(wxT("go-last"),
-                              go_last_128_png,go_last_128_png_len,
-                              go_last_192_png,go_last_192_png_len
-                       ),
-                     _("Evaluate the file from the cursor to its end"));
-
+void ToolBar::AddTools()
+{
+  Clear();
+  m_ppi = wxSize(-1,-1);  
+  if(ShowNew())
+    AddTool(wxID_NEW, _("New"),GetNewBitmap(),_("New document"));
+  if(ShowOpenSave())
+  {
+    AddTool(wxID_OPEN, _("Open"),GetOpenBitmap(),_("Open document"));
+    AddTool(wxID_SAVE, _("Save"),GetSaveBitmap(),_("Save document"));
+  }
+  if(ShowPrint())
+  {
+#ifndef __WXOSX__
+    if(ShowOpenSave() || ShowNew())
+      AddSeparator();
+#endif
+    AddTool(wxID_PRINT, _("Print"), GetPrintBitmap(), _("Print document"));
+  }
+  if(ShowOptions())
+    AddTool(wxID_PREFERENCES, _("Options"), GetPreferencesBitmap(), _("Configure wxMaxima"));
+  if(ShowCopyPaste())
+  {
 #ifndef __WXOSX__
     AddSeparator();
 #endif
-    AddTool(tb_hideCode, _("Hide Code"),
-            GetImage(wxT("weather-few-clouds"),
-                     weather_few_clouds_128_png,weather_few_clouds_128_png_len,
-                     weather_few_clouds_192_png,weather_few_clouds_192_png_len
-              ),
-            _("Toggle the visibility of code cells"));
+    AddTool(wxID_CUT, _("Cut"), GetCutBitmap(), _("Cut selection"));
+    AddTool(wxID_COPY, _("Copy"), GetCopyBitmap(), _("Copy selection"));
+    AddTool(wxID_PASTE, _("Paste"), GetPasteBitmap(), _("Paste from clipboard"));
+  }
+  if(ShowSelectAll())
+    AddTool(wxID_SELECTALL, _("Select all"), GetSelectAllBitmap(), _("Select all"));
+  if(ShowSearch())
+  {
+#ifndef __WXOSX__
+    if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint())
+      AddSeparator();
+#endif
+    AddTool(wxID_FIND, _("Find"), GetFindBitmap(), _("Find and replace"));
+  }
+#ifndef __WXOSX__
+  if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions())
+    AddSeparator();
+#endif
+  AddTool(menu_restart_id, _("Restart maxima"), GetRestartBitmap(),
+          _("Completely stop maxima and restart it"));
+  AddTool(tb_interrupt, _("Interrupt"), GetInterruptBitmap(),
+          _("Interrupt current computation. To completely restart maxima press the button left to this one."));
+  m_followIcon = GetBitmap(wxT("weather-clear"),
+                          weather_clear_svg_gz,weather_clear_svg_gz_len);
+  m_needsInformationIcon = GetBitmap(wxT("software-update-urgent"),
+                                    software_update_urgent_svg_gz,software_update_urgent_svg_gz_len);
+  AddTool(tb_follow, _("Follow"), m_followIcon,
+          _("Return to the cell that is currently being evaluated"));
+  EnableTool(tb_follow, false);
+
+#ifndef __WXOSX__
+  AddSeparator();
+#endif
+
+  AddTool(tb_eval, _("Evaluate current cell"),
+          GetEvalBitmap(),
+          _("Send the current cell to maxima"));
+
+  AddTool(tb_eval_all, _("Evaluate all"),
+          GetEvalAllBitmap(),
+          _("Send all cells to maxima"));
+
+  AddTool(tb_evaltillhere, _("Evaluate to point"), GetEvalTillHereBitmap(),
+          _("Evaluate the file from its beginning to the cell above the cursor"));
+  
+  AddTool(tb_evaluate_rest, _("Evaluate the rest"), GetEvalRestBitmap(),
+          _("Evaluate the file from the cursor to its end"));
+  
+#ifndef __WXOSX__
+  AddSeparator();
+#endif
+  AddTool(tb_hideCode, _("Hide Code"), GetHideCodeBitmap(),
+          _("Toggle the visibility of code cells"));
 #ifndef __WXOSX__
   AddSeparator();
 #endif
@@ -294,6 +245,10 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   textStyle.Add(_("Subsubsection"));
   textStyle.Add(_("Heading5"));
   textStyle.Add(_("Heading6"));
+  int textStyleSelection = 0;
+  if(m_textStyle)
+    textStyleSelection = m_textStyle->GetSelection();
+  wxDELETE(m_textStyle);
   m_textStyle = new wxChoice(this, tb_changeStyle, wxDefaultPosition, wxDefaultSize, textStyle);
   m_textStyle->SetToolTip(_("For faster creation of cells the following shortcuts exist:\n\n"
                             "   Ctrl+0: Math cell\n"
@@ -305,25 +260,18 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                             "   Ctrl+6: Heading5 cell\n"
                             "   Ctrl+7: Heading6 cell\n"
                             ));
+  m_textStyle->SetSelection(textStyleSelection);
   AddControl(m_textStyle);
   
-  // Seems like on MSW changing the image of this button has strange side-effects
-  // so we combine both images into one for this OS.
-  m_PlayButton = GetImage(wxT("media-playback-start"),
-                              media_playback_start_128_png,media_playback_start_128_png_len,
-                              media_playback_start_192_png,media_playback_start_192_png_len
-    );
-  m_StopButton = GetImage(wxT("media-playback-stop"),
-                              media_playback_stop_128_png,media_playback_stop_128_png_len,
-                              media_playback_stop_192_png,media_playback_stop_192_png_len
-    );
+  m_PlayButton = GetBitmap(wxT("media-playback-start"),
+                          media_playback_start_svg_gz,media_playback_start_svg_gz_len);
+  m_StopButton = GetBitmap(wxT("media-playback-stop"),
+                          media_playback_stop_svg_gz,media_playback_stop_svg_gz_len);
 
   // It felt like a good idea to combine the play and the stop button.
-  // On windows changing a button seems to somehow stop the animation, though, so
-  // this OS requires the buttons to be separate.
   AddTool(tb_animation_startStop, _("Start or Stop animation"),
-                     m_PlayButton,
-                     _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
+          m_PlayButton,
+          _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   EnableTool(tb_animation_startStop, false);
 
 #if wxCHECK_VERSION(3, 1, 1)
@@ -347,28 +295,26 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   wxDisplaySize(&width, &height);
   if (width < 800)
     sliderWidth = wxMin(sliderWidth, 100);
+  wxDELETE(m_plotSlider);
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
                               wxDefaultPosition, wxSize(sliderWidth, -1),
-                              wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
+                              wxSL_HORIZONTAL);
   m_plotSlider->SetToolTip(
-          _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
+    _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
   m_slideShowMaxIndex = -1;
   m_slideShowDisplayedIndex = -1;
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
-  AddTool(tb_help, _("Help"),
-                     GetImage(wxT("gtk-help"),
-                              gtk_help_128_png,gtk_help_128_png_len,
-                              gtk_help_192_png,gtk_help_192_png_len
-                       ),
-                     _("Show Maxima help"));
+  if(ShowHelp())
+    AddTool(wxID_HELP, _("Help"), GetHelpBitmap(), _("Show Maxima help"));
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
-  Realize();
-  SetInitialSize(wxSize(100000,GetBestSize().y));
-  Realize();
+  Connect(wxEVT_RIGHT_DOWN,
+          wxMouseEventHandler(ToolBar::OnMouseRightDown),
+          NULL, this);
+  Realize();  
 }
 
 void ToolBar::UpdateBitmaps()
@@ -405,91 +351,110 @@ void ToolBar::UpdateBitmaps()
 
   m_ppi = ppi;
   
-  SetToolBitmap(tb_new,GetImage(wxT("gtk-new"),
-                                gtk_new_128_png,gtk_new_128_png_len,
-                                gtk_new_192_png,gtk_new_192_png_len));
-  SetToolBitmap(tb_open,GetImage(wxT("gtk-open"),
-                                 gtk_open_128_png,gtk_open_128_png_len,
-                                 gtk_open_192_png,gtk_open_192_png_len));
-  SetToolBitmap(tb_save,GetImage(wxT("gtk-save"),
-                                 gtk_save_128_png,gtk_save_128_png_len,
-                                 gtk_save_192_png,gtk_save_192_png_len
-                  ));
-  SetToolBitmap(tb_print,GetImage(wxT("gtk-print"),
-                                  gtk_print_128_png,gtk_print_128_png_len,
-                                  gtk_print_192_png,gtk_print_192_png_len
-                  ));
-  SetToolBitmap(tb_pref,GetImage(wxT("gtk-preferences"),
-                                 gtk_preferences_128_png,gtk_preferences_128_png_len,
-                                 gtk_preferences_192_png,gtk_preferences_192_png_len
-                  ));
-  SetToolBitmap(tb_cut,GetImage(wxT("gtk-cut"),
-                                gtk_cut_128_png,gtk_cut_128_png_len,
-                                gtk_cut_192_png,gtk_cut_192_png_len
-                  ));
-  SetToolBitmap(tb_copy,GetImage(wxT("gtk-copy"),
-                                 gtk_copy_128_png,gtk_copy_128_png_len,
-                                 gtk_copy_192_png,gtk_copy_192_png_len
-                  ));
-  SetToolBitmap(tb_paste,GetImage(wxT("gtk-paste"),
-                                  gtk_paste_128_png,gtk_paste_128_png_len,
-                                  gtk_paste_192_png,gtk_paste_192_png_len
-                  ));
-  SetToolBitmap(tb_select_all,
-                GetImage(wxT("gtk-select-all"),
-                         gtk_select_all_128_png,gtk_select_all_128_png_len,
-                         gtk_select_all_192_png,gtk_select_all_192_png_len
-                  ));
-  SetToolBitmap(tb_find,GetImage(wxT("gtk-find"),
-                                 gtk_find_128_png,gtk_find_128_png_len,
-                                 gtk_find_192_png,gtk_find_192_png_len
-                  ));
-  SetToolBitmap(menu_restart_id,GetImage(wxT("view-refresh"),
-                                         view_refresh_128_png,view_refresh_128_png_len,
-                                         view_refresh_192_png,view_refresh_192_png_len
-                  ));
-  SetToolBitmap(tb_interrupt,
-                GetImage(wxT("gtk-stop"),
-                         gtk_stop_128_png,gtk_stop_128_png_len,
-                         gtk_stop_192_png,gtk_stop_192_png_len
-                  ));
-  m_followIcon = GetImage(wxT("weather-clear"),
-                          weather_clear_128_png,weather_clear_128_png_len,
-                          weather_clear_192_png,weather_clear_192_png_len
-    );
-  m_needsInformationIcon = GetImage(wxT("software-update-urgent"),
-                                    software_update_urgent_128_png,software_update_urgent_128_png_len,
-                                    software_update_urgent_192_png,software_update_urgent_192_png_len
-    );
+  SetToolBitmap(tb_eval,GetEvalBitmap());
+  SetToolBitmap(tb_eval_all,GetEvalAllBitmap());
+  SetToolBitmap(wxID_NEW,GetNewBitmap());
+  SetToolBitmap(wxID_OPEN,GetOpenBitmap());
+  SetToolBitmap(wxID_SAVE,GetSaveBitmap());
+  SetToolBitmap(wxID_PRINT,GetPrintBitmap());
+  SetToolBitmap(wxID_PREFERENCES,GetPreferencesBitmap());
+  SetToolBitmap(wxID_CUT,GetCutBitmap());
+  SetToolBitmap(wxID_COPY,GetCopyBitmap());
+  SetToolBitmap(wxID_PASTE,GetPasteBitmap());
+  SetToolBitmap(wxID_SELECTALL,GetSelectAllBitmap());
+  SetToolBitmap(wxID_FIND,GetFindBitmap());
+  SetToolBitmap(menu_restart_id,GetRestartBitmap());
+  SetToolBitmap(tb_interrupt,GetInterruptBitmap());
+  m_followIcon = GetBitmap(wxT("weather-clear"),
+                          weather_clear_svg_gz,weather_clear_svg_gz_len);
+  m_needsInformationIcon = GetBitmap(wxT("software-update-urgent"),
+                                    software_update_urgent_svg_gz,software_update_urgent_svg_gz_len);
   SetToolBitmap(tb_follow, m_followIcon);
-  SetToolBitmap(tb_evaltillhere,GetImage(wxT("go-bottom"),
-                                         go_bottom_128_png,go_bottom_128_png_len,
-                                         go_bottom_192_png,go_bottom_192_png_len
-                  ));
-  SetToolBitmap(tb_evaluate_rest, 
-                GetImage(wxT("go-last"),
-                         go_last_128_png,go_last_128_png_len,
-                         go_last_192_png,go_last_192_png_len
-                  ));
-  SetToolBitmap(tb_hideCode,GetImage(wxT("weather-few-clouds"),
-                                     weather_few_clouds_128_png,weather_few_clouds_128_png_len,
-                                     weather_few_clouds_192_png,weather_few_clouds_192_png_len
-                  ));
-  m_PlayButton = GetImage(wxT("media-playback-start"),
-                          media_playback_start_128_png,media_playback_start_128_png_len,
-                          media_playback_start_192_png,media_playback_start_192_png_len
-    );
-  m_StopButton = GetImage(wxT("media-playback-stop"),
-                          media_playback_stop_128_png,media_playback_stop_128_png_len,
-                          media_playback_stop_192_png,media_playback_stop_192_png_len
-    );
+  SetToolBitmap(tb_evaltillhere, GetEvalTillHereBitmap());
+  SetToolBitmap(tb_evaluate_rest, GetEvalRestBitmap());
+  SetToolBitmap(tb_hideCode, GetHideCodeBitmap());
+  m_PlayButton = GetBitmap(wxT("media-playback-start"),
+                           media_playback_start_svg_gz,media_playback_start_svg_gz_len);
+  m_StopButton = GetBitmap(wxT("media-playback-stop"),
+                           media_playback_stop_svg_gz,media_playback_stop_svg_gz_len);
   SetToolBitmap(tb_animation_startStop,
                 m_PlayButton);
-  SetToolBitmap(tb_help,GetImage(wxT("gtk-help"),
-                                 gtk_help_128_png,gtk_help_128_png_len,
-                                 gtk_help_192_png,gtk_help_192_png_len
-                  ));
+  SetToolBitmap(wxID_HELP,GetHelpBitmap());
   Realize();
+}
+  
+wxBitmap ToolBar::GetEvalAllBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("go-next"), go_jump_svg_gz, go_jump_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetEvalBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("go-next"), go_next_svg_gz, go_next_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetNewBitmap(wxSize siz)  
+{
+  return GetBitmap(wxT("gtk-new"),gtk_new_svg_gz,gtk_new_svg_gz_len, siz);
+}
+
+wxBitmap ToolBar::GetPrintBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-print"),gtk_print_svg_gz,gtk_print_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetOpenBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-open"),gtk_open_svg_gz,gtk_open_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetSaveBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-save"),gtk_save_svg_gz,gtk_save_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetPreferencesBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-preferences"), gtk_preferences_svg_gz, gtk_preferences_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetCutBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-cut"), gtk_cut_svg_gz, gtk_cut_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetCopyBitmap(wxSize siz)
+{
+ return GetBitmap(wxT("gtk-copy"), gtk_copy_svg_gz, gtk_copy_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetPasteBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-paste"), gtk_paste_svg_gz, gtk_paste_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetSelectAllBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-select-all"), gtk_select_all_svg_gz,gtk_select_all_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetFindBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-find"), gtk_find_svg_gz, gtk_find_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetRestartBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("view-refresh"), view_refresh_svg_gz,view_refresh_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetInterruptBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-stop"), gtk_stop_svg_gz, gtk_stop_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetEvalTillHereBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("go-bottom"), go_bottom_svg_gz, go_bottom_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetHelpBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("gtk-help"), gtk_help_svg_gz,gtk_help_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetEvalRestBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("go-last"), go_last_svg_gz,go_last_svg_gz_len, siz);
+}
+wxBitmap ToolBar::GetHideCodeBitmap(wxSize siz)
+{
+  return GetBitmap(wxT("weather-few-clouds"), weather_few_clouds_svg_gz,weather_few_clouds_svg_gz_len, siz);
 }
 
 void ToolBar::SetDefaultCellStyle()
@@ -531,37 +496,28 @@ GroupType ToolBar::GetCellType()
   {
   case 1:
     return GC_TYPE_TEXT;
-    break;
   case 2:
     return GC_TYPE_TITLE;
-    break;
   case 3:
     return GC_TYPE_SECTION;
-    break;    
   case 4:
     return GC_TYPE_SUBSECTION;
-    break;
   case 5:
     return GC_TYPE_SUBSUBSECTION;
-    break;
   case 6:
     return GC_TYPE_HEADING5;
-    break;
   case 7:
     return GC_TYPE_HEADING6;
-    break;
   case 8:
     return GC_TYPE_IMAGE;
-    break;
   case 9:
     return GC_TYPE_PAGEBREAK;
-    break;
   default:
     return GC_TYPE_CODE;
   }
 }
 
-void ToolBar::SetCellStyle(int style)
+void ToolBar::SetCellStyle(GroupType style)
 {
 
   switch(style)
@@ -605,9 +561,10 @@ void ToolBar::SetCellStyle(int style)
   case GC_TYPE_HEADING6:
     m_textStyle->SetSelection(7);
     break;
+  default:
+    break;
   }
 }
-
 
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {
@@ -646,12 +603,90 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
         break;
     }
     m_AnimationStartStopState = state;
+    Realize();
   }
 }
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
-  UpdateBitmaps();
-  Refresh();
+//  AddTools();
   event.Skip();
+}
+
+void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
+{
+  wxMenu *popupMenu = new wxMenu();
+  popupMenu->AppendCheckItem(shownew, _("New button"),
+                             _("Show the \"New\" button?"));
+  popupMenu->Check(shownew, ShowNew());
+  popupMenu->AppendCheckItem(open_save, _("Open and save button"),
+                             _("Show the open and the save button?"));
+  popupMenu->Check(open_save, ShowOpenSave());
+  popupMenu->AppendCheckItem(print, _("Print button"),
+                             _("Show the print button?"));
+  popupMenu->Check(print, ShowPrint());
+  popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
+                             _("Show the Copy, Cut and the Paste button?"));
+  popupMenu->Check(copy_paste, ShowCopyPaste());
+  popupMenu->AppendCheckItem(options, _("Preferences button"),
+                             _("Show the preferences button?"));
+  popupMenu->Check(options, ShowOptions());
+  popupMenu->AppendCheckItem(selectAll, _("Select All button"),
+                             _("Show the \"select all\" button?"));
+  popupMenu->Check(selectAll, ShowSelectAll());
+  popupMenu->AppendCheckItem(search, _("Search button"),
+                             _("Show the \"search\" button?"));
+  popupMenu->Check(search, ShowSearch());
+  popupMenu->AppendCheckItem(help, _("Help button"),
+                             _("Show the \"help\" button?"));
+  popupMenu->Check(help, ShowHelp());
+
+  if (popupMenu->GetMenuItemCount() > 0)
+  {
+    popupMenu->Connect(wxEVT_MENU,
+                       wxMenuEventHandler(ToolBar::OnMenu),
+                       NULL, this);
+    PopupMenu(popupMenu);
+  }
+  wxDELETE(popupMenu);
+}
+
+void ToolBar::OnMenu(wxMenuEvent &event)
+{
+  switch(event.GetId())
+  {
+  case copy_paste:
+    ShowCopyPaste(!ShowCopyPaste());
+    AddTools();
+    break;
+  case open_save:
+    ShowOpenSave(!ShowOpenSave());
+    AddTools();
+    break;
+  case print:
+    ShowPrint(!ShowPrint());
+    AddTools();
+    break;
+  case options:
+    ShowOptions(!ShowOptions());
+    AddTools();
+    break;
+  case shownew:
+    ShowNew(!ShowNew());
+    AddTools();
+    break;
+  case search:
+    ShowSearch(!ShowSearch());
+    AddTools();
+    break;
+  case help:
+    ShowHelp(!ShowHelp());
+    AddTools();
+    break;
+  case selectAll:
+    ShowSelectAll(!ShowSelectAll());
+    AddTools();
+    break;
+  }
+  Realize();
 }

@@ -1,0 +1,138 @@
+.TH "WXMAXIMA" "1" "@CURRENTDATE@" "wxMaxima @VERSION@"
+.SH "NAME" 
+wxmaxima \- wxWidgets Interface f\(:ur Maxima
+
+.SH "SYNTAX" 
+.PP 
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [input file...]
+
+.SH "BESCHREIBUNG" 
+.PP 
+\fBwxmaxima\fR ist ein selbsterkl\(:arendes graphisches Frontend f\(:ur das 
+Computeralgebrasystem Maxima. Es stellt ein graphisches Userinterface und
+2D formatierte Ausgaben von Maxima dar.
+Das Men\(:usystem erm\(:oglicht den einfachen Zugriff zu vielen Maxima
+Befehlen und zur Maxima Hilfe.
+Dialogfenster erm\(:oglichen eine einfache Einf\(:uhrung von
+mathematischen Konstrukten wie Limits, Matrizen, etc.
+Zus\(:atzlich wird Maxima um M\(:oglichkeiten erweitert, wie beispielsweise
+die M\(:oglichkeit Diagramme mit Hilfe eines Sliders \(:uber die GUI zu animieren.
+
+.PP
+Maxima ist ein freies (GPL) Computeralgebrasystem, programmiert in Common Lisp.
+Es basiert auf dem Computeralgebrasystem Macsyma, welches am MIT entwickelt wurde.
+Eine umfangreiche Dokumentation ist inkludiert (und online verf\(:ugbar).
+.PP
+wxMaxima verwendet das Toolkit wxWidgets welches von vielen Betriebssystemen unterst\(:utzt wird.
+
+.SH "OPTIONEN"
+.TP
+.I \-h, \-\-help
+Gibt die Liste der Kommandozeilen-Optionen aus.
+
+.TP
+.I \-v, \-\-version
+Gibt die wxMaxima Version aus.
+
+.TP
+.I \-b, \-\-batch
+Verarbeitet eine Datei im Batch-Modus und speichert sie danach.
+W\(:urde anhalten, wenn Maxima eine Fehlermeldung produziert oder eine Frage stellt.
+
+.TP
+.I \-o, \-\-open=<str>
+\(:Offnet eine Datei nach dem Programmstart.
+
+.TP
+.I \-e, \-\-eval=<str>
+\(:Offnet eine Datei und verarbeitet sie nach dem Programmstart.
+
+.TP
+.I \-\-logtostdout
+Loggt "Debugging-Nachrichten" auch auf der Standard-Fehlerausgabe.
+
+.TP
+.I \-\-pipe
+Gibt Nachrichten von Maxima auf der Standardausgabe aus.
+
+.TP
+.I \-\-exit-on-error
+Beendet das Programm nach einem Fehler von Maxima.
+
+.TP
+.I \-f, --ini=<str>
+Spezifiziert, wo die Konfiguration gespeichert werden soll.
+
+.TP
+.I \-u, \-\-use-version=<str>
+Verwendet Maxima Version <str>.
+
+.TP
+.I \-l, \-\-lisp=<str>
+Verwendet ein Maxima, welches mit dem Lisp-Compiler <str> compiliert wurde.
+
+.TP
+.I \-X, \-\-extra-args=<str>
+Erm\(:oglicht es, weitere Maxima-Startargumente anzugeben.
+
+.TP
+.I \-m, \-\-maxima=<str>
+Erlaubt, den Pfad zum Maxima Programm anzugeben.
+
+.SH DATEIEN
+.TP
+.I @WXMAXIMA_CONFIGFILE_PATH@
+Die pers\(:onliche wxMaxima Initialisierungsdatei, wo pers\(:onliche Einstellungen gespeichert werden.
+
+.TP
+.I ~/.maxima/wxmaxima-init.mac
+Falls das Maxima Userdirectory - \(:ublicherweise
+.I ~/.maxima/
+- eine Datei namens
+.I wxmaxima-init.mac
+enth\(:alt, wird der Inhalt an Maxima automatisch jedesmal wenn ein neues Worksheet ge\(:offnet wird, an Maxima \(:ubergeben.
+
+.SH BUGS
+Falls Sie einen Fehler in wxMaxima finden, tragen Sie ihn bitte in der
+.UR https://github.com/wxMaxima-developers/wxmaxima/issues
+wxMaxima Fehlerdatenbank
+.UE
+ein.
+
+(Bitte \(:uberpr\(:ufen Sie zuerst, ob der Fehler nicht schon gemeldet wurde.) Und falls Sie eine L\(:osung haben, w\(:are das gro\(ssartig.
+wxMaxima ist ein Open Source Programm, wo jeder mitarbeiten kann.
+
+Falls das Problem ein mathematischer Fehler ist, ist es m\(:oglicherweise ein Fehler in Maxima (das die mathematischen 
+Berechnungen im Hintergrund erledigt), nicht in wxMaxima (dem graphischen Frontend).
+
+
+Die Maxima Fehlerdatenbank ist verf\(:ugbar auf:
+.UR https://sourceforge.net/p/maxima/bugs/
+Sourceforge
+.UE
+
+.SH "AUTOREN"
+.PP
+
+.IP \[bu] 2
+J. Rafael Rodriguez Galvan (Debian Projekt), urspr\(:unglicher Autor dieser Hilfeseite
+.IP \[bu]
+Gunter K\(:onigsmann (wxMaxima Projekt)
+.IP \[bu]
+Wolfgang Dautermannn (wxMaxima Projekt)
+
+.PP
+Diese Manualseite kann unter den Bestimmungen der GNU General Public License, Version 2 oder jeder neueren Version,
+die von der Free Software Foundation ver\(:offentlicht wird, kopiert und ver\(:andert werden.
+
+.SH "SIEHE AUCH"
+.BR maxima(1),
+.BR xmaxima(1)
+
+.UR https://wxmaxima-developers.github.io/wxmaxima/
+Webseite von wxMaxima.
+.UE
+
+.UR https://wxmaxima-developers.github.io/wxmaxima/help.html
+Dokumentationen und Tutorials zu wxMaxima
+.UE

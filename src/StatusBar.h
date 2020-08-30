@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -25,12 +25,14 @@
   This file contains the definition of the class History that handles the recently 
   issued commands for the history pane.
  */
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/timer.h>
 #include <wx/statbmp.h>
 #include <wx/statusbr.h>
+#include <memory>
 
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
@@ -41,7 +43,7 @@ class StatusBar : public wxStatusBar
 {
 public:
   StatusBar(wxWindow *parent, int id);
-
+  ~StatusBar();
   //! The network states that can be passed to NetworkStatus()
   enum networkState
   {
@@ -69,12 +71,12 @@ public:
     }
 protected:
   void OnSize(wxSizeEvent &event);
-
   void OnTimerEvent(wxTimerEvent &event);
 
   void HandleTimerEvent();
 
 private:
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The display resolution
   wxSize m_ppi;
   /*! How many percents of the available CPU power does maxima use?
@@ -98,9 +100,8 @@ private:
   //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit;
 
-  wxBitmap GetImage(wxString img,
-                    unsigned char *data_128, size_t len_128,
-                    unsigned char *data_192, size_t len_192
+  wxBitmap GetImage(wxString name,
+                    unsigned char *data_128, size_t len_128
     );
   
   //! The currently shown network status bitmap
@@ -123,7 +124,6 @@ private:
   wxTimer SendTimer;
   //! The timer that prolongs the showing of the "receiving" bitmap a bit.
   wxTimer ReceiveTimer;
-wxDECLARE_EVENT_TABLE();
 };
 
 #endif

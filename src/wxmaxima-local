@@ -3,4 +3,4 @@
 # Allow execution of wxMaxima directly from the build directory
 # without installing it.
 # (Maxima itself has a similar script ("./maxima-local")
-"${EXEPATH}/wxmaxima" "$@"
+"${CMAKE_BINARY_DIR}/src/wxmaxima" "$@"

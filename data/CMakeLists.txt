@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 if(APPLE)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
 endif()
@@ -16,11 +18,21 @@ set(PIXMAPS
 
 if(WIN32)
     add_subdirectory(fonts)
-    add_subdirectory(winrc)
 else()
+    string(TIMESTAMP CURRENTDATE "%Y-%m-%d")
+    # the config file is ~/.wxMaxima if wxWidgets < 3.1.1
+    #                    ~/.config/wxMaxima.conf if wxWidgets >= 3.1.1 (XDG Specification)
+    if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.1")
+        set(WXMAXIMA_CONFIGFILE_PATH "~/.config/wxMaxima.conf")
+    else()
+        set(WXMAXIMA_CONFIGFILE_PATH "~/.wxMaxima")
+    endif()
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1.in ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/de/wxmaxima.1.in ${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1)
     install(FILES ${PIXMAPS}                                                                     DESTINATION share/pixmaps)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima                                           DESTINATION share/bash-completion/completions)
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1                                         DESTINATION share/man/man1)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.1                                         DESTINATION share/man/man1)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/de/wxmaxima.1                                      DESTINATION share/man/de/man1)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.appdata.xml DESTINATION share/metainfo)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/io.github.wxmaxima_developers.wxMaxima.desktop     DESTINATION share/applications)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmathml.xml                                     DESTINATION share/mime/packages)
@@ -33,3 +45,4 @@ if(UNIX)
     file(COPY ${DATAFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
+add_subdirectory(winrc)

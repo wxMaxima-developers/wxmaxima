@@ -1,0 +1,135 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.07.0-DevelopmentSnapshot ] */
+/* [wxMaxima: subsubsect start ]
+Rounded parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:"("$rmxchar:")"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Square parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:"["$rmxchar:"]"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Straight parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:"|"$rmxchar:"|"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+Angled parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:"<"$rmxchar:">"$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+No parenthesis
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lmxchar:" "$rmxchar:" "$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+funmake('matrix,  
+    [makelist(i,i,1,10)]
+);
+funmake('matrix,  
+    makelist([i],i,1,10)
+);
+funmake('matrix,  
+    makelist(
+        makelist(o+10*i-10,o,1,10)
+    ,i,1,10
+)
+);
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.07.0-DevelopmentSnapshot"$

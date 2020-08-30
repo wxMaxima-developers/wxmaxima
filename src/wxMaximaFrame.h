@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -17,7 +17,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -30,6 +30,7 @@ surrounding the worksheet.
 #ifndef WXMAXIMAFRAME_H
 #define WXMAXIMAFRAME_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 
 #include <wx/dirctrl.h>
@@ -45,7 +46,6 @@ surrounding the worksheet.
 #include "Version.h"
 #include "MainMenuBar.h"
 #include "History.h"
-#include "ToolBar.h"
 #include "XmlInspector.h"
 #include "StatusBar.h"
 #include "LogPane.h"
@@ -60,11 +60,11 @@ public:
   wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
-                long style = wxDEFAULT_FRAME_STYLE, bool becomeLogTarget = true);
+                long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
 
   /*! The destructor
   */
-  ~wxMaximaFrame();
+  virtual ~wxMaximaFrame();
 
   /*! Shows or hides the toolbar
     \param show
@@ -103,6 +103,7 @@ public:
     menu_pane_xmlInspector, //!< Both the "toggle the xml monitor" command and the monitor pane
     menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
     menu_pane_greek,     //!< Both the "toggle the greek pane" command and the "greek" pane
+    menu_pane_unicode,   //!< Both the "toggle the unicode pane" command and the "unicode" pane
     menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
     menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
     menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane
@@ -113,14 +114,10 @@ public:
       that this entry stays that of the last pane in this enum.
     */
     menu_pane_stats,
-
+    menu_pane_dockAll,
     input_line_id,
     refresh_id,
-    menu_new_id,
-    menu_open_id,
     menu_batch_id,
-    menu_save_id,
-    menu_save_as_id,
     menu_load_id,
     menu_sconsole_id,
     menu_interrupt_id,
@@ -140,6 +137,15 @@ public:
     menu_gen_mat,
     menu_gen_mat_lambda,
     menu_enter_mat,
+    menu_csv2mat,
+    menu_mat2csv,
+    menu_csv2list,
+    menu_list2csv,
+    menu_matrix_row,
+    menu_matrix_col,
+    menu_matrix_row_list,
+    menu_matrix_col_list,
+    menu_submatrix,
     menu_invert_mat,
     menu_cpoly,
     menu_determinant,
@@ -169,6 +175,7 @@ public:
     menu_to_float,
     menu_to_bfloat,
     menu_to_numer,
+    menu_num_domain,
     menu_set_precision,
     menu_set_displayprecision,
     menu_engineeringFormat,
@@ -197,6 +204,7 @@ public:
     menu_atvalue,
     menu_lhs,
     menu_rhs,
+    menu_wxmaximahelp,
     menu_maximahelp,
     menu_example,
     menu_apropos,
@@ -217,8 +225,10 @@ public:
     menu_defaultAutosubscript,
     menu_alwaysAutosubscript,
     menu_roundedMatrixParens,
-    menu_roundedMatrixParensYes,
-    menu_roundedMatrixParensNo,
+    menu_squareMatrixParens,
+    menu_straightMatrixParens,
+    menu_angledMatrixParens,
+    menu_noMatrixParens,
     menu_draw_2d,
     menu_draw_3d,
     menu_draw_explicit,
@@ -270,13 +280,9 @@ public:
     menu_evaluate_all_visible,
     menu_evaluate_all,
     menu_show_tip,
-    menu_copy_from_worksheet,
-	menu_copy_matlab_from_worksheet,
+    menu_copy_matlab_from_worksheet,
     menu_copy_tex_from_worksheet,
     menu_copy_text_from_worksheet,
-    menu_undo,
-    menu_redo,
-    menu_select_all,
     menu_logcontract,
     menu_logexpand,
     menu_to_fact,
@@ -284,7 +290,7 @@ public:
     menu_texform,
     button_enter,
     menu_zoom_80,
-    menu_zoom_100,
+    /* Instead of menu_zoom_100 we use the standard wxID_ZOOM_100, which displays an icon in the menu (currently Unix only) */
     menu_zoom_120,
     menu_zoom_150,
     menu_zoom_200,
@@ -323,14 +329,9 @@ public:
     menu_insert_previous_output,
     menu_autocomplete,
     menu_autocomplete_templates,
-    menu_cut,
-    menu_paste,
     menu_paste_input,
     menu_fullscreen,
     menu_remove_output,
-    mac_newId,
-    mac_openId,
-    mac_closeId,
     menu_list_create_from_elements,
     menu_list_create_from_rule,
     menu_list_create_from_list,
@@ -481,15 +482,30 @@ public:
     menu_format_image,
     menu_format_pagebreak,
     menu_help_tutorials,
+    menu_help_tutorials_start, //! Start of bundled tutorials
+    menu_help_solving,
+    menu_help_diffequations,
+    menu_help_numberformats,
+    menu_help_tolerances,
+    menu_help_listaccess,
+    menu_help_memoizing,
+    menu_help_3d,
+    menu_help_varnames,
+    menu_help_fittingData,
+    menu_help_tutorials_end, //! End of bundled tutorials
     menu_show_toolbar,
-    menu_edit_find,
     menu_history_previous,
     menu_history_next,
     menu_check_updates,
     socket_client_id,
     socket_server_id,
     maxima_process_id,
-    gnuplot_process_id
+    gnuplot_process_id,
+    menu_additionalSymbols,
+    enable_unicodePane,
+    menu_showLatinGreekLookalikes,
+    menu_showGreekMu,
+    menu_invertWorksheetBackground
   };
 
   /*! Update the recent documents list
@@ -509,14 +525,14 @@ public:
   /*! Show or hide a sidebar
     
     \param id The type of the sidebar to show/hide
-    \param hide 
+    \param show 
      - true: show the sidebar
      - false: hide it
    */
-  void ShowPane(Event id, bool hide);
+  void ShowPane(Event id, bool show = true);
 
   //! Adds a command to the list  of recently used maxima commands
-  void AddToHistory(wxString cmd)
+  void AddToHistory(const wxString &cmd)
   { m_history->AddToHistory(cmd); }
 
   enum ToolbarStatus
@@ -574,8 +590,6 @@ protected:
   long m_bytesFromMaxima;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
-  //! Did the user ever give this file a name?
-  bool m_isNamed;
   //! The last name GetTempAutosavefileName() has returned.
   wxString m_tempfileName;
   //! Issued if a notification is closed.
@@ -622,23 +636,19 @@ protected:
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
   void ReReadConfig();  
-  /*! Determine a suitable name for a temporary autosave file.
-    
-    Is used if we want to autosave the current file, but still have no 
-    filename to save it to.
-  */  
-  wxString GetTempAutosavefileName();
-  //! Remember an temporary autosave file name.
+  //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
+  /*! An instant single-window mode
+
+    A last resort if https://trac.wxwidgets.org/ticket/18815 hinders one from 
+    re-docking windows.
+   */
+  void DockAllSidebars(wxCommandEvent &ev);
+
 private:
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;
   wxTimer m_bytesReadDisplayTimer; 
-  //! A panel that shows all user-defined symbols on the symbols pane.
-  wxPanel *m_userSymbols;
-  //! A button per user defined symbol
-  std::list<wxPanel *> m_userSymbolButtons;
-  wxGridSizer *m_userSymbolsSizer;
   //! True=We are currently saving.
   bool m_StatusSaving;
 
@@ -654,12 +664,12 @@ private:
   wxPanel *CreateMathPane();
 
   wxPanel *CreateFormatPane();
-
+  
   //! The class for the sidebar with the draw commands
   class DrawPane: public wxPanel
     {
     public:
-      DrawPane(wxWindow *parent, int ID = wxID_ANY);
+      explicit DrawPane(wxWindow *parent, int id = wxID_ANY);
       /*! Tell the sidebar if we currently are inside a 2D or a 3D plot command
         
         \param dimensions
@@ -687,11 +697,13 @@ private:
       int m_dimensions;
     };
 public:
-  void LeftStatusText(wxString text, bool saveInLog = true)
+  void LeftStatusText(const wxString &text, bool saveInLog = true)
     {m_newLeftStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
-  void RightStatusText(wxString text, bool saveInLog = true)
+  void RightStatusText(const wxString &text, bool saveInLog = true)
     {m_newRightStatusText = true; m_rightStatusText = text; if(saveInLog)wxLogMessage(text);}
 protected:
+  //! Are we inside a 2d or 3d draw command?
+  long m_drawDimensions_last;
   //! Do we have new text to output in the Right half of the Status Bar?
   bool m_newRightStatusText;
   //! Do we have new text to output in the Left half of the Status Bar?
@@ -705,26 +717,46 @@ protected:
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
-  /*! A flat, compact button for the greek and the symbols pane
-    
-    \param parent The parent panel/window
-    \param ch The unicode symbol
-    \param description The help text for the symbol
-    \param matchesMaximaCommand true means that this symbol is automatically
-                                translated into a maxima command/operator
+  class GreekPane : public wxPanel
+  {
+  public:
+    GreekPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
+  protected:
+    void UpdateSymbols();
+    void OnMouseRightDown(wxMouseEvent &event);
+    void OnMenu(wxCommandEvent &event);
+  private:
+    Configuration *m_configuration;
+    wxFlexGridSizer *m_lowercaseSizer;
+    wxFlexGridSizer *m_uppercaseSizer;
+    Worksheet *m_worksheet;
+  };
 
-   */
-  wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
-
-  wxPanel *CreateGreekPane();
+  class SymbolsPane : public wxPanel
+  {
+  public:
+    SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
+    //! Update the "user symbols" portion of the symbols pane.
+    void UpdateUserSymbols();
+  protected:
+    void OnMouseRightDown(wxMouseEvent &event);
+    void OnMenu(wxCommandEvent &event);
+  private:
+    //! A panel that shows all user-defined symbols on the symbols pane.
+    wxPanel *m_userSymbols;
+    //! A button per user defined symbol
+    std::list<wxPanel *> m_userSymbolButtons;
+    wxGridSizer *m_userSymbolsSizer;
+    Configuration *m_configuration;
+    Worksheet *m_worksheet;
+  };
 
   wxPanel *CreateSymbolsPane();
 
 protected:
+  SymbolsPane *m_symbolsPane;
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
-  //! Update the "user symbols" portion of the symbols pane.
-  void UpdateUserSymbols();
   //! Do we need to update the display showing the evaluation queue length?
   bool m_updateEvaluationQueueLengthDisplay;
   //! The number of commands left in the current of the evaluation queue item
@@ -733,10 +765,7 @@ protected:
   //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
 
-  void CharacterButtonPressed(wxMouseEvent &event);
-
   bool ToolbarIsShown();
-
   //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
@@ -754,6 +783,9 @@ protected:
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
   wxMenu *m_recentPackagesMenu;
+  wxMenu *m_autoSubscriptMenu;
+  wxMenu *m_equationTypeMenuMenu;
+  wxMenu *m_roundedMatrixParensMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

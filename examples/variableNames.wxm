@@ -1,0 +1,187 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.02.2 ] */
+/* [wxMaxima: title   start ]
+Advanced variable names
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+Engineer-style Subscripts
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+wxMaxima allows to use engineer-style subscripts in variable or function names:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+R_100=U_In/I_Out;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If this feature is over-eager (or not eagerly enough) wxMaxima offers additional control:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxsubscripts: 'all$
+RR_xy;
+R_100;
+RR_100;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxsubscripts: false$
+RR_xy;
+R_100;
+RR_100;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxsubscripts: true$
+RR_xy;
+R_100;
+RR_100;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxsubscripts: true$
+wxdeclare_subscripted(ew_wewr)$
+ew_wewr;
+ew_qwqw;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Variable and equation names containing "'", "+", "-" or the like
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+By escaping it with a backslash nearly every symbol can be made to be interpreted as an ordinary character:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1\':φ_\-=10;
+eq1\'\':φ_\+=φ_\-;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1:subst(eq1\',eq1\'\');
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Equipping any character with accents
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Unicode supports so-called "combining diacritics" that allow to assemble a character from several elements. Maxima might not know that the individual parts these characters are combined to are meant to be interpreted as ordinary letters, though, so assembling weird characters is a multi-step process:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Easy access to combining diacritics
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+ * Open the "mathematical symbols" sidebar (if it isn't already displayed) and right-click on it
+ * Drag-and-drop a combining diacritic to the "add new symbols" dialogue, for example one of the following.
+ * The "symbols" sidebar now should allow for easy access to these characters.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+A few combining diacritics are:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+ * ̂
+ * ̃
+ * ̅
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Actually using combining diacritics
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+* First enter the character you want to equip with new accents or the like.
+* Then add a Backslash ("\") in order to tell maxima that the symbol that now follows is to be interpreted as an ordinary character
+* Then add the combining diacritic(s):
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+d\̃=10;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+T\̂/U_Test;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Pre- and post- super- and subscripts
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Thanks to Robert Dodier it is now possible to equip variables with super-, and subscripts that are displayed left of the variable name, too:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+declare_index_properties(A,[postsubscript,postsuperscript,presubscript,presuperscript])$
+A[postsubscript,postsuperscript,presubscript,presuperscript];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+A weird example, just for showing off
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's hope the font that is used to display this includes cherries, pear and banana symbols.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1:🍐+🍌=🍒;
+eq2:🍐+🍐=🍌;
+eq3:🍌=10;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+solve([eq1,eq2,eq3],[🍐,🍌,🍒]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+For all xkcd fans:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+xkcd_55:sqrt(💓)=\?;
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.02.2"$

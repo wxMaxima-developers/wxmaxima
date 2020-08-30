@@ -1,0 +1,124 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.07.0 ] */
+/* [wxMaxima: input   start ] */
+½≠1/2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ½≠1/2 then
+     error ("The number 1/2 isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if x²≠x^2 then
+     error ("The exponent 2 isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if x³≠x^3 then
+     error ("The exponent 3 isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if √(2)≠sqrt(2) then
+     error ("The square root isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ⅈ≠%i then
+     error ("The imaginary unit isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ⅇ≠%e then
+     error ("Euler's constant isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ⇒≠implies then
+     error ("The \"implies\" symbol isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ∞≠inf then
+     error ("The \"infinity\" symbol isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ∅≠[] then
+     error ("The \"empty set\" symbol isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* if (a ⊻ b) ≠ (a xor b) then 
+    error("Error substituting the \"xor\" operator")$ */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if (a ⋀ b) ≠ (a and b) then 
+    error("Error substituting the \"and\" operator")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if (¬a) ≠ (not a) then 
+    error("Error substituting the \"not\" operator")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if (a ⋁ b) ≠ (a or b) then 
+    error("Error substituting the \"or\" operator")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ∫≠integrate then
+     error ("The \"integrate\" symbol isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ∫≠integrate then
+     error ("The \"integrate\" symbol isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if (2 ≥ 3)  then 
+    error("Error substituting the \">=\" operator")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if (a ≤ b) ≠ (a <= b) then 
+    error("Error substituting the \"<=\" operator")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ∑≠sum then
+     error ("The \"sum\" symbol isn't properly substituted.")$    
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if ∏≠product then
+     error ("The \"product\" symbol isn't properly substituted.")$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.07.0"$

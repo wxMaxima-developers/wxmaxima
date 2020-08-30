@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -50,10 +50,20 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
     font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #endif
     wxASSERT_MSG(font.IsOk(),
-                 _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+                 _("Seems like something is broken with a font."));
     if(font.IsOk())
       SetFont(font);
   }
+#if defined __WXGTK__
+  Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+#else
+  Connect(wxEVT_CHAR, wxKeyEventHandler(BTextCtrl::OnChar), NULL, this);
+#endif
+  #ifdef __WXOSX__
+  #if wxCHECK_VERSION(3, 1, 1)
+  OSXDisableAllSmartSubstitutions();
+  #endif
+  #endif
 }
 
 
@@ -152,11 +162,3 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
       SetInsertionPoint(to + 1);
   }
 }
-
-BEGIN_EVENT_TABLE(BTextCtrl, wxTextCtrl)
-#if defined __WXGTK__
-                EVT_KEY_DOWN(BTextCtrl::OnChar)
-#else
-                EVT_CHAR(BTextCtrl::OnChar)
-#endif
-END_EVENT_TABLE()

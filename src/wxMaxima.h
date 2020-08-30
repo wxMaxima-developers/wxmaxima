@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -33,27 +33,23 @@
 
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
+#include "MaximaIPC.h"
 #include "Dirstructure.h"
 
 #include <wx/socket.h>
 #include <wx/config.h>
 #include <wx/process.h>
 #include <wx/regex.h>
-#include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/buffer.h>
+#include <memory>
 #ifdef __WXMSW__
 #include <windows.h>
 #endif
-
-#if defined (__WXMSW__)
-#include <wx/msw/helpchm.h>
-#endif
-
-#include <wx/html/helpctrl.h>
-
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
   
@@ -75,22 +71,8 @@
 //! How many miliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
 
-#ifndef __WXGTK__
-
-class MyAboutDialog : public wxDialog
-{
-public:
-  MyAboutDialog(wxWindow *parent, int id, const wxString title, wxString description);
-
-  ~MyAboutDialog()
-  {};
-
-  void OnLinkClicked(wxHtmlLinkEvent &event);
-
-DECLARE_EVENT_TABLE()
-};
-
-#endif
+class Maxima; // The Maxima process interface
+class MaximaEvent;
 
 /* The top-level window and the main application logic
 
@@ -100,11 +82,17 @@ class wxMaxima : public wxMaximaFrame
 public:
 
   wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
+           const wxString &filename = wxEmptyString,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
-  ~wxMaxima();
+  virtual ~wxMaxima();
 
-  void CleanUp();                                  //!< shuts down server and client on exit
+  //! Pipe maxima's output to stdout
+  static void PipeToStdout(){m_pipeToStdout = true;}
+  static void ExitOnError(){m_exitOnError = true;}
+  static void EnableIPC(){ MaximaIPC::EnableIPC(); }
+  static void ExtraMaximaArgs(const wxString &args){m_extraMaximaArgs = args;}
+
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
   {
@@ -114,25 +102,15 @@ public:
             AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID,
-            //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID
+            /*! We have given Maxima enough time to do the important 
+
+              now it is time to compile the list of helpfile anchors */
+            COMPILEHELPANCHORS_ID
   };
 
-  /*! A timer that determines when to do the next autosave;
-
-    The actual autosave is triggered if both this timer is expired and the keyboard
-    has been inactive for >10s so the autosave won't cause the application to shortly
-    stop responding due to saving the file while the user is typing a word.
-
-    This timer is used in one-shot mode so in the unikely case that saving needs more
-    time than this timer to expire the user still got a chance to do something against
-    it between two expirys. 
-   */
-  wxTimer m_autoSaveTimer;
-
-  //! A timer that tells us to wait until maxima ends its data.
-  wxTimer m_waitForStringEndTimer;
-
+  //! A timer that ells us that we now can do the low-prio compilation of help anchors
+  wxTimer m_compileHelpAnchorsTimer;
+  
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
 
@@ -141,23 +119,7 @@ public:
 
   void ShowTip(bool force);
 
-  /*! Get the name of the help file
-   */
-  wxString GetHelpFile();
-  //! An helper function for GetHelpFile()
-  wxString GetHelpFile2();
-
-  void ShowMaximaHelp(wxString keyword = wxEmptyString);
-
-  void ShowWxMaximaHelp();
-
-  void InitSession();
-
-  void SetOpenFile(wxString file)
-  {
-    m_openFile = file;
-  }
-  
+  void SetWXMdata(const wxString &data){m_initialWorkSheetContents = data;}
   //! Do we want to evaluate the document on statup?
   void EvalOnStartup(bool eval)
     {
@@ -176,11 +138,13 @@ public:
   
   void StripLispComments(wxString &s);
 
-  void SendMaxima(wxString s, bool history = false);
+  //! Launches the help browser on the uri passed as an argument.
+  void LaunchHelpBrowser(wxString uri);
+  
+  void SendMaxima(wxString s, bool addToHistory = false);
 
   //! Open a file
-  bool OpenFile(wxString file,
-                wxString command = wxEmptyString);
+  bool OpenFile(const wxString &file, const wxString &command ={});
 
   //! Does this document need saving?
   bool DocumentSaved()
@@ -193,12 +157,38 @@ public:
   //! Query the value of a new maxima variable
   bool QueryVariableValue();
 
+  //! A version number that can be compared using "<" and ">"
+  class VersionNumber
+  {
+  public:
+    explicit VersionNumber(const wxString &version);
+    long Major() const {return m_major;}
+    long Minor() const {return m_minor;}
+    long Patchlevel() const {return m_patchlevel;}
+    friend bool operator<(const VersionNumber& v1, const VersionNumber& v2);
+    friend bool operator>(const VersionNumber& v1, const VersionNumber& v2);
+  private:
+    long m_major;
+    long m_minor;
+    long m_patchlevel;
+  };
+
 private:
+  #ifdef HAVE_OMP_HEADER
+  omp_lock_t m_helpFileAnchorsLock;
+  #endif
+  MaximaIPC m_ipc{this};
+  //! wxm data the worksheet is populated from 
+  wxString m_initialWorkSheetContents;
+  static bool m_pipeToStdout;
+  static bool m_exitOnError;
+  static wxString m_extraMaximaArgs;
   //! Search for the wxMaxima help file
   wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
-  //! The variable names to query for the variables pane
+  //! The variable names to query for the variables pane and for internal reasons
   wxArrayString m_varNamesToQuery;
+
   bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.
   bool m_openInitialFileError;
@@ -209,11 +199,10 @@ private:
   //! The number of Jiffies the CPU had made the last time
   long long m_cpuTotalJiffies_old;
   //! Do we need to update the menus + toolbars?
-  bool m_updateControls;
   //! All configuration commands we still have to send to maxima
   wxString m_configCommands;
   //! A RegEx that matches gnuplot errors.
-  wxRegEx m_gnuplotErrorRegex;
+  static wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 
   bool AbortOnError();
   //! This string allows us to detect when the string we search for has changed.
@@ -223,7 +212,7 @@ private:
   //! On opening a new file we only need a new maxima process if the old one ever evaluated cells.
   bool m_hasEvaluatedCells;
   //! Searches for maxima's output prompts
-  wxRegEx m_outputPromptRegEx;
+//  static wxRegEx m_outputPromptRegEx;
   //! The number of output cells the current command has produced so far.
   int m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display 
@@ -253,6 +242,23 @@ private:
   wxMemoryBuffer m_uncompletedChars;
 
 protected:
+  //! Reads a potentially unclosed XML tag and closes it
+  wxString ReadPotentiallyUnclosedTag(wxStringTokenizer &lines, wxString firstLine);
+
+  //! Finds the name of an opening tag
+  static wxRegEx m_xmlOpeningTagName;
+  //! Looks if this opening tag is actually complete.
+  static wxRegEx m_xmlOpeningTag;
+  //! Collect all keyword anchors in the help file
+  void CompileHelpFileAnchors();
+  //! Load the result from the last CompileHelpFileAnchors from the disk cache
+  bool LoadManualAnchorsFromCache();
+  //! Load the help file anchors from an wxXmlDocument
+  bool LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion = true);
+  //! Load the help file anchors from the built-in list
+  bool LoadBuiltInManualAnchors();
+  //! Save the list of help file anchors to the cache.
+  void SaveManualAnchorsToCache();
   //! The gnuplot process info
   wxProcess *m_gnuplotProcess;
   //! Is this window active?
@@ -265,18 +271,25 @@ protected:
   void ConfigChanged();
   //! Called when the "Scroll to last error" button is pressed.
   void OnJumpToError(wxCommandEvent &event);
-
+  //! Sends a new char to the symbols sidebar
+  void OnSymbolAdd(wxCommandEvent &event);
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow(wxCommandEvent &event);
 
-  void ShowCHMHelp(wxString helpfile, wxString keyword);
+  /*! Get the name of the help file
+   */
+  wxString GetMaximaHelpFile();
+  //! A helper function for GetHelpFile()
+  wxString GetMaximaHelpFile2();
 
-  /*! Launches the HTML help browser
+  //! Show the help for maxima
+  void ShowMaximaHelp(wxString = {});
 
-    \param helpfile The name of the file the help browser has to be launched with
-    \param keyword The keyword to show help for
-  */
-  void ShowHTMLHelp(wxString helpfile, wxString keyword = wxEmptyString);
+  //! Show the help for wxMaxima
+  void ShowWxMaximaHelp();
+    
+  //! Try to determine if help is needed for maxima or wxMaxima and show this help
+  void ShowHelp(const wxString &keyword);
 
   void CheckForUpdates(bool reportUpToDate = false);
 
@@ -314,13 +327,13 @@ protected:
       - true, if there was new data
       - false, if there wasn't any new data.
    */
-  bool InterpretDataFromMaxima();
+  bool InterpretDataFromMaxima(const wxString &newData);
   bool m_dataFromMaximaIs;
   
-  void MenuCommand(wxString cmd);                  //!< Inserts command cmd into the worksheet
+  void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
-  void AlgebraMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
+  void MatrixMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
   void EquationsMenu(wxCommandEvent &event);       //!< Processes "equations menu" clicks
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
@@ -330,11 +343,12 @@ protected:
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
   void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks
+  void ReplaceSuggestion(wxCommandEvent &event);   //!< Processes clicks on suggestions
   void Interrupt(wxCommandEvent &event);           //!< Interrupt button and hotkey presses
   //! Make the menu item, toolbars and panes visible that should be visible right now.
-  void UpdateMenus(wxUpdateUIEvent &event);     //!< Enables and disables the Right menu buttons
-  void UpdateToolBar(wxUpdateUIEvent &event);      //!< Enables and disables the Right toolbar buttons
-  void UpdateSlider(wxUpdateUIEvent &event);       //!< Updates the slider to show the right frame
+  void UpdateMenus();        //!< Enables and disables the Right menu buttons
+  void UpdateToolBar();      //!< Enables and disables the Right toolbar buttons
+  void UpdateSlider();       //!< Updates the slider to show the right frame
   /*! Toggle the visibility of a pane
     \param event The event that triggered calling this function.
    */
@@ -359,18 +373,16 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
-  //!< server event: maxima connection
+  //! Is called if maxima connects to wxMaxima.
+  void OnMaximaConnect();
+  
+  //! Maxima sends or receives data, or disconnects
+  void MaximaEvent(::MaximaEvent &event);
+
+  //! Server event: Maxima connects
   void ServerEvent(wxSocketEvent &event);
-  /*! Is triggered on Input or disconnect from maxima
 
-    The data we get from maxima is typically split into small packets we append to 
-    m_currentOutput until we got a full line we can display.
-   */
-  void ClientEvent(wxSocketEvent &event);
-  //! Triggered when we get new chars from maxima.
-  void OnNewChars();
-
-  /*! Add a parameter to an draw command
+  /*! Add a parameter to a draw command
 
     \param cmd The parameter to  add to the draw command
     \param dimensionsOfNewDrawCommand The number of dimensions the new draw command needs to 
@@ -384,15 +396,17 @@ protected:
     NULL, if there is no such line (for example if the appended object is 
     maths instead).
    */
-  TextCell *ConsoleAppend(wxString s, CellType type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, CellType  type, 
-                       bool newLine = true, bool bigSkip = true, wxString userLabel = wxEmptyString);
+  TextCell *ConsoleAppend(wxString s, CellType type, const wxString &userLabel = {});        //!< append maxima output to console
+
+  enum AppendOpt { NewLine = 1, BigSkip = 2, PromptToolTip = 4, DefaultOpt = NewLine|BigSkip };
+  void DoConsoleAppend(wxString s, CellType type, AppendOpt opts = AppendOpt::DefaultOpt,
+                       const wxString &userLabel = {});
 
   /*!Append one or more lines of ordinary unicode text to the console
 
     \return A pointer to the last line that was appended or NULL, if there is no such line
    */
-  TextCell *DoRawConsoleAppend(wxString s, CellType  type); 
+  TextCell *DoRawConsoleAppend(wxString s, CellType  type, AppendOpt opts = {});
 
   /*! Spawn the "configure" menu.
 
@@ -427,9 +441,9 @@ protected:
 
   void TryUpdateInspector();
 
-  void UpdateDrawPane();
-  
-  wxString ExtractFirstExpression(wxString entry);
+  bool UpdateDrawPane();
+
+  wxString ExtractFirstExpression(const wxString &entry);
 
   wxString GetDefaultEntry();
   
@@ -464,16 +478,16 @@ protected:
    */
   void ReadFirstPrompt(wxString &data);
 
-  /*! Determine where the text for ReadMiscText ends
+  /*! Reads an XML tag or a piece of status text from maxima's output
 
-    Every error message or other line maxima outputs should end in a newline character. 
-    But sometimes it doesn't and a <code>\<mth\></code> tag comes first \f$ =>\f$ This 
-    function determines where the miscellaneous text ends.
+    \todo Is there any way to handle the (perhaps, thanks to the flush commands in maxima)
+    theoretical case that maxima might stop sending data in the middle of an XML tag
+    and then resume sending data with the next XML packet?
    */
-  int GetMiscTextEnd(const wxString &data);
+  bool ParseNextChunkFromMaxima(wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
-  int FindTagEnd(wxString &data, const wxString &tag);
+  int FindTagEnd(const wxString &data, const wxString &tag);
 
   /*! Reads text that isn't enclosed between xml tags.
 
@@ -482,7 +496,7 @@ protected:
 
      After processing the lines not enclosed in xml tags they are removed from data.
    */
-  void ReadMiscText(wxString &data);
+  void ReadMiscText(const wxString &data);
 
   /*! Reads the input prompt from Maxima.
 
@@ -511,6 +525,8 @@ protected:
 
     After processing the templates they are removed from data.
    */
+
+  void ReadMaximaIPC(wxString &data){m_ipc.ReadInputData(data);}
   void ReadLoadSymbols(wxString &data);
 
   //! Read (and discard) suppressed output
@@ -523,14 +539,33 @@ protected:
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
   void ReadAddVariables(wxString &data);
+  void VariableActionUserDir(const wxString &value);
+  void VariableActionTempDir(const wxString &value);
+  void VariableActionAutoconfVersion(const wxString &value);
+  void VariableActionAutoconfHost(const wxString &value);
+  void VariableActionMaximaInfodir(const wxString &value);
+  void VariableActionGnuplotCommand(const wxString &value);
+  void VariableActionMaximaSharedir(const wxString &value);
+  void VariableActionLispName(const wxString &value);
+  void VariableActionLispVersion(const wxString &value);
+  void VariableActionWxLoadFileName(const wxString &value);
+  void VariableActionWxSubscripts(const wxString &value);
+  void VariableActionLmxChar(const wxString &value);
+  void VariableActionDisplay2D(const wxString &value);
+  void VariableActionAltDisplay2D(const wxString &value);
+  void VariableActionNumer(const wxString &value);
+  void VariableActionAlgebraic(const wxString &value);
+  void VariableActionShowtime(const wxString &value);
+  void VariableActionDomain(const wxString &value);
+  void VariableActionAutoplay(const wxString &value);
+  void VariableActionEngineeringFormat(const wxString &value);
 
-#ifndef __WXMSW__
-
-  //! reads the output the maxima command sends to stdout
-  void ReadProcessOutput();
-
-#endif
-
+  wxString m_maximaVariable_wxSubscripts;
+  wxString m_maximaVariable_lmxchar;
+  wxString m_maximaVariable_display2d;
+  wxString m_maximaVariable_altdisplay2d;
+  wxString m_maximaVariable_engineeringFormat;
+  bool m_readMaximaVariables = false;
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
@@ -583,25 +618,22 @@ protected:
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */
-  bool OpenXML(wxString file, Worksheet *document);
+  bool OpenXML(const wxString &file, Worksheet *document);
 
   //! Complains if the version string from the XML file indicates too low a maxima version
-  bool CheckWXMXVersion(wxString docversion);
-
-  //! Reads the contents of a .mac or a .out file. Used by OpenMacFile
-  wxString ReadMacContents(wxString file);
+  bool CheckWXMXVersion(const wxString &docversion);
 
   //! Opens a .mac file or a .out file from Xmaxima
-  bool OpenMACFile(wxString file, Worksheet *document, bool clearDocument = true);
+  bool OpenMACFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxm file
-  bool OpenWXMFile(wxString file, Worksheet *document, bool clearDocument = true);
+  bool OpenWXMFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxmx file
-  bool OpenWXMXFile(wxString file, Worksheet *document, bool clearDocument = true);
+  bool OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Loads a wxmx description
-  GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
+  std::unique_ptr<GroupCell> CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
 
   /*! Saves the current file
 
@@ -609,6 +641,14 @@ protected:
    */
   bool SaveFile(bool forceSave = false);
 
+  //! Try to save the file before closing it - or return false 
+  bool SaveOnClose();
+  /*! Save the project in a temp file.
+
+    Returns false if a save was necessary, but not possible.
+   */
+  bool AutoSave();
+  
   int SaveDocumentP();
 
   //! Set the current working directory file I/O from maxima is relative to.
@@ -620,22 +660,15 @@ protected:
     return m_CWD;
   }
 
-  wxSocketBase *m_client;
-  wxSocketInputStream *m_clientStream;
-  wxTextInputStream *m_clientTextStream;
+  std::unique_ptr<Maxima> m_client;
   wxSocketServer *m_server;
-  //! Is the network connection to maxima working?
-  bool m_isConnected;
-  //! Is maxima running?
-  bool m_isRunning;
+
   wxProcess *m_process;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr;
   int m_port;
-  //! All chars from maxima that still aren't part of m_currentOutput
-  wxString m_newCharsFromMaxima;
   /*! The end of maxima's current uninterpreted output, see m_currentOutput.
    
     If we just want to look if maxima's current output contains an ending tag
@@ -645,33 +678,56 @@ protected:
     creating this string worthwile.
    */
   wxString m_currentOutputEnd;
+  //! Caches the name of wxMaxima's help file.
+  wxString m_wxMaximaHelpFile;
   //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
+  //! A marker for the start of maths
+  static wxString m_mathPrefix1;
+  //! A marker for the start of maths
+  static wxString m_mathPrefix2;
+  //! A marker for the end of maths
+  static wxString m_mathSuffix1;
+  //! A marker for the end of maths
+  static wxString m_mathSuffix2;
   //! The marker for the start of a input prompt
-  wxString m_promptPrefix;
+  static wxString m_promptPrefix;
+public:
   //! The marker for the end of a input prompt
-  wxString m_promptSuffix;
+  const static wxString m_promptSuffix;
+protected:
   //! The marker for the start of a variables section
-  wxString m_variablesPrefix;
+  static wxString m_variablesPrefix;
   //! The marker for the end of a variables section
-  wxString m_variablesSuffix;
+  static wxString m_variablesSuffix;
+  //! The marker for the start of a prompt
+//  static wxString m_outputPromptPrefix;
+  //! The marker for the end of a prompt
+//  static wxString m_outputPromptSuffix;
+  //! The marker for the start of a variables section
+  static wxString m_statusbarPrefix;
+  //! The marker for the end of a variables section
+  static wxString m_statusbarSuffix;
   //! The marker for the start of a "add variables" section
-  wxString m_addVariablesPrefix;
+  static wxString m_addVariablesPrefix;
   //! The marker for the end of a "add variables" section
-  wxString m_addVariablesSuffix;
+  static wxString m_addVariablesSuffix;
   //! The marker for the start of a list of autocompletion templates
-  wxString m_symbolsPrefix;
+  static wxString m_symbolsPrefix;
   //! The marker for the end of a list of autocompletion templates
-  wxString m_symbolsSuffix;
+  static wxString m_symbolsSuffix;
   //! The marker that tells to start suppressing any output from maxima
-  wxString m_suppressOutputPrefix;
+  static wxString m_suppressOutputPrefix;
   //! The marker that tells to stop to suppress any output from maxima
-  wxString m_suppressOutputSuffix;
-  wxString m_firstPrompt;
+  static wxString m_suppressOutputSuffix;
+  //! The first prompt maxima will output
+  static wxString m_firstPrompt;
+  //! An empty wxxml symbols section
+  static wxString m_emptywxxmlSymbols;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   wxString m_lastPrompt;
   wxString m_lastPath;
-  wxPrintData *m_printData;
+  std::unique_ptr<wxPrintData> m_printData;
   /*! Did we tell maxima to close?
 
     If we didn't we respan an unexpectedly-closing maxima.
@@ -683,32 +739,57 @@ protected:
   //! The directory with maxima's documentation
   wxString m_maximaDocDir;
   bool m_fileSaved;
-  wxString m_chmhelpFile;
   wxString m_maximaVersion;
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;
+  static int m_exitCode;
+  //! Maxima's idea about gnuplot's location
+  wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
   int m_commandIndex;
-#if defined (__WXMSW__)
-  wxCHMHelpController m_chmhelpCtrl;
-#endif
-  wxHtmlHelpController m_htmlhelpCtrl;
   wxFindReplaceData m_findData;
-  wxRegEx m_funRegEx;
-  wxRegEx m_varRegEx;
-  wxRegEx m_blankStatementRegEx;
-  wxRegEx m_sbclCompilationRegEx;
-  MathParser *m_parser;
+  static wxRegEx m_funRegEx;
+  static wxRegEx m_varRegEx;
+  static wxRegEx m_blankStatementRegEx;
+  static wxRegEx m_sbclCompilationRegEx;
+  MathParser m_parser;
   bool m_maximaBusy;
-  wxMemoryBuffer m_rawDataToSend;
-  unsigned long int m_rawBytesSent;
+private:
+  //! A pointer to a method that handles a text chunk
+  typedef void (wxMaxima::*ParseFunction)(wxString &s);
+  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
+  typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
+  WX_DECLARE_STRING_HASH_MAP(VarReadFunction, VarReadFunctionHash);
+  //! A list of XML tags we know and what we want to do if we encounter them
+  static ParseFunctionHash m_knownXMLTags;
+  //! A list of actions we want to execute if we are sent the contents of specific variables
+  static VarReadFunctionHash m_variableReadActions;
+
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;
 
 #endif
-  DECLARE_EVENT_TABLE()
+  friend class MaximaIPC;
+
+  /*! A timer that determines when to do the next autosave;
+
+    The actual autosave is triggered if both this timer is expired and the keyboard
+    has been inactive for >10s so the autosave won't cause the application to shortly
+    stop responding due to saving the file while the user is typing a word.
+
+    This timer is used in one-shot mode so in the unlikely case that saving needs more
+    time than this timer to expire the user still got a chance to do something against
+    it between two expirys. 
+   */
+  wxTimer m_autoSaveTimer;
+
+  //! Starts a single-shot of m_autoSaveTimer.
+  void StartAutoSaveTimer();
+
+
+
 };
 
 #if wxUSE_DRAG_AND_DROP
@@ -716,7 +797,7 @@ protected:
 class MyDropTarget : public wxFileDropTarget
 {
 public:
-  MyDropTarget(wxMaxima *wxmax)
+  explicit MyDropTarget(wxMaxima *wxmax)
   { m_wxmax = wxmax; }
 
   bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files);
@@ -728,6 +809,7 @@ private:
 #endif
 
 
+// cppcheck-suppress noConstructor
 class MyApp : public wxApp
 {
 public:
@@ -746,10 +828,13 @@ public:
     \param file The file name
     \param evalOnStartup Do we want to execute the file automatically, but halt on error?
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
+    \param wxmData A gnuzipped version of the .wxm file containing the initial worksheet contents
+    \param wxmLen  The length of wxmData
    */
-  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
-  
-  static std::list<wxMaxima *> m_topLevelWindows;
+  void NewWindow(const wxString &file = {}, bool evalOnStartup = false, bool exitAfterEval = false, unsigned char *wxmData = NULL, int wxmLen = 0);
+
+  static std::vector<wxMaxima *> m_topLevelWindows;
+  static void DelistTopLevelWindow(wxMaxima *);
 
   void OnFileMenu(wxCommandEvent &ev);
 
@@ -757,13 +842,21 @@ public:
   void BecomeLogTarget();
 
   virtual void MacOpenFile(const wxString &file);
+
 private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
-  Dirstructure *m_dirstruct;
-  DECLARE_EVENT_TABLE()
+  Dirstructure m_dirstruct;
+  #if defined __WXOSX__
+  bool m_allWindowsInOneProcess = true;
+  #else
+  bool m_allWindowsInOneProcess = false;
+  #endif
 };
 
+
+
+// cppcheck-suppress unknownMacro
 DECLARE_APP(MyApp)
 
 #endif // WXMAXIMA_H

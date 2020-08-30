@@ -1,9 +1,16 @@
 *.wxmx binary
+*.wxm linguist-language=maxima-session
+*.wxmx linguist-language=maxima-session
 art/*/*.h linguist-generated=true
 src/invalidImage.h linguist-generated=true
+examples/*.h linguist-generated=true
+info/wxmaxima.*.html linguist-generated=true
+info/wxmaxima.*.md linguist-generated=true
+info/*.hhk linguist-generated=true
 data/*.h linguist-generated=true
 wxmaxima-local text eol=lf
 *.sh text eol=lf
+*.wxm text eol=lf
 .gitignore text working-tree-encoding=UTF-8 eol=lf
 .gitattributes text working-tree-encoding=UTF-8 eol=lf
 *.cpp text working-tree-encoding=UTF-8 eol=lf
@@ -22,3 +29,4 @@ README           text working-tree-encoding=UTF-8 eol=lf
 *.in             text working-tree-encoding=UTF-8 eol=lf
 *.txt            text working-tree-encoding=UTF-8 eol=lf
 *.xpm            text working-tree-encoding=UTF-8 eol=lf
+src/nanoSVG/* linguist-vendored=true

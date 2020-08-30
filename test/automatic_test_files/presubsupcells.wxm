@@ -1,0 +1,434 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.07.0 ] */
+/* [wxMaxima: section start ]
+Pre-and-post-sub-and-sup-cells
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Four arrows pointing to an O:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lst:listify(permutations([[postsubscript,↖], [postsuperscript,↙], [presuperscript,↘], [presubscript,↗]]))$
+for i in lst do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Three arrows pointing to an O:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i in unique(sort(map('rest,lst))) do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two arrows pointing to an O:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i in unique(sort(map('rest,map('rest,lst)))) do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+One arrow pointing to an O:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i in unique(sort(map('rest,map('rest,map('rest,lst))))) do
+(apply (declare_index_properties, [O, makelist(o[1],o,i)]), 
+    print (arraymake (O, makelist(o[2],o,i))))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+More or less index properties than indices
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+B[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+C[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+D[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+E[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+F[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+G[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+H[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+I[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+J[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+K[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+L[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+N[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+O[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+P[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Q[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+R[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+S[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+T[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+U[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+V[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+W[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+X[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A[a,b,c];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+B[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+C[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+D[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+E[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+F[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+G[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+H[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+I[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+J[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+K[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+L[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+N[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+O[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+P[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Q[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+R[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+S[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+T[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+U[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+V[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+W[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+X[a,b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+B[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+C[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+D[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+E[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+F[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+G[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+H[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+I[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+J[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+K[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+L[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+N[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+O[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+P[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Q[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+R[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+S[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+T[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+U[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+V[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+W[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+X[a];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+declare_index_properties(O,[postsuperscript,postsuperscript,postsuperscript,postsuperscript]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+O[1,2,3,4];
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.07.0"$

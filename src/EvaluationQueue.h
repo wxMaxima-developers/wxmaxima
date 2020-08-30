@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009      Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012      Doug Ilijev <doug.ilijev@gmail.com>
@@ -17,7 +17,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -32,21 +32,37 @@ that still have to be sent to maxima.
 #ifndef EVALUATIONQUEUE_H
 #define EVALUATIONQUEUE_H
 
+#include "precomp.h"
 #include "GroupCell.h"
 #include "wx/arrstr.h"
-#include <list>
+#include <vector>
 
 //! A simple FIFO queue with manual removal of elements
 class EvaluationQueue
 {
 private:
 
-  class command{
+  class Command{
   public:
-    command(wxString string, int index){m_command = string; m_indexStart = index;}
-    wxString GetString(){return m_command;}
-    void AddEnding(){m_command += ";";}
-    int GetIndex(){return m_indexStart;}
+    Command(const wxString &string, int index) : m_indexStart(index), m_command(string) {}
+    Command(Command &&o) : m_indexStart(o.m_indexStart), m_command(std::move(o.m_command)) {}
+    Command(const Command &o) : m_indexStart(o.m_indexStart), m_command(o.m_command) {}
+    Command &operator=(Command &&o)
+    {
+      m_indexStart = o.m_indexStart;
+      m_command = std::move(o.m_command);
+      return *this;
+    }
+    Command &operator=(const Command &o)
+    {
+      m_indexStart = o.m_indexStart;
+      m_command = o.m_command;
+      return *this;
+    }
+
+    const wxString &GetString() const { return m_command; }
+    void AddEnding() { m_command += ";"; }
+    int GetIndex() const { return m_indexStart; }
   private:
     int m_indexStart;
     wxString m_command;
@@ -59,12 +75,12 @@ private:
        as an answer to an eventual question and
        - we need to know when to switch to the next cell
   */
-  std::list<EvaluationQueue::command> m_commands;
+  std::vector<EvaluationQueue::Command> m_commands;
   int m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
   //! The groupCells in the evaluation Queue.
-  std::list<GroupCell *>m_queue;
+  std::vector<GroupCell *> m_queue;
 
   //! Adds all commands in commandString as separate tokens to the queue.
   void AddTokens(GroupCell *cell);
@@ -80,10 +96,10 @@ public:
     (in which case we assume the user wanted to hide it and for example didn't use
     it as a label at all) we return wxEmptyString.
   */
-  wxString GetUserLabel()
+  wxString GetUserLabel() const
   { return m_userLabel; }
 
-  int GetIndex()
+  int GetIndex() const
     {
       if (!m_commands.empty())
         return  m_commands.front().GetIndex();
@@ -97,7 +113,8 @@ public:
 
   void AddEnding()
     {
-      m_commands.back().AddEnding();
+      if (!m_commands.empty())
+        m_commands.back().AddEnding();
     }
   
   ~EvaluationQueue()
@@ -106,14 +123,11 @@ public:
   //! Is GroupCell gr part of the evaluation queue?
   bool IsLastInQueue(GroupCell *gr)
   {
-    if (m_queue.empty())
-      return false;
-    else
-      return (gr == m_queue.front());
+    return !m_queue.empty() && (gr == m_queue.front());
   }
 
   //! Is GroupCell gr part of the evaluation queue?
-  bool IsInQueue(GroupCell *gr);
+  bool IsInQueue(GroupCell *gr) const;
 
   //! Adds a GroupCell to the evaluation queue.
   void AddToQueue(GroupCell *gr);
@@ -134,25 +148,19 @@ public:
   GroupCell *GetCell();
 
   //! Is the queue empty?
-  bool Empty();
+  bool Empty() const;
 
   //! Clear the queue
   void Clear();
 
   //! Return the next command that needs to be evaluated.
-  wxString GetCommand();  
+  wxString GetCommand();
 
   //! Get the size of the queue [in cells]
-  int Size()
-  {
-    return m_size;
-  }
+  int Size() const { return m_size; }
 
   //! Get the size of the queue
-  int CommandsLeftInCell()
-  {
-    return m_commands.size();
-  }
+  int CommandsLeftInCell() const { return m_commands.size(); }
 };
 
 

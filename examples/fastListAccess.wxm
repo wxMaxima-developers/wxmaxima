@@ -1,0 +1,181 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.03.1-DevelopmentSnapshot ] */
+/* [wxMaxima: title   start ]
+Fast list access
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+Lists and Arrays
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+If one wants to store a bunch of items there is basically two methods:
+ * Arrays: If you know in advance that you want to store n items and that all have the same size m it is easy to allocate m*n bytes of memory. Determining the address the k-th element starts is easy in this case.
+ * Lists: Memory for each list element is allocated the moment a new element is needed and each element knows where in the computer's memory the next list element is stored.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima loves Lists: It is easy to append items to a lists at any time. It is easy to delete list items. List items can be re-ordered just by swapping a few pointers. Maxima contains fast methods to sort lists, to eliminate double elements. But determining the length of a list or the address the nth list item is stored at means having to iterate through the list querying each item where the next list item can be found.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+Fast access to all list elements
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Accessing a random item of a list involves a time-consuming iterating over the list. But if one plans to iterate through the whole list, anyway (as one normally has to) this work isn't much of an overhead - and maxima offers several functions for this purpose:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+makelist
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Makelist is a quite universal swiss-army knife, if what you want to generate is shaped like a list.
+The most widely known form of this command is:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list1:makelist(i,i,1,10);
+list2:makelist(i,i,0,9/10,1/10);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+But you can also tell makelist to iterate over a list - which is quite fast:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list3:makelist(sin(i),i,list2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+for
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+For does do nearly the same as makelist except that it doesn't return a list.:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i in list3 do disp(asin(i));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+pop
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+It is possible to access all list elements by accessing and removing the first element repeatedly:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+while not emptyp(list3) do 
+    disp(pop(list3));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+map
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+map runs the same function on every single list element:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+map(sin,list2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+If the function one wants to run on each list element is only used once and one doesn't want to give this one-time-function a name one can ask the lambda() command to generate a name-less function with one argument: Just pass lambda() first the list of the arguments the new command shall have and the contents of that command:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+map(
+    lambda(
+        [x],
+        sin(cos(x))
+    ),
+    list2
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Iterating through two lists at the same time
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+One way to do so efficiently is to use the pop() method on both lists. The other is to make a list of lists:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M1:matrix(list1,list2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+M2:transpose(M1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Now we extract the list of arguments to the matrix() command:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list4:args(M2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Of course all of these commands can be executed in one long command line:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+list5:args(transpose(matrix(list1,list2)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+...and over this list we can iterate efficiently again:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+makelist(f(i[1])=i[2],i,list4);
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.03.1-DevelopmentSnapshot"$

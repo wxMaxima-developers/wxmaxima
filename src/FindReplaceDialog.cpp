@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C)      2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -42,6 +42,9 @@ FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, 
     SetPosition(m_windowPos);
   if (m_windowSize.x > 0)
     SetSize(wxSize(m_windowSize.x, GetSize().y));
+  Connect(wxEVT_ACTIVATE, wxActivateEventHandler(FindReplaceDialog::OnActivate),NULL, this);
+  Connect(wxEVT_CHAR_HOOK, wxKeyEventHandler(FindReplaceDialog::OnKeyDown),NULL, this);
+  Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(FindReplaceDialog::OnClose),NULL, this);
 }
 
 void FindReplaceDialog::OnKeyDown(wxKeyEvent &event)
@@ -71,10 +74,3 @@ void FindReplaceDialog::OnActivate(wxActivateEvent &event)
 
 wxSize  FindReplaceDialog::m_windowSize = wxSize(-1, -1);
 wxPoint FindReplaceDialog::m_windowPos = wxPoint(-1, -1);
-
-BEGIN_EVENT_TABLE(FindReplaceDialog, wxDialog)
-                EVT_ACTIVATE(FindReplaceDialog::OnActivate)
-                EVT_CHAR_HOOK(FindReplaceDialog::OnKeyDown)
-                EVT_CLOSE(FindReplaceDialog::OnClose)
-
-END_EVENT_TABLE()

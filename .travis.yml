@@ -1,72 +1,141 @@
 language: cpp
-sudo: required
 os:
-- linux
-- osx
+  - linux
+  - osx
+dist: bionic
+jobs:
+  include:
+    - os: linux
+      dist: bionic
+    - os: linux
+      dist: focal
+    - os: linux
+      dist: focal
+      env: CPPCHECK_ONLY=YES
+    - os: osx
+#  allow_failures:
+#    - os: linux
+#      dist: focal
 branches:
   except:
   - gh_pages
   - DebianPackaging
-dist: bionic
+  - DebianPackaging_NightlyBuild
+env:
+  global:
+  - CMAKE=cmake
+  - CMAKEGEN="Ninja"
+  - CPPCHECK_ONLY=NO
+  - LANG=en_US.UTF-8
+  - UNITY_BUILD_BATCH_SIZE=8
+  - secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
+before_cache:
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
+  # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
+  # Cache only .git files under "/usr/local/Homebrew" so "brew update" does not take 5min every build
+  # Find workaround on macOS due to https://superuser.com/a/1459901/151744
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then cd "/usr/local/Homebrew" && find . \! -regex ".+\.git.+" -delete; fi
 cache:
   ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
-  - /usr/local/Cellar/libpng
-  - /usr/local/Cellar/gettext
-  - /usr/local/Cellar/ccache
+  - "/usr/local/Homebrew"
 addons:
-  ssh_known_hosts: home67027059.1and1-data.host
   apt:
     packages:
-    - libwxgtk3.0-gtk3-dev
-    - libwxgtk3.0
     - gettext
     - doxygen
     - graphviz
+    - gnuplot
+    - gnuplot-x11
+    - libomp-dev
+    - libwxgtk3.0-gtk3-dev
     - rpm
-    - cmake
     - maxima
+    - maxima-share
+    - ninja-build
     - netcat-openbsd
     - xvfb
     - appstream-util
     - desktop-file-utils
     - po4a
     - pandoc
-    - texlive-latex-base
-    - texlive-latex-extra
-    - texlive-xetex
-    - lmodern
-    - texlive-fonts-recommended
-before_cache:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
+    - cppcheck
+    - ccache
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache; export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin; brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr update --self; sudo tlmgr install collection-fontsrecommended; fi
-notification:
+- |
+  if [[ "$TRAVIS_OS_NAME" == "linux" && "$CPPCHECK_ONLY" == "NO" ]]
+  then
+    cat .travis/kitware.key | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+    sudo apt-add-repository 'https://apt.kitware.com/ubuntu/'
+    sudo apt-get -q update
+    sudo apt-get -q install cmake
+    export CMAKE=/usr/bin/cmake
+  fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]
+  then
+    set -e
+    brew pin gdal postgis
+    #brew update
+    set +e
+  fi
+install:
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]
+  then
+    export PATH=$PATH:/usr/local/opt/gettext/bin
+    export HOMEBREW_NO_AUTO_UPDATE=1
+    set -e
+    brew upgrade cmake
+    brew install gettext libomp ninja pandoc wxwidgets
+    brew link cmake
+    set +e
+  fi
+notifications:
   email:
     on_success: change
     on_failure: change
 git:
   depth: 15
 script:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
-  else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
-- mkdir build && cd build && cmake .. && cmake --build .
-- cmake --build . -- install DESTDIR=$(pwd)/installtest
-- cmake --build . -- package
-- mkdir -p deploy
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp *.dmg deploy/wxMaxima-nightly.dmg; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]
+  then
+    export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"
+  else
+    export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
+  fi
+- mkdir build
+- touch build build/build.ninja
+- cd build
+- ${CMAKE} -G "${CMAKEGEN}" -DWXM_USE_CPPCHECK=${CPPCHECK_ONLY} -DWXM_BUILD_SOURCE_ONLY=${CPPCHECK_ONLY} -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} -DWXM_UNIT_TESTS=YES ..
+- ${CMAKE} --build .
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
+  DESTDIR=$(pwd)/installtest
+  ${CMAKE} --build . -- install;
+  fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" ]]; then
+  ${CMAKE} --build . -- package;
+  fi
+- >
+  if [[ "$CPPCHECK_ONLY" == "NO" && "$TRAVIS_OS_NAME" == "linux" ]]; then
+  CTEST_OUTPUT_ON_FAILURE=1 LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
+  xvfb-run -a ctest -j 3;
+  fi
 - cd ..
-- ccache -s
-- ls build/deploy
-- mkdir -p .ssh
-- openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out .ssh/id_rsa -d
-- chmod 600 .ssh/id_rsa
-- eval "$(ssh-agent -s)"
-- ssh-add .ssh/id_rsa
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then echo "put deploy/wxMaxima-nightly.dmg" | sftp -i .ssh/id_rsa p33761049-travis@home67027059.1and1-data.host; fi
+- |
+  if [[ "$TRAVIS_OS_NAME" == "osx" && a$encrypted_f94fa95f949a_key != a ]]
+  then
+    openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d
+    chmod 0600 id_rsa
+    eval `ssh-agent -s`
+    ssh-add id_rsa
+    cat .travis/known_hosts >>~/.ssh/known_hosts
+    cp build/*.dmg wxMaxima.dmg
+    echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host
+  fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ccache -s; ccache -c -M 100M; fi
 
-env:
-  global:
-    secure: FOIPVgpFCQjLbFI+mOmCTu4MLh7jqgV2bwKOr3zfcJzFTV+0pHP42GWJfS1Krf5MTrztYx+2p38ovK1Gq09HCBCR7Qc9C7brM961Nvqt2tFlFXXEfrE73unUHU/CxJlCi+1O9oQQJby7X+/IaZr5nDmbkKCjSBiEsajiI5Jtb+Xiopr9cJfT4cDZwofdPo7RME8/zzMao9gtPgk9fkeeQWg9JhECQ4zLdxyaJb1osx8oZ/wd6fOvhW2E5zMczv/svb3hR9dYSPF2K547+JZMaQtbA17MZ4xd59FR8JISnfwtiAihU1ngtm6l9/H6EkuoP4ndhBR9aMMLOfUxiH1UKUsFmazhqhwvWDEuScD60dXV/ulyCaLw1kVunWQd6rkmx12OU22omqP61+9Cg6OIib8BuW4w72O9WqoYVNf6ZrjTX3q9axSPlAzliMvivmUB8UsYEKTmNrWi+a0mStyGbFPMi4TwFgmbCp3SnNOq4Qe7XsjcBAQJ4BlgzMAQdaMBm2gLdGVxaVwSbhTD7W7f/2PKg/A/OvT8QEdj4jwq3qaV4b1MMLwoTRmKVZPFGaaU2HLumrM8uqeJVkOPXBV+2lx8BYCQqfbAwrgOkuNNEAjNqut87/06husmdlPKjVOVBGXQnHF5u0aD5k0oMtgfeoKPw93cvQn/6XMFtJqiPFM=

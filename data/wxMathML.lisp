@@ -1,20 +1,30 @@
 (format t "<suppressOutput>")
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2018
+;; Gunter Königsmann, 2014-2020
+;; Robert Dodier,     2019-2020
 ;;  SPDX-License-Identifier: GPL-2.0+
 
-;; MathML-printing
-;; Created by David Drysdale (DMD), December 2002/January 2003
+;; This file isn't directly loaded by maxima on startup of wxMaxima.
+;; Instead generate_wxmathml.sh, when run manually, generates a
+;; gzip'ed version that is included in the wxMaxima binary and 
+;; sent to maxima using a :lisp-quiet command.
 ;;
+;; Rationale: This approach means that wxMaxima doesn't need to
+;; know where wxMathml.lisp was moved by the ArchLinux, Gentoo,
+;; Macports, cygwin, fink, homebrew, app-in-dmg, Ubuntu or similar
+;; packager.
+
+;; The MathML-printing part (which makes up most of this file)
+;; was created by David Drysdale (DMD), December 2002/January 2003
 ;; closely based on the original TeX conversion code in mactex.lisp,
 ;; for which the following credits apply:
 ;;   (c) copyright 1987, Richard J. Fateman
 ;;   small corrections and additions: Andrey Grozin, 2001
 ;;   additional additions: Judah Milgram (JM), September 2001
 ;;   additional corrections: Barton Willis (BLW), October 2001
-;; Method:
 
+;; Method:
 ;; Producing wxml from a Maxima internal expression is done by
 ;; a reversal of the parsing process.  Fundamentally, a
 ;; traversal of the expression tree is produced by the program,
@@ -24,9 +34,9 @@
 
 ;(format t "<wxxml-start/>")
 
-;; This is necessary to make file and directory names that contain special characters
-;; work under windows.
 (progn
+  ;; This is necessary to make file and directory names that contain special characters
+  ;; work under windows.
   #+sbcl (setf sb-impl::*default-external-format* :UTF-8)
 
   (in-package :maxima)
@@ -53,6 +63,7 @@
   (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
   (defvar $wxsubscripts t
     "Recognize TeX-style subscripts")
+  (defvar $wxplot_usesvg nil "Create scalable plots?")
   (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
   (defmvar $wxplot_old_gnuplot nil)
 
@@ -72,10 +83,10 @@
   ;; Allow the user to communicate what to display in the statusbar whilst
   ;; the current program is running
   (defun $wxstatusbar (&rest status)
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string
 					     (apply '$sconcat status)))
-    #+clisp (finish-output)
+    (finish-output)
     )
 
 
@@ -135,7 +146,7 @@
     (format t "To report a Maxima bug, you must have a Sourceforge account.~%~%")
     (format t "A problem in the graphical user interface is probably a wxMaxima bug.~%")
     (format t "The wxMaxima bug database is available at~%")
-    (format t "    https://github.com/wxMaxima-developers/wxmaxima/issues?direction=desc&sort=created&state=open~%")
+    (format t "    https://github.com/wxMaxima-developers/wxmaxima/issues~%")
     (format t "Submit bug reports by following the 'New issue' link on that page.~%~%")
     (format t "Please check before submitting, if your bug was already reported.~%~%")
     (format t "Please include the following information with your bug report:~%")
@@ -143,22 +154,66 @@
     ($wxbuild_info)
     (format t "-------------------------------------------------------------~%"))
 
-  (defvar *var-tag* '("<v>" "</v>"))
+  (defvar *var-tag* '("<mi>" "</mi>"))
 
   (defun wxxml-get (x p)
     (if (symbolp x) (get x p)))
 
-  (defun wxxml-array (x l r &aux f)
+  ;; Adapted from DIMENSION-ARRAY and DIMENSION-INDICES in Maxima src/displa.lisp.
+  (defun wxxml-array (x l r &aux base-symbol)
+    (if (eq (caar x) 'mqapply)
+      (setq base-symbol (cadr x) x (cdr x))
+      (setq base-symbol (caar x)))
+    (let
+      ((display-indices (safe-mget base-symbol 'display-indices))
+       (indices (cdr x)))
+      (if (and (> (length display-indices) 0) (not (= (length display-indices) (length indices))))
+        ;; Ignore DISPLAY-INDICES if it's nonempty and not the same size as INDICES.
+        (setq display-indices nil))
+      (let (pre-subscripts pre-superscripts post-subscripts post-superscripts)
+        (if display-indices
+          (progn
+            (setq pre-subscripts (extract-indices indices display-indices '$presubscript)
+                  pre-superscripts (extract-indices indices display-indices '$presuperscript)
+                  post-subscripts (extract-indices indices display-indices '$postsubscript)
+                  post-superscripts (extract-indices indices display-indices '$postsuperscript))
+            (wxxml-array-with-display-properties x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts))
+          (wxxml-array-no-display-properties x l r)))))
+
+  (defun wxxml-array-with-display-properties (x base-symbol l r pre-subscripts pre-superscripts post-subscripts post-superscripts &aux f)
+    (let*
+      ((separator (let ((x (safe-$get base-symbol '$display_index_separator))) (if (or (null x) (stringp x)) x (coerce (mstring x) 'string))))
+       (separator-xml (if (and separator (string= separator "")) "" (concatenate 'string "<mi>" (or separator ",") "</mi>")))
+       (mrow-terminate (list (concatenate 'string "</mrow>" (coerce (list #\Newline) 'string))))
+       (pre-subscripts-xml (if pre-subscripts (wxxml-list pre-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
+       (pre-superscripts-xml (if pre-superscripts (wxxml-list pre-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
+       (post-subscripts-xml (if post-subscripts (wxxml-list post-subscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
+       (post-superscripts-xml (if post-superscripts (wxxml-list post-superscripts (list "<mrow>") mrow-terminate separator-xml) (list "<none/>")))
+       (mmultiscripts-xml       
+	(append l (list (format nil "<mmultiscripts altCopy=\"~{~a~}\">" (mstring x)))
+			(wxxml base-symbol nil nil 'mparen 'mparen)
+			post-subscripts-xml post-superscripts-xml
+			(list (concatenate
+			       'string "<mprescripts/>"
+			       (coerce (list #\Newline) 'string)))
+			pre-subscripts-xml pre-superscripts-xml
+			(list (concatenate
+			       'string "</mmultiscripts>"
+			       (coerce (list #\Newline) 'string)))
+			r)))
+       mmultiscripts-xml))
+    
+  (defun wxxml-array-no-display-properties (x l r &aux f)
     (if (eq 'mqapply (caar x))
 	(setq f (cadr x)
 	      x (cdr x)
-	      l (wxxml f (append l (list "<i><p>")) (list "</p>")
+	      l (wxxml f (append l (list "<munder><p>")) (list "</p>")
 		       'mparen 'mparen))
       (setq f (caar x)
-	    l (wxxml f (append l '("<i><r>"))
-		     (list "</r>") lop 'mfunction)))
-    (setq r (nconc (wxxml-list (cdr x) (list "<r>")
-			       (list "</r></i>") "<v>,</v>") r))
+	    l (wxxml f (append l '("<munder><mrow>"))
+		     (list "</mrow>") lop 'mfunction)))
+    (setq r (nconc (wxxml-list (cdr x) (list "<mrow>")
+			       (list "</mrow></munder>") "<mi>,</mi>") r))
     (nconc l r))
 
   (defmacro make-tag (val tag)
@@ -213,23 +268,24 @@
 			 (= (length sub-var) 1)
 			 ($get x '$wxxml_subscripted)
 			 ($get sub-symb '$wxxml_subscript)))
-	    (format nil  "<i altCopy=\"~{~a~}\"><r>~a</r><r>~a</r></i>"
+	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		    (mstring x)
 		    (or (get sub-var-symb 'wxxmlword)
-			(format nil "<v>~a</v>" sub-var))
+			(format nil "<mi>~a</mi>" sub-var))
 		    (if sub-int
-			(format nil "<n>~a</n>" sub-int)
-                      (format nil "<v>~a</v>" sub))))))))
+			;; sub-symb discarded leading zeros from subscripts
+			(format nil "<mi>~a</mi>" sub) 
+                      (format nil "<mi>~a</mi>" sub))))))))
 
   (defun wxxmlnumformat (atom)
     (let (r firstpart exponent)
       (cond ((integerp atom)
-	     (format nil "<n>~{~c~}</n>" (exploden atom)))
+	     (format nil "<mn>~{~c~}</mn>" (exploden atom)))
 	    (t
 	     (setq r (exploden atom))
 	     (setq exponent (member 'e r :test #'string-equal))
 	     (cond ((null exponent)
-		    (format nil "<n>~{~c~}</n>" r))
+		    (format nil "<mn>~{~c~}</mn>" r))
 		   (t
 		    (setq firstpart
 			  (nreverse (cdr (member 'e (reverse r)
@@ -238,7 +294,7 @@
 			(setq exponent (cddr exponent))
 		      (setq exponent (cdr exponent)))
 		    (format nil
-			    "<r><n>~{~c~}</n><h>*</h><e><n>10</n><n>~{~c~}</n></e></r>"
+			    "<mrow><mn>~{~c~}</mn><h>*</h><msup><mn>10</mn><mn>~{~c~}</mn></msup></mrow>"
 			    firstpart exponent)))))))
 
   (defun wxxml-stripdollar (sym &aux pname)
@@ -273,23 +329,23 @@
 			     (setq tmp-x (format nil "\"~a\"" tmp-x)))
 			 (concatenate 'string "<st>" tmp-x "</st>"))
 			((arrayp x)
-			 (format nil "<v>#{Lisp array [~{~a~^,~}]}</v>"
+			 (format nil "<mi>#{Lisp array [~{~a~^,~}]}</mi>"
 				 (array-dimensions x)))
 			((functionp x)
-			 (format nil "<v>~a</v>"
+			 (format nil "<mi>~a</mi>"
 				 (wxxml-fix-string
 				  (stripdollar
 				   (maybe-invert-string-case (format nil "~A" x))))))
 			((streamp x)
-			 (format nil "<v>#{Stream [~A]</v>}"
+			 (format nil "<mi>#{Stream [~A]</mi>}"
 				 (stream-element-type x)))
 			((member (type-of x) '(GRAPH DIGRAPH))
-			 (format nil "<v>~a</v>" x))
+			 (format nil "<mi>~a</mi>" x))
 			((typep x 'structure-object)
 			 (let ((tmp-string (format nil "~s" x)))
 			   (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
 			((hash-table-p x)
-			 (format nil "<v>#{HashTable}</v>"))
+			 (format nil "<mi>#{HashTable}</mi>"))
 			((and $wxsubscripts (subscriptp x)))
 			(t (wxxml-stripdollar x))))
 	    r))
@@ -318,14 +374,14 @@
 		    (list (wxxml-dissym-to-string (car (get (caar x) 'dissym)))))
 	  r (append (list (wxxml-dissym-to-string (cdr (get (caar x) 'dissym))))
 		    r)
-	  x (wxxml-list (cdr x) nil r "<t>,</t>"))
+	  x (wxxml-list (cdr x) nil r "<mo>,</mo>"))
     (append l x))
 
   (defun wxxml-nary (x l r)
     (let* ((op (caar x))
 	   (sym (cond ((member op '(mtimes wxtimes) :test #'eq)
 		       (if $stardisp
-			   "<t>*</t>"
+			   "<mo>*</mo>"
 			 "<h>*</h>"))
 					;((wxxmlsym op))
 		      ((eq (get op 'dimension) 'dimension-nary)
@@ -374,7 +430,7 @@
 	  (t (wxxml-function x l r))))
 
   (defun wxxml-paren (x l r)
-    (wxxml x (append l '("<r><p>")) (cons "</p></r>" r) 'mparen 'mparen))
+    (wxxml x (append l '("<mrow><p>")) (cons "</p></mrow>" r) 'mparen 'mparen))
 
   ;; set up a list , separated by symbols (, * ...)  and then tack on the
   ;; ending item (e.g. "]" or perhaps ")"
@@ -409,14 +465,14 @@
 	  ;; car of wxxmlsym of a matchfix operator is the lead op
 	  r (append (cdr (wxxmlsym (caar x))) r)
 	  ;; cdr is the trailing op
-	  x (wxxml-list (cdr x) nil r "<t>,</t>"))
+	  x (wxxml-list (cdr x) nil r "<mo>,</mo>"))
     (append l x))
 
 
   (defun wxxml-dissym-to-string (lst &aux pname)
     (setq pname
 	  (wxxml-fix-string (format nil "~{~a~}" lst)))
-    (concatenate 'string "<v>" pname "</v>"))
+    (concatenate 'string "<mi>" pname "</mi>"))
 
   (defun wxxmlsym (x)
     (or (get x 'wxxmlsym)
@@ -433,29 +489,29 @@
 
   ;;(defun mathml-bigfloat (x l r) (declare (ignore l r)) (fpformat x))
   (defun wxxml-bigfloat (x l r)
-    (append l '("<n>") (fpformat x) '("</n>") r))
+    (append l '("<mn>") (fpformat x) '("</mn>") r))
 
   (defprop mprog  "<fnm>block</fnm>" wxxmlword)
   (defprop $true  "<t>true</t>"  wxxmlword)
   (defprop $false "<t>false</t>" wxxmlword)
 
   (defprop mprogn wxxml-matchfix wxxml)
-  (defprop mprogn (("<r><p>") "</p></r>") wxxmlsym)
+  (defprop mprogn (("<mrow><p>") "</p></mrow>") wxxmlsym)
 
   (defprop mlist wxxml-matchfix wxxml)
-  (defprop mlist (("<r><t>[</t>")"<t>]</t></r>") wxxmlsym)
+  (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t listdelim=\"true\">]</t></mrow>") wxxmlsym)
 
   (defprop $set wxxml-matchfix wxxml)
-  (defprop $set (("<r><t>{</t>")"<t>}</t></r>") wxxmlsym)
+  (defprop $set (("<mrow><t>{</t>")"<t>}</t></mrow>") wxxmlsym)
 
   (defprop mabs wxxml-matchfix wxxml)
-  (defprop mabs (("<r><a>")"</a></r>") wxxmlsym)
+  (defprop mabs (("<mrow><a>")"</a></mrow>") wxxmlsym)
 
   (defprop $conjugate wxxml-matchfix wxxml)
-  (defprop $conjugate (("<r><cj>")"</cj></r>") wxxmlsym)
+  (defprop $conjugate (("<mrow><cj>")"</cj></mrow>") wxxmlsym)
 
   (defprop %conjugate wxxml-matchfix wxxml)
-  (defprop %conjugate (("<r><cj>")"</cj></r>") wxxmlsym)
+  (defprop %conjugate (("<mrow><cj>")"</cj></mrow>") wxxmlsym)
 
   (defprop mbox wxxml-mbox wxxml)
   (defprop mlabox wxxml-mbox wxxml)
@@ -467,8 +523,8 @@
   (defprop mlabbox 10. wxxml-lbp)
 
   (defun wxxml-mbox (x l r)
-    (setq l (wxxml (cadr x) (append l '("<r><hl>")) nil 'mparen 'mparen)
-	  r (append '("</hl></r>") r))
+    (setq l (wxxml (cadr x) (append l '("<mrow><hl>")) nil 'mparen 'mparen)
+	  r (append '("</hl></mrow>") r))
     (append l r))
 
   (defprop mqapply wxxml-mqapply wxxml)
@@ -476,7 +532,7 @@
   (defun wxxml-mqapply (x l r)
     (setq l (wxxml (cadr x) (append l '("<fn>"))
 		   (list "<p>" ) lop 'mfunction)
-	  r (wxxml-list (cddr x) nil (cons "</p></fn>" r) "<t>,</t>"))
+	  r (wxxml-list (cddr x) nil (cons "</p></fn>" r) "<mo>,</mo>"))
     (append l r))
 
 
@@ -585,48 +641,48 @@
   (defprop $%i "<s>%i</s>" wxxmlword)
   (defprop $%e "<s>%e</s>" wxxmlword)
   (defprop $inf "<s>inf</s>" wxxmlword)
-  (defprop $minf "<t>-</t><s>inf</s>" wxxmlword)
+  (defprop $minf "<mo>-</mo><s>inf</s>" wxxmlword)
 
   (defprop mreturn "return" wxxmlword)
 
   (defprop mquote wxxml-prefix wxxml)
-  (defprop mquote ("<t>'</t>") wxxmlsym)
-  (defprop mquote "<t>'</t>" wxxmlword)
+  (defprop mquote ("<mo>'</mo>") wxxmlsym)
+  (defprop mquote "<mo>'</mo>" wxxmlword)
   (defprop mquote 201. wxxml-rbp)
 
   (defprop msetq wxxml-infix wxxml)
-  (defprop msetq ("<t>:</t>") wxxmlsym)
-  (defprop msetq "<t>:</t>" wxxmlword)
+  (defprop msetq ("<mo>:</mo>") wxxmlsym)
+  (defprop msetq "<mo>:</mo>" wxxmlword)
   (defprop msetq 180. wxxml-rbp)
   (defprop msetq 20. wxxml-rbp)
 
   (defprop mset wxxml-infix wxxml)
-  (defprop mset ("<t>::</t>") wxxmlsym)
-  (defprop mset "<t>::</t>" wxxmlword)
+  (defprop mset ("<mo>::</mo>") wxxmlsym)
+  (defprop mset "<mo>::</mo>" wxxmlword)
   (defprop mset 180. wxxml-lbp)
   (defprop mset 20. wxxml-rbp)
 
   (defprop mdefine wxxml-infix wxxml)
-  (defprop mdefine ("<t>:=</t>") wxxmlsym)
-  (defprop mdefine "<t>:=</t>" wxxmlword)
+  (defprop mdefine ("<mo>:=</mo>") wxxmlsym)
+  (defprop mdefine "<mo>:=</mo>" wxxmlword)
   (defprop mdefine 180. wxxml-lbp)
   (defprop mdefine 20. wxxml-rbp)
 
   (defprop mdefmacro wxxml-infix wxxml)
-  (defprop mdefmacro ("<t>::=</t>") wxxmlsym)
-  (defprop mdefmacro "<t>::=</t>" wxxmlword)
+  (defprop mdefmacro ("<mo>::=</mo>") wxxmlsym)
+  (defprop mdefmacro "<mo>::=</mo>" wxxmlword)
   (defprop mdefmacro 180. wxxml-lbp)
   (defprop mdefmacro 20. wxxml-rbp)
 
   (defprop marrow wxxml-infix wxxml)
-  (defprop marrow ("<t>-></t>") wxxmlsym)
-  (defprop marrow "<t>-></t>" wxxmlword)
+  (defprop marrow ("<mo>-></mo>") wxxmlsym)
+  (defprop marrow "<mo>-></mo>" wxxmlword)
   (defprop marrow 25 wxxml-lbp)
   (defprop marrow 25 wxxml-rbp)
 
   (defprop mfactorial wxxml-postfix wxxml)
-  (defprop mfactorial ("<t>!</t>") wxxmlsym)
-  (defprop mfactorial "<t>!</t>" wxxmlword)
+  (defprop mfactorial ("<mo>!</mo>") wxxmlsym)
+  (defprop mfactorial "<mo>!</mo>" wxxmlword)
   (defprop mfactorial 160. wxxml-lbp)
 
   (defprop mexpt wxxml-mexpt wxxml)
@@ -658,39 +714,39 @@
 			 'mparen 'mparen))
 	(setq f (caar xarr)
 	      l (wxxml f (append l (if nc
-				       (list "<ie mat=\"true\"><r>")
-				     (list "<ie><r>")))
-		       (list "</r>") lop 'mfunction)))
-      (setq  l (append l (wxxml-list (cdr xarr) (list "<r>")
-				     (list "</r>") "<v>,</v>")))
+				       (list "<ie mat=\"true\"><mrow>")
+				     (list "<ie><mrow>")))
+		       (list "</mrow>") lop 'mfunction)))
+      (setq  l (append l (wxxml-list (cdr xarr) (list "<mrow>")
+				     (list "</mrow>") "<mi>,</mi>")))
       ;; The exponent part
       (setq r (if (mmminusp xexp)
 		  ;; the change in base-line makes parens unnecessary
-		  (wxxml (cadr xexp) '("<r><v>-</v>")
-			 (cons "</r></ie>" r) 'mparen 'mparen)
+		  (wxxml (cadr xexp) '("<mrow><mi>-</mi>")
+			 (cons "</mrow></ie>" r) 'mparen 'mparen)
 		(if (and (integerp xexp) (< xexp 10))
 		    (wxxml xexp nil
 			   (cons "</ie>" r) 'mparen 'mparen)
-		  (wxxml xexp (list "<r>")
-			 (cons "</r></ie>" r) 'mparen 'mparen)
+		  (wxxml xexp (list "<mrow>")
+			 (cons "</mrow></ie>" r) 'mparen 'mparen)
 		  )))
       (append l r)))
 
   (defun wxxml-mexpt-simple (x l r)
     (let((nc (eq (caar x) 'mncexpt)))
       (setq l (wxxml (cadr x) (append l (if nc
-					    '("<e mat=\"true\"><r>")
-					  '("<e><r>")))
+					    '("<msup mat=\"true\"><mrow>")
+					  '("<msup><mrow>")))
 		     nil lop (caar x))
 	    r (if (mmminusp (setq x (nformat (caddr x))))
 		  ;; the change in base-line makes parens unnecessary
-		  (wxxml (cadr x) '("</r><r><v>-</v>")
-			 (cons "</r></e>" r) 'mminus 'mminus)
+		  (wxxml (cadr x) '("</mrow><mrow><mi>-</mi>")
+			 (cons "</mrow></msup>" r) 'mminus 'mminus)
 		(if (and (integerp x) (< x 10))
-		    (wxxml x (list "</r>")
-			   (cons "</e>" r) 'mparen 'mparen)
-		  (wxxml x (list "</r><r>")
-			 (cons "</r></e>" r) 'mparen 'mparen)
+		    (wxxml x (list "</mrow>")
+			   (cons "</msup>" r) 'mparen 'mparen)
+		  (wxxml x (list "</mrow><mrow>")
+			 (cons "</mrow></msup>" r) 'mparen 'mparen)
 		  )))
       (append l r)))
 
@@ -700,20 +756,20 @@
   (defprop mncexpt 134. wxxml-rbp)
 
   (defprop mnctimes wxxml-nary wxxml)
-  (defprop mnctimes "<t>.</t>" wxxmlsym)
-  (defprop mnctimes "<t>.</t>" wxxmlword)
+  (defprop mnctimes "<mo>.</mo>" wxxmlsym)
+  (defprop mnctimes "<mo>.</mo>" wxxmlword)
   (defprop mnctimes 110. wxxml-lbp)
   (defprop mnctimes 109. wxxml-rbp)
 
   (defprop mtimes wxxml-nary wxxml)
   (defprop mtimes "<h>*</h>" wxxmlsym)
-  (defprop mtimes "<t>*</t>" wxxmlword)
+  (defprop mtimes "<mo>*</mo>" wxxmlword)
   (defprop mtimes 120. wxxml-lbp)
   (defprop mtimes 120. wxxml-rbp)
 
   (defprop wxtimes wxxml-nary wxxml)
   (defprop wxtimes "<h>*</h>" wxxmlsym)
-  (defprop wxtimes "<t>*</t>" wxxmlword)
+  (defprop wxtimes "<mo>*</mo>" wxxmlword)
   (defprop wxtimes 120. wxxml-lbp)
   (defprop wxtimes 120. wxxml-rbp)
 
@@ -724,16 +780,16 @@
 	   (append '("</q>") r) 'mparen 'mparen))
 
   (defprop mquotient wxxml-mquotient wxxml)
-  (defprop mquotient ("<t>/</t>") wxxmlsym)
-  (defprop mquotient "<t>/</t>" wxxmlword)
+  (defprop mquotient ("<mo>/</mo>") wxxmlsym)
+  (defprop mquotient "<mo>/</mo>" wxxmlword)
   (defprop mquotient 122. wxxml-lbp) ;;dunno about this
   (defprop mquotient 123. wxxml-rbp)
 
   (defun wxxml-mquotient (x l r)
     (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
-    (setq l (wxxml (cadr x) (append l '("<f><r>")) nil 'mparen 'mparen)
-	  r (wxxml (caddr x) (list "</r><r>")
-		   (append '("</r></f>")r) 'mparen 'mparen))
+    (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
+	  r (wxxml (caddr x) (list "</mrow><mrow>")
+		   (append '("</mrow></mfrac>")r) 'mparen 'mparen))
     (append l r))
 
   (defprop $matrix wxxml-matrix-test wxxml)
@@ -757,8 +813,16 @@
 		       (list (format nil "<tb special=\"true\" rownames=~s colnames=~s>"
 				     (if (find 'rownames (car x)) "true" "false")
 				     (if (find 'colnames (car x)) "true" "false"))))
-		      ((string= $lmxchar #\()
+		      ((string= $lmxchar "(")
 		       (list "<tb roundedParens=\"true\">"))
+		      ((string= $lmxchar "[")
+		       (list "<tb bracketParens=\"true\">"))
+		      ((string= $lmxchar "<")
+		       (list "<tb angledParens=\"true\">"))
+		      ((string= $lmxchar "|")
+		       (list "<tb straightParens=\"true\">"))
+		      ((string= $lmxchar " ")
+		       (list "<tb special=\"true\">"))
 		      (t
 		       (list "<tb>")))
 		   (mapcan #'(lambda (y)
@@ -777,37 +841,50 @@
 
   (defprop %sum wxxml-sum wxxml)
   (defprop %lsum wxxml-lsum wxxml)
+  (defprop %lproduct wxxml-lproduct wxxml)
   (defprop %product wxxml-sum wxxml)
   (defprop $sum wxxml-sum wxxml)
   (defprop $lsum wxxml-lsum wxxml)
+  (defprop $lproduct wxxml-lproduct wxxml)
   (defprop $product wxxml-sum wxxml)
 
   ;; easily extended to union, intersect, otherops
 
-  (defun wxxml-lsum(x l r)
-    (let ((op "<sm type=\"lsum\"><r>")
+  (defun wxxml-lproduct(x l r)
+    (let ((op "<sm type=\"lprod\"><mrow>")
 	  ;; gotta be one of those above
 	  (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	  (index ;; "index = lowerlimit"
 	   (wxxml `((min simp) , (caddr x), (cadddr x))
 		  nil nil 'mparen 'mparen)))
       (append l `(,op ,@index
-		      "</r><r><mn/></r><r>"
-		      ,@s1 "</r></sm>") r)))
+		      "</mrow><mrow><mn/></mrow><mrow>"
+		      ,@s1 "</mrow></sm>") r)))
+
+  (defun wxxml-lsum(x l r)
+    (let ((op "<sm type=\"lsum\"><mrow>")
+	  ;; gotta be one of those above
+	  (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
+	  (index ;; "index = lowerlimit"
+	   (wxxml `((min simp) , (caddr x), (cadddr x))
+		  nil nil 'mparen 'mparen)))
+      (append l `(,op ,@index
+		      "</mrow><mrow><mn/></mrow><mrow>"
+		      ,@s1 "</mrow></sm>") r)))
 
   (defun wxxml-sum(x l r)
     (let ((op (if (or (eq (caar x) '%sum)
 		      (eq (caar x) '$sum))
-		  "<sm><r>"
-		"<sm type=\"prod\"><r>"))
+		  "<sm><mrow>"
+		"<sm type=\"prod\"><mrow>"))
 	  (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
 	  (index ;; "index = lowerlimit"
 	   (wxxml `((mequal simp) ,(caddr x) ,(cadddr x))
 		  nil nil 'mparen 'mparen))
 	  (toplim (wxxml (car (cddddr x)) nil nil 'mparen 'mparen)))
-      (append l `( ,op ,@index "</r><r>" ,@toplim
-		       "</r><r>"
-		       ,@s1 "</r></sm>") r)))
+      (append l `( ,op ,@index "</mrow><mrow>" ,@toplim
+		       "</mrow><mrow>"
+		       ,@s1 "</mrow></sm>") r)))
 
   (defprop %integrate wxxml-int wxxml)
   (defprop $integrate wxxml-int wxxml)
@@ -816,28 +893,28 @@
     (let ((s1 (wxxml (cadr x) nil nil 'mparen 'mparen));;integrand delims / & d
 	  (var (wxxml (caddr x) nil nil 'mparen rop))) ;; variable
       (cond ((= (length x) 3)
-	     (append l `("<in def=\"false\"><r>"
+	     (append l `("<in def=\"false\"><mrow>"
 			 ,@s1
-			 "</r><r><s>d</s>"
+			 "</mrow><mrow><s>d</s>"
 			 ,@var
-			 "</r></in>") r))
+			 "</mrow></in>") r))
 	    (t ;; presumably length 5
 	     (let ((low (wxxml (nth 3 x) nil nil 'mparen 'mparen))
 		   ;; 1st item is 0
 		   (hi (wxxml (nth 4 x) nil nil 'mparen 'mparen)))
-	       (append l `("<in><r>"
+	       (append l `("<in><mrow>"
 			   ,@low
-			   "</r><r>"
+			   "</mrow><mrow>"
 			   ,@hi
-			   "</r><r>"
+			   "</mrow><mrow>"
 			   ,@s1
-			   "</r><r><s>d</s>"
-			   ,@var "</r></in>") r))))))
+			   "</mrow><mrow><s>d</s>"
+			   ,@var "</mrow></in>") r))))))
 
   (defprop %limit wxxml-limit wxxml)
 
   (defprop mrarr wxxml-infix wxxml)
-  (defprop mrarr ("<t>-></t>") wxxmlsym)
+  (defprop mrarr ("<mo>-></mo>") wxxmlsym)
   (defprop mrarr 80. wxxml-lbp)
   (defprop mrarr 80. wxxml-rbp)
 
@@ -848,25 +925,25 @@
 		    ,(fourth x)) nil nil 'mparen 'mparen)))
       (case (fifth x)
 	    ($plus
-	     (append l `("<lm><fnm>lim</fnm><r>"
-			 ,@subfun "<v>+</v></r><r>"
-			 ,@s1 "</r></lm>") r))
+	     (append l `("<lm><fnm>lim</fnm><mrow>"
+			 ,@subfun "<mi>+</mi></mrow><mrow>"
+			 ,@s1 "</mrow></lm>") r))
 	    ($minus
-	     (append l `("<lm><fnm>lim</fnm><r>"
-			 ,@subfun "<t>-</t></r><r>"
-			 ,@s1 "</r></lm>") r))
+	     (append l `("<lm><fnm>lim</fnm><mrow>"
+			 ,@subfun "<mo>-</mo></mrow><mrow>"
+			 ,@s1 "</mrow></lm>") r))
 	    (otherwise
-	     (append l `("<lm><fnm>lim</fnm><r>"
-			 ,@subfun "</r><r>"
-			 ,@s1 "</r></lm>") r)))))
+	     (append l `("<lm><fnm>lim</fnm><mrow>"
+			 ,@subfun "</mrow><mrow>"
+			 ,@s1 "</mrow></lm>") r)))))
 
   (defprop %at wxxml-at wxxml)
   ;; e.g.  at(diff(f(x)),x=a)
   (defun wxxml-at (x l r)
     (let ((s1 (wxxml (cadr x) nil nil lop rop))
 	  (sub (wxxml (caddr x) nil nil 'mparen 'mparen)))
-      (append l '("<at><r>") s1
-	      '("</r><r>") sub '("</r></at>") r)))
+      (append l '("<at><mrow>") s1
+	      '("</mrow><mrow>") sub '("</mrow></at>") r)))
 
   ;;binomial coefficients
 
@@ -875,11 +952,11 @@
 
   (defun wxxml-choose (x l r)
     `(,@l
-      "<p print=\"no\"><f line=\"no\"><r>"
+      "<p print=\"no\"><mfrac line=\"no\"><mrow>"
       ,@(wxxml (cadr x) nil nil 'mparen 'mparen)
-      "</r><r>"
+      "</mrow><mrow>"
       ,@(wxxml (caddr x) nil nil 'mparen 'mparen)
-      "</r></f></p>"
+      "</mrow></mfrac></p>"
       ,@r))
 
 
@@ -894,7 +971,7 @@
 
   (defun wxxml-mplus (x l r)
     (cond ((member 'trunc (car x) :test #'eq)
-	   (setq r (cons "<v>+</v><t>...</t>" r))))
+	   (setq r (cons "<mi>+</mi><mo>...</mo>" r))))
     (cond ((null (cddr x))
 	   (if (null (cdr x))
 	       (wxxml-function x l r)
@@ -904,25 +981,25 @@
 	     (do ((nl l)  (dissym))
 		 ((null (cdr x))
 		  (if (mmminusp (car x)) (setq l (cadar x) dissym
-					       (list "<v>-</v>"))
-		    (setq l (car x) dissym (list "<v>+</v>")))
+					       (list "<mi>-</mi>"))
+		    (setq l (car x) dissym (list "<mi>+</mi>")))
 		  (setq r (wxxml l dissym r 'mplus rop))
 		  (append nl r))
 		 (if (mmminusp (car x)) (setq l (cadar x) dissym
-					      (list "<v>-</v>"))
-		   (setq l (car x) dissym (list "<v>+</v>")))
+					      (list "<mi>-</mi>"))
+		   (setq l (car x) dissym (list "<mi>+</mi>")))
 		 (setq nl (append nl (wxxml l dissym nil 'mplus 'mplus))
 		       x (cdr x))))))
 
   (defprop mminus wxxml-prefix wxxml)
-  (defprop mminus ("<v>-</v>") wxxmlsym)
-  (defprop mminus "<v>-</v>" wxxmlword)
+  (defprop mminus ("<mi>-</mi>") wxxmlsym)
+  (defprop mminus "<mi>-</mi>" wxxmlword)
   (defprop mminus 101. wxxml-rbp)
   (defprop mminus 101. wxxml-lbp)
 
   (defprop $~ wxxml-infix wxxml)
-  (defprop $~ ("<t>~</t>") wxxmlsym)
-  (defprop $~ "<t>~</t>" wxxmlword)
+  (defprop $~ ("<mo>~</mo>") wxxmlsym)
+  (defprop $~ "<mo>~</mo>" wxxmlword)
   (defprop $~ 134. wxxml-lbp)
   (defprop $~ 133. wxxml-rbp)
 
@@ -933,37 +1010,37 @@
   (defprop min 80. wxxml-rbp)
 
   (defprop mequal wxxml-infix wxxml)
-  (defprop mequal ("<v>=</v>") wxxmlsym)
-  (defprop mequal "<v>=</v>" wxxmlword)
+  (defprop mequal ("<mi>=</mi>") wxxmlsym)
+  (defprop mequal "<mi>=</mi>" wxxmlword)
   (defprop mequal 80. wxxml-lbp)
   (defprop mequal 80. wxxml-rbp)
 
   (defprop mnotequal wxxml-infix wxxml)
-  (defprop mnotequal ("<t>#</t>") wxxmlsym)
+  (defprop mnotequal ("<mo>#</mo>") wxxmlsym)
   (defprop mnotequal 80. wxxml-lbp)
   (defprop mnotequal 80. wxxml-rbp)
 
   (defprop mgreaterp wxxml-infix wxxml)
-  (defprop mgreaterp ("<t>&gt;</t>") wxxmlsym)
-  (defprop mgreaterp "<t>&gt;</t>" wxxmlword)
+  (defprop mgreaterp ("<mo>&gt;</mo>") wxxmlsym)
+  (defprop mgreaterp "<mo>&gt;</mo>" wxxmlword)
   (defprop mgreaterp 80. wxxml-lbp)
   (defprop mgreaterp 80. wxxml-rbp)
 
   (defprop mgeqp wxxml-infix wxxml)
-  (defprop mgeqp ("<t>&gt;=</t>") wxxmlsym)
-  (defprop mgeqp "<t>&gt;=</t>" wxxmlword)
+  (defprop mgeqp ("<mo>&gt;=</mo>") wxxmlsym)
+  (defprop mgeqp "<mo>&gt;=</mo>" wxxmlword)
   (defprop mgeqp 80. wxxml-lbp)
   (defprop mgeqp 80. wxxml-rbp)
 
   (defprop mlessp wxxml-infix wxxml)
-  (defprop mlessp ("<t>&lt;</t>") wxxmlsym)
-  (defprop mlessp "<t>&lt;</t>" wxxmlword)
+  (defprop mlessp ("<mo>&lt;</mo>") wxxmlsym)
+  (defprop mlessp "<mo>&lt;</mo>" wxxmlword)
   (defprop mlessp 80. wxxml-lbp)
   (defprop mlessp 80. wxxml-rbp)
 
   (defprop mleqp wxxml-infix wxxml)
-  (defprop mleqp ("<t>&lt;=</t>") wxxmlsym)
-  (defprop mleqp "<t>&lt;=</t>" wxxmlword)
+  (defprop mleqp ("<mo>&lt;=</mo>") wxxmlsym)
+  (defprop mleqp "<mo>&lt;=</mo>" wxxmlword)
   (defprop mleqp 80. wxxml-lbp)
   (defprop mleqp 80. wxxml-rbp)
 
@@ -1034,8 +1111,9 @@
 		     (t ords)))
 	 (vars (odds difflist 1))
 	 (fun (wxxml (cadr x) nil nil 'mparen 'mparen)))
-      (append '("<i d=\"1\"><r>") fun '("</r>")
-	      '("<r>") (wxxml-d-abbrev-subscript vars ords) '("</r></i>"))))
+      (append '("<munder d=\"1\" altCopy=\"diff(")
+	      (mstring (cadr x))'(",") (mstring (car vars)) '(",") ords '(")\"><mrow>") fun '("</mrow>")
+	      '("<mrow>") (wxxml-d-abbrev-subscript vars ords) '("</mrow></munder>"))))
 
   (defun wxxml-d (x)
     ;; format the macsyma derivative form so it looks
@@ -1169,12 +1247,12 @@
   (defprop spaceout wxxml-spaceout wxxml)
 
   (defun mydispla (x)
-    #+clisp (finish-output)
+    (finish-output)
     (let ((*print-circle* nil)
 	  (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
       (mapc #'princ
-	    (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen)))
-    #+clisp (finish-output)
+	    (wxxml x '("<math>") '("</math>") 'mparen 'mparen)))
+    (finish-output)
     )
 
   (setf *alt-display2d* 'mydispla)
@@ -1217,10 +1295,12 @@
   (defun wxxml-amatrix (x l r)
     (let* ((nr ($@-function x '$nr))
 	   (nc ($@-function x '$nc))
-	   (M (simplifya ($genmatrix
+	   (M (if (or (= nr 0) (= nc 0))
+		'(($matrix))
+		(simplifya ($genmatrix
 			  `((lambda) ((mlist) i j) (mfuncall '$get_element ,x i j))
 			  nr nc)
-			 t)))
+			 t))))
       (wxxml-matrix M l r)))
 
   (defprop $amatrix wxxml-amatrix wxxml)
@@ -1233,11 +1313,11 @@
     (let ((n (cadr x))
 	  (k (caddr x)))
       (append l
-	      (list (format nil "<i altCopy=\"~{~a~}\"><p>" (mstring x)))
+	      (list (format nil "<munder altCopy=\"~{~a~}\"><p>" (mstring x)))
 	      (wxxml n nil nil 'mparen 'mparen)
-	      (list "</p><r>")
+	      (list "</p><mrow>")
 	      (wxxml k nil nil 'mparen 'mparen)
-	      (list "</r></i>")
+	      (list "</mrow></munder>")
 	      r)))
 
   (defprop $pochhammer wxxml-pochhammer wxxml)
@@ -1249,20 +1329,20 @@
       (append l
 	      (list (format nil "<fn altCopy=\"~{~a~}\">" (mstring x)))
 	      (if (nth 2 disp-name)
-		  (list (format nil "<ie><fnm>~a</fnm><r>" (car disp-name)))
-		(list (format nil "<i><fnm>~a</fnm><r>" (car disp-name))))
+		  (list (format nil "<ie><fnm>~a</fnm><mrow>" (car disp-name)))
+		(list (format nil "<munder><fnm>~a</fnm><mrow>" (car disp-name))))
 	      (wxxml (nth (nth 1 disp-name) args) nil nil 'mparen 'mparen)
 	      (when (nth 2 disp-name)
-		(append (list "</r><r>")
+		(append (list "</mrow><mrow>")
 			(when (nth 3 disp-name) (list "<p>"))
 			(wxxml-list (or (nth 5 disp-name)
 					(mapcar (lambda (i) (nth i args)) (nth 2 disp-name)))
 				    nil nil ",")
 			(when (nth 3 disp-name) (list "</p>"))
-			(list "</r>")))
+			(list "</mrow>")))
 	      (if (nth 2 disp-name)
 		  (list "</ie>")
-		(list "</r></i>"))
+		(list "</mrow></munder>"))
 	      (list "<p>")
 	      (wxxml-list (mapcar (lambda (i) (nth i args)) (nth 4 disp-name)) nil nil ",")
 	      (list "</p></fn>")
@@ -1325,10 +1405,10 @@
 		    (setq p (make-list n :initial-element "'")))
 		   (t
 		    (setq p (list "(" n ")"))))
-	     (append (append l '("<r>"))
+	     (append (append l '("<mrow>"))
 		     (let ((*var-tag* (list "<fnm>" "</fnm>"))) (wxxml (cadr x) nil nil lop rop))
 		     p
-		     (list "</r>")  r)))
+		     (list "</mrow>")  r)))
 
 	  ((and $pdiff_uses_named_subscripts_for_derivatives
 		(< (apply #'+ (cddr x)) $pdiff_prime_limit))
@@ -1340,15 +1420,15 @@
 	     (dotimes (i (length n))
 	       (setq p (append p (make-list (nth i n)
 					    :initial-element (nth i v)))))
-	     (append (append l '("<i><r>"))
+	     (append (append l '("<munder><mrow>"))
 		     (wxxml (cadr x) nil nil lop rop)
-		     (list "</r><r>") p (list "</r></i>") r)))
+		     (list "</mrow><mrow>") p (list "</mrow></munder>") r)))
 	  (t
-	   (append (append l '("<i><r>"))
+	   (append (append l '("<munder><mrow>"))
 		   (wxxml (cadr x) nil nil lop rop)
-		   (list "</r><r>(")
+		   (list "</mrow><mrow>(")
 		   (wxxml-list (cddr x) nil nil ",")
-		   (list ")</r></i>") r))))
+		   (list ")</mrow></munder>") r))))
 
   ;;
   ;; Plotting support
@@ -1380,7 +1460,9 @@
   (defun wxplot-filename (&optional (suff t))
     (incf *image-counter*)
     (plot-temp-file (if suff
-			(format nil "maxout_~d_~d.png" (getpid) *image-counter*)
+			(format nil (if
+					$wxplot_usesvg "maxout_~d_~d.svg" "maxout_~d_~d.png")
+				(getpid) *image-counter*)
 		      (format nil "maxout_~d_~d" (getpid) *image-counter*))))
 
   ;; The "solid" has to be changed to "dashed" as soon as plot() starts
@@ -1389,8 +1471,9 @@
     (let ((frmt
 	   (cond
 	    ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
-	    ($wxplot_pngcairo "set terminal pngcairo solid background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
-	    (t "set terminal png size ~d,~d; set zeroaxis;"))))
+	    ((and (not $wxplot_usesvg) $wxplot_pngcairo) "set terminal pngcairo solid background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
+	    ((and (not $wxplot_usesvg) (not $wxplot_pngcairo)) "set terminal png size ~d,~d; set zeroaxis;")
+	    (t "set terminal svg size ~d,~d; set zeroaxis;"))))
       (format nil frmt
 	      ($first $wxplot_size)
 	      ($second $wxplot_size))))
@@ -1453,7 +1536,9 @@
 				       preamble (meval (maxima-substitute aval a (caddr arg)))))))
 	  (apply #'$plot2d `(,(meval expr) ,@(mapcar #'meval args)
 			     ((mlist simp) $plot_format $gnuplot)
-			     ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			     ((mlist simp) $gnuplot_term ,(if
+							      $wxplot_usesvg '$svg
+							    (if $wxplot_pngcairo '$pngcairo '$png)))
 			     ((mlist simp) $gnuplot_preamble ,preamble)
 			     ((mlist simp) $gnuplot_out_file ,filename)))
 	  (setq images (cons filename images))))
@@ -1514,21 +1599,37 @@
 					    ((mequal simp) $file_name ,file-name))
 					  (get-pic-size-opt)
 					  imgs))
-				 "")
+				 (format t "<math><img del=\"yes\">~a.gif</img></math>" file-name))
 			     ;; If file_name is not set, show the animation in wxMaxima
 			     (progn
 			       (dolist (aval (reverse (cdr a-range)))
 				 ($wxstatusbar (format nil "Preparing Frame #~d" frameno))
 				 (setf frameno (+ 1 frameno))
 				 (let* ((filename (wxplot-filename nil))
+					(gnuplotfilename (wxplot-gnuplotfilename))
+					(datafilename (wxplot-datafilename))
 					(args (cons scene-head
 						    (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
 							    args))))
-				   (setq images (cons (format nil "~a.png" filename) images))
+				   (setq images (cons (format nil
+							      (if $wxplot_usesvg "~a.svg" "~a.png")
+							      filename)
+						      images))
+ 				   (setq images
+					 (cons
+					  (format nil "~a/~a" $maxima_tempdir gnuplotfilename)
+					  images))
+ 				   (setq images
+					 (cons
+					  (format nil "~a/~a" $maxima_tempdir datafilename)
+					  images))
 				   ($apply '$draw
 					   (append
 					    `((mlist simp)
-					      ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
+					      ((mequal simp) $terminal ,(if $wxplot_usesvg '$svg
+									  (if $wxplot_pngcairo '$pngcairo '$png)))
+					      ((mequal simp) $gnuplot_file_name ,gnuplotfilename)
+					      ((mequal simp) $data_file_name ,datafilename)
 					      ((mequal simp) $file_name ,filename))
 					    (get-pic-size-opt)
 					    (list args)))))
@@ -1563,7 +1664,8 @@
 	    (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
       (apply #'$plot2d `(,@args
 			 ((mlist simp) $plot_format $gnuplot)
-			 ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							(if $wxplot_pngcairo '$pngcairo '$png)))
 			 ((mlist simp) $gnuplot_preamble ,preamble)
 			 ((mlist simp) $gnuplot_out_file ,filename)))
       ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -1582,7 +1684,8 @@
 				   preamble (caddr arg)))))
       (apply #'$plot3d `(,@args
 			 ((mlist simp) $plot_format $gnuplot)
-			 ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							(if $wxplot_pngcairo '$pngcairo '$png)))
 			 ((mlist simp) $gnuplot_preamble ,preamble)
 			 ((mlist simp) $gnuplot_out_file ,filename)))
       ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -1619,7 +1722,8 @@
 			(append
 			 '((mlist simp))
 			 args
-			 `(((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 `(((mequal simp) $terminal ,(if $wxplot_usesvg '$svg
+							(if $wxplot_pngcairo '$pngcairo '$png)))
 			   ((mequal simp) $gnuplot_file_name ,gnuplotfilename)
 			   ((mequal simp) $data_file_name ,datafilename)
 			   ((mequal simp) $file_name ,filename))
@@ -1631,14 +1735,18 @@
 			   `(((mequal simp) $dimensions ,$wxplot_size)))))))
       (if $display_graphics
 	  (progn
-	    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil "~a.png" filename)) "img"
+	    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil
+								 (if $wxplot_usesvg "~a.svg" "~a.png")
+								 filename)) "img"
 		      ,(if file_name_spec
 			   (format nil "del=\"no\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 			 )
 		      ))
 	    (setq res ""))
-	(setf res `((wxxmltag simp) ,(wxxml-fix-string (format nil "~a.png" filename)) "img")))
+	(setf res `((wxxmltag simp) ,(wxxml-fix-string (format nil
+							       (if $wxplot_usesvg "svg" "png")
+							       filename)) "img")))
       res))
 
   (defmspec $wxdraw_list (args)
@@ -1660,7 +1768,8 @@
 				   preamble (caddr arg)))))
       ($apply '$implicit_plot `((mlist simp) ,@args
 				((mlist simp) $plot_format $gnuplot)
-				((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+				((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							       (if $wxplot_pngcairo '$pngcairo '$png)))
 				((mlist simp) $gnuplot_preamble ,preamble)
 				((mlist simp) $gnuplot_out_file ,filename)))
       ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
@@ -1679,7 +1788,8 @@
 	(if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
 	    (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
       (apply #'$contour_plot `(,@args
-			       ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
+			       ((mlist simp) $gnuplot_term ,(if $wxplot_usesvg '$svg
+							       (if $wxplot_pngcairo '$pngcairo '$png)))
 			       ((mlist simp) $plot_format $gnuplot)
 			       ((mlist simp) $gnuplot_preamble ,preamble)
 			       ((mlist simp) $gnuplot_out_file ,filename)))
@@ -1843,7 +1953,7 @@
 
   ;; A function that determines all symbols for autocompletion
   (defun wxPrint_autocompletesymbols ()
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<wxxml-symbols>")
     ;; Function names and rules
     (format t "~{~a~^$~}"
@@ -1864,7 +1974,7 @@
     	 (format t "~{~a~^$~}"
     		 (mapcar #'print_unit (cdr ($known_units))))))
     (format t "</wxxml-symbols>")
-    #+clisp (finish-output)
+    (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1879,6 +1989,13 @@
       (let (($display2d nil))
 	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
+  
+  (defun wx-print-display2d ()
+    (format t "<variable><name>display2d</name><value>")
+    (if (eq $display2d nil)
+	(format t "false")
+      (format t "true"))
+    (format t "</value></variable>~%"))
 
   (defun wx-query-variable (var)
     (format t "<variables>~%<variable>~%<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
@@ -1888,7 +2005,7 @@
       (format t "</variable>~%</variables>~%"))
 
   (defun wx-print-variables ()
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<variables>")
     (wx-print-variable '$maxima_userdir)
     (wx-print-variable '$maxima_tempdir)
@@ -1897,8 +2014,8 @@
 					;  (wx-print-variable '*maxima-topdir*)
     (wx-print-variable '$gnuplot_command)
     (wx-print-variable '*maxima-demodir*)
+    (wx-print-variable '*autoconf-version*) ; Must be queried before maxima-sharedir is
     (wx-print-variable '*maxima-sharedir*)
-    (wx-print-variable '*autoconf-version*)
     (wx-print-variable '*autoconf-host*)
     (format t "<variable><name>*lisp-name*</name><value>~a</value></variable>"
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-type))
@@ -1907,7 +2024,24 @@
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	    #-sbcl (lisp-implementation-version))
     (format t "</variables>~%")
-    #+clisp (finish-output)
+    (finish-output)
+    )
+  
+  (defun wx-print-gui-variables ()
+    (finish-output)
+    (format t "<variables>")
+    (wx-print-variable '$wxsubscripts)
+    (wx-print-variable '$lmxchar)
+    (wx-print-variable '$numer)
+    (wx-print-variable '$domain)
+    (wx-print-variable '$showtime)
+    (wx-print-variable '$algebraic)
+    (wx-print-variable '$engineering_format_floats)
+    (wx-print-variable '$wxanimate_autoplay)
+    (wx-print-display2d)
+    (wx-print-variable '*alt-display2d*)
+    (format t "</variables>~%")
+    (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1942,7 +2076,8 @@
 	  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl) (format t
            "Info: wxMathml.cpp: Changing the working dir during a maxima session isn't implemented for this lisp.")
   	  (namestring dir)
-	  (wx-print-variables)))
+	  (wx-print-variables)
+	  (wx-print-gui-variables)))
       (error (c)        (format t "Warning: Can set maxima's working directory but cannot change it during the maxima session :~%~&~%")
           (values 0 c))))
 
@@ -2011,43 +2146,26 @@
      (declare (ignore fnname))
      t))
 
-;;; A function that loads bitmaps from files as a slideshow.
-;;; Todo: Replace this function by at least half-way-optimized LISP code.
-  (progn
-    (defprop $wxanimate_from_imgfiles t translated)
-    (add2lnc '$wxanimate_from_imgfiles $props)
-    (defmtrfun ($wxanimate_from_imgfiles $any mdefine t nil)
-      ($x)
-      (declare (special $x))
-      (progn
-	#+clisp (finish-output)
-	(simplify (mfunction-call $printf t '"<mth><slide"))
-	(cond
-	 ((is-boole-check (trd-msymeval $wxanimate_autoplay '$wxanimate_autoplay))
-	  (simplify (mfunction-call $printf t '" running=\"false\""))))
-	(cond
-	 ((like
-	   (simplify
-	    `((mfactorial)
-	      ,(trd-msymeval $wxanimate_framerate '$wxanimate_framerate)))
-	   '$wxanimate_framerate)
-	  (simplify
-	   (mfunction-call $printf t '" fr=\"~d\""
-			   (trd-msymeval $wxanimate_framerate
-					 '$wxanimate_framerate)))))
-	(simplify (mfunction-call $printf t '">"))
-	(do (($i)
-	     (mdo (cdr $x) (cdr mdo)))
-	    ((null mdo) '$done)
-	    (declare (special $i))
-	    (setq $i (car mdo))
-	    (simplify (mfunction-call $printf t '"~a;" $i)))
-	(simplify (mfunction-call $printf t '"</slide></mth>"))
-	#+clisp (finish-output)
-	)
+  ;;; A function that loads bitmaps from files as a slideshow.
+  ;;; Todo: Replace this function by at least half-way-optimized LISP code.
+  (defun $wxanimate_from_imgfiles (&rest names)
+    (progn
+      (format t "<mth>~%<slide ")
+      (if (eql $wxanimate_autoplay 't)
+	  (format t " running=\"false\""))
+      (format t " fr=\"~d\"" $wxanimate_framerate)
+      (format t ">")
+      (mapcar (lambda (x)
+		(if
+		    (listp x)
+		    (mapcar (lambda (x2)
+			      (format t "~a;" x2))
+			      (cdr x))
+		  (format t "~a;" x)))
+	      names)
+      (format t "</slide>~%</mth>~%")
       ))
-
-
+  
   (when ($file_search "wxmaxima-init")
     ($load "wxmaxima-init"))
 
@@ -2106,22 +2224,23 @@
 	   (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
 		   (wxxml-fix-string filename))
 	   (format t "</variables>~%")))
-     (setq *wxmaxima-nested-loads* (+ *wxmaxima-nested-loads* 1))
+     (incf *wxmaxima-nested-loads*)
      ;; Load the file
      (unwind-protect
 	 (load_original_wxmaxima filename)
        (progn
 	 ;; After loading the file: Tell wxMaxima we have finished loading the file
 	 ;; and what autocompletable symbols we know about.
-	 (setq *wxmaxima-nested-loads* (- *wxmaxima-nested-loads* 1))))
-     (if (< *wxmaxima-nested-loads* 1)
-	 (wxPrint_autocompletesymbols))
-     ))
+	 (progn
+	   (decf *wxmaxima-nested-loads* )
+	   (if (< *wxmaxima-nested-loads* 1)
+	       (wxPrint_autocompletesymbols)))))))
   (format t "</suppressOutput>~%")
   ;; Publish all new global variables maxima might contain to wxMaxima's
   ;; autocompletion feature.
   (wxPrint_autocompletesymbols)
   (wx-print-variables)
+  (wx-print-gui-variables)
   (format t "~%")
   (finish-output)
 )

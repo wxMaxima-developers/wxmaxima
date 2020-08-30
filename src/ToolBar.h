@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -26,6 +26,7 @@
   This file declares the class ToolBar that represents wxMaxima's main tool bar.
  */
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
@@ -38,7 +39,7 @@
 class ToolBar : public wxAuiToolBar
 {
 public:
-  ToolBar(wxWindow *parent);
+  explicit ToolBar(wxWindow *parent);
   /*! All states the "start/stop animation" toolbar button can be in
    */
   enum AnimationStartStopState
@@ -47,10 +48,21 @@ public:
     Stopped, //!< The animation is stopped
     Inactive //!< No animation is currently running
   };
-  
-  wxBitmap GetImage(wxString name,
-                    unsigned char *data_128, size_t len_128,
-                    unsigned char *data_192, size_t len_192);
+
+  enum popupitems
+  {
+    copy_paste,
+    open_save,
+    print,
+    options,
+    shownew,
+    search,
+    help,
+    selectAll
+  };
+
+  wxBitmap GetBitmap(wxString name,
+                     unsigned char *data, size_t len, wxSize siz = wxSize(-1,-1));
 
   virtual ~ToolBar();
 
@@ -81,24 +93,15 @@ public:
   enum Event
   {
     plot_slider_id = 5500,
-    tb_new,
-    tb_open,
-    tb_save,
-    tb_copy,
-    tb_paste,
-    tb_cut,
-    tb_select_all,
-    tb_print,
-    tb_pref,
     tb_interrupt,
     tb_follow,
+    tb_eval,
+    tb_eval_all,
     tb_evaltillhere,
     tb_evaluate_rest,
-    tb_help,
     tb_animation_startStop,
     tb_animation_start,
     tb_animation_stop,
-    tb_find,
     tb_hideCode,
     tb_changeStyle,
     menu_restart_id
@@ -116,7 +119,7 @@ public:
   {
     if (value != m_canCopy_old)
     {
-      EnableTool(tb_copy, value);
+      EnableTool(wxID_COPY, value);
       m_canCopy_old = value;
     }
   }
@@ -125,7 +128,7 @@ public:
   {
     if (value != m_canCut_old)
     {
-      EnableTool(tb_cut, value);
+      EnableTool(wxID_CUT, value);
       m_canCut_old = value;
     }
   }
@@ -134,7 +137,7 @@ public:
   {
     if (value != m_canSave_old)
     {
-      EnableTool(tb_save, value);
+      EnableTool(wxID_SAVE, value);
       m_canSave_old = value;
     }
   }
@@ -143,7 +146,7 @@ public:
   {
     if (value != m_canPrint_old)
     {
-      EnableTool(tb_print, value);
+      EnableTool(wxID_PRINT, value);
       m_canPrint_old = value;
     }
   }
@@ -158,6 +161,24 @@ public:
     }
   }
 
+  void CanEvalThisCell(bool value)
+    {
+      if (value != m_canEvalThisCell_old)
+      {
+        EnableTool(tb_eval, value);
+        m_canEvalThisCell_old = value;
+      }
+    }
+
+  void WorksheetEmpty(bool value)
+    {
+      if (value != m_worksheetEmpty_old)
+      {
+        EnableTool(tb_eval_all, !value);
+        m_worksheetEmpty_old = value;
+      }
+    }
+
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
 
@@ -165,29 +186,82 @@ public:
     return m_needsInformationIcon.GetSize().y;
   }
   
+  //! Remove all ools and then add all tools that are requested/fit in the toolbar/...
+  void AddTools();
+
   //! Get the cell style for new cells
   GroupType GetCellType();
   //! Set the cell style to show for the current cell
-  void SetCellStyle(int style);
+  void SetCellStyle(GroupType style);
   //! Called if there is no cell to show the style for
-  void UnsetCellStyle(){SetCellStyle(-1);}
+  void UnsetCellStyle(){SetCellStyle(GC_TYPE_INVALID);}
   //! Set the default cell style for new cells
-  void SetDefaultCellStyle(int style)
-    {
-      m_defaultCellStyle = style;
-    }
+  void SetDefaultCellStyle(GroupType style) { m_defaultCellStyle = style; }
   //! The current style is the new style for new cells
   void SetDefaultCellStyle();
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
+  wxBitmap GetEvalAllBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetEvalBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetNewBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetOpenBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetSaveBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPrintBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPreferencesBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetCutBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetCopyBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetPasteBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetSelectAllBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetFindBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetRestartBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetInterruptBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetEvalTillHereBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetHelpBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetEvalRestBitmap(wxSize siz = wxSize(-1, -1));
+  wxBitmap GetHideCodeBitmap(wxSize siz = wxSize(-1, -1));
+
+  bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
+    return show;}
+  void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste",show);}
+
+  bool ShowOpenSave(){bool show = true;wxConfig::Get()->Read("Toolbar/showOpenSave",&show);
+    return show;}
+  void ShowOpenSave(bool show){wxConfig::Get()->Write("Toolbar/showOpenSave",show);}
+  
+  bool ShowNew(){bool show = true;wxConfig::Get()->Read("Toolbar/showNew",&show);
+    return show;}
+  void ShowNew(bool show){wxConfig::Get()->Write("Toolbar/showNew",show);}
+
+  bool ShowSearch(){bool show = true;wxConfig::Get()->Read("Toolbar/showSearch",&show);
+    return show;}
+  void ShowSearch(bool show){wxConfig::Get()->Write("Toolbar/showSearch",show);}
+
+  bool ShowHelp(){bool show = true;wxConfig::Get()->Read("Toolbar/showHelp",&show);
+    return show;}
+  void ShowHelp(bool show){wxConfig::Get()->Write("Toolbar/showHelp",show);}
+
+  bool ShowPrint(){bool show = true;wxConfig::Get()->Read("Toolbar/showPrint",&show);
+    return show;}
+  void ShowPrint(bool show){wxConfig::Get()->Write("Toolbar/showPrint",show);}
+
+  bool ShowOptions(){bool show = true;wxConfig::Get()->Read("Toolbar/showOptions",&show);
+    return show;}
+  void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions",show);}
+
+  bool ShowSelectAll(){bool show = true;wxConfig::Get()->Read("Toolbar/showSelectAll",&show);
+    return show;}
+  void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll",show);}
+
 protected:
-    void OnSize(wxSizeEvent &event);
+  void OnSize(wxSizeEvent &event);
+  void OnMouseRightDown(wxMouseEvent &event);
+  void OnMenu(wxMenuEvent &event);
 private:
   //! The ppi rate.
   wxSize m_ppi;
   //! The default style for new cells.
-  int m_defaultCellStyle;
+  GroupType m_defaultCellStyle;
   //! The drop-down-box for text styles
   wxChoice *m_textStyle;
   //! The position in the current slideshow at the last call of UpdateSlider()
@@ -199,6 +273,9 @@ private:
   bool m_canSave_old;
   bool m_canPrint_old;
   bool m_canEvalTillHere_old;
+  bool m_canEvalThisCell_old;
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+  bool m_worksheetEmpty_old;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.
   bool m_needsInformation;

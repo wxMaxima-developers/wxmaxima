@@ -13,7 +13,7 @@ void RecentDocuments::Load()
 
   for(int i=0; i<30; i++)
     {
-      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType, i);
+      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       wxString filename;
       if (config->Read(name, &filename))
 	{
@@ -26,7 +26,7 @@ void RecentDocuments::Load()
   Save();
 }
 
-wxString RecentDocuments::Get(int num)
+wxString RecentDocuments::Get(int num) const
 {
   std::list<wxString> listOfFiles = m_listOfFiles;
   for(int i = 0; i<num; i++)
@@ -46,38 +46,38 @@ void RecentDocuments::Save()
 {
   wxConfigBase *config = wxConfig::Get();
   int i = 0;
-  for(std::list<wxString>::iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
+  for(std::list<wxString>::const_iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
     {
-      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType, i);
+      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       i++;
       config->Write(name, *it);
     }
   for(;i<30;i++)
     {
-      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType, i);
+      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       config->DeleteEntry(name);
     }
 }
 
-void RecentDocuments::AddDocument(wxString filename)
+void RecentDocuments::AddDocument(wxString name)
 {
-  wxFileName fle(filename);
+  wxFileName fle(name);
   fle.MakeAbsolute();
   if((fle.GetFullPath() != wxEmptyString) && wxFileExists(fle.GetFullPath()))
-    filename = fle.GetFullPath();
+    name = fle.GetFullPath();
 
   std::list<wxString>::iterator it = m_listOfFiles.begin();
   while(it != m_listOfFiles.end())
     {
-      if (*it == filename)
+      if (*it == name)
 	it = m_listOfFiles.erase(it);
       else
 	++it;
     }
   
-  m_listOfFiles.push_front(filename);
+  m_listOfFiles.push_front(name);
   m_listOfFiles.unique();
-  long recentItems;
+  long recentItems = 10;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
   if (recentItems < 5) recentItems = 5;
   if (recentItems > 30) recentItems = 30;

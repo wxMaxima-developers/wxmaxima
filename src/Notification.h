@@ -17,7 +17,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -32,8 +32,15 @@
 #define NOTIFICATION_H
 
 #include "GroupCell.h"
+#include "precomp.h"
 #include <wx/notifmsg.h>
 #include <wx/wx.h>
+
+#ifdef __WXOSX__
+#define NOTIFI_OVERRIDE override
+#else
+#define NOTIFI_OVERRIDE
+#endif
 
 /*! A user notification the operating system claims to be non-disturbing
 
@@ -41,24 +48,26 @@
   focus between the user action that caused maxima to run a command and the moment the 
   command has finished or has caused an error.
  */
-class Notification: public wxNotificationMessage
+class Notification final: public wxNotificationMessage
 {
 public:
   //! A constructor that doesn't take any arguments
   Notification();
   //! A constructor that completely prepares the notification, but doesn't call Show() yet.
-  Notification(const wxString &title,
-               const wxString &message=wxEmptyString,
-               wxWindow *parent=NULL,
-               int flags=wxICON_INFORMATION);
+  explicit Notification(const wxString &title,
+                        const wxString &message = {},
+                        wxWindow *parent=NULL,
+                        int flags=wxICON_INFORMATION);
+  //! A destructor that also closes the notification
+  ~Notification() override { Notification::Close(); }
   //! Makes the notification appear.
-  virtual bool Show(int duration = Timeout_Auto);
+  bool Show(int duration = Timeout_Auto) NOTIFI_OVERRIDE;
   //! Informs the notification which the main window is it notified for.
-  virtual void SetGroup(wxWindow *parent);
+  void SetGroup(wxWindow *parent);
   //! Returns a pointer to the main window or NULL, if no main window is set.
-  virtual wxWindow *GetGroup(){return m_parent;}
+  wxWindow *GetGroup() { return m_parent; }
   //! Tell the operating system that the notification may be closed.
-  virtual bool Close();
+  bool Close() NOTIFI_OVERRIDE;
   //! Might produce false positives, but at least tries to determine if the notification is active.
   bool IsShown(){return m_shown;}
   //! The cell we signal an error for
@@ -74,5 +83,7 @@ protected:
   //! Called on closing the notification by the OS or user action, if supported.
   void OnDismissed(wxCommandEvent &event);
 };
+
+#undef NOTIFI_OVERRIDE
 
 #endif

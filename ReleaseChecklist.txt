@@ -1,14 +1,13 @@
-- Does test/testbench_simple.wxmx work?
 - Enter the new version number into CMakeLists.txt
-- Run "make && make test" in order to update the test suite files.
 - Update the version numbers in the appImage repo (update_versions.sh)
 - Update NEWS.md in order to announce the new version on https://freshcode.club/
 - Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml
 - Update snap/snapcraft.yaml
 - Run "make test"
+- Does test/testbench_simple.wxmx work?
 - Create a git tag for the release
 - Go to the releases page Github and convert the tag into a release
-- Update the release info on the download page and in release.txt
+- Update the release info in the files download.html and in version.txt
   in the gh_pages branch.
 - Append "-DevelopmentSnapshot" to the version number in CMakeLists.txt for the new development version.
 - Download the tarball (.tar.gz and .zip version) and run the following command on them:

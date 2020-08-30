@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -15,13 +15,14 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
 #ifndef TIPOFTHEDAY_H
 #define TIPOFTHEDAY_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
 #include <wx/arrstr.h>
@@ -30,15 +31,10 @@
 #include <wx/checkbox.h>
 #include <wx/stattext.h>
 
-extern unsigned char media_playback_start_128_png[];
-extern unsigned int  media_playback_start_128_png_len;
-extern unsigned char media_playback_start_192_png[];
-extern unsigned int  media_playback_start_192_png_len;
-extern unsigned char media_playback_start_reverse_128_png[];
-extern unsigned int  media_playback_start_reverse_128_png_len;
-extern unsigned char media_playback_start_reverse_192_png[];
-extern unsigned int  media_playback_start_reverse_192_png_len;
-extern const char * invalidImage_xpm[];
+extern unsigned char media_playback_start_svg_gz[];
+extern unsigned int  media_playback_start_svg_gz_len;
+extern unsigned char media_playback_start_reverse_svg_gz[];
+extern unsigned int  media_playback_start_reverse_svg_gz_len;
 
 /*! A minimalistic Tip of the day dialogue
 
@@ -52,7 +48,7 @@ extern const char * invalidImage_xpm[];
 class TipOfTheDay : public wxDialog
 {
 public:
-  TipOfTheDay(wxWindow *parent);
+  explicit TipOfTheDay(wxWindow *parent);
   ~TipOfTheDay();
 protected:
   void OnNextButton(wxCommandEvent &dummy);
@@ -65,8 +61,7 @@ private:
   wxTextCtrl *m_tip;
   wxString GetTip();
   wxCheckBox *m_showAtStartup;
-  wxImage GetImage(unsigned char *data_128, size_t len_128,
-                   unsigned char *data_192, size_t len_192);
+  wxImage GetImage(unsigned char *data, size_t len);
   wxArrayString m_tips;
 };
 

@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -25,67 +25,99 @@
  */
 
 #include "Configuration.h"
+
+#include "Cell.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
+#include "StringUtils.h"
 #include <wx/wx.h>
+#include <wx/mimetype.h>
 #include <wx/string.h>
 #include <wx/font.h>
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
-#include "Cell.h"
 
-Configuration::Configuration(wxDC *dc) : m_dc(dc) 
+Configuration::Configuration(wxDC *dc, InitOpt options) :
+  m_dc(dc)
 {
+  ResetAllToDefaults(options);
+  ReadConfig();
+}
+
+void Configuration::ResetAllToDefaults(InitOpt options)
+{
+  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
-  
+  m_incrementalSearch = true;
+  m_symbolPaneAdditionalChars = wxT("Øü§");
+  SetBackgroundBrush(*wxWHITE_BRUSH);
+  m_hidemultiplicationsign = true;
+  m_autodetectHelpBrowser = true;
+  #ifdef __WXGTK__
+  m_helpBrowserUserLocation = wxT("xdg-open");
+  #else
+  // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
+  auto *manager = wxTheMimeTypesManager;
+  wxFileType *filetype = manager->GetFileTypeFromExtension("html");
+  m_helpBrowserUserLocation = filetype->GetOpenCommand({});
+  #endif
+
+  m_saveUntitled = true;
+  m_cursorJump = true;
+  m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
-  m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
   m_fontChanged = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
+  m_invertBackground = false;
+  m_undoLimit = 0;
+  m_recentItems = 10;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
-  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");
   m_zoomFactor = 1.0; // affects returned fontsizes
+  m_useSVG = false;
   m_changeAsterisk = true;
   m_workSheet = NULL;
   m_latin2greek = false;
+  m_enterEvaluates = false;
   m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
   m_printing = false;
   m_TeXFonts = false;
-  m_printing = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
+  SetLanguage(wxLANGUAGE_DEFAULT);
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
-  m_showLabelChoice = 1;
+  m_showLabelChoice = labels_prefer_user;
   m_abortOnError = true;
-  m_autoSaveMinutes = 3;
+  m_defaultPort = 49152;
+  m_maxGnuplotMegabytes = 12;
   m_clientWidth = 1024;
-  m_defaultPort = 40100;
-
   m_clientHeight = 768;
   m_indentMaths=true;
-  if(m_maximaLocation_override != wxEmptyString)
-    m_maximaUserLocation = m_maximaLocation_override;
-  else
-    m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+  if (!(options & InitOpt::temporary))
+  {
+    if(m_maximaLocation_override != wxEmptyString)
+      m_maximaUserLocation = m_maximaLocation_override;
+    else
+      m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
+  }
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
-  ReadConfig();
   m_showCodeCells = true;
-  m_defaultToolTip = wxEmptyString;
+  m_greekSidebar_ShowLatinLookalikes = false;
+  m_greekSidebar_Show_mu = false;
   m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
   // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
   // for maxima-discuss.
@@ -96,182 +128,227 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_copyEMF = false;
   m_showLength = 2;
   m_useUnicodeMaths = true;
-  m_escCodes["pm"]    = wxT("\x00B1");
-  m_escCodes["+/-"]   = wxT("\x00B1");
-  m_escCodes["alpha"] = wxT("\x03B1");
-  m_escCodes["beta"]  = wxT("\x03B2");
-  m_escCodes["gamma"] = wxT("\x03B3");
-  m_escCodes["delta"] = wxT("\x03B4");
-  m_escCodes["epsilon"] = wxT("\x03B5");
-  m_escCodes["zeta"] = wxT("\x03B6");
-  m_escCodes["eta"] = wxT("\x03B7");
-  m_escCodes["theta"] = wxT("\x03B8");
-  m_escCodes["iota"] = wxT("\x03B9");
-  m_escCodes["kappa"] = wxT("\x03BA");
-  m_escCodes["lambda"] = wxT("\x03BB");
-  m_escCodes["mu"] = wxT("\x03BC");
-  m_escCodes["nu"] = wxT("\x03BD");
-  m_escCodes["xi"] = wxT("\x03BE");
-  m_escCodes["om"] = wxT("\x03BF");
-  m_escCodes["omicron"] = wxT("\x03BF");
-  m_escCodes["pi"] = wxT("\x03C0");
-  m_escCodes["rho"] = wxT("\x03C1");
-  m_escCodes["sigma"] = wxT("\x03C3");
-  m_escCodes["tau"] = wxT("\x03C4");
-  m_escCodes["upsilon"] = wxT("\x03C5");
-  m_escCodes["phi"] = wxT("\x03C6");
-  m_escCodes["chi"] = wxT("\x03C7");
-  m_escCodes["psi"] = wxT("\x03C8");
-  m_escCodes["omega"] = wxT("\x03C9");
-  m_escCodes["Alpha"] = wxT("\x0391");
-  m_escCodes["Beta"] = wxT("\x0392");
-  m_escCodes["Gamma"] = wxT("\x0393");
-  m_escCodes["Delta"] = wxT("\x0394");
-  m_escCodes["Epsilon"] = wxT("\x0395");
-  m_escCodes["Zeta"] = wxT("\x0396");
-  m_escCodes["Eta"] = wxT("\x0397");
-  m_escCodes["Theta"] = wxT("\x0398");
-  m_escCodes["Iota"] = wxT("\x0399");
-  m_escCodes["Kappa"] = wxT("\x039A");
-  m_escCodes["Lambda"] = wxT("\x039B");
-  m_escCodes["Mu"] = wxT("\x039C");
-  m_escCodes["Nu"] = wxT("\x039D");
-  m_escCodes["Xi"] = wxT("\x039E");
-  m_escCodes["Omicron"] = wxT("\x039F");
-  m_escCodes["Pi"] = wxT("\x03A0");
-  m_escCodes["Rho"] = wxT("\x03A1");
-  m_escCodes["Sigma"] = wxT("\x03A3");
-  m_escCodes["Tau"] = wxT("\x03A4");
-  m_escCodes["Upsilon"] = wxT("\x03A5");
-  m_escCodes["Phi"] = wxT("\x03A6");
-  m_escCodes["Chi"] = wxT("\x03A7");
-  m_escCodes["Psi"] = wxT("\x03A8");
-  m_escCodes["Omega"] = wxT("\x03A9");
-  m_escCodes["Ohm"] = wxT("\x03A9");
-  //////////////////////////
-  m_escCodes["^2"] = wxT("\x00B2");
-  m_escCodes["^3"] = wxT("\x00B3");
-  m_escCodes["/2"] = wxT("\x00BD");
-  m_escCodes["sq"] = wxT("\x221A");
-  m_escCodes["ii"] = wxT("\x2148");
-  m_escCodes["ee"] = wxT("\x2147");
-  m_escCodes["hb"] = wxT("\x210F");
-  m_escCodes["in"] = wxT("\x2208");
-  m_escCodes["impl"] = wxT("\x21D2");
-  m_escCodes["inf"] = wxT("\x221e");
-  m_escCodes["empty"] = wxT("\x2205");
-  m_escCodes["TB"] = wxT("\x25b6");
-  m_escCodes["tb"] = wxT("\x25b8");
-  m_escCodes["and"] = wxT("\x22C0");
-  m_escCodes["or"] = wxT("\x22C1");
-  m_escCodes["xor"] = wxT("\x22BB");
-  m_escCodes["nand"] = wxT("\x22BC");
-  m_escCodes["nor"] = wxT("\x22BD");
-  m_escCodes["implies"] = wxT("\x21D2");
-  m_escCodes["=>"] = wxT("\x21D2");
-  m_escCodes["equiv"] = wxT("\x21D4");
-  m_escCodes["<=>"] = wxT("\x21D4");
-  m_escCodes["not"] = wxT("\x00AC");
-  m_escCodes["union"] = wxT("\x22C3");
-  m_escCodes["inter"] = wxT("\x22C2");
-  m_escCodes["subseteq"] = wxT("\x2286");
-  m_escCodes["subset"] = wxT("\x2282");
-  m_escCodes["notsubseteq"] = wxT("\x2288");
-  m_escCodes["notsubset"] = wxT("\x2284");
-  m_escCodes["hbar"] = wxT("\x0127");
-  m_escCodes["Hbar"] = wxT("\x0126");
-  m_escCodes["partial"] = wxT("\x2202");
-  m_escCodes["integral"] = wxT("\x222b");
-  m_escCodes["approx"] = wxT("\x2245");
-  m_escCodes["prop"] = wxT("\x221d");
-  m_escCodes["propto"] = wxT("\x221d");
-  m_escCodes["neq"] = wxT("\x2260");
-  m_escCodes["!="] = wxT("\x2260");
-  m_escCodes["/="] = wxT("\x2260");
-  m_escCodes["#"] = wxT("\x2260");
-  m_escCodes["<="] = wxT("\x2264");
-  m_escCodes["leq"] = wxT("\x2264");
-  m_escCodes[">="] = wxT("\x2265");
-  m_escCodes["geq"] = wxT("\x2265");
-  m_escCodes["ll"] = wxT("\x226A");
-  m_escCodes["<<"] = wxT("\x226A");
-  m_escCodes["gg"] = wxT("\x226B");
-  m_escCodes[">>"] = wxT("\x226B");
-  m_escCodes["qed"] = wxT("\x220E");
-  m_escCodes["equiv"] = wxT("\x2263");
-  m_escCodes["sum"] = wxT("\x2211");
-  m_escCodes["prod"] = wxT("\x220F");
-  m_escCodes["product"] = wxT("\x220F");
-  m_escCodes["exists"] = wxT("\x2203");
-  m_escCodes["nexists"] = wxT("\x2204");
-  m_escCodes["parallel"] = wxT("\x2225");
-  m_escCodes["perp"] = wxT("\x27C2");
-  m_escCodes["perpendicular"] = wxT("\x27C2");
-  m_escCodes["bot"] = wxT("\x27C2");
-  m_escCodes["leadsto"] = wxT("\x219D");
-  m_escCodes["->"] = wxT("\x2192");
-  m_escCodes["-->"] = wxT("\x27F6");
-  m_escCodes[" --> "] = wxT("\x27F6");
-
+  m_offerKnownAnswers = true;
   m_parenthesisDrawMode = unknown;
-
-  #ifdef __WXMSW__
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetStyle(wxFONTSTYLE_NORMAL );
-  if(font.IsOk())
-    m_fontName = wxT("Linux Libertine O");
-  if(font.IsOk())
-    m_mathFontName = wxT("Linux Libertine O");
-  else
-    m_mathFontName = wxEmptyString;
-  #endif
-  m_defaultFontSize = 12;
-  m_mathFontSize = m_defaultFontSize;
-  m_fontEncoding = wxFONTENCODING_DEFAULT;
-  m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
-  m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
-  m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
-  m_styles[TS_CODE_FUNCTION].Set(_("Code highlighting: Functions"),wxColor(128,0,0), false, true, false);
-  m_styles[TS_CODE_COMMENT].Set(_("Code highlighting: Comments"),wxColor(64,64,64), false, true, false);
-  m_styles[TS_CODE_NUMBER].Set(_("Code highlighting: Numbers"),wxColor(128,64,0), false, true, false);
-  m_styles[TS_CODE_STRING].Set(_("Code highlighting: Strings"),wxColor(0,0,128), false, true, false);
-  m_styles[TS_CODE_OPERATOR].Set(_("Code highlighting: Operators"),*wxBLACK, false, true, false);
-  m_styles[TS_CODE_LISP].Set(_("Code highlighting: Lisp"),wxColor(255,0,128), false, true, false);
-  m_styles[TS_CODE_ENDOFLINE].Set(_("Code highlighting: End of line"),wxColor(128,128,128), false, true, false);
-  m_styles[TS_GREEK_CONSTANT].Set(_("Greek constants"),*wxBLACK, false, true, false);
-  m_styles[TS_HEADING6].Set(_("Heading 6"),*wxBLACK, true, false, false, 14);
-  m_styles[TS_HEADING5].Set(_("Heading 5"),*wxBLACK, true, false, false, 15);
-  m_styles[TS_SUBSUBSECTION].Set(_("Subsubsection cell"),*wxBLACK, true, false, false, 16);
-  m_styles[TS_SUBSECTION].Set(_("Subsection cell"),*wxBLACK, true, false, false, 16);
-  m_styles[TS_SECTION].Set(_("Section cell"),*wxBLACK, true, true, false, 18);
-  m_styles[TS_TITLE].Set(_("Title cell"),*wxBLACK, true, false, true, 24);
-  m_styles[TS_WARNING].Set(_("Maxima warnings"),wxColor(wxT("orange")), true, false, false, 12);
-  m_styles[TS_ERROR].Set(_("Maxima errors"),*wxRED, false, false, false, 12);
-  m_styles[TS_MAIN_PROMPT].Set(_("Input labels"),wxColor(wxT("rgb(255,128,128)")), false, false, false);
-  m_styles[TS_OTHER_PROMPT].Set(_("Maxima questions"),*wxRED, false, true, false);
-  m_styles[TS_LABEL].Set(_("Output labels"),wxColor(wxT("rgb(255,192,128)")), false, false, false);
-  m_styles[TS_USERLABEL].Set(_("User-defined labels"),wxColor(wxT("rgb(255,64,0)")), false, false, false);
-  m_styles[TS_SPECIAL_CONSTANT].Set(_("Special constants"),*wxBLACK, false, false, false);
-  m_styles[TS_INPUT].Set(_("Maxima input"),*wxBLUE, false, false, false);
-  m_styles[TS_NUMBER].Set(_("Numbers"),*wxBLACK, false, false, false);
-  m_styles[TS_STRING].Set(_("Strings"),*wxBLACK, false, true, false);
-  m_styles[TS_GREEK_CONSTANT].Set(_("Greek Constants"),*wxBLACK, false, false, false);
-  m_styles[TS_VARIABLE].Set(_("Variables"),*wxBLACK, false, true, false);
-  m_styles[TS_FUNCTION].Set(_("Function names"),*wxBLACK);
-  m_styles[TS_HIGHLIGHT].Set(_("Highlight (dpart)"),*wxRED);
-  m_styles[TS_TEXT_BACKGROUND].Set(_("Text cell background"),*wxWHITE);
-  m_styles[TS_DOCUMENT_BACKGROUND].Set(_("Document background"),*wxWHITE);
-  m_styles[TS_CELL_BRACKET].Set(_("Cell bracket"),wxColour(wxT("rgb(0,0,0)")));
-  m_styles[TS_ACTIVE_CELL_BRACKET].Set(_("Active cell bracket"),wxT("rgb(255,0,0)"));
-  m_styles[TS_CURSOR].Set(_("Cursor"),wxT("rgb(0,0,0)"));
-  m_styles[TS_SELECTION].Set(_("Selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
-  m_styles[TS_EQUALSSELECTION].Set(_("Text equal to selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
-  m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
+  m_autoWrap = 3;
+  m_displayedDigits = 100;
+  m_autoIndent = true;
+  m_restartOnReEvaluation = true;
+  m_matchParens = true;
+  m_insertAns = false;
+  m_openHCaret = false;
+  m_labelWidth = 4;
+  m_zoomFactor = 1.0;
+  m_TeXFonts = false;
+  m_keepPercent = true;  
+  InitStyles();
 }
 
-wxSize Configuration::GetPPI(wxWindow *win)
+static const Configuration::EscCodeContainer &EscCodes()
+{
+  static const Configuration::EscCodeContainer escCodes{
+    {wxT("pm"), wxT("\u00B1")},
+    {wxT("+/-"), wxT("\u00B1")},
+    {wxT("alpha"), wxT("\u03B1")},
+    {wxT("beta"), wxT("\u03B2")},
+    {wxT("gamma"), wxT("\u03B3")},
+    {wxT("delta"), wxT("\u03B4")},
+    {wxT("epsilon"), wxT("\u03B5")},
+    {wxT("zeta"), wxT("\u03B6")},
+    {wxT("eta"), wxT("\u03B7")},
+    {wxT("theta"), wxT("\u03B8")},
+    {wxT("iota"), wxT("\u03B9")},
+    {wxT("kappa"), wxT("\u03BA")},
+    {wxT("lambda"), wxT("\u03BB")},
+    {wxT("mu"), wxT("\u03BC")},
+    {wxT("nu"), wxT("\u03BD")},
+    {wxT("xi"), wxT("\u03BE")},
+    {wxT("om"), wxT("\u03BF")},
+    {wxT("omicron"), wxT("\u03BF")},
+    {wxT("nabla"), wxT("\u2207")},
+    {wxT("pi"), wxT("\u03C0")},
+    {wxT("rho"), wxT("\u03C1")},
+    {wxT("sigma"), wxT("\u03C3")},
+    {wxT("tau"), wxT("\u03C4")},
+    {wxT("upsilon"), wxT("\u03C5")},
+    {wxT("phi"), wxT("\u03C6")},
+    {wxT("chi"), wxT("\u03C7")},
+    {wxT("psi"), wxT("\u03C8")},
+    {wxT("omega"), wxT("\u03C9")},
+    {wxT("Alpha"), wxT("\u0391")},
+    {wxT("Beta"), wxT("\u0392")},
+    {wxT("Gamma"), wxT("\u0393")},
+    {wxT("Delta"), wxT("\u0394")},
+    {wxT("Epsilon"), wxT("\u0395")},
+    {wxT("Zeta"), wxT("\u0396")},
+    {wxT("Eta"), wxT("\u0397")},
+    {wxT("Theta"), wxT("\u0398")},
+    {wxT("Iota"), wxT("\u0399")},
+    {wxT("Kappa"), wxT("\u039A")},
+    {wxT("Lambda"), wxT("\u039B")},
+    {wxT("Mu"), wxT("\u039C")},
+    {wxT("Nu"), wxT("\u039D")},
+    {wxT("Xi"), wxT("\u039E")},
+    {wxT("Omicron"), wxT("\u039F")},
+    {wxT("Pi"), wxT("\u03A0")},
+    {wxT("Rho"), wxT("\u03A1")},
+    {wxT("Sigma"), wxT("\u03A3")},
+    {wxT("Tau"), wxT("\u03A4")},
+    {wxT("Upsilon"), wxT("\u03A5")},
+    {wxT("Phi"), wxT("\u03A6")},
+    {wxT("Chi"), wxT("\u03A7")},
+    {wxT("Psi"), wxT("\u03A8")},
+    {wxT("Omega"), wxT("\u03A9")},
+    {wxT("Ohm"), wxT("\u03A9")},
+    //////////////////////////
+    {wxT("^2"), wxT("\u00B2")},
+    {wxT("^3"), wxT("\u00B3")},
+    {wxT("/2"), wxT("\u00BD")},
+    {wxT("sq"), wxT("\u221A")},
+    {wxT("ii"), wxT("\u2148")},
+    {wxT("ee"), wxT("\u2147")},
+    {wxT("hb"), wxT("\u210F")},
+    {wxT("in"), wxT("\u2208")},
+    {wxT("impl"), wxT("\u21D2")},
+    {wxT("inf"), wxT("\u221e")},
+    {wxT("empty"), wxT("\u2205")},
+    {wxT("TB"), wxT("\u25b6")},
+    {wxT("tb"), wxT("\u25b8")},
+    {wxT("and"), wxT("\u22C0")},
+    {wxT("or"), wxT("\u22C1")},
+    {wxT("xor"), wxT("\u22BB")},
+    {wxT("nand"), wxT("\u22BC")},
+    {wxT("nor"), wxT("\u22BD")},
+    {wxT("implies"), wxT("\u21D2")},
+    {wxT("=>"), wxT("\u21D2")},
+    {wxT("<=>"), wxT("\u21D4")},
+    {wxT("not"), wxT("\u00AC")},
+    {wxT("union"), wxT("\u22C3")},
+    {wxT("inter"), wxT("\u22C2")},
+    {wxT("subseteq"), wxT("\u2286")},
+    {wxT("subset"), wxT("\u2282")},
+    {wxT("notsubseteq"), wxT("\u2288")},
+    {wxT("notsubset"), wxT("\u2284")},
+    {wxT("hbar"), wxT("\u0127")},
+    {wxT("Hbar"), wxT("\u0126")},
+    {wxT("partial"), wxT("\u2202")},
+    {wxT("integral"), wxT("\u222b")},
+    {wxT("approx"), wxT("\u2245")},
+    {wxT("prop"), wxT("\u221d")},
+    {wxT("propto"), wxT("\u221d")},
+    {wxT("neq"), wxT("\u2260")},
+    {wxT("!="), wxT("\u2260")},
+    {wxT("/="), wxT("\u2260")},
+    {wxT("#"), wxT("\u2260")},
+    {wxT("<="), wxT("\u2264")},
+    {wxT("leq"), wxT("\u2264")},
+    {wxT(">="), wxT("\u2265")},
+    {wxT("geq"), wxT("\u2265")},
+    {wxT("ll"), wxT("\u226A")},
+    {wxT("<<"), wxT("\u226A")},
+    {wxT("gg"), wxT("\u226B")},
+    {wxT(">>"), wxT("\u226B")},
+    {wxT("qed"), wxT("\u220E")},
+    {wxT("equiv"), wxT("\u2263")},
+    {wxT("sum"), wxT("\u2211")},
+    {wxT("prod"), wxT("\u220F")},
+    {wxT("product"), wxT("\u220F")},
+    {wxT("exists"), wxT("\u2203")},
+    {wxT("nexists"), wxT("\u2204")},
+    {wxT("parallel"), wxT("\u2225")},
+    {wxT("perp"), wxT("\u27C2")},
+    {wxT("perpendicular"), wxT("\u27C2")},
+    {wxT("bot"), wxT("\u27C2")},
+    {wxT("leadsto"), wxT("\u219D")},
+    {wxT("->"), wxT("\u2192")},
+    {wxT("-->"), wxT("\u27F6")},
+    {wxT(" --> "), wxT("\u27F6")},
+    };
+  return escCodes;
+}
+
+void Configuration::InitStyles()
+{
+  std::fill(std::begin(m_styles), std::end(m_styles), Style{});
+
+  Style defaultStyle;
+
+  #ifdef __WINDOWS__
+  // Font defaulting for Windows
+  m_styles[TS_DEFAULT].FontName(AFontName::Arial());
+
+  for (auto fontName :
+       {AFontName::Linux_Libertine_G(), AFontName::Linux_Libertine_O(),
+        AFontName::Linux_Libertine(), AFontName::Times_New_Roman()})
+  {
+    auto style = Style().FontName(fontName);
+    style.ResolveToFont();
+    if (style.IsFontOk() && style.GetFontName() == fontName)
+    {
+      m_styles[TS_MATH].FontName(style.GetFontName());
+      break;
+    }
+  }
+  #endif
+
+  m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
+  m_styles[TS_MATH].FontSize(12.0);
+
+  m_styles[TS_TEXT].FontSize(12);
+  m_styles[TS_CODE_VARIABLE].Color(0,128,0).Italic();
+  m_styles[TS_CODE_FUNCTION].Color(128,0,0).Italic();
+  m_styles[TS_CODE_COMMENT].Color(64,64,64).Italic();
+  m_styles[TS_CODE_NUMBER].Color(128,64,0).Italic();
+  m_styles[TS_CODE_STRING].Color(0,0,128).Italic();
+  m_styles[TS_CODE_OPERATOR].Italic();
+  m_styles[TS_CODE_LISP].Color(255,0,128).Italic();
+  m_styles[TS_CODE_ENDOFLINE].Color(128,128,128).Italic();
+  m_styles[TS_GREEK_CONSTANT].Italic();
+  m_styles[TS_HEADING6].Bold().FontSize(14);
+  m_styles[TS_HEADING5].Bold().FontSize(15);
+  m_styles[TS_SUBSUBSECTION].Bold().FontSize(16);
+  m_styles[TS_SUBSECTION].Bold().FontSize(16);
+  m_styles[TS_SECTION].Bold().Italic().FontSize(18);
+  m_styles[TS_TITLE].Bold().Underlined().FontSize(24);
+  m_styles[TS_WARNING].Color(wxT("orange")).Bold().FontSize(12);
+  m_styles[TS_ERROR].Color(*wxRED).FontSize(12);
+  m_styles[TS_MAIN_PROMPT].Color(255,128,128);
+  m_styles[TS_OTHER_PROMPT].Color(*wxRED).Italic();
+  m_styles[TS_LABEL].Color(255,192,128);
+  m_styles[TS_USERLABEL].Color(255,64,0);
+  //m_styles[TS_SPECIAL_CONSTANT];
+  m_styles[TS_INPUT].Color(*wxBLUE);
+  //m_styles[TS_NUMBER];
+  m_styles[TS_STRING].Italic();
+  //m_styles[TS_GREEK_CONSTANT];
+  m_styles[TS_VARIABLE].Italic();
+  //m_styles[TS_FUNCTION];
+  m_styles[TS_HIGHLIGHT].Color(*wxRED);
+  m_styles[TS_TEXT_BACKGROUND].Color(*wxWHITE);
+  m_styles[TS_DOCUMENT_BACKGROUND].Color(*wxWHITE);
+  //m_styles[TS_CELL_BRACKET];
+  m_styles[TS_ACTIVE_CELL_BRACKET].Color(*wxRED);
+  //m_styles[TS_CURSOR];
+  m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
+  m_styles[TS_EQUALSSELECTION].Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
+  m_styles[TS_OUTDATED].Color(153,153,153);
+}
+
+const wxString &Configuration::GetEscCode(const wxString &key)
+{
+  auto &escCodes = EscCodes();
+  auto it = escCodes.find(key);
+  if (it != escCodes.end())
+    return it->second;
+  return wxm::emptyString;
+}
+
+Configuration::EscCodeIterator Configuration::EscCodesBegin()
+{ return EscCodes().cbegin(); }
+Configuration::EscCodeIterator Configuration::EscCodesEnd()
+{ return EscCodes().cend(); }
+
+wxSize Configuration::GetPPI(wxWindow *win) const
 {
   if(win == NULL)
     return wxSize(96,96);
@@ -295,24 +372,29 @@ wxSize Configuration::GetPPI(wxWindow *win)
   return ppi;
 }
 
-wxString Configuration::GetAutosubscript_string(){
+wxString Configuration::GetAutosubscript_string() const
+{
   switch (m_autoSubscript)
   {
   case 0:
     return "nil";
-    break;
   case 1:
     return "t";
-    break;
   default:
     return "'all";
-    break;
   }
 }
 
 void Configuration::ShowCodeCells(bool show)
 {
   m_showCodeCells = show;
+}
+
+void Configuration::SetBackgroundBrush(wxBrush brush)
+{
+  m_BackgroundBrush = brush;
+  m_tooltipBrush = brush;
+  m_tooltipBrush.SetColour(wxColour(255, 255, 192, 128));
 }
 
 bool Configuration::MaximaFound(wxString location)
@@ -345,16 +427,33 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   wxConfigBase *config = wxConfig::Get();
-  m_autoWrap = 3;
+  if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
+  {
+    long autoSaveMinutes = 0;
+    config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
+    m_autoSaveAsTempFile = (autoSaveMinutes == 0);
+  }
+  config->Read("language", &m_language);
+  config->Read("incrementalSearch", &m_incrementalSearch);
+  if (m_language == wxLANGUAGE_UNKNOWN)
+    m_language = wxLANGUAGE_DEFAULT;
 
-  config->Read(wxT("autoSaveMinutes"),&m_autoSaveMinutes);
-  if(m_autoSaveMinutes < 0)
-    m_autoSaveMinutes = 0;
-
+  config->Read("invertBackground", &m_invertBackground);
+  config->Read("undoLimit", &m_undoLimit);
+  config->Read("recentItems", &m_recentItems);
+  config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
+  config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);
-
+  config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
+  config->Read(wxT("hidemultiplicationsign"), &m_hidemultiplicationsign);
+  config->Read("greekSidebar_ShowLatinLookalikes", &m_greekSidebar_ShowLatinLookalikes);
+  config->Read("greekSidebar_Show_mu", &m_greekSidebar_Show_mu);
+  config->Read("symbolPaneAdditionalChars", &m_symbolPaneAdditionalChars);
+  config->Read("parameters", &m_maximaParameters);
+  config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
+  config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp;
     config->Read("HTMLequationFormat", &tmp);
@@ -372,28 +471,26 @@ void Configuration::ReadConfig()
   config->Read(wxT("abortOnError"),&m_abortOnError);
   config->Read("defaultPort",&m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
-  
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
-
+  config->Read(wxT("useSVG"), &m_useSVG);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
   config->Read(wxT("copyRTF"), &m_copyRTF);
   config->Read(wxT("copySVG"), &m_copySVG );
   config->Read(wxT("copyEMF"), &m_copyEMF );
-
   config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
-
   config->Read(wxT("maxima"), &m_maximaUserLocation);
-  // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
+  // Fix wrong" maxima=1" parameter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaUserLocation.IsSameAs(wxT("1")))
     m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
-  m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
-  config->Read(wxT("showLabelChoice"), &m_showLabelChoice);
+  int showLabelChoice = 0;
+  config->Read(wxT("showLabelChoice"), &showLabelChoice);
+  m_showLabelChoice = (showLabels) showLabelChoice; 
 
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
@@ -401,145 +498,193 @@ void Configuration::ReadConfig()
 
   config->Read(wxT("hideBrackets"), &m_hideBrackets);
 
-  m_displayedDigits = 100;
   config->Read(wxT("displayedDigits"), &m_displayedDigits);
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
 
-  m_restartOnReEvaluation = true;
   config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
-  m_matchParens = true;
   config->Read(wxT("matchParens"), &m_matchParens);
 
-  m_insertAns = false;
   config->Read(wxT("insertAns"), &m_insertAns);
 
-  m_openHCaret = false;
   config->Read(wxT("openHCaret"), &m_openHCaret);
-
-
-  m_labelWidth = 4;
+  
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
   config->Read(wxT("printBrackets"), &m_printBrackets);
 
-  m_zoomFactor = 1.0;
   config->Read(wxT("ZoomFactor"), &m_zoomFactor);
 
-  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = CMEX10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMSY = CMSY10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMRI = CMR10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMMI = CMMI10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMTI = CMTI10))
+  if (wxFontEnumerator::IsValidFacename((m_fontCMEX = AFontName::CMEX10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename((m_fontCMSY = AFontName::CMSY10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename((m_fontCMRI = AFontName::CMR10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename((m_fontCMMI = AFontName::CMMI10()).GetAsString()) &&
+      wxFontEnumerator::IsValidFacename((m_fontCMTI = AFontName::CMTI10()).GetAsString()))
   {
     m_TeXFonts = true;
     config->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
-  m_keepPercent = true;
-  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
+  config->Read(wxT("keepPercent"), &m_keepPercent);
+  config->Read(wxT("saveUntitled"), &m_saveUntitled);
+  config->Read(wxT("cursorJump"), &m_cursorJump);
 
   ReadStyles();
 }
 
-wxFont Configuration::GetFont(TextStyle textStyle, int fontSize)
+Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
 {
-  wxString fontName;
-  wxFontStyle fontStyle;
-  wxFontWeight fontWeight;
-  wxFontEncoding fontEncoding;
-  bool underlined = IsUnderlined(textStyle);
-  
-  if ((textStyle == TS_TITLE) ||
-      (textStyle == TS_SECTION) ||
-      (textStyle == TS_SUBSECTION) ||
-      (textStyle == TS_SUBSUBSECTION) ||
-      (textStyle == TS_HEADING5) ||
-      (textStyle == TS_HEADING6))
+  Style style = m_styles[ts];
+
+  if ((ts == TS_TITLE) || (ts == TS_SECTION) || (ts == TS_SUBSECTION) ||
+      (ts == TS_SUBSUBSECTION) || (ts == TS_HEADING5) || (ts == TS_HEADING6))
   {
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
     // would look weird.
-    underlined = false;
+    style.SetUnderlined(false);
 
     // Besides that these items have a fixed font size.
-    fontSize = GetFontSize(textStyle);
-  }  
-  if (fontSize < 4)
-    fontSize = 4;
+  } else
+    style.SetFontSize(fontSize);
 
-  // The font size scales with the worksheet
-  int fontSize1 = Scale_Px(fontSize);
+  style.SetFontName(GetFontName(ts));
 
-  // Ensure a sane minimum font size
-  if (fontSize1 < 4)
-    fontSize1 = 4;
+  if (!style.IsFontOk())
+    style.SetFontName({});
 
-
-  fontName = GetFontName(textStyle);
-  fontStyle = IsItalic(textStyle);
-  fontWeight = IsBold(textStyle);
-  
-  fontEncoding = GetFontEncoding();
-  
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(fontName);
-  font.SetEncoding(fontEncoding);
-  font.SetStyle(fontStyle);
-  font.SetWeight(fontWeight);
-  font.SetUnderlined(underlined);
-  font.SetEncoding(fontEncoding);
-  if (!font.IsOk())
+  // cppcheck-suppress duplicateCondition
+  if (!style.IsFontOk())
   {
-    font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetEncoding(fontEncoding);
-    font.SetStyle(fontStyle);
-    font.SetWeight(fontWeight);
-    font.SetUnderlined(underlined);
+    auto size = style.GetFontSize();
+    style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
+    style.SetFontSize(size);
   }
-  
-  if (!font.IsOk())
-    font = *wxNORMAL_FONT;
-  
-  font.SetPointSize(fontSize1);
 
-  return font;
+  wxASSERT_MSG(style.IsFontOk(),
+               _("Seems like something is broken with a font."));
+  
+  return style;
 }
 
-Configuration::drawMode Configuration::GetGrouphesisDrawMode()
+wxColor Configuration::DefaultBackgroundColor()
 {
-  if(m_parenthesisDrawMode == unknown)
+  if(InvertBackground())
+    return InvertColour(m_styles[TS_DOCUMENT_BACKGROUND].GetColor());
+  else
+    return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();
+}
+
+wxColor Configuration::EditorBackgroundColor()
+{
+  if(InvertBackground())
+    return InvertColour(m_styles[TS_TEXT_BACKGROUND].GetColor());
+  else
+    return m_styles[TS_TEXT_BACKGROUND].GetColor();
+}
+
+void Configuration::NotifyOfCellRedraw(const Cell *cell)
+{
+  if (!m_cellRedrawTrace || !cell)
+    return;
+  // This operation is fast and doesn't allocate after the configuration
+  // was used for a few screen redraws.
+  m_cellRedrawTrace->push_back(cell);
+}
+
+void Configuration::ClearAndEnableRedrawTracing()
+{
+  if (!m_cellRedrawTrace)
+    m_cellRedrawTrace.reset(new CellRedrawTrace);
+  else
+    m_cellRedrawTrace->clear();
+}
+
+void Configuration::ReportMultipleRedraws()
+{
+  if (!m_cellRedrawTrace)
+    return;
+
+  // This sort is over two orders of magnitude faster,
+  // per-cell, than having counters in a map or hash.
+  std::sort(m_cellRedrawTrace->begin(), m_cellRedrawTrace->end());
+  int counter = 0;
+  const Cell *prev = {};
+  for (auto *cell : *m_cellRedrawTrace)
   {
+    if (prev != cell)
+    {
+      if (counter > 1)
+        wxLogMessage("Bug: %i redraws in one screen refresh for a cell reading \"%s\"",
+                     counter, prev->ToString());
+      prev = cell;
+      counter = 1;
+    }
+    else
+      ++counter;
+  }
+}
+
+void Configuration::SetPrinting(bool printing)
+{
+  m_printing = printing;
+  if(printing)
+    m_invertBackground = false;
+  else
+    wxConfig::Get()->Read("invertBackground", m_invertBackground);
+  if(printing)
+    ClipToDrawRegion(false);
+}
+
+wxColour Configuration::InvertColour(wxColour col)
+{
+  return wxColour(
+    255 - col.Red(),
+    255 - col.Green(),
+    255 - col.Blue(),
+    col.Alpha());
+}
+
+long Configuration::GetLineWidth() const
+{
+  // The default line width is the width of the viewport minus the indentation minus
+  // roughly one char
+  long lineWidth = m_clientWidth - Scale_Px(GetLabelWidth() +
+                                           GetCellBracketWidth() + GetDefaultFontSize());
+
+  // If that was suspiciously wide we reduce the default line width again.
+  if((lineWidth >= Scale_Px(GetDefaultFontSize()) * LineWidth_em()) &&
+     (!m_printing))
+    lineWidth = Scale_Px(GetDefaultFontSize()) * LineWidth_em();
+  return lineWidth;
+}
+
+Configuration::drawMode Configuration::GetParenthesisDrawMode()
+{
+  if (m_parenthesisDrawMode == unknown)
+  {
+    static const wxString parens{
+      (wxT(PAREN_OPEN_TOP_UNICODE)
+         wxT(PAREN_OPEN_EXTEND_UNICODE)
+           wxT(PAREN_OPEN_BOTTOM_UNICODE))};
+
     m_parenthesisDrawMode = handdrawn;
-    wxFont font = GetFont(TS_FUNCTION,20);
-    if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
-      )
+    auto style = GetStyle(TS_FUNCTION, AFontSize(20.0f));
+
+    if (CharsExistInFont(style.GetFont(), parens))
     {
       m_parenthesisDrawMode = assembled_unicode;
       return m_parenthesisDrawMode;
     }
-    font.SetFaceName(wxT("Linux Libertine"));
-    if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
-      )
+    style.SetFontName(AFontName::Linux_Libertine());
+    if (CharsExistInFont(style.GetFont(), parens))
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont;
       return m_parenthesisDrawMode;
     }
-      
-    font.SetFaceName(wxT("Linux Libertine O"));
-    if (CharsExistInFont(font,
-                         wxT(PAREN_OPEN_TOP_UNICODE),
-                         wxT(PAREN_OPEN_EXTEND_UNICODE),
-                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
-      )
+    style.SetFontName(AFontName::Linux_Libertine_O());
+    if (CharsExistInFont(style.GetFont(), parens))
     {
       m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
       return m_parenthesisDrawMode;
@@ -548,20 +693,17 @@ Configuration::drawMode Configuration::GetGrouphesisDrawMode()
   return m_parenthesisDrawMode;
 }
 
-bool Configuration::IsEqual(wxBitmap bitmap1, wxBitmap bitmap2)
+//! A comparison operator for wxImage
+static bool operator==(const wxImage &a, const wxImage &b)
 {
-  if (bitmap1.GetSize() != bitmap2.GetSize())
+  if (a.GetSize() != b.GetSize())
     return false;
 
-  wxImage img1=bitmap1.ConvertToImage();
-  wxImage img2=bitmap2.ConvertToImage();
-  int bytes = img1.GetWidth()*img1.GetHeight()*3;
-
-  if(bytes < 0)
+  long bytes = a.GetWidth() * b.GetHeight() * 3;
+  if (bytes < 0)
     return false;
 
-  bool equal = (memcmp(img1.GetData(),img2.GetData(),bytes) == 0);
-  return equal;
+  return memcmp(a.GetData(), b.GetData(), bytes) == 0;
 }
 
 void Configuration::SetZoomFactor(double newzoom)
@@ -572,125 +714,103 @@ void Configuration::SetZoomFactor(double newzoom)
     newzoom = GetMinZoomFactor();
 
   m_zoomFactor = newzoom;
-  wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
-  RecalculationForce(true);
 }
 
 Configuration::~Configuration()
 {
   WriteStyles();
+  WriteSettings();
 }
 
-bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
+bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
 {
-  wxString name = char1 + char2 + char3;
-  CharsInFontMap::iterator it = m_charsInFontMap.find(name);
-  if(it != m_charsInFontMap.end())
-    return it->second;
+  wxASSERT(!chars.empty());
+  for (auto const &ex : m_charsInFont)
+    // cppcheck-suppress useStlAlgorithm
+    if (ex.chars == chars)
+      return ex.exist;
 
-  if(!font.IsOk())
+  auto const cache = [this, &chars](bool result)
   {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
+    m_charsInFont.emplace_back(chars, result);
+    return result;
+  };
+
+  if (!font.IsOk())
+    return cache(false);
+
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
   if (font.GetFaceName() == wxT("Monaco"))
-  {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
+    return cache(false);
 
-  if(!m_useUnicodeMaths)
-  {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
+  if (!m_useUnicodeMaths)
+    return cache(false);
   
+  struct Params {
+    wxUniChar ch;
+    wxSize size;
+    wxImage image;
+    explicit Params(wxUniChar ch) : ch(ch) {}
+  };
+  std::vector<Params> P(chars.begin(), chars.end());
+
   // Letters with width or height = 0 don't exist in the current font
-  int width1,height1,descent1;
   GetDC()->SetFont(font);
-  GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
-  if((width1 < 1) || (height1-descent1 < 1))
+  for (auto &p : P)
   {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
-  int width2,height2,descent2;
-  GetDC()->GetTextExtent(char2,&width2,&height2,&descent2);
-  if((width2 < 1) || (height2-descent2 < 1))
-  {
-    m_charsInFontMap[name] = false;
-    return false;
-  }
-  int width3,height3,descent3;
-  GetDC()->GetTextExtent(char3,&width3,&height3,&descent3);
-  if((width3 < 1) || (height3-descent3 < 1))
-  {
-    m_charsInFontMap[name] = false;
-    return false;
+    wxCoord descent;
+    GetDC()->GetTextExtent(p.ch, &p.size.x, &p.size.y, &descent);
+    if ((p.size.x < 1) || ((p.size.y-descent) < 1))
+      return cache(false);
   }
 
-  if(((width1 != width2) &&
-      (width1 != width3) &&
-      (width2 != width3))||
-     ((height1 != height2) &&
-      (height1 != height3) &&
-      (height2 != height3)))
-  {
-    m_charsInFontMap[name] = true;
-    return true;
-  }
-  
-  wxBitmap bmp1(width1,height1);
-  wxMemoryDC dc1(bmp1);
-  dc1.SetFont(font);
-  dc1.SelectObject(bmp1);
-  dc1.Clear();
-  dc1.DrawText(char1,wxPoint(0,0));
-  
-  wxBitmap bmp2(width2,height2);
-  wxMemoryDC dc2(bmp2);
-  dc2.SetFont(font);
-  dc2.SelectObject(bmp2);
-  dc2.Clear();
-  dc2.DrawText(char2,wxPoint(0,0));
-  
-  wxBitmap bmp3(width3,height3);
-  wxMemoryDC dc3(bmp3);
-  dc3.SetFont(font);
-  dc3.SelectObject(bmp3);
-  dc3.Clear();
-  dc3.DrawText(char3,wxPoint(0,0));
+  bool allDifferentSizes = true;
+  for (auto i = P.begin(); allDifferentSizes && i != P.end(); ++i)
+    for (auto j = i+1; allDifferentSizes && j != P.end(); ++j)
+      allDifferentSizes &= i->size != j->size;
 
-  if(IsEqual(bmp1,bmp2) || IsEqual(bmp2,bmp3) || IsEqual(bmp1,bmp3))
+  if (allDifferentSizes)
+    return cache(true);
+
+  for (auto &p : P)
   {
-    m_charsInFontMap[name] = false;
-    return false;
+    wxBitmap bmp(p.size);
+    wxMemoryDC dc(bmp);
+    dc.SetFont(font);
+    dc.Clear();
+    dc.DrawText(p.ch, wxPoint(0,0));
+    p.image = bmp.ConvertToImage();
   }
-  else
-  {
-    m_charsInFontMap[name] = false;
-    return true;
-  }
+
+  for (auto i = P.begin(); i != P.end(); ++i)
+    for (auto j = i+1; j != P.end(); ++j)
+      if (i->image == j->image)
+        return cache(false);
+
+  return cache(true);
 }
 
-wxString Configuration::GetFontName(int type)
+AFontName Configuration::GetFontName(TextStyle const ts) const
 {
-  wxString retval = m_fontName;
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
-      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
-    retval = m_styles[type].FontName();
-  if(retval == wxEmptyString)
-    retval = m_fontName;
-  
-  if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
-    retval = m_mathFontName;
+  AFontName retval;
+
+  if (ts == TS_TITLE || ts == TS_SUBSECTION || ts == TS_SUBSUBSECTION ||
+      ts == TS_HEADING5 || ts == TS_HEADING6 || ts == TS_SECTION ||
+      ts == TS_TEXT)
+    retval = m_styles[ts].GetFontName();
+
+  else if (ts == TS_NUMBER || ts == TS_VARIABLE || ts == TS_FUNCTION ||
+           ts == TS_SPECIAL_CONSTANT || ts == TS_STRING)
+    retval = m_styles[TS_MATH].GetFontName();
+
+  if (retval.empty())
+    retval = m_styles[TS_DEFAULT].GetFontName();
+
   return retval;
 }
 
-wxString Configuration::MaximaLocation()
+wxString Configuration::MaximaLocation() const
 {
   if(m_autodetectMaxima)
     return MaximaDefaultLocation();
@@ -703,7 +823,7 @@ wxString Configuration::MaximaDefaultLocation()
   return Dirstructure::Get()->MaximaDefaultLocation();
 }
 
-void Configuration::ReadStyles(wxString file)
+void Configuration::ReadStyles(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
@@ -713,31 +833,18 @@ void Configuration::ReadStyles(wxString file)
     wxFileInputStream str(file);
     config = new wxFileConfig(str);
   }
-  
-  // Font
-  config->Read(wxT("Style/fontname"), &m_fontName);
-#ifdef __WXOSX_MAC__
-  if (m_fontName.IsEmpty())
-  {
-    m_fontName = "Monaco";
-  }
-#endif
 
-  config->Read(wxT("fontSize"), &m_defaultFontSize);
-  config->Read(wxT("mathfontsize"), &m_mathFontSize);
-  int encoding = m_fontEncoding;
-  config->Read(wxT("fontEncoding"), &encoding);
-  m_fontEncoding = (wxFontEncoding) encoding;
-
-  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
-#ifdef __WXOSX_MAC__
-  if (m_mathFontName.IsEmpty())
-  {
-    m_mathFontName = "Monaco";
-  }
-#endif
-  
   m_styles[TS_DEFAULT].Read(config, "Style/Default/");
+
+  // Read legacy defaults for the math font name and size
+  long tmpLong;
+  if (config->Read(wxT("mathfontsize"), &tmpLong) && tmpLong > 1)
+    m_styles[TS_MATH].SetFontSize(AFontSize(tmpLong));
+  wxString tmpString;
+  if (config->Read(wxT("Style/Math/fontname"), &tmpString) && tmpString.size() > 1)
+    m_styles[TS_MATH].SetFontName(AFontName(tmpString));
+
+  m_styles[TS_MATH].Read(config, "Style/Math/");
   m_styles[TS_TEXT].Read(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Read(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Read(config, "Style/CodeHighlighting/Function/");
@@ -763,7 +870,6 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_INPUT].Read(config, "Style/Input/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
-  m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
   m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Read(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
@@ -777,26 +883,25 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
-
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(wxString file)
+void Configuration::WriteStyles(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-    config = new wxFileConfig(wxT("wxMaxima"),wxEmptyString,file);
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+
+  config->Write(wxT("keepPercent"), m_keepPercent);
+  config->Write(wxT("labelWidth"), m_labelWidth);
+  config->Write(wxT("saveUntitled"), m_saveUntitled);
+  config->Write(wxT("cursorJump"), m_cursorJump);
 
   // Font
-  config->Write(wxT("Style/fontname"), m_fontName);
-  config->Write(wxT("fontSize"), m_defaultFontSize);
-  config->Write(wxT("mathfontsize"), m_mathFontSize);
-  config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
-  config->Write(wxT("Style/Math/fontname"), m_mathFontName);
-  
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
+  m_styles[TS_MATH].Write(config, "Style/Math/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
@@ -822,7 +927,6 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_INPUT].Write(config, "Style/Input/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");
-  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
   m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Write(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
@@ -842,49 +946,178 @@ void Configuration::WriteStyles(wxString file)
   }
 }
 
-wxFontWeight Configuration::IsBold(int st)
+wxFontWeight Configuration::IsBold(long st) const
 {
-  if (m_styles[st].Bold())
+  if (m_styles[st].IsBold())
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
-wxFontStyle Configuration::IsItalic(int st)
+wxFontStyle Configuration::IsItalic(long st) const
 {
-  if (m_styles[st].Italic())
-    return wxFONTSTYLE_SLANT;
+  if (m_styles[st].IsItalic())
+    return wxFONTSTYLE_ITALIC;
   return wxFONTSTYLE_NORMAL;
 }
 
-bool Configuration::IsUnderlined(int st)
+class AFontName Configuration::GetSymbolFontName() const
 {
-  return m_styles[st].Underlined();
-}
-
-wxString Configuration::GetSymbolFontName()
-{
-#if defined __WXMSW__
-  return wxT("Symbol");
+#ifdef __WINDOWS__
+  return AFontName::Symbol();
+#else
+  return m_styles[TS_DEFAULT].GetFontName();
 #endif
-  return m_fontName;
 }
 
-wxColour Configuration::GetColor(int st)
+wxColour Configuration::GetColor(TextStyle style)
 {
+  wxColour col = m_styles[style].GetColor();
   if (m_outdated)
-    return m_styles[TS_OUTDATED].Color();
-  return m_styles[st].Color();
+    col = m_styles[TS_OUTDATED].GetColor();
+
+  if(InvertBackground() &&
+     (style != TS_TEXT_BACKGROUND) &&
+     (style != TS_DOCUMENT_BACKGROUND))
+    col = MakeColorDifferFromBackground(col);
+  return col;
 }
 
-int Configuration::Scale_Px(double px)
+long Configuration::Scale_Px(double px) const
 {
-  int retval = round(px * GetZoomFactor());
-  if (retval < 1)
-    retval = 1;
-  return retval;
+  long retval = lround(px * GetZoomFactor());
+  return std::max(retval, 1l);
 }
 
+AFontSize Configuration::Scale_Px(AFontSize size) const
+{
+  auto retval = size.Get() * GetZoomFactor();
+  return AFontSize(retval);
+}
+
+wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
+{
+  int newBrightness = 255 - (color.Red() + color.Green() + color.Blue()) / 3;
+  if(color == DefaultBackgroundColor())
+  {
+    return InvertColour(color);
+  }
+  else
+  {
+    int maxOldCol = wxMax(wxMax(color.Red(), color.Green()), color.Blue());
+    return wxColour(
+      newBrightness * color.Red() / maxOldCol,
+      newBrightness * color.Green() / maxOldCol,
+      newBrightness * color.Blue() / maxOldCol
+      );
+  }
+}
+
+void Configuration::WriteSettings()
+{
+  wxConfigBase *config = wxConfig::Get();
+  config->Write("incrementalSearch", m_incrementalSearch);
+  config->Write(wxT("hideBrackets"), m_hideBrackets);
+  config->Write(wxT("printScale"), m_printScale);
+  config->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
+  config->Write(wxT("autoWrapMode"), m_autoWrap);
+  config->Write(wxT("autoIndent"), m_autoIndent);
+  config->Write(wxT("indentMaths"), m_indentMaths);
+  config->Write(wxT("matchParens"), m_matchParens);
+  config->Write(wxT("changeAsterisk"), m_changeAsterisk);
+  config->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign);
+  config->Write(wxT("latin2greek"), m_latin2greek);
+  config->Write(wxT("greekSidebar_ShowLatinLookalikes"), m_greekSidebar_ShowLatinLookalikes);
+  config->Write(wxT("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
+  config->Write(wxT("symbolPaneAdditionalChars"),m_symbolPaneAdditionalChars);
+  config->Write(wxT("notifyIfIdle"), m_notifyIfIdle);
+  config->Write(wxT("displayedDigits"), m_displayedDigits);
+  config->Write(wxT("insertAns"), m_insertAns);
+  config->Write(wxT("openHCaret"), m_openHCaret);
+  config->Write(wxT("restartOnReEvaluation"), m_restartOnReEvaluation);
+  config->Write(wxT("invertBackground"), m_invertBackground);
+  config->Write("recentItems", m_recentItems);
+  config->Write(wxT("undoLimit"), m_undoLimit);
+  config->Write(wxT("showLabelChoice"), (int) (m_showLabelChoice));
+  config->Write(wxT("printBrackets"), m_printBrackets);
+  config->Write(wxT("autodetectMaxima"), m_autodetectMaxima);
+  config->Write(wxT("parameters"),m_maximaParameters);
+  config->Write(wxT("maxima"), m_maximaUserLocation);
+  config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
+  config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
+  config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices);
+  config->Write(wxT("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);
+  config->Write(wxT("enterEvaluates"), m_enterEvaluates);
+  config->Write(wxT("mathJaxURL"), m_mathJaxURL);
+  config->Write(wxT("antiAliasLines"), m_antiAliasLines);
+  config->Write(wxT("copyBitmap"), m_copyBitmap);
+  config->Write(wxT("copyMathML"), m_copyMathML);
+  config->Write(wxT("copyMathMLHTML"), m_copyMathMLHTML);
+  config->Write(wxT("copyRTF"), m_copyRTF);
+  config->Write(wxT("copySVG"), m_copySVG);
+  config->Write(wxT("copyEMF"), m_copyEMF);
+  config->Write(wxT("useSVG"), m_useSVG);
+  config->Write(wxT("showLength"), m_showLength);
+  config->Write(wxT("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
+  config->Write(wxT("useUnicodeMaths"), m_useUnicodeMaths);
+  config->Write("defaultPort",m_defaultPort);
+  config->Write("abortOnError",m_abortOnError);
+  config->Write("language",m_language);
+  config->Write("maxGnuplotMegabytes",m_maxGnuplotMegabytes);
+  config->Write("offerKnownAnswers",m_offerKnownAnswers);
+  config->Write("documentclass",m_documentclass);
+  config->Write("documentclassoptions",m_documentclassOptions);
+  config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
+  config->Write("autosubscript", m_autoSubscript);
+  config->Write(wxT("ZoomFactor"), m_zoomFactor);
+}
+const wxString &Configuration::GetStyleName(TextStyle style) const
+{
+  static const wxString *names[NUMBEROFSTYLES] = {
+    &_("Default"),
+    &_("Variables"),
+    &_("Numbers"),
+    &_("Function names"),
+    &_("Special constants"),
+    &_("Greek Constants"),
+    &_("Strings"),
+    &_("Maxima input"),
+    &_("Input labels"),
+    &_("Maxima questions"),
+    &_("Output labels"),
+    &_("User-defined labels"),
+    &_("Highlight (dpart)"),
+    &_("Maxima warnings"),
+    &_("Maxima errors"),
+    &_("Text cell"),
+    &_("Heading 6"),
+    &_("Heading 5"),
+    &_("Subsubsection cell (Heading 4)"),
+    &_("Subsection cell (Heading 3)"),
+    &_("Section cell (Heading 2)"),
+    &_("Title cell (Heading 1)"),
+    &_("Text cell background"),
+    &_("Document background"),
+    &_("Cell bracket"),
+    &_("Active cell bracket"),
+    &_("Cursor"),
+    &_("Selection"),
+    &_("Text equal to selection"),
+    &_("Outdated cells"),
+    &_("Code highlighting: Variables"),
+    &_("Code highlighting: Functions"),
+    &_("Code highlighting: Comments"),
+    &_("Code highlighting: Numbers"),
+    &_("Code highlighting: Strings"),
+    &_("Code highlighting: Operators"),
+    &_("Code highlighting: Lisp"),
+    &_("Code highlighting: End of line"),
+    &_("Math Default"),
+  };
+  if (style >= 0 && style < NUMBEROFSTYLES)
+    return *names[style];
+
+  return wxm::emptyString;
+}
 
 wxString Configuration::m_maximaLocation_override;
 wxString Configuration::m_configfileLocation_override;
-

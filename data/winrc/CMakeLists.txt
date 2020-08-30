@@ -1,6 +1,3 @@
-set(RESSOURCES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest)
+# -*- mode: CMake; cmake-tab-width: 4; -*-
 
-# need only be installed on Windows.
-if(WIN32)
-    install(FILES ${RESSOURCES} DESTINATION share/wxMaxima)
-endif()
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest.in ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest)

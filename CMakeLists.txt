@@ -1,4 +1,147 @@
-cmake_minimum_required(VERSION 3.4)
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
+cmake_minimum_required(VERSION 3.7)
+
+set(VERSION 20.07.0-DevelopmentSnapshot)
+set(GITVERSION ${VERSION})
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+##
+# Options
+#
+
+option(WXM_BUILD_SOURCE_ONLY
+    "Only build the source code. Don't generate documentation, translations, etc." OFF)
+option(WXM_ENABLE_PRECOMPILED_HEADERS
+    "Enable precompiled headers to potentially speed up compilation." OFF)
+option(WXM_USE_CPPCHECK
+    "Perform CPPCHECK during compilation." OFF)
+option(WXM_USE_OPENMP
+    "Use OpenMP for parallelizing code." ON)
+option(WXM_UNIT_TESTS
+    "Compile unit tests and enable the tests." OFF)
+
+if(DEFINED MACOSX_VERSION_MIN)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOSX_VERSION_MIN} CACHE STRING FORCE)
+    unset(MACOSX_VERSION_MIN)
+    unset(MACOSX_VERSION_MIN CACHE)
+    message(WARNING "MACOSX_VERSION_MIN is deprecated. Use CMAKE_OSX_DEPLOYMENT_TARGET instead")
+endif()
+if(DEFINED USE_CPPCHECK)
+    set(WXM_USE_CPPCHECK ${USE_CPPCHECK} FORCE)
+    unset(USE_CPPCHECK)
+    unset(USE_CPPCHECK CACHE)
+    message(WARNING "USE_CPPCHECK is deprecated. Use WXM_USE_CPPCHECK instead")
+endif()
+if(DEFINED USE_OPENMP)
+    set(WXM_USE_OPENMP ${USE_OPENMP} FORCE)
+    unset(USE_OPENMP)
+    unset(USE_OPENMP CACHE)
+    message(WARNING "USE_OPENMP is deprecated. Use WXM_USE_OPENMP instead")
+endif()
+
+##
+# Internal Options
+#
+
+if(CMAKE_VERSION VERSION_LESS "3.16")
+    unset(CMAKE_UNITY_BUILD)
+    unset(CMAKE_UNITY_BUILD_BATCH_SIZE)
+endif()
+
+if(NOT APPVEYOR_BUILD)
+  set(NONCRIT_WARNING WARNING)
+else()
+  # Warnings cause trouble when running under PowerShell, since they are output to
+  # stderr and are interpreted as if they were hard failures.
+  set(NONCRIT_WARNING STATUS)
+endif()
+
+##
+# Project
+#
+
+if(WIN32)
+    project(wxmaxima LANGUAGES CXX RC)
+else()
+    project(wxmaxima LANGUAGES CXX)
+endif()    
+##
+# CMake Policies
+#
+
+# Avoid a warning by deciding which version of this policy we prefer.
+if(POLICY CMP0066)
+    cmake_policy(SET CMP0066 NEW)
+endif()
+
+# link time optimization seems to need that
+if(POLICY CMP0069)
+    cmake_policy(SET CMP0069 NEW)
+endif()
+
+##
+# Compiler-Specific Tweaks
+#
+
+if(MSVC)
+    # Turn off many warnings wxWidgets triggers on MSVC
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    # Safely handle exceptions everywhere
+    add_compile_options(/EHsc)
+endif()
+
+if(MSYS OR MINGW)
+    add_compile_options(-Wa,-mbig-obj)
+endif()
+
+##
+# Environment Check
+#
+
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Debug' as none was specified.")
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_INSTALL_DEBUG_LIBRARIES 1)
+    # Set the possible values of build type for cmake-gui
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+# Set the install configuration the same as the build type (for cpack)
+if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
+    set(CMAKE_INSTALL_CONFIG_NAME "${CMAKE_BUILD_TYPE}")
+endif()
+
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+    message(WARNING
+        "Cmake discourages in-source builds making them the less tested option. "
+        "It is therefore advisable to do an out-of-source-build instead: Create a "
+        "separate directory for the build and run cmake <path to the source dir> and "
+        "make from there.")
+endif()
+
+##
+# Dependencies/Packages
+#
+
+include(GNUInstallDirs)
+
+message(STATUS "Looking for wxWidgets in:           ${wxWidgets_ROOT_DIR}")
+message(STATUS "Looking for wxWidgets libraries in: ${wxWidgets_LIB_DIR}")
+
+# The package order below matters.
+###
+###  Incorrect order WILL BREAK Unix and MinGW STATIC BUILDS.
+###
+# The correct order is a topological sort based on the dependency graph
+# here: https://docs.wxwidgets.org/3.0/page_libs.html#page_libs_wxrichtext
+# The root dependency (base) must come last.
+#
+find_package(wxWidgets 3 REQUIRED richtext aui adv html core xml net base)
+include(${wxWidgets_USE_FILE})
+
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
   # Support Unix Makefiles and Ninja
@@ -9,64 +152,6 @@ if(CCACHE_PROGRAM)
   message(STATUS "Found CCache ${CCACHE_PROGRAM}")
 else()
   message(STATUS "Not found a ccache that speeds up incremental compilation.")
-endif()
-
-project(wxmaxima LANGUAGES CXX)
-set(VERSION 19.09.0-DevelopmentSnapshot)
-set(PACKAGE_VERSION ${VERSION})
-set(GITVERSION ${VERSION})
-set(PACKAGE wxMaxima)
-set(APP_NAME wxMaxima)
-
-find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
-include(${wxWidgets_USE_FILE})
-
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-
-# Avoid a warning by deciding which version of this policy we use in case we can
-# decide this.
-if(POLICY CMP0066)
-    cmake_policy(SET CMP0066 NEW)
-endif()
-
-# Turn off many warnings wxWidgets triggers on MSVC
-if(MSVC)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
-
-# Set a default build type if none was specified
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "Setting build type to 'Debug' as none was specified.")
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
-  set(CMAKE_INSTALL_DEBUG_LIBRARIES 1)
-  # Set the possible values of build type for cmake-gui
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
-    "MinSizeRel" "RelWithDebInfo")
-endif()
-
-
-# Set the install configuration the same as the build type (for cpack)
-if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
-    set(CMAKE_INSTALL_CONFIG_NAME "${CMAKE_BUILD_TYPE}")
-endif()
-
-
-if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-    message(WARNING "Cmake strongly discourages in-source builds. It is therefore advisable to make an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
-endif()
-
-# should the PDF doku be build from the texinfo source? (requires a TeX installation)
-option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
-
-# MacOSX version-min compiler settings
-if(MACOSX_VERSION_MIN)
-    message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_LINKER_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
 endif()
 
 # Get the git version, if available.
@@ -82,126 +167,85 @@ if(Git_FOUND)
     endif()
 endif()
 
+if(WXM_USE_OPENMP)
+    find_package(OpenMP)
+    include(CheckIncludeFileCXX)
+    check_include_file_cxx("omp.h" HAVE_OMP_HEADER)
+endif()
 
-add_subdirectory(locales)
-add_subdirectory(Doxygen)
-add_subdirectory(data)
-add_subdirectory(info)
+if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
+    # For CMake < 3.9, we need to make the target ourselves
+    if(NOT TARGET OpenMP::OpenMP_CXX)
+        find_package(Threads REQUIRED)
+        add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
+        set_property(TARGET OpenMP::OpenMP_CXX
+            PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
+        # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
+        set_property(TARGET OpenMP::OpenMP_CXX
+            PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
+    endif()
+    set(CMAKE_INSTALL_OPENMP_LIBRARIES TRUE) # Include OpenMP libraries in the required system libraries
+endif()
+
+if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
+    if(OpenMP_CXX_SPEC_DATE LESS 201107)
+        message(STATUS "OpenMP too old to be used for multiprocessing in wxMaxima (" ${OpenMP_CXX_SPEC_DATE} ").")
+    else()
+        if(HAVE_OMP_HEADER)
+            message(STATUS "Using OpenMP for multiprocessing.")
+        else()
+            message(STATUS "Using OpenMP, but omp.h missing => Can use multiprocessing only in a few cases.")
+        endif()
+    endif()
+else()
+    message(STATUS "No OpenMP found => Not using multiprocessing.")
+endif()
+
+##
+# Utility Functions
+#
+
+# Prepends a prefix to all elements in a list. Needed only in
+# cmake < 3.12, but we claim to support 3.7, so this is needed.
+# Usage: list_transform_prepend(FILES_TO_TRANSLATE "prefix/")
+# See https://stackoverflow.com/a/59155344/1329652
+
+function(list_transform_prepend var prefix)
+    set(temp "")
+    foreach(f ${${var}})
+        list(APPEND temp "${prefix}${f}")
+    endforeach()
+    set(${var} "${temp}" PARENT_SCOPE)
+endfunction()
+
+##
+# Build Items
+#
+
+if(NOT WXM_BUILD_SOURCE_ONLY)
+    add_subdirectory(locales)
+    add_subdirectory(Doxygen)
+    add_subdirectory(data)
+    add_subdirectory(info)
+endif()
+
 add_subdirectory(src)
-
-install(FILES COPYING README README.md DESTINATION share/wxMaxima)
-
-install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
-  DESTINATION programs
-  COMPONENT applications)
-
-# include wxWidgets DLLs on Windows on appveyor
-if(WIN32 AND APPVEYOR_BUILD)
-    file(GLOB wxwidgets_dlls "${wxWidgets_LIB_DIR}/*.dll")
-    install(FILES ${wxwidgets_dlls} DESTINATION bin/)
-endif()
-
-# Make the bundle portable to other macs.
-#
-# Doesn't currently work, unfortunately, see
-# https://gitlab.kitware.com/cmake/cmake/issues/19663
-#
-# set(BU_CHMOD_BUNDLE_ITEM)
-# if(APPLE)
-# install(CODE "include(BundleUtilities)
-#     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
-# endif()
-
-# Build Packages
-if(WIN32)
-    set(CPACK_GENERATOR "ZIP;NSIS")
-else()
-    set(CPACK_GENERATOR "TGZ;TBZ2")
-endif()
-
-if(UNIX AND NOT APPLE)
-    list(APPEND CPACK_GENERATOR "DEB") # Don't build DEB packages on MacOS
-endif()
-
-if(APPLE)
-    set(MACOSX_BUNDLE)
-    list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
-endif()
-
-# build RPMs only if rpmbuild is installed
-find_program(RPMBUILD_EXECUTABLE rpmbuild)
-if(NOT RPMBUILD_EXECUTABLE)
-    message(STATUS "rpmbuild not found - no RPM package will be build with make package.")
-else()
-    message(STATUS "rpmbuild found - RPM package can be build with make package.")
-    list(APPEND  CPACK_GENERATOR "RPM")
-endif()
-
-
-
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
-set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
-set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
-set(CPACK_PACKAGE_SECTION "science")
-if(WIN32)
-#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data\\\\io.github.wxmaxima_developers.wxMaxima.png")
-else()
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
-endif()
-set(CPACK_PACKAGE_VERSION "${VERSION}")
-
-
-set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc")
-set(CPACK_DEBIAN_PACKAGE_SUGGESTS "jsmath-fonts")
-
-set(CPACK_RPM_PACKAGE_SUGGESTS "jsmath-fonts")
-
-# Build a tarball
-set(CPACK_SOURCE_IGNORE_FILES
-  "build/"
-  ".git/"
-  ".gitignore"
-  ".gitattributes"
-  "Doxygen/html/"
-  "\\\\.gmo$"
-  "\\\\.mo$"
-  "~$"
-  "CPackConfig.cmake"
-  "CPackSourceConfig.cmake"
-  "CMakeCache.txt"
-  "CMakeFiles"
-  "_CPack_Packages"
-  "wxmaxima-.*\\\\.tgz$"
-  "wxmaxima-.*\\\\.deb$"
-  "wxmaxima-.*\\\\.rpm$"
-  "wxmaxima-.*\\\\.bz2$"
-  "wxmaxima-.*\\\\.xz$"
-  "wxmaxima-.*\\\\.Z$"
-  "wxmaxima-.*\\\\.gz$"
-  "${CPACK_SOURCE_IGNORE_FILES}")
-
-add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-
-# Debian wants to be able to download a signature of the source package from the
-# project's download directory. If it cannot find it it will still work, but will
-# issue a warning. For details see
-# https://lintian.debian.org/tags/debian-watch-may-check-gpg-signature.html
-find_program(gpg NAMES gpg pgp)
-add_custom_target(gpg DEPENDS dist
-  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
-  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
-  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
-  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
-
-add_custom_target(checksums
-    ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
-
-include(InstallRequiredSystemLibraries)
-include(CPack)
 
 enable_testing()
 add_subdirectory(test)
+
+if(NOT WXM_BUILD_SOURCE_ONLY)
+    add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+    add_custom_target(checksums
+        ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
+
+    install(FILES AUTHORS COPYING ChangeLog GPL.txt NEWS.md README README.md DESTINATION share/doc/wxmaxima)
+
+    # include wxWidgets DLLs on Windows on appveyor
+    if(WIN32 AND APPVEYOR_BUILD)
+        install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+            DESTINATION programs
+            COMPONENT applications)
+    endif()
+endif()

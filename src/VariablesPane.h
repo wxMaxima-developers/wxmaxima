@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -15,15 +15,17 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
 #ifndef VARIABLESPANE_H
 #define VARIABLESPANE_H
 
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/grid.h>
+#include <wx/panel.h>
 #include <wx/arrstr.h>
 
 /*! \file 
@@ -35,7 +37,7 @@ This file contains the class Variablespane.
 /*! A "variables" sidepane
 
 */
-class Variablespane : public wxGrid
+class Variablespane : public wxPanel
 {
 public:
   enum VarIds
@@ -58,10 +60,10 @@ public:
   };
 
   //! The constructor
-  Variablespane(wxWindow *parent, wxWindowID id = wxID_ANY);
+  explicit Variablespane(wxWindow *parent, wxWindowID id = wxID_ANY);
   //! Called when a variable name was changed
   void OnTextChange(wxGridEvent &event);
-  //! Called after te user has entered an variable name but before it is committed
+  //! Called after te user has entered a variable name but before it is committed
   void OnTextChanging(wxGridEvent &event);
   //! Called on right-clicking the variables list
   void OnRightClick(wxGridEvent &event);
@@ -93,9 +95,13 @@ public:
   void VariableValue(wxString var, wxString val);
   //! Sets the variable var to "undefined"
   void VariableUndefined(wxString var);
+  void UpdateSize();
   //! The destructor
   ~Variablespane();
 private:
+  // The spreadsheet with the variable names
+  wxGrid *m_grid;
+  bool m_updateSizeNeeded = false;
   wxString InvertCase(wxString var);
   WX_DECLARE_STRING_HASH_MAP(int, IntHash);
   //! A list of all symbols that can be entered using Esc-Codes

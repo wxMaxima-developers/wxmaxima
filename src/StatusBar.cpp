@@ -1,7 +1,7 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2019 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -27,14 +27,18 @@
 #include "StatusBar.h"
 #include <wx/artprov.h>
 #include <wx/display.h>
-#include "invalidImage.h"
 #include "../art/statusbar/images.h"
+#include "SvgBitmap.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include "Image.h"
 
-StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
+StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
+                                                 m_ppi(wxSize(-1,-1))
 {
-  m_ppi = wxSize(-1,-1);
+  m_svgRast.reset(nsvgCreateRasterizer());
   int widths[] = {-1, 300, GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;
@@ -54,7 +58,12 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
   m_networkState = offline;
   // Mark the network state as "to be changed"
   m_oldNetworkState = receive;
+  Connect(wxEVT_SIZE, wxSizeEventHandler(StatusBar::OnSize));
+  Connect(wxEVT_TIMER, wxTimerEventHandler(StatusBar::OnTimerEvent));
 }
+
+StatusBar::~StatusBar()
+{}
 
 void StatusBar::UpdateBitmaps()
 {
@@ -81,29 +90,23 @@ void StatusBar::UpdateBitmaps()
   {
     m_ppi = ppi;
     m_network_error = GetImage("network-error",
-                               network_error_128_png,network_error_128_png_len,
-                               network_error_192_png,network_error_192_png_len
+                               network_error_svg_gz,network_error_svg_gz_len
       );
     m_network_offline = GetImage("network-offline",
-                                 network_offline_128_png,network_offline_128_png_len,
-                                 network_offline_192_png,network_offline_192_png_len
+                                 network_offline_svg_gz,network_offline_svg_gz_len
       );
     m_network_transmit = GetImage("network-transmit",
-                                  network_transmit_128_png,network_transmit_128_png_len,
-                                  network_transmit_192_png,network_transmit_192_png_len
+                                  network_transmit_svg_gz,network_transmit_svg_gz_len
       );
     m_network_idle = GetImage("network-idle",
-                              network_idle_128_png,network_idle_128_png_len,
-                              network_idle_192_png,network_idle_192_png_len
+                              network_idle_svg_gz,network_idle_svg_gz_len
       );
     m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
     m_network_receive = GetImage("network-receive",
-                                 network_receive_128_png,network_receive_128_png_len,
-                                 network_receive_192_png,network_receive_192_png_len
+                                 network_receive_svg_gz,network_receive_svg_gz_len
       );
     m_network_transmit_receive = GetImage("network-transmit-receive",
-                                          network_transmit_receive_128_png,network_transmit_receive_128_png_len,
-                                          network_transmit_receive_192_png,network_transmit_receive_192_png_len
+                                          network_transmit_receive_svg_gz,network_transmit_receive_svg_gz_len
       );
   }
 }
@@ -234,8 +237,7 @@ void StatusBar::OnSize(wxSizeEvent &event)
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
 
 wxBitmap StatusBar::GetImage(wxString name,
-                          unsigned char *data_128, size_t len_128,
-                          unsigned char *data_192, size_t len_192)
+                          unsigned char *data, size_t len)
 {
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
@@ -254,8 +256,8 @@ wxBitmap StatusBar::GetImage(wxString name,
   if (ppi.y < 72)
     ppi.y = 72;
 #endif
-  double targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
-  double targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
+  int targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
+  int targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
 
   if(targetWidth < 16)
     targetWidth = 16;
@@ -269,8 +271,6 @@ wxBitmap StatusBar::GetImage(wxString name,
     img = bmp.ConvertToImage();
   }
 
-    int prescale;
-
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetWidth && sizeA >= 32) {
     sizeA >>= 1;
@@ -281,33 +281,8 @@ wxBitmap StatusBar::GetImage(wxString name,
     sizeB >>= 1;
   }
 
-  if(ABS(targetWidth - sizeA) < ABS(targetWidth - sizeB)) {
-    targetWidth = sizeA;
-    prescale = 128;
-  } else {
-    targetWidth = sizeB;
-    prescale = 192;
-  }
-
-  if(!img.IsOk()) {
-    void *data;
-    size_t len;
-    if(prescale == 128)
-    {
-      data = (void *)data_128;
-      len  = len_128;
-    }
-    else
-    {
-      data = (void *)data_192;
-      len  = len_192;
-    }
-    wxMemoryInputStream istream(data,len);
-    img.LoadFile(istream);
-  }
-  if(!img.IsOk()) {
-    img = wxImage(invalidImage_xpm);
-  }
+  if(!img.IsOk())
+    return SvgBitmap(data, len, targetWidth, targetWidth);
 
   targetWidth = static_cast<double>(GetSize().GetHeight());
   targetHeight = static_cast<double>(GetSize().GetHeight());
@@ -320,9 +295,3 @@ wxBitmap StatusBar::GetImage(wxString name,
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
 #endif
 }
-
-
-wxBEGIN_EVENT_TABLE(StatusBar, wxStatusBar)
-                EVT_SIZE(StatusBar::OnSize)
-                EVT_TIMER(wxID_ANY, StatusBar::OnTimerEvent)
-wxEND_EVENT_TABLE()

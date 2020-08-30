@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -25,12 +25,13 @@
   This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
  */
+#include "precomp.h"
 #include "Configuration.h"
+#include "RegexCtrl.h"
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <vector>
 #include "GroupCell.h"
-#include "EditorCell.h"
 
 #ifndef TABLEOFCONTENTS_H
 #define TABLEOFCONTENTS_H
@@ -98,13 +99,12 @@ private:
   void UpdateDisplay();
 
   wxListCtrl *m_displayedItems;
-  wxTextCtrl *m_regex;
+  RegexCtrl *m_regex;
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;
   Configuration **m_configuration;
 
   std::vector<GroupCell *> m_structure;
-DECLARE_EVENT_TABLE()
 };
 
 #endif // TABLEOFCONTENTS_H

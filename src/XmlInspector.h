@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -15,7 +15,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -24,10 +24,10 @@
   This file contains the definition of the class XmlInspector that handles the 
   table of contents pane.
  */
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include <vector>
-#include "GroupCell.h"
 
 #ifndef XMLINSPECTOR_H
 #define XMLINSPECTOR_H
@@ -53,7 +53,7 @@ public:
   //! Add some text we have received from maxima.
   void Add_FromMaxima(wxString text);
   //! Actually draw the updates
-  void Update();
+  void UpdateContents();
   //! Do we need to update the XmlInspector's display?
   bool UpdateNeeded(){return m_updateNeeded;}
 private:

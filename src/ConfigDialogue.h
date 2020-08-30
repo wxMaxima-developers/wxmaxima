@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -16,7 +16,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -29,10 +29,14 @@ dialog. The preferences themself will be read directly using
 <code> config->Read </code>, instead, where needed or from Configuration.
 */
 
+extern unsigned int view_refresh_svg_gz_len;
+extern unsigned char view_refresh_svg_gz[];
+
+#include "precomp.h"
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/hashmap.h>
-
+#include <memory>
 #include <wx/propdlg.h>
 #include <wx/generic/propdlg.h>
 #include <wx/spinctrl.h>
@@ -55,8 +59,8 @@ enum
   checkbox_bold,
   checkbox_italic,
   checkbox_underlined,
+  button_defaultFont,
   button_mathFont,
-  font_family,
   style_font_family,
   language_id,
   save_id,
@@ -74,10 +78,19 @@ class ConfigDialogue : public wxPropertySheetDialog
 {
 public:
   //! The constructor
-  ConfigDialogue(wxWindow *parent, Configuration *config);
+  ConfigDialogue(wxWindow *parent, Configuration *cfg);
 
   //! The destructor
   ~ConfigDialogue();
+
+  //! The export formats we support for HTML equations
+  enum htmlExportFormats
+  {
+    mathJaX_TeX = 0,
+    bitmap = 1,
+    mathML_mathJaX = 2,
+    svg = 3
+  };
 
   /*! Called if the color of an item has been changed
 
@@ -93,10 +106,11 @@ public:
   void WriteSettings();
 
 private:
+  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   Configuration *m_configuration;
   
-  WX_DECLARE_STRING_HASH_MAP(int, Languages);
+  WX_DECLARE_STRING_HASH_MAP(long, Languages);
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
 
@@ -107,30 +121,15 @@ private:
   public:
     //! The constructor
     ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
-      {
-#if defined (__WXOSX__)
-        m_size = 12;
-#else
-        m_size = 10;
-#endif
-        m_italic = false;
-        m_bold = false;
-        m_underlined = false;
-      };
+    { Connect(wxEVT_PAINT, wxPaintEventHandler(ConfigDialogue::ExamplePanel::OnPaint)); };
 
-    //! Sets all user-changable elements of style of the example at once.
-    void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
-      {
-        m_fgColor = fg_color;
-        m_italic = italic;
-        m_bold = bold;
-        m_underlined = underlined;
-        m_font = font;
-      }
-
-    //! Sets the font size of the example
-    void SetFontSize(int size)
-      { m_size = size; }
+    //! Sets the text style of the example
+    void SetStyle(const Style &style)
+    {
+      if (m_style.IsStyleEqualTo(style)) return;
+      m_style = style;
+      Refresh();
+    }
 
   private:
     /*! Actually updates the formatting example
@@ -139,19 +138,8 @@ private:
     */
     void OnPaint(wxPaintEvent &event);
 
-    //! The foreground color of the currently selected item type
-    wxColour m_fgColor;
-    //! Is the currently selected item type displayed in italic?
-    bool m_italic;
-    //! Is the currently selected item type displayed in bold?
-    bool m_bold;
-    //! Is the currently selected item type displayed underlined?
-    bool m_underlined;
-    //! The font the currently selected item type is displayed with
-    wxString m_font;
-    //! The size of the characters of the currently selected item type
-    int m_size;
-    DECLARE_EVENT_TABLE()
+    //! The text style of this example
+    Style m_style;
   };
 
   /*! A rectangle showing the color of an item
@@ -176,7 +164,6 @@ private:
   private:
     ConfigDialogue *m_configDialogue;
     wxColor m_color;
-    DECLARE_EVENT_TABLE()
   };
 
 
@@ -184,18 +171,20 @@ private:
 
     This method sets the window title, the tool tips etc.
    */
-  void SetProperties();
+  void SetCheckboxValues();
 
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
 
   //! Loads the image for a configuration tab
   wxBitmap GetImage(wxString name,
-                   unsigned char *data_128, size_t len_128,
-                   unsigned char *data_192, size_t len_192);
+                   unsigned char *data, size_t len);
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();
+
+  //! The panel that allows to choose which formats to put on the clipboard
+  wxPanel *CreateRevertToDefaultsPanel();
 
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
   #if wxUSE_ENH_METAFILE
@@ -219,9 +208,12 @@ private:
 
   //! The panel that allows to specify startup commands
   wxPanel *CreateStartupPanel();
-
-  // end wxGlade
+  
 protected:
+  void OnReloadAll(wxCommandEvent& event);
+  void OnReloadStyles(wxCommandEvent& event);
+  void OnResetAllToDefaults(wxCommandEvent& event);
+  void OnResetStyles(wxCommandEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.
@@ -233,6 +225,8 @@ protected:
   wxRadioButton *m_autodetectMaxima;
   //! The radio button that is set if m_autodetectMaxima is unset
   wxRadioButton *m_noAutodetectMaxima;
+  wxRadioButton *m_autodetectHelpBrowser;
+  wxRadioButton *m_noAutodetectHelpBrowser;
   //! Autodetect the mathJaX location?
   wxRadioButton *m_autodetectMathJaX;
   //! The radio button that is set if m_autodetectMathJaX is unset
@@ -249,21 +243,21 @@ protected:
   //! A textbox containing wxMaxima's startup commands
   wxTextCtrl *m_wxStartupCommands;
   wxTextCtrl *m_maximaUserLocation;
+  wxTextCtrl *m_helpBrowserUserLocation;
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_documentclassOptions;
   wxTextCtrl *m_texPreamble;
-  wxSpinCtrl *m_autoSaveInterval;
+  wxCheckBox *m_autoSave;
   wxButton *m_mpBrowse;
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
-  wxCheckBox *m_saveSize;
   wxCheckBox *m_abortOnError;
+  wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
-  wxCheckBox *m_savePanes;
-  wxCheckBox *m_usepngCairo;
+  wxCheckBox *m_usesvg;
   wxCheckBox *m_antialiasLines;
   wxSpinCtrl *m_defaultFramerate;
   wxSpinCtrl *m_defaultPlotWidth;
@@ -300,9 +294,9 @@ protected:
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
   wxChoice *m_showUserDefinedLabels;
-  wxButton *m_getFont;
+  wxButton *m_getDefaultFont;
+  wxButton *m_getMathFont;
   wxButton *m_getStyleFont;
-  wxFontEncoding m_fontEncoding;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
   ColorPanel *m_styleColor;
@@ -312,24 +306,21 @@ protected:
   wxCheckBox *m_fixedFontInTC;
   wxCheckBox *m_unixCopy;
   wxCheckBox *m_changeAsterisk;
+  wxCheckBox *m_hidemultiplicationSign;
   wxCheckBox *m_latin2Greek;
-  wxCheckBox *m_useJSMath;
   wxCheckBox *m_useUnicodeMaths;
   wxCheckBox *m_keepPercentWithSpecials;
   wxBookCtrlBase *m_notebook;
-  wxStaticText *m_mathFont;
-  wxButton *m_getMathFont;
-  wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
-  // end wxGlade
-
+  wxSpinCtrl *m_maxGnuplotMegabytes;
+  wxTextCtrl *m_autoMathJaxURL;
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
 
   //! Is called when the path to the maxima binary was changed.
-  void UsepngcairoChanged(wxCommandEvent &event);
+  void UsesvgChanged(wxCommandEvent &event);
 
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent &event);
@@ -337,10 +328,12 @@ protected:
   //! Starts the file chooser that allows selecting where the maxima binary lies
   void OnMpBrowse(wxCommandEvent &event);
 
+  void OnHelpBrowserBrowse(wxCommandEvent&  event);
+
   void OnIdle(wxIdleEvent &event);
 
-  //! Starts the font selector dialog for the math font
-  void OnMathBrowse(wxCommandEvent &event);
+  //! Starts the font selector dialog triggered by the math or default font buttons
+  void OnFontButton(wxCommandEvent &event);
 
   //! Called if a new item type that is to be styled is selected
   void OnChangeStyle(wxCommandEvent &event);
@@ -360,14 +353,23 @@ protected:
   //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent &event);
 
+  //! Map the style list index to a style
+  static TextStyle StyleForListIndex(int index);
+  //! Map the style to the style list index
+  static int StyleListIndexForStyle(TextStyle style);
+  //! Get the style currently selected in the m_styleFor control
+  TextStyle GetSelectedStyle() const;
+
+  //! Sets the label for the font setting button given by the style (either TS_DEFAULT or TS_MATH)
+  void UpdateButton(TextStyle style);
+
   //! The size of the text font
   int m_fontSize;
   //! The size of the maths font.
   int m_mathFontSize;
 
   //! A list containing the pictograms for the tabs.
-  wxImageList *m_imageList;
-DECLARE_EVENT_TABLE()
+  std::unique_ptr<wxImageList> m_imageList;
 };
 
 #ifndef __WXMSW__

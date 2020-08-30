@@ -17,7 +17,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -30,7 +30,7 @@
 #include "EvaluationQueue.h"
 #include "MaximaTokenizer.h"
 
-bool EvaluationQueue::Empty()
+bool EvaluationQueue::Empty() const
 {
   return (m_queue.size() <= 1) && (m_commands.empty());
 }
@@ -49,19 +49,16 @@ void EvaluationQueue::Clear()
   m_workingGroupChanged = false;
 }
 
-bool EvaluationQueue::IsInQueue(GroupCell *gr)
+bool EvaluationQueue::IsInQueue(GroupCell *gr) const
 {
-  for(std::list<GroupCell *>::iterator it=m_queue.begin(); it != m_queue.end(); ++it)
-    if (*it == gr)
-      return true;
-  
-  return false;
+  return std::find(m_queue.begin(), m_queue.end(), gr) != m_queue.end();
 }
 
 void EvaluationQueue::Remove(GroupCell *gr)
 {
-  bool removeFirst = !(m_queue.empty()) && gr == m_queue.front();
-  m_queue.remove(gr);
+  bool removeFirst = IsLastInQueue(gr);
+  auto pos = std::find(m_queue.begin(), m_queue.end(), gr);
+  if (pos != m_queue.end()) m_queue.erase(pos);
   m_size = m_queue.size();
   if(removeFirst)
   {
@@ -94,15 +91,13 @@ void EvaluationQueue::AddToQueue(GroupCell *gr)
  */
 void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
 {
-  if (gr == NULL)
+  if (!gr)
     return; // caller should check, but just in case
 
-  GroupCell *cell = gr->GetHiddenTree();
-  while (cell != NULL)
+  for (auto &cell : OnList(gr->GetHiddenTree()))
   {
-    AddToQueue(dynamic_cast<GroupCell *>(cell));
-    AddHiddenTreeToQueue(cell);
-    cell = dynamic_cast<GroupCell *>(cell->m_next);
+    AddToQueue(&cell);
+    AddHiddenTreeToQueue(&cell);
   }
 }
 
@@ -111,7 +106,7 @@ void EvaluationQueue::RemoveFirst()
   if (!m_commands.empty())
   {
     m_workingGroupChanged = false;
-    m_commands.pop_front();
+    m_commands.erase(m_commands.begin());
   }
   else
   {
@@ -120,7 +115,7 @@ void EvaluationQueue::RemoveFirst()
       if(m_queue.empty())
         return;
       
-      m_queue.pop_front();
+      m_queue.erase(m_queue.begin());
       m_size--;
       AddTokens(GetCell());
     } while (m_commands.empty() && (!m_queue.empty()));
@@ -130,27 +125,26 @@ void EvaluationQueue::RemoveFirst()
 
 void EvaluationQueue::AddTokens(GroupCell *cell)
 {
-  if(cell == NULL)
+  if (cell == NULL)
     return;
-  MaximaTokenizer::TokenList tokens = cell->GetEditable()->GetTokens();
-  MaximaTokenizer::TokenList::iterator it;
   wxString token;
   int index = 0;
-  for (it = tokens.begin(); it != tokens.end(); ++it)
+  for (auto const &tok : cell->GetEditable()->GetTokens())
   {
-    wxString itemText = (*it)->GetText();
-    TextStyle itemStyle = (*it)->GetStyle();
+    const TextStyle itemStyle = tok.GetStyle();
+    wxString itemText = tok.GetText();
+    itemText.Replace(wxT("\u00a0"), " ");
     index += itemText.Length();
-    if(itemStyle != TS_CODE_COMMENT)
+    if (itemStyle != TS_CODE_COMMENT)
       token += itemText;
 
     if(itemStyle == TS_CODE_LISP)
     {
       token.Trim(true);
       token.Trim(false);
-      if(!token.IsEmpty())
-        m_commands.push_back(command(token, index));      
-      token = wxEmptyString;
+      if (!token.IsEmpty())
+        m_commands.emplace_back(token, index);
+      token.Clear();
       continue;
     }
 
@@ -158,16 +152,16 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
     {
       token.Trim(true);
       token.Trim(false);
-      if(!token.IsEmpty())
-        m_commands.push_back(command(token, index));
-      token = wxEmptyString;
+      if (!token.IsEmpty())
+        m_commands.emplace_back(token, index);
+      token.Clear();
       continue;
     }
   }
   token.Trim(true);
   token.Trim(false);
   if(!token.IsEmpty())
-    m_commands.push_back(command(token, index));
+    m_commands.emplace_back(token, index);
 }
 
 GroupCell *EvaluationQueue::GetCell()
@@ -180,38 +174,39 @@ GroupCell *EvaluationQueue::GetCell()
 
 wxString EvaluationQueue::GetCommand()
 {
-  wxString retval;
-  m_userLabel = wxEmptyString;
-  if (!m_commands.empty())
-  {
-    retval = m_commands.front().GetString();
+  if (m_commands.empty())
+    return {};
 
-    wxString userLabel;
-    int colonPos;
-    if ((colonPos = retval.find(wxT(":"))) != wxNOT_FOUND)
+  auto retval = m_commands.front().GetString();
+
+  m_userLabel.Clear();
+  wxString userLabel;
+
+  int colonPos = retval.find(wxT(":"));
+  if (colonPos != wxNOT_FOUND && !retval.StartsWith(wxT(":lisp")))
+  {
+    userLabel = retval.Left(colonPos);
+    userLabel.Trim(true);
+    userLabel.Trim(false);
+    if (!userLabel.empty() && (wxIsalpha(userLabel[0]) || (userLabel[0] == wxT('\\')) ||
+        (userLabel[0] >127) || (userLabel[0] == wxT('_'))))
     {
-      userLabel = retval.Left(colonPos);
-      userLabel.Trim(true);
-      userLabel.Trim(false);
-      if ((wxIsalpha(userLabel[0])) || (userLabel[0] == wxT('\\')) || (userLabel[0] == wxT('_')))
+      for (size_t i = 0; i < userLabel.Length(); i++)
       {
-        for (size_t i = 0; i < userLabel.Length(); i++)
+        if (userLabel[i] == wxT('\\'))
+          i++;
+        else
         {
-          if (userLabel[i] == wxT('\\'))
-            i++;
-          else
+          if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] < 128) && (userLabel[i] != '[') && (userLabel[i] != ']'))
           {
-            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] != '[') && (userLabel[i] != ']'))
-            {
-              userLabel = wxEmptyString;
-              break;
-            }
+            userLabel.Clear();
+            break;
           }
         }
-        m_userLabel = userLabel;
       }
-    };
-  }
+      m_userLabel = userLabel;
+    }
+  };
   return retval;
 }
 
