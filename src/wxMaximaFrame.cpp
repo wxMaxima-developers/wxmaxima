@@ -789,7 +789,7 @@ void wxMaximaFrame::SetupMenu()
   m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParens, _("Rounded"), _("Use rounded parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(menu_squareMatrixParens, _("Square"), _("Use square parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(menu_angledMatrixParens, _("Angles"), _("Use \"<\" and \">\" as parenthesis for matrices"));
-  m_roundedMatrixParensMenu->AppendRadioItem(menu_straightMatrixParens, _("Straight lines"), _("Use vertival lines instead of parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_straightMatrixParens, _("Straight lines"), _("Use vertical lines instead of parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), m_roundedMatrixParensMenu, _("Choose the parenthesis type for Matrices"));
   
