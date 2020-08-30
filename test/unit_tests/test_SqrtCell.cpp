@@ -62,7 +62,6 @@ void Configuration::SetZoomFactor(double newzoom)
     newzoom = GetMinZoomFactor();
 
   m_zoomFactor = newzoom;
-  RecalculationForce(true);
 }
 
 SCENARIO("SqrtCell recalculates") {
