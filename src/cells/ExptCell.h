@@ -56,7 +56,7 @@ public:
   InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_close}; }
 
   //! By how much do we want to rise the power?
-  double PowRise() const {return Scale_Px(.3 * m_fontSize);}
+  double PowRise() const {return .3 * m_fontSize_Scaled;}
   
   void Recalculate(AFontSize fontsize) override;
 

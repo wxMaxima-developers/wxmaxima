@@ -43,13 +43,6 @@ const wxString &Cell::GetLocalToolTip() const
   return *m_toolTip;
 }
 
-bool Cell::IsZoomFactorChanged() const
-{
-  double constexpr eps = 0.04;
-  double diff = (*m_configuration)->GetZoomFactor() - m_lastZoomFactor;
-  return diff < -eps || diff > eps;
-}
-
 const wxString &Cell::GetToolTip(const wxPoint point) const
 {
   if (!ContainsPoint(point))
@@ -70,7 +63,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_group(group),
     m_configuration(config),
     m_toolTip(&wxm::emptyString),
-    m_fontSize((*config)->GetMathFontSize())
+    m_fontSize_Scaled(Scale_Px((*config)->GetMathFontSize()))
 {
   InitBitFields();
   ResetSize();
@@ -240,16 +233,14 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   // std::cerr << ToString()<< "\n"<<
   //   "m_recalculateWidths" << m_recalculateWidths<<"\n"<<
-  //   "(fontSize != m_fontSize)"<<(fontSize != m_fontSize)<<"\n"<<
+  //   "(Scale_Px(fontSize) != m_fontSize_Scaled)"<<(Scale_Px(fontSize) != m_fontSize_Scaled)<<"\n"<<
   //   "(m_isBrokenIntoLines != m_isBrokenIntoLines_old)"<<(m_isBrokenIntoLines != m_isBrokenIntoLines_old)<<"\n"<<
   //   "(m_clientWidth_old != (*m_configuration)->GetClientWidth())" << (m_clientWidth_old != (*m_configuration)->GetClientWidth()) <<"\n"<<
-  //   "IsZoomFactorChanged()"<<IsZoomFactorChanged()<<"\n"<<
   //   "(*m_configuration)->FontChanged()"<<(*m_configuration)->FontChanged()<<"\n\n";
   bool result = (m_recalculateWidths) ||
-    (fontSize != m_fontSize) ||
+    (Scale_Px(fontSize) != m_fontSize_Scaled) ||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
-    IsZoomFactorChanged() ||
     (*m_configuration)->FontChanged();
   return result;
 }
@@ -456,11 +447,9 @@ void Cell::ResetSizeList()
 
 void Cell::Recalculate(AFontSize fontsize)
 {
-  m_fontSize = fontsize;
+  m_fontSize_Scaled = Scale_Px(fontsize);
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
-  m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
-  wxASSERT(!IsZoomFactorChanged());
   ResetCellListSizes();
   m_recalculateWidths = false;
 }

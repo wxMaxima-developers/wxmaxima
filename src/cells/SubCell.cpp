@@ -80,7 +80,7 @@ void SubCell::Draw(wxPoint point)
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetCenterList() -
-           Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+           .8 * m_fontSize_Scaled + MC_EXP_INDENT;
     m_indexCell->DrawList(in);
   }
 }

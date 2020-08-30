@@ -208,7 +208,7 @@ public:
   void SetCurrentPoint(wxPoint point) override;
 
   //! The screen coordinates of the cursor
-  wxPoint PositionToPoint(AFontSize fontsize, int pos = -1) override;
+  wxPoint PositionToPoint(int pos = -1) override;
 
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(wxPoint point) override;
@@ -469,6 +469,10 @@ public:
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
 private:
+  //! Did the zoom factor change since the last recalculation?
+  bool IsZoomFactorChanged() const;
+  //! The zoom factor we had the last time we recalculated this cell.
+  double m_lastZoomFactor;
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be
@@ -566,7 +570,7 @@ private:
   wxString InterpretEscapeString(const wxString &txt) const;
 
   //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, TextStyle style, AFontSize fontsize);
+  void MarkSelection(long start, long end, TextStyle style);
 
   //! Determines the size of a text snippet
   wxSize GetTextSize(const wxString &text);

@@ -221,7 +221,7 @@ void IntCell::Draw(wxPoint point)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      auto fontsize1 = AFontSize(Scale_Px(m_fontSize * 1.5));
+      auto fontsize1 = AFontSize(m_fontSize_Scaled * 1.5);
       wxASSERT(fontsize1.IsValid());
 
       Style style = Style(fontsize1)

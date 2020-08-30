@@ -603,11 +603,22 @@ void EditorCell::ConvertNumToUNicodeChar()
   m_positionOfCaret+= newChar.Length();
 }
 
+bool EditorCell::IsZoomFactorChanged() const
+{
+  double constexpr eps = 0.04;
+  double diff = (*m_configuration)->GetZoomFactor() - m_lastZoomFactor;
+  return diff < -eps || diff > eps;
+}
+
+
 void EditorCell::Recalculate(AFontSize fontsize)
 {
   if (IsZoomFactorChanged())
+  {
     m_widths.clear();
-
+    m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
+  }
+    
   m_isDirty = false;
   if (NeedsRecalculation(fontsize))
   {
@@ -716,7 +727,7 @@ wxString EditorCell::ToHTML() const
   return retval;
 }
 
-void EditorCell::MarkSelection(long start, long end, TextStyle style, AFontSize fontsize)
+void EditorCell::MarkSelection(long start, long end, TextStyle style)
 {
   Configuration *configuration = (*m_configuration);
   if ((start < 0) || (end < 0)) return;
@@ -737,8 +748,8 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style, AFontSize 
     while (pos1 < end && m_text.GetChar(pos1) != '\n' && m_text.GetChar(pos1) != '\r')
       pos1++;
 
-    point = PositionToPoint(fontsize, pos2);  // left  point
-    point1 = PositionToPoint(fontsize, pos1); // right point
+    point = PositionToPoint(pos2);  // left  point
+    point1 = PositionToPoint(pos1); // right point
     long selectionWidth = point1.x - point.x;
     wxRect rect;
 #if defined(__WXOSX__)
@@ -834,7 +845,7 @@ void EditorCell::Draw(wxPoint point)
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != wxMin(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start, end, TS_EQUALSSELECTION, m_fontSize);
+          MarkSelection(start, end, TS_EQUALSSELECTION);
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -849,7 +860,7 @@ void EditorCell::Draw(wxPoint point)
       if (m_selectionStart >= 0)
         MarkSelection(wxMin(m_selectionStart, m_selectionEnd),
                       wxMax(m_selectionStart, m_selectionEnd),
-                      TS_SELECTION, m_fontSize);
+                      TS_SELECTION);
 
       //
       // Matching parens - draw only if we don't have selection
@@ -863,7 +874,7 @@ void EditorCell::Draw(wxPoint point)
 #endif
         dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION)))); //highlight c.
 
-        wxPoint matchPoint = PositionToPoint(m_fontSize, m_paren1);
+        wxPoint matchPoint = PositionToPoint(m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         wxRect matchRect(matchPoint.x + 1,
@@ -871,7 +882,7 @@ void EditorCell::Draw(wxPoint point)
                          width - 1, height - 1);
         if (InUpdateRegion(matchRect))
           dc->DrawRectangle(CropToUpdateRegion(matchRect));
-        matchPoint = PositionToPoint(m_fontSize, m_paren2);
+        matchPoint = PositionToPoint(m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         matchRect = wxRect(matchPoint.x + 1,
                            matchPoint.y + Scale_Px(2) - m_center + 1,
@@ -1022,9 +1033,9 @@ void EditorCell::SetFont()
   m_fontWeight = configuration->IsBold(m_textStyle);
   m_underlined = configuration->IsUnderlined(m_textStyle);
 
-  wxASSERT(m_fontSize.IsValid());
+  wxASSERT(m_fontSize_Scaled.IsValid());
 
-  auto style = Style(Scale_Px(m_fontSize))
+  auto style = Style(m_fontSize_Scaled)
                  .FontName(m_fontName)
                  .FontStyle(m_fontStyle)
                  .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
@@ -1037,7 +1048,7 @@ void EditorCell::SetFont()
   }
   if (!style.IsFontOk()) {
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(Scale_Px(m_fontSize));
+    style.SetFontSize(m_fontSize_Scaled);
   }
 
   wxASSERT_MSG(style.IsFontOk(),
@@ -2702,7 +2713,7 @@ void EditorCell::SetCurrentPoint(wxPoint point)
     m_currentPoint_Last = point;
 }
 
-wxPoint EditorCell::PositionToPoint(AFontSize WXUNUSED(fontsize), int pos)
+wxPoint EditorCell::PositionToPoint(int pos)
 {
   SetFont();
 
@@ -2743,7 +2754,7 @@ void EditorCell::SelectPointText(const wxPoint point)
   wxASSERT_MSG(m_currentPoint.x >= 0, _("Bug: x position of cell is unknown!"));
   wxASSERT_MSG(m_currentPoint.y >= 0, _("Bug: y position of cell is unknown!"));
   posInCell -= m_currentPoint;
-//  posInCell -= wxPoint(Scale_Px(m_fontSize), 2);
+//  posInCell -= wxPoint(m_fontSize, 2);
   posInCell.y -= m_center;
 
   int lin = posInCell.y / m_charHeight + 1;

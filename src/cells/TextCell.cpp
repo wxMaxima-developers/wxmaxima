@@ -67,7 +67,6 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
     wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"), style));
     m_type = MC_TYPE_TITLE;
   }
-  m_fontSize.Set(10.0f);
   TextCell::SetValue(text);
 }
 
@@ -314,7 +313,7 @@ void TextCell::SetValue(const wxString &text)
 
 AFontSize TextCell::GetScaledTextSize() const
 {
-    return Scale_Px(m_fontSize);
+    return m_fontSize_Scaled;
 }
 
 bool TextCell::NeedsRecalculation(AFontSize fontSize) const
@@ -388,8 +387,7 @@ void TextCell::Recalculate(AFontSize fontsize)
   {      
     Cell::Recalculate(fontsize);
     m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
-    m_fontSize = fontsize;
-    SetFont(fontsize);
+    SetFont(m_fontSize_Scaled);
 
 
     wxSize sz = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
@@ -419,13 +417,10 @@ void TextCell::Draw(wxPoint point)
   {
     wxDC *dc = configuration->GetDC();
     
-    if (NeedsRecalculation(m_fontSize))
-      Recalculate(m_fontSize);
-    
     if (InUpdateRegion())
     {
       SetForeground();
-      SetFont(m_fontSize);
+      SetFont(m_fontSize_Scaled);
       dc->DrawText(m_displayedText,
                    point.x + MC_TEXT_PADDING,
                    point.y - m_center + MC_TEXT_PADDING);
@@ -437,29 +432,7 @@ void TextCell::SetFont(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-
-  if ((m_textStyle == TS_TITLE) ||
-      (m_textStyle == TS_SECTION) ||
-      (m_textStyle == TS_SUBSECTION) ||
-      (m_textStyle == TS_SUBSUBSECTION) ||
-      (m_textStyle == TS_HEADING5) || 
-      (m_textStyle == TS_HEADING6))
-  {
-    // Titles have a fixed font size 
-    m_fontSize = configuration->GetFontSize(m_textStyle);
-  }
-  else
-  {
-    // Font within maths has a dynamic font size that might be reduced for example
-    // within fractions, subscripts or superscripts.
-    if (
-      (m_textStyle != TS_MAIN_PROMPT) &&
-      (m_textStyle != TS_OTHER_PROMPT)
-      )
-      m_fontSize = fontsize;
-  }
-
-  auto style = configuration->GetStyle(m_textStyle, fontsize);
+  auto style = configuration->GetStyle(m_textStyle, m_fontSize_Scaled);
   
   // Mark special variables that are printed as ordinary letters as being special.
   if ((!(*m_configuration)->CheckKeepPercent()) &&
@@ -471,8 +444,8 @@ void TextCell::SetFont(AFontSize fontsize)
       style.SetItalic(true);
   }
 
-  wxASSERT(m_fontSize.IsValid());
-  style.SetFontSize(Scale_Px(m_fontSize));
+  wxASSERT(m_fontSize_Scaled.IsValid());
+  style.SetFontSize(m_fontSize_Scaled);
 
   dc->SetFont(style.GetFont());
 }

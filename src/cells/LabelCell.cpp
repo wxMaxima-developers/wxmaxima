@@ -65,7 +65,9 @@ void LabelCell::Draw(wxPoint point)
     auto const index = GetLabelIndex();
     if (index != noText)
     {
-      auto const style = (*m_configuration)->GetStyle(m_textStyle, Scale_Px(m_fontSize_scaledToFit));
+      auto const style = (*m_configuration)->GetStyle(
+        m_textStyle,
+        Scale_Px(m_fontSize_scaledToFit));
       dc->SetFont(style.GetFont());
       SetToolTip(&m_userDefinedLabel);
       if(m_textStyle == TS_USERLABEL)

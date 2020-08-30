@@ -162,7 +162,7 @@ void SqrtCell::Draw(wxPoint point)
 
       in.x += m_signWidth;
 
-      auto fontsize1 = AFontSize(Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale));
+      auto fontsize1 = AFontSize(SIGN_FONT_SCALE * m_fontSize_Scaled * m_signFontScale);
       wxASSERT(fontsize1.IsValid());
 
       auto style = Style(fontsize1)

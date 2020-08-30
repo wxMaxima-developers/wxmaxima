@@ -708,7 +708,7 @@ public:
   virtual bool CanCopy() const
   { return false; }
 
-  virtual wxPoint PositionToPoint(AFontSize WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
+  virtual wxPoint PositionToPoint(int WXUNUSED(pos) = -1)
   { return wxPoint(-1, -1); }
 
   virtual bool IsDirty() const
@@ -870,8 +870,6 @@ protected:
 //** 4-byte objects (36 bytes)
 //**
 private:
-  //! The zoom factor at the time of the last recalculation.
-  float m_lastZoomFactor = -1.0f;
 
 protected:
   //! The height of this cell.
@@ -900,7 +898,7 @@ protected:
 //** 2-byte objects (2 bytes)
 //**
   //! The font size is smaller in super- and subscripts.
-  AFontSize m_fontSize = {};
+  AFontSize m_fontSize_Scaled = {};
 
 //** 1-byte objects (2 bytes)
 //**
@@ -973,7 +971,6 @@ protected:
   }
 
   const wxString &GetLocalToolTip() const;
-  bool IsZoomFactorChanged() const;
 
   CellPointers *GetCellPointers() const;
 

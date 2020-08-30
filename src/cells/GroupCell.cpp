@@ -115,7 +115,6 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, const wxString
 {
   InitBitFields();
   m_group = this;
-  m_fontSize = (*m_configuration)->GetDefaultFontSize();
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
   ForceBreakLine();
   m_type = MC_TYPE_GROUP;
@@ -456,10 +455,9 @@ void GroupCell::UpdateConfusableCharWarnings()
 
 void GroupCell::Recalculate()
 {
-  m_fontSize = (*m_configuration)->GetDefaultFontSize();
-
-  if (NeedsRecalculation(m_fontSize))
+  if (NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
   {
+    Cell::Recalculate((*m_configuration)->GetDefaultFontSize());
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
     Configuration *configuration = (*m_configuration);
     ClearNeedsToRecalculateWidths();
@@ -488,6 +486,8 @@ void GroupCell::Recalculate()
     else*/
       RecalculateHeightOutput();
   }
+  // The line breaking will have set our "needs recalculation" flag again.
+  ClearNeedsToRecalculateWidths();
   UpdateYPosition();
 }
 
@@ -540,7 +540,6 @@ void GroupCell::RecalculateHeightInput()
     m_inputWidth = m_width = configuration->GetCellBracketWidth();
     m_inputHeight = m_height = 2;
     m_center = 0;
-    Cell::RecalculateList((*m_configuration)->GetDefaultFontSize());
     return;
   }
   else
@@ -590,7 +589,6 @@ void GroupCell::RecalculateHeightOutput()
     
   if (NeedsToRecalculateWidths())
   {
-    m_fontSize = configuration->GetDefaultFontSize();
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
     
     //RecalculateHeightInput();
@@ -714,7 +712,7 @@ void GroupCell::Draw(wxPoint const point)
 
   if (!TEMPORARY_WINDOWS_PERFORMANCE_HACK)
   {
-    if (NeedsRecalculation(m_fontSize))
+    if (NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
       Recalculate();
   }
   if (m_updateConfusableCharWarnings)

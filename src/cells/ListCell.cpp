@@ -46,7 +46,6 @@ ListCell::ListCell(GroupCell *parent, Configuration **config, std::unique_ptr<Ce
 
   m_open->SetStyle(TS_FUNCTION);
   m_close->SetStyle(TS_FUNCTION);
-  m_fontSize = AFontSize(10.0f);
 }
 
 // These false-positive warnings only appear in old versions of cppcheck

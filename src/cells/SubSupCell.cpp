@@ -187,7 +187,7 @@ void SubSupCell::Draw(wxPoint point)
       presub.x += preWidth - m_preSubCell->GetFullWidth();
       presub.y += m_baseCell->GetMaxDrop() +
         m_preSubCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        .8 * m_fontSize_Scaled + MC_EXP_INDENT;
       m_preSubCell->DrawList(presub);
     }
 
@@ -197,7 +197,7 @@ void SubSupCell::Draw(wxPoint point)
       presup.x += preWidth - m_preSupCell->GetFullWidth();
       presup.y -= m_baseCell->GetCenterList() + m_preSupCell->GetHeightList()
         - m_preSupCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        .8 * m_fontSize_Scaled + MC_EXP_INDENT;
       m_preSupCell->DrawList(presup);
     }
 
@@ -209,14 +209,14 @@ void SubSupCell::Draw(wxPoint point)
     {
       in.y = point.y + m_baseCell->GetMaxDrop() +
         m_postSubCell->GetCenterList() -
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        .8 * m_fontSize_Scaled + MC_EXP_INDENT;
       m_postSubCell->DrawList(in);
     }
     if(m_postSupCell)
     {
       in.y = point.y - m_baseCell->GetCenterList() - m_postSupCell->GetHeightList()
         + m_postSupCell->GetCenterList() +
-        Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
+        .8 * m_fontSize_Scaled + MC_EXP_INDENT;
       m_postSupCell->DrawList(in);
     }
   }

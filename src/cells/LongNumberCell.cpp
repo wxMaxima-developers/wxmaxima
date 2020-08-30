@@ -97,8 +97,7 @@ void LongNumberCell::Recalculate(AFontSize fontsize)
     else
     {
       Cell::Recalculate(fontsize);
-      m_fontSize = fontsize;
-      SetFont(fontsize);
+      SetFont(m_fontSize_Scaled);
       Configuration *configuration = (*m_configuration);
       wxDC *dc = configuration->GetDC();
       auto numStartSize = CalculateTextSize(dc, m_numStart, numberStart);
@@ -126,7 +125,7 @@ void LongNumberCell::Draw(wxPoint point)
     {
       Cell::Draw(point);
       SetForeground();
-      SetFont(m_fontSize);
+      SetFont(m_fontSize_Scaled);
       Configuration *configuration = (*m_configuration);
       wxDC *dc = configuration->GetDC();
       dc->DrawText(m_numStart,

@@ -1949,7 +1949,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = GetActiveCell()->GetCaretPosition();
     if (GetActiveCell()->SelectionActive()) startingChar = GetActiveCell()->GetSelectionStart();
-    m_down = wxPoint(GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize(), startingChar));
+    m_down = wxPoint(GetActiveCell()->PositionToPoint(startingChar));
     GetActiveCell()->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -7702,11 +7702,11 @@ bool Worksheet::CaretVisibleIs()
   {
     if (GetActiveCell())
     {
-      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint();
       if (point.y < 1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint();
       }
       return PointVisibleIs(point);
     }
@@ -7731,12 +7731,12 @@ bool Worksheet::ScrollToCaretIfNeeded()
   {
     if (GetActiveCell())
     {
-      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint();
       if ((point.x < 0) || (point.y < 0))
       {
         RecalculateForce();
         RecalculateIfNeeded();
-        point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint();
       }
       if (QuestionPending())
       {
@@ -7986,7 +7986,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
 
     // Find the position for the popup menu
     RecalculateIfNeeded();
-    wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
+    wxPoint pos = editor->PositionToPoint();
     // There might be no current point yet in this EditorCell.
     if((pos.x < 0) || (pos.y < 0))
       pos = editor->GetGroup()->GetCurrentPoint();
