@@ -1,6 +1,12 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
 cmake_minimum_required(VERSION 3.7)
+project(wxmaxima LANGUAGES CXX)
+
+if(WIN32)
+    enable_language(RC)
+endif()    
+
 
 set(VERSION 20.07.0-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
@@ -58,15 +64,6 @@ else()
   set(NONCRIT_WARNING STATUS)
 endif()
 
-##
-# Project
-#
-
-if(WIN32)
-    project(wxmaxima LANGUAGES CXX RC)
-else()
-    project(wxmaxima LANGUAGES CXX)
-endif()    
 ##
 # CMake Policies
 #
