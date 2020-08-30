@@ -166,6 +166,8 @@ public:
   */
   void RemoveOutput();
 
+  AFontSize EditorFontSize() const;
+
   //! GroupCells warn if they contain both greek and latin lookalike chars.
   void UpdateConfusableCharWarnings();
   

@@ -231,17 +231,23 @@ GroupCell *Cell::GetGroup() const
 
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
-  // std::cerr << ToString()<< "\n"<<
-  //   "m_recalculateWidths" << m_recalculateWidths<<"\n"<<
-  //   "(Scale_Px(fontSize) != m_fontSize_Scaled)"<<(Scale_Px(fontSize) != m_fontSize_Scaled)<<"\n"<<
-  //   "(m_isBrokenIntoLines != m_isBrokenIntoLines_old)"<<(m_isBrokenIntoLines != m_isBrokenIntoLines_old)<<"\n"<<
-  //   "(m_clientWidth_old != (*m_configuration)->GetClientWidth())" << (m_clientWidth_old != (*m_configuration)->GetClientWidth()) <<"\n"<<
-  //   "(*m_configuration)->FontChanged()"<<(*m_configuration)->FontChanged()<<"\n\n";
   bool result = (m_recalculateWidths) ||
-    (Scale_Px(fontSize) != m_fontSize_Scaled) ||
+    (
+      (abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1) &&
+      (GetType() != MC_TYPE_GROUP)
+      )||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (*m_configuration)->FontChanged();
+  // if(result)
+  //   std::cerr << ToString()<< "\n"<<
+  //     "(GetType() != MC_TYPE_GROUP)" << (GetType() != MC_TYPE_GROUP) <<"\n"<<
+  //     "m_recalculateWidths" << m_recalculateWidths<<"\n"<<
+  //     "abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get())"<<abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get())<<"\n"<<
+  //     "(abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1)"<<(abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1)<<"\n"<<
+  //     "(m_isBrokenIntoLines != m_isBrokenIntoLines_old)"<<(m_isBrokenIntoLines != m_isBrokenIntoLines_old)<<"\n"<<
+  //     "(m_clientWidth_old != (*m_configuration)->GetClientWidth())" << (m_clientWidth_old != (*m_configuration)->GetClientWidth()) <<"\n"<<
+  //     "(*m_configuration)->FontChanged()"<<(*m_configuration)->FontChanged()<<"\n\n";
   return result;
 }
 
@@ -1029,6 +1035,12 @@ void Cell::ResetData()
   for (Cell &cell : OnInner(this))
     for (Cell &tmp : OnList(&cell))
       tmp.ResetData();
+}
+
+void Cell::ResetDataList()
+{
+  for (Cell &tmp : OnList(this))
+    tmp.ResetData();
 }
 
 Cell *Cell::first() const

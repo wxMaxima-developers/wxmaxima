@@ -455,7 +455,7 @@ void GroupCell::UpdateConfusableCharWarnings()
 
 void GroupCell::Recalculate()
 {
-  if (NeedsRecalculation((*m_configuration)->GetDefaultFontSize()))
+  if (NeedsRecalculation(EditorFontSize()))
   {
     Cell::Recalculate((*m_configuration)->GetDefaultFontSize());
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
@@ -487,8 +487,8 @@ void GroupCell::Recalculate()
       RecalculateHeightOutput();
   }
   // The line breaking will have set our "needs recalculation" flag again.
-  ClearNeedsToRecalculateWidths();
   UpdateYPosition();
+  Cell::Recalculate((*m_configuration)->GetDefaultFontSize());
 }
 
 void GroupCell::InputHeightChanged()
@@ -517,6 +517,19 @@ void GroupCell::OnSize()
 {
   InputHeightChanged();
   BreakLines();
+}
+
+AFontSize GroupCell::EditorFontSize() const
+{
+  Configuration *configuration = (*m_configuration);
+  AFontSize fontSize = configuration->GetDefaultFontSize();
+  if(GetEditable())
+  {
+    fontSize = configuration->GetFontSize(GetEditable()->GetStyle());
+    if (fontSize.IsNull())
+      fontSize = configuration->GetDefaultFontSize();
+  }
+  return fontSize;
 }
 
 void GroupCell::RecalculateHeightInput()
@@ -551,27 +564,21 @@ void GroupCell::RecalculateHeightInput()
     if ((configuration->ShowCodeCells()) ||
         (m_groupType != GC_TYPE_CODE))
     {
-      AFontSize fontSize = configuration->GetDefaultFontSize();
       if(GetEditable())
-      {
-        fontSize = configuration->GetFontSize(GetEditable()->GetStyle());
-        if (fontSize.IsNull())
-          fontSize = configuration->GetDefaultFontSize();
-        GetEditable()->RecalculateList(fontSize);
-      }
+        GetEditable()->RecalculateList(EditorFontSize());
       
       if(m_inputLabel)
       {
-        m_inputLabel->Recalculate(fontSize);
+        m_inputLabel->Recalculate(EditorFontSize());
         m_inputWidth = m_width = m_inputLabel->GetFullWidth();
         m_center = m_inputLabel->GetCenterList();
         m_inputHeight = m_height = m_inputLabel->GetHeightList();
       }
     }
   }
-  if(!m_inputLabel)
-    m_center = 0;
   m_height = m_inputHeight;
+  if(!m_inputLabel)
+    m_center = m_height;
   m_width = m_inputWidth;
 }
 
@@ -646,7 +653,7 @@ void GroupCell::RecalculateHeightOutput()
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
-    ((GetInput() != NULL) && (GetInput()->NeedsRecalculation(fontSize)));
+    ((GetInput() != NULL) && (GetInput()->NeedsRecalculation(EditorFontSize())));
 }
 
 void GroupCell::UpdateYPositionList()
@@ -1621,7 +1628,7 @@ void GroupCell::BreakLines()
       cell = cell->GetNextToDraw();
     }
   }
-  ResetData();
+  m_output->ResetDataList();
   ResetCellListSizes();
 }
 

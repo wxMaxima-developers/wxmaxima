@@ -444,6 +444,8 @@ public:
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
+  void ResetDataList();
+
   //! Mark the cached height and width information as "to be calculated".
   void ResetSize()
     { 

@@ -612,18 +612,17 @@ bool EditorCell::IsZoomFactorChanged() const
 
 
 void EditorCell::Recalculate(AFontSize fontsize)
-{
-  if (IsZoomFactorChanged())
-  {
-    m_widths.clear();
-    m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
-  }
-    
+{    
   m_isDirty = false;
   if (NeedsRecalculation(fontsize))
   {
-    Configuration *configuration = (*m_configuration);
     Cell::Recalculate(fontsize);
+    Configuration *configuration = (*m_configuration);
+    if (IsZoomFactorChanged())
+    {
+      m_widths.clear();
+      m_lastZoomFactor = configuration->GetZoomFactor();
+    }
     StyleText();
     wxDC *dc = configuration->GetDC();
     SetFont();
@@ -676,6 +675,7 @@ void EditorCell::Recalculate(AFontSize fontsize)
 
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
+    Cell::Recalculate(fontsize);
   }
 }
 
