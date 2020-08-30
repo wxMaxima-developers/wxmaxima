@@ -942,7 +942,6 @@ bool Worksheet::RecalculateIfNeeded()
 
   if (m_configuration->AdjustWorksheetSize())
     AdjustSize();
-  m_configuration->RecalculationForce(false);
   m_configuration->FontChanged(false);
 
   m_configuration->AdjustWorksheetSize(false);
@@ -956,9 +955,6 @@ void Worksheet::Recalculate(Cell *start, bool force)
   GroupCell *group = GetTree();
   if (start)
     group = start->GetGroup();
-
-  if (force)
-    m_configuration->RecalculationForce(force);
 
   if (!m_recalculateStart)
     m_recalculateStart = group;

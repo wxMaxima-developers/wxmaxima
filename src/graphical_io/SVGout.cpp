@@ -52,7 +52,6 @@ Svgout::Svgout(Configuration **configuration, const wxString &filename, double s
   auto &config = m_cmn.GetConfiguration();
   config.SetContext(m_recalculationDc);
   config.SetClientWidth(700*scale);
-  config.RecalculationForce(true);
 }
 
 Svgout::Svgout(Configuration **configuration, std::unique_ptr<Cell> &&tree, const wxString &filename, double scale) :

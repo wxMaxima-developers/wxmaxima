@@ -37,7 +37,6 @@ Emfout::Emfout(Configuration **configuration, const wxString &filename) :
   auto &config = m_cmn.GetConfiguration();
   config.SetContext(m_recalculationDc);
   config.SetClientWidth(3000);
-  config.RecalculationForce(true);
 }
 
 Emfout::Emfout(Configuration **configuration, std::unique_ptr<Cell> &&tree, const wxString &filename) :

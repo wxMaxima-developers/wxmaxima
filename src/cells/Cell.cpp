@@ -45,7 +45,7 @@ const wxString &Cell::GetLocalToolTip() const
 
 bool Cell::IsZoomFactorChanged() const
 {
-  double constexpr eps = 0.01;
+  double constexpr eps = 0.04;
   double diff = (*m_configuration)->GetZoomFactor() - m_lastZoomFactor;
   return diff < -eps || diff > eps;
 }
@@ -73,6 +73,7 @@ Cell::Cell(GroupCell *group, Configuration **config) :
     m_fontSize((*config)->GetMathFontSize())
 {
   InitBitFields();
+  ResetSize();
 }
 
 Cell::~Cell()
@@ -237,19 +238,25 @@ GroupCell *Cell::GetGroup() const
 
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
+  // std::cerr << ToString()<< "\n"<<
+  //   "m_recalculateWidths" << m_recalculateWidths<<"\n"<<
+  //   "(fontSize != m_fontSize)"<<(fontSize != m_fontSize)<<"\n"<<
+  //   "(m_isBrokenIntoLines != m_isBrokenIntoLines_old)"<<(m_isBrokenIntoLines != m_isBrokenIntoLines_old)<<"\n"<<
+  //   "(m_clientWidth_old != (*m_configuration)->GetClientWidth())" << (m_clientWidth_old != (*m_configuration)->GetClientWidth()) <<"\n"<<
+  //   "IsZoomFactorChanged()"<<IsZoomFactorChanged()<<"\n"<<
+  //   "(*m_configuration)->FontChanged()"<<(*m_configuration)->FontChanged()<<"\n\n";
   bool result = (m_recalculateWidths) ||
     (fontSize != m_fontSize) ||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     IsZoomFactorChanged() ||
-    ((*m_configuration)->RecalculationForce()) ||
     (*m_configuration)->FontChanged();
   return result;
 }
 
 int Cell::GetCenterList() const
 {
-  if (m_recalculate_maxCenter || ((*m_configuration)->RecalculationForce()))
+  if (m_recalculate_maxCenter)
   {
     m_recalculate_maxCenter = false;
     int maxCenter = 0;
@@ -267,7 +274,7 @@ int Cell::GetCenterList() const
 
 int Cell::GetMaxDrop() const
 {
-  if (m_recalculate_maxDrop || ((*m_configuration)->RecalculationForce()))
+  if (m_recalculate_maxDrop)
   {
     m_recalculate_maxDrop = false;
     int maxDrop = 0;
@@ -291,7 +298,7 @@ int Cell::GetHeightList() const
 int Cell::GetFullWidth() const
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
-  if (m_recalculate_maxWidth || ((*m_configuration)->RecalculationForce()))
+  if (m_recalculate_maxWidth)
   {
     m_recalculate_maxWidth = false;
 

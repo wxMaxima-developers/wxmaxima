@@ -47,7 +47,6 @@ EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString
   m_text.Replace(wxT("\u2029"), "\n");
 
   SetValue(TabExpand(text, 0));
-  ResetSize();  
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input)
@@ -164,8 +163,6 @@ void EditorCell::AddDrawParameter(wxString param)
   m_text += textAfterParameter;
   StyleText();
   ResetSize();
-  if (m_group)
-    m_group->ResetSize();
 }
 
 void EditorCell::SearchStartedHere(int index) const
@@ -608,15 +605,15 @@ void EditorCell::ConvertNumToUNicodeChar()
 
 void EditorCell::Recalculate(AFontSize fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   if (IsZoomFactorChanged())
     m_widths.clear();
 
   m_isDirty = false;
   if (NeedsRecalculation(fontsize))
   {
+    Configuration *configuration = (*m_configuration);
+    Cell::Recalculate(fontsize);
     StyleText();
-    m_fontSize_Last = Scale_Px(fontsize);
     wxDC *dc = configuration->GetDC();
     SetFont();
 
@@ -669,7 +666,6 @@ void EditorCell::Recalculate(AFontSize fontsize)
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
-  Cell::Recalculate(fontsize);
 }
 
 wxString EditorCell::ToHTML() const
@@ -1011,12 +1007,6 @@ void EditorCell::SetFont()
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
-  m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize.IsNull())
-    m_fontSize = configuration->GetDefaultFontSize();
-
-  m_fontSize = Scale_Px(m_fontSize);
-
   m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
   // ordinary cells in order to make transparent that this cell is special.
@@ -1034,7 +1024,7 @@ void EditorCell::SetFont()
 
   wxASSERT(m_fontSize.IsValid());
 
-  auto style = Style(m_fontSize)
+  auto style = Style(Scale_Px(m_fontSize))
                  .FontName(m_fontName)
                  .FontStyle(m_fontStyle)
                  .Bold(configuration->IsBold(m_textStyle) == wxFONTWEIGHT_BOLD)
@@ -1047,7 +1037,7 @@ void EditorCell::SetFont()
   }
   if (!style.IsFontOk()) {
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(m_fontSize);
+    style.SetFontSize(Scale_Px(m_fontSize));
   }
 
   wxASSERT_MSG(style.IsFontOk(),
@@ -2957,7 +2947,6 @@ wxString EditorCell::DivideAtCaret()
 
   SetValue(newText);
   ResetSize();
-  GetGroup()->ResetSize();
   wxString retval = original.SubString(m_positionOfCaret, original.Length());
   // Remove an eventual newline from the beginning of a new cell
   // that would appear if the cell is divided at the end of a line.
@@ -3873,8 +3862,6 @@ void EditorCell::SetValue(const wxString &text)
 
   // Style the text.
   StyleText();
-  if (m_group)
-    m_group->ResetSize();
   ResetData();
 }
 

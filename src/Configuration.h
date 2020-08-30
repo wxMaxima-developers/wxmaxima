@@ -209,10 +209,7 @@ public:
   //! Sets the zoom factor without storing the new value in the config file/registry.
   void SetZoomFactor_temporarily(double newzoom){
     if(m_zoomFactor != newzoom)
-    {
-      RecalculationForce(true);
       FontChanged(true);
-    }
     m_zoomFactor = newzoom;
   }
 
@@ -251,18 +248,6 @@ public:
   wxFontStyle IsItalic(long st) const;
 
   bool IsUnderlined(long st) const {return m_styles[st].IsUnderlined();}
-
-  //! Force a full recalculation?
-  void RecalculationForce(bool force)
-  {
-    m_forceUpdate = force;
-  }
-
-  //! Force a full recalculation?
-  bool RecalculationForce() const 
-  {
-    return m_forceUpdate;
-  }
 
   long GetLabelWidth() const
   { return m_labelWidth * 14; }
@@ -329,16 +314,12 @@ public:
    */
   void SetIndent(long indent)
   {
-    if(m_indent != indent)
-      RecalculationForce(true);
     m_indent = indent;
   }
 
   //! Set the width of the visible window for GetClientWidth()
   void SetClientWidth(long width)
   {
-    if(m_clientWidth != width)
-      RecalculationForce(true);
     m_clientWidth = width;
   }
   //! Has a font changed?
@@ -361,8 +342,6 @@ public:
   void FontChanged(bool fontChanged)
     {
       m_fontChanged = fontChanged;
-      if(fontChanged)
-        RecalculationForce(true);
       m_charsInFont.clear();
     }
   

@@ -69,7 +69,6 @@ OutCommon::~OutCommon()
   }
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
-  (*m_configuration)->RecalculationForce(true);
 }
 
 wxSize OutCommon::GetScaledSize() const

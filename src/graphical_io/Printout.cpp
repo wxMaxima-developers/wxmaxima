@@ -53,7 +53,6 @@ Printout::~Printout()
     wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
-  (*m_configuration)->RecalculationForce(true);  
 }
 
 void Printout::SetData(std::unique_ptr<GroupCell> &&tree)
@@ -245,7 +244,6 @@ void Printout::SetupData()
   (*m_configuration)->LineWidth_em(10000);
   Recalculate();
   BreakPages();
-  (*m_configuration)->RecalculationForce(true);
 }
 
 void Printout::GetPageInfo(int *minPage, int *maxPage,

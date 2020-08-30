@@ -499,7 +499,6 @@ void GroupCell::InputHeightChanged()
   EditorCell *editorCell = GetEditable();
   if(editorCell == NULL)
     return;
-//  editorCell -> ResetSize();
   RecalculateHeightInput();
   if(m_output != NULL)
   {
@@ -553,18 +552,25 @@ void GroupCell::RecalculateHeightInput()
     if ((configuration->ShowCodeCells()) ||
         (m_groupType != GC_TYPE_CODE))
     {
+      AFontSize fontSize = configuration->GetDefaultFontSize();
+      if(GetEditable())
+      {
+        fontSize = configuration->GetFontSize(GetEditable()->GetStyle());
+        if (fontSize.IsNull())
+          fontSize = configuration->GetDefaultFontSize();
+        GetEditable()->RecalculateList(fontSize);
+      }
+      
       if(m_inputLabel)
       {
-        m_inputLabel->RecalculateList((*m_configuration)->GetDefaultFontSize());
+        m_inputLabel->Recalculate(fontSize);
         m_inputWidth = m_width = m_inputLabel->GetFullWidth();
         m_center = m_inputLabel->GetCenterList();
         m_inputHeight = m_height = m_inputLabel->GetHeightList();
       }
     }
   }
-  if(m_inputLabel)
-    m_inputLabel->GetCenterList();
-  else
+  if(!m_inputLabel)
     m_center = 0;
   m_height = m_inputHeight;
   m_width = m_inputWidth;

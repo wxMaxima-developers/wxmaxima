@@ -651,11 +651,6 @@ private:
 
 //** 2 bytes
 //**
-  /*! The font size we were called with  the last time
-
-    We need to know this in order to be able to detect we need a full recalculation.
-   */
-  AFontSize m_fontSize_Last;
   AFontStyle m_fontStyle;
   AFontWeight m_fontWeight;
 

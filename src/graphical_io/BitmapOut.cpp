@@ -46,7 +46,6 @@ BitmapOut::BitmapOut(Configuration **configuration, double scale) :
   config.SetContext(m_dc);
   config.SetClientWidth(BM_FULL_WIDTH);
   config.SetClientHeight(BM_FULL_WIDTH);
-  config.RecalculationForce(true);
 }
 
 BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale, long maxSize) :
