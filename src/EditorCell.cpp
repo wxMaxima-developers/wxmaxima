@@ -2326,6 +2326,9 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
 
     chr = event.GetUnicodeKey();
 
+    if (event.ShiftDown())
+      chr.Replace(wxT(" "), wxT("\xa0"));
+
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
              chr +
              m_text.SubString(m_positionOfCaret, m_text.Length());
