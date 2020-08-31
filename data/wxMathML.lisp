@@ -451,7 +451,7 @@
 
   (defun wxxml-infix (x l r)
     ;; check for 2 args
-    (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+    (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-infix (wxxml-function x l r)))
     (setq l (wxxml (cadr x) l nil lop (caar x)))
     (wxxml (caddr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
 
@@ -786,7 +786,7 @@
   (defprop mquotient 123. wxxml-rbp)
 
   (defun wxxml-mquotient (x l r)
-    (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+    (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-mquotient (wxxml-function x l r)))
     (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
 	  r (wxxml (caddr x) (list "</mrow><mrow>")
 		   (append '("</mrow></mfrac>")r) 'mparen 'mparen))
@@ -1416,7 +1416,7 @@
 		 (v (mapcar #'stripdollar (cdr $pdiff_diff_var_names)))
 		 (p))
 	     (cond ((> (length n) (length v))
-		    (merror "Not enough elements in pdiff_diff_var_names to display the expression")))
+		    (return-from wxxml-pderivop (wxxml-function x l r))))
 	     (dotimes (i (length n))
 	       (setq p (append p (make-list (nth i n)
 					    :initial-element (nth i v)))))
