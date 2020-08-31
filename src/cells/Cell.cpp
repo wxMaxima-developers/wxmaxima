@@ -1005,7 +1005,7 @@ Cell::Range Cell::GetInnerCellsInRect(const wxRect &rect) const
     for (Cell const &tmp : OnList(&cell))
       if (tmp.ContainsRect(rect))
       {
-        r = GetCellsInRect(rect);
+        r = tmp.GetCellsInRect(rect);
         wxASSERT(r.first);
       }
 
