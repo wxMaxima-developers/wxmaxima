@@ -553,6 +553,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(Worksheet::popid_special_constant_percent, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(Worksheet::popid_changeasterisk, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(Worksheet::popid_hideasterisk, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_exponentialize, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_invert_mat, wxEVT_MENU,
@@ -8072,7 +8076,21 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       m_worksheet->RequestRedraw();
       break;
     }
-    case menu_num_domain:
+    case Worksheet::popid_hideasterisk:
+    {
+      m_worksheet->m_configuration->HidemultiplicationSign(event.IsChecked());
+      m_worksheet->GetTree()->ResetDataList();
+      m_worksheet->RequestRedraw();
+      break;
+    }
+    case Worksheet::popid_changeasterisk:
+    {
+      m_worksheet->m_configuration->SetChangeAsterisk(event.IsChecked());
+      m_worksheet->GetTree()->ResetDataList();
+      m_worksheet->RequestRedraw();
+      break;
+    }
+  case menu_num_domain:
       if(event.IsChecked())
         cmd = wxT("domain:'complex$");
       else

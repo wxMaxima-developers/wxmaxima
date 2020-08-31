@@ -1469,6 +1469,25 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu.Check(popid_special_constant_percent,
                           m_configuration->CheckKeepPercent());
         }
+        if(
+          (GetSelectionStart() != NULL) &&
+          (GetSelectionStart()->GetType() == MC_TYPE_TEXT) &&
+          (dynamic_cast<TextCell *>(GetSelectionStart())->IsOperator())
+          )
+        {
+          if(popupMenu.GetMenuItemCount()>0)
+            popupMenu.AppendSeparator();
+          popupMenu.AppendCheckItem(
+            popid_hideasterisk, _("Hide multiplication dots"),
+            wxEmptyString);
+          popupMenu.Check(popid_hideasterisk,
+                          m_configuration->HidemultiplicationSign());
+          popupMenu.AppendCheckItem(
+            popid_changeasterisk, _("Show * as multiplication dot"),
+            wxEmptyString);
+          popupMenu.Check(popid_changeasterisk,
+                          m_configuration->GetChangeAsterisk());
+        }
         if (
           (GetSelectionStart() != NULL) &&
           (GetSelectionStart() == GetSelectionEnd()) &&

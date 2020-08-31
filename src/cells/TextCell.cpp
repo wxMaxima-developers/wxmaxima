@@ -400,8 +400,8 @@ void TextCell::Recalculate(AFontSize fontsize)
     /// Hidden cells (multiplication * is not displayed)
     if (IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign()))
     {
-      m_height = 0;
-      m_width = Scale_Px(fontsize) / 4;
+      m_height = m_fontSize_Scaled.Get();
+      m_width = m_fontSize_Scaled.Get() / 4;
     }
     if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
     m_center = m_height / 2;

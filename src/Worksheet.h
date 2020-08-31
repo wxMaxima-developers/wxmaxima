@@ -826,6 +826,8 @@ public:
     popid_add_watch,
     popid_add_watch_label,
     popid_special_constant_percent,
+    popid_changeasterisk,
+    popid_hideasterisk,
     popid_delete,
     popid_simplify,
     popid_expand,
