@@ -405,7 +405,7 @@ Worksheet::~Worksheet()
 #if wxCHECK_VERSION(3, 1, 2)
 #define WORKING_DC_CLEAR 1
 #else
-#ifndef __WXGTK3__
+#ifndef __WXGTK__
 #define WORKING_DC_CLEAR 1
 #endif
 #endif
@@ -420,8 +420,6 @@ Worksheet::~Worksheet()
 #else
 #endif
 #endif
-
-#define WORKING_DC_CLEAR 1
 
 #ifdef __WXGTK__
 #if wxCHECK_VERSION(3, 1, 0)
