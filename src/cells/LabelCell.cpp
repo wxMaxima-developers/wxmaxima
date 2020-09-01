@@ -150,6 +150,54 @@ void LabelCell::UpdateDisplayedText()
   m_displayedText.Replace(wxT("\u2212>"), wxT("\u2192"));
 }
 
+wxString LabelCell::ToXML() const
+{
+  wxString tag;
+  if (IsHidden() || GetHidableMultSign())
+    tag = _T("h");
+  else
+    switch (GetStyle())
+    {
+      case TS_GREEK_CONSTANT:
+        tag = _T("g");
+        break;
+      case TS_SPECIAL_CONSTANT:
+        tag = _T("s");
+        break;
+      case TS_VARIABLE:
+        tag = _T("v");
+        break;
+      case TS_FUNCTION:
+        tag = _T("fnm");
+        break;
+      case TS_NUMBER:
+        tag = _T("n");
+        break;
+      case TS_STRING:
+        tag = _T("st");
+        break;
+      case TS_LABEL:
+        tag = _T("lbl");
+        break;
+      case TS_USERLABEL:
+        tag = _T("lbl");
+        break;
+      case TS_MAIN_PROMPT:
+        tag = _T("lbl");
+        break;
+      case TS_OTHER_PROMPT:
+        tag = _T("lbl");
+        break;
+      default:
+        tag = _T("t");
+    }
+
+  wxString xmlstring = XMLescape(m_text);
+  // convert it, so that the XML configuration doesn't fail
+
+  return wxT("<") + tag + GetXMLFlags() + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
+}
+
 void LabelCell::SetStyle(TextStyle style)
 {
   wxASSERT (

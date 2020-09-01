@@ -1240,6 +1240,12 @@ wxString TextCell::ToXML() const
       case TS_USERLABEL:
         tag = _T("lbl");
         break;
+      case TS_MAIN_PROMPT:
+        tag = _T("lbl");
+        break;
+      case TS_OTHER_PROMPT:
+        tag = _T("lbl");
+        break;
       default:
         tag = _T("t");
     }

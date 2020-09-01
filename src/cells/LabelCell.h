@@ -52,6 +52,7 @@ public:
   void UpdateDisplayedText() override;
   const wxString &GetAltCopyText() const override;
   void SetAltCopyText(const wxString &WXUNUSED(text)) override;
+  wxString ToXML() const override;
 
 private:
 //** Large objects (48 bytes)
