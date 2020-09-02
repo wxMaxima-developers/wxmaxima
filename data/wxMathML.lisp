@@ -117,13 +117,9 @@
   (defvar $maxima_frontend_version nil)
   (setf (symbol-value '$maxima_frontend) "wxMaxima")
 
+
   (defun $wxbuild_info ()
-    (let ((year (sixth cl-user:*maxima-build-time*))
-	  (month (fifth cl-user:*maxima-build-time*))
-	  (day (fourth cl-user:*maxima-build-time*))
-	  (hour (third cl-user:*maxima-build-time*))
-	  (minute (second cl-user:*maxima-build-time*))
-	  (seconds (first cl-user:*maxima-build-time*)))
+    (progv  '(seconds minute hour day month year) cl-user:*maxima-build-time*
       (format t "wxMaxima version: ~a~%" $wxmaximaversion)
       (format t "using wxWidgets version: ~a~%" $wxwidgetsversion)
       (format t "Maxima version: ~a~%" *autoconf-version*)
