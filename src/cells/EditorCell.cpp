@@ -45,7 +45,6 @@ EditorCell::EditorCell(GroupCell *parent, Configuration **config, const wxString
   InitBitFields();
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
-
   SetValue(TabExpand(text, 0));
 }
 
