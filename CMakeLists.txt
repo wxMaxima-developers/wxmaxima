@@ -111,12 +111,15 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     set(CMAKE_INSTALL_CONFIG_NAME "${CMAKE_BUILD_TYPE}")
 endif()
 
-if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
-    message(WARNING
-        "Cmake discourages in-source builds making them the less tested option. "
-        "It is therefore advisable to do an out-of-source-build instead: Create a "
-        "separate directory for the build and run cmake <path to the source dir> and "
-        "make from there.")
+get_filename_component(srcdir "${CMAKE_SOURCE_DIR}" REALPATH)
+get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
+if("${srcdir}" STREQUAL "${bindir}")
+    message(FATAL_ERROR
+        "In-source builds not allowed. They are unsupportable in practice, they spill "
+        "their guts into .gitignore, and they turn buildsystem bugs into damage to sources. "
+        "Instead, build the project out-of source: Create a "
+        "separate directory for the build *outside of the source folder*, and run "
+        "cmake <path to the source dir> and build from there.")
 endif()
 
 ##
