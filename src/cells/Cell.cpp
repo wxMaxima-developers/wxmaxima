@@ -1000,16 +1000,17 @@ Cell::Range Cell::GetListCellsInRect(const wxRect &rect) const
 
 Cell::Range Cell::GetInnerCellsInRect(const wxRect &rect) const
 {
-  Range r = {const_cast<Cell*>(this), const_cast<Cell*>(this)};
+  Range retval = {const_cast<Cell*>(this), const_cast<Cell*>(this)};
   for (Cell const &cell : OnInner(this))
     for (Cell const &tmp : OnList(&cell))
       if (tmp.ContainsRect(rect))
       {
-        r = tmp.GetCellsInRect(rect);
-        wxASSERT(r.first);
+        auto r = tmp.GetCellsInRect(rect);
+        if (r.first)
+          retval = r;
       }
 
-  return r;
+  return retval;
 }
 
 bool Cell::ContainsRect(const wxRect &sm, bool all) const
