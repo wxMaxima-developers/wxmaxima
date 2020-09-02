@@ -3694,6 +3694,8 @@ void wxMaxima::SetupVariables()
 
 #if defined (__WXOSX__)
   wxString gnuplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
+  gnuplot_binary.Replace("\\","\\\\");
+  gnuplot_binary.Replace("\"","\\\"");
   if (wxFileExists(gnuplot_binary))
     cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplot_binary + wxT("\")\n");
   wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), gnuplot_binary.utf8_str()));
@@ -3743,9 +3745,7 @@ void wxMaxima::SetupVariables()
   
   wxmaximaversion_lisp.Replace("\\","\\\\");
   wxmaximaversion_lisp.Replace("\"","\\\"");
-
   wxLogMessage(_("Updating maxima's configuration"));
-
   SendMaxima(wxString(wxT(":lisp-quiet (progn (setq $wxmaximaversion \"")) +
              wxString(wxmaximaversion_lisp) +
              wxT("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
