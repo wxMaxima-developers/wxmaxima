@@ -43,7 +43,7 @@
 #include <map>
 #include <memory>
 #include <vector>
-
+#include <type_traits>
 class CellPointers;
 class EditorCell;
 class GroupCell;
