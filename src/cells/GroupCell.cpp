@@ -506,7 +506,6 @@ void GroupCell::InputHeightChanged()
     m_outputRect.y = m_currentPoint.y + m_center;
     m_width = wxMax(m_width, m_output->GetLineWidth());
   }
-  ClearNeedsToRecalculateWidths();
   UpdateYPositionList();
 }
 
@@ -594,13 +593,7 @@ void GroupCell::RecalculateHeightOutput()
   
   Configuration *configuration = (*m_configuration);
     
-  if (NeedsToRecalculateWidths())
-  {
-    m_mathFontSize = (*m_configuration)->GetMathFontSize();
-    
-    //RecalculateHeightInput();
-    ClearNeedsToRecalculateWidths();
-  }
+  m_mathFontSize = (*m_configuration)->GetMathFontSize();
   // FIXME - this code did nothing, but the intent was maybe to break the line?
   // m_output->HardLineBreak();
 
@@ -617,16 +610,16 @@ void GroupCell::RecalculateHeightOutput()
   // Breakup cells and break lines
   BreakLines();
   
-  // Recalculate size of cells
-  // for (Cell &tmp : OnList(m_output.get()))
-  // {
-  //   tmp.RecalculateHeight(tmp.IsMath() ?
-  //                             (*m_configuration)->GetMathFontSize() :
-  //                             (*m_configuration)->GetDefaultFontSize());
-  // }
+  // Recalculate size of cells again: Their size might have changed during breaking
+  // lines
+  for (Cell &tmp : OnList(m_output.get()))
+  {
+    tmp.Recalculate(tmp.IsMath() ?
+                    (*m_configuration)->GetMathFontSize() :
+                    (*m_configuration)->GetDefaultFontSize());
+  }
 
   // Update heights
-  m_output->ForceBreakLine(true);
   for (Cell &tmp : OnDrawList(m_output.get()))
   {
     if (tmp.BreakLineHere())
