@@ -1,0 +1,18 @@
+name: cppcheck
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  run_cppcheck:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install
+      run: sudo apt-get install cppcheck
+    - name: cppcheck
+      working-directory: ${{runner.workspace}}/wxmaxima
+      run: cppcheck --inline-suppr src/*.cpp src/*/*.cpp --force --enable=all
