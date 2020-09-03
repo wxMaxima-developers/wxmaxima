@@ -411,6 +411,9 @@ public:
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
 
+private:
+  //! The client width at the time of the last recalculation.
+  int m_clientWidth_old = -1;
 protected:
   bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();

@@ -237,7 +237,6 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
       (GetType() != MC_TYPE_GROUP)
       )||
     (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
-    (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
     (*m_configuration)->FontChanged();
   // if(result)
   //   std::cerr << ToString()<< "\n"<<
@@ -455,7 +454,6 @@ void Cell::Recalculate(AFontSize fontsize)
 {
   m_fontSize_Scaled = Scale_Px(fontsize);
   m_isBrokenIntoLines_old = m_isBrokenIntoLines;
-  m_clientWidth_old = (*m_configuration)->GetClientWidth();
   ResetCellListSizes();
   m_recalculateWidths = false;
 }

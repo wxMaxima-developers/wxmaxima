@@ -893,9 +893,6 @@ protected:
   int m_center = -1;
   mutable int m_maxCenter = -1;
   mutable int m_maxDrop = -1;
-private:
-  //! The client width at the time of the last recalculation.
-  int m_clientWidth_old = -1;
 protected:
 //** 2-byte objects (2 bytes)
 //**

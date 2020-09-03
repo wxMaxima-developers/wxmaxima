@@ -488,7 +488,9 @@ void GroupCell::Recalculate()
   }
   // The line breaking will have set our "needs recalculation" flag again.
   UpdateYPosition();
-  Cell::Recalculate((*m_configuration)->GetDefaultFontSize());
+  Cell::Recalculate((*m_configuration)->GetDefaultFontSize(
+                      ));
+  m_clientWidth_old = (*m_configuration)->GetClientWidth();
 }
 
 void GroupCell::InputHeightChanged()
@@ -646,7 +648,8 @@ void GroupCell::RecalculateHeightOutput()
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
-    ((GetInput() != NULL) && (GetInput()->NeedsRecalculation(EditorFontSize())));
+    ((GetInput() != NULL) && (GetInput()->NeedsRecalculation(EditorFontSize()))) ||
+    (m_clientWidth_old != (*m_configuration)->GetClientWidth());
 }
 
 void GroupCell::UpdateYPositionList()
