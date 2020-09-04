@@ -21,10 +21,24 @@
 
 #define CATCH_CONFIG_RUNNER
 #define CELLPTR_COUNT_INSTANCES 1
+#include "Cell.cpp"
+#include "CellImpl.h"
+#include "CellIterators.h"
 #include "CellPtr.cpp"
+#include "StringUtils.cpp"
 #include <catch2/catch.hpp>
 #include <stx/optional.hpp>
 #include <array>
+
+AFontSize Style::GetFontSize() const { return {}; }
+AFontName Style::Default_FontName() { return {}; }
+AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
+wxColour Configuration::GetColor(TextStyle) { return {}; }
+void Configuration::NotifyOfCellRedraw(const Cell *) {}
+void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&) {}
+void CellList::DeleteList(Cell *) {}
+Configuration::Configuration(wxDC *, Configuration::InitOpt) : m_dc{} {}
+Configuration::~Configuration() {}
 
 class TestCell : public Observed {};
 
@@ -453,6 +467,78 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
               REQUIRE(!ptr2.HasControlBlock());
           }
         }
+      }
+    }
+  }
+}
+
+class FullTestCell : public Cell {
+public:
+  FullTestCell(Configuration **config) : Cell({}, config) {}
+  FullTestCell(const FullTestCell &) : Cell({}, {}) {}
+  std::unique_ptr<Cell> Copy() const override;
+  const CellTypeInfo &GetInfo() override;
+  Cell *GetNextToDraw() const override { return {}; }
+  void SetNextToDraw(Cell *) override {}
+};
+DEFINE_CELL(FullTestCell)
+
+SCENARIO("An InnerCellIterator skips null cells")
+{
+  GIVEN("A list of two null owning cell pointers") {
+    std::unique_ptr<Cell> inner[2];
+    WHEN("An inner cell iterator is created on that list") {
+      InnerCellIterator it(&inner[0], &inner[1]);
+      InnerCellAdapter range(it);
+      THEN("The iterator equals the end iterator")
+        REQUIRE(it == range.end());
+      AND_THEN("The range is empty")
+        REQUIRE(range.begin() == range.end());
+      AND_THEN("The range-for loop over the range skips the loop body")
+        for(auto &cell : range) REQUIRE(false);
+    }
+  }
+  GIVEN("A list of a non-null then null owning cell pointer") {
+    Configuration configuration;
+    Configuration *config = &configuration;
+    std::unique_ptr<Cell> inner[2]{std::make_unique<FullTestCell>(&config), nullptr};
+    WHEN("An inner cell iterator is created on that list") {
+      InnerCellIterator it(&inner[0], &inner[1]);
+      InnerCellAdapter range(it);
+      THEN("The iterator doesn't equal the end iterator")
+        REQUIRE(it != range.end());
+      AND_THEN("The range is not empty")
+        REQUIRE(range.begin() != range.end());
+      AND_THEN("The range begins with the cell")
+        REQUIRE(&*range.begin() == inner[0].get());
+      AND_THEN("A range-for loop over the range iterates over the cell once")
+      {
+        std::vector<Cell *> trace;
+        for(auto &cell : range) trace.push_back(&cell);
+        REQUIRE(trace.size() == 1);
+        REQUIRE(trace.front() == inner[0].get());
+      }
+    }
+  }
+  GIVEN("A list of a null then non-null owning cell pointer") {
+    Configuration configuration;
+    Configuration *config = &configuration;
+    std::unique_ptr<Cell> inner[2]{nullptr, std::make_unique<FullTestCell>(&config)};
+    WHEN("An inner cell iterator is created on that list") {
+      InnerCellIterator it(&inner[0], &inner[1]);
+      InnerCellAdapter range(it);
+      THEN("The iterator doesn't equal the end iterator")
+        REQUIRE(it != range.end());
+      AND_THEN("The range is not empty")
+        REQUIRE(range.begin() != range.end());
+      AND_THEN("The range begins with the cell")
+        REQUIRE(&*range.begin() == inner[1].get());
+      AND_THEN("A range-for loop over the range iterates over the cell once")
+      {
+        std::vector<Cell *> trace;
+        for(auto &cell : range) trace.push_back(&cell);
+        REQUIRE(trace.size() == 1);
+        REQUIRE(trace.front() == inner[1].get());
       }
     }
   }
