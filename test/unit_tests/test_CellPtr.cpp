@@ -496,7 +496,10 @@ SCENARIO("An InnerCellIterator skips null cells")
       AND_THEN("The range is empty")
         REQUIRE(range.begin() == range.end());
       AND_THEN("The range-for loop over the range skips the loop body")
-        for(auto &cell : range) REQUIRE(false);
+        for(auto &cell : range) {
+          wxUnusedVar(cell);
+          REQUIRE(false);
+        }
     }
   }
   GIVEN("A list of a non-null then null owning cell pointer") {
