@@ -49,13 +49,12 @@ const wxString &Cell::GetToolTip(const wxPoint point) const
     return wxm::emptyString;
 
   for (const Cell &cell : OnInner(this))
-    if(&cell)
-      for (const Cell &tmp : OnList(&cell))
-      {
-        auto &toolTip = tmp.GetToolTip(point);
-        if (!toolTip.empty())
-          return toolTip;
-      }
+    for (const Cell &tmp : OnList(&cell))
+    {
+      auto &toolTip = tmp.GetToolTip(point);
+      if (!toolTip.empty())
+        return toolTip;
+    }
 
   return *m_toolTip;
 }
@@ -190,8 +189,7 @@ int Cell::CellsInListRecursive() const
   {
     ++ cells;
     for (const Cell &cell : OnInner(&tmp))
-      if(&cell)
-        cells += cell.CellsInListRecursive();
+      cells += cell.CellsInListRecursive();
   }
   return cells;
 }
@@ -211,8 +209,7 @@ void Cell::SetGroup(GroupCell *group)
     wxASSERT (group->GetType() == MC_TYPE_GROUP);
   
   for (Cell &cell : OnInner(this))
-    if(&cell)
-      cell.SetGroupList(group);
+    cell.SetGroupList(group);
 }
 
 void Cell::FontsChangedList()
@@ -221,8 +218,7 @@ void Cell::FontsChangedList()
   {
     tmp.FontsChanged();
     for (Cell &cell : OnInner(&tmp))
-      if(&cell)
-        cell.FontsChangedList();
+      cell.FontsChangedList();
   }
 }
 
@@ -1004,15 +1000,14 @@ Cell::Range Cell::GetInnerCellsInRect(const wxRect &rect) const
 {
   Range retval = {const_cast<Cell*>(this), const_cast<Cell*>(this)};
   for (Cell const &cell : OnInner(this))
-    if(&cell)
-      for (Cell const &tmp : OnList(&cell))
-        if (tmp.ContainsRect(rect))
-        {
-          auto r = tmp.GetCellsInRect(rect);
-          if (r.first)
-            retval = r;
-        }
-  
+    for (Cell const &tmp : OnList(&cell))
+      if (tmp.ContainsRect(rect))
+      {
+        auto r = tmp.GetCellsInRect(rect);
+        if (r.first)
+          retval = r;
+      }
+
   return retval;
 }
 
@@ -1037,9 +1032,8 @@ void Cell::ResetData()
 {
   ResetSize();
   for (Cell &cell : OnInner(this))
-    if(&cell)
-      for (Cell &tmp : OnList(&cell))
-        tmp.ResetData();
+    for (Cell &tmp : OnList(&cell))
+      tmp.ResetData();
 }
 
 void Cell::ResetDataList()
@@ -1075,13 +1069,12 @@ bool Cell::BreakUp()
   if(clientWidth < 50)
     clientWidth = 50;
   for (Cell &cell : OnInner(this))
-    if(&cell)
-      for (Cell &tmp : OnList(&cell))
-        if(tmp.GetWidth() > clientWidth)
-        {
-          tmp.BreakUp();
-          retval = true;
-        }
+    for (Cell &tmp : OnList(&cell))
+      if(tmp.GetWidth() > clientWidth)
+      {
+        tmp.BreakUp();
+        retval = true;
+    }
   return retval;
 }
 
@@ -1101,9 +1094,8 @@ void Cell::Unbreak()
 
   // Unbreak the inner cells, too
   for (Cell &cell : OnInner(this))
-    if(&cell)
-      for (Cell &tmp : OnList(&cell))
-        tmp.Unbreak();
+    for (Cell &tmp : OnList(&cell))
+      tmp.Unbreak();
 }
 
 void Cell::UnbreakList()
@@ -1278,8 +1270,7 @@ wxAccStatus CellAccessible::GetChildCount(int *childCount)
 
   int count = 0;
   for (Cell &cell : OnInner(m_cell))
-    if(&cell)
-      ++count;
+    ++count;
 
   return (*childCount = count), wxACC_OK;
 }
@@ -1309,21 +1300,20 @@ wxAccStatus Cell::HitTest(const wxPoint &pt, int *childId, Cell **child)
 
   int id = 0; // Child #0 is this very cell
   for (Cell &cell : OnInner(this))
-    if(&cell)
-    {
-      // GetChildCount(), GetChild(), and this loop all skip null children - thus
-      // the child identifiers present the same via the accessibility API.
-      // This is facilitated by the inner cell iterators not ever returning a null
-      // cell :)
-      ++ id; // The first valid inner cell will have id #1, and so on.
-      
-      cell.GetLocation(rect, 0);
-      if (rect.Contains(pt))
-        return (childId && (*childId = id)), (child && (*child = &cell)),
-          wxACC_OK;
-    }
+  {
+    // GetChildCount(), GetChild(), and this loop all skip null children - thus
+    // the child identifiers present the same via the accessibility API.
+    // This is facilitated by the inner cell iterators not ever returning a null
+    // cell :)
+    ++ id; // The first valid inner cell will have id #1, and so on.
+
+    cell.GetLocation(rect, 0);
+    if (rect.Contains(pt))
+      return (childId && (*childId = id)), (child && (*child = &cell)),
+             wxACC_OK;
+  }
   return (childId && (*childId = 0)), (child && (*child = this)), //-V560
-    wxACC_OK;
+         wxACC_OK;
 }
 
 wxAccStatus CellAccessible::GetChild(int childId, wxAccessible **child)
@@ -1343,10 +1333,9 @@ wxAccStatus Cell::GetChild(int childId, Cell **child) const
 
   if (childId > 0)
     for (Cell &cell : OnInner(this))
-      if(&cell)
-        if (--childId == 0)
-          return (*child = &cell), wxACC_OK;
-  
+      if (--childId == 0)
+        return (*child = &cell), wxACC_OK;
+
   return wxACC_FAIL;
 }
 
@@ -1361,16 +1350,15 @@ wxAccStatus Cell::GetFocus(int *childId, Cell **child) const
 {
   int id = 0;
   for (Cell &cell : OnInner(this))
-    if(&cell)
-    {
-      ++ id;
-      
-      int dummy;
-      if (cell.GetFocus(&dummy, child) == wxACC_OK)
-        return (childId && (*childId = id)), (child && (*child = &cell)),
-          wxACC_OK;
-    }
-  
+  {
+    ++ id;
+
+    int dummy;
+    if (cell.GetFocus(&dummy, child) == wxACC_OK)
+      return (childId && (*childId = id)), (child && (*child = &cell)),
+             wxACC_OK;
+  }
+
   return (childId && (*childId = 0)), (child && (*child = nullptr)), //-V560
          wxACC_FAIL;
 }
