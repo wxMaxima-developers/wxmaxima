@@ -432,7 +432,7 @@ void TextCell::SetFont(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-  auto style = configuration->GetStyle(m_textStyle, m_fontSize_Scaled);
+  auto style = configuration->GetStyle(m_textStyle, fontsize);
   
   // Mark special variables that are printed as ordinary letters as being special.
   if ((!(*m_configuration)->CheckKeepPercent()) &&
