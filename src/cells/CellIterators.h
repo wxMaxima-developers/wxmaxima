@@ -135,6 +135,7 @@ class Cell;
 
 class InnerCellIterator
 {
+  enum class Advance { Always, OnlyIfNull };
   enum class Uses : uint16_t { SmartPtr, RawPtr};
   using SmartPtr_ = const std::unique_ptr<Cell> *;
   using RawPtr_ = Cell* const*;
@@ -145,9 +146,11 @@ class InnerCellIterator
 public:
   InnerCellIterator() = default;
   InnerCellIterator(const std::unique_ptr<Cell> *p, const std::unique_ptr<Cell> *last) :
-    m_ptr((p != last) ? p : nullptr), m_count(uint16_t(1+(last-p))), m_uses(Uses::SmartPtr) {}
+    m_ptr((p != last) ? p : nullptr), m_count(uint16_t(1+(last-p))), m_uses(Uses::SmartPtr)
+  { FindFirstInnerCell(); }
   InnerCellIterator(Cell* const *p, Cell* const *last) :
-    m_ptr((p != last) ? p : nullptr), m_count(uint16_t(1+(last-p))), m_uses(Uses::RawPtr) {}
+    m_ptr((p != last) ? p : nullptr), m_count(uint16_t(1+(last-p))), m_uses(Uses::RawPtr)
+  { FindFirstInnerCell(); }
   InnerCellIterator(const InnerCellIterator &o) = default;
   InnerCellIterator &operator=(const InnerCellIterator &o) = default;
   InnerCellIterator operator++(int)
@@ -160,11 +163,9 @@ public:
     wxASSERT_MSG(!m_ptr == !m_count, "Bug: The InnerCellIterator pointer and count must be both either zero or nonzero.");
     if (m_ptr)
     {
-      if (m_uses == Uses::SmartPtr) AdvanceLoop<Uses::SmartPtr>();
-      else if (m_uses == Uses::RawPtr) AdvanceLoop<Uses::RawPtr>();
+      if (m_uses == Uses::SmartPtr) AdvanceLoop<Uses::SmartPtr>(Advance::Always);
+      else if (m_uses == Uses::RawPtr) AdvanceLoop<Uses::RawPtr>(Advance::Always);
       else wxASSERT_MSG(false, "Internal error in InnerCellIterator");
-      if (!m_count)
-        m_ptr = nullptr;
     }
     return *this;
   }
@@ -180,7 +181,8 @@ private:
   template <Uses> Cell *GetInner_() const;
   template <Uses> void Advance_();
   Cell *GetInner() const;
-  template <Uses uses> void AdvanceLoop();
+  void FindFirstInnerCell();
+  template <Uses uses> void AdvanceLoop(Advance mode);
 };
 
 template <> inline Cell *InnerCellIterator::GetInner_<InnerCellIterator::Uses::SmartPtr>() const
@@ -200,15 +202,27 @@ inline Cell *InnerCellIterator::GetInner() const
   else return {};
 }
 
+inline void InnerCellIterator::FindFirstInnerCell()
+{
+  if (!m_ptr) return;
+  if (m_uses == Uses::SmartPtr) return AdvanceLoop<Uses::SmartPtr>(Advance::OnlyIfNull);
+  else if (m_uses == Uses::RawPtr) return AdvanceLoop<Uses::RawPtr>(Advance::OnlyIfNull);
+}
+
 template <InnerCellIterator::Uses uses>
-inline void InnerCellIterator::AdvanceLoop()
+inline void InnerCellIterator::AdvanceLoop(Advance mode)
 {
   Cell *prev = GetInner_<uses>();
+  if (mode == Advance::OnlyIfNull && prev)
+    return;
   for (;;)
   {
     Advance_<uses>();
     if (!--m_count)
+    {
+      m_ptr = nullptr;
       break;
+    }
     Cell *const cur = GetInner_<uses>();
     wxASSERT(!prev || prev != cur);
     if (cur)
