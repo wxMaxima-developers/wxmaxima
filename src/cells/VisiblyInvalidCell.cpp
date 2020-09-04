@@ -62,3 +62,13 @@ VisiblyInvalidCell::VisiblyInvalidCell(GroupCell *parent,
 }
 
 DEFINE_CELL_TYPEINFO(VisiblyInvalidCell)
+
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
+{
+  return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
+}
+
+std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(Configuration **config)
+{
+  return std::make_unique<VisiblyInvalidCell>(nullptr, config);
+}

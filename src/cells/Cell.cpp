@@ -1181,16 +1181,6 @@ bool Cell::IsMath() const
            m_textStyle == TS_INPUT);
 }
 
-std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell() const
-{
-  return std::make_unique<VisiblyInvalidCell>(m_group, m_configuration);
-}
-
-std::unique_ptr<Cell> Cell::MakeVisiblyInvalidCell(Configuration **config)
-{
-  return std::make_unique<VisiblyInvalidCell>(nullptr, config);
-}
-
 #if wxUSE_ACCESSIBILITY
 
 CellAccessible *Cell::GetAccessible()
