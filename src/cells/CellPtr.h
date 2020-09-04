@@ -124,8 +124,8 @@ class Observed
     ControlBlock(const ControlBlock &) = delete;
     void operator=(const ControlBlock &) = delete;
 
-    constexpr void reset() noexcept { m_object = nullptr; }
-    constexpr inline Observed *Get() const noexcept { return m_object; }
+    void reset() noexcept { m_object = nullptr; }
+    inline Observed *Get() const noexcept { return m_object; }
 
     //! References the control block, and returns the pointer to the control block.
     ControlBlock *Ref(const CellPtrBase *cellptr)
