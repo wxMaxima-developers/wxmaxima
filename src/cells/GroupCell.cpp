@@ -626,6 +626,7 @@ void GroupCell::RecalculateHeightOutput()
   {
     if (tmp.BreakLineHere())
     {
+      tmp.ResetCellListSizes();
       int height_Delta = tmp.GetHeightList();
       m_width = wxMax(m_width, tmp.GetLineWidth());
       m_outputRect.width = wxMax(m_outputRect.width, m_width);
