@@ -805,6 +805,7 @@ int GroupCell::GetLineIndent(Cell *cell)
       (cell->GetStyle() != TS_USERLABEL) &&
       (cell->GetStyle() != TS_MAIN_PROMPT) &&
       (cell->GetStyle() != TS_OTHER_PROMPT) &&
+      (cell->GetStyle() != TS_ASCIIMATHS) &&
       (*m_configuration)->IndentMaths())
     return Scale_Px((*m_configuration)->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
   return 0;

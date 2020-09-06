@@ -107,6 +107,9 @@ void Cell::SetType(CellType type)
     case MC_TYPE_TEXT:
       m_textStyle = TS_TEXT;
       break;
+    case MC_TYPE_ASCIIMATHS:
+      m_textStyle = TS_ASCIIMATHS;
+      break;
     case MC_TYPE_SUBSUBSECTION:
       m_textStyle = TS_SUBSUBSECTION;
       break;

@@ -55,6 +55,7 @@ TextCell::TextCell(GroupCell *parent, Configuration **config,
   case TS_USERLABEL: m_type = MC_TYPE_LABEL; break;
   case TS_HIGHLIGHT: m_type = MC_TYPE_TEXT; break;
   case TS_WARNING: m_type = MC_TYPE_WARNING; break;
+  case TS_ASCIIMATHS: m_type = MC_TYPE_ASCIIMATHS; break;
   case TS_ERROR: m_type = MC_TYPE_ERROR; break;
   case TS_TEXT: m_type = MC_TYPE_TEXT; break;
   case TS_HEADING6: m_type = MC_TYPE_HEADING6; break;
@@ -381,6 +382,8 @@ void TextCell::UpdateDisplayedText()
 void TextCell::Recalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
+  if(m_textStyle == TS_ASCIIMATHS)
+    ForceBreakLine(true);
   if(m_keepPercent_last != (*m_configuration)->CheckKeepPercent())
     UpdateDisplayedText();
   if(NeedsRecalculation(fontsize))
@@ -1189,6 +1192,9 @@ wxString TextCell::GetXMLFlags() const
   wxString flags;
   if (HasHardLineBreak() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
+
+  if (GetStyle() == TS_ASCIIMATHS)
+    flags += wxT(" type=\"ASCII-Art\"");
 
   if (GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");

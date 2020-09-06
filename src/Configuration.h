@@ -116,6 +116,16 @@ public:
     temporary,          //!< This configuration is temporary and shouldn't redetect Maxima etc.
   };
 
+  enum mathDisplayMode
+  {
+    display_2d,
+    display_2dASCII,
+    display_1dASCII
+  };
+
+  mathDisplayMode DisplayMode(){return m_displayMode;}
+  void DisplayMode(mathDisplayMode mode ){m_displayMode = mode;}
+
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
@@ -791,6 +801,7 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   //! Initialize the text styles on construction.
   void InitStyles();
 private:
+  mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
 
   //! true = Autosave doesn't save into the current file.

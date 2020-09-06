@@ -291,6 +291,8 @@ void Configuration::InitStyles()
   }
   #endif
 
+  wxFont monospace(10, wxMODERN, wxNORMAL, wxNORMAL);
+  m_styles[TS_ASCIIMATHS].SetFontName(AFontName(monospace.GetFaceName()));
   m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
 
@@ -797,7 +799,7 @@ AFontName Configuration::GetFontName(TextStyle const ts) const
 
   if (ts == TS_TITLE || ts == TS_SUBSECTION || ts == TS_SUBSUBSECTION ||
       ts == TS_HEADING5 || ts == TS_HEADING6 || ts == TS_SECTION ||
-      ts == TS_TEXT)
+      ts == TS_TEXT || ts == TS_ASCIIMATHS)
     retval = m_styles[ts].GetFontName();
 
   else if (ts == TS_NUMBER || ts == TS_VARIABLE || ts == TS_FUNCTION ||
@@ -870,6 +872,7 @@ void Configuration::ReadStyles(const wxString &file)
   m_styles[TS_INPUT].Read(config, "Style/Input/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
+  m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Read(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
@@ -927,6 +930,7 @@ void Configuration::WriteStyles(const wxString &file)
   m_styles[TS_INPUT].Write(config, "Style/Input/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");
+  m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Write(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
@@ -1088,6 +1092,7 @@ const wxString &Configuration::GetStyleName(TextStyle style) const
     &_("Highlight (dpart)"),
     &_("Maxima warnings"),
     &_("Maxima errors"),
+    &_("ASCII maths"),
     &_("Text cell"),
     &_("Heading 6"),
     &_("Heading 5"),

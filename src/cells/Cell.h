@@ -69,6 +69,7 @@ enum CellType : int8_t
   MC_TYPE_WARNING,     //!< A warning output by maxima
   MC_TYPE_ERROR,       //!< An error output by maxima
   MC_TYPE_TEXT,        //!< Text that isn't passed to maxima
+  MC_TYPE_ASCIIMATHS,  //!< Equations displayed in 2D
   MC_TYPE_SUBSECTION,  //!< A subsection name
   MC_TYPE_SUBSUBSECTION,  //!< A subsubsection name
   MC_TYPE_HEADING5,  //!< A subsubsection name

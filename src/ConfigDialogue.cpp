@@ -475,7 +475,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
   m_symbolPaneAdditionalChars->SetValue(configuration->SymbolPaneAdditionalChars());
-  m_getStyleFont->Enable(GetSelectedStyle() >= TS_TEXT && GetSelectedStyle() <= TS_TITLE);
+  m_getStyleFont->Enable(GetSelectedStyle() >= TS_ASCIIMATHS && GetSelectedStyle() <= TS_TITLE);
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
   unsigned int i = 0;
   // First set the language to "default".
@@ -1476,7 +1476,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent& WXUNUSED(event))
 
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.  
-  m_getStyleFont->Enable(st >= TS_TEXT && st <= TS_TITLE);
+  m_getStyleFont->Enable(st >= TS_ASCIIMATHS && st <= TS_TITLE);
 
   if (st <= TS_TITLE || st == TS_MATH)
   {

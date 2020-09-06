@@ -1266,6 +1266,7 @@
      (t
       (format t "Unknown display type")
       (setq tp '$unknown)))
+    (wx-print-gui-variables)
     tp)
 
   ;;

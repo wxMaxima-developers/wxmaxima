@@ -1332,7 +1332,6 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type,
                     AppendOpt(AppendOpt::NewLine | AppendOpt::BigSkip), userLabel);
   }
-
   else if (type == MC_TYPE_ERROR)
   {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR);
@@ -1357,6 +1356,10 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, const wxString &use
   else if (type == MC_TYPE_TEXT)
   {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_TEXT);
+  }
+  else if (type == MC_TYPE_ASCIIMATHS)
+  {
+    lastLine = DoRawConsoleAppend(s, MC_TYPE_ASCIIMATHS);
   }
   else
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, AppendOpt::BigSkip);
@@ -2414,7 +2417,12 @@ void wxMaxima::ReadMiscText(const wxString &data)
         if (warning)
           m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_WARNING));
         else
-          m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_TEXT));
+        {
+          if(m_worksheet->m_configuration->DisplayMode() != Configuration::display_2dASCII)
+            m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_TEXT));
+          else
+            m_worksheet->SetCurrentTextCell(ConsoleAppend(textline, MC_TYPE_ASCIIMATHS));
+        }
       }
     }
     if (lines.HasMoreTokens())
@@ -2796,13 +2804,22 @@ void wxMaxima::VariableActionDisplay2D(const wxString &value)
   {
     m_maximaVariable_display2d = value;
     if(m_maximaVariable_display2d == wxT("false"))
+    {
+      m_worksheet->m_configuration->DisplayMode(Configuration::display_1dASCII);
       m_equationTypeMenuMenu->Check(menu_math_as_1D_ASCII, true);
+    }
     else
     {
       if(m_maximaVariable_altdisplay2d == wxT("false"))
+      {
+        m_worksheet->m_configuration->DisplayMode(Configuration::display_2dASCII);
         m_equationTypeMenuMenu->Check(menu_math_as_2D_ASCII, true);
+      }
       else
+      {
+        m_worksheet->m_configuration->DisplayMode(Configuration::display_2d);
         m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
+      }
     }
   }
 }
@@ -2812,13 +2829,22 @@ void wxMaxima::VariableActionAltDisplay2D(const wxString &value)
   {
     m_maximaVariable_altdisplay2d = value;
     if(m_maximaVariable_display2d == wxT("false"))
+    {
+      m_worksheet->m_configuration->DisplayMode(Configuration::display_1dASCII);
       m_equationTypeMenuMenu->Check(menu_math_as_1D_ASCII, true);
+    }
     else
     {
       if(m_maximaVariable_altdisplay2d == wxT("false"))
+      {
+        m_worksheet->m_configuration->DisplayMode(Configuration::display_2dASCII);
         m_equationTypeMenuMenu->Check(menu_math_as_2D_ASCII, true);
+      }
       else
+      {
+        m_worksheet->m_configuration->DisplayMode(Configuration::display_2d);
         m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
+      }
     }
   }
 }

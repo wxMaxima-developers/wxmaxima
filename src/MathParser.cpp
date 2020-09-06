@@ -226,6 +226,8 @@ std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node)
     TextStyle style = TS_DEFAULT;
     if (node->GetAttribute(wxT("type")) == wxT("error"))
       style = TS_ERROR;
+    if (node->GetAttribute(wxT("type")) == wxT("ASCII-Art"))
+      style = TS_ASCIIMATHS;
     if (node->GetAttribute(wxT("type")) == wxT("warning"))
       style = TS_WARNING;
     return ParseText(node->GetChildren(), style);
