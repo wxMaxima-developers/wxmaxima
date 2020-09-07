@@ -471,7 +471,7 @@ void GroupCell::Recalculate()
     }
     
     if(m_inputLabel != NULL)
-      RecalculateHeightInput();
+      RecalculateInput();
 
 /*    if (m_output == NULL || IsHidden())
     {
@@ -484,7 +484,7 @@ void GroupCell::Recalculate()
       }  
     }
     else*/
-      RecalculateHeightOutput();
+      RecalculateOutput();
   }
   // The line breaking will have set our "needs recalculation" flag again.
   UpdateYPosition();
@@ -501,7 +501,7 @@ void GroupCell::InputHeightChanged()
   EditorCell *editorCell = GetEditable();
   if(editorCell == NULL)
     return;
-  RecalculateHeightInput();
+  RecalculateInput();
   if(m_output != NULL)
   {
     m_height += m_outputRect.GetHeight();
@@ -533,7 +533,7 @@ AFontSize GroupCell::EditorFontSize() const
   return fontSize;
 }
 
-void GroupCell::RecalculateHeightInput()
+void GroupCell::RecalculateInput()
 {
   Configuration *configuration = (*m_configuration);
   m_currentPoint.x = configuration->GetIndent();
@@ -583,7 +583,7 @@ void GroupCell::RecalculateHeightInput()
   m_width = m_inputWidth;
 }
 
-void GroupCell::RecalculateHeightOutput()
+void GroupCell::RecalculateOutput()
 {
   m_outputRect = wxRect(m_currentPoint.x, m_currentPoint.y + m_center,
                         0, 0);

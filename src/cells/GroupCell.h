@@ -237,14 +237,14 @@ public:
   void Recalculate();
 
   //! Recalculate the height of the input part of the cell
-  void RecalculateHeightInput();
+  void RecalculateInput();
   wxRect GetRect(bool all = false) const override;
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
     during RecalculateAppended.
    */
-  void RecalculateHeightOutput();
+  void RecalculateOutput();
 
   /*! Attempt to split math objects that are wider than the screen into multiple lines.
     
@@ -348,9 +348,9 @@ public:
 
     \attention The height the output has needs to be in sync with the height
     calculation done during RecalculateAppended() and during
-    RecalculateHeightOutput().
+    RecalculateOutput().
     \attention The y position used here must be in sync with the one calculated
-    by RecalculateHeightOutput().
+    by RecalculateOutput().
 
    */
   void Draw(wxPoint point) override;
