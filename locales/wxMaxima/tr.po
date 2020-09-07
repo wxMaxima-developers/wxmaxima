@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-31 02:13+0200\n"
+"POT-Creation-Date: 2020-09-07 20:32+0200\n"
 "PO-Revision-Date: 2020-06-03 03:13+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "\n"
 "Maxima tüm CPU ların %3.3f%% nı kullanıyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8195
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8221
 #, c-format
 msgid ""
 "\n"
@@ -40,7 +40,7 @@ msgstr ""
 "wxWidgets: %d.%d.%d\n"
 "Unicode Desteği: %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8215
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8241
 msgid ""
 "\n"
 "Maxima compiled using: "
@@ -48,7 +48,7 @@ msgstr ""
 "\n"
 "Maxima kullanılarak derlendi: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8211
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8237
 msgid ""
 "\n"
 "Maxima version: "
@@ -56,7 +56,7 @@ msgstr ""
 "\n"
 "Maxima Sürümü: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8200
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8226
 #, c-format
 msgid ""
 "\n"
@@ -65,7 +65,7 @@ msgstr ""
 "\n"
 "Multiprocessing using OpenMP %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8207
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8233
 msgid ""
 "\n"
 "No OpenMP support"
@@ -73,7 +73,7 @@ msgstr ""
 "\n"
 "OpenMP desteği yok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8204
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8230
 msgid ""
 "\n"
 "No fine-grained OpenMP locks built in"
@@ -81,7 +81,7 @@ msgstr ""
 "\n"
 "No fine-grained OpenMP locks built in"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8213
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8239
 msgid ""
 "\n"
 "Not connected."
@@ -89,7 +89,7 @@ msgstr ""
 "\n"
 "Bağlanamadı."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8202
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8228
 msgid ""
 "\n"
 "Using fine-grained OpenMP locks"
@@ -157,7 +157,7 @@ msgstr "\"Copy LaTeX\"denklem işaretlerini ekler"
 msgid "\"implies\" symbol"
 msgstr "\"uygular\" işareti"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4386
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4412
 #, c-format
 msgid "%i cells in evaluation queue"
 msgstr "%i hücreleri değerlendirme sırasında (bekliyor)"
@@ -468,12 +468,12 @@ msgstr "3B"
 msgid ": Can't interpret line: %s"
 msgstr ": Satır yorumlanamıyor:% s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4389
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4415
 #, c-format
 msgid "; %i commands left in the current cell"
 msgstr "; %i komutları geçerli hücrede kaldı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9604
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9630
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -570,6 +570,11 @@ msgstr "Garip bir örnek, sadece göstermek için\n"
 msgid "A&t Value..."
 msgstr "&Başlangıç Şartı..."
 
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1095
+#, fuzzy
+msgid "ASCII maths"
+msgstr "'ASCII Art' olarak"
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1079
 msgid "Abort evaluation on error"
 msgstr "Hata oluştuğunda değerlendirmeyi durdur"
@@ -600,7 +605,7 @@ msgstr ""
 msgid "Accuracy"
 msgstr "Doğruluk"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1101
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1106
 msgid "Active cell bracket"
 msgstr "Aktif hücre ayıracı"
 
@@ -630,11 +635,11 @@ msgstr ""
 msgid "Add all"
 msgstr "Hepsini topla"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7500
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7526
 msgid "Add an element to a list"
 msgstr "Listeye bir öge ekle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6212
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6238
 msgid "Add dir to path:"
 msgstr "Yola dizin ekle :"
 
@@ -756,7 +761,7 @@ msgid "All but the last n elements"
 msgstr "'n' tane ögenin sonuncusu hariç hepsi"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:499
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5504
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5530
 msgid ""
 "All openable types (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*."
 "out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
@@ -804,7 +809,7 @@ msgstr "Her zaman tüm sayı basamaklarını göster"
 msgid "An example\n"
 msgstr "Bir örnek\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4186
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4212
 msgid "Anchors file has no top node."
 msgstr ""
 
@@ -849,7 +854,7 @@ msgstr "Ekle"
 msgid "Append a list"
 msgstr "Bir liste ekle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7518
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7544
 msgid "Append a list to a list"
 msgstr "Bir listeye liste ekle"
 
@@ -869,11 +874,11 @@ msgstr "Var olan bir lsiteye bir öge ekle"
 msgid "Appending lists of tolerances\n"
 msgstr "Tolerans listeleri ekleme\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6863
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6889
 msgid "Apply"
 msgstr "Uygula"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7387
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7413
 msgid "Apply a function to each list element"
 msgstr "Fonksiyonu bir listenin her ögesine uygula"
 
@@ -881,11 +886,11 @@ msgstr "Fonksiyonu bir listenin her ögesine uygula"
 msgid "Apply function to a list"
 msgstr "Fonksiyonu bir listeye uygula"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8357
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8383
 msgid "Apropos"
 msgstr "İlgili"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6784
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6810
 msgid "Array:"
 msgstr "Dizin:"
 
@@ -932,7 +937,7 @@ msgstr "Tahmin ettiğimiz gibi 2. voltaj bölücü daha iyiydi.\n"
 msgid "Ask to save untitled documents"
 msgstr "İsim verilmemiş belgeyi kaydederken sor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6541
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6567
 msgid "At value"
 msgstr "Başlangıç Değeri"
 
@@ -999,12 +1004,12 @@ msgstr ""
 msgid "Automatically send known answers"
 msgstr "Soruları otomatik olarak cevapla"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5436
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5462
 #, c-format
 msgid "Autosaving as temp file %s"
 msgstr "%s geçici dosyası olarak otomatik kaydetme"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5453
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5479
 #, c-format
 msgid "Autosaving the .wxmx file as %s"
 msgstr ".wxmx dosyasını %s olarak otomatik kaydetme"
@@ -1029,7 +1034,7 @@ msgstr "Uzun satırları otomatik olarak kısalt:"
 msgid "Axis"
 msgstr "Eksenler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6442
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6468
 msgid "BC2"
 msgstr "SŞ2"
 
@@ -1046,7 +1051,7 @@ msgstr "Bat Dosyaları (*.bat)|*.bat|tümü|*"
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
 msgstr "Bat Dosyaları (*.bat)|*.bat|tümü|*"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5668
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5694
 msgid "Batch File"
 msgstr "Kütük Dosyası"
 
@@ -1108,7 +1113,7 @@ msgstr "Onu sayılara özetliyor\n"
 msgid "Bold"
 msgstr "Koyu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4673
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4699
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr "Hem yatay hem de dikey imleç aynı anda etkin"
 
@@ -1171,11 +1176,11 @@ msgstr ""
 msgid "Bug: HTML output is no valid XML"
 msgstr "Hata: HTML çıktısı geçerli bir XML değil"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:550
+#: /home/gunter/src/wxmaxima/src/Configuration.h:560
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr "Hata : Gösterimi çok uzun sürecek öok basamaklı bir sayı!"
 
-#: /home/gunter/src/wxmaxima/src/MathParser.cpp:437
+#: /home/gunter/src/wxmaxima/src/MathParser.cpp:443
 msgid "Bug: Missing contents"
 msgstr "Hata: Eksik içerik"
 
@@ -1309,7 +1314,7 @@ msgstr "En Son Sonucun Büyük Kayan Sayı Değerini Heapla"
 msgid "Calculate float value of the last result"
 msgstr "En Son Sonucunu Kayan Sayı Değerini Heapla"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7676
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7702
 msgid "Calculate modulus:"
 msgstr "Modülleri Hesapla:"
 
@@ -1333,17 +1338,17 @@ msgid ""
 "Calculating primes[10000] in several steps is possible, instead:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10123
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10149
 msgid "Can not connect to the web server."
 msgstr "Web sunucusuna bağlanamıyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10172
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10198
 msgid "Can not download version info."
 msgstr "Sürüm bilgisi indirilemiyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1846
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2148
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3777
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1849
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2151
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3803
 msgid ""
 "Can not start maxima. The most probable cause is that maxima isn't installed "
 "(it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's "
@@ -1355,31 +1360,31 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:45
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:47
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10211
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10237
 msgid "Cancel"
 msgstr "İptal et"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1858
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1861
 msgid ""
 "Cannot find a maxima binary and no binary chosen in the config dialogue."
 msgstr ""
 "Bir Maxima ikili dosyası bulunamıyor ve Yapılandır diyalog penceresinde "
 "hiçbir ikili seçilmemiş."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1733
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1736
 msgid "Cannot set the communication address to localhost."
 msgstr "İletişim adresi localhost olarak ayarlanamıyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1735
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1738
 #, c-format
 msgid "Cannot set the communication port to %i."
 msgstr "İletişim bağlantı noktası%i olarak ayarlanamıyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5831
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5857
 msgid "Cannot start gnuplot"
 msgstr "Gnuplot u başlatamadı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1841
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1844
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:511
 msgid "Cannot start the maxima binary"
 msgstr "Maxima binary dosyaları başlatılamıyor"
@@ -1396,11 +1401,11 @@ msgstr "Katalanca"
 msgid "Ce&ll"
 msgstr "&Hücre"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1100
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1105
 msgid "Cell bracket"
 msgstr "Hücre parantezi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9388
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9414
 msgid "Cell ends in a backslash"
 msgstr "Hücre ters kesme işareti ile bitiyor"
 
@@ -1423,7 +1428,7 @@ msgid ""
 "Change the text \"alpha\" and \"beta\" to the corresponding greek letter?"
 msgstr "\"Alfa\" ve \"beta\" metnini karşılık gelen Yunanca harfle değiştir?"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7706
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7732
 msgid "Change variable"
 msgstr "Değişkeni değiştir"
 
@@ -1431,7 +1436,7 @@ msgstr "Değişkeni değiştir"
 msgid "Change variable in integral or sum"
 msgstr "İntegral ve ya toplam daki değişkeni değiştir"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6771
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6797
 msgid "Char poly"
 msgstr "Karakt. Polinom"
 
@@ -1470,8 +1475,8 @@ msgstr "Yazı tipi şeç"
 msgid "Choose the parenthesis type for Matrices"
 msgstr "Matrisler için parantez türünü seçin"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8405
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8421
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8431
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8447
 msgid "Classes:"
 msgstr "Sınıflar:"
 
@@ -1493,44 +1498,44 @@ msgstr "Kapat\tCtrl+W"
 msgid "Close window"
 msgstr "Pencereyi kapat"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1108
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1113
 msgid "Code highlighting: Comments"
 msgstr "Kod vurgulama: Açıklamalar"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1113
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1118
 msgid "Code highlighting: End of line"
 msgstr "Kod vurgulama: Satır sonu"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1107
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1112
 msgid "Code highlighting: Functions"
 msgstr "Kod vurgulama: Fonksiyonlar"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1112
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1117
 msgid "Code highlighting: Lisp"
 msgstr "Kod vurgulama: Lisp"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1109
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1114
 msgid "Code highlighting: Numbers"
 msgstr "Kod vurgulama: Sayılar"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1111
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1116
 msgid "Code highlighting: Operators"
 msgstr "Kod vurgulama: İşlemciler"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1110
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1115
 msgid "Code highlighting: Strings"
 msgstr "Kod vurgulama: Karakter dizilimleri"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1106
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1111
 msgid "Code highlighting: Variables"
 msgstr "Kod vurgulama: Değişkenler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8553
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8579
 msgid "Col. names:"
 msgstr "Sütun adları:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6784
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6804
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6810
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
 msgid "Columns:"
 msgstr "Sütunlar:"
 
@@ -1538,21 +1543,21 @@ msgstr "Sütunlar:"
 msgid "Combine factorials in an expression"
 msgstr "Bir ifadedeki faktöriyelleri ortak paranteze alarak düzenle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9446
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9472
 msgid "Comma directly followed by a closing parenthesis"
 msgstr "Virgül kapatılan bir parantezden hemen sonra gelir"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7176
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7202
 msgid "Comma-separated elements"
 msgstr "Virgülle ayrılmış ögeler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6340
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8990
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6366
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9016
 msgid "Comma-separated equations"
 msgstr "Virgülle ayrılmış denklemler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6341
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8991
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6367
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9017
 msgid "Comma-separated variables"
 msgstr "Virgülle ayrılmış değişkenler"
 
@@ -1576,12 +1581,12 @@ msgstr "Yorum Seçimi\tCtrl+/"
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
 msgstr "Derleyici-Hatası? wxMathml.lisp beklenenden daha kısa!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1464
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1467
 #, c-format
 msgid "Compiling %s"
 msgstr "%s ı derliyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4037
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4063
 msgid "Compiling the list of anchors the maxima manual provides"
 msgstr "Maxima kılavuzunun sunduğu anchor  listesini derleme"
 
@@ -1626,7 +1631,7 @@ msgstr "Bir matrisin tersini hesapla"
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr "OKEK hesapla (önce load(functs) paketini yükle)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8605
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8631
 msgid "Condition:"
 msgstr "Şart:"
 
@@ -1645,11 +1650,11 @@ msgstr "Yapılandırma uyarısı"
 msgid "Configure wxMaxima"
 msgstr "'wxMaxima'yı' yapılandır"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1710
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1713
 msgid "Connection attempt, but connection failed."
 msgstr "Bağlantı denemesi, ancak bağlantı başarısız."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1657
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1660
 msgid "Connection to Maxima lost."
 msgstr "Maxima bağlantısı kesildi."
 
@@ -1892,7 +1897,7 @@ msgstr ""
 msgid "Copy, Cut and Paste button"
 msgstr "Kopyala, Kes ve Yapıştır düğmesi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1973
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1976
 msgid ""
 "Could not map view of the file needed in order to send an interrupt signal "
 "to maxima."
@@ -1900,8 +1905,8 @@ msgstr ""
 "Maxima'ya bir kesme sinyali göndermek için gerekli olan dosyanın görünümü "
 "haritalanamadı."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1950
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1998
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1953
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2001
 msgid "Could not send an interrupt signal to maxima."
 msgstr "Maxima'ya Durdur sinyali gönderilemedi."
 
@@ -1909,16 +1914,16 @@ msgstr "Maxima'ya Durdur sinyali gönderilemedi."
 msgid "Create a list"
 msgstr "Liste oluştur"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7237
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7263
 msgid "Create a list as a storage for the values of variables"
 msgstr ""
 "Değişkenlerin değerleri için bir saklama alanı olarak bir liste oluştur"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7192
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7218
 msgid "Create a list from a rule"
 msgstr "Kuraldan liste oluştur"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7220
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7246
 msgid "Create a list from another list"
 msgstr "Başka bir listeden  liste oluştur"
 
@@ -1938,7 +1943,7 @@ msgstr "Bir önceki çıktı ile yeni bir hücre oluştur"
 msgid "Create list"
 msgstr "Liste oluştur"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7175
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7201
 msgid "Create list from comma-separated elements"
 msgstr "Virgülle ayrılmış öğelerden  liste oluştur"
 
@@ -1946,7 +1951,7 @@ msgstr "Virgülle ayrılmış öğelerden  liste oluştur"
 msgid "Create scalable plots."
 msgstr "Ölçeklenebilir grafikler oluşturun."
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1102
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1107
 msgid "Cursor"
 msgstr "İmleç"
 
@@ -1972,26 +1977,26 @@ msgstr "Çekçe"
 msgid "Danish"
 msgstr "Danimarkaca"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8544
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8553
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8605
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8570
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8579
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8631
 msgid "Data Matrix:"
 msgstr "Veri Matrisi:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8574
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8600
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr "Veri dosyası (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8405
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8421
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8437
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8446
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8455
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8465
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8474
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8483
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8492
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8534
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8431
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8447
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8463
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8472
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8481
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8491
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8500
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8509
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8518
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8560
 msgid "Data:"
 msgstr "Veri:"
 
@@ -2011,7 +2016,7 @@ msgstr "Hata Ayıklama Mesajları"
 msgid "Decompose rational function to partial fractions"
 msgstr "Rasyonel fonksiyonu parçalı fonksiyonlara ayır"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1076
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1080
 msgid "Default"
 msgstr "Varsayılan"
 
@@ -2041,8 +2046,8 @@ msgid ""
 msgstr ""
 "Bir animasyonun otomatik olarak  veya tıklatılarak başlatılacağını tanımlar."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6266
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6276
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6292
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6302
 msgid "Delete"
 msgstr "Sil"
 
@@ -2071,11 +2076,11 @@ msgstr "Bir Değişkeni Sil"
 msgid "Delete all values from memory"
 msgstr "Bellekteki Tüm Değerleri Sil"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6276
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6302
 msgid "Delete function(s):"
 msgstr "Fonksiyon(ları) Sil:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6266
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6292
 msgid "Delete variable(s):"
 msgstr "Değiken(leri) sil:"
 
@@ -2083,11 +2088,11 @@ msgstr "Değiken(leri) sil:"
 msgid "Delta"
 msgstr "Delta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7722
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7748
 msgid "Denom. deg:"
 msgstr "Payda derecesi:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6425
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6451
 msgid "Derivative:"
 msgstr "Türev:"
 
@@ -2115,8 +2120,8 @@ msgstr "Biliyormuydunz ?"
 msgid "Diff..."
 msgstr "Diferansiyel.."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7874
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9038
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7900
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9064
 msgid "Differentiate"
 msgstr "Türevini al"
 
@@ -2136,7 +2141,7 @@ msgstr "Uyarı:"
 msgid "Display Te&X Form"
 msgstr "Te&X formatını göster"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6176
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6202
 msgid "Display algorithm"
 msgstr "Algoritmayı Göster"
 
@@ -2157,7 +2162,7 @@ msgstr "WxWidgets'e göre ekran çözünürlüğü:% i x% i ppi"
 msgid "Display time used for evaluation"
 msgstr "Değerlendirme süresini göster"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8130
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8156
 msgid "Displayed Precision"
 msgstr "Görüntülenen Hassasiyet"
 
@@ -2165,7 +2170,7 @@ msgstr "Görüntülenen Hassasiyet"
 msgid "Displaying 3d curves"
 msgstr "3B eğrileri görüntüleme"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7776
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7802
 msgid "Divide"
 msgstr "Böl"
 
@@ -2185,11 +2190,11 @@ msgstr "Sayıları yada polinomları böl"
 msgid "Divide this input cell into two cells"
 msgstr "Bu Girdi hücresini ikiye böl"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7458
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7484
 msgid "Do for each list element"
 msgstr "Her dizin ögesi için uygula"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10206
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10232
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "Belgede\"%s\" yaptığınız değişiklikleri kaydetmek istiyor musunuz?"
@@ -2198,11 +2203,11 @@ msgstr "Belgede\"%s\" yaptığınız değişiklikleri kaydetmek istiyor musunuz?
 msgid "Dock all Sidebars"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1099
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1104
 msgid "Document background"
 msgstr "Belge arkaplanı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3577
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3603
 msgid ""
 "Document was saved using a newer version of wxMaxima so it may not load "
 "correctly. Please update your wxMaxima."
@@ -2210,7 +2215,7 @@ msgstr ""
 "'wxMaxima'nın' daha yeni bir sürümü ile kaydedildi. Bu yüzden doğru şekilde "
 "yüklenmeyebilir  Lütfen wxMaxima'yı güncelleyin."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3570
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3596
 msgid ""
 "Document was saved using a newer version of wxMaxima. Please update your "
 "wxMaxima."
@@ -2238,7 +2243,7 @@ msgstr "Alt çizgiden sonra otomatik olarak alt (indis) karakter yazmayın"
 msgid "Don't mark cells that contain tooltips in yellow"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10211
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10237
 msgid "Don't save"
 msgstr "Kaydetme"
 
@@ -2280,7 +2285,7 @@ msgstr "Özvektörler"
 msgid "Eigen&values"
 msgstr "Özdeğerler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7461
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7487
 msgid ""
 "Either a single expression or a comma-separated list of expressions between "
 "parenthesis. In the latter case the result of the last expression in the "
@@ -2289,15 +2294,15 @@ msgstr ""
 "Bir parantez içinde tek bir ifade yada virgülle ayrılmış birçok ifade. "
 "Parantez içindeki son virgülden sonraki işlem kullanılır."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7478
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7504
 msgid "Element"
 msgstr "Öge"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7263
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7289
 msgid "Element:"
 msgstr "Öge:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6459
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6485
 msgid "Eliminate"
 msgstr "Yok et"
 
@@ -2305,7 +2310,7 @@ msgstr "Yok et"
 msgid "Eliminate a variable from a system of equations"
 msgstr "Bir denklem sisteminde bir değişkeni (sadeleştirerek) yok et"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8150
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8176
 msgid "Enable:"
 msgstr "Etkinleştirme:"
 
@@ -2314,7 +2319,7 @@ msgstr "Etkinleştirme:"
 msgid "Encountered an unknown XML tag: <%s>"
 msgstr "Bilinmeyen bir soket olayıyla karşılaştı."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1679
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1682
 msgid "Encountered an unknown socket event."
 msgstr "Bilinmeyen bir soket olayıyla karşılaştı."
 
@@ -2322,7 +2327,7 @@ msgstr "Bilinmeyen bir soket olayıyla karşılaştı."
 msgid "End of proof"
 msgstr "İspat ın sonu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3045
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3071
 msgid "Ended lisp mode after receiving a maxima prompt!"
 msgstr "Bir maxima istemi aldıktan sonra lisp modu sona erdi!"
 
@@ -2334,7 +2339,7 @@ msgstr "Mühendislik-stili altindisler\n"
 msgid "Engineering format (12.1e6 etc.)"
 msgstr "Mühendislik formatı (12.1e6 vb.)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8156
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8182
 msgid "Engineering format setup"
 msgstr "Mühendislik formatı kurulumu"
 
@@ -2346,15 +2351,15 @@ msgstr "İngilizce"
 msgid "Enhanced meta file (emf)"
 msgstr "Geliştirilmiş meta dosyası (emf)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8437
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8446
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8455
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8465
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8474
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8483
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8492
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8534
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8544
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8463
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8472
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8481
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8491
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8500
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8509
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8518
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8560
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8570
 msgid "Enter Data"
 msgstr "Veri gir"
 
@@ -2366,7 +2371,7 @@ msgstr "Matris Girin.."
 msgid "Enter a matrix"
 msgstr "Bir Matris Girin"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7691
 msgid "Enter an equation for rational simplification:"
 msgstr "Rasyonel sadeleştirilmek üzere bir denklem girin:"
 
@@ -2374,15 +2379,15 @@ msgstr "Rasyonel sadeleştirilmek üzere bir denklem girin:"
 msgid "Enter evaluates cells"
 msgstr "Enter tuşu hücreleri değerlendirsin"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6753
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6779
 msgid "Enter matrix"
 msgstr "Matris Oluşturun"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8014
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8040
 msgid "Enter new animation frame rate [Hz, integer]:"
 msgstr "Yeni bir animasyon çerçeve oranı gir [Hz, tamsayı]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8120
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8146
 msgid "Enter new precision for bigfloats:"
 msgstr "Yeni ondalık-hassasiyeti belirleyin:"
 
@@ -2394,26 +2399,26 @@ msgstr "Maxima'nın uygulayabileceği şekilde girin."
 msgid "Epsilon"
 msgstr "Epsilon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7929
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7955
 msgid "Epsilon:"
 msgstr "Epsilon:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7400
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7426
 msgid "Equation"
 msgstr "Denklem"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6328
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6353
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6522
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8978
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6354
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6379
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6548
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9004
 msgid "Equation(s):"
 msgstr "Denklem(ler):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6371
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6391
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7703
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8554
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9003
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6397
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6417
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7729
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8580
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9029
 msgid "Equation:"
 msgstr "Denklem:"
 
@@ -2428,7 +2433,7 @@ msgstr ""
 "form da oluşturlabilir Bunun yanında denklemler her zaman 2B math olarak "
 "yazdırılabilir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6455
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6481
 msgid "Equations:"
 msgstr "Denklemler:"
 
@@ -2437,32 +2442,32 @@ msgid "Equipping any character with accents\n"
 msgstr "Herhangi bir karakteri aksanlarla donatmak\n"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1402
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1846
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2148
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3115
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3170
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3179
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3461
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3471
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3571
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3601
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3611
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10123
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10172
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1849
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2151
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3141
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3196
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3205
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3487
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3497
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3597
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3627
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3637
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10149
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10198
 msgid "Error"
 msgstr "HATA"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1653
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1656
 msgid "Error writing to Maxima"
 msgstr "Maxima'ya yazma hatası"
 
 #: /home/gunter/src/wxmaxima/src/History.cpp:218
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5607
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5623
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5639
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6481
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6506
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5633
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5649
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6507
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6532
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6773
 msgid "Error!"
 msgstr "HATA!"
 
@@ -2592,7 +2597,7 @@ msgstr "Noktaya Değerlendir"
 msgid "Exact numbers\n"
 msgstr "Tam sayılar\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8343
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8369
 msgid "Example"
 msgstr "Örnek"
 
@@ -2649,7 +2654,7 @@ msgid "Expect variables to contain complex numbers"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:230
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5556
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5582
 msgid "Export"
 msgstr "Çıkart"
 
@@ -2718,15 +2723,15 @@ msgstr ""
 msgid "Exporting to .mac file failed!"
 msgstr "Maxima Kütük Dosyası olarak çıkarım başarısız!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5639
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5665
 msgid "Exporting to HTML failed!"
 msgstr "HTML formatına dönüştürme işlemi başarılamadı!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5607
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5633
 msgid "Exporting to TeX failed!"
 msgstr "TeX formatına dönüştürme işlemi başarılamadı!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5623
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5649
 msgid "Exporting to maxima batch file failed!"
 msgstr "Maxima Kütük Dosyası olarak çıkarım başarısız!"
 
@@ -2738,16 +2743,16 @@ msgstr "Çıkarılıyor..."
 msgid "Expression"
 msgstr "İfade"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6538
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6841
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7789
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7805
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7835
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7853
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7871
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7926
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7962
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9035
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6564
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6867
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7815
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7831
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7861
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7879
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7897
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7952
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7988
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9061
 msgid "Expression:"
 msgstr "İfade:"
 
@@ -2774,11 +2779,11 @@ msgstr "Bir değişken için gerçek bir değer ayıkla"
 msgid "Extract a column from the matrix and convert it to a list"
 msgstr "Listede atanan bir değişkenin değerini çıkarın"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6612
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6627
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6642
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6657
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6672
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6638
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6653
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6668
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6683
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6698
 #, fuzzy
 msgid "Extract a matrix row"
 msgstr "Bir Matris Girin"
@@ -2792,7 +2797,7 @@ msgstr ""
 msgid "Extract a row from the matrix and convert it to a list"
 msgstr "Listeden son n elemanlarını ayıklayın"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7422
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7448
 msgid "Extract a variable's value from a list of variable values"
 msgstr "Değişken değerlerin bir listesinden bir değişkenin değerini çıkarın"
 
@@ -2800,7 +2805,7 @@ msgstr "Değişken değerlerin bir listesinden bir değişkenin değerini çıka
 msgid "Extract an actual value for a variable"
 msgstr "Bir değişken için gerçek bir değer ayıkla"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7153
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7179
 msgid "Extract function arguments"
 msgstr "Fonksiyon argümanlarını ayıkla"
 
@@ -2812,11 +2817,11 @@ msgstr "Dizi elemanlarını ayıkla"
 msgid "Extract the argument list from a function call"
 msgstr "Bir fonksiyon çağrısından bağımsız değişken listesini ayıklayın"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7338
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7364
 msgid "Extract the last n elements from a list"
 msgstr "Listeden son n elemanlarını ayıklayın"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7355
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7381
 msgid "Extract the nth element from a list. Slow for n>>0"
 msgstr "'n.' öğeyi bir listeden çıkartın. n >> 0 için yavaş"
 
@@ -2868,28 +2873,28 @@ msgstr "Ölümcül Hata"
 msgid "File"
 msgstr "Dosya"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3117
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3172
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3464
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3474
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3572
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3604
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3614
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5022
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3143
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3198
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3490
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3500
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3598
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3630
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3640
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5048
 msgid "File could not be opened"
 msgstr "Dosya açılamadı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9202
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9256
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9228
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9282
 msgid "File not found"
 msgstr "Dosya bulunamadı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5011
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5037
 msgid "File opened"
 msgstr "Dosya açıldı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9202
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9256
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9228
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9282
 msgid "File you tried to open does not exist."
 msgstr "Açmaya çalıştığınız dosya yok."
 
@@ -2937,7 +2942,7 @@ msgstr "Polinomun bütün köklerini bul"
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "(Büyük kayan sayı) polinomun bütün köklerini bul"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6026
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6052
 msgid "Find and Replace"
 msgstr "Bul ve yerleştir"
 
@@ -2954,7 +2959,7 @@ msgstr "Bir matrisini özdeğerlerini bul"
 msgid "Find eigenvectors of a matrix"
 msgstr "Bir matrisini özvektörlerini bul"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7932
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7958
 msgid "Find minimum"
 msgstr "Minimum hesapla"
 
@@ -2962,8 +2967,8 @@ msgstr "Minimum hesapla"
 msgid "Find real roots of a polynomial"
 msgstr "Polinomun gerçel köklerini bul"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6375
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9007
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6401
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9033
 msgid "Find root"
 msgstr "Kökünü hesapla"
 
@@ -3130,7 +3135,7 @@ msgstr ""
 "İlk örnekte, biraz ölçüm gürültüsü olan bir parabol iyi bir başlangıç "
 "olabilir:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4088
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4114
 #, c-format
 msgid "Found %i anchors."
 msgstr "%i çapaları bulundu."
@@ -3145,7 +3150,7 @@ msgstr "%li demo dosyaları bulundu."
 msgid "Found %i loadable files."
 msgstr "Yükelenebilir %li dosyaları bulundu."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4107
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4133
 #, c-format
 msgid "Found only %li keywords in maxima's manual. Not caching them to disc."
 msgstr ""
@@ -3155,7 +3160,7 @@ msgstr ""
 msgid "Frame %i of %i"
 msgstr "Çerçeve %i nın %i'si"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8014
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8040
 msgid "Frame rate"
 msgstr "Çerçeve hızı"
 
@@ -3163,8 +3168,8 @@ msgstr "Çerçeve hızı"
 msgid "French"
 msgstr "Fransızca"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6842
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7962
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6868
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7988
 msgid "From:"
 msgstr "İlk değer:"
 
@@ -3176,27 +3181,27 @@ msgstr "Tam Ekran \tAlt-Enter"
 msgid "Full Screen\tF11"
 msgstr "Tam Ekran \tF11"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6201
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7384
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6227
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7410
 msgid "Function"
 msgstr "Fonksiyon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7436
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7462
 msgid "Function name"
 msgstr "Fonksiyon adı"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1079
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1083
 msgid "Function names"
 msgstr "Fonksiyon isimleri"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6522
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6548
 msgid "Function(s):"
 msgstr "Fonksiyon(lar):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6391
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6713
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6825
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6860
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6417
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6739
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6851
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6886
 msgid "Function:"
 msgstr "Fonksiyon:"
 
@@ -3212,11 +3217,11 @@ msgstr "Gamma fonksiyonu ve çarpanlarına ayırma fonksiyonları"
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Trigonometrik ifadeleri sadeleştirme fonksiyonları"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7760
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7786
 msgid "GCD"
 msgstr "OBEB"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9156
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9182
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF resmi (*.gif)|*.gif"
 
@@ -3247,8 +3252,8 @@ msgstr "Genel Matematik"
 msgid "General Math\tAlt+Shift+M"
 msgstr "Genel Matematik\tAlt+Shift+M"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6787
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6807
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6813
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6833
 msgid "Generate Matrix"
 msgstr "Matris oluştur"
 
@@ -3328,7 +3333,7 @@ msgstr "KarmaşıkSayı bir ifadenin gerçek kısmını hesapla"
 msgid "Gnuplot Data File Name: "
 msgstr "Gnuplot Veri Dosyası Adı "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2645
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2653
 #, c-format
 msgid "Gnuplot can be found at %s"
 msgstr "Gnuplot% s adresinde bulunabilir"
@@ -3337,7 +3342,7 @@ msgstr "Gnuplot% s adresinde bulunabilir"
 msgid "Gnuplot found at: "
 msgstr "Gnuplot şurada bulundu: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2105
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2108
 msgid "Gnuplot has closed."
 msgstr "Gnuplot sonlandırıldı."
 
@@ -3357,7 +3362,7 @@ msgstr ""
 msgid "Greek"
 msgstr "Yunanca"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1081
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1085
 msgid "Greek Constants"
 msgstr "Yunanca sabitler"
 
@@ -3373,7 +3378,7 @@ msgstr "Yunanca harfler\tAlt+Shift+G"
 msgid "Grid"
 msgstr "Izgara"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5558
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5584
 #, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|LaTeX file (*.tex)|"
@@ -3392,12 +3397,12 @@ msgid ""
 "redefine \"gnu\" x[gnu] will read the redefined value:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1093
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1098
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2134
 msgid "Heading 5"
 msgstr "Başlık 5"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1092
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1097
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2136
 msgid "Heading 6"
 msgstr "Başlık 6"
@@ -3505,7 +3510,7 @@ msgstr ""
 msgid "Hide yellow tooltip marker"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1088
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1092
 msgid "Highlight (dpart)"
 msgstr "Belirginleştir"
 
@@ -3555,7 +3560,7 @@ msgstr ""
 "* dönüştürmek için girdi verilerimizi bir listeye dönüştürmeliyiz (yani: "
 "sütunları satırlarla değiştirin veya tersini yapın)\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8408
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8434
 msgid "Histogram"
 msgstr "Histogram"
 
@@ -3583,7 +3588,7 @@ msgstr ""
 "'hücreleri seçer, backspace tuşuna basarak yada delete tuşuna iki defa "
 "basmakla yanındaki hücreyi siler."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8130
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8156
 msgid "How many digits to show:"
 msgstr "Gösterilecek basamak sayısı:"
 
@@ -3595,11 +3600,11 @@ msgstr "Yeni denklemler nasıl gösterilir"
 msgid "Hungarian"
 msgstr "Macarca"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6411
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6437
 msgid "IC1"
 msgstr "BŞ1"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6428
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6454
 msgid "IC2"
 msgstr "BŞ2"
 
@@ -3869,7 +3874,7 @@ msgstr ""
 msgid "Image"
 msgstr "Resim"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9858
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9884
 msgid ""
 "Image files (*.png, *.jpg, *.bmp, *.xpm, *.gif, *.svg, *.svgz)|*.png;*.jpg;*."
 "bmp;*.xpm;*.gif;*.svg;*.svgz"
@@ -3989,7 +3994,7 @@ msgstr ""
 "başlangıç noktasını kullanmak, sorunun yanlış yerel optimumluğa doğru "
 "ilerlemesi anlamına gelir.\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8606
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8632
 msgid "Include columns:"
 msgstr "Sütunları kapsa:"
 
@@ -4009,19 +4014,19 @@ msgstr ""
 "Matematiği girinti, böylece tüm satırlar etiketten sonra başlayan ilk "
 "satırla aynı olur."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7189
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7215
 msgid "Index End:"
 msgstr "İndeks Sonu:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7189
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7215
 msgid "Index Start:"
 msgstr "İndeks Başlangıcı:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7189
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7215
 msgid "Index Step:"
 msgstr "Dizin adım:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7188
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7214
 msgid "Index variable:"
 msgstr "Dizin değişkeni:"
 
@@ -4033,7 +4038,7 @@ msgstr "Sonsuz"
 msgid "Info about Maxima build"
 msgstr "Maxima yapısı hakkında bilgi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7928
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7954
 msgid "Initial Estimates:"
 msgstr "Başlangıç Tahminleri:"
 
@@ -4049,7 +4054,7 @@ msgstr "Başlangıç Değer Problemi (&2)"
 msgid "Input a RegEx here to filter the results"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1084
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1088
 msgid "Input labels"
 msgstr "Girdi Etiketleri"
 
@@ -4085,7 +4090,7 @@ msgstr "Başlık5 hücresi ekle"
 msgid "Insert Heading6 Cell"
 msgstr "Başlık6 hücresi ekle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9856
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9882
 msgid "Insert Image"
 msgstr "Resim Ekle"
 
@@ -4190,16 +4195,16 @@ msgstr "Tamsayılar ve tek harfler"
 msgid "Integral sign"
 msgstr "İntegral işareti"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7702
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7728
 msgid "Integral/Sum:"
 msgstr "İntegral/Toplam:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7822
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9022
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7848
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9048
 msgid "Integrate"
 msgstr "İntegralini Al"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7808
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7834
 msgid "Integrate (risch)"
 msgstr "İntegralini Al (risch)"
 
@@ -4232,7 +4237,7 @@ msgstr "Serpiştir"
 msgid "Interleave the values of two lists"
 msgstr "İki listenin değerlerini iliştir"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7536
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7562
 msgid "Interleave two lists"
 msgstr "İki listeyi serpiştir"
 
@@ -4252,12 +4257,12 @@ msgstr ""
 "Bu hesaplamayı durdur. Maxima'yı yeniden başlatmak için bunun solundaki "
 "butona bas."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1953
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1956
 #, c-format
 msgid "Interrupting maxima: %s"
 msgstr "Maxima'yı durduruyor: % s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7403
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7429
 msgid "Introduce a list of actual values into an equation"
 msgstr "Bir denklem içine gerçek değerlerin bir listesini tanıt"
 
@@ -4279,7 +4284,7 @@ msgstr ""
 "\n"
 "Maxima programına uygun yolla girin."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7856
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7882
 msgid "Inverse Laplace"
 msgstr "Ters Laplace"
 
@@ -4344,7 +4349,7 @@ msgstr "İtalyanca"
 msgid "Italic"
 msgstr "İtalik"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7496
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7522
 msgid "Item"
 msgstr "Madde"
 
@@ -4352,8 +4357,8 @@ msgstr "Madde"
 msgid "Iterating through two lists at the same time\n"
 msgstr "Aynı anda iki liste üzerinden yineleme\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7216
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7454
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7242
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7480
 msgid "Iterator:"
 msgstr "Yineleyici:"
 
@@ -4391,12 +4396,12 @@ msgstr "Kappa"
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Özel sembolleri yüzde işareti ile yaz: %e, %i, v.b."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2024
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2027
 msgid "Killing Maxima."
 msgstr "Maxima' yı öldürüyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7266
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7744
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7292
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7770
 msgid "LCM"
 msgstr "OKEK"
 
@@ -4429,7 +4434,7 @@ msgstr "WxMaxima arayüzü için kullanılan dil."
 msgid "Language:"
 msgstr "Dil:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7838
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7864
 msgid "Laplace"
 msgstr "Laplace"
 
@@ -4441,12 +4446,12 @@ msgstr "Laplace &Dönüşümü..."
 msgid "Last"
 msgstr "Sonuncu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2139
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2142
 #, c-format
 msgid "Last message from maxima's stderr: %s"
 msgstr "Maxima'nın stderr' in den son mesaj: %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2126
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2129
 #, c-format
 msgid "Last message from maxima's stdout: %s"
 msgstr "Maxima'nın stdout 'un dan son mesaj: %s"
@@ -4455,7 +4460,7 @@ msgstr "Maxima'nın stdout 'un dan son mesaj: %s"
 msgid "Last n"
 msgstr "Son n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3951
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3977
 #, c-format
 msgid ""
 "Launching the system's default help browser failed. Trying to execute %s "
@@ -4470,7 +4475,7 @@ msgstr "'e yol açar"
 msgid "Least Common Multiple..."
 msgstr "OKEK..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8557
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8583
 msgid "Least Squares Fit"
 msgstr "En Az Karelere uydur"
 
@@ -4534,7 +4539,7 @@ msgstr ""
 msgid "License"
 msgstr "Lisans"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7913
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7939
 msgid "Limit"
 msgstr "Limit"
 
@@ -4550,25 +4555,25 @@ msgstr "Çizgi rengi"
 msgid "Linear Regression..."
 msgstr "Doğrusal Regresyon..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4403
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4429
 msgid "Lisp mode."
 msgstr "Lisp modu."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2676
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2684
 #, c-format
 msgid "Lisp version: %s"
 msgstr "Lisp versiyonu: %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7134
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7291
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7315
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7335
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7352
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7384
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7418
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7436
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7478
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7496
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7160
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7317
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7341
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7361
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7378
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7410
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7444
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7462
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7504
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7522
 msgid "List"
 msgstr "Dizin"
 
@@ -4612,27 +4617,27 @@ msgstr "Kullanıcı tanımlı izin kuralı paketlerinin listesi"
 msgid "List of user-defined properties"
 msgstr "Kullanıcı tanımlı özelliklerin listesi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7400
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7426
 msgid "List with values"
 msgstr "Değerleri ile bir Dizin"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6825
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6851
 msgid "List(s):"
 msgstr "Dizin(ler):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7514
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7532
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7540
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7558
 msgid "List1"
 msgstr "Dizin1"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7514
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7532
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7540
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7558
 msgid "List2"
 msgstr "Dizin2"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6860
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7263
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7454
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6886
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7289
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7480
 msgid "List:"
 msgstr "Liste:"
 
@@ -4644,7 +4649,7 @@ msgstr "Dizilerin listesi\n"
 msgid "Load"
 msgstr "Yükle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5656
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5682
 msgid "Load Package"
 msgstr "Paket Yükle"
 
@@ -4678,8 +4683,8 @@ msgstr "Sitili dosyadan yükle"
 msgid "Long Right arrow"
 msgstr "Uzun sağ ok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6372
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9004
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6398
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9030
 msgid "Lower bound:"
 msgstr "Alt Sınır:"
 
@@ -4704,7 +4709,7 @@ msgstr "Temel Araç Çubuğu\tAlt+Shift+B"
 msgid "Make &List..."
 msgstr "Dizin& yap..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6845
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6871
 msgid "Make list"
 msgstr "Dizin yap"
 
@@ -4754,7 +4759,7 @@ msgstr ""
 "nedenle mümkün olan yerlerde tam sayıları kullanmak ve sonuçları float () "
 "veya bfloat () kullanarak float'a dönüştürmek akıllıca olacaktır:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6828
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6854
 msgid "Map"
 msgstr "Eşle"
 
@@ -4774,7 +4779,7 @@ msgstr "Büyük küçük harfe duyarlı"
 msgid "Match parenthesis in text controls"
 msgstr "Metin denetimlerinde parantezleri eşleştir"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1114
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1119
 #, fuzzy
 msgid "Math Default"
 msgstr "Varsayılan"
@@ -4845,8 +4850,8 @@ msgstr ""
 msgid "Maths"
 msgstr "Matematik"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6592
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6735
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6618
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6761
 msgid "Matrix"
 msgstr "Matris"
 
@@ -4855,11 +4860,11 @@ msgstr "Matris"
 msgid "Matrix from csv file"
 msgstr "Sitili dosyadan yükle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6716
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6742
 msgid "Matrix map"
 msgstr "Matris Eşle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8606
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8632
 msgid "Matrix name:"
 msgstr "Matrisin adı:"
 
@@ -4876,13 +4881,13 @@ msgstr "Sitili dosyadan yükle"
 msgid "Matrix to nested List"
 msgstr "İç içe geçmiş Listeye Matris"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6609
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6624
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6654
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6669
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6713
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6768
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6635
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6650
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6680
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6695
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6739
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6794
 msgid "Matrix:"
 msgstr "Matris:"
 
@@ -4916,7 +4921,7 @@ msgstr ""
 "uygulamasını sağlar. Sayılar, bfloat () komutu kullanılarak veya üs "
 "bildirilirken \"e\" yerine \"b\" girilerek bigfloats'a dönüştürülebilir:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2635
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2643
 #, c-format
 msgid "Maxima architecture: %s"
 msgstr "Maxima mimarisi:% s"
@@ -4925,7 +4930,7 @@ msgstr "Maxima mimarisi:% s"
 msgid "Maxima asks a question"
 msgstr "Maxima bir soru soruyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3012
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3038
 msgid "Maxima asks a question!"
 msgstr "Maxima'nın bir sorusu var!"
 
@@ -4961,7 +4966,7 @@ msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
 msgstr ""
 "'wxMaxima' her Maxima'yı  başlattığında gerçekleştirilecek Maxima komutları: "
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1090
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1094
 msgid "Maxima errors"
 msgstr "Maxima Hataları"
 
@@ -4971,24 +4976,24 @@ msgid ""
 "constraints:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9515
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9541
 msgid "Maxima has finished calculating."
 msgstr "Maxima hesaplamayı bitirdi."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5223
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5249
 msgid "Maxima has issued an error!"
 msgstr "Maxima'nın bir sorunla karşılaştı!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2681
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2689
 #, c-format
 msgid "Maxima has loaded the file %s."
 msgstr "Maxima% s dosyasını yükledi."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2599
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2607
 msgid "Maxima has sent a new variable value."
 msgstr "Maxima yeni bir değişken değeri gönderdi."
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1083
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1087
 msgid "Maxima input"
 msgstr "Maxima girdisi"
 
@@ -5003,7 +5008,7 @@ msgid ""
 "kind of object:\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4405
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4431
 msgid "Maxima is ready for input."
 msgstr "Maxima girdi için hazır."
 
@@ -5037,20 +5042,20 @@ msgstr ""
 "Maxima şimdi bizim için a, b ve c parametrelerini tahmin eden basit ama "
 "güçlü bir eğri düzenleyicisi sunuyor:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5670
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5696
 msgid "Maxima package (*.mac)|*.mac"
 msgstr "Maxima Paketi (*.mac)|*.mac"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5658
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5684
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Maxima Paketi (*.mac)|*.mac|Lisp Paketi (*.lisp)|*.lisp|Tümü|*"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2110
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2113
 #, c-format
 msgid "Maxima process (pid %i) has terminated with exit code %i."
 msgstr "Maksima işlemi (pid% i),% i çıkış koduyla sonlandırıldı."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2144
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2147
 msgid "Maxima process terminated unexpectedly."
 msgstr "Maxima süreci beklenmedik şekilde sona erdi."
 
@@ -5083,15 +5088,15 @@ msgstr ""
 "başlatmayı varsayılanı yapar. Bu biraz zaman gerektirdiğinden, bu anahtar bu "
 "davranışı devre dışı bırakmaya izin verir."
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1085
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1089
 msgid "Maxima questions"
 msgstr "Maxima sorular"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2597
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2605
 msgid "Maxima sends a new set of auto-completable symbols."
 msgstr "Maxima yeni bir otomatik tamamlanabilir sembol seti gönderir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2835
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2861
 msgid "Maxima sends us a new set of variables for the watch list."
 msgstr "Maxima, izleme listesi için bize yeni bir değişkenler kümesi gönderir."
 
@@ -5128,7 +5133,7 @@ msgstr ""
 "hatalar verebilir. örnek : 0.1 için 3602879701896397/36028797018963968 "
 "verebilir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2612
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2620
 #, c-format
 msgid "Maxima user configuration lies in directory %s"
 msgstr "Maxima kullanıcı yapılandırması% s dizininde yer alır"
@@ -5141,21 +5146,21 @@ msgstr ""
 "Maxima'da değişkene değer verirken ':' kullanılır ('a : 3;') vefonksiyon "
 "yazılırken ':=' kullanılır.('f(x) := x^2;')."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2618
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2626
 #, c-format
 msgid "Maxima uses temp directory %s"
 msgstr "Maxima% s geçici dizinini kullanıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2630
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2638
 #, c-format
 msgid "Maxima version: %s"
 msgstr "Maxima Sürümü:%s"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1089
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1093
 msgid "Maxima warnings"
 msgstr "Maxima uyarılar"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2671
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2679
 #, c-format
 msgid "Maxima was compiled using %s"
 msgstr "Maxima% s kullanılarak derlendi"
@@ -5180,7 +5185,7 @@ msgstr ""
 "    %[1];\n"
 "    result_b:b=at(b,%);"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2220
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2223
 #, c-format
 msgid "Maxima's PID is %li"
 msgstr "MAxima'nın PID 'si %li dir"
@@ -5197,12 +5202,12 @@ msgstr ""
 "ve bir pencere açan \"Etkileşimli olarak popout\" düğmesine basmak yardımcı "
 "olabilir, bu eğri döndürülebilir:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2640
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2648
 #, c-format
 msgid "Maxima's manual lies in directory %s"
 msgstr "Maxima'nın kılavuzu% s dizininde yer alır"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2653
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2661
 #, c-format
 msgid "Maxima's share files lie in directory %s"
 msgstr "Maxima'nın paylaşım dosyaları% s dizininde"
@@ -5294,7 +5299,7 @@ msgstr ""
 "Bu simge, verilerin maxima ile wxMaxima arasında aktarılıp aktarılmadığını "
 "gösterir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8152
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8178
 msgid "Maximum absolute value printed without exponent:"
 msgstr "Üstsüz yazdırılan maksimum mutlak değer:"
 
@@ -5302,7 +5307,7 @@ msgstr "Üstsüz yazdırılan maksimum mutlak değer:"
 msgid "Maximum displayed number of digits:"
 msgstr "Gösterilecek en fazla basamak sayısı:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8153
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8179
 msgid "Maximum number of digits to be displayed:"
 msgstr "Gösterilecek maksimum basamak sayısı:"
 
@@ -5318,7 +5323,7 @@ msgstr "Ortalama Testi..."
 msgid "Mean..."
 msgstr "Ortalama..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8501
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8527
 msgid "Mean:"
 msgstr "Ortalama:"
 
@@ -5368,20 +5373,20 @@ msgstr "Hücreleri birleştir\tCtrl+M"
 msgid "Merge the text from two input cells into one"
 msgstr "Metni iki girdi hücresinden tek hücreye birleştir"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5171
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5197
 msgid "Message from the stdout of Maxima: "
 msgstr "Maxima'nın stdout (standard çıkış) ın dan mesaj: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8151
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8177
 msgid "Minimum absolute value printed without exponent:"
 msgstr "Üssüz yazdırılan minimum mutlak değer:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9442
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9443
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9468
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9469
 msgid "Mismatched parenthesis"
 msgstr "Eşleşmeyen parantezler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7677
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7703
 msgid "Modulus"
 msgstr "Modül"
 
@@ -5411,8 +5416,8 @@ msgstr ""
 msgid "Mu"
 msgstr "Mü"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6784
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6804
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6810
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
 msgid "Name:"
 msgstr "İsim:"
 
@@ -5450,11 +5455,11 @@ msgstr "Yeni\tCtrl+N"
 msgid "New button"
 msgstr "Yeni buton"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1688
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1691
 msgid "New connection attempt whilst already connected."
 msgstr "Zaten bağlıyken yeni bağlantı girişimi."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1693
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1696
 msgid "New connection attempt, but no currently running maxima process."
 msgstr "Yeni bağlantı girişimi, ancak şu anda maxima işlemi çalışmıyor."
 
@@ -5466,9 +5471,9 @@ msgstr "Yeni belge"
 msgid "New lines: Jump to text"
 msgstr "Yeni satırlar: Metne git"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7703
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7836
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7854
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7729
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7862
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7880
 msgid "New variable:"
 msgstr "Yeni Değişken:"
 
@@ -5489,15 +5494,15 @@ msgstr "Güzel Grafiksel Eşitlikler"
 msgid "No"
 msgstr "Hayır"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9477
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9503
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr "Komut sonunda ($) ya da (;) yok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4197
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4223
 msgid "No entries in the caches for the subjects the manual contains."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4242
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4268
 msgid ""
 "No file with the subjects the manual contained in the last wxMaxima run."
 msgstr ""
@@ -5510,17 +5515,17 @@ msgstr "Gnuplot verisi yok!"
 msgid "No gnuplot source!"
 msgstr "Gnuplot kaynağı yok!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3888
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3914
 #, c-format
 msgid "No helpfile found at %s."
 msgstr "%s  konumunda yardım dosyası bulunamadı."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6084
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6107
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6110
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6133
 msgid "No matches found!"
 msgstr "Eşleşme bulunamadı!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8645
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8671
 msgid "No saving on close necessary."
 msgstr "Kapatırken kaydetmeye gerek yok."
 
@@ -5551,12 +5556,12 @@ msgstr ""
 msgid "Norwegian"
 msgstr "Norveçce"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6773
 msgid "Not a valid matrix dimension!"
 msgstr "Geçerli bir matris boyutu değil!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6481
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6506
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6507
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6532
 msgid "Not a valid number of equations!"
 msgstr "Geçerli bir denklemler sayısı değil!"
 
@@ -5594,7 +5599,7 @@ msgstr ""
 msgid "Nu"
 msgstr "Nü"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7721
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7747
 msgid "Num. deg:"
 msgstr "Say.derecesi:"
 
@@ -5602,12 +5607,12 @@ msgstr "Say.derecesi:"
 msgid "Number formats\n"
 msgstr "Sayı biçimleri\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7335
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7361
 msgid "Number of elements"
 msgstr "Ögelerin sayısı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6472
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6497
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6498
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6523
 msgid "Number of equations:"
 msgstr "Denklemlerin sayısı:"
 
@@ -5615,7 +5620,7 @@ msgstr "Denklemlerin sayısı:"
 msgid "Number types"
 msgstr "Sayı türleri"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1078
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1082
 msgid "Numbers"
 msgstr "Sayılar"
 
@@ -5661,9 +5666,9 @@ msgstr ""
 "durumlarda bir mühendis günlük olarak karşılaşırsa maxima bunu otomatik "
 "olarak yapabilir.\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7702
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7835
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7853
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7728
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7861
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7879
 msgid "Old variable:"
 msgstr "Eski Değişken:"
 
@@ -5691,7 +5696,7 @@ msgstr ""
 "sembolik matematiğin gerçek ölçüm verilerini anlamak için kullanıldığı "
 "yerdir.\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8504
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8530
 msgid "One sample t-test"
 msgstr "Bir örnek t-testi"
 
@@ -5715,7 +5720,7 @@ msgstr "Sadece kullanıcı-tanımlı etiketler"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1021
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:165
 #: /home/gunter/src/wxmaxima/src/main.cpp:497
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5502
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5528
 msgid "Open"
 msgstr "Aç"
 
@@ -5744,22 +5749,22 @@ msgstr "Aç ve Kaydet Butonu"
 msgid "Open document"
 msgstr "Belge Aç"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8572
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8598
 msgid "Open matrix"
 msgstr "Matris Aç"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3262
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3288
 msgid "Opening a wxmx file"
 msgstr "'wxmx' dosyasını açıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3105
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3162
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3266
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3588
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3131
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3188
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3292
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3614
 msgid "Opening file"
 msgstr "Dosya açılıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4294
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4320
 #, c-format
 msgid "Opening help file %s"
 msgstr "%s yardım dosyası açılıyor"
@@ -5769,7 +5774,7 @@ msgstr "%s yardım dosyası açılıyor"
 msgid "Options"
 msgstr "Seçenekler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7359
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7385
 msgid ""
 "Other than declared arrays in lists there is no way to jump to determine the "
 "address of the nth element other than iterating from one element to the "
@@ -5801,11 +5806,11 @@ msgstr ""
 "\n"
 "her liste öğesinde bir şeyler yapmak için son derece etkili yollar sağlar."
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1105
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1110
 msgid "Outdated cells"
 msgstr "Kullanılmayan Hücreler"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1086
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1090
 msgid "Output labels"
 msgstr "Çıktı Etiketleri"
 
@@ -5813,7 +5818,7 @@ msgstr "Çıktı Etiketleri"
 msgid "P&ade Approximation..."
 msgstr "Padé Yaklaşımı..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5918
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5944
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*.gif)|*.gif|"
 "Scaleable vector graphics (*.svg)|*.svg|Windows bitmap (*.bmp)|*.bmp|"
@@ -5825,7 +5830,7 @@ msgstr ""
 "Portable anymap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9132
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9158
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|GIF image (*.gif)|*.gif|Portable anymap (*.pnm)|*.pnm|Tagged image file "
@@ -5842,7 +5847,7 @@ msgstr ""
 "PNG görüntüleri eski wxMaxima sürümleri tarafından okunabilir - ancak "
 "gerçekten ölçeklenebilir değildir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7724
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7750
 msgid "Pade approximation"
 msgstr "Padé Yaklaşımı"
 
@@ -5870,11 +5875,11 @@ msgstr "Çıktı Analiz Ediliyor"
 msgid "Partial &Fractions..."
 msgstr "Parçalı Kesirler..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7792
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7818
 msgid "Partial fractions"
 msgstr "Parçalı Kesirler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3691
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Belgenin parçaları düzgün olarak yüklenemedi!"
 
@@ -5912,7 +5917,7 @@ msgstr "Pi"
 msgid "Piechart..."
 msgstr "Pasta dilimi..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3780
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3806
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Lütfen wxMaxima'yı 'Düzenle-> Yapılandır' ile yapılandırınız."
 
@@ -5932,8 +5937,8 @@ msgstr "3B Grafik..."
 msgid "Plot &Format..."
 msgstr "Grafik Formatı..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8029
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9075
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8055
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9101
 msgid "Plot 2D"
 msgstr "2B Grafik"
 
@@ -5945,8 +5950,8 @@ msgstr "2B Grafik..."
 msgid "Plot 2d..."
 msgstr "2B Grafik..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7995
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9088
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8021
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9114
 msgid "Plot 3D"
 msgstr "3B Grafik"
 
@@ -5958,7 +5963,7 @@ msgstr "3B Grafik..."
 msgid "Plot 3d..."
 msgstr "3B Grafik...."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8042
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8068
 msgid "Plot format"
 msgstr "Grafik Formatı"
 
@@ -5983,9 +5988,9 @@ msgstr "Draw  kullanarak grafik çiz"
 msgid "Plotting these lists\n"
 msgstr "Bu listeleri çizme\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6408
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6424
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6538
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6434
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6450
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6564
 msgid "Point:"
 msgstr "Nokta:"
 
@@ -5997,15 +6002,15 @@ msgstr "Noktalar"
 msgid "Polish"
 msgstr "Polonyaca"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7757
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7773
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7767
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7783
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7799
 msgid "Polynomial 1:"
 msgstr "Polinom 1:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7757
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7773
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7767
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7783
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7799
 msgid "Polynomial 2:"
 msgstr "Polinom 2:"
 
@@ -6026,7 +6031,7 @@ msgstr "Portekizce (Brezilya)"
 msgid "Pre- and post- super- and subscripts\n"
 msgstr "Pre- and post- super- and subscripts\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8120
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8146
 msgid "Precision"
 msgstr "OndalıkHassasiyet"
 
@@ -6101,7 +6106,7 @@ msgstr ""
 "Geçersiz XML üretildi. Hatalı XML verileri bu nedenle kaydedilmedi, ancak "
 "hata ayıklamaya izin vermek için panoya konuldu."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7965
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7991
 msgid "Product"
 msgstr "Çarpım"
 
@@ -6166,7 +6171,7 @@ msgstr "Sitili dosyadan yükle"
 msgid "Read Matrix..."
 msgstr "Matrisi Oku...."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4255
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4281
 #, c-format
 msgid "Read the entries the maxima manual offers from %s"
 msgstr ""
@@ -6201,7 +6206,7 @@ msgstr "Sonraki komutu geçmişten bul"
 msgid "Recall previous command from history"
 msgstr "Sonraki komutu geçmişten bul"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2217
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2220
 #, c-format
 msgid "Received maxima's first prompt: %s"
 msgstr "Maxima'nın ilk istemini aldı:% s"
@@ -6230,8 +6235,8 @@ msgstr "İndirge (trig.)"
 msgid "Reduce trigonometric expression"
 msgstr "Trigonometric İfadeyi İndirge"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1612
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9618
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1615
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9644
 msgid "Refusing to send cell to maxima: "
 msgstr "Hücreyi Maxima'ya göndermeyi reddediyor: "
 
@@ -6277,7 +6282,7 @@ msgstr ""
 "Bir satırda iki defa görünen bütün dizin ögelerini temizle. Normalde "
 "sıralama ile birlikte kullanılır."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7482
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7508
 msgid "Remove an element from a list"
 msgstr "Dizinden bir öge çıkar"
 
@@ -6297,7 +6302,7 @@ msgstr ""
 msgid "Replace All"
 msgstr "Tümünü Yeniden Yerleştir"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6120
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6146
 #, c-format
 msgid "Replaced %d occurrences."
 msgstr "Yerleştirilmiş %d Olgular."
@@ -6337,7 +6342,7 @@ msgstr "Maxima'yı Yeniden Başlat"
 msgid "Restrict Maximum size"
 msgstr "Maksimum boyutu tekrar ayarla"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6713
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6739
 msgid "Resulting Matrix name (may be empty):"
 msgstr "Sonuç Matris adı (boş olabilir):"
 
@@ -6349,11 +6354,11 @@ msgstr ""
 "Listenin ilk öğesini döndürüp listeden çıkarın. Yığın oluşturmak için "
 "kullanışlıdır."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7318
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7344
 msgid "Return the list without its first n elements"
 msgstr "İlk n elemanı olmadan listeyi döndürür"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7294
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7320
 msgid "Return the list without its last n elements"
 msgstr "Son n elemanı olmadan listeyi döndürür"
 
@@ -6433,20 +6438,20 @@ msgstr "Yuvarlak delikler aşağıdaki gibi tanımlanabilir:\n"
 msgid "Rounded"
 msgstr "Yuvarlanmış"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6609
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6624
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6654
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6635
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6650
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6680
 msgid "Row number:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6784
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6804
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6810
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
 msgid "Rows:"
 msgstr "Satırlar:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7188
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7216
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7214
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7242
 msgid "Rule:"
 msgstr "Kural:"
 
@@ -6466,11 +6471,11 @@ msgstr ""
 "bulabileceği aksaklıkların büyük bir kısmı da dahil olmak üzere gerçek "
 "hayatta benzer sıklıkla karşılaşması şaşırtıcı.\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5825
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5851
 msgid "Running gnuplot as: "
 msgstr "Gnuplot'u şu şekilde çalıştırıyor: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1837
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1840
 #, c-format
 msgid "Running maxima as: %s"
 msgstr "Maxima'yı %s olarak çalıştırma"
@@ -6515,21 +6520,21 @@ msgstr "MAXİMA YA GÖNDERİLDİ:"
 msgid "SVG graphics"
 msgstr "SVG Grafikleri"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8517
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8543
 msgid "Sample 1:"
 msgstr "Örnek 1:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8517
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8543
 msgid "Sample 2:"
 msgstr "Örnek 2:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8501
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8527
 msgid "Sample:"
 msgstr "Örnek:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1202
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:166
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10211
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10237
 msgid "Save"
 msgstr "Kaydet"
 
@@ -6537,7 +6542,7 @@ msgstr "Kaydet"
 msgid "Save Animation..."
 msgstr "Animasyonu Kaydet..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5053
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5079
 msgid "Save As"
 msgstr "Faklı Kaydet"
 
@@ -6549,7 +6554,7 @@ msgstr "Faklı Kaydet\tShift+Ctrl+S"
 msgid "Save Image..."
 msgstr "Resmi Kaydet..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5916
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5942
 msgid "Save Selection to Image"
 msgstr "Seçileni Resim Olarak Kaydet"
 
@@ -6557,7 +6562,7 @@ msgstr "Seçileni Resim Olarak Kaydet"
 msgid "Save Selection to Image..."
 msgstr "Seçileni Resim Olarak Kaydet..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9154
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9180
 msgid "Save animation to file"
 msgstr "Animasyonu Dosyaya Kaydet"
 
@@ -6582,7 +6587,7 @@ msgstr ""
 msgid "Save selection from document to an image file"
 msgstr "Seçileni Bir Resim Dosyası Olarak Kaydet"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9141
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9167
 msgid "Save selection to file"
 msgstr "Seçileni Dosyaya Kaydet"
 
@@ -6610,7 +6615,7 @@ msgstr "Kaydediyor..."
 msgid "Scalable Vector Graphics (svg)"
 msgstr "Ölçülenebilir Vektör Grafikleri (svg)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9121
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9147
 msgid ""
 "Scalable Vector image (*.svg)|*.svg|Compressed Scalable Vector Image (*."
 "svgz)|*.svgz|PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|GIF image (*."
@@ -6624,7 +6629,7 @@ msgstr ""
 "Etiketli görüntü dosyası biçimi (* .tif) | * .tif | X pixmap (* .xpm) | * ."
 "xpm"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8424
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8450
 msgid "Scatterplot"
 msgstr "Dağılım Grafiği"
 
@@ -6679,7 +6684,7 @@ msgstr ""
 msgid "Search button"
 msgstr "Arama butonu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3831
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3857
 #, c-format
 msgid "Searching for maxima help file %s"
 msgstr "% s maxima yardım dosyası aranıyor"
@@ -6689,12 +6694,12 @@ msgstr "% s maxima yardım dosyası aranıyor"
 msgid "Section"
 msgstr "Bölüm"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1096
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1101
 msgid "Section cell (Heading 2)"
 msgstr "Bölüm hücresi (Başlık 2)"
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:53
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:566
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:568
 msgid "Seems like something is broken with a font."
 msgstr ""
 
@@ -6723,7 +6728,7 @@ msgstr "Hepsini seç butonu"
 msgid "Select Maxima program"
 msgstr "Maxima Programını Seç"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8610
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8636
 msgid "Select Subsample"
 msgstr "Alt Örnek Seç"
 
@@ -6737,7 +6742,7 @@ msgstr "Tümünü Seç"
 msgid "Select help browser"
 msgstr "Hepsini seç butonu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6175
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6201
 msgid "Select math display algorithm"
 msgstr "Matematik Gösterim Algoritmasını Seç"
 
@@ -6753,7 +6758,7 @@ msgstr ""
 "Çıktının bir bölümünü seçip fareyi sağ tıkladığınızdaseçilen bölüm ile "
 "yapılabilecekler menüsü gelir."
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1103
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1108
 msgid "Selection"
 msgstr "Seçim"
 
@@ -6765,7 +6770,7 @@ msgstr "Tüm hücreleri Maxima'ya gönder"
 msgid "Send the current cell to maxima"
 msgstr "Geçerli hücreyi maxima'ya gönder"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2006
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2009
 msgid "Sending Maxima a SIGINT signal."
 msgstr "Maxima'ya SIGINT sinyali gönderme."
 
@@ -6773,15 +6778,15 @@ msgstr "Maxima'ya SIGINT sinyali gönderme."
 msgid "Sending a command to Maxima"
 msgstr "Maxima'ya bir komut gönderme"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2074
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2077
 msgid "Sending a wxSIGKILL to maxima has failed"
 msgstr "WxSIGKILL öğesini maxima'ya gönderme başarısız oldu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2002
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2005
 msgid "Sending an interactive Interrupt signal (Ctrl+C) to Maxima."
 msgstr "Maxima'ya etkileşimli bir Kesme sinyali (Ctrl + C) gönderme."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1982
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1985
 msgid "Sending an interrupt signal to Maxima."
 msgstr "Maxima'ya kesme sinyali gönderme."
 
@@ -6789,16 +6794,16 @@ msgstr "Maxima'ya kesme sinyali gönderme."
 msgid "Sending configuration data to maxima."
 msgstr "Yapılandırma verilerinin Maxima'ya gönderilmesi."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3690
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3716
 msgid "Sending maxima the info how to express 2d maths as XML"
 msgstr ""
 "Maxima bilgisini 2B matematiğini XML olarak nasıl ifade edeceğinizi gönderme"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2076
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2079
 msgid "Sent wxSIGKILL to maxima, but not to its child processes"
 msgstr "WxSIGKILL'i maxima'ya gönderdi, ancak alt süreçlerine göndermedi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7899
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7925
 msgid "Series"
 msgstr "Seriler"
 
@@ -6806,7 +6811,7 @@ msgstr "Seriler"
 msgid "Series..."
 msgstr "Seriler..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1750
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1753
 msgid "Server started"
 msgstr "Sunucu Başladı"
 
@@ -6839,7 +6844,7 @@ msgstr "Grafik formatını ayarla"
 msgid "Set the \"algebraic\" flag"
 msgstr "Cebirsel Dizeyi (Flag) Çalıştır"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6990
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7016
 msgid "Set the diagram title"
 msgstr "Diyagram başlığını ayarla"
 
@@ -6847,11 +6852,11 @@ msgstr "Diyagram başlığını ayarla"
 msgid "Set the frame rate for animations."
 msgstr "Animasyonlar için çerçeve hızını ayarla."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7062
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7088
 msgid "Set the grid density."
 msgstr "Izgara yoğunluğunu ayarlayın."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7004
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7030
 msgid "Set the next plot's title. Empty = no title."
 msgstr "Bir sonraki arsanın başlığını ayarlayın. Boş = başlık yok."
 
@@ -6887,11 +6892,11 @@ msgstr "%300 Yakınlık"
 msgid "Set zoom to 80%"
 msgstr "%80 Yakınlık"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3683
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3709
 msgid "Setting a few prerequisites for wxMaxima"
 msgstr "WxMaxima için birkaç önkoşul belirleme"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3699
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3727
 #, c-format
 msgid "Setting gnuplot_binary to %s"
 msgstr "Gnuplot_binary öğesini% s olarak ayarlama"
@@ -6958,7 +6963,7 @@ msgstr "Şablonu Göster\tCtrl+Shift+K"
 msgid "Show a tip"
 msgstr "Bir Yararlı Bilgi Göster"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8357
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8383
 msgid "Show all commands similar to:"
 msgstr "'...:'ya benzer bütün komutları göster:"
 
@@ -6966,7 +6971,7 @@ msgstr "'...:'ya benzer bütün komutları göster:"
 msgid "Show all unicode symbols"
 msgstr "Tüm unicode sembollerini göster"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8343
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8369
 msgid "Show an example for the command:"
 msgstr "'...:' Komutu için bir örnek Göster:"
 
@@ -7050,7 +7055,7 @@ msgstr "\"Hepsini seç\" düğmesi gösterilsin mi?"
 msgid "Show the Copy, Cut and the Paste button?"
 msgstr "Kopyala, Kes ve Yapıştır düğmesi gösterilsin mi?"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6200
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6226
 msgid "Show the definition of function:"
 msgstr "Fonksiyonun Tanımını Göster:"
 
@@ -7163,14 +7168,14 @@ msgstr ""
 "Daha yavaş çizilir, ancak eğrinin anlaşılması daha kolaydır, yüzey şeffaf "
 "değilse:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6408
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6424
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6434
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6450
 msgid "Solution:"
 msgstr "Çözüm:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6331
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6356
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8981
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6357
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6382
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9007
 msgid "Solve"
 msgstr "Çöz"
 
@@ -7190,8 +7195,8 @@ msgstr "&ADD Çöz..."
 msgid "Solve (to_poly)..."
 msgstr "Çöz (to_poly_solve)ile..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6394
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6525
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6420
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6551
 msgid "Solve ODE"
 msgstr "ADD Çöz"
 
@@ -7203,8 +7208,8 @@ msgstr "ADDyi Laplace ile Çöz..."
 msgid "Solve ODE..."
 msgstr "ADD Çöz..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6473
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6485
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6499
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6511
 msgid "Solve algebraic system"
 msgstr "Cebirsel Sistemi Çöz"
 
@@ -7249,8 +7254,8 @@ msgstr "Birinci derece ADD için Başlangıç Değer Problemini Çöz"
 msgid "Solve initial value problem for second degree ODE"
 msgstr "İkinci derece ADD için Başlangıç Değer Problemini Çöz"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6498
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6510
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6524
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6536
 msgid "Solve linear system"
 msgstr "Lineer Sistemi Çöz"
 
@@ -7315,7 +7320,7 @@ msgstr ""
 "sihirli bir matkap yapar. Ama bu maalesef hepsinin toleransı var. Şimdi "
 "olası sonuçların görüntülerini üretmemiz isteniyor.\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7156
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7182
 msgid "Something like f(x_1,x_2)"
 msgstr "'f(x_1,x_2)' gibi birşey"
 
@@ -7337,11 +7342,11 @@ msgstr "Bazen giriş verileri eşit aralıklarla yerleştirilmez.\n"
 msgid "Sort"
 msgstr "Sırala"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7249
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7275
 msgid "Sort a list"
 msgstr "Bir dizin sırala"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7217
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7243
 msgid "Source list:"
 msgstr "Kaynak dizin:"
 
@@ -7349,7 +7354,7 @@ msgstr "Kaynak dizin:"
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1080
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1084
 msgid "Special constants"
 msgstr "Özel Sabitler"
 
@@ -7393,17 +7398,17 @@ msgstr "Aramak istediğiniz ifade yazmaya devam ederken aramayı başlat."
 msgid "Starting Maxima process failed"
 msgstr "Maxima'yı başlatma işlemi hata ile sonuçlandı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2230
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5014
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2233
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5040
 msgid "Starting evaluation of the document"
 msgstr "Belgenin değerlendirilmesine başlama"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:349
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1742
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1745
 msgid "Starting server failed"
 msgstr "Sunucu başlatımı hata ile sonuçlandı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1729
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1732
 #, c-format
 msgid "Starting server on port %d"
 msgstr "Sunucu port %d da başlatılıyor"
@@ -7429,11 +7434,11 @@ msgstr "İstatistik\tAlt+Shift+S"
 msgid "Straight lines"
 msgstr "Örtüşme önleme çizgileri."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1647
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1650
 msgid "String from maxima apparently didn't end in a newline"
 msgstr "Görünüşe göre maxima dizesi yeni satırda bitmedi"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1082
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1086
 msgid "Strings"
 msgstr "Diziler"
 
@@ -7454,7 +7459,7 @@ msgstr "Alt Örnek..."
 msgid "Subsection"
 msgstr "Altbölüm"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1095
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1100
 msgid "Subsection cell (Heading 3)"
 msgstr "Altbölüm hücresi (Başlık 3)"
 
@@ -7462,8 +7467,8 @@ msgstr "Altbölüm hücresi (Başlık 3)"
 msgid "Subst..."
 msgstr "Yerine koy..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6288
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9062
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6314
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9088
 msgid "Substitute"
 msgstr "Yerine koy"
 
@@ -7477,11 +7482,11 @@ msgstr "Yerine koy..."
 msgid "Subsubsection"
 msgstr "Alt+alt Bölüm"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1094
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1099
 msgid "Subsubsection cell (Heading 4)"
 msgstr "Altbölüm hücresi (Başlık 4)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7948
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7974
 msgid "Sum"
 msgstr "Toplam"
 
@@ -7493,7 +7498,7 @@ msgstr "Toplam işareti"
 msgid "Suppressing a redraw during printing/export"
 msgstr "Yazdırma / dışa aktarma sırasında yeniden çizmeyi bastırma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3039
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3065
 msgid "Switched to lisp mode after receiving a lisp prompt!"
 msgstr "Bir lisp istemi aldıktan sonra lisp moduna geçildi!"
 
@@ -7521,7 +7526,7 @@ msgstr "İçerik Tablosu \tAlt+Shift+T"
 msgid "Tau"
 msgstr "Tau"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7721
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7747
 msgid "Taylor series:"
 msgstr "Taylor Serileri:"
 
@@ -7529,11 +7534,11 @@ msgstr "Taylor Serileri:"
 msgid "TeX, interpreted by MathJaX"
 msgstr "TeX MathJaX tarafından yorumlendı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3082
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3108
 msgid "Telling maxima about the new working directory."
 msgstr "Maxima'ya yeni çalışma dizini hakkında bilgi vermek."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7666
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7692
 msgid "Tellrat"
 msgstr "Tellrat"
 
@@ -7546,11 +7551,11 @@ msgstr "Metin"
 msgid "Text Only"
 msgstr "Sadece metin"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1091
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1096
 msgid "Text cell"
 msgstr "Metin Hücresi"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1098
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1103
 msgid "Text cell background"
 msgstr "Metin Hücresi Arka Planı"
 
@@ -7564,7 +7569,7 @@ msgstr ""
 "tutabilir. Madde işaretleri listelerinde olduğu gibi \">\" önündeki boşluk "
 "sayısı girinti seviyesini belirler."
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1104
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1109
 msgid "Text equal to selection"
 msgstr "Metin seçime eşit"
 
@@ -7591,7 +7596,7 @@ msgstr ""
 "    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
 "    result:at(ohm,r_parallel);"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3600
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3626
 msgid ""
 "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted "
 "from a .wxmx zip archive"
@@ -7603,7 +7608,7 @@ msgstr ""
 msgid "The Accuracy versus speed tradeoff"
 msgstr "Doğruluk, hız değişimlerine karşı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1920
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1923
 msgid ""
 "The Maxima process doesn't offer a shared memory segment we can send an "
 "interrupt signal to."
@@ -7621,15 +7626,15 @@ msgid ""
 "they are pressed."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4248
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4274
 msgid "The cache for the subjects the manual contains cannot be read."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4178
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4204
 msgid "The cache for the subjects the manual contains has no head node."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4191
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4217
 msgid ""
 "The cache for the subjects the manual contains is from a different Maxima "
 "version."
@@ -7699,7 +7704,7 @@ msgstr ""
 msgid "The fill color for the next objects"
 msgstr "Sonraki nesneler için dolgu rengi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7154
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7180
 msgid "The function call whose arguments to extract"
 msgstr "Çıkarmak için argümanları olan işlev çağrısı"
 
@@ -7731,7 +7736,7 @@ msgstr ""
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr "Shift + Space tuş bileşimi, kırılamaz bir alanla sonuçlanır."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7404
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7430
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
 "as storage for actual values for variables\"."
@@ -7765,7 +7770,7 @@ msgstr "Sonraki çizimin başlığı"
 msgid "The number of recently opened files that is to be remembered."
 msgstr "Yakın geçmişte gösterilecek en son açılan dosya sayısı."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7195
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7221
 msgid ""
 "The number of the item which is stepped from \"Index Start\" to \"Index End"
 "\"."
@@ -7865,8 +7870,8 @@ msgstr ""
 "    at(Energy,Values);\n"
 "    W_mech:rhs(%);"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7193
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7221
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7219
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7247
 msgid ""
 "The rule that explains how to generate the value of a list item.\n"
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
@@ -7905,8 +7910,8 @@ msgstr ""
 "Bunun için yazılan maxima sayısı tam sayıdır. Maxima, ondalık nokta "
 "içermeyen herhangi bir sayının kesin bir sayı olması gerektiğini varsayar:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7223
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7460
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7249
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7486
 msgid "The variable the value of the current source item is stored in."
 msgstr "Geçerli kaynak öğesinin değeri değişkeninde saklanır."
 
@@ -7932,7 +7937,7 @@ msgstr ""
 "ve wxMaxima ve Maxima'yı kullanma hakkında öğreticiler bulmak  için https://"
 "wxMaxima-developers.github.io/wxmaxima/help.html adresini ziyaret edin ."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1377
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1380
 msgid ""
 "There was an error in generated XML!\n"
 "\n"
@@ -7962,7 +7967,7 @@ msgstr ""
 "Bu yaklaşım, parametreleri bulmak için çok daha iyidir (daha sonra yaklaşım2 "
 "ile değiştirilebilir).\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4161
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4187
 msgid ""
 "This file is generated by wxMaxima\n"
 "It caches the list of subjects maxima's manual offers and is automatically\n"
@@ -7979,7 +7984,7 @@ msgstr ""
 "Bu durumda da yürütülen başlangıç ​​komutlarını eklemek için, lütfen bunları "
 "yerine maxima-init.mac dosyasına ekleyin."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7357
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7383
 msgid ""
 "This function is slow for large n.\n"
 "For efficiently iterating through every element of a large list see \"Create "
@@ -8021,8 +8026,8 @@ msgstr ""
 "bağlıdır. Maxima'nın varsayım veri tabanına cevapları söyleyerek soru "
 "sormaktan kaçınabilirsiniz:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7872
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9036
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7898
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9062
 msgid "Times:"
 msgstr "Kaç kez :"
 
@@ -8039,12 +8044,12 @@ msgstr "Günün ipucu"
 msgid "Title"
 msgstr "Başlık"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6991
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7005
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7017
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7031
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr "Başlık (Alt ve üst yazı  x_ {10} veya x ^ {10})"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1097
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1102
 msgid "Title cell (Heading 1)"
 msgstr "Başlık Hücresi (Başlık 1)"
 
@@ -8110,8 +8115,8 @@ msgstr ""
 "işleminiz bitince Shift+Enter a basarak Maxima'nın Girdinizi "
 "değerlendirmesini sağlayabilirsiniz."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6842
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7963
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6868
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7989
 msgid "To:"
 msgstr "Son değer:"
 
@@ -8153,7 +8158,7 @@ msgstr ""
 "Antialias çizgilerini deneyin (bir pikselin bir kısmıyla hareket ettirmeyi "
 "sağlar, ancak netliklerini azaltır)."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4168
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4194
 #, c-format
 msgid ""
 "Trying to cache the list of subjects the manual contains in the file %s."
@@ -8166,11 +8171,11 @@ msgstr ""
 msgid "Trying to delete gnuplot file %s"
 msgstr "%s  gnuplot dosyasını silmeye çalışılıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3395
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3421
 msgid "Trying to discard all output."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3351
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3377
 msgid "Trying to extract contents.xml out of a broken .zip file."
 msgstr ""
 
@@ -8181,31 +8186,31 @@ msgstr ""
 "%s dosyasından otomatik tamamlanabilir sembollerin bir listesini yüklemeye "
 "çalışılıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4884
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4910
 msgid "Trying to open a file with an empty name!"
 msgstr "Boş bir adla bir dosyayı açmaya çalışıyor!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4889
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4915
 #, c-format
 msgid "Trying to open the non-existing file %s"
 msgstr "%s olmayan dosyayı açmaya çalışıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3429
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3455
 #, fuzzy
 msgid "Trying to reconstruct the xml closing markers."
 msgstr "Maxima'yı yeniden başlatmaya çalışıyor."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3346
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3372
 #, fuzzy
 msgid "Trying to recover a broken .wxmx file."
 msgstr "%s eski geçici dosyasını kaldırmaya çalışılıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5444
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5470
 #, c-format
 msgid "Trying to remove the old temp file %s"
 msgstr "%s eski geçici dosyasını kaldırmaya çalışılıyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1714
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1717
 msgid "Trying to restart maxima."
 msgstr "Maxima'yı yeniden başlatmaya çalışıyor."
 
@@ -8218,7 +8223,7 @@ msgstr "Bunun yerine% i bağlantı noktasında bir sunucu başlatmaya çalışı
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8521
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8547
 msgid "Two sample t-test"
 msgstr "İki Örnek t-testi"
 
@@ -8234,15 +8239,15 @@ msgstr "URL MathJaX.js burada:"
 msgid "Ukrainian"
 msgstr "Ukraynaca"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9474
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9500
 msgid "Un-closed parenthesis"
 msgstr "Kapanmamış parantezler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9461
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9487
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "Kapatılmamış parantez"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10164
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10190
 msgid ""
 "Unable to interpret the version info I got from http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt: "
@@ -8379,11 +8384,11 @@ msgstr ""
 msgid "Unicode symbols:"
 msgstr "Unicode sembolleri:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9409
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9435
 msgid "Unterminated comment."
 msgstr "Sonlandırılmamış yorum."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9454
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9480
 msgid "Unterminated string."
 msgstr "Sonlandırılmamış dizin."
 
@@ -8391,18 +8396,18 @@ msgstr "Sonlandırılmamış dizin."
 msgid "Up"
 msgstr "Yukarı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3774
 msgid "Updating maxima's configuration"
 msgstr "Maxima yapılandırmasını güncelliyor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10151
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10158
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10165
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10177
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10184
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10191
 msgid "Upgrade"
 msgstr "Yükselt"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6372
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9004
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6398
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9030
 msgid "Upper bound:"
 msgstr "Üst Sınır:"
 
@@ -8420,7 +8425,7 @@ msgstr "Matrisler için yuvarlak parantez kullanın"
 msgid "Use a list"
 msgstr "Bir dizin kullan"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7440
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7466
 msgid "Use a list as parameter list for a function"
 msgstr "Bir işlevin parametre dizini olarak bir dizin kullan"
 
@@ -8475,7 +8480,7 @@ msgstr "Yalnızca kullanıcı etiketleri"
 msgid "User specified"
 msgstr "Kullanıcıya özel"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1087
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1091
 msgid "User-defined labels"
 msgstr "Kullanıcı tanımlı etiketler"
 
@@ -8491,13 +8496,13 @@ msgstr "Daha fazla veya daha az sayıda örnek kullanma\n"
 msgid "Using a different fitting algorithm\n"
 msgstr "Farklı bir montaj algoritması kullanma\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4225
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4251
 msgid "Using the built-in list of manual anchors."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6408
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6425
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6539
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6434
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6451
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6565
 msgid "Value:"
 msgstr "Değer:"
 
@@ -8510,38 +8515,38 @@ msgid ""
 "Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
 msgstr "\"'\", \"+\", \"-\" veya benzerini içeren değişken ve denklem adları\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7418
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7444
 msgid "Variable name"
 msgstr "Değişken adı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6328
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6353
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7871
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8978
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9035
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6354
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6379
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7897
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9004
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9061
 msgid "Variable(s):"
 msgstr "Değişken(ler):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6371
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6391
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6768
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6841
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7789
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7805
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7962
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9003
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6397
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6417
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6794
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6867
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7815
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7831
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7988
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9029
 msgid "Variable:"
 msgstr "Değişken:"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1077
+#: /home/gunter/src/wxmaxima/src/Configuration.cpp:1081
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:453
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:759
 msgid "Variables"
 msgstr "Değişken(ler)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6456
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7927
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8554
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6482
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7953
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8580
 msgid "Variables:"
 msgstr "Değişken(ler):"
 
@@ -8561,10 +8566,10 @@ msgstr "3B eğrileri görselleştirme\n"
 msgid "Warn if an inactive window is idle"
 msgstr "Etkin olmayan bir pencere boşta kalırsa uyar"
 
-#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1133
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3578
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3665
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3778
+#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1139
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3604
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3691
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3804
 msgid "Warning"
 msgstr "Uyarı"
 
@@ -8602,7 +8607,7 @@ msgstr ""
 "İlk olarak, bir kayan sayının aynı değerin bir kısmı ile değiştirilmesi "
 "durumunda maxima'ya bir uyarı yazdırmamasını söyleriz:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4398
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4424
 msgid "Welcome to wxMaxima"
 msgstr "'wxMaxima'ya' Hoş Geldiniz"
 
@@ -8610,7 +8615,7 @@ msgstr "'wxMaxima'ya' Hoş Geldiniz"
 msgid "What if there exists no symbolical solution?\n"
 msgstr "Sembolik bir çözüm yoksa ne olur?\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7455
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7481
 msgid "What to do:"
 msgstr "Ne yapalım:"
 
@@ -8642,7 +8647,7 @@ msgid ""
 "using environment variables, the Startup File and command-line switches."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5055
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5081
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm"
@@ -8736,7 +8741,7 @@ msgstr ""
 "ettirerek.Seçtikten sonra Shift+Enter ile Değerlendir yapabilir yada "
 "silebilirsiniz. Bu tarz bir kullanım olanağı size kolaylık sağlar."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10148
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10174
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -8747,11 +8752,11 @@ msgstr ""
 "\n"
 "wxMaxima web sayfasını ziyaret için OK i seçin."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10210
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10236
 msgid "Your changes will be lost if you don't save them."
 msgstr "Kaydetmezseniz yaptığınız değişiklikler kaybolabilir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10158
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10184
 msgid "Your version of wxMaxima is up to date."
 msgstr "Kullandığınız wxMaxima günceldir."
 
@@ -8775,12 +8780,12 @@ msgstr "%10 yakınlaştır"
 msgid "Zoom out 10%"
 msgstr "%10 uzaklaştır"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9925
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9951
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:199
 msgid "[ unsaved ]"
 msgstr "[Kaydedilmemiş]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9927
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9953
 msgid "[ unsaved* ]"
 msgstr "[Kaydedilmemiş*]"
 
@@ -8842,12 +8847,12 @@ msgstr "maximaya ygun bir lisp seçin"
 msgid "choose between installed maxima versions"
 msgstr "yüklü maxima sürümleri arasında seçim yap"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6669
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6695
 #, fuzzy
 msgid "comma-separated column numbers:"
 msgstr "Virgülle ayrılmış ögeler"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6669
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6695
 #, fuzzy
 msgid "comma-separated row numbers:"
 msgstr "Virgülle ayrılmış değişkenler"
@@ -8860,7 +8865,7 @@ msgstr "delta"
 msgid "do for each element"
 msgstr "her bir öge için yap"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7352
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7378
 msgid "element number n"
 msgstr "öge numarası n"
 
@@ -8976,7 +8981,7 @@ msgstr "map\n"
 msgid "map runs the same function on every single list element:\n"
 msgstr "'map' komutu, fonksiyonu bir listenin her ögesine uygular\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6804
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
 msgid "matrix[i,j]:"
 msgstr "matrix[i,j]:"
 
@@ -9006,8 +9011,8 @@ msgstr "'den daha büyük"
 msgid "much less than"
 msgstr "'den çok daha az"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7291
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7315
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7317
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7341
 msgid "n"
 msgstr "n"
 
@@ -9120,8 +9125,8 @@ msgstr ""
 "sembolik bir çözüm bulmaya çalışan solve () burada başarısız olmaya "
 "mahkumdur ve bize ne kadar yol aldığını söyler:\n"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6332
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8982
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6358
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9008
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -9173,12 +9178,12 @@ msgstr "3. kuvveti"
 msgid "union"
 msgstr "birleşim"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10190
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:10216
 msgid "unsaved"
 msgstr "kaydedilmemiş"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5047
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5548
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5073
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5574
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:201
 msgid "untitled"
 msgstr "başlıksız"
@@ -9203,7 +9208,7 @@ msgstr ""
 "adlandırır\n"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:408
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8220
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8246
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
@@ -9212,10 +9217,10 @@ msgstr "wxMaxima"
 msgid "wxMaxima %d"
 msgstr "wxMaxima %d"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9925
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9927
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9936
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9939
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9951
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9953
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9962
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:9965
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:199
 #, c-format
 msgid "wxMaxima %s "
@@ -9240,7 +9245,7 @@ msgstr ""
 "herzaman yazmak durumunda kalmaz. Bu directory dosyası (nın nerede olduğu) "
 "wxMaxima sayfasına \"maxima_userdir ;\" yazarak bulunabilir"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3461
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3487
 msgid "wxMaxima cannot read the xml contents of "
 msgstr "wxMaxima xml içeriğini okuyamıyor "
 
@@ -9270,13 +9275,13 @@ msgstr ""
 "kullanılır. Eğer siz belgenizde bir seçme yaptıysanız seçtiğiniz bölüm (lar) "
 "'%' yerine kullanılır."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4637
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4663
 msgid "wxMaxima document"
 msgstr "wxMaxima Belgesi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3115
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3170
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3179
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3141
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3196
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3205
 msgid "wxMaxima encountered an error loading "
 msgstr "wxMaxima bir yükleme hatası ile karşılaştı. "
 
@@ -9284,7 +9289,7 @@ msgstr "wxMaxima bir yükleme hatası ile karşılaştı. "
 msgid "wxMaxima help"
 msgstr "wxMaxima Yardımı"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8189
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8215
 msgid ""
 "wxMaxima is a cross-platform graphical user interface for the computer "
 "algebra system Maxima based on wxWidgets.\n"
@@ -9395,7 +9400,7 @@ msgstr "wxmx dosyası kaydedildi"
 msgid "x"
 msgstr "x"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7058
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7084
 msgid "x direction [in multiples of the tick frequency]"
 msgstr "x yönü [tik frekansının katları]"
 
@@ -9403,8 +9408,8 @@ msgstr "x yönü [tik frekansının katları]"
 msgid "xi"
 msgstr "xi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3471
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3611
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3497
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3637
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
 msgstr ""
 "dosyada bulunan xml, bir wxMaxima çalışma sayfası olmamasını talep ediyor. "
@@ -9413,11 +9418,11 @@ msgstr ""
 msgid "xor"
 msgstr "xor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7059
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7085
 msgid "y direction [in multiples of the tick frequency]"
 msgstr "y yönü [tik frekansının katları]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8197
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8223
 msgid "yes"
 msgstr "evet"
 
