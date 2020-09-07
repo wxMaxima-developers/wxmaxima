@@ -419,13 +419,16 @@ void TextCell::Draw(wxPoint point)
       !(IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign())))
   {
     wxDC *dc = configuration->GetDC();
+    int padding = 0;
+    if(GetStyle() != TS_ASCIIMATHS)
+      padding = MC_TEXT_PADDING;
     
     if (InUpdateRegion())
     {
       SetForeground();
       SetFont(m_fontSize_Scaled);
       dc->DrawText(m_displayedText,
-                   point.x + MC_TEXT_PADDING,
+                   point.x + padding,
                    point.y - m_center + MC_TEXT_PADDING);
     }
   }
