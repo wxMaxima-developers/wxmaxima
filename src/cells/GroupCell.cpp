@@ -596,6 +596,13 @@ void GroupCell::RecalculateOutput()
   Configuration *configuration = (*m_configuration);
     
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
+
+  // The following line is a hack, kind of: Without it the first
+  // (and only) line of an image that was included using the gui, not maxima
+  // (and that therefore doesn't start in a label that per definition breaks
+  // a line) later will not trigger the
+  //  if (tmp.BreakLineHere())
+  // that causes its height to be calculated.
   m_output->ForceBreakLine();
 
   m_mathFontSize = configuration->GetMathFontSize(); //-V519
