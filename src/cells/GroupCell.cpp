@@ -596,12 +596,11 @@ void GroupCell::RecalculateOutput()
   Configuration *configuration = (*m_configuration);
     
   m_mathFontSize = (*m_configuration)->GetMathFontSize();
-  // FIXME - this code did nothing, but the intent was maybe to break the line?
-  // m_output->HardLineBreak();
+  m_output->ForceBreakLine();
 
   m_mathFontSize = configuration->GetMathFontSize(); //-V519
   
-  // Recalculate widths of cells
+  // Recalculate size of all output cells
   for (Cell &tmp : OnList(m_output.get()))
   {
     tmp.Recalculate(tmp.IsMath() ?
@@ -621,7 +620,7 @@ void GroupCell::RecalculateOutput()
                     (*m_configuration)->GetDefaultFontSize());
   }
 
-  // Update heights
+  // Calculate the height of the output
   for (Cell &tmp : OnDrawList(m_output.get()))
   {
     if (tmp.BreakLineHere())
