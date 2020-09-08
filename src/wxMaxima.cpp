@@ -10285,6 +10285,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
   }
   else
     m_worksheet->m_mainToolBar->SetDefaultCellStyle();
+  m_worksheet->SetFocus();
 }
 
 

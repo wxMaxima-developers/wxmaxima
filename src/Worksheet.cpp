@@ -2141,6 +2141,7 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event)
 {
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x, &m_pointer_y);
   m_mouseMotionWas = true;
+  m_updateControls = true;
   if (!GetTree() || !m_leftDown)
     return;
 
