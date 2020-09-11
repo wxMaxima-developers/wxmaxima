@@ -254,9 +254,8 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
 
 int Cell::GetCenterList() const
 {
-  if (m_recalculate_maxCenter)
+  if (m_maxCenter.IsInvalid())
   {
-    m_recalculate_maxCenter = false;
     int maxCenter = 0;
     for (const Cell &tmp : OnDrawList(this))
     {
@@ -265,16 +264,15 @@ int Cell::GetCenterList() const
       if (!tmp.m_isBrokenIntoLines)
         maxCenter = wxMax(maxCenter, tmp.m_center);
     }
-    m_maxCenter = maxCenter;
+    m_maxCenter.SetCached(maxCenter);
   }
   return m_maxCenter;
 }
 
 int Cell::GetMaxDrop() const
 {
-  if (m_recalculate_maxDrop)
+  if (m_maxDrop.IsInvalid())
   {
-    m_recalculate_maxDrop = false;
     int maxDrop = 0;
     for (const Cell &tmp : OnDrawList(this))
     {
@@ -283,7 +281,7 @@ int Cell::GetMaxDrop() const
       if (!tmp.m_isBrokenIntoLines)
         maxDrop = wxMax(maxDrop, tmp.m_height - tmp.m_center);
     }
-    m_maxDrop = maxDrop;
+    m_maxDrop.SetCached(maxDrop);
   }
   return m_maxDrop;
 }
@@ -295,11 +293,8 @@ int Cell::GetHeightList() const
 
 int Cell::GetFullWidth() const
 {
-  // Recalculate the with of this list of cells only if this has been marked as necessary.
-  if (m_recalculate_maxWidth)
+  if (m_fullWidth.IsInvalid())
   {
-    m_recalculate_maxWidth = false;
-
     // We begin this calculation with a negative offset since the full width of only a single
     // cell doesn't contain the space that separates two cells - that is automatically added
     // to every cell in the next step.
@@ -308,16 +303,15 @@ int Cell::GetFullWidth() const
     {
       fullWidth += tmp.m_width;
     }
-    m_fullWidth = fullWidth;
+    m_fullWidth.SetCached(fullWidth);
   }
   return m_fullWidth;
 }
 
 int Cell::GetLineWidth() const
 {
-  if (m_recalculate_lineWidth)
+  if (m_lineWidth.IsInvalid())
   {
-    m_recalculate_lineWidth = false;
     int width = m_width;
     for (const Cell &tmp : OnDrawList(this))
     {
@@ -327,7 +321,7 @@ int Cell::GetLineWidth() const
 
       width += tmp.m_width;
     }
-    m_lineWidth = width;
+    m_lineWidth.SetCached(width);
   }
   return m_lineWidth;
 }
@@ -1040,6 +1034,23 @@ void Cell::ResetDataList()
 {
   for (Cell &tmp : OnList(this))
     tmp.ResetData();
+}
+
+void Cell::ResetSize()
+{
+  m_recalculateWidths = true; 
+  m_fullWidth.Invalidate();
+  m_lineWidth.Invalidate();
+  m_maxCenter.Invalidate();
+  m_maxDrop.Invalidate();
+}
+
+void Cell::ResetCellListSizes()
+{
+  m_fullWidth.Invalidate();
+  m_lineWidth.Invalidate();
+  m_maxCenter.Invalidate();
+  m_maxDrop.Invalidate();
 }
 
 Cell *Cell::first() const
