@@ -134,7 +134,7 @@ public:
 
  */
 
-// 120 bytes
+// 112 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -844,7 +844,7 @@ protected:
   */
   wxPoint m_currentPoint{-1, -1};
 
-//** 8/4-byte objects (36 + 8* bytes)
+//** 8/4-byte objects (40 + 8* bytes)
 //**
 private:
   //! The next cell in the list of cells, or null if it's the last cell.
@@ -870,10 +870,8 @@ protected:
   //! it points to a "static" string.
   const wxString *m_toolTip /* initialized in the constructor */;
 
-//** 4-byte objects (36 bytes)
+//** 4-byte objects (28 bytes)
 //**
-private:
-
 protected:
   //! The height of this cell.
   int m_height = -1;
