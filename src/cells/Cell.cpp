@@ -239,7 +239,6 @@ bool Cell::NeedsRecalculation(AFontSize fontSize) const
       (abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1) &&
       (GetType() != MC_TYPE_GROUP)
       )||
-    (m_isBrokenIntoLines != m_isBrokenIntoLines_old) ||
     (*m_configuration)->FontChanged();
   // if(result)
   //   std::cerr << ToString()<< "\n"<<
@@ -455,7 +454,6 @@ void Cell::ResetSizeList()
 void Cell::Recalculate(AFontSize fontsize)
 {
   m_fontSize_Scaled = Scale_Px(fontsize);
-  m_isBrokenIntoLines_old = m_isBrokenIntoLines;
   ResetCellListSizes();
   m_recalculateWidths = false;
 }
@@ -1082,8 +1080,10 @@ bool Cell::BreakUp()
 
 void Cell::BreakUpAndMark()
 {
+  wxASSERT(!m_isBrokenIntoLines);
   Cell::BreakUp();
   m_isBrokenIntoLines = true;
+  m_recalculateWidths = true;
 }
 
 void Cell::Unbreak()

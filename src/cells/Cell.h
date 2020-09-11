@@ -904,7 +904,7 @@ protected:
   TextStyle m_textStyle = TS_DEFAULT;
 
 private:
-//** Bitfield objects (3 bytes)
+//** Bitfield objects (2 bytes)
 //**
   void InitBitFields()
   { // Keep the initailization order below same as the order
@@ -912,7 +912,6 @@ private:
     m_ownsToolTip = false;
     m_bigSkip = false;
     m_isBrokenIntoLines = false;
-    m_isBrokenIntoLines_old = false;
     m_isHidden = false;
     m_isHidableMultSign = false;
     m_suppressMultiplicationDot = false;
@@ -937,14 +936,13 @@ private:
   bool m_ownsToolTip : 1 /* InitBitFields */;
   bool m_bigSkip : 1 /* InitBitFields */;
   bool m_isBrokenIntoLines : 1 /* InitBitFields */;
-  bool m_isBrokenIntoLines_old : 1 /* InitBitFields */;
   bool m_isHidden : 1 /* InitBitFields */;
   bool m_isHidableMultSign : 1 /* InitBitFields */;
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
-
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
   mutable bool m_recalculate_maxCenter : 1 /* InitBitFields */;
+
   mutable bool m_recalculate_maxDrop : 1 /* InitBitFields */;
   mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
   mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
