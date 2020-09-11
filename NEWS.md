@@ -11,6 +11,7 @@
  * Another massive performance update
  * Reduced the memory footprint of big equations
  * A better 2D ASCII Art mode
+ * Better High-DPI support
  * If it is configurable it now might have a right-click menu
  * Reduced the memory footprint of cells used only when line breaking is performed
  * Subscripts created by derivabbrev are now correctly copied as "diff" command
