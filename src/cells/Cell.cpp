@@ -427,7 +427,7 @@ void Cell::AddToolTip(const wxString &tip)
 
 void Cell::SetAltCopyText(const wxString &text)
 {
-  wxASSERT_MSG(text == wxEmptyString,
+  wxASSERT_MSG(text.empty(),
                wxString::Format(_("Bug: AltCopyTexts not implemented for %s cell"), GetInfo().GetName()));
 }
 
@@ -543,7 +543,7 @@ bool Cell::IsCompound() const
 
 wxString Cell::ToString() const
 {
-  return wxEmptyString;
+  return {};
 }
 
 static const wxString space = wxT(" ");
@@ -601,7 +601,7 @@ wxString Cell::ListToString() const
 
 wxString Cell::ToMatlab() const
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ListToMatlab() const
@@ -639,7 +639,7 @@ wxString Cell::ListToMatlab() const
 
 wxString Cell::ToTeX() const
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ListToTeX() const
@@ -657,12 +657,12 @@ wxString Cell::ListToTeX() const
 
 wxString Cell::ToXML() const
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ToMathML() const
 {
-  return wxEmptyString;
+  return {};
 }
 
 wxString Cell::ListToMathML(bool startofline) const
@@ -762,8 +762,8 @@ wxString Cell::OMML2RTF(wxXmlNode *node)
 
 wxString Cell::OMML2RTF(wxString ommltext)
 {
-  if (ommltext == wxEmptyString)
-    return wxEmptyString;
+  if (ommltext.empty())
+    return {};
 
   wxString result;
   wxXmlDocument ommldoc;
@@ -776,7 +776,7 @@ wxString Cell::OMML2RTF(wxString ommltext)
   wxXmlNode *node = ommldoc.GetRoot();
   result += OMML2RTF(node);
 
-  if ((result != wxEmptyString) && (result != wxT("\\mr")))
+  if (!result.empty() && (result != wxT("\\mr")))
   {
     result = wxT("{\\mmath {\\*\\moMath") + result + wxT("}}");
   }
@@ -802,7 +802,7 @@ wxString Cell::RTFescape(wxString input, bool MarkDown)
   input.Replace(wxT("\r"), "\n");
 
   // The Character we will use as a soft line break
-  input.Replace("\r", wxEmptyString);
+  input.Replace("\r", wxm::emptyString);
 
   // Encode unicode characters in a rather mind-boggling way
   wxString output;
@@ -854,7 +854,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
     wxString token = tmp.ToOMML();
 
     // End exporting the equation if we reached the end of the equation.
-    if (token == wxEmptyString)
+    if (token.empty())
       break;
 
     retval += token;
@@ -864,7 +864,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline)) const
       break;
   }
 
-  if ((multiCell) && (retval != wxEmptyString))
+  if (multiCell && !retval.empty())
     return wxT("<m:r>") + retval + wxT("</m:r>");
   else
     return retval;
@@ -877,7 +877,7 @@ wxString Cell::ListToRTF(bool startofline) const
   for (const Cell *tmp = this; tmp != NULL; )
   {
     wxString rtf = tmp->ToRTF();
-    if (rtf != wxEmptyString)
+    if (!rtf.empty())
     {
       if ((GetStyle() == TS_LABEL) || ((GetStyle() == TS_USERLABEL)))
       {
@@ -894,7 +894,7 @@ wxString Cell::ListToRTF(bool startofline) const
     }
     else
     {
-      if (tmp->ListToOMML() != wxEmptyString)
+      if (!tmp->ListToOMML().empty())
       {
         // Math!
 
@@ -910,7 +910,7 @@ wxString Cell::ListToRTF(bool startofline) const
         while (tmp != NULL)
         {
           // A non-equation item starts a new rtf item
-          if (tmp->ToOMML() == wxEmptyString)
+          if (tmp->ToOMML().empty())
             break;
 
           // A newline starts a new equation
@@ -973,7 +973,7 @@ wxString Cell::ListToXML() const
  */
 wxString Cell::GetDiffPart() const
 {
-  return wxEmptyString;
+  return {};
 }
 
 Cell::Range Cell::GetCellsInRect(const wxRect &rect) const
@@ -1372,7 +1372,7 @@ wxAccStatus Cell::GetDefaultAction(int childId, wxString *actionName) const
   if (GetChild(childId, &childCell) == wxACC_OK && childCell)
     return childCell->GetDefaultAction(0, actionName);
 
-  *actionName = wxEmptyString;
+  actionName->clear();
   return wxACC_OK;
 }
 
