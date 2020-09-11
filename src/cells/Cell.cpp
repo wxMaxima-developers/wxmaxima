@@ -437,7 +437,6 @@ void Cell::DrawList(wxPoint point)
   {
     tmp.Draw(point);
     point.x += tmp.m_width;
-    wxASSERT(&tmp != tmp.GetNextToDraw()); // ensure draw progress
   }
 }
 
