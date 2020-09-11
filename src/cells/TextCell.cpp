@@ -401,7 +401,7 @@ void TextCell::Recalculate(AFontSize fontsize)
     m_height += 2 * MC_TEXT_PADDING;
     
     /// Hidden cells (multiplication * is not displayed)
-    if (IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign()))
+    if (IsHidden() || (GetHidableMultSign() && (configuration->HidemultiplicationSign())))
     {
       m_height = m_fontSize_Scaled.Get();
       m_width = m_fontSize_Scaled.Get() / 4;
@@ -416,21 +416,18 @@ void TextCell::Draw(wxPoint point)
   Cell::Draw(point);
   Configuration *configuration = (*m_configuration);
   if (DrawThisCell(point) &&
-      !(IsHidden() || ((configuration->HidemultiplicationSign()) && GetHidableMultSign())))
+      !(IsHidden() || (GetHidableMultSign() && configuration->HidemultiplicationSign())))
   {
     wxDC *dc = configuration->GetDC();
     int padding = 0;
-    if(GetStyle() != TS_ASCIIMATHS)
+    if (GetStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
     
-    if (InUpdateRegion())
-    {
-      SetForeground();
-      SetFont(m_fontSize_Scaled);
-      dc->DrawText(m_displayedText,
-                   point.x + padding,
-                   point.y - m_center + MC_TEXT_PADDING);
-    }
+    SetForeground();
+    SetFont(m_fontSize_Scaled);
+    dc->DrawText(m_displayedText,
+                 point.x + padding,
+                 point.y - m_center + MC_TEXT_PADDING);
   }
 }
 
