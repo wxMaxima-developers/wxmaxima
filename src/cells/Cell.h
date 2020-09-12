@@ -35,6 +35,7 @@
 #include "Configuration.h"
 #include "StringUtils.h"
 #include "TextStyle.h"
+#include "utils/CachedValue.h"
 #include <wx/defs.h>
 #if wxUSE_ACCESSIBILITY
 #include "wx/access.h"
@@ -448,22 +449,9 @@ public:
   void ResetDataList();
 
   //! Mark the cached height and width information as "to be calculated".
-  void ResetSize()
-    { 
-       m_recalculateWidths = true; 
-       m_recalculate_maxCenter = true;
-       m_recalculate_maxDrop = true;
-       m_recalculate_maxWidth = true;
-       m_recalculate_lineWidth = true;
-    }
+  void ResetSize();
 
-  void ResetCellListSizes()
-    { 
-      m_recalculate_maxCenter = true;
-      m_recalculate_maxDrop = true;
-      m_recalculate_maxWidth = true;
-      m_recalculate_lineWidth = true;
-    }
+  void ResetCellListSizes();
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
@@ -877,21 +865,15 @@ protected:
   int m_height = -1;
   //! The width of this cell; is recalculated by RecalculateHeight.
   int m_width = -1;
-  /*! Caches the width of the list starting with this cell.
-
-     - Will contain -1, if it has not yet been calculated.
-     - Won't be recalculated on appending new cells to the list.
-   */
-  mutable int m_fullWidth = -1;
-  /*! Caches the width of the rest of the line this cell is part of.
-
-     - Will contain -1, if it has not yet been calculated.
-     - Won't be recalculated on appending new cells to the list.
-   */
-  mutable int m_lineWidth = -1;
   int m_center = -1;
-  mutable int m_maxCenter = -1;
-  mutable int m_maxDrop = -1;
+
+private:
+  //! The width of the list starting with this cell.
+  CachedInteger<int> m_fullWidth;
+  //! The width of the rest of the line this cell is part of.
+  CachedInteger<int> m_lineWidth;
+  CachedInteger<int> m_maxCenter;
+  CachedInteger<int> m_maxDrop;
 protected:
 //** 2-byte objects (2 bytes)
 //**
@@ -916,10 +898,6 @@ private:
     m_isHidableMultSign = false;
     m_suppressMultiplicationDot = false;
     m_recalculateWidths = true;
-    m_recalculate_maxCenter = true;
-    m_recalculate_maxDrop = true;
-    m_recalculate_maxWidth = true;
-    m_recalculate_lineWidth = true;
     m_containsToolTip = false;
     m_breakPage = false;
     m_breakLine = false;
@@ -941,12 +919,8 @@ private:
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
-  mutable bool m_recalculate_maxCenter : 1 /* InitBitFields */;
-
-  mutable bool m_recalculate_maxDrop : 1 /* InitBitFields */;
-  mutable bool m_recalculate_maxWidth : 1 /* InitBitFields */;
-  mutable bool m_recalculate_lineWidth : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;
+
   bool m_breakPage : 1 /* InitBitFields */;
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
@@ -969,6 +943,8 @@ protected:
   const wxString &GetLocalToolTip() const;
 
   CellPointers *GetCellPointers() const;
+
+  void InvalidateMaxDrop() { m_maxDrop.Invalidate(); }
 
 private:
   void RecalcCenterListAndMaxDropCache();

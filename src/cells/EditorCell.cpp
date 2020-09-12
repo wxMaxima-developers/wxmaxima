@@ -3159,7 +3159,8 @@ bool EditorCell::CutToClipboard()
 
   ClearSelection();
   m_paren1 = m_paren2 = -1;
-  m_width = m_height = m_maxDrop = m_center = -1;
+  m_width = m_height = m_center = -1;
+  InvalidateMaxDrop();
 
   return true;
 }
@@ -3186,7 +3187,8 @@ void EditorCell::InsertText(wxString text)
   m_text.Replace(wxT("\u2028"), "\n");
   m_text.Replace(wxT("\u2029"), "\n");
 
-//  m_width = m_height = m_maxDrop = m_center = -1;
+//  m_width = m_height = m_center = -1;
+//  InvalidateMaxDrop();
   StyleText();
 }
 
@@ -3307,7 +3309,8 @@ void EditorCell::Undo()
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
-  m_width = m_height = m_maxDrop = m_center = -1;
+  m_width = m_height = m_center = -1;
+  InvalidateMaxDrop();
 }
 
 
@@ -3333,7 +3336,8 @@ void EditorCell::Redo()
 
   m_paren1 = m_paren2 = -1;
   m_isDirty = true;
-  m_width = m_height = m_maxDrop = m_center = -1;
+  m_width = m_height = m_center = -1;
+  InvalidateMaxDrop();
 }
 
 

@@ -129,8 +129,10 @@ CellList::SplicedIn CellList::SpliceInAfter(Cell *where, std::unique_ptr<Cell> &
   if (!head)
     return {};
 
-  where->m_maxDrop = -1;
-  where->m_maxCenter = -1;
+  where->m_fullWidth.Invalidate();
+  where->m_lineWidth.Invalidate();
+  where->m_maxDrop.Invalidate();
+  where->m_maxCenter.Invalidate();
 
   if (!last)
     last = head->last();
