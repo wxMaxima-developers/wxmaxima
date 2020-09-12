@@ -467,6 +467,7 @@ void GroupCell::Recalculate()
     {
       m_width = configuration->GetCellBracketWidth();
       m_height = 2;
+      m_center = 1;
       return;
     }
     
