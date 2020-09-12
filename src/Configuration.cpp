@@ -291,7 +291,8 @@ void Configuration::InitStyles()
   }
   #endif
 
-  wxFont monospace(10, wxMODERN, wxNORMAL, wxNORMAL);
+  // TODO It's a fat chance that this font actually will be monospace.
+  wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
   m_styles[TS_ASCIIMATHS].SetFontName(AFontName(monospace.GetFaceName()));
   m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
   m_styles[TS_MATH].FontSize(12.0);
