@@ -57,6 +57,40 @@
          You can see current time at: https://en.wikipedia.org/wiki/ISO_8601
     -->
 
+    <release version="20.09.0" date="2020-09-12T06:57:00Z">
+      <description>
+	<p>
+	  A massive performance update and many bug fixes.
+	</p>
+	<ul>
+	  <li> Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan</li>
+	  <li> An italian translation update from Marco Ciampa</li>
+	  <li> Repaired the non-case-sensitive Replace All functionality</li>
+	  <li> Updated Ukrainian translation by Yuri Chornoivan</li>
+	  <li> More efficient and accurate calculation of worksheet object sizes</li>
+	  <li> Resolved the last visual glitches</li>
+	  <li> Reduced the UI flicker on MS Windows</li>
+	  <li> Now diff cells can be broken into lines, too</li>
+	  <li> A try to replace manual MacOs desktop integration with wxWidgets one</li>
+	  <li> Another massive performance update</li>
+	  <li> Reduced the memory footprint of big equations</li>
+	  <li> A better 2D ASCII Art mode</li>
+	  <li> Better High-DPI support</li>
+	  <li> If it is configurable it now might have a right-click menu</li>
+	  <li> Reduced the memory footprint of cells used only when line breaking is performed</li>
+	  <li> Subscripts created by derivabbrev are now correctly copied as diff command</li>
+	  <li> If Maxima comes without suitable manual we now use the online one instead</li>
+	  <li> Added buttons that reset the configuration</li>
+	  <li> A few menu items now are checkboxes set and cleared by maxima</li>
+	  <li> Now the communication port is released on closing</li>
+	  <li> Improved performance of receiving data from maxima</li>
+	  <li> The font sizes are now stored in configuration with full precision</li>
+	  <li> Many additional bug fixes</li>
+	</ul>
+      </description>
+    </release>
+
+    
     <release version="20.07.0" date="2020-07-20T08:50:00Z">
       <description>
 	<p>

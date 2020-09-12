@@ -8,7 +8,7 @@ if(WIN32)
 endif()    
 
 
-set(VERSION 20.07.0-DevelopmentSnapshot)
+set(VERSION 20.09.0)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

@@ -1,4 +1,4 @@
-# Current
+# 20.09.0
  * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
  * An italian translation update from Marco Ciampa
  * Repaired the non-case-sensitive "Replace All" functionality
@@ -19,7 +19,7 @@
  * Added buttons that reset the configuration
  * A few menu items now are checkboxes set and cleared by maxima
  * wxMaxima forgot to release the communication port it used for talking to maxima
- * Improved performance of receiving data from maxima (over the network socket)
+ * Improved performance of receiving data from maxima
  * The font sizes are stored in configuration with full precision, without rounding to integer
  * Many additional bug fixes
 
