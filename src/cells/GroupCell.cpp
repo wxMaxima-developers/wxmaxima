@@ -666,26 +666,24 @@ void GroupCell::UpdateYPositionList()
 
 void GroupCell::UpdateYPosition()
 {
-  Configuration *configuration = (*m_configuration);
-  GroupCell *const previous = GetPrevious();
+  auto *const configuration = (*m_configuration);
+  auto *const previous = GetPrevious();
   
+  wxPoint point(configuration->GetIndent(), GetCenter());
   if (!previous)
   {
-    m_currentPoint.x = configuration->GetIndent();
-    m_currentPoint.y = configuration->GetBaseIndent() + GetCenter();
-    if(m_inputLabel)
-      m_inputLabel->SetCurrentPoint(m_currentPoint);
+    point.y += configuration->GetBaseIndent();
+    if (m_inputLabel)
+      m_inputLabel->SetCurrentPoint(point);
   }
   else
   {
-    m_currentPoint.x = configuration->GetIndent();
-    if (previous->GetCurrentPoint().y <= 0)
-      return;
-    wxASSERT(previous->GetCurrentPoint().y > 0);
-    m_currentPoint.y = previous->GetCurrentPoint().y +
-      previous->GetMaxDrop() + GetCenter() +
-      configuration->GetGroupSkip();
+    point.y += configuration->GetGroupSkip();
+    if (previous->GetCurrentPoint().y > 0)
+      point.y += previous->GetCurrentPoint().y +
+                 previous->GetMaxDrop();
   }
+  m_currentPoint = point;
 }
 
 int GroupCell::GetInputIndent()
