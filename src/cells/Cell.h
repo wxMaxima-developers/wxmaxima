@@ -216,11 +216,8 @@ public:
   //! The part of the rectangle rect that is in the region that is currently drawn
   wxRect CropToUpdateRegion(wxRect rect) const;
 
-  //! Is part of this rectangle in the region that is currently drawn?
-  bool InUpdateRegion(const wxRect &rect) const;
-
   //! Is this cell inside the region that is currently drawn?
-  bool InUpdateRegion() const { return InUpdateRegion(GetRect()); }
+  bool InUpdateRegion() const;
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)

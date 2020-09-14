@@ -51,6 +51,7 @@ Style Configuration::GetStyle(TextStyle, AFontSize) const {
 }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
 Configuration::drawMode Configuration::GetParenthesisDrawMode() { return {}; }
+bool Configuration::InUpdateRegion(wxRect) const { return true; }
 Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
 Configuration::~Configuration() {}
 

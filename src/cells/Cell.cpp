@@ -341,15 +341,12 @@ void Cell::Draw(wxPoint point)
       configuration->ClipToDrawRegion() && !configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker())
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
-    if (Cell::InUpdateRegion(rect))
+    if (configuration->InUpdateRegion(rect) && !rect.IsEmpty())
     {
-      if((rect.GetWidth() > 0) && rect.GetHeight() > 0)
-      {
-        wxDC *dc = configuration->GetDC();
-        dc->SetPen(*wxTRANSPARENT_PEN);
-        dc->SetBrush((*m_configuration)->GetTooltipBrush());
-        dc->DrawRectangle(rect);
-      }
+      wxDC *dc = configuration->GetDC();
+      dc->SetPen(*wxTRANSPARENT_PEN);
+      dc->SetBrush((*m_configuration)->GetTooltipBrush());
+      dc->DrawRectangle(rect);
     }
   }
   
@@ -492,36 +489,28 @@ wxRect Cell::GetRect(bool wholeList) const
                   m_width, m_height);
 }
 
-bool Cell::InUpdateRegion(const wxRect &rect) const
+bool Cell::InUpdateRegion() const
 {
-  if (!(*m_configuration)->ClipToDrawRegion())
+  auto *const configuration = *m_configuration;
+  if (!configuration->ClipToDrawRegion())
     return true;
-
-  if((m_currentPoint.x < 0) || (m_currentPoint.y < 0))
-    return false;
-  
-  wxRect updateRegion = (*m_configuration)->GetUpdateRegion();
-
-  // If we have deferred the recalculation of the cell height but now
-  // got a draw request due to moving the mouse wheel we need to guess
-  // the cell size 
-  if(m_height < 0)
+  if (HasValidSize())
+    return configuration->InUpdateRegion(GetRect());
+  if (HasValidPosition())
   {
-    int height = 0;
-    if(m_next)
-      height = m_next->m_currentPoint.y - m_currentPoint.y;
-
-    if ((updateRegion.GetBottom() >= m_currentPoint.y) &&
-        (updateRegion.GetTop() <= m_currentPoint.y+height))
-    return true;
+    // The cell hasn't been recalculated yet: we perform a best-attempt
+    // guess at its extents. This case may happen when the canvas is being
+    // scrolled by the user, or when maxima is updating it.
+    wxRect cellRect;
+    cellRect.SetPosition(m_currentPoint);
+    cellRect.SetWidth(configuration->GetClientWidth() - m_currentPoint.x);
+    if (m_next && m_next->HasValidPosition())
+      cellRect.SetHeight(m_next->m_currentPoint.y - m_currentPoint.y);
+    else
+      cellRect.SetHeight(10);
+    return configuration->InUpdateRegion(cellRect);
   }
-
-  if(updateRegion.Contains(m_currentPoint))
-    return true;
-
-  return updateRegion.Intersects(rect) ||
-    updateRegion.Contains(rect) ||
-    (updateRegion == rect) || rect.Contains(updateRegion);
+  return false;
 }
 
 void Cell::DrawBoundingBox(wxDC &dc, bool all)
