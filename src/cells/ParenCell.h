@@ -62,8 +62,6 @@ public:
 
   void SetPrint(bool print) { m_print = print; }
 
-  void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   bool BreakUp() override;
@@ -77,6 +75,9 @@ public:
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   void SetFont(AFontSize fontsize);

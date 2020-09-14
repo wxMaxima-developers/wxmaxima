@@ -58,8 +58,6 @@ public:
   //! By how much do we want to rise the power?
   double PowRise() const {return .3 * m_fontSize_Scaled;}
   
-  void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   wxString ToMathML() const override;
@@ -80,6 +78,9 @@ public:
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   void MakeBreakupCells();

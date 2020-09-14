@@ -227,15 +227,6 @@ public:
   //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect() const { return m_outputRect; }
 
-  /*! Recalculates the size of this GroupCell and all cells inside it if needed.
-
-    This command will also assign the GroupCell a y coordinate it is plotted at.
-    The y coordinate of all output cells of this GroupCell is assigned during
-    GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
-   */
-  void Recalculate(AFontSize WXUNUSED(fontsize)) override {Recalculate();}
-  void Recalculate();
-
   //! Recalculate the height of the input part of the cell
   void RecalculateInput();
   wxRect GetRect(bool all = false) const override;
@@ -408,9 +399,19 @@ public:
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
 
-private:
-  //! The client width at the time of the last recalculation.
-  int m_clientWidth_old = -1;
+public:
+  void Recalculate() { DoRecalculate(); }
+
+protected:
+  /*! Recalculates the size of this GroupCell and all cells inside it if needed.
+
+    This command will also assign the GroupCell a y coordinate it is plotted at.
+    The y coordinate of all output cells of this GroupCell is assigned during
+    GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
+   */
+  void DoRecalculate(AFontSize WXUNUSED(fontsize)) override;
+  void DoRecalculate();
+
 protected:
   bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();
@@ -438,10 +439,12 @@ protected:
   std::unique_ptr<Cell> m_output;
   // The pointers above point to inner cells and must be kept contiguous.
 
-//** 4-byte objects (12 bytes)
+//** 4-byte objects (16 bytes)
 //**
   int m_labelWidth_cached = 0;
   int m_inputWidth, m_inputHeight;
+  //! The client width at the time of the last recalculation.
+  int m_clientWidth_old = -1;
 
 //** 2-byte objects (6 bytes)
 //**

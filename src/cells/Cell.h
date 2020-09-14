@@ -422,6 +422,9 @@ public:
   
   virtual wxString GetDiffPart() const;
 
+  void Recalculate(AFontSize fontsize);
+
+protected:
   /*! Recalculate the size of the cell and the difference between top and center
 
     Must set: m_height, m_width, m_center.
@@ -429,12 +432,10 @@ public:
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void Recalculate(AFontSize fontsize);
+  virtual void DoRecalculate(AFontSize fontsize) = 0;
 
-  /*! Recalculate both width and height of this list of cells.
-
-    Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
-   */
+public:
+  //! Recalculate the size of the list of cells, starting with this one.
   void RecalculateList(AFontSize fontsize);
 
   //! Tell a whole list of cells that their fonts have changed
@@ -825,8 +826,8 @@ protected:
        between numerator and denominator.
 
     The current point is recalculated 
-     - for GroupCells by GroupCell::RecalculateHeight
-     - for EditorCells by it's GroupCell's RecalculateHeight and
+     - for GroupCells by GroupCell::Recalculate
+     - for EditorCells by it's GroupCell's Recalculate
      - for Cells when they are drawn.
   */
   wxPoint m_currentPoint{-1, -1};

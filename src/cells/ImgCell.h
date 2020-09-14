@@ -100,8 +100,6 @@ public:
   void SetMaxWidth(double width) const { if (m_image) m_image->SetMaxWidth(width); }
   void SetMaxHeight(double height) const { if (m_image) m_image->SetMaxHeight(height); }
 
-  void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   wxString ToMatlab() const override;
@@ -114,6 +112,9 @@ public:
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false) override;

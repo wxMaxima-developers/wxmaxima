@@ -164,6 +164,9 @@ public:
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
 
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
+
 private:
   CellPointers *const m_cellPointers = GetCellPointers(); // must come before m_timer (!)
   wxTimer m_timer;
@@ -194,8 +197,6 @@ private:
 
 
   int GetImageBorderWidth() const override { return m_imageBorderWidth; }
-
-  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 

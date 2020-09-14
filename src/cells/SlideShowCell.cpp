@@ -248,7 +248,7 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::Recalculate(AFontSize fontsize)
+void SlideShow::DoRecalculate(AFontSize)
 {
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
@@ -277,7 +277,6 @@ void SlideShow::Recalculate(AFontSize fontsize)
     }
   }       
   m_center = m_height / 2;
-  Cell::Recalculate(fontsize);
 }
 
 void SlideShow::Draw(wxPoint point)

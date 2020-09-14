@@ -441,8 +441,13 @@ void Cell::ResetSizeList()
 
 void Cell::Recalculate(AFontSize fontsize)
 {
-  m_fontSize_Scaled = Scale_Px(fontsize);
-  ResetCellListSizes();
+  if (NeedsRecalculation(fontsize))
+  {
+    m_fontSize_Scaled = Scale_Px(fontsize);
+    DoRecalculate(fontsize);
+    ResetCellListSizes();
+  }
+  wxASSERT(HasValidSize());
 }
 
 /*! Is this cell currently visible in the window?.

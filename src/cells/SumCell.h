@@ -55,8 +55,6 @@ public:
 
   InnerCellIterator InnerBegin() const override { return {&m_under, &m_paren}; }
   
-  void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   wxString ToMathML() const override;
@@ -73,6 +71,9 @@ public:
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
   void Unbreak() override final;
+
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   std::unique_ptr<Cell> MakeStart(Cell *under) const;

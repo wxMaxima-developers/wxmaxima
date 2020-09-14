@@ -54,11 +54,8 @@ MatrCell::MatrCell(const MatrCell &cell):
 
 DEFINE_CELL(MatrCell)
 
-void MatrCell::Recalculate(AFontSize const fontsize)
+void MatrCell::DoRecalculate(AFontSize const fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   AFontSize const fontsize_entry{ MC_MIN_SIZE, fontsize - 2 };
   for (unsigned int i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateList(fontsize_entry);
@@ -96,8 +93,6 @@ void MatrCell::Recalculate(AFontSize const fontsize)
   if (m_height == 0)
     m_height = fontsize + Scale_Px(10);
   m_center = m_height / 2;
-
-  Cell::Recalculate(fontsize);
 }
 
 void MatrCell::Draw(wxPoint point)

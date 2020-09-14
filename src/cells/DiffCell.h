@@ -36,8 +36,6 @@ public:
 
   InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_diffCell}; }
 
-  void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   wxString ToMathML() const override;
@@ -51,6 +49,9 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
   bool BreakUp() override;
+
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   void MakeBreakupCells();

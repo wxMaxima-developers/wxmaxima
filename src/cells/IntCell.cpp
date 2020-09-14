@@ -84,11 +84,8 @@ void IntCell::MakeBreakUpCells()
   m_comma3 = std::make_unique<TextCell>(m_group, m_configuration, ",");
 }
 
-void IntCell::Recalculate(AFontSize fontsize)
+void IntCell::DoRecalculate(AFontSize fontsize)
 {
-  if (!NeedsRecalculation(fontsize))
-    return;
-
   wxASSERT(fontsize.IsValid());
   Configuration *configuration = (*m_configuration);
   

@@ -66,12 +66,8 @@ void LimitCell::MakeBreakUpCells()
   m_close->SetStyle(TS_FUNCTION);
 }
 
-
-void LimitCell::Recalculate(AFontSize fontsize)
+void LimitCell::DoRecalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_base->RecalculateList(fontsize);
   m_under->RecalculateList({ MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE });
   m_name->RecalculateList(fontsize);
@@ -90,8 +86,6 @@ void LimitCell::Recalculate(AFontSize fontsize)
     m_comma->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
   }
-  
-  Cell::Recalculate(fontsize);
 }
 
 void LimitCell::Draw(wxPoint point)

@@ -60,11 +60,8 @@ void AbsCell::MakeBreakupCells()
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
 }
 
-void AbsCell::Recalculate(AFontSize fontsize)
+void AbsCell::DoRecalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_innerCell->RecalculateList(fontsize);
   if (IsBrokenIntoLines())
   {
@@ -80,7 +77,6 @@ void AbsCell::Recalculate(AFontSize fontsize)
     m_height = m_innerCell->GetHeightList() + Scale_Px(4);
     m_center = m_innerCell->GetCenterList() + Scale_Px(2);
   }
-  Cell::Recalculate(fontsize);
 }
 
 void AbsCell::Draw(wxPoint point)
