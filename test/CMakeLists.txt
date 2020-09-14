@@ -22,7 +22,7 @@ file(
 # performance bugs that cause such behavior.
 
 set(CTEST_TEST_TIMEOUT 60)
-if (ENV{TRAVIS})
+if(ENV{TRAVIS})
   set(CTEST_TEST_TIMEOUT 15)
 endif()
 
@@ -51,9 +51,9 @@ add_test(
     NAME wxmaxima_performance
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND wxmaxima --logtostdout --pipe --batch performance.wxm)
-if (ENV{TRAVIS_DIST} EQUAL bionic)
+if(ENV{TRAVIS_DIST} EQUAL bionic)
   set_tests_properties(wxmaxima_performance PROPERTIES TIMEOUT 20)
-elseif (ENV{TRAVIS_DIST} EQUAL focal)
+elseif(ENV{TRAVIS_DIST} EQUAL focal)
   set_tests_properties(wxmaxima_performance PROPERTIES TIMEOUT 30)
 endif()
 

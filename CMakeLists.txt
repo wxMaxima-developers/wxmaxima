@@ -5,7 +5,7 @@ project(wxmaxima LANGUAGES CXX)
 
 if(WIN32)
     enable_language(RC)
-endif()    
+endif()
 
 
 set(VERSION 20.09.0-DevelopmentSnapshot)
