@@ -1053,6 +1053,13 @@ void Cell::ResetCellListSizes()
   m_maxDrop.Invalidate();
 }
 
+void Cell::SetZeroSize()
+{
+  m_width = 0;
+  m_height = 0;
+  m_center = 0;
+}
+
 Cell *Cell::first() const
 {
   const Cell *tmp = this;

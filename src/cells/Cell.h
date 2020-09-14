@@ -453,6 +453,8 @@ public:
 
   void ResetCellListSizes();
 
+  void SetZeroSize();
+
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
