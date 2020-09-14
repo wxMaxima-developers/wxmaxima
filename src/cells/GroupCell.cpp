@@ -660,9 +660,8 @@ bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 
 void GroupCell::UpdateYPositionList()
 {
-  GroupCell *cell = this;
-  while(cell != NULL)
-    cell = cell->UpdateYPosition();
+  for (auto &tmp : OnList(this))
+    tmp.UpdateYPosition();
 }
 
 GroupCell *GroupCell::UpdateYPosition()
