@@ -460,7 +460,6 @@ void GroupCell::Recalculate()
     Cell::Recalculate((*m_configuration)->GetDefaultFontSize());
     m_mathFontSize = (*m_configuration)->GetMathFontSize();
     Configuration *configuration = (*m_configuration);
-    ClearNeedsToRecalculateWidths();
 
     // Recalculating pagebreaks is simple
     if (m_groupType == GC_TYPE_PAGEBREAK)

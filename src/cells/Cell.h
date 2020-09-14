@@ -440,8 +440,6 @@ public:
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
 
-  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
-
   //! Mark all cached size information as "to be calculated".
   void ResetData();
 
@@ -862,11 +860,10 @@ protected:
 //** 4-byte objects (28 bytes)
 //**
 protected:
-  //! The height of this cell.
-  int m_height = -1;
-  //! The width of this cell; is recalculated by RecalculateHeight.
-  int m_width = -1;
-  int m_center = -1;
+  static constexpr auto const SizeKind = CachedIntegerKind::Lenient;
+  ExtendedCachedInteger<int, SizeKind> m_width;
+  ExtendedCachedInteger<int, SizeKind> m_height;
+  ExtendedCachedInteger<int, SizeKind> m_center;
 
 private:
   //! The width of the list starting with this cell.
@@ -898,7 +895,6 @@ private:
     m_isHidden = false;
     m_isHidableMultSign = false;
     m_suppressMultiplicationDot = false;
-    m_recalculateWidths = true;
     m_containsToolTip = false;
     m_breakPage = false;
     m_breakLine = false;
@@ -918,11 +914,9 @@ private:
   bool m_isHidden : 1 /* InitBitFields */;
   bool m_isHidableMultSign : 1 /* InitBitFields */;
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
-  //! true, if this cell clearly needs recalculation
-  bool m_recalculateWidths : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;
-
   bool m_breakPage : 1 /* InitBitFields */;
+
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
   bool m_forceBreakLine : 1 /* InitBitFields */;
