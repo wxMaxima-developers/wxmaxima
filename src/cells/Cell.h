@@ -345,6 +345,9 @@ public:
   int GetCenter() const
   { return m_center; }
 
+  bool HasValidSize() const;
+  bool HasValidPosition() const;
+
   /*! Get the distance between the center and the bottom of this cell
 
 
@@ -440,7 +443,6 @@ public:
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
 
-  bool NeedsToRecalculateWidths() const { return m_recalculateWidths; }
   void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
 
   //! Mark all cached size information as "to be calculated".

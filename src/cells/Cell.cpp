@@ -234,7 +234,7 @@ GroupCell *Cell::GetGroup() const
 
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
-  bool const result = (m_recalculateWidths) ||
+  bool const result = (!HasValidSize()) ||
                       (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f)) ||
                       (*m_configuration)->FontChanged();
   // if(result)
@@ -469,6 +469,17 @@ bool Cell::DrawThisCell(wxPoint point)
     return true;
   
   return(InUpdateRegion());
+}
+
+bool Cell::HasValidSize() const
+{
+  return !m_recalculateWidths &&
+         m_width > 0 && m_height > 0 && m_center >= 0;
+}
+
+bool Cell::HasValidPosition() const
+{
+  return (m_currentPoint.x >= 0) & (m_currentPoint.y >= 0);
 }
 
 wxRect Cell::GetRect(bool wholeList) const
