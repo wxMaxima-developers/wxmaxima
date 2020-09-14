@@ -216,11 +216,8 @@ public:
   //! The part of the rectangle rect that is in the region that is currently drawn
   wxRect CropToUpdateRegion(wxRect rect) const;
 
-  //! Is part of this rectangle in the region that is currently drawn?
-  bool InUpdateRegion(const wxRect &rect) const;
-
   //! Is this cell inside the region that is currently drawn?
-  bool InUpdateRegion() const { return InUpdateRegion(GetRect()); }
+  bool InUpdateRegion() const;
 
   //! Do we want this cell to start with a linebreak?
   bool SoftLineBreak(bool breakLine = true)
@@ -345,6 +342,9 @@ public:
   int GetCenter() const
   { return m_center; }
 
+  bool HasValidSize() const;
+  bool HasValidPosition() const;
+
   /*! Get the distance between the center and the bottom of this cell
 
 
@@ -440,7 +440,6 @@ public:
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
 
-  bool NeedsToRecalculateWidths() const { return m_recalculateWidths; }
   void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
 
   //! Mark all cached size information as "to be calculated".

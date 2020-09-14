@@ -762,8 +762,8 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style)
                   selectionWidth,
                   m_charHeight);
     // draw the rectangle if it is in the region that is to be updated.
-    if (InUpdateRegion(rect))
-      (*m_configuration)->GetDC()->DrawRectangle(CropToUpdateRegion(rect));
+    if (configuration->InUpdateRegion(rect))
+      configuration->GetDC()->DrawRectangle(CropToUpdateRegion(rect));
     pos1++;
     pos2 = pos1;
   }
@@ -820,7 +820,8 @@ void EditorCell::Draw(wxPoint point)
       dc->SetPen(*pen);
       auto width = (*m_configuration)->GetCanvasSize().GetWidth() - rect.x;
       rect.SetWidth(width);
-      if (InUpdateRegion(rect) && (br->GetColour() != configuration->DefaultBackgroundColor()))
+      if (configuration->InUpdateRegion(rect) &&
+          (br->GetColour() != configuration->DefaultBackgroundColor()))
         dc->DrawRectangle(CropToUpdateRegion(rect));
     }
     dc->SetPen(*wxBLACK_PEN);
@@ -879,14 +880,14 @@ void EditorCell::Draw(wxPoint point)
         wxRect matchRect(matchPoint.x + 1,
                          matchPoint.y + Scale_Px(2) - m_center + 1,
                          width - 1, height - 1);
-        if (InUpdateRegion(matchRect))
+        if (configuration->InUpdateRegion(matchRect))
           dc->DrawRectangle(CropToUpdateRegion(matchRect));
         matchPoint = PositionToPoint(m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         matchRect = wxRect(matchPoint.x + 1,
                            matchPoint.y + Scale_Px(2) - m_center + 1,
                            width - 1, height - 1);
-        if (InUpdateRegion(matchRect))
+        if (configuration->InUpdateRegion(matchRect))
           dc->DrawRectangle(CropToUpdateRegion(matchRect));
       } // else if (m_paren1 != -1 && m_paren2 != -1)
     } // if (IsActive())

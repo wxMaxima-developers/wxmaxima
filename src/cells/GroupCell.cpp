@@ -897,7 +897,7 @@ void GroupCell::DrawBracket()
           configuration->GetCellBracketWidth(),
           rect.GetHeight() + 5
   );
-  if (Cell::InUpdateRegion(rect))
+  if (configuration->InUpdateRegion(rect))
     dc->DrawRectangle(Cell::CropToUpdateRegion(rect));
 
   //
@@ -922,7 +922,7 @@ void GroupCell::DrawBracket()
       rect.GetTop() - 2,
       configuration->GetCellBracketWidth(),
       rect.GetHeight() + 5);
-    if (Cell::InUpdateRegion(bracketRect))
+    if (configuration->InUpdateRegion(bracketRect))
       dc->DrawRectangle(bracketRect);
   }
 

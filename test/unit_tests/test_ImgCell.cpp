@@ -39,6 +39,7 @@ CellPointers pointers(nullptr);
 
 Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
 Configuration::~Configuration() {}
+bool Configuration::InUpdateRegion(wxRect) const { return true; }
 long Configuration::Scale_Px(double) const { return 1; }
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }

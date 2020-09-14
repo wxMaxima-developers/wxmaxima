@@ -39,6 +39,7 @@ wxColour Configuration::GetColor(TextStyle) { return {}; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
 void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&) {}
 void CellList::DeleteList(Cell *) {}
+bool Configuration::InUpdateRegion(wxRect) const { return true; }
 Configuration::Configuration(wxDC *, Configuration::InitOpt) : m_dc{} {}
 Configuration::~Configuration() {}
 

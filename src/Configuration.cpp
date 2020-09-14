@@ -1017,6 +1017,19 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
   }
 }
 
+bool Configuration::InUpdateRegion(wxRect const rect) const
+{
+  if (!ClipToDrawRegion())
+    return true;
+
+  wxRect const updateRegion = GetUpdateRegion();
+
+  return updateRegion.Intersects(rect) ||
+         updateRegion.Contains(rect) ||
+         (updateRegion == rect) ||
+         rect.Contains(updateRegion);
+}
+
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();

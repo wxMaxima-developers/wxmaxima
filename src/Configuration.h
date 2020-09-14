@@ -563,6 +563,11 @@ public:
   
   wxRect GetUpdateRegion() const {return m_updateRegion;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
+
+  //! Whether any part of the given rectangle is within the current update region,
+  //! or true if drawing is not clipped to update region.
+  bool InUpdateRegion(wxRect rect) const;
+
   bool GetInsertAns() const
     { return m_insertAns; }
 
