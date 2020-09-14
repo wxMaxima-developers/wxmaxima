@@ -234,12 +234,9 @@ GroupCell *Cell::GetGroup() const
 
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
-  bool result = (m_recalculateWidths) ||
-    (
-      (abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1) &&
-      (GetType() != MC_TYPE_GROUP)
-      )||
-    (*m_configuration)->FontChanged();
+  bool const result = (m_recalculateWidths) ||
+                      (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f)) ||
+                      (*m_configuration)->FontChanged();
   // if(result)
   //   std::cerr << ToString()<< "\n"<<
   //     "(GetType() != MC_TYPE_GROUP)" << (GetType() != MC_TYPE_GROUP) <<"\n"<<
