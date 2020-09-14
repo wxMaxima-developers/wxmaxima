@@ -683,7 +683,7 @@ void GroupCell::UpdateYPosition()
       return;
     wxASSERT(previous->GetCurrentPoint().y > 0);
     m_currentPoint.y = previous->GetCurrentPoint().y +
-      previous->GetMaxDrop() + GetCenterList() +
+      previous->GetMaxDrop() + GetCenter() +
       configuration->GetGroupSkip();
   }
 }
