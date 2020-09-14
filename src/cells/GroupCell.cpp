@@ -558,9 +558,7 @@ void GroupCell::RecalculateInput()
   }
   else
   {
-    m_center = 0;
-    m_height = 0;
-    m_height = 0;
+    SetZeroSize();
     
     if ((configuration->ShowCodeCells()) ||
         (m_groupType != GC_TYPE_CODE))
