@@ -133,6 +133,7 @@ public:
 
 private:
   friend struct std::hash<AFontSize>;
+  friend bool EqualToWithin(AFontSize, AFontSize, float);
   value_type m_uSize = {};
   constexpr static value_type ToUSize(float size);
 };
@@ -171,5 +172,8 @@ constexpr auto AFontSize::GetForWX() const
   return GetAsLong();
 #endif
 }
+
+//! Whether the difference between to font sizes is below a provided limit value.
+bool EqualToWithin(AFontSize left, AFontSize right, float limit);
 
 #endif
