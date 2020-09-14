@@ -1224,10 +1224,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:344
-#, fuzzy
-#| msgid ""
-#| "If this option isn't set wxMaxima behaves more like a modern cellphone "
-#| "app:"
 msgid ""
 "If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
 msgstr ""
@@ -1252,23 +1248,15 @@ msgstr "Wo wird die Konfiguration gespeichert?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:352
-#, fuzzy, no-wrap
-#| msgid ""
-#| "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your homedirectory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for wxMaxima (therefore the `wx` in the name).\n"
-#| "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
+#, no-wrap
 msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
-msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
+msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf` (XDG-Standard). Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
 "(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` eine versteckte Datei).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:354
-#, fuzzy
-#| msgid ""
-#| "If you are using Windows, the configuration will be stored in the "
-#| "registry. You will find the entries for wxMaxima at the following "
-#| "position in the registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for _wxMaxima_ at the following position in the "
@@ -1550,12 +1538,6 @@ msgstr "Öffnen eingebetterer Diagramme in interaktiven Gnuplot Fenstern"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:428
-#, fuzzy
-#| msgid ""
-#| "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
-#| "`wxplot3d` isn't supported by this feature) and the file size of the "
-#| "underlying gnuplot project isn't way too high _wxMaxima_ offers a right-"
-#| "click menu that allows to open the plot in an interactive gnuplot window."
 msgid ""
 "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
 "`wxplot3d` isn't supported by this feature) and the file size of the "
@@ -1563,7 +1545,7 @@ msgid ""
 "click menu that allows to open the plot in an interactive _gnuplot_ window."
 msgstr ""
 "Wenn ein Diagramm mittels einem `wxdraw`-ähnlichen Befehl erstellt wurde "
-"(`wxplot2d` und `wxplot3d` werden hier nicht unterstüzt) und die Gnuplot-"
+"(`wxplot2d` und `wxplot3d` werden hier nicht unterstützt) und die Gnuplot-"
 "Datei nicht allzu lang ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt "
 "an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet."
 
@@ -1575,13 +1557,6 @@ msgstr "Öffnen der Gnuplot Kommandozeile in `plot` Fenstern"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:432
-#, fuzzy
-#| msgid ""
-#| "On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
-#| "replaced by \"wgnuplot\", gnuplot offers the possibility to open a "
-#| "console window, where gnuplot commands can be entered into. Unfortunately "
-#| "enabling this feature causes gnuplot to \"steal\" the keyboard focus for "
-#| "a short time every time a plot is prepared."
 msgid ""
 "On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
 "replaced by \"wgnuplot\", _gnuplot_ offers the possibility to open a console "
@@ -1822,12 +1797,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:501
-#, fuzzy
-#| msgid ""
-#| "The animation functions use _maxima_'s `makelist` command and therefore "
-#| "shares the pitfall that the slider variable's value is substituted into "
-#| "the expression only if the variable is directly visible in the "
-#| "expression. Therefore the following example will fail:"
 msgid ""
 "The animation functions use _Maxima_'s `makelist` command and therefore "
 "shares the pitfall that the slider variable's value is substituted into the "
@@ -3164,15 +3133,13 @@ msgstr ""
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:854
-#, fuzzy, no-wrap
-#| msgid "wxMaxima sometimes hangs for a several seconds once in the first minute"
+#, no-wrap
 msgid "_wxMaxima_ sometimes hangs for a several seconds once in the first minute"
-msgstr "wxMaxima hängt in der ersten Minute manchmal einmal für mehrere Sekunden"
+msgstr "_wxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:857
-#, fuzzy, no-wrap
-#| msgid "wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.\n"
+#, no-wrap
 msgid "_wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
 msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.\n"
 
