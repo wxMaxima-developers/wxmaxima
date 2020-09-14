@@ -664,11 +664,12 @@ void GroupCell::UpdateYPositionList()
     tmp.UpdateYPosition();
 }
 
-GroupCell *GroupCell::UpdateYPosition()
+void GroupCell::UpdateYPosition()
 {
   Configuration *configuration = (*m_configuration);
+  GroupCell *const previous = GetPrevious();
   
-  if (!GetPrevious())
+  if (!previous)
   {
     m_currentPoint.x = configuration->GetIndent();
     m_currentPoint.y = configuration->GetBaseIndent() + GetCenter();
@@ -676,16 +677,15 @@ GroupCell *GroupCell::UpdateYPosition()
       m_inputLabel->SetCurrentPoint(m_currentPoint);
   }
   else
-  {    
+  {
     m_currentPoint.x = configuration->GetIndent();
-    if (GetPrevious()->GetCurrentPoint().y <= 0)
-      return nullptr;
-    wxASSERT(GetPrevious()->GetCurrentPoint().y > 0);
-    m_currentPoint.y = GetPrevious()->GetCurrentPoint().y +
-      GetPrevious()->GetMaxDrop() + GetCenterList() +
+    if (previous->GetCurrentPoint().y <= 0)
+      return;
+    wxASSERT(previous->GetCurrentPoint().y > 0);
+    m_currentPoint.y = previous->GetCurrentPoint().y +
+      previous->GetMaxDrop() + previous->GetCenterList() +
       configuration->GetGroupSkip();
   }
-  return GetNext();
 }
 
 int GroupCell::GetInputIndent()
