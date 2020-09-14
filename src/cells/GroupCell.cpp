@@ -467,6 +467,7 @@ void GroupCell::Recalculate()
     {
       m_width = configuration->GetCellBracketWidth();
       m_height = 2;
+      m_center = 1;
       return;
     }
     
@@ -558,9 +559,7 @@ void GroupCell::RecalculateInput()
   }
   else
   {
-    m_center = 0;
-    m_height = 0;
-    m_height = 0;
+    SetZeroSize();
     
     if ((configuration->ShowCodeCells()) ||
         (m_groupType != GC_TYPE_CODE))
