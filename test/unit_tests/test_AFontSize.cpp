@@ -226,6 +226,34 @@ SCENARIO("AFontSize supports double operations") {
   }
 }
 
+SCENARIO("EqualToWithin works") {
+  WHEN("comparing a null size to a non-null size") THEN ("they compare unequal")
+  {
+    REQUIRE_FALSE(EqualToWithin({}, size1_4, {}));
+    REQUIRE_FALSE(EqualToWithin({}, size1_4, 0.1f));
+  }
+  WHEN("comparing a non-null size to a null size") THEN ("they compare unequal")
+  {
+    REQUIRE_FALSE(EqualToWithin(size1_4, {}, {}));
+    REQUIRE_FALSE(EqualToWithin(size1_4, {}, 0.1f));
+  }
+  WHEN("comparing null sizes") THEN ("they compare equal")
+  {
+    REQUIRE(EqualToWithin({}, {}, {}));
+    REQUIRE(EqualToWithin({}, {}, 0.1f));
+  }
+  WHEN("comparing smaller to a larger size") THEN("they compare based on the magnitude of difference")
+  {
+    REQUIRE(EqualToWithin(AFontSize(20.0f), AFontSize(20.1f), 0.2f));
+    REQUIRE_FALSE(EqualToWithin(AFontSize(20.0f), AFontSize(20.2f), 0.2f));
+  }
+  WHEN("comparing larger to a smaller size") THEN("they compare based on the magnitude of difference")
+  {
+    REQUIRE(EqualToWithin(AFontSize(20.1f), AFontSize(20.0f), 0.2f));
+    REQUIRE_FALSE(EqualToWithin(AFontSize(20.2f), AFontSize(20.0f), 0.2f));
+  }
+}
+
 // If we don't provide our own main when compiling on MinGW
 // we currently get an error message that WinMain@16 is missing
 // (https://github.com/catchorg/Catch2/issues/1287)

@@ -25,6 +25,7 @@
 #include "CellImpl.h"
 #include "CellIterators.h"
 #include "CellPtr.cpp"
+#include "FontAttribs.cpp"
 #include "StringUtils.cpp"
 #include <catch2/catch.hpp>
 #include <stx/optional.hpp>
