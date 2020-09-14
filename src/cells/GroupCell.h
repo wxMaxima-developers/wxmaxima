@@ -400,11 +400,8 @@ public:
   wxAccStatus GetLocation (wxRect &rect, int elementId) override;
 #endif
 
-  /*! Recalculate the cell's y position using the position and height of the last one.
-    
-    \return The next GroupCell or NULL if there isn't any.
-  */
-  GroupCell *UpdateYPosition();
+  //! Recalculate the cell's y position using the position and height of the last one.
+  void UpdateYPosition();
 
   void UpdateYPositionList();
 

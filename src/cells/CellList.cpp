@@ -41,8 +41,8 @@ void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&cells)
 
 Cell *CellListBuilderBase::base_DynamicAppend(std::unique_ptr<Cell> &&cells, Cell *(*caster)(Cell *))
 {
-  for (Cell *cell = cells.get(); cell; cell = cell->GetNext())
-    if (!caster(cell))
+  for (Cell &cell : OnList(cells.get()))
+    if (!caster(&cell))
       return {};
 
   Cell *const theCells = cells.get();
