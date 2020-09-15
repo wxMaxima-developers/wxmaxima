@@ -474,6 +474,11 @@ bool Cell::HasValidSize() const
          m_width > 0 && m_height > 0 && m_center >= 0;
 }
 
+bool Cell::HasStaleSize() const
+{
+  return m_width > 0 && m_height > 0 && m_center >= 0;
+}
+
 bool Cell::HasValidPosition() const
 {
   return (m_currentPoint.x >= 0) & (m_currentPoint.y >= 0);
@@ -494,7 +499,7 @@ bool Cell::InUpdateRegion() const
   auto *const configuration = *m_configuration;
   if (!configuration->ClipToDrawRegion())
     return true;
-  if (HasValidSize())
+  if (HasStaleSize())
     return configuration->InUpdateRegion(GetRect());
   if (HasValidPosition())
   {
@@ -507,7 +512,7 @@ bool Cell::InUpdateRegion() const
     if (m_next && m_next->HasValidPosition())
       cellRect.SetHeight(m_next->m_currentPoint.y - m_currentPoint.y);
     else
-      cellRect.SetHeight(10);
+      cellRect.SetHeight(1);
     return configuration->InUpdateRegion(cellRect);
   }
   return false;
