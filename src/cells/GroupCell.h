@@ -62,6 +62,8 @@ Items where a list of groupcells can be folded include
 
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
+
+ 240 bytes
  */
 class GroupCell final : public Cell
 {
