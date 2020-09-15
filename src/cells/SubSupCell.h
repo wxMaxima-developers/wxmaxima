@@ -44,8 +44,6 @@ public:
   void SetPostSub(std::unique_ptr<Cell> &&index);
   void SetPostSup(std::unique_ptr<Cell> &&index);
   
-  void Recalculate(AFontSize fontsize) override;
-
   void Draw(wxPoint point) override;
 
   wxString ToMathML() const override;
@@ -60,6 +58,9 @@ public:
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
+
+protected:
+  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   //! Text that should end up on the clipboard if this cell is copied as text.

@@ -422,6 +422,9 @@ public:
   
   virtual wxString GetDiffPart() const;
 
+  void Recalculate(AFontSize fontsize);
+
+protected:
   /*! Recalculate the size of the cell and the difference between top and center
 
     Must set: m_height, m_width, m_center.
@@ -429,18 +432,14 @@ public:
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void Recalculate(AFontSize fontsize);
+  virtual void DoRecalculate(AFontSize fontsize) = 0;
 
-  /*! Recalculate both width and height of this list of cells.
-
-    Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
-   */
+public:
+  //! Recalculate the size of the list of cells, starting with this one.
   void RecalculateList(AFontSize fontsize);
 
   //! Tell a whole list of cells that their fonts have changed
   void FontsChangedList();
-
-  void ClearNeedsToRecalculateWidths() { m_recalculateWidths = false; }
 
   //! Mark all cached size information as "to be calculated".
   void ResetData();
@@ -827,8 +826,8 @@ protected:
        between numerator and denominator.
 
     The current point is recalculated 
-     - for GroupCells by GroupCell::RecalculateHeight
-     - for EditorCells by it's GroupCell's RecalculateHeight and
+     - for GroupCells by GroupCell::Recalculate
+     - for EditorCells by it's GroupCell's Recalculate
      - for Cells when they are drawn.
   */
   wxPoint m_currentPoint{-1, -1};
@@ -862,11 +861,10 @@ protected:
 //** 4-byte objects (28 bytes)
 //**
 protected:
-  //! The height of this cell.
-  int m_height = -1;
-  //! The width of this cell; is recalculated by RecalculateHeight.
-  int m_width = -1;
-  int m_center = -1;
+  static constexpr auto const SizeKind = CachedIntegerKind::Lenient;
+  ExtendedCachedInteger<int, SizeKind> m_width;
+  ExtendedCachedInteger<int, SizeKind> m_height;
+  ExtendedCachedInteger<int, SizeKind> m_center;
 
 private:
   //! The width of the list starting with this cell.
@@ -898,7 +896,6 @@ private:
     m_isHidden = false;
     m_isHidableMultSign = false;
     m_suppressMultiplicationDot = false;
-    m_recalculateWidths = true;
     m_containsToolTip = false;
     m_breakPage = false;
     m_breakLine = false;
@@ -918,11 +915,9 @@ private:
   bool m_isHidden : 1 /* InitBitFields */;
   bool m_isHidableMultSign : 1 /* InitBitFields */;
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
-  //! true, if this cell clearly needs recalculation
-  bool m_recalculateWidths : 1 /* InitBitFields */;
   bool m_containsToolTip : 1 /* InitBitFields */;
-
   bool m_breakPage : 1 /* InitBitFields */;
+
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
   bool m_forceBreakLine : 1 /* InitBitFields */;

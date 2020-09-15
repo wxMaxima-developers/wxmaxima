@@ -48,11 +48,8 @@ AtCell::AtCell(const AtCell &cell)
 
 DEFINE_CELL(AtCell)
 
-void AtCell::Recalculate(AFontSize fontsize)
+void AtCell::DoRecalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - 3 });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
@@ -60,7 +57,6 @@ void AtCell::Recalculate(AFontSize fontsize)
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(7);
   m_center = m_baseCell->GetCenter();
-  Cell::Recalculate(fontsize);
 }
 
 void AtCell::Draw(wxPoint point)

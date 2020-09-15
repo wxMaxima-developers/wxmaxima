@@ -453,44 +453,44 @@ void GroupCell::UpdateConfusableCharWarnings()
   m_updateConfusableCharWarnings = false;
 }
 
-void GroupCell::Recalculate()
+void GroupCell::DoRecalculate(AFontSize WXUNUSED(fontsize))
 {
-  if (NeedsRecalculation(EditorFontSize()))
-  {
-    Cell::Recalculate((*m_configuration)->GetDefaultFontSize());
-    m_mathFontSize = (*m_configuration)->GetMathFontSize();
-    Configuration *configuration = (*m_configuration);
-    ClearNeedsToRecalculateWidths();
+  DoRecalculate();
+}
 
-    // Recalculating pagebreaks is simple
-    if (m_groupType == GC_TYPE_PAGEBREAK)
-    {
-      m_width = configuration->GetCellBracketWidth();
-      m_height = 2;
-      m_center = 1;
-      return;
-    }
-    
-    if(m_inputLabel != NULL)
-      RecalculateInput();
+void GroupCell::DoRecalculate()
+{
+  m_mathFontSize = (*m_configuration)->GetMathFontSize();
+  Configuration *configuration = (*m_configuration);
+
+  // Recalculating pagebreaks is simple
+  if (m_groupType == GC_TYPE_PAGEBREAK)
+  {
+    m_width = configuration->GetCellBracketWidth();
+    m_height = 2;
+    m_center = 1;
+    return;
+  }
+
+  if(m_inputLabel != NULL)
+    RecalculateInput();
 
 /*    if (m_output == NULL || IsHidden())
+  {
+    if ((configuration->ShowCodeCells()) ||
+        (m_groupType != GC_TYPE_CODE))
     {
-      if ((configuration->ShowCodeCells()) ||
-          (m_groupType != GC_TYPE_CODE))
-      {
-        m_width = GetInputIndent();
-        if(GetInput())
-          m_width += GetInput()->GetWidth();
-      }  
+      m_width = GetInputIndent();
+      if(GetInput())
+        m_width += GetInput()->GetWidth();
     }
-    else*/
-      RecalculateOutput();
   }
+  else*/
+    RecalculateOutput();
+
   // The line breaking will have set our "needs recalculation" flag again.
   UpdateYPosition();
-  Cell::Recalculate((*m_configuration)->GetDefaultFontSize(
-                      ));
+
   m_clientWidth_old = (*m_configuration)->GetClientWidth();
 }
 

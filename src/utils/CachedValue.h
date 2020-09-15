@@ -32,15 +32,21 @@
 #include <limits>
 #include <type_traits>
 
+//! Whether the CachedInteger is strict or lenient about use of invalid
+//! state.
+enum class CachedIntegerKind { Strict, Lenient };
+
 /*! A cached integer value
  *
  * The value can be used in contexts where the integer could be used,
  * but is "mostly" read-only: it can not be assigned to, but can be
  * SetCached(). This is to enforce a protocol where a dedicated method updates
  * the cached value, but elsewhere the value is only read from.
- * Attempting to access an invalid value is checked for.
+ * Attempting to access an invalid value is checked for in the default
+ * CachedIntegerKind::Strict setting. A Lenient kind disables the checks.
  */
-template <typename T, typename std::enable_if<std::is_integral<T>::value, bool>::type = true>
+template <typename T, CachedIntegerKind kind = CachedIntegerKind::Strict,
+          typename std::enable_if<std::is_integral<T>::value, bool>::type = true>
 class CachedInteger
 {
   static constexpr T invalid = std::numeric_limits<T>::max();
@@ -56,7 +62,8 @@ public:
   operator T() const { return Get(); }
   T Get() const
   {
-    wxASSERT_MSG(m_value != invalid, "Attempted to use an invalid cached value");
+    if (kind == CachedIntegerKind::Strict)
+      wxASSERT_MSG(m_value != invalid, "Attempted to use an invalid cached value");
     return (m_value != invalid) ? m_value : T{};
   }
   void SetCached(T newValue) const
@@ -65,5 +72,31 @@ public:
     m_value = newValue;
   }
 };
+
+//! A CachedInteger that is assignable, for backwards compatibility.
+template <typename T, CachedIntegerKind kind = CachedIntegerKind::Strict>
+class ExtendedCachedInteger : public CachedInteger<T, kind>
+{
+public:
+  constexpr ExtendedCachedInteger() = default;
+  constexpr ExtendedCachedInteger(const ExtendedCachedInteger &) = default;
+  constexpr ExtendedCachedInteger &operator=(const ExtendedCachedInteger &) = default;
+  ExtendedCachedInteger &operator=(T newValue)
+  {
+    this->SetCached(newValue);
+    return *this;
+  }
+  ExtendedCachedInteger &operator+=(T addend)
+  {
+    this->SetCached(this->Get() + addend);
+    return *this;
+  }
+};
+
+template <typename T1, typename T2, CachedIntegerKind kind>
+inline auto wxMax(ExtendedCachedInteger<T1, kind> a, T2 b) { return wxMax(T1(a), b); }
+
+template <typename T1, typename T2, CachedIntegerKind kind>
+inline auto wxMax(T1 a, ExtendedCachedInteger<T2, kind> b) { return wxMax(a, T2(b)); }
 
 #endif

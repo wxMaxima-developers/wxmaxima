@@ -32,7 +32,7 @@
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-// 304 bytes <- 744 bytes
+// 296 bytes <- 744 bytes
 class TextCell : public Cell
 {
 public:
@@ -47,8 +47,6 @@ public:
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text) override;
-
-  void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
 
@@ -95,7 +93,8 @@ public:
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
 
 protected:
-  mutable wxString m_altCopyText;
+  void DoRecalculate(AFontSize fontsize) override;
+
   //! Returns the XML flags this cell needs in wxMathML
   virtual wxString GetXMLFlags() const;
   //! The text we actually display depends on many factors, unfortunately
@@ -134,14 +133,19 @@ protected:
 
   wxSize CalculateTextSize(wxDC *dc, const wxString &text, TextCell::TextIndex const index);
 
+private:
+  bool KeepPercentChanged() const;
+
+protected:
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
   static wxRegEx m_roundingErrorRegEx3;
   static wxRegEx m_roundingErrorRegEx4;
 
-//** Large objects (120 bytes)
+//** Large objects (168 bytes)
 //**
+  mutable wxString m_altCopyText;
   //! The text we keep inside this cell
   wxString m_text;
   //! The text we display: We might want to convert some characters or do similar things

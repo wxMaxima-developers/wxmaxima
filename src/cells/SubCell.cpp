@@ -51,11 +51,8 @@ SubCell::SubCell(const SubCell &cell)
 
 DEFINE_CELL(SubCell)
 
-void SubCell::Recalculate(AFontSize fontsize)
+void SubCell::DoRecalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - SUB_DEC });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
@@ -63,7 +60,6 @@ void SubCell::Recalculate(AFontSize fontsize)
   m_height = m_baseCell->GetHeightList() + m_indexCell->GetHeightList() -
              Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
-  Cell::Recalculate(fontsize);
 }
 
 void SubCell::Draw(wxPoint point)

@@ -317,10 +317,14 @@ AFontSize TextCell::GetScaledTextSize() const
     return m_fontSize_Scaled;
 }
 
+bool TextCell::KeepPercentChanged() const
+{
+  return m_keepPercent_last != (*m_configuration)->CheckKeepPercent();
+}
+
 bool TextCell::NeedsRecalculation(AFontSize fontSize) const
 {
-  return Cell::NeedsRecalculation(fontSize) ||
-    (m_keepPercent_last != (*m_configuration)->CheckKeepPercent());
+  return Cell::NeedsRecalculation(fontSize) || KeepPercentChanged();
 }
 
 wxSize TextCell::CalculateTextSize(wxDC *const dc, const wxString &text, TextCell::TextIndex const index)
@@ -379,19 +383,20 @@ void TextCell::UpdateDisplayedText()
   }
 }
 
-void TextCell::Recalculate(AFontSize fontsize)
+void TextCell::DoRecalculate(AFontSize fontsize)
 {
   Configuration *configuration = (*m_configuration);
+
   if(m_textStyle == TS_ASCIIMATHS)
     ForceBreakLine(true);
-  if(m_keepPercent_last != (*m_configuration)->CheckKeepPercent())
+
+  if (KeepPercentChanged())
     UpdateDisplayedText();
-  if(NeedsRecalculation(fontsize))
-  {      
-    Cell::Recalculate(fontsize);
+
+  if (NeedsRecalculation(fontsize))
+  {
     m_keepPercent_last = (*m_configuration)->CheckKeepPercent();
     SetFont(m_fontSize_Scaled);
-
 
     wxSize sz = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, cellText);
     m_width = sz.GetWidth();

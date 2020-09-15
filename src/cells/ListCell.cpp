@@ -70,11 +70,8 @@ ListCell::ListCell(const ListCell &cell):
 
 DEFINE_CELL(ListCell)
 
-void ListCell::Recalculate(AFontSize fontsize)
+void ListCell::DoRecalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-  
   m_innerCell->RecalculateList(fontsize);
   m_innerCell->RecalculateList(fontsize);
   m_open->RecalculateList(fontsize);
@@ -110,9 +107,8 @@ void ListCell::Recalculate(AFontSize fontsize)
       m_signHeight = m_innerCell->GetHeightList();
       
     m_height = wxMax(m_signHeight,m_innerCell->GetHeightList()) + Scale_Px(4);
-    m_center = m_height / 2;   
+    m_center = m_height / 2;
   }
-  Cell::Recalculate(fontsize);
 }
 
 void ListCell::Draw(wxPoint point)
