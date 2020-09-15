@@ -6307,90 +6307,52 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
   UpdateTableOfContents();
 }
 
-bool Worksheet::ActivatePrevInput()
+bool Worksheet::ActivateInput(int direction)
 {
-  if (!m_cellPointers.m_selectionStart && !GetActiveCell())
-    return false;
+  auto const advance =
+      (direction >= 0) ? +[](GroupCell *cell) { return cell->GetNext(); }
+                       : +[](GroupCell *cell) { return cell->GetPrevious(); };
 
-  GroupCell *tmp;
+  GroupCell *tmp = {};
   if (m_cellPointers.m_selectionStart)
     tmp = m_cellPointers.m_selectionStart->GetGroup();
-  else
+  else if (GetActiveCell())
   {
     tmp = GetActiveCell()->GetGroup();
-    SetActiveCell(NULL);
+    SetActiveCell(nullptr);
   }
-
   if (!tmp)
     return false;
 
-  tmp = tmp->GetPrevious();
+  tmp = advance(tmp);
   if (!tmp)
     return false;
 
-  while (tmp && tmp->GetPrevious() && tmp->GetPrevious()->GetMaxDrop() == 0)
-    tmp = tmp->GetPrevious();
-
-  EditorCell *inpt = {};
-  while (tmp && !inpt)
+  while (tmp)
   {
-    inpt = tmp->GetEditable();
-    if (!inpt)
-      tmp = tmp->GetPrevious();
+    auto *const succ = advance(tmp);
+    if (succ && succ->GetMaxDrop() == 0)
+      tmp = succ;
+    else
+      break;
   }
 
-  if (!inpt)
-    return false;
-
-  SetActiveCell(inpt, false);
-  GetActiveCell()->CaretToEnd();
-
-  RequestRedraw();
-
-  return true;
-}
-
-bool Worksheet::ActivateNextInput(bool input)
-{
-  if (!m_cellPointers.m_selectionStart && !GetActiveCell())
-    return false;
-
-  GroupCell *tmp;
-  if (m_cellPointers.m_selectionStart)
-    tmp = m_cellPointers.m_selectionStart->GetGroup();
-  else
+  for (; tmp; tmp = advance(tmp))
   {
-    tmp = GetActiveCell()->GetGroup();
-    SetActiveCell(NULL);
+    auto *const input = tmp->GetEditable();
+    if (input)
+    {
+      SetActiveCell(input, false);
+      if (direction >= 0)
+        GetActiveCell()->CaretToStart();
+      else
+        GetActiveCell()->CaretToEnd();
+      RequestRedraw();
+      return true;
+    }
   }
 
-  if (!tmp)
-    return false;
-
-  tmp = tmp->GetNext();
-  if (!tmp)
-    return false;
-
-  while (tmp && tmp->GetNext() && tmp->GetNext()->GetMaxDrop() == 0)
-    tmp = tmp->GetNext();
-
-  EditorCell *inpt = {};
-  while (tmp && !inpt)
-  {
-    inpt = input ? tmp->GetInput() : tmp->GetEditable();
-    if (!inpt)
-      tmp = tmp->GetNext();
-  }
-
-  if (!inpt)
-    return false;
-
-  SetActiveCell(inpt, false);
-  GetActiveCell()->CaretToStart();
-
-  RequestRedraw();
-
-  return true;
+  return false;
 }
 
 /////////////////////////////////////////////////////////////
