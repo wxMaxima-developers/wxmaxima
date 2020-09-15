@@ -9647,8 +9647,8 @@ void wxMaxima::TriggerEvaluation()
       tmp->SetOutput(std::move(cell));
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->SetWorkingGroup(nullptr);
-      tmp->GetInput()->SetCaretPosition(index);
-      tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
+      tmp->GetEditable()->SetCaretPosition(index);
+      tmp->GetEditable()->SetErrorIndex((m_commandIndex = index) - 1);
 
       if (m_worksheet->FollowEvaluation())
         m_worksheet->SetSelection(NULL);
@@ -9700,7 +9700,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case Worksheet::popid_auto_answer:
       if (m_worksheet->GetActiveCell() &&
           m_worksheet->GetActiveCell()->GetGroup()->GetGroupType() == GC_TYPE_CODE)
-        m_worksheet->GetActiveCell()->GetGroup()->AutoAnswer(event.IsChecked());
+        m_worksheet->GetActiveCell()->GetGroup()->SetAutoAnswer(event.IsChecked());
       else if((m_worksheet->GetSelectionStart() != NULL)&&
               (m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
       {
@@ -9708,7 +9708,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
         while(gc != NULL)
         {
           if(gc->GetGroupType() == GC_TYPE_CODE)
-            gc->AutoAnswer(event.IsChecked());
+            gc->SetAutoAnswer(event.IsChecked());
 
           if(gc == m_worksheet->GetSelectionEnd())
             break;

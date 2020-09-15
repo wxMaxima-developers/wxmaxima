@@ -210,7 +210,7 @@ GroupCell::GroupCell(const GroupCell &cell):
     SetInput(cell.m_inputLabel->CopyList());
   if (cell.m_output)
     SetOutput(cell.m_output->CopyList());
-  AutoAnswer(cell.m_autoAnswer);
+  SetAutoAnswer(cell.m_autoAnswer);
   UpdateYPosition();
 }
 
@@ -266,8 +266,50 @@ void GroupCell::ResetInputLabelList()
   }
 }
 
+bool GroupCell::IsFoldable() const
+{
+  return ((m_groupType == GC_TYPE_SECTION) ||
+          (m_groupType == GC_TYPE_TITLE) ||
+          (m_groupType == GC_TYPE_SUBSECTION) ||
+          (m_groupType == GC_TYPE_SUBSUBSECTION) ||
+          (m_groupType == GC_TYPE_HEADING5) ||
+          (m_groupType == GC_TYPE_HEADING6)
+          );
+}
+
 GroupCell::~GroupCell()
 {}
+
+const wxString &GroupCell::GetAnswer(int answer) const
+{
+  if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
+    return wxm::emptyString;
+
+  wxString const question = wxString::Format(wxT("Question #%i"),answer);
+  auto it = m_knownAnswers.find(question);
+  return (it != m_knownAnswers.end()) ? it->second : wxm::emptyString;
+}
+
+const wxString &GroupCell::GetAnswer(const wxString &question) const
+{
+  if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
+    return wxm::emptyString;
+
+  auto it = m_knownAnswers.find(question);
+  return (it != m_knownAnswers.end()) ? it->second : GetAnswer(++m_numberedAnswersCount);
+}
+
+void GroupCell::SetAutoAnswer(bool autoAnswer)
+{
+  m_autoAnswer = autoAnswer;
+  if (GetEditable()) GetEditable()->AutoAnswer(autoAnswer);
+}
+
+void GroupCell::SetAnswer(const wxString &question, const wxString &answer)
+{
+  if (!answer.empty())
+    m_knownAnswers[question] = answer;
+}
 
 GroupCell *GroupCell::GetLastWorkingGroup() const
 { return m_cellPointers->m_lastWorkingGroup; }
@@ -369,7 +411,7 @@ void GroupCell::AppendOutput(std::unique_ptr<Cell> &&cell)
   {
     m_output = std::move(cell);
 
-    auto *input = GetInput();
+    auto *input = GetEditable();
     if (m_groupType == GC_TYPE_CODE && input)
       input->ContainsChanges(false);
   }
@@ -402,9 +444,9 @@ void GroupCell::UpdateConfusableCharWarnings()
   // Extract all variable and command names from the cell including input and output
   CmdsAndVariables cmdsAndVariables;
 
-  if (GetInput())
+  if (GetEditable())
     for (auto const &tok : MaximaTokenizer(
-           output, *m_configuration, GetInput()->GetTokens()).PopTokens())
+           output, *m_configuration, GetEditable()->GetTokens()).PopTokens())
       if((tok.GetStyle() == TS_CODE_VARIABLE) || (tok.GetStyle() == TS_CODE_FUNCTION))
         cmdsAndVariables[tok.GetText()] = 1;
   
@@ -480,9 +522,9 @@ void GroupCell::Recalculate()
           (m_groupType != GC_TYPE_CODE))
       {
         m_width = GetInputIndent();
-        if(GetInput())
-          m_width += GetInput()->GetWidth();
-      }  
+        if(GetEditable())
+          m_width += GetEditable()->GetWidth();
+      }
     }
     else*/
       RecalculateOutput();
@@ -654,7 +696,7 @@ void GroupCell::RecalculateOutput()
 bool GroupCell::NeedsRecalculation(AFontSize fontSize) const
 {
   return Cell::NeedsRecalculation(fontSize) ||
-    ((GetInput() != NULL) && (GetInput()->NeedsRecalculation(EditorFontSize()))) ||
+    (GetEditable() && GetEditable()->NeedsRecalculation(EditorFontSize())) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth());
 }
 
@@ -780,7 +822,7 @@ void GroupCell::Draw(wxPoint const point)
     {
       configuration->Outdated(false);
 
-      EditorCell *input = GetInput();
+      EditorCell *input = GetEditable();
       if (input)
         input->Draw({point.x + GetInputIndent(), point.y});
 
@@ -792,6 +834,11 @@ void GroupCell::Draw(wxPoint const point)
     }
   }
   configuration->Outdated(false);
+}
+
+bool GroupCell::AddEnding()
+{
+  return GetEditable() && GetEditable()->AddEnding();
 }
 
 wxRect GroupCell::GetRect(bool WXUNUSED(all)) const
@@ -1400,7 +1447,7 @@ wxString GroupCell::ToXML() const
     str += wxT(" hide=\"true\"");
   str += wxT(">\n");
 
-  Cell *input = GetInput();
+  Cell *input = GetEditable();
   Cell *output = GetLabel();
   // write contents
   switch (m_groupType)
@@ -1559,27 +1606,6 @@ bool GroupCell::SetEditableContent(const wxString &text)
   else
     return false;
 }
-
-EditorCell *GroupCell::GetEditable() const
-{
-  switch (m_groupType)
-  {
-    case GC_TYPE_PAGEBREAK:
-      return NULL;
-    case GC_TYPE_CODE:
-    case GC_TYPE_IMAGE:
-    case GC_TYPE_TEXT:
-    case GC_TYPE_TITLE:
-    case GC_TYPE_SECTION:
-    case GC_TYPE_SUBSECTION:
-    case GC_TYPE_SUBSUBSECTION:
-    case GC_TYPE_HEADING5:
-    case GC_TYPE_HEADING6:
-    default:
-      return GetInput();
-  }
-}
-
 
 void GroupCell::BreakLines()
 {

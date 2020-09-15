@@ -1173,10 +1173,12 @@ public:
    */
   bool CanEdit();
 
-  bool ActivatePrevInput();
+  bool ActivatePrevInput() { return ActivateInput(-1); }
+  bool ActivateNextInput() { return ActivateInput(+1); }
+private:
+  bool ActivateInput(int direction);
 
-  bool ActivateNextInput(bool input = false);
-
+public:
   //! Request to scroll to the cursor as soon as wxMaxima is idle
   void ScrollToCaret()
   {

@@ -315,7 +315,7 @@ std::unique_ptr<GroupCell> TreeFromWXM(const wxArrayString &wxmLines, Configurat
       // Read autoanswer tag
     case WXM_AUTOANSWER:
       if (last)
-        last->AutoAnswer(true);
+        last->SetAutoAnswer(true);
       break;
 
       // Read a page break tag

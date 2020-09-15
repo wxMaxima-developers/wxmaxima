@@ -525,7 +525,7 @@ std::unique_ptr<GroupCell> MathParser::GroupCellFromCodeTag(wxXmlNode *node)
   auto group = std::make_unique<GroupCell>(m_configuration, GC_TYPE_CODE);
   wxString isAutoAnswer = node->GetAttribute(wxT("auto_answer"), wxT("no"));
   if(isAutoAnswer == wxT("yes"))
-    group->AutoAnswer(true);
+    group->SetAutoAnswer(true);
   int i = 1;
   wxString answer;
   wxString question;
