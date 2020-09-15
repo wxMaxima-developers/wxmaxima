@@ -246,16 +246,7 @@ public:
   //! @{ folding and unfolding
 
   //! Is this cell foldable?
-  bool IsFoldable() const
-  {
-    return ((m_groupType == GC_TYPE_SECTION) ||
-            (m_groupType == GC_TYPE_TITLE) ||
-            (m_groupType == GC_TYPE_SUBSECTION) ||
-            (m_groupType == GC_TYPE_SUBSUBSECTION) || 
-            (m_groupType == GC_TYPE_HEADING5) || 
-            (m_groupType == GC_TYPE_HEADING6)
-    );
-  }
+  bool IsFoldable() const;
 
   //! Get the tree of cells that got hidden by folding this cell
   GroupCell *GetHiddenTree() const { return m_hiddenTree.get(); }
@@ -331,13 +322,7 @@ public:
    */
   void Draw(wxPoint point) override;
 
-  bool AddEnding() override
-    {
-      if(GetEditable() != NULL)
-        return GetEditable()->AddEnding();
-      else
-        return false;
-    }
+  bool AddEnding() override;
 
   //! Draw the bracket of this cell
   void DrawBracket();

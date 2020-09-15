@@ -266,6 +266,17 @@ void GroupCell::ResetInputLabelList()
   }
 }
 
+bool GroupCell::IsFoldable() const
+{
+  return ((m_groupType == GC_TYPE_SECTION) ||
+          (m_groupType == GC_TYPE_TITLE) ||
+          (m_groupType == GC_TYPE_SUBSECTION) ||
+          (m_groupType == GC_TYPE_SUBSUBSECTION) ||
+          (m_groupType == GC_TYPE_HEADING5) ||
+          (m_groupType == GC_TYPE_HEADING6)
+          );
+}
+
 GroupCell::~GroupCell()
 {}
 
@@ -823,6 +834,11 @@ void GroupCell::Draw(wxPoint const point)
     }
   }
   configuration->Outdated(false);
+}
+
+bool GroupCell::AddEnding()
+{
+  return GetEditable() && GetEditable()->AddEnding();
 }
 
 wxRect GroupCell::GetRect(bool WXUNUSED(all)) const
