@@ -483,7 +483,6 @@ public:
   const CellTypeInfo &GetInfo() override;
   Cell *GetNextToDraw() const override { return {}; }
   void SetNextToDraw(Cell *) override {}
-  void DoRecalculate(AFontSize) override {}
 };
 DEFINE_CELL(FullTestCell)
 

@@ -61,8 +61,11 @@ void DiffCell::MakeBreakupCells()
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
-void DiffCell::DoRecalculate(AFontSize fontsize)
+void DiffCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
   if(!IsBrokenIntoLines())
@@ -78,6 +81,7 @@ void DiffCell::DoRecalculate(AFontSize fontsize)
     m_comma->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
   }
+  Cell::Recalculate(fontsize);
 }
 
 void DiffCell::Draw(wxPoint point)

@@ -610,68 +610,72 @@ bool EditorCell::IsZoomFactorChanged() const
 }
 
 
-void EditorCell::DoRecalculate(AFontSize)
+void EditorCell::Recalculate(AFontSize fontsize)
 {    
   m_isDirty = false;
-
-  Configuration *configuration = (*m_configuration);
-  if (IsZoomFactorChanged())
+  if (NeedsRecalculation(fontsize))
   {
-    m_widths.clear();
-    m_lastZoomFactor = configuration->GetZoomFactor();
-  }
-  StyleText();
-  wxDC *dc = configuration->GetDC();
-  SetFont();
-
-  // Measure the text hight using characters that might extend below or above the region
-  // ordinary characters move in.
-  int charWidth;
-  dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
-
-  // We want a little bit of vertical space between two text lines (and between two labels).
-  m_charHeight += 2 * MC_TEXT_PADDING;
-  int width = 0, tokenwidth, tokenheight, linewidth = 0;
-
-  m_numberOfLines = 1;
-
-  std::vector<StyledText>::const_iterator textSnippet;
-
-  for (
-    textSnippet = m_styledText.begin();
-    textSnippet != m_styledText.end();
-    ++textSnippet
-    )
-  {
-    if ((textSnippet->GetText().StartsWith(wxT('\n')) || (textSnippet->GetText().StartsWith(wxT('\r')))))
+    Cell::Recalculate(fontsize);
+    Configuration *configuration = (*m_configuration);
+    if (IsZoomFactorChanged())
     {
-      m_numberOfLines++;
-      linewidth = textSnippet->GetIndentPixels();
+      m_widths.clear();
+      m_lastZoomFactor = configuration->GetZoomFactor();
     }
-    else
-    {
-      dc->GetTextExtent(textSnippet->GetText(), &tokenwidth, &tokenheight);
-      linewidth += tokenwidth;
-      width = wxMax(width, linewidth);
-    }
-  }
+    StyleText();
+    wxDC *dc = configuration->GetDC();
+    SetFont();
 
-  // Handle folding
-  if (m_firstLineOnly)
+    // Measure the text hight using characters that might extend below or above the region
+    // ordinary characters move in.
+    int charWidth;
+    dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
+
+    // We want a little bit of vertical space between two text lines (and between two labels).
+    m_charHeight += 2 * MC_TEXT_PADDING;
+    int width = 0, tokenwidth, tokenheight, linewidth = 0;
+
     m_numberOfLines = 1;
 
-  // Assign empty lines a minimum width
-  if (m_text == wxEmptyString)
-    width = charWidth;
+    std::vector<StyledText>::const_iterator textSnippet;
 
-  // Add a line border
-  m_width = width + 2 * Scale_Px(2);
+    for (
+      textSnippet = m_styledText.begin();
+      textSnippet != m_styledText.end();
+      ++textSnippet
+      )
+    {
+      if ((textSnippet->GetText().StartsWith(wxT('\n')) || (textSnippet->GetText().StartsWith(wxT('\r')))))
+      {
+        m_numberOfLines++;
+        linewidth = textSnippet->GetIndentPixels();
+      }
+      else
+      {
+        dc->GetTextExtent(textSnippet->GetText(), &tokenwidth, &tokenheight);
+        linewidth += tokenwidth;
+        width = wxMax(width, linewidth);
+      }
+    }
 
-  // Calculate the cell height
-  m_height = m_numberOfLines * (m_charHeight) + 2 * Scale_Px(2);
+    // Handle folding
+    if (m_firstLineOnly)
+      m_numberOfLines = 1;
 
-  // The center lies in the middle of the 1st line
-  m_center = m_charHeight / 2;
+    // Assign empty lines a minimum width
+    if (m_text == wxEmptyString)
+      width = charWidth;
+
+    // Add a line border
+    m_width = width + 2 * Scale_Px(2);
+
+    // Calculate the cell height
+    m_height = m_numberOfLines * (m_charHeight) + 2 * Scale_Px(2);
+
+    // The center lies in the middle of the 1st line
+    m_center = m_charHeight / 2;
+    Cell::Recalculate(fontsize);
+  }
 }
 
 wxString EditorCell::ToHTML() const

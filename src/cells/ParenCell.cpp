@@ -131,8 +131,11 @@ void ParenCell::SetFont(AFontSize fontsize)
   SetForeground();
 }
 
-void ParenCell::DoRecalculate(AFontSize fontsize)
+void ParenCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Configuration *configuration = (*m_configuration);
   
   m_innerCell->RecalculateList(fontsize);
@@ -237,6 +240,7 @@ void ParenCell::DoRecalculate(AFontSize fontsize)
       m_center = m_height / 2;   
     }
   }
+  Cell::Recalculate(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point)

@@ -113,7 +113,7 @@ void SubSupCell::SetExponent(std::unique_ptr<Cell> &&expt)
   m_postSupCell = std::move(expt);
 }
 
-void SubSupCell::DoRecalculate(AFontSize const fontsize)
+void SubSupCell::Recalculate(AFontSize const fontsize)
 {
   AFontSize const smallerFontSize{ MC_MIN_SIZE, fontsize - SUBSUP_DEC };
 
@@ -164,6 +164,7 @@ void SubSupCell::DoRecalculate(AFontSize const fontsize)
   m_center = supHeight +
     m_baseCell->GetCenterList() -
     Scale_Px(.8 * fontsize + MC_EXP_INDENT);
+  Cell::Recalculate(fontsize);
 }
 
 void SubSupCell::Draw(wxPoint point)

@@ -37,16 +37,14 @@ public:
   LongNumberCell(const LongNumberCell &cell);
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
+
+  void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   void SetStyle(TextStyle style) override;
 
 protected:
-  void DoRecalculate(AFontSize fontsize) override;
-  void UpdateDisplayedText() override;
-
-private:
-  bool DisplayedDigitsChanged() const;
+  virtual void UpdateDisplayedText() override;
 
 private:
   //** Large objects (144 bytes)

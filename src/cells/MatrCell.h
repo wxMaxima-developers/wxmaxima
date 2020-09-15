@@ -41,6 +41,8 @@ public:
     return {&m_cells.front(), &m_cells.back()};
   }
 
+  void Recalculate(AFontSize fontsize) override;
+
   void Draw(wxPoint point) override;
 
   void AddNewCell(std::unique_ptr<Cell> &&cell);
@@ -72,9 +74,6 @@ public:
 
   void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
-protected:
-  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   struct DropCenter
