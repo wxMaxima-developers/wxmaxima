@@ -9700,7 +9700,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case Worksheet::popid_auto_answer:
       if (m_worksheet->GetActiveCell() &&
           m_worksheet->GetActiveCell()->GetGroup()->GetGroupType() == GC_TYPE_CODE)
-        m_worksheet->GetActiveCell()->GetGroup()->AutoAnswer(event.IsChecked());
+        m_worksheet->GetActiveCell()->GetGroup()->SetAutoAnswer(event.IsChecked());
       else if((m_worksheet->GetSelectionStart() != NULL)&&
               (m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
       {
@@ -9708,7 +9708,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
         while(gc != NULL)
         {
           if(gc->GetGroupType() == GC_TYPE_CODE)
-            gc->AutoAnswer(event.IsChecked());
+            gc->SetAutoAnswer(event.IsChecked());
 
           if(gc == m_worksheet->GetSelectionEnd())
             break;

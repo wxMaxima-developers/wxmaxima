@@ -210,7 +210,7 @@ GroupCell::GroupCell(const GroupCell &cell):
     SetInput(cell.m_inputLabel->CopyList());
   if (cell.m_output)
     SetOutput(cell.m_output->CopyList());
-  AutoAnswer(cell.m_autoAnswer);
+  SetAutoAnswer(cell.m_autoAnswer);
   UpdateYPosition();
 }
 
@@ -268,6 +268,37 @@ void GroupCell::ResetInputLabelList()
 
 GroupCell::~GroupCell()
 {}
+
+const wxString &GroupCell::GetAnswer(int answer) const
+{
+  if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
+    return wxm::emptyString;
+
+  wxString const question = wxString::Format(wxT("Question #%i"),answer);
+  auto it = m_knownAnswers.find(question);
+  return (it != m_knownAnswers.end()) ? it->second : wxm::emptyString;
+}
+
+const wxString &GroupCell::GetAnswer(const wxString &question) const
+{
+  if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
+    return wxm::emptyString;
+
+  auto it = m_knownAnswers.find(question);
+  return (it != m_knownAnswers.end()) ? it->second : GetAnswer(++m_numberedAnswersCount);
+}
+
+void GroupCell::SetAutoAnswer(bool autoAnswer)
+{
+  m_autoAnswer = autoAnswer;
+  if (GetEditable()) GetEditable()->AutoAnswer(autoAnswer);
+}
+
+void GroupCell::SetAnswer(const wxString &question, const wxString &answer)
+{
+  if (!answer.empty())
+    m_knownAnswers[question] = answer;
+}
 
 GroupCell *GroupCell::GetLastWorkingGroup() const
 { return m_cellPointers->m_lastWorkingGroup; }

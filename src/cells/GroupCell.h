@@ -76,39 +76,15 @@ public:
   GroupCell *first() const { return dynamic_cast<GroupCell*>(Cell::first()); }
   GroupCell *last() const { return dynamic_cast<GroupCell*>(Cell::last()); }
 
-  wxString GetAnswer(int answer)
-    {
-      if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
-        return wxEmptyString;
-      
-      return m_knownAnswers[wxString::Format(wxT("Question #%i"),answer)];
-    }
+  const wxString &GetAnswer(int answer) const;
+  const wxString &GetAnswer(const wxString &question) const;
   //! Does this GroupCell know the answer to any of maxima's questions?
-  bool ContainsSavedAnswers(){return m_knownAnswers.size() > 0;}
-  wxString GetAnswer(wxString question)
-    {
-      if((!m_autoAnswer) && (!(*m_configuration)->OfferKnownAnswers()))
-        return wxEmptyString;
-      
-      wxString answer = m_knownAnswers[question];
-      if(answer.IsEmpty())
-        answer = GetAnswer(++m_numberedAnswersCount);
-      return answer;
-    }
+  bool ContainsSavedAnswers() { return !m_knownAnswers.empty(); }
   //! Does this GroupCell save the answer to a question?
   bool AutoAnswer() const { return m_autoAnswer; }
-  //! Does this GroupCell save the answer to a question?
-  void AutoAnswer(bool autoAnswer)
-  {
-    m_autoAnswer = autoAnswer;
-    if(GetEditable() != NULL) GetEditable()->AutoAnswer(autoAnswer);
-  }
-  // Add a new answer to the cell
-  void SetAnswer(wxString question, wxString answer)
-  {
-    if (answer != wxEmptyString)
-      m_knownAnswers[question] = answer;
-  }
+  void SetAutoAnswer(bool autoAnswer);
+  //! Add a new answer to the cell
+  void SetAnswer(const wxString &question, const wxString &answer);
 
   InnerCellIterator InnerBegin() const override
   {
@@ -447,7 +423,7 @@ protected:
 //**
   //! The number of cells the current group contains (-1, if no GroupCell)
   int16_t m_cellsInGroup = 1;
-  int16_t m_numberedAnswersCount = 0;
+  mutable int16_t m_numberedAnswersCount = 0;
 
   AFontSize m_mathFontSize;
 
