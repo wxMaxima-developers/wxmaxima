@@ -342,7 +342,11 @@ public:
   int GetCenter() const
   { return m_center; }
 
+  //! Is the size valid and not pending a recalculation?
   bool HasValidSize() const;
+  //! Is the size valid, whether a recalculation is pending or not?
+  bool HasStaleSize() const;
+  //! Is the position valid?
   bool HasValidPosition() const;
 
   /*! Get the distance between the center and the bottom of this cell
