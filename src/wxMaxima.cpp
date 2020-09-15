@@ -9647,8 +9647,8 @@ void wxMaxima::TriggerEvaluation()
       tmp->SetOutput(std::move(cell));
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->SetWorkingGroup(nullptr);
-      tmp->GetInput()->SetCaretPosition(index);
-      tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
+      tmp->GetEditable()->SetCaretPosition(index);
+      tmp->GetEditable()->SetErrorIndex((m_commandIndex = index) - 1);
 
       if (m_worksheet->FollowEvaluation())
         m_worksheet->SetSelection(NULL);

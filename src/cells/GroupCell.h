@@ -130,8 +130,6 @@ public:
   // cppcheck-suppress functionConst
   bool SetEditableContent(const wxString &text);
 
-  EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
-
   void AppendOutput(std::unique_ptr<Cell> &&cell);
 
   /*! Remove all output cells attached to this one
@@ -184,7 +182,7 @@ public:
 
   Cell *GetPrompt() const { return m_inputLabel.get(); }
 
-  EditorCell *GetInput() const
+  EditorCell *GetEditable() const
   { return m_inputLabel ? dynamic_cast<EditorCell *>(m_inputLabel->GetNext()) : nullptr; }
 
   /*! Returns the list of cells the output consists of, starting with the label.

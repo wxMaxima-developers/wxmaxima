@@ -2820,10 +2820,10 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
     return;
 
   wxString cellContents;
-  if (group->GetInput())
-    cellContents = group->GetInput()->GetValue();
+  if (group->GetEditable())
+    cellContents = group->GetEditable()->GetValue();
   auto newGroupCell = std::make_unique<GroupCell>(&m_configuration, style);
-  newGroupCell->GetInput()->SetValue(cellContents);
+  newGroupCell->GetEditable()->SetValue(cellContents);
   GroupCell *prev = group->GetPrevious();
   DeleteRegion(group,group);
   TreeUndo_AppendAction();
@@ -5228,8 +5228,8 @@ bool Worksheet::ExportToHTML(const wxString &file)
         output << prompt->ToString();
         output << wxT("\n  </span></td>\n");
 
-        EditorCell *input = tmp.GetInput();
-        if (input != NULL)
+        EditorCell *input = tmp.GetEditable();
+        if (input)
         {
           output << wxT("  <td><span class=\"input\">\n");
           output << input->ToHTML();
@@ -6372,9 +6372,9 @@ void Worksheet::AddToEvaluationQueue(GroupCell *cell)
   if (cell->GetGroupType() == GC_TYPE_CODE)
   {
     // Gray out the output of the cell in order to mark it as "not current".
-    if (cell->GetInput())
+    if (cell->GetEditable())
     {
-      cell->GetInput()->ContainsChanges(true);
+      cell->GetEditable()->ContainsChanges(true);
       // ...and add it to the evaluation queue
       m_evaluationQueue.AddToQueue(cell);
     }
