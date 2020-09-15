@@ -62,6 +62,8 @@ Items where a list of groupcells can be folded include
 
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
+
+ 232 bytes
  */
 class GroupCell final : public Cell
 {
@@ -367,9 +369,6 @@ public:
   bool GetSuppressTooltipMarker() const { return m_suppressTooltipMarker; }
   void SetSuppressTooltipMarker(bool suppress) { m_suppressTooltipMarker = suppress; }
 
-private:
-  //! The client width at the time of the last recalculation.
-  int m_clientWidth_old = -1;
 protected:
   bool NeedsRecalculation(AFontSize fontSize) const override;
   int GetInputIndent();
@@ -397,11 +396,15 @@ protected:
   std::unique_ptr<Cell> m_output;
   // The pointers above point to inner cells and must be kept contiguous.
 
-//** 4-byte objects (12 bytes)
+//** 4-byte objects (16 bytes)
 //**
   int m_labelWidth_cached = 0;
   int m_inputWidth, m_inputHeight;
+private:
+  //! The client width at the time of the last recalculation.
+  int m_clientWidth_old = -1;
 
+protected:
 //** 2-byte objects (6 bytes)
 //**
   //! The number of cells the current group contains (-1, if no GroupCell)
