@@ -221,73 +221,78 @@ wxString LabelCell::GetXMLFlags() const
   return flags;
 }
 
-void LabelCell::DoRecalculate(AFontSize fontsize)
+void LabelCell::Recalculate(AFontSize fontsize)
 {
   m_fontSize_scaledToFit = fontsize;
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
-  if(GetPrevious())
+  if(NeedsRecalculation(fontsize))
   {
-    ForceBreakLine(true);
-    SetBigSkip(true);
-  }
-  Configuration *configuration = (*m_configuration);
-  if(configuration->GetLabelChoice() != m_labelChoice_Last)
-  {
-    m_labelChoice_Last = configuration->GetLabelChoice();
-    UpdateDisplayedText();
-  }
-
-  // If the setting has changed and we want to show a user-defined label
-  // instead of an automatic one or vice versa we decide that here.
-  if(
-    (m_textStyle == TS_USERLABEL) &&
-    (!configuration->UseUserLabels())
-    )
-    m_textStyle = TS_LABEL;
-  if(
-    (m_textStyle == TS_LABEL) &&
-    (configuration->UseUserLabels()) &&
-    (!m_userDefinedLabel.empty())
-    )
-    m_textStyle = TS_USERLABEL;
-
-  // Labels and prompts are fixed width - adjust font size so that
-  // they fit in
-  auto const index = GetLabelIndex();
-  if (index != noText)
-  {
-    Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
-    wxDC *dc = configuration->GetDC();
-    style.SetFontSize(Scale_Px(fontsize));
-    dc->SetFont(style.GetFont());
-
-    wxSize labelSize = CalculateTextSize(configuration->GetDC(), m_displayedText, index);
-    m_height = labelSize.GetHeight();
-    m_center = m_height / 2;
-
-    wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
-                 _("Seems like something is broken with the maths font."));
-
-    while ((labelSize.GetWidth() + Scale_Px(2) >= Scale_Px(configuration->GetLabelWidth())) &&
-           (!m_fontSize_scaledToFit.IsMinimal()))
+    if(GetPrevious())
     {
-#if wxCHECK_VERSION(3, 1, 2)
-      m_fontSize_scaledToFit -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-#else
-      m_fontSize_scaledToFit -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
-#endif
-      style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
-      dc->SetFont(style.GetFont());
-      labelSize = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, index);
+      ForceBreakLine(true);
+      SetBigSkip(true);
     }
-    m_width = labelSize.GetWidth() + Scale_Px(2);
+    Configuration *configuration = (*m_configuration);
+    if(configuration->GetLabelChoice() != m_labelChoice_Last)
+    {
+      m_labelChoice_Last = configuration->GetLabelChoice();
+      UpdateDisplayedText();
+    }
+
+    Cell::Recalculate(fontsize);
+
+    // If the setting has changed and we want to show a user-defined label
+    // instead of an automatic one or vice versa we decide that here.
+    if(
+      (m_textStyle == TS_USERLABEL) &&
+      (!configuration->UseUserLabels())
+      )
+      m_textStyle = TS_LABEL;
+    if(
+      (m_textStyle == TS_LABEL) &&
+      (configuration->UseUserLabels()) &&
+      (!m_userDefinedLabel.empty())
+      )
+      m_textStyle = TS_USERLABEL;
+  
+    // Labels and prompts are fixed width - adjust font size so that
+    // they fit in
+    auto const index = GetLabelIndex();
+    if (index != noText)
+    {
+      Style style = configuration->GetStyle(m_textStyle, configuration->GetDefaultFontSize());
+      wxDC *dc = configuration->GetDC();
+      style.SetFontSize(Scale_Px(fontsize));
+      dc->SetFont(style.GetFont());
+      
+      wxSize labelSize = CalculateTextSize(configuration->GetDC(), m_displayedText, index);
+      m_height = labelSize.GetHeight();
+      m_center = m_height / 2;
+
+      wxASSERT_MSG((labelSize.GetWidth() > 0) || (m_displayedText.IsEmpty()),
+                   _("Seems like something is broken with the maths font."));
+
+      while ((labelSize.GetWidth() + Scale_Px(2) >= Scale_Px(configuration->GetLabelWidth())) &&
+             (!m_fontSize_scaledToFit.IsMinimal()))
+      {
+#if wxCHECK_VERSION(3, 1, 2)
+        m_fontSize_scaledToFit -= .3 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+#else
+        m_fontSize_scaledToFit -= 1 + 3 * (m_width - labelSize.GetWidth()) / labelSize.GetWidth() / 4;
+#endif
+        style.SetFontSize(Scale_Px(m_fontSize_scaledToFit));
+        dc->SetFont(style.GetFont());
+        labelSize = CalculateTextSize((*m_configuration)->GetDC(), m_displayedText, index);
+      }
+      m_width = labelSize.GetWidth() + Scale_Px(2);
+    }
+    else
+    {
+      m_width = m_height = m_center = 0;
+    }
+    m_width = wxMax(m_width, Scale_Px(configuration->GetLabelWidth())) + MC_TEXT_PADDING;
   }
-  else
-  {
-    m_width = m_height = m_center = 0;
-  }
-  m_width = wxMax(m_width, Scale_Px(configuration->GetLabelWidth())) + MC_TEXT_PADDING;
 }
 
 const wxString &LabelCell::GetAltCopyText() const

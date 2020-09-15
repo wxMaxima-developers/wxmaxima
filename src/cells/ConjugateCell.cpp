@@ -57,8 +57,11 @@ void ConjugateCell::MakeBreakupCells()
   m_close = std::make_unique<TextCell>(m_group, m_configuration, wxT(")"));
 }
 
-void ConjugateCell::DoRecalculate(AFontSize fontsize)
+void ConjugateCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_innerCell->RecalculateList(fontsize);
 
   if(!IsBrokenIntoLines())
@@ -78,6 +81,7 @@ void ConjugateCell::DoRecalculate(AFontSize fontsize)
     m_open->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
   }
+  Cell::Recalculate(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point)

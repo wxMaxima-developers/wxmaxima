@@ -85,8 +85,11 @@ void ExptCell::Draw(wxPoint point)
   }
 }
 
-void ExptCell::DoRecalculate(AFontSize fontsize)
+void ExptCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_baseCell->RecalculateList(fontsize);
   if (IsBrokenIntoLines())
     m_exptCell->RecalculateList(fontsize);
@@ -120,6 +123,7 @@ void ExptCell::DoRecalculate(AFontSize fontsize)
     else
       m_expt_yoffset += baseHeight - exptHeight;
   }
+  Cell::Recalculate(fontsize);
 }
 
 wxString ExptCell::ToString() const

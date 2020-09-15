@@ -120,6 +120,8 @@ public:
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
 
+  void Recalculate(AFontSize fontsize) override;
+
   virtual void Draw(wxPoint point) override;
 
   //! Convert the current cell to HTML code.
@@ -465,9 +467,6 @@ public:
   void SetNextToDraw(Cell *next) override;
 
   Cell *GetNextToDraw() const override {return m_nextToDraw;}
-
-protected:
-  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   //! Did the zoom factor change since the last recalculation?

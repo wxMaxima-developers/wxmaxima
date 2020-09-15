@@ -51,8 +51,11 @@ FunCell::FunCell(const FunCell &cell)
 
 DEFINE_CELL(FunCell)
 
-void FunCell::DoRecalculate(AFontSize fontsize)
+void FunCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   m_argCell->RecalculateList(fontsize);
   m_nameCell->RecalculateList(fontsize);
 
@@ -66,6 +69,7 @@ void FunCell::DoRecalculate(AFontSize fontsize)
     m_center = wxMax(m_nameCell->GetCenterList(), m_argCell->GetCenterList());
     m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
   }
+  Cell::Recalculate(fontsize);
 }
 
 void FunCell::Draw(wxPoint point)

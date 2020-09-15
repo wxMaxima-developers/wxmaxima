@@ -40,6 +40,7 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
+  void Recalculate(AFontSize fontsize) override;
   void Draw(wxPoint point) override;
   bool NeedsRecalculation(AFontSize fontSize) const override;
   void SetStyle(TextStyle style) override;
@@ -52,9 +53,6 @@ public:
   const wxString &GetAltCopyText() const override;
   void SetAltCopyText(const wxString &WXUNUSED(text)) override;
   wxString ToXML() const override;
-
-protected:
-  void DoRecalculate(AFontSize fontsize) override;
 
 private:
 //** Large objects (48 bytes)

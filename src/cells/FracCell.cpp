@@ -62,8 +62,10 @@ void FracCell::MakeDivideCell()
   m_divide = m_divideOwner.get();
 }
 
-void FracCell::DoRecalculate(AFontSize fontsize)
+void FracCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
   if(m_inExponent || IsBrokenIntoLines())
   {
     m_displayedNum->RecalculateList(fontsize);
@@ -115,6 +117,8 @@ void FracCell::DoRecalculate(AFontSize fontsize)
       m_center = Num()->GetHeightList() + Scale_Px(3);
     }
   }
+
+  Cell::Recalculate(fontsize);
 }
 
 void FracCell::Draw(wxPoint point)

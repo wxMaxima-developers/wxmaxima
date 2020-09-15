@@ -50,6 +50,8 @@ public:
 
   InnerCellIterator InnerBegin() const override { return {&m_base, &m_var}; }
 
+  void Recalculate(AFontSize fontsize) override;
+
   void Draw(wxPoint point) override;
 
   enum IntegralType : int8_t
@@ -72,9 +74,6 @@ public:
   void SetNextToDraw(Cell *next) override;
 
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
-protected:
-  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   void MakeBreakUpCells();

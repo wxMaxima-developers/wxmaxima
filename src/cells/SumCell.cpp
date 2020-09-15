@@ -116,8 +116,11 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const
   return newStart ? std::move(newStart) : std::make_unique<TextCell>(m_group, m_configuration);
 }
 
-void SumCell::DoRecalculate(AFontSize fontsize)
+void SumCell::Recalculate(AFontSize fontsize)
 {
+  if (!NeedsRecalculation(fontsize))
+    return;
+
   DisplayedBase()->RecalculateList(fontsize);
 
   if (IsBrokenIntoLines())
@@ -155,6 +158,7 @@ void SumCell::DoRecalculate(AFontSize fontsize)
              wxMax(m_under->GetHeightList() + Scale_Px(4) + m_signHeight / 2,
                  DisplayedBase()->GetMaxDrop());
   m_signHeight = DisplayedBase()->GetHeightList();
+  Cell::Recalculate(fontsize);
 }
 
 void SumCell::Draw(wxPoint point)

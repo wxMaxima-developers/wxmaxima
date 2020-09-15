@@ -59,6 +59,8 @@ public:
     FC_DIFF
   };
 
+  void Recalculate(AFontSize fontsize) override;
+
   void Draw(wxPoint point) override;
 
   void SetFracStyle(FracType style) { m_fracStyle = style; }
@@ -82,9 +84,6 @@ public:
 
   void SetNextToDraw(Cell *next) override;
   Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
-protected:
-  void DoRecalculate(AFontSize fontsize) override;
 
 private:
   //! Makes the division sign cell, used in linear form - whether when broken

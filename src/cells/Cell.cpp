@@ -441,13 +441,9 @@ void Cell::ResetSizeList()
 
 void Cell::Recalculate(AFontSize fontsize)
 {
-  if (NeedsRecalculation(fontsize))
-  {
-    m_fontSize_Scaled = Scale_Px(fontsize);
-    DoRecalculate(fontsize);
-    ResetCellListSizes();
-  }
-  wxASSERT(HasValidSize());
+  m_fontSize_Scaled = Scale_Px(fontsize);
+  ResetCellListSizes();
+  m_recalculateWidths = false;
 }
 
 /*! Is this cell currently visible in the window?.
@@ -474,7 +470,8 @@ bool Cell::DrawThisCell(wxPoint point)
 
 bool Cell::HasValidSize() const
 {
-  return m_width.IsValid() & m_height.IsValid() & m_center.IsValid();
+  return !m_recalculateWidths &&
+         m_width > 0 && m_height > 0 && m_center >= 0;
 }
 
 bool Cell::HasValidPosition() const
@@ -1038,9 +1035,7 @@ void Cell::ResetDataList()
 
 void Cell::ResetSize()
 {
-  m_width.Invalidate();
-  m_height.Invalidate();
-  m_center.Invalidate();
+  m_recalculateWidths = true; 
   m_fullWidth.Invalidate();
   m_lineWidth.Invalidate();
   m_maxCenter.Invalidate();
@@ -1103,9 +1098,7 @@ void Cell::BreakUpAndMark()
   wxASSERT(!m_isBrokenIntoLines);
   Cell::BreakUp();
   m_isBrokenIntoLines = true;
-  m_width.Invalidate();
-  m_height.Invalidate();
-  m_center.Invalidate();
+  m_recalculateWidths = true;
 }
 
 void Cell::Unbreak()

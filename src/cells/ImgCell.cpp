@@ -123,36 +123,34 @@ const wxString &ImgCell::GetToolTip(const wxPoint point) const
   return GetLocalToolTip();
 }
 
-void ImgCell::DoRecalculate(AFontSize fontsize)
+void ImgCell::Recalculate(AFontSize fontsize)
 {
-  if (!m_image)
-  {
-    m_width = m_height = m_center = 0;
-    return;
-  }
-
   Configuration *configuration = (*m_configuration);
-  // Here we recalculate the height, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
-  if (configuration->GetPrinting())
+  if (m_image)
   {
-    m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
-    m_imageBorderWidth = Scale_Px(1);
+    // Here we recalculate the height, as well:
+    //  - This doesn't cost much time and
+    //  - as image cell's sizes might change when the resolution does
+    //    we might have intermittent calculation issues otherwise
+    if (configuration->GetPrinting())
+    {
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+      m_imageBorderWidth = Scale_Px(1);
+    }
+    else
+      m_image->Recalculate();
+    m_width = m_image->m_width + 2 * m_imageBorderWidth;
+    if (configuration->GetPrinting())
+    {
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+      m_imageBorderWidth = Scale_Px(1);
+    }
+    else
+      m_image->Recalculate();
+    m_height = m_image->m_height + 2 * m_imageBorderWidth;
+    m_center = m_height / 2;
   }
-  else
-    m_image->Recalculate();
-  m_width = m_image->m_width + 2 * m_imageBorderWidth;
-  if (configuration->GetPrinting())
-  {
-    m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
-    m_imageBorderWidth = Scale_Px(1);
-  }
-  else
-    m_image->Recalculate();
-  m_height = m_image->m_height + 2 * m_imageBorderWidth;
-  m_center = m_height / 2;
+  Cell::Recalculate(fontsize);
 }
 
 void ImgCell::Draw(wxPoint point)

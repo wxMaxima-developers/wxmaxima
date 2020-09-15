@@ -71,14 +71,10 @@ void LongNumberCell::UpdateDisplayedText()
   m_textStyle = TS_NUMBER;
 }
 
-bool LongNumberCell::DisplayedDigitsChanged() const
-{
-  return m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits();
-}
-
 bool LongNumberCell::NeedsRecalculation(AFontSize fontSize) const
 {
-  return TextCell::NeedsRecalculation(fontSize) || DisplayedDigitsChanged();
+  return TextCell::NeedsRecalculation(fontSize) ||
+    (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits());
 }
 
 void LongNumberCell::SetStyle(TextStyle style)
@@ -87,19 +83,20 @@ void LongNumberCell::SetStyle(TextStyle style)
   TextCell::SetStyle(TS_NUMBER);
 }
 
-void LongNumberCell::DoRecalculate(AFontSize fontsize)
+void LongNumberCell::Recalculate(AFontSize fontsize)
 {
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
-  if (DisplayedDigitsChanged())
+  if ((m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits()))
     UpdateDisplayedText();
   
-  if (TextCell::NeedsRecalculation(fontsize))
+  if(NeedsRecalculation(fontsize))
   {      
-    if (m_numStart.IsEmpty())
-      TextCell::DoRecalculate(fontsize);
+    if(m_numStart.IsEmpty())
+      TextCell::Recalculate(fontsize);
     else
     {
+      Cell::Recalculate(fontsize);
       SetFont(m_fontSize_Scaled);
       Configuration *configuration = (*m_configuration);
       wxDC *dc = configuration->GetDC();

@@ -63,8 +63,11 @@ void SqrtCell::MakeBreakUpCells()
   m_close = std::make_unique<TextCell>(m_group, m_configuration, ")");
 }
 
-void SqrtCell::DoRecalculate(AFontSize fontsize)
+void SqrtCell::Recalculate(AFontSize fontsize)
 {
+  if(!NeedsRecalculation(fontsize))
+    return;
+
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateList(fontsize);
 
@@ -140,6 +143,7 @@ void SqrtCell::DoRecalculate(AFontSize fontsize)
     m_open->Recalculate(fontsize);
     m_close->Recalculate(fontsize);
   }
+  Cell::Recalculate(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point)
