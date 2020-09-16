@@ -8,7 +8,7 @@ wxmaxima \- wxWidgets interface for Maxima
 
 .SH "DESCRIPTION"
 .PP
-\fBwxmaxima\fR is a rather self-explanatory graphical
+\fBwxMaxima\fR is a rather self-explanatory graphical
 front-end to the Maxima computer algebra system. It
 provides a graphical interface and 2D formatted output display
 for Maxima. Its menu system facilitates access to a huge part of
@@ -17,6 +17,9 @@ help. The dialogue windows make easy the introduction of
 mathematical entities such as limits, matrices, etc. Besides that,
 it extends Maxima with a few powerful features like the ability to
 create diagrams with one parameter bound to a slider gui control.
+.PP
+One can create worksheets, which can include mathematical cells (and the
+results) but also different headlines, text cells, images, page breaks, etc.
 .PP
 Maxima is a free (GPL) common lisp implementation based on the
 original computer algebra system Macsyma developed at MIT. It
