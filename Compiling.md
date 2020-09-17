@@ -139,7 +139,19 @@ run directly:
 ### Creating a standalone wxMaxima
 
 wxMaxima, if linked statically, is pretty standalone and therefore fit for
-creating a portable app: The only external file wxMaxima requires 
-(besides a working maxima installation) is the wxMaxima help file and if 
-this help file cannot be found it will instruct the web browser to open 
-the online version of the manual instead.
+creating a portable app:
+
+ * It only depends on one single library: wxWidgets, that can be linked
+   statically,
+ * And besides a working maxima installation it only attempts to use two
+   sets of external files: The manual and the translation files.
+
+If a wxMaxima install should come without manual or translation files that
+might not be the end of the world, neither:
+   
+ * The .exe file of the MS Windows version of wxMaxima comes with built-in
+   translation files. If even these cannot be found the program will still
+   work, but will be using  english.
+ * And if there are no manual files wxMaxima will redirect the system's web 
+   browser to an online version of the manual, instead.
+ 
