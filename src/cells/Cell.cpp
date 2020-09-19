@@ -30,7 +30,6 @@
 #include "Cell.h"
 #include "CellList.h"
 #include "GroupCell.h"
-#include "StringUtils.h"
 #include "TextCell.h"
 #include "VisiblyInvalidCell.h"
 #include "stx/unique_cast.hpp"

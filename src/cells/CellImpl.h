@@ -28,8 +28,6 @@
 #ifndef WXMAXIMA_CELLIMPL_H
 #define WXMAXIMA_CELLIMPL_H
 
-#include "StringUtils.h"
-
 #define DEFINE_CELL_TYPEINFO(type) \
   const CellTypeInfo &type::GetInfo() \
   { \
