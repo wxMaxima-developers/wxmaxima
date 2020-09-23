@@ -554,8 +554,7 @@ msgstr "![ezUnits](./ezUnits.png){ id=img_ezUnits }"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:124
-#, fuzzy, no-wrap
-#| msgid "Besides completing a file name, an unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
+#, no-wrap
 msgid "Besides completing a file name, a unit name or the current command’s or variable’s name the autocompletion is able to show a template for most of the commands indicating the type (and meaning) of the parameters this program expects. To activate this feature press <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> or select the respective menu item (Cell/Show Template).\n"
 msgstr "Außer der Vervollständigung des Namens einer Datei, einer Einheit, eines Kommandos oder eines Variablennamens kann für viele Befehle eine Liste der erwarteten Argumente angezeigt werden. Hierfür muss einfach <kbd>SHIFT</kbd>+<kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt werden, oder der entsprechende Menüeintrag gewählt (Zelle/Zeige Parameter).\n"
 
@@ -581,13 +580,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:130
-#, fuzzy
-#| msgid ""
-#| "For most countries the codepage of 256 characters that has been chosen, "
-#| "does not include things like Greek letters, though, that are frequently "
-#| "used in mathematics. To overcome this type of limitation [Unicode]"
-#| "(https://home.unicode.org/) has been invented: An encoding that makes "
-#| "english text work like normal, but to use much more than 256 characters."
 msgid ""
 "For most countries the codepage of 256 characters that has been chosen does "
 "not include things like Greek letters, though, that are frequently used in "
@@ -601,16 +593,10 @@ msgstr ""
 "Mathematik oft verwendet werden. Um diese Begrenzung zu umgehen, wurde "
 "[Unicode](https://home.unicode.org/) entwickelt: Eine Weise, Zeichen "
 "auszudrücken, die englischen Text wie gewohnt arbeiten lässt, aber viel mehr "
-"als 256 Zeichen ermöglicht."
+"als 256 Zeichen ermöglichen."
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:132
-#, fuzzy
-#| msgid ""
-#| "_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
-#| "either supports unicode or that doesn't care about the font encoding. As "
-#| "at least one of this is likely to be true. _wxMaxima_ provides a method "
-#| "of entering Greek characters using the keyboard:"
 msgid ""
 "_Maxima_ allows Unicode, if it was compiled using a Lisp compiler that "
 "either supports Unicode or that doesn't care about the font encoding. As at "
@@ -620,15 +606,10 @@ msgstr ""
 "Wenn Maxima mit einem Lisp-Compiler generiert wurde, der Unicode unterstützt "
 "oder sich nicht darum kümmert, auf welche Weise Zeichen codiert werden, "
 "unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet "
-"_wxMaxima_ eine Methode an, griechische Zeichen mit einer nicht-griechischen "
-"Tastatur einzugeben:"
+"_wxMaxima_ eine Methode an, griechische Zeichen mit der Tastatur einzugeben:"
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:135
-#, fuzzy
-#| msgid ""
-#| "A greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
-#| "starting to type the greek character's name."
 msgid ""
 "A Greek letter can be entered by pressing the <kbd>ESC</kbd> key and then "
 "starting to type the Greek character's name."
@@ -639,11 +620,6 @@ msgstr ""
 
 #. type: Bullet: '* '
 #: ../../info/wxmaxima.md:135
-#, fuzzy
-#| msgid ""
-#| "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter "
-#| "(or two for the greek letter omicron) and <kbd>ESC</kbd> again. In this "
-#| "case the following letters are supported:"
 msgid ""
 "Alternatively it can be entered by pressing <kbd>ESC</kbd>, one letter (or "
 "two for the Greek letter omicron) and <kbd>ESC</kbd> again. In this case the "
@@ -746,8 +722,7 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:210
-#, fuzzy, no-wrap
-#| msgid "If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
+#, no-wrap
 msgid "If a special symbol isn’t in the list it is possible to input arbitrary Unicode characters by pressing <kbd>ESC</kbd> [number of the character (hexadecimal)] <kbd>ESC</kbd>.\n"
 msgstr "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <kbd>ESC</kbd> (Nummer des Zeichens (hexadezimal)) <kbd>ESC</kbd> eingegeben werden.\n"
 
@@ -1224,10 +1199,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:344
-#, fuzzy
-#| msgid ""
-#| "If this option isn't set wxMaxima behaves more like a modern cellphone "
-#| "app:"
 msgid ""
 "If this option isn't set _wxMaxima_ behaves more like a modern cellphone app:"
 msgstr ""
@@ -1252,23 +1223,15 @@ msgstr "Wo wird die Konfiguration gespeichert?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:352
-#, fuzzy, no-wrap
-#| msgid ""
-#| "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your homedirectory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for wxMaxima (therefore the `wx` in the name).\n"
-#| "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
+#, no-wrap
 msgid ""
 "If you are using Unix/Linux, the configuration information will be saved in a file `.wxMaxima` in your home directory (if you are using wxWidgets < 3.1.1), or `.config/wxMaxima.conf` ((XDG-Standard) if wxWidgets >= 3.1.1 is used). You can retrieve the wxWidgets version from the command `wxbuild_info();` or by using the menu option Help->About. [wxWidgets](https://www.wxwidgets.org/) is the cross-platform GUI library, which is the base for _wxMaxima_ (therefore the `wx` in the name).\n"
 "(Since the filename starts with a dot, `.wxMaxima` or `.config` will be hidden).\n"
-msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf`. Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
+msgstr "Auf Linux/Unix-Rechern wird die Konfiguration im Home-Verzeichnis in der Datei `.wxMaxima` gespeichert, oder (für wxWidgets >3.1.1) in `.config/wxMaxima.conf` (XDG-Standard). Die wxWidgets-Version kann über `wxbuild_info()` oder über das Hilfe->Über-Menü abgerufen werden. [wxWidgets](https://www.wxwidgets.org/) ist eine Bibliothek für graphische Benutzeroberflächen, die auf verschiedensten Betriebssystemen läuft und für das `wx` im Namen von wxMaxima verantwortlich ist.\n"
 "(Da der Dateiname mit einem Punkt beginnt, ist `.wxMaxima` oder `.config` eine versteckte Datei).\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:354
-#, fuzzy
-#| msgid ""
-#| "If you are using Windows, the configuration will be stored in the "
-#| "registry. You will find the entries for wxMaxima at the following "
-#| "position in the registry: `HKEY_CURRENT_USER\\Software\\wxMaxima`"
 msgid ""
 "If you are using Windows, the configuration will be stored in the registry. "
 "You will find the entries for _wxMaxima_ at the following position in the "
@@ -1543,19 +1506,12 @@ msgstr ""
 
 #. type: Title ###
 #: ../../info/wxmaxima.md:425
-#, fuzzy, no-wrap
-#| msgid "Opening embedded plots in interactive gnuplot windows"
+#, no-wrap
 msgid "Opening embedded plots in interactive _gnuplot_ windows"
-msgstr "Öffnen eingebetterer Diagramme in interaktiven Gnuplot Fenstern"
+msgstr "Öffnen eingebetteter Diagramme in interaktiven _gnuplot_ Fenstern"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:428
-#, fuzzy
-#| msgid ""
-#| "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
-#| "`wxplot3d` isn't supported by this feature) and the file size of the "
-#| "underlying gnuplot project isn't way too high _wxMaxima_ offers a right-"
-#| "click menu that allows to open the plot in an interactive gnuplot window."
 msgid ""
 "If a plot was generated using the `wxdraw`-type commands (`wxplot2d` and "
 "`wxplot3d` isn't supported by this feature) and the file size of the "
@@ -1563,7 +1519,7 @@ msgid ""
 "click menu that allows to open the plot in an interactive _gnuplot_ window."
 msgstr ""
 "Wenn ein Diagramm mittels einem `wxdraw`-ähnlichen Befehl erstellt wurde "
-"(`wxplot2d` und `wxplot3d` werden hier nicht unterstüzt) und die Gnuplot-"
+"(`wxplot2d` und `wxplot3d` werden hier nicht unterstützt) und die Gnuplot-"
 "Datei nicht allzu lang ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt "
 "an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet."
 
@@ -1575,13 +1531,6 @@ msgstr "Öffnen der Gnuplot Kommandozeile in `plot` Fenstern"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:432
-#, fuzzy
-#| msgid ""
-#| "On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
-#| "replaced by \"wgnuplot\", gnuplot offers the possibility to open a "
-#| "console window, where gnuplot commands can be entered into. Unfortunately "
-#| "enabling this feature causes gnuplot to \"steal\" the keyboard focus for "
-#| "a short time every time a plot is prepared."
 msgid ""
 "On MS Windows, if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
 "replaced by \"wgnuplot\", _gnuplot_ offers the possibility to open a console "
@@ -1822,12 +1771,6 @@ msgstr ""
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:501
-#, fuzzy
-#| msgid ""
-#| "The animation functions use _maxima_'s `makelist` command and therefore "
-#| "shares the pitfall that the slider variable's value is substituted into "
-#| "the expression only if the variable is directly visible in the "
-#| "expression. Therefore the following example will fail:"
 msgid ""
 "The animation functions use _Maxima_'s `makelist` command and therefore "
 "shares the pitfall that the slider variable's value is substituted into the "
@@ -2511,10 +2454,9 @@ msgstr "Der `box()`-Befehl stellt sein Argument in _wxMaxima_ rot dar."
 
 #. type: Title =
 #: ../../info/wxmaxima.md:687
-#, fuzzy, no-wrap
-#| msgid "Troubleshooting\n"
+#, no-wrap
 msgid "Troubleshooting"
-msgstr "Fehlersuche\n"
+msgstr "Fehlersuche"
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:689
@@ -3164,15 +3106,13 @@ msgstr ""
 
 #. type: Title ##
 #: ../../info/wxmaxima.md:854
-#, fuzzy, no-wrap
-#| msgid "wxMaxima sometimes hangs for a several seconds once in the first minute"
+#, no-wrap
 msgid "_wxMaxima_ sometimes hangs for a several seconds once in the first minute"
-msgstr "wxMaxima hängt in der ersten Minute manchmal einmal für mehrere Sekunden"
+msgstr "_wxMaxima_ hängt manchmal in der ersten Minute einmal für mehrere Sekunden"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:857
-#, fuzzy, no-wrap
-#| msgid "wxMaxima delegates some big tasks like parsing maxima's >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that wxMaxima needs to wait a couple of seconds before it can continue its work.\n"
+#, no-wrap
 msgid "_wxMaxima_ delegates some big tasks like parsing _Maxima_'s >1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that _wxMaxima_ needs to wait a couple of seconds before it can continue its work.\n"
 msgstr "wxMaxima lagert große Aufgaben, wie das Interpretieren des >1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.\n"
 

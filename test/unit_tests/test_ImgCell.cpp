@@ -22,6 +22,7 @@
 #define CATCH_CONFIG_RUNNER
 #include "test_ImgCell.h"
 #include "Cell.cpp"
+#include "CellList.cpp"
 #include "CellPointers.cpp"
 #include "CellPtr.cpp"
 #include "FontAttribs.cpp"
@@ -38,6 +39,7 @@ CellPointers pointers(nullptr);
 
 Configuration::Configuration(wxDC *dc, InitOpt) : m_dc(dc) {}
 Configuration::~Configuration() {}
+bool Configuration::InUpdateRegion(wxRect) const { return true; }
 long Configuration::Scale_Px(double) const { return 1; }
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
@@ -46,7 +48,7 @@ Style Configuration::GetStyle(TextStyle, AFontSize) const { return {}; }
 CellPointers *Cell::GetCellPointers() const { return &pointers; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
 
-wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &) { return {}; }
+wxBitmap SvgBitmap::RGBA2wxBitmap(unsigned char const *, int const &, int const &, int const &) { return {}; }
 
 int ErrorRedirector::m_messages_logPaneOnly;
 

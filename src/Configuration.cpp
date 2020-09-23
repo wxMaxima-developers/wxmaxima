@@ -39,12 +39,19 @@
 #include <wx/fileconf.h>
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
-  m_dc(dc),
-  m_mathJaxURL("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"),
-  m_documentclass("article"),
-  m_documentclassOptions("fleqn"),
-  m_symbolPaneAdditionalChars("Øü§")
+  m_dc(dc)
 {
+  ResetAllToDefaults(options);
+  ReadConfig();
+}
+
+void Configuration::ResetAllToDefaults(InitOpt options)
+{
+  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
+  m_documentclass = wxT("article");
+  m_documentclassOptions = wxT("fleqn");
+  m_incrementalSearch = true;
+  m_symbolPaneAdditionalChars = wxT("Øü§");
   SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
@@ -57,6 +64,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
+  m_saveUntitled = true;
+  m_cursorJump = true;
   m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
@@ -66,6 +75,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_invertBackground = false;
+  m_undoLimit = 0;
+  m_recentItems = 10;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -84,7 +95,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
-  m_language = wxLANGUAGE_DEFAULT;
+  SetLanguage(wxLANGUAGE_DEFAULT);
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = labels_prefer_user;
@@ -119,7 +130,17 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_useUnicodeMaths = true;
   m_offerKnownAnswers = true;
   m_parenthesisDrawMode = unknown;
-  
+  m_autoWrap = 3;
+  m_displayedDigits = 100;
+  m_autoIndent = true;
+  m_restartOnReEvaluation = true;
+  m_matchParens = true;
+  m_insertAns = false;
+  m_openHCaret = false;
+  m_labelWidth = 4;
+  m_zoomFactor = 1.0;
+  m_TeXFonts = false;
+  m_keepPercent = true;  
   InitStyles();
 }
 
@@ -248,21 +269,34 @@ static const Configuration::EscCodeContainer &EscCodes()
 
 void Configuration::InitStyles()
 {
-  #ifdef __WXMSW__
-  Style style;
-  style.FontName(AFontName::Linux_Libertine_O());
+  std::fill(std::begin(m_styles), std::end(m_styles), Style{});
 
-  if (style.IsFontOk())
+  Style defaultStyle;
+
+  #ifdef __WINDOWS__
+  // Font defaulting for Windows
+  m_styles[TS_DEFAULT].FontName(AFontName::Arial());
+
+  for (auto fontName :
+       {AFontName::Linux_Libertine_G(), AFontName::Linux_Libertine_O(),
+        AFontName::Linux_Libertine(), AFontName::Times_New_Roman()})
   {
-    m_fontName = style.GetFontName();
-    m_mathFontName = style.GetFontName();
+    auto style = Style().FontName(fontName);
+    style.ResolveToFont();
+    if (style.IsFontOk() && style.GetFontName() == fontName)
+    {
+      m_styles[TS_MATH].FontName(style.GetFontName());
+      break;
+    }
   }
-  else
-    m_mathFontName = {};
   #endif
-  m_mathFontSize.Set(12.0f);
 
+  // TODO It's a fat chance that this font actually will be monospace.
+  wxFont monospace(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+  m_styles[TS_ASCIIMATHS].SetFontName(AFontName(monospace.GetFaceName()));
   m_styles[TS_DEFAULT].Bold().Italic().FontSize(12);
+  m_styles[TS_MATH].FontSize(12.0);
+
   m_styles[TS_TEXT].FontSize(12);
   m_styles[TS_CODE_VARIABLE].Color(0,128,0).Italic();
   m_styles[TS_CODE_FUNCTION].Color(128,0,0).Italic();
@@ -301,7 +335,6 @@ void Configuration::InitStyles()
   m_styles[TS_SELECTION].Color(wxSYS_COLOUR_HIGHLIGHT);
   m_styles[TS_EQUALSSELECTION].Color(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150);
   m_styles[TS_OUTDATED].Color(153,153,153);
-  ReadConfig();
 }
 
 const wxString &Configuration::GetEscCode(const wxString &key)
@@ -397,8 +430,6 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   wxConfigBase *config = wxConfig::Get();
-  m_autoWrap = 3;
-
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
     long autoSaveMinutes = 0;
@@ -406,10 +437,13 @@ void Configuration::ReadConfig()
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
   config->Read("language", &m_language);
+  config->Read("incrementalSearch", &m_incrementalSearch);
   if (m_language == wxLANGUAGE_UNKNOWN)
     m_language = wxLANGUAGE_DEFAULT;
 
   config->Read("invertBackground", &m_invertBackground);
+  config->Read("undoLimit", &m_undoLimit);
+  config->Read("recentItems", &m_recentItems);
   config->Read("maxGnuplotMegabytes", &m_maxGnuplotMegabytes);
   config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
@@ -455,10 +489,9 @@ void Configuration::ReadConfig()
   if (m_maximaUserLocation.IsSameAs(wxT("1")))
     m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
-  m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
-  int showLabelChoice;
+  int showLabelChoice = 0;
   config->Read(wxT("showLabelChoice"), &showLabelChoice);
   m_showLabelChoice = (showLabels) showLabelChoice; 
 
@@ -468,29 +501,22 @@ void Configuration::ReadConfig()
 
   config->Read(wxT("hideBrackets"), &m_hideBrackets);
 
-  m_displayedDigits = 100;
   config->Read(wxT("displayedDigits"), &m_displayedDigits);
   if (m_displayedDigits <= 20)
     m_displayedDigits = 20;
 
-  m_restartOnReEvaluation = true;
   config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
-  m_matchParens = true;
   config->Read(wxT("matchParens"), &m_matchParens);
 
-  m_insertAns = false;
   config->Read(wxT("insertAns"), &m_insertAns);
 
-  m_openHCaret = false;
   config->Read(wxT("openHCaret"), &m_openHCaret);
   
-  m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
   config->Read(wxT("printBrackets"), &m_printBrackets);
 
-  m_zoomFactor = 1.0;
   config->Read(wxT("ZoomFactor"), &m_zoomFactor);
 
   if (wxFontEnumerator::IsValidFacename((m_fontCMEX = AFontName::CMEX10()).GetAsString()) &&
@@ -503,22 +529,19 @@ void Configuration::ReadConfig()
     config->Read(wxT("usejsmath"), &m_TeXFonts);
   }
 
-  m_keepPercent = true;
-  wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
+  config->Read(wxT("keepPercent"), &m_keepPercent);
+  config->Read(wxT("saveUntitled"), &m_saveUntitled);
+  config->Read(wxT("cursorJump"), &m_cursorJump);
 
   ReadStyles();
 }
 
-Style Configuration::GetStyle(TextStyle textStyle, AFontSize fontSize) const
+Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
 {
-  Style style = m_styles[textStyle];
+  Style style = m_styles[ts];
 
-  if ((textStyle == TS_TITLE) ||
-      (textStyle == TS_SECTION) ||
-      (textStyle == TS_SUBSECTION) ||
-      (textStyle == TS_SUBSUBSECTION) ||
-      (textStyle == TS_HEADING5) ||
-      (textStyle == TS_HEADING6))
+  if ((ts == TS_TITLE) || (ts == TS_SECTION) || (ts == TS_SUBSECTION) ||
+      (ts == TS_SUBSUBSECTION) || (ts == TS_HEADING5) || (ts == TS_HEADING6))
   {
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
@@ -526,16 +549,10 @@ Style Configuration::GetStyle(TextStyle textStyle, AFontSize fontSize) const
     style.SetUnderlined(false);
 
     // Besides that these items have a fixed font size.
-  }
-  else
+  } else
     style.SetFontSize(fontSize);
 
-  fontSize = style.GetFontSize();
-
-  // The font size scales with the worksheet
-  fontSize = Scale_Px(fontSize);
-
-  style.SetFontName(GetFontName(textStyle));
+  style.SetFontName(GetFontName(ts));
 
   if (!style.IsFontOk())
     style.SetFontName({});
@@ -543,8 +560,9 @@ Style Configuration::GetStyle(TextStyle textStyle, AFontSize fontSize) const
   // cppcheck-suppress duplicateCondition
   if (!style.IsFontOk())
   {
+    auto size = style.GetFontSize();
     style = Style::FromStockFont(wxStockGDI::FONT_NORMAL);
-    style.SetFontSize(fontSize);
+    style.SetFontSize(size);
   }
 
   wxASSERT_MSG(style.IsFontOk(),
@@ -699,13 +717,12 @@ void Configuration::SetZoomFactor(double newzoom)
     newzoom = GetMinZoomFactor();
 
   m_zoomFactor = newzoom;
-  wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
-  RecalculationForce(true);
 }
 
 Configuration::~Configuration()
 {
   WriteStyles();
+  WriteSettings();
 }
 
 bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
@@ -777,20 +794,22 @@ bool Configuration::CharsExistInFont(const wxFont &font, const wxString &chars)
   return cache(true);
 }
 
-AFontName Configuration::GetFontName(long type) const
+AFontName Configuration::GetFontName(TextStyle const ts) const
 {
   AFontName retval;
 
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
-      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
-    retval = m_styles[type].GetFontName();
+  if (ts == TS_TITLE || ts == TS_SUBSECTION || ts == TS_SUBSUBSECTION ||
+      ts == TS_HEADING5 || ts == TS_HEADING6 || ts == TS_SECTION ||
+      ts == TS_TEXT || ts == TS_ASCIIMATHS)
+    retval = m_styles[ts].GetFontName();
+
+  else if (ts == TS_NUMBER || ts == TS_VARIABLE || ts == TS_FUNCTION ||
+           ts == TS_SPECIAL_CONSTANT || ts == TS_STRING)
+    retval = m_styles[TS_MATH].GetFontName();
 
   if (retval.empty())
-    retval = m_fontName;
-  
-  if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
-    retval = m_mathFontName;
+    retval = m_styles[TS_DEFAULT].GetFontName();
+
   return retval;
 }
 
@@ -807,7 +826,7 @@ wxString Configuration::MaximaDefaultLocation()
   return Dirstructure::Get()->MaximaDefaultLocation();
 }
 
-void Configuration::ReadStyles(wxString file)
+void Configuration::ReadStyles(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
@@ -817,32 +836,18 @@ void Configuration::ReadStyles(wxString file)
     wxFileInputStream str(file);
     config = new wxFileConfig(str);
   }
-  
-  // Font
-  wxString fontName;
-  config->Read(wxT("Style/Default/Style/Text/fontname"), &fontName);
-#ifdef __WXOSX_MAC__
-  if (fontName.empty())
-  {
-    fontName = "Monaco";
-  }
-#endif
-  m_fontName = AFontName(fontName);
-
-  long mathFontSize;
-  if (config->Read(wxT("mathfontsize"), &mathFontSize))
-    m_mathFontSize.Set(mathFontSize);
-
-  config->Read(wxT("Style/Math/fontname"), &fontName);
-#ifdef __WXOSX_MAC__
-  if (fontName.empty())
-  {
-    fontName = "Monaco";
-  }
-#endif
-  m_mathFontName = AFontName(fontName);
 
   m_styles[TS_DEFAULT].Read(config, "Style/Default/");
+
+  // Read legacy defaults for the math font name and size
+  long tmpLong;
+  if (config->Read(wxT("mathfontsize"), &tmpLong) && tmpLong > 1)
+    m_styles[TS_MATH].SetFontSize(AFontSize(tmpLong));
+  wxString tmpString;
+  if (config->Read(wxT("Style/Math/fontname"), &tmpString) && tmpString.size() > 1)
+    m_styles[TS_MATH].SetFontName(AFontName(tmpString));
+
+  m_styles[TS_MATH].Read(config, "Style/Math/");
   m_styles[TS_TEXT].Read(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Read(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Read(config, "Style/CodeHighlighting/Function/");
@@ -868,7 +873,7 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_INPUT].Read(config, "Style/Input/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
-  m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
+  m_styles[TS_ASCIIMATHS].Read(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Read(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
@@ -882,11 +887,10 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
   m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
-
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(wxString file)
+void Configuration::WriteStyles(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
@@ -894,12 +898,14 @@ void Configuration::WriteStyles(wxString file)
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
+  config->Write(wxT("keepPercent"), m_keepPercent);
+  config->Write(wxT("labelWidth"), m_labelWidth);
+  config->Write(wxT("saveUntitled"), m_saveUntitled);
+  config->Write(wxT("cursorJump"), m_cursorJump);
+
   // Font
-  config->Write("Style/Default/Style/Text/fontname", m_fontName.GetAsString());
-  config->Write(wxT("mathfontsize"), m_mathFontSize.GetAsLong());
-  config->Write("Style/Math/fontname", m_mathFontName.GetAsString());
-  
   m_styles[TS_DEFAULT].Write(config, "Style/Default/");
+  m_styles[TS_MATH].Write(config, "Style/Math/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
@@ -925,7 +931,7 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_INPUT].Write(config, "Style/Input/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");
-  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
+  m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
   m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
   m_styles[TS_FUNCTION].Write(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
@@ -961,11 +967,10 @@ wxFontStyle Configuration::IsItalic(long st) const
 
 class AFontName Configuration::GetSymbolFontName() const
 {
-#if defined __WXMSW__
-  static const AFontName name(wxT("Symbol"));
-  return name;
+#ifdef __WINDOWS__
+  return AFontName::Symbol();
 #else
-  return m_fontName;
+  return m_styles[TS_DEFAULT].GetFontName();
 #endif
 }
 
@@ -1012,6 +1017,77 @@ wxColor Configuration::MakeColorDifferFromBackground(wxColor color)
   }
 }
 
+bool Configuration::InUpdateRegion(wxRect const rect) const
+{
+  if (!ClipToDrawRegion())
+    return true;
+
+  wxRect const updateRegion = GetUpdateRegion();
+
+  return updateRegion.Intersects(rect) ||
+         updateRegion.Contains(rect) ||
+         (updateRegion == rect) ||
+         rect.Contains(updateRegion);
+}
+
+void Configuration::WriteSettings()
+{
+  wxConfigBase *config = wxConfig::Get();
+  config->Write("incrementalSearch", m_incrementalSearch);
+  config->Write(wxT("hideBrackets"), m_hideBrackets);
+  config->Write(wxT("printScale"), m_printScale);
+  config->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile);
+  config->Write(wxT("autoWrapMode"), m_autoWrap);
+  config->Write(wxT("autoIndent"), m_autoIndent);
+  config->Write(wxT("indentMaths"), m_indentMaths);
+  config->Write(wxT("matchParens"), m_matchParens);
+  config->Write(wxT("changeAsterisk"), m_changeAsterisk);
+  config->Write(wxT("hidemultiplicationsign"), m_hidemultiplicationsign);
+  config->Write(wxT("latin2greek"), m_latin2greek);
+  config->Write(wxT("greekSidebar_ShowLatinLookalikes"), m_greekSidebar_ShowLatinLookalikes);
+  config->Write(wxT("greekSidebar_Show_mu"), m_greekSidebar_Show_mu);
+  config->Write(wxT("symbolPaneAdditionalChars"),m_symbolPaneAdditionalChars);
+  config->Write(wxT("notifyIfIdle"), m_notifyIfIdle);
+  config->Write(wxT("displayedDigits"), m_displayedDigits);
+  config->Write(wxT("insertAns"), m_insertAns);
+  config->Write(wxT("openHCaret"), m_openHCaret);
+  config->Write(wxT("restartOnReEvaluation"), m_restartOnReEvaluation);
+  config->Write(wxT("invertBackground"), m_invertBackground);
+  config->Write("recentItems", m_recentItems);
+  config->Write(wxT("undoLimit"), m_undoLimit);
+  config->Write(wxT("showLabelChoice"), (int) (m_showLabelChoice));
+  config->Write(wxT("printBrackets"), m_printBrackets);
+  config->Write(wxT("autodetectMaxima"), m_autodetectMaxima);
+  config->Write(wxT("parameters"),m_maximaParameters);
+  config->Write(wxT("maxima"), m_maximaUserLocation);
+  config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
+  config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
+  config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices);
+  config->Write(wxT("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);
+  config->Write(wxT("enterEvaluates"), m_enterEvaluates);
+  config->Write(wxT("mathJaxURL"), m_mathJaxURL);
+  config->Write(wxT("antiAliasLines"), m_antiAliasLines);
+  config->Write(wxT("copyBitmap"), m_copyBitmap);
+  config->Write(wxT("copyMathML"), m_copyMathML);
+  config->Write(wxT("copyMathMLHTML"), m_copyMathMLHTML);
+  config->Write(wxT("copyRTF"), m_copyRTF);
+  config->Write(wxT("copySVG"), m_copySVG);
+  config->Write(wxT("copyEMF"), m_copyEMF);
+  config->Write(wxT("useSVG"), m_useSVG);
+  config->Write(wxT("showLength"), m_showLength);
+  config->Write(wxT("TOCshowsSectionNumbers"), m_TOCshowsSectionNumbers);
+  config->Write(wxT("useUnicodeMaths"), m_useUnicodeMaths);
+  config->Write("defaultPort",m_defaultPort);
+  config->Write("abortOnError",m_abortOnError);
+  config->Write("language",m_language);
+  config->Write("maxGnuplotMegabytes",m_maxGnuplotMegabytes);
+  config->Write("offerKnownAnswers",m_offerKnownAnswers);
+  config->Write("documentclass",m_documentclass);
+  config->Write("documentclassoptions",m_documentclassOptions);
+  config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
+  config->Write("autosubscript", m_autoSubscript);
+  config->Write(wxT("ZoomFactor"), m_zoomFactor);
+}
 const wxString &Configuration::GetStyleName(TextStyle style) const
 {
   static const wxString *names[NUMBEROFSTYLES] = {
@@ -1030,6 +1106,7 @@ const wxString &Configuration::GetStyleName(TextStyle style) const
     &_("Highlight (dpart)"),
     &_("Maxima warnings"),
     &_("Maxima errors"),
+    &_("ASCII maths"),
     &_("Text cell"),
     &_("Heading 6"),
     &_("Heading 5"),
@@ -1053,6 +1130,7 @@ const wxString &Configuration::GetStyleName(TextStyle style) const
     &_("Code highlighting: Operators"),
     &_("Code highlighting: Lisp"),
     &_("Code highlighting: End of line"),
+    &_("Math Default"),
   };
   if (style >= 0 && style < NUMBEROFSTYLES)
     return *names[style];

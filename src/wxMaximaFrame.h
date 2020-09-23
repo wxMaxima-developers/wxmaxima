@@ -137,6 +137,15 @@ public:
     menu_gen_mat,
     menu_gen_mat_lambda,
     menu_enter_mat,
+    menu_csv2mat,
+    menu_mat2csv,
+    menu_csv2list,
+    menu_list2csv,
+    menu_matrix_row,
+    menu_matrix_col,
+    menu_matrix_row_list,
+    menu_matrix_col_list,
+    menu_submatrix,
     menu_invert_mat,
     menu_cpoly,
     menu_determinant,
@@ -166,6 +175,7 @@ public:
     menu_to_float,
     menu_to_bfloat,
     menu_to_numer,
+    menu_num_domain,
     menu_set_precision,
     menu_set_displayprecision,
     menu_engineeringFormat,
@@ -215,8 +225,10 @@ public:
     menu_defaultAutosubscript,
     menu_alwaysAutosubscript,
     menu_roundedMatrixParens,
-    menu_roundedMatrixParensYes,
-    menu_roundedMatrixParensNo,
+    menu_squareMatrixParens,
+    menu_straightMatrixParens,
+    menu_angledMatrixParens,
+    menu_noMatrixParens,
     menu_draw_2d,
     menu_draw_3d,
     menu_draw_explicit,
@@ -476,6 +488,7 @@ public:
     menu_help_numberformats,
     menu_help_tolerances,
     menu_help_listaccess,
+    menu_help_memoizing,
     menu_help_3d,
     menu_help_varnames,
     menu_help_fittingData,
@@ -770,6 +783,9 @@ protected:
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
   wxMenu *m_recentPackagesMenu;
+  wxMenu *m_autoSubscriptMenu;
+  wxMenu *m_equationTypeMenuMenu;
+  wxMenu *m_roundedMatrixParensMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

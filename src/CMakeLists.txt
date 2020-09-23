@@ -1,98 +1,115 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-set(SOURCE_FILES
+set(CELL_SOURCE_FILES
     AbsCell.cpp
-    ActualValuesStorageWiz.cpp
     AtCell.cpp
-    Autocomplete.cpp
-    AutocompletePopup.cpp
-    Autocomplete_Builtins.cpp
-    BC2Wiz.cpp
-    BTextCtrl.cpp
-    BitmapOut.cpp
     Cell.cpp
-    CellPointers.cpp
+    CellList.cpp
     CellPtr.cpp
-    CharButton.cpp
-    CompositeDataObject.cpp
-    ConfigDialogue.cpp
-    Configuration.cpp
     ConjugateCell.cpp
     DiffCell.cpp
-    Dirstructure.cpp
-    DrawWiz.cpp
-    EMFout.cpp
     EditorCell.cpp
-    ErrorRedirector.cpp
-    EvaluationQueue.cpp
     ExptCell.cpp
-    FindReplaceDialog.cpp
-    FindReplacePane.cpp
-    FontAttribs.cpp
-    FontCache.cpp
     FracCell.cpp
     FunCell.cpp
+    GroupCell.cpp
+    ImgCell.cpp
+    IntCell.cpp
+    LabelCell.cpp
+    LimitCell.cpp
+    ListCell.cpp
+    LongNumberCell.cpp
+    MatrCell.cpp
+    ParenCell.cpp
+    SlideShowCell.cpp
+    SqrtCell.cpp
+    SubCell.cpp
+    SubSupCell.cpp
+    SumCell.cpp
+    TextCell.cpp
+    VisiblyInvalidCell.cpp
+)
+list_transform_prepend(CELL_SOURCE_FILES cells/)
+
+set(WIZARD_SOURCE_FILES
+    ActualValuesStorageWiz.cpp
+    BC2Wiz.cpp
+    CsvWiz.cpp
+    DrawWiz.cpp
     Gen1Wiz.cpp
     Gen2Wiz.cpp
     Gen3Wiz.cpp
     Gen4Wiz.cpp
     Gen5Wiz.cpp
-    GroupCell.cpp
-    History.cpp
-    Image.cpp
-    ImgCell.cpp
-    IntCell.cpp
     IntegrateWiz.cpp
-    LabelCell.cpp
-    LicenseDialog.cpp
-    LimitCell.cpp
     LimitWiz.cpp
     ListSortWiz.cpp
-    LongNumberCell.cpp
+    MatWiz.cpp
+    Plot2dWiz.cpp
+    Plot3dWiz.cpp
+    PlotFormatWiz.cpp
+    SeriesWiz.cpp
+    SubstituteWiz.cpp
+    SumWiz.cpp
+    SystemWiz.cpp
+)
+list_transform_prepend(WIZARD_SOURCE_FILES wizards/)
+
+set(GRAPHICAL_IO_SOURCE_FILES
+    BitmapOut.cpp
+    EMFout.cpp
+    OutCommon.cpp
+    Printout.cpp
+    SVGout.cpp
+)
+list_transform_prepend(GRAPHICAL_IO_SOURCE_FILES graphical_io/)
+
+set(SOURCE_FILES
+    Autocomplete.cpp
+    AutocompletePopup.cpp
+    Autocomplete_Builtins.cpp
+    BTextCtrl.cpp
+    CellPointers.cpp
+    CharButton.cpp
+    CompositeDataObject.cpp
+    ConfigDialogue.cpp
+    Configuration.cpp
+    Dirstructure.cpp
+    ErrorRedirector.cpp
+    EvaluationQueue.cpp
+    FindReplaceDialog.cpp
+    FindReplacePane.cpp
+    FontAttribs.cpp
+    FontCache.cpp
+    History.cpp
+    Image.cpp
+    LicenseDialog.cpp
     LogPane.cpp
     LoggingMessageDialog.cpp
     MainMenuBar.cpp
     MarkDown.cpp
-    MatWiz.cpp
     MathParser.cpp
-    MatrCell.cpp
-    MaxSizeChooser.cpp
+    Maxima.cpp
     MaximaIPC.cpp
     MaximaTokenizer.cpp
+    MaxSizeChooser.cpp
     Notification.cpp
-    OutCommon.cpp
-    ParenCell.cpp
-    ListCell.cpp
-    Plot2dWiz.cpp
-    Plot3dWiz.cpp
-    PlotFormatWiz.cpp
-    Printout.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
-    SVGout.cpp
-    SeriesWiz.cpp
-    SlideShowCell.cpp
-    SqrtCell.cpp
     StatusBar.cpp
+    StreamUtils.cpp
     StringUtils.cpp
-    SubCell.cpp
-    SubSupCell.cpp
-    SubstituteWiz.cpp
-    SumCell.cpp
-    SumWiz.cpp
     SvgBitmap.cpp
     SvgPanel.cpp
-    SystemWiz.cpp
     TableOfContents.cpp
-    TextCell.cpp
     TextStyle.cpp
     TipOfTheDay.cpp
     ToolBar.cpp
     UnicodeSidebar.cpp
     VariablesPane.cpp
-    VisiblyInvalidCell.cpp
-    WXMformat.cpp
     Worksheet.cpp
+    WrappingStaticText.cpp
+    WXMformat.cpp
     XmlInspector.cpp
     levenshtein/levenshtein.cpp
     main.cpp
@@ -101,7 +118,22 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
-    Resources.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
+)
+
+list(APPEND SOURCE_FILES
+  ${CELL_SOURCE_FILES}
+  ${GRAPHICAL_IO_SOURCE_FILES}
+  ${WIZARD_SOURCE_FILES}
+)
+
+include_directories(
+  "${CMAKE_SOURCE_DIR}/src"
+  "${CMAKE_SOURCE_DIR}/src/cells"
+  "${CMAKE_SOURCE_DIR}/src/graphical_io"
+  "${CMAKE_SOURCE_DIR}/src/wizards"
+  # Version.h is generated in the binary dir
+  "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.9.4")
@@ -123,7 +155,10 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
 	    "--language=c++"
 	    "--template=gcc"
 	    "--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/cells/"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/graphical_io/"
 	    "-i${CMAKE_CURRENT_SOURCE_DIR}/nanoSVG/"
+	    "-i${CMAKE_CURRENT_SOURCE_DIR}/wizards/"
 	)
     else()
 	message(STATUS "cppcheck not found.")
@@ -145,25 +180,23 @@ endif()
 # Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  list(APPEND SOURCE_FILES ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc)
 endif()
 
-# Version.h is generated in the binary dir
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
-
-file(GLOB RESOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png
-    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg
-    ${CMAKE_SOURCE_DIR}/art/wxmac.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
-    ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
-    ${CMAKE_SOURCE_DIR}/info/*.html
-    ${CMAKE_SOURCE_DIR}/info/*.jpg
-    ${CMAKE_SOURCE_DIR}/info/*.png
-    ${CMAKE_SOURCE_DIR}/data/PkgInfo
-    ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
-    ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
+if(APPLE)
+  file(GLOB RESOURCE_FILES
+      ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png
+      ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg
+      ${CMAKE_SOURCE_DIR}/art/wxmac.icns
+      ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
+      ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
+      ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns
+      ${CMAKE_SOURCE_DIR}/info/*.html
+      ${CMAKE_SOURCE_DIR}/info/*.jpg
+      ${CMAKE_SOURCE_DIR}/info/*.png
+      ${CMAKE_SOURCE_DIR}/data/PkgInfo
+      ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf
+      ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
+endif()
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
@@ -172,32 +205,29 @@ elseif(APPLE)
     set(MACOSX_BUNDLE_ICON_FILE wxmac.icns)
     list(APPEND SOURCE_FILES ${RESOURCE_FILES})
     add_executable(wxmaxima ${SOURCE_FILES})
-    set_target_properties(wxmaxima PROPERTIES RESOURCE "${RESOURCE_FILES}")
-    if(APPLE)
-        set_target_properties(wxmaxima PROPERTIES
-            MACOSX_BUNDLE TRUE
-            RESOURCE "${RESOURCE_FILES}"
-        )
-
-        install(
-            # The bundle utilities need to be run in a
-            # separate step, meaning from within a string.
-            # they provide the fixup command that makes the
-            # .dylibs run from within the app bundle.
-            CODE "include(BundleUtilities)
-            # the separate step doesn't know about
-            # the values our variables had in the
-            # cmakefile so we need to set them again.
-            set(BU_CHMOD_BUNDLE_ITEMS TRUE)
-            fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")"
-            COMPONENT Runtime)
-    else()
-        set_target_properties(wxmaxima PROPERTIES
-            RESOURCE "${RESOURCE_FILES}"
+    set_target_properties(wxmaxima PROPERTIES
+        MACOSX_BUNDLE TRUE
+        RESOURCE "${RESOURCE_FILES}"
     )
-    endif()
+
+    install(
+        # The bundle utilities need to be run in a
+        # separate step, meaning from within a string.
+        # they provide the fixup command that makes the
+        # .dylibs run from within the app bundle.
+        CODE "include(BundleUtilities)
+        # the separate step doesn't know about
+        # the values our variables had in the
+        # cmakefile so we need to set them again.
+        set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+        fixup_bundle(\"${CMAKE_BINARY_DIR}/src/wxmaxima.app\"   \"\"   \"\")"
+        COMPONENT Runtime)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
+    # These don't seem to be used, and they were disabled, but perhaps they really
+    # belong on Unix platforms other than Apple
+    ##set_target_properties(wxmaxima PROPERTIES
+    ##    RESOURCE "${RESOURCE_FILES}"
 endif()
 
 if(WXM_ENABLE_PRECOMPILED_HEADERS AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
@@ -209,10 +239,11 @@ endif()
 if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
     set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
 else()
-    set(MANIFEST_FILE "${CMAKE_SOURCE_DIR}/data/winrc/wxmaxima.manifest")
+    set(MANIFEST_FILE "${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest")
 endif()
 
 file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
+file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../locales/wxMaxima/)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
 

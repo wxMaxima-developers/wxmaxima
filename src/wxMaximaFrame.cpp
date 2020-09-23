@@ -287,13 +287,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     FloatingSize(m_logPane->GetEffectiveMinSize()).
                     Left());
 
-  wxPanel *variables = new wxPanel(this,wxID_ANY);
-  wxWindowUpdateLocker variablesBlocker(variables);
-  m_worksheet->m_variablesPane = new Variablespane(variables,wxID_ANY);
-  wxSizer *variablesSizer = new wxBoxSizer(wxVERTICAL);
-  variablesSizer->Add(m_worksheet->m_variablesPane,wxSizerFlags().Expand());
-  variables->SetSizerAndFit(variablesSizer);
-  m_manager.AddPane(variables,
+  m_worksheet->m_variablesPane = new Variablespane(this, wxID_ANY);
+  wxWindowUpdateLocker variablesBlocker(m_worksheet->m_variablesPane);
+  m_manager.AddPane(m_worksheet->m_variablesPane,
                     wxAuiPaneInfo().Name(wxT("variables")).
                             CloseButton(true).
                             DockFixed(false).
@@ -303,7 +299,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             LeftDockable(true).
                             RightDockable(true).
                             PaneBorder(true).
-                            FloatingSize(variables->GetEffectiveMinSize()).
+                            FloatingSize(m_worksheet->m_variablesPane->GetEffectiveMinSize()).
                             Bottom());
 
   m_symbolsPane = new SymbolsPane(this, m_worksheet->m_configuration, m_worksheet);
@@ -409,9 +405,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
-  bool loadPanes = true;
   wxString perspective;
-  config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
   if(perspective != wxEmptyString)
@@ -507,7 +501,6 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
       (!m_bytesReadDisplayTimer.IsRunning() && (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
        (m_StatusMaximaBusy_next == transferring)))
   {
-    wxWindowUpdateLocker drawBlocker(this);
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     if (!m_StatusSaving)
     {
@@ -773,25 +766,33 @@ void wxMaximaFrame::SetupMenu()
                              wxITEM_NORMAL);
   m_Maxima_Panes_Sub->AppendSeparator();
   // equation display type submenu
-  wxMenu *equationType = new wxMenu;
-  equationType->Append(menu_math_as_1D_ASCII, _("as 1D ASCII"), _("Show equations in their linear form"), wxITEM_NORMAL);
-  equationType->Append(menu_math_as_2D_ASCII, _("as ASCII Art"), _("2D equations using ASCII Art"), wxITEM_NORMAL);
-  equationType->Append(menu_math_as_graphics, _("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
+  m_equationTypeMenuMenu = new wxMenu;
+  m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_1D_ASCII, _("as 1D ASCII"), _("Show equations in their linear form"));
+  m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_2D_ASCII, _("as ASCII Art"), _("2D equations using ASCII Art"));
+  m_equationTypeMenuMenu->AppendRadioItem(menu_math_as_graphics, _("in 2D"), _("Nice Graphical Equations"));
+  m_equationTypeMenuMenu->Check(menu_math_as_graphics, true);
 
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), equationType, _("How to display new equations"));
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), m_equationTypeMenuMenu, _("How to display new equations"));
 
-  wxMenu *autoSubscript = new wxMenu;
-  autoSubscript->Append(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
-  autoSubscript->Append(menu_defaultAutosubscript, _("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
-  autoSubscript->Append(menu_alwaysAutosubscript, _("Always"), _("Always autosubscript after an underscore"), wxITEM_NORMAL);
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), autoSubscript, _("Autosubscript chars after an underscore"));
+  m_autoSubscriptMenu = new wxMenu;
+  m_autoSubscriptMenu->AppendRadioItem(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"));
+  m_autoSubscriptMenu->AppendRadioItem(menu_defaultAutosubscript,
+                                       _("Integers and single letters"),
+                                       _("Autosubscript numbers and text following single letters"));
+  m_autoSubscriptMenu->AppendRadioItem(menu_alwaysAutosubscript, _("Always"),
+                                       _("Always autosubscript after an underscore"));
+  m_autoSubscriptMenu->Check(menu_defaultAutosubscript, true);
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
+                             _("Autosubscript chars after an underscore"));
 
-  wxMenu *roundedMatrixParens = new wxMenu;
-  roundedMatrixParens->Append(menu_roundedMatrixParensYes, _("Rounded"), _("Use rounded parenthesis for matrices"), wxITEM_NORMAL);
-  roundedMatrixParens->Append(menu_roundedMatrixParensNo, _("Square"), _("Use square parenthesis for matrices"), wxITEM_NORMAL);
-  m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), roundedMatrixParens, _("Choose the parenthesis type for Matrices"));
-
-
+  m_roundedMatrixParensMenu = new wxMenu;
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParens, _("Rounded"), _("Use rounded parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_squareMatrixParens, _("Square"), _("Use square parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_angledMatrixParens, _("Angles"), _("Use \"<\" and \">\" as parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_straightMatrixParens, _("Straight lines"), _("Use vertical lines instead of parenthesis for matrices"));
+  m_roundedMatrixParensMenu->AppendRadioItem(menu_noMatrixParens, _("None"), _("Don't use parenthesis for matrices"));
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), m_roundedMatrixParensMenu, _("Choose the parenthesis type for Matrices"));
+  
   m_Maxima_Panes_Sub->AppendSeparator();
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, wxID_ZOOM_IN, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
@@ -939,9 +940,8 @@ void wxMaximaFrame::SetupMenu()
                        _("Delete a variable"), wxITEM_NORMAL);
 
   m_MaximaMenu->AppendSeparator();
-  m_MaximaMenu->Append(menu_time, _("Toggle &Time Display"),
-                       _("Display time used for evaluation"),
-                       wxITEM_NORMAL);
+  m_MaximaMenu->AppendCheckItem(menu_time, _("&Time Display"),
+                       _("Display time used for evaluation"));
   m_MaximaMenu->Append(menu_display, _("Change &2d Display"),
                        _("Change the 2d display algorithm used to display math output"),
                        wxITEM_NORMAL);
@@ -1020,6 +1020,13 @@ void wxMaximaFrame::SetupMenu()
                          wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_enter_mat, _("&Enter Matrix..."),
                          _("Enter a matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_list_list2matrix, _("Nested List to Matrix"),
+                         _("Convert a list of lists to a matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_csv2mat, _("Matrix from csv file"),
+                         _("Load a matrix from a csv file"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_mat2csv, _("Matrix to csv file"),
+                         _("Export a matrix to a csv file"), wxITEM_NORMAL);
+  m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_invert_mat, _("&Invert Matrix"),
                          _("Compute the inverse of a matrix"),
                          wxITEM_NORMAL);
@@ -1039,6 +1046,19 @@ void wxMaximaFrame::SetupMenu()
   m_Algebra_Menu->Append(menu_transpose, _("&Transpose Matrix"),
                          _("Transpose a matrix"), wxITEM_NORMAL);
   m_Algebra_Menu->AppendSeparator();
+  m_Algebra_Menu->Append(menu_matrix_row, _("Extract Row"),
+                         _("Extract a row from the matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_col, _("Extract Column"),
+                         _("Extract a column from the matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_submatrix, _("Remove Rows or Columns"),
+                         _("Remove rows and/or columns from the matrix"), wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_row_list, _("Convert Row to list"),
+                         _("Extract a row from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->Append(menu_matrix_col_list, _("Convert Column to list"),
+                         _("Extract a column from the matrix and convert it to a list"),
+                         wxITEM_NORMAL);
+  m_Algebra_Menu->AppendSeparator();
   m_Algebra_Menu->Append(menu_make_list, _("Make &List..."),
                          _("Make list from expression"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_apply, _("&Apply to List..."),
@@ -1046,8 +1066,8 @@ void wxMaximaFrame::SetupMenu()
   m_Algebra_Menu->Append(menu_map, _("&Map to List(s)..."),
                          _("Map function to a list"), wxITEM_NORMAL);
   m_Algebra_Menu->Append(menu_map_mat, _("Ma&p to Matrix..."),
-                         _("Map function to a matrix"), wxITEM_NORMAL);
-  m_MenuBar->Append(m_Algebra_Menu, _("&Algebra"));
+                         _("Map function to a matrix"), wxITEM_NORMAL);  
+  m_MenuBar->Append(m_Algebra_Menu, _("M&atrix"));
 
   // Calculus menu
   m_CalculusMenu = new wxMenu;
@@ -1186,8 +1206,8 @@ void wxMaximaFrame::SetupMenu()
   m_SimplifyMenu->Append(menu_nouns, _("Evaluate &Noun Forms"),
                          _("Evaluate all noun forms in expression"),
                          wxITEM_NORMAL);
-  m_SimplifyMenu->Append(menu_talg, _("Toggle &Algebraic Flag"),
-                         _("Toggle algebraic flag"), wxITEM_NORMAL);
+  m_SimplifyMenu->AppendCheckItem(menu_talg, _("&Algebraic Mode"),
+                         _("Set the \"algebraic\" flag"));
   m_SimplifyMenu->Append(menu_tellrat, _("Add Algebraic E&quality..."),
                          _("Add equality to the rational simplifier"),
                          wxITEM_NORMAL);
@@ -1207,6 +1227,8 @@ void wxMaximaFrame::SetupMenu()
   listcreateSub->Append(menu_list_create_from_list, _("from a list"),
                         _("Generate a new list using a lists' elements"),
                         wxITEM_NORMAL);
+  listcreateSub->Append(menu_csv2list, _("Read List from csv file"),
+                         _("Load a list from a csv file"), wxITEM_NORMAL);
   listcreateSub->Append(menu_list_actual_values_storage, _("as storage for actual values for variables"),
                         _("Generate a storage for variable values that can be introduced into equations at any time"),
                         wxITEM_NORMAL);
@@ -1229,6 +1251,8 @@ void wxMaximaFrame::SetupMenu()
   listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
                         _("Execute a command for each element of the list"),
                         wxITEM_NORMAL);
+  listuseSub->Append(menu_list2csv, _("Export List to csv file"),
+                         _("Export a list to a csv file"), wxITEM_NORMAL);
 
   m_listMenu->Append(wxNewId(), _("Use list"),
                      listuseSub,
@@ -1281,16 +1305,19 @@ void wxMaximaFrame::SetupMenu()
   m_PlotMenu->Append(menu_plot_format, _("Plot &Format..."),
                      _("Set plot format"), wxITEM_NORMAL);
   m_PlotMenu->AppendSeparator();
-  m_PlotMenu->Append(menu_animationautostart, _("Toggle animation autoplay"),
-                     _("Defines if an animation is automatically started or only by clicking on it."), wxITEM_NORMAL);
+  m_PlotMenu->AppendCheckItem(menu_animationautostart, _("Animation autoplay"),
+                     _("Defines if an animation is automatically started or only by clicking on it."));
   m_PlotMenu->Append(menu_animationframerate, _("Animation framerate..."),
                      _("Set the frame rate for animations."));
   m_MenuBar->Append(m_PlotMenu, _("&Plot"));
 
   // Numeric menu
   m_NumericMenu = new wxMenu;
-  m_NumericMenu->Append(menu_num_out, _("Toggle &Numeric Output"),
-                        _("Toggle numeric output"), wxITEM_NORMAL);
+  m_NumericMenu->AppendCheckItem(menu_num_out, _("&Numeric Output"),
+                                 _("Numeric output"));
+  m_NumericMenu->AppendCheckItem(menu_num_domain, _("Expect numbers harder to be complex"),
+                                 _("Expect variables to contain complex numbers"));
+  m_NumericMenu->Check(menu_num_domain, false);
   m_NumericMenu->Append(menu_to_float, _("To &Float"),
                         _("Calculate float value of the last result"),
                         wxITEM_NORMAL);
@@ -1308,9 +1335,8 @@ void wxMaximaFrame::SetupMenu()
                         _("Shows how many digits of a numbers are displayed"),
                         wxITEM_NORMAL);
   m_NumericMenu->AppendSeparator();
-  m_NumericMenu->Append(menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
-                        _("Print floating-point numbers with exponents dividable by 2"),
-                        wxITEM_NORMAL);
+  m_NumericMenu->AppendCheckItem(menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
+                        _("Print floating-point numbers with exponents dividable by 3"));
   m_NumericMenu->Append(menu_engineeringFormatSetup, _("Setup the engineering format..."),
                         _("Fine-tune the display of engineering-format numbers"),
                         wxITEM_NORMAL);
@@ -1355,6 +1381,8 @@ void wxMaximaFrame::SetupMenu()
   m_HelpMenu->Append(menu_help_varnames, _("Advanced variable names"),
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_listaccess, _("Fast list access"),
+                     "", wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_help_memoizing, _("Memoizing"),
                      "", wxITEM_NORMAL);
   m_HelpMenu->Append(menu_help_tutorials, _(wxT("↗Tutorials on the web")),
                      _("Online tutorials"), wxITEM_NORMAL);

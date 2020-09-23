@@ -83,10 +83,10 @@
   ;; Allow the user to communicate what to display in the statusbar whilst
   ;; the current program is running
   (defun $wxstatusbar (&rest status)
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string
 					     (apply '$sconcat status)))
-    #+clisp (finish-output)
+    (finish-output)
     )
 
 
@@ -117,13 +117,9 @@
   (defvar $maxima_frontend_version nil)
   (setf (symbol-value '$maxima_frontend) "wxMaxima")
 
+
   (defun $wxbuild_info ()
-    (let ((year (sixth cl-user:*maxima-build-time*))
-	  (month (fifth cl-user:*maxima-build-time*))
-	  (day (fourth cl-user:*maxima-build-time*))
-	  (hour (third cl-user:*maxima-build-time*))
-	  (minute (second cl-user:*maxima-build-time*))
-	  (seconds (first cl-user:*maxima-build-time*)))
+    (progv  '(seconds minute hour day month year) cl-user:*maxima-build-time*
       (format t "wxMaxima version: ~a~%" $wxmaximaversion)
       (format t "using wxWidgets version: ~a~%" $wxwidgetsversion)
       (format t "Maxima version: ~a~%" *autoconf-version*)
@@ -274,7 +270,7 @@
 			(format nil "<mi>~a</mi>" sub-var))
 		    (if sub-int
 			;; sub-symb discarded leading zeros from subscripts
-			(format nil "<mn>~a</mn>" sub) 
+			(format nil "<mi>~a</mi>" sub) 
                       (format nil "<mi>~a</mi>" sub))))))))
 
   (defun wxxmlnumformat (atom)
@@ -451,7 +447,7 @@
 
   (defun wxxml-infix (x l r)
     ;; check for 2 args
-    (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+    (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-infix (wxxml-function x l r)))
     (setq l (wxxml (cadr x) l nil lop (caar x)))
     (wxxml (caddr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
 
@@ -499,7 +495,7 @@
   (defprop mprogn (("<mrow><p>") "</p></mrow>") wxxmlsym)
 
   (defprop mlist wxxml-matchfix wxxml)
-  (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t >]</t></mrow>") wxxmlsym)
+  (defprop mlist (("<mrow list=\"true\"><t listdelim=\"true\">[</t>")"<t listdelim=\"true\">]</t></mrow>") wxxmlsym)
 
   (defprop $set wxxml-matchfix wxxml)
   (defprop $set (("<mrow><t>{</t>")"<t>}</t></mrow>") wxxmlsym)
@@ -786,7 +782,7 @@
   (defprop mquotient 123. wxxml-rbp)
 
   (defun wxxml-mquotient (x l r)
-    (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+    (if (or (null (cddr x)) (cdddr x)) (return-from wxxml-mquotient (wxxml-function x l r)))
     (setq l (wxxml (cadr x) (append l '("<mfrac><mrow>")) nil 'mparen 'mparen)
 	  r (wxxml (caddr x) (list "</mrow><mrow>")
 		   (append '("</mrow></mfrac>")r) 'mparen 'mparen))
@@ -813,8 +809,16 @@
 		       (list (format nil "<tb special=\"true\" rownames=~s colnames=~s>"
 				     (if (find 'rownames (car x)) "true" "false")
 				     (if (find 'colnames (car x)) "true" "false"))))
-		      ((string= $lmxchar #\()
+		      ((string= $lmxchar "(")
 		       (list "<tb roundedParens=\"true\">"))
+		      ((string= $lmxchar "[")
+		       (list "<tb bracketParens=\"true\">"))
+		      ((string= $lmxchar "<")
+		       (list "<tb angledParens=\"true\">"))
+		      ((string= $lmxchar "|")
+		       (list "<tb straightParens=\"true\">"))
+		      ((string= $lmxchar " ")
+		       (list "<tb special=\"true\">"))
 		      (t
 		       (list "<tb>")))
 		   (mapcan #'(lambda (y)
@@ -833,12 +837,25 @@
 
   (defprop %sum wxxml-sum wxxml)
   (defprop %lsum wxxml-lsum wxxml)
+  (defprop %lproduct wxxml-lproduct wxxml)
   (defprop %product wxxml-sum wxxml)
   (defprop $sum wxxml-sum wxxml)
   (defprop $lsum wxxml-lsum wxxml)
+  (defprop $lproduct wxxml-lproduct wxxml)
   (defprop $product wxxml-sum wxxml)
 
   ;; easily extended to union, intersect, otherops
+
+  (defun wxxml-lproduct(x l r)
+    (let ((op "<sm type=\"lprod\"><mrow>")
+	  ;; gotta be one of those above
+	  (s1 (wxxml (cadr x) nil nil 'mparen rop));; summand
+	  (index ;; "index = lowerlimit"
+	   (wxxml `((min simp) , (caddr x), (cadddr x))
+		  nil nil 'mparen 'mparen)))
+      (append l `(,op ,@index
+		      "</mrow><mrow><mn/></mrow><mrow>"
+		      ,@s1 "</mrow></sm>") r)))
 
   (defun wxxml-lsum(x l r)
     (let ((op "<sm type=\"lsum\"><mrow>")
@@ -1090,7 +1107,8 @@
 		     (t ords)))
 	 (vars (odds difflist 1))
 	 (fun (wxxml (cadr x) nil nil 'mparen 'mparen)))
-      (append '("<munder d=\"1\"><mrow>") fun '("</mrow>")
+      (append '("<munder d=\"1\" altCopy=\"diff(")
+	      (mstring (cadr x))'(",") (mstring (car vars)) '(",") ords '(")\"><mrow>") fun '("</mrow>")
 	      '("<mrow>") (wxxml-d-abbrev-subscript vars ords) '("</mrow></munder>"))))
 
   (defun wxxml-d (x)
@@ -1225,12 +1243,12 @@
   (defprop spaceout wxxml-spaceout wxxml)
 
   (defun mydispla (x)
-    #+clisp (finish-output)
+    (finish-output)
     (let ((*print-circle* nil)
 	  (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
       (mapc #'princ
 	    (wxxml x '("<math>") '("</math>") 'mparen 'mparen)))
-    #+clisp (finish-output)
+    (finish-output)
     )
 
   (setf *alt-display2d* 'mydispla)
@@ -1248,6 +1266,7 @@
      (t
       (format t "Unknown display type")
       (setq tp '$unknown)))
+    (wx-print-gui-variables)
     tp)
 
   ;;
@@ -1394,7 +1413,7 @@
 		 (v (mapcar #'stripdollar (cdr $pdiff_diff_var_names)))
 		 (p))
 	     (cond ((> (length n) (length v))
-		    (merror "Not enough elements in pdiff_diff_var_names to display the expression")))
+		    (return-from wxxml-pderivop (wxxml-function x l r))))
 	     (dotimes (i (length n))
 	       (setq p (append p (make-list (nth i n)
 					    :initial-element (nth i v)))))
@@ -1931,7 +1950,7 @@
 
   ;; A function that determines all symbols for autocompletion
   (defun wxPrint_autocompletesymbols ()
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<wxxml-symbols>")
     ;; Function names and rules
     (format t "~{~a~^$~}"
@@ -1952,7 +1971,7 @@
     	 (format t "~{~a~^$~}"
     		 (mapcar #'print_unit (cdr ($known_units))))))
     (format t "</wxxml-symbols>")
-    #+clisp (finish-output)
+    (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1967,6 +1986,13 @@
       (let (($display2d nil))
 	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
+  
+  (defun wx-print-display2d ()
+    (format t "<variable><name>display2d</name><value>")
+    (if (eq $display2d nil)
+	(format t "false")
+      (format t "true"))
+    (format t "</value></variable>~%"))
 
   (defun wx-query-variable (var)
     (format t "<variables>~%<variable>~%<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var)))
@@ -1976,7 +2002,7 @@
       (format t "</variable>~%</variables>~%"))
 
   (defun wx-print-variables ()
-    #+clisp (finish-output)
+    (finish-output)
     (format t "<variables>")
     (wx-print-variable '$maxima_userdir)
     (wx-print-variable '$maxima_tempdir)
@@ -1995,7 +2021,24 @@
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	    #-sbcl (lisp-implementation-version))
     (format t "</variables>~%")
-    #+clisp (finish-output)
+    (finish-output)
+    )
+  
+  (defun wx-print-gui-variables ()
+    (finish-output)
+    (format t "<variables>")
+    (wx-print-variable '$wxsubscripts)
+    (wx-print-variable '$lmxchar)
+    (wx-print-variable '$numer)
+    (wx-print-variable '$domain)
+    (wx-print-variable '$showtime)
+    (wx-print-variable '$algebraic)
+    (wx-print-variable '$engineering_format_floats)
+    (wx-print-variable '$wxanimate_autoplay)
+    (wx-print-display2d)
+    (wx-print-variable '*alt-display2d*)
+    (format t "</variables>~%")
+    (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2030,7 +2073,8 @@
 	  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl) (format t
            "Info: wxMathml.cpp: Changing the working dir during a maxima session isn't implemented for this lisp.")
   	  (namestring dir)
-	  (wx-print-variables)))
+	  (wx-print-variables)
+	  (wx-print-gui-variables)))
       (error (c)        (format t "Warning: Can set maxima's working directory but cannot change it during the maxima session :~%~&~%")
           (values 0 c))))
 
@@ -2193,6 +2237,7 @@
   ;; autocompletion feature.
   (wxPrint_autocompletesymbols)
   (wx-print-variables)
+  (wx-print-gui-variables)
   (format t "~%")
   (finish-output)
 )

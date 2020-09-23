@@ -51,7 +51,7 @@ and press SHIFT-ENTER to evaluate the code)!
 In the input cell above, we've sent 5 "lines" to Maxima. Each line
 must end with a ";" or a "$". In case the line ends with a ";", Maxima
 will show the result of the line, while results of lines ending
-with "$" will be supressed. The "$" comes in handy when doing longer
+with "$" will be suppressed. The "$" comes in handy when doing longer
 calculations. Note also that the result of "1/3" and "1.0/3.0" differ.
 That's because Maxima, unlike numerical matrix packages (Matlab etc.),
 tries to keep calculations precise - it does not evaluate 

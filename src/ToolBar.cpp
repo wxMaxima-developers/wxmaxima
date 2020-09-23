@@ -66,8 +66,11 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSi
     if((m_ppi.x <= 10) || (m_ppi.y <= 10))
       m_ppi = wxSize(72,72);
     
+  #if defined __WXOSX__
     int targetSize = wxMax(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
-    
+#else
+    int targetSize = wxMax(m_ppi.x,75) * TOOLBAR_ICON_SCALE;
+#endif
     int sizeA = 128 << 4;
     while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
       sizeA >>= 1;
@@ -89,7 +92,7 @@ wxBitmap ToolBar::GetBitmap(wxString name, unsigned char *data, size_t len, wxSi
   if(bmp.IsOk())
     img = bmp.ConvertToImage();
   if(!img.IsOk())
-    return SvgBitmap(data, len, siz);
+    return SvgBitmap(data, len, siz, GetContentScaleFactor());
   
   img.Rescale(siz.x, siz.y, wxIMAGE_QUALITY_HIGH);
 #if defined __WXOSX__

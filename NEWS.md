@@ -1,4 +1,29 @@
-# Current
+# 20.09.0
+ * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
+ * An italian translation update from Marco Ciampa
+ * Repaired the non-case-sensitive "Replace All" functionality
+ * Updated Ukrainian translation by Yuri Chornoivan
+ * More efficient and accurate calculation of worksheet object sizes
+ * (Hopefully) reduced the last visual glitches
+ * Reduced the UI flicker on MS Windows
+ * diff cells can now be broken into lines
+ * A try to replace manual MacOs desktop integration with wxWidgets one
+ * Another massive performance update
+ * Reduced the memory footprint of big equations
+ * A better 2D ASCII Art mode
+ * Better High-DPI support
+ * If it is configurable it now might have a right-click menu
+ * Reduced the memory footprint of cells used only when line breaking is performed
+ * Subscripts created by derivabbrev are now correctly copied as "diff" command
+ * If Maxima comes without suitable manual we now use the online one instead
+ * Added buttons that reset the configuration
+ * A few menu items now are checkboxes set and cleared by maxima
+ * wxMaxima forgot to release the communication port it used for talking to maxima
+ * Improved performance of receiving data from maxima
+ * The font sizes are stored in configuration with full precision, without rounding to integer
+ * Many additional bug fixes
+
+# 20.07.0
  * A massive performance update
  * A new translation of the Turkish manual by Tufan Şirin
  * Improved italian translation by Marco Ciampa

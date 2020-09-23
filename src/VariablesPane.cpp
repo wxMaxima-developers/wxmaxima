@@ -22,52 +22,59 @@
 #include "VariablesPane.h"
 #include "memory"
 
-Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, id)
+Variablespane::Variablespane(wxWindow *parent, wxWindowID id) :
+  wxPanel(parent, id)
 {
-  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
-                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
-  CreateGrid(1,2);
-  SetUseNativeColLabels();
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  m_grid = new wxGrid(this, -1);
+  m_grid->BeginBatch();
+  m_grid->CreateGrid(1,2);
+  m_grid->SetUseNativeColLabels();
   wxGridCellAttr *attr0, *attr1;
   attr0 = new wxGridCellAttr;
-  SetColAttr(0,attr0);
-  SetColLabelValue(0,_("Variable"));
+  m_grid->SetColAttr(0,attr0);
+  m_grid->SetColLabelValue(0,_("Variable"));
   attr1 = new wxGridCellAttr;
 //  attr1->SetReadOnly();
-  SetColAttr(1,attr1);
-  SetColLabelValue(1,_("Contents"));
+  m_grid->SetColAttr(1,attr1);
+  m_grid->SetColLabelValue(1,_("Contents"));
   m_rightClickRow = -1;
-  Connect(wxEVT_GRID_CELL_CHANGED,
-          wxGridEventHandler(Variablespane::OnTextChange),
-          NULL, this);
-  Connect(wxEVT_GRID_CELL_CHANGING,
-          wxGridEventHandler(Variablespane::OnTextChanging),
-          NULL, this);
-  Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
-          wxGridEventHandler(Variablespane::OnRightClick),
-          NULL, this);
-  Connect(wxEVT_MENU,
-          wxCommandEventHandler(Variablespane::InsertMenu),
-          NULL, this);
-  Connect(wxEVT_KEY_DOWN,
-          wxKeyEventHandler(Variablespane::OnKey),
-          NULL, this);
+  m_grid->Connect(wxEVT_GRID_CELL_CHANGED,
+                  wxGridEventHandler(Variablespane::OnTextChange),
+                  NULL, this);
+  m_grid->Connect(wxEVT_GRID_CELL_CHANGING,
+                  wxGridEventHandler(Variablespane::OnTextChanging),
+                  NULL, this);
+  m_grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
+                  wxGridEventHandler(Variablespane::OnRightClick),
+                  NULL, this);
+  m_grid->Connect(wxEVT_MENU,
+                  wxCommandEventHandler(Variablespane::InsertMenu),
+                  NULL, this);
+  m_grid->Connect(wxEVT_KEY_DOWN,
+                  wxKeyEventHandler(Variablespane::OnKey),
+                  NULL, this);
 //  Connect(wxEVT_CHAR,
 //          wxKeyEventHandler(Variablespane::OnChar),
 //          NULL, this);
-  HideRowLabels();
-  EnableDragCell();
+  m_grid->HideRowLabels();
+  m_grid->EnableDragCell();
+  m_grid->EndBatch();
+  vbox->Add(m_grid, wxSizerFlags(10).Expand());
+  SetSizerAndFit(vbox);
+  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
+                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
 }
 
 void Variablespane::OnChar(wxKeyEvent &event)
 {
   wxChar txt(event.GetUnicodeKey());
-  if((wxIsprint(txt))&&(GetGridCursorRow()>=0))
+  if((wxIsprint(txt))&&(m_grid->GetGridCursorRow()>=0))
   {
-    SetCellValue(GetGridCursorRow(),0,wxString(txt));
-    GoToCell(GetGridCursorRow(),0);
-    ShowCellEditControl();
-    EnableCellEditControl();    
+    m_grid->SetCellValue(m_grid->GetGridCursorRow(),0,wxString(txt));
+    m_grid->GoToCell(m_grid->GetGridCursorRow(),0);
+    m_grid->ShowCellEditControl();
+    m_grid->EnableCellEditControl();    
   }
 }
 
@@ -79,10 +86,10 @@ void Variablespane::OnKey(wxKeyEvent &event)
   case WXK_DELETE:
   case WXK_NUMPAD_DELETE:
   {
-    if(GetNumberRows() > 1)
+    if(m_grid->GetNumberRows() > 1)
     {
-      BeginBatch();
-      wxArrayInt selectedRows = GetSelectedRows();
+      m_grid->BeginBatch();
+      wxArrayInt selectedRows = m_grid->GetSelectedRows();
       selectedRows.Sort(CompareInt);
       
       if(!selectedRows.IsEmpty())
@@ -90,17 +97,17 @@ void Variablespane::OnKey(wxKeyEvent &event)
         int offset = 0;
         for (wxArrayInt::const_iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
         {
-          DeleteRows(*it-offset);
+          m_grid->DeleteRows(*it-offset);
           offset++;
         }
       }
       else
       {
-        DeleteRows(GetGridCursorRow());
+        m_grid->DeleteRows(m_grid->GetGridCursorRow());
       }
-      wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
+      wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,m_grid->GetNumberRows()-1,0);
       OnTextChange(evt);
-      EndBatch();
+      m_grid->EndBatch();
     }
     break;
   }
@@ -129,20 +136,23 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   case varID_add_all:
   {
     wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, varID_add_all);
-    GetParent()->GetParent()->GetEventHandler()->QueueEvent(VarAddEvent);
+    wxWindow *top = this;
+      while(top->GetParent())
+    top = top->GetParent(); 
+    top->GetEventHandler()->QueueEvent(VarAddEvent);
     break;
   }
   case varID_delete_row:
-    if((m_rightClickRow>=0)&&(m_rightClickRow<GetNumberRows()))
+    if((m_rightClickRow>=0)&&(m_rightClickRow<m_grid->GetNumberRows()))
     {
-      DeleteRows(m_rightClickRow);
+      m_grid->DeleteRows(m_rightClickRow);
       wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,m_rightClickRow,0);
       OnTextChange(evt);
     }
     break;
   }
-  SetCellValue(GetNumberRows()-1,0,varname);
-  wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
+  m_grid->SetCellValue(m_grid->GetNumberRows()-1,0,varname);
+  wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,m_grid->GetNumberRows()-1,0);
   OnTextChange(evt);
 }
 
@@ -150,8 +160,8 @@ void Variablespane::OnRightClick(wxGridEvent &event)
 {
   m_rightClickRow = event.GetRow();
   m_vars.clear();
-  for(int i = 0; i < GetNumberRows(); i++)
-    m_vars[GetCellValue(i,0)] = 1;
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
+    m_vars[m_grid->GetCellValue(i,0)] = 1;
   
   std::unique_ptr<wxMenu> popupMenu(new wxMenu);
   if(m_vars["values"] != 1)
@@ -185,13 +195,13 @@ void Variablespane::OnRightClick(wxGridEvent &event)
     popupMenu->Append(varID_gradefs,
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
   popupMenu->AppendSeparator();    
-  if(GetGridCursorRow()>=0)
+  if(m_grid->GetGridCursorRow()>=0)
   {
     popupMenu->Append(varID_delete_row,
                       _("Remove"), wxEmptyString, wxITEM_NORMAL);
   }
   
-  if(GetNumberRows()>2)
+  if(m_grid->GetNumberRows()>2)
   {
     popupMenu->Append(varID_clear,
                       _("Remove all"), wxEmptyString, wxITEM_NORMAL);
@@ -216,79 +226,86 @@ void Variablespane::OnTextChanging(wxGridEvent &event)
 
 void Variablespane::OnTextChange(wxGridEvent &event)
 {
-  if((event.GetRow()>GetNumberRows()) || (event.GetRow()<0))
+  if((event.GetRow()>m_grid->GetNumberRows()) || (event.GetRow()<0))
     return;
-  BeginBatch();
-  if(IsValidVariable(GetCellValue(event.GetRow(),0)))
+  m_grid->BeginBatch();
+  if(IsValidVariable(m_grid->GetCellValue(event.GetRow(),0)))
   {
-    SetCellValue(event.GetRow(),1,wxT(""));
-    SetCellTextColour(event.GetRow(),0,*wxBLACK);
+    m_grid->SetCellValue(event.GetRow(),1,wxT(""));
+    m_grid->SetCellTextColour(event.GetRow(),0,*wxBLACK);
   }
   else
   {
-    if(GetCellValue(event.GetRow(),0) != wxEmptyString)
+    if(m_grid->GetCellValue(event.GetRow(),0) != wxEmptyString)
     {
-      SetCellTextColour(event.GetRow(),0,*wxRED);
-      SetCellTextColour(event.GetRow(),1,*wxLIGHT_GREY);
-      SetCellValue(event.GetRow(),1,_("(Not a valid variable name)"));
-      RefreshAttr(event.GetRow(), 1);
+      m_grid->SetCellTextColour(event.GetRow(),0,*wxRED);
+      m_grid->SetCellTextColour(event.GetRow(),1,*wxLIGHT_GREY);
+      m_grid->SetCellValue(event.GetRow(),1,_("(Not a valid variable name)"));
+      m_grid->RefreshAttr(event.GetRow(), 1);
     }
   }
-  RefreshAttr(event.GetRow(), 0);
+  m_grid->RefreshAttr(event.GetRow(), 0);
 
-  if((GetNumberRows() == 0) || (GetCellValue(GetNumberRows()-1,0) != wxEmptyString))
-    AppendRows();
+  if((m_grid->GetNumberRows() == 0) || (m_grid->GetCellValue(m_grid->GetNumberRows()-1,0) != wxEmptyString))
+    m_grid->AppendRows();
   else
-    for(int i = 0; i < GetNumberRows() - 1; i++)
-      if(GetCellValue(i,0) == wxEmptyString)
-        DeleteRows(i);
+    for(int i = 0; i < m_grid->GetNumberRows() - 1; i++)
+      if(m_grid->GetCellValue(i,0) == wxEmptyString)
+        m_grid->DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
-  GetParent()->GetParent()->GetEventHandler()->QueueEvent(VarReadEvent);
+  wxWindow *top = this;
+  while(top->GetParent())
+    top = top->GetParent();
+  top->GetEventHandler()->QueueEvent(VarReadEvent);
 
   // Avoid introducing a cell with the same name twice.
   m_vars.clear();
-  for(int i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
   {
     if(i!=event.GetRow())
-      m_vars[GetCellValue(i,0)] = i+1;      
+      m_vars[m_grid->GetCellValue(i,0)] = i+1;      
   }
-  int identicalVar = m_vars[GetCellValue(event.GetRow(),0)];
+  int identicalVar = m_vars[m_grid->GetCellValue(event.GetRow(),0)];
   if(identicalVar > 0)
   {
     wxEventBlocker blocker(this);
-    DeleteRows(identicalVar-1);
+    m_grid->DeleteRows(identicalVar-1);
   }
-  EndBatch();
+  m_grid->EndBatch();
 }
 
 void Variablespane::VariableValue(wxString var, wxString val)
 {
-  for(int i = 0; i < GetNumberRows(); i++)
-    if(GetCellValue(i,0) == UnescapeVarname(var))
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
+    if(m_grid->GetCellValue(i,0) == UnescapeVarname(var))
     {
-      SetCellTextColour(i,1,*wxBLACK);
-      SetCellValue(i,1,val);
-      RefreshAttr(i, 1);
+      m_grid->SetCellTextColour(i,1,*wxBLACK);
+      if(m_grid->GetCellValue(i,1) != val)
+      {
+        m_updateSizeNeeded = true;        
+        m_grid->SetCellValue(i,1,val);
+      }
+      m_grid->RefreshAttr(i, 1);
     }
 }
 
 void Variablespane::VariableUndefined(wxString var)
 {
-  for(int i = 0; i < GetNumberRows(); i++)
-    if(GetCellValue(i,0) == UnescapeVarname(var))
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
+    if(m_grid->GetCellValue(i,0) == UnescapeVarname(var))
     {
-      SetCellTextColour(i,1,*wxLIGHT_GREY);
-      SetCellValue(i,1,_("Undefined"));
-      RefreshAttr(i, 1);
+      m_grid->SetCellTextColour(i,1,*wxLIGHT_GREY);
+      m_grid->SetCellValue(i,1,_("Undefined"));
+      m_grid->RefreshAttr(i, 1);
     }
 }
 
 wxArrayString Variablespane::GetEscapedVarnames()
 {
   wxArrayString retVal;
-  for(int i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
   {
-    wxString var = GetCellValue(i,0);
+    wxString var = m_grid->GetCellValue(i,0);
     if(IsValidVariable(var))
       retVal.Add(InvertCase(EscapeVarname(var)));
   }
@@ -298,9 +315,9 @@ wxArrayString Variablespane::GetEscapedVarnames()
 wxArrayString Variablespane::GetVarnames()
 {
   wxArrayString retVal;
-  for(int i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
   {
-    wxString var = GetCellValue(i,0);
+    wxString var = m_grid->GetCellValue(i,0);
     retVal.Add(var);
   }
   return retVal;
@@ -327,6 +344,7 @@ wxString Variablespane::InvertCase(wxString var)
 
 void Variablespane::AddWatchCode(wxString code)
 {
+  m_updateSizeNeeded = true;
   wxString unescapedCode;
   for (wxString::const_iterator it = code.begin(); it != code.end(); ++it)
   {
@@ -344,11 +362,12 @@ void Variablespane::AddWatchCode(wxString code)
 
 void Variablespane::AddWatch(wxString watch)
 {
-  BeginBatch();
-  SetCellValue(GetNumberRows()-1,0,watch);
-  wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
+  m_updateSizeNeeded = true;
+  m_grid->BeginBatch();
+  m_grid->SetCellValue(m_grid->GetNumberRows()-1,0,watch);
+  wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,m_grid->GetNumberRows()-1,0);
   OnTextChange(evt);
-  EndBatch();
+  m_grid->EndBatch();
 }
 
 wxString Variablespane::UnescapeVarname(wxString var)
@@ -413,25 +432,36 @@ bool Variablespane::IsValidVariable(wxString var)
   return true;
 }
 
+void Variablespane::UpdateSize()
+{
+  if(m_updateSizeNeeded)
+  {
+    m_updateSizeNeeded = false;
+    m_grid->AutoSize();
+    Layout();
+  }
+}
+
 void Variablespane::ResetValues()
 {
-  for(int i = 0; i < GetNumberRows(); i++)
+  for(int i = 0; i < m_grid->GetNumberRows(); i++)
   {
-    if(GetCellValue(i,0) != wxEmptyString)
+    if(m_grid->GetCellValue(i,0) != wxEmptyString)
     {
-      SetCellTextColour(i,1,*wxLIGHT_GREY);
-      SetCellValue(i,1,_("Undefined"));
-      RefreshAttr(i,1);
+      m_grid->SetCellTextColour(i,1,*wxLIGHT_GREY);
+      m_grid->SetCellValue(i,1,_("Undefined"));
+      m_grid->RefreshAttr(i,1);
     }
     else
-      SetCellValue(i,1,wxT(""));
+      m_grid->SetCellValue(i,1,wxT(""));
   }
 }
 
 void Variablespane::Clear()
 {
-  while(GetNumberRows() > 1)
-    DeleteRows(0);    
+  m_updateSizeNeeded = true;
+  while(m_grid->GetNumberRows() > 1)
+    m_grid->DeleteRows(0);    
 }
 
 Variablespane::~Variablespane()

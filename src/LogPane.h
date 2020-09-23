@@ -37,7 +37,10 @@ class LogPane : public wxPanel
 public:
   explicit LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
   void BecomeLogTarget();
-  void SetBatchMode() {m_errorRedirector->SetBatchMode();}
+  void SetBatchMode() {
+      if (m_errorRedirector)
+        m_errorRedirector->SetBatchMode();
+  }
   void DropLogTarget();
   bool IsLogTarget() {return m_logPanelTarget.has_value();}
   ~LogPane();

@@ -71,6 +71,9 @@
 //! How many miliseconds should we wait between polling for stdout+cpu power?
 #define MAXIMAPOLLMSECS 2000
 
+class Maxima; // The Maxima process interface
+class MaximaEvent;
+
 /* The top-level window and the main application logic
 
  */
@@ -99,28 +102,11 @@ public:
             AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
             MAXIMA_STDOUT_POLL_ID,
-            //! We have finished waiting if the current string ends in a newline
-            WAITFORSTRING_ID,
             /*! We have given Maxima enough time to do the important 
 
               now it is time to compile the list of helpfile anchors */
             COMPILEHELPANCHORS_ID
   };
-
-  /*! A timer that determines when to do the next autosave;
-
-    The actual autosave is triggered if both this timer is expired and the keyboard
-    has been inactive for >10s so the autosave won't cause the application to shortly
-    stop responding due to saving the file while the user is typing a word.
-
-    This timer is used in one-shot mode so in the unlikely case that saving needs more
-    time than this timer to expire the user still got a chance to do something against
-    it between two expirys. 
-   */
-  wxTimer m_autoSaveTimer;
-
-  //! A timer that tells us to wait until maxima ends its data.
-  wxTimer m_waitForStringEndTimer;
 
   //! A timer that ells us that we now can do the low-prio compilation of help anchors
   wxTimer m_compileHelpAnchorsTimer;
@@ -200,8 +186,9 @@ private:
   //! Search for the wxMaxima help file
   wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
-  //! The variable names to query for the variables pane
+  //! The variable names to query for the variables pane and for internal reasons
   wxArrayString m_varNamesToQuery;
+
   bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.
   bool m_openInitialFileError;
@@ -266,6 +253,12 @@ protected:
   void CompileHelpFileAnchors();
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
   bool LoadManualAnchorsFromCache();
+  //! Load the help file anchors from an wxXmlDocument
+  bool LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion = true);
+  //! Load the help file anchors from the built-in list
+  bool LoadBuiltInManualAnchors();
+  //! Save the list of help file anchors to the cache.
+  void SaveManualAnchorsToCache();
   //! The gnuplot process info
   wxProcess *m_gnuplotProcess;
   //! Is this window active?
@@ -334,13 +327,13 @@ protected:
       - true, if there was new data
       - false, if there wasn't any new data.
    */
-  bool InterpretDataFromMaxima();
+  bool InterpretDataFromMaxima(const wxString &newData);
   bool m_dataFromMaximaIs;
   
   void MenuCommand(const wxString &cmd);           //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
-  void AlgebraMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
+  void MatrixMenu(wxCommandEvent &event);         //!< Processes "algebra menu" clicks
   void EquationsMenu(wxCommandEvent &event);       //!< Processes "equations menu" clicks
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
@@ -383,19 +376,11 @@ protected:
   //! Is called if maxima connects to wxMaxima.
   void OnMaximaConnect();
   
-  //! server event: Maxima sends or receives data, connects or disconnects
+  //! Maxima sends or receives data, or disconnects
+  void MaximaEvent(::MaximaEvent &event);
+
+  //! Server event: Maxima connects
   void ServerEvent(wxSocketEvent &event);
-
-  /* Tries to read the new data from maxima
-
-     Is called by ClientEvent() if wxWidgets reckons there is data. But as this sometimes
-     doesn't happen even if there is data (only on MSW) it is called from the idle loop,
-     as well.
-  */
-  void TryToReadDataFromMaxima();
-    
-  //! Triggered when we get new chars from maxima.
-  void OnNewChars();
 
   /*! Add a parameter to a draw command
 
@@ -493,13 +478,13 @@ protected:
    */
   void ReadFirstPrompt(wxString &data);
 
-  /*! Determine where the text for ReadMiscText ends
+  /*! Reads an XML tag or a piece of status text from maxima's output
 
-    Every error message or other line maxima outputs should end in a newline character. 
-    But sometimes it doesn't and a <code>\<mth\></code> tag comes first \f$ =>\f$ This 
-    function determines where the miscellaneous text ends.
+    \todo Is there any way to handle the (perhaps, thanks to the flush commands in maxima)
+    theoretical case that maxima might stop sending data in the middle of an XML tag
+    and then resume sending data with the next XML packet?
    */
-  int GetMiscTextEnd(const wxString &data);
+  bool ParseNextChunkFromMaxima(wxString &data);
 
   //! Find the end of a tag in wxMaxima's output.
   int FindTagEnd(const wxString &data, const wxString &tag);
@@ -511,7 +496,7 @@ protected:
 
      After processing the lines not enclosed in xml tags they are removed from data.
    */
-  void ReadMiscText(wxString &data);
+  void ReadMiscText(const wxString &data);
 
   /*! Reads the input prompt from Maxima.
 
@@ -540,6 +525,8 @@ protected:
 
     After processing the templates they are removed from data.
    */
+
+  void ReadMaximaIPC(wxString &data){m_ipc.ReadInputData(data);}
   void ReadLoadSymbols(wxString &data);
 
   //! Read (and discard) suppressed output
@@ -552,14 +539,33 @@ protected:
   /*! Reads the "add variable to watch list" tag maxima can send us
    */
   void ReadAddVariables(wxString &data);
+  void VariableActionUserDir(const wxString &value);
+  void VariableActionTempDir(const wxString &value);
+  void VariableActionAutoconfVersion(const wxString &value);
+  void VariableActionAutoconfHost(const wxString &value);
+  void VariableActionMaximaInfodir(const wxString &value);
+  void VariableActionGnuplotCommand(const wxString &value);
+  void VariableActionMaximaSharedir(const wxString &value);
+  void VariableActionLispName(const wxString &value);
+  void VariableActionLispVersion(const wxString &value);
+  void VariableActionWxLoadFileName(const wxString &value);
+  void VariableActionWxSubscripts(const wxString &value);
+  void VariableActionLmxChar(const wxString &value);
+  void VariableActionDisplay2D(const wxString &value);
+  void VariableActionAltDisplay2D(const wxString &value);
+  void VariableActionNumer(const wxString &value);
+  void VariableActionAlgebraic(const wxString &value);
+  void VariableActionShowtime(const wxString &value);
+  void VariableActionDomain(const wxString &value);
+  void VariableActionAutoplay(const wxString &value);
+  void VariableActionEngineeringFormat(const wxString &value);
 
-#ifndef __WXMSW__
-
-  //! reads the output the maxima command sends to stdout
-  void ReadProcessOutput();
-
-#endif
-
+  wxString m_maximaVariable_wxSubscripts;
+  wxString m_maximaVariable_lmxchar;
+  wxString m_maximaVariable_display2d;
+  wxString m_maximaVariable_altdisplay2d;
+  wxString m_maximaVariable_engineeringFormat;
+  bool m_readMaximaVariables = false;
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
@@ -627,7 +633,7 @@ protected:
   bool OpenWXMXFile(const wxString &file, Worksheet *document, bool clearDocument = true);
 
   //! Loads a wxmx description
-  GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
+  std::unique_ptr<GroupCell> CreateTreeFromXMLNode(wxXmlNode *xmlcells, const wxString &wxmxfilename = {});
 
   /*! Saves the current file
 
@@ -654,18 +660,15 @@ protected:
     return m_CWD;
   }
 
-  std::unique_ptr<wxSocketBase> m_client;
-  std::unique_ptr<wxSocketInputStream> m_clientStream;
-  std::unique_ptr<wxTextInputStream> m_clientTextStream;
+  std::unique_ptr<Maxima> m_client;
   wxSocketServer *m_server;
+
   wxProcess *m_process;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr;
   int m_port;
-  //! All chars from maxima that still aren't part of m_currentOutput
-  wxString m_newCharsFromMaxima;
   /*! The end of maxima's current uninterpreted output, see m_currentOutput.
    
     If we just want to look if maxima's current output contains an ending tag
@@ -689,8 +692,10 @@ protected:
   static wxString m_mathSuffix2;
   //! The marker for the start of a input prompt
   static wxString m_promptPrefix;
+public:
   //! The marker for the end of a input prompt
-  static wxString m_promptSuffix;
+  const static wxString m_promptSuffix;
+protected:
   //! The marker for the start of a variables section
   static wxString m_variablesPrefix;
   //! The marker for the end of a variables section
@@ -750,15 +755,41 @@ protected:
   static wxRegEx m_sbclCompilationRegEx;
   MathParser m_parser;
   bool m_maximaBusy;
-  wxMemoryBuffer m_rawDataToSend;
-  unsigned long int m_rawBytesSent;
 private:
+  //! A pointer to a method that handles a text chunk
+  typedef void (wxMaxima::*ParseFunction)(wxString &s);
+  WX_DECLARE_STRING_HASH_MAP(ParseFunction, ParseFunctionHash);
+  typedef void (wxMaxima::*VarReadFunction)(const wxString &value);
+  WX_DECLARE_STRING_HASH_MAP(VarReadFunction, VarReadFunctionHash);
+  //! A list of XML tags we know and what we want to do if we encounter them
+  static ParseFunctionHash m_knownXMLTags;
+  //! A list of actions we want to execute if we are sent the contents of specific variables
+  static VarReadFunctionHash m_variableReadActions;
+
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;
 
 #endif
   friend class MaximaIPC;
+
+  /*! A timer that determines when to do the next autosave;
+
+    The actual autosave is triggered if both this timer is expired and the keyboard
+    has been inactive for >10s so the autosave won't cause the application to shortly
+    stop responding due to saving the file while the user is typing a word.
+
+    This timer is used in one-shot mode so in the unlikely case that saving needs more
+    time than this timer to expire the user still got a chance to do something against
+    it between two expirys. 
+   */
+  wxTimer m_autoSaveTimer;
+
+  //! Starts a single-shot of m_autoSaveTimer.
+  void StartAutoSaveTimer();
+
+
+
 };
 
 #if wxUSE_DRAG_AND_DROP
@@ -816,7 +847,14 @@ private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
   Dirstructure m_dirstruct;
+  #if defined __WXOSX__
+  bool m_allWindowsInOneProcess = true;
+  #else
+  bool m_allWindowsInOneProcess = false;
+  #endif
 };
+
+
 
 // cppcheck-suppress unknownMacro
 DECLARE_APP(MyApp)

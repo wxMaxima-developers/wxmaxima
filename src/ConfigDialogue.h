@@ -29,6 +29,9 @@ dialog. The preferences themself will be read directly using
 <code> config->Read </code>, instead, where needed or from Configuration.
 */
 
+extern unsigned int view_refresh_svg_gz_len;
+extern unsigned char view_refresh_svg_gz[];
+
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/image.h>
@@ -56,8 +59,8 @@ enum
   checkbox_bold,
   checkbox_italic,
   checkbox_underlined,
+  button_defaultFont,
   button_mathFont,
-  font_family,
   style_font_family,
   language_id,
   save_id,
@@ -107,7 +110,7 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   
-  WX_DECLARE_STRING_HASH_MAP(int, Languages);
+  WX_DECLARE_STRING_HASH_MAP(long, Languages);
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
 
@@ -168,7 +171,7 @@ private:
 
     This method sets the window title, the tool tips etc.
    */
-  void SetProperties();
+  void SetCheckboxValues();
 
   //! Calculates the size of the images for a configuration tab
   int GetImageSize();
@@ -179,6 +182,9 @@ private:
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();
+
+  //! The panel that allows to choose which formats to put on the clipboard
+  wxPanel *CreateRevertToDefaultsPanel();
 
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
   #if wxUSE_ENH_METAFILE
@@ -204,6 +210,10 @@ private:
   wxPanel *CreateStartupPanel();
   
 protected:
+  void OnReloadAll(wxCommandEvent& event);
+  void OnReloadStyles(wxCommandEvent& event);
+  void OnResetAllToDefaults(wxCommandEvent& event);
+  void OnResetStyles(wxCommandEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.
@@ -247,7 +257,6 @@ protected:
   wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
-  wxCheckBox *m_savePanes;
   wxCheckBox *m_usesvg;
   wxCheckBox *m_antialiasLines;
   wxSpinCtrl *m_defaultFramerate;
@@ -285,7 +294,8 @@ protected:
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
   wxChoice *m_showUserDefinedLabels;
-  wxButton *m_getFont;
+  wxButton *m_getDefaultFont;
+  wxButton *m_getMathFont;
   wxButton *m_getStyleFont;
   wxListBox *m_styleFor;
   //! An example rectangle with the font color
@@ -301,13 +311,11 @@ protected:
   wxCheckBox *m_useUnicodeMaths;
   wxCheckBox *m_keepPercentWithSpecials;
   wxBookCtrlBase *m_notebook;
-  wxStaticText *m_mathFont;
-  wxButton *m_getMathFont;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
   wxSpinCtrl *m_maxGnuplotMegabytes;
-
+  wxTextCtrl *m_autoMathJaxURL;
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
 
@@ -324,8 +332,8 @@ protected:
 
   void OnIdle(wxIdleEvent &event);
 
-  //! Starts the font selector dialog for the math font
-  void OnMathBrowse(wxCommandEvent &event);
+  //! Starts the font selector dialog triggered by the math or default font buttons
+  void OnFontButton(wxCommandEvent &event);
 
   //! Called if a new item type that is to be styled is selected
   void OnChangeStyle(wxCommandEvent &event);
@@ -344,6 +352,16 @@ protected:
 
   //! A "export the configuration" dialog
   void LoadSave(wxCommandEvent &event);
+
+  //! Map the style list index to a style
+  static TextStyle StyleForListIndex(int index);
+  //! Map the style to the style list index
+  static int StyleListIndexForStyle(TextStyle style);
+  //! Get the style currently selected in the m_styleFor control
+  TextStyle GetSelectedStyle() const;
+
+  //! Sets the label for the font setting button given by the style (either TS_DEFAULT or TS_MATH)
+  void UpdateButton(TextStyle style);
 
   //! The size of the text font
   int m_fontSize;

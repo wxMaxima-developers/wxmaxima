@@ -25,6 +25,7 @@
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/grid.h>
+#include <wx/panel.h>
 #include <wx/arrstr.h>
 
 /*! \file 
@@ -36,7 +37,7 @@ This file contains the class Variablespane.
 /*! A "variables" sidepane
 
 */
-class Variablespane : public wxGrid
+class Variablespane : public wxPanel
 {
 public:
   enum VarIds
@@ -94,9 +95,13 @@ public:
   void VariableValue(wxString var, wxString val);
   //! Sets the variable var to "undefined"
   void VariableUndefined(wxString var);
+  void UpdateSize();
   //! The destructor
   ~Variablespane();
 private:
+  // The spreadsheet with the variable names
+  wxGrid *m_grid;
+  bool m_updateSizeNeeded = false;
   wxString InvertCase(wxString var);
   WX_DECLARE_STRING_HASH_MAP(int, IntHash);
   //! A list of all symbols that can be entered using Esc-Codes
