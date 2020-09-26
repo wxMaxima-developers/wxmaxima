@@ -515,7 +515,10 @@ public:
     Useful for black/white background theme changes
   */
   wxColor MakeColorDifferFromBackground(wxColor color);
-  
+
+  bool UsePngCairo() const { return m_usepngCairo;}
+  void UsePngCairo(bool usepngCairo) { m_usepngCairo = usepngCairo;}
+
   bool GetMatchParens() const { return m_matchParens; }
   void SetMatchParens(bool matchParens) { m_matchParens = matchParens; }
   
@@ -908,6 +911,7 @@ private:
   long m_showLength;
   //!< don't add ; in lisp mode
   bool m_inLispMode;
+  bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
   bool m_copyRTF;

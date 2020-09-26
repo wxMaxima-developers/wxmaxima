@@ -882,6 +882,7 @@ void Image::LoadImage(wxString image, std::shared_ptr<wxFileSystem> filesystem, 
   #pragma omp task
   #endif
   #endif
+  m_imageName = image;
   LoadImage_Backgroundtask(image, filesystem, remove);
 }
 
@@ -891,7 +892,6 @@ void Image::LoadImage_Backgroundtask(wxString image, std::shared_ptr<wxFileSyste
   WaitForLoad waitforload(&m_imageLoadLock);
   #endif
 
-  m_imageName = image;
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
 

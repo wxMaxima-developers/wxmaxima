@@ -47,6 +47,11 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  #ifdef __WXOSX__
+  m_usepngCairo = false;
+  #else
+  m_usepngCairo = true;
+  #endif
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
@@ -430,6 +435,7 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Read(wxT("usepngCairo"), &m_usepngCairo);
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
     long autoSaveMinutes = 0;
@@ -1033,6 +1039,7 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxT("hideBrackets"), m_hideBrackets);
   config->Write(wxT("printScale"), m_printScale);

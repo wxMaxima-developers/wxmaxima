@@ -500,6 +500,7 @@ public:
     socket_client_id,
     socket_server_id,
     maxima_process_id,
+    gnuplot_query_terminals_id,
     gnuplot_process_id,
     menu_additionalSymbols,
     enable_unicodePane,

@@ -157,13 +157,7 @@ void wxMaxima::ConfigChanged()
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_usesvg t)\n");
   else
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_usesvg nil)\n");
-#if defined (__WXOSX__)
-  bool usepngCairo = false;
-#else
-  bool usepngCairo=true;
-#endif
-  config->Read(wxT("usepngCairo"), &usepngCairo);
-  if (usepngCairo)
+  if (m_worksheet->m_configuration->UsePngCairo())
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
   else
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
@@ -841,6 +835,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCloseEventHandler(wxMaxima::OnClose), NULL, this);
   Connect(maxima_process_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnProcessEvent), NULL, this);
+  Connect(gnuplot_query_terminals_id, wxEVT_END_PROCESS,
+          wxProcessEventHandler(wxMaxima::OnGnuplotQueryTerminals), NULL, this);
   Connect(gnuplot_process_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnGnuplotClose), NULL, this);
   Connect(Worksheet::popid_edit, wxEVT_MENU,
@@ -2102,6 +2098,45 @@ void wxMaxima::KillMaxima(bool logMessage)
   m_pid = -1;
 }
 
+void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent& WXUNUSED(event))
+{
+  if(!m_gnuplotTerminalQueryProcess)
+    return;
+  wxString gnuplotMessage;
+  {
+    wxInputStream* istream = m_gnuplotTerminalQueryProcess->GetInputStream();
+    wxTextInputStream textin(*istream);
+    while(!istream->Eof())
+      gnuplotMessage += textin.ReadLine()+"\n";
+  }
+  {
+    wxInputStream* istream = m_gnuplotTerminalQueryProcess->GetErrorStream();
+    wxTextInputStream textin(*istream);
+    while(!istream->Eof())
+      gnuplotMessage += textin.ReadLine()+"\n";
+  }
+  gnuplotMessage.Trim(true);
+  gnuplotMessage.Trim(false);
+  wxLogMessage("Terminals supported by gnuplot: "+gnuplotMessage);
+  if(gnuplotMessage.Contains(wxT("pngcairo")))
+  {
+    wxLogMessage(_("Using gnuplot's pngcairo driver for embedded plots"));
+    if (!m_worksheet->m_configuration->UsePngCairo())
+      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+    m_worksheet->m_configuration->UsePngCairo(true);
+  }
+  else
+  {
+    wxLogMessage(_("Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo could not be found"));
+    if (m_worksheet->m_configuration->UsePngCairo())
+      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
+    m_worksheet->m_configuration->UsePngCairo(false);
+  }
+  m_gnuplotTerminalQueryProcess->CloseOutput();
+  m_gnuplotTerminalQueryProcess = NULL;
+  
+}
+
 void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
 {
   m_gnuplotProcess = NULL;
@@ -2651,6 +2686,34 @@ void wxMaxima::VariableActionGnuplotCommand(const wxString &value)
 {
   m_gnuplotcommand = value;
   wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
+  wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
+  wxEnvVariableHashMap environment;
+  // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
+  environment["PAGER"] = "cat";
+  wxGetEnvMap(&environment);
+  
+  m_gnuplotTerminalQueryProcess = new wxProcess(this, gnuplot_query_terminals_id);
+  m_gnuplotTerminalQueryProcess->Redirect();
+  // We don't want error dialogues here.
+  SuppressErrorDialogs suppressor;
+  wxExecuteEnv *env = new wxExecuteEnv;
+  env->env = environment;
+  if (wxExecute(m_gnuplotcommand,
+                wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE,
+                m_gnuplotTerminalQueryProcess, env) < 0)
+    wxLogMessage(_("Cannot start gnuplot"));
+  else
+  {
+    wxOutputStream* ostream = m_gnuplotTerminalQueryProcess->GetOutputStream();
+    if(ostream != NULL)
+    {
+      wxTextOutputStream textout(*ostream);
+      textout << "print GPVAL_TERMINALS;quit;\n\n\n\n\n\n\n\n\n\n\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n";
+//      ostream->Close();
+    }
+    else
+      wxLogMessage("Cannot get gnuplot's output stream!");
+  }
 }
 
 void wxMaxima::VariableActionMaximaSharedir(const wxString &value)
