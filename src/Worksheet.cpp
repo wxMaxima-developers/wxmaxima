@@ -741,7 +741,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, Group
 
   if (renumbersections)
     NumberSections();
-  Recalculate(where, true);
+  Recalculate(where);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
@@ -846,7 +846,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
   if (!tmp->GetNext())
     UpdateMLast();
   OutputChanged();
-  Recalculate(tmp, false);
+  Recalculate(tmp);
   
   if (FollowEvaluation())
   {
@@ -948,7 +948,7 @@ bool Worksheet::RecalculateIfNeeded()
   return true;
 }
 
-void Worksheet::Recalculate(Cell *start, bool force)
+void Worksheet::Recalculate(Cell *start)
 {
   GroupCell *group = GetTree();
   if (start)
@@ -1811,13 +1811,13 @@ void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
         ToggleFoldAll(clickedInGC);
       else
         ToggleFold(clickedInGC);
-      Recalculate(clickedInGC, true);
+      Recalculate(clickedInGC);
     }
     else
     {
       clickedInGC->SwitchHide();
       clickedInGC->ResetSize();
-      Recalculate(clickedInGC, false);
+      Recalculate(clickedInGC);
       m_clickType = CLICK_TYPE_NONE; // ignore drag-select
     }
   }
@@ -1867,7 +1867,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
       m_blinkDisplayCaret = true;
       m_clickType = CLICK_TYPE_INPUT_SELECTION;
       if (editor->GetWidth() == -1)
-        Recalculate(clickedInGC, false);
+        Recalculate(clickedInGC);
       ScrollToCaret();
       // Here we tend to get unacceptably long delays before the display is
       // refreshed by the idle loop => Trigger the refresh manually.
@@ -2936,7 +2936,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
   if (group->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(group, true);
+    Recalculate(group);
   }
 
   // If we still haven't a cell to put the answer in we now create one.
@@ -8051,7 +8051,7 @@ void Worksheet::SetActiveCellText(const wxString &text)
       parent->ResetSize();
       parent->ResetData();
       parent->ResetInputLabel();
-      Recalculate(parent, false);
+      Recalculate(parent);
       RequestRedraw();
     }
   }
