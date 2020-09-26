@@ -544,6 +544,7 @@ While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups tha
 ~~~
 
 Plotting multiple plots in the same window is possible, too:
+
 ~~~maxima
 	wxdraw(
 		gr2d(

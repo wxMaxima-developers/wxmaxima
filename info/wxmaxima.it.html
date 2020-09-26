@@ -787,7 +787,15 @@ Ordinary text</code></pre>
     
     <span class="co">/* Paraboloid in window #3 */</span>
     <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</code></pre></div>
-<p>Plotting multiple plots in the same window is possible, too: <sub><del>maxima wxdraw( gr2d( key=&quot;sin (x)&quot;,grid=[2,2], explicit(sin(x),x,0,2<em>%pi)), gr2d( key=&quot;cos (x)&quot;,grid=[2,2], explicit(cos(x),x,0,2</em>%pi)) );</del></sub></p>
+<p>Plotting multiple plots in the same window is possible, too:</p>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="cn">wxdraw</span>(
+        <span class="cn">gr2d</span>(
+            <span class="cn">key</span>=<span class="st">&quot;sin (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],
+            <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*%<span class="cn">pi</span>)),
+        <span class="cn">gr2d</span>(
+        <span class="cn">key</span>=<span class="st">&quot;cos (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],
+        <span class="cn">explicit</span>(<span class="fu">cos</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*%<span class="cn">pi</span>))
+     );</code></pre></div>
 <h3 id="the-plot-using-draw-side-pane"><span class="header-section-number">2.3.8</span> The &quot;Plot using draw&quot; side pane</h3>
 <p>The &quot;Plot using draw&quot; sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
