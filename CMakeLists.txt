@@ -223,10 +223,10 @@ endfunction()
 #
 
 if(NOT WXM_BUILD_SOURCE_ONLY)
-    add_subdirectory(locales)
     add_subdirectory(Doxygen)
     add_subdirectory(data)
     add_subdirectory(info)
+    add_subdirectory(locales)
 endif()
 
 add_subdirectory(src)
