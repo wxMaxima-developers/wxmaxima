@@ -764,7 +764,7 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:
 
-~~~lisp
+~~~commonlisp
 (setf sb-impl::*default-external-format* :utf-8)
 ~~~
 
