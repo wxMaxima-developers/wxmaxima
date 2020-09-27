@@ -2685,6 +2685,9 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
 void wxMaxima::VariableActionGnuplotCommand(const wxString &value)
 {
   m_gnuplotcommand = value;
+  if((!m_gnuplotcommand.StartsWith("\"")) &&
+      (!m_gnuplotcommand.StartsWith("\'")))
+    m_gnuplotcommand = "\"" + m_gnuplotcommand + "\"";
   wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
   wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
   wxEnvVariableHashMap environment;
