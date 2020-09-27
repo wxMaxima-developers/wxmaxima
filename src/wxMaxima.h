@@ -699,6 +699,8 @@ public:
   //! The marker for the end of a input prompt
   const static wxString m_promptSuffix;
 protected:
+  //! Sets gnuplot's command name and tries to determine gnuplot's path
+  void GnuplotCommandName(wxString gnuplot);
   //! The marker for the start of a variables section
   static wxString m_variablesPrefix;
   //! The marker for the end of a variables section

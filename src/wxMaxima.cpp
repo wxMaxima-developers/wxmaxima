@@ -197,6 +197,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration)
 {
+  GnuplotCommandName("gnuplot");
   if(m_knownXMLTags.empty())
   {
     m_knownXMLTags[wxT("PROMPT")] = &wxMaxima::ReadPrompt;
@@ -2682,13 +2683,78 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
               m_maximaDocDir = value;
               wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
 }
+
+void wxMaxima::GnuplotCommandName(wxString gnuplot)
+{
+  m_gnuplotcommand = gnuplot;
+  if(!wxFileName(m_gnuplotcommand).IsAbsolute())
+  {
+    wxPathList pathlist;
+
+    // Add paths relative to the path of the wxMaxima executable
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
+    // Add paths from the PATH environment variable
+    pathlist.AddEnvList(wxT("PATH"));
+
+    // Add OSX specific paths
+#ifdef __WXOSX__
+    // MacPorts:
+    // The MacPorts default binary path /opt/local/bin/ is not in the PATH for applications.
+    // It is added to .profile, but this is only used by shells.
+    // => Add the default MacPorts binary path /opt/local/bin/ to our search path list.
+    //
+    // Homebrew:
+    // Homebrew installs binaries in /usr/local/bin, which is in the PATH by default.
+    //
+    // Application packages including gnuplot:
+    // The above wxMaxima executable relative logic should work
+    //
+    // If gnuplot is somewhere else (e.g. non default MacPort or Homebrew path), the command
+    //   gnuplot_command:"/opt/local/bin/gnuplot"$
+    // must be added manually to ~/.maxima/wxmaxima-init.mac
+    // This should be documented for the installer packages, e.g. as MacPorts "notes" field.
+    pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
+#endif
+
+    // Find executable "gnuplot" in our list of paths
+    m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
+    #ifdef __WXMSW__
+    // If not successful, Find executable "gnuplot.exe" in our list of paths
+    if(m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxT(".exe"));
+    // If not successful, Find executable "gnuplot.bat" in our list of paths
+    if(m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxT(".bat"));
+    #endif
+    #ifdef __WXOSX__
+    if(m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxT(".app"));
+    #endif
+    // If not successful, use the original command (better than empty for error messages)
+    if(m_gnuplotcommand == wxEmptyString)
+    {
+      wxLogMessage(_("Gnuplot not found, using the default: ") + gnuplot);
+      m_gnuplotcommand = gnuplot;
+    }
+    else
+    {
+      wxLogMessage(_("Gnuplot found at: ") + m_gnuplotcommand);
+    }    
+  }
+  if(
+    m_gnuplotcommand.Contains(" ") &&
+    (!m_gnuplotcommand.StartsWith("\"")) &&
+    (!m_gnuplotcommand.StartsWith("\'")))
+    m_gnuplotcommand = "\"" + m_gnuplotcommand + "\"";
+}
+
 void wxMaxima::VariableActionGnuplotCommand(const wxString &value)
 {
-  m_gnuplotcommand = value;
-  if((!m_gnuplotcommand.StartsWith("\"")) &&
-      (!m_gnuplotcommand.StartsWith("\'")))
-    m_gnuplotcommand = "\"" + m_gnuplotcommand + "\"";
-  wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
+  GnuplotCommandName(value);
+
   wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
   wxEnvVariableHashMap environment;
   // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
@@ -3785,12 +3851,13 @@ void wxMaxima::SetupVariables()
   wxString cmd;
 
 #if defined (__WXOSX__)
-  wxString gnuplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
+  wxString gnuplot_binary = m_gnuplotcommand;
+
   gnuplot_binary.Replace("\\","\\\\");
   gnuplot_binary.Replace("\"","\\\"");
-  if (wxFileExists(gnuplot_binary))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplot_binary + wxT("\")\n");
-  wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), gnuplot_binary.utf8_str()));
+  if (wxFileExists(m_gnuplotcommand))
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand + wxT("\")\n");
+  wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), m_gnuplotcommand.utf8_str()));
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
@@ -5913,7 +5980,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     }
       
     // Execute gnuplot
-    wxString cmdline = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand) + wxT(" " + gnuplotSource + wxT(".popout"));
+    wxString cmdline = m_gnuplotcommand + wxT(" " + gnuplotSource + wxT(".popout"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
     
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);

@@ -29,6 +29,16 @@
 #ifndef DIRSTRUCTURE_H
 #define DIRSTRUCTURE_H
 
+
+// This macro is used to mark the macports prefix, so that it can be easily patched
+// The MacPorts port file for wxMaxima uses this, so don't remove this!
+// Note: this is not done with a define passed through cmake because I didn't find a way
+// to pass paths which need quoting through cmake.
+#define OSX_MACPORTS_PREFIX "/opt/local"
+// If set to 1, the macports path is put first into the search path (after app package paths).
+// This could be done with a define but then it doesn't make sense to use a different method.
+#define OSX_MACPORTS_PREFER 0
+
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/string.h>
@@ -89,9 +99,6 @@ public:
 
   //! The executable file path to the maxima executable (or .bat on Windows)
   static wxString MaximaDefaultLocation();
-
-  //! The executable file path to the gnuplot executable
-  static wxString GnuplotDefaultLocation(wxString pathguess);
 
   static wxString
     AnchorsCacheFile()
