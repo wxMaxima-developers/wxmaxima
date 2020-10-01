@@ -708,6 +708,10 @@ public:
   void CopyMathML(bool copyMathML){ m_copyMathML = copyMathML;}
   bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
   void CopyMathMLHTML(bool copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }
+  bool HideMarkerForThisMessage(wxString message){return m_hideMarkerForThisMessage.find(message) !=
+      m_hideMarkerForThisMessage.end();}
+  bool HideMarkerForThisMessage(wxString message, bool hide)
+    {return m_hideMarkerForThisMessage[message] = hide;}
   bool CopyRTF() const {return m_copyRTF;}
   void CopyRTF(bool copyRTF) { m_copyRTF = copyRTF; }
   bool CopySVG() const {return m_copySVG;}
@@ -733,7 +737,10 @@ public:
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
   
   drawMode GetParenthesisDrawMode();
-  
+
+  WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
+  StringBoolHash m_hideMarkerForThisMessage;
+
   /*! Get the resolved text Style for a given text style identifier.
 
     \param textStyle The text style to resolve the style for.

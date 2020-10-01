@@ -37,6 +37,9 @@
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
+#include <wx/txtstrm.h>
+#include <wx/mstream.h>
+#include <wx/xml/xml.h>
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc)
@@ -47,6 +50,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_hideMarkerForThisMessage.clear();
   #ifdef __WXOSX__
   m_usepngCairo = false;
   #else
@@ -435,6 +439,49 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   wxConfigBase *config = wxConfig::Get();
+
+  {
+    // If this preference cannot be loaded we don't want an error message about it
+    SuppressErrorDialogs suppressor;
+    wxString hideMessagesConfigString;
+    config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
+    // Write the string into a memory buffer
+    wxMemoryOutputStream ostream;
+    wxTextOutputStream txtstrm(ostream);
+    txtstrm.WriteString(hideMessagesConfigString);
+    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxXmlDocument xmlDocument;
+    std::cerr<<"tryToLoad\n";
+    if(xmlDocument.Load(istream))
+    {
+      std::cerr<<"load\n";
+      wxXmlNode *headNode = xmlDocument.GetDocumentNode();
+      if(headNode)
+      {
+        headNode = headNode->GetChildren();
+        std::cerr<<"headNode\n";
+        while((headNode) && (headNode->GetName() != wxT("markers")))
+          headNode = headNode->GetNext();
+        wxXmlNode *entry = headNode->GetChildren();
+        while(entry)
+        {
+          std::cerr<<"child "<<entry->GetName()<<"\n";
+
+          if(entry->GetName() == wxT("hide"))
+          {
+            wxXmlNode *node = entry->GetChildren();
+            if(node)
+            {
+              HideMarkerForThisMessage(node->GetContent(), true);
+              std::cerr<<"node: \""<<node->GetContent()<<"\"\n";
+            }
+          }
+          entry = entry->GetNext();
+        }
+      }
+    }
+  }
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
@@ -904,6 +951,51 @@ void Configuration::WriteStyles(const wxString &file)
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
+
+  {
+    wxXmlNode *topNode = new wxXmlNode(
+      NULL,
+      wxXML_DOCUMENT_NODE, wxEmptyString,
+      wxEmptyString
+      );
+    wxXmlNode *headNode = new wxXmlNode(
+      topNode,
+      wxXML_ELEMENT_NODE, wxT("markers"),
+      wxEmptyString
+      );
+    StringBoolHash::const_iterator it;
+    for (it = m_hideMarkerForThisMessage.begin();
+         it != m_hideMarkerForThisMessage.end();
+         ++it)
+    {
+      if(it->second)
+      {
+        wxXmlNode *hideNode =
+          new wxXmlNode(
+            headNode,
+            wxXML_ELEMENT_NODE,
+            "hide");
+        new wxXmlNode(
+          hideNode,
+          wxXML_TEXT_NODE,
+          wxEmptyString,
+          it->first);
+      }
+    }
+    wxXmlDocument xmlDoc;
+    xmlDoc.SetDocumentNode(topNode);
+    // Write the string into a memory buffer
+    wxMemoryOutputStream ostream;
+    xmlDoc.Save(ostream);
+    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxTextInputStream text(istream);
+    wxString hideMessagesConfigString;
+    while(!istream.Eof())
+      hideMessagesConfigString += text.ReadLine() + wxT("\n");
+    config->Write(wxT("suppressYellowMarkerMessages"), hideMessagesConfigString);
+  }
+  
   config->Write(wxT("keepPercent"), m_keepPercent);
   config->Write(wxT("labelWidth"), m_labelWidth);
   config->Write(wxT("saveUntitled"), m_saveUntitled);

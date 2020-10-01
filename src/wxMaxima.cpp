@@ -1058,6 +1058,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_hide_tooltipMarker, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(Worksheet::popid_hide_tooltipMarkerForThisMessage, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_recent_document_0, menu_recent_document_29, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
   Connect(menu_recent_package_0, menu_recent_package_29, wxEVT_MENU,
@@ -6212,7 +6214,23 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         m_worksheet->SetActiveCellText(command);
     }
     break;
-    case Worksheet::popid_hide_tooltipMarker:
+
+  case Worksheet::popid_hide_tooltipMarkerForThisMessage:
+    {
+      if(m_worksheet->GetSelectionStart() == NULL)
+        return;
+      Cell *cell = m_worksheet->GetSelectionStart();
+      if(!cell)
+        return;
+      wxString toolTip = cell->GetLocalToolTip();
+      if(toolTip.IsEmpty())
+        return;
+      bool suppress = m_worksheet->m_configuration->HideMarkerForThisMessage(toolTip);
+      m_worksheet->m_configuration->HideMarkerForThisMessage(toolTip, !suppress);
+      m_worksheet->OutputChanged();
+      break;
+    }
+  case Worksheet::popid_hide_tooltipMarker:
     {
       if(m_worksheet->GetSelectionStart() == NULL)
         return;

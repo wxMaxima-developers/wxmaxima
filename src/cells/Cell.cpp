@@ -337,7 +337,7 @@ void Cell::Draw(wxPoint point)
   
   // Mark all cells that contain tooltips
   if (!m_toolTip->empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
-      configuration->ClipToDrawRegion() && !configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker())
+      configuration->ClipToDrawRegion() && !configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker() && (!configuration->HideMarkerForThisMessage(*m_toolTip)))
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (configuration->InUpdateRegion(rect) && !rect.IsEmpty())
@@ -386,10 +386,6 @@ void Cell::SetToolTip(const wxString *toolTip)
     wxDELETE(m_toolTip);
   }
   m_toolTip = toolTip;
-
-  m_containsToolTip = (!m_toolTip->empty());
-  if (m_group)
-    m_group->m_containsToolTip = m_containsToolTip;
 }
 
 void Cell::AddToolTip(const wxString &tip)
@@ -405,10 +401,6 @@ void Cell::AddToolTip(const wxString &tip)
   }
   else
     SetToolTip(wxString(tip)); // this will move from the temporary copy
-
-  m_containsToolTip = true;
-  if (m_group)
-    m_group->m_containsToolTip = true;
 }
 
 void Cell::SetAltCopyText(const wxString &text)
