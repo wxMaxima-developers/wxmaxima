@@ -77,7 +77,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height)
     wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
   }
-  std::vector<unsigned char> imgdata(width*height*4);
+  std::vector<unsigned char> imgdata((long)width*height*4);
 
   // Actually render the bitmap
   nsvgRasterize(m_svgRast, m_svgImage.get(), 0,0,

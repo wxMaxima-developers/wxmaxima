@@ -755,7 +755,7 @@ static bool operator==(const wxImage &a, const wxImage &b)
   if (a.GetSize() != b.GetSize())
     return false;
 
-  long bytes = a.GetWidth() * b.GetHeight() * 3;
+  long bytes = (long)a.GetWidth() * b.GetHeight() * 3;
   if (bytes < 0)
     return false;
 

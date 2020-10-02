@@ -83,7 +83,7 @@ bool BitmapOut::Layout(long int maxSize)
   // Too big bitmaps or bitmaps that are too wide or high can crash windows
   // or the X server.
   if (maxSize >= 0 && (
-        (size.x * size.y >= maxSize) ||
+        ((long)size.x * size.y >= maxSize) ||
         (size.x >= 20000) ||
         (size.y >= 20000)
         ))
