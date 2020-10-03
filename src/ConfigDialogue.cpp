@@ -393,11 +393,6 @@ void ConfigDialogue::SetCheckboxValues()
   wxString texPreamble = wxEmptyString;
 
   int panelSize = 1;
-  int defaultPlotWidth = 600;
-
-  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 400;
-  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
@@ -463,8 +458,8 @@ void ConfigDialogue::SetCheckboxValues()
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(m_configuration->DefaultFramerate());
   m_maxGnuplotMegabytes->SetValue(configuration->MaxGnuplotMegabytes());
-  m_defaultPlotWidth->SetValue(defaultPlotWidth);
-  m_defaultPlotHeight->SetValue(defaultPlotHeight);
+  m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
+  m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
   m_symbolPaneAdditionalChars->SetValue(configuration->SymbolPaneAdditionalChars());
   m_getStyleFont->Enable(GetSelectedStyle() >= TS_ASCIIMATHS && GetSelectedStyle() <= TS_TITLE);
@@ -1298,8 +1293,8 @@ void ConfigDialogue::WriteSettings()
   configuration->AntiAliasLines(m_antialiasLines->GetValue());
   configuration->DefaultFramerate(m_defaultFramerate->GetValue());
   configuration->MaxGnuplotMegabytes(m_maxGnuplotMegabytes->GetValue());
-  config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
-  config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
+  configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
+  configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());

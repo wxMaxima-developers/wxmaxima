@@ -813,6 +813,10 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   bool InLispMode() const {return m_inLispMode;}
   void BitmapScale(int factor){m_bitmapScale = factor;}
   int BitmapScale() const {return m_bitmapScale;}
+  void DefaultPlotHeight(int px){m_defaultPlotHeight = px;}
+  int DefaultPlotHeight() const {return m_defaultPlotHeight;}
+  void DefaultPlotWidth(int px){m_defaultPlotWidth = px;}
+  int DefaultPlotWidth() const {return m_defaultPlotWidth;}
   void DefaultFramerate(int fps){m_defaultFramerate = fps;}
   int DefaultFramerate() const {return m_defaultFramerate;}
 
@@ -940,6 +944,8 @@ private:
   bool m_offerKnownAnswers;
   long m_defaultPort;
   long m_maxGnuplotMegabytes;
+  long m_defaultPlotHeight;
+  long m_defaultPlotWidth;
   bool m_saveUntitled;
   bool m_cursorJump;
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
