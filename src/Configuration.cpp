@@ -52,6 +52,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
 {
   m_bitmapScale = 3;
   m_defaultFramerate = 12;
+  m_fixedFontTC = false;
   m_hideMarkerForThisMessage.clear();
   #ifdef __WXOSX__
   m_usepngCairo = false;
@@ -484,6 +485,7 @@ void Configuration::ReadConfig()
       }
     }
   }
+  config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
@@ -1136,6 +1138,7 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("fixedFontTC"), m_fixedFontTC);
   config->Write(wxT("bitmapScale"), m_bitmapScale);
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate);
   config->Write(wxT("usepngCairo"), m_usepngCairo);

@@ -152,6 +152,8 @@ public:
   void UnsetContext() {m_dc = NULL;}
 
   void SetBackgroundBrush(wxBrush brush);
+  bool FixedFontInTextControls(){return m_fixedFontTC;}
+  void FixedFontInTextControls(bool fixed){m_fixedFontTC = fixed;}
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
@@ -926,6 +928,7 @@ private:
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
+  bool m_fixedFontTC;
   bool m_copyRTF;
   bool m_copySVG;
   bool m_copyEMF;

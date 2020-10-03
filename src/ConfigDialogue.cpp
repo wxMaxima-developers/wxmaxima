@@ -384,7 +384,6 @@ void ConfigDialogue::SetCheckboxValues()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool fixedFontTC = true;
   bool AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
           wrapLatexMath = true,
@@ -406,7 +405,6 @@ void ConfigDialogue::SetCheckboxValues()
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("texPreamble"), &texPreamble);
-  config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   
   m_documentclass->SetValue(configuration->Documentclass());
@@ -458,7 +456,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
   m_incrementalSearch->SetValue(configuration->IncrementalSearch());
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
-  m_fixedFontInTC->SetValue(fixedFontTC);
+  m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
   m_keepPercentWithSpecials->SetValue(configuration->CheckKeepPercent());
   m_abortOnError->SetValue(configuration->GetAbortOnError());
@@ -1272,7 +1270,7 @@ void ConfigDialogue::WriteSettings()
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
-  config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
+  configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
