@@ -809,6 +809,11 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
+  void BitmapScale(int factor){m_bitmapScale = factor;}
+  int BitmapScale() const {return m_bitmapScale;}
+  void DefaultFramerate(int fps){m_defaultFramerate = fps;}
+  int DefaultFramerate() const {return m_defaultFramerate;}
+
   void NotifyOfCellRedraw(const Cell *cell);
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
@@ -955,6 +960,8 @@ private:
   long m_undoLimit;
   long m_recentItems;
   wxString m_lispType;
+  int m_bitmapScale;
+  int m_defaultFramerate;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.

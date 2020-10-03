@@ -2413,7 +2413,7 @@ bool Worksheet::Copy(bool astext)
     {
       // Try to fill bmp with a high-res version of the cells
       BitmapOut output(&m_configuration, std::move(tmp),
-                       BitmapOut::GetConfigScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+                       m_configuration->BitmapScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
       if (output.IsOk())
         data->Add(output.GetDataObject().release());
     }
@@ -2658,7 +2658,7 @@ bool Worksheet::CopyCells()
     if (m_configuration->CopyBitmap())
     {
       BitmapOut output(&m_configuration, CopySelection(),
-                       BitmapOut::GetConfigScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+                       m_configuration->BitmapScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
       if (output.IsOk())
         data->Add(output.GetDataObject().release());
     }
@@ -5339,12 +5339,9 @@ bool Worksheet::ExportToHTML(const wxString &file)
             case Configuration::bitmap:
             {
               wxSize size;
-              int bitmapScale = 3;
-              ext = wxT(".png");
-              wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
               size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                                 &(*chunk),
-                                NULL, true, bitmapScale);
+                                NULL, true, m_configuration->BitmapScale());
               int borderwidth = 0;
               wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               borderwidth = chunk->GetImageBorderWidth();
@@ -5352,7 +5349,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\" "),
-                                 count, ext.utf8_str(), size.x / bitmapScale - 2 * borderwidth) +
+                                 count, ext.utf8_str(), size.x / m_configuration->BitmapScale() - 2 * borderwidth) +
                 alttext +
                 wxT("\" /><br/>\n");
 

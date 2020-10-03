@@ -57,13 +57,6 @@ BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree
 BitmapOut::~BitmapOut()
 {}
 
-double BitmapOut::GetConfigScale()
-{
-  int bitmapScale = 3;
-  wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-  return bitmapScale;
-}
-
 bool BitmapOut::Render(std::unique_ptr<Cell> &&tree, long int maxSize)
 {
   m_tree = std::move(tree);

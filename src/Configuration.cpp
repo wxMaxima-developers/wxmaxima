@@ -50,6 +50,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_bitmapScale = 3;
+  m_defaultFramerate = 12;
   m_hideMarkerForThisMessage.clear();
   #ifdef __WXOSX__
   m_usepngCairo = false;
@@ -530,6 +532,9 @@ void Configuration::ReadConfig()
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
   config->Read(wxT("useSVG"), &m_useSVG);
+  config->Read(wxT("copyBitmap"), &m_copyBitmap);
+  config->Read(wxT("bitmapScale"), &m_bitmapScale);
+  config->Read(wxT("DefaultFramerate"), &m_defaultFramerate);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
@@ -1131,6 +1136,8 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("bitmapScale"), m_bitmapScale);
+  config->Write(wxT("DefaultFramerate"), m_defaultFramerate);
   config->Write(wxT("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxT("hideBrackets"), m_hideBrackets);
