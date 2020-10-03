@@ -50,6 +50,9 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_bitmapScale = 3;
+  m_defaultFramerate = 12;
+  m_fixedFontTC = false;
   m_hideMarkerForThisMessage.clear();
   #ifdef __WXOSX__
   m_usepngCairo = false;
@@ -104,6 +107,8 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
+  m_defaultPlotWidth = 1200;
+  m_defaultPlotHeight = 900;
   SetLanguage(wxLANGUAGE_DEFAULT);
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
@@ -452,21 +457,17 @@ void Configuration::ReadConfig()
     wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
                                 ostream.GetOutputStreamBuffer()->GetBufferSize());
     wxXmlDocument xmlDocument;
-    std::cerr<<"tryToLoad\n";
     if(xmlDocument.Load(istream))
     {
-      std::cerr<<"load\n";
       wxXmlNode *headNode = xmlDocument.GetDocumentNode();
       if(headNode)
       {
         headNode = headNode->GetChildren();
-        std::cerr<<"headNode\n";
         while((headNode) && (headNode->GetName() != wxT("markers")))
           headNode = headNode->GetNext();
         wxXmlNode *entry = headNode->GetChildren();
         while(entry)
         {
-          std::cerr<<"child "<<entry->GetName()<<"\n";
 
           if(entry->GetName() == wxT("hide"))
           {
@@ -474,7 +475,6 @@ void Configuration::ReadConfig()
             if(node)
             {
               HideMarkerForThisMessage(node->GetContent(), true);
-              std::cerr<<"node: \""<<node->GetContent()<<"\"\n";
             }
           }
           entry = entry->GetNext();
@@ -482,6 +482,9 @@ void Configuration::ReadConfig()
       }
     }
   }
+  config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
+  config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
+  config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
@@ -530,6 +533,9 @@ void Configuration::ReadConfig()
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
   config->Read(wxT("useSVG"), &m_useSVG);
+  config->Read(wxT("copyBitmap"), &m_copyBitmap);
+  config->Read(wxT("bitmapScale"), &m_bitmapScale);
+  config->Read(wxT("DefaultFramerate"), &m_defaultFramerate);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
@@ -1131,6 +1137,11 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
+  config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight);
+  config->Write(wxT("fixedFontTC"), m_fixedFontTC);
+  config->Write(wxT("bitmapScale"), m_bitmapScale);
+  config->Write(wxT("DefaultFramerate"), m_defaultFramerate);
   config->Write(wxT("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxT("hideBrackets"), m_hideBrackets);

@@ -98,9 +98,8 @@ int SlideShow::GetFrameRate() const
     framerate = m_framerate;
   else
   {
-    wxConfigBase *config = wxConfig::Get();
 
-    config->Read(wxT("DefaultFramerate"), &framerate);
+    framerate = (*m_configuration)->DefaultFramerate();
   }
   if (framerate > 30)
     framerate = 30;

@@ -48,9 +48,6 @@ public:
   explicit BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree, double scale = 1, long maxSize = -1);
   ~BitmapOut();
 
-  //! Retrieves the `bitmapScale` from the configuration data.
-  static double GetConfigScale();
-
   /*! Renders tree as bitmap
     
     \param tree The list of cells that is to be rendered

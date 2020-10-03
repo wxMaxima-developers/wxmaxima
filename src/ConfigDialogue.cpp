@@ -381,29 +381,18 @@ void ConfigDialogue::SetCheckboxValues()
     );
 
   wxConfigBase *config = wxConfig::Get();
-  wxString mp, mc, ib, mf;
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool fixedFontTC = true;
   bool AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
           wrapLatexMath = true,
           exportContainsWXMX = false;
   int exportWithMathJAX = 0;
 
-  int bitmapScale = 3;
-  int defaultFramerate = 2;
   wxString texPreamble = wxEmptyString;
 
   int panelSize = 1;
-  config->Read(wxT("parameters"), &mc);
-  config->Read(wxT("DefaultFramerate"), &defaultFramerate);
-  int defaultPlotWidth = 600;
-
-  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 400;
-  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
@@ -411,9 +400,7 @@ void ConfigDialogue::SetCheckboxValues()
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("texPreamble"), &texPreamble);
-  config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
-  config->Read(wxT("bitmapScale"), &bitmapScale);
   
   m_documentclass->SetValue(configuration->Documentclass());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
@@ -459,20 +446,20 @@ void ConfigDialogue::SetCheckboxValues()
   m_autoWrap->SetSelection(val);
   m_labelWidth->SetValue(configuration->LabelWidth());
   m_undoLimit->SetValue(configuration->UndoLimit());
-  m_bitmapScale->SetValue(bitmapScale);
+  m_bitmapScale->SetValue(configuration->BitmapScale());
   m_printScale->SetValue(configuration->PrintScale());
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
   m_incrementalSearch->SetValue(configuration->IncrementalSearch());
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
-  m_fixedFontInTC->SetValue(fixedFontTC);
+  m_fixedFontInTC->SetValue(configuration->FixedFontInTextControls());
   m_offerKnownAnswers->SetValue(m_configuration->OfferKnownAnswers());
   m_keepPercentWithSpecials->SetValue(configuration->CheckKeepPercent());
   m_abortOnError->SetValue(configuration->GetAbortOnError());
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
-  m_defaultFramerate->SetValue(defaultFramerate);
+  m_defaultFramerate->SetValue(m_configuration->DefaultFramerate());
   m_maxGnuplotMegabytes->SetValue(configuration->MaxGnuplotMegabytes());
-  m_defaultPlotWidth->SetValue(defaultPlotWidth);
-  m_defaultPlotHeight->SetValue(defaultPlotHeight);
+  m_defaultPlotWidth->SetValue(configuration->DefaultPlotWidth());
+  m_defaultPlotHeight->SetValue(configuration->DefaultPlotHeight());
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
   m_symbolPaneAdditionalChars->SetValue(configuration->SymbolPaneAdditionalChars());
   m_getStyleFont->Enable(GetSelectedStyle() >= TS_ASCIIMATHS && GetSelectedStyle() <= TS_TITLE);
@@ -1278,7 +1265,7 @@ void ConfigDialogue::WriteSettings()
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
-  config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
+  configuration->FixedFontInTextControls(m_fixedFontInTC->GetValue());
   configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
@@ -1295,7 +1282,7 @@ void ConfigDialogue::WriteSettings()
   configuration->LabelWidth(m_labelWidth->GetValue());
   configuration->UndoLimit(m_undoLimit->GetValue());
   configuration->RecentItems(m_recentItems->GetValue());
-  config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
+  configuration->BitmapScale(m_bitmapScale->GetValue());
   configuration->PrintScale(m_printScale->GetValue());
   configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
   configuration->IncrementalSearch(m_incrementalSearch->GetValue());
@@ -1304,10 +1291,10 @@ void ConfigDialogue::WriteSettings()
   configuration->DefaultPort(m_defaultPort->GetValue());
   configuration->UseSVG(m_usesvg->GetValue());
   configuration->AntiAliasLines(m_antialiasLines->GetValue());
-  config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
+  configuration->DefaultFramerate(m_defaultFramerate->GetValue());
   configuration->MaxGnuplotMegabytes(m_maxGnuplotMegabytes->GetValue());
-  config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
-  config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
+  configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
+  configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());

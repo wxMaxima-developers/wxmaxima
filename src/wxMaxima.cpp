@@ -172,13 +172,9 @@ void wxMaxima::ConfigChanged()
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
-  int defaultPlotWidth = 600;
-  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 400;
-  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                                       defaultPlotWidth,
-                                       defaultPlotHeight);
+                                       m_worksheet->m_configuration->DefaultPlotWidth(),
+                                       m_worksheet->m_configuration->DefaultPlotHeight());
 
   if (m_worksheet->m_currentFile != wxEmptyString)
   {

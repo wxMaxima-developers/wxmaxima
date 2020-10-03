@@ -152,6 +152,8 @@ public:
   void UnsetContext() {m_dc = NULL;}
 
   void SetBackgroundBrush(wxBrush brush);
+  bool FixedFontInTextControls(){return m_fixedFontTC;}
+  void FixedFontInTextControls(bool fixed){m_fixedFontTC = fixed;}
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
@@ -809,6 +811,15 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
+  void BitmapScale(int factor){m_bitmapScale = factor;}
+  int BitmapScale() const {return m_bitmapScale;}
+  void DefaultPlotHeight(int px){m_defaultPlotHeight = px;}
+  int DefaultPlotHeight() const {return m_defaultPlotHeight;}
+  void DefaultPlotWidth(int px){m_defaultPlotWidth = px;}
+  int DefaultPlotWidth() const {return m_defaultPlotWidth;}
+  void DefaultFramerate(int fps){m_defaultFramerate = fps;}
+  int DefaultFramerate() const {return m_defaultFramerate;}
+
   void NotifyOfCellRedraw(const Cell *cell);
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
@@ -921,6 +932,7 @@ private:
   bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
+  bool m_fixedFontTC;
   bool m_copyRTF;
   bool m_copySVG;
   bool m_copyEMF;
@@ -932,6 +944,8 @@ private:
   bool m_offerKnownAnswers;
   long m_defaultPort;
   long m_maxGnuplotMegabytes;
+  long m_defaultPlotHeight;
+  long m_defaultPlotWidth;
   bool m_saveUntitled;
   bool m_cursorJump;
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
@@ -955,6 +969,8 @@ private:
   long m_undoLimit;
   long m_recentItems;
   wxString m_lispType;
+  int m_bitmapScale;
+  int m_defaultFramerate;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
