@@ -328,8 +328,6 @@ void ConfigDialogue::SetCheckboxValues()
           _("The default height for embedded plots. Can be read out or overridden by the maxima variable wxplot_size."));
   m_displayedDigits->SetToolTip(
           _("If numbers are getting longer than this number of digits they will be displayed abbreviated by an ellipsis."));
-  m_AnimateLaTeX->SetToolTip(
-          _("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(
           _("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_usePartialForDiff->SetToolTip(
@@ -384,7 +382,7 @@ void ConfigDialogue::SetCheckboxValues()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
+  bool TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
           wrapLatexMath = true,
           exportContainsWXMX = false;
@@ -393,7 +391,6 @@ void ConfigDialogue::SetCheckboxValues()
   wxString texPreamble = wxEmptyString;
 
   int panelSize = 1;
-  config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
@@ -418,7 +415,6 @@ void ConfigDialogue::SetCheckboxValues()
   m_usesvg->SetValue(configuration->UseSVG());
   m_antialiasLines->SetValue(configuration->AntiAliasLines());
 
-  m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_usePartialForDiff->SetValue(usePartialForDiff);
   m_wrapLatexMath->SetValue(wrapLatexMath);
@@ -850,10 +846,6 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_printScale->SetIncrement(.1);
   grid_sizer->Add(ps, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_printScale, 0, wxALL, 5);
-
-  m_AnimateLaTeX = new wxCheckBox(panel, -1,
-                                  _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
-  vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
 
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
@@ -1296,7 +1288,6 @@ void ConfigDialogue::WriteSettings()
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
-  config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());

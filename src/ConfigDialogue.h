@@ -263,8 +263,6 @@ protected:
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
   wxSpinCtrl *m_displayedDigits;
-  //! A checkbox that allows to select if the LaTeX file should contain animations.
-  wxCheckBox *m_AnimateLaTeX;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()

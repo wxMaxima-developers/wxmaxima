@@ -5670,15 +5670,6 @@ bool Worksheet::ExportToTeX(const wxString &file)
   // lines.
   output << wxT("\\DeclareMathOperator{\\abs}{abs}\n");
 
-  // The animate package is only needed if we actually want to output animations
-  // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
-  bool AnimateLaTeX = true;
-  wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-  if (AnimateLaTeX)
-  {
-    output << wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option\n");
-    output << wxT("                      % \"Export animations to TeX\" was enabled when this file was generated.\n");
-  }
   output << wxT("\n");
   output << wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
   output << wxT("\n");
