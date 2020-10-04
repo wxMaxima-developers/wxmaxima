@@ -819,17 +819,30 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   int DefaultPlotWidth() const {return m_defaultPlotWidth;}
   void DefaultFramerate(int fps){m_defaultFramerate = fps;}
   int DefaultFramerate() const {return m_defaultFramerate;}
-
+  bool TeXExponentsAfterSubscript() const {return m_TeXExponentsAfterSubscript;}
+  void TeXExponentsAfterSubscript(bool ExponentsAfterSubscript)
+    {m_TeXExponentsAfterSubscript = ExponentsAfterSubscript;}
+  bool UsePartialForDiff() const {return m_usePartialForDiff;}
+  void UsePartialForDiff(bool usePartialForDiff)
+    {m_usePartialForDiff = usePartialForDiff;}
   void NotifyOfCellRedraw(const Cell *cell);
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
+
+  bool WrapLatexMath() const {return m_wrapLatexMath;}
+  void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
+  void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
+  bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
+  wxString TexPreamble() const {return m_texPreamble;}
+  void TexPreamble(wxString texPreamble) {m_texPreamble = texPreamble;}
+
   Style m_styles[NUMBEROFSTYLES];
   //! Initialize the text styles on construction.
   void InitStyles();
 private:
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
-
+  bool m_usePartialForDiff;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -862,9 +875,13 @@ private:
   */
   bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
+  bool m_wrapLatexMath;
+  bool m_exportContainsWXMX;
+  wxString m_texPreamble;
+
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
-
+  bool m_TeXExponentsAfterSubscript;
   wxString m_helpBrowserUserLocation;
   wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer

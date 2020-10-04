@@ -50,6 +50,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_wrapLatexMath = true;
+  m_exportContainsWXMX = true;
   m_bitmapScale = 3;
   m_defaultFramerate = 12;
   m_fixedFontTC = false;
@@ -60,6 +62,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_usepngCairo = true;
   #endif
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
+  m_usePartialForDiff = false,
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
   m_incrementalSearch = true;
@@ -76,6 +79,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
+  m_TeXExponentsAfterSubscript = false;
   m_saveUntitled = true;
   m_cursorJump = true;
   m_autoSaveAsTempFile = false;
@@ -287,6 +291,9 @@ void Configuration::InitStyles()
 
   Style defaultStyle;
 
+  for(int i=0; i<NUMBEROFSTYLES;i++)
+    m_styles[i].Init();
+  
   #ifdef __WINDOWS__
   // Font defaulting for Windows
   m_styles[TS_DEFAULT].FontName(AFontName::Arial());
@@ -450,6 +457,9 @@ void Configuration::ReadConfig()
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
     config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
+    config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
+    config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
+    config->Read(wxT("texPreamble"), &m_texPreamble);
     // Write the string into a memory buffer
     wxMemoryOutputStream ostream;
     wxTextOutputStream txtstrm(ostream);
@@ -482,6 +492,8 @@ void Configuration::ReadConfig()
       }
     }
   }
+  config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
+  config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
   config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
   config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
   config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
@@ -1137,6 +1149,11 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
 void Configuration::WriteSettings()
 {
   wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
+  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
+  config->Write(wxT("texPreamble"), m_texPreamble);
+  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
+  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript);
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight);
   config->Write(wxT("fixedFontTC"), m_fixedFontTC);

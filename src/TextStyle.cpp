@@ -510,6 +510,19 @@ static const wxString k_fontsize_float = wxT("%s/Style/Text/fontsize_float");
 static const wxString k_fontsize_legacy = wxT("%s/Style/Text/fontsize");
 static const wxString k_fontname = wxT("%s/Style/Text/fontname");
 
+void Style::Init()
+{
+  SetColor(*wxBLACK);
+  SetBold(false);
+  SetLight(false);
+  SetItalic(false);
+  SetSlant(false);
+  SetUnderlined(false);
+  SetStrikethrough(false);
+  SetFontSize(AFontSize(12));
+  SetFontName(AFontName(wxEmptyString));
+}
+
 Style &Style::Read(wxConfigBase *config, const wxString &where)
 {
   wxString tmpStr;

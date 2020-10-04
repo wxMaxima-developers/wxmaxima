@@ -381,30 +381,13 @@ void ConfigDialogue::SetCheckboxValues()
   wxConfigBase *config = wxConfig::Get();
 
   // The default values for all config items that will be used if there is no saved
-  // configuration data for this item.
-  bool TeXExponentsAfterSubscript = false,
-          usePartialForDiff = false,
-          wrapLatexMath = true,
-          exportContainsWXMX = false;
-  int exportWithMathJAX = 0;
-
-  wxString texPreamble = wxEmptyString;
-
-  int panelSize = 1;
-  config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
-  config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
-  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
-  config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
-  config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
-  config->Read(wxT("texPreamble"), &texPreamble);
-  config->Read(wxT("panelSize"), &panelSize);
-  
+  // configuration data for this item. 
   m_documentclass->SetValue(configuration->Documentclass());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
   m_mathJaxURL->SetValue(configuration->MathJaXURL_User());
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
   m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
-  m_texPreamble->SetValue(texPreamble);
+  m_texPreamble->SetValue(configuration->TexPreamble());
   m_autoSave->SetValue(!configuration->AutoSaveAsTempFile());
 
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
@@ -415,12 +398,12 @@ void ConfigDialogue::SetCheckboxValues()
   m_usesvg->SetValue(configuration->UseSVG());
   m_antialiasLines->SetValue(configuration->AntiAliasLines());
 
-  m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
-  m_usePartialForDiff->SetValue(usePartialForDiff);
-  m_wrapLatexMath->SetValue(wrapLatexMath);
-  m_exportContainsWXMX->SetValue(exportContainsWXMX);
+  m_TeXExponentsAfterSubscript->SetValue(configuration->TeXExponentsAfterSubscript());
+  m_usePartialForDiff->SetValue(configuration->UsePartialForDiff());
+  m_wrapLatexMath->SetValue(configuration->WrapLatexMath());
+  m_exportContainsWXMX->SetValue(configuration->ExportContainsWXMX());
   m_printBrackets->SetValue(configuration->PrintBrackets());
-  m_exportWithMathJAX->SetSelection((int)configuration->HTMLequationFormat());
+  m_exportWithMathJAX->SetSelection(configuration->HTMLequationFormat());
   m_matchParens->SetValue(configuration->GetMatchParens());
   m_showLength->SetSelection(configuration->ShowLength());
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
@@ -1288,15 +1271,15 @@ void ConfigDialogue::WriteSettings()
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
-  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
-  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
-  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
-  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
+  configuration->TeXExponentsAfterSubscript(m_TeXExponentsAfterSubscript->GetValue());
+  configuration->UsePartialForDiff(m_usePartialForDiff->GetValue());
+  configuration->WrapLatexMath(m_wrapLatexMath->GetValue());
+  configuration->ExportContainsWXMX(m_exportContainsWXMX->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
   configuration->HTMLequationFormat((Configuration::htmlExportFormat) m_exportWithMathJAX->GetSelection());
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   configuration->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
-  config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
+  configuration->TexPreamble(m_texPreamble->GetValue());
   configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());

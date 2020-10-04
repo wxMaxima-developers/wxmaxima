@@ -2547,16 +2547,13 @@ bool Worksheet::CopyTeX()
     return false;
 
   wxConfigBase *config = wxConfig::Get();
-  bool wrapLatexMath = true;
-  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
-
   Cell *const start = m_cellPointers.m_selectionStart;
   bool inMath = false;
   wxString s;
 
   if (start->GetType() != MC_TYPE_GROUP)
   {
-    inMath = wrapLatexMath;
+    inMath = m_configuration->WrapLatexMath();
     if (inMath)
       s = wxT("\\[");
   }
@@ -5507,10 +5504,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
                         "wxMaxima</a>.</small></p>\n");
   output << wxEmptyString;
 
-  bool exportContainsWXMX = false;
-  wxConfig::Get()->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
-
-  if (exportContainsWXMX)
+  if (m_configuration->ExportContainsWXMX())
   {
     wxString wxmxfileName_rel = imgDir_rel + wxT("/") + filename + wxT(".wxmx");
     wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
@@ -5675,9 +5669,8 @@ bool Worksheet::ExportToTeX(const wxString &file)
   output << wxT("\n");
 
   // Add an eventual preamble requested by the user.
-  wxString texPreamble;
-  wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
-  if (texPreamble != wxEmptyString)
+  wxString texPreamble = m_configuration->TexPreamble();
+  if (!texPreamble.IsEmpty())
     output << texPreamble << wxT("\n\n");
 
   output << wxT("\\begin{document}\n");
