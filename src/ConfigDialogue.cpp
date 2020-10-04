@@ -831,10 +831,6 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   grid_sizer->Add(ps, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_printScale, 0, wxALL, 5);
 
-  m_AnimateLaTeX = new wxCheckBox(panel, -1,
-                                  _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
-  vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
-
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
 
