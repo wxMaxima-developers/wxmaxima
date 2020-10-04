@@ -286,14 +286,11 @@ static const Configuration::EscCodeContainer &EscCodes()
 }
 
 void Configuration::InitStyles()
-{
+{  
   std::fill(std::begin(m_styles), std::end(m_styles), Style{});
 
   Style defaultStyle;
 
-  for(int i=0; i<NUMBEROFSTYLES;i++)
-    m_styles[i].Init();
-  
   #ifdef __WINDOWS__
   // Font defaulting for Windows
   m_styles[TS_DEFAULT].FontName(AFontName::Arial());
@@ -961,14 +958,13 @@ void Configuration::ReadStyles(const wxString &file)
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(const wxString &file)
+void Configuration::WriteSettings(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
-
 
   {
     wxXmlNode *topNode = new wxXmlNode(
@@ -1060,6 +1056,7 @@ void Configuration::WriteStyles(const wxString &file)
   m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
+  WriteStyles(config);
   if(file != wxEmptyString)
   {
     config->Flush();
@@ -1146,9 +1143,8 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
          rect.Contains(updateRegion);
 }
 
-void Configuration::WriteSettings()
+void Configuration::WriteStyles(wxConfigBase *config)
 {
-  wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("texPreamble"), m_texPreamble);
@@ -1214,6 +1210,23 @@ void Configuration::WriteSettings()
   config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
+}
+
+//! Saves the style settings to a file.
+void Configuration::WriteStyles(const wxString &file)
+{
+  wxConfigBase *config = NULL;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+
+  WriteStyles(config);
+  if(file != wxEmptyString)
+  {
+    config->Flush();
+    delete config;
+  }
 }
 const wxString &Configuration::GetStyleName(TextStyle style) const
 {

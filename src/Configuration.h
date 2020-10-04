@@ -452,7 +452,8 @@ public:
     If a file name is given the settings are written to a file.
   */
   void WriteStyles(const wxString &file = {});
-  void WriteSettings();
+  void WriteStyles(wxConfigBase *config);
+  void WriteSettings(const wxString &file = {});
   
   void Outdated(bool outdated)
   { m_outdated = outdated; }
