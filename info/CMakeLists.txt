@@ -69,6 +69,21 @@ if(PANDOC)
 			endif()
 		endif()
 	endif()
+	# Get po4a-translate version number, only >= 0.55 works for wxMaxima.
+	execute_process(
+		COMMAND ${PO4A_TRANSLATE} --version
+		OUTPUT_VARIABLE PO4A_TRANSLATE_VERSION_TEXT)
+	# they changed the output from
+	# "po4a-translate Version 0.54" to "po4a-translate version 0.55." therefore a slightly more complex command to extract the version number.
+	string(REGEX REPLACE "^po4a-translate [vV]ersion ([^\n]*).*" "\\1"  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION_TEXT}")
+	string(REGEX REPLACE "\\.$" ""  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION}")
+	message(STATUS "Found po4a-translate (version ${PO4A_TRANSLATE_VERSION}) at: ${PO4A_TRANSLATE}")
+	if(PO4A_TRANSLATE_VERSION LESS_EQUAL 0.54)
+		message(WARNING "po4a-translate Version < 0.55 found. Please upgrade po4a, that version does not work. "
+		                "Disable po4a and the generation of localized documentation.")
+		set(PO4A_TRANSLATE "")
+	endif()
+
 
 	file(GLOB IMAGEFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png ${CMAKE_CURRENT_SOURCE_DIR}/*.jpg)
 	file(COPY ${IMAGEFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
