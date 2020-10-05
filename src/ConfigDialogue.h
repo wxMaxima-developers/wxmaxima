@@ -210,9 +210,12 @@ private:
   wxPanel *CreateStartupPanel();
   
 protected:
+  void OnImport(wxCommandEvent& event);
+  void CopyConfig(wxConfigBase *src, wxString &str, long &dummy);
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);
+  void OnExportAll(wxCommandEvent& event);
   void OnResetStyles(wxCommandEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;

@@ -633,6 +633,24 @@ wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5).
     Expand()
     );
+  wxButton *exportAllButton = new wxButton(panel, -1, _("Export all settings"));
+  exportAllButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnExportAll),
+                          NULL, this);
+  vsizer->Add(
+    exportAllButton,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
+  wxButton *importSettingsButton = new wxButton(panel, -1, _("Import settings"));
+  importSettingsButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnImport),
+                          NULL, this);
+  vsizer->Add(
+    importSettingsButton,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
   wxButton *resetStylesButton = new wxButton(panel, -1, _("Reset the Style settings"));
   resetStylesButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnResetStyles),
@@ -1464,6 +1482,56 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent& WXUNUSED(event))
   UpdateExample();
 }
 
+
+void ConfigDialogue::OnExportAll(wxCommandEvent&  WXUNUSED(event))
+{
+  wxString file = wxFileSelector(_("Save config to file"),
+                                 wxEmptyString, wxT("style.ini"), wxT("ini"),
+                                 _("Config file (*.ini)|*.ini"),
+                                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+  if (file != wxEmptyString)
+  {
+    WriteSettings();
+    m_configuration->WriteSettings(file);
+  }
+}
+
+void ConfigDialogue::OnImport(wxCommandEvent&  WXUNUSED(event))
+{
+  wxString file = wxFileSelector(_("Read config to file"),
+                                 wxEmptyString, wxT("style.ini"), wxT("ini"),
+                                 _("Config file (*.ini)|*.ini"),
+                                 wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+  if (file != wxEmptyString)
+  {
+    wxFileInputStream str(file);
+    wxConfigBase *src = new wxFileConfig(str);
+    if(src)
+    {
+      wxString str;
+      long dummy;
+      // first enum all entries
+      bool bCont = src->GetFirstEntry(str, dummy);
+      if(bCont)
+        CopyConfig(src, str, dummy);
+      m_configuration->ReadStyles(file);
+      SetCheckboxValues();
+      wxCommandEvent dummy;
+      OnChangeStyle(dummy);
+    }
+  }
+}
+
+void ConfigDialogue::CopyConfig(wxConfigBase *src, wxString &str, long &dummy)
+{
+  bool bCont = true;
+  while ( bCont )
+  {
+    std::cerr<<"test: "<<str<<"\n";;
+    bCont = src->GetNextEntry(str, dummy);
+  }
+  m_configuration->ReadStyles(file);
+}
 
 void ConfigDialogue::OnResetAllToDefaults(wxCommandEvent&  WXUNUSED(event))
 {
