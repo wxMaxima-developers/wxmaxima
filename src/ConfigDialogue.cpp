@@ -1513,24 +1513,64 @@ void ConfigDialogue::OnImport(wxCommandEvent&  WXUNUSED(event))
       // first enum all entries
       bool bCont = src->GetFirstEntry(str, dummy);
       if(bCont)
-        CopyConfig(src, str, dummy);
+        CopyConfig(src, wxConfigBase::Get());
       m_configuration->ReadStyles(file);
       SetCheckboxValues();
-      wxCommandEvent dummy;
-      OnChangeStyle(dummy);
+      wxCommandEvent dmmy;
+      OnChangeStyle(dmmy);
     }
   }
 }
 
-void ConfigDialogue::CopyConfig(wxConfigBase *src, wxString &str, long &dummy)
+void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir)
 {
   bool bCont = true;
+  long dummy;
+  wxString str;
+  src->SetPath(dir);
+  dst->SetPath(dir);
+  src->GetFirstEntry(str, dummy);
   while ( bCont )
   {
-    std::cerr<<"test: "<<str<<"\n";;
+    switch(src->GetEntryType(str))
+    {
+    Type_String:
+        wxLogMessage(wxString::Format(_("Copying config string \"%s\""),
+                                      src->GetPath()+wxT("/")+str));
+        dst->Write(str, src->ReadBool(str, wxEmptyString));
+        break;
+    Type_Boolean:
+      wxLogMessage(wxString::Format(_("Copying config bool \"%s\""),
+                                    src->GetPath()+wxT("/")+str));
+      dst->Write(str, src->ReadBool(str, false));
+      break;
+    Type_Integer:
+      wxLogMessage(wxString::Format(_("Copying config int \"%s\""),
+                                    src->GetPath()+wxT("/")+str));
+      dst->Write(str, src->ReadLong(str, 0));
+      break;
+    Type_Float:
+      wxLogMessage(wxString::Format(_("Copying config float \"%s\""),
+                                    src->GetPath()+wxT("/")+str));
+      dst->Write(str, src->ReadDouble(str, 0.0));
+      break;
+    default:
+      wxLogMessage(wxString::Format(_("Config item \"%s\" was of an unknown type"),
+                                    src->GetPath()+wxT("/")+str));
+    }
     bCont = src->GetNextEntry(str, dummy);
   }
-  m_configuration->ReadStyles(file);
+
+  bCont = src->GetFirstGroup(str, dummy);
+  while ( bCont ) {
+    CopyConfig(src, dst, str);
+    bCont = src->GetNextGroup(str, dummy);
+  }
+  if(dir != "/")
+  {
+    src->SetPath("..");
+    dst->SetPath("..");
+  }
 }
 
 void ConfigDialogue::OnResetAllToDefaults(wxCommandEvent&  WXUNUSED(event))

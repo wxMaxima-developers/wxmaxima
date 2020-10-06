@@ -211,7 +211,7 @@ private:
   
 protected:
   void OnImport(wxCommandEvent& event);
-  void CopyConfig(wxConfigBase *src, wxString &str, long &dummy);
+  void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);
