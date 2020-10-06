@@ -1336,35 +1336,12 @@ wxString GroupCell::ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, in
       if (!wxMkdir(imgDir))
         return wxEmptyString;
 
-    // Do we want to output LaTeX animations?
-    bool AnimateLaTeX = true;
-    wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-    if ((tmp->GetType() == MC_TYPE_SLIDE) && (AnimateLaTeX))
-    {
-      SlideShow *src = dynamic_cast<SlideShow *>(tmp);
-      str << wxT("\\begin{animateinline}{") + wxString::Format(wxT("%i"), src->GetFrameRate()) + wxT("}\n");
-      for (int i = 0; i < src->Length(); i++)
-      {
-        wxString Frame = imgDir + wxT("/") + image + wxString::Format(wxT("_%i"), i);
-        if ((src->GetBitmap(i)).SaveFile(Frame + wxT(".png")))
-          str << wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") + Frame +
-                 wxT("}\n");
-        else
-          str << wxT("\n\\verb|<<GRAPHICS>>|\n");
-        if (i < src->Length() - 1)
-          str << wxT("\\newframe");
-      }
-      str << wxT("\\end{animateinline}");
-    }
+    wxString file = imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
+    if (imgCopy->ToImageFile(file).x >= 0)
+      str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
+        filename + wxT("_img/") + image + wxT("}");
     else
-    {
-      wxString file = imgDir + wxT("/") + image + wxT(".") + imgCopy->GetExtension();
-      if (imgCopy->ToImageFile(file).x >= 0)
-        str += wxT("\\includegraphics[width=.95\\linewidth,height=.80\\textheight,keepaspectratio]{") +
-               filename + wxT("_img/") + image + wxT("}");
-      else
-        str << wxT("\n\\verb|<<GRAPHICS>>|\n");
-    }
+      str << wxT("\n\\verb|<<GRAPHICS>>|\n");
   }
 
   return str;

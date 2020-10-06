@@ -286,17 +286,11 @@ wxString SubSupCell::ToMatlab() const
 
 wxString SubSupCell::ToTeX() const
 {
-  wxConfigBase *config = wxConfig::Get();
-
-  bool TeXExponentsAfterSubscript = false;
-
-  config->Read("TeXExponentsAfterSubscript", &TeXExponentsAfterSubscript);
-
   wxString s;
 
   if (m_scriptCells.empty())
   {
-    if (TeXExponentsAfterSubscript)
+    if ((*m_configuration)->TeXExponentsAfterSubscript())
     {
       s = "{{{" + m_baseCell->ListToTeX() + "}";
       if(m_postSubCell)

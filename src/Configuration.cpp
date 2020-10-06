@@ -50,6 +50,8 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_wrapLatexMath = true;
+  m_exportContainsWXMX = true;
   m_bitmapScale = 3;
   m_defaultFramerate = 12;
   m_fixedFontTC = false;
@@ -60,6 +62,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_usepngCairo = true;
   #endif
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
+  m_usePartialForDiff = false,
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
   m_incrementalSearch = true;
@@ -76,6 +79,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
+  m_TeXExponentsAfterSubscript = false;
   m_saveUntitled = true;
   m_cursorJump = true;
   m_autoSaveAsTempFile = false;
@@ -282,7 +286,7 @@ static const Configuration::EscCodeContainer &EscCodes()
 }
 
 void Configuration::InitStyles()
-{
+{  
   std::fill(std::begin(m_styles), std::end(m_styles), Style{});
 
   Style defaultStyle;
@@ -450,6 +454,9 @@ void Configuration::ReadConfig()
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
     config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
+    config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
+    config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
+    config->Read(wxT("texPreamble"), &m_texPreamble);
     // Write the string into a memory buffer
     wxMemoryOutputStream ostream;
     wxTextOutputStream txtstrm(ostream);
@@ -482,6 +489,8 @@ void Configuration::ReadConfig()
       }
     }
   }
+  config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
+  config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
   config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
   config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
   config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
@@ -949,14 +958,13 @@ void Configuration::ReadStyles(const wxString &file)
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(const wxString &file)
+void Configuration::WriteSettings(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
-
 
   {
     wxXmlNode *topNode = new wxXmlNode(
@@ -1048,6 +1056,7 @@ void Configuration::WriteStyles(const wxString &file)
   m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
+  WriteStyles(config);
   if(file != wxEmptyString)
   {
     config->Flush();
@@ -1134,9 +1143,13 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
          rect.Contains(updateRegion);
 }
 
-void Configuration::WriteSettings()
+void Configuration::WriteStyles(wxConfigBase *config)
 {
-  wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
+  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
+  config->Write(wxT("texPreamble"), m_texPreamble);
+  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
+  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript);
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight);
   config->Write(wxT("fixedFontTC"), m_fixedFontTC);
@@ -1197,6 +1210,23 @@ void Configuration::WriteSettings()
   config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
+}
+
+//! Saves the style settings to a file.
+void Configuration::WriteStyles(const wxString &file)
+{
+  wxConfigBase *config = NULL;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+
+  WriteStyles(config);
+  if(file != wxEmptyString)
+  {
+    config->Flush();
+    delete config;
+  }
 }
 const wxString &Configuration::GetStyleName(TextStyle style) const
 {

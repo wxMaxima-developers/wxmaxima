@@ -2547,16 +2547,13 @@ bool Worksheet::CopyTeX()
     return false;
 
   wxConfigBase *config = wxConfig::Get();
-  bool wrapLatexMath = true;
-  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
-
   Cell *const start = m_cellPointers.m_selectionStart;
   bool inMath = false;
   wxString s;
 
   if (start->GetType() != MC_TYPE_GROUP)
   {
-    inMath = wrapLatexMath;
+    inMath = m_configuration->WrapLatexMath();
     if (inMath)
       s = wxT("\\[");
   }
@@ -5507,10 +5504,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
                         "wxMaxima</a>.</small></p>\n");
   output << wxEmptyString;
 
-  bool exportContainsWXMX = false;
-  wxConfig::Get()->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
-
-  if (exportContainsWXMX)
+  if (m_configuration->ExportContainsWXMX())
   {
     wxString wxmxfileName_rel = imgDir_rel + wxT("/") + filename + wxT(".wxmx");
     wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
@@ -5670,23 +5664,13 @@ bool Worksheet::ExportToTeX(const wxString &file)
   // lines.
   output << wxT("\\DeclareMathOperator{\\abs}{abs}\n");
 
-  // The animate package is only needed if we actually want to output animations
-  // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
-  bool AnimateLaTeX = true;
-  wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-  if (AnimateLaTeX)
-  {
-    output << wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option\n");
-    output << wxT("                      % \"Export animations to TeX\" was enabled when this file was generated.\n");
-  }
   output << wxT("\n");
   output << wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
   output << wxT("\n");
 
   // Add an eventual preamble requested by the user.
-  wxString texPreamble;
-  wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
-  if (texPreamble != wxEmptyString)
+  wxString texPreamble = m_configuration->TexPreamble();
+  if (!texPreamble.IsEmpty())
     output << texPreamble << wxT("\n\n");
 
   output << wxT("\\begin{document}\n");

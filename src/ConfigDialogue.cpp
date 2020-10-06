@@ -328,8 +328,6 @@ void ConfigDialogue::SetCheckboxValues()
           _("The default height for embedded plots. Can be read out or overridden by the maxima variable wxplot_size."));
   m_displayedDigits->SetToolTip(
           _("If numbers are getting longer than this number of digits they will be displayed abbreviated by an ellipsis."));
-  m_AnimateLaTeX->SetToolTip(
-          _("Some PDF viewers are able to display moving images and wxMaxima is able to output them. If this option is selected additional LaTeX packages might be needed in order to compile the output, though."));
   m_TeXExponentsAfterSubscript->SetToolTip(
           _("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_usePartialForDiff->SetToolTip(
@@ -381,33 +379,16 @@ void ConfigDialogue::SetCheckboxValues()
     );
 
   wxConfigBase *config = wxConfig::Get();
+  wxString mp, mc, ib, mf;
 
   // The default values for all config items that will be used if there is no saved
-  // configuration data for this item.
-  bool AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
-          usePartialForDiff = false,
-          wrapLatexMath = true,
-          exportContainsWXMX = false;
-  int exportWithMathJAX = 0;
-
-  wxString texPreamble = wxEmptyString;
-
-  int panelSize = 1;
-  config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-  config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
-  config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
-  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
-  config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
-  config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
-  config->Read(wxT("texPreamble"), &texPreamble);
-  config->Read(wxT("panelSize"), &panelSize);
-  
+  // configuration data for this item. 
   m_documentclass->SetValue(configuration->Documentclass());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
   m_mathJaxURL->SetValue(configuration->MathJaXURL_User());
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
   m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
-  m_texPreamble->SetValue(texPreamble);
+  m_texPreamble->SetValue(configuration->TexPreamble());
   m_autoSave->SetValue(!configuration->AutoSaveAsTempFile());
 
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
@@ -418,13 +399,12 @@ void ConfigDialogue::SetCheckboxValues()
   m_usesvg->SetValue(configuration->UseSVG());
   m_antialiasLines->SetValue(configuration->AntiAliasLines());
 
-  m_AnimateLaTeX->SetValue(AnimateLaTeX);
-  m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
-  m_usePartialForDiff->SetValue(usePartialForDiff);
-  m_wrapLatexMath->SetValue(wrapLatexMath);
-  m_exportContainsWXMX->SetValue(exportContainsWXMX);
+  m_TeXExponentsAfterSubscript->SetValue(configuration->TeXExponentsAfterSubscript());
+  m_usePartialForDiff->SetValue(configuration->UsePartialForDiff());
+  m_wrapLatexMath->SetValue(configuration->WrapLatexMath());
+  m_exportContainsWXMX->SetValue(configuration->ExportContainsWXMX());
   m_printBrackets->SetValue(configuration->PrintBrackets());
-  m_exportWithMathJAX->SetSelection((int)configuration->HTMLequationFormat());
+  m_exportWithMathJAX->SetSelection(configuration->HTMLequationFormat());
   m_matchParens->SetValue(configuration->GetMatchParens());
   m_showLength->SetSelection(configuration->ShowLength());
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
@@ -653,6 +633,24 @@ wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxALL,5).
     Expand()
     );
+  wxButton *exportAllButton = new wxButton(panel, -1, _("Export all settings"));
+  exportAllButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnExportAll),
+                          NULL, this);
+  vsizer->Add(
+    exportAllButton,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
+  wxButton *importSettingsButton = new wxButton(panel, -1, _("Import settings"));
+  importSettingsButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnImport),
+                          NULL, this);
+  vsizer->Add(
+    importSettingsButton,
+    wxSizerFlags().Border(wxALL,5).
+    Expand()
+    );
   wxButton *resetStylesButton = new wxButton(panel, -1, _("Reset the Style settings"));
   resetStylesButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnResetStyles),
@@ -850,10 +848,6 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_printScale->SetIncrement(.1);
   grid_sizer->Add(ps, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_printScale, 0, wxALL, 5);
-
-  m_AnimateLaTeX = new wxCheckBox(panel, -1,
-                                  _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
-  vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
 
   m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
   vsizer->Add(m_TeXExponentsAfterSubscript, 0, wxALL, 5);
@@ -1296,16 +1290,15 @@ void ConfigDialogue::WriteSettings()
   configuration->DefaultPlotWidth(m_defaultPlotWidth->GetValue());
   configuration->DefaultPlotHeight(m_defaultPlotHeight->GetValue());
   configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
-  config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
-  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
-  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
-  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
-  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
+  configuration->TeXExponentsAfterSubscript(m_TeXExponentsAfterSubscript->GetValue());
+  configuration->UsePartialForDiff(m_usePartialForDiff->GetValue());
+  configuration->WrapLatexMath(m_wrapLatexMath->GetValue());
+  configuration->ExportContainsWXMX(m_exportContainsWXMX->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
   configuration->HTMLequationFormat((Configuration::htmlExportFormat) m_exportWithMathJAX->GetSelection());
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   configuration->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
-  config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
+  configuration->TexPreamble(m_texPreamble->GetValue());
   configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
@@ -1489,6 +1482,96 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent& WXUNUSED(event))
   UpdateExample();
 }
 
+
+void ConfigDialogue::OnExportAll(wxCommandEvent&  WXUNUSED(event))
+{
+  wxString file = wxFileSelector(_("Save config to file"),
+                                 wxEmptyString, wxT("style.ini"), wxT("ini"),
+                                 _("Config file (*.ini)|*.ini"),
+                                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+  if (file != wxEmptyString)
+  {
+    WriteSettings();
+    m_configuration->WriteSettings(file);
+  }
+}
+
+void ConfigDialogue::OnImport(wxCommandEvent&  WXUNUSED(event))
+{
+  wxString file = wxFileSelector(_("Read config to file"),
+                                 wxEmptyString, wxT("style.ini"), wxT("ini"),
+                                 _("Config file (*.ini)|*.ini"),
+                                 wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+  if (file != wxEmptyString)
+  {
+    wxFileInputStream str(file);
+    wxConfigBase *src = new wxFileConfig(str);
+    if(src)
+    {
+      wxString str;
+      long dummy;
+      // first enum all entries
+      bool bCont = src->GetFirstEntry(str, dummy);
+      if(bCont)
+        CopyConfig(src, wxConfigBase::Get());
+      m_configuration->ReadStyles(file);
+      SetCheckboxValues();
+      wxCommandEvent dmmy;
+      OnChangeStyle(dmmy);
+    }
+  }
+}
+
+void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir)
+{
+  bool bCont = true;
+  long dummy;
+  wxString str;
+  src->SetPath(dir);
+  dst->SetPath(dir);
+  src->GetFirstEntry(str, dummy);
+  while ( bCont )
+  {
+    switch(src->GetEntryType(str))
+    {
+    Type_String:
+        wxLogMessage(wxString::Format(_("Copying config string \"%s\""),
+                                      src->GetPath()+wxT("/")+str));
+        dst->Write(str, src->ReadBool(str, wxEmptyString));
+        break;
+    Type_Boolean:
+      wxLogMessage(wxString::Format(_("Copying config bool \"%s\""),
+                                    src->GetPath()+wxT("/")+str));
+      dst->Write(str, src->ReadBool(str, false));
+      break;
+    Type_Integer:
+      wxLogMessage(wxString::Format(_("Copying config int \"%s\""),
+                                    src->GetPath()+wxT("/")+str));
+      dst->Write(str, src->ReadLong(str, 0));
+      break;
+    Type_Float:
+      wxLogMessage(wxString::Format(_("Copying config float \"%s\""),
+                                    src->GetPath()+wxT("/")+str));
+      dst->Write(str, src->ReadDouble(str, 0.0));
+      break;
+    default:
+      wxLogMessage(wxString::Format(_("Config item \"%s\" was of an unknown type"),
+                                    src->GetPath()+wxT("/")+str));
+    }
+    bCont = src->GetNextEntry(str, dummy);
+  }
+
+  bCont = src->GetFirstGroup(str, dummy);
+  while ( bCont ) {
+    CopyConfig(src, dst, str);
+    bCont = src->GetNextGroup(str, dummy);
+  }
+  if(dir != "/")
+  {
+    src->SetPath("..");
+    dst->SetPath("..");
+  }
+}
 
 void ConfigDialogue::OnResetAllToDefaults(wxCommandEvent&  WXUNUSED(event))
 {

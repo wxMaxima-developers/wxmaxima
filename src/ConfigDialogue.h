@@ -210,9 +210,12 @@ private:
   wxPanel *CreateStartupPanel();
   
 protected:
+  void OnImport(wxCommandEvent& event);
+  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);
+  void OnExportAll(wxCommandEvent& event);
   void OnResetStyles(wxCommandEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;
@@ -263,8 +266,6 @@ protected:
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
   wxSpinCtrl *m_displayedDigits;
-  //! A checkbox that allows to select if the LaTeX file should contain animations.
-  wxCheckBox *m_AnimateLaTeX;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()
