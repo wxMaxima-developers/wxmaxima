@@ -1577,7 +1577,6 @@ void ConfigDialogue::OnResetAllToDefaults(wxCommandEvent&  WXUNUSED(event))
 {
   wxLogMessage(_("Resetting all configuration settings"));
   m_configuration->ResetAllToDefaults();
-  m_configuration->InitStyles();
   SetCheckboxValues();
   wxCommandEvent dummy;
   OnChangeStyle(dummy);
