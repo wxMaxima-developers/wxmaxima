@@ -44,6 +44,16 @@
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc)
 {
+  m_printing = false;
+  m_clipToDrawRegion = true;
+  m_fontChanged = true;
+  m_inLispMode = false;
+  m_forceUpdate = false;
+  m_outdated = false;
+  m_lineWidth_em = 88;
+  m_antialiassingDC = NULL;
+  m_workSheet = NULL;
+  SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults(options);
   ReadConfig();
 }
@@ -67,7 +77,6 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_documentclassOptions = wxT("fleqn");
   m_incrementalSearch = true;
   m_symbolPaneAdditionalChars = wxT("Øü§");
-  SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
   #ifdef __WXGTK__
@@ -83,28 +92,20 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_saveUntitled = true;
   m_cursorJump = true;
   m_autoSaveAsTempFile = false;
-  m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
-  m_clipToDrawRegion = true;
-  m_fontChanged = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_invertBackground = false;
   m_undoLimit = 0;
   m_recentItems = 10;
-  m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_useSVG = false;
   m_changeAsterisk = true;
-  m_workSheet = NULL;
   m_latin2greek = false;
   m_enterEvaluates = false;
   m_printScale = 1.0;
-  m_forceUpdate = false;
-  m_outdated = false;
-  m_printing = false;
   m_TeXFonts = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
@@ -114,7 +115,6 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_defaultPlotWidth = 1200;
   m_defaultPlotHeight = 900;
   SetLanguage(wxLANGUAGE_DEFAULT);
-  m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = labels_prefer_user;
   m_abortOnError = true;
