@@ -957,7 +957,7 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
 
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(9, 1, 0, 0);
+  wxFlexGridSizer *vsizer = new wxFlexGridSizer(11, 1, 0, 0);
 
   wxFlexGridSizer *nameSizer = new wxFlexGridSizer(6, 3, 0, 0);
   nameSizer->Add(new wxStaticText(panel, -1, _("Maxima program:")),
@@ -1060,6 +1060,30 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
   vsizer->Add(m_abortOnError, 0, wxALL, 5);
 
+  m_maximaEnvVariables = new wxGrid(panel,-1);
+  m_maximaEnvVariables->CreateGrid(0,2);
+  m_maximaEnvVariables->BeginBatch();
+  wxEnvVariableHashMap::const_iterator it;
+  for (it = m_configuration->MaximaEnvVars().begin();
+       it != m_configuration->MaximaEnvVars().end();
+       ++it)
+  {
+    m_maximaEnvVariables->AppendRows(1);
+    int row = m_maximaEnvVariables->GetNumberRows() - 1;
+    m_maximaEnvVariables->SetCellValue(row,0,it->first);
+    m_maximaEnvVariables->SetCellValue(row,1,it->second);
+  }
+    m_maximaEnvVariables->AppendRows(1);
+  m_maximaEnvVariables->SetColLabelValue(0,_("Variable"));
+  m_maximaEnvVariables->SetColLabelValue(1,_("Value"));
+  m_maximaEnvVariables->AutoSize();
+  m_maximaEnvVariables->EndBatch();
+  m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_CHANGED,
+                                wxGridEventHandler(ConfigDialogue::OnChangeMaximaEnvVar),
+                                NULL, this);
+  vsizer->Add(new wxStaticText(panel, -1,
+                             _("Environment variables for maxima")), wxSizerFlags().Expand());
+  vsizer->Add(m_maximaEnvVariables, wxSizerFlags().Expand());
   panel->SetSizerAndFit(vsizer);
 
   m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
@@ -1067,6 +1091,24 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   panel->SetSizerAndFit(vsizer);
 
   return panel;
+}
+
+void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& event)
+{
+  //  Make sure we have exactly one empty row the user can add variables to
+  for(int row=m_maximaEnvVariables->GetNumberRows()-2;row>=0;row--)
+  {
+    if(
+      (m_maximaEnvVariables->GetCellValue(row,0).Trim(true).Trim(false).IsEmpty()) &&
+      (m_maximaEnvVariables->GetCellValue(row,1).Trim(true).Trim(false).IsEmpty())
+      )
+      m_maximaEnvVariables->DeleteRows(row,1);
+  }
+  int row = m_maximaEnvVariables->GetNumberRows() - 1;
+  if((!m_maximaEnvVariables->GetCellValue(row,0).Trim(true).Trim(false).IsEmpty()) &&
+     (!m_maximaEnvVariables->GetCellValue(row,1).Trim(true).Trim(false).IsEmpty()))
+    m_maximaEnvVariables->AppendRows(1);
+  m_maximaEnvVariables->GetParent()->Layout();
 }
 
 wxPanel *ConfigDialogue::CreateClipboardPanel()
@@ -1249,6 +1291,15 @@ void ConfigDialogue::WriteSettings()
   wxArrayString out;
   wxConfigBase *config = wxConfig::Get();
   Configuration *configuration = m_configuration;
+
+  configuration->m_maximaEnvVars.clear();
+    for(int row=m_maximaEnvVariables->GetNumberRows()-1;row>=0;row--)
+  {
+    if(!m_maximaEnvVariables->GetCellValue(row,0).Trim(true).Trim(false).IsEmpty())
+      configuration->m_maximaEnvVars[m_maximaEnvVariables->GetCellValue(row,0)] =
+        m_maximaEnvVariables->GetCellValue(row,1);
+  }
+  
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());

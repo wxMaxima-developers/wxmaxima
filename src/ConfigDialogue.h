@@ -35,6 +35,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/image.h>
+#include <wx/grid.h>
 #include <wx/hashmap.h>
 #include <memory>
 #include <wx/propdlg.h>
@@ -210,6 +211,7 @@ private:
   wxPanel *CreateStartupPanel();
   
 protected:
+  wxGrid *m_maximaEnvVariables;
   void OnImport(wxCommandEvent& event);
   static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));
   void OnReloadAll(wxCommandEvent& event);
@@ -217,6 +219,7 @@ protected:
   void OnResetAllToDefaults(wxCommandEvent& event);
   void OnExportAll(wxCommandEvent& event);
   void OnResetStyles(wxCommandEvent& event);
+  void OnChangeMaximaEnvVar(wxGridEvent& event);
   //! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.
