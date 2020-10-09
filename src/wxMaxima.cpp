@@ -1833,7 +1833,14 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
-    if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) <= 0 )
+      
+      wxEnvVariableHashMap environment;
+      environment = m_worksheet->m_configuration->MaximaEnvVars();
+      wxGetEnvMap(&environment);
+      
+      wxExecuteEnv *env = new wxExecuteEnv;
+      env->env = environment;
+      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process, env) <= 0 )
     {
       StatusMaximaBusy(process_wont_start);
       RightStatusText(_("Cannot start the maxima binary"));

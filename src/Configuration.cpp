@@ -60,6 +60,11 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_maximaEnvVars.clear();
+  // Tell gnuplot not to wait for <enter> every few lines
+  #ifndef __WXMSW__
+  m_maximaEnvVars[wxT("PAGER")] = wxT("cat");
+  #endif
   m_wrapLatexMath = true;
   m_exportContainsWXMX = true;
   m_bitmapScale = 3;
@@ -453,38 +458,95 @@ void Configuration::ReadConfig()
     // If this preference cannot be loaded we don't want an error message about it
     SuppressErrorDialogs suppressor;
     wxString hideMessagesConfigString;
-    config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
     config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("texPreamble"), &m_texPreamble);
-    // Write the string into a memory buffer
-    wxMemoryOutputStream ostream;
-    wxTextOutputStream txtstrm(ostream);
-    txtstrm.WriteString(hideMessagesConfigString);
-    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
-                                ostream.GetOutputStreamBuffer()->GetBufferSize());
-    wxXmlDocument xmlDocument;
-    if(xmlDocument.Load(istream))
     {
-      wxXmlNode *headNode = xmlDocument.GetDocumentNode();
-      if(headNode)
+      config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
+      // Write the string into a memory buffer
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(hideMessagesConfigString);
+      wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                  ostream.GetOutputStreamBuffer()->GetBufferSize());
+      wxXmlDocument xmlDocument;
+      if(xmlDocument.Load(istream))
       {
-        headNode = headNode->GetChildren();
-        while((headNode) && (headNode->GetName() != wxT("markers")))
-          headNode = headNode->GetNext();
-        wxXmlNode *entry = headNode->GetChildren();
-        while(entry)
+        wxXmlNode *headNode = xmlDocument.GetDocumentNode();
+        if(headNode)
         {
-
-          if(entry->GetName() == wxT("hide"))
+          headNode = headNode->GetChildren();
+          while((headNode) && (headNode->GetName() != wxT("markers")))
+            headNode = headNode->GetNext();
+          wxXmlNode *entry = headNode->GetChildren();
+          while(entry)
           {
-            wxXmlNode *node = entry->GetChildren();
-            if(node)
+
+            if(entry->GetName() == wxT("hide"))
             {
-              HideMarkerForThisMessage(node->GetContent(), true);
+              wxXmlNode *node = entry->GetChildren();
+              if(node)
+              {
+                HideMarkerForThisMessage(node->GetContent(), true);
+              }
             }
+            entry = entry->GetNext();
           }
-          entry = entry->GetNext();
+        }
+      }
+    }
+    {
+      wxString maximaEnvironmentString;
+      config->Read(wxT("maximaEnvironment"), &maximaEnvironmentString);
+      // Write the string into a memory buffer
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(maximaEnvironmentString);
+      wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                  ostream.GetOutputStreamBuffer()->GetBufferSize());
+      wxXmlDocument xmlDocument;
+      if(xmlDocument.Load(istream))
+      {
+        wxXmlNode *headNode = xmlDocument.GetDocumentNode();
+        if(headNode)
+        {
+          headNode = headNode->GetChildren();
+          while(headNode)
+          {
+            if(headNode->GetName() == wxT("entry"))
+            {
+              wxXmlNode *entry = headNode->GetChildren();
+              wxString var;
+              wxString value;
+              while(entry)
+              {
+                if(entry->GetName() == wxT("var"))
+                {
+                  wxXmlNode *node = entry->GetChildren();
+                  while(node)
+                  {
+                    if(node->GetType() == wxXML_TEXT_NODE)
+                      var = node->GetContent();
+                    node = node->GetNext();
+                  }
+                }
+                if(entry->GetName() == wxT("value"))
+                {
+                  wxXmlNode *node = entry->GetChildren();
+                  while(node)
+                  {
+                    if(node->GetType() == wxXML_TEXT_NODE)
+                      value = node->GetContent();
+                    node = node->GetNext();
+                  }
+                }
+                entry = entry->GetNext();
+              }
+              if(!var.IsEmpty())
+                m_maximaEnvVars[var] = value;
+            }
+            headNode = headNode->GetNext();
+          }
         }
       }
     }
@@ -966,6 +1028,59 @@ void Configuration::WriteSettings(const wxString &file)
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
+  {
+    wxXmlNode *topNode = new wxXmlNode(
+      NULL,
+      wxXML_DOCUMENT_NODE, wxEmptyString,
+      wxEmptyString
+      );
+    wxEnvVariableHashMap::const_iterator it;
+    for (it = m_maximaEnvVars.begin();
+         it != m_maximaEnvVars.end();
+         ++it)
+    {
+      if(!it->first.IsEmpty())
+      {
+        wxXmlNode *entryNode =
+          new wxXmlNode(
+            topNode,
+            wxXML_ELEMENT_NODE,
+            "entry");
+        wxXmlNode *varNode =
+          new wxXmlNode(
+            entryNode,
+            wxXML_ELEMENT_NODE,
+            "var");
+        wxXmlNode *valueNode =
+          new wxXmlNode(
+            entryNode,
+            wxXML_ELEMENT_NODE,
+            "value");
+        new wxXmlNode(
+          varNode,
+          wxXML_TEXT_NODE,
+          wxEmptyString,
+          it->first);
+        new wxXmlNode(
+          valueNode,
+          wxXML_TEXT_NODE,
+          wxEmptyString,
+          it->second);
+      }
+    }
+    wxXmlDocument xmlDoc;
+    xmlDoc.SetDocumentNode(topNode);
+    // Write the string into a memory buffer
+    wxMemoryOutputStream ostream;
+    xmlDoc.Save(ostream);
+    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxTextInputStream text(istream);
+    wxString maximaEnvConfigString;
+    while(!istream.Eof())
+      maximaEnvConfigString += text.ReadLine() + wxT("\n");
+    config->Write(wxT("maximaEnvironment"), maximaEnvConfigString);
+  }
   {
     wxXmlNode *topNode = new wxXmlNode(
       NULL,

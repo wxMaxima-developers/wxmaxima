@@ -123,6 +123,9 @@ public:
     display_1dASCII
   };
 
+  const wxEnvVariableHashMap& MaximaEnvVars(){return m_maximaEnvVars;}
+  wxEnvVariableHashMap m_maximaEnvVars;
+
   mathDisplayMode DisplayMode(){return m_displayMode;}
   void DisplayMode(mathDisplayMode mode ){m_displayMode = mode;}
 
