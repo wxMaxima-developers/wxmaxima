@@ -1059,7 +1059,8 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
 
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
   vsizer->Add(m_abortOnError, 0, wxALL, 5);
-
+  m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
+  vsizer->Add(m_restartOnReEvaluation, 0, wxALL, 5);
   m_maximaEnvVariables = new wxGrid(panel,-1);
   m_maximaEnvVariables->CreateGrid(0,2);
   m_maximaEnvVariables->BeginBatch();
@@ -1084,10 +1085,6 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(new wxStaticText(panel, -1,
                              _("Environment variables for maxima")), wxSizerFlags().Expand());
   vsizer->Add(m_maximaEnvVariables, wxSizerFlags().Expand());
-  panel->SetSizerAndFit(vsizer);
-
-  m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
-  vsizer->Add(m_restartOnReEvaluation, 0, wxALL, 5);
   panel->SetSizerAndFit(vsizer);
 
   return panel;
