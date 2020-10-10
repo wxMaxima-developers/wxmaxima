@@ -54,8 +54,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
-<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
+<li><a href="#підручник-користувача-wxmaxima">Підручник користувача wxMaxima</a></li>
+<li><a href="#вступ-до-wxmaxima"><span class="toc-section-number">1</span> Вступ до wxMaxima</a><ul>
 <li><a href="#maxima-і-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> і wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#де-зберігаються-налаштування"><span class="toc-section-number">1.4.5</span> Де зберігаються налаштування?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#розширення-maxima"><span class="toc-section-number">2</span> Розширення <em>Maxima</em></a><ul>
 <li><a href="#змінні-із-індексами"><span class="toc-section-number">2.1</span> Змінні із індексами</a></li>
 <li><a href="#візуальний-супровід-дій-користувача-у-смужці-стану"><span class="toc-section-number">2.2</span> Візуальний супровід дій користувача у смужці стану</a></li>
 <li><a href="#креслення"><span class="toc-section-number">2.3</span> Креслення</a><ul>
@@ -105,7 +105,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#звітування-про-вади"><span class="toc-section-number">2.8</span> Звітування про вади</a></li>
 <li><a href="#як-зробити-так-щоб-виведені-дані-було-показано-червоним-кольором"><span class="toc-section-number">2.9</span> Як зробити так, щоб виведені дані було показано червоним кольором?</a></li>
 </ul></li>
-<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#вирішення-проблем"><span class="toc-section-number">3</span> Вирішення проблем</a><ul>
 <li><a href="#не-вдається-зєднатися-із-maxima"><span class="toc-section-number">3.1</span> Не вдається з'єднатися із <em>Maxima</em></a></li>
 <li><a href="#як-зберегти-дані-із-пошкодженого-файла-.wxmx"><span class="toc-section-number">3.2</span> Як зберегти дані із пошкодженого файла .wxmx</a></li>
 <li><a href="#хочу-бачити-діагностичні-відомості-на-екрані-перш-ніж-команда-завершить-свою-роботу"><span class="toc-section-number">3.3</span> Хочу бачити діагностичні відомості на екрані, перш ніж команда завершить свою роботу</a></li>
@@ -123,14 +123,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 <li><a href="#поширені-питання-та-відповіді-на-них"><span class="toc-section-number">4</span> Поширені питання та відповіді на них</a><ul>
-<li><a href="#чи-є-якийсь-спосіб-умістити-більше-тексту-на-сторінку-pdflatex"><span class="toc-section-number">4.1</span> Чи є якийсь спосіб умістити більше тексту на сторінку pdfLaTeX?</a></li>
+<li><a href="#чи-є-якийсь-спосіб-умістити-більше-тексту-на-сторінку-latex"><span class="toc-section-number">4.1</span> Чи є якийсь спосіб умістити більше тексту на сторінку LaTeX?</a></li>
 <li><a href="#чи-передбачено-у-програмі-темний-режим"><span class="toc-section-number">4.2</span> Чи передбачено у програмі «темний» режим?</a></li>
 <li><a href="#wxmaxima-іноді-повисає-на-декілька-секунд-під-час-першої-хвилини-роботи"><span class="toc-section-number">4.3</span> <em>wxMaxima</em> іноді повисає на декілька секунд під час першої хвилини роботи</a></li>
 </ul></li>
-<li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
+<li><a href="#параметри-командного-рядка"><span class="toc-section-number">5</span> Параметри командного рядка</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
+<h1 id="підручник-користувача-wxmaxima" class="unnumbered">Підручник користувача wxMaxima</h1>
 <p>wxMaxima — графічний інтерфейс користувача до системи комп'ютерної алгебри (СКА) <em>Maxima</em>. За допомогою wxMaxima можна користуватися усіма функціями <em>Maxima</em>. Крім того, у програмі передбачено зручні допоміжні програми для доступу до найпоширеніших можливостей СКА. У цьому підручнику наведено опис деяких можливостей, які роблять wxMaxima одним із найпопулярніших графічних інтерфейсів <em>Maxima</em>.</p>
 <figure>
 <img src="./wxMaximaLogo.png" alt="Логотип wxMaxima" id="img_wxMaximaLogo" /><figcaption>Логотип wxMaxima</figcaption>
@@ -157,7 +157,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Параметри командного рядка, підтримку яких передбачено у wxMaxima</p>
 <hr />
-<h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
+<h1 id="вступ-до-wxmaxima"><span class="header-section-number">1</span> Вступ до wxMaxima</h1>
 <h2 id="maxima-і-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> і wxMaxima</h2>
 <p>У системі програмного забезпечення з відкритим кодом великі системи, зазвичай, діляться на менші проєкти, з якими простіше працювати невеликим групам розробників. Наприклад, програма для запису компакт-дисків складається з засобу командного рядка, який, власне, виконує запис компакт-диска, і графічного інтерфейсу користувача, за допомогою користувачі можуть виконати потрібні їм дії, не запам'ятовуючи параметрів командного рядка і, загалом, взагалі не маючи справи із командним рядком. Однією із переваг цього підходу є те, що робота з розробки засобу командного рядка може бути використана багатьма програмами: той самий засіб командного рядка для запису компакт-дисків можна використати у додатку надсилання даних на компакт-диск у програмі для керування файлами, для функції «записати на компакт-диск» у музичному програвачі та для запису компакт-диска у програмі для резервного копіювання на DVD. Ще однією перевагою є поділ одного великого завдання на менші частини, що надає змогу розробникам надавати декілька інтерфейсів користувача для однієї програми.</p>
 <p>Система комп'ютерної алгебри (СКА), подібна до <em>Maxima</em>, дуже добре вкладається у цю схему. СКА може надавати логіку до програми-калькулятора із довільною точністю обчислень або може виконувати автоматичні перетворення форму у фоновому режимі для більших систем (наприклад, <a href="https://www.sagemath.org/">Sage</a>). Крім того, нею можна користуватися і безпосередньо, як самостійною системою. Доступ до <em>Maxima</em> можна отримати з командного рядка. Втім, часто інтерфейси, подібні до <em>wxMaxima</em>, є набагато ефективнішим способом доступу до програмного забезпечення, особливо для початківців.</p>
@@ -582,19 +582,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Деякі текстові процесори і подібні програми або розпізнають вхідні дані MathML і автоматично вставляють їх до придатного для редагування рівняння, або (подібно до LibreOffice 5.1) мають у складі редактор рівнянь, у якому передбачено можливість імпортування даних MathML з буфера обміну даними. У інших редакторах передбачено підтримку формул у RTF. Через це у <em>wxMaxima</em> передбачено декілька відповідних пунктів у контекстному меню.</p>
 <h3 id="підтримка-markdown"><span class="header-section-number">1.2.8</span> Підтримка Markdown</h3>
 <p>У <em>wxMaxima</em> ви зможете скористатися стандартними варіантами розмітки, які не суперечать математичним позначенням. Одним із елементів розмітки є невпорядковані списки.</p>
-<pre><code>Ordinary text
- * One item, indentation level 1
- * Another item at indentation level 1
-   * An item at a second indentation level
-   * A second item at the second indentation level
- * A third item at the first indentation level
-Ordinary text</code></pre>
+<pre><code>Звичайний текст
+ * Один пункт, рівень відступу 1
+ * Інший пункт на рівні відступу 1
+   * Пункт на другому рівні відступу
+   * Другий пункт на другому рівні відступу
+ * Третій пункт на першому рівні відступу
+Звичайний текст</code></pre>
 <p>У <em>wxMaxima</em> фрагменти тексту, які розпочинаються з символів <code>&gt;</code> вважаються блоками цитат:</p>
-<pre><code>Ordinary text
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-Ordinary text</code></pre>
+<pre><code>Звичайний текст
+&gt; цитата цитата цитата цитата
+&gt; цитата цитата цитата цитата
+&gt; цитата цитата цитата цитата
+Звичайний текст</code></pre>
 <p>У коді TeX та HTML <em>wxMaxima</em> також розпізнається рядок <code>=&gt;</code>, який програма замінює на відповідний символ Юнікод:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
 <p>Іншими символами, які буде розпізнано під час експортування до HTML або TeX, є <code>&lt;=</code> і <code>&gt;=</code> для порівнянь, двобічна стрілка (<code>&lt;=&gt;</code>), одинарні стрілки (<code>&lt;-&gt;</code>, <code>-&gt;</code> і <code>&lt;-</code>), а також <code>+/-</code> як відповідний знак. Для експортування у код TeX передбачено також підтримку перетворення <code>&lt;&lt;</code> і <code>&gt;&gt;</code>.</p>
@@ -622,7 +622,7 @@ Ordinary text</code></pre>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>Файли .wxm містять дані робочого аркуша, окрім виведених даних <em>Maxima</em>. У версіях Maxima &gt;5.38 їх можна прочитати за допомогою функції <code>load()</code> <em>Maxima</em>, так само, як можна прочитати файли .mac. У цьому текстовому форматі іноді є неусувна проблема — робочі аркуші із новими можливостями не є зворотно сумісними із застарілими версіями <em>wxMaxima</em>.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
-<p>У цьому заснованому на xml форматі файлів зберігається увесь робочий аркуш, включно із даними щодо масштабу та списком спостереження. Цей формат файлів є рекомендованим.</p>
+<p>У цьому заснованому на XML форматі файлів зберігається увесь робочий аркуш, включно із даними щодо масштабу та списком спостереження. Цей формат файлів є рекомендованим.</p>
 <h2 id="параметри-налаштування"><span class="header-section-number">1.4</span> Параметри налаштування</h2>
 <p>Для деяких типових змінних налаштувань у <em>wxMaxima</em> передбачено два способи налаштовування:</p>
 <ul>
@@ -637,8 +637,7 @@ Ordinary text</code></pre>
 <h3 id="типовий-розмір-креслення-для-нових-сеансів-maxima"><span class="header-section-number">1.4.2</span> Типовий розмір креслення для нових сеансів <em>maxima</em></h3>
 <p>Після наступного запуску креслення, які вбудовано до робочого аркуша, буде створено з цим розміром, якщо значення <code>wxplot_size</code> не було змінено <em>maxima</em>.</p>
 <p>Щоб встановити розмір графіка для окремого графіка, можна скористатися наведеною нижче конструкцією, яка встановить значення змінної лише для одної команди:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="cn">wxdraw2d</span>( 
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">wxdraw2d</span>( 
    <span class="cn">explicit</span>(
        <span class="cn">x</span>^<span class="dv">2</span>,
        <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>
@@ -661,7 +660,7 @@ Ordinary text</code></pre>
 <p>Якщо ви користуєтеся Unix/Linux, дані налаштувань буде збережено до файла <code>.wxMaxima</code> у вашому домашньому каталозі (якщо ви користуєтеся wxWidgets &lt; 3.1.1), або <code>.config/wxMaxima.conf</code> ((стандартний каталог XDG), якщо використано wxWidgets &gt;= 3.1.1). Визначити версію wxWidgets можна за допомогою команди <code>wxbuild_info();</code> або пункту меню «Довідка -&gt; Про програму». <a href="https://www.wxwidgets.org/">wxWidgets</a> є бібліотекою графічного інтерфейсу користувача, яка працює на багатьох платформах і є основою <em>wxMaxima</em> (звідси <code>wx</code> у назві програми). (Оскільки назви файлів починається з крапки, файл <code>.wxMaxima</code> і каталог<code>.config</code> є прихованими).</p>
 <p>Якщо ви користуєтеся Windows, налаштування буде збережено у реєстрі. Записи <em>wxMaxima</em> можна знайти у цій гілці: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
-<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
+<h1 id="розширення-maxima"><span class="header-section-number">2</span> Розширення <em>Maxima</em></h1>
 <p>Основним призначенням <em>wxMaxima</em> є забезпечення графічного інтерфейсу до <em>Maxima</em>. Отже, основним завданням програми є передавання команд до <em>Maxima</em> і сповіщення користувача про результат виконання цих команд. Втім, у деяких випадках, <em>wxMaxima</em> розширює функціональні можливості <em>Maxima</em>. Ми вже згадували про здатність <em>wxMaxima</em> створювати звіти експортуванням вмісту робочої книги до файлів HTML і LaTeX. У цьому розділі ми розглянемо деякі способи, у які <em>wxMaxima</em> удосконалює включення графіки до сеансу.</p>
 <h2 id="змінні-із-індексами"><span class="header-section-number">2.1</span> Змінні із індексами</h2>
 <p>якщо встановлено значення true для <code>wxsubscripts</code>, назви змінних у форматі <code>x_y</code> буде показано як літеру із нижнім індексом, якщо</p>
@@ -673,11 +672,11 @@ Ordinary text</code></pre>
 <h2 id="візуальний-супровід-дій-користувача-у-смужці-стану"><span class="header-section-number">2.2</span> Візуальний супровід дій користувача у смужці стану</h2>
 <p>Команди, які виконуються довго, можуть надавати користувачам інформацію на смужці стану. Цю інформацію буде замінено на будь-яку нову інформацію, яку програма надсилатиме туди (це надає змогу використовувати смужку стану як індикатор поступу), і буде вилучено, щойно буде завершено виконання поточної команди, яку надіслано до <em>Maxima</em>. Команду <code>wxstatusbar()</code> можна безпечно використовувати навіть у бібліотеках, які може бути використано у звичайній <em>Maxima</em> (без <em>wxMaxima</em>): якщо <em>wxMaxima</em> немає, команда <code>wxstatusbar()</code> просто не оброблятиметься.</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (
-    <span class="co">/* Tell the user how far we got */</span>
+    <span class="co">/* Повідомляємо користувачу, наскільки далеко зайшли */</span>
     <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),
-    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span>
-    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span>
-    <span class="co">/* program execution (here: for 3 seconds) */</span>
+    <span class="co">/* (sleep n) — функція Lisp, якою можна скористатися */</span>
+    <span class="co">/* із додаванням перед нею символу «?». Команда затримує */</span>
+    <span class="co">/* виконання програми (у нашому прикладі, на 3 секунди) */</span>
     ?<span class="cn">sleep</span>(<span class="dv">3</span>)
 )$</code></pre></div>
 <h2 id="креслення"><span class="header-section-number">2.3</span> Креслення</h2>
@@ -776,16 +775,15 @@ Ordinary text</code></pre>
 )$</code></pre></div>
 <h3 id="відкриття-декількох-креслень-у-вікнах-одночасно"><span class="header-section-number">2.3.7</span> Відкриття декількох креслень у вікнах одночасно</h3>
 <p>Хоча <em>wxMaxima</em> не надає доступу до цієї можливості, ця функція <em>Maxima</em> (у конфігураціях, де передбачено її підтримку) іноді є дуже зручною. Наведений нижче приклад походить із допису Маріо Родрігеса (Mario Rodriguez) у списку листування <em>Maxima</em>:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-    <span class="fu">load</span>(<span class="fu">draw</span>);
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="fu">load</span>(<span class="fu">draw</span>);
     
-    <span class="co">/* Parabola in window #1 */</span>
+    <span class="co">/* Парабола у вікні 1 */</span>
     <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));
     
-    <span class="co">/* Parabola in window #2 */</span>
+    <span class="co">/* Парабола у вікні 2 */</span>
     <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));
     
-    <span class="co">/* Paraboloid in window #3 */</span>
+    <span class="co">/* Параболоїд у вікні 3 */</span>
     <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</code></pre></div>
 <p>Також можна накреслити декілька креслень в одному вікні:</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="cn">wxdraw</span>(
@@ -829,8 +827,7 @@ Ordinary text</code></pre>
 <p>Надає змогу вибрати адекватну позицію у компромісному питанні «швидкість чи точність?», яке є частиною будь-якої програми для креслення.</p>
 <h2 id="вбудовування-графіків"><span class="header-section-number">2.4</span> Вбудовування графіків</h2>
 <p>Якщо використано формат файлів <code>.wxmx</code>, вбудовування файлів до проєкту <em>wxMaxima</em> можна виконати простим перетягуванням зі скиданням. Але іноді (наприклад, якщо вміст зображення може бути змінено згодом протягом роботи у сеансі), краще наказати програмі завантажувати файл зображення при обробці команд:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</code></pre></div>
 <h2 id="файли-запуску"><span class="header-section-number">2.5</span> Файли запуску</h2>
 <p>У діалоговому вікні налаштовування <em>wxMaxima</em> передбачено можливість редагування двох файлів із командами, які виконуються під час запуску програми:</p>
 <ul>
@@ -873,12 +870,12 @@ Ordinary text</code></pre>
 <h2 id="як-зробити-так-щоб-виведені-дані-було-показано-червоним-кольором"><span class="header-section-number">2.9</span> Як зробити так, щоб виведені дані було показано червоним кольором?</h2>
 <p>Команда <code>box()</code> <em>Maxima</em> призводити до того, що <em>wxMaxima</em> виводить її аргумент червоним кольором.</p>
 <hr />
-<h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
+<h1 id="вирішення-проблем"><span class="header-section-number">3</span> Вирішення проблем</h1>
 <h2 id="не-вдається-зєднатися-із-maxima"><span class="header-section-number">3.1</span> Не вдається з'єднатися із <em>Maxima</em></h2>
 <p>Оскільки <em>Maxima</em> (програма, яка виконує самі обчислення) і <em>wxMaxima</em> (програма, яка надає простий у користуванні інтерфейс користувача) є окремими програмами, які обмінюються даними за допомогою з'єднання локальною мережею. Тому найімовірнішою причиною є те, що це з'єднання чомусь не працює. Наприклад, брандмауер може бути налаштовано таким чином, що він не просто запобігає неуповноваженим з'єднання з інтернету (і, можливо, також перехоплює з'єднання із інтернетом), але і блокує обмін даними між процесами на тому самому комп'ютері. Зауважте, що оскільки <em>Maxima</em> виконується процесором Lisp, процес. із яким блокується обмін даними, не обов'язково називається «maxima». Типовими назвами програм, які відкривають з'єднання мережі, можуть бути sbcl, gcl, ccl, lisp.exe або щось подібне.</p>
 <p>У системах Un*x іншою можливою причиною є те, що петльову мережу, яка забезпечує з'єднання мережі між двома програмам, які працюють на одному комп'ютері, не налаштовано належним чином.</p>
 <h2 id="як-зберегти-дані-із-пошкодженого-файла-.wxmx"><span class="header-section-number">3.2</span> Як зберегти дані із пошкодженого файла .wxmx</h2>
-<p>На внутрішньому рівні більшість сучасних форматів на основі xml є звичайними файлами zip. <em>wxMaxima</em> не увімкнула стискання, що робить вміст файлів .wxmx придатним до перекладу у будь-якому текстовому редакторі.</p>
+<p>На внутрішньому рівні більшість сучасних форматів на основі XML є звичайними файлами zip. <em>wxMaxima</em> не увімкнула стискання, що робить вміст файлів .wxmx придатним до перекладу у будь-якому текстовому редакторі.</p>
 <p>Якщо підпис zip наприкінці файла є неушкодженим після перейменовування пошкодженого файла .wxmx на .zip, у більшості операційних систем передбачено спосіб видобування будь-якої частини даних, яка у ньому зберігається. Виконати таке видобування можна, якщо потрібно відновити початкові файли зображень з документа текстового процесора. Якщо підпис zip пошкоджено, це ще не кінець світу: якщо <em>wxMaxima</em> під час збереження виявила якусь помилку, має ще бути файл wxmx~, чий вміст може допомогти у відновленні даних.</p>
 <p>І навіть якщо такого файла не існує — якщо встановлено параметр налаштування для оптимізації файлів .wxmx для системи керування версіями, можна перейменувати файл .wxmx на файл .txt і скористатися текстовим редактором для відновлення частини XML із вмісту файла (він починається з <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> і завершується <code>&lt;/wxMaximaDocument&gt;</code>. До і після цього фрагмента тексту у текстовому редакторі ви побачите непридатні до читання двійкові дані).</p>
 <p>Якщо текстовий файл, що містить ці дані (наприклад скопійовані і вставлені як текст до звичайного файла), збережено як файл із суфіксом назви .xml, <em>wxMaxima</em> відомий спосіб відновлення тексту документа з цього файла.</p>
@@ -886,9 +883,9 @@ Ordinary text</code></pre>
 <p>Зазвичай, <em>wxMaxima</em> очікує, доки буде передано усю двовимірну формулу, перш ніж починає виводити дані. Таким чином заощаджується час, який могло б бути витрачено на постійні спроби вивести незавершену формулу. Втім, існує команда <code>disp</code>, яка може виводити діагностичні дані негайно, не очікуючи на завершення поточної команди <em>Maxima</em>:</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (
    <span class="fu">disp</span>(<span class="cn">i</span>),
-   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span>
-   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span>
-   <span class="co">/* program execution (here: for 3 seconds) */</span>
+   <span class="co">/* (sleep n) — функція Lisp, якою можна скористатися */</span>
+   <span class="co">/* із додаванням перед нею символу «?». Команда затримує */</span>
+   <span class="co">/* виконання програми (у нашому прикладі, на 3 секунди) */</span>
    ?<span class="cn">sleep</span>(<span class="dv">3</span>)
 )$</code></pre></div>
 <h2 id="на-кресленні-показано-лише-закриту-порожню-обгортку-із-повідомленням-про-помилку"><span class="header-section-number">3.4</span> На кресленні показано лише закриту порожню обгортку із повідомленням про помилку</h2>
@@ -910,8 +907,7 @@ Ordinary text</code></pre>
 <li>Якщо доступу не лишилося, не панікуйте. У меню «Перегляд» є пункт для показу панелі журналу, на якій буде показано усі команди <em>Maxima</em>, які було нещодавно віддано.</li>
 <li>Якщо ніщо інше не допомагає, у <em>Maxima</em> є функція для відтворення усіх команд:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="fu">playback</span>();</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="fu">playback</span>();</code></pre></div>
 <h2 id="wxmaxima-запускається-із-повідомленням-процес-maxima-несподівано-перервав-роботу."><span class="header-section-number">3.7</span> <em>wxMaxima</em> запускається із повідомленням «Процес Maxima несподівано перервав роботу.»</h2>
 <p>Однією з можливих причин є те, що <em>Maxima</em> не вдалося знайти у каталозі, який вказано на сторінці «Maxima» діалогового вікна налаштовування <em>wxMaxima</em>, а отже, програму взагалі не запущено. Встановлення адреси коректного виконуваного файла <em>Maxima</em> має виправити цю проблему.</p>
 <h2 id="maxima-висне-при-обчислення-і-не-відповідає-на-команди"><span class="header-section-number">3.8</span> Maxima висне при обчислення і не відповідає на команди</h2>
@@ -926,9 +922,8 @@ Ordinary text</code></pre>
 <p>Встановлення пакунка <code>ibus-gtk</code> має усунути проблему. Докладніше про це на сторінці (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558" class="uri">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>).</p>
 <h2 id="wxmaxima-припиняє-роботу-коли-maxima-обробляє-грецькі-символи-або-умляути"><span class="header-section-number">3.11</span> <em>wxMaxima</em> припиняє роботу, коли <em>Maxima</em> обробляє грецькі символи або умляути</h2>
 <p>Якщо вашу <em>Maxima</em> засновано на SBCL, слід додати такі рядки до вашого файла <code>.sbclrc</code>:</p>
-<div class="sourceCode"><pre class="sourceCode lisp"><code class="sourceCode commonlisp">
-(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
-<p>Тека, у якій має бути розташовано цей файл залежить від системи та способу встановлення. Втім, будь-яка <em>Maxima</em> на основі sbcl, яка вже виконала обчислення у якійсь комірці протягом поточного сеансу, без проблем повідомить, де його можна знайти, у відповідь на таку команду:</p>
+<div class="sourceCode"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp">(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
+<p>Тека, у якій має бути розташовано цей файл залежить від системи та способу встановлення. Втім, будь-яка <em>Maxima</em> на основі SBCL, яка вже виконала обчислення у якійсь комірці протягом поточного сеансу, без проблем повідомить, де його можна знайти, у відповідь на таку команду:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="креслення-1"><span class="header-section-number">3.12</span> Креслення</h2>
 <h3 id="чи-можна-зробити-так-щоб-wxmaxima-виводила-дані-одразу-до-файлів-зображень-і-до-вбудованих-до-аркуша-креслень"><span class="header-section-number">3.12.1</span> Чи можна зробити так, щоб <em>wxMaxima</em> виводила дані одразу до файлів зображень і до вбудованих до аркуша креслень?</h3>
@@ -967,16 +962,15 @@ Ordinary text</code></pre>
 ),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</code></pre></div>
 <hr />
 <h1 id="поширені-питання-та-відповіді-на-них"><span class="header-section-number">4</span> Поширені питання та відповіді на них</h1>
-<h2 id="чи-є-якийсь-спосіб-умістити-більше-тексту-на-сторінку-pdflatex"><span class="header-section-number">4.1</span> Чи є якийсь спосіб умістити більше тексту на сторінку pdfLaTeX?</h2>
+<h2 id="чи-є-якийсь-спосіб-умістити-більше-тексту-на-сторінку-latex"><span class="header-section-number">4.1</span> Чи є якийсь спосіб умістити більше тексту на сторінку LaTeX?</h2>
 <p>Звичайно, є. Просто додайте вказані нижче рядки до преамбули LaTeX (наприклад, за допомогою відповідного поля у діалоговому вікні налаштовування («Експорт-&gt;Додаткові рядки до преамбули TeX»)):</p>
-<div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex">
-<span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</code></pre></div>
 <h2 id="чи-передбачено-у-програмі-темний-режим"><span class="header-section-number">4.2</span> Чи передбачено у програмі «темний» режим?</h2>
 <p>Якщо бібліотека wxWidgets є достатньо новою, <em>wxMaxima</em> автоматично працюватиме у темному режимі, якщо у ньому працює решта операційної системи. Сам робочий аркуш типово має світле тло. Втім, колір тла можна змінити. Крім того, ви можете скористатися пунктом меню «Перегляд/Інвертувати яскравість робочого аркуша», за допомогою якого можна швидко перетворити робочий аркуш з темного на світлий, і навпаки.</p>
 <h2 id="wxmaxima-іноді-повисає-на-декілька-секунд-під-час-першої-хвилини-роботи"><span class="header-section-number">4.3</span> <em>wxMaxima</em> іноді повисає на декілька секунд під час першої хвилини роботи</h2>
 <p><em>wxMaxima</em> передає певні складні завдання, зокрема завдання з обробки підручника з <em>Maxima</em>, який складається з понад 1000 сторінок, фоновим завданням, що, зазвичай, відбувається зовсім непомітно. Втім, у момент, коли може знадобитися результат виконання такого завдання, <em>wxMaxima</em> може знадобитися декілька секунд для відновлення нормальної роботи.</p>
 <hr />
-<h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
+<h1 id="параметри-командного-рядка"><span class="header-section-number">5</span> Параметри командного рядка</h1>
 <p>У більшості операційних систем передбачено простіші способи запуску програми, ніж командний рядок, тому навряд ви запускатиме програму з командного рядка. Втім, у <em>wxMaxima</em> передбачено декілька корисних параметрів командного рядка.</p>
 <ul>
 <li><code>-v</code> або <code>--version</code>: вивести дані щодо версії програми</li>

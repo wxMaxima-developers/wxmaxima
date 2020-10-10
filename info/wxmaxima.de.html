@@ -105,7 +105,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#fehler-melden"><span class="toc-section-number">2.8</span> Fehler melden</a></li>
 <li><a href="#rotes-markieren-von-formelteilen"><span class="toc-section-number">2.9</span> Rotes Markieren von Formelteilen</a></li>
 </ul></li>
-<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#fehlersuche"><span class="toc-section-number">3</span> Fehlersuche</a><ul>
 <li><a href="#keine-verbindung-zu-maxima-möglich"><span class="toc-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em> möglich</a></li>
 <li><a href="#wie-repariere-ich-kaputte-.wxmx-dateien"><span class="toc-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</a></li>
 <li><a href="#ich-will-statusmeldungen-am-bildschirm-ausgeben-während-mein-befehl-ausgeführt-wird"><span class="toc-section-number">3.3</span> Ich will Statusmeldungen am Bildschirm ausgeben, während mein Befehl ausgeführt wird</a></li>
@@ -135,7 +135,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <figure>
 <img src="./wxMaximaLogo.png" alt="wxMaxima logo" id="img_wxMaximaLogo" /><figcaption>wxMaxima logo</figcaption>
 </figure>
-<p>Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on <a href="#TOC">Contents</a> moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. The Contents link appears at locations throughout the text for navigational purposes.</p>
+<p>Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen Kapitel der Dokumentation. Ein Klick auf <a href="#TOC">Inhaltsverzeichnis</a> führt zu einem detaillierten Inhaltsverzeichnis. Dieser Link kommt öfter vor, um die Navigation zu erleichtern.</p>
 <ul>
 <li><a href="#einführung-in-wxmaxima" title="Einführung in wxMaxima">Einführung</a>:</li>
 </ul>
@@ -174,9 +174,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </figure>
 <p><em>wxMaxima</em> lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-Werkzeug <em>Maxima</em> durchführen.</p>
 <h2 id="grundlagen-zum-arbeitsblatt"><span class="header-section-number">1.2</span> Grundlagen zum Arbeitsblatt</h2>
-<p>Much of <em>wxMaxima</em> is self-explaining, but some details require attention. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">This site</a> contains a number of workbooks that address various aspects of <em>wxMaxima</em>. Working through some of these (particularly the &quot;10 minute <em>(wx)Maxima</em> tutorial&quot;) will increase one’s familiarity with both the content of <em>Maxima</em> and the use of <em>wxMaxima</em> to interact with <em>Maxima</em>. This manual concentrates on describing aspects of <em>wxMaxima</em> that are not likely to be self-evident and that might not be covered in the online material.</p>
+<p>wxMaxima ist größtenteils selbsterklärend. <a href="https://wxMaxima-developers.github.io/wxmaxima/help.html">Diese Internetseite</a> bietet einige Beispiele an, wovon das &quot;10-Minuten-Tutorial&quot; besonders zu empfehlen ist. Dieses Handbuch beschreibt einige zusätzliche Aspekte von wxMaxima.</p>
 <h3 id="der-arbeitsblatt-ansatz"><span class="header-section-number">1.2.1</span> Der Arbeitsblatt-Ansatz</h3>
-<p>One of the very few things that are not standard in <em>wxMaxima</em> is that it organizes the data for <em>Maxima</em> into cells that are evaluated (which means: sent to <em>Maxima</em>) only when the user requests this. When a cell is evaluated, all commands in that cell, and only that cell, are evaluated as a batch. (The preceding statement is not quite accurate: One can select a set of adjacent cells and evaluate them together. Also, one can instruct <em>Maxima</em> to evaluate all cells in a workbook in one pass.) <em>wxMaxima</em>'s approach to submitting commands for execution might feel unfamiliar at the first sight. It does, however, drastically ease work with big documents (where the user does not want every change to automatically trigger a full re-evaluation of the whole document). Also, this approach is very handy for debugging.</p>
+<p>Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt von wxMaxima in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an <em>Maxima</em> gesendet werden. Dieser Ansatz ist jedoch für die Fehlersuche praktisch. Auch hat der gegenüber der Alternative, nach jeder Änderung alle Zellen im das Arbeitsblatt neu auszuwerten, oft viel Zeit.</p>
 <p>Wenn Text in <em>wxMaxima</em> eingegeben wird, erzeugt er automatisch eine neue Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an <em>Maxima</em> gesendet werden und das Resultat dieser Aktion wird unter der Zelle angezeigt, wie unten abgebildet.</p>
 <figure>
 <img src="./InputCell.png" alt="Eingabe/Ausgabe Zelle" id="img_InputCell" /><figcaption>Eingabe/Ausgabe Zelle</figcaption>
@@ -206,7 +206,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Innerhalb einer Zelle wird der Cursor vertikal dargestellt.</li>
 </ul>
 <h3 id="eingabezellen-an-maxima-schicken"><span class="header-section-number">1.2.4</span> Eingabezellen an <em>Maxima</em> schicken</h3>
-<p>The command in a code cell are executed once <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> or the <kbd>ENTER</kbd> key on the keypad is pressed. The <em>wxMaxima</em> default is to enter commands when either <kbd>CTRL+ENTER</kbd> or <kbd>SHIFT+ENTER</kbd> is entered, but <em>wxMaxima</em> can be configured to execute commands in response to <kbd>ENTER</kbd>.</p>
+<p>Die Befehle in einer Codezelle werden ausgeführt, sobald <kbd>CTRL</kbd>+<kbd>ENTER</kbd>, <kbd>SHIFT</kbd>+<kbd>ENTER</kbd> oder <kbd>ENTER</kbd> key im Nummernblock gedrückt wird. <em>wxMaxima</em> nimmt Befehle mit <kbd>CTRL+ENTER</kbd> oder <kbd>SHIFT+ENTER</kbd> entgegen, aber <em>wxMaxima</em> kann auch konfiguriert werden, dass Befehle nach <kbd>ENTER</kbd> ausgeführt weren..</p>
 <h3 id="auto-vervollständigung"><span class="header-section-number">1.2.5</span> Auto-Vervollständigung</h3>
 <p>wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt wird, oder die Tastenkombination <kbd>CTRL</kbd>+<kbd>SPACE</kbd> gedrückt wird. Die automatische Vervollständigung erkennt oft den Kontext, in dem sie ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für ezUnits vorschlagen.</p>
 <figure>
@@ -590,12 +590,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
  * A third item at the first indentation level
 Ordinary text</code></pre>
 <p><em>wxMaxima</em> erkennt Text, der mit einem &quot;&gt;&quot; beginnt, als ein Zitat:</p>
-<pre><code>Ordinary text
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-&gt; quote quote quote quote
-Ordinary text</code></pre>
-<p>Die Text- und HTML-Ausgabe von <em>wxMaxima</em> erkennen auch <code>=&gt;</code> und ersetzen es durch das entsprechende Unicode-Symbol:</p>
+<pre><code>Normaler Text
+&gt; Zitat Zitat Zitat
+&gt; Zitat Zitat Zitat
+&gt; Zitat Zitat Zitat
+&gt; Zitat Zitat Zitat
+Normaler Text</code></pre>
+<p>Die TeX- und HTML-Ausgabe von <em>wxMaxima</em> erkennen auch <code>=&gt;</code> und ersetzen es durch das entsprechende Unicode-Symbol:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
 <p>Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind <code>&lt;=</code> und <code>&gt;=</code>, <code>&lt;=&gt;</code>, einfache Pfeile (<code>&lt;-&gt;</code>, <code>-&gt;</code> und <code>&lt;-</code>) und <code>+/-</code>. Die TeX-Ausgabe erkennt ebenfalls <code>&lt;&lt;</code> und <code>&gt;&gt;</code>.</p>
 <h3 id="tastenkürzel"><span class="header-section-number">1.2.9</span> Tastenkürzel</h3>
@@ -618,11 +619,11 @@ Ordinary text</code></pre>
 </figure>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
 <span class="fu">read</span>(<span class="st">&quot;test.mac&quot;</span>);</code></pre></div>
-<p>You can be use <code>.mac</code> files for writing your own library of macros. But since they don’t contain enough structural information they cannot be read back as a <em>wxMaxima</em> session.</p>
+<p><code>.mac</code>-Dateien eignen sich dafür, eine Bibliothek von Maxima-Befehlen aufzubauen. Ausreichend Information über die Struktur eines <em>wxMaxima</em>-Arbeitsblatts, dass sie es erlauben, dieses wieder zu rekonstruieren, enthalten sie aber nicht.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>.wxm-Dateien sollten das Arbeitsblatt außer <em>Maxima</em>'s Ausgabe enthalten. <em>Maxima</em> &gt;5.38 kann .wxm-Dateien über den <code>load()</code>-Befehl lesen. Das .wxm-Format ist allerdings oft weniger kompatibel mit älteren Versionen von <em>wxMaxima</em>, als das .wxmx-Format.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
-<p>.wxmx-Dateien enthalten das gesamte Arbeitsblatt. Sie sind das empfohlene Format, um dieses abzuspeichern.</p>
+<p>Dieses XML basiertes Dateiformat enthält das gesamte Arbeitsblatt, inklusive Eigenschaften wie den Zoom-Faktor oder die Watchlist. Es ist das empfohlene Dateiformat für wxMaxima-Arbeitsblätter.</p>
 <h2 id="auto-vervollständigung-1"><span class="header-section-number">1.4</span> Auto-Vervollständigung</h2>
 <p>Einige Variablen, über die Maxima konfiguriert wird, können auf zwei Arten eingestellt werden:</p>
 <ul>
@@ -637,8 +638,7 @@ Ordinary text</code></pre>
 <h3 id="die-standardgröße-der-diagramme-bei-neuen-maxima-sitzungen"><span class="header-section-number">1.4.2</span> Die Standardgröße der Diagramme bei neuen Maxima Sitzungen</h3>
 <p><code>wxplot_size</code> definiert, wie groß die nachfolgenden in das Arbeitsblatt eingebauten Diagramme sind.</p>
 <p>Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt werden:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="cn">wxdraw2d</span>( 
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">wxdraw2d</span>( 
    <span class="cn">explicit</span>(
        <span class="cn">x</span>^<span class="dv">2</span>,
        <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>
@@ -672,14 +672,15 @@ Ordinary text</code></pre>
 <p>Wenn nicht, kann jede Variable als mit tiefgestelltem <code>y</code> ausgestattet deklariert werden mittels <code>wxdeclare_subscript(variablenname);</code> oder <code>wxdeclare_subscript([variablenname1,variablenname2,...]);</code> Rückgängig gemacht werden kann dies mittels <code>wxdeclare_subscript(variablenname,false);</code></p>
 <h2 id="meldungen-in-der-statusleiste"><span class="header-section-number">2.2</span> Meldungen in der Statusleiste</h2>
 <p>Kommandos, die lange arbeiten, können Fortschrittsinformationen in die Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. <code>wxstatusbar()</code> kann sogar in Bibliotheken verwendet werden, bei denen nicht bekannt ist, ob sie mit <em>wxMaxima</em> oder in einem <em>Maxima</em> ohne Frontend verwendet werden: Wenn <em>wxMaxima</em> diese Funktion nicht definiert hat, wird sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter bearbeitet.</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (
-    <span class="co">/* Tell the user how far we got */</span>
-    <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),
-    <span class="co">/* (sleep n) is a Lisp function, which can be used */</span>
-    <span class="co">/* with the character &quot;?&quot; before. It delays the */</span>
-    <span class="co">/* program execution (here: for 3 seconds) */</span>
-    ?<span class="cn">sleep</span>(<span class="dv">3</span>)
-)$</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (
+        <span class="co">/* Gib dem User Bescheid, wie weit wir schon sind */</span>
+        <span class="cn">wxstatusbar</span>(<span class="fu">concat</span>(<span class="st">&quot;Pass &quot;</span>,<span class="cn">i</span>)),
+        <span class="co">/* (sleep n) ist eine Lisp-Funktion, die mit einem */</span>
+        <span class="co">/* &quot;?&quot; Zeichen vorher verwendet werden kann. */</span>
+        <span class="co">/* Sie verzögert die Programmausführung für n Sekunden */</span>
+        <span class="co">/* (in diesem Beispiel: für 3 Sekunden). */</span>
+        ?<span class="cn">sleep</span>(<span class="dv">3</span>)
+    )$</code></pre></div>
 <h2 id="diagramme"><span class="header-section-number">2.3</span> Diagramme</h2>
 <p>Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu tun, weswegen an dieser Stelle Erweiterungen von Maxima zu erwarten sind.</p>
 <h3 id="der-einbau-von-diagrammen-in-das-arbeitsblatt"><span class="header-section-number">2.3.1</span> Der Einbau von Diagrammen in das Arbeitsblatt</h3>
@@ -693,7 +694,7 @@ Ordinary text</code></pre>
         <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>
     )
 )$</code></pre></div>
-<p>If the size of only one plot is to be changed <em>Maxima</em> provides a canonical way to change an attribute only for the current cell. In this usage the specification wxplot_size = [value1, value2] is appended to the wxdraw2d( ) command, and is not part of the wxdraw2d command.</p>
+<p>If the size of only one plot is to be changed <em>Maxima</em> provides a canonical way to change an attribute only for the current cell. In this usage the specification <code>wxplot_size = [value1, value2]</code> is appended to the <code>wxdraw2d( )</code> command, and is not part of the <code>wxdraw2d</code> command.</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">wxdraw2d</span>(
     <span class="cn">explicit</span>(
         <span class="fu">sin</span>(<span class="cn">x</span>),
@@ -776,18 +777,17 @@ Ordinary text</code></pre>
 )$</code></pre></div>
 <h3 id="mehrere-diagramme-gleichzeitig-in-fenstern-öffnen"><span class="header-section-number">2.3.7</span> Mehrere Diagramme gleichzeitig in Fenstern öffnen</h3>
 <p>Strenggenommen kein Feature von <em>wxMaxima</em>. Aber Maxima erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-    <span class="fu">load</span>(<span class="fu">draw</span>);
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="fu">load</span>(<span class="fu">draw</span>);
     
-    <span class="co">/* Parabola in window #1 */</span>
+    <span class="co">/* Parabel in Fenster #1 */</span>
     <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));
     
-    <span class="co">/* Parabola in window #2 */</span>
+    <span class="co">/* Parabel in Fenster #2 */</span>
     <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">2</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));
     
-    <span class="co">/* Paraboloid in window #3 */</span>
+    <span class="co">/* Paraboloid in Fenster #3 */</span>
     <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</code></pre></div>
-<p>Plotting multiple plots in the same window is possible, too:</p>
+<p>Mehrere Diagramme im gleichen Fenster plotten ist auch möglich:</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="cn">wxdraw</span>(
         <span class="cn">gr2d</span>(
             <span class="cn">key</span>=<span class="st">&quot;sin (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],
@@ -820,7 +820,7 @@ Ordinary text</code></pre>
 <h4 id="name-der-kurve"><span class="header-section-number">2.3.8.10</span> Name der Kurve</h4>
 <p>Fügt einen Eintrag zur Legende hinzu, der für die nächsten Objekte gilt. Ein leerer Name bedeutet, dass die nun folgenden Objekte keinen eigenen Eintrag erhalten.</p>
 <h4 id="linienfarbe"><span class="header-section-number">2.3.8.11</span> Linienfarbe</h4>
-<p>Setzt die Linienfarbe für die die nun folgenden Objekte.</p>
+<p>Setzt die Linienfarbe für die die nun folgenden Plots des aktuellen draw-Befehls.</p>
 <h4 id="füllfarbe"><span class="header-section-number">2.3.8.12</span> Füllfarbe</h4>
 <p>Setzt die Füllfarbe für die nun folgenden Objekte des aktuellen <code>draw</code>-Kommandos.</p>
 <h4 id="gitter"><span class="header-section-number">2.3.8.13</span> Gitter</h4>
@@ -829,8 +829,7 @@ Ordinary text</code></pre>
 <p>Erlaubt das Wählen zwischen Geschwindigkeit und Genauigkeit bei der Erstellung der folgenden Kurven.</p>
 <h2 id="einbetten-von-bildern"><span class="header-section-number">2.4</span> Einbetten von Bildern</h2>
 <p>Das <code>.wxmx</code>-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es ist aber auch möglich, <em>Maxima</em> anzuweisen, Bilder einzubauen:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</code></pre></div>
 <h2 id="startbefehle"><span class="header-section-number">2.5</span> Startbefehle</h2>
 <p>Der Konfigurationsdialog von <em>wxMaxima</em> bietet an, zwei Dateien mit <em>Maxima</em>-Befehlen zu bearbeiten:</p>
 <ul>
@@ -873,12 +872,12 @@ Ordinary text</code></pre>
 <h2 id="rotes-markieren-von-formelteilen"><span class="header-section-number">2.9</span> Rotes Markieren von Formelteilen</h2>
 <p>Der <code>box()</code>-Befehl stellt sein Argument in <em>wxMaxima</em> rot dar.</p>
 <hr />
-<h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
+<h1 id="fehlersuche"><span class="header-section-number">3</span> Fehlersuche</h1>
 <h2 id="keine-verbindung-zu-maxima-möglich"><span class="header-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em> möglich</h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named &quot;maxima&quot;. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das &quot;loopback&quot;-Netzwerkgerät nicht korrekt eingestellt ist.</p>
 <h2 id="wie-repariere-ich-kaputte-.wxmx-dateien"><span class="header-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</h2>
-<p>Internally most modern xml-based formats are ordinary zip-files. <em>wxMaxima</em> doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
+<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
 <p>Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach <code>&lt;irgendwas&gt;.zip</code> umbenennen, entpacken, reparieren, neu packen und wieder nach <code>&lt;irgendwas&gt;.wxmx</code> umbenennen. Dies ist auch eine praktische Möglichkeit, Word oder Powerpoint die originalen Bilddateien zu entlocken. Ist dies nicht der Fall, ist dies nicht das Ende der Welt: Oft gibt es eine funktionierende <code>wxmx~</code>-Datei.</p>
 <p>Und auch wenn diese Datei nicht existiert: Eine <code>.wxmx</code>-Datei ist ein Containerformat, und der XML-Anteil wird unkomprimiert gespeichert. Es ist möglich, die <code>.wxmx</code>-Datei in eine <code>.txt</code>Datei umzubenennen und mit einem Texteditor den XML-Anteil der Datei (beginnt mit <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> und endet mit <code>&lt;/wxMaximaDocument&gt;</code> zu sichern. Vor und nach diesem Text wird unlesbarer (binärer) Inhalt im Texteditor sichtbar sein).</p>
 <p>Wird eine Textdatei mit diesem Text (z.B. indem er mit Copy+Paste in eine neue Datei eingefügt wird) als <code>.xml</code>-Datei gespeichert, weiß <em>wxMaxima</em>, wie man den Text-Teil des Dokuments rekonstruiert.</p>
@@ -886,9 +885,10 @@ Ordinary text</code></pre>
 <p>Normalerweise gibt <em>wxMaxima</em> erst etwas aus, wenn die komplette Ausgabe steht. Das <code>disp</code>-Kommando wird hingegen sofort ausgeführt:</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="kw">for</span> <span class="cn">i</span>:<span class="dv">1</span> <span class="kw">thru</span> <span class="dv">10</span> <span class="kw">do</span> (
    <span class="fu">disp</span>(<span class="cn">i</span>),
-   <span class="co">/* (sleep n) is a Lisp function, which can be used */</span>
-   <span class="co">/* with the character &quot;?&quot; before. It delays the */</span>
-   <span class="co">/* program execution (here: for 3 seconds) */</span>
+   <span class="co">/* (sleep n) ist eine Lisp-Funktion, die mit einem */</span>
+   <span class="co">/* &quot;?&quot; Zeichen vorher verwendet werden kann. */</span>
+   <span class="co">/* Sie verzögert die Programmausführung für n Sekunden */</span>
+   <span class="co">/* (in diesem Beispiel: für 3 Sekunden). */</span>
    ?<span class="cn">sleep</span>(<span class="dv">3</span>)
 )$</code></pre></div>
 <h2 id="statt-eines-diagramms-wird-ein-briefumschlag-mit-einer-fehlermeldung-dargestellt"><span class="header-section-number">3.4</span> Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung dargestellt</h2>
@@ -910,14 +910,13 @@ Ordinary text</code></pre>
 <li>Wenn nicht: Keine Panik: Im “Ansicht”-Menü kann eine Seitenleiste eingeschaltet werden, die die letzten Befehle anzeigt.</li>
 <li>Wenn nichts anderes funktioniert, bietet Maxima die Möglichkeit an, alle bisherigen Befehle nochmals auszuführen:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="fu">playback</span>();</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="fu">playback</span>();</code></pre></div>
 <h2 id="wxmaxima-meldet-gleich-beim-hochfahren-maxima-hat-sich-beendet."><span class="header-section-number">3.7</span> <em>wxMaxima</em> meldet gleich beim Hochfahren &quot;Maxima hat sich beendet.&quot;</h2>
 <p>Ein möglicher Grund ist, dass Maxima nicht dort gefunden worden kann, wo dies in wxMaxima's Konfigurationsdialog angegeben ist. Korrektur des dort angegebenen Pfades zum Programm löst dieses Problem.</p>
 <h2 id="maxima-hört-nicht-auf-zu-rechnen-und-reagiert-nicht-auf-eingaben"><span class="header-section-number">3.8</span> Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben</h2>
 <p>Theoretisch kann es passieren, daß wxMaxima nicht erkennt, dass Maxima mit der Berechnung fertig ist und daher nie neue Befehle an Maxima sendet. In diesem Fall kann der Befehl 'Trigger Evaluation' die Synchronisation wieder herstellen.</p>
 <h2 id="sbcl-beschwert-sich-über-einen-mangel-an-speicher"><span class="header-section-number">3.9</span> SBCL beschwert sich über einen Mangel an Speicher</h2>
-<p>The Lisp compiler SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like Lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits SBCL can be provided with the command line parameter <code>--dynamic-space-size</code> that tells SBCL how many megabytes it should reserve. A 32bit Windows-SBCL can reserve up to 999 Megabytes. A 64-bit SBCL version running on Windows can be instructed to use more than the about 1280 Megabytes compiling Lapack needs.</p>
+<p>Der Lisp Compiler SBCL reserviert gleich beim Hochfahren allen Speicher, den es im Betrieb nutzen will. Wird mehr Speicher benöigt, muss ihm über den Kommandozeilenparameter <code>--dynamic-space-size</code> gesagt werden, wie viel Speicher benötigt wird. SBCL kann nur in etwa die Hälfte des freien Speichers des Systems verwenden. Auf 32-Bit-Rechnern ist dies meist unter 999 Megabytes. Auf 64-Bit-Systemen können mehr als 1280 MB verwendet werden, was notwendig ist um das Lapack-Paket zu compilieren.</p>
 <p>Kommandozeilenparameter für <em>Maxima</em> (und daher für SBCL) können in <em>wxMaxima</em>'s Konfigurationsdialog eingegeben werden.</p>
 <figure>
 <img src="./sbclMemory.png" alt="sbcl memory" id="img_sbclMemory" /><figcaption>sbcl memory</figcaption>
@@ -926,9 +925,8 @@ Ordinary text</code></pre>
 <p>Das Installieren von <code>ibus-gtk</code> behebt dieses Problem meist. Auf (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558" class="uri">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) findet man genauere Angaben dazu.</p>
 <h2 id="wxmaxima-stoppt-wenn-maxima-griechische-buchstaben-oder-umlaute-verarbeitet"><span class="header-section-number">3.11</span> <em>wxMaxima</em> stoppt, wenn <em>Maxima</em> griechische Buchstaben oder Umlaute verarbeitet</h2>
 <p>Wenn <em>Maxima</em> mittels sbcl compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
-<div class="sourceCode"><pre class="sourceCode lisp"><code class="sourceCode commonlisp">
-(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
-<p>Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit sbcl compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den Ort zu nennen:</p>
+<div class="sourceCode"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp">(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
+<p>The folder this file has to be placed in is system- and installation-specific. But any SBCL-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="diagramme-1"><span class="header-section-number">3.12</span> Diagramme</h2>
 <h3 id="kann-wxmaxima-das-eingebettete-diagramm-gleich-noch-als-datei-ausgeben"><span class="header-section-number">3.12.1</span> Kann <em>wxMaxima</em> das eingebettete Diagramm gleich noch als Datei ausgeben?</h3>
@@ -969,10 +967,9 @@ Ordinary text</code></pre>
 <h1 id="häufig-gestellte-fragen"><span class="header-section-number">4</span> Häufig gestellte Fragen</h1>
 <h2 id="gibt-es-eine-möglichkeit-mehr-text-auf-eine-latex-seite-zu-schreiben"><span class="header-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine LaTeX-Seite zu schreiben?</h2>
 <p>Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (&quot;Exportieren&quot;-&gt;&quot;Zusätzliche Zeilen für die LaTeX preamble&quot;) angeben.</p>
-<div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex">
-<span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</code></pre></div>
 <h2 id="gibt-es-einen-dark-mode"><span class="header-section-number">4.2</span> Gibt es einen Dark Mode?</h2>
-<p>If wxWidgets is new enough <em>wxMaxima</em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
+<p>Wenn wxWidgets neu genug ist, sollte wxMaxima sich automatisch im Dark Mode befinden, wenn der Rest des Betriebssystems es ist. Das Arbeitsblatt selbst besitzt standardmäßig einen hellen Hintergrund. Dies kann aber über die Konfiguration geändert werden. Als Alternative erlaubt <code>Ansicht/Invertiere die Helligkeit des Arbeitsblattes</code>, das Arbeitsblatt schnell zwischen hell und dunkel umzustellen.</p>
 <h2 id="wxmaxima-hängt-manchmal-in-der-ersten-minute-einmal-für-mehrere-sekunden"><span class="header-section-number">4.3</span> <em>wxMaxima</em> hängt manchmal in der ersten Minute einmal für mehrere Sekunden</h2>
 <p>wxMaxima lagert große Aufgaben, wie das Interpretieren des &gt;1000-Seiten-Handbuchs von Maxima an Hintergrundtasks aus. Solange die Ergebnisse dieser Tasks nicht benötigt werden, kann während dieser Zeit ganz normal weitergearbeitet werden. Wird aber eine Aktion ausgeführt, für die die Ergebnisse eines Tasks benötigt werden, muss wxMaxima warten, bis dieser beendet ist.</p>
 <hr />
