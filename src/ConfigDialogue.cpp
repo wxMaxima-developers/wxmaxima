@@ -1082,12 +1082,95 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_CHANGED,
                                 wxGridEventHandler(ConfigDialogue::OnChangeMaximaEnvVar),
                                 NULL, this);
+  m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
+                                wxGridEventHandler(ConfigDialogue::OnMaximaEnvRightClick),
+                                NULL, this);
+  
   vsizer->Add(new wxStaticText(panel, -1,
                              _("Environment variables for maxima")), wxSizerFlags().Expand());
   vsizer->Add(m_maximaEnvVariables, wxSizerFlags().Expand());
   panel->SetSizerAndFit(vsizer);
 
   return panel;
+}
+
+void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent& event)
+{
+  m_maximaEmvRightClickRow = event.GetRow();
+  if((event.GetCol() == 0) && (event.GetRow() >= 0) &&
+     m_maximaEnvVariables->GetCellValue(event.GetRow(),0).IsEmpty()
+    )
+  {
+    std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+    popupMenu->Append(MAXIMA_DEFAULT_LISP, wxT("MAXIMA_DEFAULT_LISP"));
+    popupMenu->Append(MAXIMA_IMAGESDIR, wxT("MAXIMA_IMAGESDIR"));
+    popupMenu->Append(MAXIMA_USERDIR, wxT("MAXIMA_USERDIR"));
+    popupMenu->Append(MAXIMA_TEMPDIR, wxT("MAXIMA_TEMPDIR"));
+    popupMenu->Append(MAXIMA_OBJDIR, wxT("MAXIMA_OBJDIR"));
+    popupMenu->Append(MAXIMA_DOC_PREFIX, wxT("MAXIMA_DOC_PREFIX"));
+    popupMenu->Append(HOME, wxT("HOME"));
+    popupMenu->Append(GCL_GC_PAGE_THRESH, wxT("GCL_GC_PAGE_THRESH"));
+    popupMenu->Append(GCL_GC_ALLOC_MIN, wxT("GCL_GC_ALLOC_MIN"));
+    popupMenu->Append(GCL_GC_PAGE_MAX, wxT("GCL_GC_PAGE_MAX"));
+    popupMenu->Append(GCL_MEM_MULTIPLE, wxT("GCL_MEM_MULTIPLE"));
+    popupMenu->Append(GCL_MULTIPROCESS_MEMORY_POOL, wxT("GCL_MULTIPROCESS_MEMORY_POOL"));
+    popupMenu->Append(LANG, wxT("LANG"));
+    Connect(wxEVT_MENU,
+            wxCommandEventHandler(ConfigDialogue::OnNewEnvMenu), NULL, this);
+    PopupMenu(&*popupMenu);
+  }
+}
+
+void ConfigDialogue::OnNewEnvMenu(wxCommandEvent &event)
+{
+  if(m_maximaEmvRightClickRow>=m_maximaEnvVariables->GetNumberRows())
+    return;
+  
+  switch(event.GetId())
+  {
+  case MAXIMA_DEFAULT_LISP:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_DEFAULT_LISP");
+    break;
+  case MAXIMA_IMAGESDIR:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_IMAGESDIR");
+    break;
+  case MAXIMA_USERDIR:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_USERDIR");
+    break;
+  case MAXIMA_DIRECTORY:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_DIRECTORY");
+    break;
+  case GCL_GC_PAGE_THRESH:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"GCL_GC_PAGE_THRESH");
+    break;
+  case GCL_GC_ALLOC_MIN:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"GCL_GC_ALLOC_MIN");
+    break;
+  case GCL_GC_PAGE_MAX:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"GCL_GC_PAGE_MAX");
+    break;
+  case GCL_MEM_MULTIPLE:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"GCL_MEM_MULTIPLE");
+    break;
+  case GCL_MULTIPROCESS_MEMORY_POOL:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"GCL_MULTIPROCESS_MEMORY_POOL");
+    break;
+  case LANG:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"LANG");
+    break;
+  case HOME:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"HOME");
+    break;
+  case MAXIMA_TEMPDIR:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_TEMPDIR");
+    break;
+  case MAXIMA_OBJDIR:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_OBJDIR");
+    break;
+  case MAXIMA_DOC_PREFIX:
+    m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_DOC_PREFIX");
+    break;
+  }
 }
 
 void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& event)

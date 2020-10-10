@@ -513,37 +513,45 @@ void Configuration::ReadConfig()
           headNode = headNode->GetChildren();
           while(headNode)
           {
-            if(headNode->GetName() == wxT("entry"))
+            if(headNode->GetName() == wxT("entries"))
             {
-              wxXmlNode *entry = headNode->GetChildren();
-              wxString var;
-              wxString value;
-              while(entry)
+              wxXmlNode *entryNode = headNode->GetChildren();
+              while(entryNode)
               {
-                if(entry->GetName() == wxT("var"))
+                if(entryNode->GetName() == wxT("entry"))
                 {
-                  wxXmlNode *node = entry->GetChildren();
-                  while(node)
+                  wxXmlNode *entry = entryNode->GetChildren();
+                  wxString var;
+                  wxString value;
+                  while(entry)
                   {
-                    if(node->GetType() == wxXML_TEXT_NODE)
-                      var = node->GetContent();
-                    node = node->GetNext();
+                    if(entry->GetName() == wxT("var"))
+                    {
+                      wxXmlNode *node = entry->GetChildren();
+                      while(node)
+                      {
+                        if(node->GetType() == wxXML_TEXT_NODE)
+                          var = node->GetContent();
+                        node = node->GetNext();
+                      }
+                    }
+                    if(entry->GetName() == wxT("value"))
+                    {
+                      wxXmlNode *node = entry->GetChildren();
+                      while(node)
+                      {
+                        if(node->GetType() == wxXML_TEXT_NODE)
+                          value = node->GetContent();
+                        node = node->GetNext();
+                      }
+                    }
+                    entry = entry->GetNext();
                   }
+                  if(!var.IsEmpty())
+                    m_maximaEnvVars[var] = value;
                 }
-                if(entry->GetName() == wxT("value"))
-                {
-                  wxXmlNode *node = entry->GetChildren();
-                  while(node)
-                  {
-                    if(node->GetType() == wxXML_TEXT_NODE)
-                      value = node->GetContent();
-                    node = node->GetNext();
-                  }
-                }
-                entry = entry->GetNext();
+                entryNode = entryNode->GetNext();
               }
-              if(!var.IsEmpty())
-                m_maximaEnvVars[var] = value;
             }
             headNode = headNode->GetNext();
           }
@@ -1034,6 +1042,11 @@ void Configuration::WriteSettings(const wxString &file)
       wxXML_DOCUMENT_NODE, wxEmptyString,
       wxEmptyString
       );
+    wxXmlNode *entriesNode =
+      new wxXmlNode(
+        topNode,
+        wxXML_ELEMENT_NODE,
+        "entries");
     wxEnvVariableHashMap::const_iterator it;
     for (it = m_maximaEnvVars.begin();
          it != m_maximaEnvVars.end();
@@ -1043,7 +1056,7 @@ void Configuration::WriteSettings(const wxString &file)
       {
         wxXmlNode *entryNode =
           new wxXmlNode(
-            topNode,
+            entriesNode,
             wxXML_ELEMENT_NODE,
             "entry");
         wxXmlNode *varNode =

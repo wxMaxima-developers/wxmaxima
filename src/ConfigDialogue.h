@@ -107,6 +107,23 @@ public:
   void WriteSettings();
 
 private:
+  enum newVariables
+  {
+    MAXIMA_DEFAULT_LISP,
+    MAXIMA_IMAGESDIR,
+    MAXIMA_USERDIR,
+    MAXIMA_DIRECTORY,
+    MAXIMA_TEMPDIR,
+    MAXIMA_OBJDIR,
+    MAXIMA_DOC_PREFIX,
+    GCL_GC_PAGE_THRESH,
+    GCL_GC_ALLOC_MIN,
+    GCL_GC_PAGE_MAX,
+    GCL_MEM_MULTIPLE,
+    GCL_MULTIPROCESS_MEMORY_POOL,
+    LANG,
+    HOME
+  };
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   Configuration *m_configuration;
@@ -220,7 +237,9 @@ protected:
   void OnExportAll(wxCommandEvent& event);
   void OnResetStyles(wxCommandEvent& event);
   void OnChangeMaximaEnvVar(wxGridEvent& event);
-  //! The name of maxima's startup file.
+  void OnMaximaEnvRightClick(wxGridEvent& event);
+  void OnNewEnvMenu(wxCommandEvent &event);
+//! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.
   wxString m_wxStartupFileName;
@@ -320,6 +339,7 @@ protected:
   ExamplePanel *m_examplePanel;
   wxSpinCtrl *m_maxGnuplotMegabytes;
   wxTextCtrl *m_autoMathJaxURL;
+  int m_maximaEmvRightClickRow = 0;
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
 

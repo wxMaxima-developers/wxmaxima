@@ -92,9 +92,9 @@ void UnicodeSidebar::OnRightClick(wxGridEvent &event)
   {
     std::unique_ptr<wxMenu> popupMenu(new wxMenu());
     popupMenu->Append(popid_addToSymbols, _("Add to symbols Sidebar"));
-    PopupMenu(&*popupMenu);
     Connect(popid_addToSymbols, wxEVT_MENU,
             wxCommandEventHandler(UnicodeSidebar::OnMenu), NULL, this);
+    PopupMenu(&*popupMenu);
   }
 }
 
