@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-09 23:45+0200\n"
+"POT-Creation-Date: 2020-10-11 22:11+0200\n"
 "PO-Revision-Date: 2019-12-11 13:07+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -89,29 +89,29 @@ msgid ""
 "Using fine-grained OpenMP locks"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1040
+#: ../../src/ConfigDialogue.cpp:1055
 #, fuzzy
 msgid "      -X \"--control-stack-size <int>\""
 msgstr "      -X \"--dinamikus-helyméret <egész>\""
 
-#: ../../src/ConfigDialogue.cpp:1039
+#: ../../src/ConfigDialogue.cpp:1054
 msgid "      -X \"--dynamic-space-size <int>\""
 msgstr "      -X \"--dinamikus-helyméret <egész>\""
 
-#: ../../src/ConfigDialogue.cpp:1043
+#: ../../src/ConfigDialogue.cpp:1058
 #, fuzzy
 msgid "      -X '--control-stack-size <int>'"
 msgstr "      -X '--dinamikus-helyméret <egész>'"
 
-#: ../../src/ConfigDialogue.cpp:1042
+#: ../../src/ConfigDialogue.cpp:1057
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr "      -X '--dinamikus-helyméret <egész>'"
 
-#: ../../src/ConfigDialogue.cpp:1026
+#: ../../src/ConfigDialogue.cpp:1041
 msgid "      -l <name>"
 msgstr "      -l <név>"
 
-#: ../../src/ConfigDialogue.cpp:1030
+#: ../../src/ConfigDialogue.cpp:1045
 msgid "      -u <number>"
 msgstr "      -u <szám>"
 
@@ -132,7 +132,7 @@ msgid ""
 " * ̅\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:859
+#: ../../src/ConfigDialogue.cpp:874
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "A \"LaTeX másolás\" hozzáadja a kiemelt matematikai mód jeleit"
 
@@ -392,7 +392,7 @@ msgstr "&Trigonometrikus átalakítás"
 msgid "(Not a valid variable name)"
 msgstr "(Nem egy érvényes változó neve)"
 
-#: ../../src/ConfigDialogue.cpp:153
+#: ../../src/ConfigDialogue.cpp:168
 msgid "(Use default language)"
 msgstr "(Alapértelmezett nyelv)"
 
@@ -507,7 +507,7 @@ msgstr ""
 msgid "A ridiculously advanced example\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:340
+#: ../../src/ConfigDialogue.cpp:355
 msgid ""
 "A scale factor for the printout. Helpful for printing big equations on small "
 "pdf pages."
@@ -537,12 +537,12 @@ msgstr ""
 msgid "A&t Value..."
 msgstr "Ér&tékadás..."
 
-#: ../../src/Configuration.cpp:1364
+#: ../../src/Configuration.cpp:1377
 #, fuzzy
 msgid "ASCII maths"
 msgstr "ASCII Art-ként"
 
-#: ../../src/ConfigDialogue.cpp:1060
+#: ../../src/ConfigDialogue.cpp:1075
 msgid "Abort evaluation on error"
 msgstr "Kiértékelés megszakítása hiba esetén"
 
@@ -567,7 +567,7 @@ msgstr ""
 msgid "Accuracy"
 msgstr "Pontosság"
 
-#: ../../src/Configuration.cpp:1375
+#: ../../src/Configuration.cpp:1388
 msgid "Active cell bracket"
 msgstr "Aktív cella zárójele"
 
@@ -612,7 +612,7 @@ msgstr "Egyenlőség hozzáadása racionális egyszerűsítéshez"
 msgid "Add more symbols"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:862
+#: ../../src/ConfigDialogue.cpp:877
 msgid "Add the .wxmx file to the HTML export"
 msgstr "A wxmx fájl HTML exportja"
 
@@ -634,28 +634,28 @@ msgstr "Add a megnézendők listájához"
 msgid "Added much text (%li chars) to the XML inspector."
 msgstr "Sok szöveget adott hozzá (% li karakterek) az XML lekérdezőhöz."
 
-#: ../../src/ConfigDialogue.cpp:1116
+#: ../../src/ConfigDialogue.cpp:1225
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy:"
 msgstr "További vágólap formátumok a vágólapra helyezése a szokásos másolaton:"
 
-#: ../../src/ConfigDialogue.cpp:319
+#: ../../src/ConfigDialogue.cpp:334
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr "További parancsok a LaTeX kimeneti fájl preambulumába."
 
-#: ../../src/ConfigDialogue.cpp:808
+#: ../../src/ConfigDialogue.cpp:823
 msgid "Additional lines for the TeX preamble:"
 msgstr "További sorok a TeX preambulumba:"
 
-#: ../../src/ConfigDialogue.cpp:316
+#: ../../src/ConfigDialogue.cpp:331
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "A Maxima további paraméterei (pl. -l clisp)."
 
-#: ../../src/ConfigDialogue.cpp:1020
+#: ../../src/ConfigDialogue.cpp:1035
 msgid "Additional parameters for maxima"
 msgstr "További Maxima-paraméterek"
 
-#: ../../src/ConfigDialogue.cpp:891
+#: ../../src/ConfigDialogue.cpp:906
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "További szimbólumok a \"Szimbólumok\" oldalpanelra:"
 
@@ -719,7 +719,7 @@ msgstr ""
 "munkalap (*.mac)|*.mac|XMaxima munkalap (*.out)|*.out|xml problémás .wxmx (*."
 "xml)|*.xml fájlokból"
 
-#: ../../src/ConfigDialogue.cpp:544
+#: ../../src/ConfigDialogue.cpp:559
 msgid "All variable names"
 msgstr "Összes változónév"
 
@@ -729,7 +729,7 @@ msgid ""
 "the symbols sidebar along with the built-in symbols."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1422 ../../src/ConfigDialogue.cpp:1446
+#: ../../src/ConfigDialogue.cpp:1531 ../../src/ConfigDialogue.cpp:1555
 msgid "All|*"
 msgstr "Minden fájl|*"
 
@@ -776,7 +776,7 @@ msgid ""
 "that cancel each other out actually do so:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:932
+#: ../../src/ConfigDialogue.cpp:947
 msgid "Antialias lines."
 msgstr "Élsimított vonalak"
 
@@ -865,7 +865,7 @@ msgstr ""
 msgid "As we have guessed the 2nd voltage divider was the better one.\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:935
+#: ../../src/ConfigDialogue.cpp:950
 msgid "Ask to save untitled documents"
 msgstr "Rákérdez név nélküli dokumentum mentésére"
 
@@ -873,7 +873,7 @@ msgstr "Rákérdez név nélküli dokumentum mentésére"
 msgid "At value"
 msgstr "Értékadás"
 
-#: ../../src/ConfigDialogue.cpp:596
+#: ../../src/ConfigDialogue.cpp:611
 msgid "Auto-indent new lines"
 msgstr "Új sorok automatikus behúzása"
 
@@ -892,11 +892,11 @@ msgstr "Automatikus kiegészítés:%s felderítése betölthető lisp fájlokhoz
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:967 ../../src/ConfigDialogue.cpp:992
+#: ../../src/ConfigDialogue.cpp:982 ../../src/ConfigDialogue.cpp:1007
 msgid "Autodetect"
 msgstr "Automatikus felismerés"
 
-#: ../../src/ConfigDialogue.cpp:828
+#: ../../src/ConfigDialogue.cpp:843
 msgid "Automatic"
 msgstr "Automatikus"
 
@@ -904,7 +904,7 @@ msgstr "Automatikus"
 msgid "Automatic labels"
 msgstr "Automatikus címkék"
 
-#: ../../src/ConfigDialogue.cpp:556
+#: ../../src/ConfigDialogue.cpp:571
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr "Automatikus címkék (%i1, %o1,...)"
@@ -917,7 +917,7 @@ msgstr "Kérdések automatikus megválaszolása"
 msgid "Automatically fill in answers known from the last run"
 msgstr "Automatikusan kitöltött válaszok a legutóbbi futási eredmények alapján"
 
-#: ../../src/ConfigDialogue.cpp:352
+#: ../../src/ConfigDialogue.cpp:367
 msgid ""
 "Automatically insert matching parenthesis in text controls. Automatic "
 "highlighting of matching parenthesis can be suppressed by setting the "
@@ -953,7 +953,7 @@ msgstr "Automatikusan indexeli a karaktereket"
 msgid "Autosubscript numbers and text following single letters"
 msgstr "Automatikusan indexel számokat és betűk utáni szöveget"
 
-#: ../../src/ConfigDialogue.cpp:530
+#: ../../src/ConfigDialogue.cpp:545
 msgid "Autowrap long lines:"
 msgstr "Hosszú szövegek automatikus sortörése:"
 
@@ -969,11 +969,11 @@ msgstr "Peremérték probléma"
 msgid "Barsplot..."
 msgstr "Oszlopdiagram..."
 
-#: ../../src/ConfigDialogue.cpp:1420
+#: ../../src/ConfigDialogue.cpp:1529
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Batch fájlok (*.bat)|*.bat|Minden fájl|*"
 
-#: ../../src/ConfigDialogue.cpp:1444
+#: ../../src/ConfigDialogue.cpp:1553
 #, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
 msgstr "Batch fájlok (*.bat)|*.bat|Minden fájl|*"
@@ -1015,15 +1015,15 @@ msgstr "Béta"
 msgid "Bigfloats\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1118
+#: ../../src/ConfigDialogue.cpp:1227
 msgid "Bitmap"
 msgstr "Bitkép"
 
-#: ../../src/ConfigDialogue.cpp:840
+#: ../../src/ConfigDialogue.cpp:855
 msgid "Bitmap scale for export:"
 msgstr "Bitmap skála exportáláshoz:"
 
-#: ../../src/ConfigDialogue.cpp:818
+#: ../../src/ConfigDialogue.cpp:833
 msgid "Bitmaps"
 msgstr "Bitképek"
 
@@ -1031,7 +1031,7 @@ msgstr "Bitképek"
 msgid "Boiling it down to numbers\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1217
+#: ../../src/ConfigDialogue.cpp:1326
 msgid "Bold"
 msgstr "Félkövér"
 
@@ -1287,7 +1287,7 @@ msgstr "A Maxima bináris nem tudott elindulni"
 msgid "Canonical (tr)"
 msgstr "Kanonikus (tr)"
 
-#: ../../src/ConfigDialogue.cpp:154
+#: ../../src/ConfigDialogue.cpp:169
 msgid "Catalan"
 msgstr "Katalán"
 
@@ -1295,7 +1295,7 @@ msgstr "Katalán"
 msgid "Ce&ll"
 msgstr "Ce&lla"
 
-#: ../../src/Configuration.cpp:1374
+#: ../../src/Configuration.cpp:1387
 msgid "Cell bracket"
 msgstr "Cella zárójel"
 
@@ -1307,7 +1307,7 @@ msgstr "A cella visszaperre (backslash-re) végződik"
 msgid "Change &2d Display"
 msgstr "&2d-s megjelenítés változtatása"
 
-#: ../../src/ConfigDialogue.cpp:587
+#: ../../src/ConfigDialogue.cpp:602
 msgid "Change names of greek letters to greek letters"
 msgstr "A görög betűk nevei helyett görög betűk legyenek"
 
@@ -1315,7 +1315,7 @@ msgstr "A görög betűk nevei helyett görög betűk legyenek"
 msgid "Change the 2d display algorithm used to display math output"
 msgstr "Matematikai jelek 2d-s megjelenítési algoritmusának megváltoztatása"
 
-#: ../../src/ConfigDialogue.cpp:367
+#: ../../src/ConfigDialogue.cpp:382
 msgid ""
 "Change the text \"alpha\" and \"beta\" to the corresponding greek letter?"
 msgstr "Az \"alfa\" és \"béta\" szöveg változzon a megfelelő görög betűre?"
@@ -1344,20 +1344,20 @@ msgstr "A wxMaxima/Maxima újabb verziójának keresése."
 msgid "Chi"
 msgstr "Khí"
 
-#: ../../src/ConfigDialogue.cpp:155
+#: ../../src/ConfigDialogue.cpp:170
 msgid "Chinese (Simplified)"
 msgstr "Kínai (egyszerűsített)"
 
-#: ../../src/ConfigDialogue.cpp:156
+#: ../../src/ConfigDialogue.cpp:171
 msgid "Chinese (traditional)"
 msgstr "Kínai (hagyományos)"
 
-#: ../../src/ConfigDialogue.cpp:1197 ../../src/ConfigDialogue.cpp:1200
-#: ../../src/ConfigDialogue.cpp:1214
+#: ../../src/ConfigDialogue.cpp:1306 ../../src/ConfigDialogue.cpp:1309
+#: ../../src/ConfigDialogue.cpp:1323
 msgid "Choose font"
 msgstr "Betűtípus választás"
 
-#: ../../src/ConfigDialogue.cpp:1479
+#: ../../src/ConfigDialogue.cpp:1588
 #, fuzzy, c-format
 msgid "Choose the %s Font"
 msgstr "Betűtípus választás"
@@ -1388,35 +1388,35 @@ msgstr "Bezárás\tCtrl+W"
 msgid "Close window"
 msgstr "Ablak bezárása"
 
-#: ../../src/Configuration.cpp:1382
+#: ../../src/Configuration.cpp:1395
 msgid "Code highlighting: Comments"
 msgstr "Kód kiemelése: Megjegyzések"
 
-#: ../../src/Configuration.cpp:1387
+#: ../../src/Configuration.cpp:1400
 msgid "Code highlighting: End of line"
 msgstr "Kód kiemelése: Sorvég"
 
-#: ../../src/Configuration.cpp:1381
+#: ../../src/Configuration.cpp:1394
 msgid "Code highlighting: Functions"
 msgstr "Kód kiemelése: Függvények"
 
-#: ../../src/Configuration.cpp:1386
+#: ../../src/Configuration.cpp:1399
 msgid "Code highlighting: Lisp"
 msgstr "Kód kiemelése: Lisp"
 
-#: ../../src/Configuration.cpp:1383
+#: ../../src/Configuration.cpp:1396
 msgid "Code highlighting: Numbers"
 msgstr "Kód kiemelése: Számok"
 
-#: ../../src/Configuration.cpp:1385
+#: ../../src/Configuration.cpp:1398
 msgid "Code highlighting: Operators"
 msgstr "Kód kiemelése: Műveletek"
 
-#: ../../src/Configuration.cpp:1384
+#: ../../src/Configuration.cpp:1397
 msgid "Code highlighting: Strings"
 msgstr "Kód kiemelése: Szövegek"
 
-#: ../../src/Configuration.cpp:1380
+#: ../../src/Configuration.cpp:1393
 msgid "Code highlighting: Variables"
 msgstr "Kód kiemelése: Változók"
 
@@ -1448,7 +1448,7 @@ msgstr "Vesszővel elválasztott egyenletek"
 msgid "Comma-separated variables"
 msgstr "Vesszővel elválasztott változók"
 
-#: ../../src/ConfigDialogue.cpp:783
+#: ../../src/ConfigDialogue.cpp:798
 msgid "Commands that are executed at every start of maxima."
 msgstr "Maxima parancsok végrehajtása a Maxima minden egyes indulásakor."
 
@@ -1524,17 +1524,17 @@ msgstr ""
 msgid "Condition:"
 msgstr "Feltétel:"
 
-#: ../../src/ConfigDialogue.cpp:1538 ../../src/ConfigDialogue.cpp:1551
-#: ../../src/ConfigDialogue.cpp:1712 ../../src/ConfigDialogue.cpp:1721
+#: ../../src/ConfigDialogue.cpp:1647 ../../src/ConfigDialogue.cpp:1660
+#: ../../src/ConfigDialogue.cpp:1821 ../../src/ConfigDialogue.cpp:1830
 msgid "Config file (*.ini)|*.ini"
 msgstr "Konfigurációs fájl (*.ini)|*.ini"
 
-#: ../../src/ConfigDialogue.cpp:1606
+#: ../../src/ConfigDialogue.cpp:1715
 #, c-format
 msgid "Config item \"%s\" was of an unknown type"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1672
+#: ../../src/ConfigDialogue.cpp:1781
 msgid "Configuration warning"
 msgstr "Figyelmeztetés a beállításokkal kapcsolatban"
 
@@ -1666,7 +1666,7 @@ msgid "Converts a nested list like [[1,2],[3,4]] to a matrix"
 msgstr ""
 "Olyan beágyazott listává konvertál, mint az [[1,2], [3,4]] egy mátrix esetén"
 
-#: ../../src/ConfigDialogue.cpp:232 ../../src/ToolBar.cpp:187
+#: ../../src/ConfigDialogue.cpp:247 ../../src/ToolBar.cpp:187
 #: ../../src/Worksheet.cpp:1289 ../../src/Worksheet.cpp:1328
 #: ../../src/Worksheet.cpp:1427 ../../src/Worksheet.cpp:1587
 msgid "Copy"
@@ -1777,22 +1777,22 @@ msgstr ""
 msgid "Copy, Cut and Paste button"
 msgstr "Másolás, Kivágás és Beillesztés gomb"
 
-#: ../../src/ConfigDialogue.cpp:1591
+#: ../../src/ConfigDialogue.cpp:1700
 #, c-format
 msgid "Copying config bool \"%s\""
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1601
+#: ../../src/ConfigDialogue.cpp:1710
 #, fuzzy, c-format
 msgid "Copying config float \"%s\""
 msgstr "A konfiguráció beolvasása %s helyről."
 
-#: ../../src/ConfigDialogue.cpp:1596
+#: ../../src/ConfigDialogue.cpp:1705
 #, c-format
 msgid "Copying config int \"%s\""
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1586
+#: ../../src/ConfigDialogue.cpp:1695
 #, c-format
 msgid "Copying config string \"%s\""
 msgstr ""
@@ -1845,11 +1845,11 @@ msgstr "Lista készítése"
 msgid "Create list from comma-separated elements"
 msgstr "Lista létrehozása vesszővel elválasztott elemekből"
 
-#: ../../src/ConfigDialogue.cpp:924
+#: ../../src/ConfigDialogue.cpp:939
 msgid "Create scalable plots."
 msgstr ""
 
-#: ../../src/Configuration.cpp:1376
+#: ../../src/Configuration.cpp:1389
 msgid "Cursor"
 msgstr "Kurzor"
 
@@ -1865,11 +1865,11 @@ msgstr "&Kivágás\tCtrl+X"
 msgid "Cut selection"
 msgstr "Kijelölt rész kivágása"
 
-#: ../../src/ConfigDialogue.cpp:157
+#: ../../src/ConfigDialogue.cpp:172
 msgid "Czech"
 msgstr "Cseh"
 
-#: ../../src/ConfigDialogue.cpp:158
+#: ../../src/ConfigDialogue.cpp:173
 msgid "Danish"
 msgstr "Dán"
 
@@ -1906,25 +1906,25 @@ msgstr "Hibaüzenetek"
 msgid "Decompose rational function to partial fractions"
 msgstr "Racionális törtfüggvény parciális törtekre bontása"
 
-#: ../../src/Configuration.cpp:1349
+#: ../../src/Configuration.cpp:1362
 msgid "Default"
 msgstr "Alapértelmezett"
 
-#: ../../src/ConfigDialogue.cpp:906
+#: ../../src/ConfigDialogue.cpp:921
 msgid "Default animation framerate:"
 msgstr "Az animáció alapértelmezett framerátája:"
 
-#: ../../src/ConfigDialogue.cpp:500
+#: ../../src/ConfigDialogue.cpp:515
 msgid "Default plot size for new maxima sessions:"
 msgstr "Új Maxima munkalap alapértelmezett ábrázolási mérete:"
 
-#: ../../src/ConfigDialogue.cpp:1013
+#: ../../src/ConfigDialogue.cpp:1028
 msgid "Default port for communication with wxMaxima:"
 msgstr ""
 "A Maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
 "port:"
 
-#: ../../src/ConfigDialogue.cpp:323
+#: ../../src/ConfigDialogue.cpp:338
 msgid ""
 "Define the default speed (in frames per second) animations are played back "
 "with."
@@ -2092,7 +2092,7 @@ msgstr "Akarja menteni a változásokat az alábbi dokumentumban \"%s\"?"
 msgid "Dock all Sidebars"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1373
+#: ../../src/Configuration.cpp:1386
 msgid "Document background"
 msgstr "Szöveg háttere"
 
@@ -2112,15 +2112,15 @@ msgstr ""
 "A dokumentum a wxMaxima egy újabb verziójával lett elmentve. Kérem frissítse "
 "a wxMaximát!"
 
-#: ../../src/ConfigDialogue.cpp:1196
+#: ../../src/ConfigDialogue.cpp:1305
 msgid "Documentation+Code font:"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:798
+#: ../../src/ConfigDialogue.cpp:813
 msgid "Documentclass for TeX export:"
 msgstr "Dokumentum osztály TeX exportálásra:"
 
-#: ../../src/ConfigDialogue.cpp:803
+#: ../../src/ConfigDialogue.cpp:818
 msgid "Documentclass options:"
 msgstr "Dokumentum osztály beállítása:"
 
@@ -2236,11 +2236,11 @@ msgstr "Mérnöki formátum (12.1e6 stb.)"
 msgid "Engineering format setup"
 msgstr "Mérnöki formátum beállítása"
 
-#: ../../src/ConfigDialogue.cpp:159
+#: ../../src/ConfigDialogue.cpp:174
 msgid "English"
 msgstr "Angol"
 
-#: ../../src/ConfigDialogue.cpp:1134
+#: ../../src/ConfigDialogue.cpp:1243
 msgid "Enhanced meta file (emf)"
 msgstr "Továbbfejlesztett metafájl (emf)"
 
@@ -2264,7 +2264,7 @@ msgstr "Mátrix bevitele"
 msgid "Enter an equation for rational simplification:"
 msgstr "Írja be a listába felvenni kívánt algebrai egyenletet:"
 
-#: ../../src/ConfigDialogue.cpp:572
+#: ../../src/ConfigDialogue.cpp:587
 msgid "Enter evaluates cells"
 msgstr "A parancsok az Enter lenyomására hajtódnak végre"
 
@@ -2280,11 +2280,11 @@ msgstr "Az animáció új framerátája [Hz, egész]:"
 msgid "Enter new precision for bigfloats:"
 msgstr "Új pontosság bevitele:"
 
-#: ../../src/ConfigDialogue.cpp:315
+#: ../../src/ConfigDialogue.cpp:330
 msgid "Enter the path to the Maxima executable."
 msgstr "A Maxima elérési útjának beírása."
 
-#: ../../src/ConfigDialogue.cpp:1086
+#: ../../src/ConfigDialogue.cpp:1106
 #, fuzzy
 msgid "Environment variables for maxima"
 msgstr "További Maxima-paraméterek"
@@ -2331,7 +2331,7 @@ msgstr "Egyenletek:"
 msgid "Equipping any character with accents\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1430 ../../src/wxMaxima.cpp:1851
+#: ../../src/ConfigDialogue.cpp:1539 ../../src/wxMaxima.cpp:1851
 #: ../../src/wxMaxima.cpp:2192 ../../src/wxMaxima.cpp:3278
 #: ../../src/wxMaxima.cpp:3333 ../../src/wxMaxima.cpp:3342
 #: ../../src/wxMaxima.cpp:3624 ../../src/wxMaxima.cpp:3634
@@ -2474,11 +2474,11 @@ msgstr ""
 msgid "Example"
 msgstr "Példa"
 
-#: ../../src/ConfigDialogue.cpp:1798
+#: ../../src/ConfigDialogue.cpp:1907
 msgid "Example text"
 msgstr "Példaszöveg"
 
-#: ../../src/ConfigDialogue.cpp:1023
+#: ../../src/ConfigDialogue.cpp:1038
 msgid "Examples:"
 msgstr "Példák:"
 
@@ -2526,7 +2526,7 @@ msgstr ""
 msgid "Expect variables to contain complex numbers"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:230 ../../src/wxMaxima.cpp:5720
+#: ../../src/ConfigDialogue.cpp:245 ../../src/wxMaxima.cpp:5720
 msgid "Export"
 msgstr "Exportálás"
 
@@ -2554,7 +2554,7 @@ msgstr "Maxima csomagfájl betöltése"
 msgid "Export all history to a .mac file"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:636
+#: ../../src/ConfigDialogue.cpp:651
 #, fuzzy
 msgid "Export all settings"
 msgstr "Minden fejezet elrejtése"
@@ -2568,7 +2568,7 @@ msgstr ""
 msgid "Export document to a HTML or LaTeX file"
 msgstr "Dokumentum exportálása HTML vagy pdfLaTeX formátumba"
 
-#: ../../src/ConfigDialogue.cpp:815
+#: ../../src/ConfigDialogue.cpp:830
 msgid "Export equations to HTML as:"
 msgstr "Egyenletek HTML-be való exportálása mint:"
 
@@ -2836,7 +2836,7 @@ msgstr "Keresés:"
 msgid "Fine-tune the display of engineering-format numbers"
 msgstr "A mérnöki formátumú számok megjelenítésének finomítása"
 
-#: ../../src/ConfigDialogue.cpp:160
+#: ../../src/ConfigDialogue.cpp:175
 msgid "Finnish"
 msgstr "Finn"
 
@@ -2880,12 +2880,12 @@ msgstr ""
 msgid "Fitting this curve will yield a better result as the first attempt:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:938
+#: ../../src/ConfigDialogue.cpp:953
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr "Mentés előtt rögzíti a (%i, %o) indexek hivatkozását"
 
-#: ../../src/ConfigDialogue.cpp:602
+#: ../../src/ConfigDialogue.cpp:617
 msgid "Fixed font in text controls"
 msgstr "Rögzített szélességű betűtípus a bemeneti sorban"
 
@@ -2905,16 +2905,16 @@ msgstr "Minden fejezet elrejtése"
 msgid "Follow"
 msgstr "Követés"
 
-#: ../../src/ConfigDialogue.cpp:363
+#: ../../src/ConfigDialogue.cpp:378
 msgid "Font used for display in document."
 msgstr "Konzolban használt betűtípus."
 
-#: ../../src/ConfigDialogue.cpp:364
+#: ../../src/ConfigDialogue.cpp:379
 msgid "Font used for displaying math characters in document."
 msgstr ""
 "A dokumentumban előforduló matematikai karakterekhez használt betűtípus."
 
-#: ../../src/ConfigDialogue.cpp:1184
+#: ../../src/ConfigDialogue.cpp:1293
 msgid "Fonts"
 msgstr "Betűkészletek"
 
@@ -2928,7 +2928,7 @@ msgid ""
 "list.:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:344
+#: ../../src/ConfigDialogue.cpp:359
 msgid ""
 "For each Text-, Sectioning or code cell wxMaxima can display a bracket "
 "showing the extend of the cell and allowing to fold it. This setting now "
@@ -3005,7 +3005,7 @@ msgstr "%i. kép a %i közül"
 msgid "Frame rate"
 msgstr "Frameráta"
 
-#: ../../src/ConfigDialogue.cpp:161
+#: ../../src/ConfigDialogue.cpp:176
 msgid "French"
 msgstr "Francia"
 
@@ -3029,7 +3029,7 @@ msgstr "Függvény"
 msgid "Function name"
 msgstr "Függvénynév"
 
-#: ../../src/Configuration.cpp:1352
+#: ../../src/Configuration.cpp:1365
 msgid "Function names"
 msgstr "Függvénynevek"
 
@@ -3073,7 +3073,7 @@ msgstr ""
 "a program rettenetesen villog, nézze meg ezt: https://trac.wxwidgets.org/"
 "ticket/18462."
 
-#: ../../src/ConfigDialogue.cpp:162
+#: ../../src/ConfigDialogue.cpp:177
 msgid "Galician"
 msgstr "Galíciai"
 
@@ -3131,7 +3131,7 @@ msgstr ""
 msgid "Generating evenly-spaced samples from this curve\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:163
+#: ../../src/ConfigDialogue.cpp:178
 msgid "German"
 msgstr "Német"
 
@@ -3191,11 +3191,11 @@ msgstr ""
 "Kérés egy olyan esemény-visszavonásra, amely egy végrehajthatatlan törlést "
 "tartalmaz."
 
-#: ../../src/ConfigDialogue.cpp:164
+#: ../../src/ConfigDialogue.cpp:179
 msgid "Greek"
 msgstr "Görög"
 
-#: ../../src/Configuration.cpp:1354
+#: ../../src/Configuration.cpp:1367
 msgid "Greek Constants"
 msgstr "Görög konstansok "
 
@@ -3230,11 +3230,11 @@ msgid ""
 "redefine \"gnu\" x[gnu] will read the redefined value:\n"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1367 ../../src/wxMaximaFrame.cpp:2134
+#: ../../src/Configuration.cpp:1380 ../../src/wxMaximaFrame.cpp:2134
 msgid "Heading 5"
 msgstr "5. cím"
 
-#: ../../src/Configuration.cpp:1366 ../../src/wxMaximaFrame.cpp:2136
+#: ../../src/Configuration.cpp:1379 ../../src/wxMaximaFrame.cpp:2136
 msgid "Heading 6"
 msgstr "6. cím"
 
@@ -3250,7 +3250,7 @@ msgstr "6. cím"
 msgid "Help"
 msgstr "Súgó"
 
-#: ../../src/ConfigDialogue.cpp:988
+#: ../../src/ConfigDialogue.cpp:1003
 msgid "Help browser:"
 msgstr ""
 
@@ -3303,7 +3303,7 @@ msgstr "Alfejezet elrejtése"
 msgid "Hide Subsubsection"
 msgstr "Al-alfejezet elrejtése"
 
-#: ../../src/ConfigDialogue.cpp:366
+#: ../../src/ConfigDialogue.cpp:381
 msgid ""
 "Hide all multiplication signs that aren't really necessary for understanding "
 "the equation"
@@ -3324,11 +3324,11 @@ msgstr "Tartalmak elrejtése"
 msgid "Hide multiplication dots"
 msgstr "Ha lehetséges, rejtse el a szorzásjeleket"
 
-#: ../../src/ConfigDialogue.cpp:584
+#: ../../src/ConfigDialogue.cpp:599
 msgid "Hide multiplication signs, if possible"
 msgstr "Ha lehetséges, rejtse el a szorzásjeleket"
 
-#: ../../src/ConfigDialogue.cpp:376
+#: ../../src/ConfigDialogue.cpp:391
 msgid ""
 "Hide the brackets that mark the extend of the worksheet cells at the "
 "worksheet's right side and that contain the \"hide\" button of the cell if "
@@ -3346,7 +3346,7 @@ msgstr ""
 msgid "Hide yellow tooltip marker for this message type"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1361
+#: ../../src/Configuration.cpp:1374
 msgid "Highlight (dpart)"
 msgstr "Kiemelés"
 
@@ -3411,7 +3411,7 @@ msgstr "Hány számjegyet kell megjeleníteni:"
 msgid "How to display new equations"
 msgstr "Új egyenletek hogyan legyenek megjelenítve"
 
-#: ../../src/ConfigDialogue.cpp:165
+#: ../../src/ConfigDialogue.cpp:180
 msgid "Hungarian"
 msgstr "Magyar"
 
@@ -3441,7 +3441,44 @@ msgid ""
 "in the two lists the following function can be used:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:311
+#: ../../src/ConfigDialogue.cpp:152
+msgid ""
+"If maxima versions compiled with different lisps are installed: The name of "
+"the lisp to use by default"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:164
+msgid ""
+"If maxima was compiled by GCL: Garbage Collect at minimum allocation past "
+"this heapsize"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:163
+msgid ""
+"If maxima was compiled by GCL: Minimum allocation fraction between Garbage "
+"Collects"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:162
+msgid ""
+"If maxima was compiled by GCL: Only garbage collect past this heapsize "
+"fraction of working mem"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:166
+msgid ""
+"If maxima was compiled by GCL: Share the allocated memory between gcl "
+"processes. Allows more than one gcl-compiled maxima to run at the same time, "
+"but might prooke crashes."
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:165
+msgid ""
+"If maxima was compiled by GCL: The fraction of the total installed RAM to "
+"reserve for maxima"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:326
 msgid ""
 "If multiple cells are evaluated in one go: Abort evaluation if wxMaxima "
 "detects that maxima has encountered any error."
@@ -3449,7 +3486,7 @@ msgstr ""
 "Ha egyszerre több cellát értékelük ki, a kiértékelés nem történik meg, "
 "amennyiben a wxMaxima bármilyen hibát észlel."
 
-#: ../../src/ConfigDialogue.cpp:525
+#: ../../src/ConfigDialogue.cpp:540
 msgid "If not extremely long"
 msgstr "Ha nem túl hosszú"
 
@@ -3459,11 +3496,11 @@ msgid ""
 "contour lines.\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:524
+#: ../../src/ConfigDialogue.cpp:539
 msgid "If not very long"
 msgstr "Ha nem nagyon hosszú"
 
-#: ../../src/ConfigDialogue.cpp:330
+#: ../../src/ConfigDialogue.cpp:345
 msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
@@ -3500,7 +3537,7 @@ msgid ""
 "without describing its actual height.\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:320
+#: ../../src/ConfigDialogue.cpp:335
 msgid ""
 "If the font provides big parenthesis symbols: Use them when big parenthesis "
 "are needed for maths display."
@@ -3543,7 +3580,7 @@ msgid ""
 "different numeric values:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:322
+#: ../../src/ConfigDialogue.cpp:337
 msgid ""
 "If this checkbox is checked wxMaxima automatically saves the file closing "
 "and every few minutes giving wxMaxima a more cellphone-app-like feel as the "
@@ -3555,7 +3592,7 @@ msgstr ""
 "szerűbb érzetet ad. Ha ezt a jelölőnégyzetet nem jelöli be, helyette időről "
 "időre biztonsági másolat készül a fájlról az ideiglenes mappában."
 
-#: ../../src/ConfigDialogue.cpp:312
+#: ../../src/ConfigDialogue.cpp:327
 msgid ""
 "If this checkbox is set a new code cell is opened as soon as maxima requests "
 "data. If it isn't set a new code cell is opened in this case as soon as the "
@@ -3571,7 +3608,7 @@ msgid ""
 "additional control:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:342
+#: ../../src/ConfigDialogue.cpp:357
 msgid ""
 "If this option is set the .wxmx source of the current file is copied to a "
 "place a link to is put into the result of an export."
@@ -3642,7 +3679,7 @@ msgstr ""
 msgid "Implicit Plot"
 msgstr "Implicit ábra"
 
-#: ../../src/ConfigDialogue.cpp:645
+#: ../../src/ConfigDialogue.cpp:660
 msgid "Import settings"
 msgstr ""
 
@@ -3709,7 +3746,7 @@ msgstr ""
 "\"*\" előtti szóközök száma határozza meg a behúzás mértékét. A behúzás a "
 "következő sorban szóközök használatával folytatható."
 
-#: ../../src/ConfigDialogue.cpp:332
+#: ../../src/ConfigDialogue.cpp:347
 msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
@@ -3744,15 +3781,15 @@ msgstr ""
 msgid "Include columns:"
 msgstr "Tartalmazott oszlopok:"
 
-#: ../../src/ConfigDialogue.cpp:940
+#: ../../src/ConfigDialogue.cpp:955
 msgid "Incremental Search"
 msgstr "Azonnali keresés"
 
-#: ../../src/ConfigDialogue.cpp:569
+#: ../../src/ConfigDialogue.cpp:584
 msgid "Indent equations by the label width"
 msgstr "Egyenletek behúzás a címke szélességével"
 
-#: ../../src/ConfigDialogue.cpp:378
+#: ../../src/ConfigDialogue.cpp:393
 msgid ""
 "Indent maths so all lines are in par with the first line that starts after "
 "the label."
@@ -3800,7 +3837,7 @@ msgstr "Kezdetiérték-probléma (&2)..."
 msgid "Input a RegEx here to filter the results"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1357
+#: ../../src/Configuration.cpp:1370
 msgid "Input labels"
 msgstr "Bemeneti címkék"
 
@@ -3812,7 +3849,7 @@ msgstr ""
 msgid "Insert"
 msgstr "Beszúrás"
 
-#: ../../src/ConfigDialogue.cpp:593
+#: ../../src/ConfigDialogue.cpp:608
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr "Beszúr egy %-jelet a cella elején található műveleti jel elé"
 
@@ -3932,7 +3969,7 @@ msgstr "6. címcella beszúrása\tCtrl+7"
 msgid "Insert image"
 msgstr "Kép beszúrása"
 
-#: ../../src/ConfigDialogue.cpp:543 ../../src/wxMaximaFrame.cpp:780
+#: ../../src/ConfigDialogue.cpp:558 ../../src/wxMaximaFrame.cpp:780
 msgid "Integers and single letters"
 msgstr "Egészek és egyedi betűk"
 
@@ -3964,11 +4001,11 @@ msgstr "Függvény integrálása Risch-algoritmussal"
 msgid "Integrate..."
 msgstr "Integrál..."
 
-#: ../../src/ConfigDialogue.cpp:566
+#: ../../src/ConfigDialogue.cpp:581
 msgid "Intelligently hide cell brackets"
 msgstr "A cella-zárójelek intelligens elrejtése"
 
-#: ../../src/ConfigDialogue.cpp:912
+#: ../../src/ConfigDialogue.cpp:927
 msgid "Interactive popup memory limit [MB/plot]:"
 msgstr ""
 
@@ -4017,7 +4054,7 @@ msgstr "Változók aktuális értékeinek tárolása listába"
 msgid "Invalid RegEx!"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1429
+#: ../../src/ConfigDialogue.cpp:1538
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -4043,7 +4080,7 @@ msgstr ""
 msgid "Iota"
 msgstr "Ióta"
 
-#: ../../src/ConfigDialogue.cpp:373
+#: ../../src/ConfigDialogue.cpp:388
 msgid ""
 "Issue a notification if maxima finishes calculating while the wxMaxima "
 "window isn't in focus."
@@ -4084,11 +4121,11 @@ msgstr ""
 msgid "It still remembers what x contains, though.\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:166
+#: ../../src/ConfigDialogue.cpp:181
 msgid "Italian"
 msgstr "Olasz"
 
-#: ../../src/ConfigDialogue.cpp:1218
+#: ../../src/ConfigDialogue.cpp:1327
 msgid "Italic"
 msgstr "Dőlt"
 
@@ -4104,7 +4141,7 @@ msgstr ""
 msgid "Iterator:"
 msgstr "Iterátor:"
 
-#: ../../src/ConfigDialogue.cpp:167
+#: ../../src/ConfigDialogue.cpp:182
 msgid "Japanese"
 msgstr "Japán"
 
@@ -4123,7 +4160,7 @@ msgid ""
 "notation:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:169
+#: ../../src/ConfigDialogue.cpp:184
 msgid "Kabyle"
 msgstr "Kabil"
 
@@ -4131,7 +4168,7 @@ msgstr "Kabil"
 msgid "Kappa"
 msgstr "Kappa"
 
-#: ../../src/ConfigDialogue.cpp:590
+#: ../../src/ConfigDialogue.cpp:605
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Százalékjel használata speciális , mint például %e, %i, stb."
@@ -4144,11 +4181,11 @@ msgstr "Maxima kilövése"
 msgid "LCM"
 msgstr "Legkisebb közös többszörös"
 
-#: ../../src/ConfigDialogue.cpp:852
+#: ../../src/ConfigDialogue.cpp:867
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr "LaTeX: kitevők nem az indexek fölé, hanem után"
 
-#: ../../src/ConfigDialogue.cpp:856
+#: ../../src/ConfigDialogue.cpp:871
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 "LaTeX: A \"parciális derivált\" szimbólumának megjelenítése a diff() "
@@ -4159,7 +4196,7 @@ msgstr ""
 msgid "Label width"
 msgstr "Címke szélesség:"
 
-#: ../../src/ConfigDialogue.cpp:548
+#: ../../src/ConfigDialogue.cpp:563
 msgid "Label width:"
 msgstr "Címke szélesség:"
 
@@ -4167,11 +4204,11 @@ msgstr "Címke szélesség:"
 msgid "Lambda"
 msgstr "Lambda"
 
-#: ../../src/ConfigDialogue.cpp:356
+#: ../../src/ConfigDialogue.cpp:371
 msgid "Language used for wxMaxima GUI."
 msgstr "A wxMaxima grafikus felület nyelve."
 
-#: ../../src/ConfigDialogue.cpp:888
+#: ../../src/ConfigDialogue.cpp:903
 msgid "Language:"
 msgstr "Nyelv:"
 
@@ -4375,7 +4412,7 @@ msgstr "Erre a listára:"
 msgid "Lists and Arrays\n"
 msgstr "Vektorok listája"
 
-#: ../../src/ConfigDialogue.cpp:1221
+#: ../../src/ConfigDialogue.cpp:1330
 msgid "Load"
 msgstr "Betöltés"
 
@@ -4405,7 +4442,7 @@ msgstr "Maxima csomagfájl betöltése"
 msgid "Load a matrix from a csv file"
 msgstr "Maxima csomagfájl betöltése"
 
-#: ../../src/ConfigDialogue.cpp:1719
+#: ../../src/ConfigDialogue.cpp:1828
 msgid "Load style from file"
 msgstr "Stílusfájl betöltése"
 
@@ -4490,20 +4527,20 @@ msgstr "Mátrix leképezése mátrixba"
 msgid "Match Case"
 msgstr "Kisbetű-nagybetű érzékeny keresés"
 
-#: ../../src/ConfigDialogue.cpp:578
+#: ../../src/ConfigDialogue.cpp:593
 msgid "Match parenthesis in text controls"
 msgstr "Nyitó zárójelek párjának automatikus beírása"
 
-#: ../../src/Configuration.cpp:1388
+#: ../../src/Configuration.cpp:1401
 #, fuzzy
 msgid "Math Default"
 msgstr "Alapértelmezett"
 
-#: ../../src/ConfigDialogue.cpp:1199
+#: ../../src/ConfigDialogue.cpp:1308
 msgid "Math font:"
 msgstr "Matematika betűtípus:"
 
-#: ../../src/ConfigDialogue.cpp:346
+#: ../../src/ConfigDialogue.cpp:361
 msgid ""
 "MathJAX creates scalable High-Quality representations of 2D Maths that can "
 "be used for Drag-And-Drop and provides accessibility options. The "
@@ -4517,15 +4554,15 @@ msgid ""
 "fonts that don't match the rest of the document."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:819
+#: ../../src/ConfigDialogue.cpp:834
 msgid "MathML + MathJaX as Fill-In"
 msgstr "Kitöltéshez MathML + MathJaX"
 
-#: ../../src/ConfigDialogue.cpp:1124
+#: ../../src/ConfigDialogue.cpp:1233
 msgid "MathML as HTML"
 msgstr "MathML HTML-ként"
 
-#: ../../src/ConfigDialogue.cpp:1121
+#: ../../src/ConfigDialogue.cpp:1230
 msgid "MathML description"
 msgstr "MathML leírás"
 
@@ -4586,7 +4623,7 @@ msgstr "Mátrix beágyazott listába"
 msgid "Matrix:"
 msgstr "Mátrix:"
 
-#: ../../src/ConfigDialogue.cpp:228
+#: ../../src/ConfigDialogue.cpp:243
 msgid "Maxima"
 msgstr "Maxima"
 
@@ -4625,7 +4662,7 @@ msgstr "A Maxima kérdez"
 msgid "Maxima asks a question!"
 msgstr "A Maxima kérdez!"
 
-#: ../../src/ConfigDialogue.cpp:309
+#: ../../src/ConfigDialogue.cpp:324
 #, c-format
 msgid ""
 "Maxima assigns each command/equation an automatic label (which looks like "
@@ -4650,15 +4687,15 @@ msgstr ""
 "könnyebben észrevegyük, hogy melyik sorban kezdődik egy új egyenlet, és "
 "melyben csak az előző sor tartalma folytatatódik."
 
-#: ../../src/ConfigDialogue.cpp:754
+#: ../../src/ConfigDialogue.cpp:769
 msgid "Maxima commands to be executed at every start of Maxima: "
 msgstr "Maxima parancsok végrehajtása a Maxima minden egyes indulásakor: "
 
-#: ../../src/ConfigDialogue.cpp:714
+#: ../../src/ConfigDialogue.cpp:729
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
 msgstr "Maxima parancsok végrehajtása a wxMaxima minden indításakor: "
 
-#: ../../src/Configuration.cpp:1363
+#: ../../src/Configuration.cpp:1376
 msgid "Maxima errors"
 msgstr "Maxima hibák"
 
@@ -4685,7 +4722,7 @@ msgstr "A Maxima betöltötte a %s fájlt."
 msgid "Maxima has sent a new variable value."
 msgstr "A Maxima új változó értéket küldött."
 
-#: ../../src/Configuration.cpp:1356
+#: ../../src/Configuration.cpp:1369
 msgid "Maxima input"
 msgstr "Maxima bemenet"
 
@@ -4742,7 +4779,7 @@ msgstr ""
 msgid "Maxima process terminated unexpectedly."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:963
+#: ../../src/ConfigDialogue.cpp:978
 msgid "Maxima program:"
 msgstr "Maxima program:"
 
@@ -4754,7 +4791,7 @@ msgid ""
 "and approach1:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:314
+#: ../../src/ConfigDialogue.cpp:329
 msgid ""
 "Maxima provides no \"forget all\" command that flushes all settings a maxima "
 "session could make. wxMaxima therefore normally defaults to starting a fresh "
@@ -4766,7 +4803,7 @@ msgstr ""
 "szerint új Maximát indít minden munkalap-újraértékelésnél. Mivel ez "
 "időigényes lehet, ez a kapcsoló lehetővé teszi az újraindítás kiiktatását."
 
-#: ../../src/Configuration.cpp:1358
+#: ../../src/Configuration.cpp:1371
 msgid "Maxima questions"
 msgstr "Maxima kérdései"
 
@@ -4787,7 +4824,7 @@ msgstr "Maxima csomag (*.mac)|*.mac|"
 msgid "Maxima started. Waiting for connection..."
 msgstr "A Maxima elindult és vár a kapcsolatra..."
 
-#: ../../src/ConfigDialogue.cpp:781
+#: ../../src/ConfigDialogue.cpp:796
 msgid "Maxima startup file location: "
 msgstr "Maxima indító fájl helye: "
 
@@ -4834,7 +4871,7 @@ msgstr ""
 msgid "Maxima version: %s"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1362
+#: ../../src/Configuration.cpp:1375
 msgid "Maxima warnings"
 msgstr "Maxima figyelmeztetések"
 
@@ -4961,7 +4998,7 @@ msgstr ""
 msgid "Maximum absolute value printed without exponent:"
 msgstr "Maximális abszolút érték kitevő nélkül nyomtatva:"
 
-#: ../../src/ConfigDialogue.cpp:514
+#: ../../src/ConfigDialogue.cpp:529
 msgid "Maximum displayed number of digits:"
 msgstr "Maximálisan megjelenített számjegyek száma:"
 
@@ -5080,7 +5117,7 @@ msgstr "Beágyazott lista mátrixba"
 msgid "Nested list to Matrix"
 msgstr "Beágyazott lista mátrixba"
 
-#: ../../src/ConfigDialogue.cpp:542 ../../src/ConfigDialogue.cpp:559
+#: ../../src/ConfigDialogue.cpp:557 ../../src/ConfigDialogue.cpp:574
 #: ../../src/wxMaximaFrame.cpp:778
 msgid "Never"
 msgstr "Soha"
@@ -5114,7 +5151,7 @@ msgstr ""
 msgid "New document"
 msgstr "Új dokumentum"
 
-#: ../../src/ConfigDialogue.cpp:599
+#: ../../src/ConfigDialogue.cpp:614
 msgid "New lines: Jump to text"
 msgstr "Új sorok: Ugrás a szövegre"
 
@@ -5135,7 +5172,7 @@ msgstr ""
 msgid "Nice Graphical Equations"
 msgstr "Szép grafikus egyenletek"
 
-#: ../../src/ConfigDialogue.cpp:523 ../../src/ConfigDialogue.cpp:533
+#: ../../src/ConfigDialogue.cpp:538 ../../src/ConfigDialogue.cpp:548
 msgid "No"
 msgstr "Nincs"
 
@@ -5185,7 +5222,7 @@ msgstr ""
 msgid "Normality Test..."
 msgstr "Normalitás vizsgálat..."
 
-#: ../../src/ConfigDialogue.cpp:338
+#: ../../src/ConfigDialogue.cpp:353
 msgid ""
 "Normally html expects images to be rather low-res but space saving. These "
 "images tend to look rather blurry when viewed on modern screens. Therefore "
@@ -5197,7 +5234,7 @@ msgstr ""
 "elmosódottak lehetnek. Ezzel a beállítással HTML export esetén az megnöveli "
 "a felbontás alapértelmezett értékét."
 
-#: ../../src/ConfigDialogue.cpp:171
+#: ../../src/ConfigDialogue.cpp:186
 msgid "Norwegian"
 msgstr "Norvég"
 
@@ -5260,7 +5297,7 @@ msgstr "Egyenletek száma:"
 msgid "Number types"
 msgstr ""
 
-#: ../../src/Configuration.cpp:1351
+#: ../../src/Configuration.cpp:1364
 msgid "Numbers"
 msgstr "Számok"
 
@@ -5284,7 +5321,7 @@ msgid ""
 "Of course all of these commands can be executed in one long command line:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:605
+#: ../../src/ConfigDialogue.cpp:620
 msgid "Offer answers for questions known from previous runs"
 msgstr ""
 
@@ -5338,11 +5375,11 @@ msgstr ""
 msgid "Online tutorials"
 msgstr "Online ismertetők"
 
-#: ../../src/ConfigDialogue.cpp:558
+#: ../../src/ConfigDialogue.cpp:573
 msgid "Only user-defined labels"
 msgstr "Csak a felhasználó által definiált címkék"
 
-#: ../../src/ConfigDialogue.cpp:979 ../../src/ConfigDialogue.cpp:1002
+#: ../../src/ConfigDialogue.cpp:994 ../../src/ConfigDialogue.cpp:1017
 #: ../../src/ToolBar.cpp:168 ../../src/main.cpp:500 ../../src/wxMaxima.cpp:5666
 msgid "Open"
 msgstr "Megnyitás"
@@ -5351,7 +5388,7 @@ msgstr "Megnyitás"
 msgid "Open Recent"
 msgstr "Me&gnyitás"
 
-#: ../../src/ConfigDialogue.cpp:575
+#: ../../src/ConfigDialogue.cpp:590
 msgid "Open a cell when Maxima expects input"
 msgstr "Nyit egy cellát, amikor a Maxima bemenetet vár"
 
@@ -5389,7 +5426,7 @@ msgstr "Fájl megnyitása"
 msgid "Opening help file %s"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:231 ../../src/ToolBar.cpp:180
+#: ../../src/ConfigDialogue.cpp:246 ../../src/ToolBar.cpp:180
 msgid "Options"
 msgstr "Beállítások"
 
@@ -5425,11 +5462,11 @@ msgstr ""
 "\n"
 "rendkívül hatékony módszer minden listaelemre."
 
-#: ../../src/Configuration.cpp:1379
+#: ../../src/Configuration.cpp:1392
 msgid "Outdated cells"
 msgstr "Elavult cellák"
 
-#: ../../src/Configuration.cpp:1359
+#: ../../src/Configuration.cpp:1372
 msgid "Output labels"
 msgstr "Kimeneti címkék"
 
@@ -5452,7 +5489,7 @@ msgid ""
 "format (*.tif)|*.tif|X pixmap (*.xpm)|*.xpm"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:348
+#: ../../src/ConfigDialogue.cpp:363
 msgid ""
 "PNG images can be read by old wxMaxima versions - but aren't really scalable."
 msgstr ""
@@ -5530,7 +5567,7 @@ msgstr "Tortadiagram..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Kérem állítsa be a wxMaximát a 'Szerkesztés->Beállítás' menüpontban."
 
-#: ../../src/ConfigDialogue.cpp:1671
+#: ../../src/ConfigDialogue.cpp:1780
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "A változások életbe lépéséhez indítsa újra a wxMaximát!"
 
@@ -5603,7 +5640,7 @@ msgstr "Hely:"
 msgid "Points"
 msgstr "Pontok"
 
-#: ../../src/ConfigDialogue.cpp:172
+#: ../../src/ConfigDialogue.cpp:187
 msgid "Polish"
 msgstr "Lengyel"
 
@@ -5625,7 +5662,7 @@ msgstr "Pop"
 msgid "Popout interactively"
 msgstr "Popout interaktív módon"
 
-#: ../../src/ConfigDialogue.cpp:173
+#: ../../src/ConfigDialogue.cpp:188
 msgid "Portuguese (Brazilian)"
 msgstr "Portugál (Brazil)"
 
@@ -5691,11 +5728,11 @@ msgstr "Lebegőpontos számok kiírása 2-vel osztható kitevőkkel oszthatók 2
 msgid "Print out the results\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:845
+#: ../../src/ConfigDialogue.cpp:860
 msgid "Print scale:"
 msgstr "Nyomtatási skála:"
 
-#: ../../src/ConfigDialogue.cpp:865
+#: ../../src/ConfigDialogue.cpp:880
 msgid "Print the cell brackets [drawn to their left]"
 msgstr "Cellazárójelek nyomtatása [balra helyezve]"
 
@@ -5725,7 +5762,7 @@ msgstr "Push"
 msgid "Querying gnuplot which graphics drivers it supports."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1127
+#: ../../src/ConfigDialogue.cpp:1236
 msgid "RTF with OMML maths"
 msgstr "RTF OMML matematikával"
 
@@ -5773,7 +5810,7 @@ msgstr "Stílusfájl betöltése"
 msgid "Read Matrix..."
 msgstr "Mátrix beolvasása..."
 
-#: ../../src/ConfigDialogue.cpp:1549
+#: ../../src/ConfigDialogue.cpp:1658
 #, fuzzy
 msgid "Read config to file"
 msgstr "Kijelölt rész mentése fájlba"
@@ -5818,7 +5855,7 @@ msgstr "Az előző parancs előhozása az előzmények közül"
 msgid "Received maxima's first prompt: %s"
 msgstr "A Maxima első promptja :% s"
 
-#: ../../src/ConfigDialogue.cpp:901
+#: ../../src/ConfigDialogue.cpp:916
 msgid "Recent files list length:"
 msgstr "Jelenlegi fájllista hossza:"
 
@@ -5846,20 +5883,20 @@ msgstr "Trigonometrikus kifejezés redukált alakra hozása"
 msgid "Refusing to send cell to maxima: "
 msgstr "A cella Maximához küldésének megtagadása: "
 
-#: ../../src/ConfigDialogue.cpp:663
+#: ../../src/ConfigDialogue.cpp:678
 msgid "Reload all GUI settings from disc"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:672
+#: ../../src/ConfigDialogue.cpp:687
 msgid "Reload the style settings from disc"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1644
+#: ../../src/ConfigDialogue.cpp:1753
 #, fuzzy
 msgid "Reloading the configuration from disc"
 msgstr "A konfiguráció beolvasása %s helyről."
 
-#: ../../src/ConfigDialogue.cpp:1653
+#: ../../src/ConfigDialogue.cpp:1762
 #, fuzzy
 msgid "Reloading the styles from disc"
 msgstr "A konfiguráció beolvasása %s helyről."
@@ -5921,15 +5958,15 @@ msgstr "Csere:"
 msgid "Report bug"
 msgstr "Hibajelentés"
 
-#: ../../src/ConfigDialogue.cpp:627
+#: ../../src/ConfigDialogue.cpp:642
 msgid "Reset all GUI settings"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:654
+#: ../../src/ConfigDialogue.cpp:669
 msgid "Reset the Style settings"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1626 ../../src/ConfigDialogue.cpp:1635
+#: ../../src/ConfigDialogue.cpp:1735 ../../src/ConfigDialogue.cpp:1744
 #, fuzzy
 msgid "Resetting all configuration settings"
 msgstr "(A kifejezés hosszabb, mint ami a beállítások alapján megengedett)"
@@ -6006,7 +6043,7 @@ msgstr "Fordított"
 msgid "Reverse the order of the list items"
 msgstr "Megfordítja a lista elemeinek sorrendjét"
 
-#: ../../src/ConfigDialogue.cpp:234
+#: ../../src/ConfigDialogue.cpp:249
 msgid "Revert all to defaults"
 msgstr ""
 
@@ -6103,7 +6140,7 @@ msgstr "Futtatás universal wxWidgets porton."
 msgid "Runs each element through a function"
 msgstr "Minden egyes elemet egy függvény segítségével futtat"
 
-#: ../../src/ConfigDialogue.cpp:174
+#: ../../src/ConfigDialogue.cpp:189
 msgid "Russian"
 msgstr "Orosz"
 
@@ -6111,7 +6148,7 @@ msgstr "Orosz"
 msgid "SENT TO MAXIMA:"
 msgstr "MAXIMÁHOZ KÜLDVE:"
 
-#: ../../src/ConfigDialogue.cpp:820
+#: ../../src/ConfigDialogue.cpp:835
 msgid "SVG graphics"
 msgstr "SVG grafika"
 
@@ -6127,7 +6164,7 @@ msgstr "2. minta:"
 msgid "Sample:"
 msgstr "Minta:"
 
-#: ../../src/ConfigDialogue.cpp:1222 ../../src/ToolBar.cpp:169
+#: ../../src/ConfigDialogue.cpp:1331 ../../src/ToolBar.cpp:169
 #: ../../src/wxMaxima.cpp:10391
 msgid "Save"
 msgstr "Mentés"
@@ -6160,7 +6197,7 @@ msgstr "Ki&jelölés mentése képbe..."
 msgid "Save animation to file"
 msgstr "Animáció mentése fájlba"
 
-#: ../../src/ConfigDialogue.cpp:1536
+#: ../../src/ConfigDialogue.cpp:1645
 #, fuzzy
 msgid "Save config to file"
 msgstr "Kijelölt rész mentése fájlba"
@@ -6173,7 +6210,7 @@ msgstr "Dokumentum mentése"
 msgid "Save document as"
 msgstr "Mentés másként"
 
-#: ../../src/ConfigDialogue.cpp:370
+#: ../../src/ConfigDialogue.cpp:385
 msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
@@ -6189,11 +6226,11 @@ msgstr "Kijelölt rész fájlba másolása a dokumentumból"
 msgid "Save selection to file"
 msgstr "Kijelölt rész mentése fájlba"
 
-#: ../../src/ConfigDialogue.cpp:1710
+#: ../../src/ConfigDialogue.cpp:1819
 msgid "Save style to file"
 msgstr "Stílus mentése fájlba"
 
-#: ../../src/ConfigDialogue.cpp:921
+#: ../../src/ConfigDialogue.cpp:936
 msgid "Save the worksheet automatically"
 msgstr "A munkalapot automatikus mentése"
 
@@ -6209,7 +6246,7 @@ msgstr "Sikeres mentés."
 msgid "Saving..."
 msgstr "Mentés..."
 
-#: ../../src/ConfigDialogue.cpp:1130
+#: ../../src/ConfigDialogue.cpp:1239
 msgid "Scalable Vector Graphics (svg)"
 msgstr "Skálázható Vektor Grafika (svg)"
 
@@ -6270,11 +6307,11 @@ msgstr "%s Maxima súgófájl keresése"
 msgid "Section"
 msgstr "Fejezet"
 
-#: ../../src/Configuration.cpp:1370
+#: ../../src/Configuration.cpp:1383
 msgid "Section cell (Heading 2)"
 msgstr ""
 
-#: ../../src/BTextCtrl.cpp:51 ../../src/Configuration.cpp:699
+#: ../../src/BTextCtrl.cpp:51 ../../src/Configuration.cpp:707
 msgid "Seems like something is broken with a font."
 msgstr ""
 
@@ -6298,7 +6335,7 @@ msgstr "&Minden kiválasztása\tCtrl+A"
 msgid "Select All button"
 msgstr "Minden kiválasztása"
 
-#: ../../src/ConfigDialogue.cpp:1416
+#: ../../src/ConfigDialogue.cpp:1525
 msgid "Select Maxima program"
 msgstr "A Maxima program kiválasztása"
 
@@ -6310,7 +6347,7 @@ msgstr "Részminta kiválasztása"
 msgid "Select all"
 msgstr "Minden kiválasztása"
 
-#: ../../src/ConfigDialogue.cpp:1440
+#: ../../src/ConfigDialogue.cpp:1549
 #, fuzzy
 msgid "Select help browser"
 msgstr "Minden kiválasztása"
@@ -6331,7 +6368,7 @@ msgstr ""
 "A kimenetet egy részét kijelölve az egérrel és arra a jobb egérgombbal "
 "kattintva egy menüt kapunk a kijelölt részen való lehetséges műveletekkel."
 
-#: ../../src/Configuration.cpp:1377
+#: ../../src/Configuration.cpp:1390
 msgid "Selection"
 msgstr "Kijelölés"
 
@@ -6401,7 +6438,7 @@ msgstr "Nagyítás beállítása"
 msgid "Set bigfloat &Precision..."
 msgstr "Hosszú lebegőpontos műveletek &pontosságának állítása..."
 
-#: ../../src/ConfigDialogue.cpp:361
+#: ../../src/ConfigDialogue.cpp:376
 msgid "Set fixed font in text controls."
 msgstr "Rögzített szélességű betűtípus beállítása a bemeneti sorban."
 
@@ -6466,6 +6503,11 @@ msgstr "Nagyítás beállítása 300%-ra"
 msgid "Set zoom to 80%"
 msgstr "Nagyítás beállítása 80%-ra"
 
+#: ../../src/ConfigDialogue.cpp:160
+msgid ""
+"Sets the language, line ending type and charset encoding programs will use"
+msgstr ""
+
 #: ../../src/wxMaxima.cpp:3846
 msgid "Setting a few prerequisites for wxMaxima"
 msgstr "Néhány előfeltétel megadása a wxMaxima számára"
@@ -6473,6 +6515,11 @@ msgstr "Néhány előfeltétel megadása a wxMaxima számára"
 #: ../../src/wxMaxima.cpp:3865
 #, c-format
 msgid "Setting gnuplot_binary to %s"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:161
+msgid ""
+"Setting this to \"cat\" causes gnuplot not to halt if there is much output"
 msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:2210
@@ -6583,15 +6630,15 @@ msgstr "Mutassa az egyenleteket lineáris alakjukban"
 msgid "Show function template"
 msgstr "Függvény automatikus kiegészítése sablonnal"
 
-#: ../../src/ConfigDialogue.cpp:553
+#: ../../src/ConfigDialogue.cpp:568
 msgid "Show labels:"
 msgstr "&Címkék megjelenítése:"
 
-#: ../../src/ConfigDialogue.cpp:353
+#: ../../src/ConfigDialogue.cpp:368
 msgid "Show long expressions in wxMaxima document."
 msgstr "A wxMaxima konzolja megjeleníti a hosszú kifejezéseket."
 
-#: ../../src/ConfigDialogue.cpp:520
+#: ../../src/ConfigDialogue.cpp:535
 msgid "Show long expressions:"
 msgstr "Hosszú kifejezések megjelenítése:"
 
@@ -6893,11 +6940,11 @@ msgstr "Lista rendezése"
 msgid "Source list:"
 msgstr "Forrás lista:"
 
-#: ../../src/ConfigDialogue.cpp:175
+#: ../../src/ConfigDialogue.cpp:190
 msgid "Spanish"
 msgstr "Spanyol"
 
-#: ../../src/Configuration.cpp:1353
+#: ../../src/Configuration.cpp:1366
 msgid "Special constants"
 msgstr "Különleges állandó"
 
@@ -6917,7 +6964,7 @@ msgstr ""
 msgid "Start Animation"
 msgstr "Animáció indítása"
 
-#: ../../src/ConfigDialogue.cpp:1062
+#: ../../src/ConfigDialogue.cpp:1077
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Új Maxima indítása minden újraértékeléshez"
 
@@ -6933,7 +6980,7 @@ msgstr ""
 "A kiválasztott, with_slider paranccsal létrehozott animáció indítása vagy "
 "megállítása"
 
-#: ../../src/ConfigDialogue.cpp:372
+#: ../../src/ConfigDialogue.cpp:387
 msgid "Start searching while the phrase to search for is still being typed."
 msgstr "Már a keresendő kifejezés gépelése közben elindítja a keresést."
 
@@ -6958,7 +7005,7 @@ msgstr "A szerver elindult és az alábbi porton figyel %d"
 msgid "Starting to save the worksheet as .wxmx"
 msgstr "Munkalap mentése .wxmx formátumban"
 
-#: ../../src/ConfigDialogue.cpp:233
+#: ../../src/ConfigDialogue.cpp:248
 msgid "Startup commands"
 msgstr "Indítási parancsok"
 
@@ -6979,15 +7026,15 @@ msgstr "Élsimított vonalak"
 msgid "String from maxima apparently didn't end in a newline"
 msgstr "A Maxima sztringje nyilvánvalóan nem végződött új sorban"
 
-#: ../../src/Configuration.cpp:1355
+#: ../../src/Configuration.cpp:1368
 msgid "Strings"
 msgstr "Karakterláncok"
 
-#: ../../src/ConfigDialogue.cpp:229
+#: ../../src/ConfigDialogue.cpp:244
 msgid "Style"
 msgstr "Stílus"
 
-#: ../../src/ConfigDialogue.cpp:1185
+#: ../../src/ConfigDialogue.cpp:1294
 msgid "Styles"
 msgstr "Stílusok"
 
@@ -6999,7 +7046,7 @@ msgstr "Részminta..."
 msgid "Subsection"
 msgstr "Alfejezet"
 
-#: ../../src/Configuration.cpp:1369
+#: ../../src/Configuration.cpp:1382
 msgid "Subsection cell (Heading 3)"
 msgstr ""
 
@@ -7019,7 +7066,7 @@ msgstr "&Behelyettesítés..."
 msgid "Subsubsection"
 msgstr "Al-alfejezet"
 
-#: ../../src/Configuration.cpp:1368
+#: ../../src/Configuration.cpp:1381
 msgid "Subsubsection cell (Heading 4)"
 msgstr ""
 
@@ -7043,7 +7090,7 @@ msgstr "Lisp módba váltott, miután a Lisp promptot megkapta!"
 msgid "Symbols\tAlt+Shift+Y"
 msgstr "Szimbólumok\tAlt+Shift+Y"
 
-#: ../../src/ConfigDialogue.cpp:358
+#: ../../src/ConfigDialogue.cpp:373
 msgid ""
 "Symbols that are entered or copied here will appear in the symbols sidebar "
 "so they can be entered into the worksheet easily."
@@ -7067,7 +7114,7 @@ msgstr "Tau"
 msgid "Taylor series:"
 msgstr "Taylor-sor:"
 
-#: ../../src/ConfigDialogue.cpp:817
+#: ../../src/ConfigDialogue.cpp:832
 msgid "TeX, interpreted by MathJaX"
 msgstr "TeX, MathJaX-szal értelmezve"
 
@@ -7083,15 +7130,15 @@ msgstr "'tellrat' eljárás"
 msgid "Text"
 msgstr "Szöveg"
 
-#: ../../src/ConfigDialogue.cpp:534
+#: ../../src/ConfigDialogue.cpp:549
 msgid "Text Only"
 msgstr "Csak szöveg"
 
-#: ../../src/Configuration.cpp:1365
+#: ../../src/Configuration.cpp:1378
 msgid "Text cell"
 msgstr "Cellák kivágása"
 
-#: ../../src/Configuration.cpp:1372
+#: ../../src/Configuration.cpp:1385
 msgid "Text cell background"
 msgstr "Szöveg háttere"
 
@@ -7105,7 +7152,7 @@ msgstr ""
 "\">\" jel előtti szóközök száma határozza meg a behúzás mértékét, ahogyan az "
 "a felsorolás lista esetében is történt."
 
-#: ../../src/Configuration.cpp:1378
+#: ../../src/Configuration.cpp:1391
 msgid "Text equal to selection"
 msgstr "Kijelölt rész kivágása"
 
@@ -7149,11 +7196,11 @@ msgstr ""
 "A Maxima folyamat nem kínál megosztott memória szegmenst, így küldhetünk "
 "megszakítási jelet."
 
-#: ../../src/ConfigDialogue.cpp:318
+#: ../../src/ConfigDialogue.cpp:333
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr "Az MathJaX.js URL-t HTML exportálással kell letölteni."
 
-#: ../../src/ConfigDialogue.cpp:621
+#: ../../src/ConfigDialogue.cpp:636
 msgid ""
 "The buttons in this category reset wxMaxima's settings immediately, once "
 "they are pressed."
@@ -7185,7 +7232,7 @@ msgstr ""
 msgid "The current into the input capacitance is:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:328
+#: ../../src/ConfigDialogue.cpp:343
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
@@ -7193,13 +7240,13 @@ msgstr ""
 "A beágyazott pontok alapértelmezett magassága. A Maxima wxplot_size nevű "
 "változója olvashatja vagy átírhatja."
 
-#: ../../src/ConfigDialogue.cpp:368
+#: ../../src/ConfigDialogue.cpp:383
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr ""
 "A Maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
 "port."
 
-#: ../../src/ConfigDialogue.cpp:326
+#: ../../src/ConfigDialogue.cpp:341
 msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
@@ -7211,7 +7258,7 @@ msgstr ""
 msgid "The diagram title"
 msgstr "Diagram címe"
 
-#: ../../src/ConfigDialogue.cpp:1386
+#: ../../src/ConfigDialogue.cpp:1495
 #, c-format
 msgid ""
 "The directory %s with maxima's startup file doesn't exist. Trying to create "
@@ -7220,7 +7267,32 @@ msgstr ""
 "A(z)%s könyvtár a Maxima indítófájljával nem létezik. Megpróbáljuk "
 "létrehozni ..."
 
-#: ../../src/ConfigDialogue.cpp:359
+#: ../../src/ConfigDialogue.cpp:154
+msgid ""
+"The directory containing the startup files, any user libraries and, if "
+"MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling "
+"maxima libraries."
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:155
+msgid ""
+"The directory maxima places temporary files in, for example plots that are "
+"to be included in the worksheet."
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:156
+msgid "The directory the compiled versions of maxima are placed in"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:157
+msgid "The directory the maxima manual can be found in"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:158
+msgid "The directory the user's home directory is in"
+msgstr ""
+
+#: ../../src/ConfigDialogue.cpp:374
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Dokumentumjainkhoz a LaTeX dokumentum osztályt használjuk."
 
@@ -7266,6 +7338,10 @@ msgstr ""
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr "A Shift+Space billentyűkombináció eredménye egy el nem törhető szóköz."
 
+#: ../../src/ConfigDialogue.cpp:159
+msgid "The list of directories the operating system looks for programs in"
+msgstr ""
+
 #: ../../src/wxMaxima.cpp:7584
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
@@ -7294,7 +7370,7 @@ msgstr ""
 msgid "The next plot's title"
 msgstr "A következő ábra címe"
 
-#: ../../src/ConfigDialogue.cpp:371
+#: ../../src/ConfigDialogue.cpp:386
 msgid "The number of recently opened files that is to be remembered."
 msgstr "A jelenleg megnyitott fájlok száma lesz megjegyezve."
 
@@ -7312,13 +7388,13 @@ msgstr ""
 msgid "The offline manual of wxMaxima"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:360
+#: ../../src/ConfigDialogue.cpp:375
 msgid ""
 "The options the document class LaTeX is instructed to use for our documents "
 "gets."
 msgstr "Dokumentumjainkhoz használható LaTeX dokumentum osztály opciók."
 
-#: ../../src/ConfigDialogue.cpp:715 ../../src/ConfigDialogue.cpp:755
+#: ../../src/ConfigDialogue.cpp:730 ../../src/ConfigDialogue.cpp:770
 msgid ""
 "The part of the output of these commands that isn't declared as \"math\" "
 "might be suppressed by wxMaxima. As always maxima commands are required to "
@@ -7476,7 +7552,7 @@ msgid ""
 "overwritten if maxima's version changes or the file cannot be read"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:743
+#: ../../src/ConfigDialogue.cpp:758
 msgid ""
 "This file won't be read by maxima if maxima is used without wxMaxima. In "
 "order to add startup commands that are executed in this case, too, please "
@@ -7538,7 +7614,7 @@ msgstr "Cím"
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr "Cím (alsó és felső indexek, mint x_{10} vagy x^{10})"
 
-#: ../../src/Configuration.cpp:1371
+#: ../../src/Configuration.cpp:1384
 msgid "Title cell (Heading 1)"
 msgstr ""
 
@@ -7637,7 +7713,7 @@ msgstr "A fordításokat a(z) %s helyről olvassa be."
 msgid "Transpose a matrix"
 msgstr "Mátrix transzponálás"
 
-#: ../../src/ConfigDialogue.cpp:350
+#: ../../src/ConfigDialogue.cpp:365
 msgid ""
 "Try to antialias lines (which allows to move them by a fraction of a pixel, "
 "but reduces their sharpness)."
@@ -7701,7 +7777,7 @@ msgstr ""
 msgid "Trying to start a server on port %i instead"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:176
+#: ../../src/ConfigDialogue.cpp:191
 msgid "Turkish"
 msgstr "Török"
 
@@ -7713,11 +7789,11 @@ msgstr "Kétmintás t-próba"
 msgid "Type"
 msgstr "Típus"
 
-#: ../../src/ConfigDialogue.cpp:824
+#: ../../src/ConfigDialogue.cpp:839
 msgid "URL MathJaX.js lies at:"
 msgstr "MathJaX.js URL helye:"
 
-#: ../../src/ConfigDialogue.cpp:177
+#: ../../src/ConfigDialogue.cpp:192
 msgid "Ukrainian"
 msgstr "Ukrán"
 
@@ -7739,11 +7815,11 @@ msgstr ""
 msgid "Undefined"
 msgstr "Nem definiált"
 
-#: ../../src/ConfigDialogue.cpp:1219
+#: ../../src/ConfigDialogue.cpp:1328
 msgid "Underlined"
 msgstr "Aláhúzott"
 
-#: ../../src/ConfigDialogue.cpp:539
+#: ../../src/ConfigDialogue.cpp:554
 msgid "Underscore converts to subscripts:"
 msgstr "Aláhúzást indexszé alakítja:"
 
@@ -7755,7 +7831,7 @@ msgstr "&Visszavonás\tCtrl+Z"
 msgid "Undo last change"
 msgstr "Utolsó változtatás visszavonása"
 
-#: ../../src/ConfigDialogue.cpp:896
+#: ../../src/ConfigDialogue.cpp:911
 msgid "Undo limit (0 for none):"
 msgstr "A visszaállítás mélysége (0: nincs visszaállítás):"
 
@@ -7883,12 +7959,12 @@ msgstr "Lista használata"
 msgid "Use a list as parameter list for a function"
 msgstr "Lista használata egy függvény paraméterlistájaként"
 
-#: ../../src/ConfigDialogue.cpp:365
+#: ../../src/ConfigDialogue.cpp:380
 msgid "Use centered dot and Minus, not Star and Hyphen"
 msgstr ""
 "Középre helyezett pont és mínuszjel használata csillag és kötőjel helyett"
 
-#: ../../src/ConfigDialogue.cpp:581
+#: ../../src/ConfigDialogue.cpp:596
 msgid "Use centered dot character for multiplication"
 msgstr "Középre helyezett pont használata szorzásjelként"
 
@@ -7908,7 +7984,7 @@ msgstr "Lekerekített zárójel használata mátrixoknál"
 msgid "Use square parenthesis for matrices"
 msgstr "Szögletes zárójel használata mátrixoknál"
 
-#: ../../src/ConfigDialogue.cpp:334
+#: ../../src/ConfigDialogue.cpp:349
 msgid ""
 "Use the \"partial derivative\" symbol to represent the fraction that "
 "represents a diff() when exporting LaTeX"
@@ -7916,7 +7992,7 @@ msgstr ""
 "A \"parciális derivált\" szimbólumának megjelenítése a diff() használata "
 "során, amikor LaTeX-be mentünk"
 
-#: ../../src/ConfigDialogue.cpp:1229
+#: ../../src/ConfigDialogue.cpp:1338
 msgid "Use unicode Math Symbols, if available"
 msgstr "Unicode matematikai szimbólumok használata, amit az lehetséges"
 
@@ -7929,16 +8005,16 @@ msgstr "Lekerekített zárójel használata mátrixoknál"
 msgid "User labels only"
 msgstr "Csak a felhasználó által definiált címkék"
 
-#: ../../src/ConfigDialogue.cpp:834 ../../src/ConfigDialogue.cpp:975
-#: ../../src/ConfigDialogue.cpp:998
+#: ../../src/ConfigDialogue.cpp:849 ../../src/ConfigDialogue.cpp:990
+#: ../../src/ConfigDialogue.cpp:1013
 msgid "User specified"
 msgstr "Felhasználó által meghatározott"
 
-#: ../../src/Configuration.cpp:1360
+#: ../../src/Configuration.cpp:1373
 msgid "User-defined labels"
 msgstr "Felhasználó által definiált címkék"
 
-#: ../../src/ConfigDialogue.cpp:557
+#: ../../src/ConfigDialogue.cpp:572
 msgid "User-defined labels if available"
 msgstr "Felhasználó által definiált címkék, amennyiben elérhetőek"
 
@@ -7964,7 +8040,7 @@ msgstr ""
 msgid "Using the built-in list of manual anchors."
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1079
+#: ../../src/ConfigDialogue.cpp:1094
 msgid "Value"
 msgstr "Érték"
 
@@ -7973,7 +8049,7 @@ msgstr "Érték"
 msgid "Value:"
 msgstr "Érték:"
 
-#: ../../src/ConfigDialogue.cpp:1078 ../../src/VariablesPane.cpp:36
+#: ../../src/ConfigDialogue.cpp:1093 ../../src/VariablesPane.cpp:36
 msgid "Variable"
 msgstr "Változó"
 
@@ -7999,7 +8075,7 @@ msgstr "Változó(k):"
 msgid "Variable:"
 msgstr "Változó:"
 
-#: ../../src/Configuration.cpp:1350 ../../src/wxMaximaFrame.cpp:453
+#: ../../src/Configuration.cpp:1363 ../../src/wxMaximaFrame.cpp:453
 #: ../../src/wxMaximaFrame.cpp:759
 msgid "Variables"
 msgstr "Változók"
@@ -8021,7 +8097,7 @@ msgstr "Nézet"
 msgid "Visualizing 3D curves\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:943
+#: ../../src/ConfigDialogue.cpp:958
 msgid "Warn if an inactive window is idle"
 msgstr "Figyelmeztetés, ha egy inaktív ablak tétlen"
 
@@ -8086,7 +8162,7 @@ msgid ""
 "equation:\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:683
+#: ../../src/ConfigDialogue.cpp:698
 msgid ""
 "While wxMaxima is controlled by the settings here Maxima as a command-line "
 "program isn't controlled by settings, except of the few wxMaxima settings "
@@ -8102,11 +8178,11 @@ msgstr ""
 "Egész dokumentum: (*.wxmx)|*.wxmx|Bemenet, olvasható a load()-al (Maxima > "
 "5.38):(*.wxm)|*.wxm"
 
-#: ../../src/ConfigDialogue.cpp:227
+#: ../../src/ConfigDialogue.cpp:242
 msgid "Worksheet"
 msgstr "Munkalap"
 
-#: ../../src/ConfigDialogue.cpp:336
+#: ../../src/ConfigDialogue.cpp:351
 msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
@@ -8120,7 +8196,7 @@ msgstr "Csomagolt keresés"
 msgid "Xi"
 msgstr "Kszí"
 
-#: ../../src/ConfigDialogue.cpp:526
+#: ../../src/ConfigDialogue.cpp:541
 msgid "Yes"
 msgstr "Igen"
 
@@ -8287,11 +8363,11 @@ msgstr "béta"
 msgid "chi"
 msgstr "khí"
 
-#: ../../src/ConfigDialogue.cpp:1028
+#: ../../src/ConfigDialogue.cpp:1043
 msgid "choose a lisp maxima was compiled with"
 msgstr "válassza ki, a Maxima melyik Lisp fordítóval lett buildelve"
 
-#: ../../src/ConfigDialogue.cpp:1032
+#: ../../src/ConfigDialogue.cpp:1047
 msgid "choose between installed maxima versions"
 msgstr "a telepített Maxima verziók közti választás"
 
@@ -8337,7 +8413,7 @@ msgstr "éta"
 msgid "exists"
 msgstr "létezik"
 
-#: ../../src/ConfigDialogue.cpp:355
+#: ../../src/ConfigDialogue.cpp:370
 msgid ""
 "false=Don't generate subscripts\n"
 "true=Automatically convert underscores to subscript markers if the would-be "
@@ -8544,12 +8620,12 @@ msgstr "ró"
 msgid "s\n"
 msgstr ""
 
-#: ../../src/ConfigDialogue.cpp:1047
+#: ../../src/ConfigDialogue.cpp:1062
 #, fuzzy
 msgid "sbcl: use <int>Mbytes of heap"
 msgstr "az sbcl <egész> megabájt heap-et használjon"
 
-#: ../../src/ConfigDialogue.cpp:1051
+#: ../../src/ConfigDialogue.cpp:1066
 msgid "sbcl: use <int>Mbytes of stack for function calls"
 msgstr ""
 
@@ -8680,7 +8756,7 @@ msgstr ""
 msgid "wxMaxima cannot read the xml contents of "
 msgstr "A wxMaxima nem képes az xml tartalom olvasására itt: "
 
-#: ../../src/ConfigDialogue.cpp:215 ../../src/ConfigDialogue.cpp:306
+#: ../../src/ConfigDialogue.cpp:230 ../../src/ConfigDialogue.cpp:321
 msgid "wxMaxima configuration"
 msgstr "A wxMaxima beállítása"
 
@@ -8749,7 +8825,7 @@ msgstr ""
 "lefordításában . Csatlakozzon a wxMaxima fejlesztéséhez: https://github.com/"
 "wxMaxima-developers/wxmaxima"
 
-#: ../../src/ConfigDialogue.cpp:324
+#: ../../src/ConfigDialogue.cpp:339
 msgid ""
 "wxMaxima normally stores the gnuplot sources for every plot made using "
 "draw() in order to be able to open plots interactively in gnuplot later. "
@@ -8768,7 +8844,7 @@ msgstr ""
 "\n"
 "table_form([1,2,3,4,5]);"
 
-#: ../../src/ConfigDialogue.cpp:362
+#: ../../src/ConfigDialogue.cpp:377
 msgid ""
 "wxMaxima remembers the answers to maxima's questions. If this checkbox is "
 "set it automatically offers to enter the last answer to this question the "
@@ -8778,7 +8854,7 @@ msgstr ""
 "jelölőnégyzet be van állítva, akkor automatikusan megadja az utolsó választ "
 "a felhasználó által bevitt kérdésre."
 
-#: ../../src/ConfigDialogue.cpp:741
+#: ../../src/ConfigDialogue.cpp:756
 msgid "wxMaxima startup file location: "
 msgstr "wxMaxima indító fájl helye: "
 
@@ -8815,7 +8891,7 @@ msgstr "A wxWidgets GTK 3-at használ"
 msgid "wxmx file saved"
 msgstr "wxmx fájl elmentve"
 
-#: ../../src/ConfigDialogue.cpp:505
+#: ../../src/ConfigDialogue.cpp:520
 msgid "x"
 msgstr "x"
 
