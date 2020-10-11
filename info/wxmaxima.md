@@ -865,5 +865,6 @@ Most operating systems provide less complicated ways of starting programs than t
 * `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.
 * `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
 * `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
+* `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
 
 Instead of a minus some operating systems might use a dash in front of the command-line switches.
