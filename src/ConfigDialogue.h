@@ -128,6 +128,7 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   
+  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   WX_DECLARE_STRING_HASH_MAP(long, Languages);
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
@@ -238,6 +239,7 @@ protected:
   void OnResetStyles(wxCommandEvent& event);
   void OnChangeMaximaEnvVar(wxGridEvent& event);
   void OnMaximaEnvRightClick(wxGridEvent& event);
+  void OnMouseMotion_MaximaEnv(wxMouseEvent &event);
   void OnNewEnvMenu(wxCommandEvent &event);
 //! The name of maxima's startup file.
   wxString m_startupFileName;
@@ -245,7 +247,7 @@ protected:
   wxString m_wxStartupFileName;
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
-
+  StringHash m_maximaEnvDoc;
   //! Autodetect the maxima location?
   wxRadioButton *m_autodetectMaxima;
   //! The radio button that is set if m_autodetectMaxima is unset

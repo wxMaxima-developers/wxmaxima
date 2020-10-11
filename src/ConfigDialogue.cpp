@@ -149,6 +149,21 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
+  m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] = _("If maxima versions compiled with different lisps are installed: The name of the lisp to use by default");
+  m_maximaEnvDoc["MAXIMA_OBJDIR"] = _(wxT("Tells maxima where to store the result of compiling libraries.\n⚠If MAXIMA_OBJDIR is set the user is responsible for avoiding that compile runs from different maxima versions are placed in the same directory."));
+  m_maximaEnvDoc["MAXIMA_USERDIR"] = _("The directory containing the startup files, any user libraries and, if MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling maxima libraries.");
+m_maximaEnvDoc["MAXIMA_TEMPDIR"] = _("The directory maxima places temporary files in, for example plots that are to be included in the worksheet.");
+m_maximaEnvDoc["MAXIMA_IMAGESDIR"] = _("The directory the compiled versions of maxima are placed in");
+m_maximaEnvDoc["MAXIMA_DOC_PREFIX"] = _("The directory the maxima manual can be found in");
+m_maximaEnvDoc["HOME"] = _("The directory the user's home directory is in");
+m_maximaEnvDoc["PATH"] = _("The list of directories the operating system looks for programs in");
+m_maximaEnvDoc["LANG"] = _("Sets the language, line ending type and charset encoding programs will use");
+m_maximaEnvDoc["PAGER"] = _("Setting this to \"cat\" causes gnuplot not to halt if there is much output");
+m_maximaEnvDoc["GCL_GC_PAGE_THRESH"] = _("If maxima was compiled by GCL: Only garbage collect past this heapsize fraction of working mem");
+m_maximaEnvDoc["GCL_GC_ALLOC_MIN"] = _("If maxima was compiled by GCL: Minimum allocation fraction between Garbage Collects");
+m_maximaEnvDoc["GCL_GC_PAGE_MAX"] = _("If maxima was compiled by GCL: Garbage Collect at minimum allocation past this heapsize");
+m_maximaEnvDoc["GCL_MEM_MULTIPLE"] = _("If maxima was compiled by GCL: The fraction of the total installed RAM to reserve for maxima");
+m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GCL: Share the allocated memory between gcl processes. Allows more than one gcl-compiled maxima to run at the same time, but might prooke crashes.");
   m_svgRast.reset(nsvgCreateRasterizer());
   m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
   m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
@@ -1085,6 +1100,7 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
                                 wxGridEventHandler(ConfigDialogue::OnMaximaEnvRightClick),
                                 NULL, this);
+  m_maximaEnvVariables->GetGridWindow()->Connect(wxEVT_MOTION, wxMouseEventHandler(ConfigDialogue::OnMouseMotion_MaximaEnv), NULL, this);
   
   vsizer->Add(new wxStaticText(panel, -1,
                              _("Environment variables for maxima")), wxSizerFlags().Expand());
@@ -1092,6 +1108,16 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   panel->SetSizerAndFit(vsizer);
 
   return panel;
+}
+
+void ConfigDialogue::OnMouseMotion_MaximaEnv(wxMouseEvent &event)
+{
+  int row = m_maximaEnvVariables->YToRow(event.GetY(), true);
+  wxString toolTip;
+  if(m_maximaEnvDoc.find(m_maximaEnvVariables->GetCellValue(row,0)) != m_maximaEnvDoc.end())
+    toolTip = m_maximaEnvDoc[m_maximaEnvVariables->GetCellValue(row,0)];
+  if(toolTip != m_maximaEnvVariables->GetGridWindow()->GetToolTip())
+    m_maximaEnvVariables->GetGridWindow()->SetToolTip(toolTip);
 }
 
 void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent& event)
