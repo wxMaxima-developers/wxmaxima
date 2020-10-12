@@ -1131,11 +1131,17 @@ void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent& event)
 {
   m_maximaEmvRightClickRow = event.GetRow();
   std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  if(
+    (m_maximaEmvRightClickRow >= 0) &&
+    (m_maximaEmvRightClickRow < m_maximaEnvVariables->GetNumberRows()) &&
+    (!m_maximaEnvVariables->GetCellValue(m_maximaEmvRightClickRow,0).IsEmpty()) &&
+    (!m_maximaEnvVariables->GetCellValue(m_maximaEmvRightClickRow,1).IsEmpty()))
   popupMenu->Append(VAR_DELETE, wxT("Delete this entry"));
 
   if(event.GetCol() == 0)
   {
-    popupMenu->AppendSeparator();
+    if(popupMenu->GetMenuItemCount() > 0)
+      popupMenu->AppendSeparator();
     popupMenu->Append(MAXIMA_DEFAULT_LISP, wxT("MAXIMA_DEFAULT_LISP"));
     popupMenu->Append(MAXIMA_IMAGESDIR, wxT("MAXIMA_IMAGESDIR"));
     popupMenu->Append(MAXIMA_USERDIR, wxT("MAXIMA_USERDIR"));
