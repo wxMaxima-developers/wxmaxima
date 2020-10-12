@@ -122,7 +122,8 @@ private:
     GCL_MEM_MULTIPLE,
     GCL_MULTIPROCESS_MEMORY_POOL,
     LANG,
-    HOME
+    HOME,
+    VAR_DELETE
   };
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
@@ -241,6 +242,9 @@ protected:
   void OnMaximaEnvRightClick(wxGridEvent& event);
   void OnMouseMotion_MaximaEnv(wxMouseEvent &event);
   void OnNewEnvMenu(wxCommandEvent &event);
+  void OnClickMaximaEnvVal(int row);
+  void OnChangeMaximaCellClick(wxGridEvent& event);
+
 //! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.

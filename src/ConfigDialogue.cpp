@@ -50,6 +50,7 @@
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include "Image.h"
+#include <wx/dirdlg.h>
 
 #define CONFIG_ICON_SCALE (1.0)
 
@@ -406,6 +407,25 @@ void ConfigDialogue::SetCheckboxValues()
   m_texPreamble->SetValue(configuration->TexPreamble());
   m_autoSave->SetValue(!configuration->AutoSaveAsTempFile());
 
+  m_maximaEnvVariables->BeginBatch();
+  if(m_maximaEnvVariables->GetNumberRows() > 0)
+    m_maximaEnvVariables->DeleteRows(0, m_maximaEnvVariables->GetNumberRows());
+  wxEnvVariableHashMap::const_iterator it;
+  for (it = m_configuration->MaximaEnvVars().begin();
+       it != m_configuration->MaximaEnvVars().end();
+       ++it)
+  {
+    m_maximaEnvVariables->AppendRows(1);
+    int row = m_maximaEnvVariables->GetNumberRows() - 1;
+    m_maximaEnvVariables->SetCellValue(row,0,it->first);
+    m_maximaEnvVariables->SetCellValue(row,1,it->second);
+  }
+  m_maximaEnvVariables->AppendRows(1);
+  m_maximaEnvVariables->SetColLabelValue(0,_("Variable"));
+  m_maximaEnvVariables->SetColLabelValue(1,_("Value"));
+  m_maximaEnvVariables->AutoSize();
+  m_maximaEnvVariables->EndBatch();
+  
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
   MaximaLocationChanged(dummy);
@@ -1078,22 +1098,9 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(m_restartOnReEvaluation, 0, wxALL, 5);
   m_maximaEnvVariables = new wxGrid(panel,-1);
   m_maximaEnvVariables->CreateGrid(0,2);
-  m_maximaEnvVariables->BeginBatch();
-  wxEnvVariableHashMap::const_iterator it;
-  for (it = m_configuration->MaximaEnvVars().begin();
-       it != m_configuration->MaximaEnvVars().end();
-       ++it)
-  {
-    m_maximaEnvVariables->AppendRows(1);
-    int row = m_maximaEnvVariables->GetNumberRows() - 1;
-    m_maximaEnvVariables->SetCellValue(row,0,it->first);
-    m_maximaEnvVariables->SetCellValue(row,1,it->second);
-  }
-    m_maximaEnvVariables->AppendRows(1);
-  m_maximaEnvVariables->SetColLabelValue(0,_("Variable"));
-  m_maximaEnvVariables->SetColLabelValue(1,_("Value"));
-  m_maximaEnvVariables->AutoSize();
-  m_maximaEnvVariables->EndBatch();
+  m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_LEFT_CLICK,
+                                wxGridEventHandler(ConfigDialogue::OnChangeMaximaCellClick),
+                                NULL, this);
   m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_CHANGED,
                                 wxGridEventHandler(ConfigDialogue::OnChangeMaximaEnvVar),
                                 NULL, this);
@@ -1123,11 +1130,12 @@ void ConfigDialogue::OnMouseMotion_MaximaEnv(wxMouseEvent &event)
 void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent& event)
 {
   m_maximaEmvRightClickRow = event.GetRow();
-  if((event.GetCol() == 0) && (event.GetRow() >= 0) &&
-     m_maximaEnvVariables->GetCellValue(event.GetRow(),0).IsEmpty()
-    )
+  std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+  popupMenu->Append(VAR_DELETE, wxT("Delete this entry"));
+
+  if(event.GetCol() == 0)
   {
-    std::unique_ptr<wxMenu> popupMenu(new wxMenu());
+    popupMenu->AppendSeparator();
     popupMenu->Append(MAXIMA_DEFAULT_LISP, wxT("MAXIMA_DEFAULT_LISP"));
     popupMenu->Append(MAXIMA_IMAGESDIR, wxT("MAXIMA_IMAGESDIR"));
     popupMenu->Append(MAXIMA_USERDIR, wxT("MAXIMA_USERDIR"));
@@ -1147,11 +1155,80 @@ void ConfigDialogue::OnMaximaEnvRightClick(wxGridEvent& event)
   }
 }
 
+void ConfigDialogue::OnClickMaximaEnvVal(int row)
+{
+  if(row<0) return;
+  if(row>=m_maximaEnvVariables->GetNumberRows()) return;
+  wxString var = m_maximaEnvVariables->GetCellValue(row,0);
+  if(var == "MAXIMA_IMAGESDIR")
+  {
+    wxDirDialog dirChooser(this, "Directory the compiled maxima images are in");
+    if(dirChooser.ShowModal() == wxID_OK)
+      m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
+  }
+  if(var == "MAXIMA_USERDIR")
+  {
+    wxDirDialog dirChooser(this, "Directory with maxima user libraries and/or startup files");
+    if(dirChooser.ShowModal() == wxID_OK)
+      m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
+  }
+  if(var == "MAXIMA_DIRECTORY")
+  {
+    wxDirDialog dirChooser(this, "Directory maxima is started in by default");
+    if(dirChooser.ShowModal() == wxID_OK)
+      m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
+  }
+  if(var == "MAXIMA_TEMPDIR")
+  {
+    wxDirDialog dirChooser(this, "Directory for maxima temp files");
+    if(dirChooser.ShowModal() == wxID_OK)
+      m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
+  }
+  if(var == "MAXIMA_OBJDIR")
+  {
+    wxDirDialog dirChooser(this, "Directory for compiler results. Must, if set, be changed or cleared on maxima updates");
+    if(dirChooser.ShowModal() == wxID_OK)
+      m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
+  }
+  if(var == "MAXIMA_DOC_PREFIX")
+  {
+    wxDirDialog dirChooser(this, "Directory with the maxima documentation");
+    if(dirChooser.ShowModal() == wxID_OK)
+      m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
+  }
+  m_maximaEnvVariables->AutoSize();
+}
+
 void ConfigDialogue::OnNewEnvMenu(wxCommandEvent &event)
 {
-  if(m_maximaEmvRightClickRow>=m_maximaEnvVariables->GetNumberRows())
+  if(event.GetId() == VAR_DELETE)
+  {
+    if(
+      (m_maximaEmvRightClickRow>=0) &&
+      (m_maximaEmvRightClickRow<m_maximaEnvVariables->GetNumberRows())
+      )
+      m_maximaEnvVariables->DeleteRows(m_maximaEmvRightClickRow,1);
     return;
-  
+  }
+  if(
+    (m_maximaEmvRightClickRow>=0) &&
+    (m_maximaEmvRightClickRow<m_maximaEnvVariables->GetNumberRows())
+    )
+  {
+    if(!m_maximaEnvVariables->GetCellValue(m_maximaEmvRightClickRow,0).IsEmpty())
+      m_maximaEmvRightClickRow = m_maximaEnvVariables->GetNumberRows() - 1;
+  }
+  if(
+    (m_maximaEmvRightClickRow>=0) &&
+    (m_maximaEmvRightClickRow<m_maximaEnvVariables->GetNumberRows())
+    )
+  {
+    if(!m_maximaEnvVariables->GetCellValue(m_maximaEmvRightClickRow,0).IsEmpty())
+    {
+      m_maximaEnvVariables->AppendRows(1);
+      m_maximaEmvRightClickRow = m_maximaEnvVariables->GetNumberRows() - 1;
+    }
+  }
   switch(event.GetId())
   {
   case MAXIMA_DEFAULT_LISP:
@@ -1197,6 +1274,20 @@ void ConfigDialogue::OnNewEnvMenu(wxCommandEvent &event)
     m_maximaEnvVariables->SetCellValue(m_maximaEmvRightClickRow,0,"MAXIMA_DOC_PREFIX");
     break;
   }
+  if(
+    !((m_maximaEnvVariables->GetCellValue(m_maximaEnvVariables->GetNumberRows()-1,0).IsEmpty()) &&
+      (m_maximaEnvVariables->GetCellValue(m_maximaEnvVariables->GetNumberRows()-1,1).IsEmpty()))
+    )
+    m_maximaEnvVariables->AppendRows(1);
+  m_maximaEnvVariables->AutoSize();
+  //  OnClickMaximaEnvVal(m_maximaEmvRightClickRow);
+}
+
+void ConfigDialogue::OnChangeMaximaCellClick(wxGridEvent& event)
+{
+  if(event.GetCol() == 1)
+    OnClickMaximaEnvVal(event.GetRow());
+  event.Skip();
 }
 
 void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& event)

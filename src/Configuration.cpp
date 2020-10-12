@@ -515,6 +515,7 @@ void Configuration::ReadConfig()
           {
             if(headNode->GetName() == wxT("entries"))
             {
+              m_maximaEnvVars.clear();
               wxXmlNode *entryNode = headNode->GetChildren();
               while(entryNode)
               {
