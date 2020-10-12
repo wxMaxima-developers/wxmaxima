@@ -151,7 +151,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
   m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] = _("If maxima versions compiled with different lisps are installed: The name of the lisp to use by default");
-  m_maximaEnvDoc["MAXIMA_OBJDIR"] = _(wxT("Tells maxima where to store the result of compiling libraries.\n⚠If MAXIMA_OBJDIR is set the user is responsible for avoiding that compile runs from different maxima versions are placed in the same directory."));
+  m_maximaEnvDoc["MAXIMA_OBJDIR"] = _("Tells maxima where to store the result of compiling libraries");
   m_maximaEnvDoc["MAXIMA_USERDIR"] = _("The directory containing the startup files, any user libraries and, if MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling maxima libraries.");
 m_maximaEnvDoc["MAXIMA_TEMPDIR"] = _("The directory maxima places temporary files in, for example plots that are to be included in the worksheet.");
 m_maximaEnvDoc["MAXIMA_IMAGESDIR"] = _("The directory the compiled versions of maxima are placed in");
@@ -1186,7 +1186,7 @@ void ConfigDialogue::OnClickMaximaEnvVal(int row)
   }
   if(var == "MAXIMA_OBJDIR")
   {
-    wxDirDialog dirChooser(this, "Directory for compiler results. Must, if set, be changed or cleared on maxima updates");
+    wxDirDialog dirChooser(this, "Directory the results of compiling libraries are stored in");
     if(dirChooser.ShowModal() == wxID_OK)
       m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
   }
