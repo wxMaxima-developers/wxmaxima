@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-12 22:10+0200\n"
-"PO-Revision-Date: 2020-10-12 22:13+0200\n"
+"PO-Revision-Date: 2020-10-13 06:26+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1885,9 +1885,9 @@ msgid "Copying config bool \"%s\""
 msgstr "Kopiere boolsche Konfigurations-Variable \"%s\""
 
 #: ../../src/ConfigDialogue.cpp:1807
-#, fuzzy, c-format
+#, c-format
 msgid "Copying config float \"%s\""
-msgstr "Lade die Konfiguration von %s."
+msgstr "Kopiere die Konfigurations-Fließkommazahl %s"
 
 #: ../../src/ConfigDialogue.cpp:1802
 #, c-format
@@ -1897,7 +1897,7 @@ msgstr "Kopiere Konfigurations-Integer \"%s\""
 #: ../../src/ConfigDialogue.cpp:1792
 #, c-format
 msgid "Copying config string \"%s\""
-msgstr ""
+msgstr "Kopiere die Konfigurations-Zeichenkette \"%s\""
 
 #: ../../src/wxMaxima.cpp:1978
 msgid ""
@@ -2235,9 +2235,8 @@ msgid "Don't mark cells that contain tooltips in yellow"
 msgstr "Entferne gelbe Markierung von Tooltips"
 
 #: ../../src/Worksheet.cpp:1794
-#, fuzzy
 msgid "Don't mark this message text in yellow"
-msgstr "Entferne gelbe Markierung von Tooltips"
+msgstr "Markiere diese Nachricht nie in gelb"
 
 #: ../../src/wxMaxima.cpp:10391
 msgid "Don't save"
@@ -2387,9 +2386,8 @@ msgid "Enter the path to the Maxima executable."
 msgstr "Geben Sie den Pfad zum Maxima Programm an."
 
 #: ../../src/ConfigDialogue.cpp:1113
-#, fuzzy
 msgid "Environment variables for maxima"
-msgstr "Zusätzliche Parameter für Maxima:"
+msgstr "Umgebungsvariablen für Maxima:"
 
 #: ../../src/wxMaximaFrame.cpp:1921
 msgid "Epsilon"
@@ -2654,9 +2652,8 @@ msgid "Export all history to a .mac file"
 msgstr "Exportiere die Historie als .mac-File"
 
 #: ../../src/ConfigDialogue.cpp:671
-#, fuzzy
 msgid "Export all settings"
-msgstr "Rücksetzen aller GUI-Einstellungen"
+msgstr "Exportiere alle Einstellungen"
 
 #: ../../src/History.cpp:82
 msgid "Export commands from the current maxima session to a .mac file"
@@ -3443,14 +3440,12 @@ msgstr ""
 "Zellinhalts erlaubt."
 
 #: ../../src/Worksheet.cpp:1789
-#, fuzzy
 msgid "Hide yellow tooltip marker for this cell"
-msgstr "Verstecke den gelben Tooltip-Marker"
+msgstr "Verstecke den gelben Tooltip-Marker für diese Zelle"
 
 #: ../../src/Worksheet.cpp:1793
-#, fuzzy
 msgid "Hide yellow tooltip marker for this message type"
-msgstr "Verstecke den gelben Tooltip-Marker"
+msgstr "Verstecke den gelben Tooltip-Marker für diese Art von Nachricht"
 
 #: ../../src/Configuration.cpp:1375
 msgid "Highlight (dpart)"
@@ -3585,32 +3580,32 @@ msgstr "Wenn Maxima-Versionen, die mit unterschiedlichen Lisps compiliert wurden
 msgid ""
 "If maxima was compiled by GCL: Garbage Collect at minimum allocation past "
 "this heapsize"
-msgstr "Wenn Maxima von GCL compiliert wurde: Aufräumen des Heaps nicht unter dieser Heapgröße."
+msgstr "Falls Maxima von GCL compiliert wurde: Aufräumen des Heaps nicht unter dieser Heapgröße."
 
 #: ../../src/ConfigDialogue.cpp:164
 msgid ""
 "If maxima was compiled by GCL: Minimum allocation fraction between Garbage "
 "Collects"
-msgstr ""
+msgstr "Falls Maxima von GCL compiliert wurde: Minimaler Anteil an malloc()s vor Aufräumen des Heaps"
 
 #: ../../src/ConfigDialogue.cpp:163
 msgid ""
 "If maxima was compiled by GCL: Only garbage collect past this heapsize "
 "fraction of working mem"
-msgstr ""
+msgstr "Falls Maxima von GCL compiliert wurde: Minimaler Anteil der malloc()s an der Arbeitsspeichergröße vor Aufräumen des Heaps"
 
 #: ../../src/ConfigDialogue.cpp:167
 msgid ""
 "If maxima was compiled by GCL: Share the allocated memory between gcl "
 "processes. Allows more than one gcl-compiled maxima to run at the same time, "
 "but might prooke crashes."
-msgstr ""
+msgstr "Falls Maxima von GCL compiliert wurde: Teile den Heap zwischen den GCL-Prozessen. Ermöglicht es, mehrere maxima-Prozesse gleichzeitig auf demselben Rechner laufen zu lassen, aber führt manchmal zu Abstürzen."
 
 #: ../../src/ConfigDialogue.cpp:166
 msgid ""
 "If maxima was compiled by GCL: The fraction of the total installed RAM to "
 "reserve for maxima"
-msgstr ""
+msgstr "Falls Maxima von GCL compiliert wurde: Welcher Anteil des gesamten RAMs der Maschine soll für Maxima reserviert sein?"
 
 #: ../../src/ConfigDialogue.cpp:327
 msgid ""
@@ -3873,7 +3868,7 @@ msgstr "Implizit"
 
 #: ../../src/ConfigDialogue.cpp:680
 msgid "Import settings"
-msgstr ""
+msgstr "Importiere die Einstellungen von einer Datei"
 
 #: ../../examples/examples_gettext.h:288
 msgid ""
@@ -6131,9 +6126,8 @@ msgid "Read Matrix..."
 msgstr "Matrix laden ..."
 
 #: ../../src/ConfigDialogue.cpp:1755
-#, fuzzy
 msgid "Read config to file"
-msgstr "Auswahl in eine Datei speichern"
+msgstr "Knfiguration in eine Datei speichern"
 
 #: ../../src/wxMaxima.cpp:4419
 #, c-format
@@ -6520,9 +6514,8 @@ msgid "Save animation to file"
 msgstr "Sichere Animation in Datei"
 
 #: ../../src/ConfigDialogue.cpp:1742
-#, fuzzy
 msgid "Save config to file"
-msgstr "Auswahl in eine Datei speichern"
+msgstr "Konfiguration in eine Datei speichern"
 
 #: ../../src/ToolBar.cpp:169 ../../src/wxMaximaFrame.cpp:660
 msgid "Save document"
@@ -6843,7 +6836,7 @@ msgstr "Setze Vergrößerung auf 80 %"
 #: ../../src/ConfigDialogue.cpp:161
 msgid ""
 "Sets the language, line ending type and charset encoding programs will use"
-msgstr ""
+msgstr "Wählt die Sprache, Zeilenenden und den Zeichensatz, den Programme verwenden"
 
 #: ../../src/wxMaxima.cpp:3846
 msgid "Setting a few prerequisites for wxMaxima"
@@ -6857,7 +6850,7 @@ msgstr "Setze die Adresse von Gnuplot auf %s"
 #: ../../src/ConfigDialogue.cpp:162
 msgid ""
 "Setting this to \"cat\" causes gnuplot not to halt if there is much output"
-msgstr ""
+msgstr "\"cat\" bedeutet, dass gnuplot nicht manchmal anhält, wenn zu viel Text auszugeben ist"
 
 #: ../../src/wxMaximaFrame.cpp:2210
 msgid "Setup a 2D plot"
@@ -7479,7 +7472,7 @@ msgstr "Tellrat"
 
 #: ../../src/ConfigDialogue.cpp:154
 msgid "Tells maxima where to store the result of compiling libraries"
-msgstr ""
+msgstr "Wo soll Maxima Bibliotheken nach dem Compilieren ablegen?"
 
 #: ../../src/ToolBar.cpp:244 ../../src/wxMaximaFrame.cpp:2124
 msgid "Text"
@@ -7634,27 +7627,25 @@ msgid ""
 "The directory containing the startup files, any user libraries and, if "
 "MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling "
 "maxima libraries."
-msgstr ""
+msgstr "Das Verzeichnis, das die Startup-Files, vom User geschriebene Bibliotheken und, wenn MAXIMA_OBJDIR nicht gesetzt ist, das Ergebnis vom Versuch, maxima's Bibliotheken zu compilieren enthält."
 
 #: ../../src/ConfigDialogue.cpp:156
 msgid ""
 "The directory maxima places temporary files in, for example plots that are "
 "to be included in the worksheet."
-msgstr ""
+msgstr "Das Verzeichnis, in dem Maxima temporäre Dateien ablegt, zum Beispiel alles, was für das Zeichnen und Darstellen von Diagrammen benötigt wird."
 
 #: ../../src/ConfigDialogue.cpp:157
 msgid "The directory the compiled versions of maxima are placed in"
-msgstr ""
+msgstr "Das Verzeichnis, in dem die compilierten Versionen von Maxima liegen"
 
 #: ../../src/ConfigDialogue.cpp:158
-#, fuzzy
 msgid "The directory the maxima manual can be found in"
-msgstr ""
-"Stelle eine Liste der Stichwörter passend zu %s aus dem Handbuch zusammen"
+msgstr "Das Verzeichnis mit dem Handbuch von Maxima"
 
 #: ../../src/ConfigDialogue.cpp:159
 msgid "The directory the user's home directory is in"
-msgstr ""
+msgstr "Das \"Eigene Dateien\"-Verzeichnis des Benutzers"
 
 #: ../../src/ConfigDialogue.cpp:375
 msgid "The document class LaTeX is instructed to use for our documents."
@@ -7712,7 +7703,7 @@ msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:160
 msgid "The list of directories the operating system looks for programs in"
-msgstr ""
+msgstr "In welchen Verzeichnissen das Betriebssystem nach Programmen suchen soll"
 
 #: ../../src/wxMaxima.cpp:7584
 msgid ""
