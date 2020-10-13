@@ -1202,6 +1202,13 @@ void ConfigDialogue::OnClickMaximaEnvVal(int row)
     if(dirChooser.ShowModal() == wxID_OK)
       m_maximaEnvVariables->SetCellValue(row,1,dirChooser.GetPath());
   }
+  if(var == "GCL_MULTIPROCESS_MEMORY_POOL")
+  {
+    if(m_maximaEnvVariables->GetCellValue(row,1) == "t")
+      m_maximaEnvVariables->SetCellValue(row,1, "nil");
+    else
+      m_maximaEnvVariables->SetCellValue(row,1, "t");
+  }
   m_maximaEnvVariables->AutoSize();
 }
 
