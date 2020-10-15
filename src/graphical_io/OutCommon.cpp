@@ -44,6 +44,8 @@ OutCommon::OutCommon(Configuration **configuration, const wxString &filename, in
   m_thisconfig.ShowCodeCells(m_oldconfig->ShowCodeCells());
   *m_configuration = &m_thisconfig;
   m_thisconfig.SetZoomFactor_temporarily(1);
+  m_thisconfig.FontChanged(true);
+
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in emf to be
   // usable. Also the probability was high that the right font wasn't

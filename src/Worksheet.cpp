@@ -940,7 +940,9 @@ bool Worksheet::RecalculateIfNeeded()
 
   if (m_configuration->AdjustWorksheetSize())
     AdjustSize();
-  m_configuration->FontChanged(false);
+  
+  if((!m_configuration->GetPrinting()) && (m_configuration->ClipToDrawRegion()))
+    m_configuration->FontChanged(false);
 
   m_configuration->AdjustWorksheetSize(false);
 
