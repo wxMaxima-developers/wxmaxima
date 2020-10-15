@@ -516,18 +516,7 @@ void GroupCell::Recalculate()
     if(m_inputLabel != NULL)
       RecalculateInput();
 
-/*    if (m_output == NULL || IsHidden())
-    {
-      if ((configuration->ShowCodeCells()) ||
-          (m_groupType != GC_TYPE_CODE))
-      {
-        m_width = GetInputIndent();
-        if(GetEditable())
-          m_width += GetEditable()->GetWidth();
-      }
-    }
-    else*/
-      RecalculateOutput();
+    RecalculateOutput();
   }
   // The line breaking will have set our "needs recalculation" flag again.
   UpdateYPosition();
