@@ -3061,6 +3061,7 @@ void Worksheet::Evaluate()
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
   m_updateControls = true;
+  m_configuration->AdjustWorksheetSize(true);
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -4044,6 +4045,7 @@ void Worksheet::SetNotification(const wxString &message, int flags)
  */
 void Worksheet::OnChar(wxKeyEvent &event)
 {
+  m_configuration->AdjustWorksheetSize(true);
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown())
