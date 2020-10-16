@@ -2477,17 +2477,12 @@ msgstr "Wie repariere ich kaputte .wxmx-Dateien?"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:693
-#, fuzzy
-#| msgid ""
-#| "Internally most modern xml-based formats are ordinary zip-files. wxMaxima "
-#| "doesn't turn on compression which makes the contents of .wxmx files "
-#| "viewable in any text editor."
 msgid ""
 "Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ "
 "doesn't turn on compression, so the contents of .wxmx files can be viewed in "
 "any text editor."
 msgstr ""
-"Die meisten xml-basierten Formate sind von ihrem Inhalt her einfache .zip-"
+"Die meisten modernen XML-basierten Formate sind von ihrem Inhalt her einfache .zip-"
 "Dateien. _wxMaxima_ schaltet bei ihnen die Kompression nicht ein, weswegen "
 "ihr Inhalt in einem normalen Texteditor lesbar ist."
 
@@ -2829,19 +2824,13 @@ msgstr "    (setf sb-impl::*default-external-format* :utf-8)\n"
 
 #. type: Plain text
 #: ../../info/wxmaxima.md:772
-#, fuzzy
-#| msgid ""
-#| "The folder this file has to be placed in is system- and installation-"
-#| "specific. But any sbcl-based _Maxima_ that already has evaluated a cell "
-#| "in the current session will happily tell where it can be found after "
-#| "getting the following command:"
 msgid ""
 "The folder this file has to be placed in is system- and installation-"
 "specific. But any SBCL-based _Maxima_ that already has evaluated a cell in "
 "the current session will happily tell where it can be found after getting "
 "the following command:"
 msgstr ""
-"Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit sbcl "
+"Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit SBCL "
 "compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den "
 "Ort zu nennen:"
 
