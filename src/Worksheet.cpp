@@ -2545,7 +2545,6 @@ bool Worksheet::CopyTeX()
   if (!m_cellPointers.m_selectionStart)
     return false;
 
-  wxConfigBase *config = wxConfig::Get();
   Cell *const start = m_cellPointers.m_selectionStart;
   bool inMath = false;
   wxString s;

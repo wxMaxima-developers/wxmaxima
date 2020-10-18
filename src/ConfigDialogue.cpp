@@ -1792,22 +1792,22 @@ void ConfigDialogue::CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString d
   {
     switch(src->GetEntryType(str))
     {
-    Type_String:
+    case wxConfigBase::EntryType::Type_String:
         wxLogMessage(wxString::Format(_("Copying config string \"%s\""),
                                       src->GetPath()+wxT("/")+str));
         dst->Write(str, src->ReadBool(str, wxEmptyString));
         break;
-    Type_Boolean:
+    case wxConfigBase::EntryType::Type_Boolean:
       wxLogMessage(wxString::Format(_("Copying config bool \"%s\""),
                                     src->GetPath()+wxT("/")+str));
       dst->Write(str, src->ReadBool(str, false));
       break;
-    Type_Integer:
+    case wxConfigBase::EntryType::Type_Integer:
       wxLogMessage(wxString::Format(_("Copying config int \"%s\""),
                                     src->GetPath()+wxT("/")+str));
       dst->Write(str, src->ReadLong(str, 0));
       break;
-    Type_Float:
+    case wxConfigBase::EntryType::Type_Float:
       wxLogMessage(wxString::Format(_("Copying config float \"%s\""),
                                     src->GetPath()+wxT("/")+str));
       dst->Write(str, src->ReadDouble(str, 0.0));
