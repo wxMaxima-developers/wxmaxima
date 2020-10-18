@@ -37,7 +37,6 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   #endif
 #endif
   m_config = cfg;
-  bool fixedFont = true;
   m_skipTab = true;
   if (m_config->FixedFontInTextControls())
   {

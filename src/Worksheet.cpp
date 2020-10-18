@@ -781,7 +781,7 @@ void Worksheet::ScrollToError()
   if (errorCell->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(true);
+    Recalculate();
   }
 
   // Try to scroll to a place from which the full error message is visible
@@ -2834,7 +2834,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
   InsertGroupCells(std::move(newGroupCell), prev);
   SetActiveCell(editable, false);
   SetSaved(false);
-  Recalculate(true);
+  Recalculate();
   RequestRedraw();
 }
 
@@ -6745,7 +6745,7 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist, UndoActions *undoFor
 
     SetHCaret(action.m_start);
 
-    Recalculate(true);
+    Recalculate();
     RequestRedraw();
 
     wxASSERT_MSG(!action.m_newCellsEnd,
@@ -6799,7 +6799,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperat
   } while (actionContinues);
   if (!undoForThisOperation->empty())
     undoForThisOperation->front().m_partOfAtomicAction = false;
-  Recalculate(true);
+  Recalculate();
   RequestRedraw();
   return true;
 }
@@ -8116,7 +8116,7 @@ void Worksheet::OnFollow()
     if (GetWorkingGroup()->RevealHidden())
     {
       FoldOccurred();
-      Recalculate(true);
+      Recalculate();
     }
     SetSelection(GetWorkingGroup());
     SetHCaret(GetWorkingGroup());

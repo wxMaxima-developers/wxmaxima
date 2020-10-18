@@ -9928,7 +9928,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9936,7 +9936,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9950,7 +9950,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9963,7 +9963,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9976,7 +9976,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SUBSECTION);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9989,7 +9989,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SUBSUBSECTION);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9997,7 +9997,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -10005,7 +10005,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -10047,13 +10047,13 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_fold_all_cells:
       m_worksheet->FoldAll();
-      m_worksheet->Recalculate(true);
+      m_worksheet->Recalculate();
       // send cursor to the top
       m_worksheet->SetHCaret(NULL);
       break;
     case menu_unfold_all_cells:
       m_worksheet->UnfoldAll();
-      m_worksheet->Recalculate(true);
+      m_worksheet->Recalculate();
       // refresh without moving cursor
       m_worksheet->SetHCaret(m_worksheet->GetHCaret());
       break;

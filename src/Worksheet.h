@@ -949,10 +949,10 @@ public:
   //! Schedule a recalculation of the worksheet starting with the cell start.
   void Recalculate(Cell *start);
 
-  void Recalculate(bool force = false) { Recalculate(GetTree()); }
+  void Recalculate() { Recalculate(GetTree()); }
 
   //! Schedule a full recalculation of the worksheet
-  void RecalculateForce() { Recalculate(true); }
+  void RecalculateForce() { Recalculate(); }
 
   /*! Empties the current document
 
