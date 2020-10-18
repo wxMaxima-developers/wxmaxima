@@ -1583,12 +1583,12 @@ void GroupCell::BreakLines()
   // 1st step: Break 2d objects that are wider than a line into lines
   if(UnBreakUpCells(cell))
   {
-    m_output->ResetSizeList();
+    m_output->ResetCellListSizesList();
     m_output->RecalculateList((*m_configuration)->GetMathFontSize());
   }
   if(BreakUpCells(cell))
   {
-    m_output->ResetSizeList();
+    m_output->ResetCellListSizesList();
     m_output->RecalculateList((*m_configuration)->GetMathFontSize());
   }
 

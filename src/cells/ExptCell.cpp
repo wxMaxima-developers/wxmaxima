@@ -87,9 +87,6 @@ void ExptCell::Draw(wxPoint point)
 
 void ExptCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   if (IsBrokenIntoLines())
     m_exptCell->RecalculateList(fontsize);

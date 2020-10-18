@@ -63,9 +63,6 @@ void DiffCell::MakeBreakupCells()
 
 void DiffCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
   if(!IsBrokenIntoLines())

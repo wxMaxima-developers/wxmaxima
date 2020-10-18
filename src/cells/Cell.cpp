@@ -234,17 +234,7 @@ GroupCell *Cell::GetGroup() const
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   bool const result = (!HasValidSize()) ||
-                      (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f)) ||
-                      (*m_configuration)->FontChanged();
-  // if(result)
-  //   std::cerr << ToString()<< "\n"<<
-  //     "(GetType() != MC_TYPE_GROUP)" << (GetType() != MC_TYPE_GROUP) <<"\n"<<
-  //     "m_recalculateWidths" << m_recalculateWidths<<"\n"<<
-  //     "abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get())"<<abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get())<<"\n"<<
-  //     "(abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1)"<<(abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1)<<"\n"<<
-  //     "(m_isBrokenIntoLines != m_isBrokenIntoLines_old)"<<(m_isBrokenIntoLines != m_isBrokenIntoLines_old)<<"\n"<<
-  //     "(m_clientWidth_old != (*m_configuration)->GetClientWidth())" << (m_clientWidth_old != (*m_configuration)->GetClientWidth()) <<"\n"<<
-  //     "(*m_configuration)->FontChanged()"<<(*m_configuration)->FontChanged()<<"\n\n";
+                      (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f));
   return result;
 }
 
@@ -1027,6 +1017,16 @@ void Cell::ResetDataList()
 {
   for (Cell &tmp : OnList(this))
     tmp.ResetData();
+}
+
+void Cell::ResetCellListSizesList()
+{
+  for (Cell &cell : OnList(this))
+  {
+    cell.ResetCellListSizes();
+    for (Cell &tmp : OnList(&cell))
+      tmp.ResetCellListSizes();
+  }
 }
 
 void Cell::ResetSize()

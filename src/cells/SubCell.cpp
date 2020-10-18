@@ -53,9 +53,6 @@ DEFINE_CELL(SubCell)
 
 void SubCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - SUB_DEC });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -

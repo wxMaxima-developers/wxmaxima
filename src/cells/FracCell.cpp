@@ -63,8 +63,6 @@ void FracCell::MakeDivideCell()
 
 void FracCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
   if(m_inExponent || IsBrokenIntoLines())
   {
     m_displayedNum->RecalculateList(fontsize);

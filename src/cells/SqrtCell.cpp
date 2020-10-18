@@ -65,16 +65,12 @@ void SqrtCell::MakeBreakUpCells()
 
 void SqrtCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateList(fontsize);
 
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    m_innerCell->RecalculateList(fontsize);
 
     m_signFontScale = 1.0;
     auto fontsize1 = AFontSize(Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale));

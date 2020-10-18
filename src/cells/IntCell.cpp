@@ -86,9 +86,6 @@ void IntCell::MakeBreakUpCells()
 
 void IntCell::Recalculate(AFontSize fontsize)
 {
-  if (!NeedsRecalculation(fontsize))
-    return;
-
   wxASSERT(fontsize.IsValid());
   Configuration *configuration = (*m_configuration);
   
@@ -97,12 +94,12 @@ void IntCell::Recalculate(AFontSize fontsize)
   if(m_signWidth < 4)
     m_signWidth = 4;
   
+  m_base->RecalculateList(fontsize);
+  m_var->RecalculateList(fontsize);
   if (IsBrokenIntoLines())
   {
-    m_base->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
     m_comma1->RecalculateList(fontsize);
-    m_var->RecalculateList(fontsize);
     m_comma2->RecalculateList(fontsize);
     m_under->RecalculateList(fontsize);
     m_comma3->RecalculateList(fontsize);
@@ -111,8 +108,6 @@ void IntCell::Recalculate(AFontSize fontsize)
   }
   else
   {
-    m_base->RecalculateList(fontsize);
-    m_var->RecalculateList(fontsize);
     m_under->RecalculateList({ MC_MIN_SIZE, fontsize - 5 });
     m_over->RecalculateList({ MC_MIN_SIZE, fontsize - 5 });
   }

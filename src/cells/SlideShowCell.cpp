@@ -249,11 +249,6 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::Recalculate(AFontSize fontsize)
 {
-  // Here we recalculate the height, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
-
   Configuration *configuration = *m_configuration;
 
   // Assuming a minimum size maybe isn't that bad.

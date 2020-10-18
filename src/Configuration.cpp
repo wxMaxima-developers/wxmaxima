@@ -46,7 +46,6 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 {
   m_printing = false;
   m_clipToDrawRegion = true;
-  m_fontChanged = true;
   m_inLispMode = false;
   m_forceUpdate = false;
   m_outdated = false;

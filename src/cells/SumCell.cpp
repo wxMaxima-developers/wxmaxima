@@ -118,21 +118,21 @@ std::unique_ptr<Cell> SumCell::MakeStart(Cell *under) const
 
 void SumCell::Recalculate(AFontSize fontsize)
 {
-  if (!NeedsRecalculation(fontsize))
-    return;
-
   DisplayedBase()->RecalculateList(fontsize);
+  m_start->RecalculateList(fontsize);
+  m_var->RecalculateList(fontsize);
 
   if (IsBrokenIntoLines())
   {
+    m_over->RecalculateList(fontsize);
     m_comma1->RecalculateList(fontsize);
     m_comma2->RecalculateList(fontsize);
     m_comma3->RecalculateList(fontsize);
     m_open->RecalculateList(fontsize);
     m_close->RecalculateList(fontsize);
   }
-  m_start->RecalculateList(fontsize);
-  m_var->RecalculateList(fontsize);
+  else
+    m_over->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
 
   if (m_sumStyle == SM_SUM)
     m_signWidth = 3.0 * m_signHeight / 5.0;
@@ -143,10 +143,6 @@ void SumCell::Recalculate(AFontSize fontsize)
     m_under->RecalculateList(fontsize);
   else
     m_under->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
-  if(IsBrokenIntoLines())
-    m_over->RecalculateList(fontsize);
-  else
-    m_over->RecalculateList({ MC_MIN_SIZE, fontsize - SUM_DEC });
 
   m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
   m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);

@@ -59,9 +59,6 @@ void ConjugateCell::MakeBreakupCells()
 
 void ConjugateCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_innerCell->RecalculateList(fontsize);
 
   if(!IsBrokenIntoLines())

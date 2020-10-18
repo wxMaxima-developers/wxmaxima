@@ -133,9 +133,6 @@ void ParenCell::SetFont(AFontSize fontsize)
 
 void ParenCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   Configuration *configuration = (*m_configuration);
   
   m_innerCell->RecalculateList(fontsize);

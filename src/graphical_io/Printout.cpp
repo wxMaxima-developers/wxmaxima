@@ -52,7 +52,7 @@ Printout::~Printout()
   if(m_printConfigCreated)
     wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
-  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->FontChanged();
 }
 
 void Printout::SetData(std::unique_ptr<GroupCell> &&tree)

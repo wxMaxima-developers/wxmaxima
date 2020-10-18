@@ -53,9 +53,6 @@ DEFINE_CELL(FunCell)
 
 void FunCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_argCell->RecalculateList(fontsize);
   m_nameCell->RecalculateList(fontsize);
 

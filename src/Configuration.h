@@ -223,8 +223,6 @@ public:
 
   //! Sets the zoom factor without storing the new value in the config file/registry.
   void SetZoomFactor_temporarily(double newzoom){
-    if(m_zoomFactor != newzoom)
-      FontChanged(true);
     m_zoomFactor = newzoom;
   }
 
@@ -337,9 +335,6 @@ public:
   {
     m_clientWidth = width;
   }
-  //! Has a font changed?
-  bool FontChanged() const {return m_fontChanged;}
-
 
   bool IncrementalSearch() const {return m_incrementalSearch;}
 
@@ -354,9 +349,8 @@ public:
   std::vector<CharsExist> m_charsInFont;
 
   //! Has a font changed?
-  void FontChanged(bool fontChanged)
+  void FontChanged()
     {
-      m_fontChanged = fontChanged;
       m_charsInFont.clear();
     }
   
@@ -857,8 +851,6 @@ private:
   bool m_autodetectHelpBrowser;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
-  //! Has the font changed?
-  bool m_fontChanged;
   //! Do we want to use incremental search?
   bool m_incrementalSearch;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?

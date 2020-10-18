@@ -454,7 +454,11 @@ public:
   //! Mark the cached height and width information as "to be calculated".
   void ResetSize();
 
+  //! Mark the line and cell list widths and heights as "to be calculated"
   void ResetCellListSizes();
+
+  //! Mark the line and cell list widths and heights as "to be calculated"
+  void ResetCellListSizesList();
 
   void SetZeroSize();
 

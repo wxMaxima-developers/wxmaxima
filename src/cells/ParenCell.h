@@ -61,6 +61,7 @@ public:
 
   void SetPrint(bool print) { m_print = print; }
 
+  //! \todo m_open and m_close are recalculated in handdrawn mode, too.
   void Recalculate(AFontSize fontsize) override;
 
   void Draw(wxPoint point) override;
