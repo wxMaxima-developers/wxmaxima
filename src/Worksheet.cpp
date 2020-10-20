@@ -3999,7 +3999,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       // keycodes which open hCaret with initial content
     default:
       wxChar tx(event.GetUnicodeKey());
-      if (tx == WXK_NONE)
+      if ((tx == WXK_NONE) || (!wxIsprint(tx)))
       {
         event.Skip();
         return;
