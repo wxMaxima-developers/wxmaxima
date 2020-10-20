@@ -425,7 +425,8 @@ void ConfigDialogue::SetCheckboxValues()
   m_maximaEnvVariables->SetColLabelValue(1,_("Value"));
   m_maximaEnvVariables->AutoSize();
   m_maximaEnvVariables->EndBatch();
-  
+  m_maximaEnvVariables->GetParent()->Layout();
+
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
   MaximaLocationChanged(dummy);
@@ -1085,12 +1086,6 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(m_additionalParameters, wxSizerFlags());
 
   vsizer->Add(10, 10);
-  m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
-  vsizer->Add(m_abortOnError, wxSizerFlags());
-  m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
-  vsizer->Add(m_restartOnReEvaluation, wxSizerFlags());
-  vsizer->Add(10, 10);
-
   m_maximaEnvVariables = new wxGrid(panel,-1);
   m_maximaEnvVariables->CreateGrid(0,2);
   m_maximaEnvVariables->Connect(wxEVT_GRID_CELL_LEFT_CLICK,
@@ -1107,8 +1102,14 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(new wxStaticText(panel, -1,
                              _("Environment variables for maxima")), wxSizerFlags().Expand());
   vsizer->Add(m_maximaEnvVariables, wxSizerFlags().Expand());
-  panel->SetSizerAndFit(vsizer);
 
+  vsizer->Add(10, 10);
+  m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
+  vsizer->Add(m_abortOnError, wxSizerFlags());
+  m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
+  vsizer->Add(m_restartOnReEvaluation, wxSizerFlags());
+
+  panel->SetSizerAndFit(vsizer);
   return panel;
 }
 
@@ -1288,6 +1289,7 @@ void ConfigDialogue::OnNewEnvMenu(wxCommandEvent &event)
     )
     m_maximaEnvVariables->AppendRows(1);
   m_maximaEnvVariables->AutoSize();
+  m_maximaEnvVariables->GetParent()->Layout();
   //  OnClickMaximaEnvVal(m_maximaEmvRightClickRow);
 }
 
