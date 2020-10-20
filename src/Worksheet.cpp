@@ -4045,24 +4045,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown())
-  {
     event.Skip();
-    if (
-      (event.GetKeyCode() == WXK_UP) ||
-      (event.GetKeyCode() == WXK_DOWN) ||
-      (
-        (
-          (event.GetUnicodeKey() >= 'a') &&
-          (event.GetUnicodeKey() <= 'z')
-        ) ||
-        (
-          (event.GetUnicodeKey() >= 'A') &&
-          (event.GetUnicodeKey() <= 'Z')
-          ) 
-        )
-      )
-      return;
-  }
     
   if (m_autocompletePopup)
   {
@@ -4101,10 +4084,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
             !(event.GetKeyCode() == WXK_HOME) &&
             !(event.GetKeyCode() == WXK_END)
             )
-    {
       event.Skip();
-      return;
-    }
   }
 
   // Forward cell creation hotkeys to the class wxMaxima

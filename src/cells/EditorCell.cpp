@@ -1308,7 +1308,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 #endif
     done = HandleSpecialKey(event);
 
-  if (!done)
+  if ((!done) && (wxIsprint(event.GetUnicodeKey())))
     HandleOrdinaryKey(event);
 
   if (m_type == MC_TYPE_INPUT)
