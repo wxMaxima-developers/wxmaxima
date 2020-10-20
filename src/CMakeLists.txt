@@ -252,7 +252,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
 if(WIN32)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat" ../wxmaxima-local.bat)
 else()
-    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local" ../wxmaxima-local)
 endif()
 
 if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
