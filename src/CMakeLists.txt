@@ -207,6 +207,7 @@ elseif(APPLE)
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
         MACOSX_BUNDLE TRUE
+	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/data/Info.plist
         RESOURCE "${RESOURCE_FILES}"
     )
 
