@@ -613,49 +613,46 @@ bool EditorCell::IsZoomFactorChanged() const
 void EditorCell::Recalculate(AFontSize fontsize)
 {    
   m_isDirty = false;
-  if (NeedsRecalculation(fontsize))
+  Cell::Recalculate(fontsize);
+  Configuration *configuration = (*m_configuration);
+  if (IsZoomFactorChanged())
   {
-    Cell::Recalculate(fontsize);
-    Configuration *configuration = (*m_configuration);
-    if (IsZoomFactorChanged())
+    m_widths.clear();
+    m_lastZoomFactor = configuration->GetZoomFactor();
+  }
+  StyleText();
+  wxDC *dc = configuration->GetDC();
+  SetFont();
+
+  // Measure the text hight using characters that might extend below or above the region
+  // ordinary characters move in.
+  int charWidth;
+  dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
+
+  // We want a little bit of vertical space between two text lines (and between two labels).
+  m_charHeight += 2 * MC_TEXT_PADDING;
+  int width = 0, tokenwidth, tokenheight, linewidth = 0;
+
+  m_numberOfLines = 1;
+
+  std::vector<StyledText>::const_iterator textSnippet;
+
+  for (
+    textSnippet = m_styledText.begin();
+    textSnippet != m_styledText.end();
+    ++textSnippet
+    )
+  {
+    if ((textSnippet->GetText().StartsWith(wxT('\n')) || (textSnippet->GetText().StartsWith(wxT('\r')))))
     {
-      m_widths.clear();
-      m_lastZoomFactor = configuration->GetZoomFactor();
+      m_numberOfLines++;
+      linewidth = textSnippet->GetIndentPixels();
     }
-    StyleText();
-    wxDC *dc = configuration->GetDC();
-    SetFont();
-
-    // Measure the text hight using characters that might extend below or above the region
-    // ordinary characters move in.
-    int charWidth;
-    dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
-
-    // We want a little bit of vertical space between two text lines (and between two labels).
-    m_charHeight += 2 * MC_TEXT_PADDING;
-    int width = 0, tokenwidth, tokenheight, linewidth = 0;
-
-    m_numberOfLines = 1;
-
-    std::vector<StyledText>::const_iterator textSnippet;
-
-    for (
-      textSnippet = m_styledText.begin();
-      textSnippet != m_styledText.end();
-      ++textSnippet
-      )
+    else
     {
-      if ((textSnippet->GetText().StartsWith(wxT('\n')) || (textSnippet->GetText().StartsWith(wxT('\r')))))
-      {
-        m_numberOfLines++;
-        linewidth = textSnippet->GetIndentPixels();
-      }
-      else
-      {
-        dc->GetTextExtent(textSnippet->GetText(), &tokenwidth, &tokenheight);
-        linewidth += tokenwidth;
-        width = wxMax(width, linewidth);
-      }
+      dc->GetTextExtent(textSnippet->GetText(), &tokenwidth, &tokenheight);
+      linewidth += tokenwidth;
+      width = wxMax(width, linewidth);
     }
 
     // Handle folding
