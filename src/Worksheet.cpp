@@ -4094,7 +4094,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
   }
 
   // Forward cell creation hotkeys to the class wxMaxima
-  if (event.CmdDown() && event.AltDown())
+  if (event.CmdDown() && !event.AltDown() && !!event.ShiftDown())
   {
     if (
             (event.GetKeyCode() == WXK_ESCAPE) ||
@@ -4109,7 +4109,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
       return;
     }
   }
-
+  
   // If the find dialogue is open we use the ESC key as a hotkey that closes
   // the dialogue. If it isn't it is used as part of the shortcuts for
   // entering unicode characters instead.
