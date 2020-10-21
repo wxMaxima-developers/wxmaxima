@@ -4094,7 +4094,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
   }
 
   // Forward cell creation hotkeys to the class wxMaxima
-  if (event.CmdDown() && !event.AltDown() && !!event.ShiftDown())
+  if (event.CmdDown() && !event.AltDown())
   {
     if (
             (event.GetKeyCode() == WXK_ESCAPE) ||
