@@ -952,7 +952,7 @@ public:
   void Recalculate() { Recalculate(GetTree()); }
 
   //! Schedule a full recalculation of the worksheet
-  void RecalculateForce() { Recalculate(); }
+  void RecalculateForce();
 
   /*! Empties the current document
 

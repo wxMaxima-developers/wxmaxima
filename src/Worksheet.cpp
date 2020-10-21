@@ -1003,7 +1003,6 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
         break;
     }
   }
-
   RecalculateForce();
 
   UpdateConfigurationClientSize();
@@ -1030,6 +1029,13 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
+}
+
+void Worksheet::RecalculateForce()
+{
+  if(GetTree())
+    GetTree()->ResetSizeList();
+  Recalculate();
 }
 
 /***
