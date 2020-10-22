@@ -708,10 +708,9 @@ public:
   void CopyMathML(bool copyMathML){ m_copyMathML = copyMathML;}
   bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
   void CopyMathMLHTML(bool copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }
-  bool HideMarkerForThisMessage(wxString message){return m_hideMarkerForThisMessage.find(message) !=
-      m_hideMarkerForThisMessage.end();}
-  bool HideMarkerForThisMessage(wxString message, bool hide)
-    {return m_hideMarkerForThisMessage[message] = hide;}
+  bool HideMarkerForThisMessage(wxString message);
+  void HideMarkerForThisMessage(wxString message, bool hide)
+    {m_hideMarkerForThisMessage[message] = hide;}
   bool CopyRTF() const {return m_copyRTF;}
   void CopyRTF(bool copyRTF) { m_copyRTF = copyRTF; }
   bool CopySVG() const {return m_copySVG;}

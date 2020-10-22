@@ -45,6 +45,7 @@ CellPointers *Cell::GetCellPointers() const { return &pointers; }
 long Configuration::Scale_Px(double) const { return 1; }
 AFontSize Configuration::Scale_Px(AFontSize) const { return AFontSize(10.0); }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
+bool Configuration::HideMarkerForThisMessage(wxString) {return false;}
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 Style Configuration::GetStyle(TextStyle, AFontSize) const {
   return Style(AFontSize(10.0));

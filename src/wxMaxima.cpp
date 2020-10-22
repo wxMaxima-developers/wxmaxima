@@ -6229,8 +6229,11 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         return;
       wxString toolTip = cell->GetLocalToolTip();
       if(toolTip.IsEmpty())
+        toolTip = cell->GetGroup()->GetLocalToolTip();
+      if(toolTip.IsEmpty())
         return;
       bool suppress = m_worksheet->m_configuration->HideMarkerForThisMessage(toolTip);
+      std::cerr<<"suppress="<<suppress<<"\n";
       m_worksheet->m_configuration->HideMarkerForThisMessage(toolTip, !suppress);
       m_worksheet->OutputChanged();
       break;

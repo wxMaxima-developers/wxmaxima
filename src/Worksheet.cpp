@@ -1784,21 +1784,26 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     }
   }
 
-  wxString toolTip;
-  if ((m_cellPointers.m_selectionStart) &&
-      (!(toolTip = m_cellPointers.m_selectionStart->GetLocalToolTip()).IsEmpty()))
+  if((m_cellPointers.m_selectionStart))
   {
-    if(popupMenu.GetMenuItemCount() > 0)
-      popupMenu.AppendSeparator();
+    wxString toolTip = m_cellPointers.m_selectionStart->GetLocalToolTip();
     GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
-    popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker for this cell"),
-                              _("Don't mark cells that contain tooltips in yellow"));
-    popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
-    popupMenu.AppendCheckItem(popid_hide_tooltipMarkerForThisMessage,
-                              _("Hide yellow tooltip marker for this message type"),
-                              _("Don't mark this message text in yellow"));
-    popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
-                    m_configuration->HideMarkerForThisMessage(toolTip));
+    if(toolTip.IsEmpty())
+      toolTip = group->GetLocalToolTip();
+    
+    if (!(toolTip.IsEmpty()))
+    {
+      if(popupMenu.GetMenuItemCount() > 0)
+        popupMenu.AppendSeparator();
+      popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker for this cell"),
+                                _("Don't mark cells that contain tooltips in yellow"));
+      popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
+      popupMenu.AppendCheckItem(popid_hide_tooltipMarkerForThisMessage,
+                                _("Hide yellow tooltip marker for this message type"),
+                                _("Don't mark this message text in yellow"));
+      popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
+                      m_configuration->HideMarkerForThisMessage(toolTip));
+    }
   }
   // create menu if we have any items
   if (popupMenu.GetMenuItemCount() > 0)

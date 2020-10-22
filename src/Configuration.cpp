@@ -674,6 +674,15 @@ void Configuration::ReadConfig()
   ReadStyles();
 }
 
+bool Configuration::HideMarkerForThisMessage(wxString message)
+{
+  auto it = m_hideMarkerForThisMessage.find(message);
+  if (it == m_hideMarkerForThisMessage.end())
+    return false;
+  else
+    return it->second;
+}
+
 Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
 {
   Style style = m_styles[ts];
