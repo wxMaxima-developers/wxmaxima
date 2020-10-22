@@ -394,9 +394,6 @@ void ConfigDialogue::SetCheckboxValues()
           _("Indent maths so all lines are in par with the first line that starts after the label.")
     );
 
-  wxConfigBase *config = wxConfig::Get();
-  wxString mp, mc, ib, mf;
-
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item. 
   m_documentclass->SetValue(configuration->Documentclass());
@@ -1300,7 +1297,7 @@ void ConfigDialogue::OnChangeMaximaCellClick(wxGridEvent& event)
   event.Skip();
 }
 
-void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& event)
+void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& WXUNUSED(event))
 {
   //  Make sure we have exactly one empty row the user can add variables to
   for(int row=m_maximaEnvVariables->GetNumberRows()-2;row>=0;row--)
