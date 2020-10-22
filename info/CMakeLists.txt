@@ -25,7 +25,7 @@ if(PANDOC)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.${FILEEXTENSION}
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -o ${FILEBASENAME}.${FILEEXTENSION} --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -s -o ${FILEBASENAME}.${FILEEXTENSION} --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
 			COMMENT "Generating ${FILEBASENAME}.${FILEEXTENSION}")
 		add_custom_target(build_${FILEBASENAME}.${FILEEXTENSION} DEPENDS ${FILEBASENAME}.${FILEEXTENSION})
 		add_dependencies(${FILEEXTENSION} build_${FILEBASENAME}.${FILEEXTENSION})
@@ -138,7 +138,7 @@ endif()
 set(HTMLHELP_ADDITIONAL_FILES wxmaxima.css Autocomplete1.jpg Autocomplete2.jpg
                               BatchImage.png cell-example.png ezUnits.png InputCell.png MatrixTableExample.png
                               maxima_screenshot.png sbclMemory.png SecondTableExample.png SidePanes.png
-                              wxMaxima_configuration_001.png wxMaxima_configuration_002.png wxMaximaLogo.png wxMaximaWindow.png)
+                              wxMaxima_configuration_001.png wxMaxima_configuration_002.png wxMaximaLogo.png wxMaximaWindow.png wxmaxima.svg)
 foreach(CURRENTFILE ${HTMLHELP_ADDITIONAL_FILES})
 	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION share/doc/wxmaxima)
 	file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${CURRENTFILE}" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")

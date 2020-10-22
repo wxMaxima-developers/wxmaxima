@@ -1,3 +1,8 @@
+---
+header-includes:
+    <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
+---
+
 The wxMaxima user manual {-}
 ============================
 
