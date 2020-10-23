@@ -4039,9 +4039,12 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
         return;
       }
       else
-        OpenHCaret(tx);
+      {
+        if(wxIsprint(tx))
+          OpenHCaret(tx);
+      }
   }
-
+  
   RequestRedraw();
 }
 
