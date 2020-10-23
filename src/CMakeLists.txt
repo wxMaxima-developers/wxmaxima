@@ -250,9 +250,9 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(WIN32)
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat" ../wxmaxima-local.bat)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-local.bat)
 else()
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local" ../wxmaxima-local)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
 endif()
 
 if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
