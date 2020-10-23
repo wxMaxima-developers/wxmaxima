@@ -1782,6 +1782,27 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
                               _("Hide contents"), wxEmptyString, wxITEM_NORMAL);
       }
     }
+
+    if(GetActiveCell())
+    {
+      wxString toolTip = GetActiveCell()->GetLocalToolTip();
+      if((toolTip.IsEmpty()) && (group))
+        toolTip = group->GetLocalToolTip();
+      
+      if (!(toolTip.IsEmpty()))
+      {
+        if(popupMenu.GetMenuItemCount() > 0)
+          popupMenu.AppendSeparator();
+        popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker for this cell"),
+                                  _("Don't mark cells that contain tooltips in yellow"));
+        popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
+        popupMenu.AppendCheckItem(popid_hide_tooltipMarkerForThisMessage,
+                                  _("Hide yellow tooltip marker for this message type"),
+                                  _("Don't mark this message text in yellow"));
+        popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
+                        m_configuration->HideMarkerForThisMessage(toolTip));
+      }
+    } 
   }
 
   if((m_cellPointers.m_selectionStart))
