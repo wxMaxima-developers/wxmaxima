@@ -908,6 +908,8 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 bool Worksheet::RecalculateIfNeeded()
 {
   UpdateConfigurationClientSize();
+  if(m_configuration->GetClientWidth()<1)
+    return(false);
   if (!m_recalculateStart || !GetTree())
   {
     m_recalculateStart = {};
