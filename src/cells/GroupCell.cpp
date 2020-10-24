@@ -2165,4 +2165,16 @@ wxString GroupCell:: m_lookalikeChars(
     wxT("x")		wxT("\u03c7")
     wxT("ü")		wxT("\u03cb")
     wxT("\u0460")	wxT("\u03c9")
-    wxT("\u0472")	wxT("\u0398"));
+    wxT("\u0472")	wxT("\u0398")
+    wxT("У")	        wxT("Y")
+    wxT("У")	        wxT("y")
+    wxT("ѡ")	        wxT("ω")
+    wxT("Ѳ")	        wxT("Θ")
+    wxT("θ")	        wxT("ѳ")
+    wxT("ø")	        wxT("⌀")
+    wxT("∅")	        wxT("⊘")
+    wxT("∅")	        wxT("⌀")
+    wxT("ø")	        wxT("⊘")
+    wxT("ø")            wxT("∅")
+    wxT("⌀")            wxT("⊘")
+  );
