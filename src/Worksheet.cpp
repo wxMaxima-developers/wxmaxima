@@ -4133,7 +4133,9 @@ void Worksheet::OnChar(wxKeyEvent &event)
             (event.GetKeyCode() == wxT('2')) ||
             (event.GetKeyCode() == wxT('3')) ||
             (event.GetKeyCode() == wxT('4')) ||
-            (event.GetKeyCode() == wxT('5'))
+            (event.GetKeyCode() == wxT('5')) ||
+            (event.GetKeyCode() == wxT('+')) ||
+            (event.GetKeyCode() == wxT('-'))
             )
     {
       event.Skip();
