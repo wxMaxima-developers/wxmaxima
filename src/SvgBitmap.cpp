@@ -128,7 +128,14 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
 }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
-                                  const int &width, const int &height, const int &scaleFactor)
+                                  const int &width, const int &height,
+
+  #if defined __WXOSX__
+                                  const int &scaleFactor
+  #else
+                                  const int &WXUNUSED(scaleFactor)
+  #endif
+  )
 {
   #if defined __WXOSX__
   wxBitmap retval = wxBitmap(wxSize(width, height), 32, scaleFactor);
