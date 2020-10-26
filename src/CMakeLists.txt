@@ -1,5 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
+set(MANIFEST_FILE "${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest")
+
 set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
@@ -118,8 +120,8 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
+    ${MANIFEST_FILE}
     ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
-    ${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest
 )
 
 list(APPEND SOURCE_FILES
@@ -167,21 +169,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
     endif()
 endif()
 
-# We provide our own manifest. MSVC seems not to autodetect that.
-if(MSVC)
-  message(STATUS "MSVC detected => Trying to disable the inclusion of the automatic manifest hat suppresses high-dpi support.")
-  set(CMAKE_EXE_LINKER_FLAGS_RELEASE    "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
-  set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
-  set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
-  set(CMAKE_EXE_LINKER_FLAGS_DEBUG    "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
-  set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
-  set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
-endif()
-
-# Include our Resources file that contains our manifest
-if(WIN32)
-  include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-endif()
+include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
 
 if(APPLE)
   file(GLOB RESOURCE_FILES
@@ -232,16 +220,13 @@ else()
     ##    RESOURCE "${RESOURCE_FILES}"
 endif()
 
-if(WXM_ENABLE_PRECOMPILED_HEADERS AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
-    target_precompile_headers(wxmaxima PUBLIC "precomp.h")
-else()
-    set(USE_PRECOMP_HEADER "0")
-endif()
-
-if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
-    set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
-else()
-    set(MANIFEST_FILE "${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    set_target_properties(wxmaxima PROPERTIES VS_DPI_AWARE "PerMonitor")
+    if(WXM_ENABLE_PRECOMPILED_HEADERS)
+	target_precompile_headers(wxmaxima PUBLIC "precomp.h")
+    else()
+	set(USE_PRECOMP_HEADER "0")
+    endif()
 endif()
 
 file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
@@ -280,6 +265,7 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
+    set(CPACK_NSIS_DEFINES "ManifestDPIAware true")
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 elseif(APPLE)
