@@ -120,7 +120,7 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
-    ${MANIFEST_FILE}
+#    ${MANIFEST_FILE}
     ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
 )
 
