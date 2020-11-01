@@ -10,11 +10,11 @@
 
 #ifndef MSVC
 #define wxMANIFEST_ID 1
-wxMANIFEST_ID RT_MANIFEST "@MANIFEST_FILE@"
+wxMANIFEST_ID RT_MANIFEST "wxmaxima.manifest"
 #endif
 
-icon0 ICON "@WINDOWS_ICON_DIR@/maximaicon.ico"
-icon1 ICON "@WINDOWS_ICON_DIR@/wxmac-doc.ico"
+icon0 ICON "maximaicon.ico"
+icon1 ICON "wxmac-doc.ico"
 
 myapp_de     MOFILE   "@TRANSLATIONS_DIR@/de.po"
 myapp_ca     MOFILE   "@TRANSLATIONS_DIR@/ca.po"

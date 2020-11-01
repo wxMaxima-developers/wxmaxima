@@ -1,7 +1,5 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-set(MANIFEST_FILE "${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest")
-
 set(CELL_SOURCE_FILES
     AbsCell.cpp
     AtCell.cpp
@@ -120,8 +118,8 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
-#    ${MANIFEST_FILE}
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest
 )
 
 list(APPEND SOURCE_FILES
@@ -229,10 +227,10 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
     endif()
 endif()
 
-file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../locales/wxMaxima/)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc.in" wxmaxima.rc)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest.in" wxmaxima.manifest)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(WIN32)
