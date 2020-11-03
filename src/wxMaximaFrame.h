@@ -660,14 +660,14 @@ private:
 */
   void SetupMenu();
 
-  wxPanel *CreateStatPane();
+  wxWindow *CreateStatPane();
 
-  wxPanel *CreateMathPane();
+  wxWindow *CreateMathPane();
 
-  wxPanel *CreateFormatPane();
+  wxWindow *CreateFormatPane();
   
   //! The class for the sidebar with the draw commands
-  class DrawPane: public wxPanel
+  class DrawPane: public wxScrolled<wxPanel>
     {
     public:
       explicit DrawPane(wxWindow *parent, int id = wxID_ANY);
@@ -718,7 +718,7 @@ protected:
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
-  class GreekPane : public wxPanel
+  class GreekPane : public wxScrolled<wxPanel>
   {
   public:
     GreekPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
@@ -728,12 +728,12 @@ private:
     void OnMenu(wxCommandEvent &event);
   private:
     Configuration *m_configuration;
-    wxFlexGridSizer *m_lowercaseSizer;
-    wxFlexGridSizer *m_uppercaseSizer;
+    wxSizer *m_lowercaseSizer;
+    wxSizer *m_uppercaseSizer;
     Worksheet *m_worksheet;
   };
 
-  class SymbolsPane : public wxPanel
+  class SymbolsPane : public wxScrolled<wxPanel>
   {
   public:
     SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID = wxID_ANY);
@@ -746,7 +746,7 @@ private:
     //! A panel that shows all user-defined symbols on the symbols pane.
     wxPanel *m_userSymbols;
     //! A button per user defined symbol
-    std::list<wxPanel *> m_userSymbolButtons;
+    std::list<wxWindow *> m_userSymbolButtons;
     wxGridSizer *m_userSymbolsSizer;
     Configuration *m_configuration;
     Worksheet *m_worksheet;

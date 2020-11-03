@@ -37,26 +37,19 @@ void CharButton::ForwardToParent(wxMouseEvent &event)
     GetParent()->GetEventHandler()->QueueEvent(new wxMouseEvent(event));
 }
 
-void CharButton::CharButtonPressed(wxMouseEvent &WXUNUSED(event))
+void CharButton::CharButtonPressed(wxCommandEvent &WXUNUSED(event))
 {
   wxCommandEvent *ev = new wxCommandEvent(SIDEBARKEYEVENT, (long)(m_char));
   m_worksheet->GetEventHandler()->QueueEvent(ev);
 }
 
-CharButton::CharButton(wxPanel *parent, wxWindow *worksheet, const Definition &def) :
-    wxPanel(parent, wxID_ANY),
+CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def) :
+  wxButton(parent, wxID_ANY, def.symbol, wxDefaultPosition, wxDefaultSize,
+           wxBORDER_NONE | wxBU_EXACTFIT),
     m_char(def.symbol),
     m_worksheet(worksheet)
 {
-  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  wxStaticText *text = new wxStaticText(this, wxID_ANY, {def.symbol});
-  vbox->Add(text, 1, wxALL | wxCENTER, 0);
-
-  if (!def.description.IsEmpty())
-    text->SetToolTip(def.description);
-  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(CharButton::CharButtonPressed), NULL, this);
-  text->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(CharButton::CharButtonPressed), NULL, this);
-  text->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
-  SetSizerAndFit(vbox);
+  SetToolTip(def.description);
+  Connect(wxEVT_BUTTON, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
 }

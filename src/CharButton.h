@@ -30,12 +30,12 @@
  */
 #include "precomp.h"
 #include "StringUtils.h"
-#include <wx/panel.h>
+#include <wx/button.h>
 
 /*! This class generates a pane containing the last commands that were issued.
 
  */
-class CharButton : public wxPanel
+class CharButton : public wxButton
 {
 public:
   //! A definition of this button, used to construct it.
@@ -52,10 +52,10 @@ public:
     \param worksheet The worksheet this button sends char events to
     \param def The definition of the button
   */
-  CharButton(wxPanel *parent, wxWindow *worksheet, const Definition &def);
+  CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &def);
 protected:
   void ForwardToParent(wxMouseEvent &event);
-  void CharButtonPressed(wxMouseEvent &event);
+  void CharButtonPressed(wxCommandEvent &event);
   wchar_t m_char;
 private:
   wxWindow *m_worksheet;
