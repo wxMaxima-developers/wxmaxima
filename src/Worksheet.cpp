@@ -297,9 +297,9 @@ bool Worksheet::RedrawIfRequested()
 
         if (!toolTip.empty())
         {
-          if (GetToolTip())
+          if (!GetToolTipText().empty())
           {
-            if (toolTip != GetToolTip()->GetTip())
+            if (toolTip != GetToolTipText())
             {
               // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
               wxToolTip::Enable(false);

@@ -50,6 +50,10 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &
     m_worksheet(worksheet)
 {
   SetToolTip(def.description);
+  wxFont fnt = GetFont();
+  wxClientDC dc(this);
+  auto const size1 = dc.GetTextExtent(m_char);
+  auto const size2 = dc.GetTextExtent("M");
   Connect(wxEVT_BUTTON, wxCommandEventHandler(CharButton::CharButtonPressed), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(CharButton::ForwardToParent), NULL, this);
 }

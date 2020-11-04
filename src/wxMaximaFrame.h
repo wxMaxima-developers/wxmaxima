@@ -726,6 +726,7 @@ private:
     void UpdateSymbols();
     void OnMouseRightDown(wxMouseEvent &event);
     void OnMenu(wxCommandEvent &event);
+    void OnSize(wxSizeEvent &event);
   private:
     Configuration *m_configuration;
     wxSizer *m_lowercaseSizer;
@@ -742,12 +743,13 @@ private:
   protected:
     void OnMouseRightDown(wxMouseEvent &event);
     void OnMenu(wxCommandEvent &event);
+    void OnSize(wxSizeEvent &event);
   private:
     //! A panel that shows all user-defined symbols on the symbols pane.
     wxPanel *m_userSymbols;
     //! A button per user defined symbol
     std::list<wxWindow *> m_userSymbolButtons;
-    wxGridSizer *m_userSymbolsSizer;
+    wxSizer *m_userSymbolsSizer;
     Configuration *m_configuration;
     Worksheet *m_worksheet;
   };

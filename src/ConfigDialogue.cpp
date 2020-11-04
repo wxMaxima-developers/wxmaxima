@@ -1116,7 +1116,7 @@ void ConfigDialogue::OnMouseMotion_MaximaEnv(wxMouseEvent &event)
   wxString toolTip;
   if(m_maximaEnvDoc.find(m_maximaEnvVariables->GetCellValue(row,0)) != m_maximaEnvDoc.end())
     toolTip = m_maximaEnvDoc[m_maximaEnvVariables->GetCellValue(row,0)];
-  if(toolTip != m_maximaEnvVariables->GetGridWindow()->GetToolTip())
+  if(toolTip != m_maximaEnvVariables->GetGridWindow()->GetToolTipText())
     m_maximaEnvVariables->GetGridWindow()->SetToolTip(toolTip);
 }
 
