@@ -118,14 +118,6 @@ void SubSupCell::Recalculate(AFontSize const fontsize)
   AFontSize const smallerFontSize{ MC_MIN_SIZE, fontsize - SUBSUP_DEC };
 
   m_baseCell->RecalculateList(fontsize);
-  if(m_postSubCell)    
-    m_postSubCell->RecalculateList(smallerFontSize);
-  if(m_postSupCell)    
-    m_postSupCell->RecalculateList(smallerFontSize);
-  if(m_preSubCell)    
-    m_preSubCell->RecalculateList(smallerFontSize);
-  if(m_preSupCell)    
-    m_preSupCell->RecalculateList(smallerFontSize);
 
   int preWidth = 0;
   int postWidth = 0;
@@ -286,17 +278,11 @@ wxString SubSupCell::ToMatlab() const
 
 wxString SubSupCell::ToTeX() const
 {
-  wxConfigBase *config = wxConfig::Get();
-
-  bool TeXExponentsAfterSubscript = false;
-
-  config->Read("TeXExponentsAfterSubscript", &TeXExponentsAfterSubscript);
-
   wxString s;
 
   if (m_scriptCells.empty())
   {
-    if (TeXExponentsAfterSubscript)
+    if ((*m_configuration)->TeXExponentsAfterSubscript())
     {
       s = "{{{" + m_baseCell->ListToTeX() + "}";
       if(m_postSubCell)

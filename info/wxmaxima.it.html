@@ -54,8 +54,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
-<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
+<li><a href="#il-manuale-utente-di-wxmaxima">Il manuale utente di wxMaxima</a></li>
+<li><a href="#introduzione-a-wxmaxima"><span class="toc-section-number">1</span> Introduzione a wxMaxima</a><ul>
 <li><a href="#maxima-e-wxmaxima"><span class="toc-section-number">1.1</span> <em>Maxima</em> e wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> <em>Maxima</em></a></li>
 <li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#where-is-the-configuration-saved"><span class="toc-section-number">1.4.5</span> Where is the configuration saved?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#estensioni-a-maxima"><span class="toc-section-number">2</span> Estensioni a <em>Maxima</em></a><ul>
 <li><a href="#subscripted-variables"><span class="toc-section-number">2.1</span> Subscripted variables</a></li>
 <li><a href="#user-feedback-in-the-status-bar"><span class="toc-section-number">2.2</span> User feedback in the status bar</a></li>
 <li><a href="#plotting"><span class="toc-section-number">2.3</span> Plotting</a><ul>
@@ -105,7 +105,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#bug-reporting"><span class="toc-section-number">2.8</span> Bug reporting</a></li>
 <li><a href="#marking-output-being-drawn-in-red"><span class="toc-section-number">2.9</span> Marking output being drawn in red</a></li>
 </ul></li>
-<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#risoluzione-dei-problemi"><span class="toc-section-number">3</span> Risoluzione dei problemi</a><ul>
 <li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to <em>Maxima</em></a></li>
 <li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
 <li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</a></li>
@@ -123,14 +123,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 <li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
-<li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
+<li><a href="#is-there-a-way-to-make-more-text-fit-on-a-latex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a LaTeX page?</a></li>
 <li><a href="#is-there-a-dark-mode"><span class="toc-section-number">4.2</span> Is there a dark mode?</a></li>
 <li><a href="#wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="toc-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</a></li>
 </ul></li>
-<li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
+<li><a href="#argomenti-della-riga-di-comando"><span class="toc-section-number">5</span> Argomenti della riga di comando</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
+<h1 id="il-manuale-utente-di-wxmaxima" class="unnumbered">Il manuale utente di wxMaxima</h1>
 <p>wxMaxima è un'interfaccia utente grafica (GUI) per il sistema di algebra computazionale (CAS) <em>Maxima</em>. wxMaxima consente di utilizzare tutte le funzioni di <em>Maxima</em>, inoltre, fornisce comode procedure guidate per accedere alle funzionalità più comunemente utilizzate. Questo manuale descrive alcune delle funzionalità che rendono wxMaxima una delle GUI più popolari per <em>Maxima</em>.</p>
 <figure>
 <img src="./wxMaximaLogo.png" alt="logo wxMaxima" id="img_wxMaximaLogo" /><figcaption>logo wxMaxima</figcaption>
@@ -157,7 +157,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Gli argomenti a riga di comando che wxMaxima supporta</p>
 <hr />
-<h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
+<h1 id="introduzione-a-wxmaxima"><span class="header-section-number">1</span> Introduzione a wxMaxima</h1>
 <h2 id="maxima-e-wxmaxima"><span class="header-section-number">1.1</span> <em>Maxima</em> e wxMaxima</h2>
 <p>Nel dominio open source, i grandi sistemi sono normalmente suddivisi in progetti più piccoli che sono più facili da gestire per piccoli gruppi di sviluppatori. Ad esempio, un programma di masterizzazione di CD sarà costituito da uno strumento a riga di comando che effettivamente masterizza il CD e da un'interfaccia utente grafica che consente agli utenti di utilizzarlo senza dover conoscere tutte le opzioni della riga di comando, e di fatto senza utilizzare affatto la riga di comando. Un vantaggio di questo approccio è che il lavoro di sviluppo che è stato investito nel programma a riga di comando può essere condiviso da molti programmi: lo stesso programma a riga di comando del masterizzatore CD può essere utilizzato come plug-in &quot;invia-al-CD&quot; per un'applicazione di gestione file, per la funzione &quot;masterizza su CD&quot; di un lettore musicale e come masterizzatore di CD per uno strumento di backup su DVD. Un altro vantaggio è che suddividere una grande attività in parti più piccole consente agli sviluppatori di fornire diverse interfacce utente per lo stesso programma.</p>
 <p>Un sistema di algebra computazionale (CAS) come <em>Maxima</em> si inserisce in questo quadro. Un CAS può fornire la logica dietro un'applicazione di calcolatrice di precisione arbitraria o può fare trasformazioni automatiche di formule sullo sfondo di un sistema più grande (ad esempio, [Sage] (https://www.sagemath.org/)). In alternativa, può essere utilizzato direttamente come sistema indipendente. <em>Maxima</em> è utilizzabile tramite riga di comando. Spesso, tuttavia, un'interfaccia come <em>wxMaxima</em> si rivela un modo più efficiente per accedere al software, in particolare per i nuovi utenti.</p>
@@ -595,9 +595,9 @@ Ordinary text</code></pre>
 &gt; quote quote quote quote
 &gt; quote quote quote quote
 Ordinary text</code></pre>
-<p><em>wxMaxima</em>'s TeX and html output will also recognize <code>=&gt;</code> and replace it by the corresponding unicode sign:</p>
+<p><em>wxMaxima</em>'s TeX and HTML output will also recognize <code>=&gt;</code> and replace it by the corresponding Unicode sign:</p>
 <pre><code>cogito =&gt; sum.</code></pre>
-<p>Other symbols the html and TeX export will recognize are <code>&lt;=</code> and <code>&gt;=</code> for comparisons, a double-pointed double arrow (<code>&lt;=&gt;</code>), single- headed arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are recognized.</p>
+<p>Other symbols the HTML and TeX export will recognize are <code>&lt;=</code> and <code>&gt;=</code> for comparisons, a double-pointed double arrow (<code>&lt;=&gt;</code>), single- headed arrows (<code>&lt;-&gt;</code>, <code>-&gt;</code> and <code>&lt;-</code>) and <code>+/-</code> as the respective sign. For TeX output also <code>&lt;&lt;</code> and <code>&gt;&gt;</code> are recognized.</p>
 <h3 id="hotkeys"><span class="header-section-number">1.2.9</span> Hotkeys</h3>
 <p>Most hotkeys can be found in the text of the respective menus. Since they are actually taken from the menu text and thus can be customized by the translations of <em>wxMaxima</em> to match the needs of users of the local keyboard, we do not document them here. A few hotkeys or hotkey aliases, though, are not documented in the menus:</p>
 <ul>
@@ -622,7 +622,7 @@ Ordinary text</code></pre>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
 <p>.wxm files contain the worksheet except <em>Maxima</em>'s output. On Maxima versions &gt;5.38 they can be read using <em>Maxima</em>'s <code>load()</code> function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of <em>wxMaxima</em>.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
-<p>This xml-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.</p>
+<p>This XML-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.</p>
 <h2 id="configuration-options"><span class="header-section-number">1.4</span> Configuration options</h2>
 <p>For some common configuration variables <em>wxMaxima</em> offers two ways of configuring:</p>
 <ul>
@@ -637,8 +637,7 @@ Ordinary text</code></pre>
 <h3 id="default-plot-size-for-new-maxima-sessions"><span class="header-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</h3>
 <p>After the next start plots embedded into the worksheet will be created with this size if the value of <code>wxplot_size</code> isn't changed by <em>maxima</em>.</p>
 <p>In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="cn">wxdraw2d</span>( 
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">wxdraw2d</span>( 
    <span class="cn">explicit</span>(
        <span class="cn">x</span>^<span class="dv">2</span>,
        <span class="cn">x</span>,<span class="dv">-5</span>,<span class="dv">5</span>
@@ -661,7 +660,7 @@ Ordinary text</code></pre>
 <p>If you are using Unix/Linux, the configuration information will be saved in a file <code>.wxMaxima</code> in your home directory (if you are using wxWidgets &lt; 3.1.1), or <code>.config/wxMaxima.conf</code> ((XDG-Standard) if wxWidgets &gt;= 3.1.1 is used). You can retrieve the wxWidgets version from the command <code>wxbuild_info();</code> or by using the menu option Help-&gt;About. <a href="https://www.wxwidgets.org/">wxWidgets</a> is the cross-platform GUI library, which is the base for <em>wxMaxima</em> (therefore the <code>wx</code> in the name). (Since the filename starts with a dot, <code>.wxMaxima</code> or <code>.config</code> will be hidden).</p>
 <p>If you are using Windows, the configuration will be stored in the registry. You will find the entries for <em>wxMaxima</em> at the following position in the registry: <code>HKEY_CURRENT_USER\Software\wxMaxima</code></p>
 <hr />
-<h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
+<h1 id="estensioni-a-maxima"><span class="header-section-number">2</span> Estensioni a <em>Maxima</em></h1>
 <p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session.</p>
 <h2 id="subscripted-variables"><span class="header-section-number">2.1</span> Subscripted variables</h2>
 <p>if <code>wxsubscripts</code> is set to true variable names of the format <code>x_y</code> are displayed using a subscript if</p>
@@ -693,7 +692,7 @@ Ordinary text</code></pre>
         <span class="cn">x</span>,<span class="dv">1</span>,<span class="dv">10</span>
     )
 )$</code></pre></div>
-<p>If the size of only one plot is to be changed <em>Maxima</em> provides a canonical way to change an attribute only for the current cell. In this usage the specification wxplot_size = [value1, value2] is appended to the wxdraw2d( ) command, and is not part of the wxdraw2d command.</p>
+<p>If the size of only one plot is to be changed <em>Maxima</em> provides a canonical way to change an attribute only for the current cell. In this usage the specification <code>wxplot_size = [value1, value2]</code> is appended to the <code>wxdraw2d( )</code> command, and is not part of the <code>wxdraw2d</code> command.</p>
 <div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">wxdraw2d</span>(
     <span class="cn">explicit</span>(
         <span class="fu">sin</span>(<span class="cn">x</span>),
@@ -776,8 +775,7 @@ Ordinary text</code></pre>
 )$</code></pre></div>
 <h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</h3>
 <p>While not being a provided by <em>wxMaxima</em> this feature of <em>Maxima</em> (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the <em>Maxima</em> mailing list:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-    <span class="fu">load</span>(<span class="fu">draw</span>);
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="fu">load</span>(<span class="fu">draw</span>);
     
     <span class="co">/* Parabola in window #1 */</span>
     <span class="fu">draw2d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">1</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>));
@@ -787,7 +785,15 @@ Ordinary text</code></pre>
     
     <span class="co">/* Paraboloid in window #3 */</span>
     <span class="fu">draw3d</span>(<span class="cn">terminal</span>=[<span class="cn">wxt</span>,<span class="dv">3</span>],<span class="cn">explicit</span>(<span class="cn">x</span>^<span class="dv">2</span>+<span class="cn">y</span>^<span class="dv">2</span>,<span class="cn">x</span>,<span class="dv">-1</span>,<span class="dv">1</span>,<span class="cn">y</span>,<span class="dv">-1</span>,<span class="dv">1</span>));</code></pre></div>
-<p>Plotting multiple plots in the same window is possible, too: <sub><del>maxima wxdraw( gr2d( key=&quot;sin (x)&quot;,grid=[2,2], explicit(sin(x),x,0,2<em>%pi)), gr2d( key=&quot;cos (x)&quot;,grid=[2,2], explicit(cos(x),x,0,2</em>%pi)) );</del></sub></p>
+<p>Plotting multiple plots in the same window is possible, too:</p>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">    <span class="cn">wxdraw</span>(
+        <span class="cn">gr2d</span>(
+            <span class="cn">key</span>=<span class="st">&quot;sin (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],
+            <span class="cn">explicit</span>(<span class="fu">sin</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*%<span class="cn">pi</span>)),
+        <span class="cn">gr2d</span>(
+        <span class="cn">key</span>=<span class="st">&quot;cos (x)&quot;</span>,<span class="cn">grid</span>=[<span class="dv">2</span>,<span class="dv">2</span>],
+        <span class="cn">explicit</span>(<span class="fu">cos</span>(<span class="cn">x</span>),<span class="cn">x</span>,<span class="dv">0</span>,<span class="dv">2</span>*%<span class="cn">pi</span>))
+     );</code></pre></div>
 <h3 id="the-plot-using-draw-side-pane"><span class="header-section-number">2.3.8</span> The &quot;Plot using draw&quot; side pane</h3>
 <p>The &quot;Plot using draw&quot; sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
 <h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
@@ -811,18 +817,17 @@ Ordinary text</code></pre>
 <p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current <code>draw()</code> command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
 <h4 id="plot-name"><span class="header-section-number">2.3.8.10</span> Plot name</h4>
 <p>Adds a legend entry showing the next plot's name to the legend of the diagram. An empty name disables generating legend entries for the following plots.</p>
-<h4 id="line-color"><span class="header-section-number">2.3.8.11</span> Line color</h4>
-<p>Sets the line color for the following plots the current draw command contains.</p>
-<h4 id="fill-color"><span class="header-section-number">2.3.8.12</span> Fill color</h4>
-<p>Sets the fill color for the following plots the current draw command contains.</p>
+<h4 id="line-colour"><span class="header-section-number">2.3.8.11</span> Line colour</h4>
+<p>Sets the line colour for the following plots the current draw command contains.</p>
+<h4 id="fill-colour"><span class="header-section-number">2.3.8.12</span> Fill colour</h4>
+<p>Sets the fill colour for the following plots the current draw command contains.</p>
 <h4 id="grid"><span class="header-section-number">2.3.8.13</span> Grid</h4>
 <p>Pops up a wizard that allows to set up grid lines.</p>
 <h4 id="accuracy"><span class="header-section-number">2.3.8.14</span> Accuracy</h4>
 <p>Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.</p>
 <h2 id="embedding-graphics"><span class="header-section-number">2.4</span> Embedding graphics</h2>
 <p>If the <code>.wxmx</code> file format is being used embedding files in a <em>wxMaxima</em> project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="cn">show_image</span>(<span class="st">&quot;man.png&quot;</span>);</code></pre></div>
 <h2 id="startup-files"><span class="header-section-number">2.5</span> Startup files</h2>
 <p>The config dialogue of <em>wxMaxima</em> offers to edit two files with commands that are executed on startup:</p>
 <ul>
@@ -865,12 +870,12 @@ Ordinary text</code></pre>
 <h2 id="marking-output-being-drawn-in-red"><span class="header-section-number">2.9</span> Marking output being drawn in red</h2>
 <p><em>Maxima</em>'s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red foreground.</p>
 <hr />
-<h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
+<h1 id="risoluzione-dei-problemi"><span class="header-section-number">3</span> Risoluzione dei problemi</h1>
 <h2 id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named &quot;maxima&quot;. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>On Un*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
 <h2 id="how-to-save-data-from-a-broken-.wxmx-file"><span class="header-section-number">3.2</span> How to save data from a broken .wxmx file</h2>
-<p>Internally most modern xml-based formats are ordinary zip-files. <em>wxMaxima</em> doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
+<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
 <p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a <code>wxmx~</code> file whose contents might help.</p>
 <p>And even if there isn’t such a file: The <code>.wxmx</code> file is a container format and the XML portion is stored uncompressed. It it is possible to rename the <code>.wxmx</code> file to a <code>.txt</code> file and to use a text editor to recover the XML portion of the file's contents (it starts with <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> and ends with <code>&lt;/wxMaximaDocument&gt;</code>. Before and after that text you will see some unreadable binary contents in the text editor).</p>
 <p>If a text file containing only this contents (e.g. copy and paste this text into a new file) is saved as a file ending in <code>.xml</code>, <em>wxMaxima</em> will know how to recover the text of the document from it.</p>
@@ -902,8 +907,7 @@ Ordinary text</code></pre>
 <li>If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all <em>Maxima</em> commands that have been issued recently.</li>
 <li>If nothing else helps <em>Maxima</em> contains a replay feature:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima">
-<span class="fu">playback</span>();</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode maxima"><code class="sourceCode maxima"><span class="fu">playback</span>();</code></pre></div>
 <h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process terminated.”</h2>
 <p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
 <h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
@@ -918,9 +922,8 @@ Ordinary text</code></pre>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558" class="uri">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
 <h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
 <p>If your <em>Maxima</em> is based on SBCL the following lines have to be added to your <code>.sbclrc</code>:</p>
-<div class="sourceCode"><pre class="sourceCode lisp"><code class="sourceCode commonlisp">
-(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
-<p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
+<div class="sourceCode"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp">(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
+<p>The folder this file has to be placed in is system- and installation-specific. But any SBCL-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="plotting-1"><span class="header-section-number">3.12</span> Plotting</h2>
 <h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
@@ -959,16 +962,15 @@ Ordinary text</code></pre>
 ),<span class="cn">wxplot_size</span>=[<span class="dv">1000</span>,<span class="dv">1000</span>];</code></pre></div>
 <hr />
 <h1 id="faq"><span class="header-section-number">4</span> FAQ</h1>
-<h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
+<h2 id="is-there-a-way-to-make-more-text-fit-on-a-latex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a LaTeX page?</h2>
 <p>There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (&quot;Export&quot;-&gt;&quot;Additional lines for the TeX preamble&quot;):</p>
-<div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex">
-<span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex"><span class="bu">\usepackage</span>[left=1cm,right=1cm,top=1cm,bottom=1cm]{<span class="ex">geometry</span>}</code></pre></div>
 <h2 id="is-there-a-dark-mode"><span class="header-section-number">4.2</span> Is there a dark mode?</h2>
 <p>If wxWidgets is new enough <em>wxMaxima</em> will automatically be in dark mode if the rest of the operating system is. The worksheet itself is by default equipped with a bright background. But it can be configured otherwise. Alternatively there is a <code>View/Invert worksheet brightness</code> menu entry that allows to quickly convert the worksheet from dark to bright and vice versa.</p>
 <h2 id="wxmaxima-sometimes-hangs-for-a-several-seconds-once-in-the-first-minute"><span class="header-section-number">4.3</span> <em>wxMaxima</em> sometimes hangs for a several seconds once in the first minute</h2>
 <p><em>wxMaxima</em> delegates some big tasks like parsing <em>Maxima</em>'s &gt;1000-page-manual to background tasks, which normally goes totally unnoticed. In the moment the result of such a task is needed, though, it is possible that <em>wxMaxima</em> needs to wait a couple of seconds before it can continue its work.</p>
 <hr />
-<h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
+<h1 id="argomenti-della-riga-di-comando"><span class="header-section-number">5</span> Argomenti della riga di comando</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>
 <ul>
 <li><code>-v</code> or <code>--version</code>: Output the version information</li>

@@ -4,7 +4,7 @@ wxmaxima \- wxWidgets Interface f\(:ur Maxima
 
 .SH "SYNTAX" 
 .PP 
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>]  [--enableipc] [input file...]
 
 .SH "BESCHREIBUNG" 
 .PP 
@@ -80,6 +80,11 @@ Erm\(:oglicht es, weitere Maxima-Startargumente anzugeben.
 .TP
 .I \-m, \-\-maxima=<str>
 Erlaubt, den Pfad zum Maxima Programm anzugeben.
+
+.TP
+.I \-\-enableipc
+Erlaubt Maxima die Kontrolle über wxMaxima durch Interprozesskommunikation. Mit Vorsicht benutzen.
+
 
 .SH DATEIEN
 .TP

@@ -118,7 +118,8 @@ set(SOURCE_FILES
     wxMaxima.cpp
     wxMaximaFrame.cpp
     wxMaximaIcon.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.manifest
 )
 
 list(APPEND SOURCE_FILES
@@ -166,21 +167,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.10.0" AND WXM_USE_CPPCHECK)
     endif()
 endif()
 
-# We provide our own manifest. MSVC seems not to autodetect that.
-if(MSVC)
-  message(STATUS "MSVC detected => Trying to disable the inclusion of the automatic manifest hat suppresses high-dpi support.")
-  set(CMAKE_EXE_LINKER_FLAGS_RELEASE    "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
-  set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
-  set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
-  set(CMAKE_EXE_LINKER_FLAGS_DEBUG    "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
-  set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
-  set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
-endif()
-
-# Include our Resources file that contains our manifest
-if(WIN32)
-  include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-endif()
+include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
 
 if(APPLE)
   file(GLOB RESOURCE_FILES
@@ -207,6 +194,7 @@ elseif(APPLE)
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
         MACOSX_BUNDLE TRUE
+	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/data/Info.plist
         RESOURCE "${RESOURCE_FILES}"
     )
 
@@ -230,28 +218,25 @@ else()
     ##    RESOURCE "${RESOURCE_FILES}"
 endif()
 
-if(WXM_ENABLE_PRECOMPILED_HEADERS AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
-    target_precompile_headers(wxmaxima PUBLIC "precomp.h")
-else()
-    set(USE_PRECOMP_HEADER "0")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
+    set_target_properties(wxmaxima PROPERTIES VS_DPI_AWARE "PerMonitor")
+    if(WXM_ENABLE_PRECOMPILED_HEADERS)
+	target_precompile_headers(wxmaxima PUBLIC "precomp.h")
+    else()
+	set(USE_PRECOMP_HEADER "0")
+    endif()
 endif()
 
-if(wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL "3.1.3")
-    set(MANIFEST_FILE "wx/msw/wx_dpi_aware.manifest")
-else()
-    set(MANIFEST_FILE "${CMAKE_BINARY_DIR}/data/winrc/wxmaxima.manifest")
-endif()
-
-file(RELATIVE_PATH WINDOWS_ICON_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../data/winrc/)
 file(RELATIVE_PATH TRANSLATIONS_DIR ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../locales/wxMaxima/)
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Resources.rc.in" Resources.rc)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.rc.in" wxmaxima.rc)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.manifest.in" wxmaxima.manifest)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(WIN32)
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat" ../wxmaxima-local.bat)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.bat.in" ../wxmaxima-local.bat)
 else()
-    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-local.in" ../wxmaxima-local)
 endif()
 
 if(WXM_USE_OPENMP AND OpenMP_CXX_FOUND)
@@ -278,6 +263,7 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
+    set(CPACK_NSIS_DEFINES "ManifestDPIAware true")
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 elseif(APPLE)

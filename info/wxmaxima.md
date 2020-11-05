@@ -1,3 +1,8 @@
+---
+header-includes:
+    <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
+---
+
 The wxMaxima user manual {-}
 ============================
 
@@ -248,13 +253,13 @@ Ordinary text
 Ordinary text
 ~~~
 
-_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by the corresponding unicode sign:
+_wxMaxima_'s TeX and HTML output will also recognize `=>` and replace it by the corresponding Unicode sign:
 
 ~~~
 cogito => sum.
 ~~~
 
-Other symbols the html and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
+Other symbols the HTML and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
 ### Hotkeys
 
@@ -297,7 +302,7 @@ You can be use `.mac` files for writing your own library of macros. But since th
 
 ### .wxmx
 
-This xml-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.
+This XML-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.
 
 ## Configuration options
 
@@ -319,14 +324,12 @@ After the next start plots embedded into the worksheet will be created with this
 In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:
 
 ~~~maxima
-
 wxdraw2d( 
    explicit(
        x^2,
 	   x,-5,5
    )
 ), wxplot_size=[480,480]$
-
 ~~~
 
 ### Match parenthesis in text controls
@@ -407,7 +410,7 @@ wxdraw2d(
 )$
 ~~~
 
-If the size of only one plot is to be changed _Maxima_ provides a canonical way to change an attribute only for the current cell. In this usage the specification wxplot_size = [value1, value2] is appended to the wxdraw2d(  ) command, and is not part of the wxdraw2d command.
+If the size of only one plot is to be changed _Maxima_ provides a canonical way to change an attribute only for the current cell. In this usage the specification `wxplot_size = [value1, value2]` is appended to the `wxdraw2d(  )` command, and is not part of the `wxdraw2d` command.
 
 ~~~maxima
 wxdraw2d(
@@ -529,7 +532,6 @@ with_slider_draw(
 While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the _Maxima_ mailing list:
 
 ~~~maxima
-
     load(draw);
     
     /* Parabola in window #1 */
@@ -540,10 +542,10 @@ While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups tha
     
     /* Paraboloid in window #3 */
     draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
-
 ~~~
 
 Plotting multiple plots in the same window is possible, too:
+
 ~~~maxima
 	wxdraw(
 		gr2d(
@@ -601,13 +603,13 @@ Sets up the axis.
 
 Adds a legend entry showing the next plot's name to the legend of the diagram. An empty name disables generating legend entries for the following plots.
 
-#### Line color
+#### Line colour
 
-Sets the line color for the following plots the current draw command contains.
+Sets the line colour for the following plots the current draw command contains.
 
-#### Fill color
+#### Fill colour
 
-Sets the fill color for the following plots the current draw command contains.
+Sets the fill colour for the following plots the current draw command contains.
 
 #### Grid
 
@@ -622,9 +624,7 @@ Allows to select an adequate point in the speed vs. accuracy tradeoff that is pa
 If the `.wxmx` file format is being used embedding files in a _wxMaxima_ project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
 ~~~maxima
-
 show_image("man.png");
-
 ~~~
 
 ## Startup files
@@ -694,7 +694,7 @@ On Un\*x computers another possible reason would be that the loopback network th
 
 ## How to save data from a broken .wxmx file
 
-Internally most modern xml-based formats are ordinary zip-files. _wxMaxima_ doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.
+Internally most modern XML-based formats are ordinary zip-files. _wxMaxima_ doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.
 
 If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. This can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a `wxmx~` file whose contents might help.
 
@@ -723,7 +723,7 @@ This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to
 Possible reasons for this error are:
 
 * The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
-* _Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able to understand. In this case a file ending in .gnuplot in the directory _Maxima_’s variable maxima\_userdir points to contains the instructions from _Maxima_ to _gnuplot_. Most of the time this file’s contents therefore are helpful when debugging the problem.
+* _Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able to understand. In this case, a file ending in .gnuplot located in the directory, which  _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem.
 * Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
 * Gnuplot didn’t output a valid .png file.
 
@@ -741,9 +741,7 @@ There are separate undo functions for cell operations and for changes inside of 
 * If nothing else helps _Maxima_ contains a replay feature:
 
 ~~~maxima
-
 playback();
-
 ~~~
 
 ## _wxMaxima_ starts up with the message “Maxima process terminated.”
@@ -771,13 +769,11 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 If your _Maxima_ is based on SBCL the following lines have to be added to your `.sbclrc`:
 
-~~~lisp
-
+~~~commonlisp
 (setf sb-impl::*default-external-format* :utf-8)
-
 ~~~
 
-The folder this file has to be placed in is system- and installation-specific. But any sbcl-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
+The folder this file has to be placed in is system- and installation-specific. But any SBCL-based _Maxima_ that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
 
     :lisp (sb-impl::userinit-pathname)
 
@@ -837,14 +833,12 @@ wxdraw2d(
 FAQ
 ===
 
-## Is there a way to make more text fit on a pdfLaTeX page?
+## Is there a way to make more text fit on a LaTeX page?
 
 There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"):
 
 ~~~latex
-
 \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
-
 ~~~
 
 ## Is there a dark mode?
@@ -876,5 +870,6 @@ Most operating systems provide less complicated ways of starting programs than t
 * `-l`, `--lisp=<str>`:              Use a Maxima compiled with Lisp compiler `<str>`.
 * `-X`, `--extra-args=<str>`:        Allows to specify extra Maxima arguments
 * `-m` or `--maxima=<str>`:    allows to specify the location of the _maxima_ binary
+* `--enableipc`: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
 
 Instead of a minus some operating systems might use a dash in front of the command-line switches.

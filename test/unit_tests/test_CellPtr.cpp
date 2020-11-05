@@ -37,6 +37,7 @@ const AFontSize Style::Default_FontSize;
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
+bool Configuration::HideMarkerForThisMessage(wxString) {return false;}
 void CellListBuilderBase::base_Append(std::unique_ptr<Cell> &&) {}
 void CellList::DeleteList(Cell *) {}
 bool Configuration::InUpdateRegion(wxRect) const { return true; }

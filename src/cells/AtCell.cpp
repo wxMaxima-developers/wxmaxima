@@ -50,9 +50,6 @@ DEFINE_CELL(AtCell)
 
 void AtCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   m_indexCell->RecalculateList({ MC_MIN_SIZE, fontsize - 3 });
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +

@@ -1,3 +1,9 @@
+# 20.11.0
+ * Many bug fixes
+ * Ukrainian translation update by Yuri Chornoivan 
+ * Russian translation update by OlesyaGerasimenko and Yuri Chornoivan 
+ * An editor for maxima's environment variables
+ 
 # 20.09.0
  * Russian translation updates from OlesyaGerasimenko and Yuri Chornoivan
  * An italian translation update from Marco Ciampa

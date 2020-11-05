@@ -234,17 +234,7 @@ GroupCell *Cell::GetGroup() const
 bool Cell::NeedsRecalculation(AFontSize fontSize) const
 {
   bool const result = (!HasValidSize()) ||
-                      (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f)) ||
-                      (*m_configuration)->FontChanged();
-  // if(result)
-  //   std::cerr << ToString()<< "\n"<<
-  //     "(GetType() != MC_TYPE_GROUP)" << (GetType() != MC_TYPE_GROUP) <<"\n"<<
-  //     "m_recalculateWidths" << m_recalculateWidths<<"\n"<<
-  //     "abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get())"<<abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get())<<"\n"<<
-  //     "(abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1)"<<(abs(Scale_Px(fontSize).Get() - m_fontSize_Scaled.Get()) >.1)<<"\n"<<
-  //     "(m_isBrokenIntoLines != m_isBrokenIntoLines_old)"<<(m_isBrokenIntoLines != m_isBrokenIntoLines_old)<<"\n"<<
-  //     "(m_clientWidth_old != (*m_configuration)->GetClientWidth())" << (m_clientWidth_old != (*m_configuration)->GetClientWidth()) <<"\n"<<
-  //     "(*m_configuration)->FontChanged()"<<(*m_configuration)->FontChanged()<<"\n\n";
+                      (GetType() != MC_TYPE_GROUP && !EqualToWithin(Scale_Px(fontSize), m_fontSize_Scaled, 0.1f));
   return result;
 }
 
@@ -337,7 +327,7 @@ void Cell::Draw(wxPoint point)
   
   // Mark all cells that contain tooltips
   if (!m_toolTip->empty() && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL) &&
-      configuration->ClipToDrawRegion() && !configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker())
+      configuration->ClipToDrawRegion() && !configuration->GetPrinting() && !m_group->GetSuppressTooltipMarker() && (!configuration->HideMarkerForThisMessage(*m_toolTip)))
   {
     wxRect rect = Cell::CropToUpdateRegion(GetRect());
     if (configuration->InUpdateRegion(rect) && !rect.IsEmpty())
@@ -386,10 +376,6 @@ void Cell::SetToolTip(const wxString *toolTip)
     wxDELETE(m_toolTip);
   }
   m_toolTip = toolTip;
-
-  m_containsToolTip = (!m_toolTip->empty());
-  if (m_group)
-    m_group->m_containsToolTip = m_containsToolTip;
 }
 
 void Cell::AddToolTip(const wxString &tip)
@@ -405,10 +391,6 @@ void Cell::AddToolTip(const wxString &tip)
   }
   else
     SetToolTip(wxString(tip)); // this will move from the temporary copy
-
-  m_containsToolTip = true;
-  if (m_group)
-    m_group->m_containsToolTip = true;
 }
 
 void Cell::SetAltCopyText(const wxString &text)
@@ -1035,6 +1017,16 @@ void Cell::ResetDataList()
 {
   for (Cell &tmp : OnList(this))
     tmp.ResetData();
+}
+
+void Cell::ResetCellListSizesList()
+{
+  for (Cell &cell : OnList(this))
+  {
+    cell.ResetCellListSizes();
+    for (Cell &tmp : OnList(&cell))
+      tmp.ResetCellListSizes();
+  }
 }
 
 void Cell::ResetSize()

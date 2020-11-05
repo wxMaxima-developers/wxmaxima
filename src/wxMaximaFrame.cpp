@@ -42,6 +42,7 @@
 #include <wx/display.h>
 #include <wx/wupdlock.h>
 #include <wx/sysopt.h>
+#include <wx/wrapsizer.h>
 #include "wxMaximaIcon.h"
 #include "Gen1Wiz.h"
 #include "UnicodeSidebar.h"
@@ -203,7 +204,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_history,
                     wxAuiPaneInfo().Name(wxT("history")).
-                            CloseButton(true).PinButton(true).
+                            CloseButton(true).PinButton(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -213,7 +214,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_worksheet->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
-                            CloseButton(true).PinButton(true).
+                            CloseButton(true).PinButton(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -223,7 +224,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_xmlInspector,
                     wxAuiPaneInfo().Name("XmlInspector").
-                            CloseButton(true).PinButton(true).
+                            CloseButton(true).PinButton(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -231,10 +232,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             PaneBorder(true).
                             Right());
 
-  wxPanel *statPane;
+  wxWindow *statPane;
   m_manager.AddPane(statPane = CreateStatPane(),
                     wxAuiPaneInfo().Name(wxT("stats")).
-                            CloseButton(true).PinButton(true).
+                            CloseButton(true).PinButton(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -247,9 +248,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxWindowUpdateLocker greekBlocker(greekPane);
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
-                            CloseButton(true).PinButton(true).
+                            CloseButton(true).PinButton(false).
                             DockFixed(false).
                             Gripper(false).
+                            PinButton(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -262,7 +264,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxWindowUpdateLocker unicodeBlocker(unicodePane);
   m_manager.AddPane(unicodePane,
                     wxAuiPaneInfo().Name(wxT("unicode")).
-                            CloseButton(true).PinButton(true).
+                            CloseButton(true).PinButton(false).
                             DockFixed(false).
                             Gripper(false).
                             TopDockable(true).
@@ -275,7 +277,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_logPane,
                     wxAuiPaneInfo().Name("log").
-                    CloseButton(true).PinButton(true).
+                    CloseButton(true).PinButton(false).
                     Gripper(false).
                     TopDockable(true).
                     BottomDockable(true).
@@ -378,29 +380,29 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     Layout();
   }
   
-  m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector").Show(false).Movable(true);
-  m_manager.GetPane("stats") = m_manager.GetPane("stats").Show(false).Movable(true);
-  m_manager.GetPane("greek") = m_manager.GetPane("greek").Show(false).Movable(true);
-  m_manager.GetPane("variables") = m_manager.GetPane("variables").Show(false).Movable(true);
-  m_manager.GetPane("math") = m_manager.GetPane("math").Show(false).Movable(true);
-  m_manager.GetPane("format") = m_manager.GetPane("format").Show(false).Movable(true);
-  m_manager.GetPane("log") = m_manager.GetPane("log").Show(false).Movable(true);
+  m_manager.GetPane("XmlInspector") = m_manager.GetPane("XmlInspector").PinButton(false).Show(false).Movable(true);
+  m_manager.GetPane("stats") = m_manager.GetPane("stats").PinButton(false).Show(false).Movable(true);
+  m_manager.GetPane("greek") = m_manager.GetPane("greek").PinButton(false).Show(false).Movable(true);
+  m_manager.GetPane("variables") = m_manager.GetPane("variables").PinButton(false).Show(false).Movable(true);
+  m_manager.GetPane("math") = m_manager.GetPane("math").PinButton(false).Show(false).Movable(true);
+  m_manager.GetPane("format") = m_manager.GetPane("format").PinButton(false).Show(false).Movable(true);
+  m_manager.GetPane("log") = m_manager.GetPane("log").PinButton(false).Show(false).Movable(true);
 
   m_manager.GetPane("unicode") = m_manager.GetPane("unicode").
-    Show(false).Gripper(false).CloseButton(true).PinButton(true).Movable(true);
+    Show(false).Gripper(false).CloseButton(true).PinButton(false).Movable(true);
 
-  m_manager.GetPane("variables") = m_manager.GetPane("variables").
-    Gripper(false).CloseButton(true).PinButton(true);
-  m_manager.GetPane("log") = m_manager.GetPane("log").
-    Gripper(false).CloseButton(true).PinButton(true).Movable(true);
+  m_manager.GetPane("variables") = m_manager.GetPane("variables").PinButton(false).
+    Gripper(false).CloseButton(true).PinButton(false);
+  m_manager.GetPane("log") = m_manager.GetPane("log").PinButton(false).
+    Gripper(false).CloseButton(true).PinButton(false).Movable(true);
 
   m_manager.GetPane("symbols") = m_manager.GetPane("symbols").
-    Show(true).Gripper(false).CloseButton(true).Movable(true);
+    Show(true).Gripper(false).CloseButton(true).PinButton(false).Movable(true);
   m_manager.GetPane("greek") = m_manager.GetPane("greek").
-    Show(true).Gripper(false).CloseButton(true).Movable(true);
+    Show(true).Gripper(false).CloseButton(true).PinButton(false).Movable(true);
 
   m_manager.GetPane("draw") = m_manager.GetPane("draw").
-    Show(true).CloseButton(true).Gripper(false).Movable(true);
+    Show(true).CloseButton(true).Gripper(false).PinButton(false).Movable(true);
 
 
   // Read the perspektive (the sidebar state and positions).
@@ -1694,10 +1696,11 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
   m_manager.Update();
 }
 
-wxPanel *wxMaximaFrame::CreateMathPane()
+wxWindow *wxMaximaFrame::CreateMathPane()
 {
   wxGridSizer *grid = new wxGridSizer(2);
-  wxPanel *panel = new wxPanel(this, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
+  panel->SetScrollRate(5, 5);
 
   int style = wxALL | wxEXPAND;
   int border = 0;
@@ -1740,13 +1743,11 @@ wxPanel *wxMaximaFrame::CreateMathPane()
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
 
   panel->SetSizer(grid);
-  grid->Fit(panel);
-  grid->SetSizeHints(panel);
-
+  panel->FitInside();
   return panel;
 }
 
-wxPanel *wxMaximaFrame::CreateStatPane()
+wxWindow *wxMaximaFrame::CreateStatPane()
 {
   wxGridSizer *grid1 = new wxGridSizer(2);
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
@@ -1754,7 +1755,8 @@ wxPanel *wxMaximaFrame::CreateStatPane()
   wxGridSizer *grid2 = new wxGridSizer(2);
   wxGridSizer *grid3 = new wxGridSizer(2);
   wxBoxSizer *box3 = new wxBoxSizer(wxVERTICAL);
-  wxPanel *panel = new wxPanel(this, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
+  panel->SetScrollRate(5, 5);
 
   int style = wxALL | wxEXPAND;
   int border = 0;
@@ -1810,45 +1812,52 @@ wxPanel *wxMaximaFrame::CreateStatPane()
   box->Add(box3, 0, style, sizerBorder);
 
   panel->SetSizer(box);
-  box->Fit(panel);
-  box->SetSizeHints(panel);
+  panel->FitInside();
 
   return panel;
 }
 
 wxMaximaFrame::GreekPane::GreekPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID) :
-  wxPanel(parent, ID),
+  wxScrolled<wxPanel>(parent, ID),
   m_configuration(configuration),
-  m_lowercaseSizer(new wxFlexGridSizer(8)),
-  m_uppercaseSizer(new wxFlexGridSizer(8)),
+  m_lowercaseSizer(new wxWrapSizer(wxHORIZONTAL)),
+  m_uppercaseSizer(new wxWrapSizer(wxHORIZONTAL)),
   m_worksheet(worksheet)
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-
-  int style = wxALL | wxEXPAND;
-  int border = 0;
-
-  m_lowercaseSizer->SetFlexibleDirection(wxBOTH);
-  m_uppercaseSizer->SetFlexibleDirection(wxBOTH);
-
-  for (int i = 0; i < 8; i++)
-    m_lowercaseSizer->AddGrowableCol(i, 1);
-  for (int i = 0; i < 8; i++)
-    m_uppercaseSizer->AddGrowableCol(i, 1);
-
+  ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
+  EnableScrolling(false, true);
+  SetScrollRate(5, 5);
   UpdateSymbols();
   
-  vbox->Add(m_lowercaseSizer, 0, style, border);
-  vbox->Add(m_uppercaseSizer, 0, style, border);
+  vbox->Add(m_lowercaseSizer, wxSizerFlags().Expand());
+  vbox->Add(m_uppercaseSizer, wxSizerFlags().Expand());
 
+  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::GreekPane::OnSize),
+          NULL, this);
   Connect(menu_showLatinGreekLookalikes, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::GreekPane::OnMenu), NULL, this);
   Connect(menu_showGreekMu, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::GreekPane::OnMenu), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::GreekPane::OnMouseRightDown));
 
-  SetSizerAndFit(vbox);
-  vbox->SetSizeHints(this);
+  SetSizer(vbox);
+  FitInside();
+  SetMinSize(wxSize(GetContentScaleFactor()*50,GetMinSize().y));
+}
+
+void wxMaximaFrame::GreekPane::OnSize(wxSizeEvent &event)
+{
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked 
+  SetVirtualSize(GetClientSize());
+  event.Skip();
+}
+
+void wxMaximaFrame::SymbolsPane::OnSize(wxSizeEvent &event)
+{
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked 
+  SetVirtualSize(GetClientSize());
+  event.Skip();
 }
 
 void wxMaximaFrame::GreekPane::OnMenu(wxCommandEvent &event)
@@ -1948,14 +1957,14 @@ void wxMaximaFrame::GreekPane::UpdateSymbols()
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, def), 0, wxALL | wxEXPAND, 2);
+      m_lowercaseSizer->Add(new CharButton(this, m_worksheet, def), wxSizerFlags().Expand());
 
   m_uppercaseSizer->Clear(true);
   for (auto &def : upperCaseDefs)
     if (def.condition == Cond::None ||
         (def.condition == Cond::Show_mu && Show_mu) ||
         (def.condition == Cond::ShowLatinLookalikes && ShowLatinLookalikes))
-      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, def), 0, wxALL | wxEXPAND, 2);
+      m_uppercaseSizer->Add(new CharButton(this, m_worksheet, def), wxSizerFlags().Expand());
 }
 
 void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
@@ -1970,10 +1979,13 @@ void wxMaximaFrame::GreekPane::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 
 
 wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configuration, Worksheet *worksheet, int ID) :
-  wxPanel(parent, ID),
+  wxScrolled<wxPanel>(parent, ID),
   m_configuration(configuration),
   m_worksheet(worksheet)
 {
+  ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
+  EnableScrolling(false, true);
+  SetScrollRate(5, 5);
   const CharButton::Definition symbolButtonDefinitions[] = {
     {L'\u00BD', _("1/2"), true},
     {L'\u00B2', _("to the power of 2"), true},
@@ -2030,26 +2042,23 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
   m_userSymbols = NULL;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-  int style = wxALL | wxEXPAND;
-  int border = 0;
-
-  wxFlexGridSizer *builtInSymbolsSizer = new wxFlexGridSizer(8);
+  wxSizer *builtInSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
   wxPanel *builtInSymbols = new wxPanel(this);
-  builtInSymbolsSizer->SetFlexibleDirection(wxBOTH);
-  for (int i = 0; i < 8; i++)
-    builtInSymbolsSizer->AddGrowableCol(i, 1);
   for (auto &def : symbolButtonDefinitions)
-    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, def), 0, wxALL | wxEXPAND, 2);
+    builtInSymbolsSizer->Add(new CharButton(builtInSymbols, m_worksheet, def), wxSizerFlags().Expand());
   builtInSymbols->SetSizer(builtInSymbolsSizer);
-  vbox->Add(builtInSymbols, 0, style, border);
+  vbox->Add(builtInSymbols, wxSizerFlags().Expand());
 
   m_userSymbols = new wxPanel(this);
-  m_userSymbolsSizer = new wxGridSizer(8);
+  m_userSymbolsSizer = new wxWrapSizer(wxHORIZONTAL);
   UpdateUserSymbols();
   m_userSymbols->SetSizer(m_userSymbolsSizer);
-  vbox->Add(m_userSymbols, 0, style, border);
-  SetSizerAndFit(vbox);
-  vbox->SetSizeHints(this);
+  vbox->Add(m_userSymbols, wxSizerFlags().Expand());
+  SetSizer(vbox);
+  FitInside();
+  SetMinSize(wxSize(GetContentScaleFactor()*50,GetMinSize().y));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::SymbolsPane::OnSize),
+          NULL, this);
   Connect(menu_additionalSymbols, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::SymbolsPane::OnMenu), NULL, this);
   Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(wxMaximaFrame::SymbolsPane::OnMouseRightDown));
@@ -2105,18 +2114,19 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
   // Populate the pane with a button per user symbol
   for (auto ch : m_configuration->SymbolPaneAdditionalChars())
   {
-    wxPanel *button = new CharButton(m_userSymbols, m_worksheet,
+    wxWindow *button = new CharButton(m_userSymbols, m_worksheet,
                                      {ch, _("A symbol from the configuration dialogue")});
     m_userSymbolButtons.push_back(button);
-    m_userSymbolsSizer->Add(button, 0, wxALL | wxEXPAND, 2);
+    m_userSymbolsSizer->Add(button, wxSizerFlags().Expand());
   }
   Layout();
 }
 
-wxPanel *wxMaximaFrame::CreateFormatPane()
+wxWindow *wxMaximaFrame::CreateFormatPane()
 {
   wxGridSizer *grid = new wxGridSizer(2);
-  wxPanel *panel = new wxPanel(this, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
+  panel->SetScrollRate(5, 5);
 
   int style = wxALL | wxEXPAND;
   int border = 0;
@@ -2141,8 +2151,7 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
 
   panel->SetSizer(grid);
-  grid->Fit(panel);
-  grid->SetSizeHints(panel);
+  panel->FitInside();
 
   return panel;
 }
@@ -2196,9 +2205,10 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
   m_dimensions = dimensions;
 }
 
-wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id)
+wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxScrolled<wxPanel>(parent, id)
 {
   wxBoxSizer  *vbox = new wxBoxSizer(wxVERTICAL);
+  SetScrollRate(5, 5);
   wxGridSizer *grid = new wxGridSizer(2);
   m_dimensions = -1;
   int style = wxALL | wxEXPAND;
@@ -2212,8 +2222,6 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
                 0, style, border);
   m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
-//  grid->AddSpacer(1);
-//  grid->AddSpacer(1);
   grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
@@ -2227,8 +2235,6 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-//  grid->AddSpacer(1);
-//  grid->AddSpacer(1);
   grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title"),
                                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
@@ -2261,10 +2267,9 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_accuracy->SetToolTip(_("The Accuracy versus speed tradeoff"));
-  vbox->Add(grid, wxSizerFlags().Expand());
-  SetSizerAndFit(vbox);
-  vbox->SetSizeHints(this);
-  SetDimensions(0);
+  vbox->Add(grid, wxSizerFlags(2).Expand());
+  SetSizer(vbox);
+  FitInside();
 }
 
 void wxMaximaFrame::ShowToolBar(bool show)

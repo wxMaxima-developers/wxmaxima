@@ -57,13 +57,6 @@ BitmapOut::BitmapOut(Configuration **configuration, std::unique_ptr<Cell> &&tree
 BitmapOut::~BitmapOut()
 {}
 
-double BitmapOut::GetConfigScale()
-{
-  int bitmapScale = 3;
-  wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-  return bitmapScale;
-}
-
 bool BitmapOut::Render(std::unique_ptr<Cell> &&tree, long int maxSize)
 {
   m_tree = std::move(tree);
@@ -83,7 +76,7 @@ bool BitmapOut::Layout(long int maxSize)
   // Too big bitmaps or bitmaps that are too wide or high can crash windows
   // or the X server.
   if (maxSize >= 0 && (
-        (size.x * size.y >= maxSize) ||
+        ((long)size.x * size.y >= maxSize) ||
         (size.x >= 20000) ||
         (size.y >= 20000)
         ))

@@ -37,22 +37,50 @@
 #include <wx/config.h>
 #include <wx/wfstream.h>
 #include <wx/fileconf.h>
+#include <wx/txtstrm.h>
+#include <wx/mstream.h>
+#include <wx/xml/xml.h>
 
 Configuration::Configuration(wxDC *dc, InitOpt options) :
   m_dc(dc)
 {
+  m_printing = false;
+  m_clipToDrawRegion = true;
+  m_inLispMode = false;
+  m_forceUpdate = false;
+  m_outdated = false;
+  m_lineWidth_em = 88;
+  m_antialiassingDC = NULL;
+  m_workSheet = NULL;
+  SetBackgroundBrush(*wxWHITE_BRUSH);
   ResetAllToDefaults(options);
   ReadConfig();
 }
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_maximaEnvVars.clear();
+  // Tell gnuplot not to wait for <enter> every few lines
+  #ifndef __WXMSW__
+  m_maximaEnvVars[wxT("PAGER")] = wxT("cat");
+  #endif
+  m_wrapLatexMath = true;
+  m_exportContainsWXMX = true;
+  m_bitmapScale = 3;
+  m_defaultFramerate = 12;
+  m_fixedFontTC = false;
+  m_hideMarkerForThisMessage.clear();
+  #ifdef __WXOSX__
+  m_usepngCairo = false;
+  #else
+  m_usepngCairo = true;
+  #endif
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
+  m_usePartialForDiff = false,
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
   m_incrementalSearch = true;
   m_symbolPaneAdditionalChars = wxT("Øü§");
-  SetBackgroundBrush(*wxWHITE_BRUSH);
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
   #ifdef __WXGTK__
@@ -64,39 +92,33 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_helpBrowserUserLocation = filetype->GetOpenCommand({});
   #endif
 
+  m_TeXExponentsAfterSubscript = false;
   m_saveUntitled = true;
   m_cursorJump = true;
   m_autoSaveAsTempFile = false;
-  m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
-  m_clipToDrawRegion = true;
-  m_fontChanged = true;
   m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_invertBackground = false;
   m_undoLimit = 0;
   m_recentItems = 10;
-  m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_useSVG = false;
   m_changeAsterisk = true;
-  m_workSheet = NULL;
   m_latin2greek = false;
   m_enterEvaluates = false;
   m_printScale = 1.0;
-  m_forceUpdate = false;
-  m_outdated = false;
-  m_printing = false;
   m_TeXFonts = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
+  m_defaultPlotWidth = 1200;
+  m_defaultPlotHeight = 900;
   SetLanguage(wxLANGUAGE_DEFAULT);
-  m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = labels_prefer_user;
   m_abortOnError = true;
@@ -268,7 +290,7 @@ static const Configuration::EscCodeContainer &EscCodes()
 }
 
 void Configuration::InitStyles()
-{
+{  
   std::fill(std::begin(m_styles), std::end(m_styles), Style{});
 
   Style defaultStyle;
@@ -430,6 +452,119 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   wxConfigBase *config = wxConfig::Get();
+
+  {
+    // If this preference cannot be loaded we don't want an error message about it
+    SuppressErrorDialogs suppressor;
+    wxString hideMessagesConfigString;
+    config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
+    config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
+    config->Read(wxT("texPreamble"), &m_texPreamble);
+    {
+      config->Read(wxT("suppressYellowMarkerMessages"), &hideMessagesConfigString);
+      // Write the string into a memory buffer
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(hideMessagesConfigString);
+      wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                  ostream.GetOutputStreamBuffer()->GetBufferSize());
+      wxXmlDocument xmlDocument;
+      if(xmlDocument.Load(istream))
+      {
+        wxXmlNode *headNode = xmlDocument.GetDocumentNode();
+        if(headNode)
+        {
+          headNode = headNode->GetChildren();
+          while((headNode) && (headNode->GetName() != wxT("markers")))
+            headNode = headNode->GetNext();
+          wxXmlNode *entry = headNode->GetChildren();
+          while(entry)
+          {
+
+            if(entry->GetName() == wxT("hide"))
+            {
+              wxXmlNode *node = entry->GetChildren();
+              if(node)
+              {
+                HideMarkerForThisMessage(node->GetContent(), true);
+              }
+            }
+            entry = entry->GetNext();
+          }
+        }
+      }
+    }
+    {
+      wxString maximaEnvironmentString;
+      config->Read(wxT("maximaEnvironment"), &maximaEnvironmentString);
+      // Write the string into a memory buffer
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(maximaEnvironmentString);
+      wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                  ostream.GetOutputStreamBuffer()->GetBufferSize());
+      wxXmlDocument xmlDocument;
+      if(xmlDocument.Load(istream))
+      {
+        wxXmlNode *headNode = xmlDocument.GetDocumentNode();
+        if(headNode)
+        {
+          headNode = headNode->GetChildren();
+          while(headNode)
+          {
+            if(headNode->GetName() == wxT("entries"))
+            {
+              m_maximaEnvVars.clear();
+              wxXmlNode *entryNode = headNode->GetChildren();
+              while(entryNode)
+              {
+                if(entryNode->GetName() == wxT("entry"))
+                {
+                  wxXmlNode *entry = entryNode->GetChildren();
+                  wxString var;
+                  wxString value;
+                  while(entry)
+                  {
+                    if(entry->GetName() == wxT("var"))
+                    {
+                      wxXmlNode *node = entry->GetChildren();
+                      while(node)
+                      {
+                        if(node->GetType() == wxXML_TEXT_NODE)
+                          var = node->GetContent();
+                        node = node->GetNext();
+                      }
+                    }
+                    if(entry->GetName() == wxT("value"))
+                    {
+                      wxXmlNode *node = entry->GetChildren();
+                      while(node)
+                      {
+                        if(node->GetType() == wxXML_TEXT_NODE)
+                          value = node->GetContent();
+                        node = node->GetNext();
+                      }
+                    }
+                    entry = entry->GetNext();
+                  }
+                  if(!var.IsEmpty())
+                    m_maximaEnvVars[var] = value;
+                }
+                entryNode = entryNode->GetNext();
+              }
+            }
+            headNode = headNode->GetNext();
+          }
+        }
+      }
+    }
+  }
+  config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
+  config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
+  config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
+  config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
+  config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
+  config->Read(wxT("usepngCairo"), &m_usepngCairo);
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
     long autoSaveMinutes = 0;
@@ -477,6 +612,9 @@ void Configuration::ReadConfig()
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
   config->Read(wxT("useSVG"), &m_useSVG);
+  config->Read(wxT("copyBitmap"), &m_copyBitmap);
+  config->Read(wxT("bitmapScale"), &m_bitmapScale);
+  config->Read(wxT("DefaultFramerate"), &m_defaultFramerate);
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
@@ -534,6 +672,15 @@ void Configuration::ReadConfig()
   config->Read(wxT("cursorJump"), &m_cursorJump);
 
   ReadStyles();
+}
+
+bool Configuration::HideMarkerForThisMessage(wxString message)
+{
+  auto it = m_hideMarkerForThisMessage.find(message);
+  if (it == m_hideMarkerForThisMessage.end())
+    return false;
+  else
+    return it->second;
 }
 
 Style Configuration::GetStyle(TextStyle ts, AFontSize fontSize) const
@@ -702,7 +849,7 @@ static bool operator==(const wxImage &a, const wxImage &b)
   if (a.GetSize() != b.GetSize())
     return false;
 
-  long bytes = a.GetWidth() * b.GetHeight() * 3;
+  long bytes = (long)a.GetWidth() * b.GetHeight() * 3;
   if (bytes < 0)
     return false;
 
@@ -890,7 +1037,7 @@ void Configuration::ReadStyles(const wxString &file)
 }
 
 //! Saves the style settings to a file.
-void Configuration::WriteStyles(const wxString &file)
+void Configuration::WriteSettings(const wxString &file)
 {
   wxConfigBase *config = NULL;
   if (file == wxEmptyString)
@@ -898,6 +1045,108 @@ void Configuration::WriteStyles(const wxString &file)
   else
     config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
 
+  {
+    wxXmlNode *topNode = new wxXmlNode(
+      NULL,
+      wxXML_DOCUMENT_NODE, wxEmptyString,
+      wxEmptyString
+      );
+    wxXmlNode *entriesNode =
+      new wxXmlNode(
+        topNode,
+        wxXML_ELEMENT_NODE,
+        "entries");
+    wxEnvVariableHashMap::const_iterator it;
+    for (it = m_maximaEnvVars.begin();
+         it != m_maximaEnvVars.end();
+         ++it)
+    {
+      if(!it->first.IsEmpty())
+      {
+        wxXmlNode *entryNode =
+          new wxXmlNode(
+            entriesNode,
+            wxXML_ELEMENT_NODE,
+            "entry");
+        wxXmlNode *varNode =
+          new wxXmlNode(
+            entryNode,
+            wxXML_ELEMENT_NODE,
+            "var");
+        wxXmlNode *valueNode =
+          new wxXmlNode(
+            entryNode,
+            wxXML_ELEMENT_NODE,
+            "value");
+        new wxXmlNode(
+          varNode,
+          wxXML_TEXT_NODE,
+          wxEmptyString,
+          it->first);
+        new wxXmlNode(
+          valueNode,
+          wxXML_TEXT_NODE,
+          wxEmptyString,
+          it->second);
+      }
+    }
+    wxXmlDocument xmlDoc;
+    xmlDoc.SetDocumentNode(topNode);
+    // Write the string into a memory buffer
+    wxMemoryOutputStream ostream;
+    xmlDoc.Save(ostream);
+    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxTextInputStream text(istream);
+    wxString maximaEnvConfigString;
+    while(!istream.Eof())
+      maximaEnvConfigString += text.ReadLine() + wxT("\n");
+    config->Write(wxT("maximaEnvironment"), maximaEnvConfigString);
+  }
+  {
+    wxXmlNode *topNode = new wxXmlNode(
+      NULL,
+      wxXML_DOCUMENT_NODE, wxEmptyString,
+      wxEmptyString
+      );
+    wxXmlNode *headNode = new wxXmlNode(
+      topNode,
+      wxXML_ELEMENT_NODE, wxT("markers"),
+      wxEmptyString
+      );
+    StringBoolHash::const_iterator it;
+    for (it = m_hideMarkerForThisMessage.begin();
+         it != m_hideMarkerForThisMessage.end();
+         ++it)
+    {
+      if(it->second)
+      {
+        wxXmlNode *hideNode =
+          new wxXmlNode(
+            headNode,
+            wxXML_ELEMENT_NODE,
+            "hide");
+        new wxXmlNode(
+          hideNode,
+          wxXML_TEXT_NODE,
+          wxEmptyString,
+          it->first);
+      }
+    }
+    wxXmlDocument xmlDoc;
+    xmlDoc.SetDocumentNode(topNode);
+    // Write the string into a memory buffer
+    wxMemoryOutputStream ostream;
+    xmlDoc.Save(ostream);
+    wxMemoryInputStream istream(ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    wxTextInputStream text(istream);
+    wxString hideMessagesConfigString;
+    while(!istream.Eof())
+      hideMessagesConfigString += text.ReadLine() + wxT("\n");
+    config->Write(wxT("suppressYellowMarkerMessages"), hideMessagesConfigString);
+  }
+  
   config->Write(wxT("keepPercent"), m_keepPercent);
   config->Write(wxT("labelWidth"), m_labelWidth);
   config->Write(wxT("saveUntitled"), m_saveUntitled);
@@ -944,6 +1193,7 @@ void Configuration::WriteStyles(const wxString &file)
   m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
+  WriteStyles(config);
   if(file != wxEmptyString)
   {
     config->Flush();
@@ -1030,9 +1280,19 @@ bool Configuration::InUpdateRegion(wxRect const rect) const
          rect.Contains(updateRegion);
 }
 
-void Configuration::WriteSettings()
+void Configuration::WriteStyles(wxConfigBase *config)
 {
-  wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
+  config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
+  config->Write(wxT("texPreamble"), m_texPreamble);
+  config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
+  config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript);
+  config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
+  config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight);
+  config->Write(wxT("fixedFontTC"), m_fixedFontTC);
+  config->Write(wxT("bitmapScale"), m_bitmapScale);
+  config->Write(wxT("DefaultFramerate"), m_defaultFramerate);
+  config->Write(wxT("usepngCairo"), m_usepngCairo);
   config->Write("incrementalSearch", m_incrementalSearch);
   config->Write(wxT("hideBrackets"), m_hideBrackets);
   config->Write(wxT("printScale"), m_printScale);
@@ -1087,6 +1347,23 @@ void Configuration::WriteSettings()
   config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
+}
+
+//! Saves the style settings to a file.
+void Configuration::WriteStyles(const wxString &file)
+{
+  wxConfigBase *config = NULL;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else
+    config = new wxFileConfig(wxT("wxMaxima"), wxEmptyString, file);
+
+  WriteStyles(config);
+  if(file != wxEmptyString)
+  {
+    config->Flush();
+    delete config;
+  }
 }
 const wxString &Configuration::GetStyleName(TextStyle style) const
 {

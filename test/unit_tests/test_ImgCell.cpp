@@ -44,6 +44,7 @@ long Configuration::Scale_Px(double) const { return 1; }
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxFontStyle Configuration::IsItalic(long) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
+bool Configuration::HideMarkerForThisMessage(wxString) {return false;}
 Style Configuration::GetStyle(TextStyle, AFontSize) const { return {}; }
 CellPointers *Cell::GetCellPointers() const { return &pointers; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}

@@ -35,6 +35,7 @@ extern unsigned char view_refresh_svg_gz[];
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/image.h>
+#include <wx/grid.h>
 #include <wx/hashmap.h>
 #include <memory>
 #include <wx/propdlg.h>
@@ -106,10 +107,29 @@ public:
   void WriteSettings();
 
 private:
+  enum newVariables
+  {
+    MAXIMA_DEFAULT_LISP,
+    MAXIMA_IMAGESDIR,
+    MAXIMA_USERDIR,
+    MAXIMA_DIRECTORY,
+    MAXIMA_TEMPDIR,
+    MAXIMA_OBJDIR,
+    MAXIMA_DOC_PREFIX,
+    GCL_GC_PAGE_THRESH,
+    GCL_GC_ALLOC_MIN,
+    GCL_GC_PAGE_MAX,
+    GCL_MEM_MULTIPLE,
+    GCL_MULTIPROCESS_MEMORY_POOL,
+    LANG,
+    HOME,
+    VAR_DELETE
+  };
   std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
   //! The configuration storage
   Configuration *m_configuration;
   
+  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   WX_DECLARE_STRING_HASH_MAP(long, Languages);
   Languages m_languages;
   /*! TheSample text that is shown by the style selector.
@@ -210,17 +230,28 @@ private:
   wxPanel *CreateStartupPanel();
   
 protected:
+  wxGrid *m_maximaEnvVariables;
+  void OnImport(wxCommandEvent& event);
+  static void CopyConfig(wxConfigBase *src, wxConfigBase *dst, wxString dir = wxT("/"));
   void OnReloadAll(wxCommandEvent& event);
   void OnReloadStyles(wxCommandEvent& event);
   void OnResetAllToDefaults(wxCommandEvent& event);
+  void OnExportAll(wxCommandEvent& event);
   void OnResetStyles(wxCommandEvent& event);
-  //! The name of maxima's startup file.
+  void OnChangeMaximaEnvVar(wxGridEvent& event);
+  void OnMaximaEnvRightClick(wxGridEvent& event);
+  void OnMouseMotion_MaximaEnv(wxMouseEvent &event);
+  void OnNewEnvMenu(wxCommandEvent &event);
+  void OnClickMaximaEnvVal(int row);
+  void OnChangeMaximaCellClick(wxGridEvent& event);
+
+//! The name of maxima's startup file.
   wxString m_startupFileName;
   //! The name of wxMaxima's startup file.
   wxString m_wxStartupFileName;
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
-
+  StringHash m_maximaEnvDoc;
   //! Autodetect the maxima location?
   wxRadioButton *m_autodetectMaxima;
   //! The radio button that is set if m_autodetectMaxima is unset
@@ -263,8 +294,6 @@ protected:
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
   wxSpinCtrl *m_displayedDigits;
-  //! A checkbox that allows to select if the LaTeX file should contain animations.
-  wxCheckBox *m_AnimateLaTeX;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
   wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \\partial symbol for representing diff()
@@ -316,6 +345,7 @@ protected:
   ExamplePanel *m_examplePanel;
   wxSpinCtrl *m_maxGnuplotMegabytes;
   wxTextCtrl *m_autoMathJaxURL;
+  int m_maximaEmvRightClickRow = 0;
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
 

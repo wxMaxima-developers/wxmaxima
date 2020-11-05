@@ -895,7 +895,8 @@ public:
     popid_suggestion8,
     popid_suggestion9,
     popid_suggestion10,
-    popid_hide_tooltipMarker
+    popid_hide_tooltipMarker,
+    popid_hide_tooltipMarkerForThisMessage
   };
 
   //! The constructor
@@ -946,12 +947,12 @@ public:
   bool RecalculateIfNeeded();
 
   //! Schedule a recalculation of the worksheet starting with the cell start.
-  void Recalculate(Cell *start, bool force = false);
+  void Recalculate(Cell *start);
 
-  void Recalculate(bool force = false) { Recalculate(GetTree(), force); }
+  void Recalculate() { Recalculate(GetTree()); }
 
   //! Schedule a full recalculation of the worksheet
-  void RecalculateForce() { Recalculate(true); }
+  void RecalculateForce();
 
   /*! Empties the current document
 

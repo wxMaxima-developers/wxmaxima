@@ -72,9 +72,6 @@ DEFINE_CELL(ListCell)
 
 void ListCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-  
   m_innerCell->RecalculateList(fontsize);
   m_innerCell->RecalculateList(fontsize);
   m_open->RecalculateList(fontsize);

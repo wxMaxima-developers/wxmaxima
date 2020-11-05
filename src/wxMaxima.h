@@ -260,7 +260,9 @@ protected:
   //! Save the list of help file anchors to the cache.
   void SaveManualAnchorsToCache();
   //! The gnuplot process info
-  wxProcess *m_gnuplotProcess;
+  wxProcess *m_gnuplotProcess = NULL;
+  //! Info about the gnuplot process we start for querying the terminals it supports
+  wxProcess *m_gnuplotTerminalQueryProcess = NULL;
   //! Is this window active?
   bool m_isActive;
   //! Called when this window is activated or deactivated.
@@ -355,6 +357,7 @@ protected:
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
   void OnProcessEvent(wxProcessEvent &event);      //
   void OnGnuplotClose(wxProcessEvent &event);      //
+  void OnGnuplotQueryTerminals(wxProcessEvent &event);      //
   void PopupMenu(wxCommandEvent &event);           //
   void StatsMenu(wxCommandEvent &event);           //
 
@@ -696,6 +699,8 @@ public:
   //! The marker for the end of a input prompt
   const static wxString m_promptSuffix;
 protected:
+  //! Sets gnuplot's command name and tries to determine gnuplot's path
+  void GnuplotCommandName(wxString gnuplot);
   //! The marker for the start of a variables section
   static wxString m_variablesPrefix;
   //! The marker for the end of a variables section

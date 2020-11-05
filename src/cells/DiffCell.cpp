@@ -63,9 +63,6 @@ void DiffCell::MakeBreakupCells()
 
 void DiffCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_baseCell->RecalculateList(fontsize);
   m_diffCell->RecalculateList(fontsize);
   if(!IsBrokenIntoLines())
@@ -133,9 +130,7 @@ wxString DiffCell::ToTeX() const
   wxString diff = m_diffCell->ListToTeX();
   wxString function = m_baseCell->ListToTeX();
 
-  bool usePartialForDiff = false;
-  wxConfig::Get()->Read(wxT("usePartialForDiff"), &usePartialForDiff);
-  if (usePartialForDiff)
+  if ((*m_configuration)->UsePartialForDiff())
     diff.Replace(wxT("\\frac{d}{d"), wxT("\\frac{\\partial}{\\partial"));
 
   wxString s = diff + function;

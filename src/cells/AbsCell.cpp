@@ -62,9 +62,6 @@ void AbsCell::MakeBreakupCells()
 
 void AbsCell::Recalculate(AFontSize fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   m_innerCell->RecalculateList(fontsize);
   if (IsBrokenIntoLines())
   {

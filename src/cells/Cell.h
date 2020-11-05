@@ -454,7 +454,11 @@ public:
   //! Mark the cached height and width information as "to be calculated".
   void ResetSize();
 
+  //! Mark the line and cell list widths and heights as "to be calculated"
   void ResetCellListSizes();
+
+  //! Mark the line and cell list widths and heights as "to be calculated"
+  void ResetCellListSizesList();
 
   void SetZeroSize();
 
@@ -767,7 +771,6 @@ public:
   void SetCurrentPoint(int x, int y) { m_currentPoint = {x, y}; }
   //! Where is this cell placed on the worksheet?
   wxPoint GetCurrentPoint() const {return m_currentPoint;}
-  bool ContainsToolTip() const { return m_containsToolTip; }
 
   /*! Whether this cell is broken into two or more lines.
    *
@@ -850,6 +853,8 @@ private:
   std::unique_ptr<CellAccessible> m_accessible;
 #endif
 
+public:
+    const wxString &GetLocalToolTip() const;
 protected:
   /*! The GroupCell this list of cells belongs to.
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
@@ -903,7 +908,6 @@ private:
     m_isHidableMultSign = false;
     m_suppressMultiplicationDot = false;
     m_recalculateWidths = true;
-    m_containsToolTip = false;
     m_breakPage = false;
     m_breakLine = false;
     m_forceBreakLine = false;
@@ -924,8 +928,6 @@ private:
   bool m_suppressMultiplicationDot : 1 /* InitBitFields */;
   //! true, if this cell clearly needs recalculation
   bool m_recalculateWidths : 1 /* InitBitFields */;
-  bool m_containsToolTip : 1 /* InitBitFields */;
-
   bool m_breakPage : 1 /* InitBitFields */;
   //! Are we allowed to add a line break before this cell?
   bool m_breakLine : 1 /* InitBitFields */;
@@ -944,8 +946,6 @@ protected:
     ResetSize();
     ResetData();
   }
-
-  const wxString &GetLocalToolTip() const;
 
   CellPointers *GetCellPointers() const;
 

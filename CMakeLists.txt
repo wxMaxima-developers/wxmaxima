@@ -8,7 +8,7 @@ if(WIN32)
 endif()
 
 
-set(VERSION 20.09.0-DevelopmentSnapshot)
+set(VERSION 20.11.0-DevelopmentSnapshot)
 set(GITVERSION ${VERSION})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -223,10 +223,10 @@ endfunction()
 #
 
 if(NOT WXM_BUILD_SOURCE_ONLY)
-    add_subdirectory(locales)
     add_subdirectory(Doxygen)
     add_subdirectory(data)
     add_subdirectory(info)
+    add_subdirectory(locales)
 endif()
 
 add_subdirectory(src)

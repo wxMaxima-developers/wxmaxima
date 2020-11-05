@@ -3,12 +3,6 @@
 
   <!-- "win32" seems to include ARM and ia64; if the manifest is changed the version
   number needs to be changed, too.--> 
-  <assemblyIdentity 
-      type="win32" 
-      processorArchitecture="*"
-      name="com.github.wxMaxima-developers.wxmaxima"
-      version="@VERSION@"
-      />
   <description> A feature-ful GUI for Maxima, a free Computer Algebra System </description>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
     <security>

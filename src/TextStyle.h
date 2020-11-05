@@ -142,7 +142,7 @@ public:
   Style &Read(wxConfigBase *config, const wxString &where);
   //! Write this style to a config source
   void Write(wxConfigBase *config, const wxString &where) const;
-
+  
   //! Gets a style that represents a given font. The font gets cached.
   static const Style &FromFont(const wxFont &font);
   //! Gets a style that represents a stock font. The font is pre-cached.

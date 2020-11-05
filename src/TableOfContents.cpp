@@ -50,8 +50,7 @@ TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **confi
   box->Add(m_regex, wxSizerFlags().Expand());
   m_lastSelection = -1;
 
-  SetSizer(box);
-  box->Fit(this);
+  SetSizerAndFit(box);
   box->SetSizeHints(this);
   m_regex->Connect(REGEX_EVENT, wxCommandEventHandler(TableOfContents::OnRegExEvent), NULL, this);
   Connect(wxEVT_SIZE, wxSizeEventHandler(TableOfContents::OnSize));

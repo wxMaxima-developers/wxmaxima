@@ -4,7 +4,7 @@ wxmaxima \- wxWidgets interface for Maxima
 
 .SH "SYNOPSIS"
 .PP
-\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [input file...]
+\fBwxmaxima\fR [-v] [-h] [-o <str>] [-e] [-b] [--logtostdout] [--pipe] [--exit-on-error] [-f <str>] [-u <str>] [-l <str>] [-X <str>] [-m <str>] [--enableipc] [input file...]
 
 .SH "DESCRIPTION"
 .PP
@@ -81,6 +81,10 @@ Allows to specify extra Maxima arguments
 .TP
 .I \-m, \-\-maxima=<str>
 Allows to specify the location of the Maxima binary.
+
+.TP
+.I \-\-enableipc
+Lets Maxima control wxMaxima via interprocess communications. Use this option with care.
 
 .SH FILES
 .TP

@@ -297,9 +297,9 @@ bool Worksheet::RedrawIfRequested()
 
         if (!toolTip.empty())
         {
-          if (GetToolTip())
+          if (!GetToolTipText().empty())
           {
-            if (toolTip != GetToolTip()->GetTip())
+            if (toolTip != GetToolTipText())
             {
               // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
               wxToolTip::Enable(false);
@@ -741,7 +741,7 @@ GroupCell *Worksheet::InsertGroupCells(std::unique_ptr<GroupCell> &&cells, Group
 
   if (renumbersections)
     NumberSections();
-  Recalculate(where, true);
+  Recalculate(where);
   SetSaved(false); // document has been modified
 
   if (undoBuffer)
@@ -781,7 +781,7 @@ void Worksheet::ScrollToError()
   if (errorCell->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(true);
+    Recalculate();
   }
 
   // Try to scroll to a place from which the full error message is visible
@@ -846,7 +846,7 @@ void Worksheet::InsertLine(std::unique_ptr<Cell> &&newCell, bool forceNewLine)
   if (!tmp->GetNext())
     UpdateMLast();
   OutputChanged();
-  Recalculate(tmp, false);
+  Recalculate(tmp);
   
   if (FollowEvaluation())
   {
@@ -908,6 +908,8 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 bool Worksheet::RecalculateIfNeeded()
 {
   UpdateConfigurationClientSize();
+  if(m_configuration->GetClientWidth()<1)
+    return(false);
   if (!m_recalculateStart || !GetTree())
   {
     m_recalculateStart = {};
@@ -940,15 +942,14 @@ bool Worksheet::RecalculateIfNeeded()
 
   if (m_configuration->AdjustWorksheetSize())
     AdjustSize();
-  m_configuration->FontChanged(false);
-
+  
   m_configuration->AdjustWorksheetSize(false);
 
   m_recalculateStart = {};
   return true;
 }
 
-void Worksheet::Recalculate(Cell *start, bool force)
+void Worksheet::Recalculate(Cell *start)
 {
   GroupCell *group = GetTree();
   if (start)
@@ -1004,7 +1005,6 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
         break;
     }
   }
-
   RecalculateForce();
 
   UpdateConfigurationClientSize();
@@ -1031,6 +1031,13 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
+}
+
+void Worksheet::RecalculateForce()
+{
+  if(GetTree())
+    GetTree()->ResetSizeList();
+  Recalculate();
 }
 
 /***
@@ -1777,16 +1784,49 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
                               _("Hide contents"), wxEmptyString, wxITEM_NORMAL);
       }
     }
+
+    if(GetActiveCell())
+    {
+      wxString toolTip = GetActiveCell()->GetLocalToolTip();
+      if((toolTip.IsEmpty()) && (group))
+        toolTip = group->GetLocalToolTip();
+      
+      if (!(toolTip.IsEmpty()))
+      {
+        if(popupMenu.GetMenuItemCount() > 0)
+          popupMenu.AppendSeparator();
+        popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker for this cell"),
+                                  _("Don't mark cells that contain tooltips in yellow"));
+        popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
+        popupMenu.AppendCheckItem(popid_hide_tooltipMarkerForThisMessage,
+                                  _("Hide yellow tooltip marker for this message type"),
+                                  _("Don't mark this message text in yellow"));
+        popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
+                        m_configuration->HideMarkerForThisMessage(toolTip));
+      }
+    } 
   }
 
-  if ((m_cellPointers.m_selectionStart) && (m_cellPointers.m_selectionStart->ContainsToolTip()))
+  if((m_cellPointers.m_selectionStart))
   {
-    if(popupMenu.GetMenuItemCount() > 0)
-      popupMenu.AppendSeparator();
-    popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker"),
-                              _("Don't mark cells that contain tooltips in yellow"));
+    wxString toolTip = m_cellPointers.m_selectionStart->GetLocalToolTip();
     GroupCell *group = m_cellPointers.m_selectionStart->GetGroup();
-    popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
+    if(toolTip.IsEmpty())
+      toolTip = group->GetLocalToolTip();
+    
+    if (!(toolTip.IsEmpty()))
+    {
+      if(popupMenu.GetMenuItemCount() > 0)
+        popupMenu.AppendSeparator();
+      popupMenu.AppendCheckItem(popid_hide_tooltipMarker, _("Hide yellow tooltip marker for this cell"),
+                                _("Don't mark cells that contain tooltips in yellow"));
+      popupMenu.Check(popid_hide_tooltipMarker,group->GetSuppressTooltipMarker());
+      popupMenu.AppendCheckItem(popid_hide_tooltipMarkerForThisMessage,
+                                _("Hide yellow tooltip marker for this message type"),
+                                _("Don't mark this message text in yellow"));
+      popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
+                      m_configuration->HideMarkerForThisMessage(toolTip));
+    }
   }
   // create menu if we have any items
   if (popupMenu.GetMenuItemCount() > 0)
@@ -1811,13 +1851,13 @@ void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
         ToggleFoldAll(clickedInGC);
       else
         ToggleFold(clickedInGC);
-      Recalculate(clickedInGC, true);
+      Recalculate(clickedInGC);
     }
     else
     {
       clickedInGC->SwitchHide();
       clickedInGC->ResetSize();
-      Recalculate(clickedInGC, false);
+      Recalculate(clickedInGC);
       m_clickType = CLICK_TYPE_NONE; // ignore drag-select
     }
   }
@@ -1867,7 +1907,7 @@ void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cl
       m_blinkDisplayCaret = true;
       m_clickType = CLICK_TYPE_INPUT_SELECTION;
       if (editor->GetWidth() == -1)
-        Recalculate(clickedInGC, false);
+        Recalculate(clickedInGC);
       ScrollToCaret();
       // Here we tend to get unacceptably long delays before the display is
       // refreshed by the idle loop => Trigger the refresh manually.
@@ -2406,7 +2446,7 @@ bool Worksheet::Copy(bool astext)
     {
       // Try to fill bmp with a high-res version of the cells
       BitmapOut output(&m_configuration, std::move(tmp),
-                       BitmapOut::GetConfigScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+                       m_configuration->BitmapScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
       if (output.IsOk())
         data->Add(output.GetDataObject().release());
     }
@@ -2539,17 +2579,13 @@ bool Worksheet::CopyTeX()
   if (!m_cellPointers.m_selectionStart)
     return false;
 
-  wxConfigBase *config = wxConfig::Get();
-  bool wrapLatexMath = true;
-  config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
-
   Cell *const start = m_cellPointers.m_selectionStart;
   bool inMath = false;
   wxString s;
 
   if (start->GetType() != MC_TYPE_GROUP)
   {
-    inMath = wrapLatexMath;
+    inMath = m_configuration->WrapLatexMath();
     if (inMath)
       s = wxT("\\[");
   }
@@ -2651,7 +2687,7 @@ bool Worksheet::CopyCells()
     if (m_configuration->CopyBitmap())
     {
       BitmapOut output(&m_configuration, CopySelection(),
-                       BitmapOut::GetConfigScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+                       m_configuration->BitmapScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
       if (output.IsOk())
         data->Add(output.GetDataObject().release());
     }
@@ -2831,7 +2867,7 @@ void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
   InsertGroupCells(std::move(newGroupCell), prev);
   SetActiveCell(editable, false);
   SetSaved(false);
-  Recalculate(true);
+  Recalculate();
   RequestRedraw();
 }
 
@@ -2936,7 +2972,7 @@ void Worksheet::OpenQuestionCaret(const wxString &txt)
   if (group->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(group, true);
+    Recalculate(group);
   }
 
   // If we still haven't a cell to put the answer in we now create one.
@@ -3055,6 +3091,7 @@ void Worksheet::Evaluate()
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
   m_updateControls = true;
+  m_configuration->AdjustWorksheetSize(true);
   ClearNotification();
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -3996,15 +4033,18 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       // keycodes which open hCaret with initial content
     default:
       wxChar tx(event.GetUnicodeKey());
-      if (tx == WXK_NONE)
+      if ((tx == WXK_NONE) || (!wxIsprint(tx)))
       {
         event.Skip();
         return;
       }
       else
-        OpenHCaret(tx);
+      {
+        if(wxIsprint(tx))
+          OpenHCaret(tx);
+      }
   }
-
+  
   RequestRedraw();
 }
 
@@ -4038,27 +4078,11 @@ void Worksheet::SetNotification(const wxString &message, int flags)
  */
 void Worksheet::OnChar(wxKeyEvent &event)
 {
+  m_configuration->AdjustWorksheetSize(true);
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown())
-  {
     event.Skip();
-    if (
-      (event.GetKeyCode() == WXK_UP) ||
-      (event.GetKeyCode() == WXK_DOWN) ||
-      (
-        (
-          (event.GetUnicodeKey() >= 'a') &&
-          (event.GetUnicodeKey() <= 'z')
-        ) ||
-        (
-          (event.GetUnicodeKey() >= 'A') &&
-          (event.GetUnicodeKey() <= 'Z')
-          ) 
-        )
-      )
-      return;
-  }
     
   if (m_autocompletePopup)
   {
@@ -4097,14 +4121,11 @@ void Worksheet::OnChar(wxKeyEvent &event)
             !(event.GetKeyCode() == WXK_HOME) &&
             !(event.GetKeyCode() == WXK_END)
             )
-    {
       event.Skip();
-      return;
-    }
   }
 
   // Forward cell creation hotkeys to the class wxMaxima
-  if (event.CmdDown() && event.AltDown())
+  if (event.CmdDown() && !event.AltDown())
   {
     if (
             (event.GetKeyCode() == WXK_ESCAPE) ||
@@ -4112,14 +4133,16 @@ void Worksheet::OnChar(wxKeyEvent &event)
             (event.GetKeyCode() == wxT('2')) ||
             (event.GetKeyCode() == wxT('3')) ||
             (event.GetKeyCode() == wxT('4')) ||
-            (event.GetKeyCode() == wxT('5'))
+            (event.GetKeyCode() == wxT('5')) ||
+            (event.GetKeyCode() == wxT('+')) ||
+            (event.GetKeyCode() == wxT('-'))
             )
     {
       event.Skip();
       return;
     }
   }
-
+  
   // If the find dialogue is open we use the ESC key as a hotkey that closes
   // the dialogue. If it isn't it is used as part of the shortcuts for
   // entering unicode characters instead.
@@ -5332,12 +5355,9 @@ bool Worksheet::ExportToHTML(const wxString &file)
             case Configuration::bitmap:
             {
               wxSize size;
-              int bitmapScale = 3;
-              ext = wxT(".png");
-              wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
               size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                                 &(*chunk),
-                                NULL, true, bitmapScale);
+                                NULL, true, m_configuration->BitmapScale());
               int borderwidth = 0;
               wxString alttext = EditorCell::EscapeHTMLChars(chunk->ListToString());
               borderwidth = chunk->GetImageBorderWidth();
@@ -5345,7 +5365,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\" "),
-                                 count, ext.utf8_str(), size.x / bitmapScale - 2 * borderwidth) +
+                                 count, ext.utf8_str(), size.x / m_configuration->BitmapScale() - 2 * borderwidth) +
                 alttext +
                 wxT("\" /><br/>\n");
 
@@ -5503,10 +5523,7 @@ bool Worksheet::ExportToHTML(const wxString &file)
                         "wxMaxima</a>.</small></p>\n");
   output << wxEmptyString;
 
-  bool exportContainsWXMX = false;
-  wxConfig::Get()->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
-
-  if (exportContainsWXMX)
+  if (m_configuration->ExportContainsWXMX())
   {
     wxString wxmxfileName_rel = imgDir_rel + wxT("/") + filename + wxT(".wxmx");
     wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
@@ -5666,23 +5683,13 @@ bool Worksheet::ExportToTeX(const wxString &file)
   // lines.
   output << wxT("\\DeclareMathOperator{\\abs}{abs}\n");
 
-  // The animate package is only needed if we actually want to output animations
-  // to LaTeX. Don't drag in this dependency if this feature was disabled in the settings.
-  bool AnimateLaTeX = true;
-  wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
-  if (AnimateLaTeX)
-  {
-    output << wxT("\\usepackage{animate} % This package is required because the wxMaxima configuration option\n");
-    output << wxT("                      % \"Export animations to TeX\" was enabled when this file was generated.\n");
-  }
   output << wxT("\n");
   output << wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
   output << wxT("\n");
 
   // Add an eventual preamble requested by the user.
-  wxString texPreamble;
-  wxConfig::Get()->Read(wxT("texPreamble"), &texPreamble);
-  if (texPreamble != wxEmptyString)
+  wxString texPreamble = m_configuration->TexPreamble();
+  if (!texPreamble.IsEmpty())
     output << texPreamble << wxT("\n\n");
 
   output << wxT("\\begin{document}\n");
@@ -6756,7 +6763,7 @@ bool Worksheet::TreeUndoTextChange(UndoActions *sourcelist, UndoActions *undoFor
 
     SetHCaret(action.m_start);
 
-    Recalculate(true);
+    Recalculate();
     RequestRedraw();
 
     wxASSERT_MSG(!action.m_newCellsEnd,
@@ -6810,7 +6817,7 @@ bool Worksheet::TreeUndo(UndoActions *sourcelist, UndoActions *undoForThisOperat
   } while (actionContinues);
   if (!undoForThisOperation->empty())
     undoForThisOperation->front().m_partOfAtomicAction = false;
-  Recalculate(true);
+  Recalculate();
   RequestRedraw();
   return true;
 }
@@ -8051,7 +8058,7 @@ void Worksheet::SetActiveCellText(const wxString &text)
       parent->ResetSize();
       parent->ResetData();
       parent->ResetInputLabel();
-      Recalculate(parent, false);
+      Recalculate(parent);
       RequestRedraw();
     }
   }
@@ -8127,7 +8134,7 @@ void Worksheet::OnFollow()
     if (GetWorkingGroup()->RevealHidden())
     {
       FoldOccurred();
-      Recalculate(true);
+      Recalculate();
     }
     SetSelection(GetWorkingGroup());
     SetHCaret(GetWorkingGroup());

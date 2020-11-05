@@ -1,5 +1,5 @@
 #include "Version.h"
-#if USE_PRECOMP_HEADER
+#ifdef USE_PRECOMP_HEADER
 #include <wx/wx.h>
 #include <wx/window.h>
 #include <wx/button.h>

@@ -56,9 +56,6 @@ DEFINE_CELL(MatrCell)
 
 void MatrCell::Recalculate(AFontSize const fontsize)
 {
-  if(!NeedsRecalculation(fontsize))
-    return;
-
   AFontSize const fontsize_entry{ MC_MIN_SIZE, fontsize - 2 };
   for (unsigned int i = 0; i < m_cells.size(); i++)
     m_cells[i]->RecalculateList(fontsize_entry);

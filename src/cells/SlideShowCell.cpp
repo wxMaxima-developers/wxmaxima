@@ -98,9 +98,8 @@ int SlideShow::GetFrameRate() const
     framerate = m_framerate;
   else
   {
-    wxConfigBase *config = wxConfig::Get();
 
-    config->Read(wxT("DefaultFramerate"), &framerate);
+    framerate = (*m_configuration)->DefaultFramerate();
   }
   if (framerate > 30)
     framerate = 30;
@@ -250,11 +249,6 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::Recalculate(AFontSize fontsize)
 {
-  // Here we recalculate the height, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
-
   Configuration *configuration = *m_configuration;
 
   // Assuming a minimum size maybe isn't that bad.

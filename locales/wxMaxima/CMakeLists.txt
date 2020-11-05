@@ -10,8 +10,9 @@ set_target_properties(update-locale
 file(GLOB TRANSLATION_FILES *.po)
 
 # which sourcecode and data files can contain translatable text?
+file(GLOB POT_SOURCE_FILES_REL LIST_DIRECTORIES false RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h ${CMAKE_SOURCE_DIR}/examples/examples_gettext.h)
 file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h ${CMAKE_SOURCE_DIR}/examples/examples_gettext.h)
-
+    
 if(GETTEXT_FOUND)
     find_program(XGETTEXT xgettext)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
@@ -20,7 +21,8 @@ if(GETTEXT_FOUND)
     add_custom_command(
 	OUTPUT wxMaxima.pot
 	DEPENDS ${POT_SOURCE_FILES}
-	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -s -o "wxMaxima.pot" ${POT_SOURCE_FILES}
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -s -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot" ${POT_SOURCE_FILES_REL}
 	COMMAND ${CMAKE_COMMAND} -E copy "wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
 	COMMENT "Updating the POT-file from the current sourcecode")
 

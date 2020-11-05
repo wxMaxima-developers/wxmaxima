@@ -36,6 +36,10 @@
 #include <wx/sysopt.h>
 #include "Dirstructure.h"
 #include <iostream>
+#ifdef __WXMSW__
+#include <winuser.h>
+#include <windef.h>
+#endif
 
 #include "../examples/examples.h"
 #include "wxMaxima.h"
@@ -83,6 +87,14 @@ int main(int argc, char *argv[])
 #else
 int WINAPI WinMain( HINSTANCE hI, HINSTANCE hPrevI, LPSTR lpCmdLine, int nCmdShow )
 {
+  // // Only needed if we don't manage to ship the right manifest
+  // #ifdef DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE
+  // SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+  // #else
+  //   #ifdef DPI_AWARENESS_CONTEXT_SYSTEM_AWARE
+  //   SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+  //   #endif
+  // #endif
   wxEntryStart(hI, hPrevI, lpCmdLine, nCmdShow);
   return CommonMain();
 }

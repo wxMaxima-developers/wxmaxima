@@ -157,13 +157,7 @@ void wxMaxima::ConfigChanged()
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_usesvg t)\n");
   else
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_usesvg nil)\n");
-#if defined (__WXOSX__)
-  bool usepngCairo = false;
-#else
-  bool usepngCairo=true;
-#endif
-  config->Read(wxT("usepngCairo"), &usepngCairo);
-  if (usepngCairo)
+  if (m_worksheet->m_configuration->UsePngCairo())
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
   else
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
@@ -178,13 +172,9 @@ void wxMaxima::ConfigChanged()
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
                                        EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
-  int defaultPlotWidth = 600;
-  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 400;
-  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                                       defaultPlotWidth,
-                                       defaultPlotHeight);
+                                       m_worksheet->m_configuration->DefaultPlotWidth(),
+                                       m_worksheet->m_configuration->DefaultPlotHeight());
 
   if (m_worksheet->m_currentFile != wxEmptyString)
   {
@@ -203,6 +193,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_worksheet->m_configuration)
 {
+  GnuplotCommandName("gnuplot");
   if(m_knownXMLTags.empty())
   {
     m_knownXMLTags[wxT("PROMPT")] = &wxMaxima::ReadPrompt;
@@ -841,6 +832,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCloseEventHandler(wxMaxima::OnClose), NULL, this);
   Connect(maxima_process_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnProcessEvent), NULL, this);
+  Connect(gnuplot_query_terminals_id, wxEVT_END_PROCESS,
+          wxProcessEventHandler(wxMaxima::OnGnuplotQueryTerminals), NULL, this);
   Connect(gnuplot_process_id, wxEVT_END_PROCESS,
           wxProcessEventHandler(wxMaxima::OnGnuplotClose), NULL, this);
   Connect(Worksheet::popid_edit, wxEVT_MENU,
@@ -1060,6 +1053,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_remove_output, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(Worksheet::popid_hide_tooltipMarker, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(Worksheet::popid_hide_tooltipMarkerForThisMessage, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_recent_document_0, menu_recent_document_29, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::OnRecentDocument), NULL, this);
@@ -1838,7 +1833,14 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
-    if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) <= 0 )
+      
+      wxEnvVariableHashMap environment;
+      environment = m_worksheet->m_configuration->MaximaEnvVars();
+      wxGetEnvMap(&environment);
+      
+      wxExecuteEnv *env = new wxExecuteEnv;
+      env->env = environment;
+      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process, env) <= 0 )
     {
       StatusMaximaBusy(process_wont_start);
       RightStatusText(_("Cannot start the maxima binary"));
@@ -2100,6 +2102,45 @@ void wxMaxima::KillMaxima(bool logMessage)
       wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
+}
+
+void wxMaxima::OnGnuplotQueryTerminals(wxProcessEvent& WXUNUSED(event))
+{
+  if(!m_gnuplotTerminalQueryProcess)
+    return;
+  wxString gnuplotMessage;
+  {
+    wxInputStream* istream = m_gnuplotTerminalQueryProcess->GetInputStream();
+    wxTextInputStream textin(*istream);
+    while(!istream->Eof())
+      gnuplotMessage += textin.ReadLine()+"\n";
+  }
+  {
+    wxInputStream* istream = m_gnuplotTerminalQueryProcess->GetErrorStream();
+    wxTextInputStream textin(*istream);
+    while(!istream->Eof())
+      gnuplotMessage += textin.ReadLine()+"\n";
+  }
+  gnuplotMessage.Trim(true);
+  gnuplotMessage.Trim(false);
+  wxLogMessage("Terminals supported by gnuplot: "+gnuplotMessage);
+  if(gnuplotMessage.Contains(wxT("pngcairo")))
+  {
+    wxLogMessage(_("Using gnuplot's pngcairo driver for embedded plots"));
+    if (!m_worksheet->m_configuration->UsePngCairo())
+      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+    m_worksheet->m_configuration->UsePngCairo(true);
+  }
+  else
+  {
+    wxLogMessage(_("Using gnuplot's antialiassing-less png driver for embedded plots as pngcairo could not be found"));
+    if (m_worksheet->m_configuration->UsePngCairo())
+      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
+    m_worksheet->m_configuration->UsePngCairo(false);
+  }
+  m_gnuplotTerminalQueryProcess->CloseOutput();
+  m_gnuplotTerminalQueryProcess = NULL;
+  
 }
 
 void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
@@ -2647,10 +2688,106 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
               m_maximaDocDir = value;
               wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
 }
+
+void wxMaxima::GnuplotCommandName(wxString gnuplot)
+{
+  m_gnuplotcommand = gnuplot;
+  if(!wxFileName(m_gnuplotcommand).IsAbsolute())
+  {
+    wxPathList pathlist;
+
+    // Add paths relative to the path of the wxMaxima executable
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
+    // Add paths from the PATH environment variable
+    pathlist.AddEnvList(wxT("PATH"));
+
+    // Add OSX specific paths
+#ifdef __WXOSX__
+    // MacPorts:
+    // The MacPorts default binary path /opt/local/bin/ is not in the PATH for applications.
+    // It is added to .profile, but this is only used by shells.
+    // => Add the default MacPorts binary path /opt/local/bin/ to our search path list.
+    //
+    // Homebrew:
+    // Homebrew installs binaries in /usr/local/bin, which is in the PATH by default.
+    //
+    // Application packages including gnuplot:
+    // The above wxMaxima executable relative logic should work
+    //
+    // If gnuplot is somewhere else (e.g. non default MacPort or Homebrew path), the command
+    //   gnuplot_command:"/opt/local/bin/gnuplot"$
+    // must be added manually to ~/.maxima/wxmaxima-init.mac
+    // This should be documented for the installer packages, e.g. as MacPorts "notes" field.
+    pathlist.Add(OSX_MACPORTS_PREFIX "/bin");
+#endif
+
+    // Find executable "gnuplot" in our list of paths
+    m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot);
+    #ifdef __WXMSW__
+    // If not successful, Find executable "gnuplot.exe" in our list of paths
+    if(m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxT(".exe"));
+    // If not successful, Find executable "gnuplot.bat" in our list of paths
+    if(m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxT(".bat"));
+    #endif
+    #ifdef __WXOSX__
+    if(m_gnuplotcommand == wxEmptyString)
+      m_gnuplotcommand = pathlist.FindAbsoluteValidPath(gnuplot + wxT(".app"));
+    #endif
+    // If not successful, use the original command (better than empty for error messages)
+    if(m_gnuplotcommand == wxEmptyString)
+    {
+      wxLogMessage(_("Gnuplot not found, using the default: ") + gnuplot);
+      m_gnuplotcommand = gnuplot;
+    }
+    else
+    {
+      wxLogMessage(_("Gnuplot found at: ") + m_gnuplotcommand);
+    }    
+  }
+  if(
+    m_gnuplotcommand.Contains(" ") &&
+    (!m_gnuplotcommand.StartsWith("\"")) &&
+    (!m_gnuplotcommand.StartsWith("\'")))
+    m_gnuplotcommand = "\"" + m_gnuplotcommand + "\"";
+}
+
 void wxMaxima::VariableActionGnuplotCommand(const wxString &value)
 {
-  m_gnuplotcommand = value;
-  wxLogMessage(wxString::Format(_("Gnuplot can be found at %s"),m_gnuplotcommand.utf8_str()));
+  GnuplotCommandName(value);
+
+  wxLogMessage(_("Querying gnuplot which graphics drivers it supports."));
+  wxEnvVariableHashMap environment;
+  // gnuplot uses the PAGER variable only on un*x - and on un*x there is cat.
+  environment["PAGER"] = "cat";
+  wxGetEnvMap(&environment);
+  
+  m_gnuplotTerminalQueryProcess = new wxProcess(this, gnuplot_query_terminals_id);
+  m_gnuplotTerminalQueryProcess->Redirect();
+  // We don't want error dialogues here.
+  SuppressErrorDialogs suppressor;
+  wxExecuteEnv *env = new wxExecuteEnv;
+  env->env = environment;
+  if (wxExecute(m_gnuplotcommand,
+                wxEXEC_ASYNC | wxEXEC_HIDE_CONSOLE,
+                m_gnuplotTerminalQueryProcess, env) < 0)
+    wxLogMessage(_("Cannot start gnuplot"));
+  else
+  {
+    wxOutputStream* ostream = m_gnuplotTerminalQueryProcess->GetOutputStream();
+    if(ostream != NULL)
+    {
+      wxTextOutputStream textout(*ostream);
+      textout << "print GPVAL_TERMINALS;quit;\n\n\n\n\n\n\n\n\n\n\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n:q\n";
+//      ostream->Close();
+    }
+    else
+      wxLogMessage("Cannot get gnuplot's output stream!");
+  }
 }
 
 void wxMaxima::VariableActionMaximaSharedir(const wxString &value)
@@ -3719,12 +3856,13 @@ void wxMaxima::SetupVariables()
   wxString cmd;
 
 #if defined (__WXOSX__)
-  wxString gnuplot_binary = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand);
+  wxString gnuplot_binary = m_gnuplotcommand;
+
   gnuplot_binary.Replace("\\","\\\\");
   gnuplot_binary.Replace("\"","\\\"");
-  if (wxFileExists(gnuplot_binary))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplot_binary + wxT("\")\n");
-  wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), gnuplot_binary.utf8_str()));
+  if (wxFileExists(m_gnuplotcommand))
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + m_gnuplotcommand + wxT("\")\n");
+  wxLogMessage(wxString::Format(_("Setting gnuplot_binary to %s"), m_gnuplotcommand.utf8_str()));
 #endif
   cmd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(cmd);
@@ -5847,7 +5985,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     }
       
     // Execute gnuplot
-    wxString cmdline = Dirstructure::GnuplotDefaultLocation(m_gnuplotcommand) + wxT(" " + gnuplotSource + wxT(".popout"));
+    wxString cmdline = m_gnuplotcommand + wxT(" " + gnuplotSource + wxT(".popout"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
     
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
@@ -5875,7 +6013,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       // Refresh the display as the settings that affect it might have changed.
       m_worksheet->m_configuration->ReadStyles();
       m_worksheet->RecalculateForce();
-      m_worksheet->m_configuration->FontChanged(true);
+      m_worksheet->m_configuration->FontChanged();
+      m_worksheet->GetTree()->FontsChangedList();
+
       m_worksheet->RequestRedraw();
       ConfigChanged();
     }
@@ -6079,7 +6219,26 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         m_worksheet->SetActiveCellText(command);
     }
     break;
-    case Worksheet::popid_hide_tooltipMarker:
+
+  case Worksheet::popid_hide_tooltipMarkerForThisMessage:
+    {
+      if(m_worksheet->GetSelectionStart() == NULL)
+        return;
+      Cell *cell = m_worksheet->GetSelectionStart();
+      if(!cell)
+        return;
+      wxString toolTip = cell->GetLocalToolTip();
+      if(toolTip.IsEmpty())
+        toolTip = cell->GetGroup()->GetLocalToolTip();
+      if(toolTip.IsEmpty())
+        return;
+      bool suppress = m_worksheet->m_configuration->HideMarkerForThisMessage(toolTip);
+      std::cerr<<"suppress="<<suppress<<"\n";
+      m_worksheet->m_configuration->HideMarkerForThisMessage(toolTip, !suppress);
+      m_worksheet->OutputChanged();
+      break;
+    }
+  case Worksheet::popid_hide_tooltipMarker:
     {
       if(m_worksheet->GetSelectionStart() == NULL)
         return;
@@ -9772,7 +9931,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_CODE);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9780,7 +9939,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TEXT);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9794,7 +9953,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_TITLE);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9807,7 +9966,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SECTION);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9820,7 +9979,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SUBSECTION);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9833,7 +9992,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_SUBSUBSECTION);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9841,7 +10000,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING5);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9849,7 +10008,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       if (m_worksheet->GetActiveCell())
       {
         m_worksheet->GetActiveCell()->GetGroup()->SetGroupType(GC_TYPE_HEADING6);
-        m_worksheet->Recalculate(true);
+        m_worksheet->Recalculate();
         m_worksheet->RequestRedraw();
       }
       break;
@@ -9891,13 +10050,13 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_fold_all_cells:
       m_worksheet->FoldAll();
-      m_worksheet->Recalculate(true);
+      m_worksheet->Recalculate();
       // send cursor to the top
       m_worksheet->SetHCaret(NULL);
       break;
     case menu_unfold_all_cells:
       m_worksheet->UnfoldAll();
-      m_worksheet->Recalculate(true);
+      m_worksheet->Recalculate();
       // refresh without moving cursor
       m_worksheet->SetHCaret(m_worksheet->GetHCaret());
       break;

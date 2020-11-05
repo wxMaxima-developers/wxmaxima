@@ -77,7 +77,7 @@ const SvgBitmap &SvgBitmap::SetSize(int width, int height)
     wxBitmap::operator=(GetInvalidBitmap(width));
     return *this;
   }
-  std::vector<unsigned char> imgdata(width*height*4);
+  std::vector<unsigned char> imgdata((long)width*height*4);
 
   // Actually render the bitmap
   nsvgRasterize(m_svgRast, m_svgImage.get(), 0,0,
@@ -128,7 +128,14 @@ wxBitmap SvgBitmap::GetInvalidBitmap(int targetSize)
 }
 
 wxBitmap SvgBitmap::RGBA2wxBitmap(const unsigned char imgdata[],
-                                  const int &width, const int &height, const int &scaleFactor)
+                                  const int &width, const int &height,
+
+  #if defined __WXOSX__
+                                  const int &scaleFactor
+  #else
+                                  const int &WXUNUSED(scaleFactor)
+  #endif
+  )
 {
   #if defined __WXOSX__
   wxBitmap retval = wxBitmap(wxSize(width, height), 32, scaleFactor);

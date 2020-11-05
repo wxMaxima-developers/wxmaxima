@@ -123,6 +123,9 @@ public:
     display_1dASCII
   };
 
+  const wxEnvVariableHashMap& MaximaEnvVars(){return m_maximaEnvVars;}
+  wxEnvVariableHashMap m_maximaEnvVars;
+
   mathDisplayMode DisplayMode(){return m_displayMode;}
   void DisplayMode(mathDisplayMode mode ){m_displayMode = mode;}
 
@@ -152,6 +155,8 @@ public:
   void UnsetContext() {m_dc = NULL;}
 
   void SetBackgroundBrush(wxBrush brush);
+  bool FixedFontInTextControls(){return m_fixedFontTC;}
+  void FixedFontInTextControls(bool fixed){m_fixedFontTC = fixed;}
   wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   wxBrush GetTooltipBrush() const {return m_tooltipBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
@@ -218,8 +223,6 @@ public:
 
   //! Sets the zoom factor without storing the new value in the config file/registry.
   void SetZoomFactor_temporarily(double newzoom){
-    if(m_zoomFactor != newzoom)
-      FontChanged(true);
     m_zoomFactor = newzoom;
   }
 
@@ -332,9 +335,6 @@ public:
   {
     m_clientWidth = width;
   }
-  //! Has a font changed?
-  bool FontChanged() const {return m_fontChanged;}
-
 
   bool IncrementalSearch() const {return m_incrementalSearch;}
 
@@ -349,9 +349,8 @@ public:
   std::vector<CharsExist> m_charsInFont;
 
   //! Has a font changed?
-  void FontChanged(bool fontChanged)
+  void FontChanged()
     {
-      m_fontChanged = fontChanged;
       m_charsInFont.clear();
     }
   
@@ -450,7 +449,8 @@ public:
     If a file name is given the settings are written to a file.
   */
   void WriteStyles(const wxString &file = {});
-  void WriteSettings();
+  void WriteStyles(wxConfigBase *config);
+  void WriteSettings(const wxString &file = {});
   
   void Outdated(bool outdated)
   { m_outdated = outdated; }
@@ -515,7 +515,10 @@ public:
     Useful for black/white background theme changes
   */
   wxColor MakeColorDifferFromBackground(wxColor color);
-  
+
+  bool UsePngCairo() const { return m_usepngCairo;}
+  void UsePngCairo(bool usepngCairo) { m_usepngCairo = usepngCairo;}
+
   bool GetMatchParens() const { return m_matchParens; }
   void SetMatchParens(bool matchParens) { m_matchParens = matchParens; }
   
@@ -705,6 +708,9 @@ public:
   void CopyMathML(bool copyMathML){ m_copyMathML = copyMathML;}
   bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
   void CopyMathMLHTML(bool copyMathMLHTML){ m_copyMathMLHTML = copyMathMLHTML; }
+  bool HideMarkerForThisMessage(wxString message);
+  void HideMarkerForThisMessage(wxString message, bool hide)
+    {m_hideMarkerForThisMessage[message] = hide;}
   bool CopyRTF() const {return m_copyRTF;}
   void CopyRTF(bool copyRTF) { m_copyRTF = copyRTF; }
   bool CopySVG() const {return m_copySVG;}
@@ -730,7 +736,10 @@ public:
   bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
   
   drawMode GetParenthesisDrawMode();
-  
+
+  WX_DECLARE_STRING_HASH_MAP(bool, StringBoolHash);
+  StringBoolHash m_hideMarkerForThisMessage;
+
   /*! Get the resolved text Style for a given text style identifier.
 
     \param textStyle The text style to resolve the style for.
@@ -799,16 +808,38 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
   bool InLispMode() const {return m_inLispMode;}
+  void BitmapScale(int factor){m_bitmapScale = factor;}
+  int BitmapScale() const {return m_bitmapScale;}
+  void DefaultPlotHeight(int px){m_defaultPlotHeight = px;}
+  int DefaultPlotHeight() const {return m_defaultPlotHeight;}
+  void DefaultPlotWidth(int px){m_defaultPlotWidth = px;}
+  int DefaultPlotWidth() const {return m_defaultPlotWidth;}
+  void DefaultFramerate(int fps){m_defaultFramerate = fps;}
+  int DefaultFramerate() const {return m_defaultFramerate;}
+  bool TeXExponentsAfterSubscript() const {return m_TeXExponentsAfterSubscript;}
+  void TeXExponentsAfterSubscript(bool ExponentsAfterSubscript)
+    {m_TeXExponentsAfterSubscript = ExponentsAfterSubscript;}
+  bool UsePartialForDiff() const {return m_usePartialForDiff;}
+  void UsePartialForDiff(bool usePartialForDiff)
+    {m_usePartialForDiff = usePartialForDiff;}
   void NotifyOfCellRedraw(const Cell *cell);
   void ClearAndEnableRedrawTracing();
   void ReportMultipleRedraws();
+
+  bool WrapLatexMath() const {return m_wrapLatexMath;}
+  void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
+  void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
+  bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
+  wxString TexPreamble() const {return m_texPreamble;}
+  void TexPreamble(wxString texPreamble) {m_texPreamble = texPreamble;}
+
   Style m_styles[NUMBEROFSTYLES];
   //! Initialize the text styles on construction.
   void InitStyles();
 private:
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
-
+  bool m_usePartialForDiff;
   //! true = Autosave doesn't save into the current file.
   bool m_autoSaveAsTempFile;
   //! The number of the language wxMaxima uses.
@@ -819,8 +850,6 @@ private:
   bool m_autodetectHelpBrowser;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
-  //! Has the font changed?
-  bool m_fontChanged;
   //! Do we want to use incremental search?
   bool m_incrementalSearch;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
@@ -841,9 +870,13 @@ private:
   */
   bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
+  bool m_wrapLatexMath;
+  bool m_exportContainsWXMX;
+  wxString m_texPreamble;
+
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
-
+  bool m_TeXExponentsAfterSubscript;
   wxString m_helpBrowserUserLocation;
   wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer
@@ -908,8 +941,10 @@ private:
   long m_showLength;
   //!< don't add ; in lisp mode
   bool m_inLispMode;
+  bool m_usepngCairo;
   bool m_enterEvaluates;
   bool m_useSVG;
+  bool m_fixedFontTC;
   bool m_copyRTF;
   bool m_copySVG;
   bool m_copyEMF;
@@ -921,6 +956,8 @@ private:
   bool m_offerKnownAnswers;
   long m_defaultPort;
   long m_maxGnuplotMegabytes;
+  long m_defaultPlotHeight;
+  long m_defaultPlotWidth;
   bool m_saveUntitled;
   bool m_cursorJump;
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
@@ -944,6 +981,8 @@ private:
   long m_undoLimit;
   long m_recentItems;
   wxString m_lispType;
+  int m_bitmapScale;
+  int m_defaultFramerate;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
