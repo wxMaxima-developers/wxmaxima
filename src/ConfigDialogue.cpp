@@ -323,6 +323,7 @@ void ConfigDialogue::SetCheckboxValues()
 
   m_showUserDefinedLabels->SetToolTip(
           _("Maxima assigns each command/equation an automatic label (which looks like %i1 or %o1). If a command begins with a descriptive name followed by a : wxMaxima will call the descriptive name an \"user-defined label\" instead. This selection now allows to tell wxMaxima if to show only automatic labels, automatic labels if there aren't user-defined ones or no label at all until an user-defined label can be found by wxMaxima's heuristics. If automatic labels are suppressed extra vertical space is added between equations in order to ease discerning which line starts a new equation and which one only continues the one from the last line."));
+  m_enterEvaluates->SetToolTip(_("If this checkbox isn't checked the current command is sent to maxima only on pressing Ctrl+Enter"));
   m_abortOnError->SetToolTip(
           _("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_openHCaret->SetToolTip(_("If this checkbox is set a new code cell is opened as soon as maxima requests data. If it isn't set a new code cell is opened in this case as soon as the user starts typing in code."));
@@ -606,7 +607,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
   vsizer->Add(m_enterEvaluates, wxSizerFlags());
   
-  m_numpadEnterEvaluates = new wxCheckBox(panel, -1, _("\"Numpad Enter\" evaluates cells"));
+  m_numpadEnterEvaluates = new wxCheckBox(panel, -1, _("\"Numpad Enter\" always evaluates cells"));
   vsizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
 
   m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
