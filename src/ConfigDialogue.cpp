@@ -445,6 +445,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
   m_latin2Greek->SetValue(configuration->Latin2Greek());
   m_enterEvaluates->SetValue(configuration->EnterEvaluates());
+  m_numpadEnterEvaluates->SetValue(configuration->NumpadEnterEvaluates());
   m_saveUntitled->SetValue(configuration->SaveUntitled());
   m_openHCaret->SetValue(configuration->GetOpenHCaret());
   m_insertAns->SetValue(configuration->GetInsertAns());
@@ -604,6 +605,9 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
   vsizer->Add(m_enterEvaluates, wxSizerFlags());
+  
+  m_numpadEnterEvaluates = new wxCheckBox(panel, -1, _("\"Numpad Enter\" evaluates cells"));
+  vsizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
 
   m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
   vsizer->Add(m_openHCaret, wxSizerFlags());
@@ -1520,6 +1524,7 @@ void ConfigDialogue::WriteSettings()
   configuration->HidemultiplicationSign(m_hidemultiplicationSign->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
   configuration->EnterEvaluates(m_enterEvaluates->GetValue());
+  configuration->NumpadEnterEvaluates(m_numpadEnterEvaluates->GetValue());
   configuration->SaveUntitled(m_saveUntitled->GetValue());
   configuration->SetOpenHCaret(m_openHCaret->GetValue());
   configuration->SetInsertAns(m_insertAns->GetValue());

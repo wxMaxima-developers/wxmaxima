@@ -3177,9 +3177,15 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
       break;
 
     case WXK_NUMPAD_ENTER:
-      Evaluate();
-      break;
+      if(m_configuration->NumpadEnterEvaluates())
+      {
+        Evaluate();
+        break;
+      }
+     //fallthrough
     case WXK_RETURN:
+      break;
+
       // If Ctrl+Shift are pressed at the same time this is an evaluate event.
       if (event.ControlDown() && event.ShiftDown())
       {

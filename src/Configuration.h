@@ -402,6 +402,9 @@ public:
   bool CursorJump(){ return m_cursorJump;}
   void CursorJump(bool save){m_cursorJump = save;}
 
+  bool NumpadEnterEvaluates(){ return m_numpadEnterEvaluates;}
+  void NumpadEnterEvaluates(bool eval){m_numpadEnterEvaluates = eval;}
+
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap() const
   { return m_autoWrap > 0; }
@@ -960,6 +963,7 @@ private:
   long m_defaultPlotWidth;
   bool m_saveUntitled;
   bool m_cursorJump;
+  bool m_numpadEnterEvaluates;
   std::unique_ptr<CellRedrawTrace> m_cellRedrawTrace;
   wxString m_documentclass;
   wxString m_documentclassOptions;
