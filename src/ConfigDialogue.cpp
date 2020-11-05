@@ -164,7 +164,7 @@ m_maximaEnvDoc["GCL_GC_PAGE_THRESH"] = _("If maxima was compiled by GCL: Only ga
 m_maximaEnvDoc["GCL_GC_ALLOC_MIN"] = _("If maxima was compiled by GCL: Minimum allocation fraction between Garbage Collects");
 m_maximaEnvDoc["GCL_GC_PAGE_MAX"] = _("If maxima was compiled by GCL: Garbage Collect at minimum allocation past this heapsize");
 m_maximaEnvDoc["GCL_MEM_MULTIPLE"] = _("If maxima was compiled by GCL: The fraction of the total installed RAM to reserve for maxima");
-m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GCL: Share the allocated memory between gcl processes. Allows more than one gcl-compiled maxima to run at the same time, but might prooke crashes.");
+m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GCL: Share the allocated memory between gcl processes. Allows more than one gcl-compiled maxima to run at the same time, but might provoke crashes.");
   m_svgRast.reset(nsvgCreateRasterizer());
   m_languages[_("(Use default language)")] = wxLANGUAGE_DEFAULT;
   m_languages[_("Catalan")] = wxLANGUAGE_CATALAN;
