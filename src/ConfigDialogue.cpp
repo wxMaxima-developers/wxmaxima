@@ -604,12 +604,6 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   m_indentMaths = new wxCheckBox(panel, -1, _("Indent equations by the label width"));
   vsizer->Add(m_indentMaths, wxSizerFlags());
 
-  m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
-  vsizer->Add(m_enterEvaluates, wxSizerFlags());
-  
-  m_numpadEnterEvaluates = new wxCheckBox(panel, -1, _("\"Numpad Enter\" always evaluates cells"));
-  vsizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
-
   m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
   vsizer->Add(m_openHCaret, wxSizerFlags());
 
@@ -642,7 +636,17 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   m_offerKnownAnswers = new wxCheckBox(panel, -1, _("Offer answers for questions known from previous runs"));
   vsizer->Add(m_offerKnownAnswers, wxSizerFlags());
+
+  vsizer->Add(10, 10);
+
+  wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Hotkeys for evaluation"));
+  m_enterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("Enter evaluates cells"));
+  evalSizer->Add(m_enterEvaluates, wxSizerFlags());
   
+  m_numpadEnterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("\"Numpad Enter\" always evaluates cells"));
+  evalSizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
+  vsizer->Add(evalSizer, wxSizerFlags());
+
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
 
