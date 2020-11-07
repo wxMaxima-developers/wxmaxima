@@ -600,46 +600,62 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   grid_sizer->Add(m_showUserDefinedLabels, wxSizerFlags().Border(wxUP | wxDOWN, 5));
 
   vsizer->Add(grid_sizer, wxSizerFlags());
+  
+  wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
+  
+  m_hideBrackets = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                  _("Intelligently hide cell brackets"));
+  displaySizer->Add(m_hideBrackets, wxSizerFlags());
 
-  m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
-  vsizer->Add(m_hideBrackets, wxSizerFlags());
+  m_indentMaths = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                 _("Indent equations by the label width"));
+  displaySizer->Add(m_indentMaths, wxSizerFlags());
 
-  m_indentMaths = new wxCheckBox(panel, -1, _("Indent equations by the label width"));
-  vsizer->Add(m_indentMaths, wxSizerFlags());
+  m_changeAsterisk = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                    _("Use centered dot character for multiplication"));
+  displaySizer->Add(m_changeAsterisk, wxSizerFlags());
 
-  m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
-  vsizer->Add(m_openHCaret, wxSizerFlags());
+  m_hidemultiplicationSign = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                            _("Hide multiplication signs, if possible"));
+  displaySizer->Add(m_hidemultiplicationSign, wxSizerFlags());
 
-  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
-  vsizer->Add(m_matchParens, wxSizerFlags());
+  m_latin2Greek = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                 _("Change names of greek letters to greek letters"));
+  displaySizer->Add(m_latin2Greek, wxSizerFlags());
 
-  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
-  vsizer->Add(m_changeAsterisk, wxSizerFlags());
+  m_keepPercentWithSpecials = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                             _("Keep percent sign with special symbols: %e, %i, etc."));
+  displaySizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
 
-  m_hidemultiplicationSign = new wxCheckBox(panel, -1, _("Hide multiplication signs, if possible"));
-  vsizer->Add(m_hidemultiplicationSign, wxSizerFlags());
+  m_fixedFontInTC = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                   _("Fixed font in text controls"));
+  displaySizer->Add(m_fixedFontInTC, wxSizerFlags());
 
-  m_latin2Greek = new wxCheckBox(panel, -1, _("Change names of greek letters to greek letters"));
-  vsizer->Add(m_latin2Greek, wxSizerFlags());
+  vsizer->Add(displaySizer, wxSizerFlags().Expand());
+  vsizer->Add(10, 10);
+  
+  wxStaticBoxSizer *actionSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Interaction"));
 
-  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
-  vsizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
+  m_insertAns = new wxCheckBox(actionSizer->GetStaticBox(), -1,
+                               _("Insert % before an operator at the beginning of a cell"));
+  actionSizer->Add(m_insertAns, wxSizerFlags());
 
-  m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
-  vsizer->Add(m_insertAns, wxSizerFlags());
+  m_matchParens = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Match parenthesis in text controls"));
+  actionSizer->Add(m_matchParens, wxSizerFlags());
 
-  m_autoIndent = new wxCheckBox(panel, -1, _("Auto-indent new lines"));
-  vsizer->Add(m_autoIndent, wxSizerFlags());
+  m_autoIndent = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Auto-indent new lines"));
+  actionSizer->Add(m_autoIndent, wxSizerFlags());
 
-  m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
-  vsizer->Add(m_cursorJump, wxSizerFlags());
+  m_cursorJump = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("New lines: Jump to text"));
+  actionSizer->Add(m_cursorJump, wxSizerFlags());
 
-  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
-  vsizer->Add(m_fixedFontInTC, wxSizerFlags());
+  m_openHCaret = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Open a cell when Maxima expects input"));
+  actionSizer->Add(m_openHCaret, wxSizerFlags());
 
-  m_offerKnownAnswers = new wxCheckBox(panel, -1, _("Offer answers for questions known from previous runs"));
-  vsizer->Add(m_offerKnownAnswers, wxSizerFlags());
+  m_offerKnownAnswers = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Offer answers for questions known from previous runs"));
+  actionSizer->Add(m_offerKnownAnswers, wxSizerFlags());
 
+  vsizer->Add(actionSizer, wxSizerFlags().Expand());
   vsizer->Add(10, 10);
 
   wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Hotkeys for sending commands to maxima"));
@@ -650,7 +666,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   
   m_numpadEnterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("\"Numpad Enter\" always evaluates cells"));
   evalSizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
-  vsizer->Add(evalSizer, wxSizerFlags());
+  vsizer->Add(evalSizer, wxSizerFlags().Expand());
 
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
