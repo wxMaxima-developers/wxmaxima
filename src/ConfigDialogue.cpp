@@ -445,7 +445,10 @@ void ConfigDialogue::SetCheckboxValues()
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_hidemultiplicationSign->SetValue(configuration->HidemultiplicationSign());
   m_latin2Greek->SetValue(configuration->Latin2Greek());
-  m_enterEvaluates->SetValue(configuration->EnterEvaluates());
+  if(configuration->EnterEvaluates())
+    m_enterEvaluates->SetValue(true);
+  else
+    m_ctrlEnterEvaluates->SetValue(true);
   m_numpadEnterEvaluates->SetValue(configuration->NumpadEnterEvaluates());
   m_saveUntitled->SetValue(configuration->SaveUntitled());
   m_openHCaret->SetValue(configuration->GetOpenHCaret());
@@ -639,9 +642,11 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   vsizer->Add(10, 10);
 
-  wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Hotkeys for evaluation"));
-  m_enterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("Enter evaluates cells"));
+  wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Hotkeys for sending commands to maxima"));
+  m_enterEvaluates = new wxRadioButton(evalSizer->GetStaticBox(), -1, _("Enter evaluates cells, Ctrl+Enter adds newlines"));
   evalSizer->Add(m_enterEvaluates, wxSizerFlags());
+  m_ctrlEnterEvaluates = new wxRadioButton(evalSizer->GetStaticBox(), -1, _("Enter adds newlines, Ctrl+Enter evaluates cells"));
+  evalSizer->Add(m_ctrlEnterEvaluates, wxSizerFlags());
   
   m_numpadEnterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("\"Numpad Enter\" always evaluates cells"));
   evalSizer->Add(m_numpadEnterEvaluates, wxSizerFlags());

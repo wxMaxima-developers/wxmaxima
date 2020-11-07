@@ -305,7 +305,8 @@ protected:
   wxCheckBox *m_matchParens;
   wxChoice *m_showLength;
   wxChoice *m_autosubscript;
-  wxCheckBox *m_enterEvaluates;
+  wxRadioButton *m_enterEvaluates;
+  wxRadioButton *m_ctrlEnterEvaluates;
   wxCheckBox *m_numpadEnterEvaluates;
   wxCheckBox *m_saveUntitled;
   wxCheckBox *m_openHCaret;
