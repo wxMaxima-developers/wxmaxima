@@ -59,6 +59,7 @@ Configuration::Configuration(wxDC *dc, InitOpt options) :
 
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
+  m_numpadEnterEvaluates = true;
   m_maximaEnvVars.clear();
   // Tell gnuplot not to wait for <enter> every few lines
   #ifndef __WXMSW__
@@ -559,6 +560,7 @@ void Configuration::ReadConfig()
       }
     }
   }
+  config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
   config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
   config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
   config->Read(wxT("defaultPlotWidth"), &m_defaultPlotWidth);
@@ -1285,6 +1287,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("texPreamble"), m_texPreamble);
+  config->Write(wxT("numpadEnterEvaluates"), m_numpadEnterEvaluates);
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff);
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript);
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth);
