@@ -532,114 +532,129 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
+  wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
   auto *vsizer = new wxBoxSizer(wxVERTICAL);
 
   wxBoxSizer *PlotWidthHbox = new wxBoxSizer(wxHORIZONTAL);
-  m_defaultPlotWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
+  m_defaultPlotWidth = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
                                       100, 16384);
   PlotWidthHbox->Add(m_defaultPlotWidth, wxSizerFlags().Expand());
-  wxStaticText *xx = new wxStaticText(panel, -1, _("x"));
+  wxStaticText *xx = new wxStaticText(displaySizer->GetStaticBox(), -1, _("x"));
   PlotWidthHbox->Add(xx, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_defaultPlotHeight = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
+  m_defaultPlotHeight = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
                                        100, 16384);
   PlotWidthHbox->Add(m_defaultPlotHeight, wxSizerFlags().Expand());
   //  plotWidth->SetSizerAndFit(PlotWidthHbox);
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Default plot size for new maxima sessions:")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   grid_sizer->Add(PlotWidthHbox, wxSizerFlags());
 
-  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
+  m_displayedDigits = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
                                      INT_MAX);
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Maximum displayed number of digits:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Maximum displayed number of digits:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   grid_sizer->Add(m_displayedDigits, wxSizerFlags());
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Show long expressions:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Show long expressions:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   wxArrayString showLengths;
   showLengths.Add(_("No"));
   showLengths.Add(_("If not very long"));
   showLengths.Add(_("If not extremely long"));
   showLengths.Add(_("Yes"));
-  m_showLength = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, showLengths);
+  m_showLength = new wxChoice(displaySizer->GetStaticBox(), -1, wxDefaultPosition, wxDefaultSize, showLengths);
   grid_sizer->Add(m_showLength, 0, wxUP | wxDOWN, 5);
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Autowrap long lines:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Autowrap long lines:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   wxArrayString autoWrap;
   autoWrap.Add(_("No"));
   autoWrap.Add(_("Text Only"));
 //  autoWrap.Add(_("Text & Code"));
-  m_autoWrap = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, autoWrap);
+  m_autoWrap = new wxChoice(displaySizer->GetStaticBox(), -1, wxDefaultPosition, wxDefaultSize, autoWrap);
   grid_sizer->Add(m_autoWrap, 0, wxUP | wxDOWN, 5);
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Underscore converts to subscripts:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Underscore converts to subscripts:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   wxArrayString autosubscripts;
   autosubscripts.Add(_("Never"));
   autosubscripts.Add(_("Integers and single letters"));
   autosubscripts.Add(_("All variable names"));
-  m_autosubscript = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, autosubscripts);
+  m_autosubscript = new wxChoice(displaySizer->GetStaticBox(), -1, wxDefaultPosition, wxDefaultSize, autosubscripts);
   grid_sizer->Add(m_autosubscript, 0, wxUP | wxDOWN, 5);
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Label width:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Label width:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
-  m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 3, 10);
+  m_labelWidth = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 3, 10);
   grid_sizer->Add(m_labelWidth, 0, wxUP | wxDOWN, 5);
 
-  grid_sizer->Add(new wxStaticText(panel, -1, _("Show labels:")),
+  grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Show labels:")),
                   0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   wxArrayString labelchoices;
   labelchoices.Add(_("Automatic labels (%i1, %o1,...)"));
   labelchoices.Add(_("User-defined labels if available"));
   labelchoices.Add(_("Only user-defined labels"));
   labelchoices.Add(_("Never"));
-  m_showUserDefinedLabels = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, labelchoices);
+  m_showUserDefinedLabels = new wxChoice(displaySizer->GetStaticBox(), -1, wxDefaultPosition, wxDefaultSize, labelchoices);
 
   grid_sizer->Add(m_showUserDefinedLabels, wxSizerFlags().Border(wxUP | wxDOWN, 5));
 
-  vsizer->Add(grid_sizer, wxSizerFlags());
+  displaySizer->Add(grid_sizer, wxSizerFlags());
+    
+  m_hideBrackets = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                  _("Intelligently hide cell brackets"));
+  displaySizer->Add(m_hideBrackets, wxSizerFlags());
 
-  m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
-  vsizer->Add(m_hideBrackets, wxSizerFlags());
+  m_indentMaths = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                 _("Indent equations by the label width"));
+  displaySizer->Add(m_indentMaths, wxSizerFlags());
 
-  m_indentMaths = new wxCheckBox(panel, -1, _("Indent equations by the label width"));
-  vsizer->Add(m_indentMaths, wxSizerFlags());
+  m_changeAsterisk = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                    _("Use centered dot character for multiplication"));
+  displaySizer->Add(m_changeAsterisk, wxSizerFlags());
 
-  m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
-  vsizer->Add(m_openHCaret, wxSizerFlags());
+  m_hidemultiplicationSign = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                            _("Hide multiplication signs, if possible"));
+  displaySizer->Add(m_hidemultiplicationSign, wxSizerFlags());
 
-  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
-  vsizer->Add(m_matchParens, wxSizerFlags());
+  m_latin2Greek = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                 _("Change names of greek letters to greek letters"));
+  displaySizer->Add(m_latin2Greek, wxSizerFlags());
 
-  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
-  vsizer->Add(m_changeAsterisk, wxSizerFlags());
+  m_keepPercentWithSpecials = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                             _("Keep percent sign with special symbols: %e, %i, etc."));
+  displaySizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
 
-  m_hidemultiplicationSign = new wxCheckBox(panel, -1, _("Hide multiplication signs, if possible"));
-  vsizer->Add(m_hidemultiplicationSign, wxSizerFlags());
+  m_fixedFontInTC = new wxCheckBox(displaySizer->GetStaticBox(), -1,
+                                   _("Fixed font in text controls"));
+  displaySizer->Add(m_fixedFontInTC, wxSizerFlags());
 
-  m_latin2Greek = new wxCheckBox(panel, -1, _("Change names of greek letters to greek letters"));
-  vsizer->Add(m_latin2Greek, wxSizerFlags());
+  vsizer->Add(displaySizer, wxSizerFlags().Expand());
+  vsizer->Add(10, 10);
+  
+  wxStaticBoxSizer *actionSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Interaction"));
 
-  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
-  vsizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
+  m_insertAns = new wxCheckBox(actionSizer->GetStaticBox(), -1,
+                               _("Insert % before an operator at the beginning of a cell"));
+  actionSizer->Add(m_insertAns, wxSizerFlags());
 
-  m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
-  vsizer->Add(m_insertAns, wxSizerFlags());
+  m_matchParens = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Match parenthesis in text controls"));
+  actionSizer->Add(m_matchParens, wxSizerFlags());
 
-  m_autoIndent = new wxCheckBox(panel, -1, _("Auto-indent new lines"));
-  vsizer->Add(m_autoIndent, wxSizerFlags());
+  m_autoIndent = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Auto-indent new lines"));
+  actionSizer->Add(m_autoIndent, wxSizerFlags());
 
-  m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
-  vsizer->Add(m_cursorJump, wxSizerFlags());
+  m_cursorJump = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("New lines: Jump to text"));
+  actionSizer->Add(m_cursorJump, wxSizerFlags());
 
-  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
-  vsizer->Add(m_fixedFontInTC, wxSizerFlags());
+  m_openHCaret = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Open a cell when Maxima expects input"));
+  actionSizer->Add(m_openHCaret, wxSizerFlags());
 
-  m_offerKnownAnswers = new wxCheckBox(panel, -1, _("Offer answers for questions known from previous runs"));
-  vsizer->Add(m_offerKnownAnswers, wxSizerFlags());
+  m_offerKnownAnswers = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Offer answers for questions known from previous runs"));
+  actionSizer->Add(m_offerKnownAnswers, wxSizerFlags());
 
+  vsizer->Add(actionSizer, wxSizerFlags().Expand());
   vsizer->Add(10, 10);
 
   wxStaticBoxSizer *evalSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Hotkeys for sending commands to maxima"));
@@ -650,7 +665,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   
   m_numpadEnterEvaluates = new wxCheckBox(evalSizer->GetStaticBox(), -1, _("\"Numpad Enter\" always evaluates cells"));
   evalSizer->Add(m_numpadEnterEvaluates, wxSizerFlags());
-  vsizer->Add(evalSizer, wxSizerFlags());
+  vsizer->Add(evalSizer, wxSizerFlags().Expand());
 
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
