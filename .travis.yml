@@ -106,6 +106,7 @@ script:
 - cd build
 - ${CMAKE} -G "${CMAKEGEN}" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=${UNITY_BUILD_BATCH_SIZE} -DWXM_UNIT_TESTS=YES ..
 - ${CMAKE} --build .
+- ${CMAKE} --build . --target update-locale
 - >
   DESTDIR=$(pwd)/installtest
   ${CMAKE} --build . -- install;
