@@ -23,7 +23,7 @@ if(GETTEXT_FOUND)
 	DEPENDS ${POT_SOURCE_FILES}
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND ${XGETTEXT} -C --from-code=UTF-8 -k_ -s -o "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot" ${POT_SOURCE_FILES_REL}
-	COMMAND ${CMAKE_COMMAND} -E copy "wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
+	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
 	COMMENT "Updating the POT-file from the current sourcecode")
 
     foreach(POFILE ${TRANSLATION_FILES})
