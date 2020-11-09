@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 14:08+0100\n"
+"POT-Creation-Date: 2020-11-09 04:42+0100\n"
 "PO-Revision-Date: 2020-10-13 06:26+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -96,27 +96,27 @@ msgstr ""
 "\n"
 "Verwende hochaufgelöste Sperren in OpenMP"
 
-#: ../../src/ConfigDialogue.cpp:1098
+#: ../../src/ConfigDialogue.cpp:1103
 msgid "      -X \"--control-stack-size <int>\""
 msgstr "      -X \"--control-stack-size <int>\""
 
-#: ../../src/ConfigDialogue.cpp:1097
+#: ../../src/ConfigDialogue.cpp:1102
 msgid "      -X \"--dynamic-space-size <int>\""
 msgstr "      -X \"--dynamic-space-size <int>\""
 
-#: ../../src/ConfigDialogue.cpp:1101
+#: ../../src/ConfigDialogue.cpp:1106
 msgid "      -X '--control-stack-size <int>'"
 msgstr "      -X '--control-stack-size <int>'"
 
-#: ../../src/ConfigDialogue.cpp:1100
+#: ../../src/ConfigDialogue.cpp:1105
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr "      -X '--dynamic-space-size <int>'"
 
-#: ../../src/ConfigDialogue.cpp:1086
+#: ../../src/ConfigDialogue.cpp:1091
 msgid "      -l <name>"
 msgstr "      -l <name>"
 
-#: ../../src/ConfigDialogue.cpp:1089
+#: ../../src/ConfigDialogue.cpp:1094
 msgid "      -u <number>"
 msgstr "      -u <nummer>"
 
@@ -571,7 +571,7 @@ msgstr "Rand&bedingung setzen ..."
 msgid "ASCII maths"
 msgstr "ASCII-Art"
 
-#: ../../src/ConfigDialogue.cpp:1133
+#: ../../src/ConfigDialogue.cpp:1141
 msgid "Abort evaluation on error"
 msgstr "Fehler beenden das Evaluieren"
 
@@ -670,7 +670,7 @@ msgstr "Zur Beobachtungsliste"
 msgid "Added much text (%li chars) to the XML inspector."
 msgstr "Stelle viel Text (%li Zeichen) im XML-Inspektor dar."
 
-#: ../../src/ConfigDialogue.cpp:1352
+#: ../../src/ConfigDialogue.cpp:1361
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy:"
 msgstr "Zusätzliche Standard-Formate für \"Kopieren\":"
 
@@ -689,7 +689,7 @@ msgstr "Zusätzliche Zeilen für die LaTeX-Präambel:"
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Zusätzliche Parameter für Maxima (z. B. -l clisp)."
 
-#: ../../src/ConfigDialogue.cpp:1080
+#: ../../src/ConfigDialogue.cpp:1085
 msgid "Additional parameters for maxima"
 msgstr "Zusätzliche Parameter für Maxima:"
 
@@ -781,7 +781,7 @@ msgid ""
 msgstr ""
 "Erlaubt, nicht eingebaute Unicode-Symbole in die Seitenleiste einzufügen."
 
-#: ../../src/ConfigDialogue.cpp:1659 ../../src/ConfigDialogue.cpp:1683
+#: ../../src/ConfigDialogue.cpp:1668 ../../src/ConfigDialogue.cpp:1692
 msgid "All|*"
 msgstr "Alle|*"
 
@@ -960,7 +960,7 @@ msgstr "Autovervollständigung: Durchsuche %s nach Lisp-Dateien."
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
 msgstr "Autovervollständigung: Durchsuche %s rekursiv nach Lisp-Dateien."
 
-#: ../../src/ConfigDialogue.cpp:1028 ../../src/ConfigDialogue.cpp:1053
+#: ../../src/ConfigDialogue.cpp:1029 ../../src/ConfigDialogue.cpp:1054
 msgid "Autodetect"
 msgstr "Automatisch"
 
@@ -1040,11 +1040,11 @@ msgstr "Randwertproblem"
 msgid "Barsplot..."
 msgstr "Balkendiagramm"
 
-#: ../../src/ConfigDialogue.cpp:1657
+#: ../../src/ConfigDialogue.cpp:1666
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Batch-Dateien (*.bat)|*.bat|Alle|*"
 
-#: ../../src/ConfigDialogue.cpp:1681
+#: ../../src/ConfigDialogue.cpp:1690
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
 msgstr "Batch-Dateien (*.bat)|*.bat|Exe-Dateien (*.exe)||Alle|*"
 
@@ -1091,7 +1091,7 @@ msgstr "Beta"
 msgid "Bigfloats\n"
 msgstr "Bigfloats\n"
 
-#: ../../src/ConfigDialogue.cpp:1354
+#: ../../src/ConfigDialogue.cpp:1363
 msgid "Bitmap"
 msgstr "Bitmap"
 
@@ -1107,7 +1107,7 @@ msgstr "Bild"
 msgid "Boiling it down to numbers\n"
 msgstr "Errechnen konkreter Zahlen\n"
 
-#: ../../src/ConfigDialogue.cpp:1453
+#: ../../src/ConfigDialogue.cpp:1462
 msgid "Bold"
 msgstr "Fett"
 
@@ -1461,12 +1461,12 @@ msgstr "Chinesisch (Vereinfacht)"
 msgid "Chinese (traditional)"
 msgstr "Chinesisch (traditionell)"
 
-#: ../../src/ConfigDialogue.cpp:1433 ../../src/ConfigDialogue.cpp:1436
-#: ../../src/ConfigDialogue.cpp:1450
+#: ../../src/ConfigDialogue.cpp:1442 ../../src/ConfigDialogue.cpp:1445
+#: ../../src/ConfigDialogue.cpp:1459
 msgid "Choose font"
 msgstr "Schriftart wählen"
 
-#: ../../src/ConfigDialogue.cpp:1716
+#: ../../src/ConfigDialogue.cpp:1725
 #, c-format
 msgid "Choose the %s Font"
 msgstr "Schriftart %s wählen"
@@ -1630,17 +1630,17 @@ msgstr ""
 msgid "Condition:"
 msgstr "Bedingung:"
 
-#: ../../src/ConfigDialogue.cpp:1775 ../../src/ConfigDialogue.cpp:1788
-#: ../../src/ConfigDialogue.cpp:1949 ../../src/ConfigDialogue.cpp:1958
+#: ../../src/ConfigDialogue.cpp:1784 ../../src/ConfigDialogue.cpp:1797
+#: ../../src/ConfigDialogue.cpp:1958 ../../src/ConfigDialogue.cpp:1967
 msgid "Config file (*.ini)|*.ini"
 msgstr "Konfigurationsdatei (*.ini)|*.ini"
 
-#: ../../src/ConfigDialogue.cpp:1843
+#: ../../src/ConfigDialogue.cpp:1852
 #, c-format
 msgid "Config item \"%s\" was of an unknown type"
 msgstr "Konfigurations-Element \"%s\" hatte einen unbekannten typ"
 
-#: ../../src/ConfigDialogue.cpp:1909
+#: ../../src/ConfigDialogue.cpp:1918
 msgid "Configuration warning"
 msgstr "Konfigurationswarnung"
 
@@ -1884,22 +1884,22 @@ msgstr ""
 msgid "Copy, Cut and Paste button"
 msgstr "Knöpfe für Kopieren, Ausschneiden und Einfügen"
 
-#: ../../src/ConfigDialogue.cpp:1828
+#: ../../src/ConfigDialogue.cpp:1837
 #, c-format
 msgid "Copying config bool \"%s\""
 msgstr "Kopiere boolsche Konfigurations-Variable \"%s\""
 
-#: ../../src/ConfigDialogue.cpp:1838
+#: ../../src/ConfigDialogue.cpp:1847
 #, c-format
 msgid "Copying config float \"%s\""
 msgstr "Kopiere die Konfigurations-Fließkommazahl %s"
 
-#: ../../src/ConfigDialogue.cpp:1833
+#: ../../src/ConfigDialogue.cpp:1842
 #, c-format
 msgid "Copying config int \"%s\""
 msgstr "Kopiere Konfigurations-Integer \"%s\""
 
-#: ../../src/ConfigDialogue.cpp:1823
+#: ../../src/ConfigDialogue.cpp:1832
 #, c-format
 msgid "Copying config string \"%s\""
 msgstr "Kopiere die Konfigurations-Zeichenkette \"%s\""
@@ -2025,7 +2025,7 @@ msgstr "Die Standard-Wiederholrate für Animationen:"
 msgid "Default plot size for new maxima sessions:"
 msgstr "Die Standard-Größe von Diagrammen:"
 
-#: ../../src/ConfigDialogue.cpp:1074
+#: ../../src/ConfigDialogue.cpp:1079
 msgid "Default port for communication with wxMaxima:"
 msgstr "Standard-Port für die Kommunikation zwischen Maxima und wxMaxima."
 
@@ -2224,7 +2224,7 @@ msgstr ""
 "Das Dokument wurde mit einer aktuelleren wxMaxima Version gespeichert. Bitte "
 "aktualisieren Sie wxMaxima."
 
-#: ../../src/ConfigDialogue.cpp:1432
+#: ../../src/ConfigDialogue.cpp:1441
 msgid "Documentation+Code font:"
 msgstr "Zeichensatz für Doku+Code:"
 
@@ -2351,7 +2351,7 @@ msgstr "Einstellungen für das Ingenieursformat"
 msgid "English"
 msgstr "Englisch"
 
-#: ../../src/ConfigDialogue.cpp:1370
+#: ../../src/ConfigDialogue.cpp:1379
 msgid "Enhanced meta file (emf)"
 msgstr "Erweiterte Metadatei (emf)"
 
@@ -2401,7 +2401,7 @@ msgstr "Neue Genauigkeit für als Bigfloat deklarierte Zahlen eingeben:"
 msgid "Enter the path to the Maxima executable."
 msgstr "Geben Sie den Pfad zum Maxima Programm an."
 
-#: ../../src/ConfigDialogue.cpp:1129
+#: ../../src/ConfigDialogue.cpp:1134
 msgid "Environment variables for maxima"
 msgstr "Umgebungsvariablen für Maxima:"
 
@@ -2447,7 +2447,7 @@ msgstr "Gleichungen:"
 msgid "Equipping any character with accents\n"
 msgstr "Versehen eines beliebigen Zeichens mit Akzenten\n"
 
-#: ../../src/ConfigDialogue.cpp:1667 ../../src/wxMaxima.cpp:1851
+#: ../../src/ConfigDialogue.cpp:1676 ../../src/wxMaxima.cpp:1851
 #: ../../src/wxMaxima.cpp:2192 ../../src/wxMaxima.cpp:3278
 #: ../../src/wxMaxima.cpp:3333 ../../src/wxMaxima.cpp:3342
 #: ../../src/wxMaxima.cpp:3624 ../../src/wxMaxima.cpp:3634
@@ -2591,11 +2591,11 @@ msgstr "Exakte Zahlen\n"
 msgid "Example"
 msgstr "Beispiel"
 
-#: ../../src/ConfigDialogue.cpp:2035
+#: ../../src/ConfigDialogue.cpp:2044
 msgid "Example text"
 msgstr "Mustertext"
 
-#: ../../src/ConfigDialogue.cpp:1083
+#: ../../src/ConfigDialogue.cpp:1088
 msgid "Examples:"
 msgstr "Beispiele:"
 
@@ -3024,7 +3024,7 @@ msgstr "Schriftart für ein Dokument."
 msgid "Font used for displaying math characters in document."
 msgstr "Schriftart für mathematische Zeichen in einem Dokument."
 
-#: ../../src/ConfigDialogue.cpp:1420
+#: ../../src/ConfigDialogue.cpp:1429
 msgid "Fonts"
 msgstr "Schriftarten"
 
@@ -3368,7 +3368,7 @@ msgstr "Unterparagraph"
 msgid "Help"
 msgstr "Hilfe"
 
-#: ../../src/ConfigDialogue.cpp:1049
+#: ../../src/ConfigDialogue.cpp:1050
 msgid "Help browser:"
 msgstr "Hilfe Browser:"
 
@@ -4304,7 +4304,7 @@ msgstr ""
 msgid "Invalid RegEx!"
 msgstr "Fehlerhafte RegEx!"
 
-#: ../../src/ConfigDialogue.cpp:1666
+#: ../../src/ConfigDialogue.cpp:1675
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -4379,7 +4379,7 @@ msgstr "Es erinnert sich allerdings immernoch an den Wert von x.\n"
 msgid "Italian"
 msgstr "Italienisch"
 
-#: ../../src/ConfigDialogue.cpp:1454
+#: ../../src/ConfigDialogue.cpp:1463
 msgid "Italic"
 msgstr "Kursiv"
 
@@ -4672,7 +4672,7 @@ msgstr "Liste:"
 msgid "Lists and Arrays\n"
 msgstr "Listen und Arrays\n"
 
-#: ../../src/ConfigDialogue.cpp:1457
+#: ../../src/ConfigDialogue.cpp:1466
 msgid "Load"
 msgstr "Laden"
 
@@ -4700,7 +4700,7 @@ msgstr "Liste aus csv-Datei"
 msgid "Load a matrix from a csv file"
 msgstr "Matrix aus csv-Datei"
 
-#: ../../src/ConfigDialogue.cpp:1956
+#: ../../src/ConfigDialogue.cpp:1965
 msgid "Load style from file"
 msgstr "Lade Layout aus einer Datei"
 
@@ -4805,7 +4805,7 @@ msgstr "Klammern in Eingabefeldern automatisch schließen"
 msgid "Math Default"
 msgstr "Standard für Mathematik"
 
-#: ../../src/ConfigDialogue.cpp:1435
+#: ../../src/ConfigDialogue.cpp:1444
 msgid "Math font:"
 msgstr "Math. Schriftart:"
 
@@ -4836,11 +4836,11 @@ msgstr ""
 msgid "MathML + MathJaX as Fill-In"
 msgstr "MathML + MathJaX, wo nötig."
 
-#: ../../src/ConfigDialogue.cpp:1360
+#: ../../src/ConfigDialogue.cpp:1369
 msgid "MathML as HTML"
 msgstr "MathML als HTML"
 
-#: ../../src/ConfigDialogue.cpp:1357
+#: ../../src/ConfigDialogue.cpp:1366
 msgid "MathML description"
 msgstr "MathML Beschreibung"
 
@@ -4906,6 +4906,11 @@ msgstr "Matrix"
 #: ../../src/ConfigDialogue.cpp:244
 msgid "Maxima"
 msgstr "Maxima"
+
+#: ../../src/ConfigDialogue.cpp:1022
+#, fuzzy
+msgid "Maxima Location"
+msgstr "Maxima Fragen"
 
 #: ../../examples/examples_gettext.h:1213
 msgid ""
@@ -4985,6 +4990,11 @@ msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
 msgstr ""
 "Maxima-Befehle, die wxMaxima jeden neuen Maxima-Prozess ausführen lassen "
 "soll: "
+
+#: ../../src/ConfigDialogue.cpp:1074
+#, fuzzy
+msgid "Maxima configuration"
+msgstr "wxMaxima Konfiguration"
 
 #: ../../src/Configuration.cpp:1388
 msgid "Maxima errors"
@@ -5083,7 +5093,7 @@ msgstr "Maxima (pid %i) hat mit Rückgabewert %i geendet."
 msgid "Maxima process terminated unexpectedly."
 msgstr "Maxima wurde unerwartet beendet."
 
-#: ../../src/ConfigDialogue.cpp:1024
+#: ../../src/ConfigDialogue.cpp:1025
 msgid "Maxima program:"
 msgstr "Maxima-Programm:"
 
@@ -5157,6 +5167,11 @@ msgstr ""
 "verwenden soll, muss es daher in diesem Fall stattdessen etwas wie "
 "3602879701896397/36028797018963968 statt 0.1 verwenden, was einen "
 "(allerdings sehr kleinen) Fehler in die Rechnung einführt."
+
+#: ../../src/ConfigDialogue.cpp:1139
+#, fuzzy
+msgid "Maxima usage"
+msgstr "Maxima-Code"
 
 #: ../../src/wxMaxima.cpp:2661
 #, c-format
@@ -5733,7 +5748,7 @@ msgstr "Online Tutorials"
 msgid "Only user-defined labels"
 msgstr "Nur benutzerdefinierte Marken"
 
-#: ../../src/ConfigDialogue.cpp:1040 ../../src/ConfigDialogue.cpp:1063
+#: ../../src/ConfigDialogue.cpp:1041 ../../src/ConfigDialogue.cpp:1064
 #: ../../src/ToolBar.cpp:168 ../../src/main.cpp:512 ../../src/wxMaxima.cpp:5666
 msgid "Open"
 msgstr "Öffnen"
@@ -5929,7 +5944,7 @@ msgstr "Kreisdiagramm"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Bitte konfigurieren Sie wxMaxima mit 'Bearbeiten->Einstellungen'."
 
-#: ../../src/ConfigDialogue.cpp:1908
+#: ../../src/ConfigDialogue.cpp:1917
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Bitte starten Sie wxMaxima neu, um die Änderungen zu aktivieren!"
 
@@ -6125,7 +6140,7 @@ msgstr "Push"
 msgid "Querying gnuplot which graphics drivers it supports."
 msgstr "Frage gnuplot, welche Graphiktreiber es unterstützt."
 
-#: ../../src/ConfigDialogue.cpp:1363
+#: ../../src/ConfigDialogue.cpp:1372
 msgid "RTF with OMML maths"
 msgstr "RTF mit OMML-Formeln"
 
@@ -6170,7 +6185,7 @@ msgstr "Lade Liste aus einer csv-Datei"
 msgid "Read Matrix..."
 msgstr "Matrix laden ..."
 
-#: ../../src/ConfigDialogue.cpp:1786
+#: ../../src/ConfigDialogue.cpp:1795
 msgid "Read config to file"
 msgstr "Knfiguration in eine Datei speichern"
 
@@ -6251,11 +6266,11 @@ msgstr "Neuladen aller GUI-Einstellungen"
 msgid "Reload the style settings from disc"
 msgstr "Neuladen aller Stil-Einstellungen"
 
-#: ../../src/ConfigDialogue.cpp:1881
+#: ../../src/ConfigDialogue.cpp:1890
 msgid "Reloading the configuration from disc"
 msgstr "Lade die Konfiguration von der Festplatte."
 
-#: ../../src/ConfigDialogue.cpp:1890
+#: ../../src/ConfigDialogue.cpp:1899
 msgid "Reloading the styles from disc"
 msgstr "Lade die Konfiguration von der Festplatte."
 
@@ -6324,7 +6339,7 @@ msgstr "Rücksetzen aller GUI-Einstellungen"
 msgid "Reset the Style settings"
 msgstr "Rücksetzen aller Stil-Einstellungen"
 
-#: ../../src/ConfigDialogue.cpp:1863 ../../src/ConfigDialogue.cpp:1872
+#: ../../src/ConfigDialogue.cpp:1872 ../../src/ConfigDialogue.cpp:1881
 msgid "Resetting all configuration settings"
 msgstr "Setze alle Konfigurations-Einstellungen zurück"
 
@@ -6525,7 +6540,7 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../../src/ConfigDialogue.cpp:1458 ../../src/ToolBar.cpp:169
+#: ../../src/ConfigDialogue.cpp:1467 ../../src/ToolBar.cpp:169
 #: ../../src/wxMaxima.cpp:10396
 msgid "Save"
 msgstr "Speichern"
@@ -6558,7 +6573,7 @@ msgstr "Auswahl als Bild speichern ..."
 msgid "Save animation to file"
 msgstr "Sichere Animation in Datei"
 
-#: ../../src/ConfigDialogue.cpp:1773
+#: ../../src/ConfigDialogue.cpp:1782
 msgid "Save config to file"
 msgstr "Konfiguration in eine Datei speichern"
 
@@ -6586,7 +6601,7 @@ msgstr "Auswahl des Dokumentes in Bild-Datei speichern"
 msgid "Save selection to file"
 msgstr "Auswahl in eine Datei speichern"
 
-#: ../../src/ConfigDialogue.cpp:1947
+#: ../../src/ConfigDialogue.cpp:1956
 msgid "Save style to file"
 msgstr "Speichere Layout in eine Datei"
 
@@ -6606,7 +6621,7 @@ msgstr "Das Speichern war erfolgreich."
 msgid "Saving..."
 msgstr "Speichere..."
 
-#: ../../src/ConfigDialogue.cpp:1366
+#: ../../src/ConfigDialogue.cpp:1375
 msgid "Scalable Vector Graphics (svg)"
 msgstr "Skalierbare Vektorgraphiken (svg)"
 
@@ -6709,7 +6724,7 @@ msgstr "Alles auswählen\tCtrl+A"
 msgid "Select All button"
 msgstr "Der \"alles auswählen\"-Knopf"
 
-#: ../../src/ConfigDialogue.cpp:1653
+#: ../../src/ConfigDialogue.cpp:1662
 msgid "Select Maxima program"
 msgstr "Maxima-Programm auswählen"
 
@@ -6721,7 +6736,7 @@ msgstr "Wähle Teilstichprobe"
 msgid "Select all"
 msgstr "Alles auswählen"
 
-#: ../../src/ConfigDialogue.cpp:1677
+#: ../../src/ConfigDialogue.cpp:1686
 msgid "Select help browser"
 msgstr "Wähle den Hilfebrowser"
 
@@ -7356,7 +7371,7 @@ msgstr "Einfache Kurven\n"
 msgid "Start Animation"
 msgstr "Starte Animation"
 
-#: ../../src/ConfigDialogue.cpp:1135
+#: ../../src/ConfigDialogue.cpp:1143
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Erneute Auswertung startet ein neues Maxima"
 
@@ -7425,7 +7440,7 @@ msgstr "Zeichenfolgen"
 msgid "Style"
 msgstr "Stil"
 
-#: ../../src/ConfigDialogue.cpp:1421
+#: ../../src/ConfigDialogue.cpp:1430
 msgid "Styles"
 msgstr "Schriftstile"
 
@@ -7661,7 +7676,7 @@ msgstr ""
 msgid "The diagram title"
 msgstr "Der Titel des Diagramms"
 
-#: ../../src/ConfigDialogue.cpp:1623
+#: ../../src/ConfigDialogue.cpp:1632
 #, c-format
 msgid ""
 "The directory %s with maxima's startup file doesn't exist. Trying to create "
@@ -8284,7 +8299,7 @@ msgstr ""
 msgid "Undefined"
 msgstr "Undefiniert"
 
-#: ../../src/ConfigDialogue.cpp:1455
+#: ../../src/ConfigDialogue.cpp:1464
 msgid "Underlined"
 msgstr "Unterstrichen"
 
@@ -8475,7 +8490,7 @@ msgstr ""
 "Verwende das \"Partielle Ableitung\"-Symbol, um den Bruch, der ein diff() "
 "darstellt, auszudrücken."
 
-#: ../../src/ConfigDialogue.cpp:1465
+#: ../../src/ConfigDialogue.cpp:1474
 msgid "Use unicode Math Symbols, if available"
 msgstr "Verwende Unicode-Symbole, falls verfügbar"
 
@@ -8487,8 +8502,8 @@ msgstr "Verwende vertikale Linien anstelle von Klammern für Matrizen"
 msgid "User labels only"
 msgstr "Nur benutzerdefinierte Marken"
 
-#: ../../src/ConfigDialogue.cpp:895 ../../src/ConfigDialogue.cpp:1036
-#: ../../src/ConfigDialogue.cpp:1059
+#: ../../src/ConfigDialogue.cpp:895 ../../src/ConfigDialogue.cpp:1037
+#: ../../src/ConfigDialogue.cpp:1060
 msgid "User specified"
 msgstr "Benutzerdefiniert"
 
@@ -8863,11 +8878,11 @@ msgstr "beta"
 msgid "chi"
 msgstr "chi"
 
-#: ../../src/ConfigDialogue.cpp:1087
+#: ../../src/ConfigDialogue.cpp:1092
 msgid "choose a lisp maxima was compiled with"
 msgstr "Wählt ein Lisp, mit dem Maxima compiliert wurde, aus."
 
-#: ../../src/ConfigDialogue.cpp:1090
+#: ../../src/ConfigDialogue.cpp:1095
 msgid "choose between installed maxima versions"
 msgstr "Wahl zwischen installierten Maxima-Versionen"
 
@@ -9122,11 +9137,11 @@ msgstr "rho"
 msgid "s\n"
 msgstr "s\n"
 
-#: ../../src/ConfigDialogue.cpp:1104
+#: ../../src/ConfigDialogue.cpp:1109
 msgid "sbcl: use <int>Mbytes of heap"
 msgstr "Wie viele Megabytes soll SBCL als Heap nutzen?"
 
-#: ../../src/ConfigDialogue.cpp:1107
+#: ../../src/ConfigDialogue.cpp:1112
 msgid "sbcl: use <int>Mbytes of stack for function calls"
 msgstr "sbcl: Verwende <int> Megabytes an Stack für Funktionsaufrufe"
 
@@ -9802,9 +9817,6 @@ msgstr "zeta"
 
 #~ msgid "Math output"
 #~ msgstr "Mathematische Ausgabe"
-
-#~ msgid "Maxima code"
-#~ msgstr "Maxima-Code"
 
 #~ msgid "Maxima's power lies in symbolic operations."
 #~ msgstr "Die Stärke von Maxima liegt im symbolischen Rechnen."
