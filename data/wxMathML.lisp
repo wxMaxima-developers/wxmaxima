@@ -2060,7 +2060,7 @@
 	  #+gcl (si::chdir dir)
 	  #+lispworks (hcl:change-directory dir)
 	  #+lucid (lcl:working-directory dir)
-	  #+sbcl (sb-posix:chdir dir)
+	  #+sbcl (sb-posix:chdir (sb-ext:native-pathname dir))
 	  #+sbcl (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
 	  #+ccl (ccl:cwd dir)
 	  #+ecl (si::chdir dir)
