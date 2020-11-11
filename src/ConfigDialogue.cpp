@@ -423,7 +423,7 @@ void ConfigDialogue::SetCheckboxValues()
   m_maximaEnvVariables->SetColLabelValue(1,_("Value"));
   m_maximaEnvVariables->AutoSize();
   m_maximaEnvVariables->EndBatch();
-  m_maximaEnvVariables->GetParent()->Layout();
+  m_maximaEnvVariables->GetParent()->GetParent()->Layout();
 
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
@@ -545,7 +545,6 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   m_defaultPlotHeight = new wxSpinCtrl(displaySizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
                                        100, 16384);
   PlotWidthHbox->Add(m_defaultPlotHeight, wxSizerFlags().Expand());
-  //  plotWidth->SetSizerAndFit(PlotWidthHbox);
   grid_sizer->Add(new wxStaticText(displaySizer->GetStaticBox(), -1, _("Default plot size for new maxima sessions:")),
                      0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL);
   grid_sizer->Add(PlotWidthHbox, wxSizerFlags());
@@ -753,6 +752,7 @@ wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
     Expand()
     );
   panel->SetSizerAndFit(vsizer);
+  panel->FitInside();
   return panel;
 }
 
@@ -807,7 +807,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                                       "too, please add them to maxima-init.mac, instead."));
   vsizer_wxMaximaStartup->Add(wxStartupFileLocation, wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
 
-  panel_wxMaximaStartup->SetSizerAndFit(vsizer_wxMaximaStartup);
+  panel_wxMaximaStartup->SetSizer(vsizer_wxMaximaStartup);
   vsizer->Add(panel_wxMaximaStartup,wxSizerFlags().Expand().Border(wxBOTTOM, 5*GetContentScaleFactor()));
 
   wxStaticText *startupText =
@@ -843,9 +843,10 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                                                        m_startupFileName);
   startupFileLocation->SetToolTip(_("Commands that are executed at every start of maxima."));
   vsizer_maximaStartup->Add(startupFileLocation, wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
-  panel_maximaStartup->SetSizerAndFit(vsizer_maximaStartup);
+  panel_maximaStartup->SetSizer(vsizer_maximaStartup);
   vsizer->Add(panel_maximaStartup,wxSizerFlags().Expand().Border(wxTOP, 5*GetContentScaleFactor()));
-  panel->SetSizerAndFit(vsizer);
+  panel->SetSizer(vsizer);
+  panel->FitInside();
   return panel;
 }
 
@@ -1132,8 +1133,8 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   
   configSizer->Add(new wxStaticText(configSizer->GetStaticBox(), -1,
                              _("Environment variables for maxima")), wxSizerFlags().Expand());
-  configSizer->Add(m_maximaEnvVariables, wxSizerFlags().Expand().Border(wxRIGHT | wxBOTTOM, 10*GetContentScaleFactor()));
-  vsizer->Add(configSizer, wxSizerFlags().Expand());
+  configSizer->Add(m_maximaEnvVariables, wxSizerFlags(5).Expand().Border(wxRIGHT | wxBOTTOM, 10*GetContentScaleFactor()));
+  vsizer->Add(configSizer, wxSizerFlags(5).Expand());
 
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   wxStaticBoxSizer *handlingSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima usage"));
@@ -1144,7 +1145,8 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   handlingSizer->Add(m_restartOnReEvaluation, wxSizerFlags());
   vsizer->Add(handlingSizer, wxSizerFlags().Expand());
 
-  panel->SetSizerAndFit(vsizer);
+  panel->SetSizer(vsizer);
+  panel->FitInside();
   return panel;
 }
 
@@ -1324,7 +1326,7 @@ void ConfigDialogue::OnNewEnvMenu(wxCommandEvent &event)
     )
     m_maximaEnvVariables->AppendRows(1);
   m_maximaEnvVariables->AutoSize();
-  m_maximaEnvVariables->GetParent()->Layout();
+  m_maximaEnvVariables->GetParent()->GetParent()->Layout();
   //  OnClickMaximaEnvVal(m_maximaEmvRightClickRow);
 }
 
@@ -1350,7 +1352,7 @@ void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& WXUNUSED(event))
   if((!m_maximaEnvVariables->GetCellValue(row,0).Trim(true).Trim(false).IsEmpty()) &&
      (!m_maximaEnvVariables->GetCellValue(row,1).Trim(true).Trim(false).IsEmpty()))
     m_maximaEnvVariables->AppendRows(1);
-  m_maximaEnvVariables->GetParent()->Layout();
+  m_maximaEnvVariables->GetParent()->GetParent()->Layout();
 }
 
 wxPanel *ConfigDialogue::CreateClipboardPanel()
@@ -1380,7 +1382,8 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
   vbox->Add(m_copyEMF, wxSizerFlags());
   #endif
 
-  panel->SetSizerAndFit(vbox);
+  panel->SetSizer(vbox);
+  panel->FitInside();
 
   return panel;
 }
