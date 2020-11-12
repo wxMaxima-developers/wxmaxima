@@ -3184,8 +3184,6 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
       }
      //fallthrough
     case WXK_RETURN:
-      break;
-
       // If Ctrl+Shift are pressed at the same time this is an evaluate event.
       if (event.ControlDown() && event.ShiftDown())
       {
