@@ -70,7 +70,7 @@ if(PANDOC)
 		endif()
 	endif()
 	# Get po4a-translate version number, only >= 0.55 works for wxMaxima.
-	execute_process(
+	add_custom_target(update-manual-translations
 		COMMAND ${PO4A_TRANSLATE} --version
 		OUTPUT_VARIABLE PO4A_TRANSLATE_VERSION_TEXT)
 	# they changed the output from
