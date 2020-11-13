@@ -201,10 +201,10 @@ private:
                    unsigned char *data, size_t len);
 
   //! The panel that allows to choose which formats to put on the clipboard
-  wxPanel *CreateClipboardPanel();
+  wxWindow *CreateClipboardPanel();
 
   //! The panel that allows to choose which formats to put on the clipboard
-  wxPanel *CreateRevertToDefaultsPanel();
+  wxWindow *CreateRevertToDefaultsPanel();
 
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
   #if wxUSE_ENH_METAFILE
@@ -212,22 +212,22 @@ private:
   #endif
 
   //! The panel that allows to set the editing options
-  wxPanel *CreateWorksheetPanel();
+  wxWindow *CreateWorksheetPanel();
 
   //! A panel that allows to set general options
-  wxPanel *CreateOptionsPanel();
+  wxWindow *CreateOptionsPanel();
 
   //! The panel that allows to set options affecting the export functionality
-  wxPanel *CreateExportPanel();
+  wxWindow *CreateExportPanel();
 
   //! The panel that allows to change styles
-  wxPanel *CreateStylePanel();
+  wxWindow *CreateStylePanel();
 
   //! The panel that allows to change maxima-specific configurations.
-  wxPanel *CreateMaximaPanel();
+  wxWindow *CreateMaximaPanel();
 
   //! The panel that allows to specify startup commands
-  wxPanel *CreateStartupPanel();
+  wxWindow *CreateStartupPanel();
   
 protected:
   wxGrid *m_maximaEnvVariables;

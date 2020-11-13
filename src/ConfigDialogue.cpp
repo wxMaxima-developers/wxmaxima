@@ -44,6 +44,7 @@
 #include <wx/colordlg.h>
 #include <wx/settings.h>
 #include <wx/filename.h>
+#include <wx/scrolwin.h>
 #include "../art/config/images.h"
 #include <wx/dcbuffer.h>
 #include "SvgBitmap.h"
@@ -51,6 +52,7 @@
 #include <wx/wfstream.h>
 #include "Image.h"
 #include <wx/dirdlg.h>
+#include <wx/persist/toplevel.h>
 
 #define CONFIG_ICON_SCALE (1.0)
 
@@ -150,6 +152,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
+  SetName("Configuration");
   m_maximaEnvDoc["MAXIMA_DEFAULT_LISP"] = _("If maxima versions compiled with different lisps are installed: The name of the lisp to use by default");
   m_maximaEnvDoc["MAXIMA_OBJDIR"] = _("Tells maxima where to store the result of compiling libraries");
   m_maximaEnvDoc["MAXIMA_USERDIR"] = _("The directory containing the startup files, any user libraries and, if MAXIMA_OBJDIR isn't set the subdirectory with the results from compiling maxima libraries.");
@@ -229,7 +232,7 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
                      ));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
-         wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
+         wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 
 #if defined(__WXMSW__)
   // Must be called before pages are added, otherwise wxWidgets dumps a warning to the console:
@@ -265,6 +268,8 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
   SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   LayoutDialog();
+  SetMinSize(wxSize(GetContentScaleFactor()*800,GetContentScaleFactor()*800));
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 
   SetCheckboxValues();
 
@@ -528,9 +533,10 @@ void ConfigDialogue::SetCheckboxValues()
   m_useUnicodeMaths->SetValue(m_configuration->UseUnicodeMaths());
 }
 
-wxPanel *ConfigDialogue::CreateWorksheetPanel()
+wxWindow *ConfigDialogue::CreateWorksheetPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Display"));
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
@@ -667,14 +673,15 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   vsizer->Add(evalSizer, wxSizerFlags().Expand());
 
   panel->SetSizer(vsizer);
-  vsizer->Fit(panel);
+  panel->FitInside();
 
   return panel;
 }
 
-wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
+wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   WrappingStaticText *helpText1 = new WrappingStaticText(
     panel, -1,
@@ -751,14 +758,15 @@ wxPanel *ConfigDialogue::CreateRevertToDefaultsPanel()
     wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()).
     Expand()
     );
-  panel->SetSizerAndFit(vsizer);
+  panel->SetSizer(vsizer);
   panel->FitInside();
   return panel;
 }
 
-wxPanel *ConfigDialogue::CreateStartupPanel()
+wxWindow *ConfigDialogue::CreateStartupPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
   wxPanel *panel_maximaStartup = new wxPanel(panel, -1);
@@ -850,9 +858,10 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   return panel;
 }
 
-wxPanel *ConfigDialogue::CreateExportPanel()
+wxWindow *ConfigDialogue::CreateExportPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
@@ -929,14 +938,15 @@ wxPanel *ConfigDialogue::CreateExportPanel()
 
   vsizer->AddGrowableRow(10*GetContentScaleFactor());
   panel->SetSizer(vsizer);
-  vsizer->Fit(panel);
+  panel->FitInside();
 
   return panel;
 }
 
-wxPanel *ConfigDialogue::CreateOptionsPanel()
+wxWindow *ConfigDialogue::CreateOptionsPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
@@ -1008,14 +1018,15 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 
   vsizer->AddGrowableRow(10*GetContentScaleFactor());
   panel->SetSizer(vsizer);
-  vsizer->Fit(panel);
+  panel->FitInside();
 
   return panel;
 }
 
-wxPanel *ConfigDialogue::CreateMaximaPanel()
+wxWindow *ConfigDialogue::CreateMaximaPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
@@ -1355,9 +1366,10 @@ void ConfigDialogue::OnChangeMaximaEnvVar(wxGridEvent& WXUNUSED(event))
   m_maximaEnvVariables->GetParent()->GetParent()->Layout();
 }
 
-wxPanel *ConfigDialogue::CreateClipboardPanel()
+wxWindow *ConfigDialogue::CreateClipboardPanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   wxStaticText *descr = new wxStaticText(panel, -1, _("Additional clipboard formats to put on the clipboard on ordinary copy:"));
@@ -1425,9 +1437,10 @@ void ConfigDialogue::UpdateButton(TextStyle const st)
                                           style.GetFontSize().Get()));
 }
 
-wxPanel *ConfigDialogue::CreateStylePanel()
+wxWindow *ConfigDialogue::CreateStylePanel()
 {
-  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
+  panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
@@ -1500,7 +1513,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   vsizer->Add(hbox_sizer_3, 1, wxALIGN_RIGHT, 3);
 
   panel->SetSizer(vsizer);
-  vsizer->Fit(panel);
+  panel->FitInside();
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxT("StyleToEdit"), &styleToEditNum);
