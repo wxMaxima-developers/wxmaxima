@@ -1985,7 +1985,7 @@ wxMaximaFrame::SymbolsPane::SymbolsPane(wxWindow *parent, Configuration *configu
 {
   ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
   EnableScrolling(false, true);
-  SetScrollRate(5, 5);
+  SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   const CharButton::Definition symbolButtonDefinitions[] = {
     {L'\u00BD', _("1/2"), true},
     {L'\u00B2', _("to the power of 2"), true},
