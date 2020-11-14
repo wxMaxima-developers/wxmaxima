@@ -631,6 +631,8 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   m_keepPercentWithSpecials = new wxCheckBox(displaySizer->GetStaticBox(), -1,
                                              _("Keep percent sign with special symbols: %e, %i, etc."));
   displaySizer->Add(m_keepPercentWithSpecials, wxSizerFlags());
+  m_antialiasLines = new wxCheckBox(displaySizer->GetStaticBox(), -1, _("Antialias lines."));
+  displaySizer->Add(m_antialiasLines, wxSizerFlags());
 
   m_fixedFontInTC = new wxCheckBox(displaySizer->GetStaticBox(), -1,
                                    _("Fixed font in text controls"));
@@ -640,6 +642,9 @@ wxWindow *ConfigDialogue::CreateWorksheetPanel()
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   
   wxStaticBoxSizer *actionSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Interaction"));
+
+  m_incrementalSearch = new wxCheckBox(actionSizer->GetStaticBox(), -1, _("Incremental Search"));
+  actionSizer->Add(m_incrementalSearch, wxSizerFlags());
 
   m_insertAns = new wxCheckBox(actionSizer->GetStaticBox(), -1,
                                _("Insert % before an operator at the beginning of a cell"));
@@ -1002,16 +1007,11 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
 
   vsizer->Add(m_usesvg, wxSizerFlags());
 
-  m_antialiasLines = new wxCheckBox(panel, -1, _("Antialias lines."));
-  vsizer->Add(m_antialiasLines, wxSizerFlags());
-
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, wxSizerFlags());
 
   m_fixReorderedIndices = new wxCheckBox(panel, -1, _("Fix reordered reference indices (of %i, %o) before saving"));
   vsizer->Add(m_fixReorderedIndices, wxSizerFlags());
-  m_incrementalSearch = new wxCheckBox(panel, -1, _("Incremental Search"));
-  vsizer->Add(m_incrementalSearch, wxSizerFlags());
 
   m_notifyIfIdle = new wxCheckBox(panel, -1, _("Warn if an inactive window is idle"));
   vsizer->Add(m_notifyIfIdle, wxSizerFlags());
