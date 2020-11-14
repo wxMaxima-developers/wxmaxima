@@ -68,6 +68,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_wrapLatexMath = true;
   m_exportContainsWXMX = true;
   m_bitmapScale = 3;
+  m_maxClipbrd_BitmapMegabytes = 4;
   m_defaultFramerate = 12;
   m_fixedFontTC = false;
   m_hideMarkerForThisMessage.clear();
@@ -560,6 +561,9 @@ void Configuration::ReadConfig()
       }
     }
   }
+  config->Read(wxT("maxClipbrd_BitmapMegabytes"), &m_maxClipbrd_BitmapMegabytes);
+  if(m_maxClipbrd_BitmapMegabytes<0)
+    m_maxClipbrd_BitmapMegabytes = 1;
   config->Read(wxT("numpadEnterEvaluates"), &m_numpadEnterEvaluates);
   config->Read(wxT("usePartialForDiff"), &m_usePartialForDiff);
   config->Read(wxT("TeXExponentsAfterSubscript"), &m_TeXExponentsAfterSubscript);
@@ -1154,47 +1158,8 @@ void Configuration::WriteSettings(const wxString &file)
   config->Write(wxT("saveUntitled"), m_saveUntitled);
   config->Write(wxT("cursorJump"), m_cursorJump);
 
-  // Font
-  m_styles[TS_DEFAULT].Write(config, "Style/Default/");
-  m_styles[TS_MATH].Write(config, "Style/Math/");
-  m_styles[TS_TEXT].Write(config, "Style/Text/");
-  m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
-  m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
-  m_styles[TS_CODE_COMMENT].Write(config, "Style/CodeHighlighting/Comment/");
-  m_styles[TS_CODE_NUMBER].Write(config, "Style/CodeHighlighting/Number/");
-  m_styles[TS_CODE_STRING].Write(config, "Style/CodeHighlighting/String/");
-  m_styles[TS_CODE_OPERATOR].Write(config, "Style/CodeHighlighting/Operator/");
-  m_styles[TS_CODE_LISP].Write(config, "Style/CodeHighlighting/Lisp/");
-  m_styles[TS_CODE_ENDOFLINE].Write(config, "Style/CodeHighlighting/EndOfLine/");
-  m_styles[TS_HEADING6].Write(config, "Style/Heading6/");
-  m_styles[TS_HEADING5].Write(config, "Style/Heading5/");
-  m_styles[TS_SUBSUBSECTION].Write(config, "Style/Subsubsection/");
-  m_styles[TS_SUBSECTION].Write(config, "Style/Subsection/");
-  m_styles[TS_SECTION].Write(config, "Style/Section/");
-  m_styles[TS_TITLE].Write(config, "Style/Title/");
-  m_styles[TS_WARNING].Write(config, "Style/Warning/");
-  m_styles[TS_MAIN_PROMPT].Write(config, "Style/MainPrompt/");
-  m_styles[TS_OTHER_PROMPT].Write(config, "Style/OtherPrompt/");
-  m_styles[TS_LABEL].Write(config, "Style/Label/");  
-  m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
-  m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
-  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
-  m_styles[TS_INPUT].Write(config, "Style/Input/");
-  m_styles[TS_NUMBER].Write(config, "Style/Number/");
-  m_styles[TS_STRING].Write(config, "Style/String/");
-  m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
-  m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
-  m_styles[TS_FUNCTION].Write(config, "Style/Function/");
-  m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
-  m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");    
-  m_styles[TS_DOCUMENT_BACKGROUND].Write(config, "Style/DocumentBackground/");
-  m_styles[TS_ERROR].Write(config, "Style/Error/");
-  m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
-  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));
-  m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
-  m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
-  m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
+  config->Write(wxT("maxClipbrd_BitmapMegabytes"), m_maxClipbrd_BitmapMegabytes);
+
   WriteStyles(config);
   if(file != wxEmptyString)
   {
@@ -1350,6 +1315,47 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write("HTMLequationFormat", (int) (m_htmlEquationFormat));
   config->Write("autosubscript", m_autoSubscript);
   config->Write(wxT("ZoomFactor"), m_zoomFactor);
+  // Fonts
+  m_styles[TS_DEFAULT].Write(config, "Style/Default/");
+  m_styles[TS_MATH].Write(config, "Style/Math/");
+  m_styles[TS_TEXT].Write(config, "Style/Text/");
+  m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
+  m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
+  m_styles[TS_CODE_COMMENT].Write(config, "Style/CodeHighlighting/Comment/");
+  m_styles[TS_CODE_NUMBER].Write(config, "Style/CodeHighlighting/Number/");
+  m_styles[TS_CODE_STRING].Write(config, "Style/CodeHighlighting/String/");
+  m_styles[TS_CODE_OPERATOR].Write(config, "Style/CodeHighlighting/Operator/");
+  m_styles[TS_CODE_LISP].Write(config, "Style/CodeHighlighting/Lisp/");
+  m_styles[TS_CODE_ENDOFLINE].Write(config, "Style/CodeHighlighting/EndOfLine/");
+  m_styles[TS_HEADING6].Write(config, "Style/Heading6/");
+  m_styles[TS_HEADING5].Write(config, "Style/Heading5/");
+  m_styles[TS_SUBSUBSECTION].Write(config, "Style/Subsubsection/");
+  m_styles[TS_SUBSECTION].Write(config, "Style/Subsection/");
+  m_styles[TS_SECTION].Write(config, "Style/Section/");
+  m_styles[TS_TITLE].Write(config, "Style/Title/");
+  m_styles[TS_WARNING].Write(config, "Style/Warning/");
+  m_styles[TS_MAIN_PROMPT].Write(config, "Style/MainPrompt/");
+  m_styles[TS_OTHER_PROMPT].Write(config, "Style/OtherPrompt/");
+  m_styles[TS_LABEL].Write(config, "Style/Label/");  
+  m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
+  m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
+  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
+  m_styles[TS_INPUT].Write(config, "Style/Input/");
+  m_styles[TS_NUMBER].Write(config, "Style/Number/");
+  m_styles[TS_STRING].Write(config, "Style/String/");
+  m_styles[TS_ASCIIMATHS].Write(config, "Style/ASCIImaths/");
+  m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
+  m_styles[TS_FUNCTION].Write(config, "Style/Function/");
+  m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
+  m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");    
+  m_styles[TS_DOCUMENT_BACKGROUND].Write(config, "Style/DocumentBackground/");
+  m_styles[TS_ERROR].Write(config, "Style/Error/");
+  m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
+  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
 }
 
 //! Saves the style settings to a file.

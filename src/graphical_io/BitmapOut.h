@@ -33,9 +33,6 @@
 class BitmapOut final
 {
 public:
-  //! Typical size limit for the output destined for the clipboard.
-  static constexpr long MAX_CLIPBOARD_SIZE = 4000000;
-
   /*! The constructor.
 
     \param scale By which factor the resolution should be increased in respect

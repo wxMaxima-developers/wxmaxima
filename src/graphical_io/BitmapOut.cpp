@@ -30,8 +30,6 @@
 
 #define BM_FULL_WIDTH 1000
 
-constexpr long BitmapOut::MAX_CLIPBOARD_SIZE;
-
 BitmapOut::BitmapOut(Configuration **configuration, double scale) :
     m_cmn(configuration, BM_FULL_WIDTH, scale)
 {

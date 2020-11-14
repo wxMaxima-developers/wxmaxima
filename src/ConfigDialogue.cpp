@@ -403,6 +403,7 @@ void ConfigDialogue::SetCheckboxValues()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item. 
   m_documentclass->SetValue(configuration->Documentclass());
+  m_maxClipbrdBitmapMegabytes->SetValue(configuration->MaxClipbrdBitmapMegabytes());
   m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
   m_mathJaxURL->SetValue(configuration->MathJaXURL_User());
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
@@ -1371,29 +1372,49 @@ wxWindow *ConfigDialogue::CreateClipboardPanel()
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxStaticBoxSizer *formatSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel,
+                         _("Additional clipboard formats to put on the clipboard on ordinary copy"));
+  m_copyBitmap = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("Bitmap"));
+  formatSizer->Add(m_copyBitmap, wxSizerFlags());
 
-  wxStaticText *descr = new wxStaticText(panel, -1, _("Additional clipboard formats to put on the clipboard on ordinary copy:"));
-  vbox->Add(descr, 0, wxUP | wxDOWN);
-  m_copyBitmap = new wxCheckBox(panel, -1, _("Bitmap"));
-  vbox->Add(m_copyBitmap, wxSizerFlags());
+  m_copyMathML = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("MathML description"));
+  formatSizer->Add(m_copyMathML, wxSizerFlags());
 
-  m_copyMathML = new wxCheckBox(panel, -1, _("MathML description"));
-  vbox->Add(m_copyMathML, wxSizerFlags());
+  m_copyMathMLHTML = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("MathML as HTML"));
+  formatSizer->Add(m_copyMathMLHTML, wxSizerFlags());
 
-  m_copyMathMLHTML = new wxCheckBox(panel, -1, _("MathML as HTML"));
-  vbox->Add(m_copyMathMLHTML, wxSizerFlags());
+  m_copyRTF = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("RTF with OMML maths"));
+  formatSizer->Add(m_copyRTF, wxSizerFlags());
 
-  m_copyRTF = new wxCheckBox(panel, -1, _("RTF with OMML maths"));
-  vbox->Add(m_copyRTF, wxSizerFlags());
-
-  m_copySVG = new wxCheckBox(panel, -1, _("Scalable Vector Graphics (svg)"));
-  vbox->Add(m_copySVG, wxSizerFlags());
+  m_copySVG = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("Scalable Vector Graphics (svg)"));
+  formatSizer->Add(m_copySVG, wxSizerFlags());
 
   #if wxUSE_ENH_METAFILE
-  m_copyEMF = new wxCheckBox(panel, -1, _("Enhanced meta file (emf)"));
-  vbox->Add(m_copyEMF, wxSizerFlags());
+  m_copyEMF = new wxCheckBox(formatSizer->GetStaticBox(), -1, _("Enhanced meta file (emf)"));
+  formatSizer->Add(m_copyEMF, wxSizerFlags());
   #endif
+  vbox->Add(formatSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
+  wxStaticBoxSizer *formatParamsSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel,
+                         _("Clipboard format parameters"));
+  
+  
+
+  wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
+  
+  sizer->Add(new wxStaticText(formatParamsSizer->GetStaticBox(), -1,
+                              _("Maximum bitmap size on clipboard [Mb]:")),
+             0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  m_maxClipbrdBitmapMegabytes = new wxSpinCtrl(formatParamsSizer->GetStaticBox(), -1,
+                                               wxEmptyString, wxDefaultPosition,
+                                               wxSize(150*GetContentScaleFactor(), -1),
+                                               wxSP_ARROW_KEYS,
+                                               1, 16384);
+  sizer->Add(m_maxClipbrdBitmapMegabytes, wxSizerFlags().Expand());
+  formatParamsSizer->Add(sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  vbox->Add(formatParamsSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   panel->SetSizer(vbox);
   panel->FitInside();
 
@@ -1559,6 +1580,7 @@ void ConfigDialogue::WriteSettings()
   }
   
   configuration->SetAbortOnError(m_abortOnError->GetValue());
+  configuration->MaxClipbrdBitmapMegabytes(m_maxClipbrdBitmapMegabytes->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());

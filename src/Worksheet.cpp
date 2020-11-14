@@ -2446,7 +2446,8 @@ bool Worksheet::Copy(bool astext)
     {
       // Try to fill bmp with a high-res version of the cells
       BitmapOut output(&m_configuration, std::move(tmp),
-                       m_configuration->BitmapScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+                       m_configuration->BitmapScale(),
+                       1000000*m_configuration->MaxClipbrdBitmapMegabytes());
       if (output.IsOk())
         data->Add(output.GetDataObject().release());
     }
@@ -2687,7 +2688,8 @@ bool Worksheet::CopyCells()
     if (m_configuration->CopyBitmap())
     {
       BitmapOut output(&m_configuration, CopySelection(),
-                       m_configuration->BitmapScale(), BitmapOut::MAX_CLIPBOARD_SIZE);
+                       m_configuration->BitmapScale(),
+                       1000000*m_configuration->MaxClipbrdBitmapMegabytes());
       if (output.IsOk())
         data->Add(output.GetDataObject().release());
     }
@@ -4429,7 +4431,8 @@ std::unique_ptr<GroupCell> Worksheet::CopyTree() const
 
 bool Worksheet::CopyBitmap()
 {
-  BitmapOut bitmap(&m_configuration, CopySelection(), 1, BitmapOut::MAX_CLIPBOARD_SIZE);
+  BitmapOut bitmap(&m_configuration, CopySelection(), 1,
+                   1000000*m_configuration->MaxClipbrdBitmapMegabytes());
   bool retval = bitmap.ToClipboard();
   Recalculate();
   return retval;

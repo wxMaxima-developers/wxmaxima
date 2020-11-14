@@ -831,6 +831,10 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
 
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
+  bool MaxClipbrdBitmapMegabytes() const {return m_maxClipbrd_BitmapMegabytes;}
+  void MaxClipbrdBitmapMegabytes(int maxClipbrd_BitmapMegabytes)
+    {m_maxClipbrd_BitmapMegabytes = maxClipbrd_BitmapMegabytes;}
+  
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
   wxString TexPreamble() const {return m_texPreamble;}
@@ -987,6 +991,7 @@ private:
   wxString m_lispType;
   int m_bitmapScale;
   int m_defaultFramerate;
+  int m_maxClipbrd_BitmapMegabytes;
 };
 
 //! Sets the configuration's "printing" flag until this class is left.
