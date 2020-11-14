@@ -1504,9 +1504,9 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   m_saveStyle = new wxButton(panel, save_id, _("Save"));
 
   grid_sizer_1->Add(defaultFontLabel, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
+  grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxUP | wxRIGHT | wxDOWN, 5*GetContentScaleFactor()));
   grid_sizer_1->Add(mathFontLabel, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
+  grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxUP | wxRIGHT | wxDOWN, 5*GetContentScaleFactor()));
   grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   m_useUnicodeMaths = new wxCheckBox(panel, -1, _("Use unicode Math Symbols, if available"));
   grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
@@ -1521,7 +1521,7 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   hbox_sizer_1->Add(m_italicCB, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
   hbox_sizer_1->Add(m_underlinedCB, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
   vbox_sizer->Add(hbox_sizer_1, 1, wxUP | wxDOWN | wxEXPAND, 0);
-  vbox_sizer->Add(m_examplePanel, 0, wxUP | wxDOWN | wxEXPAND, 5*GetContentScaleFactor());
+  vbox_sizer->Add(m_examplePanel, 0, wxUP | wxDOWN | wxRIGHT | wxEXPAND, 5*GetContentScaleFactor());
   hbox_sizer_2->Add(m_styleFor, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
   hbox_sizer_2->Add(vbox_sizer, 1, wxUP | wxDOWN | wxEXPAND, 0);
   sb_sizer_2->Add(hbox_sizer_2, 0, wxUP | wxDOWN | wxEXPAND, 0);
