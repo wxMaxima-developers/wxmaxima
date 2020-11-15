@@ -2239,5 +2239,11 @@
   (wx-print-variables)
   (wx-print-gui-variables)
   (format t "~%")
+  ;; Declare that we want all builtins with underscore not to be printed with subscript
+  (maphash (lambda (key val)
+	     (declare (ignore val))
+	     (if
+		 (search "_" (print_value key))
+		 ($wxdeclare_subscripted (print_value key) nil))) *variable-initial-values*)
   (finish-output)
 )

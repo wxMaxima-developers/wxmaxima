@@ -784,6 +784,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_alwaysAutosubscript, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_declareAutosubscript, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_autosubscriptIndividual, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
+  Connect(menu_noAutosubscriptIndividual, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_roundedMatrixParens, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::EditMenu), NULL, this);
   Connect(menu_straightMatrixParens, wxEVT_MENU,
@@ -5873,6 +5879,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   //  return;
   //}
 
+  wxString expr = GetDefaultEntry();
   switch (event.GetId())
   {
   case Worksheet::popid_labelwidth3:
@@ -6149,6 +6156,36 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_alwaysAutosubscript:
       MenuCommand(wxT("wxsubscripts: 'all$"));
       break;
+    case menu_autosubscriptIndividual:
+    {
+      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                                 _("Never autosubscript this variable"),
+                                 _("Variable name"),expr);
+      if (wiz->ShowModal() == wxID_OK)
+        MenuCommand(wxT("wxdeclare_subscripted(")+wiz->GetValue()+wxT(")$"));
+      wiz->Destroy();
+      break;
+    }
+    case menu_noAutosubscriptIndividual:
+    {
+      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                                 _("Never autosubscript this variable"),
+                                 _("Variable name"),expr);
+      if (wiz->ShowModal() == wxID_OK)
+        MenuCommand(wxT("wxdeclare_subscripted(")+wiz->GetValue()+wxT(",false)$"));
+      wiz->Destroy();
+      break;
+    }
+    case menu_declareAutosubscript:
+    {
+      Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_worksheet->m_configuration,
+                                 _("Declare a text snippet to always be displayed as subscript"),
+                                 _("Text snippet"),expr);
+      if (wiz->ShowModal() == wxID_OK)
+        MenuCommand(wxT("wxdeclare_subscript(")+wiz->GetValue()+wxT(")$"));
+      wiz->Destroy();
+      break;
+    }    
     case menu_roundedMatrixParens:
       MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
       break;

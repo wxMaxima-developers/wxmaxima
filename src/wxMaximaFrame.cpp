@@ -784,9 +784,21 @@ void wxMaximaFrame::SetupMenu()
   m_autoSubscriptMenu->AppendRadioItem(menu_alwaysAutosubscript, _("Always"),
                                        _("Always autosubscript after an underscore"));
   m_autoSubscriptMenu->Check(menu_defaultAutosubscript, true);
+  m_autoSubscriptMenu->AppendSeparator();
+  m_autoSubscriptMenu->Append(menu_autosubscriptIndividual,
+                              _("Always display this variable with subscript"));
+  m_autoSubscriptMenu->Append(menu_noAutosubscriptIndividual,
+                              _("Never display this variable with subscript"));
+  m_autoSubscriptMenu->Append(menu_declareAutosubscript,
+                              _("Declare Text to always be displayed as subscript"));
+
+    
+
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), m_autoSubscriptMenu,
                              _("Autosubscript chars after an underscore"));
 
+
+    
   m_roundedMatrixParensMenu = new wxMenu;
   m_roundedMatrixParensMenu->AppendRadioItem(menu_roundedMatrixParens, _("Rounded"), _("Use rounded parenthesis for matrices"));
   m_roundedMatrixParensMenu->AppendRadioItem(menu_squareMatrixParens, _("Square"), _("Use square parenthesis for matrices"));
