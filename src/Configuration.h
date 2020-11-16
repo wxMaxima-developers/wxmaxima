@@ -831,7 +831,7 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
 
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
-  bool MaxClipbrdBitmapMegabytes() const {return m_maxClipbrd_BitmapMegabytes;}
+  int  MaxClipbrdBitmapMegabytes() const {return m_maxClipbrd_BitmapMegabytes;}
   void MaxClipbrdBitmapMegabytes(int maxClipbrd_BitmapMegabytes)
     {m_maxClipbrd_BitmapMegabytes = maxClipbrd_BitmapMegabytes;}
   

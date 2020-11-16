@@ -269,7 +269,11 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
 
   LayoutDialog();
   SetMinSize(wxSize(GetContentScaleFactor()*800,GetContentScaleFactor()*800));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
+
+  // The following two lines seem to sometimes crash
+  //
+  // wxPersistenceManager::Get().RegisterAndRestore(this);
+  // SetTitle(_("wxMaxima configuration"));
 
   SetCheckboxValues();
 
@@ -324,7 +328,6 @@ void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& WXUNUSED(unused))
 void ConfigDialogue::SetCheckboxValues()
 {
   Configuration *configuration = m_configuration;
-  SetTitle(_("wxMaxima configuration"));
 
   m_showUserDefinedLabels->SetToolTip(
           _("Maxima assigns each command/equation an automatic label (which looks like %i1 or %o1). If a command begins with a descriptive name followed by a : wxMaxima will call the descriptive name an \"user-defined label\" instead. This selection now allows to tell wxMaxima if to show only automatic labels, automatic labels if there aren't user-defined ones or no label at all until an user-defined label can be found by wxMaxima's heuristics. If automatic labels are suppressed extra vertical space is added between equations in order to ease discerning which line starts a new equation and which one only continues the one from the last line."));
