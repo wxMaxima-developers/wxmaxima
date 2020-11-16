@@ -777,12 +777,12 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), m_equationTypeMenuMenu, _("How to display new equations"));
 
   m_autoSubscriptMenu = new wxMenu;
-  m_autoSubscriptMenu->AppendRadioItem(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"));
-  m_autoSubscriptMenu->AppendRadioItem(menu_defaultAutosubscript,
-                                       _("Integers and single letters"),
-                                       _("Autosubscript numbers and text following single letters"));
-  m_autoSubscriptMenu->AppendRadioItem(menu_alwaysAutosubscript, _("Always"),
+  m_autoSubscriptMenu->AppendRadioItem(menu_alwaysAutosubscript, _("Always after underscores"),
                                        _("Always autosubscript after an underscore"));
+  m_autoSubscriptMenu->AppendRadioItem(menu_defaultAutosubscript,
+                                       _("Only Integers and single letters"),
+                                       _("Autosubscript numbers and text following single letters"));
+  m_autoSubscriptMenu->AppendRadioItem(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"));
   m_autoSubscriptMenu->Check(menu_defaultAutosubscript, true);
   m_autoSubscriptMenu->AppendSeparator();
   m_autoSubscriptMenu->Append(menu_autosubscriptIndividual,

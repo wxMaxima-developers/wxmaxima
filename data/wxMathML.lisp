@@ -258,12 +258,17 @@
 	       (sub-int (ignore-errors
 			  (parse-integer sub))))
 	  (when (and (> (length sub-var) 0)
-		     (or sub-int
-			 (eq $wxsubscripts '$all)
-			 (= (length sub) 1)
-			 (= (length sub-var) 1)
-			 ($get x '$wxxml_subscripted)
-			 ($get sub-symb '$wxxml_subscript)))
+		     (or
+		      ($get x '$wxxml_subscripted)
+		      (and
+		       (or sub-int
+			   (eq $wxsubscripts '$all)
+			   (= (length sub) 1)
+			   (= (length sub-var) 1)
+			   ($get sub-symb '$wxxml_subscript)
+			   )
+		       (ignore-errors (not
+			 (member '$WXXML_SUBSCRIPTED (cadr (properties x))))))))
 	    (format nil  "<munder altCopy=\"~{~a~}\"><mrow>~a</mrow><mrow>~a</mrow></munder>"
 		    (mstring x)
 		    (or (get sub-var-symb 'wxxmlword)
