@@ -872,78 +872,107 @@ wxWindow *ConfigDialogue::CreateExportPanel()
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
 
-  wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
-  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
-  grid_sizer->Add(dc, wxSizerFlags());
-  grid_sizer->Add(m_documentclass, wxSizerFlags());
+  wxStaticBoxSizer *texSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("LaTeX"));
+  wxFlexGridSizer *texGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
+  
+  wxStaticText *dc = new wxStaticText(texSizer->GetStaticBox(), -1,
+                                      _("Documentclass for TeX export:"));
+  m_documentclass = new wxTextCtrl(texSizer->GetStaticBox(), -1,
+                                   wxEmptyString, wxDefaultPosition,
+                                   wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  texGrid_sizer->Add(dc, wxSizerFlags());
+  texGrid_sizer->Add(m_documentclass, wxSizerFlags());
 
-  wxStaticText *dco = new wxStaticText(panel, -1, _("Documentclass options:"));
-  m_documentclassOptions = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
-  grid_sizer->Add(dco, wxSizerFlags());
-  grid_sizer->Add(m_documentclassOptions, wxSizerFlags());
+  wxStaticText *dco = new wxStaticText(texSizer->GetStaticBox(), -1, _("Documentclass options:"));
+  m_documentclassOptions = new wxTextCtrl(texSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  texGrid_sizer->Add(dco, wxSizerFlags());
+  texGrid_sizer->Add(m_documentclassOptions, wxSizerFlags());
 
-  wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
-  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), 100),
+  wxStaticText *tp = new wxStaticText(texSizer->GetStaticBox(), -1, _("Additional lines for the TeX preamble:"));
+  m_texPreamble = new wxTextCtrl(texSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), 100),
                                  wxTE_MULTILINE | wxHSCROLL);
-  grid_sizer->Add(tp, wxSizerFlags());
-  grid_sizer->Add(m_texPreamble, wxSizerFlags());
-  vsizer->Add(grid_sizer, 1, wxEXPAND, 5*GetContentScaleFactor());
+  texGrid_sizer->Add(tp, wxSizerFlags());
+  texGrid_sizer->Add(m_texPreamble, wxSizerFlags());
 
-  wxStaticText *mju = new wxStaticText(panel, -1, _("Export equations to HTML as:"));
+  texSizer->Add(texGrid_sizer, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  m_TeXExponentsAfterSubscript = new wxCheckBox(texSizer->GetStaticBox(), -1, _("LaTeX: Place exponents after, instead above subscripts"));
+  texSizer->Add(m_TeXExponentsAfterSubscript, wxSizerFlags());
+
+  m_usePartialForDiff = new wxCheckBox(texSizer->GetStaticBox(), -1,
+                                       _("LaTeX: Use the \"partial derivative\" symbol to represent diff()"));
+  texSizer->Add(m_usePartialForDiff, wxSizerFlags());
+
+  m_wrapLatexMath = new wxCheckBox(texSizer->GetStaticBox(), -1, _("\"Copy LaTeX\" adds equation markers"));
+  texSizer->Add(m_wrapLatexMath, wxSizerFlags());
+
+  vsizer->Add(texSizer, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
+
+  wxStaticBoxSizer *html_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("HTML"));
+  wxFlexGridSizer *htmlGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
+  wxStaticText *mju = new wxStaticText(html_sizer->GetStaticBox(), -1, _("Export equations to HTML as:"));
   wxArrayString mathJaxChoices;
   mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
   mathJaxChoices.Add(_("Bitmaps"));
   mathJaxChoices.Add(_("MathML + MathJaX as Fill-In"));
   mathJaxChoices.Add(_("SVG graphics"));
-  m_exportWithMathJAX = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
-  grid_sizer->Add(mju, wxSizerFlags());
-  grid_sizer->Add(m_exportWithMathJAX, wxSizerFlags());
-  wxStaticText *mj = new wxStaticText(panel, -1, _("URL MathJaX.js lies at:"));
-  grid_sizer->Add(mj, wxSizerFlags());
-  grid_sizer->Add(5*GetContentScaleFactor(),5*GetContentScaleFactor());
+  m_exportWithMathJAX = new wxChoice(html_sizer->GetStaticBox(), -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
+  htmlGrid_sizer->Add(mju, wxSizerFlags());
+  htmlGrid_sizer->Add(m_exportWithMathJAX, wxSizerFlags());
+  wxStaticText *mj = new wxStaticText(html_sizer->GetStaticBox(), -1, _("URL MathJaX.js lies at:"));
+  htmlGrid_sizer->Add(mj, wxSizerFlags());
+  htmlGrid_sizer->Add(5*GetContentScaleFactor(),5*GetContentScaleFactor());
 
-  m_autodetectMathJaX = new wxRadioButton(panel, -1, _("Automatic"), wxDefaultPosition,
+  m_autodetectMathJaX = new wxRadioButton(html_sizer->GetStaticBox(), -1, _("Automatic"), wxDefaultPosition,
                                           wxDefaultSize, wxRB_GROUP);
-  grid_sizer->Add(m_autodetectMathJaX, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  m_autoMathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
-  grid_sizer->Add(m_autoMathJaxURL, wxSizerFlags());
+  htmlGrid_sizer->Add(m_autodetectMathJaX, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
+  m_autoMathJaxURL = new wxTextCtrl(html_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
+  htmlGrid_sizer->Add(m_autoMathJaxURL, wxSizerFlags());
 
-  m_noAutodetectMathJaX = new wxRadioButton(panel, -1, _("User specified"));
-  grid_sizer->Add(m_noAutodetectMathJaX, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  m_noAutodetectMathJaX = new wxRadioButton(html_sizer->GetStaticBox(), -1, _("User specified"));
+  htmlGrid_sizer->Add(m_noAutodetectMathJaX, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
 
-  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
-  grid_sizer->Add(m_mathJaxURL, wxSizerFlags());
+  m_mathJaxURL = new wxTextCtrl(html_sizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  htmlGrid_sizer->Add(m_mathJaxURL, wxSizerFlags());
+  html_sizer->Add(htmlGrid_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  wxStaticText *bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
-  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 3);
-  grid_sizer->Add(bs, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  grid_sizer->Add(m_bitmapScale, wxSizerFlags());
+  m_exportContainsWXMX = new wxCheckBox(html_sizer->GetStaticBox(), -1,
+                                        _("Add the .wxmx file to the HTML export"));
+  html_sizer->Add(m_exportContainsWXMX, wxSizerFlags());
 
-  wxStaticText *ps = new wxStaticText(panel, -1, _("Print scale:"));
-  m_printScale = new wxSpinCtrlDouble(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, .1, 4, .1);
+  vsizer->Add(html_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+
+  wxStaticBoxSizer *misc_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Misc"));
+  wxFlexGridSizer *miscGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
+  wxStaticText *bs = new wxStaticText(misc_sizer->GetStaticBox(), -1,
+                                      _("Bitmap scale for export:"));
+  m_bitmapScale = new wxSpinCtrl(misc_sizer->GetStaticBox(), -1,
+                                 wxEmptyString, wxDefaultPosition,
+                                 wxSize(150*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 3);
+  miscGrid_sizer->Add(bs, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  miscGrid_sizer->Add(m_bitmapScale, wxSizerFlags());
+  misc_sizer->Add(miscGrid_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  vsizer->Add(misc_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+
+  wxStaticBoxSizer *print_sizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Printing"));
+  wxFlexGridSizer *printGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
+  wxStaticText *ps = new wxStaticText(print_sizer->GetStaticBox(), -1, _("Print scale:"));
+  m_printScale = new wxSpinCtrlDouble(print_sizer->GetStaticBox(), -1,
+                                      wxEmptyString, wxDefaultPosition,
+                                      wxSize(150*GetContentScaleFactor(), -1),
+                                      wxSP_ARROW_KEYS, .1, 4, .1);
   m_printScale->SetDigits(2);
   m_printScale->SetIncrement(.1);
-  grid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
-  grid_sizer->Add(m_printScale, wxSizerFlags());
-
-  m_TeXExponentsAfterSubscript = new wxCheckBox(panel, -1, _("LaTeX: Place exponents after, instead above subscripts"));
-  vsizer->Add(m_TeXExponentsAfterSubscript, wxSizerFlags());
-
-  m_usePartialForDiff = new wxCheckBox(panel, -1,
-                                       _("LaTeX: Use the \"partial derivative\" symbol to represent diff()"));
-  vsizer->Add(m_usePartialForDiff, wxSizerFlags());
-
-  m_wrapLatexMath = new wxCheckBox(panel, -1, _("\"Copy LaTeX\" adds equation markers"));
-  vsizer->Add(m_wrapLatexMath, wxSizerFlags());
-
-  m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
-  vsizer->Add(m_exportContainsWXMX, wxSizerFlags());
-
-  m_printBrackets = new wxCheckBox(panel, -1, _("Print the cell brackets [drawn to their left]"));
-  vsizer->Add(m_printBrackets, wxSizerFlags());
+  printGrid_sizer->Add(ps, 0, wxUP | wxDOWN | wxALIGN_CENTER_VERTICAL, 5*GetContentScaleFactor());
+  printGrid_sizer->Add(m_printScale, wxSizerFlags());
+  
+  m_printBrackets = new wxCheckBox(print_sizer->GetStaticBox(), -1,
+                                   _("Print the cell brackets [drawn to their left]"));
+  print_sizer->Add(m_printBrackets, wxSizerFlags());
+  print_sizer->Add(printGrid_sizer,
+                   wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
+  vsizer->Add(print_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
   vsizer->AddGrowableRow(10*GetContentScaleFactor());
   panel->SetSizer(vsizer);
