@@ -209,7 +209,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
 
   if(m_variableReadActions.empty())
   {
-    
     m_variableReadActions[wxT("maxima_userdir")] = &wxMaxima::VariableActionUserDir;
     m_variableReadActions[wxT("maxima_tempdir")] = &wxMaxima::VariableActionTempDir;
     m_variableReadActions[wxT("*autoconf-version*")] = &wxMaxima::VariableActionAutoconfVersion;
@@ -2634,10 +2633,15 @@ void wxMaxima::ReadVariables(wxString &data)
 
           if(bound)
           {
+            m_worksheet->m_variablesPane->VariableValue(name, value);
+
+            // Undo an eventual stringdisp:true adding quoting marks to strings
+            if(value.StartsWith("\"") && value.EndsWith("\""))
+              value = value.SubString(1,value.Length()-2);
+            
             auto varFunc = m_variableReadActions.find(name);
             if(varFunc != m_variableReadActions.end())
               CALL_MEMBER_FN(*this, varFunc->second)(value);
-            m_worksheet->m_variablesPane->VariableValue(name, value);
           }
           else
             m_worksheet->m_variablesPane->VariableUndefined(name);
