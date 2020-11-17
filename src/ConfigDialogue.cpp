@@ -779,22 +779,16 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
-  wxPanel *panel_maximaStartup = new wxPanel(panel, -1);
-  wxPanel *panel_wxMaximaStartup = new wxPanel(panel, -1);
-  wxBoxSizer *vsizer_maximaStartup = new wxBoxSizer(wxVERTICAL);
-  wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
-
   m_startupFileName = Dirstructure::Get()->UserConfDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
   m_startupFileName += wxT("maxima-init.mac");
 
-  wxStaticText *wxStartupText =
-    new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
-                     _("Maxima commands to be executed every time wxMaxima starts Maxima: "));
-  wxStartupText->SetToolTip(_("The part of the output of these commands that isn't declared as "
-                              "\"math\" might be suppressed by wxMaxima. As always maxima "
-                              "commands are required to end in a \";\" or a \"$\""));
-  vsizer_wxMaximaStartup->Add(wxStartupText, wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
+  wxStaticBoxSizer *wxMaximaStartupSizer = new wxStaticBoxSizer(wxVERTICAL, panel,
+                     _("Maxima commands to be executed every time wxMaxima starts Maxima"));
+  wxMaximaStartupSizer->GetStaticBox()->
+    SetToolTip(_("The part of the output of these commands that isn't declared as "
+                 "\"math\" might be suppressed by wxMaxima. As always maxima "
+                 "commands are required to end in a \";\" or a \"$\""));
 
   // Read the contents of wxMaxima's startup file
   wxString contents;
@@ -812,29 +806,29 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_wxStartupCommands = new BTextCtrl(panel_wxMaximaStartup, -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
+  m_wxStartupCommands = new BTextCtrl(wxMaximaStartupSizer->GetStaticBox(), -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_wxStartupCommands->SetValue(contents);
-  vsizer_wxMaximaStartup->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
-  wxStaticText *wxStartupFileLocation = new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
+  wxMaximaStartupSizer->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL,5*GetContentScaleFactor()));
+  wxStaticText *wxStartupFileLocation = new wxStaticText(wxMaximaStartupSizer->GetStaticBox(),
+                                                         wxID_ANY,
                                                          _("wxMaxima startup file location: ") +
                                                          m_wxStartupFileName);
   wxStartupFileLocation->SetToolTip(_("This file won't be read by maxima if maxima is used "
                                       "without wxMaxima. In order to add startup commands "
                                       "that are executed in this case, "
                                       "too, please add them to maxima-init.mac, instead."));
-  vsizer_wxMaximaStartup->Add(wxStartupFileLocation, wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
+  wxMaximaStartupSizer->Add(wxStartupFileLocation, wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()));
 
-  panel_wxMaximaStartup->SetSizer(vsizer_wxMaximaStartup);
-  vsizer->Add(panel_wxMaximaStartup,wxSizerFlags().Expand().Border(wxBOTTOM, 5*GetContentScaleFactor()));
+  vsizer->Add(wxMaximaStartupSizer,wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  wxStaticText *startupText =
-    new wxStaticText(panel_maximaStartup, wxID_ANY,
-                     _("Maxima commands to be executed at every start of Maxima: "));
-  startupText->SetToolTip(_("The part of the output of these commands that isn't declared as "
-                              "\"math\" might be suppressed by wxMaxima. As always maxima "
-                              "commands are required to end in a \";\" or a \"$\""));
-  vsizer_maximaStartup->Add(startupText, wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
+  wxStaticBoxSizer *maximaStartupSizer =
+    new wxStaticBoxSizer(wxVERTICAL, panel,
+                         _("Maxima commands to be executed at every start of Maxima"));
+  maximaStartupSizer->GetStaticBox()->
+    SetToolTip(_("The part of the output of these commands that isn't declared as "
+                 "\"math\" might be suppressed by wxMaxima. As always maxima "
+                 "commands are required to end in a \";\" or a \"$\""));
   // Read maxima's startup file's contents
   contents = wxEmptyString;
   if(wxFileExists(m_startupFileName))
@@ -851,18 +845,20 @@ wxWindow *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_startupCommands = new BTextCtrl(panel_maximaStartup, -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
+  m_startupCommands = new BTextCtrl(maximaStartupSizer->GetStaticBox(),
+                                    -1, m_configuration, wxEmptyString,
+                                    wxDefaultPosition,
+                                    wxSize(150*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
 
-  vsizer_maximaStartup->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
-  wxStaticText *startupFileLocation = new wxStaticText(panel_maximaStartup, wxID_ANY,
+  maximaStartupSizer->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5*GetContentScaleFactor()));
+  wxStaticText *startupFileLocation = new wxStaticText(maximaStartupSizer->GetStaticBox(), wxID_ANY,
                                                        _("Maxima startup file location: ") +
                                                        m_startupFileName);
   startupFileLocation->SetToolTip(_("Commands that are executed at every start of maxima."));
-  vsizer_maximaStartup->Add(startupFileLocation, wxSizerFlags().Border(wxUP | wxDOWN,5*GetContentScaleFactor()));
-  panel_maximaStartup->SetSizer(vsizer_maximaStartup);
-  vsizer->Add(panel_maximaStartup,wxSizerFlags().Expand().Border(wxTOP, 5*GetContentScaleFactor()));
+  maximaStartupSizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()));
+  vsizer->Add(maximaStartupSizer,wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   panel->SetSizer(vsizer);
   panel->FitInside();
   return panel;
@@ -873,7 +869,7 @@ wxWindow *ConfigDialogue::CreateExportPanel()
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(m_notebook, -1);
   panel->SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
 
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
   wxStaticBoxSizer *texSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("LaTeX"));
   wxFlexGridSizer *texGrid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
@@ -975,7 +971,6 @@ wxWindow *ConfigDialogue::CreateExportPanel()
                    wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   vsizer->Add(print_sizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
 
-  vsizer->AddGrowableRow(10*GetContentScaleFactor());
   panel->SetSizer(vsizer);
   panel->FitInside();
 
@@ -1064,7 +1059,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
 
   wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(11, 1, 0, 0);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxStaticBoxSizer *invocationSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima Location"));
 
   wxFlexGridSizer *nameSizer = new wxFlexGridSizer(6, 3, 0, 0);
@@ -1114,7 +1109,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   nameSizer->Add(mpBrowse2, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
 
   invocationSizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
-  vsizer->Add(invocationSizer, wxSizerFlags().Expand());
+  vsizer->Add(invocationSizer, wxSizerFlags(1).Expand());
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
 
   wxStaticBoxSizer *configSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima configuration"));
@@ -1160,7 +1155,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   }
   configSizer->Add(sizer2);
   m_additionalParameters = new wxTextCtrl(configSizer->GetStaticBox(), -1, wxEmptyString, wxDefaultPosition, wxSize(600*GetContentScaleFactor(), -1), wxTE_RICH);
-  configSizer->Add(m_additionalParameters, wxSizerFlags().Border(wxRIGHT, 10*GetContentScaleFactor()));
+  configSizer->Add(m_additionalParameters, wxSizerFlags().Border(wxRIGHT, 10*GetContentScaleFactor()).Expand());
 
   configSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   m_maximaEnvVariables = new wxGrid(configSizer->GetStaticBox(),-1);
@@ -1499,7 +1494,7 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
 
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(4, 1, 5, 5);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
   wxStaticBoxSizer *sb_sizer_1 = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxStaticBoxSizer *sb_sizer_2 = new wxStaticBoxSizer(styles, wxVERTICAL);
@@ -1537,16 +1532,16 @@ wxWindow *ConfigDialogue::CreateStylePanel()
   m_saveStyle = new wxButton(panel, save_id, _("Save"));
 
   grid_sizer_1->Add(defaultFontLabel, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxUP | wxRIGHT | wxDOWN, 5*GetContentScaleFactor()));
+  grid_sizer_1->Add(m_getDefaultFont, wxSizerFlags().Border(wxUP | wxRIGHT | wxDOWN, 5*GetContentScaleFactor()).Expand());
   grid_sizer_1->Add(mathFontLabel, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
-  grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxUP | wxRIGHT | wxDOWN, 5*GetContentScaleFactor()));
+  grid_sizer_1->Add(m_getMathFont, wxSizerFlags().Border(wxUP | wxRIGHT | wxDOWN, 5*GetContentScaleFactor()).Expand());
   grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   m_useUnicodeMaths = new wxCheckBox(panel, -1, _("Use unicode Math Symbols, if available"));
   grid_sizer_1->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   grid_sizer_1->Add(m_useUnicodeMaths, wxSizerFlags().Border(wxUP | wxDOWN, 5*GetContentScaleFactor()));
 
-  sb_sizer_1->Add(grid_sizer_1, 1, wxUP | wxDOWN | wxEXPAND, 0);
-  vsizer->Add(sb_sizer_1, 1, wxUP | wxDOWN | wxEXPAND, 3);
+  sb_sizer_1->Add(grid_sizer_1, wxSizerFlags(1).Expand());
+  vsizer->Add(sb_sizer_1, wxSizerFlags(1).Expand());
 
   vbox_sizer->Add(m_styleColor, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
   vbox_sizer->Add(m_getStyleFont, 0, wxUP | wxDOWN | wxALIGN_CENTER, 5*GetContentScaleFactor());
