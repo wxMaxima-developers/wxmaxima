@@ -1109,7 +1109,10 @@ public:
 
   void CalculateReorderedCellIndices(GroupCell *tree, int &cellIndex, std::vector<int> &cellMap);
 
-  //! Export the file to an html document
+  /*! Export the file to an html document
+
+    \todo Worksheet and text cell background work fine, but their names might be interchanged.
+   */
   bool ExportToHTML(const wxString &file);
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
