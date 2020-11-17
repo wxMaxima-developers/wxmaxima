@@ -268,7 +268,8 @@ m_maximaEnvDoc["GCL_MULTIPROCESS_MEMORY_POOL"] = _("If maxima was compiled by GC
   SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   LayoutDialog();
-  SetMinSize(wxSize(GetContentScaleFactor()*800,GetContentScaleFactor()*800));
+  SetMinSize(wxSize(GetContentScaleFactor()*600,GetContentScaleFactor()*800));
+  SetInitialSize(wxSize(GetContentScaleFactor()*900,GetContentScaleFactor()*800));
 
   // The following two lines seem to sometimes crash
   //
