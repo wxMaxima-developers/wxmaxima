@@ -77,7 +77,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   #else
   m_usepngCairo = true;
   #endif
-  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML");
+  m_mathJaxURL = wxT("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js");
   m_usePartialForDiff = false,
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
