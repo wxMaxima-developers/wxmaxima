@@ -4813,8 +4813,8 @@ bool Worksheet::ExportToHTML(const wxString &file)
   config->Read(wxT("Style/Heading5/color"), &colorHeading5);
   config->Read(wxT("Style/Heading6/color"), &colorHeading6);
   config->Read(wxT("Style/Title/color"), &colorTitle);
-  config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
-  config->Read(wxT("Style/Background/color"), &colorBg);
+  config->Read(wxT("Style/TextBackground/color"), &colorBg);
+  config->Read(wxT("Style/Background/color"), &colorTextBg);
 
   config->Read(wxT("Style/CodeHighlighting/Variable/color"), &colorCodeVariable);
   config->Read(wxT("Style/CodeHighlighting/Function/color"), &colorCodeFunction);
@@ -4911,15 +4911,16 @@ bool Worksheet::ExportToHTML(const wxString &file)
   {
     wxColour color(colorText);
     css << wxT("  color: ") +
-           wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-           wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
   }
   if (colorTextBg.Length())
   {
     wxColour color(colorTextBg);
     css << wxT("  background-color: ") +
-           wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
-           wxT(";\n");
+      wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+      wxT(";\n");
+;
   }
   css << wxT("  padding: 2mm;\n");
   css << wxT("}\n");
