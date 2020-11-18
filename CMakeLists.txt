@@ -17,8 +17,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Options
 #
 
-option(WXM_BUILD_SOURCE_ONLY
-    "Only build the source code. Don't generate documentation, translations, etc." OFF)
+option(WXM_BUILD_BINARY_ONLY
+    "Only build the wxmaxima binary. Don't generate documentation, translations, etc." OFF)
 option(WXM_ENABLE_PRECOMPILED_HEADERS
     "Enable precompiled headers to potentially speed up compilation." OFF)
 option(WXM_USE_CPPCHECK
@@ -222,7 +222,7 @@ endfunction()
 # Build Items
 #
 
-if(NOT WXM_BUILD_SOURCE_ONLY)
+if(NOT WXM_BUILD_BINARY_ONLY)
     add_subdirectory(Doxygen)
     add_subdirectory(data)
     add_subdirectory(info)
@@ -234,7 +234,7 @@ add_subdirectory(src)
 enable_testing()
 add_subdirectory(test)
 
-if(NOT WXM_BUILD_SOURCE_ONLY)
+if(NOT WXM_BUILD_BINARY_ONLY)
     add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
     add_custom_target(checksums
