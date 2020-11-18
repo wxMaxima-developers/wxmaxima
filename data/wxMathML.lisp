@@ -2035,6 +2035,7 @@
     (wx-print-variable '$wxsubscripts)
     (wx-print-variable '$lmxchar)
     (wx-print-variable '$numer)
+    (wx-print-variable '$stringdisp)
     (wx-print-variable '$domain)
     (wx-print-variable '$showtime)
     (wx-print-variable '$algebraic)

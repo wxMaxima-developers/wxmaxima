@@ -172,6 +172,7 @@ public:
     menu_demoivre,
     menu_exponentialize,
     menu_num_out,
+    menu_stringdisp,
     menu_to_float,
     menu_to_bfloat,
     menu_to_numer,

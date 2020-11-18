@@ -222,6 +222,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     m_variableReadActions[wxT("wxsubscripts")] = &wxMaxima::VariableActionWxSubscripts;
     m_variableReadActions[wxT("lmxchar")] = &wxMaxima::VariableActionLmxChar;
     m_variableReadActions[wxT("numer")] = &wxMaxima::VariableActionNumer;
+    m_variableReadActions[wxT("stringdisp")] = &wxMaxima::VariableActionStringdisp;
     m_variableReadActions[wxT("algebraic")] = &wxMaxima::VariableActionAlgebraic;
     m_variableReadActions[wxT("domain")] = &wxMaxima::VariableActionDomain;
     m_variableReadActions[wxT("wxanimate_autoplay")] = &wxMaxima::VariableActionAutoplay;
@@ -532,6 +533,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(menu_demoivre, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::SimplifyMenu), NULL, this);
   Connect(menu_num_out, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
+  Connect(menu_stringdisp, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
   Connect(menu_num_domain, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::NumericalMenu), NULL, this);
@@ -2879,6 +2882,20 @@ void wxMaxima::VariableActionNumer(const wxString &value)
       m_NumericMenu->Check(menu_num_out, false);
   }
 }
+void wxMaxima::VariableActionStringdisp(const wxString &value)
+{
+  if(value == wxT("true"))
+  {
+    if(!m_Maxima_Panes_Sub->IsChecked(menu_stringdisp))
+      m_Maxima_Panes_Sub->Check(menu_stringdisp, true);
+  }
+  else
+  {
+    if(m_Maxima_Panes_Sub->IsChecked(menu_stringdisp))
+      m_Maxima_Panes_Sub->Check(menu_stringdisp, false);
+  }
+}
+
 void wxMaxima::VariableActionAlgebraic(const wxString &value)
 {
   if(value == wxT("true"))
@@ -8340,6 +8357,13 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
         cmd = wxT("numer:false$");
       else
         cmd = wxT("numer:true$");
+      MenuCommand(cmd);
+      break;
+    case menu_stringdisp:
+      if(!event.IsChecked())
+        cmd = wxT("stringdisp:false$");
+      else
+        cmd = wxT("stringdisp:true$");
       MenuCommand(cmd);
       break;
     case menu_set_precision:

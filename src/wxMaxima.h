@@ -562,7 +562,7 @@ protected:
   void VariableActionDomain(const wxString &value);
   void VariableActionAutoplay(const wxString &value);
   void VariableActionEngineeringFormat(const wxString &value);
-
+  void VariableActionStringdisp(const wxString &value);
   wxString m_maximaVariable_wxSubscripts;
   wxString m_maximaVariable_lmxchar;
   wxString m_maximaVariable_display2d;
