@@ -1,3 +1,12 @@
+# Current
+ * Many bug fixes in various places
+ * Work on a more modern look-and-feel
+ * stringdisp support and a menu item for it
+ * Updated the default MathJAX to version 3
+ * Many autosubscripting improvements
+ * Ukrainian translation update by Yuri Chornoivan 
+ * Russian translation update by OlesyaGerasimenko and Yuri Chornoivan 
+
 # 20.11.0
  * Many bug fixes
  * Ukrainian translation update by Yuri Chornoivan 
