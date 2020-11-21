@@ -47,6 +47,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
 </head>
 <body>
 <header>
@@ -893,7 +894,7 @@ Ordinary text</code></pre>
 <p>Possible reasons for this error are:</p>
 <ul>
 <li>The plotting command is part of a third-party package like <code>implicit_plot</code> but this package was not loaded by <em>Maxima</em>’s <code>load()</code> command before trying to plot.</li>
-<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case a file ending in .gnuplot in the directory <em>Maxima</em>’s variable maxima_userdir points to contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time this file’s contents therefore are helpful when debugging the problem.</li>
+<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case, a file ending in .gnuplot located in the directory, which <em>Maxima</em>’s variable <code>maxima_userdir</code> is pointing, contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time, this file’s contents therefore are helpful when debugging the problem.</li>
 <li>Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the &quot;Use the cairo terminal for plot&quot; checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em>Maxima</em>.</li>
 <li>Gnuplot didn’t output a valid .png file.</li>
 </ul>
@@ -986,6 +987,7 @@ Ordinary text</code></pre>
 <li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
 <li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
 <li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>Instead of a minus some operating systems might use a dash in front of the command-line switches.</p>
 </body>

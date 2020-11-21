@@ -47,6 +47,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
 </head>
 <body>
 <header>
@@ -877,7 +878,7 @@ Normaler Text</code></pre>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a Lisp processor the process communication that is blocked from does not necessarily have to be named &quot;maxima&quot;. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das &quot;loopback&quot;-Netzwerkgerät nicht korrekt eingestellt ist.</p>
 <h2 id="wie-repariere-ich-kaputte-.wxmx-dateien"><span class="header-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</h2>
-<p>Internally most modern XML-based formats are ordinary zip-files. <em>wxMaxima</em> doesn't turn on compression, so the contents of .wxmx files can be viewed in any text editor.</p>
+<p>Die meisten modernen XML-basierten Formate sind von ihrem Inhalt her einfache .zip-Dateien. <em>wxMaxima</em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
 <p>Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach <code>&lt;irgendwas&gt;.zip</code> umbenennen, entpacken, reparieren, neu packen und wieder nach <code>&lt;irgendwas&gt;.wxmx</code> umbenennen. Dies ist auch eine praktische Möglichkeit, Word oder Powerpoint die originalen Bilddateien zu entlocken. Ist dies nicht der Fall, ist dies nicht das Ende der Welt: Oft gibt es eine funktionierende <code>wxmx~</code>-Datei.</p>
 <p>Und auch wenn diese Datei nicht existiert: Eine <code>.wxmx</code>-Datei ist ein Containerformat, und der XML-Anteil wird unkomprimiert gespeichert. Es ist möglich, die <code>.wxmx</code>-Datei in eine <code>.txt</code>Datei umzubenennen und mit einem Texteditor den XML-Anteil der Datei (beginnt mit <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> und endet mit <code>&lt;/wxMaximaDocument&gt;</code> zu sichern. Vor und nach diesem Text wird unlesbarer (binärer) Inhalt im Texteditor sichtbar sein).</p>
 <p>Wird eine Textdatei mit diesem Text (z.B. indem er mit Copy+Paste in eine neue Datei eingefügt wird) als <code>.xml</code>-Datei gespeichert, weiß <em>wxMaxima</em>, wie man den Text-Teil des Dokuments rekonstruiert.</p>
@@ -896,7 +897,7 @@ Normaler Text</code></pre>
 <p>Mögliche Gründe für diesen Fehler sind:</p>
 <ul>
 <li><code>implicit_plot</code> wurde verwendet, ohne vorher via <code>load()</code> geladen zu werden.</li>
-<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case a file ending in .gnuplot in the directory <em>Maxima</em>’s variable maxima_userdir points to contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time this file’s contents therefore are helpful when debugging the problem.</li>
+<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case, a file ending in .gnuplot located in the directory, which <em>Maxima</em>’s variable <code>maxima_userdir</code> is pointing, contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time, this file’s contents therefore are helpful when debugging the problem.</li>
 <li>Gnuplot wurde über <em>wxMaxima</em>'s Konfigurationsdialog instruiert, pngcairo zu verwenden, unterstützt diese Ausgabefunktionen aber nicht. Dies ist auf dem Mac ein typisches Problem.</li>
 <li>Gnuplot hat keine funktionsfähige .png-Datei ausgegeben.</li>
 </ul>
@@ -926,7 +927,7 @@ Normaler Text</code></pre>
 <h2 id="wxmaxima-stoppt-wenn-maxima-griechische-buchstaben-oder-umlaute-verarbeitet"><span class="header-section-number">3.11</span> <em>wxMaxima</em> stoppt, wenn <em>Maxima</em> griechische Buchstaben oder Umlaute verarbeitet</h2>
 <p>Wenn <em>Maxima</em> mittels sbcl compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
 <div class="sourceCode"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp">(<span class="kw">setf</span> sb-impl::*default-external-format* :utf<span class="dv">-8</span>)</code></pre></div>
-<p>The folder this file has to be placed in is system- and installation-specific. But any SBCL-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
+<p>Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit SBCL compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den Ort zu nennen:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="diagramme-1"><span class="header-section-number">3.12</span> Diagramme</h2>
 <h3 id="kann-wxmaxima-das-eingebettete-diagramm-gleich-noch-als-datei-ausgeben"><span class="header-section-number">3.12.1</span> Kann <em>wxMaxima</em> das eingebettete Diagramm gleich noch als Datei ausgeben?</h3>
@@ -981,14 +982,15 @@ Normaler Text</code></pre>
 <li><code>-o</code> oder <code>--open=&lt;str&gt;</code>: Öffnet den Dateinamen, der als Argument dieser Kommandozeilenoption angegeben wurde.</li>
 <li><code>-e</code> oder <code>--eval</code>: Evaluiere die Datei nach dem Öffnen.</li>
 <li><code>-b</code> oder <code>--batch</code>: Nach dem Öffnen werden alle Code-Zellen der Datei(en) evaluiert und die Datei danach geschlossen. Dies ist beispielsweise praktisch, wenn <em>Maxima</em> Dateien generiert. Wenn Maxima Fehler detektiert, wird dieser Vorgang abgebrochen, eventuelle Fragen an den User (Mathematik ist an einigen Stellen ein interaktiver Prozess) werden wie üblich an den User weitergereicht.</li>
-<li><code>--logtostdout</code>: Gebe alle all Debug-Nachrichten auch auf die Konsole aus.</li>
-<li><code>--pipe</code>: Gebe die Nachrichten von Maxima auch auf die Konsole aus.</li>
-<li><code>--exit-on-error</code>: Schließe wxMaxima, wenn Maxima einen Fehler detektiert.</li>
-<li><code>-f</code> oder <code>--ini=&lt;str&gt;</code>: Speichere die Konfiguration in der Datei <code>&lt;str&gt;</code></li>
-<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Verwende Maxima-Version <code>&lt;str&gt;</code></li>
-<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Verwende ein Maxima, das mit dem Lisp Compiler <code>&lt;str&gt;</code> compiliert wurde.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Erlaubt, Maxima zusätzliche Argumente mitzugeben</li>
-<li><code>-m</code> oder <code>--maxima=&lt;str&gt;</code>: Sagt, wo die ausführbare Datei von <em>maxima</em> liegt.</li>
+<li><code>--logtostdout</code>: Log all &quot;debug messages&quot; sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>Manche Betriebssysteme verwenden bei Kommandozeilenparametern einen Schrägstrich statt eines Minuszeichens.</p>
 </body>

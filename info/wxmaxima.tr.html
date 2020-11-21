@@ -47,6 +47,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
 </head>
 <body>
 <header>
@@ -893,7 +894,7 @@ Ordinary text</code></pre>
 <p>Bu hatanın olası nedenleri:</p>
 <ul>
 <li>Çizim komutu, &quot;implicit_plot&quot; gibi üçüncü taraf bir paketin parçasıdır, ancak bu paket, çizmeye çalışmadan önce <em>Maxima</em>’ın <code>load ()</code> komutu tarafından yüklenmedi.</li>
-<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case a file ending in .gnuplot in the directory <em>Maxima</em>’s variable maxima_userdir points to contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time this file’s contents therefore are helpful when debugging the problem.</li>
+<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case, a file ending in .gnuplot located in the directory, which <em>Maxima</em>’s variable <code>maxima_userdir</code> is pointing, contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time, this file’s contents therefore are helpful when debugging the problem.</li>
 <li>Gnuplot'a kenar yumuşatma ve ek çizgi stilleri sağlayan pngcairo kütüphanesini kullanması söylendi, ancak bu olasılığı desteklemek için derlenmedi. Çözüm: Yapılandırma iletişim kutusundaki &quot;Çizim için cairo terminalini kullan&quot; onay kutusunun işaretini kaldırın ve <em>Maxima</em>'dan <code>wxplot_pngcairo</code> değerini true olarak ayarlamayın.</li>
 <li>Gnuplot geçerli bir .png dosyası vermedi.</li>
 </ul>
@@ -978,14 +979,15 @@ Ordinary text</code></pre>
 <li><code>-o</code> veya<code>--open = &lt;str&gt;</code>: Bu komut satırı anahtarına bağımsız değişken olarak verilen dosya adını açın</li>
 <li><code>-e</code> veya<code>--eval</code>: Dosyayı açtıktan sonra değerlendirin.</li>
 <li><code>-b</code> veya<code>--batch</code>: Komut satırı bir dosyayı açarsa, bu dosyadaki tüm hücreler değerlendirilir ve daha sonra dosya kaydedilir. Bu, örneğin, dosyada açıklanan oturum <em>Maxima</em> çıktı dosyaları oluşturuyorsa yararlıdır. <em>WxMaxima</em>, <em>Maxima</em> öğesinin bir hata verdiğini algılarsa ve <em>Maxima</em>'ın bir sorusu varsa duraklatılırsa, toplu işlem durdurulur: Matematik, doğası gereği biraz etkileşimlidir, bu nedenle tamamen etkileşimsiz bir toplu işlem her zaman garanti edilemez.</li>
-<li><code>--logtostdout</code>: Tüm &quot;hata ayıklama iletileri&quot; kenar çubuğu iletilerini stderr'e de günlüğe kaydet.</li>
-<li><code>--pipe</code>: İletileri Maxima'dan stdout'a ilet.</li>
-<li><code>--exit-on-error</code>: Herhangi bir maxima hatasında programı kapat.</li>
-<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Bu komut satırı anahtarına bağımsız değişken olarak verilen init dosyasını kullanın</li>
-<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Maxima sürümü kullan <code>&lt;str&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Lisp derleyicisiyle derlenmiş bir Maxima kullanın <code>&lt;str&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Ekstra Maxima bağımsız değişkenleri belirtmeye izin verir</li>
-<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: <em>maxima</em> ikili dosyasının konumunu belirtmenize izin verir</li>
+<li><code>--logtostdout</code>: Log all &quot;debug messages&quot; sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>Eksi yerine bazı işletim sistemleri komut satırı anahtarlarının önünde bir tire kullanabilir.</p>
 </body>

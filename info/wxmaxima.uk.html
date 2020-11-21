@@ -47,6 +47,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
+  <link rel="icon" type="image/svg+xml" href="wxmaxima.svg" />
 </head>
 <body>
 <header>
@@ -893,7 +894,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Можливими причинами цієї помилки є такі:</p>
 <ul>
 <li>Команда креслення є частиною стороннього пакунка, наприклад <code>implicit_plot</code>, але цей пакунок не було завантажено командою <code>load()</code> <em>Maxima</em> до того, як команду було передано на виконання.</li>
-<li><em>Maxima</em> спробувала зробити щось, що не змогла обробити поточна встановлена версія <em>gnuplot</em>. У цьому випадку, файл із суфіксом назви .gnuplot у каталозі, на який вказує змінна <em>Maxima</em> maxima_userdir, містить команди, які <em>Maxima</em> передавала <em>gnuplot</em>. Здебільшого, вміст цього файла є дуже корисним для діагностування проблеми.</li>
+<li><em>Maxima</em> tried to do something the currently installed version of <em>gnuplot</em> isn’t able to understand. In this case, a file ending in .gnuplot located in the directory, which <em>Maxima</em>’s variable <code>maxima_userdir</code> is pointing, contains the instructions from <em>Maxima</em> to <em>gnuplot</em>. Most of the time, this file’s contents therefore are helpful when debugging the problem.</li>
 <li>Gnuplot було наказано використовувати бібліотеку pngcairo, яка надає можливості згладжування зображення та додаткових стилів ліній, але саму програму не було зібрано із підтримкою цієї бібліотеки. Вирішення: зніміть позначку з пункту «Використовувати термінал cairo для креслення» у діалоговому вікні налаштувань і не встановлюйте для <code>wxplot_pngcairo</code> значення true з коду <em>Maxima</em>.</li>
 <li>Gnuplot не вивів коректного файла .png.</li>
 </ul>
@@ -978,14 +979,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>-o</code> або <code>--open=&lt;рядок&gt;</code>: відкрити файл, який передано як аргумент до цього параметра командного рядка</li>
 <li><code>-e</code> або <code>--eval</code>: обробити файл після його відкриття</li>
 <li><code>-b</code> або <code>--batch</code>: якщо ви відкриваєте файл з командного рядка, усі комірки у цьому файлі обчислюються, а потім програма виконує збереження файла. Це, наприклад, корисно, якщо сеанс, який описано у файлі, призводить до того, що <em>Maxima</em> щось виводить до файлів. Пакетну обробку буде зупинено, якщо <em>wxMaxima</em> виявить, що <em>Maxima</em> вивела повідомлення про помилку, і призупинить обробку, якщо <em>Maxima</em> задасть питання: математика є дещо інтерактивною за природою, тому повністю автономна пакетна обробка можлива далеко не завжди.</li>
-<li><code>--logtostdout</code>: записувати до stderr і усі «діагностичні повідомлення» бічної панелі.</li>
-<li><code>--pipe</code>: передавати каналом повідомлення від Maxima до stdout.</li>
-<li><code>--exit-on-error</code>: завершити роботу програми за будь-якої помилки maxima.</li>
-<li><code>-f</code> або <code>--ini=&lt;рядок&gt;</code>: скористатися файлом init, який передано як аргумент цього параметра командного рядка</li>
-<li><code>-u</code>, <code>--use-version=&lt;рядок&gt;</code>: скористатися версією maxima <code>&lt;рядок&gt;</code>.</li>
-<li><code>-l</code>, <code>--lisp=&lt;рядок&gt;</code>: скористатися Maxima, яку зібрано за допомогою компілятора Lisp <code>&lt;рядок&gt;</code>.</li>
-<li><code>-X</code>, <code>--extra-args=&lt;рядок&gt;</code>: надає змогу вказати додаткові аргументи Maxima</li>
-<li><code>-m</code> або <code>--maxima=&lt;рядок&gt;</code>: надає змогу вказати розташування виконуваного файла <em>maxima</em></li>
+<li><code>--logtostdout</code>: Log all &quot;debug messages&quot; sidebar messages to stderr, too.</li>
+<li><code>--pipe</code>: Pipe messages from Maxima to stdout.</li>
+<li><code>--exit-on-error</code>: Close the program on any maxima error.</li>
+<li><code>-f</code> or <code>--ini=&lt;str&gt;</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-u</code>, <code>--use-version=&lt;str&gt;</code>: Use maxima version <code>&lt;str&gt;</code>.</li>
+<li><code>-l</code>, <code>--lisp=&lt;str&gt;</code>: Use a Maxima compiled with Lisp compiler <code>&lt;str&gt;</code>.</li>
+<li><code>-X</code>, <code>--extra-args=&lt;str&gt;</code>: Allows to specify extra Maxima arguments</li>
+<li><code>-m</code> or <code>--maxima=&lt;str&gt;</code>: allows to specify the location of the <em>maxima</em> binary</li>
+<li><code>--enableipc</code>: Lets Maxima control wxMaxima via interprocess communications. Use this option with care.</li>
 </ul>
 <p>Замість символу мінуса у деяких операційних системах перед перемикачами командного рядка використовується тире.</p>
 </body>
