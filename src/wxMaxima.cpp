@@ -6042,7 +6042,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       m_worksheet->m_configuration->ReadStyles();
       m_worksheet->RecalculateForce();
       m_worksheet->m_configuration->FontChanged();
-      m_worksheet->GetTree()->FontsChangedList();
+      if(m_worksheet->GetTree())
+        m_worksheet->GetTree()->FontsChangedList();
 
       m_worksheet->RequestRedraw();
       ConfigChanged();
