@@ -17,6 +17,7 @@ if(PANDOC)
 		# Set the format to "html5" to generate html with pandoc.
 		if(FILEEXTENSION STREQUAL "html")
 			set(FORMAT "html5")
+			set(HEADER_OPTION "--include-in-header=${CMAKE_CURRENT_SOURCE_DIR}/header.html")
 		endif()
 		# Set the format to "latex" to generate pdf with pandoc.
 		if(FILEEXTENSION STREQUAL "pdf")
@@ -25,7 +26,7 @@ if(PANDOC)
 		add_custom_command(
 			OUTPUT ${FILEBASENAME}.${FILEEXTENSION}
 			DEPENDS ${FILEBASENAME}.md
-			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -s -o ${FILEBASENAME}.${FILEEXTENSION} --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
+			COMMAND ${PANDOC} ${FILEBASENAME}.md -t ${FORMAT} -s "${HEADER_OPTION}" -o ${FILEBASENAME}.${FILEEXTENSION} --number-sections --table-of-contents --standalone --css=wxmaxima.css --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}
 			COMMENT "Generating ${FILEBASENAME}.${FILEEXTENSION}")
 		add_custom_target(build_${FILEBASENAME}.${FILEEXTENSION} DEPENDS ${FILEBASENAME}.${FILEEXTENSION})
 		add_dependencies(${FILEEXTENSION} build_${FILEBASENAME}.${FILEEXTENSION})
