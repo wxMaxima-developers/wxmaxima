@@ -1281,8 +1281,11 @@ void wxMaximaFrame::SetupMenu()
                      listextractmenu,
                      _("Extract list Elements"));
   wxMenu *listappendSub = new wxMenu;
-  listappendSub->Append(menu_list_append_item, _("Append an element"),
-                        _("Append an element to an existing list"),
+  listappendSub->Append(menu_list_append_item_end, _("Append an element"),
+                        _("Append an element to the end of an existing list"),
+                        wxITEM_NORMAL);
+  listappendSub->Append(menu_list_append_item_start, _("Prepend an element"),
+                        _("Append an element to the beginning an existing list"),
                         wxITEM_NORMAL);
   listappendSub->Append(menu_list_append_list, _("Append a list"),
                         _("Append a list to an existing list"),

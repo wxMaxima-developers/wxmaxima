@@ -988,7 +988,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
           wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
   Connect(menu_list_remove_element, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
-  Connect(menu_list_append_item, wxEVT_MENU,
+  Connect(menu_list_append_item_start, wxEVT_MENU,
+          wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
+  Connect(menu_list_append_item_end, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
   Connect(menu_list_append_list, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ListMenu), NULL, this);
@@ -7735,13 +7737,31 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
     break;
-  case menu_list_append_item:
+  case menu_list_append_item_start:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Item"), _("List"),
+                                 wxT("1"), expr,
+                                 m_worksheet->m_configuration,
+                                 this, -1,
+                                 _("Add an element to the start of a list"),
+                                 true);
+      //wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("cons(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_append_item_end:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Item"),
                                  expr, wxT("1"),
                                  m_worksheet->m_configuration,
                                  this, -1,
-                                 _("Add an element to a list"),
+                                 _("Add an element to the end of a list"),
                                  true);
       //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
