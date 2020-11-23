@@ -1,4 +1,7 @@
 # Current
+ * A chinese translation of the manual by 刘荣.
+
+# 20.11.1
  * Many bug fixes in various places
  * Work on a more modern look-and-feel
  * stringdisp support and a menu item for it
