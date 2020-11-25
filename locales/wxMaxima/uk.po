@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-16 06:25+0100\n"
-"PO-Revision-Date: 2020-11-05 22:38+0200\n"
+"PO-Revision-Date: 2020-11-25 17:57+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.11.70\n"
 
 #: ../../src/StatusBar.cpp:186
@@ -156,9 +156,8 @@ msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "«Копіювати як LaTeX» додає позначки рівняння"
 
 #: ../../src/ConfigDialogue.cpp:677
-#, fuzzy
 msgid "\"Numpad Enter\" always evaluates cells"
-msgstr "Enter для обчислення у комірках"
+msgstr "Enter з цифрової панелі завжди обчислює комірки"
 
 #: ../../src/wxMaximaFrame.cpp:2012
 msgid "\"implies\" symbol"
@@ -669,10 +668,8 @@ msgid "Added much text (%li chars) to the XML inspector."
 msgstr "У інспектор XML додано забагато тексту (%li символів)."
 
 #: ../../src/ConfigDialogue.cpp:1377
-#, fuzzy
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy"
-msgstr ""
-"Додаткові формат буфера для вставляння даних при звичайному копіюванні:"
+msgstr "Додаткові формат буфера для вставляння даних при звичайному копіюванні"
 
 #: ../../src/ConfigDialogue.cpp:341
 msgid ""
@@ -784,9 +781,8 @@ msgid "Alternatively the curve can be made more colorful:\n"
 msgstr "Крім того, криву можна зробити кольоровішою:\n"
 
 #: ../../src/wxMaximaFrame.cpp:780
-#, fuzzy
 msgid "Always after underscores"
-msgstr "Завжди автоматичний нижній індекс після символу підкреслювання"
+msgstr "Завжди після символів підкреслювання"
 
 #: ../../src/wxMaximaFrame.cpp:781
 msgid "Always autosubscript after an underscore"
@@ -794,7 +790,7 @@ msgstr "Завжди автоматичний нижній індекс післ
 
 #: ../../src/wxMaximaFrame.cpp:789
 msgid "Always display this variable with subscript"
-msgstr ""
+msgstr "Завжди показувати цю змінну із нижнім індексом"
 
 #: ../../src/Worksheet.cpp:1538
 msgid "Always show all digits"
@@ -1481,7 +1477,7 @@ msgstr "Зняти позначення"
 
 #: ../../src/ConfigDialogue.cpp:1401
 msgid "Clipboard format parameters"
-msgstr ""
+msgstr "Параметри форматування буфера обміну"
 
 #: ../../src/wxMaximaFrame.cpp:659
 msgid "Close\tCtrl+W"
@@ -2005,11 +2001,12 @@ msgstr "Діагностичні повідомлення"
 
 #: ../../src/wxMaximaFrame.cpp:793
 msgid "Declare Text to always be displayed as subscript"
-msgstr ""
+msgstr "Оголосити, що текст завжди буде показано як нижній індекс"
 
 #: ../../src/wxMaxima.cpp:6182
 msgid "Declare a text snippet to always be displayed as subscript"
 msgstr ""
+"Оголосити, що фрагмент тексту має бути завжди показано як нижній індекс"
 
 #: ../../src/wxMaximaFrame.cpp:1131
 msgid "Decompose rational function to partial fractions"
@@ -2133,9 +2130,8 @@ msgid "Direction:"
 msgstr "Напрямок:"
 
 #: ../../src/ConfigDialogue.cpp:542
-#, fuzzy
 msgid "Display"
-msgstr "Показ &часу"
+msgstr "Показ"
 
 #: ../../src/wxMaximaFrame.cpp:962
 msgid "Display Te&X Form"
@@ -2370,18 +2366,16 @@ msgid "Enter a matrix"
 msgstr "Введення матриці"
 
 #: ../../src/ConfigDialogue.cpp:674
-#, fuzzy
 msgid "Enter adds newlines, Ctrl+Enter evaluates cells"
-msgstr "Enter для обчислення у комірках"
+msgstr "Enter додає розриви рядків, Ctrl+Enter — обчислення у комірках"
 
 #: ../../src/wxMaxima.cpp:7887
 msgid "Enter an equation for rational simplification:"
 msgstr "Введіть рівняння для раціонального спрощення:"
 
 #: ../../src/ConfigDialogue.cpp:672
-#, fuzzy
 msgid "Enter evaluates cells, Ctrl+Enter adds newlines"
-msgstr "Enter для обчислення у комірках"
+msgstr "Enter — обчислення у комірках, Ctrl+Enter додає розрив рядка"
 
 #: ../../src/wxMaxima.cpp:6975
 msgid "Enter matrix"
@@ -3531,9 +3525,8 @@ msgstr ""
 "клавіші Delete призводить до вилучення вмісту комірки поряд з курсором."
 
 #: ../../src/ConfigDialogue.cpp:671
-#, fuzzy
 msgid "Hotkeys for sending commands to maxima"
-msgstr "Надсилаємо команду до Maxima"
+msgstr "Комбінації клавіш для надсилання команд maxima"
 
 #: ../../src/wxMaxima.cpp:8352
 msgid "How many digits to show:"
@@ -3802,6 +3795,8 @@ msgid ""
 "If this checkbox isn't checked the current command is sent to maxima only on "
 "pressing Ctrl+Enter"
 msgstr ""
+"Якщо цей пункт не позначено, поточну команду буде надіслано до maxima лише"
+" після натискання комбінації Ctrl+Enter"
 
 #: ../../examples/examples_gettext.h:2104
 msgid ""
@@ -4238,9 +4233,8 @@ msgid "Intelligently hide cell brackets"
 msgstr "Розумно приховати дужки комірок"
 
 #: ../../src/ConfigDialogue.cpp:644
-#, fuzzy
 msgid "Interaction"
-msgstr "перетин"
+msgstr "Взаємодія"
 
 #: ../../src/ConfigDialogue.cpp:990
 msgid "Interactive popup memory limit [MB/plot]:"
@@ -4512,7 +4506,7 @@ msgid "Length"
 msgstr "Довжина"
 
 #: ../../examples/examples_gettext.h:1774
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
@@ -4898,9 +4892,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../../src/ConfigDialogue.cpp:1035
-#, fuzzy
 msgid "Maxima Location"
-msgstr "Питання Maxima"
+msgstr "Розташування Maxima"
 
 #: ../../examples/examples_gettext.h:1213
 msgid ""
@@ -4981,9 +4974,8 @@ msgstr ""
 "Maxima: "
 
 #: ../../src/ConfigDialogue.cpp:1087
-#, fuzzy
 msgid "Maxima configuration"
-msgstr "Налаштування wxMaxima"
+msgstr "Налаштування Maxima"
 
 #: ../../src/Configuration.cpp:1394
 msgid "Maxima errors"
@@ -5158,9 +5150,8 @@ msgstr ""
 "3602879701896397/36028797018963968 замість 0.1 додає (дуже малу) похибку."
 
 #: ../../src/ConfigDialogue.cpp:1152
-#, fuzzy
 msgid "Maxima usage"
-msgstr "Дов&ідка з Maxima"
+msgstr "Використання Maxima"
 
 #: ../../src/wxMaxima.cpp:2667
 #, c-format
@@ -5335,7 +5326,7 @@ msgstr ""
 
 #: ../../src/ConfigDialogue.cpp:1408
 msgid "Maximum bitmap size on clipboard [Mb]:"
-msgstr ""
+msgstr "Розмір растрового зображення Maximum у буфері [МБ]:"
 
 #: ../../src/ConfigDialogue.cpp:561
 msgid "Maximum displayed number of digits:"
@@ -5472,11 +5463,11 @@ msgstr "Ніколи"
 
 #: ../../src/wxMaxima.cpp:6162 ../../src/wxMaxima.cpp:6172
 msgid "Never autosubscript this variable"
-msgstr ""
+msgstr "Ніколи не переводити цю змінну у нижній індекс автоматично"
 
 #: ../../src/wxMaximaFrame.cpp:791
 msgid "Never display this variable with subscript"
-msgstr ""
+msgstr "Ніколи не показувати цю змінну із нижнім індексом"
 
 #: ../../src/Worksheet.cpp:1415 ../../src/Worksheet.cpp:1717
 msgid "Never offer known answers"
@@ -5751,9 +5742,8 @@ msgid "Online tutorials"
 msgstr "Навчальні матеріали у інтернеті"
 
 #: ../../src/wxMaximaFrame.cpp:783
-#, fuzzy
 msgid "Only Integers and single letters"
-msgstr "Цілі числа і окремі літери"
+msgstr "Лише цілі числа і окремі літери"
 
 #: ../../src/ConfigDialogue.cpp:603
 msgid "Only user-defined labels"
@@ -7586,7 +7576,7 @@ msgstr "Текст, що збігається із позначеним"
 
 #: ../../src/wxMaxima.cpp:6183
 msgid "Text snippet"
-msgstr ""
+msgstr "Фрагмент тексту"
 
 #: ../../examples/examples_gettext.h:2223
 msgid ""
@@ -8634,7 +8624,7 @@ msgid "We can introduce (\"substitute\") them into other equations:\n"
 msgstr "Ви можемо вставити («підставити») їх до інших рівнянь:\n"
 
 #: ../../examples/examples_gettext.h:1788
-#, fuzzy, c-format
+#, no-c-format
 msgid ""
 "We can propose another set of values: Two resistors that are only 10% ones, "
 "but are guaranteed to always deviate into the same direction by the same "
