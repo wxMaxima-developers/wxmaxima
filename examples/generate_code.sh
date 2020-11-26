@@ -2,7 +2,7 @@
 
 # convert SVG images to PNG and then to C Sourcecode (using xxd -i)
 
-cat >examples_gettext.h <<END
+cat >examples_gettext.list <<END
 /* Automatically generated file using generate_code.sh from the .wxm examples           */
 /* This file is part of wxMaxima, but read only by gettext allowing to translate the    */
 /* example files.                                                                       */
@@ -73,6 +73,6 @@ for i in *.wxm; do
 	sed -e "s#^\\(.*wxMaxima: heading6.*end.*$\\)#) + \\1 #g" |\
 	sed -e "s#^\\(.*wxMaxima: caption.*start.*$\\)#\\1 + _(#g" |\
 	sed -e "s#^\\(.*wxMaxima: caption.*end.*$\\)#) + \\1 #g" \
-	>> examples_gettext.h
+	>> examples_gettext.list
 done
-echo "\" \";" >> examples_gettext.h
+echo "\" \";" >> examples_gettext.list
