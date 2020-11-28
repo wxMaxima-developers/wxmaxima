@@ -103,13 +103,15 @@ private:
   static const wxString *GetInternedEmpty();
 };
 
-template <> struct std::hash<AFontName> final
+namespace std {
+template <> struct hash<AFontName> final
 {
   size_t operator()(AFontName name) const
   {
-    return std::hash<const void*>()(name.m_fontName);
+    return hash<const void*>()(name.m_fontName);
   }
 };
+}
 
 //! Returns a r,g,b components packed into a 32-bit 00bbggrr triple.
 static constexpr uint32_t MAKE_RGB(uint32_t r, uint32_t g, uint32_t b)
