@@ -462,11 +462,10 @@ void GroupCell::UpdateConfusableCharWarnings()
     while(cmp != cmdsAndVariables.end())
     {
       // iterate through all lookalike chars
-      for (wxString::const_iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
+      for (wxString::const_iterator it = m_lookalikeChars.begin(); it != m_lookalikeChars.end(); ++it)
       {
-        wxUniChar ch1 = *it;
-        ++it;
-        wxASSERT(it < m_lookalikeChars.end());
+        wxUniChar ch1 = *it++;
+        wxASSERT(it != m_lookalikeChars.end());
         wxUniChar ch2 = *it;
         wxString word_subst = word;
         if(word_subst.Replace(ch1,ch2))
