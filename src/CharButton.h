@@ -23,6 +23,8 @@
 #ifndef CHARBUTTON_H
 #define CHARBUTTON_H
 
+#include "wx/stattext.h"
+
 /*! \file
 
   This file contains the definition of the class Charbutton that allows to 
@@ -30,12 +32,12 @@
  */
 #include "precomp.h"
 #include "StringUtils.h"
-#include <wx/button.h>
+#include <wx/panel.h>
 
 /*! This class generates a pane containing the last commands that were issued.
 
  */
-class CharButton : public wxButton
+class CharButton : public wxPanel
 {
 public:
   //! A definition of this button, used to construct it.
@@ -57,8 +59,19 @@ protected:
   void ForwardToParent(wxMouseEvent &event);
   void CharButtonPressed(wxCommandEvent &event);
   wchar_t m_char;
+  void OnSize(wxSizeEvent &event);
+  void OnIdle(wxIdleEvent &event);
+  void MouseOverPanel(wxMouseEvent &event);
+  void MouseOverText(wxMouseEvent &event);
+  void MouseLeftPanel(wxMouseEvent &event);
+  void MouseLeftText(wxMouseEvent &event);
 private:
+  bool m_mouseOverPanel = false;
+  bool m_mouseOverText = false;
+  bool m_backgroundColorChangeNeeded = true;
+  wxStaticText *m_buttonText;
   wxWindow *m_worksheet;
+  wxColor m_defaultBackground;
 };
 
 #endif // CHARBUTTON_H
