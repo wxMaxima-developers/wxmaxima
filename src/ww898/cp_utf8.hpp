@@ -25,7 +25,7 @@
 #pragma once
 
 #include <cstdint>
-#include <stdexcept>
+#include <utility>
 
 namespace ww898 {
 namespace utf {
@@ -42,6 +42,7 @@ struct utf8 final
     static size_t const max_unicode_symbol_size = 4;
     static size_t const max_supported_symbol_size = 6;
 
+    static uint32_t const invalid_code_point = -1;
     static uint32_t const max_supported_code_point = 0x7FFFFFFF;
 
     using char_type = uint8_t;
@@ -53,7 +54,8 @@ struct utf8 final
         if (ch0 < 0x80) // 0xxx_xxxx
             return 1;
         if (ch0 < 0xC0)
-            throw std::runtime_error("The utf8 first char in sequence is incorrect");
+            return 1;
+            //throw std::runtime_error("The utf8 first char in sequence is incorrect");
         if (ch0 < 0xE0) // 110x_xxxx 10xx_xxxx
             return 2;
         if (ch0 < 0xF0) // 1110_xxxx 10xx_xxxx 10xx_xxxx
@@ -64,7 +66,8 @@ struct utf8 final
             return 5;
         if (ch0 < 0xFE) // 1111_110x 10xx_xxxx 10xx_xxxx 10xx_xxxx 10xx_xxxx 10xx_xxxx
             return 6;
-        throw std::runtime_error("The utf8 first char in sequence is incorrect");
+        return 1;
+        //throw std::runtime_error("The utf8 first char in sequence is incorrect");
     }
 
     template<typename ReadFn>
@@ -74,7 +77,8 @@ struct utf8 final
         if (ch0 < 0x80) // 0xxx_xxxx
             return ch0;
         if (ch0 < 0xC0)
-            throw std::runtime_error("The utf8 first char in sequence is incorrect");
+            return invalid_code_point;
+            //throw std::runtime_error("The utf8 first char in sequence is incorrect");
         if (ch0 < 0xE0) // 110x_xxxx 10xx_xxxx
         {
             char_type const ch1 = read_fn(); if (ch1 >> 6 != 2) goto _err;
@@ -110,8 +114,10 @@ struct utf8 final
             char_type const ch5 = read_fn(); if (ch5 >> 6 != 2) goto _err;
             return (ch0 << 30) + (ch1 << 24) + (ch2 << 18) + (ch3 << 12) + (ch4 << 6) + ch5 - 0x82082080;
         }
-        throw std::runtime_error("The utf8 first char in sequence is incorrect");
-        _err: throw std::runtime_error("The utf8 slave char in sequence is incorrect");
+        return invalid_code_point;
+        //throw std::runtime_error("The utf8 first char in sequence is incorrect");
+        _err: return invalid_code_point;
+        //throw std::runtime_error("The utf8 slave char in sequence is incorrect");
     }
 
     template<typename WriteFn>
@@ -145,7 +151,8 @@ struct utf8 final
             goto _5;
         }
         else
-            throw std::runtime_error("Tool large UTF8 code point");
+            return;
+            //throw std::runtime_error("Tool large UTF8 code point");
         return;
         _5: write_fn(static_cast<char_type>(0x80 | (cp >> 24 & 0x3F)));
         _4: write_fn(static_cast<char_type>(0x80 | (cp >> 18 & 0x3F)));

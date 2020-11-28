@@ -25,7 +25,7 @@
 #pragma once
 
 #include <cstdint>
-#include <stdexcept>
+#include <utility>
 
 namespace ww898 {
 namespace utf {
@@ -40,6 +40,7 @@ struct utf16 final
     static size_t const max_unicode_symbol_size = 2;
     static size_t const max_supported_symbol_size = max_unicode_symbol_size;
 
+    static uint32_t const invalid_code_point = -1;
     static uint32_t const max_supported_code_point = 0x10FFFF;
 
     using char_type = uint16_t;
@@ -62,7 +63,8 @@ struct utf16 final
         if (ch0 < 0xDC00) // [0xD800‥0xDBFF] [0xDC00‥0xDFFF]
             return 2;
         if (ch0 < 0xE000)
-            throw std::runtime_error("The high utf16 surrogate char is expected");
+            return 1;
+            //throw std::runtime_error("The high utf16 surrogate char is expected");
         // [0xE000‥0xFFFF]
         return 1;
     }
@@ -75,11 +77,15 @@ struct utf16 final
             return ch0;
         if (ch0 < 0xDC00) // [0xD800‥0xDBFF] [0xDC00‥0xDFFF]
         {
-            char_type const ch1 = read_fn(); if (ch1 >> 10 != 0x37) throw std::runtime_error("The low utf16 surrogate char is expected");
+            char_type const ch1 = read_fn();
+            if (ch1 >> 10 != 0x37)
+                return invalid_code_point;
+                //throw std::runtime_error("The low utf16 surrogate char is expected");
             return (ch0 << 10) + ch1 - 0x35FDC00;
         }
         if (ch0 < 0xE000)
-            throw std::runtime_error("The high utf16 surrogate char is expected");
+            return invalid_code_point;
+            //throw std::runtime_error("The high utf16 surrogate char is expected");
         // [0xE000‥0xFFFF]
         return ch0;
     }
@@ -92,7 +98,8 @@ struct utf16 final
         else if (cp < 0x10000)
         {
             if (cp < 0xE000)
-                throw std::runtime_error("The utf16 code point can not be in surrogate range");
+                return;
+                //throw std::runtime_error("The utf16 code point can not be in surrogate range");
             // [0xE000‥0xFFFF]
             write_fn(static_cast<char_type>(cp));
         }
@@ -102,7 +109,8 @@ struct utf16 final
             write_fn(static_cast<char_type>(0xDC00 + (cp       & 0x3FF)));
         }
         else
-            throw std::runtime_error("Too large the utf16 code point");
+            return;
+            // throw std::runtime_error("Too large the utf16 code point");
     }
 };
 

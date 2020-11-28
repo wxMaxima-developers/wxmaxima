@@ -25,7 +25,7 @@
 #pragma once
 
 #include <cstdint>
-#include <stdexcept>
+#include <utility>
 
 namespace ww898 {
 namespace utf {
@@ -35,6 +35,7 @@ struct utf32 final
     static size_t const max_unicode_symbol_size = 1;
     static size_t const max_supported_symbol_size = 1;
 
+    static uint32_t const invalid_code_point = -1;
     static uint32_t const max_supported_code_point = 0x7FFFFFFF;
 
     using char_type = uint32_t;
@@ -51,7 +52,8 @@ struct utf32 final
         char_type const ch = std::forward<ReadFn>(read_fn)();
         if (ch < 0x80000000)
             return ch;
-        throw std::runtime_error("Too large utf32 char");
+        return invalid_code_point;
+        //throw std::runtime_error("Too large utf32 char");
     }
 
     template<typename WriteFn>
@@ -60,7 +62,8 @@ struct utf32 final
         if (cp < 0x80000000)
             std::forward<WriteFn>(write_fn)(static_cast<char_type>(cp));
         else
-            throw std::runtime_error("Too large utf32 code point");
+            return;
+            //throw std::runtime_error("Too large utf32 code point");
     }
 };
 
