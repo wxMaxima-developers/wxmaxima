@@ -54,7 +54,6 @@
 #include "ww898/utf_selector.hpp"
 #include <cstring>
 #include <wx/stream.h>
-#include <wx/log.h>
 
 using utf8 = ww898::utf::utf8;
 using utfwx = ww898::utf::utf_selector_t<wxStringCharType>;
@@ -130,8 +129,6 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
   // Shove leftover input data to the beginning of the buffer
   auto const inBufPos = inPtr - m_inBuf.data();
   auto const inLeftCount = m_inBufCount - inBufPos;
-  //std::cout << inBufPos << " " << inLeftCount << std::endl;
-  wxLogDebug("%lld %lld %lld", inBufPos, m_inBufCount, inLeftCount);
   memmove(m_inBuf.data(), inPtr, inLeftCount);
   m_inBufCount = inLeftCount;
 
