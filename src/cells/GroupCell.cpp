@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2008-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -462,12 +462,11 @@ void GroupCell::UpdateConfusableCharWarnings()
     while(cmp != cmdsAndVariables.end())
     {
       // iterate through all lookalike chars
-      for (wxString::const_iterator it = m_lookalikeChars.begin(); it < m_lookalikeChars.end(); ++it)
+      for (wxString::const_iterator it = m_lookalikeChars.begin(); it != m_lookalikeChars.end(); ++it)
       {
-        wxChar ch1 = *it;
-        ++it;
-        wxASSERT(it < m_lookalikeChars.end());
-        wxChar ch2 = *it;
+        wxUniChar ch1 = *it++;
+        wxASSERT(it != m_lookalikeChars.end());
+        wxUniChar ch2 = *it;
         wxString word_subst = word;
         if(word_subst.Replace(ch1,ch2))
         {

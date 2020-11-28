@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 20.01.2-DevelopmentSnapshot ] */
+/* [ Created with wxMaxima version 20.11.1 ] */
 /* [wxMaxima: title   start ]
 Tolerance calculations
    [wxMaxima: title   end   ] */
@@ -67,30 +67,22 @@ The tolerance calculation package lets tol[n] tolerate between -1 and 1. tol[n] 
 
 
 /* [wxMaxima: comment start ]
-Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor with 1% tolerance instead:
+Let's assume that R_1 is a 100Ω with 10 percents of tolerance. R_2 is a 1000Ω resistor with a 1 percent tolerance instead:
    [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-vals1:[
-    R_1=100*(1+.1*tol[1]),
-    R_2=1000*(1+.01*tol[2])
-];
-wc_inputvalueranges(%);
+%
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: comment start ]
-We can propose another set of values: Two resistors that are only 10% ones, but are guaranteed to always deviate into the same direction by the same percentage.
+We can propose another set of values: Two resistors that have a high tolerance, but are guaranteed to always deviate into the same direction by the same percentage.
    [wxMaxima: comment end   ] */
 
 
 /* [wxMaxima: input   start ] */
-vals2:[
-    R_1=100*(1+.1*tol[1]),
-    R_2=1000*(1+.1*tol[1])
-];
-wc_inputvalueranges(%);
+%
 /* [wxMaxima: input   end   ] */
 
 
@@ -181,12 +173,7 @@ Now we want to tell maxima that the voltage source provides a voltage between 4V
 
 
 /* [wxMaxima: input   start ] */
-vals3:[
-    R_1=100*(1+.1*tol[1]),
-    R_2=1000*(1+.1*tol[1]),
-    U_In=wc_mintypmax2tol(tol[3],4,4.5,6)    
-];
-wc_inputvalueranges(%);
+%
 /* [wxMaxima: input   end   ] */
 
 
@@ -290,8 +277,7 @@ hole3:(x-x_3)^2+(y-y_3)^2=r^2;
 
 
 /* [wxMaxima: input   start ] */
-solve([hole1,hole2,hole3],[x,y,r])$
-sol1:%[2];
+%
 /* [wxMaxima: input   end   ] */
 
 
@@ -373,4 +359,4 @@ wxdraw2d(
 
 
 /* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 20.01.2-DevelopmentSnapshot"$
+"Created with wxMaxima 20.11.1"$

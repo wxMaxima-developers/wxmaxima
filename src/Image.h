@@ -252,8 +252,9 @@ private:
   //! The name of the image, if known.
   wxString m_imageName;
   
+  struct free_deleter { void operator()(void *p) const { std::free(p); } };
   NSVGimage* m_svgImage = {};
-  std::unique_ptr<struct NSVGrasterizer, decltype(std::free)*> m_svgRast{nullptr, std::free};
+  std::unique_ptr<struct NSVGrasterizer, free_deleter> m_svgRast{nullptr};
 
   std::shared_ptr<wxFileSystem> m_fs_keepalive_gnuplotdata;
   std::shared_ptr<wxFileSystem> m_fs_keepalive_imagedata;

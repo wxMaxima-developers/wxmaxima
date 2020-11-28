@@ -51,29 +51,14 @@
 //  SPDX-License-Identifier: wxWindows
 
 #include "StreamUtils.h"
-#include <wx/stream.h>
-#include <algorithm>
+#include "ww898/utf_selector.hpp"
 #include <cstring>
+#include <wx/stream.h>
 
-UTF8Decoder::UTF8Decoder()
-#if !(defined(__WINDOWS__) && wxUSE_UNICODE)
-    // This works on newer Windows 10, but fails on older Windows,
-    // thus we fall back to the deprecated utf8 codec.
-    : m_locale("C.UTF-8"),
-      m_codec(std::use_facet<std::remove_reference<decltype(m_codec)>::type>(m_locale))
-#endif
-{
-}
+using utf8 = ww898::utf::utf8;
+using utfwx = ww898::utf::utf_selector_t<wxStringCharType>;
 
-UTF8Decoder::DecodeResult UTF8Decoder::Decode(UTF8Decoder::State &state,
-                                              wxInputStream &in, size_t maxRead,
-                                              size_t maxWrite)
-{
-  return state.Decode(m_codec, in, maxRead, maxWrite);
-}
-
-UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(const Codec &codec,
-                                                     wxInputStream &in,
+UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(wxInputStream &in,
                                                      size_t maxRead,
                                                      size_t maxWrite)
 {
@@ -94,25 +79,49 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(const Codec &codec,
   if (m_outBuf.size() < maxWrite)
     m_outBuf.resize(maxWrite);
 
-  // Decode
+  // Transcode
   auto const *inPtr = m_inBuf.data();
   auto *outPtr = m_outBuf.data();
 
-  auto const dr = codec.in(m_codecState, inPtr, inPtr + m_inBufCount, inPtr,
-                           outPtr, outPtr + m_outBuf.size(), outPtr);
+  size_t const inLengthBeforeCheckpoint =
+    (m_inBufCount >= utf8::max_supported_symbol_size) ?
+    m_inBufCount - (utf8::max_supported_symbol_size - 1): 0;
 
-  // Fallback for noconv
-  if (dr == std::codecvt_base::noconv)
-  {
-    wxASSERT(inPtr == m_inBuf.data() && outPtr == m_outBuf.data());
-    auto toCopy = std::min(m_inBufCount, m_outBuf.size());
-    std::copy(inPtr, inPtr+toCopy, outPtr);
-    inPtr += toCopy;
-    outPtr += toCopy;
-  }
-  else if (dr == std::codecvt_base::error)
-  {
-    m_hadError = true;
+  size_t const outLengthBeforeCheckpoint =
+    (maxWrite >= utfwx::max_supported_symbol_size) ?
+    maxWrite - (utfwx::max_supported_symbol_size - 1): 0;
+
+  auto const *const inCheckpoint = inPtr + inLengthBeforeCheckpoint;
+  auto const *const inEnd = inPtr + m_inBufCount;
+  auto *const outCheckpoint = outPtr + outLengthBeforeCheckpoint;
+  auto *const outEnd = outPtr + m_outBuf.size();
+  bool hadError = false;
+
+  for (;;) {
+    // Decode utf8
+    if (inPtr >= inCheckpoint) {
+      if (inPtr == inEnd)
+        break;
+      auto const size = utf8::char_size([=]{ return *inPtr; });
+      if (ptrdiff_t(size) > (inEnd - inPtr))
+        break;
+    }
+    auto const *const prevInPtr = inPtr;
+    auto const cp = utf8::read([&]{ return *inPtr++; });
+    if (cp == utf8::invalid_code_point) {
+      hadError = true;
+      continue;
+    }
+
+    // Encode based on wxStringCharType
+    if (outPtr >= outCheckpoint) {
+      auto const size = utfwx::char_size([=]{ return cp; });
+      if (ptrdiff_t(size) > (outEnd - outPtr)) { // we've ran out of write space
+        inPtr = prevInPtr; // un-read the input data so we won't lose it
+        break;
+      }
+    }
+    utfwx::write(cp, [&](auto ch){ *outPtr++ = ch; });
   }
 
   auto const outBufCount = outPtr - m_outBuf.data();
@@ -128,6 +137,6 @@ UTF8Decoder::DecodeResult UTF8Decoder::State::Decode(const Codec &codec,
   result.outputSize = outBufCount;
   result.output = m_outBuf.data();
   result.outputEnd = m_outBuf.data() + outBufCount;
-  result.ok = (dr != std::codecvt_base::error);
+  result.ok = !hadError;
   return result;
 }
