@@ -236,8 +236,8 @@ class InnerCellAdapter final {
 
 public:
   explicit InnerCellAdapter(iterator inner) : m_iter(inner) {}
-  constexpr iterator begin() const { return m_iter; }
-  constexpr iterator end() const { return {}; }
+  iterator begin() const { return m_iter; }
+  iterator end() const { return {}; }
 };
 
 #endif
