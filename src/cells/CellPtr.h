@@ -246,9 +246,9 @@ protected:
 public:
   static size_t GetLiveInstanceCount() { return m_instanceCount; }
   static size_t GetLiveControlBlockInstanceCount() { return ControlBlock::GetLiveInstanceCount(); }
-  constexpr bool IsNull() const { return !m_ptr.GetImpl(); }
-  constexpr bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
-  constexpr bool HasOneCellPtr() const { return m_ptr.GetCellPtrBase(); }
+  bool IsNull() const { return !m_ptr.GetImpl(); }
+  bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
+  bool HasOneCellPtr() const { return m_ptr.GetCellPtrBase(); }
 };
 
 inline void swap(Observed::CellPtrImplPointer &a, Observed::CellPtrImplPointer &b) noexcept
@@ -431,9 +431,9 @@ public:
 
   static size_t GetLiveInstanceCount() noexcept { return m_instanceCount; }
 
-  constexpr bool IsNull() const { return !m_ptr.GetImpl(); }
-  constexpr bool HasOneObserved() const { return m_ptr.GetObserved(); }
-  constexpr bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
+  bool IsNull() const { return !m_ptr.GetImpl(); }
+  bool HasOneObserved() const { return m_ptr.GetObserved(); }
+  bool HasControlBlock() const { return m_ptr.GetControlBlock(); }
 };
 
 static_assert(alignof(Observed) >= 4, "Observed doesn't have minimum viable alignment");
