@@ -44,7 +44,7 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id),
   m_oldmaximaPercentage = -1;
   SetFieldsCount(3, widths);
   int styles[] = {wxSB_NORMAL,wxSB_NORMAL,wxSB_FLAT};
-  SetStatusStyles(styles);
+  SetStatusStyles(3, styles);
   m_stdToolTip = _(
           "Maxima, the program that does the actual mathematics is started as a separate process. This has the advantage that an eventual crash of maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
   m_networkErrToolTip = _(
