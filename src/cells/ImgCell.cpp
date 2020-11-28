@@ -226,9 +226,9 @@ wxSize ImgCell::ToImageFile(wxString filename)
   return m_image->ToImageFile(filename);
 }
 
-static void writeHex(void *data, size_t length, wxStringCharType *out)
+static void writeHex(void *data, size_t length, wxStringBuffer::CharType *out)
 {
-  using char_t = wxStringCharType;
+  using char_t = std::remove_reference_t<decltype(*out)>;
   char *const end = static_cast<char*>(data) + length;
   for (char *in = static_cast<char*>(data); in != end; in++)
   {
