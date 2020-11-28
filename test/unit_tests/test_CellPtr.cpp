@@ -33,7 +33,7 @@
 
 AFontSize Style::GetFontSize() const { return {}; }
 AFontName Style::Default_FontName() { return {}; }
-const AFontSize Style::Default_FontSize;
+constexpr const AFontSize Style::Default_FontSize;
 AFontSize Configuration::Scale_Px(AFontSize) const { return {}; }
 wxColour Configuration::GetColor(TextStyle) { return {}; }
 void Configuration::NotifyOfCellRedraw(const Cell *) {}
