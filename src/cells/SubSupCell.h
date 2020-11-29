@@ -35,7 +35,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_baseCell, &m_preSupCell}; }
+  int GetInnerCellCount() const override { return 5; }
+  Cell *GetInnerCell(int index) const override { return (&m_baseCell)[index].get(); }
 
   void SetIndex(std::unique_ptr<Cell> &&index);
   void SetExponent(std::unique_ptr<Cell> &&expt);

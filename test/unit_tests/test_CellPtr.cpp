@@ -507,7 +507,8 @@ class IterArrayCell : public FullTestCell {
 public:
   std::unique_ptr<Cell> Copy() const override { return std::make_unique<IterArrayCell<N>>(); }
 
-  InnerCellIterator InnerBegin() const override { return {&inner[0], &inner[N-1]}; }
+  int GetInnerCellCount() const override { return inner.size(); }
+  Cell *GetInnerCell(int index) const override { return inner[index].get(); }
 
   std::array<std::unique_ptr<Cell>, N> inner;
 };
@@ -554,7 +555,7 @@ SCENARIO("An InnerCellIterator skips null cells")
   GIVEN("A cell with two null inner owning cell pointers") {
     IterArrayCell<2> cell;
     WHEN("An inner cell iterator and a range are created on that cell") {
-      InnerCellIterator it(&cell.inner[0], &cell.inner[1]);
+      InnerCellIterator it(&cell);
       auto range = OnInner(&cell);
       THEN("The iterator equals the end iterator")
         REQUIRE_COMM_OP_EQ(it, range.end());
@@ -571,7 +572,7 @@ SCENARIO("An InnerCellIterator skips null cells")
     IterArrayCell<2> cell;
     cell.inner[0] = std::make_unique<FullTestCell>();
     WHEN("An inner cell iterator is created on that cell") {
-      InnerCellIterator it(&cell.inner[0], &cell.inner[1]);
+      InnerCellIterator it(&cell);
       auto range = OnInner(&cell);
       THEN("The iterator doesn't equal the end iterator")
         REQUIRE_COMM_OP_NEQ(it, range.end());
@@ -592,7 +593,7 @@ SCENARIO("An InnerCellIterator skips null cells")
     IterArrayCell<2> cell;
     cell.inner[1] = std::make_unique<FullTestCell>();
     WHEN("An inner cell iterator is created on that cell") {
-      InnerCellIterator it(&cell.inner[0], &cell.inner[1]);
+      InnerCellIterator it(&cell);
       auto range = OnInner(&cell);
       THEN("The iterator doesn't equal the end iterator")
         REQUIRE_COMM_OP_NEQ(it, range.end());
