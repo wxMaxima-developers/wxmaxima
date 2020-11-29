@@ -220,7 +220,12 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event)
 {
   SetFocus();
   if(GetActiveCell())
+  {
     GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
+    GroupCell *parent = GetActiveCell()->GetGroup();
+    parent->InputHeightChanged();
+    RequestRedraw(parent);
+  }
   else
     OpenHCaret(wxString(wxChar(event.GetId())));
 }

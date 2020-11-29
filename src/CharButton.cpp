@@ -70,9 +70,14 @@ void CharButton::OnIdle(wxIdleEvent &event)
     return;
   m_backgroundColorChangeNeeded = false;
   if((m_mouseOverPanel)||(m_mouseOverText))
-    SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT)); 
+  {
+    wxColour highlightColor = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNHIGHLIGHT);
+    if(highlightColor == wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE))
+      highlightColor = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
+    SetBackgroundColour(highlightColor);
+  }
   else
-    SetBackgroundColour(m_defaultBackground);
+    SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
   event.Skip();
 }
 
@@ -109,7 +114,6 @@ CharButton::CharButton(wxWindow *parent, wxWindow *worksheet, const Definition &
     m_char(def.symbol),
     m_worksheet(worksheet)
 {
-  m_defaultBackground = GetBackgroundColour();
   Connect(wxEVT_SIZE, wxSizeEventHandler(CharButton::OnSize));
   Connect(wxEVT_IDLE,
           wxIdleEventHandler(CharButton::OnIdle), NULL, this);

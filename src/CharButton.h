@@ -71,7 +71,6 @@ private:
   bool m_backgroundColorChangeNeeded = true;
   wxStaticText *m_buttonText;
   wxWindow *m_worksheet;
-  wxColor m_defaultBackground;
 };
 
 #endif // CHARBUTTON_H
