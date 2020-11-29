@@ -502,17 +502,64 @@ public:
 };
 DEFINE_CELL(FullTestCell)
 
+template <int N>
+class IterArrayCell : public FullTestCell {
+public:
+  std::unique_ptr<Cell> Copy() const override { return std::make_unique<IterArrayCell<N>>(); }
+
+  InnerCellIterator InnerBegin() const override { return {&inner[0], &inner[N-1]}; }
+
+  std::array<std::unique_ptr<Cell>, N> inner;
+};
+
+template <>
+class IterArrayCell<0> : public FullTestCell {};
+
+SCENARIO("InnerCellIterator comparisons work") {
+  GIVEN("A cell with no inner cells") {
+    IterArrayCell<0> cell;
+    AND_GIVEN("An inner cell range on that cell") {
+      auto range = OnInner(&cell);
+      THEN("That range is empty")
+        REQUIRE_COMM_OP_EQ(range.begin(), range.end());
+      AND_THEN("Both ends of that range equal a null iterator") {
+        InnerCellIterator it;
+        REQUIRE_COMM_OP_EQ(range.begin(), it);
+        REQUIRE_COMM_OP_EQ(range.end(), it);
+      }
+    }
+  }
+  GIVEN("A cell with two inner cells") {
+    IterArrayCell<2> cell;
+    cell.inner[0] = std::make_unique<FullTestCell>();
+    cell.inner[1] = std::make_unique<FullTestCell>();
+    AND_GIVEN("An inner cell range on that cell") {
+      auto range = OnInner(&cell);
+      THEN("That range is non-empty")
+        REQUIRE_COMM_OP_NEQ(range.begin(), range.end());
+      AND_THEN("The beginning of that range doesn't equal a null iterator") {
+        InnerCellIterator it;
+        REQUIRE_COMM_OP_NEQ(range.begin(), it);
+      }
+      AND_THEN("The end of that range equals a null iterator") {
+        InnerCellIterator it;
+        REQUIRE_COMM_OP_EQ(range.end(), it);
+      }
+    }
+  }
+}
+
 SCENARIO("An InnerCellIterator skips null cells")
 {
-  GIVEN("A list of two null owning cell pointers") {
-    std::unique_ptr<Cell> inner[2];
-    WHEN("An inner cell iterator is created on that list") {
-      InnerCellIterator it(&inner[0], &inner[1]);
-      InnerCellAdapter range(it);
+  GIVEN("A cell with two null inner owning cell pointers") {
+    IterArrayCell<2> cell;
+    WHEN("An inner cell iterator and a range are created on that cell") {
+      InnerCellIterator it(&cell.inner[0], &cell.inner[1]);
+      auto range = OnInner(&cell);
       THEN("The iterator equals the end iterator")
-        REQUIRE(it == range.end());
+        REQUIRE_COMM_OP_EQ(it, range.end());
       AND_THEN("The range is empty")
-        REQUIRE(range.begin() == range.end());
+        REQUIRE_COMM_OP_EQ(range.begin(), range.end());
       AND_THEN("The range-for loop over the range skips the loop body")
         for(auto &cell : range) {
           wxUnusedVar(cell);
@@ -520,43 +567,45 @@ SCENARIO("An InnerCellIterator skips null cells")
         }
     }
   }
-  GIVEN("A list of a non-null then null owning cell pointer") {
-    std::unique_ptr<Cell> inner[2]{std::make_unique<FullTestCell>(), nullptr};
-    WHEN("An inner cell iterator is created on that list") {
-      InnerCellIterator it(&inner[0], &inner[1]);
-      InnerCellAdapter range(it);
+  GIVEN("A cell with a non-null then null owning inner cell pointer") {
+    IterArrayCell<2> cell;
+    cell.inner[0] = std::make_unique<FullTestCell>();
+    WHEN("An inner cell iterator is created on that cell") {
+      InnerCellIterator it(&cell.inner[0], &cell.inner[1]);
+      auto range = OnInner(&cell);
       THEN("The iterator doesn't equal the end iterator")
-        REQUIRE(it != range.end());
+        REQUIRE_COMM_OP_NEQ(it, range.end());
       AND_THEN("The range is not empty")
-        REQUIRE(range.begin() != range.end());
+        REQUIRE_COMM_OP_NEQ(range.begin(), range.end());
       AND_THEN("The range begins with the cell")
-        REQUIRE(&*range.begin() == inner[0].get());
+        REQUIRE(&*range.begin() == cell.inner[0].get());
       AND_THEN("A range-for loop over the range iterates over the cell once")
       {
         std::vector<Cell *> trace;
         for(auto &cell : range) trace.push_back(&cell);
         REQUIRE(trace.size() == 1);
-        REQUIRE(trace.front() == inner[0].get());
+        REQUIRE(trace.front() == cell.inner[0].get());
       }
     }
   }
-  GIVEN("A list of a null then non-null owning cell pointer") {
-    std::unique_ptr<Cell> inner[2]{nullptr, std::make_unique<FullTestCell>()};
-    WHEN("An inner cell iterator is created on that list") {
-      InnerCellIterator it(&inner[0], &inner[1]);
-      InnerCellAdapter range(it);
+  GIVEN("A cell with a null then non-null owning inner cell pointer") {
+    IterArrayCell<2> cell;
+    cell.inner[1] = std::make_unique<FullTestCell>();
+    WHEN("An inner cell iterator is created on that cell") {
+      InnerCellIterator it(&cell.inner[0], &cell.inner[1]);
+      auto range = OnInner(&cell);
       THEN("The iterator doesn't equal the end iterator")
-        REQUIRE(it != range.end());
+        REQUIRE_COMM_OP_NEQ(it, range.end());
       AND_THEN("The range is not empty")
-        REQUIRE(range.begin() != range.end());
+        REQUIRE_COMM_OP_NEQ(range.begin(), range.end());
       AND_THEN("The range begins with the cell")
-        REQUIRE(&*range.begin() == inner[1].get());
+        REQUIRE(&*range.begin() == cell.inner[1].get());
       AND_THEN("A range-for loop over the range iterates over the cell once")
       {
         std::vector<Cell *> trace;
         for(auto &cell : range) trace.push_back(&cell);
         REQUIRE(trace.size() == 1);
-        REQUIRE(trace.front() == inner[1].get());
+        REQUIRE(trace.front() == cell.inner[1].get());
       }
     }
   }
