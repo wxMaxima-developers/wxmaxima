@@ -1,5 +1,11 @@
 # Current
  * A chinese translation of the manual by 刘荣.
+ * A Russian translation update from OlesyaGerasimenko and Yuri Chornoivan 
+ * Support for gcc 5.5
+ * Many code cleanups
+ * wxMaxima now will work even if no english locale is installed
+ * A few additional bug fixes
+ * More work on a modern look-and-feel
 
 # 20.11.1
  * Many bug fixes in various places
