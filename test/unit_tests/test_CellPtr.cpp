@@ -490,9 +490,11 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
 }
 
 class FullTestCell : public Cell {
+  Configuration configuration;
+  Configuration *config = &configuration;
 public:
-  FullTestCell(Configuration **config) : Cell({}, config) {}
-  FullTestCell(const FullTestCell &) : Cell({}, {}) {}
+  FullTestCell() : Cell({}, &config) {}
+  FullTestCell(const FullTestCell &) : Cell({}, &config) {}
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
   Cell *GetNextToDraw() const override { return {}; }
@@ -519,9 +521,7 @@ SCENARIO("An InnerCellIterator skips null cells")
     }
   }
   GIVEN("A list of a non-null then null owning cell pointer") {
-    Configuration configuration;
-    Configuration *config = &configuration;
-    std::unique_ptr<Cell> inner[2]{std::make_unique<FullTestCell>(&config), nullptr};
+    std::unique_ptr<Cell> inner[2]{std::make_unique<FullTestCell>(), nullptr};
     WHEN("An inner cell iterator is created on that list") {
       InnerCellIterator it(&inner[0], &inner[1]);
       InnerCellAdapter range(it);
@@ -541,9 +541,7 @@ SCENARIO("An InnerCellIterator skips null cells")
     }
   }
   GIVEN("A list of a null then non-null owning cell pointer") {
-    Configuration configuration;
-    Configuration *config = &configuration;
-    std::unique_ptr<Cell> inner[2]{nullptr, std::make_unique<FullTestCell>(&config)};
+    std::unique_ptr<Cell> inner[2]{nullptr, std::make_unique<FullTestCell>()};
     WHEN("An inner cell iterator is created on that list") {
       InnerCellIterator it(&inner[0], &inner[1]);
       InnerCellAdapter range(it);
