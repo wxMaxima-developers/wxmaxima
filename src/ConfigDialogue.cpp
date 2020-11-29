@@ -704,6 +704,16 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
 
   wxStaticBoxSizer *revertSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Revert changes"));
   
+  wxButton *resetAllButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reset all GUI settings"));
+  resetAllButton->Connect(wxEVT_BUTTON,
+                          wxCommandEventHandler(ConfigDialogue::OnResetAllToDefaults),
+                          NULL, this);
+  revertSizer->Add(
+    resetAllButton,
+    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    Expand()
+    );
+
   wxButton *resetStylesButton = new wxButton(revertSizer->GetStaticBox(), -1, _("Reset the Style settings"));
   resetStylesButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnResetStyles),
@@ -735,21 +745,21 @@ wxWindow *ConfigDialogue::CreateRevertToDefaultsPanel()
   
   wxStaticBoxSizer *exportSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Import+Export"));
 
-  wxButton *resetAllButton = new wxButton(exportSizer->GetStaticBox(), -1, _("Reset all GUI settings"));
-  resetAllButton->Connect(wxEVT_BUTTON,
-                          wxCommandEventHandler(ConfigDialogue::OnResetAllToDefaults),
-                          NULL, this);
-  exportSizer->Add(
-    resetAllButton,
-    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
-    Expand()
-    );
   wxButton *exportAllButton = new wxButton(exportSizer->GetStaticBox(), -1, _("Export all settings"));
   exportAllButton->Connect(wxEVT_BUTTON,
                           wxCommandEventHandler(ConfigDialogue::OnExportAll),
                           NULL, this);
   exportSizer->Add(
     exportAllButton,
+    wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
+    Expand()
+    );
+  wxButton *exportStylesButton = new wxButton(exportSizer->GetStaticBox(), save_id, _("Export the style settings"));
+  exportStylesButton->Connect(wxEVT_BUTTON,
+                              wxCommandEventHandler(ConfigDialogue::LoadSave),
+                              NULL, this);
+  exportSizer->Add(
+    exportStylesButton,
     wxSizerFlags().Border(wxALL,5*GetContentScaleFactor()).
     Expand()
     );
