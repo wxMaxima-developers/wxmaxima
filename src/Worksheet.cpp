@@ -601,11 +601,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     
     // Draw the marker that tells us which output cells are selected -
     // if output cells are selected, that is.
-    for (Cell *tmp = m_cellPointers.m_selectionStart; tmp; tmp = tmp->GetNextToDraw())
+    for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
     {
-      if (!tmp->IsBrokenIntoLines() && !tmp->IsHidden() && tmp != GetActiveCell())
-        tmp->DrawBoundingBox(dc, false);
-      if (tmp == m_cellPointers.m_selectionEnd)
+      if (!tmp.IsBrokenIntoLines() && !tmp.IsHidden() && &tmp != GetActiveCell())
+        tmp.DrawBoundingBox(dc, false);
+      if (&tmp == m_cellPointers.m_selectionEnd)
         break;
     }
   }
@@ -1254,17 +1254,14 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       // SELECTION OF OUTPUT
     else
     {
-      Cell *tmp = m_cellPointers.m_selectionStart;
-      wxRect rect;
-      while (tmp != NULL)
+      for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
       {
-        rect = tmp->GetRect();
+        auto rect = tmp.GetRect();
         if (rect.Contains(downx, downy))
           clickInSelection = true;
 
-        if (tmp == m_cellPointers.m_selectionEnd)
+        if (&tmp == m_cellPointers.m_selectionEnd)
           break;
-        tmp = tmp->GetNextToDraw();
       }
     }
   }
@@ -2357,13 +2354,12 @@ wxString Worksheet::GetString(bool lb)
     return GetActiveCell() ? GetActiveCell()->ToString() : wxString{};
 
   wxString s;
-  for (Cell *tmp = m_cellPointers.m_selectionStart;
-       tmp; tmp = tmp->GetNextToDraw())
+  for (Cell &tmp : OnDrawList(m_cellPointers.m_selectionStart.get()))
   {
-    if (lb && tmp->BreakLineHere() && s.Length() > 0)
-      s += wxT("\n");
-    s += tmp->ToString();
-    if (tmp == m_cellPointers.m_selectionEnd)
+    if (lb && tmp.BreakLineHere() && !s.empty())
+      s += wxT('\n');
+    s += tmp.ToString();
+    if (&tmp == m_cellPointers.m_selectionEnd)
       break;
   }
   return s;
