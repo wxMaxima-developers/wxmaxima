@@ -117,16 +117,29 @@ SCENARIO("CellPtr lifetimes are tracked") {
     REQUIRE_FALSE(right op left); \
   } while(0)
 
-//! Tests that arguments compare equal and not unequal both ways
+//! Tests that the argument compares equal to itself, but not uneqal, both ways
+#define REQUIRE_SELF_EQ(val) \
+  do { \
+    REQUIRE_COMM_OP_T(val, ==, val); \
+    REQUIRE_COMM_OP_F(val, !=, val); \
+  } while(0)
+
+//! Tests that arguments compare equal and not unequal both ways,
+//! and also that they compare equal to themselves
 #define REQUIRE_COMM_OP_EQ(left, right) \
   do { \
+    REQUIRE_SELF_EQ(left); \
+    REQUIRE_SELF_EQ(right); \
     REQUIRE_COMM_OP_T(left, ==, right); \
     REQUIRE_COMM_OP_F(left, !=, right); \
   } while (0)
 
-//! Tests that arguments compare unequal and not equal both ways
+//! Tests that arguments compare unequal and not equal both ways,
+//! and also that they compare equal to themselves
 #define REQUIRE_COMM_OP_NEQ(left, right) \
   do { \
+    REQUIRE_SELF_EQ(left); \
+    REQUIRE_SELF_EQ(right); \
     REQUIRE_COMM_OP_T(left, !=, right); \
     REQUIRE_COMM_OP_F(left, ==, right); \
   } while (0)
