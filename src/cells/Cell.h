@@ -935,8 +935,12 @@ private:
   bool m_highlight : 1 /* InitBitFields */;
 
 protected:
-  //! Iterator to the beginning of the inner cell range. The end iterator is default-constructed.
-  virtual InnerCellIterator InnerBegin() const;
+  friend class InnerCellIterator;
+  //! The number of inner cells - for use by the iterators
+  virtual int GetInnerCellCount() const;
+  //! Retrieve an inner cell with given index which must be
+  //! less than GetInnerCellCount.
+  virtual Cell *GetInnerCell(int index) const;
 
   inline Worksheet *GetWorksheet() const;
 
@@ -1005,8 +1009,11 @@ inline auto OnDrawList(C *cell)       { return CellDrawListAdapter<C>(cell); }
 
 //! Returns an iterable that goes over the inner cells of this cell.
 template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
-inline auto OnInner(const C *cell) { return InnerCellAdapter(cell->InnerBegin()); }
+inline auto OnInner(const C *cell) { return InnerCellAdapter(const_cast<Cell *>(cell)); }
 template <typename C, typename std::enable_if<std::is_base_of<Cell, C>::value, bool>::type>
-inline auto OnInner(C *cell) { return InnerCellAdapter(cell->InnerBegin()); }
+inline auto OnInner(C *cell) { return InnerCellAdapter(cell); }
+
+inline int InnerCellIterator::GetInnerCellCount(const Cell *cell) { return cell->GetInnerCellCount(); }
+inline Cell *InnerCellIterator::GetInnerCell(const Cell *cell, int index) { return cell->GetInnerCell(index); }
 
 #endif // MATHCELL_H

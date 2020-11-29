@@ -58,7 +58,8 @@ public:
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
 
-  InnerCellIterator InnerBegin() const override { return {&m_nameCell, &m_argCell}; }
+  int GetInnerCellCount() const override { return 2; }
+  Cell *GetInnerCell(int index) const override { return (&m_nameCell)[index].get(); }
 
   void Recalculate(AFontSize fontsize) override;
 
