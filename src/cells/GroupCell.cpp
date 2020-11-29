@@ -1058,17 +1058,15 @@ wxString GroupCell::ToString() const
     }
   }
 
-  if (m_output != NULL && !IsHidden())
+  if (!IsHidden())
   {
-    Cell *tmp = m_output.get();
     bool firstCell = true;
-    while (tmp != NULL)
+    for (Cell &tmp : OnDrawList(m_output.get()))
     {
-      if (firstCell || (tmp->HasHardLineBreak() && str.Length() > 0))
+      if (firstCell || (tmp.HasHardLineBreak() && !str.empty()))
           str += wxT("\n");
-      str += tmp->ToString();
+      str += tmp.ToString();
       firstCell = false;
-      tmp = tmp->GetNextToDraw();
     }
   }
   return str;
@@ -1242,21 +1240,19 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     if (imgCounter == NULL)
       str += wxT("\\definecolor{labelcolor}{RGB}{100,0,0}\n");
 
-    Cell *tmp = m_output.get();
-
     bool mathMode = false;
 
-    while (tmp != NULL)
+    for (Cell &tmp : OnDrawList(m_output.get()))
     {
 
-      if (tmp->GetType() == MC_TYPE_IMAGE ||
-          tmp->GetType() == MC_TYPE_SLIDE)
+      if (tmp.GetType() == MC_TYPE_IMAGE ||
+          tmp.GetType() == MC_TYPE_SLIDE)
       {
-        str << ToTeXImage(tmp, imgDir, filename, imgCounter);
+        str << ToTeXImage(&tmp, imgDir, filename, imgCounter);
       }
       else
       {
-        switch (tmp->GetStyle())
+        switch (tmp.GetStyle())
         {
 
           case TS_LABEL:
@@ -1268,7 +1264,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
               str += wxT("\\[\\displaystyle ");
               mathMode = true;
             }
-            str += tmp->ToTeX() + wxT("\n");
+            str += tmp.ToTeX() + wxT("\n");
             break;
 
           case TS_STRING:
@@ -1277,7 +1273,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
               str += wxT("\\mbox{}\n\\]");
               mathMode = false;
             }
-            str += TexEscapeOutputCell(tmp->ToTeX()) + wxT("\n");
+            str += TexEscapeOutputCell(tmp.ToTeX()) + wxT("\n");
             break;
 
           default:
@@ -1286,12 +1282,10 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
               str += wxT("\\[\\displaystyle ");
               mathMode = true;
             }
-            str += tmp->ToTeX();
+            str += tmp.ToTeX();
             break;
         }
       }
-
-      tmp = tmp->GetNextToDraw();
     }
 
     if (mathMode)
@@ -1506,10 +1500,13 @@ Cell::Range GroupCell::GetCellsInOutputRect(const wxRect &rect, const wxPoint on
     Cell *const tmp = r.last;
 
     // Find the first cell in selection
-    while (r.first != tmp &&
-           ((r.first)->GetCurrentX() + (r.first)->GetWidth() < start.x
-            || (r.first)->GetCurrentY() + (r.first)->GetDrop() < start.y))
-      r.first = (r.first)->GetNextToDraw();
+    for (Cell &curr : OnDrawList(r.first)) {
+      r.first = &curr;
+      if (&curr == tmp ||
+           (curr.GetCurrentX() + curr.GetWidth() >= start.x
+            && curr.GetCurrentY() + curr.GetDrop() >= start.y))
+        break;
+    }
 
     // Find the last cell in selection
     r.last = r.first;
@@ -1602,21 +1599,23 @@ void GroupCell::BreakLines()
   if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
 
   // 3rd step: break the output into lines.
-  while (cell != NULL && !IsHidden())
-  {
-    int cellWidth = cell->GetWidth();
-    cell->SoftLineBreak(false);
-    if (cell->BreakLineHere() || (currentWidth + cellWidth >= fullWidth))
+  if (!IsHidden()) {
+    bool prevBroken = false;
+    for (Cell &tmp : OnDrawList(cell))
     {
-      cell->SoftLineBreak(true);
-      cell = cell->GetNextToDraw();
-      if(cell)
-        currentWidth = GetLineIndent(cell) + cellWidth;
-    }
-    else
-    {
+      if (prevBroken) {
+        currentWidth += GetLineIndent(&tmp);
+        prevBroken = false;
+      }
+      int const cellWidth = tmp.GetWidth();
+      tmp.SoftLineBreak(false);
+      if (tmp.BreakLineHere() || (currentWidth + cellWidth >= fullWidth))
+      {
+        tmp.SoftLineBreak(true);
+        currentWidth = 0;
+        prevBroken = true;
+      }
       currentWidth += cellWidth;
-      cell = cell->GetNextToDraw();
     }
   }
   m_output->ResetDataList();
@@ -1672,12 +1671,9 @@ bool GroupCell::BreakUpCells(Cell *cell)
   {
     bool lineHeightsChanged = false;
     wxLogMessage(_("Resolving to 1D layout for one cell in order to save time"));
-    while (cell != NULL && !IsHidden())
-    {
-      if (cell->BreakUp())
-        lineHeightsChanged = true;
-      cell = cell->GetNextToDraw();
-    }
+    if (!IsHidden())
+      for (Cell &tmp : OnDrawList(cell))
+        lineHeightsChanged |= tmp.BreakUp();
     return lineHeightsChanged;
   }
 
@@ -1686,7 +1682,6 @@ bool GroupCell::BreakUpCells(Cell *cell)
 
 bool GroupCell::UnBreakUpCells(Cell *cell)
 {
-  bool retval = false;
   int showLength;
   switch ((*m_configuration)->ShowLength())
   {
@@ -1713,15 +1708,14 @@ bool GroupCell::UnBreakUpCells(Cell *cell)
     return true;
   }
  
-  while (cell != NULL)
-  {
-    if (cell->IsBrokenIntoLines())
+  bool retval = false;
+  for (Cell &tmp : OnDrawList(cell))
+    if (tmp.IsBrokenIntoLines())
     {
-      cell->Unbreak();
+      tmp.Unbreak();
       retval = true;
     }
-    cell = cell->GetNextToDraw();
-  }
+
   return retval;
 }
 
