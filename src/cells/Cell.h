@@ -815,6 +815,9 @@ public:
 #if wxUSE_ACCESSIBILITY
   CellAccessible *GetAccessible();
 #endif
+#if CELL_TEST
+  void MockBreakUp() { m_isBrokenIntoLines = 1; }
+#endif
 
 protected:
   std::unique_ptr<Cell> MakeVisiblyInvalidCell() const;
