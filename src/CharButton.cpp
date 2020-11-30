@@ -72,12 +72,15 @@ void CharButton::OnIdle(wxIdleEvent &event)
   if((m_mouseOverPanel)||(m_mouseOverText))
   {
     wxColour highlightColor = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNHIGHLIGHT);
-    if(highlightColor == wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE))
+    if(highlightColor == wxSystemSettings::GetColour(wxSYS_COLOUR_DESKTOP))
       highlightColor = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
     SetBackgroundColour(highlightColor);
   }
   else
-    SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+  {
+    // Using an invalid color makes the panel to revert to the default one
+    SetBackgroundColour(wxColour());
+  }
   event.Skip();
 }
 

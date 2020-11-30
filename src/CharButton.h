@@ -68,7 +68,7 @@ protected:
 private:
   bool m_mouseOverPanel = false;
   bool m_mouseOverText = false;
-  bool m_backgroundColorChangeNeeded = true;
+  bool m_backgroundColorChangeNeeded = false;
   wxStaticText *m_buttonText;
   wxWindow *m_worksheet;
 };
