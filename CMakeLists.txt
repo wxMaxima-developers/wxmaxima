@@ -3,10 +3,13 @@
 cmake_minimum_required(VERSION 3.7)
 project(wxmaxima LANGUAGES CXX)
 
+# Set the locale to default C to prevent issues due to localization of commands.
+# This is necessary as we call commands like "po4a-translate --version"
+set(ENV{LANG} C)
+
 if(WIN32)
     enable_language(RC)
 endif()
-
 
 set(VERSION 20.11.1)
 set(GITVERSION ${VERSION})

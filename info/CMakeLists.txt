@@ -4,7 +4,6 @@
 find_program(PANDOC pandoc)
 if(PANDOC)
 	message(STATUS "Found pandoc at: ${PANDOC}")
-	include(FindPerl)
 
 	# "make pdf" creates the manual in PDF form. The other targets that now
 	# follow do the same for other formats
@@ -85,15 +84,12 @@ if(PANDOC)
 		endif()
 	endif()
 	# Get po4a-translate version number, only >= 0.55 works for wxMaxima.
-	add_custom_target(update-manual-translations
-		COMMAND ${PO4A_TRANSLATE} --version
+	execute_process(COMMAND ${PO4A_TRANSLATE} --version
 		OUTPUT_VARIABLE PO4A_TRANSLATE_VERSION_TEXT)
-	# they changed the output from
-	# "po4a-translate Version 0.54" to "po4a-translate version 0.55." therefore a slightly more complex command to extract the version number.
-	string(REGEX REPLACE "^po4a-translate [vV]ersion ([^\n]*).*" "\\1"  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION_TEXT}")
-	string(REGEX REPLACE "\\.$" ""  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION}")
+	string(REGEX REPLACE "^po4a-translate version ([^\n]*).*" "\\1"  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION_TEXT}")
+	string(REGEX REPLACE "\\.$" ""  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION}") # remove trailing dot.
 	message(STATUS "Found po4a-translate (version ${PO4A_TRANSLATE_VERSION}) at: ${PO4A_TRANSLATE}")
-	if(PO4A_TRANSLATE_VERSION LESS_EQUAL 0.54)
+	if(PO4A_TRANSLATE_VERSION VERSION_LESS 0.55)
 		message(WARNING "po4a-translate Version < 0.55 found. Please upgrade po4a, that version does not work. "
 		                "Disable po4a and the generation of localized documentation.")
 		set(PO4A_TRANSLATE "")
@@ -111,7 +107,7 @@ if(PANDOC)
 			COMMAND ${PANDOC} --version
 			OUTPUT_VARIABLE PANDOC_VERSION_TEXT)
 		# get pandoc major version number, if >=2 use --pdf-engine else --latex-engine (they changed the name of the command line option)
-		string(REGEX REPLACE "^pandoc ([0-9]).*$" "\\1"  PANDOC_VERSION ${PANDOC_VERSION_TEXT})
+		string(REGEX REPLACE "^pandoc ([0-9]).*$" "\\1" PANDOC_VERSION ${PANDOC_VERSION_TEXT})
 		if(PANDOC_VERSION LESS_EQUAL 1)
 			message(STATUS "pandoc version < 2 found - using option --latex-engine=${WXMAXIMA_LATEX_COMMAND}")
 			set(PANDOC_TEXSELECT_OPTION "--latex-engine=${WXMAXIMA_LATEX_COMMAND}")
