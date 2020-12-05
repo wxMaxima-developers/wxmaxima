@@ -1,5 +1,6 @@
 # This file is distributed under the same license as the wxMaxima package.
-#
+# 注意：翻译此文件时，需根据上下文，而非字面意思（有些文字的原文有误或不准确）。
+# Liu Rong, <rong.liu@mail.bnu.edu.cn>, 2020.
 # crickzhang1, <crickzhang1@gmail.com>, 2013.
 # Some strings in this Simplified Chinese translation have their roots
 # in the Tranditional Chinese translation (`zh_TW.po`).
@@ -8,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-26 08:02+0100\n"
-"PO-Revision-Date: 2020-11-27 21:34+0800\n"
+"PO-Revision-Date: 2020-12-05 20:15+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -131,8 +132,10 @@ msgid ""
 " * The \"symbols\" sidebar now should allow for easy access to these "
 "characters.\n"
 msgstr ""
-"* 打开“符号”侧边栏（如果其尚未显示），然后右键单击它，选择“添加更多符号”；\n"
-"* 将组合变音符号拖放到“添加新符号”对话框中，例如下面的一个；\n"
+"* 如果尚未显示“符号”侧边栏，可以在菜单“视图”中启用，然后\n"
+"    右键单击；\n"
+"* 将组合变音符号（例如下列符号中的一个）拖放到“添加新符号”\n"
+"    对话框中；\n"
 "* 现在应该可以使用“符号”侧边栏方便地访问这些字符。\n"
 
 #: ../../examples/examples_gettext.list:2189
@@ -418,8 +421,8 @@ msgid ""
 "now follows is to be interpreted as an ordinary character\n"
 "* Then add the combining diacritic(s):\n"
 msgstr ""
-"* 首先输入要变音的字符；\n"
-"* 然后添加反斜杠（“\\”），使 Maxima 将接下来的符号解释为普通字符；\n"
+"* 首先输入要添加组合变音符号的字符；\n"
+"* 然后输入反斜线“\\”，告诉 Maxima 后续字符应解释为普通字符；\n"
 "* 接着加上组合变音符号：\n"
 
 #: ../../src/wxMaxima.cpp:1297
@@ -434,7 +437,7 @@ msgstr "...并绘出不同的 L_Cable 的图形:\n"
 
 #: ../../examples/examples_gettext.list:543
 msgid "...and over this list we can iterate efficiently again:\n"
-msgstr "...通过这个列表可以有效率地迭代:\n"
+msgstr "可以对这个列表再次高效地迭代:\n"
 
 #: ../../src/Worksheet.cpp:7051
 msgid ".wxm clipboard data with unusual header"
@@ -482,7 +485,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:832
 msgid "A better approach is therefore to use Caruana's approach for fitting:\n"
-msgstr "一个更好的方法是使用 Caruana 法做拟合:\n"
+msgstr "因此, 更好的方法是使用 Caruana 法进行拟合:\n"
 
 #: ../../examples/examples_gettext.list:48
 msgid ""
@@ -491,12 +494,13 @@ msgid ""
 "cable of the inductivity L_Cable. In this moment the circuit is destroyed by "
 "an overvoltage. Let's see if we can calculate how high this voltage was.\n"
 msgstr ""
-"设一个电路中的电容为 C_In=100nF，电阻为 R_Load，并通过电感为 L_Cable 的电缆连"
-"接至电源 U_Supply。若此时电路因为电压过高而损坏，下面计算这个电压有多高。\n"
+"设一个电路的电容为 C_In=100nF, 电阻为 R_Load, 并通过电感为\n"
+"L_Cable 的电缆连接至电压为 U_Supply 的电源. 此时电路因为\n"
+"电压过高而发生故障, 现在来计算这个电压值.\n"
 
 #: ../../examples/examples_gettext.list:2184
 msgid "A few combining diacritics are:\n"
-msgstr "一些组合变音符号如下：\n"
+msgstr "以下为一些组合变音符号：\n"
 
 #: ../../src/TipOfTheDay.cpp:69
 msgid ""
@@ -518,7 +522,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1970
 msgid "A ridiculously advanced example\n"
-msgstr ""
+msgstr "一个复杂但可笑的例子\n"
 
 #: ../../src/ConfigDialogue.cpp:366
 msgid ""
@@ -531,8 +535,8 @@ msgid ""
 "A simple voltage divider of R_1 and R_2 is powered by a voltage source U_In. "
 "In which range can U_Out lie?\n"
 msgstr ""
-"一个简单的分压器 R_1 和 R_2 由一个电压为 U_In 的电源供电，那么输出电压 U_Out "
-"在什么范围内？\n"
+"一个简单的分压器 R_1 和 R_2 由电压为 U_In 的电源供电, 求输出\n"
+"电压 U_Out 的取值范围.\n"
 
 #: ../../src/wxMaximaFrame.cpp:2129
 msgid "A symbol from the configuration dialogue"
@@ -540,12 +544,11 @@ msgstr "来自配置对话框中的符号"
 
 #: ../../examples/examples_gettext.list:968
 msgid "A third fitting algorithm\n"
-msgstr "第三个拟合算法\n"
+msgstr "第三种拟合算法\n"
 
 #: ../../examples/examples_gettext.list:2234
-#, fuzzy
 msgid "A weird example, just for showing off\n"
-msgstr "一个奇怪的例子，只是为了展示用法\n"
+msgstr "一个奇怪的例子，只是为了演示功能\n"
 
 #: ../../src/wxMaximaFrame.cpp:1011
 msgid "A&t Value..."
@@ -576,6 +579,9 @@ msgid ""
 "normally has to) this work isn't much of an overhead - and maxima offers "
 "several functions for this purpose:\n"
 msgstr ""
+"访问列表中的随机项需要在列表上进行 (相对) 耗时的迭代. 但是, \n"
+"如果想要遍历整个列表 (人们通常有此需求), 这项工作也不会带来\n"
+"太大的开销, 而且 Maxima 也提供了一些方法:\n"
 
 #: ../../src/wxMaximaFrame.cpp:2277
 msgid "Accuracy"
@@ -587,7 +593,7 @@ msgstr "活动单元格的括号"
 
 #: ../../examples/examples_gettext.list:2196
 msgid "Actually using combining diacritics\n"
-msgstr "实际上使用组合变音符号\n"
+msgstr "使用组合变音符号\n"
 
 #: ../../src/wxMaximaFrame.cpp:1054
 msgid "Ad&joint Matrix"
@@ -683,12 +689,16 @@ msgid ""
 "the equations whenever we need them. For example we can print them out "
 "again:\n"
 msgstr ""
+"此外, 对方程命名使我们可以在需要时引用这些方程. 例如, 可以再次\n"
+"输出它们:\n"
 
 #: ../../examples/examples_gettext.list:861
 msgid ""
 "Additionally https://ieeexplore.ieee.org/document/5999593 offers an "
 "iterative method that allows to reduce the influence of noise in each step:\n"
 msgstr ""
+"另外, https://ieeexplore.ieee.org/document/5999593 中提供了\n"
+"一种迭代方法, 可以减少每个步骤中噪声的影响.\n"
 
 #: ../../examples/examples_gettext.list:120
 msgid ""
@@ -701,14 +711,16 @@ msgid ""
 "using the command lhs() and rhs(), which allows to use the part left or "
 "right of the \"=\" in a new equation:\n"
 msgstr ""
+"还可以使用命令 lhs() 和 rhs() 提取方程中等号左边或右边的式子, 以便\n"
+"在新的方程中使用这些式子:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1394
 msgid "Advanced variable names"
-msgstr ""
+msgstr "高级变量名"
 
 #: ../../examples/examples_gettext.list:2084
 msgid "Advanced variable names\n"
-msgstr ""
+msgstr "高级变量名\n"
 
 #: ../../src/ToolBar.cpp:306 ../../src/ToolBar.cpp:598
 msgid ""
@@ -751,7 +763,7 @@ msgstr "所有类型|*"
 
 #: ../../examples/examples_gettext.list:245
 msgid "Alternatively the curve can be made more colorful:\n"
-msgstr ""
+msgstr "此外, 也可以 (根据竖坐标 z) 对曲面添加颜色:\n"
 
 #: ../../src/wxMaximaFrame.cpp:780
 msgid "Always after underscores"
@@ -770,7 +782,6 @@ msgid "Always show all digits"
 msgstr "总是显示所有数字"
 
 #: ../../examples/examples_gettext.list:43
-#, fuzzy
 msgid "An example\n"
 msgstr "一个例子\n"
 
@@ -795,6 +806,8 @@ msgid ""
 "Another drawback is that mathematics is based on the fact that two things "
 "that cancel each other out actually do so:\n"
 msgstr ""
+"另一个缺点是, 在数学中若两个数互为相反数, 则它们可以相互抵消, \n"
+"而在计算机中并非如此:\n"
 
 #: ../../src/ConfigDialogue.cpp:638
 msgid "Antialias lines."
@@ -804,7 +817,7 @@ msgstr "抗锯齿线条"
 msgid ""
 "Any other number can be converted to a floating-point one using the float() "
 "keyword:\n"
-msgstr ""
+msgstr "任何其他数都可以使用 float() 命令转换为浮点数:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1296
 msgid "Append"
@@ -838,7 +851,7 @@ msgstr "在已有列表中增加一个元素"
 
 #: ../../examples/examples_gettext.list:1903
 msgid "Appending lists of tolerances\n"
-msgstr ""
+msgstr "合并误差列表\n"
 
 #: ../../src/wxMaxima.cpp:7109
 msgid "Apply"
@@ -865,6 +878,8 @@ msgid ""
 "As a first step normally the real measurement data is loaded from a .csv "
 "file using read_matrix:\n"
 msgstr ""
+"第一步通常是使用 read_matrix() 命令从 .csv 文件加载实际测量\n"
+"数据:\n"
 
 #: ../../examples/examples_gettext.list:1124
 msgid ""
@@ -872,6 +887,9 @@ msgid ""
 "contains the nth prime number, at least within the bounds of accuracy of "
 "primep():\n"
 msgstr ""
+"现在举例进行说明. 我们构造一个数组 primes[n], 其中第 n 个元素为\n"
+"第 n 个素数. 这些素数可以利用 primep() 命令生成 (需要注意该命令\n"
+"的准确度):\n"
 
 #: ../../examples/examples_gettext.list:316
 msgid ""
@@ -880,16 +898,20 @@ msgid ""
 "of a moving picture. wxMaxima allows to embed such a thing into the "
 "worksheet:\n"
 msgstr ""
+"容易看出, 如果将上面的图形弹出显示并与之交互 (例如旋转或平移\n"
+"图形), 那么运动的图像更有利于对三维图形整体形状的理解. 可以在\n"
+"wxMaxima 工作簿中嵌入含三维图形的动图 (绘制时间略长, 左键\n"
+"双击图形可在运动和静止之间切换):\n"
 
 #: ../../examples/examples_gettext.list:1503
 msgid ""
 "As seen above the last equation displayed by maxima can be referenced by "
 "using the placeholder \"%\":\n"
-msgstr ""
+msgstr "如上所示, Maxima 的上一个输出可以通过使用占位符“%”来引用:\n"
 
 #: ../../examples/examples_gettext.list:1873
 msgid "As we have guessed the 2nd voltage divider was the better one.\n"
-msgstr ""
+msgstr "正如我们所猜测的那样, 第二个分压器是更好的.\n"
 
 #: ../../src/ConfigDialogue.cpp:1047
 msgid "Ask to save untitled documents"
@@ -1016,6 +1038,12 @@ msgid ""
 "if it ever will finish. lsquares_estimates_approximate doesn't have this "
 "drawback.\n"
 msgstr ""
+"除了 lsquares_estimates_approach() 命令之外, lsquares 程序包\n"
+"还提供了 lsquares_estimates() 命令, 该命令尝试通过 solve() 命令\n"
+"求解问题来找到确切的最优值, 然后再从数值上找到答案. 但是,  如果\n"
+"要解决的问题是复杂的, 我们永远不会事先知道计算机需要花多少时\n"
+"间来运行, 以及是否能完成求解 (使用计算机求解总会遇到这种情况). \n"
+"lsquares_estimates_approximate() 命令则没有这个缺点.\n"
 
 #: ../../src/TipOfTheDay.cpp:120
 msgid ""
@@ -1032,7 +1060,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1337
 msgid "Bigfloats\n"
-msgstr ""
+msgstr "大浮点数\n"
 
 #: ../../src/ConfigDialogue.cpp:1415
 msgid "Bitmap"
@@ -1048,7 +1076,7 @@ msgstr "位图"
 
 #: ../../examples/examples_gettext.list:1570
 msgid "Boiling it down to numbers\n"
-msgstr ""
+msgstr "将解化成数值\n"
 
 #: ../../src/ConfigDialogue.cpp:1536
 msgid "Bold"
@@ -1063,6 +1091,8 @@ msgid ""
 "Both solutions solve() offers are valid. We can pick any of them manually, "
 "for example:\n"
 msgstr ""
+"solve() 提供的两个解 (可仍视为方程) 都有效. 我们可以选择其中任何\n"
+"一个 (方程), 例如:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1808
 msgid "Boxplot..."
@@ -1157,6 +1187,8 @@ msgid ""
 "But you can also tell makelist to iterate over a list - which is quite "
 "fast:\n"
 msgstr ""
+"但也可以告诉 makelist() 通过对已有列表迭代来 (非常方便地) 生成\n"
+"新列表:\n"
 
 #: ../../examples/examples_gettext.list:1493
 msgid ""
@@ -1164,6 +1196,8 @@ msgid ""
 "told to eliminate these two variables on the right side of the equations, if "
 "possible.\n"
 msgstr ""
+"选择 [a,b] 作为变量列表, 相当于告诉 Maxima, 如果可能的话,  消除\n"
+"方程组中的这两个变量.\n"
 
 #: ../../examples/examples_gettext.list:1935
 msgid ""
@@ -1172,6 +1206,9 @@ msgid ""
 "test 2 values (the minimum and the maximum) that might speed up lengthy "
 "calculations with many values that contain tolerances:\n"
 msgstr ""
+"默认情况下, wrstcse 程序包测试每个 tol[n] 对应的三个值的所有组\n"
+"合: 最小值、最大值和典型值. 如果我们只想测试两个值 (最小值和最\n"
+"大值), 也可以用如下方法减少因多项数值含误差而产生的冗长计算:\n"
 
 #: ../../src/TipOfTheDay.cpp:51
 msgid ""
@@ -1187,13 +1224,13 @@ msgstr ""
 msgid ""
 "By escaping it with a backslash nearly every symbol can be made to be "
 "interpreted as an ordinary character:\n"
-msgstr ""
+msgstr "通过用反斜线转义，几乎每个符号都可以被解释为普通字符：\n"
 
 #: ../../examples/examples_gettext.list:1460
 msgid ""
 "By having given this equation a name (\"sol2\") we gained a way to re-use "
 "this equation later.\n"
-msgstr ""
+msgstr "通过给这个方程起一个名字 (如 sol2), 我们可以重复使用该方程.\n"
 
 #: ../../src/wxMaximaFrame.cpp:1089
 msgid "C&hange Variable..."
@@ -1242,6 +1279,9 @@ msgid ""
 "is a recursive function call) eventually exceeds the lisp's stack limit. "
 "Calculating primes[10000] in several steps is possible, instead:\n"
 msgstr ""
+"一次性计算 primes[10000] 需要计算 primes[9999], 这又需要计算 \n"
+"primes[9998]. 因为这种计算实际上是一个递归函数调用, 所以最终\n"
+"会超过 Lisp 的堆栈限制. 但是可以用以下步骤计算 primes[10000]:\n"
 
 #: ../../src/wxMaxima.cpp:10394
 msgid "Can not connect to the web server."
@@ -1574,7 +1614,7 @@ msgstr "轮廓"
 
 #: ../../examples/examples_gettext.list:262
 msgid "Contour lines\n"
-msgstr ""
+msgstr "等高线\n"
 
 #: ../../src/wxMaximaFrame.cpp:2276
 msgid "Contour lines for 3d plots"
@@ -1653,12 +1693,12 @@ msgstr "转换三角函数为指数形式"
 
 #: ../../examples/examples_gettext.list:718
 msgid "Converting the data to a continuous curve\n"
-msgstr ""
+msgstr "将数据转换为连续曲线\n"
 
 #: ../../examples/examples_gettext.list:933
 msgid ""
 "Converting the result into a list of equations is a bit more complicated:\n"
-msgstr ""
+msgstr "将结果转换为一列等式要复杂一些:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1310
 msgid "Converts a matrix to a list of lists"
@@ -1893,7 +1933,7 @@ msgstr "数据："
 
 #: ../../examples/examples_gettext.list:665
 msgid "Dealing with non-evenly-spaced data\n"
-msgstr ""
+msgstr "处理非均匀分布的数据\n"
 
 #: ../../src/wxMaximaFrame.cpp:453
 msgid "Debug Messages"
@@ -1992,7 +2032,7 @@ msgstr "导数："
 
 #: ../../examples/examples_gettext.list:1975
 msgid "Description of the problem\n"
-msgstr ""
+msgstr "问题的描述\n"
 
 #: ../../src/wxMaximaFrame.cpp:1782
 msgid "Deviation..."
@@ -2176,7 +2216,7 @@ msgstr "退出(&X)\tCtrl+Q"
 
 #: ../../examples/examples_gettext.list:2172
 msgid "Easy access to combining diacritics\n"
-msgstr ""
+msgstr "快速访问组合变音符号\n"
 
 #: ../../src/wxMaximaFrame.cpp:1051
 msgid "Eige&nvectors"
@@ -2232,7 +2272,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:2089
 msgid "Engineer-style Subscripts\n"
-msgstr ""
+msgstr "工程师样式的下标\n"
 
 #: ../../src/wxMaximaFrame.cpp:1351
 msgid "Engineering format (12.1e6 etc.)"
@@ -2336,7 +2376,7 @@ msgstr "方程"
 
 #: ../../examples/examples_gettext.list:2162
 msgid "Equipping any character with accents\n"
-msgstr ""
+msgstr "为任何字符添加重音符号\n"
 
 #: ../../src/ConfigDialogue.cpp:1751 ../../src/wxMaxima.cpp:1861
 #: ../../src/wxMaxima.cpp:2202 ../../src/wxMaxima.cpp:3307
@@ -2476,7 +2516,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1364
 msgid "Exact numbers\n"
-msgstr ""
+msgstr "准确数值\n"
 
 #: ../../src/wxMaxima.cpp:8614
 msgid "Example"
@@ -2726,17 +2766,16 @@ msgid "Factorials and &Gamma"
 msgstr "阶乘和 Gamma 函数(&G)"
 
 #: ../../examples/examples_gettext.list:399
-#, fuzzy
 msgid "Fast access to all list elements\n"
-msgstr "从表达式创建列表"
+msgstr "快速访问列表的所有元素\n"
 
 #: ../../src/wxMaximaFrame.cpp:1396
 msgid "Fast list access"
-msgstr ""
+msgstr "快速访问列表"
 
 #: ../../examples/examples_gettext.list:377
 msgid "Fast list access\n"
-msgstr ""
+msgstr "快速访问列表\n"
 
 #: ../../src/wxMaxima.cpp:333
 msgid "Fatal error"
@@ -2858,16 +2897,20 @@ msgid ""
 "First we describe the energy-storing circuit elements. The voltage over the "
 "inductivity of the cable is calculated as follows:\n"
 msgstr ""
+"首先建立描述电路的方程. 考虑电感后得到的输入电压 U_In(t) 满足\n"
+"如下方程:\n"
 
 #: ../../examples/examples_gettext.list:751
 msgid ""
 "First we generate the new data and time vector. As always the fact that a "
 "subst() is necessary in this step is caused by a bug in makelist.\n"
 msgstr ""
+"首先生成新的数据和时间向量. 由于 makelist() 命令的一个错误 \n"
+"(bug), 在这个步骤中需要额外使用 subst() 命令.\n"
 
 #: ../../examples/examples_gettext.list:1759
 msgid "First we load the tolerance calculation package:\n"
-msgstr ""
+msgstr "首先加载计算误差的程序包:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1392
 msgid "Fitting curves to measurement data"
@@ -2875,19 +2918,19 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:808
 msgid "Fitting data to a·exp(k·t)\n"
-msgstr ""
+msgstr "用函数 a·exp(k·t) 拟合数据\n"
 
 #: ../../examples/examples_gettext.list:558
 msgid "Fitting equations to real measurement data\n"
-msgstr ""
+msgstr "用函数拟合实际测量数据\n"
 
 #: ../../examples/examples_gettext.list:922
 msgid "Fitting the data is simple:\n"
-msgstr ""
+msgstr "可简单地用如下命令拟合数据:\n"
 
 #: ../../examples/examples_gettext.list:785
 msgid "Fitting this curve will yield a better result as the first attempt:\n"
-msgstr ""
+msgstr "相比第一次尝试, 使用曲线拟合此点集将得到更好的结果:\n"
 
 #: ../../src/ConfigDialogue.cpp:1050
 #, c-format
@@ -2900,7 +2943,7 @@ msgstr "文本控件中使用等宽字体"
 
 #: ../../examples/examples_gettext.list:1243
 msgid "Floating-point numbers\n"
-msgstr ""
+msgstr "浮点数\n"
 
 #: ../../src/wxMaximaFrame.cpp:898
 msgid "Fold All\tCtrl+Alt+["
@@ -2928,13 +2971,15 @@ msgstr "字体"
 
 #: ../../examples/examples_gettext.list:2256
 msgid "For all xkcd fans:\n"
-msgstr ""
+msgstr "以下式子献给所有的 xkcd 漫画爱好者：\n"
 
 #: ../../examples/examples_gettext.list:441
 msgid ""
 "For does do nearly the same as makelist except that it doesn't return a "
 "list.:\n"
 msgstr ""
+"for() 命令与 makelist() 命令几乎进行相同的操作, 只是前者不返回\n"
+"列表:\n"
 
 #: ../../src/ConfigDialogue.cpp:370
 msgid ""
@@ -2961,7 +3006,7 @@ msgstr ""
 msgid ""
 "For many problems Maxima's solve() program instantly finds a list of "
 "solutions:\n"
-msgstr ""
+msgstr "对于许多问题, Maxima 的 solve() 命令会立即找到解, 并构造出列表:\n"
 
 #: ../../examples/examples_gettext.list:578
 msgid ""
@@ -2969,6 +3014,8 @@ msgid ""
 "synthetically. For the first example a parabola with a bit of measurement "
 "noise might be a good start:\n"
 msgstr ""
+"为了方便起见, 我们利用 Maxima 生成 (而非实际测量出) 这些数据. \n"
+"第一个例子是带测量噪声 (误差) 的抛物线上的数据集:\n"
 
 #: ../../src/wxMaxima.cpp:4281
 #, c-format
@@ -3112,11 +3159,11 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:2017
 msgid "Generating a list of 100 sets of possible values of \"coords\"\n"
-msgstr ""
+msgstr "生成含 100 组“坐标”可能值的列表\n"
 
 #: ../../examples/examples_gettext.list:746
 msgid "Generating evenly-spaced samples from this curve\n"
-msgstr ""
+msgstr "从该曲线生成均匀分布的样本\n"
 
 #: ../../src/ConfigDialogue.cpp:182
 msgid "German"
@@ -3211,13 +3258,16 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1109
 msgid "Hash maps have many uses. One is to implement memoizing:\n"
-msgstr ""
+msgstr "哈希映射有很多用途. 一种是储存数据:\n"
 
 #: ../../examples/examples_gettext.list:1088
 msgid ""
 "Hash maps work fine. The only thing that one can stumble about is that if we "
 "redefine \"gnu\" x[gnu] will read the redefined value:\n"
 msgstr ""
+"结果表明 Maxima 储存数值所用的哈希 (hash) 映射工作正常. 上述\n"
+"命令还定义了以 gnu 为下标的变量. 需要注意的是, 如果我们重新定义 \n"
+"gnu, x[gnu] 将读取对应的值:\n"
 
 #: ../../src/Configuration.cpp:1398 ../../src/wxMaximaFrame.cpp:2155
 msgid "Heading 5"
@@ -3345,6 +3395,13 @@ msgid ""
 "subst() in order to substitute the elements in i into errval, the equation "
 "that tells us how big the error in this point is.\n"
 msgstr ""
+"帮助理解此构造的一些提示：\n"
+"* args() 命令将矩阵转换为列表的列表;\n"
+"* makelist() 命令遍历此列表, 并将每个数据点的 x 值和 y 值构成的\n"
+"    列表赋值给 i;\n"
+"* rhs() 和 lhs() 命令提取“=”左边和右边的式子;\n"
+"* 既然已经知道 i 中的各个元素的含义, 我们可以使用 subst() 命令\n"
+"    将 i 中的元素代入 errval, 以得到在对应点处误差的大小.\n"
 
 #: ../../examples/examples_gettext.list:943
 msgid ""
@@ -3358,6 +3415,14 @@ msgid ""
 " * we need to convert our input data into a list in order to transpose it "
 "(which means: exchange the columns by rows and vice versa)\n"
 msgstr ""
+"帮助理解这一行命令的提示:\n"
+"* map() 命令对列表的每个元素运行同一个命令;\n"
+"* 我们希望为 map() 提供一个命令, 将形如“[a,3]”的内容转换为 \n"
+"    “a=3”; 但是我们不会重复使用这个命令, 所以没有必要为其指定\n"
+"    名字,  因此使用 lambda() 命令来创建一个带参数 x 的无名称命令;\n"
+"* args() 将矩阵转换为列表的列表;\n"
+"* 我们需要将参数列表和解列表转换成矩阵, 以便将其转置 (这意味着:\r行与列对"
+"调).\n"
 
 #: ../../src/wxMaxima.cpp:8679
 msgid "Histogram"
@@ -3420,6 +3485,8 @@ msgid ""
 "same isn't true with IEEE floating-point numbers like the ones the computer "
 "uses:\n"
 msgstr ""
+"在数学中, 如果两项互为相反数, 那么它们相加时可以相互抵消. 但是\n"
+"计算机中使用的 IEEE 浮点数却并非如此:\n"
 
 #: ../../examples/examples_gettext.list:1908
 msgid ""
@@ -3427,6 +3494,8 @@ msgid ""
 "other without risking a collision of tol[n] that happen to have the same n "
 "in the two lists the following function can be used:\n"
 msgstr ""
+"如果想要将两个误差列表合并，但是不想因为这两个列表中正好有\n"
+"相同的 n 而使得对应的 tol[n] 相互影响，则可以使用如下方法:\n"
 
 #: ../../src/ConfigDialogue.cpp:156
 msgid ""
@@ -3479,7 +3548,7 @@ msgstr ""
 msgid ""
 "If not the shape, but the absolute heights are important maxima offers "
 "contour lines.\n"
-msgstr ""
+msgstr "如果重要的不是形状, 而是绝对高度, Maxima 也可以绘制等高线:\n"
 
 #: ../../src/ConfigDialogue.cpp:573
 msgid "If not very long"
@@ -3501,6 +3570,12 @@ msgid ""
 "is needed and each element knows where in the computer's memory the next "
 "list element is stored.\n"
 msgstr ""
+"如果要存储一些项目 (数, 函数等), 大致有两种方法:\n"
+"* 数组: 如果事先知道要存储 n 项, 并且所有项都具有相同的大小 \n"
+"    (如 m 字节), 那么可以分配 m*n 字节的内存. 在这种情况下, 确定\n"
+"    第 k 项的地址很容易.\n"
+"* 列表: 每个列表元素 (项) 的内存是在添加该元素到列表时分配的, \n"
+"    并且每个元素都知道下一个元素在计算机内存中存储的位置。\n"
 
 #: ../../src/TipOfTheDay.cpp:147
 msgid ""
@@ -3517,6 +3592,10 @@ msgid ""
 "differential equation that describes the general shapes the curve can have "
 "without describing its actual height.\n"
 msgstr ""
+"若定义曲线形状的方程用到了曲线的斜率 (diff('f(x),x), 即对应函数\n"
+"的一阶导数)、曲线的斜率函数的斜率 (diff('f(x),x,2), 即对应函数的\n"
+"二阶导数) 或曲线对应函数的任何其他阶导数, 则该方程是一个微分\n"
+"方程, 它描述了曲线的形状特征而非实际解析式.\n"
 
 #: ../../src/ConfigDialogue.cpp:346
 msgid ""
@@ -3532,6 +3611,10 @@ msgid ""
 "pass lambda() first the list of the arguments the new command shall have and "
 "the contents of that command:\n"
 msgstr ""
+"如果要在列表的每个元素上作用的函数只使用一次, 并且不想给这个\n"
+"一次性函数命名, 则可以用 lambda() 命令生成带一个参数的无名\n"
+"函数——只需首先向 lambda() 传递该函数应具有的参数列表和\n"
+"作用法则:\n"
 
 #: ../../examples/examples_gettext.list:1713
 msgid ""
@@ -3552,12 +3635,21 @@ msgid ""
 "dimensional tolerance space. \n"
 "The last two of these methods are described here.\n"
 msgstr ""
+"如果一个式子由许多变量表示, 手动确定哪些变量对该式影响最大是\n"
+"一个耗费精力且容易出错的过程. 替代的方法有：\n"
+"* 实现一个成熟的算法, 根据输入参数的范围自动确定输出范围. 可以\n"
+"    预见, 这个算法会非常复杂, 以至于这类算法都只对简单情形有效.\n"
+"* 对每个变量的误差, 通过式子的导数确定最大的全局误差.\n"
+"* 利用蒙特卡罗 (Montecarlo) 方法: 将所有变量都替换为其误差范围\n"
+"    内的随机值, 然后反复计算, 直至可以看出式子的误差.\n"
+"* 或者系统地尝试 n 维误差空间的所有边界值.\n"
+"这里描述最后两种方法.\n"
 
 #: ../../examples/examples_gettext.list:1960
 msgid ""
 "If this calculation is repeated it will naturally result in slightly "
 "different numeric values:\n"
-msgstr ""
+msgstr "如果重复此计算, 自然会产生不同的数值:\n"
 
 #: ../../src/ConfigDialogue.cpp:348
 msgid ""
@@ -3584,7 +3676,7 @@ msgstr ""
 msgid ""
 "If this feature is over-eager (or not eagerly enough) wxMaxima offers "
 "additional control:\n"
-msgstr ""
+msgstr "wxMaxima 也提供了一些方法，以精确控制显示下标时采用的样式：\n"
 
 #: ../../src/ConfigDialogue.cpp:368
 msgid ""
@@ -3598,22 +3690,29 @@ msgid ""
 "clicking on such a number opens up a menu that allows to customize this "
 "behavior.\n"
 msgstr ""
+"如果显示大浮点数时使用的数字太多或太少, 可以右键单击这个数字, \n"
+"在弹出的菜单中选择合适的数字数量.\n"
 
 #: ../../examples/examples_gettext.list:83
 msgid ""
 "If we did everything right maxima now can determine the equation that "
 "defines the general shape of all possible loading curves:\n"
 msgstr ""
+"通过上面的方程, Maxima 现在可以确定荷载曲线对应的函数 (运行\n"
+"下列命令时, Maxima 会询问 4*C_In*R_Load^2-L_Cable 的正负号, \n"
+"可回答 positive, negative 或 zero 之一):\n"
 
 #: ../../examples/examples_gettext.list:1817
 msgid "If we just want to know the typical value we can do the following:\n"
-msgstr ""
+msgstr "如果只想知道典型值, 可以执行以下操作:\n"
 
 #: ../../examples/examples_gettext.list:1149
 msgid ""
 "If we now calculate the 1000th prime maxima will store the info about the "
 "first 1000 primes in a hash map:\n"
 msgstr ""
+"如果要得到第 100 个素数, Maxima 将利用哈希映射存储前 100 个\n"
+"素数:\n"
 
 #: ../../examples/examples_gettext.list:1425
 msgid ""
@@ -3621,6 +3720,9 @@ msgid ""
 "an art, a computer can help with in many special cases, but that often "
 "relies on human creativity for finding algorithms and ways.\n"
 msgstr ""
+"对于正在学习数学的人而言, 解方程是一门艺术. 虽然在一些特殊情\n"
+"况下, 可获得计算机的帮助, 但这也往往依赖于人类的创造力来寻找\n"
+"算法.\n"
 
 #: ../../src/TipOfTheDay.cpp:63
 msgid ""
@@ -3665,14 +3767,16 @@ msgid ""
 "values are. In this case it is possible to generate a top view without "
 "drawing the actual surface:\n"
 msgstr ""
+"有时, 我们不关心曲面的实际形状, 而只关心其上各点的高度. 这时, \n"
+"可以不绘制实际曲面, 而只生成等高线俯视图:\n"
 
 #: ../../examples/examples_gettext.list:340
 msgid "In order to allow to read values more easily\n"
-msgstr ""
+msgstr "使三维图形上点的数值更易于读取\n"
 
 #: ../../examples/examples_gettext.list:311
 msgid "In order to make the 3d shape easier to grasp\n"
-msgstr ""
+msgstr "使三维图形的形状更易于理解\n"
 
 #: ../../examples/examples_gettext.list:367
 msgid ""
@@ -3680,6 +3784,9 @@ msgid ""
 "fact that y needs to substituted into the equation to plot manually is a "
 "long-standing bug in maxima's makelist() command.\n"
 msgstr ""
+"只需在单击此图片后使用鼠标滚轮, 就可以看出曲面上的曲线随\n"
+"纵坐标 y 的变化. 代码里, 纵坐标 y 的值需要手动代入解析式, 这是 \n"
+"Maxima 的 makelist() 命令的一个长期存在的错误 (bug).\n"
 
 #: ../../src/TipOfTheDay.cpp:144
 msgid ""
@@ -3717,6 +3824,8 @@ msgid ""
 "In this case maxima offers several options to at least find the numerical "
 "values, two examples are given below:\n"
 msgstr ""
+"在这种情况下, Maxima 提供了一些方法来寻求数值解. 下面给出两个\n"
+"例子:\n"
 
 #: ../../examples/examples_gettext.list:99
 msgid ""
@@ -3733,6 +3842,8 @@ msgid ""
 "using the wrong starting point means that lsquares heads for the wrong local "
 "optimum of the problem.\n"
 msgstr ""
+"在这个例子中, 初始值“initial=”不是必要的. 但有时使用错误的\n"
+"初始值意味着 lsquares 程序包会得到错误的局部最优解.\n"
 
 #: ../../src/wxMaxima.cpp:8877
 msgid "Include columns:"
@@ -3798,7 +3909,7 @@ msgstr "输入标签"
 
 #: ../../examples/examples_gettext.list:1754
 msgid "Input values that include a tolerance\n"
-msgstr ""
+msgstr "输入含误差的值\n"
 
 #: ../../src/wxMaximaFrame.cpp:445
 msgid "Insert"
@@ -4048,7 +4159,7 @@ msgstr ""
 msgid ""
 "It is possible to access all list elements by accessing and removing the "
 "first element repeatedly:\n"
-msgstr ""
+msgstr "通过反复访问并删除第一个元素, 可以遍历列表的所有元素:\n"
 
 #: ../../src/TipOfTheDay.cpp:150
 msgid ""
@@ -4068,7 +4179,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1053
 msgid "It still remembers what x contains, though.\n"
-msgstr ""
+msgstr "不过, 它仍然记得 x 包含的内容:\n"
 
 #: ../../src/ConfigDialogue.cpp:185
 msgid "Italian"
@@ -4084,7 +4195,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:503
 msgid "Iterating through two lists at the same time\n"
-msgstr ""
+msgstr "同时迭代两个列表\n"
 
 #: ../../src/wxMaxima.cpp:7462 ../../src/wxMaxima.cpp:7700
 msgid "Iterator:"
@@ -4108,6 +4219,8 @@ msgid ""
 "equation containing the real values and the tolerances in wrstcse's "
 "notation:\n"
 msgstr ""
+"只要将上述式子代入方程, 就得到一个包含实际值和用 wrstcse 程序包\n"
+"的符号表示误差的表达式:\n"
 
 #: ../../src/ConfigDialogue.cpp:188
 msgid "Kabyle"
@@ -4124,7 +4237,7 @@ msgstr "保留下列特殊符号前的百分号(%)：%e, %i 等。"
 
 #: ../../src/wxMaxima.cpp:2039
 msgid "Killing Maxima."
-msgstr "杀死 Maxima 进程"
+msgstr "结束 Maxima 进程"
 
 #: ../../src/wxMaxima.cpp:7512 ../../src/wxMaxima.cpp:8008
 msgid "LCM"
@@ -4225,25 +4338,25 @@ msgstr "长度"
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
-msgstr ""
+msgstr "假设 R_1=100Ω 且相对误差为 10%, R_2=1000Ω 且相对误差为 1%:\n"
 
 #: ../../examples/examples_gettext.list:607
 msgid ""
 "Let's assume we have guessed that the curve might be something parabola-"
 "like:\n"
-msgstr ""
+msgstr "假设我们已经猜到拟合曲线可能是抛物线:\n"
 
 #: ../../examples/examples_gettext.list:1218
 msgid ""
 "Let's create a function that generates and remembers Fibonacci numbers for "
 "us:\n"
-msgstr ""
+msgstr "例如创建一个递推公式来生成并储存斐波纳契 (Fibonacci) 数列:\n"
 
 #: ../../examples/examples_gettext.list:2239
 msgid ""
 "Let's hope the font that is used to display this includes cherries, pear and "
 "banana symbols.\n"
-msgstr ""
+msgstr "注意：用于演示这一功能的字体应包括樱桃、梨、香蕉和心的符号。\n"
 
 #: ../../examples/examples_gettext.list:136
 msgid "Let's specify the circuit values we might know about...\n"
@@ -4358,7 +4471,7 @@ msgstr "列表："
 
 #: ../../examples/examples_gettext.list:382
 msgid "Lists and Arrays\n"
-msgstr ""
+msgstr "列表和数组\n"
 
 #: ../../src/ConfigDialogue.cpp:1540
 msgid "Load"
@@ -4441,6 +4554,8 @@ msgid ""
 "is shaped like a list.\n"
 "The most widely known form of this command is:\n"
 msgstr ""
+"如果想生成一个列表, 最常用的是 makelist() 命令, 其有瑞士军刀般\n"
+"的通用性. 该命令最广为人知的形式是:\n"
 
 #: ../../examples/examples_gettext.list:1588
 msgid ""
@@ -4451,6 +4566,11 @@ msgid ""
 "floating-point numbers by the exact fraction it most likely means and warns "
 "about doing so:\n"
 msgstr ""
+"许多计算机程序将绝对值很小的数字显示为“0”, 或者只显示小数\n"
+"点后的前几个数字, 并默认丢弃的数值是舍入误差且不会累加 (有时\n"
+"并非如此, 参见 Wilkinson 多项式的例子, 该多项式在计算时会很快\n"
+"产生较大误差). Maxima 的 solve() 命令总是将浮点数换成与之最\n"
+"接近的分数, 并告知用户替换过程:\n"
 
 #: ../../examples/examples_gettext.list:1399
 msgid ""
@@ -4458,6 +4578,9 @@ msgid ""
 "therefore wise to use exact numbers wherever possible and only to convert "
 "the results to floats using float() or bfloat():\n"
 msgstr ""
+"使用准确数值可以避免许多难以发现的错误. 因此, 在可能的情况下, \n"
+"最好一直使用准确数值计算, 并且只用 float() 或 bfloat() 命令将最终\n"
+"结果转换为浮点数:\n"
 
 #: ../../src/wxMaxima.cpp:7074
 msgid "Map"
@@ -4520,7 +4643,7 @@ msgstr "数学符号"
 
 #: ../../examples/examples_gettext.list:1733
 msgid "Mathematical description\n"
-msgstr ""
+msgstr "数学描述\n"
 
 #: ../../examples/examples_gettext.list:1420
 msgid ""
@@ -4529,6 +4652,9 @@ msgid ""
 "chosen, though, allowing simply reformulating the question in many cases the "
 "answer can be found.\n"
 msgstr ""
+"数学可以看成一种语言, 它只包含少量单词和语法规则. 不过, 这两者\n"
+"都是经过精心挑选的, 在很多情况下, 只要重新表述问题, 就能找到问\n"
+"题的答案.\n"
 
 #: ../../src/ToolBar.cpp:243
 msgid "Maths"
@@ -4586,12 +4712,14 @@ msgid ""
 "calculate the output value that corresponds to an input value only once and "
 "then remember them for the future.\n"
 msgstr ""
+"Maxima 还允许定义递推公式: 只计算一次与输入值对应的输出值, \n"
+"然后将其储存以备将来使用.\n"
 
 #: ../../examples/examples_gettext.list:1308
 msgid ""
 "Maxima allows to customize the format floating-point numbers are displayed "
 "in:\n"
-msgstr ""
+msgstr "Maxima 允许自定义浮点数的显示格式:\n"
 
 #: ../../examples/examples_gettext.list:1342
 msgid ""
@@ -4601,6 +4729,10 @@ msgid ""
 "bfloat() command or by entering a \"b\" instead of an \"e\" when declaring "
 "the exponent:\n"
 msgstr ""
+"Maxima 还提供了其实现的浮点数 (bigfloats, 大浮点数), 用这种浮点\n"
+"数计算较慢 (因为必须由软件处理), 但可以准确到任意精度. 通过使用 \n"
+"bfloat() 命令或在声明指数时输入“b”而非“e”, 可以将数字转换\n"
+"为大浮点数:\n"
 
 #: ../../src/wxMaxima.cpp:2699
 #, c-format
@@ -4650,7 +4782,7 @@ msgstr "Maxima 错误"
 msgid ""
 "Maxima even offers a third fitting algorithm that is even able to understand "
 "constraints:\n"
-msgstr ""
+msgstr "Maxima 提供了第三种拟合算法, 该算法可以理解所给的限制条件:\n"
 
 #: ../../src/wxMaxima.cpp:9786
 msgid "Maxima has finished calculating."
@@ -4683,6 +4815,8 @@ msgid ""
 "that trying to construct a list on-the-fly creates an altogether different "
 "kind of object:\n"
 msgstr ""
+"虽然 Maxima 中的大部分运算是基于列表的, 但是会令新手惊讶的是, \n"
+"尝试动态构造列表会创建一个完全不同的对象:\n"
 
 #: ../../src/wxMaxima.cpp:4598
 msgid "Maxima is ready for input."
@@ -4697,6 +4831,11 @@ msgid ""
 "list item is stored at means having to iterate through the list querying "
 "each item where the next list item can be found.\n"
 msgstr ""
+"Maxima 倾向于使用列表: 向列表添加元素很容易; 删除列表项也很\n"
+"容易; 只需交换几个指针, 就可以对列表项重新排序. Maxima 提供了\n"
+"对列表快速排序的方法, 并可以消除重复的元素. 但是, 确定一个列表\n"
+"的长度或第 n 个列表项的存储地址也意味着必须遍历该列表, 并查询\n"
+"每项对应的下一个列表项.\n"
 
 #: ../../src/Dirstructure.cpp:135
 #, c-format
@@ -4708,6 +4847,8 @@ msgid ""
 "Maxima now offers a simple, but powerful curve fitter that guesses the "
 "parameters a,b and c for us:\n"
 msgstr ""
+"Maxima 提供了一个简单但功能强大的拟合曲线程序包, 可以计算\n"
+"拟合曲线的参数 a, b 和 c:\n"
 
 #: ../../src/wxMaxima.cpp:5863
 msgid "Maxima package (*.mac)|*.mac"
@@ -4737,6 +4878,9 @@ msgid ""
 "compile a list of the errors we want to minimize. Let's do that for data2_i "
 "and approach1:\n"
 msgstr ""
+"Maxima 提供了另一种拟合算法, 该算法通常会产生更好的结果, 但是\n"
+"使用起来有点复杂. 例如, 它要求我们手动生成一个要最小化的误差\n"
+"列表. 现在对 data2_i 和 approach1 运用这种方法:\n"
 
 #: ../../src/ConfigDialogue.cpp:340
 msgid ""
@@ -4843,6 +4987,9 @@ msgid ""
 "click on it and press on the \"Popout interactively\" button which opens a "
 "window the curve can be rotated in:\n"
 msgstr ""
+"Maxima 默认显示三维曲面的方式已优化为快速显示 (固定视角的) \n"
+"图形. 为了获得对曲面形状的整体感觉, 可以右键单击图形后选择 \n"
+"“弹出并交互”选项, 以打开一个可以在其中旋转曲面的窗口:\n"
 
 #: ../../src/wxMaxima.cpp:2704
 #, c-format
@@ -4942,16 +5089,15 @@ msgstr "中值..."
 
 #: ../../src/wxMaximaFrame.cpp:1398
 msgid "Memoizing"
-msgstr ""
+msgstr "储存数据"
 
 #: ../../examples/examples_gettext.list:1023
 msgid "Memoizing\n"
-msgstr ""
+msgstr "储存数据\n"
 
 #: ../../examples/examples_gettext.list:1208
-#, fuzzy
 msgid "Memoizing functions\n"
-msgstr "显示已定义函数"
+msgstr "储存递推公式的计算值\n"
 
 #: ../../examples/examples_gettext.list:1119
 msgid ""
@@ -4959,16 +5105,20 @@ msgid ""
 "hard to calculate and of which only relatively few items ever need to be "
 "calculated.\n"
 msgstr ""
+"如果计算过程步骤较多, 而每个步骤只用到少量新生成的数据, 那么\n"
+"储存这些新数据可以大大加快计算速度.\n"
 
 #: ../../examples/examples_gettext.list:1183
 msgid ""
 "Memoizing should speed up accessing already-known values. Let's test if that "
 "is the case:\n"
 msgstr ""
+"储存数据应该可以加快访问已知值的速度. 我们来测试一下是否确实\n"
+"如此:\n"
 
 #: ../../examples/examples_gettext.list:1114
 msgid "Memoizing using hash maps\n"
-msgstr ""
+msgstr "使用哈希映射储存数据\n"
 
 #: ../../src/Worksheet.cpp:1365
 msgid "Merge Cells"
@@ -5004,7 +5154,7 @@ msgstr "求模"
 
 #: ../../examples/examples_gettext.list:1945
 msgid "Monte carlo analysis\n"
-msgstr ""
+msgstr "蒙特卡罗 (Monte carlo) 分析\n"
 
 #: ../../examples/examples_gettext.list:1248
 msgid ""
@@ -5013,10 +5163,13 @@ msgid ""
 "in the \"1e3\" notation maxima assumes one wants to use the kind of floats "
 "the machine supports out-of-the box:\n"
 msgstr ""
+"大多数计算机都有浮点运算单元 (硬件), 可以快速进行高精度的计算. \n"
+"如果一个数字是利用小数点或形如“1e3”的记号输入的, Maxima \n"
+"会假设用户希望使用机器浮点数:\n"
 
 #: ../../examples/examples_gettext.list:306
 msgid "Moving pictures\n"
-msgstr ""
+msgstr "移动图形\n"
 
 #: ../../src/wxMaximaFrame.cpp:1948
 msgid "Mu"
@@ -5172,19 +5325,19 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:912
 msgid "Now let's load the package that contains the other fitter:\n"
-msgstr ""
+msgstr "接着加载包含另一个拟合算法的程序包:\n"
 
 #: ../../examples/examples_gettext.list:523
 msgid "Now we extract the list of arguments to the matrix() command:\n"
-msgstr ""
+msgstr "现在可以将 matrix() 命令的参数列表提取出来:\n"
 
 #: ../../examples/examples_gettext.list:762
 msgid "Now we generate a matrix of values lsquares can deal with:\n"
-msgstr ""
+msgstr "现在生成 lsquares 程序包可以处理的数据矩阵:\n"
 
 #: ../../examples/examples_gettext.list:73
 msgid "Now we have enough information to calculate the input voltage itself:\n"
-msgstr ""
+msgstr "现在已有足够的信息来计算输入电压:\n"
 
 #: ../../examples/examples_gettext.list:1883
 msgid ""
@@ -5192,6 +5345,8 @@ msgid ""
 "between 4V and 6V, typically 4.5V. For doing this a specialized function "
 "exists:\n"
 msgstr ""
+"也可以告诉 Maxima, 电源提供的电压介于 4V 和 6V 之间, 典型值为\n"
+"4.5V. 为此，有一个专门的函数:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1949
 msgid "Nu"
@@ -5203,7 +5358,7 @@ msgstr "分子次数："
 
 #: ../../examples/examples_gettext.list:1238
 msgid "Number formats\n"
-msgstr ""
+msgstr "数字格式\n"
 
 #: ../../src/wxMaxima.cpp:7581
 msgid "Number of elements"
@@ -5239,7 +5394,7 @@ msgstr ""
 #: ../../examples/examples_gettext.list:533
 msgid ""
 "Of course all of these commands can be executed in one long command line:\n"
-msgstr ""
+msgstr "当然, 所有这些命令都可以在一个 (很长的) 命令行中执行:\n"
 
 #: ../../src/ConfigDialogue.cpp:669
 msgid "Offer answers for questions known from previous runs"
@@ -5254,6 +5409,10 @@ msgid ""
 "simple cases an engineer encounters on a daily basis maxima can do this "
 "automatically, instead.\n"
 msgstr ""
+"大部分微分方程的解不能用符号表示, 即数学上没有定义相应的函数\n"
+"而无法写出解析式. 有时只能猜测解的一般形式, 并用计算机帮助\n"
+"我们找到解中参数的值. 对于简单的微分方程 (如工程师每天遇到的\n"
+"那种), Maxima 可以自动完成求解.\n"
 
 #: ../../src/wxMaxima.cpp:7966 ../../src/wxMaxima.cpp:8099
 #: ../../src/wxMaxima.cpp:8117
@@ -5273,6 +5432,8 @@ msgid ""
 "One hint to that is the label that tells we only declared x[1]. Another hint "
 "is that maxima tells us that x isn't a list:\n"
 msgstr ""
+"上述命令并非创建了列表 x, 一个理由是输出标签告诉我们只声明了 \n"
+"x[1]; 另一个理由是 Maxima 也判断 x 不是一个列表:\n"
 
 #: ../../examples/examples_gettext.list:563
 msgid ""
@@ -5280,6 +5441,8 @@ msgid ""
 "that describes a phenomenon is used for understanding real measurement "
 "data.\n"
 msgstr ""
+"Maxima 能够充分展示其强大功能的一个地方, 就是用符号 (函数) 来\n"
+"描述一个现象, 从而帮助理解实际测量数据.\n"
 
 #: ../../src/wxMaxima.cpp:8775
 msgid "One sample t-test"
@@ -5290,6 +5453,9 @@ msgid ""
 "One way to do so efficiently is to use the pop() method on both lists. The "
 "other is to make a list of lists:\n"
 msgstr ""
+"如果要同时对两个列表进行迭代, 一种有效的方法是对这两个列表\n"
+"同时使用 pop() 命令, 另一种方法是构造列表的列表 (列表的元素\n"
+"仍为列表):\n"
 
 #: ../../src/wxMaximaFrame.cpp:1401
 msgid "Online tutorials"
@@ -5540,7 +5706,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:2027
 msgid "Plotting these lists\n"
-msgstr ""
+msgstr "绘制这些列表\n"
 
 #: ../../src/wxMaxima.cpp:6654 ../../src/wxMaxima.cpp:6670
 #: ../../src/wxMaxima.cpp:6784
@@ -5579,7 +5745,7 @@ msgstr "葡萄牙语（巴西）"
 
 #: ../../examples/examples_gettext.list:2218
 msgid "Pre- and post- super- and subscripts\n"
-msgstr ""
+msgstr "在变量名左、右添加上、下标\n"
 
 #: ../../src/wxMaxima.cpp:8391
 msgid "Precision"
@@ -5638,7 +5804,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1802
 msgid "Print out the results\n"
-msgstr ""
+msgstr "输出结果\n"
 
 #: ../../src/ConfigDialogue.cpp:966
 msgid "Print scale:"
@@ -5712,7 +5878,7 @@ msgstr "对文档中所有单元求值"
 
 #: ../../examples/examples_gettext.list:1498
 msgid "Re-using the solutions\n"
-msgstr ""
+msgstr "重复使用所得的解\n"
 
 #: ../../src/Worksheet.cpp:7053
 #, fuzzy
@@ -5993,7 +6159,7 @@ msgstr "多项式求根（长浮点数）"
 
 #: ../../examples/examples_gettext.list:1985
 msgid "Round holes can be described as follows:\n"
-msgstr ""
+msgstr "圆孔可以描述如下:\n"
 
 #: ../../src/wxMaximaFrame.cpp:798
 msgid "Rounded"
@@ -6022,6 +6188,12 @@ msgid ""
 "program that was created with exact numbers in mind maxima is likely to hit "
 "that kind of problem from time to time, if floating-point numbers are used.\n"
 msgstr ""
+"Rump 和 Wilkinson 提供了一些简单多项式的例子, 使用这些多项式\n"
+"会很快产生极大的误差. 令人惊讶的是, 人们在现实生活中会频繁地\n"
+"遇到很多类似的情况, 其中包括电脑游戏中的错误 (bug), 全景照片中\n"
+"边缘部分的黑色块, 等等. 此外 (平均) 音量计算器也会无法正确计算\n"
+"长音频文件的音量. 作为一个主要进行精确计算的数学程序, 如果使用\n"
+"浮点数, Maxima 可能会时不时地遇到此类误差累积问题.\n"
 
 #: ../../src/wxMaxima.cpp:6019
 msgid "Running gnuplot as: "
@@ -6623,7 +6795,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1430
 msgid "Simple equations\n"
-msgstr ""
+msgstr "简单方程\n"
 
 #: ../../src/wxMaximaFrame.cpp:1719
 msgid "Simplify"
@@ -6668,12 +6840,16 @@ msgid ""
 "keep the actual numerical input values in a separate list like the following "
 "one:\n"
 msgstr ""
+"在了解了这些机制之后, 通常来说更好的方法是只求问题的符号解, \n"
+"并将变量的实际数值保存在单独的列表中, 如下所示:\n"
 
 #: ../../examples/examples_gettext.list:695
 msgid ""
 "Since the biggest error occurs where we have the highest density of data the "
 "result of fitting the curve to this data directly will be suboptimal:\n"
 msgstr ""
+"由于最大的误差发生在数据最密集的地方, 因此用曲线直接拟合\n"
+"该数据集的结果将是次优的:\n"
 
 #: ../../src/TipOfTheDay.cpp:117
 msgid ""
@@ -6690,6 +6866,8 @@ msgid ""
 "Slower to draw, but easier to understand the curve is if the surface isn't "
 "transparent:\n"
 msgstr ""
+"可以设置曲面为非透明的, 虽然绘制速度慢一些, 但更容易理解曲面\n"
+"的形状:\n"
 
 #: ../../src/wxMaxima.cpp:6654 ../../src/wxMaxima.cpp:6670
 msgid "Solution:"
@@ -6745,6 +6923,10 @@ msgid ""
 " * The solution doesn't completely change its form depending on the range "
 "one variable is in.\n"
 msgstr ""
+"solve() 命令还接受列表作为参数. 在这种情况下, 只有满足以下条件\n"
+"时, 才能找到方程的解:\n"
+"* 线性无关方程的个数与未知数的个数相同;\n"
+"* 未知数的取值范围变化时, 解的形式并不完全改变.\n"
 
 #: ../../src/wxMaximaFrame.cpp:1005
 msgid "Solve boundary value problem for second degree ODE"
@@ -6788,15 +6970,15 @@ msgstr "求解..."
 
 #: ../../src/wxMaximaFrame.cpp:1390
 msgid "Solving differential equations"
-msgstr ""
+msgstr "解 (常) 微分方程"
 
 #: ../../examples/examples_gettext.list:28
 msgid "Solving differential equations\n"
-msgstr ""
+msgstr "解 (常) 微分方程\n"
 
 #: ../../examples/examples_gettext.list:1415
 msgid "Solving equations\n"
-msgstr ""
+msgstr "解方程\n"
 
 #: ../../src/wxMaximaFrame.cpp:1382
 msgid "Solving equations with Maxima"
@@ -6807,6 +6989,8 @@ msgid ""
 "Some solutions have never been assigned a name in mathematics. One popular "
 "example would be:\n"
 msgstr ""
+"有些解的形式在数学中从未被命名 (没有已知函数或数值与之对应), \n"
+"一个典型的例子是:\n"
 
 #: ../../examples/examples_gettext.list:1980
 msgid ""
@@ -6814,6 +6998,8 @@ msgid ""
 "exactly meet 3 points. But that points unfortunately all have tolerances. We "
 "now are asked to produce images of the possible outcome.\n"
 msgstr ""
+"有人制造了一个魔术电钻, 保证产生的钻孔正好通过 3 个点, 但是这些\n"
+"点都有误差. 现在绘出所有可能结果的图像.\n"
 
 #: ../../src/wxMaxima.cpp:7402
 msgid "Something like f(x_1,x_2)"
@@ -6825,10 +7011,12 @@ msgid ""
 "height of the curve is more easy to read if one assigns the mouse's scroll "
 "wheel to the y coordinate.\n"
 msgstr ""
+"有时实际上并不需要显示整个三维图形, 如果指定鼠标滚轮 (中键) \n"
+"来控制纵坐标 y 的变化, 则曲线的高度 (竖坐标 z) 会更容易读取:\n"
 
 #: ../../examples/examples_gettext.list:670
 msgid "Sometimes the input data isn't evenly spaced.\n"
-msgstr ""
+msgstr "有时输入的数据不是均匀分布的.\n"
 
 #: ../../src/wxMaximaFrame.cpp:1303
 msgid "Sort"
@@ -6852,7 +7040,7 @@ msgstr "特殊常量"
 
 #: ../../examples/examples_gettext.list:1878
 msgid "Specifying complex tolerances\n"
-msgstr ""
+msgstr "指定复杂公差\n"
 
 #: ../../src/wxMaximaFrame.cpp:799
 msgid "Square"
@@ -6860,7 +7048,7 @@ msgstr "平方"
 
 #: ../../examples/examples_gettext.list:206
 msgid "Standard curves\n"
-msgstr ""
+msgstr "标准曲面\n"
 
 #: ../../src/Worksheet.cpp:1303
 msgid "Start Animation"
@@ -7063,6 +7251,8 @@ msgid ""
 "Thanks to Robert Dodier it is now possible to equip variables with super-, "
 "and subscripts that are displayed left of the variable name, too:\n"
 msgstr ""
+"多亏了 Robert Dodier 的工作，现在也可以在变量名的左边添加上标\n"
+"和下标：\n"
 
 #: ../../src/TipOfTheDay.cpp:162
 msgid ""
@@ -7119,11 +7309,11 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:2003
 msgid "The coordinates of the points the holes touch\n"
-msgstr ""
+msgstr "孔对应点的坐标\n"
 
 #: ../../examples/examples_gettext.list:63
 msgid "The current into the input capacitance is:\n"
-msgstr ""
+msgstr "输入电容的电流为:\n"
 
 #: ../../src/ConfigDialogue.cpp:354
 msgid ""
@@ -7188,6 +7378,9 @@ msgid ""
 "For example machine floats cannot exactly express seemingly simple numbers "
 "like 0.1:\n"
 msgstr ""
+"利用硬件提高计算速度的一个缺点是, 使用浮点数会带来不准确的结\n"
+"果, 这可能会在人们最不希望得到误差的时候出现. 例如, 机器浮点数\n"
+"不能精确地表示像 0.1 这样看似简单的数字:\n"
 
 #: ../../src/wxMaximaFrame.cpp:2271
 msgid "The fill color for the next objects"
@@ -7199,7 +7392,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:602
 msgid "The general approach\n"
-msgstr ""
+msgstr "一般方法\n"
 
 #: ../../src/wxMaximaFrame.cpp:2275
 msgid "The grid in the background of the diagram"
@@ -7218,6 +7411,8 @@ msgid ""
 "The interpol package allows to generate continuous and half-way smooth "
 "curves from any input data.\n"
 msgstr ""
+"利用 interpol 程序包可以由任何输入数据生成连续的、接近平滑的\n"
+"曲线 (运行时间可能较长).\n"
 
 #: ../../src/TipOfTheDay.cpp:174
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -7245,7 +7440,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:813
 msgid "The natural approach to fitting data to exponential curves would be:\n"
-msgstr ""
+msgstr "用指数曲线拟合数据的方法自然是:\n"
 
 #: ../../src/wxMaximaFrame.cpp:2263
 msgid "The next plot's title"
@@ -7288,10 +7483,13 @@ msgid ""
 "data to the curves. So let's add an error to the place with the highest data "
 "density and see if we can cope with it.\n"
 msgstr ""
+"当用曲线拟合数据集时, 样本密度越大的地方权重越大. 现在我们在\n"
+"数据最密集的地方添加一些误差, 看看 Maxima 是否可以处理这种\n"
+"情况.\n"
 
 #: ../../examples/examples_gettext.list:1723
 msgid "The problem\n"
-msgstr ""
+msgstr "引入问题\n"
 
 #: ../../examples/examples_gettext.list:848
 msgid ""
@@ -7299,19 +7497,22 @@ msgid ""
 "though, in this case.  It can be partially eliminated by introducing a "
 "c_noise, as proposed by Guo.\n"
 msgstr ""
+"不过, 在这种情况下, 仍存在因噪声干扰导致找到的参数误差较大的\n"
+"问题. 正如 Guo 所建议的, 通过引入 c_noise, 可以部分地消除噪声\n"
+"的影响.\n"
 
 #: ../../examples/examples_gettext.list:902
 msgid "The result is a list of error values, each in the following format:\n"
-msgstr ""
+msgstr "所得结果是误差的列表, 每个值的格式如下:\n"
 
 #: ../../examples/examples_gettext.list:772
 msgid ""
 "The result is a still noisy and distorted, but more evenly-spaced curve:\n"
-msgstr ""
+msgstr "结果是一个 (相比原抛物线) 仍然有噪声, 但分布更均匀的点集:\n"
 
 #: ../../examples/examples_gettext.list:952
 msgid "The result isn't too bad, this time, neither:\n"
-msgstr ""
+msgstr "这次的结果也不算太糟:\n"
 
 #: ../../src/TipOfTheDay.cpp:165
 msgid ""
@@ -7341,7 +7542,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1099
 msgid "The tick (') operator can forbid maxima to do so:\n"
-msgstr ""
+msgstr "英文单引号 (') 可以阻止 Maxima 这样做:\n"
 
 #: ../../examples/examples_gettext.list:1769
 msgid ""
@@ -7351,6 +7552,9 @@ msgid ""
 "one has to make sure this name is never assigned a value else tol[name] will "
 "be replaced by tol[<value of the variable \"name\">]\n"
 msgstr ""
+"该程序包允许 tol[n] 表示取值在 -1 和 1 之间的变量,  且值与下标 n \n"
+"关联. 实际上,“n”无需为数字,  但是如果它是一个符号名, 应确保\n"
+"该符号从未被赋值, 否则 tol[name] 将成为 tol[变量 name 的值].\n"
 
 #: ../../examples/examples_gettext.list:1369
 msgid ""
@@ -7358,6 +7562,8 @@ msgid ""
 "assumes any number that doesn't contain a decimal dot to be intended as "
 "being an exact number:\n"
 msgstr ""
+"开发 Maxima 的目的之一是为了计算准确数值. Maxima 假设任何\n"
+"不包含小数点的数值都是准确的:\n"
 
 #: ../../src/wxMaxima.cpp:7469 ../../src/wxMaxima.cpp:7706
 msgid "The variable the value of the current source item is stored in."
@@ -7371,7 +7577,7 @@ msgstr ""
 msgid ""
 "Then we ask wrstcse to print out the tolerances of the right hand side of "
 "our equation \"uout\":\n"
-msgstr ""
+msgstr "然后让 wrstcse 程序包输出“uout”右侧的误差:\n"
 
 #: ../../src/TipOfTheDay.cpp:78
 msgid ""
@@ -7395,6 +7601,8 @@ msgid ""
 "These equations are simple enough that there is no need to use solve() to "
 "introduce them into each other:\n"
 msgstr ""
+"这两个方程非常简单,  直接将前者代入后者即可得出 U_Out, 无需用 \n"
+"solve() 命令求解:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1944
 msgid "Theta"
@@ -7404,7 +7612,7 @@ msgstr ""
 msgid ""
 "This approach is much more good-natured for finding the parameters (that can "
 "then be substituted into approach2).\n"
-msgstr ""
+msgstr "用这种方法求解参数会更合适, 而这些参数可以回代至 approach2.\n"
 
 #: ../../src/wxMaxima.cpp:4354
 msgid ""
@@ -7434,12 +7642,17 @@ msgid ""
 "minimum and which is the maximum. But we can inform maxima about the "
 "necessary facts:\n"
 msgstr ""
+"这个结果仍然不易理解, 因为 Maxima 不知道 U_In 的值, 所以无法\n"
+"决定输出值中, 哪个是最小的, 哪个是最大的. 但我们可以给 Maxima \n"
+"提供一些必要的假设:\n"
 
 #: ../../examples/examples_gettext.list:1950
 msgid ""
 "This time we want the tolerance package to use 1000 random sets of values "
 "and to find the best and worst case that can be reached using these values:\n"
 msgstr ""
+"这一次，我们希望误差程序包使用 1000 个随机值集合, 并通过这些值\n"
+"确定误差的范围:\n"
 
 #: ../../examples/examples_gettext.list:1465
 msgid ""
@@ -7447,6 +7660,9 @@ msgid ""
 "is why maxima asked about it. One can avoid asking questions by telling the "
 "answers to maxima's assume database:\n"
 msgstr ""
+"前面得到的解的类型取决于 a 的值，这就是 Maxima 询问它的原因. \n"
+"可以通过 assume() 命令将字母的取值范围告诉 Maxima 来避免其\n"
+"提问:\n"
 
 #: ../../src/wxMaxima.cpp:8136 ../../src/wxMaxima.cpp:9307
 msgid "Times:"
@@ -7542,7 +7758,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1708
 msgid "Tolerance calculations\n"
-msgstr ""
+msgstr "误差计算\n"
 
 #: ../../src/wxMaximaFrame.cpp:1386
 msgid "Tolerance calculations with Maxima"
@@ -7707,6 +7923,19 @@ msgid ""
 "leads to numbers that exceed the floating-point range (or exact numbers "
 "longer than the computer's memory).\n"
 msgstr ""
+"但是, 使用此方法时, 有一些因素导致很难由实验数据得到理想的拟合\n"
+"曲线, 例如:\n"
+"* 此曲线上一部分点的纵坐标绝对值太小. 由于拟合时也考虑噪声, \n"
+"    而且非线性系统中的噪声往往无法通过取平均值而削弱影响, 因此\n"
+"    即使这一部分的测量噪声很小, 也会导致得到错误的曲线参数.\n"
+"* 该曲线上另一部分点的纵坐标绝对值太大, 并且对 k 的微小变化\n"
+"    很敏感. 由于拟合时希望保持较低的整体误差, 因此会增加该部分\n"
+"    的权重 (相比误差更小的部分而言).\n"
+"* 从错误的初始点开始计算, 即使在每一步中为了最大限度地减少\n"
+"    误差而优化 a 和 k, 也可能求得与最优解误差较大的解.\n"
+"* 而试图使用 lsquares_estimates() 命令来寻找最优解, 往往导致\n"
+"    计算数值超出计算机浮点数范围 (或使用的确切数字超过计算机\n"
+"    内存容量).\n"
 
 #: ../../src/TableOfContents.cpp:267
 msgid "Unhide"
@@ -7757,6 +7986,9 @@ msgid ""
 "ordinary letters, though, so assembling weird characters is a multi-step "
 "process:\n"
 msgstr ""
+"Unicode 支持“组合变音符号”，即允许用多个字符组合成一个字\n"
+"符。 Maxima 可能不知道这些字符是要解释为普通字母的， 所以组装\n"
+"出一个字符需要多个步骤：\n"
 
 #: ../../src/wxMaximaFrame.cpp:2088
 msgid "Unicode symbols:"
@@ -7860,11 +8092,11 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1930
 msgid "Using a bigger or lower number of samples\n"
-msgstr ""
+msgstr "使用更多或更少的样本\n"
 
 #: ../../examples/examples_gettext.list:866
 msgid "Using a different fitting algorithm\n"
-msgstr ""
+msgstr "使用不同的拟合算法\n"
 
 #: ../../src/wxMaxima.cpp:2146
 msgid ""
@@ -7896,7 +8128,7 @@ msgstr "变量"
 #: ../../examples/examples_gettext.list:2141
 msgid ""
 "Variable and equation names containing \"'\", \"+\", \"-\" or the like\n"
-msgstr ""
+msgstr "包含 “'”、“+”、“-” 等符号的变量和方程名称\n"
 
 #: ../../src/wxMaxima.cpp:6187 ../../src/wxMaxima.cpp:6197
 #: ../../src/wxMaxima.cpp:7664
@@ -7949,11 +8181,11 @@ msgstr "警告"
 
 #: ../../examples/examples_gettext.list:1063
 msgid "We also can add a second element to x:\n"
-msgstr ""
+msgstr "我们还可以在 x 中添加第二个元素:\n"
 
 #: ../../examples/examples_gettext.list:1539
 msgid "We can introduce (\"substitute\") them into other equations:\n"
-msgstr ""
+msgstr "也可以将它们引入 (代入, substitute) 其他方程:\n"
 
 #: ../../examples/examples_gettext.list:1788
 #, c-format
@@ -7962,10 +8194,12 @@ msgid ""
 "but are guaranteed to always deviate into the same direction by the same "
 "percentage.\n"
 msgstr ""
+"也可以假设另一组相对误差: 两个电阻都有较高的相对误差, 但总是以\n"
+"相同的百分比向同一方向偏离:\n"
 
 #: ../../examples/examples_gettext.list:1523
 msgid "We can use them as an input to solve:\n"
-msgstr ""
+msgstr "我们可以将它们作为 solve() 命令的参数进而求解:\n"
 
 #: ../../examples/examples_gettext.list:1832
 msgid ""
@@ -7974,6 +8208,10 @@ msgid ""
 "First we tell maxima not to print a warning if a float is replaced by a "
 "fraction of the same value:\n"
 msgstr ""
+"现在来测试最小值、典型值和最大值的所有组合.\n"
+"\n"
+"首先, 我们告诉 Maxima, 在将浮点数替换为与其值相同的分数时\n"
+"不显示警告:\n"
 
 #: ../../src/wxMaxima.cpp:4591
 msgid "Welcome to wxMaxima"
@@ -7981,7 +8219,7 @@ msgstr "欢迎使用 wxMaxima"
 
 #: ../../examples/examples_gettext.list:1627
 msgid "What if there exists no symbolical solution?\n"
-msgstr ""
+msgstr "没有符号解时的解决办法\n"
 
 #: ../../src/wxMaxima.cpp:7701
 msgid "What to do:"
@@ -8000,7 +8238,7 @@ msgstr ""
 msgid ""
 "Whenever a numerical value is needed this list can be introduced into any "
 "equation:\n"
-msgstr ""
+msgstr "每当需要数值时, 可将此列表代入对应的公式:\n"
 
 #: ../../src/ConfigDialogue.cpp:769
 msgid ""
@@ -8250,17 +8488,19 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1688
 msgid "find_root\n"
-msgstr ""
+msgstr "find_root() 命令\n"
 
 #: ../../examples/examples_gettext.list:1693
 msgid ""
 "find_root even works if the equation isn't differentiable and searches for a "
 "solution in between two points.\n"
 msgstr ""
+"如果函数是不可微的, 可以用 find_root() 命令寻找在两个指定点\n"
+"之间的某个零点:\n"
 
 #: ../../examples/examples_gettext.list:436
 msgid "for\n"
-msgstr ""
+msgstr "for() 命令\n"
 
 #: ../../src/wxMaximaFrame.cpp:1237
 msgid "from a list"
@@ -8315,18 +8555,16 @@ msgid "less or equal"
 msgstr "小于等于"
 
 #: ../../examples/examples_gettext.list:409
-#, fuzzy
 msgid "makelist\n"
-msgstr "创建列表"
+msgstr "makelist() 命令\n"
 
 #: ../../examples/examples_gettext.list:467
 msgid "map\n"
-msgstr ""
+msgstr "map() 命令\n"
 
 #: ../../examples/examples_gettext.list:472
-#, fuzzy
 msgid "map runs the same function on every single list element:\n"
-msgstr "应用函数至每列元素"
+msgstr "map() 命令可以对列表的每个元素作用相同的函数:\n"
 
 #: ../../src/wxMaxima.cpp:7050
 msgid "matrix[i,j]:"
@@ -8334,7 +8572,7 @@ msgstr "矩阵[i,j]："
 
 #: ../../examples/examples_gettext.list:1668
 msgid "mnewton\n"
-msgstr ""
+msgstr "mnewton() 命令\n"
 
 #: ../../examples/examples_gettext.list:1673
 msgid ""
@@ -8342,6 +8580,9 @@ msgid ""
 "a nonlinear, but differentiable, statical and monotonic function near to a "
 "point (in this example 0.1)\n"
 msgstr ""
+"对于一个非线性但可微且 (局部) 单调的函数, mnewton() 命令使用\n"
+"修正后的牛顿法来寻找该函数在某点 (在这个例子中是 0.1) 附近的\n"
+"零点:\n"
 
 #: ../../src/wxMaximaFrame.cpp:1920
 msgid "mu"
@@ -8425,7 +8666,7 @@ msgstr "加减"
 
 #: ../../examples/examples_gettext.list:451
 msgid "pop\n"
-msgstr ""
+msgstr "pop() 命令\n"
 
 #: ../../src/wxMaximaFrame.cpp:2036
 msgid "proportional to"
@@ -8441,7 +8682,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1028
 msgid "s\n"
-msgstr ""
+msgstr "列表\n"
 
 #: ../../src/ConfigDialogue.cpp:1159
 msgid "sbcl: use <int>Mbytes of heap"
@@ -8464,6 +8705,8 @@ msgid ""
 "solve() which tries to find a symbolical solution is bound to fail here and "
 "tells us how far it got:\n"
 msgstr ""
+"solve() 命令在试图寻找上述方程的一个符号解时, 虽然注定失败, 但\n"
+"仍会输出它得到的结果:\n"
 
 #: ../../src/wxMaxima.cpp:6578 ../../src/wxMaxima.cpp:9253
 msgid ""
@@ -8534,7 +8777,7 @@ msgstr ""
 #: ../../examples/examples_gettext.list:1925
 msgid ""
 "wc_tolappend() appends values with tolerances and renumbers the tol[n]\n"
-msgstr ""
+msgstr "wc_tolpappend() 命令合并两个误差列表, 并对误差 tol[n] 重新编号.\n"
 
 #: ../../src/main.cpp:423 ../../src/wxMaxima.cpp:8491
 msgid "wxMaxima"
@@ -8557,6 +8800,8 @@ msgid ""
 "wxMaxima allows to use engineer-style subscripts in variable or function "
 "names:\n"
 msgstr ""
+"wxMaxima 允许在变量名或函数名中使用工程师样式的下标（即下标\n"
+"为文字而非数字）：\n"
 
 #: ../../src/TipOfTheDay.cpp:129
 msgid ""
