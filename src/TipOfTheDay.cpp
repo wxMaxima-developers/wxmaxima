@@ -141,7 +141,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("wxMaxima provides the \"table_form\" command that shows lists in an alternative form. One example would be:\n\ntable_form([1,2,3,4,5]);")
     );
   m_tips.Add(
-    _("In order to visualize how a parameter affects an equation wxmaxima provides commands that start with \"with_slider_\" and that create animations. One example would be:\n\n    with_slider_draw(\n        a,[-16,-9,-4,-2,0,1,2,3,4,5,6l7],\n        title=concat(\"a=\",i),\n        grid=true,\n        explicit(\n            x^2-a*x,\n            x,-10,10\n        )\n    );")
+    _("In order to visualize how a parameter affects an equation wxmaxima provides commands that start with \"with_slider_\" and that create animations. One example would be:\n\n    with_slider_draw(\n        a,[-16,-9,-4,-2,0,1,2,3,4,5,6,7],\n        title=concat(\"a=\",a),\n        grid=true,\n        explicit(\n            x^2-a*x,\n            x,-10,10\n        )\n    );")
     );
   m_tips.Add(
     _("If the \"Autosave\" functionality is enabled in the configuration dialogue wxMaxima acts like mobile apps that backup the file every few minutes and save it on closing.")
@@ -187,7 +187,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     m_num = m_tips.GetCount()-1;
   if((unsigned)m_num >=m_tips.GetCount())
     m_num = 0;
-  
+
   SetName("TipOfTheDay");
   SetTitle(_("Tip of the day"));
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -221,13 +221,13 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     );
   hbox->Add(forwardButton,wxSizerFlags().Expand());
   vbox->Add(hbox, wxSizerFlags().Expand());
-  
+
   m_tip = new wxTextCtrl(this,-1,m_tips[m_num],
                          wxDefaultPosition,wxDefaultSize,
                          wxTE_READONLY | wxTE_MULTILINE
     );
   vbox->Add(m_tip, wxSizerFlags().Expand().Proportion(10));
-  
+
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
   m_showAtStartup = new wxCheckBox(this, -1, _("Show tips at Startup"));
@@ -245,7 +245,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     );
 
   buttonSizer->Add(okButton);
-  okButton->SetDefault(); 
+  okButton->SetDefault();
   vbox->Add(buttonSizer, wxSizerFlags().Expand().Proportion(1));
 
   wxPersistenceManager::Get().RegisterAndRestore(this);
@@ -266,7 +266,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
+
   int display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx < 0)
     ppi = 72;
@@ -279,7 +279,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
     ppi = wxGetDisplayPPI().x;
   if(ppi <= 10)
     ppi = 72;
-  
+
   int targetSize = wxMax(ppi,75) * ICON_SCALE;
 
   int sizeA = 128 << 4;
@@ -297,19 +297,19 @@ wxImage TipOfTheDay::GetImage(unsigned char *data, size_t len)
   } else {
     targetSize = sizeB;
   }
-  
+
   wxImage img = SvgBitmap(data, len, targetSize, targetSize).ConvertToImage();
-  
+
 #if defined __WXMSW__
 #if wxCHECK_VERSION(3, 1, 1)
   // MSW is notorious for having problems with transparent black pixels.
   // Let's see if we can avoid these problems by converting the alpha
-  // channel to a mask even if that means we cannot antialias a transparent 
+  // channel to a mask even if that means we cannot antialias a transparent
   // and a colored pixel to a half-transparent one any more.
   img.ConvertAlphaToMask();
 #endif
 #endif
-  
+
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
   return img;
 }
