@@ -718,13 +718,13 @@ This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to
 Possible reasons for this error are:
 
 * The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
-* _Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able to understand. In this case, a file ending in .gnuplot located in the directory, which  _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem.
+* _Maxima_ tried to do something the currently installed version of _gnuplot_ isn’t able to understand. In this case, a file ending in `.gnuplot` located in the directory, which  _Maxima_’s variable `maxima_userdir` is pointing, contains the instructions from _Maxima_ to _gnuplot_. Most of the time, this file’s contents therefore are helpful when debugging the problem.
 * Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
-* Gnuplot didn’t output a valid .png file.
+* Gnuplot didn’t output a valid `.png` file.
 
 ## Plotting an animation results in “error: undefined variable”
 
-The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a `subst` command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.
+The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using a `subst` command that substitutes the slider variable into the equation to plot resolves this problem. At the end of section [Embedding animations into the spreadsheet](#embedding-animations-into-the-spreadsheet) you can see an example.
 
 ## I lost a cell contents and undo doesn’t remember
 
