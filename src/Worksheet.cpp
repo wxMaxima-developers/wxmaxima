@@ -7826,9 +7826,10 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
       frontOfSelection = frontOfSelection.Mid(positionOfEzunitStart + 1);
       int numberOfParenthesis = 0;
 
-      for (size_t i = 0; i < frontOfSelection.Length() - 1; i++)
+      for (wxString::const_iterator it = frontOfSelection.begin();
+           it != frontOfSelection.end(); ++it)
       {
-        wxChar ch = frontOfSelection[i];
+        wxChar ch = *it;
         if (
                 (!wxIsalnum(ch)) &&
                 (ch != wxT('(')) &&
