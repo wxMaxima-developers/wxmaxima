@@ -68,6 +68,7 @@ set(SOURCE_FILES
     Autocomplete.cpp
     AutocompletePopup.cpp
     Autocomplete_Builtins.cpp
+    ButtonWrapSizer.cpp
     BTextCtrl.cpp
     CellPointers.cpp
     CharButton.cpp

@@ -42,7 +42,6 @@
 #include <wx/display.h>
 #include <wx/wupdlock.h>
 #include <wx/sysopt.h>
-#include <wx/wrapsizer.h>
 #include "wxMaximaIcon.h"
 #include "Gen1Wiz.h"
 #include "UnicodeSidebar.h"
@@ -1709,7 +1708,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
 
 wxWindow *wxMaximaFrame::CreateMathPane()
 {
-  wxGridSizer *grid = new wxGridSizer(2);
+  wxSizer *grid = new Buttonwrapsizer();
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
   panel->SetScrollRate(5, 5);
 
@@ -1760,7 +1759,7 @@ wxWindow *wxMaximaFrame::CreateMathPane()
 
 wxWindow *wxMaximaFrame::CreateStatPane()
 {
-  wxGridSizer *grid1 = new wxGridSizer(2);
+  wxSizer *grid1 = new Buttonwrapsizer();
   wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *box1 = new wxBoxSizer(wxVERTICAL);
   wxGridSizer *grid2 = new wxGridSizer(2);
@@ -2135,7 +2134,7 @@ void wxMaximaFrame::SymbolsPane::UpdateUserSymbols()
 
 wxWindow *wxMaximaFrame::CreateFormatPane()
 {
-  wxGridSizer *grid = new wxGridSizer(2);
+  wxSizer *grid = new Buttonwrapsizer();
   wxScrolled<wxPanel> *panel = new wxScrolled<wxPanel>(this, -1);
   panel->SetScrollRate(5, 5);
 
@@ -2216,69 +2215,77 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
   m_dimensions = dimensions;
 }
 
+void wxMaximaFrame::DrawPane::OnSize(wxSizeEvent &event)
+{
+  // Shrink the width of the wxScrolled's virtual size if the wxScrolled is shrinked 
+  SetVirtualSize(GetClientSize());
+  event.Skip();
+}
+
 wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxScrolled<wxPanel>(parent, id)
 {
   wxBoxSizer  *vbox = new wxBoxSizer(wxVERTICAL);
   SetScrollRate(5, 5);
-  wxGridSizer *grid = new wxGridSizer(2);
+  m_grid = new Buttonwrapsizer(wxHORIZONTAL);
   m_dimensions = -1;
   int style = wxALL | wxEXPAND;
   int border = 0;
 
-  grid->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D"),
+  m_grid->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_setup2d->SetToolTip(_("Setup a 2D plot"));
-  grid->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D"),
+  m_grid->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
                 0, style, border);
   m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
-  grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression"),
+  m_grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_explicit->SetToolTip(_("The standard plot command: Plot an equation as a curve"));
-  grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
+  m_grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
+  m_grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot"),
                                              wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
+  m_grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points"),
                                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title"),
+  m_grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title"),
                                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_title->SetToolTip(_("The diagram title"));
-  grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis"),wxDefaultPosition,
+  m_grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis"),wxDefaultPosition,
                                        wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_axis->SetToolTip(_("Setup the axis"));
-  grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour"),
+  m_grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
-  grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name"),
+  m_grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name"),
                                       wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_key->SetToolTip(_("The next plot's title"));
-  grid->Add(m_draw_fgcolor = new wxButton(this, menu_draw_fgcolor, _("Line color"),
+  m_grid->Add(m_draw_fgcolor = new wxButton(this, menu_draw_fgcolor, _("Line color"),
                                           wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_fgcolor->SetToolTip(_("The color of the next line to draw"));
-  grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color"),
+  m_grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color"),
                                             wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
-  grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid"),wxDefaultPosition,
+  m_grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid"),wxDefaultPosition,
                                        wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
   m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
-  grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy"),
+  m_grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy"),
                                            wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT),
             0, style, border);
   m_draw_accuracy->SetToolTip(_("The Accuracy versus speed tradeoff"));
-  vbox->Add(grid, wxSizerFlags(2).Expand());
+  Connect(wxEVT_SIZE, wxSizeEventHandler(wxMaximaFrame::DrawPane::OnSize),NULL,this);
+  vbox->Add(m_grid, wxSizerFlags(2).Expand());
   SetSizer(vbox);
   FitInside();
 }
