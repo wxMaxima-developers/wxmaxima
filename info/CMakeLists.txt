@@ -3,7 +3,7 @@
 
 find_program(PANDOC pandoc)
 if(PANDOC)
-	message(STATUS "Found pandoc at: ${PANDOC}")
+	message(STATUS "Found pandoc: ${PANDOC}")
 
 	# "make pdf" creates the manual in PDF form. The other targets that now
 	# follow do the same for other formats
@@ -67,32 +67,19 @@ if(PANDOC)
 
 	find_program(PO4A_TRANSLATE po4a-translate)
 	if(PO4A_TRANSLATE)
-		message(STATUS "Found po4a-translate: ${PO4A_TRANSLATE}")
-	else()
-		message(${NONCRIT_WARNING} "po4a-translate not found. Localized documentation can not be converted from Markdown.")
-		message(STATUS "No po4a-translate binary")
-		find_package(Perl)
-		if(PERL_FOUND)
-			message(STATUS "Found perl")
-			find_file(PO4A_TRANSLATE po4a-translate)
-			if(PO4A_TRANSLATE)
-				message(STATUS "Found po4a-translate file")
-				get_filename_component(PO4A_TRANSLATE_DIR ${PO4A_TRANSLATE} DIRECTORY)
-				set(PO4A-TRANSLATE ${PERL_EXECUTABLE} -I${PO4A_TRANSLATE_DIR}/lib ${PO4A_TRANSLATE})
-				message(STATUS "PO4A_TRANSLATE = ${PO4A_TRANSLATE}")
-			endif()
+		# Get po4a-translate version number, only >= 0.55 works for wxMaxima.
+		execute_process(COMMAND ${PO4A_TRANSLATE} --version
+			OUTPUT_VARIABLE PO4A_TRANSLATE_VERSION_TEXT)
+		string(REGEX REPLACE "^po4a-translate version ([^\n]*).*" "\\1"  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION_TEXT}")
+		string(REGEX REPLACE "\\.$" ""  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION}") # remove trailing dot.
+		message(STATUS "Found po4a-translate: ${PO4A_TRANSLATE} (found version \"${PO4A_TRANSLATE_VERSION}\")")
+		if(PO4A_TRANSLATE_VERSION VERSION_LESS 0.55)
+			message(WARNING "po4a-translate Version < 0.55 found. Please upgrade po4a, that version does not work. "
+							"Disable po4a and the generation of localized documentation.")
+			set(PO4A_TRANSLATE "")
 		endif()
-	endif()
-	# Get po4a-translate version number, only >= 0.55 works for wxMaxima.
-	execute_process(COMMAND ${PO4A_TRANSLATE} --version
-		OUTPUT_VARIABLE PO4A_TRANSLATE_VERSION_TEXT)
-	string(REGEX REPLACE "^po4a-translate version ([^\n]*).*" "\\1"  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION_TEXT}")
-	string(REGEX REPLACE "\\.$" ""  PO4A_TRANSLATE_VERSION "${PO4A_TRANSLATE_VERSION}") # remove trailing dot.
-	message(STATUS "Found po4a-translate (version ${PO4A_TRANSLATE_VERSION}) at: ${PO4A_TRANSLATE}")
-	if(PO4A_TRANSLATE_VERSION VERSION_LESS 0.55)
-		message(WARNING "po4a-translate Version < 0.55 found. Please upgrade po4a, that version does not work. "
-		                "Disable po4a and the generation of localized documentation.")
-		set(PO4A_TRANSLATE "")
+	else()
+		message(STATUS "po4a-translate not found. Disable the generation of localized documentation.")
 	endif()
 
 
