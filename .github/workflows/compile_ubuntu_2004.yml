@@ -1,0 +1,46 @@
+name: compile_ubuntu
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  compile_2004:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout_git
+      uses: actions/checkout@v2
+      with:
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 15
+    - name: install_packages
+      run: sudo apt-get install gettext doxygen graphviz gnuplot gnuplot-x11 libomp-dev libwxgtk3.0-gtk3-dev maxima maxima-share ninja-build netcat-openbsd xvfb appstream-util desktop-file-utils cmake
+    - name: configure
+      run: |
+           export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"
+           export LANG=en_US.UTF-8
+           mkdir build
+           touch build build/build.ninja
+           cd build
+           cmake -G "Ninja" -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=debug -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 -DWXM_UNIT_TESTS=YES ..
+           cd ..
+    - name: compile
+      run: |
+           cd build
+           cmake --build .
+           cd ..
+    - name: update-locale
+      run: |
+           cd build
+           cmake --build . --target update-locale
+           cd ..
+    - name: run_tests
+      run: |
+           cd build
+           export CTEST_OUTPUT_ON_FAILURE=1
+           export LD_PRELOAD=$(gcc -print-file-name=libSegFault.so)
+           xvfb-run -a ctest -j 3;    
+           cd ..
