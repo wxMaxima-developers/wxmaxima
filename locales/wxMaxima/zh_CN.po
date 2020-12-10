@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-26 08:02+0100\n"
-"PO-Revision-Date: 2020-12-08 23:58+0800\n"
+"PO-Revision-Date: 2020-12-10 22:24+0800\n"
 "Last-Translator: Liu Rong <rong.liu@mail.bnu.edu.cn>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"wxWidgets 版本：%d.%d.%d.\n"
+"wxWidgets 版本：%d.%d.%d\n"
 "支持 Unicode： %s"
 
 #: ../../src/wxMaxima.cpp:8486
@@ -144,9 +144,9 @@ msgid ""
 " * ̃\n"
 " * ̅\n"
 msgstr ""
-" *  ̂\n"
-" *  ̃\n"
-" *  ̅\n"
+" * ̂\n"
+" * ̃\n"
+" * ̅\n"
 
 #: ../../src/ConfigDialogue.cpp:913
 msgid "\"Copy LaTeX\" adds equation markers"
@@ -167,7 +167,7 @@ msgstr "%i 个单元格位于计算队列"
 
 #: ../../src/wxMaximaFrame.cpp:1219
 msgid "&Algebraic Mode"
-msgstr "代数(&A)"
+msgstr "代数模式(&A)"
 
 #: ../../src/wxMaximaFrame.cpp:1074
 msgid "&Apply to List..."
@@ -178,9 +178,8 @@ msgid "&Apropos..."
 msgstr "查找命令(&A)..."
 
 #: ../../src/wxMaximaFrame.cpp:669
-#, fuzzy
 msgid "&Batch File...\tCtrl+B"
-msgstr "载入批处理文件(&B)...\tCtrl+B"
+msgstr "批处理文件(&B)...\tCtrl+B"
 
 #: ../../src/wxMaximaFrame.cpp:1004
 msgid "&Boundary Value Problem..."
@@ -312,7 +311,7 @@ msgstr "列表(&L)"
 
 #: ../../src/wxMaximaFrame.cpp:665
 msgid "&Load Package...\tCtrl+L"
-msgstr "加载程序包...(&L)\tCtrl+L"
+msgstr "加载程序包(&L)...\tCtrl+L"
 
 #: ../../src/wxMaximaFrame.cpp:1076
 msgid "&Map to List(s)..."
@@ -328,7 +327,7 @@ msgstr "Maxima 帮助(&M)"
 
 #: ../../src/wxMaximaFrame.cpp:1224
 msgid "&Modulus Computation..."
-msgstr "设置模运算(&M)..."
+msgstr "模运算(&M)..."
 
 #: ../../src/main.cpp:338
 msgid "&New\tCtrl+N"
@@ -360,7 +359,7 @@ msgstr "打印(&P)...\tCtrl+P"
 
 #: ../../src/wxMaximaFrame.cpp:1177
 msgid "&Reduce Trigonometric"
-msgstr "化简合并三角函数(&R)"
+msgstr "合并三角函数(&R)"
 
 #: ../../src/wxMaximaFrame.cpp:929
 msgid "&Restart Maxima"
@@ -404,11 +403,11 @@ msgstr "转置矩阵(&T)"
 
 #: ../../src/wxMaximaFrame.cpp:1186
 msgid "&Trigonometric Simplification"
-msgstr "三角函数的化简(&T)"
+msgstr "三角函数化简(&T)"
 
 #: ../../src/VariablesPane.cpp:243
 msgid "(Not a valid variable name)"
-msgstr "(非可用变量名)"
+msgstr "（非可用变量名）"
 
 #: ../../src/ConfigDialogue.cpp:172
 msgid "(Use default language)"
@@ -429,15 +428,15 @@ msgstr ""
 msgid ""
 "... [suppressed additional lines since the output is longer than allowed in "
 "the configuration] "
-msgstr "... [由于输出长度超过配置中允许的长度，因此省略了一些行] "
+msgstr "... [由于输出长度超过设置中允许的长度，因此省略了一些行] "
 
 #: ../../examples/examples_gettext.list:155
 msgid "...and let's plot the result for different L_Cable:\n"
-msgstr "...并绘出不同的 L_Cable 的图形:\n"
+msgstr "并绘出不同的 L_Cable 的图形：\n"
 
 #: ../../examples/examples_gettext.list:543
 msgid "...and over this list we can iterate efficiently again:\n"
-msgstr "可以对这个列表再次高效地迭代:\n"
+msgstr "可以对这个列表再次高效地迭代：\n"
 
 #: ../../src/Worksheet.cpp:7051
 msgid ".wxm clipboard data with unusual header"
@@ -472,7 +471,7 @@ msgstr "；当前单元格还剩下 %i 个命令"
 #: ../../src/wxMaxima.cpp:9875
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
-msgstr "以“:lisp”作为第一个命令可能无法发出“已完成（finished）”信号."
+msgstr "以“:lisp”开头的命令可能无法发出“已完成（finished）”信号。"
 
 #: ../../src/TipOfTheDay.cpp:84
 msgid ""
@@ -485,7 +484,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:832
 msgid "A better approach is therefore to use Caruana's approach for fitting:\n"
-msgstr "因此, 更好的方法是使用 Caruana 法进行拟合:\n"
+msgstr "因此，更好的方法是使用 Caruana 法进行拟合：\n"
 
 #: ../../examples/examples_gettext.list:48
 msgid ""
@@ -494,9 +493,9 @@ msgid ""
 "cable of the inductivity L_Cable. In this moment the circuit is destroyed by "
 "an overvoltage. Let's see if we can calculate how high this voltage was.\n"
 msgstr ""
-"设一个电路的电容为 C_In=100nF, 电阻为 R_Load, 并通过电感为\n"
-"L_Cable 的电缆连接至电压为 U_Supply 的电源. 此时电路因为\n"
-"电压过高而发生故障, 现在来计算这个电压值.\n"
+"设一个电路的电容为 C_In=100nF，电阻为 R_Load，并通过电感为\n"
+"L_Cable 的电缆连接至电压为 U_Supply 的电源。此时电路因为\n"
+"电压过高而发生故障，现在来计算这个电压值。\n"
 
 #: ../../examples/examples_gettext.list:2184
 msgid "A few combining diacritics are:\n"
@@ -523,7 +522,7 @@ msgstr ""
 
 #: ../../examples/examples_gettext.list:1970
 msgid "A ridiculously advanced example\n"
-msgstr "一个复杂但可笑的例子\n"
+msgstr "一个较复杂的例子\n"
 
 #: ../../src/ConfigDialogue.cpp:366
 msgid ""
@@ -536,12 +535,12 @@ msgid ""
 "A simple voltage divider of R_1 and R_2 is powered by a voltage source U_In. "
 "In which range can U_Out lie?\n"
 msgstr ""
-"一个简单的分压器 R_1 和 R_2 由电压为 U_In 的电源供电, 求输出\n"
-"电压 U_Out 的取值范围.\n"
+"一个简单的分压器 R_1 和 R_2 由电压为 U_In 的电源供电，求输出\n"
+"电压 U_Out 的取值范围。\n"
 
 #: ../../src/wxMaximaFrame.cpp:2129
 msgid "A symbol from the configuration dialogue"
-msgstr "来自配置对话框中的符号"
+msgstr "来自设置对话框中的符号"
 
 #: ../../examples/examples_gettext.list:968
 msgid "A third fitting algorithm\n"
@@ -556,13 +555,12 @@ msgid "A&t Value..."
 msgstr "函数赋值(&A)..."
 
 #: ../../src/Configuration.cpp:1395
-#, fuzzy
 msgid "ASCII maths"
 msgstr "ASCII 艺术"
 
 #: ../../src/ConfigDialogue.cpp:1191
 msgid "Abort evaluation on error"
-msgstr "发生错误时终止计算"
+msgstr "发生错误时中止计算"
 
 #: ../../src/wxMaximaFrame.cpp:1417
 msgid "About"
@@ -580,9 +578,9 @@ msgid ""
 "normally has to) this work isn't much of an overhead - and maxima offers "
 "several functions for this purpose:\n"
 msgstr ""
-"访问列表中的随机项需要在列表上进行 (相对) 耗时的迭代. 但是, \n"
-"如果想要遍历整个列表 (人们通常有此需求), 这项工作也不会带来\n"
-"太大的开销, 而且 Maxima 也提供了一些方法:\n"
+"访问列表中的随机项需要在列表上进行（相对） 耗时的迭代。 但是， \n"
+"如果想要遍历整个列表（人们通常有此需求）， 这项工作也不会带来\n"
+"太大的开销，而且 Maxima 也提供了一些方法：\n"
 
 #: ../../src/wxMaximaFrame.cpp:2277
 msgid "Accuracy"
@@ -631,7 +629,7 @@ msgstr "添加目录至搜索路径："
 
 #: ../../src/wxMaximaFrame.cpp:1222
 msgid "Add equality to the rational simplifier"
-msgstr "添加恒等式至有理式化简因子"
+msgstr "添加等式（的根）以化简有理式"
 
 #: ../../src/wxMaximaFrame.cpp:2105
 msgid "Add more symbols"
@@ -643,7 +641,7 @@ msgstr "为导出的 HTML 文件添加 .wxmx 文件"
 
 #: ../../src/wxMaximaFrame.cpp:936
 msgid "Add to &Path..."
-msgstr "添加至搜索路径(&P)"
+msgstr "添加至搜索路径(&P)..."
 
 #: ../../src/UnicodeSidebar.cpp:94
 msgid "Add to symbols Sidebar"
@@ -670,7 +668,7 @@ msgstr "输出 LaTeX 文件时，添加额外的命令到导言区。"
 
 #: ../../src/ConfigDialogue.cpp:899
 msgid "Additional lines for the TeX preamble:"
-msgstr "LaTeX 导言区的附加行："
+msgstr "LaTeX 导言区的附加内容："
 
 #: ../../src/ConfigDialogue.cpp:342
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
@@ -690,21 +688,21 @@ msgid ""
 "the equations whenever we need them. For example we can print them out "
 "again:\n"
 msgstr ""
-"此外, 对方程命名使我们可以在需要时引用这些方程. 例如, 可以再次\n"
-"输出它们:\n"
+"此外，对方程命名使我们可以在需要时引用这些方程。例如，可以再次\n"
+"输出它们：\n"
 
 #: ../../examples/examples_gettext.list:861
 msgid ""
 "Additionally https://ieeexplore.ieee.org/document/5999593 offers an "
 "iterative method that allows to reduce the influence of noise in each step:\n"
 msgstr ""
-"另外, https://ieeexplore.ieee.org/document/5999593 中提供了\n"
-"一种迭代方法, 可以减少每个步骤中噪声的影响.\n"
+"另外，https://ieeexplore.ieee.org/document/5999593 中提供了\n"
+"一种迭代方法，可以减少每个步骤中噪声的影响。\n"
 
 #: ../../examples/examples_gettext.list:120
 msgid ""
 "Additionally we are interested only in the first item in the result list:\n"
-msgstr ""
+msgstr "此外，我们只对结果列表中的第一项感兴趣：\n"
 
 #: ../../examples/examples_gettext.list:1550
 msgid ""
@@ -712,8 +710,8 @@ msgid ""
 "using the command lhs() and rhs(), which allows to use the part left or "
 "right of the \"=\" in a new equation:\n"
 msgstr ""
-"还可以使用命令 lhs() 和 rhs() 提取方程中等号左边或右边的式子, 以便\n"
-"在新的方程中使用这些式子:\n"
+"还可以使用命令 lhs() 和 rhs() 提取方程中等号左边或右边的式子，以便\n"
+"在新的方程中使用这些式子：\n"
 
 #: ../../src/wxMaximaFrame.cpp:1394
 msgid "Advanced variable names"
@@ -727,7 +725,8 @@ msgstr "高级变量名\n"
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
-msgstr "在单击由 with_slider_draw() 等命令创建的动图后，此滑块允许更改当前帧"
+msgstr ""
+"在单击由 with_slider_draw() 等命令创建的动图后，使用此滑块可以更改当前帧。"
 
 #: ../../src/wxMaximaFrame.cpp:1273
 msgid "All but the 1st n elements"
@@ -743,10 +742,10 @@ msgid ""
 "out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
 "mac)|*.mac|Xmaxima session (*.out)|*.out|xml from broken .wxmx (*.xml)|*.xml"
 msgstr ""
-"所有可打开的文件类型（*.wxm, *.wxmx, *.mac, *.out, *.xml）|*.wxm；*.wxmx；*."
+"所有可打开的文件类型（*.wxm，*.wxmx，*.mac，*.out，*.xml）|*.wxm；*.wxmx；*."
 "mac；*.out；*.xml|wxMaxima 文档（*.wxm，*.wxmx）|*.wxm；*.wxmx|Maxima 会话"
-"（*.mac）|*.mac|Xmaxima s会话（*.out）|*.out|来自已损坏 .wxmx 文档的 xml 文"
-"件 （*.xml）|*.xml"
+"（*.mac）|*.mac|Xmaxima 会话（*.out）|*.out|来自已损坏 .wxmx 文档的 xml 文件 "
+"（*.xml）|*.xml"
 
 #: ../../src/ConfigDialogue.cpp:593
 msgid "All variable names"
@@ -756,7 +755,7 @@ msgstr "所有变量名"
 msgid ""
 "Allows to specify which not-builtin unicode symbols should be displayed in "
 "the symbols sidebar along with the built-in symbols."
-msgstr ""
+msgstr "指定未内建的 unicode 符号，以便将其与内建符号一起显示在符号侧边栏。"
 
 #: ../../src/ConfigDialogue.cpp:1743 ../../src/ConfigDialogue.cpp:1767
 msgid "All|*"
@@ -764,7 +763,7 @@ msgstr "所有类型|*"
 
 #: ../../examples/examples_gettext.list:245
 msgid "Alternatively the curve can be made more colorful:\n"
-msgstr "此外, 也可以 (根据竖坐标 z) 对曲面添加颜色:\n"
+msgstr "此外，也可以（根据竖坐标 z）对曲面添加颜色：\n"
 
 #: ../../src/wxMaximaFrame.cpp:780
 msgid "Always after underscores"
@@ -772,7 +771,7 @@ msgstr "总是在下划线后面"
 
 #: ../../src/wxMaximaFrame.cpp:781
 msgid "Always autosubscript after an underscore"
-msgstr "总是将下划线后面的字符自动显示为下标"
+msgstr "总是将下划线后面的字符显示为下标"
 
 #: ../../src/wxMaximaFrame.cpp:789
 msgid "Always display this variable with subscript"
@@ -788,7 +787,7 @@ msgstr "一个例子\n"
 
 #: ../../src/wxMaxima.cpp:4379
 msgid "Anchors file has no top node."
-msgstr ""
+msgstr "锚文件没有顶部节点。"
 
 #: ../../src/wxMaximaFrame.cpp:800
 msgid "Angles"
@@ -800,55 +799,53 @@ msgstr "自动播放动图"
 
 #: ../../src/wxMaximaFrame.cpp:1323
 msgid "Animation framerate..."
-msgstr "动图帧率......"
+msgstr "动图帧率..."
 
 #: ../../examples/examples_gettext.list:1293
 msgid ""
 "Another drawback is that mathematics is based on the fact that two things "
 "that cancel each other out actually do so:\n"
 msgstr ""
-"另一个缺点是, 在数学中若两个数互为相反数, 则它们可以相互抵消, \n"
-"而在计算机中并非如此:\n"
+"另一个缺点是，在数学中若两个数互为相反数，则它们可以相互抵消，\n"
+"而在计算机中并非如此：\n"
 
 #: ../../src/ConfigDialogue.cpp:638
 msgid "Antialias lines."
-msgstr "抗锯齿线条"
+msgstr "线条抗锯齿"
 
 #: ../../examples/examples_gettext.list:1268
 msgid ""
 "Any other number can be converted to a floating-point one using the float() "
 "keyword:\n"
-msgstr "任何其他数都可以使用 float() 命令转换为浮点数:\n"
+msgstr "任何其他数都可以使用 float() 命令转换为浮点数：\n"
 
 #: ../../src/wxMaximaFrame.cpp:1296
 msgid "Append"
-msgstr "增加"
+msgstr "追加"
 
 #: ../../src/wxMaximaFrame.cpp:1290
 msgid "Append a list"
-msgstr "增加一个列表"
+msgstr "追加一个列表"
 
 #: ../../src/wxMaxima.cpp:7782
 msgid "Append a list to a list"
-msgstr "增加一个列表"
+msgstr "向已有列表追加一个列表"
 
 #: ../../src/wxMaximaFrame.cpp:1291
 msgid "Append a list to an existing list"
-msgstr "在已有列表中增加一个列表"
+msgstr "向已有列表追加一个列表"
 
 #: ../../src/wxMaximaFrame.cpp:1284
 msgid "Append an element"
-msgstr "添加元素"
+msgstr "追加元素"
 
 #: ../../src/wxMaximaFrame.cpp:1288
-#, fuzzy
 msgid "Append an element to the beginning an existing list"
-msgstr "在已有列表中增加一个元素"
+msgstr "向已有列表开头追加一个元素"
 
 #: ../../src/wxMaximaFrame.cpp:1285
-#, fuzzy
 msgid "Append an element to the end of an existing list"
-msgstr "在已有列表中增加一个元素"
+msgstr "向已有列表结尾追加一个元素"
 
 #: ../../examples/examples_gettext.list:1903
 msgid "Appending lists of tolerances\n"
@@ -860,7 +857,7 @@ msgstr "应用"
 
 #: ../../src/wxMaxima.cpp:7633
 msgid "Apply a function to each list element"
-msgstr "应用函数至每列元素"
+msgstr "应用函数至每个列表元素"
 
 #: ../../src/wxMaximaFrame.cpp:1075
 msgid "Apply function to a list"
@@ -880,7 +877,7 @@ msgid ""
 "file using read_matrix:\n"
 msgstr ""
 "第一步通常是使用 read_matrix() 命令从 .csv 文件加载实际测量\n"
-"数据:\n"
+"数据：\n"
 
 #: ../../examples/examples_gettext.list:1124
 msgid ""
@@ -888,9 +885,9 @@ msgid ""
 "contains the nth prime number, at least within the bounds of accuracy of "
 "primep():\n"
 msgstr ""
-"现在举例进行说明. 我们构造一个数组 primes[n], 其中第 n 个元素为\n"
-"第 n 个素数. 这些素数可以利用 primep() 命令生成 (需要注意该命令\n"
-"的准确度):\n"
+"现在举例进行说明。我们构造一个数组 primes[n]，其中第 n 个元素为\n"
+"（从 2 开始的）第 n 个素数。这些素数可以利用 primep() 命令生成\n"
+"（需要注意该命令的准确度）：\n"
 
 #: ../../examples/examples_gettext.list:316
 msgid ""
@@ -899,20 +896,20 @@ msgid ""
 "of a moving picture. wxMaxima allows to embed such a thing into the "
 "worksheet:\n"
 msgstr ""
-"容易看出, 如果将上面的图形弹出显示并与之交互 (例如旋转或平移\n"
-"图形), 那么运动的图像更有利于对三维图形整体形状的理解. 可以在\n"
-"wxMaxima 工作簿中嵌入含三维图形的动图 (绘制时间略长, 左键\n"
-"双击图形可在运动和静止之间切换):\n"
+"容易看出，如果将上面的图形弹出显示并与之交互（例如旋转或平移\n"
+"图形），那么运动的图像更有利于对三维图形整体形状的理解。可以\n"
+"在 wxMaxima 工作簿中嵌入含三维图形的动图（绘制时间略长，\n"
+"左键双击图形可在运动和静止之间切换）：\n"
 
 #: ../../examples/examples_gettext.list:1503
 msgid ""
 "As seen above the last equation displayed by maxima can be referenced by "
 "using the placeholder \"%\":\n"
-msgstr "如上所示, Maxima 的上一个输出可以通过使用占位符“%”来引用:\n"
+msgstr "如上所示，Maxima 的上一个输出可以通过使用占位符“%”来引用：\n"
 
 #: ../../examples/examples_gettext.list:1873
 msgid "As we have guessed the 2nd voltage divider was the better one.\n"
-msgstr "正如我们所猜测的那样, 第二个分压器是更好的.\n"
+msgstr "正如我们所猜测的那样，第二个分压器是更好的。\n"
 
 #: ../../src/ConfigDialogue.cpp:1047
 msgid "Ask to save untitled documents"
@@ -924,22 +921,22 @@ msgstr "设定值"
 
 #: ../../src/ConfigDialogue.cpp:660
 msgid "Auto-indent new lines"
-msgstr ""
+msgstr "自动缩进新行"
 
 #: ../../src/Autocomplete.cpp:312
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
-msgstr ""
+msgstr "自动补全：在 %s 中扫描可载入的示例（demo）文件。"
 
 #: ../../src/Autocomplete.cpp:290
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
-msgstr ""
+msgstr "自动补全：在 %s 中扫描可载入的 Lisp 文件。"
 
 #: ../../src/Autocomplete.cpp:278
 #, c-format
 msgid "Autocompletion: Scanning %s recursively for loadable lisp files."
-msgstr ""
+msgstr "自动补全：在 %s 中递归地扫描可载入的 Lisp 文件。"
 
 #: ../../src/ConfigDialogue.cpp:1079 ../../src/ConfigDialogue.cpp:1104
 msgid "Autodetect"
@@ -951,12 +948,12 @@ msgstr "自动"
 
 #: ../../src/Worksheet.cpp:1547
 msgid "Automatic labels"
-msgstr ""
+msgstr "自动设置标签"
 
 #: ../../src/ConfigDialogue.cpp:605
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
-msgstr "自动设置标签(%i1, %o1,...)"
+msgstr "自动设置标签（%i1, %o1, ...)"
 
 #: ../../src/wxMaximaFrame.cpp:913
 msgid "Automatically answer questions"
@@ -964,7 +961,7 @@ msgstr "自动回答"
 
 #: ../../src/wxMaximaFrame.cpp:914
 msgid "Automatically fill in answers known from the last run"
-msgstr ""
+msgstr "自动填入上一次的运行结果"
 
 #: ../../src/ConfigDialogue.cpp:378
 msgid ""
@@ -972,37 +969,38 @@ msgid ""
 "highlighting of matching parenthesis can be suppressed by setting the "
 "respective color to match the background of ordinary text."
 msgstr ""
+"自动在文本控件中插入匹配的括号。通过设置相应的颜色以匹配普通文本的背景，可以"
+"淡化匹配括号的高亮显示。"
 
 #: ../../src/Worksheet.cpp:1412 ../../src/Worksheet.cpp:1714
-#, fuzzy
 msgid "Automatically send known answers"
-msgstr "自动回答"
+msgstr "自动传出已有答案"
 
 #: ../../src/wxMaxima.cpp:5629
 #, c-format
 msgid "Autosaving as temp file %s"
-msgstr ""
+msgstr "自动保存为临时文件 %s"
 
 #: ../../src/wxMaxima.cpp:5646
 #, c-format
 msgid "Autosaving the .wxmx file as %s"
-msgstr ""
+msgstr "自动保存 .wxmx 文件为 %s"
 
 #: ../../src/wxMaximaFrame.cpp:795
 msgid "Autosubscript"
-msgstr ""
+msgstr "自动下标"
 
 #: ../../src/wxMaximaFrame.cpp:796
 msgid "Autosubscript chars after an underscore"
-msgstr ""
+msgstr "自动将下划线后的字符显示为下标"
 
 #: ../../src/wxMaximaFrame.cpp:784
 msgid "Autosubscript numbers and text following single letters"
-msgstr ""
+msgstr "自动将单个字母后的数字显示为下标"
 
 #: ../../src/ConfigDialogue.cpp:579
 msgid "Autowrap long lines:"
-msgstr ""
+msgstr "对较长的行自动换行："
 
 #: ../../src/wxMaximaFrame.cpp:2253
 msgid "Axis"
@@ -1010,7 +1008,7 @@ msgstr "坐标轴"
 
 #: ../../src/wxMaxima.cpp:6688
 msgid "BC2"
-msgstr "边界条件(二阶)"
+msgstr "两个边界条件"
 
 #: ../../src/wxMaximaFrame.cpp:1804
 msgid "Barsplot..."
@@ -1021,13 +1019,12 @@ msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "批处理文件 (*.bat)|*.bat|所有类型|*"
 
 #: ../../src/ConfigDialogue.cpp:1765
-#, fuzzy
 msgid "Bat files (*.bat)|*.bat|Exe files (*.exe)||All|*"
-msgstr "批处理文件 (*.bat)|*.bat|所有类型|*"
+msgstr "批处理文件 (*.bat)|*.bat|程序文件 (*.exe)|*.exe|所有类型|*"
 
 #: ../../src/wxMaxima.cpp:5861
 msgid "Batch File"
-msgstr "载入批处理文件"
+msgstr "批处理文件"
 
 #: ../../examples/examples_gettext.list:660
 msgid ""
@@ -1039,12 +1036,12 @@ msgid ""
 "if it ever will finish. lsquares_estimates_approximate doesn't have this "
 "drawback.\n"
 msgstr ""
-"除了 lsquares_estimates_approach() 命令之外, lsquares 程序包\n"
-"还提供了 lsquares_estimates() 命令, 该命令尝试通过 solve() 命令\n"
-"求解问题来找到确切的最优值, 然后再从数值上找到答案. 但是,  如果\n"
-"要解决的问题是复杂的, 我们永远不会事先知道计算机需要花多少时\n"
-"间来运行, 以及是否能完成求解 (使用计算机求解总会遇到这种情况). \n"
-"lsquares_estimates_approximate() 命令则没有这个缺点.\n"
+"除了 lsquares_estimates_approach() 命令之外，lsquares 程序包\n"
+"还提供了 lsquares_estimates() 命令，该命令尝试通过 solve() 命令\n"
+"求解问题来找到确切的最优值，然后再从数值上找到答案。但是，\n"
+"如果要解决的问题是复杂的，我们永远不会事先知道计算机需要花\n"
+"多少时间来运行，以及是否能完成求解（使用计算机求解总会遇到这种情\n"
+"况）。lsquares_estimates_approximate() 命令则没有这个缺点。\n"
 
 #: ../../src/TipOfTheDay.cpp:120
 msgid ""
@@ -1061,7 +1058,7 @@ msgstr ""
 
 #: ../../src/wxMaximaFrame.cpp:1938
 msgid "Beta"
-msgstr ""
+msgstr "Beta"
 
 #: ../../examples/examples_gettext.list:1337
 msgid "Bigfloats\n"
@@ -1073,7 +1070,7 @@ msgstr "位图"
 
 #: ../../src/ConfigDialogue.cpp:955
 msgid "Bitmap scale for export:"
-msgstr "导出的位图范围："
+msgstr "导出的位图比例："
 
 #: ../../src/ConfigDialogue.cpp:923
 msgid "Bitmaps"
@@ -1089,15 +1086,15 @@ msgstr "黑体"
 
 #: ../../src/wxMaxima.cpp:4866
 msgid "Both horizontal and vertical cursor active at the same time"
-msgstr ""
+msgstr "水平光标和竖直光标同时被激活"
 
 #: ../../examples/examples_gettext.list:1450
 msgid ""
 "Both solutions solve() offers are valid. We can pick any of them manually, "
 "for example:\n"
 msgstr ""
-"solve() 提供的两个解 (可仍视为方程) 都有效. 我们可以选择其中任何\n"
-"一个 (方程), 例如:\n"
+"solve() 提供的两个解（可仍视为方程）都有效。我们可以选择其中\n"
+"任何一个（方程），例如：\n"
 
 #: ../../src/wxMaximaFrame.cpp:1808
 msgid "Boxplot..."
@@ -1107,51 +1104,57 @@ msgstr "箱线图..."
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
+"Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 
 #: ../../src/Autocomplete.cpp:475
 msgid "Bug: Autocompletion requested for unknown type of item."
-msgstr ""
+msgstr "Bug: Autocompletion requested for unknown type of item."
 
 #: ../../src/Worksheet.cpp:2828
 msgid "Bug: Cell left but not entered."
-msgstr ""
+msgstr "Bug: Cell left but not entered."
 
 #: ../../src/Worksheet.cpp:6557
 msgid "Bug: Cell with negative y position!"
-msgstr ""
+msgstr "Bug: Cell with negative y position!"
 
 #: ../../src/Worksheet.cpp:2963
 msgid "Bug: Got a question but no cell to answer it in"
-msgstr ""
+msgstr "Bug: Got a question but no cell to answer it in"
 
 #: ../../src/Worksheet.cpp:6739
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
+"Bug: Got a request to change the contents of the cell above the beginning of "
+"the worksheet."
 
 #: ../../src/Worksheet.cpp:6714
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
+"Bug: Got a request to delete the cell above the beginning of the worksheet."
 
 #: ../../src/Worksheet.cpp:6778
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr ""
+"Bug: Got a request to first change the contents of a cell and to then "
+"undelete it."
 
 #: ../../src/Worksheet.cpp:5573
 msgid "Bug: HTML output is no valid XML"
-msgstr ""
+msgstr "Bug: HTML output is no valid XML"
 
 #: ../../src/Configuration.h:566
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
-msgstr ""
+msgstr "Bug: Maximum number of digits that is to be displayed is too low!"
 
 #: ../../src/MathParser.cpp:443
 msgid "Bug: Missing contents"
-msgstr "漏洞：缺少内容"
+msgstr "Bug: Missing contents"
 
 #: ../../src/Worksheet.cpp:2396 ../../src/Worksheet.cpp:2521
 #: ../../src/Worksheet.cpp:2565 ../../src/Worksheet.cpp:2602
@@ -1159,29 +1162,31 @@ msgstr "漏洞：缺少内容"
 #: ../../src/Worksheet.cpp:4473 ../../src/Worksheet.cpp:7031
 #: ../../src/Worksheet.cpp:7268
 msgid "Bug: The clipboard is already opened"
-msgstr ""
+msgstr "Bug: The clipboard is already opened"
 
 #: ../../src/Worksheet.cpp:7349
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
+"Bug: Trying to move the horizontally-drawn cursor to a place inside a "
+"GroupCell."
 
 #: ../../src/Worksheet.h:239 ../../src/Worksheet.h:244
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
-msgstr ""
+msgstr "Bug: Trying to record a cell contents change for undo without a cell."
 
 #: ../../src/Worksheet.cpp:2281
 msgid "Bug: Trying to select inside a cell without having a current cell"
-msgstr ""
+msgstr "Bug: Trying to select inside a cell without having a current cell"
 
 #: ../../src/Worksheet.cpp:6779
 msgid "Bug: Undo action with both cell contents change and cell addition."
-msgstr ""
+msgstr "Bug: Undo action with both cell contents change and cell addition."
 
 #: ../../src/Worksheet.cpp:6744
 msgid "Bug: Undo request for cell outside worksheet."
-msgstr ""
+msgstr "Bug: Undo request for cell outside worksheet."
 
 #: ../../src/wxMaximaFrame.cpp:1403
 msgid "Build &Info"
@@ -1192,8 +1197,8 @@ msgid ""
 "But you can also tell makelist to iterate over a list - which is quite "
 "fast:\n"
 msgstr ""
-"但也可以告诉 makelist() 通过对已有列表迭代来 (非常方便地) 生成\n"
-"新列表:\n"
+"但也可以告诉 makelist() 通过对已有列表迭代来（非常方便地）生成\n"
+"新列表：\n"
 
 #: ../../examples/examples_gettext.list:1493
 msgid ""
@@ -1201,7 +1206,7 @@ msgid ""
 "told to eliminate these two variables on the right side of the equations, if "
 "possible.\n"
 msgstr ""
-"选择 [a,b] 作为变量列表, 相当于告诉 Maxima, 如果可能的话,  消除\n"
+"选择 [a,b] 作为变量列表，相当于告诉 Maxima，如果可能的话，消除\n"
 "方程组中的这两个变量.\n"
 
 #: ../../examples/examples_gettext.list:1935
@@ -1211,9 +1216,10 @@ msgid ""
 "test 2 values (the minimum and the maximum) that might speed up lengthy "
 "calculations with many values that contain tolerances:\n"
 msgstr ""
-"默认情况下, wrstcse 程序包测试每个 tol[n] 对应的三个值的所有组\n"
-"合: 最小值、最大值和典型值. 如果我们只想测试两个值 (最小值和最\n"
-"大值), 也可以用如下方法减少因多项数值含误差而产生的冗长计算:\n"
+"在默认情况下，wrstcse 程序包测试每个 tol[n] 对应的三个值的所有组\n"
+"合：最小值、最大值和典型值。如果我们只想测试两个值（最小值\n"
+"和最大值），也可以用如下方法减少因多项数值含误差而产生的冗\n"
+"长计算：\n"
 
 #: ../../src/TipOfTheDay.cpp:51
 msgid ""
@@ -1223,7 +1229,7 @@ msgid ""
 "two key commands."
 msgstr ""
 "在默认情况下，使用 Shift+Enter 键执行命令，而使用 Enter 键输入多行命令。可以"
-"在“编辑->配置”对话框中更改此行为。选中“按下 Enter 键执行命令”，将切换这两种键"
+"在“编辑->设置”对话框中更改此行为。选中“按下 Enter 键执行命令”，将切换这两种键"
 "位的功能。"
 
 #: ../../examples/examples_gettext.list:2146
@@ -1236,7 +1242,7 @@ msgstr "通过用反斜线转义，几乎每个符号都可以被解释为普通
 msgid ""
 "By having given this equation a name (\"sol2\") we gained a way to re-use "
 "this equation later.\n"
-msgstr "通过给这个方程起一个名字 (如 sol2), 我们可以重复使用该方程.\n"
+msgstr "通过给这个方程起一个名字（如 sol2），我们可以重复使用该方程。\n"
 
 #: ../../src/wxMaximaFrame.cpp:1089
 msgid "C&hange Variable..."
@@ -1244,7 +1250,7 @@ msgstr "修改变量(&H)..."
 
 #: ../../src/wxMaximaFrame.cpp:742
 msgid "C&onfigure"
-msgstr "配置(&O)"
+msgstr "设置(&O)"
 
 #: ../../src/wxMaximaFrame.cpp:1108
 msgid "Calculate &Product..."
@@ -1252,15 +1258,15 @@ msgstr "计算乘积(&P)..."
 
 #: ../../src/wxMaximaFrame.cpp:1106
 msgid "Calculate Su&m..."
-msgstr "求和(&M)..."
+msgstr "计算和(&M)..."
 
 #: ../../src/wxMaximaFrame.cpp:1338
 msgid "Calculate bigfloat value of the last result"
-msgstr "将最后的计算结果以长浮点数(bigfloat)表示"
+msgstr "将计算结果以大浮点数（bigfloat）表示"
 
 #: ../../src/wxMaximaFrame.cpp:1335
 msgid "Calculate float value of the last result"
-msgstr "将最后的计算结果以浮点数(float)表示"
+msgstr "将计算结果以浮点数（float）表示"
 
 #: ../../src/wxMaxima.cpp:7940
 msgid "Calculate modulus:"
@@ -1268,15 +1274,15 @@ msgstr "求模："
 
 #: ../../src/wxMaximaFrame.cpp:1341
 msgid "Calculate numeric value of the last result"
-msgstr "计算最后结果的数值"
+msgstr "显示计算结果的数值"
 
 #: ../../src/wxMaximaFrame.cpp:1109
 msgid "Calculate products"
-msgstr "求乘积"
+msgstr "计算乘积"
 
 #: ../../src/wxMaximaFrame.cpp:1107
 msgid "Calculate sums"
-msgstr "求和"
+msgstr "计算和"
 
 #: ../../examples/examples_gettext.list:1164
 msgid ""
@@ -1285,9 +1291,9 @@ msgid ""
 "is a recursive function call) eventually exceeds the lisp's stack limit. "
 "Calculating primes[10000] in several steps is possible, instead:\n"
 msgstr ""
-"一次性计算 primes[10000] 需要计算 primes[9999], 这又需要计算 \n"
-"primes[9998]. 因为这种计算实际上是一个递归函数调用, 所以最终\n"
-"会超过 Lisp 的堆栈限制. 但是可以用以下步骤计算 primes[10000]:\n"
+"一次性计算 primes[10000] 需要计算 primes[9999]，这又需要计算 \n"
+"primes[9998]。因为这种计算实际上是一个递归函数调用，所以最终\n"
+"会超过 Lisp 的堆栈限制。但是可以用以下步骤计算 primes[10000]：\n"
 
 #: ../../src/wxMaxima.cpp:10394
 msgid "Can not connect to the web server."
@@ -1304,6 +1310,8 @@ msgid ""
 "(it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's "
 "config dialogue the setting for maxima's location is wrong."
 msgstr ""
+"无法启动 Maxima。最可能的原因是没有安装 Maxima（可以从http://maxima."
+"sourceforge.net 下载）或者在 wxMaxima 的设置对话框中，Maxima 的位置设置错误。"
 
 #: ../../src/MaxSizeChooser.cpp:45 ../../src/MaxSizeChooser.cpp:47
 #: ../../src/wxMaxima.cpp:10482
@@ -4372,7 +4380,7 @@ msgstr "长度"
 msgid ""
 "Let's assume that R_1 is a 100Ω with 10% tolerance. R_2 is a 1000Ω resistor "
 "with 1% tolerance instead:\n"
-msgstr "假设 R_1=100Ω 且相对误差为 10%，R_2=1000Ω 且相对误差为 1%：\n"
+msgstr "假设 R_1=100Ω 且相对误差为百分之十，R_2=1000Ω 且相对误差为百分之一：\n"
 
 #: ../../examples/examples_gettext.list:607
 msgid ""
@@ -8282,8 +8290,9 @@ msgid ""
 "but are guaranteed to always deviate into the same direction by the same "
 "percentage.\n"
 msgstr ""
-"也可以假设另一组相对误差：两个电阻的相对误差都是 10%，但总是以\n"
-"相同的百分比向同一方向偏离：\n"
+"也可以假设另一组相对误差：两个电阻的相对误差都是百分之十，但\n"
+"总是以相同的百分比向\n"
+"同一方向偏离：\n"
 
 #: ../../examples/examples_gettext.list:1523
 msgid "We can use them as an input to solve:\n"
