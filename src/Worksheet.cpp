@@ -224,6 +224,7 @@ void Worksheet::OnSidebarKey(wxCommandEvent &event)
     GetActiveCell()->InsertText(wxString(wxChar(event.GetId())));
     GroupCell *parent = GetActiveCell()->GetGroup();
     parent->InputHeightChanged();
+    Recalculate(parent);
     RequestRedraw(parent);
   }
   else
