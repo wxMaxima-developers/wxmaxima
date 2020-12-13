@@ -21,8 +21,7 @@ jobs:
            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
            sudo apt-add-repository -y 'deb https://apt.kitware.com/ubuntu/ xenial main'
            sudo apt-get update
-           sudo apt-get install gettext doxygen graphviz gnuplot gnuplot-x11 libwxgtk3.0-dev maxima maxima-share ninja-build netcat-openbsd xvfb appstream-util desktop-file-utils cmake
-
+           sudo apt-get install graphviz gnuplot gnuplot-x11 libwxgtk3.0-dev maxima maxima-share ninja-build netcat-openbsd xvfb cmake
     - name: configure
       run: |
            export CC=gcc-5
