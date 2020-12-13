@@ -1117,6 +1117,22 @@ void Cell::UnbreakList()
     tmp.Unbreak();
 }
 
+wxColour Cell::GetForegroundColor() const
+{
+  Configuration *configuration = (*m_configuration);
+  wxColour color;  
+  if (m_highlight)
+    color = configuration->GetColor(TS_HIGHLIGHT);
+  else if (m_type == MC_TYPE_PROMPT)
+    color = configuration->GetColor(TS_OTHER_PROMPT);
+  else if (m_type == MC_TYPE_INPUT)
+    color = configuration->GetColor(TS_INPUT);
+  else
+    color = configuration->GetColor(TS_DEFAULT);
+
+  return color;
+}
+
 // cppcheck-suppress functionStatic
 // cppcheck-suppress functionConst
 // Set the pen in device context according to the style of the cell.
@@ -1124,25 +1140,27 @@ void Cell::SetPen(double lineWidth) const
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
-
-  wxPen pen;
-
-  if (m_highlight)
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
-                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-  else if (m_type == MC_TYPE_PROMPT)
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
-                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-  else if (m_type == MC_TYPE_INPUT)
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
-                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-  else
-    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
-
+  
+  wxPen pen = *(wxThePenList->FindOrCreatePen(GetForegroundColor(),
+                                              lineWidth * configuration->GetDefaultLineWidth(),
+                                              wxPENSTYLE_SOLID)
+    );
   dc->SetPen(pen);
+    
   if(configuration->GetAntialiassingDC() != dc)
     configuration->GetAntialiassingDC()->SetPen(pen);
+}
+
+void Cell::SetBrush() const
+{
+  Configuration *configuration = (*m_configuration);
+  wxDC *dc = configuration->GetDC();
+  
+  wxBrush brush = *(wxTheBrushList->FindOrCreateBrush(GetForegroundColor()));
+  dc->SetBrush(brush);
+    
+  if(configuration->GetAntialiassingDC() != dc)
+    configuration->GetAntialiassingDC()->SetBrush(brush);
 }
 
 const wxString &Cell::GetValue() const

@@ -474,9 +474,13 @@ public:
   TextStyle GetStyle() const
   { return m_textStyle; }
 
+  //! Sets the drawing pen to the cell's default foreground color 
   // cppcheck-suppress functionStatic
   // cppcheck-suppress functionConst
   void SetPen(double lineWidth = 1.0) const;
+  //! Sets the fill brush to the cell's default foreground color 
+  void SetBrush() const;
+  wxColour GetForegroundColor() const;
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight) { m_highlight = highlight; }
