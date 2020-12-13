@@ -135,7 +135,7 @@ public:
 
  */
 
-// 112 bytes
+// 120 bytes
 class Cell: public Observed
 {
 #if wxUSE_ACCESSIBILITY
@@ -631,7 +631,7 @@ public:
     drawn as a single 2D object or the nominator, the cell containing the "/" and 
     the denominator are pointed to by GetNextToDraw() as single separate objects.
    */
-  virtual Cell *GetNextToDraw() const = 0;
+  Cell *GetNextToDraw() const { return m_nextToDraw; }
 
   /*! Tells this cell which one should be the next cell to be drawn
 
@@ -640,7 +640,7 @@ public:
     If the cell is broken into lines this sets the pointer of the last of the 
     list of cells this cell is displayed as.
    */
-  virtual void SetNextToDraw(Cell *next) = 0;
+  virtual void SetNextToDraw(Cell *next) { m_nextToDraw = next; }
   template <typename T, typename Del,
             typename std::enable_if<std::is_base_of<Cell, T>::value, bool>::type = true>
   void SetNextToDraw(const std::unique_ptr<T, Del> &ptr) { SetNextToDraw(ptr.get()); }
@@ -868,6 +868,9 @@ protected:
     every math cell has a GroupCell it belongs to.
   */
   CellPtr<GroupCell> m_group;
+  //! The next cell in the draw list. This has been factored into Cell temporarily to
+  //! reduce the change "noise" when it will be subsequently removed.
+  CellPtr<Cell> m_nextToDraw;
 
   Configuration **m_configuration;
 

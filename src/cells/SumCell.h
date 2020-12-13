@@ -70,7 +70,6 @@ public:
   void SetAltCopyText(const wxString &text) override { m_altCopyText = text; }
   const wxString &GetAltCopyText() const override { return m_altCopyText; }
 
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
   void Unbreak() override final;
@@ -87,8 +86,6 @@ private:
 
   //! Text that should end up on the clipboard if this cell is copied as text.
   wxString m_altCopyText;
-
-  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.

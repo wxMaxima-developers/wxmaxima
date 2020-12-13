@@ -493,14 +493,11 @@ SCENARIO("A CellPtr drops the reference to Observed's control block as soon as i
 class FullTestCell : public Cell {
   Configuration configuration;
   Configuration *config = &configuration;
-  CellPtr<Cell> m_nextToDraw;
 public:
   FullTestCell() : Cell({}, &config) {}
   FullTestCell(const FullTestCell &) : Cell({}, &config) {}
   std::unique_ptr<Cell> Copy() const override;
   const CellTypeInfo &GetInfo() override;
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
 };
 DEFINE_CELL(FullTestCell)
 

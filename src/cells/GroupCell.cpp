@@ -2079,11 +2079,6 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
 
 #endif
 
-void GroupCell::SetNextToDraw(Cell *next)
-{
-  m_nextToDraw = next;
-}
-
 void CellList::Check(const GroupCell *c)
 {
   if (!c) return;

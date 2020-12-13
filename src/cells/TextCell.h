@@ -90,10 +90,6 @@ public:
 
   void SetPromptTooltip(bool use) { m_promptTooltip = use; }
 
-  //! The actual font size for labels (that have a fixed width)
-  void SetNextToDraw(Cell *next) override { m_nextToDraw = next; }
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 protected:
   mutable wxString m_altCopyText;
   //! Returns the XML flags this cell needs in wxMathML
@@ -147,10 +143,6 @@ protected:
   //! The text we display: We might want to convert some characters or do similar things
   wxString m_displayedText;
   std::vector<SizeEntry> m_sizeCache;
-
-//** 8/4-byte objects (8 bytes)
-//**
-  CellPtr<Cell> m_nextToDraw;
 
 //** Bitfield objects (1 bytes)
 //**

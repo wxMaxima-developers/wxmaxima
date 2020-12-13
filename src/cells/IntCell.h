@@ -74,12 +74,8 @@ public:
   bool BreakUp() override;
   void SetNextToDraw(Cell *next) override;
 
-  Cell *GetNextToDraw() const override { return m_nextToDraw; }
-
 private:
   void MakeBreakUpCells();
-
-  CellPtr<Cell> m_nextToDraw;
 
   // The pointers below point to inner cells and must be kept contiguous.
   // ** All pointers must be the same: either Cell * or std::unique_ptr<Cell>.
